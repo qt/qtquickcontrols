@@ -98,6 +98,20 @@ Rectangle {
                 width: height
             }
         }
+	LineEdit {
+		text: "Some text"
+	}
+	LineEdit {
+		text: "Some text"
+		backgroundColor:"purple"
+	}
+	SpinBox {
+	}
+	SpinBox {
+		backgroundColor:"purple"
+	}
+
+
     }
 
     function generateColor() {

@@ -3,15 +3,11 @@ import Qt 4.7
 Item {
     id:button
 
-    width: Math.max(80, labelComponent.item.width + 2*10)
-    height: Math.max(32, labelComponent.item.height + 2*4)
+    width: 200
+    height: 28
 
-    clip:true
-    signal clicked
-    property bool pressed : mousearea.pressed;
     property Component background : defaultbackground
-    property Component content : defaultlabel
-    property string text
+    property alias text: input.text
     property string icon
 
     property color backgroundColor: "#fff";
@@ -24,6 +20,14 @@ Item {
         sourceComponent:background
     }
 
+    TextInput {
+        id:input
+        anchors.margins:4
+        anchors.fill:backgroundComponent
+        selectByMouse:true
+    }
+
+
     // content
     Loader {
         id:labelComponent
@@ -31,11 +35,6 @@ Item {
         sourceComponent:content
     }
 
-    MouseArea {
-        id:mousearea
-        anchors.fill:parent
-        onPressed: button.clicked
-    }
 
     Component {
         id:defaultbackground
@@ -54,29 +53,10 @@ Item {
                 anchors.fill:parent
                 id: backgroundimage
                 smooth:true
-                source: pressed ? "images/button_pressed.png" : "images/button_normal.png"
+                source: "images/lineedit_normal.png"
                 width: 80; height: 24
                 border.left: 6; border.top: 6
                 border.right: 6; border.bottom: 6
-            }
-        }
-    }
-
-    Component {
-        id:defaultlabel
-        Item {
-            width:layout.width
-            height:layout.height
-            anchors.margins:4
-            Row {
-                spacing:4
-                anchors.centerIn:parent
-                id:layout
-                Image { source:button.icon}
-                Text { color:button.foregroundColor;
-                    anchors.verticalCenter: parent.verticalCenter ;
-                    text:button.text
-                }
             }
         }
     }
