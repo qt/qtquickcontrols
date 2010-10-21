@@ -68,9 +68,9 @@ Rectangle {
             }
         }
 
-        Meego.Button {
-            text: "meego"
-        }
+//        Meego.Button {
+//            text: "meego"
+ //       }
 
         Slider {
         }
@@ -98,18 +98,14 @@ Rectangle {
                 width: height
             }
         }
-	LineEdit {
-		text: "Some text"
-	}
+        LineEdit { text: "Some text" }
 	LineEdit {
 		text: "Some text"
 		backgroundColor:"purple"
 	}
-	SpinBox {
-	}
-	SpinBox {
-		backgroundColor:"purple"
-	}
+
+        SpinBox { }
+        SpinBox { foregroundColor: "white"; backgroundColor:"#4499ff"}
 
 
     }

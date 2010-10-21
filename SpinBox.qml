@@ -4,7 +4,7 @@ Item {
     id:spinbox
 
     width: 200
-    height: 28
+    height: 32
 
     property Component background : defaultbackground
     property Component contents : defaultContents
@@ -58,7 +58,7 @@ Item {
         sourceComponent:background
     }
 
-    // background
+    // Contents
     Loader {
         id:contentsComponent
         anchors.fill:parent
@@ -70,7 +70,8 @@ Item {
 
     TextInput {
         id:input
-        anchors.margins:4
+        font.pixelSize:14
+        anchors.margins:5
         anchors.fill:contentsComponent.item
         selectByMouse:true
         text:spinbox.value
@@ -141,7 +142,7 @@ Item {
             anchors.right: parent.right;
             anchors.rightMargin:8;
             anchors.top:parent.top;
-            anchors.topMargin:5
+            anchors.topMargin:7
             source:"images/spinbox_up.png"
         }
     }
@@ -152,13 +153,13 @@ Item {
             anchors.right: parent.right;
             anchors.rightMargin:8;
             anchors.bottom:parent.bottom
-            anchors.bottomMargin:5
+            anchors.bottomMargin:7
             source:"images/spinbox_down.png"
         }
     }
 
     Component {
         id:defaultContents
-        Item{anchors.fill:parent; anchors.leftMargin: 4; anchors.rightMargin:20}
+        Item{anchors.fill:parent; anchors.leftMargin: 4; anchors.topMargin:2 ; anchors.rightMargin:20}
     }
 }

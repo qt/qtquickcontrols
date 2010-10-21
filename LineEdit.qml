@@ -1,12 +1,13 @@
 import Qt 4.7
 
 Item {
-    id:button
+    id:lineedit
 
     width: 200
-    height: 28
+    height: 32
 
     property Component background : defaultbackground
+    property Component contents : defaultContents
     property alias text: input.text
     property string icon
 
@@ -20,21 +21,23 @@ Item {
         sourceComponent:background
     }
 
+    // Contents
+    Loader {
+        id:contentsComponent
+        anchors.fill:parent
+        sourceComponent:contents
+        onLoaded: {
+            item.parent = lineedit
+        }
+    }
+
     TextInput {
         id:input
+        font.pixelSize:14
         anchors.margins:4
-        anchors.fill:backgroundComponent
+        anchors.fill:contentsComponent.item
         selectByMouse:true
     }
-
-
-    // content
-    Loader {
-        id:labelComponent
-        anchors.centerIn: parent
-        sourceComponent:content
-    }
-
 
     Component {
         id:defaultbackground
@@ -59,5 +62,10 @@ Item {
                 border.right: 6; border.bottom: 6
             }
         }
+    }
+
+    Component {
+        id:defaultContents
+        Item{anchors.fill:parent; anchors.margins: 4}
     }
 }
