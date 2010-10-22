@@ -56,8 +56,8 @@ Item {
                 smooth:true
                 source: pressed ? "images/button_pressed.png" : "images/button_normal.png"
                 width: 80; height: 24
-                border.left: 6; border.top: 6
-                border.right: 6; border.bottom: 6
+                border.left: 3; border.top: 3
+                border.right: 3; border.bottom: 3
             }
         }
     }

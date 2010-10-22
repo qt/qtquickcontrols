@@ -6,6 +6,10 @@ Rectangle {
     width: 800
     height: 640
 
+    gradient: Gradient{
+        GradientStop{ position:0 ; color:"#aaa"}
+        GradientStop{ position:1 ; color:"#ccc"}
+    }
     Rectangle {
         visible: redButton.visible
         color: "black"
@@ -75,29 +79,22 @@ Rectangle {
         Slider {
         }
 
-        Slider { id: coolSlider
-            width: 250
-            height: 6
-            showProgress: true
-            background: Rectangle {
-                color: "lightgrey"
-                radius: 5
-                border.width: 1
-                border.color: "black"
-            }
-            content: Rectangle {
-                color: generateColor()
-                radius: 5
-                border.width: 1
-                border.color: "black"
-            }
-            handle: Rectangle {
-                color: "black"
-                radius: 5
-                height: coolSlider.height * 3
-                width: height
-            }
+        Slider {
+            backgroundColor:"red"
         }
+
+        Slider {
+            backgroundColor:"red"
+            showProgress:true
+            foregroundColor:generateColor(value)
+        }
+
+
+        Slider {
+///            showProgress: true
+            foregroundColor: generateColor()
+        }
+
         LineEdit { text: "Some text" }
 	LineEdit {
 		text: "Some text"
@@ -110,7 +107,7 @@ Rectangle {
 
     }
 
-    function generateColor() {
-        return Qt.hsla(0.33 - (coolSlider.value / 300), 1, 0.5, 1)
+    function generateColor(value) {
+        return Qt.hsla(0.33 - (value / 300), 1, 0.5, 1)
     }
 }

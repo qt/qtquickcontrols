@@ -16,6 +16,9 @@ Item {
     property bool upHovered: mouseup.containsMouse
     property bool downHovered: mousedown.containsMouse
 
+    property bool upEnabled: value == maximum;
+    property bool downEnabled: value == minimum;
+
     property real value : 0.0
     property real maximum: 99
     property real minimum: 0
@@ -140,9 +143,10 @@ Item {
         id:defaultUp
         Image{
             anchors.right: parent.right;
-            anchors.rightMargin:8;
+            anchors.rightMargin:12;
             anchors.top:parent.top;
             anchors.topMargin:7
+            opacity: upEnabled ? 0.5 : (upPressed ? 1 : 0.8)
             source:"images/spinbox_up.png"
         }
     }
@@ -151,15 +155,16 @@ Item {
         id:defaultDown
         Image{
             anchors.right: parent.right;
-            anchors.rightMargin:8;
+            anchors.rightMargin:12;
             anchors.bottom:parent.bottom
             anchors.bottomMargin:7
+            opacity: (downEnabled ? 0.5 : (downPressed ? 1 : 0.8))
             source:"images/spinbox_down.png"
         }
     }
 
     Component {
         id:defaultContents
-        Item{anchors.fill:parent; anchors.leftMargin: 4; anchors.topMargin:2 ; anchors.rightMargin:20}
+        Item{anchors.fill:parent; anchors.leftMargin: 4; anchors.topMargin:2 ; anchors.rightMargin:24}
     }
 }

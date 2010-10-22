@@ -36,6 +36,8 @@ Item {
     property Component background : defaultbackground
     property Component content: defaultcontent
 
+    property color foregroundColor: "#9ff"
+    property color backgroundColor: "#aaa"
     property bool showProgress: false
 
     property alias value: valueModel.value
@@ -54,8 +56,8 @@ Item {
     signal pressed
     signal released
 
-    width: 140
-    height: 20
+    width: 200
+    height: 28
 
     QtComponents.RangeModel {
         // This model describes the range of values the slider can take
@@ -163,46 +165,36 @@ Item {
             sourceComponent: handle
         }
 
-        /*  Timer {
-        // In the native meegotouch slider, the indicator
-        // pops up 100ms after pressing the handle:
-        id: indicatorTimer
-        running: grooveMouseArea.pressed && indicatorVisible
-        interval: 100;
-        onTriggered: indicatorBackground.visible = grooveMouseArea.pressed && indicatorVisible
-    }*/
-/*    Binding {
-        // ...but the indicator hides immidiatly:
-        target: indicatorBackground
-        property: "visible"
-        value: grooveMouseArea.pressed && indicatorVisible
-        when: indicatorBackground.visible
-    }
-*/
-/*    Label {
-        id: indicatorText
-        anchors.left: indicatorBackground.left
-        anchors.leftMargin: labelStyle.current.get("paddingLeft")
-        anchors.verticalCenter: indicatorBackground.verticalCenter
-        styleObjectName: "MSliderHandleLabel"
-        text: root.indicatorLabel
-
-        // Set the width of indicatorBackground explicit to avoid circular
-        // dependency (since the calculation depends on the old width):
-        onWidthChanged: indicatorBackground.width = Math.max(indicatorBackground.width, width
-                                                             + labelStyle.current.get("paddingLeft")
-        + labelStyle.current.get("paddingRight"))
-    }
-*/
-
         Component {
             id:defaultbackground
             Item {
+                Rectangle{
+                    color:backgroundColor
+                    anchors.fill:sliderbackground
+                    anchors.margins:1
+                    radius:2
+                }
                 BorderImage {
+                    id:sliderbackground
                     anchors.verticalCenter: parent.verticalCenter
-                    height: 6
+                    height: 8
                     width:parent.width
-                    source:"images/slider-background.png"
+                    border.top:0
+                    border.bottom:0
+                    border.left:4
+                    border.right:4
+                    source:"images/slider.png"
+                }
+
+                Rectangle{
+                    visible:showProgress
+                    color:foregroundColor
+                    anchors.left:sliderbackground.left
+                    anchors.top:sliderbackground.top
+                    anchors.bottom:sliderbackground.bottom
+                    width:handlePixmap.x + handlePixmap.width/2
+                    anchors.margins:1
+                    radius:2
                 }
             }
         }
@@ -210,17 +202,26 @@ Item {
         Component {
             id:defaultcontent
             Item {
-                BorderImage {
-                    anchors.verticalCenter: parent.verticalCenter
-                    height: 6
-                    width:parent.width
-                    source:"images/progress-bar-bar.png"
-                }
             }
         }
 
+
         Component {
             id:defaulthandle
-            Image {source:"images/slider-handle.png"}
+            Item {
+                width:27
+                height:27
+                Rectangle{
+                    color:backgroundColor
+                    width:27
+                    height:27
+                    anchors.centerIn:handle2
+                    radius:19
+                    smooth:true
+                    anchors.margins:5
+
+                }
+                Image {anchors.centerIn:parent; id:handle2; source:"images/handle.png"}
+            }
         }
 }

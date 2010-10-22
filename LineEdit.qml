@@ -58,8 +58,8 @@ Item {
                 smooth:true
                 source: "images/lineedit_normal.png"
                 width: 80; height: 24
-                border.left: 6; border.top: 6
-                border.right: 6; border.bottom: 6
+                border.left: 6; border.top: 3
+                border.right: 6; border.bottom: 3
             }
         }
     }
