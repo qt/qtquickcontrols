@@ -13,6 +13,7 @@ Item {
 
     property color backgroundColor: "#fff";
     property color foregroundColor: "#222";
+    property alias hover : mousearea.containsMouse
 
     // background
     Loader {
@@ -29,6 +30,12 @@ Item {
         onLoaded: {
             item.parent = lineedit
         }
+    }
+
+    MouseArea {
+        id:mousearea
+        anchors.fill:parent
+        hoverEnabled:true
     }
 
     TextInput {

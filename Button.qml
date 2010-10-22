@@ -3,11 +3,12 @@ import Qt 4.7
 Item {
     id:button
 
-    width: Math.max(80, labelComponent.item.width + 2*10)
+    width: Math.max(100, labelComponent.item.width + 2*10)
     height: Math.max(32, labelComponent.item.height + 2*4)
 
     clip:true
     signal clicked
+    property alias hover : mousearea.containsMouse
     property bool pressed : mousearea.pressed;
     property Component background : defaultbackground
     property Component content : defaultlabel
@@ -33,7 +34,8 @@ Item {
 
     MouseArea {
         id:mousearea
-        anchors.fill:parent
+        hoverEnabled: true
+        anchors.fill: parent
         onPressed: button.clicked
     }
 
@@ -74,6 +76,7 @@ Item {
                 id:layout
                 Image { source:button.icon}
                 Text { color:button.foregroundColor;
+                    font.pixelSize:14
                     anchors.verticalCenter: parent.verticalCenter ;
                     text:button.text
                 }

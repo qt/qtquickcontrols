@@ -36,9 +36,10 @@ Item {
     property Component background : defaultbackground
     property Component content: defaultcontent
 
-    property color foregroundColor: "#9ff"
+    property color progressColor: "#9ff"
     property color backgroundColor: "#aaa"
     property bool showProgress: false
+    property alias hover : grooveMouseArea.containsMouse
 
     property alias value: valueModel.value
     property alias minimumValue: valueModel.minimumValue
@@ -82,6 +83,7 @@ Item {
     }
         MouseArea {
             id: grooveMouseArea
+            hoverEnabled:true
             // RestrictedDragging means that the handle
             // should snap to steps _while_ dragging. This property is hidden
             // inside here as we see this as a style decition:
@@ -111,6 +113,7 @@ Item {
             onPositionChanged: {
                 // FIXME: handle min interval/value change
                 //style.feedback("moveFeedback");
+                if (pressed) {
                 dragging = true;
                 if (vertical) {
                     valueModel.position = mouseY - (handlePixmap.height/2);
@@ -121,6 +124,7 @@ Item {
                     handlePixmap.x = restrictedDragging ?
                                      valueModel.position - (handlePixmap.width / 2) : conformToRange(mouseX);
                 }
+            }
             }
             onReleased: {
                 dragging = false;
@@ -188,11 +192,12 @@ Item {
 
                 Rectangle{
                     visible:showProgress
-                    color:foregroundColor
+                    color:progressColor
                     anchors.left:sliderbackground.left
                     anchors.top:sliderbackground.top
                     anchors.bottom:sliderbackground.bottom
                     width:handlePixmap.x + handlePixmap.width/2
+                    opacity:0.4
                     anchors.margins:1
                     radius:2
                 }
