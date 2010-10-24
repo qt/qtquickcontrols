@@ -7,7 +7,7 @@ Item {
     height: 32
 
     property Component background : defaultbackground
-    property Component contents : defaultContents
+    property Component content : defaultContents
     property alias text: input.text
     property string icon
 
@@ -26,7 +26,7 @@ Item {
     Loader {
         id:contentsComponent
         anchors.fill:parent
-        sourceComponent:contents
+        sourceComponent:content
         onLoaded: {
             item.parent = lineedit
         }

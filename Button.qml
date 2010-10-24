@@ -8,21 +8,31 @@ Item {
 
     clip:true
     signal clicked
+
     property alias hover : mousearea.containsMouse
     property bool pressed : mousearea.pressed;
+    property bool checkable : false
+    property bool checked : false
+
     property Component background : defaultbackground
     property Component content : defaultlabel
+
     property string text
     property string icon
 
     property color backgroundColor: "#fff";
-    property color foregroundColor: "#222";
+    property color foregroundColor: "#333";
+
+    property alias font: fontcontainer.font
+
+    Text {id:fontcontainer; font.pixelSize:14} // Workaround since font is not a declarable type (bug?)
 
     // background
     Loader {
         id:backgroundComponent
         anchors.fill:parent
         sourceComponent:background
+        opacity: enabled ? 1 : 0.8
     }
 
     // content
@@ -34,6 +44,7 @@ Item {
 
     MouseArea {
         id:mousearea
+        enabled: button.enabled
         hoverEnabled: true
         anchors.fill: parent
         onPressed: button.clicked
@@ -71,14 +82,17 @@ Item {
             height:layout.height
             anchors.margins:4
             Row {
-                spacing:4
+                spacing:6
                 anchors.centerIn:parent
                 id:layout
-                Image { source:button.icon}
-                Text { color:button.foregroundColor;
-                    font.pixelSize:14
+                Image { source:button.icon; anchors.verticalCenter:parent.verticalCenter}
+                Text {
+                    id:label
+                    font:button.font
+                    color:button.foregroundColor;
                     anchors.verticalCenter: parent.verticalCenter ;
                     text:button.text
+                    opacity:parent.enabled ? 1 : 0.5
                 }
             }
         }

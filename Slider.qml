@@ -36,9 +36,9 @@ Item {
     property Component background : defaultbackground
     property Component content: defaultcontent
 
-    property color progressColor: "#9ff"
-    property color backgroundColor: "#aaa"
-    property bool showProgress: false
+    property color progressColor: "#9cf"
+    property color backgroundColor: "#fff"
+    property bool  showProgress: true
     property alias hover : grooveMouseArea.containsMouse
 
     property alias value: valueModel.value
@@ -181,12 +181,11 @@ Item {
                 BorderImage {
                     id:sliderbackground
                     anchors.verticalCenter: parent.verticalCenter
-                    height: 8
                     width:parent.width
-                    border.top:0
-                    border.bottom:0
-                    border.left:4
-                    border.right:4
+                    border.top:2
+                    border.bottom:2
+                    border.left:12
+                    border.right:12
                     source:"images/slider.png"
                 }
 

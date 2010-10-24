@@ -47,4 +47,8 @@
   <variable>ProjectExplorer.Project.Updater.FileVersion</variable>
   <value type="int">4</value>
  </data>
+ <data>
+  <variable>ProjectExplorer.Project.Updater.Hostname</variable>
+  <value type="QString">jens-laptop</value>
+ </data>
 </qtcreator>
