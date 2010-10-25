@@ -1,7 +1,7 @@
 import Qt 4.7
 
 Rectangle {
-    width: 600
+    width: 700
     height: 400
 
     Rectangle {
