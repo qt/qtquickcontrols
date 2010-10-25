@@ -9,10 +9,10 @@ Item {
     clip:true
     signal clicked
 
-    property alias hover : mousearea.containsMouse
-    property bool pressed : mousearea.pressed;
-    property bool checkable : false
-    property bool checked : false
+    property alias hover: mousearea.containsMouse
+    property bool pressed: false
+    property bool checkable: false
+    property bool checked: false
 
     property Component background : defaultbackground
     property Component content : defaultlabel
@@ -47,7 +47,17 @@ Item {
         enabled: button.enabled
         hoverEnabled: true
         anchors.fill: parent
-        onPressed: button.clicked
+        onPressed: button.pressed = true
+        onEntered: if(pressed && enabled) button.pressed = true  // handles clicks as well
+        onExited: button.pressed = false
+        onReleased: {
+            if (button.pressed && enabled) { // No click if release outside area
+                button.pressed  = false
+                if (checkable)
+                    checked = !checked;
+                button.clicked()
+            }
+        }
     }
 
     Component {

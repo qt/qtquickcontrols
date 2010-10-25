@@ -2,7 +2,7 @@ import Qt 4.7
 
 Rectangle {
     width: 600
-    height: 300
+    height: 400
 
     Rectangle {
         radius:6
@@ -21,7 +21,8 @@ Rectangle {
             LineEdit { }
             SpinBox{ }
             Slider {}
-            CheckBox { }
+            Switch { text: "A switch"}
+            CheckBox {text:"Some Check Box"}
         }
 
     }
