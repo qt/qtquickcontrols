@@ -1,110 +1,42 @@
 import Qt 4.7
+import "./behaviors"
+import "./styles/default" as DefaultStyles
 
 Item {
-    id:button
+    id: button
 
-    width: Math.max(100, labelComponent.item.width + 2*10)
-    height: Math.max(32, labelComponent.item.height + 2*4)
+    width: contentComponent.item.width
+    height: contentComponent.item.height
 
-    clip:true
     signal clicked
-
-    property alias hover: mousearea.containsMouse
-    property bool pressed: false
-    property bool checkable: false
-    property bool checked: false
-
-    property Component background : defaultbackground
-    property Component content : defaultlabel
+    property alias pressed: behavior.pressed
+    property alias checkable: behavior.checkable  // button toggles between checked and !checked
+    property alias checked: behavior.checked
 
     property string text
-    property string icon
+    property url icon
+
+    property Component background: defaultStyle.background
+    property Component content: defaultStyle.content
 
     property color backgroundColor: "#fff";
-    property color foregroundColor: "#333";
+    property color foregroundColor: "#222";
 
-    property alias font: fontcontainer.font
-
-    Text {id:fontcontainer; font.pixelSize:14} // Workaround since font is not a declarable type (bug?)
-
-    // background
-    Loader {
-        id:backgroundComponent
-        anchors.fill:parent
-        sourceComponent:background
-        opacity: enabled ? 1 : 0.8
-    }
-
-    // content
-    Loader {
-        id:labelComponent
-        anchors.centerIn: parent
-        sourceComponent:content
-    }
-
-    MouseArea {
-        id:mousearea
-        enabled: button.enabled
-        hoverEnabled: true
+    DefaultStyles.ButtonStyle { id: defaultStyle }
+    ButtonBehavior {
+        id: behavior
         anchors.fill: parent
-        onPressed: button.pressed = true
-        onEntered: if(pressed && enabled) button.pressed = true  // handles clicks as well
-        onExited: button.pressed = false
-        onReleased: {
-            if (button.pressed && enabled) { // No click if release outside area
-                button.pressed  = false
-                if (checkable)
-                    checked = !checked;
-                button.clicked()
-            }
-        }
+        onClicked: button.clicked()
     }
 
-    Component {
-        id:defaultbackground
-        Item {
-
-            Rectangle{
-                color:backgroundColor
-                radius: 5
-                x:1
-                y:1
-                width:parent.width-2
-                height:parent.height-2
-            }
-
-            BorderImage {
-                anchors.fill:parent
-                id: backgroundimage
-                smooth:true
-                source: pressed ? "images/button_pressed.png" : "images/button_normal.png"
-                width: 80; height: 24
-                border.left: 3; border.top: 3
-                border.right: 3; border.bottom: 3
-            }
-        }
+    Loader {    // background
+        anchors.fill: parent
+        sourceComponent: background
     }
 
-    Component {
-        id:defaultlabel
-        Item {
-            width:layout.width
-            height:layout.height
-            anchors.margins:4
-            Row {
-                spacing:6
-                anchors.centerIn:parent
-                id:layout
-                Image { source:button.icon; anchors.verticalCenter:parent.verticalCenter}
-                Text {
-                    id:label
-                    font:button.font
-                    color:button.foregroundColor;
-                    anchors.verticalCenter: parent.verticalCenter ;
-                    text:button.text
-                    opacity:parent.enabled ? 1 : 0.5
-                }
-            }
-        }
+    Loader {    // content
+        id: contentComponent
+        anchors.centerIn: parent
+        sourceComponent: content
     }
 }

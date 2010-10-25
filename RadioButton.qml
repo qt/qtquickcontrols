@@ -9,5 +9,5 @@ Button {
     content: defaultStyle.content
     checkable: true
 
-    DefaultStyles.CheckBoxStyle { id: defaultStyle }
+    DefaultStyles.RadioButtonStyle { id: defaultStyle }
 }
