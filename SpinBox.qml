@@ -18,8 +18,8 @@ Item {
 
     property alias hover : mousearea.containsMouse
 
-    property bool upEnabled: value == maximum;
-    property bool downEnabled: value == minimum;
+    property bool upEnabled: value != maximum;
+    property bool downEnabled: value != minimum;
 
     property real value : 0.0
     property real maximum: 99
@@ -89,6 +89,7 @@ Item {
         validator:DoubleValidator{bottom: 11; top: 31}
         onTextChanged: { spinbox.setValue(text); }
         color:foregroundColor
+        opacity:parent.enabled ? 1 : 0.5
     }
 
     Component {
@@ -160,7 +161,7 @@ Item {
                 anchors.left: parent.left;
                 anchors.top:parent.top;
                 anchors.topMargin:7
-                opacity: upEnabled ? 0.3 : (upPressed ? 1 : 0.8)
+                opacity: (upEnabled && enabled) ? (upPressed ? 1 : 0.8) : 0.3
                 source:"images/spinbox_up.png"
             }
         }
@@ -176,7 +177,7 @@ Item {
                 anchors.left: parent.left;
                 anchors.bottom:parent.bottom;
                 anchors.bottomMargin:7
-                opacity: (downEnabled ? 0.3 : (downPressed ? 1 : 0.8))
+                opacity: (downEnabled && enabled) ? (downPressed ? 1 : 0.8) : 0.3
                 source:"images/spinbox_down.png"
             }
         }

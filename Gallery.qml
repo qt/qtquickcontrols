@@ -19,7 +19,7 @@ Rectangle {
                 spacing: 12
                 anchors.margins: 20
                 Button { text:"Push me"}
-                LineEdit { }
+                LineEdit { text:"Text"}
                 SpinBox{ }
                 Slider {}
                 Switch { text: "A switch"}
@@ -30,7 +30,7 @@ Rectangle {
                 spacing: 12
                 anchors.margins: 20
                 Button { text:"Push me"}
-                LineEdit { }
+                LineEdit { text:"Text"}
                 SpinBox{ }
                 Slider {}
                 Switch { text: "A switch"}

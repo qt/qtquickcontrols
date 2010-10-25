@@ -3,8 +3,6 @@ import Qt 4.7
 Button{
     id:button
 
-    width: 120
-    height: 28
     checkable: true
     background: defaultbackground
     content: defaultlabel
@@ -58,10 +56,11 @@ Button{
                 spacing:4
                 anchors.bottom:parent.bottom
                 id:layout
-                Item{ width:parent.height + 26 ; height:1}
+                Item{ width:parent.height + 8 ; height:1}
                 Image { source:button.icon}
                 Text {
                     color:button.foregroundColor;
+                    opacity:enabled ? 1 : 0.5
                     font.pixelSize:14
                     text:button.text
                     y:4

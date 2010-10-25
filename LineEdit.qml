@@ -44,6 +44,7 @@ Item {
         anchors.margins:4
         anchors.fill:contentsComponent.item
         selectByMouse:true
+        opacity:parent.enabled ? 1 : 0.5
     }
 
     Component {

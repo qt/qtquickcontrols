@@ -101,7 +101,7 @@ Item {
                 text:"OFF"
                 style: "Sunken"
                 styleColor: "white"
-                opacity: checked ? 0 : 1
+                opacity: checked ? 0 : (enabled ? 1 : 0.5)
                 Behavior on opacity { NumberAnimation{ duration: 60}}
             }
 
@@ -116,7 +116,7 @@ Item {
                 text:"ON"
                 style: "Sunken"
                 styleColor: "white"
-                opacity: checked ? 1 : 0
+                opacity: checked ? (enabled ? 1 :0.5) : 0
                 Behavior on opacity { NumberAnimation{ duration: 60}}
             }
 
@@ -153,6 +153,7 @@ Item {
                 Image { source:button.icon}
                 Text {
                     color:button.foregroundColor;
+                    opacity: (enabled ? 1 : 0.5)
                     font.pixelSize:14
                     text:button.text
                     y:4
