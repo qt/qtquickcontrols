@@ -221,9 +221,8 @@ Item {
                     height:27
                     anchors.centerIn:handle2
                     radius:19
-                    smooth:true
                     anchors.margins:5
-
+                    smooth:true
                 }
                 Image {anchors.centerIn:parent; id:handle2; source:"images/handle.png"}
             }

@@ -132,7 +132,7 @@ Item {
                 height: parent.height
                 border.left: 4; border.top: 4
                 border.right: 4; border.bottom: 4
-                Behavior on x { NumberAnimation { duration: 60 ; easing.type:"OutCubic"}
+                Behavior on x { NumberAnimation { duration: 60 ; easing.type:"InOutCirc"}
                 }
             }
         }
