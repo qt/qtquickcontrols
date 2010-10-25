@@ -44,7 +44,7 @@ Rectangle {
                 id:column3
                 spacing: 12
                 anchors.margins: 20
-                property variant bg: "#def"
+                property variant bg: "#ffc"
                 property variant fg: "#356"
 
                 Text{ font.bold:true; text:"Colored:" ; styleColor: "white" ; color:"#333" ; style:"Raised"}
@@ -64,8 +64,48 @@ Rectangle {
                 Text{ font.bold:true; text:"Custom:" ; styleColor: "white" ; color:"#333" ; style:"Raised"}
                 Button { text:"Push me" ; background: shinyButton}
                 LineEdit { text:"Text"; background: shinyEdit}
-                SpinBox{ background: shinyEdit}
-                Slider { handle: Image{source:"images/orangehandle.png"}}
+                SpinBox{
+                    background: shinyEdit
+                    up: Button {
+                        width:height;
+                        anchors.left:parent.left
+                        anchors.top:parent.top
+                        anchors.bottom:parent.bottom
+                        anchors.margins: 4
+                        Text{
+                            text:"+"
+                            anchors.centerIn: parent
+                        }
+                    }
+                    down: Button {
+                        width:height;
+                        anchors.right:parent.right
+                        anchors.top:parent.top
+                        anchors.bottom:parent.bottom
+                        anchors.margins: 4
+                        Text{
+                            text:"-"
+                            anchors.centerIn: parent
+                        }
+                    }
+                    contents: Item {anchors.fill:parent; anchors.leftMargin: 40}
+                }
+                Slider {
+                    handle: BorderImage{source:"images/shinybutton_normal.png";
+                        width:40; height:30
+                        border.left:7; border.right: 7; border.top:7; border.bottom:7
+                    }
+                    background: Item {
+                        anchors.fill:parent
+                        BorderImage {
+                            source: "images/shinyedit_normal.png"
+                            anchors.verticalCenter: parent.verticalCenter
+                            width: parent.width;
+                            height:14; smooth:true
+                            border.left: 6; border.right: 6
+                        }
+                    }
+                }
                 Switch { text: "A switch"; background: shinyEdit}
                 CheckBox { text:"Some Check Box"; background: shinyEdit}
                 ComboBox{ text:"items"; background: shinyButton}
