@@ -11,18 +11,31 @@ Rectangle {
         color: "#22ffffff"
         anchors.margins:20
 
-        Column {
-            id: column
+        Row {
+            anchors.margins:20
             anchors.fill: parent
             spacing: 12
-            anchors.margins: 20
-            Button { text:"enabled"}
-            Button { text:"disabled" ; enabled: false}
-            LineEdit { }
-            SpinBox{ }
-            Slider {}
-            Switch { text: "A switch"}
-            CheckBox {text:"Some Check Box"}
+            Column {
+                spacing: 12
+                anchors.margins: 20
+                Button { text:"Push me"}
+                LineEdit { }
+                SpinBox{ }
+                Slider {}
+                Switch { text: "A switch"}
+                CheckBox {text:"Some Check Box"}
+            }
+            Column {
+                enabled:false
+                spacing: 12
+                anchors.margins: 20
+                Button { text:"Push me"}
+                LineEdit { }
+                SpinBox{ }
+                Slider {}
+                Switch { text: "A switch"}
+                CheckBox {text:"Some Check Box"}
+            }
         }
 
     }
