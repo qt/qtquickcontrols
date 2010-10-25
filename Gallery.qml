@@ -1,7 +1,7 @@
 import Qt 4.7
 
 Rectangle {
-    width: 700
+    width: 4*240
     height: 400
 
     Rectangle {
@@ -18,6 +18,7 @@ Rectangle {
             Column {
                 spacing: 12
                 anchors.margins: 20
+                Text{ font.bold:true; text:"Default:" ; styleColor: "white" ; color:"#333" ; style:"Raised"}
                 Button { text:"Push me"}
                 LineEdit { text:"Text"}
                 SpinBox{ }
@@ -30,6 +31,7 @@ Rectangle {
                 enabled:false
                 spacing: 12
                 anchors.margins: 20
+                Text{ font.bold:true; text:"Disabled:" ; styleColor: "white" ; color:"#333" ; style:"Raised"}
                 Button { text:"Push me"}
                 LineEdit { text:"Text"}
                 SpinBox{ }
@@ -42,9 +44,10 @@ Rectangle {
                 id:column3
                 spacing: 12
                 anchors.margins: 20
-                property variant bg: "#bef"
+                property variant bg: "#def"
                 property variant fg: "#356"
 
+                Text{ font.bold:true; text:"Colored:" ; styleColor: "white" ; color:"#333" ; style:"Raised"}
                 Button { text:"Push me" ; backgroundColor: column3.bg; foregroundColor: column3.fg}
                 LineEdit { text:"Text"; backgroundColor: column3.bg; foregroundColor: column3.fg}
                 SpinBox{ backgroundColor: column3.bg; foregroundColor: column3.fg}
@@ -52,6 +55,39 @@ Rectangle {
                 Switch { text: "A switch";backgroundColor: column3.bg; foregroundColor: column3.fg}
                 CheckBox { text:"Some Check Box";backgroundColor: column3.bg; foregroundColor: column3.fg}
                 ComboBox{ text:"items";backgroundColor: column3.bg; foregroundColor: column3.fg}
+            }
+            Column {
+                id:column4
+                spacing: 12
+                anchors.margins: 20
+
+                Text{ font.bold:true; text:"Custom:" ; styleColor: "white" ; color:"#333" ; style:"Raised"}
+                Button { text:"Push me" ; background: shinyButton}
+                LineEdit { text:"Text"; background: shinyEdit}
+                SpinBox{ background: shinyEdit}
+                Slider { handle: Image{source:"images/orangehandle.png"}}
+                Switch { text: "A switch"; background: shinyEdit}
+                CheckBox { text:"Some Check Box"; background: shinyEdit}
+                ComboBox{ text:"items"; background: shinyButton}
+            }
+        }
+
+        Component{
+            id:shinyButton
+            BorderImage {
+                source: pressed ? "images/shinybutton_pressed.png":"images/shinybutton_normal.png"
+                anchors.fill:parent
+                border.left: 6; border.top: 6
+                border.right: 6; border.bottom: 6
+            }
+        }
+        Component{
+            id:shinyEdit
+            BorderImage {
+                source: "images/shinyedit_normal.png"
+                anchors.fill:parent
+                border.left: 6; border.top: 6
+                border.right: 6; border.bottom: 6
             }
         }
 
