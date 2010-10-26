@@ -40,30 +40,10 @@ QtObject {
         Component {
             id: defaultContent
             Item {
-                width: layout.width
-                height: layout.height
-
+                width: 16
+                height: 16
                 anchors.bottom: parent.bottom
                 anchors.margins: 4
-                Row {
-                    id: layout
-                    spacing: 4
-                    anchors.bottom: parent.bottom
-                    Item {
-                        width: parent.height + 8;
-                        height: 1
-                    }
-                    Image {
-                        source: button.icon
-                    }
-                    Text {
-                        y: 4
-                        color: button.foregroundColor
-                        opacity: enabled ? 1 : 0.5
-                        font.pixelSize: 14
-                        text: button.text
-                    }
-                }
             }
         }
     ]

@@ -22,9 +22,9 @@ Rectangle {
                 Button { text:"Push me"}
                 LineEdit { text:"Text"}
                 SpinBox{ }
-                Slider {}
+                Slider { value: 50 }
                 Switch { text: "A switch"}
-                CheckBox {text:"Some Check Box"}
+                CheckBox { }
                 ComboBox{ text:"items" }
             }
             Column {
@@ -35,9 +35,9 @@ Rectangle {
                 Button { text:"Push me"}
                 LineEdit { text:"Text"}
                 SpinBox{ }
-                Slider {}
+                Slider { value: 50 }
                 Switch { text: "A switch"}
-                CheckBox {text:"Some Check Box"}
+                CheckBox { }
                 ComboBox{ text:"items"}
             }
             Column {
@@ -51,9 +51,9 @@ Rectangle {
                 Button { text:"Push me" ; backgroundColor: column3.bg; foregroundColor: column3.fg}
                 LineEdit { text:"Text"; backgroundColor: column3.bg; foregroundColor: column3.fg}
                 SpinBox{ backgroundColor: column3.bg; foregroundColor: column3.fg}
-                Slider { backgroundColor: column3.bg; progressColor: "blue";}
+                Slider { value: 50; backgroundColor: column3.bg; progressColor: "blue";}
                 Switch { text: "A switch";backgroundColor: column3.bg; foregroundColor: column3.fg}
-                CheckBox { text:"Some Check Box";backgroundColor: column3.bg; foregroundColor: column3.fg}
+                CheckBox { backgroundColor: column3.bg; foregroundColor: column3.fg}
                 ComboBox{ text:"items";backgroundColor: column3.bg; foregroundColor: column3.fg}
             }
             Column {
