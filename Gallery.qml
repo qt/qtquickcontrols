@@ -115,7 +115,7 @@ Rectangle {
         Component{
             id:shinyButton
             BorderImage {
-                source: pressed ? "images/shinybutton_pressed.png":"images/shinybutton_normal.png"
+                source: parent.pressed ? "images/shinybutton_pressed.png":"images/shinybutton_normal.png"
                 anchors.fill:parent
                 border.left: 6; border.top: 6
                 border.right: 6; border.bottom: 6

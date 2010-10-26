@@ -29,7 +29,6 @@ import Qt.labs.components 1.0 as QtComponents
 import "./styles/default" as DefaultStyles
 
 Item {
-    // addition, it will implement margins towards the groove
     id: slider
     property bool vertical: false
 
@@ -52,13 +51,11 @@ Item {
     property Component background: defaultStyle.background
     property Component content: defaultStyle.content
 
-    //property bool pressed: grooveMouseArea.pressed
-
     signal valueChanged(real value)
     signal pressed
     signal released
 
-    width: 200
+    width: 200  //mm Need to get this from the styling
     height: 28
 
     QtComponents.RangeModel {
@@ -73,7 +70,7 @@ Item {
         onValueChanged: slider.valueChanged(value)
     }
 
-    QtComponents.RangeModel {   //mm How is this different from valueModel?
+    QtComponents.RangeModel {   // For "YouTube-style loading" progress
         // This model describes the progress/download percentage
         id: receivedModel
         steps: valueModel.steps
@@ -138,14 +135,12 @@ Item {
     // Background
     Loader {
         id: groove
-Rectangle { color: "green"; anchors.fill: parent }
         sourceComponent: background
         anchors.fill: parent
     }
 
     Loader {
         id: elapsed
-Rectangle { color: "blue"; anchors.fill: parent }
         visible: showProgress
         sourceComponent: content
         anchors.top: groove.top
@@ -157,7 +152,6 @@ Rectangle { color: "blue"; anchors.fill: parent }
     // Handle
     Loader {
         id: handlePixmap
-Rectangle { color: "red"; anchors.fill: parent }
         anchors.verticalCenter: parent.verticalCenter
         sourceComponent: handle
     }
