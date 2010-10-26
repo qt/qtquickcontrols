@@ -4,15 +4,17 @@ Item {
     id: behavior
 
     signal clicked
-    property bool pressed: false
+    property bool pressed: false    // Can't be alias of mouseArea.pressed because the latter is read-only
     property bool checkable: false
     property bool checked: false
     property bool triState: false
 
     MouseArea {
-        id: mousearea
+        id: mouseArea
         anchors.fill: parent
-        onEntered: if(enabled) behavior.pressed = true  // handles clicks as well
+        hoverEnabled: true
+        onPressed: behavior.pressed = true  // needed when hover is enabled
+        onEntered: if(pressed && enabled) behavior.pressed = true
         onExited: behavior.pressed = false
         onReleased: {
             if(behavior.pressed && behavior.enabled) { // No click if release outside area

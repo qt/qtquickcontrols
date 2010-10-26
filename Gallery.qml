@@ -88,7 +88,7 @@ Rectangle {
                             anchors.centerIn: parent
                         }
                     }
-                    contents: Item {anchors.fill:parent; anchors.leftMargin: 40}
+                    content: Item {anchors.fill:parent; anchors.leftMargin: 40}
                 }
                 Slider {
                     handle: BorderImage{source:"images/shinybutton_normal.png";
