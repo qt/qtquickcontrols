@@ -1,5 +1,4 @@
 import Qt 4.7
-import "./behaviors"
 import "./styles/default" as DefaultStyles
 
 Button {
