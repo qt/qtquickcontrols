@@ -6,7 +6,7 @@ Button {
         id: meegostyle
         styleClass: "MButtonStyle"
         mode: {
-            if (hover && pressed)
+            if (containsMouse && pressed)
                 return "pressed"
             else
                 return "default"

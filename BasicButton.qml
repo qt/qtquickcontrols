@@ -10,6 +10,7 @@ Item {
 
     signal clicked
     property alias pressed: behavior.pressed
+    property alias containsMouse: behavior.containsMouse
     property alias checkable: behavior.checkable  // button toggles between checked and !checked
     property alias checked: behavior.checked
 

@@ -8,7 +8,7 @@ Item {
     height: 32
 
     property alias text: input.text
-    property alias hover: mousearea.containsMouse
+    property alias containsMouse: mousearea.containsMouse
 
     property color backgroundColor: "#fff";
     property color foregroundColor: "#222";

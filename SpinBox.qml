@@ -19,7 +19,7 @@ Item {
     property alias downPressed: mouseDown.pressed
     property alias upHovered: mouseUp.containsMouse
     property alias downHovered: mouseDown.containsMouse
-    property alias hover: mouseArea.containsMouse
+    property alias containsMouse: mouseArea.containsMouse
 
     property color backgroundColor: "#fff";
     property color foregroundColor: "#222";

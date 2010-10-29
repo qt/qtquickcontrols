@@ -5,6 +5,7 @@ Item {
 
     signal clicked
     property bool pressed: false    // Can't be alias of mouseArea.pressed because the latter is read-only
+    property alias containsMouse: mouseArea.containsMouse
     property bool checkable: false
     property bool checked: false
     property bool triState: false

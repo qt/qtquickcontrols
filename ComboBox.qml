@@ -16,7 +16,7 @@ Item {
     property int popoutSizeInItems: 5
 
     property bool pressed: false
-    property alias hover: mouseArea.containsMouse
+    property alias containsMouse: mouseArea.containsMouse
 
     property Component background: defaultStyle.background
     property Component content: defaultStyle.content
