@@ -35,9 +35,11 @@ Item {
     property color progressColor: "#9cf"
     property color backgroundColor: "#fff"
     property bool  showProgress: true
-    property alias hover: grooveMouseArea.containsMouse
+    property alias containsMouse: grooveMouseArea.containsMouse
 
     property alias value: valueModel.value
+    signal valueChanged(real value)
+
     property alias minimumValue: valueModel.minimumValue
     property alias maximumValue: valueModel.maximumValue
     property alias progress: receivedModel.value
@@ -50,10 +52,8 @@ Item {
     property Component handle: defaultStyle.handle
     property Component background: defaultStyle.background
     property Component content: defaultStyle.content
+    DefaultStyles.SliderStyle { id: defaultStyle }
 
-    signal valueChanged(real value)
-    signal pressed
-    signal released
 
     width: 200  //mm Need to get this from the styling
     height: 28
@@ -95,7 +95,6 @@ Item {
         onPressed: {
             //style.feedback("pressFeedback");
             positionHandle(mouseX, mouseY);
-            slider.pressed();
         }
         onPositionChanged: {
             // FIXME: handle min interval/value change
@@ -110,7 +109,6 @@ Item {
             } else {
                 handlePixmap.x = valueModel.position - (handlePixmap.width / 2)
             }
-            slider.released();
             // enable? style.feedback("releaseFeedback");
         }
         function positionHandle(mouseX, mouseY) {
@@ -155,6 +153,4 @@ Item {
         anchors.verticalCenter: parent.verticalCenter
         sourceComponent: handle
     }
-
-    DefaultStyles.SliderStyle { id: defaultStyle }
 }

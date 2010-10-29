@@ -7,16 +7,14 @@ Item {
     width: Math.max(100, labelComponent.item.width + 2*10)
     height: Math.max(32, labelComponent.item.height + 2*4)
 
-    signal clicked
-
-    property alias hover: mousearea.containsMouse
-    property bool pressed: false
-    property bool checkable: true
     property bool checked: false
-
     property string text
-    property string icon
-    property int labelSpacing:8
+    property url icon
+    property int labelSpacing: 8
+
+    signal clicked
+    property alias containsMouse: mousearea.containsMouse
+    property bool pressed: false
 
     property color backgroundColor: checked ? "#cef" : "#fff"
     property color foregroundColor: "#333"
@@ -60,8 +58,7 @@ Item {
         onReleased: {
             if(toggleSwitch.pressed && enabled) { // No click if release outside area
                 toggleSwitch.pressed  = false
-                if (checkable)
-                    checked = !checked;
+                checked = !checked;
                 toggleSwitch.clicked()
             }
         }
