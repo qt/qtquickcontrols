@@ -23,7 +23,7 @@ QtObject {
                     anchors.fill: parent
                     id: backgroundimage
                     smooth: true
-                    source: comboBox.pressed ? "images/button_pressed.png" : "images/button_normal.png"
+                    source: comboBox.pressed ? "../../images/button_pressed.png" : "../../images/button_normal.png"
                     width: 80; height: 24
                     border.left: 3; border.top: 3
                     border.right: 3; border.bottom: 3
@@ -33,7 +33,7 @@ QtObject {
                         anchors.topMargin: 7
                         anchors.rightMargin: 7
                         opacity: enabled ? 1 : 0.3
-                        source:"images/spinbox_up.png"
+                        source:"../../images/spinbox_up.png"
                     }
                     Image {
                         anchors.bottom: parent.bottom
@@ -41,7 +41,7 @@ QtObject {
                         anchors.bottomMargin: 7
                         anchors.rightMargin: 7
                         opacity: enabled ? 1 : 0.3
-                        source:"images/spinbox_down.png"
+                        source:"../../images/spinbox_down.png"
                     }
                 }
             }
