@@ -11,6 +11,14 @@ Rectangle {
         color: "#22ffffff"
         anchors.margins:20
 
+        ListModel {
+            id: choices
+            ListElement { content: "Banana" }
+            ListElement { content: "Orange" }
+            ListElement { content: "Apple" }
+            ListElement { content: "Coconut" }
+        }
+
         Row {
             anchors.margins:20
             anchors.fill: parent
@@ -25,7 +33,7 @@ Rectangle {
                 Slider { value: 50 }
                 Switch { text: "A switch"}
                 CheckBox { }
-                ComboBox{ text:"items" }
+                ComboBox{ model: choices}
             }
             Column {
                 enabled:false
@@ -38,7 +46,7 @@ Rectangle {
                 Slider { value: 50 }
                 Switch { text: "A switch"}
                 CheckBox { }
-                ComboBox{ text:"items"}
+                ComboBox{ model: choices}
             }
             Column {
                 id:column3
@@ -54,7 +62,7 @@ Rectangle {
                 Slider { value: 50; backgroundColor: column3.bg; progressColor: "blue";}
                 Switch { text: "A switch";backgroundColor: column3.bg; foregroundColor: column3.fg}
                 CheckBox { backgroundColor: column3.bg; foregroundColor: column3.fg}
-                ComboBox{ text:"items";backgroundColor: column3.bg; foregroundColor: column3.fg}
+                ComboBox{ model: choices; backgroundColor: column3.bg; foregroundColor: column3.fg}
             }
             Column {
                 id:column4
@@ -106,9 +114,9 @@ Rectangle {
                         }
                     }
                 }
-                Switch { text: "A switch"; background: shinyEdit}
+                Switch { background: shinyEdit}
                 CheckBox { text:"Some Check Box"; background: shinyEdit}
-                ComboBox{ text:"items"; background: shinyButton}
+                ComboBox{ model: choices; background: shinyButton}
             }
         }
 
