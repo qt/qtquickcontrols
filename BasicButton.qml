@@ -7,17 +7,8 @@ Item {
 
     property int minimumWidth: defaultStyle.minimumWidth
     property int minimumHeight: defaultStyle.minimumHeight
-
-    property int leftMargin: defaultStyle.leftMargin
-    property int topMargin: defaultStyle.topMargin
-    property int rightMargin: defaultStyle.rightMargin
-    property int bottomMargin: defaultStyle.bottomMargin
-
-    width: Math.max(minimumWidth,
-                    contentComponent.item.width + leftMargin + rightMargin)
-
-    height: Math.max(minimumHeight,
-                     contentComponent.item.height + topMargin + bottomMargin)
+    width: Math.max(minimumWidth, backgroundComponent.item.width)
+    height: Math.max(minimumHeight, backgroundComponent.item.height)
 
     signal clicked
     property alias pressed: behavior.pressed
@@ -26,7 +17,6 @@ Item {
     property alias checked: behavior.checked
 
     property Component background: defaultStyle.background
-    property Component content: defaultStyle.content
 
     property color backgroundColor: "#fff";
     property color foregroundColor: "#222";
@@ -38,18 +28,9 @@ Item {
         onClicked: button.clicked()
     }
 
-    Loader {    // background        id:background
+    Loader {    // background
+        id:backgroundComponent
         anchors.fill: parent
         sourceComponent: background
-    }
-
-    Loader {    // content
-        id: contentComponent
-        anchors.fill: parent
-        anchors.leftMargin: leftMargin
-        anchors.rightMargin: rightMargin
-        anchors.topMargin: topMargin
-        anchors.bottomMargin: bottomMargin
-        sourceComponent: content
     }
 }

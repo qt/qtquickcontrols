@@ -7,11 +7,6 @@ QtObject {
     property int minimumWidth: 40
     property int minimumHeight: 25
 
-    property int leftMargin : 0
-    property int topMargin: 0
-    property int rightMargin: 0
-    property int bottomMargin: 0
-
     property list<Component> elements: [
         Component {
             id: defaultBackground

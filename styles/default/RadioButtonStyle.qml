@@ -2,7 +2,9 @@ import Qt 4.7
 
 QtObject {
     property Component background: defaultBackground
-    property Component content: defaultContent
+
+    property int minimumWidth: 90
+    property int minimumHeight: 32
 
     property list<Component> elements: [
         Component {
@@ -13,22 +15,18 @@ QtObject {
                 anchors.centerIn: parent
                 color: button.backgroundColor
                 radius: width/2
-            }
-        },
-        Component {
-            id: defaultContent
-            Item {
-                width: 20
-                height: 20
-                anchors.centerIn: parent
-                Rectangle {
-                    width: 10
-                    height: 10
+                Item {
                     anchors.centerIn: parent
-                    color: button.pressed || !button.enabled ? "gray" : "black"
-                    radius: width/2
-                    opacity: button.checked || button.pressed ? 1 : 0
+                    Rectangle {
+                        width: 10
+                        height: 10
+                        anchors.centerIn: parent
+                        color: button.pressed || !button.enabled ? "gray" : "black"
+                        radius: width/2
+                        opacity: button.checked || button.pressed ? 1 : 0
+                    }
                 }
+
             }
         }
     ]

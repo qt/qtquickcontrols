@@ -11,7 +11,7 @@ QtObject {
 
     property int leftMargin : 8
     property int topMargin: 8
-    property int rightMargin: 8
+    property int rightMargin: 20
     property int bottomMargin: 8
 
     property list<Component> elements: [

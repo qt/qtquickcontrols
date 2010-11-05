@@ -2,7 +2,9 @@ import Qt 4.7
 
 QtObject {
     property Component background: defaultBackground
-    property Component content: defaultContent
+
+    property int minimumWidth: 90
+    property int minimumHeight: 32
 
     property list<Component> elements: [
         Component {
@@ -35,15 +37,6 @@ QtObject {
                     source: "../../images/checkbox_check.png"
                     Behavior on opacity { NumberAnimation { duration: 150; easing.type: Easing.OutCubic } }
                 }
-            }
-        },
-        Component {
-            id: defaultContent
-            Item {
-                width: 16
-                height: 16
-                anchors.bottom: parent.bottom
-                anchors.margins: 4
             }
         }
     ]

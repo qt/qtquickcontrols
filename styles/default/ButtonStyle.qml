@@ -2,7 +2,7 @@ import Qt 4.7
 
 QtObject {
     property Component background: defaultBackground
-    property Component content: defaultContent
+    property Component label: defaultLabel
 
     property int minimumWidth: 90
     property int minimumHeight: 32
@@ -40,7 +40,7 @@ QtObject {
             }
         },
         Component {
-            id: defaultContent
+            id: defaultLabel
             Item {
                 width:row.width
                 height:row.height
