@@ -5,8 +5,19 @@ import "./styles/default" as DefaultStyles
 Item {
     id: comboBox
 
-    width: Math.max(100, contentComponent.item.width + 2*10)
-    height: Math.max(32, contentComponent.item.height + 2*4)
+    property int minimumWidth: defaultStyle.minimumWidth
+    property int minimumHeight: defaultStyle.minimumHeight
+
+    property int leftMargin: defaultStyle.leftMargin
+    property int topMargin: defaultStyle.topMargin
+    property int rightMargin: defaultStyle.rightMargin
+    property int bottomMargin: defaultStyle.bottomMargin
+
+    width: Math.max(minimumWidth,
+                    contentComponent.item.width + leftMargin + rightMargin)
+
+    height: Math.max(minimumHeight,
+                     contentComponent.item.height + topMargin + bottomMargin)
 
 //    clip: true
 
@@ -37,7 +48,11 @@ Item {
 
     Loader { // content
         id: contentComponent
-        anchors.centerIn: parent
+        anchors.fill: parent
+        anchors.leftMargin: leftMargin
+        anchors.rightMargin: rightMargin
+        anchors.topMargin: topMargin
+        anchors.bottomMargin: bottomMargin
         sourceComponent: comboBox.content
     }
 
@@ -49,7 +64,6 @@ Item {
         onReleased: comboBox.pressed = false
     }
 
-//    Rectangle { color: "red"; anchors.fill: parent; z: 1000 }
     ListView {  //mm load it dynamiacally?
         id: popOut
         opacity: 0

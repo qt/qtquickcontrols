@@ -2,9 +2,16 @@ import Qt 4.7
 
 QtObject {
     property Component background: defaultBackground
-    property Component content: defaultContent
     property Component up: defaultUp
     property Component down: defaultDown
+
+    property int minimumWidth: 200
+    property int minimumHeight: 25
+
+    property int leftMargin : 8
+    property int topMargin: 8
+    property int rightMargin: 8
+    property int bottomMargin: 8
 
     property list<Component> elements: [
         Component {
@@ -59,15 +66,6 @@ QtObject {
                     opacity: (downEnabled && enabled) ? (downPressed ? 1 : 0.8) : 0.3
                     source: "../../images/spinbox_down.png"
                 }
-            }
-        },
-        Component {
-            id: defaultContent
-            Item {
-                anchors.fill: parent;
-                anchors.leftMargin: 4;
-                anchors.topMargin: 2;
-                anchors.rightMargin: 24
             }
         }
     ]

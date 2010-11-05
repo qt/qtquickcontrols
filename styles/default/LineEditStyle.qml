@@ -32,10 +32,6 @@ QtObject {
                     border.right: 6; border.bottom: 3
                 }
             }
-        },
-        Component {
-            id: defaultContent
-            Item { anchors.fill: parent; anchors.margins: 4}
         }
     ]
 }

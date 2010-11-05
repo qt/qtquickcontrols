@@ -11,7 +11,6 @@ Item {
     property color foregroundColor: "#222";
 
     property Component background: defaultStyle.background
-    property Component content: defaultStyle.content
 
     property int minimumWidth: defaultStyle.minimumWidth
     property int minimumHeight: defaultStyle.minimumHeight

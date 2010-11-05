@@ -4,8 +4,19 @@ import "./styles/default" as DefaultStyles
 Item {
     id: spinbox
 
-    width: 200
-    height: 32
+    property int minimumWidth: defaultStyle.minimumWidth
+    property int minimumHeight: defaultStyle.minimumHeight
+
+    property int leftMargin: defaultStyle.leftMargin
+    property int topMargin: defaultStyle.topMargin
+    property int rightMargin: defaultStyle.rightMargin
+    property int bottomMargin: defaultStyle.bottomMargin
+
+    width: Math.max(minimumWidth,
+                    input.width + leftMargin + rightMargin)
+
+    height: Math.max(minimumHeight,
+                     input.height + topMargin + bottomMargin)
 
     property real value: 0.0
     property real maximum: 99
@@ -25,7 +36,6 @@ Item {
     property color foregroundColor: "#222";
 
     property Component background: defaultStyle.background
-    property Component content: defaultStyle.content
     property Component up: defaultStyle.up
     property Component down: defaultStyle.down
     DefaultStyles.SpinBoxStyle { id: defaultStyle }
@@ -61,16 +71,6 @@ Item {
         sourceComponent: background
     }
 
-    // Content
-    Loader {
-        id: contentComponent
-        anchors.fill: parent
-        sourceComponent: content
-        onLoaded: {
-            item.parent = spinbox
-        }
-    }
-
     MouseArea {
         id: mouseArea
         anchors.fill: parent
@@ -81,7 +81,11 @@ Item {
         id: input
         font.pixelSize: 14
         anchors.margins: 5
-        anchors.fill: contentComponent.item
+        anchors.leftMargin: leftMargin
+        anchors.topMargin: topMargin
+        anchors.rightMargin: rightMargin
+        anchors.bottomMargin: bottomMargin
+        anchors.fill: parent
         selectByMouse: true
         text: spinbox.value
         validator: DoubleValidator { bottom: 11; top: 31 }

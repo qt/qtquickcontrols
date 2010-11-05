@@ -6,6 +6,14 @@ QtObject {
     property Component listItem: defaultListItem
     property Component listHighligth: defaultListHighlight
 
+    property int minimumWidth: 90
+    property int minimumHeight: 32
+
+    property int leftMargin : 8
+    property int topMargin: 8
+    property int rightMargin: 8
+    property int bottomMargin: 8
+
     property list<Component> elements: [
         Component {
             id: defaultBackground
@@ -69,7 +77,7 @@ QtObject {
         Component {
             id: defaultListItem
             Rectangle {
-                width: parent.width
+                width: row.width
                 height: row.height
                 color: index % 2 == 0 ? "yellow" : "blue"
                 Row {
@@ -78,7 +86,6 @@ QtObject {
                     Text {
 //                        font.pixelSize: mx.fontSize
 //                        color: mx.fontColor
-                        anchors.margins: 10
                         text: model.content
                     }
 //                    Image {

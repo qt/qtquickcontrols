@@ -4,8 +4,8 @@ QtObject {
     property Component background: defaultBackground
     property Component content: defaultContent
 
-    property int minimumWidth: 40
-    property int minimumHeight: 25
+    property int minimumWidth: 90
+    property int minimumHeight: 32
 
     property int leftMargin : 8
     property int topMargin: 8
