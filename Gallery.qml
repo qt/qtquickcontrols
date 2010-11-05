@@ -80,6 +80,7 @@ Rectangle {
                     LineEdit { text:"Text"; background: shinyEdit}
                     SpinBox{
                         background: shinyEdit
+                        leftMargin: 32
                         up: Button {
                             width:height;
                             anchors.left:parent.left
@@ -102,7 +103,6 @@ Rectangle {
                                 anchors.centerIn: parent
                             }
                         }
-                        content: Item {anchors.fill:parent; anchors.leftMargin: 40}
                     }
                     Slider {
                         handle: BorderImage{source:"images/shinybutton_normal.png";
@@ -121,7 +121,7 @@ Rectangle {
                         }
                     }
                     Switch { background: shinyEdit}
-                    CheckBox { text:"Some Check Box"; background: shinyEdit}
+                    CheckBox { background: shinyEdit}
                     ComboBox{ model: choices; background: shinyButton}
                 }
             }
