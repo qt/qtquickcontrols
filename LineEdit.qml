@@ -4,9 +4,6 @@ import "./styles/default" as DefaultStyles
 Item {
     id: lineEdit
 
-    width: 200
-    height: 32
-
     property alias text: input.text
     property alias containsMouse: mousearea.containsMouse
 
@@ -15,6 +12,21 @@ Item {
 
     property Component background: defaultStyle.background
     property Component content: defaultStyle.content
+
+    property int minimumWidth: defaultStyle.minimumWidth
+    property int minimumHeight: defaultStyle.minimumHeight
+
+    property int leftMargin: defaultStyle.leftMargin
+    property int topMargin: defaultStyle.topMargin
+    property int rightMargin: defaultStyle.rightMargin
+    property int bottomMargin: defaultStyle.bottomMargin
+
+    width: Math.max(minimumWidth,
+                    input.width + leftMargin + rightMargin)
+
+    height: Math.max(minimumHeight,
+                     input.height + topMargin + bottomMargin)
+
     DefaultStyles.LineEditStyle { id: defaultStyle }
 
     // background
@@ -22,16 +34,6 @@ Item {
         id: backgroundComponent
         anchors.fill: parent
         sourceComponent: background
-    }
-
-    // Contents
-    Loader {
-        id: contentsComponent
-        anchors.fill: parent
-        sourceComponent: content
-        onLoaded: {
-            item.parent = lineEdit
-        }
     }
 
     MouseArea {
@@ -43,8 +45,11 @@ Item {
     TextInput {
         id: input
         font.pixelSize: 14
-        anchors.margins: 4
-        anchors.fill: contentsComponent.item
+        anchors.leftMargin: leftMargin
+        anchors.topMargin: topMargin
+        anchors.rightMargin: rightMargin
+        anchors.bottomMargin: bottomMargin
+        anchors.fill: parent
         selectByMouse: true
         color: foregroundColor
         opacity: parent.enabled ? 1 : 0.5

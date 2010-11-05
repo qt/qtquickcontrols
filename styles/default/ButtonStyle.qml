@@ -4,6 +4,14 @@ QtObject {
     property Component background: defaultBackground
     property Component content: defaultContent
 
+    property int minimumWidth: 40
+    property int minimumHeight: 25
+
+    property int leftMargin : 8
+    property int topMargin: 8
+    property int rightMargin: 8
+    property int bottomMargin: 8
+
     property list<Component> elements: [
         Component {
             id: defaultBackground
@@ -34,11 +42,8 @@ QtObject {
         Component {
             id: defaultContent
             Item {
-                property int minimumWidth: 40
-                property int minimumHeight: 25
-                width: Math.max(minimumWidth, row.width + 15 + 15) // add left and right margins
-                height: Math.max(minimumHeight, row.height + 5 + 5) // add top and bottom margins
-
+                width:row.width
+                height:row.height
                 Row {
                     id: row
                     spacing: 4

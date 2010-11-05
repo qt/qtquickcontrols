@@ -2,7 +2,14 @@ import Qt 4.7
 
 QtObject {
     property Component background: defaultBackground
-    property Component content: defaultContent
+
+    property int minimumWidth: 200
+    property int minimumHeight: 25
+
+    property int leftMargin : 8
+    property int topMargin: 8
+    property int rightMargin: 8
+    property int bottomMargin: 8
 
     property list<Component> elements: [
         Component {
