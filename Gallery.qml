@@ -37,7 +37,7 @@ Rectangle {
                     LineEdit { text:"Text"}
                     SpinBox{ }
                     Slider { value: 50 }
-                    Switch { text: "A switch"}
+                    Switch { }
                     CheckBox { }
                     ComboBox{ model: choices}
                 }
@@ -50,7 +50,7 @@ Rectangle {
                     LineEdit { text:"Text"}
                     SpinBox{ }
                     Slider { value: 50 }
-                    Switch { text: "A switch"}
+                    Switch { }
                     CheckBox { }
                     ComboBox{ model: choices}
                 }
@@ -66,7 +66,7 @@ Rectangle {
                     LineEdit { text:"Text"; backgroundColor: column3.bg; foregroundColor: column3.fg}
                     SpinBox{ backgroundColor: column3.bg; foregroundColor: column3.fg}
                     Slider { value: 50; backgroundColor: column3.bg; progressColor: "blue";}
-                    Switch { text: "A switch";backgroundColor: column3.bg; foregroundColor: column3.fg}
+                    Switch { backgroundColor: column3.bg; foregroundColor: column3.fg}
                     CheckBox { backgroundColor: column3.bg; foregroundColor: column3.fg}
                     ComboBox{ model: choices; backgroundColor: column3.bg; foregroundColor: column3.fg}
                 }
