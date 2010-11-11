@@ -2,7 +2,9 @@ import Qt 4.7
 
 QtObject {
     property Component background: defaultBackground
-    property Component content: defaultContent
+
+    property variant minimumWidth: 100
+    property variant minimumHeight: 32
 
     property list<Component> elements: [
         Component {
@@ -63,29 +65,6 @@ QtObject {
                     border.left: 4; border.top: 4
                     border.right: 4; border.bottom: 4
                     Behavior on x { NumberAnimation { duration: 60 ; easing.type: "InOutCirc"}
-                    }
-                }
-            }
-        },
-        Component {
-            id: defaultContent
-            Item {
-                width: layout.width
-                height: layout.height
-
-                anchors.bottom: parent.bottom
-                anchors.margins: 4
-                Row {
-                    spacing: 4
-                    anchors.bottom: parent.bottom
-                    id: layout
-                    Image { source: toggleSwitch.icon }
-                    Text {
-                        color: toggleSwitch.foregroundColor;
-                        opacity: (enabled ? 1 : 0.5)
-                        font.pixelSize: 14
-                        text: toggleSwitch.text
-                        y: 4
                     }
                 }
             }

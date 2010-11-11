@@ -1,16 +1,10 @@
 import Qt 4.7
 import "./styles/default" as DefaultStyles
 
-Item {
+BasicButton {
     id: toggleSwitch    // "switch" is a reserved word
 
-    width: Math.max(100, labelComponent.item.width + 2*10)
-    height: Math.max(32, labelComponent.item.height + 2*4)
-
     property bool checked: false
-    property string text
-    property url icon
-    property int labelSpacing: 8
 
     signal clicked
     property alias containsMouse: mousearea.containsMouse
@@ -19,11 +13,10 @@ Item {
     property color backgroundColor: checked ? "#cef" : "#fff"
     property color foregroundColor: "#333"
 
-//    property url fontFile: ""
-//    FontLoader { id: font; source: fontFile }
+    minimumWidth: defaultStyle.minimumWidth
+    minimumHeight: defaultStyle.minimumHeight
 
     property Component background : defaultStyle.background
-    property Component content : defaultStyle.content
     DefaultStyles.SwitchStyle { id: defaultStyle }
 
     Loader { // background
@@ -31,14 +24,6 @@ Item {
         anchors.fill: parent
         sourceComponent: background
         opacity: enabled ? 1 : 0.8
-    }
-
-    Loader { // content
-        id: labelComponent
-        anchors.left: backgroundComponent.right
-        anchors.leftMargin: labelSpacing
-        anchors.verticalCenter: parent.verticalCenter
-        sourceComponent: content
     }
 
     MouseArea {
