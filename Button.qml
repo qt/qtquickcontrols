@@ -9,6 +9,7 @@ BasicButton {
 
     property Component label: defaultStyle.label
 
+
     property int leftMargin: defaultStyle.leftMargin
     property int topMargin: defaultStyle.topMargin
     property int rightMargin: defaultStyle.rightMargin

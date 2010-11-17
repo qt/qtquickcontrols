@@ -40,6 +40,12 @@ Rectangle {
                     Switch { }
                     CheckBox { }
                     ComboBox{ model: choices}
+                    ProgressBar {
+                        startValue: 250; endValue: 1000;
+                        progressText: currentValue
+                        Timer { running: true; repeat: true; interval: 25; onTriggered: parent.percentComplete == 100 ? parent.percentComplete = 0 : parent.percentComplete++}
+                    }
+
                 }
                 Column {
                     enabled:false
@@ -53,6 +59,11 @@ Rectangle {
                     Switch { }
                     CheckBox { }
                     ComboBox{ model: choices}
+                    ProgressBar {
+                        startValue: 250; endValue: 1000;
+                        progressText: currentValue
+                        Timer { running: true; repeat: true; interval: 25; onTriggered: parent.percentComplete == 100 ? parent.percentComplete = 0 : parent.percentComplete++}
+                    }
                 }
                 Column {
                     id:column3
@@ -69,6 +80,11 @@ Rectangle {
                     Switch { backgroundColor: column3.bg; foregroundColor: column3.fg}
                     CheckBox { backgroundColor: column3.bg; foregroundColor: column3.fg}
                     ComboBox{ model: choices; backgroundColor: column3.bg; foregroundColor: column3.fg}
+                    ProgressBar {
+                        startValue: 250; endValue: 1000;
+                        progressText: currentValue
+                        Timer { running: true; repeat: true; interval: 25; onTriggered: parent.percentComplete == 100 ? parent.percentComplete = 0 : parent.percentComplete++}
+                    }
                 }
                 Column {
                     id:column4
@@ -123,9 +139,21 @@ Rectangle {
                     Switch { background: shinyEdit}
                     CheckBox { background: shinyEdit}
                     ComboBox{ model: choices; background: shinyButton}
+                    ProgressBar {
+                        id:bar
+                        startValue: 250; endValue: 1000;
+                        progressText: currentValue
+                        Timer { running: true; repeat: true; interval: 25; onTriggered: parent.percentComplete == 100 ? parent.percentComplete = 0 : parent.percentComplete++}
+                        content: BorderImage {
+                            id: name
+                            source: "images/shinybutton_normal.png"
+                            width: bar.width*bar.percentComplete/100.0;
+                            height: 20
+                            border.top:4 ; border.left:4 ; border.bottom:4 ; border.right:4
+                        }
+                    }
                 }
             }
-
             Component{
                 id:shinyButton
                 BorderImage {
