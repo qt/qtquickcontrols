@@ -125,7 +125,7 @@ Rectangle {
                             width:40; height:30
                             border.left:7; border.right: 7; border.top:7; border.bottom:7
                         }
-                        background: Item {
+                        groove: Item {
                             anchors.fill:parent
                             BorderImage {
                                 source: "images/shinyedit_normal.png"

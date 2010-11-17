@@ -27,64 +27,81 @@
 import Qt 4.7
 
 QtObject {
-    property Component background: defaultBackground
-    property Component content: defaultContent
-    property Component handle: defaultHandle
 
-    property list<Component> elements: [
-        Component {
-            id:defaultBackground
-            Item {
-                Rectangle {
-                    color:backgroundColor
-                    anchors.fill: sliderbackground
-                    anchors.margins: 1
-                    radius: 2
-                }
-                BorderImage {
-                    id: sliderbackground
-                    anchors.verticalCenter: parent.verticalCenter
-                    width: parent.width
-                    border.top: 2
-                    border.bottom: 2
-                    border.left: 12
-                    border.right: 12
-                    source: "../../images/slider.png"
-                }
-                Rectangle {
-                    visible: showProgress
-                    color: progressColor
-                    anchors.left: sliderbackground.left
-                    anchors.top: sliderbackground.top
-                    anchors.bottom: sliderbackground.bottom
-                    width: handlePixmap.x + handlePixmap.width/2
-                    opacity: 0.4
-                    anchors.margins: 1
-                    radius: 2
-                }
+    property int preferredWidth: 200
+    property int preferredHeight: 16
+
+    property Component groove: Component {
+        id:defaultBackground
+        Item {
+            Rectangle {
+                color:backgroundColor
+                anchors.fill: sliderbackground
+                anchors.margins: 1
+                radius: 2
             }
-        },
-        Component {
-            id: defaultContent
-            Item {
+            BorderImage {
+                id: sliderbackground
+                anchors.verticalCenter: parent.verticalCenter
+                width: parent.width
+                border.top: 2
+                border.bottom: 2
+                border.left: 12
+                border.right: 12
+                source: "../../images/slider.png"
             }
-        },
-        Component {
-            id: defaultHandle
-            Item {
-                width: 27
-                height: 27
-                Rectangle{
-                    color: backgroundColor
-                    width: 27
-                    height: 27
-                    anchors.centerIn: handle2
-                    radius: 19
-                    anchors.margins: 5
-                    smooth: true
-                }
-                Image { anchors.centerIn: parent; id: handle2; source: "../../images/handle.png" }
+            Rectangle {
+                color: progressColor
+                height: 8
+                radius: 2
+                anchors.verticalCenter: parent.verticalCenter
+                x: Math.min(2+zeroPosition, handlePosition) // see QTBUG-15250
+                width: Math.max(zeroPosition, handlePosition) - x
             }
         }
-    ]
+    }
+
+    property Component handle: Component {
+        Item{
+            width: handleImage.width
+            height: handleImage.height
+            anchors.verticalCenter: parent.verticalCenter
+
+            //mm Animation clash with slider's positioning of the hand. What to do?
+            //            Behavior on x { NumberAnimation { easing: Easing.Linear; duration: styledItem.mouseArea.drag.active ? 0 : 100 } }
+            //            Behavior on y { NumberAnimation { easing: Easing.Linear; duration: styledItem.mouseArea.drag.active ? 0 : 100 } }
+            Image {
+                id: handleImage
+                Rectangle {
+                    anchors.fill: parent
+                    anchors.margins: 5
+                    color: backgroundColor
+                    radius: Math.floor(parent.width/2)
+                    z: -1   // behind the image
+                }
+                anchors.centerIn: parent;
+                source: "../../images/handle.png"
+                smooth: true
+            }
+
+            Rectangle {
+                anchors.bottom: handleImage.top
+                anchors.horizontalCenter: handleImage.horizontalCenter
+                width: valueText.width+20
+                height: valueText.height+20
+                color: "gray"
+                opacity: pressed ? 0.9 : 0
+                Behavior on opacity { NumberAnimation { duration: 100 } }
+                radius: 5
+
+                Text {
+                    id: valueText
+                    anchors.margins: 10
+                    anchors.centerIn: parent
+                    text: value
+                }
+            }
+        }
+    }
+
 }
