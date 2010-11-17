@@ -1,59 +1,56 @@
 import Qt 4.7
-import Qt.labs.components 1.0
 import "./styles/default" as DefaultStyles
+import Qt.labs.components 1.0    // ImplicitlySizedItem. See QTBUG-14957
 
 Item {
     id: comboBox
 
-    property int minimumWidth: defaultStyle.minimumWidth
-    property int minimumHeight: defaultStyle.minimumHeight
+    property alias model: popOut.model
+    property int currentIndex: 0
+    //mm unused    property string currentText
+    property int popoutSizeInItems: 5
+
+    //mm needed?    signal clicked
+    property bool pressed: false    //mm needed?
+    property alias containsMouse: mouseArea.containsMouse   //mm needed?
+
+    property Component background: defaultStyle.background
+    property Component label: defaultStyle.label
+    property Component hints: defaultStyle.hints
+    property Component listItem: defaultStyle.listItem
+    property Component listHighlight: defaultStyle.listHighlight
+
+    property color foregroundColor: hintsLoader.item ? hintsLoader.item.textColor : "black"
+    property color backgroundColor: hintsLoader.item ? hintsLoader.item.backgroundColor : "white"
+
+    property int preferredWidth: defaultStyle.preferredWidth
+    property int preferredHeight: defaultStyle.preferredHeight
 
     property int leftMargin: defaultStyle.leftMargin
     property int topMargin: defaultStyle.topMargin
     property int rightMargin: defaultStyle.rightMargin
     property int bottomMargin: defaultStyle.bottomMargin
 
-    width: Math.max(minimumWidth,
-                    contentComponent.item.width + leftMargin + rightMargin)
+    width: Math.max(preferredWidth,
+                    labelComponent.item.width + leftMargin + rightMargin)
+    height: Math.max(preferredHeight,
+                     labelComponent.item.height + topMargin + bottomMargin)
 
-    height: Math.max(minimumHeight,
-                     contentComponent.item.height + topMargin + bottomMargin)
+    Loader { id: hintsLoader; sourceComponent: hints }
 
-//    clip: true
-
-    property alias model: popOut.model
-    property int currentIndex: 0
-    property string currentText
-    property int popoutSizeInItems: 5
-
-    property bool pressed: false
-    property alias containsMouse: mouseArea.containsMouse
-
-    property Component background: defaultStyle.background
-    property Component content: defaultStyle.content
-    property Component listItem: defaultStyle.listItem
-    property Component listHighlight: defaultStyle.listHighligth
-    DefaultStyles.ComboBoxStyle { id: defaultStyle }
-
-    property color backgroundColor: "#fff"
-    property color foregroundColor: "#333"
-
-//    property alias font: fontcontainer.font
-//    Text { id: fontcontainer; font.pixelSize: 14 } // Workaround since font is not a declarable type (bug?)
-
-    Loader { // background
-        anchors.fill: parent
-        sourceComponent: comboBox.background
+    Loader {
+        sourceComponent: background
+        anchors.fill:parent
     }
 
-    Loader { // content
-        id: contentComponent
+    Loader {
+        id:labelComponent
         anchors.fill: parent
         anchors.leftMargin: leftMargin
         anchors.rightMargin: rightMargin
         anchors.topMargin: topMargin
         anchors.bottomMargin: bottomMargin
-        sourceComponent: comboBox.content
+        sourceComponent: label
     }
 
     MouseArea {
@@ -64,13 +61,15 @@ Item {
         onReleased: comboBox.pressed = false
     }
 
+    //    Rectangle { color: "red"; anchors.fill: parent; z: 1000 }
+
+    // List should be real popout, see QTBUG-15000 and QTBUG-15001
     ListView {  //mm load it dynamiacally?
         id: popOut
         opacity: 0
         width: 100
         height: 100
         anchors.top: comboBox.bottom
-
         clip: true
         boundsBehavior: "StopAtBounds"
         keyNavigationWraps: true
@@ -89,4 +88,5 @@ Item {
             }
         }
     }
+    DefaultStyles.ComboBoxStyle{ id: defaultStyle }
 }
