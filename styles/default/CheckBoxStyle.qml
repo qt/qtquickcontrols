@@ -3,8 +3,8 @@ import Qt 4.7
 QtObject {
     property Component background: defaultBackground
 
-    property int minimumWidth: 90
-    property int minimumHeight: 32
+    property int preferredWidth: 90
+    property int preferredHeight: 32
 
     property list<Component> elements: [
         Component {

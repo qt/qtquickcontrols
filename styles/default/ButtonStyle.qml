@@ -4,8 +4,8 @@ QtObject {
     property Component background: defaultBackground
     property Component label: defaultLabel
 
-    property int minimumWidth: 90
-    property int minimumHeight: 32
+    property int preferredWidth: 90
+    property int preferredHeight: 32
 
     property int leftMargin : 8
     property int topMargin: 8
@@ -54,7 +54,7 @@ QtObject {
                     }
 
                     Text {
-                        color: !button.enabled ? "gray" : button.foregroundColor
+                        color: !button.enabled ? "gray" : button.textColor
                         anchors.verticalCenter: parent.verticalCenter
                         text: button.text
                     }

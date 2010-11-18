@@ -34,10 +34,10 @@ QtObject {
         Component {
             id: defaultContent
             Item {
-                property int minimumWidth: 40
-                property int minimumHeight: 25
-                width: Math.max(minimumWidth, row.width + 15 + 15) // add left and right margins
-                height: Math.max(minimumHeight, row.height + 5 + 5) // add top and bottom margins
+                property int preferredWidth: 40
+                property int preferredHeight: 25
+                width: Math.max(preferredWidth, row.width + 15 + 15) // add left and right margins
+                height: Math.max(preferredHeight, row.height + 5 + 5) // add top and bottom margins
 
                 Row {
                     id: row
@@ -49,7 +49,7 @@ QtObject {
                     }
 
                     Text {
-                        color: !button.enabled ? "gray" : button.foregroundColor
+                        color: !button.enabled ? "gray" : button.textColor
                         anchors.verticalCenter: parent.verticalCenter
                         text: button.text
                     }

@@ -4,18 +4,18 @@ import "./styles/default" as DefaultStyles
 Item {
     id: spinbox
 
-    property int minimumWidth: defaultStyle.minimumWidth
-    property int minimumHeight: defaultStyle.minimumHeight
+    property int preferredWidth: defaultStyle.preferredWidth
+    property int preferredHeight: defaultStyle.preferredHeight
 
     property int leftMargin: defaultStyle.leftMargin
     property int topMargin: defaultStyle.topMargin
     property int rightMargin: defaultStyle.rightMargin
     property int bottomMargin: defaultStyle.bottomMargin
 
-    width: Math.max(minimumWidth,
+    width: Math.max(preferredWidth,
                     input.width + leftMargin + rightMargin)
 
-    height: Math.max(minimumHeight,
+    height: Math.max(preferredHeight,
                      input.height + topMargin + bottomMargin)
 
     property real value: 0.0
@@ -33,7 +33,7 @@ Item {
     property alias containsMouse: mouseArea.containsMouse
 
     property color backgroundColor: "#fff";
-    property color foregroundColor: "#222";
+    property color textColor: "#222";
 
     property Component background: defaultStyle.background
     property Component up: defaultStyle.up
@@ -90,7 +90,7 @@ Item {
         text: spinbox.value
         validator: DoubleValidator { bottom: 11; top: 31 }
         onTextChanged: { spinbox.setValue(text); }
-        color: foregroundColor
+        color: textColor
         opacity: parent.enabled ? 1 : 0.5
     }
 

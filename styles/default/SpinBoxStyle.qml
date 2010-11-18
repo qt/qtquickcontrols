@@ -5,8 +5,8 @@ QtObject {
     property Component up: defaultUp
     property Component down: defaultDown
 
-    property int minimumWidth: 200
-    property int minimumHeight: 25
+    property int preferredWidth: 200
+    property int preferredHeight: 25
 
     property int leftMargin : 8
     property int topMargin: 8

@@ -11,10 +11,10 @@ BasicButton {
     property bool pressed: false
 
     property color backgroundColor: checked ? "#cef" : "#fff"
-    property color foregroundColor: "#333"
+    property color textColor: "#333"
 
-    minimumWidth: defaultStyle.minimumWidth
-    minimumHeight: defaultStyle.minimumHeight
+    preferredWidth: defaultStyle.preferredWidth
+    preferredHeight: defaultStyle.preferredHeight
 
     property Component background : defaultStyle.background
     DefaultStyles.SwitchStyle { id: defaultStyle }

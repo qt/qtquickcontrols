@@ -25,7 +25,6 @@
 ****************************************************************************/
 
 import Qt 4.7
-import "../"    // ComponentStyling element
 
 QtObject {
 

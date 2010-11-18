@@ -74,13 +74,13 @@ Rectangle {
                     property variant fg: "#356"
 
                     Text{ font.bold:true; text:"Colored:" ; styleColor: "white" ; color:"#333" ; style:"Raised"}
-                    Button { text:"Push me" ; backgroundColor: column3.bg; foregroundColor: column3.fg}
-                    LineEdit { text:"Text"; backgroundColor: column3.bg; foregroundColor: column3.fg}
-                    SpinBox{ backgroundColor: column3.bg; foregroundColor: column3.fg}
+                    Button { text:"Push me" ; backgroundColor: column3.bg; textColor: column3.fg}
+                    LineEdit { text:"Text"; backgroundColor: column3.bg; textColor: column3.fg}
+                    SpinBox{ backgroundColor: column3.bg; textColor: column3.fg}
                     Slider { value: 50; backgroundColor: column3.bg; progressColor: "blue";}
-                    Switch { backgroundColor: column3.bg; foregroundColor: column3.fg}
-                    CheckBox { backgroundColor: column3.bg; foregroundColor: column3.fg}
-                    ComboBox{ model: choices; backgroundColor: column3.bg; foregroundColor: column3.fg}
+                    Switch { backgroundColor: column3.bg; textColor: column3.fg}
+                    CheckBox { backgroundColor: column3.bg; textColor: column3.fg}
+                    ComboBox{ model: choices; backgroundColor: column3.bg; textColor: column3.fg}
                     ProgressBar {
                         startValue: 250; endValue: 1000;
                         progressText: currentValue

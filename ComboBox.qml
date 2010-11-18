@@ -20,7 +20,7 @@ Item {
     property Component listItem: defaultStyle.listItem
     property Component listHighlight: defaultStyle.listHighlight
 
-    property color foregroundColor: hintsLoader.item ? hintsLoader.item.textColor : "black"
+    property color textColor: hintsLoader.item ? hintsLoader.item.textColor : "black"
     property color backgroundColor: hintsLoader.item ? hintsLoader.item.backgroundColor : "white"
 
     property int preferredWidth: defaultStyle.preferredWidth

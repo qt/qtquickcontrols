@@ -60,7 +60,7 @@ QtObject {
             onWidthChanged: preferredWidth = Math.max(40, row.width+10+10)    //mm workaround for lacking support for defining bindings in javascript, see above
             onHeightChanged: preferredHeight = Math.max(25, row.height+6+6)
             Text {
-                color: foregroundColor
+                color: textColor
                 anchors.verticalCenter: parent.verticalCenter
                 text: model.get(currentIndex).content
                 opacity: parent.enabled ? 1 : 0.5
