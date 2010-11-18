@@ -5,10 +5,10 @@ import Qt.labs.components 1.0    // ImplicitlySizedItem. See QTBUG-14957
 Item {
     id: comboBox
 
-    property alias model: popOut.model
+    property alias model: popupList.model
     property int currentIndex: 0
     //mm unused    property string currentText
-    property int popoutSizeInItems: 5
+    property int popupListSizeInItems: 5
 
     //mm needed?    signal clicked
     property bool pressed: false    //mm needed?
@@ -62,9 +62,9 @@ Item {
 
             // Since the popup is not a child of combobox
             // we have to recalculate the position to global coordinates
-            var point = popupHelper.mapFromItem(comboBox, 0, comboBox.height)
-            popOut.y = point.y
-            popOut.x = point.x
+            var point = popupHelper.mapFromItem(comboBox, 0, labelComponent.item.y)
+            popupList.y = point.y - popupList.currentItem.y
+            popupList.x = point.x
 
         }
         onReleased: comboBox.pressed = false
@@ -92,7 +92,7 @@ Item {
         Loader {
             id:popupFrame
 
-            anchors.fill:popOut
+            anchors.fill:popupList
             anchors.leftMargin: defaultStyle.popupFrame.leftMargin != undefined ? defaultStyle.popupFrame.leftMargin : -6
             anchors.rightMargin: defaultStyle.popupFrame.rigthMargin != undefined ? defaultStyle.popupFrame.rigthMargin : -6
             anchors.topMargin: defaultStyle.popupFrame.topMargin != undefined ? defaultStyle.popupFrame.topMargin : -6
@@ -103,15 +103,28 @@ Item {
         }
 
         ListView {
-            id: popOut
-            width:100
-            height:100
+            id: popupList
+
+            height:contentHeight
+            // Why is contentWidth evaluated to 0?
+            width:Math.max(comboBox.width, contentWidth)
 
             opacity:popupFrame.item.opacity
+
             boundsBehavior: "StopAtBounds"
             keyNavigationWraps: true
 
-            delegate: comboBox.listItem
+            delegate: Component {
+                // Ensure we handle input and not the delegate
+                Loader{
+                    sourceComponent:defaultStyle.listItem
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: { currentIndex = index; popupFrame.item.opacity = 0; }
+                    }
+                }
+            }
+
             highlight: comboBox.listHighlight
             currentIndex: comboBox.currentIndex
             highlightFollowsCurrentItem: true

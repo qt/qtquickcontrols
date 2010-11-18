@@ -2,12 +2,12 @@ import Qt 4.7
 
 QtObject {
 
-    property int preferredWidth: 90
+    property int preferredWidth: 200
     property int preferredHeight: 32
 
     property int leftMargin : 8
     property int topMargin: 8
-    property int rightMargin: 30
+    property int rightMargin: 34
     property int bottomMargin: 8
 
     property Component background:
@@ -34,7 +34,7 @@ QtObject {
                     anchors.top: parent.top
                     anchors.right: parent.right
                     anchors.topMargin: 7
-                    anchors.rightMargin: 7
+                    anchors.rightMargin: 10
                     opacity: enabled ? 1 : 0.3
                     source:"../../images/spinbox_up.png"
                 }
@@ -42,7 +42,7 @@ QtObject {
                     anchors.bottom: parent.bottom
                     anchors.right: parent.right
                     anchors.bottomMargin: 7
-                    anchors.rightMargin: 7
+                    anchors.rightMargin: 10
                     opacity: enabled ? 1 : 0.3
                     source:"../../images/spinbox_down.png"
                 }
@@ -54,7 +54,9 @@ QtObject {
     Component {
         Item {
 
-            Behavior on opacity { NumberAnimation { easing.type: Easing.OutCurve ; duration: 200 }}
+            Behavior on opacity { NumberAnimation { easing.type: Easing.OutQuad; duration: 250 }}
+
+            property int preferredWidth: 200
 
             property int leftMargin : 8
             property int topMargin: 8
@@ -96,30 +98,29 @@ QtObject {
     }
 
     property Component listItem: Component {
-        Item {
-            width: parent.width
-            height: row.height
-            Row {
-                id: row
-                spacing: 5
-                Text {
-                    font.pixelSize:16
-                    anchors.margins: 10
-                    text: model.content
-                }
-            }
-            MouseArea {
-                anchors.fill: parent
-                onClicked: { currentIndex = index; popupFrame.item.opacity = 0; }
+        Item{
+            width: comboBox.width
+            height:Math.max(text.height, 28)
+
+            Text {
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left:parent.left
+                anchors.leftMargin:6
+
+                id:text
+                color: textColor
+                anchors.margins: 10
+                text: model.content
             }
         }
     }
 
     property Component listHighlight: Component {
         Rectangle {
-            color: "#cccccc"
+            color: "#33000000"
+            radius:2
+            smooth:true
             x: 1
-            width: parent.width-2
         }
     }
 
