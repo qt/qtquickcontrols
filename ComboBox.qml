@@ -19,6 +19,7 @@ Item {
     property Component hints: defaultStyle.hints
     property Component listItem: defaultStyle.listItem
     property Component listHighlight: defaultStyle.listHighlight
+    property Component popupFrame: defaultStyle.popupFrame
 
     property color textColor: hintsLoader.item ? hintsLoader.item.textColor : "black"
     property color backgroundColor: hintsLoader.item ? hintsLoader.item.backgroundColor : "white"
@@ -58,7 +59,7 @@ Item {
         anchors.fill: parent
         hoverEnabled: true
         onPressed: {
-            comboBox.pressed = true; popupFrame.item.opacity = popupFrame.item.opacity ? 0 : 1;
+            comboBox.pressed = true; popupFrameLoader.item.opacity = popupFrameLoader.item.opacity ? 0 : 1;
 
             // Since the popup is not a child of combobox
             // we have to recalculate the position to global coordinates
@@ -77,7 +78,7 @@ Item {
         // There is no global toplevel so we have to make one
         // We essentially reparent this item to the root item
 
-        opacity:popupFrame.item.opacity
+        opacity:popupFrameLoader.item.opacity
         anchors.fill:parent
 
         Component.onCompleted: {
@@ -87,17 +88,17 @@ Item {
             parent = p;
         }
 
-        onClicked: popupFrame.item.opacity = 0
+        onClicked: popupFrameLoader.item.opacity = 0
 
         Loader {
-            id:popupFrame
+            id:popupFrameLoader
 
             anchors.fill:popupList
-            anchors.leftMargin: defaultStyle.popupFrame.leftMargin != undefined ? defaultStyle.popupFrame.leftMargin : -6
-            anchors.rightMargin: defaultStyle.popupFrame.rigthMargin != undefined ? defaultStyle.popupFrame.rigthMargin : -6
-            anchors.topMargin: defaultStyle.popupFrame.topMargin != undefined ? defaultStyle.popupFrame.topMargin : -6
-            anchors.bottomMargin: defaultStyle.popupFrame.bottomMargin != undefined ? defaultStyle.popupFrame.bottomMargin : -6
-            sourceComponent: defaultStyle.popupFrame
+            anchors.leftMargin: popupFrame.leftMargin != undefined ? popupFrame.leftMargin : -6
+            anchors.rightMargin: popupFrame.rigthMargin != undefined ? popupFrame.rigthMargin : -6
+            anchors.topMargin: popupFrame.topMargin != undefined ? popupFrame.topMargin : -6
+            anchors.bottomMargin: popupFrame.bottomMargin != undefined ? popupFrame.bottomMargin : -6
+            sourceComponent: popupFrame
 
             onLoaded: { item.opacity=0 }
         }
@@ -109,7 +110,7 @@ Item {
             // Why is contentWidth evaluated to 0?
             width:Math.max(comboBox.width, contentWidth)
 
-            opacity:popupFrame.item.opacity
+            opacity:popupFrameLoader.item.opacity
 
             boundsBehavior: "StopAtBounds"
             keyNavigationWraps: true
@@ -117,10 +118,10 @@ Item {
             delegate: Component {
                 // Ensure we handle input and not the delegate
                 Loader{
-                    sourceComponent:defaultStyle.listItem
+                    sourceComponent:listItem
                     MouseArea {
                         anchors.fill: parent
-                        onClicked: { currentIndex = index; popupFrame.item.opacity = 0; }
+                        onClicked: { currentIndex = index; popupFrameLoader.item.opacity = 0; }
                     }
                 }
             }
@@ -134,7 +135,7 @@ Item {
                 if (event.key == Qt.Key_Enter || event.key == Qt.Key_Return) {
                     comboBox.currentIndex = index;
                 } else if (event.key == Qt.Key_Escape) {
-                    popupFrame.item.opacity = 0;
+                    popupFrameLoader.item.opacity = 0;
                 }
             }
         }

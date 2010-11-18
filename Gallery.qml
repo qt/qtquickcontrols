@@ -131,7 +131,6 @@ Rectangle {
                             anchors.fill:parent
                             BorderImage {
                                 source: "images/shinyedit_normal.png"
-                                anchors.verticalCenter: parent.verticalCenter
                                 width: parent.width;
                                 height:14; smooth:true
                                 border.left: 6; border.right: 6
@@ -140,7 +139,7 @@ Rectangle {
                     }
                     Switch { background: shinyEdit}
                     CheckBox { background: shinyEdit}
-                    ComboBox{ model: choices; background: shinyButton}
+                    ComboBox{ model: choices; background: shinyButton; popupFrame: shinyButton}
                     ProgressBar {
                         id:bar
                         startValue: 250; endValue: 1000;
