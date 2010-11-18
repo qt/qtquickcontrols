@@ -13,7 +13,6 @@ Item {
     property alias font: textInput.font
 
     property Component background: defaultStyle.background
-    property Component content: defaultStyle.content
     property Component hints: defaultStyle.hints
 
     property int preferredWidth: defaultStyle.preferredWidth

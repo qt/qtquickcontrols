@@ -98,7 +98,7 @@ QtObject {
 
 
     property Component hints: Component {
-        QtObject{
+        Item {
             property color textColor: "blue"
             property color backgroundColor: "yellow"
         }

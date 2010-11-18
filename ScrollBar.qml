@@ -19,7 +19,6 @@ Item {
     opacity: (scrollItem.moving == true) ? 1 : 0
     Behavior on opacity { NumberAnimation { duration: 100 } }
 
-//    property Component background: defaultStyle.background
     property Component content: defaultStyle.content
     DefaultStyles.ScrollBarStyle { id: defaultStyle }
 
