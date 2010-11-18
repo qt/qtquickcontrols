@@ -87,6 +87,7 @@ Item {
                 popOut.opacity = 0;
             }
         }
+        Component.onCompleted:{}
     }
     DefaultStyles.ComboBoxStyle{ id: defaultStyle }
 }

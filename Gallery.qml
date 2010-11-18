@@ -34,7 +34,7 @@ Rectangle {
                     anchors.margins: 20
                     Text{ font.bold:true; text:"Default:" ; styleColor: "white" ; color:"#333" ; style:"Raised"}
                     Button { text:"Push me"}
-                    LineEdit { text:"Text"}
+                    LineEdit { }
                     SpinBox{ }
                     Slider { value: 50 }
                     Switch { }
@@ -53,7 +53,7 @@ Rectangle {
                     anchors.margins: 20
                     Text{ font.bold:true; text:"Disabled:" ; styleColor: "white" ; color:"#333" ; style:"Raised"}
                     Button { text:"Push me"}
-                    LineEdit { text:"Text"}
+                    LineEdit { }
                     SpinBox{ }
                     Slider { value: 50 }
                     Switch { }
@@ -75,7 +75,7 @@ Rectangle {
 
                     Text{ font.bold:true; text:"Colored:" ; styleColor: "white" ; color:"#333" ; style:"Raised"}
                     Button { text:"Push me" ; backgroundColor: column3.bg; textColor: column3.fg}
-                    LineEdit { text:"Text"; backgroundColor: column3.bg; textColor: column3.fg}
+                    LineEdit { backgroundColor: column3.bg; textColor: column3.fg}
                     SpinBox{ backgroundColor: column3.bg; textColor: column3.fg}
                     Slider { value: 50; backgroundColor: column3.bg; progressColor: "blue";}
                     Switch { backgroundColor: column3.bg; textColor: column3.fg}
@@ -95,7 +95,7 @@ Rectangle {
 
                     Text{ font.bold:true; text:"Custom:" ; styleColor: "white" ; color:"#333" ; style:"Raised"}
                     Button { text:"Push me" ; background: shinyButton}
-                    LineEdit { text:"Text"; background: shinyEdit}
+                    LineEdit { background: shinyEdit}
                     SpinBox{
                         background: shinyEdit
                         leftMargin: 32
