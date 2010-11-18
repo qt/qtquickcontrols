@@ -61,10 +61,7 @@ Item {
         onReleased: comboBox.pressed = false
     }
 
-    //    Rectangle { color: "red"; anchors.fill: parent; z: 1000 }
-
-    // List should be real popout, see QTBUG-15000 and QTBUG-15001
-    ListView {  //mm load it dynamiacally?
+    ListView {
         id: popOut
         opacity: 0
         width: 100
@@ -87,7 +84,13 @@ Item {
                 popOut.opacity = 0;
             }
         }
-        Component.onCompleted:{}
+        Component.onCompleted:{
+            // Due to limitations of graphicsview, we have to ensure
+            // that the popup is higher up in the object hierarchy
+            // see QTBUG-15000 and QTBUG-15001
+            if (comboBox.parent != undefined)
+                parent = comboBox.parent
+        }
     }
     DefaultStyles.ComboBoxStyle{ id: defaultStyle }
 }

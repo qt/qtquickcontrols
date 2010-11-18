@@ -11,7 +11,7 @@ QtObject {
     property int bottomMargin: 8
 
     property Component background:
-            Component {
+    Component {
         id: defaultBackground
         Item {
             opacity: enabled ? 1 : 0.8

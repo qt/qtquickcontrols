@@ -108,7 +108,6 @@ QtObject {
                     text: progressText
                 }
             }
-
         }
     }
 }
