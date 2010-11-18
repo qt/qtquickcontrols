@@ -45,7 +45,7 @@ Rectangle {
                         progressText: currentValue
                         Timer { running: true; repeat: true; interval: 25; onTriggered: parent.percentComplete == 100 ? parent.percentComplete = 0 : parent.percentComplete++}
                     }
-
+                    ProgressBar { }
                 }
                 Column {
                     enabled:false
@@ -64,6 +64,7 @@ Rectangle {
                         progressText: currentValue
                         Timer { running: true; repeat: true; interval: 25; onTriggered: parent.percentComplete == 100 ? parent.percentComplete = 0 : parent.percentComplete++}
                     }
+                    ProgressBar { }
                 }
                 Column {
                     id:column3
@@ -85,6 +86,7 @@ Rectangle {
                         progressText: currentValue
                         Timer { running: true; repeat: true; interval: 25; onTriggered: parent.percentComplete == 100 ? parent.percentComplete = 0 : parent.percentComplete++}
                     }
+                    ProgressBar{}
                 }
                 Column {
                     id:column4
@@ -149,6 +151,15 @@ Rectangle {
                             source: "images/shinybutton_normal.png"
                             width: bar.width*bar.percentComplete/100.0;
                             height: 20
+                            border.top:4 ; border.left:4 ; border.bottom:4 ; border.right:4
+                        }
+                    }
+                    ProgressBar{
+                        id:bar2
+                        progressText: currentValue
+                        content: BorderImage {
+                            source: "images/shinybutton_normal.png"
+                            width: bar2.width*bar2.percentComplete/100.0;
                             border.top:4 ; border.left:4 ; border.bottom:4 ; border.right:4
                         }
                     }
