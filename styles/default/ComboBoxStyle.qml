@@ -12,7 +12,6 @@ QtObject {
 
     property Component background:
     Component {
-        id: defaultBackground
         Item {
             opacity: enabled ? 1 : 0.8
             Rectangle{
@@ -51,14 +50,42 @@ QtObject {
         }
     }
 
-    property Component label : Component {
+    property Component popupFrame:
+    Component {
+        Item {
 
+            Behavior on opacity { NumberAnimation { easing.type: Easing.OutCurve ; duration: 200 }}
+
+            property int leftMargin : 8
+            property int topMargin: 8
+            property int rightMargin: 30
+            property int bottomMargin: 8
+
+            Rectangle{
+                x: 1
+                y: 1
+                width: parent.width-2
+                height: parent.height-2
+                color: backgroundColor
+                radius: 5
+            }
+            BorderImage {
+                anchors.fill: parent
+                id: backgroundimage
+                smooth: true
+                source: "../../images/button_normal.png"
+                width: 80; height: 24
+                border.left: 5; border.top: 5
+                border.right: 5; border.bottom: 5
+            }
+        }
+    }
+
+    property Component label : Component {
         Row {
             id: row
             spacing: 6
             anchors.centerIn: parent
-            onWidthChanged: preferredWidth = Math.max(40, row.width+10+10)    //mm workaround for lacking support for defining bindings in javascript, see above
-            onHeightChanged: preferredHeight = Math.max(25, row.height+6+6)
             Text {
                 color: textColor
                 anchors.verticalCenter: parent.verticalCenter
@@ -69,21 +96,21 @@ QtObject {
     }
 
     property Component listItem: Component {
-        Rectangle {
+        Item {
             width: parent.width
             height: row.height
-            color: index % 2 == 0 ? "yellow" : "blue"
             Row {
                 id: row
                 spacing: 5
                 Text {
+                    font.pixelSize:16
                     anchors.margins: 10
                     text: model.content
                 }
             }
             MouseArea {
                 anchors.fill: parent
-                onClicked: { parent.currentIndex = index; popOut.opacity = 0; }
+                onClicked: { currentIndex = index; popupFrame.item.opacity = 0; }
             }
         }
     }
@@ -99,9 +126,8 @@ QtObject {
 
     property Component hints: Component {
         Item {
-            property color textColor: "blue"
-            property color backgroundColor: "yellow"
+            property color textColor: "#555"
+            property color backgroundColor: "white"
         }
     }
-
 }

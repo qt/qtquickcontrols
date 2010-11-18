@@ -6,10 +6,6 @@ QtObject {
         id: defaultContent
         Item {
             id: track
-            height: parent.height - 8
-            width: parent.width - 8
-            anchors.centerIn: parent
-
             Item {
                 id: thumb
                 x: (scrollbar.orientation == "horizontal") ? Math.min (Math.max ((scrollItem.visibleArea.xPosition * scrollItem.width), 0), (track.width - width)) : 0

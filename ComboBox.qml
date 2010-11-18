@@ -57,40 +57,74 @@ Item {
         id: mouseArea
         anchors.fill: parent
         hoverEnabled: true
-        onPressed: { comboBox.pressed = true; popOut.opacity = popOut.opacity ? 0 : 1; }
+        onPressed: {
+            comboBox.pressed = true; popupFrame.item.opacity = popupFrame.item.opacity ? 0 : 1;
+
+            // Since the popup is not a child of combobox
+            // we have to recalculate the position to global coordinates
+            var point = popupHelper.mapFromItem(comboBox, 0, comboBox.height)
+            popOut.y = point.y
+            popOut.x = point.x
+
+        }
         onReleased: comboBox.pressed = false
     }
 
-    ListView {
-        id: popOut
-        opacity: 0
-        width: 100
-        height: 100
-        anchors.top: comboBox.bottom
-        clip: true
-        boundsBehavior: "StopAtBounds"
-        keyNavigationWraps: true
 
-        delegate: comboBox.listItem
-        highlight: comboBox.listHighlight
-        currentIndex: comboBox.currentIndex
-        highlightFollowsCurrentItem: true
 
-        focus: true
-        Keys.onPressed: {
-            if (event.key == Qt.Key_Enter || event.key == Qt.Key_Return) {
-                comboBox.currentIndex = index;
-            } else if (event.key == Qt.Key_Escape) {
-                popOut.opacity = 0;
+    MouseArea {
+        id:popupHelper
+        // There is no global toplevel so we have to make one
+        // We essentially reparent this item to the root item
+
+        opacity:popupFrame.item.opacity
+        anchors.fill:parent
+
+        Component.onCompleted: {
+            var p = parent;
+            while (p.parent != undefined)
+                p = p.parent
+            parent = p;
+        }
+
+        onClicked: popupFrame.item.opacity = 0
+
+        Loader {
+            id:popupFrame
+
+            anchors.fill:popOut
+            anchors.leftMargin: defaultStyle.popupFrame.leftMargin != undefined ? defaultStyle.popupFrame.leftMargin : -6
+            anchors.rightMargin: defaultStyle.popupFrame.rigthMargin != undefined ? defaultStyle.popupFrame.rigthMargin : -6
+            anchors.topMargin: defaultStyle.popupFrame.topMargin != undefined ? defaultStyle.popupFrame.topMargin : -6
+            anchors.bottomMargin: defaultStyle.popupFrame.bottomMargin != undefined ? defaultStyle.popupFrame.bottomMargin : -6
+            sourceComponent: defaultStyle.popupFrame
+
+            onLoaded: { item.opacity=0 }
+        }
+
+        ListView {
+            id: popOut
+            width:100
+            height:100
+
+            opacity:popupFrame.item.opacity
+            boundsBehavior: "StopAtBounds"
+            keyNavigationWraps: true
+
+            delegate: comboBox.listItem
+            highlight: comboBox.listHighlight
+            currentIndex: comboBox.currentIndex
+            highlightFollowsCurrentItem: true
+
+            focus: true
+            Keys.onPressed: {
+                if (event.key == Qt.Key_Enter || event.key == Qt.Key_Return) {
+                    comboBox.currentIndex = index;
+                } else if (event.key == Qt.Key_Escape) {
+                    popupFrame.item.opacity = 0;
+                }
             }
         }
-        Component.onCompleted:{
-            // Due to limitations of graphicsview, we have to ensure
-            // that the popup is higher up in the object hierarchy
-            // see QTBUG-15000 and QTBUG-15001
-            if (comboBox.parent != undefined)
-                parent = comboBox.parent
-        }
+        DefaultStyles.ComboBoxStyle{ id: defaultStyle }
     }
-    DefaultStyles.ComboBoxStyle{ id: defaultStyle }
 }
