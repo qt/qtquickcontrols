@@ -41,9 +41,9 @@ Rectangle {
                     CheckBox { }
                     ComboBox{ model: choices}
                     ProgressBar {
-                        startValue: 250; endValue: 1000;
-                        progressText: currentValue
-                        Timer { running: true; repeat: true; interval: 25; onTriggered: parent.percentComplete == 100 ? parent.percentComplete = 0 : parent.percentComplete++}
+                        progressText: percentComplete
+                        endValue:100
+                        Timer { running: true; repeat: true; interval: 25; onTriggered: {parent.currentValue = (parent.currentValue + 1) % 100 }}
                     }
                     ProgressBar { }
                 }
@@ -60,9 +60,9 @@ Rectangle {
                     CheckBox { }
                     ComboBox{ model: choices}
                     ProgressBar {
-                        startValue: 250; endValue: 1000;
-                        progressText: currentValue
-                        Timer { running: true; repeat: true; interval: 25; onTriggered: parent.percentComplete == 100 ? parent.percentComplete = 0 : parent.percentComplete++}
+                        progressText: percentComplete
+                        endValue:100
+                        Timer { running: true; repeat: true; interval: 25; onTriggered: {parent.currentValue = (parent.currentValue + 1) % 100 }}
                     }
                     ProgressBar { }
                 }
@@ -82,11 +82,11 @@ Rectangle {
                     CheckBox { backgroundColor: column3.bg; textColor: column3.fg}
                     ComboBox{ model: choices; backgroundColor: column3.bg; textColor: column3.fg}
                     ProgressBar {
-                        startValue: 250; endValue: 1000;
-                        progressText: currentValue
-                        Timer { running: true; repeat: true; interval: 25; onTriggered: parent.percentComplete == 100 ? parent.percentComplete = 0 : parent.percentComplete++}
+                        progressText: percentComplete
+                        endValue:100
+                        Timer { running: true; repeat: true; interval: 25; onTriggered: {parent.currentValue = (parent.currentValue + 1) % 100 }}
                     }
-                    ProgressBar{}
+                    ProgressBar{ }
                 }
                 Column {
                     id:column4
@@ -98,28 +98,29 @@ Rectangle {
                     LineEdit { background: shinyEdit}
                     SpinBox{
                         background: shinyEdit
-                        leftMargin: 32
-                        up: Button {
+                        leftMargin: 40
+                        rightMargin: 40
+                        up: BorderImage {
                             width:height;
+                            source:upPressed ?
+                                    "images/shinybutton_pressed.png" :
+                                    "images/shinybutton_normal.png"
                             anchors.left:parent.left
                             anchors.top:parent.top
                             anchors.bottom:parent.bottom
-                            anchors.margins: 4
-                            Text{
-                                text:"+"
-                                anchors.centerIn: parent
-                            }
+                            border.left:6; border.right:6; border.top:6; border.bottom:6
+                            Text{ text:"+" ; anchors.centerIn:parent}
                         }
-                        down: Button {
+                        down: BorderImage{
                             width:height;
+                            source:downPressed ?
+                                    "images/shinybutton_pressed.png" :
+                                    "images/shinybutton_normal.png"
                             anchors.right:parent.right
                             anchors.top:parent.top
                             anchors.bottom:parent.bottom
-                            anchors.margins: 4
-                            Text{
-                                text:"-"
-                                anchors.centerIn: parent
-                            }
+                            border.left:6; border.right:6; border.top:6; border.bottom:6
+                            Text{ text:"-" ; anchors.centerIn:parent}
                         }
                     }
                     Slider {
@@ -140,25 +141,23 @@ Rectangle {
                     Switch { background: shinyEdit}
                     CheckBox { background: shinyEdit}
                     ComboBox{ model: choices; background: shinyButton; popupFrame: shinyButton}
+
                     ProgressBar {
-                        id:bar
-                        startValue: 250; endValue: 1000;
-                        progressText: currentValue
-                        Timer { running: true; repeat: true; interval: 25; onTriggered: parent.percentComplete == 100 ? parent.percentComplete = 0 : parent.percentComplete++}
+                        progressText: percentComplete
+                        endValue:100
+                        Timer { running: true; repeat: true; interval: 25; onTriggered: {parent.currentValue = (parent.currentValue + 1) % 100 }}
                         content: BorderImage {
-                            id: name
                             source: "images/shinybutton_normal.png"
-                            width: bar.width*bar.percentComplete/100.0;
+                            width: parent.width * percentComplete/100.0;
                             height: 20
                             border.top:4 ; border.left:4 ; border.bottom:4 ; border.right:4
                         }
                     }
-                    ProgressBar{
-                        id:bar2
+                    ProgressBar {
                         progressText: currentValue
                         content: BorderImage {
                             source: "images/shinybutton_normal.png"
-                            width: bar2.width*bar2.percentComplete/100.0;
+                            width: parent.width*parent.percentComplete/100.0;
                             border.top:4 ; border.left:4 ; border.bottom:4 ; border.right:4
                         }
                     }

@@ -1,5 +1,4 @@
 import Qt 4.7
-import "./styles"  // StylingLoader
 import Qt.labs.components 1.0    // ImplicitlySizedItem. See QTBUG-14957
 import "./styles/default" as DefaultStyles
 
@@ -8,8 +7,11 @@ Item{
 
     property real startValue: 0
     property real endValue: 0
-    property real currentValue: startValue + (endValue*percentComplete/100.0)
-    property real percentComplete: Math.round(currentValue/(endValue-startValue))*100.0
+
+    // percentComplete should be read only
+    property real currentValue: 0 // startValue + (endValue*percentComplete/100.0)
+
+    property real percentComplete: Math.round(currentValue/(endValue-startValue)*100.0)
     property string progressText: percentComplete + "%"
 
     property Component background: defaultStyle.background

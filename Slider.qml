@@ -39,7 +39,6 @@ Item {
 
     property alias value: valueModel.value
     signal valueChanged(real value)
-    onValueChanged: print(value)    // debug
 
     property alias minimumValue: valueModel.minimumValue
     property alias maximumValue: valueModel.maximumValue

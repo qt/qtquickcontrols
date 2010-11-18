@@ -55,7 +55,7 @@ QtObject {
 
             Item {  // progress bar, known duration
                 anchors.fill: parent
-                anchors.rightMargin: (endValue == startValue) ? 0 : parent.width - (percentComplete/100)*parent.width
+                anchors.rightMargin: (endValue == startValue) ? 0 : parent.width - (percentComplete/100) * parent.width
                 clip: true  // Clip the rounded rect inside to get a sharp right edge
 
                 Rectangle { // green progress indication
