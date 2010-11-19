@@ -5,9 +5,7 @@ QtObject {
     property variant preferredWidth: 100
     property variant preferredHeight: 32
 
-    property Component background:
-    Component {
-        id: defaultBackground
+    property Component groove: Component {
         Item {
             Rectangle {
                 x: 1
@@ -53,19 +51,19 @@ QtObject {
                 opacity: checked ? (enabled ? 1 : 0.5) : 0
                 Behavior on opacity { NumberAnimation { duration: 60 } }
             }
-            BorderImage {
-                anchors.top: parent.top
-                anchors.bottom: parent.bottom
-                x: checked ? parent.width-width : 0
-                width: parent.width/2
-                smooth: true
-                source: pressed ? "../../images/switch_pressed.png" : "../../images/switch_normal.png"
-                height: parent.height
-                border.left: 4; border.top: 4
-                border.right: 4; border.bottom: 4
-                Behavior on x { NumberAnimation { duration: 60 ; easing.type: "InOutCirc"}
-                }
-            }
+        }
+    }
+
+    property Component handle: Component {
+        BorderImage {
+            width: 50
+            height: 32
+            smooth: true
+            source: pressed ? "../../images/switch_pressed.png" : "../../images/switch_normal.png"
+
+            border.left: 4; border.top: 4
+            border.right: 4; border.bottom: 4
+            Behavior on x {NumberAnimation{easing.type: Easing.OutCubic; duration:100}}
         }
     }
 }

@@ -138,7 +138,18 @@ Rectangle {
                             }
                         }
                     }
-                    Switch { background: shinyEdit}
+                    Switch {
+                        id:aa
+                        groove: shinyEdit;
+                        handle: BorderImage {
+                            width:aa.height
+                            height:aa.height
+                            source: parent.pressed ? "images/shinybutton_pressed.png":"images/shinybutton_normal.png"
+                            border.left: 6; border.top: 6
+                            border.right: 6; border.bottom: 6
+                        }
+
+                    }
                     CheckBox { background: shinyEdit}
                     ComboBox{ model: choices; background: shinyButton; popupFrame: shinyButton}
 
