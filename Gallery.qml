@@ -170,6 +170,8 @@ Rectangle {
                         spacing:6
                     }
 
+                    ComboBox{ model: choices; background: shinyButton; popupFrame: shinyButton}
+
                     ProgressBar {
                         progressText: percentComplete
                         endValue:100
