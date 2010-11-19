@@ -12,7 +12,6 @@ Item{
     property real currentValue: 0 // startValue + (endValue*percentComplete/100.0)
 
     property real percentComplete: Math.round(currentValue/(endValue-startValue)*100.0)
-    property string progressText: percentComplete + "%"
 
     property Component background: defaultStyle.background
     property Component content: defaultStyle.content

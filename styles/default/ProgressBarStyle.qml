@@ -89,25 +89,6 @@ QtObject {
                     onTriggered: if (parent.posX++ > 7) parent.posX = 0
                 }
             }
-
-            Rectangle {
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.horizontalCenter: parent.horizontalCenter
-                width: valueText.width+10
-                height: valueText.height+10
-                color: "gray"
-                opacity: endValue ? 0.8 : 0
-                Behavior on opacity { NumberAnimation { duration: 100 } }
-                radius: 5
-
-                Text {
-                    id: valueText
-                    anchors.margins: 10
-                    anchors.centerIn: parent
-                    font.pixelSize: 8
-                    text: progressText
-                }
-            }
         }
     }
 }
