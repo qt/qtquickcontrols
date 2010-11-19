@@ -1,25 +1,24 @@
 import Qt 4.7
 import "./styles/default" as DefaultStyles
 
-BasicButton {
+Item {
     id: toggleSwitch    // "switch" is a reserved word
 
-    checkable: true
+    property int preferredWidth: defaultStyle.preferredWidth
+    property int preferredHeight: defaultStyle.preferredHeight
+    width: Math.max(preferredWidth, grooveLoader.item.width)
+    height: Math.max(preferredHeight, grooveLoader.item.height)
 
+    signal clicked
+    property bool pressed: mousearea.pressed
     property alias containsMouse: mousearea.containsMouse
-
-    property color backgroundColor: checked ? "#cef" : "#fff"
-    property color textColor: "#333"
+    property bool checked: false
 
     property Component groove: defaultStyle.groove
     property Component handle: defaultStyle.handle
 
-    preferredWidth: defaultStyle.preferredWidth
-    preferredHeight: defaultStyle.preferredHeight
-
-    property Component background : defaultStyle.background
-
-    DefaultStyles.SwitchStyle { id: defaultStyle }
+    property color backgroundColor: checked ? "#cef" : "#fff"
+    property color textColor: "#333"
 
     Loader {
         id: grooveLoader;
@@ -40,10 +39,19 @@ BasicButton {
         hoverEnabled: true
         anchors.fill: parent
 
+        drag.axis: Drag.XAxis
+        drag.minimumX:0
+        drag.maximumX:toggleSwitch.width - handleLoader.item.width
+        drag.target:handleLoader.item
+
         onPressed: toggleSwitch.pressed = true  // needed when hover is enabled
-        onEntered: if(pressed && enabled) toggleSwitch.pressed = true
+        onEntered: if (toggleSwitch.pressed && enabled) toggleSwitch.pressed = true
         onExited: toggleSwitch.pressed = false
         onReleased: {
+            if(toggleSwitch.pressed && enabled) { // No click if release outside area
+                toggleSwitch.pressed = false
+                checked = !checked;
+            }
             if (drag.active) {
                 if (handleLoader.item.x > (drag.maximumX - drag.minimumX)/2)
                     checked = true
@@ -57,10 +65,7 @@ BasicButton {
             handleLoader.item.x = checked ? drag.maximumX : drag.minimumX
             toggleSwitch.clicked()
         }
-
-        drag.axis: Drag.XAxis
-        drag.minimumX:0
-        drag.maximumX:toggleSwitch.width - handleLoader.item.width
-        drag.target:handleLoader.item
     }
+
+    DefaultStyles.SwitchStyle { id: defaultStyle }
 }

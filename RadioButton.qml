@@ -1,11 +1,14 @@
 import Qt 4.7
+import "./behaviors"
 import "./styles/default" as DefaultStyles
 
-BasicButton {
-    id: button
+// This is essentially a special case of checkbox - remove?
 
+CheckBox {
+    id: radiobutton
+
+    checkmark: defaultStyle.checkmark
     background: defaultStyle.background
-    checkable: true
 
     DefaultStyles.RadioButtonStyle { id: defaultStyle }
 }

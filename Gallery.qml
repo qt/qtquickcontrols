@@ -38,7 +38,11 @@ Rectangle {
                     SpinBox{ }
                     Slider { value: 50 }
                     Switch { }
-                    Row{CheckBox {} CheckBox {checked:true} spacing:4}
+                    Row{
+                        CheckBox { } CheckBox { checked:true}
+                        RadioButton{ } RadioButton { checked:true}
+                        spacing:6
+                    }
                     ComboBox{ model: choices}
                     ProgressBar {
                         progressText: percentComplete
@@ -57,7 +61,11 @@ Rectangle {
                     SpinBox{ }
                     Slider { value: 50 }
                     Switch { }
-                    Row{CheckBox {} CheckBox { checked:true} spacing:4}
+                    Row{
+                        CheckBox { } CheckBox { checked:true}
+                        RadioButton{ } RadioButton { checked:true}
+                        spacing:6
+                    }
                     ComboBox{ model: choices}
                     ProgressBar {
                         progressText: percentComplete
@@ -79,8 +87,13 @@ Rectangle {
                     SpinBox{ backgroundColor: column3.bg; textColor: column3.fg}
                     Slider { value: 50; backgroundColor: column3.bg; progressColor: "blue";}
                     Switch { backgroundColor: column3.bg; textColor: column3.fg}
-                    Row{CheckBox { backgroundColor: column3.bg; textColor: column3.fg}
-                        CheckBox { checked:true; backgroundColor: column3.bg; textColor: column3.fg}  spacing:4 }
+                    Row{
+                        CheckBox { backgroundColor: column3.bg; }
+                        CheckBox { checked:true; backgroundColor: column3.bg; }
+                        RadioButton{ backgroundColor: column3.bg; }
+                        RadioButton { checked:true; backgroundColor: column3.bg; }
+                        spacing:6
+                    }
                     ComboBox{ model: choices; backgroundColor: column3.bg; textColor: column3.fg}
                     ProgressBar {
                         progressText: percentComplete
@@ -151,8 +164,11 @@ Rectangle {
                         }
 
                     }
-                    Row{CheckBox { background: shinyEdit} CheckBox { background: shinyEdit; checked:true} spacing:4 }
-                    ComboBox{ model: choices; background: shinyButton; popupFrame: shinyButton}
+                    Row{
+                        CheckBox { background: shinyEdit} CheckBox { background: shinyEdit; checked:true}
+                        RadioButton{ background: shinyEdit} RadioButton { background: shinyEdit; checked:true}
+                        spacing:6
+                    }
 
                     ProgressBar {
                         progressText: percentComplete

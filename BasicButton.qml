@@ -21,16 +21,18 @@ Item {
     property color backgroundColor: "#fff";
     property color textColor: "#222";
 
-    DefaultStyles.BasicButtonStyle { id: defaultStyle }
+
+    Loader {
+        id:backgroundComponent
+        anchors.fill: parent
+        sourceComponent: background
+    }
+
     ButtonBehavior {
         id: behavior
         anchors.fill: parent
         onClicked: button.clicked()
     }
 
-    Loader {    // background
-        id:backgroundComponent
-        anchors.fill: parent
-        sourceComponent: background
-    }
+    DefaultStyles.BasicButtonStyle { id: defaultStyle }
 }
