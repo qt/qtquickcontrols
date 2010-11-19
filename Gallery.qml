@@ -2,7 +2,7 @@ import Qt 4.7
 
 Rectangle {
     width: 4*240
-    height: 400
+    height: 440
 
     Flickable {
         id: flickable
@@ -38,7 +38,7 @@ Rectangle {
                     SpinBox{ }
                     Slider { value: 50 }
                     Switch { }
-                    CheckBox { }
+                    Row{CheckBox {} CheckBox {checked:true} spacing:4}
                     ComboBox{ model: choices}
                     ProgressBar {
                         progressText: percentComplete
@@ -57,7 +57,7 @@ Rectangle {
                     SpinBox{ }
                     Slider { value: 50 }
                     Switch { }
-                    CheckBox { }
+                    Row{CheckBox {} CheckBox { checked:true} spacing:4}
                     ComboBox{ model: choices}
                     ProgressBar {
                         progressText: percentComplete
@@ -79,7 +79,8 @@ Rectangle {
                     SpinBox{ backgroundColor: column3.bg; textColor: column3.fg}
                     Slider { value: 50; backgroundColor: column3.bg; progressColor: "blue";}
                     Switch { backgroundColor: column3.bg; textColor: column3.fg}
-                    CheckBox { backgroundColor: column3.bg; textColor: column3.fg}
+                    Row{CheckBox { backgroundColor: column3.bg; textColor: column3.fg}
+                        CheckBox { checked:true; backgroundColor: column3.bg; textColor: column3.fg}  spacing:4 }
                     ComboBox{ model: choices; backgroundColor: column3.bg; textColor: column3.fg}
                     ProgressBar {
                         progressText: percentComplete
@@ -150,7 +151,7 @@ Rectangle {
                         }
 
                     }
-                    CheckBox { background: shinyEdit}
+                    Row{CheckBox { background: shinyEdit} CheckBox { background: shinyEdit; checked:true} spacing:4 }
                     ComboBox{ model: choices; background: shinyButton; popupFrame: shinyButton}
 
                     ProgressBar {
@@ -164,6 +165,7 @@ Rectangle {
                             border.top:4 ; border.left:4 ; border.bottom:4 ; border.right:4
                         }
                     }
+
                     ProgressBar {
                         progressText: currentValue
                         content: BorderImage {

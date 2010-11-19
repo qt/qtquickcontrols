@@ -2,12 +2,11 @@ import Qt 4.7
 
 QtObject {
 
-    property int preferredWidth: 90
+    property int preferredWidth: 32
     property int preferredHeight: 32
 
     property Component background:
     Component {
-        id: defaultBackground
         Item {
             Rectangle{
                 anchors.fill: backgroundimage
@@ -27,15 +26,16 @@ QtObject {
                 border.left: 6; border.top: 3
                 border.right: 6; border.bottom: 3
             }
+        }
+    }
 
-            Image {
-                anchors.centerIn: backgroundimage
-                anchors.verticalCenterOffset: 1
-                anchors.horizontalCenterOffset: 1
-                opacity: checked ? (enabled ? 1 : 0.5) : 0
-                source: "../../images/checkbox_check.png"
-                Behavior on opacity { NumberAnimation { duration: 150; easing.type: Easing.OutCubic } }
-            }
+    property Component checkmark: Component {
+        Image {
+            source: "../../images/checkbox_check.png"
+            anchors.verticalCenterOffset:1
+            anchors.horizontalCenterOffset:1
+            anchors.centerIn:parent
+            Behavior on opacity { NumberAnimation { duration: 150; easing.type: Easing.OutCubic } }
         }
     }
 }
