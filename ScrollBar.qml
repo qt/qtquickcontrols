@@ -6,14 +6,14 @@ Item {
 
     //public API
     property variant scrollItem      // item to which the scrollbar is attached - this must be a Flickable, GridView or ListView
-    property string orientation: ""  // possible values : "vertical", "horizontal" //mm Can this be made an enumeration?
+    property bool horizontal: false
 
     //private
-    width:  (scrollbar.orientation == "horizontal") ? scrollItem.width : 14
-    height: (scrollbar.orientation == "horizontal") ? 14 : scrollItem.height
-    anchors.left: (scrollbar.orientation == "horizontal") ? scrollItem.left : undefined
+    width:  horizontal ? scrollItem.width : 14
+    height: horizontal ? 14 : scrollItem.height
+    anchors.left: horizontal ? scrollItem.left : undefined
     anchors.right: scrollItem.right
-    anchors.top: (scrollbar.orientation == "horizontal") ? undefined : scrollItem.top
+    anchors.top: horizontal ? undefined : scrollItem.top
     anchors.bottom: scrollItem.bottom
 
     opacity: (scrollItem.moving == true) ? 1 : 0

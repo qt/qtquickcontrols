@@ -10,10 +10,8 @@ Components.Slider{
         width:20
         source: pressed ? "images/button_pressed.png" :
                 "images/button_normal.png"
-        border.top:6
-        border.bottom:6
-        border.left:6
-        border.right:8
+        border.top:6 ; border.bottom:6
+        border.left:6 ; border.right:6
 
         BorderImage {
             id: name

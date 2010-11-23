@@ -31,35 +31,32 @@ import "./styles/default" as DefaultStyles
 
 Item {
     id: slider
-    property string orientation: "horizontal"  // "horizontal" or "vertical"
 
     property color progressColor: "#9cf"
     property color backgroundColor: "#fff"
     property alias containsMouse: mouseArea.containsMouse
 
-    property alias value: valueModel.value
-    signal valueChanged(real value)
-
-    property alias minimumValue: valueModel.minimumValue
-    property alias maximumValue: valueModel.maximumValue
-    property alias stepSize: valueModel.steps   //mm The RangleModel's step property actually behave like a stepSize (which is a good thing)
-
-
     property int preferredWidth: defaultStyle.preferredWidth
     property int preferredHeight: defaultStyle.preferredHeight
-
-    //    property bool indicatorVisible: true
-    //    property string indicatorLabel:
 
     property Component groove: defaultStyle.groove
     property Component handle: defaultStyle.handle
 
-    property alias pressed: mouseArea.pressed
     property real zeroPosition: valueModel.positionAtZero   // needed by styling, should be read-only, see QTBUG-15257
     property real handlePosition: valueModel.position       // needed by styling, should be read-only
 
-    width: { orientation == "vertical" ? preferredHeight : preferredWidth}
-    height: { orientation == "vertical" ? preferredWidth: preferredHeight}
+    width: { horizontal ? preferredWidth : preferredHeight }
+    height: { horizontal ? preferredHeight: preferredWidth }
+
+    // Common API
+    property real minimum: 0.0
+    property real maximum: 100.0
+    property real stepSize: 1.0
+
+    property alias pressed: mouseArea.pressed
+    property alias value: valueModel.value
+    property bool horizontal: true
+    property bool updateValueWhileDragging: true
 
     QtComponents.RangeModel {
         // This model describes the range of values the slider can take
@@ -67,18 +64,19 @@ Item {
         // the graphical position of the handle inside the component
         // (positionAtMinimum/positionAtMaximum)
         id: valueModel
-        steps: 1    //mm this is really stepSize    (N.B. mouse areas drag handling works funny at the ends for large stepSize values. RangeModel bug?)
+        minimumValue: slider.minimum
+        maximumValue: slider.maximum
+        steps: slider.stepSize //mm this is really stepSize    (N.B. mouse areas drag handling works funny at the ends for large stepSize values. RangeModel bug?)
         positionAtMinimum: handleLoader.shaftRadius
         positionAtMaximum: grooveLoader.grooveLength-handleLoader.shaftRadius
-        onValueChanged: slider.valueChanged(value)
         onPositionChanged: handleLoader.x = valueModel.position    // update handle's position
     }
 
     Item { // Rotation container. As far as the styling is concerned, the slider is always horizontal (except if it has a shadow)
         anchors.centerIn: parent
-        rotation: orientation == "vertical" ? -90 : 0
-        width: orientation == "vertical" ? slider.height : slider.width
-        height: orientation == "vertical" ? slider.width : slider.height
+        rotation: horizontal ? 0 : -90
+        width: horizontal ? slider.width: slider.height
+        height: horizontal ? slider.height: slider.width
 
         MouseArea {
             id: mouseArea
@@ -90,6 +88,7 @@ Item {
 
             anchors.fill: parent
             onPressed: valueModel.position = mouse.x
+            onReleased: valueModel.position = mouse.x
 
             drag.target: handleLoader  //mm See QTBUG-15231
             drag.axis: Drag.XAxis
@@ -110,7 +109,7 @@ Item {
             anchors.fill: undefined     // override default (in part needed because of QTBUG-14873)
             anchors.verticalCenter: parent.verticalCenter
             onLoaded: handleLoader.x = valueModel.position // update handle's initial position //mm Don't think the RangeModel is reporting the correct initial value
-            onXChanged: valueModel.position = x;
+            onXChanged: if (updateValueWhileDragging) valueModel.position = x;
 
             sourceComponent: handle
             property real shaftRadius: item.height/4

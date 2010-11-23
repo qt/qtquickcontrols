@@ -48,6 +48,7 @@ QtObject {
 
     property Component content: Component {
         Item {
+            property real complete: (value-minimum)/(maximum-minimum)
             height: 8
             anchors.left: parent.left
             anchors.right: parent.right
@@ -55,7 +56,7 @@ QtObject {
 
             Item {  // progress bar, known duration
                 anchors.fill: parent
-                anchors.rightMargin: (endValue == startValue) ? 0 : parent.width - (percentComplete/100) * parent.width
+                anchors.rightMargin: indeterminate ? 0 : parent.width - (complete) * parent.width
                 clip: true  // Clip the rounded rect inside to get a sharp right edge
 
                 Rectangle { // green progress indication
@@ -66,7 +67,7 @@ QtObject {
 
             Item { // progress bar, unknown duration
                 anchors.fill: parent
-                opacity: (endValue == startValue) ? 0.5 : 0
+                opacity: indeterminate ? 0.5 : 0
                 clip: true  // Clip the repeating diagonal pattern below
                 property int posX: 0
                 Row { // Draw white diagonal lines moving across the background

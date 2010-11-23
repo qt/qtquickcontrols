@@ -8,10 +8,10 @@ QtObject {
             id: track
             Item {
                 id: thumb
-                x: (scrollbar.orientation == "horizontal") ? Math.min (Math.max ((scrollItem.visibleArea.xPosition * scrollItem.width), 0), (track.width - width)) : 0
-                y: (scrollbar.orientation == "horizontal") ? 0 : Math.min (Math.max ((scrollItem.visibleArea.yPosition * scrollItem.height), 0), (track.height - height))
-                width: (scrollbar.orientation == "horizontal") ? scrollItem.visibleArea.widthRatio * scrollItem.width : 6
-                height: (scrollbar.orientation == "horizontal") ? 6 : (scrollItem.visibleArea.heightRatio * scrollItem.height) - 8
+                x: horizontal ? Math.min (Math.max ((scrollItem.visibleArea.xPosition * scrollItem.width), 0), (track.width - width)) : 0
+                y: horizontal ? 0 : Math.min (Math.max ((scrollItem.visibleArea.yPosition * scrollItem.height), 0), (track.height - height))
+                width: horizontal ? scrollItem.visibleArea.widthRatio * scrollItem.width : 6
+                height: horizontal ? 6 : (scrollItem.visibleArea.heightRatio * scrollItem.height) - 8
                 Rectangle {
                     id: shadow
                     anchors.fill: thumb

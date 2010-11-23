@@ -4,15 +4,6 @@ import "./styles/default" as DefaultStyles
 
 Item{
     id: progressBar
-
-    property real startValue: 0
-    property real endValue: 0
-
-    // percentComplete should be read only
-    property real currentValue: 0 // startValue + (endValue*percentComplete/100.0)
-
-    property real percentComplete: Math.round(currentValue/(endValue-startValue)*100.0)
-
     property Component background: defaultStyle.background
     property Component content: defaultStyle.content
 
@@ -23,6 +14,12 @@ Item{
     property int topMargin: defaultStyle.topMargin
     property int rightMargin: defaultStyle.rightMargin
     property int bottomMargin: defaultStyle.bottomMargin
+
+    // Common API:
+    property real minimum: 0
+    property real maximum: 100
+    property real value: 0
+    property bool indeterminate: false
 
     width: preferredWidth
     height: preferredHeight

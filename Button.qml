@@ -5,10 +5,9 @@ BasicButton {
     id: button
 
     property string text
-    property url icon
+    property url iconSource
 
     property Component label: defaultStyle.label
-
 
     property int leftMargin: defaultStyle.leftMargin
     property int topMargin: defaultStyle.topMargin

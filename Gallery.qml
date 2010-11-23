@@ -46,10 +46,9 @@ Rectangle {
                     }
                     ComboBox{ model: choices}
                     ProgressBar {
-                        endValue:100
-                        Timer { running: true; repeat: true; interval: 25; onTriggered: {parent.currentValue = (parent.currentValue + 1) % 100 }}
+                        Timer { running: true; repeat: true; interval: 25; onTriggered: {parent.value = (parent.value + 1) % 100 }}
                     }
-                    ProgressBar { }
+                    ProgressBar { indeterminate:true }
                 }
                 Column {
                     enabled:false
@@ -68,10 +67,9 @@ Rectangle {
                     }
                     ComboBox{ model: choices}
                     ProgressBar {
-                        endValue:100
-                        Timer { running: true; repeat: true; interval: 25; onTriggered: {parent.currentValue = (parent.currentValue + 1) % 100 }}
+                        Timer { running: true; repeat: true; interval: 25; onTriggered: {parent.value = (parent.value + 1) % 100 }}
                     }
-                    ProgressBar { }
+                    ProgressBar { indeterminate:true }
                 }
                 Column {
                     id:column3
@@ -95,10 +93,9 @@ Rectangle {
                     }
                     ComboBox{ model: choices; backgroundColor: column3.bg; textColor: column3.fg}
                     ProgressBar {
-                        endValue:100
-                        Timer { running: true; repeat: true; interval: 25; onTriggered: {parent.currentValue = (parent.currentValue + 1) % 100 }}
+                        Timer { running: true; repeat: true; interval: 25; onTriggered: {parent.value = (parent.value + 1) % 100 }}
                     }
-                    ProgressBar{ }
+                    ProgressBar{ indeterminate:true}
                 }
                 Column {
                     id:column4
@@ -171,23 +168,22 @@ Rectangle {
                     ComboBox{ model: choices; background: shinyButton; popupFrame: shinyButton}
 
                     ProgressBar {
-                        endValue:100
-                        Timer { running: true; repeat: true; interval: 25; onTriggered: {parent.currentValue = (parent.currentValue + 1) % 100 }}
-                        content: BorderImage {
-                            source: "images/shinybutton_normal.png"
-                            width: parent.width * percentComplete/100.0;
-                            height: 20
-                            border.top:4 ; border.left:4 ; border.bottom:4 ; border.right:4
-                        }
+                        Timer { running: true; repeat: true; interval: 25; onTriggered: {parent.value = (parent.value + 1) % 100 }}
+                        content:shinyBar
                     }
 
                     ProgressBar {
-                        content: BorderImage {
-                            source: "images/shinybutton_normal.png"
-                            width: parent.width*parent.percentComplete/100.0;
-                            border.top:4 ; border.left:4 ; border.bottom:4 ; border.right:4
-                        }
+                        indeterminate:true
+                        content:shinyBar
                     }
+                }
+            }
+            Component{
+                id:shinyBar
+                BorderImage {
+                    source: "images/shinybutton_normal.png"
+                    width: indeterminate ? parent.width :parent.width * (value-minimum)/(maximum-minimum);
+                    border.top:4 ; border.left:4 ; border.bottom:4 ; border.right:4
                 }
             }
             Component{

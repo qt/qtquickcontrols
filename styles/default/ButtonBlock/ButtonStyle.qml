@@ -45,7 +45,7 @@ QtObject {
                 spacing: 4
                 anchors.centerIn: parent
                 Image {
-                    source: button.icon
+                    source: button.iconSource
                     anchors.verticalCenter: parent.verticalCenter
                 }
 

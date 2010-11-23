@@ -10,15 +10,16 @@ Item {
     width: Math.max(preferredWidth, backgroundComponent.item.width)
     height: Math.max(preferredHeight, backgroundComponent.item.height)
 
-    signal clicked
-    property alias pressed: behavior.pressed
     property alias containsMouse: behavior.containsMouse
-    property alias checked: behavior.checked
-
     property Component background: defaultStyle.background
     property Component checkmark : defaultStyle.checkmark
 
     property color backgroundColor: "#fff";
+
+    // Common API
+    signal clicked
+    property alias pressed: behavior.pressed
+    property alias checked: behavior.checked
 
     function setCheckItemOpacity() {
         if (checkComponent.item != undefined)
