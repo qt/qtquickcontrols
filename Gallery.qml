@@ -3,6 +3,8 @@ import Qt 4.7
 Rectangle {
     width: 4*240
     height: 440
+    property int rowspacing: 8
+    property int columnspacing: 12
 
     Flickable {
         id: flickable
@@ -28,9 +30,9 @@ Rectangle {
             Row {
                 anchors.margins:20
                 anchors.fill: parent
-                spacing: 12
+                spacing: rowspacing
                 Column {
-                    spacing: 12
+                    spacing: columnspacing
                     anchors.margins: 20
 
                     Text{ font.bold:true; text:"Default:" ; styleColor: "white" ; color:"#333" ; style:"Raised"}
@@ -42,17 +44,22 @@ Rectangle {
                     Row{
                         CheckBox { } CheckBox { checked:true}
                         RadioButton{ } RadioButton { checked:true}
-                        spacing:6
+                        spacing: rowspacing
                     }
                     ComboBox{ model: choices}
                     ProgressBar {
                         Timer { running: true; repeat: true; interval: 25; onTriggered: {parent.value = (parent.value + 1) % 100 }}
                     }
                     ProgressBar { indeterminate:true }
+                    Row{
+                        spacing:rowspacing
+                        BusyIndicator{}
+                        BusyIndicator{running:false}
+                    }
                 }
                 Column {
                     enabled:false
-                    spacing: 12
+                    spacing: columnspacing
                     anchors.margins: 20
                     Text{ font.bold:true; text:"Disabled:" ; styleColor: "white" ; color:"#333" ; style:"Raised"}
                     Button { text:"Push me"}
@@ -63,17 +70,22 @@ Rectangle {
                     Row{
                         CheckBox { } CheckBox { checked:true}
                         RadioButton{ } RadioButton { checked:true}
-                        spacing:6
+                        spacing:rowspacing
                     }
                     ComboBox{ model: choices}
                     ProgressBar {
                         Timer { running: true; repeat: true; interval: 25; onTriggered: {parent.value = (parent.value + 1) % 100 }}
                     }
                     ProgressBar { indeterminate:true }
+                    Row{
+                        spacing:rowspacing
+                        BusyIndicator{}
+                        BusyIndicator{running:false}
+                    }
                 }
                 Column {
                     id:column3
-                    spacing: 12
+                    spacing: columnspacing
                     anchors.margins: 20
                     property variant bg: "#ffc"
                     property variant fg: "#356"
@@ -89,17 +101,23 @@ Rectangle {
                         CheckBox { checked:true; backgroundColor: column3.bg; }
                         RadioButton{ backgroundColor: column3.bg; }
                         RadioButton { checked:true; backgroundColor: column3.bg; }
-                        spacing:6
+                        spacing:rowspacing
                     }
                     ComboBox{ model: choices; backgroundColor: column3.bg; textColor: column3.fg}
                     ProgressBar {
                         Timer { running: true; repeat: true; interval: 25; onTriggered: {parent.value = (parent.value + 1) % 100 }}
                     }
                     ProgressBar{ indeterminate:true}
+                    Row{
+                        spacing:rowspacing
+                        BusyIndicator{}
+                        BusyIndicator{running:false}
+                    }
+
                 }
                 Column {
                     id:column4
-                    spacing: 12
+                    spacing: columnspacing
                     anchors.margins: 20
 
                     Text{ font.bold:true; text:"Custom:" ; styleColor: "white" ; color:"#333" ; style:"Raised"}
@@ -162,7 +180,7 @@ Rectangle {
                     Row{
                         CheckBox { background: shinyEdit} CheckBox { background: shinyEdit; checked:true}
                         RadioButton{ background: shinyEdit} RadioButton { background: shinyEdit; checked:true}
-                        spacing:6
+                        spacing:rowspacing
                     }
 
                     ComboBox{ model: choices; background: shinyButton; popupFrame: shinyButton}
@@ -176,6 +194,25 @@ Rectangle {
                         indeterminate:true
                         content:shinyBar
                     }
+                    Row{
+                        spacing:rowspacing
+                        BusyIndicator{background:shinySpinner}
+                        BusyIndicator{background:shinySpinner; running:false}
+                    }
+                }
+            }
+            Component{
+                id:shinySpinner
+                BorderImage {
+                    width:30; height:30
+                    source: "images/shinybutton_normal.png"
+                    border.top:4 ; border.left:4 ; border.bottom:4 ; border.right:4
+                    Timer { running: true; repeat: true; interval: 25; onTriggered: opacity}
+                    PropertyAnimation on opacity {
+                        running: parent.running;
+                        easing.type:Easing.OutSine
+                        loops:Animation.Infinite;
+                        from:1; to:0; duration:500}
                 }
             }
             Component{
