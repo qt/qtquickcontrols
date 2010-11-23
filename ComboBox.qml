@@ -6,12 +6,6 @@ Item {
     id: comboBox
 
     property alias model: popupList.model
-    property int currentIndex: 0
-    //mm unused    property string currentText
-    property int popupListSizeInItems: 5
-
-    //mm needed?    signal clicked
-    property bool pressed: false    //mm needed?
     property alias containsMouse: mouseArea.containsMouse   //mm needed?
 
     property Component background: defaultStyle.background
@@ -31,6 +25,16 @@ Item {
     property int topMargin: defaultStyle.topMargin
     property int rightMargin: defaultStyle.rightMargin
     property int bottomMargin: defaultStyle.bottomMargin
+
+    // Common API // Note: these are not yet agreed upon
+    property bool pressed: false    //mm needed?
+    property int currentIndex: 0 // currently called current
+    // property int popupListSizeInItems: 5
+    // property bool editable: false
+    // property bool allowDuplicates
+    // property string validator
+    // function addItem(string text, string icon)
+    // function removeItem(int index)
 
     width: Math.max(preferredWidth,
                     labelComponent.item.width + leftMargin + rightMargin)
