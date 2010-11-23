@@ -5,10 +5,10 @@ import "./styles/default" as DefaultStyles
 Item {
     id: checkbox
 
-    property int preferredWidth: defaultStyle.preferredWidth
-    property int preferredHeight: defaultStyle.preferredHeight
-    width: Math.max(preferredWidth, backgroundComponent.item.width)
-    height: Math.max(preferredHeight, backgroundComponent.item.height)
+    property int minimumWidth: defaultStyle.minimumWidth
+    property int minimumHeight: defaultStyle.minimumHeight
+    width: Math.max(minimumWidth, backgroundComponent.item.width)
+    height: Math.max(minimumHeight, backgroundComponent.item.height)
 
     property alias containsMouse: behavior.containsMouse
     property Component background: defaultStyle.background

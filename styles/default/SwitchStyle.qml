@@ -2,8 +2,8 @@ import Qt 4.7
 
 QtObject {
 
-    property variant preferredWidth: 100
-    property variant preferredHeight: 32
+    property variant minimumWidth: 100
+    property variant minimumHeight: 32
 
     property Component groove: Component {
         Item {

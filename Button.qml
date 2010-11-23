@@ -14,13 +14,13 @@ BasicButton {
     property int rightMargin: defaultStyle.rightMargin
     property int bottomMargin: defaultStyle.bottomMargin
 
-    width: Math.max(preferredWidth,
+    width: Math.max(minimumWidth,
                     labelComponent.item.width + leftMargin + rightMargin)
-    height: Math.max(preferredHeight,
+    height: Math.max(minimumHeight,
                      labelComponent.item.height + topMargin + bottomMargin)
 
-    preferredWidth: defaultStyle.preferredWidth
-    preferredHeight: defaultStyle.preferredHeight
+    minimumWidth: defaultStyle.minimumWidth
+    minimumHeight: defaultStyle.minimumHeight
 
     background: defaultStyle.background
 

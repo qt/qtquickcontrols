@@ -2,8 +2,8 @@ import Qt 4.7
 
 QtObject {
 
-    property int preferredWidth: 200
-    property int preferredHeight: 32
+    property int minimumWidth: 200
+    property int minimumHeight: 32
 
     property int leftMargin : 8
     property int topMargin: 8
@@ -56,7 +56,7 @@ QtObject {
 
             Behavior on opacity { NumberAnimation { easing.type: Easing.OutQuad; duration: 250 }}
 
-            property int preferredWidth: 200
+            property int minimumWidth: 200
 
             property int leftMargin : 8
             property int topMargin: 8

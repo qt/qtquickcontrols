@@ -4,18 +4,18 @@ import "./styles/default" as DefaultStyles
 Item {
     id: spinbox
 
-    property int preferredWidth: defaultStyle.preferredWidth
-    property int preferredHeight: defaultStyle.preferredHeight
+    property int minimumWidth: defaultStyle.minimumWidth
+    property int minimumHeight: defaultStyle.minimumHeight
 
     property int leftMargin: defaultStyle.leftMargin
     property int topMargin: defaultStyle.topMargin
     property int rightMargin: defaultStyle.rightMargin
     property int bottomMargin: defaultStyle.bottomMargin
 
-    width: Math.max(preferredWidth,
+    width: Math.max(minimumWidth,
                     input.width + leftMargin + rightMargin)
 
-    height: Math.max(preferredHeight,
+    height: Math.max(minimumHeight,
                      input.height + topMargin + bottomMargin)
 
     property real value: 0.0

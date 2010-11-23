@@ -36,8 +36,8 @@ Item {
     property color backgroundColor: "#fff"
     property alias containsMouse: mouseArea.containsMouse
 
-    property int preferredWidth: defaultStyle.preferredWidth
-    property int preferredHeight: defaultStyle.preferredHeight
+    property int minimumWidth: defaultStyle.minimumWidth
+    property int minimumHeight: defaultStyle.minimumHeight
 
     property Component groove: defaultStyle.groove
     property Component handle: defaultStyle.handle
@@ -45,8 +45,8 @@ Item {
     property real zeroPosition: valueModel.positionAtZero   // needed by styling, should be read-only, see QTBUG-15257
     property real handlePosition: valueModel.position       // needed by styling, should be read-only
 
-    width: { horizontal ? preferredWidth : preferredHeight }
-    height: { horizontal ? preferredHeight: preferredWidth }
+    width: { horizontal ? minimumWidth : minimumHeight }
+    height: { horizontal ? minimumHeight: minimumWidth }
 
     // Common API
     property real minimum: 0.0

@@ -28,8 +28,8 @@ import Qt 4.7
 
 QtObject {
 
-    property int preferredWidth: 200
-    property int preferredHeight: 16
+    property int minimumWidth: 200
+    property int minimumHeight: 16
 
     property Component groove: Component {
         id:defaultBackground

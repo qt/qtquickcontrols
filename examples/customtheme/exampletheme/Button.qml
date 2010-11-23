@@ -4,7 +4,7 @@ import "../../../" as Components
 Components.Button {
     leftMargin:12
     rightMargin:1
-    preferredWidth:100
+    minimumWidth:100
 
     background: BorderImage {
         source: pressed ? "images/button_pressed.png" :

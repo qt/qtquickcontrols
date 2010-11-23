@@ -29,8 +29,8 @@ import Qt 4.7
 QtObject {
 
 
-    property int preferredWidth: 200
-    property int preferredHeight: 16
+    property int minimumWidth: 200
+    property int minimumHeight: 16
 
     property int leftMargin : 2
     property int topMargin: 2

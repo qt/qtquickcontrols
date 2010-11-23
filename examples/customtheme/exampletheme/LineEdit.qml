@@ -4,7 +4,7 @@ import "../../../" as Components
 Components.LineEdit {
     leftMargin:12
     rightMargin:12
-    preferredWidth:200
+    minimumWidth:200
 
     background: BorderImage {
         height:30

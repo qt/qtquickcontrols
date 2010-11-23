@@ -3,8 +3,8 @@ import "../../../" as Components
 
 Components.Slider{
 
-    preferredWidth:160
-    preferredHeight:32
+    minimumWidth:160
+    minimumHeight:32
 
     handle: BorderImage {
         width:20

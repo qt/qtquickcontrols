@@ -18,8 +18,8 @@ Item {
     property color textColor: hintsLoader.item ? hintsLoader.item.textColor : "black"
     property color backgroundColor: hintsLoader.item ? hintsLoader.item.backgroundColor : "white"
 
-    property int preferredWidth: defaultStyle.preferredWidth
-    property int preferredHeight: defaultStyle.preferredHeight
+    property int minimumWidth: defaultStyle.minimumWidth
+    property int minimumHeight: defaultStyle.minimumHeight
 
     property int leftMargin: defaultStyle.leftMargin
     property int topMargin: defaultStyle.topMargin
@@ -36,9 +36,9 @@ Item {
     // function addItem(string text, string icon)
     // function removeItem(int index)
 
-    width: Math.max(preferredWidth,
+    width: Math.max(minimumWidth,
                     labelComponent.item.width + leftMargin + rightMargin)
-    height: Math.max(preferredHeight,
+    height: Math.max(minimumHeight,
                      labelComponent.item.height + topMargin + bottomMargin)
 
     Loader { id: hintsLoader; sourceComponent: hints }

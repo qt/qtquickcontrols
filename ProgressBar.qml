@@ -7,8 +7,8 @@ Item{
     property Component background: defaultStyle.background
     property Component content: defaultStyle.content
 
-    property int preferredWidth: defaultStyle.preferredWidth
-    property int preferredHeight: defaultStyle.preferredHeight
+    property int minimumWidth: defaultStyle.minimumWidth
+    property int minimumHeight: defaultStyle.minimumHeight
 
     property int leftMargin: defaultStyle.leftMargin
     property int topMargin: defaultStyle.topMargin
@@ -21,8 +21,8 @@ Item{
     property real value: 0
     property bool indeterminate: false
 
-    width: preferredWidth
-    height: preferredHeight
+    width: minimumWidth
+    height: minimumHeight
 
     Loader {
         id: groove

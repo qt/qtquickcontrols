@@ -2,8 +2,8 @@ import Qt 4.7
 
 QtObject {
 
-    property int preferredWidth: 32
-    property int preferredHeight: 32
+    property int minimumWidth: 32
+    property int minimumHeight: 32
 
     property Component background:
     Component {

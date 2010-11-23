@@ -4,10 +4,10 @@ import "./styles/default" as DefaultStyles
 Item {
     id: toggleSwitch    // "switch" is a reserved word
 
-    property int preferredWidth: defaultStyle.preferredWidth
-    property int preferredHeight: defaultStyle.preferredHeight
-    width: Math.max(preferredWidth, grooveLoader.item.width)
-    height: Math.max(preferredHeight, grooveLoader.item.height)
+    property int minimumWidth: defaultStyle.minimumWidth
+    property int minimumHeight: defaultStyle.minimumHeight
+    width: Math.max(minimumWidth, grooveLoader.item.width)
+    height: Math.max(minimumHeight, grooveLoader.item.height)
 
     signal clicked
     property bool pressed: mousearea.pressed

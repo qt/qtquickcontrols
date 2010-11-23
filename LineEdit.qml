@@ -15,18 +15,18 @@ Item {
     property Component background: defaultStyle.background
     property Component hints: defaultStyle.hints
 
-    property int preferredWidth: defaultStyle.preferredWidth
-    property int preferredHeight: defaultStyle.preferredHeight
+    property int minimumWidth: defaultStyle.minimumWidth
+    property int minimumHeight: defaultStyle.minimumHeight
 
     property int leftMargin: defaultStyle.leftMargin
     property int topMargin: defaultStyle.topMargin
     property int rightMargin: defaultStyle.rightMargin
     property int bottomMargin: defaultStyle.bottomMargin
 
-    width: Math.max(preferredWidth,
+    width: Math.max(minimumWidth,
                     textInput.width + leftMargin + rightMargin)
 
-    height: Math.max(preferredHeight,
+    height: Math.max(minimumHeight,
                      textInput.height + topMargin + bottomMargin)
 
     property alias containsMouse: mouseArea.containsMouse
