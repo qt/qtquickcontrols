@@ -32,8 +32,9 @@ Rectangle {
                 Column {
                     spacing: 12
                     anchors.margins: 20
+
                     Text{ font.bold:true; text:"Default:" ; styleColor: "white" ; color:"#333" ; style:"Raised"}
-                    Button { text:"Push me"}
+                    Button { text:"Push me" }
                     LineEdit { }
                     SpinBox{ }
                     Slider { value: 50 }
