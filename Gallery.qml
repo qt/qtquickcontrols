@@ -38,7 +38,7 @@ Rectangle {
                     Text{ font.bold:true; text:"Default:" ; styleColor: "white" ; color:"#333" ; style:"Raised"}
                     Button { text:"Push me" }
                     LineEdit { }
-                    TextBox { text:"This is a\n multiline control."}
+                    TextBox { userPrompt:"This is a\n multiline control."}
                     SpinBox{ }
                     Slider { value: 50 }
                     Switch { }

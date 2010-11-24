@@ -6,6 +6,7 @@ Item {
 
     property alias text: textInput.text
     property alias userPrompt: userPromptText.text
+    property bool passwordMode: false
 
     property color textColor: _hints.textColor
     property color backgroundColor: _hints.backgroundColor
@@ -23,10 +24,10 @@ Item {
     property int bottomMargin: defaultStyle.bottomMargin
 
     width: Math.max(minimumWidth,
-                    textInput.width + leftMargin + rightMargin)
+                    Math.max(textInput.width, userPromptText.width) + leftMargin + rightMargin)
 
     height: Math.max(minimumHeight,
-                     textInput.height + topMargin + bottomMargin)
+                     Math.max(textInput.height, userPromptText.height) + topMargin + bottomMargin)
 
     property alias containsMouse: mouseArea.containsMouse
     property alias _hints: hintsLoader.item
@@ -44,9 +45,9 @@ Item {
         anchors.rightMargin: rightMargin
         anchors.bottomMargin: bottomMargin
 
+        anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.verticalCenter: parent.verticalCenter
 
         selectByMouse: true
         color: enabled ? textColor: Qt.tint(textColor, "#80ffffff")
@@ -55,7 +56,15 @@ Item {
 
     Text {
         id: userPromptText
-        anchors.fill: textInput
+        anchors.leftMargin: leftMargin
+        anchors.topMargin: topMargin
+        anchors.rightMargin: rightMargin
+        anchors.bottomMargin: bottomMargin
+
+        anchors.top:parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+
         font: textInput.font
         opacity: !textInput.text.length && !textInput.activeFocus ? 1 : 0
         color: "gray"
