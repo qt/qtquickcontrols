@@ -2,10 +2,10 @@ import Qt 4.7
 import "./styles/default" as DefaultStyles
 
 Item {
-    id: scrollbar
+    id: scrollDecorator
 
     //public API
-    property variant scrollItem      // item to which the scrollbar is attached - this must be a Flickable, GridView or ListView
+    property variant scrollItem      // item to which the MultiLineEdit is attached - this must be a Flickable, GridView or ListView
     property bool horizontal: false
 
     //private
@@ -20,7 +20,7 @@ Item {
     Behavior on opacity { NumberAnimation { duration: 100 } }
 
     property Component content: defaultStyle.content
-    DefaultStyles.ScrollBarStyle { id: defaultStyle }
+    DefaultStyles.ScrollDecoratorStyle{ id: defaultStyle }
 
     Loader {
         anchors.fill: parent

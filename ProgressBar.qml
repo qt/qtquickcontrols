@@ -16,8 +16,8 @@ Item{
     property int bottomMargin: defaultStyle.bottomMargin
 
     // Common API:
-    property real minimum: 0
-    property real maximum: 100
+    property real minimumValue: 0
+    property real maximumValue: 100
     property real value: 0
     property bool indeterminate: false
 

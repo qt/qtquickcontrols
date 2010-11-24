@@ -19,12 +19,12 @@ Item {
                      input.height + topMargin + bottomMargin)
 
     property real value: 0.0
-    property real maximum: 99
-    property real minimum: 0
+    property real maximumValue: 99
+    property real minimumValue: 0
     property real singlestep: 1
 
-    property bool upEnabled: value != maximum;
-    property bool downEnabled: value != minimum;
+    property bool upEnabled: value != maximumValue;
+    property bool downEnabled: value != minimumValue;
 
     property alias upPressed: mouseUp.pressed
     property alias downPressed: mouseDown.pressed
@@ -42,24 +42,24 @@ Item {
 
     function increment() {
         value += singlestep
-        if (value > maximum)
-            value = maximum
+        if (value > maximumValue)
+            value = maximumValue
         input.text = value
     }
 
     function decrement() {
         value -= singlestep
-        if (value < minimum)
-            value = minimum
+        if (value < minimumValue)
+            value = minimumValue
         input.text = value
     }
 
     function setValue(v) {
         var newval = parseFloat(v)
-        if (newval > maximum)
-            newval = maximum
-        else if (value < minimum)
-            newval = minimum
+        if (newval > maximumValue)
+            newval = maximumValue
+        else if (value < minimumValue)
+            newval = minimumValue
         value = newval
         input.text = value
     }

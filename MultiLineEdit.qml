@@ -2,15 +2,12 @@ import Qt 4.7
 import "./styles/default" as DefaultStyles
 
 Item {
-    id: lineEdit
+    id: multiLineEdit
 
-    property alias text: textInput.text
-    property alias userPrompt: userPromptText.text
     property bool passwordMode: false
 
     property color textColor: _hints.textColor
     property color backgroundColor: _hints.backgroundColor
-    property alias font: textInput.font
 
     property Component background: defaultStyle.background
     property Component hints: defaultStyle.hints
@@ -24,19 +21,31 @@ Item {
     property int bottomMargin: defaultStyle.bottomMargin
 
     width: Math.max(minimumWidth,
-                    Math.max(textInput.width, userPromptText.width) + leftMargin + rightMargin)
+                    Math.max(textEdit.width, placeholderTextComponent.width) + leftMargin + rightMargin)
 
     height: Math.max(minimumHeight,
-                     Math.max(textInput.height, userPromptText.height) + topMargin + bottomMargin)
+                     Math.max(textEdit.height, placeholderTextComponent.height) + topMargin + bottomMargin)
 
     property alias containsMouse: mouseArea.containsMouse
     property alias _hints: hintsLoader.item
+
+    // Common API
+    property int inputHint; // values tbd
+    property alias text: textEdit.text
+    property alias font: textEdit.font
+    property bool readOnly:textEdit.readOnly // read only
+    property alias placeholderText: placeholderTextComponent.text
+    property alias selectedText: textEdit.selectedText
+    property alias selectionEnd: textEdit.selectionEnd
+    property alias selectionStart: textEdit.selectionStart
+    property alias horizontalalignment: textEdit.horizontalAlignment
+    property alias verticalAlignment: textEdit.verticalAlignment
 
     Loader { id: hintsLoader; sourceComponent: hints }
     Loader { sourceComponent: background; anchors.fill:parent}
 
     TextEdit{ // see QTBUG-14936
-        id: textInput
+        id: textEdit
         font.pixelSize: _hints.fontPixelSize
         font.bold: _hints.fontBold
 
@@ -55,7 +64,7 @@ Item {
     }
 
     Text {
-        id: userPromptText
+        id: placeholderTextComponent
         anchors.leftMargin: leftMargin
         anchors.topMargin: topMargin
         anchors.rightMargin: rightMargin
@@ -65,8 +74,8 @@ Item {
         anchors.left: parent.left
         anchors.right: parent.right
 
-        font: textInput.font
-        opacity: !textInput.text.length && !textInput.activeFocus ? 1 : 0
+        font: textEdit.font
+        opacity: !textEdit.text.length && !textEdit.activeFocus ? 1 : 0
         color: "gray"
         clip: true
         text: "Enter text"
@@ -75,19 +84,19 @@ Item {
     Text {
         id: unfocusedText
         clip: true
-        anchors.fill: textInput
-        font: textInput.font
-        opacity: textInput.text.length && !textInput.activeFocus ? 1 : 0
-        color: textInput.color
+        anchors.fill: textEdit
+        font: textEdit.font
+        opacity: textEdit.text.length && !textEdit.activeFocus ? 1 : 0
+        color: textEdit.color
         elide: Text.ElideRight
-        text: textInput.text
+        text: textEdit.text
     }
 
     MouseArea {
         id: mouseArea
         anchors.fill: parent
         hoverEnabled: true
-        onPressed: textInput.focus = true   //mm Why did this stop working when TextInput was reparented to "content"?
+        onPressed: textEdit.focus = true   //mm Why did this stop working when textEdit was reparented to "content"?
     }
     DefaultStyles.LineEditStyle { id: defaultStyle }
 }

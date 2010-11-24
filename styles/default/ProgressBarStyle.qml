@@ -48,7 +48,7 @@ QtObject {
 
     property Component content: Component {
         Item {
-            property real complete: (value-minimum)/(maximum-minimum)
+            property real complete: (value-minimumValue)/(maximumValue-minimumValue)
             height: 8
             anchors.left: parent.left
             anchors.right: parent.right

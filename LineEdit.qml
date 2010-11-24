@@ -4,13 +4,8 @@ import "./styles/default" as DefaultStyles
 Item {
     id: lineEdit
 
-    property alias text: textInput.text
-    property alias userPrompt: userPromptText.text
-    property bool passwordMode: false
-
     property color textColor: _hints.textColor
     property color backgroundColor: _hints.backgroundColor
-    property alias font: textInput.font
 
     property Component background: defaultStyle.background
     property Component hints: defaultStyle.hints
@@ -31,6 +26,21 @@ Item {
 
     property alias containsMouse: mouseArea.containsMouse
     property alias _hints: hintsLoader.item
+
+    // Common API
+    property int inputHint; // values tbd
+    property bool acceptableInput :textInput.acceptableInput// read only
+    property bool readOnly:textInput.readOnly // read only
+    property alias text: textInput.text
+    property alias font : textInput.font
+    property alias placeholderText: placeholderTextComponent.text
+    property bool  passwordMode: false
+    property alias selectedText: textInput.selectedText
+    property alias selectionEnd: textInput.selectionEnd
+    property alias selectionStart: textInput.selectionStart
+    property alias validator: textInput.validator
+    property alias inputMask: textInput.inputMask
+    property alias horizontalalignment: textInput.horizontalAlignment
 
     Loader { id: hintsLoader; sourceComponent: hints }
     Loader { sourceComponent: background; anchors.fill:parent}
@@ -66,7 +76,7 @@ Item {
     }
 
     Text {
-        id: userPromptText
+        id: placeholderTextComponent
         anchors.fill: textInput
         font: textInput.font
         opacity: !textInput.text.length && !textInput.activeFocus ? 1 : 0

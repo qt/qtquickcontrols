@@ -49,8 +49,8 @@ Item {
     height: { horizontal ? minimumHeight: minimumWidth }
 
     // Common API
-    property real minimum: 0.0
-    property real maximum: 100.0
+    property real minimumValue: 0.0
+    property real maximumValue: 100.0
     property real stepSize: 1.0
 
     property alias pressed: mouseArea.pressed
@@ -64,8 +64,8 @@ Item {
         // the graphical position of the handle inside the component
         // (positionAtMinimum/positionAtMaximum)
         id: valueModel
-        minimumValue: slider.minimum
-        maximumValue: slider.maximum
+        minimumValue: slider.minimumValue
+        maximumValue: slider.maximumValue
         steps: slider.stepSize //mm this is really stepSize    (N.B. mouse areas drag handling works funny at the ends for large stepSize values. RangeModel bug?)
         positionAtMinimum: handleLoader.shaftRadius
         positionAtMaximum: grooveLoader.grooveLength-handleLoader.shaftRadius
