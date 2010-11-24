@@ -6,7 +6,7 @@ Item {
 
     Rectangle {
         id: listPanel
-        color: "gray";
+        color: "lightgray";
         width: 150
         anchors.top: parent.top
         anchors.bottom: parent.bottom
@@ -25,7 +25,10 @@ Item {
                 ListElement { component: "Switch" }
                 ListElement { component: "Slider" }
                 ListElement { component: "ProgressBar" }
+                ListElement { component: "BusyIndicator" }
+                ListElement { component: "ChoiceList" }
                 ListElement { component: "LineEdit" }
+                ListElement { component: "MultiLineEdit" }
                 ListElement { component: "SpinBox" }
             }
 
@@ -71,12 +74,30 @@ Item {
 
             Loader {
                 id: loader
+                focus: true
+                onSourceChanged: loader.state = ""
                 onLoaded: {
                     topLeftHandle.x = (testBenchRect.width-loader.item.width)/2 - topLeftHandle.width
                     topLeftHandle.y = (testBenchRect.height-loader.item.height)/2 - topLeftHandle.height
                     bottomRightHandle.x = (testBenchRect.width-loader.item.width)/2 + loader.item.width
                     bottomRightHandle.y = (testBenchRect.height-loader.item.height)/2 + loader.item.height
+
+                    switch(componentsList.model.get(componentsList.currentIndex).component) {
+                        case "ProgressBar": { loader.state =  "progressBarTest"; break }
+                    }
                 }
+
+                states: [
+                    State {
+                        name: "progressBarTest"
+                        PropertyChanges {
+                            target: timer
+                            onTriggered: { loader.item.value = (loader.item.value + 1) % 100 }
+                        }
+                    }
+                ]
+
+                Timer { id: timer; running: true; repeat: true; interval: 25; }
             }
 
             states: State { name: "pressed"
