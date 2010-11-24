@@ -3,7 +3,7 @@ import "./styles/default" as DefaultStyles
 import Qt.labs.components 1.0    // ImplicitlySizedItem. See QTBUG-14957
 
 Item {
-    id: comboBox
+    id: choiceList
 
     property alias model: popupList.model
     property alias containsMouse: mouseArea.containsMouse   //mm needed?
@@ -29,12 +29,8 @@ Item {
     // Common API // Note: these are not yet agreed upon
     property bool pressed: false    //mm needed?
     property int currentIndex: 0 // currently called current
-    // property int popupListSizeInItems: 5
-    // property bool editable: false
-    // property bool allowDuplicates
-    // property string validator
-    // function addItem(string text, string icon)
-    // function removeItem(int index)
+    property alias delegate:popupList.delegate // j - labeldelegate?
+                                               // Should it be wrapped by the platform
 
     width: Math.max(minimumWidth,
                     labelComponent.item.width + leftMargin + rightMargin)
@@ -63,16 +59,16 @@ Item {
         anchors.fill: parent
         hoverEnabled: true
         onPressed: {
-            comboBox.pressed = true; popupFrameLoader.item.opacity = popupFrameLoader.item.opacity ? 0 : 1;
+            choiceList.pressed = true; popupFrameLoader.item.opacity = popupFrameLoader.item.opacity ? 0 : 1;
 
-            // Since the popup is not a child of combobox
+            // Since the popup is not a child of ChoiceList
             // we have to recalculate the position to global coordinates
-            var point = popupHelper.mapFromItem(comboBox, 0, labelComponent.item.y)
+            var point = popupHelper.mapFromItem(choiceList, 0, labelComponent.item.y)
             popupList.y = point.y - popupList.currentItem.y
             popupList.x = point.x
 
         }
-        onReleased: comboBox.pressed = false
+        onReleased: choiceList.pressed = false
     }
 
 
@@ -112,7 +108,7 @@ Item {
 
             height:contentHeight
             // Why is contentWidth evaluated to 0?
-            width:Math.max(comboBox.width, contentWidth)
+            width:Math.max(choiceList.width, contentWidth)
 
             opacity:popupFrameLoader.item.opacity
 
@@ -130,19 +126,19 @@ Item {
                 }
             }
 
-            highlight: comboBox.listHighlight
-            currentIndex: comboBox.currentIndex
+            highlight: choiceList.listHighlight
+            currentIndex: choiceList.currentIndex
             highlightFollowsCurrentItem: true
 
             focus: true
             Keys.onPressed: {
                 if (event.key == Qt.Key_Enter || event.key == Qt.Key_Return) {
-                    comboBox.currentIndex = index;
+                    choiceList.currentIndex = index;
                 } else if (event.key == Qt.Key_Escape) {
                     popupFrameLoader.item.opacity = 0;
                 }
             }
         }
-        DefaultStyles.ComboBoxStyle{ id: defaultStyle }
+        DefaultStyles.ChoiceListStyle{ id: defaultStyle }
     }
 }

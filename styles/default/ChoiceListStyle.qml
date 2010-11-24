@@ -26,7 +26,7 @@ QtObject {
                 anchors.fill: parent
                 id: backgroundimage
                 smooth: true
-                source: comboBox.pressed ? "../../images/button_pressed.png" : "../../images/button_normal.png"
+                source: choiceList.pressed ? "../../images/button_pressed.png" : "../../images/button_normal.png"
                 width: 80; height: 24
                 border.left: 3; border.top: 3
                 border.right: 3; border.bottom: 3
@@ -99,7 +99,7 @@ QtObject {
 
     property Component listItem: Component {
         Item{
-            width: comboBox.width
+            width: choiceList.width
             height:Math.max(text.height, 28)
 
             Text {

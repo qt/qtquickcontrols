@@ -47,7 +47,7 @@ Rectangle {
                         RadioButton{ } RadioButton { checked:true}
                         spacing: rowspacing
                     }
-                    ComboBox{ model: choices}
+                    ChoiceList{ model: choices}
                     ProgressBar {
                         Timer { running: true; repeat: true; interval: 25; onTriggered: {parent.value = (parent.value + 1) % 100 }}
                     }
@@ -74,7 +74,7 @@ Rectangle {
                         RadioButton{ } RadioButton { checked:true}
                         spacing:rowspacing
                     }
-                    ComboBox{ model: choices}
+                    ChoiceList{ model: choices}
                     ProgressBar {
                         Timer { running: true; repeat: true; interval: 25; onTriggered: {parent.value = (parent.value + 1) % 100 }}
                     }
@@ -106,7 +106,7 @@ Rectangle {
                         RadioButton { checked:true; backgroundColor: column3.bg; }
                         spacing:rowspacing
                     }
-                    ComboBox{ model: choices; backgroundColor: column3.bg; textColor: column3.fg}
+                    ChoiceList{ model: choices; backgroundColor: column3.bg; textColor: column3.fg}
                     ProgressBar {
                         Timer { running: true; repeat: true; interval: 25; onTriggered: {parent.value = (parent.value + 1) % 100 }}
                     }
@@ -187,7 +187,7 @@ Rectangle {
                         spacing:rowspacing
                     }
 
-                    ComboBox{ model: choices; background: shinyButton; popupFrame: shinyButton}
+                    ChoiceList{ model: choices; background: shinyButton; popupFrame: shinyButton}
 
                     ProgressBar {
                         Timer { running: true; repeat: true; interval: 25; onTriggered: {parent.value = (parent.value + 1) % 100 }}
