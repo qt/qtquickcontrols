@@ -38,6 +38,7 @@ Rectangle {
                     Text{ font.bold:true; text:"Default:" ; styleColor: "white" ; color:"#333" ; style:"Raised"}
                     Button { text:"Push me" }
                     LineEdit { }
+                    TextBox { text:"This is a\n multiline control."}
                     SpinBox{ }
                     Slider { value: 50 }
                     Switch { }
@@ -64,6 +65,7 @@ Rectangle {
                     Text{ font.bold:true; text:"Disabled:" ; styleColor: "white" ; color:"#333" ; style:"Raised"}
                     Button { text:"Push me"}
                     LineEdit { }
+                    TextBox { text:"This is a\n multiline control."}
                     SpinBox{ }
                     Slider { value: 50 }
                     Switch { }
@@ -93,6 +95,7 @@ Rectangle {
                     Text{ font.bold:true; text:"Colored:" ; styleColor: "white" ; color:"#333" ; style:"Raised"}
                     Button { text:"Push me" ; backgroundColor: column3.bg; textColor: column3.fg}
                     LineEdit { backgroundColor: column3.bg; textColor: column3.fg}
+                    TextBox  { text:"This is a\n multiline control."; backgroundColor: column3.bg; textColor: column3.fg}
                     SpinBox{ backgroundColor: column3.bg; textColor: column3.fg}
                     Slider { value: 50; backgroundColor: column3.bg; progressColor: "blue";}
                     Switch { backgroundColor: column3.bg; textColor: column3.fg}
@@ -123,6 +126,7 @@ Rectangle {
                     Text{ font.bold:true; text:"Custom:" ; styleColor: "white" ; color:"#333" ; style:"Raised"}
                     Button { text:"Push me" ; background: shinyButton}
                     LineEdit { background: shinyEdit}
+                    TextBox {  text:"This is a\n multiline control."; background: shinyEdit}
                     SpinBox{
                         background: shinyEdit
                         leftMargin: 40

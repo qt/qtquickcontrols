@@ -20,8 +20,8 @@ QtObject {
             }
             BorderImage { // Background border
                 anchors.fill: parent
-                border.left: 6; border.top: 3
-                border.right: 6; border.bottom: 3
+                border.left: 6; border.top: 6
+                border.right: 6; border.bottom: 6
                 smooth: true
                 source: "../../images/lineedit_normal.png"
             }
