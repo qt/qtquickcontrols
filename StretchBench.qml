@@ -1,7 +1,7 @@
 import Qt 4.7
 
 Item {
-    width: 900
+    width: 950
     height: 500
 
     property string currentComponentName
@@ -40,30 +40,47 @@ Item {
                 height: item.height
                 Item { id: item
                     width: itemText.width+20; height: itemText.height+6
-                    Text { id: itemText; text: component; font.pixelSize: 20; anchors.centerIn: parent }
+                    Text {
+                        id: itemText; text: component; font.pixelSize: 20; anchors.centerIn: parent
+                        color: index == ListView.view.currentIndex ? "white" : "black"
+                    }
                 }
                 MouseArea { anchors.fill: parent; onPressed: componentsList.currentIndex = index }
             }
         }
     }
 
-    Rectangle {
+    Flickable {
         id: testBenchRect
         anchors.left: listPanel.right; anchors.right: testConfigPanel.left
         anchors.top: parent.top; anchors.bottom: parent.bottom
+        contentWidth: width+1    // Add a little to make it flickable
+        contentHeight: height+1
+        clip: true
+
+        Image {
+            anchors.fill: parent
+            source: "images/checkered.png"
+            fillMode: Image.Tile
+            opacity: testBenchRect.moving || redJiggRect.state == "pressed" ? 0.12 : 0
+            Behavior on opacity { NumberAnimation { duration: 100 } }
+        }
 
         // Upper-left resizing handle
 
         Rectangle {
             id: topLeftHandle
             width: 30; height: 30
-            color: "lightblue"
+            color: "blue"
 
             MouseArea {
                 anchors.fill: parent
                 onPressed: redJiggRect.state = "pressed"
                 onReleased: redJiggRect.state = ""
                 drag.target: topLeftHandle
+                drag.minimumX: 0; drag.minimumY: 0
+                drag.maximumX: bottomRightHandle.x-width
+                drag.maximumY: bottomRightHandle.y-height
             }
         }
 
@@ -71,90 +88,120 @@ Item {
 
         Rectangle {
             id: redJiggRect
-            color: state == "pressed" ? "red" : "white"
+            color: "transparent"
+            border.color: state == "pressed" ? "red" : "transparent"
             anchors.top: topLeftHandle.bottom
             anchors.left: topLeftHandle.right
             anchors.bottom: bottomRightHandle.top
             anchors.right: bottomRightHandle.left
 
+            property Item testItem
+
             function loadComponent(componentName) {
                 redJiggRect.state = ""
-                loader.source = componentName + ".qml"
-            }
+                var str = 'import QtQuick 1.0;'
 
-            Loader {
-                id: loader
-                focus: true
-                onSourceChanged: loader.state = ""
-                onLoaded: {
-                    topLeftHandle.x = (testBenchRect.width-loader.item.width)/2 - topLeftHandle.width
-                    topLeftHandle.y = (testBenchRect.height-loader.item.height)/2 - topLeftHandle.height
-                    bottomRightHandle.x = (testBenchRect.width-loader.item.width)/2 + loader.item.width
-                    bottomRightHandle.y = (testBenchRect.height-loader.item.height)/2 + loader.item.height
-
-                    switch(currentComponentName) {
-                        case "Button": { loader.state =  "buttonTest"; break }
-                        case "LineEdit": { loader.state =  "lineEditTest"; break }
-                        case "ChoiceList": { loader.state =  "choiceListTest"; break }
-                        case "ProgressBar": { loader.state =  "progressBarTest"; break }
-                    }
+                switch (componentName) {
+                case "Button": str +=
+                    'Button { ' +
+                    '   enabled: !buttonOptionDimmed.checked;' +
+                    '   checkable: buttonOptionLatching.checked;' +
+                    '   iconSource: buttonOptionHasIcon.checked ? "images/testIcon.png" : "";' +
+                    '   text: buttonOptionTwoLineText.checked ? "Button\\nwith two lines" : "Button";' +
+                    '   Component.onCompleted: if(buttonOptionGreenBackground.checked) backgroundColor = "green"' +
+                    '}';
+                    break;
+                case "CheckBox": str +=
+                    'CheckBox { ' +
+                    '   enabled: !checkBoxOptionDimmed.checked;' +
+                    '}';
+                    break;
+                case "RadioButton": str +=
+                    'RadioButton { ' +
+                    '   enabled: !radioButtonOptionDimmed.checked;' +
+                    '}';
+                    break;
+                case "Slider": str +=
+                    'Slider { ' +
+                    '   enabled: !sliderOptionDimmed.checked;' +
+                    '}';
+                    break;
+                case "ProgressBar": str +=
+                    'ProgressBar { ' +
+                    '   enabled: !progressBarOptionDimmed.checked;' +
+                    '   indeterminate: progressBarOptionIndeterminate.checked;' +
+                    '   Timer { id: timer; running: true; repeat: true; interval: 25;' +
+                    '       onTriggered: { parent.value = (parent.value + 1) % 100 }' +
+                    '   }' +
+                    '}';
+                    break;
+                case "BusyIndicator": str +=
+                    'BusyIndicator { ' +
+                    '   enabled: !busyIndicatorOptionDimmed.checked;' +
+                    '}';
+                    break;
+                case "LineEdit": str +=
+                    'LineEdit { ' +
+                    '   enabled: !lineEditOptionDimmed.checked;' +
+                    '   textColor: lineEditOptionRedText.checked ? "red" : "black";' +
+                    '   font.italic: lineEditOptionItalicText.checked;' +
+                    '   passwordMode: lineEditOptionPasswordMode.checked;' +
+                    '}';
+                    break;
+                case "MultiLineEdit": str +=
+                    'MultiLineEdit { ' +
+                    '   enabled: !multiLineEditOptionDimmed.checked;' +
+                    '}';
+                    break;
+                case "Switch": str +=
+                    'Switch { ' +
+                    '   enabled: !switchOptionDimmed.checked;' +
+                    '}';
+                    break;
+                case "ChoiceList": str +=
+                    'ChoiceList { ' +
+                    '   enabled: !choiceListOptionDimmed.checked;' +
+                    '   model: choiceListOptionHasModel.checked ? testDataModel : null;' +
+                    '}';
+                    break;
+                case "SpinBox": str +=
+                   'SpinBox { ' +
+                   '   enabled: !spinBoxOptionDimmed.checked;' +
+                   '}';
+                    break;
                 }
 
-                states: [
-                    State { name: "progressBarTest"
-                        PropertyChanges {
-                            target: timer
-                            onTriggered: { loader.item.value = (loader.item.value + 1) % 100 }
-                        }
-                        PropertyChanges {
-                            target: loader.item
-                            indeterminate: progressBarOption1.checked
-                        }
-                    },
-                    State { name: "lineEditTest"
-                        PropertyChanges {
-                            target: loader.item
-                            textColor: lineEditOption1.checked ? "red" : "black"
-                            font.italic: lineEditOption2.checked
-                            passwordMode: lineEditOption3.checked
-                        }
-                    },
-                    State { name: "choiceListTest"
-                        PropertyChanges {
-                            target: loader.item
-                            model: choiceListOption1.checked ? testDataModel : undefined
-                        }
-                    }
-                ]
+                var newObject = Qt.createQmlObject(str, redJiggRect);
+                topLeftHandle.x = (testBenchRect.width-newObject.width)/2 - topLeftHandle.width;
+                topLeftHandle.y = (testBenchRect.height-newObject.height)/2 - topLeftHandle.height;
+                bottomRightHandle.x = (testBenchRect.width-newObject.width)/2 + newObject.width;
+                bottomRightHandle.y = (testBenchRect.height-newObject.height)/2 + newObject.height;
+                newObject.anchors.fill = redJiggRect;
+                if(testItem) testItem.destroy();
+                testItem = newObject;
 
-                Timer { id: timer; running: true; repeat: true; interval: 25; }
-                ListModel {
-                    id: testDataModel
-                    ListElement { text: "Apple" }
-                    ListElement { text: "Banana" }
-                    ListElement { text: "Coconut" }
-                    ListElement { text: "Orange" }
-                    ListElement { text: "Kiwi" }
-                }
+                // Yellow outlined rect showing component's margins
+                Qt.createQmlObject( 'import QtQuick 1.0;' +
+                'Rectangle {' +
+                '    opacity: redJiggRect.state == "pressed" && redJiggRect.testItem.topMargin != undefined ? 1 : 0;' +
+                '    color: "transparent";' +
+                '    border.color: "yellow";' +
+                '    anchors.fill: parent;' +
+                '    anchors.leftMargin: Math.max(redJiggRect.testItem.leftMargin, 0);' +
+                '    anchors.rightMargin: Math.max(redJiggRect.testItem.rightMargin, 0);' +
+                '    anchors.topMargin: Math.max(redJiggRect.testItem.topMargin, 0);' +
+                '    anchors.bottomMargin: Math.max(redJiggRect.testItem.bottomMargin, 0);' +
+                '}', testItem);
+
             }
 
-            states: State { name: "pressed"
-                PropertyChanges {
-                    target: loader
-                    anchors.fill: redJiggRect
-                }
-            }
-
-            // Yellow outlined rect showing component's margins
-            Rectangle {
-                opacity: redJiggRect.state == "pressed" && loader.item.topMargin != undefined ? 1 : 0
-                color: "transparent"
-                border.color: "yellow"
-                anchors.fill: loader
-                anchors.leftMargin: loader.item.leftMargin != undefined ? loader.item.leftMargin : 0
-                anchors.rightMargin: loader.item.rightMargin != undefined ? loader.item.rightMargin : 0
-                anchors.topMargin: loader.item.topMargin != undefined ? loader.item.topMargin : 0
-                anchors.bottomMargin: loader.item.bottomMargin != undefined ? loader.item.bottomMargin : 0
+            ListModel {
+                id: testDataModel
+                ListElement { text: "Apple" }
+                ListElement { text: "Banana" }
+                ListElement { text: "Coconut" }
+                ListElement { text: "Orange" }
+                ListElement { text: "Kiwi" }
             }
         }
 
@@ -170,6 +217,10 @@ Item {
                 onPressed: redJiggRect.state = "pressed"
                 onReleased: redJiggRect.state = ""
                 drag.target: bottomRightHandle
+                drag.minimumX: topLeftHandle.x+width
+                drag.minimumY: topLeftHandle.y+height
+                drag.maximumX: testBenchRect.width-width;
+                drag.maximumY: testBenchRect.height-height
             }
         }
     }
@@ -181,35 +232,84 @@ Item {
     Rectangle {
         id: testConfigPanel
         color: "lightgray";
-        width: 200
+        width: 250
         anchors.top: parent.top
         anchors.bottom: parent.bottom
         anchors.right: parent.right
 
-//        Column {
-//            anchors.fill: parent; anchors.margins: 10; spacing: 5
-//            opacity: currentComponentName == "Button" ? 1 : 0
-//            StretchBenchConfigOption { text: "Has icon: "; id: buttonOption1 }
-//        }
+        Column {
+            anchors.fill: parent; anchors.margins: 10; spacing: 5
+            opacity: currentComponentName == "Button" ? 1 : 0
+            StretchBenchBoolOption { text: "Dimmed:"; id: buttonOptionDimmed}
+            StretchBenchBoolOption { text: "Latching:"; id: buttonOptionLatching }
+            StretchBenchBoolOption { text: "Has icon:"; id: buttonOptionHasIcon }
+            StretchBenchBoolOption { text: "Two-line text:"; id: buttonOptionTwoLineText }
+            StretchBenchBoolOption { text: "Green background:"; id: buttonOptionGreenBackground }
+        }
 
         Column {
             anchors.fill: parent; anchors.margins: 10; spacing: 5
             opacity: currentComponentName == "ChoiceList" ? 1 : 0
-            StretchBenchBoolOption { text: "Has model: "; id: choiceListOption1 }
+            StretchBenchBoolOption { text: "Dimmed:"; id: choiceListOptionDimmed}
+            StretchBenchBoolOption { text: "Has model:"; id: choiceListOptionHasModel }
+        }
+
+        Column {
+            anchors.fill: parent; anchors.margins: 10; spacing: 5
+            opacity: currentComponentName == "CheckBox" ? 1 : 0
+            StretchBenchBoolOption { text: "Dimmed:"; id: checkBoxOptionDimmed}
+        }
+
+        Column {
+            anchors.fill: parent; anchors.margins: 10; spacing: 5
+            opacity: currentComponentName == "RadioButton" ? 1 : 0
+            StretchBenchBoolOption { text: "Dimmed:"; id: radioButtonOptionDimmed}
+        }
+
+        Column {
+            anchors.fill: parent; anchors.margins: 10; spacing: 5
+            opacity: currentComponentName == "Switch" ? 1 : 0
+            StretchBenchBoolOption { text: "Dimmed:"; id: switchOptionDimmed}
+        }
+
+        Column {
+            anchors.fill: parent; anchors.margins: 10; spacing: 5
+            opacity: currentComponentName == "MultiLineEdit" ? 1 : 0
+            StretchBenchBoolOption { text: "Dimmed:"; id: multiLineEditOptionDimmed}
+        }
+
+        Column {
+            anchors.fill: parent; anchors.margins: 10; spacing: 5
+            opacity: currentComponentName == "Slider" ? 1 : 0
+            StretchBenchBoolOption { text: "Dimmed:"; id: sliderOptionDimmed}
+        }
+
+        Column {
+            anchors.fill: parent; anchors.margins: 10; spacing: 5
+            opacity: currentComponentName == "BusyIndicator" ? 1 : 0
+            StretchBenchBoolOption { text: "Dimmed:"; id: busyIndicatorOptionDimmed}
+        }
+
+        Column {
+            anchors.fill: parent; anchors.margins: 10; spacing: 5
+            opacity: currentComponentName == "SpinBox" ? 1 : 0
+            StretchBenchBoolOption { text: "Dimmed:"; id: spinBoxOptionDimmed}
         }
 
         Column {
             anchors.fill: parent; anchors.margins: 10; spacing: 5
             opacity: currentComponentName == "LineEdit" ? 1 : 0
-            StretchBenchBoolOption { text: "Red text color:"; id: lineEditOption1; }
-            StretchBenchBoolOption { text: "Italic font:"; id: lineEditOption2; }
-            StretchBenchBoolOption { text: "Password mode:"; id: lineEditOption3; }
+            StretchBenchBoolOption { text: "Dimmed:"; id: lineEditOptionDimmed}
+            StretchBenchBoolOption { text: "Red text color:"; id: lineEditOptionRedText; }
+            StretchBenchBoolOption { text: "Italic font:"; id: lineEditOptionItalicText; }
+            StretchBenchBoolOption { text: "Password mode:"; id: lineEditOptionPasswordMode; }
             }
 
         Column {
             anchors.fill: parent; anchors.margins: 10; spacing: 5
             opacity: currentComponentName == "ProgressBar" ? 1 : 0
-            StretchBenchBoolOption { text: "Indeterminate:"; id: progressBarOption1 }
+            StretchBenchBoolOption { text: "Dimmed:"; id: progressBarOptionDimmed}
+            StretchBenchBoolOption { text: "Indeterminate:"; id: progressBarOptionIndeterminate }
         }
     }
 
