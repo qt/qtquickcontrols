@@ -5,6 +5,8 @@ QtObject {
     Component {
         id: defaultBackground
         Image {
+            anchors.centerIn:parent
+            fillMode:Image.PreserveAspectFit
             smooth:true
             source: "images/spinner.png";
             NumberAnimation on rotation {

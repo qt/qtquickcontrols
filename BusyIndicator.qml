@@ -17,6 +17,7 @@ Item {
 
     Loader {
         id:backgroundComponent
+        anchors.fill:parent
         sourceComponent: background
         property alias running:button.running // Forward to style component
     }

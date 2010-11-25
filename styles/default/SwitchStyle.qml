@@ -57,7 +57,7 @@ QtObject {
     property Component handle: Component {
         BorderImage {
             width: 50
-            height: 32
+            height:32
             smooth: true
             source: pressed ? "../../images/switch_pressed.png" : "../../images/switch_normal.png"
 

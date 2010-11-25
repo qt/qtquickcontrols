@@ -29,6 +29,7 @@ Item {
 
     Loader {
         id: handleLoader
+        height:parent.height
         sourceComponent: handle
         anchors.verticalCenter:parent.verticalCenter
     }

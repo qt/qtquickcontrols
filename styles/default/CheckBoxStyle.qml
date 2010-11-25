@@ -16,11 +16,9 @@ QtObject {
 
             BorderImage {
                 id: backgroundimage
-                width: parent.height;
-                anchors.left: parent.left
-                anchors.top: parent.top
-                anchors.bottom: parent.bottom
-
+                width: minimumWidth;
+                height:minimumHeight
+                anchors.centerIn:parent
                 source: "../../images/lineedit_normal.png"
                 smooth: true
                 border.left: 6; border.top: 3
