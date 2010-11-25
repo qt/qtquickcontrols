@@ -20,6 +20,8 @@ Item {
     property int rightMargin: defaultStyle.rightMargin
     property int bottomMargin: defaultStyle.bottomMargin
 
+    clip:true
+
     width: Math.max(minimumWidth,
                     Math.max(textEdit.width, placeholderTextComponent.width) + leftMargin + rightMargin)
 

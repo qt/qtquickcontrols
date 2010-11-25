@@ -42,6 +42,8 @@ Item {
     property alias inputMask: textInput.inputMask
     property alias horizontalalignment: textInput.horizontalAlignment
 
+    clip: true
+
     Loader { id: hintsLoader; sourceComponent: hints }
     Loader { sourceComponent: background; anchors.fill:parent}
 
@@ -81,7 +83,6 @@ Item {
         font: textInput.font
         opacity: !textInput.text.length && !textInput.activeFocus ? 1 : 0
         color: "gray"
-        clip: true
         text: "Enter text"
     }
 
