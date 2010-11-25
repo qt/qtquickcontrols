@@ -53,7 +53,7 @@ Item {
                 checked = !checked;
             }
             if (drag.active) {
-                if (handleLoader.item.x > (drag.maximumValueX - drag.minimumValueX)/2)
+                if (handleLoader.item.x > (drag.maximumX - drag.minimumX)/2)
                     checked = true
                 else
                     checked = false
@@ -62,7 +62,7 @@ Item {
                 checked = !checked;
                 toggleSwitch.clicked()
             }
-            handleLoader.item.x = checked ? drag.maximumValueX : drag.minimumValueX
+            handleLoader.item.x = checked ? drag.maximumX : drag.minimumX
             toggleSwitch.clicked()
         }
     }
