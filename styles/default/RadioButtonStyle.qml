@@ -7,27 +7,27 @@ QtObject {
 
     property Component background:
     Component {
-        Rectangle{
-            border.color:"#333"
-            width: 32
-            height: 32
-            anchors.centerIn: parent
-            color: backgroundColor
-            radius: width/2
+        Item{
+            anchors.centerIn:parent
+            Rectangle{
+                anchors.fill:pixmap
+                radius:width/2
+                color:backgroundColor
+            }
+
+            Image{
+                id:pixmap
+                source: "../../images/radiobutton_normal.png"
+                anchors.centerIn: parent
+            }
         }
     }
 
     property Component checkmark: Component {
-        Item {
-            anchors.centerIn: parent
-            Rectangle {
-                width: 10
-                height: 10
-                anchors.centerIn: parent
-                border.color:"#333"
-                color: !parent.enabled ? "gray" : "black"
-                radius: width/2
-            }
+        Image {
+            source: "../../images/radiobutton_check.png"
+            anchors.centerIn:parent
+            Behavior on opacity { NumberAnimation { duration: 150; easing.type: Easing.OutCubic } }
         }
     }
 }
