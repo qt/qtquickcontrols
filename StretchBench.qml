@@ -99,7 +99,7 @@ Item {
 
             function loadComponent(componentName) {
                 redJiggRect.state = ""
-                var str = 'import Qt 4.7;'
+                var str = 'import QtQuick 1.0;'
 
                 switch (componentName) {
                 case "Button": str +=
