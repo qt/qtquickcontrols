@@ -239,6 +239,7 @@ Rectangle {
             Component{
                 id:shinyEdit
                 BorderImage {
+		    width:32; height:32;
                     source: "images/shinyedit_normal.png"
                     anchors.fill:parent
                     border.left: 6; border.top: 6
