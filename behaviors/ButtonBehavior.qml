@@ -10,13 +10,15 @@ Item {
     property bool checked: false
     property bool triState: false
 
+    onCheckableChanged: { if(!checkable) checked = false }
+
     MouseArea {
         id: mouseArea
         anchors.fill: parent
         hoverEnabled: true
         onPressed: behavior.pressed = true  // needed when hover is enabled
         onEntered: if(pressed && enabled) behavior.pressed = true
-        onExited: behavior.pressed = false
+        onExited: behavior.pressed = false  //mm see QTBUG-15624
         onReleased: {
             if(behavior.pressed && behavior.enabled) { // No click if release outside area
                 behavior.pressed = false

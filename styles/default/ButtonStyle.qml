@@ -1,7 +1,6 @@
 import Qt 4.7
 
 QtObject {
-
     property int minimumWidth: 90
     property int minimumHeight: 32
 
@@ -14,26 +13,19 @@ QtObject {
     Component {
         id: defaultBackground
         Item {
-            Rectangle{
-                x: 1; y: 1
-                width: parent.width-2
-                height: parent.height-2
-                color: button.backgroundColor
+            opacity: enabled ? 1 : 0.7
+            Rectangle { // Background center fill
+                anchors.fill: parent
+                anchors.margins: 1
                 radius: 5
+                color: !button.checked ? backgroundColor : Qt.darker(backgroundColor)
             }
-
             BorderImage {
                 anchors.fill: parent
                 smooth: true
                 source: button.pressed ? "images/button_pressed.png" : "images/button_normal.png"
                 border.left: 6; border.top: 6
                 border.right: 6; border.bottom: 6
-            }
-
-            Rectangle {
-                anchors.fill: parent
-                color: "black"
-                opacity: button.checked ? 0.4 : 0
             }
         }
     }
@@ -42,24 +34,33 @@ QtObject {
     Component {
         id: defaultLabel
         Item {
-            width:row.width
-            height:row.height
+            width: row.width
+            height: row.height
+            anchors.centerIn: parent    //mm see QTBUG-15619
+            opacity: enabled ? 1 : 0.5
+            transform: Translate {
+                x: button.pressed || button.checked ? 1 : 0
+                y: button.pressed || button.checked ? 1 : 0
+            }
+
             Row {
                 id: row
-                spacing: 4
                 anchors.centerIn: parent
+                spacing: 4
                 Image {
                     source: button.iconSource
                     anchors.verticalCenter: parent.verticalCenter
+                    fillMode: Image.Stretch //mm Image should shrink if button is too small, depends on QTBUG-14957
                 }
 
                 Text {
-                    color: !button.enabled ? "gray" : button.textColor
+                    color: textColor //mm see QTBUG-15623
                     anchors.verticalCenter: parent.verticalCenter
                     text: button.text
+                    horizontalAlignment: Text.Center
+                    elide: Text.ElideRight //mm can't make layout work as desired without implicit size support, see QTBUG-14957
                 }
             }
         }
-
     }
 }

@@ -50,6 +50,11 @@ Item {
         }
     }
 
+    Rectangle {
+        anchors.fill: testBenchRect
+        color: "lightblue"
+    }
+
     Flickable {
         id: testBenchRect
         anchors.left: listPanel.right; anchors.right: testConfigPanel.left
@@ -108,17 +113,20 @@ Item {
                     '   checkable: buttonOptionLatching.checked;' +
                     '   iconSource: buttonOptionHasIcon.checked ? "images/testIcon.png" : "";' +
                     '   text: buttonOptionTwoLineText.checked ? "Button\\nwith two lines" : "Button";' +
-                    '   Component.onCompleted: if(buttonOptionGreenBackground.checked) backgroundColor = "green"' +
+                    '   backgroundColor: buttonOptionGreenBackground.checked ? "green" : "#fff";' +
+                    '   textColor: buttonOptionWhiteText.checked ? "white" : "black";' +
                     '}';
                     break;
                 case "CheckBox": str +=
                     'CheckBox { ' +
                     '   enabled: !checkBoxOptionDimmed.checked;' +
+                    '   backgroundColor: checkBoxOptionGreenBackground.checked ? "green" : "#fff";' +
                     '}';
                     break;
                 case "RadioButton": str +=
                     'RadioButton { ' +
                     '   enabled: !radioButtonOptionDimmed.checked;' +
+                    '   backgroundColor: radioButtonOptionGreenBackground.checked ? "green" : "#fff";' +
                     '}';
                     break;
                 case "Slider": str +=
@@ -240,66 +248,69 @@ Item {
         Column {
             anchors.fill: parent; anchors.margins: 10; spacing: 5
             opacity: currentComponentName == "Button" ? 1 : 0
-            StretchBenchBoolOption { text: "Dimmed:"; id: buttonOptionDimmed}
+            StretchBenchBoolOption { text: "Dimmed:"; id: buttonOptionDimmed }
             StretchBenchBoolOption { text: "Latching:"; id: buttonOptionLatching }
             StretchBenchBoolOption { text: "Has icon:"; id: buttonOptionHasIcon }
             StretchBenchBoolOption { text: "Two-line text:"; id: buttonOptionTwoLineText }
             StretchBenchBoolOption { text: "Green background:"; id: buttonOptionGreenBackground }
+            StretchBenchBoolOption { text: "White text:"; id: buttonOptionWhiteText }
         }
 
         Column {
             anchors.fill: parent; anchors.margins: 10; spacing: 5
             opacity: currentComponentName == "ChoiceList" ? 1 : 0
-            StretchBenchBoolOption { text: "Dimmed:"; id: choiceListOptionDimmed}
+            StretchBenchBoolOption { text: "Dimmed:"; id: choiceListOptionDimmed }
             StretchBenchBoolOption { text: "Has model:"; id: choiceListOptionHasModel }
         }
 
         Column {
             anchors.fill: parent; anchors.margins: 10; spacing: 5
             opacity: currentComponentName == "CheckBox" ? 1 : 0
-            StretchBenchBoolOption { text: "Dimmed:"; id: checkBoxOptionDimmed}
+            StretchBenchBoolOption { text: "Dimmed:"; id: checkBoxOptionDimmed }
+            StretchBenchBoolOption { text: "Green background:"; id: checkBoxOptionGreenBackground }
         }
 
         Column {
             anchors.fill: parent; anchors.margins: 10; spacing: 5
             opacity: currentComponentName == "RadioButton" ? 1 : 0
-            StretchBenchBoolOption { text: "Dimmed:"; id: radioButtonOptionDimmed}
+            StretchBenchBoolOption { text: "Dimmed:"; id: radioButtonOptionDimmed }
+            StretchBenchBoolOption { text: "Green background:"; id: radioButtonOptionGreenBackground }
         }
 
         Column {
             anchors.fill: parent; anchors.margins: 10; spacing: 5
             opacity: currentComponentName == "Switch" ? 1 : 0
-            StretchBenchBoolOption { text: "Dimmed:"; id: switchOptionDimmed}
+            StretchBenchBoolOption { text: "Dimmed:"; id: switchOptionDimmed }
         }
 
         Column {
             anchors.fill: parent; anchors.margins: 10; spacing: 5
             opacity: currentComponentName == "MultiLineEdit" ? 1 : 0
-            StretchBenchBoolOption { text: "Dimmed:"; id: multiLineEditOptionDimmed}
+            StretchBenchBoolOption { text: "Dimmed:"; id: multiLineEditOptionDimmed }
         }
 
         Column {
             anchors.fill: parent; anchors.margins: 10; spacing: 5
             opacity: currentComponentName == "Slider" ? 1 : 0
-            StretchBenchBoolOption { text: "Dimmed:"; id: sliderOptionDimmed}
+            StretchBenchBoolOption { text: "Dimmed:"; id: sliderOptionDimmed }
         }
 
         Column {
             anchors.fill: parent; anchors.margins: 10; spacing: 5
             opacity: currentComponentName == "BusyIndicator" ? 1 : 0
-            StretchBenchBoolOption { text: "Dimmed:"; id: busyIndicatorOptionDimmed}
+            StretchBenchBoolOption { text: "Dimmed:"; id: busyIndicatorOptionDimmed }
         }
 
         Column {
             anchors.fill: parent; anchors.margins: 10; spacing: 5
             opacity: currentComponentName == "SpinBox" ? 1 : 0
-            StretchBenchBoolOption { text: "Dimmed:"; id: spinBoxOptionDimmed}
+            StretchBenchBoolOption { text: "Dimmed:"; id: spinBoxOptionDimmed }
         }
 
         Column {
             anchors.fill: parent; anchors.margins: 10; spacing: 5
             opacity: currentComponentName == "LineEdit" ? 1 : 0
-            StretchBenchBoolOption { text: "Dimmed:"; id: lineEditOptionDimmed}
+            StretchBenchBoolOption { text: "Dimmed:"; id: lineEditOptionDimmed }
             StretchBenchBoolOption { text: "Red text color:"; id: lineEditOptionRedText; }
             StretchBenchBoolOption { text: "Italic font:"; id: lineEditOptionItalicText; }
             StretchBenchBoolOption { text: "Password mode:"; id: lineEditOptionPasswordMode; }
@@ -308,7 +319,7 @@ Item {
         Column {
             anchors.fill: parent; anchors.margins: 10; spacing: 5
             opacity: currentComponentName == "ProgressBar" ? 1 : 0
-            StretchBenchBoolOption { text: "Dimmed:"; id: progressBarOptionDimmed}
+            StretchBenchBoolOption { text: "Dimmed:"; id: progressBarOptionDimmed }
             StretchBenchBoolOption { text: "Indeterminate:"; id: progressBarOptionIndeterminate }
         }
     }

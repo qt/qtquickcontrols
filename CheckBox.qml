@@ -12,7 +12,7 @@ Item {
 
     property alias containsMouse: behavior.containsMouse
     property Component background: defaultStyle.background
-    property Component checkmark : defaultStyle.checkmark
+    property Component checkmark: defaultStyle.checkmark
 
     property color backgroundColor: "#fff";
 
@@ -21,14 +21,9 @@ Item {
     property alias pressed: behavior.pressed
     property alias checked: behavior.checked
 
-    function setCheckItemOpacity() {
-        if (checkComponent.item != undefined)
-            checkComponent.item.opacity = checked ? (enabled ? 1 : 0.5) : 0
-    }
-
     Loader {
-        id:backgroundComponent
-        anchors.fill: parent
+        id: backgroundComponent
+        anchors.centerIn: parent
         sourceComponent: background
     }
 
@@ -36,14 +31,12 @@ Item {
         id: checkComponent
         anchors.centerIn: parent
         sourceComponent: checkmark
-        onLoaded: setCheckItemOpacity()
     }
 
     ButtonBehavior {
         id: behavior
         anchors.fill: parent
-        onCheckedChanged: setCheckItemOpacity()
-        checkable:true
+        checkable: true
     }
 
     DefaultStyles.CheckBoxStyle { id: defaultStyle }
