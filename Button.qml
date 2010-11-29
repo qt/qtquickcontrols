@@ -22,7 +22,20 @@ BasicButton {
     minimumWidth: defaultStyle.minimumWidth
     minimumHeight: defaultStyle.minimumHeight
 
-    background: defaultStyle.background
+//    background: defaultStyle.background
+
+    background: Rectangle {
+        color: "red"
+        radius: 10
+        border.color: "black"
+        opacity: 0.5
+    }
+
+    adjoiningBackground: Rectangle {
+        color: "red"
+        border.color: "black"
+        opacity: 0.5
+    }
 
     Loader {
         id: labelComponent

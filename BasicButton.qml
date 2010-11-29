@@ -1,5 +1,6 @@
 import Qt 4.7
-import "./behaviors"
+import "./behaviors"    // ButtonBehavior
+import "./visuals"      // AdjoiningVisual
 import "./styles/default" as DefaultStyles
 
 Item {
@@ -17,16 +18,24 @@ Item {
     property alias checked: behavior.checked
 
     property Component background: defaultStyle.background
+    property Component adjoiningBackground: defaultStyle.background
 
     property color backgroundColor: "#fff";
     property color textColor: "#222";
 
-
-    Loader {
-        id:backgroundComponent
+    AdjoiningVisual {   //mm Applies to BasicButton, or only special docking button?
+        id: backgroundComponent
         anchors.fill: parent
-        sourceComponent: background
+        adjoins: 0x1
+        normalStyling: background
+        adjoingStyling: adjoiningBackground
     }
+
+//    Loader {
+//        id:backgroundComponent
+//        anchors.fill: parent
+//        sourceComponent: background
+//    }
 
     ButtonBehavior {
         id: behavior
