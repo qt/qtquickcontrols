@@ -191,12 +191,14 @@ Rectangle {
 
                     ProgressBar {
                         Timer { running: true; repeat: true; interval: 25; onTriggered: {parent.value = (parent.value + 1) % 100 }}
-                        content:shinyBar
+                        progress: shinyBar
+                        indeterminateProgress: shinyBar
                     }
 
                     ProgressBar {
                         indeterminate:true
-                        content:shinyBar
+                        progress: shinyBar
+                        indeterminateProgress: shinyBar
                     }
                     Row{
                         spacing:rowspacing
