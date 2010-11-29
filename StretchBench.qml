@@ -23,6 +23,7 @@ Item {
 
             model: ListModel {
                 ListElement { component: "Button" }
+                ListElement { component: "ButtonBlock" }
                 ListElement { component: "CheckBox" }
                 ListElement { component: "RadioButton" }
                 ListElement { component: "Switch" }
@@ -117,6 +118,19 @@ Item {
                     '   backgroundColor: buttonOptionGreenBackground.checked ? "green" : "#fff";' +
                     '   textColor: buttonOptionWhiteText.checked ? "white" : "black";' +
                     '}';
+                    break;
+                case "ButtonBlock": str +=
+                    'ButtonBlock { ' +
+                    '    columns: 3;' +
+                    '    model: ListModel {' +
+                    '        ListElement { text: "Button A" }' +
+                    '        ListElement { text: "Button B" }' +
+                    '        ListElement { text: "Button C" }' +
+                    '        ListElement { text: "Button D" }' +
+                    '        ListElement { text: "Button E" }' +
+                    '        ListElement { text: "Button F" }' +
+                    '    }' +
+                    '}'
                     break;
                 case "CheckBox": str +=
                     'CheckBox { ' +
