@@ -114,10 +114,16 @@ Item {
             boundsBehavior: "StopAtBounds"
             keyNavigationWraps: true
 
-            delegate: Component {
-                // Ensure we handle input and not the delegate
-                Loader{
-                    sourceComponent:listItem
+            delegate: Item {
+                id: itemDelegate
+                width: delegateLoader.item.width
+                height: delegateLoader.item.height
+                property int theIndex: index    // for some reason the loader can't bind directly to the "index"
+                Loader {
+                    id: delegateLoader
+                    property alias index: itemDelegate.theIndex //mm Somehow the "model" gets through automagically, but not index
+                    property Item styledItem: choiceList
+                    sourceComponent: listItem
                     MouseArea {
                         anchors.fill: parent
                         onClicked: { currentIndex = index; popupFrameLoader.item.opacity = 0; }

@@ -98,19 +98,18 @@ QtObject {
     }
 
     property Component listItem: Component {
-        Item{
-            width: choiceList.width
-            height:Math.max(text.height, 28)
-
+        Item {
+            width: styledItem.width
+            height: Math.max(itemText.height, 28)
             Text {
+                id: itemText
                 anchors.verticalCenter: parent.verticalCenter
-                anchors.left:parent.left
-                anchors.leftMargin:6
+                anchors.left: parent.left
+                anchors.leftMargin: 6
 
-                id:text
-                color: textColor
+                color: styledItem.textColor
                 anchors.margins: 10
-                text: model.content
+                text: model.get(index).content  // list properties can't be automatically be added to the scope, so use get()
             }
         }
     }
