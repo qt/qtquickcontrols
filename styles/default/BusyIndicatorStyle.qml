@@ -3,17 +3,19 @@ import Qt 4.7
 QtObject {
     property Component background:
     Component {
-        id: defaultBackground
         Image {
-            anchors.centerIn:parent
-            fillMode:Image.PreserveAspectFit
-            smooth:true
+            opacity: running ? 1.0 : 0.7    //mm Should the rotation fade and stop when indicator is !enabled?
             source: "images/spinner.png";
-            NumberAnimation on rotation {
-                running: parent.running; from: 0; to: 360;
-                loops: Animation.Infinite; duration: 2000
+            fillMode: Image.PreserveAspectFit
+            smooth: true
+
+            property int steps: 12
+            property int rotationStep: 0
+            rotation: rotationStep*(360/steps)
+            NumberAnimation on rotationStep {
+                running: busyIndicator.running; from: 0; to: steps; //mm see QTBUG-15652
+                loops: Animation.Infinite; duration: 1000 // 1s per revolution
             }
-            opacity: running ? 1.0 : 0.5
         }
     }
 }
