@@ -17,7 +17,7 @@ QtObject {
             Rectangle { // Background center fill
                 anchors.fill: parent
                 anchors.margins: 1
-                radius: 5
+                radius: adjoining ? 0 : 5
                 color: !button.checked ? backgroundColor : Qt.darker(backgroundColor)
             }
             BorderImage {

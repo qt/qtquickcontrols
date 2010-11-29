@@ -2,7 +2,8 @@ import Qt 4.7
 
 Item {
     property string corner: ""    // Can we use Qt::Corner? see http://doc.trolltech.com/4.7/qt.html#Corner-enum
-    property bool adjoining: false
+    property alias styledItem: loader.styledItem
+    property alias adjoining: loader.adjoining
 
     clip: true
     anchors {
@@ -19,8 +20,12 @@ Item {
         y: corner == "TopLeftCorner" || corner == "TopRightCorner" ? 0 : -parent.height
 
         Loader {
+            id: loader
             anchors.fill: parent
-            sourceComponent: adjoining ? adjoingStyling : normalStyling
+            property Item styledItem
+            property bool adjoining: false
+
+            sourceComponent: styling
         }
     }
 }

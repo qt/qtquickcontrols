@@ -18,17 +18,17 @@ Item {
     property alias checked: behavior.checked
 
     property Component background: defaultStyle.background
-    property Component adjoiningBackground: defaultStyle.background
 
     property color backgroundColor: "#fff";
     property color textColor: "#222";
 
+    property alias adjoins: backgroundComponent.adjoins
     AdjoiningVisual {   //mm Applies to BasicButton, or only special docking button?
         id: backgroundComponent
         anchors.fill: parent
-        adjoins: 0x1
-        normalStyling: background
-        adjoingStyling: adjoiningBackground
+        styledItem: button
+        styling: background
+        //mm need "item" propery for BasicButton's sizing? (see above)
     }
 
 //    Loader {
