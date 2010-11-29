@@ -1,5 +1,4 @@
 import Qt 4.7
-import Qt.labs.components 1.0    // ImplicitlySizedItem. See QTBUG-14957
 import "./styles/default" as DefaultStyles
 
 Item{

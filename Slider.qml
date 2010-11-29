@@ -25,8 +25,7 @@
 ****************************************************************************/
 
 import Qt 4.7
-import "./styles"  // StylingLoader
-import Qt.labs.components 1.0 as QtComponents // RangeModel and ImplicitlySizeItem
+import Qt.labs.components 1.0 as QtComponents // RangeModel
 import "./styles/default" as DefaultStyles
 
 Item {
