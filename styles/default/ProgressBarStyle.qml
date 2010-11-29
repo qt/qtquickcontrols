@@ -27,67 +27,51 @@
 import Qt 4.7
 
 QtObject {
-
-
     property int minimumWidth: 200
     property int minimumHeight: 16
 
-    property int leftMargin : 2
+    property int leftMargin: 4
+    property int rightMargin: 4
     property int topMargin: 2
-    property int rightMargin: 2
-    property int bottomMargin: 1
+    property int bottomMargin: 2
 
     property Component background: Component {
         Rectangle { // background
-            anchors.fill:parent
+            opacity: enabled ? 1 : 0.7
             radius: 4
-            color: "#E6E6E6"
+            color: backgroundColor
             border.color: "#555"
         }
     }
 
-    property Component content: Component {
-        Item {
-            property real complete: (value-minimumValue)/(maximumValue-minimumValue)
-            height: 8
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.verticalCenter: parent.verticalCenter
+    property Component progress: Component {    // progress bar, known duration
+        Rectangle { // green progress indication
+            radius: 4; color: progressColor
 
-            Item {  // progress bar, known duration
-                anchors.fill: parent
-                anchors.rightMargin: indeterminate ? 0 : parent.width - (complete) * parent.width
-                clip: true  // Clip the rounded rect inside to get a sharp right edge
-
-                Rectangle { // green progress indication
-                    width: parent.parent.width; height: parent.height
-                    radius: 4; color: "#64AF2D"
-                }
+            Rectangle { // demonstrating "glow"
+                z: -1
+                radius: 4
+                anchors.fill: parent; anchors.margins: -2;
+                color: "white"; opacity: 0.3
             }
+        }
+    }
 
-            Item { // progress bar, unknown duration
-                anchors.fill: parent
-                opacity: indeterminate ? 0.5 : 0
-                clip: true  // Clip the repeating diagonal pattern below
-                property int posX: 0
-                Row { // Draw white diagonal lines moving across the background
-                    x: parent.posX
-                    anchors.verticalCenter: parent.verticalCenter
-                    spacing: 7
-                    Repeater {
-                        model: Math.ceil(parent.parent.width / 9)
-                        Rectangle {
-                            width: 2; height: 14
-                            color: "white"
-                            rotation: 45
-                            smooth: true
-                        }
-                    }
-                }
-                Timer {
-                    interval: 50; repeat: true
-                    running: parent.opacity > 0
-                    onTriggered: if (parent.posX++ > 7) parent.posX = 0
+    property Component indeterminateProgress: Component {   // progress bar, unknown duration
+        Rectangle {
+            id: bar
+            radius: 4; color: progressColor
+
+            Rectangle { // Ocillating puck, see QTBUG-15654
+                width: 60
+                height: parent.height
+                opacity: 0.5
+
+                NumberAnimation on x {
+                    from: 0; to: bar.width-60; //mm Somehow the width of the "bar" is zero!! (post defect)
+                    duration: 1000
+                    running: true
+                    loops: Animation.Infinite
                 }
             }
         }

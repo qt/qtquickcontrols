@@ -1,27 +1,31 @@
 import Qt 4.7
 import "./styles/default" as DefaultStyles
 
-Item{
+Item {
     id: progressBar
-    property Component background: defaultStyle.background
-    property Component content: defaultStyle.content
 
-    property int minimumWidth: defaultStyle.minimumWidth
-    property int minimumHeight: defaultStyle.minimumHeight
+    property real value: 0
+    property real minimumValue: 0
+    property real maximumValue: 100
+    property bool indeterminate: false
+
+    property color backgroundColor: "green"
+    property color progressColor: "lightgreen"
 
     property int leftMargin: defaultStyle.leftMargin
     property int topMargin: defaultStyle.topMargin
     property int rightMargin: defaultStyle.rightMargin
     property int bottomMargin: defaultStyle.bottomMargin
 
-    // Common API:
-    property real minimumValue: 0
-    property real maximumValue: 100
-    property real value: 0
-    property bool indeterminate: false
+    property int minimumWidth: defaultStyle.minimumWidth
+    property int minimumHeight: defaultStyle.minimumHeight
 
     width: minimumWidth
     height: minimumHeight
+
+    property Component background: defaultStyle.background
+    property Component progress: defaultStyle.progress
+    property Component indeterminateProgress: defaultStyle.indeterminateProgress
 
     Loader {
         id: groove
@@ -29,16 +33,37 @@ Item{
         anchors.fill: parent
     }
 
-    Loader {
-        id: contentComponent
+    Item {
+        id: clipRect
+        property real complete: (value-minimumValue)/(maximumValue-minimumValue)
+        property int glowMargins: 50
+        opacity: !indeterminate && enabled ? 1 : 0  //mm correct to always hide when !enabled?
         anchors.fill: parent
+        anchors.margins: -glowMargins
+        anchors.rightMargin: rightMargin + Math.round((progressBar.width-leftMargin-rightMargin)*(1-complete))
+        clip: true
+        Loader {
+            id: progressComponent
+            x: clipRect.glowMargins+leftMargin  //mm see QTBUG-15652
+            y: clipRect.glowMargins+topMargin
+            width: progressBar.width-leftMargin-rightMargin
+            height: progressBar.height-topMargin-bottomMargin
+            sourceComponent: progressBar.progress   // qualify "progress" so not to use Loader's property
+        }
+    }
+
+    Loader {
+        id: indeterminateComponent
+        opacity: indeterminate && enabled ? 1 : 0   //mm correct to always hide when !enabled?
+        anchors.fill: parent    //mm The loaded item's size does not get set in this one case!!?
 
         anchors.leftMargin: leftMargin
         anchors.rightMargin: rightMargin
         anchors.topMargin: topMargin
         anchors.bottomMargin: bottomMargin
-        sourceComponent: content
+        sourceComponent: indeterminateProgress
     }
 
-    DefaultStyles.ProgressBarStyle{ id: defaultStyle }
+
+    DefaultStyles.ProgressBarStyle { id: defaultStyle }
 }
