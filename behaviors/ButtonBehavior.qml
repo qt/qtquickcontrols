@@ -18,7 +18,8 @@ Item {
         hoverEnabled: true
         onPressed: behavior.pressed = true  // needed when hover is enabled
         onEntered: if(pressed && enabled) behavior.pressed = true
-        onExited: behavior.pressed = false  //mm see QTBUG-15624
+        onExited: behavior.pressed = false
+        onCanceled: behavior.pressed = false    // mouse stolen e.g. by Flickable
         onReleased: {
             if(behavior.pressed && behavior.enabled) { // No click if release outside area
                 behavior.pressed = false

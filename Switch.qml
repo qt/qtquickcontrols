@@ -48,6 +48,7 @@ Item {
         onPressed: toggleSwitch.pressed = true  // needed when hover is enabled
         onEntered: if (toggleSwitch.pressed && enabled) toggleSwitch.pressed = true
         onExited: toggleSwitch.pressed = false
+        onCanceled: toggleSwitch.pressed = false    // mouse stolen e.g. by Flickable
         onReleased: {
             if(toggleSwitch.pressed && enabled) { // No click if release outside area
                 toggleSwitch.pressed = false

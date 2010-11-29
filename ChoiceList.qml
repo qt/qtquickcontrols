@@ -68,6 +68,7 @@ Item {
 
         }
         onReleased: choiceList.pressed = false
+        onCanceled: choiceList.pressed = false    // mouse stolen e.g. by Flickable
     }
 
 
