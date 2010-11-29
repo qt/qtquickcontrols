@@ -37,6 +37,7 @@ Item {
         id: behavior
         anchors.fill: parent
         checkable: true
+        onClicked:checkbox.clicked()
     }
 
     DefaultStyles.CheckBoxStyle { id: defaultStyle }
