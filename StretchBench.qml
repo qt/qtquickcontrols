@@ -65,6 +65,7 @@ Item {
 
         Image {
             anchors.fill: parent
+            anchors.margins: -1000
             source: "images/checkered.png"
             fillMode: Image.Tile
             opacity: testBenchRect.moving || redJiggRect.state == "pressed" ? 0.12 : 0
@@ -132,6 +133,10 @@ Item {
                 case "Slider": str +=
                     'Slider { ' +
                     '   enabled: !sliderOptionDimmed.checked;' +
+                    '   value: sliderOptionValueAt30.checked ? 30 : 0;' +
+                    '   minimumValue: sliderOptionZeroInMiddle.checked ? -50 : 0;' +
+                    '   maximumValue: sliderOptionZeroInMiddle.checked ? 50 : 100;' +
+//                    '   text: sliderOptionTimeFormatted.checked ? Math.floor(value/60) + ":" + value%60 : value;' +
                     '}';
                     break;
                 case "ProgressBar": str +=
@@ -146,6 +151,7 @@ Item {
                 case "BusyIndicator": str +=
                     'BusyIndicator { ' +
                     '   enabled: !busyIndicatorOptionDimmed.checked;' +
+                    '   running: !busyIndicatorOptionPaused.checked;' +
                     '}';
                     break;
                 case "LineEdit": str +=
@@ -293,12 +299,16 @@ Item {
             anchors.fill: parent; anchors.margins: 10; spacing: 5
             opacity: currentComponentName == "Slider" ? 1 : 0
             StretchBenchBoolOption { text: "Dimmed:"; id: sliderOptionDimmed }
+            StretchBenchBoolOption { text: "Value at 30:"; id: sliderOptionValueAt30 }
+            StretchBenchBoolOption { text: "Zero in middle:"; id: sliderOptionZeroInMiddle }
+            StretchBenchBoolOption { text: "Time formatted:"; id: sliderOptionTimeFormatted }
         }
 
         Column {
             anchors.fill: parent; anchors.margins: 10; spacing: 5
             opacity: currentComponentName == "BusyIndicator" ? 1 : 0
             StretchBenchBoolOption { text: "Dimmed:"; id: busyIndicatorOptionDimmed }
+            StretchBenchBoolOption { text: "Paused (i.e. !running):"; id: busyIndicatorOptionPaused }
         }
 
         Column {
