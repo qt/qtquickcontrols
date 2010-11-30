@@ -106,10 +106,11 @@ Item {
         ListView {
             id: popupList
 
-            height:contentHeight
             // Why is contentWidth evaluated to 0?
             width:Math.max(choiceList.width, contentWidth)
-
+            height:contentHeight
+            contentWidth:1 //jb: seems we cannot depend on contenWidt being set initially
+            contentHeight:1
             opacity:popupFrameLoader.item.opacity
 
             boundsBehavior: "StopAtBounds"
