@@ -16,14 +16,25 @@ QtObject {
             opacity: enabled ? 1 : 0.7
             Rectangle { // Background center fill
                 anchors.fill: parent
-                anchors.margins: 1
+                anchors.leftMargin: adjoining&Qt.Horizontal ? 0 : 2
+                anchors.rightMargin: anchors.leftMargin
+                anchors.topMargin: adjoining&Qt.Vertical ? 0 : 2
+                anchors.bottomMargin: anchors.topMargin
+
                 radius: adjoining ? 0 : 5
                 color: !button.checked ? backgroundColor : Qt.darker(backgroundColor)
             }
             BorderImage {
                 anchors.fill: parent
                 smooth: true
-                source: button.pressed ? "images/button_pressed.png" : "images/button_normal.png"
+                source: {
+                    if(!adjoining)
+                        return button.pressed || button.checked ? "images/button_pressed.png" : "images/button_normal.png";
+                    else if(adjoining&Qt.Horizontal)
+                        return button.pressed || button.checked ? "images/buttongroup_h_pressed.png" : "images/buttongroup_h_normal.png";
+                    else // adjoining&Qt.Vertical
+                        return button.pressed || button.checked ? "images/buttongroup_v_pressed.png" : "images/buttongroup_v_normal.png";
+                }
                 border.left: 6; border.top: 6
                 border.right: 6; border.bottom: 6
             }

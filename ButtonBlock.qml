@@ -1,57 +1,69 @@
 import Qt 4.7
 
-Rectangle {
-    id: block
-    width: grid.width+20
-    height: grid.height+20
-    color: "blue"
+Item {
+    id: buttonBlock
 
-    signal clicked(int index)
     property alias model: repeater.model
-    property alias columns: grid.columns
+    property Component delegate: Button { adjoins: parent.adjoins; }
 
-    property Component buttonTemplate: Button { checkable: true; adjoins: parent.adjoins }
-    //    property Component customStyle: null
-    //    property list<Item> selected
-    //    property variant selected: new Array();
+    property int orientation: Qt.Horizontal
+    signal clicked(int index)
+
+    signal connectProperties(variant model, variant item)
+    onConnectProperties: {  //mm need QTBUG-14964 for this?
+        if(model.text) item.text = model.text;
+        if(model.iconSource) item.iconSource = model.iconSource;
+        if(model.enabled) item.enabled = model.enabled;
+        if(model.checkable) item.checkable = model.checkable;
+    }
+
+    width: grid.width
+    height: grid.height
 
     Grid {
         id: grid
-        columns: 1000
+        columns: orientation == Qt.Vertical ? 1 : model.count
         anchors.centerIn: parent
+        property int widestItemWidth: 0
+        property int talestItemHeight: 0
+
         Repeater {
             id: repeater
             delegate: Loader {
                 property int adjoins: foo(repeater.count)
                 function foo(count) {   //mm why do we need a named functon here?
                     var adjoins = 0x0;
-                    if(index%columns != 0)      // not first in row
+                    if(index%grid.columns != 0) // not first in row
                         adjoins |= 0x1;         // dock left
 
-                    if(index%columns != Math.min(columns, count)-1 // not last in row
+                    if(index%grid.columns != Math.min(grid.columns, count)-1 // not last in row
                        && index != count-1)     // nor dead last
                         adjoins |= 0x2;         // dock right
 
-                    if(index >= columns)        // not in the first row
+                    if(index >= grid.columns)   // not in the first row
                         adjoins |= 0x4;         // dock up
 
-                    if(index < count-columns)   // not in the last row
+                    if(index < count-grid.columns) // not in the last row
                         adjoins |= 0x8;         // dock down
 
                     return adjoins;
                 }
 
-                sourceComponent: buttonTemplate
+                sourceComponent: delegate
+                width: orientation == Qt.Vertical ? grid.widestItemWidth : item.width
+                height: orientation == Qt.Vertical ? item.height : grid.talestItemHeight
+
                 onLoaded: {
-// if(customStyle != null) { item.background = customStyle.background; item.content = customStyle.content }
-                    if(model.text) item.text = model.text;
-                    if(model.icon) item.icon = model.icon;
-                    if(model.enabled) item.enabled = model.enabled;
-                    if(model.checkable) item.checkable = model.checkable;
+                    connectProperties(model, item);
+
+                    if(buttonBlock.orientation == Qt.Vertical)    //mm Can't make this work without QTBUG-14957
+                        grid.widestItemWidth = Math.max(grid.widestItemWidth, item.width);
+                    else
+                        grid.talestItemHeight = Math.max(grid.talestItemHeight, item.height);
                 }
                 Connections {
                     target:  item
-                    onClicked: { print("Clicked " + index); block.clicked(index) }
+                    onClicked: { print("Clicked " + index); buttonBlock.clicked(index) }
                 }
             }
         }

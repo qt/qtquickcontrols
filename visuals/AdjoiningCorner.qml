@@ -23,7 +23,7 @@ Item {
             id: loader
             anchors.fill: parent
             property Item styledItem
-            property bool adjoining: false
+            property int adjoining: 0x0
 
             sourceComponent: styling
         }

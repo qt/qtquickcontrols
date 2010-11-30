@@ -14,13 +14,37 @@ Item {
     Item {
         anchors.fill: parent
 
-        AdjoiningCorner { corner: "TopLeftCorner"
-            adjoining: adjoins&0x01 || adjoins&0x04; styledItem: adjoiningVisual.styledItem }
-        AdjoiningCorner { corner: "TopRightCorner"
-            adjoining: adjoins&0x02 || adjoins&0x04; styledItem: adjoiningVisual.styledItem }
-        AdjoiningCorner { corner: "BottomLeftCorner"
-            adjoining: adjoins&0x01 || adjoins&0x08; styledItem: adjoiningVisual.styledItem }
-        AdjoiningCorner { corner: "BottomRightCorner"
-            adjoining: adjoins&0x02 || adjoins&0x08; styledItem: adjoiningVisual.styledItem }
+        AdjoiningCorner { corner: "TopLeftCorner"; adjoining: topLeftAdjoining(); styledItem: adjoiningVisual.styledItem }
+        AdjoiningCorner { corner: "TopRightCorner"; adjoining: topRightAdjoining(); styledItem: adjoiningVisual.styledItem }
+        AdjoiningCorner { corner: "BottomLeftCorner"; adjoining: bottomLeftAdjoining(); styledItem: adjoiningVisual.styledItem }
+        AdjoiningCorner { corner: "BottomRightCorner"; adjoining: bottomRightAdjoining(); styledItem: adjoiningVisual.styledItem }
+    }
+
+    function topLeftAdjoining() {
+        var adjoining = 0;
+        if(adjoins&0x01) adjoining |= Qt.Horizontal;
+        if(adjoins&0x04) adjoining |= Qt.Vertical;
+        return adjoining;
+    }
+
+    function topRightAdjoining() {
+        var adjoining = 0;
+        if(adjoins&0x02) adjoining |= Qt.Horizontal;
+        if(adjoins&0x04) adjoining |= Qt.Vertical;
+        return adjoining;
+    }
+
+    function bottomLeftAdjoining() {
+        var adjoining = 0;
+        if(adjoins&0x01) adjoining |= Qt.Horizontal;
+        if(adjoins&0x08) adjoining |= Qt.Vertical;
+        return adjoining;
+    }
+
+    function bottomRightAdjoining() {
+        var adjoining = 0;
+        if(adjoins&0x02) adjoining |= Qt.Horizontal;
+        if(adjoins&0x08) adjoining |= Qt.Vertical;
+        return adjoining;
     }
 }

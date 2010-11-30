@@ -37,6 +37,12 @@ Rectangle {
 
                     Text{ font.bold:true; text:"Default:" ; styleColor: "white" ; color:"#333" ; style:"Raised"}
                     Button { text:"Push me" }
+                    ButtonBlock {
+                        model: ListModel {
+                            ListElement { text: "A" }
+                            ListElement { text: "B" }
+                        }
+                    }
                     LineEdit { }
                     MultiLineEdit { placeholderText:"This is a\n multiline control."}
                     SpinBox{ }
@@ -64,6 +70,12 @@ Rectangle {
                     anchors.margins: 20
                     Text{ font.bold:true; text:"Disabled:" ; styleColor: "white" ; color:"#333" ; style:"Raised"}
                     Button { text:"Push me"}
+                    ButtonBlock {
+                        model: ListModel {
+                            ListElement { text: "A" }
+                            ListElement { text: "B" }
+                        }
+                    }
                     LineEdit { }
                     MultiLineEdit { placeholderText:"This is a\n multiline control."}
                     SpinBox{ }
@@ -94,6 +106,12 @@ Rectangle {
 
                     Text{ font.bold:true; text:"Colored:" ; styleColor: "white" ; color:"#333" ; style:"Raised"}
                     Button { text:"Push me" ; backgroundColor: column3.bg; textColor: column3.fg}
+                    ButtonBlock {
+                        model: ListModel {
+                            ListElement { text: "A" }
+                            ListElement { text: "B" }
+                        }
+                    }
                     LineEdit { backgroundColor: column3.bg; textColor: column3.fg}
                     MultiLineEdit  { placeholderText:"This is a\n multiline control."; backgroundColor: column3.bg; textColor: column3.fg}
                     SpinBox{ backgroundColor: column3.bg; textColor: column3.fg}
@@ -126,6 +144,12 @@ Rectangle {
 
                     Text{ font.bold:true; text:"Custom:" ; styleColor: "white" ; color:"#333" ; style:"Raised"}
                     Button { text:"Push me" ; background: shinyButton}
+                    ButtonBlock {
+                        model: ListModel {
+                            ListElement { text: "A" }
+                            ListElement { text: "B" }
+                        }
+                    }
                     LineEdit { background: shinyEdit}
                     MultiLineEdit {  placeholderText:"This is a\n multiline control."; background: shinyEdit}
                     SpinBox{

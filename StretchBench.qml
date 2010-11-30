@@ -22,11 +22,11 @@ Item {
             }
 
             model: ListModel {
-                ListElement { component: "Button" }
                 ListElement { component: "ButtonBlock" }
+                ListElement { component: "Switch" }
+                ListElement { component: "Button" }
                 ListElement { component: "CheckBox" }
                 ListElement { component: "RadioButton" }
-                ListElement { component: "Switch" }
                 ListElement { component: "Slider" }
                 ListElement { component: "ProgressBar" }
                 ListElement { component: "BusyIndicator" }
@@ -121,15 +121,14 @@ Item {
                     break;
                 case "ButtonBlock": str +=
                     'ButtonBlock { ' +
-                    '    columns: 3;' +
+//                    '    orientation: Qt.Vertical;' +
                     '    model: ListModel {' +
                     '        ListElement { text: "Button A" }' +
-                    '        ListElement { text: "Button B" }' +
-                    '        ListElement { text: "Button C" }' +
-                    '        ListElement { text: "Button D" }' +
-                    '        ListElement { text: "Button E" }' +
-                    '        ListElement { text: "Button F" }' +
+                    '        ListElement { text: "Button B1" }' +
+                    '        ListElement { text: "Button C12" } ' + //;iconSource: "images/testIcon.png" }' +
+                    '        ListElement { text: "Button D123" }' +
                     '    }' +
+                    '   onClicked: model.setProperty(1, "text", "Foo")' +
                     '}'
                     break;
                 case "CheckBox": str +=
