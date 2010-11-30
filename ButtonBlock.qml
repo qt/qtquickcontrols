@@ -61,10 +61,6 @@ Item {
                     else
                         grid.talestItemHeight = Math.max(grid.talestItemHeight, item.height);
                 }
-                Connections {
-                    target:  item
-                    onClicked: { print("Clicked " + index); buttonBlock.clicked(index) }
-                }
             }
         }
     }
