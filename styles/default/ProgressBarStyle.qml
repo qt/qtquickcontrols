@@ -65,30 +65,23 @@ QtObject {
     property Component indeterminateProgress: Component {   // progress bar, unknown duration
         Item {
             id: bar
+            anchors.fill:parent
+            onWidthChanged:indicator.x=width-indicator.width
             BorderImage {
                 id:indicator
-                width: 60
+                Behavior on x {
+                    NumberAnimation{easing.type:Easing.OutCirc; duration:500}
+                }
+                onXChanged: {
+                    var w = bar.width - indicator.width
+                    if (x == w) x = 0
+                    else if (x==0) x = w
+                }
+                width: 80
                 height: parent.height
                 source:"../../images/progressbar_indeterminate.png"
                 border.left:10 ; border.right:10
                 border.top:10 ; border.bottom:10
-                SequentialAnimation {
-                    loops: Animation.Infinite
-                    running:true
-                    NumberAnimation {
-                        target:indicator ; property:"x"
-                        from:0 ; to: parent.parent.parent.width-indicator.width
-                        onToChanged:print(to)
-                        easing.type:Easing.OutCubic ;
-                        duration:1000
-                    }
-                    NumberAnimation {
-                        target:indicator; property:"x" ;
-                        easing.type:Easing.OutCubic
-                        to: 0 ; from:parent.parent.parent.width-indicator.width
-                        duration:1000
-                    }
-                }
             }
         }
     }
