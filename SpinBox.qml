@@ -96,6 +96,9 @@ Item {
 
     Loader {
         id: upButton
+        property alias pressed : spinbox.upPressed
+        property alias hover : spinbox.upHovered
+        property alias enabled : spinbox.upEnabled
         sourceComponent: up
         MouseArea {
             id: mouseUp
@@ -113,6 +116,9 @@ Item {
 
     Loader {
         id: downButton
+        property alias pressed : spinbox.downPressed
+        property alias hover : spinbox.downHovered
+        property alias enabled : spinbox.downEnabled
         sourceComponent: down
         MouseArea {
             id: mouseDown

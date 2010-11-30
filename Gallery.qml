@@ -133,7 +133,7 @@ Rectangle {
                         rightMargin: 40
                         up: BorderImage {
                             width:height;
-                            source:upPressed ?
+                            source:pressed ?
                                     "images/shinybutton_pressed.png" :
                                     "images/shinybutton_normal.png"
                             anchors.left:parent.left
@@ -144,7 +144,7 @@ Rectangle {
                         }
                         down: BorderImage{
                             width:height;
-                            source:downPressed ?
+                            source:pressed ?
                                     "images/shinybutton_pressed.png" :
                                     "images/shinybutton_normal.png"
                             anchors.right:parent.right

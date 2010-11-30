@@ -14,6 +14,7 @@ Item {
 
     Loader {
         id: backgroundComponent
+        property alias running:busyIndicator.running
         anchors.fill: parent
         sourceComponent: background
     }

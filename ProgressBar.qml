@@ -29,6 +29,11 @@ Item {
 
     Loader {
         id: groove
+        property alias indeterminate:progressBar.indeterminate
+        property alias value:progressBar.value
+        property alias maximumValue:progressBar.maximumValue
+        property alias minimumValue:progressBar.minimumValue
+
         sourceComponent: background
         anchors.fill: parent
     }
@@ -44,6 +49,11 @@ Item {
         clip: true
         Loader {
             id: progressComponent
+            property alias indeterminate:progressBar.indeterminate
+            property alias value:progressBar.value
+            property alias maximumValue:progressBar.maximumValue
+            property alias minimumValue:progressBar.minimumValue
+
             x: clipRect.glowMargins+leftMargin  //mm see QTBUG-15652
             y: clipRect.glowMargins+topMargin
             width: progressBar.width-leftMargin-rightMargin
@@ -54,6 +64,11 @@ Item {
 
     Loader {
         id: indeterminateComponent
+        property alias indeterminate:progressBar.indeterminate
+        property alias value:progressBar.value
+        property alias maximumValue:progressBar.maximumValue
+        property alias minimumValue:progressBar.minimumValue
+
         opacity: indeterminate && enabled ? 1 : 0   //mm correct to always hide when !enabled?
         anchors.fill: parent    //mm The loaded item's size does not get set in this one case!!?
 
