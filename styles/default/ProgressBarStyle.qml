@@ -57,7 +57,8 @@ QtObject {
         BorderImage { // green progress indication
             source: complete > 0.95 ?
                     "../../images/progressbar_indeterminate.png" : "../../images/progressbar_fill.png"
-            border.left:complete > 0.1 ? 6: 2; border.right:complete > 0.1 ? 6: 2
+            border.left:complete > 0.1 ? 6: 2;
+            border.right:complete > 0.1 ? 6: 2
             border.top:10; border.bottom:10
         }
     }
