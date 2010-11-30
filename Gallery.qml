@@ -108,9 +108,10 @@ Rectangle {
                     }
                     ChoiceList{ model: choices; backgroundColor: column3.bg; textColor: column3.fg}
                     ProgressBar {
+                        backgroundColor: column3.bg;
                         Timer { running: true; repeat: true; interval: 25; onTriggered: {parent.value = (parent.value + 1) % 100 }}
                     }
-                    ProgressBar{ indeterminate:true}
+                    ProgressBar{ indeterminate:true; backgroundColor: column3.bg;}
                     Row{
                         spacing:rowspacing
                         BusyIndicator{}
@@ -192,6 +193,7 @@ Rectangle {
                     ProgressBar {
                         Timer { running: true; repeat: true; interval: 25; onTriggered: {parent.value = (parent.value + 1) % 100 }}
                         progress: shinyBar
+                        background: shinyEdit
                         indeterminateProgress: shinyBar
                     }
 
@@ -199,6 +201,10 @@ Rectangle {
                         indeterminate:true
                         progress: shinyBar
                         indeterminateProgress: shinyBar
+                        leftMargin:4
+                        rightMargin:4
+                        topMargin:4
+                        bottomMargin:4
                     }
                     Row{
                         spacing:rowspacing

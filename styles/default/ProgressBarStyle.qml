@@ -28,58 +28,64 @@ import Qt 4.7
 
 QtObject {
     property int minimumWidth: 200
-    property int minimumHeight: 16
+    property int minimumHeight: 25
 
-    property int leftMargin: 4
-    property int rightMargin: 4
-    property int topMargin: 2
-    property int bottomMargin: 2
+    property int leftMargin: 0
+    property int rightMargin: 0
+    property int topMargin: 0
+    property int bottomMargin: 0
 
     property Component background: Component {
-        Rectangle { // background
-            opacity: enabled ? 1 : 0.7
-            radius: 4
-            color: backgroundColor
-            border.color: "#555"
+        Item{
+            Rectangle{
+                anchors.fill:parent
+                width: parent.width-2
+                height: parent.height-2
+                color: backgroundColor
+                radius: 5
+            }
+            BorderImage {
+                anchors.fill:parent
+                source:"../../images/progressbar_groove.png"
+                border.left:10; border.right:10
+                border.top:10; border.bottom:10
+            }
         }
     }
 
     property Component progress: Component {    // progress bar, known duration
-        Rectangle { // green progress indication
-            radius: 4;
-            color: progressColor
-            Rectangle { // demonstrating "glow"
-                z: -1
-                radius: 4
-                anchors.fill: parent; anchors.margins: -2;
-                color: "white"; opacity: 0.3
-            }
+        BorderImage { // green progress indication
+            source: complete > 0.95 ?
+                    "../../images/progressbar_indeterminate.png" : "../../images/progressbar_fill.png"
+            border.left:complete > 0.1 ? 6: 2; border.right:complete > 0.1 ? 6: 2
+            border.top:10; border.bottom:10
         }
     }
 
     property Component indeterminateProgress: Component {   // progress bar, unknown duration
         Item {
             id: bar
-            anchors.fill:parent
-            Rectangle {
+            BorderImage {
                 id:indicator
                 width: 60
-                height: parent.height+1
-                radius:4
-                color:progressColor
+                height: parent.height
+                source:"../../images/progressbar_indeterminate.png"
+                border.left:10 ; border.right:10
+                border.top:10 ; border.bottom:10
                 SequentialAnimation {
                     loops: Animation.Infinite
                     running:true
                     NumberAnimation {
                         target:indicator ; property:"x"
-                        from:0 ; to: parent.parent.width-indicator.width-6
+                        from:0 ; to: parent.parent.parent.width-indicator.width
+                        onToChanged:print(to)
                         easing.type:Easing.OutCubic ;
                         duration:1000
                     }
                     NumberAnimation {
                         target:indicator; property:"x" ;
                         easing.type:Easing.OutCubic
-                        to: 0 ; from:parent.parent.width-indicator.width-6
+                        to: 0 ; from:parent.parent.parent.width-indicator.width
                         duration:1000
                     }
                 }
