@@ -41,7 +41,7 @@ Item {
     property Component groove: defaultStyle.groove
     property Component handle: defaultStyle.handle
 
-    property real zeroPosition: valueModel.positionAtZero   // needed by styling, should be read-only, see QTBUG-15257
+    property real zeroPosition: 0  // ### not available in model yet, needed by styling, should be read-only, see QTBUG-15257
     property real handlePosition: valueModel.position       // needed by styling, should be read-only
 
     width: { horizontal ? minimumWidth : minimumHeight }
