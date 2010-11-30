@@ -4,70 +4,72 @@ import "./styles/default" as DefaultStyles
 Item {
     id: toggleSwitch    // "switch" is a reserved word
 
+    property bool checked: false
+    signal clicked
+
+    property bool pressed: mouseArea.pressed
+    property alias containsMouse: mouseArea.containsMouse
+
+    property color backgroundColor: "#fff"
+    property color positiveHighlightColor: "blue"
+    property color negativeHighlightColor: "transparent"
+
+    property Component groove: defaultStyle.groove
+    property Component handle: defaultStyle.handle
+
     property int minimumWidth: defaultStyle.minimumWidth
     property int minimumHeight: defaultStyle.minimumHeight
     width: Math.max(minimumWidth, grooveLoader.item.width)
     height: Math.max(minimumHeight, grooveLoader.item.height)
 
-    signal clicked
-    property bool pressed: mousearea.pressed
-    property alias containsMouse: mousearea.containsMouse
-    property bool checked: false
-
-    property Component groove: defaultStyle.groove
-    property Component handle: defaultStyle.handle
-
-    property color backgroundColor: checked ? "#cef" : "#fff"
-    property color textColor: "#333"
-
     Loader {
-        id: grooveLoader;
+        id: grooveLoader
+        anchors.fill: parent
         sourceComponent: groove
-        anchors.fill:parent
-        property real grooveLength: item.width
+        property real handleCenterX: handleLoader.item.x + (handleLoader.item.width/2)
     }
 
     Loader {
         id: handleLoader
-        height:parent.height
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
         sourceComponent: handle
-        anchors.verticalCenter:parent.verticalCenter
     }
 
     MouseArea {
-        id: mousearea
-        enabled: toggleSwitch.enabled
-        hoverEnabled: true
+        id: mouseArea
         anchors.fill: parent
+        hoverEnabled: true
 
         drag.axis: Drag.XAxis
-        drag.minimumX:0
-        drag.maximumX:toggleSwitch.width - handleLoader.item.width
-        drag.target:handleLoader.item
+        drag.minimumX: 0
+        drag.maximumX: toggleSwitch.width - handleLoader.item.width
+        drag.target: handleLoader.item
 
         onPressed: toggleSwitch.pressed = true  // needed when hover is enabled
         onEntered: if (toggleSwitch.pressed && enabled) toggleSwitch.pressed = true
-        onExited: toggleSwitch.pressed = false
-        onCanceled: toggleSwitch.pressed = false    // mouse stolen e.g. by Flickable
+        onExited: { __snapHandleIntoPlace(); toggleSwitch.pressed = false }
+        onCanceled: { __snapHandleIntoPlace(); toggleSwitch.pressed = false; }   // mouse stolen e.g. by Flickable
         onReleased: {
-            if(toggleSwitch.pressed && enabled) { // No click if release outside area
-                toggleSwitch.pressed = false
-                checked = !checked;
-            }
+            var wasChecked = checked;
             if (drag.active) {
-                if (handleLoader.item.x > (drag.maximumX - drag.minimumX)/2)
-                    checked = true
-                else
-                    checked = false
+                checked =  (handleLoader.item.x > (drag.maximumX - drag.minimumX)/2)
             } else if (toggleSwitch.pressed && enabled) { // No click if release outside area
-                toggleSwitch.pressed  = false
                 checked = !checked;
-                toggleSwitch.clicked()
             }
-            handleLoader.item.x = checked ? drag.maximumX : drag.minimumX
-            toggleSwitch.clicked()
+
+            __snapHandleIntoPlace();
+
+            toggleSwitch.pressed = false
+            if(checked != wasChecked)
+                toggleSwitch.clicked();
         }
     }
 
+    onWidthChanged: __snapHandleIntoPlace()
+    function __snapHandleIntoPlace() {
+        if(handleLoader.item)
+            handleLoader.item.x = checked ? mouseArea.drag.maximumX : mouseArea.drag.minimumX;
+    }
     DefaultStyles.SwitchStyle { id: defaultStyle }
 }
