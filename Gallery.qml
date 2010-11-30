@@ -97,7 +97,7 @@ Rectangle {
                     LineEdit { backgroundColor: column3.bg; textColor: column3.fg}
                     MultiLineEdit  { placeholderText:"This is a\n multiline control."; backgroundColor: column3.bg; textColor: column3.fg}
                     SpinBox{ backgroundColor: column3.bg; textColor: column3.fg}
-                    Slider { value: 50; backgroundColor: column3.bg; progressColor: "blue";}
+                    Slider { value: 50; backgroundColor: column3.bg; progressColor: "#44e";}
                     Switch { backgroundColor: column3.bg; textColor: column3.fg}
                     Row{
                         CheckBox { backgroundColor: column3.bg; }

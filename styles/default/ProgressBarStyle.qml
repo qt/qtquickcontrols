@@ -66,11 +66,11 @@ QtObject {
         Item {
             id: bar
             anchors.fill:parent
-            onWidthChanged:indicator.x=width-indicator.width
+            onWidthChanged:indicator.x = width-indicator.width
             BorderImage {
                 id:indicator
                 Behavior on x {
-                    NumberAnimation{easing.type:Easing.OutCirc; duration:500}
+                    NumberAnimation{easing.type:Easing.Linear; duration:1500}
                 }
                 onXChanged: {
                     var w = bar.width - indicator.width
