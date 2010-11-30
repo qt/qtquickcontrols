@@ -54,6 +54,7 @@ Item {
             property alias maximumValue:progressBar.maximumValue
             property alias minimumValue:progressBar.minimumValue
 
+            opacity: indeterminate ? 0 : 1   //mm correct to always hide when !enabled?
             x: clipRect.glowMargins+leftMargin  //mm see QTBUG-15652
             y: clipRect.glowMargins+topMargin
             width: progressBar.width-leftMargin-rightMargin

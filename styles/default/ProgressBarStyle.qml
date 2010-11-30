@@ -46,8 +46,8 @@ QtObject {
 
     property Component progress: Component {    // progress bar, known duration
         Rectangle { // green progress indication
-            radius: 4; color: progressColor
-
+            radius: 4;
+            color: progressColor
             Rectangle { // demonstrating "glow"
                 z: -1
                 radius: 4
@@ -58,20 +58,30 @@ QtObject {
     }
 
     property Component indeterminateProgress: Component {   // progress bar, unknown duration
-        Rectangle {
+        Item {
             id: bar
-            radius: 4; color: progressColor
-
-            Rectangle { // Ocillating puck, see QTBUG-15654
+            anchors.fill:parent
+            Rectangle {
+                id:indicator
                 width: 60
-                height: parent.height
-                opacity: 0.5
-
-                NumberAnimation on x {
-                    from: 0; to: bar.width-60; //mm Somehow the width of the "bar" is zero!! (post defect)
-                    duration: 1000
-                    running: true
+                height: parent.height+1
+                radius:4
+                color:progressColor
+                SequentialAnimation {
                     loops: Animation.Infinite
+                    running:true
+                    NumberAnimation {
+                        target:indicator ; property:"x"
+                        from:0 ; to: parent.parent.width-indicator.width-6
+                        easing.type:Easing.OutCubic ;
+                        duration:1000
+                    }
+                    NumberAnimation {
+                        target:indicator; property:"x" ;
+                        easing.type:Easing.OutCubic
+                        to: 0 ; from:parent.parent.width-indicator.width-6
+                        duration:1000
+                    }
                 }
             }
         }
