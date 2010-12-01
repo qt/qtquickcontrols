@@ -17,7 +17,7 @@ QtObject {
             Rectangle {
                 anchors.fill: parent
                 anchors.margins: 2
-                radius:12
+                radius:5
                 clip: true
 
                 Item {

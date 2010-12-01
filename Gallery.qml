@@ -3,23 +3,19 @@ import Qt 4.7
 Rectangle {
     width: 4*240
     height: 440
-    property int rowspacing: 8
+    property int rowspacing: 22
     property int columnspacing: 12
+    gradient: Gradient{ GradientStop{ position:1 ; color:"#bbb"} GradientStop{ position:0 ; color:"#ccc"}}
 
     Flickable {
         id: flickable
         anchors.fill: parent
         contentHeight: parent.height*2
-
-
-        Rectangle {
-            radius:6
-            anchors.fill:parent
-            border.color: "#22000000"
-            color: "#22ffffff"
-
-            gradient: Gradient{ GradientStop{ position:0 ; color:"#aaa"} GradientStop{ position:1 ; color:"#eee"}}
-            anchors.margins:20
+        Item {
+            anchors.top:parent.top
+            anchors.left:parent.left
+            anchors.leftMargin:20
+            anchors.rightMargin:20
 
             ListModel {
                 id: choices
@@ -28,15 +24,13 @@ Rectangle {
                 ListElement { content: "Apple" }
                 ListElement { content: "Coconut" }
             }
-
             Row {
-                anchors.margins:20
                 anchors.fill: parent
                 spacing: rowspacing
                 Column {
+                    anchors.top:parent.top
                     spacing: columnspacing
-                    anchors.margins: 20
-
+                    anchors.topMargin:6
                     Text{ font.bold:true; text:"Default:" ; styleColor: "white" ; color:"#333" ; style:"Raised"}
                     Button { text:"Push me" }
                     ButtonBlock {
@@ -67,9 +61,10 @@ Rectangle {
                     }
                 }
                 Column {
+                    anchors.top:parent.top
                     enabled:false
                     spacing: columnspacing
-                    anchors.margins: 20
+                    anchors.topMargin:6
                     Text{ font.bold:true; text:"Disabled:" ; styleColor: "white" ; color:"#333" ; style:"Raised"}
                     Button { text:"Push me"}
                     ButtonBlock {
@@ -99,51 +94,62 @@ Rectangle {
                         BusyIndicator{running:false}
                     }
                 }
-                Column {
-                    id:column3
-                    spacing: columnspacing
-                    anchors.margins: 20
-                    property variant bg: "#ffc"
-                    property variant fg: "#356"
 
-                    Text{ font.bold:true; text:"Colored:" ; styleColor: "white" ; color:"#333" ; style:"Raised"}
-                    Button { text:"Push me" ; backgroundColor: column3.bg; textColor: column3.fg}
-                    ButtonBlock {
-                        model: ListModel {
-                            ListElement { text: "A" }
-                            ListElement { text: "B" }
+                Rectangle{
+                    width:column3.width+16
+                    height:column3.height+16
+                    color:"#666"
+                    border.color:"#444"
+
+                    Column {
+                        x:8
+                        id:column3
+                        spacing: columnspacing
+                        anchors.top:parent.top
+                        anchors.topMargin:6
+                        property variant bg: "#444"
+                        property variant fg: "#eee"
+
+                        Text{ font.bold:true; text:"Colored:" ; styleColor: "white" ; color:"#333" ; style:"Raised"}
+                        Button { text:"Push me" ; backgroundColor: column3.bg; textColor: column3.fg}
+                        ButtonBlock {
+                            model: ListModel {
+                                ListElement { text: "A" }
+                                ListElement { text: "B" }
+                            }
+                        }
+                        LineEdit { backgroundColor: column3.bg; textColor: column3.fg}
+                        MultiLineEdit  { placeholderText:"This is a\n multiline control."; backgroundColor: column3.bg; textColor: column3.fg}
+                        SpinBox{ backgroundColor: column3.bg; textColor: column3.fg}
+                        Slider { value: 50; backgroundColor: column3.bg; progressColor: "#4ef";}
+                        Switch { backgroundColor: column3.bg }
+                        Row{
+                            CheckBox { backgroundColor: column3.bg; }
+                            CheckBox { checked:true; backgroundColor: column3.bg; }
+                            RadioButton{ backgroundColor: column3.bg; }
+                            RadioButton { checked:true; backgroundColor: column3.bg; }
+                            spacing:rowspacing
+                        }
+                        ChoiceList{ model: choices; backgroundColor: column3.bg; textColor: column3.fg}
+                        ProgressBar {
+                            backgroundColor: column3.bg;
+                            Timer { running: true; repeat: true; interval: 25; onTriggered: {parent.value = (parent.value + 1) % 100 }}
+                        }
+                        ProgressBar{ indeterminate:true; backgroundColor: column3.bg;}
+                        Row{
+                            spacing:rowspacing
+                            BusyIndicator{}
+                            BusyIndicator{running:false}
                         }
                     }
-                    LineEdit { backgroundColor: column3.bg; textColor: column3.fg}
-                    MultiLineEdit  { placeholderText:"This is a\n multiline control."; backgroundColor: column3.bg; textColor: column3.fg}
-                    SpinBox{ backgroundColor: column3.bg; textColor: column3.fg}
-                    Slider { value: 50; backgroundColor: column3.bg; progressColor: "#44e";}
-                    Switch { backgroundColor: column3.bg }
-                    Row{
-                        CheckBox { backgroundColor: column3.bg; }
-                        CheckBox { checked:true; backgroundColor: column3.bg; }
-                        RadioButton{ backgroundColor: column3.bg; }
-                        RadioButton { checked:true; backgroundColor: column3.bg; }
-                        spacing:rowspacing
-                    }
-                    ChoiceList{ model: choices; backgroundColor: column3.bg; textColor: column3.fg}
-                    ProgressBar {
-                        backgroundColor: column3.bg;
-                        Timer { running: true; repeat: true; interval: 25; onTriggered: {parent.value = (parent.value + 1) % 100 }}
-                    }
-                    ProgressBar{ indeterminate:true; backgroundColor: column3.bg;}
-                    Row{
-                        spacing:rowspacing
-                        BusyIndicator{}
-                        BusyIndicator{running:false}
-                    }
-
                 }
                 Column {
                     id:column4
                     spacing: columnspacing
-                    anchors.margins: 20
+                    anchors.top:parent.top
+                    anchors.topMargin:6
 
+                    Item{height:6; width:6}
                     Text{ font.bold:true; text:"Custom:" ; styleColor: "white" ; color:"#333" ; style:"Raised"}
                     Button { text:"Push me" ; background: shinyButton}
                     ButtonBlock {

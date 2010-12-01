@@ -43,7 +43,7 @@ QtObject {
             Rectangle {
                 color: progressColor
                 height: 10
-                radius: 0
+                radius: 4
                 anchors.verticalCenter: parent.verticalCenter
                 x: Math.min(1+zeroPosition, handlePosition) // see QTBUG-15250
                 width: Math.max(zeroPosition, handlePosition) - x
