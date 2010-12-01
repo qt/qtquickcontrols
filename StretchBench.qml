@@ -4,7 +4,7 @@ Item {
     width: 950
     height: 500
 
-    property string currentComponentName
+    property string currentComponentName: componentsList.model.get(componentsList.currentIndex).component
 
     Rectangle {
         id: listPanel
@@ -12,14 +12,10 @@ Item {
         width: 200
         anchors.top: parent.top
         anchors.bottom: parent.bottom
+
         ListView {
             id: componentsList
             anchors.fill: parent
-
-            onCurrentIndexChanged: {
-                currentComponentName = componentsList.model.get(componentsList.currentIndex).component
-                redJiggRect.loadComponent(currentComponentName)
-            }
 
             model: ListModel {
                 ListElement { component: "ButtonBlock" }
@@ -35,6 +31,7 @@ Item {
                 ListElement { component: "MultiLineEdit" }
                 ListElement { component: "SpinBox" }
             }
+
             highlight: Rectangle { color: "blue" }
             delegate: Item {
                 width: componentsList.width
@@ -69,185 +66,109 @@ Item {
             anchors.margins: -1000
             source: "images/checkered.png"
             fillMode: Image.Tile
-            opacity: testBenchRect.moving || redJiggRect.state == "pressed" ? 0.12 : 0
+            opacity: testBenchRect.moving || topLeftHandle.pressed || bottomRightHandle.pressed ? 0.12 : 0
             Behavior on opacity { NumberAnimation { duration: 100 } }
         }
 
         // Upper-left resizing handle
 
-        Rectangle {
+        MouseArea {
             id: topLeftHandle
-            width: 30; height: 30
-            color: "blue"
+            width: 30
+            height: 30
 
-            MouseArea {
+            drag.target: topLeftHandle
+            drag.minimumX: 0; drag.minimumY: 0
+            drag.maximumX: bottomRightHandle.x - width
+            drag.maximumY: bottomRightHandle.y - height
+
+            Rectangle {
                 anchors.fill: parent
-                onPressed: redJiggRect.state = "pressed"
-                onReleased: redJiggRect.state = ""
-                drag.target: topLeftHandle
-                drag.minimumX: 0; drag.minimumY: 0
-                drag.maximumX: bottomRightHandle.x-width
-                drag.maximumY: bottomRightHandle.y-height
+                color: "blue"
             }
         }
 
         // Container for the tested Component (red when resized)
 
         Rectangle {
-            id: redJiggRect
+            id: container
+
+            property bool pressed: topLeftHandle.pressed || bottomRightHandle.pressed
+
             color: "transparent"
-            border.color: state == "pressed" ? "red" : "transparent"
+            border.color: pressed ? "red" : "transparent"
             anchors.top: topLeftHandle.bottom
             anchors.left: topLeftHandle.right
             anchors.bottom: bottomRightHandle.top
             anchors.right: bottomRightHandle.left
 
-            property Item testItem
+            Loader {
+                id: loader
+                sourceComponent: sourceComponentFromIndex()
 
-            function loadComponent(componentName) {
-                redJiggRect.state = ""
-                var str = 'import QtQuick 1.0;'
-
-                switch (componentName) {
-                case "Button": str +=
-                    'Button { ' +
-                    '   enabled: !buttonOptionDimmed.checked;' +
-                    '   checkable: buttonOptionLatching.checked;' +
-                    '   iconSource: buttonOptionHasIcon.checked ? "images/testIcon.png" : "";' +
-                    '   text: buttonOptionTwoLineText.checked ? "Button\\nwith two lines" : "Button";' +
-                    '   backgroundColor: buttonOptionGreenBackground.checked ? "green" : "#fff";' +
-                    '   textColor: buttonOptionWhiteText.checked ? "white" : "black";' +
-                    '}';
-                    break;
-                case "ButtonBlock": str +=
-                    'ButtonBlock { ' +
-//                    '    orientation: Qt.Vertical;' +
-                    '    model: ListModel {' +
-                    '        ListElement { text: "Button A" }' +
-                    '        ListElement { text: "Button B1" }' +
-                    '        ListElement { text: "Button C12" } ' + //;iconSource: "images/testIcon.png" }' +
-                    '        ListElement { text: "Button D123" }' +
-                    '    }' +
-                    '   onClicked: model.setProperty(1, "text", "Foo")' +
-                    '}'
-                    break;
-                case "CheckBox": str +=
-                    'CheckBox { ' +
-                    '   enabled: !checkBoxOptionDimmed.checked;' +
-                    '   backgroundColor: checkBoxOptionGreenBackground.checked ? "green" : "#fff";' +
-                    '}';
-                    break;
-                case "RadioButton": str +=
-                    'RadioButton { ' +
-                    '   enabled: !radioButtonOptionDimmed.checked;' +
-                    '   backgroundColor: radioButtonOptionGreenBackground.checked ? "green" : "#fff";' +
-                    '}';
-                    break;
-                case "Slider": str +=
-                    'Slider { ' +
-                    '   enabled: !sliderOptionDimmed.checked;' +
-                    '   value: sliderOptionValueAt30.checked ? 30 : 0;' +
-                    '   minimumValue: sliderOptionZeroInMiddle.checked ? -50 : 0;' +
-                    '   maximumValue: sliderOptionZeroInMiddle.checked ? 50 : 100;' +
-//                    '   text: sliderOptionTimeFormatted.checked ? Math.floor(value/60) + ":" + value%60 : value;' +
-                    '}';
-                    break;
-                case "ProgressBar": str +=
-                    'ProgressBar { ' +
-                    '   enabled: !progressBarOptionDimmed.checked;' +
-                    '   indeterminate: progressBarOptionIndeterminate.checked;' +
-                    '   Timer { id: timer; running: true; repeat: true; interval: 25;' +
-                    '       onTriggered: { parent.value = (parent.value + 1) % 100 }' +
-                    '   }' +
-                    '}';
-                    break;
-                case "BusyIndicator": str +=
-                    'BusyIndicator { ' +
-                    '   enabled: !busyIndicatorOptionDimmed.checked;' +
-                    '   running: !busyIndicatorOptionPaused.checked;' +
-                    '}';
-                    break;
-                case "LineEdit": str +=
-                    'LineEdit { ' +
-                    '   enabled: !lineEditOptionDimmed.checked;' +
-                    '   textColor: lineEditOptionRedText.checked ? "red" : "black";' +
-                    '   font.italic: lineEditOptionItalicText.checked;' +
-                    '   passwordMode: lineEditOptionPasswordMode.checked;' +
-                    '}';
-                    break;
-                case "MultiLineEdit": str +=
-                    'MultiLineEdit { ' +
-                    '   enabled: !multiLineEditOptionDimmed.checked;' +
-                    '}';
-                    break;
-                case "Switch": str +=
-                    'Switch { ' +
-                    '   enabled: !switchOptionDimmed.checked;' +
-                    '}';
-                    break;
-                case "ChoiceList": str +=
-                    'ChoiceList { ' +
-                    '   enabled: !choiceListOptionDimmed.checked;' +
-                    '   model: choiceListOptionHasModel.checked ? testDataModel : null;' +
-                    '}';
-                    break;
-                case "SpinBox": str +=
-                   'SpinBox { ' +
-                   '   enabled: !spinBoxOptionDimmed.checked;' +
-                   '}';
-                    break;
+                onStatusChanged: {
+                    if (status == Loader.Ready) {
+                        anchors.fill = null;
+                        topLeftHandle.x = (testBenchRect.width - item.width) / 2 - topLeftHandle.width;
+                        topLeftHandle.y = (testBenchRect.height - item.height) / 2 - topLeftHandle.height;
+                        bottomRightHandle.x = (testBenchRect.width - item.width) / 2 + item.width;
+                        bottomRightHandle.y = (testBenchRect.height - item.height) / 2 + item.height;
+                        anchors.fill = container;
+                        item.anchors.fill = loader;
+                    }
                 }
 
-                var newObject = Qt.createQmlObject(str, redJiggRect);
-                topLeftHandle.x = (testBenchRect.width-newObject.width)/2 - topLeftHandle.width;
-                topLeftHandle.y = (testBenchRect.height-newObject.height)/2 - topLeftHandle.height;
-                bottomRightHandle.x = (testBenchRect.width-newObject.width)/2 + newObject.width;
-                bottomRightHandle.y = (testBenchRect.height-newObject.height)/2 + newObject.height;
-                newObject.anchors.fill = redJiggRect;
-                if(testItem) testItem.destroy();
-                testItem = newObject;
+                function sourceComponentFromIndex() {
+                    var name = componentsList.model.get(componentsList.currentIndex).component;
+                    switch (name) {
+                    case "Button": return buttonComponent;
+                    case "ButtonBlock": return buttonBlockComponent;
+                    case "CheckBox": return checkBoxComponent;
+                    case "RadioButton": return radioButtonComponent;
+                    case "Switch": return switchComponent;
+                    case "Slider": return sliderComponent;
+                    case "ProgressBar": return progressBarComponent;
+                    case "BusyIndicator": return busyIndicatorComponent;
+                    case "ChoiceList": return choiceListComponent;
+                    case "LineEdit": return lineEditComponent;
+                    case "MultiLineEdit": return multiLineEditComponent;
+                    case "SpinBox": return spinBoxComponent;
+                    }
+                    return null;
+                }
 
-                // Yellow outlined rect showing component's margins
-                Qt.createQmlObject( 'import QtQuick 1.0;' +
-                'Rectangle {' +
-                '    opacity: redJiggRect.state == "pressed" && redJiggRect.testItem.topMargin != undefined ? 1 : 0;' +
-                '    color: "transparent";' +
-                '    border.color: "yellow";' +
-                '    anchors.fill: parent;' +
-                '    anchors.leftMargin: Math.max(redJiggRect.testItem.leftMargin, 0);' +
-                '    anchors.rightMargin: Math.max(redJiggRect.testItem.rightMargin, 0);' +
-                '    anchors.topMargin: Math.max(redJiggRect.testItem.topMargin, 0);' +
-                '    anchors.bottomMargin: Math.max(redJiggRect.testItem.bottomMargin, 0);' +
-                '}', testItem);
+                Rectangle {
+                    color: "transparent"
+                    opacity: container.pressed && loader.item.topMargin != undefined ? 1 : 0
+                    border.color: "yellow"
 
-            }
+                    anchors.fill: parent
+                    anchors.leftMargin: Math.max(loader.item.leftMargin, 0)
+                    anchors.rightMargin: Math.max(loader.item.rightMargin, 0)
+                    anchors.topMargin: Math.max(loader.item.topMargin, 0)
+                    anchors.bottomMargin: Math.max(loader.item.bottomMargin, 0)
 
-            ListModel {
-                id: testDataModel
-                ListElement { text: "Apple" }
-                ListElement { text: "Banana" }
-                ListElement { text: "Coconut" }
-                ListElement { text: "Orange" }
-                ListElement { text: "Kiwi" }
+                    z: 2
+                }
             }
         }
 
         // Lower-right resizing handle
 
-        Rectangle {
+        MouseArea {
             id: bottomRightHandle
-            width: 30; height: 30
-            color: "blue"
+            width: 30
+            height: 30
 
-            MouseArea {
+            drag.target: bottomRightHandle
+            drag.minimumX: topLeftHandle.x + width
+            drag.minimumY: topLeftHandle.y + height
+            drag.maximumX: testBenchRect.width - width;
+            drag.maximumY: testBenchRect.height - height
+
+            Rectangle {
                 anchors.fill: parent
-                onPressed: redJiggRect.state = "pressed"
-                onReleased: redJiggRect.state = ""
-                drag.target: bottomRightHandle
-                drag.minimumX: topLeftHandle.x+width
-                drag.minimumY: topLeftHandle.y+height
-                drag.maximumX: testBenchRect.width-width;
-                drag.maximumY: testBenchRect.height-height
+                color: "blue"
             }
         }
     }
@@ -347,4 +268,130 @@ Item {
         }
     }
 
+    //
+    // The components that we use in the stretch bench
+    //
+
+    Component {
+        id: buttonComponent
+        Button {
+            enabled: !buttonOptionDimmed.checked
+            checkable: buttonOptionLatching.checked
+            iconSource: buttonOptionHasIcon.checked ? "images/testIcon.png" : ""
+            backgroundColor: buttonOptionGreenBackground.checked ? "green" : "#fff"
+            textColor: buttonOptionWhiteText.checked ? "white" : "black"
+        }
+    }
+
+    Component {
+        id: buttonBlockComponent
+        ButtonBlock {
+            //orientation: Qt.Vertical
+            model: ListModel {
+                ListElement { text: "Button A" }
+                ListElement { text: "Button B1" }
+                ListElement { text: "Button C12" } //;iconSource: "images/testIcon.png" }
+                ListElement { text: "Button D123" }
+            }
+            onClicked: model.setProperty(1, "text", "Foo")
+        }
+    }
+
+    Component {
+        id: checkBoxComponent
+        CheckBox {
+            enabled: !checkBoxOptionDimmed.checked
+            backgroundColor: checkBoxOptionGreenBackground.checked ? "green" : "#fff"
+        }
+    }
+
+    Component {
+        id: radioButtonComponent
+        RadioButton {
+            enabled: !radioButtonOptionDimmed.checked
+            backgroundColor: radioButtonOptionGreenBackground.checked ? "green" : "#fff"
+        }
+    }
+
+    Component {
+        id: sliderComponent
+        Slider {
+            enabled: !sliderOptionDimmed.checked
+            value: sliderOptionValueAt30.checked ? 30 : 0
+            minimumValue: sliderOptionZeroInMiddle.checked ? -50 : 0
+            maximumValue: sliderOptionZeroInMiddle.checked ? 50 : 100
+            //text: sliderOptionTimeFormatted.checked ? Math.floor(value/60) + ":" + value%60 : value
+        }
+    }
+
+    Component {
+        id: progressBarComponent
+        ProgressBar {
+            enabled: !progressBarOptionDimmed.checked
+            indeterminate: progressBarOptionIndeterminate.checked
+            Timer {
+                id: timer
+                running: true
+                repeat: true
+                interval: 25
+                onTriggered: { parent.value = (parent.value + 1) % 100 }
+            }
+        }
+    }
+
+    Component {
+        id: busyIndicatorComponent
+        BusyIndicator {
+            enabled: !busyIndicatorOptionDimmed.checked
+            running: !busyIndicatorOptionPaused.checked
+        }
+    }
+
+    Component {
+        id: lineEditComponent
+        LineEdit {
+            enabled: !lineEditOptionDimmed.checked
+            textColor: lineEditOptionRedText.checked ? "red" : "black"
+            font.italic: lineEditOptionItalicText.checked
+            passwordMode: lineEditOptionPasswordMode.checked
+        }
+    }
+
+    Component {
+        id: multiLineEditComponent
+        MultiLineEdit {
+            enabled: !multiLineEditOptionDimmed.checked
+        }
+    }
+
+    Component {
+        id: switchComponent
+        Switch {
+            enabled: !switchOptionDimmed.checked
+        }
+    }
+
+    Component {
+        id: choiceListComponent
+        ChoiceList {
+            enabled: !choiceListOptionDimmed.checked
+            model: choiceListOptionHasModel.checked ? testDataModel : null
+
+            ListModel {
+                id: testDataModel
+                ListElement { text: "Apple" }
+                ListElement { text: "Banana" }
+                ListElement { text: "Coconut" }
+                ListElement { text: "Orange" }
+                ListElement { text: "Kiwi" }
+            }
+        }
+    }
+
+    Component {
+        id: spinBoxComponent
+        SpinBox {
+            enabled: !spinBoxOptionDimmed.checked
+        }
+    }
 }
