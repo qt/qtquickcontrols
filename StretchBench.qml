@@ -277,6 +277,7 @@ Item {
         Button {
             enabled: !buttonOptionDimmed.checked
             checkable: buttonOptionLatching.checked
+            text: buttonOptionTwoLineText.checked ? "Button\nwith two lines" : "Button"
             iconSource: buttonOptionHasIcon.checked ? "images/testIcon.png" : ""
             backgroundColor: buttonOptionGreenBackground.checked ? "green" : "#fff"
             textColor: buttonOptionWhiteText.checked ? "white" : "black"
