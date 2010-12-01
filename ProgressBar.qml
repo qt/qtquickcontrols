@@ -52,6 +52,7 @@ Item {
             property alias maximumValue:progressBar.maximumValue
             property alias minimumValue:progressBar.minimumValue
             property real complete: (value-minimumValue)/(maximumValue-minimumValue)
+            property alias widget: progressBar
 
             opacity: !indeterminate && value > 0 ? 1 : 0
             width: Math.round((progressBar.width-leftMargin-rightMargin)*(complete))
@@ -62,6 +63,7 @@ Item {
 
         Loader {
             id: indeterminateComponent
+            property alias widget: progressBar
             property alias indeterminate:progressBar.indeterminate
             property alias value:progressBar.value
             property alias maximumValue:progressBar.maximumValue

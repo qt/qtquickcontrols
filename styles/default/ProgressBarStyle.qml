@@ -60,6 +60,21 @@ QtObject {
             border.left:complete > 0.1 ? 6: 2;
             border.right:complete > 0.1 ? 6: 2
             border.top:10; border.bottom:10
+            clip:true
+            Image {
+                id: overlay
+                NumberAnimation on x {
+                    running: true;
+                    loops:Animation.Infinite;
+                    from:0;
+                    to:-overlay.sourceSize.width;
+                    duration:2000
+                }
+                width:widget.width + sourceSize.width
+                height:widget.height
+                fillMode:Image.TileHorizontally
+                source: "../../images/progressbar_overlay.png"
+            }
         }
     }
 
@@ -71,7 +86,7 @@ QtObject {
             BorderImage {
                 id:indicator
                 Behavior on x {
-                    NumberAnimation{easing.type:Easing.Linear; duration:1500}
+                    NumberAnimation{easing.type:Easing.Linear; duration:1000}
                 }
                 onXChanged: {
                     var w = bar.width - indicator.width
@@ -83,6 +98,24 @@ QtObject {
                 source:"../../images/progressbar_indeterminate.png"
                 border.left:10 ; border.right:10
                 border.top:10 ; border.bottom:10
+                clip:true
+                Item {
+                    anchors.left:parent.left
+                    Image {
+                    id: overlay
+                    NumberAnimation on x {
+                        running: true;
+                        loops:Animation.Infinite;
+                        from:0;
+                        to:-overlay.sourceSize.width;
+                        duration:2000
+                    }
+                    width:widget.width + sourceSize.width
+                    height:widget.height
+                    fillMode:Image.TileHorizontally
+                    source: "../../images/progressbar_overlay.png"
+                }
+            }
             }
         }
     }
