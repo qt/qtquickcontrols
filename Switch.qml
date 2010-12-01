@@ -22,6 +22,8 @@ Item {
     width: Math.max(minimumWidth, grooveLoader.item.width)
     height: Math.max(minimumHeight, grooveLoader.item.height)
 
+    onCheckedChanged: __snapHandleIntoPlace();
+
     Loader {
         id: grooveLoader
         anchors.fill: parent
@@ -35,6 +37,8 @@ Item {
         anchors.top: parent.top
         anchors.bottom: parent.bottom
         sourceComponent: handle
+
+        Component.onCompleted:item.x = checked ? mouseArea.drag.maximumX : mouseArea.drag.minimumX
     }
 
     MouseArea {

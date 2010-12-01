@@ -81,6 +81,7 @@ Item {
         color: "gray"
         clip: true
         text: "Enter text"
+        Behavior on opacity{NumberAnimation{duration:90}}
     }
 
     Text {
