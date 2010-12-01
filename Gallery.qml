@@ -2,9 +2,9 @@ import Qt 4.7
 
 Rectangle {
     width: 4*240
-    height: 440
-    property int rowspacing: 22
-    property int columnspacing: 12
+    height: 580
+    property int rowspacing: 24
+    property int columnspacing: 14
     gradient: Gradient{ GradientStop{ position:1 ; color:"#bbb"} GradientStop{ position:0 ; color:"#ccc"}}
 
     Flickable {
@@ -43,7 +43,12 @@ Rectangle {
                     MultiLineEdit { placeholderText:"This is a\n multiline control."}
                     SpinBox{ }
                     Slider { value: 50 }
-                    Switch { }
+                    Row{
+                        spacing:rowspacing
+                        anchors.horizontalCenter:parent.horizontalCenter
+                        Switch { }
+                        Switch { checked: true }
+                    }
                     Row{
                         CheckBox { } CheckBox { checked:true}
                         RadioButton{ } RadioButton { checked:true}
@@ -56,6 +61,7 @@ Rectangle {
                     ProgressBar { indeterminate:true }
                     Row{
                         spacing:rowspacing
+                        anchors.horizontalCenter:parent.horizontalCenter
                         BusyIndicator{}
                         BusyIndicator{running:false}
                     }
@@ -77,7 +83,12 @@ Rectangle {
                     MultiLineEdit { placeholderText:"This is a\n multiline control."}
                     SpinBox{ }
                     Slider { value: 50 }
-                    Switch { }
+                    Row{
+                        spacing:rowspacing
+                        anchors.horizontalCenter:parent.horizontalCenter
+                        Switch { }
+                        Switch { checked: true }
+                    }
                     Row{
                         CheckBox { } CheckBox { checked:true}
                         RadioButton{ } RadioButton { checked:true}
@@ -90,6 +101,7 @@ Rectangle {
                     ProgressBar { indeterminate:true }
                     Row{
                         spacing:rowspacing
+                        anchors.horizontalCenter:parent.horizontalCenter
                         BusyIndicator{}
                         BusyIndicator{running:false}
                     }
@@ -109,8 +121,9 @@ Rectangle {
                         anchors.topMargin:6
                         property variant bg: "#444"
                         property variant fg: "#eee"
+                        property variant pg: "#3af"
 
-                        Text{ font.bold:true; text:"Colored:" ; styleColor: "white" ; color:"#333" ; style:"Raised"}
+                        Text{ font.bold:true; text:"Colored:" ; styleColor: "#333" ; color:"white" ; style:"Raised"}
                         Button { text:"Push me" ; backgroundColor: column3.bg; textColor: column3.fg}
                         ButtonBlock {
                             model: ListModel {
@@ -121,8 +134,13 @@ Rectangle {
                         LineEdit { backgroundColor: column3.bg; textColor: column3.fg}
                         MultiLineEdit  { placeholderText:"This is a\n multiline control."; backgroundColor: column3.bg; textColor: column3.fg}
                         SpinBox{ backgroundColor: column3.bg; textColor: column3.fg}
-                        Slider { value: 50; backgroundColor: column3.bg; progressColor: "#4ef";}
-                        Switch { backgroundColor: column3.bg }
+                        Slider { value: 50; backgroundColor: column3.bg; progressColor: column3.pg;}
+                        Row{
+                            spacing:rowspacing
+                            anchors.horizontalCenter:parent.horizontalCenter
+                            Switch { backgroundColor: column3.bg; positiveHighlightColor:column3.pg}
+                            Switch { backgroundColor: column3.bg; positiveHighlightColor:column3.pg; checked: true }
+                        }
                         Row{
                             CheckBox { backgroundColor: column3.bg; }
                             CheckBox { checked:true; backgroundColor: column3.bg; }
@@ -133,11 +151,13 @@ Rectangle {
                         ChoiceList{ model: choices; backgroundColor: column3.bg; textColor: column3.fg}
                         ProgressBar {
                             backgroundColor: column3.bg;
+                            progressColor: column3.pg
                             Timer { running: true; repeat: true; interval: 25; onTriggered: {parent.value = (parent.value + 1) % 100 }}
                         }
-                        ProgressBar{ indeterminate:true; backgroundColor: column3.bg;}
+                        ProgressBar{ indeterminate:true; backgroundColor: column3.bg; progressColor: column3.pg}
                         Row{
                             spacing:rowspacing
+                            anchors.horizontalCenter:parent.horizontalCenter
                             BusyIndicator{}
                             BusyIndicator{running:false}
                         }
@@ -202,17 +222,29 @@ Rectangle {
                             }
                         }
                     }
-                    Switch {
-                        id:aa
-                        groove: shinyEdit;
-                        handle: BorderImage {
-                            width:aa.height
-                            height:aa.height
-                            source: parent.pressed ? "images/shinybutton_pressed.png":"images/shinybutton_normal.png"
-                            border.left: 6; border.top: 6
-                            border.right: 6; border.bottom: 6
+                    Row{
+                        spacing:rowspacing
+                        Switch {
+                            id:aa
+                            groove: shinyEdit;
+                            handle: handle
                         }
-
+                        Switch {
+                            id:bb
+                            groove: shinyEdit;
+                            handle: handle
+                            checked: true
+                        }
+                        Component {
+                            id:handle
+                            BorderImage {
+                                width:bb.height
+                                height:bb.height
+                                source: parent.pressed ? "images/shinybutton_pressed.png":"images/shinybutton_normal.png"
+                                border.left: 6; border.top: 6
+                                border.right: 6; border.bottom: 6
+                            }
+                        }
                     }
                     Row{
                         CheckBox { background: shinyEdit} CheckBox { background: shinyEdit; checked:true}
@@ -240,6 +272,7 @@ Rectangle {
                     }
                     Row{
                         spacing:rowspacing
+                        anchors.horizontalCenter:parent.horizontalCenter
                         BusyIndicator{background:shinySpinner}
                         BusyIndicator{background:shinySpinner; running:false}
                     }

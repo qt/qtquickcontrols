@@ -1,7 +1,7 @@
 import Qt 4.7
 
 QtObject {
-    property int minimumWidth: 100
+    property int minimumWidth: 80
     property int minimumHeight: 32
 
     property Component groove: Component {
@@ -14,10 +14,9 @@ QtObject {
                 color: backgroundColor
             }
 
-            Rectangle {
+            Item {
                 anchors.fill: parent
                 anchors.margins: 2
-                radius:5
                 clip: true
 
                 Item {
@@ -33,39 +32,6 @@ QtObject {
                         anchors.bottom: parent.bottom
                         anchors.left: parent.left
                         anchors.right: parent.horizontalCenter
-                    }
-                    Text {
-                        anchors.verticalCenter: positiveBackground.verticalCenter
-                        anchors.left: positiveBackground.left
-                        anchors.leftMargin: 34
-                        font.pixelSize: 14
-                        font.bold: true
-                        color: "#666"
-                        text: "ON"
-                        style: "Sunken"
-                        styleColor: "white"
-                    }
-
-                    Rectangle {
-                        id: negativeBackground
-                        color: negativeHighlightColor
-                        opacity: 0.8
-                        anchors.top: parent.top
-                        anchors.bottom: parent.bottom
-                        anchors.left: parent.horizontalCenter
-                        anchors.right: parent.right
-
-                    }
-                    Text {
-                        anchors.verticalCenter: negativeBackground.verticalCenter
-                        anchors.right: negativeBackground.right
-                        anchors.rightMargin: 34
-                        font.pixelSize: 14
-                        font.bold: true
-                        color: "#666"
-                        text: "OFF"
-                        style: "Sunken"
-                        styleColor: "white"
                     }
                 }
             }
@@ -93,7 +59,7 @@ QtObject {
             BorderImage {
                 id: borderImage
                 opacity: enabled ? 1 : 0.7
-                width: 50
+                width: 42
                 height: parent.height
                 smooth: true
                 source: pressed ? "../../images/switch_pressed.png" : "../../images/switch_normal.png"

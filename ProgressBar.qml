@@ -10,7 +10,7 @@ Item {
     property bool indeterminate: false
 
     property color backgroundColor: "white"
-    property color progressColor: "lightgreen"
+    property color progressColor: "#fa0"
 
     property int leftMargin: defaultStyle.leftMargin
     property int topMargin: defaultStyle.topMargin

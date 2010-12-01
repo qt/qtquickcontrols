@@ -55,6 +55,7 @@ QtObject {
 
     property Component progress: Component {    // progress bar, known duration
         BorderImage { // green progress indication
+            id:progress
             opacity: styledItem.enabled ? 1: 0.7
             source: complete > 0.95 ?
                     "../../images/progressbar_indeterminate.png" : "../../images/progressbar_fill.png"
@@ -62,20 +63,31 @@ QtObject {
             border.right:complete > 0.1 ? 6: 2
             border.top:10; border.bottom:10
             clip:true
-            Image {
-                visible:styledItem.enabled
-                id: overlay
-                NumberAnimation on x {
-                    running: styledItem.enabled;
-                    loops:Animation.Infinite;
-                    from:0;
-                    to:-overlay.sourceSize.width;
-                    duration:2000
+
+            Rectangle{
+                anchors.fill:progress
+                color: styledItem.progressColor
+                z:-1
+                radius:2
+                smooth:true
+                clip:true
+                anchors.rightMargin:0
+                anchors.margins:1
+                Image {
+                    visible:styledItem.enabled
+                    id: overlay
+                    NumberAnimation on x {
+                        running: styledItem.enabled;
+                        loops:Animation.Infinite;
+                        from:0;
+                        to:-overlay.sourceSize.width;
+                        duration:2000
+                    }
+                    width:styledItem.width + sourceSize.width
+                    height:styledItem.height
+                    fillMode:Image.TileHorizontally
+                    source: "../../images/progressbar_overlay.png"
                 }
-                width:styledItem.width + sourceSize.width
-                height:styledItem.height
-                fillMode:Image.TileHorizontally
-                source: "../../images/progressbar_overlay.png"
             }
         }
     }
@@ -102,24 +114,32 @@ QtObject {
                 border.left:10 ; border.right:10
                 border.top:10 ; border.bottom:10
                 clip:true
-                Item {
-                    visible:styledItem.enabled
-                    anchors.left:parent.left
+
+                Rectangle{
+                    anchors.fill:indicator
+                    color: styledItem.progressColor
+                    z:-1
+                    radius:2
+                    smooth:true
+                    clip:true
+                    anchors.rightMargin:0
+                    anchors.margins:1
                     Image {
-                    id: overlay
-                    NumberAnimation on x {
-                        running: styledItem.enabled;
-                        loops:Animation.Infinite;
-                        from:0;
-                        to:-overlay.sourceSize.width;
-                        duration:2000
+                        visible:styledItem.enabled
+                        id: overlay
+                        NumberAnimation on x {
+                            running: styledItem.enabled;
+                            loops:Animation.Infinite;
+                            from:0;
+                            to:-overlay.sourceSize.width;
+                            duration:2000
+                        }
+                        width:styledItem.width + sourceSize.width
+                        height:styledItem.height
+                        fillMode:Image.TileHorizontally
+                        source: "../../images/progressbar_overlay.png"
                     }
-                    width:styledItem.width + sourceSize.width
-                    height:styledItem.height
-                    fillMode:Image.TileHorizontally
-                    source: "../../images/progressbar_overlay.png"
                 }
-            }
             }
         }
     }

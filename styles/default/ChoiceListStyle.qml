@@ -120,7 +120,6 @@ QtObject {
             border.color: Qt.darker(color)
             radius:2
             smooth:true
-            opacity:0.7
         }
     }
 
