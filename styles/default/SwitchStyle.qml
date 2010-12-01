@@ -13,17 +13,11 @@ QtObject {
                 radius: 5
                 color: backgroundColor
             }
-            BorderImage {
-                anchors.fill: parent
-                source: "../../images/lineedit_normal.png"
-                border.left: 6; border.top: 3
-                border.right: 6; border.bottom: 3
-                smooth: true
-            }
 
             Rectangle {
                 anchors.fill: parent
-                anchors.margins: 4
+                anchors.margins: 2
+                radius:12
                 clip: true
 
                 Item {
@@ -39,15 +33,14 @@ QtObject {
                         anchors.bottom: parent.bottom
                         anchors.left: parent.left
                         anchors.right: parent.horizontalCenter
-
                     }
                     Text {
                         anchors.verticalCenter: positiveBackground.verticalCenter
                         anchors.left: positiveBackground.left
-                        anchors.leftMargin: 30
+                        anchors.leftMargin: 34
                         font.pixelSize: 14
                         font.bold: true
-                        color: "#aaa"
+                        color: "#666"
                         text: "ON"
                         style: "Sunken"
                         styleColor: "white"
@@ -66,16 +59,24 @@ QtObject {
                     Text {
                         anchors.verticalCenter: negativeBackground.verticalCenter
                         anchors.right: negativeBackground.right
-                        anchors.rightMargin: 30
+                        anchors.rightMargin: 34
                         font.pixelSize: 14
                         font.bold: true
-                        color: "#aaa"
+                        color: "#666"
                         text: "OFF"
                         style: "Sunken"
                         styleColor: "white"
                     }
                 }
             }
+            BorderImage {
+                anchors.fill: parent
+                source: "../../images/lineedit_normal.png"
+                border.left: 6; border.top: 3
+                border.right: 6; border.bottom: 3
+                smooth: true
+            }
+
         }
     }
 

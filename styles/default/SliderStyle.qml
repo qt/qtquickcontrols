@@ -40,6 +40,14 @@ QtObject {
                 anchors.margins: 1
                 radius: 2
             }
+            Rectangle {
+                color: progressColor
+                height: 10
+                radius: 0
+                anchors.verticalCenter: parent.verticalCenter
+                x: Math.min(1+zeroPosition, handlePosition) // see QTBUG-15250
+                width: Math.max(zeroPosition, handlePosition) - x
+            }
             BorderImage {
                 id: sliderbackground
                 anchors.verticalCenter: parent.verticalCenter
@@ -49,14 +57,6 @@ QtObject {
                 border.left: 12
                 border.right: 12
                 source: "../../images/slider.png"
-            }
-            Rectangle {
-                color: progressColor
-                height: 8
-                radius: 2
-                anchors.verticalCenter: parent.verticalCenter
-                x: Math.min(2+zeroPosition, handlePosition) // see QTBUG-15250
-                width: Math.max(zeroPosition, handlePosition) - x
             }
         }
     }
@@ -73,8 +73,11 @@ QtObject {
             Image {
                 id: handleImage
                 Rectangle {
-                    anchors.fill: parent
-                    anchors.margins: 5
+                    anchors.centerIn: parent
+                    width:parent.width - 7
+                    height:parent.height - 7
+                    smooth:true
+                    anchors.horizontalCenterOffset:-1
                     color: backgroundColor
                     radius: Math.floor(parent.width/2)
                     z: -1   // behind the image

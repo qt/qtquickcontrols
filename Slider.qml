@@ -31,7 +31,7 @@ import "./styles/default" as DefaultStyles
 Item {
     id: slider
 
-    property color progressColor: "#9cf"
+    property color progressColor: "#fa1"
     property color backgroundColor: "#fff"
     property alias containsMouse: mouseArea.containsMouse
 

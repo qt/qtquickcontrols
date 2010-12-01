@@ -11,7 +11,7 @@ Item {
     property alias containsMouse: mouseArea.containsMouse
 
     property color backgroundColor: "#fff"
-    property color positiveHighlightColor: "blue"
+    property color positiveHighlightColor: "#fa1"
     property color negativeHighlightColor: "transparent"
 
     property Component groove: defaultStyle.groove
@@ -31,6 +31,7 @@ Item {
 
     Loader {
         id: handleLoader
+        property Item styledItem:toggleSwitch
         anchors.top: parent.top
         anchors.bottom: parent.bottom
         sourceComponent: handle

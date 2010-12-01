@@ -116,10 +116,11 @@ QtObject {
 
     property Component listHighlight: Component {
         Rectangle {
-            color: "#33000000"
+            color: "#fa1"
+            border.color: Qt.darker(color)
             radius:2
             smooth:true
-            x: 1
+            opacity:0.7
         }
     }
 
