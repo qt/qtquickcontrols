@@ -55,6 +55,7 @@ QtObject {
 
     property Component progress: Component {    // progress bar, known duration
         BorderImage { // green progress indication
+            opacity: styledItem.enabled ? 1: 0.7
             source: complete > 0.95 ?
                     "../../images/progressbar_indeterminate.png" : "../../images/progressbar_fill.png"
             border.left:complete > 0.1 ? 6: 2;
@@ -62,16 +63,17 @@ QtObject {
             border.top:10; border.bottom:10
             clip:true
             Image {
+                visible:styledItem.enabled
                 id: overlay
                 NumberAnimation on x {
-                    running: true;
+                    running: styledItem.enabled;
                     loops:Animation.Infinite;
                     from:0;
                     to:-overlay.sourceSize.width;
                     duration:2000
                 }
-                width:widget.width + sourceSize.width
-                height:widget.height
+                width:styledItem.width + sourceSize.width
+                height:styledItem.height
                 fillMode:Image.TileHorizontally
                 source: "../../images/progressbar_overlay.png"
             }
@@ -85,6 +87,7 @@ QtObject {
             onWidthChanged:indicator.x = width-indicator.width
             BorderImage {
                 id:indicator
+                opacity: styledItem.enabled ? 1: 0.7
                 Behavior on x {
                     NumberAnimation{easing.type:Easing.Linear; duration:1000}
                 }
@@ -100,18 +103,19 @@ QtObject {
                 border.top:10 ; border.bottom:10
                 clip:true
                 Item {
+                    visible:styledItem.enabled
                     anchors.left:parent.left
                     Image {
                     id: overlay
                     NumberAnimation on x {
-                        running: true;
+                        running: styledItem.enabled;
                         loops:Animation.Infinite;
                         from:0;
                         to:-overlay.sourceSize.width;
                         duration:2000
                     }
-                    width:widget.width + sourceSize.width
-                    height:widget.height
+                    width:styledItem.width + sourceSize.width
+                    height:styledItem.height
                     fillMode:Image.TileHorizontally
                     source: "../../images/progressbar_overlay.png"
                 }

@@ -17,6 +17,8 @@ Rectangle {
             anchors.fill:parent
             border.color: "#22000000"
             color: "#22ffffff"
+
+            gradient: Gradient{ GradientStop{ position:0 ; color:"#aaa"} GradientStop{ position:1 ; color:"#eee"}}
             anchors.margins:20
 
             ListModel {
@@ -278,8 +280,6 @@ Rectangle {
                     border.right: 6; border.bottom: 6
                 }
             }
-
-            gradient: Gradient{ GradientStop{ position:0 ; color:"#aaa"} GradientStop{ position:1 ; color:"#eee"}}
         }
     }
 
