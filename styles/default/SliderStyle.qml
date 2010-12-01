@@ -34,6 +34,7 @@ QtObject {
     property Component groove: Component {
         id:defaultBackground
         Item {
+            opacity: enabled ? 1 : 0.7
             Rectangle {
                 color:backgroundColor
                 anchors.fill: sliderbackground

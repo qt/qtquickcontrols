@@ -14,6 +14,7 @@ QtObject {
     Component {
         id: defaultBackground
         Item {
+            opacity: enabled ? 1 : 0.7
             Rectangle {
                 x: 1
                 y: 1

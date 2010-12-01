@@ -19,6 +19,7 @@ QtObject {
                 color: backgroundColor
             }
             BorderImage { // Background border
+                opacity: enabled ? 1 : 0.7
                 anchors.fill: parent
                 border.left: 6; border.top: 6
                 border.right: 6; border.bottom: 6
