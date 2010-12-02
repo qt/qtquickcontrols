@@ -3,6 +3,7 @@ import "./styles/default" as DefaultStyles
 
 Item {
     id: multiLineEdit
+    SystemPalette{id:syspal}
 
     property bool passwordMode: false
 
