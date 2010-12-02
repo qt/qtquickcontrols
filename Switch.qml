@@ -12,7 +12,7 @@ Item {
     property alias containsMouse: mouseArea.containsMouse
 
     property color textColor: syspal.text
-    property color backgroundColor: syspal.base
+    property color backgroundColor: syspal.button
     property color positiveHighlightColor: syspal.highlight
     property color negativeHighlightColor: "transparent"
 

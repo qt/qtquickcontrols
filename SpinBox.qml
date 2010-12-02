@@ -105,7 +105,11 @@ Item {
             id: mouseUp
             anchors.fill: upButton.item
             onClicked: increment()
-            Timer { running: parent.pressed; interval: 100 ; repeat: true ; onTriggered: increment() }
+
+            property bool autoincrement: false;
+            onReleased: autoincrement = false
+            Timer { running: mouseUp.pressed; interval: 350 ; onTriggered: mouseUp.autoincrement = true }
+            Timer { running: mouseUp.autoincrement; interval: 60 ; repeat: true ; onTriggered: increment() }
         }
         onLoaded: {
             item.parent = spinbox
@@ -125,7 +129,11 @@ Item {
             id: mouseDown
             anchors.fill: downButton.item
             onClicked: decrement()
-            Timer { running: parent.pressed; interval: 100 ; repeat: true ; onTriggered: decrement() }
+
+            property bool autoincrement: false;
+            onReleased: autoincrement = false
+            Timer { running: mouseDown.pressed; interval: 350 ; onTriggered: mouseDown.autoincrement = true }
+            Timer { running: mouseDown.autoincrement; interval: 60 ; repeat: true ; onTriggered: decrement() }
         }
         onLoaded: {
             item.parent = spinbox
