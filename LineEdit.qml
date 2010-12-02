@@ -3,9 +3,10 @@ import "./styles/default" as DefaultStyles
 
 Item {
     id: lineEdit
+    SystemPalette{id:syspal}
 
-    property color textColor: _hints.textColor
-    property color backgroundColor: _hints.backgroundColor
+    property color textColor: syspal.text
+    property color backgroundColor: syspal.base
 
     property Component background: defaultStyle.background
     property Component hints: defaultStyle.hints

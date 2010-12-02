@@ -3,14 +3,15 @@ import "./styles/default" as DefaultStyles
 
 Item {
     id: progressBar
+    SystemPalette{id:syspal}
 
     property real value: 0
     property real minimumValue: 0
     property real maximumValue: 100
     property bool indeterminate: false
 
-    property color backgroundColor: "white"
-    property color progressColor: "#fa0"
+    property color backgroundColor: syspal.base
+    property color progressColor: syspal.highlight
 
     property int leftMargin: defaultStyle.leftMargin
     property int topMargin: defaultStyle.topMargin

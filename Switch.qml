@@ -3,6 +3,7 @@ import "./styles/default" as DefaultStyles
 
 Item {
     id: toggleSwitch    // "switch" is a reserved word
+    SystemPalette{id:syspal}
 
     property bool checked: false
     signal clicked
@@ -10,8 +11,9 @@ Item {
     property bool pressed: mouseArea.pressed
     property alias containsMouse: mouseArea.containsMouse
 
-    property color backgroundColor: "#fff"
-    property color positiveHighlightColor: "#fa1"
+    property color textColor: syspal.text
+    property color backgroundColor: syspal.base
+    property color positiveHighlightColor: syspal.highlight
     property color negativeHighlightColor: "transparent"
 
     property Component groove: defaultStyle.groove

@@ -62,7 +62,7 @@ QtObject {
                 width: 42
                 height: parent.height
                 smooth: true
-                source: pressed ? "../../images/button_pressed.png" : "../../images/button_normal.png"
+                source: pressed ? "images/button_pressed.png" : "images/button_normal.png"
 
                 border.left: 4; border.top: 4
                 border.right: 4; border.bottom: 4

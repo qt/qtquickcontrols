@@ -1,11 +1,14 @@
 import Qt 4.7
 
 Rectangle {
+    SystemPalette{id:syspal}
     width: 4*240
     height: 580
     property int rowspacing: 24
     property int columnspacing: 14
-    gradient: Gradient{ GradientStop{ position:1 ; color:"#bbb"} GradientStop{ position:0 ; color:"#ccc"}}
+    gradient: Gradient{ GradientStop{ position:1 ; color:syspal.window}
+              GradientStop{ position:0 ; color:Qt.darker(syspal.window, 1.2)}
+    }
 
     Flickable {
         id: flickable

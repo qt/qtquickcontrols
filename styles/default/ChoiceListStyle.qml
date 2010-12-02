@@ -26,7 +26,7 @@ QtObject {
                 anchors.fill: parent
                 id: backgroundimage
                 smooth: true
-                source: choiceList.pressed ? "../../images/button_pressed.png" : "../../images/button_normal.png"
+                source: choiceList.pressed ? "images/button_pressed.png" : "images/button_normal.png"
                 width: 80; height: 24
                 border.left: 3; border.top: 3
                 border.right: 3; border.bottom: 3
@@ -75,7 +75,7 @@ QtObject {
                 anchors.fill: parent
                 id: backgroundimage
                 smooth: true
-                source: "../../images/button_normal.png"
+                source: "images/button_normal.png"
                 width: 80; height: 24
                 border.left: 5; border.top: 5
                 border.right: 5; border.bottom: 5
@@ -116,18 +116,11 @@ QtObject {
 
     property Component listHighlight: Component {
         Rectangle {
-            color: "#fa1"
-            border.color: Qt.darker(color)
+            SystemPalette{id:syspal}
+            color: syspal.highlight
+            border.color: Qt.darker(syspal.highlight)
             radius:2
             smooth:true
-        }
-    }
-
-
-    property Component hints: Component {
-        Item {
-            property color textColor: "#555"
-            property color backgroundColor: "white"
         }
     }
 }

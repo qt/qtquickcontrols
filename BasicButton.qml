@@ -5,6 +5,7 @@ import "./styles/default" as DefaultStyles
 
 Item {
     id: button
+    SystemPalette{id:syspal}
 
     property int minimumWidth: defaultStyle.minimumWidth
     property int minimumHeight: defaultStyle.minimumHeight
@@ -19,8 +20,8 @@ Item {
 
     property Component background: defaultStyle.background
 
-    property color backgroundColor: "#fff";
-    property color textColor: "#222";
+    property color backgroundColor: syspal.button
+    property color textColor: syspal.text;
 
     property alias adjoins: backgroundComponent.adjoins
     AdjoiningVisual {   //mm Applies to BasicButton, or only special docking button?

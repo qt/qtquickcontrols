@@ -3,19 +3,19 @@ import "./styles/default" as DefaultStyles
 
 Item {
     id: choiceList
+    SystemPalette{id:syspal}
 
     property alias model: popupList.model
     property alias containsMouse: mouseArea.containsMouse   //mm needed?
 
     property Component background: defaultStyle.background
     property Component label: defaultStyle.label
-    property Component hints: defaultStyle.hints
     property Component listItem: defaultStyle.listItem
     property Component listHighlight: defaultStyle.listHighlight
     property Component popupFrame: defaultStyle.popupFrame
 
-    property color textColor: hintsLoader.item ? hintsLoader.item.textColor : "black"
-    property color backgroundColor: hintsLoader.item ? hintsLoader.item.backgroundColor : "white"
+    property color textColor: syspal.text
+    property color backgroundColor: syspal.button
 
     property int minimumWidth: defaultStyle.minimumWidth
     property int minimumHeight: defaultStyle.minimumHeight
@@ -35,8 +35,6 @@ Item {
                     labelComponent.item.width + leftMargin + rightMargin)
     height: Math.max(minimumHeight,
                      labelComponent.item.height + topMargin + bottomMargin)
-
-    Loader { id: hintsLoader; sourceComponent: hints }
 
     Loader {
         sourceComponent: background

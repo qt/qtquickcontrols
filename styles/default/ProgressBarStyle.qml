@@ -85,7 +85,7 @@ QtObject {
                     }
                     width:styledItem.width + sourceSize.width
                     height:styledItem.height
-                    fillMode:Image.TileHorizontally
+                    fillMode:Image.Tile
                     source: "../../images/progressbar_overlay.png"
                 }
             }
@@ -136,7 +136,7 @@ QtObject {
                         }
                         width:styledItem.width + sourceSize.width
                         height:styledItem.height
-                        fillMode:Image.TileHorizontally
+                        fillMode:Image.Tile
                         source: "../../images/progressbar_overlay.png"
                     }
                 }

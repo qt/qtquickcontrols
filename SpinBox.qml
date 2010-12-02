@@ -3,6 +3,7 @@ import "./styles/default" as DefaultStyles
 
 Item {
     id: spinbox
+    SystemPalette{id:syspal}
 
     property int minimumWidth: defaultStyle.minimumWidth
     property int minimumHeight: defaultStyle.minimumHeight
@@ -32,8 +33,8 @@ Item {
     property alias downHovered: mouseDown.containsMouse
     property alias containsMouse: mouseArea.containsMouse
 
-    property color backgroundColor: "#fff";
-    property color textColor: "#222";
+    property color backgroundColor: syspal.base
+    property color textColor: syspal.text
 
     property Component background: defaultStyle.background
     property Component up: defaultStyle.up

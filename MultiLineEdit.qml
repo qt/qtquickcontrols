@@ -6,8 +6,8 @@ Item {
 
     property bool passwordMode: false
 
-    property color textColor: _hints.textColor
-    property color backgroundColor: _hints.backgroundColor
+    property color textColor: syspal.text
+    property color backgroundColor: syspal.base
 
     property Component background: defaultStyle.background
     property Component hints: defaultStyle.hints

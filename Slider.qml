@@ -30,9 +30,11 @@ import "./styles/default" as DefaultStyles
 
 Item {
     id: slider
+    SystemPalette{id:syspal}
 
-    property color progressColor: "#fa1"
-    property color backgroundColor: "#fff"
+    property color progressColor: syspal.highlight
+    property color backgroundColor: syspal.base
+
     property alias containsMouse: mouseArea.containsMouse
 
     property int minimumWidth: defaultStyle.minimumWidth
