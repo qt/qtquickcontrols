@@ -24,7 +24,7 @@ QtObject {
                 border.left: 6; border.top: 6
                 border.right: 6; border.bottom: 6
                 smooth: true
-                source: "../../images/lineedit_normal.png"
+                source: "images/lineedit_normal.png"
             }
         }
     }

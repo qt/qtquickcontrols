@@ -46,7 +46,7 @@ QtObject {
             }
             BorderImage {
                 anchors.fill:parent
-                source:"../../images/progressbar_groove.png"
+                source:"images/progressbar_groove.png"
                 border.left:10; border.right:10
                 border.top:10; border.bottom:10
             }
@@ -58,7 +58,7 @@ QtObject {
             id:progress
             opacity: styledItem.enabled ? 1: 0.7
             source: complete > 0.95 ?
-                    "../../images/progressbar_indeterminate.png" : "../../images/progressbar_fill.png"
+                    "images/progressbar_indeterminate.png" : "images/progressbar_fill.png"
             border.left:complete > 0.1 ? 6: 2;
             border.right:complete > 0.1 ? 6: 2
             border.top:10; border.bottom:10
@@ -84,7 +84,7 @@ QtObject {
                     width:styledItem.width + sourceSize.width
                     height:styledItem.height
                     fillMode:Image.Tile
-                    source: "../../images/progressbar_overlay.png"
+                    source: "images/progressbar_overlay.png"
                 }
             }
         }
@@ -108,7 +108,7 @@ QtObject {
                 }
                 width: 80
                 height: parent.height
-                source:"../../images/progressbar_indeterminate.png"
+                source:"images/progressbar_indeterminate.png"
                 border.left:10 ; border.right:10
                 border.top:10 ; border.bottom:10
                 clip:true
@@ -133,7 +133,7 @@ QtObject {
                         width:styledItem.width + sourceSize.width
                         height:styledItem.height
                         fillMode:Image.Tile
-                        source: "../../images/progressbar_overlay.png"
+                        source: "images/progressbar_overlay.png"
                     }
                 }
             }

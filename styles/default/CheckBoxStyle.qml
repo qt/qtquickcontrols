@@ -17,7 +17,7 @@ QtObject {
             }
             BorderImage {
                 anchors.fill: parent
-                source: "../../images/lineedit_normal.png"
+                source: "images/lineedit_normal.png"
                 smooth: true
                 border.left: 6; border.top: 3
                 border.right: 6; border.bottom: 3
@@ -27,7 +27,7 @@ QtObject {
 
     property Component checkmark: Component {
         Image {
-            source: "../../images/checkbox_check.png"
+            source: "images/checkbox_check.png"
             anchors.verticalCenterOffset: 1
             anchors.horizontalCenterOffset: 1
             anchors.centerIn: parent

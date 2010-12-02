@@ -36,7 +36,7 @@ QtObject {
                     anchors.topMargin: 8
                     anchors.rightMargin: 10
                     opacity: enabled ? 1 : 0.3
-                    source:"../../images/spinbox_up.png"
+                    source:"images/spinbox_up.png"
                 }
                 Image {
                     anchors.bottom: parent.bottom
@@ -44,7 +44,7 @@ QtObject {
                     anchors.bottomMargin: 8
                     anchors.rightMargin: 10
                     opacity: enabled ? 1 : 0.3
-                    source:"../../images/spinbox_down.png"
+                    source:"images/spinbox_down.png"
                 }
             }
         }

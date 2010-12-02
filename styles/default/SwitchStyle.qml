@@ -37,7 +37,7 @@ QtObject {
             }
             BorderImage {
                 anchors.fill: parent
-                source: "../../images/lineedit_normal.png"
+                source: "images/lineedit_normal.png"
                 border.left: 6; border.top: 3
                 border.right: 6; border.bottom: 3
                 smooth: true

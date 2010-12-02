@@ -57,7 +57,7 @@ QtObject {
                 border.bottom: 2
                 border.left: 12
                 border.right: 12
-                source: "../../images/slider.png"
+                source: "images/slider.png"
             }
         }
     }
@@ -84,7 +84,7 @@ QtObject {
                     z: -1   // behind the image
                 }
                 anchors.centerIn: parent;
-                source: "../../images/handle.png"
+                source: "images/handle.png"
                 smooth: true
             }
 
