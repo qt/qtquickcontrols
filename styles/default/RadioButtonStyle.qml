@@ -1,8 +1,10 @@
 import Qt 4.7
+import "tools" as StyleTools
 
 QtObject {
     property int minimumWidth: 32
     property int minimumHeight: 32
+    property Item item;
 
     property Component background:
     Component {
@@ -27,9 +29,8 @@ QtObject {
 
     property Component checkmark: Component {
         Image {
-            source: "../../images/radiobutton_check.png"
-            anchors.verticalCenterOffset: 0
-            anchors.horizontalCenterOffset: 0
+            StyleTools.ColorConverter{id:cc; color:backgroundColor}
+            source: cc.grayValue() < 70? "../../images/radiobutton_check_white.png" : "../../images/radiobutton_check.png"
             anchors.centerIn: parent
             opacity: (!enabled && checked) || pressed == true ? 0.5 : (!checked ? 0 : 1)
             Behavior on opacity { NumberAnimation { duration: 150; easing.type: Easing.OutCubic } }

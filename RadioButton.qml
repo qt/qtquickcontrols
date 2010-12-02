@@ -9,5 +9,5 @@ CheckBox {
     checkmark: defaultStyle.checkmark
     background: defaultStyle.background
 
-    DefaultStyles.RadioButtonStyle { id: defaultStyle }
+    DefaultStyles.RadioButtonStyle { id: defaultStyle}
 }

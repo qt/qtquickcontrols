@@ -28,7 +28,7 @@ Rectangle {
                 anchors.fill: parent
                 spacing: rowspacing
                 Column {
-                    anchors.top:parent.top
+                    anchors.top: parent.top
                     spacing: columnspacing
                     anchors.topMargin:6
                     Text{ font.bold:true; text:"Default:" ; styleColor: "white" ; color:"#333" ; style:"Raised"}
@@ -119,13 +119,14 @@ Rectangle {
                         spacing: columnspacing
                         anchors.top:parent.top
                         anchors.topMargin:6
-                        property variant bg: "#444"
-                        property variant fg: "#eee"
-                        property variant pg: "#3af"
+                        property color bg: "#444"
+                        property color fg: "#eee"
+                        property color pg: "#0f0"
 
                         Text{ font.bold:true; text:"Colored:" ; styleColor: "#333" ; color:"white" ; style:"Raised"}
                         Button { text:"Push me" ; backgroundColor: column3.bg; textColor: column3.fg}
                         ButtonBlock {
+                            delegate: Button{ backgroundColor:column3.bg}
                             model: ListModel {
                                 ListElement { text: "A" }
                                 ListElement { text: "B" }
@@ -142,10 +143,10 @@ Rectangle {
                             Switch { backgroundColor: column3.bg; positiveHighlightColor:column3.pg; checked: true }
                         }
                         Row{
-                            CheckBox { backgroundColor: column3.bg; }
-                            CheckBox { checked:true; backgroundColor: column3.bg; }
-                            RadioButton{ backgroundColor: column3.bg; }
-                            RadioButton { checked:true; backgroundColor: column3.bg; }
+                            CheckBox { backgroundColor: checked ? column3.pg : column3.bg; ColorAnimation on backgroundColor {} }
+                            CheckBox { checked:true; backgroundColor: checked ? column3.pg : column3.bg; ColorAnimation on backgroundColor {}}
+                            RadioButton{ backgroundColor: checked ? column3.pg : column3.bg  ; ColorAnimation on backgroundColor {}}
+                            RadioButton { checked:true; backgroundColor: checked ? column3.pg : column3.bg; ColorAnimation on backgroundColor {} }
                             spacing:rowspacing
                         }
                         ChoiceList{ model: choices; backgroundColor: column3.bg; textColor: column3.fg}
