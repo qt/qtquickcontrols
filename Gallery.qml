@@ -2,8 +2,8 @@ import Qt 4.7
 
 Rectangle {
     SystemPalette{id:syspal}
-    width: 4*240
-    height: 580
+    width: 4*256
+    height: 620
     property int rowspacing: 24
     property int columnspacing: 14
     gradient: Gradient{ GradientStop{ position:1 ; color:syspal.window}
@@ -86,7 +86,6 @@ Rectangle {
                         anchors.topMargin:6
 
                         Column {
-                            anchors.top:parent.top
                             enabled:false
                             spacing: columnspacing
                             anchors.topMargin:6
@@ -195,7 +194,6 @@ Rectangle {
                         anchors.top:parent.top
                         anchors.topMargin:6
 
-                        Item{height:6; width:6}
                         Text{ font.bold:true; text:"Custom:" ; styleColor: "white" ; color:"#333" ; style:"Raised"}
                         Button { text:"Push me" ; background: shinyButton;}
                         ButtonBlock {
