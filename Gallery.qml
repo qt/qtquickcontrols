@@ -124,7 +124,7 @@ Rectangle {
                         anchors.topMargin:6
                         property color bg: "#444"
                         property color fg: "#eee"
-                        property color pg: "#0f0"
+                        property color pg: "#f70"
 
                         Text{ font.bold:true; text:"Colored:" ; styleColor: "#333" ; color:"white" ; style:"Raised"}
                         Button { text:"Push me" ; backgroundColor: column3.bg; textColor: column3.fg}
@@ -212,6 +212,7 @@ Rectangle {
                         }
                     }
                     Slider {
+                        value: 50;
                         handle: BorderImage{source:"images/shinybutton_normal.png";
                             width:40; height:30
                             border.left:7; border.right: 7; border.top:7; border.bottom:7

@@ -33,7 +33,7 @@ QtObject {
                 Image {
                     anchors.top: parent.top
                     anchors.right: parent.right
-                    anchors.topMargin: 7
+                    anchors.topMargin: 8
                     anchors.rightMargin: 10
                     opacity: enabled ? 1 : 0.3
                     source:"../../images/spinbox_up.png"
@@ -41,7 +41,7 @@ QtObject {
                 Image {
                     anchors.bottom: parent.bottom
                     anchors.right: parent.right
-                    anchors.bottomMargin: 7
+                    anchors.bottomMargin: 8
                     anchors.rightMargin: 10
                     opacity: enabled ? 1 : 0.3
                     source:"../../images/spinbox_down.png"

@@ -33,7 +33,7 @@ Item {
     SystemPalette{id:syspal}
 
     property color progressColor: syspal.highlight
-    property color backgroundColor: syspal.base
+    property color backgroundColor: syspal.window
 
     property alias containsMouse: mouseArea.containsMouse
 

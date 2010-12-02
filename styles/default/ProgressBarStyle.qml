@@ -74,10 +74,8 @@ QtObject {
                 anchors.rightMargin:0
                 anchors.margins:1
                 Image {
-                    visible:styledItem.enabled
                     id: overlay
                     NumberAnimation on x {
-                        running: styledItem.enabled;
                         loops:Animation.Infinite;
                         from:0;
                         to:-overlay.sourceSize.width;
@@ -125,10 +123,8 @@ QtObject {
                     anchors.rightMargin:0
                     anchors.margins:1
                     Image {
-                        visible:styledItem.enabled
                         id: overlay
                         NumberAnimation on x {
-                            running: styledItem.enabled;
                             loops:Animation.Infinite;
                             from:0;
                             to:-overlay.sourceSize.width;
