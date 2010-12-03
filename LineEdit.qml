@@ -3,10 +3,25 @@ import "./styles/default" as DefaultStyles
 
 Item {
     id: lineEdit
-    SystemPalette{id:syspal}
+
+    property alias text: textInput.text
+    property alias font: textInput.font
+
+    property int inputHint // values tbd
+    property bool acceptableInput: textInput.acceptableInput // read only
+    property bool readOnly: textInput.readOnly // read only
+    property alias placeholderText: placeholderTextComponent.text
+    property bool  passwordMode: false
+    property alias selectedText: textInput.selectedText
+    property alias selectionEnd: textInput.selectionEnd
+    property alias selectionStart: textInput.selectionStart
+    property alias validator: textInput.validator
+    property alias inputMask: textInput.inputMask
+    property alias horizontalalignment: textInput.horizontalAlignment
 
     property color textColor: syspal.text
     property color backgroundColor: syspal.base
+    property alias containsMouse: mouseArea.containsMouse
 
     property Component background: defaultStyle.background
     property Component hints: defaultStyle.hints
@@ -25,28 +40,17 @@ Item {
     height: Math.max(minimumHeight,
                      textInput.height + topMargin + bottomMargin)
 
-    property alias containsMouse: mouseArea.containsMouse
-    property alias _hints: hintsLoader.item
 
-    // Common API
-    property int inputHint; // values tbd
-    property bool acceptableInput :textInput.acceptableInput// read only
-    property bool readOnly:textInput.readOnly // read only
-    property alias text: textInput.text
-    property alias font : textInput.font
-    property alias placeholderText: placeholderTextComponent.text
-    property bool  passwordMode: false
-    property alias selectedText: textInput.selectedText
-    property alias selectionEnd: textInput.selectionEnd
-    property alias selectionStart: textInput.selectionStart
-    property alias validator: textInput.validator
-    property alias inputMask: textInput.inputMask
-    property alias horizontalalignment: textInput.horizontalAlignment
+    // Implementation
+
+    property bool desktopBehavior: true    //mm Need styling hint
 
     clip: true
+    SystemPalette { id: syspal }
 
     Loader { id: hintsLoader; sourceComponent: hints }
     Loader { sourceComponent: background; anchors.fill:parent}
+    property alias _hints: hintsLoader.item
 
     TextInput { // see QTBUG-14936
         id: textInput
@@ -62,20 +66,34 @@ Item {
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
 
-        //            focus: true
-        selectByMouse: true
-        color: enabled ? textColor: Qt.tint(textColor, "#80ffffff")
-        onActiveFocusChanged: cursorPosition = (!activeFocus ? 0 : text.length)
+        opacity: desktopBehavior || activeFocus ? 1 : 0
+        color: enabled ? textColor : Qt.tint(textColor, "#80ffffff")
+        echoMode: passwordMode ? _hints.passwordEchoMode : TextInput.Normal
 
+        selectByMouse: desktopBehavior
+        activeFocusOnPress: false // explicitly handled my mouseArea below
+        onActiveFocusChanged: if(!desktopBehavior) state = focus ? "focused" : ""
 
-        //mm Focus handling seems broken
-        echoMode: passwordMode ? _hints.passwordEchoMode : (activeFocus?TextInput.Normal:TextInput.NoEcho)
-        //            activeFocusOnPress: false // should be handled by mouseArea
+        states: [
+            State {
+                name: ""
+                PropertyChanges { target: textInput; cursorPosition: 0 }
+            },
+            State {
+                name: "focused"
+                PropertyChanges { target: textInput; cursorPosition: textInput.text.length }
+            }
+        ]
 
-        //            MouseArea {
-        //                anchors.fill: parent
-        //                onPressed: textInput.focus = true
-        //            }
+        transitions: Transition {
+            to: "focused"
+            SequentialAnimation {
+                ScriptAction { script: textInput.cursorVisible = false; }
+                ScriptAction { script: textInput.cursorPosition = textInput.positionAt(textInput.width); }
+                NumberAnimation { target: textInput; property: "cursorPosition"; duration: 150 }
+                ScriptAction { script: textInput.cursorVisible = true; }
+            }
+        }
     }
 
     Text {
@@ -85,7 +103,7 @@ Item {
         opacity: !textInput.text.length && !textInput.activeFocus ? 1 : 0
         color: "gray"
         text: "Enter text"
-        Behavior on opacity{NumberAnimation{duration:90}}
+        Behavior on opacity { NumberAnimation { duration: 90 } }
     }
 
     Text {
@@ -93,7 +111,7 @@ Item {
         clip: true
         anchors.fill: textInput
         font: textInput.font
-        opacity: !passwordMode && textInput.text.length && !textInput.activeFocus ? 1 : 0
+        opacity: !desktopBehavior && !passwordMode && textInput.text.length && !textInput.activeFocus ? 1 : 0
         color: textInput.color
         elide: Text.ElideRight
         text: textInput.text
@@ -103,8 +121,39 @@ Item {
         id: mouseArea
         anchors.fill: parent
         hoverEnabled: true
-        onPressed: textInput.focus = true   //mm Why did this stop working when TextInput was reparented to "content"?
+        drag.target: Item {} // work-around for Flickable stealing the mouse, which is expected (?), see QTBUG-15231
+
+        property int pressedPos
+
+        //mm see QTBUG-15814
+        onPressed: {
+            textInput.focus = true;
+            textInput.cursorPosition = textInput.positionAt(mouse.x-textInput.x);
+            if(desktopBehavior) {
+                pressedPos = textInput.cursorPosition;
+            }
+        }
+        onPositionChanged: {
+            if(!pressed)
+                return;
+
+            if(textInput.selectByMouse) {
+                textInput.select(pressedPos, textInput.positionAt(mouse.x-textInput.x));
+            } else {
+                textInput.cursorPosition = textInput.positionAt(mouse.x-textInput.x);
+            }
+        }
+
+        onDoubleClicked: {
+            if(desktopBehavior) {
+                textInput.selectWord(textInput.positionAt(mouse.x-textInput.x));
+            }
+        }
+
+//        onTrippleClicked: if(desktopBehavior) textInput.selectAll();
     }
+
+
     DefaultStyles.LineEditStyle { id: defaultStyle }
 }
 

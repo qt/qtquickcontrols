@@ -104,6 +104,7 @@ Item {
 
             Loader {
                 id: loader
+                focus: true
                 sourceComponent: sourceComponentFromIndex()
 
                 onStatusChanged: {
