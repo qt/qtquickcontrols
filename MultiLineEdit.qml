@@ -3,12 +3,23 @@ import "./styles/default" as DefaultStyles
 
 Item {
     id: multiLineEdit
-    SystemPalette{id:syspal}
 
+    property alias text: textEdit.text
+    property alias placeholderText: placeholderTextComponent.text
+    property alias font: textEdit.font
     property bool passwordMode: false
+    property bool readOnly: textEdit.readOnly // read only
+    property int inputHint; // values tbd   (alias to TextEdit.inputMethodHints?
+    property alias selectedText: textEdit.selectedText
+    property alias selectionEnd: textEdit.selectionEnd
+    property alias selectionStart: textEdit.selectionStart
+    property alias horizontalAlignment: textEdit.horizontalAlignment
+    property alias verticalAlignment: textEdit.verticalAlignment
+    property alias wrapMode: textEdit.wrapMode  //mm Missing from spec
 
     property color textColor: syspal.text
     property color backgroundColor: syspal.base
+    property alias containsMouse: mouseArea.containsMouse
 
     property Component background: defaultStyle.background
     property Component hints: defaultStyle.hints
@@ -21,87 +32,109 @@ Item {
     property int rightMargin: defaultStyle.rightMargin
     property int bottomMargin: defaultStyle.bottomMargin
 
-    clip:true
-
     width: Math.max(minimumWidth,
                     Math.max(textEdit.width, placeholderTextComponent.width) + leftMargin + rightMargin)
-
     height: Math.max(minimumHeight,
                      Math.max(textEdit.height, placeholderTextComponent.height) + topMargin + bottomMargin)
 
-    property alias containsMouse: mouseArea.containsMouse
+
+    // Implementation
+
+    property bool desktopBehavior: true    //mm Need styling hint
     property alias _hints: hintsLoader.item
+    clip: true
 
-    // Common API
-    property int inputHint; // values tbd
-    property alias text: textEdit.text
-    property alias font: textEdit.font
-    property bool readOnly:textEdit.readOnly // read only
-    property alias placeholderText: placeholderTextComponent.text
-    property alias selectedText: textEdit.selectedText
-    property alias selectionEnd: textEdit.selectionEnd
-    property alias selectionStart: textEdit.selectionStart
-    property alias horizontalalignment: textEdit.horizontalAlignment
-    property alias verticalAlignment: textEdit.verticalAlignment
-
+    SystemPalette { id: syspal }
     Loader { id: hintsLoader; sourceComponent: hints }
-    Loader { sourceComponent: background; anchors.fill:parent}
+    Loader { sourceComponent: background; anchors.fill: parent }
 
-    TextEdit{ // see QTBUG-14936
-        id: textEdit
-        font.pixelSize: _hints.fontPixelSize
-        font.bold: _hints.fontBold
+    Flickable {
+        id: flickable
+        clip: true
 
+        anchors.fill: parent
         anchors.leftMargin: leftMargin
         anchors.topMargin: topMargin
         anchors.rightMargin: rightMargin
         anchors.bottomMargin: bottomMargin
 
-        anchors.top: parent.top
-        anchors.left: parent.left
-        anchors.right: parent.right
+        function ensureVisible(r) {
+            if (contentX >= r.x)
+                contentX = r.x;
+            else if (contentX+width <= r.x+r.width)
+                contentX = r.x+r.width-width;
+            if (contentY >= r.y)
+                contentY = r.y;
+            else if (contentY+height <= r.y+r.height)
+                contentY = r.y+r.height-height;
+        }
 
-        selectByMouse: true
-        color: enabled ? textColor: Qt.tint(textColor, "#80ffffff")
-        onActiveFocusChanged: cursorPosition = (!activeFocus ? 0 : text.length)
+        TextEdit { // see QTBUG-14936
+            id: textEdit
+            font.pixelSize: _hints.fontPixelSize
+            font.bold: _hints.fontBold
+
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.right: parent.right
+
+            color: enabled ? textColor: Qt.tint(textColor, "#80ffffff")
+            wrapMode: desktopBehavior ? TextEdit.NoWrap : TextEdit.WordWrap
+            selectByMouse: false   // handled explicitly by mouseArea below
+            onCursorRectangleChanged: flickable.ensureVisible(cursorRectangle)
+        }
     }
 
     Text {
         id: placeholderTextComponent
-        anchors.leftMargin: leftMargin
-        anchors.topMargin: topMargin
-        anchors.rightMargin: rightMargin
-        anchors.bottomMargin: bottomMargin
-
-        anchors.top:parent.top
-        anchors.left: parent.left
-        anchors.right: parent.right
-
+        x: leftMargin; y: topMargin
         font: textEdit.font
         opacity: !textEdit.text.length && !textEdit.activeFocus ? 1 : 0
         color: "gray"
         clip: true
         text: "Enter text"
-        Behavior on opacity{NumberAnimation{duration:90}}
-    }
-
-    Text {
-        id: unfocusedText
-        clip: true
-        anchors.fill: textEdit
-        font: textEdit.font
-        opacity: textEdit.text.length && !textEdit.activeFocus ? 1 : 0
-        color: textEdit.color
-        elide: Text.ElideRight
-        text: textEdit.text
+        Behavior on opacity { NumberAnimation { duration: 90 } }
     }
 
     MouseArea {
         id: mouseArea
         anchors.fill: parent
         hoverEnabled: true
-        onPressed: textEdit.focus = true   //mm Why did this stop working when textEdit was reparented to "content"?
+        drag.target: Item {} // work-around for Flickable stealing the mouse, which is expected (?), see QTBUG-15231
+
+        property int pressedPos
+
+        //mm see QTBUG-15814
+        onPressed: {
+            textEdit.focus = true;
+            var mappedMouse = mapToItem(textEdit, mouse.x, mouse.y);
+            textEdit.cursorPosition = textEdit.positionAt(mappedMouse.x, mappedMouse.y);
+            if(desktopBehavior) {
+                pressedPos = textEdit.cursorPosition;
+            }
+        }
+        onPositionChanged: {
+            if(!pressed)
+                return;
+
+            var mappedMouse = mapToItem(textEdit, mouse.x, mouse.y);
+            if(desktopBehavior) {
+                textEdit.select(pressedPos, textEdit.positionAt(mappedMouse.x, mappedMouse.y));
+            } else {
+                textEdit.cursorPosition = textEdit.positionAt(mappedMouse.x, mappedMouse.y);
+            }
+        }
+
+        onDoubleClicked: {
+            if(desktopBehavior) {
+                var mappedMouse = mapToItem(textEdit, mouse.x, mouse.y);
+                textEdit.selectWord(textEdit.positionAt(mappedMouse.x, mappedMouse.y));
+            }
+        }
+
+        //        onTrippleClicked: if(desktopBehavior) textEdit.selectAll();
     }
+
     DefaultStyles.LineEditStyle { id: defaultStyle }
 }
 
