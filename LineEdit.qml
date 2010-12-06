@@ -44,13 +44,12 @@ Item {
     // Implementation
 
     property bool desktopBehavior: true    //mm Need styling hint
-
+    property alias _hints: hintsLoader.item
     clip: true
-    SystemPalette { id: syspal }
 
+    SystemPalette { id: syspal }
     Loader { id: hintsLoader; sourceComponent: hints }
     Loader { sourceComponent: background; anchors.fill:parent}
-    property alias _hints: hintsLoader.item
 
     TextInput { // see QTBUG-14936
         id: textInput
@@ -70,7 +69,7 @@ Item {
         color: enabled ? textColor : Qt.tint(textColor, "#80ffffff")
         echoMode: passwordMode ? _hints.passwordEchoMode : TextInput.Normal
 
-        selectByMouse: desktopBehavior
+        selectByMouse: false    // textSelection is handled explicitly by mouseArea below
         activeFocusOnPress: false // explicitly handled my mouseArea below
         onActiveFocusChanged: if(!desktopBehavior) state = focus ? "focused" : ""
 
@@ -137,7 +136,7 @@ Item {
             if(!pressed)
                 return;
 
-            if(textInput.selectByMouse) {
+            if(desktopBehavior) {
                 textInput.select(pressedPos, textInput.positionAt(mouse.x-textInput.x));
             } else {
                 textInput.cursorPosition = textInput.positionAt(mouse.x-textInput.x);
