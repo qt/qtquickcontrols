@@ -6,6 +6,7 @@ Item {
     property alias adjoining: loader.adjoining
 
     clip: true
+
     anchors {
         left: corner == "TopLeftCorner" || corner == "BottomLeftCorner" ? parent.left : parent.horizontalCenter
         right: corner == "TopLeftCorner" || corner == "BottomLeftCorner" ? parent.horizontalCenter : parent.right
@@ -22,9 +23,8 @@ Item {
         Loader {
             id: loader
             anchors.fill: parent
-            property Item styledItem
+            property Item styledItem:loader.styledItem
             property int adjoining: 0x0
-
             sourceComponent: styling
         }
     }

@@ -37,6 +37,7 @@ Item {
                      labelComponent.item.height + topMargin + bottomMargin)
 
     Loader {
+        property alias styledItem: choiceList
         sourceComponent: background
         anchors.fill:parent
     }
@@ -69,8 +70,6 @@ Item {
         onCanceled: choiceList.pressed = false    // mouse stolen e.g. by Flickable
     }
 
-
-
     MouseArea {
         id:popupHelper
         // There is no global toplevel so we have to make one
@@ -91,6 +90,7 @@ Item {
         Loader {
             id:popupFrameLoader
 
+            property alias styledItem: choiceList
             anchors.fill:popupList
             anchors.leftMargin: popupFrame.leftMargin != undefined ? popupFrame.leftMargin : -6
             anchors.rightMargin: popupFrame.rigthMargin != undefined ? popupFrame.rigthMargin : -6

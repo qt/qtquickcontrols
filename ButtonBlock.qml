@@ -1,13 +1,27 @@
 import Qt 4.7
+import "./behaviors"    // ButtonBehavior
+import "./visuals"      // AdjoiningVisual
+import "./styles/default" as DefaultStyles
 
 Item {
     id: buttonBlock
 
     property alias model: repeater.model
-    property Component delegate: Button { adjoins: parent.adjoins; }
+
+    property Component buttonBackground: defaultStyle.background
+    property Component buttonLabel: defaultStyle.label
+
+    property color backgroundColor: syspal.button
+    property color textColor: syspal.text;
 
     property int orientation: Qt.Horizontal
     signal clicked(int index)
+
+    property int leftMargin: defaultStyle.leftMargin
+    property int topMargin: defaultStyle.topMargin
+    property int rightMargin: defaultStyle.rightMargin
+    property int bottomMargin: defaultStyle.bottomMargin
+
 
     signal connectProperties(variant model, variant item)
     onConnectProperties: {  //mm need QTBUG-14964 for this?
@@ -29,8 +43,30 @@ Item {
 
         Repeater {
             id: repeater
-            delegate: Loader {
+            delegate: AdjoiningVisual {
+                id:delegateloader
+                styledItem: delegateloader
+                styling: buttonBackground
+
+                property alias pressed: behavior.pressed
+                property alias containsMouse: behavior.containsMouse
+                property alias checkable: behavior.checkable  // button toggles between checked and !checked
+                property alias checked: behavior.checked
+
+                property string text
+                property variant button: delegateloader
+                property url iconSource
+                signal clicked
+
+
+                ButtonBehavior {
+                    id: behavior
+                    anchors.fill: parent
+                    onClicked: delegateloader.clicked()
+                }
+
                 property int adjoins: foo(repeater.count)
+
                 function foo(count) {   //mm why do we need a named functon here?
                     var adjoins = 0x0;
                     if(index%grid.columns != 0) // not first in row
@@ -49,23 +85,46 @@ Item {
                     return adjoins;
                 }
 
-                sourceComponent: delegate
-                width: orientation == Qt.Vertical ? grid.widestItemWidth : item.width
-                height: orientation == Qt.Vertical ? item.height : grid.talestItemHeight
+               // width: orientation == Qt.Vertical ? grid.widestItemWidth : item.width
+               // height: orientation == Qt.Vertical ? item.height : grid.talestItemHeight
+                property int minimumWidth: defaultStyle.minimumWidth
+                property int minimumHeight: defaultStyle.minimumHeight
 
-                onLoaded: {
-                    connectProperties(model, item);
+                width: Math.max(minimumWidth,
+                                labelComponent.item.width + leftMargin + rightMargin)
+                height: Math.max(minimumHeight,
+                                 labelComponent.item.height + topMargin + bottomMargin)
+
+                Loader {
+                    id:labelComponent
+                    property variant button: delegateloader
+                    anchors.fill: parent
+                    anchors.leftMargin: leftMargin
+                    anchors.rightMargin: rightMargin
+                    anchors.topMargin: topMargin
+                    anchors.bottomMargin: bottomMargin
+                    sourceComponent: buttonLabel
+                    property alias pressed: behavior.pressed
+                    property alias containsMouse: behavior.containsMouse
+                    property alias checkable: behavior.checkable  // button toggles between checked and !checked
+                    property alias checked: behavior.checked
+                }
+
+                Component.onCompleted: {
+                    connectProperties(model, delegateloader);
 
                     if(buttonBlock.orientation == Qt.Vertical)    //mm Can't make this work without QTBUG-14957
-                        grid.widestItemWidth = Math.max(grid.widestItemWidth, item.width);
+                        grid.widestItemWidth = Math.max(grid.widestItemWidth, width);
                     else
-                        grid.talestItemHeight = Math.max(grid.talestItemHeight, item.height);
+                        grid.talestItemHeight = Math.max(grid.talestItemHeight, height);
                 }
+
                 Connections {
-                    target:  item
+                    target:  behavior
                     onClicked: buttonBlock.clicked(index)
                 }
             }
         }
     }
+    DefaultStyles.ButtonBlockStyle{ id: defaultStyle }
 }

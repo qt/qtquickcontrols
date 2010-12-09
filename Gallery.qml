@@ -4,6 +4,7 @@ Rectangle {
     SystemPalette{id:syspal}
     width: 4*256
     height: 620
+    property bool adjoining
     property int rowspacing: 24
     property int columnspacing: 14
     gradient: Gradient{ GradientStop{ position:1 ; color:syspal.window}
@@ -144,7 +145,7 @@ Rectangle {
                         Text{ font.bold:true; text:"Colored:" ; styleColor: "#333" ; color:"white" ; style:"Raised"}
                         Button { text:"Push me" ; backgroundColor: column3.bg; textColor: column3.fg}
                         ButtonBlock {
-                            delegate: Button{ backgroundColor:column3.bg}
+                            backgroundColor:column3.bg
                             model: ListModel {
                                 ListElement { text: "A" }
                                 ListElement { text: "B" }
@@ -197,6 +198,7 @@ Rectangle {
                         Text{ font.bold:true; text:"Custom:" ; styleColor: "white" ; color:"#333" ; style:"Raised"}
                         Button { text:"Push me" ; background: shinyButton;}
                         ButtonBlock {
+                            buttonBackground:shinyButton
                             model: ListModel {
                                 ListElement { text: "A" }
                                 ListElement { text: "B" }
@@ -333,12 +335,17 @@ Rectangle {
             }
             Component{
                 id:shinyButton
-                BorderImage {
-                    source: parent.pressed ? "examples/customtheme/exampletheme/images/button_pressed.png":
-                            "examples/customtheme/exampletheme/images/button_normal.png"
-                    anchors.fill:parent
-                    border.left: 6; border.top: 6
-                    border.right: 6; border.bottom: 6
+                Item {
+                    clip:true
+                    BorderImage {
+                        x:adjoining ? -2 : 0
+                        width:parent.width + (adjoining ? 5 : 0)
+                        height:parent.height
+                        source: styledItem.pressed ? "examples/customtheme/exampletheme/images/button_pressed.png":
+                                "examples/customtheme/exampletheme/images/button_normal.png"
+                        border.left: 6; border.top: 6
+                        border.right: 6; border.bottom: 6
+                    }
                 }
             }
             Component{

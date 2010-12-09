@@ -1,6 +1,5 @@
 import Qt 4.7
 import "./behaviors"    // ButtonBehavior
-import "./visuals"      // AdjoiningVisual
 import "./styles/default" as DefaultStyles
 
 Item {
@@ -23,20 +22,12 @@ Item {
     property color backgroundColor: syspal.button
     property color textColor: syspal.text;
 
-    property alias adjoins: backgroundComponent.adjoins
-    AdjoiningVisual {   //mm Applies to BasicButton, or only special docking button?
-        id: backgroundComponent
+    Loader {
+        id:backgroundComponent
         anchors.fill: parent
-        styledItem: button
-        styling: background
-        //mm need "item" propery for BasicButton's sizing? (see above)
+        sourceComponent: background
+        property Item styledItem:button
     }
-
-//    Loader {
-//        id:backgroundComponent
-//        anchors.fill: parent
-//        sourceComponent: background
-//    }
 
     ButtonBehavior {
         id: behavior
