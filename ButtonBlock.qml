@@ -126,5 +126,6 @@ Item {
             }
         }
     }
+    SystemPalette{id:syspal; colorGroup: enabled ? SystemPalette.Active : SystemPalette.Disabled}
     DefaultStyles.ButtonBlockStyle{ id: defaultStyle }
 }
