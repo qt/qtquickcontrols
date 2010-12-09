@@ -1,5 +1,5 @@
 import Qt 4.7
-import "../components"
+import "../../components"
 
 Item {
     id: name

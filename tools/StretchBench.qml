@@ -1,5 +1,6 @@
 import Qt 4.7
 import "../components"
+import "stretchbench"
 
 Item {
     width: 950
@@ -65,7 +66,7 @@ Item {
         Image {
             anchors.fill: parent
             anchors.margins: -1000
-            source: "images/checkered.png"
+            source: "stretchbench/images/checkered.png"
             fillMode: Image.Tile
             opacity: testBenchRect.moving || topLeftHandle.pressed || bottomRightHandle.pressed ? 0.12 : 0
             Behavior on opacity { NumberAnimation { duration: 100 } }
