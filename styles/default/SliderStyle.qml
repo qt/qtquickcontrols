@@ -24,87 +24,82 @@
 **
 ****************************************************************************/
 
-import Qt 4.7
+import QtQuick 1.0
 
 QtObject {
 
     property int minimumWidth: 200
-    property int minimumHeight: 16
+    property int minimumHeight: 40
 
-    property Component groove: Component {
-        id:defaultBackground
-        Item {
-            opacity: enabled ? 1 : 0.7
-            Rectangle {
-                color:backgroundColor
-                anchors.fill: sliderbackground
-                anchors.margins: 1
-                radius: 2
-            }
-            Rectangle {
-                color: progressColor
-                height: 10
-                radius: 4
-                anchors.verticalCenter: parent.verticalCenter
-                x: Math.min(1+zeroPosition, handlePosition) // see QTBUG-15250
-                width: Math.max(zeroPosition, handlePosition) - x
-            }
-            BorderImage {
-                id: sliderbackground
-                anchors.verticalCenter: parent.verticalCenter
-                width: parent.width
-                border.top: 2
-                border.bottom: 2
-                border.left: 12
-                border.right: 12
-                source: "images/slider.png"
-            }
+    property Component groove: Item {
+        opacity: enabled ? 1.0 : 0.7
+
+        Rectangle {
+            color: backgroundColor
+            anchors.fill: sliderBackground
+            anchors.margins: 1
+            radius: 2
+        }
+
+        BorderImage {
+            id: sliderBackground
+            anchors.verticalCenter: parent.verticalCenter
+            width: parent.width
+            border.top: 2
+            border.bottom: 2
+            border.left: 12
+            border.right: 12
+            source: "images/slider.png"
         }
     }
 
-    property Component handle: Component {
-        Item{
-            width: handleImage.width
-            height: handleImage.height
-            anchors.verticalCenter: parent.verticalCenter
+    property Component handle: Item {
+        width: handleImage.width
+        height: handleImage.height
+        anchors.verticalCenter: parent.verticalCenter
 
-            //mm Animation clash with slider's positioning of the hand. What to do?
-            //            Behavior on x { NumberAnimation { easing: Easing.Linear; duration: styledItem.mouseArea.drag.active ? 0 : 100 } }
-            //            Behavior on y { NumberAnimation { easing: Easing.Linear; duration: styledItem.mouseArea.drag.active ? 0 : 100 } }
-            Image {
-                id: handleImage
-                Rectangle {
-                    anchors.centerIn: parent
-                    width:parent.width - 7
-                    height:parent.height - 7
-                    smooth:true
-                    anchors.horizontalCenterOffset:-1
-                    color: backgroundColor
-                    radius: Math.floor(parent.width/2)
-                    z: -1   // behind the image
-                }
-                anchors.centerIn: parent;
-                source: "images/handle.png"
-                smooth: true
-            }
-
+        Image {
+            id: handleImage
             Rectangle {
-                anchors.bottom: handleImage.top
-                anchors.horizontalCenter: handleImage.horizontalCenter
-                width: valueText.width+20
-                height: valueText.height+20
-                color: "gray"
-                opacity: pressed ? 0.9 : 0
-                Behavior on opacity { NumberAnimation { duration: 100 } }
-                radius: 5
-
-                Text {
-                    id: valueText
-                    anchors.margins: 10
-                    anchors.centerIn: parent
-                    text: value
-                }
+                anchors.centerIn: parent
+                anchors.horizontalCenterOffset: -1
+                width: parent.width - 7
+                height: parent.height - 7
+                smooth: true
+                color: backgroundColor
+                radius: Math.floor(parent.width / 2)
+                z: -1   // behind the image
             }
+            anchors.centerIn: parent;
+            source: "images/handle.png"
+            smooth: true
+        }
+    }
+
+    property Component valueIndicator: Rectangle {
+        width: valueText.width + 20
+        height: valueText.height + 20
+        color: "gray"
+        opacity: pressed ? 0.9 : 0
+        Behavior on opacity { NumberAnimation { duration: 100 } }
+        radius: 5
+
+        Text {
+            id: valueText
+            anchors.margins: 10
+            anchors.centerIn: parent
+            text: indicatorText
+        }
+    }
+
+    property Component valueTrack: Item {
+        Rectangle {
+            anchors.right: parent.right
+            anchors.left: parent.left
+            anchors.verticalCenter: parent.verticalCenter
+            color: progressColor
+            radius: 4
+            height: 10
         }
     }
 }

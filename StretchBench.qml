@@ -234,6 +234,9 @@ Item {
             anchors.fill: parent; anchors.margins: 10; spacing: 5
             opacity: currentComponentName == "Slider" ? 1 : 0
             StretchBenchBoolOption { text: "Dimmed:"; id: sliderOptionDimmed }
+            StretchBenchBoolOption { text: "Vertical"; id: sliderOptionVertical }
+            StretchBenchBoolOption { text: "Inverted"; id: sliderOptionInverted }
+            StretchBenchBoolOption { text: "Steps"; id: sliderOptionSteps; checked: true }
             StretchBenchBoolOption { text: "Value at 30:"; id: sliderOptionValueAt30 }
             StretchBenchBoolOption { text: "Zero in middle:"; id: sliderOptionZeroInMiddle }
             StretchBenchBoolOption { text: "Time formatted:"; id: sliderOptionTimeFormatted }
@@ -322,7 +325,24 @@ Item {
             value: sliderOptionValueAt30.checked ? 30 : 0
             minimumValue: sliderOptionZeroInMiddle.checked ? -50 : 0
             maximumValue: sliderOptionZeroInMiddle.checked ? 50 : 100
-            //text: sliderOptionTimeFormatted.checked ? Math.floor(value/60) + ":" + value%60 : value
+
+            orientation: sliderOptionVertical.checked ? Qt.Vertical : Qt.Horizontal
+            stepSize: sliderOptionSteps.checked ? 1.0 : 0.0
+            inverted: sliderOptionInverted.checked
+
+            function formatValue(v) {
+                v = Math.round(v);
+                if (sliderOptionTimeFormatted.checked) {
+                    var seconds = Math.floor(v % 60);
+                    var minutes = Math.floor(v / 60);
+
+                    // :-P
+                    if (seconds < 10)
+                        seconds = "0" + seconds;
+                    return minutes + ":" + seconds
+                }
+                return v;
+            }
         }
     }
 

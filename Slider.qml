@@ -24,106 +24,324 @@
 **
 ****************************************************************************/
 
-import Qt 4.7
-import Qt.labs.components 1.0 as QtComponents // RangeModel
+import QtQuick 1.0
+import Qt.labs.components 1.0
 import "./styles/default" as DefaultStyles
 
 Item {
     id: slider
-    SystemPalette{id:syspal}
 
-    property color progressColor: syspal.highlight
-    property color backgroundColor: syspal.window
+    // COMMON API
+    property int orientation: Qt.Horizontal
+    property alias minimumValue: range.minimumValue
+    property alias maximumValue: range.maximumValue
+    property alias inverted: range.inverted
+    property bool updateValueWhileDragging: true
+    property alias pressed: mouseArea.pressed
+    property alias stepSize: range.stepSize
 
-    property alias containsMouse: mouseArea.containsMouse
+    // NOTE: this property is in/out, the user can set it, create bindings to it, and
+    // at the same time the slider wants to update. There's no way in QML to do this kind
+    // of updates AND allow the user bind it (without a Binding object). That's the
+    // reason this is an alias to a C++ property in range model.
+    property alias value: range.value
+
+    // CONVENIENCE TO BE USED BY STYLES
+    SystemPalette {
+        id: pallete
+    }
+    property color progressColor: pallete.highlight
+    property color backgroundColor: pallete.window
+
+    // EXTENSIONS
+    property real secondaryValue
+
+    // Indicate that we want animations in the Slider, people customizing should
+    // look at it to decide whether or not active animations.
+    property bool animated: true
+
+    // Value indicator displays the current value near the slider
+    property bool valueIndicatorVisible: true
+    property int valueIndicatorMargin: 10
+    property string valueIndicatorPosition: _isVertical ? "Left" : "Top"
+
+    // Reimplement this function to control how the value is shown in the
+    // indicator.
+    function formatValue(v) {
+        return Math.round(v);
+    }
 
     property int minimumWidth: defaultStyle.minimumWidth
     property int minimumHeight: defaultStyle.minimumHeight
 
-    property Component groove: defaultStyle.groove
-    property Component handle: defaultStyle.handle
+    // Hooks for customizing the pieces of the slider
+    property alias groove: grooveLoader.sourceComponent
+    property alias handle: handleLoader.sourceComponent
+    property alias valueTrack: valueTrackLoader.sourceComponent
+    property alias secondaryValueTrack: secondaryValueTrackLoader.sourceComponent
+    property alias valueIndicator: valueIndicatorLoader.sourceComponent
 
-    property real zeroPosition: 0  // ### not available in model yet, needed by styling, should be read-only, see QTBUG-15257
-    property real handlePosition: valueModel.position       // needed by styling, should be read-only
+    // PRIVATE/CONVENIENCE
+    property bool _isVertical: orientation == Qt.Vertical
 
-    width: { horizontal ? minimumWidth : minimumHeight }
-    height: { horizontal ? minimumHeight: minimumWidth }
+    width: _isVertical ? minimumHeight : minimumWidth
+    height: _isVertical ? minimumWidth : minimumHeight
 
-    // Common API
-    property real minimumValue: 0.0
-    property real maximumValue: 100.0
-    property real stepSize: 1.0
+    DefaultStyles.SliderStyle { id: defaultStyle }
 
-    property alias pressed: mouseArea.pressed
-    property alias value: valueModel.value
-    property bool horizontal: true
-    property bool updateValueWhileDragging: true
+    // This is a template slider, so every piece can be modified by passing a
+    // different Component. The main elements in the implementation are
+    //
+    // - the 'range' does the calculations to map position to/from value,
+    //   it also serves as a data storage for both properties;
+    //
+    // - the 'fakeHandle' is what the mouse area drags on the screen, it feeds
+    //   the 'range' position and also reads it when convenient;
+    //
+    // - the real 'handle' it is the visual representation of the handle, that
+    //   just follows the 'fakeHandle' position.
+    //
+    // When the 'updateValueWhileDragging' is false and we are dragging, we stop
+    // feeding the range with position information, delaying until the next
+    // mouse release.
+    //
+    // Everything is encapsulated in a contents Item, so for the
+    // vertical slider, we just swap the height/width, make it
+    // horizontal, and then use rotation to make it vertical again.
 
-    QtComponents.RangeModel {
-        // This model describes the range of values the slider can take
-        // (minimum/maximum) and helps mapping between logical value and
-        // the graphical position of the handle inside the component
-        // (positionAtMinimum/positionAtMaximum)
-        id: valueModel
-        minimumValue: slider.minimumValue
-        maximumValue: slider.maximumValue
-        steps: slider.stepSize //mm this is really stepSize    (N.B. mouse areas drag handling works funny at the ends for large stepSize values. RangeModel bug?)
-        positionAtMinimum: handleLoader.shaftRadius
-        positionAtMaximum: grooveLoader.grooveLength-handleLoader.shaftRadius
-        onPositionChanged: handleLoader.x = valueModel.position    // update handle's position
-    }
+    Item {
+        id: contents
 
-    Item { // Rotation container. As far as the styling is concerned, the slider is always horizontal (except if it has a shadow)
-        anchors.centerIn: parent
-        rotation: horizontal ? 0 : -90
-        width: horizontal ? slider.width: slider.height
-        height: horizontal ? slider.height: slider.width
+        width: _isVertical ? slider.height : slider.width
+        height: _isVertical ? slider.width : slider.height
+        rotation: _isVertical ? -90 : 0
 
-        MouseArea {
-            id: mouseArea
-            hoverEnabled: true
-            // snapToStep means that the handle
-            // should snap to steps _while_ dragging. This property is hidden
-            // inside here as we see this as a style decition:
-            //        property bool snapToStep: false   //mm Think RangeModel needs the snap support built-in
+        anchors.centerIn: slider
 
-            anchors.fill: parent
-            onPressed: valueModel.position = mouse.x
-            onReleased: valueModel.position = mouse.x
+        RangeModel {
+            id: range
+            minimumValue: 0
+            maximumValue: 100
+            value: 0
+            stepSize: 1.0
+            inverted: false
 
-            drag.target: handleLoader  //mm See QTBUG-15231
-            drag.axis: Drag.XAxis
-            drag.minimumX: handleLoader.shaftRadius
-            drag.maximumX: width - handleLoader.shaftRadius
+            positionAtMinimum: handleLoader.width / 2
+            positionAtMaximum: contents.width - handleLoader.width / 2
         }
 
         Loader {
-            id: grooveLoader;
-            sourceComponent: groove
-            anchors.fill:parent
-            property real grooveLength: item.width
+            id: grooveLoader
+            anchors.fill: parent
+            anchors.leftMargin: handleLoader.width / 2
+            anchors.rightMargin: handleLoader.width / 2
+
+            sourceComponent: defaultStyle.groove
+        }
+
+        Loader {
+            id: secondaryValueTrackLoader
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            anchors.left: grooveLoader.left
+
+            width: {
+                // ### This is a hack to make the binding system recalculate
+                // the width, since it depends on those parameters, but the
+                // dependecy is isolated inside C++ range model.
+                range.positionAtMaximum; range.positionAtMinimum;
+                range.minimumValue; range.maximumValue;
+                return range.positionForValue(slider.secondaryValue) - handleLoader.width / 2;
+            }
+
+            sourceComponent: defaultStyle.secondaryValueTrack
+
+            states: State {
+                when: slider.inverted
+                PropertyChanges {
+                    target: secondaryValueTrackLoader
+                    width: {
+                        // See comment above.
+                        range.positionAtMaximum; range.positionAtMinimum;
+                        range.minimumValue; range.maximumValue;
+                        return grooveLoader.width - range.positionForValue(slider.secondaryValue) + handleLoader.width / 2;
+                    }
+                }
+                AnchorChanges {
+                    target: secondaryValueTrackLoader
+                    anchors.left: undefined
+                    anchors.right: grooveLoader.right
+                }
+            }
+        }
+
+        Loader {
+            id: valueTrackLoader
+
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            anchors.left: grooveLoader.left
+            anchors.right: handleLoader.horizontalCenter
+            anchors.rightMargin: handleLoader.width / 2
+
+            sourceComponent: defaultStyle.valueTrack
+
+            states: State {
+                when: slider.inverted
+                PropertyChanges {
+                    target: valueTrackLoader
+                    anchors.rightMargin: 0
+                    anchors.leftMargin: - handleLoader.width / 2
+                }
+                AnchorChanges {
+                    target: valueTrackLoader
+                    anchors.left: handleLoader.horizontalCenter
+                    anchors.right: grooveLoader.right
+                }
+            }
         }
 
         Loader {
             id: handleLoader
+            transform: Translate { x: - handleLoader.width / 2 }
 
-            anchors.fill: undefined     // override default (in part needed because of QTBUG-14873)
             anchors.verticalCenter: parent.verticalCenter
-            onLoaded: handleLoader.x = valueModel.position // update handle's initial position //mm Don't think the RangeModel is reporting the correct initial value
-            onXChanged: if (updateValueWhileDragging) valueModel.position = x;
 
-            sourceComponent: handle
-            property real shaftRadius: item.height/4
+            sourceComponent: defaultStyle.handle
 
-            transform: Translate {
-                x: -handleLoader.width/2
-                y: 0
+            x: fakeHandle.x
+            Behavior on x {
+                id: behavior
+                enabled: !mouseArea.drag.active && slider.animated
+
+                PropertyAnimation {
+                    duration: behavior.enabled ? 150 : 0
+                    easing.type: Easing.OutSine
+                }
             }
         }
+
+        Item {
+            id: fakeHandle
+            width: handleLoader.width
+            height: handleLoader.height
+            transform: Translate { x: - handleLoader.width / 2 }
+        }
+
+        MouseArea {
+            id: mouseArea
+            anchors.fill: parent
+
+            drag.target: fakeHandle
+            drag.axis: Drag.XAxis
+            drag.minimumX: range.positionAtMinimum
+            drag.maximumX: range.positionAtMaximum
+
+            onPressed: {
+                // Clamp the value
+                var newX = Math.max(mouse.x, drag.minimumX);
+                newX = Math.min(newX, drag.maximumX);
+
+                // Debounce the press: a press event inside the handler will not
+                // change its position, the user needs to drag it.
+                if (Math.abs(newX - fakeHandle.x) > handleLoader.width / 2)
+                    range.position = newX;
+            }
+
+            onReleased: {
+                // If we don't update while dragging, this is the only
+                // moment that the range is updated.
+                if (!slider.updateValueWhileDragging)
+                    range.position = fakeHandle.x;
+            }
+        }
+
+        Loader {
+            id: valueIndicatorLoader
+
+            transform: Translate { x: - handleLoader.width / 2 }
+            rotation: _isVertical ? 90 : 0
+            visible: valueIndicatorVisible
+
+            // Properties available for the delegate component. Note that the indicatorText
+            // shows the value for the position the handle is, which is not necessarily the
+            // available as the current slider.value, since updateValueWhileDragging can
+            // be set to 'false'.
+            property string indicatorText: slider.formatValue(range.valueForPosition(handleLoader.x))
+            property bool dragging: mouseArea.drag.active
+
+            sourceComponent: defaultStyle.valueIndicator
+
+            state: {
+                if (!_isVertical)
+                    return slider.valueIndicatorPosition;
+
+                if (valueIndicatorPosition == "Right")
+                    return "Bottom";
+                if (valueIndicatorPosition == "Top")
+                    return "Right";
+                if (valueIndicatorPosition == "Bottom")
+                    return "Left";
+
+                return "Top";
+            }
+
+            anchors.margins: valueIndicatorMargin
+
+            states: [
+                State {
+                    name: "Top"
+                    AnchorChanges {
+                        target: valueIndicatorLoader
+                        anchors.bottom: handleLoader.top
+                        anchors.horizontalCenter: handleLoader.horizontalCenter
+                    }
+                },
+                State {
+                    name: "Bottom"
+                    AnchorChanges {
+                        target: valueIndicatorLoader
+                        anchors.top: handleLoader.bottom
+                        anchors.horizontalCenter: handleLoader.horizontalCenter
+                    }
+                },
+                State {
+                    name: "Right"
+                    AnchorChanges {
+                        target: valueIndicatorLoader
+                        anchors.left: handleLoader.right
+                        anchors.verticalCenter: handleLoader.verticalCenter
+                    }
+                },
+                State {
+                    name: "Left"
+                    AnchorChanges {
+                        target: valueIndicatorLoader
+                        anchors.right: handleLoader.left
+                        anchors.verticalCenter: handleLoader.verticalCenter
+                    }
+                }
+            ]
+        }
     }
-    DefaultStyles.SliderStyle { id: defaultStyle }
+
+    // Range position normally follow fakeHandle, except when
+    // 'updateValueWhileDragging' is false. In this case it will only follow
+    // if the user is not pressing the handle.
+    Binding {
+        when: updateValueWhileDragging || !mouseArea.pressed
+        target: range
+        property: "position"
+        value: fakeHandle.x
+    }
+
+    // During the drag, we simply ignore position set from the range, this
+    // means that setting a value while dragging will not "interrupt" the
+    // dragging activity.
+    Binding {
+        when: !mouseArea.drag.active
+        target: fakeHandle
+        property: "x"
+        value: range.position
+    }
 }
-
-
-
-
