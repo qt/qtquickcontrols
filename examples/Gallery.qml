@@ -1,4 +1,5 @@
 import Qt 4.7
+import "../components"
 
 Rectangle {
     SystemPalette{id:syspal}
@@ -213,8 +214,8 @@ Rectangle {
                             up: BorderImage {
                                 width:height;
                                 source:pressed ?
-                                        "examples/customtheme/exampletheme/images/button_pressed.png" :
-                                        "examples/customtheme/exampletheme/images/button_normal.png"
+                                        "customtheme/exampletheme/images/button_pressed.png" :
+                                        "customtheme/exampletheme/images/button_normal.png"
                                 anchors.left:parent.left
                                 anchors.top:parent.top
                                 anchors.bottom:parent.bottom
@@ -224,8 +225,8 @@ Rectangle {
                             down: BorderImage{
                                 width:height;
                                 source:pressed ?
-                                        "examples/customtheme/exampletheme/images/button_pressed.png" :
-                                        "examples/customtheme/exampletheme/images/button_normal.png"
+                                        "customtheme/exampletheme/images/button_pressed.png" :
+                                        "customtheme/exampletheme/images/button_normal.png"
                                 anchors.right:parent.right
                                 anchors.top:parent.top
                                 anchors.bottom:parent.bottom
@@ -238,14 +239,14 @@ Rectangle {
                             height: 20
                             leftMargin:10
                             rightMargin:10
-                            handle: BorderImage{source:"examples/customtheme/exampletheme/images/button_normal.png";
+                            handle: BorderImage{source:"customtheme/exampletheme/images/button_normal.png";
                                 width:20; height:20
                                 border.left:7; border.right: 7; border.top:7; border.bottom:7
                             }
                             groove: Item {
                                 anchors.fill:parent
                                 BorderImage {
-                                    source: "examples/customtheme/exampletheme/images/edit_normal.png"
+                                    source: "customtheme/exampletheme/images/edit_normal.png"
                                     width: parent.width;
                                     height:20; smooth:true
                                     border.left: 4; border.right: 4
@@ -271,7 +272,7 @@ Rectangle {
                                 BorderImage {
                                     width:bb.height
                                     height:bb.height
-                                    source: parent.pressed ? "examples/customtheme/exampletheme/images/button_pressed.png":"examples/customtheme/exampletheme/images/button_normal.png"
+                                    source: parent.pressed ? "customtheme/exampletheme/images/button_pressed.png":"customtheme/exampletheme/images/button_normal.png"
                                     border.left: 6; border.top: 6
                                     border.right: 6; border.bottom: 6
                                 }
@@ -310,7 +311,7 @@ Rectangle {
                 id:shinySpinner
                 BorderImage {
                     width:30; height:30
-                    source: "examples/customtheme/exampletheme/images/button_normal.png"
+                    source: "customtheme/exampletheme/images/button_normal.png"
                     border.top:4 ; border.left:4 ; border.bottom:4 ; border.right:4
                     Timer { running: true; repeat: true; interval: 25; onTriggered: opacity}
                     PropertyAnimation on opacity {
@@ -323,7 +324,7 @@ Rectangle {
             Component{
                 id:shinyBar
                 BorderImage {
-                    source: "examples/customtheme/exampletheme/images/button_normal.png"
+                    source: "customtheme/exampletheme/images/button_normal.png"
                     visible: styledItem.value > 2
                     border.top:4 ; border.left:4 ; border.bottom:4 ; border.right:4
                 }
@@ -332,7 +333,7 @@ Rectangle {
                 id:shinyCheck
                 Image {
                     visible: parent.parent.checked ? 1 : 0
-                    source: "examples/customtheme/exampletheme/images/checkbox_check.png"
+                    source: "customtheme/exampletheme/images/checkbox_check.png"
                 }
             }
             Component{
@@ -343,8 +344,8 @@ Rectangle {
                         x:adjoining ? -2 : 0
                         width:parent.width + (adjoining ? 5 : 0)
                         height:parent.height
-                        source: styledItem.pressed ? "examples/customtheme/exampletheme/images/button_pressed.png":
-                                "examples/customtheme/exampletheme/images/button_normal.png"
+                        source: styledItem.pressed ? "customtheme/exampletheme/images/button_pressed.png":
+                                "customtheme/exampletheme/images/button_normal.png"
                         border.left: 6; border.top: 6
                         border.right: 6; border.bottom: 6
                     }
@@ -354,7 +355,7 @@ Rectangle {
                 id:shinyEdit
                 BorderImage {
                     width:32; height:32;
-                    source: "examples/customtheme/exampletheme/images/edit_normal.png"
+                    source: "customtheme/exampletheme/images/edit_normal.png"
                     anchors.fill:parent
                     border.left: 6; border.top: 6
                     border.right: 6; border.bottom: 6

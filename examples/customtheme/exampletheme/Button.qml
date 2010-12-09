@@ -1,5 +1,5 @@
 import Qt 4.7
-import "../../../" as Components
+import "../../../components" as Components
 
 Components.Button {
     leftMargin:12

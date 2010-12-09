@@ -1,4 +1,5 @@
 import Qt 4.7
+import "../components"
 
 Item {
     width: 950
