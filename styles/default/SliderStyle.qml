@@ -31,6 +31,11 @@ QtObject {
     property int minimumWidth: 200
     property int minimumHeight: 40
 
+    property int leftMargin : 2
+    property int topMargin: 0
+    property int rightMargin: 2
+    property int bottomMargin: 0
+
     property Component groove: Item {
         opacity: enabled ? 1.0 : 0.7
 
@@ -39,6 +44,17 @@ QtObject {
             anchors.fill: sliderBackground
             anchors.margins: 1
             radius: 2
+        }
+
+        Rectangle {
+            property real zeroPos :  positionForValue(0)
+            property real handlePos: handlePosition
+            color: progressColor
+            height: 10
+            radius: 4
+            anchors.verticalCenter: parent.verticalCenter
+            x: zeroPos
+            width: handlePos - x
         }
 
         BorderImage {
@@ -89,17 +105,6 @@ QtObject {
             anchors.margins: 10
             anchors.centerIn: parent
             text: indicatorText
-        }
-    }
-
-    property Component valueTrack: Item {
-        Rectangle {
-            anchors.right: parent.right
-            anchors.left: parent.left
-            anchors.verticalCenter: parent.verticalCenter
-            color: progressColor
-            radius: 4
-            height: 10
         }
     }
 }

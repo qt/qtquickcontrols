@@ -48,14 +48,15 @@ Item {
 
     // CONVENIENCE TO BE USED BY STYLES
     SystemPalette {
-        id: pallete
+        id: palette
     }
-    property color progressColor: pallete.highlight
-    property color backgroundColor: pallete.window
+    property color progressColor: palette.highlight
+    property color backgroundColor: palette.window
+
+    property int leftMargin: defaultStyle.leftMargin
+    property int rightMargin: defaultStyle.rightMargin
 
     // EXTENSIONS
-    property real secondaryValue
-
     // Indicate that we want animations in the Slider, people customizing should
     // look at it to decide whether or not active animations.
     property bool animated: true
@@ -77,8 +78,6 @@ Item {
     // Hooks for customizing the pieces of the slider
     property alias groove: grooveLoader.sourceComponent
     property alias handle: handleLoader.sourceComponent
-    property alias valueTrack: valueTrackLoader.sourceComponent
-    property alias secondaryValueTrack: secondaryValueTrackLoader.sourceComponent
     property alias valueIndicator: valueIndicatorLoader.sourceComponent
 
     // PRIVATE/CONVENIENCE
@@ -126,78 +125,18 @@ Item {
             stepSize: 1.0
             inverted: false
 
-            positionAtMinimum: handleLoader.width / 2
-            positionAtMaximum: contents.width - handleLoader.width / 2
+            positionAtMinimum: leftMargin
+            positionAtMaximum: contents.width - rightMargin
         }
 
         Loader {
             id: grooveLoader
             anchors.fill: parent
-            anchors.leftMargin: handleLoader.width / 2
-            anchors.rightMargin: handleLoader.width / 2
-
             sourceComponent: defaultStyle.groove
-        }
 
-        Loader {
-            id: secondaryValueTrackLoader
-            anchors.top: parent.top
-            anchors.bottom: parent.bottom
-            anchors.left: grooveLoader.left
-
-            width: {
-                // ### This is a hack to make the binding system recalculate
-                // the width, since it depends on those parameters, but the
-                // dependecy is isolated inside C++ range model.
-                range.positionAtMaximum; range.positionAtMinimum;
-                range.minimumValue; range.maximumValue;
-                return range.positionForValue(slider.secondaryValue) - handleLoader.width / 2;
-            }
-
-            sourceComponent: defaultStyle.secondaryValueTrack
-
-            states: State {
-                when: slider.inverted
-                PropertyChanges {
-                    target: secondaryValueTrackLoader
-                    width: {
-                        // See comment above.
-                        range.positionAtMaximum; range.positionAtMinimum;
-                        range.minimumValue; range.maximumValue;
-                        return grooveLoader.width - range.positionForValue(slider.secondaryValue) + handleLoader.width / 2;
-                    }
-                }
-                AnchorChanges {
-                    target: secondaryValueTrackLoader
-                    anchors.left: undefined
-                    anchors.right: grooveLoader.right
-                }
-            }
-        }
-
-        Loader {
-            id: valueTrackLoader
-
-            anchors.top: parent.top
-            anchors.bottom: parent.bottom
-            anchors.left: grooveLoader.left
-            anchors.right: handleLoader.horizontalCenter
-            anchors.rightMargin: handleLoader.width / 2
-
-            sourceComponent: defaultStyle.valueTrack
-
-            states: State {
-                when: slider.inverted
-                PropertyChanges {
-                    target: valueTrackLoader
-                    anchors.rightMargin: 0
-                    anchors.leftMargin: - handleLoader.width / 2
-                }
-                AnchorChanges {
-                    target: valueTrackLoader
-                    anchors.left: handleLoader.horizontalCenter
-                    anchors.right: grooveLoader.right
-                }
+            property real handlePosition : handleLoader.x
+            function positionForValue(value) {
+                return range.positionForValue(value) - leftMargin;
             }
         }
 
@@ -205,7 +144,7 @@ Item {
             id: handleLoader
             transform: Translate { x: - handleLoader.width / 2 }
 
-            anchors.verticalCenter: parent.verticalCenter
+            anchors.verticalCenter: grooveLoader.verticalCenter
 
             sourceComponent: defaultStyle.handle
 

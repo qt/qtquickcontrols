@@ -234,8 +234,10 @@ Rectangle {
                             }
                         }
                         Slider {
-                            value: 50;
+                            value: 50
                             height: 20
+                            leftMargin:10
+                            rightMargin:10
                             handle: BorderImage{source:"examples/customtheme/exampletheme/images/button_normal.png";
                                 width:20; height:20
                                 border.left:7; border.right: 7; border.top:7; border.bottom:7
