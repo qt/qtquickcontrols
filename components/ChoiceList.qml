@@ -1,6 +1,6 @@
 import Qt 4.7
 import "./styles/default" as DefaultStyles
-import "./privates" as Privates //  for ChoiceListPopup
+import "./private" as Private //  for ChoiceListPopup
 
 // KNOWN ISSUES
 // 1) Keyboard navigation in the popout does not work in Gallery (but does work in StretchBench)
@@ -73,7 +73,7 @@ Item {
         onCanceled: choiceList.pressed = false    // mouse stolen e.g. by Flickable
     }
 
-    Privates.ChoiceListPopup {
+    Private.ChoiceListPopup {
         id: popup
         listItem: choiceList.listItem
         listHighlight: choiceList.listHighlight
