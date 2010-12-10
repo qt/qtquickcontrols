@@ -20,6 +20,7 @@ Item {
             anchors.fill: parent
 
             model: ListModel {
+                ListElement { component: "ChoiceList" }
                 ListElement { component: "ButtonBlock" }
                 ListElement { component: "Switch" }
                 ListElement { component: "Button" }
@@ -28,7 +29,6 @@ Item {
                 ListElement { component: "Slider" }
                 ListElement { component: "ProgressBar" }
                 ListElement { component: "BusyIndicator" }
-                ListElement { component: "ChoiceList" }
                 ListElement { component: "LineEdit" }
                 ListElement { component: "MultiLineEdit" }
                 ListElement { component: "SpinBox" }
@@ -403,11 +403,36 @@ Item {
 
             ListModel {
                 id: testDataModel
-                ListElement { text: "Apple" }
-                ListElement { text: "Banana" }
-                ListElement { text: "Coconut" }
-                ListElement { text: "Orange" }
-                ListElement { text: "Kiwi" }
+                ListElement { content: "1) Apple" }
+                ListElement { content: "2) Banana" }
+                ListElement { content: "3) Coconut" }
+                ListElement { content: "4) Orange" }
+                ListElement { content: "5) Kiwi" }
+                ListElement { content: "6) Apple" }
+                ListElement { content: "7) Banana" }
+                ListElement { content: "8) Coconut" }
+                ListElement { content: "9) Orange" }
+                ListElement { content: "10) Kiwi" }
+                ListElement { content: "11) Apple" }
+                ListElement { content: "12) Banana" }
+                ListElement { content: "13) Coconut" }
+                ListElement { content: "14) Orange" }
+                ListElement { content: "15) Kiwi" }
+                ListElement { content: "16) Apple" }
+                ListElement { content: "17) Banana" }
+                ListElement { content: "18) Coconut" }
+                ListElement { content: "19) Orange" }
+                ListElement { content: "20) Kiwi" }
+                ListElement { content: "21) Apple" }
+                ListElement { content: "22) Banana" }
+                ListElement { content: "23) Coconut" }
+                ListElement { content: "24) Orange" }
+                ListElement { content: "25) Kiwi" }
+                ListElement { content: "26) Apple" }
+                ListElement { content: "27) Banana" }
+                ListElement { content: "28) Coconut" }
+                ListElement { content: "29) Orange" }
+                ListElement { content: "30) Kiwi" }
             }
         }
     }

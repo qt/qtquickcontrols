@@ -1,24 +1,20 @@
 import Qt 4.7
 
 QtObject {
-
     property int minimumWidth: 200
     property int minimumHeight: 32
 
-    property int leftMargin : 8
+    property int leftMargin: 8
     property int topMargin: 8
     property int rightMargin: 34
     property int bottomMargin: 8
 
-    property Component background:
-    Component {
+    property Component background: Component {
         Item {
             opacity: enabled ? 1 : 0.8
-            Rectangle{
-                x: 1
-                y: 1
-                width: parent.width-2
-                height: parent.height-2
+            Rectangle { // Background center fill
+                anchors.fill: parent
+                anchors.margins: 1
                 color: backgroundColor
                 radius: 5
             }
@@ -31,17 +27,8 @@ QtObject {
                 border.left: 3; border.top: 3
                 border.right: 3; border.bottom: 3
                 Image {
-                    anchors.top: parent.top
+                    anchors.verticalCenter: parent.verticalCenter
                     anchors.right: parent.right
-                    anchors.topMargin: 8
-                    anchors.rightMargin: 10
-                    opacity: enabled ? 1 : 0.3
-                    source:"images/spinbox_up.png"
-                }
-                Image {
-                    anchors.bottom: parent.bottom
-                    anchors.right: parent.right
-                    anchors.bottomMargin: 8
                     anchors.rightMargin: 10
                     opacity: enabled ? 1 : 0.3
                     source:"images/spinbox_down.png"
@@ -50,24 +37,31 @@ QtObject {
         }
     }
 
-    property Component popupFrame:
-    Component {
-        Item {
+    property Component label: Component {
+        Text {
+            color: textColor
+            anchors.verticalCenter: parent.verticalCenter
+            text: model && currentIndex >= 0 ? model.get(currentIndex).content : ""
+            opacity: enabled ? 1 : 0.5
+        }
+    }
 
-            Behavior on opacity { NumberAnimation { easing.type: Easing.OutQuad; duration: 250 }}
+    // Popout styling
+
+    property Component popupFrame: Component {
+        Item {
+            Behavior on opacity { NumberAnimation { easing.type: Easing.OutQuad; duration: 250 } }
 
             property int minimumWidth: 200
 
-            property int leftMargin : 8
+            property int leftMargin: 8
             property int topMargin: 8
             property int rightMargin: 30
             property int bottomMargin: 8
 
-            Rectangle{
-                x: 1
-                y: 1
-                width: parent.width-2
-                height: parent.height-2
+            Rectangle { // Background center fill
+                anchors.fill: parent
+                anchors.margins: 1
                 color: backgroundColor
                 radius: 5
             }
@@ -83,20 +77,6 @@ QtObject {
         }
     }
 
-    property Component label : Component {
-        Row {
-            id: row
-            spacing: 6
-            anchors.centerIn: parent
-            Text {
-                color: textColor
-                anchors.verticalCenter: parent.verticalCenter
-                text: model.get(currentIndex).content
-                opacity: parent.enabled ? 1 : 0.5
-            }
-        }
-    }
-
     property Component listItem: Component {
         Item {
             width: styledItem.width
@@ -107,20 +87,25 @@ QtObject {
                 anchors.left: parent.left
                 anchors.leftMargin: 6
 
+                font.bold: index == currentIndex
                 color: styledItem.textColor
                 anchors.margins: 10
-                text: model.get(index).content  // list properties can't be automatically be added to the scope, so use get()
+                text: model ? model.get(index).content : ""  // list properties can't be automatically be added to the scope, so use get()
             }
         }
     }
 
     property Component listHighlight: Component {
-        Rectangle {
-            SystemPalette{id:syspal}
-            color: syspal.highlight
-            border.color: Qt.darker(syspal.highlight)
-            radius:2
-            smooth:true
+        Item {  // Rectangles' border extends outside its bounds so will be clipped by listbox...
+            Rectangle { // ...unless we explictly make the Rectangle slightly smaller
+                SystemPalette { id: syspal }
+                anchors.fill: parent
+                anchors.margins: 1
+                color: syspal.highlight
+                border.color: Qt.darker(syspal.highlight)
+                radius: 2
+                smooth: true
+            }
         }
     }
 }
