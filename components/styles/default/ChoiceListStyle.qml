@@ -38,11 +38,13 @@ QtObject {
     }
 
     property Component label: Component {
-        Text {
-            color: textColor
-            anchors.verticalCenter: parent.verticalCenter
-            text: model && currentIndex >= 0 ? model.get(currentIndex).content : ""
-            opacity: enabled ? 1 : 0.5
+        Item {  // Allows text element below to center vertically
+            Text {
+                color: textColor
+                anchors.verticalCenter: parent.verticalCenter
+                text: model && currentIndex >= 0 ? model.get(currentIndex).content : ""
+                opacity: enabled ? 1 : 0.5
+            }
         }
     }
 

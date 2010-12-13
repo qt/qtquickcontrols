@@ -6,8 +6,8 @@ import "./private" as Private //  for ChoiceListPopup
 // 1) Keyboard navigation in the popout does not work in Gallery (but does work in StretchBench)
 // 2) When opening the popout, the currentItem is not always centered on the ChoiceList
 // 3) Popout list does not have a scrollbar/scroll indicator or similar
-// 4) When the popout first appears (befor releasing the mouse button) the highlight is not always in the right place
-// 5) The ChoiceListPopup should be dynamically loaded, to support radically different implementations
+// 4) The ChoiceListPopup should be dynamically loaded, to support radically different implementations
+// 5) Mouse wheel scroll events not handled by the popout ListView
 
 Item {
     id: choiceList
@@ -66,7 +66,7 @@ Item {
         drag.target: Item {}    // disable dragging in case ChoiceList is on a Flickable
         onPressed: {
             choiceList.pressed = true;
-            popup.togglePopup(choiceList);
+            popup.togglePopup();
 
         }
         onReleased: choiceList.pressed = false

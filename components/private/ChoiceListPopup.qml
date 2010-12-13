@@ -16,34 +16,27 @@ MouseArea {
 
     property string behavior: "MacOS"
     property bool desktopBehavior: (behavior == "MacOS" || behavior == "Windows" || behavior == "Linux")
-    property int previousCurrentIndex: -1
-    onOpacityChanged: {
-        if(opacity == 1) // remember what current index was when the popup opened
-            previousCurrentIndex = currentIndex;
-    }
+    property int previousCurrentIndex: -1   // set in state transition last in this file
 
     property alias model: listView.model
     property alias currentIndex: listView.currentIndex
-    onModelChanged: if(!model) currentIndex = -1;
 
     property Component listItem
     property Component listHighlight
     property Component popupFrame
 
-    function togglePopup(choiceList) {
-        positionPopup(choiceList);
-        popupFrameLoader.item.opacity = popupFrameLoader.item.opacity ? 0 : 1
-    }
+    function togglePopup() { state = (state == "" ? "hidden" : "") }
     function setCurrentIndex(index) { listView.currentIndex = index; }
     function cancelSelection() { listView.currentIndex = previousCurrentIndex; }
-    function closePopup() { popupFrameLoader.item.opacity = 0; listView.hideHighlight(); }
+    function closePopup() { state = "hidden" }
 
-    function positionPopup(choiceList) {
+    function positionPopup() {
         switch(behavior) {
         case "MacOS":
             var mappedListPos = mapFromItem(choiceList, 0, 0);
             var itemHeight = Math.max(listView.contentHeight/listView.count, 0);
             var currentItemY = Math.max(currentIndex*itemHeight, 0);
+            currentItemY += (itemHeight/2 - choiceList.height/2);  // correct for choiceLists that are higher than items in the list
 
             listView.y = mappedListPos.y - currentItemY;
             listView.x = mappedListPos.x;
@@ -93,14 +86,10 @@ MouseArea {
         anchors.topMargin: item.topMargin ? item.topMargin : -6
         anchors.bottomMargin: item.bottomMargin ? item.bottomMargin : -6
         sourceComponent: popupFrame
-
-        onLoaded: item.opacity = 0  // start off hidden
     }
 
     ListView {
         id: listView
-
-        opacity: popupFrameLoader.item.opacity
 
         focus: true
         clip: true
@@ -115,24 +104,18 @@ MouseArea {
             }
         }
 
-        property int highlightedIndex: 0
-        onHighlightedIndexChanged: positionViewAtIndex(highlightedIndex, ListView.Contain)  //mm see QTBUG-15972
+        property int highlightedIndex: -1
+        onHighlightedIndexChanged: positionViewAtIndex(highlightedIndex, ListView.Contain)
 
-        property variant highlightedItem
+        property variant highlightedItem: null
         onHighlightedItemChanged: {
             if(desktopBehavior) {
                 positionHighlight();
             }
         }
 
-        onOpacityChanged: {                                     // when the popup is hidden,
-            if(opacity == 0 && Qt.isQtObject(highlightItem)) {  // hide the highlight and don't show it
-                highlightItem.opacity = 0;                      // again until positioned correctly (below)
-            }
-        }
-
         function positionHighlight() {
-            if(!Qt.isQtObject(highlightItem) || !Qt.isQtObject(highlightItem))
+            if(!Qt.isQtObject(highlightItem))
                 return;
 
             if(!Qt.isQtObject(highlightedItem)) {
@@ -166,7 +149,7 @@ MouseArea {
 //                    enabled: !desktopBehavior
                     anchors.fill: parent
 //                    onPressed: listView.currentIndex = index;
-                    onClicked: { listView.currentIndex = index; closePopup(); }
+                    onClicked: { setCurrentIndex(index); closePopup(); }
 //                    onCanceled: popup.cancelSelection();
                 }
             }
@@ -229,12 +212,13 @@ MouseArea {
         highlight: popup.listHighlight
     }
 
+    enabled: (state != "hidden") // to avoid stray events when poput is about to close
     hoverEnabled: true
     onClicked: { popup.cancelSelection(); popup.closePopup(); } // clicked outside the list
     onPressed: {
         var mappedPos = mapToItem(listView.contentItem, mouse.x, mouse.y);
         var indexAt = listView.indexAt(mappedPos.x, mappedPos.y);
-        if( indexAt != -1) {
+        if(indexAt != -1) {
             listView.currentIndex = indexAt;
         }
     }
@@ -257,22 +241,24 @@ MouseArea {
                 }
             }
         }
-
-//                if(pressed) {
-//                    if(indexAt == listView.currentIndex)
-//                        return;
-
-//                    if(indexAt >= 0) {
-//                        listView.currentIndex = indexAt;
-//                    } else {
-//                        if(mouse.y+listView.contentY > listView.currentItem.y+listView.currentItem.height && listView.currentIndex+1 < listView.count ) {
-//                            listView.currentIndex++;
-//                        } else if(mouse.y+listView.contentY < listView.currentItem.y && listView.currentIndex > 0) {
-//                            listView.currentIndex--;
-//                        }
-//                    }
-//                }
     }
+
+    state: "hidden" // hidden by default
+    states: [
+        State {
+            name: ""    // not hidden, i.e. showing
+            PropertyChanges { target: popupFrameLoader.item; opacity: 1 }
+        },
+        State {
+            name: "hidden"
+            PropertyChanges { target: popupFrameLoader.item; opacity: 0 }
+        }
+    ]
+
+    transitions: [
+        Transition { to: ""; ScriptAction { script: { previousCurrentIndex = currentIndex; positionPopup();} } },
+        Transition { to: "hidden"; ScriptAction { script: listView.hideHighlight(); } }
+    ]
 }
 
 
