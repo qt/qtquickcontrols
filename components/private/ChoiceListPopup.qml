@@ -36,20 +36,20 @@ MouseArea {
     }
     function setCurrentIndex(index) { listView.currentIndex = index; }
     function cancelSelection() { listView.currentIndex = previousCurrentIndex; }
-    function closePopup() { popupFrameLoader.item.opacity = 0; }    
+    function closePopup() { popupFrameLoader.item.opacity = 0; listView.hideHighlight(); }
 
-    property int itemHeight: 0  // set when an list delegate is created
     function positionPopup(choiceList) {
         switch(behavior) {
         case "MacOS":
             var mappedListPos = mapFromItem(choiceList, 0, 0);
-            var currentItemY = Math.max(currentIndex*popup.itemHeight, 0);
+            var itemHeight = Math.max(listView.contentHeight/listView.count, 0);
+            var currentItemY = Math.max(currentIndex*itemHeight, 0);
 
             listView.y = mappedListPos.y - currentItemY;
             listView.x = mappedListPos.x;
 
             listView.width = choiceList.width;
-            listView.height = listView.contentHeight
+            listView.height = listView.contentHeight    //mm see QTBUG-16037
 
             if(listView.y < topMargin) {
                 var excess = currentItemY - mappedListPos.y;
@@ -157,7 +157,6 @@ MouseArea {
             height: delegateLoader.item.height
             property int theIndex: index    // for some reason the loader can't bind directly to the "index"
 
-            onHeightChanged: if(height > 0 && height != popup.itemHeight) popup.itemHeight = height;
             Loader {
                 id: delegateLoader
                 property alias index: itemDelegate.theIndex //mm Somehow the "model" gets through automagically, but not index
@@ -191,16 +190,24 @@ MouseArea {
             }
         }
 
+        function firstVisibleItem() { return indexAt(contentX+10,contentY+10); }
+        function lastVisibleItem() { return indexAt(contentX+width-10,contentY+height-10); }
+        function itemsPerPage() { return lastVisibleItem() - firstVisibleItem(); }
+
         Keys.onPressed: {
             // with the ListView !interactive (non-flicking) we have to handle arrow keys
             if (event.key == Qt.Key_Up) {
-                if(highlightedIndex > 0) highlightedIndex--;
+                if(!highlightedItem) highlightedIndex = lastVisibleItem();
+                else if(highlightedIndex > 0) highlightedIndex--;
             } else if (event.key == Qt.Key_Down) {
-                if(highlightedIndex+1 < model.count) highlightedIndex++;
+                if(!highlightedItem) highlightedIndex = firstVisibleItem();
+                else if(highlightedIndex+1 < model.count) highlightedIndex++;
             } else if (event.key == Qt.Key_PageUp) {
-                highlightedIndex = Math.max(highlightedIndex-5, 0); //mm how to get actuall page size?
+                if(!highlightedItem) highlightedIndex = lastVisibleItem();
+                else highlightedIndex = Math.max(highlightedIndex-itemsPerPage(), 0);
             } else if (event.key == Qt.Key_PageDown) {
-                highlightedIndex = Math.min(highlightedIndex+5, model.count-1);
+                if(!highlightedItem) highlightedIndex = firstVisibleItem();
+                else highlightedIndex = Math.min(highlightedIndex+itemsPerPage(), model.count-1);
             } else if (event.key == Qt.Key_Home) {
                 highlightedIndex = 0;
             } else if (event.key == Qt.Key_End) {
