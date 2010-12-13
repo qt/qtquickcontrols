@@ -32,12 +32,11 @@ MouseArea {
 
     function togglePopup(choiceList) {
         positionPopup(choiceList);
-        listView.positionHighlight();
         popupFrameLoader.item.opacity = popupFrameLoader.item.opacity ? 0 : 1
     }
     function setCurrentIndex(index) { listView.currentIndex = index; }
     function cancelSelection() { listView.currentIndex = previousCurrentIndex; }
-    function closePopup() { popupFrameLoader.item.opacity = 0; }
+    function closePopup() { popupFrameLoader.item.opacity = 0; }    
 
     property int itemHeight: 0  // set when an list delegate is created
     function positionPopup(choiceList) {
@@ -89,10 +88,10 @@ MouseArea {
         property alias styledItem: popup.parent
 
         anchors.fill: listView
-        anchors.leftMargin: popupFrame.leftMargin != undefined ? popupFrame.leftMargin : -6
-        anchors.rightMargin: popupFrame.rigthMargin != undefined ? popupFrame.rigthMargin : -6
-        anchors.topMargin: popupFrame.topMargin != undefined ? popupFrame.topMargin : -6
-        anchors.bottomMargin: popupFrame.bottomMargin != undefined ? popupFrame.bottomMargin : -6
+        anchors.leftMargin: item.leftMargin ? item.leftMargin : -6
+        anchors.rightMargin: item.rightMargin ? item.rightMargin : -6
+        anchors.topMargin: item.topMargin ? item.topMargin : -6
+        anchors.bottomMargin: item.bottomMargin ? item.bottomMargin : -6
         sourceComponent: popupFrame
 
         onLoaded: item.opacity = 0  // start off hidden
@@ -136,11 +135,20 @@ MouseArea {
             if(!Qt.isQtObject(highlightItem) || !Qt.isQtObject(highlightItem))
                 return;
 
-            highlightItem.x = highlightedItem.x;
-            highlightItem.y = highlightedItem.y;
-            highlightItem.width = highlightedItem.width;
-            highlightItem.height = highlightedItem.height;
-            highlightItem.opacity = 1;  // show once positioned
+            if(!Qt.isQtObject(highlightedItem)) {
+                highlightItem.opacity = 0;  // hide when no item is highlighted
+            } else {
+                highlightItem.x = highlightedItem.x;
+                highlightItem.y = highlightedItem.y;
+                highlightItem.width = highlightedItem.width;
+                highlightItem.height = highlightedItem.height;
+                highlightItem.opacity = 1;  // show once positioned
+            }
+        }
+
+        function hideHighlight() {
+            highlightedIndex = -1;
+            highlightedItem = null; // will trigger positionHighlight() what will hide the highlight
         }
 
         delegate: Item {
@@ -198,7 +206,12 @@ MouseArea {
             } else if (event.key == Qt.Key_End) {
                 highlightedIndex = model.count-1;
             } else if (event.key == Qt.Key_Enter || event.key == Qt.Key_Return) {
-                popup.setCurrentIndex(highlightedIndex);
+                if(highlightedIndex != -1) {
+                    popup.setCurrentIndex(highlightedIndex);
+                } else {
+                    popup.cancelSelection();
+                }
+
                 popup.closePopup();
             } else if (event.key == Qt.Key_Escape) {
                 popup.cancelSelection();
@@ -226,14 +239,15 @@ MouseArea {
                 return;
 
             if(indexAt >= 0) {
-               listView.highlightedIndex = indexAt;
+                listView.highlightedIndex = indexAt;
             } else {
                 if(mouse.y > listView.y+listView.height && listView.highlightedIndex+1 < listView.count ) {
                     listView.highlightedIndex++;
                 } else if(mouse.y < listView.y && listView.highlightedIndex > 0) {
                     listView.highlightedIndex--;
-                } /*else
-                    listView.highlightItem.opacity = 0; // hide the highlight*/
+                } else if(mouse.x < popupFrameLoader.x || mouse.x > popupFrameLoader.x+popupFrameLoader.width) {
+                    listView.hideHighlight();
+                }
             }
         }
 
