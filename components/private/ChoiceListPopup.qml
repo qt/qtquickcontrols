@@ -257,7 +257,15 @@ MouseArea {
     ]
 
     transitions: [
-        Transition { to: ""; ScriptAction { script: { previousCurrentIndex = currentIndex; positionPopup();} } },
+        Transition { to: "";
+            ScriptAction {
+                script: {
+                    previousCurrentIndex = currentIndex;
+                    positionPopup();
+                    listView.forceActiveFocus();
+                }
+            }
+        },
         Transition { to: "hidden"; ScriptAction { script: listView.hideHighlight(); } }
     ]
 }

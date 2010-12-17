@@ -3,10 +3,9 @@ import "./styles/default" as DefaultStyles
 import "./private" as Private //  for ChoiceListPopup
 
 // KNOWN ISSUES
-// 1) Keyboard navigation in the popout does not work in Gallery (but does work in StretchBench)
-// 2) Popout list does not have a scrollbar/scroll indicator or similar
-// 3) The ChoiceListPopup should be dynamically loaded, to support radically different implementations
-// 4) Mouse wheel scroll events not handled by the popout ListView (see QTBUG-7369)
+// 1) Popout list does not have a scrollbar/scroll indicator or similar
+// 2) The ChoiceListPopup should be dynamically loaded, to support radically different implementations
+// 3) Mouse wheel scroll events not handled by the popout ListView (see QTBUG-7369)
 
 Item {
     id: choiceList
