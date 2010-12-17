@@ -207,6 +207,7 @@ MouseArea {
                 popup.cancelSelection();
                 popup.closePopup();
             }
+            event.accepted = true;  // consume all keys while popout has focus
         }
 
         highlight: popup.listHighlight
