@@ -99,10 +99,12 @@ Item {
 
             color: "transparent"
             border.color: pressed ? "red" : "transparent"
-            anchors.top: topLeftHandle.bottom
-            anchors.left: topLeftHandle.right
-            anchors.bottom: bottomRightHandle.top
-            anchors.right: bottomRightHandle.left
+
+            // Floor ensures that images are on integer coordinates so they stay crisp
+            y:Math.floor(topLeftHandle.y + topLeftHandle.height)
+            x:Math.floor(topLeftHandle.x + topLeftHandle.width)
+            width:Math.floor(bottomRightHandle.x - topLeftHandle.x - topLeftHandle.width)
+            height:Math.floor(bottomRightHandle.y - topLeftHandle.y - topLeftHandle.height)
 
             Loader {
                 id: loader
