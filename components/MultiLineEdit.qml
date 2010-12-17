@@ -48,7 +48,7 @@ Item {
     Loader { id: hintsLoader; sourceComponent: hints }
     Loader { sourceComponent: background; anchors.fill: parent }
 
-    Flickable {
+    Flickable { //mm is FocusScope, so MultiLineEdit's root doesn't need to be, no?
         id: flickable
         clip: true
 
@@ -78,9 +78,12 @@ Item {
             anchors.left: parent.left
             anchors.right: parent.right
 
+            focus: true
+            activeFocusOnPress: false
+            selectByMouse: false   // handled explicitly by mouseArea below
+
             color: enabled ? textColor: Qt.tint(textColor, "#80ffffff")
             wrapMode: desktopBehavior ? TextEdit.NoWrap : TextEdit.WordWrap
-            selectByMouse: false   // handled explicitly by mouseArea below
             onCursorRectangleChanged: flickable.ensureVisible(cursorRectangle)
         }
     }
@@ -106,7 +109,7 @@ Item {
 
         //mm see QTBUG-15814
         onPressed: {
-            textEdit.focus = true;
+            textEdit.forceActiveFocus();    // see QTBUG-16157
             var mappedMouse = mapToItem(textEdit, mouse.x, mouse.y);
             textEdit.cursorPosition = textEdit.positionAt(mappedMouse.x, mappedMouse.y);
             if(desktopBehavior) {

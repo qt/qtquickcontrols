@@ -1,7 +1,10 @@
 import QtQuick 1.0
 import "./styles/default" as DefaultStyles
 
-Item {
+// KNOWN ISSUES
+// 1) LineEdit does not loose focus when !enabled if it is a FocusScope (see QTBUG-16161)
+
+Item {  //mm Does this need to be a FocusScope or not?  //needs to be a FocusScope as long as TextInput is not in e.g. a Flickable's scope
     id: lineEdit
 
     property alias text: textInput.text
@@ -70,8 +73,9 @@ Item {
         echoMode: passwordMode ? _hints.passwordEchoMode : TextInput.Normal
 
         selectByMouse: false    // textSelection is handled explicitly by mouseArea below
+        focus: true             // needed when focus is set on the LineEdit instance "from the outside"
         activeFocusOnPress: false // explicitly handled my mouseArea below
-        onActiveFocusChanged: if(!desktopBehavior) state = focus ? "focused" : ""
+        onActiveFocusChanged: if(!desktopBehavior) state = (activeFocus ? "focused" : "")
 
         states: [
             State {
@@ -116,6 +120,7 @@ Item {
         text: textInput.text
     }
 
+
     MouseArea {
         id: mouseArea
         anchors.fill: parent
@@ -126,7 +131,7 @@ Item {
 
         //mm see QTBUG-15814
         onPressed: {
-            textInput.focus = true;
+            textInput.forceActiveFocus();    //mm see QTBUG-16157
             textInput.cursorPosition = textInput.positionAt(mouse.x-textInput.x);
             if(desktopBehavior) {
                 pressedPos = textInput.cursorPosition;
