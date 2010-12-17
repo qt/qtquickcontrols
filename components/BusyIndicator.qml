@@ -14,10 +14,15 @@ Item {
 
     Loader {
         id: backgroundComponent
-        property alias running:busyIndicator.running
+        property bool running: runtime.isActiveWindow &&    //mm is runtime.isActiveWindow universally available, or only in qmlviewer?
+                               busyIndicator.opacity > 0 &&
+                               busyIndicator.visible &&
+                               busyIndicator.running
+//        onRunningChanged: print("Running: " + running)
         anchors.fill: parent
         sourceComponent: background
+
     }
 
-    DefaultStyles.BusyIndicatorStyle{ id: defaultStyle }
+    DefaultStyles.BusyIndicatorStyle { id: defaultStyle }
 }
