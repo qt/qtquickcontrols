@@ -201,6 +201,13 @@ Item {
 
         Column {
             anchors.fill: parent; anchors.margins: 10; spacing: 5
+            opacity: currentComponentName == "ButtonBlock" ? 1 : 0
+            StretchBenchBoolOption { text: "Dimmed:"; id: buttonBlockOptionDimmed }
+            StretchBenchBoolOption { text: "Vertical layout"; id: buttonBlockOptionVerticalLayout }
+        }
+
+        Column {
+            anchors.fill: parent; anchors.margins: 10; spacing: 5
             opacity: currentComponentName == "ChoiceList" ? 1 : 0
             StretchBenchBoolOption { text: "Dimmed:"; id: choiceListOptionDimmed }
             StretchBenchBoolOption { text: "Has model:"; id: choiceListOptionHasModel }
@@ -264,7 +271,19 @@ Item {
             StretchBenchBoolOption { text: "Red text color:"; id: lineEditOptionRedText; }
             StretchBenchBoolOption { text: "Italic font:"; id: lineEditOptionItalicText; }
             StretchBenchBoolOption { text: "Password mode:"; id: lineEditOptionPasswordMode; }
-            }
+            StretchBenchBoolOption { text: "Focused:"; id: lineEditOptionFocused;
+                onCheckedChanged: if(checked) loader.item.forceActiveFocus(); else secondLineEdit.focus = true; }
+
+            LineEdit { id: secondLineEdit; placeholderText: "Click to verify focus handling"; width: 230}
+            LineEdit { }
+            LineEdit { }
+
+            //mm doesn't quite seem to work
+//            StretchBenchBoolOption { text: "Focused:"; checked: lineEdit.activeFocus;
+//                onCheckedChanged: { if(checked) lineEdit.focus = false; else lineEdit.forceActiveFocus(); }
+//            }
+//            LineEdit { id: lineEdit }
+        }
 
         Column {
             anchors.fill: parent; anchors.margins: 10; spacing: 5
@@ -301,6 +320,8 @@ Item {
                 ListElement { text: "Button D123" }
             }
             onClicked: model.setProperty(1, "text", "Foo")
+            enabled: !buttonBlockOptionDimmed.checked
+            orientation: buttonBlockOptionVerticalLayout.checked ? Qt.Vertical : Qt.Horizontal
         }
     }
 
@@ -378,6 +399,7 @@ Item {
             textColor: lineEditOptionRedText.checked ? "red" : "black"
             font.italic: lineEditOptionItalicText.checked
             passwordMode: lineEditOptionPasswordMode.checked
+            focus: lineEditOptionFocused.checked
         }
     }
 
