@@ -1,4 +1,4 @@
-import Qt 4.7
+import QtQuick 1.0
 
 Item {
     property string corner: ""    // Can we use Qt::Corner? see http://doc.trolltech.com/4.7/qt.html#Corner-enum

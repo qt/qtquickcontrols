@@ -1,4 +1,4 @@
-import Qt 4.7
+import QtQuick 1.0
 import "./styles/default" as DefaultStyles
 import "./private" as Private //  for ChoiceListPopup
 

@@ -1,4 +1,4 @@
-import Qt 4.7
+import QtQuick 1.0
 
 // This helper element allows extracting color values
 QtObject {
