@@ -46,9 +46,9 @@ Item {  //mm Does this need to be a FocusScope or not?  //needs to be a FocusSco
 
     // Implementation
 
-    property bool desktopBehavior: true    //mm Need styling hint
+    property bool desktopBehavior: false    //mm Need styling hint
     property alias _hints: hintsLoader.item
-    clip: true
+//    clip: true
 
     SystemPalette { id: syspal }
     Loader { id: hintsLoader; sourceComponent: hints }
@@ -132,11 +132,35 @@ Item {  //mm Does this need to be a FocusScope or not?  //needs to be a FocusSco
         //mm see QTBUG-15814
         onPressed: {
             textInput.forceActiveFocus();    //mm see QTBUG-16157
-            textInput.cursorPosition = textInput.positionAt(mouse.x-textInput.x);
             if(desktopBehavior) {
+                textInput.cursorPosition = textInput.positionAt(mouse.x-textInput.x);
                 pressedPos = textInput.cursorPosition;
             }
         }
+
+        onPressAndHold: {
+            if(!desktopBehavior) {
+                textInput.cursorPosition = textInput.positionAt(mouse.x-textInput.x);
+            }
+        }
+
+        onClicked: {
+            if(!desktopBehavior) {
+                var pos = textInput.positionAt(mouse.x-textInput.x);
+                var selectionStart = Math.min(textInput.selectionStart, textInput.selectionEnd);
+                var selectionEnd = Math.max(textInput.selectionStart, textInput.selectionEnd);
+                if(pos > selectionStart && pos < selectionEnd) {    // clicked  on selected text
+                    copyPastePopup.show = true;
+
+
+//                    print('Copied "' + textInput.selectedText + '"')
+//                    textInput.copy();
+                } else if(selectionStart != selectionEnd) { // clicked outside selection
+                    textInput.select(textInput.selectionEnd, textInput.selectionEnd);   // clear selection
+                }
+            }
+        }
+
         onPositionChanged: {
             if(!pressed)
                 return;
@@ -144,14 +168,21 @@ Item {  //mm Does this need to be a FocusScope or not?  //needs to be a FocusSco
             if(desktopBehavior) {
                 textInput.select(pressedPos, textInput.positionAt(mouse.x-textInput.x));
             } else {
-                textInput.cursorPosition = textInput.positionAt(mouse.x-textInput.x);
+                if(mouse.wasHeld) {
+                    textInput.cursorPosition = textInput.positionAt(mouse.x-textInput.x);
+                } else if(selectedText.length > 0) {
+                    var pos = textInput.positionAt(mouse.x-textInput.x);
+                    if(pos > textInput.selectionStart + (textInput.selectionEnd-textInput.selectionStart)/2)
+                        textInput.select(textInput.selectionStart, pos);
+                    else
+                        textInput.select(textInput.selectionEnd, pos);
+                }
             }
         }
 
         onDoubleClicked: {
-            if(desktopBehavior) {
-                textInput.selectWord(textInput.positionAt(mouse.x-textInput.x));
-            }
+            textInput.cursorPosition = textInput.positionAt(mouse.x-textInput.x);
+            textInput.selectWord(); // select word at cursor position
         }
 
 //        onTrippleClicked: if(desktopBehavior) textInput.selectAll();
@@ -159,5 +190,58 @@ Item {  //mm Does this need to be a FocusScope or not?  //needs to be a FocusSco
 
 
     DefaultStyles.LineEditStyle { id: defaultStyle }
+
+
+    Loader {
+        id: copyPastePopup
+        property bool show: false
+        sourceComponent: show ? copyPastePopupComponent : undefined
+
+        onLoaded: {
+            var lineEditMappedPos = mapToItem(null, lineEdit.x, lineEdit.y);
+            item.x = lineEditMappedPos.x + mouseArea.mouseX - item.width/2;
+            item.y = lineEditMappedPos.y - item.height;
+        }
+    }
+
+
+    Component {
+        id: copyPastePopupComponent
+        Rectangle {
+            color: "darkgray"
+            width: row.width
+            height: row.height
+
+            Component.onCompleted: {
+                var p = parent;
+                while (p.parent != undefined)
+                    p = p.parent
+                parent = p;
+            }
+            Row {
+                id: row
+                spacing: 10
+                Text { text: "Copy"; color: "white" }
+                Text { text: "Cut"; color: "white" }
+                Text { text: "Paste"; color: "white" }
+            }
+        }
+    }
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
