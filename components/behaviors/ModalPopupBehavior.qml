@@ -9,6 +9,7 @@ Item {
     property bool showing: false
     property Item popup
     property Item positionBy
+    property bool consumeCancelClick: true
 
     // implementation
     anchors.fill: parent
@@ -26,7 +27,7 @@ Item {
         anchors.fill: parent
         onPressed: {
             popupBehavior.showing = false;
-            mouse.accepted = false;
+            mouse.accepted = consumeCancelClick;
         }
     }
 
