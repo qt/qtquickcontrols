@@ -7,6 +7,7 @@ Item {
     id: buttonBlock
 
     property alias model: repeater.model
+    property variant bindings: ["text", "iconSource", "enabled", "opacity"]
 
     property Component buttonBackground: defaultStyle.background
     property Component buttonLabel: defaultStyle.label
@@ -21,15 +22,6 @@ Item {
     property int topMargin: defaultStyle.topMargin
     property int rightMargin: defaultStyle.rightMargin
     property int bottomMargin: defaultStyle.bottomMargin
-
-
-    signal connectProperties(variant model, variant item)
-    onConnectProperties: {  //mm need QTBUG-14964 for this?
-        if(model.text) item.text = model.text;
-        if(model.iconSource) item.iconSource = model.iconSource;
-        if(model.enabled) item.enabled = model.enabled;
-        if(model.checkable) item.checkable = model.checkable;
-    }
 
     width: grid.width
     height: grid.height
@@ -58,6 +50,21 @@ Item {
                 property url iconSource
                 signal clicked
 
+                property int buttonIndex: index    // workaround to give access to button's index below
+                Repeater {
+                    model: bindings
+                    delegate: Item {
+                        id: bindingItem
+                        property string bindingComponent: 'import QtQuick 1.0;' +
+                                'Binding {' +
+                                '    target: delegateloader;' +
+                                '    property: "' + bindings[index] + '";' +
+                                '    value: buttonBlock.model.get(' + buttonIndex + ').' + bindings[index] + ';' +
+                                '}'
+
+                        Component.onCompleted: Qt.createQmlObject(bindingComponent, bindingItem)
+                    }
+                }
 
                 ButtonBehavior {
                     id: behavior
@@ -65,9 +72,9 @@ Item {
                     onClicked: delegateloader.clicked()
                 }
 
-                property int adjoins: foo(repeater.count)
-
-                function foo(count) {   //mm why do we need a named functon here?
+                property int adjoins
+                adjoins: {   //mm see QTBUG-14987
+                    var count = repeater.count;
                     var adjoins = 0x0;
                     if(index%grid.columns != 0) // not first in row
                         adjoins |= 0x1;         // dock left
@@ -111,8 +118,6 @@ Item {
                 }
 
                 Component.onCompleted: {
-                    connectProperties(model, delegateloader);
-
                     if(buttonBlock.orientation == Qt.Vertical)    //mm Can't make this work without QTBUG-14957
                         grid.widestItemWidth = Math.max(grid.widestItemWidth, width);
                     else
