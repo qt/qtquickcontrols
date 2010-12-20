@@ -10,8 +10,10 @@ Components.CheckBox{
         border.left: 12
         border.right: 12
     }
+
     checkmark:Image{
         anchors.centerIn:parent
+        visible: checked
         source: pressed ? "image://theme/meegotouch-button-checkbox-checkmark-pressed" :
                 "image://theme/meegotouch-button-checkbox-checkmark"
         Behavior on opacity { NumberAnimation{easing.type:Easing.OutCubic}}
