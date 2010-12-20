@@ -41,6 +41,7 @@ Item {
 
     // Implementation
 
+    property alias activeFocus: textEdit.activeFocus // Forward active focus
     property alias desktopBehavior: mouseEditBehavior.desktopBehavior
     property alias _hints: hintsLoader.item
     clip: true

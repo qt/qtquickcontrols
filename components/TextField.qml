@@ -44,6 +44,8 @@ Item {  //mm Does this need to be a FocusScope or not?  //needs to be a FocusSco
     height: Math.max(minimumHeight,
                      textInput.height + topMargin + bottomMargin)
 
+    // Forward focus property
+    property alias activeFocus: textInput.activeFocus
 
     // Implementation
 

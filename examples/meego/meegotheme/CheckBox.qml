@@ -13,7 +13,6 @@ Components.CheckBox{
         border.left: 12
         border.right: 12
     }
-
-    checkmark:undefined
+    checkmark: Item{} // Drawn as part of the background
 }
 
