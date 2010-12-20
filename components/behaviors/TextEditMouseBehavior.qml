@@ -1,12 +1,18 @@
 import QtQuick 1.0
 
+// KNOWN ISSUES
+// 1) With !desktopBehavior and TextEdit dragging a highlight is interrupted by the PressAndHold signal firing
+
 Item {
     id: mouseBehavior
 
     property TextInput textInput
     property TextEdit textEdit
+    property Flickable flickable
     property bool desktopBehavior: true
     property alias containsMouse: mouseArea.containsMouse
+
+    property Component copyPasteButtons
 
     // Implementation
 
@@ -46,7 +52,9 @@ Item {
 
         onPressAndHold: {
             if(!desktopBehavior) {
-                textEditor.cursorPosition = characterPositionAt(mouse);
+                if(!textEditor.selectedText.length) {   //mm Somehow just having the onPressAndHold impementation interrupts the text selection
+                    textEditor.cursorPosition = characterPositionAt(mouse);
+                }
             }
         }
 
@@ -56,7 +64,7 @@ Item {
                 var selectionStart = Math.min(textEditor.selectionStart, textEditor.selectionEnd);
                 var selectionEnd = Math.max(textEditor.selectionStart, textEditor.selectionEnd);
                 if(pos > selectionStart && pos < selectionEnd) {    // clicked  on selected text
-                    copyPastePopup.show = true;
+                    copyPastePopup.showing = true;
 
 
 //                    print('Copied "' + textEditor.selectedText + '"')
@@ -95,41 +103,78 @@ Item {
     }
 
 
-    Loader {
+
+    MouseArea {
         id: copyPastePopup
-        property bool show: false
-        sourceComponent: show ? copyPastePopupComponent : undefined
+        property bool showing: false
 
-        onLoaded: {
-            var mappedPos = mapToItem(null, textEditor.x, textEditor.y);
-            item.x = mappedPos.x + mouseArea.mouseX - item.width/2;
-            item.y = mappedPos.y - item.height;
+        property Item rootItem
+        Component.onCompleted: {
+            rootItem = parent;
+            while (rootItem.parent != undefined) {
+                rootItem = rootItem.parent;
+            }
+        }
+
+        onPressed: {
+            showing = false; // hide
+            mouse.accepted = false;  // let pointer event throught
+        }
+
+        opacity: 0  // hidden initially
+        anchors.fill: parent
+
+        Rectangle { color: "red"; anchors.fill: parent; opacity: 0.5 }
+
+        states: State { name: "visible"
+            when: copyPastePopup.showing == true
+            ParentChange { target: copyPastePopup; parent: copyPastePopup.rootItem }
+            PropertyChanges { target: copyPastePopup; opacity: 1 }
         }
     }
 
-    Component {
-        id: copyPastePopupComponent
-        Rectangle {
-            color: "darkgray"
-            width: row.width
-            height: row.height
 
-            Component.onCompleted: {
-                var p = parent;
-                while (p.parent != undefined)
-                    p = p.parent
-                parent = p;
-            }
-            Row {
-                id: row
-                spacing: 10
-                Text { text: "Copy"; color: "white" }
-                Text { text: "Cut"; color: "white" }
-                Text { text: "Paste"; color: "white" }
-            }
-        }
-    }
 
+
+//    Loader {
+//        id: copyPastePopup
+//        property bool show: false
+//        sourceComponent: show ? copyPastePopupComponent : undefined
+
+//        onLoaded: if(status == Loader.Ready) {
+//            var mappedPos = mapToItem(null, textEditor.x, textEditor.y);
+//            item.x = mappedPos.x + mouseArea.mouseX - item.width/2;
+//            item.y = mappedPos.y - item.height;
+//        }
+//    }
+
+//    Component {
+//        id: copyPastePopupComponent
+//        Item {
+//            width: buttonLoader.width
+//            height: buttonLoader.height
+
+//            Component.onCompleted: {
+//                var p = parent;
+//                while (p.parent != undefined)
+//                    p = p.parent
+//                parent = p;
+//            }
+
+//            ListModel {
+//                id: buttonModel
+//                ListElement { text: "Copy" }
+//                ListElement { text: "Cut" }
+//                ListElement { text: "Paste" }
+//            }
+
+//            Loader {
+//                id: buttonLoader
+//                sourceComponent: copyPasteButtons
+//                onLoaded: if(status == Loader.Ready) { print("loaded:" + status); item.model = buttonModel }
+//            }
+//        }
+//    }
 }
 
 
