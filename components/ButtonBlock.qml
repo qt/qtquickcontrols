@@ -6,10 +6,9 @@ import "./styles/default" as DefaultStyles
 // KNOWN ISSUES
 // 1) When switching between horizontal and vertical orientation after block has been created, the Grid's move
 //    transition is called *before* the grid item's have actually moved, resulting in incorrect "adjoins" states
-// 2) The "bindings" property ought to allow maps not just arrays, but there's no way to find the keys used in the map
-// 3) Can't make items in vertical groups all the same width without access to their implicitWidth, see QTBUG-14957
-// 4) Should be generalized into JoinedGroup and ButtonBlock made a specialization.
-// 5) ExclusiveSelection support missing
+// 2) Can't make items in vertical groups all the same width without access to their implicitWidth, see QTBUG-14957
+// 3) Should be generalized into JoinedGroup and ButtonBlock made a specialization.
+// 4) ExclusiveSelection support missing
 
 // NOTES
 // 1) The ButtonBlock implementation has no ultimate dependency on AdjoiningVisual, and can therefor be made to work
@@ -25,7 +24,7 @@ Item {
     id: buttonBlock
 
     property alias model: repeater.model
-    property variant bindings: ["text", "iconSource", "enabled", "opacity"] //mm should be a map, but can't get list of its keys
+    property variant bindings: {"text":"text", "iconSource":"iconSource", "enabled":"enabled", "opacity":"opacity"}
 
     property Component buttonBackground: defaultStyle.background
     property Component buttonLabel: defaultStyle.label
@@ -135,25 +134,31 @@ Item {
                 property alias checked: behavior.checked
 
                 property string text
-                property variant button: blockButton
                 property url iconSource
+                property color textColor: buttonBlock.textColor
+                property color backgroundColor: buttonBlock.backgroundColor
 
-                property int buttonIndex: index    // workaround to give access to button's index below
-                Repeater {
-                    model: bindings
-                    delegate: Item {
-                        id: bindingItem
-                        Component.onCompleted: {
-                            var bindingComponent =
-                                    'import QtQuick 1.0;' +
-                                    'Binding {' +
-                                    '    target: blockButton;' +
-                                    '    property: "' + bindings[index] + '";' +
-                                    '    value: buttonBlock.model.get(' + buttonIndex + ').' + bindings[index] + ';' +
-                                    '}'
-                            Qt.createQmlObject(bindingComponent, bindingItem)    //mm do we ever need to explicitly delete these?
-                        }
+                Component.onCompleted: {
+                    // Create the Binding objects defined by the ButtonBlock's "bindings" map property to allow
+                    // the properties of the buttons to be bound to properties in the model with different names
+                    var keys = Object.keys(bindings);
+                    for(var i = 0; i < keys.length; i++) {
+                        var key = keys[i];
+                        var bindingComponent =
+                                'import QtQuick 1.0;' +
+                                'Binding {' +
+                                '    target: blockButton;' +
+                                '    property: "' + key + '";' +
+                                '    value: buttonBlock.model.get(' + index + ').' + bindings[key] + ';' +
+                                '}';
+                        Qt.createQmlObject(bindingComponent, blockButton);    //mm do we ever need to explicitly delete these?
                     }
+
+                    // Find the widest/talest item to make all buttons the same width/height
+                    if(buttonBlock.orientation == Qt.Vertical)    //mm Can't make this work without QTBUG-14957
+                        grid.widestItemWidth = Math.max(grid.widestItemWidth, width);
+                    else
+                        grid.talestItemHeight = Math.max(grid.talestItemHeight, height);
                 }
 
                 ButtonBehavior {
@@ -189,26 +194,16 @@ Item {
                                  labelComponent.item.height + topMargin + bottomMargin)
 
                 Loader {
-                    id:labelComponent
-                    property variant button: blockButton
+                    id: labelComponent
+                    property variant styledItem: blockButton
                     anchors.fill: parent
                     anchors.leftMargin: leftMargin
                     anchors.rightMargin: rightMargin
                     anchors.topMargin: topMargin
                     anchors.bottomMargin: bottomMargin
                     sourceComponent: buttonLabel
-                    property alias pressed: behavior.pressed
-                    property alias containsMouse: behavior.containsMouse
-                    property alias checkable: behavior.checkable  // button toggles between checked and !checked
-                    property alias checked: behavior.checked
                 }
 
-                Component.onCompleted: {
-                    if(buttonBlock.orientation == Qt.Vertical)    //mm Can't make this work without QTBUG-14957
-                        grid.widestItemWidth = Math.max(grid.widestItemWidth, width);
-                    else
-                        grid.talestItemHeight = Math.max(grid.talestItemHeight, height);
-                }
             }
         }
     }

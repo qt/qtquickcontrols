@@ -9,9 +9,6 @@ QtObject {
     property int rightMargin: 8
     property int bottomMargin: 8
 
-    property bool pressed:false
-    property bool checked:false
-
     property Component background:
     Component {
         id: defaultBackground
@@ -25,7 +22,7 @@ QtObject {
                 anchors.bottomMargin: anchors.topMargin
 
                 radius: adjoining ? 0 : 5
-                color: !checked ? backgroundColor : Qt.darker(backgroundColor)
+                color: !styledItem.checked ? backgroundColor : Qt.darker(backgroundColor)
             }
             BorderImage {
                 anchors.fill: parent
@@ -51,10 +48,10 @@ QtObject {
             width: row.width
             height: row.height
             anchors.centerIn: parent    //mm see QTBUG-15619
-            opacity: enabled ? 1 : 0.5
+            opacity: styledItem.enabled ? 1 : 0.5
             transform: Translate {
-                x: pressed || checked ? 1 : 0
-                y: pressed || checked ? 1 : 0
+                x: styledItem.pressed || styledItem.checked ? 1 : 0
+                y: styledItem.pressed || styledItem.checked ? 1 : 0
             }
 
             Row {
@@ -62,15 +59,15 @@ QtObject {
                 anchors.centerIn: parent
                 spacing: 4
                 Image {
-                    source: button.iconSource
+                    source: styledItem.iconSource
                     anchors.verticalCenter: parent.verticalCenter
                     fillMode: Image.Stretch //mm Image should shrink if button is too small, depends on QTBUG-14957
                 }
 
                 Text {
-                    color: textColor //mm see QTBUG-15623
+                    color: styledItem.textColor
                     anchors.verticalCenter: parent.verticalCenter
-                    text: button.text
+                    text: styledItem.text
                     horizontalAlignment: Text.Center
                     elide: Text.ElideRight //mm can't make layout work as desired without implicit size support, see QTBUG-14957
                 }
