@@ -103,96 +103,65 @@ Item {
     }
 
 
+    function selectionPopoutPoint() {
+        var point = {x:0, y:0}
+
+        var selectionStartPos = Math.min(textEditor.selectionStart, textEditor.selectionEnd);
+        var selectionEndPos = Math.max(textEditor.selectionStart, textEditor.selectionEnd);
+
+        var selectionStartRect = textEditor.positionToRectangle(selectionStartPos);
+        var mappedStartPoint = mapFromItem(textEditor, selectionStartRect.x, selectionStartRect.y);
+        mappedStartPoint.x = Math.max(mappedStartPoint.x, 0);
+        mappedStartPoint.y = Math.max(mappedStartPoint.y, 0);
+
+        var selectioEndRect = textEditor.positionToRectangle(selectionEndPos);
+        var mappedEndPoint = mapFromItem(textEditor, selectioEndRect.x, selectioEndRect.y);
+        mappedEndPoint.x = Math.min(mappedEndPoint.x, textEditor.width);
+        mappedEndPoint.y = Math.min(mappedEndPoint.y, textEditor.height);
+
+        var multilineSelection = (selectionStartRect.y != selectioEndRect.y);
+        if(!multilineSelection) {
+            point.x = mappedStartPoint.x + (mappedEndPoint.x-mappedStartPoint.x)/2
+        } else {
+            point.x = textEditor.x + textEdit.width/2;
+        }
+
+        point.y = mappedStartPoint.y
+        return point;
+    }
 
     Item {
-        id: foo
+        id: copyPastePopup
+
+        property alias showing: modalPopup.showing
+        onShowingChanged: {
+            if(showing) {
+                var popoutPoint = selectionPopoutPoint();
+                copyPastePopup.x = popoutPoint.x - modalPopup.popup.width/2
+                copyPastePopup.y = popoutPoint.y - modalPopup.popup.height
+            }
+        }
 
         ModalPopupBehavior {
-            x: 10
-            id: copyPastePopup
-            popup: redRect
+            id: modalPopup
+            popup: loader.item
+            positionBy: copyPastePopup
 
-            Rectangle {
-                id: redRect
-                color: "red"
-                width: 100
-                height: 200
+            ListModel {
+                id: buttonModel
+                ListElement { text: "Copy" }
+                ListElement { text: "Cut" }
+                ListElement { text: "Paste" }
+            }
+
+            Loader {
+                id: loader
+                sourceComponent: copyPasteButtons
+                onLoaded: if(status == Loader.Ready) { item.model = buttonModel }
             }
         }
     }
 
-
-//    MouseArea {
-//        id: copyPastePopup
-//        property bool showing: false
-
-//        property Item rootItem
-//        Component.onCompleted: {
-//            rootItem = parent;
-//            while (rootItem.parent != undefined) {
-//                rootItem = rootItem.parent;
-//            }
-//        }
-
-//        onPressed: {
-//            showing = false; // hide
-//            mouse.accepted = false;  // let pointer event throught
-//        }
-
-//        opacity: 0  // hidden initially
-//        anchors.fill: parent
-
-//        Rectangle { color: "red"; anchors.fill: parent; opacity: 0.5 }
-
-//        states: State { name: "visible"
-//            when: copyPastePopup.showing == true
-//            ParentChange { target: copyPastePopup; parent: copyPastePopup.rootItem }
-//            PropertyChanges { target: copyPastePopup; opacity: 1 }
-//        }
-//    }
-
-
-
-
-//    Loader {
-//        id: copyPastePopup
-//        property bool show: false
-//        sourceComponent: show ? copyPastePopupComponent : undefined
-
-//        onLoaded: if(status == Loader.Ready) {
-//            var mappedPos = mapToItem(null, textEditor.x, textEditor.y);
-//            item.x = mappedPos.x + mouseArea.mouseX - item.width/2;
-//            item.y = mappedPos.y - item.height;
-//        }
-//    }
-
-//    Component {
-//        id: copyPastePopupComponent
-//        Item {
-//            width: buttonLoader.width
-//            height: buttonLoader.height
-
-//            Component.onCompleted: {
-//                var p = parent;
-//                while (p.parent != undefined)
-//                    p = p.parent
-//                parent = p;
-//            }
-
-//            ListModel {
-//                id: buttonModel
-//                ListElement { text: "Copy" }
-//                ListElement { text: "Cut" }
-//                ListElement { text: "Paste" }
-//            }
-
-//            Loader {
-//                id: buttonLoader
-//                sourceComponent: copyPasteButtons
-//                onLoaded: if(status == Loader.Ready) { print("loaded:" + status); item.model = buttonModel }
-//            }
-//        }
-//    }
 }
 
 

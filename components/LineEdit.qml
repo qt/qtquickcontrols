@@ -123,6 +123,7 @@ Item {  //mm Does this need to be a FocusScope or not?  //needs to be a FocusSco
         anchors.fill: parent
         textInput: textInput
         desktopBehavior: false
+        copyPasteButtons: ButtonBlock {}
     }
 
     DefaultStyles.LineEditStyle { id: defaultStyle }

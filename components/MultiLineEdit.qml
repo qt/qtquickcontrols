@@ -102,6 +102,7 @@ Item {
         anchors.fill: parent
         textEdit: textEdit
         desktopBehavior: false
+        copyPasteButtons: ButtonBlock {}
     }
 
     DefaultStyles.LineEditStyle { id: defaultStyle }

@@ -1,16 +1,17 @@
 import Qt 4.7
 
-Rectangle {
+// KNOWN ISSUES
+// 1) Screen is not redrawn correctly when popout is closed, see QTBUG-16180
+
+Item {
     id: popupBehavior
 
     property bool showing: false
     property Item popup
-//    property variant globalPos
+    property Item positionBy
 
     // implementation
     anchors.fill: parent
-    color: "red"
-    opacity: 0.3
 
     property Item root: findRoot()
     function findRoot() {
@@ -21,26 +22,24 @@ Rectangle {
         return p;
     }
 
-    property variant popupPos
-    Component.onCompleted: {
-        popupPos = mapToItem(null, 0 ,0);
-        popupPos.x += popup.x;
-        popupPos.y += popup.y;
-    }
-
-
     MouseArea {
         anchors.fill: parent
-        onClicked: popupBehavior.showing = false
+        onPressed: {
+            popupBehavior.showing = false;
+            mouse.accepted = false;
+        }
     }
 
-    state: "hidden" // initially hidden
+    function popupPos() {   // making this a property doesn't work
+        return mapFromItem(positionBy, 0, 0);
+    }
+
     states: [
         State {
             name: "showing"
             when: popupBehavior.showing
             ParentChange { target: popupBehavior; parent: root }
-            PropertyChanges { target: popup; x: popupPos.x; y: popupPos.y }
+            PropertyChanges { target: popup; x: popupPos().x; y: popupPos().y }
         },
         State {
             name: "hidden"
@@ -48,5 +47,4 @@ Rectangle {
             PropertyChanges { target: popupBehavior; opacity: 0 }
         }
     ]
-
 }
