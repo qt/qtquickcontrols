@@ -49,8 +49,8 @@ Rectangle {
                                 ListElement { text: "B" }
                             }
                         }
-                        LineEdit { }
-                        MultiLineEdit { placeholderText:"This is a\n multiline control."}
+                        TextField { }
+                        TextArea { placeholderText:"This is a\n multiline control."}
                         SpinBox{ }
                         Slider { value: 50 }
                         Row{
@@ -99,8 +99,8 @@ Rectangle {
                                     ListElement { text: "B" }
                                 }
                             }
-                            LineEdit { }
-                            MultiLineEdit { placeholderText:"This is a\n multiline control."}
+                            TextField { }
+                            TextArea { placeholderText:"This is a\n multiline control."}
                             SpinBox{ }
                             Slider { value: 50 }
                             Row{
@@ -152,8 +152,8 @@ Rectangle {
                                 ListElement { text: "B" }
                             }
                         }
-                        LineEdit { backgroundColor: column3.bg; textColor: column3.fg}
-                        MultiLineEdit  { placeholderText:"This is a\n multiline control."; backgroundColor: column3.bg; textColor: column3.fg}
+                        TextField { backgroundColor: column3.bg; textColor: column3.fg}
+                        TextArea  { placeholderText:"This is a\n multiline control."; backgroundColor: column3.bg; textColor: column3.fg}
                         SpinBox{ backgroundColor: column3.bg; textColor: column3.fg}
                         Slider { value: 50; backgroundColor: column3.bg; progressColor: column3.pg;}
                         Row{
@@ -205,8 +205,8 @@ Rectangle {
                                 ListElement { text: "B" }
                             }
                         }
-                        LineEdit { background: shinyEdit}
-                        MultiLineEdit {  placeholderText:"This is a\n multiline control."; background: shinyEdit}
+                        TextField { background: shinyEdit}
+                        TextArea {  placeholderText:"This is a\n multiline control."; background: shinyEdit}
                         SpinBox{
                             background: shinyEdit
                             leftMargin: 40

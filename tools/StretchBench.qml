@@ -29,8 +29,8 @@ Item {
                 ListElement { component: "Slider" }
                 ListElement { component: "ProgressBar" }
                 ListElement { component: "BusyIndicator" }
-                ListElement { component: "LineEdit" }
-                ListElement { component: "MultiLineEdit" }
+                ListElement { component: "TextField" }
+                ListElement { component: "TextArea" }
                 ListElement { component: "SpinBox" }
             }
 
@@ -135,8 +135,8 @@ Item {
                     case "ProgressBar": return progressBarComponent;
                     case "BusyIndicator": return busyIndicatorComponent;
                     case "ChoiceList": return choiceListComponent;
-                    case "LineEdit": return lineEditComponent;
-                    case "MultiLineEdit": return multiLineEditComponent;
+                    case "TextField": return lineEditComponent;
+                    case "TextArea": return textAreaComponent;
                     case "SpinBox": return spinBoxComponent;
                     }
                     return null;
@@ -237,8 +237,8 @@ Item {
 
         Column {
             anchors.fill: parent; anchors.margins: 10; spacing: 5
-            opacity: currentComponentName == "MultiLineEdit" ? 1 : 0
-            StretchBenchBoolOption { text: "Dimmed:"; id: multiLineEditOptionDimmed }
+            opacity: currentComponentName == "TextArea" ? 1 : 0
+            StretchBenchBoolOption { text: "Dimmed:"; id: textAreaOptionDimmed }
         }
 
         Column {
@@ -268,23 +268,23 @@ Item {
 
         Column {
             anchors.fill: parent; anchors.margins: 10; spacing: 5
-            opacity: currentComponentName == "LineEdit" ? 1 : 0
+            opacity: currentComponentName == "TextField" ? 1 : 0
             StretchBenchBoolOption { text: "Dimmed:"; id: lineEditOptionDimmed }
             StretchBenchBoolOption { text: "Red text color:"; id: lineEditOptionRedText; }
             StretchBenchBoolOption { text: "Italic font:"; id: lineEditOptionItalicText; }
             StretchBenchBoolOption { text: "Password mode:"; id: lineEditOptionPasswordMode; }
             StretchBenchBoolOption { text: "Focused:"; id: lineEditOptionFocused;
-                onCheckedChanged: if(checked) loader.item.forceActiveFocus(); else secondLineEdit.focus = true; }
+                onCheckedChanged: if(checked) loader.item.forceActiveFocus(); else secondTextField.focus = true; }
 
-            LineEdit { id: secondLineEdit; placeholderText: "Click to verify focus handling"; width: 230}
-            LineEdit { }
-            LineEdit { }
+            TextField { id: secondTextField; placeholderText: "Click to verify focus handling"; width: 230}
+            TextField { }
+            TextField { }
 
             //mm doesn't quite seem to work
 //            StretchBenchBoolOption { text: "Focused:"; checked: lineEdit.activeFocus;
 //                onCheckedChanged: { if(checked) lineEdit.focus = false; else lineEdit.forceActiveFocus(); }
 //            }
-//            LineEdit { id: lineEdit }
+//            TextField { id: lineEdit }
         }
 
         Column {
@@ -396,7 +396,7 @@ Item {
 
     Component {
         id: lineEditComponent
-        LineEdit {
+        TextField {
             enabled: !lineEditOptionDimmed.checked
             textColor: lineEditOptionRedText.checked ? "red" : "black"
             font.italic: lineEditOptionItalicText.checked
@@ -406,9 +406,9 @@ Item {
     }
 
     Component {
-        id: multiLineEditComponent
-        MultiLineEdit {
-            enabled: !multiLineEditOptionDimmed.checked
+        id: textAreaComponent
+        TextArea {
+            enabled: !textAreaOptionDimmed.checked
         }
     }
 

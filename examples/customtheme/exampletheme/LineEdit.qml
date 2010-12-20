@@ -1,7 +1,7 @@
 import QtQuick 1.0
 import "../../../components" as Components
 
-Components.LineEdit {
+Components.TextField {
     leftMargin:12
     rightMargin:12
     minimumWidth:200

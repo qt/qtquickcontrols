@@ -17,7 +17,7 @@ Rectangle {
                     Button { text:modelData }
                 }
             }
-            LineEdit { text:modelData }
+            TextField { text:modelData }
             Slider { value:50 }
             Row {
                 spacing:4

@@ -4,6 +4,6 @@ import "../../components" as QtComponents
 
 Item {
     QmlTime.Timer {
-        component: QtComponents.MultiLineEdit { text: "This is the text being edited" }
+        component: QtComponents.TextArea { text: "This is the text being edited" }
     }
 }

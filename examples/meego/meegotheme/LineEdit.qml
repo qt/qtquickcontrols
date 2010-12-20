@@ -4,7 +4,7 @@ import "../../../components" as Components
 // ### import QtComponents to load meego imageprovider
 import com.meego.themebridge 1.0
 
-Components.LineEdit {
+Components.TextField {
     minimumHeight: 40
 
     Style {
