@@ -3,8 +3,6 @@ import "../../../components" as Components
 
 Components.CheckBox{
     background: BorderImage {
-        width:16
-        height:16
         source: "images/edit_normal.png"
         border.top:6
         border.bottom:6

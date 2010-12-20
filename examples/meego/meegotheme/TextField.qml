@@ -6,6 +6,8 @@ import com.meego.themebridge 1.0
 
 Components.TextField {
     id:textField
+    leftMargin:20
+    rightMargin:20
     minimumHeight: 40
 
     Style {
@@ -23,8 +25,8 @@ Components.TextField {
                 "image://theme/meegotouch-textedit-background"
         border.top: 6
         border.bottom: 6
-        border.left: 20
-        border.right: 20
+        border.left: textField.leftMargin
+        border.right: textField.rightMargin
     }
 }
 
