@@ -20,6 +20,7 @@ Rectangle {
                 Button{iconSource:"images/folder_new.png"}
                 Button{text:"Text"; iconSource:"images/folder_new.png"}
                 CheckBox{}
+                LineEdit{}
             }
 
             Row {
@@ -28,6 +29,7 @@ Rectangle {
                 Meego.Button{text:""; iconSource:"images/folder_new.png"}
                 Meego.Button{text:"Text"; iconSource:"images/folder_new.png"}
                 Meego.CheckBox{}
+                Meego.LineEdit{}
             }
         }
     }
