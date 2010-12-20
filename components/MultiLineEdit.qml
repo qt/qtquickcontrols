@@ -1,5 +1,6 @@
 import QtQuick 1.0
 import "./styles/default" as DefaultStyles
+import "./behaviors"    // TextEditMouseBehavior
 
 Item {
     id: multiLineEdit
@@ -19,7 +20,7 @@ Item {
 
     property color textColor: syspal.text
     property color backgroundColor: syspal.base
-    property alias containsMouse: mouseArea.containsMouse
+    property alias containsMouse: mouseEditBehavior.containsMouse
 
     property Component background: defaultStyle.background
     property Component hints: defaultStyle.hints
@@ -40,7 +41,7 @@ Item {
 
     // Implementation
 
-    property bool desktopBehavior: true    //mm Need styling hint
+    property alias desktopBehavior: mouseEditBehavior.desktopBehavior
     property alias _hints: hintsLoader.item
     clip: true
 
@@ -78,10 +79,6 @@ Item {
             anchors.left: parent.left
             anchors.right: parent.right
 
-            focus: true
-            activeFocusOnPress: false
-            selectByMouse: false   // handled explicitly by mouseArea below
-
             color: enabled ? textColor: Qt.tint(textColor, "#80ffffff")
             wrapMode: desktopBehavior ? TextEdit.NoWrap : TextEdit.WordWrap
             onCursorRectangleChanged: flickable.ensureVisible(cursorRectangle)
@@ -99,43 +96,12 @@ Item {
         Behavior on opacity { NumberAnimation { duration: 90 } }
     }
 
-    MouseArea {
-        id: mouseArea
+
+    TextEditMouseBehavior {
+        id: mouseEditBehavior
         anchors.fill: parent
-        hoverEnabled: true
-        drag.target: Item {} // work-around for Flickable stealing the mouse, which is expected (?), see QTBUG-15231
-
-        property int pressedPos
-
-        //mm see QTBUG-15814
-        onPressed: {
-            textEdit.forceActiveFocus();    // see QTBUG-16157
-            var mappedMouse = mapToItem(textEdit, mouse.x, mouse.y);
-            textEdit.cursorPosition = textEdit.positionAt(mappedMouse.x, mappedMouse.y);
-            if(desktopBehavior) {
-                pressedPos = textEdit.cursorPosition;
-            }
-        }
-        onPositionChanged: {
-            if(!pressed)
-                return;
-
-            var mappedMouse = mapToItem(textEdit, mouse.x, mouse.y);
-            if(desktopBehavior) {
-                textEdit.select(pressedPos, textEdit.positionAt(mappedMouse.x, mappedMouse.y));
-            } else {
-                textEdit.cursorPosition = textEdit.positionAt(mappedMouse.x, mappedMouse.y);
-            }
-        }
-
-        onDoubleClicked: {
-            if(desktopBehavior) {
-                var mappedMouse = mapToItem(textEdit, mouse.x, mouse.y);
-                textEdit.selectWord(textEdit.positionAt(mappedMouse.x, mappedMouse.y));
-            }
-        }
-
-        //        onTrippleClicked: if(desktopBehavior) textEdit.selectAll();
+        textEdit: textEdit
+        desktopBehavior: false
     }
 
     DefaultStyles.LineEditStyle { id: defaultStyle }

@@ -121,7 +121,7 @@ Item {  //mm Does this need to be a FocusScope or not?  //needs to be a FocusSco
     TextEditMouseBehavior {
         id: mouseEditBehavior
         anchors.fill: parent
-        textEditor: textInput
+        textInput: textInput
         desktopBehavior: false
     }
 
