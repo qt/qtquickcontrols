@@ -42,7 +42,7 @@ QtObject {
             Text {
                 color: textColor
                 anchors.verticalCenter: parent.verticalCenter
-                text: model && currentIndex >= 0 ? model.get(currentIndex).content : ""
+                text: model && currentIndex >= 0 ? model.get(currentIndex).text : ""
                 opacity: enabled ? 1 : 0.5
             }
         }
@@ -90,7 +90,7 @@ QtObject {
                 font.bold: index == currentIndex
                 color: styledItem.textColor
                 anchors.margins: 10
-                text: model ? model.get(index).content : ""  // list properties can't be automatically be added to the scope, so use get()
+                text: model ? model.get(index).text : ""  // list properties can't be automatically be added to the scope, so use get()
             }
         }
     }

@@ -24,10 +24,10 @@ Rectangle {
 
             ListModel {
                 id: choices
-                ListElement { content: "Banana" }
-                ListElement { content: "Orange" }
-                ListElement { content: "Apple" }
-                ListElement { content: "Coconut" }
+                ListElement { text: "Banana" }
+                ListElement { text: "Orange" }
+                ListElement { text: "Apple" }
+                ListElement { text: "Coconut" }
             }
             Row {
                 anchors.fill: parent

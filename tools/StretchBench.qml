@@ -427,36 +427,36 @@ Item {
 
             ListModel {
                 id: testDataModel
-                ListElement { content: "1) Apple" }
-                ListElement { content: "2) Banana" }
-                ListElement { content: "3) Coconut" }
-                ListElement { content: "4) Orange" }
-                ListElement { content: "5) Kiwi" }
-                ListElement { content: "6) Apple" }
-                ListElement { content: "7) Banana" }
-                ListElement { content: "8) Coconut" }
-                ListElement { content: "9) Orange" }
-                ListElement { content: "10) Kiwi" }
-                ListElement { content: "11) Apple" }
-                ListElement { content: "12) Banana" }
-                ListElement { content: "13) Coconut" }
-                ListElement { content: "14) Orange" }
-                ListElement { content: "15) Kiwi" }
-                ListElement { content: "16) Apple" }
-                ListElement { content: "17) Banana" }
-                ListElement { content: "18) Coconut" }
-                ListElement { content: "19) Orange" }
-                ListElement { content: "20) Kiwi" }
-                ListElement { content: "21) Apple" }
-                ListElement { content: "22) Banana" }
-                ListElement { content: "23) Coconut" }
-                ListElement { content: "24) Orange" }
-                ListElement { content: "25) Kiwi" }
-                ListElement { content: "26) Apple" }
-                ListElement { content: "27) Banana" }
-                ListElement { content: "28) Coconut" }
-                ListElement { content: "29) Orange" }
-                ListElement { content: "30) Kiwi" }
+                ListElement { text: "1) Apple" }
+                ListElement { text: "2) Banana" }
+                ListElement { text: "3) Coconut" }
+                ListElement { text: "4) Orange" }
+                ListElement { text: "5) Kiwi" }
+                ListElement { text: "6) Apple" }
+                ListElement { text: "7) Banana" }
+                ListElement { text: "8) Coconut" }
+                ListElement { text: "9) Orange" }
+                ListElement { text: "10) Kiwi" }
+                ListElement { text: "11) Apple" }
+                ListElement { text: "12) Banana" }
+                ListElement { text: "13) Coconut" }
+                ListElement { text: "14) Orange" }
+                ListElement { text: "15) Kiwi" }
+                ListElement { text: "16) Apple" }
+                ListElement { text: "17) Banana" }
+                ListElement { text: "18) Coconut" }
+                ListElement { text: "19) Orange" }
+                ListElement { text: "20) Kiwi" }
+                ListElement { text: "21) Apple" }
+                ListElement { text: "22) Banana" }
+                ListElement { text: "23) Coconut" }
+                ListElement { text: "24) Orange" }
+                ListElement { text: "25) Kiwi" }
+                ListElement { text: "26) Apple" }
+                ListElement { text: "27) Banana" }
+                ListElement { text: "28) Coconut" }
+                ListElement { text: "29) Orange" }
+                ListElement { text: "30) Kiwi" }
             }
         }
     }

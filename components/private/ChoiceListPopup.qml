@@ -157,11 +157,7 @@ MouseArea {
             states: State {
                 name: "highlighted"
                 when: index == listView.highlightedIndex
-            }
-
-            transitions: Transition {
-                to: "highlighted"   // when an item becomes the highlighted one
-                ScriptAction {
+                StateChangeScript {
                     script: {
                         if(Qt.isQtObject(listView.highlightedItem)) {
                             listView.highlightedItem.yChanged.disconnect(listView.positionHighlight);
@@ -170,6 +166,7 @@ MouseArea {
                         listView.highlightedItem.yChanged.connect(listView.positionHighlight);
                     }
                 }
+
             }
         }
 
