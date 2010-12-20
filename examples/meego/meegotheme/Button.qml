@@ -35,10 +35,10 @@ Components.Button {
     background: BorderImage {
         source: pressed ? "image://theme/meegotouch-button-background-pressed" :
                 "image://theme/meegotouch-button-background"
-        border.top: 12
-        border.bottom: 12
-        border.left: 12
-        border.right: 12
+        border.top: 8
+        border.bottom: 8
+        border.left: 22
+        border.right: 22
     }
 
 
