@@ -104,34 +104,52 @@ Item {
 
 
 
-    MouseArea {
-        id: copyPastePopup
-        property bool showing: false
+    Item {
+        id: foo
 
-        property Item rootItem
-        Component.onCompleted: {
-            rootItem = parent;
-            while (rootItem.parent != undefined) {
-                rootItem = rootItem.parent;
+        ModalPopupBehavior {
+            x: 10
+            id: copyPastePopup
+            popup: redRect
+
+            Rectangle {
+                id: redRect
+                color: "red"
+                width: 100
+                height: 200
             }
         }
-
-        onPressed: {
-            showing = false; // hide
-            mouse.accepted = false;  // let pointer event throught
-        }
-
-        opacity: 0  // hidden initially
-        anchors.fill: parent
-
-        Rectangle { color: "red"; anchors.fill: parent; opacity: 0.5 }
-
-        states: State { name: "visible"
-            when: copyPastePopup.showing == true
-            ParentChange { target: copyPastePopup; parent: copyPastePopup.rootItem }
-            PropertyChanges { target: copyPastePopup; opacity: 1 }
-        }
     }
+
+
+//    MouseArea {
+//        id: copyPastePopup
+//        property bool showing: false
+
+//        property Item rootItem
+//        Component.onCompleted: {
+//            rootItem = parent;
+//            while (rootItem.parent != undefined) {
+//                rootItem = rootItem.parent;
+//            }
+//        }
+
+//        onPressed: {
+//            showing = false; // hide
+//            mouse.accepted = false;  // let pointer event throught
+//        }
+
+//        opacity: 0  // hidden initially
+//        anchors.fill: parent
+
+//        Rectangle { color: "red"; anchors.fill: parent; opacity: 0.5 }
+
+//        states: State { name: "visible"
+//            when: copyPastePopup.showing == true
+//            ParentChange { target: copyPastePopup; parent: copyPastePopup.rootItem }
+//            PropertyChanges { target: copyPastePopup; opacity: 1 }
+//        }
+//    }
 
 
 
