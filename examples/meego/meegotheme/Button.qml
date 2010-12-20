@@ -10,6 +10,19 @@ Components.Button {
     //minimumWidth:100
     minimumHeight: 40
 
+    Style {
+           id: meegostyle
+           styleClass: "MButtonStyle"
+           mode: {
+               if (button.containsMouse && button.pressed)
+                   return "pressed"
+               else if (button.checked)
+                   return "selected"
+               else
+                   return "default"
+           }
+       }
+
     background: BorderImage {
         source: pressed ? "image://theme/meegotouch-button-background-pressed" :
                 "image://theme/meegotouch-button-background"
