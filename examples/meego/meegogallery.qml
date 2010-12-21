@@ -6,7 +6,7 @@ import "meegotheme"
 
 Rectangle {
     width: 4*240
-    height: 440
+    height: 600
 
     Item {
         anchors.margins:8
@@ -30,6 +30,13 @@ Rectangle {
                 TextArea{}
             }
             Slider{}
+            ButtonBlock{
+                model: ListModel{
+                    ListElement{text:"one"}
+                    ListElement{text:"two" }
+                    ListElement{text:"three"}
+                }
+            }
 
             Text{ text: "Mainline"}
 
@@ -47,6 +54,11 @@ Rectangle {
                 Meego.MultiLineEdit{width:200}
             }
             Meego.Slider{}
+            Meego.ButtonRow{
+                Meego.Button{text:"one"}
+                Meego.Button{text:"two"}
+                Meego.Button{text:"three"}
+            }
         }
     }
 }
