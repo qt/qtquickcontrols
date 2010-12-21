@@ -12,7 +12,9 @@ Rectangle {
         anchors.margins:8
         anchors.fill:parent
         Column {
-            spacing:6
+            spacing:12
+
+            Text{ text: "Based on Custom"}
 
             Row {
                 spacing:6
@@ -20,8 +22,14 @@ Rectangle {
                 Button{iconSource:"images/folder_new.png"}
                 Button{text:"Text"; iconSource:"images/folder_new.png"}
                 CheckBox{}
+            }
+
+            Row {
+                spacing:6
                 TextField{}
             }
+
+            Text{ text: "Mainline"}
 
             Row {
                 spacing:6
@@ -29,7 +37,12 @@ Rectangle {
                 Meego.Button{text:""; iconSource:"images/folder_new.png"}
                 Meego.Button{text:"Text"; iconSource:"images/folder_new.png"}
                 Meego.CheckBox{}
-                Meego.LineEdit{}
+            }
+
+            Row {
+                spacing:6
+                Meego.LineEdit{width:200}
+                Meego.MultiLineEdit{width:200}
             }
         }
     }
