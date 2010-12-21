@@ -53,7 +53,7 @@ Components.Slider{
 
                 anchors.verticalCenter: parent.verticalCenter
                 x: positionForValue(0)
-                width: positionForValue(slider.value) - x
+                width: handlePosition - x
             }
         }
     }
