@@ -29,6 +29,7 @@ Rectangle {
                 TextField{}
                 TextArea{}
             }
+            Slider{}
 
             Text{ text: "Mainline"}
 
@@ -45,6 +46,7 @@ Rectangle {
                 Meego.LineEdit{width:200}
                 Meego.MultiLineEdit{width:200}
             }
+            Meego.Slider{}
         }
     }
 }

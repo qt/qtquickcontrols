@@ -11,7 +11,6 @@ Item {
     property bool triState: false
 
     onCheckableChanged: { if(!checkable) checked = false }
-
     MouseArea {
         id: mouseArea
         anchors.fill: parent

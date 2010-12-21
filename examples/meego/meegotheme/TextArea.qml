@@ -4,7 +4,7 @@ import "../../../components" as Components
 // ### import QtComponents to load meego imageprovider
 import com.meego.themebridge 1.0
 
-Components.TextField {
+Components.TextArea {
     id:textField
 
     leftMargin:meegostyle.current.get("paddingLeft")
