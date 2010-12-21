@@ -14,7 +14,7 @@ Components.Button {
     property bool iconVisible: true
     property bool textVisible: true
 
-    minimumWidth:55
+    minimumWidth: 55
     minimumHeight: meegostyle.preferredHeight
     textColor: meegostyle.current.get("textColor")
     //font: meegostyle.current.get("font")

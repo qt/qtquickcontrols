@@ -6,9 +6,12 @@ import com.meego.themebridge 1.0
 
 Components.TextField {
     id:textField
-    leftMargin:20
-    rightMargin:20
-    minimumHeight: 40
+
+    leftMargin:meegostyle.current.get("paddingLeft")
+    rightMargin:meegostyle.current.get("paddingRight")
+    topMargin: meegostyle.current.get("paddingTop")
+    bottomMargin: meegostyle.current.get("paddingBottom")
+    minimumHeight: meegostyle.preferredHeight
 
     Style {
         id: meegostyle
@@ -23,10 +26,11 @@ Components.TextField {
         source: textField.activeFocus ?
                 "image://theme/meegotouch-textedit-background-selected" :
                 "image://theme/meegotouch-textedit-background"
-        border.top: 6
-        border.bottom: 6
         border.left: textField.leftMargin
         border.right: textField.rightMargin
+        // Note: top and bottom margins are too small
+        border.top: textField.leftMargin
+        border.bottom: textField.rightMargin
     }
 }
 

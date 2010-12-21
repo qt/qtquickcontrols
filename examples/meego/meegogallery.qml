@@ -27,6 +27,7 @@ Rectangle {
             Row {
                 spacing:6
                 TextField{}
+                TextArea{}
             }
 
             Text{ text: "Mainline"}
