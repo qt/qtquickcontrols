@@ -51,5 +51,35 @@ Components.ButtonBlock {
                 return "default"
         }
     }
+
+    buttonLabel : Component {
+        Item {
+            height: 30
+            width:(iconFromSource.width ? iconFromSource.width + 6 : 0) + label.width + 4
+            Row {
+                anchors.centerIn:parent
+                spacing: 6
+                Image {
+                    id: iconFromSource
+                    source:styledItem.iconSource
+                    sourceSize.width: meegostyle.current.get("iconSize").width
+                    sourceSize.height: meegostyle.current.get("iconSize").height
+                }
+                Label {
+                    id: label
+                    x:(iconFromSource.width ? iconFromSource.width + 8 : 0)
+                    elide: Text.ElideRight
+                    anchors.verticalCenter:parent.verticalCenter
+
+                    // XXX This does not make sense yet, since the label width is not being set
+                    // horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: meegostyle.current.get("verticalTextAlign")
+                    font: meegostyle.current.get("font")
+                    color: meegostyle.current.get("textColor")
+                    text: styledItem.text
+                }
+            }
+        }
+    }
 }
 

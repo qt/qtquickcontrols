@@ -32,7 +32,7 @@ Rectangle {
             Slider{}
             ButtonBlock{
                 model: ListModel{
-                    ListElement{text:"one"}
+                    ListElement{text:"one" ; iconSource:"images/folder_new.png"}
                     ListElement{text:"two" }
                     ListElement{text:"three"}
                 }
@@ -55,7 +55,7 @@ Rectangle {
             }
             Meego.Slider{}
             Meego.ButtonRow{
-                Meego.Button{text:"one"}
+                Meego.Button{text:"one" ; iconSource: "images/folder_new.png"}
                 Meego.Button{text:"two"}
                 Meego.Button{text:"three"}
             }
