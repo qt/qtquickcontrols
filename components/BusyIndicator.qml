@@ -14,8 +14,7 @@ Item {
 
     Loader {
         id: backgroundComponent
-        property bool running: runtime.isActiveWindow &&    //mm is runtime.isActiveWindow universally available, or only in qmlviewer?
-                               busyIndicator.opacity > 0 &&
+        property bool running: busyIndicator.opacity > 0 &&
                                busyIndicator.visible &&
                                busyIndicator.running
 //        onRunningChanged: print("Running: " + running)
