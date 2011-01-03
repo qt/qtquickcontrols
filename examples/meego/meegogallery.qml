@@ -30,6 +30,11 @@ Rectangle {
                 TextArea{}
             }
             Slider{}
+            Item {
+                height:10
+                width:10
+            }
+
             ButtonBlock{
                 model: ListModel{
                     ListElement{text:"one" ; iconSource:"images/folder_new.png"}

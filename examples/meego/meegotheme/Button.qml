@@ -10,7 +10,6 @@ Components.Button {
     // Icon properties. Precedence is the following:
     // Source has precedence over Id
     // When checked, try to use checked Source or Id, if empty, fallback to default Source or Id
-    property string iconId
     property bool iconVisible: true
     property bool textVisible: true
 
@@ -51,22 +50,6 @@ Components.Button {
                 anchors.centerIn:parent
                 spacing: 6
                 Image {
-                    Icon {
-                        id: iconFromId
-
-                        // When checked, try to use checked Id. If empty, the standard Id is the fallback
-                        iconId: {
-                            if (checkable.checked && button.checkedIconId)
-                                return button.checkedIconId;
-                            return button.iconId;
-                        }
-
-                        // Visiblity check for default state (icon is not explicitly hidden)
-                        // Icon is shown if there's a valid iconId, respecting the higher
-                        // priority of iconFromSource
-                        visible: iconId && !iconFromSource.visible
-                    }
-
                     id: iconFromSource
                     sourceSize.width: meegostyle.current.get("iconSize").width
                     sourceSize.height: meegostyle.current.get("iconSize").height
@@ -89,7 +72,7 @@ Components.Button {
                         // Show sourceIcon when
                         //  1) checkedIconSource is present (highest priority), or
                         //  2) no checked icon exists (fallback)
-                        return button.checkedIconSource || !button.checkedIconId;
+                        return button.checkedIconSource;
                     }
 
                     states: State {
@@ -97,7 +80,7 @@ Components.Button {
                         when: !button.iconVisible
                         // Hide both icons
                         PropertyChanges { target: iconFromSource; visible: false; source: "" }
-                        PropertyChanges { target: iconFromId; visible: false; iconId: "" }
+                        PropertyChanges { target: iconFromId; visible: false; }
                     }
                 }
 
