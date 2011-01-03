@@ -4,16 +4,16 @@ import "./styles/default" as DefaultStyles
 Item {
     id: scrollDecorator
 
-    property variant scrollItem      // must be a Flickable, e.g. GridView or ListView
+    property variant flickable      // must be a Flickable, e.g. GridView or ListView
 
     anchors.fill: parent
     ScrollIndicator {
         horizontal: true
-        scrollItem: scrollDecorator.scrollItem
+        scrollItem: scrollDecorator.flickable
     }
 
     ScrollIndicator {
         horizontal: false
-        scrollItem: scrollDecorator.scrollItem
+        scrollItem: scrollDecorator.flickable
     }
 }

@@ -365,6 +365,6 @@ Rectangle {
     }
 
     ScrollDecorator{
-        scrollItem: flickable
+        flickable: flickable
     }
 }
