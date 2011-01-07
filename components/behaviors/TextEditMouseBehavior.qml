@@ -74,11 +74,11 @@ Item {
                 } else if(selectionStart != selectionEnd) { // clicked outside selection
                     textEditor.select(textEditor.selectionEnd, textEditor.selectionEnd);   // clear selection
                 } else {    // clicked while there's no selection
-//                  var endOfWordRegEx = /b/;
-//mm crash!         var endOfWordPosition = textEditor.text.indexOf(endOfWordRegEx, pos);
-
-                    textEditor.cursorPosition = pos;    //mm temp workaround
-                    var endOfWordPosition = textEditor.cursorPosition;
+                    var endOfWordRegEx = /[^\b]\b/g;
+                    endOfWordRegEx.lastIndex = pos;
+                    var endOfWordPosition = pos;
+                    if(endOfWordRegEx.test(textEditor.text))   // updates lastIndex
+                        endOfWordPosition = endOfWordRegEx.lastIndex;
 
                     if(textEditor.cursorPosition == endOfWordPosition) {
                         if(hadFocusBeforePress && textEditor.cursorPosition == pressedPos) {
