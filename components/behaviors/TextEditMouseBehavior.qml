@@ -3,7 +3,7 @@ import QtQuick 1.0
 // KNOWN ISSUES
 // 1) Can't tell if the Paste button should be shown or not, see QTBUG-16190
 // 2) Hard to tell if the Select button should be shown (part of QTBUG-16190?)
-// 3) Dragging the end of the selection past the beginning (or vise vesa) result in somewhat wrong selection
+// 3) Double-clicking on the word where the cusor is doesn't select the word (but opens the menu)
 // 4) Positioning of copy/paste/etc buttons doesn't take the window into account (can result in clipped buttons)
 
 Item {
@@ -34,7 +34,11 @@ Item {
         drag.target: Item {} // work-around for Flickable stealing the mouse, which is expected (?), see QTBUG-15231
 
         property int pressedPos
+        property int selectionStartAtPress
+        property int selectionEndAtPress
         property bool hadFocusBeforePress
+        property bool draggingStartHandle
+        property bool draggingEndHandle
 
         function characterPositionAt(mouse) {
             var mappedMouse = mapToItem(textEditor, mouse.x, mouse.y);
@@ -48,10 +52,22 @@ Item {
         //mm see QTBUG-15814
         onPressed: {
             hadFocusBeforePress = textEditor.activeFocus;
+            selectionStartAtPress = textEditor.selectionStart;
+            selectionEndAtPress = textEditor.selectionEnd;
+
             textEditor.forceActiveFocus();    //mm see QTBUG-16157
+            var pos = characterPositionAt(mouse);
             if(desktopBehavior) {
-                textEditor.cursorPosition = characterPositionAt(mouse);
+                textEditor.cursorPosition = pos;
+            } else {
+                draggingStartHandle = false;    // reset both to false, i.e. no dragging of selection endpoints
+                draggingEndHandle = false;
+                if(textEditor.selectionStart != textEditor.selectionEnd) {
+                    draggingEndHandle = (pos > selectionStartAtPress + (selectionEndAtPress-selectionStartAtPress)/2);
+                    draggingStartHandle = !draggingEndHandle;
+                }
             }
+
             pressedPos = textEditor.cursorPosition;
         }
 
@@ -66,12 +82,10 @@ Item {
         onClicked: {
             if(!desktopBehavior) {
                 var pos = characterPositionAt(mouse);
-                var selectionStart = Math.min(textEditor.selectionStart, textEditor.selectionEnd);
-                var selectionEnd = Math.max(textEditor.selectionStart, textEditor.selectionEnd);
 
-                if(pos > selectionStart && pos < selectionEnd) {    // clicked on selected text
+                if(pos > textEditor.selectionStart && pos < selectionEnd) {    // clicked on selected text
                     copyPastePopup.showing = true;
-                } else if(selectionStart != selectionEnd) { // clicked outside selection
+                } else if(textEditor.selectionStart != textEditor.selectionEnd) { // clicked outside selection
                     textEditor.select(textEditor.selectionEnd, textEditor.selectionEnd);   // clear selection
                 } else {    // clicked while there's no selection
                     var endOfWordRegEx = /[^\b]\b/g;
@@ -100,13 +114,12 @@ Item {
             if(desktopBehavior) {
                 textEditor.select(pressedPos, pos);
             } else {
-                if(mouse.wasHeld) {
+                if(draggingStartHandle) {
+                    textEditor.select(selectionEndAtPress, pos);
+                } else if(draggingEndHandle) {
+                    textEditor.select(selectionStartAtPress, pos);
+                } else if(mouse.wasHeld) {  // there's no selection
                     textEditor.cursorPosition = pos;
-                } else if(selectedText.length > 0) {
-                    if(pos > textEditor.selectionStart + (textEditor.selectionEnd-textEditor.selectionStart)/2)
-                        textEditor.select(textEditor.selectionStart, pos);
-                    else
-                        textEditor.select(textEditor.selectionEnd, pos);
                 }
             }
         }
@@ -123,15 +136,12 @@ Item {
     function selectionPopoutPoint() {
         var point = {x:0, y:0}
 
-        var selectionStartPos = Math.min(textEditor.selectionStart, textEditor.selectionEnd);
-        var selectionEndPos = Math.max(textEditor.selectionStart, textEditor.selectionEnd);
-
-        var selectionStartRect = textEditor.positionToRectangle(selectionStartPos);
+        var selectionStartRect = textEditor.positionToRectangle(textEditor.selectionStart);
         var mappedStartPoint = mapFromItem(textEditor, selectionStartRect.x, selectionStartRect.y);
         mappedStartPoint.x = Math.max(mappedStartPoint.x, 0);
         mappedStartPoint.y = Math.max(mappedStartPoint.y, 0);
 
-        var selectioEndRect = textEditor.positionToRectangle(selectionEndPos);
+        var selectioEndRect = textEditor.positionToRectangle(textEditor.selectionEnd);
         var mappedEndPoint = mapFromItem(textEditor, selectioEndRect.x, selectioEndRect.y);
         mappedEndPoint.x = Math.min(mappedEndPoint.x, textEditor.width);
         mappedEndPoint.y = Math.min(mappedEndPoint.y, textEditor.height);
