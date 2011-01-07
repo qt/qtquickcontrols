@@ -169,7 +169,12 @@ Item {
 
         MouseArea {
             id: mouseArea
-            anchors.fill: parent
+
+            anchors.centerIn: parent
+            anchors.horizontalCenterOffset: (slider.leftMargin - slider.rightMargin) / 2
+
+            width: parent.width + handleLoader.width - slider.rightMargin - slider.leftMargin
+            height: parent.height
 
             drag.target: fakeHandle
             drag.axis: Drag.XAxis
