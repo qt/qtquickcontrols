@@ -52,6 +52,7 @@ Rectangle {
         anchors.bottom:parent.bottom
         contentHeight: 420
         frame:false
+        enabled:enabledCheck.checked
 
         Column {
             x:220; y:8
@@ -89,7 +90,6 @@ Rectangle {
             anchors.margins: 8
             anchors.fill: parent
             id:contentRow
-            enabled:enabledCheck.checked
             Item {
                 Column {
                     spacing:6

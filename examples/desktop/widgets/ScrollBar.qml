@@ -2,7 +2,7 @@ import QtQuick 1.0
 import "../../../components" as Components
 import "../plugin"
 
-Item {
+MouseArea {
     id:scrollbar
     property int __scrollbarExtent : styleitem.pixelMetric("scrollbarExtent");
     width:orientation == Qt.Horizontal ? 200 : __scrollbarExtent;
@@ -13,6 +13,13 @@ Item {
     property alias maximum: slider.maximumValue
     property alias value: slider.value
 
+    onPressed: {
+        var control = styleitem.hitTest(mouseX,mouseY)
+        if (control == "up") {
+            value = value - 20
+        } else if (control == "down")
+            value = value + 20
+    }
     QStyleItem {
         id:styleitem
         elementType:"scrollbar"

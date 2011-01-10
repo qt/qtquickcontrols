@@ -126,8 +126,13 @@ QString QStyleItem::hitTest(int x, int y) const
         opt.orientation = horizontal() ? Qt::Horizontal : Qt::Vertical;
         opt.sliderPosition = value();
         subcontrol = qApp->style()->hitTestComplexControl(control, &opt, QPoint(x,y), 0);
+
         if (subcontrol == QStyle::SC_ScrollBarSlider)
             return "handle";
+        if (subcontrol == QStyle::SC_ScrollBarSubLine)
+            return "up";
+        if (subcontrol == QStyle::SC_ScrollBarAddLine)
+            return "down";
     }
     return "none";
 }
