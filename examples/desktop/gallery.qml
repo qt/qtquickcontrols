@@ -6,10 +6,13 @@ Rectangle {
     height: 440
 
     SystemPalette{id:syspal}
-    gradient: Gradient{ GradientStop{ position:1 ; color:syspal.window}
-        GradientStop{ position:0 ; color:Qt.darker(syspal.window, 1.2)}
+    color:syspal.window
+    gradient: Gradient{
+        GradientStop{ position:0 ; color:syspal.window}
+        GradientStop{ position:0.6 ; color:syspal.window}
+        GradientStop{ position:1 ; color:Qt.darker(syspal.window, 1.1)}
     }
-    
+
     Item {
         anchors.margins:8
         anchors.fill:parent
@@ -26,9 +29,9 @@ Rectangle {
             TextArea{text:"\n"}
             Row {
                 spacing:4
-                ProgressBar{value:50}
+                ProgressBar{value:slider.value}
             }
-            Slider{}
+            Slider{id:slider; value:50}
 
             GroupBox{
                 text:"CheckBox"
