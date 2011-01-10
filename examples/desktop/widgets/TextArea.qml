@@ -9,6 +9,7 @@ Components.TextArea {
     desktopBehavior:true
     background: QStyleItem {
         elementType:"edit"
+        sunken:true
         anchors.fill:parent
     }
 }

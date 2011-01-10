@@ -22,11 +22,8 @@ Rectangle {
                     Button { text:modelData }
                 }
             }
-            Row {
-                spacing:4
-                TextField{}
-                TextArea{}
-            }
+            TextField{}
+            TextArea{text:"\n"}
             Row {
                 spacing:4
                 ProgressBar{value:50}

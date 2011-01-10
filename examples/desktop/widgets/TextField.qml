@@ -11,6 +11,7 @@ Components.TextField {
     background: QStyleItem {
         elementType:"edit"
         anchors.fill:parent
+        sunken:true
         focus:parent.focus
         hover:containsMouse
     }

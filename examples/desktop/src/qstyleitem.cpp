@@ -54,7 +54,10 @@ QStyleItem::QStyleItem(QDeclarativeItem *parent)
     m_selected(false),
     m_focus(false),
     m_on(false),
-    m_horizontal(true)
+    m_horizontal(true),
+    m_minimum(0),
+    m_maximum(100),
+    m_value(0)
 {
     setFlag(QGraphicsItem::ItemHasNoContents, false);
     setCacheMode(QGraphicsItem::DeviceCoordinateCache);
@@ -105,8 +108,9 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
         opt.text = text();
         qApp->style()->drawControl(control, &opt, painter, 0);
     } else if (m_type == QLatin1String("edit")) {
-        QStyle::PrimitiveElement control = QStyle::PE_FrameLineEdit;
+        QStyle::PrimitiveElement control = QStyle::PE_PanelLineEdit;
         QStyleOptionFrameV3 opt;
+        opt.lineWidth = 1; // jens : this must be non-zero
         initStyleOption(&opt);
         qApp->style()->drawPrimitive(control, &opt, painter, 0);
     } else if (m_type == QLatin1String("slidergroove")) {
@@ -121,10 +125,6 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
     } else if (m_type == QLatin1String("combobox")) {
         QStyle::ComplexControl control = QStyle::CC_ComboBox;
         QStyleOptionSlider opt;
-        opt.minimum = 0;
-        opt.maximum = 100;
-        opt.subControls |= (QStyle::SC_SliderGroove);
-        opt.activeSubControls = QStyle::SC_SliderHandle;
         initStyleOption(&opt);
         qApp->style()->drawComplexControl(control, &opt, painter, 0);
     } else if (m_type == QLatin1String("slider")) {

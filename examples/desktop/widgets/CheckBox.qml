@@ -11,7 +11,7 @@ Components.CheckBox{
     background: QStyleItem {
         id:styleitem
         elementType:"checkbox"
-        width:100
+        width:120
         height:18
         sunken:pressed
         on:checked || pressed
