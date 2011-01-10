@@ -34,6 +34,7 @@ Rectangle {
                 }
             }
             ChoiceList{model:choices}
+            SpinBox{}
             TextField{}
             TextArea{text:"\n"}
             Row {

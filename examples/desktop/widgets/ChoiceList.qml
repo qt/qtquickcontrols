@@ -11,5 +11,9 @@ Components.ChoiceList {
         raised: !pressed
         hover: containsMouse
     }
+
+    popupFrame: QStyleItem {
+        elementType:"menu"
+    }
 }
 

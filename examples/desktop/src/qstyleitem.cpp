@@ -95,6 +95,12 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
         QStyleOptionButton opt;
         initStyleOption(&opt);
         qApp->style()->drawControl(control, &opt, painter, 0);
+    } if (m_type == QLatin1String("menu")) {
+        QStyle::PrimitiveElement control = QStyle::PE_PanelMenu;
+        QStyleOptionFrameV3 opt;
+        opt.lineWidth = 1;
+        initStyleOption(&opt);
+        qApp->style()->drawPrimitive(control, &opt, painter, 0);
     } else if (m_type == QLatin1String("checkbox")) {
         QStyle::ControlElement control = QStyle::CE_CheckBox;
         QStyleOptionButton opt;
@@ -125,6 +131,12 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
     } else if (m_type == QLatin1String("combobox")) {
         QStyle::ComplexControl control = QStyle::CC_ComboBox;
         QStyleOptionComboBox opt;
+        initStyleOption(&opt);
+        qApp->style()->drawComplexControl(control, &opt, painter, 0);
+    } else if (m_type == QLatin1String("spinbox")) {
+        QStyle::ComplexControl control = QStyle::CC_SpinBox;
+        QStyleOptionSpinBox opt;
+        opt.frame = true;
         initStyleOption(&opt);
         qApp->style()->drawComplexControl(control, &opt, painter, 0);
     } else if (m_type == QLatin1String("slider")) {
