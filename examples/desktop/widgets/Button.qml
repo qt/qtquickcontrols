@@ -8,6 +8,7 @@ Components.Button {
         anchors.fill:parent
         sunken: pressed
         raised: !pressed
+        hover: containsMouse
     }
 }
 

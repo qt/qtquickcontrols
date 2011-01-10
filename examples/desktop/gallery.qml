@@ -21,8 +21,6 @@ Rectangle {
                     model: ["Button 1", "Button 2", "Button 3" ]
                     Button { text:modelData }
                 }
-                RadioButton{}
-                RadioButton{checked:true}
             }
             Row {
                 spacing:4
