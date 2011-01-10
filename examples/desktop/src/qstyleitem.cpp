@@ -44,6 +44,7 @@
 #include <QtGui/QStyleOption>
 #include <QtGui/QApplication>
 #include <QtGui/QMainWindow>
+#include <QtGui/QGroupBox>
 
 
 QStyleItem::QStyleItem(QDeclarativeItem *parent)
@@ -188,6 +189,7 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
         opt.text = text();
         opt.lineWidth = 1;
         opt.subControls = QStyle::SC_GroupBoxLabel;
-        qApp->style()->drawComplexControl(control, &opt, painter, 0);
+        QGroupBox box;
+        qApp->style()->drawComplexControl(control, &opt, painter, &box);
     }
 }
