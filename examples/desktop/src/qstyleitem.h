@@ -132,6 +132,7 @@ protected:
     int m_minimum;
     int m_maximum;
     int m_value;
+    QWidget m_dummywidget;
 };
 
 #endif //STYLEWRAPPER_H

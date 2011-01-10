@@ -59,7 +59,8 @@ QStyleItem::QStyleItem(QDeclarativeItem *parent)
     m_horizontal(true),
     m_minimum(0),
     m_maximum(100),
-    m_value(0)
+    m_value(0),
+    m_dummywidget(0)
 {
     setFlag(QGraphicsItem::ItemHasNoContents, false);
     setCacheMode(QGraphicsItem::DeviceCoordinateCache);
@@ -189,7 +190,7 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
         opt.text = text();
         opt.lineWidth = 1;
         opt.subControls = QStyle::SC_GroupBoxLabel;
-        QGroupBox box;
-        qApp->style()->drawComplexControl(control, &opt, painter, &box);
+        // oxygen crashes if we dont pass a widget
+        qApp->style()->drawComplexControl(control, &opt, painter, &m_dummywidget);
     }
 }

@@ -9,6 +9,7 @@ Components.TextArea {
     minimumWidth:200
     desktopBehavior:true
     placeholderText:""
+
     background: QStyleItem {
         elementType:"edit"
         sunken:true

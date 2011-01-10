@@ -16,7 +16,7 @@ Item {
         anchors.fill:parent
         Item {
             id:content
-            anchors.topMargin:14
+            anchors.topMargin:16
             anchors.leftMargin:6
             anchors.fill:parent
         }
