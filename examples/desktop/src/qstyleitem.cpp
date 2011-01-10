@@ -124,7 +124,7 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
         qApp->style()->drawComplexControl(control, &opt, painter, 0);
     } else if (m_type == QLatin1String("combobox")) {
         QStyle::ComplexControl control = QStyle::CC_ComboBox;
-        QStyleOptionSlider opt;
+        QStyleOptionComboBox opt;
         initStyleOption(&opt);
         qApp->style()->drawComplexControl(control, &opt, painter, 0);
     } else if (m_type == QLatin1String("slider")) {

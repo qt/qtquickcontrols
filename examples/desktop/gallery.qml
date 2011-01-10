@@ -12,6 +12,14 @@ Rectangle {
         GradientStop{ position:0.6 ; color:syspal.window}
         GradientStop{ position:1 ; color:Qt.darker(syspal.window, 1.1)}
     }
+    ListModel {
+        id: choices
+        ListElement { text: "Banana" }
+        ListElement { text: "Orange" }
+        ListElement { text: "Apple" }
+        ListElement { text: "Coconut" }
+    }
+
 
     Item {
         anchors.margins:8
@@ -25,6 +33,7 @@ Rectangle {
                     Button { text:modelData }
                 }
             }
+            ChoiceList{model:choices}
             TextField{}
             TextArea{text:"\n"}
             Row {
