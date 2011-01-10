@@ -91,6 +91,105 @@ void QStyleItem::initStyleOption(QStyleOption *opt) const
     opt->rect = QRect(x(), y(), width(), height());
 }
 
+QString QStyleItem::hitTest(int x, int y) const
+{
+    QStyle::SubControl subcontrol = QStyle::SC_All;
+    QStyle::ComplexControl control = QStyle::CC_CustomBase;
+    if (m_type == QLatin1String("spinbox")) {
+        control = QStyle::CC_SpinBox;
+        QStyleOptionSpinBox opt;
+        opt.frame = true;
+        initStyleOption(&opt);
+        subcontrol = qApp->style()->hitTestComplexControl(control, &opt, QPoint(x,y), 0);
+        if (subcontrol == QStyle::SC_SpinBoxUp)
+            return "up";
+        else if (subcontrol == QStyle::SC_SpinBoxDown)
+            return "down";
+
+    } else if (m_type == QLatin1String("slider")) {
+        control = QStyle::CC_Slider;
+        QStyleOptionSlider opt;
+        opt.minimum = minimum();
+        opt.maximum = maximum();
+        opt.sliderPosition = value();
+        initStyleOption(&opt);
+        subcontrol = qApp->style()->hitTestComplexControl(control, &opt, QPoint(x,y), 0);
+        if (subcontrol == QStyle::SC_SliderHandle)
+            return "handle";
+    } else if (m_type == QLatin1String("scrollbar")) {
+        control = QStyle::CC_ScrollBar;
+        QStyleOptionSlider opt;
+        initStyleOption(&opt);
+        opt.minimum = minimum();
+        opt.maximum = maximum();
+        opt.pageStep = 100;
+        opt.orientation = horizontal() ? Qt::Horizontal : Qt::Vertical;
+        opt.sliderPosition = value();
+        subcontrol = qApp->style()->hitTestComplexControl(control, &opt, QPoint(x,y), 0);
+        if (subcontrol == QStyle::SC_ScrollBarSlider)
+            return "handle";
+    }
+    /*switch(subcontrol)
+    {
+    case QStyle::SC_SliderHandle:
+    case QStyle::SC_ScrollBarSlider:
+        return "handle";
+
+    case QStyle::SC_SpinBoxUp:
+        return "up";
+
+    case QStyle::SC_SpinBoxDown:
+        return "down";
+    default:
+        break;
+    }*/
+
+    return "none";
+}
+
+QRect QStyleItem::subControlRect(const QString &subcontrolString) const
+{
+    QStyle::SubControl subcontrol = QStyle::SC_None;
+    if (m_type == QLatin1String("spinbox")) {
+        QStyle::ComplexControl control = QStyle::CC_SpinBox;
+        QStyleOptionSpinBox opt;
+        opt.frame = true;
+        initStyleOption(&opt);
+        if (subcontrolString == QLatin1String("down"))
+            subcontrol = QStyle::SC_SpinBoxDown;
+        else if (subcontrolString == QLatin1String("up"))
+            subcontrol = QStyle::SC_SpinBoxUp;
+        return qApp->style()->subControlRect(control, &opt, subcontrol, 0);
+    } else if (m_type == QLatin1String("slider")) {
+        QStyle::ComplexControl control = QStyle::CC_Slider;
+        QStyleOptionSlider opt;
+        opt.minimum = minimum();
+        opt.maximum = maximum();
+        opt.sliderPosition = value();
+        initStyleOption(&opt);
+        if (subcontrolString == QLatin1String("handle"))
+            subcontrol = QStyle::SC_SliderHandle;
+        else if (subcontrolString == QLatin1String("groove"))
+            subcontrol = QStyle::SC_SliderGroove;
+        return qApp->style()->subControlRect(control, &opt, subcontrol, 0);
+    } else if (m_type == QLatin1String("scrollbar")) {
+        QStyle::ComplexControl control = QStyle::CC_ScrollBar;
+        QStyleOptionSlider opt;
+        initStyleOption(&opt);
+        opt.minimum = minimum();
+        opt.maximum = maximum();
+        opt.pageStep = 100;
+        opt.orientation = horizontal() ? Qt::Horizontal : Qt::Vertical;
+        opt.sliderPosition = value();
+        if (subcontrolString == QLatin1String("slider"))
+            subcontrol = QStyle::SC_ScrollBarSlider;
+        else if (subcontrolString == QLatin1String("add"))
+            subcontrol = QStyle::SC_ScrollBarAddPage;
+        else if (subcontrolString == QLatin1String("sub"))
+            subcontrol = QStyle::SC_ScrollBarSubPage;
+        return qApp->style()->subControlRect(control, &opt, subcontrol, 0);
+    }
+}
 
 void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
