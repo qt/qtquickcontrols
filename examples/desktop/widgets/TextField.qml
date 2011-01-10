@@ -7,7 +7,7 @@ Components.TextField {
     rightMargin:12
     minimumWidth:200
     desktopBehavior:true
-
+    placeholderText:""
     background: QStyleItem {
         elementType:"edit"
         anchors.fill:parent

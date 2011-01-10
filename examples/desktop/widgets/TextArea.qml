@@ -7,6 +7,7 @@ Components.TextArea {
     rightMargin:12
     minimumWidth:200
     desktopBehavior:true
+    placeholderText:""
     background: QStyleItem {
         elementType:"edit"
         sunken:true
