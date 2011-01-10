@@ -9,7 +9,7 @@ Components.RadioButton{
     property variant text
     background: QStyleItem {
         elementType:"radiobutton"
-        width:120
+        width:110
         height:18
         sunken:pressed
         on:checked || pressed

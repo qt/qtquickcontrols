@@ -8,6 +8,7 @@ Rectangle {
     property bool adjoining
     property int rowspacing: 24
     property int columnspacing: 14
+
     gradient: Gradient{ GradientStop{ position:1 ; color:syspal.window}
         GradientStop{ position:0 ; color:Qt.darker(syspal.window, 1.2)}
     }

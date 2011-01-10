@@ -192,5 +192,16 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
         opt.subControls = QStyle::SC_GroupBoxLabel;
         // oxygen crashes if we dont pass a widget
         qApp->style()->drawComplexControl(control, &opt, painter, &m_dummywidget);
+    } else if (m_type == QLatin1String("scrollbar")) {
+        QStyle::ComplexControl control = QStyle::CC_ScrollBar;
+        QStyleOptionSlider opt;
+        opt.minimum = minimum();
+        opt.maximum = maximum();
+        opt.pageStep = 100;
+        opt.orientation = horizontal() ? Qt::Horizontal : Qt::Vertical;
+        opt.sliderPosition = value();
+        opt.activeSubControls = QStyle::SC_SliderHandle;
+        initStyleOption(&opt);
+        qApp->style()->drawComplexControl(control, &opt, painter, &m_dummywidget);
     }
 }
