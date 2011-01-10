@@ -103,6 +103,8 @@ public:
 public Q_SLOTS:
     QRect subControlRect(const QString &subcontrol) const;
     QString hitTest(int x, int y) const;
+    int pixelMetric(const QString&) const;
+    QSize sizeFromContents(const QString &metric, int width, int height) const;
 
 Q_SIGNALS:
     void elementTypeChanged();

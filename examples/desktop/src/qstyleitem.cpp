@@ -122,7 +122,7 @@ QString QStyleItem::hitTest(int x, int y) const
         initStyleOption(&opt);
         opt.minimum = minimum();
         opt.maximum = maximum();
-        opt.pageStep = 100;
+        opt.pageStep = 200;
         opt.orientation = horizontal() ? Qt::Horizontal : Qt::Vertical;
         opt.sliderPosition = value();
         subcontrol = qApp->style()->hitTestComplexControl(control, &opt, QPoint(x,y), 0);
@@ -131,6 +131,26 @@ QString QStyleItem::hitTest(int x, int y) const
     }
     return "none";
 }
+
+QSize QStyleItem::sizeFromContents(const QString &metric, int width, int height) const
+{
+    QStyle::ContentsType type = QStyle::CT_CheckBox;
+    if (metric == QLatin1String("checkbox")) {
+        QStyle::ControlElement control = QStyle::CE_CheckBox;
+        QStyleOptionButton opt;
+        initStyleOption(&opt);
+        opt.text = text();
+        return qApp->style()->sizeFromContents(QStyle::CT_CheckBox, &opt, QSize(width,height), 0);
+    }
+    return QSize();
+}
+
+int QStyleItem::pixelMetric(const QString &metric) const
+{
+    if (metric == "scrollbarExtent")
+        return qApp->style()->pixelMetric(QStyle::PM_ScrollBarExtent);
+}
+
 
 QRect QStyleItem::subControlRect(const QString &subcontrolString) const
 {
@@ -163,7 +183,7 @@ QRect QStyleItem::subControlRect(const QString &subcontrolString) const
         initStyleOption(&opt);
         opt.minimum = minimum();
         opt.maximum = maximum();
-        opt.pageStep = 100;
+        opt.pageStep = 200;
         opt.orientation = horizontal() ? Qt::Horizontal : Qt::Vertical;
         opt.sliderPosition = value();
         if (subcontrolString == QLatin1String("slider"))
@@ -289,7 +309,7 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
         QStyleOptionSlider opt;
         opt.minimum = minimum();
         opt.maximum = maximum();
-        opt.pageStep = 100;
+        opt.pageStep = 200;
         opt.orientation = horizontal() ? Qt::Horizontal : Qt::Vertical;
         opt.sliderPosition = value();
         opt.activeSubControls = QStyle::SC_SliderHandle;

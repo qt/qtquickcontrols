@@ -31,8 +31,6 @@ Components.SpinBox {
     up:Item {
         width:__upRect.width > 0 ? __upRect.width : 20
         height:spinbox.height/2
-        onWidthChanged: print(__upRect.width)
-        onXChanged: print("x" +x)
     }
 
     down:Item{

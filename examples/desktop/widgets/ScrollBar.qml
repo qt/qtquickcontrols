@@ -4,8 +4,9 @@ import "../plugin"
 
 Item {
     id:scrollbar
-    width:orientation == Qt.Horizontal ? 200 :18
-    height:orientation == Qt.Horizontal ? 18 : 200
+    property int __scrollbarExtent : styleitem.pixelMetric("scrollbarExtent");
+    width:orientation == Qt.Horizontal ? 200 : __scrollbarExtent;
+    height:orientation == Qt.Horizontal ? __scrollbarExtent : 200
 
     property int orientation : Qt.Horizontal
     property alias minimum: slider.minimumValue
