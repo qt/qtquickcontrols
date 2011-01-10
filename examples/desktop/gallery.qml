@@ -46,7 +46,7 @@ Rectangle {
         anchors.left:parent.left
         anchors.right: parent.right
         anchors.bottom:parent.bottom
-        contentHeight: parent.height*1.1
+        contentHeight: 460
 
         Row {
             anchors.margins: 8
