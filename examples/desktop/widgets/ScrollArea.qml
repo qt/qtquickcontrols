@@ -25,8 +25,7 @@ Item {
             clip: true
             Item{
                 id: content
-                width: 100
-                height: 100
+                anchors.fill:parent
             }
         }
     }

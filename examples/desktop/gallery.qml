@@ -2,8 +2,8 @@ import QtQuick 1.0
 import "widgets"
 
 Rectangle {
-    width: 640
-    height: 400
+    width: 540
+    height: 330
 
     ToolBar{
         id:toolbar
@@ -50,9 +50,41 @@ Rectangle {
         anchors.left:parent.left
         anchors.right: parent.right
         anchors.bottom:parent.bottom
-        contentHeight: 580
+        contentHeight: 420
         frame:false
 
+        Column {
+            x:220; y:8
+            spacing: 8
+            ScrollArea {
+                width:200
+                height:110
+                contentHeight: 180
+                Rectangle{
+                    anchors.fill: parent
+                    TextEdit {id:edit; text:loremIpsum; wrapMode: TextEdit.WordWrap; width:parent.width}
+                }
+            }
+            GroupBox{
+                text:"CheckBox"
+                Row {
+                    anchors.fill:parent
+                    CheckBox{text:"Check 1"}
+                    CheckBox{text:"Check 2";checked:true}
+                }
+            }
+            GroupBox{
+                text:"Radio Buttons"
+                Row {
+                    anchors.fill:parent
+                    RadioButton{text:"Radio 1"}
+                    RadioButton{
+                        text:"Radio 2";
+                        checked:true
+                    }
+                }
+            }
+        }
         Row {
             anchors.margins: 8
             anchors.fill: parent
@@ -86,34 +118,12 @@ Rectangle {
                     Slider{id:slider; value:50}
                     smooth:true
 
-                    GroupBox{
-                        text:"CheckBox"
-                        Row {
-                            anchors.fill:parent
-                            CheckBox{text:"Check 1"}
-                            CheckBox{text:"Check 2";checked:true}
-                        }
-                    }
-                    GroupBox{
-                        text:"Radio Buttons"
-                        Row {
-                            anchors.fill:parent
-                            RadioButton{text:"Radio 1"}
-                            RadioButton{
-                                text:"Radio 2";
-                                checked:true
-                            }
-                        }
-                    }
-                    ScrollArea {
-                        width:200
-                        height:100
-                        contentHeight: 400
-                        Button {text:"hello"}
-                    }
-
                 }
             }
         }
     }
+    property string loremIpsum:
+        "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor "+
+        "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud "+
+        "exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ";
 }
