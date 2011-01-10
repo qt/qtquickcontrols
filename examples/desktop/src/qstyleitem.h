@@ -59,6 +59,7 @@ class QStyleItem: public QDeclarativeItem
     Q_PROPERTY( bool horizontal READ horizontal WRITE setHorizontal NOTIFY horizontalChanged)
     Q_PROPERTY( QString elementType READ elementType WRITE setElementType NOTIFY elementTypeChanged)
     Q_PROPERTY( QString text READ text WRITE setText NOTIFY textChanged)
+
     // For range controls
     Q_PROPERTY( int minimum READ minimum WRITE setMinimum NOTIFY minimumChanged)
     Q_PROPERTY( int maximum READ maximum WRITE setMaximum NOTIFY maximumChanged)

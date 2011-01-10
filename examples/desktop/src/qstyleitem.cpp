@@ -138,6 +138,16 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
         QStyleOptionSpinBox opt;
         opt.frame = true;
         initStyleOption(&opt);
+        if (value() & 0x1)
+            opt.activeSubControls = QStyle::SC_SpinBoxUp;
+        else if (value() & (1<<1))
+            opt.activeSubControls = QStyle::SC_SpinBoxDown;
+        opt.subControls |= QStyle::SC_SpinBoxDown;
+        opt.subControls |= QStyle::SC_SpinBoxUp;
+        if (value() & (1<<2))
+            opt.stepEnabled |= QAbstractSpinBox::StepUpEnabled;
+        if (value() & (1<<3))
+            opt.stepEnabled |= QAbstractSpinBox::StepDownEnabled;
         qApp->style()->drawComplexControl(control, &opt, painter, 0);
     } else if (m_type == QLatin1String("slider")) {
         QStyle::ComplexControl control = QStyle::CC_Slider;
