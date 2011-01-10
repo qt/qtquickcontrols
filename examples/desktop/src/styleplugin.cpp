@@ -43,9 +43,7 @@
 
 void StylePlugin::registerTypes(const char *uri)
 {
-    qmlRegisterType<StyleWrapper>(uri, 1, 0, "QStyleWrapper");
     qmlRegisterType<QStyleItem>(uri, 1, 0, "QStyleItem");
-    qmlRegisterType<QStyleRangeItem>(uri, 1, 0, "QStyleRangeItem");
 }
 
 Q_EXPORT_PLUGIN2(styleplugin, StylePlugin);

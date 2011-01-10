@@ -116,8 +116,7 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
         opt.activeSubControls = QStyle::SC_SliderHandle;
         initStyleOption(&opt);
         qApp->style()->drawComplexControl(control, &opt, painter, 0);
-    }
-    else if (m_type == QLatin1String("combobox")) {
+    } else if (m_type == QLatin1String("combobox")) {
         QStyle::ComplexControl control = QStyle::CC_ComboBox;
         QStyleOptionSlider opt;
         opt.minimum = 0;
@@ -126,33 +125,7 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
         opt.activeSubControls = QStyle::SC_SliderHandle;
         initStyleOption(&opt);
         qApp->style()->drawComplexControl(control, &opt, painter, 0);
-    }}
-
-StyleWrapper::StyleWrapper(QDeclarativeItem *parent)
-    : QObject(parent)
-{
-}
-
-
-QStyleRangeItem::QStyleRangeItem(QDeclarativeItem *parent)
-    : QStyleItem(parent),
-    m_minimum(0),
-    m_maximum(100),
-    m_value(0)
-{
-    setFlag(QGraphicsItem::ItemHasNoContents, false);
-    setCacheMode(QGraphicsItem::DeviceCoordinateCache);
-}
-
-void QStyleRangeItem::initStyleOption(QStyleOption *opt) const
-{
-    QStyleItem::initStyleOption(opt);
-}
-
-
-void QStyleRangeItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
-{
-    if (m_type == QLatin1String("slider")) {
+    } else if (m_type == QLatin1String("slider")) {
         QStyle::ComplexControl control = QStyle::CC_Slider;
         QStyleOptionSlider opt;
         opt.minimum = minimum();
@@ -164,19 +137,3 @@ void QStyleRangeItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *,
         qApp->style()->drawComplexControl(control, &opt, painter, 0);
     }
 }
-
-
-/*
-QRect StyleWrapper::subElementRect(SubElement subElement, const QRect &rect, int state) const
-{
-    QStyleOption opt;
-    opt.rect = rect;
-    opt.state = (QStyle::State)state;
-    return QRect();//qApp->style()->subElementRect(subElement, &opt, 0);
-}
-
-int StyleWrapper::styleHint(StyleHint hint)
-{
-    return qApp->style()->styleHint((QStyle::StyleHint)hint);
-}
-*/
