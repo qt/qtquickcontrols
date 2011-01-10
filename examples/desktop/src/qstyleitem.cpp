@@ -64,6 +64,7 @@ QStyleItem::QStyleItem(QDeclarativeItem *parent)
 {
     setFlag(QGraphicsItem::ItemHasNoContents, false);
     setCacheMode(QGraphicsItem::DeviceCoordinateCache);
+    setSmooth(true);
 }
 
 void QStyleItem::initStyleOption(QStyleOption *opt) const
@@ -101,6 +102,13 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
     } if (m_type == QLatin1String("menu")) {
         QStyle::PrimitiveElement control = QStyle::PE_PanelMenu;
         QStyleOptionFrameV3 opt;
+        opt.lineWidth = 1;
+        initStyleOption(&opt);
+        qApp->style()->drawPrimitive(control, &opt, painter, 0);
+    } if (m_type == QLatin1String("frame")) {
+        QStyle::PrimitiveElement control = QStyle::PE_Frame;
+        QStyleOptionFrameV3 opt;
+        opt.frameShape = QFrame::StyledPanel;
         opt.lineWidth = 1;
         initStyleOption(&opt);
         qApp->style()->drawPrimitive(control, &opt, painter, 0);

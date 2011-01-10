@@ -4,6 +4,7 @@ import "../plugin"
 
 Components.Button {
     id:button
+
     background: QStyleItem {
         elementType:"button"
         anchors.fill:parent

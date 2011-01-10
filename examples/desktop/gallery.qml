@@ -18,6 +18,12 @@ Rectangle {
             checked:true
             anchors.verticalCenter:parent.verticalCenter
         }
+        CheckBox{
+            id:animateCheck
+            text:"Animated"
+            checked:false
+            anchors.verticalCenter:parent.verticalCenter
+        }
     }
 
     SystemPalette{id:syspal}
@@ -37,16 +43,15 @@ Rectangle {
         ListElement { text: "Coconut" }
     }
 
-    Flickable{
+    ScrollArea{
         id:flickable
-        boundsBehavior: Flickable.StopAtBounds
         clip:true
-        interactive: false
         anchors.top: toolbar.bottom
         anchors.left:parent.left
         anchors.right: parent.right
         anchors.bottom:parent.bottom
-        contentHeight: 460
+        contentHeight: 580
+        frame:false
 
         Row {
             anchors.margins: 8
@@ -59,19 +64,27 @@ Rectangle {
                     Row {
                         spacing:4
                         Repeater {
-                            model: ["Button 1", "Button 2", "Button 3" ]
-                            Button { text:modelData }
+                            model: ["Button 1", "Button 2"]
+                            Button { text:modelData
+                                rotation: 0
+                                smooth:true
+                                width:98
+                                RotationAnimation on rotation { from:0; to: 360;
+                                    direction: RotationAnimation.Clockwise
+                                    running: animateCheck.checked
+                                    duration: 1000
+                                    loops: Animation.Infinite
+                                }
+                            }
                         }
                     }
                     ChoiceList{model:choices}
                     SpinBox{}
                     TextField{text:"TextField"}
                     TextArea{text:"TextArea\n"}
-                    Row {
-                        spacing:4
-                        ProgressBar{value:slider.value}
-                    }
+                    ProgressBar{value:slider.value}
                     Slider{id:slider; value:50}
+                    smooth:true
 
                     GroupBox{
                         text:"CheckBox"
@@ -86,24 +99,21 @@ Rectangle {
                         Row {
                             anchors.fill:parent
                             RadioButton{text:"Radio 1"}
-                            RadioButton{text:"Radio 2";checked:true}
+                            RadioButton{
+                                text:"Radio 2";
+                                checked:true
+                            }
                         }
                     }
-                    ScrollBar{minimum: 0; maximum: 200}
-                }
+                    ScrollArea {
+                        width:200
+                        height:100
+                        contentHeight: 400
+                        Button {text:"hello"}
+                    }
 
+                }
             }
         }
-        contentY: scrollbar.value
-    }
-    ScrollBar{
-        id:scrollbar
-        orientation: Qt.Vertical
-        maximum: flickable.contentHeight- flickable.height
-        minimum: 0
-        value:flickable.contentY
-        anchors.right:parent.right
-        anchors.top:parent.top
-        anchors.bottom:parent.bottom
     }
 }

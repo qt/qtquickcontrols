@@ -21,7 +21,9 @@ Item {
         maximum:slider.maximumValue
         value:slider.value
         horizontal:orientation == Qt.Horizontal
+        enabled: parent.enabled
     }
+
     Components.Slider {
         id:slider
         orientation:scrollbar.orientation
