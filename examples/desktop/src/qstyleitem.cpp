@@ -43,6 +43,7 @@
 #include <QtGui/QStyle>
 #include <QtGui/QStyleOption>
 #include <QtGui/QApplication>
+#include <QtGui/QMainWindow>
 
 
 QStyleItem::QStyleItem(QDeclarativeItem *parent)
@@ -101,6 +102,12 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
         opt.lineWidth = 1;
         initStyleOption(&opt);
         qApp->style()->drawPrimitive(control, &opt, painter, 0);
+    } if (m_type == QLatin1String("menuitem")) {
+        QStyle::ControlElement control = QStyle::CE_MenuItem;
+        QStyleOptionMenuItem opt;
+        opt.text = text();
+        initStyleOption(&opt);
+        qApp->style()->drawControl(control, &opt, painter, 0);
     } else if (m_type == QLatin1String("checkbox")) {
         QStyle::ControlElement control = QStyle::CE_CheckBox;
         QStyleOptionButton opt;
@@ -167,11 +174,19 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
         opt.progress = value();
         initStyleOption(&opt);
         qApp->style()->drawControl(control, &opt, painter, 0);
+    } else if (m_type == QLatin1String("toolbar")) {
+        QStyle::ControlElement control = QStyle::CE_ToolBar;
+        QStyleOptionToolBar opt;
+        initStyleOption(&opt);
+        QMainWindow mw;
+        QWidget w(&mw);
+        qApp->style()->drawControl(control, &opt, painter, &w);
     } else if (m_type == QLatin1String("groupbox")) {
         QStyle::ComplexControl control = QStyle::CC_GroupBox;
         QStyleOptionGroupBox opt;
         initStyleOption(&opt);
         opt.text = text();
+        opt.lineWidth = 1;
         opt.subControls = QStyle::SC_GroupBoxLabel;
         qApp->style()->drawComplexControl(control, &opt, painter, 0);
     }

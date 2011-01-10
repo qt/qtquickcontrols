@@ -4,6 +4,14 @@ import "widgets"
 Rectangle {
     width: 4*240
     height: 440
+    ToolBar{
+        id:toolbar
+        width:parent.width
+        height:46
+        ToolButton{iconSource: "images/folder_new.png"}
+        ToolButton{iconSource: "images/folder_new.png"}
+        ToolButton{iconSource: "images/folder_new.png"}
+    }
 
     SystemPalette{id:syspal}
     color:syspal.window
@@ -20,10 +28,11 @@ Rectangle {
         ListElement { text: "Coconut" }
     }
 
-
     Item {
         anchors.margins:8
-        anchors.fill:parent
+        anchors.top:toolbar.bottom
+        anchors.left:parent.left
+
         Column {
             spacing:6
             Row {
