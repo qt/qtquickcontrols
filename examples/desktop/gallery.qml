@@ -27,6 +27,10 @@ Rectangle {
                 TextArea{}
                 Slider{}
             }
+            Row {
+                ProgressBar{value:50;}
+            }
+
             Slider{orientation:Qt.Vertical}
         }
     }

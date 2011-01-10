@@ -63,7 +63,6 @@ class QStyleItem: public QDeclarativeItem
     Q_PROPERTY( int maximum READ maximum WRITE setMaximum NOTIFY maximumChanged)
     Q_PROPERTY( int value READ value WRITE setValue NOTIFY valueChanged)
 
-
 public:
     QStyleItem(QDeclarativeItem *parent = 0);
     void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *);
@@ -92,9 +91,7 @@ public:
     void setHorizontal(bool horizontal) { if (m_horizontal != horizontal) {m_horizontal = horizontal; emit horizontalChanged(); update();}}
     void setMinimum(int minimum) { if (m_minimum!= minimum) {m_minimum = minimum; emit minimumChanged(); update();}}
     void setMaximum(int maximum) { if (m_maximum != maximum) {m_maximum = maximum; emit maximumChanged(); update();}}
-    void setValue(int  value) { if (m_value!= value) {m_value = value; emit valueChanged(); update();}}
-
-
+    void setValue(int value) { if (m_value!= value) {m_value = value; emit valueChanged(); update();}}
 
     virtual void initStyleOption(QStyleOption *opt) const;
 

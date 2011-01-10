@@ -135,5 +135,13 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
         opt.activeSubControls = QStyle::SC_SliderHandle;
         initStyleOption(&opt);
         qApp->style()->drawComplexControl(control, &opt, painter, 0);
+    } else if (m_type == QLatin1String("progressbar")) {
+        QStyle::ControlElement control = QStyle::CE_ProgressBar;
+        QStyleOptionProgressBarV2 opt;
+        opt.minimum = minimum();
+        opt.maximum = maximum();
+        opt.progress = value();
+        initStyleOption(&opt);
+        qApp->style()->drawControl(control, &opt, painter, 0);
     }
 }
