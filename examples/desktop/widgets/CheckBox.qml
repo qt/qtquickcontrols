@@ -5,14 +5,18 @@ import "../plugin"
 // jb : Size should not depend on background, we should make it consistent
 
 Components.CheckBox{
+    id:checkbox
+    property variant text
 
     background: QStyleItem {
+        id:styleitem
         elementType:"checkbox"
-        width:16
-        height:16
+        width:100
+        height:18
         sunken:pressed
         on:checked || pressed
         hover:containsMouse
+        text:checkbox.text
     }
 
     checkmark: Item{}

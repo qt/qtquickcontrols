@@ -5,14 +5,16 @@ import "../plugin"
 // jb : Size should not depend on background, we should make it consistent
 
 Components.RadioButton{
-
+    id:radiobutton
+    property variant text
     background: QStyleItem {
         elementType:"radiobutton"
-        width:16
-        height:16
+        width:100
+        height:18
         sunken:pressed
         on:checked || pressed
         hover:containsMouse
+        text:radiobutton.text
     }
     checkmark: Item{}
 }

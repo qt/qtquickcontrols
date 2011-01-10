@@ -58,6 +58,7 @@ class QStyleItem: public QDeclarativeItem
     Q_PROPERTY( bool hover READ hover WRITE setHover NOTIFY hoverChanged)
     Q_PROPERTY( bool horizontal READ horizontal WRITE setHorizontal NOTIFY horizontalChanged)
     Q_PROPERTY( QString elementType READ elementType WRITE setElementType NOTIFY elementTypeChanged)
+    Q_PROPERTY( QString text READ text WRITE setText NOTIFY textChanged)
     // For range controls
     Q_PROPERTY( int minimum READ minimum WRITE setMinimum NOTIFY minimumChanged)
     Q_PROPERTY( int maximum READ maximum WRITE setMaximum NOTIFY maximumChanged)
@@ -79,6 +80,8 @@ public:
     int minimum() const { return m_minimum; }
     int maximum() const { return m_maximum; }
     int value() const { return m_value; }
+    QString elementType() const { return m_type; }
+    QString text() const { return m_text; }
 
     void setSunken(bool sunken) { if (m_sunken != sunken) {m_sunken = sunken; emit sunkenChanged(); update();}}
     void setRaised(bool raised) { if (m_raised!= raised) {m_raised = raised; emit raisedChanged(); update();}}
@@ -92,14 +95,14 @@ public:
     void setMinimum(int minimum) { if (m_minimum!= minimum) {m_minimum = minimum; emit minimumChanged(); update();}}
     void setMaximum(int maximum) { if (m_maximum != maximum) {m_maximum = maximum; emit maximumChanged(); update();}}
     void setValue(int value) { if (m_value!= value) {m_value = value; emit valueChanged(); update();}}
+    void setElementType(const QString &str) { if (m_type != str) {m_type = str; emit elementTypeChanged();update(); }}
+    void setText(const QString &str) { if (m_text != str) {m_text = str; emit textChanged();update(); }}
 
     virtual void initStyleOption(QStyleOption *opt) const;
 
-    QString elementType() const { return m_type; }
-    void setElementType(const QString &str) { if (m_type != str) {m_type = str; emit elementTypeChanged();update(); }}
-
 Q_SIGNALS:
     void elementTypeChanged();
+    void textChanged();
     void sunkenChanged();
     void raisedChanged();
     void activeChanged();
@@ -115,6 +118,7 @@ Q_SIGNALS:
 
 protected:
     QString m_type;
+    QString m_text;
     bool m_sunken;
     bool m_raised;
     bool m_active;

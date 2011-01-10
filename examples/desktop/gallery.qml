@@ -5,6 +5,11 @@ Rectangle {
     width: 4*240
     height: 440
 
+    SystemPalette{id:syspal}
+    gradient: Gradient{ GradientStop{ position:1 ; color:syspal.window}
+        GradientStop{ position:0 ; color:Qt.darker(syspal.window, 1.2)}
+    }
+    
     Item {
         anchors.margins:8
         anchors.fill:parent
@@ -16,8 +21,6 @@ Rectangle {
                     model: ["Button 1", "Button 2", "Button 3" ]
                     Button { text:modelData }
                 }
-                CheckBox{}
-                CheckBox{checked:true}
                 RadioButton{}
                 RadioButton{checked:true}
             }
@@ -25,13 +28,30 @@ Rectangle {
                 spacing:4
                 TextField{}
                 TextArea{}
-                Slider{}
             }
             Row {
-                ProgressBar{value:50;}
+                spacing:4
+                ProgressBar{value:50}
+            }
+            Slider{}
+
+            GroupBox{
+                text:"CheckBox"
+                Row {
+                    anchors.fill:parent
+                    CheckBox{text:"CheckBox 1"}
+                    CheckBox{text:"CheckBox 2";checked:true}
+                }
+            }
+            GroupBox{
+                text:"Radio Buttons"
+                Row {
+                    anchors.fill:parent
+                    RadioButton{text:"Radio 1"}
+                    RadioButton{text:"Radio 2";checked:true}
+                }
             }
 
-            Slider{orientation:Qt.Vertical}
         }
     }
 }

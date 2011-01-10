@@ -96,11 +96,13 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
         QStyle::ControlElement control = QStyle::CE_CheckBox;
         QStyleOptionButton opt;
         initStyleOption(&opt);
+        opt.text = text();
         qApp->style()->drawControl(control, &opt, painter, 0);
     } else if (m_type == QLatin1String("radiobutton")) {
         QStyle::ControlElement control = QStyle::CE_RadioButton;
         QStyleOptionButton opt;
         initStyleOption(&opt);
+        opt.text = text();
         qApp->style()->drawControl(control, &opt, painter, 0);
     } else if (m_type == QLatin1String("edit")) {
         QStyle::PrimitiveElement control = QStyle::PE_FrameLineEdit;
@@ -143,5 +145,12 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
         opt.progress = value();
         initStyleOption(&opt);
         qApp->style()->drawControl(control, &opt, painter, 0);
+    } else if (m_type == QLatin1String("groupbox")) {
+        QStyle::ComplexControl control = QStyle::CC_GroupBox;
+        QStyleOptionGroupBox opt;
+        initStyleOption(&opt);
+        opt.text = text();
+        opt.subControls = QStyle::SC_GroupBoxLabel;
+        qApp->style()->drawComplexControl(control, &opt, painter, 0);
     }
 }
