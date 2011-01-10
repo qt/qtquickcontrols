@@ -38,8 +38,8 @@
 ****************************************************************************/
  
 #include <qdeclarative.h>
-#include "styleplugin.h"
-#include "stylewrapper.h"
+#include "qstyleplugin.h"
+#include "qstyleitem.h"
 
 void StylePlugin::registerTypes(const char *uri)
 {

@@ -37,7 +37,7 @@
 **
 ****************************************************************************/
 
-#include "stylewrapper.h"
+#include "qstyleitem.h"
 
 #include <QtGui/QPainter>
 #include <QtGui/QStyle>
