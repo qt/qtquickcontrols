@@ -129,21 +129,6 @@ QString QStyleItem::hitTest(int x, int y) const
         if (subcontrol == QStyle::SC_ScrollBarSlider)
             return "handle";
     }
-    /*switch(subcontrol)
-    {
-    case QStyle::SC_SliderHandle:
-    case QStyle::SC_ScrollBarSlider:
-        return "handle";
-
-    case QStyle::SC_SpinBoxUp:
-        return "up";
-
-    case QStyle::SC_SpinBoxDown:
-        return "down";
-    default:
-        break;
-    }*/
-
     return "none";
 }
 

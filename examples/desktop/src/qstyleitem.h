@@ -99,10 +99,10 @@ public:
     void setElementType(const QString &str) { if (m_type != str) {m_type = str; emit elementTypeChanged();update(); }}
     void setText(const QString &str) { if (m_text != str) {m_text = str; emit textChanged();update(); }}
 
+    virtual void initStyleOption(QStyleOption *opt) const;
+public Q_SLOTS:
     QRect subControlRect(const QString &subcontrol) const;
     QString hitTest(int x, int y) const;
-
-    virtual void initStyleOption(QStyleOption *opt) const;
 
 Q_SIGNALS:
     void elementTypeChanged();
