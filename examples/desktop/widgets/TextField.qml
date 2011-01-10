@@ -3,6 +3,7 @@ import "../../../components" as Components
 import "../plugin"
 
 Components.TextField {
+    id:textfield
     leftMargin:12
     rightMargin:12
     minimumWidth:200
@@ -10,9 +11,9 @@ Components.TextField {
     placeholderText:""
     background: QStyleItem {
         elementType:"edit"
-        anchors.fill:parent
+        anchors.fill:textfield
         sunken:true
-        focus:parent.focus
+        focus:textfield.activeFocus
         hover:containsMouse
     }
 }

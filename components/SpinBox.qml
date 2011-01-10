@@ -32,6 +32,7 @@ Item {
     property alias upHovered: mouseUp.containsMouse
     property alias downHovered: mouseDown.containsMouse
     property alias containsMouse: mouseArea.containsMouse
+    property alias activeFocus: input.activeFocus // Forward active focus
 
     property color backgroundColor: syspal.base
     property color textColor: syspal.text

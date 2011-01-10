@@ -35,8 +35,8 @@ Rectangle {
             }
             ChoiceList{model:choices}
             SpinBox{}
-            TextField{}
-            TextArea{text:"\n"}
+            TextField{text:"TextField"}
+            TextArea{text:"TextArea\n"}
             Row {
                 spacing:4
                 ProgressBar{value:slider.value}
