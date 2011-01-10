@@ -1,4 +1,5 @@
-See qt/tests/benchmarks/declarative/qmltime/
+Each of these tests should be run with qmltime, available from
+$QTDIR/tests/benchmarks/declarative/qmltime/
 
 Run (ms):           (1)
 
