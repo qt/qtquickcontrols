@@ -11,6 +11,12 @@ Rectangle {
         ToolButton{iconSource: "images/folder_new.png"}
         ToolButton{iconSource: "images/folder_new.png"}
         ToolButton{iconSource: "images/folder_new.png"}
+        CheckBox{
+            id:enabledCheck
+            text:"Enabled"
+            checked:true
+            anchors.verticalCenter:parent.verticalCenter
+        }
     }
 
     SystemPalette{id:syspal}
@@ -28,47 +34,90 @@ Rectangle {
         ListElement { text: "Coconut" }
     }
 
-    Item {
+    Row {
         anchors.margins:8
         anchors.top:toolbar.bottom
         anchors.left:parent.left
+        enabled:enabledCheck.checked
+        Item {
 
-        Column {
-            spacing:6
-            Row {
-                spacing:4
-                Repeater {
-                    model: ["Button 1", "Button 2", "Button 3" ]
-                    Button { text:modelData }
-                }
-            }
-            ChoiceList{model:choices}
-            SpinBox{}
-            TextField{text:"TextField"}
-            TextArea{text:"TextArea\n"}
-            Row {
-                spacing:4
-                ProgressBar{value:slider.value}
-            }
-            Slider{id:slider; value:50}
-
-            GroupBox{
-                text:"CheckBox"
+            Column {
+                spacing:6
                 Row {
-                    anchors.fill:parent
-                    CheckBox{text:"CheckBox 1"}
-                    CheckBox{text:"CheckBox 2";checked:true}
+                    spacing:4
+                    Repeater {
+                        model: ["Button 1", "Button 2", "Button 3" ]
+                        Button { text:modelData }
+                    }
                 }
-            }
-            GroupBox{
-                text:"Radio Buttons"
+                ChoiceList{model:choices}
+                SpinBox{}
+                TextField{text:"TextField"}
+                TextArea{text:"TextArea\n"}
                 Row {
-                    anchors.fill:parent
-                    RadioButton{text:"Radio 1"}
-                    RadioButton{text:"Radio 2";checked:true}
+                    spacing:4
+                    ProgressBar{value:slider.value}
+                }
+                Slider{id:slider; value:50}
+
+                GroupBox{
+                    text:"CheckBox"
+                    Row {
+                        anchors.fill:parent
+                        CheckBox{text:"CheckBox 1"}
+                        CheckBox{text:"CheckBox 2";checked:true}
+                    }
+                }
+                GroupBox{
+                    text:"Radio Buttons"
+                    Row {
+                        anchors.fill:parent
+                        RadioButton{text:"Radio 1"}
+                        RadioButton{text:"Radio 2";checked:true}
+                    }
+                }
+
+            }
+            Item {
+
+                Column {
+                    spacing:6
+                    Row {
+                        spacing:4
+                        Repeater {
+                            model: ["Button 1", "Button 2", "Button 3" ]
+                            Button { text:modelData }
+                        }
+                    }
+                    ChoiceList{model:choices}
+                    SpinBox{}
+                    TextField{text:"TextField"}
+                    TextArea{text:"TextArea\n"}
+                    Row {
+                        spacing:4
+                        ProgressBar{value:slider2.value}
+                    }
+                    Slider{id:slider2; value:50}
+
+                    GroupBox{
+                        text:"CheckBox"
+                        Row {
+                            anchors.fill:parent
+                            CheckBox{text:"CheckBox 1"}
+                            CheckBox{text:"CheckBox 2";checked:true}
+                        }
+                    }
+                    GroupBox{
+                        text:"Radio Buttons"
+                        Row {
+                            anchors.fill:parent
+                            RadioButton{text:"Radio 1"}
+                            RadioButton{text:"Radio 2";checked:true}
+                        }
+                    }
+
                 }
             }
-
         }
     }
 }
