@@ -10,6 +10,7 @@ Components.ChoiceList {
         sunken: pressed
         raised: !pressed
         hover: containsMouse
+        enabled:choicelist.enabled
     }
 
     listItem: Item {

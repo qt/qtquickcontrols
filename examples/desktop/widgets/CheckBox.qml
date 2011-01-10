@@ -17,6 +17,7 @@ Components.CheckBox{
         on:checked || pressed
         hover:containsMouse
         text:checkbox.text
+        enabled:checkbox.enabled
     }
 
     checkmark: Item{}

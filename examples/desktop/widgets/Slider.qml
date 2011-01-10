@@ -17,6 +17,7 @@ Components.Slider{
         minimum:slider.minimumValue
         value:slider.value
         horizontal:slider.orientation == Qt.Horizontal
+        enabled:slider.enabled
     }
 
     handle:Item{}

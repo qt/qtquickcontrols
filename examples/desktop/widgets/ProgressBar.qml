@@ -11,6 +11,7 @@ Components.ProgressBar {
         minimum: minimumValue
         maximum: maximumValue
         value: progressbar.value
+        enabled:progressbar.enabled
     }
 
     progress: Item{}

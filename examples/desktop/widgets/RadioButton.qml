@@ -15,6 +15,7 @@ Components.RadioButton{
         on:checked || pressed
         hover:containsMouse
         text:radiobutton.text
+        enabled:radiobutton.enabled
     }
     checkmark: Item{}
 }
