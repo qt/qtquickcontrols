@@ -65,8 +65,8 @@ Rectangle {
                 }
                 Row {
                     spacing:6
-                    Meego.LineEdit{width:200}
-                    Meego.MultiLineEdit{width:200}
+                    Meego.TextField{width:200}
+                    Meego.TextArea{width:200}
                 }
                 Meego.Slider{}
                 Meego.ButtonRow{
