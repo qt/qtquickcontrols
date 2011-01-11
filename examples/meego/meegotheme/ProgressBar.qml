@@ -49,8 +49,8 @@ Components.ProgressBar{
             NumberAnimation on imageXOffset  {
                 loops:Animation.Infinite;
                 from:0;
-                to:6;
-                duration:300
+                to:8;
+                duration:200
             }
         }
 }
