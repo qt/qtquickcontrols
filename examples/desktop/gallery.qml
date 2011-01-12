@@ -56,16 +56,7 @@ Rectangle {
 
         Column {
             x:220; y:8
-            spacing: 8
-            ScrollArea {
-                width:200
-                height:110
-                contentHeight: 180
-                Rectangle{
-                    anchors.fill: parent
-                    TextEdit {id:edit; text:loremIpsum; wrapMode: TextEdit.WordWrap; width:parent.width}
-                }
-            }
+            spacing: 12
             GroupBox{
                 text:"CheckBox"
                 Row {
@@ -77,14 +68,20 @@ Rectangle {
             GroupBox{
                 text:"Radio Buttons"
                 Row {
-                    anchors.fill:parent
-                    RadioButton{text:"Radio 1"}
-                    RadioButton{
-                        text:"Radio 2";
-                        checked:true
-                    }
+                    RadioButton{id:radio1; text:"Radio 1"; onCheckedChanged: radio2.checked=!radio1.checked;checked:true;}
+                    RadioButton{id:radio2; text:"Radio 2"; onCheckedChanged: radio1.checked=!radio2.checked}
                 }
             }
+            ScrollArea {
+                width:280
+                height:142
+                contentHeight: 220
+                Rectangle{
+                    anchors.fill: parent
+                    TextEdit {id:edit; text:loremIpsum + loremIpsum; wrapMode: TextEdit.WordWrap; width:parent.width}
+                }
+            }
+
         }
         Row {
             anchors.margins: 8
@@ -124,6 +121,6 @@ Rectangle {
     }
     property string loremIpsum:
         "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor "+
-        "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud "+
+        "incididunt ut labore et dolore magna aliqua.\n Ut enim ad minim veniam, quis nostrud "+
         "exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ";
 }
