@@ -104,6 +104,8 @@ Item {
                 }
 
             }
+
+            textEditor.openSoftwareInputPanel()
         }
 
         onPositionChanged: {

@@ -83,6 +83,8 @@ Item {
             color: enabled ? textColor: Qt.tint(textColor, "#80ffffff")
             wrapMode: desktopBehavior ? TextEdit.NoWrap : TextEdit.WordWrap
             onCursorRectangleChanged: flickable.ensureVisible(cursorRectangle)
+
+            onActiveFocusChanged: activeFocus ? openSoftwareInputPanel() : closeSoftwareInputPanel()
         }
     }
 

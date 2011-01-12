@@ -75,7 +75,16 @@ Item {  //mm Does this need to be a FocusScope or not?  //needs to be a FocusSco
         color: enabled ? textColor : Qt.tint(textColor, "#80ffffff")
         echoMode: passwordMode ? _hints.passwordEchoMode : TextInput.Normal
 
-        onActiveFocusChanged: if(!desktopBehavior) state = (activeFocus ? "focused" : "")
+        onActiveFocusChanged: {
+            if (!desktopBehavior)
+                state = (activeFocus ? "focused" : "")
+
+            if (activeFocus)
+                openSoftwareInputPanel()
+            else
+                closeSoftwareInputPanel()
+        }
+
         states: [
             State {
                 name: ""
