@@ -144,9 +144,11 @@ MouseArea {
                 id: delegateLoader
                 property alias index: itemDelegate.theIndex //mm Somehow the "model" gets through automagically, but not index
                 property Item styledItem: choiceList
+                property bool containsMouse: itemMouseArea.containsMouse
                 sourceComponent: listItem
                 MouseArea { // handle list selection on mobile platforms
-//                    enabled: !desktopBehavior
+                    id:itemMouseArea
+                    hoverEnabled: true
                     anchors.fill: parent
 //                    onPressed: listView.currentIndex = index;
                     onClicked: { setCurrentIndex(index); closePopup(); }
