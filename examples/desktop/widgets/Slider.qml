@@ -20,6 +20,6 @@ Components.Slider{
         enabled:slider.enabled
     }
 
-    handle:Item{}
-    valueIndicator:Item{}
+    handle: null
+    valueIndicator: null
 }

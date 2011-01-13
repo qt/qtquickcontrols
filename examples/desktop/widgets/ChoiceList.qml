@@ -14,15 +14,19 @@ Components.ChoiceList {
     }
 
     listItem: Item {
-        height:20
+        height:24
         anchors.left:parent.left
         width:choicelist.width
+
         QStyleItem {
             elementType:"menuitem"
             text:model.get(index).text
             anchors.fill:parent
+            selected:containsMouse
         }
     }
+
+    listHighlight: null
 
     popupFrame: QStyleItem {
         elementType:"menu"
