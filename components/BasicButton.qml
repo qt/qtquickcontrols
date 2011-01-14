@@ -21,12 +21,14 @@ Item {
 
     property color backgroundColor: syspal.button
     property color textColor: syspal.text;
+    property string __position: "only"
 
     Loader {
         id:backgroundComponent
         anchors.fill: parent
         sourceComponent: background
         property Item styledItem:button
+        property alias position:button.__position
     }
 
     ButtonBehavior {

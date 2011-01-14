@@ -44,11 +44,9 @@ Rectangle {
 
                         Text{ font.bold:true; text:"Default:" ; styleColor: "white" ; color:"#333" ; style:"Raised"}
                         Button { text:"Push me" }
-                        ButtonBlock {
-                            model: ListModel {
-                                ListElement { text: "A" }
-                                ListElement { text: "B" }
-                            }
+                        ButtonRow {
+                            Button{ text: "A" }
+                            Button{ text: "B" }
                         }
                         TextField { }
                         TextArea { placeholderText:"This is a\n multiline control."}
@@ -94,11 +92,9 @@ Rectangle {
                             anchors.topMargin:6
                             Text{ font.bold:true; text:"Disabled:" ; styleColor: "white" ; color:"#333" ; style:"Raised"}
                             Button { text:"Push me"}
-                            ButtonBlock {
-                                model: ListModel {
-                                    ListElement { text: "A" }
-                                    ListElement { text: "B" }
-                                }
+                            ButtonRow {
+                                Button{ text: "A" }
+                                Button{ text: "B" }
                             }
                             TextField { }
                             TextArea { placeholderText:"This is a\n multiline control."}
@@ -146,12 +142,9 @@ Rectangle {
 
                         Text{ font.bold:true; text:"Colored:" ; styleColor: "#333" ; color:"white" ; style:"Raised"}
                         Button { text:"Push me" ; backgroundColor: column3.bg; textColor: column3.fg}
-                        ButtonBlock {
-                            backgroundColor:column3.bg
-                            model: ListModel {
-                                ListElement { text: "A" }
-                                ListElement { text: "B" }
-                            }
+                        ButtonRow {
+                            Button{ text: "A" ; backgroundColor: column3.bg}
+                            Button{ text: "B" ; backgroundColor: column3.bg}
                         }
                         TextField { backgroundColor: column3.bg; textColor: column3.fg}
                         TextArea  { placeholderText:"This is a\n multiline control."; backgroundColor: column3.bg; textColor: column3.fg}
@@ -199,12 +192,9 @@ Rectangle {
 
                         Text{ font.bold:true; text:"Custom:" ; styleColor: "white" ; color:"#333" ; style:"Raised"}
                         Button { text:"Push me" ; background: shinyButton;}
-                        ButtonBlock {
-                            buttonBackground:shinyButton
-                            model: ListModel {
-                                ListElement { text: "A" }
-                                ListElement { text: "B" }
-                            }
+                        ButtonRow {
+                            Button { text: "A" ; background:shinyButton}
+                            Button{ text: "B" ; background:shinyButton}
                         }
                         TextField { background: shinyEdit}
                         TextArea {  placeholderText:"This is a\n multiline control."; background: shinyEdit}

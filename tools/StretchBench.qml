@@ -22,6 +22,8 @@ Item {
             model: ListModel {
                 ListElement { component: "ChoiceList" }
                 ListElement { component: "ButtonBlock" }
+                ListElement { component: "ButtonRow" }
+                ListElement { component: "ButtonColumn" }
                 ListElement { component: "Switch" }
                 ListElement { component: "Button" }
                 ListElement { component: "CheckBox" }
@@ -128,6 +130,8 @@ Item {
                     switch (name) {
                     case "Button": return buttonComponent;
                     case "ButtonBlock": return buttonBlockComponent;
+                    case "ButtonRow": return buttonRowComponent;
+                    case "ButtonColumn": return buttonColumnComponent;
                     case "CheckBox": return checkBoxComponent;
                     case "RadioButton": return radioButtonComponent;
                     case "Switch": return switchComponent;
@@ -324,6 +328,24 @@ Item {
             onClicked: model.setProperty(1, "text", "Foo")
             enabled: !buttonBlockOptionDimmed.checked
             orientation: buttonBlockOptionVerticalLayout.checked ? Qt.Vertical : Qt.Horizontal
+        }
+    }
+    Component {
+        id: buttonRowComponent
+        ButtonRow {
+            Button { text: "Button A" }
+            Button { text: "Button B1" }
+            Button { text: "Button C12" } //;iconSource: "images/testIcon.png" }
+            Button { text: "Button D123" }
+        }
+    }
+    Component {
+        id: buttonColumnComponent
+        ButtonColumn {
+            Button { text: "Button A" }
+            Button { text: "Button B1" }
+            Button { text: "Button C12" }
+            Button { text: "Button D123" }
         }
     }
 

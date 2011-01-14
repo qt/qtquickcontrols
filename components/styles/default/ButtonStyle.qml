@@ -14,22 +14,57 @@ QtObject {
         id: defaultBackground
         Item {
             opacity: enabled ? 1 : 0.7
-            Rectangle { // Background center fill
-                anchors.fill: parent
-                anchors.leftMargin: anchors.leftMargin
-                anchors.rightMargin: anchors.rightMargin
-                anchors.topMargin: anchors.topMargin
-                anchors.bottomMargin: anchors.bottomMargin
+            clip:true
+            property bool isPositioned: position != "only" // only evaluate for rows and columns
 
-                radius: 5
-                color: !button.checked ? backgroundColor : Qt.darker(backgroundColor)
-            }
-            BorderImage {
+            Item {
                 anchors.fill: parent
-                smooth: true
-                source: button.pressed || button.checked ? "images/button_pressed.png" : "images/button_normal.png";
-                border.left: 6; border.top: 6
-                border.right: 6; border.bottom: 6
+                anchors.leftMargin:   isPositioned && (position == "rightmost"  || position =="h_middle") ? -leftMargin : 0
+                anchors.rightMargin:  isPositioned && (position == "leftmost"   || position =="h_middle") ? -rightMargin : 0
+                anchors.topMargin:    isPositioned && (position == "bottom"     || position =="v_middle") ? -bottomMargin : 0
+                anchors.bottomMargin: isPositioned && (position == "top"        || position =="v_middle") ? -topMargin : 0
+
+                Rectangle {
+                    // Background center fill
+                    anchors.fill: parent
+                    anchors.leftMargin: anchors.leftMargin
+                    anchors.rightMargin: anchors.rightMargin
+                    anchors.topMargin: anchors.topMargin
+                    anchors.bottomMargin: anchors.bottomMargin
+                    radius: 5
+                    color: backgroundColor
+                }
+                BorderImage {
+                    anchors.fill: parent
+                    smooth: true
+                    source: button.pressed || button.checked ? "images/button_pressed.png" : "images/button_normal.png";
+                    border.left: 6; border.top: 6
+                    border.right: 6; border.bottom: 6
+                }
+            }
+
+            // Draw
+            Rectangle {
+                width:1
+                visible: isPositioned && !checked && !pressed && (position == "rightmost" || position == "h_middle")
+                anchors.top:parent.top
+                anchors.topMargin:2
+                anchors.bottomMargin:2
+                anchors.bottom:parent.bottom
+                anchors.left:parent.left
+                opacity:0.4
+                color: "white"
+            }
+            Rectangle {
+                width:1
+                opacity:0.4
+                visible: isPositioned && !checked && !pressed && (position == "leftmost" || position == "h_middle")
+                anchors.top:parent.top
+                anchors.topMargin:2
+                anchors.bottomMargin:2
+                anchors.bottom:parent.bottom
+                anchors.right:parent.right
+                color: "black"
             }
         }
     }
@@ -40,7 +75,6 @@ QtObject {
         Item {
             width: row.width
             height: row.height
-            anchors.centerIn: parent    //mm see QTBUG-15619
             opacity: enabled ? 1 : 0.5
             transform: Translate {
                 x: button.pressed || button.checked ? 1 : 0

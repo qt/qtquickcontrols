@@ -26,7 +26,7 @@ BasicButton {
 
     Loader {
         id: labelComponent
-        anchors.fill: parent
+        anchors.fill:parent
         anchors.leftMargin: leftMargin
         anchors.rightMargin: rightMargin
         anchors.topMargin: topMargin
