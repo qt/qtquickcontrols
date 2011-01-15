@@ -3,7 +3,7 @@ import "widgets"
 
 Rectangle {
     width: 540
-    height: 330
+    height: 340
 
     ToolBar{
         id:toolbar
@@ -50,7 +50,6 @@ Rectangle {
         x:0
         width:parent.width
         anchors.bottom:parent.bottom
-        contentHeight: 420
         frame:false
         enabled:enabledCheck.checked
 
@@ -127,21 +126,18 @@ Rectangle {
                 }
             }
             ScrollArea {
+                id:area
+                color:"white"
                 width:280
-                height:142
-                contentHeight: 220
-                Rectangle{
-                    anchors.fill: parent
-                    TextEdit {id:edit; text:loremIpsum + loremIpsum; wrapMode: TextEdit.WordWrap; width:parent.width}
-                }
+                height:120
+                contentWidth:200
+                TextEdit {id:edit; text:loremIpsum + loremIpsum; wrapMode: TextEdit.WordWrap; width:area.contentWidth}
             }
-
         }
-
-
     }
     property string loremIpsum:
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor "+
-        "incididunt ut labore et dolore magna aliqua.\n Ut enim ad minim veniam, quis nostrud "+
-        "exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ";
+            "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor "+
+            "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor "+
+            "incididunt ut labore et dolore magna aliqua.\n Ut enim ad minim veniam, quis nostrud "+
+            "exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ";
 }
