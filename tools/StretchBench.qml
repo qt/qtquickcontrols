@@ -210,6 +210,21 @@ Item {
             opacity: currentComponentName == "ButtonBlock" ? 1 : 0
             StretchBenchBoolOption { text: "Dimmed:"; id: buttonBlockOptionDimmed }
             StretchBenchBoolOption { text: "Vertical layout"; id: buttonBlockOptionVerticalLayout }
+            StretchBenchBoolOption { text: "Hide last button"; id: buttonBlockHideLastButton }
+        }
+
+        Column {
+            anchors.fill: parent; anchors.margins: 10; spacing: 5
+            opacity: currentComponentName == "ButtonRow" ? 1 : 0
+            StretchBenchBoolOption { text: "Dimmed:"; id: buttonRowOptionDimmed }
+            StretchBenchBoolOption { text: "Hide last button"; id: buttonRowHideLastButton }
+        }
+
+        Column {
+            anchors.fill: parent; anchors.margins: 10; spacing: 5
+            opacity: currentComponentName == "ButtonColumn" ? 1 : 0
+            StretchBenchBoolOption { text: "Dimmed:"; id: buttonColumnOptionDimmed }
+            StretchBenchBoolOption { text: "Hide last button"; id: buttonColumnHideLastButton }
         }
 
         Column {
@@ -320,14 +335,18 @@ Item {
         ButtonBlock {
             //orientation: Qt.Vertical
             model: ListModel {
-                ListElement { text: "Button A" }
-                ListElement { text: "Button B1" }
-                ListElement { text: "Button C12" } //;iconSource: "images/testIcon.png" }
-                ListElement { text: "Button D123" }
+                ListElement { text: "Button A"; opacity: 1 }
+                ListElement { text: "Button B1"; opacity: 1 }
+                ListElement { text: "Button C12"; opacity: 1 }
+                ListElement { text: "Button D123"; opacity: 1 }
             }
             onClicked: model.setProperty(1, "text", "Foo")
             enabled: !buttonBlockOptionDimmed.checked
             orientation: buttonBlockOptionVerticalLayout.checked ? Qt.Vertical : Qt.Horizontal
+            Connections { target: buttonBlockHideLastButton; onCheckedChanged: handleHideLastButtonChanged() }
+            function handleHideLastButtonChanged() {
+                model.setProperty(3, "opacity", buttonBlockHideLastButton.checked ? 0 : 1);
+            }
         }
     }
     Component {
@@ -336,7 +355,8 @@ Item {
             Button { text: "Button A" }
             Button { text: "Button B1" }
             Button { text: "Button C12" } //;iconSource: "images/testIcon.png" }
-            Button { text: "Button D123" }
+            Button { text: "Button D123"; opacity: buttonRowHideLastButton.checked ? 0 : 1 }
+            enabled: !buttonRowOptionDimmed.checked
         }
     }
     Component {
@@ -345,7 +365,8 @@ Item {
             Button { text: "Button A" }
             Button { text: "Button B1" }
             Button { text: "Button C12" }
-            Button { text: "Button D123" }
+            Button { text: "Button D123"; opacity: buttonColumnHideLastButton.checked ? 0 : 1 }
+            enabled: !buttonColumnOptionDimmed.checked
         }
     }
 
