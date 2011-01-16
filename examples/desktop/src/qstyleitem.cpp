@@ -197,6 +197,7 @@ QRect QStyleItem::subControlRect(const QString &subcontrolString) const
             subcontrol = QStyle::SC_ScrollBarSubPage;
         return qApp->style()->subControlRect(control, &opt, subcontrol, 0);
     }
+    return QRect();
 }
 
 void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
@@ -283,12 +284,13 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
     } else if (m_type == QLatin1String("slider")) {
         QStyle::ComplexControl control = QStyle::CC_Slider;
         QStyleOptionSlider opt;
+        initStyleOption(&opt);
         opt.minimum = minimum();
         opt.maximum = maximum();
         opt.sliderPosition = value();
-        opt.subControls |= (QStyle::SC_SliderGroove);
-        opt.activeSubControls = QStyle::SC_SliderHandle;
-        initStyleOption(&opt);
+        opt.sliderValue = value();
+        opt.subControls = QStyle::SC_SliderGroove | QStyle::SC_SliderHandle;
+        opt.activeSubControls = QStyle::SC_None;
         qApp->style()->drawComplexControl(control, &opt, painter, 0);
     } else if (m_type == QLatin1String("progressbar")) {
         QStyle::ControlElement control = QStyle::CE_ProgressBar;
@@ -323,6 +325,7 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
         opt.pageStep = 200;
         opt.orientation = horizontal() ? Qt::Horizontal : Qt::Vertical;
         opt.sliderPosition = value();
+        opt.sliderValue = value();
         if (opt.orientation == Qt::Vertical) {
             opt.activeSubControls = (activeControl() == QLatin1String("up"))
                                     ? QStyle::SC_ScrollBarSubLine :
@@ -336,6 +339,8 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
                                     QStyle::SC_ScrollBarAddPage:
                                     QStyle::SC_ScrollBarSlider;
         }
+        opt.sliderValue = value();
+        opt.subControls = QStyle::SC_All;
         qApp->style()->drawComplexControl(control, &opt, painter, &m_dummywidget);
     }
 }

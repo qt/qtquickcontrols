@@ -76,9 +76,9 @@ Item {
     property int minimumHeight: defaultStyle.minimumHeight
 
     // Hooks for customizing the pieces of the slider
-    property alias groove: grooveLoader.sourceComponent
-    property alias handle: handleLoader.sourceComponent
-    property alias valueIndicator: valueIndicatorLoader.sourceComponent
+    property Component groove: defaultStyle.groove
+    property Component handle: defaultStyle.handle
+    property Component valueIndicator: defaultStyle.valueIndicator
 
     // PRIVATE/CONVENIENCE
     property bool _isVertical: orientation == Qt.Vertical
@@ -132,7 +132,7 @@ Item {
         Loader {
             id: grooveLoader
             anchors.fill: parent
-            sourceComponent: defaultStyle.groove
+            sourceComponent: groove
 
             property real handlePosition : handleLoader.x
             function positionForValue(value) {
@@ -146,7 +146,7 @@ Item {
 
             anchors.verticalCenter: grooveLoader.verticalCenter
 
-            sourceComponent: defaultStyle.handle
+            sourceComponent: handle
 
             x: fakeHandle.x
             Behavior on x {
@@ -214,7 +214,7 @@ Item {
             property string indicatorText: slider.formatValue(range.valueForPosition(handleLoader.x))
             property bool dragging: mouseArea.drag.active
 
-            sourceComponent: defaultStyle.valueIndicator
+            sourceComponent: valueIndicator
 
             state: {
                 if (!_isVertical)

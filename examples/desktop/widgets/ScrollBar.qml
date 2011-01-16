@@ -73,9 +73,9 @@ MouseArea {
         leftMargin:16
         rightMargin:16
         anchors.fill:parent
-        handle:Item{width:(maximum-minimum)/50.0; height:20}
-        groove:Item{}
-        valueIndicator:Item{}
+        handle: Item{width:(maximum-minimum)/50.0; height:20}
+        groove:null
+        valueIndicator:null
         inverted:orientation != Qt.Horizontal
     }
 }

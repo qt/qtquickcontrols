@@ -4,8 +4,8 @@ import "../plugin"
 
 Components.Button {
     id:button
-
     background: QStyleItem {
+        id: styleitem
         elementType:"button"
         anchors.fill:parent
         sunken: pressed
