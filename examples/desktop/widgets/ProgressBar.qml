@@ -10,8 +10,8 @@ Components.ProgressBar {
         anchors.fill:parent
         minimum: minimumValue
         maximum: maximumValue
-        value: progressbar.value
-        enabled:progressbar.enabled
+        value:   progressbar.value
+        enabled: progressbar.enabled
     }
 
     progress: Item{}

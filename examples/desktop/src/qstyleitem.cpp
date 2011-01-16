@@ -139,9 +139,7 @@ QString QStyleItem::hitTest(int x, int y) const
 
 QSize QStyleItem::sizeFromContents(const QString &metric, int width, int height) const
 {
-    QStyle::ContentsType type = QStyle::CT_CheckBox;
     if (metric == QLatin1String("checkbox")) {
-        QStyle::ControlElement control = QStyle::CE_CheckBox;
         QStyleOptionButton opt;
         initStyleOption(&opt);
         opt.text = text();
@@ -216,6 +214,13 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
         qApp->style()->drawPrimitive(control, &opt, painter, 0);
     } if (m_type == QLatin1String("frame")) {
         QStyle::PrimitiveElement control = QStyle::PE_Frame;
+        QStyleOptionFrameV3 opt;
+        opt.frameShape = QFrame::StyledPanel;
+        opt.lineWidth = 1;
+        initStyleOption(&opt);
+        qApp->style()->drawPrimitive(control, &opt, painter, 0);
+    } if (m_type == QLatin1String("tabframe")) {
+        QStyle::PrimitiveElement control = QStyle::PE_FrameTabWidget;
         QStyleOptionFrameV3 opt;
         opt.frameShape = QFrame::StyledPanel;
         opt.lineWidth = 1;
@@ -312,13 +317,25 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
     } else if (m_type == QLatin1String("scrollbar")) {
         QStyle::ComplexControl control = QStyle::CC_ScrollBar;
         QStyleOptionSlider opt;
+        initStyleOption(&opt);
         opt.minimum = minimum();
         opt.maximum = maximum();
         opt.pageStep = 200;
         opt.orientation = horizontal() ? Qt::Horizontal : Qt::Vertical;
         opt.sliderPosition = value();
-        opt.activeSubControls = QStyle::SC_SliderHandle;
-        initStyleOption(&opt);
+        if (opt.orientation == Qt::Vertical) {
+            opt.activeSubControls = (activeControl() == QLatin1String("up"))
+                                    ? QStyle::SC_ScrollBarSubLine :
+                                    (activeControl() == QLatin1String("down")) ?
+                                    QStyle::SC_ScrollBarAddLine:
+                                    QStyle::SC_ScrollBarSlider;
+        } else {
+            opt.activeSubControls = (activeControl() == QLatin1String("up"))
+                                    ? QStyle::SC_ScrollBarSubPage:
+                                    (activeControl() == QLatin1String("down")) ?
+                                    QStyle::SC_ScrollBarAddPage:
+                                    QStyle::SC_ScrollBarSlider;
+        }
         qApp->style()->drawComplexControl(control, &opt, painter, &m_dummywidget);
     }
 }

@@ -59,6 +59,7 @@ class QStyleItem: public QDeclarativeItem
     Q_PROPERTY( bool horizontal READ horizontal WRITE setHorizontal NOTIFY horizontalChanged)
     Q_PROPERTY( QString elementType READ elementType WRITE setElementType NOTIFY elementTypeChanged)
     Q_PROPERTY( QString text READ text WRITE setText NOTIFY textChanged)
+    Q_PROPERTY( QString activeControl READ activeControl WRITE setActiveControl NOTIFY activeControlChanged)
 
     // For range controls
     Q_PROPERTY( int minimum READ minimum WRITE setMinimum NOTIFY minimumChanged)
@@ -83,6 +84,7 @@ public:
     int value() const { return m_value; }
     QString elementType() const { return m_type; }
     QString text() const { return m_text; }
+    QString activeControl() const { return m_activeControl; }
 
     void setSunken(bool sunken) { if (m_sunken != sunken) {m_sunken = sunken; emit sunkenChanged(); update();}}
     void setRaised(bool raised) { if (m_raised!= raised) {m_raised = raised; emit raisedChanged(); update();}}
@@ -98,6 +100,7 @@ public:
     void setValue(int value) { if (m_value!= value) {m_value = value; emit valueChanged(); update();}}
     void setElementType(const QString &str) { if (m_type != str) {m_type = str; emit elementTypeChanged();update(); }}
     void setText(const QString &str) { if (m_text != str) {m_text = str; emit textChanged();update(); }}
+    void setActiveControl(const QString &str) { if (m_activeControl != str) {m_activeControl = str; emit activeControlChanged();update(); }}
 
     virtual void initStyleOption(QStyleOption *opt) const;
 public Q_SLOTS:
@@ -121,10 +124,12 @@ Q_SIGNALS:
     void minimumChanged();
     void maximumChanged();
     void valueChanged();
+    void activeControlChanged();
 
 protected:
     QString m_type;
     QString m_text;
+    QString m_activeControl;
     bool m_sunken;
     bool m_raised;
     bool m_active;

@@ -28,6 +28,7 @@ Components.SpinBox {
         onHeightChanged:updateRect()
     }
 
+
     up:Item {
         width:__upRect.width > 0 ? __upRect.width : 20
         height:spinbox.height/2
