@@ -3,7 +3,6 @@ import QtQuick 1.0
 // KNOWN ISSUES
 // 1) Can't tell if the Paste button should be shown or not, see QTBUG-16190
 // 2) Hard to tell if the Select button should be shown (part of QTBUG-16190?)
-// 3) Positioning of copy/paste/etc buttons doesn't take the window into account (can result in clipped buttons)
 
 Item {
     id: mouseBehavior
@@ -220,10 +219,14 @@ Item {
             showSelectAllActionChanged();
         }
 
-        function positionPopout() {
+        function positionPopout() {   // position poput above the text field's cursor
             var popoutPoint = selectionPopoutPoint();
             copyPastePopup.x = popoutPoint.x - modalPopup.popup.width/2
             copyPastePopup.y = popoutPoint.y - modalPopup.popup.height
+        }
+
+        function repositionPopout() {   // try position the popout below the text field instread
+            copyPastePopup.y += modalPopup.popup.height + textEditor.height;
         }
 
         ModalPopupBehavior {
@@ -232,7 +235,12 @@ Item {
             positionBy: copyPastePopup
             consumeCancelClick: false
             whenAlso: !mouseArea.pressed
-            onPrepareToShow: copyPastePopup.positionPopout()
+            onPrepareToShow: {
+                copyPastePopup.positionPopout();
+                if(extendsOffTheTop()) {
+                    copyPastePopup.repositionPopout();
+                }
+            }
             onCancelledByClick: copyPastePopup.wasCancelledByClick = true
 
             transitions: Transition {   //mm Should this be stylable?

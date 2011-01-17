@@ -16,6 +16,16 @@ Item {
     signal prepareToHide
     signal cancelledByClick
 
+    function extendsOffTheTop() {
+        var popupPos = popupBehavior.popupPos();
+        return (popupPos.y < 0);
+    }
+
+    function extendsPastTheBottom() {
+        var popupPos = popupBehavior.popupPos();
+        return (popupPos.y > root.height-popup.height);
+    }
+
     // implementation
     anchors.fill: parent
 
@@ -45,7 +55,10 @@ Item {
     }
 
     function popupPos() {   // making this a property doesn't work
-        return mapFromItem(positionBy, 0, 0);
+        var popupPos = root.mapFromItem(positionBy, 0, 0);
+        popupPos.x = Math.max(popupPos.x, 0);   // if outside to the left
+        popupPos.x = Math.min(popupPos.x, root.width-popup.width); // if outside to the right
+        return popupPos;
     }
 
     states: [
@@ -62,3 +75,4 @@ Item {
         }
     ]
 }
+
