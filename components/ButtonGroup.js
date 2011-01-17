@@ -1,6 +1,7 @@
 var self,
     clickHandlers = [], // bindet click handlers (for removing them)
     shadow = [],        // shadow copy of children
+    visibleButtons,
     _first,             // holds first index
     _last,              // holds last index
     _direction,
@@ -49,12 +50,19 @@ function build() {
     // copy of children because its not an array. also we need a copy
     shadow = [];
     shadow.length = self.children.length;
+    visibleButtons = 0;
+    _first = undefined;
+    _last = 0;
     var isCheckedPresent = false;
     for (var i = 0, item; (item = self.children[i]); i++) {
         if (hasChecked(item)) {
             shadow[i] = item;
-            _last = i;
-            _first = undefined === _first ? i : _first;
+            if (item.visible) {
+                if (_first === undefined)
+                    _first = i;
+                _last = i;
+                visibleButtons = visibleButtons + 1;
+            }
             if (item === self.checkedButton) {
                 isCheckedPresent = true;
             }
@@ -63,10 +71,6 @@ function build() {
     if (!isCheckedPresent) {
         self.checkedButton = undefined;
     }
-
-    var extraPixels = self.width % shadow.length
-    var buttonSize = (self.width-extraPixels) / shadow.length;
-
 
     shadow.forEach(function(item, i) {
         if (isButton(item) ) {
@@ -84,6 +88,7 @@ function build() {
                     item.anchors.right = self.right
                 }
             }
+            item.visibleChanged.connect(childrenChanged);
         }
         if (exclusive && hasChecked(item)) {
             if (item["checkable"]!==undefined) {
@@ -94,7 +99,6 @@ function build() {
         }
 
     });
-    resizeChildren();
 }
 
 /**
@@ -104,6 +108,8 @@ function cleanup() {
     for (var i = 0, l = shadow.length; i < l; i++) {
         try {
             if (clickHandlers[i]) { shadow[i].clicked.disconnect(clickHandlers[i]); }
+            if (isButton(shadow[i]))
+                shadow[i].visibleChanged.disconnect(childrenChanged);
         } catch (e) {}
     }
     clickHandlers = [];
@@ -122,10 +128,12 @@ var resizeChildren = function() {
         return;
     }
 
-    var extraPixels = self.width % shadow.length
-    var buttonSize = (self.width-extraPixels) / shadow.length;
+    var extraPixels = self.width % visibleButtons;
+    var buttonSize = (self.width - extraPixels) / visibleButtons;
     shadow.forEach(function(item, i) {
-        item.width = buttonSize + (extraPixels ? 1 : 0);
+        if (!item.visible)
+            return;
+        item.width = buttonSize + (extraPixels > 0 ? 1 : 0);
         if (extraPixels > 0) {
             extraPixels--;
         }

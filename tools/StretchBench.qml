@@ -355,7 +355,7 @@ Item {
             Button { text: "Button A" }
             Button { text: "Button B1" }
             Button { text: "Button C12" } //;iconSource: "images/testIcon.png" }
-            Button { text: "Button D123"; opacity: buttonRowHideLastButton.checked ? 0 : 1 }
+            Button { text: "Button D123"; visible: !buttonRowHideLastButton.checked }
             enabled: !buttonRowOptionDimmed.checked
         }
     }
@@ -365,7 +365,7 @@ Item {
             Button { text: "Button A" }
             Button { text: "Button B1" }
             Button { text: "Button C12" }
-            Button { text: "Button D123"; opacity: buttonColumnHideLastButton.checked ? 0 : 1 }
+            Button { text: "Button D123"; visible: !buttonColumnHideLastButton.checked }
             enabled: !buttonColumnOptionDimmed.checked
         }
     }
