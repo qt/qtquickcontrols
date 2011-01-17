@@ -137,9 +137,15 @@ QString QStyleItem::hitTest(int x, int y) const
     return "none";
 }
 
-QSize QStyleItem::sizeFromContents(const QString &metric, int width, int height) const
+QSize QStyleItem::sizeFromContents(int width, int height) const
 {
+    QString metric = m_type;
     if (metric == QLatin1String("checkbox")) {
+        QStyleOptionButton opt;
+        initStyleOption(&opt);
+        opt.text = text();
+        return qApp->style()->sizeFromContents(QStyle::CT_CheckBox, &opt, QSize(width,height), 0);
+    } else if (metric == QLatin1String("button")) {
         QStyleOptionButton opt;
         initStyleOption(&opt);
         opt.text = text();
@@ -161,12 +167,15 @@ QRect QStyleItem::subControlRect(const QString &subcontrolString) const
     if (m_type == QLatin1String("spinbox")) {
         QStyle::ComplexControl control = QStyle::CC_SpinBox;
         QStyleOptionSpinBox opt;
-        opt.frame = true;
         initStyleOption(&opt);
+        opt.frame = true;
         if (subcontrolString == QLatin1String("down"))
             subcontrol = QStyle::SC_SpinBoxDown;
         else if (subcontrolString == QLatin1String("up"))
             subcontrol = QStyle::SC_SpinBoxUp;
+        else if (subcontrolString == QLatin1String("edit")){
+            subcontrol = QStyle::SC_SpinBoxEditField;
+        }
         return qApp->style()->subControlRect(control, &opt, subcontrol, 0);
     } else if (m_type == QLatin1String("slider")) {
         QStyle::ComplexControl control = QStyle::CC_Slider;

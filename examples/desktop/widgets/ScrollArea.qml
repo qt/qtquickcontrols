@@ -20,7 +20,7 @@ Item {
 
     QStyleItem {
         id:styleitem
-        elementType: "frame"
+        elementType: frame ? "frame" : ""
         sunken: true
         anchors.fill: parent
         anchors.rightMargin: scrollbar.width + 4

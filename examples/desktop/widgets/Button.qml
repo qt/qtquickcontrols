@@ -4,6 +4,9 @@ import "../plugin"
 
 Components.Button {
     id:button
+
+    height: 26
+
     background: QStyleItem {
         id: styleitem
         elementType:"button"

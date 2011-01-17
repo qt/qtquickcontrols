@@ -6,26 +6,45 @@ Components.SpinBox {
     id:spinbox
     property variant __upRect;
     property variant __downRect;
-    background: QStyleItem {
-        id:styleitem
-        elementType:"spinbox"
-        anchors.fill:parent
-        sunken: true
-        hover: containsMouse
-        focus:spinbox.activeFocus
-        enabled:spinbox.enabled
-        value: (upPressed? 1 : 0)           |
-               (downPressed== 1 ? 1<<1 : 0) |
-               (upEnabled? (1<<2) : 0)      |
-               (downEnabled == 1 ? (1<<3) : 0)
+    background:
 
+        Item {anchors.fill: parent
+        property variant editrect: styleitem.subControlRect("edit");
+        Rectangle {
+            x:editrect.x
+            y:editrect.y
+            width:editrect.width
+            height:editrect.height
+
+        }
         function updateRect() {
-            __upRect = styleitem.subControlRect("up");
-            __downRect = styleitem.subControlRect("down");
+            editrect = styleitem.subControlRect("edit");
         }
         Component.onCompleted:updateRect()
         onWidthChanged:updateRect()
         onHeightChanged:updateRect()
+
+        QStyleItem {
+            id:styleitem
+            elementType:"spinbox"
+            anchors.fill:parent
+            sunken: downPressed | upPressed
+            hover: containsMouse
+            focus:spinbox.activeFocus
+            enabled:spinbox.enabled
+            value: (upPressed? 1 : 0)           |
+                   (downPressed== 1 ? 1<<1 : 0) |
+                   (upEnabled? (1<<2) : 0)      |
+                   (downEnabled == 1 ? (1<<3) : 0)
+
+            function updateRect() {
+                __upRect = styleitem.subControlRect("up");
+                __downRect = styleitem.subControlRect("down");
+            }
+            Component.onCompleted:updateRect()
+            onWidthChanged:updateRect()
+            onHeightChanged:updateRect()
+        }
     }
 
 
