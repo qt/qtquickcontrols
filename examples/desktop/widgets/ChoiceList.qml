@@ -20,7 +20,7 @@ Components.ChoiceList {
 
         QStyleItem {
             elementType:"menuitem"
-            text:model.get(index).text
+            text:choicelist.model.get(index).text
             anchors.fill:parent
             selected:containsMouse
         }
