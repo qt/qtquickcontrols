@@ -16,7 +16,7 @@ function create(that, options) {
     _direction = options.direction || Qt.Horizontal;
     exclusive = self.exclusive|| options.exclusive;
     self.childrenChanged.connect(childrenChanged);
-    self.widthChanged.connect(resizeChildren);
+//    self.widthChanged.connect(resizeChildren);
     build();
 }
 
@@ -39,7 +39,7 @@ function hasChecked(item) {
  */
 function destroy() {
     self.childrenChanged.disconnect(childrenChanged);
-    self.widthChanged.disconnect(resizeChildren);
+//    self.widthChanged.disconnect(resizeChildren);
     cleanup();
 }
 
