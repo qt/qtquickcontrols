@@ -3,8 +3,7 @@ import QtQuick 1.0
 // KNOWN ISSUES
 // 1) Can't tell if the Paste button should be shown or not, see QTBUG-16190
 // 2) Hard to tell if the Select button should be shown (part of QTBUG-16190?)
-// 3) Double-clicking on the word where the cusor is doesn't select the word (but opens the menu)
-// 4) Positioning of copy/paste/etc buttons doesn't take the window into account (can result in clipped buttons)
+// 3) Positioning of copy/paste/etc buttons doesn't take the window into account (can result in clipped buttons)
 
 Item {
     id: mouseBehavior
@@ -20,6 +19,21 @@ Item {
     // Implementation
 
     property Item textEditor: Qt.isQtObject(textInput) ? textInput : textEdit
+
+    Connections {
+        target: textInput
+        onTextChanged: reset()
+        onCursorPositionChanged: reset()
+        onSelectedTextChanged: reset()
+        onActiveFocusChanged: reset()
+    }
+
+    function reset() {
+        copyPastePopup.showing = false; // hide and restart the visibility timer
+        copyPastePopup.showing = selectedText.length > 0;
+        copyPastePopup.wasCancelledByClick = false;
+        copyPastePopup.wasClosedByCopy = false;
+    }
 
     Component.onCompleted: {
         textEditor.focus = true;
@@ -79,30 +93,42 @@ Item {
             }
         }
 
+        onReleased: {
+            if(!desktopBehavior) {
+                if(mouse.wasHeld) copyPastePopup.showing = true;
+            }
+        }
+
         onClicked: {
             if(!desktopBehavior) {
+                if(!hadFocusBeforePress)
+                    return;
+
                 var pos = characterPositionAt(mouse);
-
-                if(pos > textEditor.selectionStart && pos < selectionEnd) {    // clicked on selected text
-                    copyPastePopup.showing = true;
-                } else if(textEditor.selectionStart != textEditor.selectionEnd) { // clicked outside selection
-                    textEditor.select(textEditor.selectionEnd, textEditor.selectionEnd);   // clear selection
+                if(textEditor.selectedText.length) { // clicked on or outside selection
+                    if(copyPastePopup.wasClosedByCopy && pos >= textEditor.selectionStart && pos < textEditor.selectionEnd)
+                        copyPastePopup.showing = true;
+                    else
+                        textEditor.select(textEditor.selectionEnd, textEditor.selectionEnd);   //mm use deselect() from QtQuick 1.1 (see QTBUG-16059)
                 } else {    // clicked while there's no selection
-                    var endOfWordRegEx = /[^\b]\b/g;
-                    endOfWordRegEx.lastIndex = pos;
-                    var endOfWordPosition = pos;
-                    if(endOfWordRegEx.test(textEditor.text))   // updates lastIndex
-                        endOfWordPosition = endOfWordRegEx.lastIndex;
+                    if(pos == textEditor.cursorPosition) {  // Clicked where the cursor already where
+                        copyPastePopup.showing = !copyPastePopup.wasCancelledByClick;
+                        copyPastePopup.wasCancelledByClick = false;
+                    } else { // Clicked in a new place (where the cursor wasn't)
+                        var endOfWordRegEx = /[^\b]\b/g;
+                        endOfWordRegEx.lastIndex = pos;
+                        var endOfWordPosition = pos;
+                        if(endOfWordRegEx.test(textEditor.text))   // updates lastIndex
+                            endOfWordPosition = endOfWordRegEx.lastIndex;
 
-                    if(textEditor.cursorPosition == endOfWordPosition) {
-                        if(hadFocusBeforePress && textEditor.cursorPosition == pressedPos) {
-                            copyPastePopup.showing = true;
+                        if(textEditor.cursorPosition != endOfWordPosition) {
+                            textEditor.cursorPosition = endOfWordPosition;
+                        } else {
+                            copyPastePopup.showing = !copyPastePopup.wasCancelledByClick;
+                            copyPastePopup.wasCancelledByClick = false;
                         }
-                    } else {
-                        textEditor.cursorPosition = endOfWordPosition;
                     }
                 }
-
             }
         }
 
@@ -118,8 +144,9 @@ Item {
                     textEditor.select(selectionEndAtPress, pos);
                 } else if(draggingEndHandle) {
                     textEditor.select(selectionStartAtPress, pos);
-                } else if(mouse.wasHeld) {  // there's no selection
+                } else if(mouse.wasHeld && textEditor.cursorPosition != pos) {  // there's no selection
                     textEditor.cursorPosition = pos;
+                    copyPastePopup.showing = true; // show once not pressed any more
                 }
             }
         }
@@ -161,13 +188,8 @@ Item {
         id: copyPastePopup
 
         property alias showing: modalPopup.showing
-        onShowingChanged: {
-            if(showing) {
-                var popoutPoint = selectionPopoutPoint();
-                copyPastePopup.x = popoutPoint.x - modalPopup.popup.width/2
-                copyPastePopup.y = popoutPoint.y - modalPopup.popup.height
-            }
-        }
+        property bool wasCancelledByClick: false
+        property bool wasClosedByCopy: false
 
         property bool showCopyAction: textEditor.selectedText.length > 0
         property bool showCutAction: textEditor.selectedText.length > 0
@@ -198,11 +220,29 @@ Item {
             showSelectAllActionChanged();
         }
 
+        function positionPopout() {
+            var popoutPoint = selectionPopoutPoint();
+            copyPastePopup.x = popoutPoint.x - modalPopup.popup.width/2
+            copyPastePopup.y = popoutPoint.y - modalPopup.popup.height
+        }
+
         ModalPopupBehavior {
             id: modalPopup
             popup: loader.item
             positionBy: copyPastePopup
-            consumeCancelClick: true
+            consumeCancelClick: false
+            whenAlso: !mouseArea.pressed
+            onPrepareToShow: copyPastePopup.positionPopout()
+            onCancelledByClick: copyPastePopup.wasCancelledByClick = true
+
+            transitions: Transition {   //mm Should this be stylable?
+                to: "showing"
+                SequentialAnimation {
+                    PropertyAction { properties: "x,y" }   // set pop-up's position right away
+                    PauseAnimation { duration: 300 }    // delay the showing to allow double-click-to-select
+                    NumberAnimation { property: "opacity"; duration: 100 }
+                }
+            }
 
             Loader {
                 id: loader
@@ -212,12 +252,16 @@ Item {
                 Connections {
                     target: loader.item
                     onClicked: {
-                        if(index == 0) textEditor.copy();
+                        if(index == 0) {
+                            textEditor.copy();
+                            copyPastePopup.showing = false;
+                            copyPastePopup.wasClosedByCopy = true;
+                        }
                         if(index == 1) textEditor.cut();
                         if(index == 2) textEditor.paste();
                         if(index == 3) textEditor.selectWord();
                         if(index == 4) textEditor.selectAll();
-                        copyPastePopup.showing = false;
+
                     }
                 }
             }
