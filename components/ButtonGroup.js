@@ -11,7 +11,7 @@ var self,
  * prepares the group behavior for that component
  */
 
-var create = function(that, options) {
+function create(that, options) {
     self = that;
     _direction = options.direction || Qt.Horizontal;
     exclusive = self.exclusive|| options.exclusive;
@@ -37,7 +37,7 @@ function hasChecked(item) {
 /**
  * Destroy behavior for that component
  */
-var destroy = function() {
+function destroy() {
     self.childrenChanged.disconnect(childrenChanged);
     self.widthChanged.disconnect(resizeChildren);
     cleanup();
@@ -105,13 +105,14 @@ function build() {
  * cleanup the buttongroup
  */
 function cleanup() {
-    for (var i = 0, l = shadow.length; i < l; i++) {
-        try {
-            if (clickHandlers[i]) { shadow[i].clicked.disconnect(clickHandlers[i]); }
+    shadow.forEach(function(item, i) {
+        if (item) {
+            if (clickHandlers[i])
+                item.clicked.disconnect(clickHandlers[i]);
             if (isButton(shadow[i]))
-                shadow[i].visibleChanged.disconnect(childrenChanged);
-        } catch (e) {}
-    }
+                item.visibleChanged.disconnect(childrenChanged);
+        }
+    });
     clickHandlers = [];
 }
 
@@ -123,20 +124,19 @@ function childrenChanged() {
     build();
 }
 
-var resizeChildren = function() {
-    if (_direction != Qt.Horizontal) {
+function resizeChildren() {
+    if (_direction != Qt.Horizontal)
         return;
-    }
 
+    console.log("resizeChildren");
     var extraPixels = self.width % visibleButtons;
     var buttonSize = (self.width - extraPixels) / visibleButtons;
     shadow.forEach(function(item, i) {
-        if (!item.visible)
+        if (!item || !item.visible)
             return;
         item.width = buttonSize + (extraPixels > 0 ? 1 : 0);
-        if (extraPixels > 0) {
+        if (extraPixels > 0)
             extraPixels--;
-        }
     });
 }
 
