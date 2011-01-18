@@ -12,6 +12,9 @@ QML_FILES = \
         BasicButton.qml \
         BusyIndicator.qml \
         ButtonBlock.qml \
+        ButtonColumn.qml \
+        ButtonRow.qml \
+        ButtonGroup.js \
         Button.qml \
         CheckBox.qml \
         ChoiceList.qml \
