@@ -94,7 +94,7 @@ function build() {
             if (item["checkable"]!==undefined) {
                 item.checkable = true;
             }
-            clickHandlers[i] = function() { checkExclusive(item); }
+            clickHandlers[i] = checkExclusive(item);
             item.clicked.connect(clickHandlers[i]);
         }
 
@@ -141,8 +141,11 @@ function resizeChildren() {
 }
 
 function checkExclusive(item) {
-    for (var i = 0, ref; (ref = shadow[i]); i++) {
-        ref.checked = item === ref;
+    var button = item;
+    return function() {
+        for (var i = 0, ref; (ref = shadow[i]); i++) {
+            ref.checked = button === ref;
+        }
+        self.checkedButton = button;
     }
-    self.checkedButton = item;
 }
