@@ -2,7 +2,7 @@ import QtQuick 1.0
 import "./styles/default" as DefaultStyles
 import "./behaviors"    // TextEditMouseBehavior
 
-Item {
+FocusScope {
     id: textArea
 
     property alias text: textEdit.text
@@ -83,6 +83,8 @@ Item {
             color: enabled ? textColor: Qt.tint(textColor, "#80ffffff")
             wrapMode: desktopBehavior ? TextEdit.NoWrap : TextEdit.WordWrap
             onCursorRectangleChanged: flickable.ensureVisible(cursorRectangle)
+
+            onActiveFocusChanged: activeFocus ? openSoftwareInputPanel() : closeSoftwareInputPanel()
         }
     }
 

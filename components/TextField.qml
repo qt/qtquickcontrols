@@ -5,7 +5,7 @@ import "./behaviors"    // TextEditMouseBehavior
 // KNOWN ISSUES
 // 1) TextField does not loose focus when !enabled if it is a FocusScope (see QTBUG-16161)
 
-Item {  //mm Does this need to be a FocusScope or not?  //needs to be a FocusScope as long as TextInput is not in e.g. a Flickable's scope
+FocusScope {
     id: textField
 
     property alias text: textInput.text
@@ -75,7 +75,16 @@ Item {  //mm Does this need to be a FocusScope or not?  //needs to be a FocusSco
         color: enabled ? textColor : Qt.tint(textColor, "#80ffffff")
         echoMode: passwordMode ? _hints.passwordEchoMode : TextInput.Normal
 
-        onActiveFocusChanged: if(!desktopBehavior) state = (activeFocus ? "focused" : "")
+        onActiveFocusChanged: {
+            if (!desktopBehavior)
+                state = (activeFocus ? "focused" : "")
+
+            if (activeFocus)
+                openSoftwareInputPanel()
+            else
+                closeSoftwareInputPanel()
+        }
+
         states: [
             State {
                 name: ""

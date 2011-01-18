@@ -129,6 +129,8 @@ Item {
                     }
                 }
             }
+
+            textEditor.openSoftwareInputPanel()
         }
 
         onPositionChanged: {
