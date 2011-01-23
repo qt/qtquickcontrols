@@ -65,9 +65,9 @@ Item {
     ScrollBar {
         id: scrollbar
         orientation: Qt.Vertical
-        maximum: contentHeight > flickable.height ? scrollarea.contentHeight-
+        maximumValue: contentHeight > flickable.height ? scrollarea.contentHeight-
                 flickable.height : 0
-        minimum: 0
+        minimumValue: 0
         value: scrollarea.contentY
         anchors.right: parent.right
         anchors.top: parent.top

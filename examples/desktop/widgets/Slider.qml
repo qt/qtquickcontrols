@@ -7,7 +7,11 @@ import "../plugin"
 Components.Slider{
     id:slider
     minimumWidth:200
-    minimumHeight:24
+
+    // Align with button
+    property int buttonHeight: buttonitem.sizeFromContents(100, 15).height
+    QStyleItem { id:buttonitem; elementType:"button" }
+    height: buttonHeight
 
     groove: QStyleBackground {
         anchors.fill:parent

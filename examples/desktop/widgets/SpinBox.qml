@@ -6,10 +6,32 @@ Components.SpinBox {
     id:spinbox
     property variant __upRect;
     property variant __downRect;
-    background:
+    property int __margin: (height -15)/2
 
-            Item {anchors.fill: parent
-        property variant editrect: styleitem.subControlRect("edit");
+    // Align height with button
+    topMargin:__margin
+    bottomMargin:__margin
+    property int buttonHeight: buttonitem.sizeFromContents(100, 15).height
+    QStyleItem { id:buttonitem; elementType:"button" }
+    height: buttonHeight
+
+    QStyleItem {
+        id:styleitem
+        elementType:"spinbox"
+        sunken: downPressed | upPressed
+        hover: containsMouse
+        focus:spinbox.activeFocus
+        enabled:spinbox.enabled
+        value: (upPressed? 1 : 0)           |
+                (downPressed== 1 ? 1<<1 : 0) |
+                (upEnabled? (1<<2) : 0)      |
+                (downEnabled == 1 ? (1<<3) : 0)
+
+    }
+
+    background:
+        Item {anchors.fill: parent
+        property variant editrect
         Rectangle {
             x:editrect.x
             y:editrect.y
@@ -17,35 +39,21 @@ Components.SpinBox {
             height:editrect.height
 
         }
+
         function updateRect() {
-            editrect = styleitem.subControlRect("edit");
+            __upRect = spinboxbg.subControlRect("up");
+            __downRect = spinboxbg.subControlRect("down");
+            editrect = spinboxbg.subControlRect("edit");
         }
+
         Component.onCompleted:updateRect()
         onWidthChanged:updateRect()
         onHeightChanged:updateRect()
 
         QStyleBackground {
+            id:spinboxbg
             anchors.fill:parent
-            style: QStyleItem{
-                id:styleitem
-                elementType:"spinbox"
-                sunken: downPressed | upPressed
-                hover: containsMouse
-                focus:spinbox.activeFocus
-                enabled:spinbox.enabled
-                value: (upPressed? 1 : 0)           |
-                        (downPressed== 1 ? 1<<1 : 0) |
-                        (upEnabled? (1<<2) : 0)      |
-                        (downEnabled == 1 ? (1<<3) : 0)
-
-            }
-            function updateRect() {
-                __upRect = styleitem.subControlRect("up");
-                __downRect = styleitem.subControlRect("down");
-            }
-            Component.onCompleted:updateRect()
-            onWidthChanged:updateRect()
-            onHeightChanged:updateRect()
+            style:styleitem
         }
     }
 

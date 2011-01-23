@@ -5,13 +5,8 @@ import "../plugin"
 Components.Button {
     id:button
 
-    function updateSize() { sizeRect = styleitem.sizeFromContents(labelWidth, labelHeight); print(sizeRect.height) }
-    property variant sizeRect
-    Component.onCompleted: updateSize()
-    onTextChanged: updateSize()
-    onIconSourceChanged: updateSize()
-
-    height: sizeRect ? sizeRect.height : 0
+    property int buttonHeight: styleitem.sizeFromContents(100, 15).height
+    height: buttonHeight
 
     QStyleItem {
         id:styleitem

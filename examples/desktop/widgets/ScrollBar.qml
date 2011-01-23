@@ -9,21 +9,26 @@ MouseArea {
     height:orientation == Qt.Horizontal ? __scrollbarExtent : 200
 
     property int orientation : Qt.Horizontal
-    property alias minimum: slider.minimumValue
-    property alias maximum: slider.maximumValue
+    property alias minimumValue: slider.minimumValue
+    property alias maximumValue: slider.maximumValue
     property alias value: slider.value
-    property variant __scrollbarrect : styleitem.subControlRect("slider");
 
     property bool upPressed;
     property bool downPressed;
-    property bool __autoincrement: false;
+    property bool __autoincrement: false
+
+    // Update hover item
+    onEntered: styleitem.activeControl = bgitem.hitTest(mouseX,mouseY)
+    onExited: styleitem.activeControl = "none"
+    onMouseXChanged: styleitem.activeControl = bgitem.hitTest(mouseX,mouseY)
+    hoverEnabled:true
 
     Timer { running: upPressed || downPressed; interval: 350 ; onTriggered: __autoincrement = true }
     Timer { running: __autoincrement; interval: 60 ; repeat: true ;
         onTriggered: upPressed ? decrement() : increment() }
 
     onPressed: {
-        var control = styleitem.hitTest(mouseX,mouseY)
+        var control = bgitem.hitTest(mouseX,mouseY)
         if (control == "up") {
             upPressed = true
         } else if (control == "down") {
@@ -44,42 +49,57 @@ MouseArea {
 
     function increment() {
         value += 30
-        if (value > maximum)
-            value = maximum
+        if (value > maximumValue)
+            value = maximumValue
     }
 
     function decrement() {
         value -= 30
-        if (value < minimum)
-            value = minimum
+        if (value < minimumValue)
+            value = minimumValue
     }
 
     QStyleBackground {
+        id:bgitem
         anchors.fill:parent
-
         style: QStyleItem {
             id:styleitem
             elementType:"scrollbar"
+            hover:activeControl != "none"
+            activeControl:"none"
             sunken: upPressed | downPressed
             minimum:slider.minimumValue
             maximum:slider.maximumValue
-            activeControl: upPressed ? "up" : downPressed ? "down" : ""
             value:slider.value
             horizontal:orientation == Qt.Horizontal
             enabled: parent.enabled
         }
     }
 
+    property variant handleRect
+    function updateHandle() {
+        handleRect = 50
+        slider.anchors.topMargin = bgitem.subControlRect("add").width
+        slider.anchors.bottomMargin = bgitem.subControlRect("sub").width
+    }
+
+    onValueChanged: updateHandle()
+    onMaximumValueChanged: updateHandle()
+    onMinimumValueChanged: updateHandle()
+
     Components.Slider {
         id:slider
-        orientation:scrollbar.orientation
-        leftMargin:16
-        rightMargin:16
         anchors.fill:parent
-        handle: Item{width:(maximum-minimum)/50.0; height:20}
+        orientation:scrollbar.orientation
+        handle: Item{
+            width:scrollbar.handleRect.height;
+            height:scrollbar.handleRect.width
+        }
         groove:null
         valueIndicator:null
         inverted:orientation != Qt.Horizontal
     }
 }
+
+
 

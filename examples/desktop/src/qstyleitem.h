@@ -103,8 +103,6 @@ public:
 
     virtual void initStyleOption(QStyleOption *opt) const;
 public Q_SLOTS:
-    QRect subControlRect(const QString &subcontrol) const;
-    QString hitTest(int x, int y) const;
     int pixelMetric(const QString&) const;
     QSize sizeFromContents(int width, int height) const;
 
@@ -157,6 +155,8 @@ public Q_SLOTS:
     QStyleItem *style(){return m_style;}
     void setStyle(QStyleItem *style);
     void updateItem(){update();}
+    QString hitTest(int x, int y) const;
+    QRect subControlRect(const QString &subcontrolString) const;
 
 Q_SIGNALS:
     void styleChanged();

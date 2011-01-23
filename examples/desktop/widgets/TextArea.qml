@@ -10,6 +10,11 @@ Components.TextArea {
     desktopBehavior:true
     placeholderText:""
 
+    // Align with button
+    property int buttonHeight: buttonitem.sizeFromContents(100, 14).height
+    QStyleItem { id:buttonitem; elementType:"button" }
+    minimumHeight: buttonHeight
+
     background: QStyleBackground {
         anchors.fill:parent
         style: QStyleItem{

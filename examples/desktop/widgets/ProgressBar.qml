@@ -5,6 +5,11 @@ import "../plugin"
 Components.ProgressBar {
     id:progressbar
 
+    // Align with button
+    property int buttonHeight: buttonitem.sizeFromContents(100, 15).height
+    QStyleItem { id:buttonitem; elementType:"button" }
+    height: buttonHeight
+
     background: QStyleBackground{
         anchors.fill:parent
         style: QStyleItem{

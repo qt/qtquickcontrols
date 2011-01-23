@@ -34,6 +34,9 @@ Item {
     property int rightMargin: defaultStyle.rightMargin
     property int bottomMargin: defaultStyle.bottomMargin
 
+    property int labelWidth: labelComponent.item.width
+    property int labelHeight: labelComponent.item.height
+
     width: Math.max(minimumWidth,
                     labelComponent.item.width + leftMargin + rightMargin)
     height: Math.max(minimumHeight,

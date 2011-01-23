@@ -53,7 +53,6 @@ Rectangle {
         frame:false
         enabled:enabledCheck.checked
 
-
         Row {
             anchors.margins: 8
             anchors.fill: parent
@@ -126,7 +125,6 @@ Rectangle {
                     loops: Animation.Infinite
                 }
             }
-
             TextScrollArea {
                 id:area
                 text: loremIpsum + loremIpsum
