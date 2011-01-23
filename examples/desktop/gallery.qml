@@ -119,19 +119,17 @@ Rectangle {
                 }
                 RotationAnimation on rotation {
                     from:0; to:360;
-                    easing.type:Easing.OutCubic; duration:1000;
+                    easing.type: Easing.OutCubic
+                    duration: 1000
                     running: animateCheck.checked
                     alwaysRunToEnd: true
                     loops: Animation.Infinite
                 }
             }
-            ScrollArea {
+
+            TextScrollArea {
                 id:area
-                color:"white"
-                width:280
-                height:120
-                contentWidth:200
-                TextEdit {id:edit; text:loremIpsum + loremIpsum; wrapMode: TextEdit.WordWrap; width:area.contentWidth}
+                text: loremIpsum + loremIpsum
             }
         }
     }

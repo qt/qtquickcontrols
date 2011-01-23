@@ -7,6 +7,7 @@ Item {
     width:100
     height:100
 
+    property int contentMargin: 1
     property int __scrollbarExtent : styleitem.pixelMetric("scrollbarExtent");
     property int contentHeight : content.childrenRect.height
     property int contentWidth: content.childrenRect.width
@@ -33,13 +34,18 @@ Item {
             clip: true
 
             Item {
-                id: content
-                x: scrollarea.contentX
-                y: -scrollarea.contentY
+                id: docmargins
+                anchors.fill:parent
+                anchors.margins:contentMargin
+                Item {
+                    id: content
+                    x: scrollarea.contentX
+                    y: -scrollarea.contentY
+                }
             }
         }
     }
-/*
+    /*
     ScrollBar {
         id: hscrollbar
         orientation: Qt.Horizontal
