@@ -5,13 +5,15 @@ import "../plugin"
 Components.ProgressBar {
     id:progressbar
 
-    background: QStyleItem {
-        elementType:"progressbar"
+    background: QStyleBackground{
         anchors.fill:parent
-        minimum: minimumValue
-        maximum: maximumValue
-        value:   progressbar.value
-        enabled: progressbar.enabled
+        style: QStyleItem{
+            elementType:"progressbar"
+            minimum: minimumValue
+            maximum: maximumValue
+            value:   progressbar.value
+            enabled: progressbar.enabled
+        }
     }
 
     progress: Item{}

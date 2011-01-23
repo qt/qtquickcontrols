@@ -9,10 +9,13 @@ Components.TextField {
     minimumWidth:200
     desktopBehavior:true
     placeholderText:""
-    background: QStyleItem {
-        elementType:"edit"
-        sunken:true
-        focus:textfield.activeFocus
-        hover:containsMouse
+
+    background: QStyleBackground{
+        style : QStyleItem {
+            elementType:"edit"
+            sunken:true
+            focus:textfield.activeFocus
+            hover:containsMouse
+        }
     }
 }

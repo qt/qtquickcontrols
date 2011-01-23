@@ -3,13 +3,16 @@ import "../../../components" as Components
 import "../plugin"
 
 Components.Button {
+    id:button
     minimumWidth:30
-    background: QStyleItem {
-        elementType:"button"
+    background: QStyleBackground {
         anchors.fill:parent
-        sunken: pressed
-        visible: sunken
-        hover: containsMouse
+        visible: pressed
+        style: QStyleItem{
+            elementType:"button"
+            sunken: pressed
+            hover: containsMouse
+        }
     }
 }
 

@@ -8,9 +8,11 @@ Item {
 
     default property alias children: content.children
 
-    QStyleItem {
+
+    QStyleBackground {
         id:styleitem
-        elementType:"toolbar"
+        style:QStyleItem{elementType:"toolbar"}
+
         anchors.fill:parent
         Row {
             id:content

@@ -10,10 +10,13 @@ Item {
     default property alias children: content.children
     property bool checkable: false
 
-    QStyleItem {
-        id:styleitem
-        elementType:"groupbox"
+    QStyleBackground {
         anchors.fill:parent
+        style: QStyleItem{
+            id:styleitem
+            elementType:"groupbox"
+        }
+
         Item {
             id:content
             anchors.topMargin:16

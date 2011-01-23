@@ -44,7 +44,7 @@
 #include <QtGui/QStyle>
 
 
-class QStyleItem: public QDeclarativeItem
+class QStyleItem: public QObject
 {
     Q_OBJECT
 
@@ -67,8 +67,7 @@ class QStyleItem: public QDeclarativeItem
     Q_PROPERTY( int value READ value WRITE setValue NOTIFY valueChanged)
 
 public:
-    QStyleItem(QDeclarativeItem *parent = 0);
-    void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *);
+    QStyleItem(QObject *parent = 0);
 
     bool sunken() const { return m_sunken; }
     bool raised() const { return m_raised; }
@@ -86,21 +85,21 @@ public:
     QString text() const { return m_text; }
     QString activeControl() const { return m_activeControl; }
 
-    void setSunken(bool sunken) { if (m_sunken != sunken) {m_sunken = sunken; emit sunkenChanged(); update();}}
-    void setRaised(bool raised) { if (m_raised!= raised) {m_raised = raised; emit raisedChanged(); update();}}
-    void setActive(bool active) { if (m_active!= active) {m_active = active; emit activeChanged();update();}}
-    void setEnabled(bool enabled) { if (m_enabled!= enabled) {m_enabled = enabled; emit enabledChanged();update();}}
-    void setSelected(bool selected) { if (m_selected!= selected) {m_selected = selected; emit selectedChanged(); update();}}
-    void setFocus(bool focus) { if (m_focus != focus) {m_focus = focus; emit focusChanged(); update();}}
-    void setOn(bool on) { if (m_on != on) {m_on = on ; emit onChanged(); update();}}
-    void setHover(bool hover) { if (m_hover != hover) {m_hover = hover ; emit hoverChanged(); update();}}
-    void setHorizontal(bool horizontal) { if (m_horizontal != horizontal) {m_horizontal = horizontal; emit horizontalChanged(); update();}}
-    void setMinimum(int minimum) { if (m_minimum!= minimum) {m_minimum = minimum; emit minimumChanged(); update();}}
-    void setMaximum(int maximum) { if (m_maximum != maximum) {m_maximum = maximum; emit maximumChanged(); update();}}
-    void setValue(int value) { if (m_value!= value) {m_value = value; emit valueChanged(); update();}}
-    void setElementType(const QString &str) { if (m_type != str) {m_type = str; emit elementTypeChanged();update(); }}
-    void setText(const QString &str) { if (m_text != str) {m_text = str; emit textChanged();update(); }}
-    void setActiveControl(const QString &str) { if (m_activeControl != str) {m_activeControl = str; emit activeControlChanged();update(); }}
+    void setSunken(bool sunken) { if (m_sunken != sunken) {m_sunken = sunken; emit sunkenChanged();}}
+    void setRaised(bool raised) { if (m_raised!= raised) {m_raised = raised; emit raisedChanged();}}
+    void setActive(bool active) { if (m_active!= active) {m_active = active; emit activeChanged();}}
+    void setEnabled(bool enabled) { if (m_enabled!= enabled) {m_enabled = enabled; emit enabledChanged();}}
+    void setSelected(bool selected) { if (m_selected!= selected) {m_selected = selected; emit selectedChanged();}}
+    void setFocus(bool focus) { if (m_focus != focus) {m_focus = focus; emit focusChanged();}}
+    void setOn(bool on) { if (m_on != on) {m_on = on ; emit onChanged();}}
+    void setHover(bool hover) { if (m_hover != hover) {m_hover = hover ; emit hoverChanged();}}
+    void setHorizontal(bool horizontal) { if (m_horizontal != horizontal) {m_horizontal = horizontal; emit horizontalChanged();}}
+    void setMinimum(int minimum) { if (m_minimum!= minimum) {m_minimum = minimum; emit minimumChanged();}}
+    void setMaximum(int maximum) { if (m_maximum != maximum) {m_maximum = maximum; emit maximumChanged();}}
+    void setValue(int value) { if (m_value!= value) {m_value = value; emit valueChanged();}}
+    void setElementType(const QString &str) { if (m_type != str) {m_type = str; emit elementTypeChanged();}}
+    void setText(const QString &str) { if (m_text != str) {m_text = str; emit textChanged();}}
+    void setActiveControl(const QString &str) { if (m_activeControl != str) {m_activeControl = str; emit activeControlChanged();}}
 
     virtual void initStyleOption(QStyleOption *opt) const;
 public Q_SLOTS:
@@ -143,6 +142,28 @@ protected:
     int m_maximum;
     int m_value;
     QWidget m_dummywidget;
+};
+
+class QStyleBackground: public QDeclarativeItem
+{
+    Q_OBJECT
+public:
+    Q_PROPERTY( QStyleItem* style READ style WRITE setStyle NOTIFY styleChanged)
+
+    QStyleBackground(QDeclarativeItem *parent = 0);
+    void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *);
+
+public Q_SLOTS:
+    QStyleItem *style(){return m_style;}
+    void setStyle(QStyleItem *style);
+    void updateItem(){update();}
+
+Q_SIGNALS:
+    void styleChanged();
+
+private:
+    QWidget m_dummywidget;
+    QStyleItem *m_style;
 };
 
 #endif //STYLEWRAPPER_H

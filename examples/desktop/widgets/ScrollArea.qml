@@ -19,10 +19,13 @@ Item {
     property int contentY:scrollbar.value
     property int contentX:0
 
-    QStyleItem {
-        id:styleitem
-        elementType: frame ? "frame" : ""
-        sunken: true
+    QStyleBackground {
+        style: QStyleItem{
+            id:styleitem
+            elementType: frame ? "frame" : ""
+            sunken: true
+        }
+
         anchors.fill: parent
         anchors.rightMargin: scrollbar.width + 4
 

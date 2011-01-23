@@ -9,15 +9,17 @@ Components.Slider{
     minimumWidth:200
     minimumHeight:24
 
-    groove: QStyleItem {
-        elementType:"slider"
+    groove: QStyleBackground {
         anchors.fill:parent
-        sunken: pressed
-        maximum:slider.maximumValue
-        minimum:slider.minimumValue
-        value:slider.value
-        horizontal:slider.orientation == Qt.Horizontal
-        enabled:slider.enabled
+        style: QStyleItem{
+            elementType:"slider"
+            sunken: pressed
+            maximum:slider.maximumValue
+            minimum:slider.minimumValue
+            value:slider.value
+            horizontal:slider.orientation == Qt.Horizontal
+            enabled:slider.enabled
+        }
     }
 
     handle: null

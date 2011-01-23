@@ -44,6 +44,7 @@
 void StylePlugin::registerTypes(const char *uri)
 {
     qmlRegisterType<QStyleItem>(uri, 1, 0, "QStyleItem");
+    qmlRegisterType<QStyleBackground>(uri, 1, 0, "QStyleBackground");
 }
 
 Q_EXPORT_PLUGIN2(styleplugin, StylePlugin);

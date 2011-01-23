@@ -10,10 +10,12 @@ Components.TextArea {
     desktopBehavior:true
     placeholderText:""
 
-    background: QStyleItem {
-        elementType:"edit"
-        sunken:true
+    background: QStyleBackground {
         anchors.fill:parent
-        focus:textarea.activeFocus
+        style: QStyleItem{
+            elementType:"edit"
+            sunken:true
+            focus:textarea.activeFocus
+        }
     }
 }

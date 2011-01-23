@@ -7,16 +7,20 @@ import "../plugin"
 Components.RadioButton{
     id:radiobutton
     property variant text
-    background: QStyleItem {
-        elementType:"radiobutton"
+    background: QStyleBackground {
         width:110
         height:18
-        sunken:pressed
-        on:checked || pressed
-        hover:containsMouse
-        text:radiobutton.text
-        enabled:radiobutton.enabled
+
+        style: QStyleItem{
+            elementType:"radiobutton"
+            sunken:pressed
+            on:checked || pressed
+            hover:containsMouse
+            text:radiobutton.text
+            enabled:radiobutton.enabled
+        }
     }
+
     checkmark: Item{}
 }
 

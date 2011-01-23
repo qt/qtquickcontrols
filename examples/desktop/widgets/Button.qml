@@ -5,16 +5,26 @@ import "../plugin"
 Components.Button {
     id:button
 
-    height: 26
+    function updateSize() { sizeRect = styleitem.sizeFromContents(labelWidth, labelHeight); print(sizeRect.height) }
+    property variant sizeRect
+    Component.onCompleted: updateSize()
+    onTextChanged: updateSize()
+    onIconSourceChanged: updateSize()
 
-    background: QStyleItem {
-        id: styleitem
+    height: sizeRect ? sizeRect.height : 0
+
+    QStyleItem {
+        id:styleitem
         elementType:"button"
-        anchors.fill:parent
         sunken: pressed
         raised: !pressed
         hover: containsMouse
         enabled:button.enabled
+    }
+
+    background: QStyleBackground {
+        style:styleitem
+        anchors.fill:parent
     }
 }
 

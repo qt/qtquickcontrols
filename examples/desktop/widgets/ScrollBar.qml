@@ -54,17 +54,20 @@ MouseArea {
             value = minimum
     }
 
-    QStyleItem {
-        id:styleitem
-        elementType:"scrollbar"
+    QStyleBackground {
         anchors.fill:parent
-        sunken: upPressed | downPressed
-        minimum:slider.minimumValue
-        maximum:slider.maximumValue
-        activeControl: upPressed ? "up" : downPressed ? "down" : ""
-        value:slider.value
-        horizontal:orientation == Qt.Horizontal
-        enabled: parent.enabled
+
+        style: QStyleItem {
+            id:styleitem
+            elementType:"scrollbar"
+            sunken: upPressed | downPressed
+            minimum:slider.minimumValue
+            maximum:slider.maximumValue
+            activeControl: upPressed ? "up" : downPressed ? "down" : ""
+            value:slider.value
+            horizontal:orientation == Qt.Horizontal
+            enabled: parent.enabled
+        }
     }
 
     Components.Slider {

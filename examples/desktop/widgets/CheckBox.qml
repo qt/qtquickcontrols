@@ -8,16 +8,18 @@ Components.CheckBox{
     id:checkbox
     property variant text
 
-    background: QStyleItem {
+    background: QStyleBackground {
         id:styleitem
-        elementType:"checkbox"
         width:110
         height:18
-        sunken:pressed
-        on:checked || pressed
-        hover:containsMouse
-        text:checkbox.text
-        enabled:checkbox.enabled
+        style:QStyleItem {
+            elementType:"checkbox"
+            sunken:pressed
+            on:checked || pressed
+            hover:containsMouse
+            text:checkbox.text
+            enabled:checkbox.enabled
+        }
     }
 
     checkmark: Item{}

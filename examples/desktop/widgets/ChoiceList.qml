@@ -4,13 +4,16 @@ import "../plugin"
 
 Components.ChoiceList {
     id:choicelist
-    background: QStyleItem {
-        elementType:"combobox"
+
+    background: QStyleBackground {
         anchors.fill:parent
-        sunken: pressed
-        raised: !pressed
-        hover: containsMouse
-        enabled:choicelist.enabled
+        style: QStyleItem {
+            elementType:"combobox"
+            sunken: pressed
+            raised: !pressed
+            hover: containsMouse
+            enabled:choicelist.enabled
+        }
     }
 
     listItem: Item {
@@ -18,18 +21,20 @@ Components.ChoiceList {
         anchors.left:parent.left
         width:choicelist.width
 
-        QStyleItem {
-            elementType:"menuitem"
-            text:choicelist.model.get(index).text
+        QStyleBackground {
             anchors.fill:parent
-            selected:containsMouse
+            style: QStyleItem {
+                elementType:"menuitem"
+                text:choicelist.model.get(index).text
+                selected:containsMouse
+            }
         }
     }
 
     listHighlight: null
 
-    popupFrame: QStyleItem {
-        elementType:"menu"
+    popupFrame: QStyleBackground {
+        style:QStyleItem{elementType:"menu"}
     }
 }
 

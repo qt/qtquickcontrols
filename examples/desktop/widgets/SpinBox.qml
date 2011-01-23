@@ -8,7 +8,7 @@ Components.SpinBox {
     property variant __downRect;
     background:
 
-        Item {anchors.fill: parent
+            Item {anchors.fill: parent
         property variant editrect: styleitem.subControlRect("edit");
         Rectangle {
             x:editrect.x
@@ -24,19 +24,21 @@ Components.SpinBox {
         onWidthChanged:updateRect()
         onHeightChanged:updateRect()
 
-        QStyleItem {
-            id:styleitem
-            elementType:"spinbox"
+        QStyleBackground {
             anchors.fill:parent
-            sunken: downPressed | upPressed
-            hover: containsMouse
-            focus:spinbox.activeFocus
-            enabled:spinbox.enabled
-            value: (upPressed? 1 : 0)           |
-                   (downPressed== 1 ? 1<<1 : 0) |
-                   (upEnabled? (1<<2) : 0)      |
-                   (downEnabled == 1 ? (1<<3) : 0)
+            style: QStyleItem{
+                id:styleitem
+                elementType:"spinbox"
+                sunken: downPressed | upPressed
+                hover: containsMouse
+                focus:spinbox.activeFocus
+                enabled:spinbox.enabled
+                value: (upPressed? 1 : 0)           |
+                        (downPressed== 1 ? 1<<1 : 0) |
+                        (upEnabled? (1<<2) : 0)      |
+                        (downEnabled == 1 ? (1<<3) : 0)
 
+            }
             function updateRect() {
                 __upRect = styleitem.subControlRect("up");
                 __downRect = styleitem.subControlRect("down");
