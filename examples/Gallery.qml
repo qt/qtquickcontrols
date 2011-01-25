@@ -355,7 +355,7 @@ Rectangle {
         }
     }
 
-    ScrollDecorator{
-        flickable: flickable
+    ScrollDecorator {
+        flickableItem: flickable
     }
 }

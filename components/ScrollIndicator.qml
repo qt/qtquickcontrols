@@ -4,7 +4,7 @@ import "./styles/default" as DefaultStyles
 Item {
     id: scrollIndicator
 
-    property variant scrollItem      // must be a Flickable, e.g. GridView or ListView
+    property Flickable scrollItem
     property bool horizontal: false
 
     property Component content: defaultStyle.content

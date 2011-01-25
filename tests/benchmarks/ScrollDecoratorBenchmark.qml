@@ -6,6 +6,6 @@ Item {
     GridView { id: gridView }
 
     QmlTime.Timer {
-        component: QtComponents.ScrollDecorator { flickable: gridView }
+        component: QtComponents.ScrollDecorator { flickableItem: gridView }
     }
 }
