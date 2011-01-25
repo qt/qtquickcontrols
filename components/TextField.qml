@@ -22,6 +22,9 @@ FocusScope {
     property alias validator: textInput.validator
     property alias inputMask: textInput.inputMask
     property alias horizontalalignment: textInput.horizontalAlignment
+    property alias echoMode: textInput.echoMode
+    property alias cursorPosition: textInput.cursorPosition
+    property alias inputMethodHints: textInput.inputMethodHints
 
     property color textColor: syspal.text
     property color backgroundColor: syspal.base
@@ -37,6 +40,40 @@ FocusScope {
     property int topMargin: defaultStyle.topMargin
     property int rightMargin: defaultStyle.rightMargin
     property int bottomMargin: defaultStyle.bottomMargin
+
+    function copy() {
+        textInput.copy()
+    }
+
+    function paste() {
+        textInput.paste()
+    }
+
+    function cut() {
+        textInput.cut()
+    }
+
+    function select(start, end) {
+        textInput.select(start, end)
+    }
+
+    function selectAll() {
+        textInput.selectAll()
+    }
+
+    function selectWord() {
+        textInput.selectWord()
+    }
+
+    function positionAt(x) {
+        var p = mapToItem(textInput, x, 0);
+        return textInput.positionAt(p.x);
+    }
+
+    function positionToRectangle(pos) {
+        var p = mapToItem(textInput, pos.x, pos.y);
+        return textInput.positionToRectangle(p);
+    }
 
     width: Math.max(minimumWidth,
                     textInput.width + leftMargin + rightMargin)
