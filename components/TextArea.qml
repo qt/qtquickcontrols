@@ -17,6 +17,8 @@ FocusScope {
     property alias horizontalAlignment: textEdit.horizontalAlignment
     property alias verticalAlignment: textEdit.verticalAlignment
     property alias wrapMode: textEdit.wrapMode  //mm Missing from spec
+    property alias textFormat: textEdit.textFormat
+    property alias cursorPosition: textEdit.cursorPosition
 
     property color textColor: syspal.text
     property color backgroundColor: syspal.base
@@ -32,6 +34,44 @@ FocusScope {
     property int topMargin: defaultStyle.topMargin
     property int rightMargin: defaultStyle.rightMargin
     property int bottomMargin: defaultStyle.bottomMargin
+
+    function copy() {
+        textEdit.copy()
+    }
+
+    function paste() {
+        textEdit.paste()
+    }
+
+    function cut() {
+        textEdit.cut()
+    }
+
+    function forceActiveFocus() {
+        textEdit.forceActiveFocus()
+    }
+
+    function select(start, end) {
+        textEdit.select(start, end)
+    }
+
+    function selectAll() {
+        textEdit.selectAll()
+    }
+
+    function selectWord() {
+        textEdit.selectWord()
+    }
+
+    function positionAt(x, y) {
+        var p = mapToItem(textEdit, x, y);
+        return textEdit.positionAt(p.x, p.y);
+    }
+
+    function positionToRectangle(pos) {
+        var p = mapToItem(textEdit, pos.x, pos.y);
+        return textEdit.positionToRectangle(p);
+    }
 
     width: Math.max(minimumWidth,
                     Math.max(textEdit.width, placeholderTextComponent.width) + leftMargin + rightMargin)
