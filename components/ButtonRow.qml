@@ -31,7 +31,7 @@ Row {
      * Property: checkedButton
      * [string] Contains the last checked Button.
      */
-    property variant checkedButton;
+    property Item checkedButton;
 
     Component.onCompleted: {
         Behavior.create(root, {direction: Qt.Horizontal});
