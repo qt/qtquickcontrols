@@ -92,18 +92,4 @@ QtObject {
             }
         }
     }
-
-    property Component listHighlight: Component {
-        Item {  // Rectangles' border extends outside its bounds so will be clipped by listbox...
-            Rectangle { // ...unless we explictly make the Rectangle slightly smaller
-                SystemPalette { id: syspal }
-                anchors.fill: parent
-                anchors.margins: 1
-                color: syspal.highlight
-                border.color: Qt.darker(syspal.highlight)
-                radius: 2
-                smooth: true
-            }
-        }
-    }
 }

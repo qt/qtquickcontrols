@@ -23,7 +23,6 @@ Item {
     property Component background: defaultStyle.background
     property Component label: defaultStyle.label
     property Component listItem: defaultStyle.listItem
-    property Component listHighlight: defaultStyle.listHighlight
     property Component popupFrame: defaultStyle.popupFrame
 
     property int minimumWidth: defaultStyle.minimumWidth
@@ -79,7 +78,6 @@ Item {
     Private.ChoiceListPopup {
         id: popup
         listItem: choiceList.listItem
-        listHighlight: choiceList.listHighlight
         popupFrame: choiceList.popupFrame
     }
 
