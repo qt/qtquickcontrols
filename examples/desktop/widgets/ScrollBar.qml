@@ -78,23 +78,21 @@ MouseArea {
 
     property variant handleRect
     function updateHandle() {
-        handleRect = 50
-        slider.anchors.topMargin = bgitem.subControlRect("add").width
-        slider.anchors.bottomMargin = bgitem.subControlRect("sub").width
+        handleRect = bgitem.subControlRect("handle")
+        var grooveRect = bgitem.subControlRect("groove");
+        slider.anchors.topMargin = grooveRect.y
+        slider.anchors.bottomMargin = height - grooveRect.y  - grooveRect.height
     }
 
     onValueChanged: updateHandle()
     onMaximumValueChanged: updateHandle()
     onMinimumValueChanged: updateHandle()
-
+    Component.onCompleted: updateHandle()
     Components.Slider {
         id:slider
         anchors.fill:parent
         orientation:scrollbar.orientation
-        handle: Item{
-            width:scrollbar.handleRect.height;
-            height:scrollbar.handleRect.width
-        }
+        handle: null
         groove:null
         valueIndicator:null
         inverted:orientation != Qt.Horizontal
