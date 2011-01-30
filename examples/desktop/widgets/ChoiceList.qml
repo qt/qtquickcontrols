@@ -5,7 +5,7 @@ import "../plugin"
 Components.ChoiceList {
     id:choicelist
 
-    property int buttonHeight: buttonitem.sizeFromContents(100, 15).height
+    property int buttonHeight: buttonitem.sizeFromContents(100, 0).height
     QStyleItem { id:buttonitem; elementType:"button" }
     height: buttonHeight
     topMargin:4
@@ -40,8 +40,6 @@ Components.ChoiceList {
             }
         }
     }
-
-    listHighlight: null
 
     popupFrame: QStyleBackground {
         style:QStyleItem{elementType:"menu"}

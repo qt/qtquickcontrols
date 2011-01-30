@@ -5,7 +5,7 @@ import "../plugin"
 Components.Button {
     id:button
 
-    property int buttonHeight: styleitem.sizeFromContents(100, 15).height
+    property int buttonHeight: styleitem.sizeFromContents(100, 5).height
     height: buttonHeight
 
     QStyleItem {
@@ -17,7 +17,8 @@ Components.Button {
         enabled:button.enabled
     }
 
-    background: QStyleBackground {
+    background:
+        QStyleBackground {
         style:styleitem
         anchors.fill:parent
     }

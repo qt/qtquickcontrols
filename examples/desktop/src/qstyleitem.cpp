@@ -51,7 +51,7 @@ QStyleItem::QStyleItem(QObject*parent)
     : QObject(parent),
     m_sunken(false),
     m_raised(false),
-    m_active(false),
+    m_active(true),
     m_enabled(true),
     m_selected(false),
     m_focus(false),
@@ -165,6 +165,14 @@ int QStyleItem::pixelMetric(const QString &metric) const
 {
     if (metric == "scrollbarExtent")
         return qApp->style()->pixelMetric(QStyle::PM_ScrollBarExtent);
+    return 0;
+}
+
+int QStyleItem::styleHint(const QString &metric) const
+{
+    if (metric == "focuswidget")
+        return qApp->style()->styleHint(QStyle::SH_FocusFrame_AboveWidget);
+    return 0;
 }
 
 
@@ -288,6 +296,13 @@ void QStyleBackground::paint(QPainter *painter, const QStyleOptionGraphicsItem *
         m_style->initStyleOption(&opt);
         qApp->style()->drawPrimitive(control, &opt, painter, 0);
     }
+    else if (type == QLatin1String("focusframe")) {
+        QStyle::ControlElement control = QStyle::CE_FocusFrame;
+        QStyleOption opt;
+        opt.rect = QRect(x(), y(), width(), height());
+        m_style->initStyleOption(&opt);
+        qApp->style()->drawControl(control, &opt, painter, &m_dummywidget);
+    }
     else if (type == QLatin1String("tabframe")) {
         QStyle::PrimitiveElement control = QStyle::PE_FrameTabWidget;
         QStyleOptionTabWidgetFrameV2 opt;
@@ -348,7 +363,8 @@ void QStyleBackground::paint(QPainter *painter, const QStyleOptionGraphicsItem *
         QStyleOptionComboBox opt;
         opt.rect = QRect(x(), y(), width(), height());
         m_style->initStyleOption(&opt);
-        qApp->style()->drawComplexControl(control, &opt, painter, 0);
+        m_dummywidget.activateWindow();
+        qApp->style()->drawComplexControl(control, &opt, painter, &m_dummywidget);
     }
     else if (type == QLatin1String("spinbox")) {
         QStyle::ComplexControl control = QStyle::CC_SpinBox;

@@ -23,4 +23,22 @@ Components.TextArea {
             focus:textarea.activeFocus
         }
     }
+
+    Item{
+        id:focusFrame
+        anchors.fill: textarea
+        parent:textarea.parent
+        visible:framestyle.styleHint("focuswidget")
+        QStyleBackground{
+            anchors.margins: -1
+            anchors.rightMargin:-5
+            anchors.bottomMargin:-5
+            anchors.fill: parent
+            visible:textarea.activeFocus
+            style: QStyleItem {
+                id:framestyle
+                elementType:"focusframe"
+            }
+        }
+    }
 }

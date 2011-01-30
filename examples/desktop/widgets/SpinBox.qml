@@ -11,7 +11,7 @@ Components.SpinBox {
     // Align height with button
     topMargin:__margin
     bottomMargin:__margin
-    property int buttonHeight: buttonitem.sizeFromContents(100, 15).height
+    property int buttonHeight: buttonitem.sizeFromContents(100, 1).height
     QStyleItem { id:buttonitem; elementType:"button" }
     height: buttonHeight
 
@@ -57,7 +57,6 @@ Components.SpinBox {
         }
     }
 
-
     up:Item {
         width:__upRect.width > 0 ? __upRect.width : 20
         height:spinbox.height/2
@@ -66,6 +65,23 @@ Components.SpinBox {
     down:Item{
         width:__downRect.width > 0 ? __downRect.width : 20
         height:spinbox.height/2
+    }
+    Item{
+        id:focusFrame
+        anchors.fill: spinbox
+        parent:spinbox.parent
+        visible:framestyle.styleHint("focuswidget")
+        QStyleBackground{
+            anchors.margins: -1
+            anchors.rightMargin:-5
+            anchors.bottomMargin:-5
+            anchors.fill: parent
+            visible:spinbox.activeFocus
+            style: QStyleItem {
+                id:framestyle
+                elementType:"focusframe"
+            }
+        }
     }
 }
 

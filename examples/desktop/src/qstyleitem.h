@@ -103,7 +103,8 @@ public:
 
     virtual void initStyleOption(QStyleOption *opt) const;
 public Q_SLOTS:
-    int pixelMetric(const QString&) const;
+    int pixelMetric(const QString&) const;    
+    int styleHint(const QString&) const;
     QSize sizeFromContents(int width, int height) const;
 
 Q_SIGNALS:
