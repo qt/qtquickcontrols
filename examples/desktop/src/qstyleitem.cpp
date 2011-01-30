@@ -270,6 +270,11 @@ void QStyleBackground::paint(QPainter *painter, const QStyleOptionGraphicsItem *
         QStyleOptionButton opt;
         opt.rect = QRect(x(), y(), width(), height());
         m_style->initStyleOption(&opt);
+
+        // Dirty hack to fix button label positioning on mac
+        if (qApp->style()->metaObject()->className() == QLatin1String("QMacStyle"));
+            opt.rect.translate(0,2);
+
         qApp->style()->drawControl(control, &opt, painter, 0);
     }
     if (type == QLatin1String("tab")) {
