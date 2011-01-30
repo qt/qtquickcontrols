@@ -53,6 +53,7 @@ Item {
 
     Loader {
         id: labelComponent
+        property alias model: popup.model
         anchors.fill: parent
         anchors.leftMargin: leftMargin
         anchors.rightMargin: rightMargin

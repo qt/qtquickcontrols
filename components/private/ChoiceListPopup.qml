@@ -142,6 +142,7 @@ MouseArea {
 
             Loader {
                 id: delegateLoader
+                property variant model: listView.model
                 property alias index: itemDelegate.theIndex //mm Somehow the "model" gets through automagically, but not index
                 property Item styledItem: choiceList
                 property bool containsMouse: itemMouseArea.containsMouse
