@@ -5,7 +5,7 @@ Rectangle {
     SystemPalette{id:syspal}
     width: 4*256
     height: 620
-    property bool adjoining
+    property string position // jbw: hack for shinybuttonstyle
     property int rowspacing: 24
     property int columnspacing: 14
 
@@ -332,8 +332,8 @@ Rectangle {
                 Item {
                     clip:true
                     BorderImage {
-                        x:adjoining ? -2 : 0
-                        width:parent.width + (adjoining ? 5 : 0)
+                        x:position == "rightmost" ? -2 : 0
+                        width:parent.width + (position == "leftmost" ? 5 : 0)
                         height:parent.height
                         source: styledItem.pressed ? "customtheme/exampletheme/images/button_pressed.png":
                                 "customtheme/exampletheme/images/button_normal.png"
@@ -347,7 +347,6 @@ Rectangle {
                 BorderImage {
                     width:32; height:32;
                     source: "customtheme/exampletheme/images/edit_normal.png"
-                    anchors.fill:parent
                     border.left: 6; border.top: 6
                     border.right: 6; border.bottom: 6
                 }
