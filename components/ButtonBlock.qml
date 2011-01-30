@@ -141,7 +141,10 @@ Item {
                 Component.onCompleted: {
                     // Create the Binding objects defined by the ButtonBlock's "bindings" map property to allow
                     // the properties of the buttons to be bound to properties in the model with different names
-                    var keys = Object.keys(bindings);
+
+                    if (bindings == undefined) // jb : bindings is undefined on Mac
+                        return;
+                    var key = Object.keys(buttonBlock.bindings);
                     for(var i = 0; i < keys.length; i++) {
                         var key = keys[i];
                         var bindingComponent =
