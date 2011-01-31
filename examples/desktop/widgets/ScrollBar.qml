@@ -92,7 +92,7 @@ MouseArea {
         id:slider
         anchors.fill:parent
         orientation:scrollbar.orientation
-        handle: null
+        handle: Item{ width:scrollbar.width ; height:scrollbar.width}
         groove:null
         valueIndicator:null
         inverted:orientation != Qt.Horizontal
