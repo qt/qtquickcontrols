@@ -90,7 +90,6 @@ MouseArea {
 
     ListView {
         id: listView
-
         focus: true
         boundsBehavior: desktopBehavior ? ListView.StopAtBounds : ListView.DragOverBounds
         keyNavigationWraps: !desktopBehavior
@@ -144,15 +143,12 @@ MouseArea {
                 property variant model: listView.model
                 property alias index: itemDelegate.theIndex //mm Somehow the "model" gets through automagically, but not index
                 property Item styledItem: choiceList
-                property bool containsMouse: itemMouseArea.containsMouse
+                property bool highlighted: theIndex == listView.highlightedIndex
                 sourceComponent: listItem
                 MouseArea { // handle list selection on mobile platforms
                     id:itemMouseArea
-                    hoverEnabled: true
                     anchors.fill: parent
-//                    onPressed: listView.currentIndex = index;
                     onClicked: { setCurrentIndex(index); closePopup(); }
-//                    onCanceled: popup.cancelSelection();
                 }
             }
 
