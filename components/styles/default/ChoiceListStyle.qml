@@ -76,9 +76,13 @@ QtObject {
     }
 
     property Component listItem: Component {
-        Item {
-            width: styledItem.width
+        Rectangle {
+            width: styledItem.width - 2
             height: Math.max(itemText.height, 28)
+	    color: containsMouse ? "#556699" : "transparent" 
+	    radius:2
+	    border.width:1
+	    border.color:Qt.darker(color)
             Text {
                 id: itemText
                 anchors.verticalCenter: parent.verticalCenter
@@ -86,7 +90,7 @@ QtObject {
                 anchors.leftMargin: 6
 
                 font.bold: index == currentIndex
-                color: styledItem.textColor
+                color: containsMouse ? "white" : styledItem.textColor
                 anchors.margins: 10
                 text: model ? model.get(index).text : ""  // list properties can't be automatically be added to the scope, so use get()
             }
