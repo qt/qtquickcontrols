@@ -12,7 +12,8 @@ Components.TextField {
     leftMargin:6
     rightMargin:6
     width:200
-    height:20
+    height: editItem.sizeFromContents(100, 20).height
+    clip:false
 
     QStyleItem {
         id:editItem
@@ -21,10 +22,6 @@ Components.TextField {
         focus:textfield.activeFocus
         hover:containsMouse
     }
-
-    // Align with button
-    property int buttonHeight: editItem.sizeFromContents(100, 15).height
-    //    height: buttonHeight
 
     background: QStyleBackground {
         anchors.fill:parent
@@ -38,12 +35,12 @@ Components.TextField {
     Item{
         id:focusFrame
         anchors.fill: textfield
-        parent:textfield.parent
+        parent:textfield
         visible:framestyle.styleHint("focuswidget")
         QStyleBackground{
-            anchors.margins: -1
-            anchors.rightMargin:-5
-            anchors.bottomMargin:-5
+            anchors.margins: -2
+            anchors.rightMargin:-6
+            anchors.bottomMargin:-6
             anchors.fill: parent
             visible:textfield.activeFocus
             style: QStyleItem {

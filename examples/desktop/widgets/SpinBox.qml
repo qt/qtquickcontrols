@@ -11,9 +11,10 @@ Components.SpinBox {
     // Align height with button
     topMargin:__margin
     bottomMargin:__margin
-    property int buttonHeight: buttonitem.sizeFromContents(100, 1).height
-    QStyleItem { id:buttonitem; elementType:"button" }
+    property int buttonHeight: edititem.sizeFromContents(100, 20).height
+    QStyleItem { id:edititem; elementType:"edit" }
     height: buttonHeight
+    clip:false
 
     QStyleItem {
         id:styleitem
@@ -26,18 +27,17 @@ Components.SpinBox {
                 (downPressed== 1 ? 1<<1 : 0) |
                 (upEnabled? (1<<2) : 0)      |
                 (downEnabled == 1 ? (1<<3) : 0)
-
     }
 
     background:
-        Item {anchors.fill: parent
+        Item {
+        anchors.fill: parent
         property variant editrect
         Rectangle {
             x:editrect.x
             y:editrect.y
             width:editrect.width
             height:editrect.height
-
         }
 
         function updateRect() {
@@ -69,7 +69,6 @@ Components.SpinBox {
     Item{
         id:focusFrame
         anchors.fill: spinbox
-        parent:spinbox.parent
         visible:framestyle.styleHint("focuswidget")
         QStyleBackground{
             anchors.margins: -1

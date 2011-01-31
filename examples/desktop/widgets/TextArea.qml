@@ -9,7 +9,7 @@ Components.TextArea {
     minimumWidth:200
     desktopBehavior:true
     placeholderText:""
-
+    clip:false
     // Align with button
     property int buttonHeight: buttonitem.sizeFromContents(100, 14).height
     QStyleItem { id:buttonitem; elementType:"button" }
@@ -30,9 +30,9 @@ Components.TextArea {
         parent:textarea.parent
         visible:framestyle.styleHint("focuswidget")
         QStyleBackground{
-            anchors.margins: -1
-            anchors.rightMargin:-5
-            anchors.bottomMargin:-5
+            anchors.margins: -2
+            anchors.rightMargin:-6
+            anchors.bottomMargin:-6
             anchors.fill: parent
             visible:textarea.activeFocus
             style: QStyleItem {

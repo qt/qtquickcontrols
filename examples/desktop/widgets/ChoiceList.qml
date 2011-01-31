@@ -5,8 +5,8 @@ import "../plugin"
 Components.ChoiceList {
     id:choicelist
 
-    property int buttonHeight: buttonitem.sizeFromContents(100, 0).height
-    QStyleItem { id:buttonitem; elementType:"button" }
+    property int buttonHeight: buttonitem.sizeFromContents(100, 16).height
+    QStyleItem { id:buttonitem; elementType:"combobox" }
     height: buttonHeight
     topMargin:4
     bottomMargin:4
@@ -27,7 +27,7 @@ Components.ChoiceList {
 
     listItem: Item {
         id:item
-        height:24
+        height:22
         anchors.left:parent.left
         width:choicelist.width
 

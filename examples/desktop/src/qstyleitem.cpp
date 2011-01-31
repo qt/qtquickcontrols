@@ -142,21 +142,24 @@ QSize QStyleItem::sizeFromContents(int width, int height) const
         QStyleOptionButton opt;
         initStyleOption(&opt);
         opt.text = text();
-        return qApp->style()->sizeFromContents(QStyle::CT_CheckBox, &opt, QSize(width,height), 0);
+        return qApp->style()->sizeFromContents(QStyle::CT_CheckBox, &opt, QSize(width,height), &m_dummywidget);
     } else if (metric == QLatin1String("button")) {
         QStyleOptionButton opt;
         initStyleOption(&opt);
         opt.text = text();
-        return qApp->style()->sizeFromContents(QStyle::CT_PushButton, &opt, QSize(width,height), 0);
+        return qApp->style()->sizeFromContents(QStyle::CT_PushButton, &opt, QSize(width,height), &m_dummywidget);
     } else if (metric == QLatin1String("combobox")) {
         QStyleOptionComboBox opt;
         initStyleOption(&opt);
-        //opt.text = text();
-        return qApp->style()->sizeFromContents(QStyle::CT_ComboBox, &opt, QSize(width,height), 0);
-    } else if (metric == QLatin1String("edit")) {
+        return qApp->style()->sizeFromContents(QStyle::CT_ComboBox, &opt, QSize(width,height), &m_dummywidget);
+    } else if (metric == QLatin1String("spinbox")) {
         QStyleOptionSpinBox opt;
         initStyleOption(&opt);
-        return qApp->style()->sizeFromContents(QStyle::CT_LineEdit, &opt, QSize(width,height), 0);
+        return qApp->style()->sizeFromContents(QStyle::CT_SpinBox, &opt, QSize(width,height), &m_dummywidget);
+    } else if (metric == QLatin1String("edit")) {
+        QStyleOptionFrameV3 opt;
+        initStyleOption(&opt);
+        return qApp->style()->sizeFromContents(QStyle::CT_LineEdit, &opt, QSize(width,height), &m_dummywidget);
     }
     return QSize();
 }
@@ -219,6 +222,8 @@ QRect QStyleBackground::subControlRect(const QString &subcontrolString) const
         opt.sliderPosition = m_style->value();
         if (subcontrolString == QLatin1String("slider"))
             subcontrol = QStyle::SC_ScrollBarSlider;
+        if (subcontrolString == QLatin1String("groove"))
+            subcontrol = QStyle::SC_ScrollBarGroove;
         else if (subcontrolString == QLatin1String("add"))
             subcontrol = QStyle::SC_ScrollBarAddPage;
         else if (subcontrolString == QLatin1String("sub"))
@@ -291,6 +296,8 @@ void QStyleBackground::paint(QPainter *painter, const QStyleOptionGraphicsItem *
         opt.lineWidth = 1;
         m_style->initStyleOption(&opt);
         qApp->style()->drawPrimitive(control, &opt, painter, 0);
+
+        qApp->style()->drawPrimitive(QStyle::PE_FrameMenu, &opt, painter, 0);
     }
     else if (type == QLatin1String("frame")) {
         QStyle::PrimitiveElement control = QStyle::PE_Frame;
