@@ -144,7 +144,7 @@ Item {
 
                     if (bindings == undefined) // jb : bindings is undefined on Mac
                         return;
-                    var key = Object.keys(buttonBlock.bindings);
+                    var keys = Object.keys(buttonBlock.bindings);
                     for(var i = 0; i < keys.length; i++) {
                         var key = keys[i];
                         var bindingComponent =
