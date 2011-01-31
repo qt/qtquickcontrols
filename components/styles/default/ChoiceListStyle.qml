@@ -54,7 +54,7 @@ QtObject {
 
             property int leftMargin: -6
             property int topMargin: -6
-            property int rightMargin: -6
+            property int rightMargin: -7
             property int bottomMargin: -6
 
             Rectangle { // Background center fill
@@ -77,12 +77,13 @@ QtObject {
 
     property Component listItem: Component {
         Rectangle {
-            width: styledItem.width - 2
+            width: styledItem.width
             height: Math.max(itemText.height, 28)
 	    color: containsMouse ? "#556699" : "transparent" 
 	    radius:2
 	    border.width:1
 	    border.color:Qt.darker(color)
+	    clip:true
             Text {
                 id: itemText
                 anchors.verticalCenter: parent.verticalCenter

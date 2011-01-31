@@ -92,7 +92,6 @@ MouseArea {
         id: listView
 
         focus: true
-        clip: true
         boundsBehavior: desktopBehavior ? ListView.StopAtBounds : ListView.DragOverBounds
         keyNavigationWraps: !desktopBehavior
         highlightFollowsCurrentItem: false  // explicitly handled below
