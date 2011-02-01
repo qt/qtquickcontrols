@@ -1,4 +1,4 @@
-import QtQuick 1.0
+import QtQuick 1.1
 
 QtObject {
     property int minimumWidth: 80
@@ -7,65 +7,63 @@ QtObject {
     property Component groove: Component {
         Item {
             opacity: enabled ? 1 : 0.7
-            Rectangle {
+            Rectangle { // Background center fill
                 anchors.fill: parent
                 anchors.margins: 1
                 radius: 5
                 color: backgroundColor
             }
 
-            Item {
+            Item { // Clipping container of the positive and negative groove highlight
                 anchors.fill: parent
                 anchors.margins: 2
                 clip: true
 
-                Item {
+                Item { // The highlight item is twice the width of there switch, clipped by its parent,
+                       // and sliding back and forth keeping the center under the handle
                     height: parent.height
                     width: 2*parent.width
                     x: handleCenterX-parent.width-parent.anchors.leftMargin
 
-                    Rectangle {
-                        id: positiveBackground
+                    Rectangle { // positive background highlight
                         color: positiveHighlightColor
                         opacity: 0.8
-                        anchors.top: parent.top
-                        anchors.bottom: parent.bottom
-                        anchors.left: parent.left
-                        anchors.right: parent.horizontalCenter
+                        anchors.top: parent.top; anchors.bottom: parent.bottom
+                        anchors.left: parent.left; anchors.right: parent.horizontalCenter
+                    }
+                    Rectangle { // negative background highlight
+                        color: negativeHighlightColor
+                        opacity: 0.8
+                        anchors.top: parent.top; anchors.bottom: parent.bottom
+                        anchors.left: parent.horizontalCenter; anchors.right: parent.right
                     }
                 }
             }
-            BorderImage {
+
+            BorderImage { // Rounded border
                 anchors.fill: parent
                 source: "images/lineedit_normal.png"
-                border.left: 6; border.top: 3
-                border.right: 6; border.bottom: 3
+                border { left: 6; right: 6; top: 3; bottom: 3 }
                 smooth: true
             }
-
         }
     }
 
     property Component handle: Component {
         Item {
-            width: borderImage.width
-
+            width: 42
             Rectangle { // center fill
                 anchors.fill: parent
                 anchors.margins: 1
                 radius: 5
-                color: backgroundColor  //mm Change to something else?
+                color: switchColor
             }
             BorderImage {
-                id: borderImage
+                anchors.fill: parent
                 opacity: enabled ? 1 : 0.7
-                width: 42
-                height: parent.height
                 smooth: true
                 source: pressed ? "images/button_pressed.png" : "images/button_normal.png"
-
-                border.left: 4; border.top: 4
-                border.right: 4; border.bottom: 4
+                border { left: 4; top: 4; right: 4; bottom: 4 }
             }
             Behavior on x { NumberAnimation { easing.type: Easing.OutCubic; duration: 200 } }
         }

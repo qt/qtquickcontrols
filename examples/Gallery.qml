@@ -169,8 +169,8 @@ Rectangle {
                         Row{
                             spacing:rowspacing
                             anchors.horizontalCenter:parent.horizontalCenter
-                            Switch { backgroundColor: column3.bg; positiveHighlightColor:column3.pg}
-                            Switch { backgroundColor: column3.bg; positiveHighlightColor:column3.pg; checked: true }
+                            Switch { switchColor: column3.bg; backgroundColor: column3.bg; positiveHighlightColor:column3.pg}
+                            Switch { switchColor: column3.bg; backgroundColor: column3.bg; positiveHighlightColor:column3.pg; checked: true }
                         }
                         Row{
                             CheckBox { backgroundColor: checked ? column3.pg : column3.bg; ColorAnimation on backgroundColor {} }

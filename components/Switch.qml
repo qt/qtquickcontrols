@@ -1,46 +1,49 @@
-import QtQuick 1.0
+import QtQuick 1.1
 import "./styles/default" as DefaultStyles
 
 Item {
     id: toggleSwitch    // "switch" is a reserved word
-    SystemPalette{id:syspal}
 
-    property bool checked: false
     signal clicked
-
     property bool pressed: mouseArea.pressed
+    property bool checked: false
     property alias containsMouse: mouseArea.containsMouse
 
-    property color textColor: syspal.text
-    property color backgroundColor: syspal.button
+    property color switchColor: syspal.button
+    property color backgroundColor: syspal.alternateBase
     property color positiveHighlightColor: syspal.highlight
     property color negativeHighlightColor: "transparent"
+    property color textColor: syspal.text
 
     property Component groove: defaultStyle.groove
     property Component handle: defaultStyle.handle
 
     property int minimumWidth: defaultStyle.minimumWidth
     property int minimumHeight: defaultStyle.minimumHeight
-    width: Math.max(minimumWidth, grooveLoader.item.width)
-    height: Math.max(minimumHeight, grooveLoader.item.height)
 
-    onCheckedChanged: __snapHandleIntoPlace();
+    // implementation
+
+    implicitWidth: Math.max(minimumWidth, grooveLoader.item.implicitWidth)
+    implicitHeight: Math.max(minimumHeight, grooveLoader.item.implicitHeight)
+
+    onCheckedChanged: snapHandleIntoPlace();
 
     Loader {
         id: grooveLoader
         anchors.fill: parent
-        sourceComponent: groove
+        property alias styledItem: toggleSwitch
         property real handleCenterX: handleLoader.item.x + (handleLoader.item.width/2)
+        sourceComponent: groove
     }
 
     Loader {
         id: handleLoader
-        property Item styledItem:toggleSwitch
         anchors.top: parent.top
         anchors.bottom: parent.bottom
+        property alias styledItem: toggleSwitch
         sourceComponent: handle
 
-        Component.onCompleted:item.x = checked ? mouseArea.drag.maximumX : mouseArea.drag.minimumX
+        Component.onCompleted: item.x = checked ? mouseArea.drag.maximumX : mouseArea.drag.minimumX
     }
 
     MouseArea {
@@ -54,9 +57,7 @@ Item {
         drag.target: handleLoader.item
 
         onPressed: toggleSwitch.pressed = true  // needed when hover is enabled
-        onEntered: if (toggleSwitch.pressed && enabled) toggleSwitch.pressed = true
-        onExited: { __snapHandleIntoPlace(); toggleSwitch.pressed = false }
-        onCanceled: { __snapHandleIntoPlace(); toggleSwitch.pressed = false; }   // mouse stolen e.g. by Flickable
+        onCanceled: { snapHandleIntoPlace(); toggleSwitch.pressed = false; }   // mouse stolen e.g. by Flickable
         onReleased: {
             var wasChecked = checked;
             if (drag.active) {
@@ -65,7 +66,7 @@ Item {
                 checked = !checked;
             }
 
-            __snapHandleIntoPlace();
+            snapHandleIntoPlace();
 
             toggleSwitch.pressed = false
             if(checked != wasChecked)
@@ -73,10 +74,12 @@ Item {
         }
     }
 
-    onWidthChanged: __snapHandleIntoPlace()
-    function __snapHandleIntoPlace() {
+    onWidthChanged: snapHandleIntoPlace()
+    function snapHandleIntoPlace() {
         if(handleLoader.item)
             handleLoader.item.x = checked ? mouseArea.drag.maximumX : mouseArea.drag.minimumX;
     }
+
     DefaultStyles.SwitchStyle { id: defaultStyle }
+    SystemPalette { id: syspal }
 }

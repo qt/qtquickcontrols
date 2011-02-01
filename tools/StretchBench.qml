@@ -8,6 +8,7 @@ Item {
 
     property string currentComponentName: componentsList.model.get(componentsList.currentIndex).component
 
+    SystemPalette { id: syspal }
     Rectangle {
         id: listPanel
         color: "lightgray";
@@ -260,6 +261,9 @@ Item {
             anchors.fill: parent; anchors.margins: 10; spacing: 5
             opacity: currentComponentName == "Switch" ? 1 : 0
             StretchBenchBoolOption { text: "Dimmed:"; id: switchOptionDimmed }
+            StretchBenchBoolOption { text: "Green positive highlight:"; id: switchOptionGreenPositiveHighlight }
+            StretchBenchBoolOption { text: "Red negative highlight:"; id: switchOptionRedNegativeHighlight }
+            StretchBenchBoolOption { text: "Blue switch color:"; id: switchOptionBlueSwitchColor}
         }
 
         Column {
@@ -470,6 +474,9 @@ Item {
         id: switchComponent
         Switch {
             enabled: !switchOptionDimmed.checked
+            positiveHighlightColor: switchOptionGreenPositiveHighlight.checked ? "green" : syspal.highlight
+            negativeHighlightColor: switchOptionRedNegativeHighlight.checked ? "red" : "transparent"
+            switchColor: switchOptionBlueSwitchColor.checked ? "blue" : syspal.button
         }
     }
 
