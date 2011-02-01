@@ -7,7 +7,7 @@ Item {
 
     property real value: 0
     property real minimumValue: 0
-    property real maximumValue: 100
+    property real maximumValue: 1
     property bool indeterminate: false
 
     property color backgroundColor: syspal.base

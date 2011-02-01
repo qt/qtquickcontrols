@@ -424,7 +424,10 @@ Item {
                 running: true
                 repeat: true
                 interval: 25
-                onTriggered: { parent.value = (parent.value + 1) % 100 }
+                onTriggered: {
+                    var next = parent.value + 0.01;
+                    parent.value = (next > parent.maximumValue) ? parent.minimumValue : next;
+                }
             }
         }
     }

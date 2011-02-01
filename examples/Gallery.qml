@@ -65,7 +65,15 @@ Rectangle {
                         }
                         ChoiceList{ model: choices}
                         ProgressBar {
-                            Timer { running: true; repeat: true; interval: 25; onTriggered: {parent.value = (parent.value + 1) % 100 }}
+                            Timer {
+                                running: true
+                                repeat: true
+                                interval: 25
+                                onTriggered: {
+                                    var next = parent.value + 0.01;
+                                    parent.value = (next > parent.maximumValue) ? parent.minimumValue : next;
+                                }
+                            }
                         }
                         ProgressBar { indeterminate:true }
                         Row{
@@ -113,7 +121,15 @@ Rectangle {
                             }
                             ChoiceList{ model: choices}
                             ProgressBar {
-                                Timer { running: true; repeat: true; interval: 25; onTriggered: {parent.value = (parent.value + 1) % 100 }}
+                                Timer {
+                                    running: true
+                                    repeat: true
+                                    interval: 25
+                                    onTriggered: {
+                                        var next = parent.value + 0.01;
+                                        parent.value = (next > parent.maximumValue) ? parent.minimumValue : next;
+                                    }
+                                }
                             }
                             ProgressBar { indeterminate:true }
                             Row{
@@ -167,7 +183,15 @@ Rectangle {
                         ProgressBar {
                             backgroundColor: column3.bg;
                             progressColor: column3.pg
-                            Timer { running: true; repeat: true; interval: 25; onTriggered: {parent.value = (parent.value + 1) % 100 }}
+                            Timer {
+                                running: true
+                                repeat: true
+                                interval: 25
+                                onTriggered: {
+                                    var next = parent.value + 0.01;
+                                    parent.value = (next > parent.maximumValue) ? parent.minimumValue : next;
+                                }
+                            }
                         }
                         ProgressBar{ indeterminate:true; backgroundColor: column3.bg; progressColor: column3.pg}
                         Row{
@@ -278,7 +302,16 @@ Rectangle {
                         ChoiceList{ model: choices; background: shinyButton; popupFrame: shinyButton}
 
                         ProgressBar {
-                            Timer { running: true; repeat: true; interval: 25; onTriggered: {parent.value = (parent.value + 1) % 100 }}
+                            Timer {
+                                running: true
+                                repeat: true
+                                interval: 25
+                                onTriggered: {
+                                    var next = parent.value + 0.01;
+                                    parent.value = (next > parent.maximumValue) ? parent.minimumValue : next;
+                                }
+                            }
+
                             progress: shinyBar
                             background: shinyEdit
                             indeterminateProgress: shinyBar
@@ -316,7 +349,7 @@ Rectangle {
                 id:shinyBar
                 BorderImage {
                     source: "customtheme/exampletheme/images/button_normal.png"
-                    visible: styledItem.value > 2
+                    visible: styledItem.value > 0
                     border.top:4 ; border.left:4 ; border.bottom:4 ; border.right:4
                 }
             }

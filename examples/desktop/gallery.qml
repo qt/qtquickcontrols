@@ -83,7 +83,10 @@ Rectangle {
                 SpinBox{}
                 TextField{text:"TextField"}
                 TextArea{text:"TextArea\n"}
-                ProgressBar{value:slider.value}
+                ProgressBar {
+                    // normalize value [0.0 .. 1.0]
+                    value: (slider.value - slider.minimumValue) / (slider.maximumValue - slider.minimumValue)
+                }
                 Slider{id:slider; value:50}
                 smooth:true
 

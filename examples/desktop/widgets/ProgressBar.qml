@@ -12,11 +12,16 @@ Components.ProgressBar {
 
     background: QStyleBackground{
         anchors.fill:parent
-        style: QStyleItem{
+        style: QStyleItem {
             elementType:"progressbar"
-            minimum: minimumValue
-            maximum: maximumValue
-            value:   progressbar.value
+
+            // XXX: since desktop uses int instead of real, the progressbar
+            // range [0..1] must be stretched to a good precision
+            property int factor : 1000000
+
+            value:   progressbar.value * factor
+            minimum: progressbar.minimumValue * factor
+            maximum: progressbar.maximumValue * factor
             enabled: progressbar.enabled
         }
     }
