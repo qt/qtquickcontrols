@@ -221,74 +221,44 @@ Item {
             showSelectAllActionChanged();
         }
 
-        function positionPopout() {   // position poput above the text field's cursor
+        function positionPopout(popup, window) {   // position poput above the text field's cursor
             var popoutPoint = selectionPopoutPoint();
-            copyPastePopup.x = popoutPoint.x - modalPopup.popup.width/2
-            copyPastePopup.y = popoutPoint.y - modalPopup.popup.height
-        }
+            var mappedPos = mapToItem(window, popoutPoint.x, popoutPoint.y);
+            popup.x = Math.max(mappedPos.x - popup.width/2, 0);
+            if(popup.x+popup.width > window.width)
+                popup.x = window.width-popup.width;
 
-        function repositionPopout() {   // try position the popout below the text field instread
-            copyPastePopup.y += modalPopup.popup.height + textEditor.height;
+            popup.y = mappedPos.y - popup.height;
+            if(popup.y < 0)
+                popup.y += popup.height + textEditor.height;
         }
 
         ModalPopupBehavior {
             id: modalPopup
-            popup: loader.item
-            positionBy: copyPastePopup
             consumeCancelClick: false
             whenAlso: !mouseArea.pressed
-            onPrepareToShow: {
-                copyPastePopup.positionPopout();
-                if(extendsOffTheTop()) {
-                    copyPastePopup.repositionPopout();
-                }
-            }
+            delay: 300
+            onPrepareToShow: copyPastePopup.positionPopout(popup, window)
             onCancelledByClick: copyPastePopup.wasCancelledByClick = true
 
-            transitions: Transition {   //mm Should this be stylable?
-                to: "showing"
-                SequentialAnimation {
-                    PropertyAction { properties: "x,y" }   // set pop-up's position right away
-                    PauseAnimation { duration: 300 }    // delay the showing to allow double-click-to-select
-                    NumberAnimation { property: "opacity"; duration: 100 }
-                }
-            }
+            popupComponent: copyPasteButtons
+            onPopupChanged: if(popup) popup.model = popupButtonModel
 
-            Loader {
-                id: loader
-                sourceComponent: copyPasteButtons
-                onLoaded: if(status == Loader.Ready) { item.model = popupButtonModel }
-
-                Connections {
-                    target: loader.item
-                    onClicked: {
-                        if(index == 0) {
-                            textEditor.copy();
-                            copyPastePopup.showing = false;
-                            copyPastePopup.wasClosedByCopy = true;
-                        }
-                        if(index == 1) textEditor.cut();
-                        if(index == 2) textEditor.paste();
-                        if(index == 3) textEditor.selectWord();
-                        if(index == 4) textEditor.selectAll();
-
+            Connections {
+                target: modalPopup.popup
+                onClicked: {
+                    if(index == 0) {
+                        textEditor.copy();
+                        copyPastePopup.showing = false;
+                        copyPastePopup.wasClosedByCopy = true;
                     }
+                    if(index == 1) textEditor.cut();
+                    if(index == 2) textEditor.paste();
+                    if(index == 3) textEditor.selectWord();
+                    if(index == 4) textEditor.selectAll();
                 }
             }
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 

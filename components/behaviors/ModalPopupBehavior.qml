@@ -1,39 +1,44 @@
-import Qt 4.7
+import QtQuick 1.0
 
 // KNOWN ISSUES
-// 1) Screen is not redrawn correctly when popout is closed, see QTBUG-16180
+// none
 
 Item {
     id: popupBehavior
 
     property bool showing: false
-    property bool whenAlso: true    // modifier to the "showing" property
-    property Item popup
-    property Item positionBy
+    property bool whenAlso: true            // modifier to the "showing" property
     property bool consumeCancelClick: true
+    property int delay: 0                   // delay before popout becomes visible
+    property int deallocationDelay: 3000    // 3 seconds
+
+    property Component popupComponent
+
+    property alias popup: popupLoader.item  // read-only
+    property alias window: popupBehavior.root // read-only
 
     signal prepareToShow
     signal prepareToHide
     signal cancelledByClick
 
-    function extendsOffTheTop() {
-        var popupPos = popupBehavior.popupPos();
-        return (popupPos.y < 0);
-    }
-
-    function extendsPastTheBottom() {
-        var popupPos = popupBehavior.popupPos();
-        return (popupPos.y > root.height-popup.height);
-    }
-
     // implementation
+
     anchors.fill: parent
 
     onShowingChanged: notifyChange()
     onWhenAlsoChanged: notifyChange()
     function notifyChange() {
-        if(state == "hidden" && (showing && whenAlso)) prepareToShow();
-        if(state == "showing" && (!showing || !whenAlso)) prepareToHide();
+        if(showing && whenAlso) {
+            if(popupLoader.sourceComponent == undefined) {
+                popupLoader.sourceComponent = popupComponent;
+            }
+        } else {
+            mouseArea.enabled = false; // disable before opacity is changed in case it has fading behavior
+            if(Qt.isQtObject(popupLoader.item)) {
+                popupBehavior.prepareToHide();
+                popupLoader.item.opacity = 0;
+            }
+        }
     }
 
     property Item root: findRoot()
@@ -46,7 +51,9 @@ Item {
     }
 
     MouseArea {
+        id: mouseArea
         anchors.fill: parent
+        enabled: false  // enabled only when popout is showing
         onPressed: {
             popupBehavior.showing = false;
             mouse.accepted = consumeCancelClick;
@@ -54,25 +61,30 @@ Item {
         }
     }
 
-    function popupPos() {   // making this a property doesn't work
-        var popupPos = root.mapFromItem(positionBy, 0, 0);
-        popupPos.x = Math.max(popupPos.x, 0);   // if outside to the left
-        popupPos.x = Math.min(popupPos.x, root.width-popup.width); // if outside to the right
-        return popupPos;
+    Loader {
+        id: popupLoader
     }
 
-    states: [
-        State {
-            name: "showing"
-            when: popupBehavior.showing && popupBehavior.whenAlso
-            ParentChange { target: popupBehavior; parent: root }
-            PropertyChanges { target: popup; x: popupPos().x; y: popupPos().y }
-        },
-        State {
-            name: "hidden"
-            when: !popupBehavior.showing || !popupBehavior.whenAlso
-            PropertyChanges { target: popupBehavior; opacity: 0 }
+    Timer { // visibility timer
+        running: Qt.isQtObject(popupLoader.item) && showing && whenAlso
+        interval: delay
+        onTriggered: {
+            popupBehavior.prepareToShow();
+            mouseArea.enabled = true;
+            popup.opacity = 1;
         }
-    ]
-}
+    }
+
+    Timer { // deallocation timer
+        running: Qt.isQtObject(popupLoader.item) && popupLoader.item.opacity == 0
+        interval: deallocationDelay
+        onTriggered: popupLoader.sourceComponent = undefined
+    }
+
+    states: State {
+        name: "active"
+        when: Qt.isQtObject(popupLoader.item) && popupLoader.item.opacity > 0
+        ParentChange { target: popupBehavior; parent: root }
+    }
+ }
 

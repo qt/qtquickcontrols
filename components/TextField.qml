@@ -171,7 +171,10 @@ FocusScope {
         anchors.fill: parent
         textInput: textInput
         desktopBehavior: false
-        copyPasteButtons: ButtonBlock {}
+        copyPasteButtons: ButtonBlock {
+            opacity: 0  // initially hidden
+            Behavior on opacity { NumberAnimation { duration: 100 } }
+        }
     }
 
     DefaultStyles.TextFieldStyle { id: defaultStyle }
