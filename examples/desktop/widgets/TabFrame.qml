@@ -8,30 +8,31 @@ Item{
     height:100
 
     property int current: 0
+    property int count: stack.children.length
     default property alias content: stack.children
 
-    property TabBar tabbar: TabBar{tabs:tabWidget}
+    property TabBar tabbar: TabBar{tabFrame:tabWidget; z:1}
 
     onCurrentChanged: __setOpacities()
     Component.onCompleted: __setOpacities()
-
     function __setOpacities() {
         for (var i = 0; i < stack.children.length; ++i) {
             stack.children[i].opacity = (i == current ? 1 : 0)
         }
     }
 
+    property int __baseHeight : style.pixelMetric("tabbaseheight");
+
     QStyleBackground {
         id: stack
-        anchors.fill:parent
-        anchors.topMargin:14
+        z:-1
         style: QStyleItem {
+            id:style
             elementType: "tabframe"
-            value: tabbar ? tabbar.children[current].x : 0
-            minimum: tabbar ? tabbar.children[current].width : 0
+            value: tabbar && tabbar.tab(current) ? tabbar.tab(current).x : 0
+            minimum: tabbar && tabbar.tab(current)? tabbar.tab(current).width : 0
         }
-        width: tabWidget.width
-        y: tabbar ? tabbar.height : 0
-        anchors.bottom: tabWidget.bottom
+        anchors.fill:parent
+        anchors.topMargin: tabbar ? tabbar.height - __baseHeight + 1: 0
     }
 }
