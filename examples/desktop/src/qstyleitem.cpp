@@ -169,6 +169,8 @@ int QStyleItem::pixelMetric(const QString &metric) const
     if (metric == "scrollbarExtent")
         return qApp->style()->pixelMetric(QStyle::PM_ScrollBarExtent);
     else if (metric == "taboverlap")
+        return qApp->style()->pixelMetric(QStyle::PM_TabBarTabOverlap);
+    else if (metric == "tabbaseoverlap")
         return qApp->style()->pixelMetric(QStyle::PM_TabBarBaseOverlap);
     else if (metric == "tabbaseheight")
         return qApp->style()->pixelMetric(QStyle::PM_TabBarBaseHeight);

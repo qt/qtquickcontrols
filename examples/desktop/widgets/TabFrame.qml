@@ -15,6 +15,7 @@ Item{
 
     onCurrentChanged: __setOpacities()
     Component.onCompleted: __setOpacities()
+
     function __setOpacities() {
         for (var i = 0; i < stack.children.length; ++i) {
             stack.children[i].opacity = (i == current ? 1 : 0)
@@ -22,6 +23,7 @@ Item{
     }
 
     property int __baseHeight : style.pixelMetric("tabbaseheight");
+    property int __baseOverlap : style.pixelMetric("tabbaseoverlap");
 
     QStyleBackground {
         id: stack
@@ -33,6 +35,6 @@ Item{
             minimum: tabbar && tabbar.tab(current)? tabbar.tab(current).width : 0
         }
         anchors.fill:parent
-        anchors.topMargin: tabbar ? tabbar.height - __baseHeight + 1: 0
+        anchors.topMargin: tabbar ? tabbar.height - __baseOverlap: 0
     }
 }
