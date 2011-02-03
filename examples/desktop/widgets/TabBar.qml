@@ -23,7 +23,7 @@ Row {
 
     Repeater {
         id:repeater
-        model: tabFrame ? tabFrame.children.length : null
+        model: tabFrame ? tabFrame.tabs.length : null
         delegate: Item {
             id:tab
             property int tabindex: index

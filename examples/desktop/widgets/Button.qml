@@ -5,7 +5,7 @@ import "../plugin"
 Components.Button {
     id:button
 
-    property int buttonHeight: styleitem.sizeFromContents(100, 5).height
+    property int buttonHeight: Math.max(22, styleitem.sizeFromContents(100, 6).height)
     height: buttonHeight
 
     QStyleItem {
@@ -15,6 +15,7 @@ Components.Button {
         raised: !pressed
         hover: containsMouse
         enabled:button.enabled
+        text:button.text
     }
 
     background:

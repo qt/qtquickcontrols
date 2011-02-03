@@ -11,6 +11,7 @@ Item{
     property int current: 0
     property int count: stack.children.length
     property bool frame:true
+
     default property alias tabs : stack.children
 
     onTabbarChanged:tabbar.tabFrame = tabWidget

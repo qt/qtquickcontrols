@@ -50,7 +50,8 @@ Rectangle {
             "exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ";
 
     TabFrame {
-        tabbar: TabBar{}
+        id:frame
+        tabbar: TabBar{parent:frame}
         anchors.top:toolbar.bottom
         anchors.bottom:parent.bottom
         anchors.right:parent.right
@@ -147,16 +148,8 @@ Rectangle {
             }
         }
         Tab {
-            title:"Text"
+            title:"More"
             Rectangle {
-                color: parent.title
-                anchors.fill:parent
-            }
-        }
-        Tab {
-            title:"blue"
-            Rectangle {
-                color: parent.title
                 anchors.fill:parent
             }
         }
