@@ -1,19 +1,27 @@
 import Qt 4.7
 import "widgets"
 
-TabWidget{
+TabFrame {
     width: 640
     height: 480
-    Rectangle{
-        property string title:"faen"
-        color:"red"
+
+    Tab{
+        title:"First"
+        Rectangle{
+            color:"red"
+        }
     }
-    Rectangle{
-        property string title:"faen 2"
-        color:"blue"
+    Tab {
+        title: "Second"
+        Rectangle{
+            color:"blue"
+        }
     }
-    Rectangle{
-        property string title:"faen 3"
-        color:"green"
+    Tab {
+        title: "Third"
+        Rectangle{
+            property string title:"faen 3"
+            color:"green"
+        }
     }
 }
