@@ -7,12 +7,13 @@ Item{
     width:100
     height:100
 
+    property TabBar tabbar
     property int current: 0
     property int count: stack.children.length
-    default property alias content: stack.children
+    property bool frame:true
+    default property alias tabs : stack.children
 
-    property TabBar tabbar: TabBar{tabFrame:tabWidget; z:1}
-
+    onTabbarChanged:tabbar.tabFrame = tabWidget
     onCurrentChanged: __setOpacities()
     Component.onCompleted: __setOpacities()
 
@@ -22,11 +23,10 @@ Item{
         }
     }
 
-    property int __baseHeight : style.pixelMetric("tabbaseheight");
     property int __baseOverlap : style.pixelMetric("tabbaseoverlap");
 
     QStyleBackground {
-        id: stack
+        id: frame
         z:-1
         style: QStyleItem {
             id:style
@@ -35,6 +35,11 @@ Item{
             minimum: tabbar && tabbar.tab(current)? tabbar.tab(current).width : 0
         }
         anchors.fill:parent
-        anchors.topMargin: tabbar ? tabbar.height - __baseOverlap: 0
+        Item {
+            id:stack
+            anchors.fill:parent
+            anchors.margins: frame ? 2 : 0
+        }
+        anchors.topMargin: (tabbar ? tabbar.height - __baseOverlap: 0)
     }
 }

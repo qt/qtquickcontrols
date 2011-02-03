@@ -36,7 +36,7 @@ Components.ChoiceList {
             style: QStyleItem {
                 elementType: "menuitem"
                 text: choicelist.model.get(index).text
-                selected: containsMouse
+                selected: highlighted
             }
         }
     }
