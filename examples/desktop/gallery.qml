@@ -24,6 +24,12 @@ Rectangle {
             checked:false
             anchors.verticalCenter:parent.verticalCenter
         }
+        CheckBox{
+            text:"South Tab"
+            id:toolBarPosition
+            checked:false
+            anchors.verticalCenter:parent.verticalCenter
+        }
     }
 
     SystemPalette{id:syspal}
@@ -51,6 +57,7 @@ Rectangle {
 
     TabFrame {
         id:frame
+        position: toolBarPosition.checked ? "South" : "North"
         tabbar: TabBar{parent:frame}
         anchors.top:toolbar.bottom
         anchors.bottom:parent.bottom
@@ -149,6 +156,12 @@ Rectangle {
         }
         Tab {
             title:"More"
+            Rectangle {
+                anchors.fill:parent
+            }
+        }
+        Tab {
+            title:"Stuff"
             Rectangle {
                 anchors.fill:parent
             }

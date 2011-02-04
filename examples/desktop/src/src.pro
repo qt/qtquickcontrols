@@ -32,4 +32,7 @@ OTHER_FILES += \
     ../widgets/TextField.qml \
     ../widgets/ToolBar.qml \
     ../widgets/ToolButton.qml \
-    ../gallery.qml
+    ../gallery.qml \
+    ../widgets/Tab.qml \
+    ../widgets/TabBar.qml \
+    ../widgets/TabFrame.qml

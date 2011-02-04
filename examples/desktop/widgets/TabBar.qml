@@ -10,6 +10,7 @@ Row {
     property Item tabFrame
     onTabFrameChanged:parent = tabFrame
     property int __overlap : styleitem.pixelMetric("tabvshift");
+    property string position: tabFrame ? tabFrame.position : "North"
     QStyleItem {id:styleitem}
 
     function tab(index) {
@@ -37,14 +38,17 @@ Row {
                     id:style
                     elementType: "tab"
                     selected: tab.selected
+                    text: tabbar.position
+
                     activeControl: tabFrame.count == 1 ?
                             "only" :
                             index == 0 ? "beginning" :
                             index == tabFrame.count-1 ? "end" : "middle"
                 }
-                anchors.leftMargin: (style.activeControl == "middle" || style.activeControl == "end")
+                anchors.leftMargin: style.text == "North" && (style.activeControl == "middle" || style.activeControl == "end")
                                      && tab.selected ? -__overlap : 0
-                anchors.rightMargin: (style.activeControl == "middle"  || style.activeControl == "beginning")
+
+                anchors.rightMargin: style.text == "North" && (style.activeControl == "middle"  || style.activeControl == "beginning")
                                      && tab.selected ? -__overlap : 0
                 anchors { fill: parent }
             }
@@ -59,7 +63,7 @@ Row {
             }
             MouseArea {
                 anchors.fill: parent
-                onClicked: tabFrame.current = index
+                onPressed: tabFrame.current = index
             }
         }
     }
