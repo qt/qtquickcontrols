@@ -18,9 +18,9 @@ MouseArea {
     property bool __autoincrement: false
 
     // Update hover item
-    onEntered: styleitem.activeControl = bgitem.hitTest(mouseX,mouseY)
+    onEntered: styleitem.activeControl = bgitem.hitTest(mouseX, mouseY)
     onExited: styleitem.activeControl = "none"
-    onMouseXChanged: styleitem.activeControl = bgitem.hitTest(mouseX,mouseY)
+    onMouseXChanged: styleitem.activeControl = bgitem.hitTest(mouseX, mouseY)
     hoverEnabled:true
 
     Timer { running: upPressed || downPressed; interval: 350 ; onTriggered: __autoincrement = true }
@@ -64,14 +64,14 @@ MouseArea {
         anchors.fill:parent
         style: QStyleItem {
             id:styleitem
-            elementType:"scrollbar"
-            hover:activeControl != "none"
-            activeControl:"none"
+            elementType: "scrollbar"
+            hover: activeControl != "none"
+            activeControl: "none"
             sunken: upPressed | downPressed
-            minimum:slider.minimumValue
-            maximum:slider.maximumValue
-            value:slider.value
-            horizontal:orientation == Qt.Horizontal
+            minimum: slider.minimumValue
+            maximum: slider.maximumValue
+            value: slider.value
+            horizontal: orientation == Qt.Horizontal
             enabled: parent.enabled
         }
     }
@@ -92,7 +92,7 @@ MouseArea {
         id:slider
         anchors.fill:parent
         orientation:scrollbar.orientation
-        handle: Item{ width:scrollbar.width ; height:scrollbar.width}
+        handle: Item{ width:16; height:16}
         groove:null
         valueIndicator:null
         inverted:orientation != Qt.Horizontal

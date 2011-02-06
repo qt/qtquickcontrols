@@ -4,8 +4,8 @@ import "../plugin"
 
 Item {
     id:scrollarea
-    width:100
-    height:100
+    width: 100
+    height: 100
 
     property int contentMargin: 1
     property int __scrollbarExtent : styleitem.pixelMetric("scrollbarExtent");
@@ -16,8 +16,10 @@ Item {
 
     default property alias children: content.children
 
-    property int contentY:scrollbar.value
-    property int contentX:0
+    property int contentY
+    property int contentX
+    Binding{target:scrollarea; property:"contentY" ;  value:vscrollbar.value}
+    Binding{target:scrollarea; property:"contentX" ;  value:-hscrollbar.value}
 
     QStyleBackground {
         style: QStyleItem{
@@ -27,7 +29,8 @@ Item {
         }
 
         anchors.fill: parent
-        anchors.rightMargin: scrollbar.width + 4
+        anchors.rightMargin: vscrollbar.visible ? vscrollbar.width + 4 : 0
+        anchors.bottomMargin: hscrollbar.visible ? vscrollbar.width + 4 : 0
 
         Rectangle {
             id:flickable
@@ -48,30 +51,30 @@ Item {
             }
         }
     }
-    /*
+
     ScrollBar {
         id: hscrollbar
         orientation: Qt.Horizontal
-        maximum: contentWidth > flickable.width ? scrollarea.contentWidth -
-                flickable.width : 0
-        minimum: 0
+        visible: contentWidth > flickable.width
+        maximumValue: contentWidth > flickable.width ? scrollarea.contentWidth - flickable.width : 0
+        minimumValue: 0
         value: scrollarea.contentY
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.rightMargin: frame ? 1 + __scrollbar : __scrollbarExtent
+        anchors.rightMargin: { return (frame ? 1 : 0) + ( vscrollbar.visible ? __scrollbarExtent : 0) }
     }
-    */
+
     ScrollBar {
-        id: scrollbar
+        id: vscrollbar
         orientation: Qt.Vertical
-        maximumValue: contentHeight > flickable.height ? scrollarea.contentHeight-
-                flickable.height : 0
+        visible: contentHeight > flickable.height
+        maximumValue: contentHeight > flickable.height ? scrollarea.contentHeight - flickable.height : 0
         minimumValue: 0
         value: scrollarea.contentY
         anchors.right: parent.right
         anchors.top: parent.top
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: frame ? 1 :0; //+ __scrollbar : __scrollbarExtent
+        anchors.bottomMargin:  { return (frame ? 1 : 0) + (hscrollbar.visible ? __scrollbarExtent : 0) }
     }
 }

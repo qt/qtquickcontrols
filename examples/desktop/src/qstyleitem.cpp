@@ -335,14 +335,20 @@ void QStyleBackground::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     }
     else if (type == QLatin1String("tabframe")) {
         QStyle::PrimitiveElement control = QStyle::PE_FrameTabWidget;
-        QStyleOptionTabWidgetFrameV2 opt;
-        if (m_style->text() == "South")
-            opt.shape = QTabBar::RoundedSouth;
-        m_style->initStyleOption(&opt);
-        opt.selectedTabRect = QRect(m_style->value(), 0, m_style->minimum(), height());
-        opt.rect = QRect(0, 0, width(), height());
-        opt.lineWidth = 1;
-        qApp->style()->drawPrimitive(control, &opt, painter, 0);
+        if (m_style->minimum()) {
+            QStyleOptionTabWidgetFrameV2 opt;
+            m_style->initStyleOption(&opt);
+            if (m_style->text() == "South")
+                opt.shape = QTabBar::RoundedSouth;
+            opt.selectedTabRect = QRect(m_style->value(), 0, m_style->minimum(), height());
+            opt.rect = QRect(0, 0, width(), height());
+            qApp->style()->drawPrimitive(control, &opt, painter, 0);
+        } else {
+            QStyleOptionTabWidgetFrame opt;
+            m_style->initStyleOption(&opt);
+            opt.rect = QRect(0, 0, width(), height());
+            qApp->style()->drawPrimitive(control, &opt, painter, 0);
+        }
     }
     else if (type == QLatin1String("menuitem")) {
         QStyle::ControlElement control = QStyle::CE_MenuItem;

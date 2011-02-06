@@ -9,6 +9,7 @@ Row {
     height:28
     property Item tabFrame
     onTabFrameChanged:parent = tabFrame
+    visible: tabFrame ? tabFrame.tabsVisible : true
     property int __overlap : styleitem.pixelMetric("tabvshift");
     property string position: tabFrame ? tabFrame.position : "North"
     QStyleItem {id:styleitem}

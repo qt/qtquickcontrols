@@ -18,6 +18,7 @@ ScrollArea {
         wrapMode: TextEdit.WordWrap;
         width: area.contentWidth
         selectByMouse:true
+
         // keep textcursor within scrollarea
         onCursorRectangleChanged:
             if (cursorRectangle.y >= area.contentY + area.height - 1.5*cursorRectangle.height)
