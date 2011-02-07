@@ -41,10 +41,43 @@
 #include "qstyleplugin.h"
 #include "qstyleitem.h"
 
+#include <qdeclarativeextensionplugin.h>
+
+#include <qdeclarativeengine.h>
+#include <qdeclarative.h>
+#include <qdeclarativeitem.h>
+#include <qdeclarativeimageprovider.h>
+#include <qdeclarativeview.h>
+#include <QApplication>
+#include <QImage>
+
+// Load icons from desktop theme
+class DesktopIconProvider : public QDeclarativeImageProvider
+{
+public:
+    DesktopIconProvider()
+        : QDeclarativeImageProvider(QDeclarativeImageProvider::Pixmap)
+    {
+    }
+
+    QPixmap requestPixmap(const QString &id, QSize *size, const QSize &requestedSize)
+    {
+        int pos = id.lastIndexOf('/');
+        QString iconName = id.right(id.length() - pos);
+        int width = qApp->style()->pixelMetric(QStyle::PM_ToolBarIconSize);
+        return QIcon::fromTheme(iconName).pixmap(width);
+    }
+};
+
 void StylePlugin::registerTypes(const char *uri)
 {
     qmlRegisterType<QStyleItem>(uri, 1, 0, "QStyleItem");
     qmlRegisterType<QStyleBackground>(uri, 1, 0, "QStyleBackground");
+}
+
+void StylePlugin::initializeEngine(QDeclarativeEngine *engine, const char *uri)
+{
+    engine->addImageProvider("desktoptheme", new DesktopIconProvider);
 }
 
 Q_EXPORT_PLUGIN2(styleplugin, StylePlugin);

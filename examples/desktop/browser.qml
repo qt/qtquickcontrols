@@ -14,6 +14,7 @@ Rectangle {
             ToolButton{
                 id:button
                 text:"Back"
+                iconSource:"image://desktoptheme/go-previous"
                 onClicked: view.back.trigger()
                 anchors.verticalCenter:parent.verticalCenter
                 enabled:  view.back.enabled
@@ -57,21 +58,22 @@ Rectangle {
         Tab {
             title: {
                 if (view.title.length < 11)
-                    return view.title.length
+                    return view.title
                 else
-                    return view.title.substring(0, 7) + "..."
+                    return view.title.substring(0, 8) + "..."
             }
             ScrollArea{
-                id:flickable
+                id:area
                 clip:true
-                anchors.fill:parent
                 frame:false
+                anchors.fill:parent
                 contentHeight: view.contentsSize.height
                 contentWidth: view.contentsSize.width
                 WebView{
                     id:view
-                    width:parent.contentWidth
-                    height:parent.contentHeight
+                    height: contentsSize.height
+                    width: contentsSize.width
+                    //onLoadFinished: area.contentY = 1 // force webview repaint
                     Component.onCompleted: url = textfield.text
                 }
             }
