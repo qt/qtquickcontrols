@@ -9,6 +9,9 @@ Rectangle {
         id:toolbar
         width:parent.width
         height:46
+        Row {
+            spacing:8
+
         ToolButton{iconSource: "images/folder_new.png"}
         ToolButton{iconSource: "images/folder_new.png"}
         ToolButton{iconSource: "images/folder_new.png"}
@@ -29,6 +32,7 @@ Rectangle {
             id:toolBarPosition
             checked:false
             anchors.verticalCenter:parent.verticalCenter
+        }
         }
     }
 
@@ -108,7 +112,6 @@ Rectangle {
                         }
                         Slider{id:slider; value:50}
                         smooth:true
-
                     }
                 }
                 Column {

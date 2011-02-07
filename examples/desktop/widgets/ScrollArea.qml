@@ -18,8 +18,14 @@ Item {
 
     property int contentY
     property int contentX
-    Binding{target:scrollarea; property:"contentY" ;  value:vscrollbar.value}
-    Binding{target:scrollarea; property:"contentX" ;  value:-hscrollbar.value}
+
+    onContentYChanged: {
+        vscrollbar.value = contentY
+    }
+
+    onContentXChanged: {
+        hscrollbar.value = contentY
+    }
 
     QStyleBackground {
         style: QStyleItem{
@@ -27,7 +33,6 @@ Item {
             elementType: frame ? "frame" : ""
             sunken: true
         }
-
         anchors.fill: parent
         anchors.rightMargin: vscrollbar.visible ? vscrollbar.width + 4 : 0
         anchors.bottomMargin: hscrollbar.visible ? hscrollbar.height + 4 : 0
@@ -62,6 +67,7 @@ Item {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.rightMargin: { return (frame ? 1 : 0) + ( vscrollbar.visible ? __scrollbarExtent : 0) }
+        onValueChanged: contentX = value
     }
 
     ScrollBar {
@@ -74,5 +80,6 @@ Item {
         anchors.top: parent.top
         anchors.bottom: parent.bottom
         anchors.bottomMargin:  { return (frame ? 1 : 0) + (hscrollbar.visible ? __scrollbarExtent : 0) }
+        onValueChanged: contentY = value
     }
 }
