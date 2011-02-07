@@ -127,9 +127,9 @@ QString QStyleBackground::hitTest(int px, int py) const
 
         if (subcontrol == QStyle::SC_ScrollBarSlider)
             return "handle";
-        if (subcontrol == QStyle::SC_ScrollBarSubLine)
+        if (subcontrol == QStyle::SC_ScrollBarSubLine || subcontrol == QStyle::SC_ScrollBarSubPage)
             return "up";
-        if (subcontrol == QStyle::SC_ScrollBarAddLine)
+        if (subcontrol == QStyle::SC_ScrollBarAddLine || subcontrol == QStyle::SC_ScrollBarAddPage)
             return "down";
     }
     return "none";
@@ -225,13 +225,15 @@ QRect QStyleBackground::subControlRect(const QString &subcontrolString) const
         opt.rect = QRect(0, 0, width(), height());
         opt.minimum = m_style->minimum();
         opt.maximum = m_style->maximum();
-        opt.pageStep = 200;
+        opt.pageStep = m_style->horizontal() ? width() : height();
         opt.orientation = m_style->horizontal() ? Qt::Horizontal : Qt::Vertical;
         opt.sliderPosition = m_style->value();
         if (subcontrolString == QLatin1String("slider"))
             subcontrol = QStyle::SC_ScrollBarSlider;
         if (subcontrolString == QLatin1String("groove"))
             subcontrol = QStyle::SC_ScrollBarGroove;
+        else if (subcontrolString == QLatin1String("handle"))
+            subcontrol = QStyle::SC_ScrollBarSlider;
         else if (subcontrolString == QLatin1String("add"))
             subcontrol = QStyle::SC_ScrollBarAddPage;
         else if (subcontrolString == QLatin1String("sub"))
@@ -475,19 +477,12 @@ void QStyleBackground::paint(QPainter *painter, const QStyleOptionGraphicsItem *
         opt.orientation = m_style->horizontal() ? Qt::Horizontal : Qt::Vertical;
         opt.sliderPosition = m_style->value();
         opt.sliderValue = m_style->value();
-        if (opt.orientation == Qt::Vertical) {
-            opt.activeSubControls = (m_style->activeControl() == QLatin1String("up"))
-                                    ? QStyle::SC_ScrollBarSubLine :
-                                    (m_style->activeControl() == QLatin1String("down")) ?
-                                    QStyle::SC_ScrollBarAddLine:
-                                    QStyle::SC_ScrollBarSlider;
-        } else {
-            opt.activeSubControls = (m_style->activeControl() == QLatin1String("up"))
-                                    ? QStyle::SC_ScrollBarSubPage:
-                                    (m_style->activeControl() == QLatin1String("down")) ?
-                                    QStyle::SC_ScrollBarAddPage:
-                                    QStyle::SC_ScrollBarSlider;
-        }
+        opt.activeSubControls = (m_style->activeControl() == QLatin1String("up"))
+                                ? QStyle::SC_ScrollBarSubLine :
+                                (m_style->activeControl() == QLatin1String("down")) ?
+                                QStyle::SC_ScrollBarAddLine:
+                                QStyle::SC_ScrollBarSlider;
+
         opt.sliderValue = m_style->value();
         opt.subControls = QStyle::SC_All;
         qApp->style()->drawComplexControl(control, &opt, painter, &m_dummywidget);

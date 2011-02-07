@@ -80,8 +80,14 @@ MouseArea {
     function updateHandle() {
         handleRect = bgitem.subControlRect("handle")
         var grooveRect = bgitem.subControlRect("groove");
-        slider.anchors.topMargin = grooveRect.y
-        slider.anchors.bottomMargin = height - grooveRect.y  - grooveRect.height
+        var extra = 0
+        if (orientation == Qt.Vertical) {
+            slider.anchors.topMargin = grooveRect.y + extra
+            slider.anchors.bottomMargin = height - grooveRect.y - grooveRect.height + extra
+        } else {
+            slider.anchors.leftMargin = grooveRect.x + extra
+            slider.anchors.rightMargin = width - grooveRect.x - grooveRect.width + extra
+        }
     }
 
     onValueChanged: updateHandle()
@@ -92,12 +98,12 @@ MouseArea {
         id:slider
         anchors.fill:parent
         orientation:scrollbar.orientation
-        handle: Item{ width:16; height:16}
+        leftMargin: (orientation === Qt.Horizontal) ? handleRect.width/2 : handleRect.height/2
+        rightMargin:leftMargin
+        handle: Item{ width:orientation == Qt.Vertical ? handleRect.height : handleRect.width;
+                           height:orientation == Qt.Vertical ? handleRect.width : handleRect.height}
         groove:null
         valueIndicator:null
         inverted:orientation != Qt.Horizontal
     }
 }
-
-
-
