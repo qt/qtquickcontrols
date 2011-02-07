@@ -30,7 +30,7 @@ Item {
 
         anchors.fill: parent
         anchors.rightMargin: vscrollbar.visible ? vscrollbar.width + 4 : 0
-        anchors.bottomMargin: hscrollbar.visible ? vscrollbar.width + 4 : 0
+        anchors.bottomMargin: hscrollbar.visible ? hscrollbar.height + 4 : 0
 
         Rectangle {
             id:flickable
@@ -58,7 +58,6 @@ Item {
         visible: contentWidth > flickable.width
         maximumValue: contentWidth > flickable.width ? scrollarea.contentWidth - flickable.width : 0
         minimumValue: 0
-        value: scrollarea.contentY
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
@@ -71,7 +70,6 @@ Item {
         visible: contentHeight > flickable.height
         maximumValue: contentHeight > flickable.height ? scrollarea.contentHeight - flickable.height : 0
         minimumValue: 0
-        value: scrollarea.contentY
         anchors.right: parent.right
         anchors.top: parent.top
         anchors.bottom: parent.bottom

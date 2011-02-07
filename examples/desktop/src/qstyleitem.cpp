@@ -471,7 +471,7 @@ void QStyleBackground::paint(QPainter *painter, const QStyleOptionGraphicsItem *
         m_style->initStyleOption(&opt);
         opt.minimum = m_style->minimum();
         opt.maximum = m_style->maximum();
-        opt.pageStep = 200;
+        opt.pageStep = m_style->horizontal() ? width() : height();
         opt.orientation = m_style->horizontal() ? Qt::Horizontal : Qt::Vertical;
         opt.sliderPosition = m_style->value();
         opt.sliderValue = m_style->value();
