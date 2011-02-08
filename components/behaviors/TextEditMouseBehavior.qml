@@ -29,7 +29,7 @@ Item {
 
     function reset() {
         copyPastePopup.showing = false; // hide and restart the visibility timer
-        copyPastePopup.showing = selectedText.length > 0;
+        copyPastePopup.showing = selectedText.length > 0 && !desktopBehavior;
         copyPastePopup.wasCancelledByClick = false;
         copyPastePopup.wasClosedByCopy = false;
     }
@@ -153,11 +153,13 @@ Item {
         }
 
         onDoubleClicked: {
-            textEditor.cursorPosition = characterPositionAt(mouse);
-            textEditor.selectWord(); // select word at cursor position
+            if(desktopBehavior)
+                textEditor.selectAll();
+            else {
+                textEditor.cursorPosition = characterPositionAt(mouse);
+                textEditor.selectWord(); // select word at cursor position
+            }
         }
-
-//        onTrippleClicked: if(desktopBehavior) textEditor.selectAll();
     }
 
 
