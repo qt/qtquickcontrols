@@ -4,7 +4,7 @@ import "./private" as Private //  for ChoiceListPopup
 
 // KNOWN ISSUES
 // 1) Popout list does not have a scrollbar/scroll indicator or similar
-// 2) The ChoiceListPopup should be dynamically loaded, to support radically different implementations
+// 2) The ChoiceListPopup should ff dynamically loaded, to support radically different implementations
 // 3) Mouse wheel scroll events not handled by the popout ListView (see QTBUG-7369)
 // 4) Support for configurable bindings between model's and ChoiceList's properties similar to ButtonBlock's is missing
 
@@ -83,7 +83,3 @@ Item {
 
     DefaultStyles.ChoiceListStyle { id: defaultStyle }
 }
-
-
-
-

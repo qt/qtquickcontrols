@@ -13,7 +13,7 @@ Components.ChoiceList {
 
     QStyleItem {
         id:styleitem
-        elementType:"combobox"
+        elementType: "combobox"
         sunken: pressed
         raised: !pressed
         hover: containsMouse
@@ -27,10 +27,10 @@ Components.ChoiceList {
 
     listItem: Item {
         id:item
+
         height:22
         anchors.left:parent.left
         width:choicelist.width
-
         QStyleBackground {
             anchors.fill:parent
             style: QStyleItem {
@@ -42,7 +42,11 @@ Components.ChoiceList {
     }
 
     popupFrame: QStyleBackground {
+        property int fw: styleitem.pixelMetric("menupanelwidth");
+        anchors.leftMargin: styleitem.pixelMetric("menuhmargin") + fw
+        anchors.rightMargin: styleitem.pixelMetric("menuhmargin") + fw
+        anchors.topMargin: styleitem.pixelMetric("menuvmargin") + fw
+        anchors.bottomMargin: styleitem.pixelMetric("menuvmargin") + fw
         style:QStyleItem{elementType:"menu"}
     }
 }
-

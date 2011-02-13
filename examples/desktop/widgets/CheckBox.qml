@@ -10,7 +10,7 @@ Components.CheckBox{
 
     background: QStyleBackground {
         id:styleitem
-        width:110
+        width:100
         height:18
         style:QStyleItem {
             elementType:"checkbox"

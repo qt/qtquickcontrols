@@ -30,7 +30,7 @@ Item {
         text: "generic"
     }
 
-    Row{
+    Row {
         id:tabrow
         states:
         State {
@@ -70,7 +70,7 @@ Item {
 
                     anchors.rightMargin: style.text == "North" && (style.activeControl == "middle"  || style.activeControl == "beginning")
                                          && tab.selected ? -__overlap : 0
-                    anchors { fill: parent }
+                    anchors.fill:parent
                 }
                 Text {
                     id:textitem

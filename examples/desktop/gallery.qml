@@ -8,9 +8,9 @@ Rectangle {
     ToolBar{
         id:toolbar
         width:parent.width
-        height:46
+        height:40
         Row {
-            spacing:8
+            spacing:2
 
         ToolButton{iconSource: "images/folder_new.png"}
         ToolButton{iconSource: "images/folder_new.png"}

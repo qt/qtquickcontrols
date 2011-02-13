@@ -20,7 +20,7 @@ FocusScope {
     property int contentY
     property int contentX
 
-    property bool frameAroundContents: styleitem.styleHit("framearoundcontents")
+    property bool frameAroundContents: styleitem.styleHint("framearoundcontents")
 
     onContentYChanged: {
         vscrollbar.value = contentY

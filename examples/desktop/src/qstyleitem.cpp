@@ -46,6 +46,7 @@
 #include <QtGui/QMainWindow>
 #include <QtGui/QGroupBox>
 #include <QtGui/QToolBar>
+#include <QtGui/QMenu>
 
 
 QStyleItem::QStyleItem(QObject*parent)
@@ -182,7 +183,13 @@ int QStyleItem::pixelMetric(const QString &metric) const
         return qApp->style()->pixelMetric(QStyle::PM_TabBarBaseHeight);
     else if (metric == "tabvshift")
         return qApp->style()->pixelMetric(QStyle::PM_TabBarTabShiftVertical);
-    return 0;
+    else if (metric == "menuhmargin")
+        return qApp->style()->pixelMetric(QStyle::PM_MenuHMargin);
+    else if (metric == "menuvmargin")
+        return qApp->style()->pixelMetric(QStyle::PM_MenuVMargin);
+    else if (metric == "menupanelwidth"){
+        return qApp->style()->pixelMetric(QStyle::PM_MenuPanelWidth);
+}    return 0;
 }
 
 QVariant QStyleItem::styleHint(const QString &metric) const
@@ -259,11 +266,15 @@ QRect QStyleBackground::subControlRect(const QString &subcontrolString) const
 
 QStyleBackground::QStyleBackground(QDeclarativeItem *parent)
     : QDeclarativeItem(parent),
-    m_style(0)
+      m_menu(0),
+      m_style(0)
 {
     setFlag(QGraphicsItem::ItemHasNoContents, false);
     setCacheMode(QGraphicsItem::DeviceCoordinateCache);
     setSmooth(true);
+
+    m_menu = new QMenu();
+    m_menu->ensurePolished();
 }
 
 void QStyleBackground::setStyle(QStyleItem *style)
@@ -333,14 +344,26 @@ void QStyleBackground::paint(QPainter *painter, const QStyleOptionGraphicsItem *
         qApp->style()->drawControl(control, &opt, painter, &m_dummywidget);
     }
     else if (type == QLatin1String("menu")) {
-        QStyle::PrimitiveElement control = QStyle::PE_PanelMenu;
-        QStyleOptionFrameV3 opt;
+        QStyleOptionMenuItem opt;
         opt.rect = QRect(0, 0, width(), height());
-        opt.lineWidth = 1;
         m_style->initStyleOption(&opt);
-        qApp->style()->drawPrimitive(control, &opt, painter, 0);
-
-        qApp->style()->drawPrimitive(QStyle::PE_FrameMenu, &opt, painter, 0);
+        QStyleHintReturnMask val;
+        qApp->style()->styleHint(QStyle::SH_Menu_Mask, &opt, &m_dummywidget, &val);
+        painter->save();
+        painter->setClipRegion(val.region);
+        m_menu->setContextMenuPolicy(Qt::CustomContextMenu);
+        m_menu->ensurePolished();
+        opt.palette = m_menu->palette();
+        painter->fillRect(opt.rect, opt.palette.window());
+        painter->restore();
+        qApp->style()->drawPrimitive(QStyle::PE_PanelMenu, &opt, painter, m_menu);
+        QStyleOptionFrame frame;
+        m_style->initStyleOption(&frame);
+        frame.lineWidth = qApp->style()->pixelMetric(QStyle::PM_MenuPanelWidth);
+        frame.midLineWidth = 0;
+        frame.rect = opt.rect;
+        qApp->style()->drawPrimitive(QStyle::PE_FrameMenu, &frame, painter, m_menu);
+        //       qApp->style()->drawControl(QStyle::CE_MenuVMargin, &opt, painter, m_menu);
     }
     else if (type == QLatin1String("frame")) {
         QStyle::PrimitiveElement control = QStyle::PE_Frame;
@@ -380,10 +403,9 @@ void QStyleBackground::paint(QPainter *painter, const QStyleOptionGraphicsItem *
         QStyleOptionMenuItem opt;
         opt.rect = QRect(0, 0, width(), height());
         opt.text = m_style->text();
-        opt.rect = QRect(0, 0, width(), height());
         m_style->initStyleOption(&opt);
-        QTabWidget w;
-        qApp->style()->drawControl(control, &opt, painter, &w);
+        opt.palette = m_menu->palette();
+        qApp->style()->drawControl(control, &opt, painter, m_menu);
     }
     else if (type == QLatin1String("checkbox")) {
         QStyle::ControlElement control = QStyle::CE_CheckBox;

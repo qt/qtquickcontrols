@@ -164,6 +164,7 @@ Q_SIGNALS:
 
 private:
     QWidget m_dummywidget;
+    QWidget *m_menu;
     QStyleItem *m_style;
 };
 
