@@ -35,7 +35,7 @@ Components.SpinBox {
         property variant editrect
         Rectangle {
             id:editBackground
-            x:editrect.x
+            x:editrect.x-1
             y:editrect.y
             width:editrect.width
             height:editrect.height
