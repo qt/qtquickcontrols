@@ -34,11 +34,28 @@ Components.SpinBox {
         anchors.fill: parent
         property variant editrect
         Rectangle {
+            id:editBackground
             x:editrect.x
             y:editrect.y
             width:editrect.width
             height:editrect.height
         }
+
+        Item{
+            id:focusFrame
+            anchors.fill: editBackground
+            visible:framestyle.styleHint("focuswidget")
+            QStyleBackground{
+                anchors.margins: -6
+                anchors.fill: parent
+                visible:spinbox.activeFocus
+                style: QStyleItem {
+                    id:framestyle
+                    elementType:"focusframe"
+                }
+            }
+        }
+
 
         function updateRect() {
             __upRect = spinboxbg.subControlRect("up");
@@ -65,22 +82,6 @@ Components.SpinBox {
     down:Item{
         width:__downRect.width > 0 ? __downRect.width : 20
         height:spinbox.height/2
-    }
-    Item{
-        id:focusFrame
-        anchors.fill: spinbox
-        visible:framestyle.styleHint("focuswidget")
-        QStyleBackground{
-            anchors.margins: -1
-            anchors.rightMargin:-5
-            anchors.bottomMargin:-5
-            anchors.fill: parent
-            visible:spinbox.activeFocus
-            style: QStyleItem {
-                id:framestyle
-                elementType:"focusframe"
-            }
-        }
     }
 }
 

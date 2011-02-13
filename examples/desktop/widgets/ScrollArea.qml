@@ -86,7 +86,7 @@ FocusScope {
         onValueChanged: contentY = value
     }
 
-    QStyleBackground{
+    QStyleBackground {
         z:2
         anchors.fill:parent
         anchors.margins:-2
