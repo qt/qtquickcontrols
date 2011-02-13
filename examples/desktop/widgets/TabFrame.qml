@@ -6,7 +6,6 @@ Item{
     id: tabWidget
     width:100
     height:100
-
     property TabBar tabbar
     property int current: 0
     property int count: stack.children.length

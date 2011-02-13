@@ -2,7 +2,7 @@ import QtQuick 1.0
 import "../../../components" as Components
 import "../plugin"
 
-Item {
+FocusScope {
     id:scrollarea
     width: 100
     height: 100
@@ -13,11 +13,14 @@ Item {
     property int contentWidth: content.childrenRect.width
     property alias color: flickable.color
     property bool frame: true
+    property bool highlightOnFocus: false
 
     default property alias children: content.children
 
     property int contentY
     property int contentX
+
+    property bool frameAroundContents: styleitem.styleHit("framearoundcontents")
 
     onContentYChanged: {
         vscrollbar.value = contentY
@@ -34,8 +37,8 @@ Item {
             sunken: true
         }
         anchors.fill: parent
-        anchors.rightMargin: vscrollbar.visible ? vscrollbar.width + 4 : 0
-        anchors.bottomMargin: hscrollbar.visible ? hscrollbar.height + 4 : 0
+        anchors.rightMargin: (frameAroundContents && vscrollbar.visible) ? vscrollbar.width + 4 : 0
+        anchors.bottomMargin: (frameAroundContents && hscrollbar.visible) ? hscrollbar.height + 4 : 0
 
         Rectangle {
             id:flickable
@@ -81,5 +84,18 @@ Item {
         anchors.bottom: parent.bottom
         anchors.bottomMargin:  { return (frame ? 1 : 0) + (hscrollbar.visible ? __scrollbarExtent : 0) }
         onValueChanged: contentY = value
+    }
+
+    QStyleBackground{
+        z:2
+        anchors.fill:parent
+        anchors.margins:-2
+        anchors.rightMargin:-4
+        anchors.bottomMargin:-4
+        visible: highlightOnFocus && parent.activeFocus
+        style: QStyleItem {
+            id:framestyle
+            elementType:"focusframe"
+        }
     }
 }

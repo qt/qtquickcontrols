@@ -75,7 +75,6 @@ Rectangle {
                 anchors.fill:parent
                 frame:false
                 enabled:enabledCheck.checked
-
                 Row {
                     anchors.margins: 8
                     anchors.fill: parent

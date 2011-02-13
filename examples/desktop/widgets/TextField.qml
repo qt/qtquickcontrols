@@ -39,8 +39,8 @@ Components.TextField {
         visible:framestyle.styleHint("focuswidget")
         QStyleBackground{
             anchors.margins: -2
-            anchors.rightMargin:-6
-            anchors.bottomMargin:-6
+            anchors.rightMargin:-4
+            anchors.bottomMargin:-4
             anchors.fill: parent
             visible:textfield.activeFocus
             style: QStyleItem {

@@ -11,6 +11,7 @@ ScrollArea {
 
     property alias text: edit.text
     property alias wrapMode: edit.wrapMode
+    highlightOnFocus: true
 
     TextEdit {
         id: edit
@@ -25,5 +26,6 @@ ScrollArea {
                 area.contentY = cursorRectangle.y - area.height + 1.5*cursorRectangle.height
             else if (cursorRectangle.y < area.contentY)
                 area.contentY = cursorRectangle.y
+
     }
 }

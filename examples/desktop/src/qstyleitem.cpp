@@ -148,6 +148,11 @@ QSize QStyleItem::sizeFromContents(int width, int height) const
         initStyleOption(&opt);
         opt.text = text();
         return qApp->style()->sizeFromContents(QStyle::CT_PushButton, &opt, QSize(width,height), &m_dummywidget);
+    } else if (metric == QLatin1String("tab")) {
+        QStyleOptionTabV3 opt;
+        initStyleOption(&opt);
+        opt.text = text();
+        return qApp->style()->sizeFromContents(QStyle::CT_TabBarTab, &opt, QSize(width,height), &m_dummywidget);
     } else if (metric == QLatin1String("combobox")) {
         QStyleOptionComboBox opt;
         initStyleOption(&opt);
@@ -179,10 +184,18 @@ int QStyleItem::pixelMetric(const QString &metric) const
     return 0;
 }
 
-int QStyleItem::styleHint(const QString &metric) const
+QVariant QStyleItem::styleHint(const QString &metric) const
 {
     if (metric == "focuswidget")
         return qApp->style()->styleHint(QStyle::SH_FocusFrame_AboveWidget);
+    if (metric == "tabbaralignment") {
+        int result = qApp->style()->styleHint(QStyle::SH_TabBar_Alignment);
+        if (result == Qt::AlignCenter)
+            return "center";
+        return "left";
+    }
+    if (metric == "framearoundcontents")
+        return qApp->style()->styleHint(QStyle::SH_ScrollView_FrameOnlyAroundContents);
     return 0;
 }
 
@@ -430,9 +443,11 @@ void QStyleBackground::paint(QPainter *painter, const QStyleOptionGraphicsItem *
         m_style->initStyleOption(&opt);
         opt.minimum = m_style->minimum();
         opt.maximum = m_style->maximum();
+        opt.tickPosition = QSlider::TicksBelow;
         opt.sliderPosition = m_style->value();
+        opt.tickInterval = 1200 / (opt.maximum - opt.minimum);
         opt.sliderValue = m_style->value();
-        opt.subControls = QStyle::SC_SliderGroove | QStyle::SC_SliderHandle;
+        opt.subControls = QStyle::SC_SliderTickmarks | QStyle::SC_SliderGroove | QStyle::SC_SliderHandle;
         opt.activeSubControls = QStyle::SC_None;
         qApp->style()->drawComplexControl(control, &opt, painter, 0);
     }
