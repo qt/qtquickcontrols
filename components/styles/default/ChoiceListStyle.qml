@@ -52,10 +52,10 @@ QtObject {
         Item {
             Behavior on opacity { NumberAnimation { easing.type: Easing.OutQuad; duration: 250 } }
 
-            property int leftMargin: -6
-            property int topMargin: -6
-            property int rightMargin: -7
-            property int bottomMargin: -6
+            anchors.leftMargin: 6
+            anchors.topMargin: 6
+            anchors.rightMargin: 7
+            anchors.bottomMargin: 6
 
             Rectangle { // Background center fill
                 anchors.fill: parent

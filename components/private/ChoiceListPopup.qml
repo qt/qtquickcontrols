@@ -79,12 +79,11 @@ MouseArea {
     Loader {
         id: popupFrameLoader
         property alias styledItem: popup.parent
-
         anchors.fill: listView
-        anchors.leftMargin: item.leftMargin ? item.leftMargin : -6
-        anchors.rightMargin: item.rightMargin ? item.rightMargin : -6
-        anchors.topMargin: item.topMargin ? item.topMargin : -6
-        anchors.bottomMargin: item.bottomMargin ? item.bottomMargin : -6
+        anchors.leftMargin: -item.anchors.leftMargin
+        anchors.rightMargin: -item.anchors.rightMargin
+        anchors.topMargin: -item.anchors.topMargin
+        anchors.bottomMargin: -item.anchors.bottomMargin
         sourceComponent: popupFrame
     }
 
