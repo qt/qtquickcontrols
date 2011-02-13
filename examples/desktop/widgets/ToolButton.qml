@@ -7,9 +7,9 @@ Components.Button {
     minimumWidth:30
     background: QStyleBackground {
         anchors.fill:parent
-        visible: enabled && (pressed || containsMouse)
         style: QStyleItem{
-            elementType:"button"
+            elementType:"toolbutton"
+            on: pressed | checked
             sunken: pressed
             hover: containsMouse
         }

@@ -47,6 +47,7 @@ Components.SpinBox {
             visible:framestyle.styleHint("focuswidget")
             QStyleBackground{
                 anchors.margins: -6
+                anchors.leftMargin: -5
                 anchors.fill: parent
                 visible:spinbox.activeFocus
                 style: QStyleItem {

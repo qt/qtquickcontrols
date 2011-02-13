@@ -45,6 +45,7 @@
 #include <QtGui/QApplication>
 #include <QtGui/QMainWindow>
 #include <QtGui/QGroupBox>
+#include <QtGui/QToolBar>
 
 
 QStyleItem::QStyleItem(QObject*parent)
@@ -304,6 +305,15 @@ void QStyleBackground::paint(QPainter *painter, const QStyleOptionGraphicsItem *
             opt.rect.translate(0,2);
 
         qApp->style()->drawControl(control, &opt, painter, 0);
+    }
+    else if (type == QLatin1String("toolbutton")) {
+        QStyle::ComplexControl control = QStyle::CC_ToolButton;
+        QStyleOptionToolButton opt;
+        opt.rect = QRect(0, 0, width(), height());
+        m_style->initStyleOption(&opt);
+        QToolBar bar;
+        QWidget dummy(&bar);
+        qApp->style()->drawComplexControl(control, &opt, painter, &dummy);
     }
     else if (type == QLatin1String("tab")) {
         QStyle::ControlElement control = QStyle::CE_TabBarTabShape;
