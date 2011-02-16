@@ -1,4 +1,4 @@
-import QtQuick 1.0
+import QtQuick 1.1
 import "../components"
 import "stretchbench"
 
@@ -102,26 +102,34 @@ Item {
             color: "transparent"
             border.color: pressed ? "red" : "transparent"
 
+            function resetSize() {
+                // Position the blue drag handles so that the component tested gets its desired size
+                topLeftHandle.x = (testBenchRect.width - loader.item.implicitWidth) / 2 - topLeftHandle.width;
+                topLeftHandle.y = (testBenchRect.height - loader.item.implicitHeight) / 2 - topLeftHandle.height;
+                bottomRightHandle.x = (testBenchRect.width - loader.item.implicitWidth) / 2 + loader.item.implicitWidth;
+                bottomRightHandle.y = (testBenchRect.height - loader.item.implicitHeight) / 2 + loader.item.implicitHeight;
+            }
+
+            // Use this instead of anchors (see QTBUG-15622);
             // Floor ensures that images are on integer coordinates so they stay crisp
-            y:Math.floor(topLeftHandle.y + topLeftHandle.height)
-            x:Math.floor(topLeftHandle.x + topLeftHandle.width)
-            width:Math.floor(bottomRightHandle.x - topLeftHandle.x - topLeftHandle.width)
-            height:Math.floor(bottomRightHandle.y - topLeftHandle.y - topLeftHandle.height)
+            y: Math.floor(topLeftHandle.y + topLeftHandle.height)
+            x: Math.floor(topLeftHandle.x + topLeftHandle.width)
+            width: Math.floor(bottomRightHandle.x - topLeftHandle.x - topLeftHandle.width)
+            height: Math.floor(bottomRightHandle.y - topLeftHandle.y - topLeftHandle.height)
 
             Loader {
                 id: loader
                 focus: true
                 sourceComponent: sourceComponentFromIndex()
+                anchors.fill: parent
 
                 onStatusChanged: {
                     if (status == Loader.Ready) {
-                        anchors.fill = null;
-                        topLeftHandle.x = (testBenchRect.width - item.width) / 2 - topLeftHandle.width;
-                        topLeftHandle.y = (testBenchRect.height - item.height) / 2 - topLeftHandle.height;
-                        bottomRightHandle.x = (testBenchRect.width - item.width) / 2 + item.width;
-                        bottomRightHandle.y = (testBenchRect.height - item.height) / 2 + item.height;
-                        anchors.fill = container;
-                        item.anchors.fill = loader;
+                        container.resetSize();
+
+                        // on any future implicit size changes, reset the size
+                        item.implicitWidthChanged.connect(container.resetSize);
+                        item.implicitHeightChanged.connect(container.resetSize);
                     }
                 }
 
@@ -324,7 +332,7 @@ Item {
             enabled: !buttonOptionDimmed.checked
             checkable: buttonOptionLatching.checked
             text: buttonOptionTwoLineText.checked ? "Button\nwith two lines" : "Button"
-            iconSource: buttonOptionHasIcon.checked ? "images/testIcon.png" : ""
+            iconSource: buttonOptionHasIcon.checked ? "stretchbench/images/testIcon.png" : ""
             backgroundColor: buttonOptionGreenBackground.checked ? "green" : "#fff"
             textColor: buttonOptionWhiteText.checked ? "white" : "black"
         }
