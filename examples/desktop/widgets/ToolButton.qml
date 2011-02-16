@@ -11,6 +11,7 @@ Components.Button {
             elementType:"toolbutton"
             on: pressed | checked
             sunken: pressed
+            raised: containsMouse
             hover: containsMouse
         }
     }

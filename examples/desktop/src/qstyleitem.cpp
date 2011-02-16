@@ -320,11 +320,12 @@ void QStyleBackground::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     else if (type == QLatin1String("toolbutton")) {
         QStyle::ComplexControl control = QStyle::CC_ToolButton;
         QStyleOptionToolButton opt;
-        opt.rect = QRect(0, 0, width(), height());
         m_style->initStyleOption(&opt);
+        opt.subControls = QStyle::SC_ToolButton;
+        opt.rect = QRect(0, 0, width(), height());
         QToolBar bar;
         QWidget dummy(&bar);
-        qApp->style()->drawComplexControl(control, &opt, painter, &dummy);
+        qApp->style()->drawComplexControl(control, &opt, painter);//, &dummy);
     }
     else if (type == QLatin1String("tab")) {
         QStyle::ControlElement control = QStyle::CE_TabBarTabShape;
