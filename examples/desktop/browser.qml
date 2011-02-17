@@ -56,23 +56,16 @@ Rectangle {
         anchors.right:parent.right
         anchors.left:parent.left
         Tab {
-            title: {
-                if (view.title.length < 11)
-                    return view.title
-                else
-                    return view.title.substring(0, 8) + "..."
-            }
+            title: view.title.length < 11 ? view.title :
+                   view.title.substring(0, 8) + "..."
             ScrollArea{
-                id:area
-                clip:true
-                frame:false
-                anchors.fill:parent
-                contentHeight: view.contentsSize.height
-                contentWidth: view.contentsSize.width
+                id: area
+                frame: false
+                anchors.fill: parent
                 WebView{
                     id:view
-                    height: contentsSize.height
                     width: contentsSize.width
+                    height:contentsSize.height
                     onLoadFinished: area.contentY = -1 // workaround to force webview repaint
                     Component.onCompleted: url = textfield.text
                 }
