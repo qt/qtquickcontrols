@@ -293,10 +293,12 @@ Rectangle {
                                 }
                             }
                         }
-                        Row{
-                            CheckBox { background: shinyEdit; checkmark:shinyCheck} CheckBox { background: shinyEdit; checkmark:shinyCheck; checked:true}
-                            RadioButton{ background: shinyEdit; checkmark:shinyCheck} RadioButton { background: shinyEdit; checkmark:shinyCheck; checked:true}
-                            spacing:rowspacing
+                        Row {
+                            CheckBox { background: shinyCheckBackground; checkmark: shinyCheckMark }
+                            CheckBox { background: shinyCheckBackground; checkmark: shinyCheckMark; checked: true}
+                            RadioButton { background: shinyCheckBackground; checkmark: shinyCheckMark }
+                            RadioButton { background: shinyCheckBackground; checkmark: shinyCheckMark; checked: true}
+                            spacing: rowspacing
                         }
 
                         ChoiceList{ model: choices; background: shinyButton; popupFrame: shinyButton}
@@ -353,10 +355,20 @@ Rectangle {
                     border.top:4 ; border.left:4 ; border.bottom:4 ; border.right:4
                 }
             }
+            Component {
+                id: shinyCheckBackground
+                BorderImage {
+                    width: styledItem.implicitWidth; height: styledItem.implicitHeight
+                    source: "customtheme/exampletheme/images/edit_normal.png"
+                    border.left: 6; border.top: 6
+                    border.right: 6; border.bottom: 6
+                }
+            }
             Component{
-                id:shinyCheck
+                id: shinyCheckMark
                 Image {
-                    visible: parent.parent.checked ? 1 : 0
+                    visible: styledItem.checked || styledItem.pressed ? 1 : 0
+                    opacity: !enabled || styledItem.pressed ? 0.7 : 1
                     source: "customtheme/exampletheme/images/checkbox_check.png"
                 }
             }
@@ -375,10 +387,9 @@ Rectangle {
                     }
                 }
             }
-            Component{
-                id:shinyEdit
+            Component {
+                id: shinyEdit
                 BorderImage {
-                    width:32; height:32;
                     source: "customtheme/exampletheme/images/edit_normal.png"
                     border.left: 6; border.top: 6
                     border.right: 6; border.bottom: 6

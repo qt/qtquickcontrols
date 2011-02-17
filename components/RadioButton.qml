@@ -1,10 +1,10 @@
-import QtQuick 1.0
+import QtQuick 1.1
 import "./styles/default" as DefaultStyles
 
-// This is essentially a special case of checkbox - remove?
-
 CheckBox {
-    id: radiobutton
+    id: radioButton
+
+    // implementation
 
     checkmark: defaultStyle.checkmark
     background: defaultStyle.background

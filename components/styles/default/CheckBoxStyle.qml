@@ -1,13 +1,12 @@
-import QtQuick 1.0
+import QtQuick 1.1
 
 QtObject {
     property int minimumWidth: 32
     property int minimumHeight: 32
 
-    property Component background:
-    Component {
+    property Component background: Component {
         Item {
-            width: minimumWidth; height: minimumHeight
+            width: styledItem.implicitWidth; height: styledItem.implicitHeight
             opacity: enabled ? 1 : 0.7
             Rectangle { // Background center fill
                 anchors.fill: parent
@@ -28,9 +27,6 @@ QtObject {
     property Component checkmark: Component {
         Image {
             source: "images/checkbox_check.png"
-            anchors.verticalCenterOffset: 1
-            anchors.horizontalCenterOffset: 1
-            anchors.centerIn: parent
             opacity: (!enabled && checked) || pressed == true ? 0.5 : (!checked ? 0 : 1)
             Behavior on opacity { NumberAnimation { duration: 150; easing.type: Easing.OutCubic } }
         }

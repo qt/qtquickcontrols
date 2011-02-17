@@ -1,35 +1,39 @@
-import QtQuick 1.0
+import QtQuick 1.1
 import "./behaviors"
 import "./styles/default" as DefaultStyles
 
 Item {
-    id: checkbox
+    id: checkBox
 
-    property int minimumWidth: defaultStyle.minimumWidth
-    property int minimumHeight: defaultStyle.minimumHeight
-    width: Math.max(minimumWidth, backgroundComponent.item.width)
-    height: Math.max(minimumHeight, backgroundComponent.item.height)
-
-    property alias containsMouse: behavior.containsMouse
-    property Component background: defaultStyle.background
-    property Component checkmark: defaultStyle.checkmark
-
-    property color backgroundColor: "#fff";
-
-    // Common API
     signal clicked
     property alias pressed: behavior.pressed
     property alias checked: behavior.checked
+    property alias containsMouse: behavior.containsMouse
+
+    property Component background: defaultStyle.background
+    property Component checkmark: defaultStyle.checkmark
+
+    property color backgroundColor: syspal.base
+
+    property int minimumWidth: defaultStyle.minimumWidth
+    property int minimumHeight: defaultStyle.minimumHeight
+
+    // implementation
+
+    implicitWidth: minimumWidth
+    implicitHeight: minimumHeight
 
     Loader {
-        id: backgroundComponent
+        id: backgroundLoader
         anchors.centerIn: parent
+        property alias styledItem: checkBox
         sourceComponent: background
     }
 
     Loader {
-        id: checkComponent
+        id: checkmarkLoader
         anchors.centerIn: parent
+        property alias styledItem: checkBox
         sourceComponent: checkmark
     }
 
@@ -37,8 +41,9 @@ Item {
         id: behavior
         anchors.fill: parent
         checkable: true
-        onClicked:checkbox.clicked()
+        onClicked: checkBox.clicked()
     }
 
     DefaultStyles.CheckBoxStyle { id: defaultStyle }
+    SystemPalette { id: syspal }
 }
