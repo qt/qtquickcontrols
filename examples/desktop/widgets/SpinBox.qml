@@ -21,16 +21,17 @@ Components.SpinBox {
     background:
         Item {
         anchors.fill: parent
-        property variant editrect
+        property variant __editRect
+
         Rectangle {
             id:editBackground
-            x: __editRectX - 1
-            y: __editRectY
-            width: __editRectWidth
-            height: __editRectHeight
+            x: __editRect.x - 1
+            y: __editRect.y
+            width: __editRect.width
+            height: __editRect.height
         }
 
-        Item{
+        Item {
             id:focusFrame
             anchors.fill: editBackground
             visible:framestyle.styleHint("focuswidget")
@@ -49,7 +50,7 @@ Components.SpinBox {
         function updateRect() {
             __upRect = spinboxbg.subControlRect("up");
             __downRect = spinboxbg.subControlRect("down");
-            editrect = spinboxbg.subControlRect("edit");
+            __editRect = spinboxbg.subControlRect("edit");
         }
 
         Component.onCompleted:updateRect()
