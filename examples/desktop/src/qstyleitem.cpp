@@ -286,6 +286,7 @@ void QStyleBackground::setStyle(QStyleItem *style)
         connect(m_style, SIGNAL(activeChanged()), this, SLOT(updateItem()));
         connect(m_style, SIGNAL(textChanged()), this, SLOT(updateItem()));
         connect(m_style, SIGNAL(activeChanged()), this, SLOT(updateItem()));
+        connect(m_style, SIGNAL(raisedChanged()), this, SLOT(updateItem()));
         connect(m_style, SIGNAL(sunkenChanged()), this, SLOT(updateItem()));
         connect(m_style, SIGNAL(hoverChanged()), this, SLOT(updateItem()));
         connect(m_style, SIGNAL(maximumChanged()), this, SLOT(updateItem()));
@@ -325,7 +326,7 @@ void QStyleBackground::paint(QPainter *painter, const QStyleOptionGraphicsItem *
         opt.rect = QRect(0, 0, width(), height());
         QToolBar bar;
         QWidget dummy(&bar);
-        qApp->style()->drawComplexControl(control, &opt, painter);//, &dummy);
+        qApp->style()->drawComplexControl(control, &opt, painter, &dummy);
     }
     else if (type == QLatin1String("tab")) {
         QStyle::ControlElement control = QStyle::CE_TabBarTabShape;
