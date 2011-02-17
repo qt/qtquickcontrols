@@ -71,6 +71,7 @@ Item {
                                          && tab.selected ? -__overlap : 0
                     anchors.fill:parent
                 }
+
                 Text {
                     id:textitem
                     anchors.centerIn:parent
