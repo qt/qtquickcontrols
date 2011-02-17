@@ -1,6 +1,4 @@
 import Qt 4.7
-
-
 import com.meego 1.0 as Meego
 import "meegotheme"
 
@@ -17,11 +15,11 @@ Rectangle {
                 spacing:20
                 Text{ text: "Based on Custom"}
                 Row {
-                    spacing:6
-                    Button{text:"Text"}
-                    Button{iconSource:"images/folder_new.png"}
-                    Button{text:"Text"; iconSource:"images/folder_new.png"}
-                    CheckBox{}
+                    spacing: 6
+                    Button{ text: "Text" }
+                    Button{ iconSource:"images/folder_new.png" }
+                    Button{ text:"Text"; iconSource:"images/folder_new.png" }
+                    CheckBox {}
                 }
                 ProgressBar {
                     width:400

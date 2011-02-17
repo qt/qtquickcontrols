@@ -1,20 +1,20 @@
-import Qt 4.7
-import "../../../components" as Components
-
-// ### import QtComponents to load meego imageprovider
-import com.meego.themebridge 1.0
+import QtQuick 1.1
+import "../../../components" as Components  // Button
+import com.meego.themebridge 1.0            // Style
 
 Components.Button {
-    id:button
 
-    // Icon properties. Precedence is the following:
-    // Source has precedence over Id
-    // When checked, try to use checked Source or Id, if empty, fallback to default Source or Id
-    property bool iconVisible: true
-    property bool textVisible: true
+    // implementation
 
     minimumWidth: 55
-    minimumHeight: meegostyle.preferredHeight
+    minimumHeight: 50 // meegostyle.preferredHeight
+    //mm meegostyle.preferredHeight doesn't seem to return the right value
+
+    leftMargin: 16
+    rightMargin: 16
+    topMargin: 10
+    bottomMargin: 10
+
     textColor: meegostyle.current.get("textColor")
     //font: meegostyle.current.get("font")
 
@@ -22,85 +22,57 @@ Components.Button {
         id: meegostyle
         styleClass: "MButtonStyle"
         mode: {
-            if (pressed)
-                return "pressed"
-            else if (checked)
-                return "selected"
+            if (styledItem.pressed)
+                return "pressed";
+            else if (styledItem.checked)
+                return "selected";
             else
-                return "default"
+                return "default";
         }
     }
 
-    background: BorderImage {
-        source: pressed ? "image://theme/meegotouch-button-background-pressed" :
-        "image://theme/meegotouch-button-background"
-        border.top: 8
-        border.bottom: 8
-        border.left: 22
-        border.right: 22
+    background: Component {
+        BorderImage {
+            source: {
+                var bkgImage = "image://theme/meegotouch-button-background"
+                if(!styledItem.enabled)
+                    bkgImage += "-disabled";
+                else if(styledItem.pressed)
+                    bkgImage += "-pressed";
+                else if(styledItem.checked)
+                    bkgImage += "-selected";
+
+                return bkgImage;
+            }
+
+            border.top: 8
+            border.bottom: 8
+            border.left: 22
+            border.right: 22
+        }
     }
 
-
-
-    label : Component {
+    label: Component {
         Item {
-            width:(iconFromSource.width ? iconFromSource.width + 6 : 0) + label.width + 4
-
+            implicitWidth: row.implicitWidth
+            implicitHeight: row.implicitHeight
             Row {
-                anchors.centerIn:parent
+                id: row
+                anchors.centerIn: parent
                 spacing: 6
                 Image {
-                    id: iconFromSource
+                    anchors.verticalCenter: parent.verticalCenter
                     sourceSize.width: meegostyle.current.get("iconSize").width
                     sourceSize.height: meegostyle.current.get("iconSize").height
-
-                    // When checked, try to use checked source. If empty, the standard source is the fallback
-                    source: {
-                        if (checkable.checked && button.checkedIconSource)
-                            return button.checkedIconSource;
-                        return button.iconSource;
-                    }
-
-                    // Visibility check for default state (icon is not explicitly hidden)
-                    visible: {
-                        if (iconFromSource.source == "")
-                            return false;
-
-                        if (!checkable.checked)
-                            return true;
-
-                        // Show sourceIcon when
-                        //  1) checkedIconSource is present (highest priority), or
-                        //  2) no checked icon exists (fallback)
-                        return button.checkedIconSource;
-                    }
-
-                    states: State {
-                        name: "iconHidden"
-                        when: !button.iconVisible
-                        // Hide both icons
-                        PropertyChanges { target: iconFromSource; visible: false; source: "" }
-                        PropertyChanges { target: iconFromId; visible: false; }
-                    }
+                    source: styledItem.iconSource
                 }
 
-
                 Label {
-
-                    id: label
-                    x:(iconFromSource.width ? iconFromSource.width + 8 : 0)
-
+                    anchors.verticalCenter: parent.verticalCenter
                     elide: Text.ElideRight
-                    anchors.verticalCenter:parent.verticalCenter
-
-                    // XXX This does not make sense yet, since the label width is not being set
-                    // horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: meegostyle.current.get("verticalTextAlign")
-
                     font: meegostyle.current.get("font")
                     color: meegostyle.current.get("textColor")
-
-                    text: button.text
+                    text: styledItem.text
                 }
             }
         }
