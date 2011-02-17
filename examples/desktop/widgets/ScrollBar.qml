@@ -1,12 +1,12 @@
-import QtQuick 1.0
+import QtQuick 1.1
 import "../../../components" as Components
 import "../plugin"
 
 MouseArea {
     id:scrollbar
     property int __scrollbarExtent : styleitem.pixelMetric("scrollbarExtent");
-    width:orientation == Qt.Horizontal ? 200 : __scrollbarExtent;
-    height:orientation == Qt.Horizontal ? __scrollbarExtent : 200
+    implicitWidth:orientation == Qt.Horizontal ? 200 : __scrollbarExtent;
+    implicitHeight:orientation == Qt.Horizontal ? __scrollbarExtent : 200
 
     property int orientation : Qt.Horizontal
     property alias minimumValue: slider.minimumValue
@@ -100,8 +100,8 @@ MouseArea {
         orientation:scrollbar.orientation
         leftMargin: (orientation === Qt.Horizontal) ? handleRect.width/2 : handleRect.height/2
         rightMargin:leftMargin
-        handle: Item{ width:orientation == Qt.Vertical ? handleRect.height : handleRect.width;
-                           height:orientation == Qt.Vertical ? handleRect.width : handleRect.height}
+        handle: Item { width:orientation == Qt.Vertical ? handleRect.height : handleRect.width;
+                       height:orientation == Qt.Vertical ? handleRect.width : handleRect.height}
         groove:null
         valueIndicator:null
         inverted:orientation != Qt.Horizontal

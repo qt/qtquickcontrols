@@ -73,7 +73,7 @@ Rectangle {
                     id:view
                     height: contentsSize.height
                     width: contentsSize.width
-                    //onLoadFinished: area.contentY = 1 // force webview repaint
+                    onLoadFinished: area.contentY = -1 // workaround to force webview repaint
                     Component.onCompleted: url = textfield.text
                 }
             }

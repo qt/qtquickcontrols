@@ -27,7 +27,7 @@ FocusScope {
     }
 
     onContentXChanged: {
-        hscrollbar.value = contentY
+        hscrollbar.value = contentX
     }
 
     QStyleBackground {
@@ -53,7 +53,7 @@ FocusScope {
                 anchors.margins:contentMargin
                 Item {
                     id: content
-                    x: scrollarea.contentX
+                    x: -scrollarea.contentX
                     y: -scrollarea.contentY
                 }
             }
