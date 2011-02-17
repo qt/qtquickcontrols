@@ -43,7 +43,6 @@ Item {
         }
         Repeater {
             id:repeater
-            anchors.horizontalCenter: parent.horizontalCenter
             model: tabFrame ? tabFrame.tabs.length : null
             delegate: Item {
                 id:tab
