@@ -4,30 +4,19 @@ import "../plugin"
 
 Components.SpinBox {
     id:spinbox
+
     property variant __upRect;
     property variant __downRect;
-    property int __margin: (height -15)/2
+    property int __margin: (height -16)/2
 
     // Align height with button
     topMargin:__margin
     bottomMargin:__margin
+
     property int buttonHeight: edititem.sizeFromContents(100, 20).height
     QStyleItem { id:edititem; elementType:"edit" }
     height: buttonHeight
     clip:false
-
-    QStyleItem {
-        id:styleitem
-        elementType:"spinbox"
-        sunken: downPressed | upPressed
-        hover: containsMouse
-        focus:spinbox.activeFocus
-        enabled:spinbox.enabled
-        value: (upPressed? 1 : 0)           |
-                (downPressed== 1 ? 1<<1 : 0) |
-                (upEnabled? (1<<2) : 0)      |
-                (downEnabled == 1 ? (1<<3) : 0)
-    }
 
     background:
         Item {
@@ -35,10 +24,10 @@ Components.SpinBox {
         property variant editrect
         Rectangle {
             id:editBackground
-            x:editrect.x-1
-            y:editrect.y
-            width:editrect.width
-            height:editrect.height
+            x: __editRectX - 1
+            y: __editRectY
+            width: __editRectWidth
+            height: __editRectHeight
         }
 
         Item{
@@ -57,7 +46,6 @@ Components.SpinBox {
             }
         }
 
-
         function updateRect() {
             __upRect = spinboxbg.subControlRect("up");
             __downRect = spinboxbg.subControlRect("down");
@@ -71,18 +59,32 @@ Components.SpinBox {
         QStyleBackground {
             id:spinboxbg
             anchors.fill:parent
-            style:styleitem
+            style: QStyleItem {
+                id: styleitem
+                elementType: "spinbox"
+                sunken: downPressed | upPressed
+                hover: containsMouse
+                focus: spinbox.activeFocus
+                enabled: spinbox.enabled
+                value: (upPressed? 1 : 0)           |
+                        (downPressed== 1 ? 1<<1 : 0) |
+                        (upEnabled? (1<<2) : 0)      |
+                        (downEnabled == 1 ? (1<<3) : 0)
+            }
         }
     }
 
-    up:Item {
-        width:__upRect.width > 0 ? __upRect.width : 20
-        height:spinbox.height/2
+    up: Item {
+        x: __upRect.x
+        y: __upRect.y
+        width: __upRect.width
+        height: __upRect.height
     }
 
-    down:Item{
-        width:__downRect.width > 0 ? __downRect.width : 20
-        height:spinbox.height/2
+    down: Item {
+        x: __downRect.x
+        y: __downRect.y
+        width: __downRect.width
+        height: __downRect.height
     }
 }
-
