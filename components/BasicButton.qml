@@ -22,11 +22,11 @@ Item {
     // implementation
 
     property string __position: "only"
-    implicitWidth: Math.max(minimumWidth, backgroundComponent.item.width)
-    implicitHeight: Math.max(minimumHeight, backgroundComponent.item.height)
+    implicitWidth: Math.max(minimumWidth, backgroundLoader.item.width)
+    implicitHeight: Math.max(minimumHeight, backgroundLoader.item.height)
 
     Loader {
-        id: backgroundComponent
+        id: backgroundLoader
         anchors.fill: parent
         sourceComponent: background
         property alias styledItem: button

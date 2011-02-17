@@ -16,8 +16,8 @@ BasicButton {
 
     // implementation
 
-    implicitWidth: Math.max(minimumWidth, labelComponent.item.implicitWidth + leftMargin + rightMargin)
-    implicitHeight: Math.max(minimumHeight, labelComponent.item.implicitHeight + topMargin + bottomMargin)
+    implicitWidth: Math.max(minimumWidth, labelLoader.item.implicitWidth + leftMargin + rightMargin)
+    implicitHeight: Math.max(minimumHeight, labelLoader.item.implicitHeight + topMargin + bottomMargin)
 
     minimumWidth: defaultStyle.minimumWidth
     minimumHeight: defaultStyle.minimumHeight
@@ -25,7 +25,7 @@ BasicButton {
     background: defaultStyle.background
 
     Loader {
-        id: labelComponent
+        id: labelLoader
         anchors.fill: parent
         anchors.leftMargin: leftMargin
         anchors.rightMargin: rightMargin
