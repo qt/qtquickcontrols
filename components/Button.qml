@@ -1,4 +1,4 @@
-import QtQuick 1.0
+import QtQuick 1.1
 import "./styles/default" as DefaultStyles
 
 BasicButton {
@@ -14,13 +14,10 @@ BasicButton {
     property int rightMargin: defaultStyle.rightMargin
     property int bottomMargin: defaultStyle.bottomMargin
 
-    property int labelWidth: labelComponent.item.width
-    property int labelHeight: labelComponent.item.height
+    // implementation
 
-    width: Math.max(minimumWidth,
-                    labelComponent.item.width + leftMargin + rightMargin)
-    height: Math.max(minimumHeight,
-                     labelComponent.item.height + topMargin + bottomMargin)
+    implicitWidth: Math.max(minimumWidth, labelComponent.item.implicitWidth + leftMargin + rightMargin)
+    implicitHeight: Math.max(minimumHeight, labelComponent.item.implicitHeight + topMargin + bottomMargin)
 
     minimumWidth: defaultStyle.minimumWidth
     minimumHeight: defaultStyle.minimumHeight
@@ -29,11 +26,12 @@ BasicButton {
 
     Loader {
         id: labelComponent
-        anchors.fill:parent
+        anchors.fill: parent
         anchors.leftMargin: leftMargin
         anchors.rightMargin: rightMargin
         anchors.topMargin: topMargin
         anchors.bottomMargin: bottomMargin
+        property alias styledItem: button
         sourceComponent: label
     }
 

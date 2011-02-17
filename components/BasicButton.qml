@@ -1,15 +1,9 @@
-import QtQuick 1.0
+import QtQuick 1.1
 import "./behaviors"    // ButtonBehavior
 import "./styles/default" as DefaultStyles
 
 Item {
     id: button
-    SystemPalette{id:syspal}
-
-    property int minimumWidth: defaultStyle.minimumWidth
-    property int minimumHeight: defaultStyle.minimumHeight
-    width: Math.max(minimumWidth, backgroundComponent.item.width)
-    height: Math.max(minimumHeight, backgroundComponent.item.height)
 
     signal clicked
     property alias pressed: behavior.pressed
@@ -21,14 +15,22 @@ Item {
 
     property color backgroundColor: syspal.button
     property color textColor: syspal.text;
+
+    property int minimumWidth: defaultStyle.minimumWidth
+    property int minimumHeight: defaultStyle.minimumHeight
+
+    // implementation
+
     property string __position: "only"
+    implicitWidth: Math.max(minimumWidth, backgroundComponent.item.width)
+    implicitHeight: Math.max(minimumHeight, backgroundComponent.item.height)
 
     Loader {
-        id:backgroundComponent
+        id: backgroundComponent
         anchors.fill: parent
         sourceComponent: background
-        property Item styledItem:button
-        property alias position:button.__position
+        property alias styledItem: button
+        property alias position: button.__position
     }
 
     ButtonBehavior {
@@ -38,4 +40,5 @@ Item {
     }
 
     DefaultStyles.BasicButtonStyle { id: defaultStyle }
+    SystemPalette { id: syspal }
 }
