@@ -16,9 +16,9 @@ Item {
     property string tabBarAlignment: styleitem.styleHint("tabbaralignment");
 
     function tab(index) {
-        for (var i = 0; i < children.length; ++i) {
-            if (children[i].tabindex == index) {
-                return children[i]
+        for (var i = 0; i < tabrow.children.length; ++i) {
+            if (tabrow.children[i].tabindex == index) {
+                return tabrow.children[i]
             }
         }
         return null;

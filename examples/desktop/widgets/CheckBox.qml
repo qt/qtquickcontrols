@@ -21,7 +21,6 @@ Components.CheckBox{
             enabled:checkbox.enabled
         }
     }
-
-    checkmark: Item{}
+    checkmark: null
 }
 

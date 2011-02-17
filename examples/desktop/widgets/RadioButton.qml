@@ -20,7 +20,6 @@ Components.RadioButton{
             enabled:radiobutton.enabled
         }
     }
-
-    checkmark: Item{}
+    checkmark: null
 }
 

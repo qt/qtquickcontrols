@@ -19,7 +19,7 @@ Components.Button {
     }
 
     background:
-        QStyleBackground {
+    QStyleBackground {
         style:styleitem
         anchors.fill:parent
     }
