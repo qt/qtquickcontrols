@@ -115,8 +115,6 @@ Item {
         onLoaded: {
             item.parent = spinbox
             mouseUp.parent = item
-            item.x = spinbox.width-item.width
-            item.y = 0
         }
     }
 
@@ -139,8 +137,6 @@ Item {
         onLoaded: {
             item.parent = spinbox
             mouseDown.parent = item
-            item.x = spinbox.width-item.width
-            item.y = spinbox.height - item.height
         }
     }
 }
