@@ -7,11 +7,11 @@ import "../plugin"
 Components.CheckBox{
     id:checkbox
     property variant text
+    width:100
+    height:18
 
     background: QStyleBackground {
         id:styleitem
-        width:100
-        height:18
         style:QStyleItem {
             elementType:"checkbox"
             sunken:pressed

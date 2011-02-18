@@ -7,9 +7,10 @@ import "../plugin"
 Components.RadioButton{
     id:radiobutton
     property variant text
+    width:110
+    height:18
+
     background: QStyleBackground {
-        width:110
-        height:18
 
         style: QStyleItem{
             elementType:"radiobutton"

@@ -25,7 +25,7 @@ Item {
 
     Loader {
         id: backgroundLoader
-        anchors.centerIn: parent
+        anchors.fill: parent
         property alias styledItem: checkBox
         sourceComponent: background
     }
