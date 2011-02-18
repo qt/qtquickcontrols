@@ -109,7 +109,7 @@ Rectangle {
                             // normalize value [0.0 .. 1.0]
                             value: (slider.value - slider.minimumValue) / (slider.maximumValue - slider.minimumValue)
                         }
-                        Slider{id:slider; value:50}
+                        Slider {id:slider; value:50}
                         smooth:true
                     }
                 }
@@ -121,6 +121,7 @@ Rectangle {
                         id:group1
                         text:"CheckBox"
                         Row {
+                            spacing: 8
                             anchors.fill:parent
                             CheckBox{text:"Check 1"}
                             CheckBox{text:"Check 2";checked:true}
@@ -136,9 +137,9 @@ Rectangle {
                     GroupBox{
                         id:group2
                         text:"Radio Buttons"
-                        Row {
-                            RadioButton{id:radio1; text:"Radio 1"; onCheckedChanged: if(radio2)radio2.checked=!checked; checked:true;}
-                            RadioButton{id:radio2; text:"Radio 2"; onCheckedChanged: radio1.checked=!checked}
+                        ButtonRow {
+                            RadioButton{id:radio1; text:"Radio 1"}
+                            RadioButton{id:radio2; text:"Radio 2"}
                         }
                         RotationAnimation on rotation {
                             from:0; to:360;
