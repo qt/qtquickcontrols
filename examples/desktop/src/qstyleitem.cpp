@@ -335,7 +335,8 @@ void QStyleBackground::paint(QPainter *painter, const QStyleOptionGraphicsItem *
         QStyle::ControlElement control = QStyle::CE_TabBarTabShape;
         QStyleOptionTabV3 opt;
         m_style->initStyleOption(&opt);
-        opt.rect = QRect(0, 0, width(), height());
+        int overlap = qApp->style()->pixelMetric(QStyle::PM_TabBarTabOverlap);
+        opt.rect = QRect(overlap, 0, width()-2*overlap, height());
         if (m_style->text() == "South")
             opt.shape = QTabBar::RoundedSouth;
         if (m_style->activeControl() == QLatin1String("beginning"))

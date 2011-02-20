@@ -65,11 +65,11 @@ Item {
                         index == 0 ? "beginning" :
                             index == tabFrame.count-1 ? "end" : "middle"
                     }
-                    anchors.leftMargin: style.text == "North" && (style.activeControl == "middle" || style.activeControl == "end")
-                                        && tab.selected ? -__overlap : 0
+                    anchors.leftMargin: -tabOverlap + (style.text == "North" && (style.activeControl == "middle" || style.activeControl == "end")
+                                        && tab.selected ? -__overlap : 0)
 
-                    anchors.rightMargin: style.text == "North" && (style.activeControl == "middle"  || style.activeControl == "beginning")
-                                         && tab.selected ? -__overlap : 0
+                    anchors.rightMargin: -tabOverlap + (style.text == "North" && (style.activeControl == "middle"  || style.activeControl == "beginning")
+                                         && tab.selected ? -__overlap : 0)
                     anchors.fill:parent
                 }
 
