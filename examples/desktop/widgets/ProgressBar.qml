@@ -20,12 +20,12 @@ Components.ProgressBar {
             property int factor : 1000000
 
             value:   progressbar.value * factor
-            minimum: progressbar.minimumValue * factor
-            maximum: progressbar.maximumValue * factor
+            minimum: indeterminate ? 0 : progressbar.minimumValue * factor
+            maximum: indeterminate ? 0 : progressbar.maximumValue * factor
             enabled: progressbar.enabled
         }
     }
-
-    progress: Item{}
+    indeterminateProgress:null
+    progress: null
 }
 

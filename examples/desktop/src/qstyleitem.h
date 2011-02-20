@@ -42,7 +42,33 @@
 
 #include <QDeclarativeItem>
 #include <QtGui/QStyle>
+#include <QtGui>
+#include <QEvent>
 
+/**
+ * This class adds experimental support for
+ * animated progressbars
+ */
+class AnimWidget: public QProgressBar
+{
+Q_OBJECT
+public:
+    AnimWidget(QWidget *parent = 0):
+        QProgressBar(parent) {
+        setMaximum(100);
+        setMinimum(0);
+        setValue(50);
+        setAttribute(Qt::WA_WState_InPaintEvent);
+        setAttribute(Qt::WA_WState_Visible, true);
+    }
+public:
+    bool event(QEvent *e){
+        emit updateRequest();
+        return QProgressBar::event(e);
+    }
+signals:
+    void updateRequest();
+};
 
 class QStyleItem: public QObject
 {
@@ -140,7 +166,7 @@ protected:
     int m_minimum;
     int m_maximum;
     int m_value;
-    QWidget m_dummywidget;
+    AnimWidget m_dummywidget;
 };
 
 class QStyleBackground: public QDeclarativeItem
@@ -163,7 +189,7 @@ Q_SIGNALS:
     void styleChanged();
 
 private:
-    QWidget m_dummywidget;
+    AnimWidget m_dummywidget;
     QWidget *m_menu;
     QStyleItem *m_style;
 };

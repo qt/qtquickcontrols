@@ -106,6 +106,7 @@ Rectangle {
                         TextField{text:"TextField"}
                         TextArea{text:"TextArea\n"}
                         ProgressBar {
+                            indeterminate:true
                             // normalize value [0.0 .. 1.0]
                             value: (slider.value - slider.minimumValue) / (slider.maximumValue - slider.minimumValue)
                         }

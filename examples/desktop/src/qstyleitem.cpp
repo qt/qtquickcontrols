@@ -160,6 +160,7 @@ QSize QStyleItem::sizeFromContents(int width, int height) const
         initStyleOption(&opt);
         return qApp->style()->sizeFromContents(QStyle::CT_ComboBox, &opt, QSize(width,height), &m_dummywidget);
     } else if (metric == QLatin1String("spinbox")) {
+
         QStyleOptionSpinBox opt;
         initStyleOption(&opt);
         return qApp->style()->sizeFromContents(QStyle::CT_SpinBox, &opt, QSize(width,height), &m_dummywidget);
@@ -281,6 +282,7 @@ void QStyleBackground::setStyle(QStyleItem *style)
 {   
     if (m_style != style) {
         m_style = style;
+        connect(&m_dummywidget, SIGNAL(updateRequest()), this, SLOT(updateItem()));
         connect(m_style, SIGNAL(onChanged()), this, SLOT(updateItem()));
         connect(m_style, SIGNAL(selectedChanged()), this, SLOT(updateItem()));
         connect(m_style, SIGNAL(activeChanged()), this, SLOT(updateItem()));
@@ -316,7 +318,7 @@ void QStyleBackground::paint(QPainter *painter, const QStyleOptionGraphicsItem *
         if (qApp->style()->metaObject()->className() == QLatin1String("QMacStyle"))
             opt.rect.translate(0,2);
 
-        qApp->style()->drawControl(control, &opt, painter, 0);
+        qApp->style()->drawControl(control, &opt, painter, &m_dummywidget);
     }
     else if (type == QLatin1String("toolbutton")) {
         QStyle::ComplexControl control = QStyle::CC_ToolButton;
@@ -493,7 +495,7 @@ void QStyleBackground::paint(QPainter *painter, const QStyleOptionGraphicsItem *
         opt.minimum = m_style->minimum();
         opt.maximum = m_style->maximum();
         opt.progress = m_style->value();
-        qApp->style()->drawControl(control, &opt, painter, 0);
+        qApp->style()->drawControl(control, &opt, painter, &m_dummywidget);
     }
     else if (type == QLatin1String("toolbar")) {
         QStyle::ControlElement control = QStyle::CE_ToolBar;
