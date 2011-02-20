@@ -415,8 +415,10 @@ void QStyleBackground::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     else if (type == QLatin1String("checkbox")) {
         QStyle::ControlElement control = QStyle::CE_CheckBox;
         QStyleOptionButton opt;
-        opt.rect = QRect(0, 0, width(), height());
         m_style->initStyleOption(&opt);
+        if (!(opt.state & QStyle::State_On))
+            opt.state |= QStyle::State_Off;
+        opt.rect = QRect(0, 0, width(), height());
         opt.text = m_style->text();
         qApp->style()->drawControl(control, &opt, painter, 0);
     }

@@ -14,6 +14,7 @@ Item {
     property int __overlap : styleitem.pixelMetric("tabvshift");
     property string position: tabFrame ? tabFrame.position : "North"
     property string tabBarAlignment: styleitem.styleHint("tabbaralignment");
+    property int tabOverlap: styleitem.pixelMetric("taboverlap");
 
     function tab(index) {
         for (var i = 0; i < tabrow.children.length; ++i) {
