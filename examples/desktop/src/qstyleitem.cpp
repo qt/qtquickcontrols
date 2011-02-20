@@ -282,7 +282,7 @@ void QStyleBackground::setStyle(QStyleItem *style)
 {   
     if (m_style != style) {
         m_style = style;
-        connect(&m_dummywidget, SIGNAL(updateRequest()), this, SLOT(updateItem()));
+        //connect(&m_dummywidget, SIGNAL(updateRequest()), this, SLOT(updateItem()));
         connect(m_style, SIGNAL(onChanged()), this, SLOT(updateItem()));
         connect(m_style, SIGNAL(selectedChanged()), this, SLOT(updateItem()));
         connect(m_style, SIGNAL(activeChanged()), this, SLOT(updateItem()));
