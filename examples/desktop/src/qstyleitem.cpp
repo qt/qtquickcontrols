@@ -176,6 +176,8 @@ int QStyleItem::pixelMetric(const QString &metric) const
 {
     if (metric == "scrollbarExtent")
         return qApp->style()->pixelMetric(QStyle::PM_ScrollBarExtent);
+    else if (metric == "defaultframewidth")
+        return qApp->style()->pixelMetric(QStyle::PM_DefaultFrameWidth);
     else if (metric == "taboverlap")
         return qApp->style()->pixelMetric(QStyle::PM_TabBarTabOverlap);
     else if (metric == "tabbaseoverlap")
@@ -188,9 +190,9 @@ int QStyleItem::pixelMetric(const QString &metric) const
         return qApp->style()->pixelMetric(QStyle::PM_MenuHMargin);
     else if (metric == "menuvmargin")
         return qApp->style()->pixelMetric(QStyle::PM_MenuVMargin);
-    else if (metric == "menupanelwidth"){
+    else if (metric == "menupanelwidth")
         return qApp->style()->pixelMetric(QStyle::PM_MenuPanelWidth);
-}    return 0;
+    return 0;
 }
 
 QVariant QStyleItem::styleHint(const QString &metric) const

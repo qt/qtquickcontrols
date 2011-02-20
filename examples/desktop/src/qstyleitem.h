@@ -58,12 +58,12 @@ public:
         setMaximum(100);
         setMinimum(0);
         setValue(50);
-        setAttribute(Qt::WA_WState_InPaintEvent);
-        setAttribute(Qt::WA_WState_Visible, true);
+        // setAttribute(Qt::WA_WState_InPaintEvent);
+        // setAttribute(Qt::WA_WState_Visible, true);
     }
 public:
     bool event(QEvent *e){
-        emit updateRequest();
+        // emit updateRequest();
         return QProgressBar::event(e);
     }
 signals:

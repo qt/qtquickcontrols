@@ -9,6 +9,7 @@ FocusScope {
 
     property int contentMargin: 1
     property int __scrollbarExtent : styleitem.pixelMetric("scrollbarExtent");
+    property int frameWidth: styleitem.pixelMetric("defaultframewidth");
     property int contentHeight : content.childrenRect.height
     property int contentWidth: content.childrenRect.width
     property alias color: flickable.color
@@ -37,8 +38,9 @@ FocusScope {
             sunken: true
         }
         anchors.fill: parent
-        anchors.rightMargin: (frameAroundContents && vscrollbar.visible) ? vscrollbar.width + 4 : 0
-        anchors.bottomMargin: (frameAroundContents && hscrollbar.visible) ? hscrollbar.height + 4 : 0
+        anchors.rightMargin: (frameAroundContents && vscrollbar.visible) ? vscrollbar.width + 4 : -frameWidth
+        anchors.bottomMargin: (frameAroundContents && hscrollbar.visible) ? hscrollbar.height + 4 : -frameWidth
+        anchors.topMargin: (frameAroundContents && hscrollbar.visible) ? hscrollbar.height + 4 : -frameWidth
 
         Rectangle {
             id:flickable
