@@ -35,6 +35,7 @@ Item {
 
     property int labelWidth: labelComponent.item.width
     property int labelHeight: labelComponent.item.height
+    property string popupBehavior
 
     width: Math.max(minimumWidth,
                     labelComponent.item.width + leftMargin + rightMargin)

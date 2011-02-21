@@ -14,7 +14,7 @@ MouseArea {
     anchors.fill: parent  // fill the while app area
     opacity: popupFrameLoader.item.opacity  // let the frame control opacity, so it can set the behavior
 
-    property string behavior: "MacOS"
+    property string behavior: popupFrameLoader.item && popupFrameLoader.item.behavior ? popupFrameLoader.item.behavior : "MacOS"
     property bool desktopBehavior: (behavior == "MacOS" || behavior == "Windows" || behavior == "Linux")
     property int previousCurrentIndex: -1   // set in state transition last in this file
 

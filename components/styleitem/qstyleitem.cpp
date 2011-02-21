@@ -197,6 +197,8 @@ int QStyleItem::pixelMetric(const QString &metric) const
 
 QVariant QStyleItem::styleHint(const QString &metric) const
 {
+    if (metric == "comboboxpopup")
+        return qApp->style()->styleHint(QStyle::SH_ComboBox_Popup);
     if (metric == "focuswidget")
         return qApp->style()->styleHint(QStyle::SH_FocusFrame_AboveWidget);
     if (metric == "tabbaralignment") {
