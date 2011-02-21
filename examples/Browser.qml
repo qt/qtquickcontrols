@@ -1,6 +1,6 @@
 import QtQuick 1.0
 import QtWebKit 1.0
-import "widgets"
+import "../components"
 
 Rectangle {
     id:root
