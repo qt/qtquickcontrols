@@ -25,7 +25,7 @@
 ****************************************************************************/
 
 import QtQuick 1.0
-import Qt.labs.components 1.0
+import "../plugin"
 import "./styles/default" as DefaultStyles
 
 Item {

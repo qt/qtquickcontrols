@@ -9,10 +9,13 @@ DESTDIR = ..\\plugin
 OBJECTS_DIR = tmp
 MOC_DIR = tmp
 
-HEADERS += qstyleplugin.h \
+HEADERS += qrangemodel_p.h \
+           qrangemodel.h \
+           qstyleplugin.h \
            qstyleitem.h
 
-SOURCES += qstyleplugin.cpp \
+SOURCES += qrangemodel.cpp \
+	   qstyleplugin.cpp \
 	   qstyleitem.cpp
            
 

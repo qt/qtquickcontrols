@@ -47,6 +47,7 @@
 #include <qdeclarative.h>
 #include <qdeclarativeitem.h>
 #include <qdeclarativeimageprovider.h>
+#include <qrangemodel.h>
 #include <qdeclarativeview.h>
 #include <QApplication>
 #include <QImage>
@@ -73,6 +74,7 @@ void StylePlugin::registerTypes(const char *uri)
 {
     qmlRegisterType<QStyleItem>(uri, 1, 0, "QStyleItem");
     qmlRegisterType<QStyleBackground>(uri, 1, 0, "QStyleBackground");
+    qmlRegisterType<QRangeModel>(uri, 1, 0, "RangeModel");
 }
 
 void StylePlugin::initializeEngine(QDeclarativeEngine *engine, const char *uri)
