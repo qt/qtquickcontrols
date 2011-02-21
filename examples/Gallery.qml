@@ -1,5 +1,5 @@
 import QtQuick 1.0
-import "widgets"
+import "../components"
 
 Rectangle {
     width: 540

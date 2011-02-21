@@ -1,6 +1,6 @@
 import QtQuick 1.1
-import "../../../components" as Components
-import "../plugin"
+import "custom" as Components
+import "plugin"
 
 MouseArea {
     id:scrollbar

@@ -1,6 +1,6 @@
 import QtQuick 1.0
-import "../../../components" as Components
-import "../plugin"
+import "custom" as Components
+import "plugin"
 
 Components.ChoiceList {
     id:choicelist
