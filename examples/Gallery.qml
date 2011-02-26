@@ -2,8 +2,8 @@ import QtQuick 1.0
 import "../components"
 
 Rectangle {
-    width: 540
-    height: 340
+    width: 560
+    height: 370
 
     ToolBar{
         id:toolbar
@@ -165,7 +165,6 @@ Rectangle {
                 }
             }
         }
-        current: 1
 
         Tab {
             title: "Dials"
