@@ -43,7 +43,6 @@ Components.ChoiceList {
 
     popupFrame: QStyleBackground {
         property string behavior: styleitem.styleHint("comboboxpopup") ? "MacOS" : "Windows"
-        onBehaviorChanged:print(behavior) + styleitem.styleHint("comboboxpopup")
         property int fw: styleitem.pixelMetric("menupanelwidth");
         anchors.leftMargin: styleitem.pixelMetric("menuhmargin") + fw
         anchors.rightMargin: styleitem.pixelMetric("menuhmargin") + fw
