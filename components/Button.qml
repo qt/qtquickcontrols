@@ -18,15 +18,37 @@ Components.Button {
         raised: !pressed
         hover: containsMouse
         enabled: button.enabled
-        text: button.text
+        text: iconSource != "" ? "" : button.text
         focus: button.focus
+        // If no icon, let the style do the drawing
         activeControl: defaultbutton ? "default" : ""
     }
 
-    background:
-    QStyleBackground {
+    background: QStyleBackground {
         style:styleitem
         anchors.fill:parent
+    }
+
+    label: Item {
+        // Used as a fallback since I can't pass the imageURL
+        // directly to the style object
+        Row {
+            id: row
+            anchors.centerIn: parent
+            spacing: 4
+            Image {
+                source: iconSource
+                anchors.verticalCenter: parent.verticalCenter
+                fillMode: Image.Stretch //mm Image should shrink if button is too small, depends on QTBUG-14957
+            }
+            Text {
+                id:text
+                color: textColor
+                anchors.verticalCenter: parent.verticalCenter
+                text: styledItem.text
+                horizontalAlignment: Text.Center
+            }
+        }
     }
 }
 

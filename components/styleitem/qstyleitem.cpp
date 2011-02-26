@@ -379,9 +379,10 @@ void QStyleBackground::paint(QPainter *painter, const QStyleOptionGraphicsItem *
         m_style->initStyleOption(&opt);
 
         // Dirty hack to fix button label positioning on mac
-        if (qApp->style()->metaObject()->className() == QLatin1String("QMacStyle"))
-            opt.rect.translate(0,2);
+        //if (qApp->style()->metaObject()->className() == QLatin1String("QMacStyle"))
+        //    opt.rect.translate(0,2);
         m_style->widget()->resize(width(), height());
+        opt.text = m_style->text();
         if (m_style->activeControl() == "default")
             opt.features |= QStyleOptionButton::DefaultButton;
 
