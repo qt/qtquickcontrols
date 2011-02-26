@@ -19,7 +19,7 @@ Components.ProgressBar {
             // range [0..1] must be stretched to a good precision
             property int factor : 1000000
 
-            value:   progressbar.value * factor
+            value:   indeterminate ? 1 : progressbar.value * factor
             minimum: indeterminate ? 0 : progressbar.minimumValue * factor
             maximum: indeterminate ? 0 : progressbar.maximumValue * factor
             enabled: progressbar.enabled

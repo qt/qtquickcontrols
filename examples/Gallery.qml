@@ -11,28 +11,27 @@ Rectangle {
         height:40
         Row {
             spacing:2
-
-        ToolButton{iconSource: "images/folder_new.png"}
-        ToolButton{iconSource: "images/folder_new.png"}
-        ToolButton{iconSource: "images/folder_new.png"}
-        CheckBox{
-            id:enabledCheck
-            text:"Enabled"
-            checked:true
-            anchors.verticalCenter:parent.verticalCenter
-        }
-        CheckBox{
-            id:animateCheck
-            text:"Animated"
-            checked:false
-            anchors.verticalCenter:parent.verticalCenter
-        }
-        CheckBox{
-            text:"South Tab"
-            id:toolBarPosition
-            checked:false
-            anchors.verticalCenter:parent.verticalCenter
-        }
+            ToolButton{iconSource: "images/folder_new.png"}
+            ToolButton{iconSource: "images/folder_new.png"}
+            ToolButton{iconSource: "images/folder_new.png"}
+            CheckBox{
+                id:enabledCheck
+                text:"Enabled"
+                checked:true
+                anchors.verticalCenter:parent.verticalCenter
+            }
+            CheckBox{
+                id:animateCheck
+                text:"Animated"
+                checked:false
+                anchors.verticalCenter:parent.verticalCenter
+            }
+            CheckBox{
+                text:"South Tab"
+                id:toolBarPosition
+                checked:false
+                anchors.verticalCenter:parent.verticalCenter
+            }
         }
     }
 
@@ -83,31 +82,40 @@ Rectangle {
                         spacing:6
                         SequentialAnimation on x {
                             running: animateCheck.checked
-                            NumberAnimation { from:0 ; to: -flickable.width; easing.type:Easing.OutCubic; duration:600}
-                            PauseAnimation { duration: 2000 }
-                            NumberAnimation { from:-flickable.width; to:0; easing.type:Easing.OutCubic; duration:600}
+                            NumberAnimation { from:0 ; to: -flickable.width; easing.type:Easing.OutSine; duration:1000}
+                            PauseAnimation { duration: 1000 }
+                            NumberAnimation { from:-flickable.width; to:0; easing.type:Easing.OutSine; duration:1000}
                             alwaysRunToEnd: true
                             loops: Animation.Infinite
                         }
 
                         Row {
                             spacing:4
-                            Repeater {
-                                model: ["Button 1", "Button 2"]
-                                Button { text:modelData
-                                    rotation: 0
-                                    smooth:true
-                                    width:98
-                                }
+                            Button {
+                                id:button1
+                                text:"Button 1"
+                                width:98
+                                focus:true
+                                defaultbutton:true
+                                KeyNavigation.tab: button2
+                            }
+                            Button {
+                                id:button2
+                                text:"Button 2"
+                                width:98
+                                KeyNavigation.tab: button1
                             }
                         }
                         ChoiceList{model:choices}
-                        SpinBox{}
-                        TextField{text:"TextField"}
-                        TextArea{text:"TextArea\n"}
+                        SpinBox{id:t1; KeyNavigation.tab: t2}
+                        TextField{id: t2; text:"TextField"; KeyNavigation.tab: t3}
+                        TextArea{id: t3; text:"TextArea\n"; KeyNavigation.tab: t1}
                         ProgressBar {
                             // normalize value [0.0 .. 1.0]
                             value: (slider.value - slider.minimumValue) / (slider.maximumValue - slider.minimumValue)
+                        }
+                        ProgressBar {
+                            indeterminate: true
                         }
                         Slider {id:slider; value:50}
                         smooth:true
@@ -151,16 +159,22 @@ Rectangle {
                         }
                     }
                     TextScrollArea {
-                        id:area
+                        id: area
                         text: loremIpsum + loremIpsum
                     }
                 }
             }
         }
+        current: 1
+
         Tab {
-            title:"More"
-            Rectangle {
-                anchors.fill:parent
+            title: "Dials"
+            Row {
+                anchors.fill: parent
+                anchors.margins:8
+                Dial{id: dial1; KeyNavigation.tab:dial2}
+                Dial{id: dial2; KeyNavigation.tab:dial3}
+                Dial{id: dial3; KeyNavigation.tab:dial1}
             }
         }
         Tab {
