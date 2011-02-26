@@ -51,6 +51,7 @@
 
 QStyleItem::QStyleItem(QObject*parent)
     : QObject(parent),
+    m_dummywidget(0),
     m_sunken(false),
     m_raised(false),
     m_active(true),
@@ -137,42 +138,42 @@ QString QStyleBackground::hitTest(int px, int py) const
     return "none";
 }
 
-QSize QStyleItem::sizeFromContents(int width, int height) const
+QSize QStyleItem::sizeFromContents(int width, int height)
 {
     QString metric = m_type;
     if (metric == QLatin1String("checkbox")) {
         QStyleOptionButton opt;
         initStyleOption(&opt);
         opt.text = text();
-        return qApp->style()->sizeFromContents(QStyle::CT_CheckBox, &opt, QSize(width,height), &m_dummywidget);
+        return qApp->style()->sizeFromContents(QStyle::CT_CheckBox, &opt, QSize(width,height), widget());
     } else if (metric == QLatin1String("button")) {
         QStyleOptionButton opt;
         initStyleOption(&opt);
         opt.text = text();
-        return qApp->style()->sizeFromContents(QStyle::CT_PushButton, &opt, QSize(width,height), &m_dummywidget);
+        return qApp->style()->sizeFromContents(QStyle::CT_PushButton, &opt, QSize(width,height), widget());
     } else if (metric == QLatin1String("tab")) {
         QStyleOptionTabV3 opt;
         initStyleOption(&opt);
         opt.text = text();
-        return qApp->style()->sizeFromContents(QStyle::CT_TabBarTab, &opt, QSize(width,height), &m_dummywidget);
+        return qApp->style()->sizeFromContents(QStyle::CT_TabBarTab, &opt, QSize(width,height), widget());
     } else if (metric == QLatin1String("combobox")) {
         QStyleOptionComboBox opt;
         initStyleOption(&opt);
-        return qApp->style()->sizeFromContents(QStyle::CT_ComboBox, &opt, QSize(width,height), &m_dummywidget);
+        return qApp->style()->sizeFromContents(QStyle::CT_ComboBox, &opt, QSize(width,height), widget());
     } else if (metric == QLatin1String("spinbox")) {
 
         QStyleOptionSpinBox opt;
         initStyleOption(&opt);
-        return qApp->style()->sizeFromContents(QStyle::CT_SpinBox, &opt, QSize(width,height), &m_dummywidget);
+        return qApp->style()->sizeFromContents(QStyle::CT_SpinBox, &opt, QSize(width,height), widget());
     } else if (metric == QLatin1String("edit")) {
         QStyleOptionFrameV3 opt;
         initStyleOption(&opt);
-        return qApp->style()->sizeFromContents(QStyle::CT_LineEdit, &opt, QSize(width,height), &m_dummywidget);
+        return qApp->style()->sizeFromContents(QStyle::CT_LineEdit, &opt, QSize(width,height), widget());
     }
     return QSize();
 }
 
-int QStyleItem::pixelMetric(const QString &metric) const
+int QStyleItem::pixelMetric(const QString &metric)
 {
     if (metric == "scrollbarExtent")
         return qApp->style()->pixelMetric(QStyle::PM_ScrollBarExtent);
@@ -195,10 +196,13 @@ int QStyleItem::pixelMetric(const QString &metric) const
     return 0;
 }
 
-QVariant QStyleItem::styleHint(const QString &metric) const
+QVariant QStyleItem::styleHint(const QString &metric)
 {
-    if (metric == "comboboxpopup")
-        return qApp->style()->styleHint(QStyle::SH_ComboBox_Popup);
+    if (metric == "comboboxpopup") {
+        QStyleOptionComboBox opt;
+        opt.editable = false;
+        return qApp->style()->styleHint(QStyle::SH_ComboBox_Popup, &opt);
+    }
     if (metric == "focuswidget")
         return qApp->style()->styleHint(QStyle::SH_FocusFrame_AboveWidget);
     if (metric == "tabbaralignment") {
@@ -212,6 +216,63 @@ QVariant QStyleItem::styleHint(const QString &metric) const
     return 0;
 }
 
+void QStyleItem::setElementType(const QString &str)
+{
+    if (m_type == str)
+        return;
+
+    m_type = str;
+    emit elementTypeChanged();
+
+    if (m_dummywidget) {
+        delete m_dummywidget;
+        m_dummywidget = 0;
+    }
+    // Only enable visible if the widget can animate
+    bool visible = false;
+    if (str == "menu" || str == "menuitem") {
+        // Since these are used by the delegate, it makes no
+        // sense to re-create them per item
+        static QWidget *menu = new QMenu();
+        m_dummywidget = menu;
+    } else if (str == "combobox") {
+        m_dummywidget = new QComboBox();
+        visible = true;
+    } else if (str == "progressbar") {
+        m_dummywidget = new QProgressBar();
+        visible = true;
+    } else if (str == "button") {
+        m_dummywidget = new QPushButton();
+        visible = true;
+    } else if (str == "checkbox") {
+        m_dummywidget = new QCheckBox();
+        visible = true;
+    } else if (str == "radiobutton") {
+        m_dummywidget = new QRadioButton();
+        visible = true;
+    } else if (str == "edit") {
+        m_dummywidget = new QLineEdit();
+        visible = true;
+    } else if (str == "scrollbar") {
+        m_dummywidget = new QScrollBar();
+        visible = true;
+    }
+
+    if (m_dummywidget) {
+        m_dummywidget->installEventFilter(this);
+        m_dummywidget->setAttribute(Qt::WA_DontShowOnScreen);
+        m_dummywidget->setAttribute(Qt::WA_QuitOnClose, false); // dont keep app open
+        m_dummywidget->setVisible(visible);
+    }
+}
+
+bool QStyleItem::eventFilter(QObject *o, QEvent *e) {
+    if (e->type() == QEvent::Paint) {
+        updateItem();
+        return true;
+    }
+    return QObject::eventFilter(o, e);
+}
 
 QRect QStyleBackground::subControlRect(const QString &subcontrolString) const
 {
@@ -271,22 +332,18 @@ QRect QStyleBackground::subControlRect(const QString &subcontrolString) const
 
 QStyleBackground::QStyleBackground(QDeclarativeItem *parent)
     : QDeclarativeItem(parent),
-      m_menu(0),
       m_style(0)
 {
     setFlag(QGraphicsItem::ItemHasNoContents, false);
     setCacheMode(QGraphicsItem::DeviceCoordinateCache);
     setSmooth(true);
-
-    m_menu = new QMenu();
-    m_menu->ensurePolished();
 }
 
 void QStyleBackground::setStyle(QStyleItem *style)
 {   
     if (m_style != style) {
         m_style = style;
-        //connect(&m_dummywidget, SIGNAL(updateRequest()), this, SLOT(updateItem()));
+        connect(m_style, SIGNAL(updateItem()), this, SLOT(updateItem()));
         connect(m_style, SIGNAL(onChanged()), this, SLOT(updateItem()));
         connect(m_style, SIGNAL(selectedChanged()), this, SLOT(updateItem()));
         connect(m_style, SIGNAL(activeChanged()), this, SLOT(updateItem()));
@@ -311,6 +368,9 @@ void QStyleBackground::setStyle(QStyleItem *style)
 
 void QStyleBackground::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
+    if (!m_style)
+        return;
+
     QString type = m_style->elementType();
     if (type == QLatin1String("button")) {
         QStyle::ControlElement control = QStyle::CE_PushButton;
@@ -321,8 +381,11 @@ void QStyleBackground::paint(QPainter *painter, const QStyleOptionGraphicsItem *
         // Dirty hack to fix button label positioning on mac
         if (qApp->style()->metaObject()->className() == QLatin1String("QMacStyle"))
             opt.rect.translate(0,2);
+        m_style->widget()->resize(width(), height());
+        if (m_style->activeControl() == "default")
+            opt.features |= QStyleOptionButton::DefaultButton;
 
-        qApp->style()->drawControl(control, &opt, painter, &m_dummywidget);
+        qApp->style()->drawControl(control, &opt, painter, m_style->widget());
     }
     else if (type == QLatin1String("toolbutton")) {
         QStyle::ComplexControl control = QStyle::CC_ToolButton;
@@ -331,9 +394,8 @@ void QStyleBackground::paint(QPainter *painter, const QStyleOptionGraphicsItem *
         opt.subControls = QStyle::SC_ToolButton;
         opt.rect = QRect(0, 0, width(), height());
         QToolBar bar;
-        QWidget dummy(&bar);
         if (opt.state & QStyle::State_Raised || opt.state & QStyle::State_On)
-            qApp->style()->drawComplexControl(control, &opt, painter, &dummy);
+            qApp->style()->drawComplexControl(control, &opt, painter, m_style->widget());
     }
     else if (type == QLatin1String("tab")) {
         QStyle::ControlElement control = QStyle::CE_TabBarTabShape;
@@ -351,28 +413,27 @@ void QStyleBackground::paint(QPainter *painter, const QStyleOptionGraphicsItem *
             opt.position = QStyleOptionTabV3::OnlyOneTab;
         else
             opt.position = QStyleOptionTabV3::Middle;
-        qApp->style()->drawControl(control, &opt, painter, &m_dummywidget);
+        qApp->style()->drawControl(control, &opt, painter, m_style->widget());
     }
     else if (type == QLatin1String("menu")) {
+        QMenu *menu = qobject_cast<QMenu*>(m_style->widget());
         QStyleOptionMenuItem opt;
         opt.rect = QRect(0, 0, width(), height());
         m_style->initStyleOption(&opt);
         QStyleHintReturnMask val;
-        qApp->style()->styleHint(QStyle::SH_Menu_Mask, &opt, &m_dummywidget, &val);
+        qApp->style()->styleHint(QStyle::SH_Menu_Mask, &opt, m_style->widget(), &val);
         painter->save();
         painter->setClipRegion(val.region);
-        m_menu->setContextMenuPolicy(Qt::CustomContextMenu);
-        m_menu->ensurePolished();
-        opt.palette = m_menu->palette();
+        opt.palette = menu->palette();
         painter->fillRect(opt.rect, opt.palette.window());
         painter->restore();
-        qApp->style()->drawPrimitive(QStyle::PE_PanelMenu, &opt, painter, m_menu);
+        qApp->style()->drawPrimitive(QStyle::PE_PanelMenu, &opt, painter, menu);
         QStyleOptionFrame frame;
         m_style->initStyleOption(&frame);
         frame.lineWidth = qApp->style()->pixelMetric(QStyle::PM_MenuPanelWidth);
         frame.midLineWidth = 0;
         frame.rect = opt.rect;
-        qApp->style()->drawPrimitive(QStyle::PE_FrameMenu, &frame, painter, m_menu);
+        qApp->style()->drawPrimitive(QStyle::PE_FrameMenu, &frame, painter, menu);
         //       qApp->style()->drawControl(QStyle::CE_MenuVMargin, &opt, painter, m_menu);
     }
     else if (type == QLatin1String("frame")) {
@@ -389,7 +450,7 @@ void QStyleBackground::paint(QPainter *painter, const QStyleOptionGraphicsItem *
         QStyleOption opt;
         opt.rect = QRect(0, 0, width(), height());
         m_style->initStyleOption(&opt);
-        qApp->style()->drawControl(control, &opt, painter, &m_dummywidget);
+        qApp->style()->drawControl(control, &opt, painter, m_style->widget());
     }
     else if (type == QLatin1String("tabframe")) {
         QStyle::PrimitiveElement control = QStyle::PE_FrameTabWidget;
@@ -400,22 +461,23 @@ void QStyleBackground::paint(QPainter *painter, const QStyleOptionGraphicsItem *
                 opt.shape = QTabBar::RoundedSouth;
             opt.selectedTabRect = QRect(m_style->value(), 0, m_style->minimum(), height());
             opt.rect = QRect(0, 0, width(), height());
-            qApp->style()->drawPrimitive(control, &opt, painter, 0);
+            qApp->style()->drawPrimitive(control, &opt, painter, m_style->widget());
         } else {
             QStyleOptionTabWidgetFrame opt;
             m_style->initStyleOption(&opt);
             opt.rect = QRect(0, 0, width(), height());
-            qApp->style()->drawPrimitive(control, &opt, painter, 0);
+            qApp->style()->drawPrimitive(control, &opt, painter, m_style->widget());
         }
     }
     else if (type == QLatin1String("menuitem")) {
+        QMenu *menu = qobject_cast<QMenu*>(m_style->widget());
         QStyle::ControlElement control = QStyle::CE_MenuItem;
         QStyleOptionMenuItem opt;
         opt.rect = QRect(0, 0, width(), height());
         opt.text = m_style->text();
         m_style->initStyleOption(&opt);
-        opt.palette = m_menu->palette();
-        qApp->style()->drawControl(control, &opt, painter, m_menu);
+        opt.palette = menu->palette();
+        qApp->style()->drawControl(control, &opt, painter, 0);
     }
     else if (type == QLatin1String("checkbox")) {
         QStyle::ControlElement control = QStyle::CE_CheckBox;
@@ -425,7 +487,8 @@ void QStyleBackground::paint(QPainter *painter, const QStyleOptionGraphicsItem *
             opt.state |= QStyle::State_Off;
         opt.rect = QRect(0, 0, width(), height());
         opt.text = m_style->text();
-        qApp->style()->drawControl(control, &opt, painter, 0);
+        m_style->widget()->resize(width(), height());
+        qApp->style()->drawControl(control, &opt, painter, m_style->widget());
     }
     else if (type == QLatin1String("radiobutton")) {
         QStyle::ControlElement control = QStyle::CE_RadioButton;
@@ -433,7 +496,8 @@ void QStyleBackground::paint(QPainter *painter, const QStyleOptionGraphicsItem *
         opt.rect = QRect(0, 0, width(), height());
         m_style->initStyleOption(&opt);
         opt.text = m_style->text();
-        qApp->style()->drawControl(control, &opt, painter, 0);
+        m_style->widget()->resize(width(), height());
+        qApp->style()->drawControl(control, &opt, painter, m_style->widget());
     }
     else if (type == QLatin1String("edit")) {
         QStyle::PrimitiveElement control = QStyle::PE_PanelLineEdit;
@@ -441,26 +505,15 @@ void QStyleBackground::paint(QPainter *painter, const QStyleOptionGraphicsItem *
         opt.rect = QRect(0, 0, width(), height());
         opt.lineWidth = 1; // jens : this must be non-zero
         m_style->initStyleOption(&opt);
-        qApp->style()->drawPrimitive(control, &opt, painter, 0);
-    }
-    else if (type == QLatin1String("slidergroove")) {
-        QStyle::ComplexControl control = QStyle::CC_Slider;
-        QStyleOptionSlider opt;
-        opt.rect = QRect(0, 0, width(), height());
-        opt.minimum = 0;
-        opt.maximum = 100;
-        opt.subControls |= (QStyle::SC_SliderGroove);
-        opt.activeSubControls = QStyle::SC_SliderHandle;
-        m_style->initStyleOption(&opt);
-        qApp->style()->drawComplexControl(control, &opt, painter, 0);
+        qApp->style()->drawPrimitive(control, &opt, painter, m_style->widget());
     }
     else if (type == QLatin1String("combobox")) {
         QStyle::ComplexControl control = QStyle::CC_ComboBox;
         QStyleOptionComboBox opt;
         opt.rect = QRect(0, 0, width(), height());
         m_style->initStyleOption(&opt);
-        m_dummywidget.activateWindow();
-        qApp->style()->drawComplexControl(control, &opt, painter, &m_dummywidget);
+        m_style->widget()->resize(width(), height());
+        qApp->style()->drawComplexControl(control, &opt, painter, m_style->widget());
     }
     else if (type == QLatin1String("spinbox")) {
         QStyle::ComplexControl control = QStyle::CC_SpinBox;
@@ -478,7 +531,7 @@ void QStyleBackground::paint(QPainter *painter, const QStyleOptionGraphicsItem *
             opt.stepEnabled |= QAbstractSpinBox::StepUpEnabled;
         if (m_style->value() & (1<<3))
             opt.stepEnabled |= QAbstractSpinBox::StepDownEnabled;
-        qApp->style()->drawComplexControl(control, &opt, painter, 0);
+        qApp->style()->drawComplexControl(control, &opt, painter, m_style->widget());
     }
     else if (type == QLatin1String("slider")) {
         QStyle::ComplexControl control = QStyle::CC_Slider;
@@ -493,9 +546,29 @@ void QStyleBackground::paint(QPainter *painter, const QStyleOptionGraphicsItem *
         opt.sliderValue = m_style->value();
         opt.subControls = QStyle::SC_SliderTickmarks | QStyle::SC_SliderGroove | QStyle::SC_SliderHandle;
         opt.activeSubControls = QStyle::SC_None;
-        qApp->style()->drawComplexControl(control, &opt, painter, 0);
+        qApp->style()->drawComplexControl(control, &opt, painter, m_style->widget());
+    }
+    else if (type == QLatin1String("dial")) {
+        QStyle::ComplexControl control = QStyle::CC_Dial;
+        QStyleOptionSlider opt;
+        opt.rect = QRect(0, 0, width(), height());
+        m_style->initStyleOption(&opt);
+        opt.minimum = m_style->minimum();
+        opt.maximum = m_style->maximum();
+        opt.tickPosition = QSlider::TicksBelow;
+        opt.sliderPosition = m_style->value();
+        opt.tickInterval = 1200 / (opt.maximum - opt.minimum);
+        opt.sliderValue = m_style->value();
+        opt.subControls = QStyle::SC_SliderTickmarks | QStyle::SC_SliderGroove | QStyle::SC_SliderHandle;
+        opt.activeSubControls = QStyle::SC_None;
+        qApp->style()->drawComplexControl(control, &opt, painter, m_style->widget());
     }
     else if (type == QLatin1String("progressbar")) {
+        QProgressBar *bar= qobject_cast<QProgressBar*>(m_style->widget());
+        bar->setMaximum(m_style->maximum());
+        bar->setMinimum(m_style->minimum());
+        if (m_style->maximum() != m_style->minimum())
+            bar->setValue(1);
         QStyle::ControlElement control = QStyle::CE_ProgressBar;
         QStyleOptionProgressBarV2 opt;
         opt.rect = QRect(0, 0, width(), height());
@@ -503,7 +576,7 @@ void QStyleBackground::paint(QPainter *painter, const QStyleOptionGraphicsItem *
         opt.minimum = m_style->minimum();
         opt.maximum = m_style->maximum();
         opt.progress = m_style->value();
-        qApp->style()->drawControl(control, &opt, painter, &m_dummywidget);
+        qApp->style()->drawControl(control, &opt, painter, bar);
     }
     else if (type == QLatin1String("toolbar")) {
         QStyle::ControlElement control = QStyle::CE_ToolBar;
@@ -523,9 +596,15 @@ void QStyleBackground::paint(QPainter *painter, const QStyleOptionGraphicsItem *
         opt.lineWidth = 1;
         opt.subControls = QStyle::SC_GroupBoxLabel;
         // oxygen crashes if we dont pass a widget
-        qApp->style()->drawComplexControl(control, &opt, painter, &m_dummywidget);
+        qApp->style()->drawComplexControl(control, &opt, painter, m_style->widget());
     }
     else if (type == QLatin1String("scrollbar")) {
+        QScrollBar *bar = qobject_cast<QScrollBar *>(m_style->widget());
+        bar->setMaximum(m_style->maximum());
+        bar->setMinimum(m_style->minimum());
+        bar->setValue(m_style->value());
+        bar->resize(width(), height());
+
         QStyle::ComplexControl control = QStyle::CC_ScrollBar;
         QStyleOptionSlider opt;
         opt.rect = QRect(0, 0, width(), height());
@@ -544,6 +623,6 @@ void QStyleBackground::paint(QPainter *painter, const QStyleOptionGraphicsItem *
 
         opt.sliderValue = m_style->value();
         opt.subControls = QStyle::SC_All;
-        qApp->style()->drawComplexControl(control, &opt, painter, &m_dummywidget);
+        qApp->style()->drawComplexControl(control, &opt, painter, bar);
     }
 }

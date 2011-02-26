@@ -40,14 +40,13 @@
 #include <qdeclarative.h>
 #include "qstyleplugin.h"
 #include "qstyleitem.h"
-
+#include "qrangemodel.h"
 #include <qdeclarativeextensionplugin.h>
 
 #include <qdeclarativeengine.h>
 #include <qdeclarative.h>
 #include <qdeclarativeitem.h>
 #include <qdeclarativeimageprovider.h>
-#include <qrangemodel.h>
 #include <qdeclarativeview.h>
 #include <QApplication>
 #include <QImage>

@@ -45,31 +45,6 @@
 #include <QtGui>
 #include <QEvent>
 
-/**
- * This class adds experimental support for
- * animated progressbars
- */
-class AnimWidget: public QProgressBar
-{
-Q_OBJECT
-public:
-    AnimWidget(QWidget *parent = 0):
-        QProgressBar(parent) {
-        setMaximum(100);
-        setMinimum(0);
-        setValue(50);
-        // setAttribute(Qt::WA_WState_InPaintEvent);
-        // setAttribute(Qt::WA_WState_Visible, true);
-    }
-public:
-    bool event(QEvent *e){
-        // emit updateRequest();
-        return QProgressBar::event(e);
-    }
-signals:
-    void updateRequest();
-};
-
 class QStyleItem: public QObject
 {
     Q_OBJECT
@@ -123,15 +98,17 @@ public:
     void setMinimum(int minimum) { if (m_minimum!= minimum) {m_minimum = minimum; emit minimumChanged();}}
     void setMaximum(int maximum) { if (m_maximum != maximum) {m_maximum = maximum; emit maximumChanged();}}
     void setValue(int value) { if (m_value!= value) {m_value = value; emit valueChanged();}}
-    void setElementType(const QString &str) { if (m_type != str) {m_type = str; emit elementTypeChanged();}}
+    void setElementType(const QString &str);
     void setText(const QString &str) { if (m_text != str) {m_text = str; emit textChanged();}}
     void setActiveControl(const QString &str) { if (m_activeControl != str) {m_activeControl = str; emit activeControlChanged();}}
+    bool eventFilter(QObject *, QEvent *);
+    virtual void initStyleOption (QStyleOption *opt) const;
+    QWidget *widget(){ return m_dummywidget; };
 
-    virtual void initStyleOption(QStyleOption *opt) const;
 public Q_SLOTS:
-    int pixelMetric(const QString&) const;    
-    QVariant styleHint(const QString&) const;
-    QSize sizeFromContents(int width, int height) const;
+    int pixelMetric(const QString&);
+    QVariant styleHint(const QString&);
+    QSize sizeFromContents(int width, int height);
 
 Q_SIGNALS:
     void elementTypeChanged();
@@ -149,8 +126,10 @@ Q_SIGNALS:
     void maximumChanged();
     void valueChanged();
     void activeControlChanged();
+    void updateItem();
 
 protected:
+    QWidget *m_dummywidget;
     QString m_type;
     QString m_text;
     QString m_activeControl;
@@ -166,7 +145,6 @@ protected:
     int m_minimum;
     int m_maximum;
     int m_value;
-    AnimWidget m_dummywidget;
 };
 
 class QStyleBackground: public QDeclarativeItem
@@ -189,8 +167,6 @@ Q_SIGNALS:
     void styleChanged();
 
 private:
-    AnimWidget m_dummywidget;
-    QWidget *m_menu;
     QStyleItem *m_style;
 };
 
