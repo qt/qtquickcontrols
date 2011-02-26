@@ -18,7 +18,7 @@ Components.Button {
         raised: !pressed
         hover: containsMouse
         enabled: button.enabled
-        text: iconSource != "" ? "" : button.text
+        text: iconSource == "" ? "" : button.text
         focus: button.focus
         // If no icon, let the style do the drawing
         activeControl: defaultbutton ? "default" : ""
