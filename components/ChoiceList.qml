@@ -6,8 +6,10 @@ Components.ChoiceList {
     id:choicelist
 
     property int buttonHeight: buttonitem.sizeFromContents(100, 18).height
+    property int buttonWidth: buttonitem.sizeFromContents(100, 18).width
     QStyleItem { id:buttonitem; elementType:"combobox" }
     height: buttonHeight
+    width: buttonWidth
     topMargin:4
     bottomMargin:4
 
@@ -18,6 +20,7 @@ Components.ChoiceList {
         raised: !pressed
         hover: containsMouse
         enabled:choicelist.enabled
+        text:choicelist.model.get(currentIndex).text
     }
 
     background: QStyleBackground {
@@ -34,13 +37,13 @@ Components.ChoiceList {
         QStyleBackground {
             anchors.fill:parent
             style: QStyleItem {
-                elementType: "menuitem"
+                elementType: "comboboxitem"
                 text: choicelist.model.get(index).text
                 selected: highlighted
             }
         }
     }
-
+    label:null
     popupFrame: QStyleBackground {
         property string behavior: styleitem.styleHint("comboboxpopup") ? "MacOS" : "Windows"
         property int fw: styleitem.pixelMetric("menupanelwidth");

@@ -235,6 +235,10 @@ void QStyleItem::setElementType(const QString &str)
         // sense to re-create them per item
         static QWidget *menu = new QMenu();
         m_dummywidget = menu;
+    } else if (str == "comboboxitem")  {
+        // Gtk uses qobject cast, hence we need to separate this from menuitem
+        static QComboBox *combo = new QComboBox();
+        m_dummywidget = combo;
     } else if (str == "combobox") {
         m_dummywidget = new QComboBox();
         visible = true;
@@ -470,15 +474,15 @@ void QStyleBackground::paint(QPainter *painter, const QStyleOptionGraphicsItem *
             qApp->style()->drawPrimitive(control, &opt, painter, m_style->widget());
         }
     }
-    else if (type == QLatin1String("menuitem")) {
-        QMenu *menu = qobject_cast<QMenu*>(m_style->widget());
+    else if (type == QLatin1String("menuitem") || type == QLatin1String("comboboxitem")) {
         QStyle::ControlElement control = QStyle::CE_MenuItem;
         QStyleOptionMenuItem opt;
+        m_style->initStyleOption(&opt);
+        opt.checked = false;
         opt.rect = QRect(0, 0, width(), height());
         opt.text = m_style->text();
-        m_style->initStyleOption(&opt);
-        opt.palette = menu->palette();
-        qApp->style()->drawControl(control, &opt, painter, 0);
+        opt.palette = m_style->widget()->palette();
+        qApp->style()->drawControl(control, &opt, painter, m_style->widget());
     }
     else if (type == QLatin1String("checkbox")) {
         QStyle::ControlElement control = QStyle::CE_CheckBox;
@@ -514,7 +518,9 @@ void QStyleBackground::paint(QPainter *painter, const QStyleOptionGraphicsItem *
         opt.rect = QRect(0, 0, width(), height());
         m_style->initStyleOption(&opt);
         m_style->widget()->resize(width(), height());
+        opt.currentText = m_style->text();
         qApp->style()->drawComplexControl(control, &opt, painter, m_style->widget());
+        qApp->style()->drawControl(QStyle::CE_ComboBoxLabel, &opt, painter, m_style->widget());
     }
     else if (type == QLatin1String("spinbox")) {
         QStyle::ComplexControl control = QStyle::CC_SpinBox;
