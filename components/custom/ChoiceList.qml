@@ -33,8 +33,8 @@ Item {
     property int rightMargin: defaultStyle.rightMargin
     property int bottomMargin: defaultStyle.bottomMargin
 
-    property int labelWidth: labelComponent.item.width
-    property int labelHeight: labelComponent.item.height
+    property int labelWidth: label != null ? labelComponent.item.width : 0
+    property int labelHeight: label != null ? labelComponent.item.height : 0
     property string popupBehavior
 
     width: Math.max(minimumWidth,

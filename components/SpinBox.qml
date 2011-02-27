@@ -13,9 +13,12 @@ Components.SpinBox {
     topMargin:__margin
     bottomMargin:__margin
 
-    property int buttonHeight: edititem.sizeFromContents(100, 20).height
-    QStyleItem { id:edititem; elementType:"edit" }
+    property int buttonHeight: edititem.sizeFromContents(70, 25).height
+    property int buttonWidth: edititem.sizeFromContents(70, 25).width
+
+    QStyleItem { id:edititem; elementType:"spinbox" }
     height: buttonHeight
+    width: buttonWidth
     clip:false
 
     background:
@@ -38,8 +41,9 @@ Components.SpinBox {
             QStyleBackground{
                 anchors.margins: -6
                 anchors.leftMargin: -5
+                anchors.rightMargin: -7
                 anchors.fill: parent
-                visible:spinbox.activeFocus
+                visible: spinbox.activeFocus
                 style: QStyleItem {
                     id:framestyle
                     elementType:"focusframe"

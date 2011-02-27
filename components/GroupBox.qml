@@ -4,7 +4,7 @@ import "plugin"
 
 Item {
     width:200
-    height:46
+    height:40
 
     property alias text: styleitem.text
     default property alias children: content.children

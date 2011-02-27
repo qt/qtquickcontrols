@@ -84,7 +84,10 @@ FocusScope {
         anchors.right: parent.right
         anchors.top: parent.top
         anchors.bottom: parent.bottom
-        anchors.bottomMargin:  { return (frame ? 1 : 0) + (hscrollbar.visible ? __scrollbarExtent : 0) }
+        anchors.bottomMargin: styleitem.style == "mac" ? -1 : 0
+        anchors.topMargin: styleitem.style == "mac" ? 1 : 0
+//        anchors.bottomMargin:  { return (frame ? 1 : 0) + (hscrollbar.visible ? __scrollbarExtent : 0) }
+//        anchors.topMargin:  { return (frame ? 0 : frameWidth) }
         onValueChanged: contentY = value
     }
 

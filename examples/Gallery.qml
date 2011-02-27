@@ -1,16 +1,17 @@
 import QtQuick 1.0
 import "../components"
+import "../components/plugin"
 
 Rectangle {
-    width: 560
-    height: 370
+    width: 530 + frame.margins*2
+    height: 325 + frame.margins*2
 
     ToolBar{
         id:toolbar
         width:parent.width
         height:40
         Row {
-            spacing:2
+            spacing: 2
             ToolButton{iconSource: "images/folder_new.png"}
             ToolButton{iconSource: "images/folder_new.png"}
             ToolButton{iconSource: "images/folder_new.png"}
@@ -36,6 +37,7 @@ Rectangle {
     }
 
     SystemPalette{id:syspal}
+    QStyleItem{id:styleitem}
     color:syspal.window
 
     gradient: Gradient{
@@ -60,12 +62,14 @@ Rectangle {
 
     TabFrame {
         id:frame
+        property int margins : styleitem.style == "mac" ? 16 : 0
         position: toolBarPosition.checked ? "South" : "North"
         tabbar: TabBar{parent:frame}
         anchors.top:toolbar.bottom
         anchors.bottom:parent.bottom
         anchors.right:parent.right
         anchors.left:parent.left
+        anchors.margins: margins
         Tab {
             title:"Widgets"
             ScrollArea{
@@ -75,9 +79,10 @@ Rectangle {
                 frame:false
                 enabled:enabledCheck.checked
                 Row {
-                    anchors.margins: 8
-                    anchors.fill: parent
                     id:contentRow
+                    anchors.margins: 18
+                    spacing: 12
+                    anchors.fill: parent
                     Column {
                         spacing:6
                         SequentialAnimation on x {
@@ -108,8 +113,7 @@ Rectangle {
                         }
                         ChoiceList{model:choices}
                         SpinBox{id:t1; KeyNavigation.tab: t2}
-                        TextField{id: t2; text:"TextField"; KeyNavigation.tab: t3}
-                        TextArea{id: t3; text:"TextArea\n"; KeyNavigation.tab: t1}
+                        TextField{id: t2; text:"TextField"; KeyNavigation.tab: t1}
                         ProgressBar {
                             // normalize value [0.0 .. 1.0]
                             value: (slider.value - slider.minimumValue) / (slider.maximumValue - slider.minimumValue)
@@ -120,47 +124,48 @@ Rectangle {
                         Slider {id:slider; value:50}
                         smooth:true
                     }
-                }
-                Column {
-                    id:rightcol
-                    x:220; y:8
-                    spacing: 12
-                    GroupBox{
-                        id:group1
-                        text:"CheckBox"
-                        Row {
-                            spacing: 8
-                            anchors.fill:parent
-                            CheckBox{text:"Check 1"}
-                            CheckBox{text:"Check 2";checked:true}
+                    Column {
+                        id:rightcol
+                        spacing: 8
+                        GroupBox{
+                            id:group1
+                            text:"CheckBox"
+                            Row {
+                                spacing: 6
+                                anchors.fill:parent
+                                CheckBox{text:"Check 1"; checked:true}
+                                CheckBox{text:"Check 2"}
+                            }
+                            RotationAnimation on rotation {
+                                from:0; to:360;
+                                easing.type:Easing.OutCubic; duration:1000;
+                                running: animateCheck.checked
+                                alwaysRunToEnd: true
+                                loops: Animation.Infinite
+                            }
                         }
-                        RotationAnimation on rotation {
-                            from:0; to:360;
-                            easing.type:Easing.OutCubic; duration:1000;
-                            running: animateCheck.checked
-                            alwaysRunToEnd: true
-                            loops: Animation.Infinite
+                        GroupBox{
+                            id:group2
+                            text:"Radio Buttons"
+                            ButtonRow {
+                                RadioButton{id:radio1; text:"Radio 1"; checked:true}
+                                RadioButton{id:radio2; text:"Radio 2"}
+                            }
+                            RotationAnimation on rotation {
+                                from:0; to:360;
+                                easing.type: Easing.OutCubic
+                                duration: 1000
+                                running: animateCheck.checked
+                                alwaysRunToEnd: true
+                                loops: Animation.Infinite
+                            }
                         }
-                    }
-                    GroupBox{
-                        id:group2
-                        text:"Radio Buttons"
-                        ButtonRow {
-                            RadioButton{id:radio1; text:"Radio 1"}
-                            RadioButton{id:radio2; text:"Radio 2"}
+                        TextScrollArea {
+                            id: area
+                            y:t2.y
+                            text: loremIpsum + loremIpsum
+                            height: slider.y + slider.height - t2.y
                         }
-                        RotationAnimation on rotation {
-                            from:0; to:360;
-                            easing.type: Easing.OutCubic
-                            duration: 1000
-                            running: animateCheck.checked
-                            alwaysRunToEnd: true
-                            loops: Animation.Infinite
-                        }
-                    }
-                    TextScrollArea {
-                        id: area
-                        text: loremIpsum + loremIpsum
                     }
                 }
             }
@@ -174,12 +179,6 @@ Rectangle {
                 Dial{id: dial1; KeyNavigation.tab:dial2}
                 Dial{id: dial2; KeyNavigation.tab:dial3}
                 Dial{id: dial3; KeyNavigation.tab:dial1}
-            }
-        }
-        Tab {
-            title:"Stuff"
-            Rectangle {
-                anchors.fill:parent
             }
         }
     }

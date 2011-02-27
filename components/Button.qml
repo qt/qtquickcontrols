@@ -5,7 +5,7 @@ import "plugin"
 Components.Button {
     id:button
 
-    property int buttonHeight: Math.max(22, styleitem.sizeFromContents(100, 6).height)
+    property int buttonHeight: Math.max(22, styleitem.sizeFromContents(80, 6).height)
     property bool defaultbutton
     height: buttonHeight
 

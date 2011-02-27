@@ -61,6 +61,7 @@ class QStyleItem: public QObject
     Q_PROPERTY( QString elementType READ elementType WRITE setElementType NOTIFY elementTypeChanged)
     Q_PROPERTY( QString text READ text WRITE setText NOTIFY textChanged)
     Q_PROPERTY( QString activeControl READ activeControl WRITE setActiveControl NOTIFY activeControlChanged)
+    Q_PROPERTY( QString style READ style NOTIFY styleChanged)
 
     // For range controls
     Q_PROPERTY( int minimum READ minimum WRITE setMinimum NOTIFY minimumChanged)
@@ -85,6 +86,7 @@ public:
     QString elementType() const { return m_type; }
     QString text() const { return m_text; }
     QString activeControl() const { return m_activeControl; }
+    QString style() const;
 
     void setSunken(bool sunken) { if (m_sunken != sunken) {m_sunken = sunken; emit sunkenChanged();}}
     void setRaised(bool raised) { if (m_raised!= raised) {m_raised = raised; emit raisedChanged();}}
@@ -126,6 +128,7 @@ Q_SIGNALS:
     void maximumChanged();
     void valueChanged();
     void activeControlChanged();
+    void styleChanged();
     void updateItem();
 
 protected:

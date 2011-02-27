@@ -88,6 +88,26 @@ void QStyleItem::initStyleOption(QStyleOption *opt) const
         opt->state |= QStyle::State_Horizontal;
 }
 
+/*
+ *   Property style
+ *
+ *   Returns a simplified style name.
+ *
+ *   QMacStyle = "mac"
+ *   QWindowsXPStyle = "windowsxp"
+ *   QPlastiqueStyle = "plastique"
+ */
+
+QString QStyleItem::style() const
+{
+    QString style = qApp->style()->metaObject()->className();
+    if (style.startsWith(QLatin1Char('Q')))
+        style = style.right(style.length() - 1);
+    if (style.endsWith("Style"))
+        style = style.left(style.length()-5);
+    return style.toLower();
+}
+
 QString QStyleBackground::hitTest(int px, int py) const
 {
     QStyle::SubControl subcontrol = QStyle::SC_All;
@@ -176,23 +196,23 @@ QSize QStyleItem::sizeFromContents(int width, int height)
 int QStyleItem::pixelMetric(const QString &metric)
 {
     if (metric == "scrollbarExtent")
-        return qApp->style()->pixelMetric(QStyle::PM_ScrollBarExtent);
+        return qApp->style()->pixelMetric(QStyle::PM_ScrollBarExtent, 0 , widget());
     else if (metric == "defaultframewidth")
-        return qApp->style()->pixelMetric(QStyle::PM_DefaultFrameWidth);
+        return qApp->style()->pixelMetric(QStyle::PM_DefaultFrameWidth, 0 , widget());
     else if (metric == "taboverlap")
-        return qApp->style()->pixelMetric(QStyle::PM_TabBarTabOverlap);
+        return qApp->style()->pixelMetric(QStyle::PM_TabBarTabOverlap, 0 , widget());
     else if (metric == "tabbaseoverlap")
-        return qApp->style()->pixelMetric(QStyle::PM_TabBarBaseOverlap);
+        return qApp->style()->pixelMetric(QStyle::PM_TabBarBaseOverlap, 0 , widget());
     else if (metric == "tabbaseheight")
-        return qApp->style()->pixelMetric(QStyle::PM_TabBarBaseHeight);
+        return qApp->style()->pixelMetric(QStyle::PM_TabBarBaseHeight, 0 , widget());
     else if (metric == "tabvshift")
-        return qApp->style()->pixelMetric(QStyle::PM_TabBarTabShiftVertical);
+        return qApp->style()->pixelMetric(QStyle::PM_TabBarTabShiftVertical, 0 , widget());
     else if (metric == "menuhmargin")
-        return qApp->style()->pixelMetric(QStyle::PM_MenuHMargin);
+        return qApp->style()->pixelMetric(QStyle::PM_MenuHMargin, 0 , widget());
     else if (metric == "menuvmargin")
-        return qApp->style()->pixelMetric(QStyle::PM_MenuVMargin);
+        return qApp->style()->pixelMetric(QStyle::PM_MenuVMargin, 0 , widget());
     else if (metric == "menupanelwidth")
-        return qApp->style()->pixelMetric(QStyle::PM_MenuPanelWidth);
+        return qApp->style()->pixelMetric(QStyle::PM_MenuPanelWidth, 0 , widget());
     return 0;
 }
 
@@ -235,10 +255,28 @@ void QStyleItem::setElementType(const QString &str)
         // sense to re-create them per item
         static QWidget *menu = new QMenu();
         m_dummywidget = menu;
+    } if (str == "groupbox") {
+        // Since these are used by the delegate, it makes no
+        // sense to re-create them per item
+        static QGroupBox *group = new QGroupBox();
+        m_dummywidget = group;
     } else if (str == "comboboxitem")  {
         // Gtk uses qobject cast, hence we need to separate this from menuitem
+        // On mac, we temporarily use the menu item because it has more accurate
+        // palette.
+#ifdef Q_WS_MAC
+        static QMenu *combo = new QMenu();
+#else
         static QComboBox *combo = new QComboBox();
+#endif
         m_dummywidget = combo;
+    } else if (str == "toolbar") {
+        static QToolBar *tb = 0;
+        if (!tb) {
+            QMainWindow *mw = new QMainWindow();
+            tb = new QToolBar(mw);
+        }
+        m_dummywidget = tb;
     } else if (str == "combobox") {
         m_dummywidget = new QComboBox();
         visible = true;
@@ -264,9 +302,12 @@ void QStyleItem::setElementType(const QString &str)
 
     if (m_dummywidget) {
         m_dummywidget->installEventFilter(this);
-        m_dummywidget->setAttribute(Qt::WA_DontShowOnScreen);
         m_dummywidget->setAttribute(Qt::WA_QuitOnClose, false); // dont keep app open
+        m_dummywidget->winId();
         m_dummywidget->setVisible(visible);
+        // Mac require us to set the visibility before this
+        m_dummywidget->setAttribute(Qt::WA_DontShowOnScreen);
+        m_dummywidget->setAttribute(Qt::WA_LayoutUsesWidgetRect);
     }
 }
 
@@ -381,10 +422,6 @@ void QStyleBackground::paint(QPainter *painter, const QStyleOptionGraphicsItem *
         QStyleOptionButton opt;
         opt.rect = QRect(0, 0, width(), height());
         m_style->initStyleOption(&opt);
-
-        // Dirty hack to fix button label positioning on mac
-        //if (qApp->style()->metaObject()->className() == QLatin1String("QMacStyle"))
-        //    opt.rect.translate(0,2);
         m_style->widget()->resize(width(), height());
         opt.text = m_style->text();
         if (m_style->activeControl() == "default")
@@ -421,24 +458,25 @@ void QStyleBackground::paint(QPainter *painter, const QStyleOptionGraphicsItem *
         qApp->style()->drawControl(control, &opt, painter, m_style->widget());
     }
     else if (type == QLatin1String("menu")) {
-        QMenu *menu = qobject_cast<QMenu*>(m_style->widget());
         QStyleOptionMenuItem opt;
+        if (QMenu *menu = qobject_cast<QMenu*>(m_style->widget())){
+            opt.palette = menu->palette();
+        }
         opt.rect = QRect(0, 0, width(), height());
         m_style->initStyleOption(&opt);
         QStyleHintReturnMask val;
         qApp->style()->styleHint(QStyle::SH_Menu_Mask, &opt, m_style->widget(), &val);
         painter->save();
         painter->setClipRegion(val.region);
-        opt.palette = menu->palette();
         painter->fillRect(opt.rect, opt.palette.window());
         painter->restore();
-        qApp->style()->drawPrimitive(QStyle::PE_PanelMenu, &opt, painter, menu);
+        qApp->style()->drawPrimitive(QStyle::PE_PanelMenu, &opt, painter, m_style->widget());
         QStyleOptionFrame frame;
         m_style->initStyleOption(&frame);
         frame.lineWidth = qApp->style()->pixelMetric(QStyle::PM_MenuPanelWidth);
         frame.midLineWidth = 0;
         frame.rect = opt.rect;
-        qApp->style()->drawPrimitive(QStyle::PE_FrameMenu, &frame, painter, menu);
+        qApp->style()->drawPrimitive(QStyle::PE_FrameMenu, &frame, painter, m_style->widget());
         //       qApp->style()->drawControl(QStyle::CE_MenuVMargin, &opt, painter, m_menu);
     }
     else if (type == QLatin1String("frame")) {
@@ -571,11 +609,12 @@ void QStyleBackground::paint(QPainter *painter, const QStyleOptionGraphicsItem *
         qApp->style()->drawComplexControl(control, &opt, painter, m_style->widget());
     }
     else if (type == QLatin1String("progressbar")) {
-        QProgressBar *bar= qobject_cast<QProgressBar*>(m_style->widget());
-        bar->setMaximum(m_style->maximum());
-        bar->setMinimum(m_style->minimum());
-        if (m_style->maximum() != m_style->minimum())
-            bar->setValue(1);
+        if (QProgressBar *bar= qobject_cast<QProgressBar*>(m_style->widget())){
+            bar->setMaximum(m_style->maximum());
+            bar->setMinimum(m_style->minimum());
+            if (m_style->maximum() != m_style->minimum())
+                bar->setValue(1);
+        }
         QStyle::ControlElement control = QStyle::CE_ProgressBar;
         QStyleOptionProgressBarV2 opt;
         opt.rect = QRect(0, 0, width(), height());
@@ -583,16 +622,14 @@ void QStyleBackground::paint(QPainter *painter, const QStyleOptionGraphicsItem *
         opt.minimum = m_style->minimum();
         opt.maximum = m_style->maximum();
         opt.progress = m_style->value();
-        qApp->style()->drawControl(control, &opt, painter, bar);
+        qApp->style()->drawControl(control, &opt, painter, m_style->widget());
     }
     else if (type == QLatin1String("toolbar")) {
         QStyle::ControlElement control = QStyle::CE_ToolBar;
         QStyleOptionToolBar opt;
         opt.rect = QRect(0, 0, width(), height());
         m_style->initStyleOption(&opt);
-        QMainWindow mw;
-        QWidget w(&mw);
-        qApp->style()->drawControl(control, &opt, painter, &w);
+        qApp->style()->drawControl(control, &opt, painter, m_style->widget());
     }
     else if (type == QLatin1String("groupbox")) {
         QStyle::ComplexControl control = QStyle::CC_GroupBox;
