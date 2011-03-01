@@ -43,7 +43,7 @@ Components.SpinBox {
                 anchors.leftMargin: -5
                 anchors.rightMargin: -7
                 anchors.fill: parent
-                visible: spinbox.activeFocus
+                visible: spinbox.focus || spinbox.activeFocus
                 style: QStyleItem {
                     id:framestyle
                     elementType:"focusframe"
