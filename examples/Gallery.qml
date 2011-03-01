@@ -4,7 +4,7 @@ import "../components/plugin"
 
 Rectangle {
     width: 530 + frame.margins*2
-    height: 325 + frame.margins*2
+    height: 345 + frame.margins*2
 
     ToolBar{
         id:toolbar
@@ -111,9 +111,12 @@ Rectangle {
                                 KeyNavigation.tab: button1
                             }
                         }
-                        ChoiceList{model:choices}
-                        SpinBox{id:t1; KeyNavigation.tab: t2}
-                        TextField{id: t2; text:"TextField"; KeyNavigation.tab: t1}
+                        ChoiceList{model:choices; width:200}
+                        Row {
+                            SpinBox{id:t1; width:100; KeyNavigation.tab: t2; }
+                            SpinBox{id:t2; width:100; KeyNavigation.tab: t3; }
+                        }
+                        TextField{id: t3; text:"TextField"; KeyNavigation.tab: t1}
                         ProgressBar {
                             // normalize value [0.0 .. 1.0]
                             value: (slider.value - slider.minimumValue) / (slider.maximumValue - slider.minimumValue)
@@ -126,7 +129,7 @@ Rectangle {
                     }
                     Column {
                         id:rightcol
-                        spacing: 8
+                        spacing: 24
                         GroupBox{
                             id:group1
                             text:"CheckBox"

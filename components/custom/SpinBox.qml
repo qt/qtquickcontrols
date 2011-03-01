@@ -139,4 +139,6 @@ Item {
             mouseDown.parent = item
         }
     }
+    Keys.onUpPressed: increment()
+    Keys.onDownPressed: decrement()
 }

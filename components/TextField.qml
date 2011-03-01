@@ -12,7 +12,7 @@ Components.TextField {
     leftMargin:6
     rightMargin:6
     height: editItem.sizeFromContents(200, 25).height
-    width: editItem.sizeFromContents(200, 25).width
+    width: 200
     clip:false
 
     QStyleItem {

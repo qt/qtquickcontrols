@@ -13,8 +13,8 @@ Components.SpinBox {
     topMargin:__margin
     bottomMargin:__margin
 
-    property int buttonHeight: edititem.sizeFromContents(60, 20).height
-    property int buttonWidth: edititem.sizeFromContents(60, 20).width
+    property int buttonHeight: edititem.sizeFromContents(70, 20).height
+    property int buttonWidth: edititem.sizeFromContents(70, 20).width
 
     QStyleItem { id:edititem; elementType:"edit" }
     height: buttonHeight
