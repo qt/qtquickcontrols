@@ -632,6 +632,9 @@ void QStyleBackground::paint(QPainter *painter, const QStyleOptionGraphicsItem *
         qApp->style()->drawControl(control, &opt, painter, m_style->widget());
     }
     else if (type == QLatin1String("groupbox")) {
+        if (QGroupBox *group= qobject_cast<QGroupBox*>(m_style->widget())){
+            group->setTitle(m_style->text());
+        }
         QStyle::ComplexControl control = QStyle::CC_GroupBox;
         QStyleOptionGroupBox opt;
         opt.rect = QRect(0, 0, width(), height());
