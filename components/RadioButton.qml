@@ -8,8 +8,7 @@ Components.RadioButton{
     id:radiobutton
     property variant text
     width:110
-    height:18
-
+    height:20
     background: QStyleBackground {
 
         style: QStyleItem{
@@ -19,8 +18,10 @@ Components.RadioButton{
             hover:containsMouse
             text:radiobutton.text
             enabled:radiobutton.enabled
+            focus:radiobutton.focus
         }
     }
     checkmark: null
+    Keys.onSpacePressed:clicked()
 }
 

@@ -19,6 +19,7 @@ ScrollArea {
         wrapMode: TextEdit.WordWrap;
         width: area.contentWidth
         selectByMouse:true
+        focus:true
 
         // keep textcursor within scrollarea
         onCursorRectangleChanged:

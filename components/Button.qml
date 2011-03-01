@@ -9,8 +9,6 @@ Components.Button {
     property bool defaultbutton
     height: buttonHeight
 
-    onClicked: button.focus = true
-
     QStyleItem {
         id: styleitem
         elementType: "button"
@@ -21,7 +19,7 @@ Components.Button {
         text: iconSource === "" ? "" : button.text
         focus: button.focus
         // If no icon, let the style do the drawing
-        activeControl: defaultbutton ? "default" : ""
+        activeControl: focus ? "default" : ""
     }
 
     background: QStyleBackground {
@@ -51,5 +49,6 @@ Components.Button {
             }
         }
     }
+    Keys.onSpacePressed:clicked()
 }
 

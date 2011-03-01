@@ -8,7 +8,7 @@ Components.CheckBox{
     id:checkbox
     property variant text
     width:100
-    height:18
+    height:20
 
     background: QStyleBackground {
         id:styleitem
@@ -19,8 +19,10 @@ Components.CheckBox{
             hover:containsMouse
             text:checkbox.text
             enabled:checkbox.enabled
+            focus:checkbox.focus
         }
     }
     checkmark: null
+    Keys.onSpacePressed:checked = !checked
 }
 

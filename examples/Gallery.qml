@@ -101,22 +101,27 @@ Rectangle {
                                 text:"Button 1"
                                 width:98
                                 focus:true
-                                defaultbutton:true
+                                Component.onCompleted:button1.forceActiveFocus()
+                                //defaultbutton:true
                                 KeyNavigation.tab: button2
+                                //KeyNavigation.backtab: button2
                             }
                             Button {
                                 id:button2
                                 text:"Button 2"
+                                focus:true
                                 width:98
-                                KeyNavigation.tab: button1
+                                KeyNavigation.tab: combo
+                                //KeyNavigation.backtab: button1
                             }
                         }
-                        ChoiceList{model:choices; width:200}
+                        ChoiceList{id:combo; model:choices; width:200; focus:false; KeyNavigation.tab:t1}
                         Row {
-                            SpinBox{id:t1; width:100; KeyNavigation.tab: t2; }
-                            SpinBox{id:t2; width:100; KeyNavigation.tab: t3; }
+                            spacing:6
+                            SpinBox{id:t1; width:97; KeyNavigation.tab: t2; }
+                            SpinBox{id:t2; width:97; KeyNavigation.tab: t3; }
                         }
-                        TextField{id: t3; text:"TextField"; KeyNavigation.tab: t1}
+                        TextField{id: t3; text:"TextField"; KeyNavigation.tab: slider; }
                         ProgressBar {
                             // normalize value [0.0 .. 1.0]
                             value: (slider.value - slider.minimumValue) / (slider.maximumValue - slider.minimumValue)
@@ -124,7 +129,7 @@ Rectangle {
                         ProgressBar {
                             indeterminate: true
                         }
-                        Slider {id:slider; value:50}
+                        Slider {id:slider; value:50; KeyNavigation.tab:c1}
                         smooth:true
                     }
                     Column {
@@ -136,8 +141,8 @@ Rectangle {
                             Row {
                                 spacing: 6
                                 anchors.fill:parent
-                                CheckBox{text:"Check 1"; checked:true}
-                                CheckBox{text:"Check 2"}
+                                CheckBox{id: c1; text:"Check 1"; KeyNavigation.tab:c2; checked:true}
+                                CheckBox{id: c2; text:"Check 2"; KeyNavigation.tab:r1}
                             }
                             RotationAnimation on rotation {
                                 from:0; to:360;
@@ -151,8 +156,8 @@ Rectangle {
                             id:group2
                             text:"Radio Buttons"
                             ButtonRow {
-                                RadioButton{id:radio1; text:"Radio 1"; checked:true}
-                                RadioButton{id:radio2; text:"Radio 2"}
+                                RadioButton{id:r1; text:"Radio 1"; KeyNavigation.tab:r2; checked:true}
+                                RadioButton{id:r2; text:"Radio 2"; KeyNavigation.tab:area }
                             }
                             RotationAnimation on rotation {
                                 from:0; to:360;
@@ -165,9 +170,8 @@ Rectangle {
                         }
                         TextScrollArea {
                             id: area
-                            y:t2.y
                             text: loremIpsum + loremIpsum
-                            height: slider.y + slider.height - t2.y
+                            KeyNavigation.tab:button1
                         }
                     }
                 }

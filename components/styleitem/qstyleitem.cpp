@@ -181,7 +181,6 @@ QSize QStyleItem::sizeFromContents(int width, int height)
         initStyleOption(&opt);
         return qApp->style()->sizeFromContents(QStyle::CT_ComboBox, &opt, QSize(width,height), widget());
     } else if (metric == QLatin1String("spinbox")) {
-
         QStyleOptionSpinBox opt;
         initStyleOption(&opt);
         return qApp->style()->sizeFromContents(QStyle::CT_SpinBox, &opt, QSize(width,height), widget());
@@ -277,6 +276,9 @@ void QStyleItem::setElementType(const QString &str)
             tb = new QToolBar(mw);
         }
         m_dummywidget = tb;
+    } else if (str == "slider") {
+        static QSlider *slider = new QSlider();
+        m_dummywidget = slider;
     } else if (str == "combobox") {
         m_dummywidget = new QComboBox();
         visible = true;
@@ -581,6 +583,7 @@ void QStyleBackground::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     else if (type == QLatin1String("slider")) {
         QStyle::ComplexControl control = QStyle::CC_Slider;
         QStyleOptionSlider opt;
+        m_style->widget()->resize(width(), height());
         opt.rect = QRect(0, 0, width(), height());
         m_style->initStyleOption(&opt);
         opt.minimum = m_style->minimum();

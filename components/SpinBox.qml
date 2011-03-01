@@ -69,7 +69,7 @@ Components.SpinBox {
                 elementType: "spinbox"
                 sunken: downPressed | upPressed
                 hover: containsMouse
-                focus: spinbox.activeFocus
+                focus: spinbox.focus || spinbox.activeFocus
                 enabled: spinbox.enabled
                 value: (upPressed? 1 : 0)           |
                         (downPressed== 1 ? 1<<1 : 0) |

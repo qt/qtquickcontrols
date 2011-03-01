@@ -21,6 +21,7 @@ Components.ChoiceList {
         hover: containsMouse
         enabled:choicelist.enabled
         text:choicelist.model.get(currentIndex).text
+        focus:choicelist.focus
     }
 
     background: QStyleBackground {

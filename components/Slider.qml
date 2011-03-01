@@ -23,9 +23,14 @@ Components.Slider{
             value:slider.value
             horizontal:slider.orientation == Qt.Horizontal
             enabled:slider.enabled
+            focus:slider.focus
         }
     }
 
     handle: null
     valueIndicator: null
+
+    Keys.onRightPressed: value += (maximumValue - minimumValue)/10.0
+    Keys.onLeftPressed: value -= (maximumValue - minimumValue)/10.0
+
 }
