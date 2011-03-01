@@ -82,5 +82,8 @@ Item {
         popupFrame: choiceList.popupFrame
     }
 
+    Keys.onUpPressed: { if (currentIndex < model.count - 1) currentIndex++ }
+    Keys.onDownPressed: {if (currentIndex > 0) currentIndex-- }
+
     DefaultStyles.ChoiceListStyle { id: defaultStyle }
 }
