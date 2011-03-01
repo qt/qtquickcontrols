@@ -18,7 +18,7 @@ Components.Button {
         raised: !pressed
         hover: containsMouse
         enabled: button.enabled
-        text: iconSource == "" ? "" : button.text
+        text: iconSource === "" ? "" : button.text
         focus: button.focus
         // If no icon, let the style do the drawing
         activeControl: defaultbutton ? "default" : ""
@@ -32,6 +32,7 @@ Components.Button {
     label: Item {
         // Used as a fallback since I can't pass the imageURL
         // directly to the style object
+        visible: button.iconSource === ""
         Row {
             id: row
             anchors.centerIn: parent
