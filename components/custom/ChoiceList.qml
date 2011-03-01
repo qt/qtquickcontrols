@@ -42,6 +42,8 @@ Item {
     height: Math.max(minimumHeight,
                      labelComponent.item.height + topMargin + bottomMargin)
 
+    property bool activeFocusOnPress: true
+
     // Implementation
 
     SystemPalette { id: syspal }
@@ -68,6 +70,8 @@ Item {
         hoverEnabled: true
         drag.target: Item {}    // disable dragging in case ChoiceList is on a Flickable
         onPressed: {
+            if (activeFocusOnPress)
+                choicelist.focus = true
             choiceList.pressed = true;
             popup.togglePopup();
 

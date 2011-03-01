@@ -60,6 +60,7 @@ Item {
     // Indicate that we want animations in the Slider, people customizing should
     // look at it to decide whether or not active animations.
     property bool animated: true
+    property bool activeFocusOnPress: true
 
     // Value indicator displays the current value near the slider
     property bool valueIndicatorVisible: true
@@ -182,6 +183,9 @@ Item {
             drag.maximumX: range.positionAtMaximum
 
             onPressed: {
+                if (activeFocusOnPress)
+                    slider.focus = true;
+
                 // Clamp the value
                 var newX = Math.max(mouse.x, drag.minimumX);
                 newX = Math.min(newX, drag.maximumX);

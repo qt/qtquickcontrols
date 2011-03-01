@@ -18,6 +18,8 @@ Item {
     property int minimumWidth: defaultStyle.minimumWidth
     property int minimumHeight: defaultStyle.minimumHeight
 
+    property bool activeFocusOnPress: true
+
     // implementation
 
     implicitWidth: minimumWidth
@@ -41,7 +43,7 @@ Item {
         id: behavior
         anchors.fill: parent
         checkable: true
-        onClicked: checkBox.clicked()
+        onClicked: {if (activeFocusOnPress)checkBox.focus = true; checkBox.clicked()}
     }
 
     DefaultStyles.CheckBoxStyle { id: defaultStyle }

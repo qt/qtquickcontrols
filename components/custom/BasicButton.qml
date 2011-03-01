@@ -18,6 +18,7 @@ Item {
 
     property int minimumWidth: defaultStyle.minimumWidth
     property int minimumHeight: defaultStyle.minimumHeight
+    property bool activeFocusOnPress: true
 
     // implementation
 
@@ -37,6 +38,7 @@ Item {
         id: behavior
         anchors.fill: parent
         onClicked: button.clicked()
+        onPressedChanged: if (activeFocusOnPress) button.focus = true
     }
 
     DefaultStyles.BasicButtonStyle { id: defaultStyle }
