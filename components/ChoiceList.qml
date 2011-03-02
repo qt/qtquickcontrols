@@ -44,7 +44,6 @@ Components.ChoiceList {
             }
         }
     }
-    label:null
     popupFrame: QStyleBackground {
         property string behavior: styleitem.styleHint("comboboxpopup") ? "MacOS" : "Windows"
         property int fw: styleitem.pixelMetric("menupanelwidth");

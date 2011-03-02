@@ -20,7 +20,6 @@ Item {
     property color backgroundColor: syspal.button
 
     property Component background: null
-    property Component label: null
     property Component listItem: null
     property Component popupFrame: null
 
@@ -32,14 +31,9 @@ Item {
     property int rightMargin: 0
     property int bottomMargin: 0
 
-    property int labelWidth: label != null ? labelComponent.item.width : 0
-    property int labelHeight: label != null ? labelComponent.item.height : 0
     property string popupBehavior
-
-    width: Math.max(minimumWidth,
-                    labelComponent.item.width + leftMargin + rightMargin)
-    height: Math.max(minimumHeight,
-                     labelComponent.item.height + topMargin + bottomMargin)
+    width: 0
+    height: 0
 
     property bool activeFocusOnPress: true
 
@@ -50,17 +44,6 @@ Item {
         property alias styledItem: choiceList
         sourceComponent: background
         anchors.fill: parent
-    }
-
-    Loader {
-        id: labelComponent
-        property alias model: popup.model
-        anchors.fill: parent
-        anchors.leftMargin: leftMargin
-        anchors.rightMargin: rightMargin
-        anchors.topMargin: topMargin
-        anchors.bottomMargin: bottomMargin
-        sourceComponent: label
     }
 
     MouseArea {
@@ -85,6 +68,7 @@ Item {
         popupFrame: choiceList.popupFrame
     }
 
+    Keys.onSpacePressed: { popup.togglePopup() }
     Keys.onUpPressed: { if (currentIndex < model.count - 1) currentIndex++ }
     Keys.onDownPressed: {if (currentIndex > 0) currentIndex-- }
 }
