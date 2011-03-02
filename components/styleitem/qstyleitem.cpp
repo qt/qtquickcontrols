@@ -166,6 +166,11 @@ QSize QStyleItem::sizeFromContents(int width, int height)
         initStyleOption(&opt);
         opt.text = text();
         return qApp->style()->sizeFromContents(QStyle::CT_CheckBox, &opt, QSize(width,height), widget());
+    } else if (metric == QLatin1String("toolbutton")) {
+        QStyleOptionToolButton opt;
+        initStyleOption(&opt);
+        opt.icon = qApp->style()->standardIcon(QStyle::SP_ArrowBack);
+        return qApp->style()->sizeFromContents(QStyle::CT_ToolButton, &opt, QSize(width,height), widget());
     } else if (metric == QLatin1String("button")) {
         QStyleOptionButton opt;
         initStyleOption(&opt);

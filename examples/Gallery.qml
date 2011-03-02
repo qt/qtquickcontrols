@@ -12,27 +12,26 @@ Rectangle {
         height:40
         Row {
             spacing: 2
-            ToolButton{iconSource: "images/folder_new.png"}
-            ToolButton{iconSource: "images/folder_new.png"}
-            ToolButton{iconSource: "images/folder_new.png"}
-            CheckBox{
-                id:enabledCheck
-                text:"Enabled"
-                checked:true
+            anchors.verticalCenter:parent.verticalCenter
+            ToolButton{
+                iconSource: "images/folder_new.png"
                 anchors.verticalCenter:parent.verticalCenter
             }
-            CheckBox{
-                id:animateCheck
-                text:"Animated"
-                checked:false
+            ToolButton{
+                iconSource: "images/folder_new.png"
                 anchors.verticalCenter:parent.verticalCenter
             }
-            CheckBox{
-                text:"South Tab"
-                id:toolBarPosition
-                checked:false
+            ToolButton{
+                iconSource: "images/folder_new.png"
                 anchors.verticalCenter:parent.verticalCenter
             }
+        }
+        CheckBox{
+            id:enabledCheck
+            text:"Enabled"
+            checked:true
+            anchors.right:parent.right
+            anchors.verticalCenter:parent.verticalCenter
         }
     }
 
@@ -63,7 +62,7 @@ Rectangle {
     TabFrame {
         id:frame
         property int margins : styleitem.style == "mac" ? 16 : 0
-        position: toolBarPosition.checked ? "South" : "North"
+        position: tabPositionGroup.checkedButton == r2 ? "South" : "North"
         tabbar: TabBar{parent:frame}
         anchors.top:toolbar.bottom
         anchors.bottom:parent.bottom
@@ -128,7 +127,7 @@ Rectangle {
                         ProgressBar {
                             indeterminate: true
                         }
-                        Slider {id:slider; value:50; KeyNavigation.tab:c1}
+                        Slider {id:slider; value:50; KeyNavigation.tab:enabledCheck}
                         smooth:true
                     }
                     Column {
@@ -140,8 +139,21 @@ Rectangle {
                             Row {
                                 spacing: 6
                                 anchors.fill:parent
-                                CheckBox{id: c1; text:"Check 1"; KeyNavigation.tab:c2; checked:true}
-                                CheckBox{id: c2; text:"Check 2"; KeyNavigation.tab:r1}
+
+                                CheckBox{
+                                    id:frameCheckbox
+                                    text:"Text frame"
+                                    checked:true
+                                    KeyNavigation.tab:animateCheck;
+                                }
+                                CheckBox{
+                                    id:animateCheck
+                                    text:"Animated"
+
+                                    checked:false
+                                    KeyNavigation.tab:r1
+                                }
+
                             }
                             RotationAnimation on rotation {
                                 from:0; to:360;
@@ -153,10 +165,11 @@ Rectangle {
                         }
                         GroupBox{
                             id:group2
-                            text:"Radio Buttons"
+                            text:"Tab Position"
                             ButtonRow {
-                                RadioButton{id:r1; text:"Radio 1"; KeyNavigation.tab:r2; checked:true}
-                                RadioButton{id:r2; text:"Radio 2"; KeyNavigation.tab:area }
+                                id:tabPositionGroup
+                                RadioButton{id:r1; text:"North"; KeyNavigation.tab:r2; checked:true}
+                                RadioButton{id:r2; text:"South"; KeyNavigation.tab:area }
                             }
                             RotationAnimation on rotation {
                                 from:0; to:360;
@@ -169,6 +182,7 @@ Rectangle {
                         }
                         TextScrollArea {
                             id: area
+                            frame:frameCheckbox.checked
                             text: loremIpsum + loremIpsum
                             KeyNavigation.tab:button1
                         }

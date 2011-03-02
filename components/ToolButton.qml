@@ -5,8 +5,8 @@ import "plugin"
 Components.Button {
     id:button
 
-    width: 40
-    height: 40
+    height: 40; //styleitem.sizeFromContents(32, 32).height
+    width: 40; //styleitem.sizeFromContents(32, 32).width
 
     QStyleItem {elementType: "toolbutton"; id:styleitem  }
 

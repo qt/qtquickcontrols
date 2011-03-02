@@ -3,10 +3,9 @@ import "custom" as Components
 import "plugin"
 
 QStyleBackground {
-    id:styleitem
+    id:toolbar
     width:200
-    height:60
-
-    style: QStyleItem{elementType:"toolbar"}
+    height: styleitem.sizeFromContents(32, 32).height
+    style: QStyleItem{id:styleitem; elementType:"toolbar"}
 }
 
