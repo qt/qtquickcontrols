@@ -27,7 +27,7 @@ FocusScope {
 
     property color textColor: syspal.text
     property color backgroundColor: syspal.base
-    property alias containsMouse: mouseEditBehavior.containsMouse
+    property alias containsMouse: mouseArea.containsMouse
 
     property Component background: null
     property Component hints: null
@@ -84,16 +84,20 @@ FocusScope {
     property alias activeFocus: textInput.activeFocus
 
     // Implementation
-
-    property alias desktopBehavior: mouseEditBehavior.desktopBehavior
     clip: true
 
     SystemPalette { id: syspal }
     Loader { id: hintsLoader; sourceComponent: hints }
     Loader { sourceComponent: background; anchors.fill:parent}
 
+    MouseArea {
+        id:mouseArea
+        anchors.fill:parent
+    }
+
     TextInput { // see QTBUG-14936
         id: textInput
+        selectByMouse:true
         font.pixelSize: hintsLoader.item != null ? hintsLoader.item.fontPixelSize: 14
         font.bold: hintsLoader.item != null ? hintsLoader.item.fontBold : false
 
@@ -106,40 +110,8 @@ FocusScope {
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
 
-        opacity: desktopBehavior || activeFocus ? 1 : 0
         color: enabled ? textColor : Qt.tint(textColor, "#80ffffff")
         echoMode: passwordMode ? _hints.passwordEchoMode : TextInput.Normal
-
-        onActiveFocusChanged: {
-            if (!desktopBehavior)
-                state = (activeFocus ? "focused" : "")
-
-            if (activeFocus)
-                openSoftwareInputPanel()
-            else
-                closeSoftwareInputPanel()
-        }
-
-        states: [
-            State {
-                name: ""
-                PropertyChanges { target: textInput; cursorPosition: 0 }
-            },
-            State {
-                name: "focused"
-                PropertyChanges { target: textInput; cursorPosition: textInput.text.length }
-            }
-        ]
-
-        transitions: Transition {
-            to: "focused"
-            SequentialAnimation {
-                ScriptAction { script: textInput.cursorVisible = false; }
-                ScriptAction { script: textInput.cursorPosition = textInput.positionAt(textInput.width); }
-                NumberAnimation { target: textInput; property: "cursorPosition"; duration: 150 }
-                ScriptAction { script: textInput.cursorVisible = true; }
-            }
-        }
     }
 
     Text {
@@ -157,32 +129,8 @@ FocusScope {
         clip: true
         anchors.fill: textInput
         font: textInput.font
-        opacity: !desktopBehavior && !passwordMode && textInput.text.length && !textInput.activeFocus ? 1 : 0
         color: textInput.color
         elide: Text.ElideRight
         text: textInput.text
     }
-
-
-    TextEditMouseBehavior {
-        id: mouseEditBehavior
-        anchors.fill: parent
-        textInput: textInput
-        desktopBehavior: false
-    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

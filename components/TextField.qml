@@ -5,7 +5,7 @@ import "plugin"
 Components.TextField {
     id:textfield
     minimumWidth:200
-    desktopBehavior:true
+
     placeholderText:""
     topMargin:2
     bottomMargin:2
