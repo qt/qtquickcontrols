@@ -6,7 +6,7 @@ import "plugin"
 
 Components.CheckBox {
     id:radiobutton
-    property variant text
+    property string text
     width:110
     height:20
     background: QStyleBackground {

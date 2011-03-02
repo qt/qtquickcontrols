@@ -6,7 +6,7 @@ import "plugin"
 
 Components.CheckBox{
     id:checkbox
-    property variant text
+    property string text
     width:100
     height:20
 
