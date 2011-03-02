@@ -1,4 +1,4 @@
-import QtQuick 1.1
+import QtQuick 1.0
 import "./behaviors"    // ButtonBehavior
 
 Item {
@@ -15,8 +15,6 @@ Item {
     property color backgroundColor: syspal.button
     property color textColor: syspal.text;
 
-    property int minimumWidth: defaultStyle.minimumWidth
-    property int minimumHeight: defaultStyle.minimumHeight
     property bool activeFocusOnPress: true
     property string tooltip
 
@@ -25,8 +23,8 @@ Item {
     // implementation
 
     property string __position: "only"
-    implicitWidth: Math.max(minimumWidth, backgroundLoader.item.width)
-    implicitHeight: Math.max(minimumHeight, backgroundLoader.item.height)
+    width: Math.max(minimumWidth, backgroundLoader.item.width)
+    height: Math.max(minimumHeight, backgroundLoader.item.height)
 
     Loader {
         id: backgroundLoader

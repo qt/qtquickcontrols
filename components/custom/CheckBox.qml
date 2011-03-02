@@ -1,4 +1,4 @@
-import QtQuick 1.1
+import QtQuick 1.0
 import "./behaviors"
 
 Item {
@@ -10,18 +10,10 @@ Item {
     property alias containsMouse: behavior.containsMouse
 
     property Component background: null
-
     property color backgroundColor: syspal.base
-
-    property int minimumWidth: 0
-    property int minimumHeight: 0
-
     property bool activeFocusOnPress: true
 
     // implementation
-
-    implicitWidth: minimumWidth
-    implicitHeight: minimumHeight
 
     Loader {
         id: backgroundLoader
