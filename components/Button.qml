@@ -7,6 +7,7 @@ Components.Button {
 
     property int buttonHeight: Math.max(22, styleitem.sizeFromContents(80, 6).height)
     property bool defaultbutton
+
     height: buttonHeight
 
     QStyleItem {
@@ -25,6 +26,14 @@ Components.Button {
     background: QStyleBackground {
         style:styleitem
         anchors.fill:parent
+        Connections{
+            target: button
+            onToolTipTriggered: showTip()
+        }
+        function showTip(){
+            showToolTip(tooltip);
+        }
+
     }
 
     label: Item {

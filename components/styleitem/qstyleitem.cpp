@@ -306,10 +306,12 @@ void QStyleItem::setElementType(const QString &str)
         m_dummywidget->installEventFilter(this);
         m_dummywidget->setAttribute(Qt::WA_QuitOnClose, false); // dont keep app open
         m_dummywidget->winId();
-        m_dummywidget->setVisible(visible);
-        // Mac require us to set the visibility before this
+#ifdef Q_WS_MAC
+        m_dummywidget->setVisible(visible);// Mac require us to set the visibility before this
+#endif
         m_dummywidget->setAttribute(Qt::WA_DontShowOnScreen);
         m_dummywidget->setAttribute(Qt::WA_LayoutUsesWidgetRect);
+        m_dummywidget->setVisible(visible);
     }
 }
 
@@ -319,6 +321,13 @@ bool QStyleItem::eventFilter(QObject *o, QEvent *e) {
         return true;
     }
     return QObject::eventFilter(o, e);
+}
+
+void QStyleBackground::showToolTip(const QString &str) const
+{
+    QPointF scene = mapToScene(width() - 20, 0);
+    QPoint global = qApp->focusWidget()->mapToGlobal(scene.toPoint());
+    QToolTip::showText(QPoint(global.x(), global.y()), str);
 }
 
 QRect QStyleBackground::subControlRect(const QString &subcontrolString) const

@@ -19,6 +19,9 @@ Item {
     property int minimumWidth: defaultStyle.minimumWidth
     property int minimumHeight: defaultStyle.minimumHeight
     property bool activeFocusOnPress: true
+    property string tooltip
+
+    signal toolTipTriggered
 
     // implementation
 
@@ -39,6 +42,13 @@ Item {
         anchors.fill: parent
         onClicked: button.clicked()
         onPressedChanged: if (activeFocusOnPress) button.focus = true
+        onMouseMoved: {tiptimer.restart()}
+        Timer{
+            id: tiptimer
+            interval:1000
+            running:containsMouse && tooltip.length
+            onTriggered: button.toolTipTriggered()
+        }
     }
 
     DefaultStyles.BasicButtonStyle { id: defaultStyle }

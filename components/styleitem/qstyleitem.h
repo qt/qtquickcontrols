@@ -165,6 +165,7 @@ public Q_SLOTS:
     void updateItem(){update();}
     QString hitTest(int x, int y) const;
     QRect subControlRect(const QString &subcontrolString) const;
+    void showToolTip(const QString &str) const;
 
 Q_SIGNALS:
     void styleChanged();

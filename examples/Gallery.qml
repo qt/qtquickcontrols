@@ -102,9 +102,9 @@ Rectangle {
                                 width:98
                                 focus:true
                                 Component.onCompleted:button1.forceActiveFocus()
-                                //defaultbutton:true
+				tooltip:"This is an interesting tool tip"                                
+				//defaultbutton:true
                                 KeyNavigation.tab: button2
-                                //KeyNavigation.backtab: button2
                             }
                             Button {
                                 id:button2
@@ -112,7 +112,6 @@ Rectangle {
                                 focus:true
                                 width:98
                                 KeyNavigation.tab: combo
-                                //KeyNavigation.backtab: button1
                             }
                         }
                         ChoiceList{id:combo; model:choices; width:200; focus:false; KeyNavigation.tab:t1}
