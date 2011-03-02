@@ -13,6 +13,9 @@ Components.SpinBox {
     topMargin:__margin
     bottomMargin:__margin
 
+    leftMargin:6
+    rightMargin:6
+
     property int buttonHeight: edititem.sizeFromContents(70, 20).height
     property int buttonWidth: edititem.sizeFromContents(70, 20).width
 

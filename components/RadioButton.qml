@@ -4,7 +4,7 @@ import "plugin"
 
 // jb : Size should not depend on background, we should make it consistent
 
-Components.RadioButton{
+Components.CheckBox {
     id:radiobutton
     property variant text
     width:110
@@ -21,7 +21,6 @@ Components.RadioButton{
             focus:radiobutton.focus
         }
     }
-    checkmark: null
     Keys.onSpacePressed:clicked()
 }
 

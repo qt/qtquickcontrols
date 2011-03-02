@@ -1,5 +1,4 @@
 import QtQuick 1.0
-import "./styles/default" as DefaultStyles
 import "./private" as Private //  for ChoiceListPopup
 
 // KNOWN ISSUES
@@ -20,18 +19,18 @@ Item {
     property color textColor: syspal.text
     property color backgroundColor: syspal.button
 
-    property Component background: defaultStyle.background
-    property Component label: defaultStyle.label
-    property Component listItem: defaultStyle.listItem
-    property Component popupFrame: defaultStyle.popupFrame
+    property Component background: null
+    property Component label: null
+    property Component listItem: null
+    property Component popupFrame: null
 
-    property int minimumWidth: defaultStyle.minimumWidth
-    property int minimumHeight: defaultStyle.minimumHeight
+    property int minimumWidth: 0
+    property int minimumHeight: 0
 
-    property int leftMargin: defaultStyle.leftMargin
-    property int topMargin: defaultStyle.topMargin
-    property int rightMargin: defaultStyle.rightMargin
-    property int bottomMargin: defaultStyle.bottomMargin
+    property int leftMargin: 0
+    property int topMargin: 0
+    property int rightMargin: 0
+    property int bottomMargin: 0
 
     property int labelWidth: label != null ? labelComponent.item.width : 0
     property int labelHeight: label != null ? labelComponent.item.height : 0
@@ -88,6 +87,4 @@ Item {
 
     Keys.onUpPressed: { if (currentIndex < model.count - 1) currentIndex++ }
     Keys.onDownPressed: {if (currentIndex > 0) currentIndex-- }
-
-    DefaultStyles.ChoiceListStyle { id: defaultStyle }
 }

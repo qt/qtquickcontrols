@@ -1,6 +1,5 @@
 import QtQuick 1.1
 import "./behaviors"
-import "./styles/default" as DefaultStyles
 
 Item {
     id: checkBox
@@ -10,13 +9,12 @@ Item {
     property alias checked: behavior.checked
     property alias containsMouse: behavior.containsMouse
 
-    property Component background: defaultStyle.background
-    property Component checkmark: defaultStyle.checkmark
+    property Component background: null
 
     property color backgroundColor: syspal.base
 
-    property int minimumWidth: defaultStyle.minimumWidth
-    property int minimumHeight: defaultStyle.minimumHeight
+    property int minimumWidth: 0
+    property int minimumHeight: 0
 
     property bool activeFocusOnPress: true
 
@@ -32,13 +30,6 @@ Item {
         sourceComponent: background
     }
 
-    Loader {
-        id: checkmarkLoader
-        anchors.centerIn: parent
-        property alias styledItem: checkBox
-        sourceComponent: checkmark
-    }
-
     ButtonBehavior {
         id: behavior
         anchors.fill: parent
@@ -46,6 +37,5 @@ Item {
         onClicked: {if (activeFocusOnPress)checkBox.focus = true; checkBox.clicked()}
     }
 
-    DefaultStyles.CheckBoxStyle { id: defaultStyle }
     SystemPalette { id: syspal }
 }

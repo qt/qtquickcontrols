@@ -26,7 +26,6 @@
 
 import QtQuick 1.0
 import "../plugin"
-import "./styles/default" as DefaultStyles
 
 Item {
     id: slider
@@ -53,8 +52,8 @@ Item {
     property color progressColor: palette.highlight
     property color backgroundColor: palette.window
 
-    property int leftMargin: defaultStyle.leftMargin
-    property int rightMargin: defaultStyle.rightMargin
+    property int leftMargin: 0
+    property int rightMargin: 0
 
     // EXTENSIONS
     // Indicate that we want animations in the Slider, people customizing should
@@ -73,21 +72,19 @@ Item {
         return Math.round(v);
     }
 
-    property int minimumWidth: defaultStyle.minimumWidth
-    property int minimumHeight: defaultStyle.minimumHeight
+    property int minimumWidth: 0
+    property int minimumHeight: 0
 
     // Hooks for customizing the pieces of the slider
-    property Component groove: defaultStyle.groove
-    property Component handle: defaultStyle.handle
-    property Component valueIndicator: defaultStyle.valueIndicator
+    property Component groove: null
+    property Component handle: null
+    property Component valueIndicator: null
 
     // PRIVATE/CONVENIENCE
     property bool _isVertical: orientation == Qt.Vertical
 
     width: _isVertical ? minimumHeight : minimumWidth
     height: _isVertical ? minimumWidth : minimumHeight
-
-    DefaultStyles.SliderStyle { id: defaultStyle }
 
     // This is a template slider, so every piece can be modified by passing a
     // different Component. The main elements in the implementation are

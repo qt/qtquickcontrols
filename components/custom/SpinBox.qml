@@ -1,17 +1,16 @@
 import QtQuick 1.0
-import "./styles/default" as DefaultStyles
 
 Item {
     id: spinbox
     SystemPalette{id:syspal}
 
-    property int minimumWidth: defaultStyle.minimumWidth
-    property int minimumHeight: defaultStyle.minimumHeight
+    property int minimumWidth: 0
+    property int minimumHeight: 0
 
-    property int leftMargin: defaultStyle.leftMargin
-    property int topMargin: defaultStyle.topMargin
-    property int rightMargin: defaultStyle.rightMargin
-    property int bottomMargin: defaultStyle.bottomMargin
+    property int leftMargin: 0
+    property int topMargin: 0
+    property int rightMargin: 0
+    property int bottomMargin: 0
 
     width: Math.max(minimumWidth,
                     input.width + leftMargin + rightMargin)
@@ -40,7 +39,6 @@ Item {
     property Component background: defaultStyle.background
     property Component up: defaultStyle.up
     property Component down: defaultStyle.down
-    DefaultStyles.SpinBoxStyle { id: defaultStyle }
 
     function increment() {
         value += singlestep

@@ -1,5 +1,4 @@
 import QtQuick 1.1
-import "./styles/default" as DefaultStyles
 
 BasicButton {
     id: button
@@ -7,20 +6,20 @@ BasicButton {
     property string text
     property url iconSource
 
-    property Component label: defaultStyle.label
+    property Component label: null
 
-    property int leftMargin: defaultStyle.leftMargin
-    property int topMargin: defaultStyle.topMargin
-    property int rightMargin: defaultStyle.rightMargin
-    property int bottomMargin: defaultStyle.bottomMargin
+    property int leftMargin: 0
+    property int topMargin: 0
+    property int rightMargin: 0
+    property int bottomMargin: 0
 
     // implementation
 
-    implicitWidth: Math.max(minimumWidth, labelLoader.item.implicitWidth + leftMargin + rightMargin)
-    implicitHeight: Math.max(minimumHeight, labelLoader.item.implicitHeight + topMargin + bottomMargin)
+    implicitWidth: Math.max(minimumWidth, labelLoader.item ? labelLoader.item.implicitWidth : 0 + leftMargin + rightMargin)
+    implicitHeight: Math.max(minimumHeight, labelLoader.item ? labelLoader.item.implicitHeight : 0 + topMargin + bottomMargin)
 
-    minimumWidth: defaultStyle.minimumWidth
-    minimumHeight: defaultStyle.minimumHeight
+    minimumWidth: 0
+    minimumHeight: 0
 
     background: defaultStyle.background
 
@@ -34,6 +33,4 @@ BasicButton {
         property alias styledItem: button
         sourceComponent: label
     }
-
-    DefaultStyles.ButtonStyle { id: defaultStyle }
 }

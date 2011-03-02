@@ -22,7 +22,6 @@ Components.CheckBox{
             focus:checkbox.focus
         }
     }
-    checkmark: null
     Keys.onSpacePressed:checked = !checked
 }
 

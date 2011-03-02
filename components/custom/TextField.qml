@@ -1,5 +1,4 @@
 import QtQuick 1.0
-import "./styles/default" as DefaultStyles
 import "./behaviors"    // TextEditMouseBehavior
 
 // KNOWN ISSUES
@@ -30,16 +29,16 @@ FocusScope {
     property color backgroundColor: syspal.base
     property alias containsMouse: mouseEditBehavior.containsMouse
 
-    property Component background: defaultStyle.background
-    property Component hints: defaultStyle.hints
+    property Component background: null
+    property Component hints: null
 
-    property int minimumWidth: defaultStyle.minimumWidth
-    property int minimumHeight: defaultStyle.minimumHeight
+    property int minimumWidth: 0
+    property int minimumHeight: 0
 
-    property int leftMargin: defaultStyle.leftMargin
-    property int topMargin: defaultStyle.topMargin
-    property int rightMargin: defaultStyle.rightMargin
-    property int bottomMargin: defaultStyle.bottomMargin
+    property int leftMargin: 0
+    property int topMargin: 0
+    property int rightMargin: 0
+    property int bottomMargin: 0
 
     function copy() {
         textInput.copy()
@@ -87,7 +86,6 @@ FocusScope {
     // Implementation
 
     property alias desktopBehavior: mouseEditBehavior.desktopBehavior
-    property alias _hints: hintsLoader.item
     clip: true
 
     SystemPalette { id: syspal }
@@ -96,8 +94,8 @@ FocusScope {
 
     TextInput { // see QTBUG-14936
         id: textInput
-        font.pixelSize: _hints.fontPixelSize
-        font.bold: _hints.fontBold
+        font.pixelSize: hintsLoader.item != null ? hintsLoader.item.fontPixelSize: 14
+        font.bold: hintsLoader.item != null ? hintsLoader.item.fontBold : false
 
         anchors.leftMargin: leftMargin
         anchors.topMargin: topMargin
@@ -171,13 +169,7 @@ FocusScope {
         anchors.fill: parent
         textInput: textInput
         desktopBehavior: false
-        copyPasteButtons: ButtonBlock {
-            opacity: 0  // initially hidden
-            Behavior on opacity { NumberAnimation { duration: 100 } }
-        }
     }
-
-    DefaultStyles.TextFieldStyle { id: defaultStyle }
 }
 
 

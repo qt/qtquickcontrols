@@ -1,6 +1,5 @@
 import QtQuick 1.1
 import "./behaviors"    // ButtonBehavior
-import "./styles/default" as DefaultStyles
 
 Item {
     id: button
@@ -11,7 +10,7 @@ Item {
     property alias checkable: behavior.checkable  // button toggles between checked and !checked
     property alias checked: behavior.checked
 
-    property Component background: defaultStyle.background
+    property Component background: null
 
     property color backgroundColor: syspal.button
     property color textColor: syspal.text;
@@ -51,6 +50,5 @@ Item {
         }
     }
 
-    DefaultStyles.BasicButtonStyle { id: defaultStyle }
     SystemPalette { id: syspal }
 }
