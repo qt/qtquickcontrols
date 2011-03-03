@@ -189,6 +189,10 @@ QSize QStyleItem::sizeFromContents(int width, int height)
         QStyleOptionSpinBox opt;
         initStyleOption(&opt);
         return qApp->style()->sizeFromContents(QStyle::CT_SpinBox, &opt, QSize(width,height), widget());
+    } else if (metric == QLatin1String("slider")) {
+        QStyleOptionSlider opt;
+        initStyleOption(&opt);
+        return qApp->style()->sizeFromContents(QStyle::CT_Slider, &opt, QSize(width,height), widget());
     } else if (metric == QLatin1String("edit")) {
         QStyleOptionFrameV3 opt;
         initStyleOption(&opt);
@@ -602,7 +606,8 @@ void QStyleBackground::paint(QPainter *painter, const QStyleOptionGraphicsItem *
         m_style->initStyleOption(&opt);
         opt.minimum = m_style->minimum();
         opt.maximum = m_style->maximum();
-        opt.tickPosition = QSlider::TicksBelow;
+        if (m_style->activeControl() == "ticks")
+            opt.tickPosition = QSlider::TicksBelow;
         opt.sliderPosition = m_style->value();
         opt.tickInterval = 1200 / (opt.maximum - opt.minimum);
         opt.sliderValue = m_style->value();

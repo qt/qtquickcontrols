@@ -72,9 +72,6 @@ Item {
         return Math.round(v);
     }
 
-    property int minimumWidth: 0
-    property int minimumHeight: 0
-
     // Hooks for customizing the pieces of the slider
     property Component groove: null
     property Component handle: null
@@ -82,9 +79,6 @@ Item {
 
     // PRIVATE/CONVENIENCE
     property bool _isVertical: orientation == Qt.Vertical
-
-    width: _isVertical ? minimumHeight : minimumWidth
-    height: _isVertical ? minimumWidth : minimumHeight
 
     // This is a template slider, so every piece can be modified by passing a
     // different Component. The main elements in the implementation are

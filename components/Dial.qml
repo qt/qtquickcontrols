@@ -12,7 +12,9 @@ QStyleBackground {
 
     property alias maximumValue: range.maximumValue
     property alias minimumValue: range.minimumValue
+    property alias containsMouse: mouseArea.containsMouse
     property alias value: range.value
+
     property bool wrapping: false
     property bool tickmarks: true // not implemented
 
@@ -28,10 +30,13 @@ QStyleBackground {
         id: mouseArea
         anchors.fill:parent
         property bool inDrag
+        hoverEnabled:true
 
         onPositionChanged: {
-            value = valueFromPoint(mouseX, mouseY)
-            inDrag = true
+            if (pressed) {
+                value = valueFromPoint(mouseX, mouseY)
+                inDrag = true
+            }
         }
         onPressed: {
             value = valueFromPoint(mouseX, mouseY)
