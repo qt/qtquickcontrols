@@ -5,10 +5,12 @@ import "plugin"
 Components.ProgressBar {
     id:progressbar
 
-    // Align with button
-    height: buttonitem.sizeFromContents(100, 15).height
-    width: 200
-    QStyleItem { id:buttonitem; elementType:"button" }
+    QStyleItem { id:buttonitem; elementType: "progressbar" }
+    property int buttonWidth: buttonitem.sizeFromContents(25, 200).width
+    property int buttonHeight: buttonitem.sizeFromContents(25, 200).height
+    property int orientation: Qt.Horizontal
+    height: orientation == Qt.Vertical ? buttonHeight : buttonWidth
+    width: orientation == Qt.Vertical ? buttonWidth : buttonHeight
 
     background: QStyleBackground{
         anchors.fill:parent
@@ -21,6 +23,7 @@ Components.ProgressBar {
             minimum: indeterminate ? 0 : progressbar.minimumValue * factor
             maximum: indeterminate ? 0 : progressbar.maximumValue * factor
             enabled: progressbar.enabled
+            horizontal: progressbar.orientation == Qt.Horizontal
         }
     }
 }

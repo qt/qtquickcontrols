@@ -231,6 +231,88 @@ Rectangle {
         }
 
         Tab {
+            title: "Sliders"
+            Row {
+                anchors.fill: parent
+                anchors.margins:16
+                spacing:12
+                Slider {
+                    value:50
+                    orientation:Qt.Vertical
+                }
+                Slider {
+                    value: 50
+                    tickmarksEnabled: false
+                    orientation: Qt.Vertical
+                }
+
+                Column {
+                    anchors.verticalCenter:parent.verticalCenter
+                    anchors.margins:16
+                    spacing:12
+                    Slider {
+                        value:50
+                    }
+                    Slider {
+                        id : slider1
+                        value: 50
+                        tickmarksEnabled: false
+                    }
+                    Slider {
+                        value: 50
+                        tickmarksEnabled: true
+                        scale:-1
+                    }
+                    Slider {
+                        value: 50
+                        tickmarksEnabled: false
+                        scale:-1
+                    }
+                }
+            }
+        }
+        Tab {
+            title: "Progress"
+            Row {
+                anchors.fill:parent
+                anchors.margins:20
+                spacing:20
+                Column {
+                    anchors.margins: 20
+                    spacing: 20
+                    ProgressBar {
+                        value: 0.0
+                    }
+                    ProgressBar {
+                        value:0.5
+                    }
+                    ProgressBar {
+                        value:1
+                    }
+                    ProgressBar {
+                        indeterminate: true
+                    }
+                }
+                ProgressBar {
+                    value: 0.0
+                    orientation: Qt.Vertical
+                }
+                ProgressBar {
+                    value: 0.5
+                    orientation: Qt.Vertical
+                }
+                ProgressBar {
+                    value: 1
+                    orientation: Qt.Vertical
+                }
+                ProgressBar {
+                    orientation: Qt.Vertical
+                    indeterminate: true
+                }
+            }
+
+        }
+        Tab {
             title: "Dials"
             Row {
                 anchors.fill: parent
@@ -245,57 +327,6 @@ Rectangle {
                 }
             }
         }
-        Tab {
-            title: "Slider"
-            Row {
-                anchors.fill: parent
-                anchors.margins:16
-                spacing:12
-                Slider {
-                    value:50
-                    orientation:Qt.Vertical
-                    KeyNavigation.tab: frameCheckbox
-                    KeyNavigation.backtab: t3
-                }
-                Slider {
-                    value: 50
-                    tickmarksEnabled: false
-                    orientation: Qt.Vertical
-                    KeyNavigation.tab: frameCheckbox
-                    KeyNavigation.backtab: t3
-                }
 
-                Column {
-                    anchors.verticalCenter:parent.verticalCenter
-                    anchors.margins:16
-                    spacing:12
-                    Slider {
-                        value:50
-                        KeyNavigation.tab: frameCheckbox
-                        KeyNavigation.backtab: t3
-                    }
-                    Slider {
-                        value: 50
-                        tickmarksEnabled: false
-                        KeyNavigation.tab: frameCheckbox
-                        KeyNavigation.backtab: t3
-                    }
-                    Slider {
-                        value: 50
-                        tickmarksEnabled: true
-                        KeyNavigation.tab: frameCheckbox
-                        KeyNavigation.backtab: t3
-                        scale:-1
-                    }
-                    Slider {
-                        value: 50
-                        tickmarksEnabled: false
-                        KeyNavigation.tab: frameCheckbox
-                        KeyNavigation.backtab: t3
-                        scale:-1
-                    }
-                }
-            }
-        }
     }
 }

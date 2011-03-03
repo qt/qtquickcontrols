@@ -193,6 +193,10 @@ QSize QStyleItem::sizeFromContents(int width, int height)
         QStyleOptionSlider opt;
         initStyleOption(&opt);
         return qApp->style()->sizeFromContents(QStyle::CT_Slider, &opt, QSize(width,height), widget());
+    } else if (metric == QLatin1String("progressbar")) {
+        QStyleOptionSlider opt;
+        initStyleOption(&opt);
+        return qApp->style()->sizeFromContents(QStyle::CT_ProgressBar, &opt, QSize(width,height), widget());
     } else if (metric == QLatin1String("edit")) {
         QStyleOptionFrameV3 opt;
         initStyleOption(&opt);
@@ -639,6 +643,7 @@ void QStyleBackground::paint(QPainter *painter, const QStyleOptionGraphicsItem *
         }
         QStyle::ControlElement control = QStyle::CE_ProgressBar;
         QStyleOptionProgressBarV2 opt;
+        opt.orientation = m_style->horizontal() ? Qt::Horizontal : Qt::Vertical;
         opt.rect = QRect(0, 0, width(), height());
         m_style->initStyleOption(&opt);
         opt.minimum = m_style->minimum();
