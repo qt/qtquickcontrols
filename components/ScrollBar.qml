@@ -100,7 +100,7 @@ MouseArea {
         orientation:scrollbar.orientation
         leftMargin: (orientation === Qt.Horizontal) ? handleRect.width/2 : handleRect.height/2
         rightMargin:leftMargin
-        handle: Rectangle {
+        handle: Item {
             width:orientation == Qt.Vertical ? handleRect.height : handleRect.width;
             height:orientation == Qt.Vertical ? handleRect.width : handleRect.height
         }
