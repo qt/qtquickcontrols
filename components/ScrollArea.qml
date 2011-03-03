@@ -7,7 +7,6 @@ FocusScope {
     width: 100
     height: 100
 
-    property int contentMargin: 1
     property int __scrollbarExtent : styleitem.pixelMetric("scrollbarExtent");
     property int frameWidth: styleitem.pixelMetric("defaultframewidth");
     property int contentHeight : content.childrenRect.height
@@ -26,6 +25,8 @@ FocusScope {
     onContentYChanged: { vscrollbar.value = contentY }
     onContentXChanged: { hscrollbar.value = contentX }
 
+    property int frameMargins : frame ? frameWidth : 0
+
     QStyleBackground {
         style: QStyleItem{
             id:styleitem
@@ -33,21 +34,20 @@ FocusScope {
             sunken: true
         }
         anchors.fill: parent
-        anchors.rightMargin: (frameAroundContents && vscrollbar.visible) ? vscrollbar.width + 4 : -frameWidth
-        anchors.bottomMargin: (frameAroundContents && hscrollbar.visible) ? hscrollbar.height + 4 : -frameWidth
-        anchors.topMargin: (frameAroundContents && hscrollbar.visible) ? hscrollbar.height + 4 : -frameWidth
+        anchors.rightMargin: (frame && frameAroundContents && vscrollbar.visible) ? vscrollbar.width + 2*frameMargins : 0
+        anchors.bottomMargin: (frame && frameAroundContents && hscrollbar.visible) ? hscrollbar.height + 2*frameMargins : 0
 
         Rectangle {
             id:flickable
             color: "transparent"
             anchors.fill: parent
-            anchors.margins: frame ? 2 : 0
+            anchors.margins: frameMargins
             clip: true
 
             Item {
                 id: docmargins
                 anchors.fill:parent
-                anchors.margins:contentMargin
+                anchors.margins:frameMargins
                 Item {
                     id: content
                     x: -scrollarea.contentX
@@ -60,36 +60,38 @@ FocusScope {
     ScrollBar {
         id: hscrollbar
         orientation: Qt.Horizontal
-        visible: contentWidth > flickable.width
-        maximumValue: contentWidth > flickable.width ? scrollarea.contentWidth - flickable.width : 0
+        property int availableWidth : scrollarea.width - (frame ? (vscrollbar.width) : 0)
+        visible: contentWidth > availableWidth
+        maximumValue: contentWidth > availableWidth ? scrollarea.contentWidth - availableWidth: 0
         minimumValue: 0
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.rightMargin: { return (frame ? 1 : 0) + ( vscrollbar.visible ? __scrollbarExtent : 0) }
+        anchors.rightMargin: { vscrollbar.visible ? __scrollbarExtent : (frame ? 1 : 0) }
         onValueChanged: contentX = value
     }
 
     ScrollBar {
         id: vscrollbar
         orientation: Qt.Vertical
-        visible: contentHeight > flickable.height
-        maximumValue: contentHeight > flickable.height ? scrollarea.contentHeight - flickable.height : 0
+        property int availableHeight : scrollarea.height - (frame ? (hscrollbar.height) : 0)
+        visible: contentHeight > availableHeight
+        maximumValue: contentHeight > availableHeight ? scrollarea.contentHeight - availableHeight : 0
         minimumValue: 0
         anchors.right: parent.right
         anchors.top: parent.top
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: styleitem.style == "mac" ? -1 : 0
         anchors.topMargin: styleitem.style == "mac" ? 1 : 0
         onValueChanged: contentY = value
+        anchors.bottomMargin: (frameAroundContents && hscrollbar.visible) ? hscrollbar.height : 0
     }
 
     QStyleBackground {
         z:2
         anchors.fill:parent
-        anchors.margins:-2
-        anchors.rightMargin:-4
-        anchors.bottomMargin:-4
+        anchors.margins:-frameMargins
+        anchors.rightMargin:-frameMargins
+        anchors.bottomMargin:-frameMargins
         visible: highlightOnFocus && parent.activeFocus && styleitem.styleHint("focuswidget")
         style: QStyleItem {
             id:framestyle

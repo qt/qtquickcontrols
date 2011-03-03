@@ -94,14 +94,13 @@ MouseArea {
     onValueChanged: updateHandle()
     onMaximumValueChanged: updateHandle()
     onMinimumValueChanged: updateHandle()
-    Component.onCompleted: updateHandle()
     Components.Slider {
         id:slider
         anchors.fill:parent
         orientation:scrollbar.orientation
         leftMargin: (orientation === Qt.Horizontal) ? handleRect.width/2 : handleRect.height/2
         rightMargin:leftMargin
-        handle: Item {
+        handle: Rectangle {
             width:orientation == Qt.Vertical ? handleRect.height : handleRect.width;
             height:orientation == Qt.Vertical ? handleRect.width : handleRect.height
         }
