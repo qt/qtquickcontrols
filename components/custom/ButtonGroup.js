@@ -1,29 +1,25 @@
 var self;
-var clickHandlers = [];
+var checkHandlers = [];
 var visibleButtons = [];
 var nonVisibleButtons = [];
 var direction;
-var exclusive;
 
 function create(that, options) {
     self = that;
     direction = options.direction || Qt.Horizontal;
-    exclusive = self.exclusive|| options.exclusive;
     self.childrenChanged.connect(rebuild);
 //    self.widthChanged.connect(resizeChildren);
     build();
 }
 
 function isButton(item) {
-    if (item && item["__position"] !== undefined)
+    if (item && item.hasOwnProperty("__position"))
         return true;
     return false;
 }
 
 function hasChecked(item) {
-    if (item && item["checked"] !== undefined)
-        return true;
-    return false;
+    return (item && item.hasOwnProperty("checked"));
 }
 
 function destroy() {
@@ -47,21 +43,26 @@ function build() {
         }
         visibleButtons.push(item);
 
-        if (exclusive && hasChecked(item)) {
-            if (item["checkable"]!==undefined) {
-                item.checkable = true;
-            }
-            clickHandlers[i] = checkExclusive(item);
-            item.clicked.connect(clickHandlers[i]);
+        if (self.exclusive && item.hasOwnProperty("checkable"))
+            item.checkable = true;
+
+        if (self.exclusive) {
+            item.checked = false;
+            checkHandlers.push(checkExclusive(item));
+            item.checkedChanged.connect(checkHandlers[checkHandlers.length - 1]);
         }
     }
-
-    if (self.checkedButton && !self.checkedButton.visible)
-        self.checkedButton = undefined;
 
     var nrButtons = visibleButtons.length;
     if (nrButtons == 0)
         return;
+
+    if (self.checkedButton)
+        self.checkedButton.checked = true;
+    else if (self.exclusive) {
+        self.checkedButton = visibleButtons[0];
+        self.checkedButton.checked = true;
+    }
 
     if (nrButtons == 1) {
         finishButton(visibleButtons[0], "only");
@@ -77,7 +78,7 @@ function finishButton(button, position) {
     if (isButton(button)) {
         button.__position = position;
         if (direction == Qt.Vertical) {
-            button.anchors.left = self.left
+            button.anchors.left = self.left     //mm How to make this not cause binding loops? see QTBUG-17162
             button.anchors.right = self.right
         }
     }
@@ -85,11 +86,11 @@ function finishButton(button, position) {
 
 function cleanup() {
     visibleButtons.forEach(function(item, i) {
-        if (clickHandlers[i])
-            item.clicked.disconnect(clickHandlers[i]);
+        if (checkHandlers[i])
+            item.checkedChanged.disconnect(checkHandlers[i]);
         item.visibleChanged.disconnect(rebuild);
     });
-    clickHandlers = [];
+    checkHandlers = [];
 
     nonVisibleButtons.forEach(function(item, i) {
         item.visibleChanged.disconnect(rebuild);
@@ -97,6 +98,9 @@ function cleanup() {
 }
 
 function rebuild() {
+    if (self == undefined)
+        return;
+
     cleanup();
     build();
 }
@@ -120,7 +124,13 @@ function checkExclusive(item) {
     var button = item;
     return function() {
         for (var i = 0, ref; (ref = visibleButtons[i]); i++) {
-            ref.checked = button === ref;
+            if (ref.checked == (button === ref))
+                continue;
+
+            // Disconnect the signal to avoid recursive calls
+            ref.checkedChanged.disconnect(checkHandlers[i]);
+            ref.checked = !ref.checked;
+            ref.checkedChanged.connect(checkHandlers[i]);
         }
         self.checkedButton = button;
     }
