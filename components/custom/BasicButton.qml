@@ -12,9 +12,7 @@ Item {
 
     property Component background: null
 
-    property color backgroundColor: syspal.button
     property color textColor: syspal.text;
-
     property bool activeFocusOnPress: true
     property string tooltip
 

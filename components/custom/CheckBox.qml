@@ -8,10 +8,8 @@ Item {
     property alias pressed: behavior.pressed
     property alias checked: behavior.checked
     property alias containsMouse: behavior.containsMouse
-
-    property Component background: null
-    property color backgroundColor: syspal.base
     property bool activeFocusOnPress: true
+    property Component background: null
 
     // implementation
 

@@ -16,15 +16,9 @@ Item {
     property alias containsMouse: mouseArea.containsMouse   //mm needed?
     property bool pressed: false    //mm needed?
 
-    property color textColor: syspal.text
-    property color backgroundColor: syspal.button
-
     property Component background: null
     property Component listItem: null
     property Component popupFrame: null
-
-    property int minimumWidth: 0
-    property int minimumHeight: 0
 
     property int leftMargin: 0
     property int topMargin: 0

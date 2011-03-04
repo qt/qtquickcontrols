@@ -46,11 +46,6 @@ Item {
     property alias value: range.value
 
     // CONVENIENCE TO BE USED BY STYLES
-    SystemPalette {
-        id: palette
-    }
-    property color progressColor: palette.highlight
-    property color backgroundColor: palette.window
 
     property int leftMargin: 0
     property int rightMargin: 0
