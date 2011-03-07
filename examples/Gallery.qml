@@ -219,7 +219,7 @@ Rectangle {
                                 loops: Animation.Infinite
                             }
                         }
-                        TextScrollArea {
+                        TextArea {
                             id: area
                             frame: frameCheckbox.checked
                             text: loremIpsum + loremIpsum

@@ -2,44 +2,31 @@ import QtQuick 1.0
 import "custom" as Components
 import "plugin"
 
-Components.TextArea {
-    id: textarea
-    leftMargin: 12
-    rightMargin: 12
-    minimumWidth: 200
-    desktopBehavior: true
-    placeholderText: ""
-    clip:false
+ScrollArea {
+    id:area
+    color: "white"
+    width: 280
+    height: 120
+    contentWidth: 200
 
-    // Align with button
-    property int buttonHeight: buttonitem.sizeFromContents(100, 14).height
-    QStyleItem { id:buttonitem; elementType:"button" }
-    minimumHeight: buttonHeight
+    property alias text: edit.text
+    property alias wrapMode: edit.wrapMode
+    highlightOnFocus: true
 
-    background: QStyleBackground {
-        anchors.fill:parent
-        style: QStyleItem{
-            elementType:"edit"
-            sunken:true
-            focus:textarea.activeFocus
-        }
-    }
+    TextEdit {
+        id: edit
+        text: loremIpsum + loremIpsum;
+        wrapMode: TextEdit.WordWrap;
+        width: area.contentWidth
+        selectByMouse:true
+        focus:true
 
-    Item{
-        id:focusFrame
-        anchors.fill: textarea
-        parent:textarea.parent
-        visible:framestyle.styleHint("focuswidget")
-        QStyleBackground{
-            anchors.margins: -2
-            anchors.rightMargin:-4
-            anchors.bottomMargin:-4
-            anchors.fill: parent
-            visible:textarea.activeFocus
-            style: QStyleItem {
-                id:framestyle
-                elementType:"focusframe"
-            }
-        }
+        // keep textcursor within scrollarea
+        onCursorRectangleChanged:
+            if (cursorRectangle.y >= area.contentY + area.height - 1.5*cursorRectangle.height)
+                area.contentY = cursorRectangle.y - area.height + 1.5*cursorRectangle.height
+            else if (cursorRectangle.y < area.contentY)
+                area.contentY = cursorRectangle.y
+
     }
 }
