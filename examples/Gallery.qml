@@ -26,7 +26,7 @@ Rectangle {
                 anchors.verticalCenter: parent.verticalCenter
             }
         }
-        CheckBox{
+        CheckBox {
             id: enabledCheck
             text: "Enabled"
             checked: true
@@ -84,15 +84,6 @@ Rectangle {
                     anchors.fill: parent
                     Column {
                         spacing: 9
-                        SequentialAnimation on x {
-                            running: animateCheck.checked
-                            NumberAnimation { from:0 ; to: -flickable.width; easing.type:Easing.OutSine; duration:1000}
-                            PauseAnimation { duration: 1000 }
-                            NumberAnimation { from:-flickable.width; to:0; easing.type:Easing.OutSine; duration:1000}
-                            alwaysRunToEnd: true
-                            loops: Animation.Infinite
-                        }
-
                         Row {
                             spacing:8
                             Button {
@@ -154,6 +145,7 @@ Rectangle {
                         Slider {
                             id:slider
                             value:50
+                            tickmarksEnabled: tickmarkCheck.checked
                             KeyNavigation.tab: frameCheckbox
                             KeyNavigation.backtab: t3
                         }
@@ -172,23 +164,16 @@ Rectangle {
                                     id: frameCheckbox
                                     text: "Text frame"
                                     checked: true
-                                    KeyNavigation.tab: animateCheck
+                                    KeyNavigation.tab: tickmarkCheck
                                     KeyNavigation.backtab: slider
                                 }
                                 CheckBox {
-                                    id: animateCheck
-                                    text: "Animated"
-                                    checked: false
+                                    id: tickmarkCheck
+                                    text: "Tickmarks"
+                                    checked: true
                                     KeyNavigation.tab: r1
                                     KeyNavigation.backtab: frameCheckbox
                                 }
-                            }
-                            RotationAnimation on rotation {
-                                from:0; to:360;
-                                easing.type:Easing.OutCubic; duration:1000;
-                                running: animateCheck.checked
-                                alwaysRunToEnd: true
-                                loops: Animation.Infinite
                             }
                         }
                         GroupBox {
@@ -210,14 +195,6 @@ Rectangle {
                                     KeyNavigation.backtab: r1
                                 }
                             }
-                            RotationAnimation on rotation {
-                                from:0; to:360
-                                easing.type: Easing.OutCubic
-                                duration: 1000
-                                running: animateCheck.checked
-                                alwaysRunToEnd: true
-                                loops: Animation.Infinite
-                            }
                         }
                         Item {height: 6; width: 6}
                         TextArea {
@@ -232,83 +209,77 @@ Rectangle {
         }
 
         Tab {
-            title: "Sliders"
+            title: "Range"
             Row {
                 anchors.fill: parent
                 anchors.margins:16
                 spacing:16
 
                 Column {
-                    anchors.verticalCenter:parent.verticalCenter
-                    anchors.margins:16
                     spacing:12
-                    Slider {
-                        value:50
-                    }
-                    Slider {
-                        id : slider1
-                        value: 50
-                        tickmarksEnabled: false
-                    }
-                }
-            }
-        }
-        Tab {
-            title: "Progress"
-            Row {
-                anchors.fill:parent
-                anchors.margins:20
-                spacing:20
-                Column {
-                    anchors.margins: 20
-                    spacing: 20
-                    ProgressBar {
-                        value: 0.0
-                    }
-                    ProgressBar {
-                        value:0.5
-                    }
-                    ProgressBar {
-                        value:1
-                    }
-                    ProgressBar {
-                        indeterminate: true
-                    }
-                }
-                ProgressBar {
-                    value: 0.0
-                    orientation: Qt.Vertical
-                }
-                ProgressBar {
-                    value: 0.5
-                    orientation: Qt.Vertical
-                }
-                ProgressBar {
-                    value: 1
-                    orientation: Qt.Vertical
-                }
-                ProgressBar {
-                    orientation: Qt.Vertical
-                    indeterminate: true
-                }
-            }
 
-        }
-        Tab {
-            title: "Dials"
-            Row {
-                anchors.fill: parent
-                anchors.margins:16
-                spacing:12
-                Dial{id: dial1; KeyNavigation.tab:dial2; scale:1.2}
-                Dial{id: dial2; scale: 1; KeyNavigation.tab:dial3}
-                Dial{
-                    id: dial3;
-                    KeyNavigation.tab:dial1
-                    scale: 0.8
+                    GroupBox {
+                        text: "Animation options"
+                        ButtonRow {
+                            exclusive: false
+                            CheckBox {
+                                id:fade
+                                width:120
+                                text: "Fade on hover"
+                            }
+                            CheckBox {
+                                id: scale
+                                width:120
+                                text: "Scale on hover"
+                            }
+                        }
+                    }
+                    Row {
+                        spacing: 20
+                        Column {
+                            spacing: 8
+                            Slider {
+                                value:50
+                                scale: scale.checked && containsMouse ? 1.1 : 1
+                                opacity: !fade.checked || containsMouse ? 1 : 0.5
+                                Behavior on scale { NumberAnimation { easing.type: Easing.OutCubic ; duration: 120} }
+                                Behavior on opacity { NumberAnimation { easing.type: Easing.OutCubic ; duration: 220} }
+                            }
+                            Slider {
+                                id : slider1
+                                value: 50
+                                tickmarksEnabled: false
+                                scale: scale.checked && containsMouse ? 1.1 : 1
+                                opacity: !fade.checked || containsMouse ? 1 : 0.5
+                                Behavior on scale { NumberAnimation { easing.type: Easing.OutCubic ; duration: 120} }
+                                Behavior on opacity { NumberAnimation { easing.type: Easing.OutCubic ; duration: 220} }
+                            }
+                            ProgressBar {
+                                value: 0.5
+                                scale: scale.checked && containsMouse ? 1.1 : 1
+                                opacity: !fade.checked || containsMouse ? 1 : 0.5
+                                Behavior on scale { NumberAnimation { easing.type: Easing.OutCubic ; duration: 120} }
+                                Behavior on opacity { NumberAnimation { easing.type: Easing.OutCubic ; duration: 220} }
+                            }
+                            ProgressBar {
+                                indeterminate: true
+                                scale: scale.checked && containsMouse ? 1.1 : 1
+                                opacity: !fade.checked || containsMouse ? 1 : 0.5
+                                Behavior on scale { NumberAnimation { easing.type: Easing.OutCubic ; duration: 120} }
+                                Behavior on opacity { NumberAnimation { easing.type: Easing.OutCubic ; duration: 220} }
+                            }
+                        }
+                        Dial{
+                            width: 120
+                            height: 120
+                            scale: scale.checked && containsMouse ? 1.1 : 1
+                            opacity: !fade.checked || containsMouse ? 1 : 0.5
+                            Behavior on scale { NumberAnimation { easing.type: Easing.OutCubic ; duration: 120} }
+                            Behavior on opacity { NumberAnimation { easing.type: Easing.OutCubic ; duration: 220} }
+                        }
+                    }
                 }
             }
         }
-
     }
 }

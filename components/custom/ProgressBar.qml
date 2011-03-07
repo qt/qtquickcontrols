@@ -7,6 +7,7 @@ Item {
     property real minimumValue: 0
     property real maximumValue: 1
     property bool indeterminate: false
+    property bool containsMouse: mouseArea.containsMouse
 
     property int leftMargin: 0
     property int topMargin: 0
@@ -41,5 +42,11 @@ Item {
         anchors.rightMargin: rightMargin
         anchors.topMargin: topMargin
         anchors.bottomMargin: bottomMargin
+    }
+
+    MouseArea {
+        id: mouseArea
+        anchors.fill: parent
+        hoverEnabled: true
     }
 }

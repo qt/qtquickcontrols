@@ -44,6 +44,7 @@ Item {
     // of updates AND allow the user bind it (without a Binding object). That's the
     // reason this is an alias to a C++ property in range model.
     property alias value: range.value
+    property bool containsMouse: mouseArea.containsMouse
 
     // CONVENIENCE TO BE USED BY STYLES
 
@@ -156,7 +157,7 @@ Item {
 
         MouseArea {
             id: mouseArea
-
+            hoverEnabled: true
             anchors.centerIn: parent
             anchors.horizontalCenterOffset: (slider.leftMargin - slider.rightMargin) / 2
 
