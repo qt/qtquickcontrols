@@ -237,15 +237,6 @@ Rectangle {
                 anchors.fill: parent
                 anchors.margins:16
                 spacing:16
-                Slider {
-                    value:50
-                    orientation:Qt.Vertical
-                }
-                Slider {
-                    value: 50
-                    tickmarksEnabled: false
-                    orientation: Qt.Vertical
-                }
 
                 Column {
                     anchors.verticalCenter:parent.verticalCenter
@@ -258,16 +249,6 @@ Rectangle {
                         id : slider1
                         value: 50
                         tickmarksEnabled: false
-                    }
-                    Slider {
-                        value: 50
-                        tickmarksEnabled: true
-                        scale:-1
-                    }
-                    Slider {
-                        value: 50
-                        tickmarksEnabled: false
-                        scale:-1
                     }
                 }
             }

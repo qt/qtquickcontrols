@@ -36,7 +36,7 @@ Item{
         style: QStyleItem {
             id:style
             elementType: "tabframe"
-            text: position
+            info: position
             value: tabbar && tabsVisible && tabbar.tab(current) ? tabbar.tab(current).x : 0
             minimum: tabbar && tabsVisible && tabbar.tab(current) ? tabbar.tab(current).width : 0
         }
