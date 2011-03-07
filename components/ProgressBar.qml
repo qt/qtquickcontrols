@@ -6,11 +6,11 @@ Components.ProgressBar {
     id:progressbar
 
     QStyleItem { id:buttonitem; elementType: "progressbar" }
-    property int buttonWidth: buttonitem.sizeFromContents(25, 200).width
-    property int buttonHeight: buttonitem.sizeFromContents(25, 200).height
+    property variant sizehint: buttonitem.sizeFromContents(23, 23)
     property int orientation: Qt.Horizontal
-    height: orientation == Qt.Vertical ? buttonHeight : buttonWidth
-    width: orientation == Qt.Vertical ? buttonWidth : buttonHeight
+
+    height: orientation === Qt.Horizontal ? sizehint.height : 200
+    width: orientation === Qt.Horizontal ? 200 : sizehint.height
 
     background: QStyleBackground{
         anchors.fill:parent
