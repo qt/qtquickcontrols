@@ -7,14 +7,13 @@ import "plugin"
 Components.Slider{
     id: slider
 
-    // Align with button
-    property int buttonWidth: buttonitem.sizeFromContents(30, 200).width
-    property int buttonHeight: buttonitem.sizeFromContents(30, 200).height
     property bool tickmarksEnabled: true
 
     QStyleItem { id:buttonitem; elementType: "slider" }
-    height: orientation == Qt.Vertical ? buttonHeight : buttonWidth
-    width: orientation == Qt.Vertical ? buttonWidth : buttonHeight
+    property variant sizehint: buttonitem.sizeFromContents(23, 23)
+    property int orientation: Qt.Horizontal
+    height: orientation === Qt.Horizontal ? sizehint.height : 200
+    width: orientation === Qt.Horizontal ? 200 : sizehint.height
 
     groove: QStyleBackground {
         anchors.fill:parent
