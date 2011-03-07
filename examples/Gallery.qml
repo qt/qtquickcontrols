@@ -237,7 +237,7 @@ Rectangle {
                     Row {
                         spacing: 20
                         Column {
-                            spacing: 8
+                            spacing: 10
                             Button {
                                 width:200
                                 text: "Push button"
