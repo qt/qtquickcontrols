@@ -3,7 +3,7 @@ import "../components"
 import "../components/plugin"
 
 Rectangle {
-    width: 530 + frame.margins*2
+    width: 538 + frame.margins*2
     height: 345 + frame.margins*2
 
     ToolBar{
@@ -80,10 +80,10 @@ Rectangle {
                 Row {
                     id: contentRow
                     anchors.margins: 18
-                    spacing: 12
+                    spacing: 16
                     anchors.fill: parent
                     Column {
-                        spacing: 6
+                        spacing: 9
                         SequentialAnimation on x {
                             running: animateCheck.checked
                             NumberAnimation { from:0 ; to: -flickable.width; easing.type:Easing.OutSine; duration:1000}
@@ -94,7 +94,7 @@ Rectangle {
                         }
 
                         Row {
-                            spacing:4
+                            spacing:8
                             Button {
                                 id: button1
                                 text:"Button 1"
@@ -124,7 +124,7 @@ Rectangle {
                             KeyNavigation.backtab: button2
                         }
                         Row {
-                            spacing: 6
+                            spacing: 8
                             SpinBox {
                                 id: t1
                                 width: 97
@@ -161,12 +161,12 @@ Rectangle {
                     }
                     Column {
                         id: rightcol
-                        spacing: 24
+                        spacing: 12
                         GroupBox{
                             id: group1
                             text: "CheckBox"
                             Row {
-                                spacing: 6
+                                spacing: 9
                                 anchors.fill: parent
                                 CheckBox {
                                     id: frameCheckbox
@@ -219,6 +219,7 @@ Rectangle {
                                 loops: Animation.Infinite
                             }
                         }
+                        Item {height: 6; width: 6}
                         TextArea {
                             id: area
                             frame: frameCheckbox.checked
@@ -235,7 +236,7 @@ Rectangle {
             Row {
                 anchors.fill: parent
                 anchors.margins:16
-                spacing:12
+                spacing:16
                 Slider {
                     value:50
                     orientation:Qt.Vertical
