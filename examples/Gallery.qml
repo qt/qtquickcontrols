@@ -27,8 +27,8 @@ Rectangle {
             }
         }
         CheckBox{
-            id:enabledCheck
-            text:"Enabled"
+            id: enabledCheck
+            text: "Enabled"
             checked: true
             anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter

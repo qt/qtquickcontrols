@@ -123,14 +123,4 @@ FocusScope {
         text: "Enter text"
         Behavior on opacity { NumberAnimation { duration: 90 } }
     }
-
-    Text {
-        id: unfocusedText
-        clip: true
-        anchors.fill: textInput
-        font: textInput.font
-        color: textInput.color
-        elide: Text.ElideRight
-        text: textInput.text
-    }
 }
