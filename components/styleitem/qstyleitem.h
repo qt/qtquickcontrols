@@ -61,6 +61,7 @@ class QStyleItem: public QObject
     Q_PROPERTY( QString elementType READ elementType WRITE setElementType NOTIFY elementTypeChanged)
     Q_PROPERTY( QString text READ text WRITE setText NOTIFY textChanged)
     Q_PROPERTY( QString activeControl READ activeControl WRITE setActiveControl NOTIFY activeControlChanged)
+    Q_PROPERTY( QString info READ info WRITE setInfo NOTIFY infoChanged)
     Q_PROPERTY( QString style READ style NOTIFY styleChanged)
 
     // For range controls
@@ -80,12 +81,15 @@ public:
     bool on() const { return m_on; }
     bool hover() const { return m_hover; }
     bool horizontal() const { return m_horizontal; }
+
     int minimum() const { return m_minimum; }
     int maximum() const { return m_maximum; }
     int value() const { return m_value; }
+
     QString elementType() const { return m_type; }
     QString text() const { return m_text; }
     QString activeControl() const { return m_activeControl; }
+    QString info() const { return m_info; }
     QString style() const;
 
     void setSunken(bool sunken) { if (m_sunken != sunken) {m_sunken = sunken; emit sunkenChanged();}}
@@ -103,6 +107,8 @@ public:
     void setElementType(const QString &str);
     void setText(const QString &str) { if (m_text != str) {m_text = str; emit textChanged();}}
     void setActiveControl(const QString &str) { if (m_activeControl != str) {m_activeControl = str; emit activeControlChanged();}}
+    void setInfo(const QString &str) { if (m_info != str) {m_info = str; emit infoChanged();}}
+
     bool eventFilter(QObject *, QEvent *);
     virtual void initStyleOption (QStyleOption *opt) const;
     QWidget *widget(){ return m_dummywidget; };
@@ -128,14 +134,19 @@ Q_SIGNALS:
     void maximumChanged();
     void valueChanged();
     void activeControlChanged();
+    void infoChanged();
+
     void styleChanged();
     void updateItem();
 
 protected:
     QWidget *m_dummywidget;
+
     QString m_type;
     QString m_text;
     QString m_activeControl;
+    QString m_info;
+
     bool m_sunken;
     bool m_raised;
     bool m_active;
@@ -145,6 +156,7 @@ protected:
     bool m_hover;
     bool m_on;
     bool m_horizontal;
+
     int m_minimum;
     int m_maximum;
     int m_value;

@@ -413,6 +413,7 @@ void QStyleBackground::setStyle(QStyleItem *style)
     if (m_style != style) {
         m_style = style;
         connect(m_style, SIGNAL(updateItem()), this, SLOT(updateItem()));
+        connect(m_style, SIGNAL(infoChanged()), this, SLOT(updateItem()));
         connect(m_style, SIGNAL(onChanged()), this, SLOT(updateItem()));
         connect(m_style, SIGNAL(selectedChanged()), this, SLOT(updateItem()));
         connect(m_style, SIGNAL(activeChanged()), this, SLOT(updateItem()));
@@ -464,12 +465,13 @@ void QStyleBackground::paint(QPainter *painter, const QStyleOptionGraphicsItem *
             qApp->style()->drawComplexControl(control, &opt, painter, m_style->widget());
     }
     else if (type == QLatin1String("tab")) {
-        QStyle::ControlElement control = QStyle::CE_TabBarTabShape;
+        QStyle::ControlElement control = QStyle::CE_TabBarTab;
         QStyleOptionTabV3 opt;
         m_style->initStyleOption(&opt);
         int overlap = qApp->style()->pixelMetric(QStyle::PM_TabBarTabOverlap);
         opt.rect = QRect(overlap, 0, width()-2*overlap, height());
-        if (m_style->text() == "South")
+        opt.text = m_style->text();
+        if (m_style->info() == "South")
             opt.shape = QTabBar::RoundedSouth;
         if (m_style->activeControl() == QLatin1String("beginning"))
             opt.position = QStyleOptionTabV3::Beginning;

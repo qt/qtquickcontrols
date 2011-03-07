@@ -58,12 +58,10 @@ Item {
                         id:style
                         elementType: "tab"
                         selected: tab.selected
-                        text: tabbar.position
-
-                        activeControl: tabFrame.count == 1 ?
-                                           "only" :
-                        index == 0 ? "beginning" :
-                            index == tabFrame.count-1 ? "end" : "middle"
+                        info: tabbar.position
+                        text: tabFrame.tabs[index].title
+                        activeControl: tabFrame.count == 1 ? "only" : index == 0 ? "beginning" :
+                                                index == tabFrame.count-1 ? "end" : "middle"
                     }
                     anchors.leftMargin: -tabOverlap + (style.text == "North" && (style.activeControl == "middle" || style.activeControl == "end")
                                         && tab.selected ? -__overlap : 0)
@@ -71,13 +69,12 @@ Item {
                     anchors.rightMargin: -tabOverlap + (style.text == "North" && (style.activeControl == "middle"  || style.activeControl == "beginning")
                                          && tab.selected ? -__overlap : 0)
                     anchors.fill:parent
-                }
-
-                Text {
-                    id:textitem
-                    anchors.centerIn:parent
-                    text:  tabFrame.tabs[index].title
-                    elide: Text.ElideRight
+                    Text {
+                        // Used for size hint
+                        id: textitem
+                        visible: false
+                        text: tabFrame.tabs[index].title
+                    }
                 }
 
                 MouseArea {
