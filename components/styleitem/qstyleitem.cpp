@@ -526,7 +526,7 @@ void QStyleBackground::paint(QPainter *painter, const QStyleOptionGraphicsItem *
         if (m_style->minimum()) {
             QStyleOptionTabWidgetFrameV2 opt;
             m_style->initStyleOption(&opt);
-            if (m_style->text() == "South")
+            if (m_style->info() == "South")
                 opt.shape = QTabBar::RoundedSouth;
             opt.selectedTabRect = QRect(m_style->value(), 0, m_style->minimum(), height());
             opt.rect = QRect(0, 0, width(), height());

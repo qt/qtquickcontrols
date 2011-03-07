@@ -34,8 +34,9 @@ FocusScope {
             sunken: true
         }
         anchors.fill: parent
-        anchors.rightMargin: (frame && frameAroundContents && vscrollbar.visible) ? vscrollbar.width + 2*frameMargins : 0
-        anchors.bottomMargin: (frame && frameAroundContents && hscrollbar.visible) ? hscrollbar.height + 2*frameMargins : 0
+        anchors.rightMargin: frame ? (frameAroundContents ? (vscrollbar.visible ? vscrollbar.width + 2 * frameMargins : 0) : -frameWidth) : 0
+        anchors.bottomMargin: frame ? (frameAroundContents ? (hscrollbar.visible ? hscrollbar.height + 2 * frameMargins : 0) : -frameWidth) : 0
+        anchors.topMargin: frame ? (frameAroundContents ? 0 : -frameWidth) : 0
 
         Rectangle {
             id:flickable
