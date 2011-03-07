@@ -238,6 +238,14 @@ Rectangle {
                         spacing: 20
                         Column {
                             spacing: 8
+                            Button {
+                                width:200
+                                text: "Push button"
+                                scale: scale.checked && containsMouse ? 1.1 : 1
+                                opacity: !fade.checked || containsMouse ? 1 : 0.5
+                                Behavior on scale { NumberAnimation { easing.type: Easing.OutCubic ; duration: 120} }
+                                Behavior on opacity { NumberAnimation { easing.type: Easing.OutCubic ; duration: 220} }
+                            }
                             Slider {
                                 value:50
                                 scale: scale.checked && containsMouse ? 1.1 : 1
