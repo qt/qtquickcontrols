@@ -94,6 +94,7 @@ MouseArea {
     onValueChanged: updateHandle()
     onMaximumValueChanged: updateHandle()
     onMinimumValueChanged: updateHandle()
+    Component.onCompleted: updateHandle()
     Components.Slider {
         id:slider
         anchors.fill:parent

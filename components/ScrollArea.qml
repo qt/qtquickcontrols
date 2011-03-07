@@ -87,11 +87,11 @@ FocusScope {
     }
 
     QStyleBackground {
-        z:2
-        anchors.fill:parent
-        anchors.margins:-frameMargins
-        anchors.rightMargin:-frameMargins
-        anchors.bottomMargin:-frameMargins
+        z: 2
+        anchors.fill: parent
+        anchors.margins: -frameMargins
+        anchors.rightMargin: -frameMargins
+        anchors.bottomMargin: -frameMargins
         visible: highlightOnFocus && parent.activeFocus && styleitem.styleHint("focuswidget")
         style: QStyleItem {
             id:framestyle
