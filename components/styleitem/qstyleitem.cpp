@@ -506,13 +506,14 @@ void QStyleBackground::paint(QPainter *painter, const QStyleOptionGraphicsItem *
         //       qApp->style()->drawControl(QStyle::CE_MenuVMargin, &opt, painter, m_menu);
     }
     else if (type == QLatin1String("frame")) {
-        QStyle::PrimitiveElement control = QStyle::PE_Frame;
+        QStyle::ControlElement control = QStyle::CE_ShapedFrame;
         QStyleOptionFrameV3 opt;
+        m_style->initStyleOption(&opt);
         opt.rect = QRect(0, 0, width(), height());
         opt.frameShape = QFrame::StyledPanel;
         opt.lineWidth = 1;
-        m_style->initStyleOption(&opt);
-        qApp->style()->drawPrimitive(control, &opt, painter, 0);
+        opt.midLineWidth = 1;
+        qApp->style()->drawControl(control, &opt, painter, 0);
     }
     else if (type == QLatin1String("focusframe")) {
         QStyle::ControlElement control = QStyle::CE_FocusFrame;
