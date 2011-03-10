@@ -63,7 +63,7 @@ Rectangle {
 
                 Column {
                     id: panel2
-                    opacity: expander.checked ? 1 : 0
+                    opacity: expander.checked && sidebar.show ? 1 : 0
                     scale: opacity
                     Behavior on opacity{NumberAnimation { easing.type:Easing.OutSine; duration: 300 }}
                     transformOrigin: Item.Top
