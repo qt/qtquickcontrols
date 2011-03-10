@@ -289,5 +289,11 @@ Rectangle {
                 }
             }
         }
+        Tab {
+            title: "Sidebar"
+            Panel {
+                anchors.fill:parent
+            }
+        }
     }
 }
