@@ -20,9 +20,9 @@ Components.Slider{
         style: QStyleItem {
             elementType: "slider"
             sunken: pressed
-            maximum: slider.maximumValue
-            minimum: slider.minimumValue
-            value: slider.value
+            maximum: slider.maximumValue*100
+            minimum: slider.minimumValue*100
+            value: slider.value*100
             horizontal: slider.orientation == Qt.Horizontal
             enabled: slider.enabled
             focus: slider.focus
