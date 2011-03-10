@@ -107,10 +107,10 @@ Item {
 
         RangeModel {
             id: range
-            minimumValue: 0
-            maximumValue: 100
+            minimumValue: 0.0
+            maximumValue: 1.0
             value: 0
-            stepSize: 1.0
+            stepSize: 0.0
             inverted: false
 
             positionAtMinimum: leftMargin
