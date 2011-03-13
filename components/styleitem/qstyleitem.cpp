@@ -202,8 +202,7 @@ void QStyleItem::initStyleOption()
             m_styleoption = new QStyleOptionComboBox();
 
         QStyleOptionComboBox *opt = qstyleoption_cast<QStyleOptionComboBox*>(m_styleoption);
-
-        //widget()->resize(width(), height());
+        widget()->resize(width(), height());
         opt->currentText = text();
     }
     else if (type == QLatin1String("spinbox")) {
@@ -353,31 +352,33 @@ QString QStyleItem::style() const
     if (style.startsWith(QLatin1Char('Q')))
         style = style.right(style.length() - 1);
     if (style.endsWith("Style"))
-        style = style.left(style.length()-5);
+        style = style.left(style.length() - 5);
     return style.toLower();
 }
 
 QString QStyleItem::hitTest(int px, int py)
 {
-    QStyle::SubControl subcontrol = QStyle::SC_All;
-    QStyle::ComplexControl control = QStyle::CC_CustomBase;
     QString type = elementType();
+    QStyle::SubControl subcontrol = QStyle::SC_All;
+    initStyleOption();
     if (type == QLatin1String("spinbox")) {
-        control = QStyle::CC_SpinBox;
-        subcontrol = qApp->style()->hitTestComplexControl(control, qstyleoption_cast<QStyleOptionComplex*>(m_styleoption), QPoint(px,py), 0);
+        subcontrol = qApp->style()->hitTestComplexControl(QStyle::CC_SpinBox,
+                                                          qstyleoption_cast<QStyleOptionComplex*>(m_styleoption),
+                                                          QPoint(px,py), 0);
         if (subcontrol == QStyle::SC_SpinBoxUp)
             return "up";
         else if (subcontrol == QStyle::SC_SpinBoxDown)
             return "down";
-
     } else if (type == QLatin1String("slider")) {
-        control = QStyle::CC_Slider;
-        subcontrol = qApp->style()->hitTestComplexControl(control, qstyleoption_cast<QStyleOptionComplex*>(m_styleoption), QPoint(px,py), 0);
+        subcontrol = qApp->style()->hitTestComplexControl(QStyle::CC_Slider,
+                                                          qstyleoption_cast<QStyleOptionComplex*>(m_styleoption),
+                                                          QPoint(px,py), 0);
         if (subcontrol == QStyle::SC_SliderHandle)
             return "handle";
     } else if (type == QLatin1String("scrollbar")) {
-        subcontrol = qApp->style()->hitTestComplexControl(control, qstyleoption_cast<QStyleOptionComplex*>(m_styleoption), QPoint(px,py), 0);
-
+        subcontrol = qApp->style()->hitTestComplexControl(QStyle::CC_ScrollBar,
+                                                          qstyleoption_cast<QStyleOptionComplex*>(m_styleoption),
+                                                          QPoint(px,py), 0);
         if (subcontrol == QStyle::SC_ScrollBarSlider)
             return "handle";
         if (subcontrol == QStyle::SC_ScrollBarSubLine || subcontrol == QStyle::SC_ScrollBarSubPage)
@@ -582,6 +583,7 @@ QRect QStyleItem::subControlRect(const QString &subcontrolString)
 {
     QStyle::SubControl subcontrol = QStyle::SC_None;
     QString m_type = elementType();
+    initStyleOption();
     if (m_type == QLatin1String("spinbox")) {
         QStyle::ComplexControl control = QStyle::CC_SpinBox;
         QStyleOptionSpinBox opt;
