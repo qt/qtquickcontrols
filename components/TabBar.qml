@@ -6,6 +6,7 @@ import "plugin"
 Item {
     id: tabbar
     property int tabHeight: styleitem.sizeFromContents(100, 24).height
+    property int tabWidth: tabrow.width
     height: tabHeight
 
     property Item tabFrame

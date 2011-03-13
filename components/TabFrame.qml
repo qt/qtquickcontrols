@@ -31,12 +31,19 @@ Item{
     }
 
     QStyleItem {
+        anchors.fill: parent
+        elementType: "widget"
+    }
+
+
+    QStyleItem {
         id: frameitem
         z: -1
         elementType: "tabframe"
         info: position
         value: tabbar && tabsVisible && tabbar.tab(current) ? tabbar.tab(current).x : 0
         minimum: tabbar && tabsVisible && tabbar.tab(current) ? tabbar.tab(current).width : 0
+        maximum: tabbar && tabsVisible ? tabbar.tabWidth : width
         anchors.fill: parent
         Item {
             id: stack

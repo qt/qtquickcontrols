@@ -165,10 +165,12 @@ void QStyleItem::initStyleOption()
             m_styleoption = new QStyleOptionTabWidgetFrameV2();
 
         QStyleOptionTabWidgetFrameV2 *opt = qstyleoption_cast<QStyleOptionTabWidgetFrameV2*>(m_styleoption);
+        opt->tabBarSize = QSize(maximum() , height());
+        opt->shape = (info() == "South") ? QTabBar::RoundedSouth : QTabBar::RoundedNorth;
         if (minimum()) {
-            opt->shape = (info() == "South") ? QTabBar::RoundedSouth : QTabBar::RoundedNorth;
             opt->selectedTabRect = QRect(value(), 0, minimum(), height());
         }
+          opt->tabBarRect = opt->rect;
     }
     else if (type == QLatin1String("menuitem") || type == QLatin1String("comboboxitem")) {
         if (!m_styleoption)
@@ -211,7 +213,7 @@ void QStyleItem::initStyleOption()
             opt->activeSubControls = QStyle::SC_SpinBoxUp;
         else if (value() & (1<<1))
             opt->activeSubControls = QStyle::SC_SpinBoxDown;
-        opt->subControls = QStyle::SC_SpinBoxDown | QStyle::SC_SpinBoxUp;
+        opt->subControls = QStyle::SC_All;
         if (value() & (1<<2))
             opt->stepEnabled |= QAbstractSpinBox::StepUpEnabled;
         if (value() & (1<<3))
@@ -250,13 +252,14 @@ void QStyleItem::initStyleOption()
     else if (type == QLatin1String("groupbox")) {
         if (QGroupBox *group= qobject_cast<QGroupBox*>(widget()))
             group->setTitle(text());
+
         if (!m_styleoption)
             m_styleoption = new QStyleOptionGroupBox();
 
         QStyleOptionGroupBox *opt = qstyleoption_cast<QStyleOptionGroupBox*>(m_styleoption);
         opt->text = text();
         opt->lineWidth = 1;
-        opt->subControls = QStyle::SC_GroupBoxLabel;
+        opt->subControls = QStyle::SC_GroupBoxLabel | QStyle::SC_GroupBoxFrame;
     }
     else if (type == QLatin1String("scrollbar")) {
         QScrollBar *bar = qobject_cast<QScrollBar *>(widget());
@@ -285,6 +288,7 @@ void QStyleItem::initStyleOption()
 
     if (!m_styleoption)
         m_styleoption = new QStyleOption();
+
     if (type == QLatin1String("tabframe")) {
         int overlap = qApp->style()->pixelMetric(QStyle::PM_TabBarTabOverlap);
         m_styleoption->rect = QRect(overlap, 0,
@@ -351,21 +355,25 @@ QString QStyleItem::hitTest(int px, int py)
             return "up";
         else if (subcontrol == QStyle::SC_SpinBoxDown)
             return "down";
+
     } else if (type == QLatin1String("slider")) {
         subcontrol = qApp->style()->hitTestComplexControl(QStyle::CC_Slider,
                                                           qstyleoption_cast<QStyleOptionComplex*>(m_styleoption),
                                                           QPoint(px,py), 0);
         if (subcontrol == QStyle::SC_SliderHandle)
             return "handle";
+
     } else if (type == QLatin1String("scrollbar")) {
         subcontrol = qApp->style()->hitTestComplexControl(QStyle::CC_ScrollBar,
                                                           qstyleoption_cast<QStyleOptionComplex*>(m_styleoption),
                                                           QPoint(px,py), 0);
         if (subcontrol == QStyle::SC_ScrollBarSlider)
             return "handle";
+
         if (subcontrol == QStyle::SC_ScrollBarSubLine
                           || subcontrol == QStyle::SC_ScrollBarSubPage)
             return "up";
+
         if (subcontrol == QStyle::SC_ScrollBarAddLine
                           || subcontrol == QStyle::SC_ScrollBarAddPage)
             return "down";
@@ -377,6 +385,7 @@ QSize QStyleItem::sizeFromContents(int width, int height)
 {
     QString metric = m_type;
     initStyleOption();
+
     if (metric == QLatin1String("checkbox")) {
         return qApp->style()->sizeFromContents(QStyle::CT_CheckBox, m_styleoption, QSize(width,height), widget());
     } else if (metric == QLatin1String("toolbutton")) {
@@ -427,13 +436,16 @@ QVariant QStyleItem::styleHint(const QString &metric)
     initStyleOption();
     if (metric == "comboboxpopup") {
         return qApp->style()->styleHint(QStyle::SH_ComboBox_Popup, m_styleoption);
+
     } else if (metric == "focuswidget") {
         return qApp->style()->styleHint(QStyle::SH_FocusFrame_AboveWidget);
+
     } else if (metric == "tabbaralignment") {
         int result = qApp->style()->styleHint(QStyle::SH_TabBar_Alignment);
         if (result == Qt::AlignCenter)
             return "center";
         return "left";
+
     } else if (metric == "framearoundcontents")
         return qApp->style()->styleHint(QStyle::SH_ScrollView_FrameOnlyAroundContents);
     return 0;
@@ -471,6 +483,10 @@ void QStyleItem::setElementType(const QString &str)
         static QGroupBox *group = new QGroupBox();
         m_sharedWidget = true;
         m_dummywidget = group;
+    } if (str == "tabframe") {
+        static QTabWidget *tabframe = new QTabWidget();
+        m_sharedWidget = true;
+        m_dummywidget = tabframe;
     } else if (str == "comboboxitem")  {
         // Gtk uses qobject cast, hence we need to separate this from menuitem
         // On mac, we temporarily use the menu item because it has more accurate
@@ -558,14 +574,20 @@ QRect QStyleItem::subControlRect(const QString &subcontrolString)
         else if (subcontrolString == QLatin1String("edit")){
             subcontrol = QStyle::SC_SpinBoxEditField;
         }
-        return qApp->style()->subControlRect(control, qstyleoption_cast<QStyleOptionComplex*>(m_styleoption), subcontrol, 0);
+        return qApp->style()->subControlRect(control,
+                                             qstyleoption_cast<QStyleOptionComplex*>(m_styleoption),
+                                             subcontrol, widget());
+
     } else if (m_type == QLatin1String("slider")) {
         QStyle::ComplexControl control = QStyle::CC_Slider;
         if (subcontrolString == QLatin1String("handle"))
             subcontrol = QStyle::SC_SliderHandle;
         else if (subcontrolString == QLatin1String("groove"))
             subcontrol = QStyle::SC_SliderGroove;
-        return qApp->style()->subControlRect(control, qstyleoption_cast<QStyleOptionComplex*>(m_styleoption), subcontrol, 0);
+        return qApp->style()->subControlRect(control,
+                                             qstyleoption_cast<QStyleOptionComplex*>(m_styleoption),
+                                             subcontrol, widget());
+
     } else if (m_type == QLatin1String("scrollbar")) {
         QStyle::ComplexControl control = QStyle::CC_ScrollBar;
         if (subcontrolString == QLatin1String("slider"))
@@ -578,7 +600,9 @@ QRect QStyleItem::subControlRect(const QString &subcontrolString)
             subcontrol = QStyle::SC_ScrollBarAddPage;
         else if (subcontrolString == QLatin1String("sub"))
             subcontrol = QStyle::SC_ScrollBarSubPage;
-        return qApp->style()->subControlRect(control, qstyleoption_cast<QStyleOptionComplex*>(m_styleoption), subcontrol, 0);
+        return qApp->style()->subControlRect(control,
+                                             qstyleoption_cast<QStyleOptionComplex*>(m_styleoption),
+                                             subcontrol, widget());
     }
     return QRect();
 }
@@ -617,6 +641,9 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
     }
     else if (type == QLatin1String("edit")) {
         qApp->style()->drawPrimitive(QStyle::PE_PanelLineEdit, m_styleoption, painter, widget());
+    }
+    else if (type == QLatin1String("widget")) {
+        qApp->style()->drawPrimitive(QStyle::PE_Widget, m_styleoption, painter, widget());
     }
     else if (type == QLatin1String("combobox")) {
         qApp->style()->drawComplexControl(QStyle::CC_ComboBox,
