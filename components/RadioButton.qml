@@ -9,17 +9,14 @@ Components.CheckBox {
     property string text
     width:110
     height:20
-    background: QStyleBackground {
-
-        style: QStyleItem{
-            elementType:"radiobutton"
-            sunken:pressed
-            on:checked || pressed
-            hover:containsMouse
-            text:radiobutton.text
-            enabled:radiobutton.enabled
-            focus:radiobutton.focus
-        }
+    background: QStyleItem {
+        elementType:"radiobutton"
+        sunken:pressed
+        on:checked || pressed
+        hover:containsMouse
+        text:radiobutton.text
+        enabled:radiobutton.enabled
+        focus:radiobutton.focus
     }
     Keys.onSpacePressed:clicked()
 }

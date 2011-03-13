@@ -45,14 +45,13 @@
 #include <QtGui>
 #include <QEvent>
 
-class QStyleItem: public QObject
+class QStyleItem: public QDeclarativeItem
 {
     Q_OBJECT
 
     Q_PROPERTY( bool sunken READ sunken WRITE setSunken NOTIFY sunkenChanged)
     Q_PROPERTY( bool raised READ raised WRITE setRaised NOTIFY raisedChanged)
     Q_PROPERTY( bool active READ active WRITE setActive NOTIFY activeChanged)
-    Q_PROPERTY( bool enabled READ enabled WRITE setEnabled NOTIFY enabledChanged)
     Q_PROPERTY( bool selected READ selected WRITE setSelected NOTIFY selectedChanged)
     Q_PROPERTY( bool focus READ focus WRITE setFocus NOTIFY focusChanged)
     Q_PROPERTY( bool on READ on WRITE setOn NOTIFY onChanged)
@@ -70,7 +69,9 @@ class QStyleItem: public QObject
     Q_PROPERTY( int value READ value WRITE setValue NOTIFY valueChanged)
 
 public:
-    QStyleItem(QObject *parent = 0);
+    QStyleItem(QDeclarativeItem *parent = 0);
+
+    void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *);
 
     bool sunken() const { return m_sunken; }
     bool raised() const { return m_raised; }
@@ -111,12 +112,16 @@ public:
 
     bool eventFilter(QObject *, QEvent *);
     virtual void initStyleOption ();
-    QWidget *widget(){ return m_dummywidget; };
+    QWidget *widget(){ return m_dummywidget; }
 
 public Q_SLOTS:
     int pixelMetric(const QString&);
     QVariant styleHint(const QString&);
     QSize sizeFromContents(int width, int height);
+    void updateItem(){update();}
+    QString hitTest(int x, int y);
+    QRect subControlRect(const QString &subcontrolString);
+    void showToolTip(const QString &str);
 
 Q_SIGNALS:
     void elementTypeChanged();
@@ -124,7 +129,6 @@ Q_SIGNALS:
     void sunkenChanged();
     void raisedChanged();
     void activeChanged();
-    void enabledChanged();
     void selectedChanged();
     void focusChanged();
     void onChanged();
@@ -137,7 +141,6 @@ Q_SIGNALS:
     void infoChanged();
 
     void styleChanged();
-    void updateItem();
 
 protected:
     QWidget *m_dummywidget;
@@ -161,30 +164,6 @@ protected:
     int m_minimum;
     int m_maximum;
     int m_value;
-};
-
-class QStyleBackground: public QDeclarativeItem
-{
-    Q_OBJECT
-public:
-    Q_PROPERTY( QStyleItem* style READ style WRITE setStyle NOTIFY styleChanged)
-
-    QStyleBackground(QDeclarativeItem *parent = 0);
-    void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *);
-
-public Q_SLOTS:
-    QStyleItem *style(){return m_style;}
-    void setStyle(QStyleItem *style);
-    void updateItem(){update();}
-    QString hitTest(int x, int y) const;
-    QRect subControlRect(const QString &subcontrolString) const;
-    void showToolTip(const QString &str) const;
-
-Q_SIGNALS:
-    void styleChanged();
-
-private:
-    QStyleItem *m_style;
 };
 
 #endif //STYLEWRAPPER_H

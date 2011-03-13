@@ -11,8 +11,10 @@ Components.Button {
 
     property bool defaultbutton
 
-    QStyleItem {
+    background: QStyleItem {
         id: styleitem
+        anchors.fill:parent
+
         elementType: "button"
         sunken: pressed
         raised: !pressed
@@ -22,19 +24,13 @@ Components.Button {
         focus: button.focus
         // If no icon, let the style do the drawing
         activeControl: focus ? "default" : ""
-    }
-
-    background: QStyleBackground {
-        style:styleitem
-        anchors.fill:parent
         Connections{
             target: button
-            onToolTipTriggered: showTip()
+            onToolTipTriggered: styleitem.showTip()
         }
         function showTip(){
             showToolTip(tooltip);
         }
-
     }
 
     label: Item {
@@ -54,7 +50,7 @@ Components.Button {
                 id:text
                 color: textColor
                 anchors.verticalCenter: parent.verticalCenter
-                text: styledItem.text
+                text: styleitem.text
                 horizontalAlignment: Text.Center
             }
         }

@@ -10,17 +10,15 @@ Components.CheckBox{
     width:100
     height:20
 
-    background: QStyleBackground {
+    background: QStyleItem {
         id:styleitem
-        style:QStyleItem {
-            elementType:"checkbox"
-            sunken:pressed
-            on:checked || pressed
-            hover:containsMouse
-            text:checkbox.text
-            enabled:checkbox.enabled
-            focus:checkbox.focus
-        }
+        elementType:"checkbox"
+        sunken:pressed
+        on:checked || pressed
+        hover:containsMouse
+        text:checkbox.text
+        enabled:checkbox.enabled
+        focus:checkbox.focus
     }
     Keys.onSpacePressed:checked = !checked
 }

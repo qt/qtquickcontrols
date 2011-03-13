@@ -49,8 +49,8 @@
 #include <QtGui/QMenu>
 
 
-QStyleItem::QStyleItem(QObject*parent)
-    : QObject(parent),
+QStyleItem::QStyleItem(QDeclarativeItem *parent)
+    : QDeclarativeItem(parent),
     m_dummywidget(0),
     m_styleoption(0),
     m_sunken(false),
@@ -65,11 +65,36 @@ QStyleItem::QStyleItem(QObject*parent)
     m_maximum(100),
     m_value(0)
 {
+    setFlag(QGraphicsItem::ItemHasNoContents, false);
+    setCacheMode(QGraphicsItem::DeviceCoordinateCache);
+    setSmooth(true);
+
+    connect(this, SIGNAL(infoChanged()), this, SLOT(updateItem()));
+    connect(this, SIGNAL(onChanged()), this, SLOT(updateItem()));
+    connect(this, SIGNAL(selectedChanged()), this, SLOT(updateItem()));
+    connect(this, SIGNAL(activeChanged()), this, SLOT(updateItem()));
+    connect(this, SIGNAL(textChanged()), this, SLOT(updateItem()));
+    connect(this, SIGNAL(activeChanged()), this, SLOT(updateItem()));
+    connect(this, SIGNAL(raisedChanged()), this, SLOT(updateItem()));
+    connect(this, SIGNAL(sunkenChanged()), this, SLOT(updateItem()));
+    connect(this, SIGNAL(hoverChanged()), this, SLOT(updateItem()));
+    connect(this, SIGNAL(maximumChanged()), this, SLOT(updateItem()));
+    connect(this, SIGNAL(minimumChanged()), this, SLOT(updateItem()));
+    connect(this, SIGNAL(valueChanged()), this, SLOT(updateItem()));
+    connect(this, SIGNAL(enabledChanged()), this, SLOT(updateItem()));
+    connect(this, SIGNAL(horizontalChanged()), this, SLOT(updateItem()));
+    connect(this, SIGNAL(activeControlChanged()), this, SLOT(updateItem()));
+    connect(this, SIGNAL(focusChanged()), this, SLOT(updateItem()));
+    connect(this, SIGNAL(activeControlChanged()), this, SLOT(updateItem()));
+    connect(this, SIGNAL(elementTypeChanged()), this, SLOT(updateItem()));
+
 }
 
 void QStyleItem::initStyleOption()
 {
     QString type = elementType();
+    if (m_styleoption)
+        m_styleoption->state = 0;
 
     if (type == QLatin1String("button")) {
         if (!m_styleoption)
@@ -91,7 +116,7 @@ void QStyleItem::initStyleOption()
         QStyleOptionTabV3 *opt = qstyleoption_cast<QStyleOptionTabV3*>(m_styleoption);
 
         int overlap = qApp->style()->pixelMetric(QStyle::PM_TabBarTabOverlap);
-        //opt->rect = QRect(overlap, 0, width()-2*overlap, height());
+        opt->rect = QRect(overlap, 0, width()-2*overlap, height());
         opt->text = text();
         if (info() == "South")
             opt->shape = QTabBar::RoundedSouth;
@@ -132,7 +157,7 @@ void QStyleItem::initStyleOption()
         if (minimum()) {
             if (info() == "South")
                 opt->shape = QTabBar::RoundedSouth;
-//            opt->selectedTabRect = QRect(value(), 0, minimum(), height());
+            opt->selectedTabRect = QRect(value(), 0, minimum(), height());
         }
     }
     else if (type == QLatin1String("menuitem") || type == QLatin1String("comboboxitem")) {
@@ -152,8 +177,8 @@ void QStyleItem::initStyleOption()
         if (!(opt->state & QStyle::State_On))
             opt->state |= QStyle::State_Off;
         opt->text = text();
-//        if (widget())
-//            widget()->resize(width(), height());
+        if (widget())
+            widget()->resize(width(), height());
     }
     else if (type == QLatin1String("radiobutton")) {
         if (!m_styleoption)
@@ -161,8 +186,8 @@ void QStyleItem::initStyleOption()
 
         QStyleOptionButton *opt = qstyleoption_cast<QStyleOptionButton*>(m_styleoption);
         opt->text = text();
-        //if (widget())
-        //    widget()->resize(width(), height());
+        if (widget())
+            widget()->resize(width(), height());
     }
     else if (type == QLatin1String("edit")) {
         if (!m_styleoption)
@@ -204,7 +229,7 @@ void QStyleItem::initStyleOption()
             m_styleoption = new QStyleOptionSlider();
 
         QStyleOptionSlider *opt = qstyleoption_cast<QStyleOptionSlider*>(m_styleoption);
-        //widget()->resize(width(), height());
+        widget()->resize(width(), height());
         opt->minimum = minimum();
         opt->maximum = maximum();
         if (activeControl() == "ticks")
@@ -266,7 +291,7 @@ void QStyleItem::initStyleOption()
         bar->setMaximum(maximum());
         bar->setMinimum(minimum());
         bar->setValue(value());
-        //bar->resize(width(), height());
+        bar->resize(width(), height());
 
         if (!m_styleoption)
             m_styleoption = new QStyleOptionSlider();
@@ -288,8 +313,8 @@ void QStyleItem::initStyleOption()
         opt->subControls = QStyle::SC_All;
     }
 
-    //if (!m_styleoption->rect.isValid())
-    //    m_styleoption->rect = QRect(0, 0, width(), height());
+    if (!m_styleoption->rect.isValid())
+        m_styleoption->rect = QRect(0, 0, width(), height());
     if (m_enabled)
         m_styleoption->state |= QStyle::State_Enabled;
     if (m_active)
@@ -330,18 +355,14 @@ QString QStyleItem::style() const
     return style.toLower();
 }
 
-QString QStyleBackground::hitTest(int px, int py) const
+QString QStyleItem::hitTest(int px, int py)
 {
     QStyle::SubControl subcontrol = QStyle::SC_All;
     QStyle::ComplexControl control = QStyle::CC_CustomBase;
-    QString type = m_style->elementType();
+    QString type = elementType();
     if (type == QLatin1String("spinbox")) {
         control = QStyle::CC_SpinBox;
-        QStyleOptionSpinBox opt;
-        opt.rect = QRect(0, 0, width(), height());
-        opt.frame = true;
-        m_style->initStyleOption(&opt);
-        subcontrol = qApp->style()->hitTestComplexControl(control, &opt, QPoint(px,py), 0);
+        subcontrol = qApp->style()->hitTestComplexControl(control, qstyleoption_cast<QStyleOptionComplex*>(m_styleoption), QPoint(px,py), 0);
         if (subcontrol == QStyle::SC_SpinBoxUp)
             return "up";
         else if (subcontrol == QStyle::SC_SpinBoxDown)
@@ -349,26 +370,11 @@ QString QStyleBackground::hitTest(int px, int py) const
 
     } else if (type == QLatin1String("slider")) {
         control = QStyle::CC_Slider;
-        QStyleOptionSlider opt;
-        opt.rect = QRect(0, 0, width(), height());
-        opt.minimum = m_style->minimum();
-        opt.maximum = m_style->maximum();
-        opt.sliderPosition = m_style->value();
-        m_style->initStyleOption(&opt);
-        subcontrol = qApp->style()->hitTestComplexControl(control, &opt, QPoint(px,py), 0);
+        subcontrol = qApp->style()->hitTestComplexControl(control, qstyleoption_cast<QStyleOptionComplex*>(m_styleoption), QPoint(px,py), 0);
         if (subcontrol == QStyle::SC_SliderHandle)
             return "handle";
     } else if (type == QLatin1String("scrollbar")) {
-        control = QStyle::CC_ScrollBar;
-        QStyleOptionSlider opt;
-        opt.rect = QRect(0, 0, width(), height());
-        m_style->initStyleOption(&opt);
-        opt.minimum = m_style->minimum();
-        opt.maximum = m_style->maximum();
-        opt.pageStep = 200;
-        opt.orientation = m_style->horizontal() ? Qt::Horizontal : Qt::Vertical;
-        opt.sliderPosition = m_style->value();
-        subcontrol = qApp->style()->hitTestComplexControl(control, &opt, QPoint(px,py), 0);
+        subcontrol = qApp->style()->hitTestComplexControl(control, qstyleoption_cast<QStyleOptionComplex*>(m_styleoption), QPoint(px,py), 0);
 
         if (subcontrol == QStyle::SC_ScrollBarSlider)
             return "handle";
@@ -383,46 +389,45 @@ QString QStyleBackground::hitTest(int px, int py) const
 QSize QStyleItem::sizeFromContents(int width, int height)
 {
     QString metric = m_type;
+    initStyleOption();
+
     if (metric == QLatin1String("checkbox")) {
-        QStyleOptionButton opt;
-        initStyleOption(&opt);
-        opt.text = text();
-        return qApp->style()->sizeFromContents(QStyle::CT_CheckBox, &opt, QSize(width,height), widget());
+        return qApp->style()->sizeFromContents(QStyle::CT_CheckBox, m_styleoption, QSize(width,height), widget());
     } else if (metric == QLatin1String("toolbutton")) {
         QStyleOptionToolButton opt;
-        initStyleOption(&opt);
+
         opt.icon = qApp->style()->standardIcon(QStyle::SP_ArrowBack);
-        return qApp->style()->sizeFromContents(QStyle::CT_ToolButton, &opt, QSize(width,height), widget());
+        return qApp->style()->sizeFromContents(QStyle::CT_ToolButton, m_styleoption, QSize(width,height), widget());
     } else if (metric == QLatin1String("button")) {
         QStyleOptionButton opt;
-        initStyleOption(&opt);
+
         opt.text = text();
-        return qApp->style()->sizeFromContents(QStyle::CT_PushButton, &opt, QSize(width,height), widget());
+        return qApp->style()->sizeFromContents(QStyle::CT_PushButton, m_styleoption, QSize(width,height), widget());
     } else if (metric == QLatin1String("tab")) {
         QStyleOptionTabV3 opt;
-        initStyleOption(&opt);
+
         opt.text = text();
-        return qApp->style()->sizeFromContents(QStyle::CT_TabBarTab, &opt, QSize(width,height), widget());
+        return qApp->style()->sizeFromContents(QStyle::CT_TabBarTab, m_styleoption, QSize(width,height), widget());
     } else if (metric == QLatin1String("combobox")) {
         QStyleOptionComboBox opt;
-        initStyleOption(&opt);
-        return qApp->style()->sizeFromContents(QStyle::CT_ComboBox, &opt, QSize(width,height), widget());
+
+        return qApp->style()->sizeFromContents(QStyle::CT_ComboBox, m_styleoption, QSize(width,height), widget());
     } else if (metric == QLatin1String("spinbox")) {
         QStyleOptionSpinBox opt;
-        initStyleOption(&opt);
-        return qApp->style()->sizeFromContents(QStyle::CT_SpinBox, &opt, QSize(width,height), widget());
+
+        return qApp->style()->sizeFromContents(QStyle::CT_SpinBox, m_styleoption, QSize(width,height), widget());
     } else if (metric == QLatin1String("slider")) {
         QStyleOptionSlider opt;
-        initStyleOption(&opt);
-        return qApp->style()->sizeFromContents(QStyle::CT_Slider, &opt, QSize(width,height), widget());
+
+        return qApp->style()->sizeFromContents(QStyle::CT_Slider, m_styleoption, QSize(width,height), widget());
     } else if (metric == QLatin1String("progressbar")) {
         QStyleOptionSlider opt;
-        initStyleOption(&opt);
-        return qApp->style()->sizeFromContents(QStyle::CT_ProgressBar, &opt, QSize(width,height), widget());
+
+        return qApp->style()->sizeFromContents(QStyle::CT_ProgressBar, m_styleoption, QSize(width,height), widget());
     } else if (metric == QLatin1String("edit")) {
         QStyleOptionFrameV3 opt;
-        initStyleOption(&opt);
-        return qApp->style()->sizeFromContents(QStyle::CT_LineEdit, &opt, QSize(width,height), widget());
+
+        return qApp->style()->sizeFromContents(QStyle::CT_LineEdit, m_styleoption, QSize(width,height), widget());
     }
     return QSize();
 }
@@ -452,10 +457,11 @@ int QStyleItem::pixelMetric(const QString &metric)
 
 QVariant QStyleItem::styleHint(const QString &metric)
 {
+    initStyleOption();
     if (metric == "comboboxpopup") {
         QStyleOptionComboBox opt;
         opt.editable = false;
-        return qApp->style()->styleHint(QStyle::SH_ComboBox_Popup, &opt);
+        return qApp->style()->styleHint(QStyle::SH_ComboBox_Popup, m_styleoption);
     }
     if (metric == "focuswidget")
         return qApp->style()->styleHint(QStyle::SH_FocusFrame_AboveWidget);
@@ -482,6 +488,11 @@ void QStyleItem::setElementType(const QString &str)
         delete m_dummywidget;
         m_dummywidget = 0;
     }
+    if (m_styleoption) {
+        delete m_styleoption;
+        m_styleoption = 0;
+    }
+
     // Only enable visible if the widget can animate
     bool visible = false;
     if (str == "menu" || str == "menuitem") {
@@ -558,21 +569,21 @@ bool QStyleItem::eventFilter(QObject *o, QEvent *e) {
     return QObject::eventFilter(o, e);
 }
 
-void QStyleBackground::showToolTip(const QString &str) const
+void QStyleItem::showToolTip(const QString &str)
 {
     QPointF scene = mapToScene(width() - 20, 0);
     QPoint global = qApp->focusWidget()->mapToGlobal(scene.toPoint());
     QToolTip::showText(QPoint(global.x(), global.y()), str);
 }
 
-QRect QStyleBackground::subControlRect(const QString &subcontrolString) const
+QRect QStyleItem::subControlRect(const QString &subcontrolString)
 {
     QStyle::SubControl subcontrol = QStyle::SC_None;
-    QString m_type = m_style->elementType();
+    QString m_type = elementType();
     if (m_type == QLatin1String("spinbox")) {
         QStyle::ComplexControl control = QStyle::CC_SpinBox;
         QStyleOptionSpinBox opt;
-        m_style->initStyleOption(&opt);
+
         opt.rect = QRect(0, 0, width(), height());
         opt.frame = true;
         if (subcontrolString == QLatin1String("down"))
@@ -582,30 +593,30 @@ QRect QStyleBackground::subControlRect(const QString &subcontrolString) const
         else if (subcontrolString == QLatin1String("edit")){
             subcontrol = QStyle::SC_SpinBoxEditField;
         }
-        return qApp->style()->subControlRect(control, &opt, subcontrol, 0);
+        return qApp->style()->subControlRect(control, qstyleoption_cast<QStyleOptionComplex*>(m_styleoption), subcontrol, 0);
     } else if (m_type == QLatin1String("slider")) {
         QStyle::ComplexControl control = QStyle::CC_Slider;
         QStyleOptionSlider opt;
-        m_style->initStyleOption(&opt);
+
         opt.rect = QRect(0, 0, width(), height());
-        opt.minimum = m_style->minimum();
-        opt.maximum = m_style->maximum();
-        opt.sliderPosition = m_style->value();
+        opt.minimum = minimum();
+        opt.maximum = maximum();
+        opt.sliderPosition = value();
         if (subcontrolString == QLatin1String("handle"))
             subcontrol = QStyle::SC_SliderHandle;
         else if (subcontrolString == QLatin1String("groove"))
             subcontrol = QStyle::SC_SliderGroove;
-        return qApp->style()->subControlRect(control, &opt, subcontrol, 0);
+        return qApp->style()->subControlRect(control, qstyleoption_cast<QStyleOptionComplex*>(m_styleoption), subcontrol, 0);
     } else if (m_type == QLatin1String("scrollbar")) {
         QStyle::ComplexControl control = QStyle::CC_ScrollBar;
         QStyleOptionSlider opt;
-        m_style->initStyleOption(&opt);
+
         opt.rect = QRect(0, 0, width(), height());
-        opt.minimum = m_style->minimum();
-        opt.maximum = m_style->maximum();
-        opt.pageStep = m_style->horizontal() ? width() : height();
-        opt.orientation = m_style->horizontal() ? Qt::Horizontal : Qt::Vertical;
-        opt.sliderPosition = m_style->value();
+        opt.minimum = minimum();
+        opt.maximum = maximum();
+        opt.pageStep = horizontal() ? width() : height();
+        opt.orientation = horizontal() ? Qt::Horizontal : Qt::Vertical;
+        opt.sliderPosition = value();
         if (subcontrolString == QLatin1String("slider"))
             subcontrol = QStyle::SC_ScrollBarSlider;
         if (subcontrolString == QLatin1String("groove"))
@@ -616,312 +627,104 @@ QRect QStyleBackground::subControlRect(const QString &subcontrolString) const
             subcontrol = QStyle::SC_ScrollBarAddPage;
         else if (subcontrolString == QLatin1String("sub"))
             subcontrol = QStyle::SC_ScrollBarSubPage;
-        return qApp->style()->subControlRect(control, &opt, subcontrol, 0);
+        return qApp->style()->subControlRect(control, qstyleoption_cast<QStyleOptionComplex*>(m_styleoption), subcontrol, 0);
     }
     return QRect();
 }
 
-QStyleBackground::QStyleBackground(QDeclarativeItem *parent)
-    : QDeclarativeItem(parent),
-      m_style(0)
+void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
-    setFlag(QGraphicsItem::ItemHasNoContents, false);
-    setCacheMode(QGraphicsItem::DeviceCoordinateCache);
-    setSmooth(true);
-}
+    QString type = elementType();
+    initStyleOption();
 
-void QStyleBackground::setStyle(QStyleItem *style)
-{   
-    if (m_style != style) {
-        m_style = style;
-        connect(m_style, SIGNAL(updateItem()), this, SLOT(updateItem()));
-        connect(m_style, SIGNAL(infoChanged()), this, SLOT(updateItem()));
-        connect(m_style, SIGNAL(onChanged()), this, SLOT(updateItem()));
-        connect(m_style, SIGNAL(selectedChanged()), this, SLOT(updateItem()));
-        connect(m_style, SIGNAL(activeChanged()), this, SLOT(updateItem()));
-        connect(m_style, SIGNAL(textChanged()), this, SLOT(updateItem()));
-        connect(m_style, SIGNAL(activeChanged()), this, SLOT(updateItem()));
-        connect(m_style, SIGNAL(raisedChanged()), this, SLOT(updateItem()));
-        connect(m_style, SIGNAL(sunkenChanged()), this, SLOT(updateItem()));
-        connect(m_style, SIGNAL(hoverChanged()), this, SLOT(updateItem()));
-        connect(m_style, SIGNAL(maximumChanged()), this, SLOT(updateItem()));
-        connect(m_style, SIGNAL(minimumChanged()), this, SLOT(updateItem()));
-        connect(m_style, SIGNAL(valueChanged()), this, SLOT(updateItem()));
-        connect(m_style, SIGNAL(enabledChanged()), this, SLOT(updateItem()));
-        connect(m_style, SIGNAL(horizontalChanged()), this, SLOT(updateItem()));
-        connect(m_style, SIGNAL(activeControlChanged()), this, SLOT(updateItem()));
-        connect(m_style, SIGNAL(focusChanged()), this, SLOT(updateItem()));
-        connect(m_style, SIGNAL(activeControlChanged()), this, SLOT(updateItem()));
-        connect(m_style, SIGNAL(elementTypeChanged()), this, SLOT(updateItem()));
-        emit styleChanged();
-    }
-}
-
-
-void QStyleBackground::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
-{
-    if (!m_style)
-        return;
-
-    QString type = m_style->elementType();
     if (type == QLatin1String("button")) {
-        QStyle::ControlElement control = QStyle::CE_PushButton;
-        QStyleOptionButton opt;
-        opt.rect = QRect(0, 0, width(), height());
-        m_style->initStyleOption(&opt);
-        m_style->widget()->resize(width(), height());
-        opt.text = m_style->text();
-        if (m_style->activeControl() == "default")
-            opt.features |= QStyleOptionButton::DefaultButton;
-
-        qApp->style()->drawControl(control, &opt, painter, m_style->widget());
+        qApp->style()->drawControl(QStyle::CE_PushButton, m_styleoption, painter, widget());
     }
     else if (type == QLatin1String("toolbutton")) {
-        QStyle::ComplexControl control = QStyle::CC_ToolButton;
-        QStyleOptionToolButton opt;
-        m_style->initStyleOption(&opt);
-        opt.subControls = QStyle::SC_ToolButton;
-        opt.rect = QRect(0, 0, width(), height());
-        QToolBar bar;
-        if (opt.state & QStyle::State_Raised || opt.state & QStyle::State_On)
-            qApp->style()->drawComplexControl(control, &opt, painter, m_style->widget());
+        qApp->style()->drawComplexControl(QStyle::CC_ToolButton, qstyleoption_cast<QStyleOptionComplex*>(m_styleoption), painter, widget());
     }
     else if (type == QLatin1String("tab")) {
-        QStyle::ControlElement control = QStyle::CE_TabBarTab;
-        QStyleOptionTabV3 opt;
-        m_style->initStyleOption(&opt);
-        int overlap = qApp->style()->pixelMetric(QStyle::PM_TabBarTabOverlap);
-        opt.rect = QRect(overlap, 0, width()-2*overlap, height());
-        opt.text = m_style->text();
-        if (m_style->info() == "South")
-            opt.shape = QTabBar::RoundedSouth;
-        if (m_style->activeControl() == QLatin1String("beginning"))
-            opt.position = QStyleOptionTabV3::Beginning;
-        else if (m_style->activeControl() == QLatin1String("end"))
-            opt.position = QStyleOptionTabV3::End;
-        else if (m_style->activeControl() == QLatin1String("only"))
-            opt.position = QStyleOptionTabV3::OnlyOneTab;
-        else
-            opt.position = QStyleOptionTabV3::Middle;
-        qApp->style()->drawControl(control, &opt, painter, m_style->widget());
+        qApp->style()->drawControl(QStyle::CE_TabBarTab, m_styleoption, painter, widget());
     }
     else if (type == QLatin1String("menu")) {
         QStyleOptionMenuItem opt;
-        if (QMenu *menu = qobject_cast<QMenu*>(m_style->widget())){
+        if (QMenu *menu = qobject_cast<QMenu*>(widget())){
             opt.palette = menu->palette();
         }
         opt.rect = QRect(0, 0, width(), height());
-        m_style->initStyleOption(&opt);
+
         QStyleHintReturnMask val;
-        qApp->style()->styleHint(QStyle::SH_Menu_Mask, &opt, m_style->widget(), &val);
+        qApp->style()->styleHint(QStyle::SH_Menu_Mask, m_styleoption, widget(), &val);
         painter->save();
         painter->setClipRegion(val.region);
         painter->fillRect(opt.rect, opt.palette.window());
         painter->restore();
-        qApp->style()->drawPrimitive(QStyle::PE_PanelMenu, &opt, painter, m_style->widget());
+        qApp->style()->drawPrimitive(QStyle::PE_PanelMenu, m_styleoption, painter, widget());
         QStyleOptionFrame frame;
-        m_style->initStyleOption(&frame);
         frame.lineWidth = qApp->style()->pixelMetric(QStyle::PM_MenuPanelWidth);
         frame.midLineWidth = 0;
         frame.rect = opt.rect;
-        qApp->style()->drawPrimitive(QStyle::PE_FrameMenu, &frame, painter, m_style->widget());
-        //       qApp->style()->drawControl(QStyle::CE_MenuVMargin, &opt, painter, m_menu);
+        qApp->style()->drawPrimitive(QStyle::PE_FrameMenu, &frame, painter, widget());
+        //       qApp->style()->drawControl(QStyle::CE_MenuVMargin, m_styleoption, painter, m_menu);
     }
     else if (type == QLatin1String("frame")) {
-        QStyle::ControlElement control = QStyle::CE_ShapedFrame;
-        QStyleOptionFrameV3 opt;
-        m_style->initStyleOption(&opt);
-        opt.rect = QRect(0, 0, width(), height());
-        opt.frameShape = QFrame::StyledPanel;
-        opt.lineWidth = 1;
-        opt.midLineWidth = 1;
-        qApp->style()->drawControl(control, &opt, painter, 0);
+        qApp->style()->drawControl(QStyle::CE_ShapedFrame, m_styleoption, painter, 0);
     }
     else if (type == QLatin1String("focusframe")) {
-        QStyle::ControlElement control = QStyle::CE_FocusFrame;
-        QStyleOption opt;
-        opt.rect = QRect(0, 0, width(), height());
-        m_style->initStyleOption(&opt);
-        qApp->style()->drawControl(control, &opt, painter, m_style->widget());
+        qApp->style()->drawControl(QStyle::CE_FocusFrame, m_styleoption, painter, widget());
     }
     else if (type == QLatin1String("tabframe")) {
         QStyle::PrimitiveElement control = QStyle::PE_FrameTabWidget;
-        if (m_style->minimum()) {
+        if (minimum()) {
             QStyleOptionTabWidgetFrameV2 opt;
-            m_style->initStyleOption(&opt);
-            if (m_style->info() == "South")
+
+            if (info() == "South")
                 opt.shape = QTabBar::RoundedSouth;
-            opt.selectedTabRect = QRect(m_style->value(), 0, m_style->minimum(), height());
+            opt.selectedTabRect = QRect(value(), 0, minimum(), height());
             opt.rect = QRect(0, 0, width(), height());
-            qApp->style()->drawPrimitive(control, &opt, painter, m_style->widget());
+            qApp->style()->drawPrimitive(control, m_styleoption, painter, widget());
         } else {
             QStyleOptionTabWidgetFrame opt;
-            m_style->initStyleOption(&opt);
+
             opt.rect = QRect(0, 0, width(), height());
-            qApp->style()->drawPrimitive(control, &opt, painter, m_style->widget());
+            qApp->style()->drawPrimitive(control, m_styleoption, painter, widget());
         }
     }
     else if (type == QLatin1String("menuitem") || type == QLatin1String("comboboxitem")) {
-        QStyle::ControlElement control = QStyle::CE_MenuItem;
-        QStyleOptionMenuItem opt;
-        m_style->initStyleOption(&opt);
-        opt.checked = false;
-        opt.rect = QRect(0, 0, width(), height());
-        opt.text = m_style->text();
-        opt.palette = m_style->widget()->palette();
-        qApp->style()->drawControl(control, &opt, painter, m_style->widget());
+        qApp->style()->drawControl(QStyle::CE_MenuItem, m_styleoption, painter, widget());
     }
     else if (type == QLatin1String("checkbox")) {
-        QStyle::ControlElement control = QStyle::CE_CheckBox;
-        QStyleOptionButton opt;
-        m_style->initStyleOption(&opt);
-        if (!(opt.state & QStyle::State_On))
-            opt.state |= QStyle::State_Off;
-        opt.rect = QRect(0, 0, width(), height());
-        opt.text = m_style->text();
-        m_style->widget()->resize(width(), height());
-        qApp->style()->drawControl(control, &opt, painter, m_style->widget());
+        qApp->style()->drawControl(QStyle::CE_CheckBox, m_styleoption, painter, widget());
     }
     else if (type == QLatin1String("radiobutton")) {
-        QStyle::ControlElement control = QStyle::CE_RadioButton;
-        QStyleOptionButton opt;
-        opt.rect = QRect(0, 0, width(), height());
-        m_style->initStyleOption(&opt);
-        opt.text = m_style->text();
-        m_style->widget()->resize(width(), height());
-        qApp->style()->drawControl(control, &opt, painter, m_style->widget());
+        qApp->style()->drawControl(QStyle::CE_RadioButton, m_styleoption, painter, widget());
     }
     else if (type == QLatin1String("edit")) {
-        QStyle::PrimitiveElement control = QStyle::PE_PanelLineEdit;
-        QStyleOptionFrameV3 opt;
-        opt.rect = QRect(0, 0, width(), height());
-        opt.lineWidth = 1; // jens : this must be non-zero
-        m_style->initStyleOption(&opt);
-        qApp->style()->drawPrimitive(control, &opt, painter, m_style->widget());
+        qApp->style()->drawPrimitive(QStyle::PE_PanelLineEdit, m_styleoption, painter, widget());
     }
     else if (type == QLatin1String("combobox")) {
-        QStyle::ComplexControl control = QStyle::CC_ComboBox;
-        QStyleOptionComboBox opt;
-        opt.rect = QRect(0, 0, width(), height());
-        m_style->initStyleOption(&opt);
-        m_style->widget()->resize(width(), height());
-        opt.currentText = m_style->text();
-        qApp->style()->drawComplexControl(control, &opt, painter, m_style->widget());
-        qApp->style()->drawControl(QStyle::CE_ComboBoxLabel, &opt, painter, m_style->widget());
+        qApp->style()->drawComplexControl(QStyle::CC_ComboBox, qstyleoption_cast<QStyleOptionComplex*>(m_styleoption), painter, widget());
+        qApp->style()->drawControl(QStyle::CE_ComboBoxLabel, m_styleoption, painter, widget());
     }
     else if (type == QLatin1String("spinbox")) {
-        QStyle::ComplexControl control = QStyle::CC_SpinBox;
-        QStyleOptionSpinBox opt;
-        opt.rect = QRect(0, 0, width(), height());
-        opt.frame = true;
-        m_style->initStyleOption(&opt);
-        if (m_style->value() & 0x1)
-            opt.activeSubControls = QStyle::SC_SpinBoxUp;
-        else if (m_style->value() & (1<<1))
-            opt.activeSubControls = QStyle::SC_SpinBoxDown;
-        opt.subControls |= QStyle::SC_SpinBoxDown;
-        opt.subControls |= QStyle::SC_SpinBoxUp;
-        if (m_style->value() & (1<<2))
-            opt.stepEnabled |= QAbstractSpinBox::StepUpEnabled;
-        if (m_style->value() & (1<<3))
-            opt.stepEnabled |= QAbstractSpinBox::StepDownEnabled;
-        qApp->style()->drawComplexControl(control, &opt, painter, m_style->widget());
+        qApp->style()->drawComplexControl(QStyle::CC_SpinBox, qstyleoption_cast<QStyleOptionComplex*>(m_styleoption), painter, widget());
     }
     else if (type == QLatin1String("slider")) {
-        QStyle::ComplexControl control = QStyle::CC_Slider;
-        QStyleOptionSlider opt;
-        m_style->widget()->resize(width(), height());
-        opt.rect = QRect(0, 0, width(), height());
-        m_style->initStyleOption(&opt);
-        opt.minimum = m_style->minimum();
-        opt.maximum = m_style->maximum();
-        if (m_style->activeControl() == "ticks")
-            opt.tickPosition = QSlider::TicksBelow;
-        opt.sliderPosition = m_style->value();
-        opt.tickInterval = 1200 / (opt.maximum - opt.minimum);
-        opt.sliderValue = m_style->value();
-        opt.subControls = QStyle::SC_SliderTickmarks | QStyle::SC_SliderGroove | QStyle::SC_SliderHandle;
-        opt.activeSubControls = QStyle::SC_None;
-        qApp->style()->drawComplexControl(control, &opt, painter, m_style->widget());
+        qApp->style()->drawComplexControl(QStyle::CC_Slider, qstyleoption_cast<QStyleOptionComplex*>(m_styleoption), painter, widget());
     }
     else if (type == QLatin1String("dial")) {
-        QStyle::ComplexControl control = QStyle::CC_Dial;
-        QStyleOptionSlider opt;
-        opt.rect = QRect(0, 0, width(), height());
-        m_style->initStyleOption(&opt);
-        opt.minimum = m_style->minimum();
-        opt.maximum = m_style->maximum();
-        opt.tickPosition = QSlider::TicksBelow;
-        opt.sliderPosition = m_style->value();
-        opt.tickInterval = 1200 / (opt.maximum - opt.minimum);
-        opt.sliderValue = m_style->value();
-        opt.subControls = QStyle::SC_SliderTickmarks | QStyle::SC_SliderGroove | QStyle::SC_SliderHandle;
-        opt.activeSubControls = QStyle::SC_None;
-        qApp->style()->drawComplexControl(control, &opt, painter, m_style->widget());
+        qApp->style()->drawComplexControl(QStyle::CC_Dial, qstyleoption_cast<QStyleOptionComplex*>(m_styleoption), painter, widget());
     }
     else if (type == QLatin1String("progressbar")) {
-        if (QProgressBar *bar= qobject_cast<QProgressBar*>(m_style->widget())){
-            bar->setMaximum(m_style->maximum());
-            bar->setMinimum(m_style->minimum());
-            if (m_style->maximum() != m_style->minimum())
-                bar->setValue(1);
-        }
-        QStyle::ControlElement control = QStyle::CE_ProgressBar;
-        QStyleOptionProgressBarV2 opt;
-        opt.orientation = m_style->horizontal() ? Qt::Horizontal : Qt::Vertical;
-        opt.rect = QRect(0, 0, width(), height());
-        m_style->initStyleOption(&opt);
-        opt.minimum = m_style->minimum();
-        opt.maximum = m_style->maximum();
-        opt.progress = m_style->value();
-        qApp->style()->drawControl(control, &opt, painter, m_style->widget());
+        qApp->style()->drawControl(QStyle::CE_ProgressBar, m_styleoption, painter, widget());
     }
     else if (type == QLatin1String("toolbar")) {
-        QStyle::ControlElement control = QStyle::CE_ToolBar;
-        QStyleOptionToolBar opt;
-        opt.rect = QRect(0, 0, width(), height());
-        m_style->initStyleOption(&opt);
-        qApp->style()->drawControl(control, &opt, painter, m_style->widget());
+        qApp->style()->drawControl(QStyle::CE_ToolBar, m_styleoption, painter, widget());
     }
     else if (type == QLatin1String("groupbox")) {
-        if (QGroupBox *group= qobject_cast<QGroupBox*>(m_style->widget())){
-            group->setTitle(m_style->text());
-        }
-        QStyle::ComplexControl control = QStyle::CC_GroupBox;
-        QStyleOptionGroupBox opt;
-        opt.rect = QRect(0, 0, width(), height());
-        m_style->initStyleOption(&opt);
-        opt.text = m_style->text();
-        opt.lineWidth = 1;
-        opt.subControls = QStyle::SC_GroupBoxLabel;
-        // oxygen crashes if we dont pass a widget
-        qApp->style()->drawComplexControl(control, &opt, painter, m_style->widget());
+        qApp->style()->drawComplexControl(QStyle::CC_GroupBox, qstyleoption_cast<QStyleOptionComplex*>(m_styleoption), painter, widget());
     }
     else if (type == QLatin1String("scrollbar")) {
-        QScrollBar *bar = qobject_cast<QScrollBar *>(m_style->widget());
-        bar->setMaximum(m_style->maximum());
-        bar->setMinimum(m_style->minimum());
-        bar->setValue(m_style->value());
-        bar->resize(width(), height());
-
-        QStyle::ComplexControl control = QStyle::CC_ScrollBar;
-        QStyleOptionSlider opt;
-        opt.rect = QRect(0, 0, width(), height());
-        m_style->initStyleOption(&opt);
-        opt.minimum = m_style->minimum();
-        opt.maximum = m_style->maximum();
-        opt.pageStep = m_style->horizontal() ? width() : height();
-        opt.orientation = m_style->horizontal() ? Qt::Horizontal : Qt::Vertical;
-        opt.sliderPosition = m_style->value();
-        opt.sliderValue = m_style->value();
-        opt.activeSubControls = (m_style->activeControl() == QLatin1String("up"))
-                                ? QStyle::SC_ScrollBarSubLine :
-                                (m_style->activeControl() == QLatin1String("down")) ?
-                                QStyle::SC_ScrollBarAddLine:
-                                QStyle::SC_ScrollBarSlider;
-
-        opt.sliderValue = m_style->value();
-        opt.subControls = QStyle::SC_All;
-        qApp->style()->drawComplexControl(control, &opt, painter, bar);
+        qApp->style()->drawComplexControl(QStyle::CC_ScrollBar, qstyleoption_cast<QStyleOptionComplex*>(m_styleoption), painter, widget());
     }
 }
