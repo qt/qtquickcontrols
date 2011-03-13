@@ -145,11 +145,6 @@ void QStyleItem::initStyleOption()
         opt->lineWidth = 1;
         opt->midLineWidth = 1;
     }
-    else if (type == QLatin1String("focusframe")) {
-        if (!m_styleoption)
-            m_styleoption = new QStyleOption();
-        QStyleOption *opt = qstyleoption_cast<QStyleOption*>(m_styleoption);
-    }
     else if (type == QLatin1String("tabframe")) {
         if (!m_styleoption)
             m_styleoption = new QStyleOptionTabWidgetFrameV2();
@@ -268,10 +263,6 @@ void QStyleItem::initStyleOption()
         opt->minimum = minimum();
         opt->maximum = maximum();
         opt->progress = value();
-    }
-    else if (type == QLatin1String("toolbar")) {
-        if (!m_styleoption)
-            m_styleoption = new QStyleOptionToolBar();
     }
     else if (type == QLatin1String("groupbox")) {
         if (QGroupBox *group= qobject_cast<QGroupBox*>(widget())){
@@ -393,43 +384,23 @@ QSize QStyleItem::sizeFromContents(int width, int height)
 {
     QString metric = m_type;
     initStyleOption();
-
     if (metric == QLatin1String("checkbox")) {
         return qApp->style()->sizeFromContents(QStyle::CT_CheckBox, m_styleoption, QSize(width,height), widget());
     } else if (metric == QLatin1String("toolbutton")) {
-        QStyleOptionToolButton opt;
-
-        opt.icon = qApp->style()->standardIcon(QStyle::SP_ArrowBack);
         return qApp->style()->sizeFromContents(QStyle::CT_ToolButton, m_styleoption, QSize(width,height), widget());
     } else if (metric == QLatin1String("button")) {
-        QStyleOptionButton opt;
-
-        opt.text = text();
         return qApp->style()->sizeFromContents(QStyle::CT_PushButton, m_styleoption, QSize(width,height), widget());
     } else if (metric == QLatin1String("tab")) {
-        QStyleOptionTabV3 opt;
-
-        opt.text = text();
         return qApp->style()->sizeFromContents(QStyle::CT_TabBarTab, m_styleoption, QSize(width,height), widget());
     } else if (metric == QLatin1String("combobox")) {
-        QStyleOptionComboBox opt;
-
         return qApp->style()->sizeFromContents(QStyle::CT_ComboBox, m_styleoption, QSize(width,height), widget());
     } else if (metric == QLatin1String("spinbox")) {
-        QStyleOptionSpinBox opt;
-
         return qApp->style()->sizeFromContents(QStyle::CT_SpinBox, m_styleoption, QSize(width,height), widget());
     } else if (metric == QLatin1String("slider")) {
-        QStyleOptionSlider opt;
-
         return qApp->style()->sizeFromContents(QStyle::CT_Slider, m_styleoption, QSize(width,height), widget());
     } else if (metric == QLatin1String("progressbar")) {
-        QStyleOptionSlider opt;
-
         return qApp->style()->sizeFromContents(QStyle::CT_ProgressBar, m_styleoption, QSize(width,height), widget());
     } else if (metric == QLatin1String("edit")) {
-        QStyleOptionFrameV3 opt;
-
         return qApp->style()->sizeFromContents(QStyle::CT_LineEdit, m_styleoption, QSize(width,height), widget());
     }
     return QSize();
@@ -678,21 +649,7 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
         qApp->style()->drawControl(QStyle::CE_FocusFrame, m_styleoption, painter, widget());
     }
     else if (type == QLatin1String("tabframe")) {
-        QStyle::PrimitiveElement control = QStyle::PE_FrameTabWidget;
-        if (minimum()) {
-            QStyleOptionTabWidgetFrameV2 opt;
-
-            if (info() == "South")
-                opt.shape = QTabBar::RoundedSouth;
-            opt.selectedTabRect = QRect(value(), 0, minimum(), height());
-            opt.rect = QRect(0, 0, width(), height());
-            qApp->style()->drawPrimitive(control, m_styleoption, painter, widget());
-        } else {
-            QStyleOptionTabWidgetFrame opt;
-
-            opt.rect = QRect(0, 0, width(), height());
-            qApp->style()->drawPrimitive(control, m_styleoption, painter, widget());
-        }
+        qApp->style()->drawPrimitive(QStyle::PE_FrameTabWidget, m_styleoption, painter, widget());
     }
     else if (type == QLatin1String("menuitem") || type == QLatin1String("comboboxitem")) {
         qApp->style()->drawControl(QStyle::CE_MenuItem, m_styleoption, painter, widget());
@@ -707,17 +664,25 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
         qApp->style()->drawPrimitive(QStyle::PE_PanelLineEdit, m_styleoption, painter, widget());
     }
     else if (type == QLatin1String("combobox")) {
-        qApp->style()->drawComplexControl(QStyle::CC_ComboBox, qstyleoption_cast<QStyleOptionComplex*>(m_styleoption), painter, widget());
+        qApp->style()->drawComplexControl(QStyle::CC_ComboBox,
+                                          qstyleoption_cast<QStyleOptionComplex*>(m_styleoption),
+                                          painter, widget());
         qApp->style()->drawControl(QStyle::CE_ComboBoxLabel, m_styleoption, painter, widget());
     }
     else if (type == QLatin1String("spinbox")) {
-        qApp->style()->drawComplexControl(QStyle::CC_SpinBox, qstyleoption_cast<QStyleOptionComplex*>(m_styleoption), painter, widget());
+        qApp->style()->drawComplexControl(QStyle::CC_SpinBox,
+                                          qstyleoption_cast<QStyleOptionComplex*>(m_styleoption),
+                                          painter, widget());
     }
     else if (type == QLatin1String("slider")) {
-        qApp->style()->drawComplexControl(QStyle::CC_Slider, qstyleoption_cast<QStyleOptionComplex*>(m_styleoption), painter, widget());
+        qApp->style()->drawComplexControl(QStyle::CC_Slider,
+                                          qstyleoption_cast<QStyleOptionComplex*>(m_styleoption),
+                                          painter, widget());
     }
     else if (type == QLatin1String("dial")) {
-        qApp->style()->drawComplexControl(QStyle::CC_Dial, qstyleoption_cast<QStyleOptionComplex*>(m_styleoption), painter, widget());
+        qApp->style()->drawComplexControl(QStyle::CC_Dial,
+                                          qstyleoption_cast<QStyleOptionComplex*>(m_styleoption),
+                                          painter, widget());
     }
     else if (type == QLatin1String("progressbar")) {
         qApp->style()->drawControl(QStyle::CE_ProgressBar, m_styleoption, painter, widget());
