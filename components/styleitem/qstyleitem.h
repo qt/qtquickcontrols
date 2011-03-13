@@ -110,7 +110,7 @@ public:
     void setInfo(const QString &str) { if (m_info != str) {m_info = str; emit infoChanged();}}
 
     bool eventFilter(QObject *, QEvent *);
-    virtual void initStyleOption (QStyleOption *opt) const;
+    virtual void initStyleOption ();
     QWidget *widget(){ return m_dummywidget; };
 
 public Q_SLOTS:
@@ -141,6 +141,7 @@ Q_SIGNALS:
 
 protected:
     QWidget *m_dummywidget;
+    QStyleOption *m_styleoption;
 
     QString m_type;
     QString m_text;
