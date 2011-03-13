@@ -148,8 +148,6 @@ void QStyleItem::initStyleOption()
     else if (type == QLatin1String("menu")) {
         if (!m_styleoption)
             m_styleoption = new QStyleOptionMenuItem();
-        QStyleOptionMenuItem *opt =
-                qstyleoption_cast<QStyleOptionMenuItem*>(m_styleoption);
     }
     else if (type == QLatin1String("frame")) {
         if (!m_styleoption)
@@ -166,6 +164,7 @@ void QStyleItem::initStyleOption()
 
         QStyleOptionTabWidgetFrameV2 *opt = qstyleoption_cast<QStyleOptionTabWidgetFrameV2*>(m_styleoption);
         opt->tabBarSize = QSize(maximum() , height());
+        opt->tabBarRect = QRect(0, 0, maximum(), height());
         opt->shape = (info() == "South") ? QTabBar::RoundedSouth : QTabBar::RoundedNorth;
         if (minimum()) {
             opt->selectedTabRect = QRect(value(), 0, minimum(), height());
@@ -227,9 +226,13 @@ void QStyleItem::initStyleOption()
         opt->minimum = minimum();
         opt->maximum = maximum();
         opt->tickPosition = (activeControl() == "ticks") ? QSlider::TicksBelow : QSlider::NoTicks;
+        // ### fixme - workaround for KDE inverted dial
         opt->sliderPosition = value();
         opt->tickInterval = 1200 / (opt->maximum - opt->minimum);
-        opt->sliderValue = value();
+        if (style().startsWith(QLatin1String("oxygen")) && type == QLatin1String("dial"))
+            opt->sliderValue  = maximum() - value();
+        else
+            opt->sliderValue = value();
         opt->subControls = QStyle::SC_SliderTickmarks | QStyle::SC_SliderGroove | QStyle::SC_SliderHandle;
         opt->activeSubControls = QStyle::SC_None;
     }
@@ -262,11 +265,6 @@ void QStyleItem::initStyleOption()
         opt->subControls = QStyle::SC_GroupBoxLabel | QStyle::SC_GroupBoxFrame;
     }
     else if (type == QLatin1String("scrollbar")) {
-        QScrollBar *bar = qobject_cast<QScrollBar *>(widget());
-        bar->setMaximum(maximum());
-        bar->setMinimum(minimum());
-        bar->setValue(value());
-
         if (!m_styleoption)
             m_styleoption = new QStyleOptionSlider();
 
@@ -282,8 +280,14 @@ void QStyleItem::initStyleOption()
                                  (activeControl() == QLatin1String("down")) ?
                                  QStyle::SC_ScrollBarAddLine:
                                  QStyle::SC_ScrollBarSlider;
+
         opt->sliderValue = value();
         opt->subControls = QStyle::SC_All;
+
+        QScrollBar *bar = qobject_cast<QScrollBar *>(widget());
+        bar->setMaximum(maximum());
+        bar->setMinimum(minimum());
+        bar->setValue(value());
     }
 
     if (!m_styleoption)

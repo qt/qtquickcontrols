@@ -92,7 +92,7 @@ Rectangle {
                                 width: 98
                                 focus: true
                                 Component.onCompleted: button1.forceActiveFocus()
-				tooltip:"This is an interesting tool tip"                                
+                                tooltip:"This is an interesting tool tip"
                                 defaultbutton:true
                                 KeyNavigation.tab: button2
                                 KeyNavigation.backtab: button1
@@ -143,8 +143,8 @@ Rectangle {
                             indeterminate: true
                         }
                         Slider {
-                            id:slider
-                            value:50
+                            id: slider
+                            value: 0.5
                             tickmarksEnabled: tickmarkCheck.checked
                             KeyNavigation.tab: frameCheckbox
                             KeyNavigation.backtab: t3
@@ -157,6 +157,7 @@ Rectangle {
                         GroupBox{
                             id: group1
                             text: "CheckBox"
+                            width: area.width
                             ButtonRow {
                                 exclusive: false
                                 CheckBox {
@@ -178,6 +179,7 @@ Rectangle {
                         GroupBox {
                             id: group2
                             text:"Tab Position"
+                            width: area.width
                             ButtonRow {
                                 id: tabPositionGroup
                                 RadioButton {
@@ -248,7 +250,7 @@ Rectangle {
                                 Behavior on opacity { NumberAnimation { easing.type: Easing.OutCubic ; duration: 220} }
                             }
                             Slider {
-                                value:50
+                                value: 0.5
                                 scale: scale.checked && containsMouse ? 1.1 : 1
                                 opacity: !fade.checked || containsMouse ? 1 : 0.5
                                 Behavior on scale { NumberAnimation { easing.type: Easing.OutCubic ; duration: 120} }

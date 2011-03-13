@@ -18,7 +18,7 @@ Item {
 
         Item {
             id:content
-            anchors.topMargin:22
+            anchors.topMargin:24
             anchors.leftMargin:6
             anchors.top:parent.top
             anchors.left:parent.left
