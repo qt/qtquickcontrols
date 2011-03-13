@@ -170,7 +170,7 @@ void QStyleItem::initStyleOption()
         if (minimum()) {
             opt->selectedTabRect = QRect(value(), 0, minimum(), height());
         }
-          opt->tabBarRect = opt->rect;
+        opt->tabBarRect = opt->rect;
     }
     else if (type == QLatin1String("menuitem") || type == QLatin1String("comboboxitem")) {
         if (!m_styleoption)
@@ -278,10 +278,10 @@ void QStyleItem::initStyleOption()
         opt->sliderPosition = value();
         opt->sliderValue = value();
         opt->activeSubControls = (activeControl() == QLatin1String("up"))
-                                ? QStyle::SC_ScrollBarSubLine :
-                                (activeControl() == QLatin1String("down")) ?
-                                QStyle::SC_ScrollBarAddLine:
-                                QStyle::SC_ScrollBarSlider;
+                                 ? QStyle::SC_ScrollBarSubLine :
+                                 (activeControl() == QLatin1String("down")) ?
+                                 QStyle::SC_ScrollBarAddLine:
+                                 QStyle::SC_ScrollBarSlider;
         opt->sliderValue = value();
         opt->subControls = QStyle::SC_All;
     }
@@ -298,10 +298,6 @@ void QStyleItem::initStyleOption()
         m_styleoption->rect = QRect(0, 0, width(), height());
     }
 
-    if (widget()) {
-        m_styleoption->palette = widget()->palette();
-        widget()->resize(width(), height());
-    }
     if (isEnabled())
         m_styleoption->state |= QStyle::State_Enabled;
     if (m_active)
@@ -320,6 +316,12 @@ void QStyleItem::initStyleOption()
         m_styleoption->state |= QStyle::State_MouseOver;
     if (m_horizontal)
         m_styleoption->state |= QStyle::State_Horizontal;
+
+    if (widget()) {
+        // widget()->resize(width(), height());
+        widget()->setEnabled(isEnabled());
+        m_styleoption->palette = widget()->palette();
+    }
 }
 
 /*
@@ -371,11 +373,11 @@ QString QStyleItem::hitTest(int px, int py)
             return "handle";
 
         if (subcontrol == QStyle::SC_ScrollBarSubLine
-                          || subcontrol == QStyle::SC_ScrollBarSubPage)
+            || subcontrol == QStyle::SC_ScrollBarSubPage)
             return "up";
 
         if (subcontrol == QStyle::SC_ScrollBarAddLine
-                          || subcontrol == QStyle::SC_ScrollBarAddPage)
+            || subcontrol == QStyle::SC_ScrollBarAddPage)
             return "down";
     }
     return "none";
@@ -488,9 +490,9 @@ void QStyleItem::setElementType(const QString &str)
         m_sharedWidget = true;
         m_dummywidget = tabframe;
     } else if (str == "comboboxitem")  {
-        // Gtk uses qobject cast, hence we need to separate this from menuitem
-        // On mac, we temporarily use the menu item because it has more accurate
-        // palette.
+    // Gtk uses qobject cast, hence we need to separate this from menuitem
+    // On mac, we temporarily use the menu item because it has more accurate
+    // palette.
 #ifdef Q_WS_MAC
         static QMenu *combo = new QMenu();
 #else
@@ -527,11 +529,13 @@ void QStyleItem::setElementType(const QString &str)
     } else if (str == "edit") {
         m_dummywidget = new QLineEdit();
         visible = true;
+    } else if (str == "spinbox") {
+        m_dummywidget = new QSpinBox();
+        visible = true;
     } else if (str == "scrollbar") {
         m_dummywidget = new QScrollBar();
         visible = true;
     }
-
     if (m_dummywidget) {
         m_dummywidget->installEventFilter(this);
         m_dummywidget->setAttribute(Qt::WA_QuitOnClose, false); // dont keep app open
@@ -622,7 +626,7 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
         qApp->style()->drawControl(QStyle::CE_TabBarTab, m_styleoption, painter, widget());
     }
     else if (type == QLatin1String("frame")) {
-        qApp->style()->drawControl(QStyle::CE_ShapedFrame, m_styleoption, painter, 0);
+        qApp->style()->drawControl(QStyle::CE_ShapedFrame, m_styleoption, painter, widget());
     }
     else if (type == QLatin1String("focusframe")) {
         qApp->style()->drawControl(QStyle::CE_FocusFrame, m_styleoption, painter, widget());

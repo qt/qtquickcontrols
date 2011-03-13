@@ -14,14 +14,13 @@ Components.Button {
     background: QStyleItem {
         id: styleitem
         anchors.fill: parent
-
         elementType: "button"
         sunken: pressed
         raised: !pressed
         hover: containsMouse
-        enabled: button.enabled
         text: iconSource === "" ? "" : button.text
         focus: button.focus
+
         // If no icon, let the style do the drawing
         activeControl: focus ? "default" : ""
         Connections{

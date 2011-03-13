@@ -31,6 +31,7 @@ FocusScope {
 
     property Component background: null
     property Component hints: null
+    property Item backgroundItem: backgroundLoader.item
 
     property int minimumWidth: 0
     property int minimumHeight: 0
@@ -88,11 +89,12 @@ FocusScope {
 
     SystemPalette { id: syspal }
     Loader { id: hintsLoader; sourceComponent: hints }
-    Loader { sourceComponent: background; anchors.fill:parent}
+    Loader { id: backgroundLoader; sourceComponent: background; anchors.fill:parent}
 
     MouseArea {
-        id:mouseArea
-        anchors.fill:parent
+        id: mouseArea
+        anchors.fill: parent
+        hoverEnabled: true
     }
 
     TextInput { // see QTBUG-14936

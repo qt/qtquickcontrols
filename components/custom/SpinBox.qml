@@ -35,6 +35,7 @@ Item {
     property color textColor: syspal.text
 
     property Component background: defaultStyle.background
+    property Item backgroundItem: backgroundComponent.item
     property Component up: defaultStyle.up
     property Component down: defaultStyle.down
 
