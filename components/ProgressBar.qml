@@ -22,7 +22,6 @@ Components.ProgressBar {
         maximum: indeterminate ? 0 : progressbar.maximumValue * factor
         enabled: progressbar.enabled
         horizontal: progressbar.orientation == Qt.Horizontal
-
     }
 }
 
