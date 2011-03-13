@@ -4,7 +4,7 @@ import "../components/plugin"
 
 Rectangle {
     width: 538 + frame.margins*2
-    height: 345 + frame.margins*2
+    height: 350 + frame.margins*2
 
     ToolBar{
         id: toolbar
@@ -197,8 +197,6 @@ Rectangle {
                                 }
                             }
                         }
-
-                        Item {height: 6; width: 6}
 
                         TextArea {
                             id: area

@@ -163,13 +163,11 @@ void QStyleItem::initStyleOption()
             m_styleoption = new QStyleOptionTabWidgetFrameV2();
 
         QStyleOptionTabWidgetFrameV2 *opt = qstyleoption_cast<QStyleOptionTabWidgetFrameV2*>(m_styleoption);
-        opt->tabBarSize = QSize(maximum() , height());
-        opt->tabBarRect = QRect(0, 0, maximum(), height());
         opt->shape = (info() == "South") ? QTabBar::RoundedSouth : QTabBar::RoundedNorth;
-        if (minimum()) {
+        if (minimum())
             opt->selectedTabRect = QRect(value(), 0, minimum(), height());
-        }
-        opt->tabBarRect = opt->rect;
+        opt->tabBarSize = QSize(minimum() , height());
+        opt->tabBarRect = opt->selectedTabRect;
     }
     else if (type == QLatin1String("menuitem") || type == QLatin1String("comboboxitem")) {
         if (!m_styleoption)
@@ -298,6 +296,7 @@ void QStyleItem::initStyleOption()
         m_styleoption->rect = QRect(overlap, 0,
                                     width() - 2 * overlap,
                                     height());
+
     } else {
         m_styleoption->rect = QRect(0, 0, width(), height());
     }

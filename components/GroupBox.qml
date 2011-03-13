@@ -5,7 +5,7 @@ import "plugin"
 Item {
 
     width: Math.max(200, content.childrenRect.width)
-    height: 40
+    height: 52
 
     default property alias children: content.children
     property alias text: styleitem.text
@@ -19,7 +19,7 @@ Item {
         Item {
             id:content
             anchors.topMargin:24
-            anchors.leftMargin:6
+            anchors.leftMargin:8
             anchors.top:parent.top
             anchors.left:parent.left
         }
