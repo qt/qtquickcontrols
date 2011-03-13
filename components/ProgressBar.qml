@@ -5,8 +5,7 @@ import "plugin"
 Components.ProgressBar {
     id:progressbar
 
-    QStyleItem { id:buttonitem; elementType: "progressbar" }
-    property variant sizehint: buttonitem.sizeFromContents(23, 23)
+    property variant sizehint: backgroundItem.sizeFromContents(23, 23)
     property int orientation: Qt.Horizontal
 
     height: orientation === Qt.Horizontal ? sizehint.height : 200

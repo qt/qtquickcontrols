@@ -21,6 +21,7 @@ Item {
     height: minimumHeight
 
     property Component background: null
+    property Item backgroundItem: groove.item
 
     property color backgroundColor: syspal.base
     property color progressColor: syspal.highlight

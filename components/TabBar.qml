@@ -63,7 +63,8 @@ Item {
                     text: tabFrame.tabs[index].title
                     activeControl: tabFrame.count == 1 ? "only" : index == 0 ? "beginning" :
                             index == tabFrame.count-1 ? "end" : "middle"
-                    anchors.leftMargin: tabOverlap + (style.text == "North" && (style.activeControl == "middle" || style.activeControl == "end")
+                    anchors.leftMargin: tabOverlap + (style.text == "North" &&
+                                                      (style.activeControl == "middle" || style.activeControl == "end")
                                         && tab.selected ? -__overlap : 0)
 
                     anchors.rightMargin: -tabOverlap + (style.text == "North" && (style.activeControl == "middle"  || style.activeControl == "beginning")
