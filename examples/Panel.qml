@@ -10,8 +10,7 @@ Rectangle {
     color:"#c3c3c3"
     ScrollArea {
         frame:false
-        anchors.fill:parent
-
+        anchors.fill: parent
 
         Item {
             width:600

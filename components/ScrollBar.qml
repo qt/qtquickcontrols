@@ -9,6 +9,7 @@ MouseArea {
     height: orientation == Qt.Horizontal ? __scrollbarExtent : 200
 
     property int orientation : Qt.Horizontal
+    property int __scrollbarExtent : styleitem.pixelMetric("scrollbarExtent");
     property alias minimumValue: slider.minimumValue
     property alias maximumValue: slider.maximumValue
     property alias value: slider.value
@@ -16,17 +17,17 @@ MouseArea {
     property bool upPressed;
     property bool downPressed;
     property bool __autoincrement: false
-    property int __scrollbarExtent : styleitem.pixelMetric("scrollbarExtent");
 
     // Update hover item
     onEntered: styleitem.activeControl = styleitem.hitTest(mouseX, mouseY)
     onExited: styleitem.activeControl = "none"
     onMouseXChanged: styleitem.activeControl = styleitem.hitTest(mouseX, mouseY)
-    hoverEnabled:true
+    hoverEnabled: true
 
     Timer { running: upPressed || downPressed; interval: 350 ; onTriggered: __autoincrement = true }
     Timer { running: __autoincrement; interval: 60 ; repeat: true ;
-        onTriggered: upPressed ? decrement() : increment() }
+            onTriggered: upPressed ? decrement() : increment()
+    }
 
     onPressed: {
         var control = styleitem.hitTest(mouseX,mouseY)
@@ -93,14 +94,14 @@ MouseArea {
     onMinimumValueChanged: updateHandle()
     Component.onCompleted: updateHandle()
     Components.Slider {
-        id:slider
-        anchors.fill:parent
-        orientation:scrollbar.orientation
-        leftMargin: (orientation === Qt.Horizontal) ? handleRect.width/2 : handleRect.height/2
-        rightMargin:leftMargin
+        id: slider
+        orientation: scrollbar.orientation
+        anchors.fill: parent
+        leftMargin: (orientation === Qt.Horizontal) ? handleRect.width / 2 : handleRect.height / 2
+        rightMargin: leftMargin
         handle: Item {
-            width:orientation == Qt.Vertical ? handleRect.height : handleRect.width;
-            height:orientation == Qt.Vertical ? handleRect.width : handleRect.height
+            width: orientation == Qt.Vertical ? handleRect.height : handleRect.width;
+            height: orientation == Qt.Vertical ? handleRect.width : handleRect.height
         }
         groove:null
         valueIndicator:null
