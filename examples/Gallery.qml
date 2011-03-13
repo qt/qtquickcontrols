@@ -157,9 +157,8 @@ Rectangle {
                         GroupBox{
                             id: group1
                             text: "CheckBox"
-                            Row {
-                                spacing: 9
-                                anchors.fill: parent
+                            ButtonRow {
+                                exclusive: false
                                 CheckBox {
                                     id: frameCheckbox
                                     text: "Text frame"
@@ -196,7 +195,9 @@ Rectangle {
                                 }
                             }
                         }
+
                         Item {height: 6; width: 6}
+
                         TextArea {
                             id: area
                             frame: frameCheckbox.checked

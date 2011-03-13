@@ -10,6 +10,7 @@ Item {
     property alias containsMouse: behavior.containsMouse
     property bool activeFocusOnPress: true
     property Component background: null
+    property Item backgroundItem: backgroundLoader.item
 
     // implementation
 

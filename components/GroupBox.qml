@@ -3,11 +3,12 @@ import "custom" as Components
 import "plugin"
 
 Item {
-    width:200
-    height:40
 
-    property alias text: styleitem.text
+    width: Math.max(200, content.childrenRect.width)
+    height: 40
+
     default property alias children: content.children
+    property alias text: styleitem.text
     property bool checkable: false
 
     QStyleItem {
@@ -19,7 +20,8 @@ Item {
             id:content
             anchors.topMargin:22
             anchors.leftMargin:6
-            anchors.fill:parent
+            anchors.top:parent.top
+            anchors.left:parent.left
         }
     }
 }

@@ -7,7 +7,7 @@ import "plugin"
 Components.CheckBox{
     id:checkbox
     property string text
-    width:100
+    width:110
     height:20
 
     background: QStyleItem {

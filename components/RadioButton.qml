@@ -7,8 +7,10 @@ import "plugin"
 Components.CheckBox {
     id:radiobutton
     property string text
+
     width:110
     height:20
+
     background: QStyleItem {
         elementType:"radiobutton"
         sunken:pressed
