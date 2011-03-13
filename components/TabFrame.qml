@@ -23,7 +23,7 @@ Item{
         tabbar.anchors.right = tabWidget.right
     }
 
-    property int __baseOverlap : style.pixelMetric("tabbaseoverlap");
+    property int __baseOverlap : frameitem.pixelMetric("tabbaseoverlap");
     function __setOpacities() {
         for (var i = 0; i < stack.children.length; ++i) {
             stack.children[i].opacity = (i == current ? 1 : 0)
@@ -31,7 +31,7 @@ Item{
     }
 
     QStyleItem {
-        id: style
+        id: frameitem
         z: -1
         elementType: "tabframe"
         info: position
@@ -50,7 +50,7 @@ Item{
                 name: "South"
                 when: position == "South" && tabbar!= undefined
                 PropertyChanges {
-                    target: frame
+                    target: frameitem
                     anchors.topMargin: 0
                     anchors.bottomMargin: tabbar ? tabbar.height - __baseOverlap: 0
                 }
@@ -60,7 +60,7 @@ Item{
                 }
                 AnchorChanges {
                     target: tabbar
-                    anchors.top: frame.bottom
+                    anchors.top: frameitem.bottom
                     anchors.bottom: undefined
                 }
             }

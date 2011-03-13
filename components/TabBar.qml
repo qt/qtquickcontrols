@@ -55,7 +55,7 @@ Item {
                 z: selected ? 1 : -1
 
                 QStyleItem {
-                    id:style
+                    id: style
                     elementType: "tab"
                     selected: tab.selected
                     info: tabbar.position
@@ -69,8 +69,8 @@ Item {
                                          && tab.selected ? -__overlap : 0)
                     anchors.fill:parent
                     Text {
-                        // Used for size hint
                         id: textitem
+                        // Used for size hint
                         visible: false
                         text: tabFrame.tabs[index].title
                     }
