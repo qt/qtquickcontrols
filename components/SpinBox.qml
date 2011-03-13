@@ -20,12 +20,12 @@ Components.SpinBox {
     property int buttonWidth: edititem.sizeFromContents(70, 20).width
 
     QStyleItem { id:edititem; elementType:"edit" }
+
     height: buttonHeight
     width: buttonWidth
     clip:false
 
-    background:
-            Item {
+    background: Item {
         anchors.fill: parent
         property variant __editRect
 
@@ -40,8 +40,9 @@ Components.SpinBox {
         Item {
             id:focusFrame
             anchors.fill: editBackground
-            visible:framestyle.styleHint("focuswidget")
+            visible: frameitem.styleHint("focuswidget")
             QStyleItem {
+                id: frameitem
                 anchors.margins: -6
                 anchors.leftMargin: -5
                 anchors.rightMargin: -7
@@ -52,27 +53,27 @@ Components.SpinBox {
         }
 
         function updateRect() {
-            __upRect = spinboxbg.subControlRect("up");
-            __downRect = spinboxbg.subControlRect("down");
-            __editRect = spinboxbg.subControlRect("edit");
+            __upRect = styleitem.subControlRect("up");
+            __downRect = styleitem.subControlRect("down");
+            __editRect = styleitem.subControlRect("edit");
         }
 
-        Component.onCompleted:updateRect()
-        onWidthChanged:updateRect()
-        onHeightChanged:updateRect()
+        Component.onCompleted: updateRect()
+        onWidthChanged: updateRect()
+        onHeightChanged: updateRect()
 
         QStyleItem {
             id: styleitem
-            anchors.fill:parent
+            anchors.fill: parent
             elementType: "spinbox"
             sunken: downPressed | upPressed
             hover: containsMouse
             focus: spinbox.focus || spinbox.activeFocus
             enabled: spinbox.enabled
-            value: (upPressed? 1 : 0)           |
-                    (downPressed== 1 ? 1<<1 : 0) |
-                    (upEnabled? (1<<2) : 0)      |
-                    (downEnabled == 1 ? (1<<3) : 0)
+            value: (upPressed ? 1 : 0)           |
+                   (downPressed == 1 ? 1<<1 : 0) |
+                   (upEnabled ? (1<<2) : 0)      |
+                   (downEnabled == 1 ? (1<<3) : 0)
         }
     }
 

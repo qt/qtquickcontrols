@@ -31,7 +31,7 @@ Item{
     }
 
     QStyleItem {
-        id: frame
+        id: style
         z: -1
         elementType: "tabframe"
         info: position

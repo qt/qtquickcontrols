@@ -19,9 +19,9 @@ MouseArea {
     property int __scrollbarExtent : styleitem.pixelMetric("scrollbarExtent");
 
     // Update hover item
-    onEntered: styleitem.activeControl = bgitem.hitTest(mouseX, mouseY)
+    onEntered: styleitem.activeControl = styleitem.hitTest(mouseX, mouseY)
     onExited: styleitem.activeControl = "none"
-    onMouseXChanged: styleitem.activeControl = bgitem.hitTest(mouseX, mouseY)
+    onMouseXChanged: styleitem.activeControl = styleitem.hitTest(mouseX, mouseY)
     hoverEnabled:true
 
     Timer { running: upPressed || downPressed; interval: 350 ; onTriggered: __autoincrement = true }
@@ -29,7 +29,7 @@ MouseArea {
         onTriggered: upPressed ? decrement() : increment() }
 
     onPressed: {
-        var control = bgitem.hitTest(mouseX,mouseY)
+        var control = styleitem.hitTest(mouseX,mouseY)
         if (control == "up") {
             upPressed = true
         } else if (control == "down") {
@@ -76,8 +76,8 @@ MouseArea {
 
     property variant handleRect
     function updateHandle() {
-        handleRect = bgitem.subControlRect("handle")
-        var grooveRect = bgitem.subControlRect("groove");
+        handleRect = styleitem.subControlRect("handle")
+        var grooveRect = styleitem.subControlRect("groove");
         var extra = 0
         if (orientation == Qt.Vertical) {
             slider.anchors.topMargin = grooveRect.y + extra
