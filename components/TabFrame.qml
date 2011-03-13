@@ -37,6 +37,7 @@ Item{
 
     QStyleItem {
         id: frameitem
+        z: style == "oxygen" ? -1 : 1 // ### temporary oxygen fix
         elementType: "tabframe"
         info: position
         value: tabbar && tabsVisible && tabbar.tab(current) ? tabbar.tab(current).x : 0

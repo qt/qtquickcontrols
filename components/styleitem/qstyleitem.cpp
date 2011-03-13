@@ -167,7 +167,8 @@ void QStyleItem::initStyleOption()
         if (minimum())
             opt->selectedTabRect = QRect(value(), 0, minimum(), height());
         opt->tabBarSize = QSize(minimum() , height());
-        opt->tabBarRect = opt->selectedTabRect;
+        // oxygen style needs this hack
+        opt->leftCornerWidgetSize = QSize(value(), 0);
     }
     else if (type == QLatin1String("menuitem") || type == QLatin1String("comboboxitem")) {
         if (!m_styleoption)
