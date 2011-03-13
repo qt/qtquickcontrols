@@ -23,13 +23,11 @@ Components.TextField {
         hover:containsMouse
     }
 
-    background: QStyleBackground {
-        anchors.fill:parent
-        style: QStyleItem{
-            elementType:"edit"
-            sunken:true
-            focus:textfield.activeFocus
-        }
+    background: QStyleItem {
+        anchors.fill: parent
+            elementType: "edit"
+            sunken: true
+            focus: textfield.activeFocus
     }
 
     Item{
@@ -37,16 +35,14 @@ Components.TextField {
         anchors.fill: textfield
         parent:textfield
         visible:framestyle.styleHint("focuswidget")
-        QStyleBackground{
+        QStyleItem {
+            id:framestyle
             anchors.margins: -2
             anchors.rightMargin:-4
             anchors.bottomMargin:-4
             anchors.fill: parent
             visible:textfield.activeFocus
-            style: QStyleItem {
-                id:framestyle
-                elementType:"focusframe"
-            }
+            elementType:"focusframe"
         }
     }
 }

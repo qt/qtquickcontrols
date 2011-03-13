@@ -11,6 +11,7 @@ Item {
     property alias checked: behavior.checked
 
     property Component background: null
+    property Item backgroundItem: backgroundLoader.item
 
     property color textColor: syspal.text;
     property bool activeFocusOnPress: true

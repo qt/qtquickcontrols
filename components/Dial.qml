@@ -4,7 +4,7 @@ import "plugin"
 
 // jens: ContainsMouse breaks drag functionality
 
-QStyleBackground {
+QStyleItem {
     id: dial
 
     width:100
@@ -77,21 +77,19 @@ QStyleBackground {
         }
     }
 
-    style: QStyleItem{
-        elementType:"dial"
-        sunken: mouseArea.pressed
-        maximum: range.maximumValue*90
-        minimum: range.minimumValue*90
-        focus:dial.focus
-        value: visualPos*90
-        enabled: dial.enabled
-        property double visualPos : range.value
-        Behavior on visualPos {
-            enabled: !mouseArea.inDrag
-            NumberAnimation {
-                duration: 300
-                easing.type: Easing.OutSine
-            }
+    elementType:"dial"
+    sunken: mouseArea.pressed
+    maximum: range.maximumValue*90
+    minimum: range.minimumValue*90
+    focus:dial.focus
+    value: visualPos*90
+    enabled: dial.enabled
+    property double visualPos : range.value
+    Behavior on visualPos {
+        enabled: !mouseArea.inDrag
+        NumberAnimation {
+            duration: 300
+            easing.type: Easing.OutSine
         }
     }
 }

@@ -7,13 +7,13 @@ Components.Button {
 
     width: 100
     height: Math.max(22, sizehint.height)
-    property variant sizehint: styleitem.sizeFromContents(80, 6)
 
+    property variant sizehint: backgroundItem.sizeFromContents(80, 6)
     property bool defaultbutton
 
     background: QStyleItem {
         id: styleitem
-        anchors.fill:parent
+        anchors.fill: parent
 
         elementType: "button"
         sunken: pressed
@@ -50,7 +50,7 @@ Components.Button {
                 id:text
                 color: textColor
                 anchors.verticalCenter: parent.verticalCenter
-                text: styleitem.text
+                text: button.text
                 horizontalAlignment: Text.Center
             }
         }

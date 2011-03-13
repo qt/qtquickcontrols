@@ -10,6 +10,7 @@ BasicButton {
     // implementation
 
     background: defaultStyle.background
+    property Item labelItem: labelLoader.item
 
     Loader {
         id: labelLoader

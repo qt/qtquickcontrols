@@ -27,12 +27,11 @@ FocusScope {
 
     property int frameMargins : frame ? frameWidth : 0
 
-    QStyleBackground {
-        style: QStyleItem{
-            id:styleitem
-            elementType: frame ? "frame" : ""
-            sunken: true
-        }
+    QStyleItem {
+        id:styleitem
+        elementType: frame ? "frame" : ""
+        sunken: true
+
         anchors.fill: parent
         anchors.rightMargin: frame ? (frameAroundContents ? (vscrollbar.visible ? vscrollbar.width + 2 * frameMargins : 0) : -frameWidth) : 0
         anchors.bottomMargin: frame ? (frameAroundContents ? (hscrollbar.visible ? hscrollbar.height + 2 * frameMargins : 0) : -frameWidth) : 0
@@ -87,14 +86,11 @@ FocusScope {
         anchors.bottomMargin: (frameAroundContents && hscrollbar.visible) ? hscrollbar.height : 0
     }
 
-    QStyleBackground {
+    QStyleItem {
         z: 2
         anchors.fill: parent
         anchors.margins: -4
         visible: highlightOnFocus && parent.activeFocus && styleitem.styleHint("focuswidget")
-        style: QStyleItem {
-            id:framestyle
-            elementType: "focusframe"
-        }
+        elementType: "focusframe"
     }
 }

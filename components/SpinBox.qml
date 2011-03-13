@@ -25,7 +25,7 @@ Components.SpinBox {
     clip:false
 
     background:
-        Item {
+            Item {
         anchors.fill: parent
         property variant __editRect
 
@@ -41,16 +41,13 @@ Components.SpinBox {
             id:focusFrame
             anchors.fill: editBackground
             visible:framestyle.styleHint("focuswidget")
-            QStyleBackground{
+            QStyleItem {
                 anchors.margins: -6
                 anchors.leftMargin: -5
                 anchors.rightMargin: -7
                 anchors.fill: parent
                 visible: spinbox.focus || spinbox.activeFocus
-                style: QStyleItem {
-                    id:framestyle
-                    elementType:"focusframe"
-                }
+                elementType:"focusframe"
             }
         }
 
@@ -64,21 +61,18 @@ Components.SpinBox {
         onWidthChanged:updateRect()
         onHeightChanged:updateRect()
 
-        QStyleBackground {
-            id:spinboxbg
+        QStyleItem {
+            id: styleitem
             anchors.fill:parent
-            style: QStyleItem {
-                id: styleitem
-                elementType: "spinbox"
-                sunken: downPressed | upPressed
-                hover: containsMouse
-                focus: spinbox.focus || spinbox.activeFocus
-                enabled: spinbox.enabled
-                value: (upPressed? 1 : 0)           |
-                        (downPressed== 1 ? 1<<1 : 0) |
-                        (upEnabled? (1<<2) : 0)      |
-                        (downEnabled == 1 ? (1<<3) : 0)
-            }
+            elementType: "spinbox"
+            sunken: downPressed | upPressed
+            hover: containsMouse
+            focus: spinbox.focus || spinbox.activeFocus
+            enabled: spinbox.enabled
+            value: (upPressed? 1 : 0)           |
+                    (downPressed== 1 ? 1<<1 : 0) |
+                    (upEnabled? (1<<2) : 0)      |
+                    (downEnabled == 1 ? (1<<3) : 0)
         }
     }
 

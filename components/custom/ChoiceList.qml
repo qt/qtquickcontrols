@@ -17,6 +17,7 @@ Item {
     property bool pressed: false    //mm needed?
 
     property Component background: null
+    property Item backgroundItem: backgroundLoader.item
     property Component listItem: null
     property Component popupFrame: null
 
@@ -35,6 +36,7 @@ Item {
 
     SystemPalette { id: syspal }
     Loader {
+        id: backgroundLoader
         property alias styledItem: choiceList
         sourceComponent: background
         anchors.fill: parent

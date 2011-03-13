@@ -26,6 +26,7 @@ Item {
     }
 
     QStyleItem {
+        visible:false
         id:styleitem
         elementType: "tab"
         text: "generic"
@@ -53,16 +54,14 @@ Item {
                 height: tabHeight
                 z: selected ? 1 : -1
 
-                QStyleBackground {
-                    style: QStyleItem {
-                        id:style
-                        elementType: "tab"
-                        selected: tab.selected
-                        info: tabbar.position
-                        text: tabFrame.tabs[index].title
-                        activeControl: tabFrame.count == 1 ? "only" : index == 0 ? "beginning" :
-                                                index == tabFrame.count-1 ? "end" : "middle"
-                    }
+                QStyleItem {
+                    id:style
+                    elementType: "tab"
+                    selected: tab.selected
+                    info: tabbar.position
+                    text: tabFrame.tabs[index].title
+                    activeControl: tabFrame.count == 1 ? "only" : index == 0 ? "beginning" :
+                            index == tabFrame.count-1 ? "end" : "middle"
                     anchors.leftMargin: -tabOverlap + (style.text == "North" && (style.activeControl == "middle" || style.activeControl == "end")
                                         && tab.selected ? -__overlap : 0)
 

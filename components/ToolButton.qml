@@ -10,20 +10,18 @@ Components.Button {
 
     QStyleItem {elementType: "toolbutton"; id:styleitem  }
 
-    background: QStyleBackground {
-        anchors.fill:parent
-        style: QStyleItem {
-            id:styleitem
-            elementType: "toolbutton"
-            on: pressed | checked
-            sunken: pressed
-            raised: containsMouse
-            hover: containsMouse
+    background: QStyleItem {
+        anchors.fill: parent
+        id: styleitem
+        elementType: "toolbutton"
+        on: pressed | checked
+        sunken: pressed
+        raised: containsMouse
+        hover: containsMouse
 
-        }
         Image{
-            source:button.iconSource
-            anchors.centerIn:parent
+            source: button.iconSource
+            anchors.centerIn: parent
         }
     }
 }

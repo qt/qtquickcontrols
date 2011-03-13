@@ -15,19 +15,18 @@ Components.Slider{
     height: orientation === Qt.Horizontal ? sizehint.height : 200
     width: orientation === Qt.Horizontal ? 200 : sizehint.height
 
-    groove: QStyleBackground {
+    groove: QStyleItem {
         anchors.fill:parent
-        style: QStyleItem {
-            elementType: "slider"
-            sunken: pressed
-            maximum: slider.maximumValue*100
-            minimum: slider.minimumValue*100
-            value: slider.value*100
-            horizontal: slider.orientation == Qt.Horizontal
-            enabled: slider.enabled
-            focus: slider.focus
-            activeControl: tickmarksEnabled ? "ticks" : ""
-        }
+        elementType: "slider"
+        sunken: pressed
+        maximum: slider.maximumValue*100
+        minimum: slider.minimumValue*100
+        value: slider.value*100
+        horizontal: slider.orientation == Qt.Horizontal
+        enabled: slider.enabled
+        focus: slider.focus
+        activeControl: tickmarksEnabled ? "ticks" : ""
+
     }
 
     handle: null

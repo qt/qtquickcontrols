@@ -30,20 +30,17 @@ Item{
         }
     }
 
-    QStyleBackground {
+    QStyleItem {
         id: frame
-        z:-1
-        style: QStyleItem {
-            id:style
-            elementType: "tabframe"
-            info: position
-            value: tabbar && tabsVisible && tabbar.tab(current) ? tabbar.tab(current).x : 0
-            minimum: tabbar && tabsVisible && tabbar.tab(current) ? tabbar.tab(current).width : 0
-        }
-        anchors.fill:parent
+        z: -1
+        elementType: "tabframe"
+        info: position
+        value: tabbar && tabsVisible && tabbar.tab(current) ? tabbar.tab(current).x : 0
+        minimum: tabbar && tabsVisible && tabbar.tab(current) ? tabbar.tab(current).width : 0
+        anchors.fill: parent
         Item {
-            id:stack
-            anchors.fill:parent
+            id: stack
+            anchors.fill: parent
             anchors.margins: frame ? 2 : 0
         }
         anchors.topMargin: tabbar && tabsVisible && position == "North" ? tabbar.height - __baseOverlap : 0

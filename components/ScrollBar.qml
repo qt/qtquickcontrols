@@ -60,21 +60,18 @@ MouseArea {
             value = minimumValue
     }
 
-    QStyleBackground {
-        id:bgitem
+    QStyleItem {
+        id: styleitem
         anchors.fill:parent
-        style: QStyleItem {
-            id:styleitem
-            elementType: "scrollbar"
-            hover: activeControl != "none"
-            activeControl: "none"
-            sunken: upPressed | downPressed
-            minimum: slider.minimumValue
-            maximum: slider.maximumValue
-            value: slider.value
-            horizontal: orientation == Qt.Horizontal
-            enabled: parent.enabled
-        }
+        elementType: "scrollbar"
+        hover: activeControl != "none"
+        activeControl: "none"
+        sunken: upPressed | downPressed
+        minimum: slider.minimumValue
+        maximum: slider.maximumValue
+        value: slider.value
+        horizontal: orientation == Qt.Horizontal
+        enabled: parent.enabled
     }
 
     property variant handleRect

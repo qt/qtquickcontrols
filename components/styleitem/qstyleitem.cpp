@@ -312,6 +312,8 @@ void QStyleItem::initStyleOption()
         opt->sliderValue = value();
         opt->subControls = QStyle::SC_All;
     }
+    if (!m_styleoption)
+        m_styleoption = new QStyleOption();
 
     if (!m_styleoption->rect.isValid())
         m_styleoption->rect = QRect(0, 0, width(), height());

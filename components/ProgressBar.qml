@@ -12,19 +12,18 @@ Components.ProgressBar {
     height: orientation === Qt.Horizontal ? sizehint.height : 200
     width: orientation === Qt.Horizontal ? 200 : sizehint.height
 
-    background: QStyleBackground{
+    background: QStyleItem {
         anchors.fill:parent
-        style: QStyleItem {
-            elementType:"progressbar"
-            // XXX: since desktop uses int instead of real, the progressbar
-            // range [0..1] must be stretched to a good precision
-            property int factor : 1000000
-            value:   indeterminate ? 1 : progressbar.value * factor
-            minimum: indeterminate ? 0 : progressbar.minimumValue * factor
-            maximum: indeterminate ? 0 : progressbar.maximumValue * factor
-            enabled: progressbar.enabled
-            horizontal: progressbar.orientation == Qt.Horizontal
-        }
+        elementType:"progressbar"
+        // XXX: since desktop uses int instead of real, the progressbar
+        // range [0..1] must be stretched to a good precision
+        property int factor : 1000000
+        value:   indeterminate ? 1 : progressbar.value * factor
+        minimum: indeterminate ? 0 : progressbar.minimumValue * factor
+        maximum: indeterminate ? 0 : progressbar.maximumValue * factor
+        enabled: progressbar.enabled
+        horizontal: progressbar.orientation == Qt.Horizontal
+
     }
 }
 
