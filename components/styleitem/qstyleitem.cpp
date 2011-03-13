@@ -60,6 +60,7 @@ QStyleItem::QStyleItem(QDeclarativeItem *parent)
     m_focus(false),
     m_on(false),
     m_horizontal(true),
+    m_sharedWidget(false),
     m_minimum(0),
     m_maximum(100),
     m_value(0)
@@ -92,14 +93,15 @@ QStyleItem::~QStyleItem()
     delete m_styleoption;
     m_styleoption = 0;
 
-    delete m_dummywidget;
-    m_dummywidget = 0;
+    if (!m_sharedWidget) {
+        delete m_dummywidget;
+        m_dummywidget = 0;
+    }
 }
 
 void QStyleItem::initStyleOption()
 {
     QString type = elementType();
-
     if (m_styleoption)
         m_styleoption->state = 0;
 
@@ -109,14 +111,16 @@ void QStyleItem::initStyleOption()
 
         QStyleOptionButton *opt = qstyleoption_cast<QStyleOptionButton*>(m_styleoption);
         opt->text = text();
-        opt->features = (activeControl() == "default") ? QStyleOptionButton::DefaultButton :
+        opt->features = (activeControl() == "default") ?
+                        QStyleOptionButton::DefaultButton :
                         QStyleOptionButton::None;
     }
     else if (type == QLatin1String("toolbutton")) {
         if (!m_styleoption)
             m_styleoption = new QStyleOptionToolButton();
 
-        QStyleOptionToolButton *opt = qstyleoption_cast<QStyleOptionToolButton*>(m_styleoption);
+        QStyleOptionToolButton *opt =
+                qstyleoption_cast<QStyleOptionToolButton*>(m_styleoption);
         opt->subControls = QStyle::SC_ToolButton;
     }
     else if (type == QLatin1String("toolbar")) {
@@ -127,7 +131,9 @@ void QStyleItem::initStyleOption()
         if (!m_styleoption)
             m_styleoption = new QStyleOptionTabV3();
 
-        QStyleOptionTabV3 *opt = qstyleoption_cast<QStyleOptionTabV3*>(m_styleoption);
+        QStyleOptionTabV3 *opt =
+                qstyleoption_cast<QStyleOptionTabV3*>(m_styleoption);
+
         opt->text = text();
         opt->shape = info() == "South" ? QTabBar::RoundedSouth : QTabBar::RoundedNorth;
         if (activeControl() == QLatin1String("beginning"))
@@ -142,10 +148,8 @@ void QStyleItem::initStyleOption()
     else if (type == QLatin1String("menu")) {
         if (!m_styleoption)
             m_styleoption = new QStyleOptionMenuItem();
-        QStyleOptionMenuItem *opt = qstyleoption_cast<QStyleOptionMenuItem*>(m_styleoption);
-        if (QMenu *menu = qobject_cast<QMenu*>(widget())){
-            opt->palette = menu->palette();
-        }
+        QStyleOptionMenuItem *opt =
+                qstyleoption_cast<QStyleOptionMenuItem*>(m_styleoption);
     }
     else if (type == QLatin1String("frame")) {
         if (!m_styleoption)
@@ -283,13 +287,17 @@ void QStyleItem::initStyleOption()
         m_styleoption = new QStyleOption();
     if (type == QLatin1String("tabframe")) {
         int overlap = qApp->style()->pixelMetric(QStyle::PM_TabBarTabOverlap);
-        m_styleoption->rect = QRect(overlap, 0, width() - 2 * overlap, height());
+        m_styleoption->rect = QRect(overlap, 0,
+                                    width() - 2 * overlap,
+                                    height());
     } else {
         m_styleoption->rect = QRect(0, 0, width(), height());
     }
 
-    if (widget())
+    if (widget()) {
+        m_styleoption->palette = widget()->palette();
         widget()->resize(width(), height());
+    }
     if (isEnabled())
         m_styleoption->state |= QStyle::State_Enabled;
     if (m_active)
@@ -439,10 +447,11 @@ void QStyleItem::setElementType(const QString &str)
     m_type = str;
     emit elementTypeChanged();
 
-    if (m_dummywidget) {
+    if (m_dummywidget && !m_sharedWidget) {
         delete m_dummywidget;
         m_dummywidget = 0;
     }
+
     if (m_styleoption) {
         delete m_styleoption;
         m_styleoption = 0;
@@ -454,11 +463,13 @@ void QStyleItem::setElementType(const QString &str)
         // Since these are used by the delegate, it makes no
         // sense to re-create them per item
         static QWidget *menu = new QMenu();
+        m_sharedWidget = true;
         m_dummywidget = menu;
     } if (str == "groupbox") {
         // Since these are used by the delegate, it makes no
         // sense to re-create them per item
         static QGroupBox *group = new QGroupBox();
+        m_sharedWidget = true;
         m_dummywidget = group;
     } else if (str == "comboboxitem")  {
         // Gtk uses qobject cast, hence we need to separate this from menuitem
@@ -469,6 +480,7 @@ void QStyleItem::setElementType(const QString &str)
 #else
         static QComboBox *combo = new QComboBox();
 #endif
+        m_sharedWidget = true;
         m_dummywidget = combo;
     } else if (str == "toolbar") {
         static QToolBar *tb = 0;
@@ -479,6 +491,7 @@ void QStyleItem::setElementType(const QString &str)
         m_dummywidget = tb;
     } else if (str == "slider") {
         static QSlider *slider = new QSlider();
+        m_sharedWidget = true;
         m_dummywidget = slider;
     } else if (str == "combobox") {
         m_dummywidget = new QComboBox();
@@ -584,24 +597,6 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
     else if (type == QLatin1String("tab")) {
         qApp->style()->drawControl(QStyle::CE_TabBarTab, m_styleoption, painter, widget());
     }
-    else if (type == QLatin1String("menu")) {
-        if (QMenu *menu = qobject_cast<QMenu*>(widget())) {
-            m_styleoption->palette = menu->palette();
-        }
-        QStyleHintReturnMask val;
-        qApp->style()->styleHint(QStyle::SH_Menu_Mask, m_styleoption, widget(), &val);
-        painter->save();
-        painter->setClipRegion(val.region);
-        painter->fillRect(m_styleoption->rect, m_styleoption->palette.window());
-        painter->restore();
-        qApp->style()->drawPrimitive(QStyle::PE_PanelMenu, m_styleoption, painter, widget());
-
-        QStyleOptionFrame frame;
-        frame.lineWidth = qApp->style()->pixelMetric(QStyle::PM_MenuPanelWidth);
-        frame.midLineWidth = 0;
-        frame.rect = m_styleoption->rect;
-        qApp->style()->drawPrimitive(QStyle::PE_FrameMenu, &frame, painter, widget());
-    }
     else if (type == QLatin1String("frame")) {
         qApp->style()->drawControl(QStyle::CE_ShapedFrame, m_styleoption, painter, 0);
     }
@@ -655,5 +650,23 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
     }
     else if (type == QLatin1String("scrollbar")) {
         qApp->style()->drawComplexControl(QStyle::CC_ScrollBar, qstyleoption_cast<QStyleOptionComplex*>(m_styleoption), painter, widget());
+    }
+    else if (type == QLatin1String("menu")) {
+        if (QMenu *menu = qobject_cast<QMenu*>(widget())) {
+            m_styleoption->palette = menu->palette();
+        }
+        QStyleHintReturnMask val;
+        qApp->style()->styleHint(QStyle::SH_Menu_Mask, m_styleoption, widget(), &val);
+        painter->save();
+        painter->setClipRegion(val.region);
+        painter->fillRect(m_styleoption->rect, m_styleoption->palette.window());
+        painter->restore();
+        qApp->style()->drawPrimitive(QStyle::PE_PanelMenu, m_styleoption, painter, widget());
+
+        QStyleOptionFrame frame;
+        frame.lineWidth = qApp->style()->pixelMetric(QStyle::PM_MenuPanelWidth);
+        frame.midLineWidth = 0;
+        frame.rect = m_styleoption->rect;
+        qApp->style()->drawPrimitive(QStyle::PE_FrameMenu, &frame, painter, widget());
     }
 }

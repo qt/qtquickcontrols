@@ -158,6 +158,7 @@ protected:
     bool m_hover;
     bool m_on;
     bool m_horizontal;
+    bool m_sharedWidget;
 
     int m_minimum;
     int m_maximum;
