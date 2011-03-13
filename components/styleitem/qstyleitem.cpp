@@ -56,7 +56,6 @@ QStyleItem::QStyleItem(QDeclarativeItem *parent)
     m_sunken(false),
     m_raised(false),
     m_active(true),
-    m_enabled(true),
     m_selected(false),
     m_focus(false),
     m_on(false),
@@ -81,7 +80,6 @@ QStyleItem::QStyleItem(QDeclarativeItem *parent)
     connect(this, SIGNAL(maximumChanged()), this, SLOT(updateItem()));
     connect(this, SIGNAL(minimumChanged()), this, SLOT(updateItem()));
     connect(this, SIGNAL(valueChanged()), this, SLOT(updateItem()));
-    connect(this, SIGNAL(enabledChanged()), this, SLOT(updateItem()));
     connect(this, SIGNAL(horizontalChanged()), this, SLOT(updateItem()));
     connect(this, SIGNAL(activeControlChanged()), this, SLOT(updateItem()));
     connect(this, SIGNAL(focusChanged()), this, SLOT(updateItem()));
@@ -89,15 +87,26 @@ QStyleItem::QStyleItem(QDeclarativeItem *parent)
     connect(this, SIGNAL(elementTypeChanged()), this, SLOT(updateItem()));
 }
 
+QStyleItem::~QStyleItem()
+{
+    delete m_styleoption;
+    m_styleoption = 0;
+
+    delete m_dummywidget;
+    m_dummywidget = 0;
+}
+
 void QStyleItem::initStyleOption()
 {
     QString type = elementType();
+
     if (m_styleoption)
         m_styleoption->state = 0;
 
     if (type == QLatin1String("button")) {
         if (!m_styleoption)
             m_styleoption = new QStyleOptionButton();
+
         QStyleOptionButton *opt = qstyleoption_cast<QStyleOptionButton*>(m_styleoption);
         opt->text = text();
         opt->features = (activeControl() == "default") ? QStyleOptionButton::DefaultButton :
@@ -106,6 +115,7 @@ void QStyleItem::initStyleOption()
     else if (type == QLatin1String("toolbutton")) {
         if (!m_styleoption)
             m_styleoption = new QStyleOptionToolButton();
+
         QStyleOptionToolButton *opt = qstyleoption_cast<QStyleOptionToolButton*>(m_styleoption);
         opt->subControls = QStyle::SC_ToolButton;
     }
@@ -116,13 +126,10 @@ void QStyleItem::initStyleOption()
     else if (type == QLatin1String("tab")) {
         if (!m_styleoption)
             m_styleoption = new QStyleOptionTabV3();
-        QStyleOptionTabV3 *opt = qstyleoption_cast<QStyleOptionTabV3*>(m_styleoption);
 
-        int overlap = qApp->style()->pixelMetric(QStyle::PM_TabBarTabOverlap);
-        opt->rect = QRect(overlap, 0, width() - 2 * overlap, height());
+        QStyleOptionTabV3 *opt = qstyleoption_cast<QStyleOptionTabV3*>(m_styleoption);
         opt->text = text();
-        if (info() == "South")
-            opt->shape = QTabBar::RoundedSouth;
+        opt->shape = info() == "South" ? QTabBar::RoundedSouth : QTabBar::RoundedNorth;
         if (activeControl() == QLatin1String("beginning"))
             opt->position = QStyleOptionTabV3::Beginning;
         else if (activeControl() == QLatin1String("end"))
@@ -143,6 +150,7 @@ void QStyleItem::initStyleOption()
     else if (type == QLatin1String("frame")) {
         if (!m_styleoption)
             m_styleoption = new QStyleOptionFrameV3();
+
         QStyleOptionFrameV3 *opt = qstyleoption_cast<QStyleOptionFrameV3*>(m_styleoption);
         opt->frameShape = QFrame::StyledPanel;
         opt->lineWidth = 1;
@@ -151,10 +159,10 @@ void QStyleItem::initStyleOption()
     else if (type == QLatin1String("tabframe")) {
         if (!m_styleoption)
             m_styleoption = new QStyleOptionTabWidgetFrameV2();
+
         QStyleOptionTabWidgetFrameV2 *opt = qstyleoption_cast<QStyleOptionTabWidgetFrameV2*>(m_styleoption);
         if (minimum()) {
-            if (info() == "South")
-                opt->shape = QTabBar::RoundedSouth;
+            opt->shape = (info() == "South") ? QTabBar::RoundedSouth : QTabBar::RoundedNorth;
             opt->selectedTabRect = QRect(value(), 0, minimum(), height());
         }
     }
@@ -167,7 +175,7 @@ void QStyleItem::initStyleOption()
         opt->text = text();
         opt->palette = widget()->palette();
     }
-    else if (type == QLatin1String("checkbox")) {
+    else if (type == QLatin1String("checkbox") || type == QLatin1String("radiobutton")) {
         if (!m_styleoption)
             m_styleoption = new QStyleOptionButton();
 
@@ -175,32 +183,18 @@ void QStyleItem::initStyleOption()
         if (!(opt->state & QStyle::State_On))
             opt->state |= QStyle::State_Off;
         opt->text = text();
-        if (widget())
-            widget()->resize(width(), height());
-    }
-    else if (type == QLatin1String("radiobutton")) {
-        if (!m_styleoption)
-            m_styleoption = new QStyleOptionButton();
-
-        QStyleOptionButton *opt = qstyleoption_cast<QStyleOptionButton*>(m_styleoption);
-        opt->text = text();
-        if (widget())
-            widget()->resize(width(), height());
     }
     else if (type == QLatin1String("edit")) {
         if (!m_styleoption)
             m_styleoption = new QStyleOptionFrameV3();
 
         QStyleOptionFrameV3 *opt = qstyleoption_cast<QStyleOptionFrameV3*>(m_styleoption);
-
-        opt->lineWidth = 1; // jens : this must be non-zero
+        opt->lineWidth = 1; // this must be non-zero
     }
     else if (type == QLatin1String("combobox")) {
         if (!m_styleoption)
             m_styleoption = new QStyleOptionComboBox();
-
         QStyleOptionComboBox *opt = qstyleoption_cast<QStyleOptionComboBox*>(m_styleoption);
-        widget()->resize(width(), height());
         opt->currentText = text();
     }
     else if (type == QLatin1String("spinbox")) {
@@ -213,36 +207,20 @@ void QStyleItem::initStyleOption()
             opt->activeSubControls = QStyle::SC_SpinBoxUp;
         else if (value() & (1<<1))
             opt->activeSubControls = QStyle::SC_SpinBoxDown;
-        opt->subControls |= QStyle::SC_SpinBoxDown;
-        opt->subControls |= QStyle::SC_SpinBoxUp;
+        opt->subControls = QStyle::SC_SpinBoxDown | QStyle::SC_SpinBoxUp;
         if (value() & (1<<2))
             opt->stepEnabled |= QAbstractSpinBox::StepUpEnabled;
         if (value() & (1<<3))
             opt->stepEnabled |= QAbstractSpinBox::StepDownEnabled;
     }
-    else if (type == QLatin1String("slider")) {
+    else if (type == QLatin1String("slider") || type == QLatin1String("dial")) {
         if (!m_styleoption)
             m_styleoption = new QStyleOptionSlider();
 
         QStyleOptionSlider *opt = qstyleoption_cast<QStyleOptionSlider*>(m_styleoption);
-        widget()->resize(width(), height());
         opt->minimum = minimum();
         opt->maximum = maximum();
         opt->tickPosition = (activeControl() == "ticks") ? QSlider::TicksBelow : QSlider::NoTicks;
-        opt->sliderPosition = value();
-        opt->tickInterval = 1200 / (opt->maximum - opt->minimum);
-        opt->sliderValue = value();
-        opt->subControls = QStyle::SC_SliderTickmarks | QStyle::SC_SliderGroove | QStyle::SC_SliderHandle;
-        opt->activeSubControls = QStyle::SC_None;
-    }
-    else if (type == QLatin1String("dial")) {
-        if (!m_styleoption)
-            m_styleoption = new QStyleOptionSlider();
-
-        QStyleOptionSlider *opt = qstyleoption_cast<QStyleOptionSlider*>(m_styleoption);
-        opt->minimum = minimum();
-        opt->maximum = maximum();
-        opt->tickPosition = QSlider::TicksBelow;
         opt->sliderPosition = value();
         opt->tickInterval = 1200 / (opt->maximum - opt->minimum);
         opt->sliderValue = value();
@@ -281,7 +259,6 @@ void QStyleItem::initStyleOption()
         bar->setMaximum(maximum());
         bar->setMinimum(minimum());
         bar->setValue(value());
-        bar->resize(width(), height());
 
         if (!m_styleoption)
             m_styleoption = new QStyleOptionSlider();
@@ -301,11 +278,19 @@ void QStyleItem::initStyleOption()
         opt->sliderValue = value();
         opt->subControls = QStyle::SC_All;
     }
+
     if (!m_styleoption)
         m_styleoption = new QStyleOption();
-    if (!m_styleoption->rect.isValid())
+    if (type == QLatin1String("tabframe")) {
+        int overlap = qApp->style()->pixelMetric(QStyle::PM_TabBarTabOverlap);
+        m_styleoption->rect = QRect(overlap, 0, width() - 2 * overlap, height());
+    } else {
         m_styleoption->rect = QRect(0, 0, width(), height());
-    if (m_enabled)
+    }
+
+    if (widget())
+        widget()->resize(width(), height());
+    if (isEnabled())
         m_styleoption->state |= QStyle::State_Enabled;
     if (m_active)
         m_styleoption->state |= QStyle::State_Active;
@@ -370,9 +355,11 @@ QString QStyleItem::hitTest(int px, int py)
                                                           QPoint(px,py), 0);
         if (subcontrol == QStyle::SC_ScrollBarSlider)
             return "handle";
-        if (subcontrol == QStyle::SC_ScrollBarSubLine || subcontrol == QStyle::SC_ScrollBarSubPage)
+        if (subcontrol == QStyle::SC_ScrollBarSubLine
+                          || subcontrol == QStyle::SC_ScrollBarSubPage)
             return "up";
-        if (subcontrol == QStyle::SC_ScrollBarAddLine || subcontrol == QStyle::SC_ScrollBarAddPage)
+        if (subcontrol == QStyle::SC_ScrollBarAddLine
+                          || subcontrol == QStyle::SC_ScrollBarAddPage)
             return "down";
     }
     return "none";
@@ -521,7 +508,7 @@ void QStyleItem::setElementType(const QString &str)
         m_dummywidget->setAttribute(Qt::WA_QuitOnClose, false); // dont keep app open
         m_dummywidget->winId();
 #ifdef Q_WS_MAC
-        m_dummywidget->setVisible(visible);// Mac require us to set the visibility before this
+        m_dummywidget->setVisible(visible); // Mac require us to set the visibility before this
 #endif
         m_dummywidget->setAttribute(Qt::WA_DontShowOnScreen);
         m_dummywidget->setAttribute(Qt::WA_LayoutUsesWidgetRect);
@@ -608,6 +595,7 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
         painter->fillRect(m_styleoption->rect, m_styleoption->palette.window());
         painter->restore();
         qApp->style()->drawPrimitive(QStyle::PE_PanelMenu, m_styleoption, painter, widget());
+
         QStyleOptionFrame frame;
         frame.lineWidth = qApp->style()->pixelMetric(QStyle::PM_MenuPanelWidth);
         frame.midLineWidth = 0;

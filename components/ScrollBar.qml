@@ -24,9 +24,17 @@ MouseArea {
     onMouseXChanged: styleitem.activeControl = styleitem.hitTest(mouseX, mouseY)
     hoverEnabled: true
 
-    Timer { running: upPressed || downPressed; interval: 350 ; onTriggered: __autoincrement = true }
-    Timer { running: __autoincrement; interval: 60 ; repeat: true ;
-            onTriggered: upPressed ? decrement() : increment()
+    Timer {
+        running: upPressed || downPressed
+        interval: 350
+        onTriggered: __autoincrement = true
+    }
+
+    Timer {
+        running: __autoincrement
+        interval: 60
+        repeat: true
+        onTriggered: upPressed ? decrement() : increment()
     }
 
     onPressed: {
@@ -93,6 +101,7 @@ MouseArea {
     onMaximumValueChanged: updateHandle()
     onMinimumValueChanged: updateHandle()
     Component.onCompleted: updateHandle()
+
     Components.Slider {
         id: slider
         orientation: scrollbar.orientation

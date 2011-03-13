@@ -70,13 +70,13 @@ class QStyleItem: public QDeclarativeItem
 
 public:
     QStyleItem(QDeclarativeItem *parent = 0);
+    ~QStyleItem();
 
     void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *);
 
     bool sunken() const { return m_sunken; }
     bool raised() const { return m_raised; }
     bool active() const { return m_active; }
-    bool enabled() const { return m_enabled; }
     bool selected() const { return m_selected; }
     bool focus() const { return m_focus; }
     bool on() const { return m_on; }
@@ -96,7 +96,6 @@ public:
     void setSunken(bool sunken) { if (m_sunken != sunken) {m_sunken = sunken; emit sunkenChanged();}}
     void setRaised(bool raised) { if (m_raised!= raised) {m_raised = raised; emit raisedChanged();}}
     void setActive(bool active) { if (m_active!= active) {m_active = active; emit activeChanged();}}
-    void setEnabled(bool enabled) { if (m_enabled!= enabled) {m_enabled = enabled; emit enabledChanged();}}
     void setSelected(bool selected) { if (m_selected!= selected) {m_selected = selected; emit selectedChanged();}}
     void setFocus(bool focus) { if (m_focus != focus) {m_focus = focus; emit focusChanged();}}
     void setOn(bool on) { if (m_on != on) {m_on = on ; emit onChanged();}}
@@ -154,7 +153,6 @@ protected:
     bool m_sunken;
     bool m_raised;
     bool m_active;
-    bool m_enabled;
     bool m_selected;
     bool m_focus;
     bool m_hover;
