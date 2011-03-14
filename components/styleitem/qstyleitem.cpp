@@ -122,6 +122,8 @@ void QStyleItem::initStyleOption()
         QStyleOptionToolButton *opt =
                 qstyleoption_cast<QStyleOptionToolButton*>(m_styleoption);
         opt->subControls = QStyle::SC_ToolButton;
+        opt->state |= QStyle::State_AutoRaise;
+        opt->activeSubControls = QStyle::SC_ToolButton;
     }
     else if (type == QLatin1String("toolbar")) {
         if (!m_styleoption)
