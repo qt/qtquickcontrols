@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
 ** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
@@ -36,60 +36,30 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
- 
-#include <qdeclarative.h>
-#include "qstyleplugin.h"
-#include "qstyleitem.h"
-#include "qrangemodel.h"
+
+#ifndef QTMENUBAR_H
+#define QTMENUBAR_H
+
+#include <QDeclarativeItem>
+#include <QtGui>
+
 #include "qtmenu.h"
-#include "qtmenubar.h"
-#include "qtmenuitem.h"
-#include <qdeclarativeextensionplugin.h>
 
-#include <qdeclarativeengine.h>
-#include <qdeclarative.h>
-#include <qdeclarativeitem.h>
-#include <qdeclarativeimageprovider.h>
-#include <qdeclarativeview.h>
-#include <QApplication>
-#include <QImage>
-
-// Load icons from desktop theme
-class DesktopIconProvider : public QDeclarativeImageProvider
+class QtMenuBar: public QDeclarativeItem
 {
-public:
-    DesktopIconProvider()
-        : QDeclarativeImageProvider(QDeclarativeImageProvider::Pixmap)
-    {
-    }
+    Q_OBJECT
 
-    QPixmap requestPixmap(const QString &id, QSize *size, const QSize &requestedSize)
-    {
-        Q_UNUSED(requestedSize);
-        Q_UNUSED(size);
-        int pos = id.lastIndexOf('/');
-        QString iconName = id.right(id.length() - pos);
-        int width = qApp->style()->pixelMetric(QStyle::PM_ToolBarIconSize);
-        return QIcon::fromTheme(iconName).pixmap(width);
-    }
+    Q_PROPERTY(QDeclarativeListProperty<QtMenu> menus READ menus)
+public:
+    QtMenuBar(QDeclarativeItem *parent = 0);
+    ~QtMenuBar();
+
+    QDeclarativeListProperty<QtMenu> menus();
+
+    //void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *);
+
+private:
+    QList<QtMenu *> m_menus;
 };
 
-
-void StylePlugin::registerTypes(const char *uri)
-{
-    qmlRegisterType<QStyleItem>(uri, 1, 0, "QStyleItem");
-    qmlRegisterType<QRangeModel>(uri, 1, 0, "RangeModel");
-    qmlRegisterType<QGraphicsDropShadowEffect>(uri, 1, 0, "DropShadow");
-    qmlRegisterType<QDeclarativeFolderListModel>(uri, 1, 0, "FileSystemModel");
-    qmlRegisterType<QtMenu>(uri, 1, 0, "Menu");
-    qmlRegisterType<QtMenuBar>(uri, 1, 0, "MenuBar");
-    qmlRegisterType<QtMenuItem>(uri, 1, 0, "MenuItem");
-}
-
-void StylePlugin::initializeEngine(QDeclarativeEngine *engine, const char *uri)
-{
-    Q_UNUSED(uri);
-    engine->addImageProvider("desktoptheme", new DesktopIconProvider);
-}
-
-Q_EXPORT_PLUGIN2(styleplugin, StylePlugin);
+#endif //QTMENUBAR_H

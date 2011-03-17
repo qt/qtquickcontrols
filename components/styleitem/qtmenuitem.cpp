@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
 ** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
@@ -27,7 +27,7 @@
 ** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
 ** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
 ** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOTgall
 ** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
 ** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 ** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
@@ -36,60 +36,15 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
- 
-#include <qdeclarative.h>
-#include "qstyleplugin.h"
-#include "qstyleitem.h"
-#include "qrangemodel.h"
-#include "qtmenu.h"
-#include "qtmenubar.h"
+
 #include "qtmenuitem.h"
-#include <qdeclarativeextensionplugin.h>
 
-#include <qdeclarativeengine.h>
-#include <qdeclarative.h>
-#include <qdeclarativeitem.h>
-#include <qdeclarativeimageprovider.h>
-#include <qdeclarativeview.h>
-#include <QApplication>
-#include <QImage>
-
-// Load icons from desktop theme
-class DesktopIconProvider : public QDeclarativeImageProvider
+QtMenuItem::QtMenuItem(QObject *parent)
+    : QObject(parent)
 {
-public:
-    DesktopIconProvider()
-        : QDeclarativeImageProvider(QDeclarativeImageProvider::Pixmap)
-    {
-    }
 
-    QPixmap requestPixmap(const QString &id, QSize *size, const QSize &requestedSize)
-    {
-        Q_UNUSED(requestedSize);
-        Q_UNUSED(size);
-        int pos = id.lastIndexOf('/');
-        QString iconName = id.right(id.length() - pos);
-        int width = qApp->style()->pixelMetric(QStyle::PM_ToolBarIconSize);
-        return QIcon::fromTheme(iconName).pixmap(width);
-    }
-};
-
-
-void StylePlugin::registerTypes(const char *uri)
-{
-    qmlRegisterType<QStyleItem>(uri, 1, 0, "QStyleItem");
-    qmlRegisterType<QRangeModel>(uri, 1, 0, "RangeModel");
-    qmlRegisterType<QGraphicsDropShadowEffect>(uri, 1, 0, "DropShadow");
-    qmlRegisterType<QDeclarativeFolderListModel>(uri, 1, 0, "FileSystemModel");
-    qmlRegisterType<QtMenu>(uri, 1, 0, "Menu");
-    qmlRegisterType<QtMenuBar>(uri, 1, 0, "MenuBar");
-    qmlRegisterType<QtMenuItem>(uri, 1, 0, "MenuItem");
 }
 
-void StylePlugin::initializeEngine(QDeclarativeEngine *engine, const char *uri)
+QtMenuItem::~QtMenuItem()
 {
-    Q_UNUSED(uri);
-    engine->addImageProvider("desktoptheme", new DesktopIconProvider);
 }
-
-Q_EXPORT_PLUGIN2(styleplugin, StylePlugin);
