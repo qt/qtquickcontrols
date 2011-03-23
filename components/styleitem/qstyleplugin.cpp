@@ -75,6 +75,7 @@ void StylePlugin::registerTypes(const char *uri)
 {
     qmlRegisterType<QStyleItem>(uri, 1, 0, "QStyleItem");
     qmlRegisterType<QRangeModel>(uri, 1, 0, "RangeModel");
+    qmlRegisterType<QGraphicsDropShadowEffect>(uri, 1, 0, "DropShadow");
 }
 
 void StylePlugin::initializeEngine(QDeclarativeEngine *engine, const char *uri)
