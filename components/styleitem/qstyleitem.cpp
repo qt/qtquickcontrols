@@ -396,27 +396,35 @@ QSize QStyleItem::sizeFromContents(int width, int height)
     QString metric = m_type;
     initStyleOption();
 
+    QSize size;
     if (metric == QLatin1String("checkbox")) {
-        return qApp->style()->sizeFromContents(QStyle::CT_CheckBox, m_styleoption, QSize(width,height), widget());
+        size =  qApp->style()->sizeFromContents(QStyle::CT_CheckBox, m_styleoption, QSize(width,height), widget());
     } else if (metric == QLatin1String("toolbutton")) {
-        return qApp->style()->sizeFromContents(QStyle::CT_ToolButton, m_styleoption, QSize(width,height), widget());
+        size = qApp->style()->sizeFromContents(QStyle::CT_ToolButton, m_styleoption, QSize(width,height), widget());
     } else if (metric == QLatin1String("button")) {
-        return qApp->style()->sizeFromContents(QStyle::CT_PushButton, m_styleoption, QSize(width,height), widget());
+        size = qApp->style()->sizeFromContents(QStyle::CT_PushButton, m_styleoption, QSize(width,height), widget());
     } else if (metric == QLatin1String("tab")) {
-        return qApp->style()->sizeFromContents(QStyle::CT_TabBarTab, m_styleoption, QSize(width,height), widget());
+        size = qApp->style()->sizeFromContents(QStyle::CT_TabBarTab, m_styleoption, QSize(width,height), widget());
     } else if (metric == QLatin1String("combobox")) {
-        return qApp->style()->sizeFromContents(QStyle::CT_ComboBox, m_styleoption, QSize(width,height), widget());
+        size = qApp->style()->sizeFromContents(QStyle::CT_ComboBox, m_styleoption, QSize(width,height), widget());
     } else if (metric == QLatin1String("spinbox")) {
-        return qApp->style()->sizeFromContents(QStyle::CT_SpinBox, m_styleoption, QSize(width,height), widget());
+        size = qApp->style()->sizeFromContents(QStyle::CT_SpinBox, m_styleoption, QSize(width,height), widget());
     } else if (metric == QLatin1String("slider")) {
-        return qApp->style()->sizeFromContents(QStyle::CT_Slider, m_styleoption, QSize(width,height), widget());
+        size = qApp->style()->sizeFromContents(QStyle::CT_Slider, m_styleoption, QSize(width,height), widget());
     } else if (metric == QLatin1String("progressbar")) {
-        return qApp->style()->sizeFromContents(QStyle::CT_ProgressBar, m_styleoption, QSize(width,height), widget());
+        size = qApp->style()->sizeFromContents(QStyle::CT_ProgressBar, m_styleoption, QSize(width,height), widget());
     } else if (metric == QLatin1String("edit")) {
-        return qApp->style()->sizeFromContents(QStyle::CT_LineEdit, m_styleoption, QSize(width,height), widget());
+        size = qApp->style()->sizeFromContents(QStyle::CT_LineEdit, m_styleoption, QSize(width,height), widget());
     }
-    return QSize();
+
+#ifdef Q_WS_MAC
+    // ### hack - With even heights, the text baseline is off on mac
+    if (size.height() %2 == 0)
+        size.setHeight(size.height() + 1);
+#endif
+    return size;
 }
+
 
 int QStyleItem::pixelMetric(const QString &metric)
 {
