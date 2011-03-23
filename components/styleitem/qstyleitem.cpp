@@ -324,7 +324,9 @@ void QStyleItem::initStyleOption()
         m_styleoption->state |= QStyle::State_Horizontal;
 
     if (widget()) {
-        // widget()->resize(width(), height());
+#ifdef Q_WS_WIN
+        widget()->resize(width(), height());
+#endif
         widget()->setEnabled(isEnabled());
         m_styleoption->palette = widget()->palette();
     }
