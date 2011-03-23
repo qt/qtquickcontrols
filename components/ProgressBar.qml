@@ -12,12 +12,12 @@ Components.ProgressBar {
     width: orientation === Qt.Horizontal ? 200 : sizehint.height
 
     background: QStyleItem {
-        anchors.fill:parent
-        elementType:"progressbar"
+        anchors.fill: parent
+        elementType: "progressbar"
         // XXX: since desktop uses int instead of real, the progressbar
         // range [0..1] must be stretched to a good precision
-        property int factor : 1000000
-        value:   indeterminate ? 1 : progressbar.value * factor
+        property int factor : 1000
+        value:   indeterminate ? 0 : progressbar.value * factor // does indeterminate value need to be 1 on windows?
         minimum: indeterminate ? 0 : progressbar.minimumValue * factor
         maximum: indeterminate ? 0 : progressbar.maximumValue * factor
         enabled: progressbar.enabled
