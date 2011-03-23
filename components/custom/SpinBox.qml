@@ -1,6 +1,6 @@
 import QtQuick 1.0
 
-Item {
+FocusScope {
     id: spinbox
     SystemPalette{id:syspal}
 
@@ -31,7 +31,6 @@ Item {
     property alias upHovered: mouseUp.containsMouse
     property alias downHovered: mouseDown.containsMouse
     property alias containsMouse: mouseArea.containsMouse
-    property alias activeFocus: input.activeFocus // Forward active focus
     property color textColor: syspal.text
 
     property Component background: defaultStyle.background

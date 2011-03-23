@@ -81,9 +81,6 @@ FocusScope {
     height: Math.max(minimumHeight,
                      textInput.height + topMargin + bottomMargin)
 
-    // Forward focus property
-    property alias activeFocus: textInput.activeFocus
-
     // Implementation
     clip: true
 
