@@ -523,6 +523,15 @@ void QStyleItem::setElementType(const QString &str)
             tb = new QToolBar(mw);
         }
         m_dummywidget = tb;
+    } else if (str == "toolbutton") {
+        static QToolButton *tb = 0;
+        static QToolBar *bar = 0;
+        if (!tb) {
+            bar = new QToolBar(0);
+            tb = new QToolButton(bar);
+        }
+        m_sharedWidget = true;
+        m_dummywidget = tb;
     } else if (str == "slider") {
         static QSlider *slider = new QSlider();
         m_sharedWidget = true;
