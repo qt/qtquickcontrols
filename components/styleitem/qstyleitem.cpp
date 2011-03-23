@@ -538,8 +538,10 @@ void QStyleItem::setElementType(const QString &str)
         m_dummywidget = new QLineEdit();
         visible = true;
     } else if (str == "spinbox") {
+#ifndef Q_WS_WIN // Vista spinbox is currently not working due to grabwidget
         m_dummywidget = new QSpinBox();
         visible = true;
+#endif
     } else if (str == "scrollbar") {
         m_dummywidget = new QScrollBar();
         visible = true;
