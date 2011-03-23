@@ -40,12 +40,12 @@ Components.ChoiceList {
         }
     }
     popupFrame: QStyleItem {
-        property string behavior: styleitem.styleHint("comboboxpopup") ? "MacOS" : "Windows"
-        property int fw: styleitem.pixelMetric("menupanelwidth");
-        anchors.leftMargin: styleitem.pixelMetric("menuhmargin") + fw
-        anchors.rightMargin: styleitem.pixelMetric("menuhmargin") + fw
-        anchors.topMargin: styleitem.pixelMetric("menuvmargin") + fw
-        anchors.bottomMargin: styleitem.pixelMetric("menuvmargin") + fw
+        property string behavior: backgroundItem.styleHint("comboboxpopup") ? "MacOS" : "Windows"
+        property int fw: backgroundItem.pixelMetric("menupanelwidth");
+        anchors.leftMargin: backgroundItem.pixelMetric("menuhmargin") + fw
+        anchors.rightMargin: backgroundItem.pixelMetric("menuhmargin") + fw
+        anchors.topMargin: backgroundItem.pixelMetric("menuvmargin") + fw
+        anchors.bottomMargin: backgroundItem.pixelMetric("menuvmargin") + fw
         elementType: "menu"
 
         effect:    DropShadow {
