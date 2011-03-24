@@ -297,7 +297,7 @@ void QStyleItem::initStyleOption()
 
     if (type == QLatin1String("tabframe")) {
         int overlap = qApp->style()->pixelMetric(QStyle::PM_TabBarTabOverlap);
-        m_styleoption->rect = QRect(overlap, 0,
+        m_styleoption->rect = QRect(overlap, -1,
                                     width() - 2 * overlap,
                                     height());
 
