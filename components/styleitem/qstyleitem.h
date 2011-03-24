@@ -40,12 +40,13 @@
 #ifndef STYLEWRAPPER_H
 #define STYLEWRAPPER_H
 
-#include <QDeclarativeItem>
+#include <private/qsgpainteditem_p.h>
+//#include <QDeclarativeItem>
 #include <QtGui/QStyle>
 #include <QtGui>
 #include <QEvent>
 
-class QStyleItem: public QDeclarativeItem
+class QStyleItem: public QSGPaintedItem
 {
     Q_OBJECT
 
@@ -70,10 +71,10 @@ class QStyleItem: public QDeclarativeItem
     Q_PROPERTY( int paintMargins READ paintMargins WRITE setPaintMargins NOTIFY paintMarginsChanged)
 
 public:
-    QStyleItem(QDeclarativeItem *parent = 0);
+    QStyleItem(QSGPaintedItem *parent = 0);
     ~QStyleItem();
 
-    void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *);
+    void paint(QPainter *);
 
     bool sunken() const { return m_sunken; }
     bool raised() const { return m_raised; }

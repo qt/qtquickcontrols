@@ -49,8 +49,8 @@
 #include <QtGui/QMenu>
 
 
-QStyleItem::QStyleItem(QDeclarativeItem *parent)
-    : QDeclarativeItem(parent),
+QStyleItem::QStyleItem(QSGPaintedItem *parent)
+    : QSGPaintedItem(parent),
     m_dummywidget(0),
     m_styleoption(0),
     m_sunken(false),
@@ -66,8 +66,8 @@ QStyleItem::QStyleItem(QDeclarativeItem *parent)
     m_value(0),
     m_paintMargins(0)
 {
-    setFlag(QGraphicsItem::ItemHasNoContents, false);
-    setCacheMode(QGraphicsItem::DeviceCoordinateCache);
+    setFlag(QSGItem::ItemHasContents, true);
+    //setCacheMode(QGraphicsItem::DeviceCoordinateCache);
     setSmooth(true);
 
     connect(this, SIGNAL(infoChanged()), this, SLOT(updateItem()));
@@ -587,9 +587,9 @@ bool QStyleItem::eventFilter(QObject *o, QEvent *e) {
 
 void QStyleItem::showToolTip(const QString &str)
 {
-    QPointF scene = mapToScene(width() - 20, 0);
-    QPoint global = qApp->focusWidget()->mapToGlobal(scene.toPoint());
-    QToolTip::showText(QPoint(global.x(), global.y()), str);
+//    QPointF scene = mapToScene(width() - 20, 0);
+//    QPoint global = qApp->focusWidget()->mapToGlobal(scene.toPoint());
+//    QToolTip::showText(QPoint(global.x(), global.y()), str);
 }
 
 QRect QStyleItem::subControlRect(const QString &subcontrolString)
@@ -639,7 +639,7 @@ QRect QStyleItem::subControlRect(const QString &subcontrolString)
     return QRect();
 }
 
-void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
+void QStyleItem::paint(QPainter *painter)
 {
     QString type = elementType();
     initStyleOption();

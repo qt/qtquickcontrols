@@ -1,4 +1,4 @@
-import QtQuick 1.0
+import QtQuick 2.0
 import "custom" as Components
 import "plugin"
 
@@ -47,12 +47,5 @@ Components.ChoiceList {
         anchors.topMargin: backgroundItem.pixelMetric("menuvmargin") + fw
         anchors.bottomMargin: backgroundItem.pixelMetric("menuvmargin") + fw
         elementType: "menu"
-
-        effect:    DropShadow {
-            blurRadius: 10
-            color: "#60000000"
-            xOffset: 1
-            yOffset: 1
-        }
     }
 }
