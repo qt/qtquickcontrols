@@ -38,6 +38,7 @@ Item {
     property bool updateValueWhileDragging: true
     property alias pressed: mouseArea.pressed
     property alias stepSize: range.stepSize
+    property alias hoverEnabled: mouseArea.hoverEnabled
 
     // NOTE: this property is in/out, the user can set it, create bindings to it, and
     // at the same time the slider wants to update. There's no way in QML to do this kind

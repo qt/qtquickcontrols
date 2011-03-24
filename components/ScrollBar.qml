@@ -104,6 +104,7 @@ MouseArea {
 
     Components.Slider {
         id: slider
+        hoverEnabled: false // Handled by the scrollbar background
         orientation: scrollbar.orientation
         anchors.fill: parent
         leftMargin: (orientation === Qt.Horizontal) ? handleRect.width / 2 : handleRect.height / 2
@@ -113,6 +114,7 @@ MouseArea {
             height: orientation == Qt.Vertical ? handleRect.width : handleRect.height
         }
         groove:null
+        containsMouse: false
         valueIndicator:null
         inverted:orientation != Qt.Horizontal
     }
