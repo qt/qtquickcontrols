@@ -58,6 +58,7 @@ Item {
                 QStyleItem {
                     id: style
                     elementType: "tab"
+                    paintMargins: 1
                     selected: tab.selected
                     info: tabbar.position
                     text: tabFrame.tabs[index].title
@@ -65,11 +66,12 @@ Item {
                             index == tabFrame.count-1 ? "end" : "middle"
                     anchors.leftMargin: tabOverlap + (style.text == "North" &&
                                                       (style.activeControl == "middle" || style.activeControl == "end")
-                                        && tab.selected ? -__overlap : 0)
+                                        && tab.selected ? -__overlap : 0) - paintMargins
 
                     anchors.rightMargin: -tabOverlap + (style.text == "North" && (style.activeControl == "middle"  || style.activeControl == "beginning")
-                                         && tab.selected ? -__overlap : 0)
+                                         && tab.selected ? -__overlap : 0) - paintMargins
                     anchors.fill:parent
+                    anchors.margins:-paintMargins
                     Text {
                         id: textitem
                         // Used for size hint

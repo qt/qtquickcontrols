@@ -67,6 +67,7 @@ class QStyleItem: public QDeclarativeItem
     Q_PROPERTY( int minimum READ minimum WRITE setMinimum NOTIFY minimumChanged)
     Q_PROPERTY( int maximum READ maximum WRITE setMaximum NOTIFY maximumChanged)
     Q_PROPERTY( int value READ value WRITE setValue NOTIFY valueChanged)
+    Q_PROPERTY( int paintMargins READ paintMargins WRITE setPaintMargins NOTIFY paintMarginsChanged)
 
 public:
     QStyleItem(QDeclarativeItem *parent = 0);
@@ -86,6 +87,7 @@ public:
     int minimum() const { return m_minimum; }
     int maximum() const { return m_maximum; }
     int value() const { return m_value; }
+    int paintMargins() const { return m_paintMargins; }
 
     QString elementType() const { return m_type; }
     QString text() const { return m_text; }
@@ -104,6 +106,7 @@ public:
     void setMinimum(int minimum) { if (m_minimum!= minimum) {m_minimum = minimum; emit minimumChanged();}}
     void setMaximum(int maximum) { if (m_maximum != maximum) {m_maximum = maximum; emit maximumChanged();}}
     void setValue(int value) { if (m_value!= value) {m_value = value; emit valueChanged();}}
+    void setPaintMargins(int value) { if (m_paintMargins!= value) {m_paintMargins= value;}}
     void setElementType(const QString &str);
     void setText(const QString &str) { if (m_text != str) {m_text = str; emit textChanged();}}
     void setActiveControl(const QString &str) { if (m_activeControl != str) {m_activeControl = str; emit activeControlChanged();}}
@@ -138,8 +141,8 @@ Q_SIGNALS:
     void valueChanged();
     void activeControlChanged();
     void infoChanged();
-
     void styleChanged();
+    void paintMarginsChanged();
 
 protected:
     QWidget *m_dummywidget;
@@ -163,6 +166,7 @@ protected:
     int m_minimum;
     int m_maximum;
     int m_value;
+    int m_paintMargins;
 };
 
 #endif //STYLEWRAPPER_H

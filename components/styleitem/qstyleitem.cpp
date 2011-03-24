@@ -63,7 +63,8 @@ QStyleItem::QStyleItem(QDeclarativeItem *parent)
     m_sharedWidget(false),
     m_minimum(0),
     m_maximum(100),
-    m_value(0)
+    m_value(0),
+    m_paintMargins(0)
 {
     setFlag(QGraphicsItem::ItemHasNoContents, false);
     setCacheMode(QGraphicsItem::DeviceCoordinateCache);
@@ -301,7 +302,7 @@ void QStyleItem::initStyleOption()
                                     height());
 
     } else {
-        m_styleoption->rect = QRect(0, 0, width(), height());
+        m_styleoption->rect = QRect(m_paintMargins, m_paintMargins, width() - 2* m_paintMargins, height() - 2 * m_paintMargins);
     }
 
     if (isEnabled())
