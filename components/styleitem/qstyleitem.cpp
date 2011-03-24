@@ -68,7 +68,6 @@ QStyleItem::QStyleItem(QSGPaintedItem *parent)
 {
     setFlag(QSGItem::ItemHasContents, true);
     //setCacheMode(QGraphicsItem::DeviceCoordinateCache);
-    setSmooth(true);
 
     connect(this, SIGNAL(infoChanged()), this, SLOT(updateItem()));
     connect(this, SIGNAL(onChanged()), this, SLOT(updateItem()));
