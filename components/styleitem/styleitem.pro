@@ -72,4 +72,6 @@ OTHER_FILES += \
     ../custom/ProgressBar.qml \
     ../custom/Slider.qml \
     ../custom/SpinBox.qml \
-    ../custom/TextField.qml
+    ../custom/TextField.qml \
+    ../../examples/Panel.qml \
+    ../../examples/Gallery.qml
