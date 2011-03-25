@@ -29,7 +29,7 @@ FocusScope {
             anchors.leftMargin: 8
             anchors.top:parent.top
             anchors.left:parent.left
-            enabled: checkable && checkbox.checked
+            enabled: (!checkable || checkbox.checked)
         }
         Components.CheckBox{
             id: checkbox
