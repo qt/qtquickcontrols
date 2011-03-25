@@ -261,9 +261,6 @@ void QStyleItem::initStyleOption()
         opt->progress = value();
     }
     else if (type == QLatin1String("groupbox")) {
-        if (QGroupBox *group= qobject_cast<QGroupBox*>(widget()))
-            group->setTitle(text());
-
         if (!m_styleoption)
             m_styleoption = new QStyleOptionGroupBox();
 
@@ -271,6 +268,13 @@ void QStyleItem::initStyleOption()
         opt->text = text();
         opt->lineWidth = 1;
         opt->subControls = QStyle::SC_GroupBoxLabel | QStyle::SC_GroupBoxFrame;
+        if (activeControl() == "checkbox")
+            opt->subControls |= QStyle::SC_GroupBoxCheckBox;
+
+        if (QGroupBox *group= qobject_cast<QGroupBox*>(widget())) {
+            group->setTitle(text());
+            group->setCheckable(opt->subControls & QStyle::SC_GroupBoxCheckBox);
+        }
     }
     else if (type == QLatin1String("scrollbar")) {
         if (!m_styleoption)
