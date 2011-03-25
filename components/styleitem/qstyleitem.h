@@ -94,8 +94,8 @@ public:
     QString text() const { return m_text; }
     QString activeControl() const { return m_activeControl; }
     QString info() const { return m_info; }
+    QString hint() const { return m_hint; }
     QString style() const;
-    QString hint() const;
 
     void setSunken(bool sunken) { if (m_sunken != sunken) {m_sunken = sunken; emit sunkenChanged();}}
     void setRaised(bool raised) { if (m_raised!= raised) {m_raised = raised; emit raisedChanged();}}
