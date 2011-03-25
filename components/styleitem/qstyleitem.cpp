@@ -335,6 +335,7 @@ void QStyleItem::initStyleOption()
         widget()->resize(width(), height());
 #endif
         widget()->setEnabled(isEnabled());
+        m_styleoption->fontMetrics = widget()->fontMetrics();
         m_styleoption->palette = widget()->palette();
     }
 }
