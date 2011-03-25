@@ -17,6 +17,7 @@ Components.Slider{
 
     height: orientation === Qt.Horizontal ? sizehint.height : 200
     width: orientation === Qt.Horizontal ? 200 : sizehint.height
+    property string hint;
 
     groove: QStyleItem {
         anchors.fill:parent
@@ -28,6 +29,7 @@ Components.Slider{
         horizontal: slider.orientation == Qt.Horizontal
         enabled: slider.enabled
         focus: slider.focus
+        hint: slider.hint
         activeControl: tickmarksEnabled ? tickPosition.toLowerCase() : ""
     }
 

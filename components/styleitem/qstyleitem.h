@@ -63,6 +63,7 @@ class QStyleItem: public QSGPaintedItem
     Q_PROPERTY( QString activeControl READ activeControl WRITE setActiveControl NOTIFY activeControlChanged)
     Q_PROPERTY( QString info READ info WRITE setInfo NOTIFY infoChanged)
     Q_PROPERTY( QString style READ style NOTIFY styleChanged)
+    Q_PROPERTY( QString hint READ hint WRITE setHint NOTIFY hintChanged)
 
     // For range controls
     Q_PROPERTY( int minimum READ minimum WRITE setMinimum NOTIFY minimumChanged)
@@ -94,6 +95,7 @@ public:
     QString text() const { return m_text; }
     QString activeControl() const { return m_activeControl; }
     QString info() const { return m_info; }
+    QString hint() const { return m_hint; }
     QString style() const;
 
     void setSunken(bool sunken) { if (m_sunken != sunken) {m_sunken = sunken; emit sunkenChanged();}}
@@ -112,6 +114,7 @@ public:
     void setText(const QString &str) { if (m_text != str) {m_text = str; emit textChanged();}}
     void setActiveControl(const QString &str) { if (m_activeControl != str) {m_activeControl = str; emit activeControlChanged();}}
     void setInfo(const QString &str) { if (m_info != str) {m_info = str; emit infoChanged();}}
+    void setHint(const QString &str) { if (m_hint != str) {m_hint= str; emit hintChanged();}}
 
     bool eventFilter(QObject *, QEvent *);
     virtual void initStyleOption ();
@@ -144,6 +147,7 @@ Q_SIGNALS:
     void infoChanged();
     void styleChanged();
     void paintMarginsChanged();
+    void hintChanged();
 
 protected:
     QWidget *m_dummywidget;
@@ -153,6 +157,7 @@ protected:
     QString m_text;
     QString m_activeControl;
     QString m_info;
+    QString m_hint;
 
     bool m_sunken;
     bool m_raised;

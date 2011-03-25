@@ -341,6 +341,11 @@ void QStyleItem::initStyleOption()
         widget()->setEnabled(isEnabled());
         m_styleoption->fontMetrics = widget()->fontMetrics();
         m_styleoption->palette = widget()->palette();
+        if (m_hint.contains("mac.mini")) {
+            widget()->setAttribute(Qt::WA_MacMiniSize);
+        } else if (m_hint.contains("mac.small")) {
+            widget()->setAttribute(Qt::WA_MacSmallSize);
+        }
     }
 }
 

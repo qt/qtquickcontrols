@@ -7,6 +7,7 @@ import "plugin"
 Components.CheckBox{
     id:checkbox
     property string text
+    property string hint
     width:110
     height:20
 
@@ -19,6 +20,7 @@ Components.CheckBox{
         text:checkbox.text
         enabled:checkbox.enabled
         focus:checkbox.focus
+        hint:checkbox.hint
     }
     Keys.onSpacePressed:checked = !checked
 }

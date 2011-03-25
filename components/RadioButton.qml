@@ -7,7 +7,7 @@ import "plugin"
 Components.CheckBox {
     id:radiobutton
     property string text
-
+    property string hint
     width:110
     height:20
 
@@ -19,6 +19,7 @@ Components.CheckBox {
         text:radiobutton.text
         enabled:radiobutton.enabled
         focus:radiobutton.focus
+        hint:radiobutton.hint
     }
     Keys.onSpacePressed:clicked()
 }

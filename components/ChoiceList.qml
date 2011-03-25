@@ -9,6 +9,8 @@ Components.ChoiceList {
     property int buttonHeight: backgroundItem.sizeFromContents(100, 18).height
     property int buttonWidth: backgroundItem.sizeFromContents(100, 18).width
 
+    property string hint
+
     height: buttonHeight
     width: buttonWidth
     topMargin: 4
@@ -23,6 +25,7 @@ Components.ChoiceList {
         enabled: choicelist.enabled
         text: choicelist.model.get(currentIndex).text
         focus: choicelist.focus
+        hint: choicelist.hint
     }
 
     listItem: Item {
