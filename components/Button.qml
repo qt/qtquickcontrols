@@ -10,6 +10,7 @@ Components.Button {
 
     property variant sizehint: backgroundItem.sizeFromContents(80, 6)
     property bool defaultbutton
+    property string hint
 
     background: QStyleItem {
         id: styleitem
@@ -20,6 +21,7 @@ Components.Button {
         hover: containsMouse
         text: iconSource === "" ? "" : button.text
         focus: button.focus
+        hint: button.hint
 
         // If no icon, let the style do the drawing
         activeControl: focus ? "default" : ""
