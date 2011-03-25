@@ -651,6 +651,10 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
     QString type = elementType();
     initStyleOption();
 
+    if (widget()) {
+        painter->save();
+        painter->setFont(widget()->font());
+    }
     if (type == QLatin1String("button")) {
         qApp->style()->drawControl(QStyle::CE_PushButton, m_styleoption, painter, widget());
     }
@@ -735,4 +739,6 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
         frame.rect = m_styleoption->rect;
         qApp->style()->drawPrimitive(QStyle::PE_FrameMenu, &frame, painter, widget());
     }
+    if (widget())
+        painter->restore();
 }
