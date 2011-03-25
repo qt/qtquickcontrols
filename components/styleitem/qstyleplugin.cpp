@@ -81,9 +81,9 @@ void StylePlugin::registerTypes(const char *uri)
     qmlRegisterType<QRangeModel>(uri, 1, 0, "RangeModel");
     qmlRegisterType<QGraphicsDropShadowEffect>(uri, 1, 0, "DropShadow");
     qmlRegisterType<QDeclarativeFolderListModel>(uri, 1, 0, "FileSystemModel");
-    qmlRegisterType<QtMenu>(uri, 1, 0, "Menu");
-    qmlRegisterType<QtMenuBar>(uri, 1, 0, "MenuBar");
-    qmlRegisterType<QtMenuItem>(uri, 1, 0, "MenuItem");
+    qmlRegisterType<QtMenu>(uri, 1, 0, "MenuBase");
+    qmlRegisterType<QtMenuBar>(uri, 1, 0, "MenuBarBase");
+    qmlRegisterType<QtMenuItem>(uri, 1, 0, "MenuItemBase");
 }
 
 void StylePlugin::initializeEngine(QDeclarativeEngine *engine, const char *uri)

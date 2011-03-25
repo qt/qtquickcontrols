@@ -41,6 +41,8 @@ OTHER_FILES += \
     ../Dial.qml \
     ../Frame.qml \
     ../GroupBox.qml \
+    ../Menu.qml \
+    ../MenuBar.qml \
     ../ProgressBar.qml \
     ../RadioButton.qml \
     ../ScrollArea.qml \
