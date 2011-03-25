@@ -227,7 +227,6 @@ void QStyleItem::initStyleOption()
         QStyleOptionSlider *opt = qstyleoption_cast<QStyleOptionSlider*>(m_styleoption);
         opt->minimum = minimum();
         opt->maximum = maximum();
-        opt->tickPosition = (activeControl() == "ticks") ? QSlider::TicksBelow : QSlider::NoTicks;
         // ### fixme - workaround for KDE inverted dial
         opt->sliderPosition = value();
         opt->tickInterval = 1200 / (opt->maximum - opt->minimum);
@@ -235,7 +234,15 @@ void QStyleItem::initStyleOption()
             opt->sliderValue  = maximum() - value();
         else
             opt->sliderValue = value();
-        opt->subControls = QStyle::SC_SliderTickmarks | QStyle::SC_SliderGroove | QStyle::SC_SliderHandle;
+        opt->subControls = QStyle::SC_SliderGroove | QStyle::SC_SliderHandle;
+
+        opt->tickPosition = (activeControl() == "below") ?
+                             QSlider::TicksBelow : (activeControl() == "above" ?
+                                                    QSlider::TicksAbove:
+                                                    QSlider::NoTicks);
+        if (opt->tickPosition != QSlider::NoTicks)
+            opt->subControls |= QStyle::SC_SliderTickmarks;
+
         opt->activeSubControls = QStyle::SC_None;
     }
     else if (type == QLatin1String("progressbar")) {

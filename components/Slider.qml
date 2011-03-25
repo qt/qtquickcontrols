@@ -8,6 +8,7 @@ Components.Slider{
     id: slider
 
     property bool tickmarksEnabled: true
+    property string tickPosition: "Below" // "Top", "Below", "BothSides"
 
     QStyleItem { id:buttonitem; elementType: "slider" }
     property variant sizehint: buttonitem.sizeFromContents(23, 23)
@@ -25,8 +26,7 @@ Components.Slider{
         horizontal: slider.orientation == Qt.Horizontal
         enabled: slider.enabled
         focus: slider.focus
-        activeControl: tickmarksEnabled ? "ticks" : ""
-
+        activeControl: tickmarksEnabled ? tickPosition.toLowerCase() : ""
     }
 
     handle: null
