@@ -21,7 +21,8 @@ FocusScope {
     property real value: 0.0
     property real maximumValue: 99
     property real minimumValue: 0
-    property real singlestep: 1
+    property real singleStep: 1
+    property string postfix
 
     property bool upEnabled: value != maximumValue;
     property bool downEnabled: value != minimumValue;
@@ -32,27 +33,29 @@ FocusScope {
     property alias downHovered: mouseDown.containsMouse
     property alias containsMouse: mouseArea.containsMouse
     property color textColor: syspal.text
+    property alias font: input.font
 
-    property Component background: defaultStyle.background
+    property Component background: null
     property Item backgroundItem: backgroundComponent.item
-    property Component up: defaultStyle.up
-    property Component down: defaultStyle.down
+    property Component up: null
+    property Component down: null
 
     function increment() {
-        value += singlestep
+        value += singleStep
         if (value > maximumValue)
             value = maximumValue
         input.text = value
     }
 
     function decrement() {
-        value -= singlestep
+        value -= singleStep
         if (value < minimumValue)
             value = minimumValue
         input.text = value
     }
 
     function setValue(v) {
+
         var newval = parseFloat(v)
         if (newval > maximumValue)
             newval = maximumValue
@@ -61,6 +64,8 @@ FocusScope {
         value = newval
         input.text = value
     }
+
+    onValueChanged: setValue(value)
 
     // background
     Loader {
@@ -77,6 +82,7 @@ FocusScope {
 
     TextInput {
         id: input
+
         font.pixelSize: 14
         anchors.margins: 5
         anchors.leftMargin: leftMargin
@@ -86,10 +92,17 @@ FocusScope {
         anchors.fill: parent
         selectByMouse: true
         text: spinbox.value
+
         validator: DoubleValidator { bottom: 11; top: 31 }
-        onTextChanged: { spinbox.setValue(text); }
+        onTextChanged: { spinbox.setValue(text)}
         color: textColor
         opacity: parent.enabled ? 1 : 0.5
+        Text {
+            text: postfix
+            anchors.rightMargin: 4
+            anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
+        }
     }
 
     Loader {

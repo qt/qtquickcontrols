@@ -56,6 +56,8 @@ Components.SpinBox {
             __upRect = styleitem.subControlRect("up");
             __downRect = styleitem.subControlRect("down");
             __editRect = styleitem.subControlRect("edit");
+            spinbox.leftMargin = __editRect.x
+            spinbox.rightMargin = spinbox.width -__editRect.width - __editRect.x
         }
 
         Component.onCompleted: updateRect()

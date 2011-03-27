@@ -3,8 +3,8 @@ import QtQuick 1.0
 FocusScope {
     id: groupbox
 
-    width: Math.max(200, contentWidth + loader.topMargin)
-    height: contentHeight + sizehint.height + loader.topMargin
+    width: Math.max(200, contentWidth + loader.leftMargin + loader.rightMargin)
+    height: contentHeight + loader.topMargin + loader.bottomMargin
 
     default property alias children: content.children
 
@@ -12,15 +12,20 @@ FocusScope {
     property bool checkable: false
     property int contentWidth: content.childrenRect.width
     property int contentHeight: content.childrenRect.height
+    property double contentOpacity: 1
 
     property Component background: null
     property Item backgroundItem: loader.item
 
     property CheckBox checkbox: check
+    property alias checked: check.checked
 
     Loader {
         id: loader
         property int topMargin: 24
+        property int bottomMargin: 4
+        property int leftMargin: 4
+        property int rightMargin: 4
 
         anchors.fill: parent
         property alias styledItem: groupbox
@@ -28,6 +33,8 @@ FocusScope {
 
         Item {
             id:content
+            z: 1
+            opacity: contentOpacity
             anchors.topMargin: loader.topMargin
             anchors.leftMargin: 8
             anchors.top:parent.top
