@@ -22,8 +22,8 @@ Item {
     // implementation
 
     property string __position: "only"
-    width: Math.max(minimumWidth, backgroundLoader.item.width)
-    height: Math.max(minimumHeight, backgroundLoader.item.height)
+    width: backgroundLoader.item.width
+    height: backgroundLoader.item.height
 
     Loader {
         id: backgroundLoader
