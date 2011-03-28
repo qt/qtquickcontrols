@@ -31,7 +31,7 @@ Components.SpinBox {
 
         Rectangle {
             id:editBackground
-            x: __editRect.x - 1
+            x: __editRect.x
             y: __editRect.y
             width: __editRect.width
             height: __editRect.height
