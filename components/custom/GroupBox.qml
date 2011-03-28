@@ -1,4 +1,4 @@
-import QtQuick 1.0
+import QtQuick 2.0
 
 FocusScope {
     id: groupbox
@@ -6,7 +6,7 @@ FocusScope {
     width: Math.max(200, contentWidth + loader.leftMargin + loader.rightMargin)
     height: contentHeight + loader.topMargin + loader.bottomMargin
 
-    default property alias children: content.children
+    default property alias data: content.data
 
     property string text
     property bool checkable: false

@@ -15,7 +15,7 @@ FocusScope {
     property bool frame: true
     property bool highlightOnFocus: false
 
-    default property alias children: content.children
+    default property alias data: content.data
 
     property int contentY
     property int contentX
