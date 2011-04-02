@@ -454,10 +454,11 @@ QSize QStyleItem::sizeFromContents(int width, int height)
 
 int QStyleItem::pixelMetric(const QString &metric)
 {
+
     if (metric == "scrollbarExtent")
-        return qApp->style()->pixelMetric(QStyle::PM_ScrollBarExtent, 0 , widget());
+        return qApp->style()->pixelMetric(QStyle::PM_ScrollBarExtent, 0, widget());
     else if (metric == "defaultframewidth")
-        return qApp->style()->pixelMetric(QStyle::PM_DefaultFrameWidth, 0 , widget());
+        return qApp->style()->pixelMetric(QStyle::PM_DefaultFrameWidth, 0, widget());
     else if (metric == "taboverlap")
         return qApp->style()->pixelMetric(QStyle::PM_TabBarTabOverlap, 0 , widget());
     else if (metric == "tabbaseoverlap")
@@ -570,6 +571,10 @@ void QStyleItem::setElementType(const QString &str)
         static QSlider *slider = new QSlider();
         m_sharedWidget = true;
         m_dummywidget = slider;
+    } else if (str == "frame") {
+        static QFrame *frame = new QFrame();
+        m_sharedWidget = true;
+        m_dummywidget = frame;
     } else if (str == "combobox") {
         m_dummywidget = new QComboBox();
         visible = true;
