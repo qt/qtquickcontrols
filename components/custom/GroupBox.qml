@@ -23,7 +23,7 @@ FocusScope {
     Loader {
         id: loader
         anchors.fill: parent
-        property int topMargin: 20
+        property int topMargin: 22
         property int bottomMargin: 4
         property int leftMargin: 4
         property int rightMargin: 4
