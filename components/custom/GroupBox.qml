@@ -8,7 +8,7 @@ FocusScope {
 
     default property alias children: content.children
 
-    property string text
+    property string title
     property bool checkable: false
     property int contentWidth: content.childrenRect.width
     property int contentHeight: content.childrenRect.height

@@ -10,7 +10,7 @@ Components.GroupBox {
         id: styleitem
         elementType: "groupbox"
         anchors.fill: parent
-        text: groupbox.text
+        text: groupbox.title
         hover: checkbox.containsMouse
         on:  checkbox.checked
         focus: checkbox.activeFocus
