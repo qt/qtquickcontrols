@@ -80,6 +80,7 @@ void StylePlugin::registerTypes(const char *uri)
 
 void StylePlugin::initializeEngine(QDeclarativeEngine *engine, const char *uri)
 {
+    Q_UNUSED(uri);
     engine->addImageProvider("desktoptheme", new DesktopIconProvider);
 }
 

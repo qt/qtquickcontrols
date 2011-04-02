@@ -3,8 +3,9 @@ import "../components"
 import "../components/plugin"
 
 Rectangle {
-    width: 538 + frame.margins*2
-    height: 350 + frame.margins*2
+
+    width: 538 + frame.margins * 2
+    height: 350 + frame.margins * 2
 
     ToolBar{
         id: toolbar

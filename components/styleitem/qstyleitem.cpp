@@ -136,7 +136,6 @@ void QStyleItem::initStyleOption()
 
         QStyleOptionTabV3 *opt =
                 qstyleoption_cast<QStyleOptionTabV3*>(m_styleoption);
-
         opt->text = text();
         opt->shape = info() == "South" ? QTabBar::RoundedSouth : QTabBar::RoundedNorth;
         if (activeControl() == QLatin1String("beginning"))
@@ -147,8 +146,9 @@ void QStyleItem::initStyleOption()
             opt->position = QStyleOptionTabV3::OnlyOneTab;
         else
             opt->position = QStyleOptionTabV3::Middle;
-    }
-    else if (type == QLatin1String("menu")) {
+
+
+    } else if (type == QLatin1String("menu")) {
         if (!m_styleoption)
             m_styleoption = new QStyleOptionMenuItem();
     }
@@ -164,7 +164,6 @@ void QStyleItem::initStyleOption()
     else if (type == QLatin1String("tabframe")) {
         if (!m_styleoption)
             m_styleoption = new QStyleOptionTabWidgetFrameV2();
-
         QStyleOptionTabWidgetFrameV2 *opt = qstyleoption_cast<QStyleOptionTabWidgetFrameV2*>(m_styleoption);
         opt->shape = (info() == "South") ? QTabBar::RoundedSouth : QTabBar::RoundedNorth;
         if (minimum())
@@ -305,7 +304,15 @@ void QStyleItem::initStyleOption()
     if (!m_styleoption)
         m_styleoption = new QStyleOption();
 
-    if (type == QLatin1String("tabframe")) {
+    if (type == QLatin1String("tab")) {
+        bool first = (activeControl() == QLatin1String("beginning") ||
+                      activeControl() == QLatin1String("only"));
+        int leftOffset = first ? 0 : m_paintMargins;
+        widget()->setGeometry(leftOffset, m_paintMargins, 100, height());
+        m_styleoption->rect = QRect(leftOffset,
+                                    m_paintMargins, width() -
+                                    2 * m_paintMargins, height() - 2 * m_paintMargins);
+    } else if (type == QLatin1String("tabframe")) {
         int overlap = qApp->style()->pixelMetric(QStyle::PM_TabBarTabOverlap);
         m_styleoption->rect = QRect(overlap, 0,
                                     width() - 2 * overlap,
@@ -520,10 +527,14 @@ void QStyleItem::setElementType(const QString &str)
         static QGroupBox *group = new QGroupBox();
         m_sharedWidget = true;
         m_dummywidget = group;
-    } if (str == "tabframe") {
+    } if (str == "tabframe" || str == "tab") {
         static QTabWidget *tabframe = new QTabWidget();
         m_sharedWidget = true;
-        m_dummywidget = tabframe;
+        if (str == "tab")
+            m_dummywidget = tabframe->findChild<QTabBar*>();
+        else
+            m_dummywidget = tabframe;
+
     } else if (str == "comboboxitem")  {
     // Gtk uses qobject cast, hence we need to separate this from menuitem
     // On mac, we temporarily use the menu item because it has more accurate
