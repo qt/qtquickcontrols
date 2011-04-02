@@ -4,7 +4,9 @@ import "plugin"
 
 Components.GroupBox {
     id: groupbox
-    property variant sizehint: styleitem.sizeFromContents(0, 0)
+    width: Math.max(200, contentWidth + sizeHint.width)
+    height: contentHeight + sizeHint.height
+    property variant sizeHint: backgroundItem.sizeFromContents(0, 24)
 
     background : QStyleItem {
         id: styleitem
