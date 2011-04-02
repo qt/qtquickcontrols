@@ -8,7 +8,7 @@ FocusScope {
 
     default property alias data: content.data
 
-    property string text
+    property string title
     property bool checkable: false
     property int contentWidth: content.childrenRect.width
     property int contentHeight: content.childrenRect.height
@@ -22,12 +22,12 @@ FocusScope {
 
     Loader {
         id: loader
-        property int topMargin: 24
+        anchors.fill: parent
+        property int topMargin: 22
         property int bottomMargin: 4
         property int leftMargin: 4
         property int rightMargin: 4
 
-        anchors.fill: parent
         property alias styledItem: groupbox
         sourceComponent: background
 

@@ -156,7 +156,7 @@ Rectangle {
                         spacing: 12
                         GroupBox{
                             id: group1
-                            text: "CheckBox"
+                            title: "CheckBox"
                             width: area.width
                             ButtonRow {
                                 exclusive: false
@@ -178,7 +178,7 @@ Rectangle {
                         }
                         GroupBox {
                             id: group2
-                            text:"Tab Position"
+                            title:"Tab Position"
                             width: area.width
                             ButtonRow {
                                 id: tabPositionGroup
@@ -220,7 +220,7 @@ Rectangle {
                     spacing:12
 
                     GroupBox {
-                        text: "Animation options"
+                        title: "Animation options"
                         ButtonRow {
                             exclusive: false
                             CheckBox {

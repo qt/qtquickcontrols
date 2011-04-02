@@ -432,6 +432,8 @@ QSize QStyleItem::sizeFromContents(int width, int height)
         size = qApp->style()->sizeFromContents(QStyle::CT_ProgressBar, m_styleoption, QSize(width,height), widget());
     } else if (metric == QLatin1String("edit")) {
         size = qApp->style()->sizeFromContents(QStyle::CT_LineEdit, m_styleoption, QSize(width,height), widget());
+    } else if (metric == QLatin1String("groupbox")) {
+        size = qApp->style()->sizeFromContents(QStyle::CT_GroupBox, m_styleoption, QSize(width,height), widget());
     }
 
 #ifdef Q_WS_MAC
