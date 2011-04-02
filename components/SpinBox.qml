@@ -48,7 +48,7 @@ Components.SpinBox {
                 anchors.rightMargin: -7
                 anchors.fill: parent
                 visible: spinbox.focus || spinbox.activeFocus
-                elementType:"focusframe"
+                elementType: "focusframe"
             }
         }
 
