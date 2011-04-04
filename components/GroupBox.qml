@@ -4,13 +4,15 @@ import "plugin"
 
 Components.GroupBox {
     id: groupbox
-    property variant sizehint: styleitem.sizeFromContents(0, 0)
+    width: Math.max(200, contentWidth + sizeHint.width)
+    height: contentHeight + sizeHint.height + 4
+    property variant sizeHint: backgroundItem.sizeFromContents(0, 24)
 
     background : QStyleItem {
         id: styleitem
         elementType: "groupbox"
         anchors.fill: parent
-        text: groupbox.text
+        text: groupbox.title
         hover: checkbox.containsMouse
         on:  checkbox.checked
         focus: checkbox.activeFocus

@@ -58,18 +58,19 @@ Item {
                 QStyleItem {
                     id: style
                     elementType: "tab"
-                    paintMargins: 1
                     selected: tab.selected
                     info: tabbar.position
                     text: tabFrame.tabs[index].title
-                    activeControl: tabFrame.count == 1 ? "only" : index == 0 ? "beginning" :
+                    property bool first: index === 0
+                    paintMargins: first ? 0 : 1
+                    activeControl: tabFrame.count == 1 ? "only" : index === 0 ? "beginning" :
                             index == tabFrame.count-1 ? "end" : "middle"
                     anchors.leftMargin: tabOverlap + (style.text == "North" &&
                                                       (style.activeControl == "middle" || style.activeControl == "end")
-                                        && tab.selected ? -__overlap : 0) - paintMargins
+                                        && tab.selected ? -__overlap : 0) - (first ? 0 : paintMargins)
 
                     anchors.rightMargin: -tabOverlap + (style.text == "North" && (style.activeControl == "middle"  || style.activeControl == "beginning")
-                                         && tab.selected ? -__overlap : 0) - paintMargins
+                                         && tab.selected ? -__overlap : 0) - paintMargins - (!first ? 0 : paintMargins)
                     anchors.fill:parent
                     anchors.margins:-paintMargins
                     Text {

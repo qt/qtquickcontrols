@@ -3,8 +3,9 @@ import "../components"
 import "../components/plugin"
 
 Rectangle {
-    width: 538 + frame.margins*2
-    height: 350 + frame.margins*2
+
+    width: 538 + frame.margins * 2
+    height: 350 + frame.margins * 2
 
     ToolBar{
         id: toolbar
@@ -156,7 +157,7 @@ Rectangle {
                         spacing: 12
                         GroupBox{
                             id: group1
-                            text: "CheckBox"
+                            title: "CheckBox"
                             width: area.width
                             ButtonRow {
                                 exclusive: false
@@ -178,7 +179,7 @@ Rectangle {
                         }
                         GroupBox {
                             id: group2
-                            text:"Tab Position"
+                            title:"Tab Position"
                             width: area.width
                             ButtonRow {
                                 id: tabPositionGroup
@@ -220,7 +221,7 @@ Rectangle {
                     spacing:12
 
                     GroupBox {
-                        text: "Animation options"
+                        title: "Animation options"
                         ButtonRow {
                             exclusive: false
                             CheckBox {

@@ -3,7 +3,7 @@ import "custom" as Components
 import "plugin"
 
 FocusScope {
-    id:scrollarea
+    id: scrollarea
     width: 100
     height: 100
 
@@ -11,7 +11,7 @@ FocusScope {
     property int frameWidth: styleitem.pixelMetric("defaultframewidth");
     property int contentHeight : content.childrenRect.height
     property int contentWidth: content.childrenRect.width
-    property alias color: flickable.color
+    property alias color: colorRect.color
     property bool frame: true
     property bool highlightOnFocus: false
 
@@ -21,38 +21,44 @@ FocusScope {
     property int contentX
 
     property bool frameAroundContents: styleitem.styleHint("framearoundcontents")
+    property int frameMargins : frame ? 2 : 0
 
     onContentYChanged: { vscrollbar.value = contentY }
     onContentXChanged: { hscrollbar.value = contentX }
 
-    property int frameMargins : frame ? frameWidth : 0
+    Rectangle {
+        id: colorRect
+        color: "transparent"
+        anchors.fill:styleitem
+        anchors.margins: frameWidth
+    }
 
     QStyleItem {
-        id:styleitem
-        elementType: frame ? "frame" : ""
+        id: styleitem
+        elementType: "frame"
+        onElementTypeChanged: scrollarea.frameWidth = styleitem.pixelMetric("defaultframewidth");
         sunken: true
-
+        visible: frame
         anchors.fill: parent
         anchors.rightMargin: frame ? (frameAroundContents ? (vscrollbar.visible ? vscrollbar.width + 2 * frameMargins : 0) : -frameWidth) : 0
         anchors.bottomMargin: frame ? (frameAroundContents ? (hscrollbar.visible ? hscrollbar.height + 2 * frameMargins : 0) : -frameWidth) : 0
         anchors.topMargin: frame ? (frameAroundContents ? 0 : -frameWidth) : 0
+    }
 
-        Rectangle {
-            id:flickable
-            color: "transparent"
-            anchors.fill: parent
-            anchors.margins: frameMargins
-            clip: true
+    Item{
+        id:flickable
+        anchors.fill: styleitem
+        anchors.margins: frameMargins
+        clip: true
 
+        Item {
+            id: docmargins
+            anchors.fill:parent
+            anchors.margins:frameMargins
             Item {
-                id: docmargins
-                anchors.fill:parent
-                anchors.margins:frameMargins
-                Item {
-                    id: content
-                    x: -scrollarea.contentX
-                    y: -scrollarea.contentY
-                }
+                id: content
+                x: -scrollarea.contentX
+                y: -scrollarea.contentY
             }
         }
     }
