@@ -120,6 +120,10 @@ Rectangle {
                             SpinBox {
                                 id: t1
                                 width: 97
+
+                                minimumValue: -50
+                                value: -20
+
                                 KeyNavigation.tab: t2
                                 KeyNavigation.backtab: combo
                             }
