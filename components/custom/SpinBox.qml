@@ -40,7 +40,13 @@ FocusScope {
     property Component up: null
     property Component down: null
 
+    QtObject {
+        id: componentPrivate
+        property bool valueUpdate: false
+    }
+
     function increment() {
+        setValue(input.text)
         value += singleStep
         if (value > maximumValue)
             value = maximumValue
@@ -48,6 +54,7 @@ FocusScope {
     }
 
     function decrement() {
+        setValue(input.text)
         value -= singleStep
         if (value < minimumValue)
             value = minimumValue
@@ -55,17 +62,22 @@ FocusScope {
     }
 
     function setValue(v) {
-
         var newval = parseFloat(v)
         if (newval > maximumValue)
             newval = maximumValue
-        else if (value < minimumValue)
+        else if (v < minimumValue)
             newval = minimumValue
         value = newval
         input.text = value
     }
 
-    onValueChanged: setValue(value)
+    Component.onCompleted: setValue(value)
+
+    onValueChanged: {
+        componentPrivate.valueUpdate = true
+        input.text = value
+        componentPrivate.valueUpdate = false
+    }
 
     // background
     Loader {
@@ -91,10 +103,10 @@ FocusScope {
         anchors.bottomMargin: bottomMargin
         anchors.fill: parent
         selectByMouse: true
-        text: spinbox.value
 
-        validator: DoubleValidator { bottom: 11; top: 31 }
-        onTextChanged: { spinbox.setValue(text)}
+        // validator: DoubleValidator { bottom: minimumValue; top: maximumValue; }
+        onAccepted: {setValue(input.text)}
+        onActiveFocusChanged: setValue(input.text)
         color: textColor
         opacity: parent.enabled ? 1 : 0.5
         Text {
