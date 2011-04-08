@@ -16,7 +16,6 @@ ProgressBar 1.0 ProgressBar.qml
 ButtonRow 1.0 ButtonRow.qml
 ButtonColumn 1.0 ButtonColumn.qml
 Dial 1.0 Dial.qml
-RangeModel 1.0 RangeModel.qml
 CheckBox 1.0 CheckBox.qml
 RadioButton 1.0 RadioButton.qml
 plugin styleplugin plugin
