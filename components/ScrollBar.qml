@@ -6,10 +6,10 @@ Item {
     id:scrollbar
     property bool upPressed;
     property bool downPressed;
-    property int orientation : Qt.Horizontal
     property alias minimumValue: slider.minimumValue
     property alias maximumValue: slider.maximumValue
     property alias value: slider.value
+    property int orientation : Qt.Horizontal
 
     width: orientation == Qt.Horizontal ? 200 : internal.scrollbarExtent
     height: orientation == Qt.Horizontal ? internal.scrollbarExtent : 200
@@ -17,7 +17,8 @@ Item {
     onValueChanged: internal.updateHandle()
     onMaximumValueChanged: internal.updateHandle()
     onMinimumValueChanged: internal.updateHandle()
-    Component.onCompleted: internal.updateHandle()
+    onWidthChanged: internal.updateHandle()
+    onHeightChanged: internal.updateHandle()
 
     MouseArea {
         id: internal
