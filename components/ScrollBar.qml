@@ -3,13 +3,14 @@ import "custom" as Components
 import "plugin"
 
 Item {
-    id:scrollbar
-    property bool upPressed;
-    property bool downPressed;
+    id: scrollbar
+
+    property bool upPressed
+    property bool downPressed
+    property int orientation : Qt.Horizontal
     property alias minimumValue: slider.minimumValue
     property alias maximumValue: slider.maximumValue
     property alias value: slider.value
-    property int orientation : Qt.Horizontal
 
     width: orientation == Qt.Horizontal ? 200 : internal.scrollbarExtent
     height: orientation == Qt.Horizontal ? internal.scrollbarExtent : 200
@@ -22,11 +23,11 @@ Item {
 
     MouseArea {
         id: internal
+
         anchors.fill: parent
 
         property bool autoincrement: false
         property int scrollbarExtent : styleitem.pixelMetric("scrollbarExtent");
-        property variant handleRect
 
         // Update hover item
         onEntered: styleitem.activeControl = styleitem.hitTest(mouseX, mouseY)
@@ -57,7 +58,7 @@ Item {
         }
 
         onReleased: {
-            internal.autoincrement = false;
+            autoincrement = false;
             if (upPressed) {
                 upPressed = false;
                 decrement()
@@ -93,6 +94,7 @@ Item {
             enabled: parent.enabled
         }
 
+        property variant handleRect
         function updateHandle() {
             internal.handleRect = styleitem.subControlRect("handle")
             var grooveRect = styleitem.subControlRect("groove");
