@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import "custom" as Components
 import "plugin"
+import "shadereffects"
 
 Components.ChoiceList {
 
@@ -42,13 +43,21 @@ Components.ChoiceList {
 
         }
     }
-    popupFrame: QStyleItem {
-        property string behavior: backgroundItem.styleHint("comboboxpopup") ? "MacOS" : "Windows"
-        property int fw: backgroundItem.pixelMetric("menupanelwidth");
+    popupFrame: Item {
+        anchors.fill: parent
         anchors.leftMargin: backgroundItem.pixelMetric("menuhmargin") + fw
         anchors.rightMargin: backgroundItem.pixelMetric("menuhmargin") + fw
         anchors.topMargin: backgroundItem.pixelMetric("menuvmargin") + fw
         anchors.bottomMargin: backgroundItem.pixelMetric("menuvmargin") + fw
-        elementType: "menu"
+        property string behavior: backgroundItem.styleHint("comboboxpopup") ? "MacOS" : "Windows"
+        property int fw: backgroundItem.pixelMetric("menupanelwidth");
+        QStyleItem {
+            id: menu
+            anchors.fill: parent
+            elementType: "menu"
+        }
+        DropShadow {
+            itemSource: menu
+        }
     }
 }
