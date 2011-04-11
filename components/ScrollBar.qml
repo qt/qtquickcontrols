@@ -18,8 +18,7 @@ Item {
     onValueChanged: internal.updateHandle()
     onMaximumValueChanged: internal.updateHandle()
     onMinimumValueChanged: internal.updateHandle()
-    onWidthChanged: internal.updateHandle()
-    onHeightChanged: internal.updateHandle()
+    Component.onCompleted: internal.updateHandle()
 
     MouseArea {
         id: internal
