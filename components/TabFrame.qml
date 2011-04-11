@@ -26,7 +26,7 @@ Item{
     property int __baseOverlap : frameitem.pixelMetric("tabbaseoverlap");
     function __setOpacities() {
         for (var i = 0; i < stack.children.length; ++i) {
-            stack.children[i].opacity = (i == current ? 1 : 0)
+            stack.children[i].visible = (i == current ? true : false)
         }
     }
 
@@ -44,10 +44,12 @@ Item{
         minimum: tabbar && tabsVisible && tabbar.tab(current) ? tabbar.tab(current).width : 0
         maximum: tabbar && tabsVisible ? tabbar.tabWidth : width
         anchors.fill: parent
+
+        property int frameWidth: pixelMetric("defaultframewidth")
         Item {
             id: stack
             anchors.fill: parent
-            anchors.margins: frame ? 2 : 0
+            anchors.margins: frame ? frameitem.frameWidth : 0
         }
         anchors.topMargin: tabbar && tabsVisible && position == "North" ? tabbar.height - __baseOverlap : 0
 
