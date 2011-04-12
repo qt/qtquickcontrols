@@ -62,7 +62,7 @@ Item {
                     info: tabbar.position
                     text: tabFrame.tabs[index].title
                     property bool first: index === 0
-                    paintMargins: first ? 0 : 1
+                    paintMargins: 1
                     activeControl: tabFrame.count == 1 ? "only" : index === 0 ? "beginning" :
                             index == tabFrame.count-1 ? "end" : "middle"
                     anchors.leftMargin: (style.text == "North" &&
