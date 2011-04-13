@@ -67,10 +67,10 @@ Item {
                             index == tabFrame.count-1 ? "end" : "middle"
                     anchors.leftMargin: (style.text == "North" &&
                                                       (style.activeControl == "middle" || style.activeControl == "end")
-                                        && tab.selected ? -__overlap : 0) - (first ? 0 : paintMargins)
+                                        && tab.selected ? -__overlap : 0 - (first ? 0 : -paintMargins))
 
                     anchors.rightMargin: -tabOverlap + (style.text == "North" && (style.activeControl == "middle"  || style.activeControl == "beginning")
-                                         && tab.selected ? -__overlap : 0) - paintMargins - (!first ? 0 : paintMargins)
+                                         && tab.selected ? -__overlap : 0)
                     anchors.fill:parent
                     anchors.margins:-paintMargins
                     Text {

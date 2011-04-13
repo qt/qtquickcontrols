@@ -307,16 +307,13 @@ void QStyleItem::initStyleOption()
     if (type == QLatin1String("tab")) {
         bool first = (activeControl() == QLatin1String("beginning") ||
                       activeControl() == QLatin1String("only"));
-        int leftOffset = first ? 0 : m_paintMargins;
-        widget()->setGeometry(leftOffset, m_paintMargins, 100, height());
-        m_styleoption->rect = QRect(leftOffset,
-                                    m_paintMargins, width() -
-                                    2 * m_paintMargins, height() - 2 * m_paintMargins);
-    } else if (type == QLatin1String("tabframe")) {
-        int overlap = 0;//qApp->style()->pixelMetric(QStyle::PM_TabBarTabOverlap);
-        m_styleoption->rect = QRect(overlap, 0,
-                                    width() - 2 * overlap,
-                                    height());
+
+        int leftMargin = first ? 0 : m_paintMargins;
+        widget()->setGeometry(leftMargin, m_paintMargins, 100, height());
+        m_styleoption->rect = QRect(leftMargin, m_paintMargins, width() -
+                                    (leftMargin + m_paintMargins), height() - 2 * m_paintMargins);
+
+        qDebug() << " first " << first << " " << m_styleoption->rect << " " <<widget()->rect();
 
     } else {
         m_styleoption->rect = QRect(m_paintMargins, m_paintMargins, width() - 2* m_paintMargins, height() - 2 * m_paintMargins);
