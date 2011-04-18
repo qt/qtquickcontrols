@@ -116,6 +116,22 @@ void QStyleItem::initStyleOption()
                         QStyleOptionButton::DefaultButton :
                         QStyleOptionButton::None;
     }
+    else if (type == QLatin1String("item")) {
+        if (!m_styleoption)
+            m_styleoption = new QStyleOptionViewItemV4();
+
+        QStyleOptionViewItemV4 *opt = qstyleoption_cast<QStyleOptionViewItemV4*>(m_styleoption);
+        opt->features = 0;
+        if (activeControl() == "alternate")
+            opt->features |= QStyleOptionViewItemV2::Alternate;
+    }
+    else if (type == QLatin1String("header")) {
+        if (!m_styleoption)
+            m_styleoption = new QStyleOptionHeader();
+
+        QStyleOptionHeader *opt = qstyleoption_cast<QStyleOptionHeader*>(m_styleoption);
+        opt->text = text();
+    }
     else if (type == QLatin1String("toolbutton")) {
         if (!m_styleoption)
             m_styleoption = new QStyleOptionToolButton();
@@ -679,6 +695,12 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
     }
     if (type == QLatin1String("button")) {
         qApp->style()->drawControl(QStyle::CE_PushButton, m_styleoption, painter, widget());
+    }
+    else if (type == QLatin1String("item")) {
+        qApp->style()->drawPrimitive(QStyle::PE_PanelItemViewItem, m_styleoption, painter, widget());
+    }
+    else if (type == QLatin1String("header")) {
+        qApp->style()->drawControl(QStyle::CE_HeaderSection, m_styleoption, painter, widget());
     }
     else if (type == QLatin1String("toolbutton")) {
         qApp->style()->drawComplexControl(QStyle::CC_ToolButton, qstyleoption_cast<QStyleOptionComplex*>(m_styleoption), painter, widget());

@@ -12,11 +12,13 @@ MOC_DIR = tmp
 HEADERS += qrangemodel_p.h \
            qrangemodel.h \
            qstyleplugin.h \
+           qdeclarativefolderlistmodel.h \
            qstyleitem.h
 
 SOURCES += qrangemodel.cpp \
 	   qstyleplugin.cpp \
-	   qstyleitem.cpp
+           qdeclarativefolderlistmodel.cpp \
+           qstyleitem.cpp
            
 
 OTHER_FILES += \

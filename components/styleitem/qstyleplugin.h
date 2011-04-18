@@ -43,6 +43,9 @@
 #include <QDeclarativeExtensionPlugin>
 #include <QtScript/QScriptValue>
 #include <QtCore/QTimer>
+#include <QFileSystemModel>
+#include "qdeclarativefolderlistmodel.h"
+
 
 class StylePlugin : public QDeclarativeExtensionPlugin
 {
