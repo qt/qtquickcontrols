@@ -304,20 +304,10 @@ void QStyleItem::initStyleOption()
     if (!m_styleoption)
         m_styleoption = new QStyleOption();
 
-    if (type == QLatin1String("tab")) {
-        bool first = (activeControl() == QLatin1String("beginning") ||
-                      activeControl() == QLatin1String("only"));
+    if (type == QLatin1String("tab"))
+        widget()->setGeometry(0, 0, width(), height());
 
-        int leftMargin = first ? 0 : m_paintMargins;
-        widget()->setGeometry(leftMargin, m_paintMargins, 100, height());
-        m_styleoption->rect = QRect(leftMargin, m_paintMargins, width() -
-                                    (leftMargin + m_paintMargins), height() - 2 * m_paintMargins);
-
-        qDebug() << " first " << first << " " << m_styleoption->rect << " " <<widget()->rect();
-
-    } else {
-        m_styleoption->rect = QRect(m_paintMargins, m_paintMargins, width() - 2* m_paintMargins, height() - 2 * m_paintMargins);
-    }
+    m_styleoption->rect = QRect(m_paintMargins, m_paintMargins, width() - 2* m_paintMargins, height() - 2 * m_paintMargins);
 
     if (isEnabled())
         m_styleoption->state |= QStyle::State_Enabled;
@@ -460,6 +450,10 @@ int QStyleItem::pixelMetric(const QString &metric)
         return qApp->style()->pixelMetric(QStyle::PM_TabBarTabOverlap, 0 , widget());
     else if (metric == "tabbaseoverlap")
         return qApp->style()->pixelMetric(QStyle::PM_TabBarBaseOverlap, 0 , widget());
+    else if (metric == "tabhspace")
+        return qApp->style()->pixelMetric(QStyle::PM_TabBarTabHSpace, 0 , widget());
+    else if (metric == "tabvspace")
+        return qApp->style()->pixelMetric(QStyle::PM_TabBarTabVSpace, 0 , widget());
     else if (metric == "tabbaseheight")
         return qApp->style()->pixelMetric(QStyle::PM_TabBarBaseHeight, 0 , widget());
     else if (metric == "tabvshift")

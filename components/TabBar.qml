@@ -5,7 +5,7 @@ import "plugin"
 
 Item {
     id: tabbar
-    property int tabHeight: styleitem.sizeFromContents(100, 24).height
+    property int tabHeight: tabrow.height
     property int tabWidth: tabrow.width
     height: tabHeight
 
@@ -16,6 +16,9 @@ Item {
     property string position: tabFrame ? tabFrame.position : "North"
     property string tabBarAlignment: styleitem.styleHint("tabbaralignment");
     property int tabOverlap: styleitem.pixelMetric("taboverlap");
+    property int tabBaseOverlap: styleitem.pixelMetric("tabbaseoverlap");
+    property int tabHSpace: styleitem.pixelMetric("tabhspace");
+    property int tabVSpace: styleitem.pixelMetric("tabvspace");
 
     function tab(index) {
         for (var i = 0; i < tabrow.children.length; ++i) {
@@ -35,6 +38,7 @@ Item {
 
     Row {
         id:tabrow
+        property int paintMargins: 1
         states:
         State {
             when: tabBarAlignment == "center"
@@ -51,18 +55,21 @@ Item {
                 id:tab
                 property int tabindex: index
                 property bool selected : tabFrame.current == index
-                width: textitem.width + 42
-                height: tabHeight
                 z: selected ? 1 : -1
-
+                function updateRect() {
+                    var rect = style.sizeFromContents(textitem.width + tabHSpace + 2, Math.max(textitem.height + tabVSpace, 20))
+                    width = rect.width
+                    height = rect.height
+                }
                 QStyleItem {
                     id: style
                     elementType: "tab"
                     selected: tab.selected
                     info: tabbar.position
                     text: tabFrame.tabs[index].title
+
                     property bool first: index === 0
-                    paintMargins: 1
+                    paintMargins: tabrow.paintMargins
                     activeControl: tabFrame.count == 1 ? "only" : index === 0 ? "beginning" :
                             index == tabFrame.count-1 ? "end" : "middle"
                     anchors.leftMargin: (style.text == "North" &&
@@ -71,12 +78,14 @@ Item {
 
                     anchors.rightMargin: -tabOverlap + (style.text == "North" && (style.activeControl == "middle"  || style.activeControl == "beginning")
                                          && tab.selected ? -__overlap : 0)
-                    anchors.fill:parent
-                    anchors.margins:-paintMargins
+                    anchors.fill: parent
+                    anchors.margins: -paintMargins
                     Text {
                         id: textitem
                         // Used for size hint
                         visible: false
+                        onWidthChanged: updateRect()
+                        onHeightChanged: updateRect()
                         text: tabFrame.tabs[index].title
                     }
                 }
