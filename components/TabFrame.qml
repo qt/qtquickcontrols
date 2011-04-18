@@ -23,7 +23,7 @@ Item{
         tabbar.anchors.right = tabWidget.right
     }
 
-    property int __baseOverlap : frameitem.pixelMetric("tabbaseoverlap") // add paintmargins;
+    property int __baseOverlap : frameitem.pixelMetric("tabbaseoverlap") -1// add paintmargins;
     function __setOpacities() {
         for (var i = 0; i < stack.children.length; ++i) {
             stack.children[i].visible = (i == current ? true : false)
