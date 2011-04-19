@@ -213,6 +213,10 @@ Rectangle {
                 }
             }
         }
+        Tab {
+            title: "Itemviews"
+            ModelView{ anchors.fill:parent}
+        }
 
         Tab {
             title: "Range"

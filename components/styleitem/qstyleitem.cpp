@@ -116,6 +116,24 @@ void QStyleItem::initStyleOption()
                         QStyleOptionButton::DefaultButton :
                         QStyleOptionButton::None;
     }
+    else if (type == QLatin1String("itemrow")) {
+        if (!m_styleoption)
+            m_styleoption = new QStyleOptionViewItemV4();
+
+        QStyleOptionViewItemV4 *opt = qstyleoption_cast<QStyleOptionViewItemV4*>(m_styleoption);
+        opt->features = 0;
+        if (activeControl() == "alternate")
+            opt->features |= QStyleOptionViewItemV2::Alternate;
+    }
+    else if (type == QLatin1String("header")) {
+        if (!m_styleoption)
+            m_styleoption = new QStyleOptionHeader();
+
+        QStyleOptionHeader *opt = qstyleoption_cast<QStyleOptionHeader*>(m_styleoption);
+        opt->text = text();
+        opt->sortIndicator = activeControl() == "sort" ?
+                             QStyleOptionHeader::SortDown : QStyleOptionHeader::None;
+    }
     else if (type == QLatin1String("toolbutton")) {
         if (!m_styleoption)
             m_styleoption = new QStyleOptionToolButton();
@@ -304,23 +322,10 @@ void QStyleItem::initStyleOption()
     if (!m_styleoption)
         m_styleoption = new QStyleOption();
 
-    if (type == QLatin1String("tab")) {
-        bool first = (activeControl() == QLatin1String("beginning") ||
-                      activeControl() == QLatin1String("only"));
-        int leftOffset = first ? 0 : m_paintMargins;
-        widget()->setGeometry(leftOffset, m_paintMargins, 100, height());
-        m_styleoption->rect = QRect(leftOffset,
-                                    m_paintMargins, width() -
-                                    2 * m_paintMargins, height() - 2 * m_paintMargins);
-    } else if (type == QLatin1String("tabframe")) {
-        int overlap = 0;//qApp->style()->pixelMetric(QStyle::PM_TabBarTabOverlap);
-        m_styleoption->rect = QRect(overlap, 0,
-                                    width() - 2 * overlap,
-                                    height());
+    if (type == QLatin1String("tab"))
+        widget()->setGeometry(0, 0, width(), height());
 
-    } else {
-        m_styleoption->rect = QRect(m_paintMargins, m_paintMargins, width() - 2* m_paintMargins, height() - 2 * m_paintMargins);
-    }
+    m_styleoption->rect = QRect(m_paintMargins, m_paintMargins, width() - 2* m_paintMargins, height() - 2 * m_paintMargins);
 
     if (isEnabled())
         m_styleoption->state |= QStyle::State_Enabled;
@@ -463,6 +468,10 @@ int QStyleItem::pixelMetric(const QString &metric)
         return qApp->style()->pixelMetric(QStyle::PM_TabBarTabOverlap, 0 , widget());
     else if (metric == "tabbaseoverlap")
         return qApp->style()->pixelMetric(QStyle::PM_TabBarBaseOverlap, 0 , widget());
+    else if (metric == "tabhspace")
+        return qApp->style()->pixelMetric(QStyle::PM_TabBarTabHSpace, 0 , widget());
+    else if (metric == "tabvspace")
+        return qApp->style()->pixelMetric(QStyle::PM_TabBarTabVSpace, 0 , widget());
     else if (metric == "tabbaseheight")
         return qApp->style()->pixelMetric(QStyle::PM_TabBarBaseHeight, 0 , widget());
     else if (metric == "tabvshift")
@@ -494,6 +503,26 @@ QVariant QStyleItem::styleHint(const QString &metric)
     } else if (metric == "framearoundcontents")
         return qApp->style()->styleHint(QStyle::SH_ScrollView_FrameOnlyAroundContents);
     return 0;
+}
+
+void QStyleItem::setCursor(const QString &str)
+{
+    if (m_cursor != str) {
+        m_cursor = str;
+        if (m_cursor == "sizehorcursor")
+            QDeclarativeItem::setCursor(Qt::SizeHorCursor);
+        else if (m_cursor == "sizevercursor")
+            QDeclarativeItem::setCursor(Qt::SizeVerCursor);
+        else if (m_cursor == "sizeallcursor")
+            QDeclarativeItem::setCursor(Qt::SizeAllCursor);
+        else if (m_cursor == "splithcursor")
+            QDeclarativeItem::setCursor(Qt::SplitHCursor);
+        else if (m_cursor == "splitvcursor")
+            QDeclarativeItem::setCursor(Qt::SplitVCursor);
+        else if (m_cursor == "wait")
+            QDeclarativeItem::setCursor(Qt::WaitCursor);
+        emit cursorChanged();
+    }
 }
 
 void QStyleItem::setElementType(const QString &str)
@@ -555,7 +584,7 @@ void QStyleItem::setElementType(const QString &str)
         }
         m_dummywidget = tb;
 
-    } else if (str == "toolbar") {
+    } else if (str == "toolbutton") {
         static QToolButton *tb = 0;
         static QToolBar *bar = 0;
         // KDE animations are too broken with these widgets
@@ -688,6 +717,12 @@ void QStyleItem::paint(QPainter *painter)
     }
     if (type == QLatin1String("button")) {
         qApp->style()->drawControl(QStyle::CE_PushButton, m_styleoption, painter, widget());
+    }
+    else if (type == QLatin1String("itemrow")) {
+        qApp->style()->drawPrimitive(QStyle::PE_PanelItemViewRow, m_styleoption, painter, widget());
+    }
+    else if (type == QLatin1String("header")) {
+        qApp->style()->drawControl(QStyle::CE_Header, m_styleoption, painter, widget());
     }
     else if (type == QLatin1String("toolbutton")) {
         qApp->style()->drawComplexControl(QStyle::CC_ToolButton, qstyleoption_cast<QStyleOptionComplex*>(m_styleoption), painter, widget());
