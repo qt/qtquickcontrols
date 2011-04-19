@@ -131,6 +131,8 @@ void QStyleItem::initStyleOption()
 
         QStyleOptionHeader *opt = qstyleoption_cast<QStyleOptionHeader*>(m_styleoption);
         opt->text = text();
+        opt->sortIndicator = activeControl() == "sort" ?
+                             QStyleOptionHeader::SortDown : QStyleOptionHeader::None;
     }
     else if (type == QLatin1String("toolbutton")) {
         if (!m_styleoption)
@@ -720,7 +722,7 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
         qApp->style()->drawPrimitive(QStyle::PE_PanelItemViewRow, m_styleoption, painter, widget());
     }
     else if (type == QLatin1String("header")) {
-        qApp->style()->drawControl(QStyle::CE_HeaderSection, m_styleoption, painter, widget());
+        qApp->style()->drawControl(QStyle::CE_Header, m_styleoption, painter, widget());
     }
     else if (type == QLatin1String("toolbutton")) {
         qApp->style()->drawComplexControl(QStyle::CC_ToolButton, qstyleoption_cast<QStyleOptionComplex*>(m_styleoption), painter, widget());

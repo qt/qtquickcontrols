@@ -84,7 +84,7 @@ public:
     QDeclarativeFolderListModel(QObject *parent = 0);
     ~QDeclarativeFolderListModel();
 
-    enum Roles { FileNameRole = Qt::UserRole+1, FilePathRole = Qt::UserRole+2 };
+    enum Roles { FileNameRole = Qt::UserRole+1, FilePathRole = Qt::UserRole+2, FileSizeRole = Qt::UserRole+3 };
 
     int rowCount(const QModelIndex &parent) const;
     QVariant data(const QModelIndex &index, int role) const;

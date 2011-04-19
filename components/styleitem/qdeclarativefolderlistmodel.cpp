@@ -158,6 +158,7 @@ QDeclarativeFolderListModel::QDeclarativeFolderListModel(QObject *parent)
     QHash<int, QByteArray> roles;
     roles[FileNameRole] = "fileName";
     roles[FilePathRole] = "filePath";
+    roles[FileSizeRole] = "fileSize";
     setRoleNames(roles);
 
     d = new QDeclarativeFolderListModelPrivate;
@@ -186,6 +187,8 @@ QVariant QDeclarativeFolderListModel::data(const QModelIndex &index, int role) c
             rv = d->model.data(modelIndex, QDirModel::FileNameRole).toString();
         else if (role == FilePathRole)
             rv = QUrl::fromLocalFile(d->model.data(modelIndex, QDirModel::FilePathRole).toString());
+        else if (role == FileSizeRole)
+            rv = d->model.data(d->model.index(index.row(), 1, d->folderIndex), Qt::DisplayRole).toString();
     }
     return rv;
 }

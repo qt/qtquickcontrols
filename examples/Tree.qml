@@ -4,8 +4,8 @@ import "../components/plugin"
 
 Item {
     id: root
-    width:600
-    height:300
+    width: 600
+    height: 300
 
     ScrollArea {
         id: scrollarea
@@ -22,7 +22,11 @@ Item {
                     label: "Filename"
                 }
                 ListElement{
-                    width:200
+                    width: 100
+                    label: "Size"
+                }
+                ListElement{
+                    width: 280
                     label: "Path"
                 }
             }
@@ -34,27 +38,32 @@ Item {
                 anchors.top:parent.top
                 orientation: ListView.Horizontal
                 width: parent.width
-                height: 20
+                height: 22
+                property int sortColumn: -1
+
                 model: headermodel
+
                 delegate: QStyleItem {
                     clip: true
                     elementType: "header"
-                    raised:true
+                    raised: true
                     sunken: hoverarea.pressed
                     hover: hoverarea.containsMouse
-
+                    activeControl: model.index == header.sortColumn ? "sort" : ""
                     height: parent.height
-                    width: (index != 0) ? 500: model.width
-                    Text {
-                        anchors.verticalCenter:parent.verticalCenter
-                        anchors.left:parent.left
-                        anchors.leftMargin:4
-                        text: label
-                    }
+                    width: model.width
+                    text: model.label
+
                     MouseArea{
                         id: hoverarea
-                        hoverEnabled:true
-                        anchors.fill:parent
+                        hoverEnabled: true
+                        anchors.fill: parent
+                        onClicked: {
+                            if (index == 1)
+                                filemodel.sortField = 3
+                            else filemodel.sortField = 1
+                            header.sortColumn = index
+                        }
                     }
 
                     MouseArea{
@@ -62,12 +71,14 @@ Item {
                         anchors.rightMargin: -width/2
                         width: 16 ; height: parent.height
                         anchors.right: parent.right
+
                         onPositionChanged:  {
                             headermodel.setProperty(index, "width",model.width + (mouseX - offset))}
                         onPressedChanged: if(pressed)offset=mouseX
+
                         QStyleItem {
                             anchors.fill:parent
-                            cursor:"splithcursor"
+                            cursor: "splithcursor"
                         }
                     }
                 }
@@ -76,10 +87,10 @@ Item {
             ListView {
                 id: tree
                 interactive: false
-                anchors.left:parent.left
-                anchors.right:parent.right
+                anchors.left: parent.left
+                anchors.right: parent.right
                 anchors.top: header.bottom
-                height:300
+                height: 300
 
                 FileSystemModel {
                     id: filemodel
@@ -87,16 +98,16 @@ Item {
                 }
 
                 model: filemodel
-
                 delegate: QStyleItem {
                     elementType: "itemrow"
-                    width:parent.width
-                    height:20
+                    width: parent.width
+                    height: 20
                     activeControl: index%2 == 0 ? "alternate" : ""
                     Row {
                         Item {width:6; height:6}
                         Text { clip:true; text: fileName; width: headermodel.get(0).width}
-                        Text { clip:true; text: filePath; width: headermodel.get(1).width }
+                        Text { clip:true; text: fileSize; width: headermodel.get(1).width }
+                        Text { clip:true; text: filePath; width: headermodel.get(2).width }
                     }
                     MouseArea {
                         anchors.fill: parent
