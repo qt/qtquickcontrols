@@ -38,7 +38,7 @@ Item {
 
     Row {
         id:tabrow
-        property int paintMargins: 1
+        property int paintMargins: 0
         states:
         State {
             when: tabBarAlignment == "center"

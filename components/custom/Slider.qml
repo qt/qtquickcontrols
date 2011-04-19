@@ -171,6 +171,7 @@ Item {
             drag.maximumX: range.positionAtMaximum
 
             onPressed: {
+
                 if (activeFocusOnPress)
                     slider.focus = true;
 
@@ -180,7 +181,9 @@ Item {
 
                 // Debounce the press: a press event inside the handler will not
                 // change its position, the user needs to drag it.
-                if (Math.abs(newX - fakeHandle.x) > handleLoader.width / 2)
+
+                // Note this really messes up things for scrollbar
+                // if (Math.abs(newX - fakeHandle.x) > handleLoader.width / 2)
                     range.position = newX;
             }
 
