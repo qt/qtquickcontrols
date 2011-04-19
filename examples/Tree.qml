@@ -55,6 +55,10 @@ Item {
                         onPositionChanged:  {
                             headermodel.setProperty(index, "width",model.width + (mouseX - offset))}
                         onPressedChanged: if(pressed)offset=mouseX
+                        QStyleItem {
+                            anchors.fill:parent
+                            cursor:"splithcursor"
+                        }
                     }
                 }
             }
