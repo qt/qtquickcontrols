@@ -16,6 +16,8 @@ Item {
     height: orientation == Qt.Horizontal ? internal.scrollbarExtent : 200
 
     onValueChanged: internal.updateHandle()
+    // onMaximumValueChanged: internal.updateHandle()
+    // onMinimumValueChanged: internal.updateHandle()
 
     MouseArea {
         id: internal
@@ -90,7 +92,7 @@ Item {
             enabled: parent.enabled
         }
 
-        property variant handleRect
+        property variant handleRect: Qt.rect(0,0,0,0)
         function updateHandle() {
             internal.handleRect = styleitem.subControlRect("handle")
             var grooveRect = styleitem.subControlRect("groove");

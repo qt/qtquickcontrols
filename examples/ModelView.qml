@@ -118,7 +118,6 @@ Item {
                             Text {
                                 clip:true;
                                 property string varname: headermodel.get(index).label
-                                onVarnameChanged:print(varname)
                                 text: flickrmodel.get(rowIndex)[varname];
                                 width: headermodel.get(index).width
                             }
