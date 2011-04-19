@@ -509,7 +509,7 @@ void QStyleItem::setCursor(const QString &str)
 {
     if (m_cursor != str) {
         m_cursor = str;
-        if (m_cursor == "sizehorcursor")
+/*        if (m_cursor == "sizehorcursor")
             QDeclarativeItem::setCursor(Qt::SizeHorCursor);
         else if (m_cursor == "sizevercursor")
             QDeclarativeItem::setCursor(Qt::SizeVerCursor);
@@ -521,6 +521,7 @@ void QStyleItem::setCursor(const QString &str)
             QDeclarativeItem::setCursor(Qt::SplitVCursor);
         else if (m_cursor == "wait")
             QDeclarativeItem::setCursor(Qt::WaitCursor);
+            */
         emit cursorChanged();
     }
 }

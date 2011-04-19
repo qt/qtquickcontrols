@@ -40,7 +40,7 @@
 #ifndef STYLEWRAPPER_H
 #define STYLEWRAPPER_H
 
-#include <private/qsgpainteditem_p.h>
+#include <qsgpainteditem.h>
 //#include <QDeclarativeItem>
 #include <QtGui/QStyle>
 #include <QtGui>
