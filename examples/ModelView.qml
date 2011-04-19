@@ -126,7 +126,6 @@ Item {
                     }
                     MouseArea {
                         anchors.fill: parent
-                        onClicked: filemodel.folder = filePath
                     }
                 }
             }
