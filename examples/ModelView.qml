@@ -10,24 +10,25 @@ Item {
     ScrollArea {
         id: scrollarea
         anchors.fill: parent
+        contentHeight: tree.contentHeight
 
         Item {
             id: content
-            width: 580
+            width: root.width-20
             height: tree.height + header.height
             ListModel {
                 id: headermodel
                 ListElement{
                     width:200
-                    label: "Filename"
+                    label: "Title"
                 }
                 ListElement{
                     width: 100
-                    label: "Size"
+                    label: "ImageSource"
                 }
                 ListElement{
                     width: 280
-                    label: "Path"
+                    label: "Filename"
                 }
             }
 
@@ -51,7 +52,7 @@ Item {
                     hover: hoverarea.containsMouse
                     activeControl: model.index == header.sortColumn ? "sort" : ""
                     height: parent.height
-                    width: model.width
+                    width: (index ==  headermodel.count - 1) ? header.width - x  : model.width
                     text: model.label
 
                     MouseArea{
@@ -92,22 +93,36 @@ Item {
                 anchors.top: header.bottom
                 height: 300
 
-                FileSystemModel {
-                    id: filemodel
-                    folder: "file://c:"
+                XmlListModel {
+                    id: flickrmodel
+                    source: "http://api.flickr.com/services/feeds/photos_public.gne?format=rss2&tags=" + "cat"
+                    query: "/rss/channel/item"
+                    namespaceDeclarations: "declare namespace media=\"http://search.yahoo.com/mrss/\";"
+                    XmlRole { name: "Title"; query: "title/string()" }
+                    XmlRole { name: "ImageSource"; query: "media:thumbnail/@url/string()" }
+                    XmlRole { name: "Filename"; query: "link/string()" }
                 }
 
-                model: filemodel
+                model: flickrmodel
                 delegate: QStyleItem {
+                    id: delegate
                     elementType: "itemrow"
                     width: parent.width
                     height: 20
                     activeControl: index%2 == 0 ? "alternate" : ""
+                    property int rowIndex: model.index
                     Row {
                         Item {width:6; height:6}
-                        Text { clip:true; text: fileName; width: headermodel.get(0).width}
-                        Text { clip:true; text: fileSize; width: headermodel.get(1).width }
-                        Text { clip:true; text: filePath; width: headermodel.get(2).width }
+                        Repeater {
+                            model:headermodel.count
+                            Text {
+                                clip:true;
+                                property string varname: headermodel.get(index).label
+                                onVarnameChanged:print(varname)
+                                text: flickrmodel.get(rowIndex)[varname];
+                                width: headermodel.get(index).width
+                            }
+                        }
                     }
                     MouseArea {
                         anchors.fill: parent

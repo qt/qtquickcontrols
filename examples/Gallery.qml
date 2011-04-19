@@ -71,6 +71,47 @@ Rectangle {
         anchors.left: parent.left
         anchors.margins: margins
         Tab {
+            title: "Itemviews"
+
+            ListModel {
+                id:model
+                ListElement {
+                    column: [
+                        ListElement {
+                            text: "Jim Williams"
+                        },
+                        ListElement {
+                            text: "John Brown"
+                        }]
+                }
+                ListElement {
+                    column: [
+                        ListElement {
+                            text: "Jim Williams 2 "
+                        },
+                        ListElement {
+                            text: "John Brown 2"
+                        }]
+                }
+                ListElement {
+                    column: [
+                        ListElement {
+                            text: "Jim Williams 3 "
+                        },
+                        ListElement {
+                            text: "John Brown 3"
+                        }]
+                }
+            }
+
+            TableView {
+                anchors.fill:parent
+                model: model
+
+            }
+
+        }
+        Tab {
             title: "Widgets"
             ScrollArea{
                 id: flickable
