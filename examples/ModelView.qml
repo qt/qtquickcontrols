@@ -119,6 +119,7 @@ Item {
                                 clip:true;
                                 property string varname: headermodel.get(index).label
                                 text: flickrmodel.get(rowIndex)[varname];
+                                elide :Text.ElideRight
                                 width: headermodel.get(index).width
                             }
                         }
