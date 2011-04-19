@@ -116,7 +116,7 @@ void QStyleItem::initStyleOption()
                         QStyleOptionButton::DefaultButton :
                         QStyleOptionButton::None;
     }
-    else if (type == QLatin1String("item")) {
+    else if (type == QLatin1String("itemrow")) {
         if (!m_styleoption)
             m_styleoption = new QStyleOptionViewItemV4();
 
@@ -716,8 +716,8 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
     if (type == QLatin1String("button")) {
         qApp->style()->drawControl(QStyle::CE_PushButton, m_styleoption, painter, widget());
     }
-    else if (type == QLatin1String("item")) {
-        qApp->style()->drawPrimitive(QStyle::PE_PanelItemViewItem, m_styleoption, painter, widget());
+    else if (type == QLatin1String("itemrow")) {
+        qApp->style()->drawPrimitive(QStyle::PE_PanelItemViewRow, m_styleoption, painter, widget());
     }
     else if (type == QLatin1String("header")) {
         qApp->style()->drawControl(QStyle::CE_HeaderSection, m_styleoption, painter, widget());

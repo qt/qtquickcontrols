@@ -39,6 +39,10 @@ Item {
                 delegate: QStyleItem {
                     clip: true
                     elementType: "header"
+                    raised:true
+                    sunken: hoverarea.pressed
+                    hover: hoverarea.containsMouse
+
                     height: parent.height
                     width: (index != 0) ? 500: model.width
                     Text {
@@ -47,6 +51,12 @@ Item {
                         anchors.leftMargin:4
                         text: label
                     }
+                    MouseArea{
+                        id: hoverarea
+                        hoverEnabled:true
+                        anchors.fill:parent
+                    }
+
                     MouseArea{
                         property int offset:0
                         anchors.rightMargin: -width/2
@@ -79,7 +89,7 @@ Item {
                 model: filemodel
 
                 delegate: QStyleItem {
-                    elementType: "item"
+                    elementType: "itemrow"
                     width:parent.width
                     height:20
                     activeControl: index%2 == 0 ? "alternate" : ""
