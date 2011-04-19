@@ -584,7 +584,7 @@ void QStyleItem::setElementType(const QString &str)
         }
         m_dummywidget = tb;
 
-    } else if (str == "toolbar") {
+    } else if (str == "toolbutton") {
         static QToolButton *tb = 0;
         static QToolBar *bar = 0;
         // KDE animations are too broken with these widgets
