@@ -709,6 +709,9 @@ QRect QStyleItem::subControlRect(const QString &subcontrolString)
 
 void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
+    if (width() < 1 || height() <1)
+        return;
+
     QString type = elementType();
     initStyleOption();
 

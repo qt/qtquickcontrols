@@ -215,7 +215,23 @@ Rectangle {
         }
         Tab {
             title: "Itemviews"
-            ModelView{ anchors.fill:parent}
+            ModelView{
+                anchors.fill:parent
+
+                headermodel: ListModel {
+                    ListElement{ label: "Title" ; width:100}
+                    ListElement{ label: "ImageSource" ; width:100}
+                    ListElement{ label: "Filename" ; width:100}
+                }
+                model: XmlListModel {
+                    source: "http://api.flickr.com/services/feeds/photos_public.gne?format=rss2&tags=" + "cat"
+                    query: "/rss/channel/item"
+                    namespaceDeclarations: "declare namespace media=\"http://search.yahoo.com/mrss/\";"
+                    XmlRole { name: "Title"; query: "title/string()" }
+                    XmlRole { name: "ImageSource"; query: "media:thumbnail/@url/string()" }
+                    XmlRole { name: "Filename"; query: "link/string()" }
+                }
+            }
         }
 
         Tab {
