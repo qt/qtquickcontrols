@@ -39,8 +39,13 @@ Item {
                 anchors.top:parent.top
                 orientation: ListView.Horizontal
                 width: parent.width
-                height: 22
                 property int sortColumn: -1
+
+                // Derive size fomr style
+                Text{ id:text }
+                QStyleItem { id: styleitem ; elementType: "header" }
+                onHeightChanged: print(height)
+                height: Math.max(16, styleitem.sizeFromContents(text.font.pixelSize, text.font.pixelSize).height)
 
                 model: headermodel
 
@@ -51,8 +56,9 @@ Item {
                     sunken: hoverarea.pressed
                     hover: hoverarea.containsMouse
                     activeControl: model.index == header.sortColumn ? "sort" : ""
-                    height: parent.height
+
                     width: (index ==  headermodel.count - 1) ? header.width - x  : model.width
+                    height: parent.height
                     text: model.label
 
                     MouseArea{
