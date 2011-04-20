@@ -71,6 +71,10 @@ class QStyleItem: public QDeclarativeItem
     Q_PROPERTY( int value READ value WRITE setValue NOTIFY valueChanged)
     Q_PROPERTY( int paintMargins READ paintMargins WRITE setPaintMargins NOTIFY paintMarginsChanged)
 
+    Q_PROPERTY( QString fontFamily READ fontFamily)
+    Q_PROPERTY( double fontPointSize READ fontPointSize)
+    Q_PROPERTY( int fontHeight READ fontHeight)
+
 public:
     QStyleItem(QDeclarativeItem *parent = 0);
     ~QStyleItem();
@@ -121,6 +125,11 @@ public:
     bool eventFilter(QObject *, QEvent *);
     virtual void initStyleOption ();
     QWidget *widget(){ return m_dummywidget; }
+
+    int fontHeight();
+    QString fontFamily();
+    double fontPointSize();
+
 
 public Q_SLOTS:
     int pixelMetric(const QString&);

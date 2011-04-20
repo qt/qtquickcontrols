@@ -165,7 +165,6 @@ void QStyleItem::initStyleOption()
         else
             opt->position = QStyleOptionTabV3::Middle;
 
-
     } else if (type == QLatin1String("menu")) {
         if (!m_styleoption)
             m_styleoption = new QStyleOptionMenuItem();
@@ -809,4 +808,25 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
     }
     if (widget())
         painter->restore();
+}
+
+int QStyleItem::fontHeight()
+{
+    if (widget())
+        return widget()->fontMetrics().height();
+    return qApp->fontMetrics().height();
+}
+
+QString QStyleItem::fontFamily()
+{
+    if (widget())
+        return widget()->font().family();
+    return qApp->font().family();
+}
+
+double QStyleItem::fontPointSize()
+{
+    if (widget())
+        return widget()->font().pointSizeF();
+    return qApp->font().pointSizeF();
 }

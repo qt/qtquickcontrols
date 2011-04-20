@@ -57,7 +57,7 @@ Item {
                 property bool selected : tabFrame.current == index
                 z: selected ? 1 : -1
                 function updateRect() {
-                    var rect = style.sizeFromContents(textitem.width + tabHSpace + 2, Math.max(textitem.height + tabVSpace, 20))
+                    var rect = style.sizeFromContents(textitem.width + tabHSpace + 2, Math.max(style.fontHeight + tabVSpace + 6, 0))
                     width = rect.width
                     height = rect.height
                 }
@@ -67,6 +67,7 @@ Item {
                     selected: tab.selected
                     info: tabbar.position
                     text: tabFrame.tabs[index].title
+                    hover: mousearea.containsMouse
 
                     property bool first: index === 0
                     paintMargins: tabrow.paintMargins
@@ -91,7 +92,9 @@ Item {
                 }
 
                 MouseArea {
+                    id: mousearea
                     anchors.fill: parent
+                    hoverEnabled: true
                     onPressed: tabFrame.current = index
                 }
             }
