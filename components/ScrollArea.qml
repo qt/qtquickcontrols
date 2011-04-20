@@ -56,6 +56,21 @@ FocusScope {
         }
     }
 
+    WheelArea {
+        id: wheelarea
+        anchors.fill: parent
+
+        onVerticalWheelMoved: {
+            console.log("vertical wheel moved:", verticalDelta)
+            contentY -= verticalDelta/15
+        }
+
+        onHorizontalWheelMoved: {
+            console.log("horizontal wheel moved:", horizontalDelta)
+            contentX -= horizontalDelta/15
+        }
+    }
+
     ScrollBar {
         id: hscrollbar
         orientation: Qt.Horizontal

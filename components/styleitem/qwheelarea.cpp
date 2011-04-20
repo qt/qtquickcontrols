@@ -27,7 +27,7 @@
 ** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
 ** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
 ** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOTgall
 ** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
 ** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 ** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
@@ -36,56 +36,72 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
- 
-#include <qdeclarative.h>
-#include "qstyleplugin.h"
-#include "qstyleitem.h"
-#include "qrangemodel.h"
+
+
 #include "qwheelarea.h"
-#include <qdeclarativeextensionplugin.h>
 
-#include <qdeclarativeengine.h>
-#include <qdeclarative.h>
-#include <qdeclarativeitem.h>
-#include <qdeclarativeimageprovider.h>
-#include <qdeclarativeview.h>
-#include <QApplication>
-#include <QImage>
 
-// Load icons from desktop theme
-class DesktopIconProvider : public QDeclarativeImageProvider
-{
-public:
-    DesktopIconProvider()
-        : QDeclarativeImageProvider(QDeclarativeImageProvider::Pixmap)
-    {
+QWheelArea::QWheelArea(QDeclarativeItem *parent)
+    : QDeclarativeItem(parent),
+      _verticalDelta(0),
+      _horizontalDelta(0)
+{}
+
+QWheelArea::~QWheelArea() {}
+
+bool QWheelArea::event (QEvent * e) {
+    switch(e->type()) {
+    case QEvent::GraphicsSceneWheel: {
+        QGraphicsSceneWheelEvent *we = static_cast<QGraphicsSceneWheelEvent*>(e);
+        if(we) {
+            switch(we->orientation()) {
+                case Qt::Horizontal:
+                    setHorizontalDelta(we->delta());
+                    break;
+                case Qt::Vertical:
+                    setVerticalDelta(we->delta());
+            }
+            return true;
+        }
     }
+    case QEvent::Wheel: {
+        QWheelEvent *we = static_cast<QWheelEvent*>(e);
+        if(we) {
+            switch(we->orientation()) {
+                case Qt::Horizontal:
+                    setHorizontalDelta(we->delta());
 
-    QPixmap requestPixmap(const QString &id, QSize *size, const QSize &requestedSize)
-    {
-        Q_UNUSED(requestedSize);
-        Q_UNUSED(size);
-        int pos = id.lastIndexOf('/');
-        QString iconName = id.right(id.length() - pos);
-        int width = qApp->style()->pixelMetric(QStyle::PM_ToolBarIconSize);
-        return QIcon::fromTheme(iconName).pixmap(width);
+                    break;
+                case Qt::Vertical:
+                    setVerticalDelta(we->delta());
+
+            }
+            return true;
+        }
     }
-};
-
-
-void StylePlugin::registerTypes(const char *uri)
-{
-    qmlRegisterType<QStyleItem>(uri, 1, 0, "QStyleItem");
-    qmlRegisterType<QRangeModel>(uri, 1, 0, "RangeModel");
-    qmlRegisterType<QGraphicsDropShadowEffect>(uri, 1, 0, "DropShadow");
-    qmlRegisterType<QDeclarativeFolderListModel>(uri, 1, 0, "FileSystemModel");
-    qmlRegisterType<QWheelArea>(uri, 1, 0, "WheelArea");
+    default: break;
+    }
+    return QDeclarativeItem::event(e);
 }
 
-void StylePlugin::initializeEngine(QDeclarativeEngine *engine, const char *uri)
+void QWheelArea::setVerticalDelta(qreal d)
 {
-    Q_UNUSED(uri);
-    engine->addImageProvider("desktoptheme", new DesktopIconProvider);
+    _verticalDelta = d;
+    emit(verticalWheelMoved());
 }
 
-Q_EXPORT_PLUGIN2(styleplugin, StylePlugin);
+qreal QWheelArea::verticalDelta()
+{
+    return _verticalDelta;
+}
+
+void QWheelArea::setHorizontalDelta(qreal d)
+{
+    _horizontalDelta = d;
+    emit(horizontalWheelMoved());
+}
+
+qreal QWheelArea::horizontalDelta()
+{
+    return _horizontalDelta;
+}

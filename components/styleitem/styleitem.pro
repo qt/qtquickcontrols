@@ -13,12 +13,14 @@ HEADERS += qrangemodel_p.h \
            qrangemodel.h \
            qstyleplugin.h \
            qdeclarativefolderlistmodel.h \
-           qstyleitem.h
+           qstyleitem.h \
+           qwheelarea.h
 
 SOURCES += qrangemodel.cpp \
 	   qstyleplugin.cpp \
            qdeclarativefolderlistmodel.cpp \
-           qstyleitem.cpp
+           qstyleitem.cpp \
+           qwheelarea.cpp
            
 
 OTHER_FILES += \
