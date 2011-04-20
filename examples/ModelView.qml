@@ -43,9 +43,8 @@ Item {
 
                 // Derive size fomr style
                 Text{ id:text }
-                QStyleItem { id: styleitem ; elementType: "header" }
-                onHeightChanged: print(height)
-                height: Math.max(16, styleitem.sizeFromContents(text.font.pixelSize, text.font.pixelSize).height)
+                QStyleItem { id: styleitem ; elementType: "header"; visible:false }
+                height: Math.max(text.font.pixelSize + 2, styleitem.sizeFromContents(text.font.pixelSize, text.font.pixelSize).height)
 
                 model: headermodel
 
