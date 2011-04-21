@@ -169,7 +169,7 @@ FocusScope{
                         sourceComponent: itemDelegate
                         property string itemtext: root.model.get(rowIndex)[ headermodel.get(index).label]
                         property int itemwidth: headermodel.get(index).width
-                        property int itemheight: rowstyle.sizeFromContents(16, 16).height
+                        property int itemheight: Math.max(16, rowstyle.sizeFromContents(16, 16).height)
                         property bool itemselected: rowitem.ListView.isCurrentItem
                         property bool alternaterow: rowitem.alternateRow
                     }
