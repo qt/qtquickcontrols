@@ -18,6 +18,36 @@ FocusScope{
     property alias contentX: tree.contentX
     property alias contentY: tree.contentY
 
+    property bool alternateRowColor: true
+
+    property Component itemDelegate: standardDelegate
+
+
+    Component {
+        id: standardDelegate
+        Text {
+            clip:true
+            color: itemselected ? palette.highlightedText : palette.text
+            elide: Text.ElideRight
+            height: itemheight
+            width: itemwidth
+            text: itemtext
+        }
+    }
+
+    Component {
+        id: nativeDelegate
+        // This gives more native styling, but might be less performant
+        QStyleItem {
+            id: itemdelegate
+            elementType: "item"
+            height: itemheight
+            width:  itemwidth
+            text:   itemtext
+            selected: itemselected
+        }
+    }
+
 
     ListView {
         id: tree
@@ -43,6 +73,7 @@ FocusScope{
             width: row.width
             height: row.height
             property int rowIndex: model.index
+            property bool alternateRow: alternateRowColor && rowIndex %2 == 1
             QStyleItem {
                 id: rowstyle
                 elementType: "itemrow"
@@ -59,28 +90,15 @@ FocusScope{
                 anchors.leftMargin: 4
                 Repeater {
                     model: headermodel.count
-                    Text {
-                        id:textitem
-                        clip:true
-                        elide: Text.ElideRight
-                        height: rowstyle.sizeFromContents(16, 16).height
-                        property string varname: headermodel.get(index).label
-                        text: root.model.get(rowIndex)[varname];
-                        width: headermodel.get(index).width
-                        color: rowitem.ListView.isCurrentItem ? palette.highlightedText : palette.text
+                    Loader {
+                        id: itemDelegateLoader
+                        sourceComponent: itemDelegate
+                        property string itemtext: root.model.get(rowIndex)[ headermodel.get(index).label]
+                        property int itemwidth: headermodel.get(index).width
+                        property int itemheight: rowstyle.sizeFromContents(16, 16).height
+                        property bool itemselected: rowitem.ListView.isCurrentItem
+                        property bool alternaterow: rowitem.alternateRow
                     }
-                    /*
-                    QStyleItem {
-                        // This gives native styling, but might be too slow for practical use
-                        id: itemdelegate
-                        elementType: "item"
-                        height: sizeFromContents(16, 16).height
-                        activeControl: index %2 == 0 ? "alternate" : ""
-                        selected: rowitem.ListView.isCurrentItem ? "true" : "false"
-                        property string varname: headermodel.get(index).label
-                        text: root.model.get(rowIndex)[varname];
-                        width: headermodel.get(index).width
-                    }*/
                 }
                 onWidthChanged: tree.contentWidth = width
             }
