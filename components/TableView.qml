@@ -71,13 +71,17 @@ FocusScope{
 
     Component {
         id: standardDelegate
-        Text {
-            clip:true
-            color: itemselected ? palette.highlightedText : palette.text
-            elide: Text.ElideRight
-            height: itemheight
+        Item {
             width: itemwidth
-            text: itemtext
+            height: itemheight
+            clip: true
+            Text {
+                anchors.fill:parent
+                anchors.margins: 2
+                anchors.verticalCenter: parent.verticalCenter
+                elide: Text.ElideRight
+                text: itemtext
+            }
         }
     }
 
@@ -149,7 +153,6 @@ FocusScope{
             Row {
                 id: row
                 anchors.left: parent.left
-                anchors.leftMargin: 4
                 Repeater {
                     model: headermodel.count
                     Loader {

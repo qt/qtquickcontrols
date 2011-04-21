@@ -217,7 +217,8 @@ Rectangle {
         Tab {
             title: "Itemviews"
             TableView{
-                frame: false
+                frame: true
+                anchors.margins:4
                 anchors.fill:parent
 
                 headermodel: ListModel {
