@@ -2,6 +2,51 @@ import QtQuick 1.0
 import "../components"
 import "../components/plugin"
 
+/*
+*
+* TableView
+*
+* This component provides an item-view with resizable
+* header sections.
+*
+* You can style the drawn delegate by overriding the itemDelegate
+* property. The following properties are supported for custom
+* delegates:
+*
+* Note: Currently only row selection is available for this component
+*
+* itemheight - default platform size of item
+* itemwidth - default platform width of item
+* itemselected - if the row is currently selected
+* itemtext - The text for this item
+*
+* For example:
+*   itemDelegate: Text {
+*       color: itemselected ? "white": "black"
+*       elide: Text.ElideRight
+*       height: itemheight
+*       width: itemwidth
+*       text: itemtext
+*    }
+*
+* You provide title and size properties on headersections
+* by setting the headermodel :
+*
+* ListModel {
+*    ListElement{ label: "Column 1" ; width:100}
+*    ListElement{ label: "Column 2" ; width:200}
+* }
+*
+* The view itself does not provide sorting. This has to
+* be done on the model itself. However you can provide sorting
+* on the model and enable sort indicators on headers.
+*
+* sortColumn - The index of the currently selected sort header
+* sortIndicatorVisible - If sort indicators should be enabled
+* sortIndicatorDirection - "up" or "down" depending on state
+*
+*/
+
 FocusScope{
     id: root
     property variant headermodel
@@ -14,13 +59,13 @@ FocusScope{
     property bool frameAroundContents: styleitem.styleHint("framearoundcontents")
     property int frameMargins : frame ? 2 : 0
 
+    property int sortColumn: 0  // Index of currently selected sort header
+    property bool sortIndicatorVisible: true // enables or disables sort indicator
+    property string sortIndicatorDirection: "down" // "up" or "down" depending on current state
+
+    property bool alternateRowColor: true
     property alias contentX: tree.contentX
     property alias contentY: tree.contentY
-    property bool alternateRowColor: true
-
-    property int sortColumn: 0
-    property bool sortIndicatorVisible: true
-    property string sortIndicatorDirection: "down"
 
     property Component itemDelegate: standardDelegate
 
@@ -63,17 +108,18 @@ FocusScope{
 
     ListView {
         id: tree
-        focus: true
-        clip:true
-        interactive: false
 
+        model: root.model
+
+        interactive: false
         anchors.top: header.bottom
         anchors.left: frameitem.left
         anchors.right: frameitem.right
         anchors.bottom: frameitem.bottom
-
         anchors.margins: frameWidth
-        model: root.model
+
+        focus: true
+        clip:true
 
         Keys.onUpPressed: if (currentIndex > 0)currentIndex = currentIndex - 1
         Keys.onDownPressed: if (currentIndex< count - 1)currentIndex = currentIndex + 1

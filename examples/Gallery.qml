@@ -70,6 +70,7 @@ Rectangle {
         anchors.right: parent.right
         anchors.left: parent.left
         anchors.margins: margins
+
         Tab {
             title: "Widgets"
             ScrollArea{
@@ -215,7 +216,8 @@ Rectangle {
         }
         Tab {
             title: "Itemviews"
-            ModelView{
+            TableView{
+                frame: false
                 anchors.fill:parent
 
                 headermodel: ListModel {
