@@ -38,31 +38,38 @@ FocusScope{
         }
 
 
-        delegate: QStyleItem {
+        delegate: Item {
             id: rowitem
-            elementType: "itemrow"
             width: row.width
             height: row.height
             property int rowIndex: model.index
-            activeControl: model.index %2 == 0 ? "alternate" : ""
-            selected: ListView.isCurrentItem ? "true" : "false"
+            QStyleItem {
+                id: rowstyle
+                elementType: "itemrow"
+                // Row fills the tree with regardless of item size
+                // But scrollbar should not adjust to it
+                width:tree.width
+                height:parent.height
+                activeControl: model.index %2 == 0 ? "alternate" : ""
+                selected: ListView.isCurrentItem ? "true" : "false"
+            }
             Row {
                 id: row
+                anchors.left: parent.left
+                anchors.leftMargin: 4
                 Repeater {
                     model: headermodel.count
-                    /*
                     Text {
                         id:textitem
                         clip:true
                         elide: Text.ElideRight
-                        height: rowitem.sizeFromContents(16, 16).height
+                        height: rowstyle.sizeFromContents(16, 16).height
                         property string varname: headermodel.get(index).label
                         text: root.model.get(rowIndex)[varname];
-                        width: (index ==  headermodel.count - 1) ? textitem.implicitWidth  : headermodel.get(index).width
+                        width: headermodel.get(index).width
                         color: rowitem.ListView.isCurrentItem ? palette.highlightedText : palette.text
                     }
-                    */
-
+                    /*
                     QStyleItem {
                         // This gives native styling, but might be too slow for practical use
                         id: itemdelegate
@@ -72,8 +79,8 @@ FocusScope{
                         selected: rowitem.ListView.isCurrentItem ? "true" : "false"
                         property string varname: headermodel.get(index).label
                         text: root.model.get(rowIndex)[varname];
-                        width: (index ==  headermodel.count - 1) ? Math.max(textWidth(text), header.width - x)  : headermodel.get(index).width
-                    }
+                        width: headermodel.get(index).width
+                    }*/
                 }
                 onWidthChanged: tree.contentWidth = width
             }
@@ -93,8 +100,9 @@ FocusScope{
         interactive:false
         anchors.rightMargin: frame ? (frameAroundContents ? (vscrollbar.visible ? vscrollbar.width + 2 * frameMargins : 0) : -frameWidth) : 0
         anchors.left:parent.left
-        anchors.right:parent.right
         anchors.top:parent.top
+        height: Math.max(text.font.pixelSize + 2, styleitem.sizeFromContents(text.font.pixelSize, text.font.pixelSize).height)
+        width:parent.width
         orientation: ListView.Horizontal
 
         property int sortColumn: -1
@@ -102,7 +110,6 @@ FocusScope{
         // Derive size fomr style
         Text{ id:text }
         QStyleItem { id: styleitem ; elementType: "header"; visible:false }
-        height: Math.max(text.font.pixelSize + 2, styleitem.sizeFromContents(text.font.pixelSize, text.font.pixelSize).height)
 
         model: headermodel
 
@@ -114,7 +121,7 @@ FocusScope{
             hover: hoverarea.containsMouse
             activeControl: model.index == header.sortColumn ? "sort" : ""
 
-            width: (index ==  headermodel.count - 1) ? header.width - x  : model.width
+            width: model.width
             height: parent.height
             text: model.label
 
@@ -150,6 +157,15 @@ FocusScope{
         }
     }
 
+    QStyleItem {
+        elementType: "header"
+
+        anchors.top: parent.top
+        anchors.right: parent.right
+        anchors.bottom: header.bottom
+        width: Math.max(0, tree.width-contentWidth)
+        raised: true
+    }
 
     ScrollBar {
         id: hscrollbar
