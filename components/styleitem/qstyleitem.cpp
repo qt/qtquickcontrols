@@ -125,6 +125,15 @@ void QStyleItem::initStyleOption()
         if (activeControl() == "alternate")
             opt->features |= QStyleOptionViewItemV2::Alternate;
     }
+    else if (type == QLatin1String("item")) {
+        if (!m_styleoption)
+            m_styleoption = new QStyleOptionViewItemV4();
+
+        QStyleOptionViewItemV4 *opt = qstyleoption_cast<QStyleOptionViewItemV4*>(m_styleoption);
+        opt->features = QStyleOptionViewItemV4::HasDisplay;
+        opt->text = text();
+        opt->palette = widget()->palette();
+    }
     else if (type == QLatin1String("header")) {
         if (!m_styleoption)
             m_styleoption = new QStyleOptionHeader();
@@ -552,6 +561,12 @@ void QStyleItem::setElementType(const QString &str)
         static QWidget *menu = new QMenu();
         m_sharedWidget = true;
         m_dummywidget = menu;
+    }     if (str == "item" || str == "itemrow") {
+        // Since these are used by the delegate, it makes no
+        // sense to re-create them per item
+        static QWidget *menu = new QTreeView();
+        m_sharedWidget = true;
+        m_dummywidget = menu;
     } if (str == "groupbox") {
         // Since these are used by the delegate, it makes no
         // sense to re-create them per item
@@ -724,6 +739,9 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
     }
     else if (type == QLatin1String("itemrow")) {
         qApp->style()->drawPrimitive(QStyle::PE_PanelItemViewRow, m_styleoption, painter, widget());
+    }
+    else if (type == QLatin1String("item")) {
+        qApp->style()->drawControl(QStyle::CE_ItemViewItem, m_styleoption, painter, widget());
     }
     else if (type == QLatin1String("header")) {
         qApp->style()->drawControl(QStyle::CE_Header, m_styleoption, painter, widget());

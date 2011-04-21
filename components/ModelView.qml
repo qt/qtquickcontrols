@@ -2,17 +2,18 @@ import QtQuick 1.0
 import "../components"
 import "../components/plugin"
 
-Item {
+FocusScope{
     id: root
-
     property variant headermodel
     property variant model
 
     Item {
         id: content
+        focus: true
         anchors.fill: parent
         ListView {
             id: header
+            focus:false
             interactive:false
             anchors.left:parent.left
             anchors.top:parent.top
@@ -73,41 +74,61 @@ Item {
 
         ScrollArea {
             id: scrollarea
-
-            frame:false
+            focus:true
+            //frame:false
             anchors.topMargin:  header.height
             anchors.fill: parent
-            contentHeight: tree.contentHeight
+            contentHeight: tree.height
+            contentWidth:400
+            contentY: -tree.contentY
 
-            ListView {
-                id: tree
-                interactive: false
-                width:parent.width
-                height:900
+            FocusScope {
+                width:500
+                height: 500
+                focus:true
 
-                model: root.model
-                delegate: QStyleItem {
-                    id: delegate
-                    elementType: "itemrow"
-                    width: parent.width
-                    height: 20
-                    activeControl: index%2 == 0 ? "alternate" : ""
-                    property int rowIndex: model.index
-                    Row {
-                        Item {width:6; height:6}
-                        Repeater {
-                            model:headermodel.count
-                            Text {
-                                clip:true;
-                                property string varname: headermodel.get(index).label
-                                text: root.model.get(rowIndex)[varname];
-                                elide :Text.ElideRight
-                                width: headermodel.get(index).width
+                ListView {
+                    id: tree
+                    focus: true
+                    interactive: false
+                    anchors.fill: parent
+                    model: root.model
+
+                    Keys.onUpPressed: if (currentIndex > 0)currentIndex = currentIndex - 1
+                    Keys.onDownPressed: if (currentIndex< count - 1)currentIndex = currentIndex + 1
+                    onCurrentIndexChanged: positionViewAtIndex(currentIndex, ListView.Center)
+
+                    delegate: QStyleItem {
+                        id: rowitem
+                        elementType: "itemrow"
+                        width: parent.width
+                        height: 18
+                        activeControl: index%2 == 0 ? "alternate" : ""
+                        property int rowIndex: model.index
+                        selected: ListView.isCurrentItem ? "true" : "false"
+                        Row {
+                            Repeater {
+                                model: headermodel.count
+                                QStyleItem {
+                                    id: itemdelegate
+                                    elementType: "item"
+                                    height: 20
+                                    activeControl: index%2 == 0 ? "alternate" : ""
+                                    selected: rowitem.ListView.isCurrentItem ? "true" : "false"
+                                    property string varname: headermodel.get(index).label
+                                    text: root.model.get(rowIndex)[varname];
+                                    width: headermodel.get(index).width
+
+                                }
                             }
                         }
-                    }
-                    MouseArea {
-                        anchors.fill: parent
+                        MouseArea{
+                            anchors.fill:parent
+                            onPressed:  {
+                                tree.forceActiveFocus()
+                                tree.currentIndex = rowIndex
+                            }
+                        }
                     }
                 }
             }
