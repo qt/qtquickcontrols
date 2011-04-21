@@ -747,7 +747,8 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
     }
     else if (type == QLatin1String("itemrow")) {
         qApp->style()->drawPrimitive(QStyle::PE_PanelItemViewRow, m_styleoption, painter, widget());
-    }
+        if (!qApp->style()->styleHint(QStyle::SH_ItemView_ShowDecorationSelected) && selected())
+            painter->fillRect(m_styleoption->rect, m_styleoption->palette.highlight());    }
     else if (type == QLatin1String("item")) {
         qApp->style()->drawControl(QStyle::CE_ItemViewItem, m_styleoption, painter, widget());
     }

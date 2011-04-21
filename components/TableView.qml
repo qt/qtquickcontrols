@@ -81,6 +81,7 @@ FocusScope{
                 anchors.verticalCenter: parent.verticalCenter
                 elide: Text.ElideRight
                 text: itemtext
+                color: itemselected ? palette.highlightedText : palette.text
             }
         }
     }
