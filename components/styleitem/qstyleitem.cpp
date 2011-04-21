@@ -126,14 +126,16 @@ void QStyleItem::initStyleOption()
             opt->features |= QStyleOptionViewItemV2::Alternate;
     }
     else if (type == QLatin1String("item")) {
-        if (!m_styleoption)
+        if (!m_styleoption) {
             m_styleoption = new QStyleOptionViewItemV4();
-
+        }
         QStyleOptionViewItemV4 *opt = qstyleoption_cast<QStyleOptionViewItemV4*>(m_styleoption);
         opt->features = QStyleOptionViewItemV4::HasDisplay;
         opt->text = text();
         opt->textElideMode = Qt::ElideRight;
-        opt->palette = widget()->palette();
+        QPalette pal = m_styleoption->palette;
+        pal.setBrush(QPalette::Base, Qt::NoBrush);
+        m_styleoption->palette = pal;
     }
     else if (type == QLatin1String("header")) {
         if (!m_styleoption)
@@ -361,7 +363,8 @@ void QStyleItem::initStyleOption()
 #endif
         widget()->setEnabled(isEnabled());
         m_styleoption->fontMetrics = widget()->fontMetrics();
-        m_styleoption->palette = widget()->palette();
+        if (!m_styleoption->palette.resolve())
+            m_styleoption->palette = widget()->palette();
         if (m_hint.contains("mac.mini")) {
             widget()->setAttribute(Qt::WA_MacMiniSize);
         } else if (m_hint.contains("mac.small")) {
@@ -457,7 +460,7 @@ QSize QStyleItem::sizeFromContents(int width, int height)
         size = qApp->style()->sizeFromContents(QStyle::CT_GroupBox, m_styleoption, QSize(width,height), widget());
     } else if (metric == QLatin1String("header")) {
         size = qApp->style()->sizeFromContents(QStyle::CT_HeaderSection, m_styleoption, QSize(width,height), widget());
-    } else if (metric == QLatin1String("item")) {
+    } else if (metric == QLatin1String("itemrow") || metric == QLatin1String("item")) {
         size = qApp->style()->sizeFromContents(QStyle::CT_ItemViewItem, m_styleoption, QSize(width,height), widget());
     }
 
@@ -564,13 +567,13 @@ void QStyleItem::setElementType(const QString &str)
         static QWidget *menu = new QMenu();
         m_sharedWidget = true;
         m_dummywidget = menu;
-    }     if (str == "item" || str == "itemrow") {
+    } else if (str == "item" || str == "itemrow") {
         // Since these are used by the delegate, it makes no
         // sense to re-create them per item
         static QWidget *menu = new QTreeView();
         m_sharedWidget = true;
         m_dummywidget = menu;
-    } if (str == "groupbox") {
+    } else if (str == "groupbox") {
         // Since these are used by the delegate, it makes no
         // sense to re-create them per item
         static QGroupBox *group = new QGroupBox();

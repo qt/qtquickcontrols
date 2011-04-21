@@ -18,6 +18,75 @@ FocusScope{
     property alias contentX: tree.contentX
     property alias contentY: tree.contentY
 
+
+    ListView {
+        id: tree
+
+        focus: true
+        interactive: false
+        anchors.topMargin: header.height
+        anchors.fill: parent
+        model: root.model
+        anchors.rightMargin: frame ? (frameAroundContents ? (vscrollbar.visible ? vscrollbar.width + 2 * frameMargins : 0) : -frameWidth) : 0
+        anchors.bottomMargin: frame ? (frameAroundContents ? (hscrollbar.visible ? hscrollbar.height + 2 * frameMargins : 0) : -frameWidth) : 0
+
+        Keys.onUpPressed: if (currentIndex > 0)currentIndex = currentIndex - 1
+        Keys.onDownPressed: if (currentIndex< count - 1)currentIndex = currentIndex + 1
+        onCurrentIndexChanged: {
+            positionViewAtIndex(currentIndex, ListView.Contain)
+            vscrollbar.value = tree.contentY
+        }
+
+
+        delegate: QStyleItem {
+            id: rowitem
+            elementType: "itemrow"
+            width: row.width
+            height: row.height
+            property int rowIndex: model.index
+            activeControl: model.index %2 == 0 ? "alternate" : ""
+            selected: ListView.isCurrentItem ? "true" : "false"
+            Row {
+                id: row
+                Repeater {
+                    model: headermodel.count
+                    /*
+                    Text {
+                        id:textitem
+                        clip:true
+                        elide: Text.ElideRight
+                        height: rowitem.sizeFromContents(16, 16).height
+                        property string varname: headermodel.get(index).label
+                        text: root.model.get(rowIndex)[varname];
+                        width: (index ==  headermodel.count - 1) ? textitem.implicitWidth  : headermodel.get(index).width
+                        color: rowitem.ListView.isCurrentItem ? palette.highlightedText : palette.text
+                    }
+                    */
+
+                    QStyleItem {
+                        // This gives native styling, but might be too slow for practical use
+                        id: itemdelegate
+                        elementType: "item"
+                        height: sizeFromContents(16, 16).height
+                        activeControl: index %2 == 0 ? "alternate" : ""
+                        selected: rowitem.ListView.isCurrentItem ? "true" : "false"
+                        property string varname: headermodel.get(index).label
+                        text: root.model.get(rowIndex)[varname];
+                        width: (index ==  headermodel.count - 1) ? Math.max(textWidth(text), header.width - x)  : headermodel.get(index).width
+                    }
+                }
+                onWidthChanged: tree.contentWidth = width
+            }
+            MouseArea{
+                anchors.fill:parent
+                onPressed:  {
+                    tree.forceActiveFocus()
+                    tree.currentIndex = rowIndex
+                }
+            }
+        }
+    }
+
     ListView {
         id: header
         focus:false
@@ -81,58 +150,6 @@ FocusScope{
         }
     }
 
-    ListView {
-        id: tree
-
-        clip: true
-        focus: true
-        interactive: false
-        anchors.topMargin: header.height
-        anchors.fill: parent
-        model: root.model
-        anchors.rightMargin: frame ? (frameAroundContents ? (vscrollbar.visible ? vscrollbar.width + 2 * frameMargins : 0) : -frameWidth) : 0
-        anchors.bottomMargin: frame ? (frameAroundContents ? (hscrollbar.visible ? hscrollbar.height + 2 * frameMargins : 0) : -frameWidth) : 0
-
-        Keys.onUpPressed: if (currentIndex > 0)currentIndex = currentIndex - 1
-        Keys.onDownPressed: if (currentIndex< count - 1)currentIndex = currentIndex + 1
-        onCurrentIndexChanged: {
-            positionViewAtIndex(currentIndex, ListView.Contain)
-            vscrollbar.value = tree.contentY
-        }
-        delegate: QStyleItem {
-            id: rowitem
-            elementType: "itemrow"
-            width: row.width
-            height: row.height
-            activeControl: index%2 == 0 ? "alternate" : ""
-            property int rowIndex: model.index
-            selected: ListView.isCurrentItem ? "true" : "false"
-            Row {
-                id: row
-                Repeater {
-                    model: headermodel.count
-                    QStyleItem {
-                        id: itemdelegate
-                        elementType: "item"
-                        height: sizeFromContents(16, 16).height
-                        activeControl: index%2 == 0 ? "alternate" : ""
-                        selected: rowitem.ListView.isCurrentItem ? "true" : "false"
-                        property string varname: headermodel.get(index).label
-                        text: root.model.get(rowIndex)[varname];
-                        width: (index ==  headermodel.count - 1) ? Math.max(textWidth(text), header.width - x)  : headermodel.get(index).width
-                    }
-                }
-                onWidthChanged: tree.contentWidth = width
-            }
-            MouseArea{
-                anchors.fill:parent
-                onPressed:  {
-                    tree.forceActiveFocus()
-                    tree.currentIndex = rowIndex
-                }
-            }
-        }
-    }
 
     ScrollBar {
         id: hscrollbar
@@ -171,4 +188,5 @@ FocusScope{
         visible: highlightOnFocus && parent.activeFocus && styleitem.styleHint("focuswidget")
         elementType: "focusframe"
     }
+    SystemPalette{id:palette}
 }
