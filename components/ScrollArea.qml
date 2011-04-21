@@ -43,7 +43,7 @@ FocusScope {
         anchors.topMargin: frame ? (frameAroundContents ? 0 : -frameWidth) : 0
     }
 
-    Item{
+    Item {
         id:flickable
         anchors.fill: styleitem
         anchors.margins: frameMargins

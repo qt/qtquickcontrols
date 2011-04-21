@@ -9,7 +9,7 @@ FocusScope{
     property int frameWidth: styleitem.pixelMetric("defaultframewidth");
     property alias contentHeight : tree.contentHeight
     property alias contentWidth: tree.contentWidth
-    property bool frame: false
+    property bool frame: true
     property bool highlightOnFocus: false
     property bool frameAroundContents: styleitem.styleHint("framearoundcontents")
     property int frameMargins : frame ? 2 : 0
@@ -49,30 +49,45 @@ FocusScope{
         }
     }
 
+    QStyleItem {
+        id: frameitem
+        elementType: "frame"
+        onElementTypeChanged: scrollarea.frameWidth = styleitem.pixelMetric("defaultframewidth");
+        sunken: true
+        visible: frame
+        anchors.fill: parent
+        anchors.rightMargin: frame ? (frameAroundContents ? (vscrollbar.visible ? vscrollbar.width + 2 * frameMargins : 0) : -frameWidth) : 0
+        anchors.bottomMargin: frame ? (frameAroundContents ? (hscrollbar.visible ? hscrollbar.height + 2 * frameMargins : 0) : -frameWidth) : 0
+        anchors.topMargin: frame ? (frameAroundContents ? 0 : -frameWidth) : 0
+    }
 
     ListView {
         id: tree
-
         focus: true
+        clip:true
         interactive: false
-        anchors.topMargin: header.height
-        anchors.fill: parent
+
+        anchors.top: header.bottom
+        anchors.left: frameitem.left
+        anchors.right: frameitem.right
+        anchors.bottom: frameitem.bottom
+
+        anchors.margins: frameWidth
         model: root.model
-        anchors.rightMargin: frame ? (frameAroundContents ? (vscrollbar.visible ? vscrollbar.width + 2 * frameMargins : 0) : -frameWidth) : 0
-        anchors.bottomMargin: frame ? (frameAroundContents ? (hscrollbar.visible ? hscrollbar.height + 2 * frameMargins : 0) : -frameWidth) : 0
 
         Keys.onUpPressed: if (currentIndex > 0)currentIndex = currentIndex - 1
         Keys.onDownPressed: if (currentIndex< count - 1)currentIndex = currentIndex + 1
+
         onCurrentIndexChanged: {
             positionViewAtIndex(currentIndex, ListView.Contain)
             vscrollbar.value = tree.contentY
         }
 
-
         delegate: Item {
             id: rowitem
             width: row.width
             height: row.height
+            anchors.margins: frameMargins
             property int rowIndex: model.index
             property bool alternateRow: alternateRowColor && rowIndex %2 == 1
             QStyleItem {
@@ -80,7 +95,7 @@ FocusScope{
                 elementType: "itemrow"
                 // Row fills the tree with regardless of item size
                 // But scrollbar should not adjust to it
-                width:tree.width
+                width: frameitem.width
                 height:parent.height
                 activeControl: model.index %2 == 0 ? "alternate" : ""
                 selected: ListView.isCurrentItem ? "true" : "false"
@@ -112,22 +127,20 @@ FocusScope{
             }
         }
     }
-
     ListView {
         id: header
         focus:false
         interactive:false
-        anchors.rightMargin: frame ? (frameAroundContents ? (vscrollbar.visible ? vscrollbar.width + 2 * frameMargins : 0) : -frameWidth) : 0
-        anchors.left:parent.left
-        anchors.top:parent.top
+        anchors.margins: frameMargins
+        anchors.left:frameitem.left
+        anchors.right: frameitem.right
+        anchors.top:frameitem.top
         height: Math.max(text.font.pixelSize + 2, styleitem.sizeFromContents(text.font.pixelSize, text.font.pixelSize).height)
-        width:parent.width
         orientation: ListView.Horizontal
 
 
-        // Derive size fomr style
+        // Derive size from style
         Text{ id:text }
-        QStyleItem { id: styleitem ; elementType: "header"; visible:false }
 
         model: headermodel
 
@@ -171,22 +184,21 @@ FocusScope{
                 }
             }
         }
+
+        QStyleItem {
+            elementType: "header"
+
+            anchors.top: parent.top
+            anchors.right: parent.right
+            anchors.bottom: header.bottom
+            width: Math.max(0, frameitem.width-contentWidth)
+            raised: true
+        }
     }
-
-    QStyleItem {
-        elementType: "header"
-
-        anchors.top: parent.top
-        anchors.right: parent.right
-        anchors.bottom: header.bottom
-        width: Math.max(0, tree.width-contentWidth)
-        raised: true
-    }
-
     ScrollBar {
         id: hscrollbar
         orientation: Qt.Horizontal
-        property int availableWidth : tree.width - (frame ? (vscrollbar.width) : 0)
+        property int availableWidth: root.width - (frame ? (vscrollbar.width) : 0)
         visible: contentWidth > availableWidth
         maximumValue: contentWidth > availableWidth ? tree.contentWidth - availableWidth: 0
         minimumValue: 0
@@ -202,7 +214,7 @@ FocusScope{
     ScrollBar {
         id: vscrollbar
         orientation: Qt.Vertical
-        property int availableHeight : tree.height - (frame ? (hscrollbar.height) : 0)
+        property int availableHeight : root.height - (frame ? (hscrollbar.height) : 0)
         visible: contentHeight > availableHeight
         maximumValue: contentHeight > availableHeight ? tree.contentHeight - availableHeight : 0
         minimumValue: 0
@@ -221,5 +233,7 @@ FocusScope{
         visible: highlightOnFocus && parent.activeFocus && styleitem.styleHint("focuswidget")
         elementType: "focusframe"
     }
+
+    QStyleItem { id: styleitem ; elementType: "header"; visible:false }
     SystemPalette{id:palette}
 }
