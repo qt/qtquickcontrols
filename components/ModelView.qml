@@ -148,8 +148,8 @@ FocusScope{
             clip: true
             elementType: "header"
             raised: true
-            sunken: hoverarea.pressed
-            hover: hoverarea.containsMouse
+            sunken: headerClickArea.pressed
+            hover: headerClickArea.containsMouse
             property string sortString: sortIndicatorDirection == "up" ? "up" : "down";
             activeControl: sortIndicatorVisible &&  (model.index == sortColumn) ? sortString : ""
 
@@ -158,7 +158,7 @@ FocusScope{
             text: model.label
 
             MouseArea{
-                id: hoverarea
+                id: headerClickArea
                 hoverEnabled: true
                 anchors.fill: parent
                 onClicked: {
@@ -169,13 +169,16 @@ FocusScope{
             }
 
             MouseArea{
+                id: headerResizeHandle
                 property int offset:0
+                property int minimumSize: 20
                 anchors.rightMargin: -width/2
                 width: 16 ; height: parent.height
                 anchors.right: parent.right
-
                 onPositionChanged:  {
-                    headermodel.setProperty(index, "width",model.width + (mouseX - offset))}
+                    var newHeaderWidth = model.width + (mouseX - offset)
+                    headermodel.setProperty(index, "width", Math.max(minimumSize, newHeaderWidth))
+                }
                 onPressedChanged: if(pressed)offset=mouseX
 
                 QStyleItem {
@@ -184,14 +187,12 @@ FocusScope{
                 }
             }
         }
-
         QStyleItem {
             elementType: "header"
-
             anchors.top: parent.top
             anchors.right: parent.right
             anchors.bottom: header.bottom
-            width: Math.max(0, frameitem.width-contentWidth)
+            width: Math.max(0, header.width - contentWidth)
             raised: true
         }
     }
