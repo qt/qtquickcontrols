@@ -104,17 +104,18 @@ FocusScope{
             id: rowitem
             elementType: "itemrow"
             width: parent.width
-            height: 18
+            height: row.height
             activeControl: index%2 == 0 ? "alternate" : ""
             property int rowIndex: model.index
             selected: ListView.isCurrentItem ? "true" : "false"
             Row {
+                id: row
                 Repeater {
                     model: headermodel.count
                     QStyleItem {
                         id: itemdelegate
                         elementType: "item"
-                        height: 20
+                        height: sizeFromContents(16, 16).height
                         activeControl: index%2 == 0 ? "alternate" : ""
                         selected: rowitem.ListView.isCurrentItem ? "true" : "false"
                         property string varname: headermodel.get(index).label
