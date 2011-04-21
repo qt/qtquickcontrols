@@ -143,8 +143,10 @@ void QStyleItem::initStyleOption()
 
         QStyleOptionHeader *opt = qstyleoption_cast<QStyleOptionHeader*>(m_styleoption);
         opt->text = text();
-        opt->sortIndicator = activeControl() == "sort" ?
-                             QStyleOptionHeader::SortDown : QStyleOptionHeader::None;
+        opt->sortIndicator = activeControl() == "down" ?
+                    QStyleOptionHeader::SortDown
+                  : activeControl() == "up" ?
+                        QStyleOptionHeader::SortUp : QStyleOptionHeader::None;
     }
     else if (type == QLatin1String("toolbutton")) {
         if (!m_styleoption)

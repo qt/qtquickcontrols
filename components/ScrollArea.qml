@@ -7,7 +7,6 @@ FocusScope {
     width: 100
     height: 100
 
-    property int __scrollbarExtent : styleitem.pixelMetric("scrollbarExtent");
     property int frameWidth: styleitem.pixelMetric("defaultframewidth");
     property int contentHeight : content.childrenRect.height
     property int contentWidth: content.childrenRect.width
@@ -73,8 +72,9 @@ FocusScope {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.leftMargin: (frame ? frameWidth : 0)
-        anchors.rightMargin: { vscrollbar.visible ? __scrollbarExtent : (frame ? 1 : 0) }
+        anchors.rightMargin: { vscrollbar.visible ? scrollbarExtent : (frame ? 1 : 0) }
         onValueChanged: contentX = value
+        property int scrollbarExtent : styleitem.pixelMetric("scrollbarExtent");
     }
 
     ScrollBar {

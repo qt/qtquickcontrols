@@ -6,7 +6,6 @@ FocusScope{
     id: root
     property variant headermodel
     property variant model
-    property int __scrollbarExtent : styleitem.pixelMetric("scrollbarExtent");
     property int frameWidth: styleitem.pixelMetric("defaultframewidth");
     property alias contentHeight : tree.contentHeight
     property alias contentWidth: tree.contentWidth
@@ -17,11 +16,13 @@ FocusScope{
 
     property alias contentX: tree.contentX
     property alias contentY: tree.contentY
-
     property bool alternateRowColor: true
 
-    property Component itemDelegate: standardDelegate
+    property int sortColumn: 0
+    property bool sortIndicatorVisible: true
+    property string sortIndicatorDirection: "down"
 
+    property Component itemDelegate: standardDelegate
 
     Component {
         id: standardDelegate
@@ -103,7 +104,7 @@ FocusScope{
                 onWidthChanged: tree.contentWidth = width
             }
             MouseArea{
-                anchors.fill:parent
+                anchors.fill: parent
                 onPressed:  {
                     tree.forceActiveFocus()
                     tree.currentIndex = rowIndex
@@ -123,7 +124,6 @@ FocusScope{
         width:parent.width
         orientation: ListView.Horizontal
 
-        property int sortColumn: -1
 
         // Derive size fomr style
         Text{ id:text }
@@ -137,7 +137,8 @@ FocusScope{
             raised: true
             sunken: hoverarea.pressed
             hover: hoverarea.containsMouse
-            activeControl: model.index == header.sortColumn ? "sort" : ""
+            property string sortString: sortIndicatorDirection == "up" ? "up" : "down";
+            activeControl: sortIndicatorVisible &&  (model.index == sortColumn) ? sortString : ""
 
             width: model.width
             height: parent.height
@@ -147,14 +148,11 @@ FocusScope{
                 id: hoverarea
                 hoverEnabled: true
                 anchors.fill: parent
-                /*
-                        onClicked: {
-                        if (index == 1)
-                            filemodel.sortField = 3
-                        else filemodel.sortField = 1
-                        header.sortColumn = index
-                    }
-                    */
+                onClicked: {
+                    if (sortColumn == index)
+                        sortIndicatorDirection = sortIndicatorDirection === "up" ? "down" : "up"
+                    sortColumn = index
+                }
             }
 
             MouseArea{
@@ -196,8 +194,9 @@ FocusScope{
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.leftMargin: (frame ? frameWidth : 0)
-        anchors.rightMargin: { vscrollbar.visible ? __scrollbarExtent : (frame ? 1 : 0) }
+        anchors.rightMargin: { vscrollbar.visible ? scrollbarExtent : (frame ? 1 : 0) }
         onValueChanged: contentX = value
+        property int scrollbarExtent : styleitem.pixelMetric("scrollbarExtent");
     }
 
     ScrollBar {
