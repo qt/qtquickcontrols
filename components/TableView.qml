@@ -99,6 +99,13 @@ FocusScope{
         }
     }
 
+    Rectangle {
+        id: colorRect
+        color: "white"
+        anchors.fill: frameitem
+        anchors.margins: frameWidth
+    }
+
     QStyleItem {
         id: frameitem
         elementType: "frame"
@@ -118,6 +125,7 @@ FocusScope{
 
         interactive: false
         anchors.top: header.bottom
+        anchors.topMargin: -frameWidth
         anchors.left: frameitem.left
         anchors.right: frameitem.right
         anchors.bottom: frameitem.bottom
@@ -187,7 +195,6 @@ FocusScope{
         anchors.top:frameitem.top
         height: Math.max(text.font.pixelSize + 2, styleitem.sizeFromContents(text.font.pixelSize, text.font.pixelSize).height)
         orientation: ListView.Horizontal
-
 
         // Derive size from style
         Text{ id:text }
