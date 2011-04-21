@@ -139,6 +139,7 @@ public Q_SLOTS:
     QString hitTest(int x, int y);
     QRect subControlRect(const QString &subcontrolString);
     void showToolTip(const QString &str);
+    int textWidth(const QString &);
 
 Q_SIGNALS:
     void elementTypeChanged();

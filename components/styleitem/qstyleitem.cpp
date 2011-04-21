@@ -834,6 +834,13 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
         painter->restore();
 }
 
+int QStyleItem::textWidth(const QString &text)
+{
+    if (widget())
+        return widget()->fontMetrics().boundingRect(text).width();
+    return qApp->fontMetrics().boundingRect(text).width();
+}
+
 int QStyleItem::fontHeight()
 {
     if (widget())

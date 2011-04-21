@@ -99,11 +99,10 @@ FocusScope{
             positionViewAtIndex(currentIndex, ListView.Contain)
             vscrollbar.value = tree.contentY
         }
-
         delegate: QStyleItem {
             id: rowitem
             elementType: "itemrow"
-            width: parent.width
+            width: row.width
             height: row.height
             activeControl: index%2 == 0 ? "alternate" : ""
             property int rowIndex: model.index
@@ -120,10 +119,10 @@ FocusScope{
                         selected: rowitem.ListView.isCurrentItem ? "true" : "false"
                         property string varname: headermodel.get(index).label
                         text: root.model.get(rowIndex)[varname];
-                        width:  (index ==  headermodel.count - 1) ? header.width - x  : headermodel.get(index).width
-
+                        width: (index ==  headermodel.count - 1) ? Math.max(textWidth(text), header.width - x)  : headermodel.get(index).width
                     }
                 }
+                onWidthChanged: tree.contentWidth = width
             }
             MouseArea{
                 anchors.fill:parent
