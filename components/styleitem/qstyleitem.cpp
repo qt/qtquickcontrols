@@ -132,6 +132,7 @@ void QStyleItem::initStyleOption()
         QStyleOptionViewItemV4 *opt = qstyleoption_cast<QStyleOptionViewItemV4*>(m_styleoption);
         opt->features = QStyleOptionViewItemV4::HasDisplay;
         opt->text = text();
+        opt->textElideMode = Qt::ElideRight;
         opt->palette = widget()->palette();
     }
     else if (type == QLatin1String("header")) {

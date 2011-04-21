@@ -14,14 +14,13 @@ FocusScope {
     property alias color: colorRect.color
     property bool frame: true
     property bool highlightOnFocus: false
+    property bool frameAroundContents: styleitem.styleHint("framearoundcontents")
+    property int frameMargins : frame ? 2 : 0
 
     default property alias data: content.data
 
     property int contentY
     property int contentX
-
-    property bool frameAroundContents: styleitem.styleHint("framearoundcontents")
-    property int frameMargins : frame ? 2 : 0
 
     onContentYChanged: { vscrollbar.value = contentY }
     onContentXChanged: { hscrollbar.value = contentX }
