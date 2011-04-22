@@ -50,14 +50,9 @@ FocusScope {
         clip: true
 
         Item {
-            id: docmargins
-            anchors.fill:parent
-            anchors.margins:frameMargins
-            Item {
-                id: content
-                x: -scrollarea.contentX
-                y: -scrollarea.contentY
-            }
+            id: content
+            x: -scrollarea.contentX
+            y: -scrollarea.contentY
         }
     }
 

@@ -219,15 +219,15 @@ FocusScope{
     }
     ListView {
         id: header
-        focus:false
-        interactive:false
+        focus: false
+        interactive: false
         anchors.margins: frameMargins
-        anchors.left:frameitem.left
+        anchors.left: frameitem.left
         anchors.right: frameitem.right
-        anchors.top:frameitem.top
+        anchors.top: frameitem.top
         height: Math.max(text.font.pixelSize + 2, styleitem.sizeFromContents(text.font.pixelSize, text.font.pixelSize).height)
         orientation: ListView.Horizontal
-
+        clip: true
         // Derive size from style
         Text{ id:text }
 
