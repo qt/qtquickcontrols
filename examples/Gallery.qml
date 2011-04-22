@@ -27,6 +27,22 @@ Rectangle {
                 anchors.verticalCenter: parent.verticalCenter
             }
         }
+
+        ContextMenu {
+            id: editmenu
+            model: ListModel {
+                id: menu
+                ListElement { text: "Copy" }
+                ListElement { text: "Cut" }
+                ListElement { text: "Paste" }
+            }
+        }
+        MouseArea {
+            anchors.fill:  parent
+            acceptedButtons: Qt.RightButton
+            onPressed: editmenu.show(mouseX, mouseY)
+        }
+
         CheckBox {
             id: enabledCheck
             text: "Enabled"
