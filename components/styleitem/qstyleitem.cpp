@@ -217,7 +217,7 @@ void QStyleItem::initStyleOption()
             m_styleoption = new QStyleOptionButton();
 
         QStyleOptionButton *opt = qstyleoption_cast<QStyleOptionButton*>(m_styleoption);
-        if (!(opt->state & QStyle::State_On))
+        if (!on())
             opt->state |= QStyle::State_Off;
         opt->text = text();
     }
