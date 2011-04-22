@@ -316,6 +316,18 @@ FocusScope{
         anchors.bottomMargin: (frameAroundContents && hscrollbar.visible) ? hscrollbar.height : 0
     }
 
+    Rectangle {
+        // This is the filled corner between scrollbars
+        id: cornerFill
+        anchors.left:  vscrollbar.left
+        anchors.right: vscrollbar.right
+        anchors.top: hscrollbar.top
+        anchors.bottom: hscrollbar.bottom
+        visible: hscrollbar.visible && vscrollbar.visible
+        SystemPalette { id: syspal }
+        color: syspal.window
+    }
+
     QStyleItem {
         z: 2
         anchors.fill: parent
