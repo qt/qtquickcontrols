@@ -222,12 +222,12 @@ Rectangle {
                 anchors.fill:parent
 
                 headermodel: ListModel {
-                    ListElement{ label: "Title" ; width:100}
-                    ListElement{ label: "ImageSource" ; width:100}
-                    ListElement{ label: "Filename" ; width:100}
+                    ListElement{ label: "Title" ; width: 100}
+                    ListElement{ label: "ImageSource" ; width: 200}
+                    ListElement{ label: "Filename" ; width: 200}
                 }
                 model: XmlListModel {
-                    source: "http://api.flickr.com/services/feeds/photos_public.gne?format=rss2&tags=" + "cat"
+                    source: "http://api.flickr.com/services/feeds/photos_public.gne?format=rss2&tags=" + "Qt"
                     query: "/rss/channel/item"
                     namespaceDeclarations: "declare namespace media=\"http://search.yahoo.com/mrss/\";"
                     XmlRole { name: "Title"; query: "title/string()" }

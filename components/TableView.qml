@@ -313,7 +313,7 @@ FocusScope{
         anchors.bottom: parent.bottom
         anchors.topMargin: styleitem.style == "mac" ? 1 : 0
         onValueChanged: contentY = value
-        anchors.bottomMargin: (frameAroundContents && hscrollbar.visible) ? hscrollbar.height : 0
+        anchors.bottomMargin: hscrollbar.visible ? hscrollbar.height : 0
     }
 
     Rectangle {
