@@ -5,7 +5,7 @@ import "../components/plugin"
 Rectangle {
 
     width: 538 + frame.margins * 2
-    height: 350 + frame.margins * 2
+    height: 360 + frame.margins * 2
 
     ToolBar{
         id: toolbar
@@ -73,17 +73,16 @@ Rectangle {
 
         Tab {
             title: "Widgets"
-            ScrollArea{
+            Item {
                 id: flickable
-                clip: true
                 anchors.fill: parent
-                frame: false
                 enabled: enabledCheck.checked
+
                 Row {
                     id: contentRow
-                    anchors.margins: 18
+                    anchors.fill:parent
+                    anchors.margins: 8
                     spacing: 16
-                    anchors.fill: parent
                     Column {
                         spacing: 9
                         Row {
