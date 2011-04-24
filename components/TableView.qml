@@ -36,7 +36,6 @@ import "../components/plugin"
 *    ListElement{ column1: "value 3"; column2: "value 4"}
 * }
 *
-*
 * You provide title and size properties on headersections
 * by setting the headermodel :
 *
@@ -116,6 +115,8 @@ FocusScope{
         color: "white"
         anchors.fill: frameitem
         anchors.margins: frameWidth
+        anchors.rightMargin: (!frameAroundContents && vscrollbar.visible ? vscrollbar.width +frameWidth: 0)
+        anchors.bottomMargin: (!frameAroundContents && hscrollbar.visible ? hscrollbar.height +frameWidth : 0)
     }
 
     QStyleItem {
@@ -143,7 +144,7 @@ FocusScope{
             property bool autoincrement: false;
             property bool autodecrement: false;
 
-            onReleased:  {
+            onReleased: {
                 autoincrement = false
                 autodecrement = false
             }
@@ -182,6 +183,9 @@ FocusScope{
         anchors.bottom: frameitem.bottom
         anchors.margins: frameWidth
 
+        anchors.rightMargin: (!frameAroundContents && vscrollbar.visible ? vscrollbar.width +frameWidth: 0)
+        anchors.bottomMargin: (!frameAroundContents && hscrollbar.visible ? hscrollbar.height +frameWidth : 0)
+
         focus: true
         clip:true
 
@@ -206,8 +210,8 @@ FocusScope{
                 // Row fills the tree with regardless of item size
                 // But scrollbar should not adjust to it
                 width: frameitem.width
-                height:parent.height
-                activeControl: model.index %2 == 0 ? "alternate" : ""
+                height: parent.height
+                activeControl: model.index%2 == 1 ? "alternate" : ""
                 selected: ListView.isCurrentItem ? "true" : "false"
             }
             Row {
@@ -326,18 +330,6 @@ FocusScope{
         anchors.topMargin: styleitem.style == "mac" ? 1 : 0
         onValueChanged: contentY = value
         anchors.bottomMargin: hscrollbar.visible ? hscrollbar.height : 0
-    }
-
-    Rectangle {
-        // This is the filled corner between scrollbars
-        id: cornerFill
-        anchors.left:  vscrollbar.left
-        anchors.right: vscrollbar.right
-        anchors.top: hscrollbar.top
-        anchors.bottom: hscrollbar.bottom
-        visible: hscrollbar.visible && vscrollbar.visible
-        SystemPalette { id: syspal }
-        color: syspal.window
     }
 
     QStyleItem {
