@@ -206,7 +206,7 @@ FocusScope{
                     Loader {
                         id: itemDelegateLoader
                         sourceComponent: itemDelegate
-                        property string itemtext: root.model.get(rowIndex)[ headermodel.get(index).label]
+                        property string itemtext: root.model.get(rowIndex)[ headermodel.get(index).property]
                         property int itemwidth: headermodel.get(index).width
                         property int itemheight: Math.max(16, rowstyle.sizeFromContents(16, 16).height)
                         property bool itemselected: rowitem.ListView.isCurrentItem
@@ -244,7 +244,7 @@ FocusScope{
 
             width: model.width
             height: parent.height
-            text: model.label
+            text: model.caption
 
             MouseArea{
                 id: headerClickArea
@@ -271,7 +271,7 @@ FocusScope{
                 onPressedChanged: if(pressed)offset=mouseX
 
                 QStyleItem {
-                    anchors.fill:parent
+                    anchors.fill: parent
                     cursor: "splithcursor"
                 }
             }

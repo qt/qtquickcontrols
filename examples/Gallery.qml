@@ -233,21 +233,21 @@ Rectangle {
             title: "Itemviews"
             TableView{
                 frame: true
-                anchors.margins:4
-                anchors.fill:parent
+                anchors.margins: 4
+                anchors.fill: parent
 
                 headermodel: ListModel {
-                    ListElement{ label: "Title" ; width: 100}
-                    ListElement{ label: "ImageSource" ; width: 200}
-                    ListElement{ label: "Filename" ; width: 200}
+                    ListElement{ property: "title" ; caption: "Title" ; width: 100}
+                    ListElement{ property: "imagesource" ; caption: "Image Source" ; width: 200}
+                    ListElement{ property: "filename" ; caption: "File Name" ; width: 200}
                 }
                 model: XmlListModel {
                     source: "http://api.flickr.com/services/feeds/photos_public.gne?format=rss2&tags=" + "Qt"
                     query: "/rss/channel/item"
                     namespaceDeclarations: "declare namespace media=\"http://search.yahoo.com/mrss/\";"
-                    XmlRole { name: "Title"; query: "title/string()" }
-                    XmlRole { name: "ImageSource"; query: "media:thumbnail/@url/string()" }
-                    XmlRole { name: "Filename"; query: "link/string()" }
+                    XmlRole { name: "title"; query: "title/string()" }
+                    XmlRole { name: "imagesource"; query: "media:thumbnail/@url/string()" }
+                    XmlRole { name: "filename"; query: "link/string()" }
                 }
             }
         }
