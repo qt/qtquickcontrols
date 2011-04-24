@@ -18,7 +18,7 @@ import "../components/plugin"
 * itemheight - default platform size of item
 * itemwidth - default platform width of item
 * itemselected - if the row is currently selected
-* itemtext - The text for this item
+* itemdata - The text for this item
 *
 * For example:
 *   itemDelegate: Text {
@@ -26,16 +26,28 @@ import "../components/plugin"
 *       elide: Text.ElideRight
 *       height: itemheight
 *       width: itemwidth
-*       text: itemtext
+*       text: itemdata
 *    }
+*
+* Data for each row is provided through a model:
+*
+* ListModel {
+*    ListElement{ column1: "value 1"; column2: "value 2"}
+*    ListElement{ column1: "value 3"; column2: "value 4"}
+* }
+*
 *
 * You provide title and size properties on headersections
 * by setting the headermodel :
 *
 * ListModel {
-*    ListElement{ label: "Column 1" ; width:100}
-*    ListElement{ label: "Column 2" ; width:200}
+*    ListElement{ property: "column1" ; caption: "Column 1" ; width:100}
+*    ListElement{ property: "column2" ; caption: "Column 2" ; width:200}
 * }
+*
+* The header sections are attached to properties in the datamodel by defining
+* the listmodel property they attach to.
+*
 *
 * The view itself does not provide sorting. This has to
 * be done on the model itself. However you can provide sorting
@@ -80,7 +92,7 @@ FocusScope{
                 anchors.margins: 2
                 anchors.verticalCenter: parent.verticalCenter
                 elide: Text.ElideRight
-                text: itemtext
+                text: itemdata
                 color: itemselected ? palette.highlightedText : palette.text
             }
         }
@@ -94,7 +106,7 @@ FocusScope{
             elementType: "item"
             height: itemheight
             width:  itemwidth
-            text:   itemtext
+            text:   itemdata
             selected: itemselected
         }
     }
@@ -206,7 +218,7 @@ FocusScope{
                     Loader {
                         id: itemDelegateLoader
                         sourceComponent: itemDelegate
-                        property string itemtext: root.model.get(rowIndex)[ headermodel.get(index).property]
+                        property string itemdata: root.model.get(rowIndex)[ headermodel.get(index).property]
                         property int itemwidth: headermodel.get(index).width
                         property int itemheight: Math.max(16, rowstyle.sizeFromContents(16, 16).height)
                         property bool itemselected: rowitem.ListView.isCurrentItem
