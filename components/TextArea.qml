@@ -12,21 +12,29 @@ ScrollArea {
     property alias text: edit.text
     property alias wrapMode: edit.wrapMode
     highlightOnFocus: true
+    property int documentMargins: 4
 
-    TextEdit {
-        id: edit
-        text: loremIpsum + loremIpsum;
-        wrapMode: TextEdit.WordWrap;
-        width: area.contentWidth
-        selectByMouse:true
-        focus:true
+    Item {
+        anchors.left: parent.left
+        anchors.top: parent.top
+        height: edit.height - 8
+        anchors.margins: documentMargins
 
-        // keep textcursor within scrollarea
-        onCursorRectangleChanged:
-            if (cursorRectangle.y >= area.contentY + area.height - 1.5*cursorRectangle.height)
-                area.contentY = cursorRectangle.y - area.height + 1.5*cursorRectangle.height
-            else if (cursorRectangle.y < area.contentY)
-                area.contentY = cursorRectangle.y
+        TextEdit {
+            id: edit
+            text: loremIpsum + loremIpsum;
+            wrapMode: TextEdit.WordWrap;
+            width: area.contentWidth
+            selectByMouse:true
+            focus:true
 
+            // keep textcursor within scrollarea
+            onCursorRectangleChanged:
+                if (cursorRectangle.y >= area.contentY + area.height - 1.5*cursorRectangle.height)
+                    area.contentY = cursorRectangle.y - area.height + 1.5*cursorRectangle.height
+                else if (cursorRectangle.y < area.contentY)
+                    area.contentY = cursorRectangle.y
+
+        }
     }
 }
