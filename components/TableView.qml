@@ -183,8 +183,8 @@ FocusScope{
         anchors.bottom: frameitem.bottom
         anchors.margins: frameWidth
 
-        anchors.rightMargin: (!frameAroundContents && vscrollbar.visible ? vscrollbar.width +frameWidth: 0)
-        anchors.bottomMargin: (!frameAroundContents && hscrollbar.visible ? hscrollbar.height +frameWidth : 0)
+        anchors.rightMargin: (!frameAroundContents && vscrollbar.visible ? vscrollbar.width : 0) + frame ? frameWidth : 0
+        anchors.bottomMargin: (!frameAroundContents && hscrollbar.visible ? hscrollbar.height  : 0) + frame ? frameWidth : 0
 
         focus: true
         clip:true
