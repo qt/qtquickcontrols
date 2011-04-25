@@ -18,7 +18,7 @@ import "../components/plugin"
 * itemheight - default platform size of item
 * itemwidth - default platform width of item
 * itemselected - if the row is currently selected
-* itemdata - The text for this item
+* itemvalue - The text for this item
 *
 * For example:
 *   itemDelegate: Text {
@@ -26,7 +26,7 @@ import "../components/plugin"
 *       elide: Text.ElideRight
 *       height: itemheight
 *       width: itemwidth
-*       text: itemdata
+*       text: itemvalue
 *    }
 *
 * Data for each row is provided through a model:
@@ -91,7 +91,7 @@ FocusScope{
                 anchors.margins: 2
                 anchors.verticalCenter: parent.verticalCenter
                 elide: Text.ElideRight
-                text: itemdata
+                text: itemvalue
                 color: itemselected ? palette.highlightedText : palette.text
             }
         }
@@ -105,7 +105,7 @@ FocusScope{
             elementType: "item"
             height: itemheight
             width:  itemwidth
-            text:   itemdata
+            text:   itemvalue
             selected: itemselected
         }
     }
@@ -183,14 +183,14 @@ FocusScope{
         anchors.bottom: frameitem.bottom
         anchors.margins: frameWidth
 
-        anchors.rightMargin: (!frameAroundContents && vscrollbar.visible ? vscrollbar.width : 0) + frame ? frameWidth : 0
-        anchors.bottomMargin: (!frameAroundContents && hscrollbar.visible ? hscrollbar.height  : 0) + frame ? frameWidth : 0
+        anchors.rightMargin: (!frameAroundContents && vscrollbar.visible ? vscrollbar.width +frameWidth: 0)
+        anchors.bottomMargin: (!frameAroundContents && hscrollbar.visible ? hscrollbar.height +frameWidth : 0)
 
         focus: true
-        clip:true
+        clip: true
 
-        Keys.onUpPressed: if (currentIndex > 0)currentIndex = currentIndex - 1
-        Keys.onDownPressed: if (currentIndex< count - 1)currentIndex = currentIndex + 1
+        Keys.onUpPressed: if (currentIndex > 0) currentIndex = currentIndex - 1
+        Keys.onDownPressed: if (currentIndex< count - 1) currentIndex = currentIndex + 1
 
         onCurrentIndexChanged: {
             positionViewAtIndex(currentIndex, ListView.Contain)
@@ -222,7 +222,7 @@ FocusScope{
                     Loader {
                         id: itemDelegateLoader
                         sourceComponent: itemDelegate
-                        property string itemdata: root.model.get(rowIndex)[ headermodel.get(index).property]
+                        property string itemvalue: root.model.get(rowIndex)[ headermodel.get(index).property]
                         property int itemwidth: headermodel.get(index).width
                         property int itemheight: Math.max(16, rowstyle.sizeFromContents(16, 16).height)
                         property bool itemselected: rowitem.ListView.isCurrentItem
@@ -304,7 +304,7 @@ FocusScope{
     ScrollBar {
         id: hscrollbar
         orientation: Qt.Horizontal
-        property int availableWidth: root.width - (frame ? (vscrollbar.width) : 0)
+        property int availableWidth: root.width - vscrollbar.width
         visible: contentWidth > availableWidth
         maximumValue: contentWidth > availableWidth ? tree.contentWidth - availableWidth: 0
         minimumValue: 0
@@ -320,7 +320,8 @@ FocusScope{
     ScrollBar {
         id: vscrollbar
         orientation: Qt.Vertical
-        property int availableHeight : root.height - (frame ? (hscrollbar.height) : 0)
+        // We cannot bind directly to tree.height due to binding loops so we have to redo the calculation here
+        property int availableHeight : root.height - (hscrollbar.visible ? hscrollbar.height : 0) - header.height - (frame ? 2 * frameWidth : 0)
         visible: contentHeight > availableHeight
         maximumValue: contentHeight > availableHeight ? tree.contentHeight - availableHeight : 0
         minimumValue: 0
