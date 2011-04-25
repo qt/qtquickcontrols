@@ -67,13 +67,14 @@ Rectangle {
             "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor "+
             "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor "+
             "incididunt ut labore et dolore magna aliqua.\n Ut enim ad minim veniam, quis nostrud "+
-            "exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ";
+            "exercitation ullamco laboris nisi ut aliquip ex ea commodo cosnsequat. ";
 
     TabFrame {
         id:frame
+        focus:true
         property int margins : styleitem.style == "mac" ? 16 : 0
         position: tabPositionGroup.checkedButton == r2 ? "South" : "North"
-        tabbar: TabBar{parent: frame}
+        tabbar: TabBar{parent: frame; focus:true; KeyNavigation.tab:button1}
         anchors.top: toolbar.bottom
         anchors.bottom: parent.bottom
         anchors.right: parent.right
@@ -105,7 +106,7 @@ Rectangle {
                                 tooltip:"This is an interesting tool tip"
                                 defaultbutton:true
                                 KeyNavigation.tab: button2
-                                KeyNavigation.backtab: button1
+                                KeyNavigation.backtab: frame.tabbar
                             }
                             Button {
                                 id:button2
@@ -113,7 +114,7 @@ Rectangle {
                                 focus:true
                                 width:98
                                 KeyNavigation.tab: combo
-                                KeyNavigation.backtab: button2
+                                KeyNavigation.backtab: button1
                             }
                         }
                         ChoiceList {
@@ -140,7 +141,7 @@ Rectangle {
                                 id: t2
                                 width:97
                                 KeyNavigation.tab: t3
-                                KeyNavigation.backtab: t2
+                                KeyNavigation.backtab: t1
                             }
                         }
                         TextField {
@@ -200,7 +201,7 @@ Rectangle {
                                     id: r1
                                     text: "North"
                                     KeyNavigation.tab: r2
-                                    KeyNavigation.backtab: r2
+                                    KeyNavigation.backtab: tickmarkCheck
                                     checked: true
                                 }
                                 RadioButton {

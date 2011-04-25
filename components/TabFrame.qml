@@ -2,10 +2,11 @@ import QtQuick 1.0
 import "custom" as Components
 import "plugin"
 
-Item{
+Item {
     id: tabWidget
     width:100
     height:100
+    focus: true
     property TabBar tabbar
     property int current: 0
     property int count: stack.children.length

@@ -7,6 +7,16 @@ Item {
     id: tabbar
     property int tabHeight: tabrow.height
     property int tabWidth: tabrow.width
+
+    Keys.onRightPressed: {
+        if (tabFrame && tabFrame.current < tabFrame.count - 1)
+            tabFrame.current = tabFrame.current + 1
+    }
+    Keys.onLeftPressed: {
+        if (tabFrame && tabFrame.current > 0)
+            tabFrame.current = tabFrame.current - 1
+    }
+
     height: tabHeight
 
     property Item tabFrame
@@ -38,6 +48,7 @@ Item {
 
     Row {
         id:tabrow
+        focus:true
         property int paintMargins: 1
         states:
         State {
@@ -48,11 +59,14 @@ Item {
                 anchors.horizontalCenter: tabbar.horizontalCenter
             }
         }
+
         Repeater {
             id:repeater
+            focus:true
             model: tabFrame ? tabFrame.tabs.length : null
             delegate: Item {
                 id:tab
+                focus:true
                 property int tabindex: index
                 property bool selected : tabFrame.current == index
                 z: selected ? 1 : -1
@@ -69,7 +83,7 @@ Item {
                     info: tabbar.position
                     text: tabFrame.tabs[index].title
                     hover: mousearea.containsMouse
-
+                    focus: tabbar.focus && selected
                     property bool first: index === 0
                     paintMargins: tabrow.paintMargins
                     activeControl: tabFrame.count == 1 ? "only" : index === 0 ? "beginning" :
