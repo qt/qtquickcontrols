@@ -61,6 +61,7 @@ Item {
                     width = rect.width
                     height = rect.height
                 }
+                // Component.onCompleted: print("taboverlap" + tabOverlap + " tabbaseoverlap " + tabBaseOverlap + " overlap " +__overlap + " hspace " + tabHSpace)
                 QStyleItem {
                     id: style
                     elementType: "tab"
@@ -73,12 +74,9 @@ Item {
                     paintMargins: tabrow.paintMargins
                     activeControl: tabFrame.count == 1 ? "only" : index === 0 ? "beginning" :
                             index == tabFrame.count-1 ? "end" : "middle"
-                    anchors.leftMargin: (style.text == "North" &&
-                                                      (style.activeControl == "middle" || style.activeControl == "end")
-                                        && tab.selected ? -__overlap : 0 - (first ? 0 : -paintMargins))
+                    //anchors.leftMargin: (tab.selected &&(style.activeControl == "middle" || style.activeControl == "end")? -tabOverlap : 0)
+                    //anchors.rightMargin: (tab.selected &&(style.activeControl == "middle"  || style.activeControl == "beginning") ? -tabOverlap : 0)
 
-                    anchors.rightMargin: -tabOverlap + (style.text == "North" && (style.activeControl == "middle"  || style.activeControl == "beginning")
-                                         && tab.selected ? -__overlap : 0)
                     anchors.fill: parent
                     anchors.margins: -paintMargins
                     Text {

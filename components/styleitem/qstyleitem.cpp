@@ -335,9 +335,6 @@ void QStyleItem::initStyleOption()
     if (!m_styleoption)
         m_styleoption = new QStyleOption();
 
-    if (type == QLatin1String("tab"))
-        widget()->setGeometry(0, 0, width(), height());
-
     m_styleoption->rect = QRect(m_paintMargins, m_paintMargins, width() - 2* m_paintMargins, height() - 2 * m_paintMargins);
 
     if (isEnabled())
@@ -360,9 +357,19 @@ void QStyleItem::initStyleOption()
         m_styleoption->state |= QStyle::State_Horizontal;
 
     if (widget()) {
+        if (type == QLatin1String("tab")) {
+            // Some styles actually check the beginning and end position
+            // using widget geometry, so we have to trick it
+            widget()->setGeometry(0, 0, width(), height());
+            if (activeControl() != "beginning")
+                m_styleoption->rect.translate(1, 0); // Don't position at start of widget
+            if (activeControl() != "end")
+                widget()->resize(200, height());
+        }
 #ifdef Q_WS_WIN
-        widget()->resize(width(), height());
+        else widget()->resize(width(), height());
 #endif
+
         widget()->setEnabled(isEnabled());
         m_styleoption->fontMetrics = widget()->fontMetrics();
         if (!m_styleoption->palette.resolve())
@@ -741,6 +748,7 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
     if (widget()) {
         painter->save();
         painter->setFont(widget()->font());
+        painter->translate(-m_styleoption->rect.left(), 0);
     }
     if (type == QLatin1String("button")) {
         qApp->style()->drawControl(QStyle::CE_PushButton, m_styleoption, painter, widget());

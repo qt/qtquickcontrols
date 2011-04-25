@@ -55,13 +55,6 @@ Rectangle {
     SystemPalette {id: syspal}
     QStyleItem{ id: styleitem}
     color: syspal.window
-
-    gradient: Gradient{
-        GradientStop{ position: 0   ; color: syspal.window }
-        GradientStop{ position: 0.6 ; color: syspal.window }
-        GradientStop{ position: 1   ; color: Qt.darker(syspal.window, 1.1) }
-    }
-
     ListModel {
         id: choices
         ListElement { text: "Banana" }
