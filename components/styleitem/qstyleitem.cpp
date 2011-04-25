@@ -748,7 +748,7 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
     if (widget()) {
         painter->save();
         painter->setFont(widget()->font());
-        painter->translate(-m_styleoption->rect.left(), 0);
+        painter->translate(-m_styleoption->rect.left() + m_paintMargins, 0);
     }
     if (type == QLatin1String("button")) {
         qApp->style()->drawControl(QStyle::CE_PushButton, m_styleoption, painter, widget());
