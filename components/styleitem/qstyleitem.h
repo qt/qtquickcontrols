@@ -115,6 +115,7 @@ public:
     void setMaximum(int maximum) { if (m_maximum != maximum) {m_maximum = maximum; emit maximumChanged();}}
     void setValue(int value) { if (m_value!= value) {m_value = value; emit valueChanged();}}
     void setPaintMargins(int value) {
+    Q_UNUSED(value)
 #ifdef Q_WS_WIN //only vista style needs this hack
         if (m_paintMargins!= value) {m_paintMargins = value;}
 #endif

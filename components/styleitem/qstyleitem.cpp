@@ -492,7 +492,12 @@ int QStyleItem::pixelMetric(const QString &metric)
     else if (metric == "taboverlap")
         return qApp->style()->pixelMetric(QStyle::PM_TabBarTabOverlap, 0 , widget());
     else if (metric == "tabbaseoverlap")
+#ifdef Q_WS_WIN
+        // On windows the tabbar paintmargin extends the overlap by one pixels
+        return 1 + qApp->style()->pixelMetric(QStyle::PM_TabBarBaseOverlap, 0 , widget());
+#else
         return qApp->style()->pixelMetric(QStyle::PM_TabBarBaseOverlap, 0 , widget());
+#endif
     else if (metric == "tabhspace")
         return qApp->style()->pixelMetric(QStyle::PM_TabBarTabHSpace, 0 , widget());
     else if (metric == "tabvspace")
