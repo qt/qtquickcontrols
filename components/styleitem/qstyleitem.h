@@ -114,7 +114,11 @@ public:
     void setMinimum(int minimum) { if (m_minimum!= minimum) {m_minimum = minimum; emit minimumChanged();}}
     void setMaximum(int maximum) { if (m_maximum != maximum) {m_maximum = maximum; emit maximumChanged();}}
     void setValue(int value) { if (m_value!= value) {m_value = value; emit valueChanged();}}
-    void setPaintMargins(int value) { if (m_paintMargins!= value) {m_paintMargins= value;}}
+    void setPaintMargins(int value) {
+#ifdef Q_WS_WIN //only vista style needs this hack
+        if (m_paintMargins!= value) {m_paintMargins = value;}
+#endif
+    }
     void setCursor(const QString &str);
     void setElementType(const QString &str);
     void setText(const QString &str) { if (m_text != str) {m_text = str; emit textChanged();}}

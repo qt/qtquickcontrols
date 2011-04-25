@@ -74,9 +74,6 @@ Item {
                     paintMargins: tabrow.paintMargins
                     activeControl: tabFrame.count == 1 ? "only" : index === 0 ? "beginning" :
                             index == tabFrame.count-1 ? "end" : "middle"
-                    //anchors.leftMargin: (tab.selected &&(style.activeControl == "middle" || style.activeControl == "end")? -tabOverlap : 0)
-                    //anchors.rightMargin: (tab.selected &&(style.activeControl == "middle"  || style.activeControl == "beginning") ? -tabOverlap : 0)
-
                     anchors.fill: parent
                     anchors.margins: -paintMargins
                     Text {
