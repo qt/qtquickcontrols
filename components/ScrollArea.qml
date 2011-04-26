@@ -59,25 +59,17 @@ FocusScope {
     WheelArea {
         id: wheelarea
         anchors.fill: parent
+        horizontalMinimumValue: hscrollbar.minimumValue
+        horizontalMaximumValue: hscrollbar.maximumValue
+        verticalMinimumValue: vscrollbar.minimumValue
+        verticalMaximumValue: vscrollbar.maximumValue
 
-        onVerticalWheelMoved: {
-            var cY = contentY - verticalDelta/15
-            if (cY > vscrollbar.maximumValue)
-                contentY = vscrollbar.maximumValue
-            else if (cY < vscrollbar.minimumValue)
-                contentY = vscrollbar.minimumValue
-            else
-                contentY -= verticalDelta/15
+        onVerticalValueChanged: {
+            contentY = verticalValue
         }
 
-        onHorizontalWheelMoved: {
-            var cX = contentX - horizontalDelta/15
-            if (cX > hscrollbar.maximumValue)
-                contentX = hscrollbar.maximumValue
-            else if (cX < hscrollbar.minimumValue)
-                contentX = hscrollbar.minimumValue
-            else
-                contentX -= horizontalDelta/15
+        onHorizontalValueChanged: {
+            contentX = horizontalValue
         }
     }
 

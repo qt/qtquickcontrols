@@ -43,6 +43,12 @@
 
 QWheelArea::QWheelArea(QDeclarativeItem *parent)
     : QDeclarativeItem(parent),
+      _horizontalMinimumValue(0),
+      _horizontalMaximumValue(0),
+      _verticalMinimumValue(0),
+      _verticalMaximumValue(0),
+      _horizontalValue(0),
+      _verticalValue(0),
       _verticalDelta(0),
       _horizontalDelta(0)
 {}
@@ -84,24 +90,97 @@ bool QWheelArea::event (QEvent * e) {
     return QDeclarativeItem::event(e);
 }
 
+void QWheelArea::setHorizontalMinimumValue(qreal min)
+{
+    _horizontalMinimumValue = min;
+}
+
+qreal QWheelArea::horizontalMinimumValue() const
+{
+    return _horizontalMinimumValue;
+}
+
+void QWheelArea::setHorizontalMaximumValue(qreal max)
+{
+    _horizontalMaximumValue = max;
+}
+qreal QWheelArea::horizontalMaximumValue() const
+{
+    return _horizontalMaximumValue;
+}
+
+void QWheelArea::setVerticalMinimumValue(qreal min)
+{
+    _verticalMinimumValue = min;
+}
+
+qreal QWheelArea::verticalMinimumValue() const
+{
+    return _verticalMinimumValue;
+}
+
+void QWheelArea::setVerticalMaximumValue(qreal max)
+{
+    _verticalMaximumValue = max;
+}
+
+qreal QWheelArea::verticalMaximumValue() const
+{
+    return _verticalMaximumValue;
+}
+
+void QWheelArea::setHorizontalValue(qreal val)
+{
+    if (val > _horizontalMaximumValue)
+       _horizontalValue = _horizontalMaximumValue;
+    else if (val < _horizontalMinimumValue)
+        _horizontalValue = _horizontalMinimumValue;
+    else
+        _horizontalValue = val;
+    emit(horizontalValueChanged());
+}
+
+qreal QWheelArea::horizontalValue() const
+{
+    return _horizontalValue;
+}
+
+void QWheelArea::setVerticalValue(qreal val)
+{
+    if (val > _verticalMaximumValue)
+       _verticalValue = _verticalMaximumValue;
+    else if (val < _verticalMinimumValue)
+        _verticalValue = _verticalMinimumValue;
+    else
+        _verticalValue = val;
+    emit(verticalValueChanged());
+}
+
+qreal QWheelArea::verticalValue() const
+{
+    return _verticalValue;
+}
+
 void QWheelArea::setVerticalDelta(qreal d)
 {
-    _verticalDelta = d;
+    _verticalDelta = d/15;
+    setVerticalValue(_verticalValue - _verticalDelta);
     emit(verticalWheelMoved());
 }
 
-qreal QWheelArea::verticalDelta()
+qreal QWheelArea::verticalDelta() const
 {
     return _verticalDelta;
 }
 
 void QWheelArea::setHorizontalDelta(qreal d)
 {
-    _horizontalDelta = d;
+    _horizontalDelta = d/15;
+    setHorizontalValue(_horizontalValue - _horizontalDelta);
     emit(horizontalWheelMoved());
 }
 
-qreal QWheelArea::horizontalDelta()
+qreal QWheelArea::horizontalDelta() const
 {
     return _horizontalDelta;
 }

@@ -40,6 +40,13 @@ class QWheelArea : public QDeclarativeItem
     Q_OBJECT
     Q_PROPERTY(qreal verticalDelta READ verticalDelta WRITE setVerticalDelta NOTIFY verticalWheelMoved)
     Q_PROPERTY(qreal horizontalDelta READ horizontalDelta WRITE setHorizontalDelta NOTIFY horizontalWheelMoved)
+    Q_PROPERTY(qreal horizontalMinimumValue READ horizontalMinimumValue WRITE setHorizontalMinimumValue)
+    Q_PROPERTY(qreal horizontalMaximumValue READ horizontalMaximumValue WRITE setHorizontalMaximumValue)
+    Q_PROPERTY(qreal verticalMinimumValue READ verticalMinimumValue WRITE setVerticalMinimumValue)
+    Q_PROPERTY(qreal verticalMaximumValue READ verticalMaximumValue WRITE setVerticalMaximumValue)
+    Q_PROPERTY(qreal horizontalValue READ horizontalValue WRITE setHorizontalValue)
+    Q_PROPERTY(qreal verticalValue READ verticalValue WRITE setVerticalValue)
+
 
 public:
     QWheelArea(QDeclarativeItem *parent = 0);
@@ -48,17 +55,43 @@ public:
 
     virtual bool event (QEvent * e);
 
+    void setHorizontalMinimumValue(qreal min);
+    qreal horizontalMinimumValue() const;
+
+    void setHorizontalMaximumValue(qreal min);
+    qreal horizontalMaximumValue() const;
+
+    void setVerticalMinimumValue(qreal min);
+    qreal verticalMinimumValue() const;
+
+    void setVerticalMaximumValue(qreal min);
+    qreal verticalMaximumValue() const;
+
+    void setHorizontalValue(qreal val);
+    qreal horizontalValue() const;
+
+    void setVerticalValue(qreal val);
+    qreal verticalValue() const;
+
     void setVerticalDelta(qreal d);
-    qreal verticalDelta();
+    qreal verticalDelta() const;
 
     void setHorizontalDelta(qreal d);
-    qreal horizontalDelta();
+    qreal horizontalDelta() const;
 
 Q_SIGNALS:
+    void verticalValueChanged();
+    void horizontalValueChanged();
     void verticalWheelMoved();
     void horizontalWheelMoved();
 
 private:
+    qreal _horizontalMinimumValue;
+    qreal _horizontalMaximumValue;
+    qreal _verticalMinimumValue;
+    qreal _verticalMaximumValue;
+    qreal _horizontalValue;
+    qreal _verticalValue;
     qreal _verticalDelta;
     qreal _horizontalDelta;
 
