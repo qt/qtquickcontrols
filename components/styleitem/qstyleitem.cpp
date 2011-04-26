@@ -358,7 +358,7 @@ void QStyleItem::initStyleOption()
         m_styleoption->state |= QStyle::State_Horizontal;
 
     if (widget()) {
-        if (type == QLatin1String("tab")) {
+        if (type == QLatin1String("tab") && style() != QLatin1String("mac")) {
             // Some styles actually check the beginning and end position
             // using widget geometry, so we have to trick it
             widget()->setGeometry(0, 0, width(), height());
@@ -766,6 +766,7 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
         painter->setFont(widget()->font());
         painter->translate(-m_styleoption->rect.left() + m_paintMargins, 0);
     }
+
     if (type == QLatin1String("button")) {
         qApp->style()->drawControl(QStyle::CE_PushButton, m_styleoption, painter, widget());
     }
