@@ -771,8 +771,7 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
         // Only draw through style once
         const QString pmKey = QLatin1Literal("itemrow") % QString::number(m_styleoption->state,16) % activeControl();
         if (!QPixmapCache::find(pmKey, pixmap) || pixmap.width() < width()) {
-            int newSize = width() * 1.5; //Grow by 150 % so we don't have to generate a new image for every resize
-            m_styleoption->rect.setWidth(newSize);
+            int newSize = width();
             pixmap = QPixmap(newSize, height());
             pixmap.fill(Qt::transparent);
             QPainter pixpainter(&pixmap);

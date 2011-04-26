@@ -211,6 +211,7 @@ FocusScope{
                 // Row fills the tree with regardless of item size
                 // But scrollbar should not adjust to it
                 width: frameitem.width
+                x: contentX
                 height: parent.height
                 activeControl: model.index%2 == 1 ? "alternate" : ""
                 selected: ListView.isCurrentItem ? "true" : "false"
