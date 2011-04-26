@@ -47,6 +47,7 @@
 #include <QtGui/QGroupBox>
 #include <QtGui/QToolBar>
 #include <QtGui/QMenu>
+#include <QtCore/QStringBuilder>
 
 
 QStyleItem::QStyleItem(QDeclarativeItem *parent)
@@ -759,10 +760,22 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
         qApp->style()->drawControl(QStyle::CE_PushButton, m_styleoption, painter, widget());
     }
     else if (type == QLatin1String("itemrow")) {
-        qApp->style()->drawPrimitive(QStyle::PE_PanelItemViewRow, m_styleoption, painter, widget());
-        if (!qApp->style()->styleHint(QStyle::SH_ItemView_ShowDecorationSelected) && selected())
-            painter->fillRect(m_styleoption->rect, m_styleoption->palette.highlight());    }
-    else if (type == QLatin1String("item")) {
+        QPixmap pixmap;
+        // Only draw through style once
+        const QString pmKey = QLatin1Literal("itemrow") % QString::number(m_styleoption->state,16) % activeControl();
+        if (!QPixmapCache::find(pmKey, pixmap) || pixmap.width() < width()) {
+            int newSize = width() * 1.5; //Grow by 150 % so we don't have to generate a new image for every resize
+            m_styleoption->rect.setWidth(newSize);
+            pixmap = QPixmap(newSize, height());
+            pixmap.fill(Qt::transparent);
+            QPainter pixpainter(&pixmap);
+            qApp->style()->drawPrimitive(QStyle::PE_PanelItemViewRow, m_styleoption, &pixpainter, widget());
+            if (!qApp->style()->styleHint(QStyle::SH_ItemView_ShowDecorationSelected) && selected())
+                pixpainter.fillRect(m_styleoption->rect, m_styleoption->palette.highlight());
+            QPixmapCache::insert(pmKey, pixmap);
+        }
+        painter->drawPixmap(0, 0, pixmap);
+    } else if (type == QLatin1String("item")) {
         qApp->style()->drawControl(QStyle::CE_ItemViewItem, m_styleoption, painter, widget());
     }
     else if (type == QLatin1String("header")) {
