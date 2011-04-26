@@ -224,29 +224,13 @@ Rectangle {
             }
         }
         Tab {
+            id:mytab
             title: "Itemviews"
-            TableView{
-                frame: true
-                anchors.margins: 4
+            ModelView {
                 anchors.fill: parent
-
-                headermodel: ListModel {
-                    ListElement{ property: "title" ; caption: "Title" ; width: 100}
-                    ListElement{ property: "imagesource" ; caption: "Image Source" ; width: 200}
-                    ListElement{ property: "filename" ; caption: "File Name" ; width: 200}
-                }
-
-                model: XmlListModel {
-                    source: "http://api.flickr.com/services/feeds/photos_public.gne?format=rss2&tags=" + "Qt"
-                    query: "/rss/channel/item"
-                    namespaceDeclarations: "declare namespace media=\"http://search.yahoo.com/mrss/\";"
-                    XmlRole { name: "title"; query: "title/string()" }
-                    XmlRole { name: "imagesource"; query: "media:thumbnail/@url/string()" }
-                    XmlRole { name: "filename"; query: "link/string()" }
-                }
+                anchors.margins: 6
             }
         }
-
         Tab {
             title: "Range"
             Row {

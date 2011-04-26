@@ -77,8 +77,11 @@ FocusScope{
     property bool alternateRowColor: true
     property alias contentX: tree.contentX
     property alias contentY: tree.contentY
+    property int headerHeight: header.height
 
     property Component itemDelegate: standardDelegate
+    property Component rowDelegate: rowDelegate
+    property Component headerDelegate: headerDelegate
 
     Component {
         id: standardDelegate
@@ -101,12 +104,32 @@ FocusScope{
         id: nativeDelegate
         // This gives more native styling, but might be less performant
         QStyleItem {
-            id: itemdelegate
             elementType: "item"
             height: itemheight
             width:  itemwidth
             text:   itemvalue
             selected: itemselected
+        }
+    }
+
+    Component {
+        id: headerDelegate
+        QStyleItem {
+            elementType: "header"
+            activeControl: itemsort
+            raised: true
+            sunken: itempressed
+            hover: itemhovered
+            text: itemvalue
+        }
+    }
+    Component {
+        id: rowDelegate
+        QStyleItem {
+            id: rowstyle
+            elementType: "itemrow"
+            activeControl: alternaterow ? "alternate" : ""
+            selected: itemselected ? "true" : "false"
         }
     }
 
@@ -205,18 +228,17 @@ FocusScope{
             anchors.margins: frameitem.frameMargins
             property int rowIndex: model.index
             property bool alternateRow: alternateRowColor && rowIndex %2 == 1
-            QStyleItem {
+            Loader {
                 id: rowstyle
-                elementType: "itemrow"
-                // Row fills the tree with regardless of item size
+                // row delegate
+                sourceComponent: root.rowDelegate
+                // Row fills the tree width regardless of item size
                 // But scrollbar should not adjust to it
                 width: frameitem.width
                 x: contentX
-                height: parent.height
-                activeControl: model.index%2 == 1 ? "alternate" : ""
-                selected: ListView.isCurrentItem ? "true" : "false"
-                property color textColor: styleHint("textColor")
-                property color highlightedTextColor: styleHint("highlightedTextColor")
+                height: row.height
+                property bool alternaterow: rowitem.alternateRow
+                property bool itemselected: rowitem.ListView.isCurrentItem
             }
             Row {
                 id: row
@@ -229,10 +251,10 @@ FocusScope{
                         sourceComponent: itemDelegate
                         property string itemvalue: root.model.get(rowIndex)[ headermodel.get(index).property]
                         property int itemwidth: headermodel.get(index).width
-                        property int itemheight: Math.max(16, rowstyle.sizeFromContents(16, 16).height)
+                        property int itemheight: Math.max(16, styleitem.sizeFromContents(16, 16).height)
                         property bool itemselected: rowitem.ListView.isCurrentItem
                         property bool alternaterow: rowitem.alternateRow
-                        property color itemforeground: itemselected ? rowstyle.highlightedTextColor : rowstyle.textColor
+                        property color itemforeground: itemselected ? styleitem.highlightedTextColor : styleitem.textColor
                         property int columnIndex: index
                         property int rowIndex: rowitem.rowIndex
                     }
@@ -259,18 +281,19 @@ FocusScope{
 
         model: headermodel
 
-        delegate: QStyleItem {
-            clip: true
-            elementType: "header"
-            raised: true
-            sunken: headerClickArea.pressed
-            hover: headerClickArea.containsMouse
-            property string sortString: sortIndicatorDirection == "up" ? "up" : "down";
-            activeControl: sortIndicatorVisible &&  (model.index == sortColumn) ? sortString : ""
-
+        delegate: Item {
             width: model.width
             height: parent.height
-            text: model.caption
+            clip: true
+
+            Loader {
+                sourceComponent: root.headerDelegate
+                anchors.fill: parent
+                property string itemvalue: model.caption
+                property string itemsort:  (sortIndicatorVisible && index == sortColumn) ? (sortIndicatorDirection == "up" ? "up" : "down") : "";
+                property bool itempressed: headerClickArea.pressed
+                property bool itemhovered: headerClickArea.containsMouse
+            }
 
             MouseArea{
                 id: headerClickArea
@@ -295,20 +318,25 @@ FocusScope{
                     headermodel.setProperty(index, "width", Math.max(minimumSize, newHeaderWidth))
                 }
                 onPressedChanged: if(pressed)offset=mouseX
-
                 QStyleItem {
                     anchors.fill: parent
                     cursor: "splithcursor"
                 }
             }
         }
-        QStyleItem {
-            elementType: "header"
+
+
+        Loader {
+            id: loader
+            sourceComponent: root.headerDelegate
             anchors.top: parent.top
             anchors.right: parent.right
             anchors.bottom: header.bottom
             width: Math.max(0, header.width - contentWidth)
-            raised: true
+            property string itemvalue
+            property string itemsort
+            property bool itempressed
+            property bool itemhovered
         }
     }
     ScrollBar {
@@ -331,7 +359,7 @@ FocusScope{
         id: vscrollbar
         orientation: Qt.Vertical
         // We cannot bind directly to tree.height due to binding loops so we have to redo the calculation here
-        property int availableHeight : root.height - (hscrollbar.visible ? hscrollbar.height : 0) - header.height - (frame ? 2 * frameWidth : 0)
+        property int availableHeight : root.height - (hscrollbar.visible ? hscrollbar.height : 0) - header.height
         visible: contentHeight > availableHeight
         maximumValue: contentHeight > availableHeight ? tree.contentHeight - availableHeight : 0
         minimumValue: 0
@@ -351,6 +379,12 @@ FocusScope{
         elementType: "focusframe"
     }
 
-    QStyleItem { id: styleitem ; elementType: "header"; visible:false }
+    QStyleItem {
+        id: styleitem
+        elementType: "header";
+        visible:false
+        property color textColor: styleHint("textColor")
+        property color highlightedTextColor: styleHint("highlightedTextColor")
+    }
     SystemPalette{id:palette}
 }
