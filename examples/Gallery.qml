@@ -235,6 +235,7 @@ Rectangle {
                     ListElement{ property: "imagesource" ; caption: "Image Source" ; width: 200}
                     ListElement{ property: "filename" ; caption: "File Name" ; width: 200}
                 }
+
                 model: XmlListModel {
                     source: "http://api.flickr.com/services/feeds/photos_public.gne?format=rss2&tags=" + "Qt"
                     query: "/rss/channel/item"

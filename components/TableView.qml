@@ -23,7 +23,7 @@ import "../components/plugin"
 *
 * For example:
 *   itemDelegate: Text {
-*       color: itemselected ? "white": "black"
+*       color: itemforeground
 *       elide: Text.ElideRight
 *       height: itemheight
 *       width: itemwidth
@@ -167,12 +167,14 @@ FocusScope{
                     autoincrement = false
                     autodecrement = false
                 }
+                mouse.accepted = false
             }
             onPressed:  {
                 tree.forceActiveFocus()
                 var x = Math.min(contentWidth - 5, Math.max(mouseX + contentX, 0))
                 var y = Math.min(contentHeight - 5, Math.max(mouseY + contentY, 0))
                 tree.currentIndex = tree.indexAt(x, y)
+                mouse.accepted = false
             }
         }
 
@@ -222,6 +224,7 @@ FocusScope{
                 id: row
                 anchors.left: parent.left
                 Repeater {
+                    id: repeater
                     model: headermodel.count
                     Loader {
                         id: itemDelegateLoader
@@ -232,6 +235,8 @@ FocusScope{
                         property bool itemselected: rowitem.ListView.isCurrentItem
                         property bool alternaterow: rowitem.alternateRow
                         property color itemforeground: itemselected ? rowstyle.highlightedTextColor : rowstyle.textColor
+                        property int columnIndex: index
+                        property int rowIndex: rowitem.rowIndex
                     }
                 }
                 onWidthChanged: tree.contentWidth = width
