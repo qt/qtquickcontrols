@@ -69,7 +69,6 @@ FocusScope{
     property bool frame: true
     property bool highlightOnFocus: false
     property bool frameAroundContents: styleitem.styleHint("framearoundcontents")
-    property int frameMargins : frame ? 2 : 0
 
     property int sortColumn: 0  // Index of currently selected sort header
     property bool sortIndicatorVisible: true // enables or disables sort indicator
@@ -130,6 +129,7 @@ FocusScope{
         anchors.rightMargin: frame ? (frameAroundContents ? (vscrollbar.visible ? vscrollbar.width + 2 * frameMargins : 0) : -frameWidth) : 0
         anchors.bottomMargin: frame ? (frameAroundContents ? (hscrollbar.visible ? hscrollbar.height + 2 * frameMargins : 0) : -frameWidth) : 0
         anchors.topMargin: frame ? (frameAroundContents ? 0 : -frameWidth) : 0
+        property int frameMargins : frame ? frameWidth : 0
     }
 
     ListView {
@@ -202,7 +202,7 @@ FocusScope{
             id: rowitem
             width: row.width
             height: row.height
-            anchors.margins: frameMargins
+            anchors.margins: frameitem.frameMargins
             property int rowIndex: model.index
             property bool alternateRow: alternateRowColor && rowIndex %2 == 1
             QStyleItem {
@@ -245,7 +245,7 @@ FocusScope{
         id: header
         focus: false
         interactive: false
-        anchors.margins: frameMargins
+        anchors.margins: frameitem.frameMargins
         anchors.left: frameitem.left
         anchors.right: frameitem.right
         anchors.top: frameitem.top
