@@ -245,6 +245,8 @@ FocusScope{
         anchors.left: frameitem.left
         anchors.right: frameitem.right
         anchors.top: frameitem.top
+        contentWidth: tree.contentWidth
+        contentX: tree.contentX
         height: Math.max(text.font.pixelSize + 2, styleitem.sizeFromContents(text.font.pixelSize, text.font.pixelSize).height)
         orientation: ListView.Horizontal
         clip: true
