@@ -592,9 +592,12 @@ void QStyleItem::setElementType(const QString &str)
     } else if (str == "item" || str == "itemrow" || str == "header") {
         // Since these are used by the delegate, it makes no
         // sense to re-create them per item
-        static QWidget *menu = new QTreeView();
+        static QTreeView *menu = new QTreeView();
         m_sharedWidget = true;
-        m_dummywidget = menu;
+        if (str == "header")
+            m_dummywidget = menu->header();
+        else
+            m_dummywidget = menu;
     } else if (str == "groupbox") {
         // Since these are used by the delegate, it makes no
         // sense to re-create them per item
