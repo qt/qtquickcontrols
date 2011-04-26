@@ -788,6 +788,7 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
         qApp->style()->drawControl(QStyle::CE_ItemViewItem, m_styleoption, painter, widget());
     }
     else if (type == QLatin1String("header")) {
+        widget()->resize(m_styleoption->rect.size()); // macstyle explicitly uses the widget height
         qApp->style()->drawControl(QStyle::CE_Header, m_styleoption, painter, widget());
     }
     else if (type == QLatin1String("toolbutton")) {

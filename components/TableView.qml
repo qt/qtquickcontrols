@@ -167,14 +167,12 @@ FocusScope{
                     autoincrement = false
                     autodecrement = false
                 }
-                mouse.accepted = false
             }
             onPressed:  {
                 tree.forceActiveFocus()
                 var x = Math.min(contentWidth - 5, Math.max(mouseX + contentX, 0))
                 var y = Math.min(contentHeight - 5, Math.max(mouseY + contentY, 0))
                 tree.currentIndex = tree.indexAt(x, y)
-                mouse.accepted = false
             }
         }
 
