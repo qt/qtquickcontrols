@@ -589,7 +589,7 @@ void QStyleItem::setElementType(const QString &str)
         static QWidget *menu = new QMenu();
         m_sharedWidget = true;
         m_dummywidget = menu;
-    } else if (str == "item" || str == "itemrow") {
+    } else if (str == "item" || str == "itemrow" || str == "header") {
         // Since these are used by the delegate, it makes no
         // sense to re-create them per item
         static QWidget *menu = new QTreeView();
