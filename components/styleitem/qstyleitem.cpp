@@ -521,7 +521,14 @@ QVariant QStyleItem::styleHint(const QString &metric)
     initStyleOption();
     if (metric == "comboboxpopup") {
         return qApp->style()->styleHint(QStyle::SH_ComboBox_Popup, m_styleoption);
-
+    } else if (metric == "highlightedTextColor") {
+        if (widget())
+            return widget()->palette().highlightedText().color().name();
+        return qApp->palette().highlightedText().color().name();
+    } else if (metric == "textColor") {
+        if (widget())
+            return widget()->palette().text().color().name();
+        return qApp->palette().text().color().name();
     } else if (metric == "focuswidget") {
         return qApp->style()->styleHint(QStyle::SH_FocusFrame_AboveWidget);
 

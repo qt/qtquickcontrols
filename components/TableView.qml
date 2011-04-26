@@ -19,6 +19,7 @@ import "../components/plugin"
 * itemwidth - default platform width of item
 * itemselected - if the row is currently selected
 * itemvalue - The text for this item
+* itemforeground - The default text color for an item
 *
 * For example:
 *   itemDelegate: Text {
@@ -92,7 +93,7 @@ FocusScope{
                 anchors.verticalCenter: parent.verticalCenter
                 elide: Text.ElideRight
                 text: itemvalue
-                color: itemselected ? palette.highlightedText : palette.text
+                color: itemforeground
             }
         }
     }
@@ -213,6 +214,8 @@ FocusScope{
                 height: parent.height
                 activeControl: model.index%2 == 1 ? "alternate" : ""
                 selected: ListView.isCurrentItem ? "true" : "false"
+                property color textColor: styleHint("textColor")
+                property color highlightedTextColor: styleHint("highlightedTextColor")
             }
             Row {
                 id: row
@@ -227,6 +230,7 @@ FocusScope{
                         property int itemheight: Math.max(16, rowstyle.sizeFromContents(16, 16).height)
                         property bool itemselected: rowitem.ListView.isCurrentItem
                         property bool alternaterow: rowitem.alternateRow
+                        property color itemforeground: itemselected ? rowstyle.highlightedTextColor : rowstyle.textColor
                     }
                 }
                 onWidthChanged: tree.contentWidth = width
