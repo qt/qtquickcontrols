@@ -72,6 +72,8 @@ MouseArea {
             listView.width = choiceList.width;
             listView.height = listView.contentHeight    //mm see QTBUG-16037
 
+            return; // ### fix
+
             if(listView.y < topMargin) {
                 var excess = Math.floor(currentItemY - mappedListPos.y);
                 listView.y = topMargin;

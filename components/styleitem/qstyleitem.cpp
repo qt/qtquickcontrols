@@ -47,6 +47,7 @@
 #include <QtGui/QGroupBox>
 #include <QtGui/QToolBar>
 #include <QtGui/QMenu>
+#include <QtCore/QStringBuilder>
 
 
 QStyleItem::QStyleItem(QSGPaintedItem *parent)
@@ -125,14 +126,28 @@ void QStyleItem::initStyleOption()
         if (activeControl() == "alternate")
             opt->features |= QStyleOptionViewItemV2::Alternate;
     }
+    else if (type == QLatin1String("item")) {
+        if (!m_styleoption) {
+            m_styleoption = new QStyleOptionViewItemV4();
+        }
+        QStyleOptionViewItemV4 *opt = qstyleoption_cast<QStyleOptionViewItemV4*>(m_styleoption);
+        opt->features = QStyleOptionViewItemV4::HasDisplay;
+        opt->text = text();
+        opt->textElideMode = Qt::ElideRight;
+        QPalette pal = m_styleoption->palette;
+        pal.setBrush(QPalette::Base, Qt::NoBrush);
+        m_styleoption->palette = pal;
+    }
     else if (type == QLatin1String("header")) {
         if (!m_styleoption)
             m_styleoption = new QStyleOptionHeader();
 
         QStyleOptionHeader *opt = qstyleoption_cast<QStyleOptionHeader*>(m_styleoption);
         opt->text = text();
-        opt->sortIndicator = activeControl() == "sort" ?
-                             QStyleOptionHeader::SortDown : QStyleOptionHeader::None;
+        opt->sortIndicator = activeControl() == "down" ?
+                    QStyleOptionHeader::SortDown
+                  : activeControl() == "up" ?
+                        QStyleOptionHeader::SortUp : QStyleOptionHeader::None;
     }
     else if (type == QLatin1String("toolbutton")) {
         if (!m_styleoption)
@@ -164,7 +179,6 @@ void QStyleItem::initStyleOption()
             opt->position = QStyleOptionTabV3::OnlyOneTab;
         else
             opt->position = QStyleOptionTabV3::Middle;
-
 
     } else if (type == QLatin1String("menu")) {
         if (!m_styleoption)
@@ -204,7 +218,7 @@ void QStyleItem::initStyleOption()
             m_styleoption = new QStyleOptionButton();
 
         QStyleOptionButton *opt = qstyleoption_cast<QStyleOptionButton*>(m_styleoption);
-        if (!(opt->state & QStyle::State_On))
+        if (!on())
             opt->state |= QStyle::State_Off;
         opt->text = text();
     }
@@ -322,9 +336,6 @@ void QStyleItem::initStyleOption()
     if (!m_styleoption)
         m_styleoption = new QStyleOption();
 
-    if (type == QLatin1String("tab"))
-        widget()->setGeometry(0, 0, width(), height());
-
     m_styleoption->rect = QRect(m_paintMargins, m_paintMargins, width() - 2* m_paintMargins, height() - 2 * m_paintMargins);
 
     if (isEnabled())
@@ -347,12 +358,23 @@ void QStyleItem::initStyleOption()
         m_styleoption->state |= QStyle::State_Horizontal;
 
     if (widget()) {
+        if (type == QLatin1String("tab")) {
+            // Some styles actually check the beginning and end position
+            // using widget geometry, so we have to trick it
+            widget()->setGeometry(0, 0, width(), height());
+            if (activeControl() != "beginning")
+                m_styleoption->rect.translate(1, 0); // Don't position at start of widget
+            if (activeControl() != "end")
+                widget()->resize(200, height());
+        }
 #ifdef Q_WS_WIN
-        widget()->resize(width(), height());
+        else widget()->resize(width(), height());
 #endif
+
         widget()->setEnabled(isEnabled());
         m_styleoption->fontMetrics = widget()->fontMetrics();
-        m_styleoption->palette = widget()->palette();
+        if (!m_styleoption->palette.resolve())
+            m_styleoption->palette = widget()->palette();
         if (m_hint.contains("mac.mini")) {
             widget()->setAttribute(Qt::WA_MacMiniSize);
         } else if (m_hint.contains("mac.small")) {
@@ -446,6 +468,10 @@ QSize QStyleItem::sizeFromContents(int width, int height)
         size = qApp->style()->sizeFromContents(QStyle::CT_LineEdit, m_styleoption, QSize(width,height), widget());
     } else if (metric == QLatin1String("groupbox")) {
         size = qApp->style()->sizeFromContents(QStyle::CT_GroupBox, m_styleoption, QSize(width,height), widget());
+    } else if (metric == QLatin1String("header")) {
+        size = qApp->style()->sizeFromContents(QStyle::CT_HeaderSection, m_styleoption, QSize(width,height), widget());
+    } else if (metric == QLatin1String("itemrow") || metric == QLatin1String("item")) {
+        size = qApp->style()->sizeFromContents(QStyle::CT_ItemViewItem, m_styleoption, QSize(width,height), widget());
     }
 
 #ifdef Q_WS_MAC
@@ -467,7 +493,12 @@ int QStyleItem::pixelMetric(const QString &metric)
     else if (metric == "taboverlap")
         return qApp->style()->pixelMetric(QStyle::PM_TabBarTabOverlap, 0 , widget());
     else if (metric == "tabbaseoverlap")
+#ifdef Q_WS_WIN
+        // On windows the tabbar paintmargin extends the overlap by one pixels
+        return 1 + qApp->style()->pixelMetric(QStyle::PM_TabBarBaseOverlap, 0 , widget());
+#else
         return qApp->style()->pixelMetric(QStyle::PM_TabBarBaseOverlap, 0 , widget());
+#endif
     else if (metric == "tabhspace")
         return qApp->style()->pixelMetric(QStyle::PM_TabBarTabHSpace, 0 , widget());
     else if (metric == "tabvspace")
@@ -490,7 +521,14 @@ QVariant QStyleItem::styleHint(const QString &metric)
     initStyleOption();
     if (metric == "comboboxpopup") {
         return qApp->style()->styleHint(QStyle::SH_ComboBox_Popup, m_styleoption);
-
+    } else if (metric == "highlightedTextColor") {
+        if (widget())
+            return widget()->palette().highlightedText().color().name();
+        return qApp->palette().highlightedText().color().name();
+    } else if (metric == "textColor") {
+        if (widget())
+            return widget()->palette().text().color().name();
+        return qApp->palette().text().color().name();
     } else if (metric == "focuswidget") {
         return qApp->style()->styleHint(QStyle::SH_FocusFrame_AboveWidget);
 
@@ -552,7 +590,16 @@ void QStyleItem::setElementType(const QString &str)
         static QWidget *menu = new QMenu();
         m_sharedWidget = true;
         m_dummywidget = menu;
-    } if (str == "groupbox") {
+    } else if (str == "item" || str == "itemrow" || str == "header") {
+        // Since these are used by the delegate, it makes no
+        // sense to re-create them per item
+        static QTreeView *menu = new QTreeView();
+        m_sharedWidget = true;
+        if (str == "header")
+            m_dummywidget = menu->header();
+        else
+            m_dummywidget = menu;
+    } else if (str == "groupbox") {
         // Since these are used by the delegate, it makes no
         // sense to re-create them per item
         static QGroupBox *group = new QGroupBox();
@@ -709,20 +756,40 @@ QRect QStyleItem::subControlRect(const QString &subcontrolString)
 
 void QStyleItem::paint(QPainter *painter)
 {
+    if (width() < 1 || height() <1)
+        return;
+
     QString type = elementType();
     initStyleOption();
 
     if (widget()) {
         painter->save();
         painter->setFont(widget()->font());
+        painter->translate(-m_styleoption->rect.left() + m_paintMargins, 0);
     }
     if (type == QLatin1String("button")) {
         qApp->style()->drawControl(QStyle::CE_PushButton, m_styleoption, painter, widget());
     }
     else if (type == QLatin1String("itemrow")) {
-        qApp->style()->drawPrimitive(QStyle::PE_PanelItemViewRow, m_styleoption, painter, widget());
+        QPixmap pixmap;
+        // Only draw through style once
+        const QString pmKey = QLatin1Literal("itemrow") % QString::number(m_styleoption->state,16) % activeControl();
+        if (!QPixmapCache::find(pmKey, pixmap) || pixmap.width() < width()) {
+            int newSize = width();
+            pixmap = QPixmap(newSize, height());
+            pixmap.fill(Qt::transparent);
+            QPainter pixpainter(&pixmap);
+            qApp->style()->drawPrimitive(QStyle::PE_PanelItemViewRow, m_styleoption, &pixpainter, widget());
+            if (!qApp->style()->styleHint(QStyle::SH_ItemView_ShowDecorationSelected) && selected())
+                pixpainter.fillRect(m_styleoption->rect, m_styleoption->palette.highlight());
+            QPixmapCache::insert(pmKey, pixmap);
+        }
+        painter->drawPixmap(0, 0, pixmap);
+    } else if (type == QLatin1String("item")) {
+        qApp->style()->drawControl(QStyle::CE_ItemViewItem, m_styleoption, painter, widget());
     }
     else if (type == QLatin1String("header")) {
+        widget()->resize(m_styleoption->rect.size()); // macstyle explicitly uses the widget height
         qApp->style()->drawControl(QStyle::CE_Header, m_styleoption, painter, widget());
     }
     else if (type == QLatin1String("toolbutton")) {
@@ -808,4 +875,32 @@ void QStyleItem::paint(QPainter *painter)
     }
     if (widget())
         painter->restore();
+}
+
+int QStyleItem::textWidth(const QString &text)
+{
+    if (widget())
+        return widget()->fontMetrics().boundingRect(text).width();
+    return qApp->fontMetrics().boundingRect(text).width();
+}
+
+int QStyleItem::fontHeight()
+{
+    if (widget())
+        return widget()->fontMetrics().height();
+    return qApp->fontMetrics().height();
+}
+
+QString QStyleItem::fontFamily()
+{
+    if (widget())
+        return widget()->font().family();
+    return qApp->font().family();
+}
+
+double QStyleItem::fontPointSize()
+{
+    if (widget())
+        return widget()->font().pointSizeF();
+    return qApp->font().pointSizeF();
 }

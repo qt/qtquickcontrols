@@ -5,7 +5,7 @@ import "../components/plugin"
 Rectangle {
 
     width: 538 + frame.margins * 2
-    height: 350 + frame.margins * 2
+    height: 360 + frame.margins * 2
 
     ToolBar{
         id: toolbar
@@ -27,6 +27,22 @@ Rectangle {
                 anchors.verticalCenter: parent.verticalCenter
             }
         }
+
+        ContextMenu {
+            id: editmenu
+            model: ListModel {
+                id: menu
+                ListElement { text: "Copy" }
+                ListElement { text: "Cut" }
+                ListElement { text: "Paste" }
+            }
+        }
+        MouseArea {
+            anchors.fill:  parent
+            acceptedButtons: Qt.RightButton
+            onPressed: editmenu.show(mouseX, mouseY)
+        }
+
         CheckBox {
             id: enabledCheck
             text: "Enabled"
@@ -39,13 +55,6 @@ Rectangle {
     SystemPalette {id: syspal}
     QStyleItem{ id: styleitem}
     color: syspal.window
-
-    gradient: Gradient{
-        GradientStop{ position: 0   ; color: syspal.window }
-        GradientStop{ position: 0.6 ; color: syspal.window }
-        GradientStop{ position: 1   ; color: Qt.darker(syspal.window, 1.1) }
-    }
-
     ListModel {
         id: choices
         ListElement { text: "Banana" }
@@ -58,31 +67,32 @@ Rectangle {
             "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor "+
             "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor "+
             "incididunt ut labore et dolore magna aliqua.\n Ut enim ad minim veniam, quis nostrud "+
-            "exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ";
+            "exercitation ullamco laboris nisi ut aliquip ex ea commodo cosnsequat. ";
 
     TabFrame {
         id:frame
+        focus:true
         property int margins : styleitem.style == "mac" ? 16 : 0
         position: tabPositionGroup.checkedButton == r2 ? "South" : "North"
-        tabbar: TabBar{parent: frame}
+        tabbar: TabBar{parent: frame; focus:true; KeyNavigation.tab:button1}
         anchors.top: toolbar.bottom
         anchors.bottom: parent.bottom
         anchors.right: parent.right
         anchors.left: parent.left
         anchors.margins: margins
+
         Tab {
             title: "Widgets"
-            ScrollArea{
+            Item {
                 id: flickable
-                clip: true
                 anchors.fill: parent
-                frame: false
                 enabled: enabledCheck.checked
+
                 Row {
                     id: contentRow
-                    anchors.margins: 18
+                    anchors.fill:parent
+                    anchors.margins: 8
                     spacing: 16
-                    anchors.fill: parent
                     Column {
                         spacing: 9
                         Row {
@@ -96,7 +106,7 @@ Rectangle {
                                 tooltip:"This is an interesting tool tip"
                                 defaultbutton:true
                                 KeyNavigation.tab: button2
-                                KeyNavigation.backtab: button1
+                                KeyNavigation.backtab: frame.tabbar
                             }
                             Button {
                                 id:button2
@@ -104,7 +114,7 @@ Rectangle {
                                 focus:true
                                 width:98
                                 KeyNavigation.tab: combo
-                                KeyNavigation.backtab: button2
+                                KeyNavigation.backtab: button1
                             }
                         }
                         ChoiceList {
@@ -131,7 +141,7 @@ Rectangle {
                                 id: t2
                                 width:97
                                 KeyNavigation.tab: t3
-                                KeyNavigation.backtab: t2
+                                KeyNavigation.backtab: t1
                             }
                         }
                         TextField {
@@ -191,7 +201,7 @@ Rectangle {
                                     id: r1
                                     text: "North"
                                     KeyNavigation.tab: r2
-                                    KeyNavigation.backtab: r2
+                                    KeyNavigation.backtab: tickmarkCheck
                                     checked: true
                                 }
                                 RadioButton {
@@ -215,7 +225,26 @@ Rectangle {
         }
         Tab {
             title: "Itemviews"
-            ModelView{ anchors.fill:parent}
+            TableView{
+                frame: true
+                anchors.margins: 4
+                anchors.fill: parent
+
+                headermodel: ListModel {
+                    ListElement{ property: "title" ; caption: "Title" ; width: 100}
+                    ListElement{ property: "imagesource" ; caption: "Image Source" ; width: 200}
+                    ListElement{ property: "filename" ; caption: "File Name" ; width: 200}
+                }
+
+                model: XmlListModel {
+                    source: "http://api.flickr.com/services/feeds/photos_public.gne?format=rss2&tags=" + "Qt"
+                    query: "/rss/channel/item"
+                    namespaceDeclarations: "declare namespace media=\"http://search.yahoo.com/mrss/\";"
+                    XmlRole { name: "title"; query: "title/string()" }
+                    XmlRole { name: "imagesource"; query: "media:thumbnail/@url/string()" }
+                    XmlRole { name: "filename"; query: "link/string()" }
+                }
+            }
         }
 
         Tab {

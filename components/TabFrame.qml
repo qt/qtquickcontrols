@@ -2,17 +2,20 @@ import QtQuick 2.0
 import "custom" as Components
 import "plugin"
 
-Item{
+Item {
     id: tabWidget
-    width:100
-    height:100
+    width: 100
+    height: 100
+    focus: true
     property TabBar tabbar
     property int current: 0
     property int count: stack.children.length
+    property int contentMargin: frameitem.style == "mac" ? 12 : 0
     property bool frame:true
     property bool tabsVisible: true
     property string position: "North"
     default property alias tabs : stack.children
+
 
     onCurrentChanged: __setOpacities()
     Component.onCompleted: __setOpacities()
@@ -31,13 +34,7 @@ Item{
     }
 
     QStyleItem {
-        anchors.fill: parent
-        elementType: "widget"
-    }
-
-    QStyleItem {
         id: frameitem
-        z: style == "oxygen::" ? 1 : -1 // ### temporary oxygen fix
         elementType: "tabframe"
         info: position
         value: tabbar && tabsVisible && tabbar.tab(current) ? tabbar.tab(current).x : 0
@@ -46,11 +43,13 @@ Item{
         anchors.fill: parent
 
         property int frameWidth: pixelMetric("defaultframewidth")
+
         Item {
             id: stack
             anchors.fill: parent
-            anchors.margins: frame ? frameitem.frameWidth : 0
+            anchors.margins: contentMargin + (frame ? frameitem.frameWidth : 0)
         }
+
         anchors.topMargin: tabbar && tabsVisible && position == "North" ? tabbar.height - __baseOverlap : 0
 
         states: [

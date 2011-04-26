@@ -7,21 +7,19 @@ FocusScope {
     width: 100
     height: 100
 
-    property int __scrollbarExtent : styleitem.pixelMetric("scrollbarExtent");
     property int frameWidth: styleitem.pixelMetric("defaultframewidth");
     property int contentHeight : content.childrenRect.height
     property int contentWidth: content.childrenRect.width
     property alias color: colorRect.color
     property bool frame: true
     property bool highlightOnFocus: false
+    property bool frameAroundContents: styleitem.styleHint("framearoundcontents")
+    property int frameMargins : frame ? 2 : 0
 
     default property alias data: content.data
 
     property int contentY
     property int contentX
-
-    property bool frameAroundContents: styleitem.styleHint("framearoundcontents")
-    property int frameMargins : frame ? 2 : 0
 
     onContentYChanged: { vscrollbar.value = contentY }
     onContentXChanged: { hscrollbar.value = contentX }
@@ -45,21 +43,16 @@ FocusScope {
         anchors.topMargin: frame ? (frameAroundContents ? 0 : -frameWidth) : 0
     }
 
-    Item{
+    Item {
         id:flickable
         anchors.fill: styleitem
         anchors.margins: frameMargins
         clip: true
 
         Item {
-            id: docmargins
-            anchors.fill:parent
-            anchors.margins:frameMargins
-            Item {
-                id: content
-                x: -scrollarea.contentX
-                y: -scrollarea.contentY
-            }
+            id: content
+            x: -scrollarea.contentX
+            y: -scrollarea.contentY
         }
     }
 
@@ -74,8 +67,9 @@ FocusScope {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.leftMargin: (frame ? frameWidth : 0)
-        anchors.rightMargin: { vscrollbar.visible ? __scrollbarExtent : (frame ? 1 : 0) }
+        anchors.rightMargin: { vscrollbar.visible ? scrollbarExtent : (frame ? 1 : 0) }
         onValueChanged: contentX = value
+        property int scrollbarExtent : styleitem.pixelMetric("scrollbarExtent");
     }
 
     ScrollBar {
@@ -90,7 +84,19 @@ FocusScope {
         anchors.bottom: parent.bottom
         anchors.topMargin: styleitem.style == "mac" ? 1 : 0
         onValueChanged: contentY = value
-        anchors.bottomMargin: (frameAroundContents && hscrollbar.visible) ? hscrollbar.height : 0
+        anchors.bottomMargin: hscrollbar.visible ? hscrollbar.height : 0
+    }
+
+    Rectangle {
+        // This is the filled corner between scrollbars
+        id: cornerFill
+        anchors.left:  vscrollbar.left
+        anchors.right: vscrollbar.right
+        anchors.top: hscrollbar.top
+        anchors.bottom: hscrollbar.bottom
+        visible: hscrollbar.visible && vscrollbar.visible
+        SystemPalette { id: syspal }
+        color: syspal.window
     }
 
     QStyleItem {
