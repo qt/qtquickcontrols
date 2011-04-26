@@ -73,7 +73,7 @@ class QStyleItem: public QDeclarativeItem
 
     Q_PROPERTY( QString fontFamily READ fontFamily)
     Q_PROPERTY( double fontPointSize READ fontPointSize)
-    Q_PROPERTY( int fontHeight READ fontHeight)
+    Q_PROPERTY( int fontHeight READ fontHeight NOTIFY fontHeightChanged)
 
 public:
     QStyleItem(QDeclarativeItem *parent = 0);
@@ -166,6 +166,7 @@ Q_SIGNALS:
     void paintMarginsChanged();
     void hintChanged();
     void cursorChanged();
+    void fontHeightChanged();
 
 protected:
     QWidget *m_dummywidget;
