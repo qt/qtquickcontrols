@@ -69,7 +69,7 @@ Item {
                 focus:true
                 property int tabindex: index
                 property bool selected : tabFrame.current == index
-                z: selected ? 1 : -1
+                z: selected ? 1 : -index
                 function updateRect() {
                     var rect = style.sizeFromContents(textitem.width + tabHSpace + 2, Math.max(style.fontHeight + tabVSpace + 6, 0))
                     width = rect.width
