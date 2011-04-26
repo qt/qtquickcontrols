@@ -13,6 +13,7 @@ ScrollArea {
     property alias wrapMode: edit.wrapMode
     highlightOnFocus: true
     property int documentMargins: 4
+    frame: true
 
     Item {
         anchors.left: parent.left
