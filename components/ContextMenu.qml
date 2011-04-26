@@ -1,4 +1,4 @@
-import QtQuick 1.0
+import QtQuick 2.0
 import "custom" as Components
 import "custom/private" as Private
 
@@ -52,11 +52,12 @@ Item {
         anchors.bottomMargin: backgroundItem.pixelMetric("menuvmargin") + fw
         elementType: "menu"
 
-        effect: DropShadow {
+/*        effect: DropShadow {
             blurRadius: 10
             color: "#60000000"
             xOffset: 1
             yOffset: 1
         }
+*/
     }
 }
