@@ -700,7 +700,7 @@ void QStyleItem::setElementType(const QString &str)
         m_dummywidget->setAttribute(Qt::WA_LayoutUsesWidgetRect);
         m_dummywidget->winId();
 #ifdef Q_WS_MAC
-        m_dummywidget->setGeometry(-1000, 0,0,0);
+        m_dummywidget->setGeometry(-1000, 0, 10,10);
         m_dummywidget->setVisible(visible); // Mac require us to set the visibility before this
 #endif
         m_dummywidget->setAttribute(Qt::WA_DontShowOnScreen);
