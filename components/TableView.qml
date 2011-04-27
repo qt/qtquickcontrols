@@ -185,8 +185,10 @@ FocusScope{
 
             onMousePositionChanged: {
                 if (mouseY > tree.height) {
+                    autodecrement = false
                     autoincrement = true
                 } else if (mouseY < 0) {
+                    autoincrement = false
                     autodecrement = true
                 } else {
                     var x = Math.min(contentWidth - 5, Math.max(mouseX + contentX, 0))
