@@ -648,7 +648,7 @@ void QStyleItem::setElementType(const QString &str)
         static QToolButton *tb = 0;
         static QToolBar *bar = 0;
         // KDE animations are too broken with these widgets
-        if (!str.startsWith("oxygen")) {
+        if (!style().contains(QLatin1String("oxygen"))) {
             if (!tb) {
                 bar = new QToolBar(0);
                 tb = new QToolButton(bar);
