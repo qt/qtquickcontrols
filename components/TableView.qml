@@ -339,6 +339,26 @@ FocusScope{
             property bool itemhovered
         }
     }
+
+    WheelArea {
+        id: wheelarea
+        anchors.fill: parent
+        horizontalMinimumValue: hscrollbar.minimumValue
+        horizontalMaximumValue: hscrollbar.maximumValue
+        verticalMinimumValue: vscrollbar.minimumValue
+        verticalMaximumValue: vscrollbar.maximumValue
+
+        onVerticalValueChanged: {
+            contentY = verticalValue
+            vscrollbar.value = contentY
+        }
+
+        onHorizontalValueChanged: {
+            contentX = horizontalValue
+            hscrollbar.value = contentX
+        }
+    }
+
     ScrollBar {
         id: hscrollbar
         orientation: Qt.Horizontal
