@@ -17,7 +17,7 @@ Components.SpinBox {
     leftMargin:6
     rightMargin:6
 
-    QStyleItem { id:edititem; elementType:"edit" ; visible:false}
+    QStyleItem { id:edititem ; elementType:"edit" ; visible:false }
     property int buttonHeight:  edititem.sizeFromContents(70, 20).height
     property int buttonWidth: edititem.sizeFromContents(70, 20).width
 
@@ -30,21 +30,21 @@ Components.SpinBox {
         property variant __editRect
 
         Rectangle {
-            id:editBackground
-            x: __editRect.x
+            id: editBackground
+            x: __editRect.x - 1
             y: __editRect.y
-            width: __editRect.width
+            width: __editRect.width + 1
             height: __editRect.height
         }
 
         Item {
-            id:focusFrame
+            id: focusFrame
             anchors.fill: editBackground
             visible: frameitem.styleHint("focuswidget")
             QStyleItem {
                 id: frameitem
                 anchors.margins: -6
-                anchors.leftMargin: -5
+                anchors.leftMargin: -6
                 anchors.rightMargin: -7
                 anchors.fill: parent
                 visible: spinbox.focus || spinbox.activeFocus
@@ -70,7 +70,7 @@ Components.SpinBox {
             elementType: "spinbox"
             sunken: downPressed | upPressed
             hover: containsMouse
-            focus: spinbox.focus || spinbox.activeFocus
+            focus: spinbox.focus
             enabled: spinbox.enabled
             value: (upPressed ? 1 : 0)           |
                    (downPressed == 1 ? 1<<1 : 0) |

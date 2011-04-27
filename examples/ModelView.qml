@@ -58,6 +58,7 @@ Item {
                 Text {
                     anchors.fill: parent
                     anchors.leftMargin: 5
+                    anchors.verticalCenter: parent.verticalCenter
                     elide: Qt.ElideRight
                     text: itemvalue
                     color: itemselected ? "white" : "black"
