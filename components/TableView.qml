@@ -141,8 +141,8 @@ FocusScope{
         color: "white"
         anchors.fill: frameitem
         anchors.margins: frameWidth
-        anchors.rightMargin: (!frameAroundContents && vscrollbar.visible ? vscrollbar.width +frameWidth: 0)
-        anchors.bottomMargin: (!frameAroundContents && hscrollbar.visible ? hscrollbar.height +frameWidth : 0)
+        anchors.rightMargin: (!frameAroundContents && vscrollbar.visible ? vscrollbar.width : 0) + frameWidth
+        anchors.bottomMargin: (!frameAroundContents && hscrollbar.visible ? hscrollbar.height : 0) +frameWidth
     }
 
     QStyleItem {
@@ -161,7 +161,6 @@ FocusScope{
 
     ListView {
         id: tree
-
         property list<HeaderSection> header
 
         model: root.model
@@ -213,8 +212,8 @@ FocusScope{
         anchors.bottom: frameitem.bottom
         anchors.margins: frameWidth
 
-        anchors.rightMargin: (!frameAroundContents && vscrollbar.visible ? vscrollbar.width +frameWidth: 0)
-        anchors.bottomMargin: (!frameAroundContents && hscrollbar.visible ? hscrollbar.height +frameWidth : 0)
+        anchors.rightMargin: (!frameAroundContents && vscrollbar.visible ? vscrollbar.width: 0) + frameWidth
+        anchors.bottomMargin: (!frameAroundContents && hscrollbar.visible ? hscrollbar.height : 0)  + frameWidth
 
         focus: true
         clip: true
@@ -260,18 +259,18 @@ FocusScope{
                         function getValue() {
                             if (index < header.length && root.model.get(rowIndex).hasOwnProperty(header[index].property))
                                 return root.model.get(rowIndex)[ header[index].property]
-                        }
+                            }
 
 
-                        property variant itemvalue: root.model.get(rowIndex)[ header[index].property]
-                        property int itemwidth: header[index].width
-                        property int itemheight: Math.max(16, styleitem.sizeFromContents(16, 16).height)
-                        property bool itemselected: rowitem.ListView.isCurrentItem
-                        property bool alternaterow: rowitem.alternateRow
-                        property color itemforeground: itemselected ? styleitem.highlightedTextColor : styleitem.textColor
-                        property int columnIndex: index
-                        property int rowIndex: rowitem.rowIndex
-                    }
+                                property variant itemvalue: root.model.get(rowIndex)[ header[index].property]
+                                property int itemwidth: header[index].width
+                                property int itemheight: Math.max(16, styleitem.sizeFromContents(16, 16).height)
+                                property bool itemselected: rowitem.ListView.isCurrentItem
+                                property bool alternaterow: rowitem.alternateRow
+                                property color itemforeground: itemselected ? styleitem.highlightedTextColor : styleitem.textColor
+                                property int columnIndex: index
+                                property int rowIndex: rowitem.rowIndex
+                            }
                 }
                 onWidthChanged: tree.contentWidth = width
             }
@@ -343,12 +342,13 @@ FocusScope{
         }
         Loader {
             id: loader
+            z:-1
             sourceComponent: root.headerDelegate
             anchors.top: parent.top
             anchors.right: parent.right
             anchors.bottom: headerrow.bottom
             anchors.rightMargin: -2
-            width: root.width - headerrow.width + 2
+            width: root.width - headerrow.width
             property string itemvalue
             property string itemsort
             property bool itempressed
@@ -365,7 +365,7 @@ FocusScope{
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.leftMargin: (frame ? frameWidth : 0)
+        anchors.leftMargin: frameWidth
         anchors.rightMargin: { vscrollbar.visible ? scrollbarExtent : (frame ? 1 : 0) }
         onValueChanged: contentX = value
         property int scrollbarExtent : styleitem.pixelMetric("scrollbarExtent");
