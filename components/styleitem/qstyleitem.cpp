@@ -270,7 +270,7 @@ void QStyleItem::initStyleOption()
         // ### fixme - workaround for KDE inverted dial
         opt->sliderPosition = value();
         opt->tickInterval = 1200 / (opt->maximum - opt->minimum);
-        if (style().startsWith(QLatin1String("oxygen")) && type == QLatin1String("dial"))
+        if (style() == QLatin1String("oxygen") && type == QLatin1String("dial"))
             opt->sliderValue  = maximum() - value();
         else
             opt->sliderValue = value();
@@ -406,9 +406,12 @@ void QStyleItem::initStyleOption()
 QString QStyleItem::style() const
 {
     QString style = qApp->style()->metaObject()->className();
-    if (style.startsWith(QLatin1Char('Q')))
+    style = style.toLower();
+    if (style.contains(QLatin1String("oxygen")))
+        return QLatin1String("oxygen");
+    if (style.startsWith(QLatin1Char('q')))
         style = style.right(style.length() - 1);
-    if (style.endsWith("Style"))
+    if (style.endsWith("style"))
         style = style.left(style.length() - 5);
     return style.toLower();
 }
@@ -649,7 +652,7 @@ void QStyleItem::setElementType(const QString &str)
         static QToolButton *tb = 0;
         static QToolBar *bar = 0;
         // KDE animations are too broken with these widgets
-        if (!style().contains(QLatin1String("oxygen"))) {
+        if (style() != QLatin1String("oxygen")) {
             if (!tb) {
                 bar = new QToolBar(0);
                 tb = new QToolButton(bar);
