@@ -267,7 +267,7 @@ FocusScope{
                                 property int itemheight: Math.max(16, styleitem.sizeFromContents(16, 16).height)
                                 property bool itemselected: rowitem.ListView.isCurrentItem
                                 property bool alternaterow: rowitem.alternateRow
-                                property color itemforeground: itemselected ? styleitem.highlightedTextColor : styleitem.textColor
+                                property color itemforeground: itemselected ? rowstyleitem.highlightedTextColor : rowstyleitem.textColor
                                 property int columnIndex: index
                                 property int rowIndex: rowitem.rowIndex
                             }
@@ -399,6 +399,11 @@ FocusScope{
     QStyleItem {
         id: styleitem
         elementType: "header";
+        visible:false
+    }
+    QStyleItem {
+        id: rowstyleitem
+        elementType: "item"
         visible:false
         property color textColor: styleHint("textColor")
         property color highlightedTextColor: styleHint("highlightedTextColor")
