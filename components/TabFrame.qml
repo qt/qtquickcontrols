@@ -10,12 +10,10 @@ Item {
     property TabBar tabbar
     property int current: 0
     property int count: stack.children.length
-    property int contentMargin: frameitem.style == "mac" ? 12 : 0
     property bool frame:true
     property bool tabsVisible: true
     property string position: "North"
     default property alias tabs : stack.children
-
 
     onCurrentChanged: __setOpacities()
     Component.onCompleted: __setOpacities()
@@ -48,7 +46,8 @@ Item {
         Item {
             id: stack
             anchors.fill: parent
-            anchors.margins: contentMargin + (frame ? frameitem.frameWidth : 0)
+            anchors.margins: (frame ? frameitem.frameWidth : 0)
+            anchors.topMargin: anchors.margins + (frameitem.style =="mac" ? 6 : 0)
         }
 
         anchors.topMargin: tabbar && tabsVisible && position == "North" ? tabbar.height - __baseOverlap : 0

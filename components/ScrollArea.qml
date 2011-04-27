@@ -66,6 +66,7 @@ FocusScope {
         maximumValue: contentWidth > availableWidth ? scrollarea.contentWidth - availableWidth: 0
         minimumValue: 0
         anchors.bottom: parent.bottom
+        anchors.bottomMargin: styleitem.frameoffset
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.leftMargin: (frame ? frameWidth : 0)
