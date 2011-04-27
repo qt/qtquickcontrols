@@ -296,6 +296,7 @@ FocusScope{
             Repeater {
                 model: header.length
                 delegate: Item {
+                    z:-index
                     width: header[index].width
                     visible: header[index].visible
                     height: parent.height
@@ -322,7 +323,7 @@ FocusScope{
 
                     MouseArea{
                         id: headerResizeHandle
-                        property int offset:0
+                        property int offset: 0
                         property int minimumSize: 20
                         anchors.rightMargin: -width/2
                         width: 16 ; height: parent.height
