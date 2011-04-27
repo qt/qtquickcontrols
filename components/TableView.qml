@@ -232,7 +232,7 @@ FocusScope{
             id: rowitem
             width: row.width
             height: row.height
-            anchors.margins: frameitem.frameMargins
+            anchors.margins: frameWidth
             property int rowIndex: model.index
             property bool alternateRow: alternateRowColor && rowIndex %2 == 1
             Loader {
