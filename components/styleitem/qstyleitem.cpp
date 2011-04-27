@@ -523,8 +523,9 @@ int QStyleItem::pixelMetric(const QString &metric)
         return qApp->style()->pixelMetric(QStyle::PM_MenuVMargin, 0 , widget());
     else if (metric == "menupanelwidth")
         return qApp->style()->pixelMetric(QStyle::PM_MenuPanelWidth, 0 , widget());
+    // This metric is incorrectly negative on oxygen
     else if (metric == "scrollbarspacing")
-        return qApp->style()->pixelMetric(QStyle::PM_ScrollView_ScrollBarSpacing, 0 , widget());
+        return abs(qApp->style()->pixelMetric(QStyle::PM_ScrollView_ScrollBarSpacing, 0 , widget()));
     return 0;
 }
 
