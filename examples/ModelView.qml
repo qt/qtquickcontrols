@@ -18,9 +18,27 @@ Item {
     }
 
 
+
     TableView{
         model: flickerModel
         anchors.fill: parent
+
+        itemDelegate: Item {
+            height: itemheight
+            clip: true
+            Text {
+                anchors.fill: parent
+                anchors.leftMargin: 5
+                elide: Qt.ElideRight
+                text: itemvalue
+                color: itemselected ? "white" : "black"
+            }
+            Rectangle {
+                width: 1
+                height: parent.height
+                color: "#aaa"
+            }
+        }
 
         HeaderSection {
             property: "title"
