@@ -398,7 +398,7 @@ FocusScope{
 
     QStyleItem {
         id: styleitem
-        elementType: "header";
+        elementType: "header"
         visible:false
     }
     QStyleItem {

@@ -367,6 +367,7 @@ void QStyleItem::initStyleOption()
         m_styleoption->state |= QStyle::State_Horizontal;
 
     if (widget()) {
+        widget()->ensurePolished();
         if (type == QLatin1String("tab") && style() != QLatin1String("mac")) {
             // Some styles actually check the beginning and end position
             // using widget geometry, so we have to trick it
