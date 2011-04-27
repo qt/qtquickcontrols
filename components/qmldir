@@ -20,4 +20,4 @@ TableView 1.0 TableView.qml
 CheckBox 1.0 CheckBox.qml
 RadioButton 1.0 RadioButton.qml
 plugin styleplugin plugin
-
+HeaderSection 1.0 HeaderSection.qml

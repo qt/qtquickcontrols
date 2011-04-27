@@ -7,128 +7,81 @@ Item {
     width: 600
     height: 300
 
-    ScrollArea {
-        id: scrollarea
+    XmlListModel {
+        id: flickerModel
+        source: "http://api.flickr.com/services/feeds/photos_public.gne?format=rss2&tags=" + "Qt"
+        query: "/rss/channel/item"
+        namespaceDeclarations: "declare namespace media=\"http://search.yahoo.com/mrss/\";"
+        XmlRole { name: "title"; query: "title/string()" }
+        XmlRole { name: "imagesource"; query: "media:thumbnail/@url/string()" }
+        XmlRole { name: "filename"; query: "link/string()" }
+    }
+
+
+    TableView{
+        model: flickerModel
         anchors.fill: parent
-        contentHeight: tree.contentHeight
 
-        Item {
-            id: content
-            width: root.width-20
-            height: tree.height + header.height
-            ListModel {
-                id: headermodel
-                ListElement{
-                    width:200
-                    label: "Title"
-                }
-                ListElement{
-                    width: 100
-                    label: "ImageSource"
-                }
-                ListElement{
-                    width: 280
-                    label: "Filename"
-                }
+        HeaderSection {
+            property: "title"
+            caption: "Title"
+            width: 100
+        }
+        HeaderSection {
+            property: "imagesource"
+            caption: "Image source"
+            width: 200
+            visible: true
+        }
+        HeaderSection {
+            property: "filename"
+            caption: "File Name"
+            width: 200
+        }
+/*
+        headerDelegate: Rectangle {
+            color: "#555"
+            Rectangle {
+                width: 1
+                height: parent.height
+                color: "#444"
             }
-
-            ListView {
-                id: header
-                interactive:false
-                anchors.left:parent.left
-                anchors.top:parent.top
-                orientation: ListView.Horizontal
-                width: parent.width
-                height: 22
-                property int sortColumn: -1
-
-                model: headermodel
-
-                delegate: QStyleItem {
-                    clip: true
-                    elementType: "header"
-                    raised: true
-                    sunken: hoverarea.pressed
-                    hover: hoverarea.containsMouse
-                    activeControl: model.index == header.sortColumn ? "sort" : ""
-                    height: parent.height
-                    width: (index ==  headermodel.count - 1) ? header.width - x  : model.width
-                    text: model.label
-
-                    MouseArea{
-                        id: hoverarea
-                        hoverEnabled: true
-                        anchors.fill: parent
-                        onClicked: {
-                            if (index == 1)
-                                filemodel.sortField = 3
-                            else filemodel.sortField = 1
-                            header.sortColumn = index
-                        }
-                    }
-
-                    MouseArea{
-                        property int offset:0
-                        anchors.rightMargin: -width/2
-                        width: 16 ; height: parent.height
-                        anchors.right: parent.right
-
-                        onPositionChanged:  {
-                            headermodel.setProperty(index, "width",model.width + (mouseX - offset))}
-                        onPressedChanged: if(pressed)offset=mouseX
-
-                        QStyleItem {
-                            anchors.fill:parent
-                            cursor: "splithcursor"
-                        }
-                    }
-                }
-            }
-
-            ListView {
-                id: tree
-                interactive: false
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.top: header.bottom
-                height: 300
-
-                XmlListModel {
-                    id: flickrmodel
-                    source: "http://api.flickr.com/services/feeds/photos_public.gne?format=rss2&tags=" + "cat"
-                    query: "/rss/channel/item"
-                    namespaceDeclarations: "declare namespace media=\"http://search.yahoo.com/mrss/\";"
-                    XmlRole { name: "Title"; query: "title/string()" }
-                    XmlRole { name: "ImageSource"; query: "media:thumbnail/@url/string()" }
-                    XmlRole { name: "Filename"; query: "link/string()" }
-                }
-
-                model: flickrmodel
-                delegate: QStyleItem {
-                    id: delegate
-                    elementType: "itemrow"
-                    width: parent.width
-                    height: 20
-                    activeControl: index%2 == 0 ? "alternate" : ""
-                    property int rowIndex: model.index
-                    Row {
-                        Item {width:6; height:6}
-                        Repeater {
-                            model:headermodel.count
-                            Text {
-                                clip:true;
-                                property string varname: headermodel.get(index).label
-                                text: flickrmodel.get(rowIndex)[varname];
-                                elide :Text.ElideRight
-                                width: headermodel.get(index).width
-                            }
-                        }
-                    }
-                    MouseArea {
-                        anchors.fill: parent
-                    }
-                }
+            Text {
+                text: itemvalue
+                anchors.centerIn:parent
+                color:"#ccc"
             }
         }
+        rowDelegate: Rectangle {
+            color: itemselected ? "#888" : (alternaterow ? "#ccc" : "#ddd")
+            clip: true
+            Rectangle{
+                width: parent.width
+                height:1
+                anchors.bottom: parent.bottom
+                color: "#aaa"
+            }
+        }
+        itemDelegate: Item {
+            width: itemwidth
+            height: itemheight
+            clip: true
+            Text {
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.leftMargin: 5
+                elide: Qt.ElideRight
+                text: itemvalue
+                color: itemselected ? "white" : "black"
+            }
+            Rectangle {
+                width: 1
+                height: parent.height
+                color: "#aaa"
+            }
+
+        }
+        */
     }
-}
+

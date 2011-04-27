@@ -14,7 +14,6 @@ FocusScope {
     property bool frame: true
     property bool highlightOnFocus: false
     property bool frameAroundContents: styleitem.styleHint("framearoundcontents")
-    property int frameMargins : frame ? 2 : 0
 
     default property alias data: content.data
 
@@ -41,12 +40,14 @@ FocusScope {
         anchors.rightMargin: frame ? (frameAroundContents ? (vscrollbar.visible ? vscrollbar.width + 2 * frameMargins : 0) : -frameWidth) : 0
         anchors.bottomMargin: frame ? (frameAroundContents ? (hscrollbar.visible ? hscrollbar.height + 2 * frameMargins : 0) : -frameWidth) : 0
         anchors.topMargin: frame ? (frameAroundContents ? 0 : -frameWidth) : 0
+        property int scrollbarspacing: styleitem.pixelMetric("scrollbarspacing");
+        property int frameMargins : frame ? scrollbarspacing : 0
     }
 
     Item {
         id:flickable
         anchors.fill: styleitem
-        anchors.margins: frameMargins
+        anchors.margins: styleitem.frameMargins
         clip: true
 
         Item {

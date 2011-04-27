@@ -148,6 +148,15 @@ void QStyleItem::initStyleOption()
                     QStyleOptionHeader::SortDown
                   : activeControl() == "up" ?
                         QStyleOptionHeader::SortUp : QStyleOptionHeader::None;
+        if (activeControl() == QLatin1String("beginning"))
+            opt->position = QStyleOptionHeader::Beginning;
+        else if (activeControl() == QLatin1String("end"))
+            opt->position = QStyleOptionHeader::End;
+        else if (activeControl() == QLatin1String("only"))
+            opt->position = QStyleOptionHeader::OnlyOneSection;
+        else
+            opt->position = QStyleOptionHeader::Middle;
+
     }
     else if (type == QLatin1String("toolbutton")) {
         if (!m_styleoption)
@@ -358,6 +367,7 @@ void QStyleItem::initStyleOption()
         m_styleoption->state |= QStyle::State_Horizontal;
 
     if (widget()) {
+        widget()->ensurePolished();
         if (type == QLatin1String("tab") && style() != QLatin1String("mac")) {
             // Some styles actually check the beginning and end position
             // using widget geometry, so we have to trick it
@@ -513,6 +523,8 @@ int QStyleItem::pixelMetric(const QString &metric)
         return qApp->style()->pixelMetric(QStyle::PM_MenuVMargin, 0 , widget());
     else if (metric == "menupanelwidth")
         return qApp->style()->pixelMetric(QStyle::PM_MenuPanelWidth, 0 , widget());
+    else if (metric == "scrollbarspacing")
+        return qApp->style()->pixelMetric(QStyle::PM_ScrollView_ScrollBarSpacing, 0 , widget());
     return 0;
 }
 

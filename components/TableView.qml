@@ -38,16 +38,17 @@ import "../components/plugin"
 * }
 *
 * You provide title and size properties on headersections
-* by setting the headermodel :
+* by setting the default header property :
 *
-* ListModel {
-*    ListElement{ property: "column1" ; caption: "Column 1" ; width:100}
-*    ListElement{ property: "column2" ; caption: "Column 2" ; width:200}
+* TableView {
+*    HeaderSeciton{ property: "column1" ; caption: "Column 1" ; width:100}
+*    HeaderSection{ property: "column2" ; caption: "Column 2" ; width:200}
+*    model: datamodel
 * }
 *
-* The header sections are attached to properties in the datamodel by defining
-* the listmodel property they attach to.
-*
+* The header sections are attached to values in the datamodel by defining
+* the listmodel property they attach to. Each property in the model, will
+* then be shown in each column section.
 *
 * The view itself does not provide sorting. This has to
 * be done on the model itself. However you can provide sorting
@@ -61,15 +62,13 @@ import "../components/plugin"
 
 FocusScope{
     id: root
-    property variant headermodel
     property variant model
-    property int frameWidth: styleitem.pixelMetric("defaultframewidth");
+    property int frameWidth: frame ? styleitem.pixelMetric("defaultframewidth") : 0;
     property alias contentHeight : tree.contentHeight
     property alias contentWidth: tree.contentWidth
     property bool frame: true
     property bool highlightOnFocus: false
     property bool frameAroundContents: styleitem.styleHint("framearoundcontents")
-    property int frameMargins : frame ? 2 : 0
 
     property int sortColumn: 0  // Index of currently selected sort header
     property bool sortIndicatorVisible: true // enables or disables sort indicator
@@ -78,8 +77,14 @@ FocusScope{
     property bool alternateRowColor: true
     property alias contentX: tree.contentX
     property alias contentY: tree.contentY
+    property int headerHeight: headerrow.height
 
     property Component itemDelegate: standardDelegate
+    property Component rowDelegate: rowDelegate
+    property Component headerDelegate: headerDelegate
+
+    default property alias header: tree.header
+
 
     Component {
         id: standardDelegate
@@ -92,7 +97,7 @@ FocusScope{
                 anchors.margins: 2
                 anchors.verticalCenter: parent.verticalCenter
                 elide: Text.ElideRight
-                text: itemvalue
+                text: itemvalue ? itemvalue : ""
                 color: itemforeground
             }
         }
@@ -102,7 +107,6 @@ FocusScope{
         id: nativeDelegate
         // This gives more native styling, but might be less performant
         QStyleItem {
-            id: itemdelegate
             elementType: "item"
             height: itemheight
             width:  itemwidth
@@ -111,13 +115,34 @@ FocusScope{
         }
     }
 
+    Component {
+        id: headerDelegate
+        QStyleItem {
+            elementType: "header"
+            activeControl: itemsort
+            raised: true
+            sunken: itempressed
+            hover: itemhovered
+            text: itemvalue
+        }
+    }
+    Component {
+        id: rowDelegate
+        QStyleItem {
+            id: rowstyle
+            elementType: "itemrow"
+            activeControl: alternaterow ? "alternate" : ""
+            selected: itemselected ? "true" : "false"
+        }
+    }
+
     Rectangle {
         id: colorRect
         color: "white"
         anchors.fill: frameitem
         anchors.margins: frameWidth
-        anchors.rightMargin: (!frameAroundContents && vscrollbar.visible ? vscrollbar.width +frameWidth: 0)
-        anchors.bottomMargin: (!frameAroundContents && hscrollbar.visible ? hscrollbar.height +frameWidth : 0)
+        anchors.rightMargin: (!frameAroundContents && vscrollbar.visible ? vscrollbar.width : 0) + frameWidth
+        anchors.bottomMargin: (!frameAroundContents && hscrollbar.visible ? hscrollbar.height : 0) +frameWidth
     }
 
     QStyleItem {
@@ -130,10 +155,13 @@ FocusScope{
         anchors.rightMargin: frame ? (frameAroundContents ? (vscrollbar.visible ? vscrollbar.width + 2 * frameMargins : 0) : -frameWidth) : 0
         anchors.bottomMargin: frame ? (frameAroundContents ? (hscrollbar.visible ? hscrollbar.height + 2 * frameMargins : 0) : -frameWidth) : 0
         anchors.topMargin: frame ? (frameAroundContents ? 0 : -frameWidth) : 0
+        property int scrollbarspacing: styleitem.pixelMetric("scrollbarspacing");
+        property int frameMargins : frame ? scrollbarspacing : 0
     }
 
     ListView {
         id: tree
+        property list<HeaderSection> header
 
         model: root.model
 
@@ -157,8 +185,10 @@ FocusScope{
 
             onMousePositionChanged: {
                 if (mouseY > tree.height) {
+                    autodecrement = false
                     autoincrement = true
                 } else if (mouseY < 0) {
+                    autoincrement = false
                     autodecrement = true
                 } else {
                     var x = Math.min(contentWidth - 5, Math.max(mouseX + contentX, 0))
@@ -177,15 +207,15 @@ FocusScope{
         }
 
         interactive: false
-        anchors.top: header.bottom
+        anchors.top: headersection.bottom
         anchors.topMargin: -frameWidth
         anchors.left: frameitem.left
         anchors.right: frameitem.right
         anchors.bottom: frameitem.bottom
         anchors.margins: frameWidth
 
-        anchors.rightMargin: (!frameAroundContents && vscrollbar.visible ? vscrollbar.width +frameWidth: 0)
-        anchors.bottomMargin: (!frameAroundContents && hscrollbar.visible ? hscrollbar.height +frameWidth : 0)
+        anchors.rightMargin: (!frameAroundContents && vscrollbar.visible ? vscrollbar.width: 0) + frameWidth
+        anchors.bottomMargin: (!frameAroundContents && hscrollbar.visible ? hscrollbar.height : 0)  + frameWidth
 
         focus: true
         clip: true
@@ -202,113 +232,130 @@ FocusScope{
             id: rowitem
             width: row.width
             height: row.height
-            anchors.margins: frameMargins
+            anchors.margins: frameitem.frameMargins
             property int rowIndex: model.index
             property bool alternateRow: alternateRowColor && rowIndex %2 == 1
-            QStyleItem {
+            Loader {
                 id: rowstyle
-                elementType: "itemrow"
-                // Row fills the tree with regardless of item size
+                // row delegate
+                sourceComponent: root.rowDelegate
+                // Row fills the tree width regardless of item size
                 // But scrollbar should not adjust to it
                 width: frameitem.width
                 x: contentX
-                height: parent.height
-                activeControl: model.index%2 == 1 ? "alternate" : ""
-                selected: ListView.isCurrentItem ? "true" : "false"
-                property color textColor: styleHint("textColor")
-                property color highlightedTextColor: styleHint("highlightedTextColor")
+                height: row.height
+                property bool alternaterow: rowitem.alternateRow
+                property bool itemselected: rowitem.ListView.isCurrentItem
             }
             Row {
                 id: row
                 anchors.left: parent.left
                 Repeater {
                     id: repeater
-                    model: headermodel.count
+                    model: root.header.length
                     Loader {
                         id: itemDelegateLoader
+                        visible: header[index].visible
                         sourceComponent: itemDelegate
-                        property string itemvalue: root.model.get(rowIndex)[ headermodel.get(index).property]
-                        property int itemwidth: headermodel.get(index).width
-                        property int itemheight: Math.max(16, rowstyle.sizeFromContents(16, 16).height)
-                        property bool itemselected: rowitem.ListView.isCurrentItem
-                        property bool alternaterow: rowitem.alternateRow
-                        property color itemforeground: itemselected ? rowstyle.highlightedTextColor : rowstyle.textColor
-                        property int columnIndex: index
-                        property int rowIndex: rowitem.rowIndex
-                    }
+
+                        function getValue() {
+                            if (index < header.length && root.model.get(rowIndex).hasOwnProperty(header[index].property))
+                                return root.model.get(rowIndex)[ header[index].property]
+                            }
+
+
+                                property variant itemvalue: root.model.get(rowIndex)[ header[index].property]
+                                property int itemwidth: header[index].width
+                                property int itemheight: Math.max(16, styleitem.sizeFromContents(16, 16).height)
+                                property bool itemselected: rowitem.ListView.isCurrentItem
+                                property bool alternaterow: rowitem.alternateRow
+                                property color itemforeground: itemselected ? rowstyleitem.highlightedTextColor : rowstyleitem.textColor
+                                property int columnIndex: index
+                                property int rowIndex: rowitem.rowIndex
+                            }
                 }
                 onWidthChanged: tree.contentWidth = width
             }
         }
     }
-    ListView {
-        id: header
-        focus: false
-        interactive: false
-        anchors.margins: frameMargins
+    Text{ id:text }
+
+    Item {
+        id: headersection
+        clip: true
+        anchors.top: frameitem.top
         anchors.left: frameitem.left
         anchors.right: frameitem.right
-        anchors.top: frameitem.top
-        contentWidth: tree.contentWidth
-        contentX: tree.contentX
+        anchors.margins: frameWidth
         height: styleitem.sizeFromContents(text.font.pixelSize, styleitem.fontHeight).height
-        orientation: ListView.Horizontal
-        clip: true
-        // Derive size from style
-        Text{ id:text }
 
-        model: headermodel
+        Row {
+            id: headerrow
 
-        delegate: QStyleItem {
-            clip: true
-            elementType: "header"
-            raised: true
-            sunken: headerClickArea.pressed
-            hover: headerClickArea.containsMouse
-            property string sortString: sortIndicatorDirection == "up" ? "up" : "down";
-            activeControl: sortIndicatorVisible &&  (model.index == sortColumn) ? sortString : ""
+            x: -tree.contentX
+            anchors.top: parent.top
+            height:parent.height
+            Repeater {
+                model: header.length
+                delegate: Item {
+                    z:-index
+                    width: header[index].width
+                    visible: header[index].visible
+                    height: parent.height
 
-            width: model.width
-            height: parent.height
-            text: model.caption
+                    Loader {
+                        sourceComponent: root.headerDelegate
+                        anchors.fill: parent
+                        property string itemvalue: header[index].caption
+                        property string itemsort:  (sortIndicatorVisible && index == sortColumn) ? (sortIndicatorDirection == "up" ? "up" : "down") : "";
+                        property bool itempressed: headerClickArea.pressed
+                        property bool itemhovered: headerClickArea.containsMouse
+                    }
 
-            MouseArea{
-                id: headerClickArea
-                hoverEnabled: true
-                anchors.fill: parent
-                onClicked: {
-                    if (sortColumn == index)
-                        sortIndicatorDirection = sortIndicatorDirection === "up" ? "down" : "up"
-                    sortColumn = index
-                }
-            }
+                    MouseArea{
+                        id: headerClickArea
+                        hoverEnabled: true
+                        anchors.fill: parent
+                        onClicked: {
+                            if (sortColumn == index)
+                                sortIndicatorDirection = sortIndicatorDirection === "up" ? "down" : "up"
+                            sortColumn = index
+                        }
+                    }
 
-            MouseArea{
-                id: headerResizeHandle
-                property int offset:0
-                property int minimumSize: 20
-                anchors.rightMargin: -width/2
-                width: 16 ; height: parent.height
-                anchors.right: parent.right
-                onPositionChanged:  {
-                    var newHeaderWidth = model.width + (mouseX - offset)
-                    headermodel.setProperty(index, "width", Math.max(minimumSize, newHeaderWidth))
-                }
-                onPressedChanged: if(pressed)offset=mouseX
-
-                QStyleItem {
-                    anchors.fill: parent
-                    cursor: "splithcursor"
+                    MouseArea{
+                        id: headerResizeHandle
+                        property int offset: 0
+                        property int minimumSize: 20
+                        anchors.rightMargin: -width/2
+                        width: 16 ; height: parent.height
+                        anchors.right: parent.right
+                        onPositionChanged:  {
+                            var newHeaderWidth = header[index].width + (mouseX - offset)
+                            header[index].width = Math.max(minimumSize, newHeaderWidth)
+                        }
+                        onPressedChanged: if(pressed)offset=mouseX
+                        QStyleItem {
+                            anchors.fill: parent
+                            cursor: "splithcursor"
+                        }
+                    }
                 }
             }
         }
-        QStyleItem {
-            elementType: "header"
+        Loader {
+            id: loader
+            z:-1
+            sourceComponent: root.headerDelegate
             anchors.top: parent.top
             anchors.right: parent.right
-            anchors.bottom: header.bottom
-            width: Math.max(0, header.width - contentWidth)
-            raised: true
+            anchors.bottom: headerrow.bottom
+            anchors.rightMargin: -2
+            width: root.width - headerrow.width
+            property string itemvalue
+            property string itemsort
+            property bool itempressed
+            property bool itemhovered
         }
     }
     ScrollBar {
@@ -316,12 +363,13 @@ FocusScope{
         orientation: Qt.Horizontal
         property int availableWidth: root.width - vscrollbar.width
         visible: contentWidth > availableWidth
-        maximumValue: contentWidth > availableWidth ? tree.contentWidth - availableWidth: 0
+        maximumValue: contentWidth > availableWidth ? tree.contentWidth - availableWidth : 0
         minimumValue: 0
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.leftMargin: (frame ? frameWidth : 0)
+        anchors.leftMargin: frameWidth
+        anchors.bottomMargin: styleitem.frameoffset
         anchors.rightMargin: { vscrollbar.visible ? scrollbarExtent : (frame ? 1 : 0) }
         onValueChanged: contentX = value
         property int scrollbarExtent : styleitem.pixelMetric("scrollbarExtent");
@@ -331,16 +379,17 @@ FocusScope{
         id: vscrollbar
         orientation: Qt.Vertical
         // We cannot bind directly to tree.height due to binding loops so we have to redo the calculation here
-        property int availableHeight : root.height - (hscrollbar.visible ? hscrollbar.height : 0) - header.height - (frame ? 2 * frameWidth : 0)
+        property int availableHeight : root.height - (hscrollbar.visible ? hscrollbar.height : 0) - headersection.height
         visible: contentHeight > availableHeight
         maximumValue: contentHeight > availableHeight ? tree.contentHeight - availableHeight : 0
         minimumValue: 0
+        anchors.rightMargin: styleitem.frameoffset
         anchors.right: parent.right
         anchors.top: parent.top
         anchors.bottom: parent.bottom
-        anchors.topMargin: styleitem.style == "mac" ? 1 : 0
+        anchors.topMargin: styleitem.style == "mac" ? headersection.height + 1 : 0
         onValueChanged: contentY = value
-        anchors.bottomMargin: hscrollbar.visible ? hscrollbar.height : 0
+        anchors.bottomMargin: hscrollbar.visible ? hscrollbar.height + styleitem.frameoffset: 0
     }
 
     QStyleItem {
@@ -351,6 +400,18 @@ FocusScope{
         elementType: "focusframe"
     }
 
-    QStyleItem { id: styleitem ; elementType: "header"; visible:false }
+    QStyleItem {
+        id: styleitem
+        elementType: "header"
+        visible:false
+        property int frameoffset: style === "mac" ? -1 : 0
+    }
+    QStyleItem {
+        id: rowstyleitem
+        elementType: "item"
+        visible:false
+        property color textColor: styleHint("textColor")
+        property color highlightedTextColor: styleHint("highlightedTextColor")
+    }
     SystemPalette{id:palette}
 }

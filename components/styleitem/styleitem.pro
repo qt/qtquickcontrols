@@ -22,21 +22,6 @@ SOURCES += qrangemodel.cpp \
            
 
 OTHER_FILES += \
-    ../widgets/Button.qml \
-    ../widgets/CheckBox.qml \
-    ../widgets/ChoiceList.qml \
-    ../widgets/GroupBox.qml \
-    ../widgets/ProgressBar.qml \
-    ../widgets/RadioButton.qml \
-    ../widgets/ScrollArea.qml \
-    ../widgets/ScrollBar.qml \
-    ../widgets/Slider.qml \
-    ../widgets/SpinBox.qml \
-    ../widgets/Switch.qml \
-    ../widgets/TextArea.qml \
-    ../widgets/TextField.qml \
-    ../widgets/ToolBar.qml \
-    ../widgets/ToolButton.qml \
     ../gallery.qml \
     ../widgets/Tab.qml \
     ../widgets/TabBar.qml \
@@ -46,7 +31,9 @@ OTHER_FILES += \
     ../CheckBox.qml \
     ../ChoiceList.qml \
     ../components.pro \
+    ../ContextMenu.qml \
     ../Dial.qml \
+    ../Frame.qml \
     ../GroupBox.qml \
     ../ProgressBar.qml \
     ../RadioButton.qml \
@@ -56,6 +43,7 @@ OTHER_FILES += \
     ../SpinBox.qml \
     ../Switch.qml \
     ../Tab.qml \
+    ../TableView.qml \
     ../TabBar.qml \
     ../TabFrame.qml \
     ../TextArea.qml \
@@ -75,5 +63,7 @@ OTHER_FILES += \
     ../custom/Slider.qml \
     ../custom/SpinBox.qml \
     ../custom/TextField.qml \
+    ../../examples/Browser.qml \
     ../../examples/Panel.qml \
+    ../../examples/ModelView.qml \
     ../../examples/Gallery.qml
