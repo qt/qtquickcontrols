@@ -7,7 +7,7 @@ FocusScope {
     width: 100
     height: 100
 
-    property int frameWidth: styleitem.pixelMetric("defaultframewidth");
+    property int frameWidth: frame ? styleitem.pixelMetric("defaultframewidth") : 0;
     property int contentHeight : content.childrenRect.height
     property int contentWidth: content.childrenRect.width
     property alias color: colorRect.color
@@ -45,9 +45,9 @@ FocusScope {
     }
 
     Item {
-        id:flickable
+        id: flickable
         anchors.fill: styleitem
-        anchors.margins: styleitem.frameMargins
+        anchors.margins: frameWidth
         clip: true
 
         Item {

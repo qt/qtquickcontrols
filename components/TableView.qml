@@ -232,7 +232,7 @@ FocusScope{
             id: rowitem
             width: row.width
             height: row.height
-            anchors.margins: frameitem.frameMargins
+            anchors.margins: frameWidth
             property int rowIndex: model.index
             property bool alternateRow: alternateRowColor && rowIndex %2 == 1
             Loader {
@@ -257,22 +257,23 @@ FocusScope{
                         id: itemDelegateLoader
                         visible: header[index].visible
                         sourceComponent: itemDelegate
+                        width: itemwidth
+                        height: itemheight
 
                         function getValue() {
-                            if (index < header.length && root.model.get(rowIndex).hasOwnProperty(header[index].property))
+                            if (index < header.length &&
+                                root.model.get(rowIndex).hasOwnProperty(header[index].property))
                                 return root.model.get(rowIndex)[ header[index].property]
-                            }
-
-
-                                property variant itemvalue: root.model.get(rowIndex)[ header[index].property]
-                                property int itemwidth: header[index].width
-                                property int itemheight: Math.max(16, styleitem.sizeFromContents(16, 16).height)
-                                property bool itemselected: rowitem.ListView.isCurrentItem
-                                property bool alternaterow: rowitem.alternateRow
-                                property color itemforeground: itemselected ? rowstyleitem.highlightedTextColor : rowstyleitem.textColor
-                                property int columnIndex: index
-                                property int rowIndex: rowitem.rowIndex
-                            }
+                        }
+                        property variant itemvalue: root.model.get(rowIndex)[ header[index].property]
+                        property int itemwidth: header[index].width
+                        property int itemheight: Math.max(16, styleitem.sizeFromContents(16, 16).height)
+                        property bool itemselected: rowitem.ListView.isCurrentItem
+                        property bool alternaterow: rowitem.alternateRow
+                        property color itemforeground: itemselected ? rowstyleitem.highlightedTextColor : rowstyleitem.textColor
+                        property int columnIndex: index
+                        property int rowIndex: rowitem.rowIndex
+                    }
                 }
                 onWidthChanged: tree.contentWidth = width
             }

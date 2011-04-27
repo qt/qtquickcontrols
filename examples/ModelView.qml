@@ -18,6 +18,7 @@ Item {
     }
 
 
+
     TableView{
         model: flickerModel
         anchors.fill: parent

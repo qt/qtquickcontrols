@@ -523,8 +523,9 @@ int QStyleItem::pixelMetric(const QString &metric)
         return qApp->style()->pixelMetric(QStyle::PM_MenuVMargin, 0 , widget());
     else if (metric == "menupanelwidth")
         return qApp->style()->pixelMetric(QStyle::PM_MenuPanelWidth, 0 , widget());
+    // This metric is incorrectly negative on oxygen
     else if (metric == "scrollbarspacing")
-        return qApp->style()->pixelMetric(QStyle::PM_ScrollView_ScrollBarSpacing, 0 , widget());
+        return abs(qApp->style()->pixelMetric(QStyle::PM_ScrollView_ScrollBarSpacing, 0 , widget()));
     return 0;
 }
 
@@ -648,7 +649,7 @@ void QStyleItem::setElementType(const QString &str)
         static QToolButton *tb = 0;
         static QToolBar *bar = 0;
         // KDE animations are too broken with these widgets
-        if (!str.startsWith("oxygen")) {
+        if (!style().contains(QLatin1String("oxygen"))) {
             if (!tb) {
                 bar = new QToolBar(0);
                 tb = new QToolButton(bar);
