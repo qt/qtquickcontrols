@@ -38,6 +38,7 @@ Item {
             caption: "File Name"
             width: 200
         }
+        }
 /*
         headerDelegate: Rectangle {
             color: "#555"
