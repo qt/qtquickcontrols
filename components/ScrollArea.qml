@@ -40,7 +40,8 @@ FocusScope {
         anchors.rightMargin: frame ? (frameAroundContents ? (vscrollbar.visible ? vscrollbar.width + 2 * frameMargins : 0) : -frameWidth) : 0
         anchors.bottomMargin: frame ? (frameAroundContents ? (hscrollbar.visible ? hscrollbar.height + 2 * frameMargins : 0) : -frameWidth) : 0
         anchors.topMargin: frame ? (frameAroundContents ? 0 : -frameWidth) : 0
-        property int frameMargins : frame ? frameWidth : 0
+        property int scrollbarspacing: styleitem.pixelMetric("scrollbarspacing");
+        property int frameMargins : frame ? scrollbarspacing : 0
     }
 
     Item {

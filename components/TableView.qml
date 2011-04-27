@@ -38,16 +38,17 @@ import "../components/plugin"
 * }
 *
 * You provide title and size properties on headersections
-* by setting the headermodel :
+* by setting the default header property :
 *
-* ListModel {
-*    ListElement{ property: "column1" ; caption: "Column 1" ; width:100}
-*    ListElement{ property: "column2" ; caption: "Column 2" ; width:200}
+* TableView {
+*    HeaderSeciton{ property: "column1" ; caption: "Column 1" ; width:100}
+*    HeaderSection{ property: "column2" ; caption: "Column 2" ; width:200}
+*    model: datamodel
 * }
 *
-* The header sections are attached to properties in the datamodel by defining
-* the listmodel property they attach to.
-*
+* The header sections are attached to values in the datamodel by defining
+* the listmodel property they attach to. Each property in the model, will
+* then be shown in each column section.
 *
 * The view itself does not provide sorting. This has to
 * be done on the model itself. However you can provide sorting
@@ -62,7 +63,7 @@ import "../components/plugin"
 FocusScope{
     id: root
     property variant model
-    property int frameWidth: styleitem.pixelMetric("defaultframewidth");
+    property int frameWidth: frame ? styleitem.pixelMetric("defaultframewidth") : 0;
     property alias contentHeight : tree.contentHeight
     property alias contentWidth: tree.contentWidth
     property bool frame: true
@@ -96,7 +97,7 @@ FocusScope{
                 anchors.margins: 2
                 anchors.verticalCenter: parent.verticalCenter
                 elide: Text.ElideRight
-                text: itemvalue
+                text: itemvalue ? itemvalue : ""
                 color: itemforeground
             }
         }
@@ -154,7 +155,8 @@ FocusScope{
         anchors.rightMargin: frame ? (frameAroundContents ? (vscrollbar.visible ? vscrollbar.width + 2 * frameMargins : 0) : -frameWidth) : 0
         anchors.bottomMargin: frame ? (frameAroundContents ? (hscrollbar.visible ? hscrollbar.height + 2 * frameMargins : 0) : -frameWidth) : 0
         anchors.topMargin: frame ? (frameAroundContents ? 0 : -frameWidth) : 0
-        property int frameMargins : frame ? frameWidth : 0
+        property int scrollbarspacing: styleitem.pixelMetric("scrollbarspacing");
+        property int frameMargins : frame ? scrollbarspacing : 0
     }
 
     ListView {
@@ -204,7 +206,7 @@ FocusScope{
         }
 
         interactive: false
-        anchors.top: headerrow.bottom
+        anchors.top: headersection.bottom
         anchors.topMargin: -frameWidth
         anchors.left: frameitem.left
         anchors.right: frameitem.right
@@ -254,7 +256,14 @@ FocusScope{
                         id: itemDelegateLoader
                         visible: header[index].visible
                         sourceComponent: itemDelegate
-                        property string itemvalue: root.model.get(rowIndex)[ header[index].property]
+
+                        function getValue() {
+                            if (index < header.length && root.model.get(rowIndex).hasOwnProperty(header[index].property))
+                                return root.model.get(rowIndex)[ header[index].property]
+                        }
+
+
+                        property variant itemvalue: root.model.get(rowIndex)[ header[index].property]
                         property int itemwidth: header[index].width
                         property int itemheight: Math.max(16, styleitem.sizeFromContents(16, 16).height)
                         property bool itemselected: rowitem.ListView.isCurrentItem
@@ -270,63 +279,64 @@ FocusScope{
     }
     Text{ id:text }
 
-    Row {
-        id: headerrow
-        anchors.margins: frameitem.frameMargins
-        //anchors.left: frameitem.left
-        x: -tree.contentX
-        //anchors.right: frameitem.right
+    Item {
+        id: headersection
+        clip: true
         anchors.top: frameitem.top
-
+        anchors.left: frameitem.left
+        anchors.right: frameitem.right
+        anchors.margins: frameWidth
         height: styleitem.sizeFromContents(text.font.pixelSize, styleitem.fontHeight).height
 
-        Repeater {
-            focus: false
-            //tree.contentWidth
-            clip: true
-            // Derive size from style
+        Row {
+            id: headerrow
 
-            model: 3
+            x: -tree.contentX
+            anchors.top: parent.top
+            height:parent.height
+            Repeater {
+                model: header.length
+                delegate: Item {
+                    width: header[index].width
+                    visible: header[index].visible
+                    height: parent.height
 
-            delegate: Item {
-                width: header[index].width
-                visible: header[index].visible
-                height: parent.height
-                clip: true
-                Loader {
-                    sourceComponent: root.headerDelegate
-                    anchors.fill: parent
-                    property string itemvalue: header[index].caption
-                    property string itemsort:  (sortIndicatorVisible && index == sortColumn) ? (sortIndicatorDirection == "up" ? "up" : "down") : "";
-                    property bool itempressed: headerClickArea.pressed
-                    property bool itemhovered: headerClickArea.containsMouse
-                }
-                MouseArea{
-                    id: headerClickArea
-                    hoverEnabled: true
-                    anchors.fill: parent
-                    onClicked: {
-                        if (sortColumn == index)
-                            sortIndicatorDirection = sortIndicatorDirection === "up" ? "down" : "up"
-                        sortColumn = index
-                    }
-                }
-                MouseArea{
-                    id: headerResizeHandle
-                    property int offset:0
-                    property int minimumSize: 20
-                    anchors.rightMargin: -width/2
-                    width: 16 ; height: parent.height
-                    anchors.right: parent.right
-                    onPositionChanged:  {
-                        var newHeaderWidth = header[index].width + (mouseX - offset)
-                        header[index].width = Math.max(minimumSize, newHeaderWidth)
-                        //headermodel.setProperty(index, "width", Math.max(minimumSize, newHeaderWidth))
-                    }
-                    onPressedChanged: if(pressed)offset=mouseX
-                    QStyleItem {
+                    Loader {
+                        sourceComponent: root.headerDelegate
                         anchors.fill: parent
-                        cursor: "splithcursor"
+                        property string itemvalue: header[index].caption
+                        property string itemsort:  (sortIndicatorVisible && index == sortColumn) ? (sortIndicatorDirection == "up" ? "up" : "down") : "";
+                        property bool itempressed: headerClickArea.pressed
+                        property bool itemhovered: headerClickArea.containsMouse
+                    }
+
+                    MouseArea{
+                        id: headerClickArea
+                        hoverEnabled: true
+                        anchors.fill: parent
+                        onClicked: {
+                            if (sortColumn == index)
+                                sortIndicatorDirection = sortIndicatorDirection === "up" ? "down" : "up"
+                            sortColumn = index
+                        }
+                    }
+
+                    MouseArea{
+                        id: headerResizeHandle
+                        property int offset:0
+                        property int minimumSize: 20
+                        anchors.rightMargin: -width/2
+                        width: 16 ; height: parent.height
+                        anchors.right: parent.right
+                        onPositionChanged:  {
+                            var newHeaderWidth = header[index].width + (mouseX - offset)
+                            header[index].width = Math.max(minimumSize, newHeaderWidth)
+                        }
+                        onPressedChanged: if(pressed)offset=mouseX
+                        QStyleItem {
+                            anchors.fill: parent
+                            cursor: "splithcursor"
+                        }
                     }
                 }
             }
@@ -335,15 +345,16 @@ FocusScope{
             id: loader
             sourceComponent: root.headerDelegate
             anchors.top: parent.top
+            anchors.right: parent.right
             anchors.bottom: headerrow.bottom
-            width: root.width
+            anchors.rightMargin: -2
+            width: root.width - headerrow.width + 2
             property string itemvalue
             property string itemsort
             property bool itempressed
             property bool itemhovered
         }
     }
-
     ScrollBar {
         id: hscrollbar
         orientation: Qt.Horizontal
@@ -364,7 +375,7 @@ FocusScope{
         id: vscrollbar
         orientation: Qt.Vertical
         // We cannot bind directly to tree.height due to binding loops so we have to redo the calculation here
-        property int availableHeight : root.height - (hscrollbar.visible ? hscrollbar.height : 0) - header.height
+        property int availableHeight : root.height - (hscrollbar.visible ? hscrollbar.height : 0) - headersection.height
         visible: contentHeight > availableHeight
         maximumValue: contentHeight > availableHeight ? tree.contentHeight - availableHeight : 0
         minimumValue: 0

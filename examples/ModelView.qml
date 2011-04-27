@@ -30,17 +30,17 @@ Item {
         HeaderSection {
             property: "imagesource"
             caption: "Image source"
-            width: 400
+            width: 200
             visible: true
         }
         HeaderSection {
             property: "filename"
-            caption:"File Name"
-            width: 100
+            caption: "File Name"
+            width: 200
         }
     }
 
-    TableView{
+/*    TableView{
 
         HeaderSection {
             property: "title"
@@ -106,4 +106,5 @@ Item {
             }
         }
     }
+        */
 }
