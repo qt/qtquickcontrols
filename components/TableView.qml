@@ -61,7 +61,6 @@ import "../components/plugin"
 
 FocusScope{
     id: root
-    property variant headermodel
     property variant model
     property int frameWidth: styleitem.pixelMetric("defaultframewidth");
     property alias contentHeight : tree.contentHeight
@@ -77,11 +76,14 @@ FocusScope{
     property bool alternateRowColor: true
     property alias contentX: tree.contentX
     property alias contentY: tree.contentY
-    property int headerHeight: header.height
+    property int headerHeight: headerrow.height
 
     property Component itemDelegate: standardDelegate
     property Component rowDelegate: rowDelegate
     property Component headerDelegate: headerDelegate
+
+    default property alias header: tree.header
+
 
     Component {
         id: standardDelegate
@@ -158,6 +160,8 @@ FocusScope{
     ListView {
         id: tree
 
+        property list<HeaderSection> header
+
         model: root.model
 
         MouseArea {
@@ -200,7 +204,7 @@ FocusScope{
         }
 
         interactive: false
-        anchors.top: header.bottom
+        anchors.top: headerrow.bottom
         anchors.topMargin: -frameWidth
         anchors.left: frameitem.left
         anchors.right: frameitem.right
@@ -245,12 +249,13 @@ FocusScope{
                 anchors.left: parent.left
                 Repeater {
                     id: repeater
-                    model: headermodel.count
+                    model: root.header.length
                     Loader {
                         id: itemDelegateLoader
+                        visible: header[index].visible
                         sourceComponent: itemDelegate
-                        property string itemvalue: root.model.get(rowIndex)[ headermodel.get(index).property]
-                        property int itemwidth: headermodel.get(index).width
+                        property string itemvalue: root.model.get(rowIndex)[ header[index].property]
+                        property int itemwidth: header[index].width
                         property int itemheight: Math.max(16, styleitem.sizeFromContents(16, 16).height)
                         property bool itemselected: rowitem.ListView.isCurrentItem
                         property bool alternaterow: rowitem.alternateRow
@@ -263,82 +268,82 @@ FocusScope{
             }
         }
     }
-    ListView {
-        id: header
-        focus: false
-        interactive: false
+    Text{ id:text }
+
+    Row {
+        id: headerrow
         anchors.margins: frameitem.frameMargins
-        anchors.left: frameitem.left
-        anchors.right: frameitem.right
+        //anchors.left: frameitem.left
+        x: -tree.contentX
+        //anchors.right: frameitem.right
         anchors.top: frameitem.top
-        contentWidth: tree.contentWidth
-        contentX: tree.contentX
+
         height: styleitem.sizeFromContents(text.font.pixelSize, styleitem.fontHeight).height
-        orientation: ListView.Horizontal
-        clip: true
-        // Derive size from style
-        Text{ id:text }
 
-        model: headermodel
-
-        delegate: Item {
-            width: model.width
-            height: parent.height
+        Repeater {
+            focus: false
+            //tree.contentWidth
             clip: true
+            // Derive size from style
 
-            Loader {
-                sourceComponent: root.headerDelegate
-                anchors.fill: parent
-                property string itemvalue: model.caption
-                property string itemsort:  (sortIndicatorVisible && index == sortColumn) ? (sortIndicatorDirection == "up" ? "up" : "down") : "";
-                property bool itempressed: headerClickArea.pressed
-                property bool itemhovered: headerClickArea.containsMouse
-            }
+            model: 3
 
-            MouseArea{
-                id: headerClickArea
-                hoverEnabled: true
-                anchors.fill: parent
-                onClicked: {
-                    if (sortColumn == index)
-                        sortIndicatorDirection = sortIndicatorDirection === "up" ? "down" : "up"
-                    sortColumn = index
-                }
-            }
-
-            MouseArea{
-                id: headerResizeHandle
-                property int offset:0
-                property int minimumSize: 20
-                anchors.rightMargin: -width/2
-                width: 16 ; height: parent.height
-                anchors.right: parent.right
-                onPositionChanged:  {
-                    var newHeaderWidth = model.width + (mouseX - offset)
-                    headermodel.setProperty(index, "width", Math.max(minimumSize, newHeaderWidth))
-                }
-                onPressedChanged: if(pressed)offset=mouseX
-                QStyleItem {
+            delegate: Item {
+                width: header[index].width
+                visible: header[index].visible
+                height: parent.height
+                clip: true
+                Loader {
+                    sourceComponent: root.headerDelegate
                     anchors.fill: parent
-                    cursor: "splithcursor"
+                    property string itemvalue: header[index].caption
+                    property string itemsort:  (sortIndicatorVisible && index == sortColumn) ? (sortIndicatorDirection == "up" ? "up" : "down") : "";
+                    property bool itempressed: headerClickArea.pressed
+                    property bool itemhovered: headerClickArea.containsMouse
+                }
+                MouseArea{
+                    id: headerClickArea
+                    hoverEnabled: true
+                    anchors.fill: parent
+                    onClicked: {
+                        if (sortColumn == index)
+                            sortIndicatorDirection = sortIndicatorDirection === "up" ? "down" : "up"
+                        sortColumn = index
+                    }
+                }
+                MouseArea{
+                    id: headerResizeHandle
+                    property int offset:0
+                    property int minimumSize: 20
+                    anchors.rightMargin: -width/2
+                    width: 16 ; height: parent.height
+                    anchors.right: parent.right
+                    onPositionChanged:  {
+                        var newHeaderWidth = header[index].width + (mouseX - offset)
+                        header[index].width = Math.max(minimumSize, newHeaderWidth)
+                        //headermodel.setProperty(index, "width", Math.max(minimumSize, newHeaderWidth))
+                    }
+                    onPressedChanged: if(pressed)offset=mouseX
+                    QStyleItem {
+                        anchors.fill: parent
+                        cursor: "splithcursor"
+                    }
                 }
             }
         }
-
-
         Loader {
             id: loader
             sourceComponent: root.headerDelegate
             anchors.top: parent.top
-            anchors.right: parent.right
-            anchors.bottom: header.bottom
-            width: Math.max(0, header.width - contentWidth)
+            anchors.bottom: headerrow.bottom
+            width: root.width
             property string itemvalue
             property string itemsort
             property bool itempressed
             property bool itemhovered
         }
     }
+
     ScrollBar {
         id: hscrollbar
         orientation: Qt.Horizontal

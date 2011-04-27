@@ -7,12 +7,6 @@ Item {
     width: 600
     height: 300
 
-    ListModel {
-        id: listModel
-        ListElement{ property: "title" ; caption: "Title" ; width: 100}
-        ListElement{ property: "imagesource" ; caption: "Image Source" ; width: 200}
-        ListElement{ property: "filename" ; caption: "File Name" ; width: 200}
-    }
     XmlListModel {
         id: flickerModel
         source: "http://api.flickr.com/services/feeds/photos_public.gne?format=rss2&tags=" + "Qt"
@@ -23,65 +17,92 @@ Item {
         XmlRole { name: "filename"; query: "link/string()" }
     }
 
-    Column {
-        anchors.margins: 4
-        spacing: 8
 
-        TableView{
-            headermodel: listModel
-            model: flickerModel
-            width: root.width
-            height: root.height/2
+    TableView{
+        model: flickerModel
+        anchors.fill: parent
+
+        HeaderSection {
+            property: "title"
+            caption: "Title"
+            width: 100
+        }
+        HeaderSection {
+            property: "imagesource"
+            caption: "Image source"
+            width: 400
+            visible: true
+        }
+        HeaderSection {
+            property: "filename"
+            caption:"File Name"
+            width: 100
+        }
+    }
+
+    TableView{
+
+        HeaderSection {
+            property: "title"
+            caption: "Title"
+            width: 100
+        }
+        HeaderSection {
+            property: "imagesource"
+            caption: "Image source"
+            width: 400
+            visible: true
+        }
+        HeaderSection {
+            property: "filename"
+            caption:"File Name"
+            width: 100
         }
 
-        TableView{
-            headermodel: listModel
-            model: flickerModel
-            width: root.width
-            height: root.height/2 - 10
+        model: flickerModel
+        width: root.width
+        height: root.height/2 - 10
 
-            rowDelegate: Rectangle {
-                color: itemselected ? "#888" : (alternaterow ? "#ccc" : "#ddd")
-                clip: true
-                Rectangle{
-                    width: parent.width
-                    height:1
-                    anchors.bottom: parent.bottom
-                    color: "#aaa"
-                }
+        rowDelegate: Rectangle {
+            color: itemselected ? "#888" : (alternaterow ? "#ccc" : "#ddd")
+            clip: true
+            Rectangle{
+                width: parent.width
+                height:1
+                anchors.bottom: parent.bottom
+                color: "#aaa"
             }
+        }
 
-            itemDelegate: Item {
-                width: itemwidth
-                height: itemheight
-                clip: true
-                Text {
-                    anchors.fill: parent
-                    anchors.leftMargin: 5
-                    anchors.verticalCenter: parent.verticalCenter
-                    elide: Qt.ElideRight
-                    text: itemvalue
-                    color: itemselected ? "white" : "black"
-                }
-                Rectangle {
-                    width: 1
-                    height: parent.height
-                    color: "#aaa"
-                }
+        itemDelegate: Item {
+            width: itemwidth
+            height: itemheight
+            clip: true
+            Text {
+                anchors.fill: parent
+                anchors.leftMargin: 5
+                elide: Qt.ElideRight
+                text: itemvalue
+                color: itemselected ? "white" : "black"
             }
+            Rectangle {
+                width: 1
+                height: parent.height
+                color: "#aaa"
+            }
+        }
 
-            headerDelegate: Rectangle {
-                color: "#555"
-                Rectangle {
-                    width: 1
-                    height: parent.height
-                    color: "#444"
-                }
-                Text {
-                    text: itemvalue
-                    anchors.centerIn:parent
-                    color:"#ccc"
-                }
+        headerDelegate: Rectangle {
+            color: "#555"
+            Rectangle {
+                width: 1
+                height: parent.height
+                color: "#444"
+            }
+            Text {
+                text: itemvalue
+                anchors.centerIn:parent
+                color:"#ccc"
             }
         }
     }
