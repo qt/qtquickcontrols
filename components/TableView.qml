@@ -361,12 +361,13 @@ FocusScope{
         orientation: Qt.Horizontal
         property int availableWidth: root.width - vscrollbar.width
         visible: contentWidth > availableWidth
-        maximumValue: contentWidth > availableWidth ? tree.contentWidth - availableWidth: 0
+        maximumValue: contentWidth > availableWidth ? tree.contentWidth - availableWidth : 0
         minimumValue: 0
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.leftMargin: frameWidth
+        anchors.bottomMargin: styleitem.frameoffset
         anchors.rightMargin: { vscrollbar.visible ? scrollbarExtent : (frame ? 1 : 0) }
         onValueChanged: contentX = value
         property int scrollbarExtent : styleitem.pixelMetric("scrollbarExtent");
@@ -380,10 +381,11 @@ FocusScope{
         visible: contentHeight > availableHeight
         maximumValue: contentHeight > availableHeight ? tree.contentHeight - availableHeight : 0
         minimumValue: 0
+        anchors.rightMargin: styleitem.frameoffset
         anchors.right: parent.right
         anchors.top: parent.top
         anchors.bottom: parent.bottom
-        anchors.topMargin: styleitem.style == "mac" ? headersection.height : 0
+        anchors.topMargin: styleitem.style == "mac" ? headersection.height + 1 : 0
         onValueChanged: contentY = value
         anchors.bottomMargin: hscrollbar.visible ? hscrollbar.height : 0
     }
@@ -400,6 +402,7 @@ FocusScope{
         id: styleitem
         elementType: "header"
         visible:false
+        property int frameoffset: style === "mac" ? -1 : 0
     }
     QStyleItem {
         id: rowstyleitem
