@@ -48,6 +48,7 @@ Item {
             anchors.fill: parent
             anchors.margins: (frame ? frameitem.frameWidth : 0)
             anchors.topMargin: anchors.margins + (frameitem.style =="mac" ? 6 : 0)
+            anchors.bottomMargin: anchors.margins + (frameitem.style =="mac" ? 6 : 0)
         }
 
         anchors.topMargin: tabbar && tabsVisible && position == "North" ? tabbar.height - __baseOverlap : 0

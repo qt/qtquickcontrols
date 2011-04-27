@@ -697,12 +697,13 @@ void QStyleItem::setElementType(const QString &str)
     if (m_dummywidget) {
         m_dummywidget->installEventFilter(this);
         m_dummywidget->setAttribute(Qt::WA_QuitOnClose, false); // dont keep app open
+        m_dummywidget->setAttribute(Qt::WA_LayoutUsesWidgetRect);
         m_dummywidget->winId();
 #ifdef Q_WS_MAC
+        m_dummywidget->setGeometry(-1000, 0,0,0);
         m_dummywidget->setVisible(visible); // Mac require us to set the visibility before this
 #endif
         m_dummywidget->setAttribute(Qt::WA_DontShowOnScreen);
-        m_dummywidget->setAttribute(Qt::WA_LayoutUsesWidgetRect);
         m_dummywidget->setVisible(visible);
     }
 }
