@@ -57,6 +57,7 @@ class QStyleItem: public QDeclarativeItem
     Q_PROPERTY( bool on READ on WRITE setOn NOTIFY onChanged)
     Q_PROPERTY( bool hover READ hover WRITE setHover NOTIFY hoverChanged)
     Q_PROPERTY( bool horizontal READ horizontal WRITE setHorizontal NOTIFY horizontalChanged)
+
     Q_PROPERTY( QString elementType READ elementType WRITE setElementType NOTIFY elementTypeChanged)
     Q_PROPERTY( QString text READ text WRITE setText NOTIFY textChanged)
     Q_PROPERTY( QString activeControl READ activeControl WRITE setActiveControl NOTIFY activeControlChanged)
@@ -76,6 +77,34 @@ class QStyleItem: public QDeclarativeItem
     Q_PROPERTY( int fontHeight READ fontHeight NOTIFY fontHeightChanged)
 
 public:
+    enum Type {
+        Undefined,
+        Button,
+        RadioButton,
+        CheckBox,
+        ComboBox,
+        ComboBoxItem,
+        Dial,
+        ToolBar,
+        ToolButton,
+        Tab,
+        TabFrame,
+        Frame,
+        FocusFrame,
+        SpinBox,
+        Slider,
+        ScrollBar,
+        ProgressBar,
+        Edit,
+        GroupBox,
+        Header,
+        Item,
+        ItemRow,
+        Menu,
+        MenuItem,
+        Widget
+    };
+
     QStyleItem(QDeclarativeItem *parent = 0);
     ~QStyleItem();
 
@@ -171,6 +200,7 @@ Q_SIGNALS:
 protected:
     QWidget *m_dummywidget;
     QStyleOption *m_styleoption;
+    Type m_itemType;
 
     QString m_type;
     QString m_cursor;
