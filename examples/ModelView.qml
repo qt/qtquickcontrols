@@ -9,14 +9,13 @@ Item {
 
     XmlListModel {
         id: flickerModel
-        source: "http://api.flickr.com/services/feeds/photos_public.gne?format=rss2&tags=" + "Qt"
+        source: "http://api.flickr.com/services/feeds/photos_public.gne?format=rss2&tags=" + "Cat"
         query: "/rss/channel/item"
         namespaceDeclarations: "declare namespace media=\"http://search.yahoo.com/mrss/\";"
         XmlRole { name: "title"; query: "title/string()" }
         XmlRole { name: "imagesource"; query: "media:thumbnail/@url/string()" }
         XmlRole { name: "filename"; query: "link/string()" }
     }
-
 
 
     TableView{
@@ -139,5 +138,21 @@ Item {
         }
 
     }
+    XmlListModel {
+        id: twitterModel
+        property string from : ""
+        property string to : ""
+        property string phrase : "obama"
+        source: (from=="" && to=="" && phrase=="") ? "" :
+            'http://search.twitter.com/search.atom?&rpp=500&phrase='+phrase
+        namespaceDeclarations: "declare default element namespace 'http://www.w3.org/2005/Atom'; " +
+                               "declare namespace twitter=\"http://api.twitter.com/\";";
+        query: "/feed/entry"
+        XmlRole { name: "filename"; query: "content/string()" }
+        XmlRole { name: "statusText"; query: "content/string()" }
+        XmlRole { name: "title"; query: "published/string()" }
+        XmlRole { name: "imagesource"; query: "twitter:source/string()" }
+    }
+
         */
 }
