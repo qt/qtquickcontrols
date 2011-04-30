@@ -382,7 +382,7 @@ FocusScope{
         anchors.right: parent.right
         anchors.top: parent.top
         anchors.bottom: parent.bottom
-        anchors.topMargin: styleitem.style == "mac" ? headersection.height + 1 : 0
+        anchors.topMargin: styleitem.style == "mac" ? headersection.height : 0
         onValueChanged: contentY = value
         anchors.bottomMargin: hscrollbar.visible ? hscrollbar.height :  styleitem.frameoffset
     }
