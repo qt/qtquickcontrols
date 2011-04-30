@@ -2,6 +2,7 @@ import QtQuick 2.0
 
 Item {
     id:tab
-    anchors.fill:parent
+    anchors.fill: parent
     property string title
+    property int contentMargin
 }

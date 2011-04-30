@@ -42,6 +42,7 @@ FocusScope {
         anchors.topMargin: frame ? (frameAroundContents ? 0 : -frameWidth) : 0
         property int scrollbarspacing: styleitem.pixelMetric("scrollbarspacing");
         property int frameMargins : frame ? scrollbarspacing : 0
+        property int frameoffset: style === "mac" ? -1 : 0
     }
 
     Item {
@@ -65,6 +66,7 @@ FocusScope {
         maximumValue: contentWidth > availableWidth ? scrollarea.contentWidth - availableWidth: 0
         minimumValue: 0
         anchors.bottom: parent.bottom
+        anchors.bottomMargin: styleitem.frameoffset
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.leftMargin: (frame ? frameWidth : 0)
@@ -85,7 +87,8 @@ FocusScope {
         anchors.bottom: parent.bottom
         anchors.topMargin: styleitem.style == "mac" ? 1 : 0
         onValueChanged: contentY = value
-        anchors.bottomMargin: hscrollbar.visible ? hscrollbar.height : 0
+        anchors.rightMargin: styleitem.frameoffset
+        anchors.bottomMargin: hscrollbar.visible ? hscrollbar.height : styleitem.frameoffset
     }
 
     Rectangle {

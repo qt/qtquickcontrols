@@ -17,8 +17,6 @@ Item {
         XmlRole { name: "filename"; query: "link/string()" }
     }
 
-
-
     TableView{
         model: flickerModel
         anchors.fill: parent
@@ -39,21 +37,32 @@ Item {
             caption: "File Name"
             width: 200
         }
-        }
+    }
 /*
-        headerDelegate: Rectangle {
-            color: "#555"
-            Rectangle {
-                width: 1
-                height: parent.height
-                color: "#444"
-            }
-            Text {
-                text: itemvalue
-                anchors.centerIn:parent
-                color:"#ccc"
-            }
+
+        TableView{
+
+        HeaderSection {
+            property: "title"
+            caption: "Title"
+            width: 100
         }
+        HeaderSection {
+            property: "imagesource"
+            caption: "Image source"
+            width: 400
+            visible: true
+        }
+        HeaderSection {
+            property: "filename"
+            caption:"File Name"
+            width: 100
+        }
+
+        model: flickerModel
+        width: root.width
+        height: root.height/2 - 10
+
         rowDelegate: Rectangle {
             color: itemselected ? "#888" : (alternaterow ? "#ccc" : "#ddd")
             clip: true
@@ -64,14 +73,13 @@ Item {
                 color: "#aaa"
             }
         }
+
         itemDelegate: Item {
             width: itemwidth
             height: itemheight
             clip: true
             Text {
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.verticalCenter: parent.verticalCenter
+                anchors.fill: parent
                 anchors.leftMargin: 5
                 elide: Qt.ElideRight
                 text: itemvalue
@@ -82,8 +90,8 @@ Item {
                 height: parent.height
                 color: "#aaa"
             }
-
         }
-        */
-    }
 
+    }
+    */
+}

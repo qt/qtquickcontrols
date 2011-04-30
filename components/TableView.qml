@@ -22,12 +22,13 @@ import "../components/plugin"
 * itemforeground - The default text color for an item
 *
 * For example:
-*   itemDelegate: Text {
-*       color: itemforeground
-*       elide: Text.ElideRight
-*       height: itemheight
-*       width: itemwidth
-*       text: itemvalue
+*   itemDelegate: Item {
+*       Text {
+*           anchors.verticalCenter: parent.verticalCenter
+*           color: itemForeground
+*           elide: Text.ElideRight
+*           text: itemValue
+*        }
 *    }
 *
 * Data for each row is provided through a model:
@@ -89,16 +90,14 @@ FocusScope{
     Component {
         id: standardDelegate
         Item {
-            width: itemwidth
-            height: itemheight
             clip: true
             Text {
-                anchors.fill:parent
+                anchors.fill: parent
                 anchors.margins: 2
                 anchors.verticalCenter: parent.verticalCenter
                 elide: Text.ElideRight
-                text: itemvalue ? itemvalue : ""
-                color: itemforeground
+                text: itemValue ? itemValue : ""
+                color: itemForeground
             }
         }
     }
@@ -108,10 +107,8 @@ FocusScope{
         // This gives more native styling, but might be less performant
         QStyleItem {
             elementType: "item"
-            height: itemheight
-            width:  itemwidth
-            text:   itemvalue
-            selected: itemselected
+            text:   itemValue
+            selected: itemSelected
         }
     }
 
@@ -119,11 +116,11 @@ FocusScope{
         id: headerDelegate
         QStyleItem {
             elementType: "header"
-            activeControl: itemsort
+            activeControl: itemSort
             raised: true
-            sunken: itempressed
-            hover: itemhovered
-            text: itemvalue
+            sunken: itemPressed
+            text: itemValue
+            hover: itemContainsMouse
         }
     }
     Component {
@@ -131,8 +128,8 @@ FocusScope{
         QStyleItem {
             id: rowstyle
             elementType: "itemrow"
-            activeControl: alternaterow ? "alternate" : ""
-            selected: itemselected ? "true" : "false"
+            activeControl: itemAlternateBackground ? "alternate" : ""
+            selected: itemSelected ? "true" : "false"
         }
     }
 
@@ -234,7 +231,7 @@ FocusScope{
             height: row.height
             anchors.margins: frameWidth
             property int rowIndex: model.index
-            property bool alternateRow: alternateRowColor && rowIndex %2 == 1
+            property bool itemAlternateBackground: alternateRowColor && rowIndex % 2 == 1
             Loader {
                 id: rowstyle
                 // row delegate
@@ -244,8 +241,9 @@ FocusScope{
                 width: frameitem.width
                 x: contentX
                 height: row.height
-                property bool alternaterow: rowitem.alternateRow
-                property bool itemselected: rowitem.ListView.isCurrentItem
+
+                property bool itemAlternateBackground: rowitem.itemAlternateBackground
+                property bool itemSelected: rowitem.ListView.isCurrentItem
             }
             Row {
                 id: row
@@ -257,22 +255,19 @@ FocusScope{
                         id: itemDelegateLoader
                         visible: header[index].visible
                         sourceComponent: itemDelegate
-                        width: itemwidth
-                        height: itemheight
+                        width: header[index].width
+                        height: Math.max(16, styleitem.sizeFromContents(16, 16).height)
 
                         function getValue() {
                             if (index < header.length &&
                                 root.model.get(rowIndex).hasOwnProperty(header[index].property))
                                 return root.model.get(rowIndex)[ header[index].property]
                         }
-                        property variant itemvalue: root.model.get(rowIndex)[ header[index].property]
-                        property int itemwidth: header[index].width
-                        property int itemheight: Math.max(16, styleitem.sizeFromContents(16, 16).height)
-                        property bool itemselected: rowitem.ListView.isCurrentItem
-                        property bool alternaterow: rowitem.alternateRow
-                        property color itemforeground: itemselected ? rowstyleitem.highlightedTextColor : rowstyleitem.textColor
-                        property int columnIndex: index
+                        property variant itemValue: root.model.get(rowIndex)[ header[index].property]
+                        property bool itemSelected: rowitem.ListView.isCurrentItem
+                        property color itemForeground: itemSelected ? rowstyleitem.highlightedTextColor : rowstyleitem.textColor
                         property int rowIndex: rowitem.rowIndex
+                        property int columnIndex: index
                     }
                 }
                 onWidthChanged: tree.contentWidth = width
@@ -307,10 +302,10 @@ FocusScope{
                     Loader {
                         sourceComponent: root.headerDelegate
                         anchors.fill: parent
-                        property string itemvalue: header[index].caption
-                        property string itemsort:  (sortIndicatorVisible && index == sortColumn) ? (sortIndicatorDirection == "up" ? "up" : "down") : "";
-                        property bool itempressed: headerClickArea.pressed
-                        property bool itemhovered: headerClickArea.containsMouse
+                        property string itemValue: header[index].caption
+                        property string itemSort:  (sortIndicatorVisible && index == sortColumn) ? (sortIndicatorDirection == "up" ? "up" : "down") : "";
+                        property bool itemPressed: headerClickArea.pressed
+                        property bool itemContainsMouse: headerClickArea.containsMouse
                     }
 
                     MouseArea{
@@ -353,10 +348,10 @@ FocusScope{
             anchors.bottom: headerrow.bottom
             anchors.rightMargin: -2
             width: root.width - headerrow.width
-            property string itemvalue
-            property string itemsort
-            property bool itempressed
-            property bool itemhovered
+            property string itemValue
+            property string itemSort
+            property bool itemPressed
+            property bool itemContainsMouse
         }
     }
     ScrollBar {
@@ -390,7 +385,7 @@ FocusScope{
         anchors.bottom: parent.bottom
         anchors.topMargin: styleitem.style == "mac" ? headersection.height + 1 : 0
         onValueChanged: contentY = value
-        anchors.bottomMargin: hscrollbar.visible ? hscrollbar.height + styleitem.frameoffset: 0
+        anchors.bottomMargin: hscrollbar.visible ? hscrollbar.height :  styleitem.frameoffset
     }
 
     QStyleItem {

@@ -72,9 +72,10 @@ Rectangle {
     TabFrame {
         id:frame
         focus:true
-        property int margins : styleitem.style == "mac" ? 16 : 0
         position: tabPositionGroup.checkedButton == r2 ? "South" : "North"
         tabbar: TabBar{parent: frame; focus:true; KeyNavigation.tab:button1}
+
+        property int margins : styleitem.style == "mac" ? 16 : 0
         anchors.top: toolbar.bottom
         anchors.bottom: parent.bottom
         anchors.right: parent.right
@@ -314,6 +315,7 @@ Rectangle {
         }
         Tab {
             title: "Sidebar"
+
             Panel {
                 anchors.fill:parent
             }
