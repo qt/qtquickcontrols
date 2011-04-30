@@ -96,7 +96,7 @@ FocusScope{
                 anchors.margins: 4
                 anchors.left: parent.left
                 anchors.verticalCenter: parent.verticalCenter
-                elide: Text.ElideRight
+                elide: itemElideMode
                 text: itemValue ? itemValue : ""
                 color: itemForeground
             }
@@ -269,6 +269,7 @@ FocusScope{
                         property color itemForeground: itemSelected ? rowstyleitem.highlightedTextColor : rowstyleitem.textColor
                         property int rowIndex: rowitem.rowIndex
                         property int columnIndex: index
+                        property int itemElideMode: header[index].elideMode
                     }
                 }
                 onWidthChanged: tree.contentWidth = width
