@@ -297,9 +297,10 @@ FocusScope{
                 model: header.length
                 delegate: Item {
                     z:-index
+                    parent: headerClickArea.pressed ? frameitem : headerrow
                     width: header[index].width
                     visible: header[index].visible
-                    height: parent.height
+                    height: headerrow.height
 
                     Loader {
                         sourceComponent: root.headerDelegate
@@ -312,6 +313,8 @@ FocusScope{
 
                     MouseArea{
                         id: headerClickArea
+                        drag.target: parent
+                        drag.axis: Qt.XAxis
                         hoverEnabled: true
                         anchors.fill: parent
                         onClicked: {
