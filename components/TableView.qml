@@ -90,7 +90,6 @@ FocusScope{
     Component {
         id: standardDelegate
         Item {
-            clip: true
             Text {
                 anchors.fill: parent
                 anchors.margins: 2
