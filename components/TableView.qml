@@ -90,9 +90,11 @@ FocusScope{
     Component {
         id: standardDelegate
         Item {
+            clip: true
             Text {
-                anchors.fill: parent
-                anchors.margins: 2
+                width: parent.width
+                anchors.margins: 4
+                anchors.left: parent.left
                 anchors.verticalCenter: parent.verticalCenter
                 elide: Text.ElideRight
                 text: itemValue ? itemValue : ""
