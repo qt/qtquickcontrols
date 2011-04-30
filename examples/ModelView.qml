@@ -14,7 +14,7 @@ Item {
         namespaceDeclarations: "declare namespace media=\"http://search.yahoo.com/mrss/\";"
         XmlRole { name: "title"; query: "title/string()" }
         XmlRole { name: "imagesource"; query: "media:thumbnail/@url/string()" }
-        XmlRole { name: "filename"; query: "link/string()" }
+        XmlRole { name: "credit"; query: "media:credit/string()" }
     }
 
     TableView{
@@ -24,18 +24,18 @@ Item {
         HeaderSection {
             property: "title"
             caption: "Title"
-            width: 100
+            width: 120
+        }
+        HeaderSection {
+            property: "credit"
+            caption: "Credit"
+            width: 120
         }
         HeaderSection {
             property: "imagesource"
             caption: "Image source"
             width: 200
             visible: true
-        }
-        HeaderSection {
-            property: "filename"
-            caption: "File Name"
-            width: 200
         }
         /*
         headerDelegate: Rectangle {

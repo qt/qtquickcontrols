@@ -156,6 +156,46 @@ FocusScope{
         property int scrollbarspacing: styleitem.pixelMetric("scrollbarspacing");
         property int frameMargins : frame ? scrollbarspacing : 0
     }
+    MouseArea {
+        id: mousearea
+
+        anchors.fill: tree
+
+        property bool autoincrement: false;
+        property bool autodecrement: false;
+
+        onReleased: {
+            autoincrement = false
+            autodecrement = false
+        }
+
+        // Handle vertical scrolling whem dragging mouse outside boundraries
+
+        Timer { running: mousearea.autoincrement; repeat: true; interval: 40 ; onTriggered: tree.incrementCurrentIndex()}
+        Timer { running: mousearea.autodecrement; repeat: true; interval: 40 ; onTriggered: tree.decrementCurrentIndex()}
+
+        onMousePositionChanged: {
+            if (mouseY > tree.height) {
+                autodecrement = false
+                autoincrement = true
+            } else if (mouseY < 0) {
+                autoincrement = false
+                autodecrement = true
+            } else {
+                var x = Math.min(contentWidth - 5, Math.max(mouseX + contentX, 0))
+                var y = Math.min(contentHeight - 5, Math.max(mouseY + contentY, 0))
+                tree.currentIndex = tree.indexAt(x, y)
+                autoincrement = false
+                autodecrement = false
+            }
+        }
+        onPressed:  {
+            tree.forceActiveFocus()
+            var x = Math.min(contentWidth - 5, Math.max(mouseX + contentX, 0))
+            var y = Math.min(contentHeight - 5, Math.max(mouseY + contentY, 0))
+            tree.currentIndex = tree.indexAt(x, y)
+        }
+    }
 
     ListView {
         id: tree
@@ -163,46 +203,6 @@ FocusScope{
 
         model: root.model
 
-        MouseArea {
-            id: mousearea
-
-            anchors.fill: parent
-
-            property bool autoincrement: false;
-            property bool autodecrement: false;
-
-            onReleased: {
-                autoincrement = false
-                autodecrement = false
-            }
-
-            // Handle vertical scrolling whem dragging mouse outside boundraries
-
-            Timer { running: mousearea.autoincrement; repeat: true; interval: 40 ; onTriggered: tree.incrementCurrentIndex()}
-            Timer { running: mousearea.autodecrement; repeat: true; interval: 40 ; onTriggered: tree.decrementCurrentIndex()}
-
-            onMousePositionChanged: {
-                if (mouseY > tree.height) {
-                    autodecrement = false
-                    autoincrement = true
-                } else if (mouseY < 0) {
-                    autoincrement = false
-                    autodecrement = true
-                } else {
-                    var x = Math.min(contentWidth - 5, Math.max(mouseX + contentX, 0))
-                    var y = Math.min(contentHeight - 5, Math.max(mouseY + contentY, 0))
-                    tree.currentIndex = tree.indexAt(x, y)
-                    autoincrement = false
-                    autodecrement = false
-                }
-            }
-            onPressed:  {
-                tree.forceActiveFocus()
-                var x = Math.min(contentWidth - 5, Math.max(mouseX + contentX, 0))
-                var y = Math.min(contentHeight - 5, Math.max(mouseY + contentY, 0))
-                tree.currentIndex = tree.indexAt(x, y)
-            }
-        }
 
         interactive: false
         anchors.top: headersection.bottom
