@@ -17,8 +17,6 @@ Item {
         XmlRole { name: "filename"; query: "link/string()" }
     }
 
-
-
     TableView{
         model: flickerModel
         anchors.fill: parent
@@ -39,7 +37,7 @@ Item {
             caption: "File Name"
             width: 200
         }
-/*
+        /*
         headerDelegate: Rectangle {
             color: "#555"
             Rectangle {
@@ -86,7 +84,7 @@ Item {
         */
     }
 
-/*    TableView{
+    /*    TableView{
 
         HeaderSection {
             property: "title"
@@ -139,5 +137,5 @@ Item {
         }
 
     }
-        */
+    */
 }
