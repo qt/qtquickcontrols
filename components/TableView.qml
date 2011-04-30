@@ -365,7 +365,7 @@ FocusScope{
         anchors.right: parent.right
         anchors.leftMargin: frameWidth
         anchors.bottomMargin: styleitem.frameoffset
-        anchors.rightMargin: { vscrollbar.visible ? scrollbarExtent : (frame ? 1 : 0) }
+        anchors.rightMargin: vscrollbar.visible ? scrollbarExtent : (frame ? 1 : 0)
         onValueChanged: contentX = value
         property int scrollbarExtent : styleitem.pixelMetric("scrollbarExtent");
     }
