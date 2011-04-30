@@ -534,6 +534,10 @@ QSize QStyleItem::sizeFromContents(int width, int height)
         break;
     case Header:
         size = qApp->style()->sizeFromContents(QStyle::CT_HeaderSection, m_styleoption, QSize(width,height), widget());
+#ifdef Q_WS_MAC
+        if (style() =="mac")
+            size.setHeight(15);
+#endif
         break;
     case ItemRow:
     case Item: //fall through
@@ -668,9 +672,15 @@ void QStyleItem::setElementType(const QString &str)
         // Since these are used by the delegate, it makes no
         // sense to re-create them per item
         static QTreeView *menu = new QTreeView();
+        menu->setAttribute(Qt::WA_MacMiniSize);
         m_sharedWidget = true;
         if (str == "header") {
             m_dummywidget = menu->header();
+            if (style() == "mac") { // The default qt font seems to big
+                QFont font = m_dummywidget->font();
+                font.setPointSize(11);
+                m_dummywidget->setFont(font);
+            }
             m_itemType = Header;
         } else {
             m_dummywidget = menu;

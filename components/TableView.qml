@@ -92,10 +92,11 @@ FocusScope{
         Item {
             clip: true
             Text {
-                anchors.fill: parent
-                anchors.margins: 2
+                width: parent.width
+                anchors.margins: 4
+                anchors.left: parent.left
                 anchors.verticalCenter: parent.verticalCenter
-                elide: Text.ElideRight
+                elide: itemElideMode
                 text: itemValue ? itemValue : ""
                 color: itemForeground
             }
@@ -155,6 +156,46 @@ FocusScope{
         property int scrollbarspacing: styleitem.pixelMetric("scrollbarspacing");
         property int frameMargins : frame ? scrollbarspacing : 0
     }
+    MouseArea {
+        id: mousearea
+
+        anchors.fill: tree
+
+        property bool autoincrement: false;
+        property bool autodecrement: false;
+
+        onReleased: {
+            autoincrement = false
+            autodecrement = false
+        }
+
+        // Handle vertical scrolling whem dragging mouse outside boundraries
+
+        Timer { running: mousearea.autoincrement; repeat: true; interval: 40 ; onTriggered: tree.incrementCurrentIndex()}
+        Timer { running: mousearea.autodecrement; repeat: true; interval: 40 ; onTriggered: tree.decrementCurrentIndex()}
+
+        onMousePositionChanged: {
+            if (mouseY > tree.height) {
+                autodecrement = false
+                autoincrement = true
+            } else if (mouseY < 0) {
+                autoincrement = false
+                autodecrement = true
+            } else {
+                var x = Math.min(contentWidth - 5, Math.max(mouseX + contentX, 0))
+                var y = Math.min(contentHeight - 5, Math.max(mouseY + contentY, 0))
+                tree.currentIndex = tree.indexAt(x, y)
+                autoincrement = false
+                autodecrement = false
+            }
+        }
+        onPressed:  {
+            tree.forceActiveFocus()
+            var x = Math.min(contentWidth - 5, Math.max(mouseX + contentX, 0))
+            var y = Math.min(contentHeight - 5, Math.max(mouseY + contentY, 0))
+            tree.currentIndex = tree.indexAt(x, y)
+        }
+    }
 
     ListView {
         id: tree
@@ -162,46 +203,6 @@ FocusScope{
 
         model: root.model
 
-        MouseArea {
-            id: mousearea
-
-            anchors.fill: parent
-
-            property bool autoincrement: false;
-            property bool autodecrement: false;
-
-            onReleased: {
-                autoincrement = false
-                autodecrement = false
-            }
-
-            // Handle vertical scrolling whem dragging mouse outside boundraries
-
-            Timer { running: mousearea.autoincrement; repeat: true; interval: 40 ; onTriggered: tree.incrementCurrentIndex()}
-            Timer { running: mousearea.autodecrement; repeat: true; interval: 40 ; onTriggered: tree.decrementCurrentIndex()}
-
-            onMousePositionChanged: {
-                if (mouseY > tree.height) {
-                    autodecrement = false
-                    autoincrement = true
-                } else if (mouseY < 0) {
-                    autoincrement = false
-                    autodecrement = true
-                } else {
-                    var x = Math.min(contentWidth - 5, Math.max(mouseX + contentX, 0))
-                    var y = Math.min(contentHeight - 5, Math.max(mouseY + contentY, 0))
-                    tree.currentIndex = tree.indexAt(x, y)
-                    autoincrement = false
-                    autodecrement = false
-                }
-            }
-            onPressed:  {
-                tree.forceActiveFocus()
-                var x = Math.min(contentWidth - 5, Math.max(mouseX + contentX, 0))
-                var y = Math.min(contentHeight - 5, Math.max(mouseY + contentY, 0))
-                tree.currentIndex = tree.indexAt(x, y)
-            }
-        }
 
         interactive: false
         anchors.top: headersection.bottom
@@ -268,6 +269,7 @@ FocusScope{
                         property color itemForeground: itemSelected ? rowstyleitem.highlightedTextColor : rowstyleitem.textColor
                         property int rowIndex: rowitem.rowIndex
                         property int columnIndex: index
+                        property int itemElideMode: header[index].elideMode
                     }
                 }
                 onWidthChanged: tree.contentWidth = width
@@ -366,7 +368,7 @@ FocusScope{
         anchors.right: parent.right
         anchors.leftMargin: frameWidth
         anchors.bottomMargin: styleitem.frameoffset
-        anchors.rightMargin: { vscrollbar.visible ? scrollbarExtent : (frame ? 1 : 0) }
+        anchors.rightMargin: vscrollbar.visible ? scrollbarExtent : (frame ? 1 : 0)
         onValueChanged: contentX = value
         property int scrollbarExtent : styleitem.pixelMetric("scrollbarExtent");
     }
@@ -383,7 +385,7 @@ FocusScope{
         anchors.right: parent.right
         anchors.top: parent.top
         anchors.bottom: parent.bottom
-        anchors.topMargin: styleitem.style == "mac" ? headersection.height + 1 : 0
+        anchors.topMargin: styleitem.style == "mac" ? headersection.height : 0
         onValueChanged: contentY = value
         anchors.bottomMargin: hscrollbar.visible ? hscrollbar.height :  styleitem.frameoffset
     }

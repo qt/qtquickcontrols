@@ -5,4 +5,5 @@ QtObject {
     property string property
     property int width
     property bool visible: true
+    property int elideMode: Text.ElideRight
 }
