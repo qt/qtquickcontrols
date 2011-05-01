@@ -37,6 +37,27 @@ Item {
             width: 200
             visible: true
         }
+        itemDelegate: Item {
+            clip: true
+            Text {
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.leftMargin: 5
+                elide: itemElideMode
+                text: itemValue
+                color: itemForeground
+            }
+            height: itemSelected ? 80 : 40
+            smooth:true
+            Behavior on height {NumberAnimation{}}
+            MouseArea {
+                id:mouse
+                hoverEnabled: true
+                acceptedButtons: Qt.NoButton
+                anchors.fill: parent
+            }
+        }
 
         /*
         headerDelegate: Rectangle {
@@ -53,23 +74,6 @@ Item {
             }
         }
 
-        itemDelegate: Item {
-            clip: true
-            Text {
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.leftMargin: 5
-                elide: itemElideMode
-                text: itemValue
-                color: itemForeground
-            }
-            Rectangle {
-                width: 1
-                height: parent.height
-                color: "#aaa"
-            }
-        }
         rowDelegate: Rectangle {
             color: itemSelected ? "#888" : (itemAlternateBackground ? "#ccc" : "#ddd")
             clip: true

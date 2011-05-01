@@ -894,7 +894,7 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
             QPixmap pixmap;
             // Only draw through style once
             const QString pmKey = QLatin1Literal("itemrow") % QString::number(m_styleoption->state,16) % activeControl();
-            if (!QPixmapCache::find(pmKey, pixmap) || pixmap.width() < width()) {
+            if (!QPixmapCache::find(pmKey, pixmap) || pixmap.width() < width() || height() != pixmap.height()) {
                 int newSize = width();
                 pixmap = QPixmap(newSize, height());
                 pixmap.fill(Qt::transparent);
