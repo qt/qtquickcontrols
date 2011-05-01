@@ -70,8 +70,8 @@ FocusScope{
     property bool frame: true
     property bool highlightOnFocus: false
     property bool frameAroundContents: styleitem.styleHint("framearoundcontents")
+    property int sortColumn // Index of currently selected sort column
 
-    property int sortColumn: 0  // Index of currently selected sort header
     property bool sortIndicatorVisible: true // enables or disables sort indicator
     property string sortIndicatorDirection: "down" // "up" or "down" depending on current state
 
@@ -129,6 +129,7 @@ FocusScope{
             hover: itemContainsMouse
         }
     }
+
     Component {
         id: rowDelegate
         QStyleItem {
@@ -263,11 +264,11 @@ FocusScope{
                         sourceComponent: itemDelegate
 
                         width: header[index].width
-                        height: item.height
+                        height: Math.max(16, styleitem.sizeFromContents(16, 16).height)
 
                         function getValue() {
                             if (index < header.length &&
-                                root.model.get(rowIndex).hasOwnProperty(header[index].property))
+                                    root.model.get(rowIndex).hasOwnProperty(header[index].property))
                                 return root.model.get(rowIndex)[ header[index].property]
                         }
                         property variant itemValue: root.model.get(rowIndex)[ header[index].property]
@@ -299,8 +300,12 @@ FocusScope{
             anchors.top: parent.top
             height:parent.height
             x: -tree.contentX
+
             Repeater {
+                id: repeater
                 model: header.length
+                property int targetIndex: -1
+                property int dragIndex: -1
                 delegate: Item {
                     z:-index
                     width: header[index].width
@@ -315,11 +320,18 @@ FocusScope{
                         property bool itemPressed: headerClickArea.pressed
                         property bool itemContainsMouse: headerClickArea.containsMouse
                     }
+                    Rectangle{
+                        id: targetmark
+                        width: parent.width
+                        height:parent.height
+                        opacity: (index == repeater.targetIndex && repeater.targetIndex != repeater.dragIndex) ? 0.5 : 0
+                        Behavior on opacity { NumberAnimation{duration:160}}
+                        color: palette.highlight
+                    }
 
                     MouseArea{
                         id: headerClickArea
-                        drag.target: parent
-                        drag.axis: Qt.XAxis
+                        drag.axis: Qt.YAxis
                         hoverEnabled: true
                         anchors.fill: parent
                         onClicked: {
@@ -327,9 +339,58 @@ FocusScope{
                                 sortIndicatorDirection = sortIndicatorDirection === "up" ? "down" : "up"
                             sortColumn = index
                         }
+                        // Here we handle moving header sections
+                        onMousePositionChanged: {
+                            if (pressed) { // only do this while dragging
+                                for (var h = 0 ; h < header.length ; ++h) {
+                                    if (drag.target.x > headerrow.children[h].x - 10) {
+                                        repeater.targetIndex = header.length - h - 1
+                                        break
+                                    }
+                                }
+                            }
+                        }
+
+                        onPressed: {
+                            repeater.dragIndex = index
+                            draghandle.x = parent.x
+                        }
+
+                        onReleased: {
+                            if (repeater.targetIndex >= 0 && repeater.targetIndex != index ) {
+                                // Rearrange the header sections
+                                var items = new Array
+                                for (var i = 0 ; i< header.length ; ++i)
+                                    items.push(header[i])
+                                items.splice(index, 1);
+                                items.splice(repeater.targetIndex, 0, header[index]);
+                                header = items
+                                if (sortColumn == index)
+                                    sortColumn = repeater.targetIndex
+                            }
+                            repeater.targetIndex = -1
+                        }
+                        drag.maximumX: 1000
+                        drag.minimumX: -1000
+                        drag.target: draghandle
                     }
 
-                    MouseArea{
+                    Loader {
+                        id: draghandle
+                        parent: headersection
+                        sourceComponent: root.headerDelegate
+                        width: header[index].width
+                        height: parent.height
+                        property string itemValue: header[index].caption
+                        property string itemSort:  (sortIndicatorVisible && index == sortColumn) ? (sortIndicatorDirection == "up" ? "up" : "down") : "";
+                        property bool itemPressed: headerClickArea.pressed
+                        property bool itemContainsMouse: headerClickArea.containsMouse
+                        visible: headerClickArea.pressed
+                        opacity: 0.5
+                    }
+
+
+                    MouseArea {
                         id: headerResizeHandle
                         property int offset: 0
                         property int minimumSize: 20
