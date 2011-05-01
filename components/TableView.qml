@@ -86,11 +86,11 @@ FocusScope{
 
     default property alias header: tree.header
 
-
     Component {
         id: standardDelegate
         Item {
             clip: true
+            property int implicitWidth: sizehint.paintedWidth + 4
             Text {
                 width: parent.width
                 anchors.margins: 4
@@ -99,6 +99,11 @@ FocusScope{
                 elide: itemElideMode
                 text: itemValue ? itemValue : ""
                 color: itemForeground
+            }
+            Text {
+                id: sizehint
+                text: itemValue ? itemValue : ""
+                visible:false
             }
         }
     }
@@ -203,7 +208,6 @@ FocusScope{
 
         model: root.model
 
-
         interactive: false
         anchors.top: headersection.bottom
         anchors.topMargin: -frameWidth
@@ -240,8 +244,8 @@ FocusScope{
                 // Row fills the tree width regardless of item size
                 // But scrollbar should not adjust to it
                 width: frameitem.width
-                x: contentX
                 height: row.height
+                x: contentX
 
                 property bool itemAlternateBackground: rowitem.itemAlternateBackground
                 property bool itemSelected: rowitem.ListView.isCurrentItem
@@ -249,6 +253,7 @@ FocusScope{
             Row {
                 id: row
                 anchors.left: parent.left
+
                 Repeater {
                     id: repeater
                     model: root.header.length
@@ -256,6 +261,7 @@ FocusScope{
                         id: itemDelegateLoader
                         visible: header[index].visible
                         sourceComponent: itemDelegate
+
                         width: header[index].width
                         height: Math.max(16, styleitem.sizeFromContents(16, 16).height)
 
@@ -290,9 +296,9 @@ FocusScope{
         Row {
             id: headerrow
 
-            x: -tree.contentX
             anchors.top: parent.top
             height:parent.height
+            x: -tree.contentX
             Repeater {
                 model: header.length
                 delegate: Item {
@@ -334,6 +340,21 @@ FocusScope{
                         onPositionChanged:  {
                             var newHeaderWidth = header[index].width + (mouseX - offset)
                             header[index].width = Math.max(minimumSize, newHeaderWidth)
+                        }
+                        property bool found:false
+
+                        onDoubleClicked: {
+                            var row
+                            var minWidth =  0
+                            var listdata = tree.children[0]
+                            for (row = 0 ; row < listdata.children.length ; ++row){
+                                var item = listdata.children[row+1]
+                                if (item && item.children[1] && item.children[1].children[index] &&
+                                        item.children[1].children[index].children[0].hasOwnProperty("implicitWidth"))
+                                    minWidth = Math.max(minWidth, item.children[1].children[index].children[0].implicitWidth)
+                            }
+                            if (minWidth)
+                                header[index].width = minWidth
                         }
                         onPressedChanged: if(pressed)offset=mouseX
                         QStyleItem {
