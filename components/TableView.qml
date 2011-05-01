@@ -167,8 +167,8 @@ FocusScope{
 
         anchors.fill: tree
 
-        property bool autoincrement: false;
-        property bool autodecrement: false;
+        property bool autoincrement: false
+        property bool autodecrement: false
 
         onReleased: {
             autoincrement = false
@@ -177,8 +177,8 @@ FocusScope{
 
         // Handle vertical scrolling whem dragging mouse outside boundraries
 
-        Timer { running: mousearea.autoincrement; repeat: true; interval: 40 ; onTriggered: tree.incrementCurrentIndex()}
-        Timer { running: mousearea.autodecrement; repeat: true; interval: 40 ; onTriggered: tree.decrementCurrentIndex()}
+        Timer { running: mousearea.autoincrement; repeat: true; interval: 30 ; onTriggered: tree.incrementCurrentIndex()}
+        Timer { running: mousearea.autodecrement; repeat: true; interval: 30 ; onTriggered: tree.decrementCurrentIndex()}
 
         onMousePositionChanged: {
             if (mouseY > tree.height) {
@@ -187,13 +187,17 @@ FocusScope{
             } else if (mouseY < 0) {
                 autoincrement = false
                 autodecrement = true
-            } else {
-                var x = Math.min(contentWidth - 5, Math.max(mouseX + contentX, 0))
-                var y = Math.min(contentHeight - 5, Math.max(mouseY + contentY, 0))
-                tree.currentIndex = tree.indexAt(x, y)
+            } else  {
                 autoincrement = false
                 autodecrement = false
             }
+
+            var x = Math.min(contentX + tree.width - 5, Math.max(mouseX + contentX, contentX))
+            var y = Math.min(contentY + tree.height - 5, Math.max(mouseY + contentY, contentY))
+
+            var newIndex =tree.indexAt(x, y)
+            if (newIndex > 0)
+                tree.currentIndex = tree.indexAt(x, y)
         }
         onPressed:  {
             tree.forceActiveFocus()
