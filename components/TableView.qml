@@ -344,11 +344,13 @@ FocusScope{
                             sortColumn = index
                         }
                         // Here we handle moving header sections
+                        // NOTE: the direction is different from the master branch
+                        // so this indicates that Im using an invalid assumption on item ordering
                         onMousePositionChanged: {
                             if (pressed) { // only do this while dragging
-                                for (var h = 0 ; h < header.length ; ++h) {
-                                    if (drag.target.x > headerrow.children[h].x - 10) {
-                                        repeater.targetIndex = header.length - h - 1
+                                for (var h = header.length-1 ; h >= 0 ; --h) {
+                                    if (drag.target.x > headerrow.children[h].x) {
+                                        repeater.targetIndex = h
                                         break
                                     }
                                 }
