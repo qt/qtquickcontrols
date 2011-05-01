@@ -263,7 +263,7 @@ FocusScope{
                         sourceComponent: itemDelegate
 
                         width: header[index].width
-                        //height: Math.max(16, styleitem.sizeFromContents(16, 16).height)
+                        height: item.height
 
                         function getValue() {
                             if (index < header.length &&
