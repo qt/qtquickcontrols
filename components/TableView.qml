@@ -303,7 +303,6 @@ FocusScope{
                 model: header.length
                 delegate: Item {
                     z:-index
-                    parent: headerClickArea.pressed ? frameitem : headerrow
                     width: header[index].width
                     visible: header[index].visible
                     height: headerrow.height
