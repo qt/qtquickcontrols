@@ -70,8 +70,8 @@ FocusScope{
     property bool frame: true
     property bool highlightOnFocus: false
     property bool frameAroundContents: styleitem.styleHint("framearoundcontents")
+    property int sortColumn // Index of currently selected sort column
 
-    property int sortColumn: 0  // Index of currently selected sort header
     property bool sortIndicatorVisible: true // enables or disables sort indicator
     property string sortIndicatorDirection: "down" // "up" or "down" depending on current state
 
@@ -86,11 +86,11 @@ FocusScope{
 
     default property alias header: tree.header
 
-
     Component {
         id: standardDelegate
         Item {
             clip: true
+            property int implicitWidth: sizehint.paintedWidth + 4
             Text {
                 width: parent.width
                 anchors.margins: 4
@@ -99,6 +99,11 @@ FocusScope{
                 elide: itemElideMode
                 text: itemValue ? itemValue : ""
                 color: itemForeground
+            }
+            Text {
+                id: sizehint
+                text: itemValue ? itemValue : ""
+                visible:false
             }
         }
     }
@@ -124,6 +129,7 @@ FocusScope{
             hover: itemContainsMouse
         }
     }
+
     Component {
         id: rowDelegate
         QStyleItem {
@@ -161,8 +167,8 @@ FocusScope{
 
         anchors.fill: tree
 
-        property bool autoincrement: false;
-        property bool autodecrement: false;
+        property bool autoincrement: false
+        property bool autodecrement: false
 
         onReleased: {
             autoincrement = false
@@ -171,8 +177,8 @@ FocusScope{
 
         // Handle vertical scrolling whem dragging mouse outside boundraries
 
-        Timer { running: mousearea.autoincrement; repeat: true; interval: 40 ; onTriggered: tree.incrementCurrentIndex()}
-        Timer { running: mousearea.autodecrement; repeat: true; interval: 40 ; onTriggered: tree.decrementCurrentIndex()}
+        Timer { running: mousearea.autoincrement; repeat: true; interval: 30 ; onTriggered: tree.incrementCurrentIndex()}
+        Timer { running: mousearea.autodecrement; repeat: true; interval: 30 ; onTriggered: tree.decrementCurrentIndex()}
 
         onMousePositionChanged: {
             if (mouseY > tree.height) {
@@ -181,13 +187,17 @@ FocusScope{
             } else if (mouseY < 0) {
                 autoincrement = false
                 autodecrement = true
-            } else {
-                var x = Math.min(contentWidth - 5, Math.max(mouseX + contentX, 0))
-                var y = Math.min(contentHeight - 5, Math.max(mouseY + contentY, 0))
-                tree.currentIndex = tree.indexAt(x, y)
+            } else  {
                 autoincrement = false
                 autodecrement = false
             }
+
+            var x = Math.min(contentX + tree.width - 5, Math.max(mouseX + contentX, contentX))
+            var y = Math.min(contentY + tree.height - 5, Math.max(mouseY + contentY, contentY))
+
+            var newIndex =tree.indexAt(x, y)
+            if (newIndex > 0)
+                tree.currentIndex = tree.indexAt(x, y)
         }
         onPressed:  {
             tree.forceActiveFocus()
@@ -202,7 +212,6 @@ FocusScope{
         property list<HeaderSection> header
 
         model: root.model
-
 
         interactive: false
         anchors.top: headersection.bottom
@@ -240,8 +249,8 @@ FocusScope{
                 // Row fills the tree width regardless of item size
                 // But scrollbar should not adjust to it
                 width: frameitem.width
-                x: contentX
                 height: row.height
+                x: contentX
 
                 property bool itemAlternateBackground: rowitem.itemAlternateBackground
                 property bool itemSelected: rowitem.ListView.isCurrentItem
@@ -249,6 +258,7 @@ FocusScope{
             Row {
                 id: row
                 anchors.left: parent.left
+
                 Repeater {
                     id: repeater
                     model: root.header.length
@@ -256,12 +266,13 @@ FocusScope{
                         id: itemDelegateLoader
                         visible: header[index].visible
                         sourceComponent: itemDelegate
+
                         width: header[index].width
                         height: Math.max(16, styleitem.sizeFromContents(16, 16).height)
 
                         function getValue() {
                             if (index < header.length &&
-                                root.model.get(rowIndex).hasOwnProperty(header[index].property))
+                                    root.model.get(rowIndex).hasOwnProperty(header[index].property))
                                 return root.model.get(rowIndex)[ header[index].property]
                         }
                         property variant itemValue: root.model.get(rowIndex)[ header[index].property]
@@ -290,16 +301,20 @@ FocusScope{
         Row {
             id: headerrow
 
-            x: -tree.contentX
             anchors.top: parent.top
             height:parent.height
+            x: -tree.contentX
+
             Repeater {
+                id: repeater
                 model: header.length
+                property int targetIndex: -1
+                property int dragIndex: -1
                 delegate: Item {
                     z:-index
                     width: header[index].width
                     visible: header[index].visible
-                    height: parent.height
+                    height: headerrow.height
 
                     Loader {
                         sourceComponent: root.headerDelegate
@@ -309,9 +324,18 @@ FocusScope{
                         property bool itemPressed: headerClickArea.pressed
                         property bool itemContainsMouse: headerClickArea.containsMouse
                     }
+                    Rectangle{
+                        id: targetmark
+                        width: parent.width
+                        height:parent.height
+                        opacity: (index == repeater.targetIndex && repeater.targetIndex != repeater.dragIndex) ? 0.5 : 0
+                        Behavior on opacity { NumberAnimation{duration:160}}
+                        color: palette.highlight
+                    }
 
                     MouseArea{
                         id: headerClickArea
+                        drag.axis: Qt.YAxis
                         hoverEnabled: true
                         anchors.fill: parent
                         onClicked: {
@@ -319,9 +343,58 @@ FocusScope{
                                 sortIndicatorDirection = sortIndicatorDirection === "up" ? "down" : "up"
                             sortColumn = index
                         }
+                        // Here we handle moving header sections
+                        onMousePositionChanged: {
+                            if (pressed) { // only do this while dragging
+                                for (var h = 0 ; h < header.length ; ++h) {
+                                    if (drag.target.x > headerrow.children[h].x - 10) {
+                                        repeater.targetIndex = header.length - h - 1
+                                        break
+                                    }
+                                }
+                            }
+                        }
+
+                        onPressed: {
+                            repeater.dragIndex = index
+                            draghandle.x = parent.x
+                        }
+
+                        onReleased: {
+                            if (repeater.targetIndex >= 0 && repeater.targetIndex != index ) {
+                                // Rearrange the header sections
+                                var items = new Array
+                                for (var i = 0 ; i< header.length ; ++i)
+                                    items.push(header[i])
+                                items.splice(index, 1);
+                                items.splice(repeater.targetIndex, 0, header[index]);
+                                header = items
+                                if (sortColumn == index)
+                                    sortColumn = repeater.targetIndex
+                            }
+                            repeater.targetIndex = -1
+                        }
+                        drag.maximumX: 1000
+                        drag.minimumX: -1000
+                        drag.target: draghandle
                     }
 
-                    MouseArea{
+                    Loader {
+                        id: draghandle
+                        parent: headersection
+                        sourceComponent: root.headerDelegate
+                        width: header[index].width
+                        height: parent.height
+                        property string itemValue: header[index].caption
+                        property string itemSort:  (sortIndicatorVisible && index == sortColumn) ? (sortIndicatorDirection == "up" ? "up" : "down") : "";
+                        property bool itemPressed: headerClickArea.pressed
+                        property bool itemContainsMouse: headerClickArea.containsMouse
+                        visible: headerClickArea.pressed
+                        opacity: 0.5
+                    }
+
+
+                    MouseArea {
                         id: headerResizeHandle
                         property int offset: 0
                         property int minimumSize: 20
@@ -331,6 +404,21 @@ FocusScope{
                         onPositionChanged:  {
                             var newHeaderWidth = header[index].width + (mouseX - offset)
                             header[index].width = Math.max(minimumSize, newHeaderWidth)
+                        }
+                        property bool found:false
+
+                        onDoubleClicked: {
+                            var row
+                            var minWidth =  0
+                            var listdata = tree.children[0]
+                            for (row = 0 ; row < listdata.children.length ; ++row){
+                                var item = listdata.children[row+1]
+                                if (item && item.children[1] && item.children[1].children[index] &&
+                                        item.children[1].children[index].children[0].hasOwnProperty("implicitWidth"))
+                                    minWidth = Math.max(minWidth, item.children[1].children[index].children[0].implicitWidth)
+                            }
+                            if (minWidth)
+                                header[index].width = minWidth
                         }
                         onPressedChanged: if(pressed)offset=mouseX
                         QStyleItem {

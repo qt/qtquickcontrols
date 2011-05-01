@@ -106,7 +106,9 @@ FocusScope {
     QStyleItem {
         z: 2
         anchors.fill: parent
-        anchors.margins: -4
+        anchors.margins: -3
+        anchors.rightMargin: -4
+        anchors.bottomMargin: -4
         visible: highlightOnFocus && parent.activeFocus && styleitem.styleHint("focuswidget")
         elementType: "focusframe"
     }

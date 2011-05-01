@@ -46,13 +46,14 @@ Item {
                 color: "#444"
             }
             Text {
-                text: itemvalue
+                text: itemValue
                 anchors.centerIn:parent
                 color:"#ccc"
             }
         }
+
         rowDelegate: Rectangle {
-            color: itemselected ? "#888" : (alternaterow ? "#ccc" : "#ddd")
+            color: itemSelected ? "#888" : (itemAlternateBackground ? "#ccc" : "#ddd")
             clip: true
             Rectangle{
                 width: parent.width
@@ -61,26 +62,7 @@ Item {
                 color: "#aaa"
             }
         }
-        itemDelegate: Item {
-            width: itemwidth
-            height: itemheight
-            clip: true
-            Text {
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.leftMargin: 5
-                elide: Qt.ElideRight
-                text: itemvalue
-                color: itemselected ? "white" : "black"
-            }
-            Rectangle {
-                width: 1
-                height: parent.height
-                color: "#aaa"
-            }
 
-        }
         */
     }
 }
