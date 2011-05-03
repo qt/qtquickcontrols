@@ -335,7 +335,7 @@ void QStyleItem::initStyleOption()
             opt->text = text();
             opt->lineWidth = 1;
             opt->subControls = QStyle::SC_GroupBoxLabel;
-            if (!sunken()) // Qt draws an ugly line here so I ignore it
+            if (sunken()) // Qt draws an ugly line here so I ignore it
                 opt->subControls |= QStyle::SC_GroupBoxFrame;
             else
                 opt->features |= QStyleOptionFrameV2::Flat;
