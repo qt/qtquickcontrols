@@ -334,7 +334,11 @@ void QStyleItem::initStyleOption()
             QStyleOptionGroupBox *opt = qstyleoption_cast<QStyleOptionGroupBox*>(m_styleoption);
             opt->text = text();
             opt->lineWidth = 1;
-            opt->subControls = QStyle::SC_GroupBoxLabel | QStyle::SC_GroupBoxFrame;
+            opt->subControls = QStyle::SC_GroupBoxLabel;
+            if (!sunken()) // Qt draws an ugly line here so I ignore it
+                opt->subControls |= QStyle::SC_GroupBoxFrame;
+            else
+                opt->features |= QStyleOptionFrameV2::Flat;
             if (activeControl() == "checkbox")
                 opt->subControls |= QStyle::SC_GroupBoxCheckBox;
 
