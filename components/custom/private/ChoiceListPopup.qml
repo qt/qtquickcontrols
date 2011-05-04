@@ -21,9 +21,6 @@ MouseArea {
     // e.g. receiving mouse clicks while its about to hide etc.
     property bool popupOpen: false
 
-    // 'popupLocation' can be either 'center' or 'below':
-    property string popupLocation: "center"
-
     property bool desktopBehavior: true
     property int previousCurrentIndex: -1
     property alias model: listView.model
@@ -122,7 +119,7 @@ MouseArea {
         var newW = originalParent.width;
         var newH = listView.contentHeight
 
-        switch (popupLocation) {
+        switch (popupFrameLoader.item.popupLocation) {
         case "center":
             // Show centered over original parent with respect to selected item:
             var itemHeight = Math.max(listView.contentHeight/listView.count, 0);
@@ -213,12 +210,12 @@ MouseArea {
             id: itemDelegate
             width: delegateLoader.item.width
             height: delegateLoader.item.height
-            property int theIndex: index    // for some reason the loader can't bind directly to the "index"
+            property int theIndex: index // for some reason the loader can't bind directly to 'index'
 
             Loader {
                 id: delegateLoader
                 property variant model: listView.model
-                property alias index: itemDelegate.theIndex //mm Somehow the "model" gets through automagically, but not index
+                property alias index: itemDelegate.theIndex
                 property Item styledItem: choiceList
                 property bool highlighted: theIndex == listView.highlightedIndex
                 property string itemText: popup.model.get(theIndex).text

@@ -32,6 +32,7 @@ Item {
         property alias styledItem: choiceList
         sourceComponent: background
         anchors.fill: parent
+        property string currentItemText: model.get(currentIndex).text
     }
 
     Private.ChoiceListPopup {
