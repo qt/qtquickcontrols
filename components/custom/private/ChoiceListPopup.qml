@@ -2,116 +2,177 @@ import QtQuick 1.0
 
 MouseArea {
     id: popup
-    // There is no global toplevel so we have to make one
-    // We essentially reparent this item to the root item
-    Component.onCompleted: {
-        var p = parent;
-        while (p.parent != undefined)
-            p = p.parent
-        parent = p;
-    }
 
-    anchors.fill: parent  // fill the while app area
-    opacity: popupFrameLoader.item.opacity  // let the frame control opacity, so it can set the behavior
+    // There is no global z-ordering that can stack this popup in front, so we
+    // need to reparent it to the root item to fake it upon showing the popup.
+    // In that case, the popup will also fill the whole window to allow the user to
+    // close the popup by clicking anywhere in the window. Letting the popup act as the mouse
+    // area for the button that 'owns' it is also nessesary to support drag'n'release behavior.
 
-    property string behavior: popupFrameLoader.item && popupFrameLoader.item.behavior ? popupFrameLoader.item.behavior : "MacOS"
-    property bool desktopBehavior: (behavior == "MacOS" || behavior == "Windows" || behavior == "Linux")
-    property int previousCurrentIndex: -1   // set in state transition last in this file
+    // The 'popupframe' delegate will be told to show or hide by assigning
+    // opacity to 1 or 0, respectively.
 
+    anchors.fill: parent
+    hoverEnabled: true    
+    state: "popupClosed"
+
+    // Set 'popupOpen' to show/hide the popup. The 'state' property is more
+    // internal, and contains additional states used to protect the popup from
+    // e.g. receiving mouse clicks while its about to hide etc.
+    property bool popupOpen: false
+
+    // 'popupLocation' can be either 'center' or 'below':
+    property string popupLocation: "center"
+
+    property bool desktopBehavior: true
+    property int previousCurrentIndex: -1
     property alias model: listView.model
     property alias currentIndex: listView.currentIndex
+    property string currentText: model && currentIndex >= 0 ? model.get(currentIndex).text : ""
+
+    // buttonPressed will be true when the mouse press starts
+    // while the popup is closed. At that point, this component can be
+    // seen as a button, and not yet a popup menu:
+    property bool buttonPressed: false
 
     property Component listItem
     property Component listHighlight
     property Component popupFrame
 
-    function togglePopup() { state = (state == "" ? "hidden" : "") }
-    function setCurrentIndex(index) { listView.currentIndex = index; }
-    function cancelSelection() { listView.currentIndex = previousCurrentIndex; }
-    function closePopup() { state = "hidden" }
+    property Item originalParent: parent
+
+    onPopupOpenChanged: {
+        if (popupFrameLoader.item === null)
+            return;
+        if (popupOpen) {
+            var oldMouseX = mouseX
+
+            // Reparent to root, so the popup stacks in front:
+            originalParent = parent;
+            var p = parent;
+            while (p.parent != undefined)
+                p = p.parent
+            parent = p;
+
+            previousCurrentIndex = currentIndex;
+            positionPopup();
+            popupFrameLoader.item.opacity = 1;
+            if (oldMouseX === mouseX){
+                // Work around bug: mouseX and mouseY does not immidiatly
+                // update after reparenting and resizing the mouse area:
+                var pos = originalParent.mapToItem(parent, mouseX, mouseY)
+                highlightItemAt(pos.x, pos.y);
+            } else {
+                highlightItemAt(mouseX, mouseY);
+            }
+            listView.forceActiveFocus();
+            state = "popupOpen"
+        } else {
+            // Reparent the popup back to normal. But we need to be careful not to do this
+            // before the popup is hidden, otherwise you will see it jump to the new parent
+            // on screen. So we make it a binding in case a transition is set on opacity:
+            parent = function() { return (popupFrameLoader.item.opacity == 0) ? originalParent : parent; }
+            popupFrameLoader.item.opacity = 0;
+            popup.hideHighlight();
+            // Make sure we only enter the 'hidden' state when the popup is actually not
+            // visible. Otherwise the user will be able do open the popup again by clicking
+            // anywhere on screen while its being hidden (in case of a transition):
+            state = function() { return (popupFrameLoader.item.opacity == 0) ? "popupClosed" : "popupClosing"; }
+        }
+    }
+
+    Component.onCompleted: {
+        // In case 'popupOpen' was set to 'true' before
+        // 'popupFrameLoader' was finished, we open the popup now instead:
+        if (popup.popupOpen){
+            popup.popupOpen = false
+            popup.popupOpen = true
+        }
+    }
+
+    function highlightItemAt(posX, posY)
+    {
+        var mappedPos = mapToItem(listView.contentItem, posX, posY);
+        var indexAt = listView.indexAt(mappedPos.x, mappedPos.y);
+        if (indexAt == listView.highlightedIndex)
+            return;
+        if (indexAt >= 0) {
+            listView.highlightedIndex = indexAt;
+        } else {
+            if(posY > listView.y+listView.height && listView.highlightedIndex+1 < listView.count ) {
+                listView.highlightedIndex++;
+            } else if(posY < listView.y && listView.highlightedIndex > 0) {
+                listView.highlightedIndex--;
+            } else if(posX < popupFrameLoader.x || posX > popupFrameLoader.x+popupFrameLoader.width) {
+                popup.hideHighlight();
+            }
+        }
+    }
+
+    function hideHighlight() {
+        listView.highlightedIndex = -1;
+        listView.highlightedItem = null; // will trigger positionHighlight() what will hide the highlight
+    }
 
     function positionPopup() {
-        switch(behavior) {
-        case "MacOS":
-            var mappedListPos = mapFromItem(choiceList, 0, 0);
+        // Set initial values to top left corner of original parent:
+        var globalPos = mapFromItem(originalParent, 0, 0);
+        var newX = globalPos.x;
+        var newY = globalPos.y
+        var newW = originalParent.width;
+        var newH = listView.contentHeight
+
+        switch (popupLocation) {
+        case "center":
+            // Show centered over original parent with respect to selected item:
             var itemHeight = Math.max(listView.contentHeight/listView.count, 0);
             var currentItemY = Math.max(currentIndex*itemHeight, 0);
             currentItemY += Math.floor(itemHeight/2 - choiceList.height/2);  // correct for choiceLists that are higher than items in the list
-
-            listView.y = mappedListPos.y - currentItemY;
-            listView.x = mappedListPos.x;
-
-            listView.width = choiceList.width;
-            listView.height = listView.contentHeight    //mm see QTBUG-16037
-
-            if(listView.y < topMargin) {
-                var excess = Math.floor(currentItemY - mappedListPos.y);
-                listView.y = topMargin;
-                listView.height += excess;
-                listView.contentY = excess + topMargin;
-
-                if(listView.contentY != excess+topMargin) //mm setting listView.height seems to make it worse
-                    print("!!! ChoiceListPopup.qml: listView.contentY should be " + excess+topMargin + " but is " + listView.contentY)
-            }
-
-            if(listView.height+listView.contentY > listView.contentHeight) {
-                listView.height = listView.contentHeight-listView.contentY;
-            }
-
-            if(listView.y+listView.height+bottomMargin > popup.height) {
-                listView.height = popup.height-listView.y-bottomMargin;
-            }
+            newY -= currentItemY;
             break;
-        case "Windows":
-            var point = popup.mapFromItem(choiceList, 0, choiceList.height);
-            listView.y = point.y;
-            listView.x = point.x;
-
-            listView.width = choiceList.width;
-            listView.height = choiceList.contentHeight;
-            listView.width = choiceList.width;
-            listView.height = listView.contentHeight    //mm see QTBUG-16037
-
-            return; // ### fix
-
-            if(listView.y < topMargin) {
-                var excess = Math.floor(currentItemY - mappedListPos.y);
-                listView.y = topMargin;
-                listView.height += excess;
-                listView.contentY = excess + topMargin;
-
-                if(listView.contentY != excess+topMargin) //mm setting listView.height seems to make it worse
-                    print("!!! ChoiceListPopup.qml: listView.contentY should be " + excess+topMargin + " but is " + listView.contentY)
-            }
-
-            if(listView.height+listView.contentY > listView.contentHeight) {
-                listView.height = listView.contentHeight-listView.contentY;
-            }
-
-            if(listView.y+listView.height+bottomMargin > popup.height) {
-                listView.height = popup.height-listView.y-bottomMargin;
-            }
-
-            break;
-        case "MeeGo":
+        case "below":
+        case "":
+            // Show below original parent:
+            newX -= popupFrameLoader.anchors.leftMargin;
+            newY += originalParent.height - popupFrameLoader.anchors.topMargin;
             break;
         }
+
+        // Ensure the popup is inside the window:
+        if (newX < popupFrameLoader.anchors.leftMargin)
+            newX = popupFrameLoader.anchors.leftMargin;
+        else if (newX + newW > popup.width - popupFrameLoader.anchors.rightMargin)
+            newX = popup.width - popupFrameLoader.anchors.rightMargin - newW;
+
+        if (newY < popupFrameLoader.anchors.topMargin)
+            newY = popupFrameLoader.anchors.topMargin;
+        else if (newY + newH > popup.height - popupFrameLoader.anchors.bottomMargin)
+            newY = popup.height - popupFrameLoader.anchors.bottomMargin - newH;
+
+        // Todo: handle case when the list itself is larger than the window...
+
+        listView.x = newX
+        listView.y = newY
+        listView.width = newW
+        listView.height = newH
     }
 
     Loader {
         id: popupFrameLoader
-        property alias styledItem: popup.parent
+        property alias styledItem: popup.originalParent
         anchors.fill: listView
         anchors.leftMargin: -item.anchors.leftMargin
         anchors.rightMargin: -item.anchors.rightMargin
         anchors.topMargin: -item.anchors.topMargin
         anchors.bottomMargin: -item.anchors.bottomMargin
         sourceComponent: popupFrame
+        onItemChanged: item.opacity = 0
     }
 
     ListView {
         id: listView
         focus: true
+        opacity: popupFrameLoader.item.opacity
         boundsBehavior: desktopBehavior ? ListView.StopAtBounds : ListView.DragOverBounds
         keyNavigationWraps: !desktopBehavior
         highlightFollowsCurrentItem: false  // explicitly handled below
@@ -148,11 +209,6 @@ MouseArea {
             }
         }
 
-        function hideHighlight() {
-            highlightedIndex = -1;
-            highlightedItem = null; // will trigger positionHighlight() what will hide the highlight
-        }
-
         delegate: Item {
             id: itemDelegate
             width: delegateLoader.item.width
@@ -165,12 +221,8 @@ MouseArea {
                 property alias index: itemDelegate.theIndex //mm Somehow the "model" gets through automagically, but not index
                 property Item styledItem: choiceList
                 property bool highlighted: theIndex == listView.highlightedIndex
+                property string itemText: popup.model.get(theIndex).text
                 sourceComponent: listItem
-                MouseArea { // handle list selection on mobile platforms
-                    id:itemMouseArea
-                    anchors.fill: parent
-                    onClicked: { setCurrentIndex(index); closePopup(); }
-                }
             }
 
             states: State {
@@ -213,15 +265,15 @@ MouseArea {
                 highlightedIndex = model.count-1;
             } else if (event.key == Qt.Key_Enter || event.key == Qt.Key_Return) {
                 if(highlightedIndex != -1) {
-                    popup.setCurrentIndex(highlightedIndex);
+                    listView.currentIndex = highlightedIndex;
                 } else {
-                    popup.cancelSelection();
+                    listView.currentIndex = popup.previousCurrentIndex;
                 }
 
-                popup.closePopup();
+                popup.popupOpen = false;
             } else if (event.key == Qt.Key_Escape) {
-                popup.cancelSelection();
-                popup.closePopup();
+                listView.currentIndex = popup.previousCurrentIndex;
+                popup.popupOpen = false;
             }
             event.accepted = true;  // consume all keys while popout has focus
         }
@@ -229,61 +281,40 @@ MouseArea {
         highlight: popup.listHighlight
     }
 
-    enabled: (state != "hidden") // to avoid stray events when poput is about to close
-    hoverEnabled: true
-    onClicked: { popup.cancelSelection(); popup.closePopup(); } // clicked outside the list
+    Timer {
+        // This is the time-out value for when we consider the
+        // user doing a press'n'release, and not just a click to
+        // open the popup:
+        id: pressedTimer
+        interval: 400 // Todo: fetch value from style object
+    }
+
     onPressed: {
-        var mappedPos = mapToItem(listView.contentItem, mouse.x, mouse.y);
-        var indexAt = listView.indexAt(mappedPos.x, mappedPos.y);
-        if(indexAt != -1) {
-            listView.currentIndex = indexAt;
+        if (state == "popupClosed") {
+            // Show the popup:
+            pressedTimer.running = true
+            popup.popupOpen = true
+            popup.buttonPressed = true
         }
     }
+
+    onReleased: {
+        if (state == "popupOpen" && pressedTimer.running === false) {
+            // Either we have a 'new' click on the popup, or the user has
+            // done a drag'n'release. In either case, the user has done a selection:
+            var mappedPos = mapToItem(listView.contentItem, mouseX, mouseY);
+            var indexAt = listView.indexAt(mappedPos.x, mappedPos.y);
+            if(indexAt != -1)
+                listView.currentIndex = indexAt;
+            popup.popupOpen = false
+        }
+        popup.buttonPressed = false
+    }
+
     onPositionChanged: {
-        var mappedPos = mapToItem(listView.contentItem, mouse.x, mouse.y);
-        var indexAt = listView.indexAt(mappedPos.x, mappedPos.y);
-        if(!pressed) {   // hovering
-            if(indexAt == listView.highlightedIndex)
-                return;
-
-            if(indexAt >= 0) {
-                listView.highlightedIndex = indexAt;
-            } else {
-                if(mouse.y > listView.y+listView.height && listView.highlightedIndex+1 < listView.count ) {
-                    listView.highlightedIndex++;
-                } else if(mouse.y < listView.y && listView.highlightedIndex > 0) {
-                    listView.highlightedIndex--;
-                } else if(mouse.x < popupFrameLoader.x || mouse.x > popupFrameLoader.x+popupFrameLoader.width) {
-                    listView.hideHighlight();
-                }
-            }
-        }
+        if (state == "popupOpen")
+            popup.highlightItemAt(mouseX, mouseY)
     }
-
-    state: "hidden" // hidden by default
-    states: [
-        State {
-            name: ""    // not hidden, i.e. showing
-            PropertyChanges { target: popupFrameLoader.item; opacity: 1 }
-        },
-        State {
-            name: "hidden"
-            PropertyChanges { target: popupFrameLoader.item; opacity: 0 }
-        }
-    ]
-
-    transitions: [
-        Transition { to: "";
-            ScriptAction {
-                script: {
-                    previousCurrentIndex = currentIndex;
-                    positionPopup();
-                    listView.forceActiveFocus();
-                }
-            }
-        },
-        Transition { to: "hidden"; ScriptAction { script: listView.hideHighlight(); } }
-    ]
 }
 
 

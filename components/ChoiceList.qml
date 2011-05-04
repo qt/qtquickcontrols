@@ -37,7 +37,7 @@ Components.ChoiceList {
         QStyleItem {
             anchors.fill: parent
             elementType: "comboboxitem"
-            text: choicelist.model.get(index).text
+            text: itemText
             selected: highlighted
 
         }
