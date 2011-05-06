@@ -11,6 +11,8 @@ ScrollArea {
 
     property alias text: edit.text
     property alias wrapMode: edit.wrapMode
+    property alias readOnly: edit.readOnly
+
     highlightOnFocus: true
     property int documentMargins: 4
     frame: true
@@ -26,8 +28,9 @@ ScrollArea {
             text: loremIpsum + loremIpsum;
             wrapMode: TextEdit.WordWrap;
             width: area.contentWidth
-            selectByMouse:true
-            focus:true
+            selectByMouse: true
+            readOnly: false
+            focus: true
 
             // keep textcursor within scrollarea
             onCursorRectangleChanged:
