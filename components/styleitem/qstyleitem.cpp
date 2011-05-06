@@ -334,7 +334,11 @@ void QStyleItem::initStyleOption()
             QStyleOptionGroupBox *opt = qstyleoption_cast<QStyleOptionGroupBox*>(m_styleoption);
             opt->text = text();
             opt->lineWidth = 1;
-            opt->subControls = QStyle::SC_GroupBoxLabel | QStyle::SC_GroupBoxFrame;
+            opt->subControls = QStyle::SC_GroupBoxLabel;
+            if (sunken()) // Qt draws an ugly line here so I ignore it
+                opt->subControls |= QStyle::SC_GroupBoxFrame;
+            else
+                opt->features |= QStyleOptionFrameV2::Flat;
             if (activeControl() == "checkbox")
                 opt->subControls |= QStyle::SC_GroupBoxCheckBox;
 
@@ -534,6 +538,10 @@ QSize QStyleItem::sizeFromContents(int width, int height)
         break;
     case Header:
         size = qApp->style()->sizeFromContents(QStyle::CT_HeaderSection, m_styleoption, QSize(width,height), widget());
+#ifdef Q_WS_MAC
+        if (style() =="mac")
+            size.setHeight(15);
+#endif
         break;
     case ItemRow:
     case Item: //fall through
@@ -667,9 +675,15 @@ void QStyleItem::setElementType(const QString &str)
         // Since these are used by the delegate, it makes no
         // sense to re-create them per item
         static QTreeView *menu = new QTreeView();
+        menu->setAttribute(Qt::WA_MacMiniSize);
         m_sharedWidget = true;
         if (str == "header") {
             m_dummywidget = menu->header();
+            if (style() == "mac") { // The default qt font seems to big
+                QFont font = m_dummywidget->font();
+                font.setPointSize(11);
+                m_dummywidget->setFont(font);
+            }
             m_itemType = Header;
         } else {
             m_dummywidget = menu;
@@ -884,7 +898,7 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
             QPixmap pixmap;
             // Only draw through style once
             const QString pmKey = QLatin1Literal("itemrow") % QString::number(m_styleoption->state,16) % activeControl();
-            if (!QPixmapCache::find(pmKey, pixmap) || pixmap.width() < width()) {
+            if (!QPixmapCache::find(pmKey, pixmap) || pixmap.width() < width() || height() != pixmap.height()) {
                 int newSize = width();
                 pixmap = QPixmap(newSize, height());
                 pixmap.fill(Qt::transparent);
