@@ -78,6 +78,9 @@ FocusScope{
     property bool alternateRowColor: true
     property alias contentX: tree.contentX
     property alias contentY: tree.contentY
+
+    property alias currentIndex: tree.currentIndex // Should this be currentRowIndex?
+
     property int headerHeight: headerrow.height
 
     property Component itemDelegate: standardDelegate
