@@ -33,12 +33,12 @@ ScrollArea {
             focus: true
 
             // keep textcursor within scrollarea
-            onCursorRectangleChanged:
+            onCursorRectangleChanged: {
                 if (cursorRectangle.y >= area.contentY + area.height - 1.5*cursorRectangle.height)
                     area.contentY = cursorRectangle.y - area.height + 1.5*cursorRectangle.height
                 else if (cursorRectangle.y < area.contentY)
                     area.contentY = cursorRectangle.y
-
+            }
         }
     }
 }
