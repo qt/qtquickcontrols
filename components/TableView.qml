@@ -78,6 +78,10 @@ FocusScope{
     property bool alternateRowColor: true
     property alias contentX: tree.contentX
     property alias contentY: tree.contentY
+
+    property alias currentIndex: tree.currentIndex // Should this be currentRowIndex?
+    property bool headerVisible: true
+
     property int headerHeight: headerrow.height
 
     property Component itemDelegate: standardDelegate
@@ -296,7 +300,8 @@ FocusScope{
         anchors.left: frameitem.left
         anchors.right: frameitem.right
         anchors.margins: frameWidth
-        height: styleitem.sizeFromContents(text.font.pixelSize, styleitem.fontHeight).height
+        height: headerVisible ? styleitem.sizeFromContents(text.font.pixelSize, styleitem.fontHeight).height : frameWidth
+        visible: headerVisible
 
         Row {
             id: headerrow

@@ -24,7 +24,7 @@ Components.ChoiceList {
         raised: !pressed
         hover: containsMouse
         enabled: choicelist.enabled
-        text: choicelist.model.get(currentIndex).text
+        text: currentItemText
         focus: choicelist.focus
         hint: choicelist.hint
     }
@@ -38,13 +38,14 @@ Components.ChoiceList {
         QStyleItem {
             anchors.fill: parent
             elementType: "comboboxitem"
-            text: choicelist.model.get(index).text
+            text: itemText
             selected: highlighted
 
         }
     }
     popupFrame: Item {
         anchors.fill: parent
+        property string popupLocation: backgroundItem.styleHint("comboboxpopup") ? "center" : "below"
         anchors.leftMargin: backgroundItem.pixelMetric("menuhmargin") + fw
         anchors.rightMargin: backgroundItem.pixelMetric("menuhmargin") + fw
         anchors.topMargin: backgroundItem.pixelMetric("menuvmargin") + fw

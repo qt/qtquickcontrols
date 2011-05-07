@@ -33,7 +33,7 @@ Item {
         QStyleItem {
             anchors.fill: parent
             elementType: "comboboxitem"
-            text: model.get(index).text
+            text: itemText
             selected: highlighted
         }
     }
