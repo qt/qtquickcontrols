@@ -248,12 +248,10 @@ Rectangle {
                             exclusive: false
                             CheckBox {
                                 id:fade
-                                width:120
                                 text: "Fade on hover"
                             }
                             CheckBox {
                                 id: scale
-                                width:120
                                 text: "Scale on hover"
                             }
                         }
