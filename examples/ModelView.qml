@@ -17,8 +17,17 @@ Item {
         XmlRole { name: "credit"; query: "media:credit/string()" }
     }
 
+    ListModel {
+        id: dummyModel
+        Component.onCompleted: {
+            for (var i = 0 ; i < 40 ; ++i) {
+                append({"title": "A title " + i, "imagesource" :"http://someurl.com", "credit" : "N/A"})
+            }
+        }
+    }
+
     TableView{
-        model: flickerModel
+        model: dummyModel
         anchors.fill: parent
 
         HeaderSection {

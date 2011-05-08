@@ -51,9 +51,9 @@ Components.ChoiceList {
         anchors.bottomMargin: backgroundItem.pixelMetric("menuvmargin") + fw
         elementType: "menu"
 
-        effect:    DropShadow {
-            blurRadius: 10
-            color: "#60000000"
+        effect: DropShadow {
+            blurRadius: 18
+            color: "#90000000"
             xOffset: 1
             yOffset: 1
         }
