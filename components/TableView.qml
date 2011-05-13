@@ -38,12 +38,12 @@ import "../components/plugin"
 *    ListElement{ column1: "value 3"; column2: "value 4"}
 * }
 *
-* You provide title and size properties on headersections
+* You provide title and size properties on TableColumns
 * by setting the default header property :
 *
 * TableView {
-*    HeaderSeciton{ property: "column1" ; caption: "Column 1" ; width:100}
-*    HeaderSection{ property: "column2" ; caption: "Column 2" ; width:200}
+*    TableColumn{ property: "column1" ; caption: "Column 1" ; width:100}
+*    TableColumn{ property: "column2" ; caption: "Column 2" ; width:200}
 *    model: datamodel
 * }
 *
@@ -214,12 +214,12 @@ FocusScope{
 
     ListView {
         id: tree
-        property list<HeaderSection> header
+        property list<TableColumn> header
 
         model: root.model
 
         interactive: false
-        anchors.top: headersection.bottom
+        anchors.top: tableColumn.bottom
         anchors.topMargin: -frameWidth
         anchors.left: frameitem.left
         anchors.right: frameitem.right
@@ -295,7 +295,7 @@ FocusScope{
     Text{ id:text }
 
     Item {
-        id: headersection
+        id: tableColumn
         clip: true
         anchors.top: frameitem.top
         anchors.left: frameitem.left
@@ -388,7 +388,7 @@ FocusScope{
 
                     Loader {
                         id: draghandle
-                        parent: headersection
+                        parent: tableColumn
                         sourceComponent: root.headerDelegate
                         width: header[index].width
                         height: parent.height
@@ -472,7 +472,7 @@ FocusScope{
         id: vscrollbar
         orientation: Qt.Vertical
         // We cannot bind directly to tree.height due to binding loops so we have to redo the calculation here
-        property int availableHeight : root.height - (hscrollbar.visible ? hscrollbar.height : 0) - headersection.height
+        property int availableHeight : root.height - (hscrollbar.visible ? hscrollbar.height : 0) - tableColumn.height
         visible: contentHeight > availableHeight
         maximumValue: contentHeight > availableHeight ? tree.contentHeight - availableHeight : 0
         minimumValue: 0
@@ -480,7 +480,7 @@ FocusScope{
         anchors.right: parent.right
         anchors.top: parent.top
         anchors.bottom: parent.bottom
-        anchors.topMargin: styleitem.style == "mac" ? headersection.height : 0
+        anchors.topMargin: styleitem.style == "mac" ? tableColumn.height : 0
         onValueChanged: contentY = value
         anchors.bottomMargin: hscrollbar.visible ? hscrollbar.height :  styleitem.frameoffset
     }

@@ -113,17 +113,17 @@ Rectangle {
                     anchors.fill: parent
                     anchors.margins: 12
 
-                    HeaderSection {
+                    TableColumn {
                         property: "title"
                         caption: "Title"
                         width: 120
                     }
-                    HeaderSection {
+                    TableColumn {
                         property: "credit"
                         caption: "Credit"
                         width: 120
                     }
-                    HeaderSection {
+                    TableColumn {
                         property: "imagesource"
                         caption: "Image source"
                         width: 200
@@ -145,12 +145,12 @@ Rectangle {
                     model: listModel
                     anchors.fill: parent
                     anchors.margins: 12
-                    HeaderSection {
+                    TableColumn {
                         property: "title"
                         caption: "Title"
                         width: 120
                     }
-                    HeaderSection {
+                    TableColumn {
                         property: "credit"
                         caption: "Credit"
                         width: 120
@@ -170,12 +170,12 @@ Rectangle {
                     anchors.margins: 12
                     anchors.fill: parent
 
-                    HeaderSection {
+                    TableColumn {
                         property: "name"
                         caption: "Name"
                         width: 120
                     }
-                    HeaderSection {
+                    TableColumn {
                         property: "age"
                         caption: "Age"
                         width: 120
@@ -200,12 +200,12 @@ Rectangle {
                     sortIndicatorVisible: sortableCheckbox.checked
                     alternateRowColor: alternateCheckbox.checked
 
-                    HeaderSection {
+                    TableColumn {
                         property: "name"
                         caption: "Name"
                         width: 120
                     }
-                    HeaderSection {
+                    TableColumn {
                         property: "age"
                         caption: "Age"
                         width: 120
