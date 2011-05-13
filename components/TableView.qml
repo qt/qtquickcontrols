@@ -302,7 +302,8 @@ FocusScope{
         anchors.right: frameitem.right
         anchors.margins: frameWidth
         visible: headerVisible
-        height: visible ? styleitem.sizeFromContents(text.font.pixelSize, styleitem.fontHeight).height : frameWidth
+        Behavior on height { NumberAnimation{duration:80}}
+        height: headerVisible ? styleitem.sizeFromContents(text.font.pixelSize, styleitem.fontHeight).height : frameWidth
 
         Row {
             id: headerrow
