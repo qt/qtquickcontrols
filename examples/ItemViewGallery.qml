@@ -40,6 +40,10 @@ Rectangle {
     QStyleItem{ id: styleitem}
     color: syspal.window
 
+
+
+
+
     XmlListModel {
         id: flickerModel
         source: "http://api.flickr.com/services/feeds/photos_public.gne?format=rss2&tags=" + "Qt"
@@ -68,6 +72,7 @@ Rectangle {
             credit: "credit"
         }
     }
+
 
     ListModel {
         id: largeModel
@@ -100,14 +105,14 @@ Rectangle {
 
             Tab {
                 title: "XmlListModel"
-                TableView{
+
+
+                TableView {
+
                     model: flickerModel
-                    frame: frameCheckbox.checked
-                    headerVisible: headerCheckbox.checked
-                    sortIndicatorVisible: sortableCheckbox.checked
-                    alternateRowColor: alternateCheckbox.checked
                     anchors.fill: parent
-                    anchors.margins:12
+                    anchors.margins: 12
+
                     HeaderSection {
                         property: "title"
                         caption: "Title"
@@ -124,18 +129,22 @@ Rectangle {
                         width: 200
                         visible: true
                     }
-                }
-            }
-            Tab {
-                title: "ListModel"
-                TableView{
-                    model: listModel
-                    anchors.fill: parent
-                    anchors.margins:12
+
+
                     frame: frameCheckbox.checked
                     headerVisible: headerCheckbox.checked
                     sortIndicatorVisible: sortableCheckbox.checked
                     alternateRowColor: alternateCheckbox.checked
+
+                }
+            }
+            Tab {
+                title: "ListModel"
+
+                TableView{
+                    model: listModel
+                    anchors.fill: parent
+                    anchors.margins: 12
                     HeaderSection {
                         property: "title"
                         caption: "Title"
@@ -146,18 +155,21 @@ Rectangle {
                         caption: "Credit"
                         width: 120
                     }
-                }
-            }
-            Tab {
-                title: "LargeModel"
-                TableView {
-                    model: largeModel
-                    anchors.margins: 12
-                    anchors.fill:parent
+
                     frame: frameCheckbox.checked
                     headerVisible: headerCheckbox.checked
                     sortIndicatorVisible: sortableCheckbox.checked
                     alternateRowColor: alternateCheckbox.checked
+                }
+            }
+            Tab {
+                title: "LargeModel"
+
+                TableView {
+                    model: largeModel
+                    anchors.margins: 12
+                    anchors.fill: parent
+
                     HeaderSection {
                         property: "name"
                         caption: "Name"
@@ -167,6 +179,74 @@ Rectangle {
                         property: "age"
                         caption: "Age"
                         width: 120
+                    }
+
+                    frame: frameCheckbox.checked
+                    headerVisible: headerCheckbox.checked
+                    sortIndicatorVisible: sortableCheckbox.checked
+                    alternateRowColor: alternateCheckbox.checked
+                }
+            }
+
+            Tab {
+                title: "Custom delegate"
+
+                TableView {
+                    model: largeModel
+                    anchors.margins: 12
+                    anchors.fill:parent
+                    frame: frameCheckbox.checked
+                    headerVisible: headerCheckbox.checked
+                    sortIndicatorVisible: sortableCheckbox.checked
+                    alternateRowColor: alternateCheckbox.checked
+
+                    HeaderSection {
+                        property: "name"
+                        caption: "Name"
+                        width: 120
+                    }
+                    HeaderSection {
+                        property: "age"
+                        caption: "Age"
+                        width: 120
+                    }
+
+                    headerDelegate: Rectangle {
+                        color: "#555"
+                        Rectangle {
+                            width: 1
+                            height: parent.height
+                            color: "#444"
+                        }
+                        Text {
+                            text: itemValue
+                            anchors.centerIn:parent
+                            color:"#ccc"
+                        }
+                    }
+
+                    rowDelegate: Rectangle {
+                        color: itemSelected ? "#888" : (itemAlternateBackground ? "#ccc" : "#ddd")
+                        clip: true
+                        Rectangle{
+                            width: parent.width
+                            height:1
+                            anchors.bottom: parent.bottom
+                            color: "#aaa"
+                        }
+                    }
+
+                    itemDelegate: Item {
+                        clip: true
+                        Text {
+                            width: parent.width
+                            anchors.margins: 4
+                            anchors.left: parent.left
+                            anchors.verticalCenter: parent.verticalCenter
+                            elide: itemElideMode
+                            text: itemValue ? itemValue : ""
+                            color: itemForeground
+                        }
                     }
                 }
             }

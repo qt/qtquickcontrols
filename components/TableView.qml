@@ -72,7 +72,7 @@ FocusScope{
     property bool frameAroundContents: styleitem.styleHint("framearoundcontents")
     property int sortColumn // Index of currently selected sort column
 
-    property bool sortIndicatorVisible: true // enables or disables sort indicator
+    property bool sortIndicatorVisible: false // enables or disables sort indicator
     property string sortIndicatorDirection: "down" // "up" or "down" depending on current state
 
     property bool alternateRowColor: true
@@ -273,7 +273,7 @@ FocusScope{
                         sourceComponent: itemDelegate
 
                         width: header[index].width
-                        height: Math.max(16, styleitem.sizeFromContents(16, 16).height)
+                        height: item ? item.height :  Math.max(16, styleitem.sizeFromContents(16, 16).height)
 
                         function getValue() {
                             if (index < header.length &&
