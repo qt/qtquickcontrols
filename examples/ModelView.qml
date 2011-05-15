@@ -30,17 +30,17 @@ Item {
         model: dummyModel
         anchors.fill: parent
 
-        HeaderSection {
+        TableColumn {
             property: "title"
             caption: "Title"
             width: 120
         }
-        HeaderSection {
+        TableColumn {
             property: "credit"
             caption: "Credit"
             width: 120
         }
-        HeaderSection {
+        TableColumn {
             property: "imagesource"
             caption: "Image source"
             width: 200
