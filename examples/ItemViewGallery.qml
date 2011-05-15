@@ -93,11 +93,9 @@ Rectangle {
             id:frame
             focus:true
             enabled: toolbar.enabled
-            position: tabPositionGroup.checkedButton == r2 ? "South" : "North"
             tabbar: TabBar{parent: frame}
 
             property int margins : styleitem.style == "mac" ? 16 : 0
-            anchors.top: toolbar.bottom
             height:parent.height - 34
             anchors.right: parent.right
             anchors.left: parent.left
