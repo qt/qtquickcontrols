@@ -77,7 +77,7 @@ Rectangle {
     ListModel {
         id: largeModel
         Component.onCompleted: {
-            for (var i=0 ; i< 1000 ; ++i)
+            for (var i=0 ; i< 500 ; ++i)
                 largeModel.append({"name":"Person "+i , "age": Math.round(Math.random()*100)})
         }
     }

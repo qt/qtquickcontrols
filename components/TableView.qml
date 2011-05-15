@@ -86,6 +86,7 @@ FocusScope{
     property Component itemDelegate: standardDelegate
     property Component rowDelegate: rowDelegate
     property Component headerDelegate: headerDelegate
+    property alias cacheBuffer: tree.cacheBuffer
 
     property bool headerVisible: true
 
