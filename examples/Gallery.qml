@@ -1,5 +1,6 @@
 import QtQuick 1.0
 import "../components"
+import "content"
 
 Rectangle {
 

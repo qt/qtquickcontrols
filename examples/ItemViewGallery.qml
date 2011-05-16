@@ -11,19 +11,19 @@ Rectangle {
         width: parent.width
         height: 40
 
-        ContextMenu {
-            id: editmenu
-            model: ListModel {
-                id: menu
-                ListElement { text: "Copy" }
-                ListElement { text: "Cut" }
-                ListElement { text: "Paste" }
-            }
-        }
         MouseArea {
             anchors.fill:  parent
             acceptedButtons: Qt.RightButton
             onPressed: editmenu.show(mouseX, mouseY)
+        }
+
+        ChoiceList {
+            id: delegateChooser
+            enabled: frame.current == 3 ? 1 : 0
+            model: delegatemenu
+            anchors.left: parent.left
+            anchors.leftMargin: 8
+            anchors.verticalCenter: parent.verticalCenter
         }
 
         CheckBox {
@@ -38,10 +38,6 @@ Rectangle {
     SystemPalette {id: syspal}
     QStyleItem{ id: styleitem}
     color: syspal.window
-
-
-
-
 
     XmlListModel {
         id: flickerModel
@@ -76,8 +72,8 @@ Rectangle {
     ListModel {
         id: largeModel
         Component.onCompleted: {
-            for (var i=0 ; i< 500 ; ++i)
-                largeModel.append({"name":"Person "+i , "age": Math.round(Math.random()*100)})
+            for (var i=0 ; i< 80 ; ++i)
+                largeModel.append({"name":"Person "+i , "age": Math.round(Math.random()*100), "sex": Math.random()>0.5 ? "Male" : "Female"})
         }
     }
 
@@ -188,6 +184,69 @@ Rectangle {
             Tab {
                 title: "Custom delegate"
 
+                ListModel {
+                    id: delegatemenu
+                    ListElement { text: "Gray" }
+                    ListElement { text: "hover" }
+                    ListElement { text: "Apple" }
+                    ListElement { text: "Coconut" }
+                }
+
+
+                Component {
+                    id: delegate1
+                    Item {
+                        clip: true
+                        Text {
+                            width: parent.width
+                            anchors.margins: 4
+                            anchors.left: parent.left
+                            anchors.verticalCenter: parent.verticalCenter
+                            elide: itemElideMode
+                            text: itemValue ? itemValue : ""
+                            color: itemForeground
+                        }
+                    }
+                }
+
+                Component {
+                    id: delegate2
+                    Item {
+                        height: itemSelected? 60 : 20
+                        Behavior on height{ NumberAnimation{}}
+                        Text {
+                            width: parent.width
+                            anchors.margins: 4
+                            anchors.left: parent.left
+                            anchors.verticalCenter: parent.verticalCenter
+                            elide: itemElideMode
+                            text: itemValue ? itemValue : ""
+                            color: itemForeground
+                        }
+                    }
+                }
+
+                Component {
+                    id: delegate3
+                    Item {
+                        Text {
+                            width: parent.width
+                            anchors.margins: 4
+                            anchors.left: parent.left
+                            anchors.verticalCenter: parent.verticalCenter
+                            elide: itemElideMode
+                            text: itemValue ? itemValue : ""
+                            color: itemForeground
+                            visible: columnIndex == 0
+                        }
+                        TextInput{
+                            color:"#333"
+                            anchors.fill: parent
+                            anchors.margins: 4
+                            visible: columnIndex == 1
+                        }
+                    }
+                }
                 TableView {
                     model: largeModel
                     anchors.margins: 12
@@ -205,6 +264,11 @@ Rectangle {
                     TableColumn {
                         property: "age"
                         caption: "Age"
+                        width: 120
+                    }
+                    TableColumn {
+                        property: "sex"
+                        caption: "Sex"
                         width: 120
                     }
 
@@ -233,16 +297,14 @@ Rectangle {
                         }
                     }
 
-                    itemDelegate: Item {
-                        clip: true
-                        Text {
-                            width: parent.width
-                            anchors.margins: 4
-                            anchors.left: parent.left
-                            anchors.verticalCenter: parent.verticalCenter
-                            elide: itemElideMode
-                            text: itemValue ? itemValue : ""
-                            color: itemForeground
+                    itemDelegate: {
+                        switch(delegateChooser.currentIndex) {
+                        case 0:
+                            return delegate1
+                        case 1:
+                            return delegate2
+                        case 2:
+                            return delegate3
                         }
                     }
                 }

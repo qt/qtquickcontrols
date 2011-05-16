@@ -95,7 +95,6 @@ FocusScope{
     Component {
         id: standardDelegate
         Item {
-            clip: true
             property int implicitWidth: sizehint.paintedWidth + 4
             Text {
                 width: parent.width
