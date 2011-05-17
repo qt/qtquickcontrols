@@ -215,7 +215,7 @@ FocusScope{
     ListView {
         id: tree
         property list<TableColumn> header
-
+        highlightFollowsCurrentItem: true
         model: root.model
 
         interactive: false
@@ -236,7 +236,8 @@ FocusScope{
         Keys.onDownPressed: if (currentIndex< count - 1) currentIndex = currentIndex + 1
 
         onCurrentIndexChanged: {
-            positionViewAtIndex(currentIndex, ListView.Contain)
+            // positionViewAtIndex(currentIndex, ListView.Visible)
+            // highlight follows item
             vscrollbar.value = tree.contentY
         }
 
