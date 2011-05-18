@@ -19,7 +19,13 @@ Components.Button {
         raised: containsMouse
         hover: containsMouse
 
-        Image{
+        Text {
+            text: button.text
+            anchors.centerIn: parent
+            visible: button.iconSource == ""
+        }
+
+        Image {
             source: button.iconSource
             anchors.centerIn: parent
         }

@@ -28,6 +28,8 @@ Rectangle {
             }
         }
 
+
+
         ContextMenu {
             id: editmenu
             model: ListModel {
@@ -98,6 +100,7 @@ Rectangle {
                         spacing: 9
                         Row {
                             spacing:8
+
                             Button {
                                 id: button1
                                 text:"Button 1"
