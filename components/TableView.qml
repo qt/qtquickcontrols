@@ -92,6 +92,8 @@ FocusScope{
 
     default property alias header: tree.header
 
+    signal activated
+
     Component {
         id: standardDelegate
         Item {
@@ -209,6 +211,10 @@ FocusScope{
             var x = Math.min(contentWidth - 5, Math.max(mouseX + contentX, 0))
             var y = Math.min(contentHeight - 5, Math.max(mouseY + contentY, 0))
             tree.currentIndex = tree.indexAt(x, y)
+        }
+
+        onDoubleClicked: {
+            parent.activated()
         }
     }
 
