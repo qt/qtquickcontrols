@@ -294,7 +294,7 @@ void QStyleItem::initStyleOption()
             opt->maximum = maximum();
             // ### fixme - workaround for KDE inverted dial
             opt->sliderPosition = value();
-            opt->tickInterval = 1200 / (opt->maximum - opt->minimum);
+            opt->tickInterval = opt->maximum != opt->minimum ? 1200 / (opt->maximum - opt->minimum) : 0;
             if (style() == QLatin1String("oxygen") && type == QLatin1String("dial"))
                 opt->sliderValue  = maximum() - value();
             else
