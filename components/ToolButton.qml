@@ -28,6 +28,7 @@ Components.Button {
         Image {
             source: button.iconSource
             anchors.centerIn: parent
+            opacity: enabled ? 1 : 0.5
         }
     }
 }
