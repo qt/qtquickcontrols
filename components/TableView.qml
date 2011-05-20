@@ -199,12 +199,11 @@ FocusScope{
                 autodecrement = false
             }
 
-            var x = Math.min(contentX + tree.width - 5, Math.max(mouseX + contentX, contentX))
             var y = Math.min(contentY + tree.height - 5, Math.max(mouseY + contentY, contentY))
 
-            var newIndex =tree.indexAt(x, y)
+            var newIndex = tree.indexAt(0, y)
             if (newIndex > 0)
-                tree.currentIndex = tree.indexAt(x, y)
+                tree.currentIndex = tree.indexAt(0, y)
         }
         onPressed:  {
             tree.forceActiveFocus()

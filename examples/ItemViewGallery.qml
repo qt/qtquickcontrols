@@ -236,7 +236,7 @@ Rectangle {
                 }
 
                 Component {
-                    id: delegate3
+                    id: editableDelegate
                     Item {
                         Text {
                             width: parent.width
@@ -248,13 +248,14 @@ Rectangle {
                             color: itemForeground
                             visible: !itemSelected
                         }
-                        TextInput{
-                            color: itemForeground
+                        Loader { // Initialize text editor lazily to improve performance
                             anchors.fill: parent
                             anchors.margins: 4
-                            visible: itemSelected
-                            text: itemValue ? itemValue : ""
-                            onTextChanged:  model.setProperty(rowIndex, itemProperty, text)
+                            property string modelText: itemValue
+                            property string editorText: item ? item.text : itemValue
+                            onEditorTextChanged: model.setProperty(rowIndex, itemProperty, editorText)
+                            sourceComponent: itemSelected ? editor : null
+                            Component {id: editor ; TextInput{ color: itemForeground ; text: modelText} }
                         }
                     }
                 }
@@ -321,7 +322,7 @@ Rectangle {
                         case 1:
                             return delegate2
                         case 2:
-                            return delegate3
+                            return editableDelegate
                         }
                     }
                 }
