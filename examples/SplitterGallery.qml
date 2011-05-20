@@ -10,41 +10,26 @@ Rectangle {
         id: splitter
         anchors.fill: parent
 
-        SplitterItem {
-            minimumWidth: 50
-            percentageWidth: 50
-//            maximumWidth: 200
+        Rectangle {
+//            property bool expanding: true
+            property int minimumWidth: 100
+            property int percentageWidth: 30
+            color: "gray"
             width: 200
-//            expanding: true
-            Rectangle {
-                color: "gray"
-            }
+//            Behavior on width { PropertyAnimation{} } 
         }
-        SplitterItem {
-//            minimumWidth: 50
-//            maximumWidth: 200
-            percentageWidth: 30
-//            expanding: true
-            width:200
-            Rectangle {
-                color: "darkGray"
-            }
-        }
-        SplitterItem {
-//            minimumWidth: 50
-//            maximumWidth: 200
+        Rectangle {
+            id: r2
+            color: "darkGray"
             width: 50
-            Rectangle {
-                color: "gray"
-            }
         }
-//        SplitterItem {
-////            minimumWidth: 50
-////            maximumWidth: 100
-//            width: 50
-//            Rectangle {
-//                color: "darkgray"
-//            }
-//        }
+        Rectangle {
+            property int minimumWidth: 10
+            color: "gray"
+            width: r2.width
+        }
+        Rectangle {
+            color: "darkgray"
+        }
     }
 }

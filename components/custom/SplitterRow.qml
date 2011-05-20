@@ -124,23 +124,37 @@ Item {
         // items according to the _width of the each item_
         var item, prevItem
         var handle, prevHandle
+        var newValue 
 
         // Ensure all items within min/max:
         for (var i=0; i<items.length; ++i) {
             if (i !== expandingIndex) {
                 item = items[i];
                 // Ensure item width is within its own max/min:
-                if (item.percentageWidth != undefined && item.percentageWidth !== -1)
-                    item.width = item.percentageWidth * (root.width / 100)
-                if (item.maximumWidth != undefined && item.maximumWidth != -1)
-                    item.width = Math.min(item.width, item.maximumWidth)
-                if (item.minimumWidth != undefined && item.minimumWidth != -1)
-                    item.width = Math.max(item.width, item.minimumWidth)
+                if (item.percentageWidth != undefined && item.percentageWidth !== -1) {
+                    newValue = item.percentageWidth * (root.width / 100)
+                    if (newValue !== item.width)
+                        item.width = newValue
+                }
+                if (item.maximumWidth != undefined && item.maximumWidth != -1) {
+                    newValue = Math.min(item.width, item.maximumWidth)
+                    if (newValue !== item.width)
+                        item.width = newValue
+                }
+                if (item.minimumWidth != undefined && item.minimumWidth != -1) {
+                    newValue = Math.max(item.width, item.minimumWidth)
+                    if (newValue !== item.width)
+                        item.width = newValue
+                }
             }
         }
 
         // Special case: set width of expanding item to available space:
-        items[expandingIndex].width = root.width - accumulatedWidth(0, items.length, false);
+
+        newValue = root.width - accumulatedWidth(0, items.length, false);
+        var expandingItem = items[expandingIndex]
+        if (expandingItem.width !== newValue)
+            expandingItem.width = newValue 
 
         // Then, position items and handles according to their width:
         for (i=0; i<items.length; ++i) {
@@ -148,11 +162,18 @@ Item {
             handle = handles[i]
 
             // Position item to the right of the previus handle:
-            if (prevHandle)
-                item.x = prevHandle.x + prevHandle.width
+            if (prevHandle) {
+                newValue = prevHandle.x + prevHandle.width
+                if (newValue !== item.x)
+                    item.x = newValue
+            }
+
             // Position handle to the right of item:
-            if (handle)
-                handle.x = item.x + Math.max(0, item.width)
+            if (handle) {
+                newValue = item.x + Math.max(0, item.width)
+                if (newValue !== handle.x)
+                    handle.x = newValue
+            }
 
             prevItem = item
             prevHandle = handle
