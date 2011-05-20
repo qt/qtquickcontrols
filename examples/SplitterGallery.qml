@@ -13,7 +13,7 @@ Rectangle {
         Rectangle {
 //            property bool expanding: true
             property int minimumWidth: 100
-            property int percentageWidth: 30
+            property real percentageWidth: 30
             color: "gray"
             width: 200
 //            Behavior on width { PropertyAnimation{} } 
