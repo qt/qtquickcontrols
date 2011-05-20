@@ -20,8 +20,14 @@ FocusScope {
     property int contentY
     property int contentX
 
-    onContentYChanged: { vscrollbar.value = contentY }
-    onContentXChanged: { hscrollbar.value = contentX }
+    onContentYChanged: {
+        vscrollbar.value = contentY
+        wheelarea.verticalValue = contentY
+    }
+    onContentXChanged: {
+        hscrollbar.value = contentX
+        wheelarea.horizontalValue = contentX
+    }
 
     Rectangle {
         id: colorRect
