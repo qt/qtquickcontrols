@@ -32,17 +32,14 @@ Rectangle {
 
         ContextMenu {
             id: editmenu
-            model: ListModel {
-                id: menu
-                ListElement { text: "Copy" }
-                ListElement { text: "Cut" }
-                ListElement { text: "Paste" }
-            }
+            MenuItem { text: "Copy" }
+            MenuItem { text: "Cut" }
+            MenuItem { text: "Paste" }
         }
         MouseArea {
             anchors.fill:  parent
             acceptedButtons: Qt.RightButton
-            onPressed: editmenu.show(mouseX, mouseY)
+            onPressed: editmenu.showPopup(mouseX, mouseY)
         }
 
         CheckBox {

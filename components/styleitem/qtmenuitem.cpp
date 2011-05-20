@@ -48,3 +48,13 @@ QtMenuItem::QtMenuItem(QObject *parent)
 QtMenuItem::~QtMenuItem()
 {
 }
+
+void QtMenuItem::setText(const QString &text)
+{
+    m_text = text;
+}
+
+QString QtMenuItem::text()
+{
+    return m_text;
+}

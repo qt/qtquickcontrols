@@ -29,23 +29,29 @@
 
 #include <QtGui/qmenu.h>
 #include <QtDeclarative/qdeclarative.h>
-
+#include <QtDeclarative/QDeclarativeListProperty>
+#include "qtmenuitem.h"
 class QtMenu : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString title READ title WRITE setTitle)
+    Q_PROPERTY(QDeclarativeListProperty<QtMenuItem> menuItems READ menuItems)
+     Q_CLASSINFO("DefaultProperty", "menuItems")
 public:
     QtMenu(QObject *parent = 0);
     virtual ~QtMenu();
 
     void setTitle(const QString &title);
     QString title() const;
-public Q_SLOTS:
-
+    QDeclarativeListProperty<QtMenuItem> menuItems();
+    Q_INVOKABLE void showPopup(qreal x, qreal y);
 Q_SIGNALS:
     void selected();
 private:
     QString m_title;
+    QWidget *dummy;
+    QMenu *m_menu;
+    QList<QtMenuItem *> m_menuItems;
 };
 
 QML_DECLARE_TYPE(QtMenu)

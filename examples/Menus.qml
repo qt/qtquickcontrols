@@ -1,26 +1,31 @@
 import QtQuick 1.0
 import "../components"
-import "../components/plugin"
 
 Rectangle {
     width: 540
     height: 340
+    color: "green"
+    id : rect
 
-    MenuBar {
-        id : mainMenuBar
+    ContextMenu {
+        id : editMenu
 
-        Menu {
-            id : fileMenu
-            text : "File"
+        MenuItem { text : "blue"
+                   onSelected : { rect.color = "blue" }
         }
-        Menu {
-            id : editMenu
-            text : "Edit"
+
+        MenuItem { text : "red"
+                   onSelected : { rect.color = "red" }
         }
-        Menu {
-            id : windowMenu
-            text : "Window"
+
+        MenuItem { text : "pink"
+                   onSelected : { rect.color = "pink" }
         }
     }
-}
 
+    MouseArea {
+        anchors.fill: parent
+        acceptedButtons : Qt.RightButton
+        onClicked: editMenu.showPopup(mouseX, mouseY)
+    }
+}

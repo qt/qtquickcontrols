@@ -21,3 +21,6 @@ CheckBox 1.0 CheckBox.qml
 RadioButton 1.0 RadioButton.qml
 plugin styleplugin plugin
 TableColumn 1.0 TableColumn.qml
+ContextMenu 1.0 ContextMenu.qml
+Menu 1.0 Menu.qml
+MenuItem 1.0 MenuItem.qml

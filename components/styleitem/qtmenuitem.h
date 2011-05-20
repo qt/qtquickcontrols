@@ -44,12 +44,21 @@
 
 class QtMenuItem: public QObject
 {
+    Q_PROPERTY(QString text READ text WRITE setText);
+
     Q_OBJECT
 public:
     QtMenuItem(QObject *parent = 0);
     ~QtMenuItem();
-private:
 
+    void setText(const QString &text);
+    QString text();
+
+Q_SIGNALS:
+    void selected();
+
+private:
+    QString m_text;
 };
 
 #endif //QTMENUITEM_H

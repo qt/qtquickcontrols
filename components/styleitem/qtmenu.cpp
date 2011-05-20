@@ -25,18 +25,18 @@
 ****************************************************************************/
 
 #include "qtmenu.h"
+#include "qdebug.h"
+#include <qapplication.h>
 
 QtMenu::QtMenu(QObject *parent)
     : QObject(parent)
 {
-
-
+    m_menu = new QMenu(0);
 }
-
 
 QtMenu::~QtMenu()
 {
-
+    delete m_menu;
 }
 
 void QtMenu::setTitle(const QString &title)
@@ -47,5 +47,26 @@ void QtMenu::setTitle(const QString &title)
 QString QtMenu::title() const
 {
 
+}
+
+QDeclarativeListProperty<QtMenuItem> QtMenu::menuItems()
+{
+    return QDeclarativeListProperty<QtMenuItem>(this, m_menuItems);
+}
+
+void QtMenu::showPopup(qreal x, qreal y)
+{
+    m_menu->clear();
+    foreach (QtMenuItem *item, m_menuItems) {
+        QAction *action = new QAction(item->text(), m_menu);
+        connect(action, SIGNAL(triggered()), item, SIGNAL(selected()));
+        m_menu->insertAction(0, action);
+    }
+
+    // x,y are in view coordinates, QMenu expects screen coordinates
+    // ### activeWindow hack
+    QPoint screenPosition = QApplication::activeWindow()->mapToGlobal(QPoint(x, y));
+
+    m_menu->popup(screenPosition);
 }
 
