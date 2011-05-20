@@ -1,20 +1,15 @@
 import QtQuick 1.0
-import "./private" as Private //  for ChoiceListPopup
-
-// KNOWN ISSUES
-// 1) Popout list does not have a scrollbar/scroll indicator or similar
-// 2) The ChoiceListPopup should ff dynamically loaded, to support radically different implementations
-// 3) Mouse wheel scroll events not handled by the popout ListView (see QTBUG-7369)
-// 4) Support for configurable bindings between model's and ChoiceList's properties similar to ButtonBlock's is missing
+import "./private" as Private
 
 Item {
     id: choiceList
 
     property alias model: popup.model
-    property int currentIndex: popup.currentIndex
-
-    property alias containsMouse: mouseArea.containsMouse   //mm needed?
-    property bool pressed: false    //mm needed?
+    property alias currentIndex: popup.currentIndex
+    property alias currentText: popup.currentText
+    property alias popupOpen: popup.popupOpen
+    property alias containsMouse: popup.containsMouse
+    property alias pressed: popup.buttonPressed
 
     property Component background: null
     property Item backgroundItem: backgroundLoader.item
@@ -32,39 +27,23 @@ Item {
 
     property bool activeFocusOnPress: true
 
-    // Implementation
-
-    SystemPalette { id: syspal }
     Loader {
         id: backgroundLoader
         property alias styledItem: choiceList
         sourceComponent: background
         anchors.fill: parent
-    }
-
-    MouseArea {
-        id: mouseArea
-        anchors.fill: parent
-        hoverEnabled: true
-        drag.target: Item {}    // disable dragging in case ChoiceList is on a Flickable
-        onPressed: {
-            if (activeFocusOnPress)
-                choicelist.focus = true
-            choiceList.pressed = true;
-            popup.togglePopup();
-
-        }
-        onReleased: choiceList.pressed = false
-        onCanceled: choiceList.pressed = false    // mouse stolen e.g. by Flickable
+        property string currentItemText: model.get(currentIndex).text
     }
 
     Private.ChoiceListPopup {
+        // NB: This ChoiceListPopup is also the mouse area
+        // for the component (to enable drag'n'release)
         id: popup
         listItem: choiceList.listItem
         popupFrame: choiceList.popupFrame
     }
 
-    Keys.onSpacePressed: { popup.togglePopup() }
+    Keys.onSpacePressed: { choiceList.popupOpen = !choiceList.popupOpen }
     Keys.onUpPressed: { if (currentIndex < model.count - 1) currentIndex++ }
     Keys.onDownPressed: {if (currentIndex > 0) currentIndex-- }
 }

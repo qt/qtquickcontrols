@@ -1,6 +1,6 @@
 import QtQuick 1.0
 import "../components"
-import "../components/plugin"
+import "content"
 
 Rectangle {
 
@@ -27,6 +27,8 @@ Rectangle {
                 anchors.verticalCenter: parent.verticalCenter
             }
         }
+
+
 
         ContextMenu {
             id: editmenu
@@ -72,9 +74,10 @@ Rectangle {
     TabFrame {
         id:frame
         focus:true
-        property int margins : styleitem.style == "mac" ? 16 : 0
         position: tabPositionGroup.checkedButton == r2 ? "South" : "North"
         tabbar: TabBar{parent: frame; focus:true; KeyNavigation.tab:button1}
+
+        property int margins : styleitem.style == "mac" ? 16 : 0
         anchors.top: toolbar.bottom
         anchors.bottom: parent.bottom
         anchors.right: parent.right
@@ -97,6 +100,7 @@ Rectangle {
                         spacing: 9
                         Row {
                             spacing:8
+
                             Button {
                                 id: button1
                                 text:"Button 1"
@@ -247,12 +251,10 @@ Rectangle {
                             exclusive: false
                             CheckBox {
                                 id:fade
-                                width:120
                                 text: "Fade on hover"
                             }
                             CheckBox {
                                 id: scale
-                                width:120
                                 text: "Scale on hover"
                             }
                         }
@@ -314,6 +316,7 @@ Rectangle {
         }
         Tab {
             title: "Sidebar"
+
             Panel {
                 anchors.fill:parent
             }

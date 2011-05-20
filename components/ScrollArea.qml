@@ -7,7 +7,7 @@ FocusScope {
     width: 100
     height: 100
 
-    property int frameWidth: styleitem.pixelMetric("defaultframewidth");
+    property int frameWidth: frame ? styleitem.pixelMetric("defaultframewidth") : 0;
     property int contentHeight : content.childrenRect.height
     property int contentWidth: content.childrenRect.width
     property alias color: colorRect.color
@@ -40,13 +40,15 @@ FocusScope {
         anchors.rightMargin: frame ? (frameAroundContents ? (vscrollbar.visible ? vscrollbar.width + 2 * frameMargins : 0) : -frameWidth) : 0
         anchors.bottomMargin: frame ? (frameAroundContents ? (hscrollbar.visible ? hscrollbar.height + 2 * frameMargins : 0) : -frameWidth) : 0
         anchors.topMargin: frame ? (frameAroundContents ? 0 : -frameWidth) : 0
-        property int frameMargins : frame ? frameWidth : 0
+        property int scrollbarspacing: styleitem.pixelMetric("scrollbarspacing");
+        property int frameMargins : frame ? scrollbarspacing : 0
+        property int frameoffset: style === "mac" ? -1 : 0
     }
 
     Item {
-        id:flickable
+        id: flickable
         anchors.fill: styleitem
-        anchors.margins: styleitem.frameMargins
+        anchors.margins: frameWidth
         clip: true
 
         Item {
@@ -81,6 +83,7 @@ FocusScope {
         maximumValue: contentWidth > availableWidth ? scrollarea.contentWidth - availableWidth: 0
         minimumValue: 0
         anchors.bottom: parent.bottom
+        anchors.bottomMargin: styleitem.frameoffset
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.leftMargin: (frame ? frameWidth : 0)
@@ -101,7 +104,8 @@ FocusScope {
         anchors.bottom: parent.bottom
         anchors.topMargin: styleitem.style == "mac" ? 1 : 0
         onValueChanged: contentY = value
-        anchors.bottomMargin: hscrollbar.visible ? hscrollbar.height : 0
+        anchors.rightMargin: styleitem.frameoffset
+        anchors.bottomMargin: hscrollbar.visible ? hscrollbar.height : styleitem.frameoffset
     }
 
     Rectangle {
@@ -119,7 +123,9 @@ FocusScope {
     QStyleItem {
         z: 2
         anchors.fill: parent
-        anchors.margins: -4
+        anchors.margins: -3
+        anchors.rightMargin: -4
+        anchors.bottomMargin: -4
         visible: highlightOnFocus && parent.activeFocus && styleitem.styleHint("focuswidget")
         elementType: "focusframe"
     }

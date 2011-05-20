@@ -47,11 +47,11 @@ Item {
     }
 
     Row {
-        id:tabrow
-        focus:true
+        id: tabrow
+        focus: true
         property int paintMargins: 1
         states:
-        State {
+                State {
             when: tabBarAlignment == "center"
             name: "centered"
             AnchorChanges {
@@ -99,7 +99,6 @@ Item {
                         text: tabFrame.tabs[index].title
                     }
                 }
-
                 MouseArea {
                     id: mousearea
                     anchors.fill: parent
