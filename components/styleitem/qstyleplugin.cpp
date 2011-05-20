@@ -44,6 +44,7 @@
 #include "qtmenu.h"
 #include "qtmenubar.h"
 #include "qtmenuitem.h"
+#include "qwheelarea.h"
 #include <qdeclarativeextensionplugin.h>
 
 #include <qdeclarativeengine.h>
