@@ -278,6 +278,8 @@ FocusScope{
                         id: itemDelegateLoader
                         visible: header[index].visible
                         sourceComponent: itemDelegate
+                        property variant model: tree.model
+                        property variant itemProperty: header[index].property
 
                         width: header[index].width
                         height: item ? item.height :  Math.max(16, styleitem.sizeFromContents(16, 16).height)

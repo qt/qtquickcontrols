@@ -72,7 +72,7 @@ Rectangle {
     ListModel {
         id: largeModel
         Component.onCompleted: {
-            for (var i=0 ; i< 80 ; ++i)
+            for (var i=0 ; i< 50 ; ++i)
                 largeModel.append({"name":"Person "+i , "age": Math.round(Math.random()*100), "sex": Math.random()>0.5 ? "Male" : "Female"})
         }
     }
@@ -186,12 +186,10 @@ Rectangle {
 
                 ListModel {
                     id: delegatemenu
-                    ListElement { text: "Gray" }
-                    ListElement { text: "hover" }
-                    ListElement { text: "Apple" }
-                    ListElement { text: "Coconut" }
+                    ListElement { text: "Shiny" }
+                    ListElement { text: "Scale" }
+                    ListElement { text: "Editable" }
                 }
-
 
                 Component {
                     id: delegate1
@@ -207,6 +205,17 @@ Rectangle {
                             color: itemForeground
                         }
                     }
+                }
+
+
+
+                Component {
+                    id: slickRowDelegate
+                    Rectangle{
+                        color: itemAlternateBackground ? "#cef" : "white"
+                        //                            selected: itemSelected ? "true" : "false"
+                    }
+
                 }
 
                 Component {
@@ -237,13 +246,15 @@ Rectangle {
                             elide: itemElideMode
                             text: itemValue ? itemValue : ""
                             color: itemForeground
-                            visible: columnIndex == 0
+                            visible: !itemSelected
                         }
                         TextInput{
-                            color:"#333"
+                            color: itemForeground
                             anchors.fill: parent
                             anchors.margins: 4
-                            visible: columnIndex == 1
+                            visible: itemSelected
+                            text: itemValue ? itemValue : ""
+                            onTextChanged:  model.setProperty(rowIndex, itemProperty, text)
                         }
                     }
                 }
@@ -272,28 +283,34 @@ Rectangle {
                         width: 120
                     }
 
-                    headerDelegate: Rectangle {
-                        color: "#555"
-                        Rectangle {
-                            width: 1
-                            height: parent.height
-                            color: "#444"
-                        }
+                    headerDelegate: BorderImage{
+                        source: "images/header.png"
+                        border{left:2;right:2;top:2;bottom:2}
                         Text {
                             text: itemValue
                             anchors.centerIn:parent
-                            color:"#ccc"
+                            color:"#333"
                         }
                     }
 
                     rowDelegate: Rectangle {
-                        color: itemSelected ? "#888" : (itemAlternateBackground ? "#ccc" : "#ddd")
-                        clip: true
-                        Rectangle{
-                            width: parent.width
-                            height:1
-                            anchors.bottom: parent.bottom
-                            color: "#aaa"
+                        color: itemSelected ? "#448" : (itemAlternateBackground ? "#eee" : "#fff")
+                        border.color:"#ccc"
+                        border.width: 1
+                        anchors.left: parent.left
+                        anchors.leftMargin: -2
+                        anchors.rightMargin: -1
+                        BorderImage{
+                            id:selected
+                            anchors.fill: parent
+                            source: "images/selectedrow.png"
+                            visible: itemSelected
+                            border{left:2;right:2;top:2;bottom:2}
+                            SequentialAnimation {
+                                running: true; loops: Animation.Infinite
+                                NumberAnimation { target:selected; property: "opacity"; to: 1.0; duration: 900}
+                                NumberAnimation { target:selected; property: "opacity"; to: 0.5; duration: 900}
+                            }
                         }
                     }
 
