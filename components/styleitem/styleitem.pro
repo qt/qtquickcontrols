@@ -9,14 +9,20 @@ DESTDIR = ..\\plugin
 OBJECTS_DIR = tmp
 MOC_DIR = tmp
 
-HEADERS += qrangemodel_p.h \
+HEADERS += qtmenu.h \
+           qtmenubar.h \
+           qtmenuitem.h \
+           qrangemodel_p.h \
            qrangemodel.h \
            qstyleplugin.h \
            qdeclarativefolderlistmodel.h \
            qstyleitem.h \
            qwheelarea.h
 
-SOURCES += qrangemodel.cpp \
+SOURCES += qtmenu.cpp \
+           qtmenubar.cpp \
+           qtmenuitem.cpp \
+           qrangemodel.cpp \
 	   qstyleplugin.cpp \
            qdeclarativefolderlistmodel.cpp \
            qstyleitem.cpp \
@@ -37,6 +43,7 @@ OTHER_FILES += \
     ../Dial.qml \
     ../Frame.qml \
     ../GroupBox.qml \
+    ../Menu.qml \
     ../ProgressBar.qml \
     ../RadioButton.qml \
     ../ScrollArea.qml \
