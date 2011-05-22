@@ -4,8 +4,8 @@ import "plugin"
 
 Components.SplitterRow {
     handleBackground: Rectangle {
-        color: handleIndex === 0 ? "black" : "blue"
-        width: 3
+        color: "black"
+        width: 1
 
         MouseArea {
             anchors.fill: parent

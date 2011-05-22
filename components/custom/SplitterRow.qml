@@ -6,11 +6,16 @@ Item {
     default property alias items: splitterItems.children
     property alias handles: splitterHandles.children
     property Component handleBackground: Rectangle { width:3; color: "black" }
-    property int expandingIndex
 
     Component.onCompleted: init();
-//    onItemsChanged: if (Component.Status == Component.Ready) updateItems();
     onWidthChanged: { updateExpandingIndex(); updateLayout(); }
+
+    QtObject {
+        id: d
+        property int expandingIndex: 0
+        property bool updateOptimizationGuard: false
+        property bool bindingRecursionGuard: false
+    }
 
     Component {
         id: handleBackgroundLoader
@@ -35,9 +40,9 @@ Item {
                 var rightHandle = handles[handleIndex+1]
                 var leftEdge = leftHandle ? (leftHandle.x + leftHandle.width) : 0
                 var rightEdge = (rightHandle ? rightHandle.x : root.width)
-                var expandingItem = items[expandingIndex]
+                var expandingItem = items[d.expandingIndex]
 
-                if (expandingIndex > handleIndex) {
+                if (d.expandingIndex > handleIndex) {
                     // Resize item to the left.
                     // Ensure that the handle is not crossing other handles:
                     handle.x = Math.max(leftEdge, handle.x)
@@ -56,7 +61,6 @@ Item {
                     if (root.width != 0 && rightItem.percentageWidth != undefined && rightItem.percentageWidth !== -1)
                         rightItem.percentageWidth = rightItem.width * (100 / root.width)
                 }
-                updateLayout();
             }
 
         }
@@ -78,11 +82,11 @@ Item {
         var w = 0
         for (var i=firstIndex; i<lastIndex; ++i) {
             var item = items[i]
-            if (i !== expandingIndex)
+            if (i !== d.expandingIndex)
                 w += item.width;
             else if (includeExpandingMinimum && item.minimumWidth != undefined && item.minimumWidth != -1)
                 w += item.minimumWidth
-            if (handles[i] && (i !== expandingIndex || includeExpandingMinimum === false))
+            if (handles[i] && (i !== d.expandingIndex || includeExpandingMinimum === false))
                 w += handles[i].width
         }
         return w
@@ -93,11 +97,37 @@ Item {
         for (var i=0; i<items.length; ++i) {
             var item = items[i]
             if (item.expanding && item.expanding === true) {
-                expandingIndex = i
+                d.expandingIndex = i
                 return
             }
         }
-        expandingIndex = i-1
+        d.expandingIndex = i-1
+    }
+
+    Component {
+        // This dummy item is creates as a child of all
+        // items it the splitter, just to provide a way
+        // to listed for changes to their width (and then
+        // do an updateLayout)
+        id: widthBinding
+        Item {
+            id: target
+            width: parent.width
+            onWidthChanged: {
+                if (d.bindingRecursionGuard === true)
+                    return
+                d. bindingRecursionGuard = true
+
+                // Break binding:
+                width = 0
+                updateExpandingIndex()
+                updateLayout()
+                // Restablish binding:
+                width = function() { return parent.width; }
+                
+                d.bindingRecursionGuard = false
+            }
+        }
     }
 
     function init()
@@ -107,6 +137,9 @@ Item {
             var item = items[i];
             item.anchors.top = splitterItems.top
             item.anchors.bottom = splitterItems.bottom
+
+            widthBinding.createObject(item);
+
             // Create a handle for the item:
             var handle = handleBackgroundLoader.createObject(splitterHandles, {"handleIndex":i});
             handle.anchors.top = splitterHandles.top
@@ -116,10 +149,15 @@ Item {
         // well, since the for-loop skipped the last item:
         items[i].anchors.top = splitterItems.top
         items[i].anchors.bottom = splitterItems.bottom
+        widthBinding.createObject(items[i]);
     }
 
     function updateLayout()
     {
+        if (d.updateOptimizationGuard === true)
+            return
+        d.updateOptimizationGuard = true
+
         // This function will reposition both handles and
         // items according to the _width of the each item_
         var item, prevItem
@@ -128,7 +166,7 @@ Item {
 
         // Ensure all items within min/max:
         for (var i=0; i<items.length; ++i) {
-            if (i !== expandingIndex) {
+            if (i !== d.expandingIndex) {
                 item = items[i];
                 // Ensure item width is within its own max/min:
                 if (item.percentageWidth != undefined && item.percentageWidth !== -1) {
@@ -152,7 +190,7 @@ Item {
         // Special case: set width of expanding item to available space:
 
         newValue = root.width - accumulatedWidth(0, items.length, false);
-        var expandingItem = items[expandingIndex]
+        var expandingItem = items[d.expandingIndex]
         if (expandingItem.width !== newValue)
             expandingItem.width = newValue 
 
@@ -178,5 +216,7 @@ Item {
             prevItem = item
             prevHandle = handle
         }
+
+        d.updateOptimizationGuard = false
     }
 }
