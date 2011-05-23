@@ -1,6 +1,75 @@
 import QtQuick 1.0
 import "private"
 
+/*
+*
+* SplitterRow
+*
+* SplitterRow is a component that provides a way to layout items horisontally with
+* a draggable splitter added in-between each item.
+*
+* Items are added to the SplitterRow by inserting them as
+* child items of the SplitterRow. The splitter handle is outsourced as a
+* delegate. For this delegate to work properly, you will need to create a mouse area
+* that communicates with SplitterRow by binding 'onMouseXChanged: handleDragged(handleIndex)', and
+* 'setting drag.target: dragTarget'.
+*
+* The following properties can be added for each child item:
+*
+* real minimumWidth - if present, ensures that the item cannot be resized below the
+*   given value. A value of -1 will disable it.
+* real maximumWidth - if present, ensures that the item cannot be resized above the
+*   given value. A value of -1 will disable it.
+* real percentageWidth - if present, should be a value between 0-100. This value specifies
+*   a percentage of the width of the SplitterRow width. If the width of the SplitterRow
+*   change, the width of the item will change as well. If present, SplitterRow will
+*   ignore any assignment done to the 'width' attribute. A value of -1 disables it.
+* bool expanding - if present, all extra space in the SplitterRow (after laying out other
+*   items) will be set as this items width. This means that that 'width', 'percentageWidth'
+*   and 'maximumWidth' will be ignored by the SplitterRow. By default, the last child item will
+*   get this behaviour. Also note that which item that gets resized upon dragging a handle depends
+*   on whether the expanding item is located towards the left or the right of the handle.
+*
+* Example:
+*
+* To create a SplitterRow with three items, and let
+* the center item be the one that should be expanding, one
+* could do the following:
+*
+*    SplitterRow {
+*        anchors.fill: parent
+*
+*        handleBackground: Rectangle {
+*            width: 1
+*            color: "black"
+*
+*            MouseArea {
+*                anchors.fill: parent
+*                anchors.leftMargin: -2
+*                anchors.rightMargin: -2
+*                drag.axis: Qt.YAxis
+*                drag.target: handleDragTarget
+*                onMouseXChanged: handleDragged(handleIndex)
+*            }
+*        }
+*
+*        Rectangle {
+*            color: "gray"
+*            width: 200
+*        }
+*        Rectangle {
+*            property real minimumWidth: 50
+*            property real maximumWidth: 400
+*            property bool expanding: true
+*            color: "darkgray"
+*        }
+*        Rectangle {
+*            color: "gray"
+*            width: 200
+*        }
+*    }
+*/
+
 Item {
     id: root
     default property alias items: splitterItems.children
@@ -81,11 +150,9 @@ Item {
     }
 
     Component {
-        // This dummy item is creates as a child of all
+        // This dummy item becomes a child of all
         // items it the splitter, just to provide a way
-        // to listed for changes to their width (and then
-        // do an updateLayout). In addition, it gives us
-        // a way to listed for changes to 'expanding' as well.
+        // to listed for changes to their width, expanding etc.
         id: propertyChangeListener
         Item {
             id: target
@@ -117,7 +184,7 @@ Item {
                 // We need to update the layout:
                 if (d.bindingRecursionGuard === true)
                     return
-                d. bindingRecursionGuard = true
+                d.bindingRecursionGuard = true
 
                 // Break binding:
                 width = 0
