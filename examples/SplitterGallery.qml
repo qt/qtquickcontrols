@@ -13,27 +13,26 @@ Rectangle {
         Rectangle {
             id: r1
 //            property bool expanding: true
-//            property int maximumWidth: 100
+//            property real maximumWidth: 100
             property real percentageWidth: 50
             color: "gray"
-            width: slider.value
+            width: 100
 //            Behavior on width { PropertyAnimation{} } 
         }
         Rectangle {
             id: r2
-            property int minimumWidth: 50
+            property real minimumWidth: slider.value
             color: "darkGray"
-            property bool expanding: true
+//            property bool expanding: true
             width: 50
         }
         Slider {
             id: slider
-            maximumValue: 300
-            value: 150
-            onValueChanged: r1.width = value
+            maximumValue: 100
+            value: 50
         }
         Rectangle {
-            property int minimumWidth: 10
+            property real minimumWidth: 10
             color: "gray"
             width: 100
         }
