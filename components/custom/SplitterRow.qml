@@ -150,6 +150,7 @@ Item {
         items[i].anchors.bottom = splitterItems.bottom
         propertyChangeListener.createObject(items[i]);
         d.updateOptimizationBlock = false
+        updateLayout()
     }
 
     function accumulatedWidth(firstIndex, lastIndex, includeExpandingMinimum)

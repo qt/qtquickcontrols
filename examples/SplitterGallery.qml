@@ -7,11 +7,9 @@ Rectangle {
     height: 600
 
     SplitterRow {
-        id: splitter
         anchors.fill: parent
 
         Rectangle {
-            id: r1
             color: "gray"
             width: 200
         }
