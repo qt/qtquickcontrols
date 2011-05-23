@@ -186,9 +186,9 @@ Rectangle {
 
                 ListModel {
                     id: delegatemenu
-                    ListElement { text: "Shiny" }
-                    ListElement { text: "Scale" }
-                    ListElement { text: "Editable" }
+                    ListElement { text: "Shiny delegate" }
+                    ListElement { text: "Scale selected" }
+                    ListElement { text: "Editable items" }
                 }
 
                 Component {
@@ -206,8 +206,6 @@ Rectangle {
                         }
                     }
                 }
-
-
 
                 Component {
                     id: slickRowDelegate

@@ -131,6 +131,13 @@ void QStyleItem::initStyleOption()
         }
         break;
 
+    case Splitter: {
+            if (!m_styleoption) {
+                m_styleoption = new QStyleOption;
+            }
+        }
+        break;
+
     case Item: {
             if (!m_styleoption) {
                 m_styleoption = new QStyleOptionViewItemV4();
@@ -753,6 +760,9 @@ void QStyleItem::setElementType(const QString &str)
         m_dummywidget = new QComboBox();
         visible = true;
         m_itemType = ComboBox;
+    } else if (str == "splitter") {
+        visible = true;
+        m_itemType = Splitter;
     } else if (str == "progressbar") {
         m_dummywidget = new QProgressBar();
         visible = true;
@@ -948,6 +958,9 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
         break;
     case Widget:
         qApp->style()->drawPrimitive(QStyle::PE_Widget, m_styleoption, painter, widget());
+        break;
+    case Splitter:
+        qApp->style()->drawControl(QStyle::CE_Splitter, m_styleoption, painter, widget());
         break;
     case ComboBox:
         qApp->style()->drawComplexControl(QStyle::CC_ComboBox,
