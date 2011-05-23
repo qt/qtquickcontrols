@@ -100,6 +100,7 @@ public:
         Header,
         Item,
         ItemRow,
+        Splitter,
         Menu,
         MenuItem,
         Widget
