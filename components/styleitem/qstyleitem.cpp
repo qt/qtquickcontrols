@@ -284,6 +284,7 @@ void QStyleItem::initStyleOption()
             else if (value() & (1<<1))
                 opt->activeSubControls = QStyle::SC_SpinBoxDown;
             opt->subControls = QStyle::SC_All;
+            opt->stepEnabled = 0;
             if (value() & (1<<2))
                 opt->stepEnabled |= QAbstractSpinBox::StepUpEnabled;
             if (value() & (1<<3))
