@@ -32,19 +32,16 @@ Item {
                 // 'updateLayout' will override in case new width violates max/min.
                 // And 'updateLayout will be triggered when an item changes width.
 
-                // [leftHandle - leftItem - handle - rightItem - rightHandle]
-                var leftHandle = handles[handleIndex-1]
-                var leftItem = items[handleIndex]
-                var handle = handles[handleIndex]
-                var rightItem = items[handleIndex+1]
-                var rightHandle = handles[handleIndex+1]
-                var leftEdge = leftHandle ? (leftHandle.x + leftHandle.width) : 0
-                var rightEdge = (rightHandle ? rightHandle.x : root.width)
-                var expandingItem = items[d.expandingIndex]
+                var leftHandle, leftItem, handle, rightItem, rightHandle
+                var leftEdge, rightEdge
 
                 if (d.expandingIndex > handleIndex) {
                     // Resize item to the left.
                     // Ensure that the handle is not crossing other handles:
+                    leftHandle = handles[handleIndex-1]
+                    leftItem = items[handleIndex]
+                    handle = handles[handleIndex]
+                    leftEdge = leftHandle ? (leftHandle.x + leftHandle.width) : 0
                     handle.x = Math.max(leftEdge, handle.x)
                     leftItem.width = handle.x - leftEdge
                     if (root.width != 0 && leftItem.percentageWidth != undefined && leftItem.percentageWidth !== -1)
@@ -56,6 +53,10 @@ Item {
                     // we got space for:
                     var min = accumulatedWidth(0, handleIndex+1, true)
                     // Ensure that the handle is not crossing other handles:
+                    handle = handles[handleIndex]
+                    rightItem = items[handleIndex+1]
+                    rightHandle = handles[handleIndex+1]
+                    rightEdge = (rightHandle ? rightHandle.x : root.width)
                     handle.x = Math.max(min, Math.max(Math.min((rightEdge - handle.width), handle.x)))
                     rightItem.width = rightEdge - (handle.x + handle.width)
                     if (root.width != 0 && rightItem.percentageWidth != undefined && rightItem.percentageWidth !== -1)
