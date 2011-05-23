@@ -3,22 +3,23 @@ import "custom" as Components
 import "plugin"
 
 Components.SplitterRow {
-    handleBackground: Rectangle {
-        color: "black"
-        width: 1
+    handleBackground: QStyleItem {
+            id: styleitem
+            elementType: "splitter"
+            width: pixelMetric("splitterwidth")
 
-        MouseArea {
-            anchors.fill: parent
-            anchors.leftMargin: -10
-            anchors.rightMargin: -parent.width - 10
-            drag.axis: Qt.YAxis
-            drag.target: handleDragTarget
-            onMouseXChanged: handleDragged(handleIndex)
-
-            QStyleItem {
+            MouseArea {
                 anchors.fill: parent
-                cursor: "splithcursor"
+//                anchors.leftMargin: (width <= 1) ? -2 : 0
+//                anchors.rightMargin: (width <= 1) ? -2 : 0
+                drag.axis: Qt.YAxis
+                drag.target: handleDragTarget
+                onMouseXChanged: handleDragged(handleIndex)
+
+                QStyleItem {
+                    anchors.fill: parent
+                    cursor: "splithcursor"
+                }
             }
-        }
     }
 }

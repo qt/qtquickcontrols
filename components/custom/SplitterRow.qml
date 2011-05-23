@@ -210,6 +210,8 @@ Item {
         // Special case: set width of expanding item to available space:
         newValue = root.width - accumulatedWidth(0, items.length, false);
         var expandingItem = items[d.expandingIndex]
+        if (expandingItem.minimumWidth != undefined && expandingItem.minimumWidth != -1)
+            newValue = Math.max(newValue, expandingItem.minimumWidth)
         if (expandingItem.width !== newValue)
             expandingItem.width = newValue 
 

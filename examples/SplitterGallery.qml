@@ -12,31 +12,17 @@ Rectangle {
 
         Rectangle {
             id: r1
-//            property bool expanding: true
-//            property real maximumWidth: 100
-            property real percentageWidth: 33
             color: "gray"
-            width: 100
-//            Behavior on width { PropertyAnimation{} } 
+            width: 200
         }
         Rectangle {
-            id: r2
-            property real minimumWidth: slider.value
-            property real percentageWidth: 33
-            color: "darkGray"
-//            property bool expanding: true
-//            width: 50
+            property bool expanding: true
+            property real minimumWidth: 50
+            color: "darkgray"
         }
-        Slider {
-            id: slider
-            property real percentageWidth: 33
-            maximumValue: 100
-            value: 50
+        Rectangle {
+            color: "gray"
+            width: 200
         }
-//        Rectangle {
-//            property real minimumWidth: 10
-//            color: "gray"
-//            width: 100
-//        }
     }
 }
