@@ -8,11 +8,11 @@ Item {
     property Component handleBackground: Rectangle { width:3; color: "black" }
 
     Component.onCompleted: init();
-    onWidthChanged: { updateExpandingIndex(); updateLayout(); }
+    onWidthChanged: updateLayout();
 
     QtObject {
         id: d
-        property int expandingIndex: 0
+        property int expandingIndex: items.length-1
         property bool updateOptimizationGuard: false
         property bool bindingRecursionGuard: false
     }
@@ -30,7 +30,7 @@ Item {
                 // Moving the handle means resizing an item. Which one,
                 // left or right, depends on where the expanding item is.
                 // 'updateLayout' will override in case new width violates max/min.
-                updateExpandingIndex()
+                // And 'updateLayout will be triggered when an item changes width.
 
                 // [leftHandle - leftItem - handle - rightItem - rightHandle]
                 var leftHandle = handles[handleIndex-1]
@@ -75,44 +75,31 @@ Item {
         anchors.fill: parent
     }
 
-    function accumulatedWidth(firstIndex, lastIndex, includeExpandingMinimum)
-    {
-        // Go through items and handles, and
-        // calculate their acummulated width.
-        var w = 0
-        for (var i=firstIndex; i<lastIndex; ++i) {
-            var item = items[i]
-            if (i !== d.expandingIndex)
-                w += item.width;
-            else if (includeExpandingMinimum && item.minimumWidth != undefined && item.minimumWidth != -1)
-                w += item.minimumWidth
-            if (handles[i] && (i !== d.expandingIndex || includeExpandingMinimum === false))
-                w += handles[i].width
-        }
-        return w
-    }
-
-    function updateExpandingIndex()
-    {
-        for (var i=0; i<items.length; ++i) {
-            var item = items[i]
-            if (item.expanding && item.expanding === true) {
-                d.expandingIndex = i
-                return
-            }
-        }
-        d.expandingIndex = i-1
-    }
-
     Component {
         // This dummy item is creates as a child of all
         // items it the splitter, just to provide a way
         // to listed for changes to their width (and then
-        // do an updateLayout)
-        id: widthBinding
+        // do an updateLayout). In addition, it gives us
+        // a way to listed for changes to 'expanding' as well.
+        id: propertyChangeListener
         Item {
             id: target
             width: parent.width
+            property bool expanding: (parent.expanding != undefined) ? parent.expanding : false
+
+            onExpandingChanged: {
+                for (var i=0; i<items.length; ++i) {
+                    var item = items[i]
+                    if (item.expanding && item.expanding === true) {
+                        d.expandingIndex = i
+                        updateLayout();
+                        return
+                    }
+                }
+                d.expandingIndex = i-1
+                updateLayout();
+            }
+
             onWidthChanged: {
                 if (d.bindingRecursionGuard === true)
                     return
@@ -120,7 +107,6 @@ Item {
 
                 // Break binding:
                 width = 0
-                updateExpandingIndex()
                 updateLayout()
                 // Restablish binding:
                 width = function() { return parent.width; }
@@ -137,19 +123,35 @@ Item {
             var item = items[i];
             item.anchors.top = splitterItems.top
             item.anchors.bottom = splitterItems.bottom
-
-            widthBinding.createObject(item);
-
+            // Listen for changes to width and expanding:
+            propertyChangeListener.createObject(item);
             // Create a handle for the item:
             var handle = handleBackgroundLoader.createObject(splitterHandles, {"handleIndex":i});
             handle.anchors.top = splitterHandles.top
             handle.anchors.bottom = splitterHandles.bottom
         }
-        // Anchor the last item to fill out all space vertically as
-        // well, since the for-loop skipped the last item:
+        // Do the same for the last item as well, since
+        // the for-loop skipped the last item:
         items[i].anchors.top = splitterItems.top
         items[i].anchors.bottom = splitterItems.bottom
-        widthBinding.createObject(items[i]);
+        propertyChangeListener.createObject(items[i]);
+    }
+
+    function accumulatedWidth(firstIndex, lastIndex, includeExpandingMinimum)
+    {
+        // Go through items and handles, and
+        // calculate their acummulated width.
+        var w = 0
+        for (var i=firstIndex; i<lastIndex; ++i) {
+            var item = items[i]
+            if (i !== d.expandingIndex)
+                w += item.width;
+            else if (includeExpandingMinimum && item.minimumWidth != undefined && item.minimumWidth != -1)
+                w += item.minimumWidth
+            if (handles[i] && (i !== d.expandingIndex || includeExpandingMinimum === false))
+                w += handles[i].width
+        }
+        return w
     }
 
     function updateLayout()

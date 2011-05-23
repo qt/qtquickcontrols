@@ -13,7 +13,7 @@ Rectangle {
         Rectangle {
             id: r1
 //            property bool expanding: true
-//            property int minimumWidth: 100
+//            property int maximumWidth: 100
 //            property real percentageWidth: 50
             color: "gray"
             width: slider.value
@@ -21,6 +21,7 @@ Rectangle {
         }
         Rectangle {
             id: r2
+            property int minimumWidth: 50
             color: "darkGray"
 //            property bool expanding: true
             width: 50
