@@ -13,7 +13,7 @@ Item {
     QtObject {
         id: d
         property int expandingIndex: items.length-1
-        property bool updateOptimizationGuard: false
+        property bool updateOptimizationBlock: true
         property bool bindingRecursionGuard: false
     }
 
@@ -149,6 +149,7 @@ Item {
         items[i].anchors.top = splitterItems.top
         items[i].anchors.bottom = splitterItems.bottom
         propertyChangeListener.createObject(items[i]);
+        d.updateOptimizationBlock = false
     }
 
     function accumulatedWidth(firstIndex, lastIndex, includeExpandingMinimum)
@@ -170,9 +171,9 @@ Item {
 
     function updateLayout()
     {
-        if (d.updateOptimizationGuard === true)
+        if (d.updateOptimizationBlock === true)
             return
-        d.updateOptimizationGuard = true
+        d.updateOptimizationBlock = true
 
         // This function will reposition both handles and
         // items according to the _width of the each item_
@@ -207,7 +208,6 @@ Item {
         }
 
         // Special case: set width of expanding item to available space:
-
         newValue = root.width - accumulatedWidth(0, items.length, false);
         var expandingItem = items[d.expandingIndex]
         if (expandingItem.width !== newValue)
@@ -236,6 +236,6 @@ Item {
             prevHandle = handle
         }
 
-        d.updateOptimizationGuard = false
+        d.updateOptimizationBlock = false
     }
 }
