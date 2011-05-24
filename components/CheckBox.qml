@@ -8,8 +8,8 @@ Components.CheckBox{
     id:checkbox
     property string text
     property string hint
-    width: Math.max(110, styleitem.textWidth(text) + 40)
-    height:20
+    width: Math.max(110, backgroundItem.textWidth(text) + 40)
+    height: 20
 
     background: QStyleItem {
         id:styleitem
