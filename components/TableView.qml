@@ -184,8 +184,8 @@ FocusScope{
 
         // Handle vertical scrolling whem dragging mouse outside boundraries
 
-        Timer { running: mousearea.autoincrement; repeat: true; interval: 30 ; onTriggered: tree.incrementCurrentIndex()}
-        Timer { running: mousearea.autodecrement; repeat: true; interval: 30 ; onTriggered: tree.decrementCurrentIndex()}
+        Timer { running: mousearea.autoincrement; repeat: true; interval: 30 ; onTriggered: incrementCurrentIndex()}
+        Timer { running: mousearea.autodecrement; repeat: true; interval: 30 ; onTriggered: decrementCurrentIndex()}
 
         onMousePositionChanged: {
             if (mouseY > tree.height) {
@@ -217,6 +217,20 @@ FocusScope{
         }
     }
 
+    function decrementCurrentIndex() {
+        tree.blockUpdates = true
+        if (currentIndex > 0) tree.currentIndex = tree.currentIndex - 1
+        wheelarea.verticalValue = contentY/wheelarea.scale
+        tree.blockUpdates = false
+    }
+
+    function incrementCurrentIndex() {
+        tree.blockUpdates = true
+        if (currentIndex< model.count - 1) tree.currentIndex = tree.currentIndex + 1
+        wheelarea.verticalValue = contentY/wheelarea.scale
+        tree.blockUpdates = false
+    }
+
     ListView {
         id: tree
         property list<TableColumn> header
@@ -238,18 +252,9 @@ FocusScope{
         focus: true
         clip: true
 
-        Keys.onUpPressed: {
-            blockUpdates = true
-            if (currentIndex > 0) currentIndex = currentIndex - 1
-            wheelarea.verticalValue = contentY/wheelarea.scale
-            blockUpdates = false
-        }
-        Keys.onDownPressed: {
-            blockUpdates = true
-            if (currentIndex< count - 1) currentIndex = currentIndex + 1
-            wheelarea.verticalValue = contentY/wheelarea.scale
-            blockUpdates = false
-        }
+        Keys.onUpPressed: root.decrementCurrentIndex()
+        Keys.onDownPressed: root.incrementCurrentIndex()
+
         Keys.onPressed: {
             if (event.key == Qt.Key_PageUp) {
                 vscrollbar.value = vscrollbar.value - tree.height
