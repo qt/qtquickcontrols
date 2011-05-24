@@ -9,9 +9,11 @@ import "private"
 * a draggable splitter added in-between each item.
 *
 * Add items to the SplitterRow by inserting them as child items. The splitter handle
-* is outsourced as a delegate (handleBackground). For this delegate to work properly,
+* is outsourced as a delegate (handleBackground). To enable the user to drag the handle,
 * it will need to contain a mouse area that communicates with the SplitterRow by binding
-* 'onMouseXChanged: handleDragged(handleIndex)', and 'drag.target: dragTarget'.
+* 'drag.target: handle'. The 'handle' property points to the handle item that embedds
+* the delegate. To change handle positions, either change 'x' (or 'width') of 'handle', or
+* change the width of the child items inside the SplitterRow.
 *
 * The SplitterRow contains the following API:
 *
@@ -19,12 +21,10 @@ import "private"
 *   child item. Inside the delegate, the following properties are available:
 *   int handleIndex - specifies the index of the splitter handle. The handle
 *       between the first and the second item will get index 0, the next handle index 1 etc.
-*   Item handleDragTarget - convenience property that tells which drag target any
-*       inner mouse areas that controls the handle should bind to.
-*   function handleDragged(handleIndex) - function that should be called whenever
-*       the handle is dragged to a new position
+*   Item handle - convenience property that points to the item where the handle delegate is
+*   placed. Modify 'handle.x' to move the handle (or change 'width' of SplitterRow child items).
 *
-* The following properties can optionally be added for each direct child item of SplitterRow:
+* The following properties can optionally be added for each child item of SplitterRow:
 *
 * real minimumWidth - if present, ensures that the item cannot be resized below the
 *   given value. A value of -1 will disable it.
@@ -60,8 +60,7 @@ import "private"
 *                anchors.leftMargin: -2
 *                anchors.rightMargin: -2
 *                drag.axis: Qt.YAxis
-*                drag.target: handleDragTarget
-*                onMouseXChanged: handleDragged(handleIndex)
+*                drag.target: handle
 *            }
 *        }
 *
@@ -219,22 +218,20 @@ Item {
     Component {
         id: handleBackgroundLoader
         Loader {
-            id: loader
+            id: myHandle
             property int handleIndex: 0
-            property Item handleDragTarget: loader
+            property Item handle: myHandle
             sourceComponent: handleBackground
+            onWidthChanged: d.updateLayout()
 
-            function handleDragged(handleIndex)
-            {
+            onXChanged: {
                 // Moving the handle means resizing an item. Which one,
                 // left or right, depends on where the expanding item is.
                 // 'updateLayout' will override in case new width violates max/min.
                 // And 'updateLayout will be triggered when an item changes width.
 
-                var leftHandle, leftItem, handle, rightItem, rightHandle
+                var leftHandle, leftItem, rightItem, rightHandle
                 var leftEdge, rightEdge, newWidth
-
-                handle = handles[handleIndex]
 
                 if (d.expandingIndex > handleIndex) {
                     // Resize item to the left.
@@ -242,8 +239,8 @@ Item {
                     leftHandle = handles[handleIndex-1]
                     leftItem = items[handleIndex]
                     leftEdge = leftHandle ? (leftHandle.x + leftHandle.width) : 0
-                    handle.x = Math.max(leftEdge, handle.x)
-                    newWidth = handle.x - leftEdge
+                    myHandle.x = Math.max(leftEdge, myHandle.x)
+                    newWidth = myHandle.x - leftEdge
                     if (root.width != 0 && leftItem.percentageWidth != undefined && leftItem.percentageWidth !== -1)
                         leftItem.percentageWidth = newWidth * (100 / root.width)
                     // The next line will trigger 'updateLayout' inside 'propertyChangeListener':
@@ -258,8 +255,8 @@ Item {
                     rightItem = items[handleIndex+1]
                     rightHandle = handles[handleIndex+1]
                     rightEdge = (rightHandle ? rightHandle.x : root.width)
-                    handle.x = Math.max(min, Math.max(Math.min((rightEdge - handle.width), handle.x)))
-                    newWidth = rightEdge - (handle.x + handle.width)
+                    myHandle.x = Math.max(min, Math.max(Math.min((rightEdge - myHandle.width), myHandle.x)))
+                    newWidth = rightEdge - (myHandle.x + myHandle.width)
                     if (root.width != 0 && rightItem.percentageWidth != undefined && rightItem.percentageWidth !== -1)
                         rightItem.percentageWidth = newWidth * (100 / root.width)
                     // The next line will trigger 'updateLayout' inside 'propertyChangeListener':

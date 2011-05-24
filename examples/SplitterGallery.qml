@@ -15,9 +15,9 @@ Rectangle {
             width: 200
         }
         Rectangle {
-            property bool expanding: true
             property real minimumWidth: 50
             color: "darkgray"
+            width: 200
         }
         Rectangle {
             color: "gray"
