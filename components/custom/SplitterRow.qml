@@ -221,11 +221,14 @@ Item {
             handle.anchors.top = splitterHandles.top
             handle.anchors.bottom = splitterHandles.bottom
         }
-        // Do the same for the last item as well, since
-        // the for-loop skipped the last item:
-        items[i].anchors.top = splitterItems.top
-        items[i].anchors.bottom = splitterItems.bottom
-        propertyChangeListener.createObject(items[i]);
+        item = items[i]
+        if (item) {
+            // Do the same for the last item as well, since
+            // the for-loop skipped the last item:
+            items[i].anchors.top = splitterItems.top
+            items[i].anchors.bottom = splitterItems.bottom
+            propertyChangeListener.createObject(items[i]);
+        }
         d.updateOptimizationBlock = false
         updateLayout()
     }
@@ -249,6 +252,8 @@ Item {
 
     function updateLayout()
     {
+        if (items.length === 0)
+            return;
         if (d.updateOptimizationBlock === true)
             return
         d.updateOptimizationBlock = true
