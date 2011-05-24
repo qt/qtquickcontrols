@@ -10,7 +10,7 @@ import "private"
 *
 * Add items to the SplitterRow by inserting them as child items. The splitter handle
 * is outsourced as a delegate (handleBackground). For this delegate to work properly,
-* you will need to create a mouse area that communicates with the SplitterRow by binding
+* it will need to contain a mouse area that communicates with the SplitterRow by binding
 * 'onMouseXChanged: handleDragged(handleIndex)', and 'drag.target: dragTarget'.
 *
 * The SplitterRow contains the followin API:
@@ -18,13 +18,13 @@ import "private"
 * Component handleBackground - delegate that will be instanciated between each
 *   child item. Inside the delegate, the following properties are available:
 *   int handleIndex - specifies the index of the splitter handle. The handle
-*       between the first and the second item will get index 0, the next index 1 etc.
-*   Item handleDragTarget - convenience property that tells which drag target inner
-*       mouse areas that should control the handle should bind to.
+*       between the first and the second item will get index 0, the next handle index 1 etc.
+*   Item handleDragTarget - convenience property that tells which drag target any
+*       inner mouse areas that controls the handle should bind to.
 *   function handleDragged(handleIndex) - function that should be called whenever
 *       the handle is dragged to a new position
 *
-* The following properties can optionally be added for each child item:
+* The following properties can optionally be added for each direct child item of SplitterRow:
 *
 * real minimumWidth - if present, ensures that the item cannot be resized below the
 *   given value. A value of -1 will disable it.
@@ -32,13 +32,15 @@ import "private"
 *   given value. A value of -1 will disable it.
 * real percentageWidth - if present, should be a value between 0-100. This value specifies
 *   a percentage of the width of the SplitterRow width. If the width of the SplitterRow
-*   change, the width of the item will change as well. If present, SplitterRow will
-*   ignore any assignment done to the 'width' attribute. A value of -1 disables it.
-* bool expanding - if present, all extra space in the SplitterRow (after laying out other
-*   items) will be set as this items width. This means that that 'width', 'percentageWidth'
-*   and 'maximumWidth' will be ignored by the SplitterRow. By default, the last child item will
-*   get this behaviour. Also note that which item that gets resized upon dragging a handle depends
-*   on whether the expanding item is located towards the left or the right of the handle.
+*   change, the width of the item will change as well. 'percentageWidth' have precedence
+*   over 'width', which means that SplitterRow will ignore any assignments done to 'width'.
+*   A value of -1 disables it.
+* bool expanding - if present, the item will consume all extra space in the SplitterRow, down to
+*   minimumWidth. This means that that 'width', 'percentageWidth' and 'maximumWidth' will be ignored.
+*   There will always be one (and only one) item in the SplitterRow that has this behaviour, and by
+*   default, it will be the last child item of the SplitterRow. Also note that which item that gets
+*   resized upon dragging a handle depends on whether the expanding item is located towards the left
+*   or the right of the handle.
 *
 * Example:
 *
@@ -85,6 +87,7 @@ Item {
     default property alias items: splitterItems.children
     property alias handles: splitterHandles.children
     property Component handleBackground: Rectangle { width:3; color: "black" }
+    clip: true
 
     Component.onCompleted: d.init();
     onWidthChanged: d.updateLayout();
