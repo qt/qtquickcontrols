@@ -13,7 +13,7 @@ import "private"
 * it will need to contain a mouse area that communicates with the SplitterRow by binding
 * 'onMouseXChanged: handleDragged(handleIndex)', and 'drag.target: dragTarget'.
 *
-* The SplitterRow contains the followin API:
+* The SplitterRow contains the following API:
 *
 * Component handleBackground - delegate that will be instanciated between each
 *   child item. Inside the delegate, the following properties are available:
