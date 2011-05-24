@@ -7,6 +7,7 @@ Rectangle {
     height: 600
 
     SplitterRow {
+        id: sr
         anchors.fill: parent
 
         Rectangle {
