@@ -220,6 +220,7 @@ FocusScope{
     ListView {
         id: tree
         property list<TableColumn> header
+        property bool blockUpdates: false
         highlightFollowsCurrentItem: true
         model: root.model
 
@@ -237,13 +238,31 @@ FocusScope{
         focus: true
         clip: true
 
-        Keys.onUpPressed: if (currentIndex > 0) currentIndex = currentIndex - 1
-        Keys.onDownPressed: if (currentIndex< count - 1) currentIndex = currentIndex + 1
+        Keys.onUpPressed: {
+            blockUpdates = true
+            if (currentIndex > 0) currentIndex = currentIndex - 1
+            wheelarea.verticalValue = contentY/wheelarea.scale
+            blockUpdates = false
+        }
+        Keys.onDownPressed: {
+            blockUpdates = true
+            if (currentIndex< count - 1) currentIndex = currentIndex + 1
+            wheelarea.verticalValue = contentY/wheelarea.scale
+            blockUpdates = false
+        }
+        Keys.onPressed: {
+            if (event.key == Qt.Key_PageUp) {
+                vscrollbar.value = vscrollbar.value - tree.height
+            } else if (event.key == Qt.Key_PageDown)
+                vscrollbar.value = vscrollbar.value + tree.height
+       }
 
-        onCurrentIndexChanged: {
+        onContentYChanged:  {
             // positionViewAtIndex(currentIndex, ListView.Visible)
             // highlight follows item
+            blockUpdates = true
             vscrollbar.value = tree.contentY
+            blockUpdates = false
         }
 
         delegate: Item {
@@ -469,14 +488,21 @@ FocusScope{
         verticalMinimumValue: vscrollbar.minimumValue/scale
         verticalMaximumValue: vscrollbar.maximumValue/scale
 
+        verticalValue: contentY/scale
+        horizontalValue: contentX/scale
+
         onVerticalValueChanged: {
-            contentY = verticalValue * scale
-            vscrollbar.value = contentY
+            if(!tree.blockUpdates) {
+                contentY = verticalValue * scale
+                vscrollbar.value = contentY
+            }
         }
 
         onHorizontalValueChanged: {
-            contentX = horizontalValue * scale
-            hscrollbar.value = contentX
+            if(!tree.blockUpdates) {
+                contentX = horizontalValue * scale
+                hscrollbar.value = contentX
+            }
         }
     }
 
@@ -493,7 +519,10 @@ FocusScope{
         anchors.leftMargin: frameWidth
         anchors.bottomMargin: styleitem.frameoffset
         anchors.rightMargin: vscrollbar.visible ? scrollbarExtent : (frame ? 1 : 0)
-        onValueChanged: contentX = value
+        onValueChanged: {
+            if (!tree.blockUpdates)
+                contentX = value
+        }
         property int scrollbarExtent : styleitem.pixelMetric("scrollbarExtent");
     }
 
@@ -510,8 +539,14 @@ FocusScope{
         anchors.top: parent.top
         anchors.bottom: parent.bottom
         anchors.topMargin: styleitem.style == "mac" ? tableColumn.height : 0
-        onValueChanged: contentY = value
+        onValueChanged: {
+            if(!tree.blockUpdates)
+                contentY = value
+        }
         anchors.bottomMargin: hscrollbar.visible ? hscrollbar.height :  styleitem.frameoffset
+
+        Keys.onUpPressed: if (tree.currentIndex > 0) tree.currentIndex = tree.currentIndex - 1
+        Keys.onDownPressed: if (tree.currentIndex< tree.count - 1) tree.currentIndex = tree.currentIndex + 1
     }
 
     QStyleItem {
