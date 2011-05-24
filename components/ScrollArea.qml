@@ -14,6 +14,8 @@ FocusScope {
     property bool frame: true
     property bool highlightOnFocus: false
     property bool frameAroundContents: styleitem.styleHint("framearoundcontents")
+    property alias verticalValue: vscrollbar.value
+    property alias horizontalValue: hscrollbar.value
 
     default property alias data: content.data
 
