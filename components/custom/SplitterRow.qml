@@ -8,13 +8,23 @@ import "private"
 * SplitterRow is a component that provides a way to layout items horisontally with
 * a draggable splitter added in-between each item.
 *
-* Items are added to the SplitterRow by inserting them as
-* child items of the SplitterRow. The splitter handle is outsourced as a
-* delegate. For this delegate to work properly, you will need to create a mouse area
-* that communicates with SplitterRow by binding 'onMouseXChanged: handleDragged(handleIndex)', and
-* 'setting drag.target: dragTarget'.
+* Add items to the SplitterRow by inserting them as child items. The splitter handle
+* is outsourced as a delegate (handleBackground). For this delegate to work properly,
+* you will need to create a mouse area that communicates with the SplitterRow by binding
+* 'onMouseXChanged: handleDragged(handleIndex)', and 'drag.target: dragTarget'.
 *
-* The following properties can be added for each child item:
+* The SplitterRow contains the followin API:
+*
+* Component handleBackground - delegate that will be instanciated between each
+*   child item. Inside the delegate, the following properties are available:
+*   int handleIndex - specifies the index of the splitter handle. The handle
+*       between the first and the second item will get index 0, the next index 1 etc.
+*   Item handleDragTarget - convenience property that tells which drag target inner
+*       mouse areas that should control the handle should bind to.
+*   function handleDragged(handleIndex) - function that should be called whenever
+*       the handle is dragged to a new position
+*
+* The following properties can optionally be added for each child item:
 *
 * real minimumWidth - if present, ensures that the item cannot be resized below the
 *   given value. A value of -1 will disable it.
