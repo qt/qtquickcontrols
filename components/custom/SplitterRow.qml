@@ -98,37 +98,45 @@ Item {
 
     QtObject {
         id: d
-        property int expandingIndex: items.length-1
+        property int expandingIndex: -1
         property bool updateLayoutGuard: true
         property bool itemWidthGuard: false
-        property bool itemExpandingGuard: false
+        property bool itemExpandingGuard: true
 
         function init()
         {
-            for (var i=0; i<items.length-1; ++i) {
-                // Anchor each item to fill out all space vertically:
+            for (var i=0; i<items.length; ++i) {
                 var item = items[i];
                 if (item.itemIndex != undefined)
                     item.itemIndex = i
+                // Assign one, and only one, item to be expanding:
+                if (item.expanding != undefined && item.expanding === true) {
+                    if (d.expandingIndex === -1)
+                        d.expandingIndex = i
+                    else
+                        item.expanding = false
+                }
+                // Anchor each item to fill out all space vertically:
                 item.anchors.top = splitterItems.top
                 item.anchors.bottom = splitterItems.bottom
                 // Listen for changes to width and expanding:
                 propertyChangeListener.createObject(item, {"itemIndex":i});
-                // Create a handle for the item:
-                var handle = handleBackgroundLoader.createObject(splitterHandles, {"handleIndex":i});
-                handle.anchors.top = splitterHandles.top
-                handle.anchors.bottom = splitterHandles.bottom
+                if (i < items.length-1) {
+                    // Create a handle for the item, unless its the last:
+                    var handle = handleBackgroundLoader.createObject(splitterHandles, {"handleIndex":i});
+                    handle.anchors.top = splitterHandles.top
+                    handle.anchors.bottom = splitterHandles.bottom
+                }
             }
-            item = items[i]
-            if (item) {
-                // Do the same for the last item as well, since
-                // the for-loop skipped the last item:
-                if (item.itemIndex != undefined)
-                    item.itemIndex = i
-                items[i].anchors.top = splitterItems.top
-                items[i].anchors.bottom = splitterItems.bottom
-                propertyChangeListener.createObject(items[i], {"itemIndex":i});
+
+            if (d.expandingIndex === -1) {
+                // No item had expanding set to true.
+                d.expandingIndex = items.length - 1
+                if (item.expanding != undefined)
+                    item.expanding = true
             }
+
+            d.itemExpandingGuard = false
             d.updateLayoutGuard = false
             d.updateLayout()
         }
@@ -148,6 +156,26 @@ Item {
                     w += handles[i].width
             }
             return w
+        }
+
+        function updateExpandingIndex(newIndex) {
+            // Only one item can be expanding, so clear the rest:
+            for (var i=0; i<items.length; ++i) {
+                var item = items[i]
+                if (item.expanding && item.expanding === true) {
+                    if (d.expandingIndex === -1) {
+                        // First expanding found. Use it, and clear
+                        // all other
+                        d.expandingIndex = i
+                    } else {
+                        item.expanding = false
+                    }
+                }
+            }
+            d.expandingIndex = (newIndex === -1) ? (root.items.length-1) : newIndex
+            item = root.items[d.expandingIndex]
+            if (item.expanding != undefined && item.expanding !== true)
+                item.expanding = true
         }
 
         function updateLayout()
@@ -316,17 +344,33 @@ Item {
                 if (d.itemExpandingGuard === true)
                     return
                 d.itemExpandingGuard = true
+                // break binding:
                 expanding = false
 
-                // Only one item can be expanding, so clear the rest:
+                // 'expanding' follows radio button behavior:
+                // First, find the new expanding item:
+                var newIndex = items.length-1
                 for (var i=0; i<items.length; ++i) {
                     var item = items[i]
-                    if (i != itemIndex && item.expanding && item.expanding === true)
+                    if (i !== d.expandingIndex && item.expanding != undefined && item.expanding === true) {
+                        newIndex = i
+                        break
+                    }
+                }
+                // Tell the found item that it is expanding:
+                item = items[newIndex]
+                if (item.expanding != undefined && item.expanding !== true)
+                    item.expanding = true
+                // ...and the old one that it is not:
+                if (newIndex !== d.expandingIndex) {
+                    item = items[d.expandingIndex]
+                    if (item.expanding != undefined && item.expanding !== false)
                         item.expanding = false
                 }
-                d.expandingIndex = itemIndex
+                // update index:
+                d.expandingIndex = newIndex
                 d.updateLayout();
-
+                // recreate binding:
                 expanding = function() { return (parent.expanding != undefined) ? parent.expanding : false; }
                 d.itemExpandingGuard = false
             }

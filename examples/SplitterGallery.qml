@@ -11,16 +11,15 @@ Rectangle {
         anchors.fill: parent
 
         Rectangle {
-            property bool expanding: false
+            property bool expanding: true
             property real minimumWidth: 100
             color: "gray"
             width: 200
-            property real percentageWidth: 50
             Button {
                 width: parent.width
                 text: "Set expanding"
                 onClicked: parent.expanding = true
-
+                enabled: parent.expanding === false
             }
         }
         Rectangle {
@@ -32,6 +31,7 @@ Rectangle {
                 width: parent.width
                 text: "Set expanding"
                 onClicked: parent.expanding = true
+                enabled: parent.expanding === false
 
             }
         }
@@ -44,7 +44,7 @@ Rectangle {
                 width: parent.width
                 text: "Set expanding"
                 onClicked: parent.expanding = true
-
+                enabled: parent.expanding === false
             }
         }
     }
