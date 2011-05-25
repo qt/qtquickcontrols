@@ -15,6 +15,7 @@ Rectangle {
             property real minimumWidth: 100
             color: "gray"
             width: 200
+            property real percentageWidth: 50
             Button {
                 width: parent.width
                 text: "Set expanding"

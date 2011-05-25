@@ -30,21 +30,22 @@ import "private"
 *
 * The following properties can optionally be added for each child item of SplitterRow:
 *
-* real minimumWidth - if present, ensures that the item cannot be resized below the
+* real minimumWidth - ensures that the item cannot be resized below the
 *   given value. A value of -1 will disable it.
-* real maximumWidth - if present, ensures that the item cannot be resized above the
+* real maximumWidth - ensures that the item cannot be resized above the
 *   given value. A value of -1 will disable it.
-* real percentageWidth - if present, should be a value between 0-100. This value specifies
-*   a percentage of the width of the SplitterRow width. If the width of the SplitterRow
-*   change, the width of the item will change as well. 'percentageWidth' have precedence
-*   over 'width', which means that SplitterRow will ignore any assignments done to 'width'.
-*   A value of -1 disables it.
+* real percentageWidth - This value specifies a percentage (0 - 100) of the width of the
+*   SplitterRow width. If the width of the SplitterRow change, the width of the item will
+*   change as well. 'percentageWidth' have precedence over 'width', which means that
+*   SplitterRow will ignore any assignments to 'width'. A value of -1 disables it.
 * bool expanding - if present, the item will consume all extra space in the SplitterRow, down to
 *   minimumWidth. This means that that 'width', 'percentageWidth' and 'maximumWidth' will be ignored.
 *   There will always be one (and only one) item in the SplitterRow that has this behaviour, and by
 *   default, it will be the last child item of the SplitterRow. Also note that which item that gets
 *   resized upon dragging a handle depends on whether the expanding item is located towards the left
 *   or the right of the handle.
+* int itemIndex - will be assigned a read-only value with the item index. Can be used to e.g. look-up
+*   the handles sourrounding the item (parent.handles[itemIndex])
 *
 * Example:
 *
@@ -98,18 +99,21 @@ Item {
     QtObject {
         id: d
         property int expandingIndex: items.length-1
-        property bool updateOptimizationBlock: true
-        property bool bindingRecursionGuard: false
+        property bool updateLayoutGuard: true
+        property bool itemWidthGuard: false
+        property bool itemExpandingGuard: false
 
         function init()
         {
             for (var i=0; i<items.length-1; ++i) {
                 // Anchor each item to fill out all space vertically:
                 var item = items[i];
+                if (item.itemIndex != undefined)
+                    item.itemIndex = i
                 item.anchors.top = splitterItems.top
                 item.anchors.bottom = splitterItems.bottom
                 // Listen for changes to width and expanding:
-                propertyChangeListener.createObject(item);
+                propertyChangeListener.createObject(item, {"itemIndex":i});
                 // Create a handle for the item:
                 var handle = handleBackgroundLoader.createObject(splitterHandles, {"handleIndex":i});
                 handle.anchors.top = splitterHandles.top
@@ -119,11 +123,13 @@ Item {
             if (item) {
                 // Do the same for the last item as well, since
                 // the for-loop skipped the last item:
+                if (item.itemIndex != undefined)
+                    item.itemIndex = i
                 items[i].anchors.top = splitterItems.top
                 items[i].anchors.bottom = splitterItems.bottom
-                propertyChangeListener.createObject(items[i]);
+                propertyChangeListener.createObject(items[i], {"itemIndex":i});
             }
-            d.updateOptimizationBlock = false
+            d.updateLayoutGuard = false
             d.updateLayout()
         }
 
@@ -148,9 +154,9 @@ Item {
         {
             if (items.length === 0)
                 return;
-            if (d.updateOptimizationBlock === true)
+            if (d.updateLayoutGuard === true)
                 return
-            d.updateOptimizationBlock = true
+            d.updateLayoutGuard = true
 
             // This function will reposition both handles and
             // items according to the _width of the each item_
@@ -189,6 +195,8 @@ Item {
             var expandingItem = items[d.expandingIndex]
             if (expandingItem.minimumWidth != undefined && expandingItem.minimumWidth != -1)
                 newValue = Math.max(newValue, expandingItem.minimumWidth)
+            if (expandingItem.width != 0 && expandingItem.percentageWidth != undefined && expandingItem.percentageWidth !== -1)
+                expandingItem.percentageWidth = newValue * (100 / root.width)
             if (expandingItem.width !== newValue)
                 expandingItem.width = newValue
 
@@ -215,7 +223,7 @@ Item {
                 prevHandle = handle
             }
 
-            d.updateOptimizationBlock = false
+            d.updateLayoutGuard = false
         }
     }
 
@@ -236,6 +244,8 @@ Item {
                 // left or right, depends on where the expanding item is.
                 // 'updateLayout' will override in case new width violates max/min.
                 // And 'updateLayout will be triggered when an item changes width.
+                if (d.updateLayoutGuard)
+                    return
 
                 var leftHandle, leftItem, rightItem, rightHandle
                 var leftEdge, rightEdge, newWidth
@@ -262,7 +272,9 @@ Item {
                     rightItem = items[handleIndex+1]
                     rightHandle = handles[handleIndex+1]
                     rightEdge = (rightHandle ? rightHandle.x : root.width)
-                    myHandle.x = Math.max(min, Math.max(Math.min((rightEdge - myHandle.width), myHandle.x)))
+                    var rightStopX = Math.min((rightEdge - myHandle.width), myHandle.x)
+                    // Ensure: min <= myHandle.x <= rightStopX
+                    myHandle.x = Math.max(min, Math.min(myHandle.x, rightStopX))
                     newWidth = rightEdge - (myHandle.x + myHandle.width)
                     if (root.width != 0 && rightItem.percentageWidth != undefined && rightItem.percentageWidth !== -1)
                         rightItem.percentageWidth = newWidth * (100 / root.width)
@@ -294,30 +306,36 @@ Item {
             property real percentageWidth: (parent.percentageWidth != undefined) ? parent.percentageWidth : -1
             property real minimumWidth: (parent.minimumWidth != undefined) ? parent.minimumWidth : -1
             property real maximumWidth: (parent.maximumWidth != undefined) ? parent.maximumWidth : -1
+            property int itemIndex: 0
 
             onPercentageWidthChanged: d.updateLayout();
             onMinimumWidthChanged: d.updateLayout();
             onMaximumWidthChanged: d.updateLayout();
 
             onExpandingChanged: {
-                // Find out which item that has the expanding flag:
+                if (d.itemExpandingGuard === true)
+                    return
+                d.itemExpandingGuard = true
+                expanding = false
+
+                // Only one item can be expanding, so clear the rest:
                 for (var i=0; i<items.length; ++i) {
                     var item = items[i]
-                    if (item.expanding && item.expanding === true) {
-                        d.expandingIndex = i
-                        d.updateLayout();
-                        return
-                    }
+                    if (i != itemIndex && item.expanding && item.expanding === true)
+                        item.expanding = false
                 }
-                d.expandingIndex = i-1
-                updateLayout();
+                d.expandingIndex = itemIndex
+                d.updateLayout();
+
+                expanding = function() { return (parent.expanding != undefined) ? parent.expanding : false; }
+                d.itemExpandingGuard = false
             }
 
             onWidthChanged: {
                 // We need to update the layout:
-                if (d.bindingRecursionGuard === true)
+                if (d.itemWidthGuard === true)
                     return
-                d.bindingRecursionGuard = true
+                d.itemWidthGuard = true
 
                 // Break binding:
                 width = 0
@@ -325,7 +343,7 @@ Item {
                 // Restablish binding:
                 width = function() { return parent.width; }
                 
-                d.bindingRecursionGuard = false
+                d.itemWidthGuard = false
             }
         }
     }
