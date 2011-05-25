@@ -1,8 +1,6 @@
 import QtQuick 1.0
 import "custom" as Components
 
-MenuBase {
+Menu {
     id: choiceList
-
-    property ListModel model
 }

@@ -41,12 +41,17 @@ QtMenu::~QtMenu()
 
 void QtMenu::setTitle(const QString &title)
 {
-
+    m_title = title;
 }
 
 QString QtMenu::title() const
 {
+    return m_title;
+}
 
+QString QtMenu::selected() const
+{
+    return m_selected;
 }
 
 QDeclarativeListProperty<QtMenuItem> QtMenu::menuItems()
@@ -56,10 +61,10 @@ QDeclarativeListProperty<QtMenuItem> QtMenu::menuItems()
 
 void QtMenu::showPopup(qreal x, qreal y)
 {
-    m_menu->clear();
     foreach (QtMenuItem *item, m_menuItems) {
         QAction *action = new QAction(item->text(), m_menu);
         connect(action, SIGNAL(triggered()), item, SIGNAL(selected()));
+        connect(action, SIGNAL(triggered()), this, SLOT(emitSelected()));
         m_menu->insertAction(0, action);
     }
 
@@ -68,5 +73,26 @@ void QtMenu::showPopup(qreal x, qreal y)
     QPoint screenPosition = QApplication::activeWindow()->mapToGlobal(QPoint(x, y));
 
     m_menu->popup(screenPosition);
+}
+
+Q_INVOKABLE void QtMenu::clearMenuItems()
+{
+    m_menu->clear();
+}
+
+void QtMenu::addMenuItem(const QString &text)
+{
+    QAction *action = new QAction(text, m_menu);
+    connect(action, SIGNAL(triggered()), this, SLOT(emitSelected()));
+    m_menu->insertAction(0, action);
+}
+
+void QtMenu::emitSelected()
+{
+    QAction *act = qobject_cast<QAction *>(sender());
+    if (!act)
+        return;
+    m_selected = act->text();
+    emit selectedChanged();
 }
 
