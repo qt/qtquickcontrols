@@ -11,7 +11,7 @@ Rectangle {
         anchors.fill: parent
 
         Rectangle {
-            property bool expanding: true
+            property bool expanding: false
             property real minimumWidth: 100
             color: "gray"
             width: 200

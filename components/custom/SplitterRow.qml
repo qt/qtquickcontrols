@@ -158,26 +158,6 @@ Item {
             return w
         }
 
-        function updateExpandingIndex(newIndex) {
-            // Only one item can be expanding, so clear the rest:
-            for (var i=0; i<items.length; ++i) {
-                var item = items[i]
-                if (item.expanding && item.expanding === true) {
-                    if (d.expandingIndex === -1) {
-                        // First expanding found. Use it, and clear
-                        // all other
-                        d.expandingIndex = i
-                    } else {
-                        item.expanding = false
-                    }
-                }
-            }
-            d.expandingIndex = (newIndex === -1) ? (root.items.length-1) : newIndex
-            item = root.items[d.expandingIndex]
-            if (item.expanding != undefined && item.expanding !== true)
-                item.expanding = true
-        }
-
         function updateLayout()
         {
             if (items.length === 0)
