@@ -25,7 +25,7 @@ Rectangle {
                    onSelected : { rect.color = "red" }
         }
 
-        MenuItem { text : "pink"''
+        MenuItem { text : "pink"
                    onSelected : { rect.color = "pink" }
         }
 

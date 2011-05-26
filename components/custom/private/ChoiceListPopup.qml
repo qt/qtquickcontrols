@@ -15,8 +15,6 @@ MouseArea {
     anchors.fill: parent
     hoverEnabled: true    
 
-
-
     // Set 'popupOpen' to show/hide the popup. The 'state' property is more
     // internal, and contains additional states used to protect the popup from
     // e.g. receiving mouse clicks while its about to hide etc.
@@ -68,7 +66,8 @@ MouseArea {
         } else {
             popupFrameLoader.item.opacity = 0;
             popup.hideHighlight();
-            state = "popupClosing"
+            if (popupFrameLoader.item.opacity !== 0)
+                state = "popupClosing"
         }
     }
 
@@ -312,7 +311,7 @@ MouseArea {
             name: "popupClosed"
             when: popupFrameLoader.item.opacity === 0;
             StateChangeScript {
-                script: parent = originalParent;
+                script: parent = originalParent
             }
         }
     ]
