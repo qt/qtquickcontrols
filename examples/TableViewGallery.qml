@@ -50,21 +50,15 @@ Rectangle {
     }
 
     ListModel {
-        id: listModel
+        id: nestedModel
         ListElement{
-            title: "Some title"
-            imageSource: "imagesource"
-            credit: "credit"
+            attributes:  ListElement { description: "Core" ; color:"#ffaacc"}
         }
         ListElement{
-            title: "Some title 2"
-            imageSource: "imagesource"
-            credit: "credit"
+            attributes: ListElement { description: "Second" ; color:"#ffccaa"}
         }
         ListElement{
-            title: "Some title 3"
-            imageSource: "imagesource"
-            credit: "credit"
+            attributes: ListElement { description: "Third" ; color:"#ffffaa"}
         }
     }
 
@@ -91,14 +85,13 @@ Rectangle {
             tabbar: TabBar{parent: frame}
 
             property int margins : styleitem.style == "mac" ? 16 : 0
-            height:parent.height - 34
+            height: parent.height - 34
             anchors.right: parent.right
             anchors.left: parent.left
             anchors.margins: margins
 
             Tab {
                 title: "XmlListModel"
-
 
                 TableView {
 
@@ -132,21 +125,39 @@ Rectangle {
                 }
             }
             Tab {
-                title: "ListModel"
+                title: "Multivalue "
 
                 TableView{
-                    model: listModel
+                    model: nestedModel
                     anchors.fill: parent
                     anchors.margins: 12
+
                     TableColumn {
-                        property: "title"
-                        caption: "Title"
-                        width: 120
+                        property: "attributes"
+                        caption: "Text and Color"
+                        width: 220
                     }
-                    TableColumn {
-                        property: "credit"
-                        caption: "Credit"
-                        width: 120
+
+                    itemDelegate:
+                    Item {
+                        Rectangle{
+                            color: itemValue.get(0).color
+                            anchors.top:parent.top
+                            anchors.right:parent.right
+                            anchors.bottom:parent.bottom
+                            anchors.margins: 4
+                            width:32
+                            border.color:"#666"
+                        }
+                        Text {
+                            width: parent.width
+                            anchors.margins: 4
+                            anchors.left: parent.left
+                            anchors.verticalCenter: parent.verticalCenter
+                            elide: itemElideMode
+                            text: itemValue.get(0).description
+                            color: itemForeground
+                        }
                     }
 
                     frame: frameCheckbox.checked
