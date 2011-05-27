@@ -308,11 +308,11 @@ FocusScope{
                         height: item ? item.height :  Math.max(16, styleitem.sizeFromContents(16, 16).height)
 
                         function getValue() {
-                            if (index < header.length &&
-                                    root.model.get(rowIndex).hasOwnProperty(header[index].property))
-                                return root.model.get(rowIndex)[ header[index].property]
+                            if (hasOwnProperty(header[index].property))
+                                return this[header[index].property]
+                            return ""
                         }
-                        property variant itemValue: root.model.get(rowIndex)[ header[index].property]
+                        property variant itemValue: getValue()
                         property bool itemSelected: rowitem.ListView.isCurrentItem
                         property color itemForeground: itemSelected ? rowstyleitem.highlightedTextColor : rowstyleitem.textColor
                         property int rowIndex: rowitem.rowIndex

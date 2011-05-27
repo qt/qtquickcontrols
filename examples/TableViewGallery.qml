@@ -51,17 +51,10 @@ Rectangle {
 
     ListModel {
         id: nestedModel
-        ListElement{
-            attributes:  ListElement { description: "Core" ; color:"#ffaacc"}
-        }
-        ListElement{
-            attributes: ListElement { description: "Second" ; color:"#ffccaa"}
-        }
-        ListElement{
-            attributes: ListElement { description: "Third" ; color:"#ffffaa"}
-        }
+        ListElement{attributes:  ListElement { description: "Core" ; color:"#ffaacc"}}
+        ListElement{attributes: ListElement { description: "Second" ; color:"#ffccaa"}}
+        ListElement{attributes: ListElement { description: "Third" ; color:"#ffffaa"}}
     }
-
 
     ListModel {
         id: largeModel
@@ -94,7 +87,6 @@ Rectangle {
                 title: "XmlListModel"
 
                 TableView {
-
                     model: flickerModel
                     anchors.fill: parent
                     anchors.margins: 12
@@ -116,18 +108,47 @@ Rectangle {
                         visible: true
                     }
 
+                    frame: frameCheckbox.checked
+                    headerVisible: headerCheckbox.checked
+                    sortIndicatorVisible: sortableCheckbox.checked
+                    alternateRowColor: alternateCheckbox.checked
+                }
+            }
+            Tab {
+                title: "DirModel"
+
+                TableView {
+                    model: FileSystemModel{}
+                    anchors.fill: parent
+                    anchors.margins: 12
+
+                    TableColumn {
+                        property: "fileName"
+                        caption: "File Name"
+                        width: 120
+                    }
+                    TableColumn {
+                        property: "filePath"
+                        caption: "File Path"
+                        width: 120
+                    }
+                    TableColumn {
+                        property: "fileSize"
+                        caption: "Image source"
+                        width: 200
+                        visible: true
+                    }
 
                     frame: frameCheckbox.checked
                     headerVisible: headerCheckbox.checked
                     sortIndicatorVisible: sortableCheckbox.checked
                     alternateRowColor: alternateCheckbox.checked
-
                 }
             }
             Tab {
                 title: "Multivalue "
 
-                TableView{
+                TableView {
                     model: nestedModel
                     anchors.fill: parent
                     anchors.margins: 12
@@ -167,7 +188,7 @@ Rectangle {
                 }
             }
             Tab {
-                title: "LargeModel"
+                title: "Generated"
 
                 TableView {
                     model: largeModel
@@ -193,7 +214,7 @@ Rectangle {
             }
 
             Tab {
-                title: "Custom delegate"
+                title: "Delegates"
 
                 ListModel {
                     id: delegatemenu

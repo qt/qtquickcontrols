@@ -121,7 +121,7 @@ public:
     \section1 Filtering
 
     Various properties can be set to filter the number of files and directories
-    exposed by the model.
+ ˚   exposed by the model.
 
     The \l nameFilters property can be set to contain a list of wildcard filters
     that are applied to names of files and directories, causing only those that
