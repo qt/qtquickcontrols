@@ -3,7 +3,15 @@ import "../components/plugin"
 
 MenuBase {
     property ListModel model
-    function show(x, y) {
+    property Item target
+    property bool visible: false
+    property real x: 0
+    property real y: 0
+
+    onVisibleChanged: visible ? show() : closePopup()
+    onMenuClosed: visible = false
+
+    function show() {
         // Clear and add items from the model (showPopup adds the MenuItem children)
         clearMenuItems();
 
@@ -11,6 +19,7 @@ MenuBase {
             addMenuItem(model.get(i).text)
         }
 
-        showPopup(x, y)
+        var globalPos = target.mapToItem(null, x, y)
+        showPopup(globalPos.x, globalPos.y, 0)
     }
 }

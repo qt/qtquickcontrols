@@ -118,7 +118,7 @@ Rectangle {
                                 KeyNavigation.backtab: button1
                             }
                         }
-                        ChoiceList {
+                        ComboBox {
                             id: combo;
                             model: choices;
                             width: 200;

@@ -32,6 +32,7 @@ QtMenu::QtMenu(QObject *parent)
     : QObject(parent)
 {
     m_menu = new QMenu(0);
+    connect(m_menu, SIGNAL(aboutToHide()), this, SIGNAL(menuClosed()));
 }
 
 QtMenu::~QtMenu()
@@ -59,8 +60,16 @@ QDeclarativeListProperty<QtMenuItem> QtMenu::menuItems()
     return QDeclarativeListProperty<QtMenuItem>(this, m_menuItems);
 }
 
-void QtMenu::showPopup(qreal x, qreal y)
+void QtMenu::closePopup()
 {
+    m_menu->close();
+}
+
+void QtMenu::showPopup(qreal x, qreal y, int atActionIndex)
+{
+    if (m_menu->isVisible())
+        return;
+
     foreach (QtMenuItem *item, m_menuItems) {
         QAction *action = new QAction(item->text(), m_menu);
         connect(action, SIGNAL(triggered()), item, SIGNAL(selected()));
@@ -68,11 +77,17 @@ void QtMenu::showPopup(qreal x, qreal y)
         m_menu->insertAction(0, action);
     }
 
+    // If atActionIndex is valid, x and y is specified from the
+    // the position of the corresponding QAction:
+    QAction *atAction = 0;
+    if (atActionIndex >= 0 && atActionIndex < m_menu->actions().size())
+        atAction = m_menu->actions()[atActionIndex];
+
     // x,y are in view coordinates, QMenu expects screen coordinates
     // ### activeWindow hack
     QPoint screenPosition = QApplication::activeWindow()->mapToGlobal(QPoint(x, y));
 
-    m_menu->popup(screenPosition);
+    m_menu->popup(screenPosition, atAction);
 }
 
 Q_INVOKABLE void QtMenu::clearMenuItems()

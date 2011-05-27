@@ -48,12 +48,14 @@ public:
     QDeclarativeListProperty<QtMenuItem> menuItems();
 
 
-    Q_INVOKABLE void showPopup(qreal x, qreal y);
+    Q_INVOKABLE void showPopup(qreal x, qreal y, int atActionIndex = -1);
+    Q_INVOKABLE void closePopup();
     Q_INVOKABLE void clearMenuItems();
     Q_INVOKABLE void addMenuItem(const QString &text);
 
 Q_SIGNALS:
     void selectedChanged();
+    void menuClosed();
 private Q_SLOTS:
     void emitSelected();
 private:

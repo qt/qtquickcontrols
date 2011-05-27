@@ -9,6 +9,7 @@ Tab 1.0 Tab.qml
 ScrollArea 1.0 ScrollArea.qml
 ScrollBar 1.0 ScrollBar.qml
 ChoiceList 1.0 ChoiceList.qml
+ComboBox 1.0 ComboBox.qml
 ToolButton 1.0 ToolButton.qml
 TextArea 1.0 TextArea.qml
 TextField 1.0 TextField.qml
