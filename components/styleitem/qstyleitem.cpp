@@ -302,7 +302,21 @@ void QStyleItem::initStyleOption()
             opt->maximum = maximum();
             // ### fixme - workaround for KDE inverted dial
             opt->sliderPosition = value();
-            opt->tickInterval = opt->maximum != opt->minimum ? 1200 / (opt->maximum - opt->minimum) : 0;
+            opt->singleStep = step();
+
+            if (opt->singleStep)
+            {
+                qreal numOfSteps = (opt->maximum - opt->minimum) / opt->singleStep;
+
+                // at least 5 pixels between tick marks
+                if (numOfSteps && (width() / numOfSteps < 5))
+                    opt->tickInterval = qRound((5*numOfSteps / width()) + 0.5)*step();
+                else
+                    opt->tickInterval = opt->singleStep;
+            }
+            else // default Qt-components implementation
+                opt->tickInterval = opt->maximum != opt->minimum ? 1200 / (opt->maximum - opt->minimum) : 0;
+
             if (style() == QLatin1String("oxygen") && type == QLatin1String("dial"))
                 opt->sliderValue  = maximum() - value();
             else

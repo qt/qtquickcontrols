@@ -8,7 +8,7 @@ Components.Slider{
     id: slider
 
     property bool tickmarksEnabled: true
-    property string tickPosition: "Below" // "Top", "Below", "BothSides"
+    property string tickPosition: "Below" // "Above", "Below", "BothSides"
 
     QStyleItem { id:buttonitem; elementType: "slider" }
 
@@ -25,6 +25,7 @@ Components.Slider{
         sunken: pressed
         maximum: slider.maximumValue*100
         minimum: slider.minimumValue*100
+        step: slider.stepSize*100
         value: slider.value*100
         horizontal: slider.orientation == Qt.Horizontal
         enabled: slider.enabled
