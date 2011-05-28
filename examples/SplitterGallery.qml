@@ -34,6 +34,12 @@ Rectangle {
                 enabled: parent.expanding === false
 
             }
+            Rectangle {
+                color: "red"
+                width: parent.minimumWidth
+                height: 50
+                y: 100
+            }
         }
         Rectangle {
             property bool expanding: false
@@ -45,6 +51,30 @@ Rectangle {
                 text: "Set expanding"
                 onClicked: parent.expanding = true
                 enabled: parent.expanding === false
+            }
+            Rectangle {
+                color: "red"
+                width: parent.minimumWidth
+                height: 50
+                y: 100
+            }
+        }
+        Rectangle {
+            property bool expanding: false
+            property real minimumWidth: 100
+            color: "gray"
+            width: 200
+            Button {
+                width: parent.width
+                text: "Set expanding"
+                onClicked: parent.expanding = true
+                enabled: parent.expanding === false
+            }
+            Rectangle {
+                color: "red"
+                width: parent.minimumWidth
+                height: 50
+                y: 100
             }
         }
     }

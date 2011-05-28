@@ -152,7 +152,7 @@ Item {
                     w += item.width;
                 else if (includeExpandingMinimum && item.minimumWidth != undefined && item.minimumWidth != -1)
                     w += item.minimumWidth
-                if (handles[i] && (i !== d.expandingIndex || includeExpandingMinimum === false))
+                if (handles[i])
                     w += handles[i].width
             }
             return w
@@ -256,7 +256,7 @@ Item {
                     return
 
                 var leftHandle, leftItem, rightItem, rightHandle
-                var leftEdge, rightEdge, newWidth
+                var leftEdge, rightEdge, newWidth, leftStopX, rightStopX
 
                 if (d.expandingIndex > handleIndex) {
                     // Resize item to the left.
@@ -264,25 +264,31 @@ Item {
                     leftHandle = handles[handleIndex-1]
                     leftItem = items[handleIndex]
                     leftEdge = leftHandle ? (leftHandle.x + leftHandle.width) : 0
-                    myHandle.x = Math.max(leftEdge, myHandle.x)
+
+                    // Ensure: leftStopX >= myHandle.x >= max
+                    var min = d.accumulatedWidth(handleIndex+1, items.length, true)
+                    rightStopX = root.width - min - myHandle.width
+                    leftStopX = Math.max(leftEdge, myHandle.x)
+                    myHandle.x = Math.min(rightStopX, Math.max(leftStopX, myHandle.x))
+
                     newWidth = myHandle.x - leftEdge
                     if (root.width != 0 && leftItem.percentageWidth != undefined && leftItem.percentageWidth !== -1)
                         leftItem.percentageWidth = newWidth * (100 / root.width)
                     // The next line will trigger 'updateLayout' inside 'propertyChangeListener':
                     leftItem.width = newWidth
                 } else {
-                    // Resize item to the right:
-                    // Since the first item in the splitter always will have x=0, we need
-                    // to ensure that the user cannot drag the handle more left than what
-                    // we got space for:
-                    var min = d.accumulatedWidth(0, handleIndex+1, true)
+                    // Resize item to the right.
                     // Ensure that the handle is not crossing other handles:
                     rightItem = items[handleIndex+1]
                     rightHandle = handles[handleIndex+1]
                     rightEdge = (rightHandle ? rightHandle.x : root.width)
-                    var rightStopX = Math.min((rightEdge - myHandle.width), myHandle.x)
+
                     // Ensure: min <= myHandle.x <= rightStopX
-                    myHandle.x = Math.max(min, Math.min(myHandle.x, rightStopX))
+                    var min = d.accumulatedWidth(0, handleIndex+1, true)
+                    leftStopX = min - myHandle.width
+                    rightStopX = Math.min((rightEdge - myHandle.width), myHandle.x)
+                    myHandle.x = Math.max(leftStopX, Math.min(myHandle.x, rightStopX))
+
                     newWidth = rightEdge - (myHandle.x + myHandle.width)
                     if (root.width != 0 && rightItem.percentageWidth != undefined && rightItem.percentageWidth !== -1)
                         rightItem.percentageWidth = newWidth * (100 / root.width)
