@@ -91,6 +91,7 @@ Item {
     default property alias items: splitterItems.children
     property alias handles: splitterHandles.children
     property Component handleBackground: Rectangle { width:3; color: "black" }
+    property bool restrictHandlePositions: false
     clip: true
 
     Component.onCompleted: d.init();
@@ -265,11 +266,14 @@ Item {
                     leftItem = items[handleIndex]
                     leftEdge = leftHandle ? (leftHandle.x + leftHandle.width) : 0
 
-                    // Ensure: leftStopX >= myHandle.x >= max
+                    // Ensure: leftStopX >= myHandle.x >= rightStopX
                     var min = d.accumulatedWidth(handleIndex+1, items.length, true)
                     rightStopX = root.width - min - myHandle.width
                     leftStopX = Math.max(leftEdge, myHandle.x)
-                    myHandle.x = Math.min(rightStopX, Math.max(leftStopX, myHandle.x))
+                    if (root.restrictHandlePositions)
+                        myHandle.x = Math.min(rightStopX, Math.max(leftStopX, myHandle.x))
+                    else
+                        myHandle.x = Math.max(leftStopX, myHandle.x)
 
                     newWidth = myHandle.x - leftEdge
                     if (root.width != 0 && leftItem.percentageWidth != undefined && leftItem.percentageWidth !== -1)
@@ -283,11 +287,14 @@ Item {
                     rightHandle = handles[handleIndex+1]
                     rightEdge = (rightHandle ? rightHandle.x : root.width)
 
-                    // Ensure: min <= myHandle.x <= rightStopX
+                    // Ensure: leftStopX <= myHandle.x <= rightStopX
                     var min = d.accumulatedWidth(0, handleIndex+1, true)
                     leftStopX = min - myHandle.width
                     rightStopX = Math.min((rightEdge - myHandle.width), myHandle.x)
-                    myHandle.x = Math.max(leftStopX, Math.min(myHandle.x, rightStopX))
+                    if (restrictHandlePositions)
+                        myHandle.x = Math.max(leftStopX, Math.min(myHandle.x, rightStopX))
+                    else
+                        myHandle.x = Math.min(myHandle.x, rightStopX)
 
                     newWidth = rightEdge - (myHandle.x + myHandle.width)
                     if (root.width != 0 && rightItem.percentageWidth != undefined && rightItem.percentageWidth !== -1)
