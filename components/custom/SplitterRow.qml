@@ -91,7 +91,8 @@ Item {
     default property alias items: splitterItems.children
     property alias handles: splitterHandles.children
     property Component handleBackground: Rectangle { width:3; color: "black" }
-    property bool restrictHandlePositions: false
+    property bool restrictHandleMovement: true
+    property real preferredWidth
     clip: true
 
     Component.onCompleted: d.init();
@@ -202,20 +203,24 @@ Item {
             // Special case: set width of expanding item to available space:
             newValue = root.width - d.accumulatedWidth(0, items.length, false);
             var expandingItem = items[d.expandingIndex]
+            var expandingMinimum = 0
             if (expandingItem.minimumWidth != undefined && expandingItem.minimumWidth != -1)
-                newValue = Math.max(newValue, expandingItem.minimumWidth)
+                expandingMinimum = expandingItem.minimumWidth
+            newValue = Math.max(newValue, expandingMinimum)
             if (expandingItem.width != 0 && expandingItem.percentageWidth != undefined && expandingItem.percentageWidth !== -1)
                 expandingItem.percentageWidth = newValue * (100 / root.width)
             if (expandingItem.width !== newValue)
                 expandingItem.width = newValue
 
             // Then, position items and handles according to their width:
+            var newPreferredWidth = expandingMinimum - expandingItem.width
             for (i=0; i<items.length; ++i) {
                 item = items[i];
                 handle = handles[i]
 
                 // Position item to the right of the previus handle:
                 if (prevHandle) {
+                    newPreferredWidth += prevHandle.width
                     newValue = prevHandle.x + prevHandle.width
                     if (newValue !== item.x)
                         item.x = newValue
@@ -228,11 +233,13 @@ Item {
                         handle.x = newValue
                 }
 
+                newPreferredWidth += item.width
                 prevItem = item
                 prevHandle = handle
             }
 
             d.updateLayoutGuard = false
+            root.preferredWidth = newPreferredWidth
         }
     }
 
@@ -270,7 +277,7 @@ Item {
                     var min = d.accumulatedWidth(handleIndex+1, items.length, true)
                     rightStopX = root.width - min - myHandle.width
                     leftStopX = Math.max(leftEdge, myHandle.x)
-                    if (root.restrictHandlePositions)
+                    if (root.restrictHandleMovement)
                         myHandle.x = Math.min(rightStopX, Math.max(leftStopX, myHandle.x))
                     else
                         myHandle.x = Math.max(leftStopX, myHandle.x)
@@ -291,7 +298,7 @@ Item {
                     var min = d.accumulatedWidth(0, handleIndex+1, true)
                     leftStopX = min - myHandle.width
                     rightStopX = Math.min((rightEdge - myHandle.width), myHandle.x)
-                    if (restrictHandlePositions)
+                    if (restrictHandleMovement)
                         myHandle.x = Math.max(leftStopX, Math.min(myHandle.x, rightStopX))
                     else
                         myHandle.x = Math.min(myHandle.x, rightStopX)

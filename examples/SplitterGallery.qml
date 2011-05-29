@@ -6,9 +6,15 @@ Rectangle {
     width: 800
     height: 600
 
+    Rectangle {
+        color: "white"
+        width: 800
+        height: 600
+
     SplitterRow {
         id: sr
         anchors.fill: parent
+        width: 800
 
         Rectangle {
             property bool expanding: false
@@ -77,5 +83,6 @@ Rectangle {
                 y: 100
             }
         }
+    }
     }
 }
