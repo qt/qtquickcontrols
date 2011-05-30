@@ -184,26 +184,25 @@ FocusScope{
 
         // Handle vertical scrolling whem dragging mouse outside boundraries
 
-        Timer { running: mousearea.autoincrement; repeat: true; interval: 30 ; onTriggered: incrementCurrentIndex()}
-        Timer { running: mousearea.autodecrement; repeat: true; interval: 30 ; onTriggered: decrementCurrentIndex()}
+        Timer { running: mousearea.autoincrement; repeat: true; interval: 20 ; onTriggered: incrementCurrentIndex()}
+        Timer { running: mousearea.autodecrement; repeat: true; interval: 20 ; onTriggered: decrementCurrentIndex()}
 
         onMousePositionChanged: {
-            if (mouseY > tree.height) {
+            if (mouseY > tree.height && pressed) {
+                if (autoincrement)return
                 autodecrement = false
                 autoincrement = true
-            } else if (mouseY < 0) {
+            } else if (mouseY < 0 && pressed) {
+                if (autodecrement)return
                 autoincrement = false
                 autodecrement = true
             } else  {
                 autoincrement = false
                 autodecrement = false
             }
-
             var y = Math.min(contentY + tree.height - 5, Math.max(mouseY + contentY, contentY))
-
             var newIndex = tree.indexAt(0, y)
-            if (newIndex > 0)
-                tree.currentIndex = tree.indexAt(0, y)
+            tree.currentIndex = tree.indexAt(0, y)
         }
         onPressed:  {
             tree.forceActiveFocus()
