@@ -13,7 +13,6 @@ Rectangle {
         Rectangle {
             property bool expanding: false
             property real minimumWidth: 100
-            property real percentageWidth: 50
             color: "gray"
             width: 200
             Button {

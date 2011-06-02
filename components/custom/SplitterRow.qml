@@ -237,8 +237,8 @@ Item {
                 prevHandle = handle
             }
 
-            d.updateLayoutGuard = false
             root.preferredWidth = newPreferredWidth
+            d.updateLayoutGuard = false
         }
     }
 
