@@ -91,8 +91,7 @@ Item {
     default property alias items: splitterItems.children
     property alias handles: splitterHandles.children
     property Component handleBackground: Rectangle { width:3; color: "black" }
-    property bool restrictHandleMovement: true
-    property real preferredWidth
+    property real preferredWidth: 0
     clip: true
 
     Component.onCompleted: d.init();
@@ -277,10 +276,7 @@ Item {
                     var min = d.accumulatedWidth(handleIndex+1, items.length, true)
                     rightStopX = root.width - min - myHandle.width
                     leftStopX = Math.max(leftEdge, myHandle.x)
-                    if (root.restrictHandleMovement)
-                        myHandle.x = Math.min(rightStopX, Math.max(leftStopX, myHandle.x))
-                    else
-                        myHandle.x = Math.max(leftStopX, myHandle.x)
+                    myHandle.x = Math.min(rightStopX, Math.max(leftStopX, myHandle.x))
 
                     newWidth = myHandle.x - leftEdge
                     if (root.width != 0 && leftItem.percentageWidth != undefined && leftItem.percentageWidth !== -1)
@@ -298,10 +294,7 @@ Item {
                     var min = d.accumulatedWidth(0, handleIndex+1, true)
                     leftStopX = min - myHandle.width
                     rightStopX = Math.min((rightEdge - myHandle.width), myHandle.x)
-                    if (restrictHandleMovement)
-                        myHandle.x = Math.max(leftStopX, Math.min(myHandle.x, rightStopX))
-                    else
-                        myHandle.x = Math.min(myHandle.x, rightStopX)
+                    myHandle.x = Math.max(leftStopX, Math.min(myHandle.x, rightStopX))
 
                     newWidth = rightEdge - (myHandle.x + myHandle.width)
                     if (root.width != 0 && rightItem.percentageWidth != undefined && rightItem.percentageWidth !== -1)

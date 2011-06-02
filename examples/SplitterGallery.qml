@@ -6,19 +6,14 @@ Rectangle {
     width: 800
     height: 600
 
-    Rectangle {
-        color: "white"
-        width: 800
-        height: 600
-
     SplitterRow {
         id: sr
         anchors.fill: parent
-        width: 800
 
         Rectangle {
             property bool expanding: false
             property real minimumWidth: 100
+            property real percentageWidth: 50
             color: "gray"
             width: 200
             Button {
@@ -40,12 +35,6 @@ Rectangle {
                 enabled: parent.expanding === false
 
             }
-            Rectangle {
-                color: "red"
-                width: parent.minimumWidth
-                height: 50
-                y: 100
-            }
         }
         Rectangle {
             property bool expanding: false
@@ -58,31 +47,6 @@ Rectangle {
                 onClicked: parent.expanding = true
                 enabled: parent.expanding === false
             }
-            Rectangle {
-                color: "red"
-                width: parent.minimumWidth
-                height: 50
-                y: 100
-            }
         }
-        Rectangle {
-            property bool expanding: false
-            property real minimumWidth: 100
-            color: "gray"
-            width: 200
-            Button {
-                width: parent.width
-                text: "Set expanding"
-                onClicked: parent.expanding = true
-                enabled: parent.expanding === false
-            }
-            Rectangle {
-                color: "red"
-                width: parent.minimumWidth
-                height: 50
-                y: 100
-            }
-        }
-    }
     }
 }
