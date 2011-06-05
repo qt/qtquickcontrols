@@ -13,7 +13,10 @@ import "private"
 * it will need to contain a mouse area that communicates with the SplitterRow by binding
 * 'drag.target: handle'. The 'handle' property points to the handle item that embedds
 * the delegate. To change handle positions, either change 'x' (or 'width') of 'handle', or
-* change the width of the child items inside the SplitterRow.
+* change the width of the child items inside the SplitterRow. NB: Since SplitterRow might
+* modify the 'width' property of child items to e.g. ensure they stay within
+* minimumWidth/maximumWidth, explicit expression bindings to the 'width' property of child
+* items can easily break, and is therefore not recommended.
 *
 * The SplitterRow contains the following API:
 *
