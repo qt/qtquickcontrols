@@ -17,7 +17,7 @@ HEADERS += qtmenu.h \
            qstyleplugin.h \
            qdeclarativefolderlistmodel.h \
            qstyleitem.h \
-           qtoplevelwindow.h \
+           qwindow.h \
            qwheelarea.h
 
 SOURCES += qtmenu.cpp \
@@ -27,7 +27,7 @@ SOURCES += qtmenu.cpp \
 	   qstyleplugin.cpp \
            qdeclarativefolderlistmodel.cpp \
            qstyleitem.cpp \
-           qtoplevelwindow.cpp \
+           qwindow.cpp \
            qwheelarea.cpp
            
 

@@ -24,8 +24,8 @@
 **
 ****************************************************************************/
 
-#ifndef QTOPLEVELWINDOW_H
-#define QTOPLEVELWINDOW_H
+#ifndef QWINDOW_H
+#define QWINDOW_H
 
 #include <QtGui/QApplication>
 #include <QtDeclarative>
@@ -47,7 +47,7 @@ signals:
     void visibilityChanged();
 };
 
-class QTopLevelWindow : public QObject
+class QWindow : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QDeclarativeListProperty<QObject> data READ data DESIGNABLE false)
@@ -117,7 +117,7 @@ signals:
     void windowDecorationChanged();
 
 public:
-    QTopLevelWindow() : view(&scene) {
+    QWindow() : view(&scene) {
         connect(&view, SIGNAL(visibilityChanged()), this, SIGNAL(visibilityChanged()));
 //        view.show();
         view.installEventFilter(this);
@@ -125,4 +125,4 @@ public:
 
 };
 
-#endif // QTOPLEVELWINDOW_H
+#endif // QWINDOW_H

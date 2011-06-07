@@ -44,7 +44,7 @@
 #include "qtmenu.h"
 #include "qtmenubar.h"
 #include "qtmenuitem.h"
-#include "qtoplevelwindow.h"
+#include "qwindow.h"
 #include "qwheelarea.h"
 #include <qdeclarativeextensionplugin.h>
 
@@ -88,7 +88,7 @@ void StylePlugin::registerTypes(const char *uri)
     qmlRegisterType<QtMenu>(uri, 1, 0, "MenuBase");
     qmlRegisterType<QtMenuBar>(uri, 1, 0, "MenuBarBase");
     qmlRegisterType<QtMenuItem>(uri, 1, 0, "MenuItemBase");
-    qmlRegisterType<QTopLevelWindow>(uri, 1, 0, "TopLevelWindow");
+    qmlRegisterType<QWindow>(uri, 1, 0, "TopLevelWindow");
 }
 
 void StylePlugin::initializeEngine(QDeclarativeEngine *engine, const char *uri)

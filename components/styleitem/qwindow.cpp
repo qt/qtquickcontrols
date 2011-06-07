@@ -38,9 +38,9 @@
 ****************************************************************************/
 
 
-#include "qtoplevelwindow.h"
+#include "qwindow.h"
 
-void QTopLevelWindow::data_append(QDeclarativeListProperty<QObject> *prop, QObject *o)
+void QWindow::data_append(QDeclarativeListProperty<QObject> *prop, QObject *o)
 {
     QGraphicsObject *graphicsObject = qobject_cast<QGraphicsObject *>(o);
     if (graphicsObject) {
@@ -68,17 +68,17 @@ static inline void children_clear_helper(QDeclarativeListProperty<QObject> *prop
     }
 }
 
-int QTopLevelWindow::data_count(QDeclarativeListProperty<QObject> *prop)
+int QWindow::data_count(QDeclarativeListProperty<QObject> *prop)
 {
     return children_count_helper(prop);
 }
 
-QObject *QTopLevelWindow::data_at(QDeclarativeListProperty<QObject> *prop, int i)
+QObject *QWindow::data_at(QDeclarativeListProperty<QObject> *prop, int i)
 {
     return children_at_helper(prop, i);
 }
 
-void QTopLevelWindow::data_clear(QDeclarativeListProperty<QObject> *prop)
+void QWindow::data_clear(QDeclarativeListProperty<QObject> *prop)
 {
     const QObjectList children = prop->object->children();
         for (int index = 0; index < children.count(); index++)
