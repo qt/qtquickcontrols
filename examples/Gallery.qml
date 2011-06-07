@@ -25,10 +25,33 @@ Rectangle {
             ToolButton{
                 iconSource: "images/folder_new.png"
                 anchors.verticalCenter: parent.verticalCenter
+                onClicked: top1.visible = !top1.visible
             }
         }
 
+        TopLevelWindow {
+            id: top1
+            width: 250
+            height: 250
 
+            Rectangle {
+                id: reee
+                color: "#2855d1"
+                x: 0
+                y: 0
+                width: 150
+                height: 150
+
+                Text {
+                    text: "Hello World 2"
+                    anchors.centerIn: parent
+                }
+            }
+
+            onVisibilityChanged: {
+                console.log("visibility changed:", visible)
+            }
+        }
 
         ContextMenu {
             id: editmenu

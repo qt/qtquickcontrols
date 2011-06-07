@@ -27,7 +27,7 @@
 ** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
 ** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
 ** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOTgall
 ** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
 ** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 ** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
@@ -36,65 +36,54 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
- 
-#include <qdeclarative.h>
-#include "qstyleplugin.h"
-#include "qstyleitem.h"
-#include "qrangemodel.h"
-#include "qtmenu.h"
-#include "qtmenubar.h"
-#include "qtmenuitem.h"
+
+
 #include "qtoplevelwindow.h"
-#include "qwheelarea.h"
-#include <qdeclarativeextensionplugin.h>
 
-#include <qdeclarativeengine.h>
-#include <qdeclarative.h>
-#include <qdeclarativeitem.h>
-#include <qdeclarativeimageprovider.h>
-#include <qdeclarativeview.h>
-#include <QApplication>
-#include <QImage>
-
-// Load icons from desktop theme
-class DesktopIconProvider : public QDeclarativeImageProvider
+void QTopLevelWindow::data_append(QDeclarativeListProperty<QObject> *prop, QObject *o)
 {
-public:
-    DesktopIconProvider()
-        : QDeclarativeImageProvider(QDeclarativeImageProvider::Pixmap)
-    {
+    QGraphicsObject *graphicsObject = qobject_cast<QGraphicsObject *>(o);
+    if (graphicsObject) {
+        static_cast<QGraphicsScene *>(prop->object)->addItem(graphicsObject);
     }
-
-    QPixmap requestPixmap(const QString &id, QSize *size, const QSize &requestedSize)
-    {
-        Q_UNUSED(requestedSize);
-        Q_UNUSED(size);
-        int pos = id.lastIndexOf('/');
-        QString iconName = id.right(id.length() - pos);
-        int width = qApp->style()->pixelMetric(QStyle::PM_ToolBarIconSize);
-        return QIcon::fromTheme(iconName).pixmap(width);
-    }
-};
-
-
-void StylePlugin::registerTypes(const char *uri)
-{
-    qDebug() << "register" << uri;
-    qmlRegisterType<QStyleItem>(uri, 1, 0, "QStyleItem");
-    qmlRegisterType<QRangeModel>(uri, 1, 0, "RangeModel");
-    qmlRegisterType<QGraphicsDropShadowEffect>(uri, 1, 0, "DropShadow");
-    qmlRegisterType<QDeclarativeFolderListModel>(uri, 1, 0, "FileSystemModel");
-    qmlRegisterType<QWheelArea>(uri, 1, 0, "WheelArea");
-    qmlRegisterType<QtMenu>(uri, 1, 0, "MenuBase");
-    qmlRegisterType<QtMenuBar>(uri, 1, 0, "MenuBarBase");
-    qmlRegisterType<QtMenuItem>(uri, 1, 0, "MenuItemBase");
-    qmlRegisterType<QTopLevelWindow>(uri, 1, 0, "TopLevelWindow");
 }
 
-void StylePlugin::initializeEngine(QDeclarativeEngine *engine, const char *uri)
+static inline int children_count_helper(QDeclarativeListProperty<QObject> *prop)
 {
-    Q_UNUSED(uri);
-    engine->addImageProvider("desktoptheme", new DesktopIconProvider);
+    return prop->object->children().count();
 }
 
-Q_EXPORT_PLUGIN2(styleplugin, StylePlugin);
+static inline QObject *children_at_helper(QDeclarativeListProperty<QObject> *prop, int index)
+{
+    return prop->object->children().at(index);
+}
+
+static inline void children_clear_helper(QDeclarativeListProperty<QObject> *prop)
+{
+    QList<QObject *> list = prop->object->children();
+    foreach (QObject *o, list) {
+        if (QGraphicsObject * go = qobject_cast<QGraphicsObject *>(o)) {
+            go->setParentItem(0);
+        }
+    }
+}
+
+int QTopLevelWindow::data_count(QDeclarativeListProperty<QObject> *prop)
+{
+    return children_count_helper(prop);
+}
+
+QObject *QTopLevelWindow::data_at(QDeclarativeListProperty<QObject> *prop, int i)
+{
+    return children_at_helper(prop, i);
+}
+
+void QTopLevelWindow::data_clear(QDeclarativeListProperty<QObject> *prop)
+{
+    const QObjectList children = prop->object->children();
+        for (int index = 0; index < children.count(); index++)
+            children.at(index)->setParent(0);
+    children_clear_helper(prop);
+}
+
+
