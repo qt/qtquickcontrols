@@ -60,37 +60,22 @@ class QWindow : public QObject
 
     Q_CLASSINFO("DefaultProperty", "data")
 
-    QGraphicsScene scene;
-    GraphicsView view;
+public:
+    QWindow();
 
-    QDeclarativeListProperty<QObject> data()
-    {
-        return QDeclarativeListProperty<QObject>(view.scene(), 0, data_append, data_count, data_at, data_clear);
-    }
+    QDeclarativeListProperty<QObject> data();
     static void data_append(QDeclarativeListProperty<QObject> *, QObject *);
     static int data_count(QDeclarativeListProperty<QObject> *);
     static QObject *data_at(QDeclarativeListProperty<QObject> *, int);
     static void data_clear(QDeclarativeListProperty<QObject> *);
 
-    bool eventFilter(QObject *, QEvent *ev) {
-        switch(ev->type()) {
-            case QEvent::Resize:
-                emit sizeChanged();
-                break;
-            case QEvent::Move:
-                emit positionChanged();
-                break;
-            default:
-                break;
-        }
-        return false;
-    }
 
     int x() { return view.x(); }
     int y() { return view.y(); }
     int height() { return view.height(); }
     int width() { return view.width(); }
     bool isVisible() { return view.isVisible(); }
+    bool windowDecoration() { return !(view.windowFlags() & Qt::FramelessWindowHint); }
 
 
     void setX(int x) { view.move(x, y()); }
@@ -98,31 +83,24 @@ class QWindow : public QObject
     void setHeight(int height) { view.resize(width(), height); }
     void setWidth(int width) { view.resize(width, height()); }
     void setVisible(bool visible) { view.setVisible(visible); }
-
     void setWindowDecoration(bool s) {
-        qDebug() << "foo" << s << __TIME__;
         view.setWindowFlags(s ? view.windowFlags() & ~Qt::FramelessWindowHint
                               : view.windowFlags() | Qt::FramelessWindowHint);
         emit windowDecorationChanged();
     }
-    bool windowDecoration() {
-        return !(view.windowFlags() & Qt::FramelessWindowHint);
-    }
 
+protected:
+    bool eventFilter(QObject *, QEvent *ev);
 
-signals:
+Q_SIGNALS:
     void sizeChanged();
     void positionChanged();
     void visibilityChanged();
     void windowDecorationChanged();
 
-public:
-    QWindow() : view(&scene) {
-        connect(&view, SIGNAL(visibilityChanged()), this, SIGNAL(visibilityChanged()));
-//        view.show();
-        view.installEventFilter(this);
-    }
-
+private:
+    QGraphicsScene scene;
+    GraphicsView view;
 };
 
 #endif // QWINDOW_H

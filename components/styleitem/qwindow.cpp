@@ -40,6 +40,30 @@
 
 #include "qwindow.h"
 
+QWindow::QWindow() : view(&scene) {
+    connect(&view, SIGNAL(visibilityChanged()), this, SIGNAL(visibilityChanged()));
+    view.installEventFilter(this);
+}
+
+bool QWindow::eventFilter(QObject *, QEvent *ev) {
+    switch(ev->type()) {
+        case QEvent::Resize:
+            emit sizeChanged();
+            break;
+        case QEvent::Move:
+            emit positionChanged();
+            break;
+        default:
+            break;
+    }
+    return false;
+}
+
+QDeclarativeListProperty<QObject> QWindow::data()
+{
+    return QDeclarativeListProperty<QObject>(view.scene(), 0, data_append, data_count, data_at, data_clear);
+}
+
 void QWindow::data_append(QDeclarativeListProperty<QObject> *prop, QObject *o)
 {
     QGraphicsObject *graphicsObject = qobject_cast<QGraphicsObject *>(o);
