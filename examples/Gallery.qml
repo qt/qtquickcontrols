@@ -25,31 +25,35 @@ Rectangle {
             ToolButton{
                 iconSource: "images/folder_new.png"
                 anchors.verticalCenter: parent.verticalCenter
-                onClicked: top1.visible = !top1.visible
+                onClicked: window1.visible = !window1.visible
             }
         }
 
-        TopLevelWindow {
-            id: top1
+        Window {
+            id: window1
             width: 250
             height: 250
-
             Rectangle {
-                id: reee
-                color: "#2855d1"
-                x: 0
-                y: 0
-                width: 150
-                height: 150
-
+                color: syspal.window
+                anchors.fill: parent
                 Text {
-                    text: "Hello World 2"
-                    anchors.centerIn: parent
+                    id: closeText
+                    text: "This is a new Window,\npress the button below\nto close it again."
                 }
-            }
+                Button {
+                    anchors.horizontalCenter: closeText.horizontalCenter
+                    anchors.top: closeText.bottom
+                    anchors.margins: frame.margins
+                    id: closeWindowButton
+                    text:"Close"
+                    width: 98
+                    focus: true
+                    Component.onCompleted: button1.forceActiveFocus()
+                    tooltip:"Press me, to close this window again"
+                    defaultbutton:true
+                    onClicked: window1.visible = false
+                }
 
-            onVisibilityChanged: {
-                console.log("visibility changed:", visible)
             }
         }
 

@@ -88,7 +88,7 @@ void StylePlugin::registerTypes(const char *uri)
     qmlRegisterType<QtMenu>(uri, 1, 0, "MenuBase");
     qmlRegisterType<QtMenuBar>(uri, 1, 0, "MenuBarBase");
     qmlRegisterType<QtMenuItem>(uri, 1, 0, "MenuItemBase");
-    qmlRegisterType<QWindow>(uri, 1, 0, "TopLevelWindow");
+    qmlRegisterType<QWindow>(uri, 1, 0, "Window");
 }
 
 void StylePlugin::initializeEngine(QDeclarativeEngine *engine, const char *uri)
