@@ -841,9 +841,19 @@ bool QStyleItem::eventFilter(QObject *o, QEvent *e) {
 
 void QStyleItem::showToolTip(const QString &str)
 {
-    QPointF scene = mapToScene(width() - 20, 0);
-    QPoint global = qApp->focusWidget()->mapToGlobal(scene.toPoint());
-    QToolTip::showText(QPoint(global.x(), global.y()), str);
+    QPoint global;
+    QPointF scenePos = mapToScene(width() - 20, 0);
+    QGraphicsScene *scene = QGraphicsItem::scene();
+    QObject *parent = scene->parent();
+    if (parent) {
+        QGraphicsView *view = qobject_cast<QGraphicsView*>(parent);
+        if (view) {
+            QPoint p = view->mapFromScene(scenePos);
+            global = view->mapToGlobal(p);
+        }
+    }
+
+    QToolTip::showText(QPoint(global.x(),global.y()), str);
 }
 
 QRect QStyleItem::subControlRect(const QString &subcontrolString)

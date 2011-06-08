@@ -380,14 +380,15 @@ void QDeclarativeViewer::updateSizeHints(bool initial)
 
 void QDeclarativeViewer::registerTypes()
 {
-//    static bool registered = false;
+    static bool registered = false;
 
-//    if (!registered) {
+    if (!registered) {
+        qDebug() << "registerying types now";
         // registering only for exposing the DeviceOrientation::Orientation enum
-//        qmlRegisterUncreatableType<DeviceOrientation>("Qt",4,7,"Orientation","");
-//        qmlRegisterUncreatableType<DeviceOrientation>("QtQuick",1,0,"Orientation","");
-//        registered = true;
-//    }
+        qmlRegisterUncreatableType<QDesktop>("Qt",4,7,"Desktop", QLatin1String("Do not create objects of type Desktop"));
+        qmlRegisterUncreatableType<QDesktop>("QtQuick",1,0,"Desktop",QLatin1String("Do not create objects of type Desktop"));
+        registered = true;
+    }
 }
 
 void QDeclarativeViewer::appAboutToQuit()

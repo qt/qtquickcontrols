@@ -40,7 +40,7 @@
 
 #include "qwindow.h"
 
-QWindow::QWindow() : view(&scene) {
+QWindow::QWindow() : view(new QGraphicsScene) {
     connect(&view, SIGNAL(visibilityChanged()), this, SIGNAL(visibilityChanged()));
     view.installEventFilter(this);
 }

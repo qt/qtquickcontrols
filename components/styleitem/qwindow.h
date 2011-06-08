@@ -33,7 +33,9 @@
 class GraphicsView : public QGraphicsView {
     Q_OBJECT
 public:
-    GraphicsView(QGraphicsScene *scene) : QGraphicsView(scene) {}
+    GraphicsView(QGraphicsScene *scene) : QGraphicsView(scene) {
+        scene->setParent(this);
+    }
 protected:
     void showEvent(QShowEvent * /*event*/) {
         emit visibilityChanged();
@@ -99,7 +101,6 @@ Q_SIGNALS:
     void windowDecorationChanged();
 
 private:
-    QGraphicsScene scene;
     GraphicsView view;
 };
 

@@ -44,6 +44,8 @@
 #include <QTimer>
 #include <QTime>
 #include <QList>
+#include <QtDeclarative>
+#include <QDebug>
 
 //#include "loggerwidget.h"
 
@@ -54,6 +56,32 @@ class QTranslator;
 class QActionGroup;
 class QMenuBar;
 class LoggerWidget;
+
+class QDesktop : public QObject
+{
+    Q_OBJECT
+
+    Q_PROPERTY(int width READ width)
+    Q_PROPERTY(int height READ height)
+
+public:
+    QDesktop(QObject* obj) : QObject(obj) {}
+
+    int width() const
+    {
+        return 1280;
+    }
+
+    int height() const
+    {
+        return 860;
+    }
+
+    static QDesktop *qmlAttachedProperties(QObject *obj) {
+        qDebug() << "qmlAttachedProperties called";
+        return new QDesktop(obj);
+    }
+};
 
 class QDeclarativeViewer
     : public QMainWindow
@@ -107,6 +135,8 @@ private:
     QTranslator *translator;
     void loadTranslationFile(const QString& directory);
 };
+
+QML_DECLARE_TYPEINFO(QDesktop, QML_HAS_ATTACHED_PROPERTIES)
 
 QT_END_NAMESPACE
 
