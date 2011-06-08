@@ -3,23 +3,24 @@ import "../components/plugin"
 
 MenuBase {
     property ListModel model
-    property Item target
-    property bool visible: false
-    property real x: 0
-    property real y: 0
-
-    onVisibleChanged: visible ? show() : closePopup()
+    property string selectedText: model ? model.get(selectedIndex).text : ""
+    property string highlightedText: model ? model.get(highlightedIndex).text: ""
+    property bool centerOnSelectedText: true
+    visible: false
     onMenuClosed: visible = false
 
-    function show() {
-        // Clear and add items from the model (showPopup adds the MenuItem children)
-        clearMenuItems();
-
-        for (var i = 0; i < model.count; ++i) {
-            addMenuItem(model.get(i).text)
+    onVisibleChanged: {
+        if (visible) {
+            var globalPos = parent.mapToItem(null, x, y)
+            showPopup(globalPos.x, globalPos.y, centerOnSelectedText ? selectedIndex : 0)
+        } else {
+            closePopup()
         }
+    }
 
-        var globalPos = target.mapToItem(null, x, y)
-        showPopup(globalPos.x, globalPos.y, 0)
+    onModelChanged: {
+        clearMenuItems();
+        for (var i=0; i<model.count; ++i)
+            addMenuItem(model.get(i).text)
     }
 }

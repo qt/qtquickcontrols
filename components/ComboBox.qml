@@ -4,13 +4,15 @@ Item {
     id: comboBox
 
     property alias model: popup.model
-//    property alias currentIndex: 0//popup.currentIndex
-//    property alias currentText: popup.currentText
-//    property alias popupOpen: popup.popupOpen
+    property alias selectedIndex: popup.selectedIndex
+    property alias highlightedIndex: popup.highlightedIndex
+    property string selectedText: model.get(popup.visible ? selectedIndex : highlightedIndex).text
+    property alias popupOpen: popup.visible
+    property alias popupMenu: popup
+
 //    property alias containsMouse: popup.containsMouse
 //    property alias pressed: popup.buttonPressed
 
-    property int currentIndex: 0
     property bool containsMouse: false
     property bool pressed: false
 
@@ -34,8 +36,8 @@ Item {
 //    property int bottomMargin: 0
 
 //    property string popupBehavior
-//    width: 0
-    height: 20
+    width: backgroundLoader.item.sizeFromContents(100, 18).height
+    height: backgroundLoader.item.sizeFromContents(100, 18).height
 
 //    property bool activeFocusOnPress: true
 
@@ -44,22 +46,22 @@ Item {
         property alias styledItem: comboBox
         sourceComponent: background
         anchors.fill: parent
-        property string currentItemText: model.get(currentIndex).text
+        property string currentItemText: comboBox.selectedText
     }
 
     ContextMenu {
         id: popup
-        x: 0
-        y: 0
-        target: comboBox
+        centerOnSelectedText: true
     }
 
     MouseArea {
         anchors.fill: parent
-        onPressed: popup.visible = true
+        onPressed: popupOpen = true
     }
 
-//    Keys.onSpacePressed: { comboBox.popupOpen = !comboBox.popupOpen }
-//    Keys.onUpPressed: { if (currentIndex < model.count - 1) currentIndex++ }
-//    Keys.onDownPressed: {if (currentIndex > 0) currentIndex-- }
+    // The key bindings below will only be in use when popup is
+    // not visible. Otherwise, native key handling will take place:
+    Keys.onSpacePressed: { comboBox.popupOpen = !comboBox.popupOpen }
+    Keys.onUpPressed: { if (selectedIndex < model.count - 1) selectedIndex++ }
+    Keys.onDownPressed: { if (selectedIndex > 0) selectedIndex-- }
 }

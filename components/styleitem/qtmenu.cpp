@@ -28,8 +28,8 @@
 #include "qdebug.h"
 #include <qapplication.h>
 
-QtMenu::QtMenu(QObject *parent)
-    : QObject(parent)
+QtMenu::QtMenu(QDeclarativeItem *parent)
+    : QDeclarativeItem(parent), m_selectedIndex(0), m_highlightedIndex(0)
 {
     m_menu = new QMenu(0);
     connect(m_menu, SIGNAL(aboutToHide()), this, SIGNAL(menuClosed()));
@@ -50,9 +50,18 @@ QString QtMenu::title() const
     return m_title;
 }
 
-QString QtMenu::selected() const
+void QtMenu::setSelectedIndex(int index)
 {
-    return m_selected;
+    m_selectedIndex = index;
+    m_menu->setActiveAction(m_menu->actions()[m_selectedIndex]);
+    emit selectedIndexChanged();
+}
+
+void QtMenu::setHighlightedIndex(int index)
+{
+    m_highlightedIndex = index;
+    m_menu->setActiveAction(m_menu->actions()[m_highlightedIndex]);
+    emit highlightedIndexChanged();
 }
 
 QDeclarativeListProperty<QtMenuItem> QtMenu::menuItems()
@@ -74,6 +83,7 @@ void QtMenu::showPopup(qreal x, qreal y, int atActionIndex)
         QAction *action = new QAction(item->text(), m_menu);
         connect(action, SIGNAL(triggered()), item, SIGNAL(selected()));
         connect(action, SIGNAL(triggered()), this, SLOT(emitSelected()));
+        connect(action, SIGNAL(hovered()), this, SLOT(emitHighlighted()));
         m_menu->insertAction(0, action);
     }
 
@@ -90,7 +100,7 @@ void QtMenu::showPopup(qreal x, qreal y, int atActionIndex)
     m_menu->popup(screenPosition, atAction);
 }
 
-Q_INVOKABLE void QtMenu::clearMenuItems()
+void QtMenu::clearMenuItems()
 {
     m_menu->clear();
 }
@@ -99,6 +109,7 @@ void QtMenu::addMenuItem(const QString &text)
 {
     QAction *action = new QAction(text, m_menu);
     connect(action, SIGNAL(triggered()), this, SLOT(emitSelected()));
+    connect(action, SIGNAL(hovered()), this, SLOT(emitHighlighted()));
     m_menu->insertAction(0, action);
 }
 
@@ -107,7 +118,16 @@ void QtMenu::emitSelected()
     QAction *act = qobject_cast<QAction *>(sender());
     if (!act)
         return;
-    m_selected = act->text();
-    emit selectedChanged();
+    m_selectedIndex = m_menu->actions().indexOf(act);
+    emit selectedIndexChanged();
+}
+
+void QtMenu::emitHighlighted()
+{
+    QAction *act = qobject_cast<QAction *>(sender());
+    if (!act)
+        return;
+    m_highlightedIndex = m_menu->actions().indexOf(act);
+    emit highlightedIndexChanged();
 }
 

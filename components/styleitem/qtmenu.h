@@ -29,24 +29,28 @@
 
 #include <QtGui/qmenu.h>
 #include <QtDeclarative/qdeclarative.h>
+#include <QtDeclarative/qdeclarativeitem.h>
 #include <QtDeclarative/QDeclarativeListProperty>
 #include "qtmenuitem.h"
-class QtMenu : public QObject
+class QtMenu : public QDeclarativeItem
 {
     Q_OBJECT
     Q_PROPERTY(QString title READ title WRITE setTitle)
-    Q_PROPERTY(QString selected READ selected NOTIFY selectedChanged)
+    Q_PROPERTY(int selectedIndex READ selectedIndex WRITE setSelectedIndex NOTIFY selectedIndexChanged)
+    Q_PROPERTY(int highlightedIndex READ highlightedIndex WRITE setHighlightedIndex NOTIFY highlightedIndexChanged)
     Q_PROPERTY(QDeclarativeListProperty<QtMenuItem> menuItems READ menuItems)
     Q_CLASSINFO("DefaultProperty", "menuItems")
 public:
-    QtMenu(QObject *parent = 0);
+    QtMenu(QDeclarativeItem *parent = 0);
     virtual ~QtMenu();
 
     void setTitle(const QString &title);
     QString title() const;
-    QString selected() const;
+    int selectedIndex() const { return m_selectedIndex; }
+    void setSelectedIndex(int index);
+    int highlightedIndex() const { return m_highlightedIndex; }
+    void setHighlightedIndex(int index);
     QDeclarativeListProperty<QtMenuItem> menuItems();
-
 
     Q_INVOKABLE void showPopup(qreal x, qreal y, int atActionIndex = -1);
     Q_INVOKABLE void closePopup();
@@ -54,13 +58,16 @@ public:
     Q_INVOKABLE void addMenuItem(const QString &text);
 
 Q_SIGNALS:
-    void selectedChanged();
+    void selectedIndexChanged();
+    void highlightedIndexChanged();
     void menuClosed();
 private Q_SLOTS:
     void emitSelected();
+    void emitHighlighted();
 private:
     QString m_title;
-    QString m_selected;
+    int m_selectedIndex;
+    int m_highlightedIndex;
     QWidget *dummy;
     QMenu *m_menu;
     QList<QtMenuItem *> m_menuItems;
