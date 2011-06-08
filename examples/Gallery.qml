@@ -33,6 +33,10 @@ Rectangle {
             id: window1
             width: 250
             height: 250
+
+            x: 500
+            y: 500
+
             Rectangle {
                 color: syspal.window
                 anchors.fill: parent

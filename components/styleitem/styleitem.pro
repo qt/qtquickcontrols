@@ -77,4 +77,7 @@ OTHER_FILES += \
     ../../examples/Browser.qml \
     ../../examples/Panel.qml \
     ../../examples/ModelView.qml \
-    ../../examples/Gallery.qml
+    ../../examples/Gallery.qml \
+    ../custom/behaviors/ModalPopupBehavior.qml \
+    ../custom/behaviors/ButtonBehavior.qml \
+    ../custom/private/ChoiceListPopup.qml
