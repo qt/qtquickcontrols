@@ -47,8 +47,6 @@
 #include <QtDeclarative>
 #include <QDebug>
 
-//#include "loggerwidget.h"
-
 QT_BEGIN_NAMESPACE
 
 class QDeclarativeView;
@@ -83,14 +81,14 @@ public:
     }
 };
 
-class QDeclarativeViewer
+class QmlDesktopViewer
     : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    QDeclarativeViewer(QWidget *parent = 0, Qt::WindowFlags flags = 0);
-    ~QDeclarativeViewer();
+    QmlDesktopViewer(QWidget *parent = 0, Qt::WindowFlags flags = 0);
+    ~QmlDesktopViewer();
 
     static void registerTypes();
 

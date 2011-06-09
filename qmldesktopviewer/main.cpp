@@ -54,8 +54,8 @@ QT_USE_NAMESPACE
 
 QtMsgHandler systemMsgOutput = 0;
 
-static QDeclarativeViewer *openFile(const QString &fileName);
-static void showViewer(QDeclarativeViewer *viewer);
+static QmlDesktopViewer *openFile(const QString &fileName);
+static void showViewer(QmlDesktopViewer *viewer);
 
 QString warnings;
 void exitApp(int i)
@@ -97,7 +97,7 @@ void myMessageOutput(QtMsgType type, const char *msg)
     }
 }
 
-static QDeclarativeViewer* globalViewer = 0;
+static QmlDesktopViewer* globalViewer = 0;
 
 // The qml file that is shown if the user didn't specify a QML file
 QString initialFile = "qrc:/startup/startup.qml";
@@ -177,7 +177,7 @@ private Q_SLOTS:
     {
         QApplication::processEvents();
 
-        QDeclarativeViewer *viewer = globalViewer;
+        QmlDesktopViewer *viewer = globalViewer;
         if (!viewer)
             return;
         if (viewer->currentFile().isEmpty())
@@ -237,10 +237,10 @@ static void parseCommandLineOptions(const QStringList &arguments)
 
 }
 
-static QDeclarativeViewer *createViewer()
+static QmlDesktopViewer *createViewer()
 {
     Qt::WFlags wflags = Qt::Widget;
-    QDeclarativeViewer *viewer = new QDeclarativeViewer(0, wflags);
+    QmlDesktopViewer *viewer = new QmlDesktopViewer(0, wflags);
     viewer->setAttribute(Qt::WA_DeleteOnClose, true);
     viewer->setUseGL(opts.useGL);
 
@@ -261,13 +261,13 @@ static QDeclarativeViewer *createViewer()
     return viewer;
 }
 
-void showViewer(QDeclarativeViewer *viewer)
+void showViewer(QmlDesktopViewer *viewer)
 {
     viewer->show();
     viewer->raise();
 }
 
-QDeclarativeViewer *openFile(const QString &fileName)
+QmlDesktopViewer *openFile(const QString &fileName)
 {
     globalViewer->open(fileName);
     showViewer(globalViewer);
@@ -298,7 +298,7 @@ int main(int argc, char ** argv)
     app.setOrganizationName("Nokia");
     app.setOrganizationDomain("nokia.com");
 
-    QDeclarativeViewer::registerTypes();
+    QmlDesktopViewer::registerTypes();
 
     parseCommandLineOptions(app.arguments());
 

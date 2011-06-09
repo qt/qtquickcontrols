@@ -100,13 +100,13 @@ private:
 };
 
 
-QDeclarativeViewer::QDeclarativeViewer(QWidget *parent, Qt::WindowFlags flags)
+QmlDesktopViewer::QmlDesktopViewer(QWidget *parent, Qt::WindowFlags flags)
     : QMainWindow(parent, flags)
       , loggerWindow(new LoggerWidget(this))
       , _showLoggerWindow(0)
       , translator(0)
 {
-    QDeclarativeViewer::registerTypes();
+    QmlDesktopViewer::registerTypes();
     setWindowTitle(tr("Qt QML Viewer"));
 
     canvas = 0;
@@ -134,23 +134,23 @@ QDeclarativeViewer::QDeclarativeViewer(QWidget *parent, Qt::WindowFlags flags)
     QObject::connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(appAboutToQuit()));
 }
 
-QDeclarativeViewer::~QDeclarativeViewer()
+QmlDesktopViewer::~QmlDesktopViewer()
 {
     delete loggerWindow;
     loggerWindow = 0;
 }
 
-QDeclarativeView *QDeclarativeViewer::view() const
+QDeclarativeView *QmlDesktopViewer::view() const
 {
     return canvas;
 }
 
-LoggerWidget *QDeclarativeViewer::loggerWidget() const
+LoggerWidget *QmlDesktopViewer::loggerWidget() const
 {
     return loggerWindow;
 }
 
-void QDeclarativeViewer::createMenu()
+void QmlDesktopViewer::createMenu()
 {
     QAction *openAction = new QAction(tr("&Open..."), this);
     openAction->setShortcuts(QKeySequence::Open);
@@ -192,37 +192,37 @@ void QDeclarativeViewer::createMenu()
     helpMenu->addAction(aboutAction);
 }
 
-void QDeclarativeViewer::showLoggerWindow(bool show)
+void QmlDesktopViewer::showLoggerWindow(bool show)
 {
     loggerWindow->setVisible(show);
 }
 
-void QDeclarativeViewer::loggerWidgetOpened()
+void QmlDesktopViewer::loggerWidgetOpened()
 {
     _showLoggerWindow->setChecked(true);
 }
 
-void QDeclarativeViewer::loggerWidgetClosed()
+void QmlDesktopViewer::loggerWidgetClosed()
 {
     _showLoggerWindow->setChecked(false);
 }
 
-void QDeclarativeViewer::addLibraryPath(const QString& lib)
+void QmlDesktopViewer::addLibraryPath(const QString& lib)
 {
     canvas->engine()->addImportPath(lib);
 }
 
-void QDeclarativeViewer::addPluginPath(const QString& plugin)
+void QmlDesktopViewer::addPluginPath(const QString& plugin)
 {
     canvas->engine()->addPluginPath(plugin);
 }
 
-void QDeclarativeViewer::reload()
+void QmlDesktopViewer::reload()
 {
     open(currentFileOrUrl);
 }
 
-void QDeclarativeViewer::openFile()
+void QmlDesktopViewer::openFile()
 {
     QString cur = canvas->source().toLocalFile();
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open QML file"), cur, tr("QML Files (*.qml)"));
@@ -232,7 +232,7 @@ void QDeclarativeViewer::openFile()
     }
 }
 
-void QDeclarativeViewer::openUrl()
+void QmlDesktopViewer::openUrl()
 {
     QString cur = canvas->source().toLocalFile();
     QString url= QInputDialog::getText(this, tr("Open QML file"), tr("URL of main QML file:"), QLineEdit::Normal, cur);
@@ -240,7 +240,7 @@ void QDeclarativeViewer::openUrl()
         open(url);
 }
 
-void QDeclarativeViewer::statusChanged()
+void QmlDesktopViewer::statusChanged()
 {
     if (canvas->status() == QDeclarativeView::Ready) {
         initialSize = canvas->initialSize();
@@ -248,12 +248,12 @@ void QDeclarativeViewer::statusChanged()
     }
 }
 
-void QDeclarativeViewer::launch(const QString& file_or_url)
+void QmlDesktopViewer::launch(const QString& file_or_url)
 {
     QMetaObject::invokeMethod(this, "open", Qt::QueuedConnection, Q_ARG(QString, file_or_url));
 }
 
-void QDeclarativeViewer::loadTranslationFile(const QString& directory)
+void QmlDesktopViewer::loadTranslationFile(const QString& directory)
 {
     if (!translator) {
         translator = new QTranslator(this);
@@ -263,7 +263,7 @@ void QDeclarativeViewer::loadTranslationFile(const QString& directory)
     translator->load(QLatin1String("qml_" )+QLocale::system().name(), directory + QLatin1String("/i18n"));
 }
 
-bool QDeclarativeViewer::open(const QString& file_or_url)
+bool QmlDesktopViewer::open(const QString& file_or_url)
 {
     currentFileOrUrl = file_or_url;
 
@@ -305,12 +305,12 @@ bool QDeclarativeViewer::open(const QString& file_or_url)
     return true;
 }
 
-void QDeclarativeViewer::sceneResized(QSize)
+void QmlDesktopViewer::sceneResized(QSize)
 {
     updateSizeHints();
 }
 
-void QDeclarativeViewer::keyPressEvent(QKeyEvent *event)
+void QmlDesktopViewer::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_F1 || (event->key() == Qt::Key_1)) {
         qDebug() << "F1 - help\n"
@@ -322,14 +322,14 @@ void QDeclarativeViewer::keyPressEvent(QKeyEvent *event)
     QWidget::keyPressEvent(event);
 }
 
-bool QDeclarativeViewer::event(QEvent *event)
+bool QmlDesktopViewer::event(QEvent *event)
 {
     Runtime::instance()->setActiveWindow(event->type() == QEvent::WindowActivate);
     return QWidget::event(event);
 }
 
 
-void QDeclarativeViewer::setUseGL(bool useGL)
+void QmlDesktopViewer::setUseGL(bool useGL)
 {
 #ifdef GL_SUPPORTED
     if (useGL) {
@@ -351,7 +351,7 @@ void QDeclarativeViewer::setUseGL(bool useGL)
 #endif
 }
 
-void QDeclarativeViewer::updateSizeHints(bool initial)
+void QmlDesktopViewer::updateSizeHints(bool initial)
 {
     static bool isRecursive = false;
 
@@ -378,7 +378,7 @@ void QDeclarativeViewer::updateSizeHints(bool initial)
     isRecursive = false;
 }
 
-void QDeclarativeViewer::registerTypes()
+void QmlDesktopViewer::registerTypes()
 {
     static bool registered = false;
 
@@ -391,7 +391,7 @@ void QDeclarativeViewer::registerTypes()
     }
 }
 
-void QDeclarativeViewer::appAboutToQuit()
+void QmlDesktopViewer::appAboutToQuit()
 {
     // avoid QGLContext errors about invalid contexts on exit
     canvas->setViewport(0);
