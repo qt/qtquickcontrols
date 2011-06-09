@@ -61,8 +61,21 @@ Rectangle {
                     defaultbutton:true
                     onClicked: window1.visible = false
                 }
-
+                Button {
+                    anchors.horizontalCenter: closeText.horizontalCenter
+                    anchors.top: closeWindowButton.bottom
+                    anchors.margins: frame.margins
+                    id: maximizeWindowButton
+                    text:"Maximize"
+                    width: 98
+                    focus: true
+                    Component.onCompleted: button1.forceActiveFocus()
+                    tooltip:"Press me, to maximize this window again"
+                    onClicked: window1.windowState = Qt.WindowMaximized;
+                }
             }
+
+            onWindowStateChanged: console.log("new WindowState:", window1.windowState);
         }
 
         ContextMenu {

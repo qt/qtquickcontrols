@@ -42,6 +42,7 @@
 
 QWindow::QWindow() : view(new QGraphicsScene) {
     connect(&view, SIGNAL(visibilityChanged()), this, SIGNAL(visibilityChanged()));
+    connect(&view, SIGNAL(windowStateChanged()), this, SIGNAL(windowStateChanged()));
     view.installEventFilter(this);
 }
 

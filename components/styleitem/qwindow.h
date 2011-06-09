@@ -29,6 +29,7 @@
 
 #include <QtGui/QApplication>
 #include <QtDeclarative>
+#include <QWindowStateChangeEvent>
 
 class GraphicsView : public QGraphicsView {
     Q_OBJECT
@@ -36,7 +37,14 @@ public:
     GraphicsView(QGraphicsScene *scene) : QGraphicsView(scene) {
         scene->setParent(this);
     }
+
 protected:
+    virtual bool event(QEvent *event) {
+        if (event->type() == QEvent::WindowStateChange)
+            emit windowStateChanged();
+        return QGraphicsView::event(event);
+    }
+
     void showEvent(QShowEvent * /*event*/) {
         emit visibilityChanged();
     }
@@ -47,6 +55,7 @@ protected:
 
 signals:
     void visibilityChanged();
+    void windowStateChanged();
 };
 
 class QWindow : public QObject
@@ -59,6 +68,7 @@ class QWindow : public QObject
     Q_PROPERTY(int width READ width WRITE setWidth NOTIFY sizeChanged)
     Q_PROPERTY(bool visible READ isVisible WRITE setVisible NOTIFY visibilityChanged)
     Q_PROPERTY(bool windowDecoration READ windowDecoration WRITE setWindowDecoration NOTIFY windowDecorationChanged)
+    Q_PROPERTY(Qt::WindowState windowState READ windowState WRITE setWindowState NOTIFY windowStateChanged)
 
     Q_CLASSINFO("DefaultProperty", "data")
 
@@ -78,7 +88,7 @@ public:
     int width() { return view.width(); }
     bool isVisible() { return view.isVisible(); }
     bool windowDecoration() { return !(view.windowFlags() & Qt::FramelessWindowHint); }
-
+    Qt::WindowState windowState() { return static_cast<Qt::WindowState>(static_cast<int>(view.windowState()) & ~Qt::WindowActive); }
 
     void setX(int x) { view.move(x, y()); }
     void setY(int y) { view.move(x(), y); }
@@ -90,6 +100,7 @@ public:
                               : view.windowFlags() | Qt::FramelessWindowHint);
         emit windowDecorationChanged();
     }
+    void setWindowState(Qt::WindowState state) { view.setWindowState(state); }
 
 protected:
     bool eventFilter(QObject *, QEvent *ev);
@@ -99,6 +110,7 @@ Q_SIGNALS:
     void positionChanged();
     void visibilityChanged();
     void windowDecorationChanged();
+    void windowStateChanged();
 
 private:
     GraphicsView view;
