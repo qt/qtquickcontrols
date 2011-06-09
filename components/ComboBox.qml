@@ -15,11 +15,11 @@ Item {
     property Component background: QStyleItem {
         anchors.fill: parent
         elementType: "combobox"
-        sunken: pressed
-        raised: !pressed
-        hover: containsMouse
+        sunken: comboBox.buttonMouseArea.pressed
+        raised: !sunken
+        hover: comboBox.buttonMouseArea.containsMouse
         enabled: comboBox.enabled
-        text: currentItemText
+        text: comboBox.selectedText
         focus: comboBox.focus
         hint: comboBox.hint
     }
