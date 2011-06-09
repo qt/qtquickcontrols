@@ -53,14 +53,18 @@ QString QtMenu::title() const
 void QtMenu::setSelectedIndex(int index)
 {
     m_selectedIndex = index;
-    m_menu->setActiveAction(m_menu->actions()[m_selectedIndex]);
+    QList<QAction *> actionList = m_menu->actions();
+    if (m_selectedIndex >= 0 && m_selectedIndex < actionList.size())
+        m_menu->setActiveAction(actionList[m_selectedIndex]);
     emit selectedIndexChanged();
 }
 
 void QtMenu::setHighlightedIndex(int index)
 {
     m_highlightedIndex = index;
-    m_menu->setActiveAction(m_menu->actions()[m_highlightedIndex]);
+    QList<QAction *> actionList = m_menu->actions();
+    if (m_highlightedIndex >= 0 && m_highlightedIndex < actionList.size())
+        m_menu->setActiveAction(actionList[m_highlightedIndex]);
     emit highlightedIndexChanged();
 }
 
@@ -97,6 +101,7 @@ void QtMenu::showPopup(qreal x, qreal y, int atActionIndex)
     // ### activeWindow hack
     QPoint screenPosition = QApplication::activeWindow()->mapToGlobal(QPoint(x, y));
 
+    setHighlightedIndex(m_selectedIndex);
     m_menu->popup(screenPosition, atAction);
 }
 

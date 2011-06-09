@@ -1,27 +1,62 @@
 import QtQuick 1.0
+import "custom" as Custom
 
-Item {
+/*
+*
+* ComboBox (inherits BasicButton)
+*
+* The ComboBox component is a combined button and popup list. The popup menu itself is platform
+* native, and cannot by styled from QML code.
+* Add menu items to the comboBox by either adding MenuItem children inside the popup, or
+* assign a ListModel to 'model', or both.
+*
+* The SplitterRow contains the following API (in addition to the BasicButton API):
+*
+* ListModel model - this model will be used, in addition to MenuItem children, to
+*   create items inside the popup menu
+* bool popupOpen - controls if the popup menu should be visible or not.
+* int selectedIndex - the index of the selected item in the popup menu.
+* int highlightedIndex - the index of the highlighted item in the popup menu.
+* string selectedText - the text of the selected menu item.
+* string highlightedText - the text of the highlighted menu item.
+*
+* Example:
+*
+*    ListModel {
+*        id: menuItems
+*        ListElement { text: "Banana" }
+*        ListElement { text: "Apple" }
+*        ListElement { text: "Coconut" }
+*    }
+*    ComboBox {
+*        id: comboBox;
+*        model: menuItems;
+*        width: 200;
+*    }
+
+*/
+
+Custom.BasicButton {
     id: comboBox
 
     property alias model: popup.model
+    property alias popupOpen: popup.visible
+
     property alias selectedIndex: popup.selectedIndex
     property alias highlightedIndex: popup.highlightedIndex
-    property string selectedText: model.get(popup.visible ? selectedIndex : highlightedIndex).text
-    property alias popupOpen: popup.visible
-    property alias popupMenu: popup
-    property alias buttonMouseArea: mouseArea
-    property string hint
+    property alias selectedText: popup.selectedText
+    property alias highlightedText: popup.highlightedText
 
-    property Component background: QStyleItem {
+    background: QStyleItem {
         anchors.fill: parent
         elementType: "combobox"
-        sunken: comboBox.buttonMouseArea.pressed
+        sunken: comboBox.pressed
         raised: !sunken
-        hover: comboBox.buttonMouseArea.containsMouse
+        hover: comboBox.containsMouse
         enabled: comboBox.enabled
         text: comboBox.selectedText
         focus: comboBox.focus
-        hint: comboBox.hint
+        hint: ""
     }
 
 //    ToDo: adjust margins so that selected popup label
@@ -32,28 +67,16 @@ Item {
 //    property int rightMargin: 0
 //    property int bottomMargin: 0
 
-    width: backgroundLoader.item.sizeFromContents(100, 18).height
-    height: backgroundLoader.item.sizeFromContents(100, 18).height
-
-    Loader {
-        id: backgroundLoader
-        property alias styledItem: comboBox
-        sourceComponent: background
-        anchors.fill: parent
-        property string currentItemText: comboBox.selectedText
-    }
+    width: backgroundItem.sizeFromContents(100, 18).height
+    height: backgroundItem.sizeFromContents(100, 18).height
+    checkable: false
+    onPressedChanged: if (pressed) popup.visible = true
 
     ContextMenu {
         id: popup
-        property bool center: backgroundLoader.item.styleHint("comboboxpopup")
-        centerOnSelectedText: center
+        property bool center: backgroundItem.styleHint("comboboxpopup")
+        centerSelectedText: center
         y: center ? 0 : comboBox.height
-    }
-
-    MouseArea {
-        id: mouseArea
-        anchors.fill: parent
-        onPressed: popupOpen = true
     }
 
     // The key bindings below will only be in use when popup is
