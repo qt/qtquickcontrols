@@ -83,14 +83,6 @@ void QtMenu::showPopup(qreal x, qreal y, int atActionIndex)
     if (m_menu->isVisible())
         return;
 
-    foreach (QtMenuItem *item, m_menuItems) {
-        QAction *action = new QAction(item->text(), m_menu);
-        connect(action, SIGNAL(triggered()), item, SIGNAL(selected()));
-        connect(action, SIGNAL(triggered()), this, SLOT(emitSelected()));
-        connect(action, SIGNAL(hovered()), this, SLOT(emitHighlighted()));
-        m_menu->insertAction(0, action);
-    }
-
     // If atActionIndex is valid, x and y is specified from the
     // the position of the corresponding QAction:
     QAction *atAction = 0;

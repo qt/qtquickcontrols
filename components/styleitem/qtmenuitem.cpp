@@ -52,6 +52,7 @@ QtMenuItem::~QtMenuItem()
 void QtMenuItem::setText(const QString &text)
 {
     m_text = text;
+    emit textChanged();
 }
 
 QString QtMenuItem::text()

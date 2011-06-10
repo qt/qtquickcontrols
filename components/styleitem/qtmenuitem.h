@@ -44,7 +44,7 @@
 
 class QtMenuItem: public QObject
 {
-    Q_PROPERTY(QString text READ text WRITE setText);
+    Q_PROPERTY(QString text READ text WRITE setText NOTIFY textChanged)
 
     Q_OBJECT
 public:
@@ -56,6 +56,7 @@ public:
 
 Q_SIGNALS:
     void selected();
+    void textChanged();
 
 private:
     QString m_text;

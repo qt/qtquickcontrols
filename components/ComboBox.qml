@@ -8,19 +8,19 @@ import "custom" as Custom
 * The ComboBox component is a combined button and popup list. The popup menu itself is platform
 * native, and cannot by styled from QML code.
 * Add menu items to the comboBox by either adding MenuItem children inside the popup, or
-* assign a ListModel to 'model', or both.
+* assign a ListModel to 'model' (or both).
 *
 * The SplitterRow contains the following API (in addition to the BasicButton API):
 *
 * ListModel model - this model will be used, in addition to MenuItem children, to
 *   create items inside the popup menu
-* bool popupOpen - controls if the popup menu should be visible or not.
+* bool popupOpen - setting this property to 'true' will open the popup.
 * int selectedIndex - the index of the selected item in the popup menu.
 * int highlightedIndex - the index of the highlighted item in the popup menu.
 * string selectedText - the text of the selected menu item.
 * string highlightedText - the text of the highlighted menu item.
 *
-* Example:
+* Example 1:
 *
 *    ListModel {
 *        id: menuItems
@@ -29,16 +29,29 @@ import "custom" as Custom
 *        ListElement { text: "Coconut" }
 *    }
 *    ComboBox {
-*        id: comboBox;
-*        model: menuItems;
-*        width: 200;
+*        model: menuItems
+*        width: 200
+*        onSelectedTextChanged: console.debug("You selected:" + selectedText)
 *    }
-
+*
+* Example 2:
+*
+*    ComboBox {
+*        width: 200
+*        MenuItem {
+*            text: "Pineapple"
+*        }
+*        MenuItem {
+*            text: "Grapes"
+*        }
+*    }
+*
 */
 
 Custom.BasicButton {
     id: comboBox
 
+    default property alias menuItems: popup.menuItems
     property alias model: popup.model
     property alias popupOpen: popup.visible
 

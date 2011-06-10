@@ -38,7 +38,7 @@ class QtMenu : public QDeclarativeItem
     Q_PROPERTY(QString title READ title WRITE setTitle)
     Q_PROPERTY(int selectedIndex READ selectedIndex WRITE setSelectedIndex NOTIFY selectedIndexChanged)
     Q_PROPERTY(int highlightedIndex READ highlightedIndex WRITE setHighlightedIndex NOTIFY highlightedIndexChanged)
-    Q_PROPERTY(QDeclarativeListProperty<QtMenuItem> menuItems READ menuItems)
+    Q_PROPERTY(QDeclarativeListProperty<QtMenuItem> menuItems READ menuItems NOTIFY menuItemsChanged)
     Q_CLASSINFO("DefaultProperty", "menuItems")
 public:
     QtMenu(QDeclarativeItem *parent = 0);
@@ -61,6 +61,7 @@ Q_SIGNALS:
     void selectedIndexChanged();
     void highlightedIndexChanged();
     void menuClosed();
+    void menuItemsChanged();
 private Q_SLOTS:
     void emitSelected();
     void emitHighlighted();
