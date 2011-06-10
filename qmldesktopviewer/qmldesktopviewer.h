@@ -133,7 +133,6 @@ public slots:
 
 protected:
     virtual void keyPressEvent(QKeyEvent *);
-    virtual bool event(QEvent *);
     void createMenu();
 
 private slots:

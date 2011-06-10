@@ -64,42 +64,6 @@
 
 QT_BEGIN_NAMESPACE
 
-class Runtime : public QObject
-{
-    Q_OBJECT
-
-    Q_PROPERTY(bool isActiveWindow READ isActiveWindow NOTIFY isActiveWindowChanged)
-
-public:
-    static Runtime* instance()
-    {
-        static Runtime *instance = 0;
-        if (!instance)
-            instance = new Runtime;
-        return instance;
-    }
-
-    bool isActiveWindow() const { return activeWindow; }
-    void setActiveWindow(bool active)
-    {
-        if (active == activeWindow)
-            return;
-        activeWindow = active;
-        emit isActiveWindowChanged();
-    }
-
-Q_SIGNALS:
-    void isActiveWindowChanged();
-
-private:
-    Runtime(QObject *parent=0) : QObject(parent), activeWindow(false)
-    {
-    }
-
-    bool activeWindow;
-};
-
-
 QmlDesktopViewer::QmlDesktopViewer(QWidget *parent, Qt::WindowFlags flags)
     : QMainWindow(parent, flags)
       , loggerWindow(new LoggerWidget(this))
@@ -281,8 +245,6 @@ bool QmlDesktopViewer::open(const QString& file_or_url)
     ctxt->setContextProperty("qmlDesktopViewer", this);
     ctxt->setContextProperty("qmlDesktopViewerFolder", QDir::currentPath());
 
-    ctxt->setContextProperty("runtime", Runtime::instance());
-
     QString fileName = url.toLocalFile();
     if (!fileName.isEmpty()) {
         fi.setFile(fileName);
@@ -321,13 +283,6 @@ void QmlDesktopViewer::keyPressEvent(QKeyEvent *event)
 
     QWidget::keyPressEvent(event);
 }
-
-bool QmlDesktopViewer::event(QEvent *event)
-{
-    Runtime::instance()->setActiveWindow(event->type() == QEvent::WindowActivate);
-    return QWidget::event(event);
-}
-
 
 void QmlDesktopViewer::setUseGL(bool useGL)
 {
