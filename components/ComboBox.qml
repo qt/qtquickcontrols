@@ -42,7 +42,7 @@ import "custom" as Custom
 *            text: "Pineapple"
 *        }
 *        MenuItem {
-*            text: "Grapes"
+*            text: "Grape"
 *        }
 *    }
 *

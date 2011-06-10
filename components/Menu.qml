@@ -19,6 +19,16 @@ MenuBase {
     onModelChanged: if (Component.status === Component.Ready) rebuildMenu()
     Component.onCompleted: rebuildMenu()
 
+    onHighlightedIndexChanged: {
+        if (highlightedIndex < menuItems.length)
+            menuItems[highlightedIndex].emitHighlighted()
+    }
+
+    onSelectedIndexChanged: {
+        if (highlightedIndex < menuItems.length)
+            menuItems[highlightedIndex].emitSelected()
+    }
+
     onVisibleChanged: {
         if (visible) {
             var globalPos = parent.mapToItem(null, x, y)

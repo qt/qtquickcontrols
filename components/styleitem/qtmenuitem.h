@@ -54,8 +54,12 @@ public:
     void setText(const QString &text);
     QString text();
 
+    Q_INVOKABLE void emitHighlighted() { emit highlighted(); }
+    Q_INVOKABLE void emitSelected() { emit selected(); }
+
 Q_SIGNALS:
     void selected();
+    void highlighted();
     void textChanged();
 
 private:
