@@ -16,9 +16,9 @@ import "custom" as Custom
 *   create items inside the popup menu
 * bool popupOpen - setting this property to 'true' will open the popup.
 * int selectedIndex - the index of the selected item in the popup menu.
-* int highlightedIndex - the index of the highlighted item in the popup menu.
+* int hoveredIndex - the index of the highlighted item in the popup menu.
 * string selectedText - the text of the selected menu item.
-* string highlightedText - the text of the highlighted menu item.
+* string hoveredText - the text of the highlighted menu item.
 *
 * Example 1:
 *
@@ -40,9 +40,12 @@ import "custom" as Custom
 *        width: 200
 *        MenuItem {
 *            text: "Pineapple"
+*            onSelected: console.debug(text)
+*
 *        }
 *        MenuItem {
 *            text: "Grape"
+*            onSelected: console.debug(text)
 *        }
 *    }
 *
@@ -56,9 +59,9 @@ Custom.BasicButton {
     property alias popupOpen: popup.visible
 
     property alias selectedIndex: popup.selectedIndex
-    property alias highlightedIndex: popup.highlightedIndex
+    property alias hoveredIndex: popup.hoveredIndex
     property alias selectedText: popup.selectedText
-    property alias highlightedText: popup.highlightedText
+    property alias hoveredText: popup.hoveredText
 
     background: QStyleItem {
         anchors.fill: parent

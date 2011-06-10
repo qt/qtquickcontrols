@@ -59,13 +59,13 @@ void QtMenu::setSelectedIndex(int index)
     emit selectedIndexChanged();
 }
 
-void QtMenu::setHighlightedIndex(int index)
+void QtMenu::setHoveredIndex(int index)
 {
     m_highlightedIndex = index;
     QList<QAction *> actionList = m_menu->actions();
     if (m_highlightedIndex >= 0 && m_highlightedIndex < actionList.size())
         m_menu->setActiveAction(actionList[m_highlightedIndex]);
-    emit highlightedIndexChanged();
+    emit hoveredIndexChanged();
 }
 
 QDeclarativeListProperty<QtMenuItem> QtMenu::menuItems()
@@ -93,7 +93,7 @@ void QtMenu::showPopup(qreal x, qreal y, int atActionIndex)
     // ### activeWindow hack
     QPoint screenPosition = QApplication::activeWindow()->mapToGlobal(QPoint(x, y));
 
-    setHighlightedIndex(m_selectedIndex);
+    setHoveredIndex(m_selectedIndex);
     m_menu->popup(screenPosition, atAction);
 }
 
@@ -106,7 +106,7 @@ void QtMenu::addMenuItem(const QString &text)
 {
     QAction *action = new QAction(text, m_menu);
     connect(action, SIGNAL(triggered()), this, SLOT(emitSelected()));
-    connect(action, SIGNAL(hovered()), this, SLOT(emitHighlighted()));
+    connect(action, SIGNAL(hovered()), this, SLOT(emitHovered()));
     m_menu->insertAction(0, action);
 }
 
@@ -119,12 +119,12 @@ void QtMenu::emitSelected()
     emit selectedIndexChanged();
 }
 
-void QtMenu::emitHighlighted()
+void QtMenu::emitHovered()
 {
     QAction *act = qobject_cast<QAction *>(sender());
     if (!act)
         return;
     m_highlightedIndex = m_menu->actions().indexOf(act);
-    emit highlightedIndexChanged();
+    emit hoveredIndexChanged();
 }
 

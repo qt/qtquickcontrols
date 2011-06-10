@@ -6,8 +6,8 @@ MenuBase {
 
     property string selectedText: (selectedIndex < menuItems.length) ?
             menuItems[selectedIndex].text : model.get(selectedIndex - menuItems.length).text
-    property string highlightedText: (highlightedIndex < menuItems.length) ?
-            menuItems[highlightedIndex].text : model.get(highlightedIndex - menuItems.length).text
+    property string hoveredText: (hoveredIndex < menuItems.length) ?
+            menuItems[hoveredIndex].text : model.get(hoveredIndex - menuItems.length).text
 
     // 'centerSelectedText' means that the menu will be positioned
     //  so that the selected text' top left corner will be at x, y.
@@ -19,14 +19,14 @@ MenuBase {
     onModelChanged: if (Component.status === Component.Ready) rebuildMenu()
     Component.onCompleted: rebuildMenu()
 
-    onHighlightedIndexChanged: {
-        if (highlightedIndex < menuItems.length)
-            menuItems[highlightedIndex].emitHighlighted()
+    onHoveredIndexChanged: {
+        if (hoveredIndex < menuItems.length)
+            menuItems[hoveredIndex].emitHovered()
     }
 
     onSelectedIndexChanged: {
-        if (highlightedIndex < menuItems.length)
-            menuItems[highlightedIndex].emitSelected()
+        if (hoveredIndex < menuItems.length)
+            menuItems[hoveredIndex].emitSelected()
     }
 
     onVisibleChanged: {

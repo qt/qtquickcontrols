@@ -37,7 +37,7 @@ class QtMenu : public QDeclarativeItem
     Q_OBJECT
     Q_PROPERTY(QString title READ title WRITE setTitle)
     Q_PROPERTY(int selectedIndex READ selectedIndex WRITE setSelectedIndex NOTIFY selectedIndexChanged)
-    Q_PROPERTY(int highlightedIndex READ highlightedIndex WRITE setHighlightedIndex NOTIFY highlightedIndexChanged)
+    Q_PROPERTY(int hoveredIndex READ hoveredIndex WRITE setHoveredIndex NOTIFY hoveredIndexChanged)
 
     // The only reason we declare a list of menu items here, is so we can make it a default
     // property from within QML, if needed. The reason we don't implement the code for using
@@ -54,8 +54,8 @@ public:
     QString title() const;
     int selectedIndex() const { return m_selectedIndex; }
     void setSelectedIndex(int index);
-    int highlightedIndex() const { return m_highlightedIndex; }
-    void setHighlightedIndex(int index);
+    int hoveredIndex() const { return m_highlightedIndex; }
+    void setHoveredIndex(int index);
     QDeclarativeListProperty<QtMenuItem> menuItems();
 
     Q_INVOKABLE void showPopup(qreal x, qreal y, int atActionIndex = -1);
@@ -65,12 +65,12 @@ public:
 
 Q_SIGNALS:
     void selectedIndexChanged();
-    void highlightedIndexChanged();
+    void hoveredIndexChanged();
     void menuClosed();
     void menuItemsChanged();
 private Q_SLOTS:
     void emitSelected();
-    void emitHighlighted();
+    void emitHovered();
 private:
     QString m_title;
     int m_selectedIndex;
