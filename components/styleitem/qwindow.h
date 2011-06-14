@@ -30,19 +30,19 @@
 #include <QtGui/QApplication>
 #include <QtDeclarative>
 #include <QWindowStateChangeEvent>
+#include <QDeclarativeView>
 
-class GraphicsView : public QGraphicsView {
+class DeclarativeView : public QDeclarativeView {
     Q_OBJECT
 public:
-    GraphicsView(QGraphicsScene *scene) : QGraphicsView(scene) {
-        scene->setParent(this);
+    DeclarativeView() {
     }
 
 protected:
     virtual bool event(QEvent *event) {
         if (event->type() == QEvent::WindowStateChange)
             emit windowStateChanged();
-        return QGraphicsView::event(event);
+        return QDeclarativeView::event(event);
     }
 
     void showEvent(QShowEvent * /*event*/) {
@@ -113,7 +113,7 @@ Q_SIGNALS:
     void windowStateChanged();
 
 private:
-    GraphicsView view;
+    DeclarativeView view;
 };
 
 #endif // QWINDOW_H
