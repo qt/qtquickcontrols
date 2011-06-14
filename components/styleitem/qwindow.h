@@ -82,25 +82,26 @@ public:
     static void data_clear(QDeclarativeListProperty<QObject> *);
 
 
-    int x() { return view.x(); }
-    int y() { return view.y(); }
-    int height() { return view.height(); }
-    int width() { return view.width(); }
-    bool isVisible() { return view.isVisible(); }
-    bool windowDecoration() { return !(view.windowFlags() & Qt::FramelessWindowHint); }
-    Qt::WindowState windowState() { return static_cast<Qt::WindowState>(static_cast<int>(view.windowState()) & ~Qt::WindowActive); }
+    int x() { return _view->x(); }
+    int y() { return _view->y(); }
+    int height() { return _view->height(); }
+    int width() { return _view->width(); }
+    bool isVisible() { return _view->isVisible(); }
+    bool windowDecoration() { return !(_view->windowFlags() & Qt::FramelessWindowHint); }
+    Qt::WindowState windowState() { return static_cast<Qt::WindowState>(static_cast<int>(_view->windowState()) & ~Qt::WindowActive); }
+    DeclarativeView *view() { return _view; }
 
-    void setX(int x) { view.move(x, y()); }
-    void setY(int y) { view.move(x(), y); }
-    void setHeight(int height) { view.resize(width(), height); }
-    void setWidth(int width) { view.resize(width, height()); }
-    void setVisible(bool visible) { view.setVisible(visible); }
+    void setX(int x) { _view->move(x, y()); }
+    void setY(int y) { _view->move(x(), y); }
+    void setHeight(int height) { _view->resize(width(), height); }
+    void setWidth(int width) { _view->resize(width, height()); }
+    void setVisible(bool visible) { _view->setVisible(visible); }
     void setWindowDecoration(bool s) {
-        view.setWindowFlags(s ? view.windowFlags() & ~Qt::FramelessWindowHint
-                              : view.windowFlags() | Qt::FramelessWindowHint);
+        _view->setWindowFlags(s ? _view->windowFlags() & ~Qt::FramelessWindowHint
+                              : _view->windowFlags() | Qt::FramelessWindowHint);
         emit windowDecorationChanged();
     }
-    void setWindowState(Qt::WindowState state) { view.setWindowState(state); }
+    void setWindowState(Qt::WindowState state) { _view->setWindowState(state); }
 
 protected:
     bool eventFilter(QObject *, QEvent *ev);
@@ -113,7 +114,7 @@ Q_SIGNALS:
     void windowStateChanged();
 
 private:
-    DeclarativeView view;
+    DeclarativeView *_view;
 };
 
 #endif // QWINDOW_H

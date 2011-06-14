@@ -46,6 +46,7 @@
 #include <QList>
 #include <QtDeclarative>
 #include <QDebug>
+#include "../components/styleitem/qwindow.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -146,7 +147,7 @@ private:
     void updateSizeHints(bool initial = false);
 
     LoggerWidget *loggerWindow;
-    QDeclarativeView *canvas;
+    QWindow *canvas;
     QSize initialSize;
     QString currentFileOrUrl;
     QAction *_showLoggerWindow;
