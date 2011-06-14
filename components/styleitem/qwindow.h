@@ -32,21 +32,15 @@
 #include <QWindowStateChangeEvent>
 #include <QDeclarativeView>
 
-class DeclarativeView : public QDeclarativeView {
-    Q_OBJECT
-
-};
-
 class DeclarativeWindow : public QMainWindow {
     Q_OBJECT
-
 public:
-    DeclarativeWindow() : _view(new DeclarativeView) {
+    DeclarativeWindow() : _view(new QDeclarativeView) {
         setCentralWidget(_view);
     }
 
     QGraphicsScene *scene() { return _view->scene(); }
-    DeclarativeView *view() { return _view; }
+    QDeclarativeView *view() { return _view; }
 
 protected:
     virtual bool event(QEvent *event) {
@@ -68,7 +62,7 @@ Q_SIGNALS:
     void windowStateChanged();
 
 private:
-    DeclarativeView *_view;
+    QDeclarativeView *_view;
 };
 
 
@@ -104,7 +98,7 @@ public:
     bool windowDecoration() { return !(_window->windowFlags() & Qt::FramelessWindowHint); }
     Qt::WindowState windowState() { return static_cast<Qt::WindowState>(static_cast<int>(_window->windowState()) & ~Qt::WindowActive); }
     DeclarativeWindow *window() { return _window; }
-    DeclarativeView *view() { return _window->view(); }
+    QDeclarativeView *view() { return _window->view(); }
 
     void setX(int x) { _window->move(x, y()); }
     void setY(int y) { _window->move(x(), y); }
