@@ -64,14 +64,32 @@ Rectangle {
                 Button {
                     anchors.horizontalCenter: closeText.horizontalCenter
                     anchors.top: closeWindowButton.bottom
-                    anchors.margins: frame.margins
                     id: maximizeWindowButton
                     text:"Maximize"
                     width: 98
                     focus: true
-                    Component.onCompleted: button1.forceActiveFocus()
                     tooltip:"Press me, to maximize this window again"
                     onClicked: window1.windowState = Qt.WindowMaximized;
+                }
+                Button {
+                    anchors.horizontalCenter: closeText.horizontalCenter
+                    anchors.top: maximizeWindowButton.bottom
+                    id: normalizeWindowButton
+                    text:"Normalize"
+                    width: 98
+                    focus: true
+                    tooltip:"Press me, to normalize this window again"
+                    onClicked: window1.windowState = Qt.WindowNoState;
+                }
+                Button {
+                    anchors.horizontalCenter: closeText.horizontalCenter
+                    anchors.top: normalizeWindowButton.bottom
+                    id: minimizeWindowButton
+                    text:"Minimize"
+                    width: 98
+                    focus: true
+                    tooltip:"Press me, to minimize this window again"
+                    onClicked: window1.windowState = Qt.WindowMinimized;
                 }
             }
 
