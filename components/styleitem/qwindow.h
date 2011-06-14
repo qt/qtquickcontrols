@@ -34,29 +34,43 @@
 
 class DeclarativeView : public QDeclarativeView {
     Q_OBJECT
+
+};
+
+class DeclarativeWindow : public QMainWindow {
+    Q_OBJECT
+
 public:
-    DeclarativeView() {
+    DeclarativeWindow() : _view(new DeclarativeView) {
+        setCentralWidget(_view);
     }
+
+    QGraphicsScene *scene() { return _view->scene(); }
+    DeclarativeView *view() { return _view; }
 
 protected:
     virtual bool event(QEvent *event) {
-        if (event->type() == QEvent::WindowStateChange)
-            emit windowStateChanged();
-        return QDeclarativeView::event(event);
+        switch (event->type()) {
+            case QEvent::WindowStateChange:
+                emit windowStateChanged();
+                break;
+            case QEvent::Show:
+            case QEvent::Hide:
+                emit visibilityChanged();
+                break;
+            default: break;
+        }
+        return QMainWindow::event(event);
     }
 
-    void showEvent(QShowEvent * /*event*/) {
-        emit visibilityChanged();
-    }
-
-    void hideEvent(QHideEvent * /*event*/) {
-        emit visibilityChanged();
-    }
-
-signals:
+Q_SIGNALS:
     void visibilityChanged();
     void windowStateChanged();
+
+private:
+    DeclarativeView *_view;
 };
+
 
 class QWindow : public QObject
 {
@@ -82,26 +96,27 @@ public:
     static void data_clear(QDeclarativeListProperty<QObject> *);
 
 
-    int x() { return _view->x(); }
-    int y() { return _view->y(); }
-    int height() { return _view->height(); }
-    int width() { return _view->width(); }
-    bool isVisible() { return _view->isVisible(); }
-    bool windowDecoration() { return !(_view->windowFlags() & Qt::FramelessWindowHint); }
-    Qt::WindowState windowState() { return static_cast<Qt::WindowState>(static_cast<int>(_view->windowState()) & ~Qt::WindowActive); }
-    DeclarativeView *view() { return _view; }
+    int x() { return _window->x(); }
+    int y() { return _window->y(); }
+    int height() { return _window->height(); }
+    int width() { return _window->width(); }
+    bool isVisible() { return _window->isVisible(); }
+    bool windowDecoration() { return !(_window->windowFlags() & Qt::FramelessWindowHint); }
+    Qt::WindowState windowState() { return static_cast<Qt::WindowState>(static_cast<int>(_window->windowState()) & ~Qt::WindowActive); }
+    DeclarativeWindow *window() { return _window; }
+    DeclarativeView *view() { return _window->view(); }
 
-    void setX(int x) { _view->move(x, y()); }
-    void setY(int y) { _view->move(x(), y); }
-    void setHeight(int height) { _view->resize(width(), height); }
-    void setWidth(int width) { _view->resize(width, height()); }
-    void setVisible(bool visible) { _view->setVisible(visible); }
+    void setX(int x) { _window->move(x, y()); }
+    void setY(int y) { _window->move(x(), y); }
+    void setHeight(int height) { _window->resize(width(), height); }
+    void setWidth(int width) { _window->resize(width, height()); }
+    void setVisible(bool visible) { _window->setVisible(visible); }
     void setWindowDecoration(bool s) {
-        _view->setWindowFlags(s ? _view->windowFlags() & ~Qt::FramelessWindowHint
-                              : _view->windowFlags() | Qt::FramelessWindowHint);
+        _window->setWindowFlags(s ? _window->windowFlags() & ~Qt::FramelessWindowHint
+                              : _window->windowFlags() | Qt::FramelessWindowHint);
         emit windowDecorationChanged();
     }
-    void setWindowState(Qt::WindowState state) { _view->setWindowState(state); }
+    void setWindowState(Qt::WindowState state) { _window->setWindowState(state); }
 
 protected:
     bool eventFilter(QObject *, QEvent *ev);
@@ -114,7 +129,7 @@ Q_SIGNALS:
     void windowStateChanged();
 
 private:
-    DeclarativeView *_view;
+    DeclarativeWindow *_window;
 };
 
 #endif // QWINDOW_H

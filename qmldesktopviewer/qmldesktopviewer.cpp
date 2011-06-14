@@ -80,8 +80,8 @@ QmlDesktopViewer::QmlDesktopViewer(QWidget *parent, Qt::WindowFlags flags)
 
     canvas->view()->setFocus();
 
-    QObject::connect(canvas, SIGNAL(sceneResized(QSize)), this, SLOT(sceneResized(QSize)));
-    QObject::connect(canvas, SIGNAL(statusChanged(QDeclarativeView::Status)), this, SLOT(statusChanged()));
+    QObject::connect(canvas->view(), SIGNAL(sceneResized(QSize)), this, SLOT(sceneResized(QSize)));
+    QObject::connect(canvas->view(), SIGNAL(statusChanged(QDeclarativeView::Status)), this, SLOT(statusChanged()));
     QObject::connect(canvas->view()->engine(), SIGNAL(quit()), this, SLOT(close()));
 
     QObject::connect(loggerWindow, SIGNAL(opened()), this, SLOT(loggerWidgetOpened()));

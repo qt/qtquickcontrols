@@ -40,10 +40,9 @@
 
 #include "qwindow.h"
 
-QWindow::QWindow() : _view(new DeclarativeView) {
-    connect(_view, SIGNAL(visibilityChanged()), this, SIGNAL(visibilityChanged()));
-    connect(_view, SIGNAL(windowStateChanged()), this, SIGNAL(windowStateChanged()));
-    _view->installEventFilter(this);
+QWindow::QWindow() : _window(new DeclarativeWindow) {
+    connect(_window, SIGNAL(visibilityChanged()), this, SIGNAL(visibilityChanged()));
+    connect(_window, SIGNAL(windowStateChanged()), this, SIGNAL(windowStateChanged()));
 }
 
 bool QWindow::eventFilter(QObject *, QEvent *ev) {
@@ -62,7 +61,7 @@ bool QWindow::eventFilter(QObject *, QEvent *ev) {
 
 QDeclarativeListProperty<QObject> QWindow::data()
 {
-    return QDeclarativeListProperty<QObject>(_view->scene(), 0, data_append, data_count, data_at, data_clear);
+    return QDeclarativeListProperty<QObject>(_window->scene(), 0, data_append, data_count, data_at, data_clear);
 }
 
 void QWindow::data_append(QDeclarativeListProperty<QObject> *prop, QObject *o)
