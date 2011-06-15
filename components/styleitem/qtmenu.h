@@ -62,6 +62,7 @@ public:
     Q_INVOKABLE void closePopup();
     Q_INVOKABLE void clearMenuItems();
     Q_INVOKABLE void addMenuItem(const QString &text);
+    Q_INVOKABLE QString itemTextAt(int index) const;
 
 Q_SIGNALS:
     void selectedIndexChanged();

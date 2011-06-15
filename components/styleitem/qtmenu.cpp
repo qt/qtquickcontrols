@@ -108,6 +108,19 @@ void QtMenu::addMenuItem(const QString &text)
     connect(action, SIGNAL(triggered()), this, SLOT(emitSelected()));
     connect(action, SIGNAL(hovered()), this, SLOT(emitHovered()));
     m_menu->insertAction(0, action);
+
+    if (m_menu->actions().size() == 1)
+        // Inform QML that the selected action (0) now has changed contents:
+        emit selectedIndexChanged();
+}
+
+QString QtMenu::itemTextAt(int index) const
+{
+    QList<QAction *> actionList = m_menu->actions();
+    if (index >= 0 && index < actionList.size())
+        return actionList[index]->text();
+    else
+        return "";
 }
 
 void QtMenu::emitSelected()

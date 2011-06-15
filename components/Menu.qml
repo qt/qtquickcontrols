@@ -4,10 +4,8 @@ import "../components/plugin"
 MenuBase {
     property ListModel model
 
-    property string selectedText: (selectedIndex < menuItems.length) ?
-            menuItems[selectedIndex].text : model.get(selectedIndex - menuItems.length).text
-    property string hoveredText: (hoveredIndex < menuItems.length) ?
-            menuItems[hoveredIndex].text : model.get(hoveredIndex - menuItems.length).text
+    property string selectedText: itemTextAt(selectedIndex)
+    property string hoveredText: itemTextAt(hoveredIndex)
 
     // 'centerSelectedText' means that the menu will be positioned
     //  so that the selected text' top left corner will be at x, y.

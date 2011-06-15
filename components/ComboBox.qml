@@ -24,14 +24,15 @@ import "custom" as Custom
 *
 *    ListModel {
 *        id: menuItems
-*        ListElement { text: "Banana" }
-*        ListElement { text: "Apple" }
-*        ListElement { text: "Coconut" }
+*        ListElement { text: "Banana"; color: "Yellow" }
+*        ListElement { text: "Apple"; color: "Green" }
+*        ListElement { text: "Coconut"; color: "Brown" }
 *    }
 *    ComboBox {
 *        model: menuItems
 *        width: 200
-*        onSelectedTextChanged: console.debug("You selected:" + selectedText)
+*        onSelectedIndexChanged: console.debug(selectedText + ", " + menuItems.get(selectedIndex).color)
+*
 *    }
 *
 * Example 2:
