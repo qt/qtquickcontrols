@@ -40,12 +40,14 @@
 
 #include "qwindow.h"
 
-QWindow::QWindow() : _window(new DeclarativeWindow) {
+QWindow::QWindow() : _window(new DeclarativeWindow)
+{
     connect(_window, SIGNAL(visibilityChanged()), this, SIGNAL(visibilityChanged()));
     connect(_window, SIGNAL(windowStateChanged()), this, SIGNAL(windowStateChanged()));
 }
 
-bool QWindow::eventFilter(QObject *, QEvent *ev) {
+bool QWindow::eventFilter(QObject *, QEvent *ev)
+{
     switch(ev->type()) {
         case QEvent::Resize:
             emit sizeChanged();
@@ -59,55 +61,9 @@ bool QWindow::eventFilter(QObject *, QEvent *ev) {
     return false;
 }
 
-QDeclarativeListProperty<QObject> QWindow::data()
+
+void QWindow::componentComplete()
 {
-    return QDeclarativeListProperty<QObject>(_window->scene(), 0, data_append, data_count, data_at, data_clear);
+    _window->scene()->addItem(this);
+    QDeclarativeItem::componentComplete();
 }
-
-void QWindow::data_append(QDeclarativeListProperty<QObject> *prop, QObject *o)
-{
-    QGraphicsObject *graphicsObject = qobject_cast<QGraphicsObject *>(o);
-    if (graphicsObject) {
-        static_cast<QGraphicsScene *>(prop->object)->addItem(graphicsObject);
-    }
-}
-
-static inline int children_count_helper(QDeclarativeListProperty<QObject> *prop)
-{
-    return prop->object->children().count();
-}
-
-static inline QObject *children_at_helper(QDeclarativeListProperty<QObject> *prop, int index)
-{
-    return prop->object->children().at(index);
-}
-
-static inline void children_clear_helper(QDeclarativeListProperty<QObject> *prop)
-{
-    QList<QObject *> list = prop->object->children();
-    foreach (QObject *o, list) {
-        if (QGraphicsObject * go = qobject_cast<QGraphicsObject *>(o)) {
-            go->setParentItem(0);
-        }
-    }
-}
-
-int QWindow::data_count(QDeclarativeListProperty<QObject> *prop)
-{
-    return children_count_helper(prop);
-}
-
-QObject *QWindow::data_at(QDeclarativeListProperty<QObject> *prop, int i)
-{
-    return children_at_helper(prop, i);
-}
-
-void QWindow::data_clear(QDeclarativeListProperty<QObject> *prop)
-{
-    const QObjectList children = prop->object->children();
-        for (int index = 0; index < children.count(); index++)
-            children.at(index)->setParent(0);
-    children_clear_helper(prop);
-}
-
-

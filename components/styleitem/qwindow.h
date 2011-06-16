@@ -66,10 +66,9 @@ private:
 };
 
 
-class QWindow : public QObject
+class QWindow : public QDeclarativeItem
 {
     Q_OBJECT
-    Q_PROPERTY(QDeclarativeListProperty<QObject> data READ data DESIGNABLE false)
     Q_PROPERTY(int x READ x WRITE setX NOTIFY positionChanged)
     Q_PROPERTY(int y READ y WRITE setY NOTIFY positionChanged)
     Q_PROPERTY(int height READ height WRITE setHeight NOTIFY sizeChanged)
@@ -78,17 +77,8 @@ class QWindow : public QObject
     Q_PROPERTY(bool windowDecoration READ windowDecoration WRITE setWindowDecoration NOTIFY windowDecorationChanged)
     Q_PROPERTY(Qt::WindowState windowState READ windowState WRITE setWindowState NOTIFY windowStateChanged)
 
-    Q_CLASSINFO("DefaultProperty", "data")
-
 public:
     QWindow();
-
-    QDeclarativeListProperty<QObject> data();
-    static void data_append(QDeclarativeListProperty<QObject> *, QObject *);
-    static int data_count(QDeclarativeListProperty<QObject> *);
-    static QObject *data_at(QDeclarativeListProperty<QObject> *, int);
-    static void data_clear(QDeclarativeListProperty<QObject> *);
-
 
     int x() { return _window->x(); }
     int y() { return _window->y(); }
@@ -114,6 +104,7 @@ public:
 
 protected:
     bool eventFilter(QObject *, QEvent *ev);
+    void componentComplete();
 
 Q_SIGNALS:
     void sizeChanged();
