@@ -29,10 +29,10 @@
 
 #include <QtGui/qmenu.h>
 #include <QtDeclarative/qdeclarative.h>
-#include <QtDeclarative/qdeclarativeitem.h>
+#include <QtDeclarative/QSGItem.h>
 #include <QtDeclarative/QDeclarativeListProperty>
 #include "qtmenuitem.h"
-class QtMenu : public QDeclarativeItem
+class QtMenu : public QSGItem
 {
     Q_OBJECT
     Q_PROPERTY(QString title READ title WRITE setTitle)
@@ -47,7 +47,7 @@ class QtMenu : public QDeclarativeItem
     Q_PROPERTY(QDeclarativeListProperty<QtMenuItem> menuItems READ menuItems NOTIFY menuItemsChanged)
     Q_CLASSINFO("DefaultProperty", "menuItems")
 public:
-    QtMenu(QDeclarativeItem *parent = 0);
+    QtMenu(QSGItem *parent = 0);
     virtual ~QtMenu();
 
     void setTitle(const QString &title);

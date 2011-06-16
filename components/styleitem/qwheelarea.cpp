@@ -41,8 +41,8 @@
 #include "qwheelarea.h"
 
 
-QWheelArea::QWheelArea(QDeclarativeItem *parent)
-    : QDeclarativeItem(parent),
+QWheelArea::QWheelArea(QSGItem *parent)
+    : QSGItem(parent),
       _horizontalMinimumValue(0),
       _horizontalMaximumValue(0),
       _verticalMinimumValue(0),
@@ -87,7 +87,7 @@ bool QWheelArea::event (QEvent * e) {
     }
     default: break;
     }
-    return QDeclarativeItem::event(e);
+    return QSGItem::event(e);
 }
 
 void QWheelArea::setHorizontalMinimumValue(qreal min)

@@ -28,8 +28,8 @@
 #include "qdebug.h"
 #include <qapplication.h>
 
-QtMenu::QtMenu(QDeclarativeItem *parent)
-    : QDeclarativeItem(parent), m_selectedIndex(0), m_highlightedIndex(0)
+QtMenu::QtMenu(QSGItem *parent)
+    : QSGItem(parent), m_selectedIndex(0), m_highlightedIndex(0)
 {
     m_menu = new QMenu(0);
     connect(m_menu, SIGNAL(aboutToHide()), this, SIGNAL(menuClosed()));
