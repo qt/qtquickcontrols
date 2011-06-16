@@ -68,7 +68,7 @@ Components.SpinBox {
             id: styleitem
             anchors.fill: parent
             elementType: "spinbox"
-            sunken: downPressed | upPressed
+            sunken: (downEnabled && downPressed) | (upEnabled && upPressed)
             hover: containsMouse
             focus: spinbox.focus
             enabled: spinbox.enabled

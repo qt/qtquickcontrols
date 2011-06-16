@@ -1,6 +1,6 @@
 import QtQuick 2.0
 import "../components"
-import "../components/plugin"
+import "content"
 
 Rectangle {
 
@@ -28,19 +28,18 @@ Rectangle {
             }
         }
 
+
+
         ContextMenu {
             id: editmenu
-            model: ListModel {
-                id: menu
-                ListElement { text: "Copy" }
-                ListElement { text: "Cut" }
-                ListElement { text: "Paste" }
-            }
+            MenuItem { text: "Copy" }
+            MenuItem { text: "Cut" }
+            MenuItem { text: "Paste" }
         }
         MouseArea {
             anchors.fill:  parent
             acceptedButtons: Qt.RightButton
-            onPressed: editmenu.show(mouseX, mouseY)
+            onPressed: editmenu.showPopup(mouseX, mouseY)
         }
 
         CheckBox {
@@ -98,6 +97,7 @@ Rectangle {
                         spacing: 9
                         Row {
                             spacing:8
+
                             Button {
                                 id: button1
                                 text:"Button 1"
@@ -118,7 +118,7 @@ Rectangle {
                                 KeyNavigation.backtab: button1
                             }
                         }
-                        ChoiceList {
+                        ComboBox {
                             id: combo;
                             model: choices;
                             width: 200;
@@ -248,12 +248,10 @@ Rectangle {
                             exclusive: false
                             CheckBox {
                                 id:fade
-                                width:120
                                 text: "Fade on hover"
                             }
                             CheckBox {
                                 id: scale
-                                width:120
                                 text: "Scale on hover"
                             }
                         }

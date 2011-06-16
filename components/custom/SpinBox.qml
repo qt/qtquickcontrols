@@ -26,7 +26,6 @@ FocusScope {
 
     property bool upEnabled: value != maximumValue;
     property bool downEnabled: value != minimumValue;
-
     property alias upPressed: mouseUp.pressed
     property alias downPressed: mouseDown.pressed
     property alias upHovered: mouseUp.containsMouse

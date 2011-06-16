@@ -131,6 +131,13 @@ void QStyleItem::initStyleOption()
         }
         break;
 
+    case Splitter: {
+            if (!m_styleoption) {
+                m_styleoption = new QStyleOption;
+            }
+        }
+        break;
+
     case Item: {
             if (!m_styleoption) {
                 m_styleoption = new QStyleOptionViewItemV4();
@@ -277,6 +284,7 @@ void QStyleItem::initStyleOption()
             else if (value() & (1<<1))
                 opt->activeSubControls = QStyle::SC_SpinBoxDown;
             opt->subControls = QStyle::SC_All;
+            opt->stepEnabled = 0;
             if (value() & (1<<2))
                 opt->stepEnabled |= QAbstractSpinBox::StepUpEnabled;
             if (value() & (1<<3))
@@ -294,7 +302,21 @@ void QStyleItem::initStyleOption()
             opt->maximum = maximum();
             // ### fixme - workaround for KDE inverted dial
             opt->sliderPosition = value();
-            opt->tickInterval = 1200 / (opt->maximum - opt->minimum);
+            opt->singleStep = step();
+
+            if (opt->singleStep)
+            {
+                qreal numOfSteps = (opt->maximum - opt->minimum) / opt->singleStep;
+
+                // at least 5 pixels between tick marks
+                if (numOfSteps && (width() / numOfSteps < 5))
+                    opt->tickInterval = qRound((5*numOfSteps / width()) + 0.5)*step();
+                else
+                    opt->tickInterval = opt->singleStep;
+            }
+            else // default Qt-components implementation
+                opt->tickInterval = opt->maximum != opt->minimum ? 1200 / (opt->maximum - opt->minimum) : 0;
+
             if (style() == QLatin1String("oxygen") && type == QLatin1String("dial"))
                 opt->sliderValue  = maximum() - value();
             else
@@ -590,6 +612,8 @@ int QStyleItem::pixelMetric(const QString &metric)
         return qApp->style()->pixelMetric(QStyle::PM_MenuVMargin, 0 , widget());
     else if (metric == "menupanelwidth")
         return qApp->style()->pixelMetric(QStyle::PM_MenuPanelWidth, 0 , widget());
+    else if (metric == "splitterwidth")
+        return qApp->style()->pixelMetric(QStyle::PM_SplitterWidth, 0 , widget());
     // This metric is incorrectly negative on oxygen
     else if (metric == "scrollbarspacing")
         return abs(qApp->style()->pixelMetric(QStyle::PM_ScrollView_ScrollBarSpacing, 0 , widget()));
@@ -754,6 +778,9 @@ void QStyleItem::setElementType(const QString &str)
         m_dummywidget = new QComboBox();
         visible = true;
         m_itemType = ComboBox;
+    } else if (str == "splitter") {
+        visible = true;
+        m_itemType = Splitter;
     } else if (str == "progressbar") {
         m_dummywidget = new QProgressBar();
         visible = true;
@@ -949,6 +976,9 @@ void QStyleItem::paint(QPainter *painter)
         break;
     case Widget:
         qApp->style()->drawPrimitive(QStyle::PE_Widget, m_styleoption, painter, widget());
+        break;
+    case Splitter:
+        qApp->style()->drawControl(QStyle::CE_Splitter, m_styleoption, painter, widget());
         break;
     case ComboBox:
         qApp->style()->drawComplexControl(QStyle::CC_ComboBox,

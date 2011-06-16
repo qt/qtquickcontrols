@@ -14,7 +14,6 @@ MouseArea {
 
     anchors.fill: parent
     hoverEnabled: true    
-    state: "popupClosed"
 
     // Set 'popupOpen' to show/hide the popup. The 'state' property is more
     // internal, and contains additional states used to protect the popup from
@@ -65,23 +64,10 @@ MouseArea {
             listView.forceActiveFocus();
             state = "popupOpen"
         } else {
-            // Reparent the popup back to normal. But we need to be careful not to do this
-            // before the popup is hidden, otherwise you will see it jump to the new parent
-            // on screen. So we make it a binding in case a transition is set on opacity:
-
-
-            // Comment out for now, since QtQuick 1.0 doesn't support assigning
-            // function to properties (as you can for QtQuick 1.1)
-
-//            parent = function() { return (popupFrameLoader.item.opacity == 0) ? originalParent : parent; }
-            parent = originalParent;
             popupFrameLoader.item.opacity = 0;
             popup.hideHighlight();
-            // Make sure we only enter the 'hidden' state when the popup is actually not
-            // visible. Otherwise the user will be able do open the popup again by clicking
-            // anywhere on screen while its being hidden (in case of a transition):
-//            state = function() { return (popupFrameLoader.item.opacity == 0) ? "popupClosed" : "popupClosing"; }
-            state = "popupClosed"
+            if (popupFrameLoader.item.opacity !== 0)
+                state = "popupClosing"
         }
     }
 
@@ -319,6 +305,16 @@ MouseArea {
         if (state == "popupOpen")
             popup.highlightItemAt(mouseX, mouseY)
     }
+
+    states: [
+        State {
+            name: "popupClosed"
+            when: popupFrameLoader.item.opacity === 0;
+            StateChangeScript {
+                script: parent = originalParent
+            }
+        }
+    ]
 }
 
 

@@ -18,6 +18,7 @@ QML_FILES = \
         Button.qml \
         CheckBox.qml \
         ChoiceList.qml \
+        SplitterRow.qml \
         ProgressBar.qml \
         RadioButton.qml \
         ScrollDecorator.qml \

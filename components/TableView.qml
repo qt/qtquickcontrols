@@ -38,12 +38,12 @@ import "../components/plugin"
 *    ListElement{ column1: "value 3"; column2: "value 4"}
 * }
 *
-* You provide title and size properties on headersections
+* You provide title and size properties on TableColumns
 * by setting the default header property :
 *
 * TableView {
-*    HeaderSeciton{ property: "column1" ; caption: "Column 1" ; width:100}
-*    HeaderSection{ property: "column2" ; caption: "Column 2" ; width:200}
+*    TableColumn{ property: "column1" ; caption: "Column 1" ; width:100}
+*    TableColumn{ property: "column2" ; caption: "Column 2" ; width:200}
 *    model: datamodel
 * }
 *
@@ -72,7 +72,7 @@ FocusScope{
     property bool frameAroundContents: styleitem.styleHint("framearoundcontents")
     property int sortColumn // Index of currently selected sort column
 
-    property bool sortIndicatorVisible: true // enables or disables sort indicator
+    property bool sortIndicatorVisible: false // enables or disables sort indicator
     property string sortIndicatorDirection: "down" // "up" or "down" depending on current state
 
     property bool alternateRowColor: true
@@ -80,20 +80,23 @@ FocusScope{
     property alias contentY: tree.contentY
 
     property alias currentIndex: tree.currentIndex // Should this be currentRowIndex?
-    property bool headerVisible: true
 
     property int headerHeight: headerrow.height
 
     property Component itemDelegate: standardDelegate
     property Component rowDelegate: rowDelegate
     property Component headerDelegate: headerDelegate
+    property alias cacheBuffer: tree.cacheBuffer
+
+    property bool headerVisible: true
 
     default property alias header: tree.header
+
+    signal activated
 
     Component {
         id: standardDelegate
         Item {
-            clip: true
             property int implicitWidth: sizehint.paintedWidth + 4
             Text {
                 width: parent.width
@@ -181,27 +184,25 @@ FocusScope{
 
         // Handle vertical scrolling whem dragging mouse outside boundraries
 
-        Timer { running: mousearea.autoincrement; repeat: true; interval: 30 ; onTriggered: tree.incrementCurrentIndex()}
-        Timer { running: mousearea.autodecrement; repeat: true; interval: 30 ; onTriggered: tree.decrementCurrentIndex()}
+        Timer { running: mousearea.autoincrement; repeat: true; interval: 20 ; onTriggered: incrementCurrentIndex()}
+        Timer { running: mousearea.autodecrement; repeat: true; interval: 20 ; onTriggered: decrementCurrentIndex()}
 
         onMousePositionChanged: {
-            if (mouseY > tree.height) {
+            if (mouseY > tree.height && pressed) {
+                if (autoincrement)return
                 autodecrement = false
                 autoincrement = true
-            } else if (mouseY < 0) {
+            } else if (mouseY < 0 && pressed) {
+                if (autodecrement)return
                 autoincrement = false
                 autodecrement = true
             } else  {
                 autoincrement = false
                 autodecrement = false
             }
-
-            var x = Math.min(contentX + tree.width - 5, Math.max(mouseX + contentX, contentX))
             var y = Math.min(contentY + tree.height - 5, Math.max(mouseY + contentY, contentY))
-
-            var newIndex =tree.indexAt(x, y)
-            if (newIndex > 0)
-                tree.currentIndex = tree.indexAt(x, y)
+            var newIndex = tree.indexAt(0, y)
+            tree.currentIndex = tree.indexAt(0, y)
         }
         onPressed:  {
             tree.forceActiveFocus()
@@ -209,16 +210,35 @@ FocusScope{
             var y = Math.min(contentHeight - 5, Math.max(mouseY + contentY, 0))
             tree.currentIndex = tree.indexAt(x, y)
         }
+
+        onDoubleClicked: {
+            parent.activated()
+        }
+    }
+
+    function decrementCurrentIndex() {
+        tree.blockUpdates = true;
+        tree.decrementCurrentIndex();
+        wheelarea.verticalValue = contentY/wheelarea.scale;
+        tree.blockUpdates = false;
+    }
+
+    function incrementCurrentIndex() {
+        tree.blockUpdates = true;
+        tree.incrementCurrentIndex();
+        wheelarea.verticalValue = contentY/wheelarea.scale;
+        tree.blockUpdates = false;
     }
 
     ListView {
         id: tree
-        property list<HeaderSection> header
-
+        property list<TableColumn> header
+        property bool blockUpdates: false
+        highlightFollowsCurrentItem: true
         model: root.model
 
         interactive: false
-        anchors.top: headersection.bottom
+        anchors.top: tableColumn.bottom
         anchors.topMargin: -frameWidth
         anchors.left: frameitem.left
         anchors.right: frameitem.right
@@ -231,12 +251,22 @@ FocusScope{
         focus: true
         clip: true
 
-        Keys.onUpPressed: if (currentIndex > 0) currentIndex = currentIndex - 1
-        Keys.onDownPressed: if (currentIndex< count - 1) currentIndex = currentIndex + 1
+        Keys.onUpPressed: root.decrementCurrentIndex()
+        Keys.onDownPressed: root.incrementCurrentIndex()
 
-        onCurrentIndexChanged: {
-            positionViewAtIndex(currentIndex, ListView.Contain)
+        Keys.onPressed: {
+            if (event.key == Qt.Key_PageUp) {
+                vscrollbar.value = vscrollbar.value - tree.height
+            } else if (event.key == Qt.Key_PageDown)
+                vscrollbar.value = vscrollbar.value + tree.height
+       }
+
+        onContentYChanged:  {
+            // positionViewAtIndex(currentIndex, ListView.Visible)
+            // highlight follows item
+            blockUpdates = true
             vscrollbar.value = tree.contentY
+            blockUpdates = false
         }
 
         delegate: Item {
@@ -270,16 +300,18 @@ FocusScope{
                         id: itemDelegateLoader
                         visible: header[index].visible
                         sourceComponent: itemDelegate
+                        property variant model: tree.model
+                        property variant itemProperty: header[index].property
 
                         width: header[index].width
-                        height: Math.max(16, styleitem.sizeFromContents(16, 16).height)
+                        height: item ? item.height :  Math.max(16, styleitem.sizeFromContents(16, 16).height)
 
                         function getValue() {
-                            if (index < header.length &&
-                                    root.model.get(rowIndex).hasOwnProperty(header[index].property))
-                                return root.model.get(rowIndex)[ header[index].property]
+                            if (hasOwnProperty(header[index].property))
+                                return this[header[index].property]
+                            return ""
                         }
-                        property variant itemValue: root.model.get(rowIndex)[ header[index].property]
+                        property variant itemValue: getValue()
                         property bool itemSelected: rowitem.ListView.isCurrentItem
                         property color itemForeground: itemSelected ? rowstyleitem.highlightedTextColor : rowstyleitem.textColor
                         property int rowIndex: rowitem.rowIndex
@@ -294,14 +326,15 @@ FocusScope{
     Text{ id:text }
 
     Item {
-        id: headersection
+        id: tableColumn
         clip: true
         anchors.top: frameitem.top
         anchors.left: frameitem.left
         anchors.right: frameitem.right
         anchors.margins: frameWidth
-        height: headerVisible ? styleitem.sizeFromContents(text.font.pixelSize, styleitem.fontHeight).height : frameWidth
         visible: headerVisible
+        Behavior on height { NumberAnimation{duration:80}}
+        height: headerVisible ? styleitem.sizeFromContents(text.font.pixelSize, styleitem.fontHeight).height : frameWidth
 
         Row {
             id: headerrow
@@ -388,7 +421,7 @@ FocusScope{
 
                     Loader {
                         id: draghandle
-                        parent: headersection
+                        parent: tableColumn
                         sourceComponent: root.headerDelegate
                         width: header[index].width
                         height: parent.height
@@ -451,6 +484,34 @@ FocusScope{
             property bool itemContainsMouse
         }
     }
+
+    WheelArea {
+        id: wheelarea
+        anchors.fill: parent
+        property int scale: 5
+        horizontalMinimumValue: hscrollbar.minimumValue/scale
+        horizontalMaximumValue: hscrollbar.maximumValue/scale
+        verticalMinimumValue: vscrollbar.minimumValue/scale
+        verticalMaximumValue: vscrollbar.maximumValue/scale
+
+        verticalValue: contentY/scale
+        horizontalValue: contentX/scale
+
+        onVerticalValueChanged: {
+            if(!tree.blockUpdates) {
+                contentY = verticalValue * scale
+                vscrollbar.value = contentY
+            }
+        }
+
+        onHorizontalValueChanged: {
+            if(!tree.blockUpdates) {
+                contentX = horizontalValue * scale
+                hscrollbar.value = contentX
+            }
+        }
+    }
+
     ScrollBar {
         id: hscrollbar
         orientation: Qt.Horizontal
@@ -464,7 +525,10 @@ FocusScope{
         anchors.leftMargin: frameWidth
         anchors.bottomMargin: styleitem.frameoffset
         anchors.rightMargin: vscrollbar.visible ? scrollbarExtent : (frame ? 1 : 0)
-        onValueChanged: contentX = value
+        onValueChanged: {
+            if (!tree.blockUpdates)
+                contentX = value
+        }
         property int scrollbarExtent : styleitem.pixelMetric("scrollbarExtent");
     }
 
@@ -472,7 +536,7 @@ FocusScope{
         id: vscrollbar
         orientation: Qt.Vertical
         // We cannot bind directly to tree.height due to binding loops so we have to redo the calculation here
-        property int availableHeight : root.height - (hscrollbar.visible ? hscrollbar.height : 0) - headersection.height
+        property int availableHeight : root.height - (hscrollbar.visible ? hscrollbar.height : 0) - tableColumn.height
         visible: contentHeight > availableHeight
         maximumValue: contentHeight > availableHeight ? tree.contentHeight - availableHeight : 0
         minimumValue: 0
@@ -480,9 +544,21 @@ FocusScope{
         anchors.right: parent.right
         anchors.top: parent.top
         anchors.bottom: parent.bottom
-        anchors.topMargin: styleitem.style == "mac" ? headersection.height : 0
-        onValueChanged: contentY = value
+        anchors.topMargin: styleitem.style == "mac" ? tableColumn.height : 0
+        onValueChanged: {
+            if(!tree.blockUpdates)
+                time.start()
+        }
         anchors.bottomMargin: hscrollbar.visible ? hscrollbar.height :  styleitem.frameoffset
+
+        Keys.onUpPressed: if (tree.currentIndex > 0) tree.currentIndex = tree.currentIndex - 1
+        Keys.onDownPressed: if (tree.currentIndex< tree.count - 1) tree.currentIndex = tree.currentIndex + 1
+    }
+
+    Timer{
+        id:time
+        interval: 0
+        onTriggered:contentY = vscrollbar.value
     }
 
     QStyleItem {

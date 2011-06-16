@@ -16,8 +16,8 @@ Components.Button {
         id: styleitem
         anchors.fill: parent
         elementType: "button"
-        sunken: pressed
-        raised: !pressed
+        sunken: pressed || checked
+        raised: !(pressed || checked)
         hover: containsMouse
         text: iconSource === "" ? "" : button.text
         focus: button.focus

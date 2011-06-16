@@ -50,6 +50,7 @@ Components.ChoiceList {
         anchors.rightMargin: backgroundItem.pixelMetric("menuhmargin") + fw
         anchors.topMargin: backgroundItem.pixelMetric("menuvmargin") + fw
         anchors.bottomMargin: backgroundItem.pixelMetric("menuvmargin") + fw
+
         property string behavior: backgroundItem.styleHint("comboboxpopup") ? "MacOS" : "Windows"
         property int fw: backgroundItem.pixelMetric("menupanelwidth");
         QStyleItem {

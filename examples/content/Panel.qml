@@ -1,5 +1,5 @@
 import QtQuick 2.0
-import "../components"
+import "../../components"
 
 Rectangle {
     id:root
@@ -16,7 +16,7 @@ Rectangle {
             height:600
             BorderImage {
                 id: page
-                source: "images/page.png"
+                source: "../images/page.png"
                 y:10; x:50
                 width: 400; height: 400
                 border.left: 12; border.top: 12
@@ -39,7 +39,7 @@ Rectangle {
 
             BorderImage {
                 id: sidebar
-                source: "images/panel.png"
+                source: "../images/panel.png"
                 anchors.left: parent.left
                 anchors.top: parent.top
                 width: show ? 160 : 40

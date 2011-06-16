@@ -77,6 +77,24 @@ QStyleItem {
         }
     }
 
+    WheelArea {
+        id: wheelarea
+        anchors.fill: parent
+        horizontalMinimumValue: dial.minimumValue
+        horizontalMaximumValue: dial.maximumValue
+        verticalMinimumValue: dial.minimumValue
+        verticalMaximumValue: dial.maximumValue
+        property double step: (dial.maximumValue - dial.minimumValue)/100
+
+        onVerticalWheelMoved: {
+            value += verticalDelta/4*step
+        }
+
+        onHorizontalWheelMoved: {
+            value += horizontalDelta/4*step
+        }
+    }
+
     elementType:"dial"
     sunken: mouseArea.pressed
     maximum: range.maximumValue*90
