@@ -46,6 +46,7 @@ Rectangle {
                 anchors.fill: parent
                 Text {
                     id: closeText
+                    anchors.horizontalCenter: parent.horizontalCenter
                     text: "This is a new Window,\npress the button below\nto close it again."
                 }
                 Button {

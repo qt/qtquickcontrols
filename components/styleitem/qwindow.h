@@ -52,6 +52,11 @@ protected:
             case QEvent::Hide:
                 emit visibilityChanged();
                 break;
+            case QEvent::Resize: {
+                const QResizeEvent *resize = static_cast<const QResizeEvent *>(event);
+                emit sizeChanged(resize->size());
+                break;
+            }
             default: break;
         }
         return QMainWindow::event(event);
@@ -60,6 +65,7 @@ protected:
 Q_SIGNALS:
     void visibilityChanged();
     void windowStateChanged();
+    void sizeChanged(QSize newSize);
 
 private:
     QDeclarativeView *_view;
@@ -92,8 +98,14 @@ public:
 
     void setX(int x) { _window->move(x, y()); }
     void setY(int y) { _window->move(x(), y); }
-    void setHeight(int height) { _window->resize(width(), height); }
-    void setWidth(int width) { _window->resize(width, height()); }
+    void setHeight(int height) {
+        _window->resize(width(), height);
+        QDeclarativeItem::setHeight(height);
+    }
+    void setWidth(int width) {
+        _window->resize(width, height());
+        QDeclarativeItem::setWidth(width);
+    }
     void setVisible(bool visible) { _window->setVisible(visible); }
     void setWindowDecoration(bool s) {
         _window->setWindowFlags(s ? _window->windowFlags() & ~Qt::FramelessWindowHint
@@ -105,6 +117,9 @@ public:
 protected:
     bool eventFilter(QObject *, QEvent *ev);
     void componentComplete();
+
+protected Q_SLOTS:
+    void updateSize(QSize newSize);
 
 Q_SIGNALS:
     void sizeChanged();

@@ -44,6 +44,7 @@ QWindow::QWindow() : _window(new DeclarativeWindow)
 {
     connect(_window, SIGNAL(visibilityChanged()), this, SIGNAL(visibilityChanged()));
     connect(_window, SIGNAL(windowStateChanged()), this, SIGNAL(windowStateChanged()));
+    connect(_window, SIGNAL(sizeChanged(QSize)), this, SLOT(updateSize(QSize)));
 }
 
 bool QWindow::eventFilter(QObject *, QEvent *ev)
@@ -61,9 +62,14 @@ bool QWindow::eventFilter(QObject *, QEvent *ev)
     return false;
 }
 
-
 void QWindow::componentComplete()
 {
     _window->scene()->addItem(this);
     QDeclarativeItem::componentComplete();
+}
+
+void QWindow::updateSize(QSize newSize)
+{
+    QDeclarativeItem::setSize(newSize);
+    emit sizeChanged();
 }
