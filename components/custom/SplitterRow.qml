@@ -287,16 +287,6 @@ Item {
             sourceComponent: handleBackground
             onWidthChanged: d.updateLayout()
 
-            Component.onCompleted: {
-                if (d.expandingIndex > handleIndex) {
-                    leftItem = items[handleIndex]
-                    if (leftItem.visible === false)
-                        visible
-                } else {
-
-                }
-            }
-
             onXChanged: {
                 // Moving the handle means resizing an item. Which one,
                 // left or right, depends on where the expanding item is.
@@ -456,10 +446,20 @@ Item {
             onVisibleChanged: {
                 // Hiding the expanding item forces us to
                 // select a new one (and therefore not recommended):
-                if (d.expandingIndex === itemIndex)
+
+                if (d.expandingIndex === itemIndex) {
                     updateExpandingIndex()
-                else
+                } else {
+                    if (visible) {
+                        // Try to keep all items within the SplitterRow. When an item
+                        // has been hidden, the expanding item might no longer be large enough
+                        // to give away space to the new items width. So we need to resize:
+                        var overflow = d.accumulatedWidth(0, items.length, true) - root.width;
+                        if (overflow > 0)
+                            parent.width -= overflow
+                    }
                     d.updateLayout()
+                }
             }
         }
     }
