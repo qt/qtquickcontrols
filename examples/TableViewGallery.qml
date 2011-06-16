@@ -19,7 +19,7 @@ Rectangle {
 
         ChoiceList {
             id: delegateChooser
-            enabled: frame.current == 3 ? 1 : 0
+            enabled: frame.current == 4 ? 1 : 0
             model: delegatemenu
             anchors.left: parent.left
             anchors.leftMargin: 8
@@ -59,8 +59,8 @@ Rectangle {
     ListModel {
         id: largeModel
         Component.onCompleted: {
-            for (var i=0 ; i< 50 ; ++i)
-                largeModel.append({"name":"Person "+i , "age": Math.round(Math.random()*100), "sex": Math.random()>0.5 ? "Male" : "Female"})
+            for (var i=0 ; i< 5000 ; ++i)
+                largeModel.append({"name":"Person "+i , "age": Math.round(Math.random()*100), "gender": Math.random()>0.5 ? "Male" : "Female"})
         }
     }
 
@@ -194,7 +194,6 @@ Rectangle {
                     model: largeModel
                     anchors.margins: 12
                     anchors.fill: parent
-
                     TableColumn {
                         property: "name"
                         caption: "Name"
@@ -205,7 +204,11 @@ Rectangle {
                         caption: "Age"
                         width: 120
                     }
-
+                    TableColumn {
+                        property: "gender"
+                        caption: "Gender"
+                        width: 120
+                    }
                     frame: frameCheckbox.checked
                     headerVisible: headerCheckbox.checked
                     sortIndicatorVisible: sortableCheckbox.checked

@@ -217,17 +217,17 @@ FocusScope{
     }
 
     function decrementCurrentIndex() {
-        tree.blockUpdates = true
-        if (currentIndex > 0) tree.currentIndex = tree.currentIndex - 1
-        wheelarea.verticalValue = contentY/wheelarea.scale
-        tree.blockUpdates = false
+        tree.blockUpdates = true;
+        tree.decrementCurrentIndex();
+        wheelarea.verticalValue = contentY/wheelarea.scale;
+        tree.blockUpdates = false;
     }
 
     function incrementCurrentIndex() {
-        tree.blockUpdates = true
-        if (currentIndex< model.count - 1) tree.currentIndex = tree.currentIndex + 1
-        wheelarea.verticalValue = contentY/wheelarea.scale
-        tree.blockUpdates = false
+        tree.blockUpdates = true;
+        tree.incrementCurrentIndex();
+        wheelarea.verticalValue = contentY/wheelarea.scale;
+        tree.blockUpdates = false;
     }
 
     ListView {
@@ -545,12 +545,18 @@ FocusScope{
         anchors.topMargin: styleitem.style == "mac" ? tableColumn.height : 0
         onValueChanged: {
             if(!tree.blockUpdates)
-                contentY = value
+                time.start()
         }
         anchors.bottomMargin: hscrollbar.visible ? hscrollbar.height :  styleitem.frameoffset
 
         Keys.onUpPressed: if (tree.currentIndex > 0) tree.currentIndex = tree.currentIndex - 1
         Keys.onDownPressed: if (tree.currentIndex< tree.count - 1) tree.currentIndex = tree.currentIndex + 1
+    }
+
+    Timer{
+        id:time
+        interval: 0
+        onTriggered:contentY = vscrollbar.value
     }
 
     QStyleItem {
