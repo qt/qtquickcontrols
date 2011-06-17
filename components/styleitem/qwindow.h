@@ -79,6 +79,10 @@ class QWindow : public QDeclarativeItem
     Q_PROPERTY(int y READ y WRITE setY NOTIFY positionChanged)
     Q_PROPERTY(int height READ height WRITE setHeight NOTIFY sizeChanged)
     Q_PROPERTY(int width READ width WRITE setWidth NOTIFY sizeChanged)
+    Q_PROPERTY(int minimumHeight READ minimumHeight WRITE setMinimumHeight NOTIFY minimumHeightChanged)
+    Q_PROPERTY(int maximumHeight READ maximumHeight WRITE setMaximumHeight NOTIFY maximumHeightChanged)
+    Q_PROPERTY(int minimumWidth READ minimumWidth WRITE setMinimumWidth NOTIFY minimumWidthChanged)
+    Q_PROPERTY(int maximumWidth READ maximumWidth WRITE setMaximumWidth NOTIFY maximumWidthChanged)
     Q_PROPERTY(bool visible READ isVisible WRITE setVisible NOTIFY visibilityChanged)
     Q_PROPERTY(bool windowDecoration READ windowDecoration WRITE setWindowDecoration NOTIFY windowDecorationChanged)
     Q_PROPERTY(Qt::WindowState windowState READ windowState WRITE setWindowState NOTIFY windowStateChanged)
@@ -89,12 +93,17 @@ public:
     int x() { return _window->x(); }
     int y() { return _window->y(); }
     int height() { return _window->height(); }
+    int minimumHeight() { return _window->minimumHeight(); }
+    int maximumHeight() { return _window->maximumHeight(); }
     int width() { return _window->width(); }
+    int minimumWidth() { return _window->minimumWidth(); }
+    int maximumWidth() { return _window->maximumWidth(); }
     bool isVisible() { return _window->isVisible(); }
     bool windowDecoration() { return !(_window->windowFlags() & Qt::FramelessWindowHint); }
     Qt::WindowState windowState() { return static_cast<Qt::WindowState>(static_cast<int>(_window->windowState()) & ~Qt::WindowActive); }
     DeclarativeWindow *window() { return _window; }
     QDeclarativeView *view() { return _window->view(); }
+
 
     void setX(int x) { _window->move(x, y()); }
     void setY(int y) { _window->move(x(), y); }
@@ -102,10 +111,14 @@ public:
         _window->resize(width(), height);
         QDeclarativeItem::setHeight(height);
     }
+    void setMinimumHeight(int height) { _window->setMinimumHeight(height); }
+    void setMaximumHeight(int height) { _window->setMaximumHeight(height); }
     void setWidth(int width) {
         _window->resize(width, height());
         QDeclarativeItem::setWidth(width);
     }
+    void setMinimumWidth(int width) { _window->setMinimumWidth(width); }
+    void setMaximumWidth(int width) { _window->setMaximumWidth(width); }
     void setVisible(bool visible) { _window->setVisible(visible); }
     void setWindowDecoration(bool s) {
         _window->setWindowFlags(s ? _window->windowFlags() & ~Qt::FramelessWindowHint
@@ -127,6 +140,10 @@ Q_SIGNALS:
     void visibilityChanged();
     void windowDecorationChanged();
     void windowStateChanged();
+    void minimumHeightChanged();
+    void minimumWidthChanged();
+    void maximumHeightChanged();
+    void maximumWidthChanged();
 
 private:
     DeclarativeWindow *_window;

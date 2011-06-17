@@ -38,12 +38,16 @@ Rectangle {
             width: 250
             height: 250
 
+            minimumWidth: 250
+            minimumHeight: 250
+
             x: 500
             y: 500
 
             Rectangle {
                 color: syspal.window
                 anchors.fill: parent
+
                 Text {
                     id: closeText
                     anchors.horizontalCenter: parent.horizontalCenter
