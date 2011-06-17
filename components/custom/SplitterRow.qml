@@ -358,7 +358,7 @@ Item {
     Component {
         // This dummy item becomes a child of all
         // items it the splitter, just to provide a way
-        // to listed for changes to their width, expanding etc.
+        // to listen for changes to their width, expanding etc.
         id: propertyChangeListener
         Item {
             id: target
@@ -396,7 +396,7 @@ Item {
                 }
                 item = items[newIndex]
                 if (item.visible === false) {
-                    // So now we ended up with tha last item in the splitter to be
+                    // So now we ended up with the last item in the splitter to be
                     // expanding, but it turns out to not be visible. So we need to
                     // traverse backwards again to find one that is visible...
                     for (i=items.length-2; i>=0; --i) {
@@ -446,7 +446,6 @@ Item {
             onVisibleChanged: {
                 // Hiding the expanding item forces us to
                 // select a new one (and therefore not recommended):
-
                 if (d.expandingIndex === itemIndex) {
                     updateExpandingIndex()
                 } else {
