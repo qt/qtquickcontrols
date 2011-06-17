@@ -84,7 +84,7 @@ class QWindow : public QDeclarativeItem
     Q_PROPERTY(Qt::WindowState windowState READ windowState WRITE setWindowState NOTIFY windowStateChanged)
 
 public:
-    QWindow();
+    QWindow(DeclarativeWindow* declarativeWindow = 0);
 
     int x() { return _window->x(); }
     int y() { return _window->y(); }

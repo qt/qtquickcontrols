@@ -105,12 +105,12 @@ Q_SIGNALS:
 };
 
 class QmlDesktopViewer
-    : public QMainWindow
+    : public DeclarativeWindow
 {
     Q_OBJECT
 
 public:
-    QmlDesktopViewer(QWidget *parent = 0, Qt::WindowFlags flags = 0);
+    QmlDesktopViewer();
     ~QmlDesktopViewer();
 
     static void registerTypes();
@@ -119,7 +119,6 @@ public:
     void addPluginPath(const QString& plugin);
     void setUseGL(bool use);
 
-    QDeclarativeView *view() const;
     LoggerWidget *loggerWidget() const;
     QString currentFile() const { return currentFileOrUrl; }
 
@@ -146,8 +145,8 @@ private slots:
 private:
     void updateSizeHints(bool initial = false);
 
+    QWindow *_window;
     LoggerWidget *loggerWindow;
-    QWindow *canvas;
     QSize initialSize;
     QString currentFileOrUrl;
     QAction *_showLoggerWindow;

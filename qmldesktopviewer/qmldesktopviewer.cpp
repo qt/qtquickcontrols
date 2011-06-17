@@ -64,36 +64,30 @@
 
 QT_BEGIN_NAMESPACE
 
-QmlDesktopViewer::QmlDesktopViewer(QWidget *parent, Qt::WindowFlags flags)
-    : QMainWindow(parent, flags)
-      , loggerWindow(new LoggerWidget(this))
+QmlDesktopViewer::QmlDesktopViewer()
+      : _window(new QWindow(this))
+      ,  loggerWindow(new LoggerWidget(this))
       , _showLoggerWindow(0)
       , translator(0)
 {
     QmlDesktopViewer::registerTypes();
     setWindowTitle(tr("Qt QML Viewer"));
 
-    canvas = 0;
-    canvas = new QWindow;
-    canvas->view()->setAttribute(Qt::WA_OpaquePaintEvent);
-    canvas->view()->setAttribute(Qt::WA_NoSystemBackground);
+    view()->setAttribute(Qt::WA_OpaquePaintEvent);
+    view()->setAttribute(Qt::WA_NoSystemBackground);
 
-    canvas->view()->setFocus();
+    view()->setFocus();
 
-    QObject::connect(canvas->view(), SIGNAL(sceneResized(QSize)), this, SLOT(sceneResized(QSize)));
-    QObject::connect(canvas->view(), SIGNAL(statusChanged(QDeclarativeView::Status)), this, SLOT(statusChanged()));
-    QObject::connect(canvas->view()->engine(), SIGNAL(quit()), this, SLOT(close()));
+    QObject::connect(view(), SIGNAL(sceneResized(QSize)), this, SLOT(sceneResized(QSize)));
+    QObject::connect(view(), SIGNAL(statusChanged(QDeclarativeView::Status)), this, SLOT(statusChanged()));
+    QObject::connect(view()->engine(), SIGNAL(quit()), this, SLOT(close()));
 
     QObject::connect(loggerWindow, SIGNAL(opened()), this, SLOT(loggerWidgetOpened()));
     QObject::connect(loggerWindow, SIGNAL(closed()), this, SLOT(loggerWidgetClosed()));
 
-    if (!(flags & Qt::FramelessWindowHint)) {
-        createMenu();
-    } else {
-        setMenuBar(0);
-    }
+    createMenu();
 
-    setCentralWidget(canvas->view());
+    setCentralWidget(view());
 
     QObject::connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(appAboutToQuit()));
 }
@@ -104,11 +98,6 @@ QmlDesktopViewer::~QmlDesktopViewer()
         delete loggerWindow;
         loggerWindow = 0;
     }
-}
-
-QDeclarativeView *QmlDesktopViewer::view() const
-{
-    return canvas->view();
 }
 
 LoggerWidget *QmlDesktopViewer::loggerWidget() const
@@ -175,12 +164,12 @@ void QmlDesktopViewer::loggerWidgetClosed()
 
 void QmlDesktopViewer::addLibraryPath(const QString& lib)
 {
-    canvas->view()->engine()->addImportPath(lib);
+    view()->engine()->addImportPath(lib);
 }
 
 void QmlDesktopViewer::addPluginPath(const QString& plugin)
 {
-    canvas->view()->engine()->addPluginPath(plugin);
+    view()->engine()->addPluginPath(plugin);
 }
 
 void QmlDesktopViewer::reload()
@@ -190,7 +179,7 @@ void QmlDesktopViewer::reload()
 
 void QmlDesktopViewer::openFile()
 {
-    QString cur = canvas->view()->source().toLocalFile();
+    QString cur = view()->source().toLocalFile();
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open QML file"), cur, tr("QML Files (*.qml)"));
     if (!fileName.isEmpty()) {
         QFileInfo fi(fileName);
@@ -200,7 +189,7 @@ void QmlDesktopViewer::openFile()
 
 void QmlDesktopViewer::openUrl()
 {
-    QString cur = canvas->view()->source().toLocalFile();
+    QString cur = view()->source().toLocalFile();
     QString url= QInputDialog::getText(this, tr("Open QML file"), tr("URL of main QML file:"), QLineEdit::Normal, cur);
     if (!url.isEmpty())
         open(url);
@@ -208,8 +197,8 @@ void QmlDesktopViewer::openUrl()
 
 void QmlDesktopViewer::statusChanged()
 {
-    if (canvas->view()->status() == QDeclarativeView::Ready) {
-        initialSize = canvas->view()->initialSize();
+    if (view()->status() == QDeclarativeView::Ready) {
+        initialSize = view()->initialSize();
         updateSizeHints(true);
     }
 }
@@ -241,9 +230,9 @@ bool QmlDesktopViewer::open(const QString& file_or_url)
         url = QUrl(file_or_url);
     setWindowTitle(tr("%1 - Qt QML Desktop Viewer").arg(file_or_url));
 
-    delete canvas->view()->rootObject();
-    canvas->view()->engine()->clearComponentCache();
-    QDeclarativeContext *ctxt = canvas->view()->rootContext();
+    delete view()->rootObject();
+    view()->engine()->clearComponentCache();
+    QDeclarativeContext *ctxt = view()->rootContext();
     ctxt->setContextProperty("qmlDesktopViewer", this);
     ctxt->setContextProperty("qmlDesktopViewerFolder", QDir::currentPath());
 
@@ -264,7 +253,7 @@ bool QmlDesktopViewer::open(const QString& file_or_url)
         }
     }
 
-    canvas->view()->setSource(url);
+    view()->setSource(url);
 
     return true;
 }
@@ -301,7 +290,7 @@ void QmlDesktopViewer::setUseGL(bool useGL)
         //### potentially faster, but causes junk to appear if top-level is Item, not Rectangle
         //glWidget->setAutoFillBackground(false);
 
-        canvas->setViewport(glWidget);
+        setViewport(glWidget);
     }
 #else
     Q_UNUSED(useGL)
@@ -316,10 +305,10 @@ void QmlDesktopViewer::updateSizeHints(bool initial)
         return;
     isRecursive = true;
 
-    if (initial || (canvas->view()->resizeMode() == QDeclarativeView::SizeViewToRootObject)) {
-        QSize newWindowSize = initial ? initialSize : canvas->view()->sizeHint();
+    if (initial || (view()->resizeMode() == QDeclarativeView::SizeViewToRootObject)) {
+        QSize newWindowSize = initial ? initialSize : view()->sizeHint();
         if (!isFullScreen() && !isMaximized()) {
-            canvas->view()->setFixedSize(newWindowSize);
+            view()->setFixedSize(newWindowSize);
             resize(1, 1);
             layout()->setSizeConstraint(QLayout::SetFixedSize);
             layout()->activate();
@@ -329,8 +318,8 @@ void QmlDesktopViewer::updateSizeHints(bool initial)
     layout()->activate();
     setMinimumSize(minimumSizeHint());
     setMaximumSize(QSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX));
-    canvas->view()->setMinimumSize(QSize(0,0));
-    canvas->view()->setMaximumSize(QSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX));
+    view()->setMinimumSize(QSize(0,0));
+    view()->setMaximumSize(QSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX));
 
     isRecursive = false;
 }
@@ -351,7 +340,7 @@ void QmlDesktopViewer::registerTypes()
 void QmlDesktopViewer::appAboutToQuit()
 {
     // avoid QGLContext errors about invalid contexts on exit
-    canvas->view()->setViewport(0);
+    view()->setViewport(0);
 
     // avoid crashes if messages are received after app has closed
     if (loggerWindow) {

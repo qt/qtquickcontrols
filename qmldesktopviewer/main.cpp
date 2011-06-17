@@ -239,8 +239,7 @@ static void parseCommandLineOptions(const QStringList &arguments)
 
 static QmlDesktopViewer *createViewer()
 {
-    Qt::WFlags wflags = Qt::Widget;
-    QmlDesktopViewer *viewer = new QmlDesktopViewer(0, wflags);
+    QmlDesktopViewer *viewer = new QmlDesktopViewer;
     viewer->setAttribute(Qt::WA_DeleteOnClose, true);
     viewer->setUseGL(opts.useGL);
 

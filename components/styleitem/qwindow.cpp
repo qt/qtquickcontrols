@@ -40,7 +40,8 @@
 
 #include "qwindow.h"
 
-QWindow::QWindow() : _window(new DeclarativeWindow)
+QWindow::QWindow(DeclarativeWindow* declarativeWindow)
+    : _window(declarativeWindow ? declarativeWindow : new DeclarativeWindow)
 {
     connect(_window, SIGNAL(visibilityChanged()), this, SIGNAL(visibilityChanged()));
     connect(_window, SIGNAL(windowStateChanged()), this, SIGNAL(windowStateChanged()));
