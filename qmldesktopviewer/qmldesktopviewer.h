@@ -143,7 +143,7 @@ private slots:
     void loggerWidgetClosed();
 
 private:
-    void updateSizeHints(bool initial = false);
+    void initializeSize();
 
     QWindow *_window;
     LoggerWidget *loggerWindow;

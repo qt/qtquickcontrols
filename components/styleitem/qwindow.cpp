@@ -46,6 +46,7 @@ QWindow::QWindow(DeclarativeWindow* declarativeWindow)
     connect(_window, SIGNAL(visibilityChanged()), this, SIGNAL(visibilityChanged()));
     connect(_window, SIGNAL(windowStateChanged()), this, SIGNAL(windowStateChanged()));
     connect(_window, SIGNAL(sizeChanged(QSize)), this, SLOT(updateSize(QSize)));
+    view()->setResizeMode(QDeclarativeView::SizeRootObjectToView);
 }
 
 bool QWindow::eventFilter(QObject *, QEvent *ev)

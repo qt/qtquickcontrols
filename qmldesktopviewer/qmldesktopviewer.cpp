@@ -198,8 +198,7 @@ void QmlDesktopViewer::openUrl()
 void QmlDesktopViewer::statusChanged()
 {
     if (view()->status() == QDeclarativeView::Ready) {
-        initialSize = view()->initialSize();
-        updateSizeHints(true);
+        initializeSize();
     }
 }
 
@@ -260,7 +259,6 @@ bool QmlDesktopViewer::open(const QString& file_or_url)
 
 void QmlDesktopViewer::sceneResized(QSize)
 {
-    updateSizeHints();
 }
 
 void QmlDesktopViewer::keyPressEvent(QKeyEvent *event)
@@ -297,22 +295,14 @@ void QmlDesktopViewer::setUseGL(bool useGL)
 #endif
 }
 
-void QmlDesktopViewer::updateSizeHints(bool initial)
+void QmlDesktopViewer::initializeSize()
 {
-    static bool isRecursive = false;
-
-    if (isRecursive)
-        return;
-    isRecursive = true;
-
-    if (initial || (view()->resizeMode() == QDeclarativeView::SizeViewToRootObject)) {
-        QSize newWindowSize = initial ? initialSize : view()->sizeHint();
-        if (!isFullScreen() && !isMaximized()) {
-            view()->setFixedSize(newWindowSize);
-            resize(1, 1);
-            layout()->setSizeConstraint(QLayout::SetFixedSize);
-            layout()->activate();
-        }
+    QSize newWindowSize = view()->initialSize();
+    if (!isFullScreen() && !isMaximized()) {
+        view()->setFixedSize(newWindowSize);
+        resize(1, 1);
+        layout()->setSizeConstraint(QLayout::SetFixedSize);
+        layout()->activate();
     }
     layout()->setSizeConstraint(QLayout::SetNoConstraint);
     layout()->activate();
@@ -320,8 +310,6 @@ void QmlDesktopViewer::updateSizeHints(bool initial)
     setMaximumSize(QSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX));
     view()->setMinimumSize(QSize(0,0));
     view()->setMaximumSize(QSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX));
-
-    isRecursive = false;
 }
 
 void QmlDesktopViewer::registerTypes()
