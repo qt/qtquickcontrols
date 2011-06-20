@@ -47,6 +47,31 @@ Rectangle {
             y: 500
             title: "child window"
 
+            MenuBarBase {
+                Menu {
+                    text: "Something"
+                    MenuItem {
+                        text: "Open"
+                        shortcut: "Ctrl+O"
+                        onTriggered: console.log("we should display a file open dialog")
+                    }
+                    MenuItem {
+                        text: "Close"
+                        shortcut: "Ctrl+Q"
+                        onTriggered: Qt.quit()
+                    }
+                }
+                Menu {
+                    text: "Edit"
+                    MenuItem {
+                        text: "Copy"
+                    }
+                    MenuItem {
+                        text: "Paste"
+                    }
+                }
+            }
+
             Rectangle {
                 color: syspal.window
                 anchors.fill: parent

@@ -41,10 +41,12 @@
 #define QTMENUITEM_H
 
 #include <QtCore/QObject>
+#include <QtGui/QAction>
 
 class QtMenuItem: public QObject
 {
-    Q_PROPERTY(QString text READ text WRITE setText);
+    Q_PROPERTY(QString text READ text WRITE setText NOTIFY textChanged);
+    Q_PROPERTY(QString shortcut READ shortcut WRITE setShortcut NOTIFY shortcutChanged)
 
     Q_OBJECT
 public:
@@ -52,13 +54,20 @@ public:
     ~QtMenuItem();
 
     void setText(const QString &text);
-    QString text();
+    void setShortcut(const QString &shortcut);
+
+    QString text() const;
+    QString shortcut() const;
+
+    QAction* action();
 
 Q_SIGNALS:
-    void selected();
+    void triggered();
+    void textChanged();
+    void shortcutChanged();
 
 private:
-    QString m_text;
+    QAction *_action;
 };
 
 #endif //QTMENUITEM_H

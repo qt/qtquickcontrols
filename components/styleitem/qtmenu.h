@@ -34,19 +34,18 @@
 class QtMenu : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QString title READ title WRITE setTitle)
-    Q_PROPERTY(QString selected READ selected NOTIFY selectedChanged)
+    Q_PROPERTY(QString text READ text WRITE setText)
     Q_PROPERTY(QDeclarativeListProperty<QtMenuItem> menuItems READ menuItems)
     Q_CLASSINFO("DefaultProperty", "menuItems")
 public:
     QtMenu(QObject *parent = 0);
     virtual ~QtMenu();
 
-    void setTitle(const QString &title);
-    QString title() const;
-    QString selected() const;
-    QDeclarativeListProperty<QtMenuItem> menuItems();
+    void setText(const QString &text);
 
+    QString text() const;
+    QDeclarativeListProperty<QtMenuItem> menuItems();
+    QMenu* qmenu() { return _qmenu; }
 
     Q_INVOKABLE void showPopup(qreal x, qreal y);
     Q_INVOKABLE void clearMenuItems();
@@ -54,14 +53,12 @@ public:
 
 Q_SIGNALS:
     void selectedChanged();
-private Q_SLOTS:
-    void emitSelected();
 private:
-    QString m_title;
-    QString m_selected;
+    static void append_qmenuItem(QDeclarativeListProperty<QtMenuItem> *list, QtMenuItem *menuItem);
+private:
     QWidget *dummy;
-    QMenu *m_menu;
-    QList<QtMenuItem *> m_menuItems;
+    QMenu *_qmenu;
+    QList<QtMenuItem *> _qmenuItems;
 };
 
 QML_DECLARE_TYPE(QtMenu)

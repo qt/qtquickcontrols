@@ -50,16 +50,22 @@ class QtMenuBar: public QDeclarativeItem
     Q_OBJECT
 
     Q_PROPERTY(QDeclarativeListProperty<QtMenu> menus READ menus)
+    Q_CLASSINFO("DefaultProperty", "menus")
 public:
     QtMenuBar(QDeclarativeItem *parent = 0);
     ~QtMenuBar();
 
     QDeclarativeListProperty<QtMenu> menus();
 
-    //void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *);
+protected Q_SLOTS:
+    void updateParent();
+
+private:
+    static void append_menu(QDeclarativeListProperty<QtMenu> *list, QtMenu *menu);
 
 private:
     QList<QtMenu *> m_menus;
+    QMenuBar *_menuBar;
 };
 
 #endif //QTMENUBAR_H

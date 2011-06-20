@@ -38,13 +38,16 @@
 ****************************************************************************/
 
 #include "qtmenubar.h"
+#include "qwindow.h"
 
 #include <QtGui/QMenu>
+#include <QtGui/QMenuBar>
 
 QtMenuBar::QtMenuBar(QDeclarativeItem *parent)
-    : QDeclarativeItem(parent)
+    : QDeclarativeItem(parent), _menuBar(new QMenuBar)
 {
-    setFlag(QGraphicsItem::ItemHasNoContents, false);
+    connect(this, SIGNAL(parentChanged()), this, SLOT(updateParent()));
+    setFlag(QGraphicsItem::ItemHasNoContents, true);
 }
 
 QtMenuBar::~QtMenuBar()
@@ -53,5 +56,21 @@ QtMenuBar::~QtMenuBar()
 
 QDeclarativeListProperty<QtMenu> QtMenuBar::menus()
 {
-    return QDeclarativeListProperty<QtMenu>(this, m_menus);
+    return QDeclarativeListProperty<QtMenu>(this, 0, &QtMenuBar::append_menu);
+}
+
+void QtMenuBar::updateParent()
+{
+    if (QWindow* window = qobject_cast<QWindow*>(parent()))
+        window->window()->setMenuBar(_menuBar);
+}
+
+void QtMenuBar::append_menu(QDeclarativeListProperty<QtMenu> *list, QtMenu *menu)
+{
+    QtMenuBar *menuBar = qobject_cast<QtMenuBar *>(list->object);
+    if (menuBar) {
+        menu->setParent(menuBar);
+        menuBar->m_menus.append(menu);
+        menuBar->_menuBar->addMenu(menu->qmenu());
+    }
 }

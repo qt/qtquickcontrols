@@ -40,9 +40,9 @@
 #include "qtmenuitem.h"
 
 QtMenuItem::QtMenuItem(QObject *parent)
-    : QObject(parent)
+    : QObject(parent), _action(new QAction(this))
 {
-
+    connect(_action, SIGNAL(triggered()), this, SIGNAL(triggered()));
 }
 
 QtMenuItem::~QtMenuItem()
@@ -51,10 +51,27 @@ QtMenuItem::~QtMenuItem()
 
 void QtMenuItem::setText(const QString &text)
 {
-    m_text = text;
+    _action->setText(text);
+    emit textChanged();
 }
 
-QString QtMenuItem::text()
+void QtMenuItem::setShortcut(const QString &shortcut)
 {
-    return m_text;
+    _action->setShortcut(QKeySequence(shortcut));
+    emit shortcutChanged();
+}
+
+QString QtMenuItem::text() const
+{
+    return _action->text();
+}
+
+QString QtMenuItem::shortcut() const
+{
+    return _action->shortcut().toString();
+}
+
+QAction * QtMenuItem::action()
+{
+    return _action;
 }

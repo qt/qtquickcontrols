@@ -31,68 +31,63 @@
 QtMenu::QtMenu(QObject *parent)
     : QObject(parent)
 {
-    m_menu = new QMenu(0);
+    _qmenu = new QMenu(0);
 }
 
 QtMenu::~QtMenu()
 {
-    delete m_menu;
+    delete _qmenu;
 }
 
-void QtMenu::setTitle(const QString &title)
+void QtMenu::setText(const QString &text)
 {
-    m_title = title;
+    _qmenu->setTitle(text);
 }
 
-QString QtMenu::title() const
+QString QtMenu::text() const
 {
-    return m_title;
-}
-
-QString QtMenu::selected() const
-{
-    return m_selected;
+    return _qmenu->title();
 }
 
 QDeclarativeListProperty<QtMenuItem> QtMenu::menuItems()
 {
-    return QDeclarativeListProperty<QtMenuItem>(this, m_menuItems);
+    return QDeclarativeListProperty<QtMenuItem>(this, 0, &QtMenu::append_qmenuItem);
 }
 
 void QtMenu::showPopup(qreal x, qreal y)
 {
-    foreach (QtMenuItem *item, m_menuItems) {
-        QAction *action = new QAction(item->text(), m_menu);
-        connect(action, SIGNAL(triggered()), item, SIGNAL(selected()));
-        connect(action, SIGNAL(triggered()), this, SLOT(emitSelected()));
-        m_menu->insertAction(0, action);
-    }
-
     // x,y are in view coordinates, QMenu expects screen coordinates
     // ### activeWindow hack
     QPoint screenPosition = QApplication::activeWindow()->mapToGlobal(QPoint(x, y));
 
-    m_menu->popup(screenPosition);
+    _qmenu->popup(screenPosition);
 }
 
 Q_INVOKABLE void QtMenu::clearMenuItems()
 {
-    m_menu->clear();
+    _qmenu->clear();
+    foreach (QtMenuItem *item, _qmenuItems) {
+        delete item;
+    }
+    _qmenuItems.clear();
 }
 
 void QtMenu::addMenuItem(const QString &text)
 {
-    QAction *action = new QAction(text, m_menu);
-    connect(action, SIGNAL(triggered()), this, SLOT(emitSelected()));
-    m_menu->insertAction(0, action);
+    QtMenuItem *menuItem = new QtMenuItem(this);
+    menuItem->setText(text);
+    _qmenuItems.append(menuItem);
+    _qmenu->addAction(menuItem->action());
 }
 
-void QtMenu::emitSelected()
+void QtMenu::append_qmenuItem(QDeclarativeListProperty<QtMenuItem> *list, QtMenuItem *menuItem)
 {
-    QAction *act = qobject_cast<QAction *>(sender());
-    if (!act)
-        return;
-    m_selected = act->text();
-    emit selectedChanged();
+    QtMenu *menu = qobject_cast<QtMenu *>(list->object);
+    if (menu) {
+        menuItem->setParent(menu);
+        menu->_qmenuItems.append(menuItem);
+        menu->qmenu()->addAction(menuItem->action());
+    }
 }
+
 
