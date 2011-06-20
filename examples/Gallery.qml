@@ -7,6 +7,9 @@ Rectangle {
     width: 538 + frame.margins * 2
     height: 360 + frame.margins * 2
 
+    Binding { target: mainWindow; property: "maximumWidth"; value: width }
+    Binding { target: mainWindow; property: "maximumHeight"; value: height }
+
     ToolBar{
         id: toolbar
         width: parent.width

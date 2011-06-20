@@ -234,6 +234,7 @@ bool QmlDesktopViewer::open(const QString& file_or_url)
     QDeclarativeContext *ctxt = view()->rootContext();
     ctxt->setContextProperty("qmlDesktopViewer", this);
     ctxt->setContextProperty("qmlDesktopViewerFolder", QDir::currentPath());
+    ctxt->setContextProperty("mainWindow", _window);
 
     QString fileName = url.toLocalFile();
     if (!fileName.isEmpty()) {
