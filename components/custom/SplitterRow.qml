@@ -33,6 +33,9 @@ import "private"
 *   Item splitterRow - points to the SplitterRow that the handle is in.
 * List<Item> items - contains the list of child items in the SplitterRow. Currently read-only.
 * List<Item> handles - contains the list of handles in the SplitterRow. Read-only.
+* real preferredWidth - contains the accumulated with of all child items and handles, except
+*   the expanding item. If the expanding item has a minimum width, the minimum width will
+*   be included.
 *
 * The following properties can optionally be added for each child item of SplitterRow:
 *
