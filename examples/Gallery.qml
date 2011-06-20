@@ -100,8 +100,6 @@ Rectangle {
                     onClicked: window1.windowState = Qt.WindowMinimized;
                 }
             }
-
-            onWindowStateChanged: console.log("new WindowState:", window1.windowState);
         }
 
         ContextMenu {
