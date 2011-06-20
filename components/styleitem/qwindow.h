@@ -86,10 +86,13 @@ class QWindow : public QDeclarativeItem
     Q_PROPERTY(bool visible READ isVisible WRITE setVisible NOTIFY visibilityChanged)
     Q_PROPERTY(bool windowDecoration READ windowDecoration WRITE setWindowDecoration NOTIFY windowDecorationChanged)
     Q_PROPERTY(Qt::WindowState windowState READ windowState WRITE setWindowState NOTIFY windowStateChanged)
+    Q_PROPERTY(QString title READ title WRITE setTitle NOTIFY titleChanged)
 
 public:
     QWindow(DeclarativeWindow* declarativeWindow = 0);
 
+    DeclarativeWindow *window() { return _window; }
+    QDeclarativeView *view() { return _window->view(); }
     int x() { return _window->x(); }
     int y() { return _window->y(); }
     int height() { return _window->height(); }
@@ -101,9 +104,7 @@ public:
     bool isVisible() { return _window->isVisible(); }
     bool windowDecoration() { return !(_window->windowFlags() & Qt::FramelessWindowHint); }
     Qt::WindowState windowState() { return static_cast<Qt::WindowState>(static_cast<int>(_window->windowState()) & ~Qt::WindowActive); }
-    DeclarativeWindow *window() { return _window; }
-    QDeclarativeView *view() { return _window->view(); }
-
+    QString title() const { return _window->windowTitle(); }
 
     void setX(int x) { _window->move(x, y()); }
     void setY(int y) { _window->move(x(), y); }
@@ -126,6 +127,10 @@ public:
         emit windowDecorationChanged();
     }
     void setWindowState(Qt::WindowState state) { _window->setWindowState(state); }
+    void setTitle(QString title) {
+        _window->setWindowTitle(title);
+        emit titleChanged();
+    }
 
 protected:
     bool eventFilter(QObject *, QEvent *ev);
@@ -144,6 +149,7 @@ Q_SIGNALS:
     void minimumWidthChanged();
     void maximumHeightChanged();
     void maximumWidthChanged();
+    void titleChanged();
 
 private:
     DeclarativeWindow *_window;

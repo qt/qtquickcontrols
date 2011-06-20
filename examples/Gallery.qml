@@ -9,6 +9,7 @@ Rectangle {
 
     Binding { target: mainWindow; property: "maximumWidth"; value: width }
     Binding { target: mainWindow; property: "maximumHeight"; value: height }
+    Binding { target: mainWindow; property: "title"; value: "MainWindow" }
 
     ToolBar{
         id: toolbar
@@ -40,12 +41,11 @@ Rectangle {
             id: window1
             width: 250
             height: 250
-
             minimumWidth: 250
             minimumHeight: 250
-
             x: 500
             y: 500
+            title: "child window"
 
             Rectangle {
                 color: syspal.window
