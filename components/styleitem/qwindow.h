@@ -32,11 +32,14 @@
 #include <QWindowStateChangeEvent>
 #include <QDeclarativeView>
 
+
 class DeclarativeWindow : public QMainWindow {
     Q_OBJECT
 public:
-    DeclarativeWindow() : _view(new QDeclarativeView) {
+    DeclarativeWindow()
+        : QMainWindow(_mainWindow), _view(new QDeclarativeView) {
         setCentralWidget(_view);
+        _mainWindow = this;
     }
 
     QGraphicsScene *scene() { return _view->scene(); }
@@ -69,6 +72,7 @@ Q_SIGNALS:
 
 private:
     QDeclarativeView *_view;
+    static DeclarativeWindow *_mainWindow;
 };
 
 

@@ -98,6 +98,11 @@ QmlDesktopViewer::~QmlDesktopViewer()
         delete loggerWindow;
         loggerWindow = 0;
     }
+
+    if(_window) {
+        delete _window;
+        _window = 0;
+    }
 }
 
 LoggerWidget *QmlDesktopViewer::loggerWidget() const

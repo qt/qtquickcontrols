@@ -40,6 +40,8 @@
 
 #include "qwindow.h"
 
+DeclarativeWindow *DeclarativeWindow::_mainWindow = 0;
+
 QWindow::QWindow(DeclarativeWindow* declarativeWindow)
     : _window(declarativeWindow ? declarativeWindow : new DeclarativeWindow)
 {
