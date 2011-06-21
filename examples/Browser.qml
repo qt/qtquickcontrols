@@ -1,6 +1,6 @@
 import QtQuick 1.0
 import QtWebKit 1.0
-import "../components"
+import QtDesktop 0.1
 
 Rectangle {
     id:root

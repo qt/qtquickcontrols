@@ -1,5 +1,5 @@
 import QtQuick 1.0
-import "../components/plugin"
+import "plugin"
 
 MenuBase {
     property ListModel model

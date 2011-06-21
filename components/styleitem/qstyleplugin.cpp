@@ -79,14 +79,14 @@ public:
 void StylePlugin::registerTypes(const char *uri)
 {
     qDebug() << "register" << uri;
-    qmlRegisterType<QStyleItem>(uri, 1, 0, "QStyleItem");
-    qmlRegisterType<QRangeModel>(uri, 1, 0, "RangeModel");
-    qmlRegisterType<QGraphicsDropShadowEffect>(uri, 1, 0, "DropShadow");
-    qmlRegisterType<QDeclarativeFolderListModel>(uri, 1, 0, "FileSystemModel");
-    qmlRegisterType<QWheelArea>(uri, 1, 0, "WheelArea");
-    qmlRegisterType<QtMenu>(uri, 1, 0, "MenuBase");
-    qmlRegisterType<QtMenuBar>(uri, 1, 0, "MenuBarBase");
-    qmlRegisterType<QtMenuItem>(uri, 1, 0, "MenuItemBase");
+    qmlRegisterType<QStyleItem>(uri, 0, 1, "QStyleItem");
+    qmlRegisterType<QRangeModel>(uri, 0, 1, "RangeModel");
+    qmlRegisterType<QGraphicsDropShadowEffect>(uri, 0, 1, "DropShadow");
+    qmlRegisterType<QDeclarativeFolderListModel>(uri, 0, 1, "FileSystemModel");
+    qmlRegisterType<QWheelArea>(uri, 0, 1, "WheelArea");
+    qmlRegisterType<QtMenu>(uri, 0, 1, "MenuBase");
+    qmlRegisterType<QtMenuBar>(uri, 0, 1, "MenuBarBase");
+    qmlRegisterType<QtMenuItem>(uri, 0, 1, "MenuItemBase");
 }
 
 void StylePlugin::initializeEngine(QDeclarativeEngine *engine, const char *uri)
