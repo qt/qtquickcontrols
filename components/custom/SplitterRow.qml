@@ -308,13 +308,14 @@ Item {
 
                 var leftHandle, leftItem, rightItem, rightHandle
                 var leftEdge, rightEdge, newWidth, leftStopX, rightStopX
+                var i
 
                 if (d.expandingIndex > handleIndex) {
                     // Resize item to the left.
                     // Ensure that the handle is not crossing other handles. So
                     // find the first visible handle to the left to determine the left edge:
                     leftEdge = 0
-                    for (var i=handleIndex-1; i>=0; --i) {
+                    for (i=handleIndex-1; i>=0; --i) {
                         leftHandle = handles[i]
                         if (leftHandle.visible) {
                             leftEdge = leftHandle.x + leftHandle.width
@@ -336,10 +337,18 @@ Item {
                     leftItem.width = newWidth
                 } else {
                     // Resize item to the right.
-                    // Ensure that the handle is not crossing other handles:
+                    // Ensure that the handle is not crossing other handles. So
+                    // find the first visible handle to the right to determine the right edge:
                     rightItem = items[handleIndex+1]
                     rightHandle = handles[handleIndex+1]
-                    rightEdge = (rightHandle ? rightHandle.x : root.width)
+                    rightEdge = root.width
+                    for (i=handleIndex+1; i<handles.length; ++i) {
+                        rightHandle = handles[i]
+                        if (rightHandle.visible) {
+                            rightEdge = rightHandle.x
+                            break;
+                        }
+                    }
 
                     // Ensure: leftStopX <= myHandle.x <= rightStopX
                     var min = d.accumulatedWidth(0, handleIndex+1, true)
