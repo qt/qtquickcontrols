@@ -339,8 +339,6 @@ Item {
                     // Resize item to the right.
                     // Ensure that the handle is not crossing other handles. So
                     // find the first visible handle to the right to determine the right edge:
-                    rightItem = items[handleIndex+1]
-                    rightHandle = handles[handleIndex+1]
                     rightEdge = root.width
                     for (i=handleIndex+1; i<handles.length; ++i) {
                         rightHandle = handles[i]
@@ -357,6 +355,7 @@ Item {
                     myHandle.x = Math.max(leftStopX, Math.min(myHandle.x, rightStopX))
 
                     newWidth = rightEdge - (myHandle.x + myHandle.width)
+                    rightItem = items[handleIndex+1]
                     if (root.width != 0 && rightItem.percentageWidth != undefined && rightItem.percentageWidth !== -1)
                         rightItem.percentageWidth = newWidth * (100 / root.width)
                     // The next line will trigger 'updateLayout' inside 'propertyChangeListener':
