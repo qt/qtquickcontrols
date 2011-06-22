@@ -17,9 +17,21 @@ import "private"
 * of a child item to false, the corresponding handle will also be hidden, and the
 * SplitterRow will perform a layout update to fill up available space.
 *
+* There will always be one (and only one) item in the SplitterRow that is 'expanding'.
+* The expanding item is the child that will get all the remaining space in the SplitterRow
+* (down to its own mimimumSize) when all other items have been layed out.
+* This means that that 'width', 'percentageWidth' and 'maximumWidth' will be ignored for this item.
+* By default, the last visible child item of the SplitterRow will be 'expanding'.
+*
+* A handle can belong to the item on the left side, or the right side, of the handle. Which one depends
+* on the expaning item. If the expanding item is to the right of the handle, the
+* handle will belong to the item on the left. If it is to the left, it will belong to the item on the
+* right. This will again control which item that gets resized when the user drags a handle, and which
+* handle that gets hidden when an item is told to hide.
+*
 * NB: Since SplitterRow might modify geometry properties like 'width' and 'x' of child items
 * to e.g. ensure they stay within minimumWidth/maximumWidth, explicit expression bindings
-* to such properties can easily break, and is not recommended.
+* to such properties can easily be broken up by the SplitterRow, and is not recommended.
 *
 * The SplitterRow contains the following API:
 *
@@ -47,12 +59,9 @@ import "private"
 *   SplitterRow width. If the width of the SplitterRow change, the width of the item will
 *   change as well. 'percentageWidth' have precedence over 'width', which means that
 *   SplitterRow will ignore any assignments to 'width'. A value of -1 disables it.
-* bool expanding - if present, the item will consume all extra space in the SplitterRow, down to
-*   minimumWidth. This means that that 'width', 'percentageWidth' and 'maximumWidth' will be ignored.
-*   There will always be one (and only one) item in the SplitterRow that has this behaviour, and by
-*   default, it will be the last visible child item of the SplitterRow. Also note that which item that gets
-*   resized upon dragging a handle depends on whether the expanding item is located towards the left
-*   or the right of the handle.
+* bool expanding - See explanation of 'expanding' above. If set to true, the current item
+*   will be the expanding item in the SplitterRow. If set to false, the SplitterRow will
+*   autmatically choose the last visible child of the SplitterRow as expanding instead.
 * int itemIndex - will be assigned a read-only value with the item index. Can be used to e.g. look-up
 *   the handles sourrounding the item (parent.handles[itemIndex])
 *
@@ -187,16 +196,13 @@ Item {
 
         function updateLayout()
         {
+            // This function will reposition both handles and
+            // items according to the _width of the each item_
             if (items.length === 0)
                 return;
             if (d.updateLayoutGuard === true)
                 return
             d.updateLayoutGuard = true
-
-            // This function will reposition both handles and
-            // items according to the _width of the each item_
-            var item, prevItem
-            var handle, prevHandle
 
             // Use a temporary variable to store values to avoid breaking
             // property bindings when the value does not actually change:
@@ -241,35 +247,37 @@ Item {
                 expandingItem.width = newValue
 
             // Then, position items and handles according to their width:
+            var item, lastVisibleItem
+            var handle, lastVisibleHandle
             var newPreferredWidth = expandingMinimum - expandingItem.width
-            for (i=0; i<items.length; ++i) {
-                item = items[i];
-                if (item.visible === false)
-                    continue;
-                handle = handles[i]
 
-                // Position item to the right of the previus visible handle:
-                if (prevHandle) {
-                    newPreferredWidth += prevHandle.width
-                    newValue = prevHandle.x + prevHandle.width
-                    if (newValue !== item.x)
-                        item.x = newValue
-                } else {
-                    newValue = 0
-                    if (newValue !== item.x)
-                        item.x = newValue
+            for (i=0; i<items.length; ++i) {
+                // Position item to the right of the previous visible handle:
+                item = items[i];
+                if (item.visible) {
+                    if (lastVisibleHandle) {
+                        newPreferredWidth += lastVisibleHandle.width
+                        newValue = lastVisibleHandle.x + lastVisibleHandle.width
+                        if (newValue !== item.x)
+                            item.x = newValue
+                    } else {
+                        newValue = 0
+                        if (newValue !== item.x)
+                            item.x = newValue
+                    }
+                    newPreferredWidth += item.width
+                    lastVisibleItem = item
                 }
 
-                // Position handle to the right of item:
-                if (handle) {
-                    newValue = item.x + Math.max(0, item.width)
+                // Position handle to the right of the previous visible item. We use an alterative way of
+                // checking handle visibility because that property might not have updated correctly yet:
+                handle = handles[i]
+                if (handle && items[i + ((d.expandingIndex > i) ? 0 : 1)].visible) {
+                    newValue = lastVisibleItem.x + Math.max(0, lastVisibleItem.width)
                     if (newValue !== handle.x)
                         handle.x = newValue
+                    lastVisibleHandle = handle
                 }
-
-                newPreferredWidth += item.width
-                prevItem = item
-                prevHandle = handle
             }
 
             root.preferredWidth = newPreferredWidth
