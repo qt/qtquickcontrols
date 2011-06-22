@@ -256,7 +256,6 @@ Item {
                 item = items[i];
                 if (item.visible) {
                     if (lastVisibleHandle) {
-                        newPreferredWidth += lastVisibleHandle.width
                         newValue = lastVisibleHandle.x + lastVisibleHandle.width
                         if (newValue !== item.x)
                             item.x = newValue
@@ -276,6 +275,7 @@ Item {
                     newValue = lastVisibleItem.x + Math.max(0, lastVisibleItem.width)
                     if (newValue !== handle.x)
                         handle.x = newValue
+                    newPreferredWidth += handle.width
                     lastVisibleHandle = handle
                 }
             }
