@@ -55,7 +55,6 @@ QT_USE_NAMESPACE
 QtMsgHandler systemMsgOutput = 0;
 
 static QmlDesktopViewer *openFile(const QString &fileName);
-static void showViewer(QmlDesktopViewer *viewer);
 
 QString warnings;
 void exitApp(int i)
@@ -166,8 +165,6 @@ protected:
         QFileOpenEvent *fev = static_cast<QFileOpenEvent *>(ev);
 
         globalViewer->open(fev->file());
-        if (!globalViewer->isVisible())
-            showViewer(globalViewer);
 
         return true;
     }
@@ -180,10 +177,6 @@ private Q_SLOTS:
         QmlDesktopViewer *viewer = globalViewer;
         if (!viewer)
             return;
-        if (viewer->currentFile().isEmpty())
-            viewer->openFile();
-        if (!viewer->isVisible())
-            showViewer(viewer);
     }
 };
 
@@ -240,16 +233,6 @@ static void parseCommandLineOptions(const QStringList &arguments)
 static QmlDesktopViewer *createViewer()
 {
     QmlDesktopViewer *viewer = new QmlDesktopViewer;
-    viewer->setAttribute(Qt::WA_DeleteOnClose, true);
-    viewer->setUseGL(opts.useGL);
-
-    logger = viewer->loggerWidget();
-    if (opts.warningsConfig == ShowWarnings) {
-        logger.data()->setDefaultVisibility(LoggerWidget::ShowWarnings);
-        logger.data()->show();
-    } else if (opts.warningsConfig == HideWarnings){
-        logger.data()->setDefaultVisibility(LoggerWidget::HideWarnings);
-    }
 
     foreach (QString lib, opts.imports)
         viewer->addLibraryPath(lib);
@@ -260,16 +243,9 @@ static QmlDesktopViewer *createViewer()
     return viewer;
 }
 
-void showViewer(QmlDesktopViewer *viewer)
-{
-    viewer->show();
-    viewer->raise();
-}
-
 QmlDesktopViewer *openFile(const QString &fileName)
 {
     globalViewer->open(fileName);
-    showViewer(globalViewer);
     return globalViewer;
 }
 

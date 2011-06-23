@@ -64,162 +64,30 @@
 
 QT_BEGIN_NAMESPACE
 
-QmlDesktopViewer::QmlDesktopViewer()
-      : _window(new QWindow(this))
-      ,  loggerWindow(new LoggerWidget(this))
-      , _showLoggerWindow(0)
-      , translator(0)
+QmlDesktopViewer::QmlDesktopViewer() :
+    _engine(new QDeclarativeEngine), _rootObject(new QDeclarativeItem)
 {
     QmlDesktopViewer::registerTypes();
-    setWindowTitle(tr("Qt QML Viewer"));
+//    QObject::connect(view()->engine(), SIGNAL(quit()), this, SLOT(close()));
 
-    view()->setAttribute(Qt::WA_OpaquePaintEvent);
-    view()->setAttribute(Qt::WA_NoSystemBackground);
-
-    view()->setFocus();
-
-    QObject::connect(view(), SIGNAL(sceneResized(QSize)), this, SLOT(sceneResized(QSize)));
-    QObject::connect(view(), SIGNAL(statusChanged(QDeclarativeView::Status)), this, SLOT(statusChanged()));
-    QObject::connect(view()->engine(), SIGNAL(quit()), this, SLOT(close()));
-
-    QObject::connect(loggerWindow, SIGNAL(opened()), this, SLOT(loggerWidgetOpened()));
-    QObject::connect(loggerWindow, SIGNAL(closed()), this, SLOT(loggerWidgetClosed()));
-
-    createMenu();
-
-    setCentralWidget(view());
-
-    QObject::connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(appAboutToQuit()));
 }
 
 QmlDesktopViewer::~QmlDesktopViewer()
 {
-    if (loggerWindow) {
-        delete loggerWindow;
-        loggerWindow = 0;
-    }
-
-    if(_window) {
-        delete _window;
-        _window = 0;
-    }
-}
-
-LoggerWidget *QmlDesktopViewer::loggerWidget() const
-{
-    return loggerWindow;
-}
-
-void QmlDesktopViewer::createMenu()
-{
-    QAction *openAction = new QAction(tr("&Open..."), this);
-    openAction->setShortcuts(QKeySequence::Open);
-    connect(openAction, SIGNAL(triggered()), this, SLOT(openFile()));
-
-    QAction *openUrlAction = new QAction(tr("Open &URL..."), this);
-    connect(openUrlAction, SIGNAL(triggered()), this, SLOT(openUrl()));
-
-    QAction *reloadAction = new QAction(tr("&Reload"), this);
-    reloadAction->setShortcuts(QKeySequence::Refresh);
-    connect(reloadAction, SIGNAL(triggered()), this, SLOT(reload()));
-
-    _showLoggerWindow = new QAction(tr("Show Warnings"), this);
-    _showLoggerWindow->setCheckable((true));
-    _showLoggerWindow->setChecked(loggerWindow->isVisible());
-    connect(_showLoggerWindow, SIGNAL(triggered(bool)), this, SLOT(showLoggerWindow(bool)));
-
-    QAction *aboutAction = new QAction(tr("&About Qt..."), this);
-    aboutAction->setMenuRole(QAction::AboutQtRole);
-    connect(aboutAction, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
-
-    QAction *quitAction = new QAction(tr("&Quit"), this);
-    quitAction->setMenuRole(QAction::QuitRole);
-    quitAction->setShortcuts(QKeySequence::Quit);
-    connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
-
-    QMenuBar *menu = menuBar();
-    if (!menu)
-        return;
-
-    QMenu *fileMenu = menu->addMenu(tr("&File"));
-    fileMenu->addAction(openAction);
-    fileMenu->addAction(openUrlAction);
-    fileMenu->addAction(reloadAction);
-    fileMenu->addAction(_showLoggerWindow);
-    fileMenu->addAction(quitAction);
-
-    QMenu *helpMenu = menu->addMenu(tr("&Help"));
-    helpMenu->addAction(aboutAction);
-}
-
-void QmlDesktopViewer::showLoggerWindow(bool show)
-{
-    loggerWindow->setVisible(show);
-}
-
-void QmlDesktopViewer::loggerWidgetOpened()
-{
-    _showLoggerWindow->setChecked(true);
-}
-
-void QmlDesktopViewer::loggerWidgetClosed()
-{
-    _showLoggerWindow->setChecked(false);
 }
 
 void QmlDesktopViewer::addLibraryPath(const QString& lib)
 {
-    view()->engine()->addImportPath(lib);
+    engine()->addImportPath(lib);
 }
 
 void QmlDesktopViewer::addPluginPath(const QString& plugin)
 {
-    view()->engine()->addPluginPath(plugin);
-}
-
-void QmlDesktopViewer::reload()
-{
-    open(currentFileOrUrl);
-}
-
-void QmlDesktopViewer::openFile()
-{
-    QString cur = view()->source().toLocalFile();
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Open QML file"), cur, tr("QML Files (*.qml)"));
-    if (!fileName.isEmpty()) {
-        QFileInfo fi(fileName);
-        open(fi.absoluteFilePath());
-    }
-}
-
-void QmlDesktopViewer::openUrl()
-{
-    QString cur = view()->source().toLocalFile();
-    QString url= QInputDialog::getText(this, tr("Open QML file"), tr("URL of main QML file:"), QLineEdit::Normal, cur);
-    if (!url.isEmpty())
-        open(url);
+    engine()->addPluginPath(plugin);
 }
 
 void QmlDesktopViewer::statusChanged()
 {
-    if (view()->status() == QDeclarativeView::Ready) {
-        initializeSize();
-    }
-}
-
-void QmlDesktopViewer::launch(const QString& file_or_url)
-{
-    QMetaObject::invokeMethod(this, "open", Qt::QueuedConnection, Q_ARG(QString, file_or_url));
-}
-
-void QmlDesktopViewer::loadTranslationFile(const QString& directory)
-{
-    if (!translator) {
-        translator = new QTranslator(this);
-        QApplication::installTranslator(translator);
-    }
-
-    translator->load(QLatin1String("qml_" )+QLocale::system().name(), directory + QLatin1String("/i18n"));
 }
 
 bool QmlDesktopViewer::open(const QString& file_or_url)
@@ -232,14 +100,12 @@ bool QmlDesktopViewer::open(const QString& file_or_url)
         url = QUrl::fromLocalFile(fi.absoluteFilePath());
     else
         url = QUrl(file_or_url);
-    setWindowTitle(tr("%1 - Qt QML Desktop Viewer").arg(file_or_url));
 
-    delete view()->rootObject();
-    view()->engine()->clearComponentCache();
-    QDeclarativeContext *ctxt = view()->rootContext();
+    delete rootObject();
+    engine()->clearComponentCache();
+    QDeclarativeContext *ctxt = rootContext();
     ctxt->setContextProperty("qmlDesktopViewer", this);
     ctxt->setContextProperty("qmlDesktopViewerFolder", QDir::currentPath());
-    ctxt->setContextProperty("mainWindow", _window);
 
     QString fileName = url.toLocalFile();
     if (!fileName.isEmpty()) {
@@ -249,73 +115,15 @@ bool QmlDesktopViewer::open(const QString& file_or_url)
                 qWarning() << "qml cannot open non-QML file" << fileName;
                 return false;
             }
-
-            QFileInfo fi(fileName);
-            loadTranslationFile(fi.path());
         } else {
             qWarning() << "qml cannot find file:" << fileName;
             return false;
         }
     }
 
-    view()->setSource(url);
+    execute(url);
 
     return true;
-}
-
-void QmlDesktopViewer::sceneResized(QSize)
-{
-}
-
-void QmlDesktopViewer::keyPressEvent(QKeyEvent *event)
-{
-    if (event->key() == Qt::Key_F1 || (event->key() == Qt::Key_1)) {
-        qDebug() << "F1 - help\n"
-                 << "F5 - reload QML\n";
-    } else if (event->key() == Qt::Key_F5 || (event->key() == Qt::Key_5)) {
-        reload();
-    }
-
-    QWidget::keyPressEvent(event);
-}
-
-void QmlDesktopViewer::setUseGL(bool useGL)
-{
-#ifdef GL_SUPPORTED
-    if (useGL) {
-        QGLFormat format = QGLFormat::defaultFormat();
-#ifdef Q_WS_MAC
-        format.setSampleBuffers(true);
-#else
-        format.setSampleBuffers(false);
-#endif
-
-        QGLWidget *glWidget = new QGLWidget(format);
-        //### potentially faster, but causes junk to appear if top-level is Item, not Rectangle
-        //glWidget->setAutoFillBackground(false);
-
-        setViewport(glWidget);
-    }
-#else
-    Q_UNUSED(useGL)
-#endif
-}
-
-void QmlDesktopViewer::initializeSize()
-{
-    QSize newWindowSize = view()->initialSize();
-    if (!isFullScreen() && !isMaximized()) {
-        view()->setFixedSize(newWindowSize);
-        resize(1, 1);
-        layout()->setSizeConstraint(QLayout::SetFixedSize);
-        layout()->activate();
-    }
-    layout()->setSizeConstraint(QLayout::SetNoConstraint);
-    layout()->activate();
-    setMinimumSize(minimumSizeHint());
-    setMaximumSize(QSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX));
-    view()->setMinimumSize(QSize(0,0));
-    view()->setMaximumSize(QSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX));
 }
 
 void QmlDesktopViewer::registerTypes()
@@ -331,16 +139,43 @@ void QmlDesktopViewer::registerTypes()
     }
 }
 
-void QmlDesktopViewer::appAboutToQuit()
+void QmlDesktopViewer::execute(QUrl url)
 {
-    // avoid QGLContext errors about invalid contexts on exit
-    view()->setViewport(0);
-
-    // avoid crashes if messages are received after app has closed
-    if (loggerWindow) {
-        delete loggerWindow;
-        loggerWindow = 0;
+    _component = new QDeclarativeComponent(_engine, url, this);
+    if (!_component->isLoading()) {
+        continueExecute();
+    } else {
+        QObject::connect(_component, SIGNAL(statusChanged(QDeclarativeComponent::Status)), this, SLOT(continueExecute()));
     }
+}
+
+void QmlDesktopViewer::continueExecute()
+{
+    disconnect(_component, SIGNAL(statusChanged(QDeclarativeComponent::Status)), this, SLOT(continueExecute()));
+
+    if (_component->isError()) {
+        QList<QDeclarativeError> errorList = _component->errors();
+        foreach (const QDeclarativeError &error, errorList) {
+            qWarning() << error;
+        }
+        emit statusChanged(_component->status());
+        return;
+    }
+
+    QObject *obj = _component->create();
+
+    if(_component->isError()) {
+        QList<QDeclarativeError> errorList = _component->errors();
+        foreach (const QDeclarativeError &error, errorList) {
+            qWarning() << error;
+        }
+        emit statusChanged(_component->status());
+        return;
+    }
+
+    _rootObject = qobject_cast<QGraphicsObject*>(obj);
+    Q_ASSERT(_rootObject);
+    emit statusChanged(_component->status());
 }
 
 QT_END_NAMESPACE

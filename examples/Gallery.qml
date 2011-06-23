@@ -2,14 +2,55 @@ import QtQuick 1.0
 import "../components"
 import "content"
 
+Window {
+    title: "parent window"
+
+    MenuBarBase {
+        Menu {
+            text: "Hello"
+            MenuItem {
+                text: "Open"
+                shortcut: "Ctrl+O"
+                onTriggered: console.log("we should display a file open dialog")
+            }
+            MenuItem {
+                text: "Close"
+                shortcut: "Ctrl+Q"
+                onTriggered: Qt.quit()
+            }
+        }
+        Menu {
+            text: "World"
+            MenuItem {
+                text: "Copy"
+            }
+            MenuItem {
+                text: "Paste"
+            }
+        }
+    }
+
+    width: 538 + frame.margins * 2
+    height: 360 + frame.margins * 2
+
+    Component.onCompleted: visible = true
+
+//    visible: true
+
+    property string loremIpsum:
+            "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor "+
+            "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor "+
+            "incididunt ut labore et dolore magna aliqua.\n Ut enim ad minim veniam, quis nostrud "+
+            "exercitation ullamco laboris nisi ut aliquip ex ea commodo cosnsequat. ";
+
 Rectangle {
 
     width: 538 + frame.margins * 2
     height: 360 + frame.margins * 2
 
-    Binding { target: mainWindow; property: "maximumWidth"; value: width }
-    Binding { target: mainWindow; property: "maximumHeight"; value: height }
-    Binding { target: mainWindow; property: "title"; value: "MainWindow" }
+//    Binding { target: mainWindow; property: "maximumWidth"; value: width }
+//    Binding { target: mainWindow; property: "maximumHeight"; value: height }
+//    Binding { target: mainWindow; property: "title"; value: "MainWindow" }
 
     ToolBar{
         id: toolbar
@@ -159,11 +200,6 @@ Rectangle {
         ListElement { text: "Coconut" }
     }
 
-    property string loremIpsum:
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor "+
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor "+
-            "incididunt ut labore et dolore magna aliqua.\n Ut enim ad minim veniam, quis nostrud "+
-            "exercitation ullamco laboris nisi ut aliquip ex ea commodo cosnsequat. ";
 
     TabFrame {
         id:frame
@@ -417,3 +453,6 @@ Rectangle {
         }
     }
 }
+
+}
+

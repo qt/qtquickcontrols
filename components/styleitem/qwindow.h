@@ -38,6 +38,7 @@ class DeclarativeWindow : public QMainWindow {
 public:
     DeclarativeWindow()
         : QMainWindow(_mainWindow), _view(new QDeclarativeView) {
+        setVisible(false);
         setCentralWidget(_view);
         _mainWindow = this;
     }

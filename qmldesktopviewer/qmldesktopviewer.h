@@ -105,7 +105,7 @@ Q_SIGNALS:
 };
 
 class QmlDesktopViewer
-    : public DeclarativeWindow
+    : public QObject
 {
     Q_OBJECT
 
@@ -117,42 +117,26 @@ public:
 
     void addLibraryPath(const QString& lib);
     void addPluginPath(const QString& plugin);
-    void setUseGL(bool use);
 
-    LoggerWidget *loggerWidget() const;
     QString currentFile() const { return currentFileOrUrl; }
+    QDeclarativeEngine *engine() { return _engine; }
+    QGraphicsObject *rootObject() { return _rootObject; }
+    QDeclarativeContext *rootContext() { return _engine->rootContext(); }
 
 public slots:
-    void sceneResized(QSize size);
     bool open(const QString&);
-    void openFile();
-    void openUrl();
-    void reload();
     void statusChanged();
-    void launch(const QString &);
-
-protected:
-    virtual void keyPressEvent(QKeyEvent *);
-    void createMenu();
-
-private slots:
-    void appAboutToQuit();
-
-    void showLoggerWindow(bool show);
-    void loggerWidgetOpened();
-    void loggerWidgetClosed();
+    void execute(QUrl url);
+    void continueExecute();
 
 private:
-    void initializeSize();
-
-    QWindow *_window;
-    LoggerWidget *loggerWindow;
-    QSize initialSize;
     QString currentFileOrUrl;
-    QAction *_showLoggerWindow;
+    QDeclarativeEngine *_engine;
+    QGraphicsObject *_rootObject;
+    QDeclarativeComponent *_component;
 
-    QTranslator *translator;
-    void loadTranslationFile(const QString& directory);
+signals:
+    void statusChanged(QDeclarativeComponent::Status);
 };
 
 QML_DECLARE_TYPEINFO(QDesktop, QML_HAS_ATTACHED_PROPERTIES)
