@@ -40,8 +40,10 @@ import "private"
 *   int handleIndex - specifies the index of the splitter handle. The handle
 *       between the first and the second item will get index 0, the next handle index 1 etc.
 *   Item handle - convenience property that points to the item where the handle delegate is
-*       placed. Identical to splitterRow.handles[handleIndex]. Modify 'handle.x' to move the
-*       handle (or change 'width' of SplitterRow child items).
+*       instanciated as a child. Identical to splitterRow.handles[handleIndex]. 
+*       Modify 'handle.x' to move the handle (or change 'width' of SplitterRow child items).
+*   Item item - convenience property that points to the child item that the handle controls.
+*       Also refer to information about the expanding item above.
 *   Item splitterRow - points to the SplitterRow that the handle is in.
 * List<Item> items - contains the list of child items in the SplitterRow. Currently read-only.
 * List<Item> handles - contains the list of handles in the SplitterRow. Read-only.
@@ -291,10 +293,12 @@ Item {
             id: myHandle
             property int handleIndex: 0
             property Item handle: myHandle
+            property Item item: items[handleIndex + ((d.expandingIndex > handleIndex) ? 0 : 1)]
+
              // 'splitterRow' should be an alias, but that fails to resolve runtime:
             property Item splitterRow: root
 
-            visible: items[handleIndex + ((d.expandingIndex > handleIndex) ? 0 : 1)].visible
+            visible: item.visible
             sourceComponent: handleBackground
             onWidthChanged: d.updateLayout()
 
