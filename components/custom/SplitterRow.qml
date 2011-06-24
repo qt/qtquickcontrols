@@ -39,14 +39,16 @@ import "private"
 *   child item. Inside the delegate, the following properties are available:
 *   int handleIndex - specifies the index of the splitter handle. The handle
 *       between the first and the second item will get index 0, the next handle index 1 etc.
-*   Item handle - convenience property that points to the item where the handle delegate is
-*       instanciated as a child. Identical to splitterRow.handles[handleIndex]. 
+*   Item handle - convenience property that points to the item where the handle background is
+*       instanciated as a child. Identical to splitterRow.handles[handleIndex]. The handle
+*       background iteself can be accessed through handle.item.
 *       Modify 'handle.x' to move the handle (or change 'width' of SplitterRow child items).
-*   Item item - convenience property that points to the child item that the handle controls.
+*   Item splitterItem - convenience property that points to the child item that the handle controls.
 *       Also refer to information about the expanding item above.
 *   Item splitterRow - points to the SplitterRow that the handle is in.
 * List<Item> items - contains the list of child items in the SplitterRow. Currently read-only.
-* List<Item> handles - contains the list of handles in the SplitterRow. Read-only.
+* List<Item> handles - contains the list of handles in the SplitterRow. To get to the handle 
+*   background, access the 'item' property of the a handle, e.g. handles[0].item. Read-only.
 * real preferredWidth - contains the accumulated with of all child items and handles, except
 *   the expanding item. If the expanding item has a minimum width, the minimum width will
 *   be included.
@@ -66,6 +68,8 @@ import "private"
 *   autmatically choose the last visible child of the SplitterRow as expanding instead.
 * int itemIndex - will be assigned a read-only value with the item index. Can be used to e.g. look-up
 *   the handles sourrounding the item (parent.handles[itemIndex])
+* Item splitterHandle - convenience property that points to the handle that controls the item.
+*   You need to assign it a dummy Item {} as inital value.
 *
 * Example:
 *
@@ -149,6 +153,11 @@ Item {
                 if (i < items.length-1) {
                     // Create a handle for the item, unless its the last:
                     var handle = handleBackgroundLoader.createObject(splitterHandles, {"handleIndex":i});
+
+                    // If the item has an 'handle' defined, assign it a value:
+                    if (item.splitterHandle != undefined)
+                        item.splitterHandle = handle.item
+
                     handle.anchors.top = splitterHandles.top
                     handle.anchors.bottom = splitterHandles.bottom
                 }
@@ -293,12 +302,12 @@ Item {
             id: myHandle
             property int handleIndex: 0
             property Item handle: myHandle
-            property Item item: items[handleIndex + ((d.expandingIndex > handleIndex) ? 0 : 1)]
+            property Item splitterItem: items[handleIndex + ((d.expandingIndex > handleIndex) ? 0 : 1)]
 
              // 'splitterRow' should be an alias, but that fails to resolve runtime:
             property Item splitterRow: root
 
-            visible: item.visible
+            visible: splitterItem.visible
             sourceComponent: handleBackground
             onWidthChanged: d.updateLayout()
 
