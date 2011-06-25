@@ -47,8 +47,10 @@ import "private"
 *       Also refer to information about the expanding item above.
 *   Item splitterRow - points to the SplitterRow that the handle is in.
 * List<Item> items - contains the list of child items in the SplitterRow. Currently read-only.
-* List<Item> handles - contains the list of handles in the SplitterRow. To get to the handle 
-*   background, access the 'item' property of the a handle, e.g. handles[0].item. Read-only.
+* List<Item> handles - contains the list of splitter handles in the SplitterRow. Note that this list will
+*   be populated after all child items has completed, so accessing it from Component.onCompleted
+*   inside a SplitterRow child item will not work.  To get to the handle background, access the
+*   'background' property of the handle, e.g. handles[0].background. Read-only.
 * real preferredWidth - contains the accumulated with of all child items and handles, except
 *   the expanding item. If the expanding item has a minimum width, the minimum width will
 *   be included.
@@ -68,8 +70,6 @@ import "private"
 *   autmatically choose the last visible child of the SplitterRow as expanding instead.
 * int itemIndex - will be assigned a read-only value with the item index. Can be used to e.g. look-up
 *   the handles sourrounding the item (parent.handles[itemIndex])
-* Item splitterHandle - convenience property that points to the handle that controls the item.
-*   You need to assign it a dummy Item {} as inital value.
 *
 * Example:
 *
@@ -153,10 +153,6 @@ Item {
                 if (i < items.length-1) {
                     // Create a handle for the item, unless its the last:
                     var handle = handleBackgroundLoader.createObject(splitterHandles, {"handleIndex":i});
-
-                    // If the item has an 'handle' defined, assign it a value:
-                    if (item.splitterHandle != undefined)
-                        item.splitterHandle = handle.item
 
                     handle.anchors.top = splitterHandles.top
                     handle.anchors.bottom = splitterHandles.bottom
@@ -306,6 +302,7 @@ Item {
 
              // 'splitterRow' should be an alias, but that fails to resolve runtime:
             property Item splitterRow: root
+            property Item background: item
 
             visible: splitterItem.visible
             sourceComponent: handleBackground
