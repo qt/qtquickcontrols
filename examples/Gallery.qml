@@ -23,17 +23,17 @@ Rectangle {
             ToolButton{
                 iconSource: "images/folder_new.png"
                 anchors.verticalCenter: parent.verticalCenter
-                onClicked: {
-                    console.log("Desktop.width:", Desktop.width)
-                    console.log("Desktop.height:", Desktop.height)
-                }
+//                onClicked: {
+//                    console.log("Desktop.availableWidth:", Desktop.availableWidth)
+//                    console.log("Desktop.availableHeight:", Desktop.availableHeight)
+//                }
             }
             ToolButton{
                 iconSource: "images/folder_new.png"
                 anchors.verticalCenter: parent.verticalCenter
             }
             ToolButton{
-                iconSource: "images/folder_new.png"
+                iconSource: "images/toplevel_window.png"
                 anchors.verticalCenter: parent.verticalCenter
                 onClicked: window1.visible = !window1.visible
             }
@@ -41,11 +41,11 @@ Rectangle {
 
         Window {
             id: window1
-            width: 250
+            width: 400
             height: 250
-            minimumWidth: 250
+            minimumWidth: 400
             minimumHeight: 250
-            x: 500
+            x: 1920
             y: 500
             title: "child window"
 
@@ -79,9 +79,49 @@ Rectangle {
                 anchors.fill: parent
 
                 Text {
+                    id: dimensionsText
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.top: parent.top
+                    anchors.margins: frame.margins
+                    width: parent.width
+                    horizontalAlignment: Text.AlignHCenter
+
+                    text: {
+                        if (Desktop.screenCount == 1) {
+                            "You have only a single screen.\nThe dimensions of your screen are: " + Desktop.screenWidth + " x " + Desktop.screenHeight;
+                        } else {
+                            var text = "You have " + Desktop.screenCount + " screens.\nThe dimensions of your screens are: "
+                            for(var i=0; i<Desktop.screenCount; i++) {
+                                text += "\n" + Desktop.screenGeometry(i).width + " x " + Desktop.screenGeometry(i).height
+                            }
+                            return text;
+                        }
+                    }
+                }
+
+                Text {
+                    id: availableDimensionsText
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.top: dimensionsText.bottom
+                    anchors.margins: frame.margins
+                    width: parent.width
+                    horizontalAlignment: Text.AlignHCenter
+
+                    text: {
+                        var text = "The available dimensions of your screens are: "
+                        for(var i=0; i<Desktop.screenCount; i++) {
+                            text += "\n" + Desktop.availableGeometry(i).width + " x " + Desktop.availableGeometry(i).height
+                        }
+                        return text;
+                    }
+                }
+
+                Text {
                     id: closeText
                     anchors.horizontalCenter: parent.horizontalCenter
-                    text: "This is a new Window,\npress the button below\nto close it again."
+                    anchors.top: availableDimensionsText.bottom
+                    anchors.margins: frame.margins
+                    text: "This is a new Window, press the\nbutton below to close it again."
                 }
                 Button {
                     anchors.horizontalCenter: closeText.horizontalCenter

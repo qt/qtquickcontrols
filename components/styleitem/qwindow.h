@@ -40,12 +40,27 @@ class QDesktop : public QObject
     Q_PROPERTY(int screenHeight READ screenHeight NOTIFY screenGeometryChanged)
     Q_PROPERTY(int availableWidth READ availableWidth NOTIFY availableGeometryChanged)
     Q_PROPERTY(int availableHeight READ availableHeight NOTIFY availableGeometryChanged)
+    Q_PROPERTY(int screenCount READ screenCount NOTIFY screenCountChanged)
 
 public:
     QDesktop(QObject* obj) : QObject(obj) {
         connect(&desktopWidget, SIGNAL(resized(int)), this, SIGNAL(screenGeometryChanged()));
         connect(&desktopWidget, SIGNAL(resized(int)), this, SIGNAL(availableGeometryChanged()));
         connect(&desktopWidget, SIGNAL(workAreaResized(int)), this, SIGNAL(availableGeometryChanged()));
+        connect(&desktopWidget, SIGNAL(screenCountChanged(int)), this, SIGNAL(screenCountChanged()));
+    }
+
+    int screenCount() const
+    {
+        return desktopWidget.screenCount();
+    }
+
+    Q_INVOKABLE QRect screenGeometry(int screen) {
+        return desktopWidget.screenGeometry(screen);
+    }
+
+    Q_INVOKABLE QRect availableGeometry(int screen) {
+        return desktopWidget.availableGeometry(screen);
     }
 
     int screenWidth() const
@@ -78,6 +93,7 @@ private:
 Q_SIGNALS:
     void screenGeometryChanged();
     void availableGeometryChanged();
+    void screenCountChanged();
 };
 
 QML_DECLARE_TYPEINFO(QDesktop, QML_HAS_ATTACHED_PROPERTIES)
