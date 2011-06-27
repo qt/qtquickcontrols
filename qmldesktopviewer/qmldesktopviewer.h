@@ -56,54 +56,6 @@ class QActionGroup;
 class QMenuBar;
 class LoggerWidget;
 
-class QDesktop : public QObject
-{
-    Q_OBJECT
-
-    Q_PROPERTY(int screenWidth READ screenWidth NOTIFY screenGeometryChanged)
-    Q_PROPERTY(int screenHeight READ screenHeight NOTIFY screenGeometryChanged)
-    Q_PROPERTY(int availableWidth READ availableWidth NOTIFY availableGeometryChanged)
-    Q_PROPERTY(int availableHeight READ availableHeight NOTIFY availableGeometryChanged)
-
-public:
-    QDesktop(QObject* obj) : QObject(obj) {
-        connect(&desktopWidget, SIGNAL(resized(int)), this, SIGNAL(screenGeometryChanged()));
-        connect(&desktopWidget, SIGNAL(resized(int)), this, SIGNAL(availableGeometryChanged()));
-        connect(&desktopWidget, SIGNAL(workAreaResized(int)), this, SIGNAL(availableGeometryChanged()));
-    }
-
-    int screenWidth() const
-    {
-        return desktopWidget.screenGeometry().width();
-    }
-
-    int screenHeight() const
-    {
-        return desktopWidget.screenGeometry().height();
-    }
-
-    int availableWidth() const
-    {
-        return desktopWidget.availableGeometry().width();
-    }
-
-    int availableHeight() const
-    {
-        return desktopWidget.availableGeometry().height();
-    }
-
-    static QDesktop *qmlAttachedProperties(QObject *obj) {
-        return new QDesktop(obj);
-    }
-
-private:
-    QDesktopWidget desktopWidget;
-
-Q_SIGNALS:
-    void screenGeometryChanged();
-    void availableGeometryChanged();
-};
-
 class QmlDesktopViewer
     : public QObject
 {
@@ -138,8 +90,6 @@ private:
 signals:
     void statusChanged(QDeclarativeComponent::Status);
 };
-
-QML_DECLARE_TYPEINFO(QDesktop, QML_HAS_ATTACHED_PROPERTIES)
 
 QT_END_NAMESPACE
 
