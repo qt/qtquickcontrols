@@ -5,6 +5,13 @@ import "content"
 Window {
     title: "parent window"
 
+    width: galleryRectangle.width
+    height: galleryRectangle.height
+    maximumHeight: galleryRectangle.height
+    minimumHeight: galleryRectangle.height
+    maximumWidth: galleryRectangle.width
+    minimumWidth: galleryRectangle.width
+
     MenuBarBase {
         Menu {
             text: "Hello"
@@ -30,12 +37,7 @@ Window {
         }
     }
 
-    width: 538 + frame.margins * 2
-    height: 360 + frame.margins * 2
-
     Component.onCompleted: visible = true
-
-//    visible: true
 
     property string loremIpsum:
             "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor "+
@@ -44,13 +46,10 @@ Window {
             "exercitation ullamco laboris nisi ut aliquip ex ea commodo cosnsequat. ";
 
 Rectangle {
+    id: galleryRectangle
 
     width: 538 + frame.margins * 2
     height: 360 + frame.margins * 2
-
-//    Binding { target: mainWindow; property: "maximumWidth"; value: width }
-//    Binding { target: mainWindow; property: "maximumHeight"; value: height }
-//    Binding { target: mainWindow; property: "title"; value: "MainWindow" }
 
     ToolBar{
         id: toolbar
