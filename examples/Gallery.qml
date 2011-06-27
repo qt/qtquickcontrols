@@ -2,51 +2,13 @@ import QtQuick 1.0
 import "../components"
 import "content"
 
-Window {
-    title: "parent window"
 
-    width: galleryRectangle.width
-    height: galleryRectangle.height
-    maximumHeight: galleryRectangle.height
-    minimumHeight: galleryRectangle.height
-    maximumWidth: galleryRectangle.width
-    minimumWidth: galleryRectangle.width
-
-    MenuBarBase {
-        Menu {
-            text: "Hello"
-            MenuItem {
-                text: "Open"
-                shortcut: "Ctrl+O"
-                onTriggered: console.log("we should display a file open dialog")
-            }
-            MenuItem {
-                text: "Close"
-                shortcut: "Ctrl+Q"
-                onTriggered: Qt.quit()
-            }
-        }
-        Menu {
-            text: "World"
-            MenuItem {
-                text: "Copy"
-            }
-            MenuItem {
-                text: "Paste"
-            }
-        }
-    }
-
-    Component.onCompleted: visible = true
-
+Rectangle {
     property string loremIpsum:
             "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor "+
             "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor "+
             "incididunt ut labore et dolore magna aliqua.\n Ut enim ad minim veniam, quis nostrud "+
             "exercitation ullamco laboris nisi ut aliquip ex ea commodo cosnsequat. ";
-
-Rectangle {
-    id: galleryRectangle
 
     width: 538 + frame.margins * 2
     height: 360 + frame.margins * 2
@@ -451,7 +413,5 @@ Rectangle {
             }
         }
     }
-}
-
 }
 

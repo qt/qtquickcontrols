@@ -80,4 +80,5 @@ OTHER_FILES += \
     ../../examples/Gallery.qml \
     ../custom/behaviors/ModalPopupBehavior.qml \
     ../custom/behaviors/ButtonBehavior.qml \
-    ../custom/private/ChoiceListPopup.qml
+    ../custom/private/ChoiceListPopup.qml \
+    ../../examples/TopLevel.qml
