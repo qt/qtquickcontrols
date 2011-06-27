@@ -47,6 +47,7 @@ class QtMenuItem: public QObject
 {
     Q_PROPERTY(QString text READ text WRITE setText NOTIFY textChanged);
     Q_PROPERTY(QString shortcut READ shortcut WRITE setShortcut NOTIFY shortcutChanged)
+    Q_PROPERTY(QString iconSource READ iconSource WRITE setIconSource NOTIFY iconSourceChanged)
 
     Q_OBJECT
 public:
@@ -55,9 +56,11 @@ public:
 
     void setText(const QString &text);
     void setShortcut(const QString &shortcut);
+    void setIconSource(const QString &icon);
 
     QString text() const;
     QString shortcut() const;
+    QString iconSource() const;
 
     QAction* action();
 
@@ -65,9 +68,11 @@ Q_SIGNALS:
     void triggered();
     void textChanged();
     void shortcutChanged();
+    void iconSourceChanged();
 
 private:
     QAction *_action;
+    QString _iconSource;
 };
 
 #endif //QTMENUITEM_H

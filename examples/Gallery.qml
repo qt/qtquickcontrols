@@ -42,10 +42,10 @@ Rectangle {
         Window {
             id: window1
             width: 400
-            height: 250
+            height: 400
             minimumWidth: 400
-            minimumHeight: 250
-            x: 1920
+            minimumHeight: 400
+            x: 500
             y: 500
             title: "child window"
 
@@ -55,6 +55,7 @@ Rectangle {
                     MenuItem {
                         text: "Open"
                         shortcut: "Ctrl+O"
+                        iconSource: "images/toplevel_window.png"
                         onTriggered: console.log("we should display a file open dialog")
                     }
                     MenuItem {

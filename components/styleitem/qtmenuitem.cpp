@@ -61,6 +61,13 @@ void QtMenuItem::setShortcut(const QString &shortcut)
     emit shortcutChanged();
 }
 
+void QtMenuItem::setIconSource(const QString &icon)
+{
+    _iconSource = icon;
+    _action->setIcon(QIcon(icon));
+    emit iconSourceChanged();
+}
+
 QString QtMenuItem::text() const
 {
     return _action->text();
@@ -69,6 +76,11 @@ QString QtMenuItem::text() const
 QString QtMenuItem::shortcut() const
 {
     return _action->shortcut().toString();
+}
+
+QString QtMenuItem::iconSource() const
+{
+    return _iconSource;
 }
 
 QAction * QtMenuItem::action()
