@@ -120,6 +120,7 @@ FocusScope {
         opacity: !textInput.text.length && !textInput.activeFocus ? 1 : 0
         color: "gray"
         text: "Enter text"
+        clip: true
         Behavior on opacity { NumberAnimation { duration: 90 } }
     }
 }

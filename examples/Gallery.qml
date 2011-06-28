@@ -147,9 +147,9 @@ Rectangle {
                         }
                         TextField {
                             id: t3
-                            text: "TextField"
                             KeyNavigation.tab: slider
                             KeyNavigation.backtab: t2
+                            placeholderText: "This is a placeholder for a TextField"
                         }
                         ProgressBar {
                             // normalize value [0.0 .. 1.0]
