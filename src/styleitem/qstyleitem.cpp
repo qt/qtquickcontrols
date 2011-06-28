@@ -663,6 +663,8 @@ void QStyleItem::setCursor(const QString &str)
             QDeclarativeItem::setCursor(Qt::SplitVCursor);
         else if (m_cursor == "wait")
             QDeclarativeItem::setCursor(Qt::WaitCursor);
+        else if (m_cursor == "pointinghandcursor")
+            QDeclarativeItem::setCursor(Qt::PointingHandCursor);
         emit cursorChanged();
     }
 }
