@@ -179,11 +179,21 @@ public:
     void setX(int x) { _window->move(x, y()); }
     void setY(int y) { _window->move(x(), y); }
     void setHeight(int height) {
-        _window->resize(width(), height);
+        int menuBarHeight = _window->menuBar()->sizeHint().height();
+        if (menuBarHeight) menuBarHeight++;
+        _window->resize(width(), height+menuBarHeight);
         QDeclarativeItem::setHeight(height);
     }
-    void setMinimumHeight(int height) { _window->setMinimumHeight(height); }
-    void setMaximumHeight(int height) { _window->setMaximumHeight(height); }
+    void setMinimumHeight(int height) {
+        int menuBarHeight = _window->menuBar()->sizeHint().height();
+        if (menuBarHeight) menuBarHeight++;
+        _window->setMinimumHeight(height+menuBarHeight);
+    }
+    void setMaximumHeight(int height) {
+        int menuBarHeight = _window->menuBar()->sizeHint().height();
+        if (menuBarHeight) menuBarHeight++;
+        _window->setMaximumHeight(height+menuBarHeight);
+    }
     void setWidth(int width) {
         _window->resize(width, height());
         QDeclarativeItem::setWidth(width);
