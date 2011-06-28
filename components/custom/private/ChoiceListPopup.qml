@@ -67,7 +67,7 @@ MouseArea {
             popupFrameLoader.item.opacity = 0;
             popup.hideHighlight();
             if (popupFrameLoader.item.opacity !== 0)
-                state = "popupClosing"
+                state = "popupClosed"
         }
     }
 
