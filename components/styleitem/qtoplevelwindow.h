@@ -40,7 +40,9 @@ public:
 
     QGraphicsScene *scene() { return _view->scene(); }
     QDeclarativeView *view() { return _view; }
+
     void registerChildWindow(QTopLevelWindow* child);
+    void hideChildWindows();
 
 protected:
     virtual bool event(QEvent *event);

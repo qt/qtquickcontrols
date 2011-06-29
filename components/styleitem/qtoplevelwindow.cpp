@@ -8,15 +8,23 @@ QTopLevelWindow::QTopLevelWindow()
 
 QTopLevelWindow::~QTopLevelWindow()
 {
-    foreach(QTopLevelWindow* w, _childWindows) {
-        delete w;
+    foreach(QTopLevelWindow* child, _childWindows) {
+        delete child;
     }
     _childWindows.clear();
 }
 
-void QTopLevelWindow::registerChildWindow(QTopLevelWindow* child) {
+void QTopLevelWindow::registerChildWindow(QTopLevelWindow* child)
+{
     qDebug() << child << "is a child of" << this;
     _childWindows.insert(child);
+}
+
+void QTopLevelWindow::hideChildWindows()
+{
+    foreach(QTopLevelWindow* child, _childWindows) {
+        child->hide();
+    }
 }
 
 bool QTopLevelWindow::event(QEvent *event) {
@@ -25,7 +33,10 @@ bool QTopLevelWindow::event(QEvent *event) {
             emit windowStateChanged();
             break;
         case QEvent::Show:
+            emit visibilityChanged();
+            break;
         case QEvent::Hide:
+            hideChildWindows();
             emit visibilityChanged();
             break;
         case QEvent::Resize: {
