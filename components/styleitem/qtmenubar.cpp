@@ -38,7 +38,7 @@
 ****************************************************************************/
 
 #include "qtmenubar.h"
-#include "qwindow.h"
+#include "qwindowitem.h"
 
 #include <QtGui/QMenu>
 #include <QtGui/QMenuBar>
@@ -61,7 +61,7 @@ QDeclarativeListProperty<QtMenu> QtMenuBar::menus()
 
 void QtMenuBar::updateParent()
 {
-    if (QWindow* window = qobject_cast<QWindow*>(parent()))
+    if (QWindowItem* window = qobject_cast<QWindowItem*>(parent()))
         window->window()->setMenuBar(_menuBar);
 }
 

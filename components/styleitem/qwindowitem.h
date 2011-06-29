@@ -24,125 +24,18 @@
 **
 ****************************************************************************/
 
-#ifndef QWINDOW_H
-#define QWINDOW_H
+#ifndef QWindowItem_H
+#define QWindowItem_H
+
+#include "qtoplevelwindow.h"
 
 #include <QtGui/QApplication>
-#include <QtDeclarative>
-#include <QWindowStateChangeEvent>
+#include <QDeclarativeItem>
 #include <QDeclarativeView>
-
-class QDesktop : public QObject
-{
-    Q_OBJECT
-
-    Q_PROPERTY(int screenWidth READ screenWidth NOTIFY screenGeometryChanged)
-    Q_PROPERTY(int screenHeight READ screenHeight NOTIFY screenGeometryChanged)
-    Q_PROPERTY(int availableWidth READ availableWidth NOTIFY availableGeometryChanged)
-    Q_PROPERTY(int availableHeight READ availableHeight NOTIFY availableGeometryChanged)
-    Q_PROPERTY(int screenCount READ screenCount NOTIFY screenCountChanged)
-
-public:
-    QDesktop(QObject* obj) : QObject(obj) {
-        connect(&desktopWidget, SIGNAL(resized(int)), this, SIGNAL(screenGeometryChanged()));
-        connect(&desktopWidget, SIGNAL(resized(int)), this, SIGNAL(availableGeometryChanged()));
-        connect(&desktopWidget, SIGNAL(workAreaResized(int)), this, SIGNAL(availableGeometryChanged()));
-        connect(&desktopWidget, SIGNAL(screenCountChanged(int)), this, SIGNAL(screenCountChanged()));
-    }
-
-    int screenCount() const
-    {
-        return desktopWidget.screenCount();
-    }
-
-    Q_INVOKABLE QRect screenGeometry(int screen) {
-        return desktopWidget.screenGeometry(screen);
-    }
-
-    Q_INVOKABLE QRect availableGeometry(int screen) {
-        return desktopWidget.availableGeometry(screen);
-    }
-
-    int screenWidth() const
-    {
-        return desktopWidget.screenGeometry().width();
-    }
-
-    int screenHeight() const
-    {
-        return desktopWidget.screenGeometry().height();
-    }
-
-    int availableWidth() const
-    {
-        return desktopWidget.availableGeometry().width();
-    }
-
-    int availableHeight() const
-    {
-        return desktopWidget.availableGeometry().height();
-    }
-
-    static QDesktop *qmlAttachedProperties(QObject *obj) {
-        return new QDesktop(obj);
-    }
-
-private:
-    QDesktopWidget desktopWidget;
-
-Q_SIGNALS:
-    void screenGeometryChanged();
-    void availableGeometryChanged();
-    void screenCountChanged();
-};
-
-QML_DECLARE_TYPEINFO(QDesktop, QML_HAS_ATTACHED_PROPERTIES)
-
-class DeclarativeWindow : public QMainWindow {
-    Q_OBJECT
-public:
-    DeclarativeWindow()
-        : QMainWindow(_mainWindow), _view(new QDeclarativeView) {
-        setVisible(false);
-        setCentralWidget(_view);
-        _mainWindow = this;
-    }
-
-    QGraphicsScene *scene() { return _view->scene(); }
-    QDeclarativeView *view() { return _view; }
-
-protected:
-    virtual bool event(QEvent *event) {
-        switch (event->type()) {
-            case QEvent::WindowStateChange:
-                emit windowStateChanged();
-                break;
-            case QEvent::Show:
-            case QEvent::Hide:
-                emit visibilityChanged();
-                break;
-            case QEvent::Resize: {
-                const QResizeEvent *resize = static_cast<const QResizeEvent *>(event);
-                emit sizeChanged(resize->size());
-                break;
-            }
-            default: break;
-        }
-        return QMainWindow::event(event);
-    }
-
-Q_SIGNALS:
-    void visibilityChanged();
-    void windowStateChanged();
-    void sizeChanged(QSize newSize);
-
-private:
-    QDeclarativeView *_view;
-    static DeclarativeWindow *_mainWindow;
-};
+#include <QMenuBar>
 
 
-class QWindow : public QDeclarativeItem
+class QWindowItem : public QDeclarativeItem
 {
     Q_OBJECT
     Q_PROPERTY(int x READ x WRITE setX NOTIFY positionChanged)
@@ -159,9 +52,9 @@ class QWindow : public QDeclarativeItem
     Q_PROPERTY(QString title READ title WRITE setTitle NOTIFY titleChanged)
 
 public:
-    QWindow(DeclarativeWindow* declarativeWindow = 0);
+    QWindowItem(QTopLevelWindow* QTopLevelWindow = 0);
 
-    DeclarativeWindow *window() { return _window; }
+    QTopLevelWindow *window() { return _window; }
     QDeclarativeView *view() { return _window->view(); }
     int x() { return _window->x(); }
     int y() { return _window->y(); }
@@ -214,6 +107,8 @@ public:
 
 protected:
     bool eventFilter(QObject *, QEvent *ev);
+    void updateParentWindow();
+    void registerChildWindow(QWindowItem* child);
     void componentComplete();
 
 protected Q_SLOTS:
@@ -232,7 +127,7 @@ Q_SIGNALS:
     void titleChanged();
 
 private:
-    DeclarativeWindow *_window;
+    QTopLevelWindow *_window;
 };
 
-#endif // QWINDOW_H
+#endif // QWindowItem_H

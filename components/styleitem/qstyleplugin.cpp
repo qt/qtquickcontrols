@@ -44,7 +44,8 @@
 #include "qtmenu.h"
 #include "qtmenubar.h"
 #include "qtmenuitem.h"
-#include "qwindow.h"
+#include "qwindowitem.h"
+#include "qdesktopitem.h"
 #include "qwheelarea.h"
 #include <qdeclarativeextensionplugin.h>
 
@@ -88,9 +89,9 @@ void StylePlugin::registerTypes(const char *uri)
     qmlRegisterType<QtMenu>(uri, 1, 0, "MenuBase");
     qmlRegisterType<QtMenuBar>(uri, 1, 0, "MenuBarBase");
     qmlRegisterType<QtMenuItem>(uri, 1, 0, "MenuItemBase");
-    qmlRegisterType<QWindow>("QtQuick", 1, 0, "Window");
-    qmlRegisterUncreatableType<QDesktop>("Qt",4,7,"Desktop", QLatin1String("Do not create objects of type Desktop"));
-    qmlRegisterUncreatableType<QDesktop>("QtQuick",1,0,"Desktop",QLatin1String("Do not create objects of type Desktop"));
+    qmlRegisterType<QWindowItem>("QtQuick", 1, 0, "Window");
+    qmlRegisterUncreatableType<QDesktopItem>("Qt",4,7,"Desktop", QLatin1String("Do not create objects of type Desktop"));
+    qmlRegisterUncreatableType<QDesktopItem>("QtQuick",1,0,"Desktop",QLatin1String("Do not create objects of type Desktop"));
 }
 
 void StylePlugin::initializeEngine(QDeclarativeEngine *engine, const char *uri)

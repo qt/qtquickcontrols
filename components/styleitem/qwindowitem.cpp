@@ -38,12 +38,11 @@
 ****************************************************************************/
 
 
-#include "qwindow.h"
+#include "qwindowitem.h"
+#include "qtoplevelwindow.h"
 
-DeclarativeWindow *DeclarativeWindow::_mainWindow = 0;
-
-QWindow::QWindow(DeclarativeWindow* declarativeWindow)
-    : _window(declarativeWindow ? declarativeWindow : new DeclarativeWindow)
+QWindowItem::QWindowItem(QTopLevelWindow* tlw)
+    : _window(tlw ? tlw : new QTopLevelWindow)
 {
     connect(_window, SIGNAL(visibilityChanged()), this, SIGNAL(visibilityChanged()));
     connect(_window, SIGNAL(windowStateChanged()), this, SIGNAL(windowStateChanged()));
@@ -51,7 +50,7 @@ QWindow::QWindow(DeclarativeWindow* declarativeWindow)
     view()->setResizeMode(QDeclarativeView::SizeRootObjectToView);
 }
 
-bool QWindow::eventFilter(QObject *, QEvent *ev)
+bool QWindowItem::eventFilter(QObject *, QEvent *ev)
 {
     switch(ev->type()) {
         case QEvent::Resize:
@@ -66,13 +65,33 @@ bool QWindow::eventFilter(QObject *, QEvent *ev)
     return false;
 }
 
-void QWindow::componentComplete()
+void QWindowItem::registerChildWindow(QWindowItem *child) {
+    _window->registerChildWindow(child->window());
+}
+
+void QWindowItem::updateParentWindow() {
+    QDeclarativeItem *p = parentItem();
+    while (p) {
+        QWindowItem *w = qobject_cast<QWindowItem*>(p);
+        if (w) {
+            qDebug() << "we found a childhood";
+            w->registerChildWindow(this);
+            return;
+        } else {
+            qDebug() << p << "is not a QWindowItem!";
+            p = p->parentItem();
+        }
+    }
+}
+
+void QWindowItem::componentComplete()
 {
+    updateParentWindow();
     _window->scene()->addItem(this);
     QDeclarativeItem::componentComplete();
 }
 
-void QWindow::updateSize(QSize newSize)
+void QWindowItem::updateSize(QSize newSize)
 {
     QDeclarativeItem::setSize(newSize);
     emit sizeChanged();

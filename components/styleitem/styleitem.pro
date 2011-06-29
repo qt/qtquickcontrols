@@ -17,8 +17,10 @@ HEADERS += qtmenu.h \
            qstyleplugin.h \
            qdeclarativefolderlistmodel.h \
            qstyleitem.h \
-           qwindow.h \
-           qwheelarea.h
+           qwheelarea.h \
+    qdesktopitem.h \
+    qtoplevelwindow.h \
+    qwindowitem.h
 
 SOURCES += qtmenu.cpp \
            qtmenubar.cpp \
@@ -27,8 +29,10 @@ SOURCES += qtmenu.cpp \
 	   qstyleplugin.cpp \
            qdeclarativefolderlistmodel.cpp \
            qstyleitem.cpp \
-           qwindow.cpp \
-           qwheelarea.cpp
+           qwheelarea.cpp \
+    qdesktopitem.cpp \
+    qtoplevelwindow.cpp \
+    qwindowitem.cpp
            
 
 OTHER_FILES += \
