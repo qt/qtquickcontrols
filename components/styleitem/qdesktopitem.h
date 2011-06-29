@@ -41,49 +41,16 @@ class QDesktopItem : public QObject
     Q_PROPERTY(int screenCount READ screenCount NOTIFY screenCountChanged)
 
 public:
-    QDesktopItem(QObject* obj) : QObject(obj) {
-        connect(&desktopWidget, SIGNAL(resized(int)), this, SIGNAL(screenGeometryChanged()));
-        connect(&desktopWidget, SIGNAL(resized(int)), this, SIGNAL(availableGeometryChanged()));
-        connect(&desktopWidget, SIGNAL(workAreaResized(int)), this, SIGNAL(availableGeometryChanged()));
-        connect(&desktopWidget, SIGNAL(screenCountChanged(int)), this, SIGNAL(screenCountChanged()));
-    }
+    QDesktopItem(QObject* obj);
 
-    int screenCount() const
-    {
-        return desktopWidget.screenCount();
-    }
-
-    Q_INVOKABLE QRect screenGeometry(int screen) {
-        return desktopWidget.screenGeometry(screen);
-    }
-
-    Q_INVOKABLE QRect availableGeometry(int screen) {
-        return desktopWidget.availableGeometry(screen);
-    }
-
-    int screenWidth() const
-    {
-        return desktopWidget.screenGeometry().width();
-    }
-
-    int screenHeight() const
-    {
-        return desktopWidget.screenGeometry().height();
-    }
-
-    int availableWidth() const
-    {
-        return desktopWidget.availableGeometry().width();
-    }
-
-    int availableHeight() const
-    {
-        return desktopWidget.availableGeometry().height();
-    }
-
-    static QDesktopItem *qmlAttachedProperties(QObject *obj) {
-        return new QDesktopItem(obj);
-    }
+    int screenCount() const;
+    Q_INVOKABLE QRect screenGeometry(int screen) const;
+    Q_INVOKABLE QRect availableGeometry(int screen) const;
+    int screenWidth() const;
+    int screenHeight() const;
+    int availableWidth() const;
+    int availableHeight() const;
+    static QDesktopItem *qmlAttachedProperties(QObject *obj);
 
 private:
     QDesktopWidget desktopWidget;

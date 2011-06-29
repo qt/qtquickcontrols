@@ -72,15 +72,11 @@ void QWindowItem::registerChildWindow(QWindowItem *child) {
 void QWindowItem::updateParentWindow() {
     QDeclarativeItem *p = parentItem();
     while (p) {
-        QWindowItem *w = qobject_cast<QWindowItem*>(p);
-        if (w) {
-            qDebug() << "we found a childhood";
+        if (QWindowItem *w = qobject_cast<QWindowItem*>(p)) {
             w->registerChildWindow(this);
             return;
-        } else {
-            qDebug() << p << "is not a QWindowItem!";
-            p = p->parentItem();
         }
+        p = p->parentItem();
     }
 }
 
@@ -95,4 +91,33 @@ void QWindowItem::updateSize(QSize newSize)
 {
     QDeclarativeItem::setSize(newSize);
     emit sizeChanged();
+}
+
+void QWindowItem::setHeight(int height) {
+    int menuBarHeight = _window->menuBar()->sizeHint().height();
+    if (menuBarHeight) menuBarHeight++;
+    _window->resize(width(), height+menuBarHeight);
+    QDeclarativeItem::setHeight(height);
+}
+
+void QWindowItem::setMinimumHeight(int height) {
+    int menuBarHeight = _window->menuBar()->sizeHint().height();
+    if (menuBarHeight) menuBarHeight++;
+    _window->setMinimumHeight(height+menuBarHeight);
+}
+
+void QWindowItem::setMaximumHeight(int height) {
+    int menuBarHeight = _window->menuBar()->sizeHint().height();
+    if (menuBarHeight) menuBarHeight++;
+    _window->setMaximumHeight(height+menuBarHeight);
+}
+
+void QWindowItem::setWidth(int width) {
+    _window->resize(width, height());
+    QDeclarativeItem::setWidth(width);
+}
+
+void QWindowItem::setTitle(QString title) {
+    _window->setWindowTitle(title);
+    emit titleChanged();
 }

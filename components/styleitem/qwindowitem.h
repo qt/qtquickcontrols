@@ -71,26 +71,10 @@ public:
 
     void setX(int x) { _window->move(x, y()); }
     void setY(int y) { _window->move(x(), y); }
-    void setHeight(int height) {
-        int menuBarHeight = _window->menuBar()->sizeHint().height();
-        if (menuBarHeight) menuBarHeight++;
-        _window->resize(width(), height+menuBarHeight);
-        QDeclarativeItem::setHeight(height);
-    }
-    void setMinimumHeight(int height) {
-        int menuBarHeight = _window->menuBar()->sizeHint().height();
-        if (menuBarHeight) menuBarHeight++;
-        _window->setMinimumHeight(height+menuBarHeight);
-    }
-    void setMaximumHeight(int height) {
-        int menuBarHeight = _window->menuBar()->sizeHint().height();
-        if (menuBarHeight) menuBarHeight++;
-        _window->setMaximumHeight(height+menuBarHeight);
-    }
-    void setWidth(int width) {
-        _window->resize(width, height());
-        QDeclarativeItem::setWidth(width);
-    }
+    void setHeight(int height);
+    void setMinimumHeight(int height);
+    void setMaximumHeight(int height);
+    void setWidth(int width);
     void setMinimumWidth(int width) { _window->setMinimumWidth(width); }
     void setMaximumWidth(int width) { _window->setMaximumWidth(width); }
     void setVisible(bool visible) { _window->setVisible(visible); }
@@ -100,10 +84,7 @@ public:
         emit windowDecorationChanged();
     }
     void setWindowState(Qt::WindowState state) { _window->setWindowState(state); }
-    void setTitle(QString title) {
-        _window->setWindowTitle(title);
-        emit titleChanged();
-    }
+    void setTitle(QString title);
 
 protected:
     bool eventFilter(QObject *, QEvent *ev);

@@ -35,46 +35,15 @@
 class QTopLevelWindow : public QMainWindow {
     Q_OBJECT
 public:
-    QTopLevelWindow()
-        : QMainWindow(), _view(new QDeclarativeView) {
-        setVisible(false);
-        setCentralWidget(_view);
-    }
-
-    ~QTopLevelWindow()
-    {
-        foreach(QTopLevelWindow* w, _childWindows) {
-            delete w;
-        }
-        _childWindows.clear();
-    }
+    QTopLevelWindow();
+    ~QTopLevelWindow();
 
     QGraphicsScene *scene() { return _view->scene(); }
     QDeclarativeView *view() { return _view; }
-    void registerChildWindow(QTopLevelWindow* child) {
-        qDebug() << child << "is a child of" << this;
-        _childWindows.insert(child);
-    }
+    void registerChildWindow(QTopLevelWindow* child);
 
 protected:
-    virtual bool event(QEvent *event) {
-        switch (event->type()) {
-            case QEvent::WindowStateChange:
-                emit windowStateChanged();
-                break;
-            case QEvent::Show:
-            case QEvent::Hide:
-                emit visibilityChanged();
-                break;
-            case QEvent::Resize: {
-                const QResizeEvent *resize = static_cast<const QResizeEvent *>(event);
-                emit sizeChanged(resize->size());
-                break;
-            }
-            default: break;
-        }
-        return QMainWindow::event(event);
-    }
+    virtual bool event(QEvent *event);
 
 Q_SIGNALS:
     void visibilityChanged();
