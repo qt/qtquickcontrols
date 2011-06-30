@@ -53,6 +53,7 @@ class QWindowItem : public QDeclarativeItem
 
 public:
     QWindowItem(QTopLevelWindow* QTopLevelWindow = 0);
+    ~QWindowItem();
 
     QTopLevelWindow *window() { return _window; }
     QDeclarativeView *view() { return _window->view(); }

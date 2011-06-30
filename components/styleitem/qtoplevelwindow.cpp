@@ -8,10 +8,8 @@ QTopLevelWindow::QTopLevelWindow()
 
 QTopLevelWindow::~QTopLevelWindow()
 {
-    foreach(QTopLevelWindow* child, _childWindows) {
-        delete child;
-    }
-    _childWindows.clear();
+    //we need this to break the parental loop of QWindowItem and QTopLevelWindow
+    _view->scene()->setParent(0);
 }
 
 void QTopLevelWindow::registerChildWindow(QTopLevelWindow* child)

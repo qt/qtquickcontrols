@@ -65,10 +65,9 @@
 QT_BEGIN_NAMESPACE
 
 QmlDesktopViewer::QmlDesktopViewer() :
-    _engine(new QDeclarativeEngine), _rootObject(new QDeclarativeItem)
+    _engine(new QDeclarativeEngine(this)), _rootObject(new QDeclarativeItem)
 {
     QmlDesktopViewer::registerTypes();
-//    QObject::connect(view()->engine(), SIGNAL(quit()), this, SLOT(close()));
 
 }
 
@@ -163,6 +162,7 @@ void QmlDesktopViewer::continueExecute()
     }
 
     QObject *obj = _component->create();
+    obj->setParent(this);
 
     if(_component->isError()) {
         QList<QDeclarativeError> errorList = _component->errors();
@@ -176,6 +176,11 @@ void QmlDesktopViewer::continueExecute()
     _rootObject = qobject_cast<QGraphicsObject*>(obj);
     Q_ASSERT(_rootObject);
     emit statusChanged(_component->status());
+}
+
+void QmlDesktopViewer::quit()
+{
+    qApp->quit();
 }
 
 QT_END_NAMESPACE

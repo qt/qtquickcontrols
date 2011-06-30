@@ -80,6 +80,7 @@ public slots:
     void statusChanged();
     void execute(QUrl url);
     void continueExecute();
+    void quit();
 
 private:
     QString currentFileOrUrl;

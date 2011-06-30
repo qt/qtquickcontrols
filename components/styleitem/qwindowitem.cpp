@@ -50,6 +50,14 @@ QWindowItem::QWindowItem(QTopLevelWindow* tlw)
     view()->setResizeMode(QDeclarativeView::SizeRootObjectToView);
 }
 
+QWindowItem::~QWindowItem()
+{
+    if (_window) {
+        delete _window;
+        _window = 0;
+    }
+}
+
 bool QWindowItem::eventFilter(QObject *, QEvent *ev)
 {
     switch(ev->type()) {

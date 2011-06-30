@@ -312,9 +312,11 @@ int main(int argc, char ** argv)
             openFile(fileName);
     }
 
-    QObject::connect(&app, SIGNAL(lastWindowClosed()), &app, SLOT(quit()));
+    QObject::connect(&app, SIGNAL(lastWindowClosed()), globalViewer, SLOT(quit()));
 
-    return app.exec();
+    int ret = app.exec();
+    delete globalViewer;
+    return ret;
 }
 
 #include "main.moc"
