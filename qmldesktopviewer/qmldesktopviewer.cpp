@@ -162,7 +162,7 @@ void QmlDesktopViewer::continueExecute()
     }
 
     QObject *obj = _component->create();
-    obj->setParent(this);
+    obj->setParent(_engine);
 
     if(_component->isError()) {
         QList<QDeclarativeError> errorList = _component->errors();
