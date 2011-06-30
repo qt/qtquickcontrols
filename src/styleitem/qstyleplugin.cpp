@@ -43,7 +43,6 @@
 #include "qrangemodel.h"
 #include "qtmenu.h"
 #include "qtmenubar.h"
-#include "qtmenuitem.h"
 #include "qwheelarea.h"
 #include <qdeclarativeextensionplugin.h>
 
@@ -86,7 +85,6 @@ void StylePlugin::registerTypes(const char *uri)
     qmlRegisterType<QWheelArea>(uri, 0, 1, "WheelArea");
     qmlRegisterType<QtMenu>(uri, 0, 1, "MenuBase");
     qmlRegisterType<QtMenuBar>(uri, 0, 1, "MenuBarBase");
-    qmlRegisterType<QtMenuItem>(uri, 0, 1, "MenuItemBase");
 }
 
 void StylePlugin::initializeEngine(QDeclarativeEngine *engine, const char *uri)

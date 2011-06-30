@@ -68,11 +68,6 @@ void QtMenu::setHoveredIndex(int index)
     emit hoveredIndexChanged();
 }
 
-QDeclarativeListProperty<QtMenuItem> QtMenu::menuItems()
-{
-    return QDeclarativeListProperty<QtMenuItem>(this, m_menuItems);
-}
-
 void QtMenu::closePopup()
 {
     m_menu->close();

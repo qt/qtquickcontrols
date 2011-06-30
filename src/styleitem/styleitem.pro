@@ -11,7 +11,6 @@ MOC_DIR = moc
 
 HEADERS += qtmenu.h \
            qtmenubar.h \
-           qtmenuitem.h \
            qrangemodel_p.h \
            qrangemodel.h \
            qstyleplugin.h \
@@ -21,7 +20,6 @@ HEADERS += qtmenu.h \
 
 SOURCES += qtmenu.cpp \
            qtmenubar.cpp \
-           qtmenuitem.cpp \
            qrangemodel.cpp \
            qstyleplugin.cpp \
            qdeclarativefolderlistmodel.cpp \

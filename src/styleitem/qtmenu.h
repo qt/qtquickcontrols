@@ -31,21 +31,13 @@
 #include <QtDeclarative/qdeclarative.h>
 #include <QtDeclarative/qdeclarativeitem.h>
 #include <QtDeclarative/QDeclarativeListProperty>
-#include "qtmenuitem.h"
+
 class QtMenu : public QDeclarativeItem
 {
     Q_OBJECT
     Q_PROPERTY(QString title READ title WRITE setTitle)
     Q_PROPERTY(int selectedIndex READ selectedIndex WRITE setSelectedIndex NOTIFY selectedIndexChanged)
     Q_PROPERTY(int hoveredIndex READ hoveredIndex WRITE setHoveredIndex NOTIFY hoveredIndexChanged)
-
-    // The only reason we declare a list of menu items here, is so we can make it a default
-    // property from within QML, if needed. The reason we don't implement the code for using
-    // the list here, is that we expect the QML code to mix both ListModel and MenuItems API for
-    // adding menu items. And we don't wan't to decide how to mix those two API-s from here. So the only
-    // API in his class will be 'addMenuItem' and 'clearMenuItems'.
-    Q_PROPERTY(QDeclarativeListProperty<QtMenuItem> menuItems READ menuItems NOTIFY menuItemsChanged)
-    Q_CLASSINFO("DefaultProperty", "menuItems")
 public:
     QtMenu(QDeclarativeItem *parent = 0);
     virtual ~QtMenu();
@@ -56,7 +48,6 @@ public:
     void setSelectedIndex(int index);
     int hoveredIndex() const { return m_highlightedIndex; }
     void setHoveredIndex(int index);
-    QDeclarativeListProperty<QtMenuItem> menuItems();
 
     Q_INVOKABLE void showPopup(qreal x, qreal y, int atActionIndex = -1);
     Q_INVOKABLE void closePopup();
@@ -78,7 +69,6 @@ private:
     int m_highlightedIndex;
     QWidget *dummy;
     QMenu *m_menu;
-    QList<QtMenuItem *> m_menuItems;
 };
 
 QML_DECLARE_TYPE(QtMenu)
