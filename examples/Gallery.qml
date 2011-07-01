@@ -49,7 +49,7 @@ Rectangle {
             y: 500
             title: "child window"
 
-            MenuBarBase {
+            MenuBar {
                 Menu {
                     text: "Something"
                     MenuItem {

@@ -86,11 +86,11 @@ void StylePlugin::registerTypes(const char *uri)
     qmlRegisterType<QGraphicsDropShadowEffect>(uri, 1, 0, "DropShadow");
     qmlRegisterType<QDeclarativeFolderListModel>(uri, 1, 0, "FileSystemModel");
     qmlRegisterType<QWheelArea>(uri, 1, 0, "WheelArea");
-    qmlRegisterType<QtMenu>(uri, 1, 0, "MenuBase");
-    qmlRegisterType<QtMenuBar>(uri, 1, 0, "MenuBarBase");
-    qmlRegisterType<QtMenuItem>(uri, 1, 0, "MenuItemBase");
+    qmlRegisterType<QtMenu>(uri, 1, 0, "Menu");
+    qmlRegisterType<QtMenuBar>(uri, 1, 0, "MenuBar");
+    qmlRegisterType<QtMenuItem>(uri, 1, 0, "MenuItem");
     qmlRegisterType<QWindowItem>("QtQuick", 1, 0, "Window");
-    qmlRegisterUncreatableType<QtMenuBase>(uri, 1, 0, "LeMenuBase", QLatin1String("Do not create objects of type LeMenuBase"));
+    qmlRegisterUncreatableType<QtMenuBase>(uri, 1, 0, "MenuBase", QLatin1String("Do not create objects of type MenuBase"));
     qmlRegisterUncreatableType<QDesktopItem>("Qt",4,7,"Desktop", QLatin1String("Do not create objects of type Desktop"));
     qmlRegisterUncreatableType<QDesktopItem>("QtQuick",1,0,"Desktop", QLatin1String("Do not create objects of type Desktop"));
 }

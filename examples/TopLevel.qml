@@ -12,7 +12,7 @@ Window {
     maximumWidth: gallery.width
     minimumWidth: gallery.width
 
-    MenuBarBase {
+    MenuBar {
         Menu {
             text: "Hello"
             MenuItem {
