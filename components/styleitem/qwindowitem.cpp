@@ -52,10 +52,10 @@ QWindowItem::QWindowItem(QTopLevelWindow* tlw)
 
 QWindowItem::~QWindowItem()
 {
-    if (_window) {
-        delete _window;
-        _window = 0;
-    }
+//    if (_window) {
+//        delete _window;
+//        _window = 0;
+//    }
 }
 
 bool QWindowItem::eventFilter(QObject *, QEvent *ev)
@@ -151,7 +151,7 @@ void QWindowItem::setWindowDecoration(bool s) {
 
 void QWindowItem::setModal(bool modal) {
     _window->hide();
-    _window->setWindowModality(Qt::WindowModal);
+    _window->setWindowModality(modal ? Qt::WindowModal : Qt::NonModal);
     _window->show();
     emit modalityChanged();
 }

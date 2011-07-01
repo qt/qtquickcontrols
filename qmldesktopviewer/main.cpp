@@ -272,6 +272,7 @@ int main(int argc, char ** argv)
     app.setApplicationName("QMLDesktop");
     app.setOrganizationName("Nokia");
     app.setOrganizationDomain("nokia.com");
+//    app.setAttribute(Qt::AA_DontUseNativeMenuBar);
 
     QmlDesktopViewer::registerTypes();
 

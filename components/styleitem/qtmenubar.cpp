@@ -44,7 +44,7 @@
 #include <QtGui/QMenuBar>
 
 QtMenuBar::QtMenuBar(QDeclarativeItem *parent)
-    : QDeclarativeItem(parent), _menuBar(new QMenuBar)
+    : QDeclarativeItem(parent)/*, _menuBar(new QMenuBar)*/
 {
     connect(this, SIGNAL(parentChanged()), this, SLOT(updateParent()));
     setFlag(QGraphicsItem::ItemHasNoContents, true);
@@ -61,8 +61,18 @@ QDeclarativeListProperty<QtMenu> QtMenuBar::menus()
 
 void QtMenuBar::updateParent()
 {
+    qDebug() << "updating Parent:" << parent();
     if (QWindowItem* window = qobject_cast<QWindowItem*>(parent()))
-        window->window()->setMenuBar(_menuBar);
+        _menuBar = window->window()->menuBar();
+
+    //THIS IS WRONG... WE NEED TO DO THAT DIFFERENT!
+    _menuBar->clear();
+
+    foreach (QtMenu *menu, m_menus) {
+        _menuBar->addMenu(menu->qmenu());
+    }
+    //THIS IS WRONG... WE NEED TO DO THAT DIFFERENT!
+
 }
 
 void QtMenuBar::append_menu(QDeclarativeListProperty<QtMenu> *list, QtMenu *menu)
@@ -71,6 +81,7 @@ void QtMenuBar::append_menu(QDeclarativeListProperty<QtMenu> *list, QtMenu *menu
     if (menuBar) {
         menu->setParent(menuBar);
         menuBar->m_menus.append(menu);
-        menuBar->_menuBar->addMenu(menu->qmenu());
+        if (menuBar->_menuBar)
+            menuBar->_menuBar->addMenu(menu->qmenu());
     }
 }
