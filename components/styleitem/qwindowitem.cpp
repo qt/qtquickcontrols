@@ -42,7 +42,7 @@
 #include "qtoplevelwindow.h"
 
 QWindowItem::QWindowItem(QTopLevelWindow* tlw)
-    : _window(tlw ? tlw : new QTopLevelWindow)
+    : _window(tlw ? tlw : new QTopLevelWindow), _positionIsDefined(false)
 {
     connect(_window, SIGNAL(visibilityChanged()), this, SIGNAL(visibilityChanged()));
     connect(_window, SIGNAL(windowStateChanged()), this, SIGNAL(windowStateChanged()));
@@ -92,6 +92,9 @@ void QWindowItem::componentComplete()
 {
     updateParentWindow();
     _window->scene()->addItem(this);
+    if (!_window->parentWindow())
+        _window->initPosition();
+
     QDeclarativeItem::componentComplete();
 }
 
@@ -99,6 +102,13 @@ void QWindowItem::updateSize(QSize newSize)
 {
     QDeclarativeItem::setSize(newSize);
     emit sizeChanged();
+}
+
+void QWindowItem::setX(int x) {
+    _window->move(x, y());
+}
+void QWindowItem::setY(int y) {
+    _window->move(x(), y);
 }
 
 void QWindowItem::setHeight(int height) {

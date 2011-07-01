@@ -70,8 +70,8 @@ public:
     Qt::WindowState windowState() { return static_cast<Qt::WindowState>(static_cast<int>(_window->windowState()) & ~Qt::WindowActive); }
     QString title() const { return _window->windowTitle(); }
 
-    void setX(int x) { _window->move(x, y()); }
-    void setY(int y) { _window->move(x(), y); }
+    void setX(int x);
+    void setY(int y);
     void setHeight(int height);
     void setMinimumHeight(int height);
     void setMaximumHeight(int height);
@@ -110,6 +110,7 @@ Q_SIGNALS:
 
 private:
     QTopLevelWindow *_window;
+    bool _positionIsDefined;
 };
 
 #endif // QWindowItem_H

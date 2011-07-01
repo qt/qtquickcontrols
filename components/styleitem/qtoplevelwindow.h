@@ -40,9 +40,15 @@ public:
 
     QGraphicsScene *scene() { return _view->scene(); }
     QDeclarativeView *view() { return _view; }
+    QWidget *parentWindow() { return _parentWindow; }
 
     void registerChildWindow(QTopLevelWindow* child);
     void hideChildWindows();
+    void initPosition();
+
+    void center();
+    void move(int x, int y);
+    void move(const QPoint &);
 
 protected:
     virtual bool event(QEvent *event);
@@ -54,7 +60,10 @@ Q_SIGNALS:
 
 private:
     QDeclarativeView *_view;
+    QWidget* _parentWindow;
     QSet<QTopLevelWindow*> _childWindows;
+    bool _positionIsDefined;
+
 };
 
 #endif // QTOPLEVELWINDOW_H

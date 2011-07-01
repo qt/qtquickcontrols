@@ -1,7 +1,9 @@
 #include "qtoplevelwindow.h"
 
+#include <QDesktopWidget>
+
 QTopLevelWindow::QTopLevelWindow()
-    : QMainWindow(), _view(new QDeclarativeView) {
+    : QMainWindow(), _view(new QDeclarativeView), _parentWindow(0), _positionIsDefined(false) {
     setVisible(false);
     setCentralWidget(_view);
 }
@@ -16,6 +18,7 @@ void QTopLevelWindow::registerChildWindow(QTopLevelWindow* child)
 {
     qDebug() << child << "is a child of" << this;
     _childWindows.insert(child);
+    child->_parentWindow = this;
 }
 
 void QTopLevelWindow::hideChildWindows()
@@ -23,6 +26,38 @@ void QTopLevelWindow::hideChildWindows()
     foreach(QTopLevelWindow* child, _childWindows) {
         child->hide();
     }
+}
+
+void QTopLevelWindow::initPosition()
+{
+    if (!_positionIsDefined)
+        center();
+    foreach(QTopLevelWindow* child, _childWindows) {
+        child->initPosition();
+    }
+}
+
+void QTopLevelWindow::center()
+{
+    QPoint parentCenter;
+    if (_parentWindow)
+        parentCenter = _parentWindow->geometry().center();
+    else
+        parentCenter = QDesktopWidget().screenGeometry().center();
+    QRect thisGeometry = geometry();
+    thisGeometry.moveCenter(parentCenter);
+    setGeometry(thisGeometry);
+}
+
+void QTopLevelWindow::move(int x, int y)
+{
+    move(QPoint(x,y));
+}
+
+void QTopLevelWindow::move(const QPoint &point)
+{
+    _positionIsDefined = true;
+    QMainWindow::move(point);
 }
 
 bool QTopLevelWindow::event(QEvent *event) {

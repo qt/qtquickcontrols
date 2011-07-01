@@ -41,12 +41,11 @@ Rectangle {
 
         Window {
             id: window1
+
             width: 400
             height: 400
             minimumWidth: 400
             minimumHeight: 400
-            x: 500
-            y: 500
             title: "child window"
 
             MenuBar {
