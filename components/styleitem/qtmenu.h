@@ -31,11 +31,12 @@
 #include <QtDeclarative/qdeclarative.h>
 #include <QtDeclarative/QDeclarativeListProperty>
 #include "qtmenuitem.h"
-class QtMenu : public QObject
+
+class QtMenu : public QtMenuBase
 {
     Q_OBJECT
     Q_PROPERTY(QString text READ text WRITE setText)
-    Q_PROPERTY(QDeclarativeListProperty<QtMenuItem> menuItems READ menuItems)
+    Q_PROPERTY(QDeclarativeListProperty<QtMenuBase> menuItems READ menuItems)
     Q_CLASSINFO("DefaultProperty", "menuItems")
 public:
     QtMenu(QObject *parent = 0);
@@ -44,8 +45,10 @@ public:
     void setText(const QString &text);
 
     QString text() const;
-    QDeclarativeListProperty<QtMenuItem> menuItems();
+    QDeclarativeListProperty<QtMenuBase> menuItems();
     QMenu* qmenu() { return _qmenu; }
+
+    QAction* action();
 
     Q_INVOKABLE void showPopup(qreal x, qreal y);
     Q_INVOKABLE void clearMenuItems();
@@ -53,12 +56,14 @@ public:
 
 Q_SIGNALS:
     void selectedChanged();
+
 private:
-    static void append_qmenuItem(QDeclarativeListProperty<QtMenuItem> *list, QtMenuItem *menuItem);
+    static void append_qmenuItem(QDeclarativeListProperty<QtMenuBase> *list, QtMenuBase *menuItem);
+
 private:
     QWidget *dummy;
     QMenu *_qmenu;
-    QList<QtMenuItem *> _qmenuItems;
+    QList<QtMenuBase *> _qmenuItems;
 };
 
 QML_DECLARE_TYPE(QtMenu)

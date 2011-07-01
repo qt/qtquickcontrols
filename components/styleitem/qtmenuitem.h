@@ -43,7 +43,14 @@
 #include <QtCore/QObject>
 #include <QtGui/QAction>
 
-class QtMenuItem: public QObject
+class QtMenuBase: public QObject {
+    Q_OBJECT
+public:
+    QtMenuBase(QObject *parent = 0) : QObject(parent) {}
+    virtual QAction* action() = 0;
+};
+
+class QtMenuItem: public QtMenuBase
 {
     Q_PROPERTY(QString text READ text WRITE setText NOTIFY textChanged);
     Q_PROPERTY(QString shortcut READ shortcut WRITE setShortcut NOTIFY shortcutChanged)

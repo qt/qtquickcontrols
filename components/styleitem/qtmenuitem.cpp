@@ -40,7 +40,7 @@
 #include "qtmenuitem.h"
 
 QtMenuItem::QtMenuItem(QObject *parent)
-    : QObject(parent), _action(new QAction(this))
+    : QtMenuBase(parent), _action(new QAction(this))
 {
     connect(_action, SIGNAL(triggered()), this, SIGNAL(triggered()));
 }

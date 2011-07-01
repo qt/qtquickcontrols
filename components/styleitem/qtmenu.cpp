@@ -29,7 +29,7 @@
 #include <qapplication.h>
 
 QtMenu::QtMenu(QObject *parent)
-    : QObject(parent)
+    : QtMenuBase(parent)
 {
     _qmenu = new QMenu(0);
 }
@@ -49,9 +49,9 @@ QString QtMenu::text() const
     return _qmenu->title();
 }
 
-QDeclarativeListProperty<QtMenuItem> QtMenu::menuItems()
+QDeclarativeListProperty<QtMenuBase> QtMenu::menuItems()
 {
-    return QDeclarativeListProperty<QtMenuItem>(this, 0, &QtMenu::append_qmenuItem);
+    return QDeclarativeListProperty<QtMenuBase>(this, 0, &QtMenu::append_qmenuItem);
 }
 
 void QtMenu::showPopup(qreal x, qreal y)
@@ -63,10 +63,15 @@ void QtMenu::showPopup(qreal x, qreal y)
     _qmenu->popup(screenPosition);
 }
 
+QAction* QtMenu::action()
+{
+    return _qmenu->menuAction();
+}
+
 Q_INVOKABLE void QtMenu::clearMenuItems()
 {
     _qmenu->clear();
-    foreach (QtMenuItem *item, _qmenuItems) {
+    foreach (QtMenuBase *item, _qmenuItems) {
         delete item;
     }
     _qmenuItems.clear();
@@ -80,7 +85,7 @@ void QtMenu::addMenuItem(const QString &text)
     _qmenu->addAction(menuItem->action());
 }
 
-void QtMenu::append_qmenuItem(QDeclarativeListProperty<QtMenuItem> *list, QtMenuItem *menuItem)
+void QtMenu::append_qmenuItem(QDeclarativeListProperty<QtMenuBase> *list, QtMenuBase *menuItem)
 {
     QtMenu *menu = qobject_cast<QtMenu *>(list->object);
     if (menu) {

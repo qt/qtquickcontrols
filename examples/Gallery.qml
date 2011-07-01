@@ -72,6 +72,19 @@ Rectangle {
                     MenuItem {
                         text: "Paste"
                     }
+
+                    Menu {
+                        text: "Advanced"
+                        MenuItem {
+                            text: "SubMenuItem1"
+                        }
+                        MenuItem {
+                            text: "SubMenuItem2"
+                        }
+                        MenuItem {
+                            text: "SubMenuItem3"
+                        }
+                    }
                 }
             }
 

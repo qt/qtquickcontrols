@@ -90,8 +90,9 @@ void StylePlugin::registerTypes(const char *uri)
     qmlRegisterType<QtMenuBar>(uri, 1, 0, "MenuBarBase");
     qmlRegisterType<QtMenuItem>(uri, 1, 0, "MenuItemBase");
     qmlRegisterType<QWindowItem>("QtQuick", 1, 0, "Window");
+    qmlRegisterUncreatableType<QtMenuBase>(uri, 1, 0, "LeMenuBase", QLatin1String("Do not create objects of type LeMenuBase"));
     qmlRegisterUncreatableType<QDesktopItem>("Qt",4,7,"Desktop", QLatin1String("Do not create objects of type Desktop"));
-    qmlRegisterUncreatableType<QDesktopItem>("QtQuick",1,0,"Desktop",QLatin1String("Do not create objects of type Desktop"));
+    qmlRegisterUncreatableType<QDesktopItem>("QtQuick",1,0,"Desktop", QLatin1String("Do not create objects of type Desktop"));
 }
 
 void StylePlugin::initializeEngine(QDeclarativeEngine *engine, const char *uri)
