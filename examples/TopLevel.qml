@@ -14,7 +14,7 @@ Window {
 
     MenuBar {
         Menu {
-            text: "Hello"
+            text: "File"
             MenuItem {
                 text: "Open"
                 shortcut: "Ctrl+O"
@@ -27,7 +27,7 @@ Window {
             }
         }
         Menu {
-            text: "World"
+            text: "Edit"
             MenuItem {
                 text: "Copy"
             }

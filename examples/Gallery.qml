@@ -46,11 +46,12 @@ Rectangle {
             height: 400
             minimumWidth: 400
             minimumHeight: 400
+            windowDecoration: true
             title: "child window"
 
             MenuBar {
                 Menu {
-                    text: "Something"
+                    text: "File"
                     MenuItem {
                         text: "Open"
                         shortcut: "Ctrl+O"
@@ -64,12 +65,14 @@ Rectangle {
                     }
                 }
                 Menu {
-                    text: "Edit"
+                    text: "Window"
                     MenuItem {
-                        text: "Copy"
+                        text: "Enable Window Decoration"
+                        onTriggered: window1.windowDecoration = true
                     }
                     MenuItem {
-                        text: "Paste"
+                        text: "Disable Window Decoration"
+                        onTriggered: window1.windowDecoration = false
                     }
 
                     Menu {

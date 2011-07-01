@@ -80,8 +80,11 @@ public:
     void setMaximumWidth(int width) { _window->setMaximumWidth(width); }
     void setVisible(bool visible) { _window->setVisible(visible); }
     void setWindowDecoration(bool s) {
+        bool visible = _window->isVisible();
         _window->setWindowFlags(s ? _window->windowFlags() & ~Qt::FramelessWindowHint
                               : _window->windowFlags() | Qt::FramelessWindowHint);
+        if (visible)
+            _window->show();
         emit windowDecorationChanged();
     }
     void setWindowState(Qt::WindowState state) { _window->setWindowState(state); }
