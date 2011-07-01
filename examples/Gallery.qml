@@ -47,7 +47,7 @@ Rectangle {
             minimumWidth: 400
             minimumHeight: 400
             windowDecoration: true
-            modal: true
+//            modal: true
             title: "child window"
 
             MenuBar {

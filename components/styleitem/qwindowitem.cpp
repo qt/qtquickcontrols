@@ -92,7 +92,7 @@ void QWindowItem::componentComplete()
 {
     updateParentWindow();
     _window->scene()->addItem(this);
-    if (!_window->parentWindow())
+    if (!_window->parentWidget())
         _window->initPosition();
 
     QDeclarativeItem::componentComplete();

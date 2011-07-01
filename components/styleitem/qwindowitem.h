@@ -80,7 +80,10 @@ public:
     void setWidth(int width);
     void setMinimumWidth(int width) { _window->setMinimumWidth(width); }
     void setMaximumWidth(int width) { _window->setMaximumWidth(width); }
-    void setVisible(bool visible) { _window->setVisible(visible); }
+    void setVisible(bool visible) {
+        _window->setVisible(visible);
+        _window->setWindowFlags(_window->windowFlags() | Qt::Window);
+    }
     void setWindowDecoration(bool s);
     void setWindowState(Qt::WindowState state) { _window->setWindowState(state); }
     void setTitle(QString title);

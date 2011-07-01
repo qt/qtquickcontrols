@@ -3,7 +3,7 @@
 #include <QDesktopWidget>
 
 QTopLevelWindow::QTopLevelWindow()
-    : QMainWindow(), _view(new QDeclarativeView), _parentWindow(0), _positionIsDefined(false) {
+    : QMainWindow(), _view(new QDeclarativeView), _positionIsDefined(false) {
     setVisible(false);
     setCentralWidget(_view);
 }
@@ -18,7 +18,7 @@ void QTopLevelWindow::registerChildWindow(QTopLevelWindow* child)
 {
     qDebug() << child << "is a child of" << this;
     _childWindows.insert(child);
-    child->_parentWindow = this;
+    child->setParent(this);
 }
 
 void QTopLevelWindow::hideChildWindows()
@@ -40,8 +40,8 @@ void QTopLevelWindow::initPosition()
 void QTopLevelWindow::center()
 {
     QPoint parentCenter;
-    if (_parentWindow)
-        parentCenter = _parentWindow->geometry().center();
+    if (parentWidget())
+        parentCenter = parentWidget()->geometry().center();
     else
         parentCenter = QDesktopWidget().screenGeometry().center();
     QRect thisGeometry = geometry();
