@@ -139,3 +139,19 @@ void QWindowItem::setTitle(QString title) {
     _window->setWindowTitle(title);
     emit titleChanged();
 }
+
+void QWindowItem::setWindowDecoration(bool s) {
+    bool visible = _window->isVisible();
+    _window->setWindowFlags(s ? _window->windowFlags() & ~Qt::FramelessWindowHint
+                          : _window->windowFlags() | Qt::FramelessWindowHint);
+    if (visible)
+        _window->show();
+    emit windowDecorationChanged();
+}
+
+void QWindowItem::setModal(bool modal) {
+    _window->hide();
+    _window->setWindowModality(Qt::WindowModal);
+    _window->show();
+    emit modalityChanged();
+}

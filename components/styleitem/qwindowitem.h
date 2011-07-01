@@ -48,6 +48,7 @@ class QWindowItem : public QDeclarativeItem
     Q_PROPERTY(int maximumWidth READ maximumWidth WRITE setMaximumWidth NOTIFY maximumWidthChanged)
     Q_PROPERTY(bool visible READ isVisible WRITE setVisible NOTIFY visibilityChanged)
     Q_PROPERTY(bool windowDecoration READ windowDecoration WRITE setWindowDecoration NOTIFY windowDecorationChanged)
+    Q_PROPERTY(bool modal READ modal WRITE setModal NOTIFY modalityChanged)
     Q_PROPERTY(Qt::WindowState windowState READ windowState WRITE setWindowState NOTIFY windowStateChanged)
     Q_PROPERTY(QString title READ title WRITE setTitle NOTIFY titleChanged)
 
@@ -69,6 +70,7 @@ public:
     bool windowDecoration() { return !(_window->windowFlags() & Qt::FramelessWindowHint); }
     Qt::WindowState windowState() { return static_cast<Qt::WindowState>(static_cast<int>(_window->windowState()) & ~Qt::WindowActive); }
     QString title() const { return _window->windowTitle(); }
+    bool modal() { return _window->isModal(); }
 
     void setX(int x);
     void setY(int y);
@@ -79,16 +81,10 @@ public:
     void setMinimumWidth(int width) { _window->setMinimumWidth(width); }
     void setMaximumWidth(int width) { _window->setMaximumWidth(width); }
     void setVisible(bool visible) { _window->setVisible(visible); }
-    void setWindowDecoration(bool s) {
-        bool visible = _window->isVisible();
-        _window->setWindowFlags(s ? _window->windowFlags() & ~Qt::FramelessWindowHint
-                              : _window->windowFlags() | Qt::FramelessWindowHint);
-        if (visible)
-            _window->show();
-        emit windowDecorationChanged();
-    }
+    void setWindowDecoration(bool s);
     void setWindowState(Qt::WindowState state) { _window->setWindowState(state); }
     void setTitle(QString title);
+    void setModal(bool modal);
 
 protected:
     bool eventFilter(QObject *, QEvent *ev);
@@ -110,6 +106,7 @@ Q_SIGNALS:
     void maximumHeightChanged();
     void maximumWidthChanged();
     void titleChanged();
+    void modalityChanged();
 
 private:
     QTopLevelWindow *_window;

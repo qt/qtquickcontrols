@@ -47,6 +47,7 @@ Rectangle {
             minimumWidth: 400
             minimumHeight: 400
             windowDecoration: true
+            modal: true
             title: "child window"
 
             MenuBar {
@@ -79,13 +80,18 @@ Rectangle {
                         text: "Advanced"
                         iconSource: "images/toplevel_window.png"
                         MenuItem {
-                            text: "SubMenuItem1"
+                            text: "Make Window Modal"
+                            onTriggered: {
+                                console.log("window was", window1.modal ? "modal" : "non-modal")
+                                window1.modal = true
+                            }
                         }
                         MenuItem {
-                            text: "SubMenuItem2"
-                        }
-                        MenuItem {
-                            text: "SubMenuItem3"
+                            text: "Make Window NonModal"
+                            onTriggered: {
+                                console.log("window was", window1.modal ? "modal" : "non-modal")
+                                window1.modal = false
+                            }
                         }
                     }
                 }
