@@ -45,25 +45,34 @@
 
 class QtMenuBase: public QObject {
     Q_OBJECT
+    Q_PROPERTY(QString iconSource READ iconSource WRITE setIconSource NOTIFY iconSourceChanged)
+
 public:
     QtMenuBase(QObject *parent = 0) : QObject(parent) {}
     virtual QAction* action() = 0;
+
+    void setIconSource(const QString &icon);
+    QString iconSource() const;
+
+Q_SIGNALS:
+    void iconSourceChanged();
+
+private:
+    QString _iconSource;
 };
 
 class QtMenuItem: public QtMenuBase
 {
+    Q_OBJECT
     Q_PROPERTY(QString text READ text WRITE setText NOTIFY textChanged);
     Q_PROPERTY(QString shortcut READ shortcut WRITE setShortcut NOTIFY shortcutChanged)
-    Q_PROPERTY(QString iconSource READ iconSource WRITE setIconSource NOTIFY iconSourceChanged)
 
-    Q_OBJECT
 public:
     QtMenuItem(QObject *parent = 0);
     ~QtMenuItem();
 
     void setText(const QString &text);
     void setShortcut(const QString &shortcut);
-    void setIconSource(const QString &icon);
 
     QString text() const;
     QString shortcut() const;
@@ -79,7 +88,6 @@ Q_SIGNALS:
 
 private:
     QAction *_action;
-    QString _iconSource;
 };
 
 #endif //QTMENUITEM_H

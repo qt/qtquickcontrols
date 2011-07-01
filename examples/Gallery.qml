@@ -75,6 +75,7 @@ Rectangle {
 
                     Menu {
                         text: "Advanced"
+                        iconSource: "images/toplevel_window.png"
                         MenuItem {
                             text: "SubMenuItem1"
                         }
