@@ -67,6 +67,7 @@ QT_BEGIN_NAMESPACE
 QmlDesktopViewer::QmlDesktopViewer() :
     _engine(new QDeclarativeEngine(this)), _rootObject(new QDeclarativeItem)
 {
+    _engine->setParent(this);
     QmlDesktopViewer::registerTypes();
 
 }

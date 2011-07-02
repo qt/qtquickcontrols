@@ -52,10 +52,6 @@ QWindowItem::QWindowItem(QTopLevelWindow* tlw)
 
 QWindowItem::~QWindowItem()
 {
-//    if (_window) {
-//        delete _window;
-//        _window = 0;
-//    }
 }
 
 bool QWindowItem::eventFilter(QObject *, QEvent *ev)

@@ -6,6 +6,7 @@ QTopLevelWindow::QTopLevelWindow()
     : QMainWindow(), _view(new QDeclarativeView), _positionIsDefined(false) {
     setVisible(false);
     setCentralWidget(_view);
+    setAttribute(Qt::WA_DeleteOnClose);
 }
 
 QTopLevelWindow::~QTopLevelWindow()
@@ -71,6 +72,9 @@ bool QTopLevelWindow::event(QEvent *event) {
         case QEvent::Hide:
             hideChildWindows();
             emit visibilityChanged();
+            break;
+        case QEvent::ParentChange:
+            setAttribute(Qt::WA_DeleteOnClose, !parent());
             break;
         case QEvent::Resize: {
             const QResizeEvent *resize = static_cast<const QResizeEvent *>(event);
