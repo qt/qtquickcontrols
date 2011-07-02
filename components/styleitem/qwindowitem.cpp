@@ -146,8 +146,18 @@ void QWindowItem::setWindowDecoration(bool s) {
 }
 
 void QWindowItem::setModal(bool modal) {
+    bool visible = _window->isVisible();
     _window->hide();
     _window->setWindowModality(modal ? Qt::WindowModal : Qt::NonModal);
-    _window->show();
+
+    if (modal) //this is a workaround for a bug in Qt? or in Unity?
+        _window->setWindowFlags(_window->windowFlags() | Qt::WindowStaysOnTopHint);
+    else
+        _window->setWindowFlags(_window->windowFlags() & ~Qt::WindowStaysOnTopHint );
+
+    if (visible)
+        _window->show();
     emit modalityChanged();
 }
+
+

@@ -44,6 +44,7 @@ public:
     void registerChildWindow(QTopLevelWindow* child);
     void hideChildWindows();
     void initPosition();
+    void setWindowFlags(Qt::WindowFlags type);
 
     void center();
     void move(int x, int y);

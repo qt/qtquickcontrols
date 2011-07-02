@@ -55,6 +55,7 @@ QtMenuItem::QtMenuItem(QObject *parent)
     : QtMenuBase(parent), _action(new QAction(this))
 {
     connect(_action, SIGNAL(triggered()), this, SIGNAL(triggered()));
+    connect(_action, SIGNAL(toggled(bool)), this, SIGNAL(toggled(bool)));
 }
 
 QtMenuItem::~QtMenuItem()
@@ -73,6 +74,16 @@ void QtMenuItem::setShortcut(const QString &shortcut)
     emit shortcutChanged();
 }
 
+void QtMenuItem::setCheckable(bool checkable)
+{
+    _action->setCheckable(checkable);
+}
+
+void QtMenuItem::setChecked(bool checked)
+{
+    _action->setChecked(checked);
+}
+
 QString QtMenuItem::text() const
 {
     return _action->text();
@@ -81,6 +92,16 @@ QString QtMenuItem::text() const
 QString QtMenuItem::shortcut() const
 {
     return _action->shortcut().toString();
+}
+
+bool QtMenuItem::checkable() const
+{
+    return _action->isCheckable();
+}
+
+bool QtMenuItem::checked() const
+{
+    return _action->isChecked();
 }
 
 QAction * QtMenuItem::action()

@@ -61,6 +61,11 @@ void QTopLevelWindow::move(const QPoint &point)
     QMainWindow::move(point);
 }
 
+void QTopLevelWindow::setWindowFlags(Qt::WindowFlags type)
+{
+    QWidget::setWindowFlags(type | Qt::Window);
+}
+
 bool QTopLevelWindow::event(QEvent *event) {
     switch (event->type()) {
         case QEvent::WindowStateChange:
