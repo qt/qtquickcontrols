@@ -11,6 +11,7 @@ Window {
     minimumHeight: gallery.height
     maximumWidth: gallery.width
     minimumWidth: gallery.width
+    visible: true
 
     MenuBar {
         Menu {
@@ -36,8 +37,6 @@ Window {
             }
         }
     }
-
-    Component.onCompleted: visible = true
 
     Gallery {
         id: gallery

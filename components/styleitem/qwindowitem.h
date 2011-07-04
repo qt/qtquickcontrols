@@ -80,10 +80,7 @@ public:
     void setWidth(int width);
     void setMinimumWidth(int width) { _window->setMinimumWidth(width); }
     void setMaximumWidth(int width) { _window->setMaximumWidth(width); }
-    void setVisible(bool visible) {
-        _window->setWindowFlags(_window->windowFlags() | Qt::Window);
-        _window->setVisible(visible);
-    }
+    void setVisible(bool visible);
     void setWindowDecoration(bool s);
     void setWindowState(Qt::WindowState state) { _window->setWindowState(state); }
     void setTitle(QString title);
@@ -113,7 +110,9 @@ Q_SIGNALS:
 
 private:
     QTopLevelWindow *_window;
+    bool _complete;
     bool _positionIsDefined;
+    bool _delayedVisible;
 };
 
 #endif // QWindowItem_H

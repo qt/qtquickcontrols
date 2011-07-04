@@ -41,8 +41,10 @@
 #include "qwindowitem.h"
 #include "qtoplevelwindow.h"
 
+#include <QTimer>
+
 QWindowItem::QWindowItem(QTopLevelWindow* tlw)
-    : _window(tlw ? tlw : new QTopLevelWindow), _positionIsDefined(false)
+    : _window(tlw ? tlw : new QTopLevelWindow), _positionIsDefined(false), _delayedVisible(false)
 {
     connect(_window, SIGNAL(visibilityChanged()), this, SIGNAL(visibilityChanged()));
     connect(_window, SIGNAL(windowStateChanged()), this, SIGNAL(windowStateChanged()));
@@ -92,6 +94,10 @@ void QWindowItem::componentComplete()
         _window->initPosition();
 
     QDeclarativeItem::componentComplete();
+
+    if (_delayedVisible) {
+        setVisible(true);
+    }
 }
 
 void QWindowItem::updateSize(QSize newSize)
@@ -100,43 +106,67 @@ void QWindowItem::updateSize(QSize newSize)
     emit sizeChanged();
 }
 
-void QWindowItem::setX(int x) {
+void QWindowItem::setX(int x)
+{
     _window->move(x, y());
 }
-void QWindowItem::setY(int y) {
+void QWindowItem::setY(int y)
+{
     _window->move(x(), y);
 }
 
-void QWindowItem::setHeight(int height) {
+void QWindowItem::setHeight(int height)
+{
     int menuBarHeight = _window->menuBar()->sizeHint().height();
     if (menuBarHeight) menuBarHeight++;
     _window->resize(width(), height+menuBarHeight);
     QDeclarativeItem::setHeight(height);
 }
 
-void QWindowItem::setMinimumHeight(int height) {
+void QWindowItem::setMinimumHeight(int height)
+{
     int menuBarHeight = _window->menuBar()->sizeHint().height();
     if (menuBarHeight) menuBarHeight++;
     _window->setMinimumHeight(height+menuBarHeight);
 }
 
-void QWindowItem::setMaximumHeight(int height) {
+void QWindowItem::setMaximumHeight(int height)
+{
     int menuBarHeight = _window->menuBar()->sizeHint().height();
     if (menuBarHeight) menuBarHeight++;
     _window->setMaximumHeight(height+menuBarHeight);
 }
 
-void QWindowItem::setWidth(int width) {
+void QWindowItem::setWidth(int width)
+{
     _window->resize(width, height());
     QDeclarativeItem::setWidth(width);
 }
 
-void QWindowItem::setTitle(QString title) {
+void QWindowItem::setTitle(QString title)
+{
     _window->setWindowTitle(title);
     emit titleChanged();
 }
 
-void QWindowItem::setWindowDecoration(bool s) {
+void QWindowItem::setVisible(bool visible)
+{
+    _window->setWindowFlags(_window->windowFlags() | Qt::Window);
+    if (visible) {
+        if (isComponentComplete()) {
+            // avoid flickering when showing the widget,
+            // by passing the event loop at least once
+            QTimer::singleShot(1, _window, SLOT(show()));
+        } else {
+            _delayedVisible = true;
+        }
+    } else {
+        _window->hide();
+    }
+}
+
+void QWindowItem::setWindowDecoration(bool s)
+{
     bool visible = _window->isVisible();
     _window->setWindowFlags(s ? _window->windowFlags() & ~Qt::FramelessWindowHint
                           : _window->windowFlags() | Qt::FramelessWindowHint);
@@ -145,7 +175,8 @@ void QWindowItem::setWindowDecoration(bool s) {
     emit windowDecorationChanged();
 }
 
-void QWindowItem::setModal(bool modal) {
+void QWindowItem::setModal(bool modal)
+{
     bool visible = _window->isVisible();
     _window->hide();
     _window->setWindowModality(modal ? Qt::WindowModal : Qt::NonModal);
