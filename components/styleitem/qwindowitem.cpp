@@ -49,6 +49,7 @@ QWindowItem::QWindowItem(QTopLevelWindow* tlw)
     connect(_window, SIGNAL(visibilityChanged()), this, SIGNAL(visibilityChanged()));
     connect(_window, SIGNAL(windowStateChanged()), this, SIGNAL(windowStateChanged()));
     connect(_window, SIGNAL(sizeChanged(QSize)), this, SLOT(updateSize(QSize)));
+    connect(qApp, SIGNAL(aboutToQuit()), _window, SLOT(close()));
     view()->setResizeMode(QDeclarativeView::SizeRootObjectToView);
 }
 

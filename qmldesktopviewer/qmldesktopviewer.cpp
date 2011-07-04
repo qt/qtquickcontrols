@@ -70,6 +70,7 @@ QmlDesktopViewer::QmlDesktopViewer() :
     _engine->setParent(this);
     QmlDesktopViewer::registerTypes();
 
+    connect(_engine, SIGNAL(quit()), this, SLOT(quit()));
 }
 
 QmlDesktopViewer::~QmlDesktopViewer()
