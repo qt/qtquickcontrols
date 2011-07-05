@@ -7,6 +7,16 @@ Rectangle {
     width: 540
     height: 340
 
+    property alias tabFrame: frame
+    property alias address: addressField
+
+    function addTab() {
+        var component = Qt.createComponent("BrowserTab.qml")
+        if (component.status == Component.Ready) {
+            tabFrame.addTab(component)
+        }
+    }
+
     ToolBar{
         id:toolbar
         width:parent.width
@@ -19,8 +29,8 @@ Rectangle {
             text:"Back"
             iconSource:"images/go-previous.png"
             anchors.verticalCenter:parent.verticalCenter
-            enabled:  view.back.enabled
-            onClicked: view.back.trigger()
+            enabled:  tab.webView.back.enabled
+            onClicked: tab.webView.back.trigger()
         }
 
         ToolButton{
@@ -29,24 +39,24 @@ Rectangle {
             iconSource:"images/go-next.png"
             anchors.left: back.right
             anchors.verticalCenter:parent.verticalCenter
-            enabled:  view.forward.enabled
-            onClicked: view.forward.trigger()
+            enabled:  tab.webView.forward.enabled
+            onClicked: tab.webView.forward.trigger()
         }
 
         ToolButton{
             id:reload
             anchors.left: forward.right
-            text: view.progress < 1 ? "Stop" : "Reload"
-            iconSource: view.progress < 1 ?  "images/process-stop.png" : "images/view-refresh.png"
+            text: tab.webView.progress < 1 ? "Stop" : "Reload"
+            iconSource: tab.webView.progress < 1 ?  "images/process-stop.png" : "images/view-refresh.png"
             anchors.verticalCenter:parent.verticalCenter
             onClicked: {
-                if(view.progress < 1) view.stop.trigger()
-                else view.reload.trigger()
+                if(tab.webView.progress < 1) view.stop.trigger()
+                else tab.webView.reload.trigger()
             }
         }
 
         TextField{
-            id:textfield;
+            id:addressField;
             text: "http://osnews.com"
             anchors.left:  reload.right;
             anchors.right: settings.left
@@ -54,9 +64,9 @@ Rectangle {
             anchors.leftMargin: 6
             anchors.verticalCenter:parent.verticalCenter
             Keys.onReturnPressed:  {
-                if (textfield.text.substring(0, 7) != "http://")
-                    textfield.text = "http://" + textfield.text;
-                view.url = textfield.text
+                if (addressField.text.substring(0, 7) != "http://")
+                    addressField.text = "http://" + addressField.text;
+                frame.tabs[frame.current].webView.url = addressField.text
             }
         }
 
@@ -65,7 +75,7 @@ Rectangle {
             anchors.left: settings.right
             anchors.rightMargin: 6
             anchors.verticalCenter:parent.verticalCenter
-            value:view.progress
+            value:tab.webView.progress
             width: value < 1.0 ? 200 : 0
             Behavior on width {NumberAnimation{duration:160; easing.type: Easing.OutCubic}}
         }
@@ -92,20 +102,9 @@ Rectangle {
         anchors.bottom:parent.bottom
         anchors.right:parent.right
         anchors.left:parent.left
-        Tab {
-            title: view.title.length < 11 ? view.title :
-                   view.title.substring(0, 8) + "..."
-            ScrollArea{
-                id: area
-                frame: false
-                anchors.fill: parent
-                WebView{
-                    id:view
-                    newWindowParent:root
-                    onLoadFinished: area.contentY = -1 // workaround to force webview repaint
-                    Component.onCompleted: url = textfield.text
-                }
-            }
+
+        BrowserTab {
+            id: tab
         }
     }
 }

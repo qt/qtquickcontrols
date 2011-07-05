@@ -31,6 +31,12 @@ Item {
         }
     }
 
+    function addTab(component) {
+        var tab = component.createObject(null);
+        tab.parent = stack
+        current = count-1
+    }
+
     QStyleItem {
         id: frameitem
         z: style == "oxygen" ? 1 : 0

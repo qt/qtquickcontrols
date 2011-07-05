@@ -86,4 +86,5 @@ OTHER_FILES += \
     ../custom/behaviors/ButtonBehavior.qml \
     ../custom/private/ChoiceListPopup.qml \
     ../../examples/TopLevel.qml \
-    ../../examples/TopLevelBrowser.qml
+    ../../examples/TopLevelBrowser.qml \
+    ../../examples/BrowserTab.qml

@@ -13,12 +13,39 @@ Window {
         Menu {
             text: "File"
             MenuItem {
-                text: "Open"
-                shortcut: "Ctrl+O"
-                onTriggered: console.log("we should display a file open dialog")
+                text: "New Tab"
+                shortcut: "Ctrl+T"
+                onTriggered: {
+                    browser.addTab()
+                }
             }
             MenuItem {
-                text: "Close"
+                text: "New Window"
+                shortcut: "Ctrl+N"
+//                onTriggered: Qt.quit()
+            }
+            MenuItem {
+                text: "Open Location"
+                shortcut: "Ctrl+L"
+                onTriggered: {
+                    browser.address.focus = true
+                    browser.address.selectAll()
+                }
+            }
+            Separator {}
+            MenuItem {
+                text: "Close Tab"
+                shortcut: "Ctrl+W"
+//                onTriggered: Qt.quit()
+            }
+            MenuItem {
+                text: "Close Window"
+                shortcut: "Ctrl+Shift+W"
+//                onTriggered: Qt.quit()
+            }
+            Separator {}
+            MenuItem {
+                text: "Close Browser"
                 shortcut: "Ctrl+Q"
                 onTriggered: Qt.quit()
             }
