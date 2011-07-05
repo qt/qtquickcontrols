@@ -61,6 +61,18 @@ private:
     QString _iconSource;
 };
 
+class QtMenuSeparator : public QtMenuBase
+{
+    Q_OBJECT
+public:
+    QtMenuSeparator(QObject *parent = 0);
+    ~QtMenuSeparator();
+    QAction* action();
+
+private:
+    QAction *_action;
+};
+
 class QtMenuItem: public QtMenuBase
 {
     Q_OBJECT

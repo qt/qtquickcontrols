@@ -51,6 +51,21 @@ QString QtMenuBase::iconSource() const
     return _iconSource;
 }
 
+QtMenuSeparator::QtMenuSeparator(QObject *parent)
+    : QtMenuBase(parent), _action(new QAction(this))
+{
+    _action->setSeparator(true);
+}
+
+QtMenuSeparator::~QtMenuSeparator()
+{
+}
+
+QAction * QtMenuSeparator::action()
+{
+    return _action;
+}
+
 QtMenuItem::QtMenuItem(QObject *parent)
     : QtMenuBase(parent), _action(new QAction(this))
 {
