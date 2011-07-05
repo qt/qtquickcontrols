@@ -10,20 +10,34 @@ Rectangle {
     ToolBar{
         id:toolbar
         width:parent.width
+        anchors.left: parent.left
+        anchors.right: parent.right
         height:46
+
         ToolButton{
             id:back
             text:"Back"
-            iconSource:"image://desktoptheme/go-previous"
+            iconSource:"images/go-previous.png"
             anchors.verticalCenter:parent.verticalCenter
             enabled:  view.back.enabled
             onClicked: view.back.trigger()
         }
+
+        ToolButton{
+            id:forward
+            text:"Forward"
+            iconSource:"images/go-next.png"
+            anchors.left: back.right
+            anchors.verticalCenter:parent.verticalCenter
+            enabled:  view.forward.enabled
+            onClicked: view.forward.trigger()
+        }
+
         ToolButton{
             id:reload
-            anchors.left: back.right
+            anchors.left: forward.right
             text: view.progress < 1 ? "Stop" : "Reload"
-            iconSource: view.progress < 1 ?  "image://desktoptheme/stop" : "image://desktoptheme/view-refresh"
+            iconSource: view.progress < 1 ?  "images/process-stop.png" : "images/view-refresh.png"
             anchors.verticalCenter:parent.verticalCenter
             onClicked: {
                 if(view.progress < 1) view.stop.trigger()
@@ -35,7 +49,7 @@ Rectangle {
             id:textfield;
             text: "http://osnews.com"
             anchors.left:  reload.right;
-            anchors.right: progressbar.left
+            anchors.right: settings.left
             anchors.rightMargin: 9
             anchors.leftMargin: 6
             anchors.verticalCenter:parent.verticalCenter
@@ -45,17 +59,27 @@ Rectangle {
                 view.url = textfield.text
             }
         }
+
         ProgressBar{
             id:progressbar
-            anchors.right: parent.right
+            anchors.left: settings.right
             anchors.rightMargin: 6
             anchors.verticalCenter:parent.verticalCenter
             value:view.progress
             width: value < 1.0 ? 200 : 0
             Behavior on width {NumberAnimation{duration:160; easing.type: Easing.OutCubic}}
         }
-        anchors.left: parent.left
-        anchors.right: parent.right
+
+        ToolButton{
+            id:settings
+            anchors.right: parent.right
+            text: "Settings"
+            iconSource: "images/preferences-system.png"
+            anchors.verticalCenter:parent.verticalCenter
+            onClicked: {
+                console.log("display settings window here!")
+            }
+        }
     }
 
     SystemPalette{id:syspal}

@@ -85,4 +85,5 @@ OTHER_FILES += \
     ../custom/behaviors/ModalPopupBehavior.qml \
     ../custom/behaviors/ButtonBehavior.qml \
     ../custom/private/ChoiceListPopup.qml \
-    ../../examples/TopLevel.qml
+    ../../examples/TopLevel.qml \
+    ../../examples/TopLevelBrowser.qml
