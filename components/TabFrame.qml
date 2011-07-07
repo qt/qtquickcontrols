@@ -34,8 +34,14 @@ Item {
     function addTab(component) {
         var tab = component.createObject(null);
         tab.parent = stack
-        tab.tabId = count-1
         current = count-1
+    }
+
+    function removeTab(id) {
+        var tab = tabs[id]
+        tab.destroy()
+        if (current > 0)
+            current-=1
     }
 
     QStyleItem {

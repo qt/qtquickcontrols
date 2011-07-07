@@ -38,6 +38,7 @@ Window {
                 onTriggered: {
                     browser.address.focus = true
                     browser.address.selectAll()
+                    browser.address.forceActiveFocus()
                 }
             }
             Separator {}
@@ -45,6 +46,7 @@ Window {
                 text: "Close Tab"
                 shortcut: "Ctrl+W"
                 onTriggered: {
+                    browser.closeTab()
                 }
             }
             MenuItem {

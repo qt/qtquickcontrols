@@ -94,6 +94,11 @@ FocusScope {
         hoverEnabled: true
     }
 
+    onFocusChanged: {
+        if (textField.activeFocus)
+            textInput.forceActiveFocus();
+    }
+
     TextInput { // see QTBUG-14936
         id: textInput
         selectByMouse:true
@@ -111,6 +116,7 @@ FocusScope {
 
         color: enabled ? textColor : Qt.tint(textColor, "#80ffffff")
         echoMode: passwordMode ? _hints.passwordEchoMode : TextInput.Normal
+
     }
 
     Text {

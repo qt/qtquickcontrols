@@ -17,6 +17,10 @@ Rectangle {
         }
     }
 
+    function closeTab() {
+        frame.removeTab(frame.current)
+    }
+
     ToolBar{
         id:toolbar
         width:parent.width
@@ -63,6 +67,7 @@ Rectangle {
             anchors.rightMargin: 9
             anchors.leftMargin: 6
             anchors.verticalCenter:parent.verticalCenter
+
             Keys.onReturnPressed:  {
                 if (addressField.text.substring(0, 7) != "http://")
                     addressField.text = "http://" + addressField.text;
@@ -105,7 +110,6 @@ Rectangle {
 
         BrowserTab {
             id: tab
-            tabId: 0
         }
     }
 }
