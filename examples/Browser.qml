@@ -18,7 +18,24 @@ Rectangle {
     }
 
     function closeTab() {
-        frame.removeTab(frame.current)
+        if (frame.count > 1)
+            frame.removeTab(frame.current)
+    }
+
+    Window {
+        id: settingsDialog
+        width: 200
+        height: 200
+        modal: true
+
+        Button {
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+            text: "okay"
+            onClicked: {
+                settingsDialog.visible = false
+            }
+        }
     }
 
     ToolBar{
@@ -92,7 +109,7 @@ Rectangle {
             iconSource: "images/preferences-system.png"
             anchors.verticalCenter:parent.verticalCenter
             onClicked: {
-                console.log("display settings window here!")
+                settingsDialog.visible = true
             }
         }
     }
@@ -107,6 +124,10 @@ Rectangle {
         anchors.bottom:parent.bottom
         anchors.right:parent.right
         anchors.left:parent.left
+
+        onCurrentChanged: {
+            addressField.text = tabs[current].url
+        }
 
         BrowserTab {
             id: tab

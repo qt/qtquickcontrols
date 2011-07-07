@@ -24,11 +24,10 @@ Window {
                 text: "New Window"
                 shortcut: "Ctrl+N"
                 onTriggered: {
-                    var component = Qt.createComponent("TopLevelBrowser.qml")
-                    console.log("component:", component, "status:", component.status)
-                    if (component.status == Component.Ready) {
+                    var topLevelBrowserComponent = Qt.createComponent("TopLevelBrowser.qml")
+                     if (topLevelBrowserComponent.status == Component.Ready) {
                         console.log("creating browserWindow")
-                        var browserWindow = component.createObject(null);
+                        var browserWindow = topLevelBrowserComponent.createObject(null);
                     }
                 }
             }
