@@ -192,4 +192,10 @@ void QWindowItem::setModal(bool modal)
     emit modalityChanged();
 }
 
+void QWindowItem::setClose(bool close)
+{
+    if (close)
+        _window->close();
+}
+
 

@@ -49,6 +49,7 @@ class QWindowItem : public QDeclarativeItem
     Q_PROPERTY(bool visible READ isVisible WRITE setVisible NOTIFY visibilityChanged)
     Q_PROPERTY(bool windowDecoration READ windowDecoration WRITE setWindowDecoration NOTIFY windowDecorationChanged)
     Q_PROPERTY(bool modal READ modal WRITE setModal NOTIFY modalityChanged)
+    Q_PROPERTY(bool close READ close WRITE setClose)
     Q_PROPERTY(Qt::WindowState windowState READ windowState WRITE setWindowState NOTIFY windowStateChanged)
     Q_PROPERTY(QString title READ title WRITE setTitle NOTIFY titleChanged)
 
@@ -71,6 +72,7 @@ public:
     Qt::WindowState windowState() { return static_cast<Qt::WindowState>(static_cast<int>(_window->windowState()) & ~Qt::WindowActive); }
     QString title() const { return _window->windowTitle(); }
     bool modal() { return _window->isModal(); }
+    bool close() { return false; } //we always return false here
 
     void setX(int x);
     void setY(int y);
@@ -85,6 +87,7 @@ public:
     void setWindowState(Qt::WindowState state) { _window->setWindowState(state); }
     void setTitle(QString title);
     void setModal(bool modal);
+    void setClose(bool close);
 
 protected:
     bool eventFilter(QObject *, QEvent *ev);

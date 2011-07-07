@@ -3,7 +3,8 @@ import "../components"
 import "content"
 
 Window {
-    title: "parent window"
+    id: topLevelBrowser
+    title: "Qml Desktop Browser"
 
     width: 640
     height: 480
@@ -43,12 +44,15 @@ Window {
             MenuItem {
                 text: "Close Tab"
                 shortcut: "Ctrl+W"
-//                onTriggered: Qt.quit()
+                onTriggered: {
+                }
             }
             MenuItem {
                 text: "Close Window"
                 shortcut: "Ctrl+Shift+W"
-//                onTriggered: Qt.quit()
+                onTriggered: {
+                    topLevelBrowser.close = true
+                }
             }
             Separator {}
             MenuItem {
