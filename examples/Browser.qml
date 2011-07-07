@@ -13,7 +13,7 @@ Rectangle {
     function addTab() {
         var component = Qt.createComponent("BrowserTab.qml")
         if (component.status == Component.Ready) {
-            tabFrame.addTab(component)
+            frame.addTab(component)
         }
     }
 
@@ -29,8 +29,8 @@ Rectangle {
             text:"Back"
             iconSource:"images/go-previous.png"
             anchors.verticalCenter:parent.verticalCenter
-            enabled:  tab.webView.back.enabled
-            onClicked: tab.webView.back.trigger()
+            enabled:  frame.tabs[frame.current].webView.back.enabled
+            onClicked: frame.tabs[frame.current].webView.back.trigger()
         }
 
         ToolButton{
@@ -39,19 +39,19 @@ Rectangle {
             iconSource:"images/go-next.png"
             anchors.left: back.right
             anchors.verticalCenter:parent.verticalCenter
-            enabled:  tab.webView.forward.enabled
-            onClicked: tab.webView.forward.trigger()
+            enabled:  frame.tabs[frame.current].webView.forward.enabled
+            onClicked: frame.tabs[frame.current].webView.forward.trigger()
         }
 
         ToolButton{
             id:reload
             anchors.left: forward.right
-            text: tab.webView.progress < 1 ? "Stop" : "Reload"
-            iconSource: tab.webView.progress < 1 ?  "images/process-stop.png" : "images/view-refresh.png"
+            text: frame.tabs[frame.current].webView.progress < 1 ? "Stop" : "Reload"
+            iconSource: frame.tabs[frame.current].webView.progress < 1 ?  "images/process-stop.png" : "images/view-refresh.png"
             anchors.verticalCenter:parent.verticalCenter
             onClicked: {
-                if(tab.webView.progress < 1) view.stop.trigger()
-                else tab.webView.reload.trigger()
+                if(frame.tabs[frame.current].webView.progress < 1) frame.tabs[frame.current].webView.stop.trigger()
+                else frame.tabs[frame.current].webView.reload.trigger()
             }
         }
 
@@ -105,6 +105,7 @@ Rectangle {
 
         BrowserTab {
             id: tab
+            tabId: 0
         }
     }
 }

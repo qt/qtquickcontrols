@@ -22,7 +22,14 @@ Window {
             MenuItem {
                 text: "New Window"
                 shortcut: "Ctrl+N"
-//                onTriggered: Qt.quit()
+                onTriggered: {
+                    var component = Qt.createComponent("TopLevelBrowser.qml")
+                    console.log("component:", component, "status:", component.status)
+                    if (component.status == Component.Ready) {
+                        console.log("creating browserWindow")
+                        var browserWindow = component.createObject(null);
+                    }
+                }
             }
             MenuItem {
                 text: "Open Location"

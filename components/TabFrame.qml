@@ -34,6 +34,7 @@ Item {
     function addTab(component) {
         var tab = component.createObject(null);
         tab.parent = stack
+        tab.tabId = count-1
         current = count-1
     }
 
