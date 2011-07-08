@@ -5,8 +5,6 @@ import "plugin"
 Item {
     id: scrollbar
 
-    property bool upPressed
-    property bool downPressed
     property int orientation : Qt.Horizontal
     property alias minimumValue: slider.minimumValue
     property alias maximumValue: slider.maximumValue
@@ -24,6 +22,10 @@ Item {
         id: internal
 
         anchors.fill: parent
+        property bool upPressed
+        property bool downPressed
+        property bool pageUpPressed
+        property bool pageDownPressed
 
         property bool autoincrement: false
         property int scrollbarExtent : styleitem.pixelMetric("scrollbarExtent");
@@ -42,7 +44,7 @@ Item {
         property int grooveSize
 
         Timer {
-            running: upPressed || downPressed
+            running: internal.upPressed || internal.downPressed || internal.pageUpPressed || internal.pageDownPressed
             interval: 350
             onTriggered: internal.autoincrement = true
         }
@@ -51,7 +53,9 @@ Item {
             running: internal.autoincrement
             interval: 60
             repeat: true
-            onTriggered: upPressed ? internal.decrement() : internal.increment()
+            onTriggered: internal.upPressed ? internal.decrement() : internal.downPressed ? internal.increment() :
+                                                                     internal.pageUpPressed ? internal.decrementPage() :
+                                                                                              internal.incrementPage()
         }
 
         onMousePositionChanged: {
@@ -76,14 +80,18 @@ Item {
                 pressedY = mouseY
                 oldPosition = slider.position
             } else if (control == "up") {
+                decrement();
                 upPressed = true
             } else if (control == "down") {
+                increment();
                 downPressed = true
             } else if (!scrollToClickposition){
                 if (control == "upPage") {
-                    scrollbar.value -= pageStep
+                    decrementPage();
+                    pageUpPressed = true
                 } else if (control == "downPage") {
-                    scrollbar.value += pageStep
+                    incrementPage();
+                    pageDownPressed = true
                 }
             } else {
                 slider.position = styleitem.horizontal ? mouseX - handleRect.width/2
@@ -93,14 +101,23 @@ Item {
 
         onReleased: {
             autoincrement = false;
-            if (upPressed) {
-                upPressed = false;
-                decrement()
-            } else if (downPressed) {
-                increment()
-                downPressed = false;
-            }
+            upPressed = false;
+            downPressed = false;
+            pageUpPressed = false
+            pageDownPressed = false
             control = ""
+        }
+
+        function incrementPage() {
+            value += pageStep
+            if (value > maximumValue)
+                value = maximumValue
+        }
+
+        function decrementPage() {
+            value -= pageStep
+            if (value < minimumValue)
+                value = minimumValue
         }
 
         function increment() {
@@ -121,7 +138,7 @@ Item {
             elementType: "scrollbar"
             hover: activeControl != "none"
             activeControl: "none"
-            sunken: upPressed | downPressed
+            sunken: internal.upPressed | internal.downPressed
             minimum: slider.minimumValue
             maximum: slider.maximumValue
             value: slider.value
