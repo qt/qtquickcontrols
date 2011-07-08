@@ -10,7 +10,8 @@ Item {
     property int orientation : Qt.Horizontal
     property alias minimumValue: slider.minimumValue
     property alias maximumValue: slider.maximumValue
-    property int pageStep: (maximumValue-minimumValue)/4
+    property int pageStep: styleitem.horizontal ? width : height
+    property int singleStep: 20
     property alias value: slider.value
     property bool scrollToClickposition: styleitem.styleHint("scrollToClickPosition")
 
@@ -103,13 +104,13 @@ Item {
         }
 
         function increment() {
-            value += 30
+            value += singleStep
             if (value > maximumValue)
                 value = maximumValue
         }
 
         function decrement() {
-            value -= 30
+            value -= singleStep
             if (value < minimumValue)
                 value = minimumValue
         }
