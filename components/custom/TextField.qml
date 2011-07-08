@@ -12,7 +12,7 @@ FocusScope {
 
     property int inputHint // values tbd
     property bool acceptableInput: textInput.acceptableInput // read only
-    property bool readOnly: textInput.readOnly // read only
+    property alias readOnly: textInput.readOnly // read only
     property alias placeholderText: placeholderTextComponent.text
     property bool  passwordMode: false
     property alias selectedText: textInput.selectedText
