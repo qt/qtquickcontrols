@@ -97,8 +97,6 @@ FocusScope {
     TextInput { // see QTBUG-14936
         id: textInput
         selectByMouse:true
-        font.pixelSize: hintsLoader.item != null ? hintsLoader.item.fontPixelSize: 14
-        font.bold: hintsLoader.item != null ? hintsLoader.item.fontBold : false
 
         anchors.leftMargin: leftMargin
         anchors.topMargin: topMargin

@@ -94,7 +94,6 @@ FocusScope {
     TextInput {
         id: input
 
-        font.pixelSize: 14
         anchors.margins: 5
         anchors.leftMargin: leftMargin
         anchors.topMargin: topMargin
