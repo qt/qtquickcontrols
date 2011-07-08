@@ -84,7 +84,10 @@ FocusScope {
     // Implementation
     clip: true
 
-    SystemPalette { id: syspal }
+    SystemPalette {
+        id: syspal
+        colorGroup: enabled ? SystemPalette.Active : SystemPalette.Disabled
+    }
     Loader { id: hintsLoader; sourceComponent: hints }
     Loader { id: backgroundLoader; sourceComponent: background; anchors.fill:parent}
 
@@ -107,7 +110,7 @@ FocusScope {
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
 
-        color: enabled ? textColor : Qt.tint(textColor, "#80ffffff")
+        color: syspal.text
         echoMode: passwordMode ? _hints.passwordEchoMode : TextInput.Normal
     }
 
@@ -116,7 +119,7 @@ FocusScope {
         anchors.fill: textInput
         font: textInput.font
         opacity: !textInput.text.length && !textInput.activeFocus ? 1 : 0
-        color: "gray"
+        color: "darkgray"
         text: "Enter text"
         clip: true
         Behavior on opacity { NumberAnimation { duration: 90 } }

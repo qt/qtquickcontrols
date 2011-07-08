@@ -2,7 +2,11 @@ import QtQuick 1.0
 
 FocusScope {
     id: spinbox
-    SystemPalette{id:syspal}
+
+    SystemPalette {
+        id: syspal
+        colorGroup: enabled ? SystemPalette.Active : SystemPalette.Disabled
+    }
 
     property int minimumWidth: 0
     property int minimumHeight: 0
@@ -31,7 +35,7 @@ FocusScope {
     property alias upHovered: mouseUp.containsMouse
     property alias downHovered: mouseDown.containsMouse
     property alias containsMouse: mouseArea.containsMouse
-    property color textColor: syspal.text
+    property alias textColor: syspal.text
     property alias font: input.font
 
     property Component background: null

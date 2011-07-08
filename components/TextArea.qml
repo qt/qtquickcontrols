@@ -31,6 +31,11 @@ ScrollArea {
             selectByMouse: true
             readOnly: false
             focus: true
+            color: syspal.text
+            SystemPalette {
+                id: syspal
+                colorGroup: enabled ? SystemPalette.Active : SystemPalette.Disabled
+            }
 
             onPaintedSizeChanged: {
                 area.contentWidth = paintedWidth + (2 * documentMargins)
