@@ -28,6 +28,58 @@ Rectangle {
         height: 200
         modal: true
 
+        Rectangle {
+            anchors.centerIn: parent
+            width: 150
+            height: 150
+
+            Component.onCompleted: {
+                javaCheckBox.checked = tab.webView.settings.javaEnabled
+                javascriptCheckBox.checked = tab.webView.settings.javascriptEnabled
+                pluginsCheckBox.checked = tab.webView.settings.pluginsEnabled
+            }
+
+            CheckBox {
+                id: javaCheckBox
+                text: "Enable Java"
+                anchors.margins: 10
+                anchors.top: parent.top
+                anchors.left: parent.left
+
+                onCheckedChanged: {
+                    for (var i=0; i<tabFrame.tabs.length; i++) {
+                        tabFrame.tabs[i].webView.settings.javaEnabled = checked
+                    }
+                }
+            }
+            CheckBox {
+                id: javascriptCheckBox
+                text: "Enable Javascript"
+                anchors.margins: 10
+                anchors.top: javaCheckBox.bottom
+                anchors.left: parent.left
+
+                onCheckedChanged: {
+                    for (var i=0; i<tabFrame.tabs.length; i++) {
+                        tabFrame.tabs[i].webView.settings.javascriptEnabled = checked
+                    }
+                }
+            }
+            CheckBox {
+                id: pluginsCheckBox
+                text: "Enable Plugins"
+                anchors.margins: 10
+                anchors.top: javascriptCheckBox.bottom
+                anchors.left: parent.left
+
+                onCheckedChanged: {
+                    for (var i=0; i<tabFrame.tabs.length; i++) {
+                        tabFrame.tabs[i].webView.settings.pluginsEnabled = checked
+                    }
+                }
+            }
+        }
+
         Button {
             anchors.right: parent.right
             anchors.bottom: parent.bottom
