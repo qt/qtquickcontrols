@@ -80,7 +80,6 @@ public:
 
 void StylePlugin::registerTypes(const char *uri)
 {
-    qDebug() << "register" << uri;
     qmlRegisterType<QStyleItem>(uri, 1, 0, "QStyleItem");
     qmlRegisterType<QRangeModel>(uri, 1, 0, "RangeModel");
     qmlRegisterType<QGraphicsDropShadowEffect>(uri, 1, 0, "DropShadow");
@@ -91,7 +90,7 @@ void StylePlugin::registerTypes(const char *uri)
     qmlRegisterType<QtMenuItem>(uri, 1, 0, "MenuItem");
     qmlRegisterType<QtMenuSeparator>(uri, 1, 0, "Separator");
     qmlRegisterType<QWindowItem>("QtQuick", 1, 0, "Window");
-    qmlRegisterUncreatableType<QtMenuBase>(uri, 1, 0, "MenuBase", QLatin1String("Do not create objects of type MenuBase"));
+    qmlRegisterUncreatableType<QtMenuBase>(uri, 1, 0, "NativeMenuBase", QLatin1String("Do not create objects of type MenuBase"));
     qmlRegisterUncreatableType<QDesktopItem>("Qt",4,7,"Desktop", QLatin1String("Do not create objects of type Desktop"));
     qmlRegisterUncreatableType<QDesktopItem>("QtQuick",1,0,"Desktop", QLatin1String("Do not create objects of type Desktop"));
 }

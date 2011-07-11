@@ -17,7 +17,6 @@ QTopLevelWindow::~QTopLevelWindow()
 
 void QTopLevelWindow::registerChildWindow(QTopLevelWindow* child)
 {
-    qDebug() << child << "is a child of" << this;
     _childWindows.insert(child);
     child->setParent(this);
 }

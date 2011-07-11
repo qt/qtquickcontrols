@@ -61,7 +61,6 @@ QDeclarativeListProperty<QtMenu> QtMenuBar::menus()
 
 void QtMenuBar::updateParent()
 {
-    qDebug() << "updating Parent:" << parent();
     if (QWindowItem* window = qobject_cast<QWindowItem*>(parent()))
         _menuBar = window->window()->menuBar();
 
