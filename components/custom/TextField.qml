@@ -122,6 +122,7 @@ FocusScope {
         color: "darkgray"
         text: "Enter text"
         clip: true
+        elide: Text.ElideRight
         Behavior on opacity { NumberAnimation { duration: 90 } }
     }
 }
