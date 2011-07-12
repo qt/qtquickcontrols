@@ -16,6 +16,10 @@ FocusScope {
     property bool frameAroundContents: styleitem.styleHint("framearoundcontents")
     property alias verticalValue: vscrollbar.value
     property alias horizontalValue: hscrollbar.value
+
+    property alias horizontalScrollBar: hscrollbar
+    property alias verticalScrollBar: vscrollbar
+
     property int viewportHeight: height - (hscrollbar.visible ? hscrollbar.height : 0) - 2 * frameWidth
     property int viewportWidth: width - (vscrollbar.visible ? vscrollbar.width : 0) - 2 * frameWidth
     property bool blockUpdates: false
