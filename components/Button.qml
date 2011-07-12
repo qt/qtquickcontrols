@@ -5,7 +5,7 @@ import "plugin"
 Components.Button {
     id:button
 
-    width: 100
+    width: Math.max(80, sizehint.width)
     height: Math.max(22, sizehint.height)
 
     property variant sizehint: backgroundItem.sizeFromContents(80, 6)
