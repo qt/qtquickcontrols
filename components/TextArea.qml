@@ -12,6 +12,7 @@ ScrollArea {
     property alias text: edit.text
     property alias wrapMode: edit.wrapMode
     property alias readOnly: edit.readOnly
+    property bool tabChangesFocus: false
 
     highlightOnFocus: true
     property int documentMargins: 4
@@ -35,6 +36,10 @@ ScrollArea {
                 id: syspal
                 colorGroup: enabled ? SystemPalette.Active : SystemPalette.Disabled
             }
+
+            KeyNavigation.priority: KeyNavigation.BeforeItem
+            KeyNavigation.tab: area.tabChangesFocus ? area.KeyNavigation.tab : null
+            KeyNavigation.backtab: area.tabChangesFocus ? area.KeyNavigation.backtab : null
 
             onPaintedSizeChanged: {
                 area.contentWidth = paintedWidth + (2 * documentMargins)
