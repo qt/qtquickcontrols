@@ -43,7 +43,6 @@
 #include "qrangemodel.h"
 #include "qtmenu.h"
 #include "qtmenubar.h"
-#include "qtmenuitem.h"
 #include "qwindowitem.h"
 #include "qdesktopitem.h"
 #include "qwheelarea.h"
@@ -80,19 +79,20 @@ public:
 
 void StylePlugin::registerTypes(const char *uri)
 {
-    qmlRegisterType<QStyleItem>(uri, 1, 0, "QStyleItem");
-    qmlRegisterType<QRangeModel>(uri, 1, 0, "RangeModel");
-    qmlRegisterType<QGraphicsDropShadowEffect>(uri, 1, 0, "DropShadow");
-    qmlRegisterType<QDeclarativeFolderListModel>(uri, 1, 0, "FileSystemModel");
-    qmlRegisterType<QWheelArea>(uri, 1, 0, "WheelArea");
-    qmlRegisterType<QtMenu>(uri, 1, 0, "Menu");
-    qmlRegisterType<QtMenuBar>(uri, 1, 0, "MenuBar");
-    qmlRegisterType<QtMenuItem>(uri, 1, 0, "MenuItem");
-    qmlRegisterType<QtMenuSeparator>(uri, 1, 0, "Separator");
-    qmlRegisterType<QWindowItem>("QtQuick", 1, 0, "Window");
-    qmlRegisterUncreatableType<QtMenuBase>(uri, 1, 0, "NativeMenuBase", QLatin1String("Do not create objects of type MenuBase"));
+    qDebug() << "register" << uri;
+    qmlRegisterType<QStyleItem>(uri, 0, 1, "QStyleItem");
+    qmlRegisterType<QRangeModel>(uri, 0, 1, "RangeModel");
+    qmlRegisterType<QGraphicsDropShadowEffect>(uri, 0, 1, "DropShadow");
+    qmlRegisterType<QDeclarativeFolderListModel>(uri, 0, 1, "FileSystemModel");
+    qmlRegisterType<QWheelArea>(uri, 0, 1, "WheelArea");
+    qmlRegisterType<QtMenu>(uri, 0, 1, "Menu");
+    qmlRegisterType<QtMenuBar>(uri, 0, 1, "MenuBar");
+    qmlRegisterType<QtMenuItem>(uri, 0, 1, "MenuItem");
+    qmlRegisterType<QtMenuSeparator>(uri, 0, 1, "Separator");
+    qmlRegisterType<QWindowItem>("QtQuick", 0, 1, "Window");
+    qmlRegisterUncreatableType<QtMenuBase>(uri, 0, 1, "NativeMenuBase", QLatin1String("Do not create objects of type NativeMenuBase"));
     qmlRegisterUncreatableType<QDesktopItem>("Qt",4,7,"Desktop", QLatin1String("Do not create objects of type Desktop"));
-    qmlRegisterUncreatableType<QDesktopItem>("QtQuick",1,0,"Desktop", QLatin1String("Do not create objects of type Desktop"));
+    qmlRegisterUncreatableType<QDesktopItem>("QtQuick",0,1,"Desktop", QLatin1String("Do not create objects of type Desktop"));
 }
 
 void StylePlugin::initializeEngine(QDeclarativeEngine *engine, const char *uri)

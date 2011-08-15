@@ -1,6 +1,5 @@
 import QtQuick 1.0
 import "custom" as Components
-import "plugin"
 
 Components.ProgressBar {
     id:progressbar
@@ -11,6 +10,8 @@ Components.ProgressBar {
 
     height: orientation === Qt.Horizontal ? sizehint.height : 200
     width: orientation === Qt.Horizontal ? 200 : sizehint.height
+
+    SystemPalette {id: syspal}
 
     background: QStyleItem {
         anchors.fill: parent

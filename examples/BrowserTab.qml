@@ -1,6 +1,7 @@
 import QtQuick 1.0
+import QtDesktop 0.1
 import QtWebKit 1.0
-import "../components"
+import "content"
 
 Tab {
     property alias webView : view

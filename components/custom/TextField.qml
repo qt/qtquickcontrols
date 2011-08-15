@@ -12,7 +12,7 @@ FocusScope {
 
     property int inputHint // values tbd
     property bool acceptableInput: textInput.acceptableInput // read only
-    property bool readOnly: textInput.readOnly // read only
+    property alias readOnly: textInput.readOnly // read only
     property alias placeholderText: placeholderTextComponent.text
     property bool  passwordMode: false
     property alias selectedText: textInput.selectedText
@@ -84,7 +84,10 @@ FocusScope {
     // Implementation
     clip: true
 
-    SystemPalette { id: syspal }
+    SystemPalette {
+        id: syspal
+        colorGroup: enabled ? SystemPalette.Active : SystemPalette.Disabled
+    }
     Loader { id: hintsLoader; sourceComponent: hints }
     Loader { id: backgroundLoader; sourceComponent: background; anchors.fill:parent}
 
@@ -102,8 +105,7 @@ FocusScope {
     TextInput { // see QTBUG-14936
         id: textInput
         selectByMouse:true
-        font.pixelSize: hintsLoader.item != null ? hintsLoader.item.fontPixelSize: 14
-        font.bold: hintsLoader.item != null ? hintsLoader.item.fontBold : false
+        focus: true
 
         anchors.leftMargin: leftMargin
         anchors.topMargin: topMargin
@@ -114,7 +116,7 @@ FocusScope {
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
 
-        color: enabled ? textColor : Qt.tint(textColor, "#80ffffff")
+        color: syspal.text
         echoMode: passwordMode ? _hints.passwordEchoMode : TextInput.Normal
 
     }
@@ -124,8 +126,10 @@ FocusScope {
         anchors.fill: textInput
         font: textInput.font
         opacity: !textInput.text.length && !textInput.activeFocus ? 1 : 0
-        color: "gray"
+        color: "darkgray"
         text: "Enter text"
+        clip: true
+        elide: Text.ElideRight
         Behavior on opacity { NumberAnimation { duration: 90 } }
     }
 }

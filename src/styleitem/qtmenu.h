@@ -36,6 +36,8 @@ class QtMenu : public QtMenuBase
 {
     Q_OBJECT
     Q_PROPERTY(QString text READ text WRITE setText)
+    Q_PROPERTY(int selectedIndex READ selectedIndex WRITE setSelectedIndex NOTIFY selectedIndexChanged)
+    Q_PROPERTY(int hoveredIndex READ hoveredIndex WRITE setHoveredIndex NOTIFY hoveredIndexChanged)
     Q_PROPERTY(QDeclarativeListProperty<QtMenuBase> menuItems READ menuItems)
     Q_CLASSINFO("DefaultProperty", "menuItems")
 public:
@@ -43,19 +45,32 @@ public:
     virtual ~QtMenu();
 
     void setText(const QString &text);
-
     QString text() const;
+
+    int selectedIndex() const { return _selectedIndex; }
+    void setSelectedIndex(int index);
+    int hoveredIndex() const { return _highlightedIndex; }
+    void setHoveredIndex(int index);
+
     QDeclarativeListProperty<QtMenuBase> menuItems();
     QMenu* qmenu() { return _qmenu; }
 
     QAction* action();
 
-    Q_INVOKABLE void showPopup(qreal x, qreal y);
+    Q_INVOKABLE void showPopup(qreal x, qreal y, int atActionIndex = -1);
+    Q_INVOKABLE void hidePopup();
     Q_INVOKABLE void clearMenuItems();
     Q_INVOKABLE void addMenuItem(const QString &text);
+    Q_INVOKABLE QString itemTextAt(int index) const;
 
 Q_SIGNALS:
-    void selectedChanged();
+    void menuClosed();
+    void selectedIndexChanged();
+    void hoveredIndexChanged();
+
+private Q_SLOTS:
+    void emitSelected();
+    void emitHovered();
 
 private:
     static void append_qmenuItem(QDeclarativeListProperty<QtMenuBase> *list, QtMenuBase *menuItem);
@@ -64,6 +79,8 @@ private:
     QWidget *dummy;
     QMenu *_qmenu;
     QList<QtMenuBase *> _qmenuItems;
+    int _selectedIndex;
+    int _highlightedIndex;
 };
 
 QML_DECLARE_TYPE(QtMenu)

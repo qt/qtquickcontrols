@@ -1,5 +1,5 @@
 import QtQuick 1.0
-import "../components"
+import QtDesktop 0.1
 import "content"
 
 Window {

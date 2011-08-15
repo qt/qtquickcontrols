@@ -1,6 +1,5 @@
 import QtQuick 1.0
-import "../components"
-import "../components/plugin"
+import QtDesktop 0.1
 
 Item {
     id: root

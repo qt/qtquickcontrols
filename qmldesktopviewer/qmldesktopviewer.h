@@ -46,7 +46,6 @@
 #include <QList>
 #include <QtDeclarative>
 #include <QDebug>
-#include "../components/styleitem/qwindowitem.h"
 
 QT_BEGIN_NAMESPACE
 

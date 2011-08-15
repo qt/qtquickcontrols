@@ -1,5 +1,5 @@
 import QtQuick 1.0
-import "../components"
+import QtDesktop 0.1
 import "content"
 
 
@@ -266,7 +266,7 @@ Rectangle {
                                 KeyNavigation.backtab: button1
                             }
                         }
-                        ChoiceList {
+                        ComboBox {
                             id: combo;
                             model: choices;
                             width: 200;
@@ -295,9 +295,9 @@ Rectangle {
                         }
                         TextField {
                             id: t3
-                            text: "TextField"
                             KeyNavigation.tab: slider
                             KeyNavigation.backtab: t2
+                            placeholderText: "This is a placeholder for a TextField"
                         }
                         ProgressBar {
                             // normalize value [0.0 .. 1.0]

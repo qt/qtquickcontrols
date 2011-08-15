@@ -501,19 +501,21 @@ QString QStyleItem::hitTest(int px, int py)
         }
         break;
     case ScrollBar: {
-            subcontrol = qApp->style()->hitTestComplexControl(QStyle::CC_ScrollBar,
-                                                              qstyleoption_cast<QStyleOptionComplex*>(m_styleoption),
-                                                              QPoint(px,py), 0);
-            if (subcontrol == QStyle::SC_ScrollBarSlider)
-                return "handle";
+        subcontrol = qApp->style()->hitTestComplexControl(QStyle::CC_ScrollBar,
+                                                          qstyleoption_cast<QStyleOptionComplex*>(m_styleoption),
+                                                          QPoint(px,py), 0);
+        if (subcontrol == QStyle::SC_ScrollBarSlider)
+            return "handle";
 
-            if (subcontrol == QStyle::SC_ScrollBarSubLine
-                || subcontrol == QStyle::SC_ScrollBarSubPage)
-                return "up";
+        if (subcontrol == QStyle::SC_ScrollBarSubLine)
+            return "up";
+        else if (subcontrol == QStyle::SC_ScrollBarSubPage)
+            return "upPage";
 
-            if (subcontrol == QStyle::SC_ScrollBarAddLine
-                || subcontrol == QStyle::SC_ScrollBarAddPage)
-                return "down";
+        if (subcontrol == QStyle::SC_ScrollBarAddLine)
+            return "down";
+        else if (subcontrol == QStyle::SC_ScrollBarAddPage)
+            return "downPage";
         }
         break;
     default:
@@ -635,15 +637,15 @@ QVariant QStyleItem::styleHint(const QString &metric)
         return qApp->palette().text().color().name();
     } else if (metric == "focuswidget") {
         return qApp->style()->styleHint(QStyle::SH_FocusFrame_AboveWidget);
-
     } else if (metric == "tabbaralignment") {
         int result = qApp->style()->styleHint(QStyle::SH_TabBar_Alignment);
         if (result == Qt::AlignCenter)
             return "center";
         return "left";
-
-    } else if (metric == "framearoundcontents")
+    } else if (metric == "framearoundcontents") {
         return qApp->style()->styleHint(QStyle::SH_ScrollView_FrameOnlyAroundContents);
+    } else if (metric == "scrollToClickPosition")
+        return qApp->style()->styleHint(QStyle::SH_ScrollBar_LeftClickAbsolutePosition);
     return 0;
 }
 
@@ -663,6 +665,8 @@ void QStyleItem::setCursor(const QString &str)
             QDeclarativeItem::setCursor(Qt::SplitVCursor);
         else if (m_cursor == "wait")
             QDeclarativeItem::setCursor(Qt::WaitCursor);
+        else if (m_cursor == "pointinghandcursor")
+            QDeclarativeItem::setCursor(Qt::PointingHandCursor);
         emit cursorChanged();
     }
 }
