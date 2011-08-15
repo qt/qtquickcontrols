@@ -25,7 +25,6 @@ ScrollArea {
 
         TextEdit {
             id: edit
-            text: loremIpsum + loremIpsum;
             wrapMode: TextEdit.WordWrap;
             width: 200
             selectByMouse: true
