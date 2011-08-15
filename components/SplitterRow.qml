@@ -1,6 +1,5 @@
 import QtQuick 1.1
 import "custom" as Components
-import "plugin"
 
 Components.SplitterRow {
     handleBackground: QStyleItem {
