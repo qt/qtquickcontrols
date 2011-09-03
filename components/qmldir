@@ -6,6 +6,7 @@ ToolBar 0.1 ToolBar.qml
 TabFrame 0.1 TabFrame.qml
 TabBar 0.1 TabBar.qml
 Tab 0.1 Tab.qml
+Frame 0.1 Frame.qml
 ScrollArea 0.1 ScrollArea.qml
 ScrollBar 0.1 ScrollBar.qml
 ChoiceList 0.1 ChoiceList.qml
