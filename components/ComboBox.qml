@@ -62,6 +62,7 @@ Custom.BasicButton {
     property alias hoveredIndex: popup.hoveredIndex
     property alias selectedText: popup.selectedText
     property alias hoveredText: popup.hoveredText
+    property string hint
 
     background: QStyleItem {
         anchors.fill: parent
@@ -72,7 +73,6 @@ Custom.BasicButton {
         enabled: comboBox.enabled
         text: comboBox.selectedText
         focus: comboBox.focus
-        hint: ""
     }
 
 //    ToDo: adjust margins so that selected popup label
