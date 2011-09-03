@@ -576,9 +576,9 @@ QSize QStyleItem::sizeFromContents(int width, int height)
     }
 
 #ifdef Q_WS_MAC
-    // ### hack - With even heights, the text baseline is off on mac
-    if (size.height() %2 == 0)
-        size.setHeight(size.height() + 1);
+//    ### hack - With even heights, the text baseline is off on mac
+//    if (size.height() %2 == 0)
+//        size.setHeight(size.height() + 1);
 #endif
     return size;
 }
