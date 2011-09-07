@@ -84,6 +84,7 @@ Custom.BasicButton {
 //    property int bottomMargin: 0
 
     width: backgroundItem.sizeFromContents(100, 18).height
+    onWidthChanged: popup.setMinimumWidth(width)
     height: backgroundItem.sizeFromContents(100, 18).height
     checkable: false
     onPressedChanged: if (pressed) popup.visible = true

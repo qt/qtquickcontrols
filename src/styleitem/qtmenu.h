@@ -57,6 +57,8 @@ public:
 
     QAction* action();
 
+    Q_INVOKABLE int minimumWidth() const { return _qmenu->minimumWidth(); }
+    Q_INVOKABLE void setMinimumWidth(int w) { _qmenu->setMinimumWidth(w); }
     Q_INVOKABLE void showPopup(qreal x, qreal y, int atActionIndex = -1);
     Q_INVOKABLE void hidePopup();
     Q_INVOKABLE void clearMenuItems();
