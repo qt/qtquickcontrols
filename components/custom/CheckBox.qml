@@ -8,7 +8,7 @@ Item {
     property alias pressed: behavior.pressed
     property alias checked: behavior.checked
     property alias containsMouse: behavior.containsMouse
-    property bool activeFocusOnPress: true
+    property bool activeFocusOnPress: false
     property Component background: null
     property Item backgroundItem: backgroundLoader.item
 

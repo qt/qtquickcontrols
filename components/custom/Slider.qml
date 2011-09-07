@@ -56,7 +56,7 @@ Item {
     // Indicate that we want animations in the Slider, people customizing should
     // look at it to decide whether or not active animations.
     property bool animated: true
-    property bool activeFocusOnPress: true
+    property bool activeFocusOnPress: false
 
     // Value indicator displays the current value near the slider
     property bool valueIndicatorVisible: true
