@@ -23,10 +23,6 @@ Rectangle {
             ToolButton{
                 iconSource: "images/folder_new.png"
                 anchors.verticalCenter: parent.verticalCenter
-//                onClicked: {
-//                    console.log("Desktop.availableWidth:", Desktop.availableWidth)
-//                    console.log("Desktop.availableHeight:", Desktop.availableHeight)
-//                }
             }
             ToolButton{
                 iconSource: "images/folder_new.png"
