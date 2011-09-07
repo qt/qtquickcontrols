@@ -449,6 +449,12 @@ void QStyleItem::initStyleOption()
             widget()->setAttribute(Qt::WA_MacSmallSize);
         }
     }
+#ifdef Q_WS_MAC
+    if (m_itemType == Button) {
+        // Macstyle hardcodes extra spacing inside the button paintrect
+        m_styleoption->rect.adjust(-4, 0, 6, 0);
+    }
+#endif
 }
 
 /*

@@ -238,7 +238,7 @@ Rectangle {
                             Button {
                                 id: button1
                                 text:"Button 1"
-                                width: 98
+                                width: 96
                                 tooltip:"This is an interesting tool tip"
                                 KeyNavigation.tab: button2
                                 KeyNavigation.backtab: frame.tabbar
@@ -246,7 +246,7 @@ Rectangle {
                             Button {
                                 id:button2
                                 text:"Button 2"
-                                width:98
+                                width:96
                                 KeyNavigation.tab: combo
                                 KeyNavigation.backtab: button1
                             }
@@ -254,7 +254,7 @@ Rectangle {
                         ComboBox {
                             id: combo;
                             model: choices;
-                            width: 200;
+                            width: parent.width;
                             KeyNavigation.tab: t1
                             KeyNavigation.backtab: button2
                         }
