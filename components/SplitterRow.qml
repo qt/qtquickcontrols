@@ -2,7 +2,7 @@ import QtQuick 1.1
 import "custom" as Components
 
 Components.SplitterRow {
-    handleBackground: QStyleItem {
+    handleBackground: StyleItem {
             id: styleitem
             elementType: "splitter"
             width: pixelMetric("splitterwidth")
@@ -17,7 +17,7 @@ Components.SplitterRow {
                 drag.axis: Qt.YAxis
                 drag.target: handle
 
-                QStyleItem {
+                StyleItem {
                     anchors.fill: parent
                     cursor: "splithcursor"
                 }

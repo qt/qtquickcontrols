@@ -11,7 +11,7 @@ Components.Button {
     property bool defaultbutton
     property string hint
 
-    background: QStyleItem {
+    background: StyleItem {
         id: styleitem
         anchors.fill: parent
         elementType: "button"

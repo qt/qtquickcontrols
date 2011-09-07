@@ -9,7 +9,7 @@ Components.Slider{
     property bool tickmarksEnabled: true
     property string tickPosition: "Below" // "Above", "Below", "BothSides"
 
-    QStyleItem { id:buttonitem; elementType: "slider" }
+    StyleItem { id:buttonitem; elementType: "slider" }
 
     property variant sizehint: buttonitem.sizeFromContents(23, 23)
     property int orientation: Qt.Horizontal
@@ -18,7 +18,7 @@ Components.Slider{
     width: orientation === Qt.Horizontal ? 200 : sizehint.height
     property string hint;
 
-    groove: QStyleItem {
+    groove: StyleItem {
         anchors.fill:parent
         elementType: "slider"
         sunken: pressed

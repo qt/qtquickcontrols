@@ -6,7 +6,7 @@ Item {
     height: Math.max(100, content.childrenRect.height + 2 * content.frameWidth)
     property alias raised: style.raised
     property alias sunken: style.sunken
-    QStyleItem {
+    StyleItem {
         id: style
         anchors.fill: parent
         elementType: "frame"

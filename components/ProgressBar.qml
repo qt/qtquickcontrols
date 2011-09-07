@@ -13,7 +13,7 @@ Components.ProgressBar {
 
     SystemPalette {id: syspal}
 
-    background: QStyleItem {
+    background: StyleItem {
         anchors.fill: parent
         elementType: "progressbar"
         // XXX: since desktop uses int instead of real, the progressbar

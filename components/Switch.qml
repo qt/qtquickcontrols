@@ -6,12 +6,12 @@ Components.Switch {
     minimumWidth:100
     minimumHeight:30
 
-    groove:QStyleItem {
+    groove:StyleItem {
         elementType:"edit"
         sunken: true
     }
 
-    handle: QStyleItem {
+    handle: StyleItem {
         elementType:"button"
         width:widget.width/2
         height:widget.height-4

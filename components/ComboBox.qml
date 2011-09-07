@@ -64,7 +64,7 @@ Custom.BasicButton {
     property alias hoveredText: popup.hoveredText
     property string hint
 
-    background: QStyleItem {
+    background: StyleItem {
         anchors.fill: parent
         elementType: "combobox"
         sunken: comboBox.pressed

@@ -7,7 +7,7 @@ Components.GroupBox {
     height: contentHeight + sizeHint.height + 4
     property variant sizeHint: backgroundItem.sizeFromContents(0, 24)
     property bool flat: false
-    background : QStyleItem {
+    background : StyleItem {
         id: styleitem
         elementType: "groupbox"
         anchors.fill: parent

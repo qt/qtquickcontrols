@@ -116,7 +116,7 @@ FocusScope{
     Component {
         id: nativeDelegate
         // This gives more native styling, but might be less performant
-        QStyleItem {
+        StyleItem {
             elementType: "item"
             text:   itemValue
             selected: itemSelected
@@ -125,7 +125,7 @@ FocusScope{
 
     Component {
         id: headerDelegate
-        QStyleItem {
+        StyleItem {
             elementType: "header"
             activeControl: itemSort
             raised: true
@@ -137,7 +137,7 @@ FocusScope{
 
     Component {
         id: rowDelegate
-        QStyleItem {
+        StyleItem {
             id: rowstyle
             elementType: "itemrow"
             activeControl: itemAlternateBackground ? "alternate" : ""
@@ -154,7 +154,7 @@ FocusScope{
         anchors.bottomMargin: (!frameAroundContents && hscrollbar.visible ? hscrollbar.height : 0) +frameWidth
     }
 
-    QStyleItem {
+    StyleItem {
         id: frameitem
         elementType: "frame"
         onElementTypeChanged: scrollarea.frameWidth = styleitem.pixelMetric("defaultframewidth");
@@ -457,7 +457,7 @@ FocusScope{
                                 header[index].width = minWidth
                         }
                         onPressedChanged: if(pressed)offset=mouseX
-                        QStyleItem {
+                        StyleItem {
                             anchors.fill: parent
                             cursor: "splithcursor"
                         }
@@ -557,7 +557,7 @@ FocusScope{
         onTriggered:contentY = vscrollbar.value
     }
 
-    QStyleItem {
+    StyleItem {
         z: 2
         anchors.fill: parent
         anchors.margins: -4
@@ -565,13 +565,13 @@ FocusScope{
         elementType: "focusframe"
     }
 
-    QStyleItem {
+    StyleItem {
         id: styleitem
         elementType: "header"
         visible:false
         property int frameoffset: style === "mac" ? -1 : 0
     }
-    QStyleItem {
+    StyleItem {
         id: rowstyleitem
         elementType: "item"
         visible:false

@@ -10,7 +10,7 @@ Components.CheckBox {
     width:110
     height:20
 
-    background: QStyleItem {
+    background: StyleItem {
         elementType:"radiobutton"
         sunken:pressed
         on:checked || pressed

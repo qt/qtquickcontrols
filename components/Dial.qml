@@ -3,7 +3,7 @@ import "custom" as Components
 
 // jens: ContainsMouse breaks drag functionality
 
-QStyleItem {
+StyleItem {
     id: dial
 
     width:100

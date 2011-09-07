@@ -48,7 +48,7 @@ FocusScope {
         anchors.margins: frameWidth
     }
 
-    QStyleItem {
+    StyleItem {
         id: styleitem
         elementType: "frame"
         onElementTypeChanged: scrollarea.frameWidth = styleitem.pixelMetric("defaultframewidth");
@@ -146,7 +146,7 @@ FocusScope {
         color: syspal.window
     }
 
-    QStyleItem {
+    StyleItem {
         z: 2
         anchors.fill: parent
         anchors.margins: -3

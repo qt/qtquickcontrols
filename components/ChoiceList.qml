@@ -15,7 +15,7 @@ Components.ChoiceList {
     topMargin: 4
     bottomMargin: 4
 
-    background: QStyleItem {
+    background: StyleItem {
         anchors.fill: parent
         elementType: "combobox"
         sunken: pressed
@@ -33,7 +33,7 @@ Components.ChoiceList {
         height: 22
         anchors.left: parent.left
         width: choicelist.width
-        QStyleItem {
+        StyleItem {
             anchors.fill: parent
             elementType: "comboboxitem"
             text: itemText
@@ -41,7 +41,7 @@ Components.ChoiceList {
 
         }
     }
-    popupFrame: QStyleItem {
+    popupFrame: StyleItem {
         property string popupLocation: backgroundItem.styleHint("comboboxpopup") ? "center" : "below"
         property int fw: backgroundItem.pixelMetric("menupanelwidth");
         anchors.leftMargin: backgroundItem.pixelMetric("menuhmargin") + fw

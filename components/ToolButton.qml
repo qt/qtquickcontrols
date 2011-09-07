@@ -7,9 +7,9 @@ Components.Button {
     height: 40; //styleitem.sizeFromContents(32, 32).height
     width: 40; //styleitem.sizeFromContents(32, 32).width
 
-    QStyleItem {elementType: "toolbutton"; id:styleitem  }
+    StyleItem {elementType: "toolbutton"; id:styleitem  }
 
-    background: QStyleItem {
+    background: StyleItem {
         anchors.fill: parent
         id: styleitem
         elementType: "toolbutton"

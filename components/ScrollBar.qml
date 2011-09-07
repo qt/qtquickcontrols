@@ -131,7 +131,7 @@ Item {
                 value = minimumValue
         }
 
-        QStyleItem {
+        StyleItem {
             id: styleitem
             anchors.fill:parent
             elementType: "scrollbar"

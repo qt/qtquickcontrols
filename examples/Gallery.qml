@@ -205,7 +205,7 @@ Rectangle {
     }
 
     SystemPalette {id: syspal}
-    QStyleItem{ id: styleitem}
+    StyleItem{ id: styleitem}
     color: syspal.window
     ListModel {
         id: choices

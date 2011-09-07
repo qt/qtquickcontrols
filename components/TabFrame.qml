@@ -43,7 +43,7 @@ Item {
             current-=1
     }
 
-    QStyleItem {
+    StyleItem {
         id: frameitem
         z: style == "oxygen" ? 1 : 0
         elementType: "tabframe"
