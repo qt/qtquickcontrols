@@ -11,6 +11,7 @@ Components.Button {
     property bool defaultbutton
     property string hint
 
+
     background: StyleItem {
         id: styleitem
         anchors.fill: parent

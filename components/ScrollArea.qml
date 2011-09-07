@@ -149,9 +149,12 @@ FocusScope {
     StyleItem {
         z: 2
         anchors.fill: parent
-        anchors.margins: -3
-        anchors.rightMargin: -4
-        anchors.bottomMargin: -4
+
+        anchors.topMargin: -4
+        anchors.leftMargin: -3
+        anchors.rightMargin: -5
+        anchors.bottomMargin: -6
+
         visible: highlightOnFocus && parent.activeFocus && styleitem.styleHint("focuswidget")
         elementType: "focusframe"
     }

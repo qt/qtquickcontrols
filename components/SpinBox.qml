@@ -43,8 +43,8 @@ Components.SpinBox {
             StyleItem {
                 id: frameitem
                 anchors.margins: -6
-                anchors.leftMargin: -6
-                anchors.rightMargin: -7
+                anchors.leftMargin: -5
+                anchors.rightMargin: -6
                 anchors.fill: parent
                 visible: spinbox.activeFocus
                 elementType: "focusframe"
