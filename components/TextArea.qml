@@ -12,6 +12,7 @@ ScrollArea {
     property alias wrapMode: edit.wrapMode
     property alias readOnly: edit.readOnly
     property bool tabChangesFocus: false
+    property alias font: edit.font
 
     highlightOnFocus: true
     property int documentMargins: 4
