@@ -95,6 +95,7 @@ FocusScope {
         id: mouseArea
         anchors.fill: parent
         hoverEnabled: true
+        onClicked: textfield.forceActiveFocus()
     }
 
     onFocusChanged: {
