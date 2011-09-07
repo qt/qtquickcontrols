@@ -144,8 +144,6 @@ Rectangle {
                     id: closeWindowButton
                     text:"Close"
                     width: 98
-                    focus: true
-                    Component.onCompleted: button1.forceActiveFocus()
                     tooltip:"Press me, to close this window again"
                     defaultbutton:true
                     onClicked: window1.visible = false
@@ -156,7 +154,6 @@ Rectangle {
                     id: maximizeWindowButton
                     text:"Maximize"
                     width: 98
-                    focus: true
                     tooltip:"Press me, to maximize this window again"
                     onClicked: window1.windowState = Qt.WindowMaximized;
                 }
@@ -166,7 +163,6 @@ Rectangle {
                     id: normalizeWindowButton
                     text:"Normalize"
                     width: 98
-                    focus: true
                     tooltip:"Press me, to normalize this window again"
                     onClicked: window1.windowState = Qt.WindowNoState;
                 }
@@ -176,7 +172,6 @@ Rectangle {
                     id: minimizeWindowButton
                     text:"Minimize"
                     width: 98
-                    focus: true
                     tooltip:"Press me, to minimize this window again"
                     onClicked: window1.windowState = Qt.WindowMinimized;
                 }
@@ -218,9 +213,8 @@ Rectangle {
 
     TabFrame {
         id:frame
-        focus:true
         position: tabPositionGroup.checkedButton == r2 ? "South" : "North"
-        tabbar: TabBar{parent: frame; focus:true; KeyNavigation.tab:button1}
+        tabbar: TabBar{parent: frame; KeyNavigation.tab:button1}
 
         property int margins : styleitem.style == "mac" ? 16 : 0
         anchors.top: toolbar.bottom
@@ -245,22 +239,17 @@ Rectangle {
                         spacing: 9
                         Row {
                             spacing:8
-
                             Button {
                                 id: button1
                                 text:"Button 1"
                                 width: 98
-                                focus: true
-                                Component.onCompleted: button1.forceActiveFocus()
                                 tooltip:"This is an interesting tool tip"
-                                defaultbutton:true
                                 KeyNavigation.tab: button2
                                 KeyNavigation.backtab: frame.tabbar
                             }
                             Button {
                                 id:button2
                                 text:"Button 2"
-                                focus:true
                                 width:98
                                 KeyNavigation.tab: combo
                                 KeyNavigation.backtab: button1
@@ -270,7 +259,6 @@ Rectangle {
                             id: combo;
                             model: choices;
                             width: 200;
-                            focus: false;
                             KeyNavigation.tab: t1
                             KeyNavigation.backtab: button2
                         }
