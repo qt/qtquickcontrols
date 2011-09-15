@@ -1,11 +1,5 @@
-<<<<<<< HEAD
 import QtQuick 2.0
-import "../components"
-import "../components/plugin"
-=======
-import QtQuick 1.0
 import QtDesktop 0.1
->>>>>>> master
 
 Item {
     id: root

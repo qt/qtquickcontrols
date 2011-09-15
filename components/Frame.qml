@@ -1,5 +1,7 @@
 import QtQuick 2.0
 import "custom" as Components
+import QtDesktop 0.1
+
 Item {
     default property alias children: content.children
     width: Math.max(100, content.childrenRect.width + 2 * content.frameWidth)

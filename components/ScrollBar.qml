@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import "custom" as Components
+import QtDesktop 0.1
 
 Item {
     id: scrollbar
@@ -57,7 +58,7 @@ Item {
                                                                                               internal.incrementPage()
         }
 
-        onMousePositionChanged: {
+        onPositionChanged: {
             if (pressed && control === "handle") {
                 //slider.positionAtMaximum = grooveSize
                 if (!styleitem.horizontal)

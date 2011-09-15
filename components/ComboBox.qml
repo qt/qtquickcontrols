@@ -1,5 +1,6 @@
 import QtQuick 1.0
 import "custom" as Custom
+import QtDesktop 0.1
 
 /*
 *

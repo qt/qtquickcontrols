@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import "custom" as Components
+import QtDesktop 0.1
 
 Components.GroupBox {
     id: groupbox

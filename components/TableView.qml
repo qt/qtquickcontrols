@@ -1,6 +1,5 @@
 import QtQuick 2.0
-import "../components"
-import "../components/plugin"
+import QtDesktop 0.1
 
 /*
 *
@@ -187,7 +186,7 @@ FocusScope{
         Timer { running: mousearea.autoincrement; repeat: true; interval: 20 ; onTriggered: incrementCurrentIndex()}
         Timer { running: mousearea.autodecrement; repeat: true; interval: 20 ; onTriggered: decrementCurrentIndex()}
 
-        onMousePositionChanged: {
+        onPositionChanged: {
             if (mouseY > tree.height && pressed) {
                 if (autoincrement)return
                 autodecrement = false
@@ -384,7 +383,7 @@ FocusScope{
                         // Here we handle moving header sections
                         // NOTE: the direction is different from the master branch
                         // so this indicates that Im using an invalid assumption on item ordering
-                        onMousePositionChanged: {
+                        onPositionChanged: {
                             if (pressed) { // only do this while dragging
                                 for (var h = header.length-1 ; h >= 0 ; --h) {
                                     if (drag.target.x > headerrow.children[h].x) {
