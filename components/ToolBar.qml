@@ -1,8 +1,7 @@
 import QtQuick 2.0
 import "custom" as Components
-import "plugin"
 
-QStyleItem{
+StyleItem{
     id: toolbar
     width: 200
     height: sizeFromContents(32, 32).height

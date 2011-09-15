@@ -1,6 +1,7 @@
 import QtQuick 1.0
-import "../components/plugin"
 
-MenuItemBase {
-
+Item {
+    property string text
+    signal hovered
+    signal selected
 }

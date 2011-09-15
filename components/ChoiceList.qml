@@ -1,7 +1,10 @@
 import QtQuick 2.0
 import "custom" as Components
+<<<<<<< HEAD
 import "plugin"
 import "shadereffects"
+=======
+>>>>>>> master
 
 Components.ChoiceList {
 
@@ -17,7 +20,7 @@ Components.ChoiceList {
     topMargin: 4
     bottomMargin: 4
 
-    background: QStyleItem {
+    background: StyleItem {
         anchors.fill: parent
         elementType: "combobox"
         sunken: pressed
@@ -35,7 +38,7 @@ Components.ChoiceList {
         height: 22
         anchors.left: parent.left
         width: choicelist.width
-        QStyleItem {
+        StyleItem {
             anchors.fill: parent
             elementType: "comboboxitem"
             text: itemText
@@ -43,8 +46,12 @@ Components.ChoiceList {
 
         }
     }
+<<<<<<< HEAD
     popupFrame: Item {
         anchors.fill: parent
+=======
+    popupFrame: StyleItem {
+>>>>>>> master
         property string popupLocation: backgroundItem.styleHint("comboboxpopup") ? "center" : "below"
         anchors.leftMargin: backgroundItem.pixelMetric("menuhmargin") + fw
         anchors.rightMargin: backgroundItem.pixelMetric("menuhmargin") + fw

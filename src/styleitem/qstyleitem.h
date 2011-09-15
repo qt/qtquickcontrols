@@ -41,7 +41,7 @@
 #define STYLEWRAPPER_H
 
 #include <QtDeclarative/qsgpainteditem.h>
-//#include <QDeclarativeItem>
+//#include <QSGItem>
 #include <QtWidgets/QStyle>
 #include <QtWidgets>
 #include <QEvent>

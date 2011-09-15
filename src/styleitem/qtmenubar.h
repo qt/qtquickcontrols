@@ -37,33 +37,37 @@
 **
 ****************************************************************************/
 
-#ifndef QTMENUITEM_H
-#define QTMENUITEM_H
+#ifndef QTMENUBAR_H
+#define QTMENUBAR_H
 
-#include <QtCore/QObject>
+#include <QSGItem>
+#include <QtGui>
+#include <QtWidgets/QMenu>
+#include <QtWidgets/QMenuBar>
 
-class QtMenuItem: public QObject
+#include "qtmenu.h"
+
+class QtMenuBar: public QSGItem
 {
-    Q_PROPERTY(QString text READ text WRITE setText NOTIFY textChanged)
-
     Q_OBJECT
+
+    Q_PROPERTY(QDeclarativeListProperty<QtMenu> menus READ menus)
+    Q_CLASSINFO("DefaultProperty", "menus")
 public:
-    QtMenuItem(QObject *parent = 0);
-    ~QtMenuItem();
+    QtMenuBar(QSGItem *parent = 0);
+    ~QtMenuBar();
 
-    void setText(const QString &text);
-    QString text();
+    QDeclarativeListProperty<QtMenu> menus();
 
-    Q_INVOKABLE void emitHovered() { emit hovered(); }
-    Q_INVOKABLE void emitSelected() { emit selected(); }
-
-Q_SIGNALS:
-    void selected();
-    void hovered();
-    void textChanged();
+protected Q_SLOTS:
+    void updateParent();
 
 private:
-    QString m_text;
+    static void append_menu(QDeclarativeListProperty<QtMenu> *list, QtMenu *menu);
+
+private:
+    QList<QtMenu *> m_menus;
+    QMenuBar *_menuBar;
 };
 
-#endif //QTMENUITEM_H
+#endif //QTMENUBAR_H

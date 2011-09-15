@@ -1,6 +1,5 @@
 import QtQuick 2.0
 import "custom" as Components
-import "plugin"
 
 // jb : Size should not depend on background, we should make it consistent
 
@@ -11,7 +10,7 @@ Components.CheckBox{
     width: Math.max(110, backgroundItem.textWidth(text) + 40)
     height: 20
 
-    background: QStyleItem {
+    background: StyleItem {
         id:styleitem
         elementType:"checkbox"
         sunken:pressed

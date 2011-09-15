@@ -14,7 +14,7 @@ Item {
     property Item backgroundItem: backgroundLoader.item
 
     property color textColor: syspal.text;
-    property bool activeFocusOnPress: true
+    property bool activeFocusOnPress: false
     property string tooltip
 
     signal toolTipTriggered

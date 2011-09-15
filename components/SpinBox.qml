@@ -1,6 +1,5 @@
 import QtQuick 2.0
 import "custom" as Components
-import "plugin"
 
 Components.SpinBox {
     id:spinbox
@@ -17,7 +16,7 @@ Components.SpinBox {
     leftMargin:6
     rightMargin:6
 
-    QStyleItem { id:edititem ; elementType:"edit" ; visible:false }
+    StyleItem { id:edititem ; elementType:"edit" ; visible:false }
     property int buttonHeight:  edititem.sizeFromContents(70, 20).height
     property int buttonWidth: edititem.sizeFromContents(70, 20).width
 
@@ -41,11 +40,11 @@ Components.SpinBox {
             id: focusFrame
             anchors.fill: editBackground
             visible: frameitem.styleHint("focuswidget")
-            QStyleItem {
+            StyleItem {
                 id: frameitem
                 anchors.margins: -6
-                anchors.leftMargin: -6
-                anchors.rightMargin: -7
+                anchors.leftMargin: -5
+                anchors.rightMargin: -6
                 anchors.fill: parent
                 visible: spinbox.activeFocus
                 elementType: "focusframe"
@@ -64,7 +63,7 @@ Components.SpinBox {
         onWidthChanged: updateRect()
         onHeightChanged: updateRect()
 
-        QStyleItem {
+        StyleItem {
             id: styleitem
             anchors.fill: parent
             elementType: "spinbox"

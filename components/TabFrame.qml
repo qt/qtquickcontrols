@@ -1,6 +1,5 @@
 import QtQuick 2.0
 import "custom" as Components
-import "plugin"
 
 Item {
     id: tabWidget
@@ -31,7 +30,20 @@ Item {
         }
     }
 
-    QStyleItem {
+    function addTab(component) {
+        var tab = component.createObject(null);
+        tab.parent = stack
+        current = count-1
+    }
+
+    function removeTab(id) {
+        var tab = tabs[id]
+        tab.destroy()
+        if (current > 0)
+            current-=1
+    }
+
+    StyleItem {
         id: frameitem
         z: style == "oxygen" ? 1 : 0
         elementType: "tabframe"

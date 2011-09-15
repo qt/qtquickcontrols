@@ -1,8 +1,15 @@
 import QtQuick 2.0
-import "../components"
+//import "../components"
+import QtDesktop 0.1
 import "content"
 
+
 Rectangle {
+    property string loremIpsum:
+            "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor "+
+            "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor "+
+            "incididunt ut labore et dolore magna aliqua.\n Ut enim ad minim veniam, quis nostrud "+
+            "exercitation ullamco laboris nisi ut aliquip ex ea commodo cosnsequat. ";
 
     width: 538 + frame.margins * 2
     height: 360 + frame.margins * 2
@@ -23,12 +30,150 @@ Rectangle {
                 anchors.verticalCenter: parent.verticalCenter
             }
             ToolButton{
-                iconSource: "images/folder_new.png"
+                iconSource: "images/toplevel_window.png"
                 anchors.verticalCenter: parent.verticalCenter
+                onClicked: window1.visible = !window1.visible
             }
         }
 
+        Window {
+            id: window1
 
+            width: 400
+            height: 400
+            minimumWidth: 400
+            minimumHeight: 400
+            windowDecoration: true
+            modal: modalCheck.checked
+            title: "child window"
+
+            MenuBar {
+                Menu {
+                    text: "File"
+                    MenuItem {
+                        text: "Open"
+                        shortcut: "Ctrl+O"
+                        iconSource: "images/toplevel_window.png"
+                        onTriggered: console.log("we should display a file open dialog")
+                    }
+                    MenuItem {
+                        text: "Close"
+                        shortcut: "Ctrl+Q"
+                        onTriggered: Qt.quit()
+                    }
+                }
+                Menu {
+                    text: "Window"
+                    MenuItem {
+                        text: "Enable Window Decoration"
+                        onTriggered: window1.windowDecoration = true
+                    }
+                    MenuItem {
+                        text: "Disable Window Decoration"
+                        onTriggered: window1.windowDecoration = false
+                    }
+
+                    Menu {
+                        text: "Advanced"
+                        iconSource: "images/toplevel_window.png"
+                        MenuItem {
+                            id: modalCheck
+                            text: "Window Modal"
+                            checkable: true
+                        }
+                    }
+                }
+            }
+
+            Rectangle {
+                color: syspal.window
+                anchors.fill: parent
+
+                Text {
+                    id: dimensionsText
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.top: parent.top
+                    anchors.margins: frame.margins
+                    width: parent.width
+                    horizontalAlignment: Text.AlignHCenter
+
+                    text: {
+                        if (Desktop.screenCount == 1) {
+                            "You have only a single screen.\nThe dimensions of your screen are: " + Desktop.screenWidth + " x " + Desktop.screenHeight;
+                        } else {
+                            var text = "You have " + Desktop.screenCount + " screens.\nThe dimensions of your screens are: "
+                            for(var i=0; i<Desktop.screenCount; i++) {
+                                text += "\n" + Desktop.screenGeometry(i).width + " x " + Desktop.screenGeometry(i).height
+                            }
+                            return text;
+                        }
+                    }
+                }
+
+                Text {
+                    id: availableDimensionsText
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.top: dimensionsText.bottom
+                    anchors.margins: frame.margins
+                    width: parent.width
+                    horizontalAlignment: Text.AlignHCenter
+
+                    text: {
+                        var text = "The available dimensions of your screens are: "
+                        for(var i=0; i<Desktop.screenCount; i++) {
+                            text += "\n" + Desktop.availableGeometry(i).width + " x " + Desktop.availableGeometry(i).height
+                        }
+                        return text;
+                    }
+                }
+
+                Text {
+                    id: closeText
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.top: availableDimensionsText.bottom
+                    anchors.margins: frame.margins
+                    text: "This is a new Window, press the\nbutton below to close it again."
+                }
+                Button {
+                    anchors.horizontalCenter: closeText.horizontalCenter
+                    anchors.top: closeText.bottom
+                    anchors.margins: frame.margins
+                    id: closeWindowButton
+                    text:"Close"
+                    width: 98
+                    tooltip:"Press me, to close this window again"
+                    defaultbutton:true
+                    onClicked: window1.visible = false
+                }
+                Button {
+                    anchors.horizontalCenter: closeText.horizontalCenter
+                    anchors.top: closeWindowButton.bottom
+                    id: maximizeWindowButton
+                    text:"Maximize"
+                    width: 98
+                    tooltip:"Press me, to maximize this window again"
+                    onClicked: window1.windowState = Qt.WindowMaximized;
+                }
+                Button {
+                    anchors.horizontalCenter: closeText.horizontalCenter
+                    anchors.top: maximizeWindowButton.bottom
+                    id: normalizeWindowButton
+                    text:"Normalize"
+                    width: 98
+                    tooltip:"Press me, to normalize this window again"
+                    onClicked: window1.windowState = Qt.WindowNoState;
+                }
+                Button {
+                    anchors.horizontalCenter: closeText.horizontalCenter
+                    anchors.top: normalizeWindowButton.bottom
+                    id: minimizeWindowButton
+                    text:"Minimize"
+                    width: 98
+                    tooltip:"Press me, to minimize this window again"
+                    onClicked: window1.windowState = Qt.WindowMinimized;
+                }
+            }
+        }
 
         ContextMenu {
             id: editmenu
@@ -52,7 +197,7 @@ Rectangle {
     }
 
     SystemPalette {id: syspal}
-    QStyleItem{ id: styleitem}
+    StyleItem{ id: styleitem}
     color: syspal.window
     ListModel {
         id: choices
@@ -62,17 +207,11 @@ Rectangle {
         ListElement { text: "Coconut" }
     }
 
-    property string loremIpsum:
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor "+
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor "+
-            "incididunt ut labore et dolore magna aliqua.\n Ut enim ad minim veniam, quis nostrud "+
-            "exercitation ullamco laboris nisi ut aliquip ex ea commodo cosnsequat. ";
 
     TabFrame {
         id:frame
-        focus:true
         position: tabPositionGroup.checkedButton == r2 ? "South" : "North"
-        tabbar: TabBar{parent: frame; focus:true; KeyNavigation.tab:button1}
+        tabbar: TabBar{parent: frame; KeyNavigation.tab:button1}
 
         property int margins : styleitem.style == "mac" ? 16 : 0
         anchors.top: toolbar.bottom
@@ -97,23 +236,18 @@ Rectangle {
                         spacing: 9
                         Row {
                             spacing:8
-
                             Button {
                                 id: button1
                                 text:"Button 1"
-                                width: 98
-                                focus: true
-                                Component.onCompleted: button1.forceActiveFocus()
+                                width: 96
                                 tooltip:"This is an interesting tool tip"
-                                defaultbutton:true
                                 KeyNavigation.tab: button2
                                 KeyNavigation.backtab: frame.tabbar
                             }
                             Button {
                                 id:button2
                                 text:"Button 2"
-                                focus:true
-                                width:98
+                                width:96
                                 KeyNavigation.tab: combo
                                 KeyNavigation.backtab: button1
                             }
@@ -121,8 +255,7 @@ Rectangle {
                         ComboBox {
                             id: combo;
                             model: choices;
-                            width: 200;
-                            focus: false;
+                            width: parent.width;
                             KeyNavigation.tab: t1
                             KeyNavigation.backtab: button2
                         }
@@ -147,9 +280,9 @@ Rectangle {
                         }
                         TextField {
                             id: t3
-                            text: "TextField"
                             KeyNavigation.tab: slider
                             KeyNavigation.backtab: t2
+                            placeholderText: "This is a placeholder for a TextField"
                         }
                         ProgressBar {
                             // normalize value [0.0 .. 1.0]
@@ -320,3 +453,4 @@ Rectangle {
         }
     }
 }
+

@@ -1,6 +1,5 @@
 import QtQuick 2.0
 import "custom" as Components
-import "plugin"
 
 Components.ProgressBar {
     id:progressbar
@@ -12,7 +11,9 @@ Components.ProgressBar {
     height: orientation === Qt.Horizontal ? sizehint.height : 200
     width: orientation === Qt.Horizontal ? 200 : sizehint.height
 
-    background: QStyleItem {
+    SystemPalette {id: syspal}
+
+    background: StyleItem {
         anchors.fill: parent
         elementType: "progressbar"
         // XXX: since desktop uses int instead of real, the progressbar

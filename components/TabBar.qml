@@ -1,6 +1,5 @@
 import QtQuick 2.0
 import "custom" as Components
-import "plugin"
 
 
 Item {
@@ -39,7 +38,7 @@ Item {
         return null;
     }
 
-    QStyleItem {
+    StyleItem {
         visible:false
         id:styleitem
         elementType: "tab"
@@ -76,7 +75,7 @@ Item {
                     height = rect.height
                 }
                 // Component.onCompleted: print("taboverlap" + tabOverlap + " tabbaseoverlap " + tabBaseOverlap + " overlap " +__overlap + " hspace " + tabHSpace)
-                QStyleItem {
+                StyleItem {
                     id: style
                     elementType: "tab"
                     selected: tab.selected

@@ -1,6 +1,5 @@
 import QtQuick 2.0
 import "custom" as Components
-import "plugin"
 
 Components.TextField {
     id: textfield
@@ -16,7 +15,7 @@ Components.TextField {
     width: 200
     clip: false
 
-    background: QStyleItem {
+    background: StyleItem {
         anchors.fill: parent
         elementType: "edit"
         sunken: true
@@ -29,7 +28,7 @@ Components.TextField {
         anchors.fill: textfield
         parent: textfield
         visible: framestyle.styleHint("focuswidget")
-        QStyleItem {
+        StyleItem {
             id: framestyle
             anchors.margins: -2
             anchors.rightMargin:-4

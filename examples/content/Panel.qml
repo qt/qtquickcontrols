@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import QtQuick 2.0
 import "../../components"
+=======
+import QtQuick 1.0
+import QtDesktop 0.1
+>>>>>>> master
 
 Rectangle {
     id:root

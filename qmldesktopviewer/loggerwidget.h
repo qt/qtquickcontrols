@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
 ** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
@@ -37,21 +37,63 @@
 **
 ****************************************************************************/
 
-#include "qtmenubar.h"
+#ifndef LOGGERWIDGET_H
+#define LOGGERWIDGET_H
 
-#include <QtWidgets/QMenu>
+#include <QMainWindow>
+#include <QMetaType>
 
-QtMenuBar::QtMenuBar(QSGItem *parent)
-    : QSGItem(parent)
-{
-    setFlag(QSGItem::ItemHasContents, false);
-}
+QT_BEGIN_NAMESPACE
 
-QtMenuBar::~QtMenuBar()
-{
-}
+class QPlainTextEdit;
+class QLabel;
+class QMenu;
+class QAction;
 
-QDeclarativeListProperty<QtMenu> QtMenuBar::menus()
-{
-    return QDeclarativeListProperty<QtMenu>(this, m_menus);
-}
+class LoggerWidget : public QMainWindow {
+    Q_OBJECT
+public:
+    LoggerWidget(QWidget *parent=0);
+
+    enum Visibility { ShowWarnings, HideWarnings, AutoShowWarnings };
+
+    Visibility defaultVisibility() const;
+    void setDefaultVisibility(Visibility visibility);
+
+    QMenu *preferencesMenu();
+    QAction *showAction();
+
+public slots:
+    void append(const QString &msg);
+    void updateNoWarningsLabel();
+
+private slots:
+    void warningsPreferenceChanged(QAction *action);
+    void readSettings();
+    void saveSettings();
+
+protected:
+    void showEvent(QShowEvent *event);
+    void closeEvent(QCloseEvent *event);
+
+signals:
+    void opened();
+    void closed();
+
+private:
+    void setupPreferencesMenu();
+
+    QMenu *m_preferencesMenu;
+    QAction *m_showWidgetAction;
+    QPlainTextEdit *m_plainTextEdit;
+    QLabel *m_noWarningsLabel;
+    enum ConfigOrigin { CommandLineOrigin, SettingsOrigin };
+    ConfigOrigin m_visibilityOrigin;
+    Visibility m_visibility;
+};
+
+QT_END_NAMESPACE
+
+Q_DECLARE_METATYPE(LoggerWidget::Visibility)
+
+#endif // LOGGERWIDGET_H

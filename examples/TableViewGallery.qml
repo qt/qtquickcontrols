@@ -1,5 +1,5 @@
 import QtQuick 1.0
-import "../components"
+import QtDesktop 0.1
 
 Rectangle {
 
@@ -36,7 +36,7 @@ Rectangle {
     }
 
     SystemPalette {id: syspal}
-    QStyleItem{ id: styleitem}
+    StyleItem{ id: styleitem}
     color: syspal.window
 
     XmlListModel {

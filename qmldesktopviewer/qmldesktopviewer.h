@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2011 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
 ** All rights reserved.
 ** Contact: Nokia Corporation (qt-info@nokia.com)
 **
@@ -27,7 +27,7 @@
 ** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
 ** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
 ** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOTgall
 ** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
 ** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 ** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
@@ -37,30 +37,60 @@
 **
 ****************************************************************************/
 
-#ifndef QTMENUBAR_H
-#define QTMENUBAR_H
+#ifndef QMLDESKTOPVIEWER_H
+#define QMLDESKTOPVIEWER_H
 
-#include <QSGItem>
-#include <QtGui>
-#include <QtWidgets/QMenu>
+#include <QMainWindow>
+#include <QTimer>
+#include <QTime>
+#include <QList>
+#include <QtDeclarative>
+#include <QDebug>
 
-#include "qtmenu.h"
+QT_BEGIN_NAMESPACE
 
-class QtMenuBar: public QSGItem
+class QSGView;
+class QTranslator;
+class QActionGroup;
+class QMenuBar;
+class LoggerWidget;
+
+class QmlDesktopViewer
+    : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(QDeclarativeListProperty<QtMenu> menus READ menus)
 public:
-    QtMenuBar(QSGItem *parent = 0);
-    ~QtMenuBar();
+    QmlDesktopViewer();
+    ~QmlDesktopViewer();
 
-    QDeclarativeListProperty<QtMenu> menus();
+    static void registerTypes();
 
-    //void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *);
+    void addLibraryPath(const QString& lib);
+    void addPluginPath(const QString& plugin);
+
+    QString currentFile() const { return currentFileOrUrl; }
+    QDeclarativeEngine *engine() { return _engine; }
+    //QGraphicsObject *rootObject() { return _rootObject; }
+    QDeclarativeContext *rootContext() { return _engine->rootContext(); }
+
+public slots:
+    bool open(const QString&);
+    void statusChanged();
+    void execute(QUrl url);
+    void continueExecute();
+    void quit();
 
 private:
-    QList<QtMenu *> m_menus;
+    QString currentFileOrUrl;
+    QDeclarativeEngine *_engine;
+    //QGraphicsObject *_rootObject;
+    QDeclarativeComponent *_component;
+
+signals:
+    void statusChanged(QDeclarativeComponent::Status);
 };
 
-#endif //QTMENUBAR_H
+QT_END_NAMESPACE
+
+#endif // QMLDESKTOPVIEWER_H

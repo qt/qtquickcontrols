@@ -449,6 +449,12 @@ void QStyleItem::initStyleOption()
             widget()->setAttribute(Qt::WA_MacSmallSize);
         }
     }
+#ifdef Q_WS_MAC
+    if (m_itemType == Button) {
+        // Macstyle hardcodes extra spacing inside the button paintrect
+        m_styleoption->rect.adjust(-4, 0, 6, 0);
+    }
+#endif
 }
 
 /*
@@ -501,19 +507,21 @@ QString QStyleItem::hitTest(int px, int py)
         }
         break;
     case ScrollBar: {
-            subcontrol = qApp->style()->hitTestComplexControl(QStyle::CC_ScrollBar,
-                                                              qstyleoption_cast<QStyleOptionComplex*>(m_styleoption),
-                                                              QPoint(px,py), 0);
-            if (subcontrol == QStyle::SC_ScrollBarSlider)
-                return "handle";
+        subcontrol = qApp->style()->hitTestComplexControl(QStyle::CC_ScrollBar,
+                                                          qstyleoption_cast<QStyleOptionComplex*>(m_styleoption),
+                                                          QPoint(px,py), 0);
+        if (subcontrol == QStyle::SC_ScrollBarSlider)
+            return "handle";
 
-            if (subcontrol == QStyle::SC_ScrollBarSubLine
-                || subcontrol == QStyle::SC_ScrollBarSubPage)
-                return "up";
+        if (subcontrol == QStyle::SC_ScrollBarSubLine)
+            return "up";
+        else if (subcontrol == QStyle::SC_ScrollBarSubPage)
+            return "upPage";
 
-            if (subcontrol == QStyle::SC_ScrollBarAddLine
-                || subcontrol == QStyle::SC_ScrollBarAddPage)
-                return "down";
+        if (subcontrol == QStyle::SC_ScrollBarAddLine)
+            return "down";
+        else if (subcontrol == QStyle::SC_ScrollBarAddPage)
+            return "downPage";
         }
         break;
     default:
@@ -574,9 +582,9 @@ QSize QStyleItem::sizeFromContents(int width, int height)
     }
 
 #ifdef Q_WS_MAC
-    // ### hack - With even heights, the text baseline is off on mac
-    if (size.height() %2 == 0)
-        size.setHeight(size.height() + 1);
+//    ### hack - With even heights, the text baseline is off on mac
+//    if (size.height() %2 == 0)
+//        size.setHeight(size.height() + 1);
 #endif
     return size;
 }
@@ -635,15 +643,15 @@ QVariant QStyleItem::styleHint(const QString &metric)
         return qApp->palette().text().color().name();
     } else if (metric == "focuswidget") {
         return qApp->style()->styleHint(QStyle::SH_FocusFrame_AboveWidget);
-
     } else if (metric == "tabbaralignment") {
         int result = qApp->style()->styleHint(QStyle::SH_TabBar_Alignment);
         if (result == Qt::AlignCenter)
             return "center";
         return "left";
-
-    } else if (metric == "framearoundcontents")
+    } else if (metric == "framearoundcontents") {
         return qApp->style()->styleHint(QStyle::SH_ScrollView_FrameOnlyAroundContents);
+    } else if (metric == "scrollToClickPosition")
+        return qApp->style()->styleHint(QStyle::SH_ScrollBar_LeftClickAbsolutePosition);
     return 0;
 }
 
@@ -652,18 +660,20 @@ void QStyleItem::setCursor(const QString &str)
     if (m_cursor != str) {
         m_cursor = str;
 /*        if (m_cursor == "sizehorcursor")
-            QDeclarativeItem::setCursor(Qt::SizeHorCursor);
+            QSGItem::setCursor(Qt::SizeHorCursor);
         else if (m_cursor == "sizevercursor")
-            QDeclarativeItem::setCursor(Qt::SizeVerCursor);
+            QSGItem::setCursor(Qt::SizeVerCursor);
         else if (m_cursor == "sizeallcursor")
-            QDeclarativeItem::setCursor(Qt::SizeAllCursor);
+            QSGItem::setCursor(Qt::SizeAllCursor);
         else if (m_cursor == "splithcursor")
-            QDeclarativeItem::setCursor(Qt::SplitHCursor);
+            QSGItem::setCursor(Qt::SplitHCursor);
         else if (m_cursor == "splitvcursor")
-            QDeclarativeItem::setCursor(Qt::SplitVCursor);
+            QSGItem::setCursor(Qt::SplitVCursor);
         else if (m_cursor == "wait")
-            QDeclarativeItem::setCursor(Qt::WaitCursor);
+            QSGItem::setCursor(Qt::WaitCursor);
             */
+        //else if (m_cursor == "pointinghandcursor")
+        //    QSGItem::setCursor(Qt::PointingHandCursor);
         emit cursorChanged();
     }
 }
@@ -845,6 +855,22 @@ void QStyleItem::showToolTip(const QString &str)
 //    QPointF scene = mapToScene(width() - 20, 0);
 //    QPoint global = qApp->focusWidget()->mapToGlobal(scene.toPoint());
 //    QToolTip::showText(QPoint(global.x(), global.y()), str);
+
+
+
+//    QPoint global;
+//    QPointF scenePos = mapToScene(QPointF(width() - 20, 0));
+//    QGraphicsScene *scene = QGraphicsItem::scene();
+//    QObject *parent = scene->parent();
+//    if (parent) {
+//        QGraphicsView *view = qobject_cast<QGraphicsView*>(parent);
+//        if (view) {
+//            QPoint p = view->mapFromScene(scenePos);
+//            global = view->mapToGlobal(p);
+//        }
+//    }
+
+    //QToolTip::showText(QPoint(global.x(),global.y()), str);
 }
 
 QRect QStyleItem::subControlRect(const QString &subcontrolString)

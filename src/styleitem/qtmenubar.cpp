@@ -37,25 +37,50 @@
 **
 ****************************************************************************/
 
-#include "qtmenuitem.h"
+#include "qtmenubar.h"
+#include "qwindowitem.h"
 
-QtMenuItem::QtMenuItem(QObject *parent)
-    : QObject(parent)
+#include <QtWidgets/QMenu>
+#include <QtWidgets/QMenuBar>
+
+QtMenuBar::QtMenuBar(QSGItem *parent)
+    : QSGItem(parent)/*, _menuBar(new QMenuBar)*/
 {
+    connect(this, SIGNAL(parentChanged()), this, SLOT(updateParent()));
+    setFlag(QSGItem::ItemHasContents, false);
+}
+
+QtMenuBar::~QtMenuBar()
+{
+}
+
+QDeclarativeListProperty<QtMenu> QtMenuBar::menus()
+{
+    return QDeclarativeListProperty<QtMenu>(this, 0, &QtMenuBar::append_menu);
+}
+
+void QtMenuBar::updateParent()
+{
+    if (QWindowItem* window = qobject_cast<QWindowItem*>(parent()))
+        _menuBar = window->window()->menuBar();
+
+    //THIS IS WRONG... WE NEED TO DO THAT DIFFERENT!
+    _menuBar->clear();
+
+    foreach (QtMenu *menu, m_menus) {
+        _menuBar->addMenu(menu->qmenu());
+    }
+    //THIS IS WRONG... WE NEED TO DO THAT DIFFERENT!
 
 }
 
-QtMenuItem::~QtMenuItem()
+void QtMenuBar::append_menu(QDeclarativeListProperty<QtMenu> *list, QtMenu *menu)
 {
-}
-
-void QtMenuItem::setText(const QString &text)
-{
-    m_text = text;
-    emit textChanged();
-}
-
-QString QtMenuItem::text()
-{
-    return m_text;
+    QtMenuBar *menuBar = qobject_cast<QtMenuBar *>(list->object);
+    if (menuBar) {
+        menu->setParent(menuBar);
+        menuBar->m_menus.append(menu);
+        if (menuBar->_menuBar)
+            menuBar->_menuBar->addMenu(menu->qmenu());
+    }
 }

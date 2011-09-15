@@ -32,53 +32,60 @@
 #include <QtDeclarative/QSGItem.h>
 #include <QtDeclarative/QDeclarativeListProperty>
 #include "qtmenuitem.h"
-class QtMenu : public QSGItem
+#include <QtDeclarative/QDeclarativeListProperty>
+#include "qtmenuitem.h"
+
+class QtMenu : public QtMenuBase
 {
     Q_OBJECT
-    Q_PROPERTY(QString title READ title WRITE setTitle)
+    Q_PROPERTY(QString text READ text WRITE setText)
     Q_PROPERTY(int selectedIndex READ selectedIndex WRITE setSelectedIndex NOTIFY selectedIndexChanged)
     Q_PROPERTY(int hoveredIndex READ hoveredIndex WRITE setHoveredIndex NOTIFY hoveredIndexChanged)
-
-    // The only reason we declare a list of menu items here, is so we can make it a default
-    // property from within QML, if needed. The reason we don't implement the code for using
-    // the list here, is that we expect the QML code to mix both ListModel and MenuItems API for
-    // adding menu items. And we don't wan't to decide how to mix those two API-s from here. So the only
-    // API in his class will be 'addMenuItem' and 'clearMenuItems'.
-    Q_PROPERTY(QDeclarativeListProperty<QtMenuItem> menuItems READ menuItems NOTIFY menuItemsChanged)
+    Q_PROPERTY(QDeclarativeListProperty<QtMenuBase> menuItems READ menuItems)
     Q_CLASSINFO("DefaultProperty", "menuItems")
 public:
-    QtMenu(QSGItem *parent = 0);
+    QtMenu(QObject *parent = 0);
     virtual ~QtMenu();
 
-    void setTitle(const QString &title);
-    QString title() const;
-    int selectedIndex() const { return m_selectedIndex; }
-    void setSelectedIndex(int index);
-    int hoveredIndex() const { return m_highlightedIndex; }
-    void setHoveredIndex(int index);
-    QDeclarativeListProperty<QtMenuItem> menuItems();
+    void setText(const QString &text);
+    QString text() const;
 
+    int selectedIndex() const { return _selectedIndex; }
+    void setSelectedIndex(int index);
+    int hoveredIndex() const { return _highlightedIndex; }
+    void setHoveredIndex(int index);
+
+    QDeclarativeListProperty<QtMenuBase> menuItems();
+    QMenu* qmenu() { return _qmenu; }
+
+    QAction* action();
+
+    Q_INVOKABLE int minimumWidth() const { return _qmenu->minimumWidth(); }
+    Q_INVOKABLE void setMinimumWidth(int w) { _qmenu->setMinimumWidth(w); }
     Q_INVOKABLE void showPopup(qreal x, qreal y, int atActionIndex = -1);
-    Q_INVOKABLE void closePopup();
+    Q_INVOKABLE void hidePopup();
     Q_INVOKABLE void clearMenuItems();
     Q_INVOKABLE void addMenuItem(const QString &text);
     Q_INVOKABLE QString itemTextAt(int index) const;
 
 Q_SIGNALS:
+    void menuClosed();
     void selectedIndexChanged();
     void hoveredIndexChanged();
-    void menuClosed();
-    void menuItemsChanged();
+
 private Q_SLOTS:
     void emitSelected();
     void emitHovered();
+
 private:
-    QString m_title;
-    int m_selectedIndex;
-    int m_highlightedIndex;
+    static void append_qmenuItem(QDeclarativeListProperty<QtMenuBase> *list, QtMenuBase *menuItem);
+
+private:
     QWidget *dummy;
-    QMenu *m_menu;
-    QList<QtMenuItem *> m_menuItems;
+    QMenu *_qmenu;
+    QList<QtMenuBase *> _qmenuItems;
+    int _selectedIndex;
+    int _highlightedIndex;
 };
 
 QML_DECLARE_TYPE(QtMenu)

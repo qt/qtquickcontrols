@@ -1,6 +1,5 @@
 import QtQuick 2.0
 import "custom" as Components
-import "plugin"
 
 FocusScope {
     id: scrollarea
@@ -16,6 +15,10 @@ FocusScope {
     property bool frameAroundContents: styleitem.styleHint("framearoundcontents")
     property alias verticalValue: vscrollbar.value
     property alias horizontalValue: hscrollbar.value
+
+    property alias horizontalScrollBar: hscrollbar
+    property alias verticalScrollBar: vscrollbar
+
     property int viewportHeight: height - (hscrollbar.visible ? hscrollbar.height : 0) - 2 * frameWidth
     property int viewportWidth: width - (vscrollbar.visible ? vscrollbar.width : 0) - 2 * frameWidth
     property bool blockUpdates: false
@@ -45,7 +48,7 @@ FocusScope {
         anchors.margins: frameWidth
     }
 
-    QStyleItem {
+    StyleItem {
         id: styleitem
         elementType: "frame"
         onElementTypeChanged: scrollarea.frameWidth = styleitem.pixelMetric("defaultframewidth");
@@ -143,12 +146,15 @@ FocusScope {
         color: syspal.window
     }
 
-    QStyleItem {
+    StyleItem {
         z: 2
         anchors.fill: parent
-        anchors.margins: -3
-        anchors.rightMargin: -4
-        anchors.bottomMargin: -4
+
+        anchors.topMargin: -4
+        anchors.leftMargin: -3
+        anchors.rightMargin: -5
+        anchors.bottomMargin: -6
+
         visible: highlightOnFocus && parent.activeFocus && styleitem.styleHint("focuswidget")
         elementType: "focusframe"
     }
