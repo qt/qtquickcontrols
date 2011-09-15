@@ -1,9 +1,5 @@
-<<<<<<< HEAD
 import QtQuick 2.0
 import "custom" as Components
-=======
-import QtQuick 1.0
->>>>>>> master
 
 Menu {
     id: root

@@ -1,10 +1,6 @@
-<<<<<<< HEAD
 import QtQuick 2.0
 import "../components"
 import "../components/plugin"
-=======
-import QtQuick 1.0
->>>>>>> master
 
 /*
 *
