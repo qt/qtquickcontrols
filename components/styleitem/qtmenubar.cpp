@@ -39,12 +39,12 @@
 
 #include "qtmenubar.h"
 
-#include <QtGui/QMenu>
+#include <QtWidgets/QMenu>
 
-QtMenuBar::QtMenuBar(QDeclarativeItem *parent)
-    : QDeclarativeItem(parent)
+QtMenuBar::QtMenuBar(QSGItem *parent)
+    : QSGItem(parent)
 {
-    setFlag(QGraphicsItem::ItemHasNoContents, false);
+    setFlag(QSGItem::ItemHasContents, false);
 }
 
 QtMenuBar::~QtMenuBar()

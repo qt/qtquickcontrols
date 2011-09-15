@@ -40,13 +40,13 @@
 #include "qstyleitem.h"
 
 #include <QtGui/QPainter>
-#include <QtGui/QStyle>
-#include <QtGui/QStyleOption>
-#include <QtGui/QApplication>
-#include <QtGui/QMainWindow>
-#include <QtGui/QGroupBox>
-#include <QtGui/QToolBar>
-#include <QtGui/QMenu>
+#include <QtWidgets/QStyle>
+#include <QtWidgets/QStyleOption>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QMainWindow>
+#include <QtWidgets/QGroupBox>
+#include <QtWidgets/QToolBar>
+#include <QtWidgets/QMenu>
 #include <QtCore/QStringBuilder>
 
 

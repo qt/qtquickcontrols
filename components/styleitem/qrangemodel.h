@@ -28,8 +28,8 @@
 #define QRANGEMODEL_H
 
 #include <QtCore/qobject.h>
-#include <QtGui/qgraphicsitem.h>
-#include <QtGui/qabstractslider.h>
+//#include <QtGui/qgraphicsitem.h>
+#include <QtWidgets/qabstractslider.h>
 #include <QtDeclarative/qdeclarative.h>
 
 class QRangeModelPrivate;

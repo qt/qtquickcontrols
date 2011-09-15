@@ -42,8 +42,8 @@
 
 #include <QtDeclarative/qsgpainteditem.h>
 //#include <QDeclarativeItem>
-#include <QtGui/QStyle>
-#include <QtGui>
+#include <QtWidgets/QStyle>
+#include <QtWidgets>
 #include <QEvent>
 
 class QStyleItem: public QSGPaintedItem

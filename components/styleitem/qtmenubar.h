@@ -40,18 +40,19 @@
 #ifndef QTMENUBAR_H
 #define QTMENUBAR_H
 
-#include <QDeclarativeItem>
+#include <QSGItem>
 #include <QtGui>
+#include <QtWidgets/QMenu>
 
 #include "qtmenu.h"
 
-class QtMenuBar: public QDeclarativeItem
+class QtMenuBar: public QSGItem
 {
     Q_OBJECT
 
     Q_PROPERTY(QDeclarativeListProperty<QtMenu> menus READ menus)
 public:
-    QtMenuBar(QDeclarativeItem *parent = 0);
+    QtMenuBar(QSGItem *parent = 0);
     ~QtMenuBar();
 
     QDeclarativeListProperty<QtMenu> menus();

@@ -49,9 +49,9 @@
 
 #include <qdeclarativeengine.h>
 #include <qdeclarative.h>
-#include <qdeclarativeitem.h>
+//#include <qdeclarativeitem.h>
 #include <qdeclarativeimageprovider.h>
-#include <qdeclarativeview.h>
+//x#include <qdeclarativeview.h>
 #include <QApplication>
 #include <QImage>
 

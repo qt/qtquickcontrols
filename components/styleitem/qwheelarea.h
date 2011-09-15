@@ -36,7 +36,7 @@
 
 #include <QtCore/qcoreevent.h>
 #include <QtGui/qevent.h>
-#include <QtGui/qgraphicssceneevent.h>
+#include <qgraphicssceneevent.h>
 
 class QWheelArea : public QSGItem
 {

@@ -27,7 +27,7 @@
 #ifndef QTMLMENU_H
 #define QTMLMENU_H
 
-#include <QtGui/qmenu.h>
+#include <QtWidgets/qmenu.h>
 #include <QtDeclarative/qdeclarative.h>
 #include <QtDeclarative/QSGItem.h>
 #include <QtDeclarative/QDeclarativeListProperty>
