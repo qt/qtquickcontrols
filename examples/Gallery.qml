@@ -306,6 +306,7 @@ Rectangle {
                             id: group1
                             title: "CheckBox"
                             width: area.width
+                            adjustToContentSize: true
                             ButtonRow {
                                 exclusive: false
                                 CheckBox {
@@ -328,6 +329,7 @@ Rectangle {
                             id: group2
                             title:"Tab Position"
                             width: area.width
+                            adjustToContentSize: true
                             ButtonRow {
                                 id: tabPositionGroup
                                 RadioButton {
@@ -376,6 +378,7 @@ Rectangle {
 
                     GroupBox {
                         title: "Animation options"
+                        adjustToContentSize: true
                         ButtonRow {
                             exclusive: false
                             CheckBox {

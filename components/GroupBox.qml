@@ -3,8 +3,8 @@ import "custom" as Components
 
 Components.GroupBox {
     id: groupbox
-    width: Math.max(200, contentWidth + sizeHint.width)
-    height: contentHeight + sizeHint.height + 4
+    width: adjustToContentSize ? Math.max(200, contentWidth + sizeHint.width) : 200
+    height: adjustToContentSize ? contentHeight + sizeHint.height + 4 : 100
     property variant sizeHint: backgroundItem.sizeFromContents(0, 24)
     property bool flat: false
     background : StyleItem {

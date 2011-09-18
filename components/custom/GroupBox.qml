@@ -3,10 +3,10 @@ import QtQuick 1.0
 FocusScope {
     id: groupbox
 
-    width: Math.max(200, contentWidth + loader.leftMargin + loader.rightMargin)
-    height: contentHeight + loader.topMargin + loader.bottomMargin
+    width: adjustToContentSize ? Math.max(200, contentWidth + loader.leftMargin + loader.rightMargin) : 100
+    height: adjustToContentSize ? contentHeight + loader.topMargin + loader.bottomMargin : 100
 
-    default property alias children: content.children
+    default property alias data: content.data
 
     property string title
     property bool checkable: false
@@ -19,7 +19,9 @@ FocusScope {
 
     property CheckBox checkbox: check
     property alias checked: check.checked
-
+    property bool adjustToContentSize: false // Resizes groupbox to fit contents.
+                                             // Note when using this, you cannot anchor children
+                                             // to parent
     Loader {
         id: loader
         anchors.fill: parent
@@ -37,8 +39,9 @@ FocusScope {
             opacity: contentOpacity
             anchors.topMargin: loader.topMargin
             anchors.leftMargin: 8
-            anchors.top:parent.top
-            anchors.left:parent.left
+            anchors.rightMargin: 8
+            anchors.bottomMargin: 8
+            anchors.fill: parent
             enabled: (!checkable || checkbox.checked)
         }
 
