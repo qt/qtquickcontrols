@@ -450,7 +450,7 @@ void QStyleItem::initStyleOption()
         }
     }
 #ifdef Q_WS_MAC
-    if (m_itemType == Button) {
+    if (m_itemType == Button && style() == "mac") {
         // Macstyle hardcodes extra spacing inside the button paintrect
         m_styleoption->rect.adjust(-5, 0, 6, 0);
     }
