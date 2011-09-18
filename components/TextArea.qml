@@ -27,7 +27,8 @@ ScrollArea {
         TextEdit {
             id: edit
             wrapMode: TextEdit.WordWrap;
-            width: 200
+            width: area.width
+            height: area.height
             selectByMouse: true
             readOnly: false
             focus: true

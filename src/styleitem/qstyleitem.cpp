@@ -934,6 +934,7 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
     if (widget()) {
         painter->save();
         painter->setFont(widget()->font());
+        // Some styles such as Oxygen, try to modify the widget rect
         if (m_itemType == Tab || m_itemType == TabFrame)
             painter->translate(-m_styleoption->rect.left() + m_paintMargins, 0);
     }
