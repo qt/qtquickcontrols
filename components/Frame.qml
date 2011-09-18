@@ -1,11 +1,12 @@
 import QtQuick 1.0
 import "custom" as Components
 Item {
-    default property alias children: content.children
-    width: Math.max(100, content.childrenRect.width + 2 * content.frameWidth)
-    height: Math.max(100, content.childrenRect.height + 2 * content.frameWidth)
+    default property alias data: content.data
+    width: adjustToContentSize ? content.childrenRect.width + 2 * content.frameWidth : 30
+    height: adjustToContentSize ? content.childrenRect.height + 2 * content.frameWidth : 30
     property alias raised: style.raised
     property alias sunken: style.sunken
+    property bool adjustToContentSize: false
     StyleItem {
         id: style
         anchors.fill: parent
