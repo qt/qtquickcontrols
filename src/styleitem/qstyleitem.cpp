@@ -452,7 +452,7 @@ void QStyleItem::initStyleOption()
 #ifdef Q_WS_MAC
     if (m_itemType == Button) {
         // Macstyle hardcodes extra spacing inside the button paintrect
-        m_styleoption->rect.adjust(-4, 0, 6, 0);
+        m_styleoption->rect.adjust(-5, 0, 6, 0);
     }
 #endif
 }
@@ -934,7 +934,8 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
     if (widget()) {
         painter->save();
         painter->setFont(widget()->font());
-        painter->translate(-m_styleoption->rect.left() + m_paintMargins, 0);
+        if (m_itemType == Tab || m_itemType == TabFrame)
+            painter->translate(-m_styleoption->rect.left() + m_paintMargins, 0);
     }
 
     switch (m_itemType) {
