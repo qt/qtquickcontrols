@@ -21,11 +21,11 @@ FocusScope {
     property alias checked: check.checked
     property bool adjustToContentSize: false // Resizes groupbox to fit contents.
                                              // Note when using this, you cannot anchor children
-                                             // to parent
+
     Loader {
         id: loader
         anchors.fill: parent
-        property int topMargin: 22
+        property int topMargin: title.length > 0 || checkable ? 22 : 4
         property int bottomMargin: 4
         property int leftMargin: 4
         property int rightMargin: 4
