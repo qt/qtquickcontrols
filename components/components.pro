@@ -34,6 +34,7 @@ QML_FILES = \
             ChoiceList.qml \       
             ScrollArea.qml \
             SplitterRow.qml \
+            SplitterColumn.qml \
             TableColumn.qml \
             TextField.qml
 

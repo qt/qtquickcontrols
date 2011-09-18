@@ -18,6 +18,7 @@ ProgressBar 0.1 ProgressBar.qml
 ButtonRow 0.1 ButtonRow.qml
 ButtonColumn 0.1 ButtonColumn.qml
 SplitterRow 0.1 SplitterRow.qml
+SplitterColumn 0.1 SplitterColumn.qml
 Dial 0.1 Dial.qml
 TableView 0.1 TableView.qml
 CheckBox 0.1 CheckBox.qml
