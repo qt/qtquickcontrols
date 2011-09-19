@@ -759,6 +759,7 @@ void QStyleItem::setElementType(const QString &str)
             tb = new QToolBar(mw);
         }
         m_dummywidget = tb;
+        m_sharedWidget = true;
         m_itemType = ToolBar;
     } else if (str == "toolbutton") {
         static QToolButton *tb = 0;
