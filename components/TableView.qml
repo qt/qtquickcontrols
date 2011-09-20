@@ -164,6 +164,7 @@ FocusScope{
         anchors.rightMargin: frame ? (frameAroundContents ? (vscrollbar.visible ? vscrollbar.width + 2 * frameMargins : 0) : -frameWidth) : 0
         anchors.bottomMargin: frame ? (frameAroundContents ? (hscrollbar.visible ? hscrollbar.height + 2 * frameMargins : 0) : -frameWidth) : 0
         anchors.topMargin: frame ? (frameAroundContents ? 0 : -frameWidth) : 0
+        anchors.leftMargin: frame ? (frameAroundContents ? 0 : -frameWidth) : 0
         property int scrollbarspacing: styleitem.pixelMetric("scrollbarspacing");
         property int frameMargins : frame ? scrollbarspacing : 0
     }
@@ -507,7 +508,17 @@ FocusScope{
             }
         }
     }
-
+    StyleItem {
+        // This is the filled corner between scrollbars
+        id: cornerFill
+        elementType: "scrollareacorner"
+        anchors.margins: frame ? frameWidth : 0
+        width: vscrollbar.width
+        anchors.right: vscrollbar.right
+        height: hscrollbar.height
+        anchors.bottom: hscrollbar.bottom
+        visible: hscrollbar.visible && vscrollbar.visible
+    }
     ScrollBar {
         id: hscrollbar
         orientation: Qt.Horizontal
@@ -516,18 +527,15 @@ FocusScope{
         maximumValue: contentWidth > availableWidth ? tree.contentWidth - availableWidth : 0
         minimumValue: 0
         anchors.bottom: parent.bottom
+        anchors.leftMargin: styleitem.style == "mac" ? 1 : 0
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.leftMargin: frameWidth
-        anchors.bottomMargin: styleitem.frameoffset
-        anchors.rightMargin: vscrollbar.visible ? scrollbarExtent : (frame ? 1 : 0)
+        anchors.rightMargin: vscrollbar.visible ? vscrollbar.width : 0
         onValueChanged: {
             if (!tree.blockUpdates)
                 contentX = value
         }
-        property int scrollbarExtent : styleitem.pixelMetric("scrollbarExtent");
     }
-
     ScrollBar {
         id: vscrollbar
         orientation: Qt.Vertical
@@ -536,7 +544,6 @@ FocusScope{
         visible: contentHeight > availableHeight
         maximumValue: contentHeight > availableHeight ? tree.contentHeight - availableHeight : 0
         minimumValue: 0
-        anchors.rightMargin: styleitem.frameoffset
         anchors.right: parent.right
         anchors.top: parent.top
         anchors.bottom: parent.bottom
@@ -545,7 +552,7 @@ FocusScope{
             if(!tree.blockUpdates)
                 time.start()
         }
-        anchors.bottomMargin: hscrollbar.visible ? hscrollbar.height :  styleitem.frameoffset
+        anchors.bottomMargin: hscrollbar.visible ? hscrollbar.height :  0
 
         Keys.onUpPressed: if (tree.currentIndex > 0) tree.currentIndex = tree.currentIndex - 1
         Keys.onDownPressed: if (tree.currentIndex< tree.count - 1) tree.currentIndex = tree.currentIndex + 1
@@ -569,7 +576,6 @@ FocusScope{
         id: styleitem
         elementType: "header"
         visible:false
-        property int frameoffset: style === "mac" ? -1 : 0
     }
     StyleItem {
         id: rowstyleitem
