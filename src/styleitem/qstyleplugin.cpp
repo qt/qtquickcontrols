@@ -46,6 +46,7 @@
 #include "qwindowitem.h"
 #include "qdesktopitem.h"
 #include "qwheelarea.h"
+#include "qcursorarea.h"
 #include <qdeclarativeextensionplugin.h>
 
 #include <qdeclarativeengine.h>
@@ -80,6 +81,7 @@ public:
 void StylePlugin::registerTypes(const char *uri)
 {
     qmlRegisterType<QStyleItem>(uri, 0, 1, "StyleItem");
+    qmlRegisterType<QCursorArea>(uri, 0, 1, "CursorArea");
     qmlRegisterType<QRangeModel>(uri, 0, 1, "RangeModel");
     qmlRegisterType<QGraphicsDropShadowEffect>(uri, 0, 1, "DropShadow");
     qmlRegisterType<QDeclarativeFolderListModel>(uri, 0, 1, "FileSystemModel");

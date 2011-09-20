@@ -64,7 +64,6 @@ class QStyleItem: public QDeclarativeItem
     Q_PROPERTY( QString info READ info WRITE setInfo NOTIFY infoChanged)
     Q_PROPERTY( QString style READ style NOTIFY styleChanged)
     Q_PROPERTY( QString hint READ hint WRITE setHint NOTIFY hintChanged)
-    Q_PROPERTY( QString cursor READ cursor WRITE setCursor NOTIFY cursorChanged)
 
     // For range controls
     Q_PROPERTY( int minimum READ minimum WRITE setMinimum NOTIFY minimumChanged)
@@ -129,7 +128,6 @@ public:
 
     QString elementType() const { return m_type; }
     QString text() const { return m_text; }
-    QString cursor() const { return m_cursor; }
     QString activeControl() const { return m_activeControl; }
     QString info() const { return m_info; }
     QString hint() const { return m_hint; }
@@ -153,7 +151,6 @@ public:
         if (m_paintMargins!= value) {m_paintMargins = value;}
 #endif
     }
-    void setCursor(const QString &str);
     void setElementType(const QString &str);
     void setText(const QString &str) { if (m_text != str) {m_text = str; emit textChanged();}}
     void setActiveControl(const QString &str) { if (m_activeControl != str) {m_activeControl = str; emit activeControlChanged();}}
@@ -199,7 +196,6 @@ Q_SIGNALS:
     void styleChanged();
     void paintMarginsChanged();
     void hintChanged();
-    void cursorChanged();
     void fontHeightChanged();
 
 protected:
@@ -208,7 +204,6 @@ protected:
     Type m_itemType;
 
     QString m_type;
-    QString m_cursor;
     QString m_text;
     QString m_activeControl;
     QString m_info;

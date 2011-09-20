@@ -16,9 +16,9 @@ Components.SplitterColumn {
                 anchors.bottomMargin: (parent.width <= 1) ? -2 : 0
                 drag.axis: Qt.XandYAxis // Why doesn't X-axis work?
                 drag.target: handle
-                StyleItem {
+                CursorArea {
                     anchors.fill: parent
-                    cursor: "splitvcursor"
+                    cursor: CursorArea.SplitVCursor
                 }
             }
     }

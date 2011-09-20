@@ -655,27 +655,6 @@ QVariant QStyleItem::styleHint(const QString &metric)
     return 0;
 }
 
-void QStyleItem::setCursor(const QString &str)
-{
-    if (m_cursor != str) {
-        m_cursor = str;
-        if (m_cursor == "sizehorcursor")
-            QDeclarativeItem::setCursor(Qt::SizeHorCursor);
-        else if (m_cursor == "sizevercursor")
-            QDeclarativeItem::setCursor(Qt::SizeVerCursor);
-        else if (m_cursor == "sizeallcursor")
-            QDeclarativeItem::setCursor(Qt::SizeAllCursor);
-        else if (m_cursor == "splithcursor")
-            QDeclarativeItem::setCursor(Qt::SplitHCursor);
-        else if (m_cursor == "splitvcursor")
-            QDeclarativeItem::setCursor(Qt::SplitVCursor);
-        else if (m_cursor == "wait")
-            QDeclarativeItem::setCursor(Qt::WaitCursor);
-        else if (m_cursor == "pointinghandcursor")
-            QDeclarativeItem::setCursor(Qt::PointingHandCursor);
-        emit cursorChanged();
-    }
-}
 
 void QStyleItem::setElementType(const QString &str)
 {

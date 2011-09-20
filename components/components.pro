@@ -1,4 +1,4 @@
-TEMPLATE = subdirs # XXX: Avoid call the linker
+    TEMPLATE = subdirs # XXX: Avoid call the linker
 TARGETPATH = QtDesktop
 
 symbian {

@@ -457,9 +457,9 @@ FocusScope{
                                 header[index].width = minWidth
                         }
                         onPressedChanged: if(pressed)offset=mouseX
-                        StyleItem {
+                        CursorArea {
                             anchors.fill: parent
-                            cursor: "splithcursor"
+                            cursor: CursorArea.SplitHCursor
                         }
                     }
                 }
