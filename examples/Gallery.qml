@@ -208,7 +208,6 @@ Rectangle {
 
     TabFrame {
         id:frame
-        tabbar: TabBar{parent: frame; KeyNavigation.tab:button1}
         position: tabPositionGroup.checkedButton == r2 ? "South" : "North"
         KeyNavigation.tab:button1
         KeyNavigation.backtab: button2
@@ -241,7 +240,7 @@ Rectangle {
                                 width: 96
                                 tooltip:"This is an interesting tool tip"
                                 KeyNavigation.tab: button2
-                                KeyNavigation.backtab: frame.tabbar
+                                KeyNavigation.backtab: frame.tabBar
                             }
                             Button {
                                 id:button2
