@@ -806,6 +806,8 @@ void QStyleItem::setElementType(const QString &str)
         m_itemType = FocusFrame;
     } else if (str == "dial") {
         m_itemType = Dial;
+    } else if (str == "scrollareacorner") {
+        m_itemType = ScrollAreaCorner;
     }
     if (m_dummywidget) {
         m_dummywidget->installEventFilter(this);
@@ -977,6 +979,9 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
         break;
     case Widget:
         qApp->style()->drawPrimitive(QStyle::PE_Widget, m_styleoption, painter, widget());
+        break;
+    case ScrollAreaCorner:
+        qApp->style()->drawPrimitive(QStyle::PE_PanelScrollAreaCorner, m_styleoption, painter, widget());
         break;
     case Splitter:
         qApp->style()->drawControl(QStyle::CE_Splitter, m_styleoption, painter, widget());

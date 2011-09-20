@@ -103,7 +103,8 @@ public:
         Splitter,
         Menu,
         MenuItem,
-        Widget
+        Widget,
+        ScrollAreaCorner
     };
 
     QStyleItem(QDeclarativeItem *parent = 0);

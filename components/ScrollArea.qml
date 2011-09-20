@@ -134,16 +134,15 @@ FocusScope {
         }
     }
 
-    Rectangle {
+    StyleItem {
         // This is the filled corner between scrollbars
         id: cornerFill
+        elementType: "scrollareacorner"
         anchors.left:  vscrollbar.left
         anchors.right: vscrollbar.right
         anchors.top: hscrollbar.top
         anchors.bottom: hscrollbar.bottom
         visible: hscrollbar.visible && vscrollbar.visible
-        SystemPalette { id: syspal }
-        color: syspal.window
     }
 
     StyleItem {
