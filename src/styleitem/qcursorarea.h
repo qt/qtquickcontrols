@@ -18,9 +18,7 @@ public:
         WaitCursor,
         PointingHandCursor
     };
-
     explicit QCursorArea(QDeclarativeItem *parent = 0);
-
     void setCursor(Cursor str);
     Cursor cursor() const { return m_cursor; }
 

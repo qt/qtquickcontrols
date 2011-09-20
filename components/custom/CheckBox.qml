@@ -26,7 +26,7 @@ FocusScope {
         focus: true
         anchors.fill: parent
         checkable: true
-        onClicked: {if (activeFocusOnPress)checkBox.forceActiveFocus(); checkBox.clicked(); checked = !checked; }
+        onClicked: {if (activeFocusOnPress)checkBox.forceActiveFocus(); checkBox.clicked(); }
     }
-    Keys.onSpacePressed: behavior.clicked()
+    Keys.onSpacePressed: {clicked(); checked = !checked; }
 }
