@@ -530,7 +530,6 @@ FocusScope{
 
     ScrollBar {
         id: vscrollbar
-        z:-1
         orientation: Qt.Vertical
         // We cannot bind directly to tree.height due to binding loops so we have to redo the calculation here
         property int availableHeight : root.height - (hscrollbar.visible ? hscrollbar.height : 0) - tableColumn.height
@@ -541,7 +540,7 @@ FocusScope{
         anchors.right: parent.right
         anchors.top: parent.top
         anchors.bottom: parent.bottom
-        anchors.topMargin: styleitem.style == "mac" ? tableColumn.height : 0
+        anchors.topMargin: styleitem.style == "mac" ? tableColumn.height + frameWidth : 0
         onValueChanged: {
             if(!tree.blockUpdates)
                 time.start()
