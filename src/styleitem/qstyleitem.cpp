@@ -621,7 +621,7 @@ int QStyleItem::pixelMetric(const QString &metric)
     else if (metric == "menupanelwidth")
         return qApp->style()->pixelMetric(QStyle::PM_MenuPanelWidth, 0 , widget());
     else if (metric == "splitterwidth")
-        return qApp->style()->pixelMetric(QStyle::PM_SplitterWidth, 0 , widget());
+        return 1;//qApp->style()->pixelMetric(QStyle::PM_SplitterWidth, 0 , widget());
     // This metric is incorrectly negative on oxygen
     else if (metric == "scrollbarspacing")
         return abs(qApp->style()->pixelMetric(QStyle::PM_ScrollView_ScrollBarSpacing, 0 , widget()));
@@ -984,7 +984,8 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
         qApp->style()->drawPrimitive(QStyle::PE_PanelScrollAreaCorner, m_styleoption, painter, widget());
         break;
     case Splitter:
-        qApp->style()->drawControl(QStyle::CE_Splitter, m_styleoption, painter, widget());
+        painter->fillRect(0, 0, width(), height(), m_styleoption->palette.dark().color());
+//        qApp->style()->drawControl(QStyle::CE_Splitter, m_styleoption, painter, widget());
         break;
     case ComboBox:
         qApp->style()->drawComplexControl(QStyle::CC_ComboBox,

@@ -8,7 +8,7 @@ FocusScope {
     property alias pressed: behavior.pressed
     property alias checked: behavior.checked
     property alias containsMouse: behavior.containsMouse
-    property bool activeFocusOnPress: false
+
     property Component background: null
     property Item backgroundItem: backgroundLoader.item
 
@@ -26,7 +26,11 @@ FocusScope {
         focus: true
         anchors.fill: parent
         checkable: true
-        onClicked: {if (activeFocusOnPress)checkBox.forceActiveFocus(); checkBox.clicked(); }
+        onClicked: {
+            if (checkBox.activeFocusOnPress)
+                checkBox.forceActiveFocus();
+            checkBox.clicked();
+        }
     }
     Keys.onSpacePressed: {clicked(); checked = !checked; }
 }

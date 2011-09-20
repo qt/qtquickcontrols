@@ -17,7 +17,7 @@ Components.SplitterRow {
             drag.axis: Qt.YAxis
             drag.target: handle
 
-            StyleItem {
+            CursorArea {
                 anchors.fill: parent
                 cursor: CursorArea.SplitHCursor
             }

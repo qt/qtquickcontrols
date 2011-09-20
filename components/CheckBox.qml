@@ -7,7 +7,7 @@ Components.CheckBox {
     id:checkbox
     property string text
     property string hint
-    property bool activeFocusOnPress: true
+    property bool activeFocusOnPress: false
     width: Math.max(110, backgroundItem.textWidth(text) + 40)
     height: 20
 
