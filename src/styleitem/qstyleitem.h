@@ -53,7 +53,7 @@ class QStyleItem: public QDeclarativeItem
     Q_PROPERTY( bool raised READ raised WRITE setRaised NOTIFY raisedChanged)
     Q_PROPERTY( bool active READ active WRITE setActive NOTIFY activeChanged)
     Q_PROPERTY( bool selected READ selected WRITE setSelected NOTIFY selectedChanged)
-    Q_PROPERTY( bool focus READ focus WRITE setFocus NOTIFY focusChanged)
+    Q_PROPERTY( bool hasFocus READ hasFocus WRITE sethasFocus NOTIFY hasFocusChanged)
     Q_PROPERTY( bool on READ on WRITE setOn NOTIFY onChanged)
     Q_PROPERTY( bool hover READ hover WRITE setHover NOTIFY hoverChanged)
     Q_PROPERTY( bool horizontal READ horizontal WRITE setHorizontal NOTIFY horizontalChanged)
@@ -116,7 +116,7 @@ public:
     bool raised() const { return m_raised; }
     bool active() const { return m_active; }
     bool selected() const { return m_selected; }
-    bool focus() const { return m_focus; }
+    bool hasFocus() const { return m_focus; }
     bool on() const { return m_on; }
     bool hover() const { return m_hover; }
     bool horizontal() const { return m_horizontal; }
@@ -139,7 +139,7 @@ public:
     void setRaised(bool raised) { if (m_raised!= raised) {m_raised = raised; emit raisedChanged();}}
     void setActive(bool active) { if (m_active!= active) {m_active = active; emit activeChanged();}}
     void setSelected(bool selected) { if (m_selected!= selected) {m_selected = selected; emit selectedChanged();}}
-    void setFocus(bool focus) { if (m_focus != focus) {m_focus = focus; emit focusChanged();}}
+    void sethasFocus(bool focus) { if (m_focus != focus) {m_focus = focus; emit hasFocusChanged();}}
     void setOn(bool on) { if (m_on != on) {m_on = on ; emit onChanged();}}
     void setHover(bool hover) { if (m_hover != hover) {m_hover = hover ; emit hoverChanged();}}
     void setHorizontal(bool horizontal) { if (m_horizontal != horizontal) {m_horizontal = horizontal; emit horizontalChanged();}}
@@ -186,7 +186,7 @@ Q_SIGNALS:
     void raisedChanged();
     void activeChanged();
     void selectedChanged();
-    void focusChanged();
+    void hasFocusChanged();
     void onChanged();
     void hoverChanged();
     void horizontalChanged();

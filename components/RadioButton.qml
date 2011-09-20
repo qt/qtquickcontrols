@@ -4,22 +4,22 @@ import "custom" as Components
 // jb : Size should not depend on background, we should make it consistent
 
 Components.CheckBox {
-    id:radiobutton
+    id: radiobutton
     property string text
     property string hint
-    width:110
-    height:20
+    width: 110
+    height: 20
 
     background: StyleItem {
-        elementType:"radiobutton"
-        sunken:pressed
-        on:checked || pressed
-        hover:containsMouse
-        text:radiobutton.text
-        enabled:radiobutton.enabled
-        focus:radiobutton.focus
-        hint:radiobutton.hint
+        elementType: "radiobutton"
+        sunken: pressed
+        on: checked || pressed
+        hover: containsMouse
+        text: radiobutton.text
+        enabled: radiobutton.enabled
+        hasFocus: radiobutton.activeFocus
+        hint: radiobutton.hint
     }
-    Keys.onSpacePressed:clicked()
+    Keys.onSpacePressed: {clicked(); checked = !checked; }
 }
 

@@ -206,12 +206,12 @@ Rectangle {
         ListElement { text: "Coconut" }
     }
 
-
     TabFrame {
         id:frame
-        position: tabPositionGroup.checkedButton == r2 ? "South" : "North"
         tabbar: TabBar{parent: frame; KeyNavigation.tab:button1}
-
+        position: tabPositionGroup.checkedButton == r2 ? "South" : "North"
+        KeyNavigation.tab:button1
+        KeyNavigation.backtab: button2
         property int margins : styleitem.style == "mac" ? 16 : 0
         anchors.top: toolbar.bottom
         anchors.bottom: parent.bottom
@@ -297,12 +297,11 @@ Rectangle {
                             KeyNavigation.tab: frameCheckbox
                             KeyNavigation.backtab: t3
                         }
-                        smooth:true
                     }
                     Column {
                         id: rightcol
                         spacing: 12
-                        GroupBox{
+                        GroupBox {
                             id: group1
                             title: "CheckBox"
                             width: area.width

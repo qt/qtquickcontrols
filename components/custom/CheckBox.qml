@@ -1,7 +1,7 @@
 import QtQuick 1.0
 import "./behaviors"
 
-Item {
+FocusScope {
     id: checkBox
 
     signal clicked
@@ -23,10 +23,10 @@ Item {
 
     ButtonBehavior {
         id: behavior
+        focus: true
         anchors.fill: parent
         checkable: true
-        onClicked: {if (activeFocusOnPress)checkBox.focus = true; checkBox.clicked()}
+        onClicked: {if (activeFocusOnPress)checkBox.forceActiveFocus(); checkBox.clicked(); checked = !checked; }
     }
-
-    SystemPalette { id: syspal }
+    Keys.onSpacePressed: behavior.clicked()
 }

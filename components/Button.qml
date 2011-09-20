@@ -20,7 +20,7 @@ Components.Button {
         raised: !(pressed || checked)
         hover: containsMouse
         text: iconSource === "" ? "" : button.text
-        focus: button.focus
+        hasFocus: button.focus
         hint: button.hint
 
         // If no icon, let the style do the drawing

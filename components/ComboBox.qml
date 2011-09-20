@@ -72,7 +72,7 @@ Custom.BasicButton {
         hover: comboBox.containsMouse
         enabled: comboBox.enabled
         text: comboBox.selectedText
-        focus: comboBox.focus
+        hasFocus: comboBox.focus
     }
 
 //    ToDo: adjust margins so that selected popup label

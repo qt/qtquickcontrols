@@ -86,7 +86,7 @@ QStyleItem::QStyleItem(QDeclarativeItem *parent)
     connect(this, SIGNAL(valueChanged()), this, SLOT(updateItem()));
     connect(this, SIGNAL(horizontalChanged()), this, SLOT(updateItem()));
     connect(this, SIGNAL(activeControlChanged()), this, SLOT(updateItem()));
-    connect(this, SIGNAL(focusChanged()), this, SLOT(updateItem()));
+    connect(this, SIGNAL(hasFocusChanged()), this, SLOT(updateItem()));
     connect(this, SIGNAL(activeControlChanged()), this, SLOT(updateItem()));
     connect(this, SIGNAL(elementTypeChanged()), this, SLOT(updateItem()));
 }

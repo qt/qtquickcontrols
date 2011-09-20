@@ -106,7 +106,6 @@ FocusScope {
     TextInput { // see QTBUG-14936
         id: textInput
         selectByMouse:true
-        focus: true
 
         anchors.leftMargin: leftMargin
         anchors.topMargin: topMargin

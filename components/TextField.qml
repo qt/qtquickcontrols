@@ -19,7 +19,7 @@ Components.TextField {
         anchors.fill: parent
         elementType: "edit"
         sunken: true
-        focus: textfield.activeFocus
+        hasFocus: textfield.activeFocus
         hover: containsMouse
     }
 

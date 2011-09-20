@@ -1,6 +1,6 @@
 import QtQuick 1.0
 
-FocusScope {
+Item {
     id: groupbox
 
     width: adjustToContentSize ? Math.max(200, contentWidth + loader.leftMargin + loader.rightMargin) : 100
@@ -17,11 +17,10 @@ FocusScope {
     property Component background: null
     property Item backgroundItem: loader.item
 
-    property CheckBox checkbox: check
+    property Item checkbox: check
     property alias checked: check.checked
     property bool adjustToContentSize: false // Resizes groupbox to fit contents.
                                              // Note when using this, you cannot anchor children
-
     Loader {
         id: loader
         anchors.fill: parent
@@ -29,29 +28,27 @@ FocusScope {
         property int bottomMargin: 4
         property int leftMargin: 4
         property int rightMargin: 4
-
         property alias styledItem: groupbox
         sourceComponent: background
-
-        Item {
-            id:content
-            z: 1
-            opacity: contentOpacity
-            anchors.topMargin: loader.topMargin
-            anchors.leftMargin: 8
-            anchors.rightMargin: 8
-            anchors.bottomMargin: 8
-            anchors.fill: parent
-            enabled: (!checkable || checkbox.checked)
-        }
-
-        CheckBox {
-            id: check
-            checked: true
-            anchors.top: parent.top
-            anchors.left: parent.left
-            anchors.right: parent.right
-            height: loader.topMargin
-        }
+    }
+    CheckBox {
+        id: check
+        checked: true
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        height: loader.topMargin
+    }
+    Item {
+        id:content
+        z: 1
+        focus: true
+        opacity: contentOpacity
+        anchors.topMargin: loader.topMargin
+        anchors.leftMargin: 8
+        anchors.rightMargin: 8
+        anchors.bottomMargin: 8
+        anchors.fill: parent
+        enabled: (!checkable || checkbox.checked)
     }
 }

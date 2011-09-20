@@ -23,7 +23,7 @@ Components.ChoiceList {
         hover: containsMouse
         enabled: choicelist.enabled
         text: currentItemText
-        focus: choicelist.focus
+        hasFocus: choicelist.focus
         hint: choicelist.hint
     }
 

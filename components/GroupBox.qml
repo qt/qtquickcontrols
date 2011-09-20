@@ -7,7 +7,7 @@ Components.GroupBox {
     height: contentHeight + sizeHint.height + 4
     property variant sizeHint:
         backgroundItem.sizeFromContents(0, (title.length > 0 || checkable) ? 24 : 4)
-    property bool flat: false
+    property bool flat: focus
     background : StyleItem {
         id: styleitem
         elementType: "groupbox"
@@ -15,7 +15,7 @@ Components.GroupBox {
         text: groupbox.title
         hover: checkbox.containsMouse
         on: checkbox.checked
-        focus: checkbox.activeFocus
+        hasFocus: checkbox.activeFocus
         activeControl: checkable ? "checkbox" : ""
         sunken: !flat
     }

@@ -47,7 +47,6 @@ Item {
 
     Row {
         id: tabrow
-        focus: true
         property int paintMargins: 1
         states:
                 State {
@@ -82,7 +81,7 @@ Item {
                     info: tabbar.position
                     text: tabFrame.tabs[index].title
                     hover: mousearea.containsMouse
-                    focus: tabbar.focus && selected
+                    hasFocus: tabbar.focus && selected
                     property bool first: index === 0
                     paintMargins: tabrow.paintMargins
                     activeControl: tabFrame.count == 1 ? "only" : index === 0 ? "beginning" :

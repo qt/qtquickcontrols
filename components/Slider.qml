@@ -28,7 +28,7 @@ Components.Slider{
         value: slider.value*100
         horizontal: slider.orientation == Qt.Horizontal
         enabled: slider.enabled
-        focus: slider.focus
+        hasFocus: slider.focus
         hint: slider.hint
         activeControl: tickmarksEnabled ? tickPosition.toLowerCase() : ""
     }

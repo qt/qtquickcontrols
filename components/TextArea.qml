@@ -31,7 +31,6 @@ ScrollArea {
             height: area.height
             selectByMouse: true
             readOnly: false
-            focus: true
             color: syspal.text
             SystemPalette {
                 id: syspal
