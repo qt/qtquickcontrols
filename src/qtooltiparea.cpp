@@ -2,6 +2,7 @@
 #include <QGraphicsView>
 #include <QToolTip>
 #include <QApplication>
+#include <QGraphicsSceneEvent>
 
 QTooltipArea::QTooltipArea(QDeclarativeItem *parent) :
     QDeclarativeItem(parent)

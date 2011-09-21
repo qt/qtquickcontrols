@@ -7,11 +7,14 @@ Components.Button {
     width: Math.max(80, sizehint.width)
     height: Math.max(22, sizehint.height)
 
+    property alias containsMouse: tooltip.containsMouse
     property variant sizehint: backgroundItem.sizeFromContents(80, 6)
     property bool defaultbutton
     property string hint
 
     TooltipArea {
+        // Note this will eat hover events
+        id: tooltip
         anchors.fill: parent
         text: button.tooltip
     }
