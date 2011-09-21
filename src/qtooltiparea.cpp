@@ -5,7 +5,8 @@
 #include <QGraphicsSceneEvent>
 
 QTooltipArea::QTooltipArea(QDeclarativeItem *parent) :
-    QDeclarativeItem(parent)
+    QDeclarativeItem(parent),
+    m_containsMouse(false)
 {
     setAcceptHoverEvents(true);
     connect(&m_tiptimer, SIGNAL(timeout()), this, SLOT(timeout()));
@@ -27,13 +28,18 @@ void QTooltipArea::showToolTip(const QString &str) const
 void QTooltipArea::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
     m_tiptimer.start(1000);
-    return QDeclarativeItem::hoverEnterEvent(event);
+
+    m_containsMouse = true;
+    emit containsMouseChanged();
+    QDeclarativeItem::hoverEnterEvent(event);
 }
 
 void QTooltipArea::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
     m_tiptimer.stop();
-    return QDeclarativeItem::hoverLeaveEvent(event);
+    m_containsMouse = false;
+    emit containsMouseChanged();
+    QDeclarativeItem::hoverLeaveEvent(event);
 }
 
 void QTooltipArea::timeout()
