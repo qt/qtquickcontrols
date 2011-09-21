@@ -2,7 +2,7 @@ import QtQuick 1.0
 import "custom" as Components
 
 Components.Button {
-    id:button
+    id: button
 
     width: Math.max(80, sizehint.width)
     height: Math.max(22, sizehint.height)
@@ -11,6 +11,10 @@ Components.Button {
     property bool defaultbutton
     property string hint
 
+    TooltipArea {
+        anchors.fill: parent
+        text: button.tooltip
+    }
 
     background: StyleItem {
         id: styleitem
@@ -25,13 +29,6 @@ Components.Button {
 
         // If no icon, let the style do the drawing
         activeControl: focus ? "default" : ""
-        Connections{
-            target: button
-            onToolTipTriggered: styleitem.showTip()
-        }
-        function showTip(){
-            showToolTip(tooltip);
-        }
     }
 
     label: Item {
