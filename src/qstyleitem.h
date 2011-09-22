@@ -175,6 +175,7 @@ public Q_SLOTS:
     QString hitTest(int x, int y);
     QRect subControlRect(const QString &subcontrolString);
     int textWidth(const QString &);
+    bool hasThemeIcon(const QString &) const;
 
 Q_SIGNALS:
     void elementTypeChanged();

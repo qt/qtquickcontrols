@@ -1056,3 +1056,8 @@ double QStyleItem::fontPointSize()
         return widget()->font().pointSizeF();
     return qApp->font().pointSizeF();
 }
+
+bool QStyleItem::hasThemeIcon(const QString &icon) const
+{
+    return QIcon::hasThemeIcon(icon);
+}

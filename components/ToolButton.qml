@@ -7,11 +7,19 @@ Components.Button {
     height: 40; //styleitem.sizeFromContents(32, 32).height
     width: 40; //styleitem.sizeFromContents(32, 32).width
 
-    StyleItem {elementType: "toolbutton"; id:styleitem  }
+    property string iconName
+
+    onIconNameChanged: {
+        if (styleitem.hasThemeIcon(iconName)) {
+            themeIcon.source = "image://desktoptheme/" + button.iconName;
+        }
+    }
+
+    StyleItem {elementType: "toolbutton"; id:styleitem}
 
     background: StyleItem {
-        anchors.fill: parent
         id: styleitem
+        anchors.fill: parent
         elementType: "toolbutton"
         on: pressed | checked
         sunken: pressed
@@ -23,11 +31,16 @@ Components.Button {
             anchors.centerIn: parent
             visible: button.iconSource == ""
         }
-
+    }
+    Image {
+        id: themeIcon
+        anchors.centerIn: parent
+        opacity: enabled ? 1 : 0.5
         Image {
-            source: button.iconSource
+            // Use fallback icon
             anchors.centerIn: parent
-            opacity: enabled ? 1 : 0.5
+            visible: (themeIcon.status != Image.Ready)
+            source: visible ? button.iconSource : ""
         }
     }
 }

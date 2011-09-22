@@ -21,14 +21,17 @@ Rectangle {
             spacing: 2
             anchors.verticalCenter: parent.verticalCenter
             ToolButton{
+                iconName: "folder-new"
                 iconSource: "images/folder_new.png"
                 anchors.verticalCenter: parent.verticalCenter
             }
             ToolButton{
+                iconName: "folder-new"
                 iconSource: "images/folder_new.png"
                 anchors.verticalCenter: parent.verticalCenter
             }
             ToolButton{
+                iconName: "window-new"
                 iconSource: "images/toplevel_window.png"
                 anchors.verticalCenter: parent.verticalCenter
                 onClicked: window1.visible = !window1.visible
