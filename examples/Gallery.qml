@@ -179,9 +179,9 @@ Rectangle {
 
         ContextMenu {
             id: editmenu
-            MenuItem { text: "Copy" }
-            MenuItem { text: "Cut" }
-            MenuItem { text: "Paste" }
+            MenuItem { text: "Copy" ;  iconName: "edit-copy" }
+            MenuItem { text: "Cut" ;   iconName: "edit-cut" }
+            MenuItem { text: "Paste" ; iconName: "edit-paste" }
         }
         MouseArea {
             anchors.fill:  parent
