@@ -9,7 +9,7 @@ Components.Button {
 
     property alias containsMouse: tooltip.containsMouse
     property variant sizehint: backgroundItem.sizeFromContents(80, 6)
-    property bool defaultbutton
+    property bool defaultbutton: false
     property string hint
 
     TooltipArea {
@@ -31,7 +31,7 @@ Components.Button {
         hint: button.hint
 
         // If no icon, let the style do the drawing
-        activeControl: focus ? "default" : ""
+        activeControl: defaultbutton ? "default" : "f"
     }
 
     label: Item {
@@ -56,6 +56,6 @@ Components.Button {
             }
         }
     }
-    Keys.onSpacePressed:clicked()
+    Keys.onSpacePressed:animateClick()
 }
 

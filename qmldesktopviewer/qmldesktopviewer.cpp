@@ -132,7 +132,6 @@ void QmlDesktopViewer::registerTypes()
     static bool registered = false;
 
     if (!registered) {
-        qDebug() << "registerying types now";
         // registering only for exposing the DeviceOrientation::Orientation enum
 //        qmlRegisterUncreatableType<QDesktopItem>("Qt",4,7,"Desktop", QLatin1String("Do not create objects of type Desktop"));
 //        qmlRegisterUncreatableType<QDesktopItem>("QtQuick",1,0,"Desktop",QLatin1String("Do not create objects of type Desktop"));

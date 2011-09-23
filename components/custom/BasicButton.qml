@@ -25,6 +25,18 @@ Item {
     width: backgroundLoader.item.width
     height: backgroundLoader.item.height
 
+    function animateClick() {
+        behavior.pressed = true
+        behavior.clicked()
+        animateClickTimer.start()
+    }
+
+    Timer {
+        id: animateClickTimer
+        interval: 250
+        onTriggered: behavior.pressed = false
+    }
+
     Loader {
         id: backgroundLoader
         anchors.fill: parent

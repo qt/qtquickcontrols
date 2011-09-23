@@ -144,7 +144,6 @@ Rectangle {
                     text:"Close"
                     width: 98
                     tooltip:"Press me, to close this window again"
-                    defaultbutton:true
                     onClicked: window1.visible = false
                 }
                 Button {

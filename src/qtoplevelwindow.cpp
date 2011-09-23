@@ -5,6 +5,9 @@
 QTopLevelWindow::QTopLevelWindow()
     : QMainWindow(), _view(new QDeclarativeView), _positionIsDefined(false) {
     setVisible(false);
+    // Ensure that we have a default size, otherwise an empty window statement will
+    // result in no window
+    resize(QSize(100, 100));
     setCentralWidget(_view);
     setAttribute(Qt::WA_DeleteOnClose);
 }

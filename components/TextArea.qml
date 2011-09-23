@@ -13,10 +13,16 @@ ScrollArea {
     property alias readOnly: edit.readOnly
     property bool tabChangesFocus: false
     property alias font: edit.font
+    property alias activeFocusOnPress: edit.activeFocusOnPress
 
     highlightOnFocus: true
     property int documentMargins: 4
     frame: true
+
+    function append (string) {
+        text += "\n" + string
+        verticalScrollBar.value = verticalScrollBar.maximumValue
+    }
 
     Item {
         anchors.left: parent.left
@@ -32,6 +38,7 @@ ScrollArea {
             selectByMouse: true
             readOnly: false
             color: syspal.text
+
             SystemPalette {
                 id: syspal
                 colorGroup: enabled ? SystemPalette.Active : SystemPalette.Disabled

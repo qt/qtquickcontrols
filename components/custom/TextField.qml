@@ -24,6 +24,7 @@ FocusScope {
     property alias echoMode: textInput.echoMode
     property alias cursorPosition: textInput.cursorPosition
     property alias inputMethodHints: textInput.inputMethodHints
+    property alias activeFocusOnPress: textInput.activeFocusOnPress
 
     property color textColor: syspal.text
     property color backgroundColor: syspal.base
