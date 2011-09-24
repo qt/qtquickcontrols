@@ -475,7 +475,7 @@ FocusScope{
             anchors.right: parent.right
             anchors.bottom: headerrow.bottom
             anchors.rightMargin: -2
-            width: root.width - headerrow.width
+            width: root.width - headerrow.width + 2
             property string itemValue
             property string itemSort
             property bool itemPressed
@@ -581,7 +581,7 @@ FocusScope{
     StyleItem {
         id: rowstyleitem
         elementType: "item"
-        visible:false
+        visible: false
         property color textColor: styleHint("textColor")
         property color highlightedTextColor: styleHint("highlightedTextColor")
     }
