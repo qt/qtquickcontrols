@@ -167,10 +167,10 @@ FocusScope{
         sunken: true
         visible: frame
         anchors.fill: parent
-        anchors.rightMargin: frame ? (frameAroundContents ? (verticalScrollBar.visible ? verticalScrollBar.width + 2 * frameMargins : 0) : -frameWidth) : 0
-        anchors.bottomMargin: frame ? (frameAroundContents ? (horizontalScrollBar.visible ? horizontalScrollBar.height + 2 * frameMargins : 0) : -frameWidth) : 0
-        anchors.topMargin: frame ? (frameAroundContents ? 0 : -frameWidth) : 0
-        anchors.leftMargin: frame ? (frameAroundContents ? 0 : -frameWidth) : 0
+        anchors.rightMargin: frame ? (frameAroundContents ? (verticalScrollBar.visible ? verticalScrollBar.width + 2 * frameMargins : 0) : 0) : 0
+        anchors.bottomMargin: frame ? (frameAroundContents ? (horizontalScrollBar.visible ? horizontalScrollBar.height + 2 * frameMargins : 0) : 0) : 0
+        anchors.topMargin: frame ? frameAroundContent : 0
+        anchors.leftMargin: frame ? frameAroundContents : 0
         property int frameWidth
         property int scrollbarspacing: styleitem.pixelMetric("scrollbarspacing");
         property int frameMargins : frame ? scrollbarspacing : 0
@@ -491,16 +491,12 @@ FocusScope{
     Private.ScrollAreaHelper {
         id: scroller
         anchors.fill: parent
-        anchors.topMargin: styleitem.style == "mac" ? tableColumn.height : 0
+        anchors.topMargin: styleitem.style == "mac" ? tableColumn.height + frameWidth: 0
         onVerticalValueChanged: {
             if(!blockUpdates) {
                 contentY = verticalValue * scale
                 verticalScrollBar.value = contentY
-
-//                if(!tree.blockUpdates)
-  //                  time.start()
             }
-
         }
 
         onHorizontalValueChanged: {
@@ -509,76 +505,6 @@ FocusScope{
                 horizontalScrollBar.value = contentX
             }
         }
-    }
-
-
-    //    WheelArea {
-    //        id: wheelarea
-    //        anchors.fill: parent
-    //        property int scale: 5
-    //        horizontalMinimumValue: horizontalScrollBar.minimumValue/scale
-    //        horizontalMaximumValue: horizontalScrollBar.maximumValue/scale
-    //        verticalMinimumValue: verticalScrollBar.minimumValue/scale
-    //        verticalMaximumValue: verticalScrollBar.maximumValue/scale
-
-    //        verticalValue: contentY/scale
-    //        horizontalValue: contentX/scale
-
-    //    }
-    //    StyleItem {
-    //        // This is the filled corner between scrollbars
-    //        id: cornerFill
-    //        elementType: "scrollareacorner"
-    //        anchors.margins: frameWidth
-    //        width: verticalScrollBar.width
-    //        anchors.right: verticalScrollBar.right
-    //        height: horizontalScrollBar.height
-    //        anchors.bottom: horizontalScrollBar.bottom
-    //        visible: horizontalScrollBar.visible && verticalScrollBar.visible
-    //    }
-    //    ScrollBar {
-    //        id: horizontalScrollBar
-    //        orientation: Qt.Horizontal
-    //        property int availableWidth: root.width - verticalScrollBar.width
-    //        visible: contentWidth > availableWidth
-    //        maximumValue: contentWidth > availableWidth ? tree.contentWidth - availableWidth : 0
-    //        minimumValue: 0
-    //        anchors.bottom: parent.bottom
-    //        anchors.leftMargin: styleitem.style == "mac" ? 1 : 0
-    //        anchors.left: parent.left
-    //        anchors.right: parent.right
-    //        anchors.rightMargin: verticalScrollBar.visible ? verticalScrollBar.width : 0
-    //        onValueChanged: {
-    //            if (!tree.blockUpdates)
-    //                contentX = value
-    //        }
-    //    }
-    //    ScrollBar {
-    //        id: verticalScrollBar
-    //        orientation: Qt.Vertical
-    //        // We cannot bind directly to tree.height due to binding loops so we have to redo the calculation here
-    //        property int availableHeight : root.height - (horizontalScrollBar.visible ? horizontalScrollBar.height : 0) - tableColumn.height
-    //        visible: contentHeight > availableHeight
-    //        maximumValue: contentHeight > availableHeight ? tree.contentHeight - availableHeight : 0
-    //        minimumValue: 0
-    //        anchors.right: parent.right
-    //        anchors.top: parent.top
-    //        anchors.bottom: parent.bottom
-    //        anchors.topMargin: styleitem.style == "mac" ? tableColumn.height + frameWidth : 0
-    //        onValueChanged: {
-    //            if(!tree.blockUpdates)
-    //                time.start()
-    //        }
-    //        anchors.bottomMargin: horizontalScrollBar.visible ? horizontalScrollBar.height :  0
-
-    //        Keys.onUpPressed: if (tree.currentIndex > 0) tree.currentIndex = tree.currentIndex - 1
-    //        Keys.onDownPressed: if (tree.currentIndex< tree.count - 1) tree.currentIndex = tree.currentIndex + 1
-    //    }
-
-    Timer{
-        id:time
-        interval: 0
-        onTriggered:contentY = verticalScrollBar.value
     }
 
     StyleItem {
