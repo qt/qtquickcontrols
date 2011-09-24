@@ -475,7 +475,7 @@ FocusScope{
             anchors.right: parent.right
             anchors.bottom: headerrow.bottom
             anchors.rightMargin: -2
-            width: root.width - headerrow.width + 2
+            width: root.width - headerrow.width
             property string itemValue
             property string itemSort
             property bool itemPressed

@@ -975,11 +975,16 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
 //        qApp->style()->drawControl(QStyle::CE_Splitter, m_styleoption, painter, widget());
         break;
     case ComboBox:
+    {
         qApp->style()->drawComplexControl(QStyle::CC_ComboBox,
                                           qstyleoption_cast<QStyleOptionComplex*>(m_styleoption),
                                           painter, widget());
+        // This is needed on mac as it will use the painter color and ignore the palette
+        QPen pen = painter->pen();
+        painter->setPen(m_styleoption->palette.text().color());
         qApp->style()->drawControl(QStyle::CE_ComboBoxLabel, m_styleoption, painter, widget());
-        break;
+        painter->setPen(pen);
+    }    break;
     case SpinBox:
         qApp->style()->drawComplexControl(QStyle::CC_SpinBox,
                                           qstyleoption_cast<QStyleOptionComplex*>(m_styleoption),
