@@ -596,11 +596,7 @@ int QStyleItem::pixelMetric(const QString &metric)
     if (metric == "scrollbarExtent")
         return qApp->style()->pixelMetric(QStyle::PM_ScrollBarExtent, 0, widget());
     else if (metric == "defaultframewidth")
-#ifdef Q_WS_MAC
-        return 1;
-#else
         return qApp->style()->pixelMetric(QStyle::PM_DefaultFrameWidth, 0, widget());
-#endif
     else if (metric == "taboverlap")
         return qApp->style()->pixelMetric(QStyle::PM_TabBarTabOverlap, 0 , widget());
     else if (metric == "tabbaseoverlap")

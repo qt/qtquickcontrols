@@ -63,7 +63,7 @@ FocusScope{
     id: root
     property variant model
     // Framewidth seems to be 1 regardless of style
-    property int frameWidth: frame ? 1 : 0;
+    property int frameWidth: frame ? frameitem.frameWidth : 0;
     property alias contentHeight : tree.contentHeight
     property alias contentWidth: tree.contentWidth
     property bool frame: true
@@ -158,7 +158,7 @@ FocusScope{
     StyleItem {
         id: frameitem
         elementType: "frame"
-        onElementTypeChanged: scrollarea.frameWidth = styleitem.pixelMetric("defaultframewidth");
+        Component.onCompleted: frameWidth = styleitem.pixelMetric("defaultframewidth");
         sunken: true
         visible: frame
         anchors.fill: parent
@@ -166,6 +166,7 @@ FocusScope{
         anchors.bottomMargin: frame ? (frameAroundContents ? (hscrollbar.visible ? hscrollbar.height + 2 * frameMargins : 0) : -frameWidth) : 0
         anchors.topMargin: frame ? (frameAroundContents ? 0 : -frameWidth) : 0
         anchors.leftMargin: frame ? (frameAroundContents ? 0 : -frameWidth) : 0
+        property int frameWidth
         property int scrollbarspacing: styleitem.pixelMetric("scrollbarspacing");
         property int frameMargins : frame ? scrollbarspacing : 0
     }
@@ -513,7 +514,7 @@ FocusScope{
         // This is the filled corner between scrollbars
         id: cornerFill
         elementType: "scrollareacorner"
-        anchors.margins: frame ? frameWidth : 0
+        anchors.margins: frameWidth
         width: vscrollbar.width
         anchors.right: vscrollbar.right
         height: hscrollbar.height
