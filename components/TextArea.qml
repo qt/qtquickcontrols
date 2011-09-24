@@ -27,7 +27,7 @@ ScrollArea {
     Item {
         anchors.left: parent.left
         anchors.top: parent.top
-        height: edit.paintedHeight + area.height - viewportHeight
+        height: edit.paintedHeight + area.height - viewportHeight + 2 * documentMargins + 4
         anchors.margins: documentMargins
 
         TextEdit {
