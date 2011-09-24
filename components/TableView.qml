@@ -40,8 +40,8 @@ import QtQuick 1.0
 * by setting the default header property :
 *
 * TableView {
-*    TableColumn{ property: "column1" ; caption: "Column 1" ; width:100}
-*    TableColumn{ property: "column2" ; caption: "Column 2" ; width:200}
+*    TableColumn{ role: "column1" ; caption: "Column 1" ; width:100}
+*    TableColumn{ role: "column2" ; caption: "Column 2" ; width:200}
 *    model: datamodel
 * }
 *
@@ -301,7 +301,7 @@ FocusScope{
                         visible: header[index].visible
                         sourceComponent: itemDelegate
                         property variant model: tree.model
-                        property variant itemProperty: header[index].property
+                        property variant role: header[index].role
 
                         width: header[index].width
                         height: item ? item.height :  Math.max(16, styleitem.sizeFromContents(16, 16).height)
