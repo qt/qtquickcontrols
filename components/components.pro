@@ -40,6 +40,7 @@ QML_FILES = \
 
 QML_DIRS = \
         custom \
+	private \
         images 
 
 qmlfiles.files = $$QML_FILES

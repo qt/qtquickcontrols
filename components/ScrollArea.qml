@@ -1,8 +1,9 @@
 import QtQuick 1.0
 import "custom" as Components
+import "private" as Private
 
 FocusScope {
-    id: scrollarea
+    id: root
     width: 100
     height: 100
 
@@ -14,21 +15,16 @@ FocusScope {
     property bool frame: true
     property bool highlightOnFocus: false
     property bool frameAroundContents: styleitem.styleHint("framearoundcontents")
-    property alias verticalValue: vscrollbar.value
-    property alias horizontalValue: hscrollbar.value
+    property alias horizontalScrollBar: scroller.horizontalScrollBar
+    property alias verticalScrollBar: scroller.verticalScrollBar
 
-    property alias horizontalScrollBar: hscrollbar
-    property alias verticalScrollBar: vscrollbar
-
-    property int viewportHeight: height - (hscrollbar.visible ? hscrollbar.height : 0) - 2 * frameWidth
-    property int viewportWidth: width - (vscrollbar.visible ? vscrollbar.width : 0) - 2 * frameWidth
-    property bool blockUpdates: false
+    property int viewportHeight: height - (horizontalScrollBar.visible ? verticalScrollBar.height : 0) - 2 * frameWidth
+    property int viewportWidth: width - (verticalScrollBar.visible ? verticalScrollBar.width : 0) - 2 * frameWidth
 
     default property alias data: content.data
 
     property int contentY
     property int contentX
-
 
     Rectangle {
         id: colorRect
@@ -43,8 +39,8 @@ FocusScope {
         sunken: true
         visible: frame
         anchors.fill: parent
-        anchors.rightMargin: frame ? (frameAroundContents ? (vscrollbar.visible ? vscrollbar.width + 2 * frameMargins : 0) : 0) : 0
-        anchors.bottomMargin: frame ? (frameAroundContents ? (hscrollbar.visible ? hscrollbar.height + 2 * frameMargins : 0) : 0) : 0
+        anchors.rightMargin: frame ? (frameAroundContents ? (verticalScrollBar.visible ? verticalScrollBar.width + 2 * frameMargins : 0) : 0) : 0
+        anchors.bottomMargin: frame ? (frameAroundContents ? (horizontalScrollBar.visible ? horizontalScrollBar.height + 2 * frameMargins : 0) : 0) : 0
         anchors.topMargin: frame ? (frameAroundContents ? 0 : 0) : 0
         property int frameWidth
         property int scrollbarspacing: styleitem.pixelMetric("scrollbarspacing");
@@ -53,104 +49,43 @@ FocusScope {
     }
 
     onContentYChanged: {
-        blockUpdates = true
-        vscrollbar.value = contentY
-        wheelarea.verticalValue = contentY
-        blockUpdates = false
+        scroller.blockUpdates = true
+        verticalScrollBar.value = contentY
+        scroller.verticalValue = contentY
+        scroller.blockUpdates = false
     }
     onContentXChanged: {
-        blockUpdates = true
-        hscrollbar.value = contentX
-        wheelarea.horizontalValue = contentX
-        blockUpdates = false
+        scroller.blockUpdates = true
+        horizontalScrollBar.value = contentX
+        scroller.horizontalValue = contentX
+        scroller.blockUpdates = false
     }
 
     Item {
-        id: flickable
+        id: clipper
         anchors.fill: styleitem
         anchors.margins: frameWidth
         clip: true
-
         Item {
             id: content
-            x: -scrollarea.contentX
-            y: -scrollarea.contentY
+            x: -root.contentX
+            y: -root.contentY
         }
     }
 
-    WheelArea {
-        id: wheelarea
-
-        property int macOffset: styleitem.style == "mac" ? 1 : 0
-
+    Private.ScrollAreaHelper {
+        id: scroller
         anchors.fill: parent
-        anchors.margins: frameWidth
-        horizontalMinimumValue: hscrollbar.minimumValue
-        horizontalMaximumValue: hscrollbar.maximumValue
-        verticalMinimumValue: vscrollbar.minimumValue
-        verticalMaximumValue: vscrollbar.maximumValue
-
         onVerticalValueChanged: {
             if (!blockUpdates)
                 contentY = verticalValue
         }
-
         onHorizontalValueChanged: {
             if (!blockUpdates)
                 contentX = horizontalValue
         }
-
-        StyleItem {
-            // This is the filled corner between scrollbars
-            id: cornerFill
-            elementType: "scrollareacorner"
-            width: vscrollbar.width
-            anchors.right: parent.right
-            height: hscrollbar.height
-            anchors.bottom: parent.bottom
-            visible: hscrollbar.visible && vscrollbar.visible
-        }
-
-        ScrollBar {
-            id: hscrollbar
-            orientation: Qt.Horizontal
-            property int availableWidth: scrollarea.width - vscrollbar.width
-            visible: contentWidth > availableWidth
-            maximumValue: contentWidth > availableWidth ? scrollarea.contentWidth - availableWidth : 0
-            minimumValue: 0
-            anchors.bottom: parent.bottom
-            anchors.leftMargin: parent.macOffset
-            anchors.bottomMargin: -parent.macOffset
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.rightMargin: vscrollbar.visible ? vscrollbar.width -parent.macOffset: 0
-            onValueChanged: {
-                if (!tree.blockUpdates)
-                    contentX = value
-            }
-        }
-
-        ScrollBar {
-            id: vscrollbar
-            orientation: Qt.Vertical
-            // We cannot bind directly to tree.height due to binding loops so we have to redo the calculation here
-            property int availableHeight : scrollarea.height - (hscrollbar.visible ? hscrollbar.height : 0)
-            visible: contentHeight > availableHeight
-            maximumValue: contentHeight > availableHeight ? scrollarea.contentHeight - availableHeight : 0
-            minimumValue: 0
-            anchors.right: parent.right
-            anchors.top: parent.top
-            anchors.bottom: parent.bottom
-            anchors.topMargin: parent.macOffset
-            anchors.rightMargin: -parent.macOffset
-            anchors.bottomMargin: hscrollbar.visible ? hscrollbar.height - parent.macOffset :  0
-
-            onValueChanged: {
-                if (!blockUpdates)
-                    contentY = value
-            }
-        }
     }
+
     StyleItem {
         z: 2
         anchors.fill: parent
