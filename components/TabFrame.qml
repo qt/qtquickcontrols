@@ -7,7 +7,7 @@ Item {
     height: 100
     property int current: 0
     property int count: stack.children.length
-    property bool frame:true
+    property bool frame: true
     property bool tabsVisible: true
     property string position: "North"
     default property alias tabs : stack.children

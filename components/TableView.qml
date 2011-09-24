@@ -62,7 +62,8 @@ import QtQuick 1.0
 FocusScope{
     id: root
     property variant model
-    property int frameWidth: frame ? styleitem.pixelMetric("defaultframewidth") : 0;
+    // Framewidth seems to be 1 regardless of style
+    property int frameWidth: frame ? 1 : 0;
     property alias contentHeight : tree.contentHeight
     property alias contentWidth: tree.contentWidth
     property bool frame: true
