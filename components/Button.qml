@@ -4,7 +4,7 @@ import "custom" as Components
 Components.Button {
     id: button
 
-    width: Math.max(80, sizehint.width)
+    width: Math.max(72, sizehint.width)
     height: Math.max(22, sizehint.height)
 
     property alias containsMouse: tooltip.containsMouse

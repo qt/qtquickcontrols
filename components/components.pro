@@ -12,6 +12,7 @@ QML_FILES = \
             Button.qml \
             ComboBox.qml \
             Dial.qml \
+            Dialog.qml \
             ProgressBar.qml \
             ScrollBar.qml \
             Switch.qml \

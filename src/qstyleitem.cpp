@@ -542,8 +542,15 @@ QSize QStyleItem::sizeFromContents(int width, int height)
     case ToolButton:
         size = qApp->style()->sizeFromContents(QStyle::CT_ToolButton, m_styleoption, QSize(width,height), widget());
         break;
-    case Button:
-        size = qApp->style()->sizeFromContents(QStyle::CT_PushButton, m_styleoption, QSize(width,height), widget());
+    case Button:{
+        QStyleOptionButton *btn = qstyleoption_cast<QStyleOptionButton*>(m_styleoption);
+        int textWidth = btn->fontMetrics.width(btn->text);
+        size = qApp->style()->sizeFromContents(QStyle::CT_PushButton, m_styleoption, QSize(textWidth,height), widget());
+#ifdef Q_WS_MAC
+        // Macstyle adds some weird constants to buttons
+        return QSize(textWidth + 14, size.height());
+#endif
+}
         break;
     case Tab:
         size = qApp->style()->sizeFromContents(QStyle::CT_TabBarTab, m_styleoption, QSize(width,height), widget());

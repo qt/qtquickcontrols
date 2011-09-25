@@ -8,6 +8,7 @@ QTopLevelWindow::QTopLevelWindow()
     // Ensure that we have a default size, otherwise an empty window statement will
     // result in no window
     resize(QSize(100, 100));
+    _view->setBackgroundBrush(palette().window());
     setCentralWidget(_view);
     setAttribute(Qt::WA_DeleteOnClose);
 }

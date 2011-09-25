@@ -27,3 +27,4 @@ plugin styleplugin plugin
 TableColumn 0.1 TableColumn.qml
 ContextMenu 0.1 ContextMenu.qml
 MenuItem 0.1 MenuItem.qml
+Dialog 0.1 Dialog.qml

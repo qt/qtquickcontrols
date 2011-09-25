@@ -46,11 +46,13 @@
 QWindowItem::QWindowItem(QTopLevelWindow* tlw)
     : _window(tlw ? tlw : new QTopLevelWindow), _positionIsDefined(false), _delayedVisible(false)
 {
-    connect(_window, SIGNAL(visibilityChanged()), this, SIGNAL(visibilityChanged()));
+    connect(_window, SIGNAL(visibilityChanged()), this, SIGNAL(visibleChanged()));
     connect(_window, SIGNAL(windowStateChanged()), this, SIGNAL(windowStateChanged()));
     connect(_window, SIGNAL(sizeChanged(QSize)), this, SLOT(updateSize(QSize)));
+
     connect(qApp, SIGNAL(aboutToQuit()), _window, SLOT(close()));
     view()->setResizeMode(QDeclarativeView::SizeRootObjectToView);
+    _window->installEventFilter(this);
 }
 
 QWindowItem::~QWindowItem()
@@ -60,14 +62,19 @@ QWindowItem::~QWindowItem()
 bool QWindowItem::eventFilter(QObject *, QEvent *ev)
 {
     switch(ev->type()) {
-        case QEvent::Resize:
-            emit sizeChanged();
-            break;
-        case QEvent::Move:
-            emit positionChanged();
-            break;
-        default:
-            break;
+    case QEvent::Resize:
+        emit sizeChanged();
+        emit widthChanged();
+        emit heightChanged();
+        break;
+
+    case QEvent::Move:
+        emit xChanged();
+        emit yChanged();
+        break;
+
+    default:
+        break;
     }
     return false;
 }
@@ -105,6 +112,11 @@ void QWindowItem::updateSize(QSize newSize)
 {
     QDeclarativeItem::setSize(newSize);
     emit sizeChanged();
+}
+
+void QWindowItem::center()
+{
+    _window->center();
 }
 
 void QWindowItem::setX(int x)
@@ -170,7 +182,7 @@ void QWindowItem::setWindowDecoration(bool s)
 {
     bool visible = _window->isVisible();
     _window->setWindowFlags(s ? _window->windowFlags() & ~Qt::FramelessWindowHint
-                          : _window->windowFlags() | Qt::FramelessWindowHint);
+                              : _window->windowFlags() | Qt::FramelessWindowHint);
     if (visible)
         _window->show();
     emit windowDecorationChanged();
