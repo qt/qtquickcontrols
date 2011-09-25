@@ -1,4 +1,5 @@
-import QtQuick 1.0
+import QtQuick 1.1
+import "."
 import "custom" as Components
 
 StyleItem{

@@ -194,6 +194,6 @@ void QWheelArea::setScrollSpeed(qreal d)
 
 qreal QWheelArea::scrollSpeed()
 {
-    _scrollSpeed;
+   return _scrollSpeed;
 }
 
