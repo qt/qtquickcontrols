@@ -46,6 +46,7 @@ class QWheelArea : public QDeclarativeItem
     Q_PROPERTY(qreal verticalMaximumValue READ verticalMaximumValue WRITE setVerticalMaximumValue)
     Q_PROPERTY(qreal horizontalValue READ horizontalValue WRITE setHorizontalValue)
     Q_PROPERTY(qreal verticalValue READ verticalValue WRITE setVerticalValue)
+    Q_PROPERTY(qreal scrollSpeed READ scrollSpeed WRITE setScrollSpeed NOTIFY scrollSpeedChanged)
 
 
 public:
@@ -79,11 +80,15 @@ public:
     void setHorizontalDelta(qreal d);
     qreal horizontalDelta() const;
 
+    void setScrollSpeed(qreal d);
+    qreal scrollSpeed();
+
 Q_SIGNALS:
     void verticalValueChanged();
     void horizontalValueChanged();
     void verticalWheelMoved();
     void horizontalWheelMoved();
+    void scrollSpeedChanged();
 
 private:
     qreal _horizontalMinimumValue;
@@ -94,6 +99,7 @@ private:
     qreal _verticalValue;
     qreal _verticalDelta;
     qreal _horizontalDelta;
+    qreal _scrollSpeed;
 
     Q_DISABLE_COPY(QWheelArea)
 };

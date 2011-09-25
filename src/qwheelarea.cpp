@@ -50,7 +50,8 @@ QWheelArea::QWheelArea(QDeclarativeItem *parent)
       _horizontalValue(0),
       _verticalValue(0),
       _verticalDelta(0),
-      _horizontalDelta(0)
+      _horizontalDelta(0),
+      _scrollSpeed(1.0)
 {}
 
 QWheelArea::~QWheelArea() {}
@@ -163,7 +164,7 @@ qreal QWheelArea::verticalValue() const
 
 void QWheelArea::setVerticalDelta(qreal d)
 {
-    _verticalDelta = d/15;
+    _verticalDelta = _scrollSpeed * d/15;
     setVerticalValue(_verticalValue - _verticalDelta);
     emit(verticalWheelMoved());
 }
@@ -184,3 +185,15 @@ qreal QWheelArea::horizontalDelta() const
 {
     return _horizontalDelta;
 }
+
+void QWheelArea::setScrollSpeed(qreal d)
+{
+    _scrollSpeed = d;
+    emit scrollSpeedChanged();
+}
+
+qreal QWheelArea::scrollSpeed()
+{
+    _scrollSpeed;
+}
+

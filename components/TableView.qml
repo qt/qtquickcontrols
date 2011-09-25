@@ -63,39 +63,42 @@ import "private" as Private
 FocusScope{
     id: root
     property variant model
+
     // Framewidth seems to be 1 regardless of style
     property int frameWidth: frame ? frameitem.frameWidth : 0;
-    property alias contentHeight : tree.contentHeight
-    property alias contentWidth: tree.contentWidth
+
+    // Cosmetic properties
     property bool frame: true
-    property bool highlightOnFocus: false
     property bool frameAroundContents: styleitem.styleHint("framearoundcontents")
-    property int sortColumn // Index of currently selected sort column
-
-    property bool sortIndicatorVisible: false // enables or disables sort indicator
-    property string sortIndicatorDirection: "down" // "up" or "down" depending on current state
-
+    property bool highlightOnFocus: false
     property bool alternateRowColor: true
-    property alias contentX: tree.contentX
-    property alias contentY: tree.contentY
+    property bool headerVisible: true
 
-    property alias currentIndex: tree.currentIndex // Should this be currentRowIndex?
-
-    property int headerHeight: headerrow.height
-
+    // Styling properties
     property Component itemDelegate: standardDelegate
     property Component rowDelegate: rowDelegate
     property Component headerDelegate: headerDelegate
-    property alias cacheBuffer: tree.cacheBuffer
 
-    property bool headerVisible: true
+    // Sort properties
+    property int sortColumn // Index of currently selected sort column
+    property bool sortIndicatorVisible: false // enables or disables sort indicator
+    property string sortIndicatorDirection: "down" // "up" or "down" depending on current state
 
+    // Item properties
     default property alias header: tree.header
-
     property alias horizontalScrollBar: scroller.horizontalScrollBar
     property alias verticalScrollBar: scroller.verticalScrollBar
 
+    // Viewport properties
+    property alias contentX: tree.contentX
+    property alias contentY: tree.contentY
+    property alias contentHeight : tree.contentHeight
+    property alias contentWidth: tree.contentWidth
 
+    property alias cacheBuffer: tree.cacheBuffer
+    property alias currentIndex: tree.currentIndex // Should this be currentRowIndex?
+
+    // Signals
     signal activated
 
     Component {
@@ -169,7 +172,7 @@ FocusScope{
         anchors.fill: parent
         anchors.rightMargin: frame ? (frameAroundContents ? (verticalScrollBar.visible ? verticalScrollBar.width + 2 * frameMargins : 0) : 0) : 0
         anchors.bottomMargin: frame ? (frameAroundContents ? (horizontalScrollBar.visible ? horizontalScrollBar.height + 2 * frameMargins : 0) : 0) : 0
-        anchors.topMargin: frame ? frameAroundContent : 0
+        anchors.topMargin: frame ? frameAroundContents : 0
         anchors.leftMargin: frame ? frameAroundContents : 0
         property int frameWidth
         property int scrollbarspacing: styleitem.pixelMetric("scrollbarspacing");
@@ -189,27 +192,27 @@ FocusScope{
         }
 
         // Handle vertical scrolling whem dragging mouse outside boundraries
-
         Timer { running: mousearea.autoincrement; repeat: true; interval: 20 ; onTriggered: incrementCurrentIndex()}
         Timer { running: mousearea.autodecrement; repeat: true; interval: 20 ; onTriggered: decrementCurrentIndex()}
 
         onMousePositionChanged: {
             if (mouseY > tree.height && pressed) {
-                if (autoincrement)return
-                autodecrement = false
-                autoincrement = true
+                if (autoincrement) return;
+                autodecrement = false;
+                autoincrement = true;
             } else if (mouseY < 0 && pressed) {
-                if (autodecrement)return
-                autoincrement = false
-                autodecrement = true
+                if (autodecrement) return;
+                autoincrement = false;
+                autodecrement = true;
             } else  {
-                autoincrement = false
-                autodecrement = false
+                autoincrement = false;
+                autodecrement = false;
             }
-            var y = Math.min(contentY + tree.height - 5, Math.max(mouseY + contentY, contentY))
-            var newIndex = tree.indexAt(0, y)
-            tree.currentIndex = tree.indexAt(0, y)
+            var y = Math.min(contentY + tree.height - 5, Math.max(mouseY + contentY, contentY));
+            var newIndex = tree.indexAt(0, y);
+            tree.currentIndex = tree.indexAt(0, y);
         }
+
         onPressed:  {
             tree.forceActiveFocus()
             var x = Math.min(contentWidth - 5, Math.max(mouseX + contentX, 0))
@@ -225,31 +228,31 @@ FocusScope{
     function decrementCurrentIndex() {
         scroller.blockUpdates = true;
         tree.decrementCurrentIndex();
-        scroller.verticalValue = contentY/scroller.scale;
+        scroller.verticalValue = contentY;
         scroller.blockUpdates = false;
     }
 
     function incrementCurrentIndex() {
         scroller.blockUpdates = true;
         tree.incrementCurrentIndex();
-        scroller.verticalValue = contentY/scroller.scale;
+        scroller.verticalValue = contentY;
         scroller.blockUpdates = false;
     }
 
     ListView {
         id: tree
+
         property list<TableColumn> header
         highlightFollowsCurrentItem: true
         model: root.model
-
         interactive: false
+
         anchors.top: tableColumn.bottom
-        anchors.topMargin: -frameWidth
         anchors.left: frameitem.left
         anchors.right: frameitem.right
         anchors.bottom: frameitem.bottom
         anchors.margins: frameWidth
-
+        anchors.topMargin: -frameWidth
         anchors.rightMargin: (!frameAroundContents && verticalScrollBar.visible ? verticalScrollBar.width: 0) + frameWidth
         anchors.bottomMargin: (!frameAroundContents && horizontalScrollBar.visible ? horizontalScrollBar.height : 0)  + frameWidth
 
@@ -267,10 +270,16 @@ FocusScope{
         }
 
         onContentYChanged:  {
-            // positionViewAtIndex(currentIndex, ListView.Visible)
-            // highlight follows item
             scroller.blockUpdates = true
+            scroller.verticalValue = tree.contentY
             verticalScrollBar.value = tree.contentY
+            scroller.blockUpdates = false
+        }
+
+        onContentXChanged:  {
+            scroller.blockUpdates = true
+            scroller.horizontalValue = tree.contentX
+            horizontalScrollBar.value = tree.contentX
             scroller.blockUpdates = false
         }
 
@@ -332,27 +341,32 @@ FocusScope{
 
     Item {
         id: tableColumn
-        clip: true
+
         anchors.top: frameitem.top
         anchors.left: frameitem.left
         anchors.right: frameitem.right
         anchors.margins: frameWidth
+
+        clip: true
         visible: headerVisible
-        Behavior on height { NumberAnimation{duration:80}}
         height: headerVisible ? styleitem.sizeFromContents(text.font.pixelSize, styleitem.fontHeight).height : frameWidth
+
+        Behavior on height { NumberAnimation{ duration: 80 } }
 
         Row {
             id: headerrow
-
             anchors.top: parent.top
             height:parent.height
             x: -tree.contentX
 
             Repeater {
                 id: repeater
-                model: header.length
+
                 property int targetIndex: -1
                 property int dragIndex: -1
+
+                model: header.length
+
                 delegate: Item {
                     z:-index
                     width: header[index].width
@@ -374,6 +388,7 @@ FocusScope{
                         opacity: (index == repeater.targetIndex && repeater.targetIndex != repeater.dragIndex) ? 0.5 : 0
                         Behavior on opacity { NumberAnimation{duration:160}}
                         color: palette.highlight
+                        SystemPalette{id:palette}
                     }
 
                     MouseArea{
@@ -424,14 +439,14 @@ FocusScope{
 
                     Loader {
                         id: draghandle
-                        parent: tableColumn
-                        sourceComponent: root.headerDelegate
-                        width: header[index].width
-                        height: parent.height
                         property string itemValue: header[index].caption
                         property string itemSort:  (sortIndicatorVisible && index == sortColumn) ? (sortIndicatorDirection == "up" ? "up" : "down") : "";
                         property bool itemPressed: headerClickArea.pressed
                         property bool itemContainsMouse: headerClickArea.containsMouse
+                        parent: tableColumn
+                        width: header[index].width
+                        height: parent.height
+                        sourceComponent: root.headerDelegate
                         visible: headerClickArea.pressed
                         opacity: 0.5
                     }
@@ -474,17 +489,17 @@ FocusScope{
         }
         Loader {
             id: loader
-            z:-1
-            sourceComponent: root.headerDelegate
-            anchors.top: parent.top
-            anchors.right: parent.right
-            anchors.bottom: headerrow.bottom
-            anchors.rightMargin: -2
-            width: root.width - headerrow.width + 2
             property string itemValue
             property string itemSort
             property bool itemPressed
             property bool itemContainsMouse
+            anchors.top: parent.top
+            anchors.right: parent.right
+            anchors.bottom: headerrow.bottom
+            anchors.rightMargin: -2
+            sourceComponent: root.headerDelegate
+            width: root.width - headerrow.width + 2
+            z:-1
         }
     }
 
@@ -492,19 +507,7 @@ FocusScope{
         id: scroller
         anchors.fill: parent
         anchors.topMargin: styleitem.style == "mac" ? tableColumn.height + frameWidth: 0
-        onVerticalValueChanged: {
-            if(!blockUpdates) {
-                contentY = verticalValue * scale
-                verticalScrollBar.value = contentY
-            }
-        }
-
-        onHorizontalValueChanged: {
-            if(!blockUpdates) {
-                contentX = horizontalValue * scale
-                horizontalScrollBar.value = contentX
-            }
-        }
+        scrollSpeed: 2
     }
 
     StyleItem {
@@ -520,12 +523,12 @@ FocusScope{
         elementType: "header"
         visible:false
     }
+
     StyleItem {
         id: rowstyleitem
-        elementType: "item"
-        visible: false
         property color textColor: styleHint("textColor")
         property color highlightedTextColor: styleHint("highlightedTextColor")
+        elementType: "item"
+        visible: false
     }
-    SystemPalette{id:palette}
 }

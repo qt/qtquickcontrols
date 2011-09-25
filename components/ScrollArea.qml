@@ -7,24 +7,25 @@ FocusScope {
     width: 100
     height: 100
 
-    // Framewidth seems to be 1 regardless of style
-    property int frameWidth: frame ? styleitem.frameWidth : 0;
-    property int contentHeight : content.childrenRect.height
-    property int contentWidth: content.childrenRect.width
-    property alias color: colorRect.color
+    // Cosmetic propeties
     property bool frame: true
-    property bool highlightOnFocus: false
     property bool frameAroundContents: styleitem.styleHint("framearoundcontents")
+    property bool highlightOnFocus: false
+    property alias color: colorRect.color // background color
+    property int frameWidth: frame ? styleitem.frameWidth : 0
+
+    // Item properties
     property alias horizontalScrollBar: scroller.horizontalScrollBar
     property alias verticalScrollBar: scroller.verticalScrollBar
 
+    // Viewport properties
+    property int contentX
+    property int contentY
+    property int contentHeight : content.childrenRect.height
+    property int contentWidth: content.childrenRect.width
     property int viewportHeight: height - (horizontalScrollBar.visible ? verticalScrollBar.height : 0) - 2 * frameWidth
     property int viewportWidth: width - (verticalScrollBar.visible ? verticalScrollBar.width : 0) - 2 * frameWidth
-
     default property alias data: content.data
-
-    property int contentY
-    property int contentX
 
     Rectangle {
         id: colorRect
@@ -54,6 +55,7 @@ FocusScope {
         scroller.verticalValue = contentY
         scroller.blockUpdates = false
     }
+
     onContentXChanged: {
         scroller.blockUpdates = true
         horizontalScrollBar.value = contentX
@@ -73,17 +75,10 @@ FocusScope {
         }
     }
 
+
     Private.ScrollAreaHelper {
         id: scroller
         anchors.fill: parent
-        onVerticalValueChanged: {
-            if (!blockUpdates)
-                contentY = verticalValue
-        }
-        onHorizontalValueChanged: {
-            if (!blockUpdates)
-                contentX = horizontalValue
-        }
     }
 
     StyleItem {
