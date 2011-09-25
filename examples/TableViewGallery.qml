@@ -91,17 +91,17 @@ Rectangle {
                     anchors.margins: 12
 
                     TableColumn {
-                        property: "title"
+                        role: "title"
                         caption: "Title"
                         width: 120
                     }
                     TableColumn {
-                        property: "credit"
+                        role: "credit"
                         caption: "Credit"
                         width: 120
                     }
                     TableColumn {
-                        property: "imagesource"
+                        role: "imagesource"
                         caption: "Image source"
                         width: 200
                         visible: true
@@ -122,17 +122,17 @@ Rectangle {
                     anchors.margins: 12
 
                     TableColumn {
-                        property: "fileName"
+                        role: "fileName"
                         caption: "File Name"
                         width: 120
                     }
                     TableColumn {
-                        property: "filePath"
+                        role: "filePath"
                         caption: "File Path"
                         width: 120
                     }
                     TableColumn {
-                        property: "fileSize"
+                        role: "fileSize"
                         caption: "Image source"
                         width: 200
                         visible: true
@@ -153,7 +153,7 @@ Rectangle {
                     anchors.margins: 12
 
                     TableColumn {
-                        property: "attributes"
+                        role: "attributes"
                         caption: "Text and Color"
                         width: 220
                     }
@@ -194,17 +194,17 @@ Rectangle {
                     anchors.margins: 12
                     anchors.fill: parent
                     TableColumn {
-                        property: "name"
+                        role: "name"
                         caption: "Name"
                         width: 120
                     }
                     TableColumn {
-                        property: "age"
+                        role: "age"
                         caption: "Age"
                         width: 120
                     }
                     TableColumn {
-                        property: "gender"
+                        role: "gender"
                         caption: "Gender"
                         width: 120
                     }
@@ -301,17 +301,17 @@ Rectangle {
                     alternateRowColor: alternateCheckbox.checked
 
                     TableColumn {
-                        property: "name"
+                        role: "name"
                         caption: "Name"
                         width: 120
                     }
                     TableColumn {
-                        property: "age"
+                        role: "age"
                         caption: "Age"
                         width: 120
                     }
                     TableColumn {
-                        property: "sex"
+                        role: "sex"
                         caption: "Sex"
                         width: 120
                     }

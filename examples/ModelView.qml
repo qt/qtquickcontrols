@@ -30,118 +30,20 @@ Item {
         anchors.fill: parent
 
         TableColumn {
-            property: "title"
+            role: "title"
             caption: "Title"
             width: 120
         }
         TableColumn {
-            property: "credit"
+            role: "credit"
             caption: "Credit"
             width: 120
         }
         TableColumn {
-            property: "imagesource"
+            role: "imagesource"
             caption: "Image source"
             width: 200
             visible: true
         }
-        /*
-        headerDelegate: Rectangle {
-            color: "#555"
-            Rectangle {
-                width: 1
-                height: parent.height
-                color: "#444"
-            }
-            Text {
-                text: itemValue
-                anchors.centerIn:parent
-                color:"#ccc"
-            }
-        }
-
-        rowDelegate: Rectangle {
-            color: itemSelected ? "#888" : (itemAlternateBackground ? "#ccc" : "#ddd")
-            clip: true
-            Rectangle{
-                width: parent.width
-                height:1
-                anchors.bottom: parent.bottom
-                color: "#aaa"
-            }
-        }
-
-        */
     }
-
-    /*    TableView{
-
-        HeaderSection {
-            property: "title"
-            caption: "Title"
-            width: 100
-        }
-        HeaderSection {
-            property: "imagesource"
-            caption: "Image source"
-            width: 400
-            visible: true
-        }
-        HeaderSection {
-            property: "filename"
-            caption:"File Name"
-            width: 100
-        }
-
-        model: flickerModel
-        width: root.width
-        height: root.height/2 - 10
-
-        rowDelegate: Rectangle {
-            color: itemselected ? "#888" : (alternaterow ? "#ccc" : "#ddd")
-            clip: true
-            Rectangle{
-                width: parent.width
-                height:1
-                anchors.bottom: parent.bottom
-                color: "#aaa"
-            }
-        }
-
-        itemDelegate: Item {
-            width: itemwidth
-            height: itemheight
-            clip: true
-            Text {
-                anchors.fill: parent
-                anchors.leftMargin: 5
-                elide: Qt.ElideRight
-                text: itemvalue
-                color: itemselected ? "white" : "black"
-            }
-            Rectangle {
-                width: 1
-                height: parent.height
-                color: "#aaa"
-            }
-        }
-
-    }
-    XmlListModel {
-        id: twitterModel
-        property string from : ""
-        property string to : ""
-        property string phrase : "obama"
-        source: (from=="" && to=="" && phrase=="") ? "" :
-            'http://search.twitter.com/search.atom?&rpp=500&phrase='+phrase
-        namespaceDeclarations: "declare default element namespace 'http://www.w3.org/2005/Atom'; " +
-                               "declare namespace twitter=\"http://api.twitter.com/\";";
-        query: "/feed/entry"
-        XmlRole { name: "filename"; query: "content/string()" }
-        XmlRole { name: "statusText"; query: "content/string()" }
-        XmlRole { name: "title"; query: "published/string()" }
-        XmlRole { name: "imagesource"; query: "twitter:source/string()" }
-    }
-
-        */
 }

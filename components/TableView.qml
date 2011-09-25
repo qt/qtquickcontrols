@@ -62,6 +62,7 @@ import "private" as Private
 
 FocusScope{
     id: root
+
     property variant model
 
     // Framewidth seems to be 1 regardless of style
@@ -321,8 +322,8 @@ FocusScope{
                         height: item ? item.height :  Math.max(16, styleitem.sizeFromContents(16, 16).height)
 
                         function getValue() {
-                            if (hasOwnProperty(header[index].property))
-                                return this[header[index].property]
+                            if (hasOwnProperty(header[index].role))
+                                return this[header[index].role]
                             return ""
                         }
                         property variant itemValue: getValue()
