@@ -161,11 +161,11 @@ void QStyleItem::initStyleOption()
                                  QStyleOptionHeader::SortDown
                                      : activeControl() == "up" ?
                                      QStyleOptionHeader::SortUp : QStyleOptionHeader::None;
-            if (activeControl() == QLatin1String("beginning"))
+            if (info() == QLatin1String("beginning"))
                 opt->position = QStyleOptionHeader::Beginning;
-            else if (activeControl() == QLatin1String("end"))
+            else if (info() == QLatin1String("end"))
                 opt->position = QStyleOptionHeader::End;
-            else if (activeControl() == QLatin1String("only"))
+            else if (info() == QLatin1String("only"))
                 opt->position = QStyleOptionHeader::OnlyOneSection;
             else
                 opt->position = QStyleOptionHeader::Middle;

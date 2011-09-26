@@ -144,6 +144,7 @@ FocusScope{
             sunken: itemPressed
             text: itemValue
             hover: itemContainsMouse
+            info: itemPosition
         }
     }
 
@@ -413,6 +414,9 @@ FocusScope{
                         property string itemSort:  (sortIndicatorVisible && index == sortColumn) ? (sortIndicatorDirection == "up" ? "up" : "down") : "";
                         property bool itemPressed: headerClickArea.pressed
                         property bool itemContainsMouse: headerClickArea.containsMouse
+                        property string itemPosition: header.length === 1 ? "only" :
+                                                      index===header.length-1 ? "end" :
+                                                      index===0 ? "beginning" : ""
                     }
                     Rectangle{
                         id: targetmark
@@ -526,6 +530,7 @@ FocusScope{
             property string itemSort
             property bool itemPressed
             property bool itemContainsMouse
+
             anchors.top: parent.top
             anchors.right: parent.right
             anchors.bottom: headerrow.bottom
