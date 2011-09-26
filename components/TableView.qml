@@ -242,6 +242,30 @@ FocusScope{
         scroller.blockUpdates = false;
     }
 
+    // Fills extra rows with alternate color
+    Column {
+        id: rowfiller
+
+        property variant rowHeight: contentHeight / count
+        property int rowCount: height/rowHeight
+
+        y: contentHeight
+        width: parent.width
+        visible: alternateRowColor && !verticalScrollBar.visible
+        height: parent.height - contentHeight
+        Repeater {
+            model: rowfiller.rowCount
+            StyleItem {
+                id: rowfill
+                elementType: "itemrow"
+                width: rowfiller.width
+                height: rowfiller.rowHeight
+                activeControl: (index + count) % 2 == 0 ? "alternate" : ""
+            }
+        }
+
+    }
+
     ListView {
         id: tree
 
@@ -345,29 +369,6 @@ FocusScope{
         }
     }
 
-    // Fills extra rows with alternate color
-    Column {
-        id: rowfiller
-
-        property variant rowHeight: contentHeight / count
-        property int rowCount: height/rowHeight
-
-        y: contentHeight
-        width: parent.width
-        visible: alternateRowColor && !verticalScrollBar.visible
-        height: parent.height - contentHeight
-        Repeater {
-            model: rowfiller.rowCount
-            StyleItem {
-                id: rowfill
-                elementType: "itemrow"
-                width: rowfiller.width
-                height: rowfiller.rowHeight
-                activeControl: (index + count) % 2 == 0 ? "alternate" : ""
-            }
-        }
-
-    }
 
     Text{ id:text }
 
