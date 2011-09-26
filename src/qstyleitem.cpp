@@ -548,7 +548,7 @@ QSize QStyleItem::sizeFromContents(int width, int height)
         size = qApp->style()->sizeFromContents(QStyle::CT_PushButton, m_styleoption, QSize(textWidth,height), widget());
 #ifdef Q_WS_MAC
         // Macstyle adds some weird constants to buttons
-        return QSize(textWidth + 14, size.height());
+        return QSize(textWidth + 18, size.height() + 2);
 #endif
 }
         break;
