@@ -56,7 +56,7 @@ Item {
             anchors.bottomMargin: anchors.margins + (frameitem.style =="mac" ? 6 : 0)
         }
 
-        anchors.topMargin: tabbarItem && tabsVisible && position == "North" ? tabbarItem.height - __baseOverlap : 0
+        anchors.topMargin: tabbarItem && tabsVisible && position == "North" ? Math.max(0, tabbarItem.height - __baseOverlap) : 0
 
         states: [
             State {
