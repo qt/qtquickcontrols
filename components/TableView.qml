@@ -79,6 +79,7 @@ FocusScope{
     property Component itemDelegate: standardDelegate
     property Component rowDelegate: rowDelegate
     property Component headerDelegate: headerDelegate
+    property color backgroundColor: "white"
 
     // Sort properties
     property int sortColumn // Index of currently selected sort column
@@ -95,6 +96,7 @@ FocusScope{
     property alias contentY: tree.contentY
     property alias contentHeight : tree.contentHeight
     property alias contentWidth: tree.contentWidth
+    property alias count: tree.count
 
     property alias cacheBuffer: tree.cacheBuffer
     property alias currentIndex: tree.currentIndex // Should this be currentRowIndex?
@@ -108,7 +110,7 @@ FocusScope{
             property int implicitWidth: sizehint.paintedWidth + 4
             Text {
                 width: parent.width
-                anchors.margins: 4
+                anchors.margins: 6
                 anchors.left: parent.left
                 anchors.verticalCenter: parent.verticalCenter
                 elide: itemElideMode
@@ -157,7 +159,7 @@ FocusScope{
 
     Rectangle {
         id: colorRect
-        color: "white"
+        color: backgroundColor
         anchors.fill: frameitem
         anchors.margins: frameWidth
         anchors.rightMargin: (!frameAroundContents && verticalScrollBar.visible ? verticalScrollBar.width : 0) + frameWidth
@@ -291,6 +293,7 @@ FocusScope{
             anchors.margins: frameWidth
             property int rowIndex: model.index
             property bool itemAlternateBackground: alternateRowColor && rowIndex % 2 == 1
+            property variant itemModelData: modelData
             Loader {
                 id: rowstyle
                 // row delegate
@@ -317,6 +320,7 @@ FocusScope{
                         sourceComponent: itemDelegate
                         property variant model: tree.model
                         property variant role: header[index].role
+                        property variant modelData: itemModelData
 
                         width: header[index].width
                         height: item ? item.height :  Math.max(16, styleitem.sizeFromContents(16, 16).height)
@@ -324,6 +328,8 @@ FocusScope{
                         function getValue() {
                             if (hasOwnProperty(header[index].role))
                                 return this[header[index].role]
+                            if (modelData.hasOwnProperty(header[index].role))
+                                return modelData[header[index].role]
                             return ""
                         }
                         property variant itemValue: getValue()
@@ -338,6 +344,31 @@ FocusScope{
             }
         }
     }
+
+    // Fills extra rows with alternate color
+    Column {
+        id: rowfiller
+
+        property variant rowHeight: contentHeight / count
+        property int rowCount: height/rowHeight
+
+        y: contentHeight
+        width: parent.width
+        visible: alternateRowColor && !verticalScrollBar.visible
+        height: parent.height - contentHeight
+        Repeater {
+            model: rowfiller.rowCount
+            StyleItem {
+                id: rowfill
+                elementType: "itemrow"
+                width: rowfiller.width
+                height: rowfiller.rowHeight
+                activeControl: (index + count) % 2 == 0 ? "alternate" : ""
+            }
+        }
+
+    }
+
     Text{ id:text }
 
     Item {
