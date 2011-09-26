@@ -19,6 +19,7 @@ QML_FILES = \
             TableView.qml \
             ToolBar.qml \
             ButtonRow.qml \
+            ButtonColumn.qml \
             Frame.qml \
             MenuItem.qml   \
             Slider.qml \
