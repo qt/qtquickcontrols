@@ -23,7 +23,7 @@ Window {
 
     Item {
         id: content
-        anchors.topMargin:8
+        anchors.topMargin:16
         anchors.margins: 16
         anchors.top: parent.top
         anchors.right: parent.right
@@ -40,6 +40,7 @@ Window {
         anchors.bottom: parent.bottom
         anchors.right: parent.right
         anchors.margins: 16
+        anchors.topMargin:0
         anchors.bottomMargin:8
         spacing: 6
 
@@ -51,7 +52,6 @@ Window {
                 rejected()
             }
         }
-
         Button {
             visible: buttons & cancel
             text: "Cancel"
@@ -60,7 +60,6 @@ Window {
                 rejected()
             }
         }
-
         Button {
             visible: buttons & ok
             text: "OK"

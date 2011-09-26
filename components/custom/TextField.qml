@@ -118,7 +118,7 @@ FocusScope {
         anchors.verticalCenter: parent.verticalCenter
 
         color: syspal.text
-        echoMode: passwordMode ? _hints.passwordEchoMode : TextInput.Normal
+        echoMode: passwordMode ? TextInput.Password : TextInput.Normal
 
     }
 

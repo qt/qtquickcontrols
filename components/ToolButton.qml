@@ -4,10 +4,12 @@ import "custom" as Components
 Components.Button {
     id:button
 
-    height: 40; //styleitem.sizeFromContents(32, 32).height
-    width: 40; //styleitem.sizeFromContents(32, 32).width
-
+    property alias containsMouse: tooltip.containsMouse
     property string iconName
+
+    height: styleitem.sizeFromContents(32, 32).height
+    width: styleitem.sizeFromContents(32, 32).width
+
 
     onIconNameChanged: {
         if (styleitem.hasThemeIcon(iconName)) {
@@ -16,6 +18,13 @@ Components.Button {
     }
 
     StyleItem {elementType: "toolbutton"; id:styleitem}
+
+    TooltipArea {
+        // Note this will eat hover events
+        id: tooltip
+        anchors.fill: parent
+        text: button.tooltip
+    }
 
     background: StyleItem {
         id: styleitem
