@@ -111,6 +111,7 @@ FocusScope{
             Text {
                 width: parent.width
                 anchors.margins: 6
+
                 anchors.left: parent.left
                 anchors.verticalCenter: parent.verticalCenter
                 elide: itemElideMode
@@ -246,22 +247,20 @@ FocusScope{
     // Fills extra rows with alternate color
     Column {
         id: rowfiller
-
-        property variant rowHeight: contentHeight / count
+        property variant rowHeight: Math.max(1, contentHeight / count)
         property int rowCount: height/rowHeight
-
         y: contentHeight
         width: parent.width
-        visible: alternateRowColor && !verticalScrollBar.visible
+        visible: contentHeight > 0 && alternateRowColor && !verticalScrollBar.visible
         height: parent.height - contentHeight
         Repeater {
-            model: rowfiller.rowCount
+            model: visible ? rowfiller.rowCount : 0
             StyleItem {
                 id: rowfill
                 elementType: "itemrow"
                 width: rowfiller.width
                 height: rowfiller.rowHeight
-                activeControl: (index + count) % 2 == 0 ? "alternate" : ""
+                activeControl: (index + count) % 2 === 0 ? "alternate" : ""
             }
         }
 
@@ -318,7 +317,7 @@ FocusScope{
             anchors.margins: frameWidth
             property int rowIndex: model.index
             property bool itemAlternateBackground: alternateRowColor && rowIndex % 2 == 1
-            property variant itemModelData: modelData
+            property variant itemModelData: hasOwnProperty("modelData") ? modelData : null
             Loader {
                 id: rowstyle
                 // row delegate
@@ -353,7 +352,7 @@ FocusScope{
                         function getValue() {
                             if (hasOwnProperty(header[index].role))
                                 return this[header[index].role]
-                            if (modelData.hasOwnProperty(header[index].role))
+                            else if (modelData && modelData.hasOwnProperty(header[index].role))
                                 return modelData[header[index].role]
                             return ""
                         }
@@ -480,6 +479,8 @@ FocusScope{
                         property string itemSort:  (sortIndicatorVisible && index == sortColumn) ? (sortIndicatorDirection == "up" ? "up" : "down") : "";
                         property bool itemPressed: headerClickArea.pressed
                         property bool itemContainsMouse: headerClickArea.containsMouse
+                        property string itemPosition
+
                         parent: tableColumn
                         width: header[index].width
                         height: parent.height
@@ -530,6 +531,7 @@ FocusScope{
             property string itemSort
             property bool itemPressed
             property bool itemContainsMouse
+            property string itemPosition
 
             anchors.top: parent.top
             anchors.right: parent.right

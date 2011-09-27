@@ -6,4 +6,5 @@ QtObject {
     property int width: 160
     property bool visible: true
     property int elideMode: Text.ElideRight
+    property int textAlignment: Text.ElideRight
 }
