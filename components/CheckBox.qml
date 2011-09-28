@@ -6,7 +6,7 @@ import "custom" as Components
 Components.CheckBox {
     id:checkbox
     property string text
-    property string hint
+    property string styleHint
     property bool activeFocusOnPress: false
     width: Math.max(110, backgroundItem.textWidth(text) + 40)
     height: 20
@@ -20,7 +20,7 @@ Components.CheckBox {
         text: checkbox.text
         enabled: checkbox.enabled
         hasFocus: checkbox.activeFocus
-        styleHint: checkbox.hint
+        hint: checkbox.styleHint
     }
 }
 

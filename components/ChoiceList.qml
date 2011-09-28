@@ -8,7 +8,7 @@ Components.ChoiceList {
     property int buttonHeight: backgroundItem.sizeFromContents(100, 18).height
     property int buttonWidth: backgroundItem.sizeFromContents(100, 18).width
 
-    property string hint
+    property string styleHint
 
     height: buttonHeight
     width: buttonWidth
@@ -24,7 +24,7 @@ Components.ChoiceList {
         enabled: choicelist.enabled
         text: currentItemText
         hasFocus: choicelist.focus
-        styleHint: choicelist.hint
+        hint: choicelist.styleHint
     }
 
     listItem: Item {

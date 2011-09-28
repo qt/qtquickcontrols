@@ -7,7 +7,7 @@ Components.SpinBox {
     property variant __upRect;
     property variant __downRect;
     property int __margin: (height -16)/2
-    property string hint
+    property string styleHint
 
     // Align height with button
     topMargin:__margin
@@ -75,7 +75,7 @@ Components.SpinBox {
                    (downPressed == 1 ? 1<<1 : 0) |
                    (upEnabled ? (1<<2) : 0)      |
                    (downEnabled == 1 ? (1<<3) : 0)
-            styleHint: spinbox.hint
+            hint: spinbox.styleHint
         }
     }
 

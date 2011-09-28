@@ -6,7 +6,7 @@ Components.ProgressBar {
 
     property variant sizehint: backgroundItem.sizeFromContents(23, 23)
     property int orientation: Qt.Horizontal
-    property string hint
+    property string styleHint
 
     height: orientation === Qt.Horizontal ? sizehint.height : 200
     width: orientation === Qt.Horizontal ? 200 : sizehint.height
@@ -24,7 +24,7 @@ Components.ProgressBar {
         maximum: indeterminate ? 0 : progressbar.maximumValue * factor
         enabled: progressbar.enabled
         horizontal: progressbar.orientation == Qt.Horizontal
-        styleHint: progressbar.hint
+        hint: progressbar.styleHint
     }
 }
 

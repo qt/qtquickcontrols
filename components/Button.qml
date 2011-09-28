@@ -10,7 +10,7 @@ Components.Button {
     property alias containsMouse: tooltip.containsMouse
     property variant sizehint: backgroundItem.sizeFromContents(80, 6)
     property bool defaultbutton: false
-    property string hint
+    property string styleHint
 
     TooltipArea {
         // Note this will eat hover events
@@ -28,7 +28,7 @@ Components.Button {
         hover: containsMouse
         text: iconSource === "" ? "" : button.text
         hasFocus: button.focus
-       platformHint: button.hint
+        hint: button.styleHint
 
         // If no icon, let the style do the drawing
         activeControl: defaultbutton ? "default" : "f"

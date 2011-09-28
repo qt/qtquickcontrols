@@ -48,6 +48,10 @@ symbian {
            
 target.path = $$INSTALL_IMPORTS/$$TARGETPATH
 
+mac {
+    LIBS += -framework Carbon
+}
+
 INSTALLS += target
 
 symbian {

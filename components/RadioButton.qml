@@ -6,7 +6,7 @@ import "custom" as Components
 Components.CheckBox {
     id: radiobutton
     property string text
-    property string hint
+    property string styleHint
     width: 110
     height: 20
 
@@ -18,7 +18,7 @@ Components.CheckBox {
         text: radiobutton.text
         enabled: radiobutton.enabled
         hasFocus: radiobutton.activeFocus
-        styleHint: radiobutton.hint
+        hint: radiobutton.styleHint
     }
     Keys.onSpacePressed: {clicked(); checked = !checked; }
 }

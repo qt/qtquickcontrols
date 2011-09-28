@@ -62,7 +62,7 @@ Custom.BasicButton {
     property alias hoveredIndex: popup.hoveredIndex
     property alias selectedText: popup.selectedText
     property alias hoveredText: popup.hoveredText
-    property string hint
+    property string styleHint
 
     background: StyleItem {
         anchors.fill: parent
