@@ -15,12 +15,15 @@ Components.TextField {
     width: 200
     clip: false
 
+    property string styleHint
+
     background: StyleItem {
         anchors.fill: parent
         elementType: "edit"
         sunken: true
         hasFocus: textfield.activeFocus
         hover: containsMouse
+        hint: textfield.styleHint
     }
 
     Item{
@@ -35,6 +38,7 @@ Components.TextField {
             anchors.bottomMargin:-4
             anchors.fill: parent
             visible: textfield.activeFocus
+            hint: textfield.styleHint
             elementType: "focusframe"
         }
     }

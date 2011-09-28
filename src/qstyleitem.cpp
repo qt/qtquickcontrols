@@ -961,6 +961,11 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
         qApp->style()->drawControl(QStyle::CE_ShapedFrame, m_styleoption, painter, widget());
         break;
     case FocusFrame:
+#ifdef Q_WS_MAC
+        if (style() == "mac" && hint().contains("mac.search")) {
+            break; // embedded in the line itself
+        } else
+#endif
         qApp->style()->drawControl(QStyle::CE_FocusFrame, m_styleoption, painter, widget());
         break;
     case TabFrame:
@@ -981,20 +986,19 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
         if (style() == "mac" && hint().contains("mac.search")) {
             const QPaintDevice *target = painter->device();
             HIThemeFrameDrawInfo fdi;
-            fdi.version = 1;
+            fdi.version = 0;
             fdi.state = kThemeStateActive;
             SInt32 frame_size;
             GetThemeMetric(kThemeMetricEditTextFrameOutset, &frame_size);
             fdi.kind = kHIThemeFrameTextFieldRound;
             if ((m_styleoption->state & QStyle::State_ReadOnly) || !(m_styleoption->state & QStyle::State_Enabled))
                 fdi.state = kThemeStateInactive;
-            fdi.isFocused = (m_styleoption->state & QStyle::State_HasFocus);
+            fdi.isFocused = hasFocus();
             HIRect hirect = qt_hirectForQRect(m_styleoption->rect,
                                               QRect(frame_size, frame_size,
                                                     frame_size * 2, frame_size * 2));
             HIThemeDrawFrame(&hirect, &fdi, qt_mac_cg_context(target), kHIThemeOrientationNormal);
-            return;
-        }
+        } else
 #endif
         qApp->style()->drawPrimitive(QStyle::PE_PanelLineEdit, m_styleoption, painter, widget());
     }
