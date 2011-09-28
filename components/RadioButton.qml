@@ -18,7 +18,7 @@ Components.CheckBox {
         text: radiobutton.text
         enabled: radiobutton.enabled
         hasFocus: radiobutton.activeFocus
-        hint: radiobutton.hint
+        styleHint: radiobutton.hint
     }
     Keys.onSpacePressed: {clicked(); checked = !checked; }
 }

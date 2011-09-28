@@ -75,7 +75,7 @@ Components.SpinBox {
                    (downPressed == 1 ? 1<<1 : 0) |
                    (upEnabled ? (1<<2) : 0)      |
                    (downEnabled == 1 ? (1<<3) : 0)
-            hint: spinbox.hint
+            styleHint: spinbox.hint
         }
     }
 

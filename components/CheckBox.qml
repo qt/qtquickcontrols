@@ -20,7 +20,7 @@ Components.CheckBox {
         text: checkbox.text
         enabled: checkbox.enabled
         hasFocus: checkbox.activeFocus
-        hint: checkbox.hint
+        styleHint: checkbox.hint
     }
 }
 

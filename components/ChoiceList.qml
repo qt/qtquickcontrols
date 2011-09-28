@@ -24,7 +24,7 @@ Components.ChoiceList {
         enabled: choicelist.enabled
         text: currentItemText
         hasFocus: choicelist.focus
-        hint: choicelist.hint
+        styleHint: choicelist.hint
     }
 
     listItem: Item {
