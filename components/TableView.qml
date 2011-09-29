@@ -67,6 +67,8 @@ FocusScope{
 
     // Framewidth seems to be 1 regardless of style
     property int frameWidth: frame ? frameitem.frameWidth : 0;
+    width: 200
+    height: 200
 
     // Cosmetic properties
     property bool frame: true
@@ -111,7 +113,7 @@ FocusScope{
             Text {
                 width: parent.width
                 anchors.margins: 6
-
+                font.pixelSize:11
                 anchors.left: parent.left
                 anchors.verticalCenter: parent.verticalCenter
                 elide: itemElideMode
@@ -244,28 +246,6 @@ FocusScope{
         scroller.blockUpdates = false;
     }
 
-    // Fills extra rows with alternate color
-    Column {
-        id: rowfiller
-        property variant rowHeight: Math.max(1, contentHeight / count)
-        property int rowCount: height/rowHeight
-        y: contentHeight
-        width: parent.width
-        visible: contentHeight > 0 && alternateRowColor && !verticalScrollBar.visible
-        height: parent.height - contentHeight
-        Repeater {
-            model: visible ? rowfiller.rowCount : 0
-            StyleItem {
-                id: rowfill
-                elementType: "itemrow"
-                width: rowfiller.width
-                height: rowfiller.rowHeight
-                activeControl: (index + count) % 2 === 0 ? "alternate" : ""
-            }
-        }
-
-    }
-
     ListView {
         id: tree
 
@@ -285,6 +265,27 @@ FocusScope{
 
         focus: true
         clip: true
+
+        // Fills extra rows with alternate color
+        Column {
+            id: rowfiller
+            property variant rowHeight: Math.max(1, contentHeight / count)
+            property int rowCount: height/rowHeight
+            y: contentHeight
+            width: parent.width
+            visible: contentHeight > 0 && alternateRowColor && !verticalScrollBar.visible
+            height: parent.height - contentHeight
+            Repeater {
+                model: visible ? rowfiller.rowCount : 0
+                StyleItem {
+                    id: rowfill
+                    elementType: "itemrow"
+                    width: rowfiller.width
+                    height: rowfiller.rowHeight
+                    activeControl: (index + count) % 2 === 1 ? "alternate" : ""
+                }
+            }
+        }
 
         Keys.onUpPressed: root.decrementCurrentIndex()
         Keys.onDownPressed: root.incrementCurrentIndex()
