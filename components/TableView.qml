@@ -342,7 +342,7 @@ FocusScope{
                     Loader {
                         id: itemDelegateLoader
                         visible: header[index].visible
-                        sourceComponent: itemDelegate
+                        sourceComponent: header[index].delegate ? header[index].delegate : itemDelegate
                         property variant model: tree.model
                         property variant role: header[index].role
                         property variant modelData: itemModelData

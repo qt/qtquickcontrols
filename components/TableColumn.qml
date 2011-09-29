@@ -7,4 +7,5 @@ QtObject {
     property bool visible: true
     property int elideMode: Text.ElideRight
     property int textAlignment: Text.ElideRight
+    property Component delegate
 }
