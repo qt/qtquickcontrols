@@ -104,6 +104,7 @@ public:
         Menu,
         MenuItem,
         Widget,
+        StatusBar,
         ScrollAreaCorner
     };
 

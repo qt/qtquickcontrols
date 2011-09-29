@@ -825,6 +825,8 @@ void QStyleItem::setElementType(const QString &str)
         m_itemType = FocusFrame;
     } else if (str == "dial") {
         m_itemType = Dial;
+    } else if (str == "statusbar") {
+        m_itemType = StatusBar;
     } else if (str == "scrollareacorner") {
         m_itemType = ScrollAreaCorner;
     }
@@ -1044,6 +1046,9 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
         break;
     case ToolBar:
         qApp->style()->drawControl(QStyle::CE_ToolBar, m_styleoption, painter, widget());
+        break;
+    case StatusBar:
+        qApp->style()->drawPrimitive(QStyle::PE_PanelStatusBar, m_styleoption, painter, widget());
         break;
     case GroupBox:
         qApp->style()->drawComplexControl(QStyle::CC_GroupBox, qstyleoption_cast<QStyleOptionComplex*>(m_styleoption), painter, widget());
