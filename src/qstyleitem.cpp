@@ -1048,7 +1048,15 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
         qApp->style()->drawControl(QStyle::CE_ToolBar, m_styleoption, painter, widget());
         break;
     case StatusBar:
-        qApp->style()->drawPrimitive(QStyle::PE_PanelStatusBar, m_styleoption, painter, widget());
+        if (style() == "mac") {
+            m_styleoption->rect.adjust(0, 1, 0, 0);
+            qApp->style()->drawControl(QStyle::CE_ToolBar, m_styleoption, painter, widget());
+            m_styleoption->rect.adjust(0, -1, 0, 0);
+            painter->setPen(m_styleoption->palette.dark().color().darker(120));
+            painter->drawLine(m_styleoption->rect.topLeft(), m_styleoption->rect.topRight());
+        } else {
+            qApp->style()->drawPrimitive(QStyle::PE_PanelToolBar, m_styleoption, painter, widget());
+        }
         break;
     case GroupBox:
         qApp->style()->drawComplexControl(QStyle::CC_GroupBox, qstyleoption_cast<QStyleOptionComplex*>(m_styleoption), painter, widget());

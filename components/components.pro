@@ -37,6 +37,7 @@ QML_FILES = \
             ScrollArea.qml \
             SplitterRow.qml \
             SplitterColumn.qml \
+            StatusBar.qml \
             TableColumn.qml \
             TextField.qml
 
