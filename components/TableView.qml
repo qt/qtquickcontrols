@@ -115,6 +115,8 @@ FocusScope{
                 anchors.margins: 6
                 font.pixelSize:11
                 anchors.left: parent.left
+                anchors.right: parent.right
+                horizontalAlignment: itemTextAlignment
                 anchors.verticalCenter: parent.verticalCenter
                 elide: itemElideMode
                 text: itemValue ? itemValue : ""
@@ -363,6 +365,7 @@ FocusScope{
                         property int rowIndex: rowitem.rowIndex
                         property int columnIndex: index
                         property int itemElideMode: header[index].elideMode
+                        property int itemTextAlignment: header[index].textAlignment
                     }
                 }
                 onWidthChanged: tree.contentWidth = width
