@@ -111,6 +111,7 @@ FocusScope{
         Item {
             property int implicitWidth: sizehint.paintedWidth + 4
             Text {
+                id: label
                 width: parent.width
                 anchors.margins: 6
                 font.pointSize: itemstyle.fontPointSize
@@ -124,6 +125,7 @@ FocusScope{
             }
             Text {
                 id: sizehint
+                font: label.font
                 text: itemValue ? itemValue : ""
                 visible: false
             }
@@ -207,8 +209,8 @@ FocusScope{
         }
 
         // Handle vertical scrolling whem dragging mouse outside boundraries
-        Timer { running: mousearea.autoincrement; repeat: true; interval: 20 ; onTriggered: incrementCurrentIndex()}
-        Timer { running: mousearea.autodecrement; repeat: true; interval: 20 ; onTriggered: decrementCurrentIndex()}
+        Timer { running: mousearea.autoincrement && verticalScrollBar.visible; repeat: true; interval: 20 ; onTriggered: incrementCurrentIndex()}
+        Timer { running: mousearea.autodecrement && verticalScrollBar.visible; repeat: true; interval: 20 ; onTriggered: decrementCurrentIndex()}
 
         onMousePositionChanged: {
             if (mouseY > tree.height && pressed) {
@@ -225,7 +227,8 @@ FocusScope{
             }
             var y = Math.min(contentY + tree.height - 5, Math.max(mouseY + contentY, contentY));
             var newIndex = tree.indexAt(0, y);
-            tree.currentIndex = tree.indexAt(0, y);
+            if (newIndex >= 0)
+                tree.currentIndex = tree.indexAt(0, y);
         }
 
         onPressed:  {
