@@ -167,7 +167,6 @@ public:
     QString fontFamily();
     double fontPointSize();
 
-
 public Q_SLOTS:
     int pixelMetric(const QString&);
     QVariant styleHint(const QString&);
@@ -175,6 +174,7 @@ public Q_SLOTS:
     void updateItem(){update();}
     QString hitTest(int x, int y);
     QRect subControlRect(const QString &subcontrolString);
+    QString elidedText(const QString &text, int elideMode, int width);
     int textWidth(const QString &);
     bool hasThemeIcon(const QString &) const;
 

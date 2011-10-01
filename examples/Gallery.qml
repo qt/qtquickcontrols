@@ -452,6 +452,20 @@ Rectangle {
             Panel {
                 anchors.fill:parent
             }
+            MouseArea {
+                anchors.fill: parent
+                onPressed: frame.addTab(crap, "Some shit")
+            }
+        }
+
+    }
+
+    Component {
+        id: crap
+        Rectangle {
+            color : "red"
+            width:200
+            height:200
         }
     }
 }

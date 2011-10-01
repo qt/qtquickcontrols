@@ -1097,6 +1097,11 @@ int QStyleItem::textWidth(const QString &text)
     return qApp->fontMetrics().boundingRect(text).width();
 }
 
+QString QStyleItem::elidedText(const QString &text, int elideMode, int width)
+{
+    return qApp->fontMetrics().elidedText(text, Qt::TextElideMode(elideMode), width);
+}
+
 int QStyleItem::fontHeight()
 {
     if (widget())

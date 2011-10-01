@@ -98,6 +98,7 @@ protected:
 protected Q_SLOTS:
     void updateSize(QSize newSize);
     void center();
+    void moveWindow(int x, int y, int lx, int ly);
 
 Q_SIGNALS:
     void sizeChanged();
@@ -118,6 +119,8 @@ private:
     bool _complete;
     bool _positionIsDefined;
     bool _delayedVisible;
+    int _x;
+    int _y;
 };
 
 #endif // QWindowItem_H

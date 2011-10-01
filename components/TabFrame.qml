@@ -23,10 +23,18 @@ Item {
         }
     }
 
-    function addTab(component) {
-        var tab = component.createObject(null);
+    Component {
+        id: tabcomp
+        Tab {}
+    }
+
+    function addTab(component, title) {
+        var tab = tabcomp.createObject(this);
+        component.createObject(tab)
         tab.parent = stack
-        current = count-1
+        tab.title = title
+        __setOpacities()
+        return tab
     }
 
     function removeTab(id) {

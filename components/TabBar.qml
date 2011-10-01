@@ -68,9 +68,10 @@ Item {
                 property int tabindex: index
                 property bool selected : tabFrame.current == index
                 z: selected ? 1 : -1
+                width: Math.min(implicitWidth, tabbar.width/tabs.length)
                 function updateRect() {
                     var rect = style.sizeFromContents(textitem.width + tabHSpace + 2, Math.max(style.fontHeight + tabVSpace + 6, 0))
-                    width = rect.width
+                    implicitWidth = rect.width
                     height = rect.height
                 }
                 // Component.onCompleted: print("taboverlap" + tabOverlap + " tabbaseoverlap " + tabBaseOverlap + " overlap " +__overlap + " hspace " + tabHSpace)
@@ -79,7 +80,7 @@ Item {
                     elementType: "tab"
                     selected: tab.selected
                     info: tabbar.position
-                    text: tabFrame.tabs[index].title
+                    text:  tabFrame.tabs[index].title
                     hover: mousearea.containsMouse
                     hasFocus: tabbar.focus && selected
                     property bool first: index === 0
@@ -94,7 +95,7 @@ Item {
                         visible: false
                         onWidthChanged: updateRect()
                         onHeightChanged: updateRect()
-                        text: tabFrame.tabs[index].title
+                        text:  tabFrame.tabs[index].title
                     }
                 }
                 MouseArea {

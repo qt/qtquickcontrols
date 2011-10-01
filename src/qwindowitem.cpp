@@ -44,7 +44,7 @@
 #include <QTimer>
 
 QWindowItem::QWindowItem(QTopLevelWindow* tlw)
-    : _window(tlw ? tlw : new QTopLevelWindow), _positionIsDefined(false), _delayedVisible(false)
+    : _window(tlw ? tlw : new QTopLevelWindow), _positionIsDefined(false), _delayedVisible(false), _x(0), _y(0)
 {
     connect(_window, SIGNAL(visibilityChanged()), this, SIGNAL(visibleChanged()));
     connect(_window, SIGNAL(windowStateChanged()), this, SIGNAL(windowStateChanged()));
@@ -121,11 +121,21 @@ void QWindowItem::center()
 
 void QWindowItem::setX(int x)
 {
-    _window->move(x, y());
+    _x = x;
+    _window->move(x, _y);
 }
 void QWindowItem::setY(int y)
 {
-    _window->move(x(), y);
+    _y = y;
+    _window->move(_x, y);
+}
+
+void QWindowItem::moveWindow(int x,int y, int lx, int ly)
+{
+    QPoint p = _window->mapToGlobal(QPoint(x,y));
+    p.setX(p.x() - lx);
+    p.setY(p.y() - ly);
+    _window->move(p);
 }
 
 void QWindowItem::setHeight(int height)
@@ -133,7 +143,7 @@ void QWindowItem::setHeight(int height)
     int menuBarHeight = _window->menuBar()->sizeHint().height();
     if (menuBarHeight) menuBarHeight++;
     _window->resize(width(), height+menuBarHeight);
-    QDeclarativeItem::setHeight(height);
+    QDeclarativeItem::setHeight(_window->height());
 }
 
 void QWindowItem::setMinimumHeight(int height)
@@ -153,7 +163,7 @@ void QWindowItem::setMaximumHeight(int height)
 void QWindowItem::setWidth(int width)
 {
     _window->resize(width, height());
-    QDeclarativeItem::setWidth(width);
+    QDeclarativeItem::setWidth(_window->width());
 }
 
 void QWindowItem::setTitle(QString title)
@@ -181,6 +191,8 @@ void QWindowItem::setVisible(bool visible)
 void QWindowItem::setWindowDecoration(bool s)
 {
     bool visible = _window->isVisible();
+
+
     _window->setWindowFlags(s ? _window->windowFlags() & ~Qt::FramelessWindowHint
                               : _window->windowFlags() | Qt::FramelessWindowHint);
     if (visible)

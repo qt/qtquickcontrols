@@ -55,6 +55,7 @@ void QTopLevelWindow::center()
 
 void QTopLevelWindow::move(int x, int y)
 {
+    qDebug("a %d, %d", x, y);
     move(QPoint(x,y));
 }
 
