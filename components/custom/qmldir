@@ -14,3 +14,4 @@ TextField 1.0 TextField.qml
 GroupBox 1.0 GroupBox.qml
 SplitterRow 1.0 SplitterRow.qml
 SplitterColumn 1.0 SplitterColumn.qml
+SplitterItem 1.0 SplitterItem.qml
