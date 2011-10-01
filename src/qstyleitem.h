@@ -72,8 +72,8 @@ class QStyleItem: public QDeclarativeItem
     Q_PROPERTY( int step READ step WRITE setStep NOTIFY stepChanged)
     Q_PROPERTY( int paintMargins READ paintMargins WRITE setPaintMargins NOTIFY paintMarginsChanged)
 
-    Q_PROPERTY( QString fontFamily READ fontFamily)
-    Q_PROPERTY( double fontPointSize READ fontPointSize)
+    Q_PROPERTY( QString fontFamily READ fontFamily NOTIFY fontHeightChanged)
+    Q_PROPERTY( double fontPointSize READ fontPointSize NOTIFY fontHeightChanged)
     Q_PROPERTY( int fontHeight READ fontHeight NOTIFY fontHeightChanged)
 
 public:

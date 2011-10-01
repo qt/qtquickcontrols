@@ -1113,6 +1113,10 @@ QString QStyleItem::fontFamily()
 
 double QStyleItem::fontPointSize()
 {
+#ifdef Q_WS_MAC
+    if (elementType() == "item")
+        return 11;
+#endif
     if (widget())
         return widget()->font().pointSizeF();
     return qApp->font().pointSizeF();

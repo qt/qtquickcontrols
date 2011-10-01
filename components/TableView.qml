@@ -113,7 +113,7 @@ FocusScope{
             Text {
                 width: parent.width
                 anchors.margins: 6
-                font.pixelSize:11
+                font.pointSize: itemstyle.fontPointSize
                 anchors.left: parent.left
                 anchors.right: parent.right
                 horizontalAlignment: itemTextAlignment
@@ -125,9 +125,15 @@ FocusScope{
             Text {
                 id: sizehint
                 text: itemValue ? itemValue : ""
-                visible:false
+                visible: false
             }
         }
+    }
+
+    StyleItem {
+        id: itemstyle
+        elementType: "item"
+        visible:false
     }
 
     Component {
