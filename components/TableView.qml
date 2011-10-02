@@ -41,8 +41,8 @@ import "private" as Private
 * by setting the default header property :
 *
 * TableView {
-*    TableColumn{ role: "column1" ; caption: "Column 1" ; width:100}
-*    TableColumn{ role: "column2" ; caption: "Column 2" ; width:200}
+*    TableColumn{ role: "column1" ; title: "Column 1" ; width:100}
+*    TableColumn{ role: "column2" ; title: "Column 2" ; width:200}
 *    model: datamodel
 * }
 *
@@ -362,10 +362,12 @@ FocusScope{
                         height: item ? item.height :  Math.max(16, styleitem.sizeFromContents(16, 16).height)
 
                         function getValue() {
-                            if (hasOwnProperty(header[index].role))
+                            if (header[index].role.length && hasOwnProperty(header[index].role))
                                 return this[header[index].role]
                             else if (modelData && modelData.hasOwnProperty(header[index].role))
                                 return modelData[header[index].role]
+                            else if (modelData)
+                                return modelData
                             return ""
                         }
                         property variant itemValue: getValue()
@@ -422,7 +424,7 @@ FocusScope{
                     Loader {
                         sourceComponent: root.headerDelegate
                         anchors.fill: parent
-                        property string itemValue: header[index].caption
+                        property string itemValue: header[index].title
                         property string itemSort:  (sortIndicatorVisible && index == sortColumn) ? (sortIndicatorDirection == "up" ? "up" : "down") : "";
                         property bool itemPressed: headerClickArea.pressed
                         property bool itemContainsMouse: headerClickArea.containsMouse
@@ -488,7 +490,7 @@ FocusScope{
 
                     Loader {
                         id: draghandle
-                        property string itemValue: header[index].caption
+                        property string itemValue: header[index].title
                         property string itemSort:  (sortIndicatorVisible && index == sortColumn) ? (sortIndicatorDirection == "up" ? "up" : "down") : "";
                         property bool itemPressed: headerClickArea.pressed
                         property bool itemContainsMouse: headerClickArea.containsMouse
@@ -552,6 +554,7 @@ FocusScope{
             anchors.rightMargin: -2
             sourceComponent: root.headerDelegate
             width: root.width - headerrow.width + 2
+            visible: root.header.length
             z:-1
         }
     }

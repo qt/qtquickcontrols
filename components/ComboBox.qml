@@ -83,7 +83,8 @@ Custom.BasicButton {
 //    property int rightMargin: 0
 //    property int bottomMargin: 0
 
-    width: backgroundItem.sizeFromContents(100, 18).height
+    width: implicitWidth
+    implicitWidth: Math.max(80, backgroundItem.sizeFromContents(100, 18).height)
     onWidthChanged: popup.setMinimumWidth(width)
     height: backgroundItem.sizeFromContents(100, 18).height
     checkable: false

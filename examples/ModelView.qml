@@ -31,17 +31,17 @@ Item {
 
         TableColumn {
             role: "title"
-            caption: "Title"
+            title: "Title"
             width: 120
         }
         TableColumn {
             role: "credit"
-            caption: "Credit"
+            title: "Credit"
             width: 120
         }
         TableColumn {
             role: "imagesource"
-            caption: "Image source"
+            title: "Image source"
             width: 200
             visible: true
         }

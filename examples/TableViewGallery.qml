@@ -92,17 +92,17 @@ Rectangle {
 
                     TableColumn {
                         role: "title"
-                        caption: "Title"
+                        title: "Title"
                         width: 120
                     }
                     TableColumn {
                         role: "credit"
-                        caption: "Credit"
+                        title: "Credit"
                         width: 120
                     }
                     TableColumn {
                         role: "imagesource"
-                        caption: "Image source"
+                        title: "Image source"
                         width: 200
                         visible: true
                     }
@@ -123,17 +123,17 @@ Rectangle {
 
                     TableColumn {
                         role: "fileName"
-                        caption: "File Name"
+                        title: "File Name"
                         width: 120
                     }
                     TableColumn {
                         role: "filePath"
-                        caption: "File Path"
+                        title: "File Path"
                         width: 120
                     }
                     TableColumn {
                         role: "fileSize"
-                        caption: "Image source"
+                        title: "Image source"
                         width: 200
                         visible: true
                     }
@@ -154,7 +154,7 @@ Rectangle {
 
                     TableColumn {
                         role: "attributes"
-                        caption: "Text and Color"
+                        title: "Text and Color"
                         width: 220
                     }
 
@@ -195,17 +195,17 @@ Rectangle {
                     anchors.fill: parent
                     TableColumn {
                         role: "name"
-                        caption: "Name"
+                        title: "Name"
                         width: 120
                     }
                     TableColumn {
                         role: "age"
-                        caption: "Age"
+                        title: "Age"
                         width: 120
                     }
                     TableColumn {
                         role: "gender"
-                        caption: "Gender"
+                        title: "Gender"
                         width: 120
                     }
                     frame: frameCheckbox.checked
@@ -302,17 +302,17 @@ Rectangle {
 
                     TableColumn {
                         role: "name"
-                        caption: "Name"
+                        title: "Name"
                         width: 120
                     }
                     TableColumn {
                         role: "age"
-                        caption: "Age"
+                        title: "Age"
                         width: 120
                     }
                     TableColumn {
                         role: "sex"
-                        caption: "Sex"
+                        title: "Sex"
                         width: 120
                     }
 

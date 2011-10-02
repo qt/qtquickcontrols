@@ -1,7 +1,7 @@
 import QtQuick 1.1
 
 QtObject {
-    property string caption
+    property string title
     property string role
     property int width: 160
     property int x
