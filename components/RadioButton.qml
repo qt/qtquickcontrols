@@ -7,9 +7,9 @@ Components.CheckBox {
     id: radiobutton
     property string text
     property string styleHint
-    width: 110
-    height: 20
 
+    height: 20
+    width: Math.max(110, backgroundItem.textWidth(text) + 40)
     background: StyleItem {
         elementType: "radiobutton"
         sunken: pressed
