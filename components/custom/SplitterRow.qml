@@ -115,6 +115,7 @@ Item {
     default property alias items: splitterItems.children
     property alias handles: splitterHandles.children
     property Component handleBackground: Rectangle { width:3; color: "black" }
+    property int handleWidth: -1
     property real preferredWidth: 0
     clip: true
 

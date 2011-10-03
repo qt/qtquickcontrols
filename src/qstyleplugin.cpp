@@ -73,7 +73,7 @@ public:
         Q_UNUSED(size);
         int pos = id.lastIndexOf('/');
         QString iconName = id.right(id.length() - pos);
-        int width = qApp->style()->pixelMetric(QStyle::PM_ToolBarIconSize);
+        int width = requestedSize.width();
         return QIcon::fromTheme(iconName).pixmap(width);
     }
 };

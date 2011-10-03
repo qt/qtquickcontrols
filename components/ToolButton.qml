@@ -6,6 +6,7 @@ Components.Button {
 
     property alias containsMouse: tooltip.containsMouse
     property string iconName
+    property string styleHint
 
     height: styleitem.sizeFromContents(32, 32).height
     width: styleitem.sizeFromContents(32, 32).width
@@ -34,7 +35,8 @@ Components.Button {
         sunken: pressed
         raised: containsMouse
         hover: containsMouse
-
+        info: __position
+        hint: button.styleHint
         Text {
             text: button.text
             anchors.centerIn: parent
@@ -45,6 +47,9 @@ Components.Button {
         id: themeIcon
         anchors.centerIn: parent
         opacity: enabled ? 1 : 0.5
+        smooth: true
+        sourceSize.width: (styleitem.style === "mac" && button.styleHint.indexOf("mac.segmented") !== -1) ? 16 : 32
+        fillMode: Image.PreserveAspectFit
         Image {
             // Use fallback icon
             anchors.centerIn: parent

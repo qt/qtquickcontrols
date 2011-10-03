@@ -184,7 +184,7 @@ void QStyleItem::initStyleOption()
 
     }
         break;
-    case ToolButton :{
+    case ToolButton: {
         if (!m_styleoption)
             m_styleoption = new QStyleOptionToolButton();
 
@@ -640,7 +640,7 @@ int QStyleItem::pixelMetric(const QString &metric)
     else if (metric == "menupanelwidth")
         return qApp->style()->pixelMetric(QStyle::PM_MenuPanelWidth, 0 , widget());
     else if (metric == "splitterwidth")
-        return 1;//qApp->style()->pixelMetric(QStyle::PM_SplitterWidth, 0 , widget());
+        return qApp->style()->pixelMetric(QStyle::PM_SplitterWidth, 0 , widget());
     // This metric is incorrectly negative on oxygen
     else if (metric == "scrollbarspacing")
         return abs(qApp->style()->pixelMetric(QStyle::PM_ScrollView_ScrollBarSpacing, 0 , widget()));
@@ -954,6 +954,35 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
         qApp->style()->drawControl(QStyle::CE_Header, m_styleoption, painter, widget());
         break;
     case ToolButton:
+
+#ifdef Q_WS_MAC
+        if (style() == "mac" && hint().contains("mac.segmented")) {
+            const QPaintDevice *target = painter->device();
+             HIThemeSegmentDrawInfo sgi;
+            sgi.version = 0;
+            sgi.state = isEnabled() ? kThemeStateActive : kThemeStateDisabled;
+            if (sunken()) sgi.state |= kThemeStatePressed;
+            sgi.size = kHIThemeSegmentSizeNormal;
+            sgi.kind = kHIThemeSegmentKindTextured;
+            sgi.value = on() && !sunken() ? kThemeButtonOn : kThemeButtonOff;
+
+            sgi.adornment |= kHIThemeSegmentAdornmentLeadingSeparator;
+            if (sunken()) {
+                sgi.adornment |= kHIThemeSegmentAdornmentTrailingSeparator;
+            }
+            SInt32 button_height;
+            GetThemeMetric(kThemeMetricButtonRoundedHeight, &button_height);
+            sgi.position = info() == "leftmost" ? kHIThemeSegmentPositionFirst:
+                                                  info() == "rightmost" ? kHIThemeSegmentPositionLast :
+                                                               info() == "h_middle" ? kHIThemeSegmentPositionMiddle :
+                                                                                   kHIThemeSegmentPositionOnly;
+            QRect centered = m_styleoption->rect;
+            centered.setHeight(button_height);
+            centered.moveCenter(m_styleoption->rect.center());
+            HIRect hirect = qt_hirectForQRect(centered.translated(0, -1), QRect(0, 0, 0, 0));
+            HIThemeDrawSegment(&hirect, &sgi, qt_mac_cg_context(target), kHIThemeOrientationNormal);
+        } else
+#endif
         qApp->style()->drawComplexControl(QStyle::CC_ToolButton, qstyleoption_cast<QStyleOptionComplex*>(m_styleoption), painter, widget());
         break;
     case Tab:
@@ -1012,8 +1041,10 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
         qApp->style()->drawPrimitive(QStyle::PE_PanelScrollAreaCorner, m_styleoption, painter, widget());
         break;
     case Splitter:
-        painter->fillRect(0, 0, width(), height(), m_styleoption->palette.dark().color());
-        //        qApp->style()->drawControl(QStyle::CE_Splitter, m_styleoption, painter, widget());
+        if (m_styleoption->rect.width() == 1)
+            painter->fillRect(0, 0, width(), height(), m_styleoption->palette.dark().color());
+        else
+            qApp->style()->drawControl(QStyle::CE_Splitter, m_styleoption, painter, widget());
         break;
     case ComboBox:
     {

@@ -5,7 +5,7 @@ Components.SplitterRow {
     handleBackground: StyleItem {
         id: styleitem
         elementType: "splitter"
-        width: pixelMetric("splitterwidth")
+        width: handleWidth != -1 ?  handleWidth : pixelMetric("splitterwidth")
         property alias pressed: mouseArea.pressed
         property bool dragged: mouseArea.drag.active
 
