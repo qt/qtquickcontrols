@@ -827,6 +827,8 @@ void QStyleItem::setElementType(const QString &str)
         m_itemType = Dial;
     } else if (str == "statusbar") {
         m_itemType = StatusBar;
+    } else if (str == "machelpbutton") {
+        m_itemType = MacHelpButton;
     } else if (str == "scrollareacorner") {
         m_itemType = ScrollAreaCorner;
     }
@@ -1033,6 +1035,20 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
 #endif
         qApp->style()->drawPrimitive(QStyle::PE_PanelLineEdit, m_styleoption, painter, widget());
     }
+        break;
+    case MacHelpButton:
+#ifdef Q_WS_MAC
+    {
+        const QPaintDevice *target = painter->device();
+        HIThemeButtonDrawInfo fdi;
+        fdi.kind = kThemeRoundButtonHelp;
+        fdi.version = 0;
+        fdi.adornment = 0;
+        fdi.state = sunken() ? kThemeStatePressed : kThemeStateActive;
+        HIRect hirect = qt_hirectForQRect(m_styleoption->rect,QRect(0, 0, 0, 0));
+        HIThemeDrawButton(&hirect, &fdi, qt_mac_cg_context(target), kHIThemeOrientationNormal, NULL);
+    }
+#endif
         break;
     case Widget:
         qApp->style()->drawPrimitive(QStyle::PE_Widget, m_styleoption, painter, widget());

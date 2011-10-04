@@ -105,7 +105,8 @@ public:
         MenuItem,
         Widget,
         StatusBar,
-        ScrollAreaCorner
+        ScrollAreaCorner,
+        MacHelpButton
     };
 
     QStyleItem(QDeclarativeItem *parent = 0);
