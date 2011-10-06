@@ -40,7 +40,8 @@ QML_FILES = \
             SplitterColumn.qml \
             StatusBar.qml \
             TableColumn.qml \
-            TextField.qml
+            TextField.qml \
+            ApplicationWindow.qml
 
 QML_DIRS = \
         custom \
