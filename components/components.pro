@@ -9,6 +9,7 @@ symbian {
 
 QML_FILES = \
             qmldir \
+            Label.qml \
             Button.qml \
             ComboBox.qml \
             Dial.qml \

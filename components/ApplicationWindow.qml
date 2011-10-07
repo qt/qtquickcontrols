@@ -8,6 +8,15 @@ Window {
     property alias statusBar: statusBarArea.data
     default property alias data: contentArea.data
 
+    SystemPalette {id: syspal}
+
+
+    Rectangle {
+        anchors.fill: parent
+        color: syspal.button
+    }
+
+
     Column {
         id: toolBarArea
         anchors.top: parent.top
