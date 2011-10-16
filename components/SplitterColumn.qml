@@ -81,13 +81,13 @@ import "custom" as Components
 *        anchors.fill: parent
 *
 *        Rectangle {
-*            property real maximumHeight: 400
+*            Splitter.aximumHeight: 400
 *            color: "gray"
 *            height: 200
 *        }
 *        Rectangle {
-*            property real minimumHeight: 50
-*            property bool expanding: true
+*            Splitter.minimumHeight: 50
+*            Splitter.expanding: true
 *            color: "darkgray"
 *        }
 *        Rectangle {
