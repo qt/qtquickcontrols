@@ -34,6 +34,7 @@ QtSplitterAttached::QtSplitterAttached(QObject *object)
       m_minimumSize(-1),
       m_maximumSize(-1),
       m_percentageSize(-1),
+      m_itemIndex(-1),
       m_expanding(false)
 {
 }

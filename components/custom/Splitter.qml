@@ -32,10 +32,9 @@ Splitter {
         {
             for (var i=0; i<items.length; ++i) {
                 var item = items[i];
-                // If the item has an 'itemIndex' defined, assign it a value:
-                if (item.itemIndex != undefined)
-                    item.itemIndex = i
 
+                item.Splitter.itemIndex = i
+                print("set "+item.Splitter.itemIndex + " " + i)
                 // Assign one, and only one, item to be expanding:
                 if (item.Splitter.expanding === true) {
                     if (d.expandingIndex === -1 && item.visible === true)
@@ -306,7 +305,7 @@ Splitter {
             property real percentageSize: parent.Splitter.percentageSize
             property real minimumWidth: parent.Splitter.minimumSize
             property real maximumSize: parent.Splitter.maximumSize
-            property int itemIndex: 0
+            property int itemIndex: parent.Splitter.itemIndex
 
             onPercentageSizeChanged: d.updateLayout();
             onMinimumWidthChanged: d.updateLayout();

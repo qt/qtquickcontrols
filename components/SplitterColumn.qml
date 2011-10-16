@@ -55,20 +55,20 @@ import "custom" as Components
 *   the expanding item. If the expanding item has a minimum height, the minimum height will
 *   be included.
 *
-* The following properties can optionally be added for each child item of SplitterColumn:
+* The following attached properties can be used for each child item of SplitterColumn:
 *
-* real minimumHeight - ensures that the item cannot be resized below the
-*   given value. A value of -1 will disable it.
-* real maximumHeight - ensures that the item cannot be resized above the
-*   given value. A value of -1 will disable it.
+* real Splitter.minimumSize - ensures that the item cannot be resized below the
+*   given pixelvalue. A value of -1 will disable it.
+* real Splitter.maximumSize - ensures that the item cannot be resized above the
+*   given pixelvalue. A value of -1 will disable it.
 * real percentageHeight - This value specifies a percentage (0 - 100) of the height of the
 *   SplitterColumn height. If the height of the SplitterColumn change, the height of the item will
 *   change as well. 'percentageHeight' have precedence over 'height', which means that
 *   SplitterColumn will ignore any assignments to 'height'. A value of -1 disables it.
-* bool expanding - See explanation of 'expanding' above. If set to true, the current item
+* bool Splitter.expanding - See explanation of 'expanding' above. If set to true, the current item
 *   will be the expanding item in the SplitterColumn. If set to false, the SplitterColumn will
 *   autmatically choose the last visible child of the SplitterColumn as expanding instead.
-* int itemIndex - will be assigned a read-only value with the item index. Can be used to e.g. look-up
+* int Splitter.itemIndex - will be assigned a read-only value with the item index. Can be used to e.g. look-up
 *   the handles sourrounding the item (parent.handles[itemIndex])
 *
 * Example:
@@ -81,12 +81,12 @@ import "custom" as Components
 *        anchors.fill: parent
 *
 *        Rectangle {
-*            Splitter.aximumHeight: 400
+*            Splitter.maximumSize: 400
 *            color: "gray"
 *            height: 200
 *        }
 *        Rectangle {
-*            Splitter.minimumHeight: 50
+*            Splitter.minimumSize: 50
 *            Splitter.expanding: true
 *            color: "darkgray"
 *        }

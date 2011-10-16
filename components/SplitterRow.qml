@@ -55,20 +55,20 @@ import "custom" as Components
 *   the expanding item. If the expanding item has a minimum width, the minimum width will
 *   be included.
 *
-* The following properties can optionally be added for each child item of SplitterRow:
+* The following attached properties can optionally be used for each child item of SplitterRow:
 *
-* real minimumWidth - ensures that the item cannot be resized below the
+* real Splitter.minimumSize - ensures that the item cannot be resized below the
+*   given pixelvalue. A value of -1 will disable it.
+* real Splitter.maximumSixe - ensures that the item cannot be resized above the
 *   given value. A value of -1 will disable it.
-* real maximumWidth - ensures that the item cannot be resized above the
-*   given value. A value of -1 will disable it.
-* real percentageWidth - This value specifies a percentage (0 - 100) of the width of the
+* real Splitter.percentageSize - This value specifies a percentage (0 - 100) of the width of the
 *   SplitterRow width. If the width of the SplitterRow change, the width of the item will
 *   change as well. 'percentageWidth' have precedence over 'width', which means that
 *   SplitterRow will ignore any assignments to 'width'. A value of -1 disables it.
-* bool expanding - See explanation of 'expanding' above. If set to true, the current item
+* bool Splitter.expanding - See explanation of 'expanding' above. If set to true, the current item
 *   will be the expanding item in the SplitterRow. If set to false, the SplitterRow will
 *   autmatically choose the last visible child of the SplitterRow as expanding instead.
-* int itemIndex - will be assigned a read-only value with the item index. Can be used to e.g. look-up
+* int Splitter.itemIndex - will be assigned a read-only value with the item index. Can be used to e.g. look-up
 *   the handles sourrounding the item (parent.handles[itemIndex])
 *
 * Example:
@@ -81,13 +81,13 @@ import "custom" as Components
 *        anchors.fill: parent
 *
 *        Rectangle {
-*            property real maximumWidth: 400
+*            Splitter.maximumWidth: 400
 *            color: "gray"
 *            width: 200
 *        }
 *        Rectangle {
-*            property real minimumWidth: 50
-*            property bool expanding: true
+*            Splitter.minimumWidth: 50
+*            Splitter.expanding: true
 *            color: "darkgray"
 *        }
 *        Rectangle {
