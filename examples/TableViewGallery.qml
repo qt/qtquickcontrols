@@ -9,7 +9,7 @@ Rectangle {
     ToolBar {
         id: toolbar
         width: parent.width
-        height: 40
+        //height: 40
 
         MouseArea {
             anchors.fill:  parent

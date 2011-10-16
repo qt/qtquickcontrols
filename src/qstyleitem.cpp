@@ -78,7 +78,11 @@ QStyleItem::QStyleItem(QDeclarativeItem *parent)
       m_minimum(0),
       m_maximum(100),
       m_value(0),
-      m_paintMargins(0)
+      m_paintMargins(0),
+      m_implicitWidth(0),
+      m_implicitHeight(0),
+      m_contentWidth(0),
+      m_contentHeight(0)
 {
     setFlag(QGraphicsItem::ItemHasNoContents, false);
     setCacheMode(QGraphicsItem::DeviceCoordinateCache);
@@ -101,6 +105,10 @@ QStyleItem::QStyleItem(QDeclarativeItem *parent)
     connect(this, SIGNAL(hasFocusChanged()), this, SLOT(updateItem()));
     connect(this, SIGNAL(activeControlChanged()), this, SLOT(updateItem()));
     connect(this, SIGNAL(elementTypeChanged()), this, SLOT(updateItem()));
+
+    connect(this, SIGNAL(textChanged()), this, SLOT(updateSizeHint()));
+    connect(this, SIGNAL(contentWidthChanged(int)), this, SLOT(updateSizeHint()));
+    connect(this, SIGNAL(contentHeightChanged(int)), this, SLOT(updateSizeHint()));
 }
 
 QStyleItem::~QStyleItem()
@@ -369,10 +377,12 @@ void QStyleItem::initStyleOption()
         opt->text = text();
         opt->lineWidth = 1;
         opt->subControls = QStyle::SC_GroupBoxLabel;
-        if (sunken()) // Qt draws an ugly line here so I ignore it
+        opt->features = 0;
+        if (sunken()) { // Qt draws an ugly line here so I ignore it
             opt->subControls |= QStyle::SC_GroupBoxFrame;
-        else
+        } else {
             opt->features |= QStyleOptionFrameV2::Flat;
+        }
         if (activeControl() == "checkbox")
             opt->subControls |= QStyle::SC_GroupBoxCheckBox;
 
@@ -551,6 +561,9 @@ QSize QStyleItem::sizeFromContents(int width, int height)
     case CheckBox:
         size =  qApp->style()->sizeFromContents(QStyle::CT_CheckBox, m_styleoption, QSize(width,height), widget());
         break;
+    case ToolBar:
+        size = QSize(200, 40);
+        break;
     case ToolButton:
         size = qApp->style()->sizeFromContents(QStyle::CT_ToolButton, m_styleoption, QSize(width,height), widget());
         break;
@@ -608,6 +621,12 @@ QSize QStyleItem::sizeFromContents(int width, int height)
     return size;
 }
 
+void QStyleItem::updateSizeHint()
+{
+    QSize implicitSize = sizeFromContents(m_contentWidth, m_contentHeight);
+    m_implicitWidth = implicitSize.width();
+    m_implicitHeight = implicitSize.height();
+}
 
 int QStyleItem::pixelMetric(const QString &metric)
 {
@@ -844,6 +863,7 @@ void QStyleItem::setElementType(const QString &str)
         m_dummywidget->setAttribute(Qt::WA_DontShowOnScreen);
         m_dummywidget->setVisible(visible);
     }
+    updateSizeHint();
 }
 
 bool QStyleItem::eventFilter(QObject *o, QEvent *e) {
@@ -1172,6 +1192,16 @@ double QStyleItem::fontPointSize()
     if (widget())
         return widget()->font().pointSizeF();
     return qApp->font().pointSizeF();
+}
+
+int QStyleItem::implicitHeight()
+{
+    return m_implicitHeight;
+}
+
+int QStyleItem::implicitWidth()
+{
+    return m_implicitWidth;
 }
 
 bool QStyleItem::hasThemeIcon(const QString &icon) const

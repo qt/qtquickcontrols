@@ -72,6 +72,11 @@ class QStyleItem: public QDeclarativeItem
     Q_PROPERTY( int step READ step WRITE setStep NOTIFY stepChanged)
     Q_PROPERTY( int paintMargins READ paintMargins WRITE setPaintMargins NOTIFY paintMarginsChanged)
 
+    Q_PROPERTY( int implicitWidth READ implicitWidth() NOTIFY implicitWidthChanged)
+    Q_PROPERTY( int implicitHeight READ implicitHeight() NOTIFY implicitHeightChanged)
+    Q_PROPERTY( int contentWidth READ contentWidth() WRITE setContentWidth NOTIFY contentWidthChanged)
+    Q_PROPERTY( int contentHeight READ contentHeight() WRITE setContentHeight NOTIFY contentHeightChanged)
+
     Q_PROPERTY( QString fontFamily READ fontFamily NOTIFY fontHeightChanged)
     Q_PROPERTY( double fontPointSize READ fontPointSize NOTIFY fontHeightChanged)
     Q_PROPERTY( int fontHeight READ fontHeight NOTIFY fontHeightChanged)
@@ -168,16 +173,43 @@ public:
     QString fontFamily();
     double fontPointSize();
 
+    int implicitHeight();
+    int implicitWidth();
+
+    int contentWidth() const {
+        return m_contentWidth;
+    }
+
+    int contentHeight() const {
+        return m_contentHeight;
+    }
+
 public Q_SLOTS:
     int pixelMetric(const QString&);
     QVariant styleHint(const QString&);
-    QSize sizeFromContents(int width, int height);
+    void updateSizeHint();
     void updateItem(){update();}
     QString hitTest(int x, int y);
     QRect subControlRect(const QString &subcontrolString);
     QString elidedText(const QString &text, int elideMode, int width);
     int textWidth(const QString &);
     bool hasThemeIcon(const QString &) const;
+
+    void setContentWidth(int arg)
+    {
+        if (m_contentWidth != arg) {
+            m_contentWidth = arg;
+            emit contentWidthChanged(arg);
+        }
+    }
+
+    void setContentHeight(int arg)
+    {
+        if (m_contentHeight != arg) {
+            m_contentHeight = arg;
+            emit contentHeightChanged(arg);
+        }
+    }
 
 Q_SIGNALS:
     void elementTypeChanged();
@@ -200,6 +232,15 @@ Q_SIGNALS:
     void paintMarginsChanged();
     void hintChanged();
     void fontHeightChanged();
+
+    void implicitHeightChanged(int arg);
+    void implicitWidthChanged(int arg);
+
+    void contentWidthChanged(int arg);
+    void contentHeightChanged(int arg);
+
+private:
+    QSize sizeFromContents(int width, int height);
 
 protected:
     QWidget *m_dummywidget;
@@ -227,6 +268,12 @@ protected:
     int m_value;
     int m_step;
     int m_paintMargins;
+
+    int m_implicitWidth;
+    int m_implicitHeight;
+    int m_contentWidth;
+    int m_contentHeight;
+
 };
 
 #endif //STYLEWRAPPER_H

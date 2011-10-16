@@ -9,13 +9,17 @@ Components.Slider{
     property bool tickmarksEnabled: true
     property string tickPosition: "Below" // "Above", "Below", "BothSides"
 
-    StyleItem { id:buttonitem; elementType: "slider" }
+    StyleItem {
+        id:buttonitem
+        elementType: "slider"
+        contentWidth:23
+        contentHeight:23
+    }
 
-    property variant sizehint: buttonitem.sizeFromContents(23, 23)
     property int orientation: Qt.Horizontal
 
-    implicitWidth: orientation === Qt.Horizontal ? 200 : sizehint.height
-    implicitHeight: orientation === Qt.Horizontal ? sizehint.height : 200
+    implicitWidth: orientation === Qt.Horizontal ? 200 : buttonitem.implicitHeight
+    implicitHeight: orientation === Qt.Horizontal ? buttonitem.implicitHeight : 200
 
     property string styleHint;
 

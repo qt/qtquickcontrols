@@ -3,8 +3,8 @@ import QtQuick 1.1
 Item {
     id: groupbox
 
-    width: adjustToContentSize ? Math.max(200, contentWidth + loader.leftMargin + loader.rightMargin) : 100
-    height: adjustToContentSize ? contentHeight + loader.topMargin + loader.bottomMargin : 100
+    implicitWidth: adjustToContentSize ? Math.max(200, contentWidth + loader.leftMargin + loader.rightMargin) : 100
+    implicitHeight: adjustToContentSize ? contentHeight + loader.topMargin + loader.bottomMargin : 100
 
     default property alias data: content.data
 

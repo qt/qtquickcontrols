@@ -4,11 +4,10 @@ import "custom" as Components
 Components.Button {
     id: button
 
-    implicitWidth: Math.max(72, sizehint.width)
-    implicitHeight: Math.max(22, sizehint.height)
+    implicitWidth: Math.max(72, backgroundItem.implicitWidth)
+    implicitHeight: Math.max(22, backgroundItem.implicitHeight)
 
     property alias containsMouse: tooltip.containsMouse
-    property variant sizehint: backgroundItem.sizeFromContents(80, 6)
     property bool defaultbutton: false
     property string styleHint
 

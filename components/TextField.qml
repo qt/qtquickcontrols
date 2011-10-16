@@ -11,8 +11,8 @@ Components.TextField {
     leftMargin: 6
     rightMargin: 6
 
-    implicitWidth: 200
-    implicitHeight: backgroundItem.sizeFromContents(200, 25).height
+    implicitWidth: backgroundItem.implicitWidth
+    implicitHeight: backgroundItem.implicitHeight
 
     clip: false
 
@@ -25,6 +25,8 @@ Components.TextField {
         hasFocus: textfield.activeFocus
         hover: containsMouse
         hint: textfield.styleHint
+        contentWidth: 200
+        contentHeight: 25
     }
 
     Item{

@@ -22,8 +22,8 @@ Item {
     // implementation
 
     property string __position: "only"
-    width: backgroundLoader.item.width
-    height: backgroundLoader.item.height
+    implicitWidth: backgroundLoader.item.width
+    implicitHeight: backgroundLoader.item.height
 
     function animateClick() {
         behavior.pressed = true

@@ -359,7 +359,7 @@ FocusScope{
                         property variant modelData: itemModelData
 
                         width: header[index].width
-                        height: item ? item.height :  Math.max(16, styleitem.sizeFromContents(16, 16).height)
+                        height: item ? item.height :  Math.max(16, styleitem.implicitHeight)
 
                         function getValue() {
                             if (header[index].role.length && hasOwnProperty(header[index].role))
@@ -397,7 +397,7 @@ FocusScope{
 
         clip: true
         visible: headerVisible
-        height: headerVisible ? styleitem.sizeFromContents(text.font.pixelSize, styleitem.fontHeight).height : frameWidth
+        height: headerVisible ? styleitem.implicitHeight : frameWidth
 
         Behavior on height { NumberAnimation{ duration: 80 } }
 
@@ -578,6 +578,8 @@ FocusScope{
         id: styleitem
         elementType: "header"
         visible:false
+        contentWidth: 16
+        contentHeight: fontHeight
     }
 
     StyleItem {

@@ -4,12 +4,11 @@ import "custom" as Components
 Components.ProgressBar {
     id:progressbar
 
-    property variant sizehint: backgroundItem.sizeFromContents(23, 23)
     property int orientation: Qt.Horizontal
     property string styleHint
 
-    implicitWidth: orientation === Qt.Horizontal ? 200 : sizehint.height
-    implicitHeight: orientation === Qt.Horizontal ? sizehint.height : 200
+    implicitWidth: orientation === Qt.Horizontal ? 200 : backgroundItem.implicitHeight
+    implicitHeight: orientation === Qt.Horizontal ? backgroundItem.implicitHeight : 200
 
 
     SystemPalette {id: syspal}
@@ -26,6 +25,8 @@ Components.ProgressBar {
         enabled: progressbar.enabled
         horizontal: progressbar.orientation == Qt.Horizontal
         hint: progressbar.styleHint
+        contentWidth: 23
+        contentHeight: 23
     }
 }
 

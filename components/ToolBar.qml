@@ -5,6 +5,6 @@ import "custom" as Components
 StyleItem {
     id: toolbar
     width: parent ? parent.width : 200
-    height: 40
+    height: implicitHeight
     elementType: "toolbar"
 }

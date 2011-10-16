@@ -16,10 +16,16 @@ Components.SpinBox {
     leftMargin:6
     rightMargin:6
 
-    StyleItem { id:edititem ; elementType:"edit" ; visible:false }
+    StyleItem {
+        id:edititem
+        elementType: "edit"
+        visible: false
+        contentWidth: 70
+        contentHeight: 20
+    }
 
-    implicitWidth: edititem.sizeFromContents(70, 20).width
-    implicitHeight: edititem.sizeFromContents(70, 20).height
+    implicitWidth: edititem.implicitWidth
+    implicitHeight: edititem.implicitHeight
 
     clip:false
 

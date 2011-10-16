@@ -8,16 +8,14 @@ Components.Button {
     property string iconName
     property string styleHint
 
-    implicitWidth: styleitem.sizeFromContents(32, 32).width
-    implicitHeight: styleitem.sizeFromContents(32, 32).height
+    implicitWidth: backgroundItem.implicitWidth
+    implicitHeight: backgroundItem.implicitHeight
 
     onIconNameChanged: {
-        if (styleitem.hasThemeIcon(iconName)) {
+        if (backgroundItem && backgroundItem.hasThemeIcon(iconName)) {
             themeIcon.source = "image://desktoptheme/" + button.iconName;
         }
     }
-
-    StyleItem {elementType: "toolbutton"; id:styleitem}
 
     TooltipArea {
         // Note this will eat hover events
@@ -36,7 +34,10 @@ Components.Button {
         hover: containsMouse
         info: __position
         hint: button.styleHint
+        contentWidth: Math.max(textitem.paintedWidth, 32)
+        contentHeight: 32
         Text {
+            id: textitem
             text: button.text
             anchors.centerIn: parent
             visible: button.iconSource == ""
