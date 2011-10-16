@@ -19,7 +19,7 @@ import "private"
 *
 * There will always be one (and only one) item in the SplitterRow that is 'expanding'.
 * The expanding item is the child that will get all the remaining space in the SplitterRow
-* (down to its own mimimumSize) when all other items have been layed out.
+* (down to its own mimimumWidth/Height) when all other items have been layed out.
 * This means that that 'width', 'percentageWidth' and 'maximumWidth' will be ignored for this item.
 * By default, the last visible child item of the SplitterRow will be 'expanding'.
 *
@@ -42,7 +42,7 @@ import "private"
 *   Item handle - convenience property that points to the item where the handle background is
 *       instanciated as a child. Identical to splitterRow.handles[handleIndex]. The handle
 *       background iteself can be accessed through handle.item.
-*       Modify 'handle.x' to move the handle (or change 'width' of SplitterRow child items).
+*       Modify 'handle[d.offset]' to move the handle (or change 'width' of SplitterRow child items).
 *   Item splitterItem - convenience property that points to the child item that the handle controls.
 *       Also refer to information about the expanding item above.
 *   Item splitterRow - points to the SplitterRow that the handle is in.
@@ -51,7 +51,7 @@ import "private"
 *   be populated after all child items has completed, so accessing it from Component.onCompleted
 *   inside a SplitterRow child item will not work.  To get to the handle background, access the
 *   'background' property of the handle, e.g. handles[0].background. Read-only.
-* real preferredWidth - contains the accumulated with of all child items and handles, except
+* real preferredWidth/Height - contains the accumulated with of all child items and handles, except
 *   the expanding item. If the expanding item has a minimum width, the minimum width will
 *   be included.
 *
@@ -116,14 +116,24 @@ Item {
     property alias handles: splitterHandles.children
     property Component handleBackground: Rectangle { width:3; color: "black" }
     property int handleWidth: -1
-    property real preferredWidth: 0
-    clip: true
+    property real preferredSize: 0
+    property int orientation: Qt.Horizontal
 
+    clip: true
     Component.onCompleted: d.init();
     onWidthChanged: d.updateLayout();
+    onHeightChanged: d.updateLayout();
 
     QtObject {
         id: d
+
+        property bool horizontal: orientation == Qt.Horizontal
+        property string size: horizontal ? "width" : "height"
+        property string minimumSize: horizontal ? "minimumWidth" : "minimumHeight"
+        property string maximumSize: horizontal ? "maximumWidth" : "maximumHeight"
+
+        property string percentageSize: horizontal ? "percentageWidth" : "percentageHeight"
+        property string offset: horizontal ? "x" : "y"
         property int expandingIndex: -1
         property bool updateLayoutGuard: true
         property bool itemWidthGuard: false
@@ -146,8 +156,14 @@ Item {
                 }
 
                 // Anchor each item to fill out all space vertically:
-                item.anchors.top = splitterItems.top
-                item.anchors.bottom = splitterItems.bottom
+                if (d.horizontal) {
+                    item.anchors.top = splitterItems.top
+                    item.anchors.bottom = splitterItems.bottom
+                } else  {
+                    item.anchors.left = splitterItems.left
+                    item.anchors.right = splitterItems.right
+
+                }
 
                 // Listen for changes to width and expanding:
                 propertyChangeListener.createObject(item, {"itemIndex":i});
@@ -155,8 +171,13 @@ Item {
                     // Create a handle for the item, unless its the last:
                     var handle = handleBackgroundLoader.createObject(splitterHandles, {"handleIndex":i});
 
-                    handle.anchors.top = splitterHandles.top
-                    handle.anchors.bottom = splitterHandles.bottom
+                    if (d.horizontal) {
+                        handle.anchors.top = splitterHandles.top
+                        handle.anchors.bottom = splitterHandles.bottom
+                    } else {
+                        handle.anchors.left = splitterHandles.left
+                        handle.anchors.right = splitterHandles.right
+                    }
                 }
             }
 
@@ -181,7 +202,7 @@ Item {
             d.updateLayout()
         }
 
-        function accumulatedWidth(firstIndex, lastIndex, includeExpandingMinimum)
+        function accumulatedSize(firstIndex, lastIndex, includeExpandingMinimum)
         {
             // Go through items and handles, and
             // calculate their acummulated width.
@@ -190,14 +211,14 @@ Item {
                 var item = items[i]
                 if (item.visible) {
                     if (i !== d.expandingIndex)
-                        w += item.width;
-                    else if (includeExpandingMinimum && item.minimumWidth != undefined && item.minimumWidth != -1)
-                        w += item.minimumWidth
+                        w += item[d.size];
+                    else if (includeExpandingMinimum && item[d.minimumSize] != undefined && item[d.minimumSize] != -1)
+                        w += item[d.minimumSize]
                 }
 
                 var handle = handles[i]
                 if (handle && items[i + ((d.expandingIndex > i) ? 0 : 1)].visible)
-                    w += handle.width
+                    w += handle[d.size]
             }
             return w
         }
@@ -222,57 +243,57 @@ Item {
                     item = items[i];
                     // If the item is using percentage width, convert
                     // that number to real width now:
-                    if (item.percentageWidth != undefined && item.percentageWidth !== -1) {
-                        newValue = item.percentageWidth * (root.width / 100)
-                        if (newValue !== item.width)
-                            item.width = newValue
+                    if (item[d.percentageSize] != undefined && item[d.percentageSize] !== -1) {
+                        newValue = item[d.percentageSize] * (root[d.size] / 100)
+                        if (newValue !== item[d.size])
+                            item[d.size] = newValue
                     }
-                    // Ensure item width is not more than maximumWidth:
-                    if (item.maximumWidth != undefined && item.maximumWidth != -1) {
-                        newValue = Math.min(item.width, item.maximumWidth)
-                        if (newValue !== item.width)
-                            item.width = newValue
+                    // Ensure item width is not more than maximumSize:
+                    if (item.maximumSize != undefined && item.maximumSize != -1) {
+                        newValue = Math.min(item[d.size], item.maximumSize)
+                        if (newValue !== item[d.size])
+                            item[d.size] = newValue
                     }
                     // Ensure item width is not more less minimumWidth:
-                    if (item.minimumWidth != undefined && item.minimumWidth != -1) {
-                        newValue = Math.max(item.width, item.minimumWidth)
-                        if (newValue !== item.width)
-                            item.width = newValue
+                    if (item[d.minimumSize] != undefined && item[d.minimumSize] != -1) {
+                        newValue = Math.max(item[d.size], item[d.minimumSize])
+                        if (newValue !== item[d.size])
+                            item[d.size] = newValue
                     }
                 }
             }
 
             // Special case: set width of expanding item to available space:
-            newValue = root.width - d.accumulatedWidth(0, items.length, false);
+            newValue = root[d.size] - d.accumulatedSize(0, items.length, false);
             var expandingItem = items[d.expandingIndex]
             var expandingMinimum = 0
-            if (expandingItem.minimumWidth != undefined && expandingItem.minimumWidth != -1)
-                expandingMinimum = expandingItem.minimumWidth
+            if (expandingItem[d.minimumSize] != undefined && expandingItem[d.minimumSize] != -1)
+                expandingMinimum = expandingItem[d.minimumSize]
             newValue = Math.max(newValue, expandingMinimum)
-            if (expandingItem.width != 0 && expandingItem.percentageWidth != undefined && expandingItem.percentageWidth !== -1)
-                expandingItem.percentageWidth = newValue * (100 / root.width)
-            if (expandingItem.width !== newValue)
-                expandingItem.width = newValue
+            if (expandingItem[d.size] != 0 && expandingItem[d.percentageSize] != undefined && expandingItem[d.percentageSize] !== -1)
+                expandingItem[d.percentageSize] = newValue * (100 / root[d.size])
+            if (expandingItem[d.size] !== newValue)
+                expandingItem[d.size] = newValue
 
             // Then, position items and handles according to their width:
             var item, lastVisibleItem
             var handle, lastVisibleHandle
-            var newPreferredWidth = expandingMinimum - expandingItem.width
+            var newpreferredSize = expandingMinimum - expandingItem[d.size]
 
             for (i=0; i<items.length; ++i) {
                 // Position item to the right of the previous visible handle:
                 item = items[i];
                 if (item.visible) {
                     if (lastVisibleHandle) {
-                        newValue = lastVisibleHandle.x + lastVisibleHandle.width
-                        if (newValue !== item.x)
-                            item.x = newValue
+                        newValue = lastVisibleHandle[d.offset] + lastVisibleHandle[d.size]
+                        if (newValue !== item[d.offset])
+                            item[d.offset] = newValue
                     } else {
                         newValue = 0
-                        if (newValue !== item.x)
-                            item.x = newValue
+                        if (newValue !== item[d.offset])
+                            item[d.offset] = newValue
                     }
-                    newPreferredWidth += item.width
+                    newpreferredSize += item[d.size]
                     lastVisibleItem = item
                 }
 
@@ -280,15 +301,15 @@ Item {
                 // checking handle visibility because that property might not have updated correctly yet:
                 handle = handles[i]
                 if (handle && items[i + ((d.expandingIndex > i) ? 0 : 1)].visible) {
-                    newValue = lastVisibleItem.x + Math.max(0, lastVisibleItem.width)
-                    if (newValue !== handle.x)
-                        handle.x = newValue
-                    newPreferredWidth += handle.width
+                    newValue = lastVisibleItem[d.offset] + Math.max(0, lastVisibleItem[d.size])
+                    if (newValue !== handle[d.offset])
+                        handle[d.offset] = newValue
+                    newpreferredSize += handle[d.size]
                     lastVisibleHandle = handle
                 }
             }
 
-            root.preferredWidth = newPreferredWidth
+            root.preferredSize = newpreferredSize
             d.updateLayoutGuard = false
         }
     }
@@ -329,48 +350,48 @@ Item {
                     for (i=handleIndex-1; i>=0; --i) {
                         leftHandle = handles[i]
                         if (leftHandle.visible) {
-                            leftEdge = leftHandle.x + leftHandle.width
+                            leftEdge = leftHandle[d.offset] + leftHandle[d.size]
                             break;
                         }
                     }
 
-                    // Ensure: leftStopX >= myHandle.x >= rightStopX
-                    var min = d.accumulatedWidth(handleIndex+1, items.length, true)
-                    rightStopX = root.width - min - myHandle.width
-                    leftStopX = Math.max(leftEdge, myHandle.x)
-                    myHandle.x = Math.min(rightStopX, Math.max(leftStopX, myHandle.x))
+                    // Ensure: leftStopX >= myHandle[d.offset] >= rightStopX
+                    var min = d.accumulatedSize(handleIndex+1, items.length, true)
+                    rightStopX = root[d.size] - min - myHandle[d.size]
+                    leftStopX = Math.max(leftEdge, myHandle[d.offset])
+                    myHandle[d.offset] = Math.min(rightStopX, Math.max(leftStopX, myHandle[d.offset]))
 
-                    newWidth = myHandle.x - leftEdge
+                    newWidth = myHandle[d.offset] - leftEdge
                     leftItem = items[handleIndex]
-                    if (root.width != 0 && leftItem.percentageWidth != undefined && leftItem.percentageWidth !== -1)
-                        leftItem.percentageWidth = newWidth * (100 / root.width)
+                    if (root[d.size] != 0 && leftItem[d.percentageSize] != undefined && leftItem[d.percentageSize] !== -1)
+                        leftItem[d.percentageSize] = newWidth * (100 / root[d.size])
                     // The next line will trigger 'updateLayout' inside 'propertyChangeListener':
-                    leftItem.width = newWidth
+                    leftItem[d.size] = newWidth
                 } else {
                     // Resize item to the right.
                     // Ensure that the handle is not crossing other handles. So
                     // find the first visible handle to the right to determine the right edge:
-                    rightEdge = root.width
+                    rightEdge = root[d.size]
                     for (i=handleIndex+1; i<handles.length; ++i) {
                         rightHandle = handles[i]
                         if (rightHandle.visible) {
-                            rightEdge = rightHandle.x
+                            rightEdge = rightHandle[d.offset]
                             break;
                         }
                     }
 
-                    // Ensure: leftStopX <= myHandle.x <= rightStopX
-                    var min = d.accumulatedWidth(0, handleIndex+1, true)
-                    leftStopX = min - myHandle.width
-                    rightStopX = Math.min((rightEdge - myHandle.width), myHandle.x)
-                    myHandle.x = Math.max(leftStopX, Math.min(myHandle.x, rightStopX))
+                    // Ensure: leftStopX <= myHandle[d.offset] <= rightStopX
+                    var min = d.accumulatedSize(0, handleIndex+1, true)
+                    leftStopX = min - myHandle[d.size]
+                    rightStopX = Math.min((rightEdge - myHandle[d.size]), myHandle[d.offset])
+                    myHandle[d.offset] = Math.max(leftStopX, Math.min(myHandle[d.offset], rightStopX))
 
-                    newWidth = rightEdge - (myHandle.x + myHandle.width)
+                    newWidth = rightEdge - (myHandle[d.offset] + myHandle[d.size])
                     rightItem = items[handleIndex+1]
-                    if (root.width != 0 && rightItem.percentageWidth != undefined && rightItem.percentageWidth !== -1)
-                        rightItem.percentageWidth = newWidth * (100 / root.width)
+                    if (root[d.size] != 0 && rightItem[d.percentageSize] != undefined && rightItem[d.percentageSize] !== -1)
+                        rightItem[d.percentageSize] = newWidth * (100 / root[d.size])
                     // The next line will trigger 'updateLayout' inside 'propertyChangeListener':
-                    rightItem.width = newWidth
+                    rightItem[d.size] = newWidth
                 }
             }
         }
@@ -392,16 +413,16 @@ Item {
         id: propertyChangeListener
         Item {
             id: target
-            width: parent.width
+            width: parent[d.size]
             property bool expanding: (parent.expanding != undefined) ? parent.expanding : false
-            property real percentageWidth: (parent.percentageWidth != undefined) ? parent.percentageWidth : -1
-            property real minimumWidth: (parent.minimumWidth != undefined) ? parent.minimumWidth : -1
-            property real maximumWidth: (parent.maximumWidth != undefined) ? parent.maximumWidth : -1
+            property real percentageWidth: (parent[d.percentageSize] != undefined) ? parent[d.percentageSize] : -1
+            property real minimumWidth: (parent[d.minimumSize] != undefined) ? parent[d.minimumSize] : -1
+            property real maximumSize: (parent.maximumSize != undefined) ? parent.maximumSize : -1
             property int itemIndex: 0
 
             onPercentageWidthChanged: d.updateLayout();
             onMinimumWidthChanged: d.updateLayout();
-            onMaximumWidthChanged: d.updateLayout();
+            onMaximumSizeChanged: d.updateLayout();
             onExpandingChanged: updateExpandingIndex()
 
             function updateExpandingIndex()
@@ -456,7 +477,7 @@ Item {
                 d.itemExpandingGuard = false
             }
 
-            onWidthChanged: {
+            function handleSizeChanged() {
                 // We need to update the layout.
                 // The following code is needed to avoid a binding
                 // loop, since we might change 'width' again to a different value:
@@ -464,14 +485,24 @@ Item {
                     return
                 d.itemWidthGuard = true
                 // Break binding:
-                width = 0
+                this[d.size] = 0
 
                 d.updateLayout()
 
                 // Restablish binding:
-                width = function() { return parent.width; }
+                width = function() { return parent[d.size]; }
                 d.itemWidthGuard = false
             }
+
+            onWidthChanged: {
+                if (orientation === Qt.Horizontal)
+                    handleSizeChanged()
+            }
+            onHeightChanged: {
+                if (orientation === Qt.Vertical)
+                    handleSizeChanged()
+            }
+
 
             onVisibleChanged: {
                 // Hiding the expanding item forces us to
@@ -483,9 +514,9 @@ Item {
                         // Try to keep all items within the SplitterRow. When an item
                         // has been hidden, the expanding item might no longer be large enough
                         // to give away space to the new items width. So we need to resize:
-                        var overflow = d.accumulatedWidth(0, items.length, true) - root.width;
+                        var overflow = d.accumulatedSize(0, items.length, true) - root[d.size];
                         if (overflow > 0)
-                            parent.width -= overflow
+                            parent[d.size] -= overflow
                     }
                     d.updateLayout()
                 }

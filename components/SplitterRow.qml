@@ -1,7 +1,8 @@
 import QtQuick 1.1
 import "custom" as Components
 
-Components.SplitterRow {
+Components.Splitter {
+    orientation: Qt.Horizontal
     handleBackground: StyleItem {
         id: styleitem
         elementType: "splitter"
