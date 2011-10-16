@@ -30,5 +30,4 @@ ContextMenu 0.1 ContextMenu.qml
 MenuItem 0.1 MenuItem.qml
 Dialog 0.1 Dialog.qml
 StatusBar 0.1 StatusBar.qml
-SplitterItem 0.1 SplitterItem.qml
 ApplicationWindow 0.1 ApplicationWindow.qml

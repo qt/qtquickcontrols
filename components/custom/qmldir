@@ -12,5 +12,4 @@ Slider 1.0 Slider.qml
 SpinBox 1.0 SpinBox.qml
 TextField 1.0 TextField.qml
 GroupBox 1.0 GroupBox.qml
-SplitterItem 1.0 SplitterItem.qml
 Splitter 1.0 Splitter.qml

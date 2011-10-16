@@ -24,7 +24,6 @@ QML_FILES = \
             Frame.qml \
             MenuItem.qml   \
             Slider.qml \
-            SplitterItem.qml \
             TabBar.qml \
             Tab.qml \
             ToolButton.qml \

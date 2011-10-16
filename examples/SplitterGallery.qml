@@ -18,7 +18,7 @@ Rectangle {
             CheckBox {
                 id: be1
                 anchors.centerIn: parent
-                checked: parent.expanding
+                checked: parent.Splitter.expanding
                 text: "Set expanding"
                 onClicked: {
                     parent.Splitter.expanding = true
@@ -57,10 +57,9 @@ Rectangle {
                     id: cr1
                     height:200
                 }
-                Rectangle {
+                Item {
                     id: cr2
                     height: 200
-                    color: "red"
                 }
             }
         }
