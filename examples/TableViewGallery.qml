@@ -17,7 +17,7 @@ Rectangle {
             onPressed: editmenu.show(mouseX, mouseY)
         }
 
-        ChoiceList {
+        ComboBox {
             id: delegateChooser
             enabled: frame.current == 4 ? 1 : 0
             model: delegatemenu
@@ -117,7 +117,7 @@ Rectangle {
                 title: "DirModel"
 
                 TableView {
-                    model: FileSystemModel{}
+//                    model: FileSystemModel{}
                     anchors.fill: parent
                     anchors.margins: 12
 

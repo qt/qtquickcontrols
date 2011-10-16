@@ -34,7 +34,6 @@ QML_FILES = \
             SpinBox.qml \
             TabFrame.qml \
             TextArea.qml \
-            ChoiceList.qml \       
             ScrollArea.qml \
             SplitterRow.qml \
             SplitterColumn.qml \
