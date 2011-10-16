@@ -10,18 +10,17 @@ Components.SpinBox {
     property string styleHint
 
     // Align height with button
-    topMargin:__margin
-    bottomMargin:__margin
+    topMargin: __margin
+    bottomMargin: __margin
 
     leftMargin:6
     rightMargin:6
 
     StyleItem { id:edititem ; elementType:"edit" ; visible:false }
-    property int buttonHeight:  edititem.sizeFromContents(70, 20).height
-    property int buttonWidth: edititem.sizeFromContents(70, 20).width
 
-    height: buttonHeight
-    width: buttonWidth
+    implicitWidth: edititem.sizeFromContents(70, 20).width
+    implicitHeight: edititem.sizeFromContents(70, 20).height
+
     clip:false
 
     background: Item {

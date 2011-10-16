@@ -6,8 +6,8 @@ import "custom" as Components
 StyleItem {
     id: dial
 
-    width:100
-    height:100
+    width: 100
+    height: 100
 
     property alias maximumValue: range.maximumValue
     property alias minimumValue: range.minimumValue

@@ -76,12 +76,6 @@ FocusScope {
         return textInput.positionToRectangle(p);
     }
 
-    width: Math.max(minimumWidth,
-                    textInput.width + leftMargin + rightMargin)
-
-    height: Math.max(minimumHeight,
-                     textInput.height + topMargin + bottomMargin)
-
     // Implementation
     clip: true
 

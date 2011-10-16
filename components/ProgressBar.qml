@@ -8,8 +8,9 @@ Components.ProgressBar {
     property int orientation: Qt.Horizontal
     property string styleHint
 
-    height: orientation === Qt.Horizontal ? sizehint.height : 200
-    width: orientation === Qt.Horizontal ? 200 : sizehint.height
+    implicitWidth: orientation === Qt.Horizontal ? 200 : sizehint.height
+    implicitHeight: orientation === Qt.Horizontal ? sizehint.height : 200
+
 
     SystemPalette {id: syspal}
 

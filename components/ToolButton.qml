@@ -8,9 +8,8 @@ Components.Button {
     property string iconName
     property string styleHint
 
-    height: styleitem.sizeFromContents(32, 32).height
-    width: styleitem.sizeFromContents(32, 32).width
-
+    implicitWidth: styleitem.sizeFromContents(32, 32).width
+    implicitHeight: styleitem.sizeFromContents(32, 32).height
 
     onIconNameChanged: {
         if (styleitem.hasThemeIcon(iconName)) {

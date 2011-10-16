@@ -2,8 +2,8 @@ import QtQuick 1.1
 import "custom" as Components
 Item {
     default property alias data: content.data
-    width: adjustToContentSize ? content.childrenRect.width + 2 * content.frameWidth : 30
-    height: adjustToContentSize ? content.childrenRect.height + 2 * content.frameWidth : 30
+    implicitWidth: adjustToContentSize ? content.childrenRect.width + 2 * content.frameWidth : 30
+    implicitHeight: adjustToContentSize ? content.childrenRect.height + 2 * content.frameWidth : 30
     property alias raised: style.raised
     property alias sunken: style.sunken
     property bool adjustToContentSize: false

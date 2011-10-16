@@ -8,8 +8,8 @@ Components.CheckBox {
     property string text
     property string styleHint
     property bool activeFocusOnPress: false
-    width: Math.max(110, backgroundItem.textWidth(text) + 40)
-    height: 20
+    implicitWidth: Math.max(110, backgroundItem.textWidth(text) + 40)
+    implicitHeight: 20
 
     background: StyleItem {
         id: styleitem

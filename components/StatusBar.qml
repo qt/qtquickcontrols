@@ -3,7 +3,7 @@ import "."
 import "custom" as Components
 
 StyleItem {
-    width: parent ? parent.width : 200
-    height: 24
+    implicitWidth: parent ? parent.width : 200
+    implicitHeight: 24
     elementType: "statusbar"
 }

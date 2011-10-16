@@ -14,8 +14,9 @@ Components.Slider{
     property variant sizehint: buttonitem.sizeFromContents(23, 23)
     property int orientation: Qt.Horizontal
 
-    height: orientation === Qt.Horizontal ? sizehint.height : 200
-    width: orientation === Qt.Horizontal ? 200 : sizehint.height
+    implicitWidth: orientation === Qt.Horizontal ? 200 : sizehint.height
+    implicitHeight: orientation === Qt.Horizontal ? sizehint.height : 200
+
     property string styleHint;
 
     groove: StyleItem {

@@ -11,8 +11,9 @@ Components.TextField {
     leftMargin: 6
     rightMargin: 6
 
-    height:  backgroundItem.sizeFromContents(200, 25).height
-    width: 200
+    implicitWidth: 200
+    implicitHeight: backgroundItem.sizeFromContents(200, 25).height
+
     clip: false
 
     property string styleHint

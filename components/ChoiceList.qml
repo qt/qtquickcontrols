@@ -10,8 +10,9 @@ Components.ChoiceList {
 
     property string styleHint
 
-    height: buttonHeight
-    width: buttonWidth
+    implicitWidth: buttonHeight
+    implicitHeight: buttonWidth
+
     topMargin: 4
     bottomMargin: 4
 
