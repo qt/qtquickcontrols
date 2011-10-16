@@ -93,6 +93,7 @@ void StylePlugin::registerTypes(const char *uri)
     qmlRegisterType<QtMenuItem>(uri, 0, 1, "MenuItem");
     qmlRegisterType<QtMenuSeparator>(uri, 0, 1, "Separator");
 
+    qmlRegisterType<QFileSystemModel>(uri, 0, 1, "FileSystemModel");
     qmlRegisterType<QtSplitterBase>("QtDesktopPrivate", 0, 1, "Splitter");
     qmlRegisterType<QWindowItem>("QtQuick", 0, 1, "Window");
 

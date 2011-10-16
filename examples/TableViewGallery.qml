@@ -117,7 +117,7 @@ Rectangle {
                 title: "DirModel"
 
                 TableView {
-//                    model: FileSystemModel{}
+                    model: FileSystemModel{}
                     anchors.fill: parent
                     anchors.margins: 12
 
@@ -285,7 +285,7 @@ Rectangle {
                             anchors.margins: 4
                             property string modelText: itemValue
                             property string editorText: item ? item.text : itemValue
-                            onEditorTextChanged: model.setProperty(rowIndex, itemProperty, editorText)
+                            onEditorTextChanged: model.setProperty(rowIndex, role, editorText)
                             sourceComponent: itemSelected ? editor : null
                             Component {id: editor ; TextInput{ color: itemForeground ; text: modelText} }
                         }
@@ -348,7 +348,7 @@ Rectangle {
                     }
 
                     itemDelegate: {
-                        switch(delegateChooser.currentIndex) {
+                        switch(delegateChooser.selectedIndex) {
                         case 0:
                             return delegate1
                         case 1:
