@@ -7,27 +7,19 @@
 class QtSplitterAttached : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(qreal minimumWidth READ minimumWidth WRITE setMinimumWidth NOTIFY minimumWidthChanged)
-    Q_PROPERTY(qreal minimumHeight READ minimumHeight WRITE setMinimumHeight NOTIFY minimumHeightChanged)
-    Q_PROPERTY(qreal maximumWidth READ maximumWidth WRITE setMaximumWidth NOTIFY maximumHeightChanged)
-    Q_PROPERTY(qreal maximumHeight READ maximumHeight WRITE setMaximumHeight NOTIFY maximumHeight)
+    Q_PROPERTY(qreal minimumSize READ minimumSize WRITE setMinimumSize NOTIFY minimumSizeChanged)
+    Q_PROPERTY(qreal maximumSize READ maximumSize WRITE setMaximumSize NOTIFY maximumSizeChanged)
     Q_PROPERTY(qreal percentageSize READ percentageSize WRITE setPercentageSize NOTIFY percentageWidthSize)
     Q_PROPERTY(bool expanding READ expanding WRITE setExpanding NOTIFY expandingChanged)
 
 public:
     explicit QtSplitterAttached(QObject *object);
 
-    qreal minimumWidth() const { return m_minimumWidth; }
-    void setMinimumWidth(qreal width);
+    qreal minimumSize() const { return m_minimumSize; }
+    void setMinimumSize(qreal width);
 
-    qreal minimumHeight() const { return m_minimumHeight; }
-    void setMinimumHeight(qreal height);
-
-    qreal maximumWidth() const { return m_maximumWidth; }
-    void setMaximumWidth(qreal width);
-
-    qreal maximumHeight() const { return m_maximumHeight; }
-    void setMaximumHeight(qreal height);
+    qreal maximumSize() const { return m_maximumSize; }
+    void setMaximumSize(qreal width);
 
     bool expanding() const { return m_expanding; }
     void setExpanding(bool expanding);
@@ -38,27 +30,20 @@ public slots:
     void setPercentageSize(qreal arg) { m_percentageSize = arg; }
 
 signals:
-    void minimumWidthChanged(qreal arg);
-
+    void minimumSizeChanged(qreal arg);
     void expandingChanged(bool arg);
-
     void percentageWidthSize(qreal arg);
-
     void maximumHeight(qreal arg);
-
-    void maximumHeightChanged(qreal arg);
-
+    void maximumSizeChanged(qreal arg);
     void minimumHeightChanged(qreal arg);
 
 private:
-    qreal m_minimumWidth;
-    qreal m_minimumHeight;
-    qreal m_maximumWidth;
-    qreal m_maximumHeight;
+    qreal m_minimumSize;
+    qreal m_maximumSize;
+    qreal m_percentageSize;
     bool m_expanding;
 
     friend class QtSplitterBase;
-    qreal m_percentageSize;
 };
 
 

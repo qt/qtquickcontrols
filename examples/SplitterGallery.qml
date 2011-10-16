@@ -12,7 +12,7 @@ Rectangle {
         anchors.fill: parent
         Item {
             id: r1
-            Splitter.minimumWidth: 140
+            Splitter.minimumSize: 140
             Splitter.expanding: false
             width: 200
             CheckBox {
@@ -22,13 +22,13 @@ Rectangle {
                 text: "Set expanding"
                 onClicked: {
                     parent.Splitter.expanding = true
-                    be2.checked = false
+                    be2.checked = !parent.Splitter.expanding
                 }
             }
         }
         Item {
             id: r2
-            Splitter.minimumWidth: 140
+            Splitter.minimumSize: 140
             Splitter.expanding: true
             width: 200
             CheckBox {
@@ -38,14 +38,14 @@ Rectangle {
                 checked: true
                 onClicked: {
                     parent.Splitter.expanding = true
-                    be1.checked = false
+                    be1.checked = !parent.Splitter.expanding
                 }
             }
         }
         Item {
             id: r3
             Splitter.expanding: false
-            Splitter.minimumWidth: 140
+            Splitter.minimumSize: 140
             width: 200
             SplitterColumn {
                 id: sc
