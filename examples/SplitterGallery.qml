@@ -1,5 +1,6 @@
 import QtQuick 1.1
 import QtDesktop 0.1
+import QtDesktopPrivate 0.1
 
 Rectangle {
     width: 800
@@ -9,38 +10,42 @@ Rectangle {
     SplitterRow {
         id: sr
         anchors.fill: parent
-        SplitterItem {
+        Item {
             id: r1
-            minimumWidth: 140
-            expanding: false
-            onExpandingChanged: be2.checked = !expanding
+            Splitter.minimumWidth: 140
+            Splitter.expanding: false
             width: 200
             CheckBox {
                 id: be1
                 anchors.centerIn: parent
                 checked: parent.expanding
                 text: "Set expanding"
-                onClicked: parent.expanding = true
+                onClicked: {
+                    parent.Splitter.expanding = true
+                    be2.checked = false
+                }
             }
         }
-        SplitterItem {
+        Item {
             id: r2
-            minimumWidth: 140
-            expanding: true
-            onExpandingChanged: be1.checked = !expanding
+            Splitter.minimumWidth: 140
+            Splitter.expanding: true
             width: 200
             CheckBox {
                 id: be2
                 anchors.centerIn: parent
                 text: "Set expanding"
                 checked: true
-                onClicked: parent.expanding = true
+                onClicked: {
+                    parent.Splitter.expanding = true
+                    be1.checked = false
+                }
             }
         }
-        SplitterItem {
+        Item {
             id: r3
-            expanding: false
-            minimumWidth: 140
+            Splitter.expanding: false
+            Splitter.minimumWidth: 140
             width: 200
             SplitterColumn {
                 id: sc
@@ -48,13 +53,14 @@ Rectangle {
                 anchors.right: parent.right
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
-                SplitterItem {
+                Item {
                     id: cr1
                     height:200
                 }
-                SplitterItem {
+                Rectangle {
                     id: cr2
                     height: 200
+                    color: "red"
                 }
             }
         }

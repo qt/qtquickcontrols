@@ -1,8 +1,8 @@
 import QtQuick 1.1
 import "private"
+import QtDesktopPrivate 0.1
 
-
-Item {
+Splitter {
     id: root
     default property alias items: splitterItems.children
     property alias handles: splitterHandles.children
@@ -24,7 +24,6 @@ Item {
         property string minimumSize: horizontal ? "minimumWidth" : "minimumHeight"
         property string maximumSize: horizontal ? "maximumWidth" : "maximumHeight"
 
-        property string percentageSize: horizontal ? "percentageWidth" : "percentageHeight"
         property string offset: horizontal ? "x" : "y"
         property int expandingIndex: -1
         property bool updateLayoutGuard: true
@@ -40,11 +39,11 @@ Item {
                     item.itemIndex = i
 
                 // Assign one, and only one, item to be expanding:
-                if (item.expanding != undefined && item.expanding === true) {
+                if (item.Splitter.expanding === true) {
                     if (d.expandingIndex === -1 && item.visible === true)
                         d.expandingIndex = i
                     else
-                        item.expanding = false
+                        item.Splitter.expanding = false
                 }
 
                 // Anchor each item to fill out all space vertically:
@@ -85,8 +84,7 @@ Item {
                         break
                     }
                 }
-                if (item.expanding != undefined)
-                    item.expanding = true
+                item.Splitter.expanding = true
             }
 
             d.itemExpandingGuard = false
@@ -104,7 +102,7 @@ Item {
                 if (item.visible) {
                     if (i !== d.expandingIndex)
                         w += item[d.size];
-                    else if (includeExpandingMinimum && item[d.minimumSize] != undefined && item[d.minimumSize] != -1)
+                    else if (includeExpandingMinimum && item.Splitter[d.minimumSize] != -1)
                         w += item[d.minimumSize]
                 }
 
@@ -135,20 +133,20 @@ Item {
                     item = items[i];
                     // If the item is using percentage width, convert
                     // that number to real width now:
-                    if (item[d.percentageSize] != undefined && item[d.percentageSize] !== -1) {
-                        newValue = item[d.percentageSize] * (root[d.size] / 100)
+                    if (item.Splitter.percentageSize !== -1) {
+                        newValue = item.Splitter.percentageSize * (root[d.size] / 100)
                         if (newValue !== item[d.size])
                             item[d.size] = newValue
                     }
                     // Ensure item width is not more than maximumSize:
-                    if (item.maximumSize != undefined && item.maximumSize != -1) {
-                        newValue = Math.min(item[d.size], item.maximumSize)
+                    if (item.Splitter[d.maximumSize] != -1) {
+                        newValue = Math.min(item[d.size], item.Splitter[d.maximumSize])
                         if (newValue !== item[d.size])
                             item[d.size] = newValue
                     }
                     // Ensure item width is not more less minimumWidth:
-                    if (item[d.minimumSize] != undefined && item[d.minimumSize] != -1) {
-                        newValue = Math.max(item[d.size], item[d.minimumSize])
+                    if (item.Splitter[d.minimumSize] != -1) {
+                        newValue = Math.max(item[d.size], item.Splitter[d.minimumSize])
                         if (newValue !== item[d.size])
                             item[d.size] = newValue
                     }
@@ -162,8 +160,8 @@ Item {
             if (expandingItem[d.minimumSize] != undefined && expandingItem[d.minimumSize] != -1)
                 expandingMinimum = expandingItem[d.minimumSize]
             newValue = Math.max(newValue, expandingMinimum)
-            if (expandingItem[d.size] != 0 && expandingItem[d.percentageSize] != undefined && expandingItem[d.percentageSize] !== -1)
-                expandingItem[d.percentageSize] = newValue * (100 / root[d.size])
+            if (expandingItem[d.size] != 0 && expandingItem.Splitter.percentageSize !== -1)
+                expandingItem.Splitter.percentageSize = newValue * (100 / root[d.size])
             if (expandingItem[d.size] !== newValue)
                 expandingItem[d.size] = newValue
 
@@ -255,8 +253,8 @@ Item {
 
                     newWidth = myHandle[d.offset] - leftEdge
                     leftItem = items[handleIndex]
-                    if (root[d.size] != 0 && leftItem[d.percentageSize] != undefined && leftItem[d.percentageSize] !== -1)
-                        leftItem[d.percentageSize] = newWidth * (100 / root[d.size])
+                    if (root[d.size] != 0 && leftItem.Splitter.percentageSize !== -1)
+                        leftItem.Splitter.percentageSize = newWidth * (100 / root[d.size])
                     // The next line will trigger 'updateLayout' inside 'propertyChangeListener':
                     leftItem[d.size] = newWidth
                 } else {
@@ -280,8 +278,8 @@ Item {
 
                     newWidth = rightEdge - (myHandle[d.offset] + myHandle[d.size])
                     rightItem = items[handleIndex+1]
-                    if (root[d.size] != 0 && rightItem[d.percentageSize] != undefined && rightItem[d.percentageSize] !== -1)
-                        rightItem[d.percentageSize] = newWidth * (100 / root[d.size])
+                    if (root[d.size] != 0 && rightItem[d.percentageSize] !== -1)
+                        rightItem.Splitter.percentageSize = newWidth * (100 / root[d.size])
                     // The next line will trigger 'updateLayout' inside 'propertyChangeListener':
                     rightItem[d.size] = newWidth
                 }
@@ -306,13 +304,13 @@ Item {
         Item {
             id: target
             width: parent[d.size]
-            property bool expanding: (parent.expanding != undefined) ? parent.expanding : false
-            property real percentageWidth: (parent[d.percentageSize] != undefined) ? parent[d.percentageSize] : -1
-            property real minimumWidth: (parent[d.minimumSize] != undefined) ? parent[d.minimumSize] : -1
-            property real maximumSize: (parent.maximumSize != undefined) ? parent.maximumSize : -1
+            property bool expanding: parent.Splitter.expanding
+            property real percentageSize: parent.Splitter.percentageSize
+            property real minimumWidth: parent.Splitter.minimumWidth
+            property real maximumSize: parent.Splitter.maximumWidth
             property int itemIndex: 0
 
-            onPercentageWidthChanged: d.updateLayout();
+            onPercentageSizeChanged: d.updateLayout();
             onMinimumWidthChanged: d.updateLayout();
             onMaximumSizeChanged: d.updateLayout();
             onExpandingChanged: updateExpandingIndex()
@@ -332,7 +330,7 @@ Item {
                 var newIndex = items.length-1
                 for (var i=0; i<items.length; ++i) {
                     var item = items[i]
-                    if (i !== d.expandingIndex && item.expanding != undefined && item.expanding === true && item.visible === true) {
+                    if (i !== d.expandingIndex && item.Splitter.expanding === true && item.visible === true) {
                         newIndex = i
                         break
                     }
@@ -353,19 +351,19 @@ Item {
                 }
 
                 // Tell the found item that it is expanding:
-                if (item.expanding != undefined && item.expanding !== true)
-                    item.expanding = true
+                if (item.Splitter.expanding !== true)
+                    item.Splitter.expanding = true
                 // ...and the old one that it is not:
                 if (newIndex !== d.expandingIndex) {
                     item = items[d.expandingIndex]
-                    if (item.expanding != undefined && item.expanding !== false)
-                        item.expanding = false
+                    if (item.Splitter.expanding !== false)
+                        item.Splitter.expanding = false
                 }
                 // update index:
                 d.expandingIndex = newIndex
                 d.updateLayout();
                 // recreate binding:
-                expanding = function() { return (parent.expanding != undefined) ? parent.expanding : false; }
+                expanding = function() { return parent.Splitter.expanding }
                 d.itemExpandingGuard = false
             }
 
@@ -386,14 +384,8 @@ Item {
                 d.itemWidthGuard = false
             }
 
-            onWidthChanged: {
-                if (orientation === Qt.Horizontal)
-                    handleSizeChanged()
-            }
-            onHeightChanged: {
-                if (orientation === Qt.Vertical)
-                    handleSizeChanged()
-            }
+            onWidthChanged:  handleSizeChanged()
+            onHeightChanged: handleSizeChanged()
 
 
             onVisibleChanged: {

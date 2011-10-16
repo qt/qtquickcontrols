@@ -48,6 +48,7 @@
 #include "qwheelarea.h"
 #include "qcursorarea.h"
 #include "qtooltiparea.h"
+#include "qtsplitterbase.h"
 #include <qdeclarativeextensionplugin.h>
 
 #include <qdeclarativeengine.h>
@@ -85,15 +86,17 @@ void StylePlugin::registerTypes(const char *uri)
     qmlRegisterType<QCursorArea>(uri, 0, 1, "CursorArea");
     qmlRegisterType<QTooltipArea>(uri, 0, 1, "TooltipArea");
     qmlRegisterType<QRangeModel>(uri, 0, 1, "RangeModel");
-    qmlRegisterType<QGraphicsDropShadowEffect>(uri, 0, 1, "DropShadow");
-    qmlRegisterType<QDeclarativeFolderListModel>(uri, 0, 1, "FileSystemModel");
     qmlRegisterType<QWheelArea>(uri, 0, 1, "WheelArea");
+
     qmlRegisterType<QtMenu>(uri, 0, 1, "Menu");
     qmlRegisterType<QtMenuBar>(uri, 0, 1, "MenuBar");
     qmlRegisterType<QtMenuItem>(uri, 0, 1, "MenuItem");
     qmlRegisterType<QtMenuSeparator>(uri, 0, 1, "Separator");
+
+    qmlRegisterType<QtSplitterBase>("QtDesktopPrivate", 0, 1, "Splitter");
     qmlRegisterType<QWindowItem>("QtQuick", 0, 1, "Window");
-    qmlRegisterUncreatableType<QtMenuBase>(uri, 0, 1, "NativeMenuBase", QLatin1String("Do not create objects of type NativeMenuBase"));
+
+    qmlRegisterUncreatableType<QtMenuBase>("uri", 0, 1, "NativeMenuBase", QLatin1String("Do not create objects of type NativeMenuBase"));
     qmlRegisterUncreatableType<QDesktopItem>("QtQuick",1,1,"Desktop", QLatin1String("Do not create objects of type Desktop"));
 }
 

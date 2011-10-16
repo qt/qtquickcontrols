@@ -102,7 +102,7 @@ Components.Splitter {
     handleBackground: StyleItem {
         id: styleitem
         elementType: "splitter"
-        height: handleHeight != -1 ?  handleHeight : pixelMetric("splitterheight")
+        height: handleWidth != -1 ?  handleWidth : pixelMetric("splitterwidth")
         horizontal: false
         property alias pressed: mouseArea.pressed
         property bool dragged: mouseArea.drag.active

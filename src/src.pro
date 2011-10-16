@@ -22,7 +22,8 @@ HEADERS += qtmenu.h \
            qdesktopitem.h \
            qtoplevelwindow.h \
            qcursorarea.h \
-           qtooltiparea.h
+           qtooltiparea.h \
+    qtsplitterbase.h
 
 SOURCES += qtmenu.cpp \
            qtmenubar.cpp \
@@ -36,7 +37,8 @@ SOURCES += qtmenu.cpp \
            qdesktopitem.cpp \
            qtoplevelwindow.cpp \
            qcursorarea.cpp \
-           qtooltiparea.cpp
+           qtooltiparea.cpp \
+    qtsplitterbase.cpp
 
 TARGETPATH = QtDesktop/plugin
 
@@ -57,6 +59,8 @@ INSTALLS += target
 symbian {
     DEPLOYMENT += target
 }
+
+
 
 
 
