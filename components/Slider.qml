@@ -6,7 +6,7 @@ import "custom" as Components
 Components.Slider{
     id: slider
 
-    property bool tickmarksEnabled: true
+    property bool tickmarksEnabled: false
     property string tickPosition: "Below" // "Above", "Below", "BothSides"
 
     StyleItem {

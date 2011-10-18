@@ -342,10 +342,8 @@ void QStyleItem::initStyleOption()
         else
             opt->sliderValue = value();
         opt->subControls = QStyle::SC_SliderGroove | QStyle::SC_SliderHandle;
-        opt->tickPosition = (activeControl() == "below") ?
-                    QSlider::TicksBelow : (activeControl() == "above" ?
-                                               QSlider::TicksAbove:
-                                               QSlider::NoTicks);
+        opt->tickPosition = (activeControl() == "tick" ?
+                    QSlider::TicksBelow : QSlider::NoTicks);
         if (opt->tickPosition != QSlider::NoTicks)
             opt->subControls |= QStyle::SC_SliderTickmarks;
 
