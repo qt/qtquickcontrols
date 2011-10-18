@@ -4,23 +4,33 @@ import "custom" as Components
 // jb : Size should not depend on background, we should make it consistent
 
 Components.CheckBox {
-    id:checkbox
+    id: checkbox
     property string text
     property string styleHint
-    property bool activeFocusOnPress: false
-    implicitWidth: Math.max(110, backgroundItem.textWidth(text) + 40)
-    implicitHeight: 20
+
+    implicitWidth: Math.max(120, backgroundItem.implicitWidth)
+    implicitHeight: backgroundItem.implicitHeight
 
     background: StyleItem {
-        id: styleitem
         elementType: "checkbox"
         sunken: pressed
         on: checked || pressed
         hover: containsMouse
-        text: checkbox.text
         enabled: checkbox.enabled
         hasFocus: checkbox.activeFocus
         hint: checkbox.styleHint
+        contentHeight: textitem.implicitHeight
+        contentWidth: textitem.implicitWidth + indicatorWidth
+        property int indicatorWidth: pixelMetric("indicatorwidth") + 2
+        Text {
+            id: textitem
+            text: checkbox.text
+            anchors.left: parent.left
+            anchors.leftMargin: parent.indicatorWidth
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.right: parent.right
+            elide: Text.ElideRight
+        }
     }
 }
 

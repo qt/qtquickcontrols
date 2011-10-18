@@ -556,6 +556,9 @@ QSize QStyleItem::sizeFromContents(int width, int height)
 
     QSize size;
     switch (m_itemType) {
+    case RadioButton:
+        size =  qApp->style()->sizeFromContents(QStyle::CT_RadioButton, m_styleoption, QSize(width,height), widget());
+        break;
     case CheckBox:
         size =  qApp->style()->sizeFromContents(QStyle::CT_CheckBox, m_styleoption, QSize(width,height), widget());
         break;
@@ -644,6 +647,8 @@ int QStyleItem::pixelMetric(const QString &metric)
 #endif
     else if (metric == "tabhspace")
         return qApp->style()->pixelMetric(QStyle::PM_TabBarTabHSpace, 0 , widget());
+    else if (metric == "indicatorwidth")
+        return qApp->style()->pixelMetric(QStyle::PM_ExclusiveIndicatorWidth, 0 , widget());
     else if (metric == "tabvspace")
         return qApp->style()->pixelMetric(QStyle::PM_TabBarTabVSpace, 0 , widget());
     else if (metric == "tabbaseheight")

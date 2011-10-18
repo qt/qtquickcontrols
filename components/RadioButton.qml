@@ -8,18 +8,29 @@ Components.CheckBox {
     property string text
     property string styleHint
 
-    implicitWidth: Math.max(110, backgroundItem.textWidth(text) + 40)
-    implicitHeight: 20
+    implicitWidth: Math.max(120, backgroundItem.implicitWidth)
+    implicitHeight: backgroundItem.implicitHeight
 
     background: StyleItem {
         elementType: "radiobutton"
         sunken: pressed
         on: checked || pressed
         hover: containsMouse
-        text: radiobutton.text
         enabled: radiobutton.enabled
         hasFocus: radiobutton.activeFocus
         hint: radiobutton.styleHint
+        contentHeight: textitem.implicitHeight
+        contentWidth: textitem.implicitWidth + indicatorWidth
+        property int indicatorWidth: pixelMetric("indicatorwidth") + 2
+        Text {
+            id: textitem
+            text: radiobutton.text
+            anchors.left: parent.left
+            anchors.leftMargin: parent.indicatorWidth
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.right: parent.right
+            elide: Text.ElideRight
+        }
     }
     Keys.onSpacePressed: {clicked(); checked = !checked; }
 }
