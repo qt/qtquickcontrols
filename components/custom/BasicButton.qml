@@ -9,6 +9,7 @@ Item {
     property alias containsMouse: behavior.containsMouse
     property alias checkable: behavior.checkable  // button toggles between checked and !checked
     property alias checked: behavior.checked
+    property bool activeFocusOnPress: false
 
     property Component background: null
     property Item backgroundItem: backgroundLoader.item
