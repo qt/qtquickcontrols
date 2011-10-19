@@ -34,7 +34,6 @@ Splitter {
                 var item = items[i];
 
                 item.Splitter.itemIndex = i
-                print("set "+item.Splitter.itemIndex + " " + i)
                 // Assign one, and only one, item to be expanding:
                 if (item.Splitter.expanding === true) {
                     if (d.expandingIndex === -1 && item.visible === true)

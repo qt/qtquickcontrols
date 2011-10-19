@@ -189,7 +189,6 @@ void QStyleItem::initStyleOption()
             opt->position = QStyleOptionHeader::OnlyOneSection;
         else
             opt->position = QStyleOptionHeader::Middle;
-
     }
         break;
     case ToolButton: {

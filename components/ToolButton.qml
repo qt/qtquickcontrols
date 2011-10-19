@@ -11,12 +11,6 @@ Components.Button {
     implicitWidth: backgroundItem.implicitWidth
     implicitHeight: backgroundItem.implicitHeight
 
-    onIconNameChanged: {
-        if (backgroundItem && backgroundItem.hasThemeIcon(iconName)) {
-            themeIcon.source = "image://desktoptheme/" + button.iconName;
-        }
-    }
-
     TooltipArea {
         // Note this will eat hover events
         id: tooltip
@@ -48,11 +42,14 @@ Components.Button {
         anchors.centerIn: parent
         opacity: enabled ? 1 : 0.5
         smooth: true
-        sourceSize.width: (styleitem.style === "mac" && button.styleHint.indexOf("mac.segmented") !== -1) ? 16 : 32
+        sourceSize.width: (backgroundItem && backgroundItem.style === "mac" && button.styleHint.indexOf("mac.segmented") !== -1) ? 16 : 24
+        property string iconPath: "image://desktoptheme/" + button.iconName
+        source: backgroundItem && backgroundItem.hasThemeIcon(iconName) ? iconPath : ""
         fillMode: Image.PreserveAspectFit
         Image {
             // Use fallback icon
             anchors.centerIn: parent
+            sourceSize: parent.sourceSize
             visible: (themeIcon.status != Image.Ready)
             source: visible ? button.iconSource : ""
         }

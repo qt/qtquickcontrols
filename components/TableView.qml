@@ -98,6 +98,8 @@ FocusScope{
     property alias contentY: tree.contentY
     property alias contentHeight : tree.contentHeight
     property alias contentWidth: tree.contentWidth
+    property alias viewportWidth: scroller.availableWidth
+    property alias viewportHeight: scroller.availableHeight
     property alias count: tree.count
 
     property alias cacheBuffer: tree.cacheBuffer

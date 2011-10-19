@@ -8,6 +8,8 @@ WheelArea {
     property alias verticalScrollBar: vscrollbar
     property int macOffset: styleitem.style == "mac" ? 1 : 0
     property bool blockUpdates: false
+    property int availableHeight : root.height - (hscrollbar.visible ? hscrollbar.height : 0)
+    property int availableWidth: root.width - vscrollbar.width
 
     anchors.fill: parent
     anchors.margins: frameWidth
@@ -40,7 +42,6 @@ WheelArea {
     ScrollBar {
         id: hscrollbar
         orientation: Qt.Horizontal
-        property int availableWidth: root.width - vscrollbar.width
         visible: contentWidth > availableWidth
         maximumValue: contentWidth > availableWidth ? root.contentWidth - availableWidth : 0
         minimumValue: 0
@@ -62,7 +63,6 @@ WheelArea {
         id: vscrollbar
         orientation: Qt.Vertical
         // We cannot bind directly to tree.height due to binding loops so we have to redo the calculation here
-        property int availableHeight : root.height - (hscrollbar.visible ? hscrollbar.height : 0)
         visible: contentHeight > availableHeight
         maximumValue: contentHeight > availableHeight ? root.contentHeight - availableHeight : 0
         minimumValue: 0
