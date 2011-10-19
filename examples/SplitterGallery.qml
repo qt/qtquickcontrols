@@ -1,6 +1,5 @@
 import QtQuick 1.1
 import QtDesktop 0.1
-import QtDesktopPrivate 0.1
 
 Rectangle {
     width: 800

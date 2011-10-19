@@ -1,6 +1,6 @@
 import QtQuick 1.1
+import QtDesktop 0.1
 import "private"
-import QtDesktopPrivate 0.1
 
 Splitter {
     id: root
@@ -21,6 +21,8 @@ Splitter {
 
         property bool horizontal: orientation == Qt.Horizontal
         property string size: horizontal ? "width" : "height"
+        property string minimum: horizontal ? "minimumWidth" : "minimumHeight"
+        property string maximum: horizontal ? "maximumWidth" : "maximumHeight"
 
         property string offset: horizontal ? "x" : "y"
         property int expandingIndex: -1
@@ -98,8 +100,8 @@ Splitter {
                 if (item.visible) {
                     if (i !== d.expandingIndex)
                         w += item[d.size];
-                    else if (includeExpandingMinimum && item.Splitter.minimumSize != -1)
-                        w += item.minimumSize
+                    else if (includeExpandingMinimum && item.Splitter[minimum] != -1)
+                        w += item[minimum]
                 }
 
                 var handle = handles[i]
@@ -135,14 +137,14 @@ Splitter {
                             item[d.size] = newValue
                     }
                     // Ensure item width is not more than maximumSize:
-                    if (item.Splitter.maximumSize != -1) {
-                        newValue = Math.min(item[d.size], item.Splitter.maximumSize)
+                    if (item.Splitter[maximum] !== -1) {
+                        newValue = Math.min(item[d.size], item.Splitter[maximum])
                         if (newValue !== item[d.size])
                             item[d.size] = newValue
                     }
                     // Ensure item width is not more less minimumWidth:
-                    if (item.Splitter.minimumSize != -1) {
-                        newValue = Math.max(item[d.size], item.Splitter.minimumSize)
+                    if (item.Splitter[minimum] !== -1) {
+                        newValue = Math.max(item[d.size], item.Splitter[minimum])
                         if (newValue !== item[d.size])
                             item[d.size] = newValue
                     }
@@ -153,10 +155,10 @@ Splitter {
             newValue = root[d.size] - d.accumulatedSize(0, items.length, false);
             var expandingItem = items[d.expandingIndex]
             var expandingMinimum = 0
-            if (expandingItem.Splitter.minimumSize != -1)
-                expandingMinimum = expandingItem.Splitter.minimumSize
+            if (expandingItem.Splitter[minimum] !== -1)
+                expandingMinimum = expandingItem.Splitter[minimum]
             newValue = Math.max(newValue, expandingMinimum)
-            if (expandingItem[d.size] != 0 && expandingItem.Splitter.percentageSize !== -1)
+            if (expandingItem[d.size] !== 0 && expandingItem.Splitter.percentageSize !== -1)
                 expandingItem.Splitter.percentageSize = newValue * (100 / root[d.size])
             if (expandingItem[d.size] !== newValue)
                 expandingItem[d.size] = newValue
@@ -274,7 +276,7 @@ Splitter {
 
                     newWidth = rightEdge - (myHandle[d.offset] + myHandle[d.size])
                     rightItem = items[handleIndex+1]
-                    if (root[d.size] != 0 && rightItem[d.percentageSize] !== -1)
+                    if (root[d.size] !== 0 && rightItem[d.percentageSize] !== -1)
                         rightItem.Splitter.percentageSize = newWidth * (100 / root[d.size])
                     // The next line will trigger 'updateLayout' inside 'propertyChangeListener':
                     rightItem[d.size] = newWidth
@@ -302,8 +304,8 @@ Splitter {
             width: parent[d.size]
             property bool expanding: parent.Splitter.expanding
             property real percentageSize: parent.Splitter.percentageSize
-            property real minimumWidth: parent.Splitter.minimumSize
-            property real maximumSize: parent.Splitter.maximumSize
+            property real minimumWidth: parent.Splitter[d.minimum]
+            property real maximumSize: parent.Splitter[d.maximum]
             property int itemIndex: parent.Splitter.itemIndex
 
             onPercentageSizeChanged: d.updateLayout();
@@ -382,8 +384,6 @@ Splitter {
 
             onWidthChanged:  handleSizeChanged()
             onHeightChanged: handleSizeChanged()
-
-
             onVisibleChanged: {
                 // Hiding the expanding item forces us to
                 // select a new one (and therefore not recommended):
