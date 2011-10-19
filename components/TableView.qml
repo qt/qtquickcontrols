@@ -111,6 +111,7 @@ FocusScope{
     Component {
         id: standardDelegate
         Item {
+            height: Math.max(16, styleitem.implicitHeight)
             property int implicitWidth: sizehint.paintedWidth + 4
             Text {
                 id: label
@@ -361,7 +362,7 @@ FocusScope{
                         property variant modelData: itemModelData
 
                         width: header[index].width
-                        height: item ? item.height :  Math.max(16, styleitem.implicitHeight)
+                        height: item !== undefined ? item.height : Math.max(16, styleitem.implicitHeight)
 
                         function getValue() {
                             if (header[index].role.length && hasOwnProperty(header[index].role))
