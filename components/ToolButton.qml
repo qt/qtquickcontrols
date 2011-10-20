@@ -7,6 +7,7 @@ Components.Button {
     property alias containsMouse: tooltip.containsMouse
     property string iconName
     property string styleHint
+    property int iconSize: (backgroundItem && backgroundItem.style === "mac" && button.styleHint.indexOf("segmented") !== -1) ? 16 : 24
 
     implicitWidth: backgroundItem.implicitWidth
     implicitHeight: backgroundItem.implicitHeight
@@ -42,7 +43,7 @@ Components.Button {
         anchors.centerIn: parent
         opacity: enabled ? 1 : 0.5
         smooth: true
-        sourceSize.width: (backgroundItem && backgroundItem.style === "mac" && button.styleHint.indexOf("mac.segmented") !== -1) ? 16 : 24
+        sourceSize.width: iconSize
         property string iconPath: "image://desktoptheme/" + button.iconName
         source: backgroundItem && backgroundItem.hasThemeIcon(iconName) ? iconPath : ""
         fillMode: Image.PreserveAspectFit
