@@ -462,9 +462,9 @@ void QStyleItem::initStyleOption()
         m_styleoption->fontMetrics = widget()->fontMetrics();
         if (!m_styleoption->palette.resolve())
             m_styleoption->palette = widget()->palette();
-        if (m_hint.contains("mac.mini")) {
+        if (m_hint.contains("mini")) {
             widget()->setAttribute(Qt::WA_MacMiniSize);
-        } else if (m_hint.contains("mac.small")) {
+        } else if (m_hint.contains("small")) {
             widget()->setAttribute(Qt::WA_MacSmallSize);
         }
     }
@@ -980,7 +980,7 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
     case ToolButton:
 
 #ifdef Q_WS_MAC
-        if (style() == "mac" && hint().contains("mac.segmented")) {
+        if (style() == "mac" && hint().contains("segmented")) {
             const QPaintDevice *target = painter->device();
              HIThemeSegmentDrawInfo sgi;
             sgi.version = 0;
@@ -1017,7 +1017,7 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
         break;
     case FocusFrame:
 #ifdef Q_WS_MAC
-        if (style() == "mac" && hint().contains("mac.search")) {
+        if (style() == "mac" && hint().contains("search")) {
             break; // embedded in the line itself
         } else
 #endif
@@ -1038,7 +1038,7 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
         break;
     case Edit: {
 #ifdef Q_WS_MAC
-        if (style() == "mac" && hint().contains("mac.search")) {
+        if (style() == "mac" && hint().contains("rounded")) {
             const QPaintDevice *target = painter->device();
             HIThemeFrameDrawInfo fdi;
             fdi.version = 0;
