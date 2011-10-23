@@ -336,7 +336,7 @@ FocusScope{
             Loader {
                 id: rowstyle
                 // row delegate
-                sourceComponent: root.rowDelegate
+                sourceComponent: itemAlternateBackground || itemSelected ? root.rowDelegate : null
                 // Row fills the tree width regardless of item size
                 // But scrollbar should not adjust to it
                 width: frameitem.width

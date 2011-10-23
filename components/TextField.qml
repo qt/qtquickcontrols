@@ -8,8 +8,8 @@ Components.TextField {
     placeholderText: ""
     topMargin: 2
     bottomMargin: 2
-    leftMargin: 6
-    rightMargin: 6
+    leftMargin: 8
+    rightMargin: 8
 
     implicitWidth: backgroundItem.implicitWidth
     implicitHeight: backgroundItem.implicitHeight
@@ -29,11 +29,11 @@ Components.TextField {
         contentHeight: 25
     }
 
-    Item{
+    Item {
         id: focusFrame
         anchors.fill: textfield
         parent: textfield
-        visible: framestyle.styleHint("focuswidget")
+        visible: framestyle.styleHint("focuswidget") && styleHint !== "rounded"
         StyleItem {
             id: framestyle
             anchors.margins: -2
