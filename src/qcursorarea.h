@@ -7,9 +7,11 @@ class QCursorArea : public QDeclarativeItem
 {
     Q_OBJECT
     Q_ENUMS(Cursor)
-    Q_PROPERTY( Cursor cursor READ cursor WRITE setCursor NOTIFY cursorChanged)
+    Q_PROPERTY(Cursor cursor READ cursor WRITE setCursor NOTIFY cursorChanged)
+
 public:
     enum Cursor {
+        ArrowCursor,
         SizeHorCursor,
         SizeVerCursor,
         SizeAllCursor,
@@ -18,8 +20,10 @@ public:
         WaitCursor,
         PointingHandCursor
     };
+
     explicit QCursorArea(QDeclarativeItem *parent = 0);
-    void setCursor(Cursor str);
+
+    void setCursor(Cursor cursor);
     Cursor cursor() const { return m_cursor; }
 
 signals:
@@ -27,7 +31,6 @@ signals:
 
 private:
     Cursor m_cursor;
-
 };
 
 #endif // CURSORAREA_H
