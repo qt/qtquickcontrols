@@ -27,13 +27,10 @@
 #ifndef QWHEELAREA_H
 #define QWHEELAREA_H
 
-
-#include <QtCore/qobject.h>
-#include <QtDeclarative/qdeclarative.h>
-#include <QtDeclarative/qdeclarativeitem.h>
-#include <QtCore/qcoreevent.h>
 #include <QtGui/qevent.h>
 #include <QtGui/qgraphicssceneevent.h>
+#include <QtDeclarative/qdeclarativeitem.h>
+
 
 class QWheelArea : public QDeclarativeItem
 {
@@ -48,40 +45,38 @@ class QWheelArea : public QDeclarativeItem
     Q_PROPERTY(qreal verticalValue READ verticalValue WRITE setVerticalValue)
     Q_PROPERTY(qreal scrollSpeed READ scrollSpeed WRITE setScrollSpeed NOTIFY scrollSpeedChanged)
 
-
 public:
     QWheelArea(QDeclarativeItem *parent = 0);
-
     virtual ~QWheelArea();
 
-    virtual bool event (QEvent * e);
-
-    void setHorizontalMinimumValue(qreal min);
+    void setHorizontalMinimumValue(qreal value);
     qreal horizontalMinimumValue() const;
 
-    void setHorizontalMaximumValue(qreal min);
+    void setHorizontalMaximumValue(qreal value);
     qreal horizontalMaximumValue() const;
 
-    void setVerticalMinimumValue(qreal min);
+    void setVerticalMinimumValue(qreal value);
     qreal verticalMinimumValue() const;
 
-    void setVerticalMaximumValue(qreal min);
+    void setVerticalMaximumValue(qreal value);
     qreal verticalMaximumValue() const;
 
-    void setHorizontalValue(qreal val);
+    void setHorizontalValue(qreal value);
     qreal horizontalValue() const;
 
-    void setVerticalValue(qreal val);
+    void setVerticalValue(qreal value);
     qreal verticalValue() const;
 
-    void setVerticalDelta(qreal d);
+    void setVerticalDelta(qreal value);
     qreal verticalDelta() const;
 
-    void setHorizontalDelta(qreal d);
+    void setHorizontalDelta(qreal value);
     qreal horizontalDelta() const;
 
-    void setScrollSpeed(qreal d);
-    qreal scrollSpeed();
+    void setScrollSpeed(qreal value);
+    qreal scrollSpeed() const;
+
+    virtual bool event(QEvent *e);
 
 Q_SIGNALS:
     void verticalValueChanged();
@@ -91,15 +86,15 @@ Q_SIGNALS:
     void scrollSpeedChanged();
 
 private:
-    qreal _horizontalMinimumValue;
-    qreal _horizontalMaximumValue;
-    qreal _verticalMinimumValue;
-    qreal _verticalMaximumValue;
-    qreal _horizontalValue;
-    qreal _verticalValue;
-    qreal _verticalDelta;
-    qreal _horizontalDelta;
-    qreal _scrollSpeed;
+    qreal m_horizontalMinimumValue;
+    qreal m_horizontalMaximumValue;
+    qreal m_verticalMinimumValue;
+    qreal m_verticalMaximumValue;
+    qreal m_horizontalValue;
+    qreal m_verticalValue;
+    qreal m_verticalDelta;
+    qreal m_horizontalDelta;
+    qreal m_scrollSpeed;
 
     Q_DISABLE_COPY(QWheelArea)
 };
