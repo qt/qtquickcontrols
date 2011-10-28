@@ -50,6 +50,12 @@ symbian {
            
 target.path = $$INSTALL_IMPORTS/$$TARGETPATH
 
+win32 {
+    CONFIG(debug, debug|release) {
+        TARGET = $$member(TARGET, 0)d
+    }
+}
+
 mac {
     LIBS += -framework Carbon
 }
@@ -59,13 +65,3 @@ INSTALLS += target
 symbian {
     DEPLOYMENT += target
 }
-
-
-
-
-
-
-
-
-
-
