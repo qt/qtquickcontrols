@@ -1,7 +1,7 @@
 #ifndef QTSPLITTERBASE_H
 #define QTSPLITTERBASE_H
 
-#import <QtDeclarative>
+#include <QtDeclarative>
 
 
 class QtSplitterAttached : public QObject
