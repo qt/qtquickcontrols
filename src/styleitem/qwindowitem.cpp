@@ -50,7 +50,7 @@ QWindowItem::QWindowItem(QTopLevelWindow* tlw)
     connect(_window, SIGNAL(windowStateChanged()), this, SIGNAL(windowStateChanged()));
     connect(_window, SIGNAL(sizeChanged(QSize)), this, SLOT(updateSize(QSize)));
     connect(qApp, SIGNAL(aboutToQuit()), _window, SLOT(close()));
-    view()->setResizeMode(QSGView::SizeRootObjectToView);
+    view()->setResizeMode(QQuickView::SizeRootObjectToView);
 }
 
 QWindowItem::~QWindowItem()
@@ -77,7 +77,7 @@ void QWindowItem::registerChildWindow(QWindowItem *child) {
 }
 
 void QWindowItem::updateParentWindow() {
-    QSGItem *p = parentItem();
+    QQuickItem *p = parentItem();
     while (p) {
         if (QWindowItem *w = qobject_cast<QWindowItem*>(p)) {
             w->registerChildWindow(this);
@@ -94,7 +94,7 @@ void QWindowItem::componentComplete()
 //    if (!_window->parentWidget())
 //        _window->initPosition();
 
-    QSGItem::componentComplete();
+    QQuickItem::componentComplete();
 
     if (_delayedVisible) {
         setVisible(true);
@@ -103,7 +103,7 @@ void QWindowItem::componentComplete()
 
 void QWindowItem::updateSize(QSize newSize)
 {
-    QSGItem::setSize(newSize);
+    QQuickItem::setSize(newSize);
     emit sizeChanged();
 }
 
@@ -121,7 +121,7 @@ void QWindowItem::setHeight(int height)
     int menuBarHeight = _window->menuBar()->sizeHint().height();
     if (menuBarHeight) menuBarHeight++;
     _window->resize(width(), height+menuBarHeight);
-    QSGItem::setHeight(height);
+    QQuickItem::setHeight(height);
 }
 
 void QWindowItem::setMinimumHeight(int height)
@@ -141,7 +141,7 @@ void QWindowItem::setMaximumHeight(int height)
 void QWindowItem::setWidth(int width)
 {
     _window->resize(width, height());
-    QSGItem::setWidth(width);
+    QQuickItem::setWidth(width);
 }
 
 void QWindowItem::setTitle(QString title)

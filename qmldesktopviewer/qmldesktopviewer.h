@@ -40,7 +40,7 @@
 #ifndef QMLDESKTOPVIEWER_H
 #define QMLDESKTOPVIEWER_H
 
-#include <QMainWindow>
+#include <QtWidgets/qmainwindow.h>
 #include <QTimer>
 #include <QTime>
 #include <QList>
@@ -49,7 +49,7 @@
 
 QT_BEGIN_NAMESPACE
 
-class QSGView;
+class QQuickView;
 class QTranslator;
 class QActionGroup;
 class QMenuBar;

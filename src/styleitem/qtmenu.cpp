@@ -26,7 +26,7 @@
 
 #include "qtmenu.h"
 #include "qdebug.h"
-#include <qapplication.h>
+#include <qguiapplication.h>
 #include <qmenubar.h>
 
 #include "qtoplevelwindow.h"
@@ -90,7 +90,8 @@ void QtMenu::showPopup(qreal x, qreal y, int atActionIndex)
     // x,y are in view coordinates, QMenu expects screen coordinates
     // ### activeWindow hack
     int menuBarHeight = 0;
-    QWidget *window = QApplication::activeWindow();
+    QWindow *window = QGuiApplication::focusWindow();
+//    QWidget *window = QApplication::activeWindow();
     QTopLevelWindow *tw = qobject_cast<QTopLevelWindow*>(window);
     if (tw) {
         QMenuBar *menuBar = tw->menuBar();

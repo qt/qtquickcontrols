@@ -50,8 +50,8 @@
 #include <QtCore/QStringBuilder>
 
 
-QStyleItem::QStyleItem(QSGPaintedItem *parent)
-    : QSGPaintedItem(parent),
+QStyleItem::QStyleItem(QQuickPaintedItem *parent)
+    : QQuickPaintedItem(parent),
     m_dummywidget(0),
     m_styleoption(0),
     m_type(Undefined),
@@ -68,7 +68,7 @@ QStyleItem::QStyleItem(QSGPaintedItem *parent)
     m_value(0),
     m_paintMargins(0)
 {
-    setFlag(QSGItem::ItemHasContents, true);
+    setFlag(QQuickItem::ItemHasContents, true);
     setSmooth(true);
     //setCacheMode(QGraphicsItem::DeviceCoordinateCache);
 
@@ -660,20 +660,20 @@ void QStyleItem::setCursor(const QString &str)
     if (m_cursor != str) {
         m_cursor = str;
 /*        if (m_cursor == "sizehorcursor")
-            QSGItem::setCursor(Qt::SizeHorCursor);
+            QQuickItem::setCursor(Qt::SizeHorCursor);
         else if (m_cursor == "sizevercursor")
-            QSGItem::setCursor(Qt::SizeVerCursor);
+            QQuickItem::setCursor(Qt::SizeVerCursor);
         else if (m_cursor == "sizeallcursor")
-            QSGItem::setCursor(Qt::SizeAllCursor);
+            QQuickItem::setCursor(Qt::SizeAllCursor);
         else if (m_cursor == "splithcursor")
-            QSGItem::setCursor(Qt::SplitHCursor);
+            QQuickItem::setCursor(Qt::SplitHCursor);
         else if (m_cursor == "splitvcursor")
-            QSGItem::setCursor(Qt::SplitVCursor);
+            QQuickItem::setCursor(Qt::SplitVCursor);
         else if (m_cursor == "wait")
-            QSGItem::setCursor(Qt::WaitCursor);
+            QQuickItem::setCursor(Qt::WaitCursor);
             */
         //else if (m_cursor == "pointinghandcursor")
-        //    QSGItem::setCursor(Qt::PointingHandCursor);
+        //    QQuickItem::setCursor(Qt::PointingHandCursor);
         emit cursorChanged();
     }
 }

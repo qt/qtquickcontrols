@@ -27,7 +27,7 @@
 #ifndef QTOPLEVELWINDOW_H
 #define QTOPLEVELWINDOW_H
 
-#include <QtDeclarative/QSGView>
+#include <QtDeclarative/QQuickView>
 #include <QMainWindow>
 #include <QWindowStateChangeEvent>
 #include <QDebug>
@@ -39,7 +39,7 @@ public:
     ~QTopLevelWindow();
 
     //QGraphicsScene *scene() { return _view->scene(); }
-    QSGView *view() { return _view; }
+    QQuickView *view() { return _view; }
 
     void registerChildWindow(QTopLevelWindow* child);
     void hideChildWindows();
@@ -59,7 +59,7 @@ Q_SIGNALS:
     void sizeChanged(QSize newSize);
 
 private:
-    QSGView *_view;
+    QQuickView *_view;
     QSet<QTopLevelWindow*> _childWindows;
     bool _positionIsDefined;
 

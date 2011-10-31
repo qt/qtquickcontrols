@@ -39,7 +39,7 @@
 
 #include "qmldesktopviewer.h"
 #include "loggerwidget.h"
-#include <qsgview.h>
+#include <qquickview.h>
 #include <qdeclarativecontext.h>
 #include <qdeclarativeengine.h>
 #include <qdeclarative.h>
@@ -65,7 +65,7 @@
 QT_BEGIN_NAMESPACE
 
 QmlDesktopViewer::QmlDesktopViewer() :
-    _engine(new QDeclarativeEngine(this))//, _rootObject(new QSGItem)
+    _engine(new QDeclarativeEngine(this))//, _rootObject(new QQuickItem)
 {
     _engine->setParent(this);
     QmlDesktopViewer::registerTypes();

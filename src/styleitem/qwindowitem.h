@@ -30,12 +30,12 @@
 #include "qtoplevelwindow.h"
 
 #include <QtWidgets/QApplication>
-#include <QSGItem>
-#include <QSGView>
+#include <QQuickItem>
+#include <QQuickView>
 #include <QMenuBar>
 
 
-class QWindowItem : public QSGItem
+class QWindowItem : public QQuickItem
 {
     Q_OBJECT
     Q_PROPERTY(int x READ x WRITE setX NOTIFY positionChanged)
@@ -58,7 +58,7 @@ public:
     ~QWindowItem();
 
     QTopLevelWindow *window() { return _window; }
-    QSGView *view() { return _window->view(); }
+    QQuickView *view() { return _window->view(); }
     int x() { return _window->x(); }
     int y() { return _window->y(); }
     int height() { return _window->height(); }

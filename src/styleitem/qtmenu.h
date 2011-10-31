@@ -29,7 +29,7 @@
 
 #include <QtWidgets/qmenu.h>
 #include <QtDeclarative/qdeclarative.h>
-#include <QtDeclarative/QSGItem.h>
+#include <QtDeclarative/QQuickItem>
 #include <QtDeclarative/QDeclarativeListProperty>
 #include "qtmenuitem.h"
 #include <QtDeclarative/QDeclarativeListProperty>

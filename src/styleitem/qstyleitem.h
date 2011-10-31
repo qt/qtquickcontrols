@@ -40,13 +40,13 @@
 #ifndef STYLEWRAPPER_H
 #define STYLEWRAPPER_H
 
-#include <QtDeclarative/qsgpainteditem.h>
+#include <QtDeclarative/qquickpainteditem.h>
 //#include <QSGItem>
 #include <QtWidgets/QStyle>
 #include <QtWidgets>
 #include <QEvent>
 
-class QStyleItem: public QSGPaintedItem
+class QStyleItem: public QQuickPaintedItem
 {
     Q_OBJECT
 
@@ -79,7 +79,7 @@ class QStyleItem: public QSGPaintedItem
     Q_PROPERTY( int fontHeight READ fontHeight NOTIFY fontHeightChanged)
 
 public:
-    QStyleItem(QSGPaintedItem *parent = 0);
+    QStyleItem(QQuickPaintedItem *parent = 0);
     ~QStyleItem();
 
     enum Type {

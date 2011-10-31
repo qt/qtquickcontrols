@@ -2,7 +2,7 @@ TEMPLATE = app
 TARGET =
 DEPENDPATH += .
 INCLUDEPATH += .
-QT += declarative
+QT += declarative widgets
 
 # Input
 HEADERS +=  qmldesktopviewer.h \

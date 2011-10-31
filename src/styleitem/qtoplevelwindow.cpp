@@ -3,7 +3,7 @@
 #include <QDesktopWidget>
 
 QTopLevelWindow::QTopLevelWindow()
-    : QMainWindow(), _view(new QSGView), _positionIsDefined(false) {
+    : QMainWindow(), _view(new QQuickView), _positionIsDefined(false) {
     setVisible(false);
     //setCentralWidget(_view);
     setAttribute(Qt::WA_DeleteOnClose);

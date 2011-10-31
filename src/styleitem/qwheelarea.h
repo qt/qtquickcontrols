@@ -29,7 +29,7 @@
 
 
 #include <QtCore/qobject.h>
-#include <QtDeclarative/qsgitem.h>
+#include <QtDeclarative/qquickitem.h>
 
 //#include <QtDeclarative/qdeclarative.h>
 //#include <QtDeclarative/qdeclarativeitem.h>
@@ -38,7 +38,7 @@
 #include <QtGui/qevent.h>
 #include <qgraphicssceneevent.h>
 
-class QWheelArea : public QSGItem
+class QWheelArea : public QQuickItem
 {
     Q_OBJECT
     Q_PROPERTY(qreal verticalDelta READ verticalDelta WRITE setVerticalDelta NOTIFY verticalWheelMoved)
@@ -52,7 +52,7 @@ class QWheelArea : public QSGItem
 
 
 public:
-    QWheelArea(QSGItem *parent = 0);
+    QWheelArea(QQuickItem *parent = 0);
 
     virtual ~QWheelArea();
 

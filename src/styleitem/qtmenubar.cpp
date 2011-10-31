@@ -43,11 +43,11 @@
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
 
-QtMenuBar::QtMenuBar(QSGItem *parent)
-    : QSGItem(parent)/*, _menuBar(new QMenuBar)*/
+QtMenuBar::QtMenuBar(QQuickItem *parent)
+    : QQuickItem(parent)/*, _menuBar(new QMenuBar)*/
 {
     connect(this, SIGNAL(parentChanged()), this, SLOT(updateParent()));
-    setFlag(QSGItem::ItemHasContents, false);
+    setFlag(QQuickItem::ItemHasContents, false);
 }
 
 QtMenuBar::~QtMenuBar()
