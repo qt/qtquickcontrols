@@ -1,5 +1,5 @@
 import QtQuick 1.1
-import "../"
+import QtDesktop 0.1
 
 WheelArea {
     id: wheelarea

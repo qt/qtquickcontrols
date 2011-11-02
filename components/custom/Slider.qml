@@ -26,7 +26,7 @@
 
 import QtQuick 2.0
 import QtDesktop 0.1
-import "../"
+//import "../"
 
 Item {
     id: slider
