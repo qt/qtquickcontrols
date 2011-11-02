@@ -186,7 +186,7 @@ public Q_SLOTS:
     int pixelMetric(const QString&);
     QVariant styleHint(const QString&);
     void updateSizeHint();
-    void updateItem(){update();}
+    void updateItem(){initStyleOption(); update();}
     QString hitTest(int x, int y);
     QRect subControlRect(const QString &subcontrolString);
     QString elidedText(const QString &text, int elideMode, int width);

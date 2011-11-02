@@ -488,7 +488,6 @@ QString QStyleItem::style() const
 QString QStyleItem::hitTest(int px, int py)
 {
     QStyle::SubControl subcontrol = QStyle::SC_All;
-    initStyleOption();
     switch (m_itemType) {
     case SpinBox :{
         subcontrol = qApp->style()->hitTestComplexControl(QStyle::CC_SpinBox,
