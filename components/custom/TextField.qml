@@ -24,6 +24,7 @@ FocusScope {
     property alias echoMode: textInput.echoMode
     property alias cursorPosition: textInput.cursorPosition
     property alias inputMethodHints: textInput.inputMethodHints
+    property alias activeFocusOnPress: textInput.activeFocusOnPress
 
     property color textColor: syspal.text
     property color backgroundColor: syspal.base
@@ -75,12 +76,6 @@ FocusScope {
         return textInput.positionToRectangle(p);
     }
 
-    width: Math.max(minimumWidth,
-                    textInput.width + leftMargin + rightMargin)
-
-    height: Math.max(minimumHeight,
-                     textInput.height + topMargin + bottomMargin)
-
     // Implementation
     clip: true
 
@@ -106,7 +101,6 @@ FocusScope {
     TextInput { // see QTBUG-14936
         id: textInput
         selectByMouse:true
-        focus: true
 
         anchors.leftMargin: leftMargin
         anchors.topMargin: topMargin
@@ -118,7 +112,7 @@ FocusScope {
         anchors.verticalCenter: parent.verticalCenter
 
         color: syspal.text
-        echoMode: passwordMode ? _hints.passwordEchoMode : TextInput.Normal
+        echoMode: passwordMode ? TextInput.Password : TextInput.Normal
 
     }
 

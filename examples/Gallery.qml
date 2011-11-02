@@ -14,7 +14,7 @@ Rectangle {
     width: 538 + frame.margins * 2
     height: 360 + frame.margins * 2
 
-    ToolBar{
+    ToolBar {
         id: toolbar
         width: parent.width
         height: 40
@@ -22,14 +22,17 @@ Rectangle {
             spacing: 2
             anchors.verticalCenter: parent.verticalCenter
             ToolButton{
+                iconName: "folder-new"
                 iconSource: "images/folder_new.png"
                 anchors.verticalCenter: parent.verticalCenter
             }
             ToolButton{
+                iconName: "folder-new"
                 iconSource: "images/folder_new.png"
                 anchors.verticalCenter: parent.verticalCenter
             }
             ToolButton{
+                iconName: "window-new"
                 iconSource: "images/toplevel_window.png"
                 anchors.verticalCenter: parent.verticalCenter
                 onClicked: window1.visible = !window1.visible
@@ -142,7 +145,6 @@ Rectangle {
                     text:"Close"
                     width: 98
                     tooltip:"Press me, to close this window again"
-                    defaultbutton:true
                     onClicked: window1.visible = false
                 }
                 Button {
@@ -177,9 +179,9 @@ Rectangle {
 
         ContextMenu {
             id: editmenu
-            MenuItem { text: "Copy" }
-            MenuItem { text: "Cut" }
-            MenuItem { text: "Paste" }
+            MenuItem { text: "Copy" ;  iconName: "edit-copy" }
+            MenuItem { text: "Cut" ;   iconName: "edit-cut" }
+            MenuItem { text: "Paste" ; iconName: "edit-paste" }
         }
         MouseArea {
             anchors.fill:  parent
@@ -207,12 +209,11 @@ Rectangle {
         ListElement { text: "Coconut" }
     }
 
-
     TabFrame {
         id:frame
         position: tabPositionGroup.checkedButton == r2 ? "South" : "North"
-        tabbar: TabBar{parent: frame; KeyNavigation.tab:button1}
-
+        KeyNavigation.tab:button1
+        KeyNavigation.backtab: button2
         property int margins : styleitem.style == "mac" ? 16 : 0
         anchors.top: toolbar.bottom
         anchors.bottom: parent.bottom
@@ -242,7 +243,7 @@ Rectangle {
                                 width: 96
                                 tooltip:"This is an interesting tool tip"
                                 KeyNavigation.tab: button2
-                                KeyNavigation.backtab: frame.tabbar
+                                KeyNavigation.backtab: frame.tabBar
                             }
                             Button {
                                 id:button2
@@ -298,15 +299,15 @@ Rectangle {
                             KeyNavigation.tab: frameCheckbox
                             KeyNavigation.backtab: t3
                         }
-                        smooth:true
                     }
                     Column {
                         id: rightcol
                         spacing: 12
-                        GroupBox{
+                        GroupBox {
                             id: group1
                             title: "CheckBox"
                             width: area.width
+                            adjustToContentSize: true
                             ButtonRow {
                                 exclusive: false
                                 CheckBox {
@@ -329,6 +330,7 @@ Rectangle {
                             id: group2
                             title:"Tab Position"
                             width: area.width
+                            adjustToContentSize: true
                             ButtonRow {
                                 id: tabPositionGroup
                                 RadioButton {
@@ -377,6 +379,7 @@ Rectangle {
 
                     GroupBox {
                         title: "Animation options"
+                        adjustToContentSize: true
                         ButtonRow {
                             exclusive: false
                             CheckBox {

@@ -32,21 +32,21 @@
 #include <QtWidgets/QApplication>
 #include <QQuickItem>
 #include <QQuickView>
-#include <QMenuBar>
+#include <QtWidgets/QMenuBar>
 
 
 class QWindowItem : public QQuickItem
 {
     Q_OBJECT
-    Q_PROPERTY(int x READ x WRITE setX NOTIFY positionChanged)
-    Q_PROPERTY(int y READ y WRITE setY NOTIFY positionChanged)
+    Q_PROPERTY(int x READ x WRITE setX NOTIFY xChanged)
+    Q_PROPERTY(int y READ y WRITE setY NOTIFY yChanged)
     Q_PROPERTY(int height READ height WRITE setHeight NOTIFY sizeChanged)
     Q_PROPERTY(int width READ width WRITE setWidth NOTIFY sizeChanged)
     Q_PROPERTY(int minimumHeight READ minimumHeight WRITE setMinimumHeight NOTIFY minimumHeightChanged)
     Q_PROPERTY(int maximumHeight READ maximumHeight WRITE setMaximumHeight NOTIFY maximumHeightChanged)
     Q_PROPERTY(int minimumWidth READ minimumWidth WRITE setMinimumWidth NOTIFY minimumWidthChanged)
     Q_PROPERTY(int maximumWidth READ maximumWidth WRITE setMaximumWidth NOTIFY maximumWidthChanged)
-    Q_PROPERTY(bool visible READ isVisible WRITE setVisible NOTIFY visibilityChanged)
+    Q_PROPERTY(bool visible READ isVisible WRITE setVisible NOTIFY visibleChanged)
     Q_PROPERTY(bool windowDecoration READ windowDecoration WRITE setWindowDecoration NOTIFY windowDecorationChanged)
     Q_PROPERTY(bool modal READ modal WRITE setModal NOTIFY modalityChanged)
     Q_PROPERTY(bool close READ close WRITE setClose)
@@ -97,11 +97,14 @@ protected:
 
 protected Q_SLOTS:
     void updateSize(QSize newSize);
+    void center();
+    void moveWindow(int x, int y, int lx, int ly);
 
 Q_SIGNALS:
     void sizeChanged();
-    void positionChanged();
-    void visibilityChanged();
+    void xChanged();
+    void yChanged();
+    void visibleChanged();
     void windowDecorationChanged();
     void windowStateChanged();
     void minimumHeightChanged();
@@ -116,6 +119,8 @@ private:
     bool _complete;
     bool _positionIsDefined;
     bool _delayedVisible;
+    int _x;
+    int _y;
 };
 
 #endif // QWindowItem_H

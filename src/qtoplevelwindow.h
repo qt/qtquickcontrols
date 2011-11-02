@@ -24,43 +24,46 @@
 **
 ****************************************************************************/
 
-#ifndef QDESKTOPITEM_H
-#define QDESKTOPITEM_H
+#ifndef QTOPLEVELWINDOW_H
+#define QTOPLEVELWINDOW_H
 
-#include <QDesktopWidget>
-#include <QtDeclarative>
+#include <QtDeclarative/QQuickView>
+#include <QtWidgets/QMainWindow>
+#include <QWindowStateChangeEvent>
+#include <QDebug>
 
-class QDesktopItem : public QObject
-{
+class QTopLevelWindow : public QMainWindow {
     Q_OBJECT
-
-    Q_PROPERTY(int screenWidth READ screenWidth NOTIFY screenGeometryChanged)
-    Q_PROPERTY(int screenHeight READ screenHeight NOTIFY screenGeometryChanged)
-    Q_PROPERTY(int availableWidth READ availableWidth NOTIFY availableGeometryChanged)
-    Q_PROPERTY(int availableHeight READ availableHeight NOTIFY availableGeometryChanged)
-    Q_PROPERTY(int screenCount READ screenCount NOTIFY screenCountChanged)
-
 public:
-    QDesktopItem(QObject* obj);
+    QTopLevelWindow();
+    ~QTopLevelWindow();
 
-    int screenCount() const;
-    Q_INVOKABLE QRect screenGeometry(int screen) const;
-    Q_INVOKABLE QRect availableGeometry(int screen) const;
-    int screenWidth() const;
-    int screenHeight() const;
-    int availableWidth() const;
-    int availableHeight() const;
-    static QDesktopItem *qmlAttachedProperties(QObject *obj);
+    //QGraphicsScene *scene() { return _view->scene(); }
+    QQuickView *view() { return _view; }
 
-private:
-    QDesktopWidget desktopWidget;
+
+    void registerChildWindow(QTopLevelWindow* child);
+    void hideChildWindows();
+    void initPosition();
+    void setWindowFlags(Qt::WindowFlags type);
+
+    void center();
+    void move(int x, int y);
+    void move(const QPoint &);
+
+protected:
+    virtual bool event(QEvent *event);
 
 Q_SIGNALS:
-    void screenGeometryChanged();
-    void availableGeometryChanged();
-    void screenCountChanged();
+    void visibilityChanged();
+    void windowStateChanged();
+    void sizeChanged(QSize newSize);
+
+private:
+    QQuickView *_view;
+    QSet<QTopLevelWindow*> _childWindows;
+    bool _positionIsDefined;
+
 };
 
-QML_DECLARE_TYPEINFO(QDesktopItem, QML_HAS_ATTACHED_PROPERTIES)
-
-#endif // QDesktopItemITEM_H
+#endif // QTOPLEVELWINDOW_H

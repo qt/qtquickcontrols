@@ -28,6 +28,12 @@ Column {
     property bool exclusive: true
 
     /*
+     * Property: styleHint
+     * [string] Used to indicate special OS specific button types
+     */
+    property string styleHint
+
+    /*
      * Property: checkedButton
      * [string] Contains the last checked Button.
      */

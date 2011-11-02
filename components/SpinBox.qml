@@ -8,21 +8,26 @@ Components.SpinBox {
     property variant __upRect;
     property variant __downRect;
     property int __margin: (height -16)/2
-    property string hint
+    property string styleHint
 
     // Align height with button
-    topMargin:__margin
-    bottomMargin:__margin
+    topMargin: __margin
+    bottomMargin: __margin
 
     leftMargin:6
     rightMargin:6
 
-    StyleItem { id:edititem ; elementType:"edit" ; visible:false }
-    property int buttonHeight:  edititem.sizeFromContents(70, 20).height
-    property int buttonWidth: edititem.sizeFromContents(70, 20).width
+    StyleItem {
+        id:edititem
+        elementType: "edit"
+        visible: false
+        contentWidth: 70
+        contentHeight: 20
+    }
 
-    height: buttonHeight
-    width: buttonWidth
+    implicitWidth: edititem.implicitWidth
+    implicitHeight: edititem.implicitHeight
+
     clip:false
 
     background: Item {
@@ -70,13 +75,13 @@ Components.SpinBox {
             elementType: "spinbox"
             sunken: (downEnabled && downPressed) | (upEnabled && upPressed)
             hover: containsMouse
-            focus: spinbox.focus
+            hasFocus: spinbox.focus
             enabled: spinbox.enabled
             value: (upPressed ? 1 : 0)           |
                    (downPressed == 1 ? 1<<1 : 0) |
                    (upEnabled ? (1<<2) : 0)      |
                    (downEnabled == 1 ? (1<<3) : 0)
-            hint: spinbox.hint
+            hint: spinbox.styleHint
         }
     }
 

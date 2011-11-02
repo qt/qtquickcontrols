@@ -6,10 +6,10 @@ Rectangle {
     width: 538 + frame.margins * 2
     height: 360 + frame.margins * 2
 
-    ToolBar{
+    ToolBar {
         id: toolbar
         width: parent.width
-        height: 40
+        //height: 40
 
         MouseArea {
             anchors.fill:  parent
@@ -17,7 +17,7 @@ Rectangle {
             onPressed: editmenu.show(mouseX, mouseY)
         }
 
-        ChoiceList {
+        ComboBox {
             id: delegateChooser
             enabled: frame.current == 4 ? 1 : 0
             model: delegatemenu
@@ -75,7 +75,6 @@ Rectangle {
             id:frame
             focus:true
             enabled: toolbar.enabled
-            tabbar: TabBar{parent: frame}
 
             property int margins : styleitem.style == "mac" ? 16 : 0
             height: parent.height - 34
@@ -92,18 +91,18 @@ Rectangle {
                     anchors.margins: 12
 
                     TableColumn {
-                        property: "title"
-                        caption: "Title"
+                        role: "title"
+                        title: "Title"
                         width: 120
                     }
                     TableColumn {
-                        property: "credit"
-                        caption: "Credit"
+                        role: "credit"
+                        title: "Credit"
                         width: 120
                     }
                     TableColumn {
-                        property: "imagesource"
-                        caption: "Image source"
+                        role: "imagesource"
+                        title: "Image source"
                         width: 200
                         visible: true
                     }
@@ -123,18 +122,18 @@ Rectangle {
                     anchors.margins: 12
 
                     TableColumn {
-                        property: "fileName"
-                        caption: "File Name"
+                        role: "fileName"
+                        title: "File Name"
                         width: 120
                     }
                     TableColumn {
-                        property: "filePath"
-                        caption: "File Path"
+                        role: "filePath"
+                        title: "File Path"
                         width: 120
                     }
                     TableColumn {
-                        property: "fileSize"
-                        caption: "Image source"
+                        role: "fileSize"
+                        title: "Image source"
                         width: 200
                         visible: true
                     }
@@ -154,8 +153,8 @@ Rectangle {
                     anchors.margins: 12
 
                     TableColumn {
-                        property: "attributes"
-                        caption: "Text and Color"
+                        role: "attributes"
+                        title: "Text and Color"
                         width: 220
                     }
 
@@ -195,18 +194,18 @@ Rectangle {
                     anchors.margins: 12
                     anchors.fill: parent
                     TableColumn {
-                        property: "name"
-                        caption: "Name"
+                        role: "name"
+                        title: "Name"
                         width: 120
                     }
                     TableColumn {
-                        property: "age"
-                        caption: "Age"
+                        role: "age"
+                        title: "Age"
                         width: 120
                     }
                     TableColumn {
-                        property: "gender"
-                        caption: "Gender"
+                        role: "gender"
+                        title: "Gender"
                         width: 120
                     }
                     frame: frameCheckbox.checked
@@ -286,7 +285,7 @@ Rectangle {
                             anchors.margins: 4
                             property string modelText: itemValue
                             property string editorText: item ? item.text : itemValue
-                            onEditorTextChanged: model.setProperty(rowIndex, itemProperty, editorText)
+                            onEditorTextChanged: model.setProperty(rowIndex, role, editorText)
                             sourceComponent: itemSelected ? editor : null
                             Component {id: editor ; TextInput{ color: itemForeground ; text: modelText} }
                         }
@@ -302,18 +301,18 @@ Rectangle {
                     alternateRowColor: alternateCheckbox.checked
 
                     TableColumn {
-                        property: "name"
-                        caption: "Name"
+                        role: "name"
+                        title: "Name"
                         width: 120
                     }
                     TableColumn {
-                        property: "age"
-                        caption: "Age"
+                        role: "age"
+                        title: "Age"
                         width: 120
                     }
                     TableColumn {
-                        property: "sex"
-                        caption: "Sex"
+                        role: "sex"
+                        title: "Sex"
                         width: 120
                     }
 
@@ -349,7 +348,7 @@ Rectangle {
                     }
 
                     itemDelegate: {
-                        switch(delegateChooser.currentIndex) {
+                        switch(delegateChooser.selectedIndex) {
                         case 0:
                             return delegate1
                         case 1:

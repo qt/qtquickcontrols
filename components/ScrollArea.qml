@@ -1,46 +1,32 @@
 import QtQuick 2.0
 import "custom" as Components
+import "private" as Private
 import QtDesktop 0.1
 
 FocusScope {
-    id: scrollarea
+    id: root
     width: 100
     height: 100
 
-    property int frameWidth: frame ? styleitem.pixelMetric("defaultframewidth") : 0;
+    // Cosmetic propeties
+    property bool frame: true
+    property bool frameAroundContents: styleitem.styleHint("framearoundcontents")
+    property bool highlightOnFocus: false
+    property alias color: colorRect.color // background color
+    property int frameWidth: frame ? styleitem.frameWidth : 0
+
+    // Item properties
+    property alias horizontalScrollBar: scroller.horizontalScrollBar
+    property alias verticalScrollBar: scroller.verticalScrollBar
+
+    // Viewport properties
+    property int contentX
+    property int contentY
     property int contentHeight : content.childrenRect.height
     property int contentWidth: content.childrenRect.width
-    property alias color: colorRect.color
-    property bool frame: true
-    property bool highlightOnFocus: false
-    property bool frameAroundContents: styleitem.styleHint("framearoundcontents")
-    property alias verticalValue: vscrollbar.value
-    property alias horizontalValue: hscrollbar.value
-
-    property alias horizontalScrollBar: hscrollbar
-    property alias verticalScrollBar: vscrollbar
-
-    property int viewportHeight: height - (hscrollbar.visible ? hscrollbar.height : 0) - 2 * frameWidth
-    property int viewportWidth: width - (vscrollbar.visible ? vscrollbar.width : 0) - 2 * frameWidth
-    property bool blockUpdates: false
-
+    property int viewportHeight: height - (horizontalScrollBar.visible ? verticalScrollBar.height : 0) - 2 * frameWidth
+    property int viewportWidth: width - (verticalScrollBar.visible ? verticalScrollBar.width : 0) - 2 * frameWidth
     default property alias data: content.data
-
-    property int contentY
-    property int contentX
-
-    onContentYChanged: {
-        blockUpdates = true
-        vscrollbar.value = contentY
-        wheelarea.verticalValue = contentY
-        blockUpdates = false
-    }
-    onContentXChanged: {
-        blockUpdates = true
-        hscrollbar.value = contentX
-        wheelarea.horizontalValue = contentX
-        blockUpdates = false
-    }
 
     Rectangle {
         id: colorRect
@@ -52,109 +38,58 @@ FocusScope {
     StyleItem {
         id: styleitem
         elementType: "frame"
-        onElementTypeChanged: scrollarea.frameWidth = styleitem.pixelMetric("defaultframewidth");
         sunken: true
         visible: frame
         anchors.fill: parent
-        anchors.rightMargin: frame ? (frameAroundContents ? (vscrollbar.visible ? vscrollbar.width + 2 * frameMargins : 0) : -frameWidth) : 0
-        anchors.bottomMargin: frame ? (frameAroundContents ? (hscrollbar.visible ? hscrollbar.height + 2 * frameMargins : 0) : -frameWidth) : 0
-        anchors.topMargin: frame ? (frameAroundContents ? 0 : -frameWidth) : 0
+        anchors.rightMargin: frame ? (frameAroundContents ? (verticalScrollBar.visible ? verticalScrollBar.width + 2 * frameMargins : 0) : 0) : 0
+        anchors.bottomMargin: frame ? (frameAroundContents ? (horizontalScrollBar.visible ? horizontalScrollBar.height + 2 * frameMargins : 0) : 0) : 0
+        anchors.topMargin: frame ? (frameAroundContents ? 0 : 0) : 0
+        property int frameWidth
         property int scrollbarspacing: styleitem.pixelMetric("scrollbarspacing");
         property int frameMargins : frame ? scrollbarspacing : 0
-        property int frameoffset: style === "mac" ? -1 : 0
+        Component.onCompleted: frameWidth = styleitem.pixelMetric("defaultframewidth");
+    }
+
+    onContentYChanged: {
+        scroller.blockUpdates = true
+        verticalScrollBar.value = contentY
+        scroller.verticalValue = contentY
+        scroller.blockUpdates = false
+    }
+
+    onContentXChanged: {
+        scroller.blockUpdates = true
+        horizontalScrollBar.value = contentX
+        scroller.horizontalValue = contentX
+        scroller.blockUpdates = false
     }
 
     Item {
-        id: flickable
+        id: clipper
         anchors.fill: styleitem
         anchors.margins: frameWidth
         clip: true
-
         Item {
             id: content
-            x: -scrollarea.contentX
-            y: -scrollarea.contentY
+            x: -root.contentX
+            y: -root.contentY
         }
     }
 
-    WheelArea {
-        id: wheelarea
+
+    Private.ScrollAreaHelper {
+        id: scroller
         anchors.fill: parent
-        horizontalMinimumValue: hscrollbar.minimumValue
-        horizontalMaximumValue: hscrollbar.maximumValue
-        verticalMinimumValue: vscrollbar.minimumValue
-        verticalMaximumValue: vscrollbar.maximumValue
-
-        onVerticalValueChanged: {
-            if (!blockUpdates)
-                contentY = verticalValue
-        }
-
-        onHorizontalValueChanged: {
-            if (!blockUpdates)
-                contentX = horizontalValue
-        }
-    }
-
-    ScrollBar {
-        id: hscrollbar
-        orientation: Qt.Horizontal
-        property int availableWidth : scrollarea.width - (vscrollbar.visible ? vscrollbar.width : 0)
-        visible: contentWidth > availableWidth
-        maximumValue: contentWidth > availableWidth ? scrollarea.contentWidth - availableWidth: 0
-        minimumValue: 0
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: styleitem.frameoffset
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.leftMargin: (frame ? frameWidth : 0)
-        anchors.rightMargin: { vscrollbar.visible ? scrollbarExtent : (frame ? 1 : 0) }
-        property int scrollbarExtent : styleitem.pixelMetric("scrollbarExtent");
-        onValueChanged: {
-            if (!blockUpdates)
-                contentX = value
-        }
-    }
-
-    ScrollBar {
-        id: vscrollbar
-        orientation: Qt.Vertical
-        property int availableHeight : scrollarea.height - (hscrollbar.visible ? (hscrollbar.height) : 0)
-        visible: contentHeight > availableHeight
-        maximumValue: contentHeight > availableHeight ? scrollarea.contentHeight - availableHeight : 0
-        minimumValue: 0
-        anchors.right: parent.right
-        anchors.top: parent.top
-        anchors.bottom: parent.bottom
-        anchors.topMargin: styleitem.style == "mac" ? 1 : 0
-        anchors.rightMargin: styleitem.frameoffset
-        anchors.bottomMargin: hscrollbar.visible ? hscrollbar.height : styleitem.frameoffset
-        onValueChanged: {
-            if (!blockUpdates)
-                contentY = value
-        }
-    }
-
-    Rectangle {
-        // This is the filled corner between scrollbars
-        id: cornerFill
-        anchors.left:  vscrollbar.left
-        anchors.right: vscrollbar.right
-        anchors.top: hscrollbar.top
-        anchors.bottom: hscrollbar.bottom
-        visible: hscrollbar.visible && vscrollbar.visible
-        SystemPalette { id: syspal }
-        color: syspal.window
     }
 
     StyleItem {
         z: 2
         anchors.fill: parent
 
-        anchors.topMargin: -4
+        anchors.topMargin: -3
         anchors.leftMargin: -3
         anchors.rightMargin: -5
-        anchors.bottomMargin: -6
+        anchors.bottomMargin: -5
 
         visible: highlightOnFocus && parent.activeFocus && styleitem.styleHint("focuswidget")
         elementType: "focusframe"

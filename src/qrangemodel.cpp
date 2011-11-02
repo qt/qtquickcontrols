@@ -42,8 +42,8 @@
 */
 
 #include <QEvent>
-#include <QApplication>
-#include <QGraphicsSceneEvent>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QGraphicsSceneEvent>
 #include <QDebug>
 
 #ifndef QT_NO_ACCESSIBILITY

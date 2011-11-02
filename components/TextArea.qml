@@ -14,25 +14,32 @@ ScrollArea {
     property alias readOnly: edit.readOnly
     property bool tabChangesFocus: false
     property alias font: edit.font
+    property alias activeFocusOnPress: edit.activeFocusOnPress
 
     highlightOnFocus: true
     property int documentMargins: 4
     frame: true
 
+    function append (string) {
+        text += "\n" + string
+        verticalScrollBar.value = verticalScrollBar.maximumValue
+    }
+
     Item {
         anchors.left: parent.left
         anchors.top: parent.top
-        height: edit.paintedHeight + area.height - viewportHeight
+        height: edit.paintedHeight + area.height - viewportHeight + 2 * documentMargins + 4
         anchors.margins: documentMargins
 
         TextEdit {
             id: edit
             wrapMode: TextEdit.WordWrap;
-            width: 200
+            width: area.width
+            height: area.height
             selectByMouse: true
             readOnly: false
-            focus: true
             color: syspal.text
+
             SystemPalette {
                 id: syspal
                 colorGroup: enabled ? SystemPalette.Active : SystemPalette.Disabled

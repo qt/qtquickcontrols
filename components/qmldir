@@ -2,6 +2,7 @@ Slider 0.1 Slider.qml
 SpinBox 0.1 SpinBox.qml
 GroupBox 0.1 GroupBox.qml
 Button 0.1 Button.qml
+Label 0.1 Label.qml
 ToolBar 0.1 ToolBar.qml
 TabFrame 0.1 TabFrame.qml
 TabBar 0.1 TabBar.qml
@@ -9,7 +10,6 @@ Tab 0.1 Tab.qml
 Frame 0.1 Frame.qml
 ScrollArea 0.1 ScrollArea.qml
 ScrollBar 0.1 ScrollBar.qml
-ChoiceList 0.1 ChoiceList.qml
 ComboBox 0.1 ComboBox.qml
 ToolButton 0.1 ToolButton.qml
 TextArea 0.1 TextArea.qml
@@ -18,6 +18,7 @@ ProgressBar 0.1 ProgressBar.qml
 ButtonRow 0.1 ButtonRow.qml
 ButtonColumn 0.1 ButtonColumn.qml
 SplitterRow 0.1 SplitterRow.qml
+SplitterColumn 0.1 SplitterColumn.qml
 Dial 0.1 Dial.qml
 TableView 0.1 TableView.qml
 CheckBox 0.1 CheckBox.qml
@@ -26,3 +27,6 @@ plugin styleplugin plugin
 TableColumn 0.1 TableColumn.qml
 ContextMenu 0.1 ContextMenu.qml
 MenuItem 0.1 MenuItem.qml
+Dialog 0.1 Dialog.qml
+StatusBar 0.1 StatusBar.qml
+ApplicationWindow 0.1 ApplicationWindow.qml

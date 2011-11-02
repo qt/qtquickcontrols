@@ -48,7 +48,6 @@ Item {
 
     Row {
         id: tabrow
-        focus: true
         property int paintMargins: 1
         states:
                 State {
@@ -69,34 +68,35 @@ Item {
                 focus:true
                 property int tabindex: index
                 property bool selected : tabFrame.current == index
-                z: selected ? 1 : -index
+                z: selected ? 1 : -1
+                width: Math.min(implicitWidth, tabbar.width/tabs.length)
                 function updateRect() {
-                    var rect = style.sizeFromContents(textitem.width + tabHSpace + 2, Math.max(style.fontHeight + tabVSpace + 6, 0))
-                    width = rect.width
-                    height = rect.height
+                    implicitWidth = style.implicitWidth
+                    height = style.implicitHeight
                 }
-                // Component.onCompleted: print("taboverlap" + tabOverlap + " tabbaseoverlap " + tabBaseOverlap + " overlap " +__overlap + " hspace " + tabHSpace)
                 StyleItem {
                     id: style
                     elementType: "tab"
                     selected: tab.selected
                     info: tabbar.position
-                    text: tabFrame.tabs[index].title
+                    text:  tabFrame.tabs[index].title
                     hover: mousearea.containsMouse
-                    focus: tabbar.focus && selected
+                    hasFocus: tabbar.focus && selected
                     property bool first: index === 0
                     paintMargins: tabrow.paintMargins
-                    activeControl: tabFrame.count == 1 ? "only" : index === 0 ? "beginning" :
-                            index == tabFrame.count-1 ? "end" : "middle"
+                    activeControl: tabFrame.count === 1 ? "only" : index === 0 ? "beginning" :
+                            index === tabFrame.count-1 ? "end" : "middle"
                     anchors.fill: parent
                     anchors.margins: -paintMargins
+                    contentWidth: textitem.width + tabHSpace + 2
+                    contentHeight: Math.max(style.fontHeight + tabVSpace + 6, 0)
                     Text {
                         id: textitem
                         // Used for size hint
                         visible: false
                         onWidthChanged: updateRect()
                         onHeightChanged: updateRect()
-                        text: tabFrame.tabs[index].title
+                        text:  tabFrame.tabs[index].title
                     }
                 }
                 MouseArea {

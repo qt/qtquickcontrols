@@ -17,8 +17,7 @@ QML_FILES = \
         ButtonGroup.js \
         Button.qml \
         CheckBox.qml \
-        ChoiceList.qml \
-        SplitterRow.qml \
+        Splitter.qml \
         ProgressBar.qml \
         RadioButton.qml \
         ScrollDecorator.qml \

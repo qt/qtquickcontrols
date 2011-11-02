@@ -16,12 +16,6 @@ FocusScope {
     property int rightMargin: 0
     property int bottomMargin: 0
 
-    width: Math.max(minimumWidth,
-                    input.width + leftMargin + rightMargin)
-
-    height: Math.max(minimumHeight,
-                     input.height + topMargin + bottomMargin)
-
     property real value: 0.0
     property real maximumValue: 99
     property real minimumValue: 0

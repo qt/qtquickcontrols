@@ -1,11 +1,11 @@
 import QtQuick 2.0
+import "."
 import "custom" as Components
 import QtDesktop 0.1
 
-StyleItem{
+StyleItem {
     id: toolbar
-    width: 200
-    height: sizeFromContents(32, 32).height
+    width: parent ? parent.width : 200
+    height: implicitHeight
     elementType: "toolbar"
 }
-

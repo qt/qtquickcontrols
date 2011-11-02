@@ -176,7 +176,6 @@ Rectangle {
 
     TabFrame {
         id:frame
-        tabbar: TabBar{parent:frame}
         anchors.top:toolbar.bottom
         anchors.bottom:parent.bottom
         anchors.right:parent.right

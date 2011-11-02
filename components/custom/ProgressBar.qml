@@ -17,9 +17,6 @@ Item {
     property int minimumWidth: 0
     property int minimumHeight: 0
 
-    width: minimumWidth
-    height: minimumHeight
-
     property Component background: null
     property Item backgroundItem: groove.item
 

@@ -1,4 +1,4 @@
-import QtQuick 1.0
+import QtQuick 1.1
 import "custom" as Custom
 import QtDesktop 0.1
 
@@ -63,7 +63,7 @@ Custom.BasicButton {
     property alias hoveredIndex: popup.hoveredIndex
     property alias selectedText: popup.selectedText
     property alias hoveredText: popup.hoveredText
-    property string hint
+    property string styleHint
 
     background: StyleItem {
         anchors.fill: parent
@@ -73,20 +73,20 @@ Custom.BasicButton {
         hover: comboBox.containsMouse
         enabled: comboBox.enabled
         text: comboBox.selectedText
-        focus: comboBox.focus
+        hasFocus: comboBox.focus
+        contentHeight: 18
     }
 
-//    ToDo: adjust margins so that selected popup label
-//      centers directly above button label when
-//      popup.centerOnSelectedText === true
-//    property int leftMargin: 0
-//    property int topMargin: 0
-//    property int rightMargin: 0
-//    property int bottomMargin: 0
+//  ToDo: adjust margins so that selected popup label
+//    centers directly above button label when
+//    popup.centerOnSelectedText === true
 
-    width: backgroundItem.sizeFromContents(100, 18).height
+
+    width: implicitWidth
+    height: implicitHeight
+    implicitWidth: Math.max(80, backgroundItem.implicitWidth)
+    implicitHeight: backgroundItem.implicitHeight
     onWidthChanged: popup.setMinimumWidth(width)
-    height: backgroundItem.sizeFromContents(100, 18).height
     checkable: false
     onPressedChanged: if (pressed) popup.visible = true
 

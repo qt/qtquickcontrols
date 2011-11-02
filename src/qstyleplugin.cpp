@@ -46,6 +46,9 @@
 #include "qwindowitem.h"
 #include "qdesktopitem.h"
 #include "qwheelarea.h"
+#include "qcursorarea.h"
+#include "qtooltiparea.h"
+#include "qtsplitterbase.h"
 #include <qdeclarativeextensionplugin.h>
 
 #include <qdeclarativeengine.h>
@@ -53,7 +56,7 @@
 //#include <qdeclarativeitem.h>
 #include <qdeclarativeimageprovider.h>
 //x#include <qdeclarativeview.h>
-#include <QApplication>
+#include <QtWidgets/QApplication>
 #include <QImage>
 
 // Load icons from desktop theme
@@ -71,7 +74,7 @@ public:
         Q_UNUSED(size);
         int pos = id.lastIndexOf('/');
         QString iconName = id.right(id.length() - pos);
-        int width = qApp->style()->pixelMetric(QStyle::PM_ToolBarIconSize);
+        int width = requestedSize.width();
         return QIcon::fromTheme(iconName).pixmap(width);
     }
 };
@@ -82,18 +85,22 @@ void StylePlugin::registerTypes(const char *uri)
     qDebug(uri);
     qmlRegisterType<QWindowItem>(uri, 0, 1, "Window");
     qmlRegisterType<QStyleItem>(uri, 0, 1, "StyleItem");
+    qmlRegisterType<QCursorArea>(uri, 0, 1, "CursorArea");
+    qmlRegisterType<QTooltipArea>(uri, 0, 1, "TooltipArea");
     qmlRegisterType<QRangeModel>(uri, 0, 1, "RangeModel");
-    qmlRegisterType<QGraphicsDropShadowEffect>(uri, 0, 1, "DropShadow");
-    qmlRegisterType<QDeclarativeFolderListModel>(uri, 0, 1, "FileSystemModel");
     qmlRegisterType<QWheelArea>(uri, 0, 1, "WheelArea");
+
     qmlRegisterType<QtMenu>(uri, 0, 1, "Menu");
     qmlRegisterType<QtMenuBar>(uri, 0, 1, "MenuBar");
     qmlRegisterType<QtMenuItem>(uri, 0, 1, "MenuItem");
     qmlRegisterType<QtMenuSeparator>(uri, 0, 1, "Separator");
+
+    qmlRegisterType<QFileSystemModel>(uri, 0, 1, "FileSystemModel");
+    qmlRegisterType<QtSplitterBase>(uri, 0, 1, "Splitter");
     qmlRegisterType<QWindowItem>("QtQuick", 0, 1, "Window");
-    qmlRegisterUncreatableType<QtMenuBase>(uri, 0, 1, "NativeMenuBase", QLatin1String("Do not create objects of type NativeMenuBase"));
-    qmlRegisterUncreatableType<QDesktopItem>("Qt",4,7,"Desktop", QLatin1String("Do not create objects of type Desktop"));
-    qmlRegisterUncreatableType<QDesktopItem>("QtQuick",0,1,"Desktop", QLatin1String("Do not create objects of type Desktop"));
+
+    qmlRegisterUncreatableType<QtMenuBase>("uri", 0, 1, "NativeMenuBase", QLatin1String("Do not create objects of type NativeMenuBase"));
+    qmlRegisterUncreatableType<QDesktopItem>("QtQuick",1,1,"Desktop", QLatin1String("Do not create objects of type Desktop"));
 }
 
 void StylePlugin::initializeEngine(QDeclarativeEngine *engine, const char *uri)

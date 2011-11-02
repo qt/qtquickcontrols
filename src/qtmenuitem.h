@@ -42,23 +42,30 @@
 
 #include <QtCore/QObject>
 #include <QtWidgets/QAction>
+#include <QtCore/QUrl>
 
 class QtMenuBase: public QObject {
     Q_OBJECT
-    Q_PROPERTY(QString iconSource READ iconSource WRITE setIconSource NOTIFY iconSourceChanged)
+    Q_PROPERTY(QUrl iconSource READ iconSource WRITE setIconSource NOTIFY iconSourceChanged)
+    Q_PROPERTY(QString iconName READ iconName WRITE setIconName NOTIFY iconNameChanged)
 
 public:
     QtMenuBase(QObject *parent = 0) : QObject(parent) {}
     virtual QAction* action() = 0;
 
-    void setIconSource(const QString &icon);
-    QString iconSource() const;
+    void setIconSource(const QUrl &icon);
+    QUrl iconSource() const;
+
+    void setIconName(const QString &icon);
+    QString iconName() const;
 
 Q_SIGNALS:
     void iconSourceChanged();
+    void iconNameChanged();
 
 private:
-    QString _iconSource;
+    QUrl _iconSource;
+    QString _iconName;
 };
 
 class QtMenuSeparator : public QtMenuBase
@@ -94,7 +101,6 @@ public:
     QString shortcut() const;
     bool checkable() const;
     bool checked() const;
-
 
     QAction* action();
 

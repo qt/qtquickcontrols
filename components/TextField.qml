@@ -12,16 +12,22 @@ Components.TextField {
     leftMargin: 6
     rightMargin: 6
 
-    height:  backgroundItem.sizeFromContents(200, 25).height
-    width: 200
+    implicitWidth: backgroundItem.implicitWidth
+    implicitHeight: backgroundItem.implicitHeight
+
     clip: false
+
+    property string styleHint
 
     background: StyleItem {
         anchors.fill: parent
         elementType: "edit"
         sunken: true
-        focus: textfield.activeFocus
+        hasFocus: textfield.activeFocus
         hover: containsMouse
+        hint: textfield.styleHint
+        contentWidth: 200
+        contentHeight: 25
     }
 
     Item{
@@ -36,6 +42,7 @@ Components.TextField {
             anchors.bottomMargin:-4
             anchors.fill: parent
             visible: textfield.activeFocus
+            hint: textfield.styleHint
             elementType: "focusframe"
         }
     }

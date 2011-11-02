@@ -13,8 +13,8 @@ Item {
     property alias value: slider.value
     property bool scrollToClickposition: styleitem.styleHint("scrollToClickPosition")
 
-    width: orientation == Qt.Horizontal ? 200 : internal.scrollbarExtent
-    height: orientation == Qt.Horizontal ? internal.scrollbarExtent : 200
+    implicitWidth: orientation == Qt.Horizontal ? 200 : internal.scrollbarExtent
+    implicitHeight: orientation == Qt.Horizontal ? internal.scrollbarExtent : 200
 
     onValueChanged: internal.updateHandle()
 
@@ -163,4 +163,5 @@ Item {
             positionAtMaximum: internal.grooveSize
         }
     }
+
 }

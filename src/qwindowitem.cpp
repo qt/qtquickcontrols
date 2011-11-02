@@ -44,13 +44,15 @@
 #include <QTimer>
 
 QWindowItem::QWindowItem(QTopLevelWindow* tlw)
-    : _window(tlw ? tlw : new QTopLevelWindow), _positionIsDefined(false), _delayedVisible(false)
+    : _window(tlw ? tlw : new QTopLevelWindow), _positionIsDefined(false), _delayedVisible(false), _x(0), _y(0)
 {
-    connect(_window, SIGNAL(visibilityChanged()), this, SIGNAL(visibilityChanged()));
+    connect(_window, SIGNAL(visibilityChanged()), this, SIGNAL(visibleChanged()));
     connect(_window, SIGNAL(windowStateChanged()), this, SIGNAL(windowStateChanged()));
     connect(_window, SIGNAL(sizeChanged(QSize)), this, SLOT(updateSize(QSize)));
+
     connect(qApp, SIGNAL(aboutToQuit()), _window, SLOT(close()));
     view()->setResizeMode(QQuickView::SizeRootObjectToView);
+    _window->installEventFilter(this);
 }
 
 QWindowItem::~QWindowItem()
@@ -60,14 +62,19 @@ QWindowItem::~QWindowItem()
 bool QWindowItem::eventFilter(QObject *, QEvent *ev)
 {
     switch(ev->type()) {
-        case QEvent::Resize:
-            emit sizeChanged();
-            break;
-        case QEvent::Move:
-            emit positionChanged();
-            break;
-        default:
-            break;
+    case QEvent::Resize:
+        emit sizeChanged();
+        emit widthChanged();
+        emit heightChanged();
+        break;
+
+    case QEvent::Move:
+        emit xChanged();
+        emit yChanged();
+        break;
+
+    default:
+        break;
     }
     return false;
 }
@@ -107,13 +114,28 @@ void QWindowItem::updateSize(QSize newSize)
     emit sizeChanged();
 }
 
+void QWindowItem::center()
+{
+    _window->center();
+}
+
 void QWindowItem::setX(int x)
 {
-    _window->move(x, y());
+    _x = x;
+    _window->move(x, _y);
 }
 void QWindowItem::setY(int y)
 {
-    _window->move(x(), y);
+    _y = y;
+    _window->move(_x, y);
+}
+
+void QWindowItem::moveWindow(int x,int y, int lx, int ly)
+{
+    QPoint p = _window->mapToGlobal(QPoint(x,y));
+    p.setX(p.x() - lx);
+    p.setY(p.y() - ly);
+    _window->move(p);
 }
 
 void QWindowItem::setHeight(int height)
@@ -121,7 +143,7 @@ void QWindowItem::setHeight(int height)
     int menuBarHeight = _window->menuBar()->sizeHint().height();
     if (menuBarHeight) menuBarHeight++;
     _window->resize(width(), height+menuBarHeight);
-    QQuickItem::setHeight(height);
+    QQuickItem::setHeight(_window->height());
 }
 
 void QWindowItem::setMinimumHeight(int height)
@@ -141,7 +163,7 @@ void QWindowItem::setMaximumHeight(int height)
 void QWindowItem::setWidth(int width)
 {
     _window->resize(width, height());
-    QQuickItem::setWidth(width);
+    QQuickItem::setWidth(_window->width());
 }
 
 void QWindowItem::setTitle(QString title)
@@ -169,8 +191,10 @@ void QWindowItem::setVisible(bool visible)
 void QWindowItem::setWindowDecoration(bool s)
 {
     bool visible = _window->isVisible();
+
+
     _window->setWindowFlags(s ? _window->windowFlags() & ~Qt::FramelessWindowHint
-                          : _window->windowFlags() | Qt::FramelessWindowHint);
+                              : _window->windowFlags() | Qt::FramelessWindowHint);
     if (visible)
         _window->show();
     emit windowDecorationChanged();

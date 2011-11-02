@@ -41,7 +41,7 @@
 
 //![code]
 #include "qdeclarativefolderlistmodel.h"
-#include <QDirModel>
+#include <QtWidgets/QDirModel>
 #include <QDebug>
 #include <qdeclarativecontext.h>
 

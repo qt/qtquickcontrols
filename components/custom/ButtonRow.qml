@@ -20,13 +20,18 @@ Row {
 
     /*
      * Property: exclusive
-     * [bool=true] Specifies the grouping behavior. If enabled, the checked property on buttons contained
+     * [bool=false] Specifies the grouping behavior. If enabled, the checked property on buttons contained
      * in the group will be exclusive.
      *
      * Note that a button in an exclusive group will allways be checkable
      */
-    property bool exclusive: true
+    property bool exclusive: false
 
+    /*
+     * Property: styleHint
+     * [string] Used to indicate special OS specific button types
+     */
+    property string styleHint
     /*
      * Property: checkedButton
      * [string] Contains the last checked Button.

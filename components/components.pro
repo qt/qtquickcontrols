@@ -1,4 +1,4 @@
-TEMPLATE = subdirs # XXX: Avoid call the linker
+    TEMPLATE = subdirs # XXX: Avoid call the linker
 TARGETPATH = QtDesktop
 
 symbian {
@@ -9,15 +9,18 @@ symbian {
 
 QML_FILES = \
             qmldir \
+            Label.qml \
             Button.qml \
             ComboBox.qml \
             Dial.qml \
+            Dialog.qml \
             ProgressBar.qml \
             ScrollBar.qml \
             Switch.qml \
             TableView.qml \
             ToolBar.qml \
             ButtonRow.qml \
+            ButtonColumn.qml \
             Frame.qml \
             MenuItem.qml   \
             Slider.qml \
@@ -31,14 +34,17 @@ QML_FILES = \
             SpinBox.qml \
             TabFrame.qml \
             TextArea.qml \
-            ChoiceList.qml \       
             ScrollArea.qml \
             SplitterRow.qml \
+            SplitterColumn.qml \
+            StatusBar.qml \
             TableColumn.qml \
-            TextField.qml
+            TextField.qml \
+            ApplicationWindow.qml
 
 QML_DIRS = \
         custom \
+	private \
         images 
 
 qmlfiles.files = $$QML_FILES

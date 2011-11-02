@@ -24,45 +24,51 @@
 **
 ****************************************************************************/
 
-#ifndef QTOPLEVELWINDOW_H
-#define QTOPLEVELWINDOW_H
+#include "qcursorarea.h"
 
-#include <QtDeclarative/QQuickView>
-#include <QMainWindow>
-#include <QWindowStateChangeEvent>
-#include <QDebug>
+QCursorArea::QCursorArea(QQuickItem *parent)
+    : QQuickItem(parent),
+      m_cursor(ArrowCursor)
+{
 
-class QTopLevelWindow : public QMainWindow {
-    Q_OBJECT
-public:
-    QTopLevelWindow();
-    ~QTopLevelWindow();
+}
 
-    //QGraphicsScene *scene() { return _view->scene(); }
-    QQuickView *view() { return _view; }
+void QCursorArea::setCursor(Cursor cursor)
+{
+    if (m_cursor == cursor)
+        return;
 
-    void registerChildWindow(QTopLevelWindow* child);
-    void hideChildWindows();
-    void initPosition();
-    void setWindowFlags(Qt::WindowFlags type);
+#if 0
+    switch (cursor) {
+    case ArrowCursor:
+        QQuickItem::setCursor(Qt::ArrowCursor);
+        break;
+    case SizeHorCursor:
+        QQuickItem::setCursor(Qt::SizeHorCursor);
+        break;
+    case SizeVerCursor:
+        QQuickItem::setCursor(Qt::SizeVerCursor);
+        break;
+    case SizeAllCursor:
+        QQuickItem::setCursor(Qt::SizeAllCursor);
+        break;
+    case SplitHCursor:
+        QQuickItem::setCursor(Qt::SplitHCursor);
+        break;
+    case SplitVCursor:
+        QQuickItem::setCursor(Qt::SplitVCursor);
+        break;
+    case WaitCursor:
+        QQuickItem::setCursor(Qt::WaitCursor);
+        break;
+    case PointingHandCursor:
+        QQuickItem::setCursor(Qt::PointingHandCursor);
+        break;
+    default:
+        return;
+    }
+#endif
 
-    void center();
-    void move(int x, int y);
-    void move(const QPoint &);
-
-protected:
-    virtual bool event(QEvent *event);
-
-Q_SIGNALS:
-    void visibilityChanged();
-    void windowStateChanged();
-    void sizeChanged(QSize newSize);
-
-private:
-    QQuickView *_view;
-    QSet<QTopLevelWindow*> _childWindows;
-    bool _positionIsDefined;
-
-};
-
-#endif // QTOPLEVELWINDOW_H
+    m_cursor = cursor;
+    emit cursorChanged();
+}

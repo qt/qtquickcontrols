@@ -27,12 +27,15 @@
 #include "qtmenu.h"
 #include "qdebug.h"
 #include <qguiapplication.h>
-#include <qmenubar.h>
+#include <QtWidgets/qmenubar.h>
 
 #include "qtoplevelwindow.h"
 
 QtMenu::QtMenu(QObject *parent)
-    : QtMenuBase(parent)
+    : QtMenuBase(parent),
+      dummy(0),
+      _selectedIndex(0),
+      _highlightedIndex(0)
 {
     _qmenu = new QMenu(0);
     connect(_qmenu, SIGNAL(aboutToHide()), this, SIGNAL(menuClosed()));

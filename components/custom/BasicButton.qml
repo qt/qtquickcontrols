@@ -9,12 +9,12 @@ Item {
     property alias containsMouse: behavior.containsMouse
     property alias checkable: behavior.checkable  // button toggles between checked and !checked
     property alias checked: behavior.checked
+    property bool activeFocusOnPress: false
 
     property Component background: null
     property Item backgroundItem: backgroundLoader.item
 
     property color textColor: syspal.text;
-    property bool activeFocusOnPress: false
     property string tooltip
 
     signal toolTipTriggered
@@ -22,8 +22,20 @@ Item {
     // implementation
 
     property string __position: "only"
-    width: backgroundLoader.item.width
-    height: backgroundLoader.item.height
+    implicitWidth: backgroundLoader.item.width
+    implicitHeight: backgroundLoader.item.height
+
+    function animateClick() {
+        behavior.pressed = true
+        behavior.clicked()
+        animateClickTimer.start()
+    }
+
+    Timer {
+        id: animateClickTimer
+        interval: 250
+        onTriggered: behavior.pressed = false
+    }
 
     Loader {
         id: backgroundLoader

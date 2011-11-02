@@ -6,23 +6,16 @@ Item {
     id: tabWidget
     width: 100
     height: 100
-    focus: true
-    property TabBar tabbar
     property int current: 0
     property int count: stack.children.length
-    property bool frame:true
+    property bool frame: true
     property bool tabsVisible: true
     property string position: "North"
     default property alias tabs : stack.children
+    property Item tabBar: tabbarItem
 
     onCurrentChanged: __setOpacities()
     Component.onCompleted: __setOpacities()
-    onTabbarChanged: {
-        tabbar.tabFrame = tabWidget
-        tabbar.anchors.top = tabWidget.top
-        tabbar.anchors.left = tabWidget.left
-        tabbar.anchors.right = tabWidget.right
-    }
 
     property int __baseOverlap : frameitem.pixelMetric("tabbaseoverlap")// add paintmargins;
     function __setOpacities() {
@@ -31,10 +24,18 @@ Item {
         }
     }
 
-    function addTab(component) {
-        var tab = component.createObject(null);
+    Component {
+        id: tabcomp
+        Tab {}
+    }
+
+    function addTab(component, title) {
+        var tab = tabcomp.createObject(this);
+        component.createObject(tab)
         tab.parent = stack
-        current = count-1
+        tab.title = title
+        __setOpacities()
+        return tab
     }
 
     function removeTab(id) {
@@ -49,9 +50,9 @@ Item {
         z: style == "oxygen" ? 1 : 0
         elementType: "tabframe"
         info: position
-        value: tabbar && tabsVisible && tabbar.tab(current) ? tabbar.tab(current).x : 0
-        minimum: tabbar && tabsVisible && tabbar.tab(current) ? tabbar.tab(current).width : 0
-        maximum: tabbar && tabsVisible ? tabbar.tabWidth : width
+        value: tabbarItem && tabsVisible && tabbarItem.tab(current) ? tabbarItem.tab(current).x : 0
+        minimum: tabbarItem && tabsVisible && tabbarItem.tab(current) ? tabbarItem.tab(current).width : 0
+        maximum: tabbarItem && tabsVisible ? tabbarItem.tabWidth : width
         anchors.fill: parent
 
         property int frameWidth: pixelMetric("defaultframewidth")
@@ -64,27 +65,34 @@ Item {
             anchors.bottomMargin: anchors.margins + (frameitem.style =="mac" ? 6 : 0)
         }
 
-        anchors.topMargin: tabbar && tabsVisible && position == "North" ? tabbar.height - __baseOverlap : 0
+        anchors.topMargin: tabbarItem && tabsVisible && position == "North" ? Math.max(0, tabbarItem.height - __baseOverlap) : 0
 
         states: [
             State {
                 name: "South"
-                when: position == "South" && tabbar!= undefined
+                when: position == "South" && tabbarItem!= undefined
                 PropertyChanges {
                     target: frameitem
                     anchors.topMargin: 0
-                    anchors.bottomMargin: tabbar ? tabbar.height - __baseOverlap: 0
+                    anchors.bottomMargin: tabbarItem ? tabbarItem.height - __baseOverlap: 0
                 }
                 PropertyChanges {
-                    target: tabbar
+                    target: tabbarItem
                     anchors.topMargin: -__baseOverlap
                 }
                 AnchorChanges {
-                    target: tabbar
+                    target: tabbarItem
                     anchors.top: frameitem.bottom
                     anchors.bottom: undefined
                 }
             }
         ]
+    }
+    TabBar {
+        id: tabbarItem
+        tabFrame: tabWidget
+        anchors.top: tabWidget.top
+        anchors.left: tabWidget.left
+        anchors.right: tabWidget.right
     }
 }

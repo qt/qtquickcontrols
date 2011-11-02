@@ -3,74 +3,63 @@ import QtDesktop 0.1
 
 Rectangle {
     width: 800
-    height: 600
-
+    height: 500
+    color: syspal.window
+    SystemPalette{id:syspal}
     SplitterRow {
         id: sr
         anchors.fill: parent
-
-        Rectangle {
+        Item {
             id: r1
-            property bool expanding: false
-            property real minimumWidth: 100
-//            visible: false
-            color: "gray"
+            Splitter.minimumSize: 140
+            Splitter.expanding: false
             width: 200
-            Button {
+            CheckBox {
                 id: be1
-                width: parent.width
+                anchors.centerIn: parent
+                checked: parent.Splitter.expanding
                 text: "Set expanding"
-                onClicked: parent.expanding = true
-                enabled: parent.expanding === false
-            }
-            Button {
-                width: parent.width
-                anchors.top: be1.bottom
-                text: "Show/hide next column"
-                onClicked: { r2.visible = !r2.visible; }
+                onClicked: {
+                    parent.Splitter.expanding = true
+                    be2.checked = !parent.Splitter.expanding
+                }
             }
         }
-        Rectangle {
+        Item {
             id: r2
-            property real minimumWidth: 100
-            property bool expanding: false
-//            visible: false
-            color: "darkgray"
+            Splitter.minimumSize: 140
+            Splitter.expanding: true
             width: 200
-            Button {
+            CheckBox {
                 id: be2
-                width: parent.width
+                anchors.centerIn: parent
                 text: "Set expanding"
-                onClicked: parent.expanding = true
-                enabled: parent.expanding === false
-
-            }
-            Button {
-                width: parent.width
-                anchors.top: be2.bottom
-                text: "Show/hide next column"
-                onClicked: { r3.visible = !r3.visible; }
+                checked: true
+                onClicked: {
+                    parent.Splitter.expanding = true
+                    be1.checked = !parent.Splitter.expanding
+                }
             }
         }
-        Rectangle {
+        Item {
             id: r3
-//            visible: false
-            property bool expanding: false
-            property real minimumWidth: 100
-            color: "gray"
+            Splitter.expanding: false
+            Splitter.minimumSize: 140
             width: 200
-            Button {
-                id: be3
-                width: parent.width
-                text: "Set expanding"
-                onClicked: parent.expanding = true
-                enabled: parent.expanding === false
-            }
-            Button {
-                width: parent.width
-                anchors.top: be3.bottom
-                text: "Show/hide first column"
-                onClicked: { r1.visible = !r1.visible; }
+            SplitterColumn {
+                id: sc
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                Item {
+                    id: cr1
+                    height:200
+                }
+                Item {
+                    id: cr2
+                    height: 200
+                }
             }
         }
     }

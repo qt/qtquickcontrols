@@ -1,14 +1,14 @@
 import QtQuick 2.0
 import "./behaviors"
 
-Item {
+FocusScope {
     id: checkBox
 
     signal clicked
     property alias pressed: behavior.pressed
     property alias checked: behavior.checked
     property alias containsMouse: behavior.containsMouse
-    property bool activeFocusOnPress: false
+
     property Component background: null
     property Item backgroundItem: backgroundLoader.item
 
@@ -23,10 +23,14 @@ Item {
 
     ButtonBehavior {
         id: behavior
+        focus: true
         anchors.fill: parent
         checkable: true
-        onClicked: {if (activeFocusOnPress)checkBox.focus = true; checkBox.clicked()}
+        onClicked: {
+            if (checkBox.activeFocusOnPress)
+                checkBox.forceActiveFocus();
+            checkBox.clicked();
+        }
     }
-
-    SystemPalette { id: syspal }
+    Keys.onSpacePressed: {clicked(); checked = !checked; }
 }

@@ -3,15 +3,21 @@ import "custom" as Components
 import QtDesktop 0.1
 
 Components.Button {
-    id:button
+    id: button
 
-    width: Math.max(80, sizehint.width)
-    height: Math.max(22, sizehint.height)
+    implicitWidth: Math.max(72, backgroundItem.implicitWidth)
+    implicitHeight: Math.max(22, backgroundItem.implicitHeight)
 
-    property variant sizehint: backgroundItem.sizeFromContents(80, 6)
-    property bool defaultbutton
-    property string hint
+    property alias containsMouse: tooltip.containsMouse
+    property bool defaultbutton: false
+    property string styleHint
 
+    TooltipArea {
+        // Note this will eat hover events
+        id: tooltip
+        anchors.fill: parent
+        text: button.tooltip
+    }
 
     background: StyleItem {
         id: styleitem
@@ -21,18 +27,11 @@ Components.Button {
         raised: !(pressed || checked)
         hover: containsMouse
         text: iconSource === "" ? "" : button.text
-        focus: button.focus
-        hint: button.hint
+        hasFocus: button.focus
+        hint: button.styleHint
 
         // If no icon, let the style do the drawing
-        activeControl: focus ? "default" : ""
-        Connections{
-            target: button
-            onToolTipTriggered: styleitem.showTip()
-        }
-        function showTip(){
-            showToolTip(tooltip);
-        }
+        activeControl: defaultbutton ? "default" : "f"
     }
 
     label: Item {
@@ -57,6 +56,6 @@ Components.Button {
             }
         }
     }
-    Keys.onSpacePressed:clicked()
+    Keys.onSpacePressed:animateClick()
 }
 

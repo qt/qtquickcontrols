@@ -4,9 +4,8 @@ import QtDesktop 0.1
 
 Components.GroupBox {
     id: groupbox
-    width: Math.max(200, contentWidth + sizeHint.width)
-    height: contentHeight + sizeHint.height + 4
-    property variant sizeHint: backgroundItem.sizeFromContents(0, 24)
+    implicitWidth: Math.max(200, contentWidth + backgroundItem.implicitWidth)
+    implicitHeight: contentHeight + backgroundItem.implicitHeight + 4
     property bool flat: false
     background : StyleItem {
         id: styleitem
@@ -15,8 +14,9 @@ Components.GroupBox {
         text: groupbox.title
         hover: checkbox.containsMouse
         on: checkbox.checked
-        focus: checkbox.activeFocus
+        hasFocus: checkbox.activeFocus
         activeControl: checkable ? "checkbox" : ""
         sunken: !flat
+        contentHeight:  (title.length > 0 || checkable) ? 24 : 4
     }
 }

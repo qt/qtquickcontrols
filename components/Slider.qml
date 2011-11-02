@@ -7,17 +7,22 @@ import QtDesktop 0.1
 Components.Slider{
     id: slider
 
-    property bool tickmarksEnabled: true
+    property bool tickmarksEnabled: false
     property string tickPosition: "Below" // "Above", "Below", "BothSides"
 
-    StyleItem { id:buttonitem; elementType: "slider" }
+    StyleItem {
+        id:buttonitem
+        elementType: "slider"
+        contentWidth:23
+        contentHeight:23
+    }
 
-    property variant sizehint: buttonitem.sizeFromContents(23, 23)
     property int orientation: Qt.Horizontal
 
-    height: orientation === Qt.Horizontal ? sizehint.height : 200
-    width: orientation === Qt.Horizontal ? 200 : sizehint.height
-    property string hint;
+    implicitWidth: orientation === Qt.Horizontal ? 200 : buttonitem.implicitHeight
+    implicitHeight: orientation === Qt.Horizontal ? buttonitem.implicitHeight : 200
+
+    property string styleHint;
 
     groove: StyleItem {
         anchors.fill:parent
@@ -29,8 +34,8 @@ Components.Slider{
         value: slider.value*100
         horizontal: slider.orientation == Qt.Horizontal
         enabled: slider.enabled
-        focus: slider.focus
-        hint: slider.hint
+        hasFocus: slider.focus
+        hint: slider.styleHint
         activeControl: tickmarksEnabled ? tickPosition.toLowerCase() : ""
     }
 

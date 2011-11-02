@@ -39,16 +39,33 @@
 
 #include "qtmenuitem.h"
 
-void QtMenuBase::setIconSource(const QString &icon)
+void QtMenuBase::setIconSource(const QUrl &icon)
 {
     _iconSource = icon;
-    action()->setIcon(QIcon(icon));
+    if (_iconName.isEmpty())
+        action()->setIcon(QIcon(icon.toLocalFile()));
+    else
+        action()->setIcon(QIcon::fromTheme(_iconName, QIcon(_iconSource.toLocalFile())));
+
     emit iconSourceChanged();
 }
 
-QString QtMenuBase::iconSource() const
+QUrl QtMenuBase::iconSource() const
 {
     return _iconSource;
+}
+
+void QtMenuBase::setIconName(const QString &icon)
+{
+    _iconName = icon;
+    action()->setIcon(QIcon::fromTheme(_iconName, QIcon(_iconSource.toLocalFile())));
+
+    emit iconNameChanged();
+}
+
+QString QtMenuBase::iconName() const
+{
+    return _iconName;
 }
 
 QtMenuSeparator::QtMenuSeparator(QObject *parent)

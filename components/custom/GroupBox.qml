@@ -1,10 +1,10 @@
 import QtQuick 2.0
 
-FocusScope {
+Item {
     id: groupbox
 
-    width: Math.max(200, contentWidth + loader.leftMargin + loader.rightMargin)
-    height: contentHeight + loader.topMargin + loader.bottomMargin
+    implicitWidth: adjustToContentSize ? Math.max(200, contentWidth + loader.leftMargin + loader.rightMargin) : 100
+    implicitHeight: adjustToContentSize ? contentHeight + loader.topMargin + loader.bottomMargin : 100
 
     default property alias data: content.data
 
@@ -17,38 +17,38 @@ FocusScope {
     property Component background: null
     property Item backgroundItem: loader.item
 
-    property CheckBox checkbox: check
+    property Item checkbox: check
     property alias checked: check.checked
-
+    property bool adjustToContentSize: false // Resizes groupbox to fit contents.
+                                             // Note when using this, you cannot anchor children
     Loader {
         id: loader
         anchors.fill: parent
-        property int topMargin: 22
+        property int topMargin: title.length > 0 || checkable ? 22 : 4
         property int bottomMargin: 4
         property int leftMargin: 4
         property int rightMargin: 4
-
         property alias styledItem: groupbox
         sourceComponent: background
-
-        Item {
-            id:content
-            z: 1
-            opacity: contentOpacity
-            anchors.topMargin: loader.topMargin
-            anchors.leftMargin: 8
-            anchors.top:parent.top
-            anchors.left:parent.left
-            enabled: (!checkable || checkbox.checked)
-        }
-
-        CheckBox {
-            id: check
-            checked: true
-            anchors.top: parent.top
-            anchors.left: parent.left
-            anchors.right: parent.right
-            height: loader.topMargin
-        }
+    }
+    CheckBox {
+        id: check
+        checked: true
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        height: loader.topMargin
+    }
+    Item {
+        id:content
+        z: 1
+        focus: true
+        opacity: contentOpacity
+        anchors.topMargin: loader.topMargin
+        anchors.leftMargin: 8
+        anchors.rightMargin: 8
+        anchors.bottomMargin: 8
+        anchors.fill: parent
+        enabled: (!checkable || checkbox.checked)
     }
 }

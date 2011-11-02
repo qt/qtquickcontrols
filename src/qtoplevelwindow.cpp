@@ -1,6 +1,6 @@
 #include "qtoplevelwindow.h"
 
-#include <QDesktopWidget>
+#include <QtWidgets/QDesktopWidget>
 
 QTopLevelWindow::QTopLevelWindow()
     : QMainWindow(), _view(new QQuickView), _positionIsDefined(false) {
@@ -51,6 +51,7 @@ void QTopLevelWindow::center()
 
 void QTopLevelWindow::move(int x, int y)
 {
+    qDebug("a %d, %d", x, y);
     move(QPoint(x,y));
 }
 

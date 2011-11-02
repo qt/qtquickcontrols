@@ -33,6 +33,10 @@ function build() {
     nonVisibleButtons = [];
 
     for (var i = 0, item; (item = self.children[i]); i++) {
+
+        if (item.hasOwnProperty("styleHint"))
+            item.styleHint = styleHint;
+
         if (!hasChecked(item))
             continue;
 

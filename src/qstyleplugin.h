@@ -43,7 +43,7 @@
 #include <QDeclarativeExtensionPlugin>
 #include <QtScript/QScriptValue>
 #include <QtCore/QTimer>
-#include <QFileSystemModel>
+#include <QtWidgets/QFileSystemModel>
 #include "qdeclarativefolderlistmodel.h"
 
 
