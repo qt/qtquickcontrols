@@ -26,6 +26,7 @@
 
 #include "qdeclarativelayoutengine_p.h"
 
+
 /*
   This function is a modification of qGeomCalc() included in "QtCore/kernel/qlayoutengine_p.h".
   It is used as a helper function to handle linear layout recalculations for QDeclarativeItems.
@@ -108,7 +109,11 @@ void qDeclarativeLayoutCalculate(QVector<QDeclarativeLayoutInfo> &chain, int sta
         for (int i = start; i < end; i++) {
             QDeclarativeLayoutInfo *data = &chain[i];
             data->done = true;
-            data->size = qMin<qreal>(data->minimumSize, maxval);
+
+            if (data->minimumSize > 0)
+                data->size = data->minimumSize;
+            else
+                data->size = qMin<qreal>(data->minimumSize, maxval);
         }
     } else if (space < totalSizeHint + totalSpacing) {
         /*

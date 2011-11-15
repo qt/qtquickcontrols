@@ -157,6 +157,12 @@ void QDeclarativeLinearLayout::reconfigureLayout()
     if (count == 0)
         return;
 
+    qreal totalStretch = 0;
+    qreal totalSpacing = 0;
+    qreal totalSizeHint = 0;
+    qreal totalMinimumSize = 0;
+    qreal totalMaximumSize = 0;
+
     QVector<QDeclarativeLayoutInfo> itemData;
 
     for (int i = 0; i < count; i++) {
@@ -180,6 +186,16 @@ void QDeclarativeLinearLayout::reconfigureLayout()
         }
 
         itemData.append(data);
+
+        // sum
+        totalStretch += data.stretch;
+        totalSizeHint += data.sizeHint;
+        totalMinimumSize += data.minimumSize;
+        totalMaximumSize += data.maximumSize;
+
+        // don't count last spacing
+        if (i < count - 1)
+            totalSpacing += data.spacing + m_spacing;
     }
 
     if (m_orientation == Horizontal) {
@@ -202,5 +218,21 @@ void QDeclarativeLinearLayout::reconfigureLayout()
             item->setY(data.pos);
             item->setHeight(data.size);
         }
+    }
+
+    // propagate hints to upper levels
+    QObject *attached = qmlAttachedPropertiesObject<QDeclarativeLayout>(this);
+    QDeclarativeLayoutAttached *info = static_cast<QDeclarativeLayoutAttached *>(attached);
+
+    info->setStretchFactor(totalStretch);
+
+    if (m_orientation == Horizontal) {
+        setImplicitWidth(totalSizeHint);
+        info->setMinimumWidth(totalMinimumSize + totalSpacing);
+        info->setMaximumWidth(totalMaximumSize + totalSpacing);
+    } else {
+        setImplicitHeight(totalSizeHint);
+        info->setMinimumHeight(totalMinimumSize + totalSpacing);
+        info->setMaximumHeight(totalMaximumSize + totalSpacing);
     }
 }
