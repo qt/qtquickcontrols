@@ -29,8 +29,6 @@
 
 
 static const qreal q_declarativeLayoutMaxSize = 10e8;
-static const qreal q_declarativeLayoutDefaultStretch = 1.0;
-static const qreal q_declarativeLayoutDefaultItemSpacing = 0.0;
 
 
 QDeclarativeLayoutAttached::QDeclarativeLayoutAttached(QObject *parent)
@@ -39,8 +37,8 @@ QDeclarativeLayoutAttached::QDeclarativeLayoutAttached(QObject *parent)
       m_minimumHeight(0),
       m_maximumWidth(q_declarativeLayoutMaxSize),
       m_maximumHeight(q_declarativeLayoutMaxSize),
-      m_spacing(q_declarativeLayoutDefaultItemSpacing),
-      m_stretchFactor(q_declarativeLayoutDefaultStretch)
+      m_verticalSizePolicy(QDeclarativeLayout::Fixed),
+      m_horizontalSizePolicy(QDeclarativeLayout::Fixed)
 {
 
 }
@@ -81,22 +79,20 @@ void QDeclarativeLayoutAttached::setMaximumHeight(qreal height)
     updateLayout();
 }
 
-void QDeclarativeLayoutAttached::setSpacing(qreal value)
+void QDeclarativeLayoutAttached::setVerticalSizePolicy(QDeclarativeLayout::SizePolicy policy)
 {
-    if (qIsNaN(value) || m_spacing == value)
-        return;
-
-    m_spacing = value;
-    updateLayout();
+    if (m_verticalSizePolicy != policy) {
+        m_verticalSizePolicy = policy;
+        updateLayout();
+    }
 }
 
-void QDeclarativeLayoutAttached::setStretchFactor(qreal value)
+void QDeclarativeLayoutAttached::setHorizontalSizePolicy(QDeclarativeLayout::SizePolicy policy)
 {
-    if (qIsNaN(value) || m_stretchFactor == value)
-        return;
-
-    m_stretchFactor = value;
-    updateLayout();
+    if (m_horizontalSizePolicy != policy) {
+        m_horizontalSizePolicy = policy;
+        updateLayout();
+    }
 }
 
 void QDeclarativeLayoutAttached::updateLayout()

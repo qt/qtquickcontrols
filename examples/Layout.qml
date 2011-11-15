@@ -60,7 +60,9 @@ Item {
                     Rectangle {
                         color: "green"
                         height: parent.height
-                        Layout.spacing: 10
+                    }
+                    Item {
+                        implicitWidth: 10
                     }
                     Rectangle {
                         color: "blue"
@@ -77,69 +79,27 @@ Item {
                     Rectangle {
                         color: "red"
                         height: parent.height
-                    }
-                    Rectangle {
-                        color: "green"
-                        height: parent.height
-                        Layout.stretchFactor: 3.0
-                    }
-                    Rectangle {
-                        color: "blue"
-                        height: parent.height
-                    }
-                }
-
-                // [4]
-                RowLayout {
-                    height: defaultHeight
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-
-                    Rectangle {
-                        color: "red"
-                        height: parent.height
-                        Layout.stretchFactor: 8.0
-                    }
-                    Rectangle {
-                        color: "green"
-                        height: parent.height
-                        implicitWidth: 150
-                        Layout.stretchFactor: 0.0
-                    }
-                    Rectangle {
-                        color: "blue"
-                        height: parent.height
-                        Layout.stretchFactor: 3.0
-                    }
-                }
-
-                // [5]
-                RowLayout {
-                    height: defaultHeight
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-
-                    Rectangle {
-                        color: "red"
-                        height: parent.height
                         Layout.minimumWidth: 50
                         Layout.maximumWidth: 100
+                        Layout.horizontalSizePolicy: Layout.Expanding
                     }
                     Rectangle {
                         color: "green"
                         height: parent.height
                         Layout.minimumWidth: 100
                         Layout.maximumWidth: 200
+                        Layout.horizontalSizePolicy: Layout.Expanding
                     }
                     Rectangle {
                         color: "blue"
                         height: parent.height
                         Layout.minimumWidth: 200
                         Layout.maximumWidth: 400
+                        Layout.horizontalSizePolicy: Layout.Expanding
                     }
                 }
 
-                // [5]
+                // [4]
                 RowLayout {
                     spacing: 100
                     height: defaultHeight
@@ -150,20 +110,23 @@ Item {
                         color: "red"
                         height: parent.height
                         Layout.minimumWidth: 100
+                        Layout.horizontalSizePolicy: Layout.Expanding
                     }
                     Rectangle {
                         color: "green"
                         height: parent.height
                         Layout.minimumWidth: 200
+                        Layout.horizontalSizePolicy: Layout.Expanding
                     }
                     Rectangle {
                         color: "blue"
                         height: parent.height
                         Layout.minimumWidth: 300
+                        Layout.horizontalSizePolicy: Layout.Expanding
                     }
                 }
 
-                // [6]
+                // [5]
                 RowLayout {
                     height: defaultHeight
                     anchors.left: parent.left
@@ -174,10 +137,11 @@ Item {
                         height: parent.height
                         Layout.minimumWidth: 200
                         Layout.maximumWidth: 500
+                        Layout.horizontalSizePolicy: Layout.Expanding
                     }
                 }
 
-                // [7]
+                // [6]
                 RowLayout {
                     spacing: 40
                     height: defaultHeight
@@ -192,12 +156,13 @@ Item {
                             color: "red"
                             height: parent.height
                             Layout.minimumWidth: 100
-                            Layout.stretchFactor: 2.0
+                            Layout.horizontalSizePolicy: Layout.Expanding
                         }
                         Rectangle {
                             color: "blue"
                             height: parent.height
                             Layout.minimumWidth: 200
+                            Layout.horizontalSizePolicy: Layout.Expanding
                         }
                     }
 
@@ -209,11 +174,14 @@ Item {
                             color: "green"
                             height: parent.height
                             Layout.maximumWidth: 300
+                            Layout.horizontalSizePolicy: Layout.Expanding
                         }
                         Rectangle {
                             color: "red"
                             height: parent.height
+                            Layout.minimumWidth: 40
                             Layout.maximumWidth: 100
+                            Layout.horizontalSizePolicy: Layout.Expanding
                         }
                     }
                 }
@@ -269,7 +237,9 @@ Item {
                     Rectangle {
                         color: "green"
                         width: parent.width
-                        Layout.spacing: 10
+                    }
+                    Item {
+                        implicitWidth: 10
                     }
                     Rectangle {
                         color: "blue"
@@ -286,69 +256,27 @@ Item {
                     Rectangle {
                         color: "red"
                         width: parent.width
-                    }
-                    Rectangle {
-                        color: "green"
-                        width: parent.width
-                        Layout.stretchFactor: 3.0
-                    }
-                    Rectangle {
-                        color: "blue"
-                        width: parent.width
-                    }
-                }
-
-                // [4]
-                ColumnLayout {
-                    width: defaultWidth
-                    anchors.top: parent.top
-                    anchors.bottom: parent.bottom
-
-                    Rectangle {
-                        color: "red"
-                        width: parent.width
-                        Layout.stretchFactor: 8.0
-                    }
-                    Rectangle {
-                        color: "green"
-                        width: parent.width
-                        implicitWidth: 150
-                        Layout.stretchFactor: 0.0
-                    }
-                    Rectangle {
-                        color: "blue"
-                        width: parent.width
-                        Layout.stretchFactor: 3.0
-                    }
-                }
-
-                // [5]
-                ColumnLayout {
-                    width: defaultWidth
-                    anchors.top: parent.top
-                    anchors.bottom: parent.bottom
-
-                    Rectangle {
-                        color: "red"
-                        width: parent.width
                         Layout.minimumHeight: 50
                         Layout.maximumHeight: 100
+                        Layout.verticalSizePolicy: Layout.Expanding
                     }
                     Rectangle {
                         color: "green"
                         width: parent.width
                         Layout.minimumHeight: 100
                         Layout.maximumHeight: 200
+                        Layout.verticalSizePolicy: Layout.Expanding
                     }
                     Rectangle {
                         color: "blue"
                         width: parent.width
                         Layout.minimumHeight: 200
                         Layout.maximumHeight: 400
+                        Layout.verticalSizePolicy: Layout.Expanding
                     }
                 }
 
-                // [5]
+                // [4]
                 ColumnLayout {
                     spacing: 100
                     width: defaultWidth
@@ -359,20 +287,23 @@ Item {
                         color: "red"
                         width: parent.width
                         Layout.minimumHeight: 100
+                        Layout.verticalSizePolicy: Layout.Expanding
                     }
                     Rectangle {
                         color: "green"
                         width: parent.width
                         Layout.minimumHeight: 200
+                        Layout.verticalSizePolicy: Layout.Expanding
                     }
                     Rectangle {
                         color: "blue"
                         width: parent.width
                         Layout.minimumHeight: 300
+                        Layout.verticalSizePolicy: Layout.Expanding
                     }
                 }
 
-                // [6]
+                // [5]
                 ColumnLayout {
                     width: defaultWidth
                     anchors.top: parent.top
@@ -383,10 +314,11 @@ Item {
                         width: parent.width
                         Layout.minimumHeight: 200
                         Layout.maximumHeight: 500
+                        Layout.verticalSizePolicy: Layout.Expanding
                     }
                 }
 
-                // [7]
+                // [6]
                 ColumnLayout {
                     spacing: 40
                     width: defaultWidth
@@ -401,12 +333,13 @@ Item {
                             color: "red"
                             width: parent.width
                             Layout.minimumHeight: 100
-                            Layout.stretchFactor: 2.0
+                            Layout.verticalSizePolicy: Layout.Expanding
                         }
                         Rectangle {
                             color: "blue"
                             width: parent.width
                             Layout.minimumHeight: 200
+                            Layout.verticalSizePolicy: Layout.Expanding
                         }
                     }
 
@@ -418,11 +351,14 @@ Item {
                             color: "green"
                             width: parent.width
                             Layout.maximumHeight: 300
+                            Layout.verticalSizePolicy: Layout.Expanding
                         }
                         Rectangle {
                             color: "red"
                             width: parent.width
+                            Layout.minimumHeight: 40
                             Layout.maximumHeight: 100
+                            Layout.verticalSizePolicy: Layout.Expanding
                         }
                     }
                 }
@@ -447,39 +383,43 @@ Item {
                     Rectangle {
                         color: "red"
                         height: parent.height
+                        Layout.horizontalSizePolicy: Layout.Expanding
                     }
                     Rectangle {
                         color: "green"
                         height: parent.height
                         implicitWidth: 100
-                        Layout.stretchFactor: 0.0
                     }
                     Rectangle {
                         color: "blue"
                         height: parent.height
+                        Layout.horizontalSizePolicy: Layout.Expanding
                     }
                 }
 
+                // [2]
                 Rectangle {
                     color: "yellow"
                     height: parent.height
                     anchors.left: parent.left
                     anchors.right: parent.right
+                    Layout.minimumHeight: 10
                     Layout.maximumHeight: 30
+                    Layout.horizontalSizePolicy: Layout.Expanding
+                    Layout.verticalSizePolicy: Layout.Expanding
                 }
 
-                // [1]
+                // [3]
                 RowLayout {
                     height: defaultHeight
                     anchors.left: parent.left
                     anchors.right: parent.right
 
-                    Layout.stretchFactor: 2.0
-
                     Rectangle {
                         color: "red"
                         height: parent.height
                         Layout.maximumHeight: 200
+                        Layout.horizontalSizePolicy: Layout.Expanding
                     }
                     Rectangle {
                         color: "blue"
@@ -497,6 +437,7 @@ Item {
                                 anchors.right: parent.right
                                 Layout.minimumHeight: 100
                                 Layout.maximumHeight: 200
+                                Layout.verticalSizePolicy: Layout.Expanding
                             }
 
                             Rectangle {
@@ -504,7 +445,7 @@ Item {
                                 height: parent.height
                                 anchors.left: parent.left
                                 anchors.right: parent.right
-                                Layout.stretchFactor: 2
+                                Layout.verticalSizePolicy: Layout.Expanding
                             }
                         }
                     }

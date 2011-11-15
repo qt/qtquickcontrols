@@ -32,7 +32,7 @@
 struct QDeclarativeLayoutInfo
 {
     QDeclarativeLayoutInfo()
-        : stretch(0),
+        : stretch(1),
           sizeHint(0),
           spacing(0),
           minimumSize(0),

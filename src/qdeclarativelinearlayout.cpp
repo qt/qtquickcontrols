@@ -158,7 +158,6 @@ void QDeclarativeLinearLayout::reconfigureLayout()
     if (count == 0)
         return;
 
-    qreal totalStretch = 0;
     qreal totalSpacing = 0;
     qreal totalSizeHint = 0;
     qreal totalMinimumSize = 0;
@@ -172,24 +171,22 @@ void QDeclarativeLinearLayout::reconfigureLayout()
         QDeclarativeLayoutAttached *info = static_cast<QDeclarativeLayoutAttached *>(attached);
 
         QDeclarativeLayoutInfo data;
-        data.expansive = true;
-        data.spacing = info->spacing();
-        data.stretch = info->stretchFactor();
 
         if (m_orientation == Horizontal) {
             data.sizeHint = item->implicitWidth();
             data.minimumSize = info->minimumWidth();
             data.maximumSize = info->maximumWidth();
+            data.expansive = (info->horizontalSizePolicy() == QDeclarativeLayout::Expanding);
         } else {
             data.sizeHint = item->implicitHeight();
             data.minimumSize = info->minimumHeight();
             data.maximumSize = info->maximumHeight();
+            data.expansive = (info->verticalSizePolicy() == QDeclarativeLayout::Expanding);
         }
 
         itemData.append(data);
 
         // sum
-        totalStretch += data.stretch;
         totalSizeHint += data.sizeHint;
         totalMinimumSize += data.minimumSize;
         totalMaximumSize += data.maximumSize;
@@ -224,8 +221,6 @@ void QDeclarativeLinearLayout::reconfigureLayout()
     // propagate hints to upper levels
     QObject *attached = qmlAttachedPropertiesObject<QDeclarativeLayout>(this);
     QDeclarativeLayoutAttached *info = static_cast<QDeclarativeLayoutAttached *>(attached);
-
-    info->setStretchFactor(totalStretch);
 
     if (m_orientation == Horizontal) {
         setImplicitWidth(totalSizeHint);

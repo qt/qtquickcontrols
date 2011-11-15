@@ -36,8 +36,14 @@ class QDeclarativeLayoutAttached;
 class QDeclarativeLayout : public QDeclarativeItem
 {
     Q_OBJECT
+    Q_ENUMS(SizePolicy)
 
 public:
+    enum SizePolicy {
+        Fixed,
+        Expanding
+    };
+
     explicit QDeclarativeLayout(QDeclarativeItem *parent = 0);
     ~QDeclarativeLayout();
 
@@ -55,12 +61,12 @@ private:
 class QDeclarativeLayoutAttached : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(qreal spacing READ spacing WRITE setSpacing)
     Q_PROPERTY(qreal minimumWidth READ minimumWidth WRITE setMinimumWidth)
     Q_PROPERTY(qreal minimumHeight READ minimumHeight WRITE setMinimumHeight)
     Q_PROPERTY(qreal maximumWidth READ maximumWidth WRITE setMaximumWidth)
     Q_PROPERTY(qreal maximumHeight READ maximumHeight WRITE setMaximumHeight)
-    Q_PROPERTY(qreal stretchFactor READ stretchFactor WRITE setStretchFactor)
+    Q_PROPERTY(QDeclarativeLayout::SizePolicy verticalSizePolicy READ verticalSizePolicy WRITE setVerticalSizePolicy)
+    Q_PROPERTY(QDeclarativeLayout::SizePolicy horizontalSizePolicy READ horizontalSizePolicy WRITE setHorizontalSizePolicy)
 
 public:
     QDeclarativeLayoutAttached(QObject *object);
@@ -77,11 +83,11 @@ public:
     qreal maximumHeight() const { return m_maximumHeight; }
     void setMaximumHeight(qreal height);
 
-    qreal spacing() const { return m_spacing; }
-    void setSpacing(qreal value);
+    QDeclarativeLayout::SizePolicy verticalSizePolicy() const { return m_verticalSizePolicy; }
+    void setVerticalSizePolicy(QDeclarativeLayout::SizePolicy policy);
 
-    qreal stretchFactor() const { return m_stretchFactor; }
-    void setStretchFactor(qreal value);
+    QDeclarativeLayout::SizePolicy horizontalSizePolicy() const { return m_horizontalSizePolicy; }
+    void setHorizontalSizePolicy(QDeclarativeLayout::SizePolicy policy);
 
 protected:
     void updateLayout();
@@ -91,8 +97,8 @@ private:
     qreal m_minimumHeight;
     qreal m_maximumWidth;
     qreal m_maximumHeight;
-    qreal m_spacing;
-    qreal m_stretchFactor;
+    QDeclarativeLayout::SizePolicy m_verticalSizePolicy;
+    QDeclarativeLayout::SizePolicy m_horizontalSizePolicy;
     QPointer<QDeclarativeLayout> m_layout;
 
     friend class QDeclarativeLayout;
