@@ -2,7 +2,7 @@ TEMPLATE = lib
 CONFIG += qt plugin
 QT += declarative
 QT += script
- 
+
 TARGET  = styleplugin
 
 DESTDIR = ../components/plugin
@@ -23,7 +23,10 @@ HEADERS += qtmenu.h \
            qtoplevelwindow.h \
            qcursorarea.h \
            qtooltiparea.h \
-    qtsplitterbase.h
+           qtsplitterbase.h \
+           qdeclarativelayout.h \
+           qdeclarativelinearlayout.h \
+           qdeclarativelayoutengine_p.h
 
 SOURCES += qtmenu.cpp \
            qtmenubar.cpp \
@@ -38,7 +41,10 @@ SOURCES += qtmenu.cpp \
            qtoplevelwindow.cpp \
            qcursorarea.cpp \
            qtooltiparea.cpp \
-    qtsplitterbase.cpp
+           qtsplitterbase.cpp \
+           qdeclarativelayout.cpp \
+           qdeclarativelinearlayout.cpp \
+           qdeclarativelayoutengine.cpp
 
 TARGETPATH = QtDesktop/plugin
 
@@ -47,7 +53,7 @@ symbian {
 } else {
     INSTALL_IMPORTS = $$[QT_INSTALL_IMPORTS]
 }
-           
+
 target.path = $$INSTALL_IMPORTS/$$TARGETPATH
 
 win32 {

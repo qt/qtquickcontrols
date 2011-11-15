@@ -36,7 +36,7 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
- 
+
 #include <qdeclarative.h>
 #include "qstyleplugin.h"
 #include "qstyleitem.h"
@@ -49,6 +49,7 @@
 #include "qcursorarea.h"
 #include "qtooltiparea.h"
 #include "qtsplitterbase.h"
+#include "qdeclarativelinearlayout.h"
 #include <qdeclarativeextensionplugin.h>
 
 #include <qdeclarativeengine.h>
@@ -98,6 +99,9 @@ void StylePlugin::registerTypes(const char *uri)
     qmlRegisterType<QWindowItem>("QtQuick", 0, 1, "Window");
 
     qmlRegisterUncreatableType<QtMenuBase>("uri", 0, 1, "NativeMenuBase", QLatin1String("Do not create objects of type NativeMenuBase"));
+    qmlRegisterType<QDeclarativeLinearLayout>(uri, 0, 1, "LinearLayout");
+    qmlRegisterUncreatableType<QDeclarativeLayout>(uri, 0, 1, "Layout",
+                                                   QLatin1String("Do not create objects of type Layout"));
     qmlRegisterUncreatableType<QDesktopItem>("QtQuick",1,1,"Desktop", QLatin1String("Do not create objects of type Desktop"));
 }
 
