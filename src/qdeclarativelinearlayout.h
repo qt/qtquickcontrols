@@ -33,9 +33,7 @@
 class QDeclarativeLinearLayout : public QDeclarativeLayout
 {
     Q_OBJECT
-    Q_ENUMS(Orientation)
     Q_PROPERTY(qreal spacing READ spacing WRITE setSpacing NOTIFY spacingChanged)
-    Q_PROPERTY(Orientation orientation READ orientation WRITE setOrientation NOTIFY orientationChanged)
 
 public:
     enum Orientation {
@@ -43,7 +41,8 @@ public:
         Horizontal
     };
 
-    explicit QDeclarativeLinearLayout(QDeclarativeItem *parent = 0);
+    explicit QDeclarativeLinearLayout(Orientation orientation,
+                                      QDeclarativeItem *parent = 0);
     ~QDeclarativeLinearLayout() {}
 
     qreal spacing() const;
@@ -74,6 +73,26 @@ private:
     qreal m_spacing;
     Orientation m_orientation;
     QList<QDeclarativeItem *> m_items;
+};
+
+
+class QDeclarativeRowLayout : public QDeclarativeLinearLayout
+{
+    Q_OBJECT
+
+public:
+    explicit QDeclarativeRowLayout(QDeclarativeItem *parent = 0)
+        : QDeclarativeLinearLayout(Horizontal, parent) {}
+};
+
+
+class QDeclarativeColumnLayout : public QDeclarativeLinearLayout
+{
+    Q_OBJECT
+
+public:
+    explicit QDeclarativeColumnLayout(QDeclarativeItem *parent = 0)
+        : QDeclarativeLinearLayout(Vertical, parent) {}
 };
 
 #endif

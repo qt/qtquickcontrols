@@ -31,10 +31,11 @@
 static const qreal q_declarativeLayoutDefaultSpacing = 0.0;
 
 
-QDeclarativeLinearLayout::QDeclarativeLinearLayout(QDeclarativeItem *parent)
+QDeclarativeLinearLayout::QDeclarativeLinearLayout(Orientation orientation,
+                                                   QDeclarativeItem *parent)
     : QDeclarativeLayout(parent),
       m_spacing(q_declarativeLayoutDefaultSpacing),
-      m_orientation(Vertical)
+      m_orientation(orientation)
 {
 
 }

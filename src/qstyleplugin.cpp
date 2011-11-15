@@ -99,7 +99,8 @@ void StylePlugin::registerTypes(const char *uri)
     qmlRegisterType<QWindowItem>("QtQuick", 0, 1, "Window");
 
     qmlRegisterUncreatableType<QtMenuBase>("uri", 0, 1, "NativeMenuBase", QLatin1String("Do not create objects of type NativeMenuBase"));
-    qmlRegisterType<QDeclarativeLinearLayout>(uri, 0, 1, "LinearLayout");
+    qmlRegisterType<QDeclarativeRowLayout>(uri, 0, 1, "RowLayout");
+    qmlRegisterType<QDeclarativeColumnLayout>(uri, 0, 1, "ColumnLayout");
     qmlRegisterUncreatableType<QDeclarativeLayout>(uri, 0, 1, "Layout",
                                                    QLatin1String("Do not create objects of type Layout"));
     qmlRegisterUncreatableType<QDesktopItem>("QtQuick",1,1,"Desktop", QLatin1String("Do not create objects of type Desktop"));

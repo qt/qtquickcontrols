@@ -26,11 +26,10 @@ Item {
                 }
 
                 // [1]
-                LinearLayout {
+                RowLayout {
                     height: defaultHeight
                     anchors.left: parent.left
                     anchors.right: parent.right
-                    orientation: LinearLayout.Horizontal
 
                     Rectangle {
                         color: "red"
@@ -47,13 +46,12 @@ Item {
                 }
 
                 // [2]
-                LinearLayout {
+                RowLayout {
                     height: defaultHeight
                     anchors.left: parent.left
                     anchors.right: parent.right
 
                     spacing: 5
-                    orientation: LinearLayout.Horizontal
 
                     Rectangle {
                         color: "red"
@@ -71,11 +69,10 @@ Item {
                 }
 
                 // [3]
-                LinearLayout {
+                RowLayout {
                     height: defaultHeight
                     anchors.left: parent.left
                     anchors.right: parent.right
-                    orientation: LinearLayout.Horizontal
 
                     Rectangle {
                         color: "red"
@@ -93,11 +90,10 @@ Item {
                 }
 
                 // [4]
-                LinearLayout {
+                RowLayout {
                     height: defaultHeight
                     anchors.left: parent.left
                     anchors.right: parent.right
-                    orientation: LinearLayout.Horizontal
 
                     Rectangle {
                         color: "red"
@@ -118,11 +114,10 @@ Item {
                 }
 
                 // [5]
-                LinearLayout {
+                RowLayout {
                     height: defaultHeight
                     anchors.left: parent.left
                     anchors.right: parent.right
-                    orientation: LinearLayout.Horizontal
 
                     Rectangle {
                         color: "red"
@@ -145,12 +140,11 @@ Item {
                 }
 
                 // [5]
-                LinearLayout {
+                RowLayout {
                     spacing: 100
                     height: defaultHeight
                     anchors.left: parent.left
                     anchors.right: parent.right
-                    orientation: LinearLayout.Horizontal
 
                     Rectangle {
                         color: "red"
@@ -170,11 +164,10 @@ Item {
                 }
 
                 // [6]
-                LinearLayout {
+                RowLayout {
                     height: defaultHeight
                     anchors.left: parent.left
                     anchors.right: parent.right
-                    orientation: LinearLayout.Horizontal
 
                     Rectangle {
                         color: "red"
@@ -185,17 +178,15 @@ Item {
                 }
 
                 // [7]
-                LinearLayout {
+                RowLayout {
                     spacing: 40
                     height: defaultHeight
                     anchors.left: parent.left
                     anchors.right: parent.right
-                    orientation: LinearLayout.Horizontal
 
-                    LinearLayout {
+                    RowLayout {
                         spacing: 10
                         height: parent.height
-                        orientation: LinearLayout.Horizontal
 
                         Rectangle {
                             color: "red"
@@ -210,10 +201,9 @@ Item {
                         }
                     }
 
-                    LinearLayout {
+                    RowLayout {
                         spacing: 10
                         height: parent.height
-                        orientation: LinearLayout.Horizontal
 
                         Rectangle {
                             color: "green"
@@ -245,11 +235,10 @@ Item {
                 }
 
                 // [1]
-                LinearLayout {
+                ColumnLayout {
                     width: defaultWidth
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
-                    orientation: LinearLayout.Vertical
 
                     Rectangle {
                         color: "red"
@@ -266,13 +255,12 @@ Item {
                 }
 
                 // [2]
-                LinearLayout {
+                ColumnLayout {
                     width: defaultWidth
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
 
                     spacing: 5
-                    orientation: LinearLayout.Vertical
 
                     Rectangle {
                         color: "red"
@@ -290,11 +278,10 @@ Item {
                 }
 
                 // [3]
-                LinearLayout {
+                ColumnLayout {
                     width: defaultWidth
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
-                    orientation: LinearLayout.Vertical
 
                     Rectangle {
                         color: "red"
@@ -312,11 +299,10 @@ Item {
                 }
 
                 // [4]
-                LinearLayout {
+                ColumnLayout {
                     width: defaultWidth
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
-                    orientation: LinearLayout.Vertical
 
                     Rectangle {
                         color: "red"
@@ -337,11 +323,10 @@ Item {
                 }
 
                 // [5]
-                LinearLayout {
+                ColumnLayout {
                     width: defaultWidth
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
-                    orientation: LinearLayout.Vertical
 
                     Rectangle {
                         color: "red"
@@ -364,12 +349,11 @@ Item {
                 }
 
                 // [5]
-                LinearLayout {
+                ColumnLayout {
                     spacing: 100
                     width: defaultWidth
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
-                    orientation: LinearLayout.Vertical
 
                     Rectangle {
                         color: "red"
@@ -389,11 +373,10 @@ Item {
                 }
 
                 // [6]
-                LinearLayout {
+                ColumnLayout {
                     width: defaultWidth
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
-                    orientation: LinearLayout.Vertical
 
                     Rectangle {
                         color: "red"
@@ -404,17 +387,15 @@ Item {
                 }
 
                 // [7]
-                LinearLayout {
+                ColumnLayout {
                     spacing: 40
                     width: defaultWidth
                     anchors.top: parent.top
                     anchors.bottom: parent.bottom
-                    orientation: LinearLayout.Vertical
 
-                    LinearLayout {
+                    ColumnLayout {
                         spacing: 10
                         width: parent.width
-                        orientation: LinearLayout.Vertical
 
                         Rectangle {
                             color: "red"
@@ -429,10 +410,9 @@ Item {
                         }
                     }
 
-                    LinearLayout {
+                    ColumnLayout {
                         spacing: 10
                         width: parent.width
-                        orientation: LinearLayout.Vertical
 
                         Rectangle {
                             color: "green"
@@ -453,16 +433,14 @@ Item {
         Tab {
             title: "Horizontal and Vertical"
 
-            LinearLayout {
+            ColumnLayout {
                 anchors.fill: parent
-                orientation: LinearLayout.Vertical
 
                 // [1]
-                LinearLayout {
+                RowLayout {
                     height: defaultHeight
                     anchors.left: parent.left
                     anchors.right: parent.right
-                    orientation: LinearLayout.Horizontal
 
                     Layout.minimumHeight: 100
 
@@ -491,11 +469,10 @@ Item {
                 }
 
                 // [1]
-                LinearLayout {
+                RowLayout {
                     height: defaultHeight
                     anchors.left: parent.left
                     anchors.right: parent.right
-                    orientation: LinearLayout.Horizontal
 
                     Layout.stretchFactor: 2.0
 
@@ -508,11 +485,10 @@ Item {
                         color: "blue"
                         height: parent.height
 
-                        LinearLayout {
+                        ColumnLayout {
                             anchors.fill: parent
                             spacing: 10
                             opacity: 0.6
-                            orientation: LinearLayout.Vertical
 
                             Rectangle {
                                 color: "darkRed"
