@@ -1,5 +1,5 @@
-import QtQuick 1.0
-import "../components"
+import QtQuick 1.1
+import QtDesktop 0.1
 
 Rectangle {
     width: 540
@@ -17,16 +17,17 @@ Rectangle {
         id : editMenu
 
         // MenuItem API:
-        MenuItem { text : "blue"
-                   onSelected : { rect.color = "blue" }
+        MenuItem {
+            text : "blue"
+            //onSelected : { rect.color = "blue" }
         }
-
-        MenuItem { text : "red"
-                   onSelected : { rect.color = "red" }
+        MenuItem {
+            text : "red"
+            //onSelected : { rect.color = "red" }
         }
-
-        MenuItem { text : "pink"
-                   onSelected : { rect.color = "pink" }
+        MenuItem {
+            text : "pink"
+            //onSelected : { rect.color = "pink" }
         }
 
         // ListModel API:
@@ -42,6 +43,6 @@ Rectangle {
     MouseArea {
         anchors.fill: parent
         acceptedButtons : Qt.RightButton
-        onClicked: editMenu.show(mouseX, mouseY)
+        onClicked: editMenu.showPopup(mouseX, mouseY)
     }
 }
