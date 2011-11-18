@@ -10,6 +10,7 @@ QTooltipArea::QTooltipArea(QDeclarativeItem *parent) :
 {
     setAcceptHoverEvents(true);
     connect(&m_tiptimer, SIGNAL(timeout()), this, SLOT(timeout()));
+	m_tiptimer.setSingleShot(true);
 }
 
 void QTooltipArea::setText(const QString &t)
