@@ -51,6 +51,7 @@
 #include "qtsplitterbase.h"
 #include "qdeclarativelinearlayout.h"
 #include <qdeclarativeextensionplugin.h>
+#include "settings.h"
 
 #include <qdeclarativeengine.h>
 #include <qdeclarative.h>
@@ -96,6 +97,7 @@ void StylePlugin::registerTypes(const char *uri)
 
     qmlRegisterType<QFileSystemModel>(uri, 0, 1, "FileSystemModel");
     qmlRegisterType<QtSplitterBase>(uri, 0, 1, "Splitter");
+    qmlRegisterType<Settings>(uri, 0, 1, "Settings");
     qmlRegisterType<QWindowItem>("QtQuick", 0, 1, "Window");
 
     qmlRegisterUncreatableType<QtMenuBase>("uri", 0, 1, "NativeMenuBase", QLatin1String("Do not create objects of type NativeMenuBase"));
