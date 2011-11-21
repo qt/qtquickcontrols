@@ -69,7 +69,7 @@ Rectangle {
                     spacing:12
 
                     Button { width: parent.width - 12; text: "Close Panel"; onClicked: sidebar.show = false}
-                    TextField{ id:textfield; text: "Some text" ; width: parent.width - 12}
+                    TextField { id: textfield; text: "Some text" ; width: parent.width - 12}
                     SpinBox { width: parent.width - 12}
                     CheckBox{ id: expander; text:"Sliders"}
                 }
