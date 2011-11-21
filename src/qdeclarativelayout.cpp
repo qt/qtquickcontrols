@@ -158,7 +158,7 @@ void QDeclarativeLayout::invalidate()
     QDeclarativeLayout *layout = this;
     QDeclarativeLayout *parentLayout = 0;
 
-    while (layout) {
+    while (!layout->m_dirty) {
         layout->m_dirty = true;
         parentLayout = qobject_cast<QDeclarativeLayout *>(layout->parentItem());
 
@@ -168,7 +168,9 @@ void QDeclarativeLayout::invalidate()
             layout = parentLayout;
     }
 
-    QApplication::postEvent(layout, new QEvent(QEvent::LayoutRequest));
+    // just post events for top level layouts
+    if (!parentLayout)
+        QApplication::postEvent(layout, new QEvent(QEvent::LayoutRequest));
 }
 
 void QDeclarativeLayout::reconfigureTopDown()
