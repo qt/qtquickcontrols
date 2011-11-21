@@ -38,6 +38,8 @@
 ****************************************************************************/
 
 #include "qdeclarativelayout.h"
+#include <QEvent>
+#include <QApplication>
 #include <QtCore/qnumeric.h>
 
 
@@ -117,7 +119,8 @@ void QDeclarativeLayoutAttached::updateLayout()
 
 
 QDeclarativeLayout::QDeclarativeLayout(QDeclarativeItem *parent)
-    : QDeclarativeItem(parent)
+    : QDeclarativeItem(parent),
+      m_dirty(false)
 {
 
 }
@@ -137,4 +140,54 @@ void QDeclarativeLayout::setupItemLayout(QDeclarativeItem *item)
 QDeclarativeLayoutAttached *QDeclarativeLayout::qmlAttachedProperties(QObject *object)
 {
     return new QDeclarativeLayoutAttached(object);
+}
+
+bool QDeclarativeLayout::event(QEvent *e)
+{
+    if (e->type() == QEvent::LayoutRequest)
+        reconfigureTopDown();
+
+    return QDeclarativeItem::event(e);
+}
+
+void QDeclarativeLayout::invalidate()
+{
+    if (m_dirty)
+        return;
+
+    QDeclarativeLayout *layout = this;
+    QDeclarativeLayout *parentLayout = 0;
+
+    while (layout) {
+        layout->m_dirty = true;
+        parentLayout = qobject_cast<QDeclarativeLayout *>(layout->parentItem());
+
+        if (!parentLayout)
+            break;
+        else
+            layout = parentLayout;
+    }
+
+    QApplication::postEvent(layout, new QEvent(QEvent::LayoutRequest));
+}
+
+void QDeclarativeLayout::reconfigureTopDown()
+{
+    const QList<QGraphicsItem *> &children = childItems();
+
+    foreach (QGraphicsItem *child, children) {
+        QGraphicsObject *obj = child->toGraphicsObject();
+        QDeclarativeLayout *layout = obj ? qobject_cast<QDeclarativeLayout *>(obj) : 0;
+
+        if (layout && layout->m_dirty)
+            layout->reconfigureTopDown();
+    }
+
+    reconfigureLayout();
+    m_dirty = false;
+}
+
+void QDeclarativeLayout::reconfigureLayout()
+{
+
 }

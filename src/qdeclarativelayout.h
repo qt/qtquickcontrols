@@ -63,10 +63,15 @@ public:
     static QDeclarativeLayoutAttached *qmlAttachedProperties(QObject *object);
 
 protected:
-    virtual void invalidate() = 0;
+    void invalidate();
+    bool event(QEvent *e);
+    void reconfigureTopDown();
+    virtual void reconfigureLayout();
     void setupItemLayout(QDeclarativeItem *item);
 
 private:
+    bool m_dirty;
+
     friend class QDeclarativeLayoutAttached;
 };
 

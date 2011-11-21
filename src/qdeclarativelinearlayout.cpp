@@ -64,7 +64,7 @@ void QDeclarativeLinearLayout::setSpacing(qreal spacing)
         return;
 
     m_spacing = spacing;
-    reconfigureLayout();
+    invalidate();
 }
 
 QDeclarativeLinearLayout::Orientation QDeclarativeLinearLayout::orientation() const
@@ -78,7 +78,7 @@ void QDeclarativeLinearLayout::setOrientation(Orientation orientation)
         return;
 
     m_orientation = orientation;
-    reconfigureLayout();
+    invalidate();
 
     emit orientationChanged();
 }
@@ -87,7 +87,7 @@ void QDeclarativeLinearLayout::componentComplete()
 {
     QDeclarativeLayout::componentComplete();
     updateLayoutItems();
-    reconfigureLayout();
+    invalidate();
 }
 
 void QDeclarativeLinearLayout::updateLayoutItems()
@@ -127,7 +127,7 @@ QVariant QDeclarativeLinearLayout::itemChange(GraphicsItemChange change, const Q
 void QDeclarativeLinearLayout::geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry)
 {
     QDeclarativeLayout::geometryChanged(newGeometry, oldGeometry);
-    reconfigureLayout();
+    invalidate();
 }
 
 void QDeclarativeLinearLayout::insertLayoutItem(QDeclarativeItem *item)
@@ -135,7 +135,7 @@ void QDeclarativeLinearLayout::insertLayoutItem(QDeclarativeItem *item)
     m_items.append(item);
     setupItemLayout(item);
 
-    reconfigureLayout();
+    invalidate();
     QObject::connect(item, SIGNAL(destroyed()), this, SLOT(onItemDestroyed()));
 }
 
@@ -144,7 +144,7 @@ void QDeclarativeLinearLayout::removeLayoutItem(QDeclarativeItem *item)
     if (!m_items.removeOne(item))
         return;
 
-    reconfigureLayout();
+    invalidate();
     QObject::disconnect(item, SIGNAL(destroyed()), this, SLOT(onItemDestroyed()));
 }
 
@@ -153,12 +153,7 @@ void QDeclarativeLinearLayout::onItemDestroyed()
     if (!m_items.removeOne(static_cast<QDeclarativeItem *>(sender())))
         return;
 
-    reconfigureLayout();
-}
-
-void QDeclarativeLinearLayout::invalidate()
-{
-    reconfigureLayout();
+    invalidate();
 }
 
 void QDeclarativeLinearLayout::reconfigureLayout()

@@ -71,7 +71,6 @@ signals:
     void orientationChanged();
 
 protected:
-    void invalidate();
     void updateLayoutItems();
     void reconfigureLayout();
     void insertLayoutItem(QDeclarativeItem *item);
