@@ -108,6 +108,14 @@ FocusScope{
     // Signals
     signal activated
 
+
+    Rectangle {
+        id: colorRect
+        color: backgroundColor
+        anchors.fill: frameitem
+        anchors.margins: frameWidth
+    }
+
     Component {
         id: standardDelegate
         Item {
@@ -174,14 +182,6 @@ FocusScope{
         }
     }
 
-    Rectangle {
-        id: colorRect
-        color: backgroundColor
-        anchors.fill: frameitem
-        anchors.margins: frameWidth
-        anchors.rightMargin: (!frameAroundContents && verticalScrollBar.visible ? verticalScrollBar.width : 0) + frameWidth
-        anchors.bottomMargin: (!frameAroundContents && horizontalScrollBar.visible ? horizontalScrollBar.height : 0) +frameWidth
-    }
 
     StyleItem {
         id: frameitem
