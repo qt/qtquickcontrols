@@ -41,7 +41,7 @@
 #include "qdeclarativelayoutengine_p.h"
 #include <QtCore/qnumeric.h>
 
-static const qreal q_declarativeLayoutDefaultSpacing = 0.0;
+static const qreal q_declarativeLayoutDefaultSpacing = 4.0;
 
 
 QDeclarativeLinearLayout::QDeclarativeLinearLayout(Orientation orientation,
@@ -214,6 +214,7 @@ void QDeclarativeLinearLayout::reconfigureLayout()
             const QDeclarativeLayoutInfo &data = itemData.at(i);
 
             item->setX(data.pos);
+            item->setY(height()/2 - item->height()/2);
             item->setWidth(data.size);
         }
     } else {
@@ -224,6 +225,7 @@ void QDeclarativeLinearLayout::reconfigureLayout()
             const QDeclarativeLayoutInfo &data = itemData.at(i);
 
             item->setY(data.pos);
+            item->setX(width()/2 - item->width()/2);
             item->setHeight(data.size);
         }
     }
