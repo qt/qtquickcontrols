@@ -1,6 +1,7 @@
 import QtQuick 2.0
 //import "../components"
-import QtDesktop 0.1
+import QtQuick.Window 2.0
+import QtDesktop 0.2
 import "content"
 
 
@@ -44,12 +45,15 @@ Rectangle {
 
             width: 400
             height: 400
+            /*
             minimumWidth: 400
             minimumHeight: 400
             windowDecoration: true
             modal: modalCheck.checked
-            title: "child window"
+            */
+            windowTitle: "child window"
 
+/*
             MenuBar {
                 Menu {
                     text: "File"
@@ -87,6 +91,7 @@ Rectangle {
                     }
                 }
             }
+*/
 
             Rectangle {
                 color: syspal.window

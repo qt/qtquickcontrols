@@ -1,7 +1,7 @@
 import QtQuick 2.0
 import "."
 import "custom" as Components
-import QtDesktop 0.1
+import QtDesktop 0.2
 
 StyleItem {
     id: toolbar

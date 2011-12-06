@@ -2,7 +2,7 @@
 import QtQuick 2.0
 =======
 import QtQuick 1.0
-import QtDesktop 0.1
+import QtDesktop 0.2
 >>>>>>> master
 import QtWebKit 1.0
 import "content"

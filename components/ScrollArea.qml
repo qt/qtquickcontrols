@@ -1,7 +1,7 @@
 import QtQuick 2.0
 import "custom" as Components
 import "private" as Private
-import QtDesktop 0.1
+import QtDesktop 0.2
 
 FocusScope {
     id: root

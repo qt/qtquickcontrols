@@ -1,21 +1,26 @@
 import QtQuick 2.0
 import "custom" as Components
-import QtDesktop 0.1
+import QtDesktop 0.2
 
-Menu {
+Item {
     id: root
     property ListModel model
     property string selectedText: itemTextAt(selectedIndex)
     property string hoveredText: itemTextAt(hoveredIndex)
-    property int x
-    property int y
-    property bool visible
+    property list<Item> menuItems
 
+
+    property int selectedIndex
+    property int hoveredIndex
     // 'centerSelectedText' means that the menu will be positioned
     //  so that the selected text' top left corner will be at x, y.
     property bool centerSelectedText: true
 
     visible: false
+/*
+    property int x
+    property int y
+    property bool visible
     onMenuClosed: visible = false
     onModelChanged: if (Component.status === Component.Ready && model != undefined) rebuildMenu()
     Component.onCompleted: if (model != undefined) rebuildMenu()
@@ -49,4 +54,5 @@ Menu {
                 addMenuItem(model.get(j).text)
         }
     }
+*/
 }

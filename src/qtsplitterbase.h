@@ -2,6 +2,7 @@
 #define QTSPLITTERBASE_H
 
 #include <QtDeclarative>
+#include <QtQuick>
 
 
 class QtSplitterAttached : public QObject

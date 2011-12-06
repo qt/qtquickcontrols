@@ -29,7 +29,7 @@
 
 #include <QtGui/qevent.h>
 #include <QtWidgets/qgraphicssceneevent.h>
-#include <QtDeclarative/qquickitem.h>
+#include <QtQuick/qquickitem.h>
 
 
 class QWheelArea : public QQuickItem

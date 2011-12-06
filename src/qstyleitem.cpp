@@ -54,7 +54,7 @@
 
 QStyleItem::QStyleItem(QQuickPaintedItem *parent)
     : QQuickPaintedItem(parent),
-    m_dummywidget(0),
+    m_dummywidget(new QWidget),
     m_styleoption(0),
     m_type(Undefined),
     m_sunken(false),
@@ -862,6 +862,8 @@ void QStyleItem::setElementType(const QString &str)
     } else if (str == "scrollareacorner") {
         m_itemType = ScrollAreaCorner;
     }
+    if (!m_dummywidget)
+            m_dummywidget = new QWidget();
     if (m_dummywidget) {
         m_dummywidget->installEventFilter(this);
         m_dummywidget->setAttribute(Qt::WA_QuitOnClose, false); // dont keep app open
