@@ -61,7 +61,6 @@ Q_SIGNALS:
 
 private:
     QDeclarativeView *_view;
-    QSet<QTopLevelWindow*> _childWindows;
     bool _positionIsDefined;
 
 };

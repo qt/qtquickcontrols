@@ -10,24 +10,24 @@ QTopLevelWindow::QTopLevelWindow()
 //    resize(QSize(100, 100));
     _view->setBackgroundBrush(palette().window());
     setCentralWidget(_view);
-    setAttribute(Qt::WA_DeleteOnClose);
 }
 
 QTopLevelWindow::~QTopLevelWindow()
 {
+    foreach(QTopLevelWindow* child, findChildren<QTopLevelWindow*>())
+        child->setParent(0);
     //we need this to break the parental loop of QWindowItem and QTopLevelWindow
     _view->scene()->setParent(0);
 }
 
 void QTopLevelWindow::registerChildWindow(QTopLevelWindow* child)
 {
-    _childWindows.insert(child);
     child->setParent(this);
 }
 
 void QTopLevelWindow::hideChildWindows()
 {
-    foreach(QTopLevelWindow* child, _childWindows) {
+    foreach(QTopLevelWindow* child, findChildren<QTopLevelWindow*>()) {
         child->hide();
     }
 }
@@ -36,7 +36,7 @@ void QTopLevelWindow::initPosition()
 {
     if (!_positionIsDefined)
         center();
-    foreach(QTopLevelWindow* child, _childWindows) {
+    foreach(QTopLevelWindow* child, findChildren<QTopLevelWindow*>()) {
         child->initPosition();
     }
 }
@@ -81,9 +81,6 @@ bool QTopLevelWindow::event(QEvent *event) {
         case QEvent::Hide:
             hideChildWindows();
             emit visibilityChanged();
-            break;
-        case QEvent::ParentChange:
-            setAttribute(Qt::WA_DeleteOnClose, !parent());
             break;
         case QEvent::Resize: {
             const QResizeEvent *resize = static_cast<const QResizeEvent *>(event);

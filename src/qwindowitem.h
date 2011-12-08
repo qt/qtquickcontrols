@@ -49,12 +49,12 @@ class QWindowItem : public QDeclarativeItem
     Q_PROPERTY(bool visible READ isVisible WRITE setVisible NOTIFY visibleChanged)
     Q_PROPERTY(bool windowDecoration READ windowDecoration WRITE setWindowDecoration NOTIFY windowDecorationChanged)
     Q_PROPERTY(bool modal READ modal WRITE setModal NOTIFY modalityChanged)
-    Q_PROPERTY(bool close READ close WRITE setClose)
+    Q_PROPERTY(bool deleteOnClose READ deleteOnClose WRITE setDeleteOnClose NOTIFY deleteOnCloseChanged)
     Q_PROPERTY(Qt::WindowState windowState READ windowState WRITE setWindowState NOTIFY windowStateChanged)
     Q_PROPERTY(QString title READ title WRITE setTitle NOTIFY titleChanged)
 
 public:
-    QWindowItem(QTopLevelWindow* QTopLevelWindow = 0);
+    QWindowItem();
     ~QWindowItem();
 
     QTopLevelWindow *window() { return _window; }
@@ -71,7 +71,7 @@ public:
     bool windowDecoration() const { return !(_window->windowFlags() & Qt::FramelessWindowHint); }
     Qt::WindowState windowState() const { return static_cast<Qt::WindowState>(static_cast<int>(_window->windowState()) & ~Qt::WindowActive); }
     QString title() const { return _window->windowTitle(); }
-    bool close() { return false; } //we always return false here
+    bool deleteOnClose() const { return _deleteOnClose; }
     bool modal() const { return _window->isModal(); }
 
     void setX(int x);
@@ -87,7 +87,10 @@ public:
     void setWindowState(Qt::WindowState state) { _window->setWindowState(state); }
     void setTitle(QString title);
     void setModal(bool modal);
-    void setClose(bool close);
+    void setDeleteOnClose(bool close);
+
+public Q_SLOTS:
+    void close();
 
 protected:
     bool eventFilter(QObject *, QEvent *ev);
@@ -113,12 +116,14 @@ Q_SIGNALS:
     void maximumWidthChanged();
     void titleChanged();
     void modalityChanged();
+    void deleteOnCloseChanged();
 
 private:
     QTopLevelWindow *_window;
     bool _complete;
     bool _positionIsDefined;
     bool _delayedVisible;
+    bool _deleteOnClose;
     int _x;
     int _y;
 };

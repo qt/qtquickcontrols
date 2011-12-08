@@ -43,25 +43,32 @@
 
 #include <QTimer>
 
-QWindowItem::QWindowItem(QTopLevelWindow* tlw)
-    : _window(tlw ? tlw : new QTopLevelWindow), _positionIsDefined(false), _delayedVisible(false), _x(0), _y(0)
+QWindowItem::QWindowItem()
+    : _window(new QTopLevelWindow), _positionIsDefined(false), _delayedVisible(false), _deleteOnClose(true), _x(0), _y(0)
 {
     connect(_window, SIGNAL(visibilityChanged()), this, SIGNAL(visibleChanged()));
     connect(_window, SIGNAL(windowStateChanged()), this, SIGNAL(windowStateChanged()));
     connect(_window, SIGNAL(sizeChanged(QSize)), this, SLOT(updateSize(QSize)));
 
-    connect(qApp, SIGNAL(aboutToQuit()), _window, SLOT(close()));
     view()->setResizeMode(QDeclarativeView::SizeRootObjectToView);
     _window->installEventFilter(this);
 }
 
 QWindowItem::~QWindowItem()
 {
+    delete _window;
 }
 
 bool QWindowItem::eventFilter(QObject *, QEvent *ev)
 {
     switch(ev->type()) {
+    case QEvent::Close:
+        ev->ignore();
+        if (_deleteOnClose)
+            deleteLater();
+        else
+            _window->hide();
+        return true;
     case QEvent::Resize:
         emit sizeChanged();
         emit widthChanged();
@@ -206,20 +213,23 @@ void QWindowItem::setModal(bool modal)
     _window->hide();
     _window->setWindowModality(modal ? Qt::WindowModal : Qt::NonModal);
 
-    if (modal) //this is a workaround for a bug in Qt? or in Unity?
-        _window->setWindowFlags(_window->windowFlags() | Qt::WindowStaysOnTopHint);
-    else
-        _window->setWindowFlags(_window->windowFlags() & ~Qt::WindowStaysOnTopHint );
-
     if (visible)
         _window->show();
     emit modalityChanged();
 }
 
-void QWindowItem::setClose(bool close)
+void QWindowItem::setDeleteOnClose(bool deleteOnClose)
 {
-    if (close)
-        _window->close();
+    if (deleteOnClose == _deleteOnClose)
+        return;
+    _deleteOnClose = deleteOnClose;
+    emit deleteOnCloseChanged();
 }
 
-
+void QWindowItem::close()
+{
+    if (_deleteOnClose)
+        deleteLater();
+    else
+        _window->hide();
+}

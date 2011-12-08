@@ -52,7 +52,7 @@ Window {
                 text: "Close Window"
                 shortcut: "Ctrl+Shift+W"
                 onTriggered: {
-                    topLevelBrowser.close = true
+                    topLevelBrowser.close()
                 }
             }
             Separator {}
