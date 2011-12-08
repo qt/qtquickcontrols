@@ -59,20 +59,20 @@ public:
 
     QTopLevelWindow *window() { return _window; }
     QDeclarativeView *view() { return _window->view(); }
-    int x() { return _window->x(); }
-    int y() { return _window->y(); }
-    int height() { return _window->height(); }
-    int minimumHeight() { return _window->minimumHeight(); }
-    int maximumHeight() { return _window->maximumHeight(); }
-    int width() { return _window->width(); }
-    int minimumWidth() { return _window->minimumWidth(); }
-    int maximumWidth() { return _window->maximumWidth(); }
-    bool isVisible() { return _window->isVisible(); }
-    bool windowDecoration() { return !(_window->windowFlags() & Qt::FramelessWindowHint); }
-    Qt::WindowState windowState() { return static_cast<Qt::WindowState>(static_cast<int>(_window->windowState()) & ~Qt::WindowActive); }
+    int x() const { return _window->x(); }
+    int y() const { return _window->y(); }
+    int height() const { return _window->height(); }
+    int minimumHeight() const { return _window->minimumHeight(); }
+    int maximumHeight() const { return _window->maximumHeight(); }
+    int width() const { return _window->width(); }
+    int minimumWidth() const { return _window->minimumWidth(); }
+    int maximumWidth() const { return _window->maximumWidth(); }
+    bool isVisible() const { return _window->isVisible(); }
+    bool windowDecoration() const { return !(_window->windowFlags() & Qt::FramelessWindowHint); }
+    Qt::WindowState windowState() const { return static_cast<Qt::WindowState>(static_cast<int>(_window->windowState()) & ~Qt::WindowActive); }
     QString title() const { return _window->windowTitle(); }
-    bool modal() { return _window->isModal(); }
     bool close() { return false; } //we always return false here
+    bool modal() const { return _window->isModal(); }
 
     void setX(int x);
     void setY(int y);
