@@ -1,4 +1,4 @@
-    TEMPLATE = subdirs # XXX: Avoid call the linker
+TEMPLATE = subdirs # XXX: Avoid calling the linker
 TARGETPATH = QtDesktop
 
 symbian {
@@ -44,7 +44,7 @@ QML_FILES = \
 
 QML_DIRS = \
         custom \
-	private \
+        private \
         images 
 
 qmlfiles.files = $$QML_FILES
