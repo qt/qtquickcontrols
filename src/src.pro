@@ -3,7 +3,8 @@ CONFIG += qt plugin
 QT += declarative
 QT += quick
 QT += script
- 
+QT += widgets
+
 TARGET  = styleplugin
 
 DESTDIR = ../components/plugin
