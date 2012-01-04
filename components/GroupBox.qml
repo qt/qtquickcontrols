@@ -19,4 +19,7 @@ Components.GroupBox {
         sunken: !flat
         contentHeight:  (title.length > 0 || checkable) ? 24 : 4
     }
+
+    Accessible.role: Accessible.Grouping
+    Accessible.name: title
 }

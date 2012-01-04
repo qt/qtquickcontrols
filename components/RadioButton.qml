@@ -12,6 +12,8 @@ Components.CheckBox {
     implicitWidth: Math.max(120, backgroundItem.implicitWidth)
     implicitHeight: backgroundItem.implicitHeight
 
+    Accessible.role: Accessible.RadioButton
+
     background: StyleItem {
         elementType: "radiobutton"
         sunken: pressed

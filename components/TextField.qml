@@ -17,6 +17,10 @@ Components.TextField {
 
     clip: false
 
+    Accessible.name: text
+    Accessible.role: Accessible.EditableText
+    Accessible.description: placeholderText
+
     property string styleHint
 
     background: StyleItem {

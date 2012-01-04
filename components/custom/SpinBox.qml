@@ -37,6 +37,9 @@ FocusScope {
     property Component up: null
     property Component down: null
 
+    Accessible.name: input.text
+    Accessible.role: Accessible.SpinBox
+
     QtObject {
         id: componentPrivate
         property bool valueUpdate: false

@@ -106,6 +106,8 @@ FocusScope{
     property alias cacheBuffer: tree.cacheBuffer
     property alias currentIndex: tree.currentIndex // Should this be currentRowIndex?
 
+    Accessible.role: Accessible.Table
+
     // Signals
     signal activated
 

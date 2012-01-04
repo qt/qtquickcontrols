@@ -25,6 +25,10 @@ ScrollArea {
         verticalScrollBar.value = verticalScrollBar.maximumValue
     }
 
+    Accessible.role: Accessible.EditableText
+    // FIXME: probably implement text interface
+    Accessible.name: text
+
     Item {
         anchors.left: parent.left
         anchors.top: parent.top

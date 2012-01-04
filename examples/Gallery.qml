@@ -26,17 +26,23 @@ Rectangle {
                 iconName: "folder-new"
                 iconSource: "images/folder_new.png"
                 anchors.verticalCenter: parent.verticalCenter
+                Accessible.name: "New"
+                tooltip: "A button."
             }
             ToolButton{
                 iconName: "folder-new"
                 iconSource: "images/folder_new.png"
                 anchors.verticalCenter: parent.verticalCenter
+                Accessible.name: "New 2"
+                tooltip: "A second button."
             }
             ToolButton{
                 iconName: "window-new"
                 iconSource: "images/toplevel_window.png"
                 anchors.verticalCenter: parent.verticalCenter
                 onClicked: window1.visible = !window1.visible
+                Accessible.name: "New window"
+                tooltip: "New window button."
             }
         }
 

@@ -23,6 +23,9 @@ Item {
     property color backgroundColor: syspal.base
     property color progressColor: syspal.highlight
 
+    Accessible.role: Accessible.ProgressBar
+    Accessible.name: value
+
     Loader {
         id: groove
         property alias indeterminate:progressBar.indeterminate

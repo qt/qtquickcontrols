@@ -8,4 +8,6 @@ StyleItem {
     width: parent ? parent.width : 200
     height: implicitHeight
     elementType: "toolbar"
+
+    Accessible.role: Accessible.ToolBar
 }

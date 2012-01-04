@@ -75,6 +75,9 @@ Item {
     property Component handle: null
     property Component valueIndicator: null
 
+    Accessible.role: Accessible.Slider
+    Accessible.name: value
+
     // PRIVATE/CONVENIENCE
     property bool _isVertical: orientation == Qt.Vertical
 

@@ -19,6 +19,7 @@ Item {
 
     height: tabHeight
 
+
     property Item tabFrame
     onTabFrameChanged:parent = tabFrame
     visible: tabFrame ? tabFrame.tabsVisible : true
@@ -48,6 +49,7 @@ Item {
 
     Row {
         id: tabrow
+        Accessible.role: Accessible.PageTabList
         property int paintMargins: 1
         states:
                 State {
@@ -105,6 +107,8 @@ Item {
                     hoverEnabled: true
                     onPressed: tabFrame.current = index
                 }
+                Accessible.role: Accessible.PageTab
+                Accessible.name: textitem.text
             }
         }
     }

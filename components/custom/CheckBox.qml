@@ -13,6 +13,7 @@ FocusScope {
     property Item backgroundItem: backgroundLoader.item
 
     // implementation
+    Accessible.role: Accessible.CheckBox
 
     Loader {
         id: backgroundLoader

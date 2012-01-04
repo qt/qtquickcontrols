@@ -17,6 +17,9 @@ Item {
     property color textColor: syspal.text;
     property string tooltip
 
+    Accessible.role: Accessible.Button
+    Accessible.description: tooltip
+
     signal toolTipTriggered
 
     // implementation

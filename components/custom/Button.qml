@@ -8,6 +8,7 @@ BasicButton {
     property Component label: null
 
     // implementation
+    Accessible.name: text
 
     background: defaultStyle.background
     property Item labelItem: labelLoader.item

@@ -47,6 +47,9 @@ Item {
     property bool tickmarksEnabled: false
     property bool activeFocusOnPress: false
 
+    Accessible.role: Accessible.Dial
+    Accessible.name: value
+
     RangeModel {
         id: range
         minimumValue: 0.0
