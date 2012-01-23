@@ -28,49 +28,49 @@
 #include "qdebug.h"
 #include <qapplication.h>
 #include <qmenubar.h>
-
+#include <qabstractitemmodel.h>
 #include "qtoplevelwindow.h"
 
 QtMenu::QtMenu(QObject *parent)
     : QtMenuBase(parent),
       dummy(0),
-      _selectedIndex(0),
-      _highlightedIndex(0)
+      m_selectedIndex(0),
+      m_highlightedIndex(0)
 {
-    _qmenu = new QMenu(0);
-    connect(_qmenu, SIGNAL(aboutToHide()), this, SIGNAL(menuClosed()));
+    m_qmenu = new QMenu(0);
+    connect(m_qmenu, SIGNAL(aboutToHide()), this, SIGNAL(menuClosed()));
 }
 
 QtMenu::~QtMenu()
 {
-    delete _qmenu;
+    delete m_qmenu;
 }
 
 void QtMenu::setText(const QString &text)
 {
-    _qmenu->setTitle(text);
+    m_qmenu->setTitle(text);
 }
 
 QString QtMenu::text() const
 {
-    return _qmenu->title();
+    return m_qmenu->title();
 }
 
 void QtMenu::setSelectedIndex(int index)
 {
-    _selectedIndex = index;
-    QList<QAction *> actionList = _qmenu->actions();
-    if (_selectedIndex >= 0 && _selectedIndex < actionList.size())
-        _qmenu->setActiveAction(actionList[_selectedIndex]);
+    m_selectedIndex = index;
+    QList<QAction *> actionList = m_qmenu->actions();
+    if (m_selectedIndex >= 0 && m_selectedIndex < actionList.size())
+        m_qmenu->setActiveAction(actionList[m_selectedIndex]);
     emit selectedIndexChanged();
 }
 
 void QtMenu::setHoveredIndex(int index)
 {
-    _highlightedIndex = index;
-    QList<QAction *> actionList = _qmenu->actions();
-    if (_highlightedIndex >= 0 && _highlightedIndex < actionList.size())
-        _qmenu->setActiveAction(actionList[_highlightedIndex]);
+    m_highlightedIndex = index;
+    QList<QAction *> actionList = m_qmenu->actions();
+    if (m_highlightedIndex >= 0 && m_highlightedIndex < actionList.size())
+        m_qmenu->setActiveAction(actionList[m_highlightedIndex]);
     emit hoveredIndexChanged();
 }
 
@@ -81,14 +81,14 @@ QDeclarativeListProperty<QtMenuBase> QtMenu::menuItems()
 
 void QtMenu::showPopup(qreal x, qreal y, int atActionIndex)
 {
-    if (_qmenu->isVisible())
+    if (m_qmenu->isVisible())
         return;
 
     // If atActionIndex is valid, x and y is specified from the
     // the position of the corresponding QAction:
     QAction *atAction = 0;
-    if (atActionIndex >= 0 && atActionIndex < _qmenu->actions().size())
-        atAction = _qmenu->actions()[atActionIndex];
+    if (atActionIndex >= 0 && atActionIndex < m_qmenu->actions().size())
+        atAction = m_qmenu->actions()[atActionIndex];
 
     // x,y are in view coordinates, QMenu expects screen coordinates
     // ### activeWindow hack
@@ -102,40 +102,40 @@ void QtMenu::showPopup(qreal x, qreal y, int atActionIndex)
 
     QPoint screenPosition = window->mapToGlobal(QPoint(x, y+menuBarHeight));
 
-    setHoveredIndex(_selectedIndex);
-    _qmenu->popup(screenPosition, atAction);
+    setHoveredIndex(m_selectedIndex);
+    m_qmenu->popup(screenPosition, atAction);
 }
 
 void QtMenu::hidePopup()
 {
-    _qmenu->close();
+    m_qmenu->close();
 }
 
 QAction* QtMenu::action()
 {
-    return _qmenu->menuAction();
+    return m_qmenu->menuAction();
 }
 
 Q_INVOKABLE void QtMenu::clearMenuItems()
 {
-    _qmenu->clear();
-    foreach (QtMenuBase *item, _qmenuItems) {
+    m_qmenu->clear();
+    foreach (QtMenuBase *item, m_qmenuItems) {
         delete item;
     }
-    _qmenuItems.clear();
+    m_qmenuItems.clear();
 }
 
 void QtMenu::addMenuItem(const QString &text)
 {
     QtMenuItem *menuItem = new QtMenuItem(this);
     menuItem->setText(text);
-    _qmenuItems.append(menuItem);
-    _qmenu->addAction(menuItem->action());
+    m_qmenuItems.append(menuItem);
+    m_qmenu->addAction(menuItem->action());
 
     connect(menuItem->action(), SIGNAL(triggered()), this, SLOT(emitSelected()));
     connect(menuItem->action(), SIGNAL(hovered()), this, SLOT(emitHovered()));
 
-    if (_qmenu->actions().size() == 1)
+    if (m_qmenu->actions().size() == 1)
         // Inform QML that the selected action (0) now has changed contents:
         emit selectedIndexChanged();
 }
@@ -145,7 +145,7 @@ void QtMenu::emitSelected()
     QAction *act = qobject_cast<QAction *>(sender());
     if (!act)
         return;
-    _selectedIndex = _qmenu->actions().indexOf(act);
+    m_selectedIndex = m_qmenu->actions().indexOf(act);
     emit selectedIndexChanged();
 }
 
@@ -154,25 +154,42 @@ void QtMenu::emitHovered()
     QAction *act = qobject_cast<QAction *>(sender());
     if (!act)
         return;
-    _highlightedIndex = _qmenu->actions().indexOf(act);
+    m_highlightedIndex = m_qmenu->actions().indexOf(act);
     emit hoveredIndexChanged();
 }
 
 QString QtMenu::itemTextAt(int index) const
 {
-    QList<QAction *> actionList = _qmenu->actions();
+    QList<QAction *> actionList = m_qmenu->actions();
     if (index >= 0 && index < actionList.size())
         return actionList[index]->text();
     else
         return "";
 }
 
+QString QtMenu::modelTextAt(int index) const
+{
+    if (QAbstractItemModel *model = qobject_cast<QAbstractItemModel*>(m_model.value<QObject*>())) {
+        return model->data(model->index(index, 0)).toString();
+    }
+    return "";
+}
+
+int QtMenu::modelCount() const
+{
+    if (QAbstractItemModel *model = qobject_cast<QAbstractItemModel*>(m_model.value<QObject*>())) {
+        return model->rowCount();
+    }
+    return -1;
+}
+
+
 void QtMenu::append_qmenuItem(QDeclarativeListProperty<QtMenuBase> *list, QtMenuBase *menuItem)
 {
     QtMenu *menu = qobject_cast<QtMenu *>(list->object);
     if (menu) {
         menuItem->setParent(menu);
-        menu->_qmenuItems.append(menuItem);
+        menu->m_qmenuItems.append(menuItem);
         menu->qmenu()->addAction(menuItem->action());
     }
 }

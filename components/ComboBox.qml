@@ -83,10 +83,13 @@ Custom.BasicButton {
 
     width: implicitWidth
     height: implicitHeight
+
     implicitWidth: Math.max(80, backgroundItem.implicitWidth)
     implicitHeight: backgroundItem.implicitHeight
+
     onWidthChanged: popup.setMinimumWidth(width)
     checkable: false
+
     onPressedChanged: if (pressed) popup.visible = true
 
     ContextMenu {

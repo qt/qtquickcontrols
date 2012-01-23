@@ -2,12 +2,12 @@ import QtQuick 1.1
 
 Menu {
     id: root
-    property ListModel model
     property string selectedText: itemTextAt(selectedIndex)
     property string hoveredText: itemTextAt(hoveredIndex)
     property int x
     property int y
     property bool visible
+    property string textRole
 
     // 'centerSelectedText' means that the menu will be positioned
     //  so that the selected text' top left corner will be at x, y.
@@ -16,7 +16,10 @@ Menu {
     visible: false
     onMenuClosed: visible = false
     onModelChanged: if (Component.status === Component.Ready && model != undefined) rebuildMenu()
-    Component.onCompleted: if (model != undefined) rebuildMenu()
+
+    Component.onCompleted: if (model !== undefined) rebuildMenu()
+
+    onRebuildMenu: rebuildMenu()
 
     onHoveredIndexChanged: {
         if (hoveredIndex < menuItems.length)
@@ -40,11 +43,45 @@ Menu {
     function rebuildMenu()
     {
         clearMenuItems();
+
         for (var i=0; i<menuItems.length; ++i)
             addMenuItem(menuItems[i].text)
-        if (model != undefined) {
-            for (var j=0; j<model.count; ++j)
-                addMenuItem(model.get(j).text)
+
+        var nativeModel = root.modelCount() !== -1
+
+        if (model !== undefined) {
+            var modelCount = nativeModel ? root.modelCount() : model.count;
+            for (var j = 0 ; j < modelCount; ++j) {
+                var textValue
+                if (nativeModel) {
+                    textValue = root.modelTextAt(j);
+                } else {
+                    if (textRole !== "")
+                        textValue = model.get(j)[textRole]
+                    else if (model.count > 0 && root.model.get && root.model.get(0)) {
+                        // ListModel with one role
+                        var listElement = root.model.get(0)
+                        var oneRole = true
+                        var roleName = ""
+                        var roleCount = 0
+                        for (var i in listElement) {
+                            roleName = i
+                            ++roleCount
+                            if (roleCount > 1) {
+                                oneRole = false
+                                root.enabled = false
+                                console.log("When multiple roles used, provide textRole for the ComboBox.")
+                                break
+                            }
+                        }
+                        if (oneRole) {
+                            root.textRole = roleName
+                            textValue = root.model.get(j)[textRole]
+                        }
+                    }
+                }
+                addMenuItem(textValue)
+            }
         }
     }
 }

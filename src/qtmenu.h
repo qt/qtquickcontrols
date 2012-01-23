@@ -30,12 +30,16 @@
 #include <QtGui/qmenu.h>
 #include <QtDeclarative/qdeclarative.h>
 #include <QtDeclarative/QDeclarativeListProperty>
+#include <QtCore/qabstractitemmodel.h>
+#include <QtCore/QVariant>
 #include "qtmenuitem.h"
 
 class QtMenu : public QtMenuBase
 {
     Q_OBJECT
     Q_PROPERTY(QString text READ text WRITE setText)
+    Q_PROPERTY(bool hasNativeModel READ hasNativeModel)
+    Q_PROPERTY(QVariant model READ model WRITE setModel NOTIFY modelChanged)
     Q_PROPERTY(int selectedIndex READ selectedIndex WRITE setSelectedIndex NOTIFY selectedIndexChanged)
     Q_PROPERTY(int hoveredIndex READ hoveredIndex WRITE setHoveredIndex NOTIFY hoveredIndexChanged)
     Q_PROPERTY(QDeclarativeListProperty<QtMenuBase> menuItems READ menuItems)
@@ -47,28 +51,48 @@ public:
     void setText(const QString &text);
     QString text() const;
 
-    int selectedIndex() const { return _selectedIndex; }
+    int selectedIndex() const { return m_selectedIndex; }
     void setSelectedIndex(int index);
-    int hoveredIndex() const { return _highlightedIndex; }
+    int hoveredIndex() const { return m_highlightedIndex; }
     void setHoveredIndex(int index);
 
     QDeclarativeListProperty<QtMenuBase> menuItems();
-    QMenu* qmenu() { return _qmenu; }
+    QMenu* qmenu() { return m_qmenu; }
 
     QAction* action();
 
-    Q_INVOKABLE int minimumWidth() const { return _qmenu->minimumWidth(); }
-    Q_INVOKABLE void setMinimumWidth(int w) { _qmenu->setMinimumWidth(w); }
+    Q_INVOKABLE int minimumWidth() const { return m_qmenu->minimumWidth(); }
+    Q_INVOKABLE void setMinimumWidth(int w) { m_qmenu->setMinimumWidth(w); }
     Q_INVOKABLE void showPopup(qreal x, qreal y, int atActionIndex = -1);
     Q_INVOKABLE void hidePopup();
     Q_INVOKABLE void clearMenuItems();
     Q_INVOKABLE void addMenuItem(const QString &text);
     Q_INVOKABLE QString itemTextAt(int index) const;
+    Q_INVOKABLE QString modelTextAt(int index) const;
+    Q_INVOKABLE int modelCount() const;
 
+    QVariant model() const { return m_model; }
+    bool hasNativeModel() const { return m_hasNativeModel; }
+
+public slots:
+
+    void setModel(const QVariant arg) {
+        if (m_model != arg) {
+            if (QAbstractItemModel *model = qobject_cast<QAbstractItemModel*>(arg.value<QObject*>())) {
+                connect(model, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SIGNAL(rebuildMenu()));
+            }
+            m_model = arg;
+            emit modelChanged(m_model);
+        }
+    }
+
+public:
 Q_SIGNALS:
     void menuClosed();
     void selectedIndexChanged();
     void hoveredIndexChanged();
+    void modelChanged(const QVariant&);
+    void rebuldMenu();
 
 private Q_SLOTS:
     void emitSelected();
@@ -79,10 +103,12 @@ private:
 
 private:
     QWidget *dummy;
-    QMenu *_qmenu;
-    QList<QtMenuBase *> _qmenuItems;
-    int _selectedIndex;
-    int _highlightedIndex;
+    QMenu *m_qmenu;
+    QList<QtMenuBase *> m_qmenuItems;
+    int m_selectedIndex;
+    int m_highlightedIndex;
+    bool m_hasNativeModel;
+    QVariant m_model;
 };
 
 QML_DECLARE_TYPE(QtMenu)
