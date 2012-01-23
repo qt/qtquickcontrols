@@ -69,10 +69,10 @@ Item {
                 property bool selected : tabFrame.current == index
                 z: selected ? 1 : -1
                 width: Math.min(implicitWidth, tabbar.width/tabs.length)
-                function updateRect() {
-                    implicitWidth = style.implicitWidth
-                    height = style.implicitHeight
-                }
+
+                implicitWidth: Math.max(textitem.paintedWidth, style.implicitWidth)
+                implicitHeight: Math.max(textitem.paintedHeight, style.implicitHeight)
+
                 StyleItem {
                     id: style
                     elementType: "tab"
@@ -93,8 +93,6 @@ Item {
                         id: textitem
                         // Used for size hint
                         visible: false
-                        onWidthChanged: updateRect()
-                        onHeightChanged: updateRect()
                         text:  tabFrame.tabs[index].title
                     }
                 }
