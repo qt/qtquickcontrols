@@ -38,7 +38,6 @@ class QtMenu : public QtMenuBase
 {
     Q_OBJECT
     Q_PROPERTY(QString text READ text WRITE setText)
-    Q_PROPERTY(bool hasNativeModel READ hasNativeModel)
     Q_PROPERTY(QVariant model READ model WRITE setModel NOTIFY modelChanged)
     Q_PROPERTY(int selectedIndex READ selectedIndex WRITE setSelectedIndex NOTIFY selectedIndexChanged)
     Q_PROPERTY(int hoveredIndex READ hoveredIndex WRITE setHoveredIndex NOTIFY hoveredIndexChanged)
@@ -72,16 +71,20 @@ public:
     Q_INVOKABLE int modelCount() const;
 
     QVariant model() const { return m_model; }
-    bool hasNativeModel() const { return m_hasNativeModel; }
+    Q_INVOKABLE bool hasNativeModel() const { return m_hasNativeModel; }
 
 public slots:
 
     void setModel(const QVariant arg) {
         if (m_model != arg) {
-            if (QAbstractItemModel *model = qobject_cast<QAbstractItemModel*>(arg.value<QObject*>())) {
-                connect(model, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SIGNAL(rebuildMenu()));
-            }
+            m_hasNativeModel = false;
             m_model = arg;
+            if (QAbstractItemModel *model = qobject_cast<QAbstractItemModel*>(arg.value<QObject*>())) {
+                m_hasNativeModel = true;
+                connect(model, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SIGNAL(rebuildMenu()));
+            } else if (arg.canConvert(QVariant::StringList)) {
+                m_hasNativeModel = true;
+            }
             emit modelChanged(m_model);
         }
     }

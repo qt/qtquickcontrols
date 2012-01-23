@@ -35,7 +35,8 @@ QtMenu::QtMenu(QObject *parent)
     : QtMenuBase(parent),
       dummy(0),
       m_selectedIndex(0),
-      m_highlightedIndex(0)
+      m_highlightedIndex(0),
+      m_hasNativeModel(false)
 {
     m_qmenu = new QMenu(0);
     connect(m_qmenu, SIGNAL(aboutToHide()), this, SIGNAL(menuClosed()));
@@ -171,6 +172,8 @@ QString QtMenu::modelTextAt(int index) const
 {
     if (QAbstractItemModel *model = qobject_cast<QAbstractItemModel*>(m_model.value<QObject*>())) {
         return model->data(model->index(index, 0)).toString();
+    } else if (m_model.canConvert(QVariant::StringList)) {
+        return m_model.toStringList().at(index);
     }
     return "";
 }
@@ -179,6 +182,8 @@ int QtMenu::modelCount() const
 {
     if (QAbstractItemModel *model = qobject_cast<QAbstractItemModel*>(m_model.value<QObject*>())) {
         return model->rowCount();
+    } else if (m_model.canConvert(QVariant::StringList)) {
+        return m_model.toStringList().count();
     }
     return -1;
 }

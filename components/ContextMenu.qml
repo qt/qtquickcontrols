@@ -47,7 +47,7 @@ Menu {
         for (var i=0; i<menuItems.length; ++i)
             addMenuItem(menuItems[i].text)
 
-        var nativeModel = root.modelCount() !== -1
+        var nativeModel = root.hasNativeModel()
 
         if (model !== undefined) {
             var modelCount = nativeModel ? root.modelCount() : model.count;
