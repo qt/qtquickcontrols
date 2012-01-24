@@ -44,7 +44,7 @@
 #include <QtGui/QMenuBar>
 
 QtMenuBar::QtMenuBar(QDeclarativeItem *parent)
-    : QDeclarativeItem(parent)/*, _menuBar(new QMenuBar)*/
+    : QDeclarativeItem(parent), _menuBar(0) /*, _menuBar(new QMenuBar)*/
 {
     connect(this, SIGNAL(parentChanged()), this, SLOT(updateParent()));
     setFlag(QGraphicsItem::ItemHasNoContents, true);
