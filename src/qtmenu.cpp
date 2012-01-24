@@ -188,7 +188,6 @@ int QtMenu::modelCount() const
     return -1;
 }
 
-
 void QtMenu::append_qmenuItem(QDeclarativeListProperty<QtMenuBase> *list, QtMenuBase *menuItem)
 {
     QtMenu *menu = qobject_cast<QtMenu *>(list->object);
@@ -199,4 +198,22 @@ void QtMenu::append_qmenuItem(QDeclarativeListProperty<QtMenuBase> *list, QtMenu
     }
 }
 
+void QtMenu::setModel(const QVariant &newModel) {
+    if (m_model != newModel) {
 
+        // Clean up any existing connections
+        if (QAbstractItemModel *oldModel = qobject_cast<QAbstractItemModel*>(m_model.value<QObject*>())) {
+            disconnect(oldModel, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SIGNAL(rebuildMenu()));
+        }
+
+        m_hasNativeModel = false;
+        m_model = newModel;
+        if (QAbstractItemModel *model = qobject_cast<QAbstractItemModel*>(newModel.value<QObject*>())) {
+            m_hasNativeModel = true;
+            connect(model, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SIGNAL(rebuildMenu()));
+        } else if (arg.canConvert(QVariant::StringList)) {
+            m_hasNativeModel = true;
+        }
+        emit modelChanged(m_model);
+    }
+}

@@ -74,27 +74,14 @@ public:
     Q_INVOKABLE bool hasNativeModel() const { return m_hasNativeModel; }
 
 public slots:
-
-    void setModel(const QVariant arg) {
-        if (m_model != arg) {
-            m_hasNativeModel = false;
-            m_model = arg;
-            if (QAbstractItemModel *model = qobject_cast<QAbstractItemModel*>(arg.value<QObject*>())) {
-                m_hasNativeModel = true;
-                connect(model, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SIGNAL(rebuildMenu()));
-            } else if (arg.canConvert(QVariant::StringList)) {
-                m_hasNativeModel = true;
-            }
-            emit modelChanged(m_model);
-        }
-    }
+    void setModel(const QVariant &newModel);
 
 public:
 Q_SIGNALS:
     void menuClosed();
     void selectedIndexChanged();
     void hoveredIndexChanged();
-    void modelChanged(const QVariant&);
+    void modelChanged(const QVariant &newModel);
     void rebuldMenu();
 
 private Q_SLOTS:
