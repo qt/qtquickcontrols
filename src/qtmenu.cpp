@@ -208,10 +208,11 @@ void QtMenu::setModel(const QVariant &newModel) {
 
         m_hasNativeModel = false;
         m_model = newModel;
+
         if (QAbstractItemModel *model = qobject_cast<QAbstractItemModel*>(newModel.value<QObject*>())) {
             m_hasNativeModel = true;
             connect(model, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SIGNAL(rebuildMenu()));
-        } else if (arg.canConvert(QVariant::StringList)) {
+        } else if (newModel.canConvert(QVariant::StringList)) {
             m_hasNativeModel = true;
         }
         emit modelChanged(m_model);
