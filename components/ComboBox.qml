@@ -40,12 +40,12 @@ import "custom" as Custom
 *        width: 200
 *        MenuItem {
 *            text: "Pineapple"
-*            onSelected: console.debug(text)
+*            onTriggered: console.debug(text)
 *
 *        }
 *        MenuItem {
 *            text: "Grape"
-*            onSelected: console.debug(text)
+*            onTriggered: console.debug(text)
 *        }
 *    }
 *
