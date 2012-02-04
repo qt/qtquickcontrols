@@ -64,16 +64,17 @@ Menu {
                         var oneRole = true
                         var roleName = ""
                         var roleCount = 0
-                        for (var i in listElement) {
-                            roleName = i
+                        for (var role in listElement) {
+                            if (!roleName || role === "text")
+                                roleName = role
                             ++roleCount
-                            if (roleCount > 1) {
-                                oneRole = false
-                                root.enabled = false
-                                console.log("When multiple roles used, provide textRole for the ComboBox.")
-                                break
-                            }
                         }
+                        if (roleCount > 1 && roleName !== "text") {
+                            oneRole = false
+                            console.log("Warning: No textRole set for ComboBox.")
+                            break
+                        }
+
                         if (oneRole) {
                             root.textRole = roleName
                             textValue = root.model.get(j)[textRole]
