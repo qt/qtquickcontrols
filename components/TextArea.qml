@@ -53,7 +53,7 @@ ScrollArea {
             KeyNavigation.tab: area.tabChangesFocus ? area.KeyNavigation.tab : null
             KeyNavigation.backtab: area.tabChangesFocus ? area.KeyNavigation.backtab : null
 
-            onPaintedSizeChanged: {
+            onContentSizeChanged: {
                 area.contentWidth = paintedWidth + (2 * documentMargins)
             }
 
