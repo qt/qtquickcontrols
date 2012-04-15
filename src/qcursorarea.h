@@ -37,6 +37,7 @@ class QCursorArea : public QDeclarativeItem
 
 public:
     enum Cursor {
+        DefaultCursor,
         ArrowCursor,
         SizeHorCursor,
         SizeVerCursor,

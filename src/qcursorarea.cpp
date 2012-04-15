@@ -28,7 +28,7 @@
 
 QCursorArea::QCursorArea(QDeclarativeItem *parent)
     : QDeclarativeItem(parent),
-      m_cursor(ArrowCursor)
+      m_cursor(DefaultCursor)
 {
 
 }
@@ -39,6 +39,9 @@ void QCursorArea::setCursor(Cursor cursor)
         return;
 
     switch (cursor) {
+    case DefaultCursor:
+        QDeclarativeItem::setCursor(QCursor());
+        break;
     case ArrowCursor:
         QDeclarativeItem::setCursor(Qt::ArrowCursor);
         break;
