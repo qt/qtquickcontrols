@@ -88,6 +88,7 @@ QtMenuItem::QtMenuItem(QObject *parent)
 {
     connect(_action, SIGNAL(triggered()), this, SIGNAL(triggered()));
     connect(_action, SIGNAL(toggled(bool)), this, SIGNAL(toggled(bool)));
+    connect(_action, SIGNAL(changed()), this, SIGNAL(enabledChanged()));
 }
 
 QtMenuItem::~QtMenuItem()
@@ -116,6 +117,11 @@ void QtMenuItem::setChecked(bool checked)
     _action->setChecked(checked);
 }
 
+void QtMenuItem::setEnabled(bool enabled)
+{
+    _action->setEnabled(enabled);
+}
+
 QString QtMenuItem::text() const
 {
     return _action->text();
@@ -134,6 +140,11 @@ bool QtMenuItem::checkable() const
 bool QtMenuItem::checked() const
 {
     return _action->isChecked();
+}
+
+bool QtMenuItem::enabled() const
+{
+    return _action->isEnabled();
 }
 
 QAction * QtMenuItem::action()

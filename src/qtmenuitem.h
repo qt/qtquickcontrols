@@ -87,6 +87,7 @@ class QtMenuItem: public QtMenuBase
     Q_PROPERTY(QString shortcut READ shortcut WRITE setShortcut NOTIFY shortcutChanged)
     Q_PROPERTY(bool checkable READ checkable WRITE setCheckable)
     Q_PROPERTY(bool checked READ checked WRITE setChecked NOTIFY toggled)
+    Q_PROPERTY(bool enabled READ enabled WRITE setEnabled NOTIFY enabledChanged)
 
 public:
     QtMenuItem(QObject *parent = 0);
@@ -96,11 +97,13 @@ public:
     void setShortcut(const QString &shortcut);
     void setCheckable(bool checkable);
     void setChecked(bool checked);
+    void setEnabled(bool enabled);
 
     QString text() const;
     QString shortcut() const;
     bool checkable() const;
     bool checked() const;
+    bool enabled() const;
 
     QAction* action();
 
@@ -109,6 +112,7 @@ Q_SIGNALS:
     void textChanged();
     void shortcutChanged();
     void toggled(bool);
+    void enabledChanged();
 
 private:
     QAction *_action;
