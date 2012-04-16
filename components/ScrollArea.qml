@@ -23,7 +23,7 @@ FocusScope {
     property int contentY
     property int contentHeight : content.childrenRect.height
     property int contentWidth: content.childrenRect.width
-    property int viewportHeight: height - (horizontalScrollBar.visible ? verticalScrollBar.height : 0) - 2 * frameWidth
+    property int viewportHeight: height - (horizontalScrollBar.visible ? horizontalScrollBar.height : 0) - 2 * frameWidth
     property int viewportWidth: width - (verticalScrollBar.visible ? verticalScrollBar.width : 0) - 2 * frameWidth
     default property alias data: content.data
 
