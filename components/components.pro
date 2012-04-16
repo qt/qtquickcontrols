@@ -4,7 +4,7 @@ TARGETPATH = QtDesktop
 symbian {
     INSTALL_IMPORTS = /resource/qt/imports
 } else {
-    INSTALL_IMPORTS = $$[QT_INSTALL_IMPORTS]
+    isEmpty(INSTALL_IMPORTS):INSTALL_IMPORTS = $$[QT_INSTALL_IMPORTS]
 }
 
 QML_FILES = \
