@@ -94,5 +94,3 @@ void StylePlugin::initializeEngine(QQmlEngine *engine, const char *uri)
     Q_UNUSED(uri);
     engine->addImageProvider("desktoptheme", new DesktopIconProvider);
 }
-
-Q_EXPORT_PLUGIN2(styleplugin, StylePlugin);
