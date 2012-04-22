@@ -1,7 +1,7 @@
 #ifndef QTSPLITTERBASE_H
 #define QTSPLITTERBASE_H
 
-#include <QtDeclarative>
+#include <QtQml>
 #include <QtQuick>
 
 

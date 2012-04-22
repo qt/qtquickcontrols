@@ -40,18 +40,18 @@
 #ifndef STYLEPLUGIN_H
 #define STYLEPLUGIN_H
 
-#include <QDeclarativeExtensionPlugin>
+#include <QQmlExtensionPlugin>
 #include <QtCore/QTimer>
 #include <QtWidgets/QFileSystemModel>
 #include "qdeclarativefolderlistmodel.h"
 
 
-class StylePlugin : public QDeclarativeExtensionPlugin
+class StylePlugin : public QQmlExtensionPlugin
 {
     Q_OBJECT
 public:
     void registerTypes(const char *uri);
-    void initializeEngine(QDeclarativeEngine *engine, const char *uri);
+    void initializeEngine(QQmlEngine *engine, const char *uri);
 };
 
 #endif // STYLEPLUGIN_H

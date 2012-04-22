@@ -43,7 +43,7 @@
 #include "qdeclarativefolderlistmodel.h"
 #include <QtWidgets/QDirModel>
 #include <QDebug>
-#include <qdeclarativecontext.h>
+#include <qqmlcontext.h>
 
 #ifndef QT_NO_DIRMODEL
 

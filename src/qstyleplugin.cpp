@@ -37,7 +37,7 @@
 **
 ****************************************************************************/
  
-#include <qdeclarative.h>
+#include <qqml.h>
 #include "qstyleplugin.h"
 #include "qstyleitem.h"
 #include "qrangemodel.h"
@@ -46,22 +46,19 @@
 #include "qcursorarea.h"
 #include "qtooltiparea.h"
 #include "qtsplitterbase.h"
-#include <qdeclarativeextensionplugin.h>
+#include <qqmlextensionplugin.h>
 
-#include <qdeclarativeengine.h>
-#include <qdeclarative.h>
-//#include <qdeclarativeitem.h>
-#include <qdeclarativeimageprovider.h>
-//x#include <qdeclarativeview.h>
+#include <qqmlengine.h>
+#include <qquickimageprovider.h>
 #include <QtWidgets/QApplication>
 #include <QImage>
 
 // Load icons from desktop theme
-class DesktopIconProvider : public QDeclarativeImageProvider
+class DesktopIconProvider : public QQuickImageProvider
 {
 public:
     DesktopIconProvider()
-        : QDeclarativeImageProvider(QDeclarativeImageProvider::Pixmap)
+        : QQuickImageProvider(QQuickImageProvider::Pixmap)
     {
     }
 
@@ -92,7 +89,7 @@ void StylePlugin::registerTypes(const char *uri)
     qmlRegisterUncreatableType<QDesktopItem>(uri, 0,2,"Desktop", QLatin1String("Do not create objects of type Desktop"));
 }
 
-void StylePlugin::initializeEngine(QDeclarativeEngine *engine, const char *uri)
+void StylePlugin::initializeEngine(QQmlEngine *engine, const char *uri)
 {
     Q_UNUSED(uri);
     engine->addImageProvider("desktoptheme", new DesktopIconProvider);

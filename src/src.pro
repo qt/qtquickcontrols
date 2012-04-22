@@ -1,6 +1,6 @@
 TEMPLATE = lib
 CONFIG += qt plugin
-QT += declarative
+QT += qml
 QT += quick
 QT += script
 QT += widgets

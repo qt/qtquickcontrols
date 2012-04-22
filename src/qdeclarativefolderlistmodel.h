@@ -42,7 +42,7 @@
 #ifndef QDECLARATIVEFOLDERLISTMODEL_H
 #define QDECLARATIVEFOLDERLISTMODEL_H
 
-#include <qdeclarative.h>
+#include <qqml.h>
 #include <QStringList>
 #include <QUrl>
 #include <QAbstractListModel>
@@ -58,10 +58,10 @@ class QModelIndex;
 
 class QDeclarativeFolderListModelPrivate;
 
-class QDeclarativeFolderListModel : public QAbstractListModel, public QDeclarativeParserStatus
+class QDeclarativeFolderListModel : public QAbstractListModel, public QQmlParserStatus
 {
     Q_OBJECT
-    Q_INTERFACES(QDeclarativeParserStatus)
+    Q_INTERFACES(QQmlParserStatus)
 
     Q_PROPERTY(QUrl folder READ folder WRITE setFolder NOTIFY folderChanged)
     Q_PROPERTY(QUrl parentFolder READ parentFolder NOTIFY folderChanged)
