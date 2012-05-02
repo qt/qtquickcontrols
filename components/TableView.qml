@@ -173,7 +173,7 @@ FocusScope{
             id: rowstyle
             elementType: "itemrow"
             activeControl: itemAlternateBackground ? "alternate" : ""
-            selected: itemSelected ? "true" : "false"
+            selected: itemSelected ? true : false
         }
     }
 
@@ -335,7 +335,8 @@ FocusScope{
             anchors.margins: frameWidth
             property int rowIndex: model.index
             property bool itemAlternateBackground: alternateRowColor && rowIndex % 2 == 1
-            property variant itemModelData: hasOwnProperty("modelData") ? modelData : null
+            property variant itemModelData: this.hasOwnProperty("modelData") ? modelData : null
+            // ## Note the this reference is due to a behavior change in Qt5.0 This needs to be investigated
             Loader {
                 id: rowstyle
                 // row delegate
@@ -368,8 +369,8 @@ FocusScope{
                         height: item !== undefined ? item.height : Math.max(16, styleitem.implicitHeight)
 
                         function getValue() {
-                            if (header[index].role.length && hasOwnProperty(header[index].role))
-                                return this[header[index].role]
+                            if (header[index].role.length && model.get && model.get(rowIndex)[header[index].role])
+                                return model.get(rowIndex)[header[index].role]
                             else if (modelData && modelData.hasOwnProperty(header[index].role))
                                 return modelData[header[index].role]
                             else if (modelData)
