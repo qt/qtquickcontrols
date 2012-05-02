@@ -85,7 +85,7 @@ Item {
                     hover: mousearea.containsMouse
                     hasFocus: tabbar.focus && selected
                     property bool first: index === 0
-                    paintMargins: tabrow.paintMargins
+                    //paintMargins: tabrow.paintMargins
                     activeControl: tabFrame.count === 1 ? "only" : index === 0 ? "beginning" :
                             index === tabFrame.count-1 ? "end" : "middle"
                     anchors.fill: parent

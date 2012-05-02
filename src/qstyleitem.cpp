@@ -71,7 +71,7 @@ QStyleItem::QStyleItem(QQuickPaintedItem *parent)
     m_paintMargins(0)
 {
     setFlag(QQuickItem::ItemHasContents, true);
-    setSmooth(true);
+    setSmooth(false);
     //setCacheMode(QGraphicsItem::DeviceCoordinateCache);
 
     connect(this, SIGNAL(infoChanged()), this, SLOT(updateItem()));
