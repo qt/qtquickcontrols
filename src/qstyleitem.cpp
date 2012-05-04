@@ -78,7 +78,12 @@ QStyleItem::QStyleItem(QQuickPaintedItem *parent)
     m_minimum(0),
     m_maximum(100),
     m_value(0),
-    m_paintMargins(0)
+    m_paintMargins(0),
+    m_implicitWidth(0),
+    m_implicitHeight(0),
+    m_contentWidth(0),
+    m_contentHeight(0)
+
 {
     setFlag(QQuickItem::ItemHasContents, true);
     setSmooth(false);
