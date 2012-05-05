@@ -45,11 +45,6 @@
 #include <QPlainTextEdit>
 #include <QLabel>
 #include <QVBoxLayout>
-#ifdef Q_WS_MAEMO_5
-#  include <QScrollArea>
-#  include <QVBoxLayout>
-#  include "texteditautoresizer_maemo5.h"
-#endif
 
 #include "loggerwidget.h"
 

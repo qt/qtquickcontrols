@@ -111,11 +111,6 @@ void usage()
     qWarning("  -I <directory> ........................... prepend to the module import search path,");
     qWarning("                                             display path if <directory> is empty");
     qWarning("  -P <directory> ........................... prepend to the plugin search path");
-#if defined(Q_WS_MAC)
-    qWarning("  -no-opengl ............................... don't use a QGLWidget for the viewport");
-#else
-    qWarning("  -opengl .................................. use a QGLWidget for the viewport");
-#endif
     qWarning(" ");
     qWarning(" Press F1 for interactive help");
 
@@ -127,19 +122,14 @@ enum WarningsConfig { ShowWarnings, HideWarnings, DefaultWarnings };
 struct ViewerOptions
 {
     ViewerOptions()
-        : useGL(false),
-          warningsConfig(DefaultWarnings),
+        : warningsConfig(DefaultWarnings),
           sizeToView(true)
     {
-#if defined(Q_WS_MAC)
-        useGL = true;
-#endif
     }
 
     QStringList imports;
     QStringList plugins;
     QString translationFile;
-    bool useGL;
     WarningsConfig warningsConfig;
     bool sizeToView;
 };
@@ -190,13 +180,6 @@ static void parseCommandLineOptions(const QStringList &arguments)
         } else if (arg == "-translation") {
             if (lastArg) usage();
             opts.translationFile = arguments.at(++i);
-#if defined(Q_WS_MAC)
-        } else if (arg == "-no-opengl") {
-            opts.useGL = false;
-#else
-        } else if (arg == "-opengl") {
-            opts.useGL = true;
-#endif
         } else if (arg == "-warnings") {
             if (lastArg) usage();
             QString warningsStr = arguments.at(++i);
@@ -251,21 +234,6 @@ QmlDesktopViewer *openFile(const QString &fileName)
 int main(int argc, char ** argv)
 {
     systemMsgOutput = qInstallMsgHandler(myMessageOutput);
-
-#if defined (Q_WS_X11) || defined (Q_WS_MAC)
-    //### default to using raster graphics backend for now
-    bool gsSpecified = false;
-    for (int i = 0; i < argc; ++i) {
-        QString arg = argv[i];
-        if (arg == "-graphicssystem") {
-            gsSpecified = true;
-            break;
-        }
-    }
-
-    if (!gsSpecified)
-        QApplication::setGraphicsSystem("raster");
-#endif
 
     Application app(argc, argv);
     app.setApplicationName("QMLDesktop");

@@ -55,10 +55,6 @@
 #include <QLocale>
 #include <QDebug>
 
-#ifdef GL_SUPPORTED
-#include <QGLWidget>
-#endif
-
 QT_BEGIN_NAMESPACE
 
 QmlDesktopViewer::QmlDesktopViewer() :
