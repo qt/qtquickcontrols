@@ -440,7 +440,7 @@ void QStyleItem::initStyleOption()
             if (activeControl() != "end")
                 widget()->resize(200, height());
         }
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
         else widget()->resize(width(), height());
 #endif
 
@@ -454,7 +454,7 @@ void QStyleItem::initStyleOption()
             widget()->setAttribute(Qt::WA_MacSmallSize);
         }
     }
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
     if (m_itemType == Button && style() == "mac") {
         // Macstyle hardcodes extra spacing inside the button paintrect
         m_styleoption->rect.adjust(-5, 0, 6, 0);
@@ -556,7 +556,7 @@ QSize QStyleItem::sizeFromContents(int width, int height)
         QStyleOptionButton *btn = qstyleoption_cast<QStyleOptionButton*>(m_styleoption);
         int textWidth = btn->fontMetrics.width(btn->text);
         size = qApp->style()->sizeFromContents(QStyle::CT_PushButton, m_styleoption, QSize(textWidth,height), widget());
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
         // Macstyle adds some weird constants to buttons
         return QSize(textWidth + 18, size.height() + 2);
 #endif
@@ -585,7 +585,7 @@ QSize QStyleItem::sizeFromContents(int width, int height)
         break;
     case Header:
         size = qApp->style()->sizeFromContents(QStyle::CT_HeaderSection, m_styleoption, QSize(width,height), widget());
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
         if (style() =="mac")
             size.setHeight(15);
 #endif
@@ -598,7 +598,7 @@ QSize QStyleItem::sizeFromContents(int width, int height)
         break;
     }
 
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
     //    ### hack - With even heights, the text baseline is off on mac
     //    if (size.height() %2 == 0)
     //        size.setHeight(size.height() + 1);
@@ -623,7 +623,7 @@ int QStyleItem::pixelMetric(const QString &metric)
     else if (metric == "taboverlap")
         return qApp->style()->pixelMetric(QStyle::PM_TabBarTabOverlap, 0 , widget());
     else if (metric == "tabbaseoverlap")
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
         // On windows the tabbar paintmargin extends the overlap by one pixels
         return 1 + qApp->style()->pixelMetric(QStyle::PM_TabBarBaseOverlap, 0 , widget());
 #else
@@ -772,7 +772,7 @@ void QStyleItem::setElementType(const QString &str)
         // Gtk uses qobject cast, hence we need to separate this from menuitem
         // On mac, we temporarily use the menu item because it has more accurate
         // palette.
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
         static QMenu *combo = new QMenu();
 #else
         static QComboBox *combo = new QComboBox();
@@ -840,7 +840,7 @@ void QStyleItem::setElementType(const QString &str)
         visible = true;
         m_itemType = Edit;
     } else if (str == "spinbox") {
-#ifndef Q_WS_WIN // Vista spinbox is currently not working due to grabwidget
+#ifndef Q_OS_WIN // Vista spinbox is currently not working due to grabwidget
         m_dummywidget = new QSpinBox();
         visible = true;
 #endif
@@ -869,7 +869,7 @@ void QStyleItem::setElementType(const QString &str)
         m_dummywidget->setAttribute(Qt::WA_QuitOnClose, false); // dont keep app open
         m_dummywidget->setAttribute(Qt::WA_LayoutUsesWidgetRect);
         m_dummywidget->winId();
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
         m_dummywidget->setGeometry(-1000, 0, 10,10);
         m_dummywidget->setVisible(visible); // Mac require us to set the visibility before this
 #endif
@@ -1015,7 +1015,7 @@ void QStyleItem::paint(QPainter *painter)
         break;
     case ToolButton:
 
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
         if (style() == "mac" && hint().contains("segmented")) {
             const QPaintDevice *target = painter->device();
              HIThemeSegmentDrawInfo sgi;
@@ -1052,7 +1052,7 @@ void QStyleItem::paint(QPainter *painter)
         qApp->style()->drawControl(QStyle::CE_ShapedFrame, m_styleoption, painter, widget());
         break;
     case FocusFrame:
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
         if (style() == "mac" && hint().contains("search")) {
             break; // embedded in the line itself
         } else
@@ -1073,7 +1073,7 @@ void QStyleItem::paint(QPainter *painter)
         qApp->style()->drawControl(QStyle::CE_RadioButton, m_styleoption, painter, widget());
         break;
     case Edit: {
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
         if (style() == "mac" && hint().contains("rounded")) {
             const QPaintDevice *target = painter->device();
             HIThemeFrameDrawInfo fdi;
@@ -1095,7 +1095,7 @@ void QStyleItem::paint(QPainter *painter)
     }
         break;
     case MacHelpButton:
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
     {
         const QPaintDevice *target = painter->device();
         HIThemeButtonDrawInfo fdi;
@@ -1223,7 +1223,7 @@ QString QStyleItem::fontFamily()
 
 double QStyleItem::fontPointSize()
 {
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
     if (elementType() == "item")
         return 11;
 #endif
