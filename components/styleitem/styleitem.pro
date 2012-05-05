@@ -1,8 +1,6 @@
 TEMPLATE = lib
 CONFIG += qt plugin
-QT += declarative
-QT += script
-QT += widgets
+QT += qml quick widgets
  
 TARGET  = styleplugin
 
