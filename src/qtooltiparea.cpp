@@ -21,11 +21,14 @@ void QTooltipArea::setText(const QString &t)
 
 void QTooltipArea::showToolTip(const QString &str) const
 {
+    Q_UNUSED(str);
     //QToolTip::showText(cursor().pos(), str);
 }
 
 void QTooltipArea::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
+
 {
+    Q_UNUSED(event);
     m_tiptimer.start(1000);
 
     m_containsMouse = true;
@@ -35,6 +38,7 @@ void QTooltipArea::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 
 void QTooltipArea::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
+    Q_UNUSED(event);
     m_tiptimer.stop();
     m_containsMouse = false;
     emit containsMouseChanged();

@@ -40,9 +40,6 @@
 #include "qmldesktopviewer.h"
 #include "loggerwidget.h"
 #include <qquickview.h>
-#include <qdeclarativecontext.h>
-#include <qdeclarativeengine.h>
-#include <qdeclarative.h>
 
 #include <QWidget>
 #include <QApplication>
@@ -65,7 +62,7 @@
 QT_BEGIN_NAMESPACE
 
 QmlDesktopViewer::QmlDesktopViewer() :
-    _engine(new QDeclarativeEngine(this))//, _rootObject(new QQuickItem)
+    _engine(new QQmlEngine(this))//, _rootObject(new QQuickItem)
 {
     _engine->setParent(this);
     QmlDesktopViewer::registerTypes();
@@ -104,7 +101,7 @@ bool QmlDesktopViewer::open(const QString& file_or_url)
 
     //delete rootObject();
     engine()->clearComponentCache();
-    QDeclarativeContext *ctxt = rootContext();
+    QQmlContext *ctxt = rootContext();
     ctxt->setContextProperty("qmlDesktopViewer", this);
     ctxt->setContextProperty("qmlDesktopViewerFolder", QDir::currentPath());
 
@@ -141,21 +138,21 @@ void QmlDesktopViewer::registerTypes()
 
 void QmlDesktopViewer::execute(QUrl url)
 {
-    _component = new QDeclarativeComponent(_engine, url, this);
+    _component = new QQmlComponent(_engine, url, this);
     if (!_component->isLoading()) {
         continueExecute();
     } else {
-        QObject::connect(_component, SIGNAL(statusChanged(QDeclarativeComponent::Status)), this, SLOT(continueExecute()));
+        QObject::connect(_component, SIGNAL(statusChanged(QQmlComponent::Status)), this, SLOT(continueExecute()));
     }
 }
 
 void QmlDesktopViewer::continueExecute()
 {
-    disconnect(_component, SIGNAL(statusChanged(QDeclarativeComponent::Status)), this, SLOT(continueExecute()));
+    disconnect(_component, SIGNAL(statusChanged(QQmlComponent::Status)), this, SLOT(continueExecute()));
 
     if (_component->isError()) {
-        QList<QDeclarativeError> errorList = _component->errors();
-        foreach (const QDeclarativeError &error, errorList) {
+        QList<QQmlError> errorList = _component->errors();
+        foreach (const QQmlError &error, errorList) {
             qWarning() << error;
         }
         emit statusChanged(_component->status());
@@ -166,8 +163,8 @@ void QmlDesktopViewer::continueExecute()
     obj->setParent(_engine);
 
     if(_component->isError()) {
-        QList<QDeclarativeError> errorList = _component->errors();
-        foreach (const QDeclarativeError &error, errorList) {
+        QList<QQmlError> errorList = _component->errors();
+        foreach (const QQmlError &error, errorList) {
             qWarning() << error;
         }
         emit statusChanged(_component->status());

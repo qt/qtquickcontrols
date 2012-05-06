@@ -76,7 +76,6 @@ public:
 
 void StylePlugin::registerTypes(const char *uri)
 {
-    qDebug(uri);
     qmlRegisterType<QStyleItem>(uri, 0, 2, "StyleItem");
     qmlRegisterType<QCursorArea>(uri, 0, 2, "CursorArea");
     qmlRegisterType<QTooltipArea>(uri, 0, 2, "TooltipArea");

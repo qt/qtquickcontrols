@@ -37,9 +37,8 @@
 **
 ****************************************************************************/
 
-#include "qdeclarative.h"
+#include <QtQml>
 #include "qmldesktopviewer.h"
-#include "qdeclarativeengine.h"
 #include "loggerwidget.h"
 #include <QWidget>
 #include <QDir>
@@ -212,7 +211,7 @@ static void parseCommandLineOptions(const QStringList &arguments)
             if (arg == "-L")
                 qWarning("-L option provided for compatibility only, use -I instead");
             if (lastArg) {
-                QDeclarativeEngine tmpEngine;
+                QQmlEngine tmpEngine;
                 QString paths = tmpEngine.importPathList().join(QLatin1String(":"));
                 qWarning("Current search path: %s", paths.toLocal8Bit().constData());
                 exitApp(0);

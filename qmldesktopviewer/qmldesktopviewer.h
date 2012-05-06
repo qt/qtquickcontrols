@@ -40,11 +40,12 @@
 #ifndef QMLDESKTOPVIEWER_H
 #define QMLDESKTOPVIEWER_H
 
-#include <QtWidgets/qmainwindow.h>
+#include <QMainWindow>
 #include <QTimer>
 #include <QTime>
 #include <QList>
-#include <QtDeclarative>
+#include <QtQml>
+#include <QtQml/QQmlEngine>
 #include <QDebug>
 
 QT_BEGIN_NAMESPACE
@@ -70,9 +71,9 @@ public:
     void addPluginPath(const QString& plugin);
 
     QString currentFile() const { return currentFileOrUrl; }
-    QDeclarativeEngine *engine() { return _engine; }
+    QQmlEngine *engine() { return _engine; }
     //QGraphicsObject *rootObject() { return _rootObject; }
-    QDeclarativeContext *rootContext() { return _engine->rootContext(); }
+    QQmlContext *rootContext() { return _engine->rootContext(); }
 
 public slots:
     bool open(const QString&);
@@ -83,12 +84,12 @@ public slots:
 
 private:
     QString currentFileOrUrl;
-    QDeclarativeEngine *_engine;
+    QQmlEngine *_engine;
     //QGraphicsObject *_rootObject;
-    QDeclarativeComponent *_component;
+    QQmlComponent *_component;
 
 signals:
-    void statusChanged(QDeclarativeComponent::Status);
+    void statusChanged(QQmlComponent::Status);
 };
 
 QT_END_NAMESPACE
