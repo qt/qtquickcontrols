@@ -51,6 +51,16 @@
 #include <QtWidgets/QtWidgets>
 #include <QtCore/QStringBuilder>
 
+#ifdef Q_OS_MAC
+#include <Carbon/Carbon.h>
+
+static inline HIRect qt_hirectForQRect(const QRect &convertRect, const QRect &rect = QRect())
+{
+    return CGRectMake(convertRect.x() + rect.x(), convertRect.y() + rect.y(),
+                      convertRect.width() - rect.width(), convertRect.height() - rect.height());
+}
+
+#endif
 
 QStyleItem::QStyleItem(QQuickPaintedItem *parent)
     : QQuickPaintedItem(parent),
@@ -1015,7 +1025,7 @@ void QStyleItem::paint(QPainter *painter)
         break;
     case ToolButton:
 
-#ifdef Q_OS_MAC
+#ifdef Q_WS_MAC
         if (style() == "mac" && hint().contains("segmented")) {
             const QPaintDevice *target = painter->device();
              HIThemeSegmentDrawInfo sgi;
@@ -1073,7 +1083,7 @@ void QStyleItem::paint(QPainter *painter)
         qApp->style()->drawControl(QStyle::CE_RadioButton, m_styleoption, painter, widget());
         break;
     case Edit: {
-#ifdef Q_OS_MAC
+#ifdef Q_WS_MAC
         if (style() == "mac" && hint().contains("rounded")) {
             const QPaintDevice *target = painter->device();
             HIThemeFrameDrawInfo fdi;
@@ -1095,7 +1105,7 @@ void QStyleItem::paint(QPainter *painter)
     }
         break;
     case MacHelpButton:
-#ifdef Q_OS_MAC
+#ifdef Q_WS_MAC
     {
         const QPaintDevice *target = painter->device();
         HIThemeButtonDrawInfo fdi;
