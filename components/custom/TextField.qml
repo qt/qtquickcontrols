@@ -1,5 +1,6 @@
 import QtQuick 1.1
 import "./behaviors"    // TextEditMouseBehavior
+import ".."
 
 // KNOWN ISSUES
 // 1) TextField does not loose focus when !enabled if it is a FocusScope (see QTBUG-16161)
@@ -91,6 +92,10 @@ FocusScope {
         anchors.fill: parent
         hoverEnabled: true
         onClicked: textfield.forceActiveFocus()
+        CursorArea {
+            anchors.fill: parent
+            cursor: CursorArea.IBeamCursor
+        }
     }
 
     onFocusChanged: {
