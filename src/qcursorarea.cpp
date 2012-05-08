@@ -66,6 +66,9 @@ void QCursorArea::setCursor(Cursor cursor)
     case PointingHandCursor:
         QDeclarativeItem::setCursor(Qt::PointingHandCursor);
         break;
+    case IBeamCursor:
+        QDeclarativeItem::setCursor(Qt::IBeamCursor);
+        break;
     default:
         return;
     }
