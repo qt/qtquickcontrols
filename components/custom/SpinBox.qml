@@ -1,4 +1,5 @@
 import QtQuick 1.1
+import ".."
 
 FocusScope {
     id: spinbox
@@ -110,6 +111,10 @@ FocusScope {
             anchors.rightMargin: 4
             anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
+        }
+        CursorArea {
+            anchors.fill: parent
+            cursor: CursorArea.IBeamCursor
         }
     }
 
