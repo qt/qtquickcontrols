@@ -35,16 +35,6 @@ SOURCES += qtmenu.cpp \
 
 TARGETPATH = QtDesktop/plugin
 
-symbian {
-    INSTALL_IMPORTS = /resource/qt/imports
-} else {
-    INSTALL_IMPORTS = $$[QT_INSTALL_IMPORTS]
-}
-           
-target.path = $$INSTALL_IMPORTS/$$TARGETPATH
+target.path = $$[QT_INSTALL_IMPORTS]/$$TARGETPATH
 
 INSTALLS += target
-
-symbian {
-    DEPLOYMENT += target
-}

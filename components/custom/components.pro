@@ -1,12 +1,6 @@
 TEMPLATE = subdirs # XXX: Avoid call the linker
 TARGETPATH = Qt/labs/components/custom
 
-symbian {
-    INSTALL_IMPORTS = /resource/qt/imports
-} else {
-    INSTALL_IMPORTS = $$[QT_INSTALL_IMPORTS]
-}
-
 QML_FILES = \
         qmldir \
         BasicButton.qml \
@@ -36,14 +30,10 @@ QML_DIRS = \
 
 qmlfiles.files = $$QML_FILES
 qmlfiles.sources = $$QML_FILES
-qmlfiles.path = $$INSTALL_IMPORTS/$$TARGETPATH
+qmlfiles.path = $$[QT_INSTALL_IMPORTS]/$$TARGETPATH
 
 qmldirs.files = $$QML_DIRS
 qmldirs.sources = $$QML_DIRS
-qmldirs.path = $$INSTALL_IMPORTS/$$TARGETPATH
+qmldirs.path = $$[QT_INSTALL_IMPORTS]/$$TARGETPATH
 
 INSTALLS += qmlfiles qmldirs
-
-symbian {
-    DEPLOYMENT += qmlfiles qmldirs
-}
