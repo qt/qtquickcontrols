@@ -44,6 +44,11 @@ ScrollArea {
                 colorGroup: enabled ? SystemPalette.Active : SystemPalette.Disabled
             }
 
+            CursorArea {
+                anchors.fill: parent
+                cursor: CursorArea.IBeamCursor
+            }
+
             KeyNavigation.priority: KeyNavigation.BeforeItem
             KeyNavigation.tab: area.tabChangesFocus ? area.KeyNavigation.tab : null
             KeyNavigation.backtab: area.tabChangesFocus ? area.KeyNavigation.backtab : null
