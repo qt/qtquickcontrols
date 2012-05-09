@@ -344,6 +344,7 @@ Rectangle {
                             adjustToContentSize: true
                             ButtonRow {
                                 id: tabPositionGroup
+                                exclusive: true
                                 RadioButton {
                                     id: r1
                                     text: "North"
