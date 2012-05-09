@@ -52,17 +52,10 @@
 #ifdef Q_OS_MAC
 #include <Carbon/Carbon.h>
 
-static inline HIRect qt_hirectForQRect(const QRect &convertRect, const QRect &rect = QRect())
-{
-    return CGRectMake(convertRect.x() + rect.x(), convertRect.y() + rect.y(),
-                      convertRect.width() - rect.width(), convertRect.height() - rect.height());
-}
-
+#if QT_VERSION <= 0x050000
+extern CGContextRef qt_mac_cg_context(const QPaintDevice *); //qpaintdevice_mac.cpp
 #endif
 
-#ifdef Q_WS_MAC
-#include <Carbon/Carbon.h>
-extern CGContextRef qt_mac_cg_context(const QPaintDevice *); //qpaintdevice_mac.cpp
 static inline HIRect qt_hirectForQRect(const QRect &convertRect, const QRect &rect = QRect())
 {
     return CGRectMake(convertRect.x() + rect.x(), convertRect.y() + rect.y(),
