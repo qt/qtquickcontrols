@@ -16,7 +16,9 @@ HEADERS += qrangemodel_p.h \
            qdeclarativefolderlistmodel.h \
            qstyleitem.h \
            qwheelarea.h \
+           qwindowitem.h \
            qdesktopitem.h \
+           qtoplevelwindow.h \
            qcursorarea.h \
            qtooltiparea.h \
     qtsplitterbase.h
@@ -26,10 +28,16 @@ SOURCES += qrangemodel.cpp \
            qdeclarativefolderlistmodel.cpp \
            qstyleitem.cpp \
            qwheelarea.cpp \
+           qwindowitem.cpp \
            qdesktopitem.cpp \
+           qtoplevelwindow.cpp \
            qcursorarea.cpp \
            qtooltiparea.cpp \
     qtsplitterbase.cpp
+
+### Qt 5 only
+HEADERS += qwindowwidget.h
+SOURCES += qwindowwidget.cpp
 
 TARGETPATH = QtDesktop/plugin
 

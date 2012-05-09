@@ -27,7 +27,7 @@
 ** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
 ** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
 ** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOTgall
 ** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
 ** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 ** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
@@ -36,62 +36,36 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
- 
-#include <qqml.h>
-#include "qstyleplugin.h"
-#include "qstyleitem.h"
-#include "qrangemodel.h"
-#include "qwindowitem.h"
-#include "qdesktopitem.h"
-#include "qwheelarea.h"
-#include "qcursorarea.h"
-#include "qtooltiparea.h"
-#include "qtsplitterbase.h"
-#include <qqmlextensionplugin.h>
 
-#include <qqmlengine.h>
-#include <qquickimageprovider.h>
-#include <QtWidgets/QApplication>
-#include <QImage>
+#include <QtCore>
+#include <QtQml>
+#include <QtQuick>
+#include <QtWidgets>
 
-// Load icons from desktop theme
-class DesktopIconProvider : public QQuickImageProvider
+#include "qwindowwidget.h"
+
+QT_USE_NAMESPACE
+
+int main(int argc, char ** argv)
 {
-public:
-    DesktopIconProvider()
-        : QQuickImageProvider(QQuickImageProvider::Pixmap)
-    {
-    }
+    QApplication app(argc, argv);
 
-    QPixmap requestPixmap(const QString &id, QSize *size, const QSize &requestedSize)
-    {
-        Q_UNUSED(requestedSize);
-        Q_UNUSED(size);
-        int pos = id.lastIndexOf('/');
-        QString iconName = id.right(id.length() - pos);
-        int width = requestedSize.width();
-        return QIcon::fromTheme(iconName).pixmap(width);
-    }
-};
+    QQuickView quickView;
+    quickView.setObjectName("quick view");
+    quickView.setSource(QUrl::fromLocalFile("../examples/Gallery.qml"));
 
+    QWindowWidget windowWidget;
+    windowWidget.setObjectName("window widget");
+    windowWidget.setEmbeddedWindow(&quickView);
 
-void StylePlugin::registerTypes(const char *uri)
-{
-    qmlRegisterType<QStyleItem>(uri, 0, 2, "StyleItem");
-    qmlRegisterType<QCursorArea>(uri, 0, 2, "CursorArea");
-    qmlRegisterType<QTooltipArea>(uri, 0, 2, "TooltipArea");
-    qmlRegisterType<QRangeModel>(uri, 0, 2, "RangeModel");
-    qmlRegisterType<QWheelArea>(uri, 0, 2, "WheelArea");
+    QMainWindow main;
+    main.setObjectName("main window");
+    main.setCentralWidget(&windowWidget);
+    main.setStatusBar(new QStatusBar());
+    main.setMenuBar(new QMenuBar());
+    main.show();
 
-    qmlRegisterType<QFileSystemModel>(uri, 0, 2, "FileSystemModel");
-    qmlRegisterType<QtSplitterBase>(uri, 0, 2, "Splitter");
-    qmlRegisterType<QWindowItem>("QtQuick", 2, 0, "Window");
-
-    qmlRegisterUncreatableType<QDesktopItem>(uri, 0,2,"Desktop", QLatin1String("Do not create objects of type Desktop"));
+    return app.exec();
 }
 
-void StylePlugin::initializeEngine(QQmlEngine *engine, const char *uri)
-{
-    Q_UNUSED(uri);
-    engine->addImageProvider("desktoptheme", new DesktopIconProvider);
-}
+

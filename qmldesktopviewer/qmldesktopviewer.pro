@@ -10,3 +10,4 @@ HEADERS +=  qmldesktopviewer.h \
 SOURCES +=  main.cpp \
             qmldesktopviewer.cpp \
             loggerwidget.cpp
+CONFIG -=app_bundle
