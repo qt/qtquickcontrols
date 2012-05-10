@@ -26,7 +26,6 @@ RadioButton 0.1 RadioButton.qml
 plugin styleplugin plugin
 TableColumn 0.1 TableColumn.qml
 ContextMenu 0.1 ContextMenu.qml
-MenuItem 0.1 MenuItem.qml
 Dialog 0.1 Dialog.qml
 StatusBar 0.1 StatusBar.qml
 ApplicationWindow 0.1 ApplicationWindow.qml

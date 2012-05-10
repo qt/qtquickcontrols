@@ -41,6 +41,9 @@
 #include "qstyleplugin.h"
 #include "qstyleitem.h"
 #include "qrangemodel.h"
+#include "qtmenu.h"
+#include "qtmenubar.h"
+#include "qwindowitem.h"
 #include "qwindowitem.h"
 #include "qdesktopitem.h"
 #include "qwheelarea.h"
@@ -83,10 +86,16 @@ void StylePlugin::registerTypes(const char *uri)
     qmlRegisterType<QRangeModel>(uri, 0, 2, "RangeModel");
     qmlRegisterType<QWheelArea>(uri, 0, 2, "WheelArea");
 
+    qmlRegisterType<QtMenu>(uri, 0, 2, "Menu");
+    qmlRegisterType<QtMenuBar>(uri, 0, 2, "MenuBar");
+    qmlRegisterType<QtMenuItem>(uri, 0, 2, "MenuItem");
+    qmlRegisterType<QtMenuSeparator>(uri, 0, 2, "Separator");
+
     qmlRegisterType<QFileSystemModel>(uri, 0, 2, "FileSystemModel");
     qmlRegisterType<QtSplitterBase>(uri, 0, 2, "Splitter");
-    qmlRegisterType<QWindowItem>("QtQuick", 2, 0, "Window");
+    qmlRegisterType<QWindowItem>("QtQuick", 2, 0, "Window"); // override built-in Window
 
+    qmlRegisterUncreatableType<QtMenuBase>("uri", 0, 1, "NativeMenuBase", QLatin1String("Do not create objects of type NativeMenuBase"));
     qmlRegisterUncreatableType<QDesktopItem>(uri, 0,2,"Desktop", QLatin1String("Do not create objects of type Desktop"));
 }
 

@@ -16,7 +16,6 @@ QML_FILES = \
             ButtonRow.qml \
             ButtonColumn.qml \
             Frame.qml \
-            MenuItem.qml   \
             Slider.qml \
             TabBar.qml \
             Tab.qml \
