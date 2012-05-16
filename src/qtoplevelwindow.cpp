@@ -1,12 +1,15 @@
 #include "qtoplevelwindow.h"
 
 #include <QDesktopWidget>
+#if QT_VERSION >= 0x050000
+#include <QtWidgets/QMenuBar>
+#endif
 
 QTopLevelWindow::QTopLevelWindow()
 #if QT_VERSION < 0x050000
     : QMainWindow(), _view(new QDeclarativeView), _positionIsDefined(false) {
 #else
-    : QMainWindow(), _windowWidget(new QWindowWidget), _view(new QQuickView), _positionIsDefined(false) {
+    : QQuickView(), _menuBar(new QMenuBar), _positionIsDefined(false) {
 #endif
 
     setVisible(false);
@@ -16,11 +19,16 @@ QTopLevelWindow::QTopLevelWindow()
 #if QT_VERSION < 0x050000
     _view->setBackgroundBrush(palette().window());
     setCentralWidget(_view);
-#else
-    _windowWidget->setEmbeddedWindow(_view);
-    setCentralWidget(_windowWidget);
 #endif
 }
+
+#if QT_VERSION >= 0x050000
+QMenuBar *QTopLevelWindow::menuBar()
+{
+    return _menuBar;
+}
+#endif
+
 
 QTopLevelWindow::~QTopLevelWindow()
 {
@@ -76,32 +84,19 @@ void QTopLevelWindow::move(int x, int y)
 void QTopLevelWindow::move(const QPoint &point)
 {
     _positionIsDefined = true;
+#if QT_VERSION < 0x050000
     QMainWindow::move(point);
+#else
+    QQuickView::setPos(point);
+#endif
 }
 
 void QTopLevelWindow::setWindowFlags(Qt::WindowFlags type)
 {
+#if QT_VERSION < 0x050000
     QWidget::setWindowFlags(type | Qt::Window);
+#else
+    QQuickView::setWindowFlags(type | Qt::Window);
+#endif
 }
 
-bool QTopLevelWindow::event(QEvent *event) {
-    switch (event->type()) {
-        case QEvent::WindowStateChange:
-            emit windowStateChanged();
-            break;
-        case QEvent::Show:
-            emit visibilityChanged();
-            break;
-        case QEvent::Hide:
-            hideChildWindows();
-            emit visibilityChanged();
-            break;
-        case QEvent::Resize: {
-            const QResizeEvent *resize = static_cast<const QResizeEvent *>(event);
-            emit sizeChanged(resize->size());
-            break;
-        }
-        default: break;
-    }
-    return QMainWindow::event(event);
-}

@@ -41,10 +41,6 @@ SOURCES += qtmenu.cpp \
            qtooltiparea.cpp \
     qtsplitterbase.cpp
 
-### Qt 5 only
-HEADERS += qwindowwidget.h
-SOURCES += qwindowwidget.cpp
-
 TARGETPATH = QtDesktop/plugin
 
 target.path = $$[QT_INSTALL_IMPORTS]/$$TARGETPATH
