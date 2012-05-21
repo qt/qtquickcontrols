@@ -36,6 +36,36 @@ Rectangle {
                 anchors.verticalCenter: parent.verticalCenter
                 onClicked: window1.visible = !window1.visible
             }
+            ToolButton{
+                iconName: "document-open"
+                anchors.verticalCenter: parent.verticalCenter
+                onClicked: fileDialogLoad.open()
+            }
+            ToolButton{
+                iconName: "document-save-as"
+                anchors.verticalCenter: parent.verticalCenter
+                onClicked: fileDialogSave.open()
+            }
+        }
+
+        FileDialog {
+            id: fileDialogLoad
+            folder: "/tmp"
+            title: "Choose a file to open"
+            selectMultiple: true
+            nameFilters: [ "Image files (*.png *.jpg)", "All files (*)" ]
+
+            onAccepted: { console.log("Accepted: " + filePaths) }
+        }
+
+        FileDialog {
+            id: fileDialogSave
+            folder: "/tmp"
+            title: "Save as..."
+            modal: true
+            selectExisting: false
+
+            onAccepted: { console.log("Accepted: " + filePath) }
         }
 
         Window {

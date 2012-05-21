@@ -27,6 +27,7 @@ HEADERS += qtmenu.h \
            qdeclarativelayout.h \
            qdeclarativelinearlayout.h \
            qdeclarativelayoutengine_p.h \
+           qfiledialogitem.h \
            settings.h
 
 SOURCES += qtmenu.cpp \
@@ -46,6 +47,7 @@ SOURCES += qtmenu.cpp \
            qdeclarativelayout.cpp \
            qdeclarativelinearlayout.cpp \
            qdeclarativelayoutengine.cpp \
+           qfiledialogitem.cpp \
            settings.cpp
 
 TARGETPATH = QtDesktop/plugin

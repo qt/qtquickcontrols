@@ -52,6 +52,7 @@
 #include "qtsplitterbase.h"
 #include "qdeclarativelinearlayout.h"
 #include <qdeclarativeextensionplugin.h>
+#include "qfiledialogitem.h"
 #include "settings.h"
 
 #include <qdeclarativeengine.h>
@@ -95,6 +96,8 @@ void StylePlugin::registerTypes(const char *uri)
     qmlRegisterType<QtMenuBar>(uri, 0, 1, "MenuBar");
     qmlRegisterType<QtMenuItem>(uri, 0, 1, "MenuItem");
     qmlRegisterType<QtMenuSeparator>(uri, 0, 1, "Separator");
+
+    qmlRegisterType<QFileDialogItem>(uri, 0, 1, "FileDialog");
 
     qmlRegisterType<QFileSystemModel>(uri, 0, 1, "FileSystemModel");
     qmlRegisterType<QtSplitterBase>(uri, 0, 1, "Splitter");
