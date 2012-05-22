@@ -207,11 +207,14 @@ void QWindowItem::setWindowDecoration(bool s)
     emit windowDecorationChanged();
 }
 
-void QWindowItem::setModal(bool modal)
+void QWindowItem::setModality(Qt::WindowModality modality)
 {
+    if (modality == _window->windowModality())
+        return;
+
     bool visible = _window->isVisible();
     _window->hide();
-    _window->setWindowModality(modal ? Qt::WindowModal : Qt::NonModal);
+    _window->setWindowModality(modality);
 
     if (visible)
         _window->show();

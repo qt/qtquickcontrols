@@ -101,11 +101,14 @@ void QFileDialogItem::setTitle(QString title)
 }
 
 /* Intentionally left undocumented, as we might decide to remove it later */
-void QFileDialogItem::setModal(bool modal)
+void QFileDialogItem::setModality(Qt::WindowModality modality)
 {
+    if (modality == _dialog->windowModality())
+        return;
+
     bool visible = _dialog->isVisible();
     _dialog->hide();
-    _dialog->setWindowModality(modal ? Qt::WindowModal : Qt::NonModal);
+    _dialog->setWindowModality(modality);
 
     if (visible)
         _dialog->show();

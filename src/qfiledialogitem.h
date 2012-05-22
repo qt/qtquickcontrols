@@ -48,7 +48,8 @@
 class QFileDialogItem: public QDeclarativeItem
 {
     Q_OBJECT
-    Q_PROPERTY(bool modal READ modal WRITE setModal NOTIFY modalityChanged)
+    Q_PROPERTY(Qt::WindowModality modality READ modality \
+               WRITE setModality NOTIFY modalityChanged)
     Q_PROPERTY(QString title READ title WRITE setTitle NOTIFY titleChanged)
     Q_PROPERTY(bool selectExisting READ selectExisting \
                WRITE setSelectExisting NOTIFY selectExistingChanged)
@@ -67,7 +68,7 @@ public:
     ~QFileDialogItem();
 
     QString title() const { return _dialog->windowTitle(); }
-    bool modal() const { return _dialog->isModal(); }
+    Qt::WindowModality modality() const { return _dialog->windowModality(); }
     bool selectExisting() const { return _selectExisting; }
     bool selectMultiple() const { return _selectMultiple; }
     bool selectFolder() const { return _selectFolder; }
@@ -77,7 +78,7 @@ public:
     QStringList filePaths() const;
 
     void setTitle(QString title);
-    void setModal(bool modal);
+    void setModality(Qt::WindowModality modality);
     void setSelectExisting(bool selectExisting);
     void setSelectMultiple(bool selectMultiple);
     void setSelectFolder(bool selectFolder);

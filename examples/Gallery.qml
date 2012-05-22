@@ -62,7 +62,7 @@ Rectangle {
             id: fileDialogSave
             folder: "/tmp"
             title: "Save as..."
-            modal: true
+            modality: Qt.WindowModal
             selectExisting: false
 
             onAccepted: { console.log("Accepted: " + filePath) }
@@ -76,7 +76,7 @@ Rectangle {
             minimumWidth: 400
             minimumHeight: 400
             windowDecoration: true
-            modal: modalCheck.checked
+            modality: modalCheck.checked ? Qt.ApplicationModal : Qt.NonModal
             title: "child window"
 
             MenuBar {

@@ -62,7 +62,8 @@ class QWindowItem : public QDeclarativeItem
     Q_PROPERTY(int maximumWidth READ maximumWidth WRITE setMaximumWidth NOTIFY maximumWidthChanged)
     Q_PROPERTY(bool visible READ isVisible WRITE setVisible NOTIFY visibleChanged)
     Q_PROPERTY(bool windowDecoration READ windowDecoration WRITE setWindowDecoration NOTIFY windowDecorationChanged)
-    Q_PROPERTY(bool modal READ modal WRITE setModal NOTIFY modalityChanged)
+    Q_PROPERTY(Qt::WindowModality modality READ modality \
+               WRITE setModality NOTIFY modalityChanged)
     Q_PROPERTY(bool deleteOnClose READ deleteOnClose WRITE setDeleteOnClose NOTIFY deleteOnCloseChanged)
     Q_PROPERTY(Qt::WindowState windowState READ windowState WRITE setWindowState NOTIFY windowStateChanged)
     Q_PROPERTY(QString title READ title WRITE setTitle NOTIFY titleChanged)
@@ -86,7 +87,7 @@ public:
     Qt::WindowState windowState() const { return static_cast<Qt::WindowState>(static_cast<int>(_window->windowState()) & ~Qt::WindowActive); }
     QString title() const { return _window->windowTitle(); }
     bool deleteOnClose() const { return _deleteOnClose; }
-    bool modal() const { return _window->isModal(); }
+    Qt::WindowModality modality() const { return _window->windowModality(); }
 
     void setX(int x);
     void setY(int y);
@@ -100,7 +101,7 @@ public:
     void setWindowDecoration(bool s);
     void setWindowState(Qt::WindowState state) { _window->setWindowState(state); }
     void setTitle(QString title);
-    void setModal(bool modal);
+    void setModality(Qt::WindowModality modality);
     void setDeleteOnClose(bool close);
 
 public Q_SLOTS:
