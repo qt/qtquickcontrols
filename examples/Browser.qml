@@ -27,7 +27,7 @@ Rectangle {
         id: settingsDialog
         width: 200
         height: 200
-        modal: true
+        modality: Qt.WindowModal
 
         Rectangle {
             anchors.centerIn: parent
