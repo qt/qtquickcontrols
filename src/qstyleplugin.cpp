@@ -51,6 +51,7 @@
 #include "qcursorarea.h"
 #include "qtooltiparea.h"
 #include "qtsplitterbase.h"
+#include "qquicklinearlayout.h"
 #include <qqmlextensionplugin.h>
 
 #include <qqmlengine.h>
@@ -91,6 +92,11 @@ void StylePlugin::registerTypes(const char *uri)
     qmlRegisterType<QtMenuBar>(uri, 0, 2, "MenuBar");
     qmlRegisterType<QtMenuItem>(uri, 0, 2, "MenuItem");
     qmlRegisterType<QtMenuSeparator>(uri, 0, 2, "Separator");
+
+    qmlRegisterType<QQuickComponentsRowLayout>(uri, 0, 2, "RowLayout");
+    qmlRegisterType<QQuickComponentsColumnLayout>(uri, 0, 2, "ColumnLayout");
+    qmlRegisterUncreatableType<QQuickComponentsLayout>(uri, 0, 2, "Layout",
+                                                       QLatin1String("Do not create objects of type Layout"));
 
     qmlRegisterType<QFileSystemModel>(uri, 0, 2, "FileSystemModel");
     qmlRegisterType<QtSplitterBase>(uri, 0, 2, "Splitter");

@@ -23,8 +23,11 @@ HEADERS += qtmenu.h \
            qdesktopitem.h \
            qtoplevelwindow.h \
            qcursorarea.h \
+           qquicklayoutengine_p.h \
+           qquicklayout.h \
+           qquicklinearlayout.h \
            qtooltiparea.h \
-    qtsplitterbase.h
+           qtsplitterbase.h
 
 SOURCES += qtmenu.cpp \
            qtmenubar.cpp \
@@ -39,7 +42,10 @@ SOURCES += qtmenu.cpp \
            qtoplevelwindow.cpp \
            qcursorarea.cpp \
            qtooltiparea.cpp \
-    qtsplitterbase.cpp
+           qquicklayout.cpp \
+           qquicklayoutengine.cpp \
+           qquicklinearlayout.cpp \
+           qtsplitterbase.cpp
 
 TARGETPATH = QtDesktop/plugin
 
