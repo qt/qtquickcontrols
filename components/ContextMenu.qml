@@ -59,8 +59,6 @@ Menu {
 
     Component.onCompleted: if (model !== undefined) rebuildMenu()
 
-    onRebuildMenu: rebuildMenu()
-
     onHoveredIndexChanged: {
         if (hoveredIndex < menuItems.length)
             menuItems[hoveredIndex].hovered()
