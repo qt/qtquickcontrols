@@ -116,14 +116,15 @@ void QtMenu::showPopup(qreal x, qreal y, int atActionIndex)
     // x,y are in view coordinates, QMenu expects screen coordinates
     // ### activeWindow hack
     int menuBarHeight = 0;
-    QWidget *window = QApplication::activeWindow();
+    QWindow *window = QGuiApplication::focusWindow();
     QTopLevelWindow *tw = qobject_cast<QTopLevelWindow*>(window);
     if (tw) {
         QMenuBar *menuBar = tw->menuBar();
         menuBarHeight = menuBar->height();
     }
 
-    QPoint screenPosition = window->mapToGlobal(QPoint(x, y+menuBarHeight));
+    int windowFrameHeight = window->frameMargins().top();
+    QPoint screenPosition = window->mapToGlobal(QPoint(x, y+menuBarHeight-windowFrameHeight));
 
     setHoveredIndex(m_selectedIndex);
     m_qmenu->popup(screenPosition, atAction);
