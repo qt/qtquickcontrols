@@ -57,8 +57,8 @@ public:
     QString text() const {return m_text;}
     bool containsMouse() const {return m_containsMouse;}
     void showToolTip(const QString &str) const;
-    void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
-    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
+    void hoverEnterEvent(QHoverEvent *event);
+    void hoverLeaveEvent(QHoverEvent *event);
 
 public slots:
     void timeout();

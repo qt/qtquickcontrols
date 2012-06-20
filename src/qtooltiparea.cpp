@@ -65,7 +65,7 @@ void QTooltipArea::showToolTip(const QString &str) const
     //QToolTip::showText(cursor().pos(), str);
 }
 
-void QTooltipArea::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
+void QTooltipArea::hoverEnterEvent(QHoverEvent *event)
 
 {
     Q_UNUSED(event);
@@ -76,7 +76,7 @@ void QTooltipArea::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
     //QQuickItem::hoverEnterEvent(event);
 }
 
-void QTooltipArea::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
+void QTooltipArea::hoverLeaveEvent(QHoverEvent *event)
 {
     Q_UNUSED(event);
     m_tiptimer.stop();
