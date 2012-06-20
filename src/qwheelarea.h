@@ -90,7 +90,7 @@ public:
     void setScrollSpeed(qreal value);
     qreal scrollSpeed() const;
 
-    virtual bool event(QEvent *e);
+    void wheelEvent(QWheelEvent *event);
 
 Q_SIGNALS:
     void verticalValueChanged();
