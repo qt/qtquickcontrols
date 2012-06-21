@@ -55,6 +55,7 @@ ScrollArea {
     property bool tabChangesFocus: false
     property alias font: edit.font
     property alias activeFocusOnPress: edit.activeFocusOnPress
+    property alias horizontalAlignment: edit.horizontalAlignment
 
     highlightOnFocus: true
     property int documentMargins: 4
