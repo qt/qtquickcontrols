@@ -885,10 +885,6 @@ void QStyleItem::setElementType(const QString &str)
         m_dummywidget->setAttribute(Qt::WA_QuitOnClose, false); // dont keep app open
         m_dummywidget->setAttribute(Qt::WA_LayoutUsesWidgetRect);
         m_dummywidget->winId();
-#ifdef Q_WS_MAC // WS_MAC: Qt 4-only workaround
-        m_dummywidget->setGeometry(-1000, 0, 10,10);
-        m_dummywidget->setVisible(visible); // Mac require us to set the visibility before this
-#endif
         m_dummywidget->setAttribute(Qt::WA_DontShowOnScreen);
         m_dummywidget->setVisible(visible);
     }
