@@ -195,4 +195,9 @@ FocusScope {
         elide: Text.ElideRight
         Behavior on opacity { NumberAnimation { duration: 90 } }
     }
+    MouseArea {
+        anchors.fill: parent
+        cursorShape: Qt.IBeamCursor
+        acceptedButtons: Qt.NoButton
+    }
 }

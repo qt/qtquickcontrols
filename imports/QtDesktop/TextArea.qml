@@ -70,6 +70,12 @@ ScrollArea {
     Accessible.name: text
 
     TextEdit {
+        MouseArea {
+            anchors.fill: parent
+            cursorShape: Qt.IBeamCursor
+            acceptedButtons: Qt.NoButton
+        }
+
         id: edit
         selectionColor: syspal.highlight
         selectedTextColor: syspal.highlightedText
