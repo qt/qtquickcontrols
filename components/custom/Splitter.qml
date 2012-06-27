@@ -417,7 +417,7 @@ Splitter {
                 d.updateLayout()
 
                 // Restablish binding:
-                width = function() { return parent[d.size]; }
+                width = Qt.binding(function() { return parent[d.size]; })
                 d.itemWidthGuard = false
             }
 
