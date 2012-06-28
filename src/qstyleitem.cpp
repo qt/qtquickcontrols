@@ -67,18 +67,20 @@ QStyleItem::QStyleItem(QQuickPaintedItem *parent)
     : QQuickPaintedItem(parent),
     m_dummywidget(new QWidget),
     m_styleoption(0),
-    m_type(Undefined),
+    m_itemType(Undefined),
     m_sunken(false),
     m_raised(false),
     m_active(true),
     m_selected(false),
     m_focus(false),
+    m_hover(false),
     m_on(false),
     m_horizontal(true),
     m_sharedWidget(false),
     m_minimum(0),
     m_maximum(100),
     m_value(0),
+    m_step(0),
     m_paintMargins(0),
     m_implicitWidth(0),
     m_implicitHeight(0),
@@ -877,7 +879,10 @@ void QStyleItem::setElementType(const QString &str)
         m_itemType = MacHelpButton;
     } else if (str == "scrollareacorner") {
         m_itemType = ScrollAreaCorner;
+    } else {
+        m_itemType = Undefined;
     }
+
     if (!m_dummywidget)
             m_dummywidget = new QWidget();
     if (m_dummywidget) {
