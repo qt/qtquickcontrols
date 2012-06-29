@@ -71,8 +71,7 @@ FocusScope {
         colorGroup: enabled ? SystemPalette.Active : SystemPalette.Disabled
     }
 
-    property Component background: Item {
-
+    property Component delegate: Item {
         property rect upRect
         property rect downRect
         property rect inputRect
@@ -176,7 +175,7 @@ FocusScope {
         property rect upRect: item ? item.upRect : Qt.rect(0, 0, 0, 0)
         property rect downRect: item ? item.downRect : Qt.rect(0, 0, 0, 0)
         property rect inputRect: item ? item.inputRect : Qt.rect(0, 0, 0, 0)
-        sourceComponent: background
+        sourceComponent: delegate
         anchors.fill: parent
     }
 

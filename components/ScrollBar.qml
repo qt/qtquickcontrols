@@ -57,6 +57,20 @@ Item {
 
     onValueChanged: internal.updateHandle()
 
+    property Component delegate: StyleItem {
+        id: styleitem
+        anchors.fill:parent
+        elementType: "scrollbar"
+        hover: activeControl != "none"
+        activeControl: "none"
+        sunken: internal.upPressed | internal.downPressed
+        minimum: slider.minimumValue
+        maximum: slider.maximumValue
+        value: slider.value
+        horizontal: orientation == Qt.Horizontal
+        enabled: parent.enabled
+    }
+
     MouseArea {
         id: internal
 
@@ -171,18 +185,10 @@ Item {
                 value = minimumValue
         }
 
-        StyleItem {
-            id: styleitem
-            anchors.fill:parent
-            elementType: "scrollbar"
-            hover: activeControl != "none"
-            activeControl: "none"
-            sunken: internal.upPressed | internal.downPressed
-            minimum: slider.minimumValue
-            maximum: slider.maximumValue
-            value: slider.value
-            horizontal: orientation == Qt.Horizontal
-            enabled: parent.enabled
+        Loader {
+            id: loader
+            sourceComponent: delegate
+            anchors.fill: parent
         }
 
         property rect handleRect: Qt.rect(0,0,0,0)

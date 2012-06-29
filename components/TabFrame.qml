@@ -56,7 +56,6 @@ Item {
     onCurrentChanged: __setOpacities()
     Component.onCompleted: __setOpacities()
 
-    property int __baseOverlap : frameitem.pixelMetric("tabbaseoverlap")// add paintmargins;
     function __setOpacities() {
         for (var i = 0; i < stack.children.length; ++i) {
             stack.children[i].visible = (i == current ? true : false)
@@ -84,7 +83,25 @@ Item {
             current-=1
     }
 
-    StyleItem {
+    Loader {
+        id: loader
+        anchors.fill: parent
+        anchors.topMargin: tabbarItem && tabsVisible && position == "North" ? Math.max(0, tabbarItem.height - stack.baseOverlap) : 0
+        sourceComponent: delegate
+        Item {
+            id: stack
+            anchors.fill: parent
+            anchors.margins: (frame ? frameWidth : 0)
+            anchors.topMargin: anchors.margins + (style =="mac" ? 6 : 0)
+            anchors.bottomMargin: anchors.margins + (style =="mac" ? 6 : 0)
+            property int frameWidth
+            property string style
+            property int baseOverlap
+        }
+        onLoaded: item.z = -1
+    }
+
+    property Component delegate: StyleItem {
         id: frameitem
         z: style == "oxygen" ? 1 : 0
         elementType: "tabframe"
@@ -92,19 +109,11 @@ Item {
         value: tabbarItem && tabsVisible && tabbarItem.tab(current) ? tabbarItem.tab(current).x : 0
         minimum: tabbarItem && tabsVisible && tabbarItem.tab(current) ? tabbarItem.tab(current).width : 0
         maximum: tabbarItem && tabsVisible ? tabbarItem.tabWidth : width
-        anchors.fill: parent
-
-        property int frameWidth: pixelMetric("defaultframewidth")
-
-        Item {
-            id: stack
-            anchors.fill: parent
-            anchors.margins: (frame ? frameitem.frameWidth : 0)
-            anchors.topMargin: anchors.margins + (frameitem.style =="mac" ? 6 : 0)
-            anchors.bottomMargin: anchors.margins + (frameitem.style =="mac" ? 6 : 0)
+        Component.onCompleted: {
+            stack.frameWidth = pixelMetric("defaultframewidth")
+            stack.style = style
+            stack.baseOverlap = pixelMetric("tabbaseoverlap")// add paintmargins;
         }
-
-        anchors.topMargin: tabbarItem && tabsVisible && position == "North" ? Math.max(0, tabbarItem.height - __baseOverlap) : 0
 
         states: [
             State {
@@ -113,11 +122,11 @@ Item {
                 PropertyChanges {
                     target: frameitem
                     anchors.topMargin: 0
-                    anchors.bottomMargin: tabbarItem ? tabbarItem.height - __baseOverlap: 0
+                    anchors.bottomMargin: tabbarItem ? tabbarItem.height - stack.baseOverlap: 0
                 }
                 PropertyChanges {
                     target: tabbarItem
-                    anchors.topMargin: -__baseOverlap
+                    anchors.topMargin: -stack.baseOverlap
                 }
                 AnchorChanges {
                     target: tabbarItem

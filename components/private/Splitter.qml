@@ -45,7 +45,7 @@ Splitter {
     id: root
     default property alias items: splitterItems.children
     property alias handles: splitterHandles.children
-    property Component handleBackground: Rectangle { width:3; color: "black" }
+    property Component handleDelegate: Rectangle { width:3; color: "black" }
     property int handleWidth: -1
     property real preferredSize: 0
     property int orientation: Qt.Horizontal
@@ -97,7 +97,7 @@ Splitter {
                 propertyChangeListener.createObject(item, {"itemIndex":i});
                 if (i < items.length-1) {
                     // Create a handle for the item, unless its the last:
-                    var handle = handleBackgroundLoader.createObject(splitterHandles, {"handleIndex":i});
+                    var handle = handleloader.createObject(splitterHandles, {"handleIndex":i});
 
                     if (d.horizontal) {
                         handle.anchors.top = splitterHandles.top
@@ -242,7 +242,7 @@ Splitter {
     }
 
     Component {
-        id: handleBackgroundLoader
+        id: handleloader
         Loader {
             id: myHandle
             property int handleIndex: 0
@@ -254,7 +254,7 @@ Splitter {
             property Item background: item
 
             visible: splitterItem.visible
-            sourceComponent: handleBackground
+            sourceComponent: handleDelegate
             onWidthChanged: d.updateLayout()
 
             onXChanged: {

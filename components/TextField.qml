@@ -66,7 +66,7 @@ FocusScope {
     property alias activeFocusOnPress: textInput.activeFocusOnPress
     property alias containsMouse: mouseArea.containsMouse
 
-    property Component background: StyleItem {
+    property Component delegate: StyleItem {
         anchors.fill: parent
         elementType: "edit"
         sunken: true
@@ -92,11 +92,10 @@ FocusScope {
                 elementType: "focusframe"
             }
         }
-
     }
 
-    implicitWidth: backgroundLoader.item.implicitWidth
-    implicitHeight: backgroundLoader.item.implicitHeight
+    implicitWidth: loader.item.implicitWidth
+    implicitHeight: loader.item.implicitHeight
 
     Accessible.name: text
     Accessible.role: Accessible.EditableText
@@ -147,9 +146,9 @@ FocusScope {
     }
 
     Loader {
-        id: backgroundLoader;
-        sourceComponent: background;
-        anchors.fill:parent
+        id: loader
+        sourceComponent: delegate
+        anchors.fill: parent
     }
 
     MouseArea {
@@ -160,7 +159,7 @@ FocusScope {
     }
 
     onFocusChanged: {
-        if (textField.activeFocus)
+        if (textfield.activeFocus)
             textInput.forceActiveFocus();
     }
 

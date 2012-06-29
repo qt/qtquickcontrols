@@ -78,11 +78,16 @@ Item {
         return null;
     }
 
-    StyleItem {
-        visible:false
-        id:styleitem
+    property Component delegate: StyleItem {
+        visible: false
+        id: styleitem
         elementType: "tab"
         text: "generic"
+    }
+
+    Loader {
+        id: loader
+        sourceComponent: delegate
     }
 
     Row {

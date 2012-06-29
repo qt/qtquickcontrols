@@ -45,9 +45,6 @@ import QtDesktop 0.2
 BasicButton {
     id: button
 
-    implicitWidth: Math.max(72, backgroundItem.implicitWidth)
-    implicitHeight: Math.max(22, backgroundItem.implicitHeight)
-
     property alias containsMouse: tooltip.containsMouse
     property bool defaultbutton: false
     property string styleHint
@@ -65,7 +62,7 @@ BasicButton {
         text: button.tooltip
     }
 
-    background: StyleItem {
+    delegate: StyleItem {
         id: styleitem
         anchors.fill: parent
         elementType: "button"

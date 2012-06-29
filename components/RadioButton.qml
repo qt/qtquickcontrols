@@ -46,12 +46,9 @@ import QtDesktop 0.2
 CheckBox {
     id: radiobutton
 
-    implicitWidth: Math.max(120, backgroundItem.implicitWidth)
-    implicitHeight: backgroundItem.implicitHeight
-
     Accessible.role: Accessible.RadioButton
 
-    background: StyleItem {
+    delegate: StyleItem {
         elementType: "radiobutton"
         sunken: pressed
         on: checked || pressed

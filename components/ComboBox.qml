@@ -105,7 +105,7 @@ Private.BasicButton {
     property alias hoveredText: popup.hoveredText
     property string styleHint
 
-    background: StyleItem {
+    delegate: StyleItem {
         anchors.fill: parent
         elementType: "combobox"
         sunken: comboBox.pressed
@@ -115,24 +115,22 @@ Private.BasicButton {
         text: comboBox.selectedText
         hasFocus: comboBox.focus
         contentHeight: 18
+        Component.onCompleted: popup.center = styleHint("comboboxpopup");
     }
 
 //  ToDo: adjust margins so that selected popup label
 //    centers directly above button label when
 //    popup.centerOnSelectedText === true
 
-
     width: implicitWidth
     height: implicitHeight
-    implicitWidth: Math.max(80, backgroundItem.implicitWidth)
-    implicitHeight: backgroundItem.implicitHeight
     onWidthChanged: popup.setMinimumWidth(width)
     checkable: false
     onPressedChanged: if (pressed) popup.visible = true
 
     ContextMenu {
         id: popup
-        property bool center: backgroundItem.styleHint("comboboxpopup")
+        property bool center: false
         centerSelectedText: center
         y: center ? 0 : comboBox.height
     }

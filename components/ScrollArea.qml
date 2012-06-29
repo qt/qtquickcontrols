@@ -49,7 +49,7 @@ FocusScope {
 
     // Cosmetic propeties
     property bool frame: true
-    property bool frameAroundContents: styleitem.styleHint("framearoundcontents")
+    property bool frameAroundContents: true
     property bool highlightOnFocus: false
     property alias color: colorRect.color // background color
     property int frameWidth: frame ? styleitem.frameWidth : 0
@@ -86,7 +86,10 @@ FocusScope {
         property int frameWidth
         property int scrollbarspacing: styleitem.pixelMetric("scrollbarspacing");
         property int frameMargins : frame ? scrollbarspacing : 0
-        Component.onCompleted: frameWidth = styleitem.pixelMetric("defaultframewidth");
+        Component.onCompleted: {
+            frameWidth = styleitem.pixelMetric("defaultframewidth");
+            frameAroundContents = styleitem.styleHint("framearoundcontents")
+        }
     }
 
     onContentYChanged: {

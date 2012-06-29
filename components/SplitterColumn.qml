@@ -50,9 +50,9 @@ import QtDesktop 0.2
 * a draggable splitter added in-between each item.
 *
 * Add items to the SplitterColumn by inserting them as child items. The splitter handle
-* is outsourced as a delegate (handleBackground). To enable the user to drag the handle,
+* is outsourced as a delegate (handleDelegate). To enable the user to drag the handle,
 * it will need to contain a mouse area that communicates with the SplitterColumn by binding
-* 'drag.target: handle'. The 'handle' property points to the handle item that embedds
+* 'drag.target: handle'. The 'handle' property points to the handle item that embeds
 * the delegate. To change handle positions, either change 'y; (or 'height') of 'handle', or
 * change the height of the child items inside the SplitterColumn. If you set the visibility
 * of a child item to false, the corresponding handle will also be hidden, and the
@@ -76,7 +76,7 @@ import QtDesktop 0.2
 *
 * The SplitterColumn contains the following API:
 *
-* Component handleBackground - delegate that will be instanciated between each
+* Component handleDelegate - delegate that will be instanciated between each
 *   child item. Inside the delegate, the following properties are available:
 *   int handleIndex - specifies the index of the splitter handle. The handle
 *       between the first and the second item will get index 0, the next handle index 1 etc.
@@ -140,7 +140,7 @@ import QtDesktop 0.2
 
 Private.Splitter {
     orientation: Qt.Vertical
-    handleBackground: StyleItem {
+    handleDelegate: StyleItem {
         id: styleitem
         elementType: "splitter"
         height: handleWidth != -1 ?  handleWidth : pixelMetric("splitterwidth")

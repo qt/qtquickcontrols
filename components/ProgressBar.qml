@@ -62,7 +62,7 @@ Item {
     implicitWidth: orientation === Qt.Horizontal ? 200 : loader.item.implicitHeight
     implicitHeight: orientation === Qt.Horizontal ? loader.item.implicitHeight : 200
 
-    property Component background: StyleItem {
+    property Component delegate: StyleItem {
         anchors.fill: parent
         elementType: "progressbar"
         // XXX: since desktop uses int instead of real, the progressbar
@@ -85,7 +85,7 @@ Item {
         property alias maximumValue:progressbar.maximumValue
         property alias minimumValue:progressbar.minimumValue
 
-        sourceComponent: background
+        sourceComponent: delegate
         anchors.fill: parent
     }
 

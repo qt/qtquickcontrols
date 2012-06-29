@@ -84,7 +84,7 @@ Item {
 
     property string styleHint;
 
-    property Component groove: StyleItem {
+    property Component delegate: StyleItem {
         anchors.fill:parent
         elementType: "slider"
         sunken: pressed
@@ -119,16 +119,15 @@ Item {
             stepSize: 0.0
             inverted: false
 
-            positionAtMinimum: grooveLoader.leftMargin
-            positionAtMaximum: contents.width - grooveLoader.rightMargin
+            positionAtMinimum: loader.leftMargin
+            positionAtMaximum: contents.width - loader.rightMargin
         }
 
         Loader {
-            id: grooveLoader
+            id: loader
             anchors.fill: parent
-            sourceComponent: groove
+            sourceComponent: delegate
 
-            property real handlePosition : handleLoader.x
             function positionForValue(value) {
                 return range.positionForValue(value) - leftMargin;
             }
@@ -136,40 +135,17 @@ Item {
             property int rightMargin: 0
         }
 
-        Loader {
-            id: handleLoader
-            transform: Translate { x: - handleLoader.width / 2 }
-
-            anchors.verticalCenter: grooveLoader.verticalCenter
-
-            sourceComponent: null
-
-            x: fakeHandle.x
-            Behavior on x {
-                id: behavior
-                enabled: !mouseArea.drag.active
-
-                PropertyAnimation {
-                    duration: behavior.enabled ? 150 : 0
-                    easing.type: Easing.OutSine
-                }
-            }
-        }
-
         Item {
             id: fakeHandle
-            width: handleLoader.width
-            height: handleLoader.height
-            transform: Translate { x: - handleLoader.width / 2 }
         }
 
         MouseArea {
             id: mouseArea
             hoverEnabled: true
             anchors.centerIn: parent
-            anchors.horizontalCenterOffset: (grooveLoader.leftMargin - grooveLoader.rightMargin) / 2
+            anchors.horizontalCenterOffset: (loader.leftMargin - loader.rightMargin) / 2
 
-            width: parent.width + handleLoader.width - grooveLoader.rightMargin - grooveLoader.leftMargin
+            width: parent.width - loader.rightMargin - loader.leftMargin
             height: parent.height
 
             drag.target: fakeHandle

@@ -62,7 +62,7 @@ Item {
     Accessible.role: Accessible.Grouping
     Accessible.name: title
 
-    property Component background: StyleItem {
+    property Component delegate: StyleItem {
         id: styleitem
         elementType: "groupbox"
         anchors.fill: parent
@@ -83,7 +83,8 @@ Item {
         property int leftMargin: 4
         property int rightMargin: 4
         property alias styledItem: groupbox
-        sourceComponent: background
+        sourceComponent: delegate
+        onLoaded: item.z = -1
     }
 
     CheckBox {

@@ -98,7 +98,7 @@ Window {
             text: "Help"
             focus: false
             Component.onCompleted: if (style.isMac) width = 22
-            background: style.isMac ? machelpdelegate : cancelbutton.background
+            delegate: style.isMac ? machelpdelegate : cancelbutton.background
             onClicked: {
                 clickedButton = helpbutton
                 buttonClicked()

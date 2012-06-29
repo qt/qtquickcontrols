@@ -54,16 +54,14 @@ FocusScope {
     property string text
     property string styleHint
 
-    property Item backgroundItem: backgroundLoader.item
-
     // implementation
     Accessible.role: Accessible.CheckBox
     Accessible.name: text
 
-    implicitWidth: Math.max(120, backgroundItem.implicitWidth)
-    implicitHeight: backgroundItem.implicitHeight
+    implicitWidth: Math.max(120, loader.item.implicitWidth)
+    implicitHeight: loader.item.implicitHeight
 
-    property Component background: StyleItem {
+    property Component delegate: StyleItem {
                 elementType: "checkbox"
                 sunken: pressed
                 on: checked || pressed
@@ -86,10 +84,10 @@ FocusScope {
             }
 
     Loader {
-        id: backgroundLoader
+        id: loader
         anchors.fill: parent
         property alias control: checkBox
-        sourceComponent: background
+        sourceComponent: delegate
     }
 
     ButtonBehavior {

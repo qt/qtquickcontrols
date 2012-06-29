@@ -50,8 +50,7 @@ Item {
     property alias checked: behavior.checked
     property bool activeFocusOnPress: false
 
-    property Component background: null
-    property Item backgroundItem: backgroundLoader.item
+    property Component delegate: null
 
     property color textColor: syspal.text;
     property string tooltip
@@ -64,8 +63,8 @@ Item {
     // implementation
 
     property string __position: "only"
-    implicitWidth: backgroundLoader.item.width
-    implicitHeight: backgroundLoader.item.height
+    implicitWidth: loader.item.implicitWidth
+    implicitHeight: loader.item.implicitHeight
 
     function animateClick() {
         behavior.pressed = true
@@ -80,9 +79,9 @@ Item {
     }
 
     Loader {
-        id: backgroundLoader
+        id: loader
         anchors.fill: parent
-        sourceComponent: background
+        sourceComponent: delegate
         property alias styledItem: button
         property alias position: button.__position
     }
