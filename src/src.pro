@@ -15,7 +15,6 @@ HEADERS += qtmenu.h \
            qrangemodel_p.h \
            qrangemodel.h \
            qstyleplugin.h \
-           qdeclarativefolderlistmodel.h \
            qstyleitem.h \
            qwheelarea.h \
            qtmenuitem.h \
@@ -33,7 +32,6 @@ SOURCES += qtmenu.cpp \
            qtmenubar.cpp \
            qrangemodel.cpp \
            qstyleplugin.cpp \
-           qdeclarativefolderlistmodel.cpp \
            qstyleitem.cpp \
            qwheelarea.cpp \
            qtmenuitem.cpp \

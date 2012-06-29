@@ -44,8 +44,6 @@
 #include <QQmlExtensionPlugin>
 #include <QtCore/QTimer>
 #include <QtWidgets/QFileSystemModel>
-#include "qdeclarativefolderlistmodel.h"
-
 
 class StylePlugin : public QQmlExtensionPlugin
 {
