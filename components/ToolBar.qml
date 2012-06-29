@@ -39,8 +39,6 @@
 ****************************************************************************/
 
 import QtQuick 2.0
-import "."
-import "custom" as Components
 import QtDesktop 0.2
 
 StyleItem {

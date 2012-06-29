@@ -39,47 +39,53 @@
 ****************************************************************************/
 
 import QtQuick 2.0
-import "custom" as Components
 import QtDesktop 0.2
 
-Components.SpinBox {
-    id:spinbox
+FocusScope {
+    id: spinbox
 
-    property variant __upRect;
-    property variant __downRect;
-    property int __margin: (height -16)/2
+    property int minimumWidth: 0
+    property int minimumHeight: 0
+
+    property real value: 0.0
+    property real maximumValue: 99
+    property real minimumValue: 0
+    property real singleStep: 1
+    property string postfix
+
+    property bool upEnabled: value != maximumValue;
+    property bool downEnabled: value != minimumValue;
+    property alias upPressed: mouseUp.pressed
+    property alias downPressed: mouseDown.pressed
+    property alias upHovered: mouseUp.containsMouse
+    property alias downHovered: mouseDown.containsMouse
+    property alias containsMouse: mouseArea.containsMouse
+    property alias font: input.font
     property string styleHint
 
-    // Align height with button
-    topMargin: __margin
-    bottomMargin: __margin
+    Accessible.name: input.text
+    Accessible.role: Accessible.SpinBox
 
-    leftMargin:6
-    rightMargin:6
-
-    StyleItem {
-        id:edititem
-        elementType: "edit"
-        visible: false
-        contentWidth: 70
-        contentHeight: 20
+    SystemPalette {
+        id: syspal
+        colorGroup: enabled ? SystemPalette.Active : SystemPalette.Disabled
     }
 
-    implicitWidth: edititem.implicitWidth
-    implicitHeight: edititem.implicitHeight
+    property Component background: Item {
 
-    clip:false
-
-    background: Item {
-        anchors.fill: parent
-        property variant __editRect
+        property rect upRect
+        property rect downRect
+        property rect inputRect
+        implicitHeight: styleitem.implicitHeight
+        implicitWidth: styleitem.implicitWidth
 
         Rectangle {
             id: editBackground
-            x: __editRect.x - 1
-            y: __editRect.y
-            width: __editRect.width + 1
-            height: __editRect.height
+            x: inputRect.x - 1
+            y: inputRect.y
+            width: inputRect.width + 1
+            height: inputRect.height
+            color: "white"
         }
 
         Item {
@@ -98,11 +104,9 @@ Components.SpinBox {
         }
 
         function updateRect() {
-            __upRect = styleitem.subControlRect("up");
-            __downRect = styleitem.subControlRect("down");
-            __editRect = styleitem.subControlRect("edit");
-            spinbox.leftMargin = __editRect.x + 2
-            spinbox.rightMargin = spinbox.width -__editRect.width - __editRect.x
+            upRect = styleitem.subControlRect("up");
+            downRect = styleitem.subControlRect("down");
+            inputRect = styleitem.subControlRect("edit");
         }
 
         Component.onCompleted: updateRect()
@@ -113,6 +117,8 @@ Components.SpinBox {
             id: styleitem
             anchors.fill: parent
             elementType: "spinbox"
+            contentWidth: 200
+            contentHeight: 26
             sunken: (downEnabled && downPressed) | (upEnabled && upPressed)
             hover: containsMouse
             hasFocus: spinbox.focus
@@ -125,17 +131,132 @@ Components.SpinBox {
         }
     }
 
-    up: Item {
-        x: __upRect.x
-        y: __upRect.y
-        width: __upRect.width
-        height: __upRect.height
+    width: implicitWidth
+    height: implicitHeight
+
+    implicitWidth: loader.item ? loader.item.implicitWidth : 0
+    implicitHeight: loader.item ? loader.item.implicitHeight : 0
+
+    function increment() {
+        setValue(input.text)
+        value += singleStep
+        if (value > maximumValue)
+            value = maximumValue
+        input.text = value
     }
 
-    down: Item {
-        x: __downRect.x
-        y: __downRect.y
-        width: __downRect.width
-        height: __downRect.height
+    function decrement() {
+        setValue(input.text)
+        value -= singleStep
+        if (value < minimumValue)
+            value = minimumValue
+        input.text = value
     }
+
+    function setValue(v) {
+        var newval = parseFloat(v)
+        if (newval > maximumValue)
+            newval = maximumValue
+        else if (v < minimumValue)
+            newval = minimumValue
+        value = newval
+        input.text = value
+    }
+
+    Component.onCompleted: setValue(value)
+
+    onValueChanged: {
+        input.valueUpdate = true
+        input.text = value
+        input.valueUpdate = false
+    }
+
+    Loader {
+        id: loader
+        property rect upRect: item ? item.upRect : Qt.rect(0, 0, 0, 0)
+        property rect downRect: item ? item.downRect : Qt.rect(0, 0, 0, 0)
+        property rect inputRect: item ? item.inputRect : Qt.rect(0, 0, 0, 0)
+        sourceComponent: background
+        anchors.fill: parent
+    }
+
+    MouseArea {
+        id: mouseArea
+        anchors.fill: parent
+        hoverEnabled: true
+    }
+
+    // Spinbox input field
+
+    TextInput {
+        id: input
+
+        property bool valueUpdate: false
+
+        clip: true
+
+        x: loader.inputRect.x
+        y: loader.inputRect.y
+        width: loader.inputRect.width
+        height: loader.inputRect.height
+        selectByMouse: true
+
+        // validator: DoubleValidator { bottom: minimumValue; top: maximumValue; }
+        onAccepted: {setValue(input.text)}
+        onActiveFocusChanged: setValue(input.text)
+        color: syspal.text
+        opacity: parent.enabled ? 1 : 0.5
+        Text {
+            text: postfix
+            anchors.rightMargin: 4
+            anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
+        }
+    }
+
+    // Spinbox increment button
+
+    MouseArea {
+        id: mouseUp
+
+        anchors.left: parent.left
+        anchors.top: parent.top
+
+        anchors.leftMargin: loader.upRect.x
+        anchors.topMargin: loader.upRect.y
+
+        width: loader.upRect.width
+        height: loader.upRect.height
+
+        onClicked: increment()
+
+        property bool autoincrement: false;
+        onReleased: autoincrement = false
+        Timer { running: mouseUp.pressed; interval: 350 ; onTriggered: mouseUp.autoincrement = true }
+        Timer { running: mouseUp.autoincrement; interval: 60 ; repeat: true ; onTriggered: increment() }
+    }
+
+    // Spinbox decrement button
+
+    MouseArea {
+        id: mouseDown
+        onClicked: decrement()
+
+        anchors.left: parent.left
+        anchors.top: parent.top
+
+        anchors.leftMargin: loader.downRect.x
+        anchors.topMargin: loader.downRect.y
+
+        width: loader.downRect.width
+        height: loader.downRect.height
+
+        property bool autoincrement: false;
+        onReleased: autoincrement = false
+        Timer { running: mouseDown.pressed; interval: 350 ; onTriggered: mouseDown.autoincrement = true }
+        Timer { running: mouseDown.autoincrement; interval: 60 ; repeat: true ; onTriggered: decrement() }
+    }
+
+    Keys.onUpPressed: increment()
+    Keys.onDownPressed: decrement()
 }

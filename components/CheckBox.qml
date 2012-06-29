@@ -39,41 +39,69 @@
 ****************************************************************************/
 
 import QtQuick 2.0
-import "custom" as Components
 import QtDesktop 0.2
+import "private"
 
-// jb : Size should not depend on background, we should make it consistent
+FocusScope {
+    id: checkBox
 
-Components.CheckBox {
-    id: checkbox
+    signal clicked
+
+    property alias pressed: behavior.pressed
+    property alias checked: behavior.checked
+    property alias containsMouse: behavior.containsMouse
+
     property string text
     property string styleHint
+
+    property Item backgroundItem: backgroundLoader.item
+
+    // implementation
+    Accessible.role: Accessible.CheckBox
+    Accessible.name: text
 
     implicitWidth: Math.max(120, backgroundItem.implicitWidth)
     implicitHeight: backgroundItem.implicitHeight
 
-    Accessible.name: text
+    property Component background: StyleItem {
+                elementType: "checkbox"
+                sunken: pressed
+                on: checked || pressed
+                hover: containsMouse
+                enabled: control.enabled
+                hasFocus: control.activeFocus
+                hint: control.styleHint
+                contentHeight: textitem.implicitHeight
+                contentWidth: textitem.implicitWidth + indicatorWidth
+                property int indicatorWidth: pixelMetric("indicatorwidth") + 2
+                Text {
+                    id: textitem
+                    text: control.text
+                    anchors.left: parent.left
+                    anchors.leftMargin: parent.indicatorWidth
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.right: parent.right
+                    elide: Text.ElideRight
+                }
+            }
 
-    background: StyleItem {
-        elementType: "checkbox"
-        sunken: pressed
-        on: checked || pressed
-        hover: containsMouse
-        enabled: checkbox.enabled
-        hasFocus: checkbox.activeFocus
-        hint: checkbox.styleHint
-        contentHeight: textitem.implicitHeight
-        contentWidth: textitem.implicitWidth + indicatorWidth
-        property int indicatorWidth: pixelMetric("indicatorwidth") + 2
-        Text {
-            id: textitem
-            text: checkbox.text
-            anchors.left: parent.left
-            anchors.leftMargin: parent.indicatorWidth
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.right: parent.right
-            elide: Text.ElideRight
+    Loader {
+        id: backgroundLoader
+        anchors.fill: parent
+        property alias control: checkBox
+        sourceComponent: background
+    }
+
+    ButtonBehavior {
+        id: behavior
+        focus: true
+        anchors.fill: parent
+        checkable: true
+        onClicked: {
+            if (checkBox.activeFocusOnPress)
+                checkBox.forceActiveFocus();
+            checkBox.clicked();
         }
     }
+    Keys.onSpacePressed: {clicked(); checked = !checked; }
 }
-

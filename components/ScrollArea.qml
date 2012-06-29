@@ -39,9 +39,8 @@
 ****************************************************************************/
 
 import QtQuick 2.0
-import "custom" as Components
-import "private" as Private
 import QtDesktop 0.2
+import "private" as Private
 
 FocusScope {
     id: root

@@ -39,31 +39,34 @@
 ****************************************************************************/
 
 import QtQuick 2.0
-import "custom" as Components
 import QtDesktop 0.2
 
-Components.TextField {
+FocusScope {
     id: textfield
-    minimumWidth: 200
+    property alias text: textInput.text
+    property alias font: textInput.font
 
-    placeholderText: ""
-    topMargin: 2
-    bottomMargin: 2
-    leftMargin: 6
-    rightMargin: 6
+    property int minimumWidth: 0
+    property int minimumHeight: 0
 
-    implicitWidth: backgroundItem.implicitWidth
-    implicitHeight: backgroundItem.implicitHeight
+    property int inputHint // values tbd
+    property bool acceptableInput: textInput.acceptableInput // read only
+    property alias readOnly: textInput.readOnly // read only
+    property alias placeholderText: placeholderTextComponent.text
+    property bool  passwordMode: false
+    property alias selectedText: textInput.selectedText
+    property alias selectionEnd: textInput.selectionEnd
+    property alias selectionStart: textInput.selectionStart
+    property alias validator: textInput.validator
+    property alias inputMask: textInput.inputMask
+    property alias horizontalalignment: textInput.horizontalAlignment
+    property alias echoMode: textInput.echoMode
+    property alias cursorPosition: textInput.cursorPosition
+    property alias inputMethodHints: textInput.inputMethodHints
+    property alias activeFocusOnPress: textInput.activeFocusOnPress
+    property alias containsMouse: mouseArea.containsMouse
 
-    clip: false
-
-    Accessible.name: text
-    Accessible.role: Accessible.EditableText
-    Accessible.description: placeholderText
-
-    property string styleHint
-
-    background: StyleItem {
+    property Component background: StyleItem {
         anchors.fill: parent
         elementType: "edit"
         sunken: true
@@ -72,22 +75,123 @@ Components.TextField {
         hint: textfield.styleHint
         contentWidth: 200
         contentHeight: 25
+
+        Item {
+            id: focusFrame
+            anchors.fill: parent
+            parent: textfield
+            visible: framestyle.styleHint("focuswidget")
+            StyleItem {
+                id: framestyle
+                anchors.margins: -2
+                anchors.rightMargin:-4
+                anchors.bottomMargin:-4
+                anchors.fill: parent
+                visible: textfield.activeFocus
+                hint: textfield.styleHint
+                elementType: "focusframe"
+            }
+        }
+
     }
 
-    Item{
-        id: focusFrame
-        anchors.fill: textfield
-        parent: textfield
-        visible: framestyle.styleHint("focuswidget")
-        StyleItem {
-            id: framestyle
-            anchors.margins: -2
-            anchors.rightMargin:-4
-            anchors.bottomMargin:-4
-            anchors.fill: parent
-            visible: textfield.activeFocus
-            hint: textfield.styleHint
-            elementType: "focusframe"
-        }
+    implicitWidth: backgroundLoader.item.implicitWidth
+    implicitHeight: backgroundLoader.item.implicitHeight
+
+    Accessible.name: text
+    Accessible.role: Accessible.EditableText
+    Accessible.description: placeholderText
+
+    property string styleHint
+
+
+    function copy() {
+        textInput.copy()
+    }
+
+    function paste() {
+        textInput.paste()
+    }
+
+    function cut() {
+        textInput.cut()
+    }
+
+    function select(start, end) {
+        textInput.select(start, end)
+    }
+
+    function selectAll() {
+        textInput.selectAll()
+    }
+
+    function selectWord() {
+        textInput.selectWord()
+    }
+
+    function positionAt(x) {
+        var p = mapToItem(textInput, x, 0);
+        return textInput.positionAt(p.x);
+    }
+
+    function positionToRectangle(pos) {
+        var p = mapToItem(textInput, pos.x, pos.y);
+        return textInput.positionToRectangle(p);
+    }
+
+    // Implementation
+
+    SystemPalette {
+        id: syspal
+        colorGroup: enabled ? SystemPalette.Active : SystemPalette.Disabled
+    }
+
+    Loader {
+        id: backgroundLoader;
+        sourceComponent: background;
+        anchors.fill:parent
+    }
+
+    MouseArea {
+        id: mouseArea
+        anchors.fill: parent
+        hoverEnabled: true
+        onClicked: textfield.forceActiveFocus()
+    }
+
+    onFocusChanged: {
+        if (textField.activeFocus)
+            textInput.forceActiveFocus();
+    }
+
+    TextInput { // see QTBUG-14936
+        id: textInput
+        selectByMouse:true
+
+        // Todo move these margins to StyleItem
+        anchors.leftMargin: 4
+        anchors.topMargin: 4
+        anchors.rightMargin: 4
+        anchors.bottomMargin: 4
+
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.verticalCenter: parent.verticalCenter
+
+        color: syspal.text
+        echoMode: passwordMode ? TextInput.Password : TextInput.Normal
+        clip: true
+    }
+
+    Text {
+        id: placeholderTextComponent
+        anchors.fill: textInput
+        font: textInput.font
+        opacity: !textInput.text.length && !textInput.activeFocus ? 1 : 0
+        color: "darkgray"
+        text: "Enter text"
+        clip: true
+        elide: Text.ElideRight
+        Behavior on opacity { NumberAnimation { duration: 90 } }
     }
 }

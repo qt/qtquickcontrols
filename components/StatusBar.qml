@@ -39,8 +39,6 @@
 ****************************************************************************/
 
 import QtQuick 2.0
-import "."
-import "custom" as Components
 
 Item {
     width: parent ? parent.width : 200

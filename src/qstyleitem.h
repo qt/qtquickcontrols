@@ -189,7 +189,7 @@ public Q_SLOTS:
     void updateSizeHint();
     void updateItem(){initStyleOption(); update();}
     QString hitTest(int x, int y);
-    QRect subControlRect(const QString &subcontrolString);
+    QRectF subControlRect(const QString &subcontrolString);
     QString elidedText(const QString &text, int elideMode, int width);
     int textWidth(const QString &);
     bool hasThemeIcon(const QString &) const;

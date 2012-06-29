@@ -39,16 +39,18 @@
 ****************************************************************************/
 
 import QtQuick 2.0
-import "custom" as Components
 import QtDesktop 0.2
+import "private" as Private
 
-Components.Button {
+Private.BasicButton {
     id:button
 
     property alias containsMouse: tooltip.containsMouse
     property string iconName
     property string styleHint
     property int iconSize: (backgroundItem && backgroundItem.style === "mac" && button.styleHint.indexOf("segmented") !== -1) ? 16 : 24
+    property url iconSource
+    property string text
 
     implicitWidth: backgroundItem.implicitWidth
     implicitHeight: backgroundItem.implicitHeight
@@ -96,4 +98,5 @@ Components.Button {
             source: visible ? button.iconSource : ""
         }
     }
+    Accessible.name: text
 }

@@ -39,7 +39,6 @@
 ****************************************************************************/
 
 import QtQuick 2.0
-import "custom" as Components
 import QtDesktop 0.2
 
 Item {
@@ -186,8 +185,8 @@ Item {
             enabled: parent.enabled
         }
 
-        property variant handleRect: Qt.rect(0,0,0,0)
-        property variant grooveRect: Qt.rect(0,0,0,0)
+        property rect handleRect: Qt.rect(0,0,0,0)
+        property rect grooveRect: Qt.rect(0,0,0,0)
         function updateHandle() {
             internal.handleRect = styleitem.subControlRect("handle")
             grooveRect = styleitem.subControlRect("groove");
@@ -203,5 +202,4 @@ Item {
             positionAtMaximum: internal.grooveSize
         }
     }
-
 }

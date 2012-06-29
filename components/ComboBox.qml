@@ -39,7 +39,7 @@
 ****************************************************************************/
 
 import QtQuick 2.0
-import "custom" as Custom
+import "private" as Private
 import QtDesktop 0.2
 
 /*
@@ -92,7 +92,7 @@ import QtDesktop 0.2
 *
 */
 
-Custom.BasicButton {
+Private.BasicButton {
     id: comboBox
 
     default property alias menuItems: popup.menuItems

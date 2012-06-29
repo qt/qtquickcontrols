@@ -929,7 +929,7 @@ void QStyleItem::showToolTip(const QString &str)
 }
 #endif
 
-QRect QStyleItem::subControlRect(const QString &subcontrolString)
+QRectF QStyleItem::subControlRect(const QString &subcontrolString)
 {
     QStyle::SubControl subcontrol = QStyle::SC_None;
     initStyleOption();
@@ -984,7 +984,7 @@ QRect QStyleItem::subControlRect(const QString &subcontrolString)
     default:
         break;
     }
-    return QRect();
+    return QRectF();
 }
 
 void QStyleItem::paint(QPainter *painter)

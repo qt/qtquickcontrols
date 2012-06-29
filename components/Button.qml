@@ -39,10 +39,10 @@
 ****************************************************************************/
 
 import QtQuick 2.0
-import "custom" as Components
+import "private"
 import QtDesktop 0.2
 
-Components.Button {
+BasicButton {
     id: button
 
     implicitWidth: Math.max(72, backgroundItem.implicitWidth)
@@ -51,6 +51,12 @@ Components.Button {
     property alias containsMouse: tooltip.containsMouse
     property bool defaultbutton: false
     property string styleHint
+    property string text
+    property url iconSource
+
+    Accessible.name: text
+
+    Keys.onSpacePressed:animateClick()
 
     TooltipArea {
         // Note this will eat hover events
@@ -74,28 +80,28 @@ Components.Button {
         activeControl: defaultbutton ? "default" : "f"
     }
 
-    label: Item {
-        // Used as a fallback since I can't pass the imageURL
-        // directly to the style object
-        visible: button.iconSource === ""
-        Row {
-            id: row
-            anchors.centerIn: parent
-            spacing: 4
-            Image {
-                source: iconSource
-                anchors.verticalCenter: parent.verticalCenter
-                fillMode: Image.Stretch //mm Image should shrink if button is too small, depends on QTBUG-14957
-            }
-            Text {
-                id:text
-                color: textColor
-                anchors.verticalCenter: parent.verticalCenter
-                text: button.text
-                horizontalAlignment: Text.Center
-            }
-        }
-    }
-    Keys.onSpacePressed:animateClick()
+// ## TODO: move to style implementation
+//    label: Item {
+//        // Used as a fallback since I can't pass the imageURL
+//        // directly to the style object
+//        visible: button.iconSource === ""
+//        Row {
+//            id: row
+//            anchors.centerIn: parent
+//            spacing: 4
+//            Image {
+//                source: iconSource
+//                anchors.verticalCenter: parent.verticalCenter
+//                fillMode: Image.Stretch //mm Image should shrink if button is too small, depends on QTBUG-14957
+//            }
+//            Text {
+//                id:text
+//                color: textColor
+//                anchors.verticalCenter: parent.verticalCenter
+//                text: button.text
+//                horizontalAlignment: Text.Center
+//            }
+//        }
+//    }
 }
 

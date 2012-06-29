@@ -39,22 +39,30 @@
 ****************************************************************************/
 
 import QtQuick 2.0
-import "custom" as Components
 import QtDesktop 0.2
 
-Components.ProgressBar {
+Item {
     id:progressbar
+
+    property real value: 0
+    property real minimumValue: 0
+    property real maximumValue: 1
+    property bool indeterminate: false
+    property bool containsMouse: mouseArea.containsMouse
+
+    property int minimumWidth: 0
+    property int minimumHeight: 0
 
     property int orientation: Qt.Horizontal
     property string styleHint
 
-    implicitWidth: orientation === Qt.Horizontal ? 200 : backgroundItem.implicitHeight
-    implicitHeight: orientation === Qt.Horizontal ? backgroundItem.implicitHeight : 200
+    Accessible.role: Accessible.ProgressBar
+    Accessible.name: value
 
+    implicitWidth: orientation === Qt.Horizontal ? 200 : loader.item.implicitHeight
+    implicitHeight: orientation === Qt.Horizontal ? loader.item.implicitHeight : 200
 
-    SystemPalette {id: syspal}
-
-    background: StyleItem {
+    property Component background: StyleItem {
         anchors.fill: parent
         elementType: "progressbar"
         // XXX: since desktop uses int instead of real, the progressbar
@@ -68,6 +76,23 @@ Components.ProgressBar {
         hint: progressbar.styleHint
         contentWidth: 23
         contentHeight: 23
+    }
+
+    Loader {
+        id: loader
+        property alias indeterminate: progressbar.indeterminate
+        property alias value:progressbar.value
+        property alias maximumValue:progressbar.maximumValue
+        property alias minimumValue:progressbar.minimumValue
+
+        sourceComponent: background
+        anchors.fill: parent
+    }
+
+    MouseArea {
+        id: mouseArea
+        anchors.fill: parent
+        hoverEnabled: true
     }
 }
 
