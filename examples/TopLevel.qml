@@ -13,13 +13,23 @@ Window {
     minimumWidth: gallery.width
     visible: true
 
+
+    FileDialog {
+        id: fileDialogLoad
+        folder: "/tmp"
+        title: "Choose a file to open"
+        selectMultiple: true
+        nameFilters: [ "Image files (*.png *.jpg)", "All files (*)" ]
+        onAccepted: { console.log("Accepted: " + filePaths) }
+    }
+
     MenuBar {
         Menu {
             text: "File"
             MenuItem {
                 text: "Open"
                 shortcut: "Ctrl+O"
-                onTriggered: console.log("we should display a file open dialog")
+                onTriggered: fileDialogLoad.open();
             }
             MenuItem {
                 text: "Close"

@@ -23,27 +23,47 @@ Rectangle {
             spacing: 2
             anchors.verticalCenter: parent.verticalCenter
             ToolButton{
-                iconName: "folder-new"
-                iconSource: "images/folder_new.png"
-                anchors.verticalCenter: parent.verticalCenter
-                Accessible.name: "New"
-                tooltip: "A button."
-            }
-            ToolButton{
-                iconName: "folder-new"
-                iconSource: "images/folder_new.png"
-                anchors.verticalCenter: parent.verticalCenter
-                Accessible.name: "New 2"
-                tooltip: "A second button."
-            }
-            ToolButton{
                 iconName: "window-new"
-                iconSource: "images/toplevel_window.png"
+                iconSource: "images/window-new.png"
                 anchors.verticalCenter: parent.verticalCenter
                 onClicked: window1.visible = !window1.visible
                 Accessible.name: "New window"
-                tooltip: "New window button."
+                tooltip: "Toggle visibility of the second window"
             }
+            ToolButton{
+                iconName: "document-open"
+                iconSource: "images/document-open.png"
+                anchors.verticalCenter: parent.verticalCenter
+                onClicked: fileDialogLoad.open()
+                tooltip: "(Pretend to) open a file"
+            }
+            ToolButton{
+                iconName: "document-save-as"
+                iconSource: "images/document-save-as.png"
+                anchors.verticalCenter: parent.verticalCenter
+                onClicked: fileDialogSave.open()
+                tooltip: "(Pretend to) save as..."
+            }
+        }
+
+        FileDialog {
+            id: fileDialogLoad
+            folder: "/tmp"
+            title: "Choose a file to open"
+            selectMultiple: true
+            nameFilters: [ "Image files (*.png *.jpg)", "All files (*)" ]
+
+            onAccepted: { console.log("Accepted: " + filePaths) }
+        }
+
+        FileDialog {
+            id: fileDialogSave
+            folder: "/tmp"
+            title: "Save as..."
+            modal: true
+            selectExisting: false
+
+            onAccepted: { console.log("Accepted: " + filePath) }
         }
 
         Window {

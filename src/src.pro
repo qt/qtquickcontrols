@@ -25,7 +25,8 @@ HEADERS += qtmenu.h \
            qquicklayout.h \
            qquicklinearlayout.h \
            qquickcomponentsprivate.h \
-           qtsplitterbase.h
+           qtsplitterbase.h \
+           qfiledialogitem.h
 
 SOURCES += qtmenu.cpp \
            qtmenubar.cpp \
@@ -41,7 +42,8 @@ SOURCES += qtmenu.cpp \
            qquicklayoutengine.cpp \
            qquicklinearlayout.cpp \
            qquickcomponentsprivate.cpp \
-           qtsplitterbase.cpp
+           qtsplitterbase.cpp \
+           qfiledialogitem.cpp
 
 TARGETPATH = QtDesktop/plugin
 

@@ -51,6 +51,7 @@
 #include "qtsplitterbase.h"
 #include "qquicklinearlayout.h"
 #include "qquickcomponentsprivate.h"
+#include "qfiledialogitem.h"
 #include <qqmlextensionplugin.h>
 
 #include <qqmlengine.h>
@@ -103,6 +104,8 @@ void StylePlugin::registerTypes(const char *uri)
     qmlRegisterType<QQuickComponentsColumnLayout>(uri, 0, 2, "ColumnLayout");
     qmlRegisterUncreatableType<QQuickComponentsLayout>(uri, 0, 2, "Layout",
                                                        QLatin1String("Do not create objects of type Layout"));
+
+    qmlRegisterType<QFileDialogItem>(uri, 0, 2, "FileDialog");
 
     qmlRegisterType<QFileSystemModel>(uri, 0, 2, "FileSystemModel");
     qmlRegisterType<QtSplitterBase>(uri, 0, 2, "Splitter");
