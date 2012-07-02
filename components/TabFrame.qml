@@ -130,7 +130,7 @@ Item {
                 }
                 AnchorChanges {
                     target: tabbarItem
-                    anchors.top: frameitem.bottom
+                    anchors.top: tabWidget.bottom
                     anchors.bottom: undefined
                 }
             }
