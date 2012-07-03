@@ -11,7 +11,7 @@ Rectangle {
         anchors.fill: parent
         Item {
             id: r1
-            Splitter.minimumSize: 140
+            Splitter.minimumWidth: 140
             Splitter.expanding: false
             width: 200
             CheckBox {
@@ -27,7 +27,7 @@ Rectangle {
         }
         Item {
             id: r2
-            Splitter.minimumSize: 140
+            Splitter.minimumWidth: 140
             Splitter.expanding: true
             width: 200
             CheckBox {
@@ -44,7 +44,7 @@ Rectangle {
         Item {
             id: r3
             Splitter.expanding: false
-            Splitter.minimumSize: 140
+            Splitter.minimumWidth: 140
             width: 200
             SplitterColumn {
                 id: sc
