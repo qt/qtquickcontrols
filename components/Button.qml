@@ -45,7 +45,6 @@ import QtDesktop 0.2
 BasicButton {
     id: button
 
-    property alias containsMouse: tooltip.containsMouse
     property bool defaultbutton: false
     property string styleHint
     property string text
@@ -54,13 +53,6 @@ BasicButton {
     Accessible.name: text
 
     Keys.onSpacePressed:animateClick()
-
-    TooltipArea {
-        // Note this will eat hover events
-        id: tooltip
-        anchors.fill: parent
-        text: button.tooltip
-    }
 
     delegate: StyleItem {
         id: styleitem

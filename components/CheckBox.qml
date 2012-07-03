@@ -47,7 +47,7 @@ FocusScope {
 
     signal clicked
 
-    property alias pressed: behavior.pressed
+    property alias pressed: behavior.effectivePressed
     property alias checked: behavior.checked
     property alias containsMouse: behavior.containsMouse
 

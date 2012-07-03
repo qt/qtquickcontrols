@@ -45,18 +45,10 @@ import "private" as Private
 Private.BasicButton {
     id:button
 
-    property alias containsMouse: tooltip.containsMouse
     property string iconName
     property string styleHint
     property url iconSource
     property string text
-
-    TooltipArea {
-        // Note this will eat hover events
-        id: tooltip
-        anchors.fill: parent
-        text: button.tooltip
-    }
 
     delegate: StyleItem {
         id: styleitem

@@ -38,40 +38,26 @@
 **
 ****************************************************************************/
 
-#ifndef QTOOLTIPAREA_H
-#define QTOOLTIPAREA_H
+#include "qquickcomponentsprivate.h"
+#include <QToolTip>
+#include <QQuickCanvas>
 
-#include <QQuickItem>
-#include <QTimer>
-#include <QtWidgets/QGraphicsSceneHoverEvent>
 
-class QTooltipArea : public QQuickItem
+QQuickComponentsPrivate::QQuickComponentsPrivate(QObject *parent)
+    : QObject(parent)
 {
-    Q_OBJECT
-    Q_PROPERTY(QString text READ text WRITE setText NOTIFY textChanged)
-    Q_PROPERTY(bool containsMouse READ containsMouse NOTIFY containsMouseChanged)
 
-public:
-    QTooltipArea(QQuickItem *parent = 0);
-    void setText(const QString &t);
-    QString text() const {return m_text;}
-    bool containsMouse() const {return m_containsMouse;}
-    void showToolTip(const QString &str) const;
-    void hoverEnterEvent(QHoverEvent *event);
-    void hoverLeaveEvent(QHoverEvent *event);
+}
 
-public slots:
-    void timeout();
+void QQuickComponentsPrivate::showToolTip(QQuickItem *item, const QPointF &pos, const QString &str)
+{
+    if (!item || !item->canvas())
+        return;
 
-signals:
-    void textChanged();
-    void containsMouseChanged();
+    QToolTip::showText(item->canvas()->mapToGlobal(item->mapToScene(pos).toPoint()), str);
+}
 
-private:
-
-    QTimer m_tiptimer;
-    QString m_text;
-    bool m_containsMouse;
-};
-
-#endif // QTOOLTIPAREA_H
+void QQuickComponentsPrivate::hideToolTip()
+{
+    QToolTip::hideText();
+}

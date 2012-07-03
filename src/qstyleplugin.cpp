@@ -49,9 +49,9 @@
 #include "qdesktopitem.h"
 #include "qwheelarea.h"
 #include "qcursorarea.h"
-#include "qtooltiparea.h"
 #include "qtsplitterbase.h"
 #include "qquicklinearlayout.h"
+#include "qquickcomponentsprivate.h"
 #include <qqmlextensionplugin.h>
 
 #include <qqmlengine.h>
@@ -79,12 +79,20 @@ public:
     }
 };
 
+QObject *registerPrivateModule(QQmlEngine *engine, QJSEngine *jsEngine)
+{
+    Q_UNUSED(engine);
+    Q_UNUSED(jsEngine);
+    return new QQuickComponentsPrivate();
+}
 
 void StylePlugin::registerTypes(const char *uri)
 {
+    qmlRegisterModuleApi<QQuickComponentsPrivate>(QByteArray(uri) + ".Internal",
+                                                  0, 2, registerPrivateModule);
+
     qmlRegisterType<QStyleItem>(uri, 0, 2, "StyleItem");
     qmlRegisterType<QCursorArea>(uri, 0, 2, "CursorArea");
-    qmlRegisterType<QTooltipArea>(uri, 0, 2, "TooltipArea");
     qmlRegisterType<QRangeModel>(uri, 0, 2, "RangeModel");
     qmlRegisterType<QWheelArea>(uri, 0, 2, "WheelArea");
 

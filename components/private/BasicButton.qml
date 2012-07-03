@@ -39,12 +39,13 @@
 ****************************************************************************/
 
 import QtQuick 2.0
+import QtDesktop.Internal 0.2 as Internal
 
 Item {
     id: button
 
     signal clicked
-    property alias pressed: behavior.pressed
+    property alias pressed: behavior.effectivePressed
     property alias containsMouse: behavior.containsMouse
     property alias checkable: behavior.checkable  // button toggles between checked and !checked
     property alias checked: behavior.checked
@@ -67,15 +68,15 @@ Item {
     implicitHeight: loader.item.implicitHeight
 
     function animateClick() {
-        behavior.pressed = true
-        behavior.clicked()
+        behavior.keyPressed = true
+        button.clicked()
         animateClickTimer.start()
     }
 
     Timer {
         id: animateClickTimer
         interval: 250
-        onTriggered: behavior.pressed = false
+        onTriggered: behavior.keyPressed = false
     }
 
     Loader {
@@ -90,13 +91,14 @@ Item {
         id: behavior
         anchors.fill: parent
         onClicked: button.clicked()
-        onPressedChanged: if (activeFocusOnPress) button.focus = true
-        onMouseMoved: {tiptimer.restart()}
-        Timer{
-            id: tiptimer
-            interval:1000
-            running:containsMouse && tooltip.length
-            onTriggered: button.toolTipTriggered()
+        onExited: Internal.hideToolTip()
+        onCanceled: Internal.hideToolTip()
+        onPressed: if (activeFocusOnPress) button.focus = true
+
+        Timer {
+            interval: 1000
+            running: containsMouse && !pressed && tooltip.length
+            onTriggered: Internal.showToolTip(behavior, Qt.point(behavior.mouseX, behavior.mouseY), tooltip)
         }
     }
 
