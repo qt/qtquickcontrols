@@ -50,6 +50,7 @@ FocusScope {
     property alias pressed: behavior.effectivePressed
     property alias checked: behavior.checked
     property alias containsMouse: behavior.containsMouse
+    property bool activeFocusOnPress: false
 
     property string text
     property string styleHint
@@ -95,11 +96,20 @@ FocusScope {
         focus: true
         anchors.fill: parent
         checkable: true
-        onClicked: {
-            if (checkBox.activeFocusOnPress)
-                checkBox.forceActiveFocus();
+        onClicked: checkBox.clicked();
+        onPressed: if (checkBox.activeFocusOnPress) checkBox.forceActiveFocus();
+    }
+
+    Keys.onPressed: {
+        if (event.key == Qt.Key_Space && !event.isAutoRepeat && !behavior.pressed)
+            behavior.keyPressed = true;
+    }
+
+    Keys.onReleased: {
+        if (event.key == Qt.Key_Space && !event.isAutoRepeat && behavior.keyPressed) {
+            behavior.keyPressed = false;
+            checked = !checked;
             checkBox.clicked();
         }
     }
-    Keys.onSpacePressed: {clicked(); checked = !checked; }
 }

@@ -69,6 +69,4 @@ CheckBox {
             elide: Text.ElideRight
         }
     }
-    Keys.onSpacePressed: {clicked(); checked = !checked; }
 }
-
