@@ -44,11 +44,7 @@
 #include <QtCore/qglobal.h>
 
 #include <QMainWindow>
-#if QT_VERSION < 0x050000
-#include <QDeclarativeView>
-#else
 #include <QtQuick/QQuickView>
-#endif
 
 #include <QWindowStateChangeEvent>
 #include <QDebug>
@@ -62,13 +58,8 @@ public:
     QTopLevelWindow();
     ~QTopLevelWindow();
 
-#if QT_VERSION < 0x050000
-    QGraphicsScene *scene() { return _view->scene(); }
-    QDeclarativeView *view() { return _view; }
-#else
     QQuickView * view() { return this; }
     QMenuBar *menuBar();
-#endif
     void registerChildWindow(QTopLevelWindow* child);
     void hideChildWindows();
     void initPosition();
@@ -85,11 +76,7 @@ Q_SIGNALS:
     void sizeChanged(QSize newSize);
 
 private:
-#if QT_VERSION < 0x050000
-    QDeclarativeView *_view;
-#else
     QMenuBar *_menuBar;
-#endif
     bool _positionIsDefined;
 
 };

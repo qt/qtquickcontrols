@@ -44,20 +44,11 @@
 #include "qtoplevelwindow.h"
 
 #include <QtGui/QGuiApplication>
-#if QT_VERSION < 0x050000
-#include <QDeclarativeItem>
-#include <QDeclarativeView>
-#else
 #include <QtQuick/QQuickItem>
 #include <QtQuick/QQuickView>
-#endif
 #include <QMenuBar>
 
-#if QT_VERSION < 0x050000
-class QWindowItem : public QDeclarativeItem
-#else
 class QWindowItem : public QQuickItem
-#endif
 {
     Q_OBJECT
     Q_PROPERTY(int x READ x WRITE setX NOTIFY xChanged)
@@ -79,28 +70,15 @@ public:
     QWindowItem();
     ~QWindowItem();
     QTopLevelWindow *window() { return _window; }
-#if QT_VERSION < 0x050000
-    QDeclarativeView *view() { return _window->view(); }
-#else
     QQuickView *view() { return _window->view(); }
-#endif
     int x() const { return _window->x(); }
     int y() const { return _window->y(); }
-#if QT_VERSION < 0x050000
-    int height() const { return _window->height(); }
-    int minimumHeight() const { return _window->minimumHeight(); }
-    int maximumHeight() const { return _window->maximumHeight(); }
-    int width() const { return _window->width(); }
-    int minimumWidth() const { return _window->minimumWidth(); }
-    int maximumWidth() const { return _window->maximumWidth(); }
-#else
     int height() const { return _window->size().height(); }
     int minimumHeight() const { return _window->minimumSize().height(); }
     int maximumHeight() const { return _window->maximumSize().height(); }
     int width() const { return _window->size().width(); }
     int minimumWidth() const { return _window->minimumSize().width(); }
     int maximumWidth() const { return _window->maximumSize().width(); }
-#endif
     bool isVisible() const { return _window->isVisible(); }
     bool windowDecoration() const { return !(_window->windowFlags() & Qt::FramelessWindowHint); }
     Qt::WindowState windowState() const { return static_cast<Qt::WindowState>(static_cast<int>(_window->windowState()) & ~Qt::WindowActive); }

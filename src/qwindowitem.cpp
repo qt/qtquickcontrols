@@ -50,11 +50,7 @@ QWindowItem::QWindowItem()
     connect(_window, SIGNAL(windowStateChanged()), this, SIGNAL(windowStateChanged()));
     connect(_window, SIGNAL(sizeChanged(QSize)), this, SLOT(updateSize(QSize)));
 
-#if QT_VERSION < 0x050000
-    view()->setResizeMode(QDeclarativeView::SizeRootObjectToView);
-#else
     view()->setResizeMode(QQuickView::SizeRootObjectToView);
-#endif
     _window->installEventFilter(this);
 }
 
@@ -95,11 +91,7 @@ void QWindowItem::registerChildWindow(QWindowItem *child) {
 }
 
 void QWindowItem::updateParentWindow() {
-#if QT_VERSION < 0x050000
-    QDeclarativeItem *p = parentItem();
-#else
     QQuickItem *p = parentItem();
-#endif
     while (p) {
         if (QWindowItem *w = qobject_cast<QWindowItem*>(p)) {
             w->registerChildWindow(this);
@@ -112,17 +104,10 @@ void QWindowItem::updateParentWindow() {
 void QWindowItem::componentComplete()
 {
     updateParentWindow();
-#if QT_VERSION < 0x050000
-    _window->scene()->addItem(this);
-    if (!_window->parentWidget())
-        _window->initPosition();
-    QDeclarativeItem::componentComplete();
-#else
     this->setParentItem(_window->view()->rootItem());
     if (_window->isTopLevel())
         _window->initPosition();
     QQuickItem::componentComplete();
-#endif
     if (_delayedVisible) {
         setVisible(true);
     }
@@ -130,11 +115,7 @@ void QWindowItem::componentComplete()
 
 void QWindowItem::updateSize(QSize newSize)
 {
-#if QT_VERSION < 0x050000
-    QDeclarativeItem::setSize(newSize);
-#else
     QQuickItem::setSize(newSize);
-#endif
     emit sizeChanged();
 }
 
@@ -164,65 +145,34 @@ void QWindowItem::moveWindow(int x,int y, int lx, int ly)
 
 void QWindowItem::setHeight(int height)
 {
-#if QT_VERSION < 0x050000
-    int menuBarHeight = _window->menuBar()->sizeHint().height();
-    if (menuBarHeight) menuBarHeight++;
-    _window->resize(width(), height+menuBarHeight);
-    QDeclarativeItem::setHeight(_window->height());
-#else
     _window->resize(width(), height);
     QQuickItem::setHeight(_window->height());
-#endif
 }
 
 void QWindowItem::setMinimumHeight(int height)
 {
-#if QT_VERSION < 0x050000
-    int menuBarHeight = _window->menuBar()->sizeHint().height();
-    if (menuBarHeight) menuBarHeight++;
-    _window->setMinimumHeight(height+menuBarHeight);
-#else
     _window->setMinimumSize(QSize(_window->minimumSize().width(), height));
-#endif
 }
 
 void QWindowItem::setMaximumHeight(int height)
 {
-#if QT_VERSION < 0x050000
-    int menuBarHeight = _window->menuBar()->sizeHint().height();
-    if (menuBarHeight) menuBarHeight++;
-    _window->setMaximumHeight(height+menuBarHeight);
-#else
     _window->setMaximumSize(QSize(_window->maximumSize().width(), height));
-#endif
 }
 
 void QWindowItem::setWidth(int width)
 {
     _window->resize(width, height());
-#if QT_VERSION < 0x050000
-    QDeclarativeItem::setWidth(_window->width());
-#else
     QQuickItem::setWidth(_window->width());
-#endif
 }
 
 void QWindowItem::setMinimumWidth(int width)
 {
-#if QT_VERSION < 0x050000
-    _window->setMinimumWidth(width);
-#else
     _window->setMinimumSize(QSize(width, _window->minimumSize().height()));
-#endif
 }
 
 void QWindowItem::setMaximumWidth(int width)
 {
-#if QT_VERSION < 0x050000
-    _window->setMaximumWidth(width);
-#else
     _window->setMinimumSize(QSize(width, _window->maximumSize().height()));
-#endif
 }
 
 void QWindowItem::setTitle(QString title)

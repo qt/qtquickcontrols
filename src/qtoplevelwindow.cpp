@@ -41,43 +41,23 @@
 #include "qtoplevelwindow.h"
 
 #include <QDesktopWidget>
-#if QT_VERSION >= 0x050000
 #include <QtWidgets/QMenuBar>
-#endif
 
 QTopLevelWindow::QTopLevelWindow()
-#if QT_VERSION < 0x050000
-    : QMainWindow(), _view(new QDeclarativeView), _positionIsDefined(false) {
-#else
-    : QQuickView(), _menuBar(new QMenuBar), _positionIsDefined(false) {
-#endif
-
+    : QQuickView(), _menuBar(new QMenuBar), _positionIsDefined(false)
+{
     setVisible(false);
-    // Ensure that we have a default size, otherwise an empty window statement will
-    // result in no window
-//    resize(QSize(100, 100));
-#if QT_VERSION < 0x050000
-    _view->setBackgroundBrush(palette().window());
-    setCentralWidget(_view);
-#endif
 }
 
-#if QT_VERSION >= 0x050000
 QMenuBar *QTopLevelWindow::menuBar()
 {
     return _menuBar;
 }
-#endif
-
 
 QTopLevelWindow::~QTopLevelWindow()
 {
     foreach (QTopLevelWindow* child, findChildren<QTopLevelWindow*>())
         child->setParent(0);
-    //we need this to break the parental loop of QWindowItem and QTopLevelWindow
-#if QT_VERSION < 0x050000
-    _view->scene()->setParent(0);
-#endif
 }
 
 void QTopLevelWindow::registerChildWindow(QTopLevelWindow* child)
@@ -103,13 +83,7 @@ void QTopLevelWindow::initPosition()
 
 void QTopLevelWindow::center()
 {
-    QPoint parentCenter;
-#if QT_VERSION < 0x050000
-    if (parentWidget())
-        parentCenter = parentWidget()->geometry().center();
-    else
-#endif
-        parentCenter = QDesktopWidget().screenGeometry().center();
+    QPoint parentCenter = QDesktopWidget().screenGeometry().center();
     QRect thisGeometry = geometry();
     thisGeometry.moveCenter(parentCenter);
     setGeometry(thisGeometry);
@@ -124,19 +98,11 @@ void QTopLevelWindow::move(int x, int y)
 void QTopLevelWindow::move(const QPoint &point)
 {
     _positionIsDefined = true;
-#if QT_VERSION < 0x050000
-    QMainWindow::move(point);
-#else
     QQuickView::setPos(point);
-#endif
 }
 
 void QTopLevelWindow::setWindowFlags(Qt::WindowFlags type)
 {
-#if QT_VERSION < 0x050000
-    QWidget::setWindowFlags(type | Qt::Window);
-#else
     QQuickView::setWindowFlags(type | Qt::Window);
-#endif
 }
 
