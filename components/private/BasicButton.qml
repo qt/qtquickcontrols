@@ -67,16 +67,18 @@ Item {
     implicitWidth: loader.item.implicitWidth
     implicitHeight: loader.item.implicitHeight
 
-    function animateClick() {
-        behavior.keyPressed = true
-        button.clicked()
-        animateClickTimer.start()
+    Keys.onPressed: {
+        if (event.key == Qt.Key_Space && !event.isAutoRepeat && !behavior.pressed)
+            behavior.keyPressed = true;
     }
 
-    Timer {
-        id: animateClickTimer
-        interval: 250
-        onTriggered: behavior.keyPressed = false
+    Keys.onReleased: {
+        if (event.key == Qt.Key_Space && !event.isAutoRepeat && behavior.keyPressed) {
+            behavior.keyPressed = false;
+            if (checkable)
+                checked = !checked;
+            button.clicked();
+        }
     }
 
     Loader {
@@ -93,7 +95,7 @@ Item {
         onClicked: button.clicked()
         onExited: Internal.hideToolTip()
         onCanceled: Internal.hideToolTip()
-        onPressed: if (activeFocusOnPress) button.focus = true
+        onPressed: if (activeFocusOnPress) button.forceActiveFocus()
 
         Timer {
             interval: 1000

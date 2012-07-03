@@ -47,6 +47,7 @@ MouseArea {
     property bool effectivePressed: pressed && containsMouse || keyPressed
 
     hoverEnabled: true
+    enabled: !keyPressed
 
     onCheckableChanged: {
         if (!checkable)

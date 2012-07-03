@@ -52,8 +52,6 @@ BasicButton {
 
     Accessible.name: text
 
-    Keys.onSpacePressed:animateClick()
-
     delegate: StyleItem {
         id: styleitem
         anchors.fill: parent
