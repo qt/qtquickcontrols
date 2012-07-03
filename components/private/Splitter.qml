@@ -400,7 +400,7 @@ Splitter {
                 d.expandingIndex = newIndex
                 d.updateLayout();
                 // recreate binding:
-                expanding = function() { return parent.Splitter.expanding }
+                expanding = Qt.binding(function() { return parent.Splitter.expanding })
                 d.itemExpandingGuard = false
             }
 
