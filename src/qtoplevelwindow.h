@@ -73,7 +73,6 @@ public:
 Q_SIGNALS:
     void visibilityChanged();
     void windowStateChanged();
-    void sizeChanged(QSize newSize);
 
 private:
     QMenuBar *_menuBar;

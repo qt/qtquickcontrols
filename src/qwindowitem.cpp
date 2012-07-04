@@ -53,7 +53,6 @@ QWindowItem::QWindowItem()
 {
     connect(_window, SIGNAL(visibilityChanged()), this, SIGNAL(visibleChanged()));
     connect(_window, SIGNAL(windowStateChanged()), this, SIGNAL(windowStateChanged()));
-    connect(_window, SIGNAL(sizeChanged(QSize)), this, SLOT(setSize(QSize)));
 
     connect(this, SIGNAL(xChanged()), this, SLOT(updateWindowGeometry()));
     connect(this, SIGNAL(yChanged()), this, SLOT(updateWindowGeometry()));
