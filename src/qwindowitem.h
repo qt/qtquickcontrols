@@ -51,10 +51,6 @@
 class QWindowItem : public QQuickItem
 {
     Q_OBJECT
-    Q_PROPERTY(int x READ x WRITE setX NOTIFY xChanged)
-    Q_PROPERTY(int y READ y WRITE setY NOTIFY yChanged)
-    Q_PROPERTY(int height READ height WRITE setHeight NOTIFY sizeChanged)
-    Q_PROPERTY(int width READ width WRITE setWidth NOTIFY sizeChanged)
     Q_PROPERTY(int minimumHeight READ minimumHeight WRITE setMinimumHeight NOTIFY minimumHeightChanged)
     Q_PROPERTY(int maximumHeight READ maximumHeight WRITE setMaximumHeight NOTIFY maximumHeightChanged)
     Q_PROPERTY(int minimumWidth READ minimumWidth WRITE setMinimumWidth NOTIFY minimumWidthChanged)
@@ -71,12 +67,8 @@ public:
     ~QWindowItem();
     QTopLevelWindow *window() { return _window; }
     QQuickView *view() { return _window->view(); }
-    int x() const { return _window->x(); }
-    int y() const { return _window->y(); }
-    int height() const { return _window->size().height(); }
     int minimumHeight() const { return _window->minimumSize().height(); }
     int maximumHeight() const { return _window->maximumSize().height(); }
-    int width() const { return _window->size().width(); }
     int minimumWidth() const { return _window->minimumSize().width(); }
     int maximumWidth() const { return _window->maximumSize().width(); }
     bool isVisible() const { return _window->isVisible(); }
@@ -86,13 +78,8 @@ public:
     bool deleteOnClose() const { return _deleteOnClose; }
     bool modal() const { return _window->isModal(); }
 
-    void setX(int x);
-    void setY(int y);
-
-    void setHeight(int height);
     void setMinimumHeight(int height);
     void setMaximumHeight(int height);
-    void setWidth(int width);
     void setMinimumWidth(int width);
     void setMaximumWidth(int width);
     void setVisible(bool visible);
@@ -112,14 +99,11 @@ protected:
     void componentComplete();
 
 protected Q_SLOTS:
-    void updateSize(QSize newSize);
+    void updateWindowGeometry();
     void center();
     void moveWindow(int x, int y, int lx, int ly);
 
 Q_SIGNALS:
-    void sizeChanged();
-    void xChanged();
-    void yChanged();
     void visibleChanged();
     void windowDecorationChanged();
     void windowStateChanged();

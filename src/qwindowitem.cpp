@@ -44,11 +44,21 @@
 #include <QTimer>
 
 QWindowItem::QWindowItem()
-    : _window(new QTopLevelWindow), _positionIsDefined(false), _delayedVisible(false), _deleteOnClose(true), _x(0), _y(0)
+    : QQuickItem()
+    , _window(new QTopLevelWindow)
+    , _positionIsDefined(false)
+    , _delayedVisible(false)
+    , _deleteOnClose(false)
+    , _x(0), _y(0)
 {
     connect(_window, SIGNAL(visibilityChanged()), this, SIGNAL(visibleChanged()));
     connect(_window, SIGNAL(windowStateChanged()), this, SIGNAL(windowStateChanged()));
-    connect(_window, SIGNAL(sizeChanged(QSize)), this, SLOT(updateSize(QSize)));
+    connect(_window, SIGNAL(sizeChanged(QSize)), this, SLOT(setSize(QSize)));
+
+    connect(this, SIGNAL(xChanged()), this, SLOT(updateWindowGeometry()));
+    connect(this, SIGNAL(yChanged()), this, SLOT(updateWindowGeometry()));
+    connect(this, SIGNAL(widthChanged()), this, SLOT(updateWindowGeometry()));
+    connect(this, SIGNAL(heightChanged()), this, SLOT(updateWindowGeometry()));
 
     view()->setResizeMode(QQuickView::SizeRootObjectToView);
     _window->installEventFilter(this);
@@ -63,22 +73,20 @@ bool QWindowItem::eventFilter(QObject *, QEvent *ev)
 {
     switch (ev->type()) {
     case QEvent::Close:
-        ev->ignore();
-        if (_deleteOnClose)
-            deleteLater();
-        else
-            _window->hide();
-        return true;
-    case QEvent::Resize:
-        emit sizeChanged();
-        emit widthChanged();
-        emit heightChanged();
-        break;
+        close();
+        return _deleteOnClose;
 
-    case QEvent::Move:
-        emit xChanged();
-        emit yChanged();
+    case QEvent::Resize: {
+        QResizeEvent *rev = static_cast<QResizeEvent *>(ev);
+        setSize(rev->size());
         break;
+    }
+
+    case QEvent::Move: {
+        QMoveEvent *mev = static_cast<QMoveEvent *>(ev);
+        setPos(mev->pos());
+        break;
+    }
 
     default:
         break;
@@ -113,26 +121,20 @@ void QWindowItem::componentComplete()
     }
 }
 
-void QWindowItem::updateSize(QSize newSize)
+void QWindowItem::updateWindowGeometry()
 {
-    QQuickItem::setSize(newSize);
-    emit sizeChanged();
+    // Translate the view's root item on the other direction to keep this item in place
+    QQuickItem *viewRootItem = _window->view()->rootItem();
+    viewRootItem->setX(-x());
+    viewRootItem->setY(-y());
+
+    _window->move(x(), y());
+    _window->resize(width(), height());
 }
 
 void QWindowItem::center()
 {
     _window->center();
-}
-
-void QWindowItem::setX(int x)
-{
-    _x = x;
-    _window->move(x, _y);
-}
-void QWindowItem::setY(int y)
-{
-    _y = y;
-    _window->move(_x, y);
 }
 
 void QWindowItem::moveWindow(int x,int y, int lx, int ly)
@@ -143,36 +145,32 @@ void QWindowItem::moveWindow(int x,int y, int lx, int ly)
     _window->move(p);
 }
 
-void QWindowItem::setHeight(int height)
+void QWindowItem::setMinimumHeight(int h)
 {
-    _window->resize(width(), height);
-    QQuickItem::setHeight(_window->height());
+    _window->setMinimumSize(QSize(_window->minimumSize().width(), h));
+    if (height() < h)
+        setHeight(h);
 }
 
-void QWindowItem::setMinimumHeight(int height)
+void QWindowItem::setMaximumHeight(int h)
 {
-    _window->setMinimumSize(QSize(_window->minimumSize().width(), height));
+    _window->setMaximumSize(QSize(_window->maximumSize().width(), h));
+    if (height() > h)
+        setHeight(h);
 }
 
-void QWindowItem::setMaximumHeight(int height)
+void QWindowItem::setMinimumWidth(int w)
 {
-    _window->setMaximumSize(QSize(_window->maximumSize().width(), height));
+    _window->setMinimumSize(QSize(w, _window->minimumSize().height()));
+    if (width() < w)
+        setWidth(w);
 }
 
-void QWindowItem::setWidth(int width)
+void QWindowItem::setMaximumWidth(int w)
 {
-    _window->resize(width, height());
-    QQuickItem::setWidth(_window->width());
-}
-
-void QWindowItem::setMinimumWidth(int width)
-{
-    _window->setMinimumSize(QSize(width, _window->minimumSize().height()));
-}
-
-void QWindowItem::setMaximumWidth(int width)
-{
-    _window->setMinimumSize(QSize(width, _window->maximumSize().height()));
+    _window->setMinimumSize(QSize(w, _window->maximumSize().height()));
+    if (width() > w)
+        setWidth(w);
 }
 
 void QWindowItem::setTitle(QString title)
