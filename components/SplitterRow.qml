@@ -155,11 +155,7 @@ Private.Splitter {
             anchors.rightMargin: (parent.width <= 1) ? -2 : 0
             drag.axis: Qt.YAxis
             drag.target: handle
-
-            CursorArea {
-                anchors.fill: parent
-                cursor: CursorArea.SplitHCursor
-            }
+            cursorShape: Qt.SplitHCursor
         }
     }
 }

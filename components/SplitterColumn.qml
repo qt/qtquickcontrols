@@ -153,12 +153,9 @@ Private.Splitter {
             anchors.fill: parent
             anchors.topMargin: (parent.height <= 1) ? -2 : 0
             anchors.bottomMargin: (parent.height <= 1) ? -2 : 0
-            drag.axis: Qt.XandYAxis // Why doesn't X-axis work?
+            drag.axis: Drag.XandYAxis // Why doesn't X-axis work?
             drag.target: handle
-            CursorArea {
-                anchors.fill: parent
-                cursor: CursorArea.SplitVCursor
-            }
+            cursorShape: Qt.SplitVCursor
         }
     }
 }
