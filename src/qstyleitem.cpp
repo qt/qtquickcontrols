@@ -82,8 +82,6 @@ QStyleItem::QStyleItem(QQuickPaintedItem *parent)
     m_value(0),
     m_step(0),
     m_paintMargins(0),
-    m_implicitWidth(0),
-    m_implicitHeight(0),
     m_contentWidth(0),
     m_contentHeight(0)
 
@@ -627,8 +625,7 @@ QSize QStyleItem::sizeFromContents(int width, int height)
 void QStyleItem::updateSizeHint()
 {
     QSize implicitSize = sizeFromContents(m_contentWidth, m_contentHeight);
-    m_implicitWidth = implicitSize.width();
-    m_implicitHeight = implicitSize.height();
+    setImplicitSize(implicitSize.width(), implicitSize.height());
 }
 
 int QStyleItem::pixelMetric(const QString &metric)
@@ -1247,16 +1244,6 @@ double QStyleItem::fontPointSize()
     if (widget())
         return widget()->font().pointSizeF();
     return qApp->font().pointSizeF();
-}
-
-int QStyleItem::implicitHeight()
-{
-    return m_implicitHeight;
-}
-
-int QStyleItem::implicitWidth()
-{
-    return m_implicitWidth;
 }
 
 bool QStyleItem::hasThemeIcon(const QString &icon) const

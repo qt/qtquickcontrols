@@ -73,8 +73,6 @@ class QStyleItem: public QQuickPaintedItem
     Q_PROPERTY( int step READ step WRITE setStep NOTIFY stepChanged)
     Q_PROPERTY( int paintMargins READ paintMargins WRITE setPaintMargins NOTIFY paintMarginsChanged)
 
-    Q_PROPERTY( int implicitWidth READ implicitWidth() NOTIFY implicitWidthChanged)
-    Q_PROPERTY( int implicitHeight READ implicitHeight() NOTIFY implicitHeightChanged)
     Q_PROPERTY( int contentWidth READ contentWidth() WRITE setContentWidth NOTIFY contentWidthChanged)
     Q_PROPERTY( int contentHeight READ contentHeight() WRITE setContentHeight NOTIFY contentHeightChanged)
 
@@ -172,8 +170,6 @@ public:
     QString fontFamily();
     double fontPointSize();
 
-    int implicitHeight();
-    int implicitWidth();
 
     int contentWidth() const {
         return m_contentWidth;
@@ -232,9 +228,6 @@ Q_SIGNALS:
     void hintChanged();
     void fontHeightChanged();
 
-    void implicitHeightChanged(int arg);
-    void implicitWidthChanged(int arg);
-
     void contentWidthChanged(int arg);
     void contentHeightChanged(int arg);
 
@@ -268,8 +261,6 @@ protected:
     int m_step;
     int m_paintMargins;
 
-    int m_implicitWidth;
-    int m_implicitHeight;
     int m_contentWidth;
     int m_contentHeight;
 
