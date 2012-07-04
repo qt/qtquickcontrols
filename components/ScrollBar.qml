@@ -47,10 +47,12 @@ Item {
     property int orientation : Qt.Horizontal
     property alias minimumValue: slider.minimumValue
     property alias maximumValue: slider.maximumValue
-    property int pageStep: styleitem.horizontal ? width : height
+    property int pageStep: styleitem && styleitem.horizontal ? width : height
     property int singleStep: 20
     property alias value: slider.value
-    property bool scrollToClickposition: styleitem.styleHint("scrollToClickPosition")
+    property bool scrollToClickposition: styleitem ? styleitem.styleHint("scrollToClickPosition") : false
+
+    property Item styleitem: loader.item
 
     implicitWidth: orientation == Qt.Horizontal ? 200 : internal.scrollbarExtent
     implicitHeight: orientation == Qt.Horizontal ? internal.scrollbarExtent : 200
