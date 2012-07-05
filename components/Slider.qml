@@ -72,15 +72,8 @@ Item {
         return Math.round(v);
     }
 
-    StyleItem {
-        id:buttonitem
-        elementType: "slider"
-        contentWidth:23
-        contentHeight:23
-    }
-
-    implicitWidth: orientation === Qt.Horizontal ? 200 : buttonitem.implicitHeight
-    implicitHeight: orientation === Qt.Horizontal ? buttonitem.implicitHeight : 200
+    implicitWidth: orientation === Qt.Horizontal ? 200 : loader.item.implicitHeight
+    implicitHeight: orientation === Qt.Horizontal ? loader.item.implicitHeight : 200
 
     property string styleHint;
 
@@ -88,6 +81,8 @@ Item {
         anchors.fill:parent
         elementType: "slider"
         sunken: pressed
+        contentWidth: 23
+        contentHeight: 23
         maximum: slider.maximumValue*100
         minimum: slider.minimumValue*100
         step: slider.stepSize*100
