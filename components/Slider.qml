@@ -54,6 +54,7 @@ Components.Slider{
         elementType: "slider"
         contentWidth:23
         contentHeight:23
+        visible: false
     }
 
     property int orientation: Qt.Horizontal
