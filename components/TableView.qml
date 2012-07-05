@@ -581,10 +581,7 @@ FocusScope{
                                 header[index].width = minWidth
                         }
                         onPressedChanged: if(pressed)offset=mouseX
-                        CursorArea {
-                            anchors.fill: parent
-                            cursor: CursorArea.SplitHCursor
-                        }
+                        cursorShape: Qt.SplitHCursor
                     }
                 }
             }

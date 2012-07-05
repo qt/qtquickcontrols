@@ -37,7 +37,7 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
- 
+
 #include <qqml.h>
 #include "qstyleplugin.h"
 #include "qstyleitem.h"
@@ -48,7 +48,6 @@
 #include "qwindowitem.h"
 #include "qdesktopitem.h"
 #include "qwheelarea.h"
-#include "qcursorarea.h"
 #include "qtsplitterbase.h"
 #include "qquicklinearlayout.h"
 #include "qquickcomponentsprivate.h"
@@ -92,7 +91,6 @@ void StylePlugin::registerTypes(const char *uri)
                                                   0, 2, registerPrivateModule);
 
     qmlRegisterType<QStyleItem>(uri, 0, 2, "StyleItem");
-    qmlRegisterType<QCursorArea>(uri, 0, 2, "CursorArea");
     qmlRegisterType<QRangeModel>(uri, 0, 2, "RangeModel");
     qmlRegisterType<QWheelArea>(uri, 0, 2, "WheelArea");
 
