@@ -166,6 +166,8 @@ FocusScope {
     TextInput { // see QTBUG-14936
         id: textInput
         selectByMouse:true
+        selectionColor: syspal.highlight
+        selectedTextColor: syspal.highlightedText
 
         // Todo move these margins to StyleItem
         anchors.leftMargin: 4

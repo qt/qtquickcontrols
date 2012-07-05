@@ -199,6 +199,8 @@ FocusScope {
         width: loader.inputRect.width
         height: loader.inputRect.height
         selectByMouse: true
+        selectionColor: syspal.highlight
+        selectedTextColor: syspal.highlightedText
 
         // validator: DoubleValidator { bottom: minimumValue; top: maximumValue; }
         onAccepted: {setValue(input.text)}

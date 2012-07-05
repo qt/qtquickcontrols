@@ -71,6 +71,8 @@ ScrollArea {
 
     TextEdit {
         id: edit
+        selectionColor: syspal.highlight
+        selectedTextColor: syspal.highlightedText
         wrapMode: TextEdit.WordWrap;
         width: area.viewportWidth - (2 * documentMargins)
         x: documentMargins
