@@ -90,6 +90,7 @@ QStyleItem::QStyleItem(QQuickPaintedItem *parent)
     setSmooth(false);
     //setCacheMode(QGraphicsItem::DeviceCoordinateCache);
 
+    connect(this, SIGNAL(enabledChanged()), this, SLOT(updateItem()));
     connect(this, SIGNAL(infoChanged()), this, SLOT(updateItem()));
     connect(this, SIGNAL(onChanged()), this, SLOT(updateItem()));
     connect(this, SIGNAL(selectedChanged()), this, SLOT(updateItem()));

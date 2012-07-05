@@ -374,6 +374,7 @@ Rectangle {
         Tab {
             id:mytab
             title: "Itemviews"
+            enabled: enabledCheck.checked
             ModelView {
                 anchors.fill: parent
                 anchors.margins: 6
@@ -381,6 +382,7 @@ Rectangle {
         }
         Tab {
             title: "Range"
+            enabled: enabledCheck.checked
             Row {
                 anchors.fill: parent
                 anchors.margins:16
@@ -461,6 +463,7 @@ Rectangle {
         }
         Tab {
             title: "Sidebar"
+            enabled: enabledCheck.checked
 
             Panel {
                 anchors.fill:parent
