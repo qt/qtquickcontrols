@@ -88,7 +88,6 @@ QStyleItem::QStyleItem(QQuickPaintedItem *parent)
 {
     setFlag(QQuickItem::ItemHasContents, true);
     setSmooth(false);
-    //setCacheMode(QGraphicsItem::DeviceCoordinateCache);
 
     connect(this, SIGNAL(enabledChanged()), this, SLOT(updateItem()));
     connect(this, SIGNAL(infoChanged()), this, SLOT(updateItem()));
@@ -696,31 +695,6 @@ QVariant QStyleItem::styleHint(const QString &metric)
     return 0;
 }
 
-#if 0
-void QStyleItem::setCursor(const QString &str)
-{
-    if (m_cursor != str) {
-        m_cursor = str;
-/*        if (m_cursor == "sizehorcursor")
-            QQuickItem::setCursor(Qt::SizeHorCursor);
-        else if (m_cursor == "sizevercursor")
-            QQuickItem::setCursor(Qt::SizeVerCursor);
-        else if (m_cursor == "sizeallcursor")
-            QQuickItem::setCursor(Qt::SizeAllCursor);
-        else if (m_cursor == "splithcursor")
-            QQuickItem::setCursor(Qt::SplitHCursor);
-        else if (m_cursor == "splitvcursor")
-            QQuickItem::setCursor(Qt::SplitVCursor);
-        else if (m_cursor == "wait")
-            QQuickItem::setCursor(Qt::WaitCursor);
-            */
-        //else if (m_cursor == "pointinghandcursor")
-        //    QQuickItem::setCursor(Qt::PointingHandCursor);
-        emit cursorChanged();
-    }
-}
-#endif
-
 void QStyleItem::setElementType(const QString &str)
 {
     if (m_type == str)
@@ -901,31 +875,6 @@ bool QStyleItem::eventFilter(QObject *o, QEvent *e) {
     }
     return QObject::eventFilter(o, e);
 }
-
-#if 0
-void QStyleItem::showToolTip(const QString &str)
-{
-//    QPointF scene = mapToScene(width() - 20, 0);
-//    QPoint global = qApp->focusWidget()->mapToGlobal(scene.toPoint());
-//    QToolTip::showText(QPoint(global.x(), global.y()), str);
-
-
-
-//    QPoint global;
-//    QPointF scenePos = mapToScene(QPointF(width() - 20, 0));
-//    QGraphicsScene *scene = QGraphicsItem::scene();
-//    QObject *parent = scene->parent();
-//    if (parent) {
-//        QGraphicsView *view = qobject_cast<QGraphicsView*>(parent);
-//        if (view) {
-//            QPoint p = view->mapFromScene(scenePos);
-//            global = view->mapToGlobal(p);
-//        }
-//    }
-
-    //QToolTip::showText(QPoint(global.x(),global.y()), str);
-}
-#endif
 
 QRectF QStyleItem::subControlRect(const QString &subcontrolString)
 {
