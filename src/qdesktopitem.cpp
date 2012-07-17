@@ -80,6 +80,11 @@ int QDesktopItem::availableHeight() const
     return desktopWidget.availableGeometry().height();
 }
 
+bool QDesktopItem::nativeTextRendering() const
+{
+    return qgetenv("DESKTOPCOMPONENTS_USE_NATIVE_TEXT").toInt() != 0;
+}
+
 QDesktopItem *QDesktopItem::qmlAttachedProperties(QObject *obj) {
     return new QDesktopItem(obj);
 }

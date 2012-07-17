@@ -112,10 +112,16 @@ Private.BasicButton {
         raised: !sunken
         hover: comboBox.containsMouse
         enabled: comboBox.enabled
-        text: comboBox.selectedText
+        //text: comboBox.selectedText
         hasFocus: comboBox.focus
         contentHeight: 18
         Component.onCompleted: popup.center = styleHint("comboboxpopup");
+        Text {
+            id: textItem
+            text: comboBox.selectedText
+            anchors.centerIn: parent
+            renderType: Desktop.nativeTextRendering ? Text.NativeRendering : Text.QtRendering
+        }
     }
 
 //  ToDo: adjust margins so that selected popup label

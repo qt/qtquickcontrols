@@ -201,6 +201,7 @@ FocusScope {
         selectByMouse: true
         selectionColor: syspal.highlight
         selectedTextColor: syspal.highlightedText
+        renderType: Desktop.nativeTextRendering ? Text.NativeRendering : Text.QtRendering
 
         // validator: DoubleValidator { bottom: minimumValue; top: maximumValue; }
         onAccepted: {setValue(input.text)}
@@ -212,6 +213,8 @@ FocusScope {
             anchors.rightMargin: 4
             anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
+            renderType: Desktop.nativeTextRendering ? Text.NativeRendering : Text.QtRendering
+
         }
     }
 

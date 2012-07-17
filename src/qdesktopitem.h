@@ -53,6 +53,7 @@ class QDesktopItem : public QObject
     Q_PROPERTY(int availableWidth READ availableWidth NOTIFY availableGeometryChanged)
     Q_PROPERTY(int availableHeight READ availableHeight NOTIFY availableGeometryChanged)
     Q_PROPERTY(int screenCount READ screenCount NOTIFY screenCountChanged)
+    Q_PROPERTY(bool nativeTextRendering READ nativeTextRendering CONSTANT)
 
 public:
     QDesktopItem(QObject* obj);
@@ -64,6 +65,7 @@ public:
     int screenHeight() const;
     int availableWidth() const;
     int availableHeight() const;
+    bool nativeTextRendering() const;
     static QDesktopItem *qmlAttachedProperties(QObject *obj);
 
 private:

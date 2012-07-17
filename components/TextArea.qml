@@ -79,6 +79,7 @@ ScrollArea {
         y: documentMargins
         // height has to be big enough to handle mouse focus
         height: Math.max(area.height, paintedHeight)
+        renderType: Desktop.nativeTextRendering ? Text.NativeRendering : Text.QtRendering
 
         selectByMouse: true
         readOnly: false

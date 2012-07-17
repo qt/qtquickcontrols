@@ -124,7 +124,7 @@ Item {
                     elementType: "tab"
                     selected: tab.selected
                     info: tabbar.position
-                    text:  tabFrame.tabs[index].title
+//                    text:  tabFrame.tabs[index].title
                     hover: mousearea.containsMouse
                     hasFocus: tabbar.focus && selected
                     property bool first: index === 0
@@ -137,11 +137,11 @@ Item {
                     contentHeight: Math.max(style.fontHeight + tabVSpace + 6, 0)
                     Text {
                         id: textitem
-                        // Used for size hint
-                        visible: false
+                        anchors.centerIn: parent
                         onWidthChanged: updateRect()
                         onHeightChanged: updateRect()
                         text:  tabFrame.tabs[index].title
+                        renderType: Desktop.nativeTextRendering ? Text.NativeRendering : Text.QtRendering
                     }
                 }
                 MouseArea {

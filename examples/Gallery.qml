@@ -110,6 +110,7 @@ Rectangle {
                     anchors.margins: frame.margins
                     width: parent.width
                     horizontalAlignment: Text.AlignHCenter
+                    renderType: Desktop.nativeTextRendering ? Text.NativeRendering : Text.QtRendering
 
                     text: {
                         if (Desktop.screenCount == 1) {
@@ -131,6 +132,7 @@ Rectangle {
                     anchors.margins: frame.margins
                     width: parent.width
                     horizontalAlignment: Text.AlignHCenter
+                    renderType: Desktop.nativeTextRendering ? Text.NativeRendering : Text.QtRendering
 
                     text: {
                         var text = "The available dimensions of your screens are: "
@@ -147,6 +149,7 @@ Rectangle {
                     anchors.top: availableDimensionsText.bottom
                     anchors.margins: frame.margins
                     text: "This is a new Window, press the\nbutton below to close it again."
+                    renderType: Desktop.nativeTextRendering ? Text.NativeRendering : Text.QtRendering
                 }
                 Button {
                     anchors.horizontalCenter: closeText.horizontalCenter
@@ -403,6 +406,7 @@ Rectangle {
                             CheckBox {
                                 id: scale
                                 text: "Scale on hover"
+                                property real scaleFactor: 2.0
                             }
                         }
                     }
@@ -413,14 +417,14 @@ Rectangle {
                             Button {
                                 width:200
                                 text: "Push button"
-                                scale: scale.checked && containsMouse ? 1.1 : 1
+                                scale: scale.checked && containsMouse ? scale.scaleFactor : 1
                                 opacity: !fade.checked || containsMouse ? 1 : 0.5
                                 Behavior on scale { NumberAnimation { easing.type: Easing.OutCubic ; duration: 120} }
                                 Behavior on opacity { NumberAnimation { easing.type: Easing.OutCubic ; duration: 220} }
                             }
                             Slider {
                                 value: 0.5
-                                scale: scale.checked && containsMouse ? 1.1 : 1
+                                scale: scale.checked && containsMouse ? scale.scaleFactor : 1
                                 opacity: !fade.checked || containsMouse ? 1 : 0.5
                                 Behavior on scale { NumberAnimation { easing.type: Easing.OutCubic ; duration: 120} }
                                 Behavior on opacity { NumberAnimation { easing.type: Easing.OutCubic ; duration: 220} }
@@ -429,21 +433,21 @@ Rectangle {
                                 id : slider1
                                 value: 50
                                 tickmarksEnabled: false
-                                scale: scale.checked && containsMouse ? 1.1 : 1
+                                scale: scale.checked && containsMouse ? scale.scaleFactor : 1
                                 opacity: !fade.checked || containsMouse ? 1 : 0.5
                                 Behavior on scale { NumberAnimation { easing.type: Easing.OutCubic ; duration: 120} }
                                 Behavior on opacity { NumberAnimation { easing.type: Easing.OutCubic ; duration: 220} }
                             }
                             ProgressBar {
                                 value: 0.5
-                                scale: scale.checked && containsMouse ? 1.1 : 1
+                                scale: scale.checked && containsMouse ? scale.scaleFactor : 1
                                 opacity: !fade.checked || containsMouse ? 1 : 0.5
                                 Behavior on scale { NumberAnimation { easing.type: Easing.OutCubic ; duration: 120} }
                                 Behavior on opacity { NumberAnimation { easing.type: Easing.OutCubic ; duration: 220} }
                             }
                             ProgressBar {
                                 indeterminate: true
-                                scale: scale.checked && containsMouse ? 1.1 : 1
+                                scale: scale.checked && containsMouse ? scale.scaleFactor : 1
                                 opacity: !fade.checked || containsMouse ? 1 : 0.5
                                 Behavior on scale { NumberAnimation { easing.type: Easing.OutCubic ; duration: 120} }
                                 Behavior on opacity { NumberAnimation { easing.type: Easing.OutCubic ; duration: 220} }
@@ -452,7 +456,7 @@ Rectangle {
                         Dial{
                             width: 120
                             height: 120
-                            scale: scale.checked && containsMouse ? 1.1 : 1
+                            scale: scale.checked && containsMouse ? scale.scaleFactor : 1
                             opacity: !fade.checked || containsMouse ? 1 : 0.5
                             Behavior on scale { NumberAnimation { easing.type: Easing.OutCubic ; duration: 120} }
                             Behavior on opacity { NumberAnimation { easing.type: Easing.OutCubic ; duration: 220} }

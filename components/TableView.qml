@@ -168,12 +168,14 @@ FocusScope{
                 elide: itemElideMode
                 text: itemValue ? itemValue : ""
                 color: itemForeground
+                renderType: Desktop.nativeTextRendering ? Text.NativeRendering : Text.QtRendering
             }
             Text {
                 id: sizehint
                 font: label.font
                 text: itemValue ? itemValue : ""
                 visible: false
+                renderType: Desktop.nativeTextRendering ? Text.NativeRendering : Text.QtRendering
             }
         }
     }
@@ -432,7 +434,7 @@ FocusScope{
     }
 
 
-    Text{ id:text }
+    Text{ id:text; renderType: Desktop.nativeTextRendering ? Text.NativeRendering : Text.QtRendering }
 
     Item {
         id: tableColumn

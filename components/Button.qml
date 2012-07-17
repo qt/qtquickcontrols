@@ -59,13 +59,25 @@ BasicButton {
         sunken: pressed || checked
         raised: !(pressed || checked)
         hover: containsMouse
-        text: iconSource === "" ? "" : button.text
+//        text: iconSource === "" ? "" : button.text
         hasFocus: button.focus
         hint: button.styleHint
 
         // If no icon, let the style do the drawing
         activeControl: defaultbutton ? "default" : "f"
+
+        Text {
+            id:text
+            color: textColor
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
+            text: button.text
+            horizontalAlignment: Text.Center
+            renderType: Desktop.nativeTextRendering ? Text.NativeRendering : Text.QtRendering
+        }
     }
+
 
 // ## TODO: move to style implementation
 //    label: Item {

@@ -66,13 +66,20 @@ Item {
         id: styleitem
         elementType: "groupbox"
         anchors.fill: parent
-        text: groupbox.title
+        //text: groupbox.title
         hover: checkbox.containsMouse
         on: checkbox.checked
         hasFocus: checkbox.activeFocus
         activeControl: checkable ? "checkbox" : ""
         sunken: !flat
         contentHeight:  (title.length > 0 || checkable) ? 24 : 4
+        Text {
+            id: textItem
+            text: groupbox.title
+            anchors.top: parent.top
+            anchors.left: parent.left
+            renderType: Desktop.nativeTextRendering ? Text.NativeRendering : Text.QtRendering
+        }
     }
 
     Loader {

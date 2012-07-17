@@ -67,6 +67,7 @@ CheckBox {
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: parent.right
             elide: Text.ElideRight
+            renderType: Desktop.nativeTextRendering ? Text.NativeRendering : Text.QtRendering
         }
     }
 }

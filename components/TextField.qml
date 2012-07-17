@@ -168,6 +168,7 @@ FocusScope {
         selectByMouse:true
         selectionColor: syspal.highlight
         selectedTextColor: syspal.highlightedText
+        renderType: Desktop.nativeTextRendering ? Text.NativeRendering : Text.QtRendering
 
         // Todo move these margins to StyleItem
         anchors.leftMargin: 4
@@ -194,5 +195,6 @@ FocusScope {
         clip: true
         elide: Text.ElideRight
         Behavior on opacity { NumberAnimation { duration: 90 } }
+        renderType: Desktop.nativeTextRendering ? Text.NativeRendering : Text.QtRendering
     }
 }
