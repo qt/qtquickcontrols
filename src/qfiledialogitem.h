@@ -40,7 +40,7 @@
 #ifndef QFILEDIALOGITEM_H
 #define QFILEDIALOGITEM_H
 
-#include <QtGui/QApplication>
+#include <QApplication>
 #if QT_VERSION < 0x050000
 #include <QDeclarativeItem>
 #include <QDeclarativeView>
