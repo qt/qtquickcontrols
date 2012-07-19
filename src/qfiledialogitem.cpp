@@ -294,7 +294,7 @@ void QFileDialogItem::close()
 QVariant QFileDialogItem::itemChange(GraphicsItemChange change,
                                      const QVariant &value)
 {
-    if (change == QGraphicsItem::QGraphicsItem::ItemVisibleHasChanged) {
+    if (change == QGraphicsItem::ItemVisibleHasChanged) {
         bool visible = value.toBool();
 
         if (visible && _isOpen) {
