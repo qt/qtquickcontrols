@@ -48,8 +48,8 @@ WheelArea {
     property alias verticalScrollBar: vscrollbar
     property int macOffset: frame && styleitem.style === "mac" ? 1 : 0
     property bool blockUpdates: false
-    property int availableHeight : root.height - (hscrollbar.visible ? hscrollbar.height : 0)
-    property int availableWidth: root.width - vscrollbar.width
+    property int availableHeight : height - (hscrollbar.visible ? hscrollbar.height : 0)
+    property int availableWidth: width - vscrollbar.width
 
     anchors.fill: parent
     anchors.margins: frameWidth
