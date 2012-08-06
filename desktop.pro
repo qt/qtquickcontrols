@@ -1,2 +1,2 @@
 TEMPLATE = subdirs
-SUBDIRS = components src
+SUBDIRS = imports/QtDesktop/components.pro src
