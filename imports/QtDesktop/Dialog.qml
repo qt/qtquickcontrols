@@ -39,8 +39,9 @@
 ****************************************************************************/
 
 import QtQuick 2.0
+import QtDesktop 0.1 as QtDesktop // purely for override of Window
 
-Window {
+QtDesktop.Window {
     id: dialog
 
     width: 400

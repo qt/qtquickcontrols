@@ -2,6 +2,7 @@ import QtQuick 2.0
 //import "../components"
 import QtQuick.Window 2.0
 import QtDesktop 0.2
+import QtDesktop 0.2 as QtDesktop // purely for overriding Window
 import "content"
 
 
@@ -66,7 +67,7 @@ Rectangle {
             onAccepted: { console.log("Accepted: " + filePath) }
         }
 
-        Window {
+        QtDesktop.Window {
             id: window1
 
             width: 400
@@ -76,8 +77,9 @@ Rectangle {
             minimumHeight: 400
             windowDecoration: true
             modal: modalCheck.checked
-            */
             windowTitle: "child window"
+            */
+            title: "child window"
 
 /*
             MenuBar {

@@ -88,8 +88,7 @@ QObject *registerPrivateModule(QQmlEngine *engine, QJSEngine *jsEngine)
 
 void StylePlugin::registerTypes(const char *uri)
 {
-    qmlRegisterModuleApi<QQuickComponentsPrivate>(QByteArray(uri) + ".Internal",
-                                                  0, 2, registerPrivateModule);
+    qmlRegisterSingletonType<QQuickComponentsPrivate>(uri, 0, 2, "PrivateHelper", registerPrivateModule);
 
     qmlRegisterType<QStyleItem>(uri, 0, 2, "StyleItem");
     qmlRegisterType<QRangeModel>(uri, 0, 2, "RangeModel");
@@ -109,9 +108,10 @@ void StylePlugin::registerTypes(const char *uri)
 
     qmlRegisterType<QFileSystemModel>(uri, 0, 2, "FileSystemModel");
     qmlRegisterType<QtSplitterBase>(uri, 0, 2, "Splitter");
-    qmlRegisterType<QWindowItem>("QtQuick", 2, 0, "Window"); // override built-in Window
+    qmlRegisterType<QWindowItem>(uri, 0, 2, "Window"); // cannot override built-in Window, clients must namespace the import to use this Window.
+    qmlRegisterType<QWindowItem>(uri, 0, 1, "Window"); // cannot override built-in Window, clients must namespace the import to use this Window.
 
-    qmlRegisterUncreatableType<QtMenuBase>("uri", 0, 1, "NativeMenuBase", QLatin1String("Do not create objects of type NativeMenuBase"));
+    qmlRegisterUncreatableType<QtMenuBase>(uri, 0, 1, "NativeMenuBase", QLatin1String("Do not create objects of type NativeMenuBase"));
     qmlRegisterUncreatableType<QDesktopItem>(uri, 0,2,"Desktop", QLatin1String("Do not create objects of type Desktop"));
 }
 

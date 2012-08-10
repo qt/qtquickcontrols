@@ -1,8 +1,9 @@
 import QtQuick 2.0
 import QtDesktop 0.2
+import QtDesktop 0.2 as QtDesktop // purely for overriding Window
 import "content"
 
-Window {
+QtDesktop.Window {
     title: "parent window"
 
     width: gallery.width

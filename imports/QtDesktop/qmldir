@@ -1,3 +1,4 @@
+module QtDesktop
 plugin styleplugin plugin
 ApplicationWindow 0.1 ApplicationWindow.qml
 Button 0.1 Button.qml
