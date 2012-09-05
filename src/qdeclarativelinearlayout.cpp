@@ -53,6 +53,12 @@ QDeclarativeLinearLayout::QDeclarativeLinearLayout(Orientation orientation,
 
 }
 
+QDeclarativeLinearLayout::~QDeclarativeLinearLayout()
+{
+    foreach (QDeclarativeItem *item, m_items)
+        removeLayoutItem(item);
+}
+
 qreal QDeclarativeLinearLayout::spacing() const
 {
     return m_spacing;

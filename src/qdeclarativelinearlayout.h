@@ -56,7 +56,7 @@ public:
 
     explicit QDeclarativeLinearLayout(Orientation orientation,
                                       QDeclarativeItem *parent = 0);
-    ~QDeclarativeLinearLayout() {}
+    ~QDeclarativeLinearLayout();
 
     qreal spacing() const;
     void setSpacing(qreal spacing);
