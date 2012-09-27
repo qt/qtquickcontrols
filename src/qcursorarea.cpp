@@ -65,6 +65,12 @@ void QCursorArea::setCursor(Cursor cursor)
     case SizeVerCursor:
         QDeclarativeItem::setCursor(Qt::SizeVerCursor);
         break;
+    case SizeBDiagCursor:
+        QDeclarativeItem::setCursor(Qt::SizeBDiagCursor);
+        break;
+    case SizeFDiagCursor:
+        QDeclarativeItem::setCursor(Qt::SizeFDiagCursor);
+        break;
     case SizeAllCursor:
         QDeclarativeItem::setCursor(Qt::SizeAllCursor);
         break;

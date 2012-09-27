@@ -55,6 +55,8 @@ public:
         ArrowCursor,
         SizeHorCursor,
         SizeVerCursor,
+        SizeBDiagCursor,
+        SizeFDiagCursor,
         SizeAllCursor,
         SplitHCursor,
         SplitVCursor,
