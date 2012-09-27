@@ -121,7 +121,9 @@ Splitter {
                         break
                     }
                 }
-                item.Splitter.expanding = true
+                if (items.length && item.visible) {
+                    item.Splitter.expanding = true
+                }
             }
 
             d.itemExpandingGuard = false
