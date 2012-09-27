@@ -258,6 +258,20 @@ Splitter {
             onWidthChanged: d.updateLayout()
 
             onXChanged: {
+                // For some unknown reason, dragging by X axis only not working in MouseArea, so
+                // to enable it Drag.XandYAxis should be used, therefore not only Y coordinate
+                // changes, but also X and we need to filter out this events, if we have splitter,
+                // that should move vertically
+                if (d.horizontal) {
+                    moveHandle()
+                }
+            }
+
+            onYChanged: {
+                moveHandle()
+            }
+
+            function moveHandle() {
                 // Moving the handle means resizing an item. Which one,
                 // left or right, depends on where the expanding item is.
                 // 'updateLayout' will override in case new width violates max/min.
