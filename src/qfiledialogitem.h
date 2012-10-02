@@ -103,6 +103,9 @@ Q_SIGNALS:
 protected:
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
+private Q_SLOTS:
+    void dialogDestroyed();
+
 private:
     void updateFileMode();
 

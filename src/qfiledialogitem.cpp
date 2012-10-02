@@ -82,11 +82,21 @@ QFileDialogItem::QFileDialogItem():
 {
     QObject::connect(_dialog, SIGNAL(accepted()), this, SIGNAL(accepted()));
     QObject::connect(_dialog, SIGNAL(rejected()), this, SIGNAL(rejected()));
+    QObject::connect(_dialog, SIGNAL(destroyed()), this, SLOT(dialogDestroyed()));
 }
 
 QFileDialogItem::~QFileDialogItem()
 {
     delete _dialog;
+}
+
+// If the dialog parent is set in the open() method, we need to watch
+// for that parent being destroyed otherwise we'll end up destroying
+// the dialog twice (once when the parent view is destructed, and once
+// in our own destructor).
+void QFileDialogItem::dialogDestroyed()
+{
+    _dialog = 0;
 }
 
 /*!
