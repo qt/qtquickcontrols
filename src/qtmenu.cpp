@@ -106,16 +106,11 @@ void QtMenu::showPopup(qreal x, qreal y, int atActionIndex)
         atAction = m_qmenu->actions()[atActionIndex];
 
     // x,y are in view coordinates, QMenu expects screen coordinates
-    // ### activeWindow hack
-    int menuBarHeight = 0;
-    QWidget *window = QApplication::activeWindow();
-    QTopLevelWindow *tw = qobject_cast<QTopLevelWindow*>(window);
-    if (tw) {
-        QMenuBar *menuBar = tw->menuBar();
-        menuBarHeight = menuBar->height();
-    }
-
-    QPoint screenPosition = window->mapToGlobal(QPoint(x, y+menuBarHeight));
+    // map coordinates from focusWidget rather than activeWindow since
+    // QML items are commonly presented through a QWidget-derived view
+    // still a hack
+    QWidget *focusedWidget = QApplication::focusWidget();
+    QPoint screenPosition = focusedWidget->mapToGlobal(QPoint(x, y));
 
     setHoveredIndex(m_selectedIndex);
     m_qmenu->popup(screenPosition, atAction);
