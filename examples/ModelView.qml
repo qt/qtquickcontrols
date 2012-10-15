@@ -1,20 +1,21 @@
-import QtQuick 1.0
-import QtDesktop 0.1
+import QtQuick 2.0
+import QtDesktop 0.2
+//import QtQuick.XmlListModel 2.0
 
 Item {
     id: root
     width: 600
     height: 300
 
-    XmlListModel {
-        id: flickerModel
-        source: "http://api.flickr.com/services/feeds/photos_public.gne?format=rss2&tags=" + "Cat"
-        query: "/rss/channel/item"
-        namespaceDeclarations: "declare namespace media=\"http://search.yahoo.com/mrss/\";"
-        XmlRole { name: "title"; query: "title/string()" }
-        XmlRole { name: "imagesource"; query: "media:thumbnail/@url/string()" }
-        XmlRole { name: "credit"; query: "media:credit/string()" }
-    }
+//    XmlListModel {
+//        id: flickerModel
+//        source: "http://api.flickr.com/services/feeds/photos_public.gne?format=rss2&tags=" + "Cat"
+//        query: "/rss/channel/item"
+//        namespaceDeclarations: "declare namespace media=\"http://search.yahoo.com/mrss/\";"
+//        XmlRole { name: "title"; query: "title/string()" }
+//        XmlRole { name: "imagesource"; query: "media:thumbnail/@url/string()" }
+//        XmlRole { name: "credit"; query: "media:credit/string()" }
+//    }
 
     ListModel {
         id: dummyModel

@@ -1,5 +1,8 @@
-import QtQuick 1.1
-import QtDesktop 0.1
+import QtQuick 2.0
+//import "../components"
+import QtQuick.Window 2.0
+import QtDesktop 0.2
+import QtDesktop 0.2 as QtDesktop // purely for overriding Window
 import "content"
 
 
@@ -21,30 +24,26 @@ Rectangle {
             spacing: 2
             anchors.verticalCenter: parent.verticalCenter
             ToolButton{
-                iconName: "folder-new"
-                iconSource: "images/folder_new.png"
-                anchors.verticalCenter: parent.verticalCenter
-            }
-            ToolButton{
-                iconName: "folder-new"
-                iconSource: "images/folder_new.png"
-                anchors.verticalCenter: parent.verticalCenter
-            }
-            ToolButton{
                 iconName: "window-new"
-                iconSource: "images/toplevel_window.png"
+                iconSource: "images/window-new.png"
                 anchors.verticalCenter: parent.verticalCenter
                 onClicked: window1.visible = !window1.visible
+                Accessible.name: "New window"
+                tooltip: "Toggle visibility of the second window"
             }
             ToolButton{
                 iconName: "document-open"
+                iconSource: "images/document-open.png"
                 anchors.verticalCenter: parent.verticalCenter
                 onClicked: fileDialogLoad.open()
+                tooltip: "(Pretend to) open a file"
             }
             ToolButton{
                 iconName: "document-save-as"
+                iconSource: "images/document-save-as.png"
                 anchors.verticalCenter: parent.verticalCenter
                 onClicked: fileDialogSave.open()
+                tooltip: "(Pretend to) save as..."
             }
         }
 
@@ -62,23 +61,27 @@ Rectangle {
             id: fileDialogSave
             folder: "/tmp"
             title: "Save as..."
-            modality: Qt.WindowModal
+            modal: true
             selectExisting: false
 
             onAccepted: { console.log("Accepted: " + filePath) }
         }
 
-        Window {
+        QtDesktop.Window {
             id: window1
 
             width: 400
             height: 400
+            /*
             minimumWidth: 400
             minimumHeight: 400
             windowDecoration: true
-            modality: modalCheck.checked ? Qt.ApplicationModal : Qt.NonModal
+            modal: modalCheck.checked
+            windowTitle: "child window"
+            */
             title: "child window"
 
+/*
             MenuBar {
                 Menu {
                     text: "File"
@@ -116,6 +119,7 @@ Rectangle {
                     }
                 }
             }
+*/
 
             Rectangle {
                 color: syspal.window
@@ -392,6 +396,7 @@ Rectangle {
         Tab {
             id:mytab
             title: "Itemviews"
+            enabled: enabledCheck.checked
             ModelView {
                 anchors.fill: parent
                 anchors.margins: 6
@@ -399,6 +404,7 @@ Rectangle {
         }
         Tab {
             title: "Range"
+            enabled: enabledCheck.checked
             Row {
                 anchors.fill: parent
                 anchors.margins:16
@@ -479,6 +485,7 @@ Rectangle {
         }
         Tab {
             title: "Sidebar"
+            enabled: enabledCheck.checked
 
             Panel {
                 anchors.fill:parent

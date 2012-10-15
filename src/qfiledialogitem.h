@@ -40,16 +40,25 @@
 #ifndef QFILEDIALOGITEM_H
 #define QFILEDIALOGITEM_H
 
-#include <QtGui/QApplication>
+#include <QApplication>
+#if QT_VERSION < 0x050000
 #include <QDeclarativeItem>
 #include <QDeclarativeView>
+#else
+#include <QtQuick/QQuickItem>
+#include <QtQuick/QQuickView>
+#endif
 #include <QFileDialog>
 
-class QFileDialogItem: public QDeclarativeItem
+#if QT_VERSION < 0x050000
+class QFileDialogItem : public QDeclarativeItem
+#else
+class QFileDialogItem : public QQuickItem
+#endif
 {
     Q_OBJECT
-    Q_PROPERTY(Qt::WindowModality modality READ modality \
-               WRITE setModality NOTIFY modalityChanged)
+    Q_PROPERTY(bool visible READ isVisible WRITE setVisible NOTIFY visibleChanged)
+    Q_PROPERTY(bool modal READ modal WRITE setModal NOTIFY modalityChanged)
     Q_PROPERTY(QString title READ title WRITE setTitle NOTIFY titleChanged)
     Q_PROPERTY(bool selectExisting READ selectExisting \
                WRITE setSelectExisting NOTIFY selectExistingChanged)
@@ -67,8 +76,9 @@ public:
     QFileDialogItem();
     ~QFileDialogItem();
 
+    bool isVisible() const { return _dialog->isVisible(); }
     QString title() const { return _dialog->windowTitle(); }
-    Qt::WindowModality modality() const { return _dialog->windowModality(); }
+    bool modal() const { return _dialog->isModal(); }
     bool selectExisting() const { return _selectExisting; }
     bool selectMultiple() const { return _selectMultiple; }
     bool selectFolder() const { return _selectFolder; }
@@ -77,8 +87,9 @@ public:
     QString filePath() const;
     QStringList filePaths() const;
 
+    void setVisible(bool visible);
     void setTitle(QString title);
-    void setModality(Qt::WindowModality modality);
+    void setModal(bool modal);
     void setSelectExisting(bool selectExisting);
     void setSelectMultiple(bool selectMultiple);
     void setSelectFolder(bool selectFolder);
@@ -99,12 +110,12 @@ Q_SIGNALS:
     void selectFolderChanged();
     void folderChanged();
     void nameFiltersChanged();
+    void visibleChanged();
 
 protected:
+#if QT_VERSION < 0x050000
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);
-
-private Q_SLOTS:
-    void dialogDestroyed();
+#endif
 
 private:
     void updateFileMode();

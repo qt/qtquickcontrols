@@ -44,12 +44,13 @@
 #include <QTimer>
 #include <QTime>
 #include <QList>
-#include <QtDeclarative>
+#include <QtQml>
+#include <QtQml/QQmlEngine>
 #include <QDebug>
 
 QT_BEGIN_NAMESPACE
 
-class QDeclarativeView;
+class QQuickView;
 class QTranslator;
 class QActionGroup;
 class QMenuBar;
@@ -70,9 +71,9 @@ public:
     void addPluginPath(const QString& plugin);
 
     QString currentFile() const { return currentFileOrUrl; }
-    QDeclarativeEngine *engine() { return _engine; }
-    QGraphicsObject *rootObject() { return _rootObject; }
-    QDeclarativeContext *rootContext() { return _engine->rootContext(); }
+    QQmlEngine *engine() { return _engine; }
+    //QGraphicsObject *rootObject() { return _rootObject; }
+    QQmlContext *rootContext() { return _engine->rootContext(); }
 
 public slots:
     bool open(const QString&);
@@ -83,12 +84,12 @@ public slots:
 
 private:
     QString currentFileOrUrl;
-    QDeclarativeEngine *_engine;
-    QGraphicsObject *_rootObject;
-    QDeclarativeComponent *_component;
+    QQmlEngine *_engine;
+    //QGraphicsObject *_rootObject;
+    QQmlComponent *_component;
 
 signals:
-    void statusChanged(QDeclarativeComponent::Status);
+    void statusChanged(QQmlComponent::Status);
 };
 
 QT_END_NAMESPACE

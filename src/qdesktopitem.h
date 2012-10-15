@@ -41,8 +41,8 @@
 #ifndef QDESKTOPITEM_H
 #define QDESKTOPITEM_H
 
-#include <QDesktopWidget>
-#include <QtDeclarative>
+#include <QtWidgets/QDesktopWidget>
+#include <QtQml>
 
 class QDesktopItem : public QObject
 {

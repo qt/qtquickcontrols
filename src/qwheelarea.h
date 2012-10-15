@@ -42,11 +42,11 @@
 #define QWHEELAREA_H
 
 #include <QtGui/qevent.h>
-#include <QtGui/qgraphicssceneevent.h>
-#include <QtDeclarative/qdeclarativeitem.h>
+#include <QtWidgets/qgraphicssceneevent.h>
+#include <QtQuick/qquickitem.h>
 
 
-class QWheelArea : public QDeclarativeItem
+class QWheelArea : public QQuickItem
 {
     Q_OBJECT
     Q_PROPERTY(qreal verticalDelta READ verticalDelta WRITE setVerticalDelta NOTIFY verticalWheelMoved)
@@ -60,7 +60,7 @@ class QWheelArea : public QDeclarativeItem
     Q_PROPERTY(qreal scrollSpeed READ scrollSpeed WRITE setScrollSpeed NOTIFY scrollSpeedChanged)
 
 public:
-    QWheelArea(QDeclarativeItem *parent = 0);
+    QWheelArea(QQuickItem *parent = 0);
     virtual ~QWheelArea();
 
     void setHorizontalMinimumValue(qreal value);
@@ -90,7 +90,7 @@ public:
     void setScrollSpeed(qreal value);
     qreal scrollSpeed() const;
 
-    virtual bool event(QEvent *e);
+    void wheelEvent(QWheelEvent *event);
 
 Q_SIGNALS:
     void verticalValueChanged();

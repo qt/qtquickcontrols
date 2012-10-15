@@ -38,25 +38,38 @@
 **
 ****************************************************************************/
 
-import QtQuick 1.1
-import "custom" as Components
+import QtQuick 2.0
+import QtDesktop 0.2
+
 Item {
+    id: frame
     default property alias data: content.data
     implicitWidth: adjustToContentSize ? content.childrenRect.width + 2 * content.frameWidth : 30
     implicitHeight: adjustToContentSize ? content.childrenRect.height + 2 * content.frameWidth : 30
-    property alias raised: style.raised
-    property alias sunken: style.sunken
+
+    property bool raised
+    property bool sunken
     property bool adjustToContentSize: false
-    StyleItem {
-        id: style
+
+    Loader {
+        id: loader
         anchors.fill: parent
-        elementType: "frame"
+        sourceComponent: delegate
         Item {
             id: content
             anchors.fill: parent
             anchors.margins: frameWidth
-            property int frameWidth: styleitem.pixelMetric("defaultframewidth");
+            property int frameWidth
         }
+        onLoaded: item.z = -1
+    }
+
+    property Component delegate: StyleItem {
+        id: style
+        anchors.fill: parent
+        elementType: "frame"
+        sunken: frame.sunken
+        raised: frame.raised
+        Component.onCompleted: content.frameWidth = pixelMetric("defaultframewidth");
     }
 }
-

@@ -38,15 +38,13 @@
 **
 ****************************************************************************/
 
-import QtQuick 1.1
+import QtQuick 2.0
+import QtDesktop 0.2
 
 Menu {
     id: root
     property string selectedText: itemTextAt(selectedIndex)
     property string hoveredText: itemTextAt(hoveredIndex)
-    property int x
-    property int y
-    property bool visible
     property string textRole
 
     // 'centerSelectedText' means that the menu will be positioned

@@ -38,7 +38,8 @@
 **
 ****************************************************************************/
 
-import QtQuick 1.1
+import QtQuick 2.0
+import QtDesktop 0.2
 import "private" as Private
 
 /*
@@ -145,16 +146,10 @@ FocusScope{
     property alias cacheBuffer: tree.cacheBuffer
     property alias currentIndex: tree.currentIndex // Should this be currentRowIndex?
 
+    Accessible.role: Accessible.Table
+
     // Signals
     signal activated
-
-
-    Rectangle {
-        id: colorRect
-        color: backgroundColor
-        anchors.fill: frameitem
-        anchors.margins: frameWidth
-    }
 
     Component {
         id: standardDelegate
@@ -218,10 +213,18 @@ FocusScope{
             id: rowstyle
             elementType: "itemrow"
             activeControl: itemAlternateBackground ? "alternate" : ""
-            selected: itemSelected ? "true" : "false"
+            selected: itemSelected ? true : false
         }
     }
 
+    Rectangle {
+        id: colorRect
+        color: backgroundColor
+        anchors.fill: frameitem
+        anchors.margins: frameWidth
+        anchors.rightMargin: (!frameAroundContents && verticalScrollBar.visible ? verticalScrollBar.width : 0) + frameWidth
+        anchors.bottomMargin: (!frameAroundContents && horizontalScrollBar.visible ? horizontalScrollBar.height : 0) +frameWidth
+    }
 
     StyleItem {
         id: frameitem
@@ -255,7 +258,7 @@ FocusScope{
         Timer { running: mousearea.autoincrement && verticalScrollBar.visible; repeat: true; interval: 20 ; onTriggered: incrementCurrentIndex()}
         Timer { running: mousearea.autodecrement && verticalScrollBar.visible; repeat: true; interval: 20 ; onTriggered: decrementCurrentIndex()}
 
-        onMousePositionChanged: {
+        onPositionChanged: {
             if (mouseY > tree.height && pressed) {
                 if (autoincrement) return;
                 autodecrement = false;
@@ -372,11 +375,12 @@ FocusScope{
             anchors.margins: frameWidth
             property int rowIndex: model.index
             property bool itemAlternateBackground: alternateRowColor && rowIndex % 2 == 1
-            property variant itemModelData: hasOwnProperty("modelData") ? modelData : null
+            property variant itemModelData: this.hasOwnProperty("modelData") ? modelData : null
+            // ## Note the this reference is due to a behavior change in Qt5.0 This needs to be investigated
             Loader {
                 id: rowstyle
                 // row delegate
-                sourceComponent: itemAlternateBackground || itemSelected ? root.rowDelegate : null
+                sourceComponent: root.rowDelegate
                 // Row fills the tree width regardless of item size
                 // But scrollbar should not adjust to it
                 width: frameitem.width
@@ -405,8 +409,8 @@ FocusScope{
                         height: item !== undefined ? item.height : Math.max(16, styleitem.implicitHeight)
 
                         function getValue() {
-                            if (header[index].role.length && hasOwnProperty(header[index].role))
-                                return this[header[index].role]
+                            if (header[index].role.length && model.get && model.get(rowIndex)[header[index].role])
+                                return model.get(rowIndex)[header[index].role]
                             else if (modelData && modelData.hasOwnProperty(header[index].role))
                                 return modelData[header[index].role]
                             else if (modelData)
@@ -496,11 +500,13 @@ FocusScope{
                             sortColumn = index
                         }
                         // Here we handle moving header sections
-                        onMousePositionChanged: {
+                        // NOTE: the direction is different from the master branch
+                        // so this indicates that Im using an invalid assumption on item ordering
+                        onPositionChanged: {
                             if (pressed) { // only do this while dragging
-                                for (var h = 0 ; h < header.length ; ++h) {
-                                    if (drag.target.x > headerrow.children[h].x - 10) {
-                                        repeater.targetIndex = header.length - h - 1
+                                for (var h = header.length-1 ; h >= 0 ; --h) {
+                                    if (drag.target.x > headerrow.children[h].x) {
+                                        repeater.targetIndex = h
                                         break
                                     }
                                 }
@@ -575,10 +581,7 @@ FocusScope{
                                 header[index].width = minWidth
                         }
                         onPressedChanged: if(pressed)offset=mouseX
-                        CursorArea {
-                            anchors.fill: parent
-                            cursor: CursorArea.SplitHCursor
-                        }
+                        cursorShape: Qt.SplitHCursor
                     }
                 }
             }

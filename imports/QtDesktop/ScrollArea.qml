@@ -38,8 +38,8 @@
 **
 ****************************************************************************/
 
-import QtQuick 1.1
-import "custom" as Components
+import QtQuick 2.0
+import QtDesktop 0.2
 import "private" as Private
 
 FocusScope {
@@ -49,7 +49,7 @@ FocusScope {
 
     // Cosmetic propeties
     property bool frame: true
-    property bool frameAroundContents: styleitem.styleHint("framearoundcontents")
+    property bool frameAroundContents: true
     property bool highlightOnFocus: false
     property alias color: colorRect.color // background color
     property int frameWidth: frame ? styleitem.frameWidth : 0
@@ -63,7 +63,7 @@ FocusScope {
     property int contentY
     property int contentHeight : content.childrenRect.height
     property int contentWidth: content.childrenRect.width
-    property int viewportHeight: height - (horizontalScrollBar.visible ? horizontalScrollBar.height : 0) - 2 * frameWidth
+    property int viewportHeight: height - (horizontalScrollBar.visible ? verticalScrollBar.height : 0) - 2 * frameWidth
     property int viewportWidth: width - (verticalScrollBar.visible ? verticalScrollBar.width : 0) - 2 * frameWidth
     default property alias data: content.data
 
@@ -86,7 +86,10 @@ FocusScope {
         property int frameWidth
         property int scrollbarspacing: styleitem.pixelMetric("scrollbarspacing");
         property int frameMargins : frame ? scrollbarspacing : 0
-        Component.onCompleted: frameWidth = styleitem.pixelMetric("defaultframewidth");
+        Component.onCompleted: {
+            frameWidth = styleitem.pixelMetric("defaultframewidth");
+            frameAroundContents = styleitem.styleHint("framearoundcontents")
+        }
     }
 
     onContentYChanged: {

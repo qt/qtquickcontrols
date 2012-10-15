@@ -45,7 +45,7 @@
 #include <qabstractitemmodel.h>
 #include "qtoplevelwindow.h"
 
-QtMenu::QtMenu(QObject *parent)
+QtMenu::QtMenu(QQuickItem *parent)
     : QtMenuBase(parent),
       dummy(0),
       m_selectedIndex(0),
@@ -89,10 +89,18 @@ void QtMenu::setHoveredIndex(int index)
     emit hoveredIndexChanged();
 }
 
+
+#if QT_VERSION < 0x050000
 QDeclarativeListProperty<QtMenuBase> QtMenu::menuItems()
 {
     return QDeclarativeListProperty<QtMenuBase>(this, 0, &QtMenu::append_qmenuItem);
 }
+#else
+QQmlListProperty<QtMenuBase> QtMenu::menuItems()
+{
+    return QQmlListProperty<QtMenuBase>(this, 0, &QtMenu::append_qmenuItem);
+}
+#endif
 
 void QtMenu::showPopup(qreal x, qreal y, int atActionIndex)
 {
@@ -106,11 +114,15 @@ void QtMenu::showPopup(qreal x, qreal y, int atActionIndex)
         atAction = m_qmenu->actions()[atActionIndex];
 
     // x,y are in view coordinates, QMenu expects screen coordinates
-    // map coordinates from focusWidget rather than activeWindow since
-    // QML items are commonly presented through a QWidget-derived view
-    // still a hack
-    QWidget *focusedWidget = QApplication::focusWidget();
-    QPoint screenPosition = focusedWidget->mapToGlobal(QPoint(x, y));
+    int menuBarHeight = 0;
+    QTopLevelWindow *tw = qobject_cast<QTopLevelWindow*>(canvas());
+    if (tw) {
+        QMenuBar *menuBar = tw->menuBar();
+        menuBarHeight = menuBar->height();
+    }
+
+    int windowFrameHeight = canvas()->frameMargins().top();
+    QPoint screenPosition = canvas()->mapToGlobal(QPoint(x, y+menuBarHeight-windowFrameHeight));
 
     setHoveredIndex(m_selectedIndex);
     m_qmenu->popup(screenPosition, atAction);
@@ -197,6 +209,7 @@ int QtMenu::modelCount() const
     return -1;
 }
 
+#if QT_VERSION < 0x050000
 void QtMenu::append_qmenuItem(QDeclarativeListProperty<QtMenuBase> *list, QtMenuBase *menuItem)
 {
     QtMenu *menu = qobject_cast<QtMenu *>(list->object);
@@ -206,6 +219,17 @@ void QtMenu::append_qmenuItem(QDeclarativeListProperty<QtMenuBase> *list, QtMenu
         menu->qmenu()->addAction(menuItem->action());
     }
 }
+#else
+void QtMenu::append_qmenuItem(QQmlListProperty<QtMenuBase> *list, QtMenuBase *menuItem)
+{
+    QtMenu *menu = qobject_cast<QtMenu *>(list->object);
+    if (menu) {
+        menuItem->setParent(menu);
+        menu->m_qmenuItems.append(menuItem);
+        menu->qmenu()->addAction(menuItem->action());
+    }
+}
+#endif
 
 void QtMenu::setModel(const QVariant &newModel) {
     if (m_model != newModel) {

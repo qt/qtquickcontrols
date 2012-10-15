@@ -38,9 +38,10 @@
 **
 ****************************************************************************/
 
-import QtQuick 1.1
+import QtQuick 2.0
+import QtDesktop 0.1 as QtDesktop // purely for override of Window
 
-Window {
+QtDesktop.Window {
     id: dialog
 
     width: 400
@@ -98,7 +99,7 @@ Window {
             text: "Help"
             focus: false
             Component.onCompleted: if (style.isMac) width = 22
-            background: style.isMac ? machelpdelegate : cancelbutton.background
+            delegate: style.isMac ? machelpdelegate : cancelbutton.background
             onClicked: {
                 clickedButton = helpbutton
                 buttonClicked()

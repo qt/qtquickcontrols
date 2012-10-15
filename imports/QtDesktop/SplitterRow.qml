@@ -38,8 +38,9 @@
 **
 ****************************************************************************/
 
-import QtQuick 1.1
-import "custom" as Components
+import QtQuick 2.0
+import "private" as Private
+import QtDesktop 0.2
 
 /*
 *
@@ -49,9 +50,9 @@ import "custom" as Components
 * a draggable splitter added in-between each item.
 *
 * Add items to the SplitterRow by inserting them as child items. The splitter handle
-* is outsourced as a delegate (handleBackground). To enable the user to drag the handle,
+* is outsourced as a delegate (handleDelegate). To enable the user to drag the handle,
 * it will need to contain a mouse area that communicates with the SplitterRow by binding
-* 'drag.target: handle'. The 'handle' property points to the handle item that embedds
+* 'drag.target: handle'. The 'handle' property points to the handle item that embeds
 * the delegate. To change handle positions, either change 'x' (or 'width') of 'handle', or
 * change the width of the child items inside the SplitterRow. If you set the visibility
 * of a child item to false, the corresponding handle will also be hidden, and the
@@ -75,7 +76,7 @@ import "custom" as Components
 *
 * The SplitterRow contains the following API:
 *
-* Component handleBackground - delegate that will be instanciated between each
+* Component handleDelegate - delegate that will be instanciated between each
 *   child item. Inside the delegate, the following properties are available:
 *   int handleIndex - specifies the index of the splitter handle. The handle
 *       between the first and the second item will get index 0, the next handle index 1 etc.
@@ -138,12 +139,12 @@ import "custom" as Components
 */
 
 
-Components.Splitter {
+Private.Splitter {
     orientation: Qt.Horizontal
-    handleBackground: StyleItem {
+    handleDelegate: StyleItem {
         id: styleitem
         elementType: "splitter"
-        width: handleWidth !== -1 ?  handleWidth : pixelMetric("splitterwidth")
+        width: handleWidth != -1 ?  handleWidth : pixelMetric("splitterwidth")
         property alias pressed: mouseArea.pressed
         property bool dragged: mouseArea.drag.active
 
@@ -154,11 +155,7 @@ Components.Splitter {
             anchors.rightMargin: (parent.width <= 1) ? -2 : 0
             drag.axis: Qt.YAxis
             drag.target: handle
-
-            CursorArea {
-                anchors.fill: parent
-                cursor: CursorArea.SplitHCursor
-            }
+            cursorShape: Qt.SplitHCursor
         }
     }
 }

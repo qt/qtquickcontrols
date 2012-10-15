@@ -40,10 +40,15 @@
 
 #ifndef QTMLMENU_H
 #define QTMLMENU_H
-
-#include <QtGui/qmenu.h>
+#include <QtCore/qglobal.h>
+#include <QtWidgets/qmenu.h>
+#if QT_VERSION < 0x050000
 #include <QtDeclarative/qdeclarative.h>
 #include <QtDeclarative/QDeclarativeListProperty>
+#else
+#include <QtQuick/QtQuick>
+#include <QtQml/QtQml>
+#endif
 #include <QtCore/qabstractitemmodel.h>
 #include <QtCore/QVariant>
 #include "qtmenuitem.h"
@@ -55,10 +60,14 @@ class QtMenu : public QtMenuBase
     Q_PROPERTY(QVariant model READ model WRITE setModel NOTIFY modelChanged)
     Q_PROPERTY(int selectedIndex READ selectedIndex WRITE setSelectedIndex NOTIFY selectedIndexChanged)
     Q_PROPERTY(int hoveredIndex READ hoveredIndex WRITE setHoveredIndex NOTIFY hoveredIndexChanged)
+#if QT_VERSION < 0x050000
     Q_PROPERTY(QDeclarativeListProperty<QtMenuBase> menuItems READ menuItems)
+#else
+    Q_PROPERTY(QQmlListProperty<QtMenuBase> menuItems READ menuItems)
+#endif
     Q_CLASSINFO("DefaultProperty", "menuItems")
 public:
-    QtMenu(QObject *parent = 0);
+    QtMenu(QQuickItem *parent = 0);
     virtual ~QtMenu();
 
     void setText(const QString &text);
@@ -69,7 +78,11 @@ public:
     int hoveredIndex() const { return m_highlightedIndex; }
     void setHoveredIndex(int index);
 
+#if QT_VERSION < 0x050000
     QDeclarativeListProperty<QtMenuBase> menuItems();
+#else
+    QQmlListProperty<QtMenuBase> menuItems();
+#endif
     QMenu* qmenu() { return m_qmenu; }
 
     QAction* action();
@@ -103,8 +116,11 @@ private Q_SLOTS:
     void emitHovered();
 
 private:
+#if QT_VERSION < 0x050000
     static void append_qmenuItem(QDeclarativeListProperty<QtMenuBase> *list, QtMenuBase *menuItem);
-
+#else
+    static void append_qmenuItem(QQmlListProperty<QtMenuBase> *list, QtMenuBase *menuItem);
+#endif
 private:
     QWidget *dummy;
     QMenu *m_qmenu;

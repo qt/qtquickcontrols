@@ -38,15 +38,15 @@
 **
 ****************************************************************************/
 
-import QtQuick 1.1
-import "../"
+import QtQuick 2.0
+import QtDesktop 0.2
 
 WheelArea {
     id: wheelarea
 
     property alias horizontalScrollBar: hscrollbar
     property alias verticalScrollBar: vscrollbar
-    property int macOffset: frame && styleitem.style === "mac" ? 1 : 0
+    property int macOffset: styleitem.style == "mac" ? 1 : 0
     property bool blockUpdates: false
     property int availableHeight : root.height - (hscrollbar.visible ? hscrollbar.height : 0)
     property int availableWidth: root.width - vscrollbar.width

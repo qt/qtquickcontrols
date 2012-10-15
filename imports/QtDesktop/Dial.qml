@@ -38,8 +38,8 @@
 **
 ****************************************************************************/
 
-import QtQuick 1.1
-import "custom" as Components
+import QtQuick 2.0
+import QtDesktop 0.2
 
 // jens: ContainsMouse breaks drag functionality
 
@@ -58,6 +58,9 @@ Item {
     property bool wrapping: false
     property bool tickmarksEnabled: false
     property bool activeFocusOnPress: false
+
+    Accessible.role: Accessible.Dial
+    Accessible.name: value
 
     RangeModel {
         id: range

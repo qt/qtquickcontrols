@@ -41,26 +41,47 @@
 #include "qtmenubar.h"
 #include "qwindowitem.h"
 
+#if QT_VERSION < 0x050000
 #include <QtGui/QMenu>
 #include <QtGui/QMenuBar>
+#else
+#include <QtWidgets/QMenu>
+#include <QtWidgets/QMenuBar>
+#endif
 
+#if QT_VERSION < 0x050000
 QtMenuBar::QtMenuBar(QDeclarativeItem *parent)
     : QDeclarativeItem(parent), _menuBar(0) /*, _menuBar(new QMenuBar)*/
 {
     connect(this, SIGNAL(parentChanged()), this, SLOT(updateParent()));
     setFlag(QGraphicsItem::ItemHasNoContents, true);
 }
+#else
+QtMenuBar::QtMenuBar(QQuickItem *parent)
+    : QQuickItem(parent), _menuBar(0) /*, _menuBar(new QMenuBar)*/
+{
+    connect(this, SIGNAL(parentChanged(QQuickItem *)), this, SLOT(updateParent(QQuickItem *)));
+    setFlag(QQuickItem::ItemHasContents, false);
+}
+#endif
 
 QtMenuBar::~QtMenuBar()
 {
 }
 
+#if QT_VERSION < 0x050000
 QDeclarativeListProperty<QtMenu> QtMenuBar::menus()
 {
     return QDeclarativeListProperty<QtMenu>(this, 0, &QtMenuBar::append_menu);
 }
+#else
+QQmlListProperty<QtMenu> QtMenuBar::menus()
+{
+    return QQmlListProperty<QtMenu>(this, 0, &QtMenuBar::append_menu);
+}
+#endif
 
-void QtMenuBar::updateParent()
+void QtMenuBar::updateParent(QQuickItem *newParent)
 {
     if (QWindowItem* window = qobject_cast<QWindowItem*>(parent()))
         _menuBar = window->window()->menuBar();
@@ -75,7 +96,11 @@ void QtMenuBar::updateParent()
 
 }
 
+#if QT_VERSION < 0x050000
 void QtMenuBar::append_menu(QDeclarativeListProperty<QtMenu> *list, QtMenu *menu)
+#else
+void QtMenuBar::append_menu(QQmlListProperty<QtMenu> *list, QtMenu *menu)
+#endif
 {
     QtMenuBar *menuBar = qobject_cast<QtMenuBar *>(list->object);
     if (menuBar) {
@@ -85,3 +110,5 @@ void QtMenuBar::append_menu(QDeclarativeListProperty<QtMenu> *list, QtMenu *menu
             menuBar->_menuBar->addMenu(menu->qmenu());
     }
 }
+
+#

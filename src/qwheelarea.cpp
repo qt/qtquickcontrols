@@ -41,8 +41,8 @@
 #include "qwheelarea.h"
 
 
-QWheelArea::QWheelArea(QDeclarativeItem *parent)
-    : QDeclarativeItem(parent),
+QWheelArea::QWheelArea(QQuickItem *parent)
+    : QQuickItem(parent),
       m_horizontalMinimumValue(0),
       m_horizontalMaximumValue(0),
       m_verticalMinimumValue(0),
@@ -61,34 +61,14 @@ QWheelArea::~QWheelArea()
 
 }
 
-bool QWheelArea::event(QEvent *e)
+void QWheelArea::wheelEvent(QWheelEvent *we)
 {
-    switch (e->type()) {
-    case QEvent::GraphicsSceneWheel: {
-        QGraphicsSceneWheelEvent *we = static_cast<QGraphicsSceneWheelEvent *>(e);
-
-        if (we->orientation() == Qt::Vertical)
-            setVerticalDelta(we->delta());
-        else
-            setHorizontalDelta(we->delta());
-
-        return true;
+    if (we->orientation() == Qt::Vertical) {
+        setVerticalDelta(we->delta());
+    } else {
+        setHorizontalDelta(we->delta());
     }
-    case QEvent::Wheel: {
-        QWheelEvent *we = static_cast<QWheelEvent *>(e);
-
-        if (we->orientation() == Qt::Vertical)
-            setVerticalDelta(we->delta());
-        else
-            setHorizontalDelta(we->delta());
-
-        return true;
-    }
-    default:
-        break;
-    }
-
-    return QDeclarativeItem::event(e);
+    we->accept();
 }
 
 void QWheelArea::setHorizontalMinimumValue(qreal value)

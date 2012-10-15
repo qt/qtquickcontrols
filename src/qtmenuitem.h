@@ -42,16 +42,28 @@
 #define QTMENUITEM_H
 
 #include <QtCore/QObject>
-#include <QtGui/QAction>
+#include <QtWidgets/QAction>
 #include <QtCore/QUrl>
 
+#if QT_VERSION >= 0x050000
+#include <QtQuick/QQuickItem>
+#endif
+
+#if QT_VERSION < 0x050000
 class QtMenuBase: public QObject {
-    Q_OBJECT
+#else
+class QtMenuBase: public QQuickItem {
+#endif
+Q_OBJECT
     Q_PROPERTY(QUrl iconSource READ iconSource WRITE setIconSource NOTIFY iconSourceChanged)
     Q_PROPERTY(QString iconName READ iconName WRITE setIconName NOTIFY iconNameChanged)
 
 public:
+#if QT_VERSION < 0x050000
     QtMenuBase(QObject *parent = 0) : QObject(parent) {}
+#else
+    QtMenuBase(QQuickItem *parent = 0) : QQuickItem(parent) {}
+#endif
     virtual QAction* action() = 0;
 
     void setIconSource(const QUrl &icon);
@@ -73,7 +85,11 @@ class QtMenuSeparator : public QtMenuBase
 {
     Q_OBJECT
 public:
+#if QT_VERSION < 0x050000
     QtMenuSeparator(QObject *parent = 0);
+#else
+    QtMenuSeparator(QQuickItem *parent = 0);
+#endif
     ~QtMenuSeparator();
     QAction* action();
 
@@ -91,7 +107,11 @@ class QtMenuItem: public QtMenuBase
     Q_PROPERTY(bool enabled READ enabled WRITE setEnabled NOTIFY enabledChanged)
 
 public:
+#if QT_VERSION < 0x050000
     QtMenuItem(QObject *parent = 0);
+#else
+    QtMenuItem(QQuickItem *parent = 0);
+#endif
     ~QtMenuItem();
 
     void setText(const QString &text);

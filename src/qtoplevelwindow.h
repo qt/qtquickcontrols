@@ -41,21 +41,25 @@
 #ifndef QTOPLEVELWINDOW_H
 #define QTOPLEVELWINDOW_H
 
-#include <QDeclarativeView>
+#include <QtCore/qglobal.h>
+
 #include <QMainWindow>
+#include <QtQuick/QQuickView>
+
 #include <QWindowStateChangeEvent>
 #include <QDebug>
 
-class QTopLevelWindow : public QMainWindow {
+// Qt 4, QtQuick1 : QTopLevelWindow is a QMainWindow with a QDeclarativeView centerWidget
+// Qt 5, QtQuick2 : QTopLevelWindow is a QQuickView.
+class QMenuBar;
+class QTopLevelWindow : public QQuickView {
     Q_OBJECT
 public:
     QTopLevelWindow();
     ~QTopLevelWindow();
 
-    QGraphicsScene *scene() { return _view->scene(); }
-    QDeclarativeView *view() { return _view; }
-
-
+    QQuickView * view() { return this; }
+    QMenuBar *menuBar();
     void registerChildWindow(QTopLevelWindow* child);
     void hideChildWindows();
     void initPosition();
@@ -65,16 +69,13 @@ public:
     void move(int x, int y);
     void move(const QPoint &);
 
-protected:
-    virtual bool event(QEvent *event);
 
 Q_SIGNALS:
     void visibilityChanged();
     void windowStateChanged();
-    void sizeChanged(QSize newSize);
 
 private:
-    QDeclarativeView *_view;
+    QMenuBar *_menuBar;
     bool _positionIsDefined;
 
 };

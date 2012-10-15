@@ -38,37 +38,33 @@
 **
 ****************************************************************************/
 
-#include <qdeclarative.h>
+#include <qqml.h>
 #include "qstyleplugin.h"
 #include "qstyleitem.h"
 #include "qrangemodel.h"
 #include "qtmenu.h"
 #include "qtmenubar.h"
 #include "qwindowitem.h"
+#include "qwindowitem.h"
 #include "qdesktopitem.h"
 #include "qwheelarea.h"
-#include "qcursorarea.h"
-#include "qtooltiparea.h"
 #include "qtsplitterbase.h"
-#include "qdeclarativelinearlayout.h"
-#include <qdeclarativeextensionplugin.h>
+#include "qquicklinearlayout.h"
+#include "qquickcomponentsprivate.h"
 #include "qfiledialogitem.h"
-#include "settings.h"
+#include <qqmlextensionplugin.h>
 
-#include <qdeclarativeengine.h>
-#include <qdeclarative.h>
-#include <qdeclarativeitem.h>
-#include <qdeclarativeimageprovider.h>
-#include <qdeclarativeview.h>
-#include <QApplication>
+#include <qqmlengine.h>
+#include <qquickimageprovider.h>
+#include <QtWidgets/QApplication>
 #include <QImage>
 
 // Load icons from desktop theme
-class DesktopIconProvider : public QDeclarativeImageProvider
+class DesktopIconProvider : public QQuickImageProvider
 {
 public:
     DesktopIconProvider()
-        : QDeclarativeImageProvider(QDeclarativeImageProvider::Pixmap)
+        : QQuickImageProvider(QQuickImageProvider::Pixmap)
     {
     }
 
@@ -83,39 +79,44 @@ public:
     }
 };
 
+QObject *registerPrivateModule(QQmlEngine *engine, QJSEngine *jsEngine)
+{
+    Q_UNUSED(engine);
+    Q_UNUSED(jsEngine);
+    return new QQuickComponentsPrivate();
+}
 
 void StylePlugin::registerTypes(const char *uri)
 {
-    qmlRegisterType<QStyleItem>(uri, 0, 1, "StyleItem");
-    qmlRegisterType<QCursorArea>(uri, 0, 1, "CursorArea");
-    qmlRegisterType<QTooltipArea>(uri, 0, 1, "TooltipArea");
-    qmlRegisterType<QRangeModel>(uri, 0, 1, "RangeModel");
-    qmlRegisterType<QWheelArea>(uri, 0, 1, "WheelArea");
+    qmlRegisterSingletonType<QQuickComponentsPrivate>(uri, 0, 2, "PrivateHelper", registerPrivateModule);
 
-    qmlRegisterType<QtMenu>(uri, 0, 1, "Menu");
-    qmlRegisterType<QtMenuBar>(uri, 0, 1, "MenuBar");
-    qmlRegisterType<QtMenuItem>(uri, 0, 1, "MenuItem");
-    qmlRegisterType<QtMenuSeparator>(uri, 0, 1, "Separator");
+    qmlRegisterType<QStyleItem>(uri, 0, 2, "StyleItem");
+    qmlRegisterType<QRangeModel>(uri, 0, 2, "RangeModel");
+    qmlRegisterType<QWheelArea>(uri, 0, 2, "WheelArea");
 
-    qmlRegisterType<QFileDialogItem>(uri, 0, 1, "FileDialog");
+    qmlRegisterType<QtMenu>(uri, 0, 2, "Menu");
+    qmlRegisterType<QtMenuBar>(uri, 0, 2, "MenuBar");
+    qmlRegisterType<QtMenuItem>(uri, 0, 2, "MenuItem");
+    qmlRegisterType<QtMenuSeparator>(uri, 0, 2, "Separator");
 
-    qmlRegisterType<QFileSystemModel>(uri, 0, 1, "FileSystemModel");
-    qmlRegisterType<QtSplitterBase>(uri, 0, 1, "Splitter");
-    qmlRegisterType<Settings>(uri, 0, 1, "Settings");
-    qmlRegisterType<QWindowItem>("QtQuick", 0, 1, "Window");
+    qmlRegisterType<QQuickComponentsRowLayout>(uri, 0, 2, "RowLayout");
+    qmlRegisterType<QQuickComponentsColumnLayout>(uri, 0, 2, "ColumnLayout");
+    qmlRegisterUncreatableType<QQuickComponentsLayout>(uri, 0, 2, "Layout",
+                                                       QLatin1String("Do not create objects of type Layout"));
 
-    qmlRegisterUncreatableType<QtMenuBase>("uri", 0, 1, "NativeMenuBase", QLatin1String("Do not create objects of type NativeMenuBase"));
-    qmlRegisterType<QDeclarativeRowLayout>(uri, 0, 1, "RowLayout");
-    qmlRegisterType<QDeclarativeColumnLayout>(uri, 0, 1, "ColumnLayout");
-    qmlRegisterUncreatableType<QDeclarativeLayout>(uri, 0, 1, "Layout",
-                                                   QLatin1String("Do not create objects of type Layout"));
-    qmlRegisterUncreatableType<QDesktopItem>("QtQuick",1,1,"Desktop", QLatin1String("Do not create objects of type Desktop"));
+    qmlRegisterType<QFileDialogItem>(uri, 0, 2, "FileDialog");
+
+    qmlRegisterType<QFileSystemModel>(uri, 0, 2, "FileSystemModel");
+    qmlRegisterType<QtSplitterBase>(uri, 0, 2, "Splitter");
+    qmlRegisterType<QWindowItem>(uri, 0, 2, "Window"); // cannot override built-in Window, clients must namespace the import to use this Window.
+    qmlRegisterType<QWindowItem>(uri, 0, 1, "Window"); // cannot override built-in Window, clients must namespace the import to use this Window.
+
+    qmlRegisterUncreatableType<QtMenuBase>(uri, 0, 1, "NativeMenuBase", QLatin1String("Do not create objects of type NativeMenuBase"));
+    qmlRegisterUncreatableType<QDesktopItem>(uri, 0,2,"Desktop", QLatin1String("Do not create objects of type Desktop"));
 }
 
-void StylePlugin::initializeEngine(QDeclarativeEngine *engine, const char *uri)
+void StylePlugin::initializeEngine(QQmlEngine *engine, const char *uri)
 {
     Q_UNUSED(uri);
     engine->addImageProvider("desktoptheme", new DesktopIconProvider);
 }
-
-Q_EXPORT_PLUGIN2(styleplugin, StylePlugin);

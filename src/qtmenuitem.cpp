@@ -68,8 +68,12 @@ QString QtMenuBase::iconName() const
 {
     return _iconName;
 }
-
+#if QT_VERSION < 0x050000
 QtMenuSeparator::QtMenuSeparator(QObject *parent)
+#else
+QtMenuSeparator::QtMenuSeparator(QQuickItem *parent)
+#endif
+
     : QtMenuBase(parent), _action(new QAction(this))
 {
     _action->setSeparator(true);
@@ -84,7 +88,11 @@ QAction * QtMenuSeparator::action()
     return _action;
 }
 
+#if QT_VERSION < 0x050000
 QtMenuItem::QtMenuItem(QObject *parent)
+#else
+QtMenuItem::QtMenuItem(QQuickItem *parent)
+#endif
     : QtMenuBase(parent), _action(new QAction(this))
 {
     connect(_action, SIGNAL(triggered()), this, SIGNAL(triggered()));

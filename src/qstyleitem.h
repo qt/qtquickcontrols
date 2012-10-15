@@ -41,12 +41,12 @@
 #ifndef STYLEWRAPPER_H
 #define STYLEWRAPPER_H
 
-#include <QDeclarativeItem>
-#include <QtGui/QStyle>
-#include <QtGui>
+#include <QtQuick/qquickpainteditem.h>
+//#include <QSGItem>
+#include <QtWidgets/QStyle>
 #include <QEvent>
 
-class QStyleItem: public QDeclarativeItem
+class QStyleItem: public QQuickPaintedItem
 {
     Q_OBJECT
 
@@ -73,8 +73,6 @@ class QStyleItem: public QDeclarativeItem
     Q_PROPERTY( int step READ step WRITE setStep NOTIFY stepChanged)
     Q_PROPERTY( int paintMargins READ paintMargins WRITE setPaintMargins NOTIFY paintMarginsChanged)
 
-    Q_PROPERTY( int implicitWidth READ implicitWidth() NOTIFY implicitWidthChanged)
-    Q_PROPERTY( int implicitHeight READ implicitHeight() NOTIFY implicitHeightChanged)
     Q_PROPERTY( int contentWidth READ contentWidth() WRITE setContentWidth NOTIFY contentWidthChanged)
     Q_PROPERTY( int contentHeight READ contentHeight() WRITE setContentHeight NOTIFY contentHeightChanged)
 
@@ -83,6 +81,9 @@ class QStyleItem: public QDeclarativeItem
     Q_PROPERTY( int fontHeight READ fontHeight NOTIFY fontHeightChanged)
 
 public:
+    QStyleItem(QQuickPaintedItem *parent = 0);
+    ~QStyleItem();
+
     enum Type {
         Undefined,
         Button,
@@ -115,10 +116,7 @@ public:
         MacHelpButton
     };
 
-    QStyleItem(QDeclarativeItem *parent = 0);
-    ~QStyleItem();
-
-    void paint(QPainter *, const QStyleOptionGraphicsItem *, QWidget *);
+    void paint(QPainter *);
 
     bool sunken() const { return m_sunken; }
     bool raised() const { return m_raised; }
@@ -156,9 +154,7 @@ public:
     void setStep(int step) { if (m_step != step) { m_step = step; emit stepChanged(); }}
     void setPaintMargins(int value) {
     Q_UNUSED(value)
-#ifdef Q_WS_WIN //only vista style needs this hack
         if (m_paintMargins!= value) {m_paintMargins = value;}
-#endif
     }
     void setElementType(const QString &str);
     void setText(const QString &str) { if (m_text != str) {m_text = str; emit textChanged();}}
@@ -174,8 +170,6 @@ public:
     QString fontFamily();
     double fontPointSize();
 
-    int implicitHeight();
-    int implicitWidth();
 
     int contentWidth() const {
         return m_contentWidth;
@@ -189,9 +183,9 @@ public Q_SLOTS:
     int pixelMetric(const QString&);
     QVariant styleHint(const QString&);
     void updateSizeHint();
-    void updateItem(){update();}
+    void updateItem(){initStyleOption(); update();}
     QString hitTest(int x, int y);
-    QRect subControlRect(const QString &subcontrolString);
+    QRectF subControlRect(const QString &subcontrolString);
     QString elidedText(const QString &text, int elideMode, int width);
     int textWidth(const QString &);
     bool hasThemeIcon(const QString &) const;
@@ -234,9 +228,6 @@ Q_SIGNALS:
     void hintChanged();
     void fontHeightChanged();
 
-    void implicitHeightChanged(int arg);
-    void implicitWidthChanged(int arg);
-
     void contentWidthChanged(int arg);
     void contentHeightChanged(int arg);
 
@@ -270,8 +261,6 @@ protected:
     int m_step;
     int m_paintMargins;
 
-    int m_implicitWidth;
-    int m_implicitHeight;
     int m_contentWidth;
     int m_contentHeight;
 

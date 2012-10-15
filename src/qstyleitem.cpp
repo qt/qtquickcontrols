@@ -41,57 +41,55 @@
 #include "qstyleitem.h"
 
 #include <QtGui/QPainter>
-#include <QtGui/QStyle>
-#include <QtGui/QStyleOption>
-#include <QtGui/QApplication>
-#include <QtGui/QMainWindow>
-#include <QtGui/QGroupBox>
-#include <QtGui/QToolBar>
-#include <QtGui/QMenu>
+#include <QtWidgets/QStyle>
+#include <QtWidgets/QStyleOption>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QProgressBar>
+#include <QtWidgets/QMainWindow>
+#include <QtWidgets/QGroupBox>
+#include <QtWidgets/QToolBar>
+#include <QtWidgets/QMenu>
+#include <QtWidgets/QtWidgets>
 #include <QtCore/QStringBuilder>
 
 #ifdef Q_OS_MAC
 #include <Carbon/Carbon.h>
-
-#if QT_VERSION <= 0x050000
-extern CGContextRef qt_mac_cg_context(const QPaintDevice *); //qpaintdevice_mac.cpp
-#endif
 
 static inline HIRect qt_hirectForQRect(const QRect &convertRect, const QRect &rect = QRect())
 {
     return CGRectMake(convertRect.x() + rect.x(), convertRect.y() + rect.y(),
                       convertRect.width() - rect.width(), convertRect.height() - rect.height());
 }
+
 #endif
 
+QStyleItem::QStyleItem(QQuickPaintedItem *parent)
+    : QQuickPaintedItem(parent),
+    m_dummywidget(new QWidget),
+    m_styleoption(0),
+    m_itemType(Undefined),
+    m_sunken(false),
+    m_raised(false),
+    m_active(true),
+    m_selected(false),
+    m_focus(false),
+    m_hover(false),
+    m_on(false),
+    m_horizontal(true),
+    m_sharedWidget(false),
+    m_minimum(0),
+    m_maximum(100),
+    m_value(0),
+    m_step(0),
+    m_paintMargins(0),
+    m_contentWidth(0),
+    m_contentHeight(0)
 
-
-QStyleItem::QStyleItem(QDeclarativeItem *parent)
-    : QDeclarativeItem(parent),
-      m_dummywidget(0),
-      m_styleoption(0),
-      m_type(Undefined),
-      m_sunken(false),
-      m_raised(false),
-      m_active(true),
-      m_selected(false),
-      m_focus(false),
-      m_on(false),
-      m_horizontal(true),
-      m_sharedWidget(false),
-      m_minimum(0),
-      m_maximum(100),
-      m_value(0),
-      m_paintMargins(0),
-      m_implicitWidth(0),
-      m_implicitHeight(0),
-      m_contentWidth(0),
-      m_contentHeight(0)
 {
-    setFlag(QGraphicsItem::ItemHasNoContents, false);
-    setCacheMode(QGraphicsItem::DeviceCoordinateCache);
-    setSmooth(true);
+    setFlag(QQuickItem::ItemHasContents, true);
+    setSmooth(false);
 
+    connect(this, SIGNAL(enabledChanged()), this, SLOT(updateItem()));
     connect(this, SIGNAL(infoChanged()), this, SLOT(updateItem()));
     connect(this, SIGNAL(onChanged()), this, SLOT(updateItem()));
     connect(this, SIGNAL(selectedChanged()), this, SLOT(updateItem()));
@@ -458,7 +456,7 @@ void QStyleItem::initStyleOption()
             if (activeControl() != "end")
                 widget()->resize(200, height());
         }
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
         else widget()->resize(width(), height());
 #endif
 
@@ -472,7 +470,7 @@ void QStyleItem::initStyleOption()
             widget()->setAttribute(Qt::WA_MacSmallSize);
         }
     }
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
     if (m_itemType == Button && style() == "mac") {
         // Macstyle hardcodes extra spacing inside the button paintrect
         m_styleoption->rect.adjust(-5, 0, 6, 0);
@@ -506,7 +504,6 @@ QString QStyleItem::style() const
 QString QStyleItem::hitTest(int px, int py)
 {
     QStyle::SubControl subcontrol = QStyle::SC_All;
-    initStyleOption();
     switch (m_itemType) {
     case SpinBox :{
         subcontrol = qApp->style()->hitTestComplexControl(QStyle::CC_SpinBox,
@@ -575,7 +572,7 @@ QSize QStyleItem::sizeFromContents(int width, int height)
         QStyleOptionButton *btn = qstyleoption_cast<QStyleOptionButton*>(m_styleoption);
         int textWidth = btn->fontMetrics.width(btn->text);
         size = qApp->style()->sizeFromContents(QStyle::CT_PushButton, m_styleoption, QSize(textWidth,height), widget());
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
         // Macstyle adds some weird constants to buttons
         return QSize(textWidth + 18, size.height() + 2);
 #endif
@@ -604,7 +601,7 @@ QSize QStyleItem::sizeFromContents(int width, int height)
         break;
     case Header:
         size = qApp->style()->sizeFromContents(QStyle::CT_HeaderSection, m_styleoption, QSize(width,height), widget());
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
         if (style() =="mac")
             size.setHeight(15);
 #endif
@@ -617,7 +614,7 @@ QSize QStyleItem::sizeFromContents(int width, int height)
         break;
     }
 
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
     //    ### hack - With even heights, the text baseline is off on mac
     //    if (size.height() %2 == 0)
     //        size.setHeight(size.height() + 1);
@@ -628,21 +625,20 @@ QSize QStyleItem::sizeFromContents(int width, int height)
 void QStyleItem::updateSizeHint()
 {
     QSize implicitSize = sizeFromContents(m_contentWidth, m_contentHeight);
-    m_implicitWidth = implicitSize.width();
-    m_implicitHeight = implicitSize.height();
+    setImplicitSize(implicitSize.width(), implicitSize.height());
 }
 
 int QStyleItem::pixelMetric(const QString &metric)
 {
 
     if (metric == "scrollbarExtent")
-        return qApp->style()->pixelMetric(QStyle::PM_ScrollBarExtent, 0, widget());
+        return qApp->style()->pixelMetric(QStyle::PM_ScrollBarExtent, 0, widget()) + 1;
     else if (metric == "defaultframewidth")
         return qApp->style()->pixelMetric(QStyle::PM_DefaultFrameWidth, 0, widget());
     else if (metric == "taboverlap")
         return qApp->style()->pixelMetric(QStyle::PM_TabBarTabOverlap, 0 , widget());
     else if (metric == "tabbaseoverlap")
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
         // On windows the tabbar paintmargin extends the overlap by one pixels
         return 1 + qApp->style()->pixelMetric(QStyle::PM_TabBarBaseOverlap, 0 , widget());
 #else
@@ -698,7 +694,6 @@ QVariant QStyleItem::styleHint(const QString &metric)
         return qApp->style()->styleHint(QStyle::SH_ScrollBar_LeftClickAbsolutePosition);
     return 0;
 }
-
 
 void QStyleItem::setElementType(const QString &str)
 {
@@ -767,7 +762,7 @@ void QStyleItem::setElementType(const QString &str)
         // Gtk uses qobject cast, hence we need to separate this from menuitem
         // On mac, we temporarily use the menu item because it has more accurate
         // palette.
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
         static QMenu *combo = new QMenu();
 #else
         static QComboBox *combo = new QComboBox();
@@ -835,7 +830,7 @@ void QStyleItem::setElementType(const QString &str)
         visible = true;
         m_itemType = Edit;
     } else if (str == "spinbox") {
-#ifndef Q_WS_WIN // Vista spinbox is currently not working due to grabwidget
+#ifndef Q_OS_WIN // Vista spinbox is currently not working due to grabwidget
         m_dummywidget = new QSpinBox();
         visible = true;
 #endif
@@ -856,16 +851,17 @@ void QStyleItem::setElementType(const QString &str)
         m_itemType = MacHelpButton;
     } else if (str == "scrollareacorner") {
         m_itemType = ScrollAreaCorner;
+    } else {
+        m_itemType = Undefined;
     }
+
+    if (!m_dummywidget)
+            m_dummywidget = new QWidget();
     if (m_dummywidget) {
         m_dummywidget->installEventFilter(this);
         m_dummywidget->setAttribute(Qt::WA_QuitOnClose, false); // dont keep app open
         m_dummywidget->setAttribute(Qt::WA_LayoutUsesWidgetRect);
         m_dummywidget->winId();
-#ifdef Q_WS_MAC
-        m_dummywidget->setGeometry(-1000, 0, 10,10);
-        m_dummywidget->setVisible(visible); // Mac require us to set the visibility before this
-#endif
         m_dummywidget->setAttribute(Qt::WA_DontShowOnScreen);
         m_dummywidget->setVisible(visible);
     }
@@ -880,7 +876,7 @@ bool QStyleItem::eventFilter(QObject *o, QEvent *e) {
     return QObject::eventFilter(o, e);
 }
 
-QRect QStyleItem::subControlRect(const QString &subcontrolString)
+QRectF QStyleItem::subControlRect(const QString &subcontrolString)
 {
     QStyle::SubControl subcontrol = QStyle::SC_None;
     initStyleOption();
@@ -935,10 +931,10 @@ QRect QStyleItem::subControlRect(const QString &subcontrolString)
     default:
         break;
     }
-    return QRect();
+    return QRectF();
 }
 
-void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
+void QStyleItem::paint(QPainter *painter)
 {
     if (width() < 1 || height() <1)
         return;
@@ -1020,7 +1016,7 @@ void QStyleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
         qApp->style()->drawControl(QStyle::CE_ShapedFrame, m_styleoption, painter, widget());
         break;
     case FocusFrame:
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
         if (style() == "mac" && hint().contains("search")) {
             break; // embedded in the line itself
         } else
@@ -1191,23 +1187,13 @@ QString QStyleItem::fontFamily()
 
 double QStyleItem::fontPointSize()
 {
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
     if (elementType() == "item")
         return 11;
 #endif
     if (widget())
         return widget()->font().pointSizeF();
     return qApp->font().pointSizeF();
-}
-
-int QStyleItem::implicitHeight()
-{
-    return m_implicitHeight;
-}
-
-int QStyleItem::implicitWidth()
-{
-    return m_implicitWidth;
 }
 
 bool QStyleItem::hasThemeIcon(const QString &icon) const

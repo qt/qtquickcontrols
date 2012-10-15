@@ -38,28 +38,19 @@
 **
 ****************************************************************************/
 
-import QtQuick 1.1
-import "custom" as Components
+import QtQuick 2.0
+import QtDesktop 0.2
+import "private" as Private
 
-Components.Button {
+Private.BasicButton {
     id:button
 
-    property alias containsMouse: tooltip.containsMouse
     property string iconName
     property string styleHint
-    property int iconSize: (backgroundItem && backgroundItem.style === "mac" && button.styleHint.indexOf("segmented") !== -1) ? 16 : 24
+    property url iconSource
+    property string text
 
-    implicitWidth: backgroundItem.implicitWidth
-    implicitHeight: backgroundItem.implicitHeight
-
-    TooltipArea {
-        // Note this will eat hover events
-        id: tooltip
-        anchors.fill: parent
-        text: button.tooltip
-    }
-
-    background: StyleItem {
+    delegate: StyleItem {
         id: styleitem
         anchors.fill: parent
         elementType: "toolbutton"
@@ -84,8 +75,9 @@ Components.Button {
         opacity: enabled ? 1 : 0.5
         smooth: true
         sourceSize.width: iconSize
-        property string iconPath: "image://desktoptheme/" + button.iconName
-        source: backgroundItem && backgroundItem.hasThemeIcon(iconName) ? iconPath : ""
+        //property string iconPath: "image://desktoptheme/" + button.iconName
+        property int iconSize: 24 //(backgroundItem && backgroundItem.style === "mac" && button.styleHint.indexOf("segmented") !== -1) ? 16 : 24
+        //source: iconPath // backgroundItem && backgroundItem.hasThemeIcon(iconName) ? iconPath : ""
         fillMode: Image.PreserveAspectFit
         Image {
             // Use fallback icon
@@ -95,4 +87,5 @@ Components.Button {
             source: visible ? button.iconSource : ""
         }
     }
+    Accessible.name: text
 }

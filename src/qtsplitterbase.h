@@ -41,7 +41,8 @@
 #ifndef QTSPLITTERBASE_H
 #define QTSPLITTERBASE_H
 
-#include <QtDeclarative>
+#include <QtQml>
+#include <QtQuick>
 
 
 class QtSplitterAttached : public QObject
@@ -107,11 +108,11 @@ private:
 };
 
 
-class QtSplitterBase : public QDeclarativeItem
+class QtSplitterBase : public QQuickItem
 {
     Q_OBJECT
 public:
-    explicit QtSplitterBase(QDeclarativeItem *parent = 0);
+    explicit QtSplitterBase(QQuickItem *parent = 0);
     ~QtSplitterBase() {}
 
     static QtSplitterAttached *qmlAttachedProperties(QObject *object);

@@ -1,5 +1,6 @@
-import QtQuick 1.0
-import QtDesktop 0.1
+import QtQuick 2.0
+import QtDesktop 0.2
+import QtDesktop 0.2 as QtDesktop // purely for overriding Window
 import QtWebKit 1.0
 import "content"
 
@@ -23,11 +24,11 @@ Rectangle {
             frame.removeTab(frame.current)
     }
 
-    Window {
+    QtDesktop.Window {
         id: settingsDialog
         width: 200
         height: 200
-        modality: Qt.WindowModal
+        modal: true
 
         Rectangle {
             anchors.centerIn: parent

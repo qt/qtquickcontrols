@@ -40,8 +40,8 @@
 
 #include "qtsplitterbase.h"
 
-QtSplitterBase::QtSplitterBase(QDeclarativeItem *parent)
-    : QDeclarativeItem(parent)
+QtSplitterBase::QtSplitterBase(QQuickItem *parent)
+    : QQuickItem(parent)
 {
 }
 

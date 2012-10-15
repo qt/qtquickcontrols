@@ -1,8 +1,8 @@
 TEMPLATE = app
-TARGET =
+TARGET = qmldesktopviewer
 DEPENDPATH += .
 INCLUDEPATH += .
-QT += declarative
+QT += qml widgets quick
 
 # Input
 HEADERS +=  qmldesktopviewer.h \
@@ -10,3 +10,4 @@ HEADERS +=  qmldesktopviewer.h \
 SOURCES +=  main.cpp \
             qmldesktopviewer.cpp \
             loggerwidget.cpp
+CONFIG -=app_bundle

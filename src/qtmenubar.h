@@ -41,11 +41,19 @@
 #ifndef QTMENUBAR_H
 #define QTMENUBAR_H
 
+#include <QtCore/qglobal.h>
+
+#if QT_VERSION < 0x050000
 #include <QDeclarativeItem>
 #include <QtGui>
+#else
+#include <QtQuick/QQuickItem>
+#include <QtWidgets>
+#endif
 
 #include "qtmenu.h"
 
+#if QT_VERSION < 0x050000
 class QtMenuBar: public QDeclarativeItem
 {
     Q_OBJECT
@@ -68,5 +76,29 @@ private:
     QList<QtMenu *> m_menus;
     QMenuBar *_menuBar;
 };
+#else
+class QtMenuBar: public QQuickItem
+{
+    Q_OBJECT
+
+    Q_PROPERTY(QQmlListProperty<QtMenu> menus READ menus)
+    Q_CLASSINFO("DefaultProperty", "menus")
+public:
+    QtMenuBar(QQuickItem *parent = 0);
+    ~QtMenuBar();
+
+    QQmlListProperty<QtMenu> menus();
+
+protected Q_SLOTS:
+    void updateParent(QQuickItem *newParent);
+
+private:
+    static void append_menu(QQmlListProperty<QtMenu> *list, QtMenu *menu);
+
+private:
+    QList<QtMenu *> m_menus;
+    QMenuBar *_menuBar;
+};
+#endif
 
 #endif //QTMENUBAR_H

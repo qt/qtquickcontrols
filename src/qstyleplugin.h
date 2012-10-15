@@ -41,19 +41,17 @@
 #ifndef STYLEPLUGIN_H
 #define STYLEPLUGIN_H
 
-#include <QDeclarativeExtensionPlugin>
-#include <QtScript/QScriptValue>
+#include <QQmlExtensionPlugin>
 #include <QtCore/QTimer>
-#include <QFileSystemModel>
-#include "qdeclarativefolderlistmodel.h"
+#include <QtWidgets/QFileSystemModel>
 
-
-class StylePlugin : public QDeclarativeExtensionPlugin
+class StylePlugin : public QQmlExtensionPlugin
 {
     Q_OBJECT
+    Q_PLUGIN_METADATA(IID "org.qt-project.playground.qtdesktopcomponents.QQmlExtensionInterface" FILE "styleplugin.json")
 public:
     void registerTypes(const char *uri);
-    void initializeEngine(QDeclarativeEngine *engine, const char *uri);
+    void initializeEngine(QQmlEngine *engine, const char *uri);
 };
 
 #endif // STYLEPLUGIN_H

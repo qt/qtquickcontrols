@@ -38,8 +38,8 @@
 **
 ****************************************************************************/
 
-import QtQuick 1.1
-import "custom" as Components
+import QtQuick 2.0
+import QtDesktop 0.2
 
 Item {
     id: scrollbar
@@ -47,15 +47,31 @@ Item {
     property int orientation : Qt.Horizontal
     property alias minimumValue: slider.minimumValue
     property alias maximumValue: slider.maximumValue
-    property int pageStep: styleitem.horizontal ? width : height
+    property int pageStep: styleitem && styleitem.horizontal ? width : height
     property int singleStep: 20
     property alias value: slider.value
-    property bool scrollToClickposition: styleitem.styleHint("scrollToClickPosition")
+    property bool scrollToClickposition: styleitem ? styleitem.styleHint("scrollToClickPosition") : false
+
+    property Item styleitem: loader.item
 
     implicitWidth: orientation == Qt.Horizontal ? 200 : internal.scrollbarExtent
     implicitHeight: orientation == Qt.Horizontal ? internal.scrollbarExtent : 200
 
     onValueChanged: internal.updateHandle()
+
+    property Component delegate: StyleItem {
+        id: styleitem
+        anchors.fill:parent
+        elementType: "scrollbar"
+        hover: activeControl != "none"
+        activeControl: "none"
+        sunken: internal.upPressed | internal.downPressed
+        minimum: slider.minimumValue
+        maximum: slider.maximumValue
+        value: slider.value
+        horizontal: orientation == Qt.Horizontal
+        enabled: parent.enabled
+    }
 
     MouseArea {
         id: internal
@@ -97,7 +113,7 @@ Item {
                                                                                               internal.incrementPage()
         }
 
-        onMousePositionChanged: {
+        onPositionChanged: {
             if (pressed && control === "handle") {
                 //slider.positionAtMaximum = grooveSize
                 if (!styleitem.horizontal)
@@ -171,22 +187,14 @@ Item {
                 value = minimumValue
         }
 
-        StyleItem {
-            id: styleitem
-            anchors.fill:parent
-            elementType: "scrollbar"
-            hover: activeControl != "none"
-            activeControl: "none"
-            sunken: internal.upPressed | internal.downPressed
-            minimum: slider.minimumValue
-            maximum: slider.maximumValue
-            value: slider.value
-            horizontal: orientation == Qt.Horizontal
-            enabled: parent.enabled
+        Loader {
+            id: loader
+            sourceComponent: delegate
+            anchors.fill: parent
         }
 
-        property variant handleRect: Qt.rect(0,0,0,0)
-        property variant grooveRect: Qt.rect(0,0,0,0)
+        property rect handleRect: Qt.rect(0,0,0,0)
+        property rect grooveRect: Qt.rect(0,0,0,0)
         function updateHandle() {
             internal.handleRect = styleitem.subControlRect("handle")
             grooveRect = styleitem.subControlRect("groove");
@@ -202,5 +210,4 @@ Item {
             positionAtMaximum: internal.grooveSize
         }
     }
-
 }

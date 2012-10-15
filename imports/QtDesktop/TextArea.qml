@@ -38,11 +38,11 @@
 **
 ****************************************************************************/
 
-import QtQuick 1.1
-import "custom" as Components
+import QtQuick 2.0
+import QtDesktop 0.2
 
 ScrollArea {
-    id:area
+    id: area
     color: "white"
     width: 280
     height: 120
@@ -54,6 +54,7 @@ ScrollArea {
     property bool tabChangesFocus: false
     property alias font: edit.font
     property alias activeFocusOnPress: edit.activeFocusOnPress
+    property alias horizontalAlignment: edit.horizontalAlignment
 
     highlightOnFocus: true
     property int documentMargins: 4
@@ -64,51 +65,55 @@ ScrollArea {
         verticalScrollBar.value = verticalScrollBar.maximumValue
     }
 
-    Item {
-        anchors.left: parent.left
-        anchors.top: parent.top
-        height: edit.paintedHeight + area.height - viewportHeight + 2 * documentMargins + 4
-        anchors.margins: documentMargins
+    Accessible.role: Accessible.EditableText
+    // FIXME: probably implement text interface
+    Accessible.name: text
 
-        TextEdit {
-            id: edit
-            wrapMode: TextEdit.WordWrap;
-            width: area.width
-            height: area.height
-            selectByMouse: true
-            readOnly: false
-            color: syspal.text
+    TextEdit {
+        MouseArea {
+            anchors.fill: parent
+            cursorShape: Qt.IBeamCursor
+            acceptedButtons: Qt.NoButton
+        }
 
-            SystemPalette {
-                id: syspal
-                colorGroup: enabled ? SystemPalette.Active : SystemPalette.Disabled
-            }
+        id: edit
+        selectionColor: syspal.highlight
+        selectedTextColor: syspal.highlightedText
+        wrapMode: TextEdit.WordWrap;
+        width: area.viewportWidth - (2 * documentMargins)
+        x: documentMargins
+        y: documentMargins
+        // height has to be big enough to handle mouse focus
+        height: Math.max(area.height, paintedHeight)
 
-            CursorArea {
-                anchors.fill: parent
-                cursor: CursorArea.IBeamCursor
-            }
+        selectByMouse: true
+        readOnly: false
+        color: syspal.text
 
-            KeyNavigation.priority: KeyNavigation.BeforeItem
-            KeyNavigation.tab: area.tabChangesFocus ? area.KeyNavigation.tab : null
-            KeyNavigation.backtab: area.tabChangesFocus ? area.KeyNavigation.backtab : null
+        SystemPalette {
+            id: syspal
+            colorGroup: enabled ? SystemPalette.Active : SystemPalette.Disabled
+        }
 
-            onPaintedSizeChanged: {
-                area.contentWidth = paintedWidth + (2 * documentMargins)
-            }
+        KeyNavigation.priority: KeyNavigation.BeforeItem
+        KeyNavigation.tab: area.tabChangesFocus ? area.KeyNavigation.tab : null
+        KeyNavigation.backtab: area.tabChangesFocus ? area.KeyNavigation.backtab : null
 
-            // keep textcursor within scrollarea
-            onCursorPositionChanged: {
-                if (cursorRectangle.y >= area.contentY + area.viewportHeight - 1.5*cursorRectangle.height - documentMargins)
-                    area.contentY = cursorRectangle.y - area.viewportHeight + 1.5*cursorRectangle.height + documentMargins
-                else if (cursorRectangle.y < area.contentY)
-                    area.contentY = cursorRectangle.y
+        onContentSizeChanged: {
+            area.contentWidth = paintedWidth + (2 * documentMargins)
+        }
 
-                if (cursorRectangle.x >= area.contentX + area.viewportWidth - documentMargins) {
-                    area.contentX = cursorRectangle.x - area.viewportWidth + documentMargins
-                } else if (cursorRectangle.x < area.contentX)
-                    area.contentX = cursorRectangle.x
-            }
+        // keep textcursor within scrollarea
+        onCursorPositionChanged: {
+            if (cursorRectangle.y >= area.contentY + area.viewportHeight - 1.5*cursorRectangle.height - documentMargins)
+                area.contentY = cursorRectangle.y - area.viewportHeight + 1.5*cursorRectangle.height + documentMargins
+            else if (cursorRectangle.y < area.contentY)
+                area.contentY = cursorRectangle.y
+
+            if (cursorRectangle.x >= area.contentX + area.viewportWidth - documentMargins) {
+                area.contentX = cursorRectangle.x - area.viewportWidth + documentMargins
+            } else if (cursorRectangle.x < area.contentX)
+                area.contentX = cursorRectangle.x
         }
     }
 
@@ -118,6 +123,4 @@ ScrollArea {
         } else if (event.key == Qt.Key_PageDown)
             verticalValue = verticalValue + area.height
     }
-
-    Component.onCompleted: edit.width = area.viewportWidth - (2 * documentMargins)
 }

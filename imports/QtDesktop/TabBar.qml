@@ -38,9 +38,8 @@
 **
 ****************************************************************************/
 
-import QtQuick 1.1
-import "custom" as Components
-
+import QtQuick 2.0
+import QtDesktop 0.2
 
 Item {
     id: tabbar
@@ -57,6 +56,7 @@ Item {
     }
 
     height: tabHeight
+
 
     property Item tabFrame
     onTabFrameChanged:parent = tabFrame
@@ -78,15 +78,21 @@ Item {
         return null;
     }
 
-    StyleItem {
-        visible:false
-        id:styleitem
+    property Component delegate: StyleItem {
+        visible: false
+        id: styleitem
         elementType: "tab"
         text: "generic"
     }
 
+    Loader {
+        id: loader
+        sourceComponent: delegate
+    }
+
     Row {
         id: tabrow
+        Accessible.role: Accessible.PageTabList
         property int paintMargins: 1
         states:
                 State {
@@ -109,10 +115,10 @@ Item {
                 property bool selected : tabFrame.current == index
                 z: selected ? 1 : -1
                 width: Math.min(implicitWidth, tabbar.width/tabs.length)
-
-                implicitWidth: Math.max(textitem.paintedWidth, style.implicitWidth)
-                implicitHeight: Math.max(textitem.paintedHeight, style.implicitHeight)
-
+                function updateRect() {
+                    implicitWidth = style.implicitWidth
+                    height = style.implicitHeight
+                }
                 StyleItem {
                     id: style
                     elementType: "tab"
@@ -122,7 +128,7 @@ Item {
                     hover: mousearea.containsMouse
                     hasFocus: tabbar.focus && selected
                     property bool first: index === 0
-                    paintMargins: tabrow.paintMargins
+                    //paintMargins: tabrow.paintMargins
                     activeControl: tabFrame.count === 1 ? "only" : index === 0 ? "beginning" :
                             index === tabFrame.count-1 ? "end" : "middle"
                     anchors.fill: parent
@@ -133,6 +139,8 @@ Item {
                         id: textitem
                         // Used for size hint
                         visible: false
+                        onWidthChanged: updateRect()
+                        onHeightChanged: updateRect()
                         text:  tabFrame.tabs[index].title
                     }
                 }
@@ -142,6 +150,8 @@ Item {
                     hoverEnabled: true
                     onPressed: tabFrame.current = index
                 }
+                Accessible.role: Accessible.PageTab
+                Accessible.name: textitem.text
             }
         }
     }

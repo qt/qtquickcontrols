@@ -71,7 +71,9 @@
 
 #include "qfiledialogitem.h"
 
+#if QT_VERSION < 0x050000
 #include <QGraphicsScene>
+#endif
 
 QFileDialogItem::QFileDialogItem():
     _dialog(new QFileDialog),
@@ -82,21 +84,11 @@ QFileDialogItem::QFileDialogItem():
 {
     QObject::connect(_dialog, SIGNAL(accepted()), this, SIGNAL(accepted()));
     QObject::connect(_dialog, SIGNAL(rejected()), this, SIGNAL(rejected()));
-    QObject::connect(_dialog, SIGNAL(destroyed()), this, SLOT(dialogDestroyed()));
 }
 
 QFileDialogItem::~QFileDialogItem()
 {
     delete _dialog;
-}
-
-// If the dialog parent is set in the open() method, we need to watch
-// for that parent being destroyed otherwise we'll end up destroying
-// the dialog twice (once when the parent view is destructed, and once
-// in our own destructor).
-void QFileDialogItem::dialogDestroyed()
-{
-    _dialog = 0;
 }
 
 /*!
@@ -111,14 +103,11 @@ void QFileDialogItem::setTitle(QString title)
 }
 
 /* Intentionally left undocumented, as we might decide to remove it later */
-void QFileDialogItem::setModality(Qt::WindowModality modality)
+void QFileDialogItem::setModal(bool modal)
 {
-    if (modality == _dialog->windowModality())
-        return;
-
     bool visible = _dialog->isVisible();
     _dialog->hide();
-    _dialog->setWindowModality(modality);
+    _dialog->setWindowModality(modal ? Qt::WindowModal : Qt::NonModal);
 
     if (visible)
         _dialog->show();
@@ -266,6 +255,14 @@ QStringList QFileDialogItem::filePaths() const
     return _dialog->selectedFiles();
 }
 
+void QFileDialogItem::setVisible(bool visible)
+{
+    if (visible)
+        open();
+    else
+        close();
+}
+
 /*!
     \qmlmethod void FileDialog::open()
 
@@ -273,6 +270,7 @@ QStringList QFileDialogItem::filePaths() const
 */
 void QFileDialogItem::open()
 {
+#if QT_VERSION < 0x050000
     /* We must set the QtDeclarative scene as parent widget for the
      * QDialog, so that it will be positioned on top of it.
      * This is also necessary for the modality to work.
@@ -283,9 +281,11 @@ void QFileDialogItem::open()
             _dialog->setParent(views[0], Qt::Dialog);
         }
     }
+#endif
 
-    if (isVisible()) {
+    if (!isVisible()) {
         _dialog->show();
+        emit visibleChanged();
     }
     _isOpen = true;
 }
@@ -299,12 +299,14 @@ void QFileDialogItem::close()
 {
     _isOpen = false;
     _dialog->hide();
+    emit visibleChanged();
 }
 
+#if QT_VERSION < 0x050000
 QVariant QFileDialogItem::itemChange(GraphicsItemChange change,
                                      const QVariant &value)
 {
-    if (change == QGraphicsItem::ItemVisibleHasChanged) {
+    if (change == QGraphicsItem::QGraphicsItem::ItemVisibleHasChanged) {
         bool visible = value.toBool();
 
         if (visible && _isOpen) {
@@ -312,7 +314,9 @@ QVariant QFileDialogItem::itemChange(GraphicsItemChange change,
         } else {
             _dialog->hide();
         }
+        emit visibleChanged();
     }
 
     return QDeclarativeItem::itemChange(change, value);
 }
+#endif

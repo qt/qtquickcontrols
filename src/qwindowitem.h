@@ -43,27 +43,21 @@
 
 #include "qtoplevelwindow.h"
 
-#include <QtGui/QApplication>
-#include <QDeclarativeItem>
-#include <QDeclarativeView>
+#include <QtGui/QGuiApplication>
+#include <QtQuick/QQuickItem>
+#include <QtQuick/QQuickView>
 #include <QMenuBar>
 
-
-class QWindowItem : public QDeclarativeItem
+class QWindowItem : public QQuickItem
 {
     Q_OBJECT
-    Q_PROPERTY(int x READ x WRITE setX NOTIFY xChanged)
-    Q_PROPERTY(int y READ y WRITE setY NOTIFY yChanged)
-    Q_PROPERTY(int height READ height WRITE setHeight NOTIFY sizeChanged)
-    Q_PROPERTY(int width READ width WRITE setWidth NOTIFY sizeChanged)
     Q_PROPERTY(int minimumHeight READ minimumHeight WRITE setMinimumHeight NOTIFY minimumHeightChanged)
     Q_PROPERTY(int maximumHeight READ maximumHeight WRITE setMaximumHeight NOTIFY maximumHeightChanged)
     Q_PROPERTY(int minimumWidth READ minimumWidth WRITE setMinimumWidth NOTIFY minimumWidthChanged)
     Q_PROPERTY(int maximumWidth READ maximumWidth WRITE setMaximumWidth NOTIFY maximumWidthChanged)
     Q_PROPERTY(bool visible READ isVisible WRITE setVisible NOTIFY visibleChanged)
     Q_PROPERTY(bool windowDecoration READ windowDecoration WRITE setWindowDecoration NOTIFY windowDecorationChanged)
-    Q_PROPERTY(Qt::WindowModality modality READ modality \
-               WRITE setModality NOTIFY modalityChanged)
+    Q_PROPERTY(bool modal READ modal WRITE setModal NOTIFY modalityChanged)
     Q_PROPERTY(bool deleteOnClose READ deleteOnClose WRITE setDeleteOnClose NOTIFY deleteOnCloseChanged)
     Q_PROPERTY(Qt::WindowState windowState READ windowState WRITE setWindowState NOTIFY windowStateChanged)
     Q_PROPERTY(QString title READ title WRITE setTitle NOTIFY titleChanged)
@@ -71,37 +65,28 @@ class QWindowItem : public QDeclarativeItem
 public:
     QWindowItem();
     ~QWindowItem();
-
     QTopLevelWindow *window() { return _window; }
-    QDeclarativeView *view() { return _window->view(); }
-    int x() const { return _window->x(); }
-    int y() const { return _window->y(); }
-    int height() const { return _window->height(); }
-    int minimumHeight() const { return _window->minimumHeight(); }
-    int maximumHeight() const { return _window->maximumHeight(); }
-    int width() const { return _window->width(); }
-    int minimumWidth() const { return _window->minimumWidth(); }
-    int maximumWidth() const { return _window->maximumWidth(); }
+    QQuickView *view() { return _window->view(); }
+    int minimumHeight() const { return _window->minimumSize().height(); }
+    int maximumHeight() const { return _window->maximumSize().height(); }
+    int minimumWidth() const { return _window->minimumSize().width(); }
+    int maximumWidth() const { return _window->maximumSize().width(); }
     bool isVisible() const { return _window->isVisible(); }
     bool windowDecoration() const { return !(_window->windowFlags() & Qt::FramelessWindowHint); }
     Qt::WindowState windowState() const { return static_cast<Qt::WindowState>(static_cast<int>(_window->windowState()) & ~Qt::WindowActive); }
     QString title() const { return _window->windowTitle(); }
     bool deleteOnClose() const { return _deleteOnClose; }
-    Qt::WindowModality modality() const { return _window->windowModality(); }
+    bool modal() const { return _window->isModal(); }
 
-    void setX(int x);
-    void setY(int y);
-    void setHeight(int height);
     void setMinimumHeight(int height);
     void setMaximumHeight(int height);
-    void setWidth(int width);
-    void setMinimumWidth(int width) { _window->setMinimumWidth(width); }
-    void setMaximumWidth(int width) { _window->setMaximumWidth(width); }
+    void setMinimumWidth(int width);
+    void setMaximumWidth(int width);
     void setVisible(bool visible);
     void setWindowDecoration(bool s);
     void setWindowState(Qt::WindowState state) { _window->setWindowState(state); }
     void setTitle(QString title);
-    void setModality(Qt::WindowModality modality);
+    void setModal(bool modal);
     void setDeleteOnClose(bool close);
 
 public Q_SLOTS:
@@ -114,14 +99,11 @@ protected:
     void componentComplete();
 
 protected Q_SLOTS:
-    void updateSize(QSize newSize);
+    void updateWindowGeometry();
     void center();
     void moveWindow(int x, int y, int lx, int ly);
 
 Q_SIGNALS:
-    void sizeChanged();
-    void xChanged();
-    void yChanged();
     void visibleChanged();
     void windowDecorationChanged();
     void windowStateChanged();

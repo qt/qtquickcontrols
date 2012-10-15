@@ -38,8 +38,9 @@
 **
 ****************************************************************************/
 
-import QtQuick 1.1
-import "custom" as Custom
+import QtQuick 2.0
+import "private" as Private
+import QtDesktop 0.2
 
 /*
 *
@@ -80,18 +81,18 @@ import "custom" as Custom
 *        width: 200
 *        MenuItem {
 *            text: "Pineapple"
-*            onTriggered: console.debug(text)
+*            onSelected: console.debug(text)
 *
 *        }
 *        MenuItem {
 *            text: "Grape"
-*            onTriggered: console.debug(text)
+*            onSelected: console.debug(text)
 *        }
 *    }
 *
 */
 
-Custom.BasicButton {
+Private.BasicButton {
     id: comboBox
 
     default property alias menuItems: popup.menuItems
@@ -104,7 +105,7 @@ Custom.BasicButton {
     property alias hoveredText: popup.hoveredText
     property string styleHint
 
-    background: StyleItem {
+    delegate: StyleItem {
         anchors.fill: parent
         elementType: "combobox"
         sunken: comboBox.pressed
@@ -114,27 +115,22 @@ Custom.BasicButton {
         text: comboBox.selectedText
         hasFocus: comboBox.focus
         contentHeight: 18
+        Component.onCompleted: popup.center = styleHint("comboboxpopup");
     }
 
 //  ToDo: adjust margins so that selected popup label
 //    centers directly above button label when
 //    popup.centerOnSelectedText === true
 
-
     width: implicitWidth
     height: implicitHeight
-
-    implicitWidth: Math.max(80, backgroundItem.implicitWidth)
-    implicitHeight: backgroundItem.implicitHeight
-
     onWidthChanged: popup.setMinimumWidth(width)
     checkable: false
-
     onPressedChanged: if (pressed) popup.visible = true
 
     ContextMenu {
         id: popup
-        property bool center: backgroundItem.styleHint("comboboxpopup")
+        property bool center: false
         centerSelectedText: center
         y: center ? 0 : comboBox.height
     }

@@ -1,8 +1,9 @@
-import QtQuick 1.0
-import QtDesktop 0.1
+import QtQuick 2.0
+import QtDesktop 0.2
+import QtDesktop 0.2 as QtDesktop // purely for overriding Window
 import "content"
 
-Window {
+QtDesktop.Window {
     id: topLevelBrowser
     title: "Qml Desktop Browser"
 
@@ -52,7 +53,7 @@ Window {
                 text: "Close Window"
                 shortcut: "Ctrl+Shift+W"
                 onTriggered: {
-                    topLevelBrowser.close()
+                    topLevelBrowser.close = true
                 }
             }
             Separator {}

@@ -38,20 +38,17 @@
 **
 ****************************************************************************/
 
-import QtQuick 1.1
-import "custom" as Components
+import QtQuick 2.0
+import QtDesktop 0.2
 
 // jb : Size should not depend on background, we should make it consistent
 
-Components.CheckBox {
+CheckBox {
     id: radiobutton
-    property string text
-    property string styleHint
 
-    implicitWidth: Math.max(120, backgroundItem.implicitWidth)
-    implicitHeight: backgroundItem.implicitHeight
+    Accessible.role: Accessible.RadioButton
 
-    background: StyleItem {
+    delegate: StyleItem {
         elementType: "radiobutton"
         sunken: pressed
         on: checked || pressed
@@ -72,6 +69,4 @@ Components.CheckBox {
             elide: Text.ElideRight
         }
     }
-    Keys.onSpacePressed: {clicked(); checked = !checked; }
 }
-

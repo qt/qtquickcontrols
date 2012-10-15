@@ -1,11 +1,5 @@
-    TEMPLATE = subdirs # XXX: Avoid call the linker
+TEMPLATE = subdirs # XXX: Avoid calling the linker
 TARGETPATH = QtDesktop
-
-symbian {
-    INSTALL_IMPORTS = /resource/qt/imports
-} else {
-    isEmpty(INSTALL_IMPORTS):INSTALL_IMPORTS = $$[QT_INSTALL_IMPORTS]
-}
 
 QML_FILES = \
             qmldir \
@@ -22,7 +16,6 @@ QML_FILES = \
             ButtonRow.qml \
             ButtonColumn.qml \
             Frame.qml \
-            MenuItem.qml   \
             Slider.qml \
             TabBar.qml \
             Tab.qml \
@@ -44,19 +37,15 @@ QML_FILES = \
 
 QML_DIRS = \
         custom \
-	private \
+        private \
         images 
 
 qmlfiles.files = $$QML_FILES
 qmlfiles.sources = $$QML_FILES
-qmlfiles.path = $$INSTALL_IMPORTS/$$TARGETPATH
+qmlfiles.path = $$[QT_INSTALL_IMPORTS]/$$TARGETPATH
 
 qmldirs.files = $$QML_DIRS
 qmldirs.sources = $$QML_DIRS
-qmldirs.path = $$INSTALL_IMPORTS/$$TARGETPATH
+qmldirs.path = $$[QT_INSTALL_IMPORTS]/$$TARGETPATH
 
 INSTALLS += qmlfiles qmldirs
-
-symbian {
-    DEPLOYMENT += qmlfiles qmldirs
-}

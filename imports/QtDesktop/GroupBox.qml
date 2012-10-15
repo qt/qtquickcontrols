@@ -38,15 +38,31 @@
 **
 ****************************************************************************/
 
-import QtQuick 1.1
-import "custom" as Components
+import QtQuick 2.0
+import QtDesktop 0.2
 
-Components.GroupBox {
+Item {
     id: groupbox
-    implicitWidth: Math.max(200, contentWidth + backgroundItem.implicitWidth)
-    implicitHeight: contentHeight + backgroundItem.implicitHeight + 4
+    implicitWidth: Math.max(200, contentWidth + loader.item.implicitWidth)
+    implicitHeight: contentHeight + loader.item.implicitHeight + 4
+
+    default property alias data: content.data
+
+    property string title
     property bool flat: false
-    background : StyleItem {
+    property bool checkable: false
+    property int contentWidth: content.childrenRect.width
+    property int contentHeight: content.childrenRect.height
+
+    property Item checkbox: check
+    property alias checked: check.checked
+    property bool adjustToContentSize: false // Resizes groupbox to fit contents.
+                                             // Note when using this, you cannot anchor children
+
+    Accessible.role: Accessible.Grouping
+    Accessible.name: title
+
+    property Component delegate: StyleItem {
         id: styleitem
         elementType: "groupbox"
         anchors.fill: parent
@@ -57,5 +73,39 @@ Components.GroupBox {
         activeControl: checkable ? "checkbox" : ""
         sunken: !flat
         contentHeight:  (title.length > 0 || checkable) ? 24 : 4
+    }
+
+    Loader {
+        id: loader
+        anchors.fill: parent
+        property int topMargin: title.length > 0 || checkable ? 22 : 4
+        property int bottomMargin: 4
+        property int leftMargin: 4
+        property int rightMargin: 4
+        property alias styledItem: groupbox
+        sourceComponent: delegate
+        onLoaded: item.z = -1
+    }
+
+    CheckBox {
+        id: check
+        checked: true
+        visible: checkable
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        height: loader.topMargin
+    }
+
+    Item {
+        id:content
+        z: 1
+        focus: true
+        anchors.topMargin: loader.topMargin
+        anchors.leftMargin: 8
+        anchors.rightMargin: 8
+        anchors.bottomMargin: 8
+        anchors.fill: parent
+        enabled: (!checkable || checkbox.checked)
     }
 }
