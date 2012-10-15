@@ -1,2 +1,2 @@
 TEMPLATE = subdirs
-SUBDIRS = components src qmldesktopviewer
+SUBDIRS = imports/QtDesktop/components.pro src qmldesktopviewer

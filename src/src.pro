@@ -5,7 +5,7 @@ QT += script
 
 TARGET  = styleplugin
 
-DESTDIR = ../components/plugin
+DESTDIR = ../imports/QtDesktop/plugin
 OBJECTS_DIR = obj
 MOC_DIR = moc
 
