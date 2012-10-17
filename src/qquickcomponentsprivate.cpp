@@ -40,7 +40,7 @@
 
 #include "qquickcomponentsprivate.h"
 #include <QToolTip>
-#include <QQuickCanvas>
+#include <QQuickWindow>
 
 
 QQuickComponentsPrivate::QQuickComponentsPrivate(QObject *parent)
@@ -51,10 +51,10 @@ QQuickComponentsPrivate::QQuickComponentsPrivate(QObject *parent)
 
 void QQuickComponentsPrivate::showToolTip(QQuickItem *item, const QPointF &pos, const QString &str)
 {
-    if (!item || !item->canvas())
+    if (!item || !item->window())
         return;
 
-    QToolTip::showText(item->canvas()->mapToGlobal(item->mapToScene(pos).toPoint()), str);
+    QToolTip::showText(item->window()->mapToGlobal(item->mapToScene(pos).toPoint()), str);
 }
 
 void QQuickComponentsPrivate::hideToolTip()

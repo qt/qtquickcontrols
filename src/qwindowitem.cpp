@@ -111,7 +111,7 @@ void QWindowItem::updateParentWindow() {
 void QWindowItem::componentComplete()
 {
     updateParentWindow();
-    this->setParentItem(_window->view()->rootItem());
+    this->setParentItem(_window->view()->rootObject());
     if (_window->isTopLevel())
         _window->initPosition();
     QQuickItem::componentComplete();
@@ -123,9 +123,11 @@ void QWindowItem::componentComplete()
 void QWindowItem::updateWindowGeometry()
 {
     // Translate the view's root item on the other direction to keep this item in place
-    QQuickItem *viewRootItem = _window->view()->rootItem();
-    viewRootItem->setX(-x());
-    viewRootItem->setY(-y());
+    QQuickItem *viewRootItem = _window->view()->rootObject();
+    if (viewRootItem) {
+        viewRootItem->setX(-x());
+        viewRootItem->setY(-y());
+    }
 
     _window->move(x(), y());
     _window->resize(width(), height());
