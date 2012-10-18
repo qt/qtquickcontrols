@@ -44,7 +44,6 @@
 #include <QtWidgets/QStyle>
 #include <QtWidgets/QStyleOption>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QProgressBar>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QToolBar>
@@ -352,12 +351,6 @@ void QStyleItem::initStyleOption()
     }
         break;
     case ProgressBar: {
-        if (QProgressBar *bar= qobject_cast<QProgressBar*>(widget())){
-            bar->setMaximum(maximum());
-            bar->setMinimum(minimum());
-            if (maximum() != minimum())
-                bar->setValue(1);
-        }
         if (!m_styleoption)
             m_styleoption = new QStyleOptionProgressBarV2();
 
@@ -424,6 +417,7 @@ void QStyleItem::initStyleOption()
     if (!m_styleoption)
         m_styleoption = new QStyleOption();
 
+    m_styleoption->styleObject = this;
     m_styleoption->rect = QRect(m_paintMargins, m_paintMargins, width() - 2* m_paintMargins, height() - 2 * m_paintMargins);
 
     if (isEnabled())
@@ -591,7 +585,7 @@ QSize QStyleItem::sizeFromContents(int width, int height)
         size = qApp->style()->sizeFromContents(QStyle::CT_Slider, m_styleoption, QSize(width,height), widget());
         break;
     case ProgressBar:
-        size = qApp->style()->sizeFromContents(QStyle::CT_ProgressBar, m_styleoption, QSize(width,height), widget());
+        size = qApp->style()->sizeFromContents(QStyle::CT_ProgressBar, m_styleoption, QSize(width,height));
         break;
     case Edit:
         size = qApp->style()->sizeFromContents(QStyle::CT_LineEdit, m_styleoption, QSize(width,height), widget());
@@ -810,7 +804,6 @@ void QStyleItem::setElementType(const QString &str)
         visible = true;
         m_itemType = Splitter;
     } else if (str == "progressbar") {
-        m_dummywidget = new QProgressBar();
         visible = true;
         m_itemType = ProgressBar;
     } else if (str == "button") {
