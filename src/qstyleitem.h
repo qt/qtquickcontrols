@@ -161,9 +161,7 @@ public:
     void setInfo(const QString &str) { if (m_info != str) {m_info = str; emit infoChanged();}}
     void setHint(const QString &str) { if (m_hint != str) {m_hint= str; emit hintChanged();}}
 
-    bool eventFilter(QObject *, QEvent *);
     virtual void initStyleOption ();
-    QWidget *widget(){ return m_dummywidget; }
 
     int fontHeight();
     QString fontFamily();
