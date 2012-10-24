@@ -375,8 +375,7 @@ FocusScope{
             anchors.margins: frameWidth
             property int rowIndex: model.index
             property bool itemAlternateBackground: alternateRowColor && rowIndex % 2 == 1
-            property variant itemModelData: this.hasOwnProperty("modelData") ? modelData : null
-            // ## Note the this reference is due to a behavior change in Qt5.0 This needs to be investigated
+            property variant itemModelData: typeof modelData == "undefined" ? null : modelData
             Loader {
                 id: rowstyle
                 // row delegate
