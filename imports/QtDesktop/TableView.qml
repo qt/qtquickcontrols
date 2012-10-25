@@ -388,6 +388,9 @@ FocusScope{
 
                 property bool itemAlternateBackground: rowitem.itemAlternateBackground
                 property bool itemSelected: rowitem.ListView.isCurrentItem
+                property int index: rowitem.rowIndex
+                property variant model: tree.model
+                property variant modelData: rowitem.itemModelData
             }
             Row {
                 id: row
