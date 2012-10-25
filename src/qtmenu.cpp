@@ -98,7 +98,7 @@ QDeclarativeListProperty<QtMenuBase> QtMenu::menuItems()
 #else
 QQmlListProperty<QtMenuBase> QtMenu::menuItems()
 {
-    return QQmlListProperty<QtMenuBase>(this, 0, &QtMenu::append_qmenuItem);
+    return QQmlListProperty<QtMenuBase>(this, 0, &QtMenu::append_qmenuItem, 0, 0, 0);
 }
 #endif
 
@@ -115,14 +115,15 @@ void QtMenu::showPopup(qreal x, qreal y, int atActionIndex)
 
     // x,y are in view coordinates, QMenu expects screen coordinates
     int menuBarHeight = 0;
+    QPoint screenPosition;
     QTopLevelWindow *tw = qobject_cast<QTopLevelWindow*>(window());
     if (tw) {
         QMenuBar *menuBar = tw->menuBar();
         menuBarHeight = menuBar->height();
+        int windowFrameHeight = tw->frameMargins().top();
+        QPoint screenPosition = tw->mapToGlobal(QPoint(x, y+menuBarHeight-windowFrameHeight));
     }
 
-    int windowFrameHeight = tw->frameMargins().top();
-    QPoint screenPosition = tw->mapToGlobal(QPoint(x, y+menuBarHeight-windowFrameHeight));
 
     setHoveredIndex(m_selectedIndex);
     m_qmenu->popup(screenPosition, atAction);

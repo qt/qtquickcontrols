@@ -77,7 +77,7 @@ QDeclarativeListProperty<QtMenu> QtMenuBar::menus()
 #else
 QQmlListProperty<QtMenu> QtMenuBar::menus()
 {
-    return QQmlListProperty<QtMenu>(this, 0, &QtMenuBar::append_menu);
+    return QQmlListProperty<QtMenu>(this, 0, &QtMenuBar::append_menu, 0, 0, 0);
 }
 #endif
 
