@@ -42,7 +42,6 @@
 #define STYLEWRAPPER_H
 
 #include <QtQuick/qquickpainteditem.h>
-//#include <QSGItem>
 #include <QtWidgets/QStyle>
 #include <QEvent>
 
