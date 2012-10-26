@@ -78,11 +78,8 @@ public:
     int hoveredIndex() const { return m_highlightedIndex; }
     void setHoveredIndex(int index);
 
-#if QT_VERSION < 0x050000
-    QDeclarativeListProperty<QtMenuBase> menuItems();
-#else
     QQmlListProperty<QtMenuBase> menuItems();
-#endif
+
     QMenu* qmenu() { return m_qmenu; }
 
     QAction* action();
@@ -116,12 +113,8 @@ private Q_SLOTS:
     void emitHovered();
 
 private:
-#if QT_VERSION < 0x050000
-    static void append_qmenuItem(QDeclarativeListProperty<QtMenuBase> *list, QtMenuBase *menuItem);
-#else
     static void append_qmenuItem(QQmlListProperty<QtMenuBase> *list, QtMenuBase *menuItem);
-#endif
-private:
+
     QWidget *dummy;
     QMenu *m_qmenu;
     QList<QtMenuBase *> m_qmenuItems;

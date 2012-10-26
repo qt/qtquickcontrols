@@ -89,18 +89,10 @@ void QtMenu::setHoveredIndex(int index)
     emit hoveredIndexChanged();
 }
 
-
-#if QT_VERSION < 0x050000
-QDeclarativeListProperty<QtMenuBase> QtMenu::menuItems()
-{
-    return QDeclarativeListProperty<QtMenuBase>(this, 0, &QtMenu::append_qmenuItem);
-}
-#else
 QQmlListProperty<QtMenuBase> QtMenu::menuItems()
 {
     return QQmlListProperty<QtMenuBase>(this, 0, &QtMenu::append_qmenuItem, 0, 0, 0);
 }
-#endif
 
 void QtMenu::showPopup(qreal x, qreal y, int atActionIndex)
 {
@@ -210,17 +202,6 @@ int QtMenu::modelCount() const
     return -1;
 }
 
-#if QT_VERSION < 0x050000
-void QtMenu::append_qmenuItem(QDeclarativeListProperty<QtMenuBase> *list, QtMenuBase *menuItem)
-{
-    QtMenu *menu = qobject_cast<QtMenu *>(list->object);
-    if (menu) {
-        menuItem->setParent(menu);
-        menu->m_qmenuItems.append(menuItem);
-        menu->qmenu()->addAction(menuItem->action());
-    }
-}
-#else
 void QtMenu::append_qmenuItem(QQmlListProperty<QtMenuBase> *list, QtMenuBase *menuItem)
 {
     QtMenu *menu = qobject_cast<QtMenu *>(list->object);
@@ -230,7 +211,6 @@ void QtMenu::append_qmenuItem(QQmlListProperty<QtMenuBase> *list, QtMenuBase *me
         menu->qmenu()->addAction(menuItem->action());
     }
 }
-#endif
 
 void QtMenu::setModel(const QVariant &newModel) {
     if (m_model != newModel) {
