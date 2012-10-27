@@ -64,6 +64,7 @@ win32 {
     CONFIG(debug, debug|release) {
         TARGET = $$member(TARGET, 0)d
     }
+    CONFIG += DLL
 }
 
 mac {
