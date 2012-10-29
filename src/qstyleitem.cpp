@@ -527,24 +527,32 @@ QSize QStyleItem::sizeFromContents(int width, int height)
     case ToolBar:
         size = QSize(200, 40);
         break;
-    case ToolButton:
-        size = qApp->style()->sizeFromContents(QStyle::CT_ToolButton, m_styleoption, QSize(width,height));
+    case ToolButton: {
+        QStyleOptionToolButton *btn = qstyleoption_cast<QStyleOptionToolButton*>(m_styleoption);
+        int newWidth = qMax(width, btn->fontMetrics.width(btn->text));
+        int newHeight = qMax(height, btn->fontMetrics.height());
+        size = qApp->style()->sizeFromContents(QStyle::CT_ToolButton, m_styleoption, QSize(newWidth, newHeight)); }
         break;
-    case Button:{
-            QStyleOptionButton *btn = qstyleoption_cast<QStyleOptionButton*>(m_styleoption);
-            int newWidth = qMax(width, btn->fontMetrics.width(btn->text));
-            int newHeight = qMax(height, btn->fontMetrics.height());
-            size = qApp->style()->sizeFromContents(QStyle::CT_PushButton, m_styleoption, QSize(newWidth, newHeight));
-        }
+    case Button: {
+        QStyleOptionButton *btn = qstyleoption_cast<QStyleOptionButton*>(m_styleoption);
+        int newWidth = qMax(width, btn->fontMetrics.width(btn->text));
+        int newHeight = qMax(height, btn->fontMetrics.height());
+        size = qApp->style()->sizeFromContents(QStyle::CT_PushButton, m_styleoption, QSize(newWidth, newHeight)); }
+        break;
+    case ComboBox: {
+        QStyleOptionComboBox *btn = qstyleoption_cast<QStyleOptionComboBox*>(m_styleoption);
+        int newWidth = qMax(width, btn->fontMetrics.width(btn->currentText));
+        int newHeight = qMax(height, btn->fontMetrics.height());
+        size = qApp->style()->sizeFromContents(QStyle::CT_ComboBox, m_styleoption, QSize(newWidth, newHeight)); }
+        break;
+    case SpinBox: {
+        QStyleOptionSpinBox *box = qstyleoption_cast<QStyleOptionSpinBox*>(m_styleoption);
+        int newWidth = qMax(width, box->fontMetrics.width(QLatin1String("0.0")));
+        int newHeight = qMax(height, box->fontMetrics.height());
+        size = qApp->style()->sizeFromContents(QStyle::CT_SpinBox, m_styleoption, QSize(newWidth, newHeight)); }
         break;
     case Tab:
         size = qApp->style()->sizeFromContents(QStyle::CT_TabBarTab, m_styleoption, QSize(width,height));
-        break;
-    case ComboBox:
-        size = qApp->style()->sizeFromContents(QStyle::CT_ComboBox, m_styleoption, QSize(width,height));
-        break;
-    case SpinBox:
-        size = qApp->style()->sizeFromContents(QStyle::CT_SpinBox, m_styleoption, QSize(width,height));
         break;
     case Slider:
         size = qApp->style()->sizeFromContents(QStyle::CT_Slider, m_styleoption, QSize(width,height));
