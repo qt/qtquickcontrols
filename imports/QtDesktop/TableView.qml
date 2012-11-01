@@ -214,6 +214,7 @@ FocusScope{
             elementType: "itemrow"
             activeControl: itemAlternateBackground ? "alternate" : ""
             selected: itemSelected ? true : false
+            height: Math.max(16, styleitem.implicitHeight)
         }
     }
 
@@ -371,11 +372,13 @@ FocusScope{
         delegate: Item {
             id: rowitem
             width: row.width
-            height: row.height
+            height: rowstyle.height
+
             anchors.margins: frameWidth
             property int rowIndex: model.index
             property bool itemAlternateBackground: alternateRowColor && rowIndex % 2 == 1
             property variant itemModelData: typeof modelData == "undefined" ? null : modelData
+
             Loader {
                 id: rowstyle
                 // row delegate
@@ -383,7 +386,6 @@ FocusScope{
                 // Row fills the tree width regardless of item size
                 // But scrollbar should not adjust to it
                 width: frameitem.width
-                height: row.height
                 x: contentX
 
                 property bool itemAlternateBackground: rowitem.itemAlternateBackground
@@ -395,12 +397,13 @@ FocusScope{
             Row {
                 id: row
                 anchors.left: parent.left
-
+                height: parent.height
                 Repeater {
                     id: repeater
                     model: root.header.length
                     Loader {
                         id: itemDelegateLoader
+                        height: parent.height
                         visible: header[index].visible
                         sourceComponent: header[index].delegate ? header[index].delegate : itemDelegate
                         property variant model: tree.model
@@ -408,7 +411,6 @@ FocusScope{
                         property variant modelData: itemModelData
 
                         width: header[index].width
-                        height: item !== undefined ? item.height : Math.max(16, styleitem.implicitHeight)
 
                         function getValue() {
                             if (header[index].role.length && model.get && model.get(rowIndex)[header[index].role])
