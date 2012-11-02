@@ -256,7 +256,6 @@ void QStyleItem::initStyleOption()
         QStyleOptionMenuItem *opt = qstyleoption_cast<QStyleOptionMenuItem*>(m_styleoption);
         opt->checked = false;
         opt->text = text();
-//        opt->palette = widget()->palette();
     }
         break;
     case CheckBox:
@@ -313,27 +312,20 @@ void QStyleItem::initStyleOption()
         QStyleOptionSlider *opt = qstyleoption_cast<QStyleOptionSlider*>(m_styleoption);
         opt->minimum = minimum();
         opt->maximum = maximum();
-        // ### fixme - workaround for KDE inverted dial
         opt->sliderPosition = value();
         opt->singleStep = step();
 
-        if (opt->singleStep)
-        {
+        if (opt->singleStep) {
             qreal numOfSteps = (opt->maximum - opt->minimum) / opt->singleStep;
-
             // at least 5 pixels between tick marks
             if (numOfSteps && (width() / numOfSteps < 5))
                 opt->tickInterval = qRound((5*numOfSteps / width()) + 0.5)*step();
             else
                 opt->tickInterval = opt->singleStep;
-        }
-        else // default Qt-components implementation
+        } else // default Qt-components implementation
             opt->tickInterval = opt->maximum != opt->minimum ? 1200 / (opt->maximum - opt->minimum) : 0;
 
-        if (style() == QLatin1String("oxygen") && type == QLatin1String("dial"))
-            opt->sliderValue  = maximum() - value();
-        else
-            opt->sliderValue = value();
+        opt->sliderValue = value();
         opt->subControls = QStyle::SC_SliderGroove | QStyle::SC_SliderHandle;
         opt->tickPosition = (activeControl() == "tick" ?
                     QSlider::TicksBelow : QSlider::NoTicks);
@@ -446,15 +438,13 @@ void QStyleItem::initStyleOption()
  *
  *   QMacStyle = "mac"
  *   QWindowsXPStyle = "windowsxp"
- *   QPlastiqueStyle = "plastique"
+ *   QFusionStyle = "fusion"
  */
 
 QString QStyleItem::style() const
 {
     QString style = qApp->style()->metaObject()->className();
     style = style.toLower();
-    if (style.contains(QLatin1String("oxygen")))
-        return QLatin1String("oxygen");
     if (style.startsWith(QLatin1Char('q')))
         style = style.right(style.length() - 1);
     if (style.endsWith("style"))
@@ -628,7 +618,6 @@ int QStyleItem::pixelMetric(const QString &metric)
         return qApp->style()->pixelMetric(QStyle::PM_MenuPanelWidth, 0 );
     else if (metric == "splitterwidth")
         return qApp->style()->pixelMetric(QStyle::PM_SplitterWidth, 0 );
-    // This metric is incorrectly negative on oxygen
     else if (metric == "scrollbarspacing")
         return abs(qApp->style()->pixelMetric(QStyle::PM_ScrollView_ScrollBarSpacing, 0 ));
     return 0;
