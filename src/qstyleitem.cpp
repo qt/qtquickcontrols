@@ -137,12 +137,12 @@ void QStyleItem::initStyleOption()
         break;
     case ItemRow: {
         if (!m_styleoption)
-            m_styleoption = new QStyleOptionViewItemV4();
+            m_styleoption = new QStyleOptionViewItem();
 
-        QStyleOptionViewItemV4 *opt = qstyleoption_cast<QStyleOptionViewItemV4*>(m_styleoption);
+        QStyleOptionViewItem *opt = qstyleoption_cast<QStyleOptionViewItem*>(m_styleoption);
         opt->features = 0;
         if (activeControl() == "alternate")
-            opt->features |= QStyleOptionViewItemV2::Alternate;
+            opt->features |= QStyleOptionViewItem::Alternate;
     }
         break;
 
@@ -155,10 +155,10 @@ void QStyleItem::initStyleOption()
 
     case Item: {
         if (!m_styleoption) {
-            m_styleoption = new QStyleOptionViewItemV4();
+            m_styleoption = new QStyleOptionViewItem();
         }
-        QStyleOptionViewItemV4 *opt = qstyleoption_cast<QStyleOptionViewItemV4*>(m_styleoption);
-        opt->features = QStyleOptionViewItemV4::HasDisplay;
+        QStyleOptionViewItem *opt = qstyleoption_cast<QStyleOptionViewItem*>(m_styleoption);
+        opt->features = QStyleOptionViewItem::HasDisplay;
         opt->text = text();
         opt->textElideMode = Qt::ElideRight;
         QPalette pal = m_styleoption->palette;
@@ -204,20 +204,19 @@ void QStyleItem::initStyleOption()
         break;
     case Tab: {
         if (!m_styleoption)
-            m_styleoption = new QStyleOptionTabV3();
+            m_styleoption = new QStyleOptionTab();
 
-        QStyleOptionTabV3 *opt =
-                qstyleoption_cast<QStyleOptionTabV3*>(m_styleoption);
+        QStyleOptionTab *opt = qstyleoption_cast<QStyleOptionTab*>(m_styleoption);
         opt->text = text();
         opt->shape = info() == "South" ? QTabBar::RoundedSouth : QTabBar::RoundedNorth;
         if (activeControl() == QLatin1String("beginning"))
-            opt->position = QStyleOptionTabV3::Beginning;
+            opt->position = QStyleOptionTab::Beginning;
         else if (activeControl() == QLatin1String("end"))
-            opt->position = QStyleOptionTabV3::End;
+            opt->position = QStyleOptionTab::End;
         else if (activeControl() == QLatin1String("only"))
-            opt->position = QStyleOptionTabV3::OnlyOneTab;
+            opt->position = QStyleOptionTab::OnlyOneTab;
         else
-            opt->position = QStyleOptionTabV3::Middle;
+            opt->position = QStyleOptionTab::Middle;
 
     } break;
 
@@ -228,9 +227,9 @@ void QStyleItem::initStyleOption()
         break;
     case Frame: {
         if (!m_styleoption)
-            m_styleoption = new QStyleOptionFrameV3();
+            m_styleoption = new QStyleOptionFrame();
 
-        QStyleOptionFrameV3 *opt = qstyleoption_cast<QStyleOptionFrameV3*>(m_styleoption);
+        QStyleOptionFrame *opt = qstyleoption_cast<QStyleOptionFrame*>(m_styleoption);
         opt->frameShape = QFrame::StyledPanel;
         opt->lineWidth = 1;
         opt->midLineWidth = 1;
@@ -238,8 +237,8 @@ void QStyleItem::initStyleOption()
         break;
     case TabFrame: {
         if (!m_styleoption)
-            m_styleoption = new QStyleOptionTabWidgetFrameV2();
-        QStyleOptionTabWidgetFrameV2 *opt = qstyleoption_cast<QStyleOptionTabWidgetFrameV2*>(m_styleoption);
+            m_styleoption = new QStyleOptionTabWidgetFrame();
+        QStyleOptionTabWidgetFrame *opt = qstyleoption_cast<QStyleOptionTabWidgetFrame*>(m_styleoption);
         opt->shape = (info() == "South") ? QTabBar::RoundedSouth : QTabBar::RoundedNorth;
         if (minimum())
             opt->selectedTabRect = QRect(value(), 0, minimum(), height());
@@ -274,9 +273,9 @@ void QStyleItem::initStyleOption()
         break;
     case Edit: {
         if (!m_styleoption)
-            m_styleoption = new QStyleOptionFrameV3();
+            m_styleoption = new QStyleOptionFrame();
 
-        QStyleOptionFrameV3 *opt = qstyleoption_cast<QStyleOptionFrameV3*>(m_styleoption);
+        QStyleOptionFrame *opt = qstyleoption_cast<QStyleOptionFrame*>(m_styleoption);
         opt->lineWidth = 1; // this must be non-zero
     }
         break;
@@ -346,9 +345,9 @@ void QStyleItem::initStyleOption()
         break;
     case ProgressBar: {
         if (!m_styleoption)
-            m_styleoption = new QStyleOptionProgressBarV2();
+            m_styleoption = new QStyleOptionProgressBar();
 
-        QStyleOptionProgressBarV2 *opt = qstyleoption_cast<QStyleOptionProgressBarV2*>(m_styleoption);
+        QStyleOptionProgressBar *opt = qstyleoption_cast<QStyleOptionProgressBar*>(m_styleoption);
         opt->orientation = horizontal() ? Qt::Horizontal : Qt::Vertical;
         opt->minimum = minimum();
         opt->maximum = maximum();
@@ -367,7 +366,7 @@ void QStyleItem::initStyleOption()
         if (sunken()) { // Qt draws an ugly line here so I ignore it
             opt->subControls |= QStyle::SC_GroupBoxFrame;
         } else {
-            opt->features |= QStyleOptionFrameV2::Flat;
+            opt->features |= QStyleOptionFrame::Flat;
         }
         if (activeControl() == "checkbox")
             opt->subControls |= QStyle::SC_GroupBoxCheckBox;
@@ -676,10 +675,6 @@ void QStyleItem::setElementType(const QString &str)
         m_itemType = (str == "menu") ? Menu : MenuItem;
     } else if (str == "item" || str == "itemrow" || str == "header") {
         if (str == "header") {
-            if (style() == "mac") { // The default qt font seems to big
-//                QFont font = m_dummywidget->font();
-//                font.setPointSize(11);
-            }
             m_itemType = Header;
         } else {
             m_itemType = (str == "item") ? Item : ItemRow;
