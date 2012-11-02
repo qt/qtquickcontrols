@@ -84,6 +84,7 @@ QStyleItem::QStyleItem(QQuickPaintedItem *parent)
     m_contentHeight(0)
 
 {
+    m_font = qApp->font();
     setFlag(QQuickItem::ItemHasContents, true);
     setSmooth(false);
 
@@ -416,19 +417,12 @@ void QStyleItem::initStyleOption()
     if (m_horizontal)
         m_styleoption->state |= QStyle::State_Horizontal;
 
-//        m_styleoption->fontMetrics = widget()->fontMetrics();
+    if (m_hint.contains("mini")) {
+        m_styleoption->state |= QStyle::State_Mini;
+    } else if (m_hint.contains("small")) {
+        m_styleoption->state |= QStyle::State_Small;
+    }
 
-//        if (m_hint.contains("mini")) {
-//            m_styleoption->state |= Qt::WA_MacMiniSize;
-//        } else if (m_hint.contains("small")) {
-//            m_styleoption->state |= Qt::WA_MacSmallSize;
-//        }
-//#ifdef Q_OS_MAC
-//    if (m_itemType == Button && style() == "mac") {
-//        // Macstyle hardcodes extra spacing inside the button paintrect
-//        m_styleoption->rect.adjust(-5, 0, 6, 0);
-//    }
-//#endif
 }
 
 /*
@@ -646,6 +640,22 @@ QVariant QStyleItem::styleHint(const QString &metric)
     return 0;
 }
 
+void QStyleItem::setHint(const QString &str)
+{
+    if (m_hint != str) {
+        m_hint= str; emit hintChanged();
+
+        if (hint().contains("mini")) {
+            m_font.setPointSize(9.);
+            emit fontChanged();
+        } else if (hint().contains("small")) {
+            m_font.setPointSize(11.);
+            emit fontChanged();
+        }
+    }
+}
+
+
 void QStyleItem::setElementType(const QString &str)
 {
     if (m_type == str)
@@ -663,6 +673,10 @@ void QStyleItem::setElementType(const QString &str)
     if (str == "menu" || str == "menuitem") {
         m_itemType = (str == "menu") ? Menu : MenuItem;
     } else if (str == "item" || str == "itemrow" || str == "header") {
+#ifdef Q_OS_MAC
+        m_font.setPointSize(11.0);
+        emit fontChanged();
+#endif
         if (str == "header") {
             m_itemType = Header;
         } else {
@@ -996,31 +1010,12 @@ void QStyleItem::paint(QPainter *painter)
 
 int QStyleItem::textWidth(const QString &text)
 {
-    return qApp->fontMetrics().boundingRect(text).width();
+    return QFontMetrics(m_font).boundingRect(text).width();
 }
 
 QString QStyleItem::elidedText(const QString &text, int elideMode, int width)
 {
     return qApp->fontMetrics().elidedText(text, Qt::TextElideMode(elideMode), width);
-}
-
-int QStyleItem::fontHeight()
-{
-    return qApp->fontMetrics().height();
-}
-
-QString QStyleItem::fontFamily()
-{
-    return qApp->font().family();
-}
-
-double QStyleItem::fontPointSize()
-{
-#ifdef Q_OS_MAC
-    if (elementType() == "item")
-        return 11;
-#endif
-    return qApp->font().pointSizeF();
 }
 
 bool QStyleItem::hasThemeIcon(const QString &icon) const

@@ -160,7 +160,7 @@ FocusScope{
                 id: label
                 width: parent.width
                 anchors.margins: 6
-                font.pointSize: itemstyle.fontPointSize
+                font: itemstyle.font
                 anchors.left: parent.left
                 anchors.right: parent.right
                 horizontalAlignment: itemTextAlignment
@@ -629,7 +629,7 @@ FocusScope{
         elementType: "header"
         visible:false
         contentWidth: 16
-        contentHeight: fontHeight
+        contentHeight: font.pixelSize
     }
 
     StyleItem {

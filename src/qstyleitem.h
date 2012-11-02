@@ -64,6 +64,7 @@ class QStyleItem: public QQuickPaintedItem
     Q_PROPERTY( QString info READ info WRITE setInfo NOTIFY infoChanged)
     Q_PROPERTY( QString style READ style NOTIFY styleChanged)
     Q_PROPERTY( QString hint READ hint WRITE setHint NOTIFY hintChanged)
+    Q_PROPERTY( QFont font READ font NOTIFY fontChanged)
 
     // For range controls
     Q_PROPERTY( int minimum READ minimum WRITE setMinimum NOTIFY minimumChanged)
@@ -74,10 +75,6 @@ class QStyleItem: public QQuickPaintedItem
 
     Q_PROPERTY( int contentWidth READ contentWidth() WRITE setContentWidth NOTIFY contentWidthChanged)
     Q_PROPERTY( int contentHeight READ contentHeight() WRITE setContentHeight NOTIFY contentHeightChanged)
-
-    Q_PROPERTY( QString fontFamily READ fontFamily NOTIFY fontHeightChanged)
-    Q_PROPERTY( double fontPointSize READ fontPointSize NOTIFY fontHeightChanged)
-    Q_PROPERTY( int fontHeight READ fontHeight NOTIFY fontHeightChanged)
 
 public:
     QStyleItem(QQuickPaintedItem *parent = 0);
@@ -137,6 +134,7 @@ public:
     QString activeControl() const { return m_activeControl; }
     QString info() const { return m_info; }
     QString hint() const { return m_hint; }
+    QFont font() const { return m_font;}
     QString style() const;
 
     void setSunken(bool sunken) { if (m_sunken != sunken) {m_sunken = sunken; emit sunkenChanged();}}
@@ -151,30 +149,17 @@ public:
     void setMaximum(int maximum) { if (m_maximum != maximum) {m_maximum = maximum; emit maximumChanged();}}
     void setValue(int value) { if (m_value!= value) {m_value = value; emit valueChanged();}}
     void setStep(int step) { if (m_step != step) { m_step = step; emit stepChanged(); }}
-    void setPaintMargins(int value) {
-    Q_UNUSED(value)
-        if (m_paintMargins!= value) {m_paintMargins = value;}
-    }
+    void setPaintMargins(int value) { if (m_paintMargins!= value) {m_paintMargins = value;} }
     void setElementType(const QString &str);
     void setText(const QString &str) { if (m_text != str) {m_text = str; emit textChanged();}}
     void setActiveControl(const QString &str) { if (m_activeControl != str) {m_activeControl = str; emit activeControlChanged();}}
     void setInfo(const QString &str) { if (m_info != str) {m_info = str; emit infoChanged();}}
-    void setHint(const QString &str) { if (m_hint != str) {m_hint= str; emit hintChanged();}}
+    void setHint(const QString &str);
+
+    int contentWidth() const { return m_contentWidth; }
+    int contentHeight() const { return m_contentHeight; }
 
     virtual void initStyleOption ();
-
-    int fontHeight();
-    QString fontFamily();
-    double fontPointSize();
-
-
-    int contentWidth() const {
-        return m_contentWidth;
-    }
-
-    int contentHeight() const {
-        return m_contentHeight;
-    }
 
 public Q_SLOTS:
     int pixelMetric(const QString&);
@@ -223,7 +208,7 @@ Q_SIGNALS:
     void styleChanged();
     void paintMarginsChanged();
     void hintChanged();
-    void fontHeightChanged();
+    void fontChanged();
 
     void contentWidthChanged(int arg);
     void contentHeightChanged(int arg);
@@ -241,6 +226,7 @@ protected:
     QString m_activeControl;
     QString m_info;
     QString m_hint;
+    QFont m_font;
 
     bool m_sunken;
     bool m_raised;

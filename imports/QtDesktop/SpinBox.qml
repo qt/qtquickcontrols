@@ -127,6 +127,7 @@ FocusScope {
                    (upEnabled ? (1<<2) : 0)      |
                    (downEnabled == 1 ? (1<<3) : 0)
             hint: spinbox.styleHint
+            onFontChanged: input.font = font
         }
     }
 
@@ -194,10 +195,14 @@ FocusScope {
 
         clip: true
 
+        renderType: Text.NativeRendering
+        font: styleitem.font
+
         x: loader.inputRect.x
         y: loader.inputRect.y
         width: loader.inputRect.width
-        height: loader.inputRect.height
+        anchors.verticalCenter: parent.verticalCenter
+
         selectByMouse: true
         selectionColor: syspal.highlight
         selectedTextColor: syspal.highlightedText
@@ -209,6 +214,7 @@ FocusScope {
         opacity: parent.enabled ? 1 : 0.5
         Text {
             text: postfix
+            font: input.font
             anchors.rightMargin: 4
             anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
