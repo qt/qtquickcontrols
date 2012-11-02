@@ -2,6 +2,7 @@ TEMPLATE = subdirs # XXX: Avoid calling the linker
 TARGETPATH = QtDesktop
 
 QML_FILES = \
+            plugins.qmltypes \
             qmldir \
             Label.qml \
             Button.qml \
