@@ -53,7 +53,7 @@ Menu {
 
     visible: false
     onMenuClosed: visible = false
-    onModelChanged: if (Component.status === Component.Ready && model != undefined) rebuildMenu()
+    onModelChanged: if (Component.status === Component.Ready && model !== undefined) rebuildMenu()
 
     Component.onCompleted: if (model !== undefined) rebuildMenu()
 

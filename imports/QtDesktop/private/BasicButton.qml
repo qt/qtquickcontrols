@@ -68,12 +68,12 @@ Item {
     implicitHeight: loader.item.implicitHeight
 
     Keys.onPressed: {
-        if (event.key == Qt.Key_Space && !event.isAutoRepeat && !behavior.pressed)
+        if (event.key === Qt.Key_Space && !event.isAutoRepeat && !behavior.pressed)
             behavior.keyPressed = true;
     }
 
     Keys.onReleased: {
-        if (event.key == Qt.Key_Space && !event.isAutoRepeat && behavior.keyPressed) {
+        if (event.key === Qt.Key_Space && !event.isAutoRepeat && behavior.keyPressed) {
             behavior.keyPressed = false;
             if (checkable)
                 checked = !checked;
