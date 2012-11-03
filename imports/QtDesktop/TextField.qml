@@ -182,6 +182,7 @@ FocusScope {
         color: syspal.text
         echoMode: passwordMode ? TextInput.Password : TextInput.Normal
         clip: true
+        renderType: Text.NativeRendering
     }
 
     Text {

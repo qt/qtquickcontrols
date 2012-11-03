@@ -168,6 +168,7 @@ FocusScope{
                 elide: itemElideMode
                 text: itemValue ? itemValue : ""
                 color: itemForeground
+                renderType: Text.NativeRendering
             }
             Text {
                 id: sizehint

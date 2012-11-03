@@ -75,6 +75,7 @@ ScrollArea {
             cursorShape: Qt.IBeamCursor
             acceptedButtons: Qt.NoButton
         }
+        renderType: Text.NativeRendering
 
         id: edit
         selectionColor: syspal.highlight

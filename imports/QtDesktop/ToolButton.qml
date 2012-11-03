@@ -61,7 +61,7 @@ Private.BasicButton {
         info: __position
         hint: button.styleHint
         contentWidth: Math.max(textitem.paintedWidth, 32)
-        contentHeight: 32
+        contentHeight: 30
         Text {
             id: textitem
             text: button.text

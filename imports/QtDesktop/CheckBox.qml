@@ -79,8 +79,10 @@ FocusScope {
                     anchors.left: parent.left
                     anchors.leftMargin: parent.indicatorWidth
                     anchors.verticalCenter: parent.verticalCenter
+                    anchors.verticalCenterOffset: 1
                     anchors.right: parent.right
                     elide: Text.ElideRight
+                    renderType: Text.NativeRendering
                 }
             }
 
