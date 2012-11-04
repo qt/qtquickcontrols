@@ -46,6 +46,7 @@ Window {
     width: 320
     height: 240
 
+    property alias menuBar: menuBarArea.data
     property alias toolBar: toolBarArea.data
     property alias statusBar: statusBarArea.data
     default property alias data: contentArea.data
@@ -56,6 +57,13 @@ Window {
     Rectangle {
         anchors.fill: parent
         color: syspal.button
+    }
+
+    Column {
+        id: menuBarArea
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
     }
 
 

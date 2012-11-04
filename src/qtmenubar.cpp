@@ -45,7 +45,7 @@
 #include <QtWidgets/QMenuBar>
 
 QtMenuBar::QtMenuBar(QQuickItem *parent)
-    : QQuickItem(parent), _menuBar(0) /*, _menuBar(new QMenuBar)*/
+    : QQuickItem(parent), _menuBar(new QMenuBar)
 {
     connect(this, SIGNAL(parentChanged(QQuickItem *)), this, SLOT(updateParent(QQuickItem *)));
     setFlag(QQuickItem::ItemHasContents, false);
@@ -62,17 +62,10 @@ QQmlListProperty<QtMenu> QtMenuBar::menus()
 
 void QtMenuBar::updateParent(QQuickItem *newParent)
 {
-    if (QWindowItem* window = qobject_cast<QWindowItem*>(parent()))
-        _menuBar = window->window()->menuBar();
-
-    //THIS IS WRONG... WE NEED TO DO THAT DIFFERENT!
     _menuBar->clear();
-
     foreach (QtMenu *menu, m_menus) {
         _menuBar->addMenu(menu->qmenu());
     }
-    //THIS IS WRONG... WE NEED TO DO THAT DIFFERENT!
-
 }
 
 void QtMenuBar::append_menu(QQmlListProperty<QtMenu> *list, QtMenu *menu)
