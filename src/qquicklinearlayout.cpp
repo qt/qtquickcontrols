@@ -171,13 +171,13 @@ void QQuickComponentsLinearLayout::reconfigureLayout()
             data.minimumSize = info->minimumWidth();
             data.maximumSize = info->maximumWidth();
             data.expansive = (info->horizontalSizePolicy() == QQuickComponentsLayout::Expanding);
-            //data.stretch = info->horizontalSizePolicy() == Expanding ? 1.0 : 0;
+            data.stretch = info->horizontalSizePolicy() == Expanding ? 1.0 : 0;
         } else {
             data.sizeHint = item->implicitHeight();
             data.minimumSize = info->minimumHeight();
             data.maximumSize = info->maximumHeight();
             data.expansive = (info->verticalSizePolicy() == QQuickComponentsLayout::Expanding);
-            //data.stretch = info->verticalSizePolicy() == Expanding ? 1.0 : 0;
+            data.stretch = info->verticalSizePolicy() == Expanding ? 1.0 : 0;
         }
 
         itemData.append(data);
