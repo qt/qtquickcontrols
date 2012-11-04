@@ -39,6 +39,7 @@
 ****************************************************************************/
 
 import QtQuick 2.0
+import QtDesktop 0.2
 
 Item {
     width: parent ? parent.width : 200
