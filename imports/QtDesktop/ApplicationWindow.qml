@@ -39,9 +39,10 @@
 ****************************************************************************/
 
 import QtQuick 2.0
+import QtQuick.Window 2.0
 import QtDesktop 0.1 as QtDesktop
 
-QtDesktop.Window {
+Window {
     width: 320
     height: 240
 

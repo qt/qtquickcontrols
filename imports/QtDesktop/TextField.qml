@@ -74,7 +74,7 @@ FocusScope {
         hover: containsMouse
         hint: textfield.styleHint
         contentWidth: 200
-        contentHeight: 25
+        contentHeight: 19
 
         Item {
             id: focusFrame
