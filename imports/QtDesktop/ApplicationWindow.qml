@@ -59,13 +59,12 @@ Window {
         color: syspal.button
     }
 
-    Column {
+    Item {
         id: menuBarArea
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
     }
-
 
     Column {
         id: toolBarArea
