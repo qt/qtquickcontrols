@@ -134,7 +134,7 @@ Item {
                     anchors.fill: parent
                     anchors.margins: -paintMargins
                     contentWidth: textitem.width + tabHSpace + 2
-                    contentHeight: Math.max(style.fontHeight + tabVSpace + 6, 0)
+                    contentHeight: Math.max(style.font.pixelSize + tabVSpace + 6, 0)
                     Text {
                         id: textitem
                         // Used for size hint
