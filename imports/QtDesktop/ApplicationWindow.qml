@@ -50,23 +50,23 @@ Window {
     property alias toolBar: toolBarArea.data
     property alias statusBar: statusBarArea.data
     default property alias data: contentArea.data
+    property alias backgroundColor: syspal.window
 
     SystemPalette {id: syspal}
 
-
     Rectangle {
         anchors.fill: parent
-        color: syspal.button
+        color: backgroundColor
     }
 
-    Item {
+    Row {
         id: menuBarArea
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
     }
 
-    Item {
+    Row {
         id: toolBarArea
         anchors.top: parent.top
         anchors.left: parent.left
@@ -81,7 +81,7 @@ Window {
         anchors.bottom: statusBarArea.top
     }
 
-    Item {
+    Row {
         id: statusBarArea
         anchors.bottom: parent.bottom
         anchors.left: parent.left
