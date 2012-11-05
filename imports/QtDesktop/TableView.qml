@@ -336,12 +336,14 @@ FocusScope{
             height: parent.height - contentHeight
             Repeater {
                 model: visible ? rowfiller.rowCount : 0
-                StyleItem {
-                    id: rowfill
-                    elementType: "itemrow"
+                Loader {
                     width: rowfiller.width
                     height: rowfiller.rowHeight
-                    activeControl: (index + count) % 2 === 1 ? "alternate" : ""
+                    sourceComponent: root.rowDelegate
+                    property bool itemAlternateBackground: (index + count) % 2 === 1
+                    property bool itemSelected: false
+                    property variant model: tree.model
+                    property variant modelData: null
                 }
             }
         }
