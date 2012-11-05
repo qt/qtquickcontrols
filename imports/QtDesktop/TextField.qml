@@ -170,7 +170,7 @@ FocusScope {
         selectedTextColor: syspal.highlightedText
 
         // Todo move these margins to StyleItem
-        anchors.leftMargin: 4
+        anchors.leftMargin: styleHint.indexOf("rounded") > -1 ? 8: 4
         anchors.topMargin: 4
         anchors.rightMargin: 4
         anchors.bottomMargin: 4

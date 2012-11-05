@@ -60,6 +60,36 @@ static inline HIRect qt_hirectForQRect(const QRect &convertRect, const QRect &re
                       convertRect.width() - rect.width(), convertRect.height() - rect.height());
 }
 
+/*! \internal
+
+    Returns the CoreGraphics CGContextRef of the paint device. 0 is
+    returned if it can't be obtained. It is the caller's responsibility to
+    CGContextRelease the context when finished using it.
+
+    \warning This function is only available on Mac OS X.
+    \warning This function is duplicated in qmacstyle_mac.mm
+*/
+CGContextRef qt_mac_cg_context(const QPaintDevice *pdev)
+{
+
+    if (pdev->devType() == QInternal::Image) {
+         const QImage *i = static_cast<const  QImage*>(pdev);
+         QImage *image = const_cast< QImage*>(i);
+        CGColorSpaceRef colorspace = CGColorSpaceCreateDeviceRGB();
+        uint flags = kCGImageAlphaPremultipliedFirst;
+        flags |= kCGBitmapByteOrder32Host;
+        CGContextRef ret = 0;
+
+        ret = CGBitmapContextCreate(image->bits(), image->width(), image->height(),
+                                    8, image->bytesPerLine(), colorspace, flags);
+
+        CGContextTranslateCTM(ret, 0, image->height());
+        CGContextScaleCTM(ret, 1, -1);
+        return ret;
+    }
+    return 0;
+}
+
 #endif
 
 QStyleItem::QStyleItem(QQuickPaintedItem *parent)
@@ -107,6 +137,7 @@ QStyleItem::QStyleItem(QQuickPaintedItem *parent)
     connect(this, SIGNAL(activeControlChanged()), this, SLOT(updateItem()));
     connect(this, SIGNAL(elementTypeChanged()), this, SLOT(updateItem()));
 
+    connect(this, SIGNAL(hintChanged()), this, SLOT(updateSizeHint()));
     connect(this, SIGNAL(textChanged()), this, SLOT(updateSizeHint()));
     connect(this, SIGNAL(contentWidthChanged(int)), this, SLOT(updateSizeHint()));
     connect(this, SIGNAL(contentHeightChanged(int)), this, SLOT(updateSizeHint()));
@@ -545,6 +576,8 @@ QSize QStyleItem::sizeFromContents(int width, int height)
         break;
     case Edit:
         size = qApp->style()->sizeFromContents(QStyle::CT_LineEdit, m_styleoption, QSize(width,height));
+        if (hint().contains("rounded"))
+            size += QSize(0, 2);
         break;
     case GroupBox:
         size = qApp->style()->sizeFromContents(QStyle::CT_GroupBox, m_styleoption, QSize(width,height));
@@ -833,7 +866,7 @@ void QStyleItem::paint(QPainter *painter)
         break;
     case ToolButton:
 
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
         if (style() == "mac" && hint().contains("segmented")) {
             const QPaintDevice *target = painter->device();
              HIThemeSegmentDrawInfo sgi;
@@ -891,7 +924,7 @@ void QStyleItem::paint(QPainter *painter)
         qApp->style()->drawControl(QStyle::CE_RadioButton, m_styleoption, painter);
         break;
     case Edit: {
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
         if (style() == "mac" && hint().contains("rounded")) {
             const QPaintDevice *target = painter->device();
             HIThemeFrameDrawInfo fdi;
@@ -913,7 +946,7 @@ void QStyleItem::paint(QPainter *painter)
     }
         break;
     case MacHelpButton:
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
     {
         const QPaintDevice *target = painter->device();
         HIThemeButtonDrawInfo fdi;
