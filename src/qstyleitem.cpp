@@ -404,7 +404,7 @@ void QStyleItem::initStyleOption()
         QStyleOptionSlider *opt = qstyleoption_cast<QStyleOptionSlider*>(m_styleoption);
         opt->minimum = minimum();
         opt->maximum = maximum();
-        opt->pageStep = horizontal() ? width() : height();
+        opt->pageStep = qMax(0, int(horizontal() ? width() : height()));
         opt->orientation = horizontal() ? Qt::Horizontal : Qt::Vertical;
         opt->sliderPosition = value();
         opt->sliderValue = value();
