@@ -1,10 +1,10 @@
 import QtQuick 2.0
+import QtQuick.Window 2.0
 import QtDesktop 0.2
-import QtDesktop 0.2 as QtDesktop // purely for overriding Window
 import "content"
 
-QtDesktop.Window {
-    title: "parent window"
+ApplicationWindow {
+    windowTitle: "parent window"
 
     width: gallery.width
     height: gallery.height
@@ -12,7 +12,6 @@ QtDesktop.Window {
     minimumHeight: gallery.height
     maximumWidth: gallery.width
     minimumWidth: gallery.width
-    visible: true
 
 
     FileDialog {
@@ -24,7 +23,7 @@ QtDesktop.Window {
         onAccepted: { console.log("Accepted: " + filePaths) }
     }
 
-    MenuBar {
+    menuBar:MenuBar {
         Menu {
             text: "File"
             MenuItem {

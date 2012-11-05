@@ -66,7 +66,7 @@ Window {
         anchors.right: parent.right
     }
 
-    Column {
+    Item {
         id: toolBarArea
         anchors.top: parent.top
         anchors.left: parent.left
@@ -81,7 +81,7 @@ Window {
         anchors.bottom: statusBarArea.top
     }
 
-    Column {
+    Item {
         id: statusBarArea
         anchors.bottom: parent.bottom
         anchors.left: parent.left

@@ -109,7 +109,7 @@ WheelArea {
         anchors.right: parent.right
         anchors.top: parent.top
         anchors.bottom: parent.bottom
-        anchors.topMargin: parent.macOffset
+        anchors.topMargin: 1//parent.macOffset
         anchors.rightMargin: -parent.macOffset
         anchors.bottomMargin: hscrollbar.visible ? hscrollbar.height - parent.macOffset :  0
 
