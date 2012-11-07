@@ -42,13 +42,8 @@
 #define QTMLMENU_H
 #include <QtCore/qglobal.h>
 #include <QtWidgets/qmenu.h>
-#if QT_VERSION < 0x050000
-#include <QtDeclarative/qdeclarative.h>
-#include <QtDeclarative/QDeclarativeListProperty>
-#else
 #include <QtQuick/QtQuick>
 #include <QtQml/QtQml>
-#endif
 #include <QtCore/qabstractitemmodel.h>
 #include <QtCore/QVariant>
 #include "qtmenuitem.h"
@@ -56,15 +51,11 @@
 class QtMenu : public QtMenuBase
 {
     Q_OBJECT
-    Q_PROPERTY(QString text READ text WRITE setText)
+    Q_PROPERTY(QString text READ text WRITE setText NOTIFY textChanged)
     Q_PROPERTY(QVariant model READ model WRITE setModel NOTIFY modelChanged)
     Q_PROPERTY(int selectedIndex READ selectedIndex WRITE setSelectedIndex NOTIFY selectedIndexChanged)
     Q_PROPERTY(int hoveredIndex READ hoveredIndex WRITE setHoveredIndex NOTIFY hoveredIndexChanged)
-#if QT_VERSION < 0x050000
-    Q_PROPERTY(QDeclarativeListProperty<QtMenuBase> menuItems READ menuItems)
-#else
     Q_PROPERTY(QQmlListProperty<QtMenuBase> menuItems READ menuItems)
-#endif
     Q_CLASSINFO("DefaultProperty", "menuItems")
 public:
     QtMenu(QQuickItem *parent = 0);
@@ -86,7 +77,7 @@ public:
 
     Q_INVOKABLE int minimumWidth() const { return m_qmenu->minimumWidth(); }
     Q_INVOKABLE void setMinimumWidth(int w) { m_qmenu->setMinimumWidth(w); }
-    Q_INVOKABLE void showPopup(qreal x, qreal y, int atActionIndex = -1);
+    Q_INVOKABLE void showPopup(qreal x, qreal y, int atActionIndex = -1, QQuickWindow *window = 0);
     Q_INVOKABLE void hidePopup();
     Q_INVOKABLE void clearMenuItems();
     Q_INVOKABLE void addMenuItem(const QString &text);
@@ -106,7 +97,8 @@ Q_SIGNALS:
     void selectedIndexChanged();
     void hoveredIndexChanged();
     void modelChanged(const QVariant &newModel);
-    void rebuldMenu();
+    void rebuildMenu();
+    void textChanged();
 
 private Q_SLOTS:
     void emitSelected();

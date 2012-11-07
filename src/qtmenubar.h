@@ -52,13 +52,27 @@ class QtMenuBar: public QQuickItem
 {
     Q_OBJECT
 
-    Q_PROPERTY(QQmlListProperty<QtMenu> menus READ menus)
+    Q_PROPERTY(QQmlListProperty<QtMenu> menus READ menus NOTIFY menuChanged)
+    Q_PROPERTY(QList<QObject*> menuList READ menuList NOTIFY menuChanged)
+    Q_PROPERTY(bool showMenuBar READ showMenuBar NOTIFY showMenuBarChanged)
     Q_CLASSINFO("DefaultProperty", "menus")
 public:
     QtMenuBar(QQuickItem *parent = 0);
     ~QtMenuBar();
 
     QQmlListProperty<QtMenu> menus();
+    QList<QObject*> menuList();
+
+    bool showMenuBar() {
+#ifdef Q_OS_MAC
+        return false;
+#endif
+        return true;
+}
+
+signals:
+    void menuChanged();
+    void showMenuBarChanged();
 
 protected Q_SLOTS:
     void updateParent(QQuickItem *newParent);
@@ -67,7 +81,7 @@ private:
     static void append_menu(QQmlListProperty<QtMenu> *list, QtMenu *menu);
 
 private:
-    QList<QtMenu *> m_menus;
+    QList<QObject *> m_menus;
     QMenuBar *_menuBar;
 };
 

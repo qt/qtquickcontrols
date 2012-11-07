@@ -109,7 +109,9 @@ public:
         Widget,
         StatusBar,
         ScrollAreaCorner,
-        MacHelpButton
+        MacHelpButton,
+        MenuBar,
+        MenuBarItem
     };
 
     void paint(QPainter *);

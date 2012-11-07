@@ -44,10 +44,13 @@
 #include <QtWidgets/QMenuBar>
 
 QtMenuBar::QtMenuBar(QQuickItem *parent)
-    : QQuickItem(parent), _menuBar(new QMenuBar)
+    : QQuickItem(parent)
 {
     connect(this, SIGNAL(parentChanged(QQuickItem *)), this, SLOT(updateParent(QQuickItem *)));
     setFlag(QQuickItem::ItemHasContents, false);
+#ifdef Q_OS_MAC
+    _menuBar = new QMenuBar(0);
+#endif
 }
 
 QtMenuBar::~QtMenuBar()
@@ -59,12 +62,20 @@ QQmlListProperty<QtMenu> QtMenuBar::menus()
     return QQmlListProperty<QtMenu>(this, 0, &QtMenuBar::append_menu, 0, 0, 0);
 }
 
-void QtMenuBar::updateParent(QQuickItem * /*newParent*/)
+QList<QObject*> QtMenuBar::menuList()
 {
+    return m_menus;
+}
+
+void QtMenuBar::updateParent(QQuickItem *newParent)
+{
+#ifdef Q_OS_MAC
     _menuBar->clear();
-    foreach (QtMenu *menu, m_menus) {
+    foreach (QObject *obj, m_menus) {
+        QtMenu *menu = qobject_cast<QtMenu*>(obj);
         _menuBar->addMenu(menu->qmenu());
     }
+#endif
 }
 
 void QtMenuBar::append_menu(QQmlListProperty<QtMenu> *list, QtMenu *menu)
@@ -73,9 +84,10 @@ void QtMenuBar::append_menu(QQmlListProperty<QtMenu> *list, QtMenu *menu)
     if (menuBar) {
         menu->setParent(menuBar);
         menuBar->m_menus.append(menu);
+#ifdef Q_OS_MAC
         if (menuBar->_menuBar)
             menuBar->_menuBar->addMenu(menu->qmenu());
+#endif
+        menuBar->menuChanged();
     }
 }
-
-

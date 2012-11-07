@@ -42,14 +42,16 @@ import QtQuick 2.0
 import QtDesktop 0.2
 
 Window {
+    id: root
     width: 320
     height: 240
 
-    property alias menuBar: menuBarArea.data
+    property MenuBar menuBar
     property alias toolBar: toolBarArea.data
     property alias statusBar: statusBarArea.data
     default property alias data: contentArea.data
     property alias backgroundColor: syspal.window
+    property bool showMenuBar: menuBar ? menuBar.showMenuBar : false
 
     SystemPalette {id: syspal}
 
@@ -58,16 +60,48 @@ Window {
         color: backgroundColor
     }
 
-    Row {
+    StyleItem {
         id: menuBarArea
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
+        elementType: "menubar"
+        visible: showMenuBar
+        contentHeight: showMenuBar ? 20 : 0
+        Row {
+            id: row
+            anchors.fill: parent
+            Repeater {
+                model: showMenuBar ? menuBar.menuList.length : 0
+                StyleItem {
+                    id: menuItem
+                    elementType: "menubaritem"
+                    contentWidth: 100
+                    contentHeight: 20
+                    width: text.paintedWidth + 12
+                    height :text.paintedHeight + 4
+                    sunken: true
+                    selected: mouse.pressed
+                    property var menu: menuBar.menuList[index]
+                    Text {
+                        id: text
+                        text: menu.text
+                        anchors.centerIn: parent
+                        renderType: Text.NativeRendering
+                    }
+                    MouseArea {
+                        id: mouse
+                        anchors.fill:parent
+                        onPressed: menu.showPopup(menuItem.x, menuBarArea.height, 0, root)
+                    }
+                }
+            }
+        }
     }
 
     Row {
         id: toolBarArea
-        anchors.top: parent.top
+        anchors.top: menuBarArea.bottom
         anchors.left: parent.left
         anchors.right: parent.right
     }

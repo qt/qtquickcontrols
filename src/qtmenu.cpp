@@ -63,6 +63,7 @@ QtMenu::~QtMenu()
 void QtMenu::setText(const QString &text)
 {
     m_qmenu->setTitle(text);
+    emit textChanged();
 }
 
 QString QtMenu::text() const
@@ -93,7 +94,7 @@ QQmlListProperty<QtMenuBase> QtMenu::menuItems()
     return QQmlListProperty<QtMenuBase>(this, 0, &QtMenu::append_qmenuItem, 0, 0, 0);
 }
 
-void QtMenu::showPopup(qreal x, qreal y, int atActionIndex)
+void QtMenu::showPopup(qreal x, qreal y, int atActionIndex, QQuickWindow * parentWindow)
 {
     if (m_qmenu->isVisible())
         return;
@@ -104,10 +105,11 @@ void QtMenu::showPopup(qreal x, qreal y, int atActionIndex)
     if (atActionIndex >= 0 && atActionIndex < m_qmenu->actions().size())
         atAction = m_qmenu->actions()[atActionIndex];
 
-    QPointF screenPosition;
-    QWindow *tw = window();
-    if (tw)
+    QPointF screenPosition(mapToScene(QPoint(x, y)));
+    QWindow *tw = parentWindow ? parentWindow : window();
+    if (tw) {
         screenPosition = tw->mapToGlobal(QPoint(x, y));
+    }
 
     setHoveredIndex(m_selectedIndex);
     m_qmenu->popup(screenPosition.toPoint(), atAction);

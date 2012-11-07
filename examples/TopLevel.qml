@@ -3,7 +3,7 @@ import QtDesktop 0.2
 import "content"
 
 ApplicationWindow {
-    windowTitle: "parent window"
+    title: "parent window"
 
     width: gallery.width
     height: gallery.height
@@ -22,7 +22,7 @@ ApplicationWindow {
         onAccepted: { console.log("Accepted: " + filePaths) }
     }
 
-    menuBar:MenuBar {
+    menuBar: MenuBar {
         Menu {
             text: "File"
             MenuItem {

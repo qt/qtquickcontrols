@@ -418,6 +418,21 @@ void QStyleItem::initStyleOption()
         opt->subControls = QStyle::SC_All;
 
     }
+    case MenuBar:
+        if (!m_styleoption) {
+            QStyleOptionMenuItem *menuOpt = new QStyleOptionMenuItem();
+            menuOpt->menuItemType = QStyleOptionMenuItem::EmptyArea;
+            m_styleoption = menuOpt;
+        }
+
+        break;
+    case MenuBarItem:
+        if (!m_styleoption) {
+            QStyleOptionMenuItem *menuOpt = new QStyleOptionMenuItem();
+           menuOpt->text = text();
+           menuOpt->menuItemType = QStyleOptionMenuItem::Normal;
+           m_styleoption = menuOpt;
+        }
         break;
     default:
         break;
@@ -593,6 +608,12 @@ QSize QStyleItem::sizeFromContents(int width, int height)
     case Item: //fall through
         size = qApp->style()->sizeFromContents(QStyle::CT_ItemViewItem, m_styleoption, QSize(width,height));
         break;
+    case MenuBarItem: //fall through
+        size = qApp->style()->sizeFromContents(QStyle::CT_MenuBarItem, m_styleoption, QSize(width,height));
+        break;
+    case MenuBar: //fall through
+        size = qApp->style()->sizeFromContents(QStyle::CT_MenuBar, m_styleoption, QSize(width,height));
+        break;
     default:
         break;
     }
@@ -766,6 +787,10 @@ void QStyleItem::setElementType(const QString &str)
         m_itemType = MacHelpButton;
     } else if (str == "scrollareacorner") {
         m_itemType = ScrollAreaCorner;
+    } else if (str == "menubar") {
+        m_itemType = MenuBar;
+    } else if (str == "menubaritem") {
+        m_itemType = MenuBarItem;
     } else {
         m_itemType = Undefined;
     }
@@ -912,6 +937,12 @@ void QStyleItem::paint(QPainter *painter)
         break;
     case TabFrame:
         qApp->style()->drawPrimitive(QStyle::PE_FrameTabWidget, m_styleoption, painter);
+        break;
+    case MenuBar:
+        qApp->style()->drawControl(QStyle::CE_MenuBarEmptyArea, m_styleoption, painter);
+        break;
+    case MenuBarItem:
+        qApp->style()->drawControl(QStyle::CE_MenuBarItem, m_styleoption, painter);
         break;
     case MenuItem:
     case ComboBoxItem: // fall through
