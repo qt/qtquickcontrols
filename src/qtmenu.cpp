@@ -43,7 +43,6 @@
 #include <qapplication.h>
 #include <qmenubar.h>
 #include <qabstractitemmodel.h>
-#include "qtoplevelwindow.h"
 
 QtMenu::QtMenu(QQuickItem *parent)
     : QtMenuBase(parent),

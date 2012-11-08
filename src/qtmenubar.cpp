@@ -39,7 +39,6 @@
 ****************************************************************************/
 
 #include "qtmenubar.h"
-#include "qwindowitem.h"
 
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
@@ -60,7 +59,7 @@ QQmlListProperty<QtMenu> QtMenuBar::menus()
     return QQmlListProperty<QtMenu>(this, 0, &QtMenuBar::append_menu, 0, 0, 0);
 }
 
-void QtMenuBar::updateParent(QQuickItem *newParent)
+void QtMenuBar::updateParent(QQuickItem * /*newParent*/)
 {
     _menuBar->clear();
     foreach (QtMenu *menu, m_menus) {
