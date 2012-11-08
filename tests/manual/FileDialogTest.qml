@@ -1,8 +1,5 @@
 import QtQuick 2.0
-//import "../components"
-import QtQuick.Window 2.0
 import QtDesktop 0.2
-
 
 Rectangle {
 

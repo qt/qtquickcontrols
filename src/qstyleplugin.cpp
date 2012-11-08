@@ -44,8 +44,6 @@
 #include "qrangemodel.h"
 #include "qtmenu.h"
 #include "qtmenubar.h"
-#include "qwindowitem.h"
-#include "qwindowitem.h"
 #include "qdesktopitem.h"
 #include "qwheelarea.h"
 #include "qtsplitterbase.h"
@@ -57,6 +55,7 @@
 #include <qqmlengine.h>
 #include <qquickimageprovider.h>
 #include <QtWidgets/QApplication>
+#include <QtQuick/QQuickWindow>
 #include <QImage>
 
 // Load icons from desktop theme
@@ -108,8 +107,7 @@ void StylePlugin::registerTypes(const char *uri)
 
     qmlRegisterType<QFileSystemModel>(uri, 0, 2, "FileSystemModel");
     qmlRegisterType<QtSplitterBase>(uri, 0, 2, "Splitter");
-    qmlRegisterType<QWindowItem>(uri, 0, 2, "Window"); // cannot override built-in Window, clients must namespace the import to use this Window.
-    qmlRegisterType<QWindowItem>(uri, 0, 1, "Window"); // cannot override built-in Window, clients must namespace the import to use this Window.
+    qmlRegisterType<QQuickWindow>(uri, 0, 2, "Window");
 
     qmlRegisterUncreatableType<QtMenuBase>(uri, 0, 1, "NativeMenuBase", QLatin1String("Do not create objects of type NativeMenuBase"));
     qmlRegisterUncreatableType<QDesktopItem>(uri, 0,2,"Desktop", QLatin1String("Do not create objects of type Desktop"));

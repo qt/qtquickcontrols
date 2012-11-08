@@ -1,8 +1,5 @@
 import QtQuick 2.0
-//import "../components"
-import QtQuick.Window 2.0
 import QtDesktop 0.2
-import QtDesktop 0.2 as QtDesktop // purely for overriding Window
 import "content"
 
 
@@ -67,7 +64,7 @@ Rectangle {
             onAccepted: { console.log("Accepted: " + filePath) }
         }
 
-        QtDesktop.Window {
+        Window {
             id: window1
 
             width: 400

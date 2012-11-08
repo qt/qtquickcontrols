@@ -1,9 +1,8 @@
 import QtQuick 2.0
 import QtDesktop 0.2
-import QtDesktop 0.2 as QtDesktop // purely for overriding Window
 import "content"
 
-QtDesktop.Window {
+Window {
     id: topLevelBrowser
     title: "Qml Desktop Browser"
 

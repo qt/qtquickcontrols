@@ -18,9 +18,7 @@ HEADERS += qtmenu.h \
            qstyleitem.h \
            qwheelarea.h \
            qtmenuitem.h \
-           qwindowitem.h \
            qdesktopitem.h \
-           qtoplevelwindow.h \
            qquicklayoutengine_p.h \
            qquicklayout.h \
            qquicklinearlayout.h \
@@ -35,9 +33,7 @@ SOURCES += qtmenu.cpp \
            qstyleitem.cpp \
            qwheelarea.cpp \
            qtmenuitem.cpp \
-           qwindowitem.cpp \
            qdesktopitem.cpp \
-           qtoplevelwindow.cpp \
            qquicklayout.cpp \
            qquicklayoutengine.cpp \
            qquicklinearlayout.cpp \
