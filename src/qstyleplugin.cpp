@@ -87,6 +87,12 @@ QObject *registerPrivateModule(QQmlEngine *engine, QJSEngine *jsEngine)
 
 void StylePlugin::registerTypes(const char *uri)
 {
+
+    // Unfortunately animations do not work on mac without this hack
+#ifdef Q_OS_MAC
+    setenv("QML_BAD_GUI_RENDER_LOOP", "1", 0);
+#endif
+
     qmlRegisterSingletonType<QQuickComponentsPrivate>(uri, 0, 2, "PrivateHelper", registerPrivateModule);
 
     qmlRegisterType<QStyleItem>(uri, 0, 2, "StyleItem");
