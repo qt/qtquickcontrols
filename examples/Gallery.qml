@@ -273,14 +273,12 @@ Rectangle {
                                 width: 96
                                 tooltip:"This is an interesting tool tip"
                                 KeyNavigation.tab: button2
-                                KeyNavigation.backtab: frame.tabBar
                             }
                             Button {
                                 id:button2
                                 text:"Button 2"
                                 width:96
                                 KeyNavigation.tab: combo
-                                KeyNavigation.backtab: button1
                             }
                         }
                         ComboBox {
@@ -288,7 +286,6 @@ Rectangle {
                             model: choices;
                             width: parent.width;
                             KeyNavigation.tab: t1
-                            KeyNavigation.backtab: button2
                         }
                         Row {
                             spacing: 8
@@ -300,19 +297,16 @@ Rectangle {
                                 value: -20
 
                                 KeyNavigation.tab: t2
-                                KeyNavigation.backtab: combo
                             }
                             SpinBox {
                                 id: t2
                                 width:97
                                 KeyNavigation.tab: t3
-                                KeyNavigation.backtab: t1
                             }
                         }
                         TextField {
                             id: t3
                             KeyNavigation.tab: slider
-                            KeyNavigation.backtab: t2
                             placeholderText: "This is a placeholder for a TextField"
                         }
                         ProgressBar {
@@ -327,7 +321,6 @@ Rectangle {
                             value: 0.5
                             tickmarksEnabled: tickmarkCheck.checked
                             KeyNavigation.tab: frameCheckbox
-                            KeyNavigation.backtab: t3
                         }
                     }
                     Column {
@@ -345,14 +338,12 @@ Rectangle {
                                     text: "Text frame"
                                     checked: true
                                     KeyNavigation.tab: tickmarkCheck
-                                    KeyNavigation.backtab: slider
                                 }
                                 CheckBox {
                                     id: tickmarkCheck
                                     text: "Tickmarks"
                                     checked: true
                                     KeyNavigation.tab: r1
-                                    KeyNavigation.backtab: frameCheckbox
                                 }
                             }
                         }
@@ -368,14 +359,12 @@ Rectangle {
                                     id: r1
                                     text: "North"
                                     KeyNavigation.tab: r2
-                                    KeyNavigation.backtab: tickmarkCheck
                                     checked: true
                                 }
                                 RadioButton {
                                     id: r2
                                     text: "South"
                                     KeyNavigation.tab: area
-                                    KeyNavigation.backtab: r1
                                 }
                             }
                         }
