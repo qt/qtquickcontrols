@@ -109,6 +109,12 @@ void QtMenu::showPopup(qreal x, qreal y, int atActionIndex, QQuickWindow * paren
     QWindow *tw = parentWindow ? parentWindow : window();
     if (tw) {
         screenPosition = tw->mapToGlobal(QPoint(x, y));
+
+        // calling winId forces a QWindow to be created
+        // since this needs to be a top-level
+        // otherwise windowHandle might return 0
+        m_qmenu->winId();
+        m_qmenu->windowHandle()->setTransientParent(tw);
     }
 
     setHoveredIndex(m_selectedIndex);
