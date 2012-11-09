@@ -39,7 +39,7 @@
 ****************************************************************************/
 
 import QtQuick 2.0
-import QtDesktop 0.2 as Internal
+import QtDesktop 1.0 as Internal
 
 Item {
     id: button

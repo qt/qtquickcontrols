@@ -40,7 +40,7 @@
 
 import QtQuick 2.0
 import "private"
-import QtDesktop 0.2
+import QtDesktop 1.0
 
 BasicButton {
     id: button

@@ -1,5 +1,5 @@
 import QtQuick 2.0
-import QtDesktop 0.2
+import QtDesktop 1.0
 import QtQuick.Window 2.0   // overrides any definition of Window in QtDesktop
 
 Window {

@@ -93,30 +93,30 @@ void StylePlugin::registerTypes(const char *uri)
     setenv("QML_BAD_GUI_RENDER_LOOP", "1", 0);
 #endif
 
-    qmlRegisterSingletonType<QQuickComponentsPrivate>(uri, 0, 2, "PrivateHelper", registerPrivateModule);
+    qmlRegisterSingletonType<QQuickComponentsPrivate>(uri, 1, 0, "PrivateHelper", registerPrivateModule);
 
-    qmlRegisterType<QStyleItem>(uri, 0, 2, "StyleItem");
-    qmlRegisterType<QRangeModel>(uri, 0, 2, "RangeModel");
-    qmlRegisterType<QWheelArea>(uri, 0, 2, "WheelArea");
+    qmlRegisterType<QStyleItem>(uri, 1, 0, "StyleItem");
+    qmlRegisterType<QRangeModel>(uri, 1, 0, "RangeModel");
+    qmlRegisterType<QWheelArea>(uri, 1, 0, "WheelArea");
 
-    qmlRegisterType<QtMenu>(uri, 0, 2, "Menu");
-    qmlRegisterType<QtMenuBar>(uri, 0, 2, "MenuBar");
-    qmlRegisterType<QtMenuItem>(uri, 0, 2, "MenuItem");
-    qmlRegisterType<QtMenuSeparator>(uri, 0, 2, "Separator");
+    qmlRegisterType<QtMenu>(uri, 1, 0, "Menu");
+    qmlRegisterType<QtMenuBar>(uri, 1, 0, "MenuBar");
+    qmlRegisterType<QtMenuItem>(uri, 1, 0, "MenuItem");
+    qmlRegisterType<QtMenuSeparator>(uri, 1, 0, "Separator");
 
-    qmlRegisterType<QQuickComponentsRowLayout>(uri, 0, 2, "RowLayout");
-    qmlRegisterType<QQuickComponentsColumnLayout>(uri, 0, 2, "ColumnLayout");
-    qmlRegisterUncreatableType<QQuickComponentsLayout>(uri, 0, 2, "Layout",
+    qmlRegisterType<QQuickComponentsRowLayout>(uri, 1, 0, "RowLayout");
+    qmlRegisterType<QQuickComponentsColumnLayout>(uri, 1, 0, "ColumnLayout");
+    qmlRegisterUncreatableType<QQuickComponentsLayout>(uri, 1, 0, "Layout",
                                                        QLatin1String("Do not create objects of type Layout"));
 
-    qmlRegisterType<QFileDialogItem>(uri, 0, 2, "FileDialog");
+    qmlRegisterType<QFileDialogItem>(uri, 1, 0, "FileDialog");
 
-    qmlRegisterType<QFileSystemModel>(uri, 0, 2, "FileSystemModel");
-    qmlRegisterType<QtSplitterBase>(uri, 0, 2, "Splitter");
-    qmlRegisterType<QQuickWindow>(uri, 0, 2, "Window");
+    qmlRegisterType<QFileSystemModel>(uri, 1, 0, "FileSystemModel");
+    qmlRegisterType<QtSplitterBase>(uri, 1, 0, "Splitter");
+    qmlRegisterType<QQuickWindow>(uri, 1, 0, "Window");
 
-    qmlRegisterUncreatableType<QtMenuBase>(uri, 0, 1, "NativeMenuBase", QLatin1String("Do not create objects of type NativeMenuBase"));
-    qmlRegisterUncreatableType<QDesktopItem>(uri, 0,2,"Desktop", QLatin1String("Do not create objects of type Desktop"));
+    qmlRegisterUncreatableType<QtMenuBase>(uri, 1, 0, "NativeMenuBase", QLatin1String("Do not create objects of type NativeMenuBase"));
+    qmlRegisterUncreatableType<QDesktopItem>(uri, 1, 0,"Desktop", QLatin1String("Do not create objects of type Desktop"));
 }
 
 void StylePlugin::initializeEngine(QQmlEngine *engine, const char *uri)
