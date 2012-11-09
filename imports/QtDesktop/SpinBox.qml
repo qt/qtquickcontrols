@@ -40,6 +40,7 @@
 
 import QtQuick 2.0
 import QtDesktop 1.0
+import "Styles/Settings.js" as Settings
 
 FocusScope {
     id: spinbox
@@ -52,6 +53,7 @@ FocusScope {
     property real minimumValue: 0
     property real singleStep: 1
     property string postfix
+    property var styleHints:[]
 
     property bool upEnabled: value != maximumValue;
     property bool downEnabled: value != minimumValue;
@@ -61,75 +63,10 @@ FocusScope {
     property alias downHovered: mouseDown.containsMouse
     property alias containsMouse: mouseArea.containsMouse
     property alias font: input.font
-    property string styleHint
+    property Component style: Qt.createComponent(Settings.THEME_PATH + "/SpinBoxStyle.qml")
 
     Accessible.name: input.text
     Accessible.role: Accessible.SpinBox
-
-    SystemPalette {
-        id: syspal
-        colorGroup: enabled ? SystemPalette.Active : SystemPalette.Disabled
-    }
-
-    property Component delegate: Item {
-        property rect upRect
-        property rect downRect
-        property rect inputRect
-        implicitHeight: styleitem.implicitHeight
-        implicitWidth: styleitem.implicitWidth
-
-        Rectangle {
-            id: editBackground
-            x: inputRect.x - 1
-            y: inputRect.y
-            width: inputRect.width + 1
-            height: inputRect.height
-            color: "white"
-        }
-
-        Item {
-            id: focusFrame
-            anchors.fill: editBackground
-            visible: frameitem.styleHint("focuswidget")
-            StyleItem {
-                id: frameitem
-                anchors.margins: -6
-                anchors.leftMargin: -5
-                anchors.rightMargin: -6
-                anchors.fill: parent
-                visible: spinbox.activeFocus
-                elementType: "focusframe"
-            }
-        }
-
-        function updateRect() {
-            upRect = styleitem.subControlRect("up");
-            downRect = styleitem.subControlRect("down");
-            inputRect = styleitem.subControlRect("edit");
-        }
-
-        Component.onCompleted: updateRect()
-        onWidthChanged: updateRect()
-        onHeightChanged: updateRect()
-
-        StyleItem {
-            id: styleitem
-            anchors.fill: parent
-            elementType: "spinbox"
-            contentWidth: 200
-            contentHeight: 26
-            sunken: (downEnabled && downPressed) | (upEnabled && upPressed)
-            hover: containsMouse
-            hasFocus: spinbox.focus
-            enabled: spinbox.enabled
-            value: (upPressed ? 1 : 0)           |
-                   (downPressed == 1 ? 1<<1 : 0) |
-                   (upEnabled ? (1<<2) : 0)      |
-                   (downEnabled == 1 ? (1<<3) : 0)
-            hint: spinbox.styleHint
-            onFontChanged: input.font = font
-        }
-    }
 
     width: implicitWidth
     height: implicitHeight
@@ -173,10 +110,8 @@ FocusScope {
 
     Loader {
         id: loader
-        property rect upRect: item ? item.upRect : Qt.rect(0, 0, 0, 0)
-        property rect downRect: item ? item.downRect : Qt.rect(0, 0, 0, 0)
-        property rect inputRect: item ? item.inputRect : Qt.rect(0, 0, 0, 0)
-        sourceComponent: delegate
+        property alias control: spinbox
+        sourceComponent: style
         anchors.fill: parent
     }
 
@@ -192,29 +127,30 @@ FocusScope {
         id: input
 
         property bool valueUpdate: false
+        property Item styleItem: loader.item
 
         clip: true
 
-        renderType: Text.NativeRendering
-        font: styleitem.font
-
-        x: loader.inputRect.x
-        y: loader.inputRect.y
-        width: loader.inputRect.width
-        anchors.verticalCenter: parent.verticalCenter
-
+        verticalAlignment: Qt.AlignVCenter
+        anchors.fill: parent
+        anchors.leftMargin: styleItem ? styleItem.leftMargin : 0
+        anchors.topMargin: styleItem ? styleItem.topMargin : 0
+        anchors.rightMargin: styleItem ? styleItem.rightMargin: 0
+        anchors.bottomMargin: styleItem ? styleItem.bottomMargin: 0
         selectByMouse: true
-        selectionColor: syspal.highlight
-        selectedTextColor: syspal.highlightedText
 
         // validator: DoubleValidator { bottom: minimumValue; top: maximumValue; }
         onAccepted: {setValue(input.text)}
         onActiveFocusChanged: setValue(input.text)
-        color: syspal.text
+        color: loader.item ? loader.item.foregroundColor : "black"
+        selectionColor: loader.item ? loader.item.selectionColor : "black"
+        selectedTextColor: loader.item ? loader.item.selectedTextColor : "black"
+
         opacity: parent.enabled ? 1 : 0.5
+        renderType: Text.NativeRendering
         Text {
             text: postfix
-            font: input.font
+            color: loader.item ? loader.item.foregroundColor : "black"
             anchors.rightMargin: 4
             anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
@@ -226,14 +162,16 @@ FocusScope {
     MouseArea {
         id: mouseUp
 
+        property var upRect: loader.item  ?  loader.item.upRect : null
+
         anchors.left: parent.left
         anchors.top: parent.top
 
-        anchors.leftMargin: loader.upRect.x
-        anchors.topMargin: loader.upRect.y
+        anchors.leftMargin: upRect ? upRect.x : 0
+        anchors.topMargin: upRect ? upRect.y : 0
 
-        width: loader.upRect.width
-        height: loader.upRect.height
+        width: upRect ? upRect.width : 0
+        height: upRect ? upRect.height : 0
 
         onClicked: increment()
 
@@ -248,15 +186,16 @@ FocusScope {
     MouseArea {
         id: mouseDown
         onClicked: decrement()
+        property var downRect: loader.item ? loader.item.downRect : null
 
         anchors.left: parent.left
         anchors.top: parent.top
 
-        anchors.leftMargin: loader.downRect.x
-        anchors.topMargin: loader.downRect.y
+        anchors.leftMargin: downRect ? downRect.x : 0
+        anchors.topMargin: downRect ? downRect.y : 0
 
-        width: loader.downRect.width
-        height: loader.downRect.height
+        width: downRect ? downRect.width : 0
+        height: downRect ? downRect.height : 0
 
         property bool autoincrement: false;
         onReleased: autoincrement = false

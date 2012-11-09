@@ -1,8 +1,8 @@
 /****************************************************************************
 **
-** Copyright (C) 2012 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
 ** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the Qt Components project.
 **
@@ -18,7 +18,7 @@
 **     notice, this list of conditions and the following disclaimer in
 **     the documentation and/or other materials provided with the
 **     distribution.
-**   * Neither the name of Nokia Corporation and its Subsidiary(-ies) nor
+**   * Neither the name of Digia Plc and its Subsidiary(-ies) nor
 **     the names of its contributors may be used to endorse or promote
 **     products derived from this software without specific prior written
 **     permission.
@@ -37,49 +37,37 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-
 import QtQuick 2.0
 import QtDesktop 1.0
-import "Styles/Settings.js" as Settings
 
 Item {
-    id: progressbar
+    property int __overlap : styleitem.pixelMetric("tabvshift");
+    property string position: tabFrame ? tabFrame.position : "North"
+    property string tabBarAlignment: styleitem.styleHint("tabbaralignment");
+    property int tabOverlap: styleitem.pixelMetric("taboverlap");
+    property int tabBaseOverlap: styleitem.pixelMetric("tabbaseoverlap");
+    property int tabHSpace: styleitem.pixelMetric("tabhspace");
+    property int tabVSpace: styleitem.pixelMetric("tabvspace");
 
-    property real value: 0
-    property real minimumValue: 0
-    property real maximumValue: 1
-    property bool indeterminate: false
-    property bool containsMouse: mouseArea.containsMouse
-
-    property int minimumWidth: 0
-    property int minimumHeight: 0
-
-    property int orientation: Qt.Horizontal
-    property Component style: Qt.createComponent(Settings.THEME_PATH + "/ProgressBarStyle.qml")
-    property var styleHints:[]
-
-    Accessible.role: Accessible.ProgressBar
-    Accessible.name: value
-
-    implicitWidth: orientation === Qt.Horizontal ? 200 : (loader.item ? loader.item.implicitHeight : 0)
-    implicitHeight: orientation === Qt.Horizontal ? (loader.item ? loader.item.implicitHeight : 0) : 200
-
-    Loader {
-        id: loader
-        property alias indeterminate: progressbar.indeterminate
-        property alias value: progressbar.value
-        property alias maximumValue: progressbar.maximumValue
-        property alias minimumValue: progressbar.minimumValue
-
-        property alias control: progressbar
-        sourceComponent: style
+    property Component tab: StyleItem {
+        id: styleitem
+        elementType: "tab"
         anchors.fill: parent
-    }
 
-    MouseArea {
-        id: mouseArea
-        anchors.fill: parent
-        hoverEnabled: true
+        implicitWidth: Math.max(50, textitem.width) + styleitem.pixelMetric("tabhspace") + 2
+        implicitHeight: Math.max(styleitem.font.pixelSize + styleitem.pixelMetric("tabvspace") + 6, 0)
+
+        selected: control.selected
+        info: tabbar.position
+        text:  tabFrame.tabs[index].title
+        hover: control.hover
+        hasFocus: tabbar.focus && selected
+        activeControl: tabFrame.count === 1 ? "only" : index === 0 ? "beginning" : index === tabFrame.count - 1 ? "end" : "middle"
+        anchors.margins: paintMargins
+        Text {
+            id: textitem
+            visible: false
+            text: styleitem.text
+        }
     }
 }
-

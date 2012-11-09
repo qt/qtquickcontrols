@@ -63,7 +63,7 @@ class QStyleItem: public QQuickPaintedItem
     Q_PROPERTY( QString activeControl READ activeControl WRITE setActiveControl NOTIFY activeControlChanged)
     Q_PROPERTY( QString info READ info WRITE setInfo NOTIFY infoChanged)
     Q_PROPERTY( QString style READ style NOTIFY styleChanged)
-    Q_PROPERTY( QString hint READ hint WRITE setHint NOTIFY hintChanged)
+    Q_PROPERTY( QStringList hint READ hint WRITE setHint NOTIFY hintChanged)
     Q_PROPERTY( QFont font READ font NOTIFY fontChanged)
 
     // For range controls
@@ -135,7 +135,7 @@ public:
     QString text() const { return m_text; }
     QString activeControl() const { return m_activeControl; }
     QString info() const { return m_info; }
-    QString hint() const { return m_hint; }
+    QStringList hint() const { return m_hint; }
     QFont font() const { return m_font;}
     QString style() const;
 
@@ -156,7 +156,7 @@ public:
     void setText(const QString &str) { if (m_text != str) {m_text = str; emit textChanged();}}
     void setActiveControl(const QString &str) { if (m_activeControl != str) {m_activeControl = str; emit activeControlChanged();}}
     void setInfo(const QString &str) { if (m_info != str) {m_info = str; emit infoChanged();}}
-    void setHint(const QString &str);
+    void setHint(const QStringList &str);
 
     int contentWidth() const { return m_contentWidth; }
     int contentHeight() const { return m_contentHeight; }
@@ -227,7 +227,7 @@ protected:
     QString m_text;
     QString m_activeControl;
     QString m_info;
-    QString m_hint;
+    QStringList m_hint;
     QFont m_font;
 
     bool m_sunken;

@@ -1,8 +1,8 @@
 /****************************************************************************
 **
-** Copyright (C) 2012 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
 ** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the Qt Components project.
 **
@@ -18,7 +18,7 @@
 **     notice, this list of conditions and the following disclaimer in
 **     the documentation and/or other materials provided with the
 **     distribution.
-**   * Neither the name of Nokia Corporation and its Subsidiary(-ies) nor
+**   * Neither the name of Digia Plc and its Subsidiary(-ies) nor
 **     the names of its contributors may be used to endorse or promote
 **     products derived from this software without specific prior written
 **     permission.
@@ -37,49 +37,21 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-
 import QtQuick 2.0
 import QtDesktop 1.0
-import "Styles/Settings.js" as Settings
 
-Item {
-    id: progressbar
-
-    property real value: 0
-    property real minimumValue: 0
-    property real maximumValue: 1
-    property bool indeterminate: false
-    property bool containsMouse: mouseArea.containsMouse
-
-    property int minimumWidth: 0
-    property int minimumHeight: 0
-
-    property int orientation: Qt.Horizontal
-    property Component style: Qt.createComponent(Settings.THEME_PATH + "/ProgressBarStyle.qml")
-    property var styleHints:[]
-
-    Accessible.role: Accessible.ProgressBar
-    Accessible.name: value
-
-    implicitWidth: orientation === Qt.Horizontal ? 200 : (loader.item ? loader.item.implicitHeight : 0)
-    implicitHeight: orientation === Qt.Horizontal ? (loader.item ? loader.item.implicitHeight : 0) : 200
-
-    Loader {
-        id: loader
-        property alias indeterminate: progressbar.indeterminate
-        property alias value: progressbar.value
-        property alias maximumValue: progressbar.maximumValue
-        property alias minimumValue: progressbar.minimumValue
-
-        property alias control: progressbar
-        sourceComponent: style
-        anchors.fill: parent
-    }
-
-    MouseArea {
-        id: mouseArea
-        anchors.fill: parent
-        hoverEnabled: true
-    }
+StyleItem {
+    anchors.fill: parent
+    elementType: "progressbar"
+    // XXX: since desktop uses int instead of real, the progressbar
+    // range [0..1] must be stretched to a good precision
+    property int factor : 1000
+    value:   indeterminate ? 0 : progressbar.value * factor // does indeterminate value need to be 1 on windows?
+    minimum: indeterminate ? 0 : progressbar.minimumValue * factor
+    maximum: indeterminate ? 0 : progressbar.maximumValue * factor
+    enabled: progressbar.enabled
+    horizontal: progressbar.orientation == Qt.Horizontal
+    hint: progressbar.styleHints
+    contentWidth: 23
+    contentHeight: 23
 }
-

@@ -40,7 +40,9 @@
 
 import QtQuick 2.0
 import QtDesktop 1.0
+import "Styles/Settings.js" as Settings
 import "private"
+
 
 FocusScope {
     id: checkBox
@@ -53,44 +55,22 @@ FocusScope {
     property bool activeFocusOnPress: false
 
     property string text
-    property string styleHint
+    property var styleHints:[]
 
     // implementation
     Accessible.role: Accessible.CheckBox
     Accessible.name: text
 
-    implicitWidth: Math.max(120, loader.item.implicitWidth)
-    implicitHeight: loader.item.implicitHeight
+    implicitWidth: Math.max(120, loader.item ? loader.item.implicitWidth : 0)
+    implicitHeight: loader.item ? loader.item.implicitHeight : 0
 
-    property Component delegate: StyleItem {
-                elementType: "checkbox"
-                sunken: pressed
-                on: checked || pressed
-                hover: containsMouse
-                enabled: control.enabled
-                hasFocus: control.activeFocus
-                hint: control.styleHint
-                contentHeight: textitem.implicitHeight
-                contentWidth: textitem.implicitWidth + indicatorWidth
-                property int indicatorWidth: pixelMetric("indicatorwidth") + 2
-                Text {
-                    id: textitem
-                    text: control.text
-                    anchors.left: parent.left
-                    anchors.leftMargin: parent.indicatorWidth
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.verticalCenterOffset: 1
-                    anchors.right: parent.right
-                    elide: Text.ElideRight
-                    renderType: Text.NativeRendering
-                }
-            }
+    property Component style: Qt.createComponent(Settings.THEME_PATH + "/CheckBoxStyle.qml")
 
     Loader {
         id: loader
         anchors.fill: parent
         property alias control: checkBox
-        sourceComponent: delegate
+        sourceComponent: style
     }
 
     ButtonBehavior {

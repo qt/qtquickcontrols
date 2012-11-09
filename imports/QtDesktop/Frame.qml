@@ -40,12 +40,15 @@
 
 import QtQuick 2.0
 import QtDesktop 1.0
+import "Styles/Settings.js" as Settings
 
 Item {
     id: frame
     default property alias data: content.data
     implicitWidth: adjustToContentSize ? content.childrenRect.width + 2 * content.frameWidth : 30
     implicitHeight: adjustToContentSize ? content.childrenRect.height + 2 * content.frameWidth : 30
+
+    property Component style: Qt.createComponent(Settings.THEME_PATH + "/FrameStyle.qml")
 
     property bool raised
     property bool sunken
@@ -64,12 +67,5 @@ Item {
         onLoaded: item.z = -1
     }
 
-    property Component delegate: StyleItem {
-        id: style
-        anchors.fill: parent
-        elementType: "frame"
-        sunken: frame.sunken
-        raised: frame.raised
-        Component.onCompleted: content.frameWidth = pixelMetric("defaultframewidth");
-    }
+
 }

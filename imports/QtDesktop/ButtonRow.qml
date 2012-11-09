@@ -68,10 +68,10 @@ Row {
     property bool exclusive: false
 
     /*
-     * Property: styleHint
+     * Property: styleHints
      * [string] Used to indicate special OS specific button types
      */
-    property string styleHint
+    property var styleHints
     /*
      * Property: checkedButton
      * [string] Contains the last checked Button.

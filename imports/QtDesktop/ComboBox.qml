@@ -39,8 +39,9 @@
 ****************************************************************************/
 
 import QtQuick 2.0
-import "private" as Private
 import QtDesktop 1.0
+import "private" as Private
+import "Styles/Settings.js" as Settings
 
 /*
 *
@@ -103,20 +104,9 @@ Private.BasicButton {
     property alias hoveredIndex: popup.hoveredIndex
     property alias selectedText: popup.selectedText
     property alias hoveredText: popup.hoveredText
-    property string styleHint
+    property var styleHints:[]
 
-    delegate: StyleItem {
-        anchors.fill: parent
-        elementType: "combobox"
-        sunken: comboBox.pressed
-        raised: !sunken
-        hover: comboBox.containsMouse
-        enabled: comboBox.enabled
-        text: comboBox.selectedText
-        hasFocus: comboBox.focus
-        contentHeight: 18
-        Component.onCompleted: popup.center = styleHint("comboboxpopup");
-    }
+    style: Qt.createComponent(Settings.THEME_PATH + "/ComboBoxStyle.qml")
 
 //  ToDo: adjust margins so that selected popup label
 //    centers directly above button label when

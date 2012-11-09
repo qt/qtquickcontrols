@@ -6,6 +6,8 @@ Item {
     id: root
     width: 600
     height: 300
+    anchors.fill: parent
+    anchors.margins: styleitem.style == "mac" ? 12 : 0
 
 //    XmlListModel {
 //        id: flickerModel

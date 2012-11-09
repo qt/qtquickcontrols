@@ -40,6 +40,7 @@
 
 import QtQuick 2.0
 import QtDesktop 1.0
+import "Styles/Settings.js" as Settings
 
 Item {
     id: tabWidget
@@ -52,6 +53,7 @@ Item {
     property string position: "North"
     default property alias tabs : stack.children
     property Item tabBar: tabbarItem
+    property Component delegate: Qt.createComponent(Settings.THEME_PATH + "/TabFrameStyle.qml")
 
     onCurrentChanged: __setOpacities()
     Component.onCompleted: __setOpacities()
@@ -87,6 +89,7 @@ Item {
         id: loader
         anchors.fill: parent
         anchors.topMargin: tabbarItem && tabsVisible && position == "North" ? Math.max(0, tabbarItem.height - stack.baseOverlap) : 0
+        anchors.bottomMargin: tabbarItem && tabsVisible && position == "South" ? Math.max(0, tabbarItem.height - stack.baseOverlap) : 0
         sourceComponent: delegate
         Item {
             id: stack
@@ -101,46 +104,27 @@ Item {
         onLoaded: item.z = -1
     }
 
-    property Component delegate: StyleItem {
-        id: frameitem
-        z: style == "oxygen" ? 1 : 0
-        elementType: "tabframe"
-        info: position
-        value: tabbarItem && tabsVisible && tabbarItem.tab(current) ? tabbarItem.tab(current).x : 0
-        minimum: tabbarItem && tabsVisible && tabbarItem.tab(current) ? tabbarItem.tab(current).width : 0
-        maximum: tabbarItem && tabsVisible ? tabbarItem.tabWidth : width
-        Component.onCompleted: {
-            stack.frameWidth = pixelMetric("defaultframewidth")
-            stack.style = style
-            stack.baseOverlap = pixelMetric("tabbaseoverlap")// add paintmargins;
-        }
-
-        states: [
-            State {
-                name: "South"
-                when: position == "South" && tabbarItem!= undefined
-                PropertyChanges {
-                    target: frameitem
-                    anchors.topMargin: 0
-                    anchors.bottomMargin: tabbarItem ? tabbarItem.height - stack.baseOverlap: 0
-                }
-                PropertyChanges {
-                    target: tabbarItem
-                    anchors.topMargin: -stack.baseOverlap
-                }
-                AnchorChanges {
-                    target: tabbarItem
-                    anchors.top: tabWidget.bottom
-                    anchors.bottom: undefined
-                }
-            }
-        ]
-    }
     TabBar {
         id: tabbarItem
         tabFrame: tabWidget
-        anchors.top: tabWidget.top
+        anchors.top: parent.top
         anchors.left: tabWidget.left
         anchors.right: tabWidget.right
     }
+
+    states: [
+        State {
+            name: "South"
+            when: position == "South" && tabbarItem != undefined
+            PropertyChanges {
+                target: tabbarItem
+                anchors.topMargin: tabbarItem.height
+            }
+            AnchorChanges {
+                target: tabbarItem
+                anchors.top: undefined
+                anchors.bottom: tabWidget.bottom
+            }
+        }
+    ]
 }

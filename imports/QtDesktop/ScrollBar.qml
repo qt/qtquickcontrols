@@ -40,56 +40,48 @@
 
 import QtQuick 2.0
 import QtDesktop 1.0
+import "Styles/Settings.js" as Settings
 
 Item {
     id: scrollbar
 
-    property int orientation : Qt.Horizontal
+    property int orientation: Qt.Horizontal
     property alias minimumValue: slider.minimumValue
     property alias maximumValue: slider.maximumValue
-    property int pageStep: styleitem && styleitem.horizontal ? width : height
+    property int pageStep: internal.horizontal ? width : height
     property int singleStep: 20
     property alias value: slider.value
-    property bool scrollToClickposition: styleitem ? styleitem.styleHint("scrollToClickPosition") : false
+    property bool scrollToClickposition: internal.scrollToClickPosition
 
-    property Item styleitem: loader.item
-
-    implicitWidth: orientation == Qt.Horizontal ? 200 : internal.scrollbarExtent
-    implicitHeight: orientation == Qt.Horizontal ? internal.scrollbarExtent : 200
+    implicitWidth: loader.implicitWidth
+    implicitHeight: loader.implicitHeight
 
     onValueChanged: internal.updateHandle()
 
-    property Component delegate: StyleItem {
-        id: styleitem
-        anchors.fill:parent
-        elementType: "scrollbar"
-        hover: activeControl != "none"
-        activeControl: "none"
-        sunken: internal.upPressed | internal.downPressed
-        minimum: slider.minimumValue
-        maximum: slider.maximumValue
-        value: slider.value
-        horizontal: orientation == Qt.Horizontal
-        enabled: parent.enabled
-    }
+    property Component style: Qt.createComponent(Settings.THEME_PATH + "/ScrollBarStyle.qml")
+
+    property bool upPressed
+    property bool downPressed
+
+    property bool pageUpPressed
+    property bool pageDownPressed
 
     MouseArea {
         id: internal
 
+        property bool horizontal: orientation === Qt.Horizontal
+        property alias styleItem: loader.item
+
         anchors.fill: parent
-        property bool upPressed
-        property bool downPressed
-        property bool pageUpPressed
-        property bool pageDownPressed
 
         property bool autoincrement: false
-        property int scrollbarExtent : styleitem.pixelMetric("scrollbarExtent");
+        property bool scrollToClickPosition: styleItem ? styleItem.scrollToClickPosition : 0
         property bool handlePressed
 
         // Update hover item
-        onEntered: styleitem.activeControl = styleitem.hitTest(mouseX, mouseY)
-        onExited: styleitem.activeControl = "none"
-        onMouseXChanged: styleitem.activeControl = styleitem.hitTest(mouseX, mouseY)
+        onEntered: styleItem.activeControl = styleItem.hitTest(mouseX, mouseY)
+        onExited: styleItem.activeControl = "none"
+        onMouseXChanged: styleItem.activeControl = styleItem.hitTest(mouseX, mouseY)
         hoverEnabled: true
 
         property variant control
@@ -99,7 +91,7 @@ Item {
         property int grooveSize
 
         Timer {
-            running: internal.upPressed || internal.downPressed || internal.pageUpPressed || internal.pageDownPressed
+            running: upPressed || downPressed || pageUpPressed || pageDownPressed
             interval: 350
             onTriggered: internal.autoincrement = true
         }
@@ -108,15 +100,15 @@ Item {
             running: internal.autoincrement
             interval: 60
             repeat: true
-            onTriggered: internal.upPressed ? internal.decrement() : internal.downPressed ? internal.increment() :
-                                                                     internal.pageUpPressed ? internal.decrementPage() :
-                                                                                              internal.incrementPage()
+            onTriggered: internal.upPressed ? internal.decrement() : downPressed ? internal.increment() :
+                                                                     pageUpPressed ? internal.decrementPage() :
+                                                                                     internal.incrementPage()
         }
 
         onPositionChanged: {
             if (pressed && control === "handle") {
                 //slider.positionAtMaximum = grooveSize
-                if (!styleitem.horizontal)
+                if (!horizontal)
                     slider.position = oldPosition + (mouseY - pressedY)
                 else
                     slider.position = oldPosition + (mouseX - pressedX)
@@ -124,12 +116,12 @@ Item {
         }
 
         onPressed: {
-            control = styleitem.hitTest(mouseX,mouseY)
-            scrollToClickposition = styleitem.styleHint("scrollToClickPosition")
-            grooveSize =  styleitem.horizontal? styleitem.subControlRect("groove").width -
-                                                styleitem.subControlRect("handle").width:
-                                                    styleitem.subControlRect("groove").height -
-                                                    styleitem.subControlRect("handle").height;
+            control = styleItem.hitTest(mouseX, mouseY)
+            scrollToClickposition = scrollToClickPosition
+            grooveSize =  horizontal ? styleItem.subControlRect("groove").width -
+                                       styleItem.subControlRect("handle").width:
+                                       styleItem.subControlRect("groove").height -
+                                       styleItem.subControlRect("handle").height;
             if (control == "handle") {
                 pressedX = mouseX
                 pressedY = mouseY
@@ -149,8 +141,8 @@ Item {
                     pageDownPressed = true
                 }
             } else {
-                slider.position = styleitem.horizontal ? mouseX - handleRect.width/2
-                                                       : mouseY - handleRect.height/2
+                slider.position = horizontal ? mouseX - handleRect.width/2
+                                             : mouseY - handleRect.height/2
             }
         }
 
@@ -189,15 +181,16 @@ Item {
 
         Loader {
             id: loader
-            sourceComponent: delegate
+            property Item control: scrollbar
+            sourceComponent: style
             anchors.fill: parent
         }
 
         property rect handleRect: Qt.rect(0,0,0,0)
         property rect grooveRect: Qt.rect(0,0,0,0)
         function updateHandle() {
-            internal.handleRect = styleitem.subControlRect("handle")
-            grooveRect = styleitem.subControlRect("groove");
+            internal.handleRect = styleItem.subControlRect("handle")
+            grooveRect = styleItem.subControlRect("groove");
         }
 
         RangeModel {

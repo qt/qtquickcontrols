@@ -50,10 +50,10 @@ Item {
     property alias checkable: behavior.checkable  // button toggles between checked and !checked
     property alias checked: behavior.checked
     property bool activeFocusOnPress: false
+    property alias style: loader.sourceComponent
+    property var styleHints: []
 
-    property Component delegate: null
-
-    property color textColor: syspal.text;
+    property color textColor: syspal.text
     property string tooltip
 
     Accessible.role: Accessible.Button
@@ -64,8 +64,8 @@ Item {
     // implementation
 
     property string __position: "only"
-    implicitWidth: loader.item.implicitWidth
-    implicitHeight: loader.item.implicitHeight
+    implicitWidth: loader.implicitWidth
+    implicitHeight: loader.implicitHeight
 
     Keys.onPressed: {
         if (event.key === Qt.Key_Space && !event.isAutoRepeat && !behavior.pressed)
@@ -84,8 +84,8 @@ Item {
     Loader {
         id: loader
         anchors.fill: parent
-        sourceComponent: delegate
-        property alias styledItem: button
+        sourceComponent: style
+        property alias control: button
         property alias position: button.__position
     }
 

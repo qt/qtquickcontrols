@@ -40,6 +40,7 @@
 
 import QtQuick 2.0
 import QtDesktop 1.0
+import "Styles/Settings.js" as Settings
 
 FocusScope {
     id: textfield
@@ -65,43 +66,16 @@ FocusScope {
     property alias inputMethodHints: textInput.inputMethodHints
     property alias activeFocusOnPress: textInput.activeFocusOnPress
     property alias containsMouse: mouseArea.containsMouse
+    property Component style: Qt.createComponent(Settings.THEME_PATH + "/TextFieldStyle.qml")
 
-    property Component delegate: StyleItem {
-        anchors.fill: parent
-        elementType: "edit"
-        sunken: true
-        hasFocus: textfield.activeFocus
-        hover: containsMouse
-        hint: textfield.styleHint
-        contentWidth: 200
-        contentHeight: 19
+    property var styleHints:[]
 
-        Item {
-            id: focusFrame
-            anchors.fill: parent
-            parent: textfield
-            visible: framestyle.styleHint("focuswidget")
-            StyleItem {
-                id: framestyle
-                anchors.margins: -2
-                anchors.rightMargin:-4
-                anchors.bottomMargin:-4
-                anchors.fill: parent
-                visible: textfield.activeFocus
-                hint: textfield.styleHint
-                elementType: "focusframe"
-            }
-        }
-    }
-
-    implicitWidth: loader.item.implicitWidth
-    implicitHeight: loader.item.implicitHeight
+    implicitWidth: loader.implicitWidth
+    implicitHeight: loader.implicitHeight
 
     Accessible.name: text
     Accessible.role: Accessible.EditableText
     Accessible.description: placeholderText
-
-    property string styleHint
 
 
     function copy() {
@@ -140,15 +114,11 @@ FocusScope {
 
     // Implementation
 
-    SystemPalette {
-        id: syspal
-        colorGroup: enabled ? SystemPalette.Active : SystemPalette.Disabled
-    }
-
     Loader {
         id: loader
-        sourceComponent: delegate
+        sourceComponent: style
         anchors.fill: parent
+        property Item control: textfield
     }
 
     MouseArea {
@@ -165,21 +135,21 @@ FocusScope {
 
     TextInput { // see QTBUG-14936
         id: textInput
-        selectByMouse:true
-        selectionColor: syspal.highlight
-        selectedTextColor: syspal.highlightedText
+        selectByMouse: true
+        selectionColor: loader.item ? loader.item.selectionColor : "black"
+        selectedTextColor: loader.item ? loader.item.selectedTextColor : "black"
 
-        // Todo move these margins to StyleItem
-        anchors.leftMargin: styleHint.indexOf("rounded") > -1 ? 8: 4
-        anchors.topMargin: 4
-        anchors.rightMargin: 4
-        anchors.bottomMargin: 4
+        property Item styleItem: loader.item
+        anchors.leftMargin: styleItem ? styleItem.leftMargin : 0
+        anchors.topMargin: styleItem ? styleItem.topMargin : 0
+        anchors.rightMargin: styleItem ? styleItem.rightMargin : 0
+        anchors.bottomMargin: styleItem ? styleItem.bottomMargin : 0
 
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
 
-        color: syspal.text
+        color: loader.item ? loader.item.foregroundColor : "darkgray"
         echoMode: passwordMode ? TextInput.Password : TextInput.Normal
         clip: true
         renderType: Text.NativeRendering
@@ -190,10 +160,11 @@ FocusScope {
         anchors.fill: textInput
         font: textInput.font
         opacity: !textInput.text.length && !textInput.activeFocus ? 1 : 0
-        color: "darkgray"
+        color: loader.item ? loader.item.placeholderTextColor : "darkgray"
         text: "Enter text"
         clip: true
         elide: Text.ElideRight
+//        renderType: Text.NativeRendering
         Behavior on opacity { NumberAnimation { duration: 90 } }
     }
     MouseArea {

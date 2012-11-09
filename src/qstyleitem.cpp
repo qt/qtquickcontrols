@@ -136,8 +136,6 @@ QStyleItem::QStyleItem(QQuickPaintedItem *parent)
     connect(this, SIGNAL(hasFocusChanged()), this, SLOT(updateItem()));
     connect(this, SIGNAL(activeControlChanged()), this, SLOT(updateItem()));
     connect(this, SIGNAL(elementTypeChanged()), this, SLOT(updateItem()));
-
-    connect(this, SIGNAL(hintChanged()), this, SLOT(updateSizeHint()));
     connect(this, SIGNAL(textChanged()), this, SLOT(updateSizeHint()));
     connect(this, SIGNAL(contentWidthChanged(int)), this, SLOT(updateSizeHint()));
     connect(this, SIGNAL(contentHeightChanged(int)), this, SLOT(updateSizeHint()));
@@ -463,9 +461,9 @@ void QStyleItem::initStyleOption()
     if (m_horizontal)
         m_styleoption->state |= QStyle::State_Horizontal;
 
-    if (m_hint.contains("mini")) {
+    if (m_hint.indexOf("mini") != -1) {
         m_styleoption->state |= QStyle::State_Mini;
-    } else if (m_hint.contains("small")) {
+    } else if (m_hint.indexOf("small") != -1) {
         m_styleoption->state |= QStyle::State_Small;
     }
 
@@ -591,8 +589,8 @@ QSize QStyleItem::sizeFromContents(int width, int height)
         break;
     case Edit:
         size = qApp->style()->sizeFromContents(QStyle::CT_LineEdit, m_styleoption, QSize(width,height));
-        if (hint().contains("rounded"))
-            size += QSize(0, 2);
+        if (hint().indexOf("rounded") != -1)
+            size += QSize(0, 3);
         break;
     case GroupBox:
         size = qApp->style()->sizeFromContents(QStyle::CT_GroupBox, m_styleoption, QSize(width,height));
@@ -617,12 +615,6 @@ QSize QStyleItem::sizeFromContents(int width, int height)
     default:
         break;
     }
-
-#ifdef Q_OS_MAC
-    //    ### hack - With even heights, the text baseline is off on mac
-    //    if (size.height() %2 == 0)
-    //        size.setHeight(size.height() + 1);
-#endif
     return size;
 }
 
@@ -642,12 +634,7 @@ int QStyleItem::pixelMetric(const QString &metric)
     else if (metric == "taboverlap")
         return qApp->style()->pixelMetric(QStyle::PM_TabBarTabOverlap, 0 );
     else if (metric == "tabbaseoverlap")
-#ifdef Q_OS_WIN
-        // On windows the tabbar paintmargin extends the overlap by one pixels
-        return 1 + qApp->style()->pixelMetric(QStyle::PM_TabBarBaseOverlap, 0 );
-#else
         return qApp->style()->pixelMetric(QStyle::PM_TabBarBaseOverlap, 0 );
-#endif
     else if (metric == "tabhspace")
         return qApp->style()->pixelMetric(QStyle::PM_TabBarTabHSpace, 0 );
     else if (metric == "indicatorwidth")
@@ -694,15 +681,16 @@ QVariant QStyleItem::styleHint(const QString &metric)
     return 0;
 }
 
-void QStyleItem::setHint(const QString &str)
+void QStyleItem::setHint(const QStringList &str)
 {
     if (m_hint != str) {
-        m_hint= str; emit hintChanged();
-
-        if (hint().contains("mini")) {
+        m_hint = str;
+        initStyleOption();
+        updateSizeHint();
+        if (m_styleoption->state & QStyle::State_Mini) {
             m_font.setPointSize(9.);
             emit fontChanged();
-        } else if (hint().contains("small")) {
+        } else if (m_styleoption->state & QStyle::State_Small) {
             m_font.setPointSize(11.);
             emit fontChanged();
         }
@@ -890,7 +878,7 @@ void QStyleItem::paint(QPainter *painter)
     case ToolButton:
 
 #ifdef Q_OS_MAC
-        if (style() == "mac" && hint().contains("segmented")) {
+        if (style() == "mac" && hint().indexOf("segmented") != -1) {
             const QPaintDevice *target = painter->device();
              HIThemeSegmentDrawInfo sgi;
             sgi.version = 0;
@@ -926,12 +914,10 @@ void QStyleItem::paint(QPainter *painter)
         qApp->style()->drawControl(QStyle::CE_ShapedFrame, m_styleoption, painter);
         break;
     case FocusFrame:
-#ifdef Q_OS_MAC
-        if (style() == "mac" && hint().contains("search")) {
+        if (style() == "mac" && hint().indexOf("rounded") != -1)
             break; // embedded in the line itself
-        } else
-#endif
-        qApp->style()->drawControl(QStyle::CE_FocusFrame, m_styleoption, painter);
+        else
+            qApp->style()->drawControl(QStyle::CE_FocusFrame, m_styleoption, painter);
         break;
     case TabFrame:
         qApp->style()->drawPrimitive(QStyle::PE_FrameTabWidget, m_styleoption, painter);
@@ -954,7 +940,7 @@ void QStyleItem::paint(QPainter *painter)
         break;
     case Edit: {
 #ifdef Q_OS_MAC
-        if (style() == "mac" && hint().contains("rounded")) {
+        if (style() == "mac" && hint().indexOf("rounded") != -1) {
             const QPaintDevice *target = painter->device();
             HIThemeFrameDrawInfo fdi;
             fdi.version = 0;

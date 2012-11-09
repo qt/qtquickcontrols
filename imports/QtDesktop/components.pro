@@ -34,11 +34,44 @@ QML_FILES = \
             StatusBar.qml \
             TableColumn.qml \
             TextField.qml \
-            ApplicationWindow.qml
+            ApplicationWindow.qml \
+            Styles/ToolButtonStyle.qml \
+            Styles/ToolBarStyle.qml \
+            Styles/TextFieldStyle.qml \
+            Styles/TabBarStyle.qml \
+            Styles/TabFrameStyle.qml \
+            Styles/SpinBoxStyle.qml \
+            Styles/SliderStyle.qml \
+            Styles/ScrollBarStyle.qml \
+            Styles/ScrollAreaStyle.qml \
+            Styles/RadioButtonStyle.qml \
+            Styles/ProgressBarStyle.qml \
+            Styles/GroupBoxStyle.qml \
+            Styles/FrameStyle.qml \
+            Styles/ComboBoxStyle.qml \
+            Styles/CheckBoxStyle.qml \
+            Styles/ButtonStyle.qml \
+            Styles/Desktop/ToolButtonStyle.qml \
+            Styles/Desktop/ToolBarStyle.qml \
+            Styles/Desktop/TextFieldStyle.qml \
+            Styles/Desktop/TabBarStyle.qml \
+            Styles/Desktop/TabFrameStyle.qml \
+            Styles/Desktop/SpinBoxStyle.qml \
+            Styles/Desktop/SliderStyle.qml \
+            Styles/Desktop/ScrollBarStyle.qml \
+            Styles/Desktop/ScrollAreaStyle.qml \
+            Styles/Desktop/RadioButtonStyle.qml \
+            Styles/Desktop/ProgressBarStyle.qml \
+            Styles/Desktop/GroupBoxStyle.qml \
+            Styles/Desktop/FrameStyle.qml \
+            Styles/Desktop/ComboBoxStyle.qml \
+            Styles/Desktop/CheckBoxStyle.qml \
+            Styles/Desktop/ButtonStyle.qml
 
 QML_DIRS = \
         custom \
         private \
+        Styles \
         images 
 
 qmlfiles.files = $$QML_FILES

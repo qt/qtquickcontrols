@@ -3,13 +3,13 @@ import QtQuick.tooling 1.1
 // This file describes the plugin-supplied types contained in the library.
 // It is used for QML tooling purposes only.
 //
-// This file was auto-generated with the command 'qmlplugindump QtDesktop 0.2 imports/'.
+// This file was auto-generated with the command 'qmlplugindump QtDesktop 1.0 imports/'.
 
 Module {
     Component {
         name: "QDesktopItem"
         prototype: "QObject"
-        exports: ["Desktop 0.2"]
+        exports: ["Desktop 1.0"]
         Property { name: "screenWidth"; type: "int"; isReadonly: true }
         Property { name: "screenHeight"; type: "int"; isReadonly: true }
         Property { name: "availableWidth"; type: "int"; isReadonly: true }
@@ -32,7 +32,7 @@ Module {
         name: "QFileDialogItem"
         defaultProperty: "data"
         prototype: "QQuickItem"
-        exports: ["FileDialog 0.2"]
+        exports: ["FileDialog 1.0"]
         Property { name: "visible"; type: "bool" }
         Property { name: "modal"; type: "bool" }
         Property { name: "title"; type: "string" }
@@ -52,7 +52,7 @@ Module {
     Component {
         name: "QFileSystemModel"
         prototype: "QAbstractItemModel"
-        exports: ["FileSystemModel 0.2"]
+        exports: ["FileSystemModel 1.0"]
         Property { name: "resolveSymlinks"; type: "bool" }
         Property { name: "readOnly"; type: "bool" }
         Property { name: "nameFilterDisables"; type: "bool" }
@@ -75,13 +75,13 @@ Module {
         name: "QQuickComponentsColumnLayout"
         defaultProperty: "data"
         prototype: "QQuickComponentsLinearLayout"
-        exports: ["ColumnLayout 0.2"]
+        exports: ["ColumnLayout 1.0"]
     }
     Component {
         name: "QQuickComponentsLayout"
         defaultProperty: "data"
         prototype: "QQuickItem"
-        exports: ["Layout 0.2"]
+        exports: ["Layout 1.0"]
         attachedType: "QQuickComponentsLayoutAttached"
         Enum {
             name: "SizePolicy"
@@ -111,7 +111,7 @@ Module {
     Component {
         name: "QQuickComponentsPrivate"
         prototype: "QObject"
-        exports: ["PrivateHelper 0.2"]
+        exports: ["PrivateHelper 1.0"]
         Method {
             name: "showToolTip"
             Parameter { name: "item"; type: "QQuickItem"; isPointer: true }
@@ -124,12 +124,12 @@ Module {
         name: "QQuickComponentsRowLayout"
         defaultProperty: "data"
         prototype: "QQuickComponentsLinearLayout"
-        exports: ["RowLayout 0.2"]
+        exports: ["RowLayout 1.0"]
     }
     Component {
         name: "QRangeModel"
         prototype: "QObject"
-        exports: ["RangeModel 0.2"]
+        exports: ["RangeModel 1.0"]
         Property { name: "value"; type: "double" }
         Property { name: "minimumValue"; type: "double" }
         Property { name: "maximumValue"; type: "double" }
@@ -195,7 +195,7 @@ Module {
         name: "QStyleItem"
         defaultProperty: "data"
         prototype: "QQuickPaintedItem"
-        exports: ["StyleItem 0.2"]
+        exports: ["StyleItem 1.0"]
         Property { name: "sunken"; type: "bool" }
         Property { name: "raised"; type: "bool" }
         Property { name: "active"; type: "bool" }
@@ -279,7 +279,7 @@ Module {
         name: "QWheelArea"
         defaultProperty: "data"
         prototype: "QQuickItem"
-        exports: ["WheelArea 0.2"]
+        exports: ["WheelArea 1.0"]
         Property { name: "verticalDelta"; type: "double" }
         Property { name: "horizontalDelta"; type: "double" }
         Property { name: "horizontalMinimumValue"; type: "double" }
@@ -296,7 +296,7 @@ Module {
         name: "QWindowItem"
         defaultProperty: "data"
         prototype: "QQuickItem"
-        exports: ["Window 0.1", "Window 0.2"]
+        exports: ["Window 0.1", "Window 1.0"]
         Property { name: "minimumHeight"; type: "int" }
         Property { name: "maximumHeight"; type: "int" }
         Property { name: "minimumWidth"; type: "int" }
@@ -314,7 +314,7 @@ Module {
         name: "QtMenu"
         defaultProperty: "menuItems"
         prototype: "QtMenuBase"
-        exports: ["Menu 0.2"]
+        exports: ["Menu 1.0"]
         Property { name: "text"; type: "string" }
         Property { name: "model"; type: "QVariant" }
         Property { name: "selectedIndex"; type: "int" }
@@ -369,7 +369,7 @@ Module {
         name: "QtMenuBar"
         defaultProperty: "menus"
         prototype: "QQuickItem"
-        exports: ["MenuBar 0.2"]
+        exports: ["MenuBar 1.0"]
         Property { name: "menus"; type: "QtMenu"; isList: true; isReadonly: true }
     }
     Component {
@@ -384,7 +384,7 @@ Module {
         name: "QtMenuItem"
         defaultProperty: "data"
         prototype: "QtMenuBase"
-        exports: ["MenuItem 0.2"]
+        exports: ["MenuItem 1.0"]
         Property { name: "text"; type: "string" }
         Property { name: "shortcut"; type: "string" }
         Property { name: "checkable"; type: "bool" }
@@ -400,7 +400,7 @@ Module {
         name: "QtMenuSeparator"
         defaultProperty: "data"
         prototype: "QtMenuBase"
-        exports: ["Separator 0.2"]
+        exports: ["Separator 1.0"]
     }
     Component {
         name: "QtSplitterAttached"
@@ -445,7 +445,7 @@ Module {
         name: "QtSplitterBase"
         defaultProperty: "data"
         prototype: "QQuickItem"
-        exports: ["Splitter 0.2"]
+        exports: ["Splitter 1.0"]
         attachedType: "QtSplitterAttached"
     }
 }

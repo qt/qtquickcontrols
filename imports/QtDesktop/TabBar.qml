@@ -40,6 +40,7 @@
 
 import QtQuick 2.0
 import QtDesktop 1.0
+import "Styles/Settings.js" as Settings
 
 Item {
     id: tabbar
@@ -59,15 +60,16 @@ Item {
 
 
     property Item tabFrame
-    onTabFrameChanged:parent = tabFrame
+    onTabFrameChanged: parent = tabFrame
     visible: tabFrame ? tabFrame.tabsVisible : true
-    property int __overlap : styleitem.pixelMetric("tabvshift");
+
+    property int __overlap :  loader.item ? loader.item.__overlap : 0
     property string position: tabFrame ? tabFrame.position : "North"
-    property string tabBarAlignment: styleitem.styleHint("tabbaralignment");
-    property int tabOverlap: styleitem.pixelMetric("taboverlap");
-    property int tabBaseOverlap: styleitem.pixelMetric("tabbaseoverlap");
-    property int tabHSpace: styleitem.pixelMetric("tabhspace");
-    property int tabVSpace: styleitem.pixelMetric("tabvspace");
+    property string tabBarAlignment: loader.item ? loader.item.tabBarAlignment : "Center"
+    property int tabOverlap: loader.item ? loader.item.tabOverlap : 0
+    property int tabBaseOverlap: loader.item ? loader.item.tabBaseOverlap : 0
+    property int tabHSpace: loader.item ? loader.item.tabHSpace : 0
+    property int tabVSpace: loader.item ? loader.item.tabVSpace : 0
 
     function tab(index) {
         for (var i = 0; i < tabrow.children.length; ++i) {
@@ -78,24 +80,19 @@ Item {
         return null;
     }
 
-    property Component delegate: StyleItem {
-        visible: false
-        id: styleitem
-        elementType: "tab"
-        text: "generic"
-    }
+    property Component style: Qt.createComponent(Settings.THEME_PATH + "/TabBarStyle.qml")
 
     Loader {
         id: loader
-        sourceComponent: delegate
+        sourceComponent: style
+        property alias control: tabbar
     }
 
     Row {
         id: tabrow
         Accessible.role: Accessible.PageTabList
-        property int paintMargins: 1
         states:
-                State {
+            State {
             when: tabBarAlignment == "center"
             name: "centered"
             AnchorChanges {
@@ -105,45 +102,32 @@ Item {
         }
 
         Repeater {
-            id:repeater
-            focus:true
+            id: repeater
+            focus: true
             model: tabFrame ? tabFrame.tabs.length : null
             delegate: Item {
-                id:tab
-                focus:true
+                id: tab
+                focus: true
+
                 property int tabindex: index
+                property bool selectedHelper: selected
                 property bool selected : tabFrame.current == index
+                property bool hover: mousearea.containsMouse
+                property bool first: index === 0
+
                 z: selected ? 1 : -1
-                width: Math.min(implicitWidth, tabbar.width/tabs.length)
-                function updateRect() {
-                    implicitWidth = style.implicitWidth
-                    height = style.implicitHeight
-                }
-                StyleItem {
-                    id: style
-                    elementType: "tab"
-                    selected: tab.selected
-                    info: tabbar.position
-                    text:  tabFrame.tabs[index].title
-                    hover: mousearea.containsMouse
-                    hasFocus: tabbar.focus && selected
-                    property bool first: index === 0
-                    //paintMargins: tabrow.paintMargins
-                    activeControl: tabFrame.count === 1 ? "only" : index === 0 ? "beginning" :
-                            index === tabFrame.count-1 ? "end" : "middle"
+                implicitWidth: Math.min(tabloader.implicitWidth, tabbar.width/tabs.length) + 1
+                implicitHeight: tabloader.implicitHeight
+
+                Loader {
+                    id: tabloader
+                    sourceComponent: loader.item ? loader.item.tab : null
                     anchors.fill: parent
-                    anchors.margins: -paintMargins
-                    contentWidth: textitem.width + tabHSpace + 2
-                    contentHeight: Math.max(style.font.pixelSize + tabVSpace + 6, 0)
-                    Text {
-                        id: textitem
-                        // Used for size hint
-                        visible: false
-                        onWidthChanged: updateRect()
-                        onHeightChanged: updateRect()
-                        text:  tabFrame.tabs[index].title
-                    }
+                   // anchors.margins: -2
+                    property alias control: tab
+                    property int index: tabindex
                 }
+
                 MouseArea {
                     id: mousearea
                     anchors.fill: parent
@@ -151,7 +135,7 @@ Item {
                     onPressed: tabFrame.current = index
                 }
                 Accessible.role: Accessible.PageTab
-                Accessible.name: textitem.text
+                Accessible.name: tabFrame.tabs[index].title
             }
         }
     }

@@ -39,33 +39,21 @@
 ****************************************************************************/
 
 import QtQuick 2.0
-import "private"
 import QtDesktop 1.0
+import "private"
+import "Styles/Settings.js" as Settings
 
 BasicButton {
     id: button
 
     property bool defaultbutton: false
-    property string styleHint
+    property var styleHintss
     property string text
     property url iconSource
 
     Accessible.name: text
 
-    delegate: StyleItem {
-        id: styleitem
-        anchors.fill: parent
-        elementType: "button"
-        sunken: pressed || checked
-        raised: !(pressed || checked)
-        hover: containsMouse
-        text: iconSource === "" ? "" : button.text
-        hasFocus: button.focus
-        hint: button.styleHint
-
-        // If no icon, let the style do the drawing
-        activeControl: defaultbutton ? "default" : "f"
-    }
+    style: Qt.createComponent(Settings.THEME_PATH + "/ButtonStyle.qml")
 
 // ## TODO: move to style implementation
 //    label: Item {

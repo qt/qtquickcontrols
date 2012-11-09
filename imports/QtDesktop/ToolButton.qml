@@ -41,39 +41,22 @@
 import QtQuick 2.0
 import QtDesktop 1.0
 import "private" as Private
+import "Styles/Settings.js" as Settings
 
 Private.BasicButton {
-    id:button
+    id: button
 
     property string iconName
-    property string styleHint
     property url iconSource
     property string text
 
-    delegate: StyleItem {
-        id: styleitem
-        anchors.fill: parent
-        elementType: "toolbutton"
-        on: pressed | checked
-        sunken: pressed
-        raised: containsMouse
-        hover: containsMouse
-        info: __position
-        hint: button.styleHint
-        contentWidth: Math.max(textitem.paintedWidth, 32)
-        contentHeight: 30
-        Text {
-            id: textitem
-            text: button.text
-            anchors.centerIn: parent
-            visible: button.iconSource == ""
-        }
-    }
+    style: Qt.createComponent(Settings.THEME_PATH + "/ToolButtonStyle.qml")
+
     Image {
         id: themeIcon
         anchors.centerIn: parent
         opacity: enabled ? 1 : 0.5
-        smooth: true
+        antialiasing: true
         sourceSize.width: iconSize
         //property string iconPath: "image://desktoptheme/" + button.iconName
         property int iconSize: 24 //(backgroundItem && backgroundItem.style === "mac" && button.styleHint.indexOf("segmented") !== -1) ? 16 : 24

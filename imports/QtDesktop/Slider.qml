@@ -40,6 +40,7 @@
 
 import QtQuick 2.0
 import QtDesktop 1.0
+import "Styles/Settings.js" as Settings
 
 // jens: ContainsMouse breaks drag functionality
 
@@ -72,109 +73,77 @@ Item {
         return Math.round(v);
     }
 
-    implicitWidth: orientation === Qt.Horizontal ? 200 : loader.item.implicitHeight
-    implicitHeight: orientation === Qt.Horizontal ? loader.item.implicitHeight : 200
-
-    property string styleHint;
-
-    property Component delegate: StyleItem {
-        anchors.fill:parent
-        elementType: "slider"
-        sunken: pressed
-        contentWidth: 23
-        contentHeight: 23
-        maximum: slider.maximumValue*100
-        minimum: slider.minimumValue*100
-        step: slider.stepSize*100
-        value: slider.value*100
-        horizontal: slider.orientation == Qt.Horizontal
-        enabled: slider.enabled
-        hasFocus: slider.focus
-        hint: slider.styleHint
-        activeControl: tickmarksEnabled ? tickPosition.toLowerCase() : ""
-    }
+    property var styleHints:[]
+    property Component style: Qt.createComponent(Settings.THEME_PATH + "/SliderStyle.qml")
 
     Keys.onRightPressed: value += (maximumValue - minimumValue)/10.0
     Keys.onLeftPressed: value -= (maximumValue - minimumValue)/10.0
 
-    Item {
-        id: contents
+    implicitWidth: loader.item ? loader.item.implicitWidth : 0
+    implicitHeight: loader.item ? loader.item.implicitHeight : 0
 
-        width: orientation == Qt.Vertical ? slider.height : slider.width
-        height: orientation == Qt.Vertical ? slider.width : slider.height
-        rotation: orientation == Qt.Vertical ? -90 : 0
+    RangeModel {
+        id: range
+        minimumValue: 0.0
+        maximumValue: 1.0
+        value: 0
+        stepSize: 0.0
+        inverted: false
 
-        anchors.centerIn: slider
-
-        RangeModel {
-            id: range
-            minimumValue: 0.0
-            maximumValue: 1.0
-            value: 0
-            stepSize: 0.0
-            inverted: false
-
-            positionAtMinimum: loader.leftMargin
-            positionAtMaximum: contents.width - loader.rightMargin
-        }
-
-        Loader {
-            id: loader
-            anchors.fill: parent
-            sourceComponent: delegate
-
-            function positionForValue(value) {
-                return range.positionForValue(value) - leftMargin;
-            }
-            property int leftMargin: 0
-            property int rightMargin: 0
-        }
-
-        Item {
-            id: fakeHandle
-        }
-
-        MouseArea {
-            id: mouseArea
-            hoverEnabled: true
-            anchors.centerIn: parent
-            anchors.horizontalCenterOffset: (loader.leftMargin - loader.rightMargin) / 2
-
-            width: parent.width - loader.rightMargin - loader.leftMargin
-            height: parent.height
-
-            drag.target: fakeHandle
-            drag.axis: Drag.XAxis
-            drag.minimumX: range.positionAtMinimum
-            drag.maximumX: range.positionAtMaximum
-
-            onPressed: {
-
-                if (activeFocusOnPress)
-                    slider.focus = true;
-
-                // Clamp the value
-                var newX = Math.max(mouse.x, drag.minimumX);
-                newX = Math.min(newX, drag.maximumX);
-
-                // Debounce the press: a press event inside the handler will not
-                // change its position, the user needs to drag it.
-
-                // Note this really messes up things for scrollbar
-                // if (Math.abs(newX - fakeHandle.x) > handleLoader.width / 2)
-                range.position = newX;
-            }
-
-            onReleased: {
-                // If we don't update while dragging, this is the only
-                // moment that the range is updated.
-                if (!slider.updateValueWhileDragging)
-                    range.position = fakeHandle.x;
-            }
-        }
-
-
+        positionAtMinimum: 0
+        positionAtMaximum: slider.width
     }
+
+    Loader {
+        id: loader
+        sourceComponent: style
+        anchors.fill: parent
+        property var control: slider
+        function positionForValue(value) { return range.positionForValue(value) }
+    }
+
+    Item { id: fakeHandle }
+
+    MouseArea {
+        id: mouseArea
+
+        hoverEnabled: true
+        anchors.centerIn: parent
+
+        width: parent.width
+        height: parent.height
+
+        drag.target: fakeHandle
+        drag.axis: Drag.XAxis
+        drag.minimumX: range.positionAtMinimum
+        drag.maximumX: range.positionAtMaximum
+
+        onPressed: {
+            if (activeFocusOnPress)
+                slider.focus = true;
+
+            // Clamp the value
+            var newX = Math.max(mouse.x, drag.minimumX);
+            newX = Math.min(newX, drag.maximumX);
+
+            // Debounce the press: a press event inside the handler will not
+            // change its position, the user needs to drag it.
+
+            // Note this really messes up things for scrollbar
+            // if (Math.abs(newX - fakeHandle.x) > handleLoader.width / 2)
+            range.position = newX;
+        }
+
+        onReleased: {
+            // If we don't update while dragging, this is the only
+            // moment that the range is updated.
+            if (!slider.updateValueWhileDragging)
+                range.position = fakeHandle.x;
+        }
+    }
+
+
+
     // Range position normally follow fakeHandle, except when
     // 'updateValueWhileDragging' is false. In this case it will only follow
     // if the user is not pressing the handle.

@@ -1,8 +1,8 @@
 /****************************************************************************
 **
-** Copyright (C) 2012 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
 ** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the Qt Components project.
 **
@@ -18,7 +18,7 @@
 **     notice, this list of conditions and the following disclaimer in
 **     the documentation and/or other materials provided with the
 **     distribution.
-**   * Neither the name of Nokia Corporation and its Subsidiary(-ies) nor
+**   * Neither the name of Digia Plc and its Subsidiary(-ies) nor
 **     the names of its contributors may be used to endorse or promote
 **     products derived from this software without specific prior written
 **     permission.
@@ -37,49 +37,40 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-
 import QtQuick 2.0
 import QtDesktop 1.0
-import "Styles/Settings.js" as Settings
 
 Item {
-    id: progressbar
+    property rect contentRect
+    property int margins: frame ? stack.frameWidth : 0
+    property int __baseOverlap: frameitem.pixelMetric("tabbaseoverlap") // add paintmargins;
+    contentRect: Qt.rect(margins, margins, 8 + margins + (frameitem.style == "mac" ? 6 : 0), margins + (frameitem.style =="mac" ? 6 : 0))
 
-    property real value: 0
-    property real minimumValue: 0
-    property real maximumValue: 1
-    property bool indeterminate: false
-    property bool containsMouse: mouseArea.containsMouse
-
-    property int minimumWidth: 0
-    property int minimumHeight: 0
-
-    property int orientation: Qt.Horizontal
-    property Component style: Qt.createComponent(Settings.THEME_PATH + "/ProgressBarStyle.qml")
-    property var styleHints:[]
-
-    Accessible.role: Accessible.ProgressBar
-    Accessible.name: value
-
-    implicitWidth: orientation === Qt.Horizontal ? 200 : (loader.item ? loader.item.implicitHeight : 0)
-    implicitHeight: orientation === Qt.Horizontal ? (loader.item ? loader.item.implicitHeight : 0) : 200
-
-    Loader {
-        id: loader
-        property alias indeterminate: progressbar.indeterminate
-        property alias value: progressbar.value
-        property alias maximumValue: progressbar.maximumValue
-        property alias minimumValue: progressbar.minimumValue
-
-        property alias control: progressbar
-        sourceComponent: style
+    StyleItem {
+        id: frameitem
         anchors.fill: parent
-    }
-
-    MouseArea {
-        id: mouseArea
-        anchors.fill: parent
-        hoverEnabled: true
+        anchors.topMargin: 1//stack.baseOverlap
+        z: style == "oxygen" ? 1 : 0
+        elementType: "tabframe"
+        info: position
+        value: tabbarItem && tabsVisible && tabbarItem.tab(current) ? tabbarItem.tab(current).x : 0
+        minimum: tabbarItem && tabsVisible && tabbarItem.tab(current) ? tabbarItem.tab(current).width : 0
+        maximum: tabbarItem && tabsVisible ? tabbarItem.tabWidth : width
+        Component.onCompleted: {
+            stack.frameWidth = pixelMetric("defaultframewidth")
+            stack.style = style
+            stack.baseOverlap = pixelMetric("tabbaseoverlap")// add paintmargins;
+        }
+        states: [
+            State {
+                name: "South"
+                when: position == "South" && tabbarItem!= undefined
+                PropertyChanges {
+                    target: frameitem
+                    anchors.topMargin: 0
+                    anchors.bottomMargin: 1//stack.baseOverlap
+                }
+            }
+        ]
     }
 }
-

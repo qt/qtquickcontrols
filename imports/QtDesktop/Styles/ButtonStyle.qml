@@ -1,8 +1,8 @@
 /****************************************************************************
 **
-** Copyright (C) 2012 Nokia Corporation and/or its subsidiary(-ies).
+** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
 ** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the Qt Components project.
 **
@@ -18,7 +18,7 @@
 **     notice, this list of conditions and the following disclaimer in
 **     the documentation and/or other materials provided with the
 **     distribution.
-**   * Neither the name of Nokia Corporation and its Subsidiary(-ies) nor
+**   * Neither the name of Digia Plc and its Subsidiary(-ies) nor
 **     the names of its contributors may be used to endorse or promote
 **     products derived from this software without specific prior written
 **     permission.
@@ -37,49 +37,37 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-
 import QtQuick 2.0
 import QtDesktop 1.0
-import "Styles/Settings.js" as Settings
 
 Item {
-    id: progressbar
+    implicitWidth: backgroundLoader.implicitWidth
+    implicitHeight: backgroundLoader.implicitHeight
 
-    property real value: 0
-    property real minimumValue: 0
-    property real maximumValue: 1
-    property bool indeterminate: false
-    property bool containsMouse: mouseArea.containsMouse
+    property color backgroundColor: "lightGray"
+    property color foregroundColor: "black"
 
-    property int minimumWidth: 0
-    property int minimumHeight: 0
-
-    property int orientation: Qt.Horizontal
-    property Component style: Qt.createComponent(Settings.THEME_PATH + "/ProgressBarStyle.qml")
-    property var styleHints:[]
-
-    Accessible.role: Accessible.ProgressBar
-    Accessible.name: value
-
-    implicitWidth: orientation === Qt.Horizontal ? 200 : (loader.item ? loader.item.implicitHeight : 0)
-    implicitHeight: orientation === Qt.Horizontal ? (loader.item ? loader.item.implicitHeight : 0) : 200
+    property Component background: Rectangle {
+        implicitWidth: 100
+        implicitHeight: 21
+        gradient: Gradient {
+            GradientStop {color: control.pressed ? Qt.lighter(backgroundColor, 1.1) : Qt.lighter(backgroundColor, 1.8)  ; position: 0}
+            GradientStop {color: control.pressed ? Qt.lighter(backgroundColor, 1.1) : backgroundColor ; position: 1.4}
+        }
+        border.color: Qt.darker(backgroundColor, 1.4)
+        radius: 3
+        antialiasing: true
+    }
 
     Loader {
-        id: loader
-        property alias indeterminate: progressbar.indeterminate
-        property alias value: progressbar.value
-        property alias maximumValue: progressbar.maximumValue
-        property alias minimumValue: progressbar.minimumValue
-
-        property alias control: progressbar
-        sourceComponent: style
-        anchors.fill: parent
+        id: backgroundLoader
+        sourceComponent: background
     }
 
-    MouseArea {
-        id: mouseArea
-        anchors.fill: parent
-        hoverEnabled: true
+    Text {
+        anchors.centerIn: backgroundLoader
+        renderType: Text.NativeRendering
+        text: control.text
+        color: foregroundColor
     }
 }
-
