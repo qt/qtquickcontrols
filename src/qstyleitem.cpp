@@ -738,12 +738,10 @@ void QStyleItem::setElementType(const QString &str)
         }
     } else if (str == "groupbox") {
         m_itemType = GroupBox;
-    } else if (str == "tabframe" || str == "tab") {
-        if (str == "tab") {
-            m_itemType = Tab;
-        } else {
-            m_itemType = TabFrame;
-        }
+    } else if (str == "tab") {
+        m_itemType = Tab;
+    } else if (str == "tabframe") {
+        m_itemType = TabFrame;
     } else if (str == "comboboxitem")  {
         // Gtk uses qobject cast, hence we need to separate this from menuitem
         // On mac, we temporarily use the menu item because it has more accurate
