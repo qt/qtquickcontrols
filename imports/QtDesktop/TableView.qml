@@ -130,7 +130,10 @@ FocusScope{
     property string sortIndicatorDirection: "down" // "up" or "down" depending on current state
 
     // Item properties
-    default property alias header: tree.header
+    default property alias header: tree.columnheader
+    property alias contentHeader: tree.header
+    property alias contentFooter: tree.footer
+
     property alias horizontalScrollBar: scroller.horizontalScrollBar
     property alias verticalScrollBar: scroller.verticalScrollBar
 
@@ -142,7 +145,6 @@ FocusScope{
     property alias viewportWidth: scroller.availableWidth
     property alias viewportHeight: scroller.availableHeight
     property alias count: tree.count
-    property alias section: tree.section
 
     property alias cacheBuffer: tree.cacheBuffer
     property alias currentIndex: tree.currentIndex // Should this be currentRowIndex?
@@ -309,7 +311,7 @@ FocusScope{
     ListView {
         id: tree
 
-        property list<TableColumn> header
+        property list<TableColumn> columnheader
         highlightFollowsCurrentItem: true
         model: root.model
         interactive: false
