@@ -142,6 +142,7 @@ FocusScope{
     property alias viewportWidth: scroller.availableWidth
     property alias viewportHeight: scroller.availableHeight
     property alias count: tree.count
+    property alias section: tree.section
 
     property alias cacheBuffer: tree.cacheBuffer
     property alias currentIndex: tree.currentIndex // Should this be currentRowIndex?
