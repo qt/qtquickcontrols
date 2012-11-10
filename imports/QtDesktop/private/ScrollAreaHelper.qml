@@ -103,7 +103,7 @@ WheelArea {
         id: vscrollbar
         orientation: Qt.Vertical
         // We cannot bind directly to tree.height due to binding loops so we have to redo the calculation here
-        visible: contentHeight > availableHeight
+        // visible: contentHeight > availableHeight
         maximumValue: contentHeight > availableHeight ? root.contentHeight - availableHeight : 0
         minimumValue: 0
         anchors.right: parent.right
