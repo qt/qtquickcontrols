@@ -455,14 +455,13 @@ FocusScope{
 
         clip: true
         visible: headerVisible
-        height: headerVisible ? styleitem.implicitHeight : frameWidth
+        height: headerVisible ? headerrow.height : frameWidth
 
         Behavior on height { NumberAnimation{ duration: 80 } }
 
         Row {
             id: headerrow
             anchors.top: parent.top
-            height:parent.height
             x: -tree.contentX
 
             Repeater {
@@ -477,11 +476,13 @@ FocusScope{
                     z:-index
                     width: header[index].width
                     visible: header[index].visible
-                    height: headerrow.height
+                    height: headerStyle.height
 
                     Loader {
+                        id: headerStyle
                         sourceComponent: root.headerDelegate
-                        anchors.fill: parent
+                        anchors.left: parent.left
+                        anchors.right: parent.right
                         property string itemValue: header[index].title
                         property string itemSort:  (sortIndicatorVisible && index == sortColumn) ? (sortIndicatorDirection == "up" ? "up" : "down") : "";
                         property bool itemPressed: headerClickArea.pressed
