@@ -5,12 +5,10 @@ import "content"
 ApplicationWindow {
     title: "parent window"
 
-    width: gallery.width
-    height: gallery.height
-    maximumHeight: gallery.height
-    minimumHeight: gallery.height
-    maximumWidth: gallery.width
-    minimumWidth: gallery.width
+    width: 580
+    height: 400
+    minimumHeight: 400
+    minimumWidth: 340
 
 
     FileDialog {
@@ -49,6 +47,7 @@ ApplicationWindow {
 
     Gallery {
         id: gallery
+        anchors.fill: parent
     }
 
 }
