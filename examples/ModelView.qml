@@ -20,7 +20,7 @@ Item {
     ListModel {
         id: dummyModel
         Component.onCompleted: {
-            for (var i = 0 ; i < 4000 ; ++i) {
+            for (var i = 0 ; i < 100 ; ++i) {
                 append({"title": "A title " + i, "imagesource" :"http://someurl.com", "credit" : "N/A"})
             }
         }
