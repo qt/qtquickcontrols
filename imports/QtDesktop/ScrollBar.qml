@@ -100,9 +100,9 @@ Item {
             running: internal.autoincrement
             interval: 60
             repeat: true
-            onTriggered: internal.upPressed ? internal.decrement() : downPressed ? internal.increment() :
-                                                                     pageUpPressed ? internal.decrementPage() :
-                                                                                     internal.incrementPage()
+            onTriggered: upPressed ? internal.decrement() : downPressed ? internal.increment() :
+                                                            pageUpPressed ? internal.decrementPage() :
+                                                                            internal.incrementPage()
         }
 
         onPositionChanged: {

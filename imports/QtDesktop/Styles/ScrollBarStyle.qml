@@ -66,8 +66,8 @@ Rectangle {
         implicitWidth: 16
         implicitHeight: 16
         gradient: Gradient {
-            GradientStop {color: control.upPressed ? "lightgray" : "white" ; position: 0}
-            GradientStop {color: control.upPressed ? "lightgray" : "lightgray" ; position: 1}
+            GradientStop {color: control.downPressed ? "lightgray" : "white" ; position: 0}
+            GradientStop {color: control.downPressed ? "lightgray" : "lightgray" ; position: 1}
         }
         border.color: "#aaa"
     }
@@ -77,8 +77,8 @@ Rectangle {
         implicitHeight: 16
         color: "lightgray"
         gradient: Gradient {
-            GradientStop {color: control.downPressed ? "lightgray" : "white" ; position: 0}
-            GradientStop {color: control.downPressed ? "lightgray" : "lightgray" ; position: 1}
+            GradientStop {color: control.upPressed ? "lightgray" : "white" ; position: 0}
+            GradientStop {color: control.upPressed ? "lightgray" : "lightgray" ; position: 1}
         }
         border.color: "#aaa"
     }
@@ -90,7 +90,7 @@ Rectangle {
     property string activeControl: ""
     function pixelMetric(arg) {
         if (arg === "scrollbarExtent")
-            return bg.width;
+            return (styleitem.horizontal ? bg.height : bg.width);
         return 0;
     }
 
@@ -106,7 +106,7 @@ Rectangle {
         else if (itemIsHit(downControl, argX, argY))
             return "down";
         else if (itemIsHit(bg, argX, argY)) {
-            if (argY < handleControl.y)
+            if (styleitem.horizontal && argX < handleControl.x || !styleitem.horizontal && argY < handleControl.y)
                 return "upPage"
             else
                 return "downPage"
@@ -116,10 +116,21 @@ Rectangle {
     }
 
     function subControlRect(arg) {
-        if (arg === "handle")
+        if (arg === "handle") {
             return Qt.rect(handleControl.x, handleControl.y, handleControl.width, handleControl.height);
-        else if (arg === "groove")
-            return Qt.rect(0, 16, control.width, control.height - 32);
+        } else if (arg === "groove") {
+            if (styleitem.horizontal) {
+                return Qt.rect(upControl.width - styleitem.handleOverlap,
+                               0,
+                               control.width - (upControl.width + downControl.width - styleitem.handleOverlap * 2),
+                               control.height);
+            } else {
+                return Qt.rect(0,
+                               upControl.height - styleitem.handleOverlap,
+                               control.width,
+                               control.height - (upControl.height + downControl.height - styleitem.handleOverlap * 2));
+            }
+        }
         return Qt.rect(0,0,0,0);
     }
 
@@ -132,7 +143,7 @@ Rectangle {
         id: upControl
         anchors.top: parent.top
         anchors.left: parent.left
-        sourceComponent: incrementControl
+        sourceComponent: decrementControl
     }
 
     Loader {
@@ -149,7 +160,7 @@ Rectangle {
         id: downControl
         anchors.bottom: horizontal ? undefined : parent.bottom
         anchors.right: horizontal ? parent.right : undefined
-        sourceComponent: decrementControl
+        sourceComponent: incrementControl
     }
 
     Loader{
