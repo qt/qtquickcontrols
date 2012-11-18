@@ -144,6 +144,8 @@ Rectangle {
         anchors.top: parent.top
         anchors.left: parent.left
         sourceComponent: decrementControl
+        property bool mouseOver: activeControl === "up"
+        property bool pressed: control.upPressed
     }
 
     Loader {
@@ -161,12 +163,15 @@ Rectangle {
         anchors.bottom: horizontal ? undefined : parent.bottom
         anchors.right: horizontal ? parent.right : undefined
         sourceComponent: incrementControl
+        property bool mouseOver: activeControl === "down"
+        property bool pressed: control.downPressed
     }
 
     Loader{
         id: handleControl
         property int totalextent: horizontal ? bg.width : bg.height
         property int extent: Math.max(minimumHandleLength, totalextent - control.maximumValue + 2 * handleOverlap)
+        property bool mouseOver: activeControl === "handle"
 
         height: horizontal ? implicitHeight : extent
         width: horizontal ? extent : implicitWidth
