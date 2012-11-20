@@ -4,16 +4,16 @@ This project aims to deliver widgets/components for Desktop usage on Qt Quick.
 
 Some more information can be found on the following blog entries:
 
-http://labs.qt.nokia.com/2011/03/10/qml-components-for-desktop/
-http://labs.qt.nokia.com/2011/05/26/table-view-with-qt-quick/
-http://labs.qt.nokia.com/2011/08/26/toplevel-windows-and-menus-with-qt-quick/
+https://blog.qt.digia.com/blog/2011/03/10/qml-components-for-desktop/
+https://blog.qt.digia.com/blog/2011/05/26/table-view-with-qt-quick/
+https://blog.qt.digia.com/blog/2011/08/26/toplevel-windows-and-menus-with-qt-quick/
 
 
 HELP
 
 If you have problems or questions, feel free to ask on the QML mailing list at qt-qml@qt.nokia.com
-or alternatively the Qt Developer Network: http://developer.qt.nokia.com/forums/viewforum/12/
-You can also contact the maintainer at: jens.bache-wiig (at) nokia (dot) com
+or alternatively the Qt Developer Network: http://qt-project.org/forums/viewforum/12/
+You can also contact the maintainer at: jens.bache-wiig (at) digia (dot) com
 
 
 INSTALLATION
@@ -25,7 +25,7 @@ components into your Qt directory, simply enter the root directory and do:
 
 'qmake && make install'
 
-This will compile and copy the plugins and components into your QTDIR/imports folder. 
+This will compile and copy the plugins and components into your QTDIR/imports folder.
 If you are compiling against a system Qt on linux, you might have to do a 'sudo make install'
 in order to install the project.
 
@@ -35,9 +35,9 @@ USAGE
 The examples should show how you can use the components. If you use code that makes use of
 Window or MenuBar, you will have to start your application with the desktopviewer launcher
 application. This is because it will ensure that the QMLViewer application itself does not
-show and make up the main window in your application. 
+show and make up the main window in your application.
 
 Again, please refer to :
-http://labs.qt.nokia.com/2011/08/26/toplevel-windows-and-menus-with-qt-quick/
+https://blog.qt.digia.com/blog/2011/08/26/toplevel-windows-and-menus-with-qt-quick/
 
 For more information on this.
