@@ -18,14 +18,14 @@ You can also contact the maintainer at: jens.bache-wiig (at) digia (dot) com
 
 INSTALLATION
 
-Note the MINIMUM REQUIREMENT for this project is that you have Qt 4.7.4. (Qt Quick 1.1)
+Note the MINIMUM REQUIREMENT for this project is that you have Qt 5.0. (Qt Quick 2)
 
 The components rely on several C++ plugins in order to integrate with the desktop. To install the
 components into your Qt directory, simply enter the root directory and do:
 
 'qmake && make install'
 
-This will compile and copy the plugins and components into your QTDIR/imports folder.
+This will compile and copy the plugins and components into your QTDIR/qml folder.
 If you are compiling against a system Qt on linux, you might have to do a 'sudo make install'
 in order to install the project.
 
