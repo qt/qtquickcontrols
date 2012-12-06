@@ -38,4 +38,9 @@ QML_FILES += \
     Desktop/ToolBarStyle.qml \
     Desktop/ToolButtonStyle.qml
 
+# Images
+QML_FILES += \
+    images/arrow-up.png \
+    images/arrow-down.png
+
 load(qml_module)
