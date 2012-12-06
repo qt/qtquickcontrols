@@ -44,8 +44,8 @@ Item {
     id: style
     anchors.fill: parent
 
-    implicitWidth: 100
-    implicitHeight: backgroundLoader.item.implicitHeight
+    implicitWidth: backgroundLoader.implicitWidth ? backgroundLoader.implicitWidth : 100
+    implicitHeight: backgroundLoader.implicitHeight ? backgroundLoader.implicitHeight : 20
 
     property int topMargin: 4
     property int leftMargin: 8
@@ -67,8 +67,6 @@ Item {
 
     property Component background: Rectangle {
         id: styleitem
-        anchors.fill: parent
-        implicitHeight: 20
         border.color: Qt.darker(backgroundColor, 2)
         gradient: Gradient {
             GradientStop{color: Qt.darker(backgroundColor, 1.1) ; position: 0}

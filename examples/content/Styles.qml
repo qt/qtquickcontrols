@@ -150,9 +150,9 @@ Item {
     }
 
     property Component textfieldStyle: TextFieldStyle {
+        implicitWidth: 100
+        implicitHeight: 20
         background: Rectangle {
-            width: 100
-            height: 20
             color: "#f0f0f0"
             antialiasing: true
             border.color: "gray"
