@@ -258,6 +258,7 @@ Splitter {
             visible: splitterItem.visible
             sourceComponent: handleDelegate
             onWidthChanged: d.updateLayout()
+            onHeightChanged: d.updateLayout()
 
             onXChanged: {
                 // For some unknown reason, dragging by X axis only not working in MouseArea, so
