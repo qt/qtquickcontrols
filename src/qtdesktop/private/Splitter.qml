@@ -356,7 +356,8 @@ Splitter {
         id: propertyChangeListener
         Item {
             id: target
-            width: parent[d.size]
+            width: (d.horizontal ? parent[d.size] : 0)
+            height: (!d.horizontal ? parent[d.size] : 0)
             property bool expanding: parent.Splitter.expanding
             property real percentageSize: parent.Splitter.percentageSize
             property real minimumWidth: parent.Splitter[d.minimum]
@@ -428,12 +429,20 @@ Splitter {
                     return
                 d.itemWidthGuard = true
                 // Break binding:
-                this[d.size] = 0
+                if (d.horizontal) {
+                    width = 0
+                } else {
+                    height = 0
+                }
 
                 d.updateLayout()
 
                 // Restablish binding:
-                width = Qt.binding(function() { return parent[d.size]; })
+                if (d.horizontal) {
+                    width = Qt.binding(function() { return parent[d.size]; })
+                } else {
+                    height = Qt.binding(function() { return parent[d.size]; })
+                }
                 d.itemWidthGuard = false
             }
 
