@@ -50,6 +50,8 @@
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QtWidgets>
 #include <QtCore/QStringBuilder>
+#include <QtQuick/QSGSimpleTextureNode>
+#include <QtQuick/QQuickWindow>
 
 QT_BEGIN_NAMESPACE
 
@@ -94,8 +96,23 @@ CGContextRef qt_mac_cg_context(const QPaintDevice *pdev)
 
 #endif
 
-QStyleItem::QStyleItem(QQuickPaintedItem *parent)
-    : QQuickPaintedItem(parent),
+class QStyleNode : public QSGSimpleTextureNode
+{
+public:
+    ~QStyleNode()
+    {
+        delete texture();
+    }
+
+    void setTexture(QSGTexture *texture)
+    {
+        delete QSGSimpleTextureNode::texture();
+        QSGSimpleTextureNode::setTexture(texture);
+    }
+};
+
+QStyleItem::QStyleItem(QQuickItem *parent)
+    : QQuickItem(parent),
     m_styleoption(0),
     m_itemType(Undefined),
     m_sunken(false),
@@ -126,6 +143,8 @@ QStyleItem::QStyleItem(QQuickPaintedItem *parent)
     setFlag(QQuickItem::ItemHasContents, true);
     setSmooth(false);
 
+    connect(this, SIGNAL(widthChanged()), this, SLOT(updateItem()));
+    connect(this, SIGNAL(heightChanged()), this, SLOT(updateItem()));
     connect(this, SIGNAL(enabledChanged()), this, SLOT(updateItem()));
     connect(this, SIGNAL(infoChanged()), this, SLOT(updateItem()));
     connect(this, SIGNAL(onChanged()), this, SLOT(updateItem()));
@@ -869,9 +888,6 @@ QRectF QStyleItem::subControlRect(const QString &subcontrolString)
 
 void QStyleItem::paint(QPainter *painter)
 {
-    if (width() < 1 || height() <1)
-        return;
-
     initStyleOption();
 
     switch (m_itemType) {
@@ -1095,6 +1111,45 @@ QString QStyleItem::elidedText(const QString &text, int elideMode, int width)
 bool QStyleItem::hasThemeIcon(const QString &icon) const
 {
     return QIcon::hasThemeIcon(icon);
+}
+
+bool QStyleItem::event(QEvent *ev)
+{
+    if (ev->type() == QEvent::StyleAnimationUpdate) {
+        updatePolish();
+        return true;
+    }
+    return QQuickItem::event(ev);
+}
+
+QSGNode *QStyleItem::updatePaintNode(QSGNode *node, UpdatePaintNodeData *)
+{
+    if (m_image.isNull()) {
+        delete node;
+        return 0;
+    }
+
+    QStyleNode *styleNode = static_cast<QStyleNode *>(node);
+    if (!styleNode)
+        styleNode = new QStyleNode;
+
+    styleNode->setTexture(window()->createTextureFromImage(m_image));
+    styleNode->setRect(boundingRect());
+    return styleNode;
+}
+
+void QStyleItem::updatePolish()
+{
+    if (width() > 0 && height() > 0) {
+        m_image = QImage(width(), height(), QImage::Format_ARGB32_Premultiplied);
+        m_image.fill(Qt::transparent);
+        QPainter painter(&m_image);
+        paint(&painter);
+        QQuickItem::update();
+    } else if (!m_image.isNull()) {
+        m_image = QImage();
+        QQuickItem::update();
+    }
 }
 
 QT_END_NAMESPACE

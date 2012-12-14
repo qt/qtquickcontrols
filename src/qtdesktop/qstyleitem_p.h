@@ -41,15 +41,16 @@
 #ifndef QSTYLEITEM_P_H
 #define QSTYLEITEM_P_H
 
-#include <QtQuick/qquickpainteditem.h>
+#include <QtQuick/qquickitem.h>
 #include <QtWidgets/QStyle>
+#include <QtGui/QImage>
 #include <QEvent>
 
 QT_BEGIN_HEADER
 
 QT_BEGIN_NAMESPACE
 
-class QStyleItem: public QQuickPaintedItem
+class QStyleItem: public QQuickItem
 {
     Q_OBJECT
 
@@ -81,7 +82,7 @@ class QStyleItem: public QQuickPaintedItem
     Q_PROPERTY( int contentHeight READ contentHeight() WRITE setContentHeight NOTIFY contentHeightChanged)
 
 public:
-    QStyleItem(QQuickPaintedItem *parent = 0);
+    QStyleItem(QQuickItem *parent = 0);
     ~QStyleItem();
 
     enum Type {
@@ -171,7 +172,7 @@ public Q_SLOTS:
     int pixelMetric(const QString&);
     QVariant styleHint(const QString&);
     void updateSizeHint();
-    void updateItem(){initStyleOption(); update();}
+    void updateItem(){polish();}
     QString hitTest(int x, int y);
     QRectF subControlRect(const QString &subcontrolString);
     QString elidedText(const QString &text, int elideMode, int width);
@@ -219,6 +220,11 @@ Q_SIGNALS:
     void contentWidthChanged(int arg);
     void contentHeightChanged(int arg);
 
+protected:
+    virtual bool event(QEvent *);
+    virtual QSGNode *updatePaintNode(QSGNode *, UpdatePaintNodeData *);
+    virtual void updatePolish();
+
 private:
     QSize sizeFromContents(int width, int height);
 
@@ -253,6 +259,7 @@ protected:
     int m_contentWidth;
     int m_contentHeight;
 
+    QImage m_image;
 };
 
 QT_END_NAMESPACE
