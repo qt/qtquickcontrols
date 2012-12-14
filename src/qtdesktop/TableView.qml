@@ -362,6 +362,8 @@ FocusScope{
                 verticalScrollBar.value = verticalScrollBar.value + tree.height
         }
 
+        Keys.onReturnPressed: root.activated();
+
         onContentYChanged:  {
             scroller.blockUpdates = true
             scroller.verticalValue = tree.contentY
