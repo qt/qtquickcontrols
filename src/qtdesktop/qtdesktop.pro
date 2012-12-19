@@ -2,6 +2,8 @@ QT += qml quick widgets
 
 TARGETPATH = QtDesktop
 
+QMAKE_DOCS = $$PWD/doc/qtdesktopcomponents.qdocconf
+
 QML_FILES = \
     ApplicationWindow.qml \
     Button.qml \
