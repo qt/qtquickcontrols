@@ -41,6 +41,12 @@
 import QtQuick 2.0
 import QtDesktop 1.0
 
+/*!
+    \qmltype ToolBar
+    \inqmlmodule QtDesktop 1.0
+    \brief ToolBar is doing bla...bla...
+*/
+
 StyleItem {
     id: toolbar
     width: parent ? parent.width : 200

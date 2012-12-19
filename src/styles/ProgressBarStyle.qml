@@ -40,6 +40,13 @@
 
 import QtQuick 2.0
 import QtDesktop 1.0
+
+/*!
+    \qmltype ProgressBarStyle
+    \inqmlmodule QtDesktop.Styles 1.0
+    \brief ProgressBarStyle is doing bla...bla...
+*/
+
 Item {
     anchors.fill: parent
     implicitWidth: 200

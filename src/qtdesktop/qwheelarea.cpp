@@ -40,6 +40,12 @@
 
 #include "qwheelarea.h"
 
+/*!
+    \qmltype WheelArea
+    \instantiates QWheelArea
+    \inqmlmodule QtDesktop 1.0
+    \brief WheelArea is doing bla...bla...
+*/
 
 QWheelArea::QWheelArea(QQuickItem *parent)
     : QQuickItem(parent),

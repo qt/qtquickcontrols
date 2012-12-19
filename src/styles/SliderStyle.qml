@@ -40,6 +40,12 @@
 import QtQuick 2.0
 import QtDesktop 1.0
 
+/*!
+    \qmltype SliderStyle
+    \inqmlmodule QtDesktop.Styles 1.0
+    \brief SliderStyle is doing bla...bla...
+*/
+
 Item {
     id: styleitem
 

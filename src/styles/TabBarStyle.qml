@@ -40,6 +40,12 @@
 import QtQuick 2.0
 import QtDesktop 1.0
 
+/*!
+    \qmltype TabBarStyle
+    \inqmlmodule QtDesktop.Styles 1.0
+    \brief TabBarStyle is doing bla...bla...
+*/
+
 Item {
     width: textitem.implicitWidth + 20
     height: textitem.implicitHeight + 4

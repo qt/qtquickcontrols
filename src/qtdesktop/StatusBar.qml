@@ -41,6 +41,12 @@
 import QtQuick 2.0
 import QtDesktop 1.0
 
+/*!
+    \qmltype StatusBar
+    \inqmlmodule QtDesktop 1.0
+    \brief StatusBar is doing bla...bla...
+*/
+
 Item {
     width: parent ? parent.width : 200
     height: 24

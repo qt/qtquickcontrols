@@ -39,8 +39,10 @@
 ****************************************************************************/
 
 /*!
-    \class QRangeModel
-    \brief The QRangeModel class, helps users to build components that depend
+    \qmltype RangeModel
+    \instantiates QRangeModel
+    \inqmlmodule QtDesktop 1.0
+    \brief RangeModel helps users to build components that depend
            on some value and/or position to be in a certain range previously defined
 
     With this class, the user sets a value range and a position range, which
@@ -51,8 +53,6 @@
     to 80, the equivalent position would be 90. After that, if the user decides to
     resize the slider, the value would be the same, but the knob position would
     be updated due to the new position range.
-
-    \ingroup qt-components
 */
 
 #include <QEvent>

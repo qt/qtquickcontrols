@@ -41,19 +41,20 @@
 import QtQuick 2.0
 import "private/ButtonGroup.js" as Behavior
 
-/*
-   Class: ButtonRow
-   A ButtonRow allows you to group Buttons in a row. It provides a selection-behavior as well.
+/*!
+    \qmltype ButtonRow
+    \inqmlmodule QtDesktop 1.0
+    \brief ButtonRow allows you to group Buttons in a row. It provides a selection-behavior as well.
 
    Note: This component don't support the enabled property.
    If you need to disable it you should disable all the buttons inside it.
 
-   <code>
+   \qml
        ButtonRow {
            Button { text: "Left" }
            Button { text: "Right" }
        }
-   </code>
+   \endqml
 */
 Row {
     id: root

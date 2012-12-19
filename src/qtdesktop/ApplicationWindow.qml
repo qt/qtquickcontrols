@@ -41,6 +41,12 @@
 import QtQuick 2.0
 import QtDesktop 1.0
 
+/*!
+    \qmltype ApplicationWindow
+    \inqmlmodule QtDesktop 1.0
+    \brief ApplicationWindow is doing bla...bla...
+*/
+
 Window {
     id: root
     width: 320

@@ -43,6 +43,12 @@ import QtDesktop 1.0
 import "Styles"
 import "Styles/Settings.js" as Settings
 
+/*!
+    \qmltype TextField
+    \inqmlmodule QtDesktop 1.0
+    \brief TextField is doing bla...bla...
+*/
+
 FocusScope {
     id: textfield
     property alias text: textInput.text

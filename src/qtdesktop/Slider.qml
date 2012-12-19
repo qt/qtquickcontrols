@@ -44,6 +44,12 @@ import "Styles/Settings.js" as Settings
 
 // jens: ContainsMouse breaks drag functionality
 
+/*!
+    \qmltype Slider
+    \inqmlmodule QtDesktop 1.0
+    \brief Slider is doing bla...bla...
+*/
+
 Item {
     id: slider
 

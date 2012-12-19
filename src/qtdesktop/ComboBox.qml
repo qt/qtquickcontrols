@@ -43,54 +43,57 @@ import QtDesktop 1.0
 import "private" as Private
 import "Styles/Settings.js" as Settings
 
-/*
-*
-* ComboBox (inherits BasicButton)
-*
-* The ComboBox component is a combined button and popup list. The popup menu itself is platform
-* native, and cannot by styled from QML code.
-* Add menu items to the comboBox by either adding MenuItem children inside the popup, or
-* assign it a ListModel (or both).
-*
-* The ComboBox contains the following API (in addition to the BasicButton API):
-*
-* ListModel model - this model will be used, in addition to MenuItem children, to
-*   create items inside the popup menu
-* bool popupOpen - setting this property to 'true' will open the popup.
-* int selectedIndex - the index of the selected item in the popup menu.
-* int hoveredIndex - the index of the highlighted item in the popup menu.
-* string selectedText - the text of the selected menu item.
-* string hoveredText - the text of the highlighted menu item.
-*
-* Example 1:
-*
-*    ListModel {
-*        id: menuItems
-*        ListElement { text: "Banana"; color: "Yellow" }
-*        ListElement { text: "Apple"; color: "Green" }
-*        ListElement { text: "Coconut"; color: "Brown" }
-*    }
-*    ComboBox {
-*        model: menuItems
-*        width: 200
-*        onSelectedIndexChanged: console.debug(selectedText + ", " + menuItems.get(selectedIndex).color)
-*    }
-*
-* Example 2:
-*
-*    ComboBox {
-*        width: 200
-*        MenuItem {
-*            text: "Pineapple"
-*            onSelected: console.debug(text)
-*
-*        }
-*        MenuItem {
-*            text: "Grape"
-*            onSelected: console.debug(text)
-*        }
-*    }
-*
+/*!
+    \qmltype ComboBox
+    \inqmlmodule QtDesktop 1.0
+    \brief ComboBox is a combined button and popup list. The popup menu itself is platform
+        native, and cannot by styled from QML code.
+
+    Add menu items to the comboBox by either adding MenuItem children inside the popup, or
+    assign it a ListModel (or both).
+
+    The ComboBox contains the following API (in addition to the BasicButton API):
+
+    ListModel model - this model will be used, in addition to MenuItem children, to
+      create items inside the popup menu
+    bool popupOpen - setting this property to 'true' will open the popup.
+    int selectedIndex - the index of the selected item in the popup menu.
+    int hoveredIndex - the index of the highlighted item in the popup menu.
+    string selectedText - the text of the selected menu item.
+    string hoveredText - the text of the highlighted menu item.
+
+    Example 1:
+
+    \qml
+       ListModel {
+           id: menuItems
+           ListElement { text: "Banana"; color: "Yellow" }
+           ListElement { text: "Apple"; color: "Green" }
+           ListElement { text: "Coconut"; color: "Brown" }
+       }
+       ComboBox {
+           model: menuItems
+           width: 200
+           onSelectedIndexChanged: console.debug(selectedText + ", " + menuItems.get(selectedIndex).color)
+       }
+    \endqml
+
+    Example 2:
+
+    \qml
+       ComboBox {
+           width: 200
+           MenuItem {
+               text: "Pineapple"
+               onSelected: console.debug(text)
+
+           }
+           MenuItem {
+               text: "Grape"
+               onSelected: console.debug(text)
+           }
+       }
+    \endqml
 */
 
 Private.BasicButton {

@@ -43,7 +43,6 @@
 #include <QApplication>
 #include <QtCore/qnumeric.h>
 
-
 static const qreal q_declarativeLayoutMaxSize = 10e8;
 
 

@@ -42,6 +42,12 @@ import QtQuick 2.0
 import QtDesktop 1.0
 import "Styles/Settings.js" as Settings
 
+/*!
+    \qmltype SpinBox
+    \inqmlmodule QtDesktop 1.0
+    \brief SpinBox is doing bla...bla...
+*/
+
 FocusScope {
     id: spinbox
 

@@ -40,6 +40,12 @@
 import QtQuick 2.0
 import QtDesktop 1.0
 
+/*!
+    \qmltype FrameStyle
+    \inqmlmodule QtDesktop.Styles 1.0
+    \brief FrameStyle is doing bla...bla...
+*/
+
 Rectangle {
     height:20
     width: 20

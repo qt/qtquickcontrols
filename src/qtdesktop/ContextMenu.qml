@@ -41,6 +41,12 @@
 import QtQuick 2.0
 import QtDesktop 1.0
 
+/*!
+    \qmltype ContextMenu
+    \inqmlmodule QtDesktop 1.0
+    \brief ContextMenu is doing bla...bla...
+*/
+
 Menu {
     id: root
     property string selectedText: itemTextAt(selectedIndex)

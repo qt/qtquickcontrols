@@ -42,6 +42,12 @@ import QtQuick 2.0
 import QtDesktop 1.0
 import "Styles/Settings.js" as Settings
 
+/*!
+    \qmltype TabBar
+    \inqmlmodule QtDesktop 1.0
+    \brief TabBar is doing bla...bla...
+*/
+
 Item {
     id: tabbar
     property int tabHeight: tabrow.height

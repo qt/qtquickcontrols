@@ -42,6 +42,12 @@ import QtQuick 2.0
 import "private" as Private
 import QtDesktop 1.0
 
+/*!
+    \qmltype SplitterRow
+    \inqmlmodule QtDesktop 1.0
+    \brief SplitterRow is doing bla...bla...
+*/
+
 /*
 *
 * SplitterRow

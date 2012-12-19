@@ -40,6 +40,12 @@
 
 import QtQuick 2.0
 
+/*!
+    \qmltype Tab
+    \inqmlmodule QtDesktop 1.0
+    \brief Tab is doing bla...bla...
+*/
+
 Item {
     id:tab
     anchors.fill: parent

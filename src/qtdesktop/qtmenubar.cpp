@@ -43,6 +43,13 @@
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
 
+/*!
+    \qmltype MenuBar
+    \instantiates QtMenuBar
+    \inqmlmodule QtDesktop 1.0
+    \brief MenuBar is doing bla...bla...
+*/
+
 QtMenuBar::QtMenuBar(QQuickItem *parent)
     : QQuickItem(parent)
 {

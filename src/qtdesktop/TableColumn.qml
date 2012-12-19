@@ -40,6 +40,12 @@
 
 import QtQuick 2.0
 
+/*!
+    \qmltype TableColumn
+    \inqmlmodule QtDesktop 1.0
+    \brief TableColumn is doing bla...bla...
+*/
+
 QtObject {
     property string title
     property string role

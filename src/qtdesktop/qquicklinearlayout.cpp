@@ -42,6 +42,20 @@
 #include "qquicklayoutengine_p.h"
 #include <QtCore/qnumeric.h>
 
+/*!
+    \qmltype RowLayout
+    \instantiates QQuickComponentsRowLayout
+    \inqmlmodule QtDesktop 1.0
+    \brief RowLayout is doing bla...bla...
+*/
+
+/*!
+    \qmltype ColumnLayout
+    \instantiates QQuickComponentsColumnLayout
+    \inqmlmodule QtDesktop 1.0
+    \brief ColumnLayout is doing bla...bla...
+*/
+
 static const qreal q_declarativeLayoutDefaultSpacing = 4.0;
 
 

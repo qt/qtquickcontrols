@@ -43,6 +43,12 @@ import QtDesktop 1.0
 import "private"
 import "Styles/Settings.js" as Settings
 
+/*!
+    \qmltype Button
+    \inqmlmodule QtDesktop 1.0
+    \brief Button is doing bla...bla...
+*/
+
 BasicButton {
     id: button
 

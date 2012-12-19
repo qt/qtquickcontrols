@@ -41,6 +41,12 @@
 import QtQuick 2.0
 import QtQuick.Window 2.0
 
+/*!
+    \qmltype Dialog
+    \inqmlmodule QtDesktop 1.0
+    \brief Dialog is doing bla...bla...
+*/
+
 Window {
     id: dialog
 

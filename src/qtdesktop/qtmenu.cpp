@@ -44,6 +44,13 @@
 #include <qmenubar.h>
 #include <qabstractitemmodel.h>
 
+/*!
+    \qmltype Menu
+    \instantiates QtMenu
+    \inqmlmodule QtDesktop 1.0
+    \brief Menu is doing bla...bla...
+*/
+
 QtMenu::QtMenu(QQuickItem *parent)
     : QtMenuBase(parent),
       dummy(0),

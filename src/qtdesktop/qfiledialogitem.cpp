@@ -39,8 +39,9 @@
 ****************************************************************************/
 
 /*!
-    \qmlclass FileDialog QFileDialogItem
-    \ingroup qt-components
+    \qmltype FileDialog
+    \instantiates QFileDialogItem
+    \inqmlmodule QtDesktop 1.0
     \brief Dialog component for choosing files from a local filesystem.
 
     FileDialog implements a basic file chooser: it allows the user to select

@@ -40,6 +40,12 @@
 import QtQuick 2.0
 import QtDesktop 1.0
 
+/*!
+    \qmltype CheckBoxStyle
+    \inqmlmodule QtDesktop.Styles 1.0
+    \brief CheckBoxStyle is doing bla...bla...
+*/
+
 Item {
     implicitWidth: 100
     implicitHeight: 20

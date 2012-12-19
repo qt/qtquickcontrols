@@ -42,6 +42,12 @@ import QtQuick 2.0
 import QtDesktop 1.0
 import "private" as Private
 
+/*!
+    \qmltype ScrollArea
+    \inqmlmodule QtDesktop 1.0
+    \brief ScrollArea is doing bla...bla...
+*/
+
 FocusScope {
     id: root
     width: 100

@@ -40,6 +40,12 @@
 import QtQuick 2.0
 import QtDesktop 1.0
 
+/*!
+    \qmltype GroupBoxStyle
+    \inqmlmodule QtDesktop.Styles 1.0
+    \brief GroupBoxStyle is doing bla...bla...
+*/
+
 Item {
     implicitWidth: Math.max(200, contentWidth + 30)
     implicitHeight: contentHeight

@@ -42,6 +42,12 @@ import QtQuick 2.0
 import QtDesktop 1.0
 import "Styles/Settings.js" as Settings
 
+/*!
+    \qmltype TabFrame
+    \inqmlmodule QtDesktop 1.0
+    \brief TabFrame is doing bla...bla...
+*/
+
 Item {
     id: tabWidget
     width: 100

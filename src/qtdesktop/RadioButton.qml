@@ -44,6 +44,12 @@ import "Styles/Settings.js" as Settings
 
 // jb : Size should not depend on background, we should make it consistent
 
+/*!
+    \qmltype RadioButton
+    \inqmlmodule QtDesktop 1.0
+    \brief RadioButton is doing bla...bla...
+*/
+
 CheckBox {
     id: radiobutton
 

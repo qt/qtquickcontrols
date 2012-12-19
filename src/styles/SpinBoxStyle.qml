@@ -40,6 +40,12 @@
 import QtQuick 2.0
 import QtDesktop 1.0
 
+/*!
+    \qmltype SpinBoxStyle
+    \inqmlmodule QtDesktop.Styles 1.0
+    \brief SpinBoxStyle is doing bla...bla...
+*/
+
 Item {
     id: styleitem
     implicitWidth: 100

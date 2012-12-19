@@ -40,6 +40,12 @@
 import QtQuick 2.0
 import QtDesktop 1.0
 
+/*!
+    \qmltype ButtonStyle
+    \inqmlmodule QtDesktop.Styles 1.0
+    \brief ButtonStyle is doing bla...bla...
+*/
+
 Item {
     implicitWidth: backgroundLoader.implicitWidth
     implicitHeight: backgroundLoader.implicitHeight

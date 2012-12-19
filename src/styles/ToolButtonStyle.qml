@@ -40,6 +40,12 @@
 import QtQuick 2.0
 import QtDesktop 1.0
 
+/*!
+    \qmltype ToolButtonStyle
+    \inqmlmodule QtDesktop.Styles 1.0
+    \brief ToolButtonStyle is doing bla...bla...
+*/
+
 Rectangle {
     id: styleitem
     implicitWidth: 32

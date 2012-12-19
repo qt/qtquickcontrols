@@ -42,6 +42,12 @@ import QtQuick 2.0
 import QtDesktop 1.0
 import "Styles/Settings.js" as Settings
 
+/*!
+    \qmltype GroupBox
+    \inqmlmodule QtDesktop 1.0
+    \brief GroupBox is doing bla...bla...
+*/
+
 Item {
     id: groupbox
     implicitWidth: Math.max(200, contentWidth + (loader.item ? loader.item.implicitWidth: 0) )

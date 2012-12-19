@@ -43,6 +43,12 @@ import QtDesktop 1.0
 
 // jens: ContainsMouse breaks drag functionality
 
+/*!
+    \qmltype Dial
+    \inqmlmodule QtDesktop 1.0
+    \brief Dial is doing bla...bla...
+*/
+
 Item {
     id: dial
 

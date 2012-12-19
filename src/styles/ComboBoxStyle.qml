@@ -40,6 +40,12 @@
 import QtQuick 2.0
 import QtDesktop 1.0
 
+/*!
+    \qmltype ComboBoxStyle
+    \inqmlmodule QtDesktop.Styles 1.0
+    \brief ComboBoxStyle is doing bla...bla...
+*/
+
 Rectangle {
     id: styleitem
     implicitWidth: 200

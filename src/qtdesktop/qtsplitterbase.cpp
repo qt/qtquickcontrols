@@ -40,6 +40,13 @@
 
 #include "qtsplitterbase.h"
 
+/*!
+    \qmltype Splitter
+    \instantiates QtSplitterBase
+    \inqmlmodule QtDesktop 1.0
+    \brief Splitter is doing bla...bla...
+*/
+
 QtSplitterBase::QtSplitterBase(QQuickItem *parent)
     : QQuickItem(parent)
 {

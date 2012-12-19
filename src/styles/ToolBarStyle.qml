@@ -40,6 +40,12 @@
 import QtQuick 2.0
 import QtDesktop 1.0
 
+/*!
+    \qmltype ToolBarStyle
+    \inqmlmodule QtDesktop.Styles 1.0
+    \brief ToolBarStyle is doing bla...bla...
+*/
+
 Item {
 
     property int __overlap : 1

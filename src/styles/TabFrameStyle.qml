@@ -39,6 +39,12 @@
 ****************************************************************************/
 import QtQuick 2.0
 
+/*!
+    \qmltype TabFrameStyle
+    \inqmlmodule QtDesktop.Styles 1.0
+    \brief TabFrameStyle is doing bla...bla...
+*/
+
 Item {
     property rect contentRect
 

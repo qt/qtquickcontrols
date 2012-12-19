@@ -69,6 +69,13 @@ QString QtMenuBase::iconName() const
     return _iconName;
 }
 
+/*!
+    \qmltype MenuItem
+    \instantiates QtMenuSeparator
+    \inqmlmodule QtDesktop 1.0
+    \brief MenuItem is doing bla...bla...
+*/
+
 QtMenuSeparator::QtMenuSeparator(QQuickItem *parent)
     : QtMenuBase(parent), _action(new QAction(this))
 {
@@ -83,6 +90,13 @@ QAction * QtMenuSeparator::action()
 {
     return _action;
 }
+
+/*!
+    \qmltype MenuItem
+    \instantiates QtMenuItem
+    \inqmlmodule QtDesktop 1.0
+    \brief MenuItem is doing bla...bla...
+*/
 
 QtMenuItem::QtMenuItem(QQuickItem *parent)
     : QtMenuBase(parent), _action(new QAction(this))

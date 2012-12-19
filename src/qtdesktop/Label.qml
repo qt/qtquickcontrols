@@ -40,6 +40,12 @@
 
 import QtQuick 2.0
 
+/*!
+    \qmltype Label
+    \inqmlmodule QtDesktop 1.0
+    \brief Label is doing bla...bla...
+*/
+
 Text {
     id: label
     font.pixelSize: 11

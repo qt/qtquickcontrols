@@ -41,19 +41,20 @@
 import QtQuick 2.0
 import "private/ButtonGroup.js" as Behavior
 
-/*
-   Class: ButtonColumn
-   A ButtonColumn allows you to group Buttons in a column. It provides a selection-behavior as well.
+/*!
+    \qmltype ButtonColumn
+    \inqmlmodule QtDesktop 1.0
+    \brief ButtonColumn allows you to group Buttons in a column. It provides a selection-behavior as well.
 
    Note: This component don't support the enabled property.
    If you need to disable it you should disable all the buttons inside it.
 
-   <code>
+   \qml
        ButtonColumn {
            Button { text: "Top" }
            Button { text: "Bottom" }
        }
-   </code>
+   \endqml
 */
 Column {
     id: root

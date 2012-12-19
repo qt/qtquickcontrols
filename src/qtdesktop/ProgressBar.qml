@@ -42,6 +42,12 @@ import QtQuick 2.0
 import QtDesktop 1.0
 import "Styles/Settings.js" as Settings
 
+/*!
+    \qmltype ProgressBar
+    \inqmlmodule QtDesktop 1.0
+    \brief ProgressBar is doing bla...bla...
+*/
+
 Item {
     id: progressbar
 

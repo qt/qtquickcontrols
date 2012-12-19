@@ -43,6 +43,12 @@ import QtDesktop 1.0
 import "private" as Private
 import "Styles/Settings.js" as Settings
 
+/*!
+    \qmltype ToolButton
+    \inqmlmodule QtDesktop 1.0
+    \brief ToolButton is doing bla...bla...
+*/
+
 Private.BasicButton {
     id: button
 
