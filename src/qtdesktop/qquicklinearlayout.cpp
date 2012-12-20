@@ -108,9 +108,20 @@ void QQuickComponentsLinearLayout::componentComplete()
 void QQuickComponentsLinearLayout::updateLayoutItems()
 {
     const QList<QQuickItem *> &children = childItems();
-
-    foreach (QQuickItem *child, children)
+    qreal implicitWidth = 0;
+    qreal implicitHeight = 0;
+    foreach (QQuickItem *child, children) {
+        if (m_orientation == Horizontal) {
+            implicitWidth += child->implicitWidth();
+            implicitHeight = qMax(implicitHeight, child->implicitHeight());
+        } else {
+            implicitHeight += child->implicitHeight();
+            implicitWidth = qMax(implicitWidth, child->implicitWidth());
+        }
         insertLayoutItem(child);
+    }
+    setImplicitWidth(implicitWidth);
+    setImplicitHeight(implicitHeight);
 }
 
 void QQuickComponentsLinearLayout::itemChange(ItemChange change, const ItemChangeData &value)

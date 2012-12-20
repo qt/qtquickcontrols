@@ -59,7 +59,7 @@ ApplicationWindow {
         id: toolbar
         width: parent.width
         height: 40
-        Row {
+        RowLayout {
             spacing: 2
             anchors.verticalCenter: parent.verticalCenter
             ToolButton {
