@@ -43,7 +43,7 @@ import QtDesktop 1.0
 import "Styles/Settings.js" as Settings
 import "private"
 
-+/*!
+/*!
     \qmltype CheckBox
     \inqmlmodule QtDesktop 1.0
     \brief CheckBox is doing bla...bla...
