@@ -44,45 +44,39 @@ import "private"
 import "Styles/Settings.js" as Settings
 
 /*!
-    \qmltype Button
-    \inqmlmodule QtDesktop 1.0
-    \brief Button is doing bla...bla...
-*/
+     \qmltype Button
+     \inqmlmodule QtDesktop 1.0
+     \brief A normal button
 
+     A normal command button. Similar to the QPushButton widget.
+
+     The push button is perhaps the most commonly used widget in any graphical user interface.
+     Push (click) a button to command the computer to perform some action, or to answer a question.
+     Typical buttons are OK, Apply, Cancel, Close, Yes, No and Help.
+
+ */
 BasicButton {
     id: button
-
+    /*! This property holds whether the push button is the default button.
+        Default buttons decide what happens when the user presses enter in a dialog without giving a button explicit focus.
+        Note : This property is currently ignored by Dialog
+    */
     property bool defaultbutton: false
+
+    /*! This property holds the style hints. Style hints are special properties that only affect specific themes or styles
+      An example of a styleHint can be: styleHints: "small" */
     property var styleHintss
+
+    /*! This property holds the text shown on the button.
+        If the button has no text, the \l text property will be an empty string. */
     property string text
+
+    /*! This property holds the icon shown on the button.
+        If the button has no icon, the \l iconSource property will be an empty string. */
     property url iconSource
 
     Accessible.name: text
-
     style: Qt.createComponent(Settings.THEME_PATH + "/ButtonStyle.qml")
 
-// ## TODO: move to style implementation
-//    label: Item {
-//        // Used as a fallback since I can't pass the imageURL
-//        // directly to the style object
-//        visible: button.iconSource === ""
-//        Row {
-//            id: row
-//            anchors.centerIn: parent
-//            spacing: 4
-//            Image {
-//                source: iconSource
-//                anchors.verticalCenter: parent.verticalCenter
-//                fillMode: Image.Stretch //mm Image should shrink if button is too small, depends on QTBUG-14957
-//            }
-//            Text {
-//                id:text
-//                color: textColor
-//                anchors.verticalCenter: parent.verticalCenter
-//                text: button.text
-//                horizontalAlignment: Text.Center
-//            }
-//        }
-//    }
 }
 
