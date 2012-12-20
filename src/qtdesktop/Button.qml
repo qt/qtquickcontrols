@@ -65,7 +65,7 @@ BasicButton {
 
     /*! This property holds the style hints. Style hints are special properties that only affect specific themes or styles
       An example of a styleHint can be: styleHints: "small" */
-    property var styleHintss
+    property var styleHints: []
 
     /*! This property holds the text shown on the button.
         If the button has no text, the \l text property will be an empty string. */
