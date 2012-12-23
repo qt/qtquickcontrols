@@ -114,6 +114,12 @@ QStyleItem::QStyleItem(QQuickPaintedItem *parent)
     m_contentHeight(0)
 
 {
+    if (!qApp->style()) {
+        qWarning("\nError: No widget style available. \n\nQt Desktop Components "
+               "currently depend on the widget module to function. \n"
+               "Use QApplication when creating standalone executables.\n\n");
+        exit(-1);
+    }
     m_font = qApp->font();
     setFlag(QQuickItem::ItemHasContents, true);
     setSmooth(false);
