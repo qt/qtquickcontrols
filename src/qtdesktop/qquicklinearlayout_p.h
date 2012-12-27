@@ -3,7 +3,7 @@
 ** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
-** This file is part of the Qt Components project.
+** This file is part of the examples of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:BSD$
 ** You may use this file under the terms of the BSD license as follows:
@@ -38,51 +38,74 @@
 **
 ****************************************************************************/
 
-#ifndef QTMENUBAR_H
-#define QTMENUBAR_H
+#ifndef QDECLARATIVELINEARLAYOUT_H
+#define QDECLARATIVELINEARLAYOUT_H
 
-#include <QtCore/qglobal.h>
+#include "qquicklayout_p.h"
 
-#include <QtQuick/QQuickItem>
-#include <QtWidgets>
 
-#include "qtmenu.h"
+class QQuickComponentsLinearLayout : public QQuickComponentsLayout
+{
+    Q_OBJECT
+    Q_PROPERTY(qreal spacing READ spacing WRITE setSpacing NOTIFY spacingChanged)
 
-class QtMenuBar: public QQuickItem
+public:
+    enum Orientation {
+        Vertical,
+        Horizontal
+    };
+
+    explicit QQuickComponentsLinearLayout(Orientation orientation,
+                                          QQuickItem *parent = 0);
+    ~QQuickComponentsLinearLayout() {}
+
+    qreal spacing() const;
+    void setSpacing(qreal spacing);
+
+    Orientation orientation() const;
+    void setOrientation(Orientation orientation);
+
+    void componentComplete();
+
+signals:
+    void spacingChanged();
+    void orientationChanged();
+
+protected:
+    void updateLayoutItems();
+    void reconfigureLayout();
+    void insertLayoutItem(QQuickItem *item);
+    void removeLayoutItem(QQuickItem *item);
+    void itemChange(ItemChange change, const ItemChangeData &data);
+    void geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry);
+
+protected slots:
+    void onItemDestroyed();
+
+private:
+    qreal m_spacing;
+    Orientation m_orientation;
+    QList<QQuickItem *> m_items;
+};
+
+
+class QQuickComponentsRowLayout : public QQuickComponentsLinearLayout
 {
     Q_OBJECT
 
-    Q_PROPERTY(QQmlListProperty<QtMenu> menus READ menus NOTIFY menuChanged)
-    Q_PROPERTY(QList<QObject*> menuList READ menuList NOTIFY menuChanged)
-    Q_PROPERTY(bool showMenuBar READ showMenuBar NOTIFY showMenuBarChanged)
-    Q_CLASSINFO("DefaultProperty", "menus")
 public:
-    QtMenuBar(QQuickItem *parent = 0);
-    ~QtMenuBar();
-
-    QQmlListProperty<QtMenu> menus();
-    QList<QObject*> menuList();
-
-    bool showMenuBar() {
-#ifdef Q_OS_MAC
-        return false;
-#endif
-        return true;
-}
-
-signals:
-    void menuChanged();
-    void showMenuBarChanged();
-
-protected Q_SLOTS:
-    void updateParent(QQuickItem *newParent);
-
-private:
-    static void append_menu(QQmlListProperty<QtMenu> *list, QtMenu *menu);
-
-private:
-    QList<QObject *> m_menus;
-    QMenuBar *_menuBar;
+    explicit QQuickComponentsRowLayout(QQuickItem *parent = 0)
+        : QQuickComponentsLinearLayout(Horizontal, parent) {}
 };
 
-#endif //QTMENUBAR_H
+
+class QQuickComponentsColumnLayout : public QQuickComponentsLinearLayout
+{
+    Q_OBJECT
+
+public:
+    explicit QQuickComponentsColumnLayout(QQuickItem *parent = 0)
+        : QQuickComponentsLinearLayout(Vertical, parent) {}
+};
+
+#endif

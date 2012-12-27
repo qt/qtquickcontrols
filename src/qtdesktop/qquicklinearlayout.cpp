@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-#include "qquicklinearlayout.h"
+#include "qquicklinearlayout_p.h"
 #include "qquicklayoutengine_p.h"
 #include <QtCore/qnumeric.h>
 

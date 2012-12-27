@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-#include "qquicklayout.h"
+#include "qquicklayout_p.h"
 #include <QEvent>
 #include <QApplication>
 #include <QtCore/qnumeric.h>

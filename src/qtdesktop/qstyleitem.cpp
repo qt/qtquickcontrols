@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-#include "qstyleitem.h"
+#include "qstyleitem_p.h"
 
 #include <QtGui/QPainter>
 #include <QtWidgets/QStyle>

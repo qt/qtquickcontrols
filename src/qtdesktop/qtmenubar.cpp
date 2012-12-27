@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-#include "qtmenubar.h"
+#include "qtmenubar_p.h"
 
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>

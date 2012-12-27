@@ -39,17 +39,17 @@
 ****************************************************************************/
 
 #include <qqml.h>
-#include "qstyleplugin.h"
-#include "qstyleitem.h"
-#include "qrangemodel.h"
-#include "qtmenu.h"
-#include "qtmenubar.h"
-#include "qdesktopitem.h"
-#include "qwheelarea.h"
-#include "qtsplitterbase.h"
-#include "qquicklinearlayout.h"
-#include "qquickcomponentsprivate.h"
-#include "qfiledialogitem.h"
+#include "qstyleplugin_p.h"
+#include "qstyleitem_p.h"
+#include "qrangemodel_p.h"
+#include "qtmenu_p.h"
+#include "qtmenubar_p.h"
+#include "qdesktopitem_p.h"
+#include "qwheelarea_p.h"
+#include "qtsplitterbase_p.h"
+#include "qquicklinearlayout_p.h"
+#include "qquickcomponentsprivate_p.h"
+#include "qfiledialogitem_p.h"
 #include <qqmlextensionplugin.h>
 
 #include <qqmlengine.h>

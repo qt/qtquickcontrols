@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-#include "qtmenu.h"
+#include "qtmenu_p.h"
 #include "qdebug.h"
 #include <qapplication.h>
 #include <qmenubar.h>

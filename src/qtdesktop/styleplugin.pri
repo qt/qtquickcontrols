@@ -1,19 +1,19 @@
 HEADERS += \
-    qdesktopitem.h \
-    qfiledialogitem.h \
-    qquickcomponentsprivate.h \
-    qquicklayout.h \
+    qdesktopitem_p.h \
+    qfiledialogitem_p.h \
+    qquickcomponentsprivate_p.h \
+    qquicklayout_p.h \
     qquicklayoutengine_p.h \
-    qquicklinearlayout.h \
-    qrangemodel.h \
+    qquicklinearlayout_p.h \
     qrangemodel_p.h \
-    qstyleitem.h \
-    qstyleplugin.h \
-    qtmenu.h \
-    qtmenubar.h \
-    qtmenuitem.h \
-    qtsplitterbase.h \
-    qwheelarea.h
+    qrangemodel_p_p.h \
+    qstyleitem_p.h \
+    qstyleplugin_p.h \
+    qtmenu_p.h \
+    qtmenubar_p.h \
+    qtmenuitem_p.h \
+    qtsplitterbase_p.h \
+    qwheelarea_p.h
 
 SOURCES += \
     qdesktopitem.cpp \

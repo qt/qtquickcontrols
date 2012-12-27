@@ -64,8 +64,8 @@
 #include <QAccessible>
 #endif
 
-#include "qrangemodel.h"
 #include "qrangemodel_p.h"
+#include "qrangemodel_p_p.h"
 
 QRangeModelPrivate::QRangeModelPrivate(QRangeModel *qq)
     : q_ptr(qq)

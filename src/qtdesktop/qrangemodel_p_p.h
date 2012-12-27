@@ -3,7 +3,7 @@
 ** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
-** This file is part of the examples of the Qt Toolkit.
+** This file is part of the Qt Components project.
 **
 ** $QT_BEGIN_LICENSE:BSD$
 ** You may use this file under the terms of the BSD license as follows:
@@ -38,74 +38,69 @@
 **
 ****************************************************************************/
 
-#ifndef QDECLARATIVELINEARLAYOUT_H
-#define QDECLARATIVELINEARLAYOUT_H
+#ifndef QRANGEMODEL_P_H
+#define QRANGEMODEL_P_H
 
-#include "qquicklayout.h"
+//
+//  W A R N I N G
+//  -------------
+//
+// This file is not part of the Qt Components API.  It exists purely as an
+// implementation detail.  This header file may change from version to
+// version without notice, or even be removed.
+//
+// We mean it.
+//
 
+#include "qrangemodel_p.h"
 
-class QQuickComponentsLinearLayout : public QQuickComponentsLayout
+class QRangeModelPrivate
 {
-    Q_OBJECT
-    Q_PROPERTY(qreal spacing READ spacing WRITE setSpacing NOTIFY spacingChanged)
-
+    Q_DECLARE_PUBLIC(QRangeModel)
 public:
-    enum Orientation {
-        Vertical,
-        Horizontal
-    };
+    QRangeModelPrivate(QRangeModel *qq);
+    virtual ~QRangeModelPrivate();
 
-    explicit QQuickComponentsLinearLayout(Orientation orientation,
-                                          QQuickItem *parent = 0);
-    ~QQuickComponentsLinearLayout() {}
+    void init();
 
-    qreal spacing() const;
-    void setSpacing(qreal spacing);
+    qreal posatmin, posatmax;
+    qreal minimum, maximum, stepSize, pos, value;
 
-    Orientation orientation() const;
-    void setOrientation(Orientation orientation);
+    uint inverted : 1;
 
-    void componentComplete();
+    QRangeModel *q_ptr;
 
-signals:
-    void spacingChanged();
-    void orientationChanged();
+    inline qreal effectivePosAtMin() const {
+        return inverted ? posatmax : posatmin;
+    }
 
-protected:
-    void updateLayoutItems();
-    void reconfigureLayout();
-    void insertLayoutItem(QQuickItem *item);
-    void removeLayoutItem(QQuickItem *item);
-    void itemChange(ItemChange change, const ItemChangeData &data);
-    void geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry);
+    inline qreal effectivePosAtMax() const {
+        return inverted ? posatmin : posatmax;
+    }
 
-protected slots:
-    void onItemDestroyed();
+    inline qreal equivalentPosition(qreal value) const {
+        // Return absolute position from absolute value
+        const qreal valueRange = maximum - minimum;
+        if (valueRange == 0)
+            return effectivePosAtMin();
 
-private:
-    qreal m_spacing;
-    Orientation m_orientation;
-    QList<QQuickItem *> m_items;
+        const qreal scale = (effectivePosAtMax() - effectivePosAtMin()) / valueRange;
+        return (value - minimum) * scale + effectivePosAtMin();
+    }
+
+    inline qreal equivalentValue(qreal pos) const {
+        // Return absolute value from absolute position
+        const qreal posRange = effectivePosAtMax() - effectivePosAtMin();
+        if (posRange == 0)
+            return minimum;
+
+        const qreal scale = (maximum - minimum) / posRange;
+        return (pos - effectivePosAtMin()) * scale + minimum;
+    }
+
+    qreal publicPosition(qreal position) const;
+    qreal publicValue(qreal value) const;
+    void emitValueAndPositionIfChanged(const qreal oldValue, const qreal oldPosition);
 };
 
-
-class QQuickComponentsRowLayout : public QQuickComponentsLinearLayout
-{
-    Q_OBJECT
-
-public:
-    explicit QQuickComponentsRowLayout(QQuickItem *parent = 0)
-        : QQuickComponentsLinearLayout(Horizontal, parent) {}
-};
-
-
-class QQuickComponentsColumnLayout : public QQuickComponentsLinearLayout
-{
-    Q_OBJECT
-
-public:
-    explicit QQuickComponentsColumnLayout(QQuickItem *parent = 0)
-        : QQuickComponentsLinearLayout(Vertical, parent) {}
-};
-
-#endif
+#endif // QRANGEMODEL_P_H

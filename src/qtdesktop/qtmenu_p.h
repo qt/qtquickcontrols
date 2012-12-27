@@ -46,7 +46,7 @@
 #include <QtQml/QtQml>
 #include <QtCore/qabstractitemmodel.h>
 #include <QtCore/QVariant>
-#include "qtmenuitem.h"
+#include "qtmenuitem_p.h"
 
 class QtMenu : public QtMenuBase
 {

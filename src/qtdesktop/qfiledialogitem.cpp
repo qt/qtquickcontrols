@@ -71,7 +71,7 @@
     either by closing the dialog window or by pressing the Cancel button.
 */
 
-#include "qfiledialogitem.h"
+#include "qfiledialogitem_p.h"
 
 #if QT_VERSION < 0x050000
 #include <QGraphicsScene>

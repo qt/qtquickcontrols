@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-#include "qwheelarea.h"
+#include "qwheelarea_p.h"
 
 /*!
     \qmltype WheelArea

@@ -38,69 +38,88 @@
 **
 ****************************************************************************/
 
-#ifndef QRANGEMODEL_P_H
-#define QRANGEMODEL_P_H
+#ifndef QRANGEMODEL_H
+#define QRANGEMODEL_H
 
-//
-//  W A R N I N G
-//  -------------
-//
-// This file is not part of the Qt Components API.  It exists purely as an
-// implementation detail.  This header file may change from version to
-// version without notice, or even be removed.
-//
-// We mean it.
-//
+#include <QtCore/qobject.h>
+//#include <QtGui/qgraphicsitem.h>
+#include <QtWidgets/qabstractslider.h>
+#include <QtQml/qqml.h>
 
-#include "qrangemodel.h"
+class QRangeModelPrivate;
 
-class QRangeModelPrivate
+class QRangeModel : public QObject
 {
-    Q_DECLARE_PUBLIC(QRangeModel)
+    Q_OBJECT
+    Q_PROPERTY(qreal value READ value WRITE setValue NOTIFY valueChanged USER true)
+    Q_PROPERTY(qreal minimumValue READ minimum WRITE setMinimum NOTIFY minimumChanged)
+    Q_PROPERTY(qreal maximumValue READ maximum WRITE setMaximum NOTIFY maximumChanged)
+    Q_PROPERTY(qreal stepSize READ stepSize WRITE setStepSize NOTIFY stepSizeChanged)
+    Q_PROPERTY(qreal position READ position WRITE setPosition NOTIFY positionChanged)
+    Q_PROPERTY(qreal positionAtMinimum READ positionAtMinimum WRITE setPositionAtMinimum NOTIFY positionAtMinimumChanged)
+    Q_PROPERTY(qreal positionAtMaximum READ positionAtMaximum WRITE setPositionAtMaximum NOTIFY positionAtMaximumChanged)
+    Q_PROPERTY(bool inverted READ inverted WRITE setInverted NOTIFY invertedChanged)
+
 public:
-    QRangeModelPrivate(QRangeModel *qq);
-    virtual ~QRangeModelPrivate();
+    QRangeModel(QObject *parent = 0);
+    virtual ~QRangeModel();
 
-    void init();
+    void setRange(qreal min, qreal max);
+    void setPositionRange(qreal min, qreal max);
 
-    qreal posatmin, posatmax;
-    qreal minimum, maximum, stepSize, pos, value;
+    void setStepSize(qreal stepSize);
+    qreal stepSize() const;
 
-    uint inverted : 1;
+    void setMinimum(qreal min);
+    qreal minimum() const;
 
-    QRangeModel *q_ptr;
+    void setMaximum(qreal max);
+    qreal maximum() const;
 
-    inline qreal effectivePosAtMin() const {
-        return inverted ? posatmax : posatmin;
-    }
+    void setPositionAtMinimum(qreal posAtMin);
+    qreal positionAtMinimum() const;
 
-    inline qreal effectivePosAtMax() const {
-        return inverted ? posatmin : posatmax;
-    }
+    void setPositionAtMaximum(qreal posAtMax);
+    qreal positionAtMaximum() const;
 
-    inline qreal equivalentPosition(qreal value) const {
-        // Return absolute position from absolute value
-        const qreal valueRange = maximum - minimum;
-        if (valueRange == 0)
-            return effectivePosAtMin();
+    void setInverted(bool inverted);
+    bool inverted() const;
 
-        const qreal scale = (effectivePosAtMax() - effectivePosAtMin()) / valueRange;
-        return (value - minimum) * scale + effectivePosAtMin();
-    }
+    qreal value() const;
+    qreal position() const;
 
-    inline qreal equivalentValue(qreal pos) const {
-        // Return absolute value from absolute position
-        const qreal posRange = effectivePosAtMax() - effectivePosAtMin();
-        if (posRange == 0)
-            return minimum;
+    Q_INVOKABLE qreal valueForPosition(qreal position) const;
+    Q_INVOKABLE qreal positionForValue(qreal value) const;
 
-        const qreal scale = (maximum - minimum) / posRange;
-        return (pos - effectivePosAtMin()) * scale + minimum;
-    }
+public Q_SLOTS:
+    void toMinimum();
+    void toMaximum();
+    void setValue(qreal value);
+    void setPosition(qreal position);
 
-    qreal publicPosition(qreal position) const;
-    qreal publicValue(qreal value) const;
-    void emitValueAndPositionIfChanged(const qreal oldValue, const qreal oldPosition);
+Q_SIGNALS:
+    void valueChanged(qreal value);
+    void positionChanged(qreal position);
+
+    void stepSizeChanged(qreal stepSize);
+
+    void invertedChanged(bool inverted);
+
+    void minimumChanged(qreal min);
+    void maximumChanged(qreal max);
+    void positionAtMinimumChanged(qreal min);
+    void positionAtMaximumChanged(qreal max);
+
+protected:
+    QRangeModel(QRangeModelPrivate &dd, QObject *parent);
+    QRangeModelPrivate* d_ptr;
+
+private:
+    Q_DISABLE_COPY(QRangeModel)
+    Q_DECLARE_PRIVATE(QRangeModel)
+
 };
 
-#endif // QRANGEMODEL_P_H
+QML_DECLARE_TYPE(QRangeModel)
+
+#endif // QRANGEMODEL_H

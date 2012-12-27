@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-#include "qquickcomponentsprivate.h"
+#include "qquickcomponentsprivate_p.h"
 #include <QToolTip>
 #include <QQuickWindow>
 

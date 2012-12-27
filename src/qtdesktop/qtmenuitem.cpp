@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-#include "qtmenuitem.h"
+#include "qtmenuitem_p.h"
 
 void QtMenuBase::setIconSource(const QUrl &icon)
 {

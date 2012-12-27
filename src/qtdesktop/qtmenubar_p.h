@@ -38,48 +38,51 @@
 **
 ****************************************************************************/
 
-#include "qdesktopitem_p.h"
+#ifndef QTMENUBAR_H
+#define QTMENUBAR_H
 
-QDesktopItem::QDesktopItem(QObject* obj) : QObject(obj) {
-    connect(&desktopWidget, SIGNAL(resized(int)), this, SIGNAL(screenGeometryChanged()));
-    connect(&desktopWidget, SIGNAL(resized(int)), this, SIGNAL(availableGeometryChanged()));
-    connect(&desktopWidget, SIGNAL(workAreaResized(int)), this, SIGNAL(availableGeometryChanged()));
-    connect(&desktopWidget, SIGNAL(screenCountChanged(int)), this, SIGNAL(screenCountChanged()));
-}
+#include <QtCore/qglobal.h>
 
-int QDesktopItem::screenCount() const
+#include <QtQuick/QQuickItem>
+#include <QtWidgets>
+
+#include "qtmenu_p.h"
+
+class QtMenuBar: public QQuickItem
 {
-    return desktopWidget.screenCount();
+    Q_OBJECT
+
+    Q_PROPERTY(QQmlListProperty<QtMenu> menus READ menus NOTIFY menuChanged)
+    Q_PROPERTY(QList<QObject*> menuList READ menuList NOTIFY menuChanged)
+    Q_PROPERTY(bool showMenuBar READ showMenuBar NOTIFY showMenuBarChanged)
+    Q_CLASSINFO("DefaultProperty", "menus")
+public:
+    QtMenuBar(QQuickItem *parent = 0);
+    ~QtMenuBar();
+
+    QQmlListProperty<QtMenu> menus();
+    QList<QObject*> menuList();
+
+    bool showMenuBar() {
+#ifdef Q_OS_MAC
+        return false;
+#endif
+        return true;
 }
 
-QRect QDesktopItem::screenGeometry(int screen) const {
-    return desktopWidget.screenGeometry(screen);
-}
+signals:
+    void menuChanged();
+    void showMenuBarChanged();
 
-QRect QDesktopItem::availableGeometry(int screen) const {
-    return desktopWidget.availableGeometry(screen);
-}
+protected Q_SLOTS:
+    void updateParent(QQuickItem *newParent);
 
-int QDesktopItem::screenWidth() const
-{
-    return desktopWidget.screenGeometry().width();
-}
+private:
+    static void append_menu(QQmlListProperty<QtMenu> *list, QtMenu *menu);
 
-int QDesktopItem::screenHeight() const
-{
-    return desktopWidget.screenGeometry().height();
-}
+private:
+    QList<QObject *> m_menus;
+    QMenuBar *_menuBar;
+};
 
-int QDesktopItem::availableWidth() const
-{
-    return desktopWidget.availableGeometry().width();
-}
-
-int QDesktopItem::availableHeight() const
-{
-    return desktopWidget.availableGeometry().height();
-}
-
-QDesktopItem *QDesktopItem::qmlAttachedProperties(QObject *obj) {
-    return new QDesktopItem(obj);
-}
+#endif //QTMENUBAR_H

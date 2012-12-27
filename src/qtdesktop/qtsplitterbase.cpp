@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-#include "qtsplitterbase.h"
+#include "qtsplitterbase_p.h"
 
 /*!
     \qmltype Splitter
