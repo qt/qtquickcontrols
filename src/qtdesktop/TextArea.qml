@@ -49,7 +49,7 @@ import QtDesktop 1.0
 
 ScrollArea {
     id: area
-    color: "white"
+    color: syspal.base
     width: 280
     height: 120
     contentWidth: edit.paintedWidth + (2 * documentMargins)

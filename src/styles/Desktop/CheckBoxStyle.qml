@@ -58,6 +58,8 @@ StyleItem {
         anchors.verticalCenter: parent.verticalCenter
         anchors.right: parent.right
         elide: Text.ElideRight
+        color: syspal.windowText
+        SystemPalette { id: syspal }
     }
     property int indicatorWidth: pixelMetric("indicatorwidth") + 2
 }
