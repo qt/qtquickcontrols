@@ -94,6 +94,7 @@ Window {
                         text: menu.text
                         anchors.centerIn: parent
                         renderType: Text.NativeRendering
+                        color: menuItem.selected ? syspal.highlightedText : syspal.windowText
                     }
                     MouseArea {
                         id: mouse
