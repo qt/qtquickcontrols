@@ -65,8 +65,6 @@ Window {
 
     property int buttons: ok | cancel
 
-    modal: false
-
     default property alias data: content.data
 
     Item {
