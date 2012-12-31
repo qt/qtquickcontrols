@@ -39,51 +39,44 @@
 ****************************************************************************/
 
 import QtQuick 2.0
-//import "../components"
 import QtDesktop 1.0
 
 
 Rectangle {
     width: 540
     height: 340
-    color: "green"
-    id : rect
+    color: "lightgray"
 
-    Text {
-        id : selctedLabel
+    property color selectedColor: "lightgray"
+
+    Rectangle {
+        id : rect
+        width: selectedLabel.width + 80
+        height: 80
         anchors.centerIn: parent
-        text : editMenu.selected
-    }
+        color: selectedColor
+        border.color: "darkgray"
 
-    ContextMenu {
-        id : editMenu
-
-        // MenuItem API:
-        MenuItem { text : "blue"
-                   onTriggered: rect.color = "blue"
+        Text {
+            id : selectedLabel
+            anchors.centerIn: parent
+            text : "Click to set color"
         }
 
-        MenuItem { text : "red"
-                   onTriggered: rect.color = "red"
+        ContextMenu {
+            id : editMenu
+            MenuItem { text : "orange"  ; onTriggered: selectedColor = text }
+            MenuItem { text : "lightsteelblue" ; onTriggered: selectedColor = text }
+            MenuItem { text : "deepskyblue"  ; onTriggered: selectedColor = text }
+            MenuItem { text : "navajowhite"  ; onTriggered: selectedColor = text }
+            MenuItem { text : "lemonchiffon" ; onTriggered: selectedColor = text }
         }
 
-        MenuItem { text : "pink"
-                   onTriggered: rect.color = "pink"
+        MouseArea {
+            id: mouse
+            anchors.fill: parent
+            acceptedButtons : Qt.LeftButton
+            onClicked: editMenu.showPopup(mouseX, mouseY, 0)
         }
-
-        // ListModel API:
-        // # no way to do onSelected.
-//        model: ListModel {
-//            id: menu
-//            ListElement { text: "Elememt1" }
-//            ListElement { text: "Elememt2" }
-//            ListElement { text: "Elememt2" }
-//        }
-    }
-
-    MouseArea {
-        anchors.fill: parent
-        acceptedButtons : Qt.RightButton
-        onClicked: editMenu.showPopup(mouseX, mouseY, 0)
     }
 }

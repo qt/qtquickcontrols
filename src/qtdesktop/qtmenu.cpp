@@ -103,6 +103,8 @@ QQmlListProperty<QtMenuBase> QtMenu::menuItems()
 
 void QtMenu::showPopup(qreal x, qreal y, int atActionIndex, QQuickWindow * parentWindow)
 {
+
+    qDebug() << x << y;
     if (m_qmenu->isVisible())
         return;
 
@@ -116,7 +118,7 @@ void QtMenu::showPopup(qreal x, qreal y, int atActionIndex, QQuickWindow * paren
     QWindow *tw = parentWindow ? parentWindow : window();
     if (tw) {
         screenPosition = tw->mapToGlobal(QPoint(x, y));
-
+        qDebug() << screenPosition;
         // calling winId forces a QWindow to be created
         // since this needs to be a top-level
         // otherwise windowHandle might return 0
