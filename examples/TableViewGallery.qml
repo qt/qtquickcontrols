@@ -38,8 +38,9 @@
 **
 ****************************************************************************/
 
-import QtQuick 1.0
+import QtQuick 2.0
 import QtDesktop 1.0
+import QtQuick.XmlListModel 2.0
 
 Rectangle {
 
@@ -49,7 +50,6 @@ Rectangle {
     ToolBar {
         id: toolbar
         width: parent.width
-        //height: 40
 
         MouseArea {
             anchors.fill:  parent
@@ -59,7 +59,8 @@ Rectangle {
 
         ComboBox {
             id: delegateChooser
-            enabled: frame.current == 4 ? 1 : 0
+            opacity: frame.current === 3 ? 1 : 0
+            Behavior on opacity{ NumberAnimation{} }
             model: delegatemenu
             anchors.left: parent.left
             anchors.leftMargin: 8
@@ -99,7 +100,7 @@ Rectangle {
     ListModel {
         id: largeModel
         Component.onCompleted: {
-            for (var i=0 ; i< 5000 ; ++i)
+            for (var i=0 ; i< 500 ; ++i)
                 largeModel.append({"name":"Person "+i , "age": Math.round(Math.random()*100), "gender": Math.random()>0.5 ? "Male" : "Female"})
         }
     }
@@ -142,37 +143,6 @@ Rectangle {
                     }
                     TableColumn {
                         role: "imagesource"
-                        title: "Image source"
-                        width: 200
-                        visible: true
-                    }
-
-                    frame: frameCheckbox.checked
-                    headerVisible: headerCheckbox.checked
-                    sortIndicatorVisible: sortableCheckbox.checked
-                    alternateRowColor: alternateCheckbox.checked
-                }
-            }
-            Tab {
-                title: "DirModel"
-
-                TableView {
-                    model: FileSystemModel{}
-                    anchors.fill: parent
-                    anchors.margins: 12
-
-                    TableColumn {
-                        role: "fileName"
-                        title: "File Name"
-                        width: 120
-                    }
-                    TableColumn {
-                        role: "filePath"
-                        title: "File Path"
-                        width: 120
-                    }
-                    TableColumn {
-                        role: "fileSize"
                         title: "Image source"
                         width: 200
                         visible: true
@@ -283,18 +253,14 @@ Rectangle {
 
                 Component {
                     id: slickRowDelegate
-                    Rectangle{
-                        color: itemAlternateBackground ? "#cef" : "white"
-                        //                            selected: itemSelected ? "true" : "false"
-                    }
-
+                    Rectangle { color: itemAlternateBackground ? "#cef" : "white" }
                 }
 
                 Component {
                     id: delegate2
                     Item {
                         height: itemSelected? 60 : 20
-                        Behavior on height{ NumberAnimation{}}
+                        Behavior on height{ NumberAnimation{} }
                         Text {
                             width: parent.width
                             anchors.margins: 4
@@ -367,6 +333,7 @@ Rectangle {
                     }
 
                     rowDelegate: Rectangle {
+                        height: 20
                         color: itemSelected ? "#448" : (itemAlternateBackground ? "#eee" : "#fff")
                         border.color:"#ccc"
                         border.width: 1
@@ -374,11 +341,11 @@ Rectangle {
                         anchors.leftMargin: -2
                         anchors.rightMargin: -1
                         BorderImage{
-                            id:selected
+                            id: selected
                             anchors.fill: parent
                             source: "images/selectedrow.png"
                             visible: itemSelected
-                            border{left:2;right:2;top:2;bottom:2}
+                            border{left:2; right:2; top:2; bottom:2}
                             SequentialAnimation {
                                 running: true; loops: Animation.Infinite
                                 NumberAnimation { target:selected; property: "opacity"; to: 1.0; duration: 900}
@@ -388,7 +355,7 @@ Rectangle {
                     }
 
                     itemDelegate: {
-                        switch(delegateChooser.selectedIndex) {
+                        switch (delegateChooser.selectedIndex) {
                         case 0:
                             return delegate1
                         case 1:
@@ -401,7 +368,7 @@ Rectangle {
             }
         }
         Row{
-            x:12
+            x: 12
             height: 34
             CheckBox{
                 id: alternateCheckbox
