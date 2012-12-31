@@ -63,7 +63,7 @@ Item {
     Loader {
         id: loader
         anchors.fill: parent
-        sourceComponent: delegate
+        sourceComponent: style
         Item {
             id: content
             anchors.fill: parent
