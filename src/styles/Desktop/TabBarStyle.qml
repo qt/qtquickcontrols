@@ -49,6 +49,8 @@ Item {
     property int tabHSpace: styleitem.pixelMetric("tabhspace");
     property int tabVSpace: styleitem.pixelMetric("tabvspace");
 
+    StyleItem { id: styleitem }
+
     property Component tab: StyleItem {
         id: styleitem
         elementType: "tab"
