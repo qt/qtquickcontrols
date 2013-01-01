@@ -50,7 +50,7 @@ Item {
     id: styleitem
 
     implicitWidth: 200
-    implicitHeight: backgroundControl.item.implicitHeight
+    implicitHeight: 20
 
     property int leftMargin
     property int rightMargin
@@ -69,16 +69,21 @@ Item {
         border.color: Qt.darker(backgroundColor, 1.8)
     }
 
-    property Component background: Rectangle {
-        implicitWidth: 12
-        implicitHeight: 6
-        gradient: Gradient {
-            GradientStop {color: Qt.darker(backgroundColor, 1.2) ; position: 0}
-            GradientStop {color: Qt.darker(backgroundColor, 1.5) ; position: 1}
+    property Component background: Item {
+        Rectangle {
+            anchors.verticalCenter: parent.verticalCenter
+            width: parent.width
+
+            implicitWidth: 12
+            implicitHeight: 6
+            gradient: Gradient {
+                GradientStop {color: Qt.darker(backgroundColor, 1.2) ; position: 0}
+                GradientStop {color: Qt.darker(backgroundColor, 1.5) ; position: 1}
+            }
+            antialiasing: true
+            radius: height / 2.0
+            border.color: Qt.darker(backgroundColor, 1.8)
         }
-        antialiasing: true
-        radius: height / 2.0
-        border.color: Qt.darker(backgroundColor, 1.8)
     }
 
     Loader {

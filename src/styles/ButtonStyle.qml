@@ -68,6 +68,7 @@ Item {
     Loader {
         id: backgroundLoader
         sourceComponent: background
+        anchors.fill: parent
     }
 
     Text {

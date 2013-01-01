@@ -39,72 +39,43 @@
 ****************************************************************************/
 
 import QtQuick 2.0
-import QtDesktop 1.0 as Internal
+import QtDesktop 1.0
+import QtDesktop.Styles 1.0
 
-Item {
-    id: button
+Rectangle {
+    width: 600
+    height: 400
 
-    signal clicked
-    property alias pressed: behavior.effectivePressed
-    property alias containsMouse: behavior.containsMouse
-    property alias checkable: behavior.checkable  // button toggles between checked and !checked
-    property alias checked: behavior.checked
-    property bool activeFocusOnPress: false
-    property alias style: loader.sourceComponent
-    property var styleHints: []
-
-    property color textColor: syspal.text
-    property string tooltip
-
-    Accessible.role: Accessible.Button
-    Accessible.description: tooltip
-
-    signal toolTipTriggered
-
-    // implementation
-
-    property string __position: "only"
-    implicitWidth: loader.implicitWidth
-    implicitHeight: loader.implicitHeight
-
-    Keys.onPressed: {
-        if (event.key === Qt.Key_Space && !event.isAutoRepeat && !behavior.pressed)
-            behavior.keyPressed = true;
-    }
-
-    Keys.onReleased: {
-        if (event.key === Qt.Key_Space && !event.isAutoRepeat && behavior.keyPressed) {
-            behavior.keyPressed = false;
-            if (checkable)
-                checked = !checked;
-            button.clicked();
+    TabFrame {
+        anchors.fill: parent
+        Tab {
+            title: "Height"
+            Row {
+                height: parent.height
+                anchors.horizontalCenter: parent.horizontalCenter
+                Button { text: "One" ; height: parent.height}
+                Slider { height: parent.height}
+                ComboBox { height: parent.height}
+            }
+        }
+        Tab {
+            title: "Width"
+            Column {
+                width: parent.width
+                anchors.verticalCenter: parent.verticalCenter
+                Button { text: "One" ; width: parent.width}
+                Slider { width: parent.width}
+                ComboBox {width: parent.width}
+            }
+        }
+        Tab {
+            title: "Both"
+            Row {
+                anchors.fill: parent
+                Button { text: "One" ; width: parent.width/3 ; height: parent.height}
+                Slider { width: parent.width/3 ; height: parent.height}
+                ComboBox {width: parent.width/3 ; height: parent.height}
+            }
         }
     }
-
-    Loader {
-        id: loader
-        anchors.fill: parent
-        sourceComponent: style
-        property alias control: button
-        property alias position: button.__position
-        height: item ? item.implicitHeight : 0
-        width: item ? item.implicitWidth : 0
-    }
-
-    ButtonBehavior {
-        id: behavior
-        anchors.fill: parent
-        onClicked: button.clicked()
-        onExited: Internal.PrivateHelper.hideToolTip()
-        onCanceled: Internal.PrivateHelper.hideToolTip()
-        onPressed: if (activeFocusOnPress) button.forceActiveFocus()
-
-        Timer {
-            interval: 1000
-            running: containsMouse && !pressed && tooltip.length
-            onTriggered: Internal.PrivateHelper.showToolTip(behavior, Qt.point(behavior.mouseX, behavior.mouseY), tooltip)
-        }
-    }
-
-    SystemPalette { id: syspal }
 }

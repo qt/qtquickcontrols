@@ -40,14 +40,23 @@
 import QtQuick 2.0
 import QtDesktop 1.0
 
-StyleItem {
-    elementType: "combobox"
-    sunken: comboBox.pressed
-    raised: !sunken
-    hover: comboBox.containsMouse
-    enabled: comboBox.enabled
-    text: comboBox.selectedText
-    hasFocus: comboBox.focus
-    contentHeight: 18
-    Component.onCompleted: popup.center = styleHint("comboboxpopup");
+Item {
+    width: implicitWidth
+    height: implicitHeight
+    implicitWidth: styleitem.implicitWidth
+    implicitHeight: styleitem.implicitHeight
+    StyleItem {
+        id: styleitem
+        width: parent.width
+        anchors.verticalCenter: parent.verticalCenter
+        elementType: "combobox"
+        sunken: comboBox.pressed
+        raised: !sunken
+        hover: comboBox.containsMouse
+        enabled: comboBox.enabled
+        text: comboBox.selectedText
+        hasFocus: comboBox.focus
+        contentHeight: 18
+        Component.onCompleted: popup.center = styleHint("comboboxpopup");
+    }
 }

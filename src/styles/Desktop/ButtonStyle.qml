@@ -41,10 +41,14 @@ import QtQuick 2.0
 import QtDesktop 1.0
 
 Item {
+    width: implicitWidth
+    height: implicitHeight
     implicitWidth: styleitem.implicitWidth
     implicitHeight: styleitem.implicitHeight
     StyleItem {
         id: styleitem
+        width: parent.width
+        anchors.verticalCenter: parent.verticalCenter
         elementType: "button"
         sunken: control.pressed || control.checked
         raised: !(control.pressed || control.checked)
@@ -54,8 +58,5 @@ Item {
         hint: control.styleHints
         // If no icon, let the style do the drawing
         activeControl: defaultbutton ? "default" : "f"
-
-        contentWidth: 60
-        contentHeight: 10
     }
 }
