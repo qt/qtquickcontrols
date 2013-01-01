@@ -57,6 +57,7 @@ Item {
         text: comboBox.selectedText
         hasFocus: comboBox.focus
         contentHeight: 18
+        contentWidth: 80
         Component.onCompleted: popup.center = styleHint("comboboxpopup");
     }
 }
