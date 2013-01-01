@@ -140,8 +140,9 @@ Item {
     // Style delegates:
 
     property Component buttonStyle: ButtonStyle {
+        implicitHeight: 20
+        implicitWidth: 100
         background: Rectangle {
-            width: 100; height:20
             color: control.pressed ? "darkGray" : "lightGray"
             antialiasing: true
             border.color: "gray"
@@ -161,10 +162,12 @@ Item {
     }
 
     property Component sliderStyle: SliderStyle {
+        implicitWidth: 100
+        implicitHeight: 20
 
         handle: Rectangle {
-            width: 10
-            height:20
+            width: 14
+            height: 14
             color: control.pressed ? "darkGray" : "lightGray"
             border.color: "gray"
             antialiasing: true
@@ -172,8 +175,7 @@ Item {
         }
 
         background: Rectangle {
-            implicitWidth: 100
-            implicitHeight: 8
+            height: 8
             antialiasing: true
             color: "darkGray"
             border.color: "gray"

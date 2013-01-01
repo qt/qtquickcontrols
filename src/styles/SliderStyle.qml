@@ -90,7 +90,7 @@ Item {
         id: backgroundControl
         sourceComponent: background
         width: parent.width
-        anchors.fill: parent
+        anchors.verticalCenter: parent.verticalCenter
     }
 
     Loader {
