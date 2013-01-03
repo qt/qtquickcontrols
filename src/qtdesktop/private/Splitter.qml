@@ -142,7 +142,7 @@ Splitter {
                     if (i !== d.expandingIndex)
                         w += item[d.size];
                     else if (includeExpandingMinimum && item.Splitter[minimum] != -1)
-                        w += item[minimum]
+                        w += item.Splitter[minimum]
                 }
 
                 var handle = handles[i]
