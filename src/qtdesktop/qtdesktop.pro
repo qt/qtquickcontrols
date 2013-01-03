@@ -19,6 +19,9 @@ QML_FILES = \
     Frame.qml \
     GroupBox.qml \
     Label.qml \
+    PageAnimation.qml \
+    PageStack.qml \
+    PageTransition.qml \
     ProgressBar.qml \
     RadioButton.qml \
     ScrollArea.qml \
@@ -44,6 +47,8 @@ QML_FILES += \
     private/ButtonBehavior.qml \
     private/ButtonGroup.js \
     private/ModalPopupBehavior.qml \
+    private/PageSlideTransition.qml \
+    private/PageStack.js \
     private/ScrollAreaHelper.qml \
     private/Splitter.qml
 
