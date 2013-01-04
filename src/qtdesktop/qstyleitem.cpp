@@ -51,6 +51,8 @@
 #include <QtWidgets/QtWidgets>
 #include <QtCore/QStringBuilder>
 
+QT_BEGIN_NAMESPACE
+
 #ifdef Q_OS_MAC
 #include <Carbon/Carbon.h>
 
@@ -1076,3 +1078,5 @@ bool QStyleItem::hasThemeIcon(const QString &icon) const
 {
     return QIcon::hasThemeIcon(icon);
 }
+
+QT_END_NAMESPACE

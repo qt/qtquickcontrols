@@ -77,6 +77,8 @@
 #include <QGraphicsScene>
 #endif
 
+QT_BEGIN_NAMESPACE
+
 QFileDialogItem::QFileDialogItem():
     _dialog(new QFileDialog),
     _isOpen(false),
@@ -322,3 +324,5 @@ QVariant QFileDialogItem::itemChange(GraphicsItemChange change,
     return QDeclarativeItem::itemChange(change, value);
 }
 #endif
+
+QT_END_NAMESPACE

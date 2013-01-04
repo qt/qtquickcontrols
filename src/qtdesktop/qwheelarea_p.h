@@ -45,6 +45,9 @@
 #include <QtWidgets/qgraphicssceneevent.h>
 #include <QtQuick/qquickitem.h>
 
+QT_BEGIN_HEADER
+
+QT_BEGIN_NAMESPACE
 
 class QWheelArea : public QQuickItem
 {
@@ -113,7 +116,10 @@ private:
     Q_DISABLE_COPY(QWheelArea)
 };
 
+QT_END_NAMESPACE
+
 QML_DECLARE_TYPE(QWheelArea)
 
+QT_END_HEADER
 
 #endif // QWHEELAREA_H

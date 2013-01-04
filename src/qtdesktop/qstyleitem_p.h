@@ -45,6 +45,10 @@
 #include <QtWidgets/QStyle>
 #include <QEvent>
 
+QT_BEGIN_HEADER
+
+QT_BEGIN_NAMESPACE
+
 class QStyleItem: public QQuickPaintedItem
 {
     Q_OBJECT
@@ -250,5 +254,9 @@ protected:
     int m_contentHeight;
 
 };
+
+QT_END_NAMESPACE
+
+QT_END_HEADER
 
 #endif //STYLEWRAPPER_H

@@ -47,6 +47,8 @@
     \brief WheelArea is doing bla...bla...
 */
 
+QT_BEGIN_NAMESPACE
+
 QWheelArea::QWheelArea(QQuickItem *parent)
     : QQuickItem(parent),
       m_horizontalMinimumValue(0),
@@ -185,3 +187,5 @@ qreal QWheelArea::scrollSpeed() const
 {
     return m_scrollSpeed;
 }
+
+QT_END_NAMESPACE

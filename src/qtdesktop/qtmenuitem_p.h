@@ -47,6 +47,10 @@
 
 #include <QtQuick/QQuickItem>
 
+QT_BEGIN_HEADER
+
+QT_BEGIN_NAMESPACE
+
 class QtMenuBase: public QQuickItem
 {
 Q_OBJECT
@@ -122,5 +126,9 @@ Q_SIGNALS:
 private:
     QAction *_action;
 };
+
+QT_END_NAMESPACE
+
+QT_END_HEADER
 
 #endif //QTMENUITEM_H

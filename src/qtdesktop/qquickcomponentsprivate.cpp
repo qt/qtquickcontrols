@@ -42,6 +42,7 @@
 #include <QToolTip>
 #include <QQuickWindow>
 
+QT_BEGIN_NAMESPACE
 
 QQuickComponentsPrivate::QQuickComponentsPrivate(QObject *parent)
     : QObject(parent)
@@ -61,3 +62,5 @@ void QQuickComponentsPrivate::hideToolTip()
 {
     QToolTip::hideText();
 }
+
+QT_END_NAMESPACE

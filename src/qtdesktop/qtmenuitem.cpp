@@ -40,6 +40,8 @@
 
 #include "qtmenuitem_p.h"
 
+QT_BEGIN_NAMESPACE
+
 void QtMenuBase::setIconSource(const QUrl &icon)
 {
     _iconSource = icon;
@@ -166,3 +168,5 @@ QAction * QtMenuItem::action()
 {
     return _action;
 }
+
+QT_END_NAMESPACE

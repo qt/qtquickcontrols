@@ -45,6 +45,10 @@
 #include <QtCore/QTimer>
 #include <QtWidgets/QFileSystemModel>
 
+QT_BEGIN_HEADER
+
+QT_BEGIN_NAMESPACE
+
 class StylePlugin : public QQmlExtensionPlugin
 {
     Q_OBJECT
@@ -53,5 +57,9 @@ public:
     void registerTypes(const char *uri);
     void initializeEngine(QQmlEngine *engine, const char *uri);
 };
+
+QT_END_NAMESPACE
+
+QT_END_HEADER
 
 #endif // STYLEPLUGIN_H

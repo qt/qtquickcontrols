@@ -58,6 +58,8 @@
 #include <QtQuick/QQuickWindow>
 #include <QImage>
 
+QT_BEGIN_NAMESPACE
+
 // Load icons from desktop theme
 class DesktopIconProvider : public QQuickImageProvider
 {
@@ -124,3 +126,5 @@ void StylePlugin::initializeEngine(QQmlEngine *engine, const char *uri)
     Q_UNUSED(uri);
     engine->addImageProvider("desktoptheme", new DesktopIconProvider);
 }
+
+QT_END_NAMESPACE

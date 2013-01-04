@@ -47,6 +47,8 @@
     \brief Splitter is doing bla...bla...
 */
 
+QT_BEGIN_NAMESPACE
+
 QtSplitterBase::QtSplitterBase(QQuickItem *parent)
     : QQuickItem(parent)
 {
@@ -98,3 +100,5 @@ QtSplitterAttached::QtSplitterAttached(QObject *object)
       m_expanding(false)
 {
 }
+
+QT_END_NAMESPACE

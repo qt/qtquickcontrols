@@ -48,6 +48,10 @@
 
 #include "qtmenu_p.h"
 
+QT_BEGIN_HEADER
+
+QT_BEGIN_NAMESPACE
+
 class QtMenuBar: public QQuickItem
 {
     Q_OBJECT
@@ -84,5 +88,9 @@ private:
     QList<QObject *> m_menus;
     QMenuBar *_menuBar;
 };
+
+QT_END_NAMESPACE
+
+QT_END_HEADER
 
 #endif //QTMENUBAR_H

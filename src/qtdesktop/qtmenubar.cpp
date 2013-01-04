@@ -50,6 +50,8 @@
     \brief MenuBar is doing bla...bla...
 */
 
+QT_BEGIN_NAMESPACE
+
 QtMenuBar::QtMenuBar(QQuickItem *parent)
     : QQuickItem(parent)
 {
@@ -98,3 +100,5 @@ void QtMenuBar::append_menu(QQmlListProperty<QtMenu> *list, QtMenu *menu)
         menuBar->menuChanged();
     }
 }
+
+QT_END_NAMESPACE

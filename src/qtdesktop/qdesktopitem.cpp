@@ -40,6 +40,8 @@
 
 #include "qdesktopitem_p.h"
 
+QT_BEGIN_NAMESPACE
+
 QDesktopItem::QDesktopItem(QObject* obj) : QObject(obj) {
     connect(&desktopWidget, SIGNAL(resized(int)), this, SIGNAL(screenGeometryChanged()));
     connect(&desktopWidget, SIGNAL(resized(int)), this, SIGNAL(availableGeometryChanged()));
@@ -83,3 +85,5 @@ int QDesktopItem::availableHeight() const
 QDesktopItem *QDesktopItem::qmlAttachedProperties(QObject *obj) {
     return new QDesktopItem(obj);
 }
+
+QT_END_NAMESPACE

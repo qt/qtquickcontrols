@@ -56,6 +56,8 @@
     \brief ColumnLayout is doing bla...bla...
 */
 
+QT_BEGIN_NAMESPACE
+
 static const qreal q_declarativeLayoutDefaultSpacing = 4.0;
 
 
@@ -256,3 +258,5 @@ void QQuickComponentsLinearLayout::reconfigureLayout()
         info->setMaximumHeight(totalMaximumSize + totalSpacing);
     }
 }
+
+QT_END_NAMESPACE

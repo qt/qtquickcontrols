@@ -43,6 +43,9 @@
 
 #include "qquicklayout_p.h"
 
+QT_BEGIN_HEADER
+
+QT_BEGIN_NAMESPACE
 
 class QQuickComponentsLinearLayout : public QQuickComponentsLayout
 {
@@ -107,5 +110,9 @@ public:
     explicit QQuickComponentsColumnLayout(QQuickItem *parent = 0)
         : QQuickComponentsLinearLayout(Vertical, parent) {}
 };
+
+QT_END_NAMESPACE
+
+QT_END_HEADER
 
 #endif

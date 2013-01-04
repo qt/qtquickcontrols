@@ -43,6 +43,8 @@
 #include <QApplication>
 #include <QtCore/qnumeric.h>
 
+QT_BEGIN_NAMESPACE
+
 static const qreal q_declarativeLayoutMaxSize = 10e8;
 
 
@@ -193,3 +195,5 @@ void QQuickComponentsLayout::reconfigureLayout()
 {
 
 }
+
+QT_END_NAMESPACE

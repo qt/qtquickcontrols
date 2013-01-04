@@ -51,6 +51,8 @@
     \brief Menu is doing bla...bla...
 */
 
+QT_BEGIN_NAMESPACE
+
 QtMenu::QtMenu(QQuickItem *parent)
     : QtMenuBase(parent),
       dummy(0),
@@ -239,3 +241,5 @@ void QtMenu::setModel(const QVariant &newModel) {
         emit modelChanged(m_model);
     }
 }
+
+QT_END_NAMESPACE

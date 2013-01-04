@@ -40,6 +40,7 @@
 
 #include "qquicklayoutengine_p.h"
 
+QT_BEGIN_NAMESPACE
 
 /*
   This function is a modification of qGeomCalc() included in "QtCore/kernel/qlayoutengine_p.h".
@@ -289,3 +290,5 @@ void qDeclarativeLayoutCalculate(QVector<QQuickComponentsLayoutInfo> &chain, int
         p += data->effectiveSpacer(spacer) + extra;
     }
 }
+
+QT_END_NAMESPACE

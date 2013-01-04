@@ -43,6 +43,10 @@
 
 #include <QVector>
 
+QT_BEGIN_HEADER
+
+QT_BEGIN_NAMESPACE
+
 struct QQuickComponentsLayoutInfo
 {
     QQuickComponentsLayoutInfo()
@@ -80,5 +84,9 @@ struct QQuickComponentsLayoutInfo
 
 void qDeclarativeLayoutCalculate(QVector<QQuickComponentsLayoutInfo> &chain, int start,
                                  int count, qreal pos, qreal space, qreal spacer);
+
+QT_END_NAMESPACE
+
+QT_END_HEADER
 
 #endif

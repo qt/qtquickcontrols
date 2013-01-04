@@ -46,6 +46,10 @@
 #include <QtWidgets/qabstractslider.h>
 #include <QtQml/qqml.h>
 
+QT_BEGIN_HEADER
+
+QT_BEGIN_NAMESPACE
+
 class QRangeModelPrivate;
 
 class QRangeModel : public QObject
@@ -120,6 +124,10 @@ private:
 
 };
 
+QT_END_NAMESPACE
+
 QML_DECLARE_TYPE(QRangeModel)
+
+QT_END_HEADER
 
 #endif // QRANGEMODEL_H

@@ -52,6 +52,10 @@
 // We mean it.
 //
 
+QT_BEGIN_HEADER
+
+QT_BEGIN_NAMESPACE
+
 #include "qrangemodel_p.h"
 
 class QRangeModelPrivate
@@ -102,5 +106,9 @@ public:
     qreal publicValue(qreal value) const;
     void emitValueAndPositionIfChanged(const qreal oldValue, const qreal oldPosition);
 };
+
+QT_END_NAMESPACE
+
+QT_END_HEADER
 
 #endif // QRANGEMODEL_P_H

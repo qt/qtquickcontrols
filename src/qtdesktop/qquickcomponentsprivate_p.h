@@ -44,6 +44,10 @@
 #include <QObject>
 #include <QQuickItem>
 
+QT_BEGIN_HEADER
+
+QT_BEGIN_NAMESPACE
+
 class QQuickComponentsPrivate : public QObject
 {
     Q_OBJECT
@@ -54,5 +58,9 @@ public:
     Q_INVOKABLE void showToolTip(QQuickItem *item, const QPointF &pos, const QString &text);
     Q_INVOKABLE void hideToolTip();
 };
+
+QT_END_NAMESPACE
+
+QT_END_HEADER
 
 #endif

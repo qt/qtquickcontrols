@@ -51,6 +51,10 @@
 #endif
 #include <QFileDialog>
 
+QT_BEGIN_HEADER
+
+QT_BEGIN_NAMESPACE
+
 #if QT_VERSION < 0x050000
 class QFileDialogItem : public QDeclarativeItem
 #else
@@ -128,5 +132,9 @@ private:
     bool _selectMultiple;
     bool _selectFolder;
 };
+
+QT_END_NAMESPACE
+
+QT_END_HEADER
 
 #endif // QFILEDIALOGITEM_H
