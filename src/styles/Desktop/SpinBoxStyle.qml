@@ -50,6 +50,8 @@ Item {
     property int leftMargin: 2 + edit.anchors.leftMargin
     property int rightMargin: 2 + edit.anchors.rightMargin
     property int bottomMargin: edit.anchors.bottomMargin
+    property int horizontalTextAlignment: Qt.AlignLeft
+    property int verticalTextAlignment: Qt.AlignVCenter
 
     property color foregroundColor: syspal.text
     property color backgroundColor: syspal.base

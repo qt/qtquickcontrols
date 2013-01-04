@@ -54,10 +54,29 @@ FocusScope {
     property int minimumWidth: 0
     property int minimumHeight: 0
 
-    property real value: 0.0
-    property real maximumValue: 99
+    /*!
+        The value of this SpinBox, clamped to \l minimumValue and \l maximumValue.
+    */
+    property real value: 0
+    /*!
+        The minimum value of the SpinBox range.
+        The \l value is clamped to this value.
+    */
     property real minimumValue: 0
+    /*!
+        The maximum value of the SpinBox range.
+        The \l value is clamped to this value.
+    */
+    property real maximumValue: 99
+    /*!
+        The amount by which the \l value is incremented/decremented.
+    */
     property real singleStep: 1
+    /*
+        \qmlproperty string inputMask
+        The inputMask for the text input.
+    */
+    property alias inputMask: input.inputMask
     property string postfix
     property var styleHints:[]
 
@@ -80,6 +99,10 @@ FocusScope {
     implicitWidth: loader.item ? loader.item.implicitWidth : 0
     implicitHeight: loader.item ? loader.item.implicitHeight : 0
 
+    /*!
+        Increments \l value by \l singleStep, clamping to \l maximumValue
+        if the new value is too large.
+    */
     function increment() {
         setValue(input.text)
         value += singleStep
@@ -88,6 +111,10 @@ FocusScope {
         input.text = value
     }
 
+    /*!
+        Increments \l value by \l singleStep, clamping to \l minimumValue
+        if the new value is too small.
+    */
     function decrement() {
         setValue(input.text)
         value -= singleStep
@@ -96,6 +123,10 @@ FocusScope {
         input.text = value
     }
 
+    /*!
+        Sets \l value to \a v, clamping to \l minimumValue and \l maximumValue
+        if \a v is not within this range.
+    */
     function setValue(v) {
         var newval = parseFloat(v)
         if (newval > maximumValue)
@@ -137,7 +168,8 @@ FocusScope {
 
         clip: true
 
-        verticalAlignment: Qt.AlignVCenter
+        horizontalAlignment: styleItem ? styleItem.horizontalTextAlignment : Qt.AlignLeft
+        verticalAlignment: styleItem ? styleItem.verticalTextAlignment : Qt.AlignVCenter
         anchors.fill: parent
         anchors.leftMargin: styleItem ? styleItem.leftMargin : 0
         anchors.topMargin: styleItem ? styleItem.topMargin : 0

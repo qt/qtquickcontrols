@@ -58,6 +58,8 @@ Item {
     property int leftMargin: 4
     property int rightMargin: 12
     property int bottomMargin: 0
+    property int horizontalTextAlignment: Qt.AlignLeft
+    property int verticalTextAlignment: Qt.AlignVCenter
 
     property color foregroundColor: syspal.text
     property color backgroundColor: syspal.base
