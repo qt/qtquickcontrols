@@ -12,6 +12,7 @@ Dialog 1.0 Dialog.qml
 Frame 1.0 Frame.qml
 GroupBox 1.0 GroupBox.qml
 Label 1.0 Label.qml
+Page 1.0 Page.qml
 PageAnimation 1.0 PageAnimation.qml
 PageStack 1.0 PageStack.qml
 PageTransition 1.0 PageTransition.qml

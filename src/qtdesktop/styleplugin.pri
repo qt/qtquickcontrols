@@ -15,7 +15,8 @@ HEADERS += \
     $$PWD/qtmenubar_p.h \
     $$PWD/qtmenuitem_p.h \
     $$PWD/qtsplitterbase_p.h \
-    $$PWD/qwheelarea_p.h
+    $$PWD/qwheelarea_p.h \
+    $$PWD/qpagestatus.h
 
 SOURCES += \
     $$PWD/qdesktopitem.cpp \

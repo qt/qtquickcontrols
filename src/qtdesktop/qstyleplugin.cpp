@@ -52,6 +52,7 @@
 #include "qquicklinearlayout_p.h"
 #include "qquickcomponentsprivate_p.h"
 #include "qfiledialogitem_p.h"
+#include "qpagestatus.h"
 #include <qqmlextensionplugin.h>
 
 #include <qqmlengine.h>
@@ -117,6 +118,7 @@ void StylePlugin::registerTypes(const char *uri)
 
     qmlRegisterUncreatableType<QtMenuBase>(uri, 1, 0, "NativeMenuBase", QLatin1String("Do not create objects of type NativeMenuBase"));
     qmlRegisterUncreatableType<QDesktopItem>(uri, 1, 0,"Desktop", QLatin1String("Do not create objects of type Desktop"));
+    qmlRegisterUncreatableType<QPageStatus>(uri, 1, 0, "PageStatus", QLatin1String("Do not create objects of type PageStatus"));
 }
 
 void StylePlugin::initializeEngine(QQmlEngine *engine, const char *uri)

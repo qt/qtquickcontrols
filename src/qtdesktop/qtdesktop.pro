@@ -19,6 +19,7 @@ QML_FILES = \
     Frame.qml \
     GroupBox.qml \
     Label.qml \
+    Page.qml \
     PageAnimation.qml \
     PageStack.qml \
     PageTransition.qml \
