@@ -1,35 +1,35 @@
 HEADERS += \
-    qdesktopitem_p.h \
-    qfiledialogitem_p.h \
-    qquickcomponentsprivate_p.h \
-    qquicklayout_p.h \
-    qquicklayoutengine_p.h \
-    qquicklinearlayout_p.h \
-    qrangemodel_p.h \
-    qrangemodel_p_p.h \
-    qstyleitem_p.h \
-    qstyleplugin_p.h \
-    qtmenu_p.h \
-    qtmenubar_p.h \
-    qtmenuitem_p.h \
-    qtsplitterbase_p.h \
-    qwheelarea_p.h
+    $$PWD/qdesktopitem_p.h \
+    $$PWD/qfiledialogitem_p.h \
+    $$PWD/qquickcomponentsprivate_p.h \
+    $$PWD/qquicklayout_p.h \
+    $$PWD/qquicklayoutengine_p.h \
+    $$PWD/qquicklinearlayout_p.h \
+    $$PWD/qrangemodel_p.h \
+    $$PWD/qrangemodel_p_p.h \
+    $$PWD/qstyleitem_p.h \
+    $$PWD/qstyleplugin_p.h \
+    $$PWD/qtmenu_p.h \
+    $$PWD/qtmenubar_p.h \
+    $$PWD/qtmenuitem_p.h \
+    $$PWD/qtsplitterbase_p.h \
+    $$PWD/qwheelarea_p.h
 
 SOURCES += \
-    qdesktopitem.cpp \
-    qfiledialogitem.cpp \
-    qquickcomponentsprivate.cpp \
-    qquicklayout.cpp \
-    qquicklayoutengine.cpp \
-    qquicklinearlayout.cpp \
-    qrangemodel.cpp \
-    qstyleitem.cpp \
-    qstyleplugin.cpp \
-    qtmenu.cpp \
-    qtmenubar.cpp \
-    qtmenuitem.cpp \
-    qtsplitterbase.cpp \
-    qwheelarea.cpp
+    $$PWD/qdesktopitem.cpp \
+    $$PWD/qfiledialogitem.cpp \
+    $$PWD/qquickcomponentsprivate.cpp \
+    $$PWD/qquicklayout.cpp \
+    $$PWD/qquicklayoutengine.cpp \
+    $$PWD/qquicklinearlayout.cpp \
+    $$PWD/qrangemodel.cpp \
+    $$PWD/qstyleitem.cpp \
+    $$PWD/qstyleplugin.cpp \
+    $$PWD/qtmenu.cpp \
+    $$PWD/qtmenubar.cpp \
+    $$PWD/qtmenuitem.cpp \
+    $$PWD/qtsplitterbase.cpp \
+    $$PWD/qwheelarea.cpp
 
 OTHER_FILES += \
-    styleplugin.json
+    $$PWD/styleplugin.json
