@@ -40,6 +40,7 @@
 
 import QtQuick 2.0
 import QtQuick.Window 2.0
+import QtDesktop 1.0
 
 /*!
     \qmltype Dialog
@@ -72,8 +73,6 @@ Window {
 
     property int buttons: ok | cancel
 
-    modal: false
-
     default property alias data: content.data
 
     Item {
@@ -85,9 +84,6 @@ Window {
         anchors.left: parent.left
         anchors.bottom: buttonrow.top
     }
-
-    // Dialogs should center on parent
-    onVisibleChanged: center()
 
     Row {
         property bool mac: (style.style == "mac")
@@ -105,7 +101,7 @@ Window {
             text: "Help"
             focus: false
             Component.onCompleted: if (style.isMac) width = 22
-            delegate: style.isMac ? machelpdelegate : cancelbutton.background
+            style: style.isMac ? machelpdelegate : cancelbutton.background
             onClicked: {
                 clickedButton = helpbutton
                 buttonClicked()
