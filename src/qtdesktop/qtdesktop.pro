@@ -1,6 +1,8 @@
-QT += qml quick widgets
-
+CXX_MODULE = qml
+TARGET  = styleplugin
 TARGETPATH = QtDesktop
+
+QT += qml quick widgets
 
 QMAKE_DOCS = $$PWD/doc/qtdesktopcomponents.qdocconf
 
@@ -54,7 +56,3 @@ mac {
 }
 
 load(qml_plugin)
-
-#tmp solution for QTBUG-28200
-TARGET = $$qtLibraryTarget(styleplugin)
-DESTDIR = $$QT.core.qml/QtDesktop/plugin
