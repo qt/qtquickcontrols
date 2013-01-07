@@ -176,7 +176,7 @@ FocusScope{
                 horizontalAlignment: itemTextAlignment
                 anchors.verticalCenter: parent.verticalCenter
                 elide: itemElideMode
-                text: itemValue ? itemValue : ""
+                text: itemValue != undefined ? itemValue : ""
                 color: itemForeground
                 renderType: Text.NativeRendering
             }
@@ -393,6 +393,7 @@ FocusScope{
             property int rowIndex: model.index
             property bool itemAlternateBackground: alternateRowColor && rowIndex % 2 == 1
             property variant itemModelData: typeof modelData == "undefined" ? null : modelData
+            property variant itemModel: model
 
             Loader {
                 id: rowstyle
@@ -408,6 +409,7 @@ FocusScope{
                 property int index: rowitem.rowIndex
                 property variant model: tree.model
                 property variant modelData: rowitem.itemModelData
+                property variant itemModel: rowitem.itemModel
             }
             Row {
                 id: row
@@ -428,13 +430,14 @@ FocusScope{
                         width: header[index].width
 
                         function getValue() {
-                            if (header[index].role.length && model.get && model.get(rowIndex)[header[index].role])
-                                return model.get(rowIndex)[header[index].role]
-                            else if (modelData && modelData.hasOwnProperty(header[index].role))
-                                return modelData[header[index].role]
-                            else if (modelData)
-                                return modelData
-                            return ""
+                            if (header[index].role.length && itemModel.hasOwnProperty(header[index].role))
+                                return itemModel[header[index].role] // Qml ListModel and QAbstractItemModel
+                            else if (modelData != undefined && modelData.hasOwnProperty(header[index].role))
+                                return modelData[header[index].role] // QObjectList / QObject
+                            else if (modelData != undefined)
+                                return modelData // Models without role
+                            else
+                                return ""
                         }
                         property variant itemValue: getValue()
                         property bool itemSelected: rowitem.ListView.isCurrentItem
