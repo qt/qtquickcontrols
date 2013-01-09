@@ -167,6 +167,7 @@ FocusScope {
 
     MouseArea {
         id: mouseUp
+        hoverEnabled: true
 
         property var upRect: loader.item  ?  loader.item.upRect : null
 
@@ -191,6 +192,8 @@ FocusScope {
 
     MouseArea {
         id: mouseDown
+        hoverEnabled: true
+
         onClicked: decrement()
         property var downRect: loader.item ? loader.item.downRect : null
 
