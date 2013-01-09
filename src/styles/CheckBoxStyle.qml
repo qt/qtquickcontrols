@@ -53,6 +53,7 @@ Item {
     property Component indicator: Rectangle {
         height:20
         width: 20
+        antialiasing: true
         gradient: Gradient{
             GradientStop{color: control.pressed ? "lightgray" : "white" ; position: 0}
             GradientStop{color: control.pressed ? "lightgray" : "lightgray" ; position: 1}
@@ -62,6 +63,7 @@ Item {
         Rectangle {
             height:20
             width: 20
+            antialiasing: true
             visible: control.checked
             gradient: Gradient{
                 GradientStop{color: "darkgray" ; position: 1}
