@@ -38,8 +38,8 @@
 **
 ****************************************************************************/
 
-#ifndef QWHEELAREA_H
-#define QWHEELAREA_H
+#ifndef QWHEELAREA_P_H
+#define QWHEELAREA_P_H
 
 #include <QtGui/qevent.h>
 #include <QtWidgets/qgraphicssceneevent.h>
@@ -122,4 +122,4 @@ QML_DECLARE_TYPE(QWheelArea)
 
 QT_END_HEADER
 
-#endif // QWHEELAREA_H
+#endif // QWHEELAREA_P_H

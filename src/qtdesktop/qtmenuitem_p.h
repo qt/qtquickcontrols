@@ -38,8 +38,8 @@
 **
 ****************************************************************************/
 
-#ifndef QTMENUITEM_H
-#define QTMENUITEM_H
+#ifndef QTMENUITEM_P_H
+#define QTMENUITEM_P_H
 
 #include <QtCore/QObject>
 #include <QtWidgets/QAction>
@@ -131,4 +131,4 @@ QT_END_NAMESPACE
 
 QT_END_HEADER
 
-#endif //QTMENUITEM_H
+#endif //QTMENUITEM_P_H

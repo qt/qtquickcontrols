@@ -38,8 +38,8 @@
 **
 ****************************************************************************/
 
-#ifndef QRANGEMODEL_H
-#define QRANGEMODEL_H
+#ifndef QRANGEMODEL_P_H
+#define QRANGEMODEL_P_H
 
 #include <QtCore/qobject.h>
 //#include <QtGui/qgraphicsitem.h>
@@ -130,4 +130,4 @@ QML_DECLARE_TYPE(QRangeModel)
 
 QT_END_HEADER
 
-#endif // QRANGEMODEL_H
+#endif // QRANGEMODEL_P_H

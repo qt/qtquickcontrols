@@ -38,8 +38,8 @@
 **
 ****************************************************************************/
 
-#ifndef STYLEWRAPPER_H
-#define STYLEWRAPPER_H
+#ifndef QSTYLEITEM_P_H
+#define QSTYLEITEM_P_H
 
 #include <QtQuick/qquickpainteditem.h>
 #include <QtWidgets/QStyle>
@@ -259,4 +259,4 @@ QT_END_NAMESPACE
 
 QT_END_HEADER
 
-#endif //STYLEWRAPPER_H
+#endif // QSTYLEITEM_P_H

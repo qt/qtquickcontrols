@@ -38,8 +38,8 @@
 **
 ****************************************************************************/
 
-#ifndef QTMLMENU_H
-#define QTMLMENU_H
+#ifndef QTMENU_P_H
+#define QTMENU_P_H
 #include <QtCore/qglobal.h>
 #include <QtWidgets/qmenu.h>
 #include <QtQuick/QtQuick>
@@ -126,4 +126,4 @@ QML_DECLARE_TYPE(QtMenu)
 
 QT_END_HEADER
 
-#endif // QTMLMENU_H
+#endif // QTMENU_P_H

@@ -38,8 +38,8 @@
 **
 ****************************************************************************/
 
-#ifndef QTSPLITTERBASE_H
-#define QTSPLITTERBASE_H
+#ifndef QTSPLITTERBASE_P_H
+#define QTSPLITTERBASE_P_H
 
 #include <QtQml>
 #include <QtQuick>
@@ -127,4 +127,4 @@ QML_DECLARE_TYPEINFO(QtSplitterBase, QML_HAS_ATTACHED_PROPERTIES)
 
 QT_END_HEADER
 
-#endif // QTSPLITTERBASE_H
+#endif // QTSPLITTERBASE_P_H

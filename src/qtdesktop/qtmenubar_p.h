@@ -38,8 +38,8 @@
 **
 ****************************************************************************/
 
-#ifndef QTMENUBAR_H
-#define QTMENUBAR_H
+#ifndef QTMENUBAR_P_H
+#define QTMENUBAR_P_H
 
 #include <QtCore/qglobal.h>
 
@@ -93,4 +93,4 @@ QT_END_NAMESPACE
 
 QT_END_HEADER
 
-#endif //QTMENUBAR_H
+#endif //QTMENUBAR_P_H

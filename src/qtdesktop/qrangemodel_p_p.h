@@ -38,8 +38,8 @@
 **
 ****************************************************************************/
 
-#ifndef QRANGEMODEL_P_H
-#define QRANGEMODEL_P_H
+#ifndef QRANGEMODEL_P_P_H
+#define QRANGEMODEL_P_P_H
 
 //
 //  W A R N I N G
@@ -111,4 +111,4 @@ QT_END_NAMESPACE
 
 QT_END_HEADER
 
-#endif // QRANGEMODEL_P_H
+#endif // QRANGEMODEL_P_P_H

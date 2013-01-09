@@ -38,8 +38,8 @@
 **
 ****************************************************************************/
 
-#ifndef QDECLARATIVELAYOUTENGINE_H
-#define QDECLARATIVELAYOUTENGINE_H
+#ifndef QQUICKLAYOUTENGINE_P_H
+#define QQUICKLAYOUTENGINE_P_H
 
 #include <QVector>
 
@@ -89,4 +89,4 @@ QT_END_NAMESPACE
 
 QT_END_HEADER
 
-#endif
+#endif // QQUICKLAYOUTENGINE_P_H

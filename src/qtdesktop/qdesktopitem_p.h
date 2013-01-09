@@ -38,8 +38,8 @@
 **
 ****************************************************************************/
 
-#ifndef QDESKTOPITEM_H
-#define QDESKTOPITEM_H
+#ifndef QDESKTOPITEM_P_H
+#define QDESKTOPITEM_P_H
 
 #include <QtWidgets/QDesktopWidget>
 #include <QtQml>
@@ -85,4 +85,4 @@ QML_DECLARE_TYPEINFO(QDesktopItem, QML_HAS_ATTACHED_PROPERTIES)
 
 QT_END_HEADER
 
-#endif // QDesktopItemITEM_H
+#endif // QDESKTOPITEM_P_H

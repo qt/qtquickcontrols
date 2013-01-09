@@ -38,8 +38,8 @@
 **
 ****************************************************************************/
 
-#ifndef QDECLARATIVELINEARLAYOUT_H
-#define QDECLARATIVELINEARLAYOUT_H
+#ifndef QQUICKLINEARLAYOUT_P_H
+#define QQUICKLINEARLAYOUT_P_H
 
 #include "qquicklayout_p.h"
 
@@ -115,4 +115,4 @@ QT_END_NAMESPACE
 
 QT_END_HEADER
 
-#endif
+#endif // QQUICKLINEARLAYOUT_P_H

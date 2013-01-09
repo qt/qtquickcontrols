@@ -38,8 +38,8 @@
 **
 ****************************************************************************/
 
-#ifndef QFILEDIALOGITEM_H
-#define QFILEDIALOGITEM_H
+#ifndef QFILEDIALOGITEM_P_H
+#define QFILEDIALOGITEM_P_H
 
 #include <QApplication>
 #if QT_VERSION < 0x050000
@@ -137,4 +137,4 @@ QT_END_NAMESPACE
 
 QT_END_HEADER
 
-#endif // QFILEDIALOGITEM_H
+#endif // QFILEDIALOGITEM_P_H

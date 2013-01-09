@@ -38,8 +38,8 @@
 **
 ****************************************************************************/
 
-#ifndef STYLEPLUGIN_H
-#define STYLEPLUGIN_H
+#ifndef QSTYLEPLUGIN_P_H
+#define QSTYLEPLUGIN_P_H
 
 #include <QQmlExtensionPlugin>
 #include <QtCore/QTimer>
@@ -62,4 +62,4 @@ QT_END_NAMESPACE
 
 QT_END_HEADER
 
-#endif // STYLEPLUGIN_H
+#endif // QSTYLEPLUGIN_P_H

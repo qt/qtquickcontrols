@@ -38,8 +38,8 @@
 **
 ****************************************************************************/
 
-#ifndef QDECLARATIVELAYOUT_H
-#define QDECLARATIVELAYOUT_H
+#ifndef QQUICKLAYOUT_P_H
+#define QQUICKLAYOUT_P_H
 
 #include <QPointer>
 #include <QQuickItem>
@@ -134,4 +134,4 @@ QML_DECLARE_TYPEINFO(QQuickComponentsLayout, QML_HAS_ATTACHED_PROPERTIES)
 
 QT_END_HEADER
 
-#endif
+#endif // QQUICKLAYOUT_P_H
