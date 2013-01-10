@@ -46,6 +46,8 @@
 #include <QtGui/QIcon>
 #include <QtGui/qkeysequence.h>
 
+QT_BEGIN_NAMESPACE
+
 class QtExclusiveGroup;
 
 class QtAction : public QObject
@@ -103,7 +105,7 @@ public:
     bool event(QEvent *e);
 
 public Q_SLOTS:
-    void trigger() { emit triggered(); }
+    void trigger();
     void hover() { emit hovered(); }
 
 Q_SIGNALS:
@@ -135,5 +137,7 @@ private:
     QKeySequence m_mnemonic;
     QString m_toolTip;
 };
+
+QT_END_NAMESPACE
 
 #endif // QTACTION_H

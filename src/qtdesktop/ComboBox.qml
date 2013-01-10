@@ -101,7 +101,7 @@ Private.BasicButton {
 
     default property alias menuItems: popup.menuItems
     property alias model: popup.model
-    property alias popupOpen: popup.visible
+    property bool popupOpen: false
 
     property alias selectedIndex: popup.selectedIndex
     property alias hoveredIndex: popup.hoveredIndex
@@ -117,20 +117,51 @@ Private.BasicButton {
 
     width: implicitWidth
     height: implicitHeight
-    onWidthChanged: popup.setMinimumWidth(width)
     checkable: false
-    onPressedChanged: if (pressed) popup.visible = true
+
+    onPressedChanged: { if (pressed) __popItUp() }
+
+    function __popItUp() {
+        popupOpen = true
+        popup.menuItems[selectedIndex].checked = true
+        popup.visible = true
+    }
+
+    ExclusiveGroup { id: eg }
+
+    StyleItem { id: styleItem }
+    Component.onCompleted: {
+        if (selectedIndex === -1)
+            selectedIndex = 0
+        if (styleItem.style == "mac") {
+            popup.x -= 5
+            popup.y += 2
+            popup.font.pointSize = 13
+        }
+    }
 
     ContextMenu {
         id: popup
-        property bool center: false
-        centerSelectedText: center
-        y: center ? 0 : comboBox.height
+
+        y: centerSelectedText ? 0 : comboBox.height
+        minimumWidth: comboBox.width
+
+        function finalizeItem(item) {
+            item.action.checkable = true
+            item.action.exclusiveGroup = eg
+        }
+
+        onMenuClosed: popupOpen = false
     }
 
     // The key bindings below will only be in use when popup is
     // not visible. Otherwise, native popup key handling will take place:
-    Keys.onSpacePressed: { comboBox.popupOpen = !comboBox.popupOpen }
-    Keys.onUpPressed: { if (selectedIndex < model.count - 1) selectedIndex++ }
-    Keys.onDownPressed: { if (selectedIndex > 0) selectedIndex-- }
+    Keys.onSpacePressed: {
+        if (!popupOpen)
+            __popItUp()
+        else
+            popupOpen = false
+    }
+    Keys.onUpPressed: { if (selectedIndex > 0) selectedIndex-- }
+    Keys.onDownPressed: { if (selectedIndex < model.count - 1) selectedIndex++ }
 }

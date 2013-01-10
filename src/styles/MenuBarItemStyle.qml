@@ -38,67 +38,20 @@
 **
 ****************************************************************************/
 
-#include "qtmenubar_p.h"
+import QtQuick 2.0
 
-#include "private/qguiapplication_p.h"
-#include <QtGui/qpa/qplatformtheme.h>
-#include <QtGui/qpa/qplatformmenu.h>
+Rectangle {
+    SystemPalette { id: syspal }
 
-QT_BEGIN_NAMESPACE
+    width: text.width + 12
+    height: text.height + 4
+    color: selected ? syspal.highlight : syspal.window
 
-QtMenuBar::QtMenuBar(QQuickItem *parent)
-    : QQuickItem(parent)
-{
-    connect(this, SIGNAL(parentChanged(QQuickItem *)), this, SLOT(updateParent(QQuickItem *)));
-    m_platformMenuBar = QGuiApplicationPrivate::platformTheme()->createPlatformMenuBar();
-}
-
-QtMenuBar::~QtMenuBar()
-{
-}
-
-QQmlListProperty<QtMenu> QtMenuBar::menus()
-{
-    return QQmlListProperty<QtMenu>(this, 0, &QtMenuBar::append_menu, &QtMenuBar::count_menu, &QtMenuBar::at_menu, 0);
-}
-
-bool QtMenuBar::isNative() {
-    return m_platformMenuBar != 0;
-}
-
-void QtMenuBar::updateParent(QQuickItem *newParent)
-{
-    QWindow *newParentWindow = newParent ? newParent->window() : 0;
-    if (newParentWindow != window() && m_platformMenuBar)
-        m_platformMenuBar->handleReparent(newParentWindow);
-}
-
-void QtMenuBar::append_menu(QQmlListProperty<QtMenu> *list, QtMenu *menu)
-{
-    if (QtMenuBar *menuBar = qobject_cast<QtMenuBar *>(list->object)) {
-        menu->setParent(menuBar);
-        menuBar->m_menus.append(menu);
-
-        if (menuBar->m_platformMenuBar)
-            menuBar->m_platformMenuBar->insertMenu(menu->platformMenu(), 0 /* append */);
-
-        menuBar->menuChanged();
+    Text {
+        id: text
+        text: menuItem.text
+        anchors.centerIn: parent
+        renderType: Text.NativeRendering
+        color: selected ? syspal.highlightedText : syspal.windowText
     }
 }
-
-int QtMenuBar::count_menu(QQmlListProperty<QtMenu> *list)
-{
-    if (QtMenuBar *menuBar = qobject_cast<QtMenuBar *>(list->object))
-        return menuBar->m_menus.size();
-    return 0;
-}
-
-QtMenu *QtMenuBar::at_menu(QQmlListProperty<QtMenu> *list, int index)
-{
-    QtMenuBar *menuBar = qobject_cast<QtMenuBar *>(list->object);
-    if (menuBar &&  0 <= index && index < menuBar->m_menus.size())
-        return menuBar->m_menus[index];
-    return 0;
-}
-
-QT_END_NAMESPACE

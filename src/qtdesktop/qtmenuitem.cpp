@@ -39,134 +39,376 @@
 ****************************************************************************/
 
 #include "qtmenuitem_p.h"
+#include "qtaction_p.h"
+#include "qtmenu_p.h"
+
+#include <QtCore/QUrl>
+#include <QtGui/private/qguiapplication_p.h>
+#include <QtGui/qpa/qplatformtheme.h>
+#include <QtGui/qpa/qplatformmenu.h>
 
 QT_BEGIN_NAMESPACE
 
-void QtMenuBase::setIconSource(const QUrl &icon)
+QtMenuBase::QtMenuBase(QQuickItem *parent)
+    : QQuickItem(parent)
 {
-    _iconSource = icon;
-    if (_iconName.isEmpty())
-        action()->setIcon(QIcon(icon.toLocalFile()));
-    else
-        action()->setIcon(QIcon::fromTheme(_iconName, QIcon(_iconSource.toLocalFile())));
-
-    emit iconSourceChanged();
+    m_platformItem = QGuiApplicationPrivate::platformTheme()->createPlatformMenuItem();
 }
 
-QUrl QtMenuBase::iconSource() const
+QtMenuBase::~QtMenuBase()
 {
-    return _iconSource;
+    delete m_platformItem;
 }
 
-void QtMenuBase::setIconName(const QString &icon)
+void QtMenuBase::syncWithPlatformMenu()
 {
-    _iconName = icon;
-    action()->setIcon(QIcon::fromTheme(_iconName, QIcon(_iconSource.toLocalFile())));
-
-    emit iconNameChanged();
-}
-
-QString QtMenuBase::iconName() const
-{
-    return _iconName;
+    QtMenu *menu = qobject_cast<QtMenu *>(parent());
+    if (menu && menu->platformMenu() && platformItem()
+        && menu->m_menuItems.contains(this)) // If not, it'll be added later and then sync'ed
+        menu->platformMenu()->syncMenuItem(platformItem());
 }
 
 /*!
-    \qmltype MenuItem
+    \qmltype MenuSeparator
     \instantiates QtMenuSeparator
     \inqmlmodule QtDesktop 1.0
-    \brief MenuItem is doing bla...bla...
+    \inherits Item
+    \brief MenuSeparator provides a separator for your items inside a menu.
+
+    \sa Menu, MenuItem
 */
 
 QtMenuSeparator::QtMenuSeparator(QQuickItem *parent)
-    : QtMenuBase(parent), _action(new QAction(this))
+    : QtMenuBase(parent)
 {
-    _action->setSeparator(true);
+    if (platformItem())
+        platformItem()->setIsSeparator(true);
 }
 
-QtMenuSeparator::~QtMenuSeparator()
-{
-}
-
-QAction * QtMenuSeparator::action()
-{
-    return _action;
-}
 
 /*!
     \qmltype MenuItem
     \instantiates QtMenuItem
     \inqmlmodule QtDesktop 1.0
-    \brief MenuItem is doing bla...bla...
+    \brief MenuItem provides an item to add in a menu or a menu bar.
+
+    \code
+    Menu {
+        text: "Edit"
+
+        MenuItem {
+            text: "Cut"
+            shortcut: "Ctrl+X"
+            onTriggered: ...
+        }
+
+        MenuItem {
+            text: "Copy"
+            shortcut: "Ctrl+C"
+            onTriggered: ...
+        }
+
+        MenuItem {
+            text: "Paste"
+            shortcut: "Ctrl+V"
+            onTriggered: ...
+        }
+    }
+    \endcode
+
+    \sa MenuBar, Menu, MenuSeparator, Action
+*/
+
+/*!
+    \qmlproperty string MenuItem::text
+
+    Text for the menu item.
+*/
+
+/*!
+    \qmlproperty string MenuItem::shortcut
+
+    Shorcut bound to the menu item.
+
+    \sa Action::shortcut
+*/
+
+/*!
+    \qmlproperty bool MenuItem::checkable
+
+    Whether the menu item can be toggled.
+
+    \sa checked
+*/
+
+/*!
+    \qmlproperty bool MenuItem::checked
+
+    If the menu item is checkable, this property reflects its checked state.
+
+    \sa chekcable, Action::toggled()
+*/
+
+/*!
+    \qmlproperty url MenuItem::iconSource
+
+    \sa iconName, Action::iconSource
+*/
+
+/*!
+    \qmlproperty string MenuItem::iconName
+
+    \sa iconSource, Action::iconName
+*/
+
+/*!
+    \qmlproperty Action MenuItem::action
+
+    The action bound to this menu item.
+
+    \sa Action
+*/
+
+/*! \qmlsignal MenuItem::triggered()
+
+    Emitted when either the menu item or its bound action have been activated.
+
+    \sa trigger(), Action::triggered(), Action::toggled()
+*/
+
+/*! \qmlmethod MenuItem::trigger()
+
+    Manually trigger a menu item. Will also trigger the item's bound action.
+
+    \sa triggered(), Action::trigger()
 */
 
 QtMenuItem::QtMenuItem(QQuickItem *parent)
-    : QtMenuBase(parent), _action(new QAction(this))
+    : QtMenuBase(parent)
 {
-    connect(_action, SIGNAL(triggered()), this, SIGNAL(triggered()));
-    connect(_action, SIGNAL(toggled(bool)), this, SIGNAL(toggled(bool)));
-    connect(_action, SIGNAL(changed()), this, SIGNAL(enabledChanged()));
+    bindToAction(new QtAction(this));
 }
 
 QtMenuItem::~QtMenuItem()
 {
+    unbindFromAction(m_action);
 }
 
-void QtMenuItem::setText(const QString &text)
+void QtMenuItem::bindToAction(QtAction *action)
 {
-    _action->setText(text);
-    emit textChanged();
+    m_action = action;
+
+    if (platformItem()) {
+        connect(platformItem(), SIGNAL(activated()), m_action, SLOT(trigger()));
+        connect(platformItem(), SIGNAL(hovered()), m_action, SLOT(hover()));
+    }
+
+    connect(m_action, SIGNAL(destroyed(QObject*)), this, SLOT(unbindFromAction(QObject*)));
+
+    connect(m_action, SIGNAL(triggered()), this, SIGNAL(triggered()));
+    connect(m_action, SIGNAL(toggled(bool)), this, SLOT(updateChecked()));
+    connect(m_action, SIGNAL(enabledChanged()), this, SLOT(updateEnabled()));
+    connect(m_action, SIGNAL(textChanged()), this, SLOT(updateText()));
+    connect(m_action, SIGNAL(shortcutChanged(QString)), this, SLOT(updateShortcut()));
+    connect(m_action, SIGNAL(checkableChanged()), this, SIGNAL(checkableChanged()));
+    connect(m_action, SIGNAL(iconNameChanged()), this, SLOT(updateIconName()));
+    connect(m_action, SIGNAL(iconSourceChanged()), this, SLOT(updateIconSource()));
+
+    if (m_action->parent() != this) {
+        updateText();
+        updateShortcut();
+        updateEnabled();
+        updateIconName();
+        updateIconSource();
+        if (checkable())
+            updateChecked();
+    }
 }
 
-void QtMenuItem::setShortcut(const QString &shortcut)
+void QtMenuItem::unbindFromAction(QObject *o)
 {
-    _action->setShortcut(QKeySequence(shortcut));
-    emit shortcutChanged();
+    if (!o)
+        return;
+
+    if (o == m_action)
+        m_action = 0;
+
+    QtAction *action = qobject_cast<QtAction *>(o);
+    if (!action)
+        return;
+
+    if (platformItem()) {
+        disconnect(platformItem(), SIGNAL(activated()), action, SLOT(trigger()));
+        disconnect(platformItem(), SIGNAL(hovered()), action, SLOT(hover()));
+    }
+
+    disconnect(action, SIGNAL(destroyed(QObject*)), this, SLOT(unbindFromAction(QObject*)));
+
+    disconnect(action, SIGNAL(triggered()), this, SIGNAL(triggered()));
+    disconnect(action, SIGNAL(toggled(bool)), this, SLOT(updateChecked()));
+    disconnect(action, SIGNAL(enabledChanged()), this, SLOT(updateEnabled()));
+    disconnect(action, SIGNAL(textChanged()), this, SLOT(updateText()));
+    disconnect(action, SIGNAL(shortcutChanged(QString)), this, SLOT(updateShortcut()));
+    disconnect(action, SIGNAL(checkableChanged()), this, SIGNAL(checkableChanged()));
+    disconnect(action, SIGNAL(iconNameChanged()), this, SLOT(updateIconName()));
+    disconnect(action, SIGNAL(iconSourceChanged()), this, SLOT(updateIconSource()));
 }
 
-void QtMenuItem::setCheckable(bool checkable)
+void QtMenuItem::setAction(QtAction *a)
 {
-    _action->setCheckable(checkable);
-}
+    if (a == m_action)
+        return;
 
-void QtMenuItem::setChecked(bool checked)
-{
-    _action->setChecked(checked);
-}
+    if (m_action->parent() == this)
+        delete m_action;
+    else
+        unbindFromAction(m_action);
 
-void QtMenuItem::setEnabled(bool enabled)
-{
-    _action->setEnabled(enabled);
+    bindToAction(a);
+    emit actionChanged();
 }
 
 QString QtMenuItem::text() const
 {
-    return _action->text();
+    return m_action ? m_action->text() : QString();
+}
+
+void QtMenuItem::setText(const QString &text)
+{
+    if (m_action)
+        m_action->setText(text);
+}
+
+void QtMenuItem::updateText()
+{
+    if (platformItem()) {
+        platformItem()->setText(text());
+        syncWithPlatformMenu();
+    }
+    emit textChanged();
 }
 
 QString QtMenuItem::shortcut() const
 {
-    return _action->shortcut().toString();
+    return m_action ? m_action->shortcut() : QString();
+}
+
+void QtMenuItem::setShortcut(const QString &shortcut)
+{
+    if (m_action)
+        m_action->setShortcut(shortcut);
+}
+
+void QtMenuItem::updateShortcut()
+{
+    if (platformItem()) {
+        platformItem()->setShortcut(QKeySequence(shortcut()));
+        syncWithPlatformMenu();
+    }
+    emit shortcutChanged();
 }
 
 bool QtMenuItem::checkable() const
 {
-    return _action->isCheckable();
+    return m_action ? m_action->isCheckable() : false;
+}
+
+void QtMenuItem::setCheckable(bool checkable)
+{
+    if (m_action)
+        m_action->setCheckable(checkable);
 }
 
 bool QtMenuItem::checked() const
 {
-    return _action->isChecked();
+    return m_action ? m_action->isChecked() : false;
+}
+
+void QtMenuItem::setChecked(bool checked)
+{
+    if (m_action)
+        m_action->setChecked(checked);
+}
+
+void QtMenuItem::updateChecked()
+{
+    bool checked = this->checked();
+    if (platformItem()) {
+        platformItem()->setChecked(checked);
+        syncWithPlatformMenu();
+    }
+    emit toggled(checked);
 }
 
 bool QtMenuItem::enabled() const
 {
-    return _action->isEnabled();
+    return m_action ? m_action->isEnabled() : false;
 }
 
-QAction * QtMenuItem::action()
+void QtMenuItem::setEnabled(bool enabled)
 {
-    return _action;
+    if (m_action)
+        m_action->setEnabled(enabled);
+}
+
+void QtMenuItem::updateEnabled()
+{
+    if (platformItem()) {
+        platformItem()->setEnabled(enabled());
+        syncWithPlatformMenu();
+    }
+    emit enabledChanged();
+}
+
+QUrl QtMenuItem::iconSource() const
+{
+    return m_action ? m_action->iconSource() : QUrl();
+}
+
+void QtMenuItem::setIconSource(const QUrl &iconSource)
+{
+    if (m_action)
+        m_action->setIconSource(iconSource);
+}
+
+void QtMenuItem::updateIconSource()
+{
+    QIcon icon = QIcon(iconSource().toLocalFile());
+    if (!iconName().isEmpty())
+        icon = QIcon::fromTheme(iconName(), icon);
+
+    if (platformItem()) {
+        platformItem()->setIcon(icon);
+        syncWithPlatformMenu();
+    }
+    emit iconSourceChanged();
+}
+
+QString QtMenuItem::iconName() const
+{
+    return m_action ? m_action->iconName() : QString();
+}
+
+void QtMenuItem::setIconName(const QString &iconName)
+{
+    if (m_action)
+        m_action->setIconName(iconName);
+}
+
+void QtMenuItem::updateIconName()
+{
+    QIcon icon = QIcon::fromTheme(iconName(), QIcon(iconSource().toLocalFile()));
+
+    if (platformItem()) {
+        platformItem()->setIcon(icon);
+        syncWithPlatformMenu();
+    }
+    emit iconNameChanged();
+}
+
+void QtMenuItem::trigger()
+{
+    m_action->trigger();
 }
 
 QT_END_NAMESPACE

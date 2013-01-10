@@ -89,7 +89,7 @@ Window {
 
         By default this value is not set.
     */
-    property MenuBar menuBar
+    property MenuBar menuBar: null
 
     /*!
         \qmlproperty Item ApplicationWindow::toolBar
@@ -117,76 +117,57 @@ Window {
 
     /*! \internal */
     default property alias data: contentArea.data
-
-    /*! \internal */
-    property bool showMenuBar: menuBar ? menuBar.showMenuBar : false
+    property alias backgroundColor: syspal.window
 
     SystemPalette {id: syspal}
 
     Rectangle {
+        id: backgroundItem
         anchors.fill: parent
-        color: syspal.window
-    }
+        color: backgroundColor
 
-    StyleItem {
-        id: menuBarArea
-        anchors.top: parent.top
-        anchors.left: parent.left
-        anchors.right: parent.right
-        elementType: "menubar"
-        visible: showMenuBar
-        contentHeight: showMenuBar ? 20 : 0
         Row {
-            id: row
-            anchors.fill: parent
-            Repeater {
-                model: showMenuBar ? menuBar.menuList.length : 0
-                StyleItem {
-                    id: menuItem
-                    elementType: "menubaritem"
-                    contentWidth: 100
-                    contentHeight: 20
-                    width: text.paintedWidth + 12
-                    height :text.paintedHeight + 4
-                    sunken: true
-                    selected: mouse.pressed
-                    property var menu: menuBar.menuList[index]
-                    Text {
-                        id: text
-                        text: menu.text
-                        anchors.centerIn: parent
-                        renderType: Text.NativeRendering
-                        color: menuItem.selected ? syspal.highlightedText : syspal.windowText
-                    }
-                    MouseArea {
-                        id: mouse
-                        anchors.fill:parent
-                        onPressed: menu.showPopup(menuItem.x, menuBarArea.height, 0, root)
-                    }
-                }
+            id: toolBarArea
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.right: parent.right
+        }
+
+        Item {
+            id: contentArea
+            anchors.top: toolBarArea.bottom
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.bottom: statusBarArea.top
+        }
+
+        Row {
+            id: statusBarArea
+            anchors.bottom: parent.bottom
+            anchors.left: parent.left
+            anchors.right: parent.right
+        }
+
+        states: State {
+            name: "hasMenuBar"
+            when: menuBar && !menuBar.isNative
+
+            ParentChange {
+                target: menuBar
+                parent: backgroundItem
+            }
+
+            PropertyChanges {
+                target: menuBar
+                x: 0
+                y: 0
+                width: backgroundItem.width
+            }
+
+            AnchorChanges {
+                target: toolBarArea
+                anchors.top: menuBar.bottom
             }
         }
-    }
-
-    Item {
-        id: contentArea
-        anchors.top: toolBarArea.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.bottom: statusBarArea.top
-    }
-
-    Row {
-        id: toolBarArea
-        anchors.top: menuBarArea.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-    }
-
-    Row {
-        id: statusBarArea
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
     }
 }

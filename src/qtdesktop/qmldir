@@ -7,6 +7,8 @@ ComboBox 1.0 ComboBox.qml
 ContextMenu 1.0 ContextMenu.qml
 GroupBox 1.0 GroupBox.qml
 Label 1.0 Label.qml
+MenuBar 1.0 MenuBar.qml
+Menu 1.0 Menu.qml
 Page 1.0 Page.qml
 PageAnimation 1.0 PageAnimation.qml
 PageStack 1.0 PageStack.qml

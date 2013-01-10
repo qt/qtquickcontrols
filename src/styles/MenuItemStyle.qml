@@ -38,67 +38,39 @@
 **
 ****************************************************************************/
 
-#include "qtmenubar_p.h"
+import QtQuick 2.0
+import QtDesktop 1.0
 
-#include "private/qguiapplication_p.h"
-#include <QtGui/qpa/qplatformtheme.h>
-#include <QtGui/qpa/qplatformmenu.h>
+Rectangle {
+    width: Math.max(column.implicitWidth, text.paintedWidth + 12)
+    height: isSeparator ? text.font.pixelSize / 2 : text.paintedHeight + 4
+    color: selected ? "" : backgroundColor
+    gradient: selected ? selectedGradient : undefined
 
-QT_BEGIN_NAMESPACE
+    readonly property color backgroundColor: "lightgray"
+    Gradient {
+        id: selectedGradient
+        GradientStop {color: Qt.lighter(backgroundColor, 1.8)  ; position: 0}
+        GradientStop {color: backgroundColor ; position: 1.4}
+    }
+    antialiasing: true
 
-QtMenuBar::QtMenuBar(QQuickItem *parent)
-    : QQuickItem(parent)
-{
-    connect(this, SIGNAL(parentChanged(QQuickItem *)), this, SLOT(updateParent(QQuickItem *)));
-    m_platformMenuBar = QGuiApplicationPrivate::platformTheme()->createPlatformMenuBar();
-}
+    Text {
+        id: text
+        visible: !isSeparator
+        text: menuItemData.text + (hasSubmenu ? "  \u25b6" : "")
+        x: 6
+        anchors.verticalCenter: parent.verticalCenter
+        renderType: Text.NativeRendering
+        color: "black"
+    }
 
-QtMenuBar::~QtMenuBar()
-{
-}
-
-QQmlListProperty<QtMenu> QtMenuBar::menus()
-{
-    return QQmlListProperty<QtMenu>(this, 0, &QtMenuBar::append_menu, &QtMenuBar::count_menu, &QtMenuBar::at_menu, 0);
-}
-
-bool QtMenuBar::isNative() {
-    return m_platformMenuBar != 0;
-}
-
-void QtMenuBar::updateParent(QQuickItem *newParent)
-{
-    QWindow *newParentWindow = newParent ? newParent->window() : 0;
-    if (newParentWindow != window() && m_platformMenuBar)
-        m_platformMenuBar->handleReparent(newParentWindow);
-}
-
-void QtMenuBar::append_menu(QQmlListProperty<QtMenu> *list, QtMenu *menu)
-{
-    if (QtMenuBar *menuBar = qobject_cast<QtMenuBar *>(list->object)) {
-        menu->setParent(menuBar);
-        menuBar->m_menus.append(menu);
-
-        if (menuBar->m_platformMenuBar)
-            menuBar->m_platformMenuBar->insertMenu(menu->platformMenu(), 0 /* append */);
-
-        menuBar->menuChanged();
+    Rectangle {
+        visible: isSeparator
+        width: parent.width - 2
+        height: 1
+        x: 1
+        anchors.verticalCenter: parent.verticalCenter
+        color: "darkgray"
     }
 }
-
-int QtMenuBar::count_menu(QQmlListProperty<QtMenu> *list)
-{
-    if (QtMenuBar *menuBar = qobject_cast<QtMenuBar *>(list->object))
-        return menuBar->m_menus.size();
-    return 0;
-}
-
-QtMenu *QtMenuBar::at_menu(QQmlListProperty<QtMenu> *list, int index)
-{
-    QtMenuBar *menuBar = qobject_cast<QtMenuBar *>(list->object);
-    if (menuBar &&  0 <= index && index < menuBar->m_menus.size())
-        return menuBar->m_menus[index];
-    return 0;
-}
-
-QT_END_NAMESPACE

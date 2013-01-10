@@ -43,6 +43,59 @@
 
 #include <QtGui/private/qguiapplication_p.h>
 
+QT_BEGIN_NAMESPACE
+
+/*!
+    \qmltype Action
+    \instantiates QtAction
+    \inqmlmodule QtDesktop 1.0
+    \brief Action provides an abstract user interface action that can be bound to items
+
+    \sa MenuItem, Menu, ExclusiveGroup
+*/
+
+/*!
+    \qmlproperty string Action::text
+*/
+
+/*!
+    \qmlproperty url Action::iconSource
+*/
+
+/*!
+    \qmlproperty string Action::iconName
+*/
+
+/*!
+    \qmlproperty string Action::toolTip
+*/
+
+/*!
+    \qmlproperty bool Action::enabled
+*/
+
+/*!
+    \qmlproperty bool Action::checkable
+*/
+
+/*!
+    \qmlproperty bool Action::checked
+
+*/
+
+/*!
+    \qmlproperty ExclusiveGroup Action::exclusiveGroup
+
+    \sa ExclusiveGroup
+*/
+
+/*!
+    \qmlproperty string Action::shortcut
+*/
+
+/*!
+    \qmlproperty string Action::mnemonic
+*/
 
 QtAction::QtAction(QObject *parent)
     : QObject(parent)
@@ -203,9 +256,17 @@ bool QtAction::event(QEvent *e)
         return false;
     }
 
-    if (m_checkable)
-        setChecked(!m_checked);
-    emit triggered();
+    trigger();
 
     return true;
 }
+
+void QtAction::trigger()
+{
+    if (m_checkable)
+        setChecked(!m_checked);
+
+    emit triggered();
+}
+
+QT_END_NAMESPACE

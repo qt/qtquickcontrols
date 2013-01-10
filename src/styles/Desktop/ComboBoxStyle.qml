@@ -50,7 +50,7 @@ Item {
         width: parent.width
         anchors.verticalCenter: parent.verticalCenter
         elementType: "combobox"
-        sunken: comboBox.pressed
+        sunken: comboBox.pressed || comboBox.popupOpen
         raised: !sunken
         hover: comboBox.containsMouse
         enabled: comboBox.enabled
@@ -58,6 +58,6 @@ Item {
         hasFocus: comboBox.focus
         contentHeight: 18
         contentWidth: 80
-        Component.onCompleted: popup.center = styleHint("comboboxpopup");
+        Component.onCompleted: popup.centerSelectedText = styleHint("comboboxpopup");
     }
 }

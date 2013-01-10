@@ -98,10 +98,10 @@ void StylePlugin::registerTypes(const char *uri)
 
     qmlRegisterType<QtAction>(uri, 1, 0, "Action");
     qmlRegisterType<QtExclusiveGroup>(uri, 1, 0, "ExclusiveGroup");
-    qmlRegisterType<QtMenu>(uri, 1, 0, "Menu");
-    qmlRegisterType<QtMenuBar>(uri, 1, 0, "MenuBar");
+    qmlRegisterType<QtMenu>(uri, 1, 0, "MenuPrivate");
+    qmlRegisterType<QtMenuBar>(uri, 1, 0, "MenuBarPrivate");
     qmlRegisterType<QtMenuItem>(uri, 1, 0, "MenuItem");
-    qmlRegisterType<QtMenuSeparator>(uri, 1, 0, "Separator");
+    qmlRegisterType<QtMenuSeparator>(uri, 1, 0, "MenuSeparator");
 
     qmlRegisterType<QQuickComponentsRowLayout>(uri, 1, 0, "RowLayout");
     qmlRegisterType<QQuickComponentsColumnLayout>(uri, 1, 0, "ColumnLayout");

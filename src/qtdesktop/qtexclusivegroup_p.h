@@ -44,6 +44,8 @@
 #include <QObject>
 #include <QtQml/QtQml>
 
+QT_BEGIN_NAMESPACE
+
 class QtExclusiveGroup : public QObject
 {
     Q_OBJECT
@@ -53,12 +55,12 @@ class QtExclusiveGroup : public QObject
 public:
     explicit QtExclusiveGroup(QObject *parent = 0);
 
+    QObject *current() const { return m_current; }
+    void setCurrent(QObject * o);
+
 public Q_SLOTS:
     void registerCheckable(QObject *o);
     void unregisterCheckable(QObject *o);
-
-    QObject *current() const { return m_current; }
-    void setCurrent(QObject * o);
 
 Q_SIGNALS:
     void currentChanged();
@@ -70,5 +72,7 @@ private:
     QObject * m_current;
     QMetaMethod m_updateCurrentMethod;
 };
+
+QT_END_NAMESPACE
 
 #endif // QTEXCLUSIVEGROUP_H

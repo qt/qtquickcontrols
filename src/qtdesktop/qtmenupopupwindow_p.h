@@ -38,67 +38,46 @@
 **
 ****************************************************************************/
 
-#include "qtmenubar_p.h"
+#ifndef QTMENUPOPUPWINDOW_H
+#define QTMENUPOPUPWINDOW_H
 
-#include "private/qguiapplication_p.h"
-#include <QtGui/qpa/qplatformtheme.h>
-#include <QtGui/qpa/qplatformmenu.h>
+#include <QQuickWindow>
+
+QT_BEGIN_HEADER
 
 QT_BEGIN_NAMESPACE
 
-QtMenuBar::QtMenuBar(QQuickItem *parent)
-    : QQuickItem(parent)
+class QEvent;
+class QQuickItem;
+
+class QtMenuPopupWindow : public QQuickWindow
 {
-    connect(this, SIGNAL(parentChanged(QQuickItem *)), this, SLOT(updateParent(QQuickItem *)));
-    m_platformMenuBar = QGuiApplicationPrivate::platformTheme()->createPlatformMenuBar();
-}
+    Q_OBJECT
+public:
+    QtMenuPopupWindow(QWindow *parent = 0);
+    void setMenuContentItem(QQuickItem *contentItem);
+    void setParentWindow(QQuickWindow *parentWindow);
 
-QtMenuBar::~QtMenuBar()
-{
-}
+public Q_SLOTS:
+    void dismissMenu();
+    void updateSize();
 
-QQmlListProperty<QtMenu> QtMenuBar::menus()
-{
-    return QQmlListProperty<QtMenu>(this, 0, &QtMenuBar::append_menu, &QtMenuBar::count_menu, &QtMenuBar::at_menu, 0);
-}
+Q_SIGNALS:
+    void menuDismissed();
 
-bool QtMenuBar::isNative() {
-    return m_platformMenuBar != 0;
-}
+protected:
+    void mousePressEvent(QMouseEvent *);
+    void mouseReleaseEvent(QMouseEvent *);
+    void mouseMoveEvent(QMouseEvent *);
 
-void QtMenuBar::updateParent(QQuickItem *newParent)
-{
-    QWindow *newParentWindow = newParent ? newParent->window() : 0;
-    if (newParentWindow != window() && m_platformMenuBar)
-        m_platformMenuBar->handleReparent(newParentWindow);
-}
+private:
+    void forwardEventToTransientParent(QMouseEvent *);
 
-void QtMenuBar::append_menu(QQmlListProperty<QtMenu> *list, QtMenu *menu)
-{
-    if (QtMenuBar *menuBar = qobject_cast<QtMenuBar *>(list->object)) {
-        menu->setParent(menuBar);
-        menuBar->m_menus.append(menu);
-
-        if (menuBar->m_platformMenuBar)
-            menuBar->m_platformMenuBar->insertMenu(menu->platformMenu(), 0 /* append */);
-
-        menuBar->menuChanged();
-    }
-}
-
-int QtMenuBar::count_menu(QQmlListProperty<QtMenu> *list)
-{
-    if (QtMenuBar *menuBar = qobject_cast<QtMenuBar *>(list->object))
-        return menuBar->m_menus.size();
-    return 0;
-}
-
-QtMenu *QtMenuBar::at_menu(QQmlListProperty<QtMenu> *list, int index)
-{
-    QtMenuBar *menuBar = qobject_cast<QtMenuBar *>(list->object);
-    if (menuBar &&  0 <= index && index < menuBar->m_menus.size())
-        return menuBar->m_menus[index];
-    return 0;
-}
+    bool m_pressedInside;
+};
 
 QT_END_NAMESPACE
+
+QT_END_HEADER
+
+#endif // QTMENUPOPUPWINDOW_H

@@ -162,36 +162,26 @@ public:
     void setProperties(const QVariantMap &props) { if (m_properties != props) { m_properties = props; emit propertiesChanged(); } }
 
     int contentWidth() const { return m_contentWidth; }
+    void setContentWidth(int arg);
+
     int contentHeight() const { return m_contentHeight; }
+    void setContentHeight(int arg);
 
     virtual void initStyleOption ();
+
+    Q_INVOKABLE int textWidth(const QString &);
+    Q_INVOKABLE int textHeight(const QString &);
 
 public Q_SLOTS:
     int pixelMetric(const QString&);
     QVariant styleHint(const QString&);
     void updateSizeHint();
+    void updateRect();
     void updateItem(){polish();}
     QString hitTest(int x, int y);
     QRectF subControlRect(const QString &subcontrolString);
     QString elidedText(const QString &text, int elideMode, int width);
-    int textWidth(const QString &);
     bool hasThemeIcon(const QString &) const;
-
-    void setContentWidth(int arg)
-    {
-        if (m_contentWidth != arg) {
-            m_contentWidth = arg;
-            emit contentWidthChanged(arg);
-        }
-    }
-
-    void setContentHeight(int arg)
-    {
-        if (m_contentHeight != arg) {
-            m_contentHeight = arg;
-            emit contentHeightChanged(arg);
-        }
-    }
 
 Q_SIGNALS:
     void elementTypeChanged();

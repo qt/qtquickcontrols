@@ -41,9 +41,11 @@
 #include "qtexclusivegroup_p.h"
 
 #include <QtCore/QVariant>
-#include "qdebug.h"
+#include <QtCore/qdebug.h>
 
 #define CHECKED_PROPERTY "checked"
+
+QT_BEGIN_NAMESPACE
 
 static const char *checkableSignals[] = {
     CHECKED_PROPERTY"Changed()",
@@ -178,3 +180,5 @@ void QtExclusiveGroup::unregisterCheckable(QObject *o)
         }
     }
 }
+
+QT_END_NAMESPACE

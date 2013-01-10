@@ -40,153 +40,238 @@
 
 #include "qtmenu_p.h"
 #include "qdebug.h"
-#include <qapplication.h>
-#include <qmenubar.h>
+#include "qtaction_p.h"
+#include "qtmenupopupwindow_p.h"
 #include <qabstractitemmodel.h>
 
-/*!
-    \qmltype Menu
-    \instantiates QtMenu
-    \inqmlmodule QtDesktop 1.0
-    \brief Menu is doing bla...bla...
-*/
+#include "private/qguiapplication_p.h"
+#include <QtGui/qpa/qplatformtheme.h>
+#include <QtGui/qpa/qplatformmenu.h>
 
 QT_BEGIN_NAMESPACE
 
 QtMenu::QtMenu(QQuickItem *parent)
-    : QtMenuBase(parent),
-      dummy(0),
-      m_selectedIndex(0),
+    : QtMenuItem(parent),
+      m_selectedIndex(-1),
       m_highlightedIndex(0),
-      m_hasNativeModel(false)
+      m_hasNativeModel(false),
+      m_minimumWidth(0),
+      m_popupWindow(0),
+      m_popupVisible(false)
 {
-    m_qmenu = new QMenu(0);
-    connect(m_qmenu, SIGNAL(aboutToHide()), this, SIGNAL(menuClosed()));
+    setFlag(QQuickItem::ItemHasContents, false);
+    m_platformMenu = QGuiApplicationPrivate::platformTheme()->createPlatformMenu();
+    if (m_platformMenu) {
+        connect(m_platformMenu, SIGNAL(aboutToHide()), this, SLOT(closeMenu()));
+        if (platformItem())
+            platformItem()->setMenu(m_platformMenu);
+    }
 }
 
 QtMenu::~QtMenu()
 {
-    delete m_qmenu;
+    delete m_platformMenu;
 }
 
-void QtMenu::setText(const QString &text)
+void QtMenu::updateText()
 {
-    m_qmenu->setTitle(text);
-    emit textChanged();
+    if (m_platformMenu)
+        m_platformMenu->setText(text());
+    QtMenuItem::updateText();
 }
 
-QString QtMenu::text() const
+void QtMenu::setMinimumWidth(int w)
 {
-    return m_qmenu->title();
+    if (w == m_minimumWidth)
+        return;
+
+    m_minimumWidth = w;
+    if (m_platformMenu)
+        m_platformMenu->setMinimumWidth(w);
+
+    emit minimumWidthChanged();
+}
+
+void QtMenu::setFont(const QFont &arg)
+{
+    if (m_platformMenu)
+        m_platformMenu->setFont(arg);
 }
 
 void QtMenu::setSelectedIndex(int index)
 {
+    if (m_selectedIndex == index)
+        return;
+
     m_selectedIndex = index;
-    QList<QAction *> actionList = m_qmenu->actions();
-    if (m_selectedIndex >= 0 && m_selectedIndex < actionList.size())
-        m_qmenu->setActiveAction(actionList[m_selectedIndex]);
+
+    if (m_selectedIndex >= 0 && m_selectedIndex < m_menuItems.size())
+        if (QtMenuItem *item = qobject_cast<QtMenuItem *>(m_menuItems[m_selectedIndex]))
+            if (item->checkable())
+                item->setChecked(true);
+
     emit selectedIndexChanged();
 }
 
 void QtMenu::setHoveredIndex(int index)
 {
+    if (m_highlightedIndex == index)
+        return;
+
     m_highlightedIndex = index;
-    QList<QAction *> actionList = m_qmenu->actions();
-    if (m_highlightedIndex >= 0 && m_highlightedIndex < actionList.size())
-        m_qmenu->setActiveAction(actionList[m_highlightedIndex]);
+//    QList<QAction *> actionList = m_qmenu->actions();
+//    if (m_highlightedIndex >= 0 && m_highlightedIndex < actionList.size())
+//        m_qmenu->setActiveAction(actionList[m_highlightedIndex]);
     emit hoveredIndexChanged();
 }
 
 QQmlListProperty<QtMenuBase> QtMenu::menuItems()
 {
-    return QQmlListProperty<QtMenuBase>(this, 0, &QtMenu::append_qmenuItem, 0, 0, 0);
+    return QQmlListProperty<QtMenuBase>(this, 0, &QtMenu::append_menuItems, &QtMenu::count_menuItems, &QtMenu::at_menuItems, 0);
 }
 
-void QtMenu::showPopup(qreal x, qreal y, int atActionIndex, QQuickWindow * parentWindow)
+void QtMenu::showPopup(qreal x, qreal y, int atItemIndex, QObject *reference)
 {
+    if (popupVisible())
+        closeMenu();
 
-    if (m_qmenu->isVisible())
-        return;
+    setPopupVisible(true);
 
     // If atActionIndex is valid, x and y is specified from the
-    // the position of the corresponding QAction:
-    QAction *atAction = 0;
-    if (atActionIndex >= 0 && atActionIndex < m_qmenu->actions().size())
-        atAction = m_qmenu->actions()[atActionIndex];
+    // the position of the corresponding QtMenuItem:
+    QtMenuItem *atItem = 0;
+    if (atItemIndex >= 0)
+        while (!atItem && atItemIndex < m_menuItems.size())
+            atItem = dynamic_cast<QtMenuItem *>(m_menuItems[atItemIndex++]);
 
     QPointF screenPosition(mapToScene(QPoint(x, y)));
-    QWindow *tw = parentWindow ? parentWindow : window();
-    if (tw) {
-        screenPosition = tw->mapToGlobal(QPoint(x, y));
-        // calling winId forces a QWindow to be created
-        // since this needs to be a top-level
-        // otherwise windowHandle might return 0
-        m_qmenu->winId();
-        m_qmenu->windowHandle()->setTransientParent(tw);
+    setHoveredIndex(m_selectedIndex);
+
+    QQuickItem *item = qobject_cast<QQuickItem *>(reference);
+
+    QQuickWindow *parentWindow = item ? item->window() : qobject_cast<QQuickWindow *>(reference);
+    if (!parentWindow) {
+        QQuickItem *parentAsItem = qobject_cast<QQuickItem *>(parent());
+        parentWindow = parentAsItem ? parentAsItem->window() :
+                       parentItem() ? parentItem()->window() : window();
     }
 
-    setHoveredIndex(m_selectedIndex);
-    m_qmenu->popup(screenPosition.toPoint(), atAction);
+    if (m_platformMenu) {
+        m_platformMenu->showPopup(parentWindow, screenPosition.toPoint(), atItem ? atItem->platformItem() : 0);
+    } else {
+        m_popupWindow = new QtMenuPopupWindow();
+        m_popupWindow->setParentWindow(parentWindow);
+        m_popupWindow->setMenuContentItem(m_menuContentItem);
+        connect(m_popupWindow, SIGNAL(visibleChanged(bool)), this, SLOT(windowVisibleChanged(bool)));
+
+        if (item) {
+            QPointF pos = item->mapToItem(parentWindow->contentItem(), QPointF(x, y));
+            x = pos.x();
+            y = pos.y();
+        }
+
+        if (parentWindow) {
+            x += parentWindow->geometry().left();
+            y += parentWindow->geometry().top();
+        }
+
+        m_popupWindow->setGeometry(x, y, m_menuContentItem->width(), m_menuContentItem->height());
+        m_popupWindow->show();
+        m_popupWindow->setMouseGrabEnabled(true); // Needs to be done after calling show()
+        m_popupWindow->setKeyboardGrabEnabled(true);
+    }
 }
 
-void QtMenu::hidePopup()
+void QtMenu::closeMenu()
 {
-    m_qmenu->close();
+    setPopupVisible(false);
+    if (m_popupWindow)
+        m_popupWindow->setVisible(false);
+    emit menuClosed();
 }
 
-QAction* QtMenu::action()
+void QtMenu::dismissMenu()
 {
-    return m_qmenu->menuAction();
+    if (m_popupWindow)
+        m_popupWindow->dismissMenu();
 }
 
-Q_INVOKABLE void QtMenu::clearMenuItems()
+void QtMenu::windowVisibleChanged(bool v)
 {
-    m_qmenu->clear();
-    foreach (QtMenuBase *item, m_qmenuItems) {
+    if (!v) {
+        if (qobject_cast<QtMenuPopupWindow *>(m_popupWindow->transientParent())) {
+            m_popupWindow->transientParent()->setMouseGrabEnabled(true);
+            m_popupWindow->transientParent()->setKeyboardGrabEnabled(true);
+        }
+        m_popupWindow->deleteLater();
+        m_popupWindow = 0;
+        closeMenu();
+    }
+}
+
+void QtMenu::clearMenuItems()
+{
+    foreach (QtMenuBase *item, m_menuItems) {
+        if (m_platformMenu)
+            m_platformMenu->removeMenuItem(item->platformItem());
         delete item;
     }
-    m_qmenuItems.clear();
+    m_menuItems.clear();
 }
 
-void QtMenu::addMenuItem(const QString &text)
+QtMenuItem *QtMenu::addMenuItem(const QString &text)
 {
     QtMenuItem *menuItem = new QtMenuItem(this);
+    menuItem->setParentItem(this);
     menuItem->setText(text);
-    m_qmenuItems.append(menuItem);
-    m_qmenu->addAction(menuItem->action());
+    m_menuItems.append(menuItem);
+    if (QPlatformMenuItem *platformItem = menuItem->platformItem()) {
+        if (m_platformMenu)
+            m_platformMenu->insertMenuItem(platformItem, 0 /* append */);
 
-    connect(menuItem->action(), SIGNAL(triggered()), this, SLOT(emitSelected()));
-    connect(menuItem->action(), SIGNAL(hovered()), this, SLOT(emitHovered()));
+        connect(platformItem, SIGNAL(activated()), this, SLOT(emitSelected()));
+        connect(platformItem, SIGNAL(hovered()), this, SLOT(emitHovered()));
+    }
 
-    if (m_qmenu->actions().size() == 1)
+    if (m_menuItems.size() == 1)
         // Inform QML that the selected action (0) now has changed contents:
         emit selectedIndexChanged();
+
+    emit menuItemsChanged();
+    return menuItem;
 }
 
 void QtMenu::emitSelected()
 {
-    QAction *act = qobject_cast<QAction *>(sender());
-    if (!act)
+    QPlatformMenuItem *platformItem = qobject_cast<QPlatformMenuItem *>(sender());
+    if (!platformItem)
         return;
-    m_selectedIndex = m_qmenu->actions().indexOf(act);
-    emit selectedIndexChanged();
+
+    int index = -1;
+    foreach (QtMenuBase *item, m_menuItems) {
+        ++index;
+        if (item->platformItem() == platformItem)
+            break;
+    }
+
+    setSelectedIndex(index);
 }
 
 void QtMenu::emitHovered()
 {
-    QAction *act = qobject_cast<QAction *>(sender());
-    if (!act)
-        return;
-    m_highlightedIndex = m_qmenu->actions().indexOf(act);
-    emit hoveredIndexChanged();
+//    QAction *act = qobject_cast<QAction *>(sender());
+//    if (!act)
+//        return;
+//    m_highlightedIndex = m_qmenu->actions().indexOf(act);
+//    emit hoveredIndexChanged();
 }
 
 QString QtMenu::itemTextAt(int index) const
 {
-    QList<QAction *> actionList = m_qmenu->actions();
-    if (index >= 0 && index < actionList.size())
-        return actionList[index]->text();
+    QtMenuItem *mi = 0;
+    if (index >= 0 && index < m_menuItems.size()
+        && (mi = qobject_cast<QtMenuItem *>(m_menuItems.at(index))))
+        return mi->text();
     else
         return "";
 }
@@ -211,15 +296,34 @@ int QtMenu::modelCount() const
     return -1;
 }
 
-void QtMenu::append_qmenuItem(QQmlListProperty<QtMenuBase> *list, QtMenuBase *menuItem)
+void QtMenu::append_menuItems(QQmlListProperty<QtMenuBase> *list, QtMenuBase *menuItem)
 {
     QtMenu *menu = qobject_cast<QtMenu *>(list->object);
     if (menu) {
         menuItem->setParent(menu);
-        menu->m_qmenuItems.append(menuItem);
-        menu->qmenu()->addAction(menuItem->action());
+        menuItem->setParentItem(menu);
+        menu->m_menuItems.append(menuItem);
+        if (menu->m_platformMenu)
+            menu->m_platformMenu->insertMenuItem(menuItem->platformItem(), 0 /* append */);
     }
 }
+
+int QtMenu::count_menuItems(QQmlListProperty<QtMenuBase> *list)
+{
+    QtMenu *menu = qobject_cast<QtMenu *>(list->object);
+    if (menu)
+        return menu->m_menuItems.size();
+    return 0;
+}
+
+QtMenuBase *QtMenu::at_menuItems(QQmlListProperty<QtMenuBase> *list, int index)
+{
+    QtMenu *menu = qobject_cast<QtMenu *>(list->object);
+    if (menu && 0 <= index && index < menu->m_menuItems.size())
+        return menu->m_menuItems[index];
+    return 0;
+}
+
 
 void QtMenu::setModel(const QVariant &newModel) {
     if (m_model != newModel) {

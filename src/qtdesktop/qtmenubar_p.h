@@ -44,47 +44,44 @@
 #include <QtCore/qglobal.h>
 
 #include <QtQuick/QQuickItem>
-#include <QtWidgets>
 
 #include "qtmenu_p.h"
 
 QT_BEGIN_NAMESPACE
+
+class QPlatformMenuBar;
 
 class QtMenuBar: public QQuickItem
 {
     Q_OBJECT
 
     Q_PROPERTY(QQmlListProperty<QtMenu> menus READ menus NOTIFY menuChanged)
-    Q_PROPERTY(QList<QObject*> menuList READ menuList NOTIFY menuChanged)
-    Q_PROPERTY(bool showMenuBar READ showMenuBar NOTIFY showMenuBarChanged)
     Q_CLASSINFO("DefaultProperty", "menus")
+    Q_PROPERTY(bool isNative READ isNative CONSTANT)
+
 public:
     QtMenuBar(QQuickItem *parent = 0);
     ~QtMenuBar();
 
     QQmlListProperty<QtMenu> menus();
-    QList<QObject*> menuList();
 
-    bool showMenuBar() {
-#ifdef Q_OS_MAC
-        return false;
-#endif
-        return true;
-}
+    bool isNative();
 
 signals:
     void menuChanged();
-    void showMenuBarChanged();
 
 protected Q_SLOTS:
     void updateParent(QQuickItem *newParent);
 
 private:
     static void append_menu(QQmlListProperty<QtMenu> *list, QtMenu *menu);
+    static int count_menu(QQmlListProperty<QtMenu> *list);
+    static QtMenu *at_menu(QQmlListProperty<QtMenu> *list, int index);
 
 private:
-    QList<QObject *> m_menus;
-    QMenuBar *_menuBar;
+    QList<QtMenu *> m_menus;
+    QPlatformMenuBar *m_platformMenuBar;
+    QQuickWindow *m_parentWindow;
 };
 
 QT_END_NAMESPACE

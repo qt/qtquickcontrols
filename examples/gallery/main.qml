@@ -84,36 +84,104 @@ ApplicationWindow {
 
         Action {
             id: openAction
-            text: "Open"
+            text: "&Open"
             shortcut: "Ctrl+O"
         }
 
         Action {
             id: copyAction
-            text: "Copy"
+            text: "&Copy"
             shortcut: "Ctrl+C"
             iconName: "edit-copy"
         }
 
         Action {
             id: cutAction
-            text: "Cut"
+            text: "Cu&t"
             shortcut: "Ctrl+X"
             iconName: "edit-cut"
         }
 
         Action {
             id: pasteAction
-            text: "Paste"
+            text: "&Paste"
             shortcut: "Ctrl+V"
             iconName: "edit-paste"
         }
 
+        ExclusiveGroup { id: textFormatGroup }
+
+        Action {
+            id: a1
+            text: "Align Left"
+            checkable: true
+
+            Component.onCompleted: checked = true
+            exclusiveGroup: textFormatGroup
+        }
+
+        Action {
+            id: a2
+            text: "Center"
+            checkable: true
+            exclusiveGroup: textFormatGroup
+        }
+
+        Action {
+            id: a3
+            text: "Align Right"
+            checkable: true
+            exclusiveGroup: textFormatGroup
+        }
+
         ContextMenu {
             id: editmenu
-            MenuItem { text: "Copy" ;  iconName: "edit-copy" }
-            MenuItem { text: "Cut" ;   iconName: "edit-cut" }
-            MenuItem { text: "Paste" ; iconName: "edit-paste" }
+            MenuItem { action: cutAction }
+            MenuItem { action: copyAction }
+            MenuItem { action: pasteAction }
+            MenuSeparator {}
+            Menu {
+                text: "Text Format"
+                MenuItem { action: a1 }
+                MenuItem { action: a2 }
+                MenuItem { action: a3 }
+                MenuSeparator { }
+                MenuItem { text: "Allow Hyphenation"; checkable: true }
+                MenuSeparator { }
+                Menu {
+                    text: "More Stuff"
+                    MenuItem { action: cutAction }
+                    MenuItem { action: copyAction }
+                    MenuItem { action: pasteAction }
+                    MenuSeparator { }
+                    Menu {
+                        text: "More Stuff"
+                        MenuItem { action: cutAction }
+                        MenuItem { action: copyAction }
+                        MenuItem { action: pasteAction }
+                        MenuSeparator { }
+                        Menu {
+                            text: "More Stuff"
+                            MenuItem { action: cutAction }
+                            MenuItem { action: copyAction }
+                            MenuItem { action: pasteAction }
+                            MenuSeparator { }
+                            Menu {
+                                text: "More Stuff"
+                                MenuItem { action: cutAction }
+                                MenuItem { action: copyAction }
+                                MenuItem { action: pasteAction }
+                            }
+                        }
+                    }
+                }
+            }
+            Menu {
+                text: "Font Style"
+                MenuItem { text: "Bold"; checkable: true }
+                MenuItem { text: "Italic"; checkable: true }
+                MenuItem { text: "Underline"; checkable: true }
+            }
         }
         MouseArea {
             anchors.fill:  parent
@@ -132,11 +200,8 @@ ApplicationWindow {
 
     menuBar: MenuBar {
         Menu {
-            text: "File"
-            MenuItem {
-                text: "Open"
-                shortcut: "Ctrl+O"
-            }
+            text: "&File"
+            MenuItem { action: openAction }
             MenuItem {
                 text: "Close"
                 shortcut: "Ctrl+Q"
@@ -144,12 +209,15 @@ ApplicationWindow {
             }
         }
         Menu {
-            text: "Edit"
+            text: "&Edit"
+            MenuItem { action: cutAction }
+            MenuItem { action: copyAction }
+            MenuItem { action: pasteAction }
+            MenuSeparator { }
             MenuItem {
-                text: "Copy"
-            }
-            MenuItem {
-                text: "Paste"
+                text: "Do Nothing"
+                shortcut: "Ctrl+E,Shift+Ctrl+X"
+                enabled: false
             }
         }
     }

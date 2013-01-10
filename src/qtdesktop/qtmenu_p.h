@@ -41,7 +41,6 @@
 #ifndef QTMENU_P_H
 #define QTMENU_P_H
 #include <QtCore/qglobal.h>
-#include <QtWidgets/qmenu.h>
 #include <QtQuick/QtQuick>
 #include <QtQml/QtQml>
 #include <QtCore/qabstractitemmodel.h>
@@ -50,21 +49,25 @@
 
 QT_BEGIN_NAMESPACE
 
-class QtMenu : public QtMenuBase
+class QPlatformMenu;
+class QtMenuPopupWindow;
+
+class QtMenu : public QtMenuItem
 {
     Q_OBJECT
-    Q_PROPERTY(QString text READ text WRITE setText NOTIFY textChanged)
     Q_PROPERTY(QVariant model READ model WRITE setModel NOTIFY modelChanged)
     Q_PROPERTY(int selectedIndex READ selectedIndex WRITE setSelectedIndex NOTIFY selectedIndexChanged)
     Q_PROPERTY(int hoveredIndex READ hoveredIndex WRITE setHoveredIndex NOTIFY hoveredIndexChanged)
-    Q_PROPERTY(QQmlListProperty<QtMenuBase> menuItems READ menuItems)
+    Q_PROPERTY(int minimumWidth READ minimumWidth WRITE setMinimumWidth NOTIFY minimumWidthChanged)
+    Q_PROPERTY(QFont font WRITE setFont)
+    Q_PROPERTY(QQmlListProperty<QtMenuBase> menuItems READ menuItems NOTIFY menuItemsChanged)
     Q_CLASSINFO("DefaultProperty", "menuItems")
+    Q_PROPERTY(QQuickItem *menuContentItem READ menuContentItem WRITE setMenuContentItem NOTIFY menuContentItemChanged)
+    Q_PROPERTY(bool popupVisible READ popupVisible NOTIFY popupVisibleChanged)
+
 public:
     QtMenu(QQuickItem *parent = 0);
     virtual ~QtMenu();
-
-    void setText(const QString &text);
-    QString text() const;
 
     int selectedIndex() const { return m_selectedIndex; }
     void setSelectedIndex(int index);
@@ -73,16 +76,16 @@ public:
 
     QQmlListProperty<QtMenuBase> menuItems();
 
-    QMenu* qmenu() { return m_qmenu; }
+    QPlatformMenu* platformMenu() { return m_platformMenu; }
 
-    QAction* action();
+    int minimumWidth() const { return m_minimumWidth; }
+    void setMinimumWidth(int w);
 
-    Q_INVOKABLE int minimumWidth() const { return m_qmenu->minimumWidth(); }
-    Q_INVOKABLE void setMinimumWidth(int w) { m_qmenu->setMinimumWidth(w); }
-    Q_INVOKABLE void showPopup(qreal x, qreal y, int atActionIndex = -1, QQuickWindow *window = 0);
-    Q_INVOKABLE void hidePopup();
+    void setFont(const QFont &font);
+
+    Q_INVOKABLE void showPopup(qreal x, qreal y, int atActionIndex = -1, QObject *reference = 0);
     Q_INVOKABLE void clearMenuItems();
-    Q_INVOKABLE void addMenuItem(const QString &text);
+    Q_INVOKABLE QtMenuItem *addMenuItem(const QString &text);
     Q_INVOKABLE QString itemTextAt(int index) const;
     Q_INVOKABLE QString modelTextAt(int index) const;
     Q_INVOKABLE int modelCount() const;
@@ -90,32 +93,75 @@ public:
     QVariant model() const { return m_model; }
     Q_INVOKABLE bool hasNativeModel() const { return m_hasNativeModel; }
 
-public slots:
-    void setModel(const QVariant &newModel);
+    QQuickItem *menuContentItem() const
+    {
+        return m_menuContentItem;
+    }
 
-public:
+    bool popupVisible() const
+    {
+        return m_popupVisible;
+    }
+
+public Q_SLOTS:
+    void setModel(const QVariant &newModel);
+    void closeMenu();
+    void dismissMenu();
+
+    void setMenuContentItem(QQuickItem * arg)
+    {
+        if (m_menuContentItem != arg) {
+            m_menuContentItem = arg;
+            emit menuContentItemChanged(arg);
+        }
+    }
+
+    void setPopupVisible(bool arg)
+    {
+        if (m_popupVisible != arg) {
+            m_popupVisible = arg;
+            emit popupVisibleChanged(arg);
+        }
+    }
+
 Q_SIGNALS:
     void menuClosed();
     void selectedIndexChanged();
     void hoveredIndexChanged();
     void modelChanged(const QVariant &newModel);
     void rebuildMenu();
-    void textChanged();
+    void minimumWidthChanged();
+    void menuItemsChanged();
+    void menuContentItemChanged(QQuickItem * arg);
 
-private Q_SLOTS:
+    void popupVisibleChanged(bool arg);
+
+protected:
+    bool isNative() { return m_platformMenu != 0; }
+
+protected Q_SLOTS:
     void emitSelected();
     void emitHovered();
+    void updateText();
+    void windowVisibleChanged(bool);
 
 private:
-    static void append_qmenuItem(QQmlListProperty<QtMenuBase> *list, QtMenuBase *menuItem);
+    static void append_menuItems(QQmlListProperty<QtMenuBase> *list, QtMenuBase *menuItem);
+    static int count_menuItems(QQmlListProperty<QtMenuBase> *list);
+    static QtMenuBase *at_menuItems(QQmlListProperty<QtMenuBase> *list, int index);
 
-    QWidget *dummy;
-    QMenu *m_qmenu;
-    QList<QtMenuBase *> m_qmenuItems;
+    QPlatformMenu *m_platformMenu;
+    QList<QtMenuBase *> m_menuItems;
     int m_selectedIndex;
     int m_highlightedIndex;
     bool m_hasNativeModel;
     QVariant m_model;
+    int m_minimumWidth;
+    QtMenuPopupWindow *m_popupWindow;
+    QQuickItem * m_menuContentItem;
+    bool m_popupVisible;
+
+    friend class QtMenuBase;
 };
 
 QT_END_NAMESPACE

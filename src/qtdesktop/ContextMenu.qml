@@ -63,31 +63,24 @@ Menu {
 
     Component.onCompleted: if (model !== undefined) rebuildMenu()
 
-    onHoveredIndexChanged: {
-        if (hoveredIndex < menuItems.length)
-            menuItems[hoveredIndex].hovered()
-    }
+//    onHoveredIndexChanged: {
+//        if (hoveredIndex < menuItems.length)
+//            menuItems[hoveredIndex].hovered()
+//    }
 
     onSelectedIndexChanged: {
-        if (hoveredIndex < menuItems.length)
-            menuItems[hoveredIndex].selected()
+        if (0 <= selectedIndex && selectedIndex < menuItems.length)
+            menuItems[selectedIndex].triggered()
     }
 
     onVisibleChanged: {
-        if (visible) {
-            var globalPos = mapToItem(null, x, y)
-            showPopup(globalPos.x, globalPos.y, centerSelectedText ? selectedIndex : 0)
-        } else {
-            hidePopup()
-        }
+        if (visible)
+            showPopup(x, y, centerSelectedText ? selectedIndex : 0, parent)
     }
 
     function rebuildMenu()
     {
         clearMenuItems();
-
-        for (var i=0; i<menuItems.length; ++i)
-            addMenuItem(menuItems[i].text)
 
         var nativeModel = root.hasNativeModel()
 
@@ -123,8 +116,13 @@ Menu {
                         }
                     }
                 }
-                addMenuItem(textValue)
+
+                var item = addMenuItem(textValue)
+                if (root["finalizeItem"])
+                    finalizeItem(item)
             }
         }
+
+        menuItemsChanged()
     }
 }

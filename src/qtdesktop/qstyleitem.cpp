@@ -150,6 +150,7 @@ QStyleItem::QStyleItem(QQuickItem *parent)
     connect(this, SIGNAL(onChanged()), this, SLOT(updateItem()));
     connect(this, SIGNAL(selectedChanged()), this, SLOT(updateItem()));
     connect(this, SIGNAL(activeChanged()), this, SLOT(updateItem()));
+    connect(this, SIGNAL(textChanged()), this, SLOT(updateSizeHint()));
     connect(this, SIGNAL(textChanged()), this, SLOT(updateItem()));
     connect(this, SIGNAL(activeChanged()), this, SLOT(updateItem()));
     connect(this, SIGNAL(raisedChanged()), this, SLOT(updateItem()));
@@ -163,10 +164,12 @@ QStyleItem::QStyleItem(QQuickItem *parent)
     connect(this, SIGNAL(hasFocusChanged()), this, SLOT(updateItem()));
     connect(this, SIGNAL(activeControlChanged()), this, SLOT(updateItem()));
     connect(this, SIGNAL(hintChanged()), this, SLOT(updateItem()));
+    connect(this, SIGNAL(propertiesChanged()), this, SLOT(updateSizeHint()));
+    connect(this, SIGNAL(propertiesChanged()), this, SLOT(updateItem()));
     connect(this, SIGNAL(elementTypeChanged()), this, SLOT(updateItem()));
-    connect(this, SIGNAL(textChanged()), this, SLOT(updateSizeHint()));
     connect(this, SIGNAL(contentWidthChanged(int)), this, SLOT(updateSizeHint()));
     connect(this, SIGNAL(contentHeightChanged(int)), this, SLOT(updateSizeHint()));
+    connect(this, SIGNAL(widthChanged()), this, SLOT(updateRect()));
 }
 
 QStyleItem::~QStyleItem()
@@ -293,11 +296,6 @@ void QStyleItem::initStyleOption()
 
     } break;
 
-    case Menu: {
-        if (!m_styleoption)
-            m_styleoption = new QStyleOptionMenuItem();
-    }
-        break;
     case Frame: {
         if (!m_styleoption)
             m_styleoption = new QStyleOptionFrame();
@@ -320,6 +318,29 @@ void QStyleItem::initStyleOption()
         opt->leftCornerWidgetSize = QSize(value(), 0);
     }
         break;
+    case MenuBar:
+        if (!m_styleoption) {
+            QStyleOptionMenuItem *menuOpt = new QStyleOptionMenuItem();
+            menuOpt->menuItemType = QStyleOptionMenuItem::EmptyArea;
+            m_styleoption = menuOpt;
+        }
+
+        break;
+    case MenuBarItem:
+    {
+        if (!m_styleoption)
+            m_styleoption = new QStyleOptionMenuItem();
+
+        QStyleOptionMenuItem *opt = qstyleoption_cast<QStyleOptionMenuItem*>(m_styleoption);
+        opt->text = text();
+        opt->menuItemType = QStyleOptionMenuItem::Normal;
+    }
+        break;
+    case Menu: {
+        if (!m_styleoption)
+            m_styleoption = new QStyleOptionMenuItem();
+    }
+        break;
     case MenuItem:
     case ComboBoxItem:
     {
@@ -327,8 +348,31 @@ void QStyleItem::initStyleOption()
             m_styleoption = new QStyleOptionMenuItem();
 
         QStyleOptionMenuItem *opt = qstyleoption_cast<QStyleOptionMenuItem*>(m_styleoption);
-        opt->checked = false;
-        opt->text = text();
+        if (text().isEmpty()) {
+            opt->menuItemType = QStyleOptionMenuItem::Separator;
+        } else {
+            opt->text = text();
+
+            if (m_properties["hasSubmenu"].toBool()) {
+                opt->menuItemType = QStyleOptionMenuItem::SubMenu;
+            } else {
+                QString shortcut = m_properties["shortcut"].toString();
+                if (!shortcut.isEmpty()) {
+                    opt->text += QLatin1Char('\t') + shortcut;
+                    opt->tabWidth = qMax(opt->tabWidth, textWidth(shortcut));
+                }
+
+                if (m_properties["checkable"].toBool()) {
+                    opt->checked = on();
+                    QVariant exclusive = m_properties["exclusive"];
+                    opt->checkType = exclusive.toBool() ? QStyleOptionMenuItem::Exclusive :
+                                                          QStyleOptionMenuItem::NonExclusive;
+                } else {
+                    opt->menuItemType = QStyleOptionMenuItem::Normal;
+                }
+                // XXX TODO: icon
+            }
+        }
     }
         break;
     case CheckBox:
@@ -462,22 +506,6 @@ void QStyleItem::initStyleOption()
         opt->subControls = QStyle::SC_All;
         break;
     }
-    case MenuBar:
-        if (!m_styleoption) {
-            QStyleOptionMenuItem *menuOpt = new QStyleOptionMenuItem();
-            menuOpt->menuItemType = QStyleOptionMenuItem::EmptyArea;
-            m_styleoption = menuOpt;
-        }
-
-        break;
-    case MenuBarItem:
-        if (!m_styleoption) {
-            QStyleOptionMenuItem *menuOpt = new QStyleOptionMenuItem();
-           menuOpt->text = text();
-           menuOpt->menuItemType = QStyleOptionMenuItem::Normal;
-           m_styleoption = menuOpt;
-        }
-        break;
     default:
         break;
     }
@@ -658,16 +686,43 @@ QSize QStyleItem::sizeFromContents(int width, int height)
     case MenuBar: //fall through
         size = qApp->style()->sizeFromContents(QStyle::CT_MenuBar, m_styleoption, QSize(width,height));
         break;
+    case Menu:
+        size = qApp->style()->sizeFromContents(QStyle::CT_Menu, m_styleoption, QSize(width,height));
+        break;
+    case MenuItem:
+        size = qApp->style()->sizeFromContents(QStyle::CT_MenuItem, m_styleoption, QSize(width,height));
+        break;
     default:
         break;
+    }    return size;
+}
+
+void QStyleItem::setContentWidth(int arg)
+{
+    if (m_contentWidth != arg) {
+        m_contentWidth = arg;
+        emit contentWidthChanged(arg);
     }
-    return size;
+}
+
+void QStyleItem::setContentHeight(int arg)
+{
+    if (m_contentHeight != arg) {
+        m_contentHeight = arg;
+        emit contentHeightChanged(arg);
+    }
 }
 
 void QStyleItem::updateSizeHint()
 {
     QSize implicitSize = sizeFromContents(m_contentWidth, m_contentHeight);
     setImplicitSize(implicitSize.width(), implicitSize.height());
+}
+
+void QStyleItem::updateRect()
+{
+    initStyleOption();
+    m_styleoption->rect.setWidth(width());
 }
 
 int QStyleItem::pixelMetric(const QString &metric)
@@ -697,6 +752,8 @@ int QStyleItem::pixelMetric(const QString &metric)
         return qApp->style()->pixelMetric(QStyle::PM_MenuVMargin, 0 );
     else if (metric == "menupanelwidth")
         return qApp->style()->pixelMetric(QStyle::PM_MenuPanelWidth, 0 );
+    else if (metric == "submenuoverlap")
+        return qApp->style()->pixelMetric(QStyle::PM_SubMenuOverlap, 0 );
     else if (metric == "splitterwidth")
         return qApp->style()->pixelMetric(QStyle::PM_SplitterWidth, 0 );
     else if (metric == "scrollbarspacing")
@@ -727,6 +784,8 @@ QVariant QStyleItem::styleHint(const QString &metric)
     else if (metric == "transientScrollBars")
         return qApp->style()->styleHint(QStyle::SH_ScrollBar_Transient, m_styleoption);
     return 0;
+
+    // Add SH_Menu_SpaceActivatesItem, SH_Menu_SubMenuPopupDelay
 }
 
 void QStyleItem::setHints(const QStringList &str)
@@ -762,8 +821,10 @@ void QStyleItem::setElementType(const QString &str)
     }
 
     // Only enable visible if the widget can animate
-    if (str == "menu" || str == "menuitem") {
-        m_itemType = (str == "menu") ? Menu : MenuItem;
+    if (str == "menu") {
+        m_itemType = Menu;
+    } else if (str == "menuitem") {
+        m_itemType = MenuItem;
     } else if (str == "item" || str == "itemrow" || str == "header") {
 #ifdef Q_OS_MAC
         m_font.setPointSize(11.0);
@@ -1092,11 +1153,14 @@ void QStyleItem::paint(QPainter *painter)
         painter->restore();
         qApp->style()->drawPrimitive(QStyle::PE_PanelMenu, m_styleoption, painter);
 
-        QStyleOptionFrame frame;
-        frame.lineWidth = qApp->style()->pixelMetric(QStyle::PM_MenuPanelWidth);
-        frame.midLineWidth = 0;
-        frame.rect = m_styleoption->rect;
-        qApp->style()->drawPrimitive(QStyle::PE_FrameMenu, &frame, painter);
+        if (int fw = qApp->style()->pixelMetric(QStyle::PM_MenuPanelWidth)) {
+            QStyleOptionFrame frame;
+            frame.state = QStyle::State_None;
+            frame.lineWidth = fw;
+            frame.midLineWidth = 0;
+            frame.rect = m_styleoption->rect;
+            qApp->style()->drawPrimitive(QStyle::PE_FrameMenu, &frame, painter);
+        }
     }
         break;
     default:
@@ -1107,6 +1171,11 @@ void QStyleItem::paint(QPainter *painter)
 int QStyleItem::textWidth(const QString &text)
 {
     return QFontMetrics(m_font).boundingRect(text).width();
+}
+
+int QStyleItem::textHeight(const QString &text)
+{
+    return QFontMetrics(m_font).boundingRect(text).height();
 }
 
 QString QStyleItem::elidedText(const QString &text, int elideMode, int width)

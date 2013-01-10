@@ -5,6 +5,10 @@ QML_FILES = \
     CheckBoxStyle.qml \
     ComboBoxStyle.qml \
     GroupBoxStyle.qml \
+    MenuBarStyle.qml \
+    MenuBarItemStyle.qml \
+    MenuFrameStyle.qml \
+    MenuItemStyle.qml \
     ProgressBarStyle.qml \
     RadioButtonStyle.qml \
     ScrollAreaStyle.qml \
@@ -23,6 +27,10 @@ QML_FILES += \
     Desktop/CheckBoxStyle.qml \
     Desktop/ComboBoxStyle.qml \
     Desktop/GroupBoxStyle.qml \
+    Desktop/MenuBarStyle.qml \
+    Desktop/MenuBarItemStyle.qml \
+    Desktop/MenuFrameStyle.qml \
+    Desktop/MenuItemStyle.qml \
     Desktop/ProgressBarStyle.qml \
     Desktop/RadioButtonStyle.qml \
     Desktop/ScrollAreaStyle.qml \
