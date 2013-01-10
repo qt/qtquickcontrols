@@ -1,2 +1,2 @@
 TEMPLATE = subdirs
-SUBDIRS += qtdesktop
+SUBDIRS += qtdesktop testplugin

@@ -139,6 +139,7 @@ FocusScope{
     default property alias header: tree.columnheader
     property alias contentHeader: tree.header
     property alias contentFooter: tree.footer
+    property alias currentItem: tree.currentItem
 
     property alias horizontalScrollBar: scroller.horizontalScrollBar
     property alias verticalScrollBar: scroller.verticalScrollBar
@@ -168,6 +169,7 @@ FocusScope{
             property int implicitWidth: sizehint.paintedWidth + 4
             Text {
                 id: label
+                objectName: "label"
                 width: parent.width
                 anchors.margins: 6
                 font: itemstyle.font
