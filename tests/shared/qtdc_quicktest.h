@@ -58,7 +58,7 @@ QT_BEGIN_NAMESPACE
 #define QTDC_QUICK_TEST_MAIN(name) \
     int main(int argc, char **argv) \
     { \
-        QCoreApplication* app = 0; \
+        QApplication* app = 0; \
         if (!QCoreApplication::instance()) \
             app = new QApplication(argc, argv); \
         int i = quick_test_main(argc, argv, #name, QTDC_QUICK_TEST_MAIN_VAR); \
