@@ -143,6 +143,7 @@ QStyleItem::QStyleItem(QQuickPaintedItem *parent)
     connect(this, SIGNAL(activeControlChanged()), this, SLOT(updateItem()));
     connect(this, SIGNAL(hasFocusChanged()), this, SLOT(updateItem()));
     connect(this, SIGNAL(activeControlChanged()), this, SLOT(updateItem()));
+    connect(this, SIGNAL(hintChanged()), this, SLOT(updateItem()));
     connect(this, SIGNAL(elementTypeChanged()), this, SLOT(updateItem()));
     connect(this, SIGNAL(textChanged()), this, SLOT(updateSizeHint()));
     connect(this, SIGNAL(contentWidthChanged(int)), this, SLOT(updateSizeHint()));
@@ -246,15 +247,30 @@ void QStyleItem::initStyleOption()
 
         QStyleOptionTab *opt = qstyleoption_cast<QStyleOptionTab*>(m_styleoption);
         opt->text = text();
-        opt->shape = info() == "South" ? QTabBar::RoundedSouth : QTabBar::RoundedNorth;
-        if (activeControl() == QLatin1String("beginning"))
-            opt->position = QStyleOptionTab::Beginning;
-        else if (activeControl() == QLatin1String("end"))
-            opt->position = QStyleOptionTab::End;
-        else if (activeControl() == QLatin1String("only"))
-            opt->position = QStyleOptionTab::OnlyOneTab;
-        else
-            opt->position = QStyleOptionTab::Middle;
+
+        if (hint().length() > 2) {
+            QString shape = hint()[0];
+            QString position = hint()[1];
+            QString selectedPosition = hint()[2];
+
+            opt->shape = (shape == "South") ? QTabBar::RoundedSouth : QTabBar::RoundedNorth;
+
+            if (position == QLatin1String("beginning"))
+                opt->position = QStyleOptionTab::Beginning;
+            else if (position == QLatin1String("end"))
+                opt->position = QStyleOptionTab::End;
+            else if (position == QLatin1String("only"))
+                opt->position = QStyleOptionTab::OnlyOneTab;
+            else
+                opt->position = QStyleOptionTab::Middle;
+
+            if (selectedPosition == QLatin1String("next"))
+                opt->selectedPosition = QStyleOptionTab::NextIsSelected;
+            else if (selectedPosition == QLatin1String("previous"))
+                opt->selectedPosition = QStyleOptionTab::PreviousIsSelected;
+           else
+                opt->selectedPosition = QStyleOptionTab::NotAdjacent;
+        }
 
     } break;
 
@@ -701,6 +717,8 @@ void QStyleItem::setHint(const QStringList &str)
         } else if (m_styleoption->state & QStyle::State_Small) {
             m_font.setPointSize(11.);
             emit fontChanged();
+        } else {
+            emit hintChanged();
         }
     }
 }

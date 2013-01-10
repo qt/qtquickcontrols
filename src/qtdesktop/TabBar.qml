@@ -129,9 +129,11 @@ Item {
                     id: tabloader
                     sourceComponent: loader.item ? loader.item.tab : null
                     anchors.fill: parent
-                   // anchors.margins: -2
+
                     property alias control: tab
                     property int index: tabindex
+                    property bool nextSelected: tabFrame.current === index + 1
+                    property bool previousSelected: tabFrame.current === index - 1
                 }
 
                 MouseArea {

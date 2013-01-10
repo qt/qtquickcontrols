@@ -59,13 +59,19 @@ Item {
         implicitWidth: Math.max(50, textitem.width) + styleitem.pixelMetric("tabhspace") + 2
         implicitHeight: Math.max(styleitem.font.pixelSize + styleitem.pixelMetric("tabvspace") + 6, 0)
 
+        property string tabpos: tabFrame.count === 1 ? "only" : index === 0 ? "beginning" : index === tabFrame.count - 1 ? "end" : "middle"
+        property string selectedpos: nextSelected ? "next" : previousSelected ? "previous" : ""
+
+        hint: [tabFrame.position, tabpos, selectedpos]
+        anchors.leftMargin: (selected && style == "mac") ? -1 : 0
+
         selected: control.selected
         info: tabbar.position
         text:  tabFrame.tabs[index].title
         hover: control.hover
         hasFocus: tabbar.focus && selected
-        activeControl: tabFrame.count === 1 ? "only" : index === 0 ? "beginning" : index === tabFrame.count - 1 ? "end" : "middle"
         anchors.margins: paintMargins
+
         Text {
             id: textitem
             visible: false
