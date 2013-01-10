@@ -42,6 +42,8 @@
 #include "qstyleplugin_p.h"
 #include "qstyleitem_p.h"
 #include "qrangemodel_p.h"
+#include "qtaction_p.h"
+#include "qtexclusivegroup_p.h"
 #include "qtmenu_p.h"
 #include "qtmenubar_p.h"
 #include "qdesktopitem_p.h"
@@ -101,6 +103,8 @@ void StylePlugin::registerTypes(const char *uri)
     qmlRegisterType<QRangeModel>(uri, 1, 0, "RangeModel");
     qmlRegisterType<QWheelArea>(uri, 1, 0, "WheelArea");
 
+    qmlRegisterType<QtAction>(uri, 1, 0, "Action");
+    qmlRegisterType<QtExclusiveGroup>(uri, 1, 0, "ExclusiveGroup");
     qmlRegisterType<QtMenu>(uri, 1, 0, "Menu");
     qmlRegisterType<QtMenuBar>(uri, 1, 0, "MenuBar");
     qmlRegisterType<QtMenuItem>(uri, 1, 0, "MenuItem");

@@ -9,6 +9,8 @@ HEADERS += \
     $$PWD/qrangemodel_p_p.h \
     $$PWD/qstyleitem_p.h \
     $$PWD/qstyleplugin_p.h \
+    $$PWD/qtaction_p.h \
+    $$PWD/qtexclusivegroup_p.h \
     $$PWD/qtmenu_p.h \
     $$PWD/qtmenubar_p.h \
     $$PWD/qtmenuitem_p.h \
@@ -25,6 +27,8 @@ SOURCES += \
     $$PWD/qrangemodel.cpp \
     $$PWD/qstyleitem.cpp \
     $$PWD/qstyleplugin.cpp \
+    $$PWD/qtaction.cpp \
+    $$PWD/qtexclusivegroup.cpp \
     $$PWD/qtmenu.cpp \
     $$PWD/qtmenubar.cpp \
     $$PWD/qtmenuitem.cpp \

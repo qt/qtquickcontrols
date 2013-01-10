@@ -108,6 +108,34 @@ ApplicationWindow {
 
         ChildWindow { id: window1 }
 
+        Action {
+            id: openAction
+            text: "Open"
+            shortcut: "Ctrl+O"
+            onTriggered: fileDialogLoad.open();
+        }
+
+        Action {
+            id: copyAction
+            text: "Copy"
+            shortcut: "Ctrl+C"
+            iconName: "edit-copy"
+        }
+
+        Action {
+            id: cutAction
+            text: "Cut"
+            shortcut: "Ctrl+X"
+            iconName: "edit-cut"
+        }
+
+        Action {
+            id: pasteAction
+            text: "Paste"
+            shortcut: "Ctrl+V"
+            iconName: "edit-paste"
+        }
+
         ContextMenu {
             id: editmenu
             MenuItem { text: "Copy" ;  iconName: "edit-copy" }
