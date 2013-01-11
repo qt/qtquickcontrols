@@ -135,7 +135,8 @@ Window {
         Page {
             id: page
             Component.onDestruction: console.log("destroyed component page: " + index)
-
+            property bool pushFromOnCompleted: false
+            Component.onCompleted: if (pushFromOnCompleted) pageStack.push(pageComponent)
             //pageTransition: rotateTransition
 
             Rectangle {
@@ -177,6 +178,10 @@ Window {
                     Button {
                         text: "Push component page with destroyOnPop == false"
                         onClicked: pageStack.push({page:pageComponent, destroyOnPop:false})
+                    }
+                    Button {
+                        text: "Push from Page.onCompleted"
+                        onClicked: pageStack.push({page:pageComponent, properties:{pushFromOnCompleted:true}})
                     }
                     Button {
                         text: "Pop"

@@ -547,6 +547,8 @@ Item {
         // Note: we support two different APIs in this function; The old meego API, and
         // the new "property list" API. Hence the reason for hiding the fact that you
         // can pass more arguments than shown in the signature:
+        if (__recursionGuard(true))
+            return
         var properties = arguments[1]
         var immediate = arguments[2]
         var replace = arguments[3]
@@ -584,6 +586,7 @@ Item {
             push: true
         }
         __performPageTransition(transition)
+        __recursionGuard(false)
         return __currentPage
     }
 
@@ -625,6 +628,9 @@ Item {
         if (page === __currentPage)
             return
 
+        if (__recursionGuard(true))
+            return
+
         var outElement = JSArray.pop()
         var transitionElement = outElement
         var inElement = JSArray.current()
@@ -654,12 +660,16 @@ Item {
             push: false
         }
         __performPageTransition(transition)
+        __recursionGuard(false)
         return outElement.page;
     }
 
     /*! Remove all pages from the stack. No animations will be applied. */
     function clear() {
-        completeTransition()
+        if (__recursionGuard(true))
+            return
+        if (__currentTransition)
+            __currentTransition.animation.complete()
         __currentPage = null
         var count = __depth
         for (var i=0; i<count; ++i) {
@@ -667,6 +677,7 @@ Item {
             if (element.page)
                 __cleanup(element);
         }
+        __recursionGuard(false)
     }
 
     /*! Search for a specific page inside the stack. \a func will
@@ -712,8 +723,11 @@ Item {
       */
     function completeTransition()
     {
+        if (__recursionGuard(true))
+            return
         if (__currentTransition)
             __currentTransition.animation.complete()
+        __recursionGuard(false)
     }
 
     /********* DEPRECATED API *********/
@@ -735,6 +749,8 @@ Item {
     property int __depth: 0
     /*! \internal Stores the transition info while a transition is ongoing */
     property var __currentTransition: null
+    /*! \internal Stops the user from pushing pages while preparing a transition */
+    property bool __guard: false
 
     /*! \internal */
     Component.onCompleted: {
@@ -744,8 +760,19 @@ Item {
 
     /*! \internal */
     Component.onDestruction: {
-        completeTransition()
+        if (__currentTransition)
+            __currentTransition.animation.complete()
         __currentPage = null
+    }
+
+    function __recursionGuard(use)
+    {
+        if (use && __guard) {
+            console.warn("Warning: PageStack: You cannot push/pop recursively!")
+            console.trace()
+            return true
+        }
+        __guard = use
     }
 
     /*! \internal */
@@ -858,12 +885,13 @@ Item {
     /*! \internal */
     function __performPageTransition(transition)
     {
-        // Animate page in "outElement" out, and page in "inElement" in. Ensure entering page is
-        // loaded. Loading a page can result in the loaded page recursively pushing or popping
-        // other pages, so we need to check for this.
-        completeTransition()
+        // Animate page in "outElement" out, and page in "inElement" in. Set a guard to protect
+        // the user from pushing new pages on signals that will fire while preparing for the transition
+        // (e.g Page.onCompleted, Page.onStatusChanged, Page.onIndexChanged etc). Otherwise, we will enter
+        // this function several times, which causes the pages to be half-way updated.
+        if (__currentTransition)
+            __currentTransition.animation.complete()
         __loadElement(transition.inElement)
-        var currentElement = JSArray.current()
 
         transition.name = transition.replace ? "replaceAnimation" : (transition.push ? "pushAnimation" : "popAnimation")
         var enterPage = transition.inElement.page
