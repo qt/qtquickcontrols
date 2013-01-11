@@ -707,8 +707,7 @@ Item {
         }
     }
 
-    /*! Stops any ongoing page transition, and jumps to the final
-        property values of the animations it consists of.
+    /*! Immediately completes any ongoing transition.
         /sa Animation.complete
       */
     function completeTransition()
@@ -759,8 +758,12 @@ Item {
             }
             return
         }
-        if (!element.pageComponent)
-            element.pageComponent = invalidPageReplacement
+        if (!element.pageComponent) {
+            element.page = invalidPageReplacement.createObject(root)
+            element.page.text = "\nError: Invalid page (page was 'null'). "
+                    + "This might indicate that the page was deleted outside PageStack!"
+            return
+        }
 
         var comp = __resolvePageComponent(element.pageComponent, element)
 
@@ -781,8 +784,7 @@ Item {
                     element.destroyOnPop = true
             }
         } else {
-            // comp is already an Item, so just
-            // reparent it into the pagestack, unless:
+            // comp is already an Item, so just reparent it into the pagestack:
             element.page = comp
             element.originalParent = parent
             element.page.parent = root
@@ -790,8 +792,7 @@ Item {
                 if (element.page.hasOwnProperty(prop))
                     element.page[prop] = element.properties[prop];
             }
-            // Do not destroy pages we didn't
-            // create, unless the user specified something else:
+            // Do not destroy pages we didn't create, unless the user specified something else:
             if (!element.hasOwnProperty("destroyOnPop"))
                 element.destroyOnPop = false
         }
