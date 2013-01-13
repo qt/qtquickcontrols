@@ -40,26 +40,29 @@
 
 import QtQuick 2.0
 import QtDesktop 1.0
+import "private"
 import "Styles/Settings.js" as Settings
 
 /*!
     \qmltype TabFrame
     \inqmlmodule QtDesktop 1.0
-    \brief TabFrame is doing bla...bla...
+    \brief Represents a control that contains multiple items that share the same space on the screen.
+
 */
 
 Item {
     id: tabWidget
     width: 100
     height: 100
+
     property int current: 0
     property int count: stack.children.length
     property bool frame: true
     property bool tabsVisible: true
     property string position: "North"
     default property alias tabs : stack.children
-    property Item tabBar: tabbarItem
-    property Component delegate: Qt.createComponent(Settings.THEME_PATH + "/TabFrameStyle.qml")
+    property Component style: Qt.createComponent(Settings.THEME_PATH + "/TabFrameStyle.qml")
+    property var __styleItem: loader.item
 
     onCurrentChanged: __setOpacities()
     Component.onCompleted: __setOpacities()
@@ -93,10 +96,19 @@ Item {
 
     Loader {
         id: loader
+        sourceComponent: style
+        property var control: tabWidget
+    }
+
+    Loader {
+        id: frameLoader
+
         anchors.fill: parent
         anchors.topMargin: tabbarItem && tabsVisible && position == "North" ? Math.max(0, tabbarItem.height - stack.baseOverlap) : 0
         anchors.bottomMargin: tabbarItem && tabsVisible && position == "South" ? Math.max(0, tabbarItem.height - stack.baseOverlap) : 0
-        sourceComponent: frame ? delegate : null
+        sourceComponent: frame && loader.item ? loader.item.frame : null
+        property var control: tabWidget
+
         Item {
             id: stack
             anchors.fill: parent
@@ -107,12 +119,13 @@ Item {
             property string style
             property int baseOverlap
         }
-        onLoaded: item.z = -1
+        onLoaded: { item.z = -1 }
     }
 
     TabBar {
         id: tabbarItem
         tabFrame: tabWidget
+        style: loader.item
         anchors.top: parent.top
         anchors.left: tabWidget.left
         anchors.right: tabWidget.right

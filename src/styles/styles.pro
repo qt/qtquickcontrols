@@ -13,7 +13,6 @@ QML_FILES = \
     Settings.js \
     SliderStyle.qml \
     SpinBoxStyle.qml \
-    TabBarStyle.qml \
     TabFrameStyle.qml \
     TextFieldStyle.qml \
     ToolBarStyle.qml \
@@ -32,7 +31,6 @@ QML_FILES += \
     Desktop/ScrollBarStyle.qml \
     Desktop/SliderStyle.qml \
     Desktop/SpinBoxStyle.qml \
-    Desktop/TabBarStyle.qml \
     Desktop/TabFrameStyle.qml \
     Desktop/TextFieldStyle.qml \
     Desktop/ToolBarStyle.qml \

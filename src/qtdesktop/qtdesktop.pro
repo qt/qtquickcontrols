@@ -33,7 +33,6 @@ QML_FILES = \
     SplitterRow.qml \
     StatusBar.qml \
     Tab.qml \
-    TabBar.qml \
     TabFrame.qml \
     TableColumn.qml \
     TableView.qml \
@@ -44,6 +43,7 @@ QML_FILES = \
 
 # private qml files
 QML_FILES += \
+    private/TabBar.qml \
     private/BasicButton.qml \
     private/ButtonBehavior.qml \
     private/ButtonGroup.js \

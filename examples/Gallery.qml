@@ -208,7 +208,6 @@ ApplicationWindow {
             Controls { id: controlPage }
         }
         Tab {
-            id:mytab
             title: "Itemviews"
             ModelView { }
         }

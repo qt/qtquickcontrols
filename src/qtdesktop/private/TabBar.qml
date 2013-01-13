@@ -40,18 +40,12 @@
 
 import QtQuick 2.0
 import QtDesktop 1.0
-import "Styles/Settings.js" as Settings
-
-/*!
-    \qmltype TabBar
-    \inqmlmodule QtDesktop 1.0
-    \brief TabBar is doing bla...bla...
-*/
 
 Item {
     id: tabbar
-    property int tabHeight: tabrow.height
-    property int tabWidth: tabrow.width
+    height: tabrow.height
+    width: tabrow.width
+
 
     Keys.onRightPressed: {
         if (tabFrame && tabFrame.current < tabFrame.count - 1)
@@ -62,20 +56,19 @@ Item {
             tabFrame.current = tabFrame.current - 1
     }
 
-    height: tabHeight
-
-
-    property Item tabFrame
     onTabFrameChanged: parent = tabFrame
     visible: tabFrame ? tabFrame.tabsVisible : true
 
-    property int __overlap :  loader.item ? loader.item.__overlap : 0
+
+    property Item tabFrame
+    property var style
+    property var styleItem: tabFrame.__styleItem ? tabFrame.__styleItem : null
+
+    property string tabBarAlignment: styleItem ? styleItem.tabBarAlignment : "center"
     property string position: tabFrame ? tabFrame.position : "North"
-    property string tabBarAlignment: loader.item ? loader.item.tabBarAlignment : "Center"
-    property int tabOverlap: loader.item ? loader.item.tabOverlap : 0
-    property int tabBaseOverlap: loader.item ? loader.item.tabBaseOverlap : 0
-    property int tabHSpace: loader.item ? loader.item.tabHSpace : 0
-    property int tabVSpace: loader.item ? loader.item.tabVSpace : 0
+
+    property int tabOverlap: styleItem ? styleItem.tabOverlap : 0
+    property int tabBaseOverlap: styleItem ? styleItem.tabBaseOverlap : 0
 
     function tab(index) {
         for (var i = 0; i < tabrow.children.length; ++i) {
@@ -86,33 +79,37 @@ Item {
         return null;
     }
 
-    property Component style: Qt.createComponent(Settings.THEME_PATH + "/TabBarStyle.qml")
-
-    Loader {
-        id: loader
-        sourceComponent: style
-        property alias control: tabbar
-    }
-
     Row {
         id: tabrow
         Accessible.role: Accessible.PageTabList
-        states:
+        spacing: -tabOverlap
+
+        states: [
             State {
-            when: tabBarAlignment == "center"
-            name: "centered"
-            AnchorChanges {
-                target:tabrow
-                anchors.horizontalCenter: tabbar.horizontalCenter
+                name: "center"
+                AnchorChanges { target:tabrow ; anchors.horizontalCenter: tabbar.horizontalCenter }
+            },
+            State {
+                name: "left"
+                when: tabBarAlignment == "left"
+                AnchorChanges { target:tabrow ; anchors.left: parent.left }
+                PropertyChanges { target:tabrow ; anchors.leftMargin: styleItem ? styleItem.leftMargin : 0 }
+            },
+            State {
+                name: "right"
+                when: tabBarAlignment == "right"
+                AnchorChanges { target:tabrow ; anchors.right: parent.right }
+                PropertyChanges { target:tabrow ; anchors.rightMargin: styleItem ? styleItem.rightMargin : 0 }
             }
-        }
+        ]
+
 
         Repeater {
             id: repeater
             focus: true
             model: tabFrame ? tabFrame.tabs.length : null
             delegate: Item {
-                id: tab
+                id: tabitem
                 focus: true
 
                 property int tabindex: index
@@ -120,20 +117,24 @@ Item {
                 property bool selected : tabFrame.current == index
                 property bool hover: mousearea.containsMouse
                 property bool first: index === 0
+                property string title: tabFrame.tabs[index].title
 
-                z: selected ? 1 : -1
+                z: selected ? 1 : -index
                 implicitWidth: Math.min(tabloader.implicitWidth, tabbar.width/tabs.length) + 1
                 implicitHeight: tabloader.implicitHeight
 
                 Loader {
                     id: tabloader
+
                     sourceComponent: loader.item ? loader.item.tab : null
                     anchors.fill: parent
 
-                    property alias control: tab
+                    property Item control: tabFrame
+                    property Item tab: tabitem
                     property int index: tabindex
                     property bool nextSelected: tabFrame.current === index + 1
                     property bool previousSelected: tabFrame.current === index - 1
+                    property string title: tab.title
                 }
 
                 MouseArea {
@@ -141,6 +142,7 @@ Item {
                     anchors.fill: parent
                     hoverEnabled: true
                     onPressed: tabFrame.current = index
+                    onPressAndHold: tabitem.parent = null
                 }
                 Accessible.role: Accessible.PageTab
                 Accessible.name: tabFrame.tabs[index].title

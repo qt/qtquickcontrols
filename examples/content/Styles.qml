@@ -43,6 +43,7 @@ import QtDesktop 1.0
 import QtDesktop.Styles 1.0
 
 Item {
+    id: root
     width: 300
     height: 200
 
@@ -138,11 +139,13 @@ Item {
 
         Row {
             TabFrame {
-                width: 300
-                height: 60
-                Tab { title: "One" }
-                Tab { title: "Two" }
-                frame: false
+                width: 400
+                height: 30
+                Tab { title: "One" ; Item {}}
+                Tab { title: "Two" ; Item {}}
+                Tab { title: "Three" ; Item {}}
+                Tab { title: "Four" ; Item {}}
+                style: tabFrameStyle
             }
         }
     }
@@ -214,6 +217,39 @@ Item {
             border.color: "gray"
             antialiasing: true
             radius: height/2
+        }
+    }
+    property Component tabFrameStyle: TabFrameStyle {
+        tabOverlap: 16
+        leftMargin: 12
+
+        frame: Item {
+            Rectangle {
+                gradient: Gradient{
+                    GradientStop { color: "#e5e5e5" ; position: 0 }
+                    GradientStop { color: "#e0e0e0" ; position: 1 }
+                }
+                anchors.fill: parent
+                anchors.topMargin: -4
+                border.color: "#898989"
+                 Rectangle { anchors.fill: parent ; anchors.margins: 1 ; border.color: "white" ; color: "transparent" }
+            }
+        }
+        tab: Item {
+            implicitWidth: image.sourceSize.width
+            implicitHeight: image.sourceSize.height
+            BorderImage {
+                id: image
+                anchors.fill: parent
+                source: tab.selected ? "../images/tab_selected.png" : "../images/tab.png"
+                border.left: 50
+                smooth: false
+                border.right: 50
+            }
+            Text {
+                text: tab.title
+                anchors.centerIn: parent
+            }
         }
     }
 }

@@ -40,14 +40,26 @@
 import QtQuick 2.0
 import QtDesktop 1.0
 
-Item {
-    property rect contentRect
-    property int margins: frame ? stack.frameWidth : 0
-    property int __baseOverlap: frameitem.pixelMetric("tabbaseoverlap") // add paintmargins;
-    contentRect: Qt.rect(margins, margins, 8 + margins + (frameitem.style == "mac" ? 6 : 0), margins + (frameitem.style =="mac" ? 6 : 0))
+QtObject {
+    id: root
 
-    StyleItem {
-        id: frameitem
+    property int leftMargin: 0
+    property int rightMargin: 0
+
+    property string tabBarAlignment: __barstyle.styleHint("tabbaralignment");
+
+    property var __framestyle: StyleItem { elementType: "tabframe" ; visible: false }
+    property var __barstyle: StyleItem { elementType: "tabbar" ; visible: false }
+
+    property rect contentRect
+    property int margins: control.frame ? stack.frameWidth : 0
+    property int tabOverlap: __barstyle.pixelMetric("taboverlap");
+    property int tabBaseOverlap: __barstyle.pixelMetric("tabbaseoverlap");
+    property int tabHSpace: __barstyle.pixelMetric("tabhspace");
+    property int tabVSpace: __barstyle.pixelMetric("tabvspace");
+
+    property Component frame: StyleItem {
+        id: styleitem
         anchors.fill: parent
         anchors.topMargin: 1//stack.baseOverlap
         z: style == "oxygen" ? 1 : 0
@@ -55,22 +67,42 @@ Item {
         info: position
         value: tabbarItem && tabsVisible && tabbarItem.tab(current) ? tabbarItem.tab(current).x : 0
         minimum: tabbarItem && tabsVisible && tabbarItem.tab(current) ? tabbarItem.tab(current).width : 0
-        maximum: tabbarItem && tabsVisible ? tabbarItem.tabWidth : width
+        maximum: tabbarItem && tabsVisible ? tabbarItem.width : width
         Component.onCompleted: {
-            stack.frameWidth = pixelMetric("defaultframewidth")
-            stack.style = style
-            stack.baseOverlap = pixelMetric("tabbaseoverlap")// add paintmargins;
+            stack.frameWidth = styleitem.pixelMetric("defaultframewidth");
+            stack.style = style;
+            stack.baseOverlap = root.tabBaseOverlap;
         }
-        states: [
-            State {
-                name: "South"
-                when: position == "South" && tabbarItem!= undefined
-                PropertyChanges {
-                    target: frameitem
-                    anchors.topMargin: 0
-                    anchors.bottomMargin: 1//stack.baseOverlap
-                }
+    }
+
+    property Component tab: Item {
+        property string tabpos: control.count === 1 ? "only" : index === 0 ? "beginning" : index === control.count - 1 ? "end" : "middle"
+        property string selectedpos: nextSelected ? "next" : previousSelected ? "previous" : ""
+        implicitWidth: Math.max(50, textitem.width) + tabHSpace + 2
+        implicitHeight: Math.max(styleitem.font.pixelSize + tabVSpace + 6, 0)
+
+        StyleItem {
+            id: styleitem
+
+            elementType: "tab"
+
+            anchors.fill: parent
+            anchors.leftMargin: (selected && style == "mac") ? -1 : 0
+
+            hint: [control.position, tabpos, selectedpos]
+
+            selected: tab.selected
+            info: control.position
+            text:  title
+            hover: tab.hover
+            hasFocus: tab.focus && selected
+            anchors.margins: paintMargins
+
+            Text {
+                id: textitem
+                visible: false
+                text: styleitem.text
             }
-        ]
+        }
     }
 }
