@@ -135,6 +135,16 @@ Item {
                 style: progressbarStyle
             }
         }
+
+        Row {
+            TabFrame {
+                width: 300
+                height: 60
+                Tab { title: "One" }
+                Tab { title: "Two" }
+                frame: false
+            }
+        }
     }
 
     // Style delegates:

@@ -96,7 +96,7 @@ Item {
         anchors.fill: parent
         anchors.topMargin: tabbarItem && tabsVisible && position == "North" ? Math.max(0, tabbarItem.height - stack.baseOverlap) : 0
         anchors.bottomMargin: tabbarItem && tabsVisible && position == "South" ? Math.max(0, tabbarItem.height - stack.baseOverlap) : 0
-        sourceComponent: delegate
+        sourceComponent: frame ? delegate : null
         Item {
             id: stack
             anchors.fill: parent
