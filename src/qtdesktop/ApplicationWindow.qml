@@ -106,19 +106,19 @@ Window {
         }
     }
 
-    Row {
-        id: toolBarArea
-        anchors.top: menuBarArea.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-    }
-
     Item {
         id: contentArea
         anchors.top: toolBarArea.bottom
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: statusBarArea.top
+    }
+
+    Row {
+        id: toolBarArea
+        anchors.top: menuBarArea.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
     }
 
     Row {

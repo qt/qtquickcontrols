@@ -37,55 +37,52 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-import QtQuick 2.0
-import QtDesktop 1.0
 
-/*!
-    \qmltype TextFieldStyle
-    \inqmlmodule QtDesktop.Styles 1.0
-    \brief TextFieldStyle is doing bla...bla...
-*/
+import QtQuick 2.0
 
 Item {
-    id: style
-    anchors.fill: parent
+    id: root
+    width: parent.width
+    height: 88
 
-    implicitWidth: backgroundLoader.implicitWidth ? backgroundLoader.implicitWidth : 100
-    implicitHeight: backgroundLoader.implicitHeight ? backgroundLoader.implicitHeight : 20
+    property alias text: textitem.text
+    signal clicked
 
-    property int topMargin: 4
-    property int leftMargin: 8
-    property int rightMargin: 8
-    property int bottomMargin: 4
-
-    property color foregroundColor: syspal.text
-    property color backgroundColor: syspal.base
-    property color placeholderTextColor: Qt.rgba(0, 0, 0, 0.5)
-    property color selectionColor: syspal.highlight
-    property color selectedTextColor: syspal.highlightedText
-    property font font
-
-    SystemPalette {
-        id: syspal
-        colorGroup: control.enabled ?
-                        SystemPalette.Active :
-                        SystemPalette.Disabled
-    }
-
-    property Component background: Rectangle {
-        id: styleitem
-        border.color: Qt.darker(backgroundColor, 2)
-        gradient: Gradient {
-            GradientStop{color: Qt.darker(backgroundColor, 1.1) ; position: 0}
-            GradientStop{color: Qt.lighter(backgroundColor, 1.2) ; position: 1}
-        }
-        radius: 3
-        antialiasing: true
-    }
-
-    Loader {
-        id: backgroundLoader
-        sourceComponent: background
+    Rectangle {
         anchors.fill: parent
+        color: "#11ffffff"
+        visible: mouse.pressed
+    }
+
+    Text {
+        id: textitem
+        color: "white"
+        font.pixelSize: 32
+        text: modelData
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.left: parent.left
+        anchors.leftMargin: 30
+    }
+
+    Rectangle {
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.margins: 15
+        height: 1
+        color: "#424246"
+    }
+
+    Image {
+        anchors.right: parent.right
+        anchors.rightMargin: 20
+        anchors.verticalCenter: parent.verticalCenter
+        source: "../images/navigation_next_item.png"
+    }
+
+    MouseArea {
+        id: mouse
+        anchors.fill: parent
+        onClicked: root.clicked()
+
     }
 }

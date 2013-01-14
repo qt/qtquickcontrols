@@ -37,55 +37,59 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
+
 import QtQuick 2.0
 import QtDesktop 1.0
+import QtDesktop.Styles 1.0
 
-/*!
-    \qmltype TextFieldStyle
-    \inqmlmodule QtDesktop.Styles 1.0
-    \brief TextFieldStyle is doing bla...bla...
-*/
+Page {
 
-Item {
-    id: style
-    anchors.fill: parent
-
-    implicitWidth: backgroundLoader.implicitWidth ? backgroundLoader.implicitWidth : 100
-    implicitHeight: backgroundLoader.implicitHeight ? backgroundLoader.implicitHeight : 20
-
-    property int topMargin: 4
-    property int leftMargin: 8
-    property int rightMargin: 8
-    property int bottomMargin: 4
-
-    property color foregroundColor: syspal.text
-    property color backgroundColor: syspal.base
-    property color placeholderTextColor: Qt.rgba(0, 0, 0, 0.5)
-    property color selectionColor: syspal.highlight
-    property color selectedTextColor: syspal.highlightedText
-    property font font
-
-    SystemPalette {
-        id: syspal
-        colorGroup: control.enabled ?
-                        SystemPalette.Active :
-                        SystemPalette.Disabled
-    }
-
-    property Component background: Rectangle {
-        id: styleitem
-        border.color: Qt.darker(backgroundColor, 2)
-        gradient: Gradient {
-            GradientStop{color: Qt.darker(backgroundColor, 1.1) ; position: 0}
-            GradientStop{color: Qt.lighter(backgroundColor, 1.2) ; position: 1}
-        }
-        radius: 3
-        antialiasing: true
-    }
-
-    Loader {
-        id: backgroundLoader
-        sourceComponent: background
+    TabFrame {
         anchors.fill: parent
+        style: touchStyle
+        Tab {
+            title: "Buttons"
+            ButtonPage{ visible: true }
+        }
+        Tab {
+            title: "Sliders"
+            SliderPage{ visible: true }
+        }
+        Tab {
+            title: "Progress"
+            ProgressBarPage{ visible: true }
+        }
+    }
+
+    Component {
+        id: touchStyle
+        TabFrameStyle {
+            tabBarAlignment: "center"
+            frame: Item { }
+            tab: Item {
+                implicitWidth: control.width/control.count
+                implicitHeight: 50
+                BorderImage {
+                    anchors.fill: parent
+                    border.bottom: 8
+                    border.top: 8
+                    source: tab.selected ? "../images/tab_selected.png":"../images/tabs_standard.png"
+                    Text {
+                        anchors.centerIn: parent
+                        color: "white"
+                        text: tab.title.toUpperCase()
+                        font.pixelSize: 16
+                    }
+                    Rectangle {
+                        visible: index > 0
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
+                        anchors.margins: 10
+                        width:1
+                        color: "#3a3a3a"
+                    }
+                }
+            }
+        }
     }
 }

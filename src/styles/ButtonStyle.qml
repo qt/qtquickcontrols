@@ -52,6 +52,7 @@ Item {
 
     property color backgroundColor: "lightGray"
     property color foregroundColor: "black"
+    property alias font: textitem.font
 
     property Component background: Rectangle {
         implicitWidth: 100
@@ -72,6 +73,7 @@ Item {
     }
 
     Text {
+        id: textitem
         anchors.centerIn: backgroundLoader
         renderType: Text.NativeRendering
         text: control.text

@@ -37,55 +37,72 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
+
 import QtQuick 2.0
 import QtDesktop 1.0
+import QtDesktop.Styles 1.0
 
-/*!
-    \qmltype TextFieldStyle
-    \inqmlmodule QtDesktop.Styles 1.0
-    \brief TextFieldStyle is doing bla...bla...
-*/
+Page {
 
-Item {
-    id: style
-    anchors.fill: parent
-
-    implicitWidth: backgroundLoader.implicitWidth ? backgroundLoader.implicitWidth : 100
-    implicitHeight: backgroundLoader.implicitHeight ? backgroundLoader.implicitHeight : 20
-
-    property int topMargin: 4
-    property int leftMargin: 8
-    property int rightMargin: 8
-    property int bottomMargin: 4
-
-    property color foregroundColor: syspal.text
-    property color backgroundColor: syspal.base
-    property color placeholderTextColor: Qt.rgba(0, 0, 0, 0.5)
-    property color selectionColor: syspal.highlight
-    property color selectedTextColor: syspal.highlightedText
-    property font font
-
-    SystemPalette {
-        id: syspal
-        colorGroup: control.enabled ?
-                        SystemPalette.Active :
-                        SystemPalette.Disabled
-    }
-
-    property Component background: Rectangle {
-        id: styleitem
-        border.color: Qt.darker(backgroundColor, 2)
-        gradient: Gradient {
-            GradientStop{color: Qt.darker(backgroundColor, 1.1) ; position: 0}
-            GradientStop{color: Qt.lighter(backgroundColor, 1.2) ; position: 1}
+    property real progress: 0
+    SequentialAnimation on progress {
+        loops: Animation.Infinite
+        running: true
+        NumberAnimation {
+            from: 0
+            to: 1
+            duration: 3000
         }
-        radius: 3
-        antialiasing: true
+        NumberAnimation {
+            from: 1
+            to: 0
+            duration: 3000
+        }
     }
 
-    Loader {
-        id: backgroundLoader
-        sourceComponent: background
-        anchors.fill: parent
+    Column {
+        spacing: 40
+        anchors.centerIn: parent
+
+        ProgressBar {
+            anchors.margins: 20
+            style: touchStyle
+            width: 400
+            value: progress
+        }
+
+        ProgressBar {
+            anchors.margins: 20
+            style: touchStyle
+            width: 400
+            value: 1 - progress
+        }
+
+        ProgressBar {
+            anchors.margins: 20
+            style: touchStyle
+            value: 1
+            width: 400
+        }
+
+    }
+
+    Component {
+        id: touchStyle
+        ProgressBarStyle {
+            implicitHeight: 15
+            implicitWidth: 300
+            background: Rectangle {
+                color: "#444"
+                opacity: 0.8
+                Rectangle {
+                    antialiasing: true
+                    radius: 1
+                    color: "#468bb7"
+                    height: parent.height
+                    width: parent.width * control.value / control.maximumValue
+                }
+            }
+        }
     }
 }

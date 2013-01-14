@@ -147,6 +147,7 @@ FocusScope {
         selectedTextColor: loader.item ? loader.item.selectedTextColor : "black"
 
         property Item styleItem: loader.item
+        font: styleItem ? styleItem.font : font
         anchors.leftMargin: styleItem ? styleItem.leftMargin : 0
         anchors.topMargin: styleItem ? styleItem.topMargin : 0
         anchors.rightMargin: styleItem ? styleItem.rightMargin : 0

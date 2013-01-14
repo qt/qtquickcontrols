@@ -69,6 +69,7 @@ StyleItem {
     property color selectionColor: syspal.highlight
     property color selectedTextColor: syspal.highlightedText
 
+
     hint: control.styleHints
 
     Item {

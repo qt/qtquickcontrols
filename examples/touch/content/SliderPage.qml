@@ -37,55 +37,59 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
+
 import QtQuick 2.0
 import QtDesktop 1.0
+import QtDesktop.Styles 1.0
 
-/*!
-    \qmltype TextFieldStyle
-    \inqmlmodule QtDesktop.Styles 1.0
-    \brief TextFieldStyle is doing bla...bla...
-*/
+Page {
+    Column {
+        spacing: 12
+        anchors.centerIn: parent
 
-Item {
-    id: style
-    anchors.fill: parent
-
-    implicitWidth: backgroundLoader.implicitWidth ? backgroundLoader.implicitWidth : 100
-    implicitHeight: backgroundLoader.implicitHeight ? backgroundLoader.implicitHeight : 20
-
-    property int topMargin: 4
-    property int leftMargin: 8
-    property int rightMargin: 8
-    property int bottomMargin: 4
-
-    property color foregroundColor: syspal.text
-    property color backgroundColor: syspal.base
-    property color placeholderTextColor: Qt.rgba(0, 0, 0, 0.5)
-    property color selectionColor: syspal.highlight
-    property color selectedTextColor: syspal.highlightedText
-    property font font
-
-    SystemPalette {
-        id: syspal
-        colorGroup: control.enabled ?
-                        SystemPalette.Active :
-                        SystemPalette.Disabled
-    }
-
-    property Component background: Rectangle {
-        id: styleitem
-        border.color: Qt.darker(backgroundColor, 2)
-        gradient: Gradient {
-            GradientStop{color: Qt.darker(backgroundColor, 1.1) ; position: 0}
-            GradientStop{color: Qt.lighter(backgroundColor, 1.2) ; position: 1}
+        Slider {
+            anchors.margins: 20
+            style: touchStyle
+            value: 0
         }
-        radius: 3
-        antialiasing: true
+        Slider {
+            anchors.margins: 20
+            style: touchStyle
+            value: 0.5
+        }
+        Slider {
+            anchors.margins: 20
+            style: touchStyle
+            value: 1.0
+        }
+
     }
 
-    Loader {
-        id: backgroundLoader
-        sourceComponent: background
-        anchors.fill: parent
+    Component {
+        id: touchStyle
+        SliderStyle {
+            implicitHeight: 50
+            implicitWidth: 400
+            handle: Rectangle {
+                width: 30
+                height: 30
+                radius: height
+                antialiasing: true
+                color: Qt.lighter("#468bb7", 1.2)
+            }
+            background: Rectangle {
+                implicitHeight: 8
+                implicitWidth: 300
+                color: "#444"
+                opacity: 0.8
+                Rectangle {
+                    antialiasing: true
+                    radius: 1
+                    color: "#468bb7"
+                    height: parent.height
+                    width: parent.width * control.value / control.maximumValue
+                }
+            }
+        }
     }
 }
