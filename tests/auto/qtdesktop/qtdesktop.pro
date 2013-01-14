@@ -12,6 +12,7 @@ TESTDATA = $$PWD/data/*
 
 OTHER_FILES += \
     $$PWD/data/tst_button.qml \
+    $$PWD/data/tst_shortcuts.qml \
     $$PWD/data/tst_spinbox.qml \
     $$PWD/data/tst_tableview.qml \
     $$PWD/data/tableview/table2_qabstractitemmodel.qml \

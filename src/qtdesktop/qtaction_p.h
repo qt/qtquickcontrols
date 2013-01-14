@@ -44,6 +44,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QUrl>
 #include <QtGui/QIcon>
+#include <QtGui/qkeysequence.h>
 
 class QtExclusiveGroup;
 
@@ -62,16 +63,21 @@ class QtAction : public QObject
     Q_PROPERTY(QtExclusiveGroup *exclusiveGroup READ exclusiveGroup WRITE setExclusiveGroup NOTIFY exclusiveGroupChanged)
 #ifndef QT_NO_SHORTCUT
     Q_PROPERTY(QString shortcut READ shortcut WRITE setShortcut NOTIFY shortcutChanged)
+    Q_PROPERTY(QString mnemonic READ mnemonic WRITE setMnemonic NOTIFY mnemonicChanged)
 #endif
 
 public:
     explicit QtAction(QObject *parent = 0);
+    ~QtAction();
 
     QString text() const { return m_text; }
     void setText(const QString &text);
 
-    QString shortcut() const { return m_shortcut; }
+    QString shortcut() const;
     void setShortcut(const QString &shortcut);
+
+    QString mnemonic() const;
+    void setMnemonic(const QString &mnemonic);
 
     QString iconName() const { return m_iconName; }
     void setIconName(const QString &iconName);
@@ -94,6 +100,8 @@ public:
     QtExclusiveGroup *exclusiveGroup() const { return m_exclusiveGroup; }
     void setExclusiveGroup(QtExclusiveGroup * arg);
 
+    bool event(QEvent *e);
+
 public Q_SLOTS:
     void trigger() { emit triggered(); }
     void hover() { emit hovered(); }
@@ -104,7 +112,9 @@ Q_SIGNALS:
     void toggled(bool);
 
     void textChanged();
-    void shortcutChanged(QString arg);
+    void shortcutChanged(QString shortcut);
+    void mnemonicChanged(QString mnemonic);
+
     void iconNameChanged();
     void iconSourceChanged();
     void toolTipChanged(QString arg);
@@ -121,7 +131,8 @@ private:
     bool m_checkable;
     bool m_checked;
     QtExclusiveGroup *m_exclusiveGroup;
-    QString m_shortcut;
+    QKeySequence m_shortcut;
+    QKeySequence m_mnemonic;
     QString m_toolTip;
 };
 

@@ -41,7 +41,7 @@
 #include "qtaction_p.h"
 #include "qtexclusivegroup_p.h"
 
-#include "qdebug.h"
+#include <QtGui/private/qguiapplication_p.h>
 
 
 QtAction::QtAction(QObject *parent)
@@ -53,6 +53,12 @@ QtAction::QtAction(QObject *parent)
 {
 }
 
+QtAction::~QtAction()
+{
+    setShortcut(QString());
+    setMnemonic(QString());
+}
+
 void QtAction::setText(const QString &text)
 {
     if (text == m_text)
@@ -61,12 +67,58 @@ void QtAction::setText(const QString &text)
     emit textChanged();
 }
 
+bool qShortcutContextMatcher(QObject *, Qt::ShortcutContext)
+{
+    // the context matching is only interesting for non window-wide shortcuts
+    // it might be interesting to check for the action's window being active
+    // we currently only support the window wide focus so we can safely ignore this
+    return true;
+}
+
+QString QtAction::shortcut() const
+{
+    return m_shortcut.toString(QKeySequence::NativeText);
+}
+
 void QtAction::setShortcut(const QString &arg)
 {
-    if (arg == m_shortcut)
+    QKeySequence sequence = QKeySequence::fromString(arg);
+    if (sequence == m_shortcut)
         return;
-    m_shortcut = arg;
-    emit shortcutChanged(m_shortcut);
+
+    if (!m_shortcut.isEmpty())
+        QGuiApplicationPrivate::instance()->shortcutMap.removeShortcut(0, this, m_shortcut);
+
+    m_shortcut = sequence;
+
+    if (!m_shortcut.isEmpty()) {
+        Qt::ShortcutContext context = Qt::WindowShortcut;
+        QGuiApplicationPrivate::instance()->shortcutMap.addShortcut(this, m_shortcut, context, qShortcutContextMatcher);
+    }
+    emit shortcutChanged(shortcut());
+}
+
+QString QtAction::mnemonic() const
+{
+    return m_mnemonic.toString(QKeySequence::NativeText);
+}
+
+void QtAction::setMnemonic(const QString &mnem)
+{
+    QKeySequence sequence = QKeySequence::mnemonic(mnem);
+    if (m_mnemonic == sequence)
+        return;
+
+    if (!m_mnemonic.isEmpty())
+        QGuiApplicationPrivate::instance()->shortcutMap.removeShortcut(0, this, m_mnemonic);
+
+    m_mnemonic = sequence;
+
+    if (!m_mnemonic.isEmpty()) {
+        Qt::ShortcutContext context = Qt::WindowShortcut;
+        QGuiApplicationPrivate::instance()->shortcutMap.addShortcut(this, m_mnemonic, context, qShortcutContextMatcher);
+    }
+    emit mnemonicChanged(mnemonic());
 }
 
 void QtAction::setIconSource(const QUrl &iconSource)
@@ -131,4 +183,29 @@ void QtAction::setExclusiveGroup(QtExclusiveGroup *eg)
         m_exclusiveGroup->registerCheckable(this);
 
     emit exclusiveGroupChanged();
+}
+
+bool QtAction::event(QEvent *e)
+{
+    if (!m_enabled)
+        return false;
+
+    if (e->type() != QEvent::Shortcut)
+        return false;
+
+    QShortcutEvent *se = static_cast<QShortcutEvent *>(e);
+
+    Q_ASSERT_X(se->key() == m_shortcut || se->key() == m_mnemonic,
+               "QtAction::event",
+               "Received shortcut event from incorrect shortcut");
+    if (se->isAmbiguous()) {
+        qWarning("QtAction::event: Ambiguous shortcut overload: %s", se->key().toString(QKeySequence::NativeText).toLatin1().constData());
+        return false;
+    }
+
+    if (m_checkable)
+        setChecked(!m_checked);
+    emit triggered();
+
+    return true;
 }

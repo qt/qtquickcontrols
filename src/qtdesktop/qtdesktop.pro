@@ -2,7 +2,7 @@ CXX_MODULE = qml
 TARGET  = styleplugin
 TARGETPATH = QtDesktop
 
-QT += qml quick widgets
+QT += qml quick widgets gui-private core-private
 
 QMAKE_DOCS = $$PWD/doc/qtdesktopcomponents.qdocconf
 
