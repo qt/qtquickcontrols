@@ -64,7 +64,7 @@ Item {
     property var style
     property var styleItem: tabFrame.__styleItem ? tabFrame.__styleItem : null
 
-    property string tabBarAlignment: styleItem ? styleItem.tabBarAlignment : "center"
+    property string tabBarAlignment: styleItem ? styleItem.tabBarAlignment : "left"
     property string position: tabFrame ? tabFrame.position : "North"
 
     property int tabOverlap: styleItem ? styleItem.tabOverlap : 0
@@ -86,14 +86,14 @@ Item {
 
         states: [
             State {
-                name: "center"
-                AnchorChanges { target:tabrow ; anchors.horizontalCenter: tabbar.horizontalCenter }
-            },
-            State {
                 name: "left"
-                when: tabBarAlignment == "left"
                 AnchorChanges { target:tabrow ; anchors.left: parent.left }
                 PropertyChanges { target:tabrow ; anchors.leftMargin: styleItem ? styleItem.leftMargin : 0 }
+            },
+            State {
+                name: "center"
+                when: tabBarAlignment == "center"
+                AnchorChanges { target:tabrow ; anchors.horizontalCenter: tabbar.horizontalCenter }
             },
             State {
                 name: "right"
