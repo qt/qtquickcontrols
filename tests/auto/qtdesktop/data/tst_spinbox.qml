@@ -157,6 +157,28 @@ Item {
             compare(spinbox.value.toString().toLowerCase(), "nan")
         }
 
+        function test_negativesinglestep()
+        {
+            var spinbox = Qt.createQmlObject('import QtDesktop 1.0; SpinBox {}', container, '')
+            spinbox.forceActiveFocus()
+
+            spinbox.singleStep = -1
+            spinbox.setValue(5)
+
+            compare(spinbox.value, 5)
+
+            var previousValue = spinbox.value
+            keyPress(Qt.Key_Up)
+
+            expectFailContinue("", "QTCOMPONENTS-1284 - sign of singleStep should be ignored when incrementing value")
+            compare(spinbox.value, spinbox.value + Math.abs(spinbox.singleStep))
+            keyPress(Qt.Key_Up)
+
+            previousValue = spinbox.value
+            expectFailContinue("", "QTCOMPONENTS-1284 - sign of singleStep should be ignored when decrementing value")
+            compare(spinbox.value, previousValue - Math.abs(spinbox.singleStep))
+        }
+
         function setCoordinates(item)
         {
             mainCoord.x = item.x + 1
