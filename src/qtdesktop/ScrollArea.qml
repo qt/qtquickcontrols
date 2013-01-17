@@ -60,17 +60,15 @@ FocusScope {
     property alias color: colorRect.color // background color
     property int frameWidth: frame ? styleitem.frameWidth : 0
 
-    // Item properties
-    property alias horizontalScrollBar: scroller.horizontalScrollBar
-    property alias verticalScrollBar: scroller.verticalScrollBar
-
     // Viewport properties
     property int contentX
     property int contentY
     property int contentHeight : content.childrenRect.height
     property int contentWidth: content.childrenRect.width
-    property int viewportHeight: height - (horizontalScrollBar.visible ? verticalScrollBar.height : 0) - 2 * frameWidth
-    property int viewportWidth: width - (verticalScrollBar.visible ? verticalScrollBar.width : 0) - 2 * frameWidth
+    property int viewportHeight: height - (scroller.horizontalScrollBar.visible ?
+                                           scroller.verticalScrollBar.height : 0) - 2 * frameWidth
+    property int viewportWidth: width - (scroller.verticalScrollBar.visible ?
+                                         scroller.verticalScrollBar.width : 0) - 2 * frameWidth
     default property alias data: content.data
 
     Rectangle {
@@ -86,8 +84,12 @@ FocusScope {
         sunken: true
         visible: frame
         anchors.fill: parent
-        anchors.rightMargin: frame ? (frameAroundContents ? (verticalScrollBar.visible ? verticalScrollBar.width + 2 * frameMargins : 0) : 0) : 0
-        anchors.bottomMargin: frame ? (frameAroundContents ? (horizontalScrollBar.visible ? horizontalScrollBar.height + 2 * frameMargins : 0) : 0) : 0
+        anchors.rightMargin: frame ? (frameAroundContents ?
+                                     (scroller.verticalScrollBar.visible ?
+                                      scroller.verticalScrollBar.width + 2 * frameMargins : 0) : 0) : 0
+        anchors.bottomMargin: frame ? (frameAroundContents ?
+                                      (scroller.horizontalScrollBar.visible ?
+                                       scroller.horizontalScrollBar.height + 2 * frameMargins : 0) : 0) : 0
         anchors.topMargin: frame ? (frameAroundContents ? 0 : 0) : 0
         property int frameWidth
         property int scrollbarspacing: styleitem.pixelMetric("scrollbarspacing");
@@ -100,7 +102,7 @@ FocusScope {
 
     onContentYChanged: {
         scroller.blockUpdates = true
-        verticalScrollBar.value = contentY
+        scroller.verticalScrollBar.value = contentY
         scroller.verticalValue = contentY
         scroller.blockUpdates = false
     }

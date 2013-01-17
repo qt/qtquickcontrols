@@ -26,7 +26,6 @@ QML_FILES = \
     ProgressBar.qml \
     RadioButton.qml \
     ScrollArea.qml \
-    ScrollBar.qml \
     Slider.qml \
     SpinBox.qml \
     SplitterColumn.qml \
@@ -51,7 +50,8 @@ QML_FILES += \
     private/PageSlideTransition.qml \
     private/PageStack.js \
     private/ScrollAreaHelper.qml \
-    private/Splitter.qml
+    private/Splitter.qml \
+    private/ScrollBar.qml
 
 include(styleplugin.pri)
 

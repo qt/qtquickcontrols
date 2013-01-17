@@ -40,7 +40,7 @@
 
 import QtQuick 2.0
 import QtDesktop 1.0
-import "Styles/Settings.js" as Settings
+import "../Styles/Settings.js" as Settings
 
 /*!
     \qmltype ScrollBar
@@ -64,7 +64,7 @@ Item {
 
     onValueChanged: internal.updateHandle()
 
-    property Component style: Qt.createComponent(Settings.THEME_PATH + "/ScrollBarStyle.qml")
+    property Component style: Qt.createComponent("../" + Settings.THEME_PATH + "/ScrollBarStyle.qml")
 
     property bool upPressed
     property bool downPressed
