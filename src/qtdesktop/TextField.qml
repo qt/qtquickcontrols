@@ -46,80 +46,412 @@ import "Styles/Settings.js" as Settings
 /*!
     \qmltype TextField
     \inqmlmodule QtDesktop 1.0
-    \brief TextField is doing bla...bla...
+    \brief TextField displays a single line of editable plain text
+
+    TextField is used to accept a line of text input. Input constraints
+    can be placed on a TextField item (for example, through a \l validator or \l inputMask),
+    and setting \l echoMode to an appropriate value enables TextField to be used for
+    a password input field.
+
+    \sa TextArea, TextInput
 */
 
 FocusScope {
     id: textfield
+
+    /*!
+        \qmlproperty string TextField::text
+
+        The text in the TextField.
+    */
     property alias text: textInput.text
+
+    /*!
+        \qmlproperty font TextField::font
+
+        The font of the TextField.
+    */
     property alias font: textInput.font
 
-    property int minimumWidth: 0
-    property int minimumHeight: 0
+    /*!
+        \qmlproperty bool TextField::acceptableInput
 
-    property int inputHint // values tbd
-    property bool acceptableInput: textInput.acceptableInput // read only
-    property alias readOnly: textInput.readOnly // read only
+        This property is always true unless a validator or input mask has been set.
+        If a validator or input mask has been set, this property will only be true
+        if the current text is acceptable to the validator or input mask as a final
+        string (not as an intermediate string).
+    */
+    property alias acceptableInput: textInput.acceptableInput // read only
+
+    /*!
+        \qmlproperty bool TextField::readOnly
+
+        Sets whether user input can modify the contents of the TextField.
+
+        If readOnly is set to true, then user input will not affect the text
+        property. Any bindings or attempts to set the text property will still
+        work.
+    */
+    property alias readOnly: textInput.readOnly
+
+    /*!
+        \qmlproperty string TextField::placeholderText
+
+        The text that is shown in the text field when the text field is empty
+        and has no focus.
+    */
     property alias placeholderText: placeholderTextComponent.text
+
     property bool  passwordMode: false
+
+    /*!
+        \qmlproperty string TextField::selectedText
+
+        This read-only property provides the text currently selected in the
+        text input.
+
+        It is equivalent to the following snippet, but is faster and easier
+        to use.
+
+        \js
+        myTextField.text.toString().substring(myTextField.selectionStart, myTextField.selectionEnd);
+        \endjs
+    */
     property alias selectedText: textInput.selectedText
+
+    /*!
+        \qmlproperty int TextField::selectionEnd
+
+        The cursor position after the last character in the current selection.
+
+        This property is read-only. To change the selection, use select(start,end),
+        selectAll(), or selectWord().
+
+        \sa selectionStart, cursorPosition, selectedText
+    */
     property alias selectionEnd: textInput.selectionEnd
+
+    /*!
+        \qmlproperty int TextField::selectionStart
+
+        The cursor position before the first character in the current selection.
+
+        This property is read-only. To change the selection, use select(start,end),
+        selectAll(), or selectWord().
+
+        \sa selectionEnd, cursorPosition, selectedText
+    */
     property alias selectionStart: textInput.selectionStart
+
+    /*!
+        \qmlproperty Validator TextField::validator
+
+        Allows you to set a validator on the TextField. When a validator is set
+        the TextField will only accept input which leaves the text property in
+        an acceptable or intermediate state. The accepted signal will only be sent
+        if the text is in an acceptable state when enter is pressed.
+
+        Currently supported validators are IntValidator, DoubleValidator and
+        RegExpValidator. An example of using validators is shown below, which allows
+        input of integers between 11 and 31 into the text input:
+
+        \code
+        import QtQuick 2.0
+        import QtDesktop 1.0
+
+        TextField {
+            validator: IntValidator {bottom: 11; top: 31;}
+            focus: true
+        }
+        \endcode
+
+        \sa acceptableInput, inputMask
+    */
     property alias validator: textInput.validator
+
+    /*!
+        \qmlproperty string TextField::inputMask
+
+        Allows you to set an input mask on the TextField, restricting the allowable
+        text inputs. See QLineEdit::inputMask for further details, as the exact
+        same mask strings are used by TextField.
+
+        \sa acceptableInput, validator
+    */
     property alias inputMask: textInput.inputMask
+
+    /*!
+        \qmlproperty enumeration TextField::horizontalAlignment
+
+        Sets the horizontal alignment of the text within the TextField item's
+        width and height. By default, the text alignment follows the natural alignment
+        of the text, for example text that is read from left to right will be aligned to
+        the left.
+
+        The valid values for \c horizontalAlignment are \c TextInput.AlignLeft, \c TextInput.AlignRight and
+        \c TextInput.AlignHCenter.
+
+        When using the attached property LayoutMirroring::enabled to mirror application
+        layouts, the horizontal alignment of text will also be mirrored. However, the property
+        \c horizontalAlignment will remain unchanged. To query the effective horizontal alignment
+        of TextInput, use the read-only property \c effectiveHorizontalAlignment.
+    */
     property alias horizontalalignment: textInput.horizontalAlignment
+
+    /*!
+        \qmlproperty enumeration TextField::echoMode
+
+        Specifies how the text should be displayed in the TextField.
+        \list
+        \li TextInput.Normal - Displays the text as it is. (Default)
+        \li TextInput.Password - Displays asterisks instead of characters.
+        \li TextInput.NoEcho - Displays nothing.
+        \li TextInput.PasswordEchoOnEdit - Displays characters as they are entered
+        while editing, otherwise displays asterisks.
+        \endlist
+    */
     property alias echoMode: textInput.echoMode
+
+    /*!
+        \qmlproperty int TextField::cursorPosition
+        The position of the cursor in the TextField.
+    */
     property alias cursorPosition: textInput.cursorPosition
+
+    /*!
+        \qmlproperty enumeration TextField::inputMethodHints
+
+        Provides hints to the input method about the expected content of the text field and how it
+        should operate.
+
+        The value is a bit-wise combination of flags, or Qt.ImhNone if no hints are set.
+
+        Flags that alter behavior are:
+
+        \list
+        \li Qt.ImhHiddenText - Characters should be hidden, as is typically used when entering passwords.
+                This is automatically set when setting echoMode to \c TextInput.Password.
+        \li Qt.ImhSensitiveData - Typed text should not be stored by the active input method
+                in any persistent storage like predictive user dictionary.
+        \li Qt.ImhNoAutoUppercase - The input method should not try to automatically switch to upper case
+                when a sentence ends.
+        \li Qt.ImhPreferNumbers - Numbers are preferred (but not required).
+        \li Qt.ImhPreferUppercase - Upper case letters are preferred (but not required).
+        \li Qt.ImhPreferLowercase - Lower case letters are preferred (but not required).
+        \li Qt.ImhNoPredictiveText - Do not use predictive text (i.e. dictionary lookup) while typing.
+
+        \li Qt.ImhDate - The text editor functions as a date field.
+        \li Qt.ImhTime - The text editor functions as a time field.
+        \endlist
+
+        Flags that restrict input (exclusive flags) are:
+
+        \list
+        \li Qt.ImhDigitsOnly - Only digits are allowed.
+        \li Qt.ImhFormattedNumbersOnly - Only number input is allowed. This includes decimal point and minus sign.
+        \li Qt.ImhUppercaseOnly - Only upper case letter input is allowed.
+        \li Qt.ImhLowercaseOnly - Only lower case letter input is allowed.
+        \li Qt.ImhDialableCharactersOnly - Only characters suitable for phone dialing are allowed.
+        \li Qt.ImhEmailCharactersOnly - Only characters suitable for email addresses are allowed.
+        \li Qt.ImhUrlCharactersOnly - Only characters suitable for URLs are allowed.
+        \endlist
+
+        Masks:
+
+        \list
+        \li Qt.ImhExclusiveInputMask - This mask yields nonzero if any of the exclusive flags are used.
+        \endlist
+    */
     property alias inputMethodHints: textInput.inputMethodHints
+
+    /*!
+        \qmlproperty bool TextField::activeFocusOnPress
+
+        Whether the TextField should gain active focus on a mouse press. By default this is
+        set to true.
+    */
     property alias activeFocusOnPress: textInput.activeFocusOnPress
     property alias containsMouse: mouseArea.containsMouse
     property Component style: Qt.createComponent(Settings.THEME_PATH + "/TextFieldStyle.qml")
 
     property var styleHints:[]
 
+    /*!
+        \qmlsignal TextField::accepted()
+
+        This signal is emitted when the Return or Enter key is pressed.
+        Note that if there is a \l validator or \l inputMask set on the text
+        field, the signal will only be emitted if the input is in an acceptable
+        state.
+    */
+    signal accepted()
+
+    /*!
+        \qmlmethod TextField::copy()
+
+        Copies the currently selected text to the system clipboard.
+    */
+    function copy() {
+        textInput.copy()
+    }
+
+    /*!
+        \qmlmethod TextField::cut()
+
+        Moves the currently selected text to the system clipboard.
+    */
+    function cut() {
+        textInput.cut()
+    }
+
+    /*!
+        \qmlmethod TextField::deselect()
+
+        Removes active text selection.
+    */
+    function deselect() {
+        textInput.deselect();
+    }
+
+    /*!
+        \qmlmethod string TextField::getText(int start, int end)
+
+        Removes the section of text that is between the \a start and \a end positions from the TextField.
+    */
+    function getText(start, end) {
+        return textInput.getText(start, end);
+    }
+
+    /*!
+        \qmlmethod TextField::insert(int position, string text)
+
+        Inserts \a text into the TextField at position.
+    */
+    function insert(position, text) {
+        textInput.insert(position, text);
+    }
+
+    /*!
+        \qmlmethod bool TextField::isRightToLeft(int start, int end)
+
+        Returns true if the natural reading direction of the editor text
+        found between positions \a start and \a end is right to left.
+    */
+    function isRightToLeft(start, end) {
+        return textInput.isRightToLeft(start, end);
+    }
+
+    /*!
+        \qmlmethod TextField::paste()
+
+        Replaces the currently selected text by the contents of the system clipboard.
+    */
+    function paste() {
+        textInput.paste()
+    }
+
+    /*!
+        \qmlmethod int TextField::positionAt(real x, real y, CursorPosition position = CursorBetweenCharacters)
+
+        This function returns the character position at
+        x and y pixels from the top left of the TextField. Position 0 is before the
+        first character, position 1 is after the first character but before the second,
+        and so on until position text.length, which is after all characters.
+
+        This means that for all x values before the first character this function returns 0,
+        and for all x values after the last character this function returns text.length.  If
+        the y value is above the text the position will be that of the nearest character on
+        the first line line and if it is below the text the position of the nearest character
+        on the last line will be returned.
+
+        The cursor position type specifies how the cursor position should be resolved.
+
+        \list
+        \li TextInput.CursorBetweenCharacters - Returns the position between characters that is nearest x.
+        \li TextInput.CursorOnCharacter - Returns the position before the character that is nearest x.
+        \endlist
+    */
+    function positionAt(x, y, cursor) {
+        var p = mapToItem(textInput, x, y);
+        return textInput.positionAt(p.x, p.y, cursor);
+    }
+
+    /*!
+        \qmlmethod rect TextField::positionToRectangle(int pos)
+
+        This function takes a character position and returns the rectangle that the
+        cursor would occupy, if it was placed at that character position.
+
+        This is similar to setting the cursorPosition, and then querying the cursor
+        rectangle, but the cursorPosition is not changed.
+    */
+    function positionToRectangle(pos) {
+        var p = mapToItem(textInput, pos.x, pos.y);
+        return textInput.positionToRectangle(p);
+    }
+
+    /*!
+        \qmlmethod TextField::redo()
+
+        Redoes the last operation if redo is \l {canRedo}{available}.
+    */
+    function redo() {
+        textInput.redo();
+    }
+
+    /*!
+        \qmlmethod TextField::select(int start, int end)
+
+        Causes the text from \a start to \a end to be selected.
+
+        If either start or end is out of range, the selection is not changed.
+
+        After calling this, selectionStart will become the lesser
+        and selectionEnd will become the greater (regardless of the order passed
+        to this method).
+
+        \sa selectionStart, selectionEnd
+    */
+    function select(start, end) {
+        textInput.select(start, end)
+    }
+
+    /*!
+        \qmlmethod TextField::selectAll()
+
+        Causes all text to be selected.
+    */
+    function selectAll() {
+        textInput.selectAll()
+    }
+
+    /*!
+        \qmlmethod TextField::selectWord()
+
+        Causes the word closest to the current cursor position to be selected.
+    */
+    function selectWord() {
+        textInput.selectWord()
+    }
+
+    /*!
+        \qmlmethod TextField::undo()
+
+        Undoes the last operation if undo is \l {canUndo}{available}. Deselects any
+        current selection, and updates the selection start to the current cursor
+        position.
+    */
+    function undo() {
+        textInput.undo();
+    }
+
+    // Implementation
     implicitWidth: loader.implicitWidth
     implicitHeight: loader.implicitHeight
 
     Accessible.name: text
     Accessible.role: Accessible.EditableText
     Accessible.description: placeholderText
-
-
-    function copy() {
-        textInput.copy()
-    }
-
-    function paste() {
-        textInput.paste()
-    }
-
-    function cut() {
-        textInput.cut()
-    }
-
-    function select(start, end) {
-        textInput.select(start, end)
-    }
-
-    function selectAll() {
-        textInput.selectAll()
-    }
-
-    function selectWord() {
-        textInput.selectWord()
-    }
-
-    function positionAt(x) {
-        var p = mapToItem(textInput, x, 0);
-        return textInput.positionAt(p.x);
-    }
-
-    function positionToRectangle(pos) {
-        var p = mapToItem(textInput, pos.x, pos.y);
-        return textInput.positionToRectangle(p);
-    }
-
-    // Implementation
 
     Loader {
         id: loader
@@ -135,6 +467,7 @@ FocusScope {
         onClicked: textfield.forceActiveFocus()
     }
 
+    /*! \internal */
     onFocusChanged: {
         if (textfield.activeFocus)
             textInput.forceActiveFocus();
@@ -161,6 +494,8 @@ FocusScope {
         echoMode: passwordMode ? TextInput.Password : TextInput.Normal
         clip: true
         renderType: Text.NativeRendering
+
+        onAccepted: textfield.accepted()
     }
 
     Text {
@@ -169,7 +504,6 @@ FocusScope {
         font: textInput.font
         opacity: !textInput.text.length && !textInput.activeFocus ? 1 : 0
         color: loader.item ? loader.item.placeholderTextColor : "darkgray"
-        text: "Enter text"
         clip: true
         elide: Text.ElideRight
 //        renderType: Text.NativeRendering
