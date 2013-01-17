@@ -1,12 +1,15 @@
-CXX_MODULE = qml
+TEMPLATE = lib
+CONFIG += plugin
 TARGET  = testplugin
 TARGETPATH = QtDesktopTest
 
 QT += qml quick widgets
 
+QMLDIR = $$PWD/$$TARGETPATH/qmldir
+
 OTHER_FILES += \
     $$PWD/testplugin.json \
-    $$PWD/qmldir
+    $$QMLDIR
 
 SOURCES += \
     $$PWD/testplugin.cpp
@@ -21,11 +24,14 @@ mac {
     LIBS += -framework Carbon
 }
 
-load(qml_plugin)
+DESTDIR = $$TARGETPATH
 
-qmldir_path = $$PWD$${QMAKE_DIR_SEP}qmldir
-win*: qmldir_path = $$replace(qmldir_path, /, \\)
-destdir_path = $$DESTDIR
-win*: destdir_path = $$replace(destdir_path, /, \\)
-
-QMAKE_POST_LINK = $(MAKE) -f $(MAKEFILE) install
+!equals(PWD, $$OUT_PWD) {
+    # move qmldir alongside the plugin if shadow build
+    qmldirfile.input = QMLDIR
+    qmldirfile.output = $$DESTDIR/qmldir
+    qmldirfile.variable_out = PRE_TARGETDEPS
+    qmldirfile.commands = $$QMAKE_COPY ${QMAKE_FILE_IN} ${QMAKE_FILE_OUT}
+    qmldirfile.CONFIG = no_link no_clean
+    QMAKE_EXTRA_COMPILERS += qmldirfile
+}

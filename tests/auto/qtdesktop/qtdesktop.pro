@@ -1,6 +1,8 @@
 TEMPLATE = app
 TARGET = tst_qtdesktop
 
+IMPORTPATH = $$OUT_PWD/../testplugin
+
 QT += widgets
 
 CONFIG += qmltestcase
