@@ -109,7 +109,7 @@ FocusScope {
 
     onContentXChanged: {
         scroller.blockUpdates = true
-        horizontalScrollBar.value = contentX
+        scroller.horizontalScrollBar.value = contentX
         scroller.horizontalValue = contentX
         scroller.blockUpdates = false
     }
