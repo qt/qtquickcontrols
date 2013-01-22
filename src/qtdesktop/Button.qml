@@ -76,7 +76,7 @@ BasicButton {
     property url iconSource
 
     Accessible.name: text
-    style: Qt.createComponent(Settings.THEME_PATH + "/ButtonStyle.qml")
+    style: Qt.createComponent(Settings.THEME_PATH + "/ButtonStyle.qml", button)
 
 }
 

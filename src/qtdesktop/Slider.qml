@@ -80,7 +80,7 @@ Item {
     }
 
     property var styleHints:[]
-    property Component style: Qt.createComponent(Settings.THEME_PATH + "/SliderStyle.qml")
+    property Component style: Qt.createComponent(Settings.THEME_PATH + "/SliderStyle.qml", slider)
 
     Keys.onRightPressed: value += (maximumValue - minimumValue)/10.0
     Keys.onLeftPressed: value -= (maximumValue - minimumValue)/10.0

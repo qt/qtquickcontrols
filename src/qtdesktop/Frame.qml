@@ -54,7 +54,7 @@ Item {
     implicitWidth: adjustToContentSize ? content.childrenRect.width + 2 * content.frameWidth : 30
     implicitHeight: adjustToContentSize ? content.childrenRect.height + 2 * content.frameWidth : 30
 
-    property Component style: Qt.createComponent(Settings.THEME_PATH + "/FrameStyle.qml")
+    property Component style: Qt.createComponent(Settings.THEME_PATH + "/FrameStyle.qml", frame)
 
     property bool raised
     property bool sunken

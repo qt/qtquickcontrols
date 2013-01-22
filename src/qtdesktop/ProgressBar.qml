@@ -61,7 +61,7 @@ Item {
     property int minimumHeight: 0
 
     property int orientation: Qt.Horizontal
-    property Component style: Qt.createComponent(Settings.THEME_PATH + "/ProgressBarStyle.qml")
+    property Component style: Qt.createComponent(Settings.THEME_PATH + "/ProgressBarStyle.qml", progressbar)
     property var styleHints:[]
 
     Accessible.role: Accessible.ProgressBar

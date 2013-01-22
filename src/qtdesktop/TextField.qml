@@ -535,7 +535,7 @@ FocusScope {
     property alias wrapMode: textInput.wrapMode
 
     /*! \internal */
-    property Component style: Qt.createComponent(Settings.THEME_PATH + "/TextFieldStyle.qml")
+    property Component style: Qt.createComponent(Settings.THEME_PATH + "/TextFieldStyle.qml", textInput)
 
     /*! \internal */
     property var styleHints:[]

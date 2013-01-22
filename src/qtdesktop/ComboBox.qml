@@ -109,7 +109,7 @@ Private.BasicButton {
     property alias hoveredText: popup.hoveredText
     property var styleHints:[]
 
-    style: Qt.createComponent(Settings.THEME_PATH + "/ComboBoxStyle.qml")
+    style: Qt.createComponent(Settings.THEME_PATH + "/ComboBoxStyle.qml", comboBox)
 
 //  ToDo: adjust margins so that selected popup label
 //    centers directly above button label when

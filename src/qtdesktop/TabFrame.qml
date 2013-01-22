@@ -61,7 +61,7 @@ Item {
     property bool tabsVisible: true
     property string position: "North"
     default property alias tabs : stack.children
-    property Component style: Qt.createComponent(Settings.THEME_PATH + "/TabFrameStyle.qml")
+    property Component style: Qt.createComponent(Settings.THEME_PATH + "/TabFrameStyle.qml", tabWidget)
     property var __styleItem: loader.item
 
     onCurrentChanged: __setOpacities()

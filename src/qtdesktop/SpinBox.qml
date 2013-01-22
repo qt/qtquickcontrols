@@ -88,7 +88,7 @@ FocusScope {
     property alias downHovered: mouseDown.containsMouse
     property alias containsMouse: mouseArea.containsMouse
     property alias font: input.font
-    property Component style: Qt.createComponent(Settings.THEME_PATH + "/SpinBoxStyle.qml")
+    property Component style: Qt.createComponent(Settings.THEME_PATH + "/SpinBoxStyle.qml", spinbox)
 
     Accessible.name: input.text
     Accessible.role: Accessible.SpinBox

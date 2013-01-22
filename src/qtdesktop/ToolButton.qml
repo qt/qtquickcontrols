@@ -56,7 +56,7 @@ Private.BasicButton {
     property url iconSource
     property string text
 
-    style: Qt.createComponent(Settings.THEME_PATH + "/ToolButtonStyle.qml")
+    style: Qt.createComponent(Settings.THEME_PATH + "/ToolButtonStyle.qml", button)
 
     Image {
         id: themeIcon

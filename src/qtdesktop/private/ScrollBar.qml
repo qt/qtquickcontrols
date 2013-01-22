@@ -64,7 +64,7 @@ Item {
 
     onValueChanged: internal.updateHandle()
 
-    property Component style: Qt.createComponent("../" + Settings.THEME_PATH + "/ScrollBarStyle.qml")
+    property Component style: Qt.createComponent("../" + Settings.THEME_PATH + "/ScrollBarStyle.qml", scrollbar)
 
     property bool upPressed
     property bool downPressed

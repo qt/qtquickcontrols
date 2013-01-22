@@ -65,7 +65,7 @@ Item {
     property alias checked: check.checked
     property bool adjustToContentSize: false // Resizes groupbox to fit contents.
                                              // Note when using this, you cannot anchor children
-    property Component style: Qt.createComponent(Settings.THEME_PATH + "/GroupBoxStyle.qml")
+    property Component style: Qt.createComponent(Settings.THEME_PATH + "/GroupBoxStyle.qml", groupbox)
 
     Accessible.role: Accessible.Grouping
     Accessible.name: title

@@ -69,7 +69,7 @@ FocusScope {
     implicitWidth: Math.max(120, loader.item ? loader.item.implicitWidth : 0)
     implicitHeight: loader.item ? loader.item.implicitHeight : 0
 
-    property Component style: Qt.createComponent(Settings.THEME_PATH + "/CheckBoxStyle.qml")
+    property Component style: Qt.createComponent(Settings.THEME_PATH + "/CheckBoxStyle.qml", checkBox)
 
     Loader {
         id: loader

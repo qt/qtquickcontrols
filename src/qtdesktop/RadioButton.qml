@@ -55,5 +55,5 @@ CheckBox {
 
     Accessible.role: Accessible.RadioButton
 
-    style: Qt.createComponent(Settings.THEME_PATH + "/RadioButtonStyle.qml")
+    style: Qt.createComponent(Settings.THEME_PATH + "/RadioButtonStyle.qml", radiobutton)
 }
