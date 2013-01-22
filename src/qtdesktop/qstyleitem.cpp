@@ -1116,7 +1116,7 @@ bool QStyleItem::hasThemeIcon(const QString &icon) const
 bool QStyleItem::event(QEvent *ev)
 {
     if (ev->type() == QEvent::StyleAnimationUpdate) {
-        updatePolish();
+        polish();
         return true;
     }
     return QQuickItem::event(ev);
