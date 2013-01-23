@@ -65,10 +65,6 @@ TestCase {
         rootObject.forceActiveFocus();
     }
 
-    function cleanupTestCase() {
-        wait(100) //wait for a short while to make sure no leaked textures
-    }
-
     function test_shortcut_data() {
         return [
             { key: Qt.Key_A, modifier: Qt.NoModifier, expected: "a pressed" },

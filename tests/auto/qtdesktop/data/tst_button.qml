@@ -48,10 +48,6 @@ TestCase {
     width:400
     height:400
 
-    function cleanupTestCase() {
-        wait(100) //wait for a short while to make sure no leaked textures
-    }
-
     function test_defaultbutton() {
         var tmp = Qt.createQmlObject('import QtDesktop 1.0; Button {id: button1}', testCase, '');
         compare(tmp.defaultbutton, false);
