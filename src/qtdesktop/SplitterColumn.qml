@@ -66,7 +66,7 @@ import QtDesktop 1.0
 *
 * There will always be one (and only one) item in the SplitterColumn that is 'expanding'.
 * The expanding item is the child that will get all the remaining space in the SplitterColumn
-* (down to its own mimimumHeight/Height) when all other items have been layed out.
+* (down to its own mimimumHeight/Height) when all other items have been laid out.
 * This means that that 'height', 'percentageHeight' and 'maximumHeight' will be ignored for this item.
 * By default, the last visible child item of the SplitterColumn will be 'expanding'.
 *

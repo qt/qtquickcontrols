@@ -66,7 +66,7 @@ import QtDesktop 1.0
 *
 * There will always be one (and only one) item in the SplitterRow that is 'expanding'.
 * The expanding item is the child that will get all the remaining space in the SplitterRow
-* (down to its own mimimumWidth/Height) when all other items have been layed out.
+* (down to its own mimimumWidth/Height) when all other items have been laid out.
 * This means that that 'width', 'percentageWidth' and 'maximumWidth' will be ignored for this item.
 * By default, the last visible child item of the SplitterRow will be 'expanding'.
 *
