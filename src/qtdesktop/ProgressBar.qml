@@ -45,23 +45,36 @@ import "Styles/Settings.js" as Settings
 /*!
     \qmltype ProgressBar
     \inqmlmodule QtDesktop 1.0
-    \brief ProgressBar is doing bla...bla...
+    \brief A progress bar
+
+    The ProgressBar is used to give an indication of the progress of an operation.
+    \l value is updated regularly and must be between \l minimumValue and \l maximumValue.
+
 */
 
 Item {
     id: progressbar
 
+    /*! This property is
+    */
     property real value: 0
+    /*! This property is the progress bar's minimum value */
     property real minimumValue: 0
+    /*! This property is the progress bar's maximum value */
     property real maximumValue: 1
+    /*! This property toggles indeterminate mode.
+        When the actual progress is unknown, use this option.
+        The progress bar will be animated as busy indicator instead.
+    */
     property bool indeterminate: false
-    property bool containsMouse: mouseArea.containsMouse
 
-    property int minimumWidth: 0
-    property int minimumHeight: 0
-
+    /*! This property holds the orientation of the progress bar.
+        It must be either Qt.Horizontal or Qt.Vertical.
+    */
     property int orientation: Qt.Horizontal
+    /*! \internal */
     property Component style: Qt.createComponent(Settings.THEME_PATH + "/ProgressBarStyle.qml", progressbar)
+    /*! \internal */
     property var styleHints:[]
 
     Accessible.role: Accessible.ProgressBar
@@ -80,12 +93,6 @@ Item {
         property alias control: progressbar
         sourceComponent: style
         anchors.fill: parent
-    }
-
-    MouseArea {
-        id: mouseArea
-        anchors.fill: parent
-        hoverEnabled: true
     }
 }
 
