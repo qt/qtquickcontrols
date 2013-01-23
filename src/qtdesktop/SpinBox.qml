@@ -51,9 +51,6 @@ import "Styles/Settings.js" as Settings
 FocusScope {
     id: spinbox
 
-    property int minimumWidth: 0
-    property int minimumHeight: 0
-
     /*!
         The value of this SpinBox, clamped to \l minimumValue and \l maximumValue.
     */
