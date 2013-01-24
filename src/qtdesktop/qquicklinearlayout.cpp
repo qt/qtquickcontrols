@@ -151,6 +151,7 @@ void QQuickComponentsLinearLayout::insertLayoutItem(QQuickItem *item)
 
     invalidate();
     QObject::connect(item, SIGNAL(destroyed()), this, SLOT(onItemDestroyed()));
+    QObject::connect(item, SIGNAL(visibleChanged()), this, SLOT(onItemVisibleChanged()));
 }
 
 void QQuickComponentsLinearLayout::removeLayoutItem(QQuickItem *item)
@@ -160,6 +161,12 @@ void QQuickComponentsLinearLayout::removeLayoutItem(QQuickItem *item)
 
     invalidate();
     QObject::disconnect(item, SIGNAL(destroyed()), this, SLOT(onItemDestroyed()));
+    QObject::disconnect(item, SIGNAL(visibleChanged()), this, SLOT(onItemVisibleChanged()));
+}
+
+void QQuickComponentsLinearLayout::onItemVisibleChanged()
+{
+    invalidate();
 }
 
 void QQuickComponentsLinearLayout::onItemDestroyed()
@@ -194,54 +201,54 @@ void QQuickComponentsLinearLayout::reconfigureLayout()
 
         QQuickComponentsLayoutInfo data;
 
-        if (m_orientation == Horizontal) {
-            data.sizeHint = item->implicitWidth();
-            data.minimumSize = info->minimumWidth();
-            data.maximumSize = info->maximumWidth();
-            data.expansive = (info->horizontalSizePolicy() == QQuickComponentsLayout::Expanding);
-            data.stretch = info->horizontalSizePolicy() == Expanding ? 1.0 : 0;
-        } else {
-            data.sizeHint = item->implicitHeight();
-            data.minimumSize = info->minimumHeight();
-            data.maximumSize = info->maximumHeight();
-            data.expansive = (info->verticalSizePolicy() == QQuickComponentsLayout::Expanding);
-            data.stretch = info->verticalSizePolicy() == Expanding ? 1.0 : 0;
+        if (item->isVisible()) {
+            if (m_orientation == Horizontal) {
+                data.sizeHint = item->implicitWidth();
+                data.minimumSize = info->minimumWidth();
+                data.maximumSize = info->maximumWidth();
+                data.expansive = (info->horizontalSizePolicy() == QQuickComponentsLayout::Expanding);
+                data.stretch = info->horizontalSizePolicy() == Expanding ? 1.0 : 0;
+            } else {
+                data.sizeHint = item->implicitHeight();
+                data.minimumSize = info->minimumHeight();
+                data.maximumSize = info->maximumHeight();
+                data.expansive = (info->verticalSizePolicy() == QQuickComponentsLayout::Expanding);
+                data.stretch = info->verticalSizePolicy() == Expanding ? 1.0 : 0;
+            }
+
+            itemData.append(data);
+            // sum
+            totalSizeHint += data.sizeHint;
+            totalMinimumSize += data.minimumSize;
+            totalMaximumSize += data.maximumSize;
+
+            // don't count last spacing
+            if (i < count - 1)
+                totalSpacing += data.spacing + m_spacing;
         }
-
-        itemData.append(data);
-
-        // sum
-        totalSizeHint += data.sizeHint;
-        totalMinimumSize += data.minimumSize;
-        totalMaximumSize += data.maximumSize;
-
-        // don't count last spacing
-        if (i < count - 1)
-            totalSpacing += data.spacing + m_spacing;
     }
 
-    if (m_orientation == Horizontal) {
-        qDeclarativeLayoutCalculate(itemData, 0, count, 0, width(), m_spacing);
+    qreal extent = m_orientation == Horizontal ? width() : height();
+    qDeclarativeLayoutCalculate(itemData, 0, itemData.count(), 0, extent, m_spacing);
 
-        for (int i = 0; i < count; i++) {
-            QQuickItem *item = m_items.at(i);
-            const QQuickComponentsLayoutInfo &data = itemData.at(i);
+    int i = 0;
+    int id = 0;
+    while (i < count) {
+        QQuickItem *item = m_items.at(i++);
+        if (!item->isVisible())
+            continue;
+        const QQuickComponentsLayoutInfo &data = itemData.at(id);
 
+        if (m_orientation == Horizontal) {
             item->setX(data.pos);
             item->setY(height()/2 - item->height()/2);
             item->setWidth(data.size);
-        }
-    } else {
-        qDeclarativeLayoutCalculate(itemData, 0, count, 0, height(), m_spacing);
-
-        for (int i = 0; i < count; i++) {
-            QQuickItem *item = m_items.at(i);
-            const QQuickComponentsLayoutInfo &data = itemData.at(i);
-
+        } else {
             item->setY(data.pos);
             item->setX(width()/2 - item->width()/2);
             item->setHeight(data.size);
         }
+        ++id;
     }
 
     // propagate hints to upper levels

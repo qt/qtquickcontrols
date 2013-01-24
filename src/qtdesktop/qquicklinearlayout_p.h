@@ -83,6 +83,7 @@ protected:
     void geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry);
 
 protected slots:
+    void onItemVisibleChanged();
     void onItemDestroyed();
 
 private:
