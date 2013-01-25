@@ -41,32 +41,20 @@
 import QtQuick 2.0
 import QtDesktop 1.0
 
-WheelArea {
+Item {
     id: wheelarea
 
     property alias horizontalScrollBar: hscrollbar
     property alias verticalScrollBar: vscrollbar
-    property int macOffset: styleitem.style == "mac" ? 1 : 0
     property bool blockUpdates: false
-    property int availableHeight : height - (hscrollbar.visible ? hscrollbar.height : 0)
-    property int availableWidth: width - vscrollbar.width
+    property int availableHeight : viewport ? viewport.height : 0
+    property int availableWidth: viewport ? viewport.width : 0
+    property int contentHeight: flickableItem ? flickableItem.contentHeight : 0
+    property int contentWidth: flickableItem ? flickableItem.contentWidth: 0
 
     anchors.fill: parent
-    anchors.margins: frameWidth
-    horizontalMinimumValue: hscrollbar.minimumValue
-    horizontalMaximumValue: hscrollbar.maximumValue
-    verticalMinimumValue: vscrollbar.minimumValue
-    verticalMaximumValue: vscrollbar.maximumValue
 
-    onVerticalValueChanged: {
-        if (!blockUpdates)
-            verticalScrollBar.value = verticalValue
-    }
-
-    onHorizontalValueChanged: {
-        if (!blockUpdates)
-            horizontalScrollBar.value = horizontalValue
-    }
+    property int frameMargin: outerFrame ? frameWidth : 0
 
     StyleItem {
         // This is the filled corner between scrollbars
@@ -76,6 +64,8 @@ WheelArea {
         anchors.right: parent.right
         height: hscrollbar.height
         anchors.bottom: parent.bottom
+        anchors.bottomMargin: frameMargin
+        anchors.rightMargin: frameMargin
         visible: hscrollbar.visible && vscrollbar.visible
     }
 
@@ -83,18 +73,17 @@ WheelArea {
         id: hscrollbar
         orientation: Qt.Horizontal
         visible: contentWidth > availableWidth
-        maximumValue: contentWidth > availableWidth ? root.contentWidth - availableWidth : 0
+        height: visible ? implicitHeight : 0
+        maximumValue: contentWidth > availableWidth ? contentWidth - availableWidth : 0
         minimumValue: 0
         anchors.bottom: parent.bottom
-        anchors.leftMargin: parent.macOffset
-        anchors.bottomMargin: -parent.macOffset
         anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.rightMargin: vscrollbar.visible ? vscrollbar.width -parent.macOffset: 0
+        anchors.right: cornerFill.left
+        anchors.leftMargin: frameMargin
+        anchors.bottomMargin: frameMargin
         onValueChanged: {
             if (!blockUpdates) {
-                contentX = value
-                horizontalValue = value
+                flickableItem.contentX = value
             }
         }
     }
@@ -102,21 +91,19 @@ WheelArea {
     ScrollBar {
         id: vscrollbar
         orientation: Qt.Vertical
-        // We cannot bind directly to tree.height due to binding loops so we have to redo the calculation here
         // visible: contentHeight > availableHeight
-        maximumValue: contentHeight > availableHeight ? root.contentHeight - availableHeight : 0
+        width: visible ? implicitWidth : 0
+        anchors.bottom: cornerFill.top
+        anchors.bottomMargin: hscrollbar.visible ? 0 : frameMargin
+        maximumValue: contentHeight > availableHeight ? contentHeight - availableHeight : 0
         minimumValue: 0
         anchors.right: parent.right
         anchors.top: parent.top
-        anchors.bottom: parent.bottom
-        anchors.topMargin: 1//parent.macOffset
-        anchors.rightMargin: -parent.macOffset
-        anchors.bottomMargin: hscrollbar.visible ? hscrollbar.height - parent.macOffset :  0
-
+        anchors.topMargin: __scrollBarTopMargin + frameMargin
+        anchors.rightMargin: frameMargin
         onValueChanged: {
-            if (!blockUpdates) {
-                contentY = value
-                verticalValue = value
+            if (!blockUpdates && enabled) {
+                flickableItem.contentY = value
             }
         }
     }

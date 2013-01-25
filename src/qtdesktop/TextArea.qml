@@ -697,66 +697,84 @@ ScrollArea {
         edit.undo();
     }
 
-    color: syspal.base
+    /*!
+        \qmlproperty color ScrollArea:backgroundColor
+
+        This property sets the background color of the viewport.
+
+        The default value is the base color of the SystemPalette.
+
+    */
+    property alias backgroundColor: colorRect.color
+
     width: 280
     height: 120
-    contentWidth: edit.paintedWidth + (2 * documentMargins)
-    highlightOnFocus: true
+
+    flickableItem.contentWidth: edit.paintedWidth + (2 * documentMargins)
+
     frame: true
 
     Accessible.role: Accessible.EditableText
+
     // FIXME: probably implement text interface
     Accessible.name: text
 
     TextEdit {
-        MouseArea {
-            anchors.fill: parent
-            cursorShape: Qt.IBeamCursor
-            acceptedButtons: Qt.NoButton
+        id: edit
+
+        SystemPalette {
+            id: palette
+            colorGroup: enabled ? SystemPalette.Active : SystemPalette.Disabled
         }
+
+        Rectangle {
+            id: colorRect
+            parent: viewport
+            anchors.fill: parent
+            color: palette.base
+            z: -1
+        }
+
+
         renderType: Text.NativeRendering
 
-        id: edit
-        selectionColor: syspal.highlight
-        selectedTextColor: syspal.highlightedText
-        wrapMode: TextEdit.WordWrap;
-        width: area.viewportWidth - (2 * documentMargins)
+        color: palette.text
+        selectionColor: palette.highlight
+        selectedTextColor: palette.highlightedText
+        wrapMode: TextEdit.WordWrap
+        width: area.viewport.width - (2 * documentMargins)
         x: documentMargins
         y: documentMargins
-        // height has to be big enough to handle mouse focus
-        height: Math.max(area.height, paintedHeight)
 
         selectByMouse: true
         readOnly: false
-        color: syspal.text
-
-        SystemPalette {
-            id: syspal
-            colorGroup: enabled ? SystemPalette.Active : SystemPalette.Disabled
-        }
 
         KeyNavigation.priority: KeyNavigation.BeforeItem
         KeyNavigation.tab: area.tabChangesFocus ? area.KeyNavigation.tab : null
         KeyNavigation.backtab: area.tabChangesFocus ? area.KeyNavigation.backtab : null
 
-        onContentSizeChanged: {
-            area.contentWidth = paintedWidth + (2 * documentMargins)
-        }
+        onContentSizeChanged: { area.flickableItem.contentWidth = paintedWidth + (2 * documentMargins) }
 
         // keep textcursor within scrollarea
         onCursorPositionChanged: {
-            if (cursorRectangle.y >= area.contentY + area.viewportHeight - 1.5*cursorRectangle.height - documentMargins)
-                area.contentY = cursorRectangle.y - area.viewportHeight + 1.5*cursorRectangle.height + documentMargins
-            else if (cursorRectangle.y < area.contentY)
-                area.contentY = cursorRectangle.y
+            if (cursorRectangle.y >= flickableItem.contentY + viewport.height - 1.5*cursorRectangle.height - documentMargins)
+                flickableItem.contentY = cursorRectangle.y - viewport.height + 1.5*cursorRectangle.height + documentMargins
+            else if (cursorRectangle.y < flickableItem.contentY)
+                flickableItem.contentY = cursorRectangle.y
 
-            if (cursorRectangle.x >= area.contentX + area.viewportWidth - documentMargins) {
-                area.contentX = cursorRectangle.x - area.viewportWidth + documentMargins
-            } else if (cursorRectangle.x < area.contentX)
-                area.contentX = cursorRectangle.x
+            if (cursorRectangle.x >= flickableItem.contentX + viewport.width - documentMargins) {
+                flickableItem.contentX = cursorRectangle.x - viewport.width + documentMargins
+            } else if (cursorRectangle.x < flickableItem.contentX)
+                flickableItem.contentX = cursorRectangle.x
         }
-
         onLinkActivated: area.linkActivated(link)
+
+        MouseArea {
+            parent: area.viewport
+            anchors.fill: parent
+            cursorShape: Qt.IBeamCursor
+            acceptedButtons: Qt.NoButton
+        }
     }
 
     Keys.onPressed: {
@@ -765,4 +783,5 @@ ScrollArea {
         } else if (event.key == Qt.Key_PageDown)
             verticalValue = verticalValue + area.height
     }
+
 }

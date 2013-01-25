@@ -51,7 +51,8 @@ QML_FILES += \
     private/PageStack.js \
     private/ScrollAreaHelper.qml \
     private/Splitter.qml \
-    private/ScrollBar.qml
+    private/ScrollBar.qml \
+    private/FocusFrame.qml
 
 include(styleplugin.pri)
 

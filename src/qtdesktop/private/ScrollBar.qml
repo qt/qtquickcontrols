@@ -42,12 +42,6 @@ import QtQuick 2.0
 import QtDesktop 1.0
 import "../Styles/Settings.js" as Settings
 
-/*!
-    \qmltype ScrollBar
-    \inqmlmodule QtDesktop 1.0
-    \brief ScrollBar is doing bla...bla...
-*/
-
 Item {
     id: scrollbar
 
@@ -61,8 +55,6 @@ Item {
 
     implicitWidth: loader.implicitWidth
     implicitHeight: loader.implicitHeight
-
-    onValueChanged: internal.updateHandle()
 
     property Component style: Qt.createComponent("../" + Settings.THEME_PATH + "/ScrollBarStyle.qml", scrollbar)
 
@@ -192,12 +184,6 @@ Item {
             anchors.fill: parent
         }
 
-        property rect handleRect: Qt.rect(0,0,0,0)
-        property rect grooveRect: Qt.rect(0,0,0,0)
-        function updateHandle() {
-            internal.handleRect = styleItem.subControlRect("handle")
-            grooveRect = styleItem.subControlRect("groove");
-        }
 
         RangeModel {
             id: slider

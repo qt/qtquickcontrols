@@ -45,7 +45,38 @@ import "private" as Private
 /*!
     \qmltype ScrollArea
     \inqmlmodule QtDesktop 1.0
-    \brief ScrollArea is doing bla...bla...
+    \brief The ScrollArea class provides a scrolling view onto another Item.
+
+    A ScrollArea can be used either instead of a \l Flickable or to decorate an
+    existing Flickable. Depending on the platform it will add scroll bars and
+    a content frame.
+
+    Only one Item can be a direct child of the ScrollArea and the child is implicitly anchored
+    to fill the scroll view.
+
+    Example:
+    \code
+    ScrollArea {
+        Image { imageSource: "largeImage.png" }
+    }
+    \endcode
+
+    In the previous example the Image item will implicitly get scroll behavior as if it was
+    used within a \l Flickable. The width and height of the child item will be used to
+    define the size of the content area.
+
+    Example:
+    \code
+    ScrollArea {
+        ListView {
+            ...
+        }
+    }
+    \endcode
+
+    In this case the content size of the ScrollArea will simply mirror that of its contained
+    \l flickableItem.
+
 */
 
 FocusScope {
@@ -53,95 +84,180 @@ FocusScope {
     width: 100
     height: 100
 
-    // Cosmetic propeties
-    property bool frame: true
-    property bool frameAroundContents: true
+    /*!
+        \qmlproperty bool ScrollArea:frame
+
+        This property tells the scroll area if it should render
+        a frame around it's content.
+
+        The default value is \c false
+    */
+    property bool frame: false
+
+    /*!
+        \qmlproperty bool ScrollArea:highlightOnFocus
+
+        This property controls if there should be a highlight
+        around the frame when the ScrollArea has input focus.
+
+        \Note this property is only applicable on some platforms, such
+        as Mac OS.
+    */
     property bool highlightOnFocus: false
-    property alias color: colorRect.color // background color
-    property int frameWidth: frame ? styleitem.frameWidth : 0
 
-    // Viewport properties
-    property int contentX
-    property int contentY
-    property int contentHeight : content.childrenRect.height
-    property int contentWidth: content.childrenRect.width
-    property int viewportHeight: height - (scroller.horizontalScrollBar.visible ?
-                                           scroller.verticalScrollBar.height : 0) - 2 * frameWidth
-    property int viewportWidth: width - (scroller.verticalScrollBar.visible ?
-                                         scroller.verticalScrollBar.width : 0) - 2 * frameWidth
-    default property alias data: content.data
+    /*!
+        \qmlproperty Item ScrollArea:viewport
 
-    Rectangle {
-        id: colorRect
-        color: "transparent"
-        anchors.fill:styleitem
-        anchors.margins: frameWidth
-    }
+        The viewport determines the current "window" on to the contentItem.
+        In other words it clips it and the size of the viewport tells you
+        how much of the content area is visible.
+    */
+    property alias viewport: viewportItem
 
-    StyleItem {
-        id: styleitem
-        elementType: "frame"
-        sunken: true
-        visible: frame
-        anchors.fill: parent
-        anchors.rightMargin: frame ? (frameAroundContents ?
-                                     (scroller.verticalScrollBar.visible ?
-                                      scroller.verticalScrollBar.width + 2 * frameMargins : 0) : 0) : 0
-        anchors.bottomMargin: frame ? (frameAroundContents ?
-                                      (scroller.horizontalScrollBar.visible ?
-                                       scroller.horizontalScrollBar.height + 2 * frameMargins : 0) : 0) : 0
-        anchors.topMargin: frame ? (frameAroundContents ? 0 : 0) : 0
-        property int frameWidth
-        property int scrollbarspacing: styleitem.pixelMetric("scrollbarspacing");
-        property int frameMargins : frame ? scrollbarspacing : 0
-        Component.onCompleted: {
-            frameWidth = styleitem.pixelMetric("defaultframewidth");
-            frameAroundContents = styleitem.styleHint("framearoundcontents")
+    /*!
+        \qmlproperty Item ScrollArea:flickableItem
+
+        The flickableItem of the ScrollArea. If the contentItem provided
+        to the ScrollArea is a Flickable, it will be the \l contentItem.
+    */
+    readonly property alias flickableItem: internal.flickableItem
+
+    /*!
+        \qmlproperty Item ScrollArea:contentItem
+
+        The contentItem of the ScrollArea. This is set by the user.
+
+        Note that the definition of contentItem is somewhat different to that
+        of a Flickable, where the contentItem is implicitly created.
+    */
+    default property Item contentItem
+
+    /* \private */
+    property Item __scroller: scroller
+    /* \private */
+    property int __scrollBarTopMargin: 0
+    /* \private */
+    property alias horizontalScrollBar: scroller.horizontalScrollBar
+    /* \private */
+    property alias verticalScrollBar: scroller.verticalScrollBar
+
+    onContentItemChanged: {
+
+        if (contentItem.hasOwnProperty("contentY") && // Check if flickable
+                contentItem.hasOwnProperty("contentHeight")) {
+            internal.flickableItem = contentItem // "Use content if it is a flickable
+        } else {
+            internal.flickableItem = flickableComponent.createObject(this)
+            contentItem.parent = flickableItem.contentItem
         }
+        internal.flickableItem.parent = viewportItem
+        internal.flickableItem.anchors.fill = viewportItem
     }
 
-    onContentYChanged: {
-        scroller.blockUpdates = true
-        scroller.verticalScrollBar.value = contentY
-        scroller.verticalValue = contentY
-        scroller.blockUpdates = false
-    }
 
-    onContentXChanged: {
-        scroller.blockUpdates = true
-        scroller.horizontalScrollBar.value = contentX
-        scroller.horizontalValue = contentX
-        scroller.blockUpdates = false
-    }
+    children: Item {
+        id: internal
 
-    Item {
-        id: clipper
-        anchors.fill: styleitem
-        anchors.margins: frameWidth
-        clip: true
-        Item {
-            id: content
-            x: -root.contentX
-            y: -root.contentY
+        property Flickable flickableItem
+
+        Binding {
+            target: flickableItem
+            property: "contentHeight"
+            when: contentItem !== flickableItem
+            value: contentItem ? contentItem.height : 0
         }
-    }
 
+        Binding {
+            target: flickableItem
+            when: contentItem !== flickableItem
+            property: "contentWidth"
+            value: contentItem ? contentItem.width : 0
+        }
 
-    Private.ScrollAreaHelper {
-        id: scroller
+        Connections {
+            target: flickableItem
+
+            onContentYChanged:  {
+                scroller.blockUpdates = true
+                scroller.verticalScrollBar.value = flickableItem.contentY
+                scroller.blockUpdates = false
+            }
+
+            onContentXChanged:  {
+                scroller.blockUpdates = true
+                scroller.horizontalScrollBar.value = flickableItem.contentX
+                scroller.blockUpdates = false
+            }
+
+        }
+
         anchors.fill: parent
-    }
 
-    StyleItem {
-        z: 2
-        anchors.fill: parent
+        Component {
+            id: flickableComponent
+            Flickable {}
+        }
 
-        anchors.topMargin: -3
-        anchors.leftMargin: -3
-        anchors.rightMargin: -5
-        anchors.bottomMargin: -5
+        WheelArea {
+            parent: flickableItem
 
-        visible: highlightOnFocus && parent.activeFocus && styleitem.styleHint("focuswidget")
-        elementType: "focusframe"
+            // ### Note this is needed due to broken mousewheel behavior in Flickable.
+
+            anchors.fill: parent
+
+            property int acceleration: 40
+            property int flickThreshold: 20
+            property double speedThreshold: 3
+            property double ignored: 0.001 // ## flick() does not work with 0 yVelocity
+            property int maxFlick: 400
+
+            horizontalMaximumValue: flickableItem ? flickableItem.contentWidth - viewport.width : 0
+            verticalMaximumValue: flickableItem ? flickableItem.contentHeight - viewport.height : 0
+
+            onVerticalValueChanged: {
+                if (flickableItem.contentY < flickThreshold && verticalDelta > speedThreshold) {
+                    flickableItem.flick(ignored, Math.min(maxFlick, acceleration * verticalDelta))
+                } else if (flickableItem.contentY > flickableItem.contentHeight
+                           - flickThreshold - viewport.height && verticalDelta < -speedThreshold) {
+                    flickableItem.flick(ignored, Math.max(-maxFlick, acceleration * verticalDelta))
+                } else {
+                    flickableItem.contentY = verticalValue
+                }
+            }
+
+            onHorizontalValueChanged: flickableItem.contentX = horizontalValue
+        }
+
+        Private.ScrollAreaHelper {
+            id: scroller
+            anchors.fill: parent
+            property int frameWidth: frame ? styleitem.pixelMetric("defaultframewidth") : 0
+            property bool outerFrame: !frame || !styleitem.styleHint("frameOnlyAroundContents")
+            property int scrollBarSpacing: styleitem.pixelMetric("scrollbarspacing")
+            property int verticalScrollbarOffset: verticalScrollBar.visible ?
+                                                      verticalScrollBar.width + scrollBarSpacing : 0
+            property int horizontalScrollbarOffset: horizontalScrollBar.visible ?
+                                                        horizontalScrollBar.height + scrollBarSpacing : 0
+
+            StyleItem {
+                id: styleitem
+                elementType: "frame"
+                sunken: true
+                visible: frame
+                anchors.fill: parent
+                anchors.rightMargin: scroller.outerFrame ? 0 : scroller.verticalScrollbarOffset
+                anchors.bottomMargin: scroller.outerFrame ? 0 : scroller.horizontalScrollbarOffset
+            }
+
+            Item {
+                id: viewportItem
+                anchors.fill: styleitem
+                anchors.margins: scroller.frameWidth
+                anchors.rightMargin: scroller.frameWidth + (scroller.outerFrame ? scroller.verticalScrollBar.width : 0)
+                anchors.bottomMargin: scroller.frameWidth + (scroller.outerFrame ? scroller.horizontalScrollBar.height : 0)
+                clip: true
+            }
+        }
+        Private.FocusFrame { visible: highlightOnFocus && area.activeFocus }
     }
 }

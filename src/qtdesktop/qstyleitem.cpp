@@ -671,7 +671,7 @@ int QStyleItem::pixelMetric(const QString &metric)
 {
 
     if (metric == "scrollbarExtent")
-        return qApp->style()->pixelMetric(QStyle::PM_ScrollBarExtent, 0) + 1;
+        return qApp->style()->pixelMetric(QStyle::PM_ScrollBarExtent, 0 );
     else if (metric == "defaultframewidth")
         return qApp->style()->pixelMetric(QStyle::PM_DefaultFrameWidth, 0);
     else if (metric == "taboverlap")
@@ -717,7 +717,7 @@ QVariant QStyleItem::styleHint(const QString &metric)
         if (result == Qt::AlignCenter)
             return "center";
         return "left";
-    } else if (metric == "framearoundcontents") {
+    } else if (metric == "frameOnlyAroundContents") {
         return qApp->style()->styleHint(QStyle::SH_ScrollView_FrameOnlyAroundContents);
     } else if (metric == "scrollToClickPosition")
         return qApp->style()->styleHint(QStyle::SH_ScrollBar_LeftClickAbsolutePosition);
