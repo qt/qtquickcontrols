@@ -234,9 +234,9 @@ FocusScope {
             property int frameWidth: frame ? styleitem.pixelMetric("defaultframewidth") : 0
             property bool outerFrame: !frame || !styleitem.styleHint("frameOnlyAroundContents")
             property int scrollBarSpacing: styleitem.pixelMetric("scrollbarspacing")
-            property int verticalScrollbarOffset: verticalScrollBar.visible ?
+            property int verticalScrollbarOffset: verticalScrollBar.visible && !verticalScrollBar.isTransient ?
                                                       verticalScrollBar.width + scrollBarSpacing : 0
-            property int horizontalScrollbarOffset: horizontalScrollBar.visible ?
+            property int horizontalScrollbarOffset: horizontalScrollBar.visible && !horizontalScrollBar.isTransient ?
                                                         horizontalScrollBar.height + scrollBarSpacing : 0
 
             StyleItem {
@@ -253,8 +253,8 @@ FocusScope {
                 id: viewportItem
                 anchors.fill: styleitem
                 anchors.margins: scroller.frameWidth
-                anchors.rightMargin: scroller.frameWidth + (scroller.outerFrame ? scroller.verticalScrollBar.width : 0)
-                anchors.bottomMargin: scroller.frameWidth + (scroller.outerFrame ? scroller.horizontalScrollBar.height : 0)
+                anchors.rightMargin: scroller.frameWidth + (scroller.outerFrame ? scroller.verticalScrollbarOffset : 0)
+                anchors.bottomMargin: scroller.frameWidth + (scroller.outerFrame ? scroller.horizontalScrollbarOffset : 0)
                 clip: true
             }
         }

@@ -452,12 +452,15 @@ void QStyleItem::initStyleOption()
         opt->activeSubControls = (activeControl() == QLatin1String("up"))
                 ? QStyle::SC_ScrollBarSubLine :
                   (activeControl() == QLatin1String("down")) ?
-                      QStyle::SC_ScrollBarAddLine:
-                      QStyle::SC_ScrollBarSlider;
+                      QStyle::SC_ScrollBarAddLine :
+                  (activeControl() != QLatin1String("none") || sunken()) ?
+                      QStyle::SC_ScrollBarSlider : QStyle::SC_None;
+        if (raised())
+            opt->state |= QStyle::State_On;
 
         opt->sliderValue = value();
         opt->subControls = QStyle::SC_All;
-
+        break;
     }
     case MenuBar:
         if (!m_styleoption) {
@@ -721,6 +724,8 @@ QVariant QStyleItem::styleHint(const QString &metric)
         return qApp->style()->styleHint(QStyle::SH_ScrollView_FrameOnlyAroundContents);
     } else if (metric == "scrollToClickPosition")
         return qApp->style()->styleHint(QStyle::SH_ScrollBar_LeftClickAbsolutePosition);
+    else if (metric == "transientScrollBars")
+        return qApp->style()->styleHint(QStyle::SH_ScrollBar_Transient, m_styleoption);
     return 0;
 }
 
@@ -1076,6 +1081,7 @@ void QStyleItem::paint(QPainter *painter)
         break;
     case ScrollBar:
         qApp->style()->drawComplexControl(QStyle::CC_ScrollBar, qstyleoption_cast<QStyleOptionComplex*>(m_styleoption), painter);
+        setOn(false);
         break;
     case Menu: {
         QStyleHintReturnMask val;

@@ -56,24 +56,39 @@ Item {
 
     property int frameMargin: outerFrame ? frameWidth : 0
 
+    Connections {
+        target: flickableItem
+        onContentXChanged: {
+            hscrollbar.flash()
+            vscrollbar.flash()
+        }
+        onContentYChanged: {
+            hscrollbar.flash()
+            vscrollbar.flash()
+        }
+    }
+
     StyleItem {
         // This is the filled corner between scrollbars
         id: cornerFill
         elementType: "scrollareacorner"
-        width: vscrollbar.width
+        width: visible ? vscrollbar.width : 0
         anchors.right: parent.right
-        height: hscrollbar.height
+        height: visible ? hscrollbar.height : 0
         anchors.bottom: parent.bottom
         anchors.bottomMargin: frameMargin
         anchors.rightMargin: frameMargin
-        visible: hscrollbar.visible && vscrollbar.visible
+        visible: hscrollbar.visible && !hscrollbar.isTransient && vscrollbar.visible && !vscrollbar.isTransient
     }
 
     ScrollBar {
         id: hscrollbar
+        property bool isTransient: !!styleItem && styleItem.styleHint("transientScrollBars")
+        property bool active: !!styleItem && (styleItem.sunken || styleItem.activeControl != "none")
         orientation: Qt.Horizontal
         visible: contentWidth > availableWidth
         height: visible ? implicitHeight : 0
+        z: 1
         maximumValue: contentWidth > availableWidth ? contentWidth - availableWidth : 0
         minimumValue: 0
         anchors.bottom: parent.bottom
@@ -86,13 +101,28 @@ Item {
                 flickableItem.contentX = value
             }
         }
+        Binding {
+            target: hscrollbar.styleItem
+            property: "raised"
+            value: vscrollbar.active
+            when: hscrollbar.isTransient
+        }
+        function flash() {
+            if (hscrollbar.isTransient) {
+                hscrollbar.styleItem.on = true
+                hscrollbar.styleItem.visible = true
+            }
+        }
     }
 
     ScrollBar {
         id: vscrollbar
+        property bool isTransient: !!styleItem && styleItem.styleHint("transientScrollBars")
+        property bool active: !!styleItem && (styleItem.sunken || styleItem.activeControl != "none")
         orientation: Qt.Vertical
         // visible: contentHeight > availableHeight
         width: visible ? implicitWidth : 0
+        z: 1
         anchors.bottom: cornerFill.top
         anchors.bottomMargin: hscrollbar.visible ? 0 : frameMargin
         maximumValue: contentHeight > availableHeight ? contentHeight - availableHeight : 0
@@ -104,6 +134,18 @@ Item {
         onValueChanged: {
             if (!blockUpdates && enabled) {
                 flickableItem.contentY = value
+            }
+        }
+        Binding {
+            target: vscrollbar.styleItem
+            property: "raised"
+            value: hscrollbar.active
+            when: vscrollbar.isTransient
+        }
+        function flash() {
+            if (vscrollbar.isTransient) {
+                vscrollbar.styleItem.on = true
+                vscrollbar.styleItem.visible = true
             }
         }
     }

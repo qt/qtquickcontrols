@@ -58,6 +58,7 @@ Item {
     implicitHeight: loader.implicitHeight
 
     property Component style: Qt.createComponent("../" + Settings.THEME_PATH + "/ScrollBarStyle.qml", scrollbar)
+    property alias styleItem: loader.item
 
     property bool upPressed
     property bool downPressed
@@ -70,7 +71,6 @@ Item {
         id: internal
 
         property bool horizontal: orientation === Qt.Horizontal
-        property alias styleItem: loader.item
 
         anchors.fill: parent
 
