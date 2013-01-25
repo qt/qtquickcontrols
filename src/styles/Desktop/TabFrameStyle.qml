@@ -64,7 +64,7 @@ QtObject {
         anchors.topMargin: 1//stack.baseOverlap
         z: style == "oxygen" ? 1 : 0
         elementType: "tabframe"
-        info: position
+        hints: position
         value: tabbarItem && tabsVisible && tabbarItem.tab(current) ? tabbarItem.tab(current).x : 0
         minimum: tabbarItem && tabsVisible && tabbarItem.tab(current) ? tabbarItem.tab(current).width : 0
         maximum: tabbarItem && tabsVisible ? tabbarItem.width : width
@@ -92,7 +92,6 @@ QtObject {
             hints: [control.position, tabpos, selectedpos]
 
             selected: tab.selected
-            info: control.position
             text:  title
             hover: tab.hover
             hasFocus: tab.focus && selected

@@ -216,7 +216,7 @@ FocusScope{
             sunken: itemPressed
             text: itemValue
             hover: itemContainsMouse
-            info: itemPosition
+            hints: itemPosition
         }
     }
 

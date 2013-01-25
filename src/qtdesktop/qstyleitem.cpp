@@ -234,11 +234,11 @@ void QStyleItem::initStyleOption()
                     QStyleOptionHeader::SortDown
                   : activeControl() == "up" ?
                         QStyleOptionHeader::SortUp : QStyleOptionHeader::None;
-        if (info() == QLatin1String("beginning"))
+        if (hints().contains("beginning"))
             opt->position = QStyleOptionHeader::Beginning;
-        else if (info() == QLatin1String("end"))
+        else if (hints().contains("end"))
             opt->position = QStyleOptionHeader::End;
-        else if (info() == QLatin1String("only"))
+        else if (hints().contains("only"))
             opt->position = QStyleOptionHeader::OnlyOneSection;
         else
             opt->position = QStyleOptionHeader::Middle;
@@ -312,7 +312,7 @@ void QStyleItem::initStyleOption()
         if (!m_styleoption)
             m_styleoption = new QStyleOptionTabWidgetFrame();
         QStyleOptionTabWidgetFrame *opt = qstyleoption_cast<QStyleOptionTabWidgetFrame*>(m_styleoption);
-        opt->shape = (info() == "South") ? QTabBar::RoundedSouth : QTabBar::RoundedNorth;
+        opt->shape = hints().contains("South") ? QTabBar::RoundedSouth : QTabBar::RoundedNorth;
         if (minimum())
             opt->selectedTabRect = QRect(value(), 0, minimum(), height());
         opt->tabBarSize = QSize(minimum() , height());
@@ -724,7 +724,7 @@ QVariant QStyleItem::styleHint(const QString &metric)
     return 0;
 }
 
-void QStyleItem::setHint(const QStringList &str)
+void QStyleItem::setHints(const QStringList &str)
 {
     if (m_hints != str) {
         m_hints = str;
@@ -936,10 +936,10 @@ void QStyleItem::paint(QPainter *painter)
             }
             SInt32 button_height;
             GetThemeMetric(kThemeMetricButtonRoundedHeight, &button_height);
-            sgi.position = info() == "leftmost" ? kHIThemeSegmentPositionFirst:
-                                                  info() == "rightmost" ? kHIThemeSegmentPositionLast :
-                                                               info() == "h_middle" ? kHIThemeSegmentPositionMiddle :
-                                                                                   kHIThemeSegmentPositionOnly;
+            sgi.position = hints().contains("leftmost") ? kHIThemeSegmentPositionFirst:
+                           hints().contains("rightmost") ? kHIThemeSegmentPositionLast :
+                           hints().contains("h_middle") ? kHIThemeSegmentPositionMiddle :
+                           kHIThemeSegmentPositionOnly;
             QRect centered = m_styleoption->rect;
             centered.setHeight(button_height);
             centered.moveCenter(m_styleoption->rect.center());

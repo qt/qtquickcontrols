@@ -66,9 +66,8 @@ class QStyleItem: public QQuickItem
     Q_PROPERTY( QString elementType READ elementType WRITE setElementType NOTIFY elementTypeChanged)
     Q_PROPERTY( QString text READ text WRITE setText NOTIFY textChanged)
     Q_PROPERTY( QString activeControl READ activeControl WRITE setActiveControl NOTIFY activeControlChanged)
-    Q_PROPERTY( QString info READ info WRITE setInfo NOTIFY infoChanged)
     Q_PROPERTY( QString style READ style NOTIFY styleChanged)
-    Q_PROPERTY( QStringList hints READ hints WRITE setHint NOTIFY hintChanged)
+    Q_PROPERTY( QStringList hints READ hints WRITE setHints NOTIFY hintChanged)
     Q_PROPERTY( QFont font READ font NOTIFY fontChanged)
 
     // For range controls
@@ -139,7 +138,6 @@ public:
     QString elementType() const { return m_type; }
     QString text() const { return m_text; }
     QString activeControl() const { return m_activeControl; }
-    QString info() const { return m_info; }
     QStringList hints() const { return m_hints; }
     QFont font() const { return m_font;}
     QString style() const;
@@ -160,8 +158,7 @@ public:
     void setElementType(const QString &str);
     void setText(const QString &str) { if (m_text != str) {m_text = str; emit textChanged();}}
     void setActiveControl(const QString &str) { if (m_activeControl != str) {m_activeControl = str; emit activeControlChanged();}}
-    void setInfo(const QString &str) { if (m_info != str) {m_info = str; emit infoChanged();}}
-    void setHint(const QStringList &str);
+    void setHints(const QStringList &str);
 
     int contentWidth() const { return m_contentWidth; }
     int contentHeight() const { return m_contentHeight; }
@@ -236,7 +233,6 @@ protected:
     QString m_type;
     QString m_text;
     QString m_activeControl;
-    QString m_info;
     QStringList m_hints;
     QFont m_font;
 

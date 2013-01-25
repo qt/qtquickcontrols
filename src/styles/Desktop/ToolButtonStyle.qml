@@ -48,8 +48,7 @@ StyleItem {
     sunken: pressed
     raised: containsMouse
     hover: containsMouse
-    info: __position
-    hints: control.styleHints
+    hints: control.styleHints.concat([__position])
     contentWidth: Math.max(textitem.paintedWidth, 32)
     contentHeight: 30
     Text {
