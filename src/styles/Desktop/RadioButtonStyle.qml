@@ -47,7 +47,7 @@ StyleItem {
     hover: containsMouse
     enabled: radiobutton.enabled
     hasFocus: radiobutton.activeFocus
-    hint: radiobutton.styleHints
+    hints: radiobutton.styleHints
     contentHeight: textitem.implicitHeight
     contentWidth: textitem.implicitWidth + indicatorWidth
     property int indicatorWidth: pixelMetric("indicatorwidth") + 2

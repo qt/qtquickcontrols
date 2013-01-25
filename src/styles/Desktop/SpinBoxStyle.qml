@@ -112,7 +112,7 @@ Item {
         anchors.fill: parent
         sunken: (downEnabled && downPressed) | (upEnabled && upPressed)
         hover: containsMouse
-        hint: control.styleHints
+        hints: control.styleHints
         hasFocus: control.focus
         enabled: control.enabled
         value: (upPressed ? 1 : 0)           |

@@ -49,7 +49,7 @@ StyleItem {
     raised: containsMouse
     hover: containsMouse
     info: __position
-    hint: control.styleHints
+    hints: control.styleHints
     contentWidth: Math.max(textitem.paintedWidth, 32)
     contentHeight: 30
     Text {

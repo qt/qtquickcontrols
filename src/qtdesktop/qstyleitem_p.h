@@ -68,7 +68,7 @@ class QStyleItem: public QQuickItem
     Q_PROPERTY( QString activeControl READ activeControl WRITE setActiveControl NOTIFY activeControlChanged)
     Q_PROPERTY( QString info READ info WRITE setInfo NOTIFY infoChanged)
     Q_PROPERTY( QString style READ style NOTIFY styleChanged)
-    Q_PROPERTY( QStringList hint READ hint WRITE setHint NOTIFY hintChanged)
+    Q_PROPERTY( QStringList hints READ hints WRITE setHint NOTIFY hintChanged)
     Q_PROPERTY( QFont font READ font NOTIFY fontChanged)
 
     // For range controls
@@ -140,7 +140,7 @@ public:
     QString text() const { return m_text; }
     QString activeControl() const { return m_activeControl; }
     QString info() const { return m_info; }
-    QStringList hint() const { return m_hint; }
+    QStringList hints() const { return m_hints; }
     QFont font() const { return m_font;}
     QString style() const;
 
@@ -237,7 +237,7 @@ protected:
     QString m_text;
     QString m_activeControl;
     QString m_info;
-    QStringList m_hint;
+    QStringList m_hints;
     QFont m_font;
 
     bool m_sunken;

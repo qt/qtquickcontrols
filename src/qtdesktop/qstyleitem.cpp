@@ -267,10 +267,10 @@ void QStyleItem::initStyleOption()
         QStyleOptionTab *opt = qstyleoption_cast<QStyleOptionTab*>(m_styleoption);
         opt->text = text();
 
-        if (hint().length() > 2) {
-            QString shape = hint()[0];
-            QString position = hint()[1];
-            QString selectedPosition = hint()[2];
+        if (hints().length() > 2) {
+            QString shape = hints()[0];
+            QString position = hints()[1];
+            QString selectedPosition = hints()[2];
 
             opt->shape = (shape == "South") ? QTabBar::RoundedSouth : QTabBar::RoundedNorth;
 
@@ -504,9 +504,9 @@ void QStyleItem::initStyleOption()
     if (m_horizontal)
         m_styleoption->state |= QStyle::State_Horizontal;
 
-    if (m_hint.indexOf("mini") != -1) {
+    if (m_hints.indexOf("mini") != -1) {
         m_styleoption->state |= QStyle::State_Mini;
-    } else if (m_hint.indexOf("small") != -1) {
+    } else if (m_hints.indexOf("small") != -1) {
         m_styleoption->state |= QStyle::State_Small;
     }
 
@@ -632,7 +632,7 @@ QSize QStyleItem::sizeFromContents(int width, int height)
         break;
     case Edit:
         size = qApp->style()->sizeFromContents(QStyle::CT_LineEdit, m_styleoption, QSize(width,height));
-        if (hint().indexOf("rounded") != -1)
+        if (hints().indexOf("rounded") != -1)
             size += QSize(0, 3);
         break;
     case GroupBox:
@@ -726,8 +726,8 @@ QVariant QStyleItem::styleHint(const QString &metric)
 
 void QStyleItem::setHint(const QStringList &str)
 {
-    if (m_hint != str) {
-        m_hint = str;
+    if (m_hints != str) {
+        m_hints = str;
         initStyleOption();
         updateSizeHint();
         if (m_styleoption->state & QStyle::State_Mini) {
@@ -920,7 +920,7 @@ void QStyleItem::paint(QPainter *painter)
     case ToolButton:
 
 #ifdef Q_OS_MAC
-        if (style() == "mac" && hint().indexOf("segmented") != -1) {
+        if (style() == "mac" && hints().indexOf("segmented") != -1) {
             const QPaintDevice *target = painter->device();
              HIThemeSegmentDrawInfo sgi;
             sgi.version = 0;
@@ -956,7 +956,7 @@ void QStyleItem::paint(QPainter *painter)
         qApp->style()->drawControl(QStyle::CE_ShapedFrame, m_styleoption, painter);
         break;
     case FocusFrame:
-        if (style() == "mac" && hint().indexOf("rounded") != -1)
+        if (style() == "mac" && hints().indexOf("rounded") != -1)
             break; // embedded in the line itself
         else
             qApp->style()->drawControl(QStyle::CE_FocusFrame, m_styleoption, painter);
@@ -982,7 +982,7 @@ void QStyleItem::paint(QPainter *painter)
         break;
     case Edit: {
 #ifdef Q_OS_MAC
-        if (style() == "mac" && hint().indexOf("rounded") != -1) {
+        if (style() == "mac" && hints().indexOf("rounded") != -1) {
             const QPaintDevice *target = painter->device();
             HIThemeFrameDrawInfo fdi;
             fdi.version = 0;

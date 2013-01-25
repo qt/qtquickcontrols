@@ -89,7 +89,7 @@ QtObject {
             anchors.fill: parent
             anchors.leftMargin: (selected && style == "mac") ? -1 : 0
 
-            hint: [control.position, tabpos, selectedpos]
+            hints: [control.position, tabpos, selectedpos]
 
             selected: tab.selected
             info: control.position

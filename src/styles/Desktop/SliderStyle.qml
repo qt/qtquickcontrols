@@ -54,6 +54,6 @@ StyleItem {
     horizontal: control.orientation === Qt.Horizontal
     enabled: control.enabled
     hasFocus: control.focus
-    hint: control.styleHints
+    hints: control.styleHints
     activeControl: tickmarksEnabled ? tickPosition.toLowerCase() : ""
 }

@@ -47,7 +47,7 @@ StyleItem {
     hover: containsMouse
     enabled: control.enabled
     hasFocus: control.activeFocus
-    hint: control.styleHints
+    hints: control.styleHints
     contentHeight: textitem.implicitHeight
     contentWidth: textitem.implicitWidth + indicatorWidth
     Text {

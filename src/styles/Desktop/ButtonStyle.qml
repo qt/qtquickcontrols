@@ -55,7 +55,7 @@ Item {
         hover: control.containsMouse
         text: control.iconSource === "" ? "" : control.text
         hasFocus: control.focus
-        hint: control.styleHints
+        hints: control.styleHints
         // If no icon, let the style do the drawing
         activeControl: defaultbutton ? "default" : "f"
     }

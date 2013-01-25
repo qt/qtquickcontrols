@@ -51,7 +51,7 @@ StyleItem {
     maximum: indeterminate ? 0 : progressbar.maximumValue * factor
     enabled: progressbar.enabled
     horizontal: progressbar.orientation == Qt.Horizontal
-    hint: progressbar.styleHints
+    hints: progressbar.styleHints
     contentWidth: 23
     contentHeight: 23
 }

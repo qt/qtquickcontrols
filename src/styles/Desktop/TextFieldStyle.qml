@@ -57,7 +57,7 @@ StyleItem {
     contentWidth: 200
     contentHeight: 18
 
-    property bool rounded: hint.indexOf("rounded")
+    property bool rounded: hints.indexOf("rounded")
     property int topMargin: 4
     property int leftMargin: rounded > -1 ? 8 : 4
     property int rightMargin: 4
@@ -70,7 +70,7 @@ StyleItem {
     property color selectedTextColor: syspal.highlightedText
 
 
-    hint: control.styleHints
+    hints: control.styleHints
 
     Item {
         id: focusFrame
@@ -79,7 +79,7 @@ StyleItem {
         visible: framestyle.styleHint("focuswidget")
         StyleItem {
             id: framestyle
-            hint: control.styleHints
+            hints: control.styleHints
             anchors.margins: -2
             anchors.rightMargin:-4
             anchors.bottomMargin:-4
