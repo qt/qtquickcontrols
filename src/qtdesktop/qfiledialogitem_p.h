@@ -51,8 +51,6 @@
 #endif
 #include <QFileDialog>
 
-QT_BEGIN_HEADER
-
 QT_BEGIN_NAMESPACE
 
 #if QT_VERSION < 0x050000
@@ -134,7 +132,5 @@ private:
 };
 
 QT_END_NAMESPACE
-
-QT_END_HEADER
 
 #endif // QFILEDIALOGITEM_P_H

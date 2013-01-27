@@ -44,8 +44,6 @@
 #include <QtWidgets/QDesktopWidget>
 #include <QtQml>
 
-QT_BEGIN_HEADER
-
 QT_BEGIN_NAMESPACE
 
 class QDesktopItem : public QObject
@@ -82,7 +80,5 @@ Q_SIGNALS:
 QT_END_NAMESPACE
 
 QML_DECLARE_TYPEINFO(QDesktopItem, QML_HAS_ATTACHED_PROPERTIES)
-
-QT_END_HEADER
 
 #endif // QDESKTOPITEM_P_H

@@ -45,8 +45,6 @@
 #include <QtQuickTest/quicktestglobal.h>
 #include <QtWidgets/QApplication>
 
-QT_BEGIN_HEADER
-
 QT_BEGIN_NAMESPACE
 
 #ifdef QUICK_TEST_SOURCE_DIR
@@ -67,7 +65,5 @@ QT_BEGIN_NAMESPACE
     }
 
 QT_END_NAMESPACE
-
-QT_END_HEADER
 
 #endif

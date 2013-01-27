@@ -44,8 +44,6 @@
 #include <QPointer>
 #include <QQuickItem>
 
-QT_BEGIN_HEADER
-
 QT_BEGIN_NAMESPACE
 
 class QQuickComponentsLayoutAttached;
@@ -131,7 +129,5 @@ QT_END_NAMESPACE
 
 QML_DECLARE_TYPE(QQuickComponentsLayout)
 QML_DECLARE_TYPEINFO(QQuickComponentsLayout, QML_HAS_ATTACHED_PROPERTIES)
-
-QT_END_HEADER
 
 #endif // QQUICKLAYOUT_P_H

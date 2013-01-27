@@ -45,8 +45,6 @@
 #include <QtWidgets/qgraphicssceneevent.h>
 #include <QtQuick/qquickitem.h>
 
-QT_BEGIN_HEADER
-
 QT_BEGIN_NAMESPACE
 
 class QWheelArea : public QQuickItem
@@ -119,7 +117,5 @@ private:
 QT_END_NAMESPACE
 
 QML_DECLARE_TYPE(QWheelArea)
-
-QT_END_HEADER
 
 #endif // QWHEELAREA_P_H

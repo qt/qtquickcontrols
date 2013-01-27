@@ -44,8 +44,6 @@
 #include <QObject>
 #include <QQuickItem>
 
-QT_BEGIN_HEADER
-
 QT_BEGIN_NAMESPACE
 
 class QQuickComponentsPrivate : public QObject
@@ -60,7 +58,5 @@ public:
 };
 
 QT_END_NAMESPACE
-
-QT_END_HEADER
 
 #endif // QQUICKCOMPONENTSPRIVATE_P_H

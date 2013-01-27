@@ -46,8 +46,6 @@
 #include <QtGui/QImage>
 #include <QEvent>
 
-QT_BEGIN_HEADER
-
 QT_BEGIN_NAMESPACE
 
 class QStyleItem: public QQuickItem
@@ -264,7 +262,5 @@ protected:
 };
 
 QT_END_NAMESPACE
-
-QT_END_HEADER
 
 #endif // QSTYLEITEM_P_H

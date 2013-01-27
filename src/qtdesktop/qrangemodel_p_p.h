@@ -52,8 +52,6 @@
 // We mean it.
 //
 
-QT_BEGIN_HEADER
-
 QT_BEGIN_NAMESPACE
 
 #include "qrangemodel_p.h"
@@ -108,7 +106,5 @@ public:
 };
 
 QT_END_NAMESPACE
-
-QT_END_HEADER
 
 #endif // QRANGEMODEL_P_P_H

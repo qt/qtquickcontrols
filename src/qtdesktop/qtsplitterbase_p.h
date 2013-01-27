@@ -44,8 +44,6 @@
 #include <QtQml>
 #include <QtQuick>
 
-QT_BEGIN_HEADER
-
 QT_BEGIN_NAMESPACE
 
 class QtSplitterAttached : public QObject
@@ -124,7 +122,5 @@ public:
 QT_END_NAMESPACE
 
 QML_DECLARE_TYPEINFO(QtSplitterBase, QML_HAS_ATTACHED_PROPERTIES)
-
-QT_END_HEADER
 
 #endif // QTSPLITTERBASE_P_H
