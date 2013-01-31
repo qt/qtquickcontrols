@@ -53,6 +53,7 @@ Item {
     property alias value: slider.value
     property bool scrollToClickposition: internal.scrollToClickPosition
 
+    Accessible.role: Accessible.ScrollBar
     implicitWidth: loader.implicitWidth
     implicitHeight: loader.implicitHeight
 
