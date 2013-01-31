@@ -61,6 +61,7 @@ Item {
 
     property bool upPressed
     property bool downPressed
+    property bool handlePressed
 
     property bool pageUpPressed
     property bool pageDownPressed
@@ -75,7 +76,6 @@ Item {
 
         property bool autoincrement: false
         property bool scrollToClickPosition: styleItem ? styleItem.scrollToClickPosition : 0
-        property bool handlePressed
 
         // Update hover item
         onEntered: styleItem.activeControl = styleItem.hitTest(mouseX, mouseY)
@@ -124,6 +124,7 @@ Item {
             if (control == "handle") {
                 pressedX = mouseX
                 pressedY = mouseY
+                handlePressed = true
                 oldPosition = slider.position
             } else if (control == "up") {
                 decrement();
@@ -149,6 +150,7 @@ Item {
             autoincrement = false;
             upPressed = false;
             downPressed = false;
+            handlePressed = false
             pageUpPressed = false
             pageDownPressed = false
             control = ""

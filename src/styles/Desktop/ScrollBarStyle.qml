@@ -47,7 +47,7 @@ StyleItem {
     elementType: "scrollbar"
     hover: activeControl != "none"
     activeControl: "none"
-    sunken: control.upPressed | control.downPressed
+    sunken: control.upPressed | control.downPressed | control.handlePressed
     minimum: control.minimumValue
     maximum: control.maximumValue
     value: slider.value
