@@ -233,7 +233,7 @@ FocusScope {
             anchors.fill: parent
             property int frameWidth: frame ? styleitem.pixelMetric("defaultframewidth") : 0
             property bool outerFrame: !frame || !styleitem.styleHint("frameOnlyAroundContents")
-            property int scrollBarSpacing: styleitem.pixelMetric("scrollbarspacing")
+            property int scrollBarSpacing: outerFrame ? 0 : styleitem.pixelMetric("scrollbarspacing")
             property int verticalScrollbarOffset: verticalScrollBar.visible && !verticalScrollBar.isTransient ?
                                                       verticalScrollBar.width + scrollBarSpacing : 0
             property int horizontalScrollbarOffset: horizontalScrollBar.visible && !horizontalScrollBar.isTransient ?
