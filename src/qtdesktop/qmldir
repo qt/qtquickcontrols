@@ -2,8 +2,6 @@ module QtDesktop
 plugin styleplugin
 ApplicationWindow 1.0 ApplicationWindow.qml
 Button 1.0 Button.qml
-ButtonRow 1.0 ButtonRow.qml
-ButtonColumn 1.0 ButtonColumn.qml
 CheckBox 1.0 CheckBox.qml
 ComboBox 1.0 ComboBox.qml
 ContextMenu 1.0 ContextMenu.qml

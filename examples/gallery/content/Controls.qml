@@ -122,8 +122,7 @@ Item {
                 title: "CheckBox"
                 width: area.width
                 adjustToContentSize: true
-                ButtonRow {
-                    exclusive: false
+                Row {
                     CheckBox {
                         id: frameCheckbox
                         text: "Text frame"
@@ -143,19 +142,20 @@ Item {
                 title:"Tab Position"
                 width: area.width
                 adjustToContentSize: true
-                ButtonRow {
-                    id: tabPositionGroup
-                    exclusive: true
+                ExclusiveGroup { id: tabPositionGroup }
+                Row {
                     RadioButton {
                         id: r1
                         text: "North"
                         KeyNavigation.tab: r2
                         checked: true
+                        exclusiveGroup: tabPositionGroup
                     }
                     RadioButton {
                         id: r2
                         text: "South"
                         KeyNavigation.tab: area
+                        exclusiveGroup: tabPositionGroup
                     }
                 }
             }

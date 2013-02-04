@@ -9,8 +9,6 @@ QMAKE_DOCS = $$PWD/doc/qtdesktopcomponents.qdocconf
 QML_FILES = \
     ApplicationWindow.qml \
     Button.qml \
-    ButtonColumn.qml \
-    ButtonRow.qml \
     CheckBox.qml \
     ComboBox.qml \
     ContextMenu.qml \

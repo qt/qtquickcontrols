@@ -70,6 +70,7 @@ FocusScope {
     implicitHeight: loader.item ? loader.item.implicitHeight : 0
 
     property Component style: Qt.createComponent(Settings.THEME_PATH + "/CheckBoxStyle.qml", checkBox)
+    property alias exclusiveGroup: behavior.exclusiveGroup
 
     Loader {
         id: loader
@@ -81,10 +82,15 @@ FocusScope {
     ButtonBehavior {
         id: behavior
         focus: true
+        property ExclusiveGroup exclusiveGroup
         anchors.fill: parent
         checkable: true
         onClicked: checkBox.clicked();
         onPressed: if (checkBox.activeFocusOnPress) checkBox.forceActiveFocus();
+        onExclusiveGroupChanged: {
+            if (exclusiveGroup)
+                exclusiveGroup.registerCheckable(checkBox)
+        }
     }
 
     Keys.onPressed: {

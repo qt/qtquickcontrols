@@ -52,8 +52,7 @@ Row {
         GroupBox {
             title: "Animation options"
             adjustToContentSize: true
-            ButtonRow {
-                exclusive: false
+            Row {
                 CheckBox {
                     id:fade
                     text: "Fade on hover"
