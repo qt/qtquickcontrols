@@ -132,7 +132,7 @@ Item {
         anchors.topMargin: __scrollBarTopMargin + frameMargin
         anchors.rightMargin: frameMargin
         onValueChanged: {
-            if (!blockUpdates && enabled) {
+            if (flickableItem && !blockUpdates && enabled) {
                 flickableItem.contentY = value
             }
         }
