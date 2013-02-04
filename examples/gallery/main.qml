@@ -58,12 +58,10 @@ ApplicationWindow {
     ToolBar {
         id: toolbar
         width: parent.width
-        height: 40
         RowLayout {
             spacing: 2
             anchors.verticalCenter: parent.verticalCenter
             ToolButton {
-                iconName: "window-new"
                 iconSource: "images/window-new.png"
                 anchors.verticalCenter: parent.verticalCenter
                 onClicked: window1.visible = !window1.visible
@@ -71,14 +69,12 @@ ApplicationWindow {
                 tooltip: "Toggle visibility of the second window"
             }
             ToolButton {
-                iconName: "document-open"
                 iconSource: "images/document-open.png"
                 anchors.verticalCenter: parent.verticalCenter
                 onClicked: fileDialogLoad.open()
                 tooltip: "(Pretend to) open a file"
             }
             ToolButton {
-                iconName: "document-save-as"
                 iconSource: "images/document-save-as.png"
                 anchors.verticalCenter: parent.verticalCenter
                 onClicked: fileDialogSave.open()

@@ -46,35 +46,31 @@ import "Styles/Settings.js" as Settings
 /*!
     \qmltype ToolButton
     \inqmlmodule QtDesktop 1.0
-    \brief ToolButton is doing bla...bla...
+    \brief ToolButton provides a button type that is typically used within a ToolBar
+
+     ToolButton is functionally similar to \l Button but can provide a look that is more
+     suitable within a \l ToolBar.
+
+     \code
+     ToolButton {
+        iconSource: "edit-cut.png"
+     }
+     \endcode
 */
 
 Private.BasicButton {
     id: button
 
-    property string iconName
     property url iconSource
     property string text
 
     style: Qt.createComponent(Settings.THEME_PATH + "/ToolButtonStyle.qml", button)
 
     Image {
-        id: themeIcon
         anchors.centerIn: parent
-        opacity: enabled ? 1 : 0.5
-        antialiasing: true
-        sourceSize.width: iconSize
-        //property string iconPath: "image://desktoptheme/" + button.iconName
-        property int iconSize: 24 //(backgroundItem && backgroundItem.style === "mac" && button.styleHint.indexOf("segmented") !== -1) ? 16 : 24
-        //source: iconPath // backgroundItem && backgroundItem.hasThemeIcon(iconName) ? iconPath : ""
-        fillMode: Image.PreserveAspectFit
-        Image {
-            // Use fallback icon
-            anchors.centerIn: parent
-            sourceSize: parent.sourceSize
-            visible: (themeIcon.status != Image.Ready)
-            source: visible ? button.iconSource : ""
-        }
+        source: button.iconSource
+        sourceSize: Qt.size(Math.min(button.width, implicitWidth),
+                            Math.min(button.height, implicitHeight))
     }
     Accessible.name: text
 }

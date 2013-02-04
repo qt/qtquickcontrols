@@ -50,6 +50,9 @@ import QtDesktop 1.0
     It provides styling and is generally designed to work well with ToolButton as well
     as other controls.
 
+    Note that the ToolBar does not provide a layout of its own but requires you to
+    position its contents, for instance by creating a RowLayout.
+
     \code
     ApplicationWindow {
         toolbar: ToolBar {
