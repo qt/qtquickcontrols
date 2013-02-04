@@ -44,14 +44,35 @@ import QtDesktop 1.0
 /*!
     \qmltype ToolBar
     \inqmlmodule QtDesktop 1.0
-    \brief ToolBar is doing bla...bla...
+    \brief ToolBar is for containing ToolButton and related controls.
+
+    The common way of using ToolBar is in relation to \l ApplicationWindow.
+    It provides styling and is generally designed to work well with ToolButton as well
+    as other controls.
+
+    \code
+    ApplicationWindow {
+        toolbar: ToolBar {
+            RowLayout {
+                anchors.fill: parent
+                ToolButton { ... }
+                ToolButton { ... }
+                ToolButton { ... }
+            }
+        }
+    }
+    \endcode
 */
 
-StyleItem {
-    id: toolbar
-    width: parent ? parent.width : 200
-    height: implicitHeight
-    elementType: "toolbar"
-
+Item {
+    width: toolbar.width
+    height: toolbar.height
+    implicitHeight: toolbar.implicitHeight
+    implicitWidth: toolbar.implicitWidth
     Accessible.role: Accessible.ToolBar
+    StyleItem {
+        id: toolbar
+        anchors.fill: parent
+        elementType: "toolbar"
+    }
 }
