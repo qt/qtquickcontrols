@@ -44,26 +44,87 @@ import QtDesktop 1.0
 /*!
     \qmltype ApplicationWindow
     \inqmlmodule QtDesktop 1.0
-    \brief ApplicationWindow is doing bla...bla...
+    \brief ApplicationWindow provides a top-level application window.
+
+    AppliactionWindow is a \l Window, but adds convenience
+    for positioning items such as \l MenuBar, \l ToolBar and \l StatusBar in a platform
+    independent manner.
+
+    \code
+    ApplicationWindow {
+        id: window
+        menuBar: MenuBar {
+                    Menu { MenuItem {...} }
+                    Menu { MenuItem {...} }
+                }
+
+        toolBar: ToolBar {
+                RowLayout {
+                    anchors.fill: parent
+                    ToolButton{}
+                }
+            }
+        }
+
+        TabFrame {
+            id: myContent
+            anchors.fill: parent
+            ...
+        }
+    }
+    \endcode
 */
 
 Window {
     id: root
+
     width: 320
     height: 240
 
+    /*!
+        \qmlproperty MenuBar ApplicationWindow::menuBar
+
+        This property holds the \l MenuBar
+
+        By default this value is not set.
+    */
     property MenuBar menuBar
+
+    /*!
+        \qmlproperty Item ApplicationWindow::toolBar
+
+        This property holds the tool bar \l Item.
+
+        It can be set to any Item type but is generally used with \l ToolBar.
+
+        By default this value is not set. When you set the toolBar Item, it will
+        be anchored automatically into the AppliacationWindow.
+    */
     property alias toolBar: toolBarArea.data
+
+    /*!
+        \qmlproperty Item ApplicationWindow::statusBar
+
+        This property holds the status bar \l Item.
+
+        It can be set to any Item type but is generally used with \l StatusBar.
+
+        By default this value is not set. When you set the toolBar Item, it will
+        be anchored automatically into the AppliacationWindow.
+    */
     property alias statusBar: statusBarArea.data
+
+    /*! \internal */
     default property alias data: contentArea.data
-    property alias backgroundColor: syspal.window
-    property bool showMenuBar: menuBar ? menuBar.showMenuBar : false
+
+    /*! \internal */
+    property bool __showMenuBar: menuBar ? menuBar.showMenuBar : false
 
     SystemPalette {id: syspal}
 
     Rectangle {
         anchors.fill: parent
-        color: backgroundColor
+        color: syspal.window
     }
 
     StyleItem {
