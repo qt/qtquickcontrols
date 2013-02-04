@@ -59,6 +59,8 @@ FocusScope {
     property alias containsMouse: behavior.containsMouse
     property bool activeFocusOnPress: false
 
+    property alias exclusiveGroup: behavior.exclusiveGroup
+
     property string text
     property var styleHints:[]
 

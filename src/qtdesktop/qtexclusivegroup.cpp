@@ -52,6 +52,75 @@ static const char *checkableSignals[] = {
     0
 };
 
+static bool isChecked(const QObject *o)
+{
+    if (!o) return false;
+    QVariant checkedVariant = o->property(CHECKED_PROPERTY);
+    return checkedVariant.isValid() && checkedVariant.toBool();
+}
+
+/*!
+    \qmltype ExclusiveGroup
+    \instantiates QtExclusiveGroup
+    \inqmlmodule QtDesktop 1.0
+    \brief ExclusiveGroup provides a way to declare several checkable controls as mutually exclusive.
+
+    \code
+    ExclusiveGroup { id: radioInputGroup }
+
+    Action {
+        id: dabRadioInput
+        text: "DAB"
+        exclusiveGroup: radioInputGroup
+    }
+
+    Action {
+        id: fmRadioInput
+        text: "FM"
+        exclusiveGroup: radioInputGroup
+    }
+
+    Action {
+        id: amRadioInput
+        text: "AM"
+        exclusiveGroup: radioInputGroup
+    }
+
+    \endcode
+
+    For an object, or control, to be compatible with \c ExclusiveGroup, it should have a \c checked
+    property, and either a \c checkedChanged, \c toggled(), or \c toggled(bool) signal. It also needs
+    to be registered with \c ExclusiveGroup::registerCheckable(object) when its \c ExclusiveGroup property is set.
+
+    \sa Action, ButtonBehavior
+*/
+
+/*!
+    \qmlproperty QtObject ExclusiveGroup::current
+
+    The currently selected object.
+*/
+
+/*!
+    \qmlmethod void ExclusiveGroup::registerCheckable(object)
+
+    Register \c object to the exclusive group.
+
+    You should only need to call this function when creating a component you want to be compatible with \c ExclusiveGroup.
+
+    \sa ExclusiveGroup::unregisterCheckable(object)
+*/
+
+/*!
+    \qmlmethod void ExclusiveGroup::unregisterCheckable(object)
+
+    Unregister \c object from the exclusive group.
+
+    You should only need to call this function when creating a component you want to be compatible with \c ExclusiveGroup.
+
+    \sa ExclusiveGroup::registerCheckable(object)
+*/
+
 QtExclusiveGroup::QtExclusiveGroup(QObject *parent)
     : QObject(parent)
 {
@@ -75,8 +144,7 @@ void QtExclusiveGroup::setCurrent(QObject * o)
 void QtExclusiveGroup::updateCurrent()
 {
     QObject *checkable = sender();
-    QVariant checkedVariant = checkable->property(CHECKED_PROPERTY);
-    if (checkedVariant.isValid() && checkedVariant.toBool())
+    if (isChecked(checkable))
         setCurrent(checkable);
 }
 
@@ -88,6 +156,8 @@ void QtExclusiveGroup::registerCheckable(QObject *o)
             QMetaMethod signalMethod = o->metaObject()->method(signalIndex);
             connect(o, signalMethod, this, m_updateCurrentMethod, Qt::UniqueConnection);
             connect(o, SIGNAL(destroyed(QObject*)), this, SLOT(unregisterCheckable(QObject*)), Qt::UniqueConnection);
+            if (!m_current && isChecked(o))
+                setCurrent(o);
             return;
         }
     }

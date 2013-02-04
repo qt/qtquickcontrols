@@ -39,12 +39,20 @@
 ****************************************************************************/
 
 import QtQuick 2.0
+import QtDesktop 1.0
 
 MouseArea {
+    id: behavior
     property bool checkable: false
     property bool checked: false
     property bool keyPressed: false
     property bool effectivePressed: pressed && containsMouse || keyPressed
+    property ExclusiveGroup exclusiveGroup: null
+
+    onExclusiveGroupChanged: {
+        if (exclusiveGroup)
+            exclusiveGroup.registerCheckable(behavior)
+    }
 
     hoverEnabled: true
     enabled: !keyPressed
@@ -55,7 +63,8 @@ MouseArea {
     }
 
     onReleased: {
-        if (checkable && containsMouse)
-            checked = !checked;
+        if (checkable && containsMouse
+            && (!exclusiveGroup || !checked))
+                checked = !checked;
     }
 }
