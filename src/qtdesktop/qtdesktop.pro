@@ -16,7 +16,6 @@ QML_FILES = \
     ContextMenu.qml \
     Dial.qml \
     Dialog.qml \
-    Frame.qml \
     GroupBox.qml \
     Label.qml \
     Page.qml \

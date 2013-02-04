@@ -4,7 +4,6 @@ QML_FILES = \
     ButtonStyle.qml \
     CheckBoxStyle.qml \
     ComboBoxStyle.qml \
-    FrameStyle.qml \
     GroupBoxStyle.qml \
     ProgressBarStyle.qml \
     RadioButtonStyle.qml \
@@ -23,7 +22,6 @@ QML_FILES += \
     Desktop/ButtonStyle.qml \
     Desktop/CheckBoxStyle.qml \
     Desktop/ComboBoxStyle.qml \
-    Desktop/FrameStyle.qml \
     Desktop/GroupBoxStyle.qml \
     Desktop/ProgressBarStyle.qml \
     Desktop/RadioButtonStyle.qml \
