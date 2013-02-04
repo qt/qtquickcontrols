@@ -46,17 +46,11 @@ QtObject {
     property int leftMargin: 0
     property int rightMargin: 0
 
+    property StyleItem __barstyle: StyleItem { elementType: "tabbar" ; visible: false }
+
     property string tabBarAlignment: __barstyle.styleHint("tabbaralignment");
-
-    property var __framestyle: StyleItem { elementType: "tabframe" ; visible: false }
-    property var __barstyle: StyleItem { elementType: "tabbar" ; visible: false }
-
-    property rect contentRect
-    property int margins: control.frame ? stack.frameWidth : 0
     property int tabOverlap: __barstyle.pixelMetric("taboverlap");
     property int tabBaseOverlap: __barstyle.pixelMetric("tabbaseoverlap");
-    property int tabHSpace: __barstyle.pixelMetric("tabhspace");
-    property int tabVSpace: __barstyle.pixelMetric("tabvspace");
 
     property Component frame: StyleItem {
         id: styleitem
@@ -78,6 +72,8 @@ QtObject {
     property Component tab: Item {
         property string tabpos: control.count === 1 ? "only" : index === 0 ? "beginning" : index === control.count - 1 ? "end" : "middle"
         property string selectedpos: nextSelected ? "next" : previousSelected ? "previous" : ""
+        property int tabHSpace: __barstyle.pixelMetric("tabhspace");
+        property int tabVSpace: __barstyle.pixelMetric("tabvspace");
         implicitWidth: Math.max(50, textitem.width) + tabHSpace + 2
         implicitHeight: Math.max(styleitem.font.pixelSize + tabVSpace + 6, 0)
 

@@ -87,6 +87,7 @@ Item {
         states: [
             State {
                 name: "left"
+                when: tabBarAlignment == "left"
                 AnchorChanges { target:tabrow ; anchors.left: parent.left }
                 PropertyChanges { target:tabrow ; anchors.leftMargin: styleItem ? styleItem.leftMargin : 0 }
             },
