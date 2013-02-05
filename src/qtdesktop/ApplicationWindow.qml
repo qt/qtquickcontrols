@@ -119,7 +119,7 @@ Window {
     default property alias data: contentArea.data
 
     /*! \internal */
-    property bool __showMenuBar: menuBar ? menuBar.showMenuBar : false
+    property bool showMenuBar: menuBar ? menuBar.showMenuBar : false
 
     SystemPalette {id: syspal}
 
