@@ -71,35 +71,13 @@ ApplicationWindow {
             ToolButton {
                 iconSource: "images/document-open.png"
                 anchors.verticalCenter: parent.verticalCenter
-                onClicked: fileDialogLoad.open()
                 tooltip: "(Pretend to) open a file"
             }
             ToolButton {
                 iconSource: "images/document-save-as.png"
                 anchors.verticalCenter: parent.verticalCenter
-                onClicked: fileDialogSave.open()
                 tooltip: "(Pretend to) save as..."
             }
-        }
-
-        FileDialog {
-            id: fileDialogLoad
-            folder: "/tmp"
-            title: "Choose a file to open"
-            selectMultiple: true
-            nameFilters: [ "Image files (*.png *.jpg)", "All files (*)" ]
-
-            onAccepted: { console.log("Accepted: " + filePaths) }
-        }
-
-        FileDialog {
-            id: fileDialogSave
-            folder: "/tmp"
-            title: "Save as..."
-            modal: true
-            selectExisting: false
-
-            onAccepted: { console.log("Accepted: " + filePath) }
         }
 
         ChildWindow { id: window1 }
@@ -108,7 +86,6 @@ ApplicationWindow {
             id: openAction
             text: "Open"
             shortcut: "Ctrl+O"
-            onTriggered: fileDialogLoad.open();
         }
 
         Action {
@@ -159,7 +136,6 @@ ApplicationWindow {
             MenuItem {
                 text: "Open"
                 shortcut: "Ctrl+O"
-                onTriggered: fileDialogLoad.open();
             }
             MenuItem {
                 text: "Close"

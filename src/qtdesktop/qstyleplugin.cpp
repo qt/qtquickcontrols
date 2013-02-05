@@ -110,9 +110,6 @@ void StylePlugin::registerTypes(const char *uri)
     qmlRegisterUncreatableType<QQuickComponentsLayout>(uri, 1, 0, "Layout",
                                                        QLatin1String("Do not create objects of type Layout"));
 
-    qmlRegisterType<QFileDialogItem>(uri, 1, 0, "FileDialog");
-
-    qmlRegisterType<QFileSystemModel>(uri, 1, 0, "FileSystemModel");
     qmlRegisterType<QtSplitterBase>(uri, 1, 0, "Splitter");
     qmlRegisterType<QQuickWindow>(uri, 1, 0, "Window");
 
