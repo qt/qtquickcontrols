@@ -60,18 +60,6 @@ Window {
             anchors.top: parent.top
             width: parent.width
             horizontalAlignment: Text.AlignHCenter
-
-            text: {
-                if (Desktop.screenCount == 1) {
-                    "You have only a single screen.\nThe dimensions of your screen are: " + Desktop.screenWidth + " x " + Desktop.screenHeight;
-                } else {
-                    var text = "You have " + Desktop.screenCount + " screens.\nThe dimensions of your screens are: "
-                    for(var i=0; i<Desktop.screenCount; i++) {
-                        text += "\n" + Desktop.screenGeometry(i).width + " x " + Desktop.screenGeometry(i).height
-                    }
-                    return text;
-                }
-            }
         }
 
         Text {
@@ -80,14 +68,6 @@ Window {
             anchors.top: dimensionsText.bottom
             width: parent.width
             horizontalAlignment: Text.AlignHCenter
-
-            text: {
-                var text = "The available dimensions of your screens are: "
-                for(var i=0; i<Desktop.screenCount; i++) {
-                    text += "\n" + Desktop.availableGeometry(i).width + " x " + Desktop.availableGeometry(i).height
-                }
-                return text;
-            }
         }
 
         Text {

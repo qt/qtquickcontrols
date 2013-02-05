@@ -113,7 +113,6 @@ void StylePlugin::registerTypes(const char *uri)
     qmlRegisterType<QtSplitterBase>(uri, 1, 0, "Splitter");
 
     qmlRegisterUncreatableType<QtMenuBase>(uri, 1, 0, "NativeMenuBase", QLatin1String("Do not create objects of type NativeMenuBase"));
-    qmlRegisterUncreatableType<QDesktopItem>(uri, 1, 0,"Desktop", QLatin1String("Do not create objects of type Desktop"));
     qmlRegisterUncreatableType<QPageStatus>(uri, 1, 0, "PageStatus", QLatin1String("Do not create objects of type PageStatus"));
 }
 
