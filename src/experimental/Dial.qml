@@ -41,12 +41,10 @@
 import QtQuick 2.0
 import QtDesktop 1.0
 
-// jens: ContainsMouse breaks drag functionality
-
 /*!
     \qmltype Dial
     \inqmlmodule QtDesktop 1.0
-    \brief Dial is doing bla...bla...
+    \brief Dial provides a dial control.
 */
 
 Item {
@@ -147,21 +145,21 @@ Item {
             }
         }
     }
-    WheelArea {
-        id: wheelarea
-        anchors.fill: parent
-        horizontalMinimumValue: dial.minimumValue
-        horizontalMaximumValue: dial.maximumValue
-        verticalMinimumValue: dial.minimumValue
-        verticalMaximumValue: dial.maximumValue
-        property double step: (dial.maximumValue - dial.minimumValue)/100
+//    WheelArea { // move this to MouseArea::onWheel
+//        id: wheelarea
+//        anchors.fill: parent
+//        horizontalMinimumValue: dial.minimumValue
+//        horizontalMaximumValue: dial.maximumValue
+//        verticalMinimumValue: dial.minimumValue
+//        verticalMaximumValue: dial.maximumValue
+//        property double step: (dial.maximumValue - dial.minimumValue)/100
 
-        onVerticalWheelMoved: {
-            value += verticalDelta/4*step
-        }
+//        onVerticalWheelMoved: {
+//            value += verticalDelta/4*step
+//        }
 
-        onHorizontalWheelMoved: {
-            value += horizontalDelta/4*step
-        }
-    }
+//        onHorizontalWheelMoved: {
+//            value += horizontalDelta/4*step
+//        }
+//    }
 }

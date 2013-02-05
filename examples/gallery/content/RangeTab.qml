@@ -106,14 +106,6 @@ Row {
                     Behavior on opacity { NumberAnimation { easing.type: Easing.OutCubic ; duration: 220} }
                 }
             }
-            Dial{
-                width: 120
-                height: 120
-                scale: scale.checked && containsMouse ? 1.1 : 1
-                opacity: !fade.checked || containsMouse ? 1 : 0.5
-                Behavior on scale { NumberAnimation { easing.type: Easing.OutCubic ; duration: 120} }
-                Behavior on opacity { NumberAnimation { easing.type: Easing.OutCubic ; duration: 220} }
-            }
         }
     }
 }

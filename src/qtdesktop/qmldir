@@ -5,8 +5,6 @@ Button 1.0 Button.qml
 CheckBox 1.0 CheckBox.qml
 ComboBox 1.0 ComboBox.qml
 ContextMenu 1.0 ContextMenu.qml
-Dial 1.0 Dial.qml
-Dialog 1.0 Dialog.qml
 GroupBox 1.0 GroupBox.qml
 Label 1.0 Label.qml
 Page 1.0 Page.qml

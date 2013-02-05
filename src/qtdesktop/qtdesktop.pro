@@ -12,8 +12,6 @@ QML_FILES = \
     CheckBox.qml \
     ComboBox.qml \
     ContextMenu.qml \
-    Dial.qml \
-    Dialog.qml \
     GroupBox.qml \
     Label.qml \
     Page.qml \
