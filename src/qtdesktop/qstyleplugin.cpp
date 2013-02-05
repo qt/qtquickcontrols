@@ -111,7 +111,6 @@ void StylePlugin::registerTypes(const char *uri)
                                                        QLatin1String("Do not create objects of type Layout"));
 
     qmlRegisterType<QtSplitterBase>(uri, 1, 0, "Splitter");
-    qmlRegisterType<QQuickWindow>(uri, 1, 0, "Window");
 
     qmlRegisterUncreatableType<QtMenuBase>(uri, 1, 0, "NativeMenuBase", QLatin1String("Do not create objects of type NativeMenuBase"));
     qmlRegisterUncreatableType<QDesktopItem>(uri, 1, 0,"Desktop", QLatin1String("Do not create objects of type Desktop"));
