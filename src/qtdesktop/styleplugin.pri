@@ -1,6 +1,4 @@
 HEADERS += \
-    $$PWD/qdesktopitem_p.h \
-    $$PWD/qfiledialogitem_p.h \
     $$PWD/qquickcomponentsprivate_p.h \
     $$PWD/qquicklayout_p.h \
     $$PWD/qquicklayoutengine_p.h \
@@ -19,8 +17,6 @@ HEADERS += \
     $$PWD/qpagestatus.h
 
 SOURCES += \
-    $$PWD/qdesktopitem.cpp \
-    $$PWD/qfiledialogitem.cpp \
     $$PWD/qquickcomponentsprivate.cpp \
     $$PWD/qquicklayout.cpp \
     $$PWD/qquicklayoutengine.cpp \

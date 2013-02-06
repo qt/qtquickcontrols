@@ -46,12 +46,10 @@
 #include "qtexclusivegroup_p.h"
 #include "qtmenu_p.h"
 #include "qtmenubar_p.h"
-#include "qdesktopitem_p.h"
 #include "qwheelarea_p.h"
 #include "qtsplitterbase_p.h"
 #include "qquicklinearlayout_p.h"
 #include "qquickcomponentsprivate_p.h"
-#include "qfiledialogitem_p.h"
 #include "qpagestatus.h"
 #include <qqmlextensionplugin.h>
 
