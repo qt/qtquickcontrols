@@ -121,22 +121,22 @@ Item {
             setCoordinates(spinbox)
 
             mouseMove(spinbox, mainCoord.x, mainCoord.y)
-            compare(spinbox.containsMouse, true)
-            compare(spinbox.upHovered, false)
-            compare(spinbox.downHovered, false)
+            compare(spinbox.__containsMouse, true)
+            compare(spinbox.__upHovered, false)
+            compare(spinbox.__downHovered, false)
 
             mouseMove(spinbox.parent, upCoord.x, upCoord.y)
-            compare(spinbox.upHovered, true)
-            compare(spinbox.downHovered, false)
+            compare(spinbox.__upHovered, true)
+            compare(spinbox.__downHovered, false)
 
             mouseMove(spinbox, downCoord.x, downCoord.y)
-            compare(spinbox.upHovered, false)
-            compare(spinbox.downHovered, true)
+            compare(spinbox.__upHovered, false)
+            compare(spinbox.__downHovered, true)
 
             mouseMove(spinbox, mainCoord.x - 2, mainCoord.y - 2)
-            compare(spinbox.containsMouse, false)
-            compare(spinbox.upHovered, false)
-            compare(spinbox.downHovered, false)
+            compare(spinbox.__containsMouse, false)
+            compare(spinbox.__upHovered, false)
+            compare(spinbox.__downHovered, false)
         }
 
         function test_maxvalue() {

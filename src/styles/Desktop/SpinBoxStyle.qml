@@ -111,7 +111,7 @@ Item {
         elementType: "spinbox"
         anchors.fill: parent
         sunken: (downEnabled && downPressed) | (upEnabled && upPressed)
-        hover: containsMouse
+        hover: __containsMouse
         hints: control.styleHints
         hasFocus: control.focus
         enabled: control.enabled

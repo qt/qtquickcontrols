@@ -45,7 +45,22 @@ import "Styles/Settings.js" as Settings
 /*!
     \qmltype SpinBox
     \inqmlmodule QtDesktop 1.0
-    \brief SpinBox is doing bla...bla...
+    \brief SpinBox provides a spin box control.
+
+    SpinBox allows the user to choose a value by clicking the up/down buttons or pressing up/down on the keyboard to increase/decrease
+    the value currently displayed. The user can also type the value in manually.
+
+    By default the SpinBox provides discrete values in the range [0-99] with a stepSize of 1.0.
+
+    \code
+    SpinBox {
+        id: spinbox
+        minimumValue: 0
+        maximumValue: 20
+        stepSize: 1.0
+    }
+    \endcode
+
 */
 
 FocusScope {
@@ -53,38 +68,89 @@ FocusScope {
 
     /*!
         The value of this SpinBox, clamped to \l minimumValue and \l maximumValue.
+
+        The default value is \c 0
     */
     property real value: 0
+
     /*!
         The minimum value of the SpinBox range.
         The \l value is clamped to this value.
+
+        The default value is \c 0
     */
     property real minimumValue: 0
+
     /*!
         The maximum value of the SpinBox range.
         The \l value is clamped to this value.
+
+        The default value is \c 99
     */
     property real maximumValue: 99
+
     /*!
-        The amount by which the \l value is incremented/decremented.
+        The amount by which the \l value is incremented/decremented when a
+        spin button is pressed.
     */
-    property real singleStep: 1
-    /*
-        \qmlproperty string inputMask
-        The inputMask for the text input.
+    property real singleStep: 1.0
+
+    /*!
+        \qmlproperty string SpinBox::inputMask
+
+        The input mask for the text input. See \l TextInput
     */
     property alias inputMask: input.inputMask
-    property string postfix
+
+    /*!
+        The suffix for the text content.
+    */
+    property string suffix
+    //property string prefix ### not implemented
+
+    /*! \internal */
     property var styleHints:[]
 
-    property bool upEnabled: value != maximumValue;
-    property bool downEnabled: value != minimumValue;
-    property alias upPressed: mouseUp.pressed
-    property alias downPressed: mouseDown.pressed
-    property alias upHovered: mouseUp.containsMouse
-    property alias downHovered: mouseDown.containsMouse
-    property alias containsMouse: mouseArea.containsMouse
+    /*!
+        This property indicates if the up/increment button is currently enabled.
+    */
+    readonly property bool upEnabled: value != maximumValue;
+
+    /*!
+        This property indicates if the down/decrement button is currently enabled.
+    */
+    readonly property bool downEnabled: value != minimumValue;
+
+    /*!
+        \qmlproperty bool SpinBox::upPressed
+
+        This property indicates if the up/increment button is currently being pressed.
+    */
+    readonly property alias upPressed: mouseUp.pressed
+
+    /*!
+        \qmlproperty bool SpinBox::downPressed
+
+        This property indicates if the down/decrement button is currently being pressed.
+    */
+    readonly property alias downPressed: mouseDown.pressed
+
+    // These are currently only needed for styling
+
+    /*! \internal */
+    property alias __upHovered: mouseUp.containsMouse
+    /*! \internal */
+    property alias __downHovered: mouseDown.containsMouse
+    /*! \internal */
+    property alias __containsMouse: mouseArea.containsMouse
+
+    /*! \qmlproperty font SpinBox::font
+
+        This property indicates the current font used by the SpinBox.
+    */
     property alias font: input.font
+
+    /*! \internal */
     property Component style: Qt.createComponent(Settings.THEME_PATH + "/SpinBoxStyle.qml", spinbox)
 
     Accessible.name: input.text
@@ -134,8 +200,10 @@ FocusScope {
         input.text = value
     }
 
+    /*! \internal */
     Component.onCompleted: setValue(value)
 
+    /*! \internal */
     onValueChanged: {
         input.valueUpdate = true
         input.text = value
@@ -184,7 +252,7 @@ FocusScope {
         opacity: parent.enabled ? 1 : 0.5
         renderType: Text.NativeRendering
         Text {
-            text: postfix
+            text: suffix
             color: loader.item ? loader.item.foregroundColor : "black"
             anchors.rightMargin: 4
             anchors.right: parent.right
