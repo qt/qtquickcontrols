@@ -45,6 +45,7 @@ import QtDesktop.Private 1.0
 /*!
     \qmltype ToolBar
     \inqmlmodule QtDesktop 1.0
+    \ingroup applicationwindow
     \brief ToolBar is for containing ToolButton and related controls.
 
     The common way of using ToolBar is in relation to \l ApplicationWindow.

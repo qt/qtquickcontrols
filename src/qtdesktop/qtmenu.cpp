@@ -48,6 +48,14 @@
 #include <QtGui/qpa/qplatformtheme.h>
 #include <QtGui/qpa/qplatformmenu.h>
 
+/*!
+    \qmltype Menu
+    \instantiates QtMenu
+    \inqmlmodule QtDesktop 1.0
+    \ingroup menus
+    \brief Menu is doing bla...bla...
+*/
+
 QT_BEGIN_NAMESPACE
 
 QtMenu::QtMenu(QQuickItem *parent)

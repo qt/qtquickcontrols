@@ -45,6 +45,7 @@ import QtDesktop.Private 1.0
 /*!
     \qmltype ScrollArea
     \inqmlmodule QtDesktop 1.0
+    \ingroup navigation
     \brief The ScrollArea class provides a scrolling view onto another Item.
 
     A ScrollArea can be used either instead of a \l Flickable or to decorate an

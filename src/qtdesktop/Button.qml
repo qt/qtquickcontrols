@@ -44,15 +44,16 @@ import QtDesktop.Private 1.0
 import "Styles/Settings.js" as Settings
 
 /*!
-     \qmltype Button
-     \inqmlmodule QtDesktop 1.0
-     \brief A normal button
+    \qmltype Button
+    \inqmlmodule QtDesktop 1.0
+    \ingroup controls
+    \brief A normal button
 
-     A normal command button. Similar to the QPushButton widget.
+    A normal command button. Similar to the QPushButton widget.
 
-     The push button is perhaps the most commonly used widget in any graphical user interface.
-     Push (click) a button to command the computer to perform some action, or to answer a question.
-     Typical buttons are OK, Apply, Cancel, Close, Yes, No and Help.
+    The push button is perhaps the most commonly used widget in any graphical user interface.
+    Push (click) a button to command the computer to perform some action, or to answer a question.
+    Typical buttons are OK, Apply, Cancel, Close, Yes, No and Help.
 
  */
 BasicButton {
@@ -79,4 +80,3 @@ BasicButton {
     style: Qt.createComponent(Settings.THEME_PATH + "/ButtonStyle.qml", button)
 
 }
-

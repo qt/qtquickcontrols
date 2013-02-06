@@ -43,6 +43,7 @@ import QtQuick 2.0
 /*!
     \qmltype Label
     \inqmlmodule QtDesktop 1.0
+    \ingroup controls
     \brief Label is a text display.
 
     In addition to the normal \l Text element, Label follows the font and

@@ -73,6 +73,7 @@ void QtMenuBase::syncWithPlatformMenu()
     \instantiates QtMenuSeparator
     \inqmlmodule QtDesktop 1.0
     \inherits Item
+    \ingroup menus
     \brief MenuSeparator provides a separator for your items inside a menu.
 
     \sa Menu, MenuItem
@@ -89,6 +90,7 @@ QtMenuSeparator::QtMenuSeparator(QQuickItem *parent)
 /*!
     \qmltype MenuItem
     \instantiates QtMenuItem
+    \ingroup menus
     \inqmlmodule QtDesktop 1.0
     \brief MenuItem provides an item to add in a menu or a menu bar.
 

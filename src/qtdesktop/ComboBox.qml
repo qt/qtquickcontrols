@@ -46,6 +46,7 @@ import "Styles/Settings.js" as Settings
 /*!
     \qmltype ComboBox
     \inqmlmodule QtDesktop 1.0
+    \ingroup controls
     \brief ComboBox is a combined button and popup list. The popup menu itself is platform
         native, and cannot by styled from QML code.
 

@@ -46,6 +46,7 @@ import "Styles/Settings.js" as Settings
 /*!
     \qmltype TabFrame
     \inqmlmodule QtDesktop 1.0
+    \ingroup navigation
     \brief Represents a control that contains multiple items that share the same space on the screen.
 
 */

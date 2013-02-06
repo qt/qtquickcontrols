@@ -45,6 +45,7 @@ import "Styles/Settings.js" as Settings
 /*!
     \qmltype ProgressBar
     \inqmlmodule QtDesktop 1.0
+    \ingroup indicators
     \brief A progress bar
 
     The ProgressBar is used to give an indication of the progress of an operation.
@@ -95,4 +96,3 @@ Item {
         anchors.fill: parent
     }
 }
-

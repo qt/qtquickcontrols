@@ -44,6 +44,7 @@ import QtDesktop.Private 1.0
 /*!
     \qmltype TextArea
     \inqmlmodule QtDesktop 1.0
+    \ingroup controls
     \brief TextArea displays multiple lines of editable formatted text.
 
     It can display both plain and rich text. For example:

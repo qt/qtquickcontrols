@@ -21,6 +21,8 @@ sourcedirs += ../ ../../styles
 
 excludedirs += ../private ../../styles/Desktop
 
+imagedirs += images
+
 # The following parameters are for creating a qhp file, the qhelpgenerator
 # program can convert the qhp file into a qch file which can be opened in
 # Qt Assistant and/or Qt Creator.

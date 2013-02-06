@@ -45,6 +45,7 @@ import QtDesktop.Private 1.0
 /*!
    \qmltype TableView
    \inqmlmodule QtDesktop 1.0
+   \ingroup tables
    \brief TableView is an extended ListView that provides column and header support.
 
 

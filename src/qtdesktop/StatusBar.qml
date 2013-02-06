@@ -44,6 +44,7 @@ import QtDesktop 1.0
 /*!
     \qmltype StatusBar
     \inqmlmodule QtDesktop 1.0
+    \ingroup applicationwindow
     \brief StatusBar is doing bla...bla...
 */
 

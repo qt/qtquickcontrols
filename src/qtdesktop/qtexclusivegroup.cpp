@@ -65,6 +65,7 @@ static bool isChecked(const QObject *o)
     \qmltype ExclusiveGroup
     \instantiates QtExclusiveGroup
     \inqmlmodule QtDesktop 1.0
+    \ingroup containers
     \brief ExclusiveGroup provides a way to declare several checkable controls as mutually exclusive.
 
     \code

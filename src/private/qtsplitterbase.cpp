@@ -44,6 +44,7 @@
     \qmltype Splitter
     \instantiates QtSplitterBase
     \inqmlmodule QtDesktop 1.0
+    \ingroup containers
     \brief Splitter is doing bla...bla...
 */
 

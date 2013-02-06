@@ -44,6 +44,7 @@ import QtDesktop 1.0
 /*!
     \qmltype Page
     \inqmlmodule QtDesktop 1.0
+    \ingroup navigation
     \brief A Page is an Item you can push on a PageStack
 
     A \a Page is the main Item pushed onto a \l PageStack. It normally contains a discrete

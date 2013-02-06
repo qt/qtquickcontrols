@@ -46,6 +46,7 @@ import "Styles/Settings.js" as Settings
 /*!
     \qmltype ToolButton
     \inqmlmodule QtDesktop 1.0
+    \ingroup applicationwindow
     \brief ToolButton provides a button type that is typically used within a ToolBar
 
      ToolButton is functionally similar to \l Button but can provide a look that is more

@@ -47,6 +47,7 @@ import "Styles/Settings.js" as Settings
 /*!
     \qmltype RadioButton
     \inqmlmodule QtDesktop 1.0
+    \ingroup controls
     \brief RadioButton is doing bla...bla...
 */
 

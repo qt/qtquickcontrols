@@ -46,6 +46,7 @@ import QtDesktop.Private 1.0
 /*!
     \qmltype CheckBox
     \inqmlmodule QtDesktop 1.0
+    \ingroup controls
     \brief A checkbox with a text label
 
     A CheckBox is an option button that can be toggled on (checked) or off

@@ -45,6 +45,7 @@ import "Styles/Settings.js" as Settings
 /*!
     \qmltype SpinBox
     \inqmlmodule QtDesktop 1.0
+    \ingroup controls
     \brief SpinBox provides a spin box control.
 
     SpinBox allows the user to choose a value by clicking the up/down buttons or pressing up/down on the keyboard to increase/decrease

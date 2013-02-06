@@ -46,6 +46,7 @@ import "Styles/Settings.js" as Settings
 /*!
     \qmltype Slider
     \inqmlmodule QtDesktop 1.0
+    \ingroup controls
     \brief Slider provides a vertical or horizontal slider control.
 
     The slider is the classic control for providing a bounded value. It lets

@@ -43,6 +43,7 @@ import QtQuick 2.0
 /*!
     \qmltype Tab
     \inqmlmodule QtDesktop 1.0
+    \ingroup navigation
     \brief Tab is doing bla...bla...
 */
 

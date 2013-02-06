@@ -46,6 +46,7 @@ import "Styles/Settings.js" as Settings
 /*!
     \qmltype TextField
     \inqmlmodule QtDesktop 1.0
+    \ingroup controls
     \brief TextField displays a single line of editable plain text
 
     TextField is used to accept a line of text input. Input constraints

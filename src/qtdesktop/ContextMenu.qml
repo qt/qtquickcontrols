@@ -44,6 +44,7 @@ import QtDesktop 1.0
 /*!
     \qmltype ContextMenu
     \inqmlmodule QtDesktop 1.0
+    \ingroup menus
     \brief ContextMenu is doing bla...bla...
 */
 

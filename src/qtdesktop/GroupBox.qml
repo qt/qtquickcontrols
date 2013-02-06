@@ -45,6 +45,7 @@ import "Styles/Settings.js" as Settings
 /*!
     \qmltype GroupBox
     \inqmlmodule QtDesktop 1.0
+    \ingroup controls
     \brief GroupBox is doing bla...bla...
 */
 

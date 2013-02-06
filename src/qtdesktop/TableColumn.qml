@@ -43,6 +43,7 @@ import QtQuick 2.0
 /*!
     \qmltype TableColumn
     \inqmlmodule QtDesktop 1.0
+    \ingroup tables
     \brief TableColumn is doing bla...bla...
 */
 

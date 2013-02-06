@@ -46,6 +46,7 @@ import QtDesktop.Private 1.0
 /*!
     \qmltype ApplicationWindow
     \inqmlmodule QtDesktop 1.0
+    \ingroup applicationwindow
     \brief ApplicationWindow provides a top-level application window.
 
     AppliactionWindow is a \l Window, but adds convenience
