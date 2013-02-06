@@ -42,44 +42,150 @@ import QtQuick 2.0
 import QtDesktop 1.0
 import "Styles/Settings.js" as Settings
 
-// jens: ContainsMouse breaks drag functionality
-
 /*!
     \qmltype Slider
     \inqmlmodule QtDesktop 1.0
-    \brief Slider is doing bla...bla...
+    \brief Slider provides a vertical or horizontal slider control.
+
+    The slider is the classic control for providing a bounded value. It lets
+    the user move a slider handle along a horizontal or vertical groove
+    and translates the handle's position into a value within the legal range.
+
+    \code
+    Slider {
+        onValueChanged: print(value)
+    }
+    \endcode
+
+    The Slider value is by default in the range [0, 1]. If integer values are
+    needed, you can set the \l stepSize.
 */
 
 Item {
     id: slider
 
-    // Common API
+    /*!
+        \qmlproperty enum Slider::orientation
+
+        This property holds the layout orientation of the slider.
+        The default value is \code Qt.Horizontal
+    */
     property int orientation: Qt.Horizontal
+
+    /*!
+        \qmlproperty double Slider::minimumValue
+
+        This property holds the minimum value of the Slider
+        The default value is \code 0.0
+    */
     property alias minimumValue: range.minimumValue
+
+    /*!
+        \qmlproperty double Slider::maximumValue
+
+        This property holds the maximum value of the Slider
+        The default value is \code 1.0
+    */
     property alias maximumValue: range.maximumValue
+
+    /* \internal */
     property alias inverted: range.inverted
+
+
+    /*!
+        \qmlproperty bool Slider::updateValueWhileDragging
+
+        This property indicates if the current \l value should update while
+        the user is moving the slider handle or only when the button has been released.
+        The property can for instance be used if changing the slider value can be
+        time consuming.
+
+        The default value is \code true
+    */
     property bool updateValueWhileDragging: true
+
+    /*!
+        \qmlproperty bool Slider::pressed
+
+        This property indicates if slider handle is currently being pressed
+    */
     property alias pressed: mouseArea.pressed
+
+    /*!
+        \qmlproperty double Slider::stepSize
+
+        This property indicates the slider step size.
+
+        A value of 0 indicates that the value of the slider operates in a
+        continuous range between \l minimumValue and \l maximumValue.
+
+        Any non 0 value indicates a discrete stepSize. The following example
+        will generate a slider with integer values in the range [0-5]
+
+        \code
+        Slider {
+            maximumValue: 5.0
+            stepSize: 1.0
+        }
+        \endcode
+
+        The default value is \code 0
+    */
     property alias stepSize: range.stepSize
-    property alias hoverEnabled: mouseArea.hoverEnabled
+
+
+    /*!
+        \qmlproperty double Slider::value
+
+        This property holds the current value of the Slider
+        The default value is \code 0.0
+    */
     property alias value: range.value
 
-    // Destop API
+    /*! \internal */
     property bool containsMouse: mouseArea.containsMouse
+
+    /*!
+        \qmlproperty bool Slider::activeFocusOnPress
+
+        This property indicates if the Slider should receive active focus when
+        pressed.
+    */
     property bool activeFocusOnPress: false
+
+    /*!
+        \qmlproperty bool Slider::tickmarksEnabled
+
+        This property indicates if the Slider should display tickmarks
+        at step intervals.
+
+        The default value is \code false
+    */
     property bool tickmarksEnabled: false
+
+    /* \internal*/
     property string tickPosition: "Below" // "Above", "Below", "BothSides"
 
     Accessible.role: Accessible.Slider
     Accessible.name: value
 
-    // Reimplement this function to control how the value is shown in the
-    // indicator.
+    /*!
+        \qmlmethod Slider::formatValue
+
+        This method returns the current slider value in a way that is more suitable
+        for user display, such as the \l value rounded to only two decimal places.
+
+        By default this function returns the nearest \code int value.
+    */
+
     function formatValue(v) {
         return Math.round(v);
     }
 
+    /* \internal */
     property var styleHints:[]
+
+    /* \internal */
     property Component style: Qt.createComponent(Settings.THEME_PATH + "/SliderStyle.qml", slider)
 
     Keys.onRightPressed: value += (maximumValue - minimumValue)/10.0
