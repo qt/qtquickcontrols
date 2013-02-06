@@ -72,7 +72,6 @@ FocusScope {
     implicitHeight: loader.item ? loader.item.implicitHeight : 0
 
     property Component style: Qt.createComponent(Settings.THEME_PATH + "/CheckBoxStyle.qml", checkBox)
-    property alias exclusiveGroup: behavior.exclusiveGroup
 
     Loader {
         id: loader
