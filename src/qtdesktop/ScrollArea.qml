@@ -40,7 +40,7 @@
 
 import QtQuick 2.0
 import QtDesktop 1.0
-import "private" as Private
+import QtDesktop.Private 1.0
 
 /*!
     \qmltype ScrollArea
@@ -228,7 +228,7 @@ FocusScope {
             onHorizontalValueChanged: flickableItem.contentX = horizontalValue
         }
 
-        Private.ScrollAreaHelper {
+        ScrollAreaHelper {
             id: scroller
             anchors.fill: parent
             property int frameWidth: frame ? styleitem.pixelMetric("defaultframewidth") : 0
@@ -258,6 +258,6 @@ FocusScope {
                 clip: true
             }
         }
-        Private.FocusFrame { visible: highlightOnFocus && area.activeFocus }
+        FocusFrame { visible: highlightOnFocus && area.activeFocus }
     }
 }

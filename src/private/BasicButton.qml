@@ -39,7 +39,7 @@
 ****************************************************************************/
 
 import QtQuick 2.0
-import QtDesktop 1.0 as Internal
+import QtDesktop.Private 1.0
 
 Item {
     id: button
@@ -95,14 +95,14 @@ Item {
         id: behavior
         anchors.fill: parent
         onClicked: button.clicked()
-        onExited: Internal.PrivateHelper.hideToolTip()
-        onCanceled: Internal.PrivateHelper.hideToolTip()
+        onExited: PrivateHelper.hideToolTip()
+        onCanceled: PrivateHelper.hideToolTip()
         onPressed: if (activeFocusOnPress) button.forceActiveFocus()
 
         Timer {
             interval: 1000
             running: containsMouse && !pressed && tooltip.length
-            onTriggered: Internal.PrivateHelper.showToolTip(behavior, Qt.point(behavior.mouseX, behavior.mouseY), tooltip)
+            onTriggered: PrivateHelper.showToolTip(behavior, Qt.point(behavior.mouseX, behavior.mouseY), tooltip)
         }
     }
 

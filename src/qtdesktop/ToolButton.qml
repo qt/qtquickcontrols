@@ -40,7 +40,7 @@
 
 import QtQuick 2.0
 import QtDesktop 1.0
-import "private" as Private
+import QtDesktop.Private 1.0 as Private
 import "Styles/Settings.js" as Settings
 
 /*!

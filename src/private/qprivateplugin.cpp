@@ -39,47 +39,14 @@
 ****************************************************************************/
 
 #include <qqml.h>
-#include "qstyleplugin_p.h"
-#include "qstyleitem_p.h"
+#include "qprivateplugin_p.h"
 #include "qrangemodel_p.h"
-#include "qtaction_p.h"
-#include "qtexclusivegroup_p.h"
-#include "qtmenu_p.h"
-#include "qtmenubar_p.h"
 #include "qwheelarea_p.h"
-#include "qtsplitterbase_p.h"
-#include "qquicklinearlayout_p.h"
+#include "qstyleitem_p.h"
 #include "qquickcomponentsprivate_p.h"
-#include "qpagestatus.h"
-#include <qqmlextensionplugin.h>
-
-#include <qqmlengine.h>
-#include <qquickimageprovider.h>
-#include <QtWidgets/QApplication>
-#include <QtQuick/QQuickWindow>
-#include <QImage>
+#include "qtsplitterbase_p.h"
 
 QT_BEGIN_NAMESPACE
-
-// Load icons from desktop theme
-class DesktopIconProvider : public QQuickImageProvider
-{
-public:
-    DesktopIconProvider()
-        : QQuickImageProvider(QQuickImageProvider::Pixmap)
-    {
-    }
-
-    QPixmap requestPixmap(const QString &id, QSize *size, const QSize &requestedSize)
-    {
-        Q_UNUSED(requestedSize);
-        Q_UNUSED(size);
-        int pos = id.lastIndexOf('/');
-        QString iconName = id.right(id.length() - pos);
-        int width = requestedSize.width();
-        return QIcon::fromTheme(iconName).pixmap(width);
-    }
-};
 
 QObject *registerPrivateModule(QQmlEngine *engine, QJSEngine *jsEngine)
 {
@@ -88,36 +55,14 @@ QObject *registerPrivateModule(QQmlEngine *engine, QJSEngine *jsEngine)
     return new QQuickComponentsPrivate();
 }
 
+
 void StylePlugin::registerTypes(const char *uri)
 {
-    qmlRegisterSingletonType<QQuickComponentsPrivate>(uri, 1, 0, "PrivateHelper", registerPrivateModule);
-
-    qmlRegisterType<QStyleItem>(uri, 1, 0, "StyleItem");
     qmlRegisterType<QRangeModel>(uri, 1, 0, "RangeModel");
     qmlRegisterType<QWheelArea>(uri, 1, 0, "WheelArea");
-
-    qmlRegisterType<QtAction>(uri, 1, 0, "Action");
-    qmlRegisterType<QtExclusiveGroup>(uri, 1, 0, "ExclusiveGroup");
-    qmlRegisterType<QtMenu>(uri, 1, 0, "MenuPrivate");
-    qmlRegisterType<QtMenuBar>(uri, 1, 0, "MenuBarPrivate");
-    qmlRegisterType<QtMenuItem>(uri, 1, 0, "MenuItem");
-    qmlRegisterType<QtMenuSeparator>(uri, 1, 0, "MenuSeparator");
-
-    qmlRegisterType<QQuickComponentsRowLayout>(uri, 1, 0, "RowLayout");
-    qmlRegisterType<QQuickComponentsColumnLayout>(uri, 1, 0, "ColumnLayout");
-    qmlRegisterUncreatableType<QQuickComponentsLayout>(uri, 1, 0, "Layout",
-                                                       QLatin1String("Do not create objects of type Layout"));
-
+    qmlRegisterType<QStyleItem>(uri, 1, 0, "StyleItem");
     qmlRegisterType<QtSplitterBase>(uri, 1, 0, "Splitter");
-
-    qmlRegisterUncreatableType<QtMenuBase>(uri, 1, 0, "NativeMenuBase", QLatin1String("Do not create objects of type NativeMenuBase"));
-    qmlRegisterUncreatableType<QPageStatus>(uri, 1, 0, "PageStatus", QLatin1String("Do not create objects of type PageStatus"));
-}
-
-void StylePlugin::initializeEngine(QQmlEngine *engine, const char *uri)
-{
-    Q_UNUSED(uri);
-    engine->addImageProvider("desktoptheme", new DesktopIconProvider);
+    qmlRegisterSingletonType<QQuickComponentsPrivate>(uri, 1, 0, "PrivateHelper", registerPrivateModule);
 }
 
 QT_END_NAMESPACE

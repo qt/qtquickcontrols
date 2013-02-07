@@ -1,5 +1,5 @@
 CXX_MODULE = qml
-TARGET  = styleplugin
+TARGET  = plugin
 TARGETPATH = QtDesktop
 
 QT += qml quick widgets gui-private core-private
@@ -37,26 +37,9 @@ QML_FILES = \
     ToolBar.qml \
     ToolButton.qml
 
-# private qml files
-QML_FILES += \
-    private/TabBar.qml \
-    private/BasicButton.qml \
-    private/ButtonBehavior.qml \
-    private/ButtonGroup.js \
-    private/ModalPopupBehavior.qml \
-    private/PageSlideTransition.qml \
-    private/PageStack.js \
-    private/ScrollAreaHelper.qml \
-    private/Splitter.qml \
-    private/ScrollBar.qml \
-    private/FocusFrame.qml
-
-include(styleplugin.pri)
+include(plugin.pri)
 
 DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0
 
-mac {
-    LIBS += -framework Carbon
-}
 
 load(qml_plugin)

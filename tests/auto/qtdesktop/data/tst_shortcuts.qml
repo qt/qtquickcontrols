@@ -40,8 +40,8 @@
 
 import QtQuick 2.0
 import QtTest 1.0
-
 import QtDesktop 1.0
+import QtDesktop.Private 1.0
 
 TestCase {
     id: testCase

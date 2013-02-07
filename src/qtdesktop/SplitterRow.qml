@@ -39,7 +39,7 @@
 ****************************************************************************/
 
 import QtQuick 2.0
-import "private" as Private
+import QtDesktop.Private 1.0 as Private
 import QtDesktop 1.0
 
 /*!

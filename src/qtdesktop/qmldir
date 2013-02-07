@@ -1,5 +1,5 @@
 module QtDesktop
-plugin styleplugin
+plugin plugin
 ApplicationWindow 1.0 ApplicationWindow.qml
 Button 1.0 Button.qml
 CheckBox 1.0 CheckBox.qml

@@ -41,7 +41,7 @@
 import QtQuick 2.0
 import QtDesktop 1.0
 import "Styles/Settings.js" as Settings
-import "private"
+import QtDesktop.Private 1.0
 
 /*!
     \qmltype CheckBox

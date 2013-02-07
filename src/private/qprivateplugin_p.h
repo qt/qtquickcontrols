@@ -37,21 +37,24 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-import QtQuick 2.0
-import QtDesktop 1.0
-import QtDesktop.Private 1.0
 
-StyleItem {
-    id: styleitem
-    elementType: "frame"
-    sunken: true
-    visible: frame
-    anchors.fill: parent
-    anchors.rightMargin: frame ? (frameAroundContents ? (verticalScrollBar.visible ? verticalScrollBar.width + 2 * frameMargins : 0) : 0) : 0
-    anchors.bottomMargin: frame ? (frameAroundContents ? (horizontalScrollBar.visible ? horizontalScrollBar.height + 2 * frameMargins : 0) : 0) : 0
-    anchors.topMargin: frame ? (frameAroundContents ? 0 : 0) : 0
-    property int frameWidth
-    property int scrollbarspacing: pixelMetric("scrollbarspacing");
-    property int frameMargins : frame ? scrollbarspacing : 0
-    Component.onCompleted: frameWidth = pixelMetric("defaultframewidth");
-}
+#ifndef QSTYLEPLUGIN_P_H
+#define QSTYLEPLUGIN_P_H
+
+#include <QQmlExtensionPlugin>
+#include <QtCore/QTimer>
+#include <QtWidgets/QFileSystemModel>
+
+QT_BEGIN_NAMESPACE
+
+class StylePlugin : public QQmlExtensionPlugin
+{
+    Q_OBJECT
+    Q_PLUGIN_METADATA(IID "org.qt-project.playground.qtdesktopcomponents.QQmlExtensionInterface" FILE "privateplugin.json")
+public:
+    void registerTypes(const char *uri);
+};
+
+QT_END_NAMESPACE
+
+#endif // QSTYLEPLUGIN_P_H

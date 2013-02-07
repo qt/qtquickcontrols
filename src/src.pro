@@ -1,3 +1,3 @@
 TEMPLATE = subdirs
 
-SUBDIRS += qtdesktop styles experimental
+SUBDIRS += qtdesktop styles experimental private
