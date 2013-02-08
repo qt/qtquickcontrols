@@ -44,7 +44,6 @@
 #include "qwheelarea_p.h"
 #include "qstyleitem_p.h"
 #include "qquickcomponentsprivate_p.h"
-#include "qtsplitterbase_p.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -61,7 +60,6 @@ void StylePlugin::registerTypes(const char *uri)
     qmlRegisterType<QRangeModel>(uri, 1, 0, "RangeModel");
     qmlRegisterType<QWheelArea>(uri, 1, 0, "WheelArea");
     qmlRegisterType<QStyleItem>(uri, 1, 0, "StyleItem");
-    qmlRegisterType<QtSplitterBase>(uri, 1, 0, "Splitter");
     qmlRegisterSingletonType<QQuickComponentsPrivate>(uri, 1, 0, "PrivateHelper", registerPrivateModule);
 }
 

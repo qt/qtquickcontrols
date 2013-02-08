@@ -4,6 +4,7 @@ HEADERS += \
     $$PWD/qquicklinearlayout_p.h \
     $$PWD/plugin_p.h \
     $$PWD/qtaction_p.h \
+    $$PWD/qtsplitterbase_p.h \
     $$PWD/qtexclusivegroup_p.h \
     $$PWD/qtmenu_p.h \
     $$PWD/qtmenubar_p.h \
@@ -13,6 +14,7 @@ HEADERS += \
 
 SOURCES += \
     $$PWD/qquicklayout.cpp \
+    $$PWD/qtsplitterbase.cpp \
     $$PWD/qquicklayoutengine.cpp \
     $$PWD/qquicklinearlayout.cpp \
     $$PWD/plugin.cpp \

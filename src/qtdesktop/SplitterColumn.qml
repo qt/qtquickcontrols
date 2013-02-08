@@ -40,7 +40,6 @@
 
 import QtQuick 2.0
 import QtDesktop.Private 1.0 as Private
-import QtDesktop 1.0
 
 /*!
     \qmltype SplitterColumn
@@ -144,9 +143,9 @@ import QtDesktop 1.0
 *    }
 */
 
-Private.Splitter {
+Private.SplitterBase {
     orientation: Qt.Vertical
-    handleDelegate: StyleItem {
+    handleDelegate: Private.StyleItem {
         id: styleitem
         elementType: "splitter"
         height: handleWidth != -1 ?  handleWidth : pixelMetric("splitterwidth")

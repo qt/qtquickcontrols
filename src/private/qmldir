@@ -7,3 +7,4 @@ ScrollBar 1.0 ScrollBar.qml
 ScrollAreaHelper 1.0 ScrollAreaHelper.qml
 TabBar 1.0 TabBar.qml
 PageSlideTransition 1.0 PageSlideTransition.qml
+SplitterBase 1.0 SplitterBase.qml

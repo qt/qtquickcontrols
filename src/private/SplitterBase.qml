@@ -40,6 +40,7 @@
 
 import QtQuick 2.0
 import QtDesktop 1.0
+import QtDesktop.Private 1.0 as Private
 
 Splitter {
     id: root
@@ -57,6 +58,7 @@ Splitter {
 
     QtObject {
         id: d
+
 
         property bool horizontal: orientation == Qt.Horizontal
         property string size: horizontal ? "width" : "height"
