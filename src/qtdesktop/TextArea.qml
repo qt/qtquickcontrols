@@ -712,7 +712,6 @@ ScrollArea {
     height: 120
 
     flickableItem.contentWidth: edit.paintedWidth + (2 * documentMargins)
-
     frame: true
 
     Accessible.role: Accessible.EditableText
@@ -744,6 +743,7 @@ ScrollArea {
         selectedTextColor: palette.highlightedText
         wrapMode: TextEdit.WordWrap
         width: area.viewport.width - (2 * documentMargins)
+        height: paintedHeight + 2 * documentMargins
         x: documentMargins
         y: documentMargins
 
@@ -753,8 +753,6 @@ ScrollArea {
         KeyNavigation.priority: KeyNavigation.BeforeItem
         KeyNavigation.tab: area.tabChangesFocus ? area.KeyNavigation.tab : null
         KeyNavigation.backtab: area.tabChangesFocus ? area.KeyNavigation.backtab : null
-
-        onContentSizeChanged: { area.flickableItem.contentWidth = paintedWidth + (2 * documentMargins) }
 
         // keep textcursor within scrollarea
         onCursorPositionChanged: {
