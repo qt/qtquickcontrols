@@ -38,21 +38,23 @@
 **
 ****************************************************************************/
 import QtQuick 2.0
-import QtDesktop 1.0
+import QtDesktop.Styles 1.0
 import QtDesktop.Private 1.0
 
-StyleItem {
-    anchors.fill: parent
-    elementType: "progressbar"
-    // XXX: since desktop uses int instead of real, the progressbar
-    // range [0..1] must be stretched to a good precision
-    property int factor : 1000
-    value:   indeterminate ? 0 : progressbar.value * factor // does indeterminate value need to be 1 on windows?
-    minimum: indeterminate ? 0 : progressbar.minimumValue * factor
-    maximum: indeterminate ? 0 : progressbar.maximumValue * factor
-    enabled: progressbar.enabled
-    horizontal: progressbar.orientation == Qt.Horizontal
-    hints: progressbar.styleHints
-    contentWidth: 23
-    contentHeight: 23
+Style {
+    property Component panel: StyleItem {
+        anchors.fill: parent
+        elementType: "progressbar"
+        // XXX: since desktop uses int instead of real, the progressbar
+        // range [0..1] must be stretched to a good precision
+        property int factor : 1000
+        value:   indeterminate ? 0 : control.value * factor // does indeterminate value need to be 1 on windows?
+        minimum: indeterminate ? 0 : control.minimumValue * factor
+        maximum: indeterminate ? 0 : control.maximumValue * factor
+        enabled: control.enabled
+        horizontal: control.orientation == Qt.Horizontal
+        hints: control.styleHints
+        contentWidth: 23
+        contentHeight: 23
+    }
 }

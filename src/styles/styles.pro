@@ -16,6 +16,7 @@ QML_FILES = \
     Settings.js \
     SliderStyle.qml \
     SpinBoxStyle.qml \
+    Style.qml \
     TabFrameStyle.qml \
     TextFieldStyle.qml \
     ToolBarStyle.qml \

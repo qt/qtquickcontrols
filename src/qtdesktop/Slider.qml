@@ -63,7 +63,7 @@ import "Styles/Settings.js" as Settings
     needed, you can set the \l stepSize.
 */
 
-Item {
+Control {
     id: slider
 
     /*!
@@ -135,7 +135,6 @@ Item {
     */
     property alias stepSize: range.stepSize
 
-
     /*!
         \qmlproperty double Slider::value
 
@@ -184,17 +183,11 @@ Item {
         return Math.round(v);
     }
 
-    /*! \internal */
-    property var styleHints:[]
-
-    /*! \internal */
-    property Component style: Qt.createComponent(Settings.THEME_PATH + "/SliderStyle.qml", slider)
+    /* \internal */
+    style: Qt.createComponent(Settings.THEME_PATH + "/SliderStyle.qml", slider)
 
     Keys.onRightPressed: value += (maximumValue - minimumValue)/10.0
     Keys.onLeftPressed: value -= (maximumValue - minimumValue)/10.0
-
-    implicitWidth: loader.item ? loader.item.implicitWidth : 0
-    implicitHeight: loader.item ? loader.item.implicitHeight : 0
 
     RangeModel {
         id: range
@@ -206,14 +199,6 @@ Item {
 
         positionAtMinimum: 0
         positionAtMaximum: slider.width
-    }
-
-    Loader {
-        id: loader
-        sourceComponent: style
-        anchors.fill: parent
-        property var control: slider
-        function positionForValue(value) { return range.positionForValue(value) }
     }
 
     Item { id: fakeHandle }

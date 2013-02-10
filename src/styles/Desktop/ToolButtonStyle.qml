@@ -38,25 +38,38 @@
 **
 ****************************************************************************/
 import QtQuick 2.0
-import QtDesktop 1.0
+import QtDesktop.Styles 1.0
 import QtDesktop.Private 1.0
 
-StyleItem {
-    id: styleitem
-    anchors.fill: parent
-    elementType: "toolbutton"
-    on: pressed | checked
-    sunken: pressed
-    raised: containsMouse
-    hover: containsMouse
-    hasFocus: control.focus
-    hints: control.styleHints.concat([__position])
-    contentWidth: Math.max(textitem.paintedWidth, 32)
-    contentHeight: 30
-    Text {
-        id: textitem
-        text: control.text
-        anchors.centerIn: parent
-        visible: control.iconSource == ""
+Style {
+    property Component panel: StyleItem {
+        id: styleitem
+
+        anchors.fill: parent
+        elementType: "toolbutton"
+        on: control.pressed | control.checked
+        sunken: control.pressed
+        raised: control.containsMouse
+        hover: control.containsMouse
+        hasFocus: control.focus
+        hints: control.styleHints.concat([control.__position])
+
+        contentWidth: Math.max(textitem.paintedWidth, 32)
+        contentHeight: 30
+
+        Image {
+            id: image
+            anchors.centerIn: parent
+            source: button.iconSource
+            sourceSize.width: Math.min(control.width, image.implicitWidth)
+            sourceSize.height: Math.min(control.height, image.implicitHeight)
+        }
+
+        Text {
+            id: textitem
+            text: control.text
+            anchors.centerIn: parent
+            visible: control.iconSource === ""
+        }
     }
 }

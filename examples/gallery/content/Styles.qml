@@ -138,6 +138,18 @@ Item {
         }
 
         Row {
+            spacing: 8
+            CheckBox {
+                text: "CheckBox"
+                style: CheckBoxStyle{}
+            }
+            RadioButton {
+                style: RadioButtonStyle{}
+                text: "RadioButton"
+            }
+        }
+
+        Row {
             TabFrame {
                 width: 400
                 height: 30
@@ -153,9 +165,9 @@ Item {
     // Style delegates:
 
     property Component buttonStyle: ButtonStyle {
-        implicitHeight: 20
-        implicitWidth: 100
         background: Rectangle {
+            implicitHeight: 20
+            implicitWidth: 100
             color: control.pressed ? "darkGray" : "lightGray"
             antialiasing: true
             border.color: "gray"
@@ -164,9 +176,9 @@ Item {
     }
 
     property Component textfieldStyle: TextFieldStyle {
-        implicitWidth: 100
-        implicitHeight: 20
         background: Rectangle {
+            implicitWidth: 100
+            implicitHeight: 20
             color: "#f0f0f0"
             antialiasing: true
             border.color: "gray"
@@ -175,9 +187,6 @@ Item {
     }
 
     property Component sliderStyle: SliderStyle {
-        implicitWidth: 100
-        implicitHeight: 20
-
         handle: Rectangle {
             width: 14
             height: 14
@@ -189,6 +198,9 @@ Item {
 
         background: Rectangle {
             height: 8
+            implicitWidth: 100
+            implicitHeight: 20
+
             antialiasing: true
             color: "darkGray"
             border.color: "gray"
@@ -219,6 +231,7 @@ Item {
             radius: height/2
         }
     }
+
     property Component tabFrameStyle: TabFrameStyle {
         tabOverlap: 16
         leftMargin: 12
@@ -232,7 +245,7 @@ Item {
                 anchors.fill: parent
                 anchors.topMargin: -4
                 border.color: "#898989"
-                 Rectangle { anchors.fill: parent ; anchors.margins: 1 ; border.color: "white" ; color: "transparent" }
+                Rectangle { anchors.fill: parent ; anchors.margins: 1 ; border.color: "white" ; color: "transparent" }
             }
         }
         tab: Item {

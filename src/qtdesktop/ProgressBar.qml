@@ -40,6 +40,7 @@
 
 import QtQuick 2.0
 import QtDesktop 1.0
+import QtDesktop.Private 1.0
 import "Styles/Settings.js" as Settings
 
 /*!
@@ -53,7 +54,7 @@ import "Styles/Settings.js" as Settings
 
 */
 
-Item {
+Control {
     id: progressbar
 
     /*! This property is
@@ -73,26 +74,13 @@ Item {
         It must be either Qt.Horizontal or Qt.Vertical.
     */
     property int orientation: Qt.Horizontal
+
     /*! \internal */
-    property Component style: Qt.createComponent(Settings.THEME_PATH + "/ProgressBarStyle.qml", progressbar)
-    /*! \internal */
-    property var styleHints:[]
+    style: Qt.createComponent(Settings.THEME_PATH + "/ProgressBarStyle.qml", progressbar)
 
     Accessible.role: Accessible.ProgressBar
     Accessible.name: value
 
-    implicitWidth: orientation === Qt.Horizontal ? 200 : (loader.item ? loader.item.implicitHeight : 0)
-    implicitHeight: orientation === Qt.Horizontal ? (loader.item ? loader.item.implicitHeight : 0) : 200
-
-    Loader {
-        id: loader
-        property alias indeterminate: progressbar.indeterminate
-        property alias value: progressbar.value
-        property alias maximumValue: progressbar.maximumValue
-        property alias minimumValue: progressbar.minimumValue
-
-        property alias control: progressbar
-        sourceComponent: style
-        anchors.fill: parent
-    }
+    implicitWidth: orientation === Qt.Horizontal ? 200 : (__panel ? __panel.implicitHeight : 0)
+    implicitHeight: orientation === Qt.Horizontal ? (__panel ? __panel.implicitHeight : 0) : 200
 }

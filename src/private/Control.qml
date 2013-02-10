@@ -39,24 +39,40 @@
 ****************************************************************************/
 import QtQuick 2.0
 import QtDesktop.Styles 1.0
-import QtDesktop.Private 1.0
 
-Style {
-    property Component panel: StyleItem {
-        elementType: "slider"
-        sunken: control.pressed
-        implicitWidth: 200
-        contentHeight: horizontal ? 20 : 200
-        contentWidth: horizontal ? 200 : 20
+FocusScope {
+    id: root
 
-        maximum: control.maximumValue*100
-        minimum: control.minimumValue*100
-        step: control.stepSize*100
-        value: control.value*100
-        horizontal: control.orientation === Qt.Horizontal
-        enabled: control.enabled
-        hasFocus: control.focus
-        hints: control.styleHints
-        activeControl: control.tickmarksEnabled ? "ticks" : ""
+    property Component style
+
+    /* \internal */
+    property Style __style: styleLoader.item
+
+    /* \internal */
+    property Item __panel: panelLoader.item
+
+    /* \internal */
+    property var styleHints: []
+
+    /* \internal */
+    implicitWidth: __panel ? __panel.implicitWidth: 0
+
+    /* \internal */
+    implicitHeight: __panel ? __panel.implicitHeight: 0
+
+    Loader {
+        id: panelLoader
+        anchors.fill: parent
+        sourceComponent: __style ? __style.panel : null
+        property alias control: root
+        onStatusChanged: if (status === Loader.Error) print("Failed to load panel for " + root)
+        Loader {
+            id: styleLoader
+            sourceComponent: style
+            onStatusChanged: {
+                if (status === Loader.Error)
+                    print("Failed to load Style for " + root)
+            }
+        }
     }
 }

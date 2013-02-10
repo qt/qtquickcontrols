@@ -61,7 +61,7 @@ import QtDesktop.Private 1.0
     Whenever a CheckBox is clicked, it emits the clicked() signal.
 */
 
-FocusScope {
+Control {
     id: checkBox
 
     /*!
@@ -115,23 +115,8 @@ FocusScope {
     Accessible.role: Accessible.CheckBox
     Accessible.name: text
 
-    implicitWidth: Math.max(120, loader.item ? loader.item.implicitWidth : 0)
-    implicitHeight: loader.item ? loader.item.implicitHeight : 0
-
-    /*!
-        The style that should be applied to the checkbox. Custom style
-        components can be created with:
-
-        \codeline Qt.createComponent("path/to/style.qml", checkBoxId);
-    */
-    property Component style: Qt.createComponent(Settings.THEME_PATH + "/CheckBoxStyle.qml", checkBox)
-
-    Loader {
-        id: loader
-        anchors.fill: parent
-        property alias control: checkBox
-        sourceComponent: style
-    }
+    /*! The style that should be applied to the checkbox. */
+    style: Qt.createComponent(Settings.THEME_PATH + "/CheckBoxStyle.qml", checkBox)
 
     ButtonBehavior {
         id: behavior

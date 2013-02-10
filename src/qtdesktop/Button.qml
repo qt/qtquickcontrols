@@ -58,15 +58,12 @@ import "Styles/Settings.js" as Settings
  */
 BasicButton {
     id: button
+
     /*! This property holds whether the push button is the default button.
         Default buttons decide what happens when the user presses enter in a dialog without giving a button explicit focus.
         Note : This property is currently ignored by Dialog
     */
     property bool defaultbutton: false
-
-    /*! This property holds the style hints. Style hints are special properties that only affect specific themes or styles
-      An example of a styleHint can be: styleHints: "small" */
-    property var styleHints: []
 
     /*! This property holds the text shown on the button.
         If the button has no text, the \l text property will be an empty string. */
@@ -77,6 +74,6 @@ BasicButton {
     property url iconSource
 
     Accessible.name: text
-    style: Qt.createComponent(Settings.THEME_PATH + "/ButtonStyle.qml", button)
 
+    style: Qt.createComponent(Settings.THEME_PATH + "/ButtonStyle.qml", button)
 }

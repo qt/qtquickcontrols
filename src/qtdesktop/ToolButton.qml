@@ -62,10 +62,11 @@ import "Styles/Settings.js" as Settings
 Private.BasicButton {
     id: button
 
+    /*! The image label source. */
     property url iconSource
-    property string text
 
-    style: Qt.createComponent(Settings.THEME_PATH + "/ToolButtonStyle.qml", button)
+    /*! The label text. */
+    property string text
 
     Image {
         id: image
@@ -76,4 +77,6 @@ Private.BasicButton {
         fillMode: Image.PreserveAspectFit
     }
     Accessible.name: text
+
+    style: Qt.createComponent(Settings.THEME_PATH + "/ToolButtonStyle.qml", button)
 }

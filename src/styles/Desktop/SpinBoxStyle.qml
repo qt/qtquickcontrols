@@ -39,79 +39,82 @@
 ****************************************************************************/
 import QtQuick 2.0
 import QtDesktop 1.0
+import QtDesktop.Styles 1.0
 import QtDesktop.Private 1.0
 
-Item {
-    id: style
+Style {
+    property Component panel: Item {
+        id: style
 
-    property rect upRect
-    property rect downRect
+        property rect upRect
+        property rect downRect
 
-    property int topMargin: edit.anchors.topMargin
-    property int leftMargin: 2 + edit.anchors.leftMargin
-    property int rightMargin: 2 + edit.anchors.rightMargin
-    property int bottomMargin: edit.anchors.bottomMargin
-    property int horizontalTextAlignment: Qt.AlignLeft
-    property int verticalTextAlignment: Qt.AlignVCenter
+        property int topMargin: edit.anchors.topMargin
+        property int leftMargin: 2 + edit.anchors.leftMargin
+        property int rightMargin: 2 + edit.anchors.rightMargin
+        property int bottomMargin: edit.anchors.bottomMargin
+        property int horizontalTextAlignment: Qt.AlignLeft
+        property int verticalTextAlignment: Qt.AlignVCenter
 
-    property color foregroundColor: syspal.text
-    property color backgroundColor: syspal.base
-    property color selectionColor: syspal.highlight
-    property color selectedTextColor: syspal.highlightedText
+        property color foregroundColor: syspal.text
+        property color backgroundColor: syspal.base
+        property color selectionColor: syspal.highlight
+        property color selectedTextColor: syspal.highlightedText
 
-    SystemPalette {
-        id: syspal
-        colorGroup: control.enabled ? SystemPalette.Active : SystemPalette.Disabled
-    }
+        SystemPalette {
+            id: syspal
+            colorGroup: control.enabled ? SystemPalette.Active : SystemPalette.Disabled
+        }
 
-    width: 100
-    height: styleitem.implicitHeight
+        width: 100
+        height: styleitem.implicitHeight
 
-    implicitWidth: styleitem.implicitWidth
-    implicitHeight: styleitem.implicitHeight
+        implicitWidth: styleitem.implicitWidth
+        implicitHeight: styleitem.implicitHeight
 
-    Item {
-        id: edit
-        anchors.fill: parent
-        Rectangle {
-            color: "white"
+        Item {
+            id: edit
             anchors.fill: parent
-            anchors.margins: -1
+            Rectangle {
+                color: "white"
+                anchors.fill: parent
+                anchors.margins: -1
+            }
+            FocusFrame {
+                focusMargin:-6
+                visible: spinbox.activeFocus && styleitem.styleHint("focuswidget")
+            }
         }
-        FocusFrame {
-            focusMargin:-6
-            visible: spinbox.activeFocus && styleitem.styleHint("focuswidget")
+
+        function updateRect() {
+            style.upRect = styleitem.subControlRect("up");
+            style.downRect = styleitem.subControlRect("down");
+            var inputRect = styleitem.subControlRect("edit");
+            edit.anchors.topMargin = inputRect.y
+            edit.anchors.leftMargin = inputRect.x
+            edit.anchors.rightMargin = style.width - inputRect.width - edit.anchors.leftMargin
+            edit.anchors.bottomMargin = style.height - inputRect.height - edit.anchors.topMargin
         }
-    }
 
-    function updateRect() {
-        style.upRect = styleitem.subControlRect("up");
-        style.downRect = styleitem.subControlRect("down");
-        var inputRect = styleitem.subControlRect("edit");
-        edit.anchors.topMargin = inputRect.y
-        edit.anchors.leftMargin = inputRect.x
-        edit.anchors.rightMargin = style.width - inputRect.width - edit.anchors.leftMargin
-        edit.anchors.bottomMargin = style.height - inputRect.height - edit.anchors.topMargin
-    }
+        Component.onCompleted: updateRect()
+        onWidthChanged: updateRect()
+        onHeightChanged: updateRect()
 
-    Component.onCompleted: updateRect()
-    onWidthChanged: updateRect()
-    onHeightChanged: updateRect()
-
-    StyleItem {
-        id: styleitem
-        elementType: "spinbox"
-        anchors.fill: parent
-        sunken: (control.__downEnabled && control.__downPressed) || (control.__upEnabled && control.__upPressed)
-        hover: __containsMouse
-        hints: control.styleHints
-        hasFocus: control.focus
-        enabled: control.enabled
-        value: (control.__upPressed ? 1 : 0)           |
-               (control.__downPressed ? 1<<1 : 0) |
-               (control.__upEnabled ? (1<<2) : 0)      |
-               (control.__downEnabled ? (1<<3) : 0)
-        contentWidth: control.__contentWidth
-        contentHeight: control.__contentHeight
+        StyleItem {
+            id: styleitem
+            elementType: "spinbox"
+            anchors.fill: parent
+            sunken: (control.__downEnabled && control.__downPressed) || (control.__upEnabled && control.__upPressed)
+            hover: __containsMouse
+            hints: control.styleHints
+            hasFocus: control.focus
+            enabled: control.enabled
+            value: (control.__upPressed ? 1 : 0)           |
+                   (control.__downPressed ? 1<<1 : 0) |
+                   (control.__upEnabled ? (1<<2) : 0)      |
+                   (control.__downEnabled ? (1<<3) : 0)
+            contentWidth: control.__contentWidth
+            contentHeight: control.__contentHeight
+        }
     }
 }

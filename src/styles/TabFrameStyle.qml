@@ -38,13 +38,16 @@
 **
 ****************************************************************************/
 import QtQuick 2.0
+import QtDesktop.Styles 1.0
 
 /*!
     \qmltype TabFrameStyle
     \internal
     \inqmlmodule QtDesktop.Styles 1.0
+    \brief provides custom styling for TabFrame
 */
-QtObject {
+
+Style {
 
     /*! This property holds the base alignment of the tab bar.
       The default value is "left". Supporeted alignments are

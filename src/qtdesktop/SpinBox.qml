@@ -40,6 +40,7 @@
 
 import QtQuick 2.0
 import QtDesktop 1.0
+import QtDesktop.Private 1.0
 import "Styles/Settings.js" as Settings
 
 /*!
@@ -70,7 +71,7 @@ import "Styles/Settings.js" as Settings
 
 */
 
-FocusScope {
+Control {
     id: spinbox
 
     /*!
@@ -131,7 +132,7 @@ FocusScope {
     property bool activeFocusOnPress: true
 
     /*! \internal */
-    property Component style: Qt.createComponent(Settings.THEME_PATH + "/SpinBoxStyle.qml", spinbox)
+    style: Qt.createComponent(Settings.THEME_PATH + "/SpinBoxStyle.qml", spinbox)
 
     /*! \internal */
     function __increment() {
@@ -159,8 +160,6 @@ FocusScope {
     readonly property alias __upPressed: mouseUp.pressed
     /*! \internal */
     readonly property alias __downPressed: mouseDown.pressed
-    /*! \internal */
-    property var styleHints:[]
     /*! \internal */
     property alias __upHovered: mouseUp.containsMouse
     /*! \internal */
@@ -204,19 +203,6 @@ FocusScope {
     Accessible.name: input.text
     Accessible.role: Accessible.SpinBox
 
-    width: implicitWidth
-    height: implicitHeight
-
-    implicitWidth: loader.item ? loader.item.implicitWidth : 0
-    implicitHeight: loader.item ? loader.item.implicitHeight : 0
-
-    Loader {
-        id: loader
-        property alias control: spinbox
-        sourceComponent: style
-        anchors.fill: parent
-    }
-
     MouseArea {
         id: mouseArea
         anchors.fill: parent
@@ -229,15 +215,15 @@ FocusScope {
         anchors.fill: parent
         spacing: 1
         clip: true
-        anchors.leftMargin: loader.item ? loader.item.leftMargin : 0
-        anchors.topMargin: loader.item ? loader.item.topMargin : 0
-        anchors.rightMargin: loader.item ? loader.item.rightMargin: 0
-        anchors.bottomMargin: loader.item ? loader.item.bottomMargin: 0
+        anchors.leftMargin: __panel ? __panel.leftMargin : 0
+        anchors.topMargin: __panel ? __panel.topMargin : 0
+        anchors.rightMargin: __panel ? __panel.rightMargin: 0
+        anchors.bottomMargin: __panel ? __panel.bottomMargin: 0
 
         Text {
             id: prefixItem
             text: prefix
-            color: loader.item ? loader.item.foregroundColor : "black"
+            color: __panel ? __panel.foregroundColor : "black"
             anchors.verticalCenter: parent.verticalCenter
             renderType: Text.NativeRendering
         }
@@ -263,15 +249,15 @@ FocusScope {
                 }
             }
 
-            horizontalAlignment: loader.item ? loader.item.horizontalTextAlignment : Qt.AlignLeft
-            verticalAlignment: loader.item ? loader.item.verticalTextAlignment : Qt.AlignVCenter
+            horizontalAlignment: __panel ? __panel.horizontalTextAlignment : Qt.AlignLeft
+            verticalAlignment: __panel ? __panel.verticalTextAlignment : Qt.AlignVCenter
             selectByMouse: true
 
             validator: DoubleValidator { bottom: minimumValue; top: maximumValue; }
             onAccepted: setValue(input.text)
-            color: loader.item ? loader.item.foregroundColor : "black"
-            selectionColor: loader.item ? loader.item.selectionColor : "black"
-            selectedTextColor: loader.item ? loader.item.selectedTextColor : "black"
+            color: __panel ? __panel.foregroundColor : "black"
+            selectionColor: __panel ? __panel.selectionColor : "black"
+            selectedTextColor: __panel ? __panel.selectedTextColor : "black"
 
             opacity: parent.enabled ? 1 : 0.5
             renderType: Text.NativeRendering
@@ -279,7 +265,7 @@ FocusScope {
         Text {
             id: suffixItem
             text: suffix
-            color: loader.item ? loader.item.foregroundColor : "black"
+            color: __panel ? __panel.foregroundColor : "black"
             anchors.verticalCenter: parent.verticalCenter
             renderType: Text.NativeRendering
         }
@@ -291,7 +277,7 @@ FocusScope {
         id: mouseUp
         hoverEnabled: true
 
-        property var upRect: loader.item  ?  loader.item.upRect : null
+        property var upRect: __panel  ?  __panel.upRect : null
 
         anchors.left: parent.left
         anchors.top: parent.top
@@ -317,7 +303,7 @@ FocusScope {
         hoverEnabled: true
 
         onClicked: __decrement()
-        property var downRect: loader.item ? loader.item.downRect : null
+        property var downRect: __panel ? __panel.downRect : null
 
         anchors.left: parent.left
         anchors.top: parent.top

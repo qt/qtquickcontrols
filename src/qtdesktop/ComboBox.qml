@@ -103,7 +103,6 @@ BasicButton {
 
     property alias selectedIndex: popup.selectedIndex
     property alias selectedText: popup.selectedText
-    property var styleHints:[]
 
     style: Qt.createComponent(Settings.THEME_PATH + "/ComboBoxStyle.qml", comboBox)
 
@@ -111,8 +110,6 @@ BasicButton {
 //    centers directly above button label when
 //    popup.centerOnSelectedText === true
 
-    width: implicitWidth
-    height: implicitHeight
     checkable: false
 
     onPressedChanged: { if (pressed) popup.show() }

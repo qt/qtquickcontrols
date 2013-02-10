@@ -45,17 +45,18 @@ import QtDesktop 1.0
     \qmltype ProgressBarStyle
     \internal
     \inqmlmodule QtDesktop.Styles 1.0
+    \brief provides custom styling for ProgressBar
 */
-Item {
-    anchors.fill: parent
-    implicitWidth: 200
-    implicitHeight: 20
 
+Style {
     property color backgroundColor: "darkgrey"
     property color progressColor: "#47f"
 
     property Component background: Rectangle {
         id: styleitem
+        anchors.fill: parent
+        implicitWidth: 200
+        implicitHeight: 20
         clip: true
         radius: 2
         antialiasing: true
@@ -89,9 +90,18 @@ Item {
         }
     }
 
-    Loader {
-        id: backgroundLoader
+    property Component panel: Item {
+        property Item controlref: control
         anchors.fill: parent
-        sourceComponent: background
+
+        implicitWidth: backgroundLoader.implicitWidth
+        implicitHeight: backgroundLoader.implicitHeight
+
+        Loader {
+            id: backgroundLoader
+            anchors.fill: parent
+            sourceComponent: background
+            property Item control: controlref
+        }
     }
 }

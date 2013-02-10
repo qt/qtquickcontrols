@@ -37,8 +37,7 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-import QtQuick 2.0
-import QtDesktop 1.0
+import QtDesktop.Styles 1.0
 
 /*!
     \qmltype ComboBoxStyle

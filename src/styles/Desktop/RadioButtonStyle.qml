@@ -38,30 +38,41 @@
 **
 ****************************************************************************/
 import QtQuick 2.0
-import QtDesktop 1.0
+import QtDesktop.Styles 1.0
 import QtDesktop.Private 1.0
 
-StyleItem {
-    elementType: "radiobutton"
-    sunken: pressed
-    on: checked || pressed
-    hover: containsMouse
-    enabled: radiobutton.enabled
-    hasFocus: radiobutton.activeFocus
-    hints: radiobutton.styleHints
-    contentHeight: textitem.implicitHeight
-    contentWidth: textitem.implicitWidth + indicatorWidth
-    property int indicatorWidth: pixelMetric("indicatorwidth") + 2
+Style {
+    property Component panel: Item {
+        anchors.fill: parent
 
-    Text {
-        id: textitem
-        text: radiobutton.text
-        anchors.left: parent.left
-        anchors.leftMargin: parent.indicatorWidth
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.right: parent.right
-        elide: Text.ElideRight
-        color: syspal.windowText
-        SystemPalette { id: syspal }
+        implicitWidth:  styleitem.implicitWidth
+        implicitHeight: styleitem.implicitHeight
+
+        StyleItem {
+            id: styleitem
+            elementType: "radiobutton"
+            sunken: control.pressed
+            on: control.checked || control.pressed
+            hover: control.containsMouse
+            enabled: control.enabled
+            hasFocus: control.activeFocus
+            hints: control.styleHints
+            contentHeight: textitem.implicitHeight
+            contentWidth: textitem.implicitWidth + indicatorWidth
+            property int indicatorWidth: pixelMetric("indicatorwidth") + 2
+
+            Text {
+                id: textitem
+                text: control.text
+                anchors.left: parent.left
+                anchors.leftMargin: parent.indicatorWidth
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.right: parent.right
+                renderType: Text.NativeRendering
+                elide: Text.ElideRight
+                color: syspal.windowText
+                SystemPalette { id: syspal }
+            }
+        }
     }
 }

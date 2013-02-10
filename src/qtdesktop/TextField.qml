@@ -40,6 +40,7 @@
 
 import QtQuick 2.0
 import QtDesktop 1.0
+import QtDesktop.Private 1.0
 import "Styles"
 import "Styles/Settings.js" as Settings
 
@@ -57,7 +58,7 @@ import "Styles/Settings.js" as Settings
     \sa TextArea, TextInput
 */
 
-FocusScope {
+Control {
     id: textfield
 
     /*!
@@ -501,10 +502,7 @@ FocusScope {
     property alias __contentWidth: textInput.contentWidth
 
     /*! \internal */
-    property Component style: Qt.createComponent(Settings.THEME_PATH + "/TextFieldStyle.qml", textInput)
-
-    /*! \internal */
-    property var styleHints:[]
+    style: Qt.createComponent(Settings.THEME_PATH + "/TextFieldStyle.qml", textInput)
 
     /*! \internal */
     onFocusChanged: {
@@ -512,20 +510,9 @@ FocusScope {
             textInput.forceActiveFocus();
     }
 
-    // Implementation
-    implicitWidth: loader.implicitWidth
-    implicitHeight: loader.implicitHeight
-
     Accessible.name: text
     Accessible.role: Accessible.EditableText
     Accessible.description: placeholderText
-
-    Loader {
-        id: loader
-        sourceComponent: style
-        anchors.fill: parent
-        property Item control: textfield
-    }
 
     MouseArea {
         id: mouseArea
@@ -537,20 +524,19 @@ FocusScope {
     TextInput {
         id: textInput
         selectByMouse: true
-        selectionColor: loader.item ? loader.item.selectionColor : "darkred"
-        selectedTextColor: loader.item ? loader.item.selectedTextColor : "white"
+        selectionColor: __panel ? __panel.selectionColor : "darkred"
+        selectedTextColor: __panel ? __panel.selectedTextColor : "white"
 
-        property Item styleItem: loader.item
-        font: styleItem ? styleItem.font : font
-        anchors.leftMargin: styleItem ? styleItem.leftMargin : 0
-        anchors.topMargin: styleItem ? styleItem.topMargin : 0
-        anchors.rightMargin: styleItem ? styleItem.rightMargin : 0
-        anchors.bottomMargin: styleItem ? styleItem.bottomMargin : 0
+        font: __panel ? __panel.font : font
+        anchors.leftMargin: __panel ? __panel.leftMargin : 0
+        anchors.topMargin: __panel ? __panel.topMargin : 0
+        anchors.rightMargin: __panel ? __panel.rightMargin : 0
+        anchors.bottomMargin: __panel ? __panel.bottomMargin : 0
 
         anchors.fill: parent
         verticalAlignment: Text.AlignVCenter
 
-        color: loader.item ? loader.item.foregroundColor : "darkgray"
+        color: __panel ? __panel.foregroundColor : "darkgray"
         clip: true
         renderType: Text.NativeRendering
 
@@ -564,7 +550,7 @@ FocusScope {
         horizontalAlignment: textInput.horizontalAlignment
         verticalAlignment: textInput.verticalAlignment
         opacity: !textInput.text.length && !textInput.activeFocus ? 1 : 0
-        color: loader.item ? loader.item.placeholderTextColor : "darkgray"
+        color: __panel ? __panel.placeholderTextColor : "darkgray"
         clip: true
         elide: Text.ElideRight
         renderType: Text.NativeRendering

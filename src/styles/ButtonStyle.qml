@@ -44,38 +44,61 @@ import QtDesktop 1.0
     \qmltype ButtonStyle
     \internal
     \inqmlmodule QtDesktop.Styles 1.0
+    \brief provides custom styling for Button
 */
-Item {
-    implicitWidth: backgroundLoader.implicitWidth
-    implicitHeight: backgroundLoader.implicitHeight
 
+Style {
+    id: buttonstyle
+    property font font
     property color backgroundColor: "lightGray"
     property color foregroundColor: "black"
-    property alias font: textitem.font
+
+    property Component label: Item {
+        Text {
+            id: textitem
+            anchors.centerIn: parent
+            renderType: Text.NativeRendering
+            text: control.text
+            color: buttonstyle.foregroundColor
+            font: buttonstyle.font
+        }
+    }
 
     property Component background: Rectangle {
-        implicitWidth: 100
+        implicitWidth: 80
         implicitHeight: 21
         gradient: Gradient {
-            GradientStop {color: control.pressed ? Qt.lighter(backgroundColor, 1.1) : Qt.lighter(backgroundColor, 1.8)  ; position: 0}
-            GradientStop {color: control.pressed ? Qt.lighter(backgroundColor, 1.1) : backgroundColor ; position: 1.4}
+            GradientStop {color: control.pressed ? Qt.lighter(buttonstyle.backgroundColor, 1.1) :
+                                                   Qt.lighter(buttonstyle.backgroundColor, 1.8)  ; position: 0}
+            GradientStop {color: control.pressed ? Qt.lighter(buttonstyle.backgroundColor, 1.1) :
+                                                   buttonstyle.backgroundColor ; position: 1.4}
         }
-        border.color: Qt.darker(backgroundColor, 1.4)
+        border.color: Qt.darker(buttonstyle.backgroundColor, 1.4)
         radius: 3
         antialiasing: true
     }
 
-    Loader {
-        id: backgroundLoader
-        sourceComponent: background
+    property Component panel: Item {
+        property Item controlref: control
         anchors.fill: parent
-    }
 
-    Text {
-        id: textitem
-        anchors.centerIn: backgroundLoader
-        renderType: Text.NativeRendering
-        text: control.text
-        color: foregroundColor
+        implicitWidth: backgroundLoader.implicitWidth
+        implicitHeight: backgroundLoader.implicitHeight
+
+        Loader {
+            id: backgroundLoader
+            anchors.fill: parent
+            sourceComponent: background
+            property Item control: controlref
+            property Item label: labelLoader.item
+        }
+
+        Loader {
+            id: labelLoader
+            sourceComponent: label
+            anchors.fill: parent
+            property Item control: controlref
+        }
     }
 }
+

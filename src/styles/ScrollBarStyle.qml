@@ -175,7 +175,7 @@ Rectangle {
     Loader{
         id: handleControl
         property int totalextent: horizontal ? bg.width : bg.height
-        property int extent: Math.max(minimumHandleLength, totalextent - control.maximumValue + 2 * handleOverlap)
+        property int extent: Math.max(minimumHandleLength, 100 * totalextent / (control.maximumValue - control.minimumValue) + 2 * handleOverlap)
         property bool mouseOver: activeControl === "handle"
 
         height: horizontal ? implicitHeight : extent

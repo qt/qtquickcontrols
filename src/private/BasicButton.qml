@@ -40,6 +40,7 @@
 
 import QtQuick 2.0
 import QtDesktop.Private 1.0
+import QtDesktop.Styles 1.0
 
 /*!
         \qmltype BasicButton
@@ -47,7 +48,8 @@ import QtDesktop.Private 1.0
         \qmlabstract
         \inqmlmodule QtDesktop.Private 1.0
 */
-Item {
+
+Control {
     id: button
 
     signal clicked
@@ -56,8 +58,6 @@ Item {
     property alias checkable: behavior.checkable  // button toggles between checked and !checked
     property alias checked: behavior.checked
     property bool activeFocusOnPress: false
-    property alias style: loader.sourceComponent
-    property var styleHints: []
 
     property color textColor: syspal.text
     property string tooltip
@@ -68,10 +68,7 @@ Item {
     signal toolTipTriggered
 
     // implementation
-
     property string __position: "only"
-    implicitWidth: loader.implicitWidth
-    implicitHeight: loader.implicitHeight
 
     Keys.onPressed: {
         if (event.key === Qt.Key_Space && !event.isAutoRepeat && !behavior.pressed)
@@ -85,16 +82,6 @@ Item {
                 checked = !checked;
             button.clicked();
         }
-    }
-
-    Loader {
-        id: loader
-        anchors.fill: parent
-        sourceComponent: style
-        property alias control: button
-        property alias position: button.__position
-        height: item ? item.implicitHeight : 0
-        width: item ? item.implicitWidth : 0
     }
 
     ButtonBehavior {

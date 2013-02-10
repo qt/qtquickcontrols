@@ -38,25 +38,5 @@
 **
 ****************************************************************************/
 import QtQuick 2.0
-import QtDesktop.Styles 1.0
-import QtDesktop.Private 1.0
 
-Style {
-    property Component panel: StyleItem {
-        elementType: "slider"
-        sunken: control.pressed
-        implicitWidth: 200
-        contentHeight: horizontal ? 20 : 200
-        contentWidth: horizontal ? 200 : 20
-
-        maximum: control.maximumValue*100
-        minimum: control.minimumValue*100
-        step: control.stepSize*100
-        value: control.value*100
-        horizontal: control.orientation === Qt.Horizontal
-        enabled: control.enabled
-        hasFocus: control.focus
-        hints: control.styleHints
-        activeControl: control.tickmarksEnabled ? "ticks" : ""
-    }
-}
+QtObject { }

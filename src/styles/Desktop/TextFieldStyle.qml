@@ -38,43 +38,46 @@
 **
 ****************************************************************************/
 import QtQuick 2.0
-import QtDesktop 1.0
+import QtDesktop.Styles 1.0
 import QtDesktop.Private 1.0
 
-StyleItem {
-    id: textfieldstyle
-    anchors.fill: parent
-    elementType: "edit"
-    sunken: true
-    hasFocus: textfield.activeFocus
-    hover: __containsMouse
-
-    SystemPalette {
-        id: syspal
-        colorGroup: control.enabled ?
-                        SystemPalette.Active :
-                        SystemPalette.Disabled
-    }
-
-    contentWidth: 200
-    contentHeight: 18
-
-    property bool rounded: hints.indexOf("rounded") > -1
-    property int topMargin: 1
-    property int leftMargin: rounded ? 8 : 4
-    property int rightMargin: 4
-    property int bottomMargin: 1
-
-    property color foregroundColor: syspal.text
-    property color backgroundColor: syspal.base
-    property color placeholderTextColor: "darkGray"
-    property color selectionColor: syspal.highlight
-    property color selectedTextColor: syspal.highlightedText
-
-    hints: control.styleHints
-
-    FocusFrame {
+Style {
+    property Component panel: StyleItem {
+        id: textfieldstyle
+        elementType: "edit"
         anchors.fill: parent
-        visible: textfield.activeFocus && textfieldstyle.styleHint("focuswidget")
+
+        sunken: true
+        hasFocus: control.activeFocus
+        hover: __containsMouse
+        hints: control.styleHints
+
+        SystemPalette {
+            id: syspal
+            colorGroup: control.enabled ?
+                            SystemPalette.Active :
+                            SystemPalette.Disabled
+        }
+
+        property color foregroundColor: syspal.text
+        property color backgroundColor: syspal.base
+        property color placeholderTextColor: "darkGray"
+        property color selectionColor: syspal.highlight
+        property color selectedTextColor: syspal.highlightedText
+
+
+        property bool rounded: hints.indexOf("rounded") > -1
+        property int topMargin: 1
+        property int leftMargin: rounded ? 8 : 4
+        property int rightMargin: 4
+        property int bottomMargin: 1
+
+        contentWidth: 100
+        contentHeight: 18
+
+        FocusFrame {
+            anchors.fill: parent
+            visible: textfield.activeFocus && textfieldstyle.styleHint("focuswidget")
+        }
     }
 }

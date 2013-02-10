@@ -44,32 +44,23 @@ import QtDesktop 1.0
     \qmltype TextFieldStyle
     \internal
     \inqmlmodule QtDesktop.Styles 1.0
+    \brief provides custom styling for TextField.
 */
-Item {
-    id: style
-    anchors.fill: parent
 
-    implicitWidth: backgroundLoader.implicitWidth ? backgroundLoader.implicitWidth : 100
-    implicitHeight: backgroundLoader.implicitHeight ? backgroundLoader.implicitHeight : 20
+Style {
+    id: style
 
     property int topMargin: 4
     property int leftMargin: 8
     property int rightMargin: 8
     property int bottomMargin: 4
 
-    property color foregroundColor: syspal.text
-    property color backgroundColor: syspal.base
-    property color placeholderTextColor: Qt.rgba(0, 0, 0, 0.5)
-    property color selectionColor: syspal.highlight
-    property color selectedTextColor: syspal.highlightedText
-    property font font
+    property color foregroundColor: "black"
+    property color backgroundColor: "white"
+    property color selectionColor: "blue"
+    property color selectedTextColor: "white"
 
-    SystemPalette {
-        id: syspal
-        colorGroup: control.enabled ?
-                        SystemPalette.Active :
-                        SystemPalette.Disabled
-    }
+    property font font
 
     property Component background: Rectangle {
         id: styleitem
@@ -82,9 +73,29 @@ Item {
         antialiasing: true
     }
 
-    Loader {
-        id: backgroundLoader
-        sourceComponent: background
+    property Component panel: Item {
         anchors.fill: parent
+
+        property int topMargin: style.topMargin
+        property int leftMargin: style.leftMargin
+        property int rightMargin: style.rightMargin
+        property int bottomMargin: style.bottomMargin
+
+        property color foregroundColor: style.foregroundColor
+        property color backgroundColor: style.backgroundColor
+        property color selectionColor: style.selectionColor
+        property color selectedTextColor: style.selectedTextColor
+
+        implicitWidth: backgroundLoader.implicitWidth ? backgroundLoader.implicitWidth : 100
+        implicitHeight: backgroundLoader.implicitHeight ? backgroundLoader.implicitHeight : 20
+
+        property color placeholderTextColor: Qt.rgba(0, 0, 0, 0.5)
+        property font font: style.font
+
+        Loader {
+            id: backgroundLoader
+            sourceComponent: background
+            anchors.fill: parent
+        }
     }
 }

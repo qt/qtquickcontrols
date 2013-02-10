@@ -14,4 +14,4 @@ TextAreaStyle 1.0 TextAreaStyle.qml
 TextFieldStyle 1.0 TextFieldStyle.qml
 ToolBarStyle 1.0 ToolBarStyle.qml
 ToolButtonStyle 1.0 ToolButtonStyle.qml
-
+Style 1.0 Style.qml

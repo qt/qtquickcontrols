@@ -54,29 +54,33 @@ Item {
     property int orientation: Qt.Horizontal
     property alias minimumValue: slider.minimumValue
     property alias maximumValue: slider.maximumValue
-    property int pageStep: internal.horizontal ? width : height
-    property int singleStep: 20
     property alias value: slider.value
-    property bool scrollToClickposition: internal.scrollToClickPosition
+
+    property Component style: Qt.createComponent("../" + Settings.THEME_PATH + "/ScrollBarStyle.qml", scrollbar)
+    property alias styleItem: loader.item
 
     Accessible.role: Accessible.ScrollBar
     implicitWidth: loader.implicitWidth
     implicitHeight: loader.implicitHeight
 
-    property Component style: Qt.createComponent("../" + Settings.THEME_PATH + "/ScrollBarStyle.qml", scrollbar)
-    property alias styleItem: loader.item
-
-    property bool upPressed
-    property bool downPressed
-    property bool handlePressed
-
-    property bool pageUpPressed
-    property bool pageDownPressed
+    readonly property alias upPressed: internal.upPressed
+    readonly property alias downPressed: internal.downPressed
+    readonly property alias pageUpPressed: internal.pageUpPressed
+    readonly property alias pageDownPressed: internal.pageDownPressed
 
     MouseArea {
         id: internal
 
+        property bool upPressed
+        property bool downPressed
+        property bool pageUpPressed
+        property bool pageDownPressed
+        property bool handlePressed
+
         property bool horizontal: orientation === Qt.Horizontal
+        property int pageStep: internal.horizontal ? width : height
+        property int singleStep: 20
+        property bool scrollToClickposition: internal.scrollToClickPosition
 
         anchors.fill: parent
 
@@ -123,42 +127,43 @@ Item {
         onPressed: {
             control = styleItem.hitTest(mouseX, mouseY)
             scrollToClickposition = scrollToClickPosition
+            var handleRect = styleItem.subControlRect("handle")
             grooveSize =  horizontal ? styleItem.subControlRect("groove").width -
-                                       styleItem.subControlRect("handle").width:
+                                       handleRect.width:
                                        styleItem.subControlRect("groove").height -
-                                       styleItem.subControlRect("handle").height;
+                                       handleRect.height;
             if (control == "handle") {
                 pressedX = mouseX
                 pressedY = mouseY
-                handlePressed = true
+                internal.handlePressed = true
                 oldPosition = slider.position
             } else if (control == "up") {
                 decrement();
-                upPressed = true
+                internal.upPressed = true
             } else if (control == "down") {
                 increment();
-                downPressed = true
+                internal.downPressed = true
             } else if (!scrollToClickposition){
                 if (control == "upPage") {
                     decrementPage();
-                    pageUpPressed = true
+                    internal.pageUpPressed = true
                 } else if (control == "downPage") {
                     incrementPage();
-                    pageDownPressed = true
+                    internal.pageDownPressed = true
                 }
             } else {
-                slider.position = horizontal ? mouseX - handleRect.width/2
+                slider.position = horizontal ? mouseX -  handleRect.width/2
                                              : mouseY - handleRect.height/2
             }
         }
 
         onReleased: {
             autoincrement = false;
-            upPressed = false;
-            downPressed = false;
+            internal.upPressed = false;
+            internal.downPressed = false;
             handlePressed = false
-            pageUpPressed = false
-            pageDownPressed = false
+            internal.pageUpPressed = false
+            internal.pageDownPressed = false
             control = ""
         }
 

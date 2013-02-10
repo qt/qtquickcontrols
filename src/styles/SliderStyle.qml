@@ -39,17 +39,15 @@
 ****************************************************************************/
 import QtQuick 2.0
 import QtDesktop 1.0
+import QtDesktop.Private 1.0
 
 /*!
     \qmltype SliderStyle
     \internal
     \inqmlmodule QtDesktop.Styles 1.0
 */
-Item {
+Style {
     id: styleitem
-
-    implicitWidth: 200
-    implicitHeight: 20
 
     property int leftMargin
     property int rightMargin
@@ -68,8 +66,7 @@ Item {
         border.color: Qt.darker(backgroundColor, 1.8)
     }
 
-    property Component background: Item {
-        Rectangle {
+    property Component background:  Rectangle {
             anchors.verticalCenter: parent.verticalCenter
             width: parent.width
 
@@ -82,19 +79,28 @@ Item {
             antialiasing: true
             radius: height / 2.0
             border.color: Qt.darker(backgroundColor, 1.8)
+    }
+
+    property Component panel: Item {
+        implicitWidth: 200
+        implicitHeight: 20
+
+        property Control __cref: control
+        Loader {
+            id: backgroundControl
+            sourceComponent: background
+            width: parent.width
+            anchors.verticalCenter: parent.verticalCenter
+            property Control control: __cref
+            property Item handle: handleLoader.item
         }
-    }
 
-    Loader {
-        id: backgroundControl
-        sourceComponent: background
-        width: parent.width
-        anchors.verticalCenter: parent.verticalCenter
-    }
-
-    Loader {
-        sourceComponent: handle
-        anchors.verticalCenter: backgroundControl.verticalCenter
-        x: leftMargin + control.value / control.maximumValue * (parent.width - leftMargin - rightMargin - width)
+        Loader {
+            id: handleLoader
+            sourceComponent: handle
+            anchors.verticalCenter: backgroundControl.verticalCenter
+            x: leftMargin + control.value / control.maximumValue * (parent.width - leftMargin - rightMargin - width)
+            property Control control: __cref
+        }
     }
 }

@@ -99,6 +99,7 @@ Item {
                 id: t3
                 KeyNavigation.tab: slider
                 placeholderText: "This is a placeholder for a TextField"
+                width: 200
             }
             ProgressBar {
                 // normalize value [0.0 .. 1.0]
@@ -128,6 +129,7 @@ Item {
                         text: "Text frame"
                         checked: true
                         KeyNavigation.tab: tickmarkCheck
+                        width: 100
                     }
                     CheckBox {
                         id: tickmarkCheck
@@ -150,6 +152,7 @@ Item {
                         KeyNavigation.tab: r2
                         checked: true
                         exclusiveGroup: tabPositionGroup
+                        width: 100
                     }
                     RadioButton {
                         id: r2

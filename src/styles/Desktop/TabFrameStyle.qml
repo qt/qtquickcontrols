@@ -40,15 +40,14 @@
 import QtQuick 2.0
 import QtDesktop 1.0
 import QtDesktop.Private 1.0
+import QtDesktop.Styles 1.0
 
-QtObject {
+Style {
     id: root
 
     property int leftMargin: 0
     property int rightMargin: 0
-
     property StyleItem __barstyle: StyleItem { elementType: "tabbar" ; visible: false }
-
     property string tabBarAlignment: __barstyle.styleHint("tabbaralignment");
     property int tabOverlap: __barstyle.pixelMetric("taboverlap");
     property int tabBaseOverlap: __barstyle.pixelMetric("tabbaseoverlap");

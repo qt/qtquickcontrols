@@ -38,27 +38,31 @@
 **
 ****************************************************************************/
 import QtQuick 2.0
-import QtDesktop 1.0
+import QtDesktop.Styles 1.0
 import QtDesktop.Private 1.0
 
-Item {
-    width: implicitWidth
-    height: implicitHeight
-    implicitWidth: styleitem.implicitWidth
-    implicitHeight: styleitem.implicitHeight
-    StyleItem {
-        id: styleitem
-        width: parent.width
-        anchors.verticalCenter: parent.verticalCenter
-        elementType: "combobox"
-        sunken: comboBox.pressed || comboBox.popupOpen
-        raised: !sunken
-        hover: comboBox.containsMouse
-        enabled: comboBox.enabled
-        text: comboBox.selectedText
-        hasFocus: comboBox.focus
-        contentHeight: 18
-        contentWidth: 80
-        Component.onCompleted: popup.centerSelectedText = styleHint("comboboxpopup");
+Style {
+    property Component panel: Item {
+        width: implicitWidth
+        height: implicitHeight
+        implicitWidth: styleitem.implicitWidth
+        implicitHeight: styleitem.implicitHeight
+
+        property int popup: styleitem.styleHint("comboboxpopup");
+
+        StyleItem {
+            id: styleitem
+            width: parent.width
+            anchors.verticalCenter: parent.verticalCenter
+            elementType: "combobox"
+            sunken: control.pressed
+            raised: !sunken
+            hover: control.containsMouse
+            enabled: control.enabled
+            text: control.selectedText
+            hasFocus: control.focus
+            contentHeight: 18
+            contentWidth: 80
+        }
     }
 }
