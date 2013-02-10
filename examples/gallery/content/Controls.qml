@@ -132,7 +132,7 @@ Item {
                     CheckBox {
                         id: tickmarkCheck
                         text: "Tickmarks"
-                        checked: true
+                        checked: false
                         KeyNavigation.tab: r1
                     }
                 }

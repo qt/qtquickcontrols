@@ -436,15 +436,16 @@ void QStyleItem::initStyleOption()
             qreal numOfSteps = (opt->maximum - opt->minimum) / opt->singleStep;
             // at least 5 pixels between tick marks
             if (numOfSteps && (width() / numOfSteps < 5))
-                opt->tickInterval = qRound((5*numOfSteps / width()) + 0.5)*step();
+                opt->tickInterval = qRound((5 * numOfSteps / width()) + 0.5) * step();
             else
                 opt->tickInterval = opt->singleStep;
+
         } else // default Qt-components implementation
             opt->tickInterval = opt->maximum != opt->minimum ? 1200 / (opt->maximum - opt->minimum) : 0;
 
         opt->sliderValue = value();
         opt->subControls = QStyle::SC_SliderGroove | QStyle::SC_SliderHandle;
-        opt->tickPosition = (activeControl() == "tick" ?
+        opt->tickPosition = (activeControl() == "ticks" ?
                     QSlider::TicksBelow : QSlider::NoTicks);
         if (opt->tickPosition != QSlider::NoTicks)
             opt->subControls |= QStyle::SC_SliderTickmarks;

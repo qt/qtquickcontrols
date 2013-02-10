@@ -56,5 +56,5 @@ StyleItem {
     enabled: control.enabled
     hasFocus: control.focus
     hints: control.styleHints
-    activeControl: tickmarksEnabled ? tickPosition.toLowerCase() : ""
+    activeControl: control.tickmarksEnabled ? "ticks" : ""
 }
