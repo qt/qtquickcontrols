@@ -44,7 +44,7 @@ import QtDesktop 1.0
 TableView {
     model: 3 // qml
     height: 70
-    TableColumn {
+    TableViewColumn {
         width: 100
     }
 }

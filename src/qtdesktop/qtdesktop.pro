@@ -30,8 +30,8 @@ QML_FILES = \
     StatusBar.qml \
     Tab.qml \
     TabFrame.qml \
-    TableColumn.qml \
     TableView.qml \
+    TableViewColumn.qml \
     TextArea.qml \
     TextField.qml \
     ToolBar.qml \

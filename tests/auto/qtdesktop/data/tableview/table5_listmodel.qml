@@ -49,7 +49,7 @@ TableView {
         ListElement { value: "C" }
     } // qml
     height: 70
-    TableColumn {
+    TableViewColumn {
         role: "value"
         width: 100
     }

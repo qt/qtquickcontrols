@@ -24,7 +24,7 @@ StatusBar 1.0 StatusBar.qml
 Tab 1.0 Tab.qml
 TabFrame 1.0 TabFrame.qml
 TableView 1.0 TableView.qml
-TableColumn 1.0 TableColumn.qml
+TableViewColumn 1.0 TableViewColumn.qml
 TextArea 1.0 TextArea.qml
 TextField 1.0 TextField.qml
 ToolBar 1.0 ToolBar.qml

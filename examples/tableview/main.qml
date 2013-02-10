@@ -132,17 +132,17 @@ Rectangle {
                     anchors.fill: parent
                     anchors.margins: 12
 
-                    TableColumn {
+                    TableViewColumn {
                         role: "title"
                         title: "Title"
                         width: 120
                     }
-                    TableColumn {
+                    TableViewColumn {
                         role: "credit"
                         title: "Credit"
                         width: 120
                     }
-                    TableColumn {
+                    TableViewColumn {
                         role: "imagesource"
                         title: "Image source"
                         width: 200
@@ -163,7 +163,7 @@ Rectangle {
                     anchors.fill: parent
                     anchors.margins: 12
 
-                    TableColumn {
+                    TableViewColumn {
                         role: "attributes"
                         title: "Text and Color"
                         width: 220
@@ -204,17 +204,17 @@ Rectangle {
                     model: largeModel
                     anchors.margins: 12
                     anchors.fill: parent
-                    TableColumn {
+                    TableViewColumn {
                         role: "name"
                         title: "Name"
                         width: 120
                     }
-                    TableColumn {
+                    TableViewColumn {
                         role: "age"
                         title: "Age"
                         width: 120
                     }
-                    TableColumn {
+                    TableViewColumn {
                         role: "gender"
                         title: "Gender"
                         width: 120
@@ -307,17 +307,17 @@ Rectangle {
                     sortIndicatorVisible: sortableCheckbox.checked
                     alternateRowColor: alternateCheckbox.checked
 
-                    TableColumn {
+                    TableViewColumn {
                         role: "name"
                         title: "Name"
                         width: 120
                     }
-                    TableColumn {
+                    TableViewColumn {
                         role: "age"
                         title: "Age"
                         width: 120
                     }
-                    TableColumn {
+                    TableViewColumn {
                         role: "sex"
                         title: "Sex"
                         width: 120

@@ -176,7 +176,7 @@ ApplicationWindow {
                 model: 10
                 frame: frameCheck.checked
 
-                TableColumn {title: "first"
+                TableViewColumn {title: "first"
                     width: view.viewport.width
                 }
             }

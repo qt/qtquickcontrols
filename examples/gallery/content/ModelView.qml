@@ -72,17 +72,17 @@ Item {
         model: dummyModel
         anchors.fill: parent
 
-        TableColumn {
+        TableViewColumn {
             role: "title"
             title: "Title"
             width: 120
         }
-        TableColumn {
+        TableViewColumn {
             role: "credit"
             title: "Credit"
             width: 120
         }
-        TableColumn {
+        TableViewColumn {
             role: "imagesource"
             title: "Image source"
             width: 200

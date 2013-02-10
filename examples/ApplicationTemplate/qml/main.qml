@@ -71,7 +71,7 @@ ApplicationWindow {
             frame: false
             highlightOnFocus: false
             model: 40
-            TableColumn { title: "Left Column" }
+            TableViewColumn { title: "Left Column" }
         }
         TextArea {
             frame: false

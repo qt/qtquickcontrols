@@ -45,7 +45,7 @@ import QtDesktopTest 1.0
 TableView {
     model: TestItemModel {}
     height: 70
-    TableColumn {
+    TableViewColumn {
         role: "test"
         width: 100
     }

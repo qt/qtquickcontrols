@@ -58,7 +58,7 @@ Rectangle {
       model: model_listmodel // qml
       anchors { left: parent.left; right: parent.right }
       height: 70
-      TableColumn {
+      TableViewColumn {
         role: "value"
         width: 100
       }
@@ -67,7 +67,7 @@ Rectangle {
       model: 3 // qml
       anchors { left: parent.left; right: parent.right }
       height: 70
-      TableColumn {
+      TableViewColumn {
         width: 100
       }
     }
@@ -75,7 +75,7 @@ Rectangle {
       model: ["A", "B", "C"] // qml
       anchors { left: parent.left; right: parent.right }
       height: 70
-      TableColumn {
+      TableViewColumn {
         width: 100
       }
     }
@@ -83,7 +83,7 @@ Rectangle {
       model: Item { x: 10 } // qml
       anchors { left: parent.left; right: parent.right }
       height: 70
-      TableColumn {
+      TableViewColumn {
         role: "x"
         width: 100
       }
@@ -92,7 +92,7 @@ Rectangle {
       model: model_qobjectlist // c++
       anchors { left: parent.left; right: parent.right }
       height: 70
-      TableColumn {
+      TableViewColumn {
         role: "value"
         width: 100
       }
@@ -101,7 +101,7 @@ Rectangle {
       model: model_qaim // c++
       anchors { left: parent.left; right: parent.right }
       height: 70
-      TableColumn {
+      TableViewColumn {
         role: "test"
         width: 100
       }
@@ -110,7 +110,7 @@ Rectangle {
       model: model_qstringlist // c++
       anchors { left: parent.left; right: parent.right }
       height: 70
-      TableColumn {
+      TableViewColumn {
         width: 100
       }
     }
@@ -118,7 +118,7 @@ Rectangle {
       model: model_qobject // c++
       anchors { left: parent.left; right: parent.right }
       height: 70
-      TableColumn {
+      TableViewColumn {
         role: "value"
         width: 100
       }

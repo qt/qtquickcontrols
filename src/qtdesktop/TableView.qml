@@ -45,134 +45,190 @@ import QtDesktop.Private 1.0
 /*!
    \qmltype TableView
    \inqmlmodule QtDesktop 1.0
-   \ingroup tables
-   \brief TableView is an extended ListView that provides column and header support.
+   \ingroup views
+   \brief Provides a list view with scroll bars, styling and header sections.
 
+   \image tableview.png
 
- This component provides an item-view with resizable
- header sections.
+   A TableView is similar to \l ListView and adds scroll bars, selection and
+   resizable header sections. As with \l ListView, data for each row is provided through a \l model:
 
- You can style the drawn delegate by overriding the itemDelegate
- property. The following properties are supported for custom
- delegates:
-
- Note: Currently only row selection is available for this component
-
-\list
-\li  itemHeight - default platform size of item
-\li  itemWidth - default platform width of item
-\li  itemSelected - if the row is currently selected
-\li  itemValue - The text for this item
-\li  itemForeground - The default text color for an item
-\endlist
-
-\code
- For example:
-   itemDelegate: Item {
-       Text {
-           anchors.verticalCenter: parent.verticalCenter
-           color: itemForeground
-           elide: Text.ElideRight
-           text: itemValue
-        }
-    }
-\endcode
-
- Data for each row is provided through a model:
-
-\code
+ \code
  ListModel {
-    ListElement{ column1: "value 1"; column2: "value 2"}
-    ListElement{ column1: "value 3"; column2: "value 4"}
+    id: libraryModel
+    ListElement{ title: "A Masterpiece" ; author: "Gabriel" }
+    ListElement{ title: "Brilliance"    ; author: "Jens" }
+    ListElement{ title: "Outstanding"   ; author: "Frederik" }
  }
-\endcode
+ \endcode
 
- You provide title and size properties on TableColumns
- by setting the default header property :
+   You provide title and size of a column header
+   by adding a \l TableViewColumn to the default \l header property
+   as demonstrated below.
+ \code
 
-\code
  TableView {
-    TableColumn{ role: "column1" ; title: "Column 1" ; width:100}
-    TableColumn{ role: "column2" ; title: "Column 2" ; width:200}
-    model: datamodel
+    TableViewColumn{ role: "title"  ; title: "Title" ; width: 100 }
+    TableViewColumn{ role: "author" ; title: "Author" ; width: 200 }
+    model: libraryModel
  }
-\endcode
+ \endcode
 
- The header sections are attached to values in the datamodel by defining
- the listmodel property they attach to. Each property in the model, will
- then be shown in each column section.
+   The header sections are attached to values in the \l model by defining
+   the model role they attach to. Each property in the model, will
+   then be shown in their corresponding column.
 
- The view itself does not provide sorting. This has to
- be done on the model itself. However you can provide sorting
- on the model and enable sort indicators on headers.
+   You can customize the look by overriding the \l itemDelegate,
+   \l rowDelegate or \l headerDelegate properties.
+
+   The view itself does not provide sorting. This has to
+   be done on the model itself. However you can provide sorting
+   on the model and enable sort indicators on headers.
+
 \list
-\li sortColumn - The index of the currently selected sort header
-\li sortIndicatorVisible - If sort indicators should be enabled
-\li sortIndicatorDirection - "up" or "down" depending on state
+    \li sortColumn - The index of the currently selected sort header
+    \li sortIndicatorVisible - If sort indicators should be enabled
+    \li sortIndicatorDirection - "up" or "down" depending on state
 \endlist
 */
 
 ScrollArea {
     id: root
 
+    /*! This property holds the model providing data for the list.
+
+    The model provides the set of data that is used to create the items in the view.
+    Models can be created directly in QML using ListModel, XmlListModel or VisualItemModel,
+    or provided by C++ model classes. \sa ListView::model
+
+    Example model:
+
+     \code
+     model: ListModel {
+        ListElement{ column1: "value 1" ; column2: "value 2" }
+        ListElement{ column1: "value 3" ; column2: "value 4" }
+     }
+    \endcode */
     property variant model
 
     width: 200
     height: 200
 
+    /*! \internal */
     __scrollBarTopMargin: styleitem.style == "mac" ? headerrow.height : 0
 
-    // Cosmetic properties
+    /*! This property sets if the frame should paint the focus frame around its contents.
+        The default value is \c false.
+        \Note Only certain platforms such as Mac OS X will be affected by this property */
     property bool highlightOnFocus: false
+
+    /*! This property is set to \c true if the view alternates the row color.
+        The default value is \c true. */
     property bool alternateRowColor: true
+
+    /*! This property determines if the header is visible.
+        The default value is \c true. */
     property bool headerVisible: true
 
-    // Styling properties
+    /*! This property defines a delegate to draw a specific cell.
+
+    In the item delegate you have access to the following special properties:
+    \list
+    \li  itemHeight - default platform size of item
+    \li  itemWidth - default platform width of item
+    \li  itemSelected - if the row is currently selected
+    \li  itemValue - The text for this item
+    \li  itemForeground - The default text color for an item
+    \endlist
+    Example:
+     \code
+       itemDelegate: Item {
+           Text {
+               anchors.verticalCenter: parent.verticalCenter
+               color: itemForeground
+               elide: Text.ElideRight
+               text: itemValue
+            }
+        }
+    \endcode */
     property Component itemDelegate: standardDelegate
+
+    /*! This property defines a delegate to draw a row. */
     property Component rowDelegate: rowDelegate
+
+    /*! This property defines a delegate to draw a header. */
     property Component headerDelegate: headerDelegate
 
-    /*!
-        \qmlproperty color ScrollArea:backgroundColor
+    /*! \qmlproperty color TableView::backgroundColor
 
         This property sets the background color of the viewport.
-
-        The default value is the base color of the SystemPalette.
-
-    */
+        The default value is the base color of the SystemPalette. */
     property alias backgroundColor: colorRect.color
 
+    /*! This property sets if the frame should be visible.
+        The default value is \c true. */
     frame: true
 
-    // Sort properties
-    property int sortColumn // Index of currently selected sort column
-    property bool sortIndicatorVisible: false // enables or disables sort indicator
-    property string sortIndicatorDirection: "down" // "up" or "down" depending on current state
+    /*! Index of the currently selected sort column
+        The default value is \c 0. */
+    property int sortColumn
 
-    // Item properties
+    /*! This property shows or hides the sort indicator
+        \ Note the view itself does not sort the data.
+        The default value is \c false. */
+    property bool sortIndicatorVisible: false
+
+    /*! This sets the sorting direction of the sort indicator
+       The allowed values are:
+       \list
+       \li "up"
+       \li "down" - the default
+       \endlist  */
+    property string sortIndicatorDirection: "down"
+
+    /*! \qmlproperty Component TableView::header
+    This property contains the TableViewHeader items */
     default property alias header: listView.columnheader
+
+    /*! \qmlproperty Component TableView::contentHeader
+    This is the content header of the TableView */
     property alias contentHeader: listView.header
+
+    /*! \qmlproperty Component TableView::contentFooter
+    This is the content footer of the TableView */
     property alias contentFooter: listView.footer
+
+    /*! \qmlproperty Item TableView::currentItem
+    This is the current item of the TableView */
     property alias currentItem: listView.currentItem
 
-    // Viewport properties
+    /*! \qmlproperty int TableView::count
+    The current number of rows */
     property alias count: listView.count
-    property alias section: listView.section
 
-    property alias currentIndex: listView.currentIndex // Should this be currentRowIndex?
+    /*! \qmlproperty string TableView::section
+    The section of the view. See \l ListView::section */
+    readonly property alias section: listView.section
+
+    /*! \qmlproperty int TableView::currentIndex
+    The current row index of the view. */
+    property alias currentIndex: listView.currentIndex
 
     Accessible.role: Accessible.Table
 
-    // Signals
+    /*! \qmlsignal TableView::activated()
+        Emitted when a new row is selected by the user. */
     signal activated
 
-    function decrementCurrentIndex() {
+    /*! \internal */
+    function __decrementCurrentIndex() {
         __scroller.blockUpdates = true;
         listView.decrementCurrentIndex();
         __scroller.blockUpdates = false;
     }
 
-    function incrementCurrentIndex() {
+    /*! \internal */
+    function __incrementCurrentIndex() {
         __scroller.blockUpdates = true;
         listView.incrementCurrentIndex();
         __scroller.blockUpdates = false;
@@ -217,8 +273,8 @@ ScrollArea {
             }
 
             // Handle vertical scrolling whem dragging mouse outside boundraries
-            Timer { running: mousearea.autoincrement && __scroller.verticalScrollBar.visible; repeat: true; interval: 20 ; onTriggered: incrementCurrentIndex()}
-            Timer { running: mousearea.autodecrement && __scroller.verticalScrollBar.visible; repeat: true; interval: 20 ; onTriggered: decrementCurrentIndex()}
+            Timer { running: mousearea.autoincrement && __scroller.verticalScrollBar.visible; repeat: true; interval: 20 ; onTriggered: __incrementCurrentIndex()}
+            Timer { running: mousearea.autodecrement && __scroller.verticalScrollBar.visible; repeat: true; interval: 20 ; onTriggered: __decrementCurrentIndex()}
 
             onPositionChanged: {
                 if (mouseY > listView.height && pressed) {
@@ -277,7 +333,7 @@ ScrollArea {
             }
         }
 
-        property list<TableColumn> columnheader
+        property list<TableViewColumn> columnheader
         highlightFollowsCurrentItem: true
         model: root.model
 
@@ -307,7 +363,7 @@ ScrollArea {
                 id: rowstyle
                 // row delegate
                 sourceComponent: root.rowDelegate
-                // Row fills the tree width regardless of item size
+                // Row fills the view width regardless of item size
                 // But scrollbar should not adjust to it
                 width: parent.width + __scroller.horizontalScrollBar.width
                 x: flickableItem.contentX
@@ -353,7 +409,7 @@ ScrollArea {
                         property int rowIndex: rowitem.rowIndex
                         property int columnIndex: index
                         property int itemElideMode: header[index].elideMode
-                        property int itemTextAlignment: header[index].textAlignment
+                        property int itemTextAlignment: header[index].horizontalAlignment
                     }
                 }
                 onWidthChanged: listView.contentWidth = width

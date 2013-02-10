@@ -100,7 +100,7 @@ TestCase {
         table.forceActiveFocus();
 
         // to go to next row (this model has 10 rows)
-        table.incrementCurrentIndex()
+        table.__incrementCurrentIndex()
 
         // read data from the model directly
         var valuefrommodel = table.model.dataAt(table.currentIndex)
@@ -128,7 +128,7 @@ TestCase {
         table.forceActiveFocus();
 
         // to go to next row (this model has 3 rows, read the second row)
-        table.incrementCurrentIndex()
+        table.__incrementCurrentIndex()
 
         verify(table.currentItem !== undefined, "No current item found")
         var label = findAChild(table.currentItem, "label")
