@@ -301,6 +301,18 @@ MenuPrivate {
                                     menuItem.closeMenu()
                             }
                         }
+
+                        Binding {
+                            target: menuItem
+                            property: "x"
+                            value: menuItemLoader.x
+                        }
+
+                        Binding {
+                            target: menuItem
+                            property: "y"
+                            value: menuItemLoader.y
+                        }
                     }
                 }
 

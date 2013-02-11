@@ -145,12 +145,12 @@ void QtMenu::showPopup(qreal x, qreal y, int atItemIndex, QObject *reference)
 
     setPopupVisible(true);
 
-    // If atActionIndex is valid, x and y is specified from the
+    // If atItemIndex is valid, x and y is specified from the
     // the position of the corresponding QtMenuItem:
     QtMenuItem *atItem = 0;
     if (atItemIndex >= 0)
         while (!atItem && atItemIndex < m_menuItems.size())
-            atItem = dynamic_cast<QtMenuItem *>(m_menuItems[atItemIndex++]);
+            atItem = qobject_cast<QtMenuItem *>(m_menuItems[atItemIndex++]);
 
     QPointF screenPosition(mapToScene(QPoint(x, y)));
     setHoveredIndex(m_selectedIndex);
@@ -172,15 +172,21 @@ void QtMenu::showPopup(qreal x, qreal y, int atItemIndex, QObject *reference)
         m_popupWindow->setMenuContentItem(m_menuContentItem);
         connect(m_popupWindow, SIGNAL(visibleChanged(bool)), this, SLOT(windowVisibleChanged(bool)));
 
-        if (item) {
-            QPointF pos = item->mapToItem(parentWindow->contentItem(), QPointF(x, y));
-            x = pos.x();
-            y = pos.y();
-        }
-
         if (parentWindow) {
+            if (item) {
+                QPointF pos = item->mapToItem(parentWindow->contentItem(), QPointF(x, y));
+                x = pos.x();
+                y = pos.y();
+            }
+
             x += parentWindow->geometry().left();
             y += parentWindow->geometry().top();
+        }
+
+        if (atItem) {
+            QPointF pos = atItem->position();
+            x -= pos.x();
+            y -= pos.y();
         }
 
         m_popupWindow->setGeometry(x, y, m_menuContentItem->width(), m_menuContentItem->height());
