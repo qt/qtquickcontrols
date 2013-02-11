@@ -52,7 +52,7 @@ StyleItem {
     contentWidth: textWidth(textAndShorcut)
     contentHeight: textHeight(textAndShorcut)
 
-    enabled: menuItem.enabled
+    enabled: parent.enabled
     selected: parent.selected
     on: !!menuItem["checkable"] && menuItem.checked
 

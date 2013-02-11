@@ -42,38 +42,47 @@
 #define QTMENUITEM_P_H
 
 #include <QtCore/QObject>
-
-#include <QtQuick/QQuickItem>
+#include <QtCore/QPointF>
+#include <QtCore/QPointer>
+#include <QtCore/QUrl>
 
 QT_BEGIN_NAMESPACE
 
 class QUrl;
 class QPlatformMenuItem;
+class QQuickItem;
 class QtAction;
 
-class QtMenuBase: public QQuickItem
+class QtMenuBase: public QObject
 {
     Q_OBJECT
     Q_PROPERTY(bool isNative READ isNative CONSTANT)
+    Q_PROPERTY(QQuickItem * __visualItem WRITE setVisualItem)
+
 public:
-    QtMenuBase(QQuickItem *parent = 0);
+    QtMenuBase(QObject *parent = 0);
     ~QtMenuBase();
 
     inline QPlatformMenuItem *platformItem() { return m_platformItem; }
 
     void syncWithPlatformMenu();
 
+    QQuickItem *visualItem() const;
+    void setVisualItem(QQuickItem *item);
+
 protected:
     virtual bool isNative() { return m_platformItem != 0; }
 
+private:
     QPlatformMenuItem *m_platformItem;
+    QPointer<QQuickItem> m_visualItem;
 };
 
 class QtMenuSeparator : public QtMenuBase
 {
     Q_OBJECT
 public:
-    QtMenuSeparator(QQuickItem *parent = 0);
+    QtMenuSeparator(QObject *parent = 0);
 };
 
 class QtMenuItem: public QtMenuBase
@@ -90,7 +99,7 @@ class QtMenuItem: public QtMenuBase
     Q_PROPERTY(QtAction *action READ action WRITE setAction NOTIFY actionChanged)
 
 public:
-    QtMenuItem(QQuickItem *parent = 0);
+    QtMenuItem(QObject *parent = 0);
     ~QtMenuItem();
 
     QtAction *action();
@@ -144,7 +153,6 @@ protected Q_SLOTS:
 
 private:
     QtAction *m_action;
-
 };
 
 QT_END_NAMESPACE

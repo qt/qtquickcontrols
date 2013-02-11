@@ -248,7 +248,7 @@ MenuPrivate {
                         property var menuItemsColumn: column
 
                         sourceComponent: root.menuItemStyle
-                        enabled: menuItem.enabled
+                        enabled: !isSeparator && menuItem.enabled
 
                         MouseArea {
                             id: itemMouseArea
@@ -304,14 +304,8 @@ MenuPrivate {
 
                         Binding {
                             target: menuItem
-                            property: "x"
-                            value: menuItemLoader.x
-                        }
-
-                        Binding {
-                            target: menuItem
-                            property: "y"
-                            value: menuItemLoader.y
+                            property: "__visualItem"
+                            value: menuItemLoader
                         }
                     }
                 }

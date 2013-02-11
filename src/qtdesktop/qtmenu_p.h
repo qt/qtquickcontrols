@@ -66,7 +66,7 @@ class QtMenu : public QtMenuItem
     Q_PROPERTY(bool popupVisible READ popupVisible NOTIFY popupVisibleChanged)
 
 public:
-    QtMenu(QQuickItem *parent = 0);
+    QtMenu(QObject *parent = 0);
     virtual ~QtMenu();
 
     int selectedIndex() const { return m_selectedIndex; }

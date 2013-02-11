@@ -120,13 +120,7 @@ BasicButton {
     height: implicitHeight
     checkable: false
 
-    onPressedChanged: { if (pressed) __popItUp() }
-
-    function __popItUp() {
-        popupOpen = true
-        popup.menuItems[selectedIndex].checked = true
-        popup.visible = true
-    }
+    onPressedChanged: { if (pressed) popup.show() }
 
     ExclusiveGroup { id: eg }
 
@@ -144,12 +138,23 @@ BasicButton {
     ContextMenu {
         id: popup
 
-        y: centerSelectedText ? 0 : comboBox.height
+        // 'centerSelectedText' means that the menu will be positioned
+        //  so that the selected text' top left corner will be at x, y.
+        property bool centerSelectedText: true
+
+        property int x: 0
+        property int y: centerSelectedText ? 0 : comboBox.height
         minimumWidth: comboBox.width
 
         function finalizeItem(item) {
             item.action.checkable = true
             item.action.exclusiveGroup = eg
+        }
+
+        function show() {
+            comboBox.popupOpen = true
+            menuItems[comboBox.selectedIndex].checked = true
+            showPopup(x, y, centerSelectedText ? comboBox.selectedIndex : 0, comboBox)
         }
 
         onMenuClosed: popupOpen = false
@@ -159,7 +164,7 @@ BasicButton {
     // not visible. Otherwise, native popup key handling will take place:
     Keys.onSpacePressed: {
         if (!popupOpen)
-            __popItUp()
+            popup.show()
         else
             popupOpen = false
     }

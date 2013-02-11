@@ -54,12 +54,6 @@ Menu {
     property string hoveredText: itemTextAt(hoveredIndex)
     property string textRole
 
-    // 'centerSelectedText' means that the menu will be positioned
-    //  so that the selected text' top left corner will be at x, y.
-    property bool centerSelectedText: true
-
-    visible: false
-    onMenuClosed: visible = false
     onModelChanged: if (Component.status === Component.Ready && model !== undefined) rebuildMenu()
 
     Component.onCompleted: if (model !== undefined) rebuildMenu()
@@ -72,11 +66,6 @@ Menu {
     onSelectedIndexChanged: {
         if (0 <= selectedIndex && selectedIndex < menuItems.length)
             menuItems[selectedIndex].triggered()
-    }
-
-    onVisibleChanged: {
-        if (visible)
-            showPopup(x, y, centerSelectedText ? selectedIndex : 0, parent)
     }
 
     function rebuildMenu()

@@ -58,7 +58,7 @@
 
 QT_BEGIN_NAMESPACE
 
-QtMenu::QtMenu(QQuickItem *parent)
+QtMenu::QtMenu(QObject *parent)
     : QtMenuItem(parent),
       m_selectedIndex(-1),
       m_highlightedIndex(0),
@@ -67,7 +67,6 @@ QtMenu::QtMenu(QQuickItem *parent)
       m_popupWindow(0),
       m_popupVisible(false)
 {
-    setFlag(QQuickItem::ItemHasContents, false);
     m_platformMenu = QGuiApplicationPrivate::platformTheme()->createPlatformMenu();
     if (m_platformMenu) {
         connect(m_platformMenu, SIGNAL(aboutToHide()), this, SLOT(closeMenu()));
@@ -152,7 +151,6 @@ void QtMenu::showPopup(qreal x, qreal y, int atItemIndex, QObject *reference)
         while (!atItem && atItemIndex < m_menuItems.size())
             atItem = qobject_cast<QtMenuItem *>(m_menuItems[atItemIndex++]);
 
-    QPointF screenPosition(mapToScene(QPoint(x, y)));
     setHoveredIndex(m_selectedIndex);
 
     QQuickItem *item = qobject_cast<QQuickItem *>(reference);
@@ -160,11 +158,14 @@ void QtMenu::showPopup(qreal x, qreal y, int atItemIndex, QObject *reference)
     QQuickWindow *parentWindow = item ? item->window() : qobject_cast<QQuickWindow *>(reference);
     if (!parentWindow) {
         QQuickItem *parentAsItem = qobject_cast<QQuickItem *>(parent());
-        parentWindow = parentAsItem ? parentAsItem->window() :
-                       parentItem() ? parentItem()->window() : window();
+        parentWindow = visualItem() ? visualItem()->window() :    // Menu as menu item case
+                       parentAsItem ? parentAsItem->window() : 0; //Menu as context menu/popup case
     }
 
     if (m_platformMenu) {
+        QPointF screenPosition(x, y);
+        if (item)
+            screenPosition = item->mapToScene(screenPosition);
         m_platformMenu->showPopup(parentWindow, screenPosition.toPoint(), atItem ? atItem->platformItem() : 0);
     } else {
         m_popupWindow = new QtMenuPopupWindow();
@@ -183,8 +184,8 @@ void QtMenu::showPopup(qreal x, qreal y, int atItemIndex, QObject *reference)
             y += parentWindow->geometry().top();
         }
 
-        if (atItem) {
-            QPointF pos = atItem->position();
+        if (atItem && atItem->visualItem()) {
+            QPointF pos = atItem->visualItem()->position();
             x -= pos.x();
             y -= pos.y();
         }
@@ -236,7 +237,6 @@ void QtMenu::clearMenuItems()
 QtMenuItem *QtMenu::addMenuItem(const QString &text)
 {
     QtMenuItem *menuItem = new QtMenuItem(this);
-    menuItem->setParentItem(this);
     menuItem->setText(text);
     m_menuItems.append(menuItem);
     if (QPlatformMenuItem *platformItem = menuItem->platformItem()) {
@@ -315,7 +315,6 @@ void QtMenu::append_menuItems(QQmlListProperty<QtMenuBase> *list, QtMenuBase *me
     QtMenu *menu = qobject_cast<QtMenu *>(list->object);
     if (menu) {
         menuItem->setParent(menu);
-        menuItem->setParentItem(menu);
         menu->m_menuItems.append(menuItem);
         if (menu->m_platformMenu)
             menu->m_platformMenu->insertMenuItem(menuItem->platformItem(), 0 /* append */);

@@ -42,15 +42,15 @@
 #include "qtaction_p.h"
 #include "qtmenu_p.h"
 
-#include <QtCore/QUrl>
 #include <QtGui/private/qguiapplication_p.h>
 #include <QtGui/qpa/qplatformtheme.h>
 #include <QtGui/qpa/qplatformmenu.h>
+#include <QtQuick/QQuickItem>
 
 QT_BEGIN_NAMESPACE
 
-QtMenuBase::QtMenuBase(QQuickItem *parent)
-    : QQuickItem(parent)
+QtMenuBase::QtMenuBase(QObject *parent)
+    : QObject(parent), m_visualItem(0)
 {
     m_platformItem = QGuiApplicationPrivate::platformTheme()->createPlatformMenuItem();
 }
@@ -68,6 +68,17 @@ void QtMenuBase::syncWithPlatformMenu()
         menu->platformMenu()->syncMenuItem(platformItem());
 }
 
+QQuickItem *QtMenuBase::visualItem() const
+{
+    return m_visualItem;
+}
+
+void QtMenuBase::setVisualItem(QQuickItem *item)
+{
+    m_visualItem = item;
+}
+
+
 /*!
     \qmltype MenuSeparator
     \instantiates QtMenuSeparator
@@ -79,7 +90,7 @@ void QtMenuBase::syncWithPlatformMenu()
     \sa Menu, MenuItem
 */
 
-QtMenuSeparator::QtMenuSeparator(QQuickItem *parent)
+QtMenuSeparator::QtMenuSeparator(QObject *parent)
     : QtMenuBase(parent)
 {
     if (platformItem())
@@ -185,7 +196,7 @@ QtMenuSeparator::QtMenuSeparator(QQuickItem *parent)
     \sa triggered(), Action::trigger()
 */
 
-QtMenuItem::QtMenuItem(QQuickItem *parent)
+QtMenuItem::QtMenuItem(QObject *parent)
     : QtMenuBase(parent), m_action(0)
 { }
 
