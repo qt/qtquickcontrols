@@ -206,6 +206,7 @@ MenuPrivate {
         function triggerAndDismiss() {
             var item = itemsRepeater.itemAt(root.hoveredIndex)
             if (item && !item.isSeparator) {
+                root.selectedIndex = root.hoveredIndex
                 item.menuItem.trigger()
                 root.dismissMenu()
             }
