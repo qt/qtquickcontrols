@@ -186,10 +186,8 @@ QtMenuSeparator::QtMenuSeparator(QQuickItem *parent)
 */
 
 QtMenuItem::QtMenuItem(QQuickItem *parent)
-    : QtMenuBase(parent)
-{
-    bindToAction(new QtAction(this));
-}
+    : QtMenuBase(parent), m_action(0)
+{ }
 
 QtMenuItem::~QtMenuItem()
 {
@@ -256,15 +254,24 @@ void QtMenuItem::unbindFromAction(QObject *o)
     disconnect(action, SIGNAL(iconSourceChanged()), this, SLOT(updateIconSource()));
 }
 
+QtAction *QtMenuItem::action()
+{
+    if (!m_action)
+        bindToAction(new QtAction(this));
+    return m_action;
+}
+
 void QtMenuItem::setAction(QtAction *a)
 {
     if (a == m_action)
         return;
 
-    if (m_action->parent() == this)
-        delete m_action;
-    else
-        unbindFromAction(m_action);
+    if (m_action) {
+        if (m_action->parent() == this)
+            delete m_action;
+        else
+            unbindFromAction(m_action);
+    }
 
     bindToAction(a);
     emit actionChanged();
@@ -277,8 +284,7 @@ QString QtMenuItem::text() const
 
 void QtMenuItem::setText(const QString &text)
 {
-    if (m_action)
-        m_action->setText(text);
+    action()->setText(text);
 }
 
 void QtMenuItem::updateText()
@@ -297,8 +303,7 @@ QString QtMenuItem::shortcut() const
 
 void QtMenuItem::setShortcut(const QString &shortcut)
 {
-    if (m_action)
-        m_action->setShortcut(shortcut);
+    action()->setShortcut(shortcut);
 }
 
 void QtMenuItem::updateShortcut()
@@ -317,8 +322,7 @@ bool QtMenuItem::checkable() const
 
 void QtMenuItem::setCheckable(bool checkable)
 {
-    if (m_action)
-        m_action->setCheckable(checkable);
+    action()->setCheckable(checkable);
 }
 
 bool QtMenuItem::checked() const
@@ -328,8 +332,7 @@ bool QtMenuItem::checked() const
 
 void QtMenuItem::setChecked(bool checked)
 {
-    if (m_action)
-        m_action->setChecked(checked);
+    action()->setChecked(checked);
 }
 
 void QtMenuItem::updateChecked()
@@ -349,8 +352,7 @@ bool QtMenuItem::enabled() const
 
 void QtMenuItem::setEnabled(bool enabled)
 {
-    if (m_action)
-        m_action->setEnabled(enabled);
+    action()->setEnabled(enabled);
 }
 
 void QtMenuItem::updateEnabled()
@@ -369,8 +371,7 @@ QUrl QtMenuItem::iconSource() const
 
 void QtMenuItem::setIconSource(const QUrl &iconSource)
 {
-    if (m_action)
-        m_action->setIconSource(iconSource);
+    action()->setIconSource(iconSource);
 }
 
 void QtMenuItem::updateIconSource()
@@ -393,8 +394,7 @@ QString QtMenuItem::iconName() const
 
 void QtMenuItem::setIconName(const QString &iconName)
 {
-    if (m_action)
-        m_action->setIconName(iconName);
+    action()->setIconName(iconName);
 }
 
 void QtMenuItem::updateIconName()
@@ -410,7 +410,8 @@ void QtMenuItem::updateIconName()
 
 void QtMenuItem::trigger()
 {
-    m_action->trigger();
+    if (m_action)
+        m_action->trigger();
 }
 
 QT_END_NAMESPACE

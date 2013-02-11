@@ -93,7 +93,7 @@ public:
     QtMenuItem(QQuickItem *parent = 0);
     ~QtMenuItem();
 
-    QtAction *action() const { return m_action; }
+    QtAction *action();
     void setAction(QtAction *a);
 
     QString text() const;
