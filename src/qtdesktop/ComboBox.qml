@@ -59,9 +59,7 @@ import "Styles/Settings.js" as Settings
       create items inside the popup menu
     bool popupOpen - setting this property to 'true' will open the popup.
     int selectedIndex - the index of the selected item in the popup menu.
-    int hoveredIndex - the index of the highlighted item in the popup menu.
     string selectedText - the text of the selected menu item.
-    string hoveredText - the text of the highlighted menu item.
 
     Example 1:
 
@@ -105,9 +103,7 @@ BasicButton {
     property bool popupOpen: false
 
     property alias selectedIndex: popup.selectedIndex
-    property alias hoveredIndex: popup.hoveredIndex
     property alias selectedText: popup.selectedText
-    property alias hoveredText: popup.hoveredText
     property var styleHints:[]
 
     style: Qt.createComponent(Settings.THEME_PATH + "/ComboBoxStyle.qml", comboBox)
@@ -154,6 +150,7 @@ BasicButton {
         function show() {
             comboBox.popupOpen = true
             menuItems[comboBox.selectedIndex].checked = true
+            currentIndex = comboBox.selectedIndex
             showPopup(x, y, centerSelectedText ? comboBox.selectedIndex : 0, comboBox)
         }
 

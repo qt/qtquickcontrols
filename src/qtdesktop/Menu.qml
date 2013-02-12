@@ -99,14 +99,6 @@ import "Styles/Settings.js" as Settings
 */
 
 /*!
-    \qmlproperty int Menu::hoveredIndex
-*/
-
-/*!
-    \qmlproperty int Menu::selectedIndex
-*/
-
-/*!
     \qmlproperty font Menu::font
 
     Write-only. For styling purposes only.
@@ -141,6 +133,8 @@ MenuPrivate {
 
     //! internal
     property var menuBar: null
+    //! internal
+    property int currentIndex: -1
 
     //! internal
     menuContentItem: Loader {
@@ -161,18 +155,18 @@ MenuPrivate {
         Keys.onEscapePressed: root.dismissMenu()
 
         Keys.onDownPressed: {
-            if (root.hoveredIndex < 0) {
-                root.hoveredIndex = 0
+            if (root.currentIndex < 0) {
+                root.currentIndex = 0
                 return
             }
 
-            for (var i = root.hoveredIndex + 1;
+            for (var i = root.currentIndex + 1;
                  i < root.menuItems.length && !canBeHovered(i); i++)
                 ;
         }
 
         Keys.onUpPressed: {
-            for (var i = root.hoveredIndex - 1;
+            for (var i = root.currentIndex - 1;
                  i >= 0 && !canBeHovered(i); i--)
                 ;
         }
@@ -180,7 +174,7 @@ MenuPrivate {
         function canBeHovered(index) {
             var item = itemsRepeater.itemAt(index)
             if (!item["isSeparator"] && item.enabled) {
-                root.hoveredIndex = index
+                root.currentIndex = index
                 return true
             }
             return false
@@ -192,10 +186,10 @@ MenuPrivate {
         }
 
         Keys.onRightPressed: {
-            var item = itemsRepeater.itemAt(root.hoveredIndex)
+            var item = itemsRepeater.itemAt(root.currentIndex)
             if (item && item.hasSubmenu) {
                 item.menuItem.showPopup(menuFrameLoader.subMenuXPos, 0, -1, item)
-                item.menuItem.hoveredIndex = 0
+                item.menuItem.currentIndex = 0
             }
         }
 
@@ -204,9 +198,9 @@ MenuPrivate {
         Keys.onEnterPressed: menuFrameLoader.triggerAndDismiss()
 
         function triggerAndDismiss() {
-            var item = itemsRepeater.itemAt(root.hoveredIndex)
+            var item = itemsRepeater.itemAt(root.currentIndex)
             if (item && !item.isSeparator) {
-                root.selectedIndex = root.hoveredIndex
+                root.selectedIndex = root.currentIndex
                 item.menuItem.trigger()
                 root.dismissMenu()
             }
@@ -224,7 +218,7 @@ MenuPrivate {
             anchors.fill: parent
             hoverEnabled: true
 
-            onExited: root.hoveredIndex = -1 // TODO Test for any submenu open
+            onExited: root.currentIndex = -1 // TODO Test for any submenu open
 
             // Each menu item has its own mouse area, and for events to be
             // propagated to the menu mouse area, they need to be embedded.
@@ -242,7 +236,7 @@ MenuPrivate {
                         property var menuItem: modelData
                         property bool isSeparator: !menuItem.hasOwnProperty("text")
                         property bool hasSubmenu: !!menuItem["menuItems"]
-                        property bool selected: !isSeparator && root.hoveredIndex === index
+                        property bool selected: !isSeparator && root.currentIndex === index
 
                         property alias mouseArea: itemMouseArea
                         property var menuItemsColumn: column
@@ -273,7 +267,7 @@ MenuPrivate {
                                     closeMenuTimer.start()
                             }
 
-                            onPositionChanged: root.hoveredIndex = index
+                            onPositionChanged: root.currentIndex = index
 
                             Connections {
                                 target: menuMouseArea

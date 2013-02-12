@@ -51,17 +51,11 @@ import QtDesktop 1.0
 Menu {
     id: root
     property string selectedText: itemTextAt(selectedIndex)
-    property string hoveredText: itemTextAt(hoveredIndex)
     property string textRole
 
     onModelChanged: if (Component.status === Component.Ready && model !== undefined) rebuildMenu()
 
     Component.onCompleted: if (model !== undefined) rebuildMenu()
-
-//    onHoveredIndexChanged: {
-//        if (hoveredIndex < menuItems.length)
-//            menuItems[hoveredIndex].hovered()
-//    }
 
     onSelectedIndexChanged: {
         if (0 <= selectedIndex && selectedIndex < menuItems.length)

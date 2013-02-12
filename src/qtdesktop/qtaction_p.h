@@ -106,11 +106,9 @@ public:
 
 public Q_SLOTS:
     void trigger();
-    void hover() { emit hovered(); }
 
 Q_SIGNALS:
     void triggered();
-    void hovered();
     void toggled(bool);
 
     void textChanged();

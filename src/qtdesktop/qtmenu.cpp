@@ -120,18 +120,6 @@ void QtMenu::setSelectedIndex(int index)
     emit selectedIndexChanged();
 }
 
-void QtMenu::setHoveredIndex(int index)
-{
-    if (m_highlightedIndex == index)
-        return;
-
-    m_highlightedIndex = index;
-//    QList<QAction *> actionList = m_qmenu->actions();
-//    if (m_highlightedIndex >= 0 && m_highlightedIndex < actionList.size())
-//        m_qmenu->setActiveAction(actionList[m_highlightedIndex]);
-    emit hoveredIndexChanged();
-}
-
 QQmlListProperty<QtMenuBase> QtMenu::menuItems()
 {
     return QQmlListProperty<QtMenuBase>(this, 0, &QtMenu::append_menuItems, &QtMenu::count_menuItems, &QtMenu::at_menuItems, 0);
@@ -150,8 +138,6 @@ void QtMenu::showPopup(qreal x, qreal y, int atItemIndex, QObject *reference)
     if (atItemIndex >= 0)
         while (!atItem && atItemIndex < m_menuItems.size())
             atItem = qobject_cast<QtMenuItem *>(m_menuItems[atItemIndex++]);
-
-    setHoveredIndex(m_selectedIndex);
 
     QQuickItem *item = qobject_cast<QQuickItem *>(reference);
 
@@ -244,7 +230,6 @@ QtMenuItem *QtMenu::addMenuItem(const QString &text)
             m_platformMenu->insertMenuItem(platformItem, 0 /* append */);
 
         connect(platformItem, SIGNAL(activated()), this, SLOT(emitSelected()));
-        connect(platformItem, SIGNAL(hovered()), this, SLOT(emitHovered()));
     }
 
     if (m_menuItems.size() == 1)
@@ -269,15 +254,6 @@ void QtMenu::emitSelected()
     }
 
     setSelectedIndex(index);
-}
-
-void QtMenu::emitHovered()
-{
-//    QAction *act = qobject_cast<QAction *>(sender());
-//    if (!act)
-//        return;
-//    m_highlightedIndex = m_qmenu->actions().indexOf(act);
-//    emit hoveredIndexChanged();
 }
 
 QString QtMenu::itemTextAt(int index) const

@@ -211,7 +211,6 @@ void QtMenuItem::bindToAction(QtAction *action)
 
     if (platformItem()) {
         connect(platformItem(), SIGNAL(activated()), m_action, SLOT(trigger()));
-        connect(platformItem(), SIGNAL(hovered()), m_action, SLOT(hover()));
     }
 
     connect(m_action, SIGNAL(destroyed(QObject*)), this, SLOT(unbindFromAction(QObject*)));
@@ -250,7 +249,6 @@ void QtMenuItem::unbindFromAction(QObject *o)
 
     if (platformItem()) {
         disconnect(platformItem(), SIGNAL(activated()), action, SLOT(trigger()));
-        disconnect(platformItem(), SIGNAL(hovered()), action, SLOT(hover()));
     }
 
     disconnect(action, SIGNAL(destroyed(QObject*)), this, SLOT(unbindFromAction(QObject*)));

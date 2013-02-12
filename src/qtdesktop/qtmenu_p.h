@@ -57,7 +57,6 @@ class QtMenu : public QtMenuItem
     Q_OBJECT
     Q_PROPERTY(QVariant model READ model WRITE setModel NOTIFY modelChanged)
     Q_PROPERTY(int selectedIndex READ selectedIndex WRITE setSelectedIndex NOTIFY selectedIndexChanged)
-    Q_PROPERTY(int hoveredIndex READ hoveredIndex WRITE setHoveredIndex NOTIFY hoveredIndexChanged)
     Q_PROPERTY(int minimumWidth READ minimumWidth WRITE setMinimumWidth NOTIFY minimumWidthChanged)
     Q_PROPERTY(QFont font WRITE setFont)
     Q_PROPERTY(QQmlListProperty<QtMenuBase> menuItems READ menuItems NOTIFY menuItemsChanged)
@@ -71,8 +70,6 @@ public:
 
     int selectedIndex() const { return m_selectedIndex; }
     void setSelectedIndex(int index);
-    int hoveredIndex() const { return m_highlightedIndex; }
-    void setHoveredIndex(int index);
 
     QQmlListProperty<QtMenuBase> menuItems();
 
@@ -127,7 +124,6 @@ public Q_SLOTS:
 Q_SIGNALS:
     void menuClosed();
     void selectedIndexChanged();
-    void hoveredIndexChanged();
     void modelChanged(const QVariant &newModel);
     void rebuildMenu();
     void minimumWidthChanged();
@@ -141,7 +137,6 @@ protected:
 
 protected Q_SLOTS:
     void emitSelected();
-    void emitHovered();
     void updateText();
     void windowVisibleChanged(bool);
 

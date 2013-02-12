@@ -166,7 +166,7 @@ MenuBarPrivate {
                                     if (menuBarLoader.openedMenuIndex === index) {
                                         menuItem.showPopup(0, root.height, 0, menuItemLoader)
                                         if (menuBarLoader.preselectMenuItem)
-                                            menuItem.hoveredIndex = 0
+                                            menuItem.currentIndex = 0
                                     } else {
                                         menuItem.closeMenu()
                                     }
