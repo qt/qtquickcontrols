@@ -187,7 +187,7 @@ MenuPrivate {
         }
 
         Keys.onLeftPressed: {
-            if (root.parent["menuItems"])
+            if (root.parentMenu)
                 closeMenu()
         }
 

@@ -288,6 +288,11 @@ void QtMenuItem::setAction(QtAction *a)
     emit actionChanged();
 }
 
+QtMenu *QtMenuItem::parentMenu() const
+{
+    return qobject_cast<QtMenu *>(parent());
+}
+
 QString QtMenuItem::text() const
 {
     return m_action ? m_action->text() : QString();

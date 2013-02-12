@@ -52,6 +52,7 @@ class QUrl;
 class QPlatformMenuItem;
 class QQuickItem;
 class QtAction;
+class QtMenu;
 
 class QtMenuBase: public QObject
 {
@@ -97,6 +98,7 @@ class QtMenuItem: public QtMenuBase
     Q_PROPERTY(QString iconName READ iconName WRITE setIconName NOTIFY iconNameChanged)
 
     Q_PROPERTY(QtAction *action READ action WRITE setAction NOTIFY actionChanged)
+    Q_PROPERTY(QtMenu *parentMenu READ parentMenu)
 
 public:
     QtMenuItem(QObject *parent = 0);
@@ -104,6 +106,8 @@ public:
 
     QtAction *action();
     void setAction(QtAction *a);
+
+    QtMenu *parentMenu() const;
 
     QString text() const;
     void setText(const QString &text);
