@@ -58,7 +58,7 @@ FocusScope {
         anchors.left: parent.left
         anchors.right: field.left
         height: field.height
-        width: 60
+        width: 80
         verticalAlignment: Text.AlignVCenter
         color: enabled? "white" : "grey"
         text: setupField.label + ": "

@@ -111,15 +111,15 @@ Item {
         id: styleitem
         elementType: "spinbox"
         anchors.fill: parent
-        sunken: (downEnabled && downPressed) | (upEnabled && upPressed)
+        sunken: (control.__downEnabled && control.__downPressed) || (control.__upEnabled && control.__upPressed)
         hover: __containsMouse
         hints: control.styleHints
         hasFocus: control.focus
         enabled: control.enabled
-        value: (upPressed ? 1 : 0)           |
-               (downPressed == 1 ? 1<<1 : 0) |
-               (upEnabled ? (1<<2) : 0)      |
-               (downEnabled == 1 ? (1<<3) : 0)
+        value: (control.__upPressed ? 1 : 0)           |
+               (control.__downPressed == 1 ? 1<<1 : 0) |
+               (control.__upEnabled ? (1<<2) : 0)      |
+               (control.__downEnabled == 1 ? (1<<3) : 0)
         contentWidth: 200
         contentHeight: 25
     }

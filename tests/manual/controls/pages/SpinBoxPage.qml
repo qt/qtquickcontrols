@@ -84,9 +84,9 @@ Page {
 
                 SetupField {
                     id: singleStep
-                    property variant defaultValue: spinbox.singleStep
+                    property variant defaultValue: spinbox.stepSize
                     property string title: "Step"
-                    onValidated: spinbox.singleStep = validatedValue
+                    onValidated: spinbox.stepSize = validatedValue
                 }
 
                 SetupField {
@@ -103,14 +103,7 @@ Page {
                     property string title: "Prefix"
                     property bool isText: true
                     enabled: false // not yet implemented
-                    // onValidated: spinbox.prefix = validatedValue
-                }
-
-                SetupField {
-                    id: inputmask
-                    property variant defaultValue: spinbox.inputMask
-                    property string title: "inputMask"
-                    onValidated: spinbox.inputMask = validatedValue
+                    onValidated: spinbox.prefix = validatedValue
                 }
 
                 SetupField {
@@ -118,6 +111,32 @@ Page {
                     property variant defaultValue: spinbox.value
                     property string title: "Value"
                     onValidated: spinbox.value = validatedValue
+                }
+
+                SetupField {
+                    id: font
+                    property variant defaultValue: spinbox.font.pixelSize
+                    property string title: "font"
+                    onValidated: spinbox.font.pixelSize = validatedValue
+                }
+
+                Item {
+                    height: decimalSpinBox.height
+                    width: parent.width
+
+                    Label {
+                        anchors.left: parent.left
+                        anchors.verticalCenter: parent.verticalCenter
+                        text: "Decimals"
+                        color: "white"
+                    }
+
+                    SpinBox {
+                        id: decimalSpinBox
+                        anchors.right: parent.right
+                        decimals: 0
+                        maximumValue: 5
+                    }
                 }
             }
 
@@ -141,7 +160,7 @@ Page {
                 }
 
                 CountField {
-                    id: signalSingleStepChangedCount
+                    id: signalStepSizeChangedCount
                     property string title: "SingleStep"
                 }
 
@@ -173,12 +192,12 @@ Page {
 
             BooleanField {
                 title: "UpEnabled"
-                status: spinbox.upEnabled
+                status: spinbox.__upEnabled
             }
 
             BooleanField {
                 title: "DownEnabled"
-                status: spinbox.downEnabled
+                status: spinbox.__downEnabled
             }
         }
 
@@ -188,12 +207,12 @@ Page {
 
             BooleanField {
                 title: "UpPressed"
-                status: spinbox.upPressed
+                status: spinbox.__upPressed
             }
 
             BooleanField {
                 title: "DownPressed"
-                status: spinbox.downPressed
+                status: spinbox.__downPressed
             }
         }
 
@@ -201,14 +220,14 @@ Page {
             id: spinbox
 
             width: parent.width
+            decimals: decimalSpinBox.value
 
             onMaximumValueChanged: signalMaximumValueChangedCount.increment()
             onMinimumValueChanged: signalMinimumValueChangedCount.increment()
-            onSingleStepChanged: signalSingleStepChangedCount.increment()
+            onStepSizeChanged: signalStepSizeChangedCount.increment()
             onSuffixChanged: signalSuffixChangedCount.increment()
             onValueChanged: signalValueChangedCount.increment()
-            // onPrefixChanged: signalPrefixChangedCount.increment() // not yet implemented
-            onInputMaskChanged:signalInputMaskChangedCount.increment()
+            onPrefixChanged: signalPrefixChangedCount.increment() // not yet implemented
         }
     }
 }

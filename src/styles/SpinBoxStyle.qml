@@ -75,8 +75,8 @@ Item {
         anchors.centerIn: parent
         implicitWidth: 12
         gradient: Gradient {
-            GradientStop {color: control.upPressed ? "lightgray" : "white" ; position: 0}
-            GradientStop {color: control.upPressed ? "lightgray" : "lightgray" ; position: 1}
+            GradientStop {color: control.__upPressed ? "lightgray" : "white" ; position: 0}
+            GradientStop {color: control.__upPressed ? "lightgray" : "lightgray" ; position: 1}
         }
         border.color: Qt.darker(backgroundColor, 2)
         Image {
@@ -88,8 +88,8 @@ Item {
     property Component downControl: Rectangle {
         implicitWidth: 12
         gradient: Gradient {
-            GradientStop {color: control.downPressed ? "lightgray" : "white" ; position: 0}
-            GradientStop {color: control.downPressed ? "lightgray" : "lightgray" ; position: 1}
+            GradientStop {color: control.__downPressed ? "lightgray" : "white" ; position: 0}
+            GradientStop {color: control.__downPressed ? "lightgray" : "lightgray" ; position: 1}
         }
         border.color: Qt.darker(backgroundColor, 2)
         Image {

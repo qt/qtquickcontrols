@@ -60,7 +60,7 @@ Item {
             spinbox.forceActiveFocus()
 
             compare(spinbox.maximumValue, 50)
-            spinbox.setValue(spinbox.maximumValue - 3)
+            spinbox.value = spinbox.maximumValue - 3
             keyPress(Qt.Key_Up)
             compare(spinbox.value, spinbox.maximumValue - 2)
             keyPress(Qt.Key_Up)
@@ -75,7 +75,7 @@ Item {
             spinbox.forceActiveFocus()
 
             compare(spinbox.minimumValue, 10)
-            spinbox.setValue(spinbox.minimumValue + 3)
+            spinbox.value = spinbox.minimumValue + 3
             keyPress(Qt.Key_Down)
             compare(spinbox.value, spinbox.minimumValue + 2)
             keyPress(Qt.Key_Down)
@@ -90,7 +90,7 @@ Item {
             spinbox.forceActiveFocus()
             setCoordinates(spinbox)
 
-            spinbox.setValue(spinbox.maximumValue - 3)
+            spinbox.value = spinbox.maximumValue - 3
             mouseClick(spinbox, upCoord.x, upCoord.y, Qt.LeftButton)
             compare(spinbox.value, spinbox.maximumValue - 2)
             mouseClick(spinbox, upCoord.x, upCoord.y, Qt.LeftButton)
@@ -105,7 +105,7 @@ Item {
             spinbox.forceActiveFocus()
             setCoordinates(spinbox)
 
-            spinbox.setValue(spinbox.minimumValue + 3)
+            spinbox.value = spinbox.minimumValue + 3
             mouseClick(spinbox, downCoord.x, downCoord.y, Qt.LeftButton)
             compare(spinbox.value, spinbox.minimumValue + 2)
             mouseClick(spinbox, downCoord.x, downCoord.y, Qt.LeftButton)
@@ -141,42 +141,98 @@ Item {
 
         function test_maxvalue() {
             var spinbox = Qt.createQmlObject('import QtDesktop 1.0; SpinBox {}', container, '')
-            spinbox.setValue(spinbox.maximumValue + 1)
+            spinbox.value = spinbox.maximumValue + 1
             compare(spinbox.value, spinbox.maximumValue)
         }
 
         function test_minvalue() {
             var spinbox = Qt.createQmlObject('import QtDesktop 1.0; SpinBox {}', container, '')
-            spinbox.setValue(spinbox.minimumValue - 1)
+            spinbox.value = spinbox.minimumValue - 1
             compare(spinbox.value, spinbox.minimumValue)
         }
 
-        function test_invalidvalue() {
+        function test_nanvalue() {
             var spinbox = Qt.createQmlObject('import QtDesktop 1.0; SpinBox {}', container, '')
-            spinbox.setValue("hello")
-            compare(spinbox.value.toString().toLowerCase(), "nan")
+            // It is not possible to set a string to the spinbox value.
+            // Nan is a valid number though
+            spinbox.value = NaN
+            compare(spinbox.value, NaN)
+            compare(spinbox.__text, "nan")
         }
 
-        function test_negativesinglestep()
+        function test_decimals() {
+            var spinbox = Qt.createQmlObject('import QtDesktop 1.0; SpinBox {}', container, '')
+
+            spinbox.decimals = 0
+            spinbox.value = 1.00001
+            compare(spinbox.value, 1)
+            compare(spinbox.__text, "1")
+
+            spinbox.decimals = 1
+            spinbox.value = 1.00001
+            compare(spinbox.value, 1)
+            compare(spinbox.__text, "1.0")
+            spinbox.value = 1.1
+            compare(spinbox.value, 1.1)
+            compare(spinbox.__text, "1.1")
+
+            spinbox.decimals = 5
+            spinbox.value = 1.00001
+            compare(spinbox.value, 1.00001)
+            compare(spinbox.__text, "1.00001")
+
+            spinbox.decimals = 6
+            compare(spinbox.value, 1.00001)
+            compare(spinbox.__text, "1.000010")
+        }
+
+        function test_stepsize()
         {
             var spinbox = Qt.createQmlObject('import QtDesktop 1.0; SpinBox {}', container, '')
             spinbox.forceActiveFocus()
 
-            spinbox.singleStep = -1
-            spinbox.setValue(5)
+            spinbox.stepSize = 2
+            spinbox.value = 10
+
+            compare(spinbox.value, 10)
+
+            keyPress(Qt.Key_Up)
+            compare(spinbox.value, 10 + spinbox.stepSize)
+
+            var previousValue = spinbox.value
+            keyPress(Qt.Key_Down)
+            compare(spinbox.value, previousValue - spinbox.stepSize)
+        }
+
+        function test_negativeStepSize()
+        {
+            var spinbox = Qt.createQmlObject('import QtDesktop 1.0; SpinBox {}', container, '')
+            spinbox.forceActiveFocus()
+
+            spinbox.minimumValue = -50
+            spinbox.maximumValue = 50
+
+            spinbox.stepSize = -2
+            spinbox.value = 5
 
             compare(spinbox.value, 5)
 
+            keyPress(Qt.Key_Up)
+            compare(spinbox.value, 5 + spinbox.stepSize)
+
             var previousValue = spinbox.value
-            keyPress(Qt.Key_Up)
+            keyPress(Qt.Key_Down)
+            compare(spinbox.value, previousValue - spinbox.stepSize)
 
-            expectFailContinue("", "QTCOMPONENTS-1284 - sign of singleStep should be ignored when incrementing value")
-            compare(spinbox.value, spinbox.value + Math.abs(spinbox.singleStep))
-            keyPress(Qt.Key_Up)
+            // test on the edges
 
-            previousValue = spinbox.value
-            expectFailContinue("", "QTCOMPONENTS-1284 - sign of singleStep should be ignored when decrementing value")
-            compare(spinbox.value, previousValue - Math.abs(spinbox.singleStep))
+            spinbox.value = -49
+            keyPress(Qt.Key_Up)
+            compare(spinbox.value, spinbox.minimumValue)
+
+            spinbox.value = 49
+            keyPress(Qt.Key_Down)
+            compare(spinbox.value, spinbox.maximumValue)
         }
 
         function setCoordinates(item)

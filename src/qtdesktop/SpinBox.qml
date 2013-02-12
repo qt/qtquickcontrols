@@ -51,14 +51,20 @@ import "Styles/Settings.js" as Settings
     SpinBox allows the user to choose a value by clicking the up/down buttons or pressing up/down on the keyboard to increase/decrease
     the value currently displayed. The user can also type the value in manually.
 
-    By default the SpinBox provides discrete values in the range [0-99] with a stepSize of 1.0.
+    By default the SpinBox provides discrete values in the range [0-99] with a \l stepSize of 1 and 0 \l decimals.
 
     \code
     SpinBox {
         id: spinbox
-        minimumValue: 0
-        maximumValue: 20
-        stepSize: 1.0
+    }
+    \endcode
+
+    Note that if you require decimal values you will need to set the \l decimals to a non 0 value.
+
+    \code
+    SpinBox {
+        id: spinbox
+        decimals: 2
     }
     \endcode
 
@@ -93,57 +99,23 @@ FocusScope {
     /*!
         The amount by which the \l value is incremented/decremented when a
         spin button is pressed.
-    */
-    property real singleStep: 1.0
 
-    /*!
-        \qmlproperty string SpinBox::inputMask
-
-        The input mask for the text input. See \l TextInput
+        The default value is 1.0.
     */
-    property alias inputMask: input.inputMask
+    property real stepSize: 1.0
 
-    /*!
-        The suffix for the text content.
-    */
+    /*! The suffix for the value. I.e "cm" */
     property string suffix
-    //property string prefix ### not implemented
 
-    /*! \internal */
-    property var styleHints:[]
+    /*! The prefix for the value. I.e "$" */
+    property string prefix
 
-    /*!
-        This property indicates if the up/increment button is currently enabled.
+    /*! This property indicates the amount of decimals.
+      Note that if you enter more decimals than specified, they will
+      be truncated to the specified amount of decimal places.
+      The default value is \c 0
     */
-    readonly property bool upEnabled: value != maximumValue;
-
-    /*!
-        This property indicates if the down/decrement button is currently enabled.
-    */
-    readonly property bool downEnabled: value != minimumValue;
-
-    /*!
-        \qmlproperty bool SpinBox::upPressed
-
-        This property indicates if the up/increment button is currently being pressed.
-    */
-    readonly property alias upPressed: mouseUp.pressed
-
-    /*!
-        \qmlproperty bool SpinBox::downPressed
-
-        This property indicates if the down/decrement button is currently being pressed.
-    */
-    readonly property alias downPressed: mouseDown.pressed
-
-    // These are currently only needed for styling
-
-    /*! \internal */
-    property alias __upHovered: mouseUp.containsMouse
-    /*! \internal */
-    property alias __downHovered: mouseDown.containsMouse
-    /*! \internal */
-    property alias __containsMouse: mouseArea.containsMouse
+    property int decimals: 0
 
     /*! \qmlproperty font SpinBox::font
 
@@ -151,8 +123,57 @@ FocusScope {
     */
     property alias font: input.font
 
+
     /*! \internal */
     property Component style: Qt.createComponent(Settings.THEME_PATH + "/SpinBoxStyle.qml", spinbox)
+
+    /*! \internal */
+    function __increment() {
+        input.setValue(input.text)
+        value += stepSize
+        if (value > maximumValue)
+            value = maximumValue
+        input.text = value.toFixed(decimals)
+    }
+
+    /*! \internal */
+    function __decrement() {
+        input.setValue(input.text)
+        value -= stepSize
+        if (value < minimumValue)
+            value = minimumValue
+        input.text =  value.toFixed(decimals)
+    }
+
+    /*! \internal */
+    readonly property bool __upEnabled: value != maximumValue;
+    /*! \internal */
+    readonly property bool __downEnabled: value != minimumValue;
+    /*! \internal */
+    readonly property alias __upPressed: mouseUp.pressed
+    /*! \internal */
+    readonly property alias __downPressed: mouseDown.pressed
+    /*! \internal */
+    property var styleHints:[]
+    /*! \internal */
+    property alias __upHovered: mouseUp.containsMouse
+    /*! \internal */
+    property alias __downHovered: mouseDown.containsMouse
+    /*! \internal */
+    property alias __containsMouse: mouseArea.containsMouse
+    /*! \internal */
+    property alias __text: input.text
+
+    /*! \internal */
+    onDecimalsChanged: input.setValue(value)
+    /*! \internal */
+    onMaximumValueChanged: input.setValue(value)
+    /*! \internal */
+    onMinimumValueChanged: input.setValue(value)
+    /*! \internal */
+    Component.onCompleted: input.setValue(value)
+    /*! \internal */
+    onValueChanged: input.setValue(value)
 
     Accessible.name: input.text
     Accessible.role: Accessible.SpinBox
@@ -162,54 +183,6 @@ FocusScope {
 
     implicitWidth: loader.item ? loader.item.implicitWidth : 0
     implicitHeight: loader.item ? loader.item.implicitHeight : 0
-
-    /*!
-        Increments \l value by \l singleStep, clamping to \l maximumValue
-        if the new value is too large.
-    */
-    function increment() {
-        setValue(input.text)
-        value += singleStep
-        if (value > maximumValue)
-            value = maximumValue
-        input.text = value
-    }
-
-    /*!
-        Increments \l value by \l singleStep, clamping to \l minimumValue
-        if the new value is too small.
-    */
-    function decrement() {
-        setValue(input.text)
-        value -= singleStep
-        if (value < minimumValue)
-            value = minimumValue
-        input.text = value
-    }
-
-    /*!
-        Sets \l value to \a v, clamping to \l minimumValue and \l maximumValue
-        if \a v is not within this range.
-    */
-    function setValue(v) {
-        var newval = parseFloat(v)
-        if (newval > maximumValue)
-            newval = maximumValue
-        else if (v < minimumValue)
-            newval = minimumValue
-        value = newval
-        input.text = value
-    }
-
-    /*! \internal */
-    Component.onCompleted: setValue(value)
-
-    /*! \internal */
-    onValueChanged: {
-        input.valueUpdate = true
-        input.text = value
-        input.valueUpdate = false
-    }
 
     Loader {
         id: loader
@@ -224,12 +197,25 @@ FocusScope {
         hoverEnabled: true
     }
 
-    // Spinbox input field
-
     TextInput {
         id: input
 
-        property bool valueUpdate: false
+        function setValue(v) {
+            var newval = parseFloat(v)
+
+            if (!isNaN(newval)) {
+                if (newval > maximumValue)
+                    newval = maximumValue
+                else if (v < minimumValue)
+                    newval = minimumValue
+                newval = newval.toFixed(decimals)
+                spinbox.value = parseFloat(newval)
+                input.text = newval
+            } else {
+                input.text = parseFloat(spinbox.value)
+            }
+        }
+
         property Item styleItem: loader.item
 
         clip: true
@@ -243,8 +229,8 @@ FocusScope {
         anchors.bottomMargin: styleItem ? styleItem.bottomMargin: 0
         selectByMouse: true
 
-        // validator: DoubleValidator { bottom: minimumValue; top: maximumValue; }
-        onAccepted: {setValue(input.text)}
+        validator: DoubleValidator { bottom: minimumValue; top: maximumValue; }
+        onAccepted: setValue(input.text)
         onActiveFocusChanged: setValue(input.text)
         color: loader.item ? loader.item.foregroundColor : "black"
         selectionColor: loader.item ? loader.item.selectionColor : "black"
@@ -278,7 +264,7 @@ FocusScope {
         width: upRect ? upRect.width : 0
         height: upRect ? upRect.height : 0
 
-        onClicked: increment()
+        onClicked: __increment()
 
         property bool autoincrement: false;
         onReleased: autoincrement = false
@@ -292,7 +278,7 @@ FocusScope {
         id: mouseDown
         hoverEnabled: true
 
-        onClicked: decrement()
+        onClicked: __decrement()
         property var downRect: loader.item ? loader.item.downRect : null
 
         anchors.left: parent.left
@@ -310,6 +296,6 @@ FocusScope {
         Timer { running: mouseDown.autoincrement; interval: 60 ; repeat: true ; onTriggered: decrement() }
     }
 
-    Keys.onUpPressed: increment()
-    Keys.onDownPressed: decrement()
+    Keys.onUpPressed: __increment()
+    Keys.onDownPressed: __decrement()
 }
