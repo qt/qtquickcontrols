@@ -64,14 +64,13 @@ import "Styles/Settings.js" as Settings
     Example 1:
 
     \qml
-       ListModel {
-           id: menuItems
-           ListElement { text: "Banana"; color: "Yellow" }
-           ListElement { text: "Apple"; color: "Green" }
-           ListElement { text: "Coconut"; color: "Brown" }
-       }
        ComboBox {
-           model: menuItems
+           model: ListModel {
+               id: menuItems
+               ListElement { text: "Banana"; color: "Yellow" }
+               ListElement { text: "Apple"; color: "Green" }
+               ListElement { text: "Coconut"; color: "Brown" }
+           }
            width: 200
            onSelectedIndexChanged: console.debug(selectedText + ", " + menuItems.get(selectedIndex).color)
        }
