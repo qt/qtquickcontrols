@@ -143,12 +143,32 @@ Item {
             var spinbox = Qt.createQmlObject('import QtDesktop 1.0; SpinBox {}', container, '')
             spinbox.value = spinbox.maximumValue + 1
             compare(spinbox.value, spinbox.maximumValue)
+
+            spinbox.maximumValue = 0;
+            spinbox.minimumValue = 0;
+            spinbox.value = 10;
+            compare(spinbox.value, 0)
+
+            spinbox.maximumValue = 5;
+            spinbox.minimumValue = 0;
+            spinbox.value = 10;
+            compare(spinbox.value, 5)
         }
 
         function test_minvalue() {
             var spinbox = Qt.createQmlObject('import QtDesktop 1.0; SpinBox {}', container, '')
             spinbox.value = spinbox.minimumValue - 1
             compare(spinbox.value, spinbox.minimumValue)
+
+            spinbox.maximumValue = 0;
+            spinbox.minimumValue = 6;
+            spinbox.value = 3;
+            compare(spinbox.value, 6)
+
+            spinbox.maximumValue = 10;
+            spinbox.minimumValue = 6;
+            spinbox.value = 0;
+            compare(spinbox.value, 6)
         }
 
         function test_nanvalue() {

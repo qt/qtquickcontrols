@@ -90,7 +90,8 @@ FocusScope {
 
     /*!
         The maximum value of the SpinBox range.
-        The \l value is clamped to this value.
+        The \l value is clamped to this value. If maximumValue is smaller than
+        \l minimumValue, \l minimumValue will be enforced.
 
         The default value is \c 99
     */
@@ -249,7 +250,8 @@ FocusScope {
                 var newval = parseFloat(v)
 
                 if (!isNaN(newval)) {
-                    if (newval > maximumValue)
+                    // we give minimumValue priority over maximum if they are inconsistent
+                    if (newval > maximumValue && maximumValue >= minimumValue)
                         newval = maximumValue
                     else if (v < minimumValue)
                         newval = minimumValue
