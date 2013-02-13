@@ -138,6 +138,12 @@ MenuPrivate {
 
     //! internal
     menuContentItem: Loader {
+        sourceComponent: menuComponent
+        active: !root.isNative && root.popupVisible
+        focus: true
+    }
+
+    property Component menuComponent: Loader {
         id: menuFrameLoader
 
         property var menu: root
@@ -147,7 +153,6 @@ MenuPrivate {
         property int itemWidth: item ? item.implicitWidth : 0
 
         visible: menu.popupVisible && status === Loader.Ready
-        active: !menu.isNative && menu.popupVisible
         sourceComponent: menuFrameStyle
 
         focus: true
