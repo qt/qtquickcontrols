@@ -15,11 +15,11 @@ depends = qtqml qtquick qtwidgets qtdoc
 
 exampledirs += ../../../examples/
 
-headerdirs += ../ ../../styles
+headerdirs += ../
 
-sourcedirs += ../ ../../styles
+sourcedirs += ../
 
-excludedirs += ../private ../../styles/Desktop
+excludedirs += ../private ../../styles
 
 imagedirs += images
 
