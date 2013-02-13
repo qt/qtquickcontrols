@@ -46,27 +46,113 @@ import "Styles/Settings.js" as Settings
     \qmltype GroupBox
     \inqmlmodule QtDesktop 1.0
     \ingroup controls
-    \brief GroupBox is doing bla...bla...
+    \brief GroupBox provides a group box frame with a title
+
+    A group box provides a frame, a title on top and displays various other controls inside itself. Group boxes can also be checkable.
+
+    Child controls in checkable group boxes are enabled or disabled depending on whether or not the group box is checked.
+
+    You can minimize the space consumption of a group box by enabling the flat property.
+    In most styles, enabling this property results in the removal of the left, right and bottom edges of the frame.
+
+    GroupBox doesn't automatically lay out the child controls (which are often \l{CheckBox}{CheckBoxes} or \l{RadioButton}{RadioButtons} but can be any controls).
+    The following example shows how we can set up a GroupBox with a column:
+
+    \qml
+        GroupBox {
+            title: "Package selection"
+            adjustToContentSize: true
+            Column {
+                CheckBox {
+                    text: "Update system"
+                }
+                CheckBox {
+                    text: "Update applications"
+                }
+                CheckBox {
+                    text: "Update documentation"
+                }
+            }
+        }
+    \endqml
 */
 
 Item {
     id: groupbox
-    implicitWidth: Math.max(200, contentWidth + (loader.item ? loader.item.implicitWidth: 0) )
-    implicitHeight: contentHeight + (loader.item ? loader.item.implicitHeight : 0) + 4
 
+    /*!
+        This property holds the group box title text.
+
+        There is no default title text.
+    */
+    property string title
+
+    /*!
+        This property holds whether the group box is painted flat or has a frame.
+
+        A group box usually consists of a surrounding frame with a title at the top.
+        If this property is enabled, only the top part of the frame is drawn in most styles;
+        otherwise, the whole frame is drawn.
+
+        By default, this property is disabled, i.e., group boxes are not flat unless explicitly specified.
+
+        \note In some styles, flat and non-flat group boxes have similar representations and may not be as
+              distinguishable as they are in other styles.
+    */
+    property bool flat: false
+
+    /*!
+        This property holds whether the group box has a checkbox in its title.
+
+        If this property is true, the group box displays its title using a checkbox in place of an ordinary label.
+        If the checkbox is checked, the group box's children are enabled; otherwise, they are disabled and inaccessible.
+
+        By default, group boxes are not checkable.
+    */
+    property bool checkable: false
+
+    /*!
+        \qmlproperty bool GroupBox::checked
+
+        This property holds whether the group box is checked.
+
+        If the group box is checkable, it is displayed with a check box. If the check box is checked, the group
+        box's children are enabled; otherwise, the children are disabled and are inaccessible to the user.
+
+        By default, checkable group boxes are also checked.
+    */
+    property alias checked: check.checked
+
+    /*!
+        This property holds the width of the content.
+    */
+    readonly property real contentWidth: content.childrenRect.width
+
+    /*!
+        This property holds the height of the content.
+    */
+    readonly property real contentHeight: content.childrenRect.height
+
+    /*!
+        This property holds whether the group box resizes itself to fit the contents.
+
+        By default, group boxes do not resize itself to fit the contents.
+
+        \note When adjustToContentSize is enabled, children cannot be anchored.
+    */
+    property bool adjustToContentSize: false
+
+    /*! \internal */
+    property Component style: Qt.createComponent(Settings.THEME_PATH + "/GroupBoxStyle.qml", groupbox)
+
+    /*! \internal */
     default property alias data: content.data
 
-    property string title
-    property bool flat: false
-    property bool checkable: false
-    property int contentWidth: content.childrenRect.width
-    property int contentHeight: content.childrenRect.height
+    /*! \internal */
+    property alias __checkbox: check
 
-    property Item checkbox: check
-    property alias checked: check.checked
-    property bool adjustToContentSize: false // Resizes groupbox to fit contents.
-                                             // Note when using this, you cannot anchor children
-    property Component style: Qt.createComponent(Settings.THEME_PATH + "/GroupBoxStyle.qml", groupbox)
+    implicitWidth: Math.max(200, contentWidth + (loader.item ? loader.item.implicitWidth: 0) )
+    implicitHeight: contentHeight + (loader.item ? loader.item.implicitHeight : 0) + 4
 
     Accessible.role: Accessible.Grouping
     Accessible.name: title
