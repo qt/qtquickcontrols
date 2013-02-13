@@ -153,9 +153,9 @@ import "Private/PageStack.js" as JSArray
     \l{http://doc.qt.nokia.com/latest/qml-component.html}{Component}. To push it, you assign it
     to a property "page" inside a property list, and send it as argument to \l{PageStack::push}{push}:
 
-    \qml
-        pageStack.push({page: yourPage})
-    \endqml
+    \code
+    pageStack.push({page: yourPage})
+    \endcode
 
     The list can contain several properties that controls how the page should be pushed:
     \list
@@ -180,9 +180,9 @@ import "Private/PageStack.js" as JSArray
     If the only argument needed is "page", you can also, as a short-hand
     notation, do:
 
-    \qml
+    \code
     pageStack.push(yourPage).
-    \endqml
+    \endcode
 
     You can push several pages in one go by using an array of property lists. This is
     optimizing compared to pushing pages one by one, since PageStack then can load only the
@@ -190,9 +190,9 @@ import "Private/PageStack.js" as JSArray
     the current page (which happends when the stack is popped). The following example shows how
     to push an array of pages:
 
-    \qml
-        pageStack.push([{page: yourPage1}, {page: yourPage2}])
-    \endqml
+    \code
+    pageStack.push([{page: yourPage1}, {page: yourPage2}])
+    \endcode
 
     If inline pages/items are pushed, the page gets re-parented into an internal
     container in the PageStack. When the page is later popped off, it gets
@@ -210,9 +210,9 @@ import "Private/PageStack.js" as JSArray
     its about to become the current page (in case of an inline item). This normally happends when
     the page is pushed. The following example shows how this can be done:
 
-    \qml
+    \code
     pageStack.push({page: examplePage, properties: {fgcolor: "red", bgcolor: "blue"}});
-    \endqml
+    \endcode
 
     Note that if a page is declared in an item that is destroyed - even if a component
     was used - then that page also gets destroyed.
@@ -261,19 +261,19 @@ import "Private/PageStack.js" as JSArray
     the bottom of the stack if null is given as the target page, the code works well even in the
     case that no matching page was found.
 
-    \qml
+    \code
     pageStack.pop(pageStack.find(function(page) {
         return page.name == "foo";
     }));
-    \endqml
+    \endcode
 
     You can also get to a page in the page stack using get(index). You should use
     this function if your page depends on another page in the stack, as the function will
     ensure that the page at the given index gets loaded before it is returned.
 
-    \qml
+    \code
     previousPage = pageStack.get(myPage.index - 1));
-    \endqml
+    \endcode
 
     \section1 Transitions
 
@@ -381,12 +381,12 @@ import "Private/PageStack.js" as JSArray
     The base implementation of this function just looks for a property named \c properties.name inside
     itself (root), which is how it finds \c {property Component pushAnimation} in the examples above.
 
-    \qml
+    \code
     function getAnimation(properties)
     {
         return root[properties.name]
     }
-    \endqml
+    \endcode
 
     You can override this function for your transition if you need extra logic to decide which
     animation to run. You could for example introspect the pages, and return different animations
@@ -764,6 +764,7 @@ Item {
         __currentPage = null
     }
 
+    /*! \internal */
     function __recursionGuard(use)
     {
         if (use && __guard) {
