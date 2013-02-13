@@ -70,7 +70,7 @@ Item {
         \qmlproperty enum Slider::orientation
 
         This property holds the layout orientation of the slider.
-        The default value is \code Qt.Horizontal
+        The default value is \c Qt.Horizontal
     */
     property int orientation: Qt.Horizontal
 
@@ -78,7 +78,7 @@ Item {
         \qmlproperty double Slider::minimumValue
 
         This property holds the minimum value of the Slider
-        The default value is \code 0.0
+        The default value is \c 0.0
     */
     property alias minimumValue: range.minimumValue
 
@@ -86,11 +86,11 @@ Item {
         \qmlproperty double Slider::maximumValue
 
         This property holds the maximum value of the Slider
-        The default value is \code 1.0
+        The default value is \c 1.0
     */
     property alias maximumValue: range.maximumValue
 
-    /* \internal */
+    /*! \internal */
     property alias inverted: range.inverted
 
 
@@ -102,7 +102,7 @@ Item {
         The property can for instance be used if changing the slider value can be
         time consuming.
 
-        The default value is \code true
+        The default value is \c true
     */
     property bool updateValueWhileDragging: true
 
@@ -124,14 +124,14 @@ Item {
         Any non 0 value indicates a discrete stepSize. The following example
         will generate a slider with integer values in the range [0-5]
 
-        \code
+        \qml
         Slider {
             maximumValue: 5.0
             stepSize: 1.0
         }
-        \endcode
+        \endqml
 
-        The default value is \code 0
+        The default value is \c 0
     */
     property alias stepSize: range.stepSize
 
@@ -140,7 +140,7 @@ Item {
         \qmlproperty double Slider::value
 
         This property holds the current value of the Slider
-        The default value is \code 0.0
+        The default value is \c 0.0
     */
     property alias value: range.value
 
@@ -161,11 +161,11 @@ Item {
         This property indicates if the Slider should display tickmarks
         at step intervals.
 
-        The default value is \code false
+        The default value is \c false
     */
     property bool tickmarksEnabled: false
 
-    /* \internal*/
+    /*! \internal */
     property string tickPosition: "Below" // "Above", "Below", "BothSides"
 
     Accessible.role: Accessible.Slider
@@ -177,17 +177,17 @@ Item {
         This method returns the current slider value in a way that is more suitable
         for user display, such as the \l value rounded to only two decimal places.
 
-        By default this function returns the nearest \code int value.
+        By default this function returns the nearest \c int value.
     */
 
     function formatValue(v) {
         return Math.round(v);
     }
 
-    /* \internal */
+    /*! \internal */
     property var styleHints:[]
 
-    /* \internal */
+    /*! \internal */
     property Component style: Qt.createComponent(Settings.THEME_PATH + "/SliderStyle.qml", slider)
 
     Keys.onRightPressed: value += (maximumValue - minimumValue)/10.0
