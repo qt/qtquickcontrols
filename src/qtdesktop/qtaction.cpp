@@ -186,6 +186,7 @@ void QtAction::setIconSource(const QUrl &iconSource)
         m_icon = QIcon::fromTheme(iconName, m_icon);
 
     emit iconSourceChanged();
+    emit iconChanged();
 }
 
 QString QtAction::iconName() const
@@ -200,6 +201,7 @@ void QtAction::setIconName(const QString &iconName)
 
     m_icon = QIcon::fromTheme(iconName, QIcon(m_iconSource.toLocalFile()));
     emit iconNameChanged();
+    emit iconChanged();
 }
 
 void QtAction::setToolTip(const QString &arg)

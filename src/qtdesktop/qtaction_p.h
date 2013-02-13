@@ -43,6 +43,7 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QUrl>
+#include <QtCore/QVariant>
 #include <QtGui/QIcon>
 #include <QtGui/qkeysequence.h>
 
@@ -57,6 +58,7 @@ class QtAction : public QObject
     Q_PROPERTY(QString text READ text WRITE setText NOTIFY textChanged)
     Q_PROPERTY(QUrl iconSource READ iconSource WRITE setIconSource NOTIFY iconSourceChanged)
     Q_PROPERTY(QString iconName READ iconName WRITE setIconName NOTIFY iconNameChanged)
+    Q_PROPERTY(QVariant __icon READ iconVariant NOTIFY iconChanged)
     Q_PROPERTY(QString toolTip READ tooltip WRITE setToolTip NOTIFY toolTipChanged)
     Q_PROPERTY(bool enabled READ isEnabled WRITE setEnabled NOTIFY enabledChanged)
     Q_PROPERTY(bool checkable READ isCheckable WRITE setCheckable NOTIFY checkableChanged)
@@ -103,7 +105,8 @@ public:
     void setExclusiveGroup(QtExclusiveGroup * arg);
 
     QIcon icon() const { return m_icon; }
-    void setIcon(QIcon icon) { m_icon = icon; }
+    QVariant iconVariant() const { return QVariant(m_icon); }
+    void setIcon(QIcon icon) { m_icon = icon; emit iconChanged(); }
 
     bool event(QEvent *e);
 
@@ -118,6 +121,7 @@ Q_SIGNALS:
     void shortcutChanged(QString shortcut);
     void mnemonicChanged(QString mnemonic);
 
+    void iconChanged();
     void iconNameChanged();
     void iconSourceChanged();
     void toolTipChanged(QString arg);

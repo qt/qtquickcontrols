@@ -370,8 +370,9 @@ void QStyleItem::initStyleOption()
                 } else {
                     opt->menuItemType = QStyleOptionMenuItem::Normal;
                 }
-                // XXX TODO: icon
             }
+            if (m_properties["icon"].canConvert<QIcon>())
+                opt->icon = m_properties["icon"].value<QIcon>();
         }
     }
         break;

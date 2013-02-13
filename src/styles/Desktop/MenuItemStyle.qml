@@ -60,6 +60,7 @@ StyleItem {
         "checkable": !!menuItem["checkable"],
         "exclusive": !!menuItem["action"] && !!menuItem.action["exclusiveGroup"],
         "shortcut": menuItem["shortcut"] || "",
-        "hasSubmenu": hasSubmenu
+        "hasSubmenu": hasSubmenu,
+        "icon": !!menuItem["action"] ? menuItem.action.__icon : null
     }
 }

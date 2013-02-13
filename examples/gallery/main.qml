@@ -87,6 +87,7 @@ ApplicationWindow {
             id: openAction
             text: "&Open"
             shortcut: "Ctrl+O"
+            iconSource: "images/document-open.png"
             onTriggered: console.log("Imagine a gorgeous file dialog...")
         }
 
