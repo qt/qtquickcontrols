@@ -390,12 +390,8 @@ void QtMenuItem::setIconSource(const QUrl &iconSource)
 
 void QtMenuItem::updateIconSource()
 {
-    QIcon icon = QIcon(iconSource().toLocalFile());
-    if (!iconName().isEmpty())
-        icon = QIcon::fromTheme(iconName(), icon);
-
     if (platformItem()) {
-        platformItem()->setIcon(icon);
+        platformItem()->setIcon(m_action->icon());
         syncWithPlatformMenu();
     }
     emit iconSourceChanged();
@@ -413,10 +409,8 @@ void QtMenuItem::setIconName(const QString &iconName)
 
 void QtMenuItem::updateIconName()
 {
-    QIcon icon = QIcon::fromTheme(iconName(), QIcon(iconSource().toLocalFile()));
-
     if (platformItem()) {
-        platformItem()->setIcon(icon);
+        platformItem()->setIcon(m_action->icon());
         syncWithPlatformMenu();
     }
     emit iconNameChanged();

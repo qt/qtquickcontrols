@@ -81,7 +81,7 @@ public:
     QString mnemonic() const;
     void setMnemonic(const QString &mnemonic);
 
-    QString iconName() const { return m_iconName; }
+    QString iconName() const;
     void setIconName(const QString &iconName);
 
     QUrl iconSource() const { return m_iconSource; }
@@ -101,6 +101,9 @@ public:
 
     QtExclusiveGroup *exclusiveGroup() const { return m_exclusiveGroup; }
     void setExclusiveGroup(QtExclusiveGroup * arg);
+
+    QIcon icon() const { return m_icon; }
+    void setIcon(QIcon icon) { m_icon = icon; }
 
     bool event(QEvent *e);
 
@@ -126,7 +129,7 @@ Q_SIGNALS:
 private:
     QString m_text;
     QUrl m_iconSource;
-    QString m_iconName;
+    QIcon m_icon;
     bool m_enabled;
     bool m_checkable;
     bool m_checked;

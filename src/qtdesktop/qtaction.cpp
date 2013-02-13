@@ -180,15 +180,25 @@ void QtAction::setIconSource(const QUrl &iconSource)
         return;
 
     m_iconSource = iconSource;
+    QString iconName = m_icon.name();
+    m_icon = QIcon(m_iconSource.toLocalFile());
+    if (!iconName.isEmpty())
+        m_icon = QIcon::fromTheme(iconName, m_icon);
+
     emit iconSourceChanged();
+}
+
+QString QtAction::iconName() const
+{
+    return m_icon.name();
 }
 
 void QtAction::setIconName(const QString &iconName)
 {
-    if (iconName == m_iconName)
+    if (iconName == m_icon.name())
         return;
 
-    m_iconName = iconName;
+    m_icon = QIcon::fromTheme(iconName, QIcon(m_iconSource.toLocalFile()));
     emit iconNameChanged();
 }
 
