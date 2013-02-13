@@ -86,8 +86,6 @@ FocusScope {
     height: 100
 
     /*!
-        \qmlproperty bool ScrollArea:frame
-
         This property tells the scroll area if it should render
         a frame around it's content.
 
@@ -96,18 +94,18 @@ FocusScope {
     property bool frame: false
 
     /*!
-        \qmlproperty bool ScrollArea:highlightOnFocus
-
         This property controls if there should be a highlight
         around the frame when the ScrollArea has input focus.
 
-        \Note this property is only applicable on some platforms, such
+        The default value is \c false
+
+        \note This property is only applicable on some platforms, such
         as Mac OS.
     */
     property bool highlightOnFocus: false
 
     /*!
-        \qmlproperty Item ScrollArea:viewport
+        \qmlproperty Item ScrollArea::viewport
 
         The viewport determines the current "window" on to the contentItem.
         In other words it clips it and the size of the viewport tells you
@@ -116,7 +114,7 @@ FocusScope {
     property alias viewport: viewportItem
 
     /*!
-        \qmlproperty Item ScrollArea:flickableItem
+        \qmlproperty Item ScrollArea::flickableItem
 
         The flickableItem of the ScrollArea. If the contentItem provided
         to the ScrollArea is a Flickable, it will be the \l contentItem.
@@ -124,8 +122,6 @@ FocusScope {
     readonly property alias flickableItem: internal.flickableItem
 
     /*!
-        \qmlproperty Item ScrollArea:contentItem
-
         The contentItem of the ScrollArea. This is set by the user.
 
         Note that the definition of contentItem is somewhat different to that
@@ -133,15 +129,16 @@ FocusScope {
     */
     default property Item contentItem
 
-    /* \private */
+    /*! \internal */
     property Item __scroller: scroller
-    /* \private */
+    /*! \internal */
     property int __scrollBarTopMargin: 0
-    /* \private */
+    /*! \internal */
     property alias horizontalScrollBar: scroller.horizontalScrollBar
-    /* \private */
+    /*! \internal */
     property alias verticalScrollBar: scroller.verticalScrollBar
 
+    /*! \internal */
     onContentItemChanged: {
 
         if (contentItem.hasOwnProperty("contentY") && // Check if flickable
