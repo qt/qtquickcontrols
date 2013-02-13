@@ -123,6 +123,11 @@ FocusScope {
     */
     property alias font: input.font
 
+    /*! This property indicates if the Spinbox should get active
+      focus when pressed.
+      The default value is \c true
+    */
+    property bool activeFocusOnPress: true
 
     /*! \internal */
     property Component style: Qt.createComponent(Settings.THEME_PATH + "/SpinBoxStyle.qml", spinbox)
@@ -163,6 +168,26 @@ FocusScope {
     property alias __containsMouse: mouseArea.containsMouse
     /*! \internal */
     property alias __text: input.text
+    /*! \internal */
+    readonly property int __contentHeight: Math.max(input.implicitHeight, 20)
+    /*! \internal */
+    readonly property int __contentWidth: suffixItem.implicitWidth +
+                                   Math.max(maxSizeHint.implicitWidth,
+                                            minSizeHint.implicitWidth) +
+                                   prefixItem.implicitWidth
+    Text {
+        id: maxSizeHint
+        text: maximumValue.toFixed(decimals)
+        font: input.font
+        visible: false
+    }
+
+    Text {
+        id: minSizeHint
+        text: minimumValue.toFixed(decimals)
+        font: input.font
+        visible: false
+    }
 
     /*! \internal */
     onDecimalsChanged: input.setValue(value)
@@ -195,55 +220,66 @@ FocusScope {
         id: mouseArea
         anchors.fill: parent
         hoverEnabled: true
+        onPressed: if (activeFocusOnPress) input.forceActiveFocus()
     }
 
-    TextInput {
-        id: input
+    Row {
+        id: textLayout
+        anchors.fill: parent
+        spacing: 1
+        clip: true
+        anchors.leftMargin: loader.item ? loader.item.leftMargin : 0
+        anchors.topMargin: loader.item ? loader.item.topMargin : 0
+        anchors.rightMargin: loader.item ? loader.item.rightMargin: 0
+        anchors.bottomMargin: loader.item ? loader.item.bottomMargin: 0
 
-        function setValue(v) {
-            var newval = parseFloat(v)
-
-            if (!isNaN(newval)) {
-                if (newval > maximumValue)
-                    newval = maximumValue
-                else if (v < minimumValue)
-                    newval = minimumValue
-                newval = newval.toFixed(decimals)
-                spinbox.value = parseFloat(newval)
-                input.text = newval
-            } else {
-                input.text = parseFloat(spinbox.value)
-            }
+        Text {
+            id: prefixItem
+            text: prefix
+            color: loader.item ? loader.item.foregroundColor : "black"
+            anchors.verticalCenter: parent.verticalCenter
+            renderType: Text.NativeRendering
         }
 
-        property Item styleItem: loader.item
+        TextInput {
+            id: input
+            anchors.verticalCenter: parent.verticalCenter
+            activeFocusOnPress: spinbox.activeFocusOnPress
+            function setValue(v) {
+                var newval = parseFloat(v)
 
-        clip: true
+                if (!isNaN(newval)) {
+                    if (newval > maximumValue)
+                        newval = maximumValue
+                    else if (v < minimumValue)
+                        newval = minimumValue
+                    newval = newval.toFixed(decimals)
+                    spinbox.value = parseFloat(newval)
+                    input.text = newval
+                } else {
+                    input.text = parseFloat(spinbox.value)
+                }
+            }
 
-        horizontalAlignment: styleItem ? styleItem.horizontalTextAlignment : Qt.AlignLeft
-        verticalAlignment: styleItem ? styleItem.verticalTextAlignment : Qt.AlignVCenter
-        anchors.fill: parent
-        anchors.leftMargin: styleItem ? styleItem.leftMargin : 0
-        anchors.topMargin: styleItem ? styleItem.topMargin : 0
-        anchors.rightMargin: styleItem ? styleItem.rightMargin: 0
-        anchors.bottomMargin: styleItem ? styleItem.bottomMargin: 0
-        selectByMouse: true
+            horizontalAlignment: loader.item ? loader.item.horizontalTextAlignment : Qt.AlignLeft
+            verticalAlignment: loader.item ? loader.item.verticalTextAlignment : Qt.AlignVCenter
+            selectByMouse: true
 
-        validator: DoubleValidator { bottom: minimumValue; top: maximumValue; }
-        onAccepted: setValue(input.text)
-        onActiveFocusChanged: setValue(input.text)
-        color: loader.item ? loader.item.foregroundColor : "black"
-        selectionColor: loader.item ? loader.item.selectionColor : "black"
-        selectedTextColor: loader.item ? loader.item.selectedTextColor : "black"
+            validator: DoubleValidator { bottom: minimumValue; top: maximumValue; }
+            onAccepted: setValue(input.text)
+            color: loader.item ? loader.item.foregroundColor : "black"
+            selectionColor: loader.item ? loader.item.selectionColor : "black"
+            selectedTextColor: loader.item ? loader.item.selectedTextColor : "black"
 
-        opacity: parent.enabled ? 1 : 0.5
-        renderType: Text.NativeRendering
+            opacity: parent.enabled ? 1 : 0.5
+            renderType: Text.NativeRendering
+        }
         Text {
+            id: suffixItem
             text: suffix
             color: loader.item ? loader.item.foregroundColor : "black"
-            anchors.rightMargin: 4
-            anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
+            renderType: Text.NativeRendering
         }
     }
 
@@ -269,7 +305,7 @@ FocusScope {
         property bool autoincrement: false;
         onReleased: autoincrement = false
         Timer { running: mouseUp.pressed; interval: 350 ; onTriggered: mouseUp.autoincrement = true }
-        Timer { running: mouseUp.autoincrement; interval: 60 ; repeat: true ; onTriggered: increment() }
+        Timer { running: mouseUp.autoincrement; interval: 60 ; repeat: true ; onTriggered: __increment() }
     }
 
     // Spinbox decrement button
@@ -293,7 +329,7 @@ FocusScope {
         property bool autoincrement: false;
         onReleased: autoincrement = false
         Timer { running: mouseDown.pressed; interval: 350 ; onTriggered: mouseDown.autoincrement = true }
-        Timer { running: mouseDown.autoincrement; interval: 60 ; repeat: true ; onTriggered: decrement() }
+        Timer { running: mouseDown.autoincrement; interval: 60 ; repeat: true ; onTriggered: __decrement() }
     }
 
     Keys.onUpPressed: __increment()

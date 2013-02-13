@@ -235,6 +235,41 @@ Item {
             compare(spinbox.value, spinbox.maximumValue)
         }
 
+        function test_ImplicitSize() // Verify if we correctly grow and shrink depending on contents
+        {
+            var spinbox = Qt.createQmlObject('import QtDesktop 1.0; SpinBox {}', container, '')
+            spinbox.forceActiveFocus()
+            spinbox.minimumValue = -50
+            spinbox.maximumValue = 50
+
+            var oldSize = spinbox.implicitWidth
+            spinbox.maximumValue = 5000
+            verify(oldSize < spinbox.implicitWidth)
+            oldSize = spinbox.implicitWidth
+            spinbox.maximumValue = 50
+            verify(oldSize > spinbox.implicitWidth)
+
+            oldSize = spinbox.implicitWidth
+            spinbox.minimumValue = -5000
+            verify(oldSize < spinbox.implicitWidth)
+
+            spinbox.minimumValue = -50
+            oldSize = spinbox.implicitWidth
+            spinbox.minimumValue = -5000
+            verify(oldSize < spinbox.implicitWidth)
+
+            spinbox.minimumValue = -50
+            oldSize = spinbox.implicitWidth
+            spinbox.minimumValue = -5000
+            verify(oldSize < spinbox.implicitWidth)
+
+            spinbox.minimumValue = -50
+            spinbox.decimals = 0
+            oldSize = spinbox.implicitWidth
+            spinbox.decimals = 4
+            verify(oldSize < spinbox.implicitWidth)
+        }
+
         function setCoordinates(item)
         {
             mainCoord.x = item.x + 1

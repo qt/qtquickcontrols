@@ -117,10 +117,10 @@ Item {
         hasFocus: control.focus
         enabled: control.enabled
         value: (control.__upPressed ? 1 : 0)           |
-               (control.__downPressed == 1 ? 1<<1 : 0) |
+               (control.__downPressed ? 1<<1 : 0) |
                (control.__upEnabled ? (1<<2) : 0)      |
-               (control.__downEnabled == 1 ? (1<<3) : 0)
-        contentWidth: 200
-        contentHeight: 25
+               (control.__downEnabled ? (1<<3) : 0)
+        contentWidth: control.__contentWidth
+        contentHeight: control.__contentHeight
     }
 }

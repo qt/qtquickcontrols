@@ -99,10 +99,9 @@ Page {
 
                 SetupField {
                     id: prefix
-                    property variant defaultValue: "Not implemented"; //spinbox.prefix
+                    property variant defaultValue: spinbox.prefix
                     property string title: "Prefix"
                     property bool isText: true
-                    enabled: false // not yet implemented
                     onValidated: spinbox.prefix = validatedValue
                 }
 
@@ -219,7 +218,6 @@ Page {
         SpinBox {
             id: spinbox
 
-            width: parent.width
             decimals: decimalSpinBox.value
 
             onMaximumValueChanged: signalMaximumValueChangedCount.increment()
