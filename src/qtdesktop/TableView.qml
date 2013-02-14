@@ -180,7 +180,7 @@ ScrollArea {
 
     ListView {
         id: listView
-        anchors.topMargin: headerrow.height
+        anchors.topMargin: tableHeader.height
         anchors.fill: parent
 
         flickableDirection: Flickable.HorizontalFlick

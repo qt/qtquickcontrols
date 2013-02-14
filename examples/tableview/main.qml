@@ -40,6 +40,7 @@
 
 import QtQuick 2.0
 import QtDesktop 1.0
+import QtDesktop.Private 1.0
 import QtQuick.XmlListModel 2.0
 
 Rectangle {
@@ -337,7 +338,7 @@ Rectangle {
                         color: itemSelected ? "#448" : (itemAlternateBackground ? "#eee" : "#fff")
                         border.color:"#ccc"
                         border.width: 1
-                        anchors.left: parent.left
+                        anchors.left: parent ? parent.left : undefined
                         anchors.leftMargin: -2
                         anchors.rightMargin: -1
                         BorderImage{
