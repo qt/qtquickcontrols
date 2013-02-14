@@ -52,6 +52,7 @@ class QUrl;
 class QPlatformMenuItem;
 class QQuickItem;
 class QtAction;
+class QtExclusiveGroup;
 class QtMenu;
 
 class QtMenuBase: public QObject
@@ -96,6 +97,7 @@ class QtMenuItem: public QtMenuBase
     Q_PROPERTY(bool enabled READ enabled WRITE setEnabled NOTIFY enabledChanged)
     Q_PROPERTY(QUrl iconSource READ iconSource WRITE setIconSource NOTIFY iconSourceChanged)
     Q_PROPERTY(QString iconName READ iconName WRITE setIconName NOTIFY iconNameChanged)
+    Q_PROPERTY(QtExclusiveGroup *exclusiveGroup READ exclusiveGroup WRITE setExclusiveGroup NOTIFY exclusiveGroupChanged)
 
     Q_PROPERTY(QtAction *action READ action WRITE setAction NOTIFY actionChanged)
     Q_PROPERTY(QtMenu *parentMenu READ parentMenu)
@@ -121,6 +123,9 @@ public:
     bool checked() const;
     void setChecked(bool checked);
 
+    QtExclusiveGroup *exclusiveGroup() const;
+    void setExclusiveGroup(QtExclusiveGroup *);
+
     bool enabled() const;
     void setEnabled(bool enabled);
 
@@ -134,6 +139,7 @@ Q_SIGNALS:
     void textChanged();
     void shortcutChanged();
     void checkableChanged();
+    void exclusiveGroupChanged();
     void toggled(bool);
     void enabledChanged();
 

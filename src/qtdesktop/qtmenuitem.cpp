@@ -217,6 +217,7 @@ void QtMenuItem::bindToAction(QtAction *action)
 
     connect(m_action, SIGNAL(triggered()), this, SIGNAL(triggered()));
     connect(m_action, SIGNAL(toggled(bool)), this, SLOT(updateChecked()));
+    connect(m_action, SIGNAL(exclusiveGroupChanged()), this, SIGNAL(exclusiveGroupChanged()));
     connect(m_action, SIGNAL(enabledChanged()), this, SLOT(updateEnabled()));
     connect(m_action, SIGNAL(textChanged()), this, SLOT(updateText()));
     connect(m_action, SIGNAL(shortcutChanged(QString)), this, SLOT(updateShortcut()));
@@ -255,6 +256,7 @@ void QtMenuItem::unbindFromAction(QObject *o)
 
     disconnect(action, SIGNAL(triggered()), this, SIGNAL(triggered()));
     disconnect(action, SIGNAL(toggled(bool)), this, SLOT(updateChecked()));
+    disconnect(action, SIGNAL(exclusiveGroupChanged()), this, SIGNAL(exclusiveGroupChanged()));
     disconnect(action, SIGNAL(enabledChanged()), this, SLOT(updateEnabled()));
     disconnect(action, SIGNAL(textChanged()), this, SLOT(updateText()));
     disconnect(action, SIGNAL(shortcutChanged(QString)), this, SLOT(updateShortcut()));
@@ -357,6 +359,16 @@ void QtMenuItem::updateChecked()
         syncWithPlatformMenu();
     }
     emit toggled(checked);
+}
+
+QtExclusiveGroup *QtMenuItem::exclusiveGroup() const
+{
+    return m_action ? m_action->exclusiveGroup() : 0;
+}
+
+void QtMenuItem::setExclusiveGroup(QtExclusiveGroup *eg)
+{
+    action()->setExclusiveGroup(eg);
 }
 
 bool QtMenuItem::enabled() const
