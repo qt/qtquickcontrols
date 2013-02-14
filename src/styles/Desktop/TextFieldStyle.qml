@@ -47,7 +47,7 @@ StyleItem {
     elementType: "edit"
     sunken: true
     hasFocus: textfield.activeFocus
-    hover: containsMouse
+    hover: __containsMouse
 
     SystemPalette {
         id: syspal

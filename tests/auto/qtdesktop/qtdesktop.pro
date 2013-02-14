@@ -19,6 +19,7 @@ OTHER_FILES += \
     $$PWD/data/tst_tableview.qml \
     $$PWD/data/tst_rangemodel.qml \
     $$PWD/data/tst_scrollarea.qml \
-    $$PWD/data/tst_menu.qml
+    $$PWD/data/tst_menu.qml \
+    $$PWD/data/tst_textfield.qml
 
 DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0
