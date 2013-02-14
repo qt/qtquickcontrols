@@ -85,8 +85,6 @@ void StylePlugin::registerTypes(const char *uri)
     qmlRegisterType<QtMenuBar>(uri, 1, 0, "MenuBarPrivate");
     qmlRegisterType<QtMenuItem>(uri, 1, 0, "MenuItem");
     qmlRegisterType<QtMenuSeparator>(uri, 1, 0, "MenuSeparator");
-    qmlRegisterType<QtMenuSeparator>(uri, 1, 0, "Separator");
-    qmlRegisterUncreatableType<QtMenuBase>(uri, 1, 0, "NativeMenuBase", QLatin1String("Do not create objects of type NativeMenuBase"));
 
     qmlRegisterType<QQuickComponentsRowLayout>(uri, 1, 0, "RowLayout");
     qmlRegisterType<QQuickComponentsColumnLayout>(uri, 1, 0, "ColumnLayout");
