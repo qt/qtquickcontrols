@@ -489,7 +489,9 @@ ScrollArea {
         Appends \a string as a new line to the end of the text area.
     */
     function append (string) {
-        text += "\n" + string
+        if (length)
+            string = "\n" + string
+        text += string
         verticalScrollBar.value = verticalScrollBar.maximumValue
     }
 
