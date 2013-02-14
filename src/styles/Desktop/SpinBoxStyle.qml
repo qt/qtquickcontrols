@@ -78,18 +78,9 @@ Item {
             anchors.fill: parent
             anchors.margins: -1
         }
-    }
-
-    Item {
-        id: focusFrame
-        anchors.fill: edit
-        anchors.margins: -6
-        visible: frameitem.styleHint("focuswidget")
-        StyleItem {
-            id: frameitem
-            anchors.fill: parent
-            visible: spinbox.activeFocus
-            elementType: "focusframe"
+        FocusFrame {
+            focusMargin:-6
+            visible: spinbox.activeFocus && styleitem.styleHint("focuswidget")
         }
     }
 

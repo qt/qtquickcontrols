@@ -42,6 +42,7 @@ import QtDesktop 1.0
 import QtDesktop.Private 1.0
 
 StyleItem {
+    id: textfieldstyle
     anchors.fill: parent
     elementType: "edit"
     sunken: true
@@ -58,11 +59,11 @@ StyleItem {
     contentWidth: 200
     contentHeight: 18
 
-    property bool rounded: hints.indexOf("rounded")
-    property int topMargin: 4
-    property int leftMargin: rounded > -1 ? 8 : 4
+    property bool rounded: hints.indexOf("rounded") > -1
+    property int topMargin: 1
+    property int leftMargin: rounded ? 8 : 4
     property int rightMargin: 4
-    property int bottomMargin: 4
+    property int bottomMargin: 1
 
     property color foregroundColor: syspal.text
     property color backgroundColor: syspal.base
@@ -70,23 +71,10 @@ StyleItem {
     property color selectionColor: syspal.highlight
     property color selectedTextColor: syspal.highlightedText
 
-
     hints: control.styleHints
 
-    Item {
-        id: focusFrame
+    FocusFrame {
         anchors.fill: parent
-        parent: textfield
-        visible: framestyle.styleHint("focuswidget")
-        StyleItem {
-            id: framestyle
-            hints: control.styleHints
-            anchors.margins: -2
-            anchors.rightMargin:-4
-            anchors.bottomMargin:-4
-            anchors.fill: parent
-            visible: textfield.activeFocus
-            elementType: "focusframe"
-        }
+        visible: textfield.activeFocus && textfieldstyle.styleHint("focuswidget")
     }
 }
