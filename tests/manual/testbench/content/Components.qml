@@ -80,36 +80,10 @@ Item {
     }
     property var model: ListModel{
         id: testDataModel
-        ListElement { text: "1) Apple" }
-        ListElement { text: "2) Banana" }
-        ListElement { text: "3) Coconut" }
-        ListElement { text: "4) Orange" }
-        ListElement { text: "5) Kiwi" }
-        ListElement { text: "6) Apple" }
-        ListElement { text: "7) Banana" }
-        ListElement { text: "8) Coconut" }
-        ListElement { text: "9) Orange" }
-        ListElement { text: "10) Kiwi" }
-        ListElement { text: "11) Apple" }
-        ListElement { text: "12) Banana" }
-        ListElement { text: "13) Coconut" }
-        ListElement { text: "14) Orange" }
-        ListElement { text: "15) Kiwi" }
-        ListElement { text: "16) Apple" }
-        ListElement { text: "17) Banana" }
-        ListElement { text: "18) Coconut" }
-        ListElement { text: "19) Orange" }
-        ListElement { text: "20) Kiwi" }
-        ListElement { text: "21) Apple" }
-        ListElement { text: "22) Banana" }
-        ListElement { text: "23) Coconut" }
-        ListElement { text: "24) Orange" }
-        ListElement { text: "25) Kiwi" }
-        ListElement { text: "26) Apple" }
-        ListElement { text: "27) Banana" }
-        ListElement { text: "28) Coconut" }
-        ListElement { text: "29) Orange" }
-        ListElement { text: "30) Kiwi" }
+        Component.onCompleted: {
+            for (var i = 0 ; i < 10 ; ++i)
+                testDataModel.append({text: "Value " + i});
+        }
     }
     property string loremIpsum:
             "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor "+

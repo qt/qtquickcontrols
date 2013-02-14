@@ -375,7 +375,7 @@ ApplicationWindow {
                             Text {
                                 height: 20
                                 anchors.right: parent.right
-                                text: loader.item[name]
+                                text: loader.item[name] ? loader.item[name] : ""
                             }
                         }
                     }
