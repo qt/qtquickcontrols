@@ -571,6 +571,7 @@ ScrollArea {
                     elementType: "item"
                     text:   itemValue
                     selected: itemSelected
+                    active: root.activeFocus
                 }
             }
 
@@ -595,6 +596,7 @@ ScrollArea {
                     activeControl: itemAlternateBackground ? "alternate" : ""
                     selected: itemSelected ? true : false
                     height: Math.max(16, styleitem.implicitHeight)
+                    active: root.activeFocus
                 }
             }
 
