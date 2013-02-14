@@ -59,6 +59,7 @@ int main(int argc, char *argv[])
         qWarning("Error: Your root item has to be a Window.");
         return -1;
     }
+    QObject::connect(&engine, SIGNAL(quit()), &app, SLOT(quit()));
     window->show();
     return app.exec();
 }

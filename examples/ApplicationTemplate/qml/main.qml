@@ -48,13 +48,12 @@ ApplicationWindow {
 
     menuBar: MenuBar {
         Menu {
-            text: "Menu 1"
-            MenuItem { text: "Item 1" }
-            MenuItem { text: "Item 2" }
+            text: "File"
+            MenuItem { text: "Quit"; onTriggered: Qt.quit() }
         }
         Menu {
-            text: "Menu 2"
-            MenuItem { text: "Item 3" }
+            text: "Help"
+            MenuItem { text: "About..."; enabled: false }
         }
     }
 
