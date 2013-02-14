@@ -39,12 +39,6 @@
 ****************************************************************************/
 
 /*!
-    \qmltype RangeModel
-    \instantiates QRangeModel
-    \inqmlmodule QtDesktop 1.0
-    \brief RangeModel helps users to build components that depend
-           on some value and/or position to be in a certain range previously defined
-
     With this class, the user sets a value range and a position range, which
     represent the valid values/positions the model can assume. It is worth telling
     that the value property always has priority over the position property. A nice use

@@ -68,23 +68,18 @@ import "Styles/Settings.js" as Settings
     \sa ApplicationWindow::menuBar
 */
 
-/*!
-    \qmlproperty readonly list MenuBar::menus
-    \default
-*/
-
 MenuBarPrivate {
     id: root
-    property Component menuBarStyle: Qt.createComponent(Settings.THEME_PATH + "/MenuBarStyle.qml", root)
-    property Component menuItemStyle: Qt.createComponent(Settings.THEME_PATH + "/MenuBarItemStyle.qml", root)
 
-    //! internal
     height: !isNative ? menuBarLoader.height : 0
 
-    //! internal
     data: [
         Loader {
             id: menuBarLoader
+
+            property Component menuBarStyle: Qt.createComponent(Settings.THEME_PATH + "/MenuBarStyle.qml", root)
+            property Component menuItemStyle: Qt.createComponent(Settings.THEME_PATH + "/MenuBarItemStyle.qml", root)
+
             visible: active && status === Loader.Ready
             active: !root.isNative
             sourceComponent: menuBarStyle
@@ -140,7 +135,7 @@ MenuBarPrivate {
 
                             property bool allowMenuClose: false
 
-                            sourceComponent: root.menuItemStyle
+                            sourceComponent: menuBarLoader.menuItemStyle
 
                             MouseArea {
                                 id: itemMouseArea

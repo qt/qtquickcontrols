@@ -40,14 +40,6 @@
 
 #include "qtsplitterbase_p.h"
 
-/*!
-    \qmltype Splitter
-    \instantiates QtSplitterBase
-    \inqmlmodule QtDesktop 1.0
-    \ingroup containers
-    \brief Splitter is doing bla...bla...
-*/
-
 QT_BEGIN_NAMESPACE
 
 QtSplitterBase::QtSplitterBase(QQuickItem *parent)

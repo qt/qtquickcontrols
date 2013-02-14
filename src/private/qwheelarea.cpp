@@ -40,13 +40,6 @@
 
 #include "qwheelarea_p.h"
 
-/*!
-    \qmltype WheelArea
-    \instantiates QWheelArea
-    \inqmlmodule QtDesktop 1.0
-    \brief WheelArea is doing bla...bla...
-*/
-
 QT_BEGIN_NAMESPACE
 
 QWheelArea::QWheelArea(QQuickItem *parent)
