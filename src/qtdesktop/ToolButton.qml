@@ -68,10 +68,12 @@ Private.BasicButton {
     style: Qt.createComponent(Settings.THEME_PATH + "/ToolButtonStyle.qml", button)
 
     Image {
+        id: image
         anchors.centerIn: parent
         source: button.iconSource
-        sourceSize: Qt.size(Math.min(button.width, implicitWidth),
-                            Math.min(button.height, implicitHeight))
+        width: Math.min(button.width, image.implicitWidth)
+        height: Math.min(button.height, image.implicitHeight)
+        fillMode: Image.PreserveAspectFit
     }
     Accessible.name: text
 }
