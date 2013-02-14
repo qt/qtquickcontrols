@@ -45,26 +45,34 @@ ApplicationWindow {
     width: 600
     height: 400
 
-    SplitterRow {
+    Splitter {
         anchors.fill: parent
 
         Rectangle {
             id: column
             width: 200
-            Splitter.minimumWidth: 100
+            Layout.minimumWidth: 100
+            Layout.maximumWidth: 300
             color: "lightsteelblue"
         }
 
-        handleWidth: 1
+        Rectangle {
+            id: column1
+            width: 200
+            Layout.minimumWidth: 100
+            Layout.maximumWidth: 300
+            color: "lightsteelblue"
+        }
 
-        SplitterColumn {
-            id: column2
+        Splitter {
+            orientation: Qt.Vertical
+            Layout.horizontalSizePolicy: Layout.Expanding
 
             Rectangle {
                 id: row1
                 height: 200
                 color: "lightblue"
-                Splitter.minimumHeight: 1
+                Layout.minimumHeight: 1
             }
 
             Rectangle {

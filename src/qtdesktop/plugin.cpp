@@ -45,7 +45,6 @@
 #include "qtmenu_p.h"
 #include "qtmenubar_p.h"
 #include "qquicklinearlayout_p.h"
-#include "qtsplitterbase_p.h"
 #include "qpagestatus.h"
 #include <qqmlextensionplugin.h>
 
@@ -94,7 +93,6 @@ void StylePlugin::registerTypes(const char *uri)
                                                        QLatin1String("Do not create objects of type Layout"));
 
     qmlRegisterUncreatableType<QPageStatus>(uri, 1, 0, "PageStatus", QLatin1String("Do not create objects of type PageStatus"));
-    qmlRegisterType<QtSplitterBase>(uri, 1, 0, "Splitter");
 }
 
 void StylePlugin::initializeEngine(QQmlEngine *engine, const char *uri)

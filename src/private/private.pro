@@ -30,7 +30,6 @@ QML_FILES += \
     ModalPopupBehavior.qml \
     PageSlideTransition.qml \
     PageStack.js \
-    SplitterBase.qml \
     ScrollAreaHelper.qml \
     ScrollBar.qml \
     FocusFrame.qml

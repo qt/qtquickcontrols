@@ -18,8 +18,7 @@ RadioButton 1.0 RadioButton.qml
 ScrollArea 1.0 ScrollArea.qml
 Slider 1.0 Slider.qml
 SpinBox 1.0 SpinBox.qml
-SplitterRow 1.0 SplitterRow.qml
-SplitterColumn 1.0 SplitterColumn.qml
+Splitter 1.0 Splitter.qml
 StatusBar 1.0 StatusBar.qml
 Tab 1.0 Tab.qml
 TabFrame 1.0 TabFrame.qml
