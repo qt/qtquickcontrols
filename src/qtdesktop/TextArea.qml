@@ -743,7 +743,7 @@ ScrollArea {
         selectedTextColor: palette.highlightedText
         wrapMode: TextEdit.WordWrap
         width: area.viewport.width - (2 * documentMargins)
-        height: paintedHeight + 2 * documentMargins
+        height: Math.max(area.viewport.height - (2 * documentMargins), paintedHeight + (2 * documentMargins))
         x: documentMargins
         y: documentMargins
 
