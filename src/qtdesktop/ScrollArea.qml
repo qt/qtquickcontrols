@@ -82,8 +82,8 @@ import QtDesktop.Private 1.0
 
 FocusScope {
     id: root
-    width: 100
-    height: 100
+    implicitWidth: 200
+    implicitHeight: 100
 
     /*!
         This property tells the scroll area if it should render

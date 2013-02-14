@@ -46,7 +46,9 @@ Item {
     property Component checkbox: CheckBox { text: "A CheckBox" }
     property Component radiobutton:  RadioButton { text: "A RadioButton" }
     property Component textfield: TextField { }
-    property Component textarea: TextArea { }
+    property Component textarea: TextArea {
+        text: loremIpsum
+    }
     property Component combobox: ComboBox { model: testDataModel }
     property Component spinbox: SpinBox { id: spinBox }
     property Component slider : Slider {
@@ -109,4 +111,9 @@ Item {
         ListElement { text: "29) Orange" }
         ListElement { text: "30) Kiwi" }
     }
+    property string loremIpsum:
+            "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor "+
+            "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor "+
+            "incididunt ut labore et dolore magna aliqua.\n Ut enim ad minim veniam, quis nostrud "+
+            "exercitation ullamco laboris nisi ut aliquip ex ea commodo cosnsequat. ";
 }
