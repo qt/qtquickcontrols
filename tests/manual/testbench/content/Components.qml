@@ -44,28 +44,12 @@ import QtDesktop 1.0
 Item {
     property Component button: Button { text: "Push me"}
     property Component checkbox: CheckBox { text: "A CheckBox" }
-    property Component radiobutton:  RadioButton { text: "A RadioButton" }
+    property Component radiobutton: RadioButton { text: "A RadioButton" }
     property Component textfield: TextField { }
-    property Component textarea: TextArea {
-        text: loremIpsum
-    }
+    property Component spinbox: SpinBox {}
+    property Component slider : Slider {}
     property Component combobox: ComboBox { model: testDataModel }
-    property Component spinbox: SpinBox { id: spinBox }
-    property Component slider : Slider {
-        function formatValue(v) {
-            v = Math.round(v);
-            var absV = Math.abs(v);
-            if (sliderOptionTimeFormatted.checked) {
-                var seconds = Math.floor(absV % 60);
-                var minutes = Math.floor(absV / 60);
-
-                if (seconds < 10) seconds = "0" + seconds;
-                return (v < 0 ? "-" : "") + minutes + ":" + seconds
-            }
-            return v;
-        }
-    }
-
+    property Component textarea: TextArea { text: loremIpsum }
     property Component progressbar: ProgressBar {
         Timer {
             id: timer
@@ -85,9 +69,23 @@ Item {
                 testDataModel.append({text: "Value " + i});
         }
     }
+
     property string loremIpsum:
             "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor "+
             "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor "+
             "incididunt ut labore et dolore magna aliqua.\n Ut enim ad minim veniam, quis nostrud "+
             "exercitation ullamco laboris nisi ut aliquip ex ea commodo cosnsequat. ";
+
+    property var componentModel: ListModel {
+        Component.onCompleted: {
+            append({ name: "Button",        component: button});
+            append({ name: "CheckBox",      component: checkbox});
+            append({ name: "RadioButton",   component: radiobutton});
+            append({ name: "Slider",        component: slider});
+            append({ name: "ProgressBar",   component: progressbar});
+            append({ name: "TextField",     component: textfield});
+            append({ name: "TextArea",      component: textarea});
+            append({ name: "SpinBox",       component: spinbox});
+        }
+    }
 }

@@ -47,9 +47,6 @@ ApplicationWindow {
     height: 500
 
     Components{ id: components }
-
-    property string currentComponentName: selector.model.get(selector.selectedIndex).component
-
     SystemPalette { id: syspal }
 
     toolBar: ToolBar {
@@ -60,19 +57,8 @@ ApplicationWindow {
             height: parent.height
             ComboBox {
                 id: selector
-
                 width: 200
-                model: ListModel {
-                    ListElement { component: "ComboBox" }
-                    ListElement { component: "Button" }
-                    ListElement { component: "CheckBox" }
-                    ListElement { component: "RadioButton" }
-                    ListElement { component: "Slider" }
-                    ListElement { component: "ProgressBar" }
-                    ListElement { component: "TextField" }
-                    ListElement { component: "TextArea" }
-                    ListElement { component: "SpinBox" }
-                }
+                model: components.componentModel
             }
             CheckBox {
                 id: patternCheckBox
@@ -128,7 +114,7 @@ ApplicationWindow {
             Loader {
                 id: loader
                 focus: true
-                sourceComponent: sourceComponentFromIndex()
+                sourceComponent: selector.model.get(selector.selectedIndex).component
                 anchors.fill: parent
 
                 onStatusChanged: {
@@ -205,23 +191,6 @@ ApplicationWindow {
                     }
                 }
 
-                function sourceComponentFromIndex() {
-                    var name = selector.model.get(selector.selectedIndex).component;
-                    switch (name) {
-                    case "Button": return components.button;
-                    case "CheckBox": return components.checkbox;
-                    case "RadioButton": return components.radiobutton;
-                    case "Slider": return components.slider;
-                    case "ProgressBar": return components.progressbar;
-                    case "BusyIndicator": return busyIndicatorComponent;
-                    case "ComboBox": return components.combobox;
-                    case "TextField": return components.textfield;
-                    case "TextArea": return components.textarea;
-                    case "SpinBox": return components.spinbox;
-                    }
-                    return null;
-                }
-
                 Rectangle {
                     id: marginsRect
                     color: "transparent"
@@ -296,13 +265,12 @@ ApplicationWindow {
 
             Column {
                 id: properties
-                anchors.left: parent.left
-                anchors.top: parent.top
+                anchors.left: parent ? parent.left : undefined
+                anchors.top: parent ? parent.top : undefined
                 anchors.margins: 10
                 width: scrollArea.viewport.width
                 spacing: 8
                 Repeater {
-
                     model: ListModel { id: propertyModel }
                     Column {
                         property bool isEnabled: typeString !== "ReadOnly"
