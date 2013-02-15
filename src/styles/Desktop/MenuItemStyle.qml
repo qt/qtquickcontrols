@@ -47,20 +47,20 @@ StyleItem {
     x: pixelMetric("menuhmargin") + pixelMetric("menupanelwidth")
     y: pixelMetric("menuvmargin") + pixelMetric("menupanelwidth")
 
-    text: isSeparator ? "" : menuItem.text
+    text: isSeparator || !menuItem ? "" : menuItem.text
     property string textAndShorcut: text + (properties.shortcut ? "\t" + properties.shortcut : "")
     contentWidth: textWidth(textAndShorcut)
     contentHeight: textHeight(textAndShorcut)
 
-    enabled: parent.enabled
-    selected: parent.selected
-    on: !!menuItem["checkable"] && menuItem.checked
+    enabled: !!parent && parent.enabled
+    selected: !!parent && parent.selected
+    on: !!menuItem && !!menuItem["checkable"] && menuItem.checked
 
     properties: {
-        "checkable": !!menuItem["checkable"],
-        "exclusive": !!menuItem["action"] && !!menuItem.action["exclusiveGroup"],
-        "shortcut": menuItem["shortcut"] || "",
+        "checkable": !!menuItem && !!menuItem["checkable"],
+        "exclusive": !!menuItem && !!menuItem["exclusiveGroup"],
+        "shortcut": !!menuItem && menuItem["shortcut"] || "",
         "hasSubmenu": hasSubmenu,
-        "icon": !!menuItem["action"] ? menuItem.action.__icon : null
+        "icon": !!menuItem && !!menuItem["action"] ? menuItem.action.__icon : null
     }
 }

@@ -235,19 +235,20 @@ MenuPrivate {
                 Repeater {
                     id: itemsRepeater
                     model: root.menuItems
+
                     Loader {
                         id: menuItemLoader
 
                         property var menuItem: modelData
-                        property bool isSeparator: !menuItem.hasOwnProperty("text")
-                        property bool hasSubmenu: !!menuItem["menuItems"]
+                        property bool isSeparator: menuItem ? !menuItem.hasOwnProperty("text") : false
+                        property bool hasSubmenu: menuItem ? !!menuItem["menuItems"] : false
                         property bool selected: !isSeparator && root.currentIndex === index
 
                         property alias mouseArea: itemMouseArea
                         property var menuItemsColumn: column
 
                         sourceComponent: root.menuItemStyle
-                        enabled: !isSeparator && menuItem.enabled
+                        enabled: !isSeparator && !!menuItem && menuItem.enabled
 
                         MouseArea {
                             id: itemMouseArea
