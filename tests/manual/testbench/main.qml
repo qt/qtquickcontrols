@@ -46,6 +46,7 @@ ApplicationWindow {
     width: 950
     height: 500
 
+    property var propertyMap: []
     Components{ id: components }
     SystemPalette { id: syspal }
 
@@ -72,10 +73,12 @@ ApplicationWindow {
             }
         }
     }
-
     Flickable {
         id: testBenchRect
-        anchors.fill: parent
+        anchors.left: parent.left
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        anchors.right: sidebar.left
         clip: true
 
         Rectangle {
@@ -116,34 +119,37 @@ ApplicationWindow {
                 focus: true
                 sourceComponent: selector.model.get(selector.selectedIndex).component
                 anchors.fill: parent
-
+                PropertyLayouts{ id: layouts }
                 onStatusChanged: {
+
                     if (status == Loader.Ready) {
-                        container.resetSize();
-                        propertyModel.clear()
+                        propertyMap = []
+                        var arr = new Array
 
                         for (var prop in item) {
 
                             if (!prop.indexOf("on")) { // look only for properties
                                 if (prop.indexOf("Changed") !== (prop.length - 7))
-                                    continue
+                                    continue;
                                 var substr = prop.slice(2, prop.length - 7)
                                 if (!substr.indexOf("__")) // filter private
                                     continue;
 
                                 var typeName = "None";
+                                var layout
                                 switch (substr) {
 
                                 case "ActiveFocusOnPress":
                                 case "Enabled":
                                 case "Visible":
-//                              case "Focus":
+                                    layout = layouts.boolLayout
                                     typeName = "Boolean";
                                     break
 
                                 case "MaximumValue":
                                 case "MinimumValue":
                                 case "Decimals":
+                                    layout = layouts.intLayout
                                     typeName = "Int"
                                     break;
 
@@ -153,6 +159,7 @@ ApplicationWindow {
                                 case "StepSize":
                                 case "Value":
                                 case "Opacity":
+                                    layout = layouts.realLayout
                                     typeName = "Real";
                                     break;
 
@@ -160,6 +167,7 @@ ApplicationWindow {
                                 case "ActiveFocus":
                                 case "ImplicitWidth":
                                 case "Pressed":
+                                    layout = layouts.readonlyLayout
                                     typeName = "ReadOnly"
                                     break;
 
@@ -168,28 +176,29 @@ ApplicationWindow {
                                 case "Text":
                                 case "Title":
                                 case "Tooltip":
-//                                case "TextColor":
+                                    layout = layouts.stringLayout
                                     typeName = "String";
                                     break;
 
                                 default:
                                     break;
-
                                 }
+
                                 if (substr.length > 1)
                                     substr = substr[0].toLowerCase() + substr.substring(1)
                                 else
                                     substr = substr.toLowerCase()
 
-                                var val = item[substr]+"" // All model properties must be the same type
+                                var val = item[substr] + "" // All model properties must be the same type
+
                                 if (typeName != "None" && val !== undefined) {
-                                    // We should do a proper sort instead
-                                    if (typeName == "Boolean")
-                                        propertyModel.insert(0, {name: substr , result: val, typeString: typeName})
-                                    else
-                                        propertyModel.append({name: substr , result: val, typeString: typeName})
+                                    if (arr[typeName] === undefined)
+                                        arr[typeName] = []
+                                    arr[typeName].push({name: substr , result: val, typeString: typeName, layoutComponent: layout})
                                 }
                             }
+                            propertyMap = arr;
+                            container.resetSize();
                         }
                     }
                 }
@@ -249,10 +258,8 @@ ApplicationWindow {
             }
         }
     }
-
-
-
     Rectangle {
+        id: sidebar
         color : syspal.window
         anchors.top: parent.top
         anchors.bottom: parent.bottom; width: 200; anchors.right: parent.right;
@@ -261,93 +268,26 @@ ApplicationWindow {
             height: parent.height
             color: Qt.darker(parent.color, 1.4)
         }
-
         ScrollArea {
             id: scrollArea
             anchors.fill: parent
-
             Column {
                 id: properties
                 anchors.left: parent ? parent.left : undefined
                 anchors.top: parent ? parent.top : undefined
                 anchors.margins: 10
-                width: scrollArea.viewport.width
+                width: scrollArea.viewport.width - 20
                 spacing: 8
                 Repeater {
-                    model: ListModel { id: propertyModel }
-                    Column {
-                        property bool isEnabled: typeString !== "ReadOnly"
-                        width: properties.width
-                        CheckBox {
-                            visible: typeString == "Boolean"
-                            checked: visible ? result : false
-                            text: name
-                            onCheckedChanged: if (isEnabled) loader.item[name] = checked
-                        }
-
-                        RowLayout {
-                            spacing: 4
-                            width: parent.width - 16
-                            visible: typeString == "Int"
-                            Text {
-                                text: name + ":"
-                                Layout.minimumWidth: 100
-                            }
-                            SpinBox {
-                                value: result
-                                maximumValue: 9999
-                                Layout.horizontalSizePolicy: Layout.Expanding
-                                onValueChanged: if (isEnabled) loader.item[name] = value
-                            }
-                        }
-
-                        RowLayout {
-                            spacing: 4
-                            width: parent.width - 16
-                            visible: typeString == "Real"
-                            Text {
-                                text: name + ":"
-                                Layout.minimumWidth: 100
-                            }
-                            SpinBox {
-                                value: result
-                                decimals: 1
-                                stepSize: 0.5
-                                maximumValue: 9999
-                                Layout.horizontalSizePolicy: Layout.Expanding
-                                onValueChanged: if (isEnabled) loader.item[name] = value
-                            }
-                        }
-
-                        RowLayout {
-                            spacing: 4
-                            visible: typeString == "String"
-                            width: parent.width - 16
-                            Text {
-                                text: name + ":"
-                                width: 100
-                            }
-                            TextField {
-                                id: tf
-                                text: result
-                                onTextChanged: if (isEnabled) loader.item[name] = tf.text
-                                Layout.horizontalSizePolicy: Layout.Expanding
-                            }
-                        }
-
-                        RowLayout {
-                            height: 20
-                            visible: typeString == "ReadOnly"
-                            Text {
-                                id: text
-                                height: 20
-                                text: name + ":"
-                            }
-                            Text {
-                                height: 20
-                                anchors.right: parent.right
-                                text: loader.item[name] ? loader.item[name] : ""
-                            }
+                    model: ["Boolean", "String","Int", "Real", "ReadOnly"]
+                    Repeater {
+                        model: propertyMap[modelData]
+                        Loader {
+                            width: properties.width
+                            sourceComponent: modelData.layoutComponent
+                            property string name: modelData.name
+                            property var value: modelData.value
+                            property var result: modelData.result
                         }
                     }
                 }
