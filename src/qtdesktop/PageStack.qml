@@ -44,9 +44,9 @@ import QtDesktop.Private 1.0
 import "Private/PageStack.js" as JSArray
 
 /*!
-    \qmlclass QtDesktop.PageStack
+    \qmltype PageStack
     \inherits Item
-    \inqmlmodule QtDesktop
+    \inqmlmodule QtDesktop 1.0
 
     \brief The central component for building page-based applications
 
@@ -989,4 +989,3 @@ Item {
         }
     }
 }
-
