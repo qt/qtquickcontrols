@@ -385,6 +385,8 @@ void QStyleItem::initStyleOption()
         QStyleOptionButton *opt = qstyleoption_cast<QStyleOptionButton*>(m_styleoption);
         if (!on())
             opt->state |= QStyle::State_Off;
+        if (m_hints.contains("partiallyChecked"))
+            opt->state |= QStyle::State_NoChange;
         opt->text = text();
     }
         break;
