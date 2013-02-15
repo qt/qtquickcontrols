@@ -123,7 +123,10 @@ ApplicationWindow {
                         propertyModel.clear()
 
                         for (var prop in item) {
+
                             if (!prop.indexOf("on")) { // look only for properties
+                                if (prop.indexOf("Changed") !== (prop.length - 7))
+                                    continue
                                 var substr = prop.slice(2, prop.length - 7)
                                 if (!substr.indexOf("__")) // filter private
                                     continue;
