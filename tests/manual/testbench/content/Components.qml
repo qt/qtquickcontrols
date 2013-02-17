@@ -80,6 +80,7 @@ Item {
         Component.onCompleted: {
             append({ name: "Button",        component: button});
             append({ name: "CheckBox",      component: checkbox});
+            append({ name: "ComboBox",      component: combobox});
             append({ name: "RadioButton",   component: radiobutton});
             append({ name: "Slider",        component: slider});
             append({ name: "ProgressBar",   component: progressbar});
