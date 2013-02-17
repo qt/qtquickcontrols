@@ -47,7 +47,7 @@ Item {
     anchors.fill: parent
     enabled: enabledCheck.checked
 
-    property string tabPosition: tabPositionGroup.checkedButton == r2 ? "South" : "North"
+    property string tabPosition: tabPositionGroup.current === r2 ? "South" : "North"
 
     Row {
         id: contentRow
