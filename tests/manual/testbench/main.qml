@@ -73,6 +73,17 @@ ApplicationWindow {
             }
         }
     }
+    statusBar: StatusBar {
+        Row {
+            anchors.left: parent.left
+            anchors.leftMargin: 8
+            anchors.verticalCenter: parent.verticalCenter
+            Label { text: "X: " + topLeftHandle.x ; width: 50}
+            Label { text: "Y: " + topLeftHandle.y  ; width: 50}
+            Label { text: "Width: " + container.width  ; width: 70}
+            Label { text: "Height: "+container.height  ; width: 70}
+        }
+    }
 
     SplitterRow {
         anchors.fill: parent

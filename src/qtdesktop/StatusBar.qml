@@ -68,7 +68,7 @@ import QtDesktop.Private 1.0
 Item {
     id: statusbar
     implicitHeight: 20
-    implicitWidth: 300
+    implicitWidth: parent ? parent.width : 300
     StyleItem {
         id: style
         anchors.fill: parent
