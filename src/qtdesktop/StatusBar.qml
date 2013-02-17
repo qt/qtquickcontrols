@@ -40,18 +40,37 @@
 
 import QtQuick 2.0
 import QtDesktop 1.0
+import QtDesktop.Private 1.0
 
 /*!
     \qmltype StatusBar
     \inqmlmodule QtDesktop 1.0
     \ingroup applicationwindow
-    \brief StatusBar is doing bla...bla...
+    \brief StatusBar is for containing status informating in your app
+
+    The common way of using StatusBar is in relation to \l ApplicationWindow.
+
+    Note that the StatusBar does not provide a layout of its own but requires you to
+    position its contents, for instance by creating a RowLayout.
+
+    \code
+    ApplicationWindow {
+        statusbar: StatusBar {
+            Label {
+                text: "Read Only"
+                anchors.centerIn: parent
+            }
+        }
+    }
+    \endcode
 */
 
 Item {
-    width: parent ? parent.width : 200
-    height: 24
+    id: statusbar
+    implicitHeight: 20
+    implicitWidth: 300
     StyleItem {
+        id: style
         anchors.fill: parent
         elementType: "statusbar"
     }

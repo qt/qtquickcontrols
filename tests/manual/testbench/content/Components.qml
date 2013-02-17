@@ -50,6 +50,23 @@ Item {
     property Component slider : Slider {}
     property Component combobox: ComboBox { model: testDataModel }
     property Component textarea: TextArea { text: loremIpsum }
+    property Component toolbar: ToolBar { }
+    property Component statusbar: StatusBar { }
+    property Component tableview: TableView { model: testDataModel ; TableViewColumn {title: "Column 1"}}
+    property Component scrollarea: ScrollArea {
+        Rectangle {
+            color: "#eee"
+            width: 1000
+            height: 1000
+            Image {
+                source: "../../images/checkered.png" ;
+                fillMode: Image.Tile
+                anchors.fill: parent
+                opacity: 0.1
+            }
+        }
+    }
+
     property Component progressbar: ProgressBar {
         Timer {
             id: timer
@@ -71,10 +88,10 @@ Item {
     }
 
     property string loremIpsum:
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor "+
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor "+
-            "incididunt ut labore et dolore magna aliqua.\n Ut enim ad minim veniam, quis nostrud "+
-            "exercitation ullamco laboris nisi ut aliquip ex ea commodo cosnsequat. ";
+        "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor "+
+        "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor "+
+        "incididunt ut labore et dolore magna aliqua.\n Ut enim ad minim veniam, quis nostrud "+
+        "exercitation ullamco laboris nisi ut aliquip ex ea commodo cosnsequat. ";
 
     property var componentModel: ListModel {
         Component.onCompleted: {
@@ -87,6 +104,10 @@ Item {
             append({ name: "TextField",     component: textfield});
             append({ name: "TextArea",      component: textarea});
             append({ name: "SpinBox",       component: spinbox});
+            append({ name: "ToolBar",       component: toolbar});
+            append({ name: "StatusBar",     component: statusbar});
+            append({ name: "TableView",     component: tableview});
+            append({ name: "ScrollArea",     component: scrollarea});
         }
     }
 }
