@@ -73,7 +73,7 @@ Item {
     width: toolbar.width
     height: toolbar.height
     implicitHeight: toolbar.implicitHeight
-    implicitWidth: parent ? parent.width : 300
+    implicitWidth: parent ? parent.width : toolbar.implicitWidth
     Accessible.role: Accessible.ToolBar
     StyleItem {
         id: toolbar
