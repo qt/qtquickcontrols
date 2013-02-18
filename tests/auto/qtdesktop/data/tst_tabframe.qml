@@ -51,5 +51,10 @@ TestCase {
     function test_createTabFrame() {
         var tabFrame = Qt.createQmlObject('import QtDesktop 1.0; TabFrame {}', testCase, '');
     }
+
+    function test_repeater() {
+        var tabFrame = Qt.createQmlObject('import QtQuick 2.0; import QtDesktop 1.0; TabFrame { Repeater { model: 3; Tab { } } }', testCase, '');
+        compare(tabFrame.count, 3)
+    }
 }
 
