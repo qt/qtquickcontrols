@@ -40,6 +40,7 @@
 
 import QtQuick 2.0
 import QtDesktop 1.0
+import QtDesktop.Styles 1.0
 import "Styles/Settings.js" as Settings
 
 /*!
@@ -128,8 +129,8 @@ import "Styles/Settings.js" as Settings
 
 MenuPrivate {
     id: root
-    property Component menuFrameStyle: Qt.createComponent(Settings.THEME_PATH + "/MenuFrameStyle.qml", root)
-    property Component menuItemStyle: Qt.createComponent(Settings.THEME_PATH + "/MenuItemStyle.qml", root)
+
+    property Component style: Qt.createComponent(Settings.THEME_PATH + "/MenuStyle.qml", root)
 
     //! internal
     property var menuBar: null
@@ -146,14 +147,27 @@ MenuPrivate {
     property Component menuComponent: Loader {
         id: menuFrameLoader
 
-        property var menu: root
-        property alias menuItemsColumn: column
+        property Style __style: styleLoader.item
+        property Component menuItemStyle: __style ? __style.menuItem : null
+
+        property var control: root
+        property alias contentWidth: column.width
+        property alias contentHeight: column.height
 
         property int subMenuXPos: width + (item && item["subMenuOverlap"] || 0)
-        property int itemWidth: item ? item.implicitWidth : 0
 
-        visible: menu.popupVisible && status === Loader.Ready
-        sourceComponent: menuFrameStyle
+        visible: control.popupVisible && status === Loader.Ready
+        sourceComponent: __style ? __style.frame : undefined
+
+        Loader {
+            id: styleLoader
+            active: !root.isNative
+            sourceComponent: root.style
+            onStatusChanged: {
+                if (status === Loader.Error)
+                    console.error("Failed to load Style for", root)
+            }
+        }
 
         focus: true
         Keys.forwardTo: menuBar ? [menuBar] : []
@@ -230,8 +244,6 @@ MenuPrivate {
             Column {
                 id: column
 
-                width: Math.max(menuFrameLoader.itemWidth, implicitWidth)
-
                 Repeater {
                     id: itemsRepeater
                     model: root.menuItems
@@ -240,14 +252,13 @@ MenuPrivate {
                         id: menuItemLoader
 
                         property var menuItem: modelData
+                        property int contentWidth: column.width
+                        property int contentHeight: column.height
                         property bool isSeparator: menuItem ? !menuItem.hasOwnProperty("text") : false
                         property bool hasSubmenu: menuItem ? !!menuItem["menuItems"] : false
                         property bool selected: !isSeparator && root.currentIndex === index
 
-                        property alias mouseArea: itemMouseArea
-                        property var menuItemsColumn: column
-
-                        sourceComponent: root.menuItemStyle
+                        sourceComponent: menuFrameLoader.menuItemStyle
                         enabled: !isSeparator && !!menuItem && menuItem.enabled
 
                         MouseArea {
@@ -314,7 +325,7 @@ MenuPrivate {
                     for (var i = 0; i < children.length; i++) {
                         var item = children[i]["item"]
                         if (item)
-                            item.implicitWidth = width
+                            item.implicitWidth = Math.max(root.minimumWidth, implicitWidth)
                     }
                 }
             }

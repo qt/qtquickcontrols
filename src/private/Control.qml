@@ -65,13 +65,13 @@ FocusScope {
         anchors.fill: parent
         sourceComponent: __style ? __style.panel : null
         property alias control: root
-        onStatusChanged: if (status === Loader.Error) print("Failed to load panel for " + root)
+        onStatusChanged: if (status === Loader.Error) console.error("Failed to load Style for", root)
         Loader {
             id: styleLoader
             sourceComponent: style
             onStatusChanged: {
                 if (status === Loader.Error)
-                    print("Failed to load Style for " + root)
+                    console.error("Failed to load Style for", root)
             }
         }
     }

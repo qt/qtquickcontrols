@@ -39,24 +39,55 @@
 ****************************************************************************/
 
 import QtQuick 2.0
+import QtDesktop 1.0
+import QtDesktop.Styles 1.0
+import QtDesktop.Private 1.0
 
-/*!
-    \qmltype MenuBarItemStyle
-    \internal
-    \inqmlmodule QtDesktop.Styles 1.0
-*/
-Rectangle {
-    SystemPalette { id: syspal }
+Style {
+    id: styleRoot
 
-    width: text.width + 12
-    height: text.height + 4
-    color: selected ? syspal.highlight : syspal.window
+    property Component frame: StyleItem {
+        elementType: "menu"
 
-    Text {
-        id: text
-        text: menuItem.text
-        anchors.centerIn: parent
-        renderType: Text.NativeRendering
-        color: selected ? syspal.highlightedText : syspal.windowText
+        contentWidth: parent ? parent.contentWidth : 0
+        contentHeight: parent ? parent.contentHeight : 0
+        width: implicitWidth + 2 * (pixelMetric("menuhmargin") + pixelMetric("menupanelwidth"))
+        height: implicitHeight + 2 * (pixelMetric("menuvmargin") + pixelMetric("menupanelwidth"))
+
+        property int subMenuOverlap: pixelMetric("submenuoverlap")
+
+        SystemPalette { id: syspal }
+
+        Rectangle {
+            visible: anchors.margins > 0
+            anchors {
+                fill: parent
+                margins: pixelMetric("menupanelwidth")
+            }
+            color: syspal.window
+        }
+    }
+
+    property Component menuItem: StyleItem {
+        elementType: "menuitem"
+        x: pixelMetric("menuhmargin") + pixelMetric("menupanelwidth")
+        y: pixelMetric("menuvmargin") + pixelMetric("menupanelwidth")
+
+        text: isSeparator || !menuItem ? "" : menuItem.text
+        property string textAndShorcut: text + (properties.shortcut ? "\t" + properties.shortcut : "")
+        contentWidth: textWidth(textAndShorcut)
+        contentHeight: textHeight(textAndShorcut)
+
+        enabled: !!parent && parent.enabled
+        selected: !!parent && parent.selected
+        on: !!menuItem && !!menuItem["checkable"] && menuItem.checked
+
+        properties: {
+            "checkable": !!menuItem && !!menuItem["checkable"],
+            "exclusive": !!menuItem && !!menuItem["exclusiveGroup"],
+            "shortcut": !!menuItem && menuItem["shortcut"] || "",
+            "hasSubmenu": hasSubmenu,
+            "icon": !!menuItem && !!menuItem["action"] ? menuItem.action.__icon : null
+        }
     }
 }

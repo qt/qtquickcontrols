@@ -39,16 +39,34 @@
 ****************************************************************************/
 
 import QtQuick 2.0
+import QtDesktop.Styles 1.0
 
 /*!
     \qmltype MenuBarStyle
     \internal
     \inqmlmodule QtDesktop.Styles 1.0
 */
-Rectangle {
-    SystemPalette { id: syspal }
 
-    width: menuBar.width
-    height: 20
-    color: syspal.window
+Style {
+    property var __syspal: SystemPalette { id: syspal }
+
+    property Component panel: Rectangle {
+        width: control.width
+        height: 20
+        color: __syspal.window
+    }
+
+    property Component menuItem: Rectangle {
+        width: text.width + 12
+        height: text.height + 4
+        color: selected ? __syspal.highlight : __syspal.window
+
+        Text {
+            id: text
+            text: menuItem.text
+            anchors.centerIn: parent
+            renderType: Text.NativeRendering
+            color: selected ? __syspal.highlightedText : __syspal.windowText
+        }
+    }
 }

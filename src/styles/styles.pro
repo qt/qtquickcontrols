@@ -6,9 +6,7 @@ QML_FILES = \
     ComboBoxStyle.qml \
     GroupBoxStyle.qml \
     MenuBarStyle.qml \
-    MenuBarItemStyle.qml \
-    MenuFrameStyle.qml \
-    MenuItemStyle.qml \
+    MenuStyle.qml \
     ProgressBarStyle.qml \
     RadioButtonStyle.qml \
     ScrollAreaStyle.qml \
@@ -29,9 +27,7 @@ QML_FILES += \
     Desktop/ComboBoxStyle.qml \
     Desktop/GroupBoxStyle.qml \
     Desktop/MenuBarStyle.qml \
-    Desktop/MenuBarItemStyle.qml \
-    Desktop/MenuFrameStyle.qml \
-    Desktop/MenuItemStyle.qml \
+    Desktop/MenuStyle.qml \
     Desktop/ProgressBarStyle.qml \
     Desktop/RadioButtonStyle.qml \
     Desktop/ScrollAreaStyle.qml \

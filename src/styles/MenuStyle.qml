@@ -40,27 +40,52 @@
 
 import QtQuick 2.0
 import QtDesktop 1.0
-import QtDesktop.Private 1.0
+import QtDesktop.Styles 1.0
 
-StyleItem {
-    elementType: "menuitem"
-    x: pixelMetric("menuhmargin") + pixelMetric("menupanelwidth")
-    y: pixelMetric("menuvmargin") + pixelMetric("menupanelwidth")
+Style {
+    id: styleRoot
 
-    text: isSeparator || !menuItem ? "" : menuItem.text
-    property string textAndShorcut: text + (properties.shortcut ? "\t" + properties.shortcut : "")
-    contentWidth: textWidth(textAndShorcut)
-    contentHeight: textHeight(textAndShorcut)
+    property Component frame: Rectangle {
+        width: (parent ? parent.contentWidth : 0) + 2
+        height: (parent ? parent.contentHeight : 0) + 2
 
-    enabled: !!parent && parent.enabled
-    selected: !!parent && parent.selected
-    on: !!menuItem && !!menuItem["checkable"] && menuItem.checked
+        color: "lightgray"
+        border { width: 1; color: "darkgray" }
 
-    properties: {
-        "checkable": !!menuItem && !!menuItem["checkable"],
-        "exclusive": !!menuItem && !!menuItem["exclusiveGroup"],
-        "shortcut": !!menuItem && menuItem["shortcut"] || "",
-        "hasSubmenu": hasSubmenu,
-        "icon": !!menuItem && !!menuItem["action"] ? menuItem.action.__icon : null
+        property int subMenuOverlap: -1
+    }
+
+    property Component menuItem: Rectangle {
+        width: Math.max((parent ? parent.contentWidth : 0), text.paintedWidth + 12)
+        height: isSeparator ? text.font.pixelSize / 2 : text.paintedHeight + 4
+        color: selected ? "" : backgroundColor
+        gradient: selected ? selectedGradient : undefined
+
+        readonly property color backgroundColor: "lightgray"
+        Gradient {
+            id: selectedGradient
+            GradientStop {color: Qt.lighter(backgroundColor, 1.8)  ; position: 0}
+            GradientStop {color: backgroundColor ; position: 1.4}
+        }
+        antialiasing: true
+
+        Text {
+            id: text
+            visible: !isSeparator
+            text: menuItem.text + (hasSubmenu ? "  \u25b6" : "")
+            x: 6
+            anchors.verticalCenter: parent.verticalCenter
+            renderType: Text.NativeRendering
+            color: "black"
+        }
+
+        Rectangle {
+            visible: isSeparator
+            width: parent.width - 2
+            height: 1
+            x: 1
+            anchors.verticalCenter: parent.verticalCenter
+            color: "darkgray"
+        }
     }
 }

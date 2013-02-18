@@ -40,11 +40,29 @@
 
 import QtQuick 2.0
 import QtDesktop 1.0
+import QtDesktop.Styles 1.0
 import QtDesktop.Private 1.0
 
-StyleItem {
-    elementType: "menubar"
-    width: menuBar.width
-    height: menuItemsRow.height
-//            + 2 * (pixelMetric("menuvmargin") + pixelMetric("menupanelwidth"))
+
+Style {
+    property Component frame: StyleItem {
+        elementType: "menubar"
+        width: control.width
+        height: parent ? parent.contentHeight : 0
+        //        + 2 * (pixelMetric("menuvmargin") + pixelMetric("menupanelwidth"))
+    }
+
+    property Component menuItem: StyleItem {
+        elementType: "menubaritem"
+    //    x: pixelMetric("menuhmargin") + pixelMetric("menupanelwidth")
+    //    y: pixelMetric("menuvmargin") + pixelMetric("menupanelwidth")
+
+        text: menuItem.text
+        contentWidth: textWidth(text)
+        contentHeight: textHeight(text)
+
+        enabled: menuItem.enabled
+        selected: parent.selected
+        sunken: parent.selected
+    }
 }

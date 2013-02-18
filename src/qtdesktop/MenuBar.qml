@@ -40,6 +40,8 @@
 
 import QtQuick 2.0
 import QtDesktop 1.0
+import QtDesktop.Styles 1.0
+import QtDesktop.Private 1.0
 import "Styles/Settings.js" as Settings
 
 /*!
@@ -71,24 +73,36 @@ import "Styles/Settings.js" as Settings
 MenuBarPrivate {
     id: root
 
-    height: !isNative ? menuBarLoader.height : 0
+    property Component style: Qt.createComponent(Settings.THEME_PATH + "/MenuBarStyle.qml", root)
 
+    height: !isNative ? menuBarLoader.height : 0
     data: [
         Loader {
             id: menuBarLoader
 
-            property Component menuBarStyle: Qt.createComponent(Settings.THEME_PATH + "/MenuBarStyle.qml", root)
-            property Component menuItemStyle: Qt.createComponent(Settings.THEME_PATH + "/MenuBarItemStyle.qml", root)
+            property Style __style: styleLoader.item
+            property Component menuItemStyle: __style ? __style.menuItem : null
 
-            visible: active && status === Loader.Ready
+            property alias control: root
+            onStatusChanged: if (status === Loader.Error) console.error("Failed to load panel for", root)
+
+            visible: status === Loader.Ready
             active: !root.isNative
-            sourceComponent: menuBarStyle
+            sourceComponent: __style ? __style.frame : undefined
 
-            property var menuBar: root
-            property var menuItemsRow: row
+            Loader {
+                id: styleLoader
+                active: !root.isNative
+                sourceComponent: root.style
+                onStatusChanged: {
+                    if (status === Loader.Error)
+                        console.error("Failed to load Style for", root)
+                }
+            }
 
             property int openedMenuIndex: -1
             property bool preselectMenuItem: false
+            property alias contentHeight: row.height
 
             Binding {
                 // Make sure the styled menu bar is in the background
@@ -127,13 +141,8 @@ MenuBarPrivate {
                         Loader {
                             id: menuItemLoader
 
-                            property var menuItem: modelData
+                            property var menuItem: root.isNative ? null : modelData
                             property bool selected: menuItem.popupVisible || itemMouseArea.pressed || menuBarLoader.openedMenuIndex === index
-
-                            property alias mouseArea: itemMouseArea
-                            property var menuItemsRow: row
-
-                            property bool allowMenuClose: false
 
                             sourceComponent: menuBarLoader.menuItemStyle
 
