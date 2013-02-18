@@ -197,6 +197,7 @@ FocusScope {
         }
 
         WheelArea {
+            id: wheelArea
             parent: flickableItem
 
             // ### Note this is needed due to broken mousewheel behavior in Flickable.
@@ -209,21 +210,43 @@ FocusScope {
             property double ignored: 0.001 // ## flick() does not work with 0 yVelocity
             property int maxFlick: 400
 
+            property bool horizontalRecursionGuard: false
+            property bool verticalRecursionGuard: false
+
             horizontalMaximumValue: flickableItem ? flickableItem.contentWidth - viewport.width : 0
             verticalMaximumValue: flickableItem ? flickableItem.contentHeight - viewport.height : 0
 
-            onVerticalValueChanged: {
-                if (flickableItem.contentY < flickThreshold && verticalDelta > speedThreshold) {
-                    flickableItem.flick(ignored, Math.min(maxFlick, acceleration * verticalDelta))
-                } else if (flickableItem.contentY > flickableItem.contentHeight
-                           - flickThreshold - viewport.height && verticalDelta < -speedThreshold) {
-                    flickableItem.flick(ignored, Math.max(-maxFlick, acceleration * verticalDelta))
-                } else {
-                    flickableItem.contentY = verticalValue
+            Connections {
+                target: flickableItem
+                onContentYChanged: {
+                    wheelArea.verticalRecursionGuard = true
+                    wheelArea.verticalValue = flickableItem.contentY
+                    wheelArea.verticalRecursionGuard = false
+                }
+                onContentXChanged: {
+                    wheelArea.horizontalRecursionGuard = true
+                    wheelArea.horizontalValue = flickableItem.contentX
+                    wheelArea.horizontalRecursionGuard = false
                 }
             }
 
-            onHorizontalValueChanged: flickableItem.contentX = horizontalValue
+            onVerticalValueChanged: {
+                if (!verticalRecursionGuard) {
+                    if (flickableItem.contentY < flickThreshold && verticalDelta > speedThreshold) {
+                        flickableItem.flick(ignored, Math.min(maxFlick, acceleration * verticalDelta))
+                    } else if (flickableItem.contentY > flickableItem.contentHeight
+                               - flickThreshold - viewport.height && verticalDelta < -speedThreshold) {
+                        flickableItem.flick(ignored, Math.max(-maxFlick, acceleration * verticalDelta))
+                    } else {
+                        flickableItem.contentY = verticalValue
+                    }
+                }
+            }
+
+            onHorizontalValueChanged: {
+                if (!horizontalRecursionGuard)
+                    flickableItem.contentX = horizontalValue
+            }
         }
 
         ScrollAreaHelper {
