@@ -19,7 +19,7 @@ headerdirs += ../
 
 sourcedirs += ../
 
-excludedirs += ../private ../../styles
+excludedirs += ../../styles
 
 imagedirs += images
 
