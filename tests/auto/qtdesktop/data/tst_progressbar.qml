@@ -55,8 +55,10 @@ TestCase {
         progressBar.maximumValue = 10
         progressBar.value = 2
         compare(progressBar.minimumValue, 5)
-        expectFail('', "Error: value < minimum value accepted")
         compare(progressBar.value, 5)
+
+        progressBar.minimumValue = 7
+        compare(progressBar.value, 7)
     }
 
     function test_maximumvalue() {
@@ -66,8 +68,31 @@ TestCase {
         progressBar.maximumValue = 10
         progressBar.value = 15
         compare(progressBar.maximumValue, 10)
-        expectFail('', "Error: value > maximum value accepted")
         compare(progressBar.value, 10)
+
+        progressBar.maximumValue = 8
+        compare(progressBar.value, 8)
     }
 
+    function test_invalidMinMax() {
+        var progressBar = Qt.createQmlObject('import QtDesktop 1.0; ProgressBar {}', testCase, '');
+
+        // minimumValue has priority over maximum if they are inconsistent
+
+        progressBar.minimumValue = 10
+        progressBar.maximumValue = 10
+        compare(progressBar.value, progressBar.minimumValue)
+
+        progressBar.value = 17
+        compare(progressBar.value, progressBar.minimumValue)
+
+        progressBar.maximumValue = 5
+        compare(progressBar.value, progressBar.minimumValue)
+
+        progressBar.value = 12
+        compare(progressBar.value, progressBar.minimumValue)
+
+        var progressBar2 = Qt.createQmlObject('import QtDesktop 1.0; ProgressBar {minimumValue: 10; maximumValue: 4; value: 5}', testCase, '');
+        compare(progressBar.value, progressBar.minimumValue)
+    }
 }

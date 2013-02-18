@@ -57,30 +57,76 @@ import "Styles/Settings.js" as Settings
 Control {
     id: progressbar
 
-    /*! This property is
+    /*! This property holds the progress bar's current value.
+        Attempting to change the current value to one outside the minimum-maximum
+        range has no effect on the current value.
+        The default value is \c 0
     */
     property real value: 0
-    /*! This property is the progress bar's minimum value */
+
+    /*! This property is the progress bar's minimum value
+        The \l value is clamped to this value.
+        The default value is \c 0
+    */
     property real minimumValue: 0
-    /*! This property is the progress bar's maximum value */
+
+    /*! This property is the progress bar's maximum value
+        The \l value is clamped to this value.
+        If maximumValue is smaller than \l minimumValue, \l minimumValue will be enforced.
+        The default value is \c 1
+    */
     property real maximumValue: 1
+
     /*! This property toggles indeterminate mode.
         When the actual progress is unknown, use this option.
-        The progress bar will be animated as busy indicator instead.
+        The progress bar will be animated as a busy indicator instead.
+        The default value is \c false
     */
     property bool indeterminate: false
 
-    /*! This property holds the orientation of the progress bar.
-        It must be either Qt.Horizontal or Qt.Vertical.
+    /*! \qmlproperty enum orientation
+
+        This property holds the orientation of the progress bar.
+
+        \list
+        \li Qt.Horizontal - Horizontal orientation. (Default)
+        \li Qt.Vertical - Vertical orientation.
+        \endlist
     */
     property int orientation: Qt.Horizontal
 
     /*! \internal */
     style: Qt.createComponent(Settings.THEME_PATH + "/ProgressBarStyle.qml", progressbar)
 
+    /*! \internal */
+    onMaximumValueChanged: setValue(value)
+    /*! \internal */
+    onMinimumValueChanged: setValue(value)
+    /*! \internal */
+    Component.onCompleted: setValue(value)
+    /*! \internal */
+    onValueChanged: setValue(value)
+
     Accessible.role: Accessible.ProgressBar
     Accessible.name: value
 
     implicitWidth: orientation === Qt.Horizontal ? 200 : (__panel ? __panel.implicitHeight : 0)
     implicitHeight: orientation === Qt.Horizontal ? (__panel ? __panel.implicitHeight : 0) : 200
+
+    /* \internal */
+    function setValue(v) {
+        var newval = parseFloat(v)
+        if (!isNaN(newval)) {
+            // we give minimumValue priority over maximum if they are inconsistent
+            if (newval > maximumValue) {
+                if (maximumValue >= minimumValue)
+                    newval = maximumValue;
+                else
+                    newval = minimumValue
+            } else if (v < minimumValue) {
+                newval = minimumValue
+            }
+            value = newval
+        }
+    }
 }

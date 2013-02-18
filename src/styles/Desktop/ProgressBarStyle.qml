@@ -48,9 +48,10 @@ Style {
         // XXX: since desktop uses int instead of real, the progressbar
         // range [0..1] must be stretched to a good precision
         property int factor : 1000
-        value:   indeterminate ? 0 : control.value * factor // does indeterminate value need to be 1 on windows?
-        minimum: indeterminate ? 0 : control.minimumValue * factor
-        maximum: indeterminate ? 0 : control.maximumValue * factor
+        property int decimals: 3
+        value:   indeterminate ? 0 : control.value.toFixed(decimals) * factor // does indeterminate value need to be 1 on windows?
+        minimum: indeterminate ? 0 : control.minimumValue.toFixed(decimals) * factor
+        maximum: indeterminate ? 0 : control.maximumValue.toFixed(decimals) * factor
         enabled: control.enabled
         horizontal: control.orientation == Qt.Horizontal
         hints: control.styleHints
