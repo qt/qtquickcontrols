@@ -723,6 +723,7 @@ ScrollArea {
 
     TextEdit {
         id: edit
+        focus: true
 
         SystemPalette {
             id: palette
