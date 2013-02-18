@@ -119,7 +119,7 @@ ScrollArea {
 
     /*! This property sets if the frame should paint the focus frame around its contents.
         The default value is \c false.
-        \Note Only certain platforms such as Mac OS X will be affected by this property */
+        \note Only certain platforms such as Mac OS X will be affected by this property */
     property bool highlightOnFocus: false
 
     /*! This property is set to \c true if the view alternates the row color.
@@ -174,8 +174,8 @@ ScrollArea {
     property int sortColumn
 
     /*! This property shows or hides the sort indicator
-        \ Note the view itself does not sort the data.
-        The default value is \c false. */
+        The default value is \c false.
+        \note The view itself does not sort the data. */
     property bool sortIndicatorVisible: false
 
     /*! This sets the sorting direction of the sort indicator
@@ -207,7 +207,7 @@ ScrollArea {
     property alias count: listView.count
 
     /*! \qmlproperty string TableView::section
-    The section of the view. See \l ListView::section */
+    The section of the view. \sa ListView::section */
     readonly property alias section: listView.section
 
     /*! \qmlproperty int TableView::currentIndex
