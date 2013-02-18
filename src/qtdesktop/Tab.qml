@@ -52,4 +52,5 @@ Item {
     anchors.fill: parent
     property string title
     property int contentMargin
+    Accessible.role: Accessible.PageTab
 }

@@ -57,7 +57,7 @@ Item {
     height: 100
 
     property int current: 0
-    property int count: stack.children.length
+    property int count: 0
     property bool frame: true
     property bool tabsVisible: true
     property string position: "North"
@@ -69,9 +69,14 @@ Item {
     Component.onCompleted: __setOpacities()
 
     function __setOpacities() {
+        var tabCount = 0;
         for (var i = 0; i < stack.children.length; ++i) {
             stack.children[i].visible = (i == current ? true : false)
+            // count real tabs - ignore for instance Repeater
+            if (stack.children[i].Accessible.role == Accessible.PageTab)
+                ++tabCount;
         }
+        tabWidget.count = tabCount;
     }
 
     Component {

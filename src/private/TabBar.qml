@@ -113,7 +113,7 @@ Item {
         Repeater {
             id: repeater
             focus: true
-            model: tabFrame ? tabFrame.tabs.length : null
+            model: tabFrame ? tabFrame.count : null
             delegate: Item {
                 id: tabitem
                 focus: true
@@ -126,7 +126,7 @@ Item {
                 property string title: tabFrame.tabs[index].title
 
                 z: selected ? 1 : -index
-                implicitWidth: Math.min(tabloader.implicitWidth, tabbar.width/tabs.length) + 1
+                implicitWidth: Math.min(tabloader.implicitWidth, tabbar.width/repeater.count) + 1
                 implicitHeight: tabloader.implicitHeight
 
                 Loader {
