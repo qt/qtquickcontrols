@@ -67,6 +67,7 @@ void QQuickComponentsLayoutAttached::setMinimumWidth(qreal width)
 
     m_minimumWidth = width;
     updateLayout();
+    emit minimumWidthChanged();
 }
 
 void QQuickComponentsLayoutAttached::setMinimumHeight(qreal height)
@@ -76,6 +77,7 @@ void QQuickComponentsLayoutAttached::setMinimumHeight(qreal height)
 
     m_minimumHeight = height;
     updateLayout();
+    emit minimumHeightChanged();
 }
 
 void QQuickComponentsLayoutAttached::setMaximumWidth(qreal width)
@@ -85,6 +87,7 @@ void QQuickComponentsLayoutAttached::setMaximumWidth(qreal width)
 
     m_maximumWidth = width;
     updateLayout();
+    emit maximumWidthChanged();
 }
 
 void QQuickComponentsLayoutAttached::setMaximumHeight(qreal height)
@@ -94,6 +97,7 @@ void QQuickComponentsLayoutAttached::setMaximumHeight(qreal height)
 
     m_maximumHeight = height;
     updateLayout();
+    emit maximumHeightChanged();
 }
 
 void QQuickComponentsLayoutAttached::setVerticalSizePolicy(QQuickComponentsLayout::SizePolicy policy)
@@ -101,6 +105,7 @@ void QQuickComponentsLayoutAttached::setVerticalSizePolicy(QQuickComponentsLayou
     if (m_verticalSizePolicy != policy) {
         m_verticalSizePolicy = policy;
         updateLayout();
+        emit verticalSizePolicyChanged();
     }
 }
 
@@ -109,6 +114,7 @@ void QQuickComponentsLayoutAttached::setHorizontalSizePolicy(QQuickComponentsLay
     if (m_horizontalSizePolicy != policy) {
         m_horizontalSizePolicy = policy;
         updateLayout();
+        emit horizontalSizePolicyChanged();
     }
 }
 

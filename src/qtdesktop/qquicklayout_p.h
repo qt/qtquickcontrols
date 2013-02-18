@@ -82,12 +82,12 @@ private:
 class QQuickComponentsLayoutAttached : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(qreal minimumWidth READ minimumWidth WRITE setMinimumWidth)
-    Q_PROPERTY(qreal minimumHeight READ minimumHeight WRITE setMinimumHeight)
-    Q_PROPERTY(qreal maximumWidth READ maximumWidth WRITE setMaximumWidth)
-    Q_PROPERTY(qreal maximumHeight READ maximumHeight WRITE setMaximumHeight)
-    Q_PROPERTY(QQuickComponentsLayout::SizePolicy verticalSizePolicy READ verticalSizePolicy WRITE setVerticalSizePolicy)
-    Q_PROPERTY(QQuickComponentsLayout::SizePolicy horizontalSizePolicy READ horizontalSizePolicy WRITE setHorizontalSizePolicy)
+    Q_PROPERTY(qreal minimumWidth READ minimumWidth WRITE setMinimumWidth NOTIFY minimumWidthChanged)
+    Q_PROPERTY(qreal minimumHeight READ minimumHeight WRITE setMinimumHeight NOTIFY minimumHeightChanged)
+    Q_PROPERTY(qreal maximumWidth READ maximumWidth WRITE setMaximumWidth NOTIFY maximumWidthChanged)
+    Q_PROPERTY(qreal maximumHeight READ maximumHeight WRITE setMaximumHeight NOTIFY maximumHeightChanged)
+    Q_PROPERTY(QQuickComponentsLayout::SizePolicy verticalSizePolicy READ verticalSizePolicy WRITE setVerticalSizePolicy NOTIFY verticalSizePolicyChanged)
+    Q_PROPERTY(QQuickComponentsLayout::SizePolicy horizontalSizePolicy READ horizontalSizePolicy WRITE setHorizontalSizePolicy NOTIFY horizontalSizePolicyChanged)
 
 public:
     QQuickComponentsLayoutAttached(QObject *object);
@@ -109,6 +109,14 @@ public:
 
     QQuickComponentsLayout::SizePolicy horizontalSizePolicy() const { return m_horizontalSizePolicy; }
     void setHorizontalSizePolicy(QQuickComponentsLayout::SizePolicy policy);
+
+signals:
+    void minimumWidthChanged();
+    void minimumHeightChanged();
+    void maximumWidthChanged();
+    void maximumHeightChanged();
+    void verticalSizePolicyChanged();
+    void horizontalSizePolicyChanged();
 
 protected:
     void updateLayout();
