@@ -42,10 +42,9 @@ import QtDesktop 1.0
 
 /*!
     \qmltype SliderStyle
+    \internal
     \inqmlmodule QtDesktop.Styles 1.0
-    \brief SliderStyle is doing bla...bla...
 */
-
 Item {
     id: styleitem
 

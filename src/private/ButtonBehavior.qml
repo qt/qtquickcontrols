@@ -41,6 +41,11 @@
 import QtQuick 2.0
 import QtDesktop 1.0
 
+/*!
+        \qmltype ButtonBehavior
+        \internal
+        \inqmlmodule QtDesktop.Private 1.0
+*/
 MouseArea {
     id: behavior
     property bool checkable: false

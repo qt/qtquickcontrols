@@ -41,6 +41,12 @@
 import QtQuick 2.0
 import QtDesktop.Private 1.0
 
+/*!
+        \qmltype BasicButton
+        \internal
+        \qmlabstract
+        \inqmlmodule QtDesktop.Private 1.0
+*/
 Item {
     id: button
 

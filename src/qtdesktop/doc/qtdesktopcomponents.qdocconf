@@ -19,7 +19,34 @@ headerdirs += ../
 
 sourcedirs += ../
 
-excludedirs += ../../styles
+sources += ../../private/qstyleitem.cpp \
+           ../../private/BasicButton.qml \
+           ../../private/ButtonBehavior.qml \
+           ../../private/FocusFrame.qml \
+           ../../private/ModalPopupBehavior.qml \
+           ../../private/PageSlideTransition.qml \
+           ../../private/ScrollAreaHelper.qml \
+           ../../private/ScrollBar.qml \
+           ../../private/SplitterBase.qml \
+           ../../private/TabBar.qml \
+           ../../styles/ButtonStyle.qml \
+           ../../styles/CheckBoxStyle.qml \
+           ../../styles/ComboBoxStyle.qml \
+           ../../styles/GroupBoxStyle.qml \
+           ../../styles/MenuBarItemStyle.qml \
+           ../../styles/MenuBarStyle.qml \
+           ../../styles/MenuFrameStyle.qml \
+           ../../styles/MenuItemStyle.qml \
+           ../../styles/ProgressBarStyle.qml \
+           ../../styles/RadioButtonStyle.qml \
+           ../../styles/ScrollAreaStyle.qml \
+           ../../styles/ScrollBarStyle.qml \
+           ../../styles/SliderStyle.qml \
+           ../../styles/SpinBoxStyle.qml \
+           ../../styles/TabFrameStyle.qml \
+           ../../styles/TextFieldStyle.qml \
+           ../../styles/ToolBarStyle.qml \
+           ../../styles/ToolButtonStyle.qml
 
 imagedirs += images
 

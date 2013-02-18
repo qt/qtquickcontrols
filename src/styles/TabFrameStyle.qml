@@ -41,10 +41,9 @@ import QtQuick 2.0
 
 /*!
     \qmltype TabFrameStyle
+    \internal
     \inqmlmodule QtDesktop.Styles 1.0
-    \brief TabFrameStyle is doing bla...bla...
 */
-
 QtObject {
 
     /*! This property holds the base alignment of the tab bar.

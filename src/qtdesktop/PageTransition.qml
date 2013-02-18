@@ -40,6 +40,16 @@
 
 import QtQuick 2.0
 
+/*!
+        \qmltype PageTransition
+        \inqmlmodule QtDesktop 1.0
+
+        \brief The component for managing page transitions
+
+        See the documentation for the \l {QtDesktop1::PageStack} {PageStack}
+        component.
+
+*/
 QtObject {
     id: root
 

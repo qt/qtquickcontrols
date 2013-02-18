@@ -42,10 +42,9 @@ import QtDesktop 1.0
 
 /*!
     \qmltype CheckBoxStyle
+    \internal
     \inqmlmodule QtDesktop.Styles 1.0
-    \brief CheckBoxStyle is doing bla...bla...
 */
-
 Item {
     implicitWidth: 100
     implicitHeight: 20

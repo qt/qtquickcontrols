@@ -42,10 +42,9 @@ import QtDesktop 1.0
 
 /*!
     \qmltype TextFieldStyle
+    \internal
     \inqmlmodule QtDesktop.Styles 1.0
-    \brief TextFieldStyle is doing bla...bla...
 */
-
 Item {
     id: style
     anchors.fill: parent

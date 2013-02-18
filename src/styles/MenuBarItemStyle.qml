@@ -40,6 +40,11 @@
 
 import QtQuick 2.0
 
+/*!
+    \qmltype MenuBarItemStyle
+    \internal
+    \inqmlmodule QtDesktop.Styles 1.0
+*/
 Rectangle {
     SystemPalette { id: syspal }
 

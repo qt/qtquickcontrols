@@ -41,6 +41,11 @@
 import QtQuick 2.0
 import QtDesktop 1.0
 
+/*!
+    \qmltype MenuFrameStyle
+    \internal
+    \inqmlmodule QtDesktop.Styles 1.0
+*/
 Rectangle {
     width: Math.max(menu.minimumWidth, menuItemsColumn.width) + 2
     height: menuItemsColumn.implicitHeight + 2

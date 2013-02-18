@@ -111,6 +111,10 @@ public:
     }
 };
 
+/*!
+  \class QStyleItem
+  \internal
+*/
 QStyleItem::QStyleItem(QQuickItem *parent)
     : QQuickItem(parent),
     m_styleoption(0),
@@ -171,6 +175,13 @@ QStyleItem::QStyleItem(QQuickItem *parent)
     connect(this, SIGNAL(contentHeightChanged(int)), this, SLOT(updateSizeHint()));
     connect(this, SIGNAL(widthChanged()), this, SLOT(updateRect()));
 }
+
+/*!
+        \qmltype StyleItem
+        \instantiates QStyleItem
+        \internal
+        \inqmlmodule QtDesktop.Private 1.0
+*/
 
 QStyleItem::~QStyleItem()
 {

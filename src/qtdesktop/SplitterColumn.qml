@@ -44,7 +44,6 @@ import QtDesktop.Private 1.0 as Private
 /*!
     \qmltype SplitterColumn
     \inqmlmodule QtDesktop 1.0
-    \brief SplitterColumn is doing bla...bla...
 */
 
 /*

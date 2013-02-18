@@ -43,10 +43,9 @@ import QtDesktop 1.0
 
 /*!
     \qmltype ScrollBarStyle
+    \internal
     \inqmlmodule QtDesktop.Styles 1.0
-    \brief ScrollBarStyle is doing bla...bla...
 */
-
 Rectangle {
     id: styleitem
 

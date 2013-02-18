@@ -42,10 +42,9 @@ import QtDesktop 1.0
 
 /*!
     \qmltype RadioButtonStyle
+    \internal
     \inqmlmodule QtDesktop.Styles 1.0
-    \brief RadioButtonStyle is doing bla...bla...
 */
-
 Item {
     implicitWidth: 100
     implicitHeight: 20

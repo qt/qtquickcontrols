@@ -43,6 +43,11 @@ import QtQuick 2.0
 // KNOWN ISSUES
 // none
 
+/*!
+        \qmltype ModalPopupBehavior
+        \internal
+        \inqmlmodule QtDesktop.Private 1.0
+*/
 Item {
     id: popupBehavior
 

@@ -41,6 +41,11 @@
 import QtQuick 2.0
 import QtDesktop 1.0
 
+/*!
+    \qmltype MenuItemStyle
+    \internal
+    \inqmlmodule QtDesktop.Styles 1.0
+*/
 Rectangle {
     width: Math.max(column.implicitWidth, text.paintedWidth + 12)
     height: isSeparator ? text.font.pixelSize / 2 : text.paintedHeight + 4
