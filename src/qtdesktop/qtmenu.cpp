@@ -50,6 +50,17 @@
 
 QT_BEGIN_NAMESPACE
 
+/*!
+  \class QtMenu
+  \internal
+ */
+
+/*!
+  \qmltype MenuPrivate
+  \instantiates QtMenu
+  \internal
+  \inqmlmodule QtDesktop 1.0
+ */
 QtMenu::QtMenu(QObject *parent)
     : QtMenuItem(parent),
       m_selectedIndex(-1),

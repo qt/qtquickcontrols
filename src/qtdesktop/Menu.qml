@@ -85,48 +85,6 @@ import "Styles/Settings.js" as Settings
 
     \sa MenuBar, MenuItem, MenuSeparator
 */
-
-/*!
-    \qmlproperty readonly list Menu::menuItems
-    \default
-*/
-
-/*!
-    \qmlproperty var Menu::model
-*/
-
-/*!
-    \qmlproperty int Menu::selectedIndex
-*/
-
-/*!
-    \qmlproperty font Menu::font
-
-    Write-only. For styling purposes only.
-*/
-
-/*!
-    \qmlproperty readonly bool Menu::popupVisible
-*/
-
-/*!
-    \qmlmethod void Menu::showPopup(x, y, item, parent)
-
-    Shows the popup related to this menu. It can block on some platforms, so test it accordingly.
-*/
-
-/*!
-    \qmlmethod void Menu::closeMenu()
-
-    Closes current menu (and submenus) only.
-*/
-
-/*!
-    \qmlmethod void Menu::dismissMenu()
-
-    Closes all menus related to this one, including its parent menu.
-*/
-
 MenuPrivate {
     id: root
 

@@ -46,6 +46,18 @@
 
 QT_BEGIN_NAMESPACE
 
+
+/*!
+  \class QtMenuBar
+  \internal
+ */
+
+/*!
+  \qmltype MenuBarPrivate
+  \instantiates QtMenuBar
+  \internal
+  \inqmlmodule QtDesktop 1.0
+ */
 QtMenuBar::QtMenuBar(QQuickItem *parent)
     : QQuickItem(parent)
 {
