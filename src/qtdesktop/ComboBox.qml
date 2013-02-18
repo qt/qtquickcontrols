@@ -99,6 +99,7 @@ BasicButton {
 
     default property alias menuItems: popup.menuItems
     property alias model: popup.model
+    property alias textRole: popup.textRole
     property bool popupOpen: false
 
     property alias selectedIndex: popup.selectedIndex
