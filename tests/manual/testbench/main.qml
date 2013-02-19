@@ -44,7 +44,7 @@ import "content"
 
 ApplicationWindow {
     width: 950
-    height: 500
+    height: 600
 
     property var propertyMap: []
     Components{ id: components }
@@ -148,6 +148,8 @@ ApplicationWindow {
 
                                     var typeName = "None";
                                     var layout
+                                    var enumModelData
+                                    var isColor = false
                                     switch (substr) {
 
                                     case "ActiveFocusOnPress":
@@ -191,6 +193,77 @@ ApplicationWindow {
                                         typeName = "String";
                                         break;
 
+                                    case "HorizontalAlignment":
+                                        layout = layouts.enumLayout
+                                        enumModelData = Qt.createQmlObject('import QtQuick 2.0; import QtDesktop 1.0; ListModel {}', layout, '');
+                                        typeName = "Enum";
+                                        enumModelData.append({ text: "TextEdit.AlignLeft",    value: TextEdit.AlignLeft});
+                                        enumModelData.append({ text: "TextEdit.AlignRight",   value: TextEdit.AlignRight});
+                                        enumModelData.append({ text: "TextEdit.AlignHCenter", value: TextEdit.AlignHCenter});
+                                        break;
+
+                                    case "VerticalAlignment":
+                                        layout = layouts.enumLayout
+                                        enumModelData = Qt.createQmlObject('import QtQuick 2.0; import QtDesktop 1.0; ListModel {}', layout, '');
+                                        typeName = "Enum";
+                                        enumModelData.append({ text: "TextEdit.AlignTop",      value: TextEdit.AlignTop});
+                                        enumModelData.append({ text: "TextEdit.AlignBottom",   value: TextEdit.AlignBottom});
+                                        enumModelData.append({ text: "TextEdit.AlignVCenter",  value: TextEdit.AlignVCenter});
+                                        break;
+
+                                    case "InputMethodHints":
+                                        layout = layouts.enumLayout
+                                        enumModelData = Qt.createQmlObject('import QtQuick 2.0; import QtDesktop 1.0; ListModel {}', layout, '');
+                                        typeName = "Enum";
+                                        enumModelData.append({ text: "Qt.ImhNone",                  value: Qt.ImhNone});
+                                        enumModelData.append({ text: "Qt.ImhHiddenText",            value: Qt.ImhHiddenText});
+                                        enumModelData.append({ text: "Qt.ImhSensitiveData",         value: Qt.ImhSensitiveData});
+                                        enumModelData.append({ text: "Qt.ImhNoAutoUppercase",       value: Qt.ImhNoAutoUppercase});
+                                        enumModelData.append({ text: "Qt.ImhPreferNumbers",         value: Qt.ImhPreferNumbers});
+                                        enumModelData.append({ text: "Qt.ImhPreferUppercase",       value: Qt.ImhPreferUppercase});
+                                        enumModelData.append({ text: "Qt.ImhPreferLowercase",       value: Qt.ImhPreferLowercase});
+                                        enumModelData.append({ text: "Qt.ImhNoPredictiveText",      value: Qt.ImhNoPredictiveText});
+                                        enumModelData.append({ text: "Qt.ImhDate",                  value: Qt.ImhDate});
+                                        enumModelData.append({ text: "Qt.ImhTime",                  value: Qt.ImhTime});
+                                        enumModelData.append({ text: "Qt.ImhDigitsOnly",            value: Qt.ImhDigitsOnly});
+                                        enumModelData.append({ text: "Qt.ImhFormattedNumbersOnly",  value: Qt.ImhFormattedNumbersOnly});
+                                        enumModelData.append({ text: "Qt.ImhUppercaseOnly",         value: Qt.ImhUppercaseOnly});
+                                        enumModelData.append({ text: "Qt.ImhLowercaseOnly",         value: Qt.ImhLowercaseOnly});
+                                        enumModelData.append({ text: "Qt.ImhDialableCharactersOnly",value: Qt.ImhDialableCharactersOnly});
+                                        enumModelData.append({ text: "Qt.ImhEmailCharactersOnly",   value: Qt.ImhEmailCharactersOnly});
+                                        enumModelData.append({ text: "Qt.ImhUrlCharactersOnly",     value: Qt.ImhUrlCharactersOnly});
+                                        break;
+
+                                    case "Orientation":
+                                        layout = layouts.enumLayout
+                                        enumModelData = Qt.createQmlObject('import QtQuick 2.0; import QtDesktop 1.0; ListModel {}', layout, '');
+                                        typeName = "Enum";
+                                        enumModelData.append({ text: "Qt.Horizontal",    value: Qt.Horizontal});
+                                        enumModelData.append({ text: "Qt.Vertical",      value: Qt.Vertical});
+                                        break;
+
+                                    case "EchoMode":
+                                        layout = layouts.enumLayout
+                                        enumModelData = Qt.createQmlObject('import QtQuick 2.0; import QtDesktop 1.0; ListModel {}', layout, '');
+                                        typeName = "Enum";
+                                        enumModelData.append({ text: "TextInput.Normal",            value: TextInput.Normal});
+                                        enumModelData.append({ text: "TextInput.Password",          value: TextInput.Password});
+                                        enumModelData.append({ text: "TextInput.NoEcho",            value: TextInput.NoEcho});
+                                        enumModelData.append({ text: "TextInput.PasswordEchoOnEdit",value: TextInput.PasswordEchoOnEdit});
+                                        break;
+
+                                    case "BackgroundColor":
+                                    case "TextColor":
+                                        isColor = true
+                                        layout = layouts.enumLayout
+                                        enumModelData = Qt.createQmlObject('import QtQuick 2.0; import QtDesktop 1.0; ListModel {}', layout, '');
+                                        typeName = "Enum";
+                                        enumModelData.append({ text: "Amber",       value: "#FF7E00"});
+                                        enumModelData.append({ text: "Azure",       value: "#007FFF"});
+                                        enumModelData.append({ text: "Carmine red", value: "#FF0038"});
+                                        break;
+
+
                                     default:
                                         break;
                                     }
@@ -203,9 +276,12 @@ ApplicationWindow {
                                     var val = item[substr] + "" // All model properties must be the same type
 
                                     if (typeName != "None" && val !== undefined) {
+                                        if (isColor)
+                                            enumModelData.append({ text: "Default",    value: val})
+
                                         if (arr[typeName] === undefined)
                                             arr[typeName] = []
-                                        arr[typeName].push({name: substr , result: val, typeString: typeName, layoutComponent: layout})
+                                        arr[typeName].push({name: substr , result: val, typeString: typeName, layoutComponent: layout, enumModel: enumModelData})
                                     }
                                 }
                                 propertyMap = arr;
@@ -272,7 +348,7 @@ ApplicationWindow {
         Rectangle {
             id: sidebar
             color : syspal.window
-            width: 200
+            width: 300
             ScrollArea {
                 id: scrollArea
                 anchors.fill: parent
@@ -285,7 +361,7 @@ ApplicationWindow {
                     width: scrollArea.viewport.width - 20
                     spacing: 8
                     Repeater {
-                        model: ["Boolean", "String","Int", "Real", "ReadOnly"]
+                        model: ["Boolean", "String","Int", "Real", "ReadOnly", "Enum"]
                         Repeater {
                             model: propertyMap[modelData]
                             Loader {
@@ -294,6 +370,7 @@ ApplicationWindow {
                                 property string name: modelData.name
                                 property var value: modelData.value
                                 property var result: modelData.result
+                                property var enumModel: modelData.enumModel
                             }
                         }
                     }

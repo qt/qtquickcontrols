@@ -106,4 +106,32 @@ QtObject {
             Layout.horizontalSizePolicy: Layout.Expanding
         }
     }
+
+    property Component enumLayout: RowLayout {
+        id: enumLayout
+        spacing: 4
+        height: 20
+        Text {
+            text: name + ":"
+            Layout.minimumWidth: 100
+        }
+
+        ComboBox {
+            height: 20
+            model: enumModel
+            Layout.horizontalSizePolicy: Layout.Expanding
+            onSelectedIndexChanged: loader.item[name] = model.get(selectedIndex).value
+
+
+            Component.onCompleted: selectedIndex = getDefaultIndex()
+            function getDefaultIndex() {
+                for (var index = 0 ; index < model.count ; ++index) {
+                    if ( model.get(index).value === result )
+                        return index
+                }
+                return 0;
+            }
+
+        }
+    }
 }
