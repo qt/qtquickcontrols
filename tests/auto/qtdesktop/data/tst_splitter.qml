@@ -52,26 +52,15 @@ TestCase {
 
     Component {
         id: splitterRow
-        SplitterRow { Item {}  Item {} }
+        Splitter { Item {}  Item {} }
     }
 
-    Component {
-        id: splitterColumn
-        SplitterColumn { Item {}  Item {} }
-    }
-
-    function test_splitterrow() {
+    function test_splitter() {
         var component = splitterRow
         var splitter = component.createObject(testCase);
         verify (splitter !== null, "splitterrow created is null")
         verify (splitter.orientation === Qt.Horizontal)
-        verify (splitter.items.length === 2)
+        verify (splitter.__items.length === 2)
     }
 
-    function test_splittercolumn() {
-        var component = splitterColumn
-        var splitter = component.createObject(testCase);
-        verify (splitter !== null, "splittercolumn created is null")
-        verify (splitter.items.length === 2)
-    }
 }

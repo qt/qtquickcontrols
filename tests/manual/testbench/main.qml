@@ -85,13 +85,12 @@ ApplicationWindow {
         }
     }
 
-    SplitterRow {
+    Splitter {
         anchors.fill: parent
-        handleWidth: 1
         Flickable {
             id: testBenchRect
             clip: true
-            Splitter.expanding: true
+            Layout.horizontalSizePolicy: Layout.Expanding
 
             Rectangle {
                 anchors.fill: parent
