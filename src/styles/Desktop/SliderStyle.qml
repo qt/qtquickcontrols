@@ -55,7 +55,7 @@ Style {
         value: control.value*100
         horizontal: control.orientation === Qt.Horizontal
         enabled: control.enabled
-        hasFocus: control.focus
+        hasFocus: control.activeFocus
         hints: control.styleHints
         activeControl: control.tickmarksEnabled ? "ticks" : ""
     }

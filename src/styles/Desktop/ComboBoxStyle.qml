@@ -60,7 +60,7 @@ Style {
             hover: control.containsMouse
             enabled: control.enabled
             text: control.selectedText
-            hasFocus: control.focus
+            hasFocus: control.activeFocus
             contentHeight: 18
             contentWidth: 80
         }

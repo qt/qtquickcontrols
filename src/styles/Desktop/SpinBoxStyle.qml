@@ -107,7 +107,7 @@ Style {
             sunken: (control.__downEnabled && control.__downPressed) || (control.__upEnabled && control.__upPressed)
             hover: __containsMouse
             hints: control.styleHints
-            hasFocus: control.focus
+            hasFocus: control.activeFocus
             enabled: control.enabled
             value: (control.__upPressed ? 1 : 0)           |
                    (control.__downPressed ? 1<<1 : 0) |

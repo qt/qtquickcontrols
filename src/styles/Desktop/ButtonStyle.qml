@@ -49,7 +49,7 @@ Style {
         raised: !(control.pressed || control.checked)
         hover: control.containsMouse
         text: control.iconSource === "" ? "" : control.text
-        hasFocus: control.focus
+        hasFocus: control.activeFocus
         hints: control.styleHints
         // If no icon, let the style do the drawing
         activeControl: control.defaultbutton ? "default" : "f"

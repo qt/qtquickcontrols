@@ -51,7 +51,7 @@ Style {
         sunken: control.pressed
         raised: control.containsMouse
         hover: control.containsMouse
-        hasFocus: control.focus
+        hasFocus: control.activeFocus
         hints: control.styleHints.concat([control.__position])
 
         contentWidth: Math.max(textitem.paintedWidth, 32)
