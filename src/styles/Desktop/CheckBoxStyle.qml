@@ -56,7 +56,16 @@ Style {
             hover: control.containsMouse
             enabled: control.enabled
             hasFocus: control.activeFocus
-            hints: control.styleHints
+            hints: {
+                if (control.checkedState === Qt.PartiallyChecked)
+                    control.styleHints.push("partiallyChecked");
+                else {
+                    var index = control.styleHints.indexOf("partiallyChecked");
+                    if (index !== -1)
+                        control.styleHints.splice(index, 1);
+                }
+                control.styleHints;
+            }
             contentHeight: textitem.implicitHeight
             contentWidth: textitem.implicitWidth + indicatorWidth
             property int indicatorWidth: pixelMetric("indicatorwidth") + 2

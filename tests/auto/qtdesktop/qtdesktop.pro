@@ -35,6 +35,7 @@ OTHER_FILES += \
     $$PWD/data/tst_tabframe.qml \
     $$PWD/data/tst_tableviewcolumn.qml \
     $$PWD/data/tst_toolbar.qml \
-    $$PWD/data/tst_toolbutton.qml
+    $$PWD/data/tst_toolbutton.qml \
+    $$PWD/data/tst_checkbox.qml
 
 DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0

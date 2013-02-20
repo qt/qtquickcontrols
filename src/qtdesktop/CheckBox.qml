@@ -55,93 +55,93 @@ import QtDesktop.Private 1.0
 
     The state of the checkbox can be set with the \l checked property.
 
+    In addition to the checked and unchecked states, there is a third state:
+    partially checked. This state indicates that the
+    regular checked/unchecked state can not be determined; generally because of
+    other states that affect the checkbox. This state is useful when several
+    child nodes are selected in a treeview, for example.
+
+    The partially checked state can be made available to the user by setting
+    \l partiallyCheckedEnabled to \c true, or set directly by setting
+    \l checkedState to \c Qt.PartiallyChecked. \l checkedState behaves
+    identically to \l checked when \l partiallyCheckedEnabled is \c false;
+    setting one will appropriately set the other.
+
     The text of the label shown next to the checkbox can be set with the \l text
     property.
 
     Whenever a CheckBox is clicked, it emits the clicked() signal.
 */
 
-Control {
+AbstractCheckable {
     id: checkBox
 
     /*!
-        Emitted whenever the checkbox is clicked.
+        This property indicates the current checked state of the checkbox.
+
+        Possible values:
+        \c Qt.UnChecked - The checkbox is not checked (default).
+        \c Qt.Checked - The checkbox is checked.
+        \c Qt.PartiallyChecked - The checkbox is in a partially checked (or
+        "mixed") state.
     */
-    signal clicked
+    property int checkedState: checked ? Qt.Checked : Qt.Unchecked
 
     /*!
-        \qmlproperty bool pressed
+        This property determines whether the \c Qt.PartiallyChecked state is
+        available.
 
-        This property is \c true if the checkbox is pressed.
-        Set this property to manually invoke a mouse click.
+        A checkbox may be in a partially checked state when the regular checked
+        state can not be determined.
+
+        Setting \l checkedState to \c Qt.PartiallyChecked will implicitly set
+        this property to \c true.
+
+        By default, this property is \c false.
     */
-    property alias pressed: behavior.effectivePressed
+    property bool partiallyCheckedEnabled: false
 
     /*!
-        \qmlproperty bool checked
-
-        This property is \c true if the checkbox is checked.
+        True if onCheckedChanged should be ignored because we were reacting
+        to onCheckedStateChanged.
     */
-    property alias checked: behavior.checked
+    property bool ignoreChecked: false
 
-    /*!
-        \qmlproperty bool containsMouse
+    style: Qt.createComponent(Settings.THEME_PATH + "/CheckBoxStyle.qml", checkBox)
 
-        This property is \c true if the checkbox currently contains the mouse
-        cursor.
-    */
-    property alias containsMouse: behavior.containsMouse
-
-    /*!
-        This property is \c true if the checkbox takes the focus when it is
-        pressed; \l{QQuickItem::forceActiveFocus()}{forceActiveFocus()} will be
-        called on the checkbox.
-    */
-    property bool activeFocusOnPress: false
-
-    property alias exclusiveGroup: behavior.exclusiveGroup
-
-    /*!
-        This property holds the text that the label should display.
-    */
-    property string text
-
-    /*!
-        \internal
-    */
-    property var styleHints:[]
-
-    // implementation
     Accessible.role: Accessible.CheckBox
     Accessible.name: text
 
-    /*! The style that should be applied to the checkbox. */
-    style: Qt.createComponent(Settings.THEME_PATH + "/CheckBoxStyle.qml", checkBox)
+    __cycleStatesHandler: cycleCheckBoxStates
 
-    ButtonBehavior {
-        id: behavior
-        focus: true
-        property ExclusiveGroup exclusiveGroup
-        anchors.fill: parent
-        checkable: true
-        onClicked: checkBox.clicked();
-        onPressed: if (checkBox.activeFocusOnPress) checkBox.forceActiveFocus();
-        onExclusiveGroupChanged: {
-            if (exclusiveGroup)
-                exclusiveGroup.registerCheckable(checkBox)
+    /*! \internal */
+    onCheckedChanged: {
+        if (!ignoreChecked)
+            checkedState = checked ? Qt.Checked : Qt.Unchecked;
+    }
+
+    /*! \internal */
+    onCheckedStateChanged: {
+        ignoreChecked = true;
+        if (checkedState === Qt.PartiallyChecked) {
+            partiallyCheckedEnabled = true;
+            checked = false;
+        } else {
+            checked = checkedState === Qt.Checked;
         }
+        ignoreChecked = false;
     }
 
-    Keys.onPressed: {
-        if (event.key == Qt.Key_Space && !event.isAutoRepeat && !behavior.pressed)
-            behavior.keyPressed = true;
-    }
-
-    Keys.onReleased: {
-        if (event.key == Qt.Key_Space && !event.isAutoRepeat && behavior.keyPressed) {
-            behavior.keyPressed = false;
+    /*! \internal */
+    function cycleCheckBoxStates() {
+        if (!partiallyCheckedEnabled) {
             checked = !checked;
-            checkBox.clicked();
+        } else {
+            switch (checkedState) {
+                case Qt.Unchecked: checkedState = Qt.Checked; break;
+                case Qt.Checked: checkedState = Qt.PartiallyChecked; break;
+                case Qt.PartiallyChecked: checkedState = Qt.Unchecked; break;
+            }
         }
     }
 }

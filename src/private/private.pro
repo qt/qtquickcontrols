@@ -40,7 +40,3 @@ mac {
 }
 
 load(qml_plugin)
-
-OTHER_FILES += \
-    Control.qml
-

@@ -7,6 +7,7 @@ QT += qml quick widgets gui-private core-private
 QMAKE_DOCS = $$PWD/doc/qtdesktopcomponents.qdocconf
 
 QML_FILES = \
+    AbstractCheckable.qml \
     ApplicationWindow.qml \
     Button.qml \
     CheckBox.qml \
