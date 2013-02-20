@@ -83,7 +83,7 @@ public:
     Q_INVOKABLE void showPopup(qreal x, qreal y, int atActionIndex = -1, QObject *reference = 0);
     Q_INVOKABLE void clearMenuItems();
     Q_INVOKABLE QtMenuItem *addMenuItem(const QString &text);
-    Q_INVOKABLE QString itemTextAt(int index) const;
+    Q_INVOKABLE QString itemTextAt(int index) const; // TODO Remove, it's useless
     Q_INVOKABLE QString modelTextAt(int index) const;
     Q_INVOKABLE int modelCount() const;
 

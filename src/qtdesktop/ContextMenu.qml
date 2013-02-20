@@ -43,7 +43,7 @@ import QtDesktop 1.0
 
 Menu {
     id: root
-    property string selectedText: itemTextAt(selectedIndex)
+    property string selectedText: menuItems[selectedIndex] ? menuItems[selectedIndex].text : ""
     property string textRole
 
     onModelChanged: if (Component.status === Component.Ready && model !== undefined) rebuildMenu()

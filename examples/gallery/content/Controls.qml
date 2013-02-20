@@ -77,6 +77,7 @@ Item {
                 id: combo;
                 model: choices;
                 width: parent.width;
+                selectedIndex: 2
                 KeyNavigation.tab: t1
             }
             Row {
