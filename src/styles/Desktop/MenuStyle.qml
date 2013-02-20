@@ -46,6 +46,8 @@ import QtDesktop.Private 1.0
 Style {
     id: styleRoot
 
+    property string __menuItemType: "menuitem"
+
     property Component frame: StyleItem {
         elementType: "menu"
 

@@ -131,7 +131,7 @@ BasicButton {
     ContextMenu {
         id: popup
 
-        __menuItemType: "comboboxitem"
+        style: __style.popupStyle
 
         // 'centerSelectedText' means that the menu will be positioned
         //  so that the selected text' top left corner will be at x, y.

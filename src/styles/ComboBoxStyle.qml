@@ -37,6 +37,7 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
+import QtQuick 2.0
 import QtDesktop.Styles 1.0
 
 /*!
@@ -44,21 +45,26 @@ import QtDesktop.Styles 1.0
     \internal
     \inqmlmodule QtDesktop.Styles 1.0
 */
-Rectangle {
-    id: styleitem
-    implicitWidth: 200
-    implicitHeight: 20
 
-    gradient: Gradient{
-        GradientStop{color: control.pressed ? "lightgray" : "white" ; position: 0}
-        GradientStop{color: control.pressed ? "lightgray" : "lightgray" ; position: 1}
+Style {
+    property Component panel: Rectangle {
+        id: styleitem
+        implicitWidth: 200
+        implicitHeight: 20
+
+        gradient: Gradient{
+            GradientStop{color: control.pressed ? "lightgray" : "white" ; position: 0}
+            GradientStop{color: control.pressed ? "lightgray" : "lightgray" ; position: 1}
+        }
+
+        radius:4
+        border.color: "#aaa"
+
+        Text {
+            anchors.centerIn: parent
+            text: control.selectedText
+        }
     }
 
-    radius:4
-    border.color: "#aaa"
-
-    Text {
-        anchors.centerIn: parent
-        text: control.selectedText
-    }
+    property Component popupStyle: MenuStyle { }
 }

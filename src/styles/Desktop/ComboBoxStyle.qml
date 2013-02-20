@@ -65,4 +65,8 @@ Style {
             contentWidth: 80
         }
     }
+
+    property Component popupStyle: MenuStyle {
+        __menuItemType: "comboboxitem"
+    }
 }
