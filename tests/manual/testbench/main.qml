@@ -53,6 +53,7 @@ ApplicationWindow {
     toolBar: ToolBar {
         width: parent.width
         RowLayout {
+            id: alwaysVisible
             anchors.left: parent.left
             anchors.leftMargin: 8
             height: parent.height
@@ -71,6 +72,16 @@ ApplicationWindow {
                 text: "Reset size"
                 onClicked: container.resetSize()
             }
+        }
+
+        CheckBox {
+            id: startStopAnim
+            anchors.left: alwaysVisible.right
+            anchors.verticalCenter: parent.verticalCenter
+            text: "Stop Animation"
+            checked: true
+            visible: false
+            onCheckedChanged: if (visible) loader.item.___isRunning = checked
         }
     }
     statusBar: StatusBar {
@@ -133,11 +144,18 @@ ApplicationWindow {
                     PropertyLayouts{ id: layouts }
                     onStatusChanged: {
 
+                        startStopAnim.visible = false
+
                         if (status == Loader.Ready) {
                             propertyMap = []
                             var arr = new Array
 
                             for (var prop in item) {
+
+                                if (prop.toString() === "___isRunning") {
+                                    startStopAnim.visible = true
+                                    continue;
+                                }
 
                                 if (!prop.indexOf("on")) { // look only for properties
                                     if (prop.indexOf("Changed") !== (prop.length - 7))

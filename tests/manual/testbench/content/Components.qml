@@ -69,9 +69,10 @@ Item {
     }
 
     property Component progressbar: ProgressBar {
+        property bool ___isRunning: true
         Timer {
             id: timer
-            running: true
+            running: ___isRunning
             repeat: true
             interval: 25
             onTriggered: {
@@ -80,6 +81,7 @@ Item {
             }
         }
     }
+
     property var model: ListModel{
         id: testDataModel
         Component.onCompleted: {
