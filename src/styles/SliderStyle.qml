@@ -38,13 +38,13 @@
 **
 ****************************************************************************/
 import QtQuick 2.0
-import QtDesktop 1.0
-import QtDesktop.Private 1.0
+import QtQuick.Controls 1.0
+import QtQuick.Controls.Private 1.0
 
 /*!
     \qmltype SliderStyle
     \internal
-    \inqmlmodule QtDesktop.Styles 1.0
+    \inqmlmodule QtQuick.Controls.Styles 1.0
 */
 Style {
     id: styleitem

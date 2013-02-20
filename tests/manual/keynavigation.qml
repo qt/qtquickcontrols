@@ -39,7 +39,7 @@
 ****************************************************************************/
 
 import QtQuick 2.0
-import QtDesktop 0.1
+import QtQuick.Controls 0.1
 
 ApplicationWindow {
     width: 400

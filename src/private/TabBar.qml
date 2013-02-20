@@ -39,12 +39,12 @@
 ****************************************************************************/
 
 import QtQuick 2.0
-import QtDesktop 1.0
+import QtQuick.Controls 1.0
 
 /*!
         \qmltype TabBar
         \internal
-        \inqmlmodule QtDesktop.Private 1.0
+        \inqmlmodule QtQuick.Controls.Private 1.0
 */
 Item {
     id: tabbar

@@ -38,8 +38,8 @@
 **
 ****************************************************************************/
 import QtQuick 2.0
-import QtDesktop 1.0
-import QtDesktop.Private 1.0
+import QtQuick.Controls 1.0
+import QtQuick.Controls.Private 1.0
 
 StyleItem {
     id: toolbar

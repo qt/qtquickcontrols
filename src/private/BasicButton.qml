@@ -39,14 +39,14 @@
 ****************************************************************************/
 
 import QtQuick 2.0
-import QtDesktop.Private 1.0
-import QtDesktop.Styles 1.0
+import QtQuick.Controls.Private 1.0
+import QtQuick.Controls.Styles 1.0
 
 /*!
         \qmltype BasicButton
         \internal
         \qmlabstract
-        \inqmlmodule QtDesktop.Private 1.0
+        \inqmlmodule QtQuick.Controls.Private 1.0
 */
 
 Control {

@@ -43,7 +43,7 @@ import QtQuick 2.0
 /*!
         \qmltype Style
         \internal
-        \inqmlmodule QtDesktop.Styles 1.0
+        \inqmlmodule QtQuick.Controls.Styles 1.0
 */
 
 QtObject { }

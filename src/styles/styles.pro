@@ -1,4 +1,4 @@
-TARGETPATH = QtDesktop/Styles
+TARGETPATH = QtQuick/Controls/Styles
 
 QML_FILES = \
     ButtonStyle.qml \

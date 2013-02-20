@@ -38,12 +38,12 @@
 **
 ****************************************************************************/
 import QtQuick 2.0
-import QtDesktop 1.0
+import QtQuick.Controls 1.0
 
 /*!
     \qmltype ScrollAreaStyle
     \internal
-    \inqmlmodule QtDesktop.Styles 1.0
+    \inqmlmodule QtQuick.Controls.Styles 1.0
 */
 Rectangle {
     height:20

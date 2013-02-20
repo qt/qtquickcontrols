@@ -138,7 +138,7 @@ QStyleItem::QStyleItem(QQuickItem *parent)
 
 {
     if (!qApp->style()) {
-        qWarning("\nError: No widget style available. \n\nQt Desktop Components "
+        qWarning("\nError: No widget style available. \n\nQt Quick Controls"
                "currently depend on the widget module to function. \n"
                "Use QApplication when creating standalone executables.\n\n");
         exit(-1);
@@ -180,7 +180,7 @@ QStyleItem::QStyleItem(QQuickItem *parent)
         \qmltype StyleItem
         \instantiates QStyleItem
         \internal
-        \inqmlmodule QtDesktop.Private 1.0
+        \inqmlmodule QtQuick.Controls.Private 1.0
 */
 
 QStyleItem::~QStyleItem()

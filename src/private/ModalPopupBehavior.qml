@@ -46,7 +46,7 @@ import QtQuick 2.0
 /*!
         \qmltype ModalPopupBehavior
         \internal
-        \inqmlmodule QtDesktop.Private 1.0
+        \inqmlmodule QtQuick.Controls.Private 1.0
 */
 Item {
     id: popupBehavior

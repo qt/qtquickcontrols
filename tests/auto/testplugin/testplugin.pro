@@ -1,7 +1,7 @@
 TEMPLATE = lib
 CONFIG += plugin
 TARGET  = testplugin
-TARGETPATH = QtDesktopTest
+TARGETPATH = QtQuickControlsTests
 
 QT += qml quick widgets
 

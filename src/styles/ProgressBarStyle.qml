@@ -39,12 +39,12 @@
 ****************************************************************************/
 
 import QtQuick 2.0
-import QtDesktop 1.0
+import QtQuick.Controls 1.0
 
 /*!
     \qmltype ProgressBarStyle
     \internal
-    \inqmlmodule QtDesktop.Styles 1.0
+    \inqmlmodule QtQuick.Controls.Styles 1.0
     \brief provides custom styling for ProgressBar
 */
 

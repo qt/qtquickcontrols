@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-import QtDesktop 1.0
+import QtQuick.Controls 1.0
 
 ApplicationWindow {
     width: 640

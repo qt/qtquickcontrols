@@ -1,6 +1,6 @@
 CXX_MODULE = qml
 TARGET  = privateplugin
-TARGETPATH = QtDesktop/Private
+TARGETPATH = QtQuick/Controls/Private
 
 QT += qml quick widgets gui-private core-private
 

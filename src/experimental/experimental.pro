@@ -1,4 +1,4 @@
-TARGETPATH = QtDesktop/Experimental
+TARGETPATH = QtQuick/Controls/Experimental
 
 QML_FILES = \
     Dial.qml \

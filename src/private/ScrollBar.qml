@@ -39,14 +39,14 @@
 ****************************************************************************/
 
 import QtQuick 2.0
-import QtDesktop 1.0
-import QtDesktop.Private 1.0
+import QtQuick.Controls 1.0
+import QtQuick.Controls.Private 1.0
 import "../Styles/Settings.js" as Settings
 
 /*!
         \qmltype ScrollBar
         \internal
-        \inqmlmodule QtDesktop.Private 1.0
+        \inqmlmodule QtQuick.Controls.Private 1.0
 */
 Item {
     id: scrollbar

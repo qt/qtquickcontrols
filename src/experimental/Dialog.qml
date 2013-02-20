@@ -40,11 +40,11 @@
 
 import QtQuick 2.0
 import QtQuick.Window 2.0
-import QtDesktop 1.0
+import QtQuick.Controls 1.0
 
 /*!
     \qmltype Dialog
-    \inqmlmodule QtDesktop 1.0
+    \inqmlmodule QtQuick.Controls 1.0
     \brief Dialog is doing bla...bla...
 */
 

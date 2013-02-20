@@ -39,12 +39,12 @@
 ****************************************************************************/
 
 import QtQuick 2.0
-import QtDesktop.Private 1.0
+import QtQuick.Controls.Private 1.0
 
 /*!
         \qmltype FocusFrame
         \internal
-        \inqmlmodule QtDesktop.Private 1.0
+        \inqmlmodule QtQuick.Controls.Private 1.0
 */
 StyleItem {
     z: 2

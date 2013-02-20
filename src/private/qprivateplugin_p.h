@@ -50,7 +50,7 @@ QT_BEGIN_NAMESPACE
 class StylePlugin : public QQmlExtensionPlugin
 {
     Q_OBJECT
-    Q_PLUGIN_METADATA(IID "org.qt-project.playground.qtdesktopcomponents.QQmlExtensionInterface" FILE "privateplugin.json")
+    Q_PLUGIN_METADATA(IID "org.qt-project.playground.qtquickcontrols.QQmlExtensionInterface" FILE "privateplugin.json")
 public:
     void registerTypes(const char *uri);
 };
