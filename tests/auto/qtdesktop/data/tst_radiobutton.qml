@@ -48,7 +48,80 @@ TestCase {
     width:400
     height:400
 
+    property var radioButton
+
+    SignalSpy {
+        id: signalSpy
+        target: radioButton
+    }
+
+    function cleanup() {
+        signalSpy.clear();
+    }
+
     function test_createRadioButton() {
-        var radioButton = Qt.createQmlObject('import QtDesktop 1.0; RadioButton {}', testCase, '');
+        radioButton = Qt.createQmlObject('import QtDesktop 1.0; RadioButton {}', testCase, '');
+
+        compare(radioButton.checked, false);
+        compare(radioButton.text, "");
+    }
+
+    function test_defaultConstructed() {
+        radioButton = Qt.createQmlObject("import QtDesktop 1.0; RadioButton { }", testCase, "");
+        compare(radioButton.checked, false);
+        compare(radioButton.text, "");
+    }
+
+    function test_text() {
+        radioButton = Qt.createQmlObject("import QtDesktop 1.0; RadioButton { }", testCase, "");
+        compare(radioButton.text, "");
+
+        radioButton.text = "Check me!";
+        compare(radioButton.text, "Check me!");
+    }
+
+    function test_checked() {
+        radioButton = Qt.createQmlObject("import QtDesktop 1.0; RadioButton { }", testCase, "");
+        compare(radioButton.checked, false);
+
+        radioButton.checked = true;
+        compare(radioButton.checked, true);
+
+        radioButton.checked = false;
+        compare(radioButton.checked, false);
+    }
+
+    function test_clicked() {
+        radioButton = Qt.createQmlObject("import QtDesktop 1.0; RadioButton { }", testCase, "");
+        radioButton.forceActiveFocus();
+        radioButton.focus = true;
+        console.log(radioButton.activeFocus);
+
+        signalSpy.signalName = "clicked"
+        compare(signalSpy.count, 0);
+        mouseClick(radioButton, radioButton.x + 1, radioButton.y + 1, Qt.LeftButton);
+        expectFail("", "Mouse clicks don't work...");
+        compare(signalSpy.count, 1);
+        expectFail("", "Mouse clicks don't work...");
+        compare(radioButton.checked, true);
+    }
+
+    function test_keyPressed() {
+        radioButton = Qt.createQmlObject("import QtDesktop 1.0; RadioButton { }", testCase, "");
+        radioButton.forceActiveFocus();
+        radioButton.focus = true;
+
+        signalSpy.signalName = "clicked";
+        compare(signalSpy.count, 0);
+
+        // Try cycling through checked and unchecked.
+        var expectedStates = [true, false];
+        expectedStates = expectedStates.concat(expectedStates, expectedStates, expectedStates);
+        for (var i = 0; i < expectedStates.length; ++i) {
+            keyPress(Qt.Key_Space);
+            keyRelease(Qt.Key_Space);
+            compare(signalSpy.count, i + 1);
+            compare(radioButton.checked, expectedStates[i]);
+        }
     }
 }

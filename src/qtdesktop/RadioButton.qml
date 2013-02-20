@@ -48,13 +48,27 @@ import "Styles/Settings.js" as Settings
     \qmltype RadioButton
     \inqmlmodule QtDesktop 1.0
     \ingroup controls
-    \brief RadioButton is doing bla...bla...
+    \brief A radio button with a text label
+
+    A RadioButton is an option button that can be switched on (checked) or off
+    (unchecked). Radio buttons typically present the user with a "one of many"
+    choice. In a group of radio buttons, only one radio button at a time can be
+    checked; if the user selects another button, the previously selected button
+    is switched off.
 */
 
-CheckBox {
-    id: radiobutton
+AbstractCheckable {
+    id: radioButton
 
     Accessible.role: Accessible.RadioButton
 
-    style: Qt.createComponent(Settings.THEME_PATH + "/RadioButtonStyle.qml", radiobutton)
+    /*!
+        The style that should be applied to the radio button. Custom style
+        components can be created with:
+
+        \codeline Qt.createComponent("path/to/style.qml", radioButtonId);
+    */
+    style: Qt.createComponent(Settings.THEME_PATH + "/RadioButtonStyle.qml", radioButton)
+
+    __cycleStatesHandler: function() { checked = !checked; }
 }
