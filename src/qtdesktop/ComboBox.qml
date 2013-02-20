@@ -103,7 +103,7 @@ BasicButton {
     property bool popupOpen: false
 
     property alias selectedIndex: popup.selectedIndex
-    property alias selectedText: popup.selectedText
+    readonly property alias selectedText: popup.selectedText
 
     style: Qt.createComponent(Settings.THEME_PATH + "/ComboBoxStyle.qml", comboBox)
 
