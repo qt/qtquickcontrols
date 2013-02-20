@@ -57,6 +57,7 @@ QtObject {
         SpinBox {
             value: result
             maximumValue: 9999
+            minimumValue: -9999
             Layout.horizontalSizePolicy: Layout.Expanding
             onValueChanged: loader.item[name] = value
         }
@@ -73,6 +74,7 @@ QtObject {
             decimals: 1
             stepSize: 0.5
             maximumValue: 9999
+            minimumValue: -9999
             Layout.horizontalSizePolicy: Layout.Expanding
             onValueChanged: loader.item[name] = value
         }
