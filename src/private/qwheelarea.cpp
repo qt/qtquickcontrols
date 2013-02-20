@@ -43,6 +43,19 @@
 
 QT_BEGIN_NAMESPACE
 
+// On Mac OS X, the scrolling speed in Safari is roughly 2.5 times faster
+// than in TextEdit (the native app). The former is using high-resolution
+// pixel-based delta values as they are, which is fine for a typical web
+// content, whereas the latter evidently makes scrolling slower to make it
+// feel natural and more precise for typical document type of content.
+// => we'll compromise between the two for now, and pick an arbitrary value
+//    to make the pixel-based scrolling speed something between the two
+static const qreal pixelDeltaAdjustment = 0.5;
+
+// The default scroll speed for typical angle-based mouse wheels. The value
+// comes originally from QTextEdit, which sets 20px steps by default.
+static const qreal defaultScrollSpeed = 20.0;
+
 QWheelArea::QWheelArea(QQuickItem *parent)
     : QQuickItem(parent),
       m_horizontalMinimumValue(0),
@@ -53,7 +66,7 @@ QWheelArea::QWheelArea(QQuickItem *parent)
       m_verticalValue(0),
       m_verticalDelta(0),
       m_horizontalDelta(0),
-      m_scrollSpeed(1.0)
+      m_scrollSpeed(defaultScrollSpeed)
 {
 
 }
@@ -65,11 +78,17 @@ QWheelArea::~QWheelArea()
 
 void QWheelArea::wheelEvent(QWheelEvent *we)
 {
-    if (we->orientation() == Qt::Vertical) {
-        setVerticalDelta(we->delta());
-    } else {
-        setHorizontalDelta(we->delta());
+    QPoint numPixels = we->pixelDelta();
+    QPoint numDegrees = we->angleDelta() / 8;
+
+    if (!numPixels.isNull()) {
+        setHorizontalDelta(numPixels.x() * pixelDeltaAdjustment);
+        setVerticalDelta(numPixels.y() * pixelDeltaAdjustment);
+    } else if (!numDegrees.isNull()) {
+        setHorizontalDelta(numDegrees.x() / 15.0 * m_scrollSpeed);
+        setVerticalDelta(numDegrees.y() / 15.0 * m_scrollSpeed);
     }
+
     we->accept();
 }
 
@@ -145,7 +164,7 @@ qreal QWheelArea::verticalValue() const
 
 void QWheelArea::setVerticalDelta(qreal value)
 {
-    m_verticalDelta = m_scrollSpeed * value / 15;
+    m_verticalDelta = value;
     setVerticalValue(m_verticalValue - m_verticalDelta);
 
     emit verticalWheelMoved();
@@ -158,7 +177,7 @@ qreal QWheelArea::verticalDelta() const
 
 void QWheelArea::setHorizontalDelta(qreal value)
 {
-    m_horizontalDelta = value / 15;
+    m_horizontalDelta = value;
     setHorizontalValue(m_horizontalValue - m_horizontalDelta);
 
     emit horizontalWheelMoved();
