@@ -48,13 +48,17 @@ TestCase {
     width:400
     height:400
 
-    function test_keyupdown() {
-        var comboBox = Qt.createQmlObject('import QtDesktop 1.0; ComboBox {}', testCase, '');
+    property var model
 
-        var model = Qt.createQmlObject("import QtQuick 2.0; ListModel {}", testCase, '')
+    function init() {
+        model = Qt.createQmlObject("import QtQuick 2.0; ListModel {}", testCase, '')
         model.append({ text: "Banana", color: "Yellow" })
         model.append({ text: "Apple", color: "Green" })
         model.append({ text: "Coconut", color: "Brown" })
+    }
+
+    function test_keyupdown() {
+        var comboBox = Qt.createQmlObject('import QtDesktop 1.0; ComboBox {}', testCase, '');
         comboBox.model = model
 
         compare(comboBox.selectedIndex, 0)
@@ -67,5 +71,14 @@ TestCase {
         compare(comboBox.selectedIndex, 2)
         keyPress(Qt.Key_Up)
         compare(comboBox.selectedIndex, 1)
+    }
+
+    function test_textrole() {
+        var comboBox = Qt.createQmlObject('import QtDesktop 1.0; ComboBox {}', testCase, '');
+        comboBox.model = model
+        comboBox.textRole = "text"
+        compare(comboBox.selectedIndex, 0)
+        expectFail('', "QTCOMPONENTS-1301")
+        compare(comboBox.selectedText, "Banana")
     }
 }
