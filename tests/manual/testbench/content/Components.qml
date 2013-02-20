@@ -44,6 +44,7 @@ import QtDesktop 1.0
 Item {
     property Component button: Button { text: "Push me"}
     property Component checkbox: CheckBox { text: "A CheckBox" }
+    property Component toolbutton: ToolButton { text: "A ToolButton" }
     property Component radiobutton: RadioButton { text: "A RadioButton" }
     property Component textfield: TextField { }
     property Component spinbox: SpinBox {}
@@ -96,6 +97,7 @@ Item {
     property var componentModel: ListModel {
         Component.onCompleted: {
             append({ name: "Button",        component: button});
+            append({ name: "ToolButton",    component: toolbutton});
             append({ name: "CheckBox",      component: checkbox});
             append({ name: "ComboBox",      component: combobox});
             append({ name: "RadioButton",   component: radiobutton});
@@ -107,7 +109,7 @@ Item {
             append({ name: "ToolBar",       component: toolbar});
             append({ name: "StatusBar",     component: statusbar});
             append({ name: "TableView",     component: tableview});
-            append({ name: "ScrollArea",     component: scrollarea});
+            append({ name: "ScrollArea",    component: scrollarea});
         }
     }
 }

@@ -69,7 +69,7 @@ Style {
             id: textitem
             text: control.text
             anchors.centerIn: parent
-            visible: control.iconSource === ""
+            visible: control.iconSource.toString() === ""
         }
     }
 }
