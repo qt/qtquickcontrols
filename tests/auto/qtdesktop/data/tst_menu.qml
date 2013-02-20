@@ -41,28 +41,144 @@
 import QtQuick 2.0
 import QtTest 1.0
 import QtDesktop 1.0
+import "."
 
-Item {
-    id: container
+TestCase {
+    id: testcase
+    name: "Tests_Menu"
+    when: windowShown
     width: 300; height: 300
 
-    TestCase {
-        id: testcase
-        name: "Tests_Menu"
-        when: windowShown
+    property var menuItemsText: [ "apple", "banana", "clementine", "dragon fruit" ]
 
+    property var menu
+    property var menuItem
 
-        Action {
-            id: copyAction
-            text: "&Copy"
-            shortcut: "Ctrl+C"
-            iconName: "edit-copy"
-        }
+    SignalSpy {
+        id: menuSpy
+        target: testcase.menu
+        signalName: "selectedIndexChanged"
+    }
 
+    SignalSpy {
+        id: menuItemSpy
+        target: testcase.menuItem
+        signalName: "triggered"
+    }
+
+    Component {
+        id: creationComponent
         Menu {
-            text: "&File"
-            MenuItem { action: copyAction }
+            MenuItem { text: "apple" }
+            MenuItem { text: "banana" }
+            MenuItem { text: "clementine" }
+            MenuItem { text: "dragon fruit" }
         }
     }
-}
 
+    function init() {
+        menu = creationComponent.createObject(testcase)
+    }
+
+    function cleanup() {
+        menuSpy.clear()
+        menuItemSpy.clear()
+        menu.destroy()
+    }
+
+    function test_creation() {
+        compare(menu.menuItems.length, testcase.menuItemsText.length)
+        for (var i = 0; i < menu.menuItems.length; i++)
+            compare(menu.menuItems[i].text, testcase.menuItemsText[i])
+    }
+
+    Component {
+        id: modelCreationComponent
+        // TODO Update when model patch is in
+        // Menu { MenuItemRepeater { model: testcase.menuItemsText MenuItem { text: modelData } }
+        ContextMenu { model: testcase.menuItemsText }
+    }
+
+    function test_modelCreation() {
+        var menu = modelCreationComponent.createObject(testcase)
+        compare(menu.menuItems.length, testcase.menuItemsText.length)
+        for (var i = 0; i < menu.menuItems.length; i++)
+            compare(menu.menuItems[i].text, testcase.menuItemsText[i])
+        menu.destroy()
+    }
+
+    function test_trigger() {
+        menuItem = menu.menuItems[2]
+        menuItem.trigger()
+
+        compare(menuItemSpy.count, 1)
+        expectFail('', "MenuItem.trigger() won't always update selectedIndex")
+        compare(menuSpy.count, 1)
+        compare(menu.selectedIndex, 2)
+    }
+
+    function test_check() {
+        for (var i = 0; i < menu.menuItems.length; i++)
+            menu.menuItems[i].checkable = true
+
+        menuItem = menu.menuItems[2]
+        compare(menuItem.checkable, true)
+        compare(menuItem.checked, false)
+        menuItem.trigger()
+
+        for (i = 0; i < menu.menuItems.length; i++)
+            compare(menu.menuItems[i].checked, i === 2)
+
+        menuItem = menu.menuItems[3]
+        compare(menuItem.checkable, true)
+        compare(menuItem.checked, false)
+        menuItem.trigger()
+
+        for (i = 0; i < menu.menuItems.length; i++)
+            compare(menu.menuItems[i].checked, i === 2 || i === 3)
+
+        compare(menuItemSpy.count, 2)
+        expectFail('', "MenuItem.trigger() won't always update selectedIndex")
+        compare(menuSpy.count, 2)
+        compare(menu.selectedIndex, 3)
+    }
+
+    ExclusiveGroup { id: eg }
+
+    function test_exclusive() {
+        for (var i = 0; i < menu.menuItems.length; i++) {
+            menu.menuItems[i].checkable = true
+            menu.menuItems[i].exclusiveGroup = eg
+        }
+
+        menuItem = menu.menuItems[2]
+        compare(menuItem.checkable, true)
+        compare(menuItem.checked, false)
+        menuItem.trigger()
+
+        for (i = 0; i < menu.menuItems.length; i++)
+            compare(menu.menuItems[i].checked, i === 2)
+
+        menuItem = menu.menuItems[3]
+        compare(menuItem.checkable, true)
+        compare(menuItem.checked, false)
+        menuItem.trigger()
+
+        for (i = 0; i < menu.menuItems.length; i++)
+            compare(menu.menuItems[i].checked, i === 3)
+
+        compare(menuItemSpy.count, 2)
+        expectFail('', "MenuItem.trigger() won't always update selectedIndex")
+        compare(menuSpy.count, 2)
+        compare(menu.selectedIndex, 3)
+    }
+
+    function test_selectedIndex() {
+        for (var i = 0; i < menu.menuItems.length; i++)
+            menu.menuItems[i].checkable = true
+
+        menu.selectedIndex = 3
+        compare(menu.selectedIndex, 3)
+        verify(menu.menuItems[menu.selectedIndex].checked)
+    }
+}
