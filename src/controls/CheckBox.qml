@@ -84,6 +84,9 @@ AbstractCheckable {
         \c Qt.Checked - The checkbox is checked.
         \c Qt.PartiallyChecked - The checkbox is in a partially checked (or
         "mixed") state.
+
+        The \l checked property also determines whether this property is
+        \c Qt.Checked or \c Qt.UnChecked, and vice versa.
     */
     property int checkedState: checked ? Qt.Checked : Qt.Unchecked
 
@@ -96,6 +99,8 @@ AbstractCheckable {
 
         Setting \l checkedState to \c Qt.PartiallyChecked will implicitly set
         this property to \c true.
+
+        If this property is \c true, \l checked will be \c false.
 
         By default, this property is \c false.
     */

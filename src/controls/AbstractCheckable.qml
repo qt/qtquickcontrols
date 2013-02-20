@@ -46,55 +46,58 @@ import QtQuick.Controls.Private 1.0
     \qmltype AbstractCheckable
     \inqmlmodule QtQuick.Controls 1.0
     \ingroup controls
-    \brief An abstract representation of a checkable control
+    \brief An abstract representation of a checkable control with a label
     \qmlabstract
+
+    A checkable control is one that has two states: checked (on) and
+    unchecked (off). AbstractCheckable encapsulates the basic behavior and
+    states that are required by checkable controls.
+
+    Examples of checkable controls are RadioButton and
+    CheckBox. CheckBox extends AbstractCheckable's behavior by adding a third
+    state: partially checked.
 */
 
 Control {
     id: abstractCheckable
 
     /*!
-        Emitted whenever the radio button is clicked.
+        Emitted whenever the control is clicked.
     */
     signal clicked
 
     /*!
-        \qmlproperty bool RadioButton::pressed
+        \qmlproperty bool AbstractCheckable::pressed
 
-        This property is \c true if the radio button is pressed.
+        This property is \c true if the control is pressed.
         Set this property to manually invoke a mouse click.
     */
     readonly property alias pressed: mouseArea.effectivePressed
 
     /*!
-        This property is \c true if the radio button is checked, and determines
-        whether \l checkedState is \c Qt.Checked or \c Qt.UnChecked.
-
-        If \l partiallyCheckedEnabled is \c true, this property will be
-        \c false.
+        This property is \c true if the control is checked.
     */
     property bool checked: false
 
     /*!
-        \qmlproperty bool RadioButton::containsMouse
+        \qmlproperty bool AbstractCheckable::containsMouse
 
-        This property is \c true if the radio button currently contains the
+        This property is \c true if the control currently contains the
         mouse cursor.
     */
     readonly property alias containsMouse: mouseArea.containsMouse
 
     /*!
-        This property is \c true if the radio button takes the focus when it is
+        This property is \c true if the control takes the focus when it is
         pressed; \l{QQuickItem::forceActiveFocus()}{forceActiveFocus()} will be
-        called on the radio button.
+        called on the control.
     */
     property bool activeFocusOnPress: false
 
     /*!
-        \qmlproperty ExclusiveGroup RadioButton::exclusiveGroup
+        \qmlproperty ExclusiveGroup AbstractCheckable::exclusiveGroup
 
-        This property stores the ExclusiveGroup that the radio button belongs
-        to.
+        This property stores the ExclusiveGroup that the control belongs to.
     */
     property ExclusiveGroup exclusiveGroup: null
 
