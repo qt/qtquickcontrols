@@ -86,13 +86,13 @@ Style {
                 id: indicatorLoader
                 sourceComponent: indicator
                 anchors.verticalCenter: parent.verticalCenter
-                property CheckBox control: _cref
+                property Item control: _cref
             }
             Loader {
                 id: labelLoader
                 sourceComponent: label
                 anchors.verticalCenter: parent.verticalCenter
-                property CheckBox control: _cref
+                property Item control: _cref
             }
         }
     }

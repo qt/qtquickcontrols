@@ -98,7 +98,7 @@ Control {
         This property stores the ExclusiveGroup that the radio button belongs
         to.
     */
-    property alias exclusiveGroup: mouseArea.exclusiveGroup
+    property ExclusiveGroup exclusiveGroup: null
 
     /*!
         This property holds the text that the label should display.
@@ -107,6 +107,12 @@ Control {
 
     /*! \internal */
     property var __cycleStatesHandler: cycleRadioButtonStates
+
+    /*! \internal */
+    onExclusiveGroupChanged: {
+        if (exclusiveGroup)
+            exclusiveGroup.registerCheckable(abstractCheckable)
+    }
 
     MouseArea {
         id: mouseArea
@@ -117,16 +123,10 @@ Control {
 
         property bool keyPressed: false
         property bool effectivePressed: pressed && containsMouse || keyPressed
-        property ExclusiveGroup exclusiveGroup: null
 
         onClicked: abstractCheckable.clicked();
 
-        onPressed: if (/*abstractCheckable.*/activeFocusOnPress) /*abstractCheckable.*/forceActiveFocus();
-
-        onExclusiveGroupChanged: {
-            if (exclusiveGroup)
-                exclusiveGroup.registerCheckable(mouseArea)
-        }
+        onPressed: if (activeFocusOnPress) forceActiveFocus();
 
         onReleased: {
             if (containsMouse && (!exclusiveGroup || !checked))
