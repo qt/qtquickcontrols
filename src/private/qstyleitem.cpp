@@ -359,6 +359,8 @@ void QStyleItem::initStyleOption()
             m_styleoption = new QStyleOptionMenuItem();
 
         QStyleOptionMenuItem *opt = qstyleoption_cast<QStyleOptionMenuItem*>(m_styleoption);
+        // For GTK style. See below, in setElementType()
+        setProperty("_q_isComboBoxPopupItem", m_itemType == ComboBoxItem);
         if (text().isEmpty()) {
             opt->menuItemType = QStyleOptionMenuItem::Separator;
         } else {
@@ -705,6 +707,7 @@ QSize QStyleItem::sizeFromContents(int width, int height)
         size = qApp->style()->sizeFromContents(QStyle::CT_Menu, m_styleoption, QSize(width,height));
         break;
     case MenuItem:
+    case ComboBoxItem:
         size = qApp->style()->sizeFromContents(QStyle::CT_MenuItem, m_styleoption, QSize(width,height));
         break;
     default:

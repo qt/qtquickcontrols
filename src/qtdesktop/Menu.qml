@@ -89,6 +89,7 @@ MenuPrivate {
     id: root
 
     property Component style: Qt.createComponent(Settings.THEME_PATH + "/MenuStyle.qml", root)
+    property string __menuItemType: "menuitem"
 
     //! internal
     property var menuBar: null

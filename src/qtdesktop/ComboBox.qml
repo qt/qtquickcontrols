@@ -110,8 +110,8 @@ BasicButton {
 //  ToDo: adjust margins so that selected popup label
 //    centers directly above button label when
 //    popup.centerOnSelectedText === true
-
     checkable: false
+    Accessible.role: Accessible.ComboBox
 
     onPressedChanged: { if (pressed) popup.show() }
 
@@ -130,6 +130,8 @@ BasicButton {
 
     ContextMenu {
         id: popup
+
+        __menuItemType: "comboboxitem"
 
         // 'centerSelectedText' means that the menu will be positioned
         //  so that the selected text' top left corner will be at x, y.

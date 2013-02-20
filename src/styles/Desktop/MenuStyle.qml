@@ -69,7 +69,7 @@ Style {
     }
 
     property Component menuItem: StyleItem {
-        elementType: "menuitem"
+        elementType: __menuItemType
         x: pixelMetric("menuhmargin") + pixelMetric("menupanelwidth")
         y: pixelMetric("menuvmargin") + pixelMetric("menupanelwidth")
 
