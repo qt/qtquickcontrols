@@ -46,7 +46,7 @@
 QT_BEGIN_NAMESPACE
 
 QtMenuPopupWindow::QtMenuPopupWindow(QWindow *parent) :
-    QQuickWindow(parent), m_pressedInside(true)
+    QQuickWindow(parent), m_pressedInside(true), m_itemAt(0)
 {
     setFlags(Qt::Popup);
     setModality(Qt::WindowModal);
@@ -60,6 +60,21 @@ void QtMenuPopupWindow::setMenuContentItem(QQuickItem *contentItem)
     contentItem->setParentItem(this->contentItem());
     connect(contentItem, SIGNAL(widthChanged()), this, SLOT(updateSize()));
     connect(contentItem, SIGNAL(heightChanged()), this, SLOT(updateSize()));
+}
+
+void QtMenuPopupWindow::setItemAt(const QQuickItem *menuItem)
+{
+    if (m_itemAt) {
+        disconnect(m_itemAt, SIGNAL(xChanged()), this, SLOT(updatePosition()));
+        disconnect(m_itemAt, SIGNAL(yChanged()), this, SLOT(updatePosition()));
+    }
+
+    m_itemAt = menuItem;
+    if (menuItem) {
+        m_oldItemPos = menuItem->position().toPoint();
+        connect(menuItem, SIGNAL(xChanged()), this, SLOT(updatePosition()));
+        connect(menuItem, SIGNAL(yChanged()), this, SLOT(updatePosition()));
+    }
 }
 
 void QtMenuPopupWindow::setParentWindow(QQuickWindow *parentWindow)
@@ -84,6 +99,12 @@ void QtMenuPopupWindow::updateSize()
     QSize contentSize = contentItem()->childrenRect().size().toSize();
     setWidth(contentSize.width());
     setHeight(contentSize.height());
+}
+
+void QtMenuPopupWindow::updatePosition()
+{
+    QPointF newPos = position() + m_oldItemPos - m_itemAt->position();
+    setPosition(newPos.toPoint());
 }
 
 void QtMenuPopupWindow::mouseMoveEvent(QMouseEvent *e)

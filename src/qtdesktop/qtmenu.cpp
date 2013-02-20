@@ -215,10 +215,12 @@ void QtMenu::showPopup(qreal x, qreal y, int atItemIndex, QObject *reference)
             y += parentWindow->geometry().top();
         }
 
-        if (atItem && atItem->visualItem()) {
-            QPointF pos = atItem->visualItem()->position();
+        QQuickItem *visualItem = atItem ? atItem->visualItem() : 0;
+        if (visualItem) {
+            QPointF pos = visualItem->position();
             x -= pos.x();
             y -= pos.y();
+            m_popupWindow->setItemAt(visualItem);
         }
 
         m_popupWindow->setGeometry(x, y, m_menuContentItem->width(), m_menuContentItem->height());

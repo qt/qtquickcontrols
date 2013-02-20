@@ -54,11 +54,13 @@ class QtMenuPopupWindow : public QQuickWindow
 public:
     QtMenuPopupWindow(QWindow *parent = 0);
     void setMenuContentItem(QQuickItem *contentItem);
+    void setItemAt(const QQuickItem *menuItem);
     void setParentWindow(QQuickWindow *parentWindow);
 
 public Q_SLOTS:
     void dismissMenu();
     void updateSize();
+    void updatePosition();
 
 Q_SIGNALS:
     void menuDismissed();
@@ -72,6 +74,8 @@ private:
     void forwardEventToTransientParent(QMouseEvent *);
 
     bool m_pressedInside;
+    const QQuickItem *m_itemAt;
+    QPointF m_oldItemPos;
 };
 
 QT_END_NAMESPACE

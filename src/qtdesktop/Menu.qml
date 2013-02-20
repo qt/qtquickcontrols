@@ -115,7 +115,7 @@ MenuPrivate {
 
         property int subMenuXPos: width + (item && item["subMenuOverlap"] || 0)
 
-        visible: control.popupVisible && status === Loader.Ready
+        visible: status === Loader.Ready
         sourceComponent: __style ? __style.frame : undefined
 
         Loader {
