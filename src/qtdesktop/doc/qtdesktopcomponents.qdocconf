@@ -29,6 +29,8 @@ sources += ../../private/qstyleitem.cpp \
            ../../private/ScrollBar.qml \
            ../../private/SplitterBase.qml \
            ../../private/TabBar.qml \
+           ../../private/Control.qml \
+           ../../styles/Style.qml \
            ../../styles/ButtonStyle.qml \
            ../../styles/CheckBoxStyle.qml \
            ../../styles/ComboBoxStyle.qml \
