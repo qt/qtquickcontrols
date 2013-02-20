@@ -122,8 +122,8 @@ BasicButton {
         if (selectedIndex === -1)
             selectedIndex = 0
         if (styleItem.style == "mac") {
-            popup.x -= 5
-            popup.y += 2
+            popup.x -= 10
+            popup.y += 4
             popup.font.pointSize = 13
         }
     }
