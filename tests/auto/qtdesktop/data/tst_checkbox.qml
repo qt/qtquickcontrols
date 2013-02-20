@@ -41,115 +41,125 @@
 import QtQuick 2.0
 import QtTest 1.0
 
-TestCase {
-    id: testCase
-    name: "Tests_CheckBox"
-    when: windowShown
-    width: 50
-    height: 50
+Item {
+    id: container
 
-    property var checkBox
+    TestCase {
+        id: testCase
+        name: "Tests_CheckBox"
+        when: windowShown
+        width: 50
+        height: 50
 
-    SignalSpy {
-        id: signalSpy
-        target: checkBox
-    }
+        property var checkBox
 
-    function cleanup() {
-        signalSpy.clear();
-    }
-
-    function test_defaultConstructed() {
-        checkBox = Qt.createQmlObject("import QtDesktop 1.0; CheckBox { }", testCase, "");
-        compare(checkBox.checked, false);
-        compare(checkBox.checkedState, Qt.Unchecked);
-        compare(checkBox.partiallyCheckedEnabled, false);
-        compare(checkBox.text, "");
-    }
-
-    function test_text() {
-        checkBox = Qt.createQmlObject("import QtDesktop 1.0; CheckBox { }", testCase, "");
-        compare(checkBox.text, "");
-
-        checkBox.text = "Check me!";
-        compare(checkBox.text, "Check me!");
-    }
-
-    function test_checked() {
-        checkBox = Qt.createQmlObject("import QtDesktop 1.0; CheckBox { }", testCase, "");
-        compare(checkBox.checked, false);
-        compare(checkBox.checkedState, Qt.Unchecked);
-        compare(checkBox.partiallyCheckedEnabled, false);
-
-        checkBox.checked = true;
-        compare(checkBox.checked, true);
-        compare(checkBox.checkedState, Qt.Checked);
-        compare(checkBox.partiallyCheckedEnabled, false);
-
-        checkBox.checkedState = Qt.Unchecked;
-        compare(checkBox.checked, false);
-        compare(checkBox.checkedState, Qt.Unchecked);
-        compare(checkBox.partiallyCheckedEnabled, false);
-
-        checkBox.checkedState = Qt.Checked;
-        compare(checkBox.checked, true);
-        compare(checkBox.checkedState, Qt.Checked);
-        compare(checkBox.partiallyCheckedEnabled, false);
-
-        checkBox.checkedState = Qt.PartiallyChecked;
-        compare(checkBox.checked, false);
-        compare(checkBox.checkedState, Qt.PartiallyChecked);
-        compare(checkBox.partiallyCheckedEnabled, true);
-    }
-
-    function test_clicked() {
-        checkBox = Qt.createQmlObject("import QtDesktop 1.0; CheckBox { }", testCase, "");
-        checkBox.forceActiveFocus();
-        checkBox.focus = true;
-        console.log(checkBox.activeFocus);
-
-        signalSpy.signalName = "clicked"
-        compare(signalSpy.count, 0);
-        mouseClick(checkBox, checkBox.x + 1, checkBox.y + 1, Qt.LeftButton);
-        expectFail("", "Mouse clicks don't work...");
-        compare(signalSpy.count, 1);
-        expectFail("", "Mouse clicks don't work...");
-        compare(checkBox.checked, true);
-        expectFail("", "Mouse clicks don't work...");
-        compare(checkBox.checkedState, Qt.Checked);
-    }
-
-    function test_keyPressed() {
-        checkBox = Qt.createQmlObject("import QtDesktop 1.0; CheckBox { }", testCase, "");
-        checkBox.forceActiveFocus();
-
-        signalSpy.signalName = "clicked";
-        compare(signalSpy.count, 0);
-
-        // Try cycling through checked and unchecked.
-        var expectedStates = [Qt.Checked, Qt.Unchecked];
-        expectedStates = expectedStates.concat(expectedStates, expectedStates, expectedStates);
-        for (var i = 0; i < expectedStates.length; ++i) {
-            keyPress(Qt.Key_Space);
-            keyRelease(Qt.Key_Space);
-            compare(signalSpy.count, i + 1);
-            compare(checkBox.checkedState, expectedStates[i]);
-            compare(checkBox.checked, checkBox.checkedState === Qt.Checked);
+        SignalSpy {
+            id: signalSpy
         }
 
-        // Try cycling through all three states.
-        checkBox.partiallyCheckedEnabled = true;
-        compare(checkBox.checkedState, Qt.Unchecked);
-        compare(checkBox.checked, false);
+        function init() {
+            checkBox = Qt.createQmlObject("import QtDesktop 1.0; CheckBox { }", container, "");
+        }
 
-        signalSpy.clear();
-        expectedStates = [Qt.Checked, Qt.PartiallyChecked, Qt.Unchecked];
-        expectedStates = expectedStates.concat(expectedStates, expectedStates, expectedStates);
-        for (i = 0; i < expectedStates.length; ++i) {
-            keyPress(Qt.Key_Space);
-            keyRelease(Qt.Key_Space);
-            compare(signalSpy.count, i + 1);
-            compare(checkBox.checkedState, expectedStates[i]);
+        function cleanup() {
+            signalSpy.clear();
+        }
+
+        function test_defaultConstructed() {
+            compare(checkBox.checked, false);
+            compare(checkBox.checkedState, Qt.Unchecked);
+            compare(checkBox.partiallyCheckedEnabled, false);
+            compare(checkBox.text, "");
+        }
+
+        function test_text() {
+            compare(checkBox.text, "");
+
+            checkBox.text = "Check me!";
+            compare(checkBox.text, "Check me!");
+        }
+
+        function test_checked() {
+            compare(checkBox.checked, false);
+            compare(checkBox.checkedState, Qt.Unchecked);
+            compare(checkBox.partiallyCheckedEnabled, false);
+
+            checkBox.checked = true;
+            compare(checkBox.checked, true);
+            compare(checkBox.checkedState, Qt.Checked);
+            compare(checkBox.partiallyCheckedEnabled, false);
+
+            checkBox.checkedState = Qt.Unchecked;
+            compare(checkBox.checked, false);
+            compare(checkBox.checkedState, Qt.Unchecked);
+            compare(checkBox.partiallyCheckedEnabled, false);
+
+            checkBox.checkedState = Qt.Checked;
+            compare(checkBox.checked, true);
+            compare(checkBox.checkedState, Qt.Checked);
+            compare(checkBox.partiallyCheckedEnabled, false);
+
+            checkBox.checkedState = Qt.PartiallyChecked;
+            compare(checkBox.checked, false);
+            compare(checkBox.checkedState, Qt.PartiallyChecked);
+            compare(checkBox.partiallyCheckedEnabled, true);
+        }
+
+        function test_clicked() {
+            signalSpy.signalName = "clicked"
+            signalSpy.target = checkBox;
+            compare(signalSpy.count, 0);
+            mouseClick(checkBox, checkBox.x + 1, checkBox.y + 1, Qt.LeftButton);
+            compare(signalSpy.count, 1);
+            compare(checkBox.checked, true);
+            compare(checkBox.checkedState, Qt.Checked);
+
+            // Clicking outside should do nothing.
+            mouseClick(checkBox, checkBox.x - 1, checkBox.y, Qt.LeftButton);
+            compare(signalSpy.count, 1);
+            compare(checkBox.checked, true);
+
+            mouseClick(checkBox, checkBox.x, checkBox.y - 1, Qt.LeftButton);
+            compare(signalSpy.count, 1);
+            compare(checkBox.checked, true);
+
+            mouseClick(checkBox, checkBox.x - 1, checkBox.y - 1, Qt.LeftButton);
+            compare(signalSpy.count, 1);
+            compare(checkBox.checked, true);
+        }
+
+        function test_keyPressed() {
+            checkBox.forceActiveFocus();
+
+            signalSpy.signalName = "clicked";
+            signalSpy.target = checkBox;
+            compare(signalSpy.count, 0);
+
+            // Try cycling through checked and unchecked.
+            var expectedStates = [Qt.Checked, Qt.Unchecked];
+            expectedStates = expectedStates.concat(expectedStates, expectedStates, expectedStates);
+            for (var i = 0; i < expectedStates.length; ++i) {
+                keyPress(Qt.Key_Space);
+                keyRelease(Qt.Key_Space);
+                compare(signalSpy.count, i + 1);
+                compare(checkBox.checkedState, expectedStates[i]);
+                compare(checkBox.checked, checkBox.checkedState === Qt.Checked);
+            }
+
+            // Try cycling through all three states.
+            checkBox.partiallyCheckedEnabled = true;
+            compare(checkBox.checkedState, Qt.Unchecked);
+            compare(checkBox.checked, false);
+
+            signalSpy.clear();
+            expectedStates = [Qt.Checked, Qt.PartiallyChecked, Qt.Unchecked];
+            expectedStates = expectedStates.concat(expectedStates, expectedStates, expectedStates);
+            for (i = 0; i < expectedStates.length; ++i) {
+                keyPress(Qt.Key_Space);
+                keyRelease(Qt.Key_Space);
+                compare(signalSpy.count, i + 1);
+                compare(checkBox.checkedState, expectedStates[i]);
+            }
         }
     }
 }
