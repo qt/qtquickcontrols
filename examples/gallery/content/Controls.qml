@@ -55,6 +55,7 @@ Item {
         anchors.margins: 8
         spacing: 16
         Column {
+            id: firstColumn
             spacing: 9
             Row {
                 spacing:8
@@ -118,6 +119,11 @@ Item {
         Column {
             id: rightcol
             spacing: 12
+            anchors {
+                top: parent.top
+                bottom: parent.bottom
+            }
+
             GroupBox {
                 id: group1
                 title: "CheckBox"
@@ -168,6 +174,12 @@ Item {
                 frame: frameCheckbox.checked
                 text: loremIpsum + loremIpsum
                 KeyNavigation.tab: button1
+                width: contentRow.width - firstColumn.width - contentRow.spacing
+                height: parent.height - group1.height - group2.height - 2 * parent.spacing
+                anchors {
+                    right: parent.right
+                    rightMargin: 12
+                }
             }
         }
     }
