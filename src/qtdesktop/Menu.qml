@@ -102,6 +102,7 @@ MenuPrivate {
         focus: true
     }
 
+    //! internal
     property Component menuComponent: Loader {
         id: menuFrameLoader
 

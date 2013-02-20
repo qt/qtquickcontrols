@@ -75,120 +75,130 @@ MenuBarPrivate {
 
     property Component style: Qt.createComponent(Settings.THEME_PATH + "/MenuBarStyle.qml", root)
 
-    height: !isNative ? menuBarLoader.height : 0
+    height: !isNative ? topLoader.height : 0
     data: [
         Loader {
-            id: menuBarLoader
-
-            property Style __style: styleLoader.item
-            property Component menuItemStyle: __style ? __style.menuItem : null
-
-            property alias control: root
-            onStatusChanged: if (status === Loader.Error) console.error("Failed to load panel for", root)
-
-            visible: status === Loader.Ready
+            id: topLoader
+            sourceComponent: menuBarComponent
             active: !root.isNative
-            sourceComponent: __style ? __style.frame : undefined
+            focus: true
+        },
+
+        Component {
+            id: menuBarComponent
 
             Loader {
-                id: styleLoader
+                id: menuBarLoader
+
+                property Style __style: styleLoader.item
+                property Component menuItemStyle: __style ? __style.menuItem : null
+
+                property var control: root
+                onStatusChanged: if (status === Loader.Error) console.error("Failed to load panel for", root)
+
+                visible: status === Loader.Ready
                 active: !root.isNative
-                sourceComponent: root.style
-                onStatusChanged: {
-                    if (status === Loader.Error)
-                        console.error("Failed to load Style for", root)
+                sourceComponent: __style ? __style.frame : undefined
+
+                Loader {
+                    id: styleLoader
+                    sourceComponent: root.style
+                    onStatusChanged: {
+                        if (status === Loader.Error)
+                            console.error("Failed to load Style for", root)
+                    }
                 }
-            }
 
-            property int openedMenuIndex: -1
-            property bool preselectMenuItem: false
-            property alias contentHeight: row.height
+                property int openedMenuIndex: -1
+                property bool preselectMenuItem: false
+                property alias contentHeight: row.height
 
-            Binding {
-                // Make sure the styled menu bar is in the background
-                target: menuBarLoader.item
-                property: "z"
-                value: menuMouseArea.z - 1
-            }
-
-            focus: openedMenuIndex !== -1
-
-            Keys.onLeftPressed: {
-                if (openedMenuIndex > 0) {
-                    preselectMenuItem = true
-                    openedMenuIndex--
+                Binding {
+                    // Make sure the styled menu bar is in the background
+                    target: menuBarLoader.item
+                    property: "z"
+                    value: menuMouseArea.z - 1
                 }
-            }
 
-            Keys.onRightPressed: {
-                if (openedMenuIndex < root.menus.length - 1) {
-                    preselectMenuItem = true
-                    openedMenuIndex++
+                focus: openedMenuIndex !== -1
+
+                Keys.onLeftPressed: {
+                    if (openedMenuIndex > 0) {
+                        preselectMenuItem = true
+                        openedMenuIndex--
+                    }
                 }
-            }
 
-            MouseArea {
-                id: menuMouseArea
-                anchors.fill: parent
-                hoverEnabled: true
+                Keys.onRightPressed: {
+                    if (openedMenuIndex < root.menus.length - 1) {
+                        preselectMenuItem = true
+                        openedMenuIndex++
+                    }
+                }
 
-                Row {
-                    id: row
+                MouseArea {
+                    id: menuMouseArea
+                    anchors.fill: parent
+                    hoverEnabled: true
 
-                    Repeater {
-                        id: itemsRepeater
-                        model: root.menus
-                        Loader {
-                            id: menuItemLoader
+                    Row {
+                        id: row
 
-                            property var menuItem: root.isNative ? null : modelData
-                            property bool selected: menuItem.popupVisible || itemMouseArea.pressed || menuBarLoader.openedMenuIndex === index
+                        Repeater {
+                            id: itemsRepeater
+                            model: root.menus
+                            Loader {
+                                id: menuItemLoader
 
-                            sourceComponent: menuBarLoader.menuItemStyle
+                                property var menuItem: root.isNative ? null : modelData
+                                property bool selected: menuItem.popupVisible || itemMouseArea.pressed || menuBarLoader.openedMenuIndex === index
 
-                            MouseArea {
-                                id: itemMouseArea
-                                anchors.fill:parent
-                                hoverEnabled: true
+                                sourceComponent: menuBarLoader.menuItemStyle
 
-                                onClicked: {
-                                    menuBarLoader.preselectMenuItem = false
-                                    menuBarLoader.openedMenuIndex = index
-                                }
-                                onPositionChanged: {
-                                    if ((pressed || menuMouseArea.pressed || menuBarLoader.openedMenuIndex !== -1)
-                                        && menuBarLoader.openedMenuIndex !== index) {
-                                        menuBarLoader.openedMenuIndex = index
+                                MouseArea {
+                                    id: itemMouseArea
+                                    anchors.fill:parent
+                                    hoverEnabled: true
+
+                                    onClicked: {
                                         menuBarLoader.preselectMenuItem = false
+                                        menuBarLoader.openedMenuIndex = index
+                                    }
+                                    onPositionChanged: {
+                                        if ((pressed || menuMouseArea.pressed || menuBarLoader.openedMenuIndex !== -1)
+                                                && menuBarLoader.openedMenuIndex !== index) {
+                                            menuBarLoader.openedMenuIndex = index
+                                            menuBarLoader.preselectMenuItem = false
+                                        }
                                     }
                                 }
-                            }
 
-                            Connections {
-                                target: menuBarLoader
-                                onOpenedMenuIndexChanged: {
-                                    if (menuBarLoader.openedMenuIndex === index) {
-                                        menuItem.showPopup(0, root.height, 0, menuItemLoader)
-                                        if (menuBarLoader.preselectMenuItem)
-                                            menuItem.currentIndex = 0
-                                    } else {
-                                        menuItem.closeMenu()
+                                Connections {
+                                    target: menuBarLoader
+                                    onOpenedMenuIndexChanged: {
+                                        if (menuBarLoader.openedMenuIndex === index) {
+                                            menuItem.showPopup(0, root.height, 0, menuItemLoader)
+                                            if (menuBarLoader.preselectMenuItem)
+                                                menuItem.currentIndex = 0
+                                        } else {
+                                            menuItem.closeMenu()
+                                        }
                                     }
                                 }
-                            }
 
-                            Connections {
-                                target: menuItem
-                                onMenuClosed: {
-                                    if (menuBarLoader.openedMenuIndex === index)
-                                        menuBarLoader.openedMenuIndex = -1
+                                Connections {
+                                    target: menuItem
+                                    onMenuClosed: {
+                                        if (menuBarLoader.openedMenuIndex === index)
+                                            menuBarLoader.openedMenuIndex = -1
+                                    }
                                 }
-                            }
 
-                            Binding {
-                                target: menuItem
-                                property: "menuBar"
-                                value: menuBarLoader
+                                Binding {
+                                    target: menuItem
+                                    property: "menuBar"
+                                    value: menuBarLoader
+                                }
                             }
                         }
                     }
