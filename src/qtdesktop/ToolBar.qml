@@ -53,13 +53,12 @@ import QtDesktop.Private 1.0
     as other controls.
 
     Note that the ToolBar does not provide a layout of its own but requires you to
-    position its contents, for instance by creating a RowLayout.
+    position its contents, for instance by creating a Row.
 
     \code
     ApplicationWindow {
-        toolbar: ToolBar {
-            RowLayout {
-                anchors.fill: parent
+        toolBar: ToolBar {
+            Row {
                 ToolButton { ... }
                 ToolButton { ... }
                 ToolButton { ... }
