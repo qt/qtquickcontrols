@@ -173,6 +173,10 @@ ApplicationWindow {
                                     case "ActiveFocusOnPress":
                                     case "Enabled":
                                     case "Visible":
+                                    case "Checkable":
+                                    case "Checked":
+                                    case "AdjustToContentSize":
+                                    case "Flat":
                                         layout = layouts.boolLayout
                                         typeName = "Boolean";
                                         break

@@ -188,6 +188,6 @@ Item {
         anchors.rightMargin: 8
         anchors.bottomMargin: 8
         anchors.fill: parent
-        enabled: (!checkable || checkbox.checked)
+        enabled: (!groupbox.checkable || groupbox.checked)
     }
 }

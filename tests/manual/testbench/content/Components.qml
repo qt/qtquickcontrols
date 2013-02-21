@@ -68,6 +68,17 @@ Item {
         }
     }
 
+    property Component groupbox:  GroupBox {
+        Column {
+            CheckBox {
+                text: "checkbox1"
+            }
+            CheckBox {
+                text: "checkbox2"
+            }
+        }
+    }
+
     property Component progressbar: ProgressBar {
         property bool ___isRunning: true
         Timer {
@@ -112,6 +123,7 @@ Item {
             append({ name: "StatusBar",     component: statusbar});
             append({ name: "TableView",     component: tableview});
             append({ name: "ScrollView",    component: scrollview});
+            append({ name: "GroupBox",      component: groupbox});
         }
     }
 }
