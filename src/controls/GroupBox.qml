@@ -172,6 +172,7 @@ Item {
     CheckBox {
         id: check
         checked: true
+        text: groupbox.title
         visible: checkable
         anchors.top: parent.top
         anchors.left: parent.left
