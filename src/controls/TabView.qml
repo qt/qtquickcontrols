@@ -141,6 +141,8 @@ FocusScope {
         count = __tabs.length
     }
 
+    activeFocusOnTab: false
+
     Component {
         id: tabcomp
         Tab {}

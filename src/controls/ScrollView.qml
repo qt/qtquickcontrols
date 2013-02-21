@@ -138,6 +138,8 @@ FocusScope {
     /*! \internal */
     property alias verticalScrollBar: scroller.verticalScrollBar
 
+    activeFocusOnTab: true
+
     /*! \internal */
     onContentItemChanged: {
 

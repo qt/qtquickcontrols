@@ -83,6 +83,8 @@ BasicButton {
     */
     property url iconSource
 
+    activeFocusOnTab: true
+
     Accessible.name: text
 
     style: Qt.createComponent(Settings.THEME_PATH + "/ButtonStyle.qml", button)

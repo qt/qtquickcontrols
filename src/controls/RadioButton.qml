@@ -77,6 +77,8 @@ import "Styles/Settings.js" as Settings
 AbstractCheckable {
     id: radioButton
 
+    activeFocusOnTab: true
+
     Accessible.role: Accessible.RadioButton
 
     /*!

@@ -206,6 +206,8 @@ Control {
     /*! \internal */
     onValueChanged: if (__initialized) input.setValue(value)
 
+    activeFocusOnTab: true
+
     Accessible.name: input.text
     Accessible.role: Accessible.SpinBox
 

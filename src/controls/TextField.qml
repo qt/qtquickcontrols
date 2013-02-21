@@ -539,6 +539,8 @@ Control {
             textInput.forceActiveFocus();
     }
 
+    activeFocusOnTab: true
+
     Accessible.name: text
     Accessible.role: Accessible.EditableText
     Accessible.description: placeholderText

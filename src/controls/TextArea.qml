@@ -616,6 +616,8 @@ ScrollView {
     flickableItem.contentWidth: edit.paintedWidth + (2 * documentMargins)
     frameVisible: true
 
+    activeFocusOnTab: true
+
     Accessible.role: Accessible.EditableText
 
     /*!

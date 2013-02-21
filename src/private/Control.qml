@@ -65,6 +65,8 @@ FocusScope {
     /* \internal */
     implicitHeight: __panel ? __panel.implicitHeight: 0
 
+    activeFocusOnTab: false
+
     Loader {
         id: panelLoader
         anchors.fill: parent

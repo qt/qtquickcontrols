@@ -59,6 +59,8 @@ Item {
     property Component style: Qt.createComponent("../" + Settings.THEME_PATH + "/ScrollBarStyle.qml", scrollbar)
     property alias styleItem: loader.item
 
+    activeFocusOnTab: false
+
     Accessible.role: Accessible.ScrollBar
     implicitWidth: loader.implicitWidth
     implicitHeight: loader.implicitHeight

@@ -151,6 +151,8 @@ Item {
     Accessible.role: Accessible.Grouping
     Accessible.name: title
 
+    activeFocusOnTab: false
+
     Loader {
         id: loader
         property alias control: groupbox

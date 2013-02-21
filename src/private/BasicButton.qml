@@ -122,6 +122,8 @@ Control {
         onTriggered: button.clicked()
     }
 
+    activeFocusOnTab: true
+
     Keys.onPressed: {
         if (event.key === Qt.Key_Space && !event.isAutoRepeat && !behavior.pressed)
             behavior.keyPressed = true;

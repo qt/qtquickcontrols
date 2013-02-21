@@ -69,6 +69,7 @@ Item {
     id: statusbar
     implicitHeight: 20
     implicitWidth: parent ? parent.width : style.implicitWidth
+    activeFocusOnTab: false
     StyleItem {
         id: style
         anchors.fill: parent

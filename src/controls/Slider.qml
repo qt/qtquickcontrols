@@ -167,6 +167,8 @@ Control {
     /*! \internal */
     property bool __horizontal: orientation === Qt.Horizontal
 
+    activeFocusOnTab: true
+
     Accessible.role: Accessible.Slider
     Accessible.name: value
 

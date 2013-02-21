@@ -74,6 +74,8 @@ BasicButton {
     /*! The label text. */
     property string text
 
+    activeFocusOnTab: true
+
     Accessible.name: text
 
     style: Qt.createComponent(Settings.THEME_PATH + "/ToolButtonStyle.qml", button)

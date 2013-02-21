@@ -1,3 +1,3 @@
 TEMPLATE = subdirs
-SUBDIRS += testplugin controls
+SUBDIRS += testplugin controls activeFocusOnTab
 CONFIG += ordered

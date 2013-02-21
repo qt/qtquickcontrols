@@ -51,6 +51,8 @@ FocusScope {
     height: tabrow.height
     width: tabrow.width
 
+    activeFocusOnTab: true
+
     Keys.onRightPressed: {
         if (tabView && tabView.currentIndex < tabView.count - 1)
             tabView.currentIndex = tabView.currentIndex + 1

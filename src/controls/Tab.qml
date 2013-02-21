@@ -60,6 +60,8 @@ Loader {
     active: false
     visible: false
 
+    activeFocusOnTab: false
+
     /*! \internal */
     onVisibleChanged: if (visible) active = true
 

@@ -132,6 +132,8 @@ AbstractCheckable {
 
     style: Qt.createComponent(Settings.THEME_PATH + "/CheckBoxStyle.qml", checkBox)
 
+    activeFocusOnTab: true
+
     Accessible.role: Accessible.CheckBox
     Accessible.name: text
 

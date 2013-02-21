@@ -112,6 +112,8 @@ Control {
         setValue(value)
     }
 
+    activeFocusOnTab: false
+
     Accessible.role: Accessible.ProgressBar
     Accessible.name: value
 

@@ -106,6 +106,8 @@ Control {
     */
     readonly property alias __containsMouse: mouseArea.containsMouse
 
+    activeFocusOnTab: true
+
     MouseArea {
         id: mouseArea
         focus: true

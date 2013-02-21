@@ -93,6 +93,8 @@ Control {
 
     style: Qt.createComponent(Settings.THEME_PATH + "/ComboBoxStyle.qml", comboBox)
 
+    activeFocusOnTab: true
+
     Accessible.role: Accessible.ComboBox
 
     MouseArea {
