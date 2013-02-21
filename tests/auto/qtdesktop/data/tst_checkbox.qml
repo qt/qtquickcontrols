@@ -161,5 +161,43 @@ Item {
                 compare(checkBox.checkedState, expectedStates[i]);
             }
         }
+
+        function test_exclusiveGroup() {
+            var root = Qt.createQmlObject("import QtQuick 2.0; import QtDesktop 1.0; \n"
+                + "Row { \n"
+                + "    property alias checkBox1: checkBox1 \n"
+                + "    property alias checkBox2: checkBox2 \n"
+                + "    property alias group: group \n"
+                + "    ExclusiveGroup { id: group } \n"
+                + "    CheckBox { id: checkBox1; checked: true; exclusiveGroup: group } \n"
+                + "    CheckBox { id: checkBox2; exclusiveGroup: group } \n"
+                + "}", container, "");
+
+            compare(root.checkBox1.exclusiveGroup, root.group);
+            compare(root.checkBox2.exclusiveGroup, root.group);
+            compare(root.checkBox1.checked, true);
+            compare(root.checkBox2.checked, false);
+
+            root.forceActiveFocus();
+
+            signalSpy.target = root.checkBox2;
+            signalSpy.signalName = "clicked";
+            compare(signalSpy.count, 0);
+
+            mouseClick(root.checkBox2, root.checkBox2.x, root.checkBox2.y, Qt.LeftButton);
+            compare(signalSpy.count, 1);
+            compare(root.checkBox1.checked, false);
+            compare(root.checkBox2.checked, true);
+
+            signalSpy.clear();
+            signalSpy.target = root.checkBox1;
+            signalSpy.signalName = "clicked";
+            compare(signalSpy.count, 0);
+
+            mouseClick(root.checkBox1, root.checkBox1.x, root.checkBox1.y, Qt.LeftButton);
+            compare(signalSpy.count, 1);
+            compare(root.checkBox1.checked, true);
+            compare(root.checkBox2.checked, false);
+        }
     }
 }

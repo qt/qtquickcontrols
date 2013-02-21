@@ -58,7 +58,7 @@ Item {
         }
 
         function init() {
-            radioButton = Qt.createQmlObject('import QtDesktop 1.0; RadioButton {}', container, '');
+            radioButton = Qt.createQmlObject("import QtDesktop 1.0; RadioButton {}", container, "");
         }
 
         function cleanup() {
@@ -130,6 +130,44 @@ Item {
                 compare(signalSpy.count, i + 1);
                 compare(radioButton.checked, expectedStates[i]);
             }
+        }
+
+        function test_exclusiveGroup() {
+            var root = Qt.createQmlObject("import QtQuick 2.0; import QtDesktop 1.0; \n"
+                + "Row { \n"
+                + "    property alias radioButton1: radioButton1 \n"
+                + "    property alias radioButton2: radioButton2 \n"
+                + "    property alias group: group \n"
+                + "    ExclusiveGroup { id: group } \n"
+                + "    RadioButton { id: radioButton1; checked: true; exclusiveGroup: group } \n"
+                + "    RadioButton { id: radioButton2; exclusiveGroup: group } \n"
+                + "}", container, "");
+
+            compare(root.radioButton1.exclusiveGroup, root.group);
+            compare(root.radioButton2.exclusiveGroup, root.group);
+            compare(root.radioButton1.checked, true);
+            compare(root.radioButton2.checked, false);
+
+            root.forceActiveFocus();
+
+            signalSpy.target = root.radioButton2;
+            signalSpy.signalName = "clicked";
+            compare(signalSpy.count, 0);
+
+            mouseClick(root.radioButton2, root.radioButton2.x, root.radioButton2.y, Qt.LeftButton);
+            compare(signalSpy.count, 1);
+            compare(root.radioButton1.checked, false);
+            compare(root.radioButton2.checked, true);
+
+            signalSpy.clear();
+            signalSpy.target = root.radioButton1;
+            signalSpy.signalName = "clicked";
+            compare(signalSpy.count, 0);
+
+            mouseClick(root.radioButton1, root.radioButton1.x, root.radioButton1.y, Qt.LeftButton);
+            compare(signalSpy.count, 1);
+            compare(root.radioButton1.checked, true);
+            compare(root.radioButton2.checked, false);
         }
     }
 }
