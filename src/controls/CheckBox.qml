@@ -139,6 +139,20 @@ AbstractCheckable {
     }
 
     /*! \internal */
+    onPartiallyCheckedEnabledChanged: {
+        if (exclusiveGroup && partiallyCheckedEnabled) {
+            console.warn("Cannot have partially checked boxes in an ExclusiveGroup.");
+        }
+    }
+
+    /*! \internal */
+    onExclusiveGroupChanged: {
+        if (exclusiveGroup && partiallyCheckedEnabled) {
+            console.warn("Cannot have partially checked boxes in an ExclusiveGroup.");
+        }
+    }
+
+    /*! \internal */
     function cycleCheckBoxStates() {
         if (!partiallyCheckedEnabled) {
             checked = !checked;

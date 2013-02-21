@@ -198,6 +198,24 @@ Item {
             compare(signalSpy.count, 1);
             compare(root.checkBox1.checked, true);
             compare(root.checkBox2.checked, false);
+
+            ignoreWarning("Cannot have partially checked boxes in an ExclusiveGroup.");
+            root.checkBox1.partiallyCheckedEnabled = true;
+            ignoreWarning("Cannot have partially checked boxes in an ExclusiveGroup.");
+            root.checkBox2.partiallyCheckedEnabled = true;
+
+            // Shouldn't be any warnings, since we're not setting a group.
+            root.checkBox1.exclusiveGroup = null;
+            root.checkBox2.exclusiveGroup = null;
+
+            ignoreWarning("Cannot have partially checked boxes in an ExclusiveGroup.");
+            root.checkBox1.exclusiveGroup = root.group;
+            ignoreWarning("Cannot have partially checked boxes in an ExclusiveGroup.");
+            root.checkBox2.exclusiveGroup = root.group;
+
+            // Shouldn't be any warnings, since we're not setting partiallyCheckedEnabled to true.
+            root.checkBox1.partiallyCheckedEnabled = false;
+            root.checkBox2.partiallyCheckedEnabled = false;
         }
     }
 }
