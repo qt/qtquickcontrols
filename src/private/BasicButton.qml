@@ -92,9 +92,28 @@ Control {
         }
     }
 
-    ButtonBehavior {
+    MouseArea {
         id: behavior
+        property bool checkable: false
+        property bool checked: false
+        property bool keyPressed: false
+        property bool effectivePressed: pressed && containsMouse || keyPressed
+
         anchors.fill: parent
+        hoverEnabled: true
+        enabled: !keyPressed
+
+        onCheckableChanged: {
+            if (!checkable)
+                checked = false;
+        }
+
+        onReleased: {
+            if (checkable && containsMouse
+                && (!exclusiveGroup || !checked))
+                    checked = !checked;
+        }
+
         onClicked: button.clicked()
         onExited: PrivateHelper.hideToolTip()
         onCanceled: PrivateHelper.hideToolTip()

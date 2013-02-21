@@ -26,7 +26,6 @@ OTHER_FILES += \
 QML_FILES += \
     TabBar.qml \
     BasicButton.qml \
-    ButtonBehavior.qml \
     Control.qml \
     ModalPopupBehavior.qml \
     PageSlideTransition.qml \

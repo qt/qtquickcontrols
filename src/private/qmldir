@@ -1,6 +1,5 @@
 module QtQuick.Controls.Private
 plugin privateplugin
-ButtonBehavior 1.0 ButtonBehavior.qml
 Control 1.0 Control.qml
 FocusFrame 1.0 FocusFrame.qml
 BasicButton 1.0 BasicButton.qml

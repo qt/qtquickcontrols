@@ -21,7 +21,6 @@ sourcedirs += ../
 
 sources += ../../private/qstyleitem.cpp \
            ../../private/BasicButton.qml \
-           ../../private/ButtonBehavior.qml \
            ../../private/FocusFrame.qml \
            ../../private/ModalPopupBehavior.qml \
            ../../private/PageSlideTransition.qml \
