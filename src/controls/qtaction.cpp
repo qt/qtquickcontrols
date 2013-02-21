@@ -243,10 +243,10 @@ void QtAction::setExclusiveGroup(QtExclusiveGroup *eg)
         return;
 
     if (m_exclusiveGroup)
-        m_exclusiveGroup->unregisterCheckable(this);
+        m_exclusiveGroup->unbindCheckable(this);
     m_exclusiveGroup = eg;
     if (m_exclusiveGroup)
-        m_exclusiveGroup->registerCheckable(this);
+        m_exclusiveGroup->bindCheckable(this);
 
     emit exclusiveGroupChanged();
 }

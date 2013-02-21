@@ -39,6 +39,7 @@
 ****************************************************************************/
 
 import QtQuick 2.0
+import QtQuick.Controls 1.0
 import QtQuick.Controls.Private 1.0
 import QtQuick.Controls.Styles 1.0
 
@@ -57,6 +58,13 @@ Control {
     property alias containsMouse: behavior.containsMouse
     property alias checkable: behavior.checkable  // button toggles between checked and !checked
     property alias checked: behavior.checked
+    property ExclusiveGroup exclusiveGroup: null
+
+    onExclusiveGroupChanged: {
+        if (exclusiveGroup)
+            exclusiveGroup.bindCheckable(button)
+    }
+
     property bool activeFocusOnPress: false
 
     property color textColor: syspal.text

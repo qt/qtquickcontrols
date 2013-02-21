@@ -60,8 +60,8 @@ public:
     void setCurrent(QObject * o);
 
 public Q_SLOTS:
-    void registerCheckable(QObject *o);
-    void unregisterCheckable(QObject *o);
+    void bindCheckable(QObject *o);
+    void unbindCheckable(QObject *o);
 
 Q_SIGNALS:
     void currentChanged();

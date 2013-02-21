@@ -109,7 +109,7 @@ Control {
     /*! \internal */
     onExclusiveGroupChanged: {
         if (exclusiveGroup)
-            exclusiveGroup.registerCheckable(abstractCheckable)
+            exclusiveGroup.bindCheckable(abstractCheckable)
     }
 
     MouseArea {

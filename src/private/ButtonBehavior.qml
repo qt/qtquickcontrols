@@ -39,7 +39,6 @@
 ****************************************************************************/
 
 import QtQuick 2.0
-import QtQuick.Controls 1.0
 
 /*!
         \qmltype ButtonBehavior
@@ -52,12 +51,6 @@ MouseArea {
     property bool checked: false
     property bool keyPressed: false
     property bool effectivePressed: pressed && containsMouse || keyPressed
-    property ExclusiveGroup exclusiveGroup: null
-
-    onExclusiveGroupChanged: {
-        if (exclusiveGroup)
-            exclusiveGroup.registerCheckable(behavior)
-    }
 
     hoverEnabled: true
     enabled: !keyPressed
