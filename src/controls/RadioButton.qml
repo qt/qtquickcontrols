@@ -40,6 +40,8 @@
 
 import QtQuick 2.0
 import QtQuick.Controls 1.0
+import QtQuick.Controls.Private 1.0
+
 import "Styles/Settings.js" as Settings
 
 // jb : Size should not depend on background, we should make it consistent

@@ -40,7 +40,6 @@
 
 import QtQuick 2.0
 import QtQuick.Controls 1.0
-import QtQuick.Controls.Private 1.0
 
 /*!
     \qmltype AbstractCheckable
@@ -95,8 +94,6 @@ Control {
     property bool activeFocusOnPress: false
 
     /*!
-        \qmlproperty ExclusiveGroup AbstractCheckable::exclusiveGroup
-
         This property stores the ExclusiveGroup that the control belongs to.
     */
     property ExclusiveGroup exclusiveGroup: null
@@ -108,12 +105,6 @@ Control {
 
     /*! \internal */
     property var __cycleStatesHandler: cycleRadioButtonStates
-
-    /*! \internal */
-    onExclusiveGroupChanged: {
-        if (exclusiveGroup)
-            exclusiveGroup.bindCheckable(abstractCheckable)
-    }
 
     MouseArea {
         id: mouseArea
@@ -133,6 +124,12 @@ Control {
             if (containsMouse && (!exclusiveGroup || !checked))
                 __cycleStatesHandler();
         }
+    }
+
+    /*! \internal */
+    onExclusiveGroupChanged: {
+        if (exclusiveGroup)
+            exclusiveGroup.bindCheckable(abstractCheckable)
     }
 
     Keys.onPressed: {

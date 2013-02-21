@@ -40,8 +40,9 @@
 
 import QtQuick 2.0
 import QtQuick.Controls 1.0
-import "Styles/Settings.js" as Settings
 import QtQuick.Controls.Private 1.0
+
+import "Styles/Settings.js" as Settings
 
 /*!
     \qmltype CheckBox

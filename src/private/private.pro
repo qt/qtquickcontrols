@@ -24,6 +24,7 @@ OTHER_FILES += \
 
 # private qml files
 QML_FILES += \
+    AbstractCheckable.qml \
     TabBar.qml \
     BasicButton.qml \
     Control.qml \
