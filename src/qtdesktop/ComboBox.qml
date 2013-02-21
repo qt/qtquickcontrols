@@ -94,7 +94,7 @@ import "Styles/Settings.js" as Settings
     \endqml
 */
 
-BasicButton {
+Control {
     id: comboBox
 
     default property alias menuItems: popup.menuItems
@@ -105,15 +105,18 @@ BasicButton {
     property alias selectedIndex: popup.selectedIndex
     readonly property alias selectedText: popup.selectedText
 
+    readonly property bool pressed: mouseArea.pressed || popup.popupVisible
+    property alias containsMouse: mouseArea.containsMouse
+
     style: Qt.createComponent(Settings.THEME_PATH + "/ComboBoxStyle.qml", comboBox)
 
-//  ToDo: adjust margins so that selected popup label
-//    centers directly above button label when
-//    popup.centerOnSelectedText === true
-    checkable: false
     Accessible.role: Accessible.ComboBox
 
-    onPressedChanged: { if (pressed) popup.show() }
+    MouseArea {
+        id: mouseArea
+        anchors.fill: parent
+        onPressedChanged: if (pressed) popup.show()
+    }
 
     ExclusiveGroup { id: eg }
 
