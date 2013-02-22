@@ -46,7 +46,9 @@ import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Styles 1.0
 
-Page {
+Item {
+    width: parent.width
+    height: parent.height
 
     TabView {
         anchors.fill: parent

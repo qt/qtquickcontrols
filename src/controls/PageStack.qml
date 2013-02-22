@@ -57,16 +57,7 @@ import "Private/PageStack.js" as JSArray
     deeper into the application page hierarchy. Similarily, the user can return back to
     previous pages at a later point, which from a stack point of view means popping pages from the
     top of the stack and re-activating them (make them visible on screen).
-
-    Pages can - but do not have to - use \l{Page} as the root item.
-    \l{Page} defines a contract for how the page and the page stack works together.
-    Namely the page can be notified when it becomes active or inactive
-    through the \l{Page::status} {Page.status} property. Status will be
-    \c PageStatus.Activating when a
-    page is transitioning into being the current page on screen, and \c PageStatus.Active
-    once the transition stops. When it leaves the screen, it will be
-    \c PageStatus.Deactivating, and then \c PageStatus.Inactive. When the page is
-    inactive, it will be hidden.
+    The \l Stack attached property provides information about items pushed onto a stack.
 
     \section1 Using PageStack in an Application
     Using the PageStack in the application is typically a simple matter of adding
@@ -234,17 +225,17 @@ import "Private/PageStack.js" as JSArray
     Popping the page off the top of the stack at this point would not result in further
     deactivation since the page is not active.
 
-    There is a \l{Page::status}{status} property that tracks the lifecycle. The value of status is
-    an enumeration with values \c PageStatus.Inactive, \c PageStatus.Activating, \c PageStatus.Active
-    and \c PageStatus.Deactivating. Combined with the normal \c Component.onComplete and
+    There is an attached \l{Stack::status}{Stack.status} property that tracks the lifecycle. The value of status is
+    an enumeration with values \c Stack.Inactive, \c Stack.Activating, \c Stack.Active
+    and \c Stack.Deactivating. Combined with the normal \c Component.onComplete and
     \c Component.onDestruction signals the entire lifecycle is thus:
 
     \list
     \li Created: Component.onCompleted()
-    \li Activating: onStatusChanged (status is PageStatus.Activating)
-    \li Acivated: onStatusChanged (status is PageStatus.Active)
-    \li Deactivating: onStatusChanged (status is PageStatus.Deactivating)
-    \li Deactivated: onStatusChanged (status is PageStatus.Inactive)
+    \li Activating: Stack.onStatusChanged (Stack.status is Stack.Activating)
+    \li Acivated: Stack.onStatusChanged (Stack.status is Stack.Active)
+    \li Deactivating: Stack.onStatusChanged (Stack.status is Stack.Deactivating)
+    \li Deactivated: Stack.onStatusChanged (Stack.status is Stack.Inactive)
     \li Destruction: Component.onDestruction()
     \endlist
 
@@ -372,12 +363,12 @@ import "Private/PageStack.js" as JSArray
     \endqml
 
     A single Page can also override the transition to use when itself is pushed or popped. This can
-    be done by just assigning another PageTransition object to \l{Page::pageTransition}{Page.pageTransition}.
+    be done by just assigning another PageTransition object to \l{Stack::pageTransition}{Stack.pageTransition}.
 
     \section2 Advanced usage
 
     After PageStack finds the correct transition to use (it first checks
-     \l{Page::pageTransition}{Page.pageTransition}, then \l {PageStack::pageTransition}{pageTransition})
+     \l{Stack::pageTransition}{Stack.pageTransition}, then \l {PageStack::pageTransition}{pageTransition})
     it calls \l {PageTransition::getAnimation(properties)}{PageTransition.getAnimation(properties)}.
     The base implementation of this function just looks for a property named \c properties.name inside
     itself (root), which is how it finds \c {property Component pushAnimation} in the examples above.
@@ -493,7 +484,7 @@ Item {
 
     /*! The animations to use for page transitions.
         For better understanding on how to apply custom page transitions, read \l{Transitions}.
-        \sa {Page::animations}{Page.transitions} */
+        \sa {Stack::animations}{Stack.transitions} */
     property PageTransition pageTransition: PageSlideTransition {}
 
     /*! Pushes a page onto the stack. The function takes a property list as argument, which
@@ -867,11 +858,9 @@ Item {
             // Mark the page as no longer part of the PageStack. It
             // might reenter on pop if pushed several times:
             page.visible = false
-            __setPageStatus(page, PageStatus.Inactive)
-            if (page.hasOwnProperty("__pageStack"))
-                page.__pageStack = null
-            if (page.hasOwnProperty("__index"))
-                page.__index = -1
+            __setPageStatus(page, Stack.Inactive)
+            page.Stack.__pageStack = null
+            page.Stack.__index = -1
             if (element.originalParent)
                 page.parent = element.originalParent
         }
@@ -879,8 +868,7 @@ Item {
 
     /*! \internal */
     function __setPageStatus(page, status) {
-        if (page.hasOwnProperty("__status"))
-            page.__status = status
+        page.Stack.__status = status
     }
 
     /*! \internal */
@@ -888,7 +876,7 @@ Item {
     {
         // Animate page in "outElement" out, and page in "inElement" in. Set a guard to protect
         // the user from pushing new pages on signals that will fire while preparing for the transition
-        // (e.g Page.onCompleted, Page.onStatusChanged, Page.onIndexChanged etc). Otherwise, we will enter
+        // (e.g Stack.onCompleted, Stack.onStatusChanged, Stack.onIndexChanged etc). Otherwise, we will enter
         // this function several times, which causes the pages to be half-way updated.
         if (__currentTransition)
             __currentTransition.animation.complete()
@@ -900,17 +888,15 @@ Item {
 
         // Since a page can be pushed several times, we need to update its properties:
         enterPage.parent = root
-        if (enterPage.hasOwnProperty("__pageStack"))
-            enterPage.__pageStack = root
-        if (enterPage.hasOwnProperty("__index"))
-            enterPage.__index = transition.inElement.index
+        enterPage.Stack.__pageStack = root
+        enterPage.Stack.__index = transition.inElement.index
         __currentPage = enterPage
 
         if (!transition.outElement) {
             // A transition consists of two pages, but we got just one. So just show the page:
             enterPage.visible = true
-            __setPageStatus(enterPage, PageStatus.Activating)
-            __setPageStatus(enterPage, PageStatus.Active)
+            __setPageStatus(enterPage, Stack.Activating)
+            __setPageStatus(enterPage, Stack.Active)
             return
         }
 
@@ -919,9 +905,9 @@ Item {
         if (enterPage === exitPage)
              return
 
-        __searchForAnimationIn(transition.transitionElement.page, transition)
+        __searchForAnimationIn(transition.transitionElement.page.Stack.pageTransition, transition)
         if (!transition.animation)
-            __searchForAnimationIn(root, transition)
+            __searchForAnimationIn(root.pageTransition, transition)
         if (!transition.animation) {
             console.warn("Warning: PageStack: no", transition.name, "found!")
             return
@@ -931,9 +917,9 @@ Item {
             console.warn("Warning: PageStack: cannot transition a page that is anchored!")
 
         __currentTransition = transition
-        __setPageStatus(exitPage, PageStatus.Deactivating)
+        __setPageStatus(exitPage, Stack.Deactivating)
         enterPage.visible = true
-        __setPageStatus(enterPage, PageStatus.Activating)
+        __setPageStatus(enterPage, Stack.Activating)
         transition.animation.runningChanged.connect(animationFinished)
         transition.animation.start()
         // NB! For empty animations, "animationFinished" is already
@@ -945,15 +931,14 @@ Item {
     /*! \internal */
     function __searchForAnimationIn(obj, transition)
     {
-        var t = obj.pageTransition
-        if (t) {
-            transition.pageTransition = t
+        if (obj) {
+            transition.pageTransition = obj
             transition.properties = {
                 "name":transition.name,
                 "enterPage":transition.enterPage,
                 "exitPage":transition.exitPage,
                 "immediate":transition.immediate }
-            var anim = t.getAnimation(transition.properties)
+            var anim = obj.getAnimation(transition.properties)
             if (anim.createObject) {
                 anim = anim.createObject(null, transition.properties)
                 anim.runningChanged.connect(function(){ if (anim.running === false) anim.destroy() })
@@ -970,8 +955,8 @@ Item {
 
         __currentTransition.animation.runningChanged.disconnect(animationFinished)
         __currentTransition.exitPage.visible = false
-        __setPageStatus(__currentTransition.exitPage, PageStatus.Inactive);
-        __setPageStatus(__currentTransition.enterPage, PageStatus.Active);
+        __setPageStatus(__currentTransition.exitPage, Stack.Inactive);
+        __setPageStatus(__currentTransition.enterPage, Stack.Active);
         __currentTransition.properties.animation = __currentTransition.animation
         __currentTransition.pageTransition.cleanupAnimation(__currentTransition.properties)
 

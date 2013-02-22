@@ -52,7 +52,7 @@ TestCase {
     Item { id: anItem  }
     Component {
         id: pageComponent
-        Page {}
+        Item {}
     }
 
     Component {

@@ -14,7 +14,6 @@ QML_FILES = \
     Label.qml \
     MenuBar.qml \
     Menu.qml \
-    Page.qml \
     PageAnimation.qml \
     PageStack.qml \
     PageTransition.qml \

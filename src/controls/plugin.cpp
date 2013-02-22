@@ -44,7 +44,7 @@
 #include "qtexclusivegroup_p.h"
 #include "qtmenu_p.h"
 #include "qtmenubar_p.h"
-#include "qpagestatus.h"
+#include "qtstack_p.h"
 
 #include <qimage.h>
 #include <qqml.h>
@@ -86,7 +86,7 @@ void StylePlugin::registerTypes(const char *uri)
     qmlRegisterUncreatableType<QtMenuBase>(uri, 1, 0, "MenuBase",
                                            QLatin1String("Do not create objects of type MenuBase"));
 
-    qmlRegisterUncreatableType<QPageStatus>(uri, 1, 0, "PageStatus", QLatin1String("Do not create objects of type PageStatus"));
+    qmlRegisterUncreatableType<QtStack>(uri, 1, 0, "Stack", QLatin1String("Do not create objects of type Stack"));
 }
 
 void StylePlugin::initializeEngine(QQmlEngine *engine, const char *uri)

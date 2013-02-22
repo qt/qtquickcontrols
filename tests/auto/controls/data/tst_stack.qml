@@ -43,14 +43,23 @@ import QtTest 1.0
 
 TestCase {
     id: testCase
-    name: "Tests_Page"
+    name: "Tests_Stack"
     when:windowShown
     width:400
     height:400
 
-    function test_createPage() {
-        var page = Qt.createQmlObject('import QtQuick.Controls 1.0; Page {}', testCase, '');
+    function test_index() {
+        var item = Qt.createQmlObject('import QtQuick 2.0; import QtQuick.Controls 1.0; Item { property int index: Stack.index }', testCase, '');
+        compare(item.index, -1);
     }
 
+    function test_status() {
+        var item = Qt.createQmlObject('import QtQuick 2.0; import QtQuick.Controls 1.0; Item { property int status: Stack.status }', testCase, '');
+        compare(item.status, 0); // Stack.Inactive
+    }
 
+    function test_pageStack() {
+        var item = Qt.createQmlObject('import QtQuick 2.0; import QtQuick.Controls 1.0; Item { property PageStack pageStack: Stack.pageStack }', testCase, '');
+        compare(item.pageStack, null);
+    }
 }

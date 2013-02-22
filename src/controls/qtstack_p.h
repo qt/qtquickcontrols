@@ -39,27 +39,65 @@
 **
 ****************************************************************************/
 
-#ifndef QPAGESTATUS_H
-#define QPAGESTATUS_H
+#ifndef QTSTACK_P_H
+#define QTSTACK_P_H
 
-#include <QtCore/qobject.h>
+#include <QtQuick/qquickitem.h>
 
 QT_BEGIN_NAMESPACE
 
-class QPageStatus : public QObject
+class QtStack : public QObject
 {
     Q_OBJECT
-    Q_ENUMS(PageStatus)
+    Q_PROPERTY(int index READ index NOTIFY indexChanged)
+    Q_PROPERTY(int __index READ index WRITE setIndex NOTIFY indexChanged)
+    Q_PROPERTY(Status status READ status NOTIFY statusChanged)
+    Q_PROPERTY(Status __status READ status WRITE setStatus NOTIFY statusChanged)
+    Q_PROPERTY(QQuickItem* pageStack READ pageStack NOTIFY pageStackChanged)
+    Q_PROPERTY(QQuickItem* __pageStack READ pageStack WRITE setPageStack NOTIFY pageStackChanged)
+    Q_PROPERTY(QObject* pageTransition READ pageTransition WRITE setPageTransition NOTIFY pageTransitionChanged)
+    Q_ENUMS(Status)
 
 public:
-    enum PageStatus {
+    QtStack(QObject *object = 0);
+
+    static QtStack *qmlAttachedProperties(QObject *object);
+
+    int index() const;
+    void setIndex(int index);
+
+    enum Status {
         Inactive = 0,
         Deactivating = 1,
         Activating = 2,
         Active = 3
     };
+
+    Status status() const;
+    void setStatus(Status status);
+
+    QQuickItem *pageStack() const;
+    void setPageStack(QQuickItem *pageStack);
+
+    QObject *pageTransition() const;
+    void setPageTransition(QObject* pageTransition);
+
+signals:
+    void statusChanged();
+    void pageStackChanged();
+    void indexChanged();
+    void pageTransitionChanged();
+
+private:
+    int m_index;
+    Status m_status;
+    QQuickItem *m_pageStack;
+    QObject *m_pageTransition;
 };
 
 QT_END_NAMESPACE
 
-#endif // QPAGESTATUS_H
+QML_DECLARE_TYPE(QtStack)
+QML_DECLARE_TYPEINFO(QtStack, QML_HAS_ATTACHED_PROPERTIES)
+
+#endif // QTSTACK_P_H
