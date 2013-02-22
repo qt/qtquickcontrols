@@ -51,7 +51,7 @@ import "Styles/Settings.js" as Settings
 
 */
 
-Item {
+FocusScope {
     id: root
     width: 100
     height: 100
@@ -100,14 +100,25 @@ Item {
             current-=1
     }
 
+    TabBar {
+        id: tabbarItem
+        tabView: root
+        style: loader.item
+        anchors.top: parent.top
+        anchors.left: root.left
+        anchors.right: root.right
+    }
+
     Loader {
         id: loader
+        z: tabbarItem.z - 1
         sourceComponent: style
         property var control: root
     }
 
     Loader {
         id: frameLoader
+        z: tabbarItem.z - 1
 
         anchors.fill: parent
         anchors.topMargin: tabbarItem && tabsVisible && position == "North" ? Math.max(0, tabbarItem.height - stack.baseOverlap) : 0
@@ -126,15 +137,6 @@ Item {
             property int baseOverlap
         }
         onLoaded: { item.z = -1 }
-    }
-
-    TabBar {
-        id: tabbarItem
-        tabView: root
-        style: loader.item
-        anchors.top: parent.top
-        anchors.left: root.left
-        anchors.right: root.right
     }
 
     states: [

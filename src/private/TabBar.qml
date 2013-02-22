@@ -46,11 +46,10 @@ import QtQuick.Controls 1.0
         \internal
         \inqmlmodule QtQuick.Controls.Private 1.0
 */
-Item {
+FocusScope {
     id: tabbar
     height: tabrow.height
     width: tabrow.width
-
 
     Keys.onRightPressed: {
         if (tabView && tabView.current < tabView.count - 1)

@@ -90,7 +90,7 @@ Style {
             selected: tab.selected
             text:  title
             hover: tab.hover
-            hasFocus: tab.focus && selected
+            hasFocus: tabbarItem.activeFocus && selected
             anchors.margins: paintMargins
 
             Text {
