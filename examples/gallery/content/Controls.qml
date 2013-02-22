@@ -181,10 +181,7 @@ Item {
                 KeyNavigation.tab: button1
                 width: contentRow.width - firstColumn.width - contentRow.spacing
                 height: parent.height - group1.height - group2.height - 2 * parent.spacing
-                anchors {
-                    right: parent.right
-                    rightMargin: 12
-                }
+                anchors { right: parent.right }
             }
         }
     }
