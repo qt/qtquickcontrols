@@ -26,7 +26,6 @@ sources += ../../private/qstyleitem.cpp \
            ../../private/PageSlideTransition.qml \
            ../../private/ScrollAreaHelper.qml \
            ../../private/ScrollBar.qml \
-           ../../private/SplitterBase.qml \
            ../../private/TabBar.qml \
            ../../private/Control.qml \
            ../../styles/Style.qml \

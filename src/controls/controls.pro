@@ -25,7 +25,7 @@ QML_FILES = \
     ScrollView.qml \
     Slider.qml \
     SpinBox.qml \
-    Splitter.qml \
+    SplitView.qml \
     StatusBar.qml \
     Tab.qml \
     TabView.qml \

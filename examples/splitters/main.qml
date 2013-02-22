@@ -49,7 +49,7 @@ ApplicationWindow {
     width: 600
     height: 400
 
-    Splitter {
+    SplitView {
         anchors.fill: parent
 
         Rectangle {
@@ -68,7 +68,7 @@ ApplicationWindow {
             color: "lightsteelblue"
         }
 
-        Splitter {
+        SplitView {
             orientation: Qt.Vertical
             Layout.horizontalSizePolicy: Layout.Expanding
 

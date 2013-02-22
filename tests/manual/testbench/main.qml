@@ -96,7 +96,7 @@ ApplicationWindow {
         }
     }
 
-    Splitter {
+    SplitView {
         anchors.fill: parent
         Flickable {
             id: testBenchRect

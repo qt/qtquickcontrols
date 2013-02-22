@@ -46,9 +46,10 @@ ApplicationWindow {
     height: 200
 
     Row {
-        SplitterColumn {
+        SplitView {
             width: 200
             height: 200
+            orientation: Qt.Vertical
 
             Button {
                 text: "Button 1"
@@ -61,7 +62,7 @@ ApplicationWindow {
             }
         }
 
-        SplitterRow {
+        SplitView {
             width: 200
             height: 200
 

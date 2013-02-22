@@ -68,7 +68,7 @@ ApplicationWindow {
         }
     }
 
-    SplitterRow {
+    SplitView {
         anchors.fill: parent
         handleWidth: 1
         TableView {

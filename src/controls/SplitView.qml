@@ -43,23 +43,23 @@ import QtQuick.Controls 1.0
 import QtQuick.Controls.Private 1.0 as Private
 
 /*!
-    \qmltype Splitter
+    \qmltype SplitView
     \inqmlmodule QtQuick.Controls 1.0
-    \brief Splitter is a component that lays out items horisontally or
+    \brief SplitView is a component that lays out items horisontally or
     vertically with a draggable splitter between each item.
 */
 
 /*
 *
-* Splitter
+* SplitView
 *
-* Splitter is a component that lays out items horisontally or
+* SplitView is a component that lays out items horisontally or
 * vertically with a draggable splitter between each item.
 *
-* There will always be one (and only one) item in the Splitter that is 'expanding'.
+* There will always be one (and only one) item in the SplitView that is 'expanding'.
 * Being expanding means that the item will get all the remaining space when other
 * items have been laid out according to their own width and height.
-* By default, the last visible child of the Splitter will be expanding, but
+* By default, the last visible child of the SplitView will be expanding, but
 * this can changed by setting Layout.horizontalSizePolicy to \c Layout.Expanding.
 * Since the expanding item will automatically be resized to fit the extra space, it
 * will ignore explicit assignments to width and height.
@@ -70,7 +70,7 @@ import QtQuick.Controls.Private 1.0 as Private
 * will belong to the item on the right. This will again control which item that gets resized
 * when the user drags a handle, and which handle that gets hidden when an item is told to hide.
 *
-* The Splitter contains the following API:
+* The SplitView contains the following API:
 *
 * int orientation - the orientation of the splitter. Can be either Qt.Horizontal
 *   or Qt.Vertical.
@@ -82,16 +82,16 @@ import QtQuick.Controls.Private 1.0 as Private
 *   bool pressed: the handle is being pressed.
 *   bool dragged: the handle is being dragged.
 *
-* Splitter supports setting Layout properties on child items, which means that you
+* SplitView supports setting Layout properties on child items, which means that you
 * can control minimumWidth, minimumHeight, maximumWidth and maximumHeight (in addition
 * to horizontalSizePolicy/verticalSizePolicy) for each child.
 *
 * Example:
 *
-* To create a Splitter with three items, and let
+* To create a SplitView with three items, and let
 * the center item be expanding, one could do the following:
 *
-*    Splitter {
+*    SplitView {
 *        anchors.fill: parent
 *        orientation: Qt.Horizontal
 *
@@ -175,7 +175,7 @@ Item {
                 if (!root.visible)
                     return
                 if (item.visible) {
-                    // Try to keep all items within the SplitterRow. When an item
+                    // Try to keep all items within the SplitView. When an item
                     // has been hidden, the expanding item might no longer be large enough
                     // to give away space to the new items width. So we need to resize:
                     var overflow = d.accumulatedSize(0, __items.length, true) - root[d.size];

@@ -60,7 +60,7 @@ TestCase {
         PageStack {}
     }
 
-    function test_splitterrow() {
+    function test_pagestack() {
         var component = stackComponent
         var stack = component.createObject(testCase);
         verify (stack !== null, "pagestack created is null")
