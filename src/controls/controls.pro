@@ -23,7 +23,7 @@ QML_FILES = \
     PageTransition.qml \
     ProgressBar.qml \
     RadioButton.qml \
-    ScrollArea.qml \
+    ScrollView.qml \
     Slider.qml \
     SpinBox.qml \
     Splitter.qml \

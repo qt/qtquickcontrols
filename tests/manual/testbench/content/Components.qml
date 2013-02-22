@@ -54,7 +54,7 @@ Item {
     property Component toolbar: ToolBar { }
     property Component statusbar: StatusBar { }
     property Component tableview: TableView { model: testDataModel ; TableViewColumn {title: "Column 1"}}
-    property Component scrollarea: ScrollArea {
+    property Component scrollview: ScrollView {
         Rectangle {
             color: "#eee"
             width: 1000
@@ -111,7 +111,7 @@ Item {
             append({ name: "ToolBar",       component: toolbar});
             append({ name: "StatusBar",     component: statusbar});
             append({ name: "TableView",     component: tableview});
-            append({ name: "ScrollArea",    component: scrollarea});
+            append({ name: "ScrollView",    component: scrollview});
         }
     }
 }

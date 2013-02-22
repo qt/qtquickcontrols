@@ -43,21 +43,21 @@ import QtQuick.Controls 1.0
 import QtQuick.Controls.Private 1.0
 
 /*!
-    \qmltype ScrollArea
+    \qmltype ScrollView
     \inqmlmodule QtQuick.Controls 1.0
     \ingroup navigation
-    \brief The ScrollArea class provides a scrolling view onto another Item.
+    \brief The ScrollView class provides a scrolling view onto another Item.
 
-    A ScrollArea can be used either instead of a \l Flickable or to decorate an
+    A ScrollView can be used either instead of a \l Flickable or to decorate an
     existing Flickable. Depending on the platform it will add scroll bars and
     a content frame.
 
-    Only one Item can be a direct child of the ScrollArea and the child is implicitly anchored
+    Only one Item can be a direct child of the ScrollView and the child is implicitly anchored
     to fill the scroll view.
 
     Example:
     \code
-    ScrollArea {
+    ScrollView {
         Image { imageSource: "largeImage.png" }
     }
     \endcode
@@ -68,14 +68,14 @@ import QtQuick.Controls.Private 1.0
 
     Example:
     \code
-    ScrollArea {
+    ScrollView {
         ListView {
             ...
         }
     }
     \endcode
 
-    In this case the content size of the ScrollArea will simply mirror that of its contained
+    In this case the content size of the ScrollView will simply mirror that of its contained
     \l flickableItem.
 
 */
@@ -86,7 +86,7 @@ FocusScope {
     implicitHeight: 100
 
     /*!
-        This property tells the scroll area if it should render
+        This property tells the scroll view if it should render
         a frame around it's content.
 
         The default value is \c false
@@ -95,7 +95,7 @@ FocusScope {
 
     /*!
         This property controls if there should be a highlight
-        around the frame when the ScrollArea has input focus.
+        around the frame when the ScrollView has input focus.
 
         The default value is \c false
 
@@ -105,7 +105,7 @@ FocusScope {
     property bool highlightOnFocus: false
 
     /*!
-        \qmlproperty Item ScrollArea::viewport
+        \qmlproperty Item ScrollView::viewport
 
         The viewport determines the current "window" on to the contentItem.
         In other words it clips it and the size of the viewport tells you
@@ -114,15 +114,15 @@ FocusScope {
     property alias viewport: viewportItem
 
     /*!
-        \qmlproperty Item ScrollArea::flickableItem
+        \qmlproperty Item ScrollView::flickableItem
 
-        The flickableItem of the ScrollArea. If the contentItem provided
-        to the ScrollArea is a Flickable, it will be the \l contentItem.
+        The flickableItem of the ScrollView. If the contentItem provided
+        to the ScrollView is a Flickable, it will be the \l contentItem.
     */
     readonly property alias flickableItem: internal.flickableItem
 
     /*!
-        The contentItem of the ScrollArea. This is set by the user.
+        The contentItem of the ScrollView. This is set by the user.
 
         Note that the definition of contentItem is somewhat different to that
         of a Flickable, where the contentItem is implicitly created.
@@ -249,7 +249,7 @@ FocusScope {
             }
         }
 
-        ScrollAreaHelper {
+        ScrollViewHelper {
             id: scroller
             anchors.fill: parent
             property int frameWidth: frame ? styleitem.pixelMetric("defaultframewidth") : 0

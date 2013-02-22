@@ -92,7 +92,7 @@ import QtQuick.Controls.Private 1.0
 \endlist
 */
 
-ScrollArea {
+ScrollView {
     id: root
 
     /*! This property holds the model providing data for the list.

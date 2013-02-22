@@ -44,7 +44,7 @@ import QtQuick.Controls 1.0
 
 TestCase {
     id: testCase
-    name: "Tests_ScrollArea"
+    name: "Tests_ScrollView"
     when:windowShown
     width:400
     height:400
@@ -55,54 +55,54 @@ TestCase {
     Item { id: bigItem  }
 
     Component {
-        id: scrollAreaComponent
-        ScrollArea { }
+        id: scrollViewComponent
+        ScrollView { }
     }
 
     function test_scroll() {
-        var component = scrollAreaComponent
-        var scrollArea = component.createObject(testCase);
-        verify(scrollArea !== null, "table created is null")
+        var component = scrollViewComponent
+        var scrollView = component.createObject(testCase);
+        verify(scrollView !== null, "table created is null")
 
-        scrollArea.contentItem = bigItem
-        scrollArea.visible = true
-        verify(scrollArea.flickableItem, "flickableItem should not be null")
-        verify(scrollArea.flickableItem !== scrollArea.contentItem)
-        verify(scrollArea.flickableItem.contentHeight === 0, "ContentHeight not set")
+        scrollView.contentItem = bigItem
+        scrollView.visible = true
+        verify(scrollView.flickableItem, "flickableItem should not be null")
+        verify(scrollView.flickableItem !== scrollView.contentItem)
+        verify(scrollView.flickableItem.contentHeight === 0, "ContentHeight not set")
 
         bigItem.height = 222
         bigItem.width = 333
 
-        verify(scrollArea.flickableItem.contentHeight === 222, "ContentHeight not set")
-        verify(scrollArea.flickableItem.contentWidth === 333, "ContentHeight not set")
+        verify(scrollView.flickableItem.contentHeight === 222, "ContentHeight not set")
+        verify(scrollView.flickableItem.contentWidth === 333, "ContentHeight not set")
 
-        scrollArea.flickableItem.contentY = 200
-        verify(scrollArea.flickableItem.contentY === 200, "ContentY not set")
+        scrollView.flickableItem.contentY = 200
+        verify(scrollView.flickableItem.contentY === 200, "ContentY not set")
 
-        scrollArea.flickableItem.contentX = 300
-        verify(scrollArea.flickableItem.contentX === 300, "ContentX not set")
+        scrollView.flickableItem.contentX = 300
+        verify(scrollView.flickableItem.contentX === 300, "ContentX not set")
     }
 
     function test_viewport() {
-        var component = scrollAreaComponent
-        var scrollArea =  component.createObject(testCase);
-        verify(scrollArea !== null, "table created is null")
+        var component = scrollViewComponent
+        var scrollView =  component.createObject(testCase);
+        verify(scrollView !== null, "table created is null")
 
-        scrollArea.forceActiveFocus();
-        verify(scrollArea.viewport, "Viewport not defined")
-        verify(!scrollArea.contentItem, "contentItem should be null")
-        verify(!scrollArea.flickableItem, "flickableItem should be null")
-        verify(!scrollArea.frame, "Frame should be false")
+        scrollView.forceActiveFocus();
+        verify(scrollView.viewport, "Viewport not defined")
+        verify(!scrollView.contentItem, "contentItem should be null")
+        verify(!scrollView.flickableItem, "flickableItem should be null")
+        verify(!scrollView.frame, "Frame should be false")
 
-        scrollArea.contentItem = textArea
-        verify(scrollArea.viewport, "Viewport should be defined")
-        verify(scrollArea.contentItem, "contentItem should not be null")
-        verify(scrollArea.flickableItem, "flickableItem should not be null")
-        verify(scrollArea.flickableItem.contentHeight === textArea.height, "Content height not set")
+        scrollView.contentItem = textArea
+        verify(scrollView.viewport, "Viewport should be defined")
+        verify(scrollView.contentItem, "contentItem should not be null")
+        verify(scrollView.flickableItem, "flickableItem should not be null")
+        verify(scrollView.flickableItem.contentHeight === textArea.height, "Content height not set")
 
-        var prevViewportWidth  = scrollArea.viewport.width
-        scrollArea.frame = true
-        verify(scrollArea.frame, "Frame should be true")
-        verify(scrollArea.viewport.width < prevViewportWidth, "Viewport should be smaller with frame")
+        var prevViewportWidth  = scrollView.viewport.width
+        scrollView.frame = true
+        verify(scrollView.frame, "Frame should be true")
+        verify(scrollView.viewport.width < prevViewportWidth, "Viewport should be smaller with frame")
     }
 }

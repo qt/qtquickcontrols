@@ -4,6 +4,6 @@ Control 1.0 Control.qml
 FocusFrame 1.0 FocusFrame.qml
 BasicButton 1.0 BasicButton.qml
 ScrollBar 1.0 ScrollBar.qml
-ScrollAreaHelper 1.0 ScrollAreaHelper.qml
+ScrollViewHelper 1.0 ScrollViewHelper.qml
 TabBar 1.0 TabBar.qml
 PageSlideTransition 1.0 PageSlideTransition.qml

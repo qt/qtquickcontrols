@@ -367,8 +367,8 @@ ApplicationWindow {
             id: sidebar
             color : syspal.window
             width: 300
-            ScrollArea {
-                id: scrollArea
+            ScrollView {
+                id: scrollView
                 anchors.fill: parent
                 flickableItem.flickableDirection: Flickable.VerticalFlick
                 Column {
@@ -376,7 +376,7 @@ ApplicationWindow {
                     anchors.left: parent ? parent.left : undefined
                     anchors.top: parent ? parent.top : undefined
                     anchors.margins: 10
-                    width: scrollArea.viewport.width - 20
+                    width: scrollView.viewport.width - 20
                     spacing: 8
                     Repeater {
                         model: ["Boolean", "String","Int", "Real", "ReadOnly", "Enum"]

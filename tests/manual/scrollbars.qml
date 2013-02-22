@@ -88,7 +88,7 @@ ApplicationWindow {
         frame: false
         Tab {
             title: "Rectangle"
-            ScrollArea {
+            ScrollView {
                 anchors.fill: parent
                 anchors.margins:4
                 frame: frameCheck.checked
@@ -100,7 +100,7 @@ ApplicationWindow {
         }
         Tab {
             title: "Image"
-            ScrollArea {
+            ScrollView {
                 anchors.fill: parent
                 anchors.margins:4
                 frame: frameCheck.checked
@@ -114,7 +114,7 @@ ApplicationWindow {
         }
         Tab {
             title: "Flickable"
-            ScrollArea{
+            ScrollView{
                 anchors.fill: parent
                 anchors.margins:4
                 frame: true
@@ -142,7 +142,7 @@ ApplicationWindow {
         }
         Tab {
             title: "ListView"
-            ScrollArea{
+            ScrollView{
                 anchors.fill: parent
                 anchors.margins:4
                 frame: true

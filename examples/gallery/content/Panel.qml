@@ -51,7 +51,7 @@ Rectangle {
     width: 540
     height: 340
     color:"#c3c3c3"
-    ScrollArea {
+    ScrollView {
         frame:false
         anchors.fill: parent
 

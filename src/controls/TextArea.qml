@@ -66,7 +66,7 @@ import QtQuick.Controls.Private 1.0
     \sa TextField, TextEdit
 */
 
-ScrollArea {
+ScrollView {
     id: area
 
     /*!
@@ -572,7 +572,7 @@ ScrollArea {
     }
 
     /*!
-        \qmlproperty color ScrollArea:backgroundColor
+        \qmlproperty color ScrollView:backgroundColor
 
         This property sets the background color of the viewport.
 
@@ -630,7 +630,7 @@ ScrollArea {
         KeyNavigation.tab: area.tabChangesFocus ? area.KeyNavigation.tab : null
         KeyNavigation.backtab: area.tabChangesFocus ? area.KeyNavigation.backtab : null
 
-        // keep textcursor within scrollarea
+        // keep textcursor within scroll view
         onCursorPositionChanged: {
             if (cursorRectangle.y >= flickableItem.contentY + viewport.height - 1.5*cursorRectangle.height - documentMargins)
                 flickableItem.contentY = cursorRectangle.y - viewport.height + 1.5*cursorRectangle.height + documentMargins

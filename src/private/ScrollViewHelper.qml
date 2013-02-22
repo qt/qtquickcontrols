@@ -43,7 +43,7 @@ import QtQuick.Controls 1.0
 import QtQuick.Controls.Private 1.0
 
 /*!
-        \qmltype ScrollAreaHeader
+        \qmltype ScrollViewHeader
         \internal
         \inqmlmodule QtQuick.Controls.Private 1.0
 */
