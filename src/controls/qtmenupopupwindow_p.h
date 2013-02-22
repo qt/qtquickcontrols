@@ -67,14 +67,13 @@ Q_SIGNALS:
     void menuDismissed();
 
 protected:
-    void mousePressEvent(QMouseEvent *);
     void mouseReleaseEvent(QMouseEvent *);
     void mouseMoveEvent(QMouseEvent *);
 
 private:
     void forwardEventToTransientParent(QMouseEvent *);
 
-    bool m_pressedInside;
+    bool m_mouseMoved;
     const QQuickItem *m_itemAt;
     QPointF m_oldItemPos;
 };

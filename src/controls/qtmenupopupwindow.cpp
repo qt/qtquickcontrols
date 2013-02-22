@@ -47,7 +47,7 @@
 QT_BEGIN_NAMESPACE
 
 QtMenuPopupWindow::QtMenuPopupWindow(QWindow *parent) :
-    QQuickWindow(parent), m_pressedInside(true), m_itemAt(0)
+    QQuickWindow(parent), m_mouseMoved(false), m_itemAt(0)
 {
     setFlags(Qt::Popup);
     setModality(Qt::WindowModal);
@@ -111,41 +111,39 @@ void QtMenuPopupWindow::updatePosition()
 void QtMenuPopupWindow::mouseMoveEvent(QMouseEvent *e)
 {
     QRect rect = QRect(QPoint(), size());
-    QWindow *parentMenuWindow = /*qobject_cast<QtMenuPopupWindow*>*/(transientParent());
-    if (parentMenuWindow && !rect.contains(e->pos())) {
-        forwardEventToTransientParent(e);
-    } else {
+    if (rect.contains(e->pos())) {
+        m_mouseMoved = true;
         QQuickWindow::mouseMoveEvent(e);
+    } else {
+        forwardEventToTransientParent(e);
     }
-}
-
-void QtMenuPopupWindow::mousePressEvent(QMouseEvent *e)
-{
-    QRect rect = QRect(QPoint(), size());
-    m_pressedInside = rect.contains(e->pos());
-    if (m_pressedInside)
-        QQuickWindow::mousePressEvent(e);
 }
 
 void QtMenuPopupWindow::mouseReleaseEvent(QMouseEvent *e)
 {
     QRect rect = QRect(QPoint(), size());
-    if (rect.contains(e->pos()))
-        QQuickWindow::mouseReleaseEvent(e);
-    else if (!m_pressedInside)
-        dismissMenu();
-    else
+    if (rect.contains(e->pos())) {
+        if (m_mouseMoved) {
+            QMouseEvent pe = QMouseEvent(QEvent::MouseButtonPress, e->pos(), e->button(), e->buttons(), e->modifiers());
+            QQuickWindow::mousePressEvent(&pe);
+            QQuickWindow::mouseReleaseEvent(e);
+        }
+    } else {
         forwardEventToTransientParent(e);
+    }
 }
 
 void QtMenuPopupWindow::forwardEventToTransientParent(QMouseEvent *e)
 {
-    QWindow *parentMenuWindow = /*qobject_cast<QtMenuPopupWindow*>*/(transientParent());
-    if (!parentMenuWindow)
-        return;
-    QPoint parentPos = parentMenuWindow->mapFromGlobal(mapToGlobal(e->pos()));
-    QMouseEvent pe = QMouseEvent(e->type(), parentPos, e->button(), e->buttons(), e->modifiers());
-    QGuiApplication::sendEvent(parentMenuWindow, &pe);
+    QWindow *parentMenuWindow = qobject_cast<QtMenuPopupWindow*>(transientParent());
+    if (!parentMenuWindow) {
+        if (m_mouseMoved && e->type() == QEvent::MouseButtonRelease)
+            dismissMenu();
+    } else {
+        QPoint parentPos = parentMenuWindow->mapFromGlobal(mapToGlobal(e->pos()));
+        QMouseEvent pe = QMouseEvent(e->type(), parentPos, e->button(), e->buttons(), e->modifiers());
+        QGuiApplication::sendEvent(parentMenuWindow, &pe);
+    }
 }
 
 QT_END_NAMESPACE

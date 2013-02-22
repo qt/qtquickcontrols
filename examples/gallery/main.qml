@@ -141,7 +141,7 @@ ApplicationWindow {
             exclusiveGroup: textFormatGroup
         }
 
-        ContextMenu {
+        Menu {
             id: editmenu
             MenuItem { action: cutAction }
             MenuItem { action: copyAction }

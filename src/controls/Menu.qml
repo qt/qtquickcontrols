@@ -94,6 +94,8 @@ MenuPrivate {
     property var menuBar: null
     //! internal
     property int currentIndex: -1
+    //! internal
+    onMenuClosed: currentIndex = -1
 
     //! internal
     menuContentItem: Loader {
@@ -166,7 +168,7 @@ MenuPrivate {
         Keys.onRightPressed: {
             var item = itemsRepeater.itemAt(root.currentIndex)
             if (item && item.hasSubmenu) {
-                item.menuItem.showPopup(menuFrameLoader.subMenuXPos, 0, -1, item)
+                item.showSubMenu()
                 item.menuItem.currentIndex = 0
             }
         }
@@ -195,8 +197,28 @@ MenuPrivate {
             id: menuMouseArea
             anchors.fill: parent
             hoverEnabled: true
+            acceptedButtons: Qt.AllButtons
 
-            onExited: root.currentIndex = -1 // TODO Test for any submenu open
+            onPositionChanged: updateCurrentItem(mouse)
+            onReleased: menuFrameLoader.triggerAndDismiss()
+
+            property Item currentItem: null
+
+            function updateCurrentItem(mouse) {
+                var pos = mapToItem(column, mouse.x, mouse.y)
+                if (!currentItem || !currentItem.contains(Qt.point(pos.x - currentItem.x, pos.y - currentItem.y))) {
+                    if (currentItem && !pressed && currentItem.hasSubmenu)
+                        currentItem.closeSubMenu()
+                    currentItem = column.childAt(pos.x, pos.y)
+                    if (currentItem) {
+                        root.currentIndex = currentItem.menuItemIndex
+                        if (currentItem.hasSubmenu && !currentItem.menuItem.popupVisible)
+                            currentItem.showSubMenu()
+                    } else {
+                        root.currentIndex = -1
+                    }
+                }
+            }
 
             // Each menu item has its own mouse area, and for events to be
             // propagated to the menu mouse area, they need to be embedded.
@@ -211,63 +233,33 @@ MenuPrivate {
                         id: menuItemLoader
 
                         property var menuItem: modelData
-                        property int contentWidth: column.width
-                        property int contentHeight: column.height
                         property bool isSeparator: menuItem ? !menuItem.hasOwnProperty("text") : false
                         property bool hasSubmenu: menuItem ? !!menuItem["menuItems"] : false
                         property bool selected: !isSeparator && root.currentIndex === index
 
+                        property int menuItemIndex: index
+
                         sourceComponent: menuFrameLoader.menuItemStyle
                         enabled: !isSeparator && !!menuItem && menuItem.enabled
 
-                        MouseArea {
-                            id: itemMouseArea
-                            width: menuFrameLoader.width
-                            height: parent.height
-                            y: menuItemLoader.item ? menuItemLoader.item.y : 0 // Adjust mouse area for style offset
-                            hoverEnabled: true
-
-                            onClicked: {
-                                if (hasSubmenu)
-                                    menuItem.closeMenu()
-                                menuFrameLoader.triggerAndDismiss()
-                            }
-
-                            onEntered: {
-                                if (menuItemLoader.hasSubmenu && !menuItem.popupVisible)
-                                    openMenuTimer.start()
-                            }
-
-                            onExited: {
-                                if (!pressed && menuItemLoader.hasSubmenu)
-                                    closeMenuTimer.start()
-                            }
-
-                            onPositionChanged: root.currentIndex = index
-
-                            Connections {
-                                target: menuMouseArea
-                                onEntered: {
-                                    if (!itemMouseArea.containsMouse && menuItemLoader.hasSubmenu)
-                                        closeMenuTimer.start()
-                                }
-                            }
-                        }
+                        function showSubMenu() { openMenuTimer.start() }
 
                         Timer {
                             id: openMenuTimer
                             interval: 50
                             onTriggered: {
-                                if (itemMouseArea.containsMouse)
+                                if (root.currentIndex === menuItemIndex)
                                     menuItem.showPopup(menuFrameLoader.subMenuXPos, 0, -1, menuItemLoader)
                             }
                         }
+
+                        function closeSubMenu() { closeMenuTimer.start() }
 
                         Timer {
                             id: closeMenuTimer
                             interval: 1
                             onTriggered: {
-                                if (menuMouseArea.containsMouse && !itemMouseArea.pressed && !itemMouseArea.containsMouse)
+                                if (root.currentIndex !== menuItemIndex)
                                     menuItem.closeMenu()
                             }
                         }
