@@ -56,7 +56,7 @@ Item {
             checked: false
             width: parent.width
         }
-        TabFrame {
+        TabView {
             id:frame
             width: parent.width
 

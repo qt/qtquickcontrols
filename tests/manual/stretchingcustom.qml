@@ -46,7 +46,7 @@ Rectangle {
     width: 600
     height: 400
 
-    TabFrame {
+    TabView {
         anchors.fill: parent
         Tab {
             title: "Height"

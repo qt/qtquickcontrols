@@ -53,24 +53,23 @@ Item {
 
 
     Keys.onRightPressed: {
-        if (tabFrame && tabFrame.current < tabFrame.count - 1)
-            tabFrame.current = tabFrame.current + 1
+        if (tabView && tabView.current < tabView.count - 1)
+            tabView.current = tabView.current + 1
     }
     Keys.onLeftPressed: {
-        if (tabFrame && tabFrame.current > 0)
-            tabFrame.current = tabFrame.current - 1
+        if (tabView && tabView.current > 0)
+            tabView.current = tabView.current - 1
     }
 
-    onTabFrameChanged: parent = tabFrame
-    visible: tabFrame ? tabFrame.tabsVisible : true
+    onTabViewChanged: parent = tabView
+    visible: tabView ? tabView.tabsVisible : true
 
-
-    property Item tabFrame
+    property var tabView
     property var style
-    property var styleItem: tabFrame.__styleItem ? tabFrame.__styleItem : null
+    property var styleItem: tabView.__styleItem ? tabView.__styleItem : null
 
     property string tabBarAlignment: styleItem ? styleItem.tabBarAlignment : "left"
-    property string position: tabFrame ? tabFrame.position : "North"
+    property string position: tabView ? tabView.position : "North"
 
     property int tabOverlap: styleItem ? styleItem.tabOverlap : 0
     property int tabBaseOverlap: styleItem ? styleItem.tabBaseOverlap : 0
@@ -113,17 +112,17 @@ Item {
         Repeater {
             id: repeater
             focus: true
-            model: tabFrame ? tabFrame.count : null
+            model: tabView ? tabView.count : null
             delegate: Item {
                 id: tabitem
                 focus: true
 
                 property int tabindex: index
                 property bool selectedHelper: selected
-                property bool selected : tabFrame.current == index
+                property bool selected : tabView.current == index
                 property bool hover: mousearea.containsMouse
                 property bool first: index === 0
-                property string title: tabFrame.tabs[index].title
+                property string title: tabView.tabs[index].title
 
                 z: selected ? 1 : -index
                 implicitWidth: Math.min(tabloader.implicitWidth, tabbar.width/repeater.count) + 1
@@ -135,11 +134,11 @@ Item {
                     sourceComponent: loader.item ? loader.item.tab : null
                     anchors.fill: parent
 
-                    property Item control: tabFrame
+                    property Item control: tabView
                     property Item tab: tabitem
                     property int index: tabindex
-                    property bool nextSelected: tabFrame.current === index + 1
-                    property bool previousSelected: tabFrame.current === index - 1
+                    property bool nextSelected: tabView.current === index + 1
+                    property bool previousSelected: tabView.current === index - 1
                     property string title: tab.title
                 }
 
@@ -147,11 +146,11 @@ Item {
                     id: mousearea
                     anchors.fill: parent
                     hoverEnabled: true
-                    onPressed: tabFrame.current = index
+                    onPressed: tabView.current = index
                     onPressAndHold: tabitem.parent = null
                 }
                 Accessible.role: Accessible.PageTab
-                Accessible.name: tabFrame.tabs[index].title
+                Accessible.name: tabView.tabs[index].title
             }
         }
     }

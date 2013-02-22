@@ -117,7 +117,7 @@ Rectangle {
         anchors.bottom:  parent.bottom
         anchors.margins: 8
 
-        TabFrame {
+        TabView {
             id:frame
             focus:true
             enabled: toolbar.enabled

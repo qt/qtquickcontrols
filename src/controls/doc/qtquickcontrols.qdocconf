@@ -40,11 +40,11 @@ sources += ../../private/qstyleitem.cpp \
            ../../styles/MenuItemStyle.qml \
            ../../styles/ProgressBarStyle.qml \
            ../../styles/RadioButtonStyle.qml \
-           ../../styles/ScrollAreaStyle.qml \
+           ../../styles/ScrollViewStyle.qml \
            ../../styles/ScrollBarStyle.qml \
            ../../styles/SliderStyle.qml \
            ../../styles/SpinBoxStyle.qml \
-           ../../styles/TabFrameStyle.qml \
+           ../../styles/TabViewStyle.qml \
            ../../styles/TextFieldStyle.qml \
            ../../styles/ToolBarStyle.qml \
            ../../styles/ToolButtonStyle.qml

@@ -9,7 +9,7 @@ ScrollBarStyle 1.0 ScrollBarStyle.qml
 SliderStyle 1.0 SliderStyle.qml
 SpinBoxStyle 1.0 SpinBoxStyle.qml
 TabStyle 1.0 TabStyle.qml
-TabFrameStyle 1.0 TabFrameStyle.qml
+TabViewStyle 1.0 TabViewStyle.qml
 TextAreaStyle 1.0 TextAreaStyle.qml
 TextFieldStyle 1.0 TextFieldStyle.qml
 ToolBarStyle 1.0 ToolBarStyle.qml

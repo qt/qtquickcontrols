@@ -28,7 +28,7 @@ QML_FILES = \
     Splitter.qml \
     StatusBar.qml \
     Tab.qml \
-    TabFrame.qml \
+    TabView.qml \
     TableView.qml \
     TableViewColumn.qml \
     TextArea.qml \

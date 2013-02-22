@@ -81,7 +81,7 @@ ApplicationWindow {
         }
     }
 
-    TabFrame {
+    TabView {
         id:frame
         anchors.fill: parent
         anchors.margins: 4

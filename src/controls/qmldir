@@ -21,7 +21,7 @@ SpinBox 1.0 SpinBox.qml
 Splitter 1.0 Splitter.qml
 StatusBar 1.0 StatusBar.qml
 Tab 1.0 Tab.qml
-TabFrame 1.0 TabFrame.qml
+TabView 1.0 TabView.qml
 TableView 1.0 TableView.qml
 TableViewColumn 1.0 TableViewColumn.qml
 TextArea 1.0 TextArea.qml

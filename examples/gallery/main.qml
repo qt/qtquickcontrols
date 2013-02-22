@@ -241,7 +241,7 @@ ApplicationWindow {
         ListElement { text: "Coconut" }
     }
 
-    TabFrame {
+    TabView {
         id:frame
         enabled: enabledCheck.checked
         position: controlPage.tabPosition

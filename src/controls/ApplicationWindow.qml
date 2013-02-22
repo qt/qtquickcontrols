@@ -69,7 +69,7 @@ import QtQuick.Controls.Private 1.0
             }
         }
 
-        TabFrame {
+        TabView {
             id: myContent
             anchors.fill: parent
             ...

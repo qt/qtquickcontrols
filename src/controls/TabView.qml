@@ -44,7 +44,7 @@ import QtQuick.Controls.Private 1.0
 import "Styles/Settings.js" as Settings
 
 /*!
-    \qmltype TabFrame
+    \qmltype TabView
     \inqmlmodule QtQuick.Controls 1.0
     \ingroup navigation
     \brief Represents a control that contains multiple items that share the same space on the screen.
@@ -52,7 +52,7 @@ import "Styles/Settings.js" as Settings
 */
 
 Item {
-    id: tabWidget
+    id: root
     width: 100
     height: 100
 
@@ -62,7 +62,7 @@ Item {
     property bool tabsVisible: true
     property string position: "North"
     default property alias tabs : stack.children
-    property Component style: Qt.createComponent(Settings.THEME_PATH + "/TabFrameStyle.qml", tabWidget)
+    property Component style: Qt.createComponent(Settings.THEME_PATH + "/TabViewStyle.qml", root)
     property var __styleItem: loader.item
 
     onCurrentChanged: __setOpacities()
@@ -76,7 +76,7 @@ Item {
             if (stack.children[i].Accessible.role == Accessible.PageTab)
                 ++tabCount;
         }
-        tabWidget.count = tabCount;
+        root.count = tabCount;
     }
 
     Component {
@@ -103,7 +103,7 @@ Item {
     Loader {
         id: loader
         sourceComponent: style
-        property var control: tabWidget
+        property var control: root
     }
 
     Loader {
@@ -113,7 +113,7 @@ Item {
         anchors.topMargin: tabbarItem && tabsVisible && position == "North" ? Math.max(0, tabbarItem.height - stack.baseOverlap) : 0
         anchors.bottomMargin: tabbarItem && tabsVisible && position == "South" ? Math.max(0, tabbarItem.height - stack.baseOverlap) : 0
         sourceComponent: frame && loader.item ? loader.item.frame : null
-        property var control: tabWidget
+        property var control: root
 
         Item {
             id: stack
@@ -130,11 +130,11 @@ Item {
 
     TabBar {
         id: tabbarItem
-        tabFrame: tabWidget
+        tabView: root
         style: loader.item
         anchors.top: parent.top
-        anchors.left: tabWidget.left
-        anchors.right: tabWidget.right
+        anchors.left: root.left
+        anchors.right: root.right
     }
 
     states: [
@@ -148,7 +148,7 @@ Item {
             AnchorChanges {
                 target: tabbarItem
                 anchors.top: undefined
-                anchors.bottom: tabWidget.bottom
+                anchors.bottom: root.bottom
             }
         }
     ]

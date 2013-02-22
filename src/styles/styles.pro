@@ -14,7 +14,7 @@ QML_FILES = \
     SliderStyle.qml \
     SpinBoxStyle.qml \
     Style.qml \
-    TabFrameStyle.qml \
+    TabViewStyle.qml \
     TextFieldStyle.qml \
     ToolBarStyle.qml \
     ToolButtonStyle.qml
@@ -32,7 +32,7 @@ QML_FILES += \
     Desktop/ScrollBarStyle.qml \
     Desktop/SliderStyle.qml \
     Desktop/SpinBoxStyle.qml \
-    Desktop/TabFrameStyle.qml \
+    Desktop/TabViewStyle.qml \
     Desktop/TextFieldStyle.qml \
     Desktop/ToolBarStyle.qml \
     Desktop/ToolButtonStyle.qml

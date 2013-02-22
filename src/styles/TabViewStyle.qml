@@ -37,24 +37,71 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-
 import QtQuick 2.0
-import QtTest 1.0
+import QtQuick.Controls.Styles 1.0
 
-TestCase {
-    id: testCase
-    name: "Tests_TabFrame"
-    when:windowShown
-    width:400
-    height:400
+/*!
+    \qmltype TabViewStyle
+    \internal
+    \inqmlmodule QtQuick.Controls.Styles 1.0
+    \brief provides custom styling for TabView
+*/
 
-    function test_createTabFrame() {
-        var tabFrame = Qt.createQmlObject('import QtQuick.Controls 1.0; TabFrame {}', testCase, '');
+Style {
+
+    /*! This property holds the base alignment of the tab bar.
+      The default value is "left". Supporeted alignments are
+      "left", "center" or "right".
+    */
+    property string tabBarAlignment: "left"
+
+    /*! This property holds the left margin of the tab bar.
+      It will only affect tabs \l tabBarAligment set to "right".
+    */
+    property int leftMargin: 0
+
+    /*! This property holds the right margin of the tab bar.
+      It will only affect tabs \l tabBarAligment set to "right".
+    */
+    property int rightMargin: 0
+
+    /*! This property holds the amount of overlap there are between
+      individual tab buttons. The default value is 0
+    */
+    property int tabOverlap: 0
+
+    property int tabvshift : 0
+    property int tabBaseOverlap: 0
+
+    property Component frame: Item {
+        Rectangle {
+            anchors.fill: parent
+            anchors.topMargin: -10
+            color: "lightgray"
+            border.color: "gray"
+        }
     }
 
-    function test_repeater() {
-        var tabFrame = Qt.createQmlObject('import QtQuick 2.0; import QtQuick.Controls 1.0; TabFrame { Repeater { model: 3; Tab { } } }', testCase, '');
-        compare(tabFrame.count, 3)
+    property Component tab: Item {
+        implicitWidth: textitem.implicitWidth + 20
+        implicitHeight: textitem.implicitHeight + 4
+
+        Rectangle {
+            anchors.fill: parent
+            gradient: Gradient{
+                GradientStop { color: tab.selected ? "lightgray" : "white" ; position: 0}
+                GradientStop { color: tab.selected ? "lightgray" : "lightgray" ; position: 1}
+            }
+            border.color: "#aaa"
+
+        }
+
+        Text {
+            id: textitem
+            anchors.centerIn: parent
+            text: tab.title
+            renderType: Text.NativeRendering
+        }
     }
+
 }
-

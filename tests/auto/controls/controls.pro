@@ -32,7 +32,7 @@ OTHER_FILES += \
     $$PWD/data/tst_slider.qml \
     $$PWD/data/tst_statusbar.qml \
     $$PWD/data/tst_tab.qml \
-    $$PWD/data/tst_tabframe.qml \
+    $$PWD/data/tst_tabview.qml \
     $$PWD/data/tst_tableviewcolumn.qml \
     $$PWD/data/tst_toolbar.qml \
     $$PWD/data/tst_toolbutton.qml \

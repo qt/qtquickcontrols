@@ -154,14 +154,14 @@ Item {
         }
 
         Row {
-            TabFrame {
+            TabView {
                 width: 400
                 height: 30
                 Tab { title: "One" ; Item {}}
                 Tab { title: "Two" ; Item {}}
                 Tab { title: "Three" ; Item {}}
                 Tab { title: "Four" ; Item {}}
-                style: tabFrameStyle
+                style: tabViewStyle
             }
         }
     }
@@ -236,7 +236,7 @@ Item {
         }
     }
 
-    property Component tabFrameStyle: TabFrameStyle {
+    property Component tabViewStyle: TabViewStyle {
         tabOverlap: 16
         leftMargin: 12
 

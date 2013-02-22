@@ -48,7 +48,7 @@ import QtQuick.Controls.Styles 1.0
 
 Page {
 
-    TabFrame {
+    TabView {
         anchors.fill: parent
         style: touchStyle
         Tab {
@@ -67,7 +67,7 @@ Page {
 
     Component {
         id: touchStyle
-        TabFrameStyle {
+        TabViewStyle {
             tabBarAlignment: "center"
             frame: Item { }
             tab: Item {
