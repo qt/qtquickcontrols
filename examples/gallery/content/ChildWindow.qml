@@ -96,7 +96,7 @@ Window {
             text:"Maximize"
             width: 98
             tooltip:"Press me, to maximize this window again"
-            onClicked: window1.windowState = Qt.WindowMaximized;
+            onClicked: window1.visibility = Window.Maximized;
         }
         Button {
             anchors.horizontalCenter: closeText.horizontalCenter
@@ -105,7 +105,7 @@ Window {
             text:"Normalize"
             width: 98
             tooltip:"Press me, to normalize this window again"
-            onClicked: window1.windowState = Qt.WindowNoState;
+            onClicked: window1.visibility = Window.Windowed;
         }
         Button {
             anchors.horizontalCenter: closeText.horizontalCenter
@@ -114,7 +114,7 @@ Window {
             text:"Minimize"
             width: 98
             tooltip:"Press me, to minimize this window again"
-            onClicked: window1.windowState = Qt.WindowMinimized;
+            onClicked: window1.visibility = Window.Minimized;
         }
     }
 }
