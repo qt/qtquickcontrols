@@ -45,14 +45,24 @@ import QtQuick 2.0
     \inqmlmodule QtQuick.Controls 1.0
     \ingroup viewaddons
     \brief Tab represents the content of a tab in a TabView.
+
+    A Tab item inherits from Loader and provides a similar
+    api.
 */
 
-Item {
-    id:tab
+Loader {
+    id: tab
     anchors.fill: parent
 
     /*! This property holds the title of the tab. */
     property string title
-
     Accessible.role: Accessible.PageTab
+    active: false
+    visible: false
+
+    /*! \internal */
+    onVisibleChanged: if (visible) active = true
+
+    /*! \internal */
+    default property alias component: tab.sourceComponent
 }

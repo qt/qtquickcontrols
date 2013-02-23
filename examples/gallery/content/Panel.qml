@@ -52,7 +52,7 @@ Rectangle {
     height: 340
     color:"#c3c3c3"
     ScrollView {
-        frame:false
+        frameVisible: false
         anchors.fill: parent
 
         Item {

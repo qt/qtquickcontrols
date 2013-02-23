@@ -91,7 +91,7 @@ FocusScope {
 
         The default value is \c false
     */
-    property bool frame: false
+    property bool frameVisible: false
 
     /*!
         This property controls if there should be a highlight
@@ -252,8 +252,8 @@ FocusScope {
         ScrollViewHelper {
             id: scroller
             anchors.fill: parent
-            property int frameWidth: frame ? styleitem.pixelMetric("defaultframewidth") : 0
-            property bool outerFrame: !frame || !styleitem.styleHint("frameOnlyAroundContents")
+            property int frameWidth: frameVisible ? styleitem.pixelMetric("defaultframewidth") : 0
+            property bool outerFrame: !frameVisible || !styleitem.styleHint("frameOnlyAroundContents")
             property int scrollBarSpacing: outerFrame ? 0 : styleitem.pixelMetric("scrollbarspacing")
             property int verticalScrollbarOffset: verticalScrollBar.visible && !verticalScrollBar.isTransient ?
                                                       verticalScrollBar.width + scrollBarSpacing : 0
@@ -264,7 +264,7 @@ FocusScope {
                 id: styleitem
                 elementType: "frame"
                 sunken: true
-                visible: frame
+                visible: frameVisible
                 anchors.fill: parent
                 anchors.rightMargin: scroller.outerFrame ? 0 : scroller.verticalScrollbarOffset
                 anchors.bottomMargin: scroller.outerFrame ? 0 : scroller.horizontalScrollbarOffset

@@ -51,7 +51,7 @@ Item {
     anchors.fill: parent
     enabled: enabledCheck.checked
 
-    property string tabPosition: tabPositionGroup.current === r2 ? "South" : "North"
+    property string tabPosition: tabPositionGroup.current === r2 ? "Bottom" : "Top"
 
     Row {
         id: contentRow
@@ -176,7 +176,7 @@ Item {
 
             TextArea {
                 id: area
-                frame: frameCheckbox.checked
+                frameVisible: frameCheckbox.checked
                 text: loremIpsum + loremIpsum
                 KeyNavigation.tab: button1
                 width: contentRow.width - firstColumn.width - contentRow.spacing

@@ -92,7 +92,7 @@ TestCase {
         verify(scrollView.viewport, "Viewport not defined")
         verify(!scrollView.contentItem, "contentItem should be null")
         verify(!scrollView.flickableItem, "flickableItem should be null")
-        verify(!scrollView.frame, "Frame should be false")
+        verify(!scrollView.frameVisible, "Frame should be false")
 
         scrollView.contentItem = textArea
         verify(scrollView.viewport, "Viewport should be defined")
@@ -101,8 +101,8 @@ TestCase {
         verify(scrollView.flickableItem.contentHeight === textArea.height, "Content height not set")
 
         var prevViewportWidth  = scrollView.viewport.width
-        scrollView.frame = true
-        verify(scrollView.frame, "Frame should be true")
+        scrollView.frameVisible = true
+        verify(scrollView.frameVisible, "Frame should be true")
         verify(scrollView.viewport.width < prevViewportWidth, "Viewport should be smaller with frame")
     }
 }

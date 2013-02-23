@@ -167,7 +167,7 @@ ScrollView {
 
     /*! This property sets if the frame should be visible.
         The default value is \c true. */
-    frame: true
+    frameVisible: true
 
     /*! Index of the currently selected sort column
         The default value is \c 0. */

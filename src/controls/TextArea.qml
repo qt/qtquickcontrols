@@ -587,7 +587,7 @@ ScrollView {
     height: 120
 
     flickableItem.contentWidth: edit.paintedWidth + (2 * documentMargins)
-    frame: true
+    frameVisible: true
 
     Accessible.role: Accessible.EditableText
 

@@ -48,7 +48,7 @@ import QtQuick.Controls 1.0
 Item {
 
     property int __overlap : 1
-    property string position: "North"
+    property string position: "Top"
     property string tabBarAlignment: "Center"
     property int tabOverlap: 1
     property int tabBaseOverlap: 1

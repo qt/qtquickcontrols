@@ -56,5 +56,52 @@ TestCase {
         var tabView = Qt.createQmlObject('import QtQuick 2.0; import QtQuick.Controls 1.0; TabView { Repeater { model: 3; Tab { } } }', testCase, '');
         compare(tabView.count, 3)
     }
+
+    Component {
+        id: newTab
+        Item {}
+    }
+
+    function test_addRemoveTab() {
+        var tabView = Qt.createQmlObject('import QtQuick 2.0; import QtQuick.Controls 1.0; TabView { }', testCase, '');
+        compare(tabView.count, 0)
+        tabView.addTab("title 1", newTab)
+        compare(tabView.count, 1)
+        tabView.addTab("title 2", newTab)
+        compare(tabView.count, 2)
+        compare(tabView.tabAt(0).title, "title 1")
+        compare(tabView.tabAt(1).title, "title 2")
+
+        tabView.insertTab(1, "title 3")
+        compare(tabView.count, 3)
+        compare(tabView.tabAt(0).title, "title 1")
+        compare(tabView.tabAt(1).title, "title 3")
+        compare(tabView.tabAt(2).title, "title 2")
+
+        tabView.insertTab(0, "title 4")
+        compare(tabView.count, 4)
+        compare(tabView.tabAt(0).title, "title 4")
+        compare(tabView.tabAt(1).title, "title 1")
+        compare(tabView.tabAt(2).title, "title 3")
+        compare(tabView.tabAt(3).title, "title 2")
+
+        tabView.removeTab(0)
+        compare(tabView.count, 3)
+        compare(tabView.tabAt(0).title, "title 1")
+        compare(tabView.tabAt(1).title, "title 3")
+        compare(tabView.tabAt(2).title, "title 2")
+
+        tabView.removeTab(1)
+        compare(tabView.count, 2)
+        compare(tabView.tabAt(0).title, "title 1")
+        compare(tabView.tabAt(1).title, "title 2")
+
+        tabView.removeTab(1)
+        compare(tabView.count, 1)
+        compare(tabView.tabAt(0).title, "title 1")
+
+        tabView.removeTab(0)
+        compare(tabView.count, 0)
+    }
 }
 

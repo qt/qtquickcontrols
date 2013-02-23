@@ -56,48 +56,96 @@ FocusScope {
     width: 100
     height: 100
 
-    property int current: 0
+    /*! The current tab index */
+    property int currentIndex: 0
+
+    /*! The current tab count */
     property int count: 0
-    property bool frame: true
+
+    /*! The visibility of the tab frame around contents */
+    property bool frameVisible: true
+
+    /*! The visibility of the tab bar */
     property bool tabsVisible: true
-    property string position: "North"
-    default property alias tabs : stack.children
-    property Component style: Qt.createComponent(Settings.THEME_PATH + "/TabViewStyle.qml", root)
-    property var __styleItem: loader.item
 
-    onCurrentChanged: __setOpacities()
-    Component.onCompleted: __setOpacities()
+    /*!
+        \qmlproperty string TabView::tabPosition
 
-    function __setOpacities() {
-        var tabCount = 0;
-        for (var i = 0; i < stack.children.length; ++i) {
-            stack.children[i].visible = (i == current ? true : false)
-            // count real tabs - ignore for instance Repeater
-            if (stack.children[i].Accessible.role == Accessible.PageTab)
-                ++tabCount;
-        }
-        root.count = tabCount;
-    }
+        \list
+        \li "Top" (default)
+        \li "Bottom"
+        \endlist
+    */
+    property string tabPosition: "Top"
 
-    Component {
-        id: tabcomp
-        Tab {}
-    }
+    /*! \internal */
+    default property alias data: stack.data
 
-    function addTab(component, title) {
+    /*! Adds a new tab page with title with and optional Component.
+        \return the newly added tab
+    */
+    function addTab(title, component) {
         var tab = tabcomp.createObject(this);
-        component.createObject(tab)
+        tab.sourceComponent = component
+        __tabs.push(tab)
         tab.parent = stack
         tab.title = title
         __setOpacities()
         return tab
     }
 
-    function removeTab(id) {
-        var tab = tabs[id]
+    /*! Inserts a new tab with title at index, with an optional Component.
+        \return the newly added tab
+    */
+    function insertTab(index, title, component) {
+        var tab = tabcomp.createObject(this);
+        tab.sourceComponent = component
+        tab.parent = stack
+        tab.title = title
+        __tabs.splice(index, 0, tab);
+        __setOpacities()
+        return tab
+    }
+
+    /*! Removes and destroys a tab at the given index */
+    function removeTab(index) {
+        var tab = __tabs[index]
+        __tabs.splice(index, 1);
         tab.destroy()
-        if (current > 0)
-            current-=1
+        if (currentIndex > 0)
+            currentIndex--
+        __setOpacities()
+    }
+
+    /*! Returns the \l Tab item at index */
+    function tabAt(index) {
+        return __tabs[index]
+    }
+
+    /*! \internal */
+    property var __tabs: new Array()
+
+    /*! \internal */
+    property Component style: Qt.createComponent(Settings.THEME_PATH + "/TabViewStyle.qml", root)
+
+    /*! \internal */
+    property var __styleItem: loader.item
+
+    /*! \internal */
+    onCurrentIndexChanged: __setOpacities()
+
+    /*! \internal */
+    function __setOpacities() {
+        for (var i = 0; i < __tabs.length; ++i) {
+            var child = __tabs[i];
+            child.visible = (i == currentIndex ? true : false)
+        }
+        count = __tabs.length
+    }
+
+    Component {
+        id: tabcomp
+        Tab {}
     }
 
     TabBar {
@@ -121,28 +169,39 @@ FocusScope {
         z: tabbarItem.z - 1
 
         anchors.fill: parent
-        anchors.topMargin: tabbarItem && tabsVisible && position == "North" ? Math.max(0, tabbarItem.height - stack.baseOverlap) : 0
-        anchors.bottomMargin: tabbarItem && tabsVisible && position == "South" ? Math.max(0, tabbarItem.height - stack.baseOverlap) : 0
-        sourceComponent: frame && loader.item ? loader.item.frame : null
+        anchors.topMargin: tabbarItem && tabsVisible && tabPosition == "Top" ? Math.max(0, tabbarItem.height - stack.baseOverlap) : 0
+        anchors.bottomMargin: tabbarItem && tabsVisible && tabPosition == "Bottom" ? Math.max(0, tabbarItem.height - stack.baseOverlap) : 0
+        sourceComponent: frameVisible && loader.item ? loader.item.frame : null
         property var control: root
 
         Item {
             id: stack
+
             anchors.fill: parent
-            anchors.margins: (frame ? frameWidth : 0)
+            anchors.margins: (frameVisible ? frameWidth : 0)
             anchors.topMargin: anchors.margins + (style =="mac" ? 6 : 0)
             anchors.bottomMargin: anchors.margins + (style =="mac" ? 6 : 0)
+
             property int frameWidth
             property string style
             property int baseOverlap
+
+            /*! \internal */
+            Component.onCompleted: {
+                for (var i = 0 ; i < stack.children.length ; ++i) {
+                    if (stack.children[i].Accessible.role === Accessible.PageTab)
+                        __tabs.push(stack.children[i])
+                }
+                __setOpacities()
+            }
         }
         onLoaded: { item.z = -1 }
     }
 
     states: [
         State {
-            name: "South"
-            when: position == "South" && tabbarItem != undefined
+            name: "Bottom"
+            when: tabPosition == "Bottom" && tabbarItem != undefined
             PropertyChanges {
                 target: tabbarItem
                 anchors.topMargin: tabbarItem.height

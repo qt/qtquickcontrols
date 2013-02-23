@@ -287,7 +287,7 @@ void QStyleItem::initStyleOption()
             QString position = hints()[1];
             QString selectedPosition = hints()[2];
 
-            opt->shape = (shape == "South") ? QTabBar::RoundedSouth : QTabBar::RoundedNorth;
+            opt->shape = (shape == "Bottom") ? QTabBar::RoundedSouth : QTabBar::RoundedNorth;
 
             if (position == QLatin1String("beginning"))
                 opt->position = QStyleOptionTab::Beginning;

@@ -58,9 +58,9 @@ Style {
         anchors.topMargin: 1//stack.baseOverlap
         z: style == "oxygen" ? 1 : 0
         elementType: "tabframe"
-        hints: position
-        value: tabbarItem && tabsVisible && tabbarItem.tab(current) ? tabbarItem.tab(current).x : 0
-        minimum: tabbarItem && tabsVisible && tabbarItem.tab(current) ? tabbarItem.tab(current).width : 0
+        hints: control.tabPosition
+        value: tabbarItem && tabsVisible && tabbarItem.tab(currentIndex) ? tabbarItem.tab(currentIndex).x : 0
+        minimum: tabbarItem && tabsVisible && tabbarItem.tab(currentIndex) ? tabbarItem.tab(currentIndex).width : 0
         maximum: tabbarItem && tabsVisible ? tabbarItem.width : width
         Component.onCompleted: {
             stack.frameWidth = styleitem.pixelMetric("defaultframewidth");
@@ -85,7 +85,7 @@ Style {
             anchors.fill: parent
             anchors.leftMargin: (selected && style == "mac") ? -1 : 0
 
-            hints: [control.position, tabpos, selectedpos]
+            hints: [control.tabsPosition, tabpos, selectedpos]
 
             selected: tab.selected
             text:  title

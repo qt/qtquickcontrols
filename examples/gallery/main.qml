@@ -253,15 +253,17 @@ ApplicationWindow {
     TabView {
         id:frame
         enabled: enabledCheck.checked
-        position: controlPage.tabPosition
+        tabPosition: controlPage.item ? controlPage.item.tabPosition : "Top"
         anchors.top: toolbar.bottom
         anchors.bottom: parent.bottom
         anchors.right: parent.right
         anchors.left: parent.left
         anchors.margins: styleitem.style == "mac" ? 12 : 0
+
         Tab {
+            id: controlPage
             title: "Control"
-            Controls { id: controlPage }
+            Controls { }
         }
         Tab {
             title: "Itemviews"
@@ -269,7 +271,7 @@ ApplicationWindow {
         }
         Tab {
             title: "Styles"
-            Styles { anchors.fill: parent}
+            Styles { anchors.fill: parent }
         }
         Tab {
             title: "Sidebar"

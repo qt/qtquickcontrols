@@ -52,7 +52,7 @@ FocusScope {
     width: tabrow.width
 
     Keys.onRightPressed: {
-        if (tabView && tabView.current < tabView.count - 1)
+        if (tabView && tabView.currentIndex < tabView.count - 1)
             tabView.current = tabView.current + 1
     }
     Keys.onLeftPressed: {
@@ -68,7 +68,7 @@ FocusScope {
     property var styleItem: tabView.__styleItem ? tabView.__styleItem : null
 
     property string tabBarAlignment: styleItem ? styleItem.tabBarAlignment : "left"
-    property string position: tabView ? tabView.position : "North"
+    property string position: tabView ? tabView.tabPosition : "Top"
 
     property int tabOverlap: styleItem ? styleItem.tabOverlap : 0
     property int tabBaseOverlap: styleItem ? styleItem.tabBaseOverlap : 0
@@ -111,17 +111,18 @@ FocusScope {
         Repeater {
             id: repeater
             focus: true
-            model: tabView ? tabView.count : null
+            model: tabView.count
+
             delegate: Item {
                 id: tabitem
                 focus: true
 
                 property int tabindex: index
                 property bool selectedHelper: selected
-                property bool selected : tabView.current == index
+                property bool selected : tabView.currentIndex == index
                 property bool hover: mousearea.containsMouse
                 property bool first: index === 0
-                property string title: tabView.tabs[index].title
+                property string title: tabView.__tabs[index].title
 
                 z: selected ? 1 : -index
                 implicitWidth: Math.min(tabloader.implicitWidth, tabbar.width/repeater.count) + 1
@@ -136,8 +137,8 @@ FocusScope {
                     property Item control: tabView
                     property Item tab: tabitem
                     property int index: tabindex
-                    property bool nextSelected: tabView.current === index + 1
-                    property bool previousSelected: tabView.current === index - 1
+                    property bool nextSelected: tabView.currentIndex === index + 1
+                    property bool previousSelected: tabView.currentIndex === index - 1
                     property string title: tab.title
                 }
 
@@ -145,11 +146,11 @@ FocusScope {
                     id: mousearea
                     anchors.fill: parent
                     hoverEnabled: true
-                    onPressed: tabView.current = index
+                    onPressed: tabView.currentIndex = index
                     onPressAndHold: tabitem.parent = null
                 }
                 Accessible.role: Accessible.PageTab
-                Accessible.name: tabView.tabs[index].title
+                Accessible.name: tabView.__tabs[index].title
             }
         }
     }
