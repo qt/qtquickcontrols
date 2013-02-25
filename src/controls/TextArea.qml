@@ -591,9 +591,6 @@ ScrollView {
 
     Accessible.role: Accessible.EditableText
 
-    // FIXME: probably implement text interface
-    Accessible.name: text
-
     TextEdit {
         id: edit
         focus: true
