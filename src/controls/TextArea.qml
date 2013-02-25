@@ -616,6 +616,31 @@ ScrollView {
             z: -1
         }
 
+        property bool recursionGuard: false
+
+        function doLayout() {
+            if (!recursionGuard) {
+                recursionGuard = true
+                if (wrapMode == TextEdit.NoWrap) {
+                    horizontalScrollBar.visible = edit.paintedWidth + (2 * documentMargins) > area.viewport.width
+                    edit.width = edit.paintedWidth + (2 * documentMargins)
+                } else {
+                    horizontalScrollBar.visible = false
+                    edit.width = area.viewport.width - (2 * documentMargins)
+                }
+                edit.height = Math.max(area.viewport.height - (2 * documentMargins), paintedHeight + (2 * documentMargins))
+                recursionGuard = false
+            }
+        }
+
+        Connections {
+            target: area.viewport
+            onWidthChanged: edit.doLayout()
+            onHeightChanged: edit.doLayout()
+        }
+        onPaintedWidthChanged: edit.doLayout()
+        onPaintedHeightChanged: edit.doLayout()
+        onWrapModeChanged: edit.doLayout()
 
         renderType: Text.NativeRendering
 
@@ -623,8 +648,6 @@ ScrollView {
         selectionColor: palette.highlight
         selectedTextColor: palette.highlightedText
         wrapMode: TextEdit.WordWrap
-        width: area.viewport.width - (2 * documentMargins)
-        height: Math.max(area.viewport.height - (2 * documentMargins), paintedHeight + (2 * documentMargins))
         x: documentMargins
         y: documentMargins
 

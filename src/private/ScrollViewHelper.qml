@@ -53,14 +53,39 @@ Item {
     property alias horizontalScrollBar: hscrollbar
     property alias verticalScrollBar: vscrollbar
     property bool blockUpdates: false
-    property int availableHeight : viewport ? viewport.height : 0
-    property int availableWidth: viewport ? viewport.width : 0
-    property int contentHeight: flickableItem ? flickableItem.contentHeight : 0
-    property int contentWidth: flickableItem ? flickableItem.contentWidth: 0
+    property int availableHeight
+    property int availableWidth
+    property int contentHeight
+    property int contentWidth
 
     anchors.fill: parent
 
     property int frameMargin: outerFrame ? frameWidth : 0
+
+    property bool recursionGuard: false
+
+    function doLayout() {
+        if (!recursionGuard) {
+            recursionGuard = true
+            wheelarea.availableWidth = viewport.width
+            wheelarea.availableHeight = viewport.height
+            wheelarea.contentWidth = flickableItem.contentWidth
+            wheelarea.contentHeight = flickableItem.contentHeight
+            recursionGuard = false
+        }
+    }
+
+    Connections {
+        target: viewport
+        onWidthChanged: doLayout()
+        onHeightChanged: doLayout()
+    }
+
+    Connections {
+        target: flickableItem
+        onContentWidthChanged: doLayout()
+        onContentHeightChanged: doLayout()
+    }
 
     Connections {
         target: flickableItem
@@ -126,7 +151,7 @@ Item {
         property bool isTransient: !!styleItem && styleItem.styleHint("transientScrollBars")
         property bool active: !!styleItem && (styleItem.sunken || styleItem.activeControl != "none")
         orientation: Qt.Vertical
-        // visible: contentHeight > availableHeight
+        visible: contentHeight > availableHeight
         width: visible ? implicitWidth : 0
         z: 1
         anchors.bottom: cornerFill.top
