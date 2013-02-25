@@ -157,13 +157,15 @@ void QtMenu::setSelectedIndex(int index)
         return;
 
     m_selectedIndex = index;
-
-    if (m_selectedIndex >= 0 && m_selectedIndex < m_menuItems.size())
-        if (QtMenuItem *item = qobject_cast<QtMenuItem *>(m_menuItems[m_selectedIndex]))
-            if (item->checkable())
-                item->setChecked(true);
-
     emit selectedIndexChanged();
+}
+
+void QtMenu::updateSelectedIndex()
+{
+    if (QtMenuBase *menuItem = qobject_cast<QtMenuItem*>(sender())) {
+        int index = m_menuItems.indexOf(menuItem);
+        setSelectedIndex(index);
+    }
 }
 
 QQmlListProperty<QtMenuBase> QtMenu::menuItems()
@@ -268,40 +270,24 @@ void QtMenu::clearMenuItems()
     m_menuItems.clear();
 }
 
-QtMenuItem *QtMenu::addMenuItem(const QString &text)
+void QtMenu::addMenuItem(QtMenuBase *menuItem)
 {
-    QtMenuItem *menuItem = new QtMenuItem(this);
-    menuItem->setText(text);
+    menuItem->setParentMenu(this);
     m_menuItems.append(menuItem);
     if (QPlatformMenuItem *platformItem = menuItem->platformItem()) {
         if (m_platformMenu)
             m_platformMenu->insertMenuItem(platformItem, 0 /* append */);
-
-        connect(platformItem, SIGNAL(activated()), this, SLOT(emitSelected()));
     }
+}
 
-    if (m_menuItems.size() == 1)
-        // Inform QML that the selected action (0) now has changed contents:
-        emit selectedIndexChanged();
+QtMenuItem *QtMenu::addMenuItem(const QString &text)
+{
+    QtMenuItem *menuItem = new QtMenuItem(this);
+    menuItem->setText(text);
+    addMenuItem(menuItem);
 
     emit menuItemsChanged();
     return menuItem;
-}
-
-void QtMenu::emitSelected()
-{
-    QPlatformMenuItem *platformItem = qobject_cast<QPlatformMenuItem *>(sender());
-    if (!platformItem)
-        return;
-
-    int index = -1;
-    foreach (QtMenuBase *item, m_menuItems) {
-        ++index;
-        if (item->platformItem() == platformItem)
-            break;
-    }
-
-    setSelectedIndex(index);
 }
 
 QString QtMenu::itemTextAt(int index) const
@@ -336,13 +322,8 @@ int QtMenu::modelCount() const
 
 void QtMenu::append_menuItems(QQmlListProperty<QtMenuBase> *list, QtMenuBase *menuItem)
 {
-    QtMenu *menu = qobject_cast<QtMenu *>(list->object);
-    if (menu) {
-        menuItem->setParent(menu);
-        menu->m_menuItems.append(menuItem);
-        if (menu->m_platformMenu)
-            menu->m_platformMenu->insertMenuItem(menuItem->platformItem(), 0 /* append */);
-    }
+    if (QtMenu *menu = qobject_cast<QtMenu *>(list->object))
+        menu->addMenuItem(menuItem);
 }
 
 int QtMenu::count_menuItems(QQmlListProperty<QtMenuBase> *list)

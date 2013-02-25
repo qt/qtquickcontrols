@@ -51,7 +51,7 @@
 QT_BEGIN_NAMESPACE
 
 QtMenuBase::QtMenuBase(QObject *parent)
-    : QObject(parent), m_visualItem(0)
+    : QObject(parent), m_parentMenu(0), m_visualItem(0)
 {
     m_platformItem = QGuiApplicationPrivate::platformTheme()->createPlatformMenuItem();
 }
@@ -59,6 +59,16 @@ QtMenuBase::QtMenuBase(QObject *parent)
 QtMenuBase::~QtMenuBase()
 {
     delete m_platformItem;
+}
+
+QtMenu *QtMenuBase::parentMenu() const
+{
+    return m_parentMenu;
+}
+
+void QtMenuBase::setParentMenu(QtMenu *parentMenu)
+{
+    m_parentMenu = parentMenu;
 }
 
 void QtMenuBase::syncWithPlatformMenu()
@@ -78,7 +88,6 @@ void QtMenuBase::setVisualItem(QQuickItem *item)
 {
     m_visualItem = item;
 }
-
 
 /*!
     \qmltype MenuSeparator
@@ -206,6 +215,12 @@ QtMenuItem::~QtMenuItem()
     unbindFromAction(m_action);
 }
 
+void QtMenuItem::setParentMenu(QtMenu *parentMenu)
+{
+    QtMenuBase::setParentMenu(parentMenu);
+    connect(this, SIGNAL(triggered()), parentMenu, SLOT(updateSelectedIndex()));
+}
+
 void QtMenuItem::bindToAction(QtAction *action)
 {
     m_action = action;
@@ -287,11 +302,6 @@ void QtMenuItem::setAction(QtAction *a)
 
     bindToAction(a);
     emit actionChanged();
-}
-
-QtMenu *QtMenuItem::parentMenu() const
-{
-    return qobject_cast<QtMenu *>(parent());
 }
 
 QString QtMenuItem::text() const

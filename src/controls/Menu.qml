@@ -180,7 +180,6 @@ MenuPrivate {
         function triggerAndDismiss() {
             var item = itemsRepeater.itemAt(root.currentIndex)
             if (item && !item.isSeparator) {
-                root.selectedIndex = root.currentIndex
                 item.menuItem.trigger()
                 root.dismissMenu()
             }

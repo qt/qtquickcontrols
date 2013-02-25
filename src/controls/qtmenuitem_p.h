@@ -66,8 +66,10 @@ public:
     QtMenuBase(QObject *parent = 0);
     ~QtMenuBase();
 
-    inline QPlatformMenuItem *platformItem() { return m_platformItem; }
+    QtMenu *parentMenu() const;
+    virtual void setParentMenu(QtMenu *parentMenu);
 
+    inline QPlatformMenuItem *platformItem() { return m_platformItem; }
     void syncWithPlatformMenu();
 
     QQuickItem *visualItem() const;
@@ -77,6 +79,7 @@ protected:
     virtual bool isNative() { return m_platformItem != 0; }
 
 private:
+    QtMenu *m_parentMenu;
     QPlatformMenuItem *m_platformItem;
     QPointer<QQuickItem> m_visualItem;
 };
@@ -107,10 +110,10 @@ public:
     QtMenuItem(QObject *parent = 0);
     ~QtMenuItem();
 
+    void setParentMenu(QtMenu *parentMenu);
+
     QtAction *action();
     void setAction(QtAction *a);
-
-    QtMenu *parentMenu() const;
 
     QString text() const;
     void setText(const QString &text);

@@ -75,6 +75,7 @@ public:
     QQmlListProperty<QtMenuBase> menuItems();
 
     QPlatformMenu* platformMenu() { return m_platformMenu; }
+    void addMenuItem(QtMenuBase *);
 
     int minimumWidth() const { return m_minimumWidth; }
     void setMinimumWidth(int w);
@@ -105,6 +106,7 @@ public Q_SLOTS:
     void setModel(const QVariant &newModel);
     void closeMenu();
     void dismissMenu();
+    void updateSelectedIndex();
 
     void setMenuContentItem(QQuickItem * arg)
     {
@@ -137,7 +139,6 @@ protected:
     bool isNative() { return m_platformMenu != 0; }
 
 protected Q_SLOTS:
-    void emitSelected();
     void updateText();
     void windowVisibleChanged(bool);
 

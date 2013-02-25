@@ -111,7 +111,6 @@ TestCase {
         menuItem.trigger()
 
         compare(menuItemSpy.count, 1)
-        expectFail('', "MenuItem.trigger() won't always update selectedIndex")
         compare(menuSpy.count, 1)
         compare(menu.selectedIndex, 2)
     }
@@ -137,7 +136,6 @@ TestCase {
             compare(menu.menuItems[i].checked, i === 2 || i === 3)
 
         compare(menuItemSpy.count, 2)
-        expectFail('', "MenuItem.trigger() won't always update selectedIndex")
         compare(menuSpy.count, 2)
         compare(menu.selectedIndex, 3)
     }
@@ -167,7 +165,6 @@ TestCase {
             compare(menu.menuItems[i].checked, i === 3)
 
         compare(menuItemSpy.count, 2)
-        expectFail('', "MenuItem.trigger() won't always update selectedIndex")
         compare(menuSpy.count, 2)
         compare(menu.selectedIndex, 3)
     }
@@ -178,6 +175,10 @@ TestCase {
 
         menu.selectedIndex = 3
         compare(menu.selectedIndex, 3)
+        verify(!menu.menuItems[menu.selectedIndex].checked)
+
+        menu.menuItems[2].trigger()
+        compare(menu.selectedIndex, 2)
         verify(menu.menuItems[menu.selectedIndex].checked)
     }
 }
