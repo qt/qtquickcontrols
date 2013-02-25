@@ -5,4 +5,5 @@ SUBDIRS += \
     gallery \
     splitters \
     tableview \
+    text \
     touch
