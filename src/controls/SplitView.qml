@@ -45,92 +45,99 @@ import QtQuick.Controls.Private 1.0 as Private
 /*!
     \qmltype SplitView
     \inqmlmodule QtQuick.Controls 1.0
-    \brief SplitView is a component that lays out items horisontally or
+    \brief SplitView is a component that lays out items horizontally or
     vertically with a draggable splitter between each item.
-*/
 
-/*
-*
-* SplitView
-*
-* SplitView is a component that lays out items horisontally or
-* vertically with a draggable splitter between each item.
-*
-* There will always be one (and only one) item in the SplitView that is 'expanding'.
-* Being expanding means that the item will get all the remaining space when other
-* items have been laid out according to their own width and height.
-* By default, the last visible child of the SplitView will be expanding, but
-* this can changed by setting Layout.horizontalSizePolicy to \c Layout.Expanding.
-* Since the expanding item will automatically be resized to fit the extra space, it
-* will ignore explicit assignments to width and height.
-*
-* A handle can belong to the item on the left/top side, or the right/bottom side, of the
-* handle. Which one depends on the expaning item. If the expanding item is to the right
-* of the handle, the handle will belong to the item on the left. If it is to the left, it
-* will belong to the item on the right. This will again control which item that gets resized
-* when the user drags a handle, and which handle that gets hidden when an item is told to hide.
-*
-* The SplitView contains the following API:
-*
-* int orientation - the orientation of the splitter. Can be either Qt.Horizontal
-*   or Qt.Vertical.
-* Component handleDelegate - delegate that will be instanciated between each
-*   child item. Inside the delegate, the following properties are available:
-*   int handleIndex - specifies the index of the splitter handle. The handle
-*       between the first and the second item will get index 0, the next handle index 1 etc.
-*   bool containsMouse - the mouse hovers the handle.
-*   bool pressed: the handle is being pressed.
-*   bool dragged: the handle is being dragged.
-*
-* SplitView supports setting Layout properties on child items, which means that you
-* can control minimumWidth, minimumHeight, maximumWidth and maximumHeight (in addition
-* to horizontalSizePolicy/verticalSizePolicy) for each child.
-*
-* Example:
-*
-* To create a SplitView with three items, and let
-* the center item be expanding, one could do the following:
-*
-*    SplitView {
-*        anchors.fill: parent
-*        orientation: Qt.Horizontal
-*
-*        Rectangle {
-*            width: 200
-*            Layout.maximumWidth: 400
-*            color: "gray"
-*        }
-*        Rectangle {
-*            id: centerItem
-*            Layout.minimumWidth: 50
-*            Layout.horizontalSizePolicy: Layout.Expanding
-*            color: "darkgray"
-*        }
-*        Rectangle {
-*            width: 200
-*            color: "gray"
-*        }
-*    }
+    SplitView is a control that lays out items horizontally or
+    vertically with a draggable splitter between each item.
+
+    There will always be one (and only one) item in the SplitView that is 'expanding'.
+    Being expanding means that the item will get all the remaining space when other
+    items have been laid out according to their own width and height.
+    By default, the last visible child of the SplitView will be expanding, but
+    this can be changed by setting Layout.horizontalSizePolicy to \c Layout.Expanding.
+    Since the expanding item will automatically be resized to fit the extra space, it
+    will ignore explicit assignments to width and height.
+
+    A handle can belong to the item on the left/top side, or the right/bottom side, of the
+    handle. Which one depends on the expanding item. If the expanding item is to the right
+    of the handle, the handle will belong to the item on the left. If it is to the left, it
+    will belong to the item on the right. This will again control which item that gets resized
+    when the user drags a handle, and which handle that gets hidden when an item is told to hide.
+
+    SplitView supports setting attached Layout properties on child items, which means that you
+    can control minimumWidth, minimumHeight, maximumWidth and maximumHeight (in addition
+    to horizontalSizePolicy/verticalSizePolicy) for each child.
+
+    Example:
+
+    To create a SplitView with three items, and let
+    the center item be expanding, one could do the following:
+
+    \qml
+       SplitView {
+           anchors.fill: parent
+           orientation: Qt.Horizontal
+
+           Rectangle {
+               width: 200
+               Layout.maximumWidth: 400
+               color: "gray"
+           }
+           Rectangle {
+               id: centerItem
+               Layout.minimumWidth: 50
+               Layout.horizontalSizePolicy: Layout.Expanding
+               color: "darkgray"
+           }
+           Rectangle {
+               width: 200
+               color: "gray"
+           }
+       }
+   \endqml
 */
 
 Item {
     id: root
+
+    /*!
+        \qmlproperty enumeration SplitView::orientation
+
+        This property holds the orientation of the split view.
+        The value can be either \c Qt.Horizontal or \c Qt.Vertical.
+        The default value is \c Qt.Horizontal.
+    */
     property int orientation: Qt.Horizontal
 
-    property Component handleDelegate:
-    Rectangle{
+    /*!
+        This property holds the delegate that will be instantiated between each
+        child item. Inside the delegate, the following properties are available:
+        \list
+        \li int \c handleIndex - specifies the index of the splitter handle. The handle
+                                 between the first and the second item will get index 0,
+                                 the next handle index 1 etc.
+        \li bool \c containsMouse - the mouse hovers the handle.
+        \li bool \c pressed: the handle is being pressed.
+        \li bool \c dragged: the handle is being dragged.
+        \endlist
+    */
+    property Component handleDelegate: Rectangle {
         width: 1
         height: 1
         color: Qt.darker(pal.window, 1.5)
     }
 
-    // **** PRIVATE ****
+    /*! \internal */
+    default property alias __items: splitterItems.children
+    /*! \internal */
+    property alias __handles: splitterHandles.children
 
     clip: true
-    default property alias __items: splitterItems.children
-    property alias __handles: splitterHandles.children
     Component.onCompleted: d.init()
+    /*! \internal */
     onWidthChanged: d.updateLayout()
+    /*! \internal */
     onHeightChanged: d.updateLayout()
 
     SystemPalette { id: pal }
