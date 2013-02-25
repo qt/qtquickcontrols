@@ -126,7 +126,8 @@ Control {
             } else if (v < minimumValue) {
                 newval = minimumValue
             }
-            value = newval
+            if (value !== newval)
+                value = newval
         }
     }
 }
