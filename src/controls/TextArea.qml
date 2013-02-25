@@ -572,7 +572,7 @@ ScrollView {
     }
 
     /*!
-        \qmlproperty color ScrollView:backgroundColor
+        \qmlproperty color TextArea::backgroundColor
 
         This property sets the background color of the viewport.
 
