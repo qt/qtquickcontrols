@@ -128,7 +128,9 @@ Item {
     }
 
     /*! \internal */
-    default property alias __items: splitterItems.children
+    default property alias __contents: contents.data
+    /*! \internal */
+    property alias __items: splitterItems.children
     /*! \internal */
     property alias __handles: splitterHandles.children
 
@@ -156,57 +158,38 @@ Item {
 
         function init()
         {
-            for (var i=0; i<__items.length; ++i) {
-                var item = __items[i];
-                item.widthChanged.connect(d.updateLayout);
-                item.heightChanged.connect(d.updateLayout);
-                item.Layout.maximumWidthChanged.connect(d.updateLayout);
-                item.Layout.minimumWidthChanged.connect(d.updateLayout);
-                item.Layout.maximumHeightChanged.connect(d.updateLayout);
-                item.Layout.minimumHeightChanged.connect(d.updateLayout);
+            for (var i=0; i<__contents.length; ++i) {
+                var item = __contents[i];
+                if (!item.hasOwnProperty("x"))
+                    continue
+
+                if (splitterItems.children.length > 0)
+                    handleLoader.createObject(splitterHandles, {"handleIndex":splitterItems.children.length - 1})
+                item.parent = splitterItems
+                i-- // item was removed from list
+                item.widthChanged.connect(d.updateLayout)
+                item.heightChanged.connect(d.updateLayout)
+                item.Layout.maximumWidthChanged.connect(d.updateLayout)
+                item.Layout.minimumWidthChanged.connect(d.updateLayout)
+                item.Layout.maximumHeightChanged.connect(d.updateLayout)
+                item.Layout.minimumHeightChanged.connect(d.updateLayout)
+                item.visibleChanged.connect(d.updateExpandingIndex)
                 item.Layout.horizontalSizePolicyChanged.connect(d.updateExpandingIndex)
                 item.Layout.verticalSizePolicyChanged.connect(d.updateExpandingIndex)
-                d.listenForVisibleChanged(item)
-                if (i < __items.length-1)
-                    handleLoader.createObject(splitterHandles, {"handleIndex":i});
             }
 
-            d.updateExpandingIndex()
             d.updateLayoutGuard = false
-            d.updateLayout()
-        }
-
-        function listenForVisibleChanged(item) {
-            item.visibleChanged.connect(function() {
-                if (!root.visible)
-                    return
-                if (item.visible) {
-                    // Try to keep all items within the SplitView. When an item
-                    // has been hidden, the expanding item might no longer be large enough
-                    // to give away space to the new items width. So we need to resize:
-                    var overflow = d.accumulatedSize(0, __items.length, true) - root[d.size];
-                    if (overflow > 0)
-                        item[d.size] -= overflow
-                }
-                updateExpandingIndex()
-            });
+            d.updateExpandingIndex()
         }
 
         function updateExpandingIndex()
         {
+            if (!lastItem.visible)
+                return
             var policy = (root.orientation === Qt.Horizontal) ? "horizontalSizePolicy" : "verticalSizePolicy"
-            for (var i=__items.length-1; i>=0; --i) {
-                if (__items[i].visible && __items[i].Layout[policy] === Layout.Expanding) {
-                    d.expandingIndex = i
+            for (var i=0; i<__items.length-1; ++i) {
+                if (__items[i].Layout[policy] === Layout.Expanding)
                     break;
-                }
-            }
-
-            if (i === -1) {
-                for (i=__items.length-1; i>0; --i) {
-                    if (__items[i].visible)
-                        break;
-                }
             }
 
             d.expandingIndex = i
@@ -225,11 +208,11 @@ Item {
                         w += item[d.size];
                     else if (includeExpandingMinimum && item.Layout[minimum] !== undefined)
                         w += item.Layout[minimum]
-                }
 
-                var handle = __handles[i]
-                if (handle && __items[i + ((d.expandingIndex > i) ? 0 : 1)].visible)
-                    w += handle[d.size]
+                    var handle = __handles[i]
+                    if (handle)
+                        w += handle[d.size]
+                }
             }
             return w
         }
@@ -239,6 +222,8 @@ Item {
             // This function will reposition both handles and
             // items according to the their width/height:
             if (__items.length === 0)
+                return;
+            if (!lastItem.visible)
                 return;
             if (d.updateLayoutGuard === true)
                 return
@@ -277,17 +262,15 @@ Item {
                     item[d.otherSize] = root[d.otherSize]
                     implicitSize += item[d.size]
                     lastVisibleItem = item
-                }
 
-                // Position handle to the right of the previous visible item. We use an alterative way of
-                // checking handle visibility because that property might not have updated correctly yet:
-                handle = __handles[i]
-                if (handle && __items[i + ((d.expandingIndex > i) ? 0 : 1)].visible) {
-                    handle[d.offset] = lastVisibleItem[d.offset] + Math.max(0, lastVisibleItem[d.size])
-                    handle[d.otherOffset] = 0
-                    handle[d.otherSize] = root[d.otherSize]
-                    implicitSize += handle[d.size]
-                    lastVisibleHandle = handle
+                    handle = __handles[i]
+                    if (handle) {
+                        handle[d.offset] = lastVisibleItem[d.offset] + Math.max(0, lastVisibleItem[d.size])
+                        handle[d.otherOffset] = 0
+                        handle[d.otherSize] = root[d.otherSize]
+                        implicitSize += handle[d.size]
+                        lastVisibleHandle = handle
+                    }
                 }
             }
 
@@ -312,7 +295,7 @@ Item {
             property alias pressed: mouseArea.pressed
             property bool dragged: mouseArea.drag.active
 
-            visible: __items[handleIndex + ((d.expandingIndex > handleIndex) ? 0 : 1)].visible
+            visible: __items[handleIndex + ((d.expandingIndex >= handleIndex) ? 0 : 1)].visible
             sourceComponent: handleDelegate
             onWidthChanged: d.updateLayout()
             onHeightChanged: d.updateLayout()
@@ -396,6 +379,10 @@ Item {
     }
 
     Item {
+        id: contents
+        visible: false
+    }
+    Item {
         id: splitterItems
         anchors.fill: parent
     }
@@ -404,4 +391,8 @@ Item {
         anchors.fill: parent
     }
 
+    Item {
+        id: lastItem
+        onVisibleChanged: d.updateExpandingIndex()
+    }
 }
