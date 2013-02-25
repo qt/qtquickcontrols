@@ -84,11 +84,11 @@ Page {
         id: touchStyle
 
         TextFieldStyle {
-            implicitHeight: 50
-            implicitWidth: 320
             foregroundColor: "white"
             font.pixelSize: 28
-            background: Item{
+            background: Item {
+                implicitHeight: 50
+                implicitWidth: 320
                 BorderImage {
                     source: "../images/textinput.png"
                     border.left: 8

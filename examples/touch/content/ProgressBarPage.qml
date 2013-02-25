@@ -94,9 +94,9 @@ Page {
     Component {
         id: touchStyle
         ProgressBarStyle {
-            implicitHeight: 15
-            implicitWidth: 300
             background: Rectangle {
+                implicitHeight: 15
+                implicitWidth: 400
                 color: "#444"
                 opacity: 0.8
                 Rectangle {

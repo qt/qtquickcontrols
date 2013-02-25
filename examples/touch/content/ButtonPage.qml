@@ -92,17 +92,19 @@ Page {
     Component {
         id: touchStyle
         ButtonStyle {
-            implicitHeight: 50
-            implicitWidth: 320
-            background: BorderImage {
-                anchors.fill: parent
-                antialiasing: true
-                border.bottom: 8
-                border.top: 8
-                border.left: 8
-                border.right: 8
-                anchors.margins: control.pressed ? -4 : 0
-                source: control.pressed ? "../images/button_pressed.png" : "../images/button_default.png"
+            background: Item {
+                implicitHeight: 50
+                implicitWidth: 320
+                BorderImage {
+                    anchors.fill: parent
+                    antialiasing: true
+                    border.bottom: 8
+                    border.top: 8
+                    border.left: 8
+                    border.right: 8
+                    anchors.margins: control.pressed ? -4 : 0
+                    source: control.pressed ? "../images/button_pressed.png" : "../images/button_default.png"
+                }
             }
             foregroundColor: "white"
             font.pixelSize: 23
