@@ -70,7 +70,6 @@ ApplicationWindow {
 
     SplitView {
         anchors.fill: parent
-        handleWidth: 1
         TableView {
             frame: false
             highlightOnFocus: false
