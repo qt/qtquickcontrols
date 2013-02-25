@@ -76,8 +76,9 @@ Page {
 
         TextField {
             anchors.margins: 20
-            text: "Disabled Text input"
+            text: "Readonly Text input"
             style: touchStyle
+            readOnly: true
         }
     }
     Component {
