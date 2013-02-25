@@ -24,7 +24,6 @@ sources += ../../private/qstyleitem.cpp \
            ../../private/FocusFrame.qml \
            ../../private/ModalPopupBehavior.qml \
            ../../private/PageSlideTransition.qml \
-           ../../private/ScrollAreaHelper.qml \
            ../../private/ScrollBar.qml \
            ../../private/TabBar.qml \
            ../../private/Control.qml \
@@ -33,13 +32,9 @@ sources += ../../private/qstyleitem.cpp \
            ../../styles/CheckBoxStyle.qml \
            ../../styles/ComboBoxStyle.qml \
            ../../styles/GroupBoxStyle.qml \
-           ../../styles/MenuBarItemStyle.qml \
            ../../styles/MenuBarStyle.qml \
-           ../../styles/MenuFrameStyle.qml \
-           ../../styles/MenuItemStyle.qml \
            ../../styles/ProgressBarStyle.qml \
            ../../styles/RadioButtonStyle.qml \
-           ../../styles/ScrollViewStyle.qml \
            ../../styles/ScrollBarStyle.qml \
            ../../styles/SliderStyle.qml \
            ../../styles/SpinBoxStyle.qml \
