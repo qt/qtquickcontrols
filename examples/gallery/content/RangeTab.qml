@@ -97,17 +97,27 @@ Row {
                 }
                 ProgressBar {
                     value: 0.5
-                    scale: scale.checked && containsMouse ? 1.1 : 1
-                    opacity: !fade.checked || containsMouse ? 1 : 0.5
+                    scale: scale.checked && bar1MouseArea.containsMouse ? 1.1 : 1
+                    opacity: !fade.checked || bar1MouseArea.containsMouse ? 1 : 0.5
                     Behavior on scale { NumberAnimation { easing.type: Easing.OutCubic ; duration: 120} }
                     Behavior on opacity { NumberAnimation { easing.type: Easing.OutCubic ; duration: 220} }
+                    MouseArea {
+                        id: bar1MouseArea
+                        hoverEnabled: true
+                        anchors.fill: parent
+                    }
                 }
                 ProgressBar {
                     indeterminate: true
-                    scale: scale.checked && containsMouse ? 1.1 : 1
-                    opacity: !fade.checked || containsMouse ? 1 : 0.5
+                    scale: scale.checked && bar2MouseArea.containsMouse ? 1.1 : 1
+                    opacity: !fade.checked || bar2MouseArea.containsMouse ? 1 : 0.5
                     Behavior on scale { NumberAnimation { easing.type: Easing.OutCubic ; duration: 120} }
                     Behavior on opacity { NumberAnimation { easing.type: Easing.OutCubic ; duration: 220} }
+                    MouseArea {
+                        id: bar2MouseArea
+                        hoverEnabled: true
+                        anchors.fill: parent
+                    }
                 }
             }
         }
