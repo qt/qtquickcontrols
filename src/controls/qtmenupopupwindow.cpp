@@ -111,12 +111,11 @@ void QtMenuPopupWindow::updatePosition()
 void QtMenuPopupWindow::mouseMoveEvent(QMouseEvent *e)
 {
     QRect rect = QRect(QPoint(), size());
-    if (rect.contains(e->pos())) {
-        m_mouseMoved = true;
+    m_mouseMoved = true;
+    if (rect.contains(e->pos()))
         QQuickWindow::mouseMoveEvent(e);
-    } else {
+    else
         forwardEventToTransientParent(e);
-    }
 }
 
 void QtMenuPopupWindow::mouseReleaseEvent(QMouseEvent *e)
