@@ -57,7 +57,6 @@ import "Styles/Settings.js" as Settings
 
     ListModel model - this model will be used, in addition to MenuItem children, to
       create items inside the popup menu
-    bool popupOpen - setting this property to 'true' will open the popup.
     int selectedIndex - the index of the selected item in the popup menu.
     string selectedText - the text of the selected menu item.
 
@@ -100,12 +99,11 @@ Control {
     default property alias menuItems: popup.menuItems
     property alias model: popup.model
     property alias textRole: popup.textRole
-    property bool popupOpen: false
 
     property alias selectedIndex: popup.selectedIndex
     readonly property alias selectedText: popup.selectedText
 
-    readonly property bool pressed: mouseArea.pressed || popup.popupVisible
+    readonly property bool pressed: mouseArea.pressed && mouseArea.containsMouse || popup.popupVisible
 
     /* \internal */
     property alias __containsMouse: mouseArea.containsMouse
@@ -117,6 +115,7 @@ Control {
     MouseArea {
         id: mouseArea
         anchors.fill: parent
+        hoverEnabled: true
         onPressedChanged: if (pressed) popup.show()
     }
 
@@ -152,22 +151,17 @@ Control {
         }
 
         function show() {
-            comboBox.popupOpen = true
             menuItems[comboBox.selectedIndex].checked = true
             currentIndex = comboBox.selectedIndex
             showPopup(x, y, centerSelectedText ? comboBox.selectedIndex : 0, comboBox)
         }
-
-        onMenuClosed: popupOpen = false
     }
 
     // The key bindings below will only be in use when popup is
     // not visible. Otherwise, native popup key handling will take place:
     Keys.onSpacePressed: {
-        if (!popupOpen)
+        if (!popup.popupVisible)
             popup.show()
-        else
-            popupOpen = false
     }
     Keys.onUpPressed: { if (selectedIndex > 0) selectedIndex-- }
     Keys.onDownPressed: { if (selectedIndex < model.count - 1) selectedIndex++ }
