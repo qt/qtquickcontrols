@@ -79,14 +79,6 @@ Control {
     property bool checked: false
 
     /*!
-        \qmlproperty bool AbstractCheckable::containsMouse
-
-        This property is \c true if the control currently contains the
-        mouse cursor.
-    */
-    readonly property alias containsMouse: mouseArea.containsMouse
-
-    /*!
         This property is \c true if the control takes the focus when it is
         pressed; \l{QQuickItem::forceActiveFocus()}{forceActiveFocus()} will be
         called on the control.
@@ -105,6 +97,13 @@ Control {
 
     /*! \internal */
     property var __cycleStatesHandler: cycleRadioButtonStates
+
+    /*! \internal
+
+        This property is \c true if the control currently contains the
+        mouse cursor.
+    */
+    readonly property alias __containsMouse: mouseArea.containsMouse
 
     MouseArea {
         id: mouseArea

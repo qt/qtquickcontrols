@@ -55,13 +55,15 @@ Item {
 
     property alias maximumValue: range.maximumValue
     property alias minimumValue: range.minimumValue
-    property alias containsMouse: mouseArea.containsMouse
     property alias value: range.value
     property alias stepSize: range.stepSize
 
     property bool wrapping: false
     property bool tickmarksEnabled: false
     property bool activeFocusOnPress: false
+
+    /* \internal */
+    property alias __containsMouse: mouseArea.containsMouse
 
     Accessible.role: Accessible.Dial
     Accessible.name: value

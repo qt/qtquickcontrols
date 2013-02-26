@@ -57,7 +57,7 @@ Style {
             elementType: "combobox"
             sunken: control.pressed
             raised: !sunken
-            hover: control.containsMouse
+            hover: control.__containsMouse
             enabled: control.enabled
             text: control.selectedText
             hasFocus: control.activeFocus

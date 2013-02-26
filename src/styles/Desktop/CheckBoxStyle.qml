@@ -53,7 +53,7 @@ Style {
             elementType: "checkbox"
             sunken: control.pressed
             on: control.checked || control.pressed
-            hover: control.containsMouse
+            hover: control.__containsMouse
             enabled: control.enabled
             hasFocus: control.activeFocus
             hints: {

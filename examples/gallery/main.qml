@@ -259,10 +259,6 @@ ApplicationWindow {
             ModelView { }
         }
         Tab {
-            title: "Range"
-            RangeTab { }
-        }
-        Tab {
             title: "Styles"
             Styles { anchors.fill: parent}
         }

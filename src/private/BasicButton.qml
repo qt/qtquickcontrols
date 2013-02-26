@@ -55,7 +55,6 @@ Control {
 
     signal clicked
     property alias pressed: behavior.effectivePressed
-    property alias containsMouse: behavior.containsMouse
     property alias checkable: behavior.checkable  // button toggles between checked and !checked
     property alias checked: behavior.checked
     property ExclusiveGroup exclusiveGroup: null
@@ -77,6 +76,8 @@ Control {
 
     // implementation
     property string __position: "only"
+    /*! \internal */
+    property alias __containsMouse: behavior.containsMouse
 
     Keys.onPressed: {
         if (event.key === Qt.Key_Space && !event.isAutoRepeat && !behavior.pressed)
@@ -121,7 +122,7 @@ Control {
 
         Timer {
             interval: 1000
-            running: containsMouse && !pressed && tooltip.length
+            running: behavior.containsMouse && !pressed && tooltip.length
             onTriggered: PrivateHelper.showToolTip(behavior, Qt.point(behavior.mouseX, behavior.mouseY), tooltip)
         }
     }

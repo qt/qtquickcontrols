@@ -143,9 +143,6 @@ Control {
     */
     property alias value: range.value
 
-    /*! \internal */
-    property bool containsMouse: mouseArea.containsMouse
-
     /*!
         \qmlproperty bool Slider::activeFocusOnPress
 
@@ -166,6 +163,9 @@ Control {
 
     /*! \internal */
     property string tickPosition: "Below" // "Above", "Below", "BothSides"
+
+    /*! \internal */
+    property bool __containsMouse: mouseArea.containsMouse
 
     Accessible.role: Accessible.Slider
     Accessible.name: value

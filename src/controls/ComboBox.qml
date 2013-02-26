@@ -106,7 +106,9 @@ Control {
     readonly property alias selectedText: popup.selectedText
 
     readonly property bool pressed: mouseArea.pressed || popup.popupVisible
-    property alias containsMouse: mouseArea.containsMouse
+
+    /* \internal */
+    property alias __containsMouse: mouseArea.containsMouse
 
     style: Qt.createComponent(Settings.THEME_PATH + "/ComboBoxStyle.qml", comboBox)
 

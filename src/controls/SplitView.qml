@@ -117,7 +117,6 @@ Item {
         \li int \c handleIndex - specifies the index of the splitter handle. The handle
                                  between the first and the second item will get index 0,
                                  the next handle index 1 etc.
-        \li bool \c containsMouse - the mouse hovers the handle.
         \li bool \c pressed: the handle is being pressed.
         \li bool \c dragged: the handle is being dragged.
         \endlist

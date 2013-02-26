@@ -49,8 +49,8 @@ Style {
         elementType: "toolbutton"
         on: control.pressed | control.checked
         sunken: control.pressed
-        raised: control.containsMouse
-        hover: control.containsMouse
+        raised: control.__containsMouse
+        hover: control.__containsMouse
         hasFocus: control.activeFocus
         hints: control.styleHints.concat([control.__position])
 

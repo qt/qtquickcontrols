@@ -47,7 +47,7 @@ Style {
         elementType: "button"
         sunken: control.pressed || control.checked
         raised: !(control.pressed || control.checked)
-        hover: control.containsMouse
+        hover: control.__containsMouse
         text: control.iconSource === "" ? "" : control.text
         hasFocus: control.activeFocus
         hints: control.styleHints
