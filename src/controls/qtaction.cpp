@@ -43,6 +43,7 @@
 #include "qtexclusivegroup_p.h"
 
 #include <QtGui/private/qguiapplication_p.h>
+#include <QtQml/qqmlfile.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -181,10 +182,8 @@ void QtAction::setIconSource(const QUrl &iconSource)
         return;
 
     m_iconSource = iconSource;
-    QString iconName = m_icon.name();
-    m_icon = QIcon(m_iconSource.toLocalFile());
-    if (!iconName.isEmpty())
-        m_icon = QIcon::fromTheme(iconName, m_icon);
+    QString fileString = QQmlFile::urlToLocalFileOrQrc(iconSource);
+    m_icon = QIcon(fileString);
 
     emit iconSourceChanged();
     emit iconChanged();
@@ -200,7 +199,7 @@ void QtAction::setIconName(const QString &iconName)
     if (iconName == m_icon.name())
         return;
 
-    m_icon = QIcon::fromTheme(iconName, QIcon(m_iconSource.toLocalFile()));
+    m_icon = QIcon::fromTheme(iconName, QIcon(QQmlFile::urlToLocalFileOrQrc(m_iconSource)));
     emit iconNameChanged();
     emit iconChanged();
 }
