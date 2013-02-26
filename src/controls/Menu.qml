@@ -168,7 +168,7 @@ MenuPrivate {
         Keys.onRightPressed: {
             var item = itemsRepeater.itemAt(root.currentIndex)
             if (item && item.hasSubmenu) {
-                item.showSubMenu()
+                item.showSubMenu(true)
                 item.menuItem.currentIndex = 0
             }
         }
@@ -212,7 +212,7 @@ MenuPrivate {
                     if (currentItem) {
                         root.currentIndex = currentItem.menuItemIndex
                         if (currentItem.hasSubmenu && !currentItem.menuItem.popupVisible)
-                            currentItem.showSubMenu()
+                            currentItem.showSubMenu(false)
                     } else {
                         root.currentIndex = -1
                     }
@@ -241,15 +241,19 @@ MenuPrivate {
                         sourceComponent: menuFrameLoader.menuItemStyle
                         enabled: !isSeparator && !!menuItem && menuItem.enabled
 
-                        function showSubMenu() { openMenuTimer.start() }
+                        function showSubMenu(immediately) {
+                            if (immediately) {
+                                if (root.currentIndex === menuItemIndex)
+                                    menuItem.showPopup(menuFrameLoader.subMenuXPos, 0, -1, menuItemLoader)
+                            } else {
+                                openMenuTimer.start()
+                            }
+                        }
 
                         Timer {
                             id: openMenuTimer
                             interval: 50
-                            onTriggered: {
-                                if (root.currentIndex === menuItemIndex)
-                                    menuItem.showPopup(menuFrameLoader.subMenuXPos, 0, -1, menuItemLoader)
-                            }
+                            onTriggered: menuItemLoader.showSubMenu(true)
                         }
 
                         function closeSubMenu() { closeMenuTimer.start() }
