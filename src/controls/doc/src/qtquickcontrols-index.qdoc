@@ -31,33 +31,25 @@
 
     \brief The Qt Quick Controls module is an add-on module of Qt.
 
-    \image placeholder.png
-
     \section1 Getting started
 
     The QML types can be imported into your applciation using the following import statement in your \c {.qml} file.
 
     \code
      import QtQuick.Controls 1.0
-     import QtQuick.Controls.Styles 1.0
     \endcode
 
-    \section1 Components
+    \section1 Application Window
+    Components used to describe the basic window properties of an application.
+    \annotatedlist applicationwindow
 
-    \section2 Application
-    \list
-    \li \l{Application Window}{Window}
-    \li \l{Application Menus}{Menus}
-    \li \l{Application Navigation}{Navigation}
-    \endlist
+    \section1 Navigation and Views
+    Views are controls that present or present other items on screen.
+    \annotatedlist views
 
-    \section2 Controls and Layout
-    \list
-    \li \l{Buttons and Controls}
-    \li \l{Layout and Containers}
-    \li \l{Tables}
-    \li \l{Status Indicators}
-    \endlist
+    \section1 Controls
+    Controls are typically items that are used to present or receive input from the user.
+    \annotatedlist controls
 
     \section1 Related information
 
@@ -69,7 +61,6 @@
     \section2 Reference
      \list
       \li \l{Qt Quick Controls QML Types}{Qt Quick Controls QML Types}
-      \li \l{Qt Quick Controls Styles QML Types}{Qt Quick Controls Styles QML Types}
      \endlist
 
     \section2 Examples

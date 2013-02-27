@@ -46,7 +46,7 @@ import QtQuick.Controls.Private 1.0
     \qmltype StatusBar
     \inqmlmodule QtQuick.Controls 1.0
     \ingroup applicationwindow
-    \brief StatusBar is for containing status informating in your app
+    \brief StatusBar is for containing status informating in your app.
 
     The common way of using StatusBar is in relation to \l ApplicationWindow.
 

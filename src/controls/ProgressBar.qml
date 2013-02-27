@@ -46,8 +46,8 @@ import "Styles/Settings.js" as Settings
 /*!
     \qmltype ProgressBar
     \inqmlmodule QtQuick.Controls 1.0
-    \ingroup indicators
-    \brief A progress bar
+    \ingroup controls
+    \brief A progress indicator.
 
     The ProgressBar is used to give an indication of the progress of an operation.
     \l value is updated regularly and must be between \l minimumValue and \l maximumValue.

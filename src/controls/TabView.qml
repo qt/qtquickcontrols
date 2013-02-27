@@ -46,8 +46,8 @@ import "Styles/Settings.js" as Settings
 /*!
     \qmltype TabView
     \inqmlmodule QtQuick.Controls 1.0
-    \ingroup navigation
-    \brief Represents a control that contains multiple items that share the same space on the screen.
+    \ingroup views
+    \brief A conrol that allows the user to select one of multiple stacked items.
 
 */
 

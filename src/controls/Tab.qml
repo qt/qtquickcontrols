@@ -43,14 +43,16 @@ import QtQuick 2.0
 /*!
     \qmltype Tab
     \inqmlmodule QtQuick.Controls 1.0
-    \ingroup navigation
-    \brief Tab is doing bla...bla...
+    \ingroup viewaddons
+    \brief Tab represents the content of a tab in a TabView
 */
 
 Item {
     id:tab
     anchors.fill: parent
+
+    /*! This property holds the title of the tab. */
     property string title
-    property int contentMargin
+
     Accessible.role: Accessible.PageTab
 }

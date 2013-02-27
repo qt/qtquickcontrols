@@ -45,7 +45,7 @@ import QtQuick.Controls.Private 1.0
 /*!
     \qmltype ScrollView
     \inqmlmodule QtQuick.Controls 1.0
-    \ingroup navigation
+    \ingroup views
     \brief The ScrollView class provides a scrolling view onto another Item.
 
     A ScrollView can be used either instead of a \l Flickable or to decorate an

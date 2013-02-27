@@ -44,7 +44,7 @@ import QtQuick 2.0
     \qmltype Label
     \inqmlmodule QtQuick.Controls 1.0
     \ingroup controls
-    \brief Label is a text display.
+    \brief A text label.
 
     In addition to the normal \l Text element, Label follows the font and
     color scheme of the system.

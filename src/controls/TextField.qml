@@ -48,7 +48,7 @@ import "Styles/Settings.js" as Settings
     \qmltype TextField
     \inqmlmodule QtQuick.Controls 1.0
     \ingroup controls
-    \brief TextField displays a single line of editable plain text
+    \brief TextField displays a single line of editable plain text.
 
     TextField is used to accept a line of text input. Input constraints
     can be placed on a TextField item (for example, through a \l validator or \l inputMask),

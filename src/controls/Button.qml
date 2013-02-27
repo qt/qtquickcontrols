@@ -47,9 +47,9 @@ import "Styles/Settings.js" as Settings
     \qmltype Button
     \inqmlmodule QtQuick.Controls 1.0
     \ingroup controls
-    \brief A normal button
+    \brief A push button with a text label.
 
-    A normal command button. Similar to the QPushButton widget.
+    A normal push button. Similar to the QPushButton widget.
 
     The push button is perhaps the most commonly used widget in any graphical user interface.
     Push (click) a button to command the computer to perform some action, or to answer a question.

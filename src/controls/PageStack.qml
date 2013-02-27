@@ -46,9 +46,10 @@ import "Private/PageStack.js" as JSArray
 /*!
     \qmltype PageStack
     \inherits Item
+    \ingroup views
     \inqmlmodule QtQuick.Controls 1.0
 
-    \brief The central component for building page-based applications
+    \brief Provides a stack-based navigation model.
 
     PageStack implements a stack-based navigation model for an application.
     A stack-based navigation model means that "pages" (discrete views of information)

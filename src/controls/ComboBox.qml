@@ -47,8 +47,9 @@ import "Styles/Settings.js" as Settings
     \qmltype ComboBox
     \inqmlmodule QtQuick.Controls 1.0
     \ingroup controls
-    \brief ComboBox is a combined button and popup list. The popup menu itself is platform
-        native, and cannot by styled from QML code.
+    \brief ComboBox is a combined button and popup list.
+
+    The popup menu itself is platform native, and cannot by styled from QML code.
 
     Add menu items to the comboBox by either adding MenuItem children inside the popup, or
     assign it a ListModel (or both).
