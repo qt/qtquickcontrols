@@ -48,7 +48,7 @@ TestCase {
     when: windowShown
     width: 300; height: 300
 
-    property var menuItemsText: [ "apple", "banana", "clementine", "dragon fruit" ]
+    property var itemsText: [ "apple", "banana", "clementine", "dragon fruit" ]
 
     property var menu
     property var menuItem
@@ -86,28 +86,28 @@ TestCase {
     }
 
     function test_creation() {
-        compare(menu.menuItems.length, testcase.menuItemsText.length)
-        for (var i = 0; i < menu.menuItems.length; i++)
-            compare(menu.menuItems[i].text, testcase.menuItemsText[i])
+        compare(menu.items.length, testcase.itemsText.length)
+        for (var i = 0; i < menu.items.length; i++)
+            compare(menu.items[i].text, testcase.itemsText[i])
     }
 
     Component {
         id: modelCreationComponent
         // TODO Update when model patch is in
-        // Menu { MenuItemRepeater { model: testcase.menuItemsText MenuItem { text: modelData } }
-        ContextMenu { model: testcase.menuItemsText }
+        // Menu { MenuItemRepeater { model: testcase.itemsText MenuItem { text: modelData } }
+        ContextMenu { model: testcase.itemsText }
     }
 
     function test_modelCreation() {
         var menu = modelCreationComponent.createObject(testcase)
-        compare(menu.menuItems.length, testcase.menuItemsText.length)
-        for (var i = 0; i < menu.menuItems.length; i++)
-            compare(menu.menuItems[i].text, testcase.menuItemsText[i])
+        compare(menu.items.length, testcase.itemsText.length)
+        for (var i = 0; i < menu.items.length; i++)
+            compare(menu.items[i].text, testcase.itemsText[i])
         menu.destroy()
     }
 
     function test_trigger() {
-        menuItem = menu.menuItems[2]
+        menuItem = menu.items[2]
         menuItem.trigger()
 
         compare(menuItemSpy.count, 1)
@@ -116,24 +116,24 @@ TestCase {
     }
 
     function test_check() {
-        for (var i = 0; i < menu.menuItems.length; i++)
-            menu.menuItems[i].checkable = true
+        for (var i = 0; i < menu.items.length; i++)
+            menu.items[i].checkable = true
 
-        menuItem = menu.menuItems[2]
+        menuItem = menu.items[2]
         compare(menuItem.checkable, true)
         compare(menuItem.checked, false)
         menuItem.trigger()
 
-        for (i = 0; i < menu.menuItems.length; i++)
-            compare(menu.menuItems[i].checked, i === 2)
+        for (i = 0; i < menu.items.length; i++)
+            compare(menu.items[i].checked, i === 2)
 
-        menuItem = menu.menuItems[3]
+        menuItem = menu.items[3]
         compare(menuItem.checkable, true)
         compare(menuItem.checked, false)
         menuItem.trigger()
 
-        for (i = 0; i < menu.menuItems.length; i++)
-            compare(menu.menuItems[i].checked, i === 2 || i === 3)
+        for (i = 0; i < menu.items.length; i++)
+            compare(menu.items[i].checked, i === 2 || i === 3)
 
         compare(menuItemSpy.count, 2)
         compare(menuSpy.count, 2)
@@ -143,26 +143,26 @@ TestCase {
     ExclusiveGroup { id: eg }
 
     function test_exclusive() {
-        for (var i = 0; i < menu.menuItems.length; i++) {
-            menu.menuItems[i].checkable = true
-            menu.menuItems[i].exclusiveGroup = eg
+        for (var i = 0; i < menu.items.length; i++) {
+            menu.items[i].checkable = true
+            menu.items[i].exclusiveGroup = eg
         }
 
-        menuItem = menu.menuItems[2]
+        menuItem = menu.items[2]
         compare(menuItem.checkable, true)
         compare(menuItem.checked, false)
         menuItem.trigger()
 
-        for (i = 0; i < menu.menuItems.length; i++)
-            compare(menu.menuItems[i].checked, i === 2)
+        for (i = 0; i < menu.items.length; i++)
+            compare(menu.items[i].checked, i === 2)
 
-        menuItem = menu.menuItems[3]
+        menuItem = menu.items[3]
         compare(menuItem.checkable, true)
         compare(menuItem.checked, false)
         menuItem.trigger()
 
-        for (i = 0; i < menu.menuItems.length; i++)
-            compare(menu.menuItems[i].checked, i === 3)
+        for (i = 0; i < menu.items.length; i++)
+            compare(menu.items[i].checked, i === 3)
 
         compare(menuItemSpy.count, 2)
         compare(menuSpy.count, 2)
@@ -170,15 +170,15 @@ TestCase {
     }
 
     function test_selectedIndex() {
-        for (var i = 0; i < menu.menuItems.length; i++)
-            menu.menuItems[i].checkable = true
+        for (var i = 0; i < menu.items.length; i++)
+            menu.items[i].checkable = true
 
         menu.selectedIndex = 3
         compare(menu.selectedIndex, 3)
-        verify(!menu.menuItems[menu.selectedIndex].checked)
+        verify(!menu.items[menu.selectedIndex].checked)
 
-        menu.menuItems[2].trigger()
+        menu.items[2].trigger()
         compare(menu.selectedIndex, 2)
-        verify(menu.menuItems[menu.selectedIndex].checked)
+        verify(menu.items[menu.selectedIndex].checked)
     }
 }

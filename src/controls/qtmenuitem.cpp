@@ -51,7 +51,8 @@
 QT_BEGIN_NAMESPACE
 
 QtMenuBase::QtMenuBase(QObject *parent)
-    : QObject(parent), m_parentMenu(0), m_visualItem(0)
+    : QObject(parent), m_visible(true),
+      m_parentMenu(0), m_visualItem(0)
 {
     m_platformItem = QGuiApplicationPrivate::platformTheme()->createPlatformMenuItem();
 }
@@ -59,6 +60,14 @@ QtMenuBase::QtMenuBase(QObject *parent)
 QtMenuBase::~QtMenuBase()
 {
     delete m_platformItem;
+}
+
+void QtMenuBase::setVisible(bool v)
+{
+    if (v != m_visible) {
+        m_visible = v;
+        emit visibleChanged();
+    }
 }
 
 QtMenu *QtMenuBase::parentMenu() const
@@ -93,7 +102,6 @@ void QtMenuBase::setVisualItem(QQuickItem *item)
     \qmltype MenuSeparator
     \instantiates QtMenuSeparator
     \inqmlmodule QtQuick.Controls 1.0
-    \inherits Item
     \ingroup menus
     \brief MenuSeparator provides a separator for your items inside a menu.
 
@@ -107,6 +115,73 @@ QtMenuSeparator::QtMenuSeparator(QObject *parent)
         platformItem()->setIsSeparator(true);
 }
 
+QtMenuText::QtMenuText(QObject *parent)
+    : QtMenuBase(parent), m_enabled(true)
+{ }
+
+QtMenuText::~QtMenuText()
+{ }
+
+void QtMenuText::setParentMenu(QtMenu *parentMenu)
+{
+    QtMenuBase::setParentMenu(parentMenu);
+    connect(this, SIGNAL(triggered()), parentMenu, SLOT(updateSelectedIndex()));
+}
+
+void QtMenuText::trigger()
+{
+    emit triggered();
+}
+
+void QtMenuText::setEnabled(bool enabled)
+{
+    if (enabled != m_enabled) {
+        m_enabled = enabled;
+        if (platformItem()) {
+            platformItem()->setEnabled(m_enabled);
+            syncWithPlatformMenu();
+        }
+
+        emit enabledChanged();
+    }
+}
+
+void QtMenuText::setText(const QString &text)
+{
+    if (text != m_text) {
+        m_text = text;
+        if (platformItem()) {
+            platformItem()->setText(m_text);
+            syncWithPlatformMenu();
+        }
+        emit textChanged();
+    }
+}
+
+void QtMenuText::setIconSource(const QUrl &iconSource)
+{
+    if (iconSource != m_iconSource) {
+        m_iconSource = iconSource;
+        if (platformItem()) {
+            platformItem()->setIcon(icon());
+            syncWithPlatformMenu();
+        }
+
+        emit iconSourceChanged();
+    }
+}
+
+void QtMenuText::setIconName(const QString &iconName)
+{
+    if (iconName != m_iconName) {
+        m_iconName = iconName;
+        if (platformItem()) {
+            platformItem()->setIcon(icon());
+            syncWithPlatformMenu();
+        }
+        emit iconNameChanged();
+    }
+}
 
 /*!
     \qmltype MenuItem
@@ -206,19 +281,20 @@ QtMenuSeparator::QtMenuSeparator(QObject *parent)
     \sa triggered(), Action::trigger()
 */
 
+/*! \qmlproperty ExclusiveGroup MenuItem::exclusiveGroup
+
+    ...
+
+    \sa checked, checkable
+*/
+
 QtMenuItem::QtMenuItem(QObject *parent)
-    : QtMenuBase(parent), m_action(0)
+    : QtMenuText(parent), m_action(0)
 { }
 
 QtMenuItem::~QtMenuItem()
 {
     unbindFromAction(m_action);
-}
-
-void QtMenuItem::setParentMenu(QtMenu *parentMenu)
-{
-    QtMenuBase::setParentMenu(parentMenu);
-    connect(this, SIGNAL(triggered()), parentMenu, SLOT(updateSelectedIndex()));
 }
 
 void QtMenuItem::bindToAction(QtAction *action)
@@ -316,11 +392,7 @@ void QtMenuItem::setText(const QString &text)
 
 void QtMenuItem::updateText()
 {
-    if (platformItem()) {
-        platformItem()->setText(text());
-        syncWithPlatformMenu();
-    }
-    emit textChanged();
+    QtMenuText::setText(text());
 }
 
 QString QtMenuItem::shortcut() const
@@ -394,11 +466,7 @@ void QtMenuItem::setEnabled(bool enabled)
 
 void QtMenuItem::updateEnabled()
 {
-    if (platformItem()) {
-        platformItem()->setEnabled(enabled());
-        syncWithPlatformMenu();
-    }
-    emit enabledChanged();
+    QtMenuText::setEnabled(enabled());
 }
 
 QUrl QtMenuItem::iconSource() const
@@ -413,11 +481,7 @@ void QtMenuItem::setIconSource(const QUrl &iconSource)
 
 void QtMenuItem::updateIconSource()
 {
-    if (platformItem()) {
-        platformItem()->setIcon(m_action->icon());
-        syncWithPlatformMenu();
-    }
-    emit iconSourceChanged();
+    QtMenuText::setIconSource(iconSource());
 }
 
 QString QtMenuItem::iconName() const
@@ -432,17 +496,20 @@ void QtMenuItem::setIconName(const QString &iconName)
 
 void QtMenuItem::updateIconName()
 {
-    if (platformItem()) {
-        platformItem()->setIcon(m_action->icon());
-        syncWithPlatformMenu();
-    }
-    emit iconNameChanged();
+    QtMenuText::setIconName(iconName());
+}
+
+QIcon QtMenuItem::icon() const
+{
+    return m_action ? m_action->icon() : QtMenuText::icon();
 }
 
 void QtMenuItem::trigger()
 {
     if (m_action)
         m_action->trigger();
+    else
+        QtMenuText::trigger();
 }
 
 QT_END_NAMESPACE

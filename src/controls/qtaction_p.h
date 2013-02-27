@@ -60,7 +60,7 @@ class QtAction : public QObject
     Q_PROPERTY(QUrl iconSource READ iconSource WRITE setIconSource NOTIFY iconSourceChanged)
     Q_PROPERTY(QString iconName READ iconName WRITE setIconName NOTIFY iconNameChanged)
     Q_PROPERTY(QVariant __icon READ iconVariant NOTIFY iconChanged)
-    Q_PROPERTY(QString toolTip READ tooltip WRITE setToolTip NOTIFY toolTipChanged)
+    Q_PROPERTY(QString tooltip READ tooltip WRITE setTooltip NOTIFY tooltipChanged)
     Q_PROPERTY(bool enabled READ isEnabled WRITE setEnabled NOTIFY enabledChanged)
     Q_PROPERTY(bool checkable READ isCheckable WRITE setCheckable NOTIFY checkableChanged)
     Q_PROPERTY(bool checked READ isChecked WRITE setChecked DESIGNABLE isCheckable NOTIFY toggled)
@@ -68,7 +68,6 @@ class QtAction : public QObject
     Q_PROPERTY(QtExclusiveGroup *exclusiveGroup READ exclusiveGroup WRITE setExclusiveGroup NOTIFY exclusiveGroupChanged)
 #ifndef QT_NO_SHORTCUT
     Q_PROPERTY(QString shortcut READ shortcut WRITE setShortcut NOTIFY shortcutChanged)
-    Q_PROPERTY(QString mnemonic READ mnemonic WRITE setMnemonic NOTIFY mnemonicChanged)
 #endif
 
 public:
@@ -90,8 +89,8 @@ public:
     QUrl iconSource() const { return m_iconSource; }
     void setIconSource(const QUrl &iconSource);
 
-    QString tooltip() const { return m_toolTip; }
-    void setToolTip(const QString &toolTip);
+    QString tooltip() const { return m_tooltip; }
+    void setTooltip(const QString &tooltip);
 
     bool isEnabled() const { return m_enabled; }
     void setEnabled(bool e);
@@ -125,7 +124,7 @@ Q_SIGNALS:
     void iconChanged();
     void iconNameChanged();
     void iconSourceChanged();
-    void toolTipChanged(QString arg);
+    void tooltipChanged(QString arg);
     void enabledChanged();
     void checkableChanged();
 
@@ -141,7 +140,7 @@ private:
     QtExclusiveGroup *m_exclusiveGroup;
     QKeySequence m_shortcut;
     QKeySequence m_mnemonic;
-    QString m_toolTip;
+    QString m_tooltip;
 };
 
 QT_END_NAMESPACE

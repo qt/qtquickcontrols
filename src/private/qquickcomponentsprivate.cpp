@@ -51,7 +51,7 @@ QQuickComponentsPrivate::QQuickComponentsPrivate(QObject *parent)
 
 }
 
-void QQuickComponentsPrivate::showToolTip(QQuickItem *item, const QPointF &pos, const QString &str)
+void QQuickComponentsPrivate::showTooltip(QQuickItem *item, const QPointF &pos, const QString &str)
 {
     if (!item || !item->window())
         return;
@@ -59,7 +59,7 @@ void QQuickComponentsPrivate::showToolTip(QQuickItem *item, const QPointF &pos, 
     QToolTip::showText(item->window()->mapToGlobal(item->mapToScene(pos).toPoint()), str);
 }
 
-void QQuickComponentsPrivate::hideToolTip()
+void QQuickComponentsPrivate::hideTooltip()
 {
     QToolTip::hideText();
 }

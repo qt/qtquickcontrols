@@ -72,7 +72,7 @@ Control {
     Accessible.role: Accessible.Button
     Accessible.description: tooltip
 
-    signal toolTipTriggered
+    signal tooltipTriggered
 
     // implementation
     property string __position: "only"
@@ -116,14 +116,14 @@ Control {
         }
 
         onClicked: button.clicked()
-        onExited: PrivateHelper.hideToolTip()
-        onCanceled: PrivateHelper.hideToolTip()
+        onExited: PrivateHelper.hideTooltip()
+        onCanceled: PrivateHelper.hideTooltip()
         onPressed: if (activeFocusOnPress) button.forceActiveFocus()
 
         Timer {
             interval: 1000
             running: behavior.containsMouse && !pressed && tooltip.length
-            onTriggered: PrivateHelper.showToolTip(behavior, Qt.point(behavior.mouseX, behavior.mouseY), tooltip)
+            onTriggered: PrivateHelper.showTooltip(behavior, Qt.point(behavior.mouseX, behavior.mouseY), tooltip)
         }
     }
 

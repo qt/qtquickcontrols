@@ -193,7 +193,7 @@ ApplicationWindow {
         MouseArea {
             anchors.fill:  parent
             acceptedButtons: Qt.RightButton
-            onPressed: editmenu.showPopup(mouseX, mouseY)
+            onPressed: editmenu.popup()
         }
 
         CheckBox {

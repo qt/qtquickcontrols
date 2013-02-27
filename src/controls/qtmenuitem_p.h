@@ -46,6 +46,8 @@
 #include <QtCore/QPointF>
 #include <QtCore/QPointer>
 #include <QtCore/QUrl>
+#include <QtCore/QVariant>
+#include <QtGui/QIcon>
 
 QT_BEGIN_NAMESPACE
 
@@ -59,12 +61,21 @@ class QtMenu;
 class QtMenuBase: public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(bool isNative READ isNative CONSTANT)
-    Q_PROPERTY(QQuickItem * __visualItem WRITE setVisualItem)
+    Q_PROPERTY(bool visible READ visible WRITE setVisible NOTIFY visibleChanged)
+
+    Q_PROPERTY(QtMenu *__parentMenu READ parentMenu CONSTANT)
+    Q_PROPERTY(bool __isNative READ isNative CONSTANT)
+    Q_PROPERTY(QQuickItem *__visualItem READ visualItem WRITE setVisualItem)
+
+Q_SIGNALS:
+    void visibleChanged();
 
 public:
     QtMenuBase(QObject *parent = 0);
     ~QtMenuBase();
+
+    bool visible() const { return m_visible; }
+    void setVisible(bool);
 
     QtMenu *parentMenu() const;
     virtual void setParentMenu(QtMenu *parentMenu);
@@ -75,10 +86,10 @@ public:
     QQuickItem *visualItem() const;
     void setVisualItem(QQuickItem *item);
 
-protected:
     virtual bool isNative() { return m_platformItem != 0; }
 
 private:
+    bool m_visible;
     QtMenu *m_parentMenu;
     QPlatformMenuItem *m_platformItem;
     QPointer<QQuickItem> m_visualItem;
@@ -91,32 +102,93 @@ public:
     QtMenuSeparator(QObject *parent = 0);
 };
 
-class QtMenuItem: public QtMenuBase
+class QtMenuText: public QtMenuBase
 {
     Q_OBJECT
     Q_PROPERTY(QString text READ text WRITE setText NOTIFY textChanged)
-    Q_PROPERTY(QString shortcut READ shortcut WRITE setShortcut NOTIFY shortcutChanged)
-    Q_PROPERTY(bool checkable READ checkable WRITE setCheckable NOTIFY checkableChanged)
-    Q_PROPERTY(bool checked READ checked WRITE setChecked NOTIFY toggled)
     Q_PROPERTY(bool enabled READ enabled WRITE setEnabled NOTIFY enabledChanged)
     Q_PROPERTY(QUrl iconSource READ iconSource WRITE setIconSource NOTIFY iconSourceChanged)
     Q_PROPERTY(QString iconName READ iconName WRITE setIconName NOTIFY iconNameChanged)
-    Q_PROPERTY(QtExclusiveGroup *exclusiveGroup READ exclusiveGroup WRITE setExclusiveGroup NOTIFY exclusiveGroupChanged)
 
+    Q_PROPERTY(QVariant __icon READ iconVariant  NOTIFY __iconChanged)
+
+public Q_SLOTS:
+    virtual void trigger();
+
+Q_SIGNALS:
+    void triggered();
+    void textChanged();
+    void enabledChanged();
+
+    void iconSourceChanged();
+    void iconNameChanged();
+
+    void __iconChanged();
+
+public:
+    QtMenuText(QObject *parent = 0);
+    ~QtMenuText();
+
+    virtual bool enabled() const { return m_enabled; }
+    virtual void setEnabled(bool enabled);
+
+    virtual QString text() const { return m_text; }
+    virtual void setText(const QString &text);
+
+    virtual QUrl iconSource() const { return m_iconSource; }
+    virtual void setIconSource(const QUrl &icon);
+    virtual QString iconName() const { return m_iconName; }
+    virtual void setIconName(const QString &icon);
+
+    void setParentMenu(QtMenu *parentMenu);
+
+    virtual QIcon icon() const { return QIcon(); } // TODO
+    QVariant iconVariant() const { return QVariant(icon()); }
+
+private:
+    QString m_text;
+    bool m_enabled;
+    QUrl m_iconSource;
+    QString m_iconName;
+};
+
+class QtMenuItem: public QtMenuText
+{
+    Q_OBJECT
+    Q_PROPERTY(bool checkable READ checkable WRITE setCheckable NOTIFY checkableChanged)
+    Q_PROPERTY(bool checked READ checked WRITE setChecked NOTIFY toggled)
+    Q_PROPERTY(QtExclusiveGroup *exclusiveGroup READ exclusiveGroup WRITE setExclusiveGroup NOTIFY exclusiveGroupChanged)
+    Q_PROPERTY(QString shortcut READ shortcut WRITE setShortcut NOTIFY shortcutChanged)
     Q_PROPERTY(QtAction *action READ action WRITE setAction NOTIFY actionChanged)
-    Q_PROPERTY(QtMenu *parentMenu READ parentMenu)
+
+public Q_SLOTS:
+    void trigger();
+
+Q_SIGNALS:
+    void checkableChanged();
+    void toggled(bool);
+    void exclusiveGroupChanged();
+
+    void shortcutChanged();
+    void actionChanged();
 
 public:
     QtMenuItem(QObject *parent = 0);
     ~QtMenuItem();
 
-    void setParentMenu(QtMenu *parentMenu);
-
-    QtAction *action();
-    void setAction(QtAction *a);
+    bool enabled() const;
+    void setEnabled(bool enabled);
 
     QString text() const;
     void setText(const QString &text);
+
+    QUrl iconSource() const;
+    void setIconSource(const QUrl &icon);
+    QString iconName() const;
+    void setIconName(const QString &icon);
+
+    QtAction *action();
+    void setAction(QtAction *a);
 
     QString shortcut() const;
     void setShortcut(const QString &shortcut);
@@ -130,30 +202,7 @@ public:
     QtExclusiveGroup *exclusiveGroup() const;
     void setExclusiveGroup(QtExclusiveGroup *);
 
-    bool enabled() const;
-    void setEnabled(bool enabled);
-
-    QUrl iconSource() const;
-    void setIconSource(const QUrl &icon);
-    QString iconName() const;
-    void setIconName(const QString &icon);
-
-Q_SIGNALS:
-    void triggered();
-    void textChanged();
-    void shortcutChanged();
-    void checkableChanged();
-    void exclusiveGroupChanged();
-    void toggled(bool);
-    void enabledChanged();
-
-    void iconSourceChanged();
-    void iconNameChanged();
-
-    void actionChanged();
-
-public Q_SLOTS:
-    void trigger();
+    QIcon icon() const;
 
 protected Q_SLOTS:
     virtual void updateText();

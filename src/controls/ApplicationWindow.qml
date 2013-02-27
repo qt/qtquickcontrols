@@ -150,17 +150,19 @@ Window {
             anchors.right: parent.right
         }
 
+        onVisibleChanged: if (visible && menuBar) menuBar.__parentWindow = root
+
         states: State {
             name: "hasMenuBar"
-            when: menuBar && !menuBar.isNative
+            when: menuBar && !menuBar.__isNative
 
             ParentChange {
-                target: menuBar
+                target: menuBar.__contentItem
                 parent: backgroundItem
             }
 
             PropertyChanges {
-                target: menuBar
+                target: menuBar.__contentItem
                 x: 0
                 y: 0
                 width: backgroundItem.width
@@ -168,7 +170,7 @@ Window {
 
             AnchorChanges {
                 target: toolBarArea
-                anchors.top: menuBar.bottom
+                anchors.top: menuBar.__contentItem.bottom
             }
         }
     }

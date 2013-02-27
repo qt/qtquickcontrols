@@ -97,14 +97,14 @@ import "Styles/Settings.js" as Settings
 Control {
     id: comboBox
 
-    default property alias menuItems: popup.menuItems
+    default property alias items: popup.items
     property alias model: popup.model
     property alias textRole: popup.textRole
 
     property alias selectedIndex: popup.selectedIndex
     readonly property alias selectedText: popup.selectedText
 
-    readonly property bool pressed: mouseArea.pressed && mouseArea.containsMouse || popup.popupVisible
+    readonly property bool pressed: mouseArea.pressed && mouseArea.containsMouse || popup.__popupVisible
 
     /* \internal */
     property alias __containsMouse: mouseArea.containsMouse
@@ -123,13 +123,14 @@ Control {
     ExclusiveGroup { id: eg }
 
     StyleItem { id: styleItem }
+
     Component.onCompleted: {
         if (selectedIndex === -1)
             selectedIndex = 0
         if (styleItem.style == "mac") {
             popup.x -= 10
             popup.y += 4
-            popup.font.pointSize = 13
+            popup.__font.pointSize = 13
         }
     }
 
@@ -144,7 +145,8 @@ Control {
 
         property int x: 0
         property int y: centerSelectedText ? 0 : comboBox.height
-        minimumWidth: comboBox.width
+        __minimumWidth: comboBox.width
+        visualParent: comboBox
 
         function finalizeItem(item) {
             item.action.checkable = true
@@ -152,9 +154,9 @@ Control {
         }
 
         function show() {
-            menuItems[comboBox.selectedIndex].checked = true
-            currentIndex = comboBox.selectedIndex
-            showPopup(x, y, centerSelectedText ? comboBox.selectedIndex : 0, comboBox)
+            items[comboBox.selectedIndex].checked = true
+            __currentIndex = comboBox.selectedIndex
+            __popup(x, y, centerSelectedText ? comboBox.selectedIndex : 0)
         }
     }
 

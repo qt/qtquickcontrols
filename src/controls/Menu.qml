@@ -89,24 +89,25 @@ import "Styles/Settings.js" as Settings
 MenuPrivate {
     id: root
 
+    //! \internal
     property Component style: Qt.createComponent(Settings.THEME_PATH + "/MenuStyle.qml", root)
 
-    //! internal
-    property var menuBar: null
-    //! internal
-    property int currentIndex: -1
-    //! internal
-    onMenuClosed: currentIndex = -1
+    //! \internal
+    property var __menuBar: null
+    //! \internal
+    property int __currentIndex: -1
+    //! \internal
+    on__MenuClosed: __currentIndex = -1
 
-    //! internal
-    menuContentItem: Loader {
-        sourceComponent: menuComponent
-        active: !root.isNative && root.popupVisible
+    //! \internal
+    __contentItem: Loader {
+        sourceComponent: __menuComponent
+        active: !root.__isNative && root.__popupVisible
         focus: true
     }
 
-    //! internal
-    property Component menuComponent: Loader {
+    //! \internal
+    property Component __menuComponent: Loader {
         id: menuFrameLoader
 
         property Style __style: styleLoader.item
@@ -132,22 +133,22 @@ MenuPrivate {
         }
 
         focus: true
-        Keys.forwardTo: menuBar ? [menuBar] : []
-        Keys.onEscapePressed: root.dismissMenu()
+        Keys.forwardTo: __menuBar ? [__menuBar] : []
+        Keys.onEscapePressed: root.__dismissMenu()
 
         Keys.onDownPressed: {
-            if (root.currentIndex < 0) {
-                root.currentIndex = 0
+            if (root.__currentIndex < 0) {
+                root.__currentIndex = 0
                 return
             }
 
-            for (var i = root.currentIndex + 1;
-                 i < root.menuItems.length && !canBeHovered(i); i++)
+            for (var i = root.__currentIndex + 1;
+                 i < root.items.length && !canBeHovered(i); i++)
                 ;
         }
 
         Keys.onUpPressed: {
-            for (var i = root.currentIndex - 1;
+            for (var i = root.__currentIndex - 1;
                  i >= 0 && !canBeHovered(i); i--)
                 ;
         }
@@ -155,22 +156,22 @@ MenuPrivate {
         function canBeHovered(index) {
             var item = itemsRepeater.itemAt(index)
             if (!item["isSeparator"] && item.enabled) {
-                root.currentIndex = index
+                root.__currentIndex = index
                 return true
             }
             return false
         }
 
         Keys.onLeftPressed: {
-            if (root.parentMenu)
-                closeMenu()
+            if (root.__parentMenu)
+                __closeMenu()
         }
 
         Keys.onRightPressed: {
-            var item = itemsRepeater.itemAt(root.currentIndex)
+            var item = itemsRepeater.itemAt(root.__currentIndex)
             if (item && item.hasSubmenu) {
                 item.showSubMenu(true)
-                item.menuItem.currentIndex = 0
+                item.menuItem.__currentIndex = 0
             }
         }
 
@@ -179,10 +180,10 @@ MenuPrivate {
         Keys.onEnterPressed: menuFrameLoader.triggerAndDismiss()
 
         function triggerAndDismiss() {
-            var item = itemsRepeater.itemAt(root.currentIndex)
+            var item = itemsRepeater.itemAt(root.__currentIndex)
             if (item && !item.isSeparator) {
                 item.menuItem.trigger()
-                root.dismissMenu()
+                root.__dismissMenu()
             }
         }
 
@@ -211,11 +212,11 @@ MenuPrivate {
                         currentItem.closeSubMenu()
                     currentItem = column.childAt(pos.x, pos.y)
                     if (currentItem) {
-                        root.currentIndex = currentItem.menuItemIndex
+                        root.__currentIndex = currentItem.menuItemIndex
                         if (currentItem.hasSubmenu && !currentItem.menuItem.popupVisible)
                             currentItem.showSubMenu(false)
                     } else {
-                        root.currentIndex = -1
+                        root.__currentIndex = -1
                     }
                 }
             }
@@ -227,15 +228,15 @@ MenuPrivate {
 
                 Repeater {
                     id: itemsRepeater
-                    model: root.menuItems
+                    model: root.items
 
                     Loader {
                         id: menuItemLoader
 
                         property var menuItem: modelData
                         property bool isSeparator: menuItem ? !menuItem.hasOwnProperty("text") : false
-                        property bool hasSubmenu: menuItem ? !!menuItem["menuItems"] : false
-                        property bool selected: !isSeparator && root.currentIndex === index
+                        property bool hasSubmenu: menuItem ? !!menuItem["items"] : false
+                        property bool selected: !isSeparator && root.__currentIndex === index
 
                         property int menuItemIndex: index
 
@@ -244,8 +245,8 @@ MenuPrivate {
 
                         function showSubMenu(immediately) {
                             if (immediately) {
-                                if (root.currentIndex === menuItemIndex)
-                                    menuItem.showPopup(menuFrameLoader.subMenuXPos, 0, -1, menuItemLoader)
+                                if (root.__currentIndex === menuItemIndex)
+                                    menuItem.__popup(menuFrameLoader.subMenuXPos, 0, -1)
                             } else {
                                 openMenuTimer.start()
                             }
@@ -263,15 +264,15 @@ MenuPrivate {
                             id: closeMenuTimer
                             interval: 1
                             onTriggered: {
-                                if (root.currentIndex !== menuItemIndex)
-                                    menuItem.closeMenu()
+                                if (root.__currentIndex !== menuItemIndex)
+                                    menuItem.__closeMenu()
                             }
                         }
 
-                        Binding {
-                            target: menuItem
-                            property: "__visualItem"
-                            value: menuItemLoader
+                        Component.onCompleted: {
+                            menuItem.__visualItem = menuItemLoader
+                            if (hasSubmenu)
+                                menuItem.visualParent = menuItemLoader
                         }
                     }
                 }
@@ -280,7 +281,7 @@ MenuPrivate {
                     for (var i = 0; i < children.length; i++) {
                         var item = children[i]["item"]
                         if (item)
-                            item.implicitWidth = Math.max(root.minimumWidth, implicitWidth)
+                            item.implicitWidth = Math.max(root.__minimumWidth, implicitWidth)
                     }
                 }
             }

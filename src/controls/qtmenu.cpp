@@ -45,6 +45,7 @@
 #include "qtmenupopupwindow_p.h"
 #include <qabstractitemmodel.h>
 
+#include <QtGui/QCursor>
 #include "private/qguiapplication_p.h"
 #include <QtGui/qpa/qplatformtheme.h>
 #include <QtGui/qpa/qplatformmenu.h>
@@ -87,36 +88,27 @@ QT_BEGIN_NAMESPACE
 */
 
 /*!
-    \qmlmethod void Menu::showPopup(x, y, item, parent)
+    \qmlmethod void Menu::popup(referenceItem, x, y, atIndex)
 
-    Shows the popup related to this menu. It can block on some platforms, so test it accordingly.
-*/
-
-/*!
-    \qmlmethod void Menu::closeMenu()
-
-    Closes current menu (and submenus) only.
-*/
-
-/*!
-    \qmlmethod void Menu::dismissMenu()
-
-    Closes all menus related to this one, including its parent menu.
+    Pops up this menu at the given position relative to \c referenceItem.
+    It can block on some platforms, so test it accordingly.
 */
 
 QtMenu::QtMenu(QObject *parent)
-    : QtMenuItem(parent),
+    : QtMenuText(parent),
       m_selectedIndex(-1),
       m_highlightedIndex(0),
+      m_visualParent(0),
       m_hasNativeModel(false),
       m_minimumWidth(0),
       m_popupWindow(0),
       m_menuContentItem(0),
-      m_popupVisible(false)
+      m_popupVisible(false),
+      m_parentWindow(0)
 {
     m_platformMenu = QGuiApplicationPrivate::platformTheme()->createPlatformMenu();
     if (m_platformMenu) {
-        connect(m_platformMenu, SIGNAL(aboutToHide()), this, SLOT(closeMenu()));
+        connect(m_platformMenu, SIGNAL(aboutToHide()), this, SLOT(__closeMenu()));
         if (platformItem())
             platformItem()->setMenu(m_platformMenu);
     }
@@ -127,11 +119,11 @@ QtMenu::~QtMenu()
     delete m_platformMenu;
 }
 
-void QtMenu::updateText()
+void QtMenu::setText(const QString &text)
 {
+    QtMenuText::setText(text);
     if (m_platformMenu)
-        m_platformMenu->setText(text());
-    QtMenuItem::updateText();
+        m_platformMenu->setText(this->text());
 }
 
 void QtMenu::setMinimumWidth(int w)
@@ -142,8 +134,6 @@ void QtMenu::setMinimumWidth(int w)
     m_minimumWidth = w;
     if (m_platformMenu)
         m_platformMenu->setMinimumWidth(w);
-
-    emit minimumWidthChanged();
 }
 
 void QtMenu::setFont(const QFont &arg)
@@ -174,10 +164,32 @@ QQmlListProperty<QtMenuBase> QtMenu::menuItems()
     return QQmlListProperty<QtMenuBase>(this, 0, &QtMenu::append_menuItems, &QtMenu::count_menuItems, &QtMenu::at_menuItems, 0);
 }
 
-void QtMenu::showPopup(qreal x, qreal y, int atItemIndex, QObject *reference)
+QQuickWindow *QtMenu::findParentWindow()
+{
+    if (!m_parentWindow) {
+        m_parentWindow = m_visualParent ? m_visualParent->window() : 0;
+        if (!m_parentWindow) {
+            QQuickItem *parentAsItem = qobject_cast<QQuickItem *>(parent());
+            m_parentWindow = visualItem() ? visualItem()->window() :    // Menu as menu item case
+                             parentAsItem ? parentAsItem->window() : 0; //Menu as context menu/popup case
+        }
+    }
+    return m_parentWindow;
+}
+
+void QtMenu::popup()
+{
+    QPoint mousePos = QCursor::pos();
+    if (QQuickWindow *parentWindow = findParentWindow())
+        mousePos = parentWindow->mapFromGlobal(mousePos);
+
+    __popup(mousePos.x(), mousePos.y());
+}
+
+void QtMenu::__popup(qreal x, qreal y, int atItemIndex)
 {
     if (popupVisible())
-        closeMenu();
+        __closeMenu();
 
     setPopupVisible(true);
 
@@ -188,19 +200,12 @@ void QtMenu::showPopup(qreal x, qreal y, int atItemIndex, QObject *reference)
         while (!atItem && atItemIndex < m_menuItems.size())
             atItem = qobject_cast<QtMenuItem *>(m_menuItems[atItemIndex++]);
 
-    QQuickItem *item = qobject_cast<QQuickItem *>(reference);
-
-    QQuickWindow *parentWindow = item ? item->window() : qobject_cast<QQuickWindow *>(reference);
-    if (!parentWindow) {
-        QQuickItem *parentAsItem = qobject_cast<QQuickItem *>(parent());
-        parentWindow = visualItem() ? visualItem()->window() :    // Menu as menu item case
-                       parentAsItem ? parentAsItem->window() : 0; //Menu as context menu/popup case
-    }
+    QQuickWindow *parentWindow = findParentWindow();
 
     if (m_platformMenu) {
         QPointF screenPosition(x, y);
-        if (item)
-            screenPosition = item->mapToScene(screenPosition);
+        if (m_visualParent)
+            screenPosition = m_visualParent->mapToScene(screenPosition);
         m_platformMenu->showPopup(parentWindow, screenPosition.toPoint(), atItem ? atItem->platformItem() : 0);
     } else {
         m_popupWindow = new QtMenuPopupWindow();
@@ -209,8 +214,8 @@ void QtMenu::showPopup(qreal x, qreal y, int atItemIndex, QObject *reference)
         connect(m_popupWindow, SIGNAL(visibleChanged(bool)), this, SLOT(windowVisibleChanged(bool)));
 
         if (parentWindow) {
-            if (item) {
-                QPointF pos = item->mapToItem(parentWindow->contentItem(), QPointF(x, y));
+            if (m_visualParent) {
+                QPointF pos = m_visualParent->mapToItem(parentWindow->contentItem(), QPointF(x, y));
                 x = pos.x();
                 y = pos.y();
             }
@@ -234,15 +239,38 @@ void QtMenu::showPopup(qreal x, qreal y, int atItemIndex, QObject *reference)
     }
 }
 
-void QtMenu::closeMenu()
+void QtMenu::setVisualParent(QQuickItem *item)
+{
+    if (m_visualParent != item) {
+        m_visualParent = item;
+        emit visualParentChanged();
+    }
+}
+
+void QtMenu::setMenuContentItem(QQuickItem *item)
+{
+    if (m_menuContentItem != item)
+        m_menuContentItem = item;
+}
+
+void QtMenu::setPopupVisible(bool v)
+{
+    if (m_popupVisible != v) {
+        m_popupVisible = v;
+        emit popupVisibleChanged();
+    }
+}
+
+void QtMenu::__closeMenu()
 {
     setPopupVisible(false);
     if (m_popupWindow)
         m_popupWindow->setVisible(false);
-    emit menuClosed();
+    m_parentWindow = 0;
+    emit __menuClosed();
 }
 
-void QtMenu::dismissMenu()
+void QtMenu::__dismissMenu()
 {
     if (m_popupWindow)
         m_popupWindow->dismissMenu();
@@ -257,11 +285,11 @@ void QtMenu::windowVisibleChanged(bool v)
         }
         m_popupWindow->deleteLater();
         m_popupWindow = 0;
-        closeMenu();
+        __closeMenu();
     }
 }
 
-void QtMenu::clearMenuItems()
+void QtMenu::clear()
 {
     foreach (QtMenuBase *item, m_menuItems) {
         if (m_platformMenu)
@@ -281,27 +309,17 @@ void QtMenu::addMenuItem(QtMenuBase *menuItem)
     }
 }
 
-QtMenuItem *QtMenu::addMenuItem(const QString &text)
+QtMenuItem *QtMenu::addItem(const QString &text)
 {
     QtMenuItem *menuItem = new QtMenuItem(this);
     menuItem->setText(text);
     addMenuItem(menuItem);
 
-    emit menuItemsChanged();
+    emit itemsChanged();
     return menuItem;
 }
 
-QString QtMenu::itemTextAt(int index) const
-{
-    QtMenuItem *mi = 0;
-    if (index >= 0 && index < m_menuItems.size()
-        && (mi = qobject_cast<QtMenuItem *>(m_menuItems.at(index))))
-        return mi->text();
-    else
-        return "";
-}
-
-QString QtMenu::modelTextAt(int index) const
+QString QtMenu::__modelTextAt(int index) const
 {
     if (QAbstractItemModel *model = qobject_cast<QAbstractItemModel*>(m_model.value<QObject*>())) {
         return model->data(model->index(index, 0)).toString();
@@ -311,7 +329,7 @@ QString QtMenu::modelTextAt(int index) const
     return "";
 }
 
-int QtMenu::modelCount() const
+int QtMenu::__modelCount() const
 {
     if (QAbstractItemModel *model = qobject_cast<QAbstractItemModel*>(m_model.value<QObject*>())) {
         return model->rowCount();
@@ -346,21 +364,14 @@ QtMenuBase *QtMenu::at_menuItems(QQmlListProperty<QtMenuBase> *list, int index)
 
 void QtMenu::setModel(const QVariant &newModel) {
     if (m_model != newModel) {
-
-        // Clean up any existing connections
-        if (QAbstractItemModel *oldModel = qobject_cast<QAbstractItemModel*>(m_model.value<QObject*>())) {
-            disconnect(oldModel, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SIGNAL(rebuildMenu()));
-        }
-
         m_hasNativeModel = false;
         m_model = newModel;
 
-        if (QAbstractItemModel *model = qobject_cast<QAbstractItemModel*>(newModel.value<QObject*>())) {
+        if (qobject_cast<QAbstractItemModel*>(newModel.value<QObject*>()))
             m_hasNativeModel = true;
-            connect(model, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SIGNAL(rebuildMenu()));
-        } else if (newModel.canConvert(QVariant::StringList)) {
+        else if (newModel.canConvert(QVariant::StringList))
             m_hasNativeModel = true;
-        }
+
         emit modelChanged(m_model);
     }
 }

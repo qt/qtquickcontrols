@@ -69,7 +69,7 @@ QT_BEGIN_NAMESPACE
 */
 
 /*!
-    \qmlproperty string Action::toolTip
+    \qmlproperty string Action::tooltip
 */
 
 /*!
@@ -204,11 +204,11 @@ void QtAction::setIconName(const QString &iconName)
     emit iconChanged();
 }
 
-void QtAction::setToolTip(const QString &arg)
+void QtAction::setTooltip(const QString &arg)
 {
-    if (m_toolTip != arg) {
-        m_toolTip = arg;
-        emit toolTipChanged(arg);
+    if (m_tooltip != arg) {
+        m_tooltip = arg;
+        emit tooltipChanged(arg);
     }
 }
 

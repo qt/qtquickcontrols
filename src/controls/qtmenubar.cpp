@@ -41,6 +41,7 @@
 
 #include "qtmenubar_p.h"
 
+#include <QtQuick/QQuickItem>
 #include "private/qguiapplication_p.h"
 #include <QtGui/qpa/qplatformtheme.h>
 #include <QtGui/qpa/qplatformmenu.h>
@@ -59,10 +60,9 @@ QT_BEGIN_NAMESPACE
   \internal
   \inqmlmodule QtQuick.Controls 1.0
  */
-QtMenuBar::QtMenuBar(QQuickItem *parent)
-    : QQuickItem(parent)
+QtMenuBar::QtMenuBar(QObject *parent)
+    : QObject(parent), m_contentItem(0), m_parentWindow(0)
 {
-    connect(this, SIGNAL(parentChanged(QQuickItem *)), this, SLOT(updateParent(QQuickItem *)));
     m_platformMenuBar = QGuiApplicationPrivate::platformTheme()->createPlatformMenuBar();
 }
 
@@ -75,15 +75,26 @@ QQmlListProperty<QtMenu> QtMenuBar::menus()
     return QQmlListProperty<QtMenu>(this, 0, &QtMenuBar::append_menu, &QtMenuBar::count_menu, &QtMenuBar::at_menu, 0);
 }
 
-bool QtMenuBar::isNative() {
+bool QtMenuBar::isNative()
+{
     return m_platformMenuBar != 0;
 }
 
-void QtMenuBar::updateParent(QQuickItem *newParent)
+void QtMenuBar::setContentItem(QQuickItem *item)
 {
-    QWindow *newParentWindow = newParent ? newParent->window() : 0;
-    if (newParentWindow != window() && m_platformMenuBar)
-        m_platformMenuBar->handleReparent(newParentWindow);
+    if (item != m_contentItem) {
+        m_contentItem = item;
+        emit contentItemChanged();
+    }
+}
+
+void QtMenuBar::setParentWindow(QQuickWindow *newParentWindow)
+{
+    if (newParentWindow != m_parentWindow) {
+        m_parentWindow = newParentWindow;
+        if (m_platformMenuBar)
+            m_platformMenuBar->handleReparent(m_parentWindow);
+    }
 }
 
 void QtMenuBar::append_menu(QQmlListProperty<QtMenu> *list, QtMenu *menu)
@@ -95,7 +106,7 @@ void QtMenuBar::append_menu(QQmlListProperty<QtMenu> *list, QtMenu *menu)
         if (menuBar->m_platformMenuBar)
             menuBar->m_platformMenuBar->insertMenu(menu->platformMenu(), 0 /* append */);
 
-        menuBar->menuChanged();
+        emit menuBar->menusChanged();
     }
 }
 

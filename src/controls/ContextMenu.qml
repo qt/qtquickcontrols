@@ -41,9 +41,9 @@
 import QtQuick 2.0
 import QtQuick.Controls 1.0
 
-Menu {
+Menu { // Move to private
     id: root
-    property string selectedText: menuItems[selectedIndex] ? menuItems[selectedIndex].text : ""
+    property string selectedText: items[selectedIndex] ? items[selectedIndex].text : ""
     property string textRole
 
     onModelChanged: if (Component.status === Component.Ready && model !== undefined) rebuildMenu()
@@ -51,22 +51,22 @@ Menu {
     Component.onCompleted: if (model !== undefined) rebuildMenu()
 
     onSelectedIndexChanged: {
-        if (0 <= selectedIndex && selectedIndex < menuItems.length)
-            menuItems[selectedIndex].triggered()
+        if (0 <= selectedIndex && selectedIndex < items.length)
+            items[selectedIndex].triggered()
     }
 
     function rebuildMenu()
     {
-        clearMenuItems();
+        clear();
 
-        var nativeModel = root.hasNativeModel()
+        var nativeModel = root.__hasNativeModel()
 
         if (model !== undefined) {
-            var modelCount = nativeModel ? root.modelCount() : model.count;
+            var modelCount = nativeModel ? root.__modelCount() : model.count;
             for (var j = 0 ; j < modelCount; ++j) {
                 var textValue
                 if (nativeModel) {
-                    textValue = root.modelTextAt(j);
+                    textValue = root.__modelTextAt(j);
                 } else {
                     if (textRole !== "")
                         textValue = model.get(j)[textRole]
@@ -94,12 +94,12 @@ Menu {
                     }
                 }
 
-                var item = addMenuItem(textValue)
+                var item = addItem(textValue)
                 if (root["finalizeItem"])
                     finalizeItem(item)
             }
         }
 
-        menuItemsChanged()
+        itemsChanged()
     }
 }

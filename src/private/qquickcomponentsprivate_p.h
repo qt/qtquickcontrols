@@ -54,8 +54,8 @@ class QQuickComponentsPrivate : public QObject
 public:
     QQuickComponentsPrivate(QObject *parent = 0);
 
-    Q_INVOKABLE void showToolTip(QQuickItem *item, const QPointF &pos, const QString &text);
-    Q_INVOKABLE void hideToolTip();
+    Q_INVOKABLE void showTooltip(QQuickItem *item, const QPointF &pos, const QString &text);
+    Q_INVOKABLE void hideTooltip();
 };
 
 QT_END_NAMESPACE

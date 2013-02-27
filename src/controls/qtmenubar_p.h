@@ -43,36 +43,44 @@
 #define QTMENUBAR_P_H
 
 #include <QtCore/qglobal.h>
-
-#include <QtQuick/QQuickItem>
+#include <QtCore/QObject>
 
 #include "qtmenu_p.h"
 
 QT_BEGIN_NAMESPACE
 
 class QPlatformMenuBar;
+class QQuickItem;
 
-class QtMenuBar: public QQuickItem
+class QtMenuBar: public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(QQmlListProperty<QtMenu> menus READ menus NOTIFY menuChanged)
+    Q_PROPERTY(QQmlListProperty<QtMenu> menus READ menus NOTIFY menusChanged)
     Q_CLASSINFO("DefaultProperty", "menus")
-    Q_PROPERTY(bool isNative READ isNative CONSTANT)
+
+    Q_PROPERTY(QQuickItem *__contentItem READ contentItem WRITE setContentItem NOTIFY contentItemChanged)
+    Q_PROPERTY(QQuickWindow *__parentWindow READ parentWindow WRITE setParentWindow)
+    Q_PROPERTY(bool __isNative READ isNative CONSTANT)
+
+Q_SIGNALS:
+    void menusChanged();
+
+    void contentItemChanged();
 
 public:
-    QtMenuBar(QQuickItem *parent = 0);
+    QtMenuBar(QObject *parent = 0);
     ~QtMenuBar();
 
     QQmlListProperty<QtMenu> menus();
 
     bool isNative();
 
-signals:
-    void menuChanged();
+    QQuickItem *contentItem() const { return m_contentItem; }
+    void setContentItem(QQuickItem *);
 
-protected Q_SLOTS:
-    void updateParent(QQuickItem *newParent);
+    QQuickWindow *parentWindow() const { return m_parentWindow; }
+    void setParentWindow(QQuickWindow *);
 
 private:
     static void append_menu(QQmlListProperty<QtMenu> *list, QtMenu *menu);
@@ -82,6 +90,7 @@ private:
 private:
     QList<QtMenu *> m_menus;
     QPlatformMenuBar *m_platformMenuBar;
+    QQuickItem *m_contentItem;
     QQuickWindow *m_parentWindow;
 };
 
