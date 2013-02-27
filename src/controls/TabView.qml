@@ -47,7 +47,7 @@ import "Styles/Settings.js" as Settings
     \qmltype TabView
     \inqmlmodule QtQuick.Controls 1.0
     \ingroup views
-    \brief A conrol that allows the user to select one of multiple stacked items.
+    \brief A control that allows the user to select one of multiple stacked items.
 
 */
 
