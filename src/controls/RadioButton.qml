@@ -50,7 +50,7 @@ import "Styles/Settings.js" as Settings
     \qmltype RadioButton
     \inqmlmodule QtQuick.Controls 1.0
     \ingroup controls
-    \brief A radio button with a text label
+    \brief A radio button with a text label.
 
     A RadioButton is an option button that can be switched on (checked) or off
     (unchecked). Radio buttons typically present the user with a "one of many"

@@ -46,7 +46,7 @@ import "Styles/Settings.js" as Settings
     \qmltype GroupBox
     \inqmlmodule QtQuick.Controls 1.0
     \ingroup controls
-    \brief GroupBox provides a group box frame with a title
+    \brief GroupBox provides a group box frame with a title.
 
     A group box provides a frame, a title on top and displays various other controls inside itself. Group boxes can also be checkable.
 

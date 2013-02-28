@@ -44,7 +44,7 @@ import QtQuick 2.0
         \qmltype PageTransition
         \inqmlmodule QtQuick.Controls 1.0
 
-        \brief The component for managing page transitions
+        \brief The component for managing page transitions.
 
         See the documentation for the \l {QtQuick.Controls1::PageStack} {PageStack}
         component.
