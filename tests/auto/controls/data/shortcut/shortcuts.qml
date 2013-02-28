@@ -87,7 +87,7 @@ Rectangle {
     }
 
     Action {
-        mnemonic: "&test"
+        text: "&test"
         onTriggered: text.text = "alt t pressed"
     }
 }

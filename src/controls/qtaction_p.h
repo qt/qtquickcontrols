@@ -80,8 +80,7 @@ public:
     QString shortcut() const;
     void setShortcut(const QString &shortcut);
 
-    QString mnemonic() const;
-    void setMnemonic(const QString &mnemonic);
+    void setMnemonicFromText(const QString &mnemonic);
 
     QString iconName() const;
     void setIconName(const QString &iconName);
@@ -119,7 +118,6 @@ Q_SIGNALS:
 
     void textChanged();
     void shortcutChanged(QString shortcut);
-    void mnemonicChanged(QString mnemonic);
 
     void iconChanged();
     void iconNameChanged();

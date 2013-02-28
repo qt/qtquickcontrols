@@ -52,11 +52,6 @@ TestCase {
 
     property var rootObject
 
-    // Style item to find out if we are on mac
-    StyleItem {
-        id: styleItem
-    }
-
     function initTestCase() {
         var component = Qt.createComponent("shortcut/shortcuts.qml");
         compare(component.status, Component.Ready)
@@ -78,7 +73,7 @@ TestCase {
             { key: Qt.Key_D, modifier: Qt.AltModifier, expected: "alt d pressed" },
             { key: Qt.Key_T, modifier: Qt.NoModifier, expected: "no key press" },
             // on mac we don't have mnemonics
-            { key: Qt.Key_T, modifier: Qt.AltModifier, expected: styleItem.style === "mac" ? "no key press" : "alt t pressed" },
+            { key: Qt.Key_T, modifier: Qt.AltModifier, expected: Qt.platform.os === "mac" ? "no key press" : "alt t pressed" },
         ]
     }
 

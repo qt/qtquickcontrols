@@ -53,7 +53,7 @@ QT_BEGIN_NAMESPACE
     \inqmlmodule QtQuick.Controls 1.0
     \brief Action provides an abstract user interface action that can be bound to items
 
-    \sa MenuItem, Menu, ExclusiveGroup
+    \sa MenuItem, ExclusiveGroup
 */
 
 /*!
@@ -95,10 +95,6 @@ QT_BEGIN_NAMESPACE
     \qmlproperty string Action::shortcut
 */
 
-/*!
-    \qmlproperty string Action::mnemonic
-*/
-
 QtAction::QtAction(QObject *parent)
     : QObject(parent)
     , m_enabled(true)
@@ -111,7 +107,7 @@ QtAction::QtAction(QObject *parent)
 QtAction::~QtAction()
 {
     setShortcut(QString());
-    setMnemonic(QString());
+    setMnemonicFromText(QString());
 }
 
 void QtAction::setText(const QString &text)
@@ -119,6 +115,7 @@ void QtAction::setText(const QString &text)
     if (text == m_text)
         return;
     m_text = text;
+    setMnemonicFromText(m_text);
     emit textChanged();
 }
 
@@ -153,14 +150,9 @@ void QtAction::setShortcut(const QString &arg)
     emit shortcutChanged(shortcut());
 }
 
-QString QtAction::mnemonic() const
+void QtAction::setMnemonicFromText(const QString &text)
 {
-    return m_mnemonic.toString(QKeySequence::NativeText);
-}
-
-void QtAction::setMnemonic(const QString &mnem)
-{
-    QKeySequence sequence = QKeySequence::mnemonic(mnem);
+    QKeySequence sequence = QKeySequence::mnemonic(text);
     if (m_mnemonic == sequence)
         return;
 
@@ -173,7 +165,6 @@ void QtAction::setMnemonic(const QString &mnem)
         Qt::ShortcutContext context = Qt::WindowShortcut;
         QGuiApplicationPrivate::instance()->shortcutMap.addShortcut(this, m_mnemonic, context, qShortcutContextMatcher);
     }
-    emit mnemonicChanged(mnemonic());
 }
 
 void QtAction::setIconSource(const QUrl &iconSource)
