@@ -226,6 +226,15 @@ ApplicationWindow {
                 shortcut: "Ctrl+E,Shift+Ctrl+X"
                 enabled: false
             }
+            MenuItem {
+                text: "Not Even There"
+                shortcut: "Ctrl+E,Shift+Ctrl+Y"
+                visible: false
+            }
+            Menu {
+                text: "Me Neither"
+                visible: false
+            }
         }
     }
 
