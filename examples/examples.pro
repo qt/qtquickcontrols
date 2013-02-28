@@ -1,3 +1,8 @@
 TEMPLATE = subdirs
-SUBDIRS += ApplicationTemplate
 
+SUBDIRS += \
+    ApplicationTemplate \
+    gallery \
+    splitters \
+    tableview \
+    touch
