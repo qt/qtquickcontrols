@@ -126,7 +126,7 @@ static bool isChecked(const QObject *o)
 */
 
 QtExclusiveGroup::QtExclusiveGroup(QObject *parent)
-    : QObject(parent)
+    : QObject(parent), m_current(0)
 {
     int index = metaObject()->indexOfMethod("updateCurrent()");
     m_updateCurrentMethod = metaObject()->method(index);

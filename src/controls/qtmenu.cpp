@@ -111,6 +111,7 @@ QtMenu::QtMenu(QObject *parent)
       m_hasNativeModel(false),
       m_minimumWidth(0),
       m_popupWindow(0),
+      m_menuContentItem(0),
       m_popupVisible(false)
 {
     m_platformMenu = QGuiApplicationPrivate::platformTheme()->createPlatformMenu();
