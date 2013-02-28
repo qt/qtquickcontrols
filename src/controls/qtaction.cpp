@@ -266,7 +266,7 @@ bool QtAction::event(QEvent *e)
 
 void QtAction::trigger()
 {
-    if (m_checkable)
+    if (m_checkable && !(m_checked && m_exclusiveGroup))
         setChecked(!m_checked);
 
     emit triggered();
