@@ -651,9 +651,9 @@ ScrollView {
 
     Keys.onPressed: {
         if (event.key == Qt.Key_PageUp) {
-            verticalValue = verticalValue - area.height
+            verticalScrollBar.value -= area.height
         } else if (event.key == Qt.Key_PageDown)
-            verticalValue = verticalValue + area.height
+            verticalScrollBar.value += area.height
     }
 
 }
