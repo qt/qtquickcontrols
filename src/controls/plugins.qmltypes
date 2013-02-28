@@ -21,49 +21,6 @@ Module {
         }
     }
     Component {
-        name: "QQuickComponentsColumnLayout"
-        defaultProperty: "data"
-        prototype: "QQuickComponentsLinearLayout"
-        exports: ["ColumnLayout 1.0"]
-    }
-    Component {
-        name: "QQuickComponentsLayout"
-        defaultProperty: "data"
-        prototype: "QQuickItem"
-        exports: ["Layout 1.0"]
-        attachedType: "QQuickComponentsLayoutAttached"
-        Enum {
-            name: "SizePolicy"
-            values: {
-                "Fixed": 0,
-                "Expanding": 1
-            }
-        }
-    }
-    Component {
-        name: "QQuickComponentsLayoutAttached"
-        prototype: "QObject"
-        Property { name: "minimumWidth"; type: "double" }
-        Property { name: "minimumHeight"; type: "double" }
-        Property { name: "maximumWidth"; type: "double" }
-        Property { name: "maximumHeight"; type: "double" }
-        Property { name: "verticalSizePolicy"; type: "QQuickComponentsLayout::SizePolicy" }
-        Property { name: "horizontalSizePolicy"; type: "QQuickComponentsLayout::SizePolicy" }
-    }
-    Component {
-        name: "QQuickComponentsLinearLayout"
-        defaultProperty: "data"
-        prototype: "QQuickComponentsLayout"
-        Property { name: "spacing"; type: "double" }
-        Signal { name: "orientationChanged" }
-    }
-    Component {
-        name: "QQuickComponentsRowLayout"
-        defaultProperty: "data"
-        prototype: "QQuickComponentsLinearLayout"
-        exports: ["RowLayout 1.0"]
-    }
-    Component {
         name: "QtAction"
         prototype: "QObject"
         exports: ["Action 1.0"]

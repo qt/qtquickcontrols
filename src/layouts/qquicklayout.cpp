@@ -3,7 +3,7 @@
 ** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
-** This file is part of the Qt Quick Controls module of the Qt Toolkit.
+** This file is part of the Qt Quick Layouts module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
 ** Commercial License Usage
@@ -41,164 +41,204 @@
 
 #include "qquicklayout_p.h"
 #include <QEvent>
-#include <QApplication>
+#include <QtCore/qcoreapplication.h>
 #include <QtCore/qnumeric.h>
 
 QT_BEGIN_NAMESPACE
 
-static const qreal q_declarativeLayoutMaxSize = 10e8;
-
-
-QQuickComponentsLayoutAttached::QQuickComponentsLayoutAttached(QObject *parent)
+QQuickLayoutAttached::QQuickLayoutAttached(QObject *parent)
     : QObject(parent),
       m_minimumWidth(0),
       m_minimumHeight(0),
+      m_preferredWidth(0),
+      m_preferredHeight(0),
       m_maximumWidth(q_declarativeLayoutMaxSize),
       m_maximumHeight(q_declarativeLayoutMaxSize),
-      m_verticalSizePolicy(QQuickComponentsLayout::Fixed),
-      m_horizontalSizePolicy(QQuickComponentsLayout::Fixed)
+      m_verticalSizePolicy(QQuickLayout::Fixed),
+      m_horizontalSizePolicy(QQuickLayout::Fixed),
+      m_row(0),
+      m_column(0),
+      m_rowSpan(1),
+      m_columnSpan(1),
+      m_changesNotificationEnabled(true)
 {
 
 }
 
-void QQuickComponentsLayoutAttached::setMinimumWidth(qreal width)
+void QQuickLayoutAttached::setMinimumWidth(qreal width)
 {
     if (qIsNaN(width) || m_minimumWidth == width)
         return;
 
     m_minimumWidth = width;
-    updateLayout();
+    invalidateItem();
     emit minimumWidthChanged();
 }
 
-void QQuickComponentsLayoutAttached::setMinimumHeight(qreal height)
+void QQuickLayoutAttached::setMinimumHeight(qreal height)
 {
     if (qIsNaN(height) || m_minimumHeight == height)
         return;
 
     m_minimumHeight = height;
-    updateLayout();
+    invalidateItem();
     emit minimumHeightChanged();
 }
 
-void QQuickComponentsLayoutAttached::setMaximumWidth(qreal width)
+void QQuickLayoutAttached::setPreferredWidth(qreal width)
+{
+    if (qIsNaN(width) || m_preferredWidth == width)
+        return;
+
+    m_preferredWidth = width;
+    if (m_changesNotificationEnabled)
+        invalidateItem();
+    emit preferredWidthChanged();
+}
+
+void QQuickLayoutAttached::setPreferredHeight(qreal height)
+{
+    if (qIsNaN(height) || m_preferredHeight == height)
+        return;
+
+    m_preferredHeight = height;
+    if (m_changesNotificationEnabled)
+        invalidateItem();
+    emit preferredHeightChanged();
+}
+
+void QQuickLayoutAttached::setMaximumWidth(qreal width)
 {
     if (qIsNaN(width) || m_maximumWidth == width)
         return;
 
     m_maximumWidth = width;
-    updateLayout();
+    invalidateItem();
     emit maximumWidthChanged();
 }
 
-void QQuickComponentsLayoutAttached::setMaximumHeight(qreal height)
+void QQuickLayoutAttached::setMaximumHeight(qreal height)
 {
     if (qIsNaN(height) || m_maximumHeight == height)
         return;
 
     m_maximumHeight = height;
-    updateLayout();
+    invalidateItem();
     emit maximumHeightChanged();
 }
 
-void QQuickComponentsLayoutAttached::setVerticalSizePolicy(QQuickComponentsLayout::SizePolicy policy)
+void QQuickLayoutAttached::setVerticalSizePolicy(QQuickLayout::SizePolicy policy)
 {
     if (m_verticalSizePolicy != policy) {
         m_verticalSizePolicy = policy;
-        updateLayout();
+        invalidateItem();
         emit verticalSizePolicyChanged();
     }
 }
 
-void QQuickComponentsLayoutAttached::setHorizontalSizePolicy(QQuickComponentsLayout::SizePolicy policy)
+void QQuickLayoutAttached::setHorizontalSizePolicy(QQuickLayout::SizePolicy policy)
 {
     if (m_horizontalSizePolicy != policy) {
         m_horizontalSizePolicy = policy;
-        updateLayout();
+        invalidateItem();
         emit horizontalSizePolicyChanged();
     }
 }
 
-void QQuickComponentsLayoutAttached::updateLayout()
+void QQuickLayoutAttached::invalidateItem()
 {
-    if (m_layout)
-        m_layout->invalidate();
+    quickLayoutDebug() << "QQuickLayoutAttached::invalidateItem";
+    if (QQuickLayout *layout = parentLayout()) {
+        layout->invalidate(item());
+    }
+}
+
+QQuickLayout *QQuickLayoutAttached::parentLayout() const
+{
+    QQuickItem *parentItem = item()->parentItem();
+    if (qobject_cast<QQuickLayout *>(parentItem))
+        return static_cast<QQuickLayout *>(parentItem);
+    return 0;
+}
+
+QQuickItem *QQuickLayoutAttached::item() const
+{
+    Q_ASSERT(qobject_cast<QQuickItem*>(parent()));
+    return static_cast<QQuickItem*>(parent());
 }
 
 
 
-QQuickComponentsLayout::QQuickComponentsLayout(QQuickItem *parent)
-    : QQuickItem(parent),
+
+
+QQuickLayout::QQuickLayout(QQuickLayoutPrivate &dd, QQuickItem *parent)
+    : QQuickItem(dd, parent),
       m_dirty(false)
 {
-
 }
 
-QQuickComponentsLayout::~QQuickComponentsLayout()
+QQuickLayout::~QQuickLayout()
 {
 
 }
 
-void QQuickComponentsLayout::setupItemLayout(QQuickItem *item)
+void QQuickLayout::setupItemLayout(QQuickItem *item)
 {
-    QObject *attached = qmlAttachedPropertiesObject<QQuickComponentsLayout>(item);
-    QQuickComponentsLayoutAttached *info = static_cast<QQuickComponentsLayoutAttached *>(attached);
-    info->m_layout = this;
+    //### not needed anymore, since these are deducted from hierarcy?
+    qmlAttachedPropertiesObject<QQuickLayout>(item);
 }
 
-QQuickComponentsLayoutAttached *QQuickComponentsLayout::qmlAttachedProperties(QObject *object)
+QQuickLayoutAttached *QQuickLayout::qmlAttachedProperties(QObject *object)
 {
-    return new QQuickComponentsLayoutAttached(object);
+    return new QQuickLayoutAttached(object);
 }
 
-bool QQuickComponentsLayout::event(QEvent *e)
+bool QQuickLayout::event(QEvent *e)
 {
     if (e->type() == QEvent::LayoutRequest)
-        reconfigureTopDown();
+        rearrangeTopDown();
 
     return QQuickItem::event(e);
 }
 
-void QQuickComponentsLayout::invalidate()
+void QQuickLayout::componentComplete()
+{
+    QQuickItem::componentComplete();
+}
+
+void QQuickLayout::invalidate(QQuickItem * /*childItem*/)
 {
     if (m_dirty)
         return;
 
-    QQuickComponentsLayout *layout = this;
-    QQuickComponentsLayout *parentLayout = 0;
+    m_dirty = true;
 
-    while (!layout->m_dirty) {
-        layout->m_dirty = true;
-        parentLayout = qobject_cast<QQuickComponentsLayout *>(layout->parentItem());
-
-        if (!parentLayout)
-            break;
-        else
-            layout = parentLayout;
+    if (QQuickLayout *parentLayout = qobject_cast<QQuickLayout *>(parentItem())) {
+        parentLayout->invalidate(this);
+    } else {
+        quickLayoutDebug() << "QQuickLayout::invalidate(), postEvent";
+        QCoreApplication::postEvent(this, new QEvent(QEvent::LayoutRequest));
     }
-
-    // just post events for top level layouts
-    if (!parentLayout)
-        QApplication::postEvent(layout, new QEvent(QEvent::LayoutRequest));
 }
 
-void QQuickComponentsLayout::reconfigureTopDown()
+void QQuickLayout::rearrangeTopDown()
 {
+    quickLayoutDebug() << "QQuickLayout::rearrangeTopDown()";
     const QList<QQuickItem *> &children = childItems();
 
-    reconfigureLayout();
+    rearrange();
 
     foreach (QQuickItem *child, children) {
-        QQuickComponentsLayout *layout = qobject_cast<QQuickComponentsLayout *>(child);
+        QQuickLayout *layout = qobject_cast<QQuickLayout *>(child);
 
         if (layout && layout->m_dirty)
-            layout->reconfigureTopDown();
+            layout->rearrangeTopDown();
     }
 
     m_dirty = false;
 }
 
-void QQuickComponentsLayout::reconfigureLayout()
+void QQuickLayout::rearrange()
 {
 
 }

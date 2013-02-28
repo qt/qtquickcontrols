@@ -1,7 +1,4 @@
 HEADERS += \
-    $$PWD/qquicklayout_p.h \
-    $$PWD/qquicklayoutengine_p.h \
-    $$PWD/qquicklinearlayout_p.h \
     $$PWD/plugin_p.h \
     $$PWD/qtaction_p.h \
     $$PWD/qtexclusivegroup_p.h \
@@ -12,9 +9,6 @@ HEADERS += \
     $$PWD/qpagestatus.h
 
 SOURCES += \
-    $$PWD/qquicklayout.cpp \
-    $$PWD/qquicklayoutengine.cpp \
-    $$PWD/qquicklinearlayout.cpp \
     $$PWD/plugin.cpp \
     $$PWD/qtaction.cpp \
     $$PWD/qtexclusivegroup.cpp \

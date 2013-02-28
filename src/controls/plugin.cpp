@@ -44,7 +44,6 @@
 #include "qtexclusivegroup_p.h"
 #include "qtmenu_p.h"
 #include "qtmenubar_p.h"
-#include "qquicklinearlayout_p.h"
 #include "qpagestatus.h"
 
 #include <qimage.h>
@@ -86,11 +85,6 @@ void StylePlugin::registerTypes(const char *uri)
     qmlRegisterType<QtMenuSeparator>(uri, 1, 0, "MenuSeparator");
     qmlRegisterUncreatableType<QtMenuBase>(uri, 1, 0, "MenuBase",
                                            QLatin1String("Do not create objects of type MenuBase"));
-
-    qmlRegisterType<QQuickComponentsRowLayout>(uri, 1, 0, "RowLayout");
-    qmlRegisterType<QQuickComponentsColumnLayout>(uri, 1, 0, "ColumnLayout");
-    qmlRegisterUncreatableType<QQuickComponentsLayout>(uri, 1, 0, "Layout",
-                                                       QLatin1String("Do not create objects of type Layout"));
 
     qmlRegisterUncreatableType<QPageStatus>(uri, 1, 0, "PageStatus", QLatin1String("Do not create objects of type PageStatus"));
 }

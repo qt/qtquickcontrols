@@ -3,7 +3,7 @@
 ** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
-** This file is part of the Qt Quick Controls module of the Qt Toolkit.
+** This file is part of the Qt Quick Layouts module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL$
 ** Commercial License Usage
@@ -39,78 +39,32 @@
 **
 ****************************************************************************/
 
-#ifndef QQUICKLINEARLAYOUT_P_H
-#define QQUICKLINEARLAYOUT_P_H
+#include <QtQml/qqmlextensionplugin.h>
 
-#include "qquicklayout_p.h"
+#include "qquicklinearlayout_p.h"
 
 QT_BEGIN_NAMESPACE
 
-class QQuickComponentsLinearLayout : public QQuickComponentsLayout
+//![class decl]
+class QtQuickLayoutsPlugin : public QQmlExtensionPlugin
 {
     Q_OBJECT
-    Q_PROPERTY(qreal spacing READ spacing WRITE setSpacing NOTIFY spacingChanged)
-
+    Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QQmlExtensionInterface/1.0")
 public:
-    enum Orientation {
-        Vertical,
-        Horizontal
-    };
+    virtual void registerTypes(const char *uri)
+    {
+        Q_ASSERT(QLatin1String(uri) == QLatin1String("QtQuick.Layouts"));
+        Q_UNUSED(uri);
 
-    explicit QQuickComponentsLinearLayout(Orientation orientation,
-                                          QQuickItem *parent = 0);
-    ~QQuickComponentsLinearLayout() {}
-
-    qreal spacing() const;
-    void setSpacing(qreal spacing);
-
-    Orientation orientation() const;
-    void setOrientation(Orientation orientation);
-
-    void componentComplete();
-
-signals:
-    void spacingChanged();
-    void orientationChanged();
-
-protected:
-    void updateLayoutItems();
-    void reconfigureLayout();
-    void insertLayoutItem(QQuickItem *item);
-    void removeLayoutItem(QQuickItem *item);
-    void itemChange(ItemChange change, const ItemChangeData &data);
-    void geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry);
-
-protected slots:
-    void onItemVisibleChanged();
-    void onItemDestroyed();
-
-private:
-    qreal m_spacing;
-    Orientation m_orientation;
-    QList<QQuickItem *> m_items;
+        qmlRegisterType<QQuickRowLayout>(uri, 1, 0, "RowLayout");
+        qmlRegisterType<QQuickColumnLayout>(uri, 1, 0, "ColumnLayout");
+        qmlRegisterType<QQuickGridLayout>(uri, 1, 0, "GridLayout");
+        qmlRegisterUncreatableType<QQuickLayout>(uri, 1, 0, "Layout",
+                                                           QLatin1String("Do not create objects of type Layout"));
+    }
 };
-
-
-class QQuickComponentsRowLayout : public QQuickComponentsLinearLayout
-{
-    Q_OBJECT
-
-public:
-    explicit QQuickComponentsRowLayout(QQuickItem *parent = 0)
-        : QQuickComponentsLinearLayout(Horizontal, parent) {}
-};
-
-
-class QQuickComponentsColumnLayout : public QQuickComponentsLinearLayout
-{
-    Q_OBJECT
-
-public:
-    explicit QQuickComponentsColumnLayout(QQuickItem *parent = 0)
-        : QQuickComponentsLinearLayout(Vertical, parent) {}
-};
+//![class decl]
 
 QT_END_NAMESPACE
 
-#endif // QQUICKLINEARLAYOUT_P_H
+#include "plugin.moc"

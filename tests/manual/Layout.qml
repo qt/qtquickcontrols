@@ -40,8 +40,10 @@
 
 import QtQuick 2.0
 import QtQuick.Controls 1.0
+import QtQuick.Layouts 1.0
 
 Item {
+    id: window
     width: 600
     height: 400
 
@@ -49,16 +51,34 @@ Item {
     property real defaultHeight: 30
 
     Column {
-        anchors.fill: parent
-        CheckBox {
-            id: ckHideGreen
-            text: "Hide green rectangles"
-            checked: false
+        anchors {
+            top: parent.top
+            left: parent.left
+            right: parent.right
+        }
+        Row {
             width: parent.width
+            height: 20
+            CheckBox {
+                id: ckHideGreen
+                text: "Hide green rectangles"
+                checked: false
+                height: parent.height
+            }
+            Slider {
+                id: spacingSlider
+                value: 4
+                minimumValue: 0
+                maximumValue: 100
+                width: 200
+                height: parent.height
+            }
+
         }
         TabView {
             id:frame
             width: parent.width
+            height: window.height - ckHideGreen.height
 
             Tab {
                 title: "Horizontal"
@@ -78,18 +98,22 @@ Item {
                         height: defaultHeight
                         anchors.left: parent.left
                         anchors.right: parent.right
+                        spacing: spacingSlider.value
 
                         Rectangle {
                             color: "red"
+                            width: 50
                             height: parent.height
                         }
                         Rectangle {
                             color: "green"
+                            width: 100
                             height: parent.height
                             visible: !ckHideGreen.checked
                         }
                         Rectangle {
                             color: "blue"
+                            width: 200
                             height: parent.height
                         }
                     }
@@ -100,14 +124,16 @@ Item {
                         anchors.left: parent.left
                         anchors.right: parent.right
 
-                        spacing: 5
+                        spacing: spacingSlider.value
 
                         Rectangle {
                             color: "red"
+                            width: 40
                             height: parent.height
                         }
                         Rectangle {
                             color: "green"
+                            width: 40
                             height: parent.height
                             visible: !ckHideGreen.checked
                         }
@@ -116,6 +142,7 @@ Item {
                         }
                         Rectangle {
                             color: "blue"
+                            width: 40
                             height: parent.height
                         }
                     }
@@ -125,6 +152,7 @@ Item {
                         height: defaultHeight
                         anchors.left: parent.left
                         anchors.right: parent.right
+                        spacing: spacingSlider.value
 
                         Rectangle {
                             color: "red"
@@ -152,7 +180,8 @@ Item {
 
                     // [4]
                     RowLayout {
-                        spacing: 100
+                        spacing: 100 + spacingSlider.value
+
                         height: defaultHeight
                         anchors.left: parent.left
                         anchors.right: parent.right
@@ -180,6 +209,7 @@ Item {
 
                     // [5]
                     RowLayout {
+                        spacing: spacingSlider.value
                         height: defaultHeight
                         anchors.left: parent.left
                         anchors.right: parent.right
@@ -195,7 +225,7 @@ Item {
 
                     // [6]
                     RowLayout {
-                        spacing: 40
+                        spacing: 40 + spacingSlider.value
                         height: defaultHeight
                         anchors.left: parent.left
                         anchors.right: parent.right
@@ -225,6 +255,7 @@ Item {
                             Rectangle {
                                 color: "green"
                                 height: parent.height
+                                width: 40
                                 visible: !ckHideGreen.checked
                                 Layout.maximumWidth: 300
                                 Layout.horizontalSizePolicy: Layout.Expanding
@@ -250,6 +281,7 @@ Item {
 
                     anchors {
                         top: parent.top
+
                         left: parent.left
                         bottom: parent.bottom
                         margins: 10
@@ -260,19 +292,23 @@ Item {
                         width: defaultWidth
                         anchors.top: parent.top
                         anchors.bottom: parent.bottom
+                        spacing: spacingSlider.value
 
                         Rectangle {
                             color: "red"
                             width: parent.width
+                            height: 40
                         }
                         Rectangle {
                             color: "green"
                             width: parent.width
+                            height: 80
                             visible: !ckHideGreen.checked
                         }
                         Rectangle {
                             color: "blue"
                             width: parent.width
+                            height: 120
                         }
                     }
 
@@ -282,23 +318,26 @@ Item {
                         anchors.top: parent.top
                         anchors.bottom: parent.bottom
 
-                        spacing: 5
+                        spacing: spacingSlider.value
 
                         Rectangle {
                             color: "red"
                             width: parent.width
+                            height: 40
                         }
                         Rectangle {
                             color: "green"
                             width: parent.width
                             visible: !ckHideGreen.checked
+                            height: 80
                         }
                         Item {
-                            implicitWidth: 10
+                            implicitHeight: 10
                         }
                         Rectangle {
                             color: "blue"
                             width: parent.width
+                            height: 40
                         }
                     }
 
@@ -307,10 +346,12 @@ Item {
                         width: defaultWidth
                         anchors.top: parent.top
                         anchors.bottom: parent.bottom
+                        spacing: spacingSlider.value
 
                         Rectangle {
                             color: "red"
                             width: parent.width
+                            height: 60
                             Layout.minimumHeight: 50
                             Layout.maximumHeight: 100
                             Layout.verticalSizePolicy: Layout.Expanding
@@ -318,23 +359,24 @@ Item {
                         Rectangle {
                             color: "green"
                             width: parent.width
+                            height: 90
                             visible: !ckHideGreen.checked
-                            Layout.minimumHeight: 100
-                            Layout.maximumHeight: 200
+                            Layout.minimumHeight: 75
+                            Layout.maximumHeight: 125
                             Layout.verticalSizePolicy: Layout.Expanding
                         }
                         Rectangle {
                             color: "blue"
                             width: parent.width
-                            Layout.minimumHeight: 200
-                            Layout.maximumHeight: 400
+                            height: 120
+                            Layout.minimumHeight: 100
                             Layout.verticalSizePolicy: Layout.Expanding
                         }
                     }
 
                     // [4]
                     ColumnLayout {
-                        spacing: 100
+                        spacing: 100 + spacingSlider.value
                         width: defaultWidth
                         anchors.top: parent.top
                         anchors.bottom: parent.bottom
@@ -362,22 +404,7 @@ Item {
 
                     // [5]
                     ColumnLayout {
-                        width: defaultWidth
-                        anchors.top: parent.top
-                        anchors.bottom: parent.bottom
-
-                        Rectangle {
-                            color: "red"
-                            width: parent.width
-                            Layout.minimumHeight: 200
-                            Layout.maximumHeight: 500
-                            Layout.verticalSizePolicy: Layout.Expanding
-                        }
-                    }
-
-                    // [6]
-                    ColumnLayout {
-                        spacing: 40
+                        spacing: 40 + spacingSlider.value
                         width: defaultWidth
                         anchors.top: parent.top
                         anchors.bottom: parent.bottom
@@ -385,28 +412,33 @@ Item {
                         ColumnLayout {
                             spacing: 10
                             width: parent.width
+                            Layout.verticalSizePolicy: Layout.Expanding
 
                             Rectangle {
                                 color: "red"
                                 width: parent.width
                                 Layout.minimumHeight: 100
+                                Layout.maximumHeight: 300
                                 Layout.verticalSizePolicy: Layout.Expanding
                             }
                             Rectangle {
                                 color: "blue"
                                 width: parent.width
-                                Layout.minimumHeight: 200
+                                Layout.minimumHeight: 100
                                 Layout.verticalSizePolicy: Layout.Expanding
+                                Layout.maximumHeight: 200
                             }
                         }
 
                         ColumnLayout {
                             spacing: 10
                             width: parent.width
-
+                            Layout.maximumHeight: 200
+                            Layout.verticalSizePolicy: Layout.Expanding
                             Rectangle {
                                 color: "green"
                                 width: parent.width
+                                height: 50
                                 visible: !ckHideGreen.checked
                                 Layout.maximumHeight: 300
                                 Layout.verticalSizePolicy: Layout.Expanding
@@ -414,15 +446,14 @@ Item {
                             Rectangle {
                                 color: "red"
                                 width: parent.width
+                                height: 50
                                 Layout.minimumHeight: 40
-                                Layout.maximumHeight: 100
                                 Layout.verticalSizePolicy: Layout.Expanding
                             }
                         }
                     }
                 }
             }
-
 
             Tab {
                 title: "Horizontal and Vertical"
@@ -508,6 +539,185 @@ Item {
                                 }
                             }
                         }
+                    }
+                }
+            }
+
+            Tab {
+                title: "Grid"
+                Column {
+                    spacing: 4
+
+                    anchors {
+                        top: parent.top
+                        left: parent.left
+                        right: parent.right
+                        bottom: parent.bottom
+                        margins: 10
+                    }
+
+                    // [1]
+                    GridLayout {
+                        id: flag
+                        verticalSpacing: spacingSlider.value
+                        horizontalSpacing: spacingSlider.value
+                        // row 0
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        Rectangle {
+                            color: "red"
+                            width: 52
+                            height: 52
+                            Layout.row: 0
+                            Layout.column: 0
+                            Layout.horizontalSizePolicy: Layout.Expanding
+                            Layout.verticalSizePolicy: Layout.Expanding
+                        }
+                        Rectangle {
+                            color: "white"
+                            width: 8
+                            height: 52
+                            Layout.row: 0
+                            Layout.column: 1
+                            Layout.horizontalSizePolicy: Layout.Expanding
+                            Layout.verticalSizePolicy: Layout.Expanding
+                        }
+                        Rectangle {
+                            color: "blue"
+                            width: 18
+                            height: 60
+                            Layout.row: 0
+                            Layout.column: 2
+                            Layout.rowSpan: 2
+                            Layout.horizontalSizePolicy: Layout.Expanding
+                            Layout.verticalSizePolicy: Layout.Expanding
+                        }
+                        Rectangle {
+                            color: "white"
+                            width: 8
+                            height: 52
+                            Layout.row: 0
+                            Layout.column: 3
+                            Layout.horizontalSizePolicy: Layout.Expanding
+                            Layout.verticalSizePolicy: Layout.Expanding
+                        }
+                        Rectangle {
+                            color: "red"
+                            width: 140
+                            height: 52
+                            Layout.row: 0
+                            Layout.column: 4
+                            Layout.horizontalSizePolicy: Layout.Expanding
+                            Layout.verticalSizePolicy: Layout.Expanding
+                        }
+
+                        // row 1
+                        Rectangle {
+                            color: "white"
+                            width: 60
+                            height: 8
+                            Layout.row: 1
+                            Layout.column: 0
+                            Layout.columnSpan: 2
+                            Layout.horizontalSizePolicy: Layout.Expanding
+                            Layout.verticalSizePolicy: Layout.Expanding
+                        }
+                        Rectangle {
+                            color: "white"
+                            width: 60
+                            height: 8
+                            Layout.row: 1
+                            Layout.column: 3
+                            Layout.columnSpan: 2
+                            Layout.horizontalSizePolicy: Layout.Expanding
+                            Layout.verticalSizePolicy: Layout.Expanding
+                        }
+
+                        // row 2
+                        Rectangle {
+                            color: "blue"
+                            width: 226
+                            height: 18
+                            Layout.row: 2
+                            Layout.column: 0
+                            Layout.columnSpan: 5
+                            Layout.horizontalSizePolicy: Layout.Expanding
+                            Layout.verticalSizePolicy: Layout.Expanding
+                        }
+
+                        // row 3
+                        Rectangle {
+                            color: "white"
+                            width: 60
+                            height: 8
+                            Layout.row: 3
+                            Layout.column: 0
+                            Layout.columnSpan: 2
+                            Layout.horizontalSizePolicy: Layout.Expanding
+                            Layout.verticalSizePolicy: Layout.Expanding
+                        }
+                        Rectangle {
+                            color: "blue"
+                            width: 18
+                            height: 60
+                            Layout.row: 3
+                            Layout.column: 2
+                            Layout.rowSpan: 2
+                            Layout.horizontalSizePolicy: Layout.Expanding
+                            Layout.verticalSizePolicy: Layout.Expanding
+                        }
+                        Rectangle {
+                            color: "white"
+                            width: 140
+                            height: 8
+                            Layout.row: 3
+                            Layout.column: 3
+                            Layout.columnSpan: 2
+                            Layout.horizontalSizePolicy: Layout.Expanding
+                            Layout.verticalSizePolicy: Layout.Expanding
+                        }
+
+                        // row 4
+                        Rectangle {
+                            color: "red"
+                            width: 52
+                            height: 52
+                            Layout.row: 4
+                            Layout.column: 0
+                            Layout.horizontalSizePolicy: Layout.Expanding
+                            Layout.verticalSizePolicy: Layout.Expanding
+                        }
+                        Rectangle {
+                            color: "white"
+                            width: 8
+                            height: 52
+                            Layout.row: 4
+                            Layout.column: 1
+                            Layout.horizontalSizePolicy: Layout.Expanding
+                            Layout.verticalSizePolicy: Layout.Expanding
+                        }
+                        Rectangle {
+                            color: "white"
+                            width: 8
+                            height: 52
+                            Layout.row: 4
+                            Layout.column: 3
+                            Layout.horizontalSizePolicy: Layout.Expanding
+                            Layout.verticalSizePolicy: Layout.Expanding
+                        }
+                        Rectangle {
+                            color: "red"
+                            width: 140
+                            height: 52
+                            Layout.row: 4
+                            Layout.column: 4
+                            Layout.horizontalSizePolicy: Layout.Expanding
+                            Layout.verticalSizePolicy: Layout.Expanding
+                        }
+                    }
+
+                    Text {
+                        text: "Norwegian flag"
                     }
                 }
             }
