@@ -146,7 +146,7 @@ Control {
         property int x: 0
         property int y: centerSelectedText ? 0 : comboBox.height
         __minimumWidth: comboBox.width
-        visualParent: comboBox
+        __visualItem: comboBox
 
         function finalizeItem(item) {
             item.action.checkable = true

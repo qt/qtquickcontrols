@@ -71,9 +71,19 @@ import "Styles/Settings.js" as Settings
     \sa ApplicationWindow::menuBar
 */
 
+/*!
+    \qmlproperty readonly list MenuBar::menus
+    \default
+
+    The list of menus in the menu bar.
+
+    \sa Menu
+*/
+
 MenuBarPrivate {
     id: root
 
+    //! \internal
     property Component style: Qt.createComponent(Settings.THEME_PATH + "/MenuBarStyle.qml", root)
 
     //! \internal
@@ -193,7 +203,7 @@ MenuBarPrivate {
                         }
 
                         Component.onCompleted: {
-                            menuItem.__visualItem = menuItem.visualParent = menuItemLoader
+                            menuItem.__visualItem = menuItemLoader
                             menuItem.__menuBar = menuBarLoader
                         }
                     }

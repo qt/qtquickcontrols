@@ -110,16 +110,11 @@ class QtMenuText: public QtMenuBase
     Q_PROPERTY(QUrl iconSource READ iconSource WRITE setIconSource NOTIFY iconSourceChanged)
     Q_PROPERTY(QString iconName READ iconName WRITE setIconName NOTIFY iconNameChanged)
 
-    Q_PROPERTY(QVariant __icon READ iconVariant  NOTIFY __iconChanged)
-
-public Q_SLOTS:
-    virtual void trigger();
+    Q_PROPERTY(QVariant __icon READ iconVariant NOTIFY __iconChanged)
 
 Q_SIGNALS:
-    void triggered();
     void textChanged();
     void enabledChanged();
-
     void iconSourceChanged();
     void iconNameChanged();
 
@@ -165,10 +160,11 @@ public Q_SLOTS:
     void trigger();
 
 Q_SIGNALS:
-    void checkableChanged();
-    void toggled(bool);
-    void exclusiveGroupChanged();
+    void triggered();
+    void toggled(bool checked);
 
+    void checkableChanged();
+    void exclusiveGroupChanged();
     void shortcutChanged();
     void actionChanged();
 

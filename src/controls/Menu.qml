@@ -84,6 +84,11 @@ import "Styles/Settings.js" as Settings
     }
     \endcode
 
+    Note that some properties, like \c enabled, \c text, or \c iconSource, only make sense
+    depending on the context in which the menu is being used. The three main use cases are
+    as a \l MenuBar top-level menu, as a submenu inside another menu, or as a standalone,
+    or context, menu.
+
     \sa MenuBar, MenuItem, MenuSeparator
 */
 MenuPrivate {
@@ -182,8 +187,9 @@ MenuPrivate {
         function triggerAndDismiss() {
             var item = itemsRepeater.itemAt(root.__currentIndex)
             if (item && !item.isSeparator) {
-                item.menuItem.trigger()
                 root.__dismissMenu()
+                if (!item.hasSubmenu)
+                    item.menuItem.trigger()
             }
         }
 
@@ -269,11 +275,7 @@ MenuPrivate {
                             }
                         }
 
-                        Component.onCompleted: {
-                            menuItem.__visualItem = menuItemLoader
-                            if (hasSubmenu)
-                                menuItem.visualParent = menuItemLoader
-                        }
+                        Component.onCompleted: menuItem.__visualItem = menuItemLoader
                     }
                 }
 

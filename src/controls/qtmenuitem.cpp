@@ -108,6 +108,12 @@ void QtMenuBase::setVisualItem(QQuickItem *item)
     \sa Menu, MenuItem
 */
 
+/*!
+    \qmlproperty bool MenuSeparator::visible
+
+    Whether the menu separator should be visible.
+*/
+
 QtMenuSeparator::QtMenuSeparator(QObject *parent)
     : QtMenuBase(parent)
 {
@@ -125,12 +131,8 @@ QtMenuText::~QtMenuText()
 void QtMenuText::setParentMenu(QtMenu *parentMenu)
 {
     QtMenuBase::setParentMenu(parentMenu);
-    connect(this, SIGNAL(triggered()), parentMenu, SLOT(updateSelectedIndex()));
-}
-
-void QtMenuText::trigger()
-{
-    emit triggered();
+    if (qobject_cast<QtMenuItem *>(this))
+        connect(this, SIGNAL(triggered()), parentMenu, SLOT(updateSelectedIndex()));
 }
 
 void QtMenuText::setEnabled(bool enabled)
@@ -218,37 +220,27 @@ void QtMenuText::setIconName(const QString &iconName)
 */
 
 /*!
+    \qmlproperty bool MenuItem::visible
+
+    Whether the menu item should be visible.
+*/
+
+/*!
     \qmlproperty string MenuItem::text
 
-    Text for the menu item.
+    Text for the menu item. Accelerators are supported with the usual \& convention.
 */
 
 /*!
-    \qmlproperty string MenuItem::shortcut
+    \qmlproperty bool MenuItem::enabled
 
-    Shorcut bound to the menu item.
-
-    \sa Action::shortcut
-*/
-
-/*!
-    \qmlproperty bool MenuItem::checkable
-
-    Whether the menu item can be toggled.
-
-    \sa checked
-*/
-
-/*!
-    \qmlproperty bool MenuItem::checked
-
-    If the menu item is checkable, this property reflects its checked state.
-
-    \sa chekcable, Action::toggled()
+    Whether the menu item is enabled, and responsive to user interaction.
 */
 
 /*!
     \qmlproperty url MenuItem::iconSource
+
+    Sets the icon file or resource url for the \l MenuItem icon.
 
     \sa iconName, Action::iconSource
 */
@@ -256,15 +248,10 @@ void QtMenuText::setIconName(const QString &iconName)
 /*!
     \qmlproperty string MenuItem::iconName
 
+    Sets the icon name for the \l MenuItem icon. This will pick the icon
+    with the given name from the current theme.
+
     \sa iconSource, Action::iconName
-*/
-
-/*!
-    \qmlproperty Action MenuItem::action
-
-    The action bound to this menu item.
-
-    \sa Action
 */
 
 /*! \qmlsignal MenuItem::triggered()
@@ -281,11 +268,57 @@ void QtMenuText::setIconName(const QString &iconName)
     \sa triggered(), Action::trigger()
 */
 
+/*!
+    \qmlproperty string MenuItem::shortcut
+
+    Shorcut bound to the menu item.
+
+    \sa Action::shortcut
+*/
+
+/*!
+    \qmlproperty bool MenuItem::checkable
+
+    Whether the menu item can be checked, or toggled.
+
+    \sa checked
+*/
+
+/*!
+    \qmlproperty bool MenuItem::checked
+
+    If the menu item is checkable, this property reflects its checked state.
+
+    \sa checkable, Action::toggled()
+*/
+
 /*! \qmlproperty ExclusiveGroup MenuItem::exclusiveGroup
 
-    ...
+    If a menu item is checkable, an \l ExclusiveGroup can be attached to it.
+    All the menu items sharing the same exclusive group become mutually exclusive
+    selectable, meaning that only the last checked menu item will actually be checked.
 
     \sa checked, checkable
+*/
+
+/*! \qmlsignal MenuItem::toggled(checked)
+
+    Emitted whenever a menu item's \c checked property changes.
+    This usually happens at the same time as \l triggered().
+
+    \sa checked, triggered(), Action::triggered(), Action::toggled()
+*/
+
+/*!
+    \qmlproperty Action MenuItem::action
+
+    The action bound to this menu item. Setting this property to an valid
+    \l Action will override all the menu item's properties except \l text.
+
+    In addition, the menu item \c triggered() and \c toggled() signals will not be emitted.
+    Instead, the action \c triggered() and \c toggled() signals will be.
+
+    \sa Action
 */
 
 QtMenuItem::QtMenuItem(QObject *parent)
@@ -509,7 +542,7 @@ void QtMenuItem::trigger()
     if (m_action)
         m_action->trigger();
     else
-        QtMenuText::trigger();
+        emit triggered();
 }
 
 QT_END_NAMESPACE

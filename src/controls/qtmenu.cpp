@@ -65,40 +65,72 @@ QT_BEGIN_NAMESPACE
  */
 
 /*!
-    \qmlproperty readonly list Menu::menuItems
+    \qmlproperty readonly list Menu::items
     \default
+
+    The list of items in the menu.
+
+    \sa MenuItem, MenuSeparator
+*/
+
+/*!
+    \qmlproperty bool Menu::visible
+
+    Whether the menu should be visible. This is only enabled when the menu is used as
+    a submenu.
+*/
+
+/*!
+    \qmlproperty string Menu::text
+
+    Text for the menu, whether in a \l MenuBar or as a submenu.
+    Accelerators are supported with the usual \& convention.
+*/
+
+/*!
+    \qmlproperty bool Menu::enabled
+
+    Whether the menu is enabled, and responsive to user interaction as a submenu.
+*/
+
+/*!
+    \qmlproperty url Menu::iconSource
+
+    Sets the icon file or resource url for the menu icon as a submenu.
+
+    \sa iconName
+*/
+
+/*!
+    \qmlproperty string Menu::iconName
+
+    Sets the icon name for the menu icon. This will pick the icon
+    with the given name from the current theme. Only works as a submenu.
+
+    \sa iconSource
+*/
+
+/*!
+    \qmlproperty int Menu::selectedIndex
+
+    The index for the last selected item in the menu.
+*/
+
+/*!
+    \qmlmethod void Menu::popup()
+
+    Pops up this menu under the mouse cursor.
+    It can block on some platforms, so test it accordingly.
 */
 
 /*!
     \qmlproperty var Menu::model
 */
 
-/*!
-    \qmlproperty int Menu::selectedIndex
-*/
-
-/*!
-    \qmlproperty font Menu::font
-
-    Write-only. For styling purposes only.
-*/
-
-/*!
-    \qmlproperty readonly bool Menu::popupVisible
-*/
-
-/*!
-    \qmlmethod void Menu::popup(referenceItem, x, y, atIndex)
-
-    Pops up this menu at the given position relative to \c referenceItem.
-    It can block on some platforms, so test it accordingly.
-*/
-
 QtMenu::QtMenu(QObject *parent)
     : QtMenuText(parent),
       m_selectedIndex(-1),
       m_highlightedIndex(0),
-      m_visualParent(0),
       m_hasNativeModel(false),
       m_minimumWidth(0),
       m_popupWindow(0),
@@ -167,12 +199,9 @@ QQmlListProperty<QtMenuBase> QtMenu::menuItems()
 QQuickWindow *QtMenu::findParentWindow()
 {
     if (!m_parentWindow) {
-        m_parentWindow = m_visualParent ? m_visualParent->window() : 0;
-        if (!m_parentWindow) {
-            QQuickItem *parentAsItem = qobject_cast<QQuickItem *>(parent());
-            m_parentWindow = visualItem() ? visualItem()->window() :    // Menu as menu item case
-                             parentAsItem ? parentAsItem->window() : 0; //Menu as context menu/popup case
-        }
+        QQuickItem *parentAsItem = qobject_cast<QQuickItem *>(parent());
+        m_parentWindow = visualItem() ? visualItem()->window() :    // Menu as menu item case
+                         parentAsItem ? parentAsItem->window() : 0; //Menu as context menu/popup case
     }
     return m_parentWindow;
 }
@@ -204,8 +233,8 @@ void QtMenu::__popup(qreal x, qreal y, int atItemIndex)
 
     if (m_platformMenu) {
         QPointF screenPosition(x, y);
-        if (m_visualParent)
-            screenPosition = m_visualParent->mapToScene(screenPosition);
+        if (visualItem())
+            screenPosition = visualItem()->mapToScene(screenPosition);
         m_platformMenu->showPopup(parentWindow, screenPosition.toPoint(), atItem ? atItem->platformItem() : 0);
     } else {
         m_popupWindow = new QtMenuPopupWindow();
@@ -214,8 +243,8 @@ void QtMenu::__popup(qreal x, qreal y, int atItemIndex)
         connect(m_popupWindow, SIGNAL(visibleChanged(bool)), this, SLOT(windowVisibleChanged(bool)));
 
         if (parentWindow) {
-            if (m_visualParent) {
-                QPointF pos = m_visualParent->mapToItem(parentWindow->contentItem(), QPointF(x, y));
+            if (visualItem()) {
+                QPointF pos = visualItem()->mapToItem(parentWindow->contentItem(), QPointF(x, y));
                 x = pos.x();
                 y = pos.y();
             }
@@ -236,14 +265,6 @@ void QtMenu::__popup(qreal x, qreal y, int atItemIndex)
         m_popupWindow->show();
         m_popupWindow->setMouseGrabEnabled(true); // Needs to be done after calling show()
         m_popupWindow->setKeyboardGrabEnabled(true);
-    }
-}
-
-void QtMenu::setVisualParent(QQuickItem *item)
-{
-    if (m_visualParent != item) {
-        m_visualParent = item;
-        emit visualParentChanged();
     }
 }
 

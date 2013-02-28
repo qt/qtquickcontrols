@@ -60,7 +60,6 @@ class QtMenu : public QtMenuText
     Q_PROPERTY(QQmlListProperty<QtMenuBase> items READ menuItems NOTIFY itemsChanged)
     Q_CLASSINFO("DefaultProperty", "items")
     Q_PROPERTY(int selectedIndex READ selectedIndex WRITE setSelectedIndex NOTIFY selectedIndexChanged)
-    Q_PROPERTY(QQuickItem *visualParent READ visualParent WRITE setVisualParent NOTIFY visualParentChanged)
     Q_PROPERTY(QVariant model READ model WRITE setModel NOTIFY modelChanged)
 
     Q_PROPERTY(bool __popupVisible READ popupVisible NOTIFY popupVisibleChanged)
@@ -85,7 +84,6 @@ public Q_SLOTS:
 
 Q_SIGNALS:
     void selectedIndexChanged();
-    void visualParentChanged();
     void modelChanged(const QVariant &newModel);
     void itemsChanged();
 
@@ -121,18 +119,16 @@ public:
     void setMenuContentItem(QQuickItem *);
     void setPopupVisible(bool);
 
-    QQuickItem *visualParent() const { return m_visualParent; }
-    void setVisualParent(QQuickItem *);
-
     bool isNative() { return m_platformMenu != 0; }
 
-    QQuickWindow *findParentWindow();
 
 protected Q_SLOTS:
     void windowVisibleChanged(bool);
     void updateSelectedIndex();
 
 private:
+    QQuickWindow *findParentWindow();
+
     static void append_menuItems(QQmlListProperty<QtMenuBase> *list, QtMenuBase *menuItem);
     static int count_menuItems(QQmlListProperty<QtMenuBase> *list);
     static QtMenuBase *at_menuItems(QQmlListProperty<QtMenuBase> *list, int index);
@@ -141,14 +137,13 @@ private:
     QList<QtMenuBase *> m_menuItems;
     int m_selectedIndex;
     int m_highlightedIndex;
-    QQuickItem *m_visualParent;
+    QQuickWindow *m_parentWindow;
     bool m_hasNativeModel;
     QVariant m_model;
     int m_minimumWidth;
     QtMenuPopupWindow *m_popupWindow;
     QQuickItem * m_menuContentItem;
     bool m_popupVisible;
-    QQuickWindow *m_parentWindow;
 
     friend class QtMenuBase;
 };

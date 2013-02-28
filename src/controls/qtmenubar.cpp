@@ -60,6 +60,7 @@ QT_BEGIN_NAMESPACE
   \internal
   \inqmlmodule QtQuick.Controls 1.0
  */
+
 QtMenuBar::QtMenuBar(QObject *parent)
     : QObject(parent), m_contentItem(0), m_parentWindow(0)
 {
