@@ -1,4 +1,3 @@
-CXX_MODULE = qml
 TARGET  = plugin
 TARGETPATH = QtQuick/Controls
 
@@ -38,4 +37,5 @@ QML_FILES = \
 
 include(plugin.pri)
 
+CONFIG += no_cxx_module
 load(qml_plugin)

@@ -1,4 +1,3 @@
-CXX_MODULE = qml
 TARGET  = privateplugin
 TARGETPATH = QtQuick/Controls/Private
 
@@ -39,4 +38,5 @@ mac {
     LIBS += -framework Carbon
 }
 
+CONFIG += no_cxx_module
 load(qml_plugin)
