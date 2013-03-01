@@ -50,6 +50,13 @@ import "content"
 ApplicationWindow {
     title: "Component Gallery"
 
+    property var lastFocusObject: 0
+    onFocusObjectChanged: {
+        if (object !== null) {
+            lastFocusObject = object
+        }
+    }
+
     width: 580
     height: 400
     minimumHeight: 400
@@ -99,6 +106,8 @@ ApplicationWindow {
             text: "&Copy"
             shortcut: "Ctrl+C"
             iconName: "edit-copy"
+            enabled: (lastFocusObject !== 0 && lastFocusObject["copy"] !== undefined)
+            onTriggered: lastFocusObject.copy()
         }
 
         Action {
@@ -106,6 +115,8 @@ ApplicationWindow {
             text: "Cu&t"
             shortcut: "Ctrl+X"
             iconName: "edit-cut"
+            enabled: (lastFocusObject !== 0 && lastFocusObject["cut"] !== undefined)
+            onTriggered: lastFocusObject.cut()
         }
 
         Action {
@@ -113,6 +124,8 @@ ApplicationWindow {
             text: "&Paste"
             shortcut: "Ctrl+V"
             iconName: "edit-paste"
+            enabled: (lastFocusObject !== 0 && lastFocusObject["paste"] !== undefined)
+            onTriggered: lastFocusObject.paste()
         }
 
         ExclusiveGroup { id: textFormatGroup }
