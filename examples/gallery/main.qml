@@ -74,9 +74,7 @@ ApplicationWindow {
                 tooltip: "Toggle visibility of the second window"
             }
             ToolButton {
-                iconSource: "images/document-open.png"
-                anchors.verticalCenter: parent.verticalCenter
-                tooltip: "(Pretend to) open a file"
+                action: openAction
             }
             ToolButton {
                 iconSource: "images/document-save-as.png"
@@ -93,6 +91,7 @@ ApplicationWindow {
             shortcut: "Ctrl+O"
             iconSource: "images/document-open.png"
             onTriggered: console.log("Imagine a gorgeous file dialog...")
+            tooltip: "(Pretend to) open a file"
         }
 
         Action {

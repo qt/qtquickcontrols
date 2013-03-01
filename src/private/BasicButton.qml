@@ -55,9 +55,11 @@ Control {
 
     signal clicked
     property alias pressed: behavior.effectivePressed
-    property alias checkable: behavior.checkable  // button toggles between checked and !checked
-    property alias checked: behavior.checked
+    property bool checkable: false
+    property bool checked: false
     property ExclusiveGroup exclusiveGroup: null
+
+    property Action action: null
 
     onExclusiveGroupChanged: {
         if (exclusiveGroup)
@@ -79,6 +81,15 @@ Control {
     /*! \internal */
     property alias __containsMouse: behavior.containsMouse
 
+    Action { id: ownAction; onTriggered: console.log("triggered", ownAction.text) }
+    /*! \internal */
+    property Action __action: action || ownAction
+
+    Connections {
+        target: action
+        onCheckableChanged: button.checkable = action.checkable
+    }
+
     Keys.onPressed: {
         if (event.key === Qt.Key_Space && !event.isAutoRepeat && !behavior.pressed)
             behavior.keyPressed = true;
@@ -87,16 +98,14 @@ Control {
     Keys.onReleased: {
         if (event.key === Qt.Key_Space && !event.isAutoRepeat && behavior.keyPressed) {
             behavior.keyPressed = false;
-            if (checkable)
-                checked = !checked;
-            button.clicked();
+            __action.trigger()
         }
     }
 
     MouseArea {
         id: behavior
-        property bool checkable: false
-        property bool checked: false
+        property bool checkable: __action.checkable
+        property bool checked: __action.checked
         property bool keyPressed: false
         property bool effectivePressed: pressed && containsMouse || keyPressed
 
@@ -104,18 +113,7 @@ Control {
         hoverEnabled: true
         enabled: !keyPressed
 
-        onCheckableChanged: {
-            if (!checkable)
-                checked = false;
-        }
-
-        onReleased: {
-            if (checkable && containsMouse
-                && (!exclusiveGroup || !checked))
-                    checked = !checked;
-        }
-
-        onClicked: button.clicked()
+        onReleased: if (containsMouse) __action.trigger()
         onExited: PrivateHelper.hideTooltip()
         onCanceled: PrivateHelper.hideTooltip()
         onPressed: if (activeFocusOnPress) button.forceActiveFocus()
@@ -128,4 +126,36 @@ Control {
     }
 
     SystemPalette { id: syspal }
+
+    states: [
+        State {
+            name: "ownAction"
+            when: action === null
+            PropertyChanges {
+                target: ownAction
+                enabled: button.enabled
+                checkable: button.checkable
+                checked: button.checked
+                exclusiveGroup: button.exclusiveGroup
+                text: button.text
+                iconSource: button.iconSource
+                tooltip: button.tooltip
+            }
+        },
+
+        State {
+            name: "boundAction"
+            when: action !== null
+            PropertyChanges {
+                target: button
+                enabled: action.enabled
+                checkable: action.checkable
+                checked: action.checked
+                exclusiveGroup: action.exclusiveGroup
+                text: action.text
+                iconSource: action.iconSource
+                tooltip: action.tooltip
+            }
+        }
+    ]
 }
