@@ -108,34 +108,35 @@ AbstractCheckable {
     property bool partiallyCheckedEnabled: false
 
     /*!
+        \internal
         True if onCheckedChanged should be ignored because we were reacting
         to onCheckedStateChanged.
     */
-    property bool ignoreChecked: false
+    property bool __ignoreChecked: false
 
     style: Qt.createComponent(Settings.THEME_PATH + "/CheckBoxStyle.qml", checkBox)
 
     Accessible.role: Accessible.CheckBox
     Accessible.name: text
 
-    __cycleStatesHandler: cycleCheckBoxStates
+    __cycleStatesHandler: __cycleCheckBoxStates
 
     /*! \internal */
     onCheckedChanged: {
-        if (!ignoreChecked)
+        if (!__ignoreChecked)
             checkedState = checked ? Qt.Checked : Qt.Unchecked;
     }
 
     /*! \internal */
     onCheckedStateChanged: {
-        ignoreChecked = true;
+        __ignoreChecked = true;
         if (checkedState === Qt.PartiallyChecked) {
             partiallyCheckedEnabled = true;
             checked = false;
         } else {
             checked = checkedState === Qt.Checked;
         }
-        ignoreChecked = false;
+        __ignoreChecked = false;
     }
 
     /*! \internal */
@@ -153,7 +154,7 @@ AbstractCheckable {
     }
 
     /*! \internal */
-    function cycleCheckBoxStates() {
+    function __cycleCheckBoxStates() {
         if (!partiallyCheckedEnabled) {
             checked = !checked;
         } else {
