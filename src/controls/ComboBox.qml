@@ -154,7 +154,8 @@ Control {
         }
 
         function show() {
-            items[comboBox.selectedIndex].checked = true
+            if (items[comboBox.selectedIndex])
+                items[comboBox.selectedIndex].checked = true
             __currentIndex = comboBox.selectedIndex
             __popup(x, y, centerSelectedText ? comboBox.selectedIndex : 0)
         }
