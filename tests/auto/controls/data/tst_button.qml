@@ -62,4 +62,40 @@ TestCase {
         var tmp2 = Qt.createQmlObject('import QtQuick.Controls 1.0; Button {id: button2_2; text: "Hello"}', testCase, '');
         compare(tmp2.text, "Hello");
     }
+
+    SignalSpy {
+        id: clickSpy
+        signalName: "clicked"
+    }
+
+    function test_action() {
+        var test_actionStr =
+           'import QtQuick 2.0;                     \
+            import QtQuick.Controls 1.0;            \
+            Item {                                  \
+                property var testAction: Action {   \
+                    id: testAction;                 \
+                    text: "Action text"             \
+                }                                   \
+                                                    \
+                property var button: Button {       \
+                    id: button;                     \
+                    action: testAction              \
+                }                                   \
+            }                                       '
+
+        var tmp = Qt.createQmlObject(test_actionStr, testCase, '')
+        compare(tmp.button.text, "Action text")
+
+        tmp.testAction.text = "Action Joe"
+        compare(tmp.button.text, "Action Joe")
+
+        tmp.button.text = "G.I. Joe"
+        compare(tmp.button.text, "G.I. Joe")
+        compare(tmp.testAction.text, "Action Joe")
+
+        clickSpy.target = tmp.button
+        tmp.testAction.trigger()
+        compare(clickSpy.count, 1)
+    }
 }

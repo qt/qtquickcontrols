@@ -86,8 +86,8 @@ Control {
     property Action __action: action || ownAction
 
     Connections {
-        target: action
-        onCheckableChanged: button.checkable = action.checkable
+        target: __action
+        onTriggered: button.clicked()
     }
 
     Keys.onPressed: {
