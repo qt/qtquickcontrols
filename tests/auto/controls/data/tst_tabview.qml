@@ -62,6 +62,18 @@ TestCase {
         Item {}
     }
 
+    function test_changeIndex() {
+        var tabView = Qt.createQmlObject('import QtQuick 2.0; import QtQuick.Controls 1.0; TabView { Repeater { model: 3; Tab { Text { text: index } } } }', testCase, '');
+        compare(tabView.count, 3)
+        verify(tabView.tabAt(1).item == undefined)
+        tabView.currentIndex = 1
+        verify(tabView.tabAt(1).item !== undefined)
+        verify(tabView.tabAt(2).item == undefined)
+        tabView.currentIndex = 1
+        verify(tabView.tabAt(2).item !== undefined)
+    }
+
+
     function test_addRemoveTab() {
         var tabView = Qt.createQmlObject('import QtQuick 2.0; import QtQuick.Controls 1.0; TabView { }', testCase, '');
         compare(tabView.count, 0)
