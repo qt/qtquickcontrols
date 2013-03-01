@@ -123,6 +123,7 @@ public:
 
 
 protected Q_SLOTS:
+    void updateText();
     void windowVisibleChanged(bool);
     void updateSelectedIndex();
 

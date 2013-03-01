@@ -89,7 +89,7 @@ Style {
             "exclusive": !!menuItem && !!menuItem["exclusiveGroup"],
             "shortcut": !!menuItem && menuItem["shortcut"] || "",
             "hasSubmenu": hasSubmenu,
-            "icon": !!menuItem && !!menuItem["action"] ? menuItem.action.__icon : null
+            "icon": !!menuItem && menuItem.__icon
         }
     }
 }

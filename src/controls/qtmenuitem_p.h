@@ -124,27 +124,30 @@ public:
     QtMenuText(QObject *parent = 0);
     ~QtMenuText();
 
-    virtual bool enabled() const { return m_enabled; }
+    bool enabled() const;
     virtual void setEnabled(bool enabled);
 
-    virtual QString text() const { return m_text; }
-    virtual void setText(const QString &text);
+    virtual QString text() const;
+    void setText(const QString &text);
 
-    virtual QUrl iconSource() const { return m_iconSource; }
-    virtual void setIconSource(const QUrl &icon);
-    virtual QString iconName() const { return m_iconName; }
-    virtual void setIconName(const QString &icon);
+    virtual QUrl iconSource() const;
+    void setIconSource(const QUrl &icon);
+    virtual QString iconName() const;
+    void setIconName(const QString &icon);
 
-    void setParentMenu(QtMenu *parentMenu);
-
-    virtual QIcon icon() const { return QIcon(); } // TODO
     QVariant iconVariant() const { return QVariant(icon()); }
 
+protected:
+    virtual QIcon icon() const;
+    virtual QtAction *action() const { return m_action; }
+
+protected Q_SLOTS:
+    virtual void updateText();
+    void updateEnabled();
+    void updateIcon();
+
 private:
-    QString m_text;
-    bool m_enabled;
-    QUrl m_iconSource;
-    QString m_iconName;
+    QtAction *m_action;
 };
 
 class QtMenuItem: public QtMenuText
@@ -154,7 +157,7 @@ class QtMenuItem: public QtMenuText
     Q_PROPERTY(bool checked READ checked WRITE setChecked NOTIFY toggled)
     Q_PROPERTY(QtExclusiveGroup *exclusiveGroup READ exclusiveGroup WRITE setExclusiveGroup NOTIFY exclusiveGroupChanged)
     Q_PROPERTY(QString shortcut READ shortcut WRITE setShortcut NOTIFY shortcutChanged)
-    Q_PROPERTY(QtAction *action READ action WRITE setAction NOTIFY actionChanged)
+    Q_PROPERTY(QtAction *action READ boundAction WRITE setBoundAction NOTIFY actionChanged)
 
 public Q_SLOTS:
     void trigger();
@@ -172,19 +175,15 @@ public:
     QtMenuItem(QObject *parent = 0);
     ~QtMenuItem();
 
-    bool enabled() const;
     void setEnabled(bool enabled);
 
     QString text() const;
-    void setText(const QString &text);
 
     QUrl iconSource() const;
-    void setIconSource(const QUrl &icon);
     QString iconName() const;
-    void setIconName(const QString &icon);
 
-    QtAction *action();
-    void setAction(QtAction *a);
+    QtAction *boundAction() { return m_boundAction; }
+    void setBoundAction(QtAction *a);
 
     QString shortcut() const;
     void setShortcut(const QString &shortcut);
@@ -198,20 +197,20 @@ public:
     QtExclusiveGroup *exclusiveGroup() const;
     void setExclusiveGroup(QtExclusiveGroup *);
 
-    QIcon icon() const;
+    void setParentMenu(QtMenu *parentMenu);
 
 protected Q_SLOTS:
-    virtual void updateText();
     void updateShortcut();
     void updateChecked();
-    void updateEnabled();
-    void updateIconName();
-    void updateIconSource();
     void bindToAction(QtAction *action);
     void unbindFromAction(QObject *action);
 
+protected:
+    QIcon icon() const;
+    QtAction *action() const;
+
 private:
-    QtAction *m_action;
+    QtAction *m_boundAction;
 };
 
 QT_END_NAMESPACE

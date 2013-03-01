@@ -50,11 +50,6 @@ Menu { // Move to private
 
     Component.onCompleted: if (model !== undefined) rebuildMenu()
 
-    onSelectedIndexChanged: {
-        if (0 <= selectedIndex && selectedIndex < items.length)
-            items[selectedIndex].triggered()
-    }
-
     function rebuildMenu()
     {
         clear();

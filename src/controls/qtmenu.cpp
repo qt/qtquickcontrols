@@ -154,11 +154,11 @@ QtMenu::~QtMenu()
     delete m_platformMenu;
 }
 
-void QtMenu::setText(const QString &text)
+void QtMenu::updateText()
 {
-    QtMenuText::setText(text);
     if (m_platformMenu)
         m_platformMenu->setText(this->text());
+    QtMenuText::updateText();
 }
 
 void QtMenu::setMinimumWidth(int w)

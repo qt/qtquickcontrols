@@ -149,8 +149,8 @@ Control {
         __visualItem: comboBox
 
         function finalizeItem(item) {
-            item.action.checkable = true
-            item.action.exclusiveGroup = eg
+            item.checkable = true
+            item.exclusiveGroup = eg
         }
 
         function show() {
