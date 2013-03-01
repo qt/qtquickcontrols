@@ -83,8 +83,11 @@ QT_BEGIN_NAMESPACE
 /*!
     \qmlproperty string Menu::text
 
-    Text for the menu, whether in a \l MenuBar or as a submenu.
-    Accelerators are supported with the usual \& convention.
+    Text for the menu as a submenu or in a menubar.
+
+    Mnemonics are supported by prefixing the shortcut letter with \&.
+    For instance, \c "\&File" will bind the \c Alt-F shortcut to the
+    \c "File" menu. Note that not all platforms support mnemonics.
 */
 
 /*!
@@ -113,13 +116,13 @@ QT_BEGIN_NAMESPACE
 /*!
     \qmlproperty int Menu::selectedIndex
 
-    The index for the last selected item in the menu.
+    The index of the last selected item in the menu.
 */
 
 /*!
     \qmlmethod void Menu::popup()
 
-    Pops up this menu under the mouse cursor.
+    Opens this menu under the mouse cursor.
     It can block on some platforms, so test it accordingly.
 */
 

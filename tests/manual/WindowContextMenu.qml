@@ -51,7 +51,7 @@ Window {
     Text {
         id : selctedLabel
         anchors.centerIn: parent
-        text : editMenu.itemTextAt(editMenu.selectedIndex)
+        text : editMenu.selectedIndex >= 0 ? editMenu.items[editMenu.selectedIndex].text : "No selection"
     }
 
     ContextMenu {
@@ -76,6 +76,6 @@ Window {
     MouseArea {
         anchors.fill: parent
         acceptedButtons : Qt.RightButton
-        onClicked: editMenu.showPopup(mouseX, mouseY, 0)
+        onClicked: editMenu.popup()
     }
 }

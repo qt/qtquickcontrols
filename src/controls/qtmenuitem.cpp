@@ -232,7 +232,11 @@ void QtMenuText::setIconName(const QString &iconName)
 /*!
     \qmlproperty string MenuItem::text
 
-    Text for the menu item. Accelerators are supported with the usual \& convention.
+    Text for the menu item.
+
+    Mnemonics are supported by prefixing the shortcut letter with \&.
+    For instance, \c "\&Open" will bind the \c Alt-O shortcut to the
+    \c "Open" menu item. Note that not all platforms support mnemonics.
 */
 
 /*!
@@ -316,7 +320,7 @@ void QtMenuText::setIconName(const QString &iconName)
 /*!
     \qmlproperty Action MenuItem::action
 
-    The action bound to this menu item. Setting this property to an valid
+    The action bound to this menu item. Setting this property to a valid
     \l Action will override all the menu item's properties except \l text.
 
     In addition, the menu item \c triggered() and \c toggled() signals will not be emitted.

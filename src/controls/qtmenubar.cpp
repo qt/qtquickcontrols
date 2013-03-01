@@ -61,6 +61,15 @@ QT_BEGIN_NAMESPACE
   \inqmlmodule QtQuick.Controls 1.0
  */
 
+/*!
+    \qmlproperty readonly list MenuBar::menus
+    \default
+
+    The list of menus in the menubar.
+
+    \sa Menu
+*/
+
 QtMenuBar::QtMenuBar(QObject *parent)
     : QObject(parent), m_contentItem(0), m_parentWindow(0)
 {

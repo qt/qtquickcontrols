@@ -71,15 +71,6 @@ import "Styles/Settings.js" as Settings
     \sa ApplicationWindow::menuBar
 */
 
-/*!
-    \qmlproperty readonly list MenuBar::menus
-    \default
-
-    The list of menus in the menu bar.
-
-    \sa Menu
-*/
-
 MenuBarPrivate {
     id: root
 

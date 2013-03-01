@@ -47,7 +47,6 @@ import "Styles/Settings.js" as Settings
     \qmltype Menu
     \inqmlmodule QtQuick.Controls 1.0
     \ingroup applicationwindow
-    \inherits MenuItem
     \brief Menu provides a menu component for use in menu bars, context menus, and other popup menus.
 
     \code
@@ -91,6 +90,7 @@ import "Styles/Settings.js" as Settings
 
     \sa MenuBar, MenuItem, MenuSeparator
 */
+
 MenuPrivate {
     id: root
 
