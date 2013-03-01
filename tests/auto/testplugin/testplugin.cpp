@@ -42,6 +42,7 @@
 #include <QtQml/qqml.h>
 #include <QQmlEngine>
 #include <QVariant>
+#include <QStringList>
 #include "testplugin.h"
 #include "testcppmodels.h"
 

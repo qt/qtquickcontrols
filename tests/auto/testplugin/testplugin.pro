@@ -18,8 +18,6 @@ HEADERS += \
     $$PWD/testplugin.h \
     $$PWD/testcppmodels.h
 
-DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0
-
 mac {
     LIBS += -framework Carbon
 }
