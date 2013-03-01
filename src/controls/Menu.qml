@@ -94,24 +94,24 @@ import "Styles/Settings.js" as Settings
 MenuPrivate {
     id: root
 
-    //! \internal
+    /*! \internal */
     property Component style: Qt.createComponent(Settings.THEME_PATH + "/MenuStyle.qml", root)
 
-    //! \internal
+    /*! \internal */
     property var __menuBar: null
-    //! \internal
+    /*! \internal */
     property int __currentIndex: -1
-    //! \internal
+    /*! \internal */
     on__MenuClosed: __currentIndex = -1
 
-    //! \internal
+    /*! \internal */
     __contentItem: Loader {
         sourceComponent: __menuComponent
         active: !root.__isNative && root.__popupVisible
         focus: true
     }
 
-    //! \internal
+    /*! \internal */
     property Component __menuComponent: Loader {
         id: menuFrameLoader
 

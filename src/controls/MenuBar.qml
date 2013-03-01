@@ -83,10 +83,10 @@ import "Styles/Settings.js" as Settings
 MenuBarPrivate {
     id: root
 
-    //! \internal
+    /*! \internal */
     property Component style: Qt.createComponent(Settings.THEME_PATH + "/MenuBarStyle.qml", root)
 
-    //! \internal
+    /*! \internal */
     __contentItem: Loader {
         id: topLoader
         sourceComponent: __menuBarComponent
@@ -94,7 +94,7 @@ MenuBarPrivate {
         focus: true
     }
 
-    //! \internal
+    /*! \internal */
     property Component __menuBarComponent: Loader {
         id: menuBarLoader
 
