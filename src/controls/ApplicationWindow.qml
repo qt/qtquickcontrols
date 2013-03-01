@@ -103,7 +103,7 @@ Window {
         By default this value is not set. When you set the toolBar Item, it will
         be anchored automatically into the AppliacationWindow.
     */
-    property alias toolBar: toolBarArea.data
+    property Item toolBar
 
     /*!
         \qmlproperty Item ApplicationWindow::statusBar
@@ -115,7 +115,13 @@ Window {
         By default this value is not set. When you set the toolBar Item, it will
         be anchored automatically into the AppliacationWindow.
     */
-    property alias statusBar: statusBarArea.data
+    property Item statusBar
+
+    /*! \internal */
+    onToolBarChanged: { if (toolBar) { toolBar.parent = toolBarArea } }
+
+    /*! \internal */
+    onStatusBarChanged: { if (statusBar) { statusBar.parent = statusBarArea } }
 
     /*! \internal */
     default property alias data: contentArea.data
