@@ -41,10 +41,10 @@
 
 #include "qtmenubar_p.h"
 
-#include <QtQuick/QQuickItem>
-#include "private/qguiapplication_p.h"
+#include <private/qguiapplication_p.h>
 #include <QtGui/qpa/qplatformtheme.h>
 #include <QtGui/qpa/qplatformmenu.h>
+#include <qquickwindow.h>
 
 QT_BEGIN_NAMESPACE
 

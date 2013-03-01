@@ -40,15 +40,16 @@
 ****************************************************************************/
 
 #include "qtmenu_p.h"
-#include "qdebug.h"
 #include "qtaction_p.h"
 #include "qtmenupopupwindow_p.h"
-#include <qabstractitemmodel.h>
 
-#include <QtGui/QCursor>
-#include "private/qguiapplication_p.h"
+#include <qdebug.h>
+#include <qabstractitemmodel.h>
+#include <qcursor.h>
+#include <private/qguiapplication_p.h>
 #include <QtGui/qpa/qplatformtheme.h>
 #include <QtGui/qpa/qplatformmenu.h>
+#include <qquickitem.h>
 
 QT_BEGIN_NAMESPACE
 

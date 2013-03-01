@@ -41,12 +41,13 @@
 
 #ifndef QTMENU_P_H
 #define QTMENU_P_H
-#include <QtCore/qglobal.h>
-#include <QtQuick/QtQuick>
-#include <QtQml/QtQml>
-#include <QtCore/qabstractitemmodel.h>
-#include <QtCore/QVariant>
+
 #include "qtmenuitem_p.h"
+
+#include <QtCore/qabstractitemmodel.h>
+#include <QtCore/qvariant.h>
+#include <QtQml/qqml.h>
+#include <QtQml/qqmllist.h>
 
 QT_BEGIN_NAMESPACE
 

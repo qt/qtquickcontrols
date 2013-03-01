@@ -42,7 +42,7 @@
 #ifndef QTMENUPOPUPWINDOW_H
 #define QTMENUPOPUPWINDOW_H
 
-#include <QQuickWindow>
+#include <QtQuick/qquickwindow.h>
 
 QT_BEGIN_NAMESPACE
 

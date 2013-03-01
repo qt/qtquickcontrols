@@ -42,8 +42,8 @@
 #include "qtaction_p.h"
 #include "qtexclusivegroup_p.h"
 
-#include <QtGui/private/qguiapplication_p.h>
-#include <QtQml/qqmlfile.h>
+#include <private/qguiapplication_p.h>
+#include <qqmlfile.h>
 
 QT_BEGIN_NAMESPACE
 

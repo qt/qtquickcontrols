@@ -42,10 +42,10 @@
 #ifndef QTACTION_H
 #define QTACTION_H
 
-#include <QtCore/QObject>
-#include <QtCore/QUrl>
-#include <QtCore/QVariant>
-#include <QtGui/QIcon>
+#include <QtCore/qobject.h>
+#include <QtCore/qurl.h>
+#include <QtCore/qvariant.h>
+#include <QtGui/qicon.h>
 #include <QtGui/qkeysequence.h>
 
 QT_BEGIN_NAMESPACE

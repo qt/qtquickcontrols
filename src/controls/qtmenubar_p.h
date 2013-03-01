@@ -42,10 +42,10 @@
 #ifndef QTMENUBAR_P_H
 #define QTMENUBAR_P_H
 
-#include <QtCore/qglobal.h>
-#include <QtCore/QObject>
-
 #include "qtmenu_p.h"
+
+#include <QtCore/qobject.h>
+#include <QtQuick/qquickitem.h>
 
 QT_BEGIN_NAMESPACE
 

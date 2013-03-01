@@ -41,8 +41,9 @@
 
 #include "qtmenupopupwindow_p.h"
 #include "qtmenu_p.h"
-#include <QtGui/QGuiApplication>
-#include <QtCore/QEvent>
+
+#include <qguiapplication.h>
+#include <qquickitem.h>
 
 QT_BEGIN_NAMESPACE
 

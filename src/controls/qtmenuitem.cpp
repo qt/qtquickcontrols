@@ -43,10 +43,10 @@
 #include "qtaction_p.h"
 #include "qtmenu_p.h"
 
-#include <QtGui/private/qguiapplication_p.h>
+#include <private/qguiapplication_p.h>
 #include <QtGui/qpa/qplatformtheme.h>
 #include <QtGui/qpa/qplatformmenu.h>
-#include <QtQuick/QQuickItem>
+#include <qquickitem.h>
 
 QT_BEGIN_NAMESPACE
 

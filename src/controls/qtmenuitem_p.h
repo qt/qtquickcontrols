@@ -42,12 +42,11 @@
 #ifndef QTMENUITEM_P_H
 #define QTMENUITEM_P_H
 
-#include <QtCore/QObject>
-#include <QtCore/QPointF>
-#include <QtCore/QPointer>
-#include <QtCore/QUrl>
-#include <QtCore/QVariant>
-#include <QtGui/QIcon>
+#include <QtCore/qobject.h>
+#include <QtCore/qvariant.h>
+#include <QtCore/qpointer.h>
+#include <QtCore/qurl.h>
+#include <QtGui/qicon.h>
 
 QT_BEGIN_NAMESPACE
 
