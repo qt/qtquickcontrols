@@ -134,12 +134,12 @@ QtMenu::QtMenu(QObject *parent)
     : QtMenuText(parent),
       m_selectedIndex(-1),
       m_highlightedIndex(0),
+      m_parentWindow(0),
       m_hasNativeModel(false),
       m_minimumWidth(0),
       m_popupWindow(0),
       m_menuContentItem(0),
-      m_popupVisible(false),
-      m_parentWindow(0)
+      m_popupVisible(false)
 {
     m_platformMenu = QGuiApplicationPrivate::platformTheme()->createPlatformMenu();
     if (m_platformMenu) {
