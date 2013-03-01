@@ -134,14 +134,14 @@ void QtMenuPopupWindow::mouseReleaseEvent(QMouseEvent *e)
 
 void QtMenuPopupWindow::forwardEventToTransientParent(QMouseEvent *e)
 {
-    QWindow *parentMenuWindow = qobject_cast<QtMenuPopupWindow*>(transientParent());
-    if (!parentMenuWindow) {
-        if (m_mouseMoved && e->type() == QEvent::MouseButtonRelease)
-            dismissMenu();
-    } else {
-        QPoint parentPos = parentMenuWindow->mapFromGlobal(mapToGlobal(e->pos()));
+    if (!qobject_cast<QtMenuPopupWindow*>(transientParent())
+        && m_mouseMoved && e->type() == QEvent::MouseButtonRelease) {
+        // Clicked outside any menu
+        dismissMenu();
+    } else if (transientParent()) {
+        QPoint parentPos = transientParent()->mapFromGlobal(mapToGlobal(e->pos()));
         QMouseEvent pe = QMouseEvent(e->type(), parentPos, e->button(), e->buttons(), e->modifiers());
-        QGuiApplication::sendEvent(parentMenuWindow, &pe);
+        QGuiApplication::sendEvent(transientParent(), &pe);
     }
 }
 

@@ -47,7 +47,7 @@ import QtQuick.Controls.Private 1.0
 Style {
     property Component frame: StyleItem {
         elementType: "menubar"
-        width: control.width
+        width: control.__contentItem.width
         height: parent ? parent.contentHeight : 0
         //        + 2 * (pixelMetric("menuvmargin") + pixelMetric("menupanelwidth"))
     }

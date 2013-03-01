@@ -219,7 +219,7 @@ MenuPrivate {
                     currentItem = column.childAt(pos.x, pos.y)
                     if (currentItem) {
                         root.__currentIndex = currentItem.menuItemIndex
-                        if (currentItem.hasSubmenu && !currentItem.menuItem.popupVisible)
+                        if (currentItem.hasSubmenu && !currentItem.menuItem.__popupVisible)
                             currentItem.showSubMenu(false)
                     } else {
                         root.__currentIndex = -1

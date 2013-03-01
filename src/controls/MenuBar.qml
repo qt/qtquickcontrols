@@ -140,6 +140,27 @@ MenuBarPrivate {
             anchors.fill: parent
             hoverEnabled: true
 
+            onPositionChanged: updateCurrentItem(mouse)
+            onPressed: {
+                menuBarLoader.preselectMenuItem = false
+                menuBarLoader.openedMenuIndex = currentItem.menuItemIndex
+            }
+
+            property Item currentItem: null
+            function updateCurrentItem(mouse) {
+                var pos = mapToItem(row, mouse.x, mouse.y)
+                if (!currentItem || !currentItem.contains(Qt.point(pos.x - currentItem.x, pos.y - currentItem.y))) {
+                    var newCurrentItem = row.childAt(pos.x, pos.y)
+                    if (!newCurrentItem)
+                        return;
+                    currentItem = newCurrentItem
+                    if (menuBarLoader.openedMenuIndex !== -1) {
+                        menuBarLoader.preselectMenuItem = false
+                        menuBarLoader.openedMenuIndex = currentItem.menuItemIndex
+                    }
+                }
+            }
+
             Row {
                 id: row
 
@@ -150,27 +171,10 @@ MenuBarPrivate {
                         id: menuItemLoader
 
                         property var menuItem: modelData
-                        property bool selected: menuItem.__popupVisible || itemMouseArea.pressed || menuBarLoader.openedMenuIndex === index
+                        property bool selected: menuItem.__popupVisible || menuBarLoader.openedMenuIndex === index
 
                         sourceComponent: menuBarLoader.menuItemStyle
-
-                        MouseArea {
-                            id: itemMouseArea
-                            anchors.fill:parent
-                            hoverEnabled: true
-
-                            onClicked: {
-                                menuBarLoader.preselectMenuItem = false
-                                menuBarLoader.openedMenuIndex = index
-                            }
-                            onPositionChanged: {
-                                if ((pressed || menuMouseArea.pressed || menuBarLoader.openedMenuIndex !== -1)
-                                        && menuBarLoader.openedMenuIndex !== index) {
-                                    menuBarLoader.openedMenuIndex = index
-                                    menuBarLoader.preselectMenuItem = false
-                                }
-                            }
-                        }
+                        property int menuItemIndex: index
 
                         Connections {
                             target: menuBarLoader
