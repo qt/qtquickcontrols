@@ -125,14 +125,14 @@ Window {
 
     /*! \internal */
     default property alias data: contentArea.data
-    property alias backgroundColor: syspal.window
+
+    color: syspal.window
 
     SystemPalette {id: syspal}
 
-    Rectangle {
+    Item {
         id: backgroundItem
         anchors.fill: parent
-        color: backgroundColor
 
         Row {
             id: toolBarArea
