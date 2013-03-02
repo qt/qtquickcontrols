@@ -55,7 +55,7 @@ QtObject {
 
     property Component intLayout: RowLayout {
         spacing: 4
-        Text {
+        Label {
             text: name + ":"
             Layout.minimumWidth: 100
         }
@@ -75,7 +75,7 @@ QtObject {
 
     property Component realLayout: RowLayout {
         spacing: 4
-        Text {
+        Label {
             text: name + ":"
             Layout.minimumWidth: 100
         }
@@ -106,7 +106,7 @@ QtObject {
 
     property Component stringLayout: RowLayout {
         spacing: 4
-        Text {
+        Label {
             text: name + ":"
             width: 100
         }
@@ -125,12 +125,12 @@ QtObject {
 
     property Component readonlyLayout: RowLayout {
         height: 20
-        Text {
+        Label {
             id: text
             height: 20
             text: name + ":"
         }
-        Text {
+        Label {
             height: 20
             anchors.right: parent.right
             Layout.horizontalSizePolicy: Layout.Expanding
@@ -142,7 +142,7 @@ QtObject {
         id: enumLayout
         spacing: 4
         height: 20
-        Text {
+        Label {
             text: name + ":"
             Layout.minimumWidth: 100
         }

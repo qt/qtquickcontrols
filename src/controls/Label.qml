@@ -80,7 +80,10 @@ Text {
     */
 
     id: label
-    font.pixelSize: 11
     color: pal.text
-    SystemPalette {id:pal}
+    renderType: Text.NativeRendering
+    SystemPalette {
+        id: pal
+        colorGroup: enabled ? SystemPalette.Active : SystemPalette.Disabled
+    }
 }
