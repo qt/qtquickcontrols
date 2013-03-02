@@ -43,7 +43,7 @@ import QtQuick.Controls 1.0
 
 QtObject {
     property Component boolLayout: CheckBox {
-        checked: visible ? result : false
+        checked: visible ? (result == "true") : false
         text: name
         onCheckedChanged: loader.item[name] = checked
     }
