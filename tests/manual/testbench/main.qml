@@ -55,6 +55,8 @@ ApplicationWindow {
     property SpinBox widthControl
     property SpinBox heightControl
 
+    color: "lightgray"
+
     Components{ id: components }
     SystemPalette { id: syspal }
 
@@ -72,7 +74,7 @@ ApplicationWindow {
             }
             CheckBox {
                 id: patternCheckBox
-                checked: true
+                checked: false
                 text: "Background"
             }
         }
@@ -106,14 +108,8 @@ ApplicationWindow {
             clip: true
             Layout.horizontalSizePolicy: Layout.Expanding
 
-            Rectangle {
-                anchors.fill: parent
-                color: "lightgray"
-            }
-
             Image {
                 anchors.fill: parent
-                anchors.margins: -1000
                 source: "../images/checkered.png"
                 fillMode: Image.Tile
                 opacity: patternCheckBox.checked ? 0.12 : 0
