@@ -138,27 +138,22 @@ QtObject {
         }
     }
 
-    property Component enumLayout: RowLayout {
+    property Component enumLayout: Column {
         id: enumLayout
         spacing: 4
-        height: 20
-        Label {
-            text: name + ":"
-            Layout.minimumWidth: 100
-        }
+
+        Label { text: name + ":" }
 
         ComboBox {
             height: 20
+            width: parent.width
             model: enumModel
-            Layout.horizontalSizePolicy: Layout.Expanding
             onSelectedIndexChanged: {
                 if (!ignoreUpdate) {
                     loader.item[name] = model.get(selectedIndex).value
                     propertyChanged()
                 }
             }
-
-
             Component.onCompleted: selectedIndex = getDefaultIndex()
             function getDefaultIndex() {
                 for (var index = 0 ; index < model.count ; ++index) {
