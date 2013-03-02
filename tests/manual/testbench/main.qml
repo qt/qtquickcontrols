@@ -190,6 +190,7 @@ ApplicationWindow {
                                     case "Visible":
                                     case "Checkable":
                                     case "Checked":
+                                    case "FrameVisible":
                                     case "AdjustToContentSize":
                                     case "Flat":
                                         layout = layouts.boolLayout

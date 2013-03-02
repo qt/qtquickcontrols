@@ -54,6 +54,7 @@ Item {
     property Component toolbar: ToolBar { }
     property Component statusbar: StatusBar { }
     property Component tableview: TableView { model: testDataModel ; TableViewColumn {title: "Column 1"}}
+    property Component tabView: TabView { Repeater { model: 3 ; delegate:Tab { title: "Tab " + index } }}
     property Component scrollview: ScrollView {
         Rectangle {
             color: "#eee"
@@ -124,6 +125,7 @@ Item {
             append({ name: "TableView",     component: tableview});
             append({ name: "ScrollView",    component: scrollview});
             append({ name: "GroupBox",      component: groupbox});
+            append({ name: "TabView",       component: tabView});
         }
     }
 }
