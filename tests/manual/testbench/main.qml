@@ -46,7 +46,15 @@ ApplicationWindow {
     width: 950
     height: 600
 
+    signal propertyChanged
+    property bool ignoreUpdate: false
+    onPropertyChanged: container.resetSize()
+
     property var propertyMap: []
+
+    property SpinBox widthControl
+    property SpinBox heightControl
+
     Components{ id: components }
     SystemPalette { id: syspal }
 
@@ -66,11 +74,6 @@ ApplicationWindow {
                 id: patternCheckBox
                 checked: true
                 text: "Background"
-            }
-            ToolButton {
-                id: resetButton
-                text: "Reset size"
-                onClicked: container.resetSize()
             }
         }
 
@@ -128,6 +131,18 @@ ApplicationWindow {
                     bottomRightHandle.x = topLeftHandle.x + loader.item.implicitWidth;
                     bottomRightHandle.y = topLeftHandle.y + loader.item.implicitHeight;
                 }
+
+                function updateSize() {
+                    ignoreUpdate = true
+                    if (widthControl)
+                        widthControl.value = loader.item.width
+                    if (heightControl)
+                        heightControl.value = loader.item.height
+                    ignoreUpdate = false
+                }
+
+                onHeightChanged: updateSize()
+                onWidthChanged: updateSize()
 
                 y: Math.floor(topLeftHandle.y + topLeftHandle.height - topLeftHandle.width/2)
                 x: Math.floor(topLeftHandle.x + topLeftHandle.width - topLeftHandle.height/2)
@@ -370,7 +385,7 @@ ApplicationWindow {
         Rectangle {
             id: sidebar
             color : syspal.window
-            width: 300
+            width: 200
             ScrollView {
                 id: scrollView
                 anchors.fill: parent

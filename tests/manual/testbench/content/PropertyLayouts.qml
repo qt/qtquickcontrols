@@ -45,7 +45,12 @@ QtObject {
     property Component boolLayout: CheckBox {
         checked: visible ? (result == "true") : false
         text: name
-        onCheckedChanged: loader.item[name] = checked
+        onCheckedChanged: {
+            if (!ignoreUpdate) {
+                loader.item[name] = checked
+                propertyChanged()
+            }
+        }
     }
 
     property Component intLayout: RowLayout {
@@ -59,7 +64,12 @@ QtObject {
             maximumValue: 9999
             minimumValue: -9999
             Layout.horizontalSizePolicy: Layout.Expanding
-            onValueChanged: loader.item[name] = value
+            onValueChanged: {
+                if (!ignoreUpdate) {
+                    loader.item[name] = value
+                    propertyChanged()
+                }
+            }
         }
     }
 
@@ -70,13 +80,27 @@ QtObject {
             Layout.minimumWidth: 100
         }
         SpinBox {
+            id: spinbox
             value: result
             decimals: 1
             stepSize: 0.5
             maximumValue: 9999
             minimumValue: -9999
             Layout.horizontalSizePolicy: Layout.Expanding
-            onValueChanged: loader.item[name] = value
+            onValueChanged: {
+                if (!ignoreUpdate) {
+                    loader.item[name] = value
+                    if (name != "width" && name != "height") // We dont want to reset size when size changes
+                        propertyChanged()
+                }
+            }
+
+            Component.onCompleted: {
+                if (name == "width")
+                    widthControl = spinbox
+                else if (name == "height")
+                    heightControl = spinbox
+            }
         }
     }
 
@@ -89,8 +113,13 @@ QtObject {
         TextField {
             id: tf
             text: result
-            onTextChanged: loader.item[name] = tf.text
             Layout.horizontalSizePolicy: Layout.Expanding
+            onTextChanged: {
+                if (!ignoreUpdate) {
+                    loader.item[name] = tf.text
+                    propertyChanged()
+                }
+            }
         }
     }
 
@@ -104,8 +133,8 @@ QtObject {
         Text {
             height: 20
             anchors.right: parent.right
-            text: loader.item[name] ? loader.item[name] : ""
             Layout.horizontalSizePolicy: Layout.Expanding
+            text: loader.item[name] ? loader.item[name] : ""
         }
     }
 
@@ -122,7 +151,12 @@ QtObject {
             height: 20
             model: enumModel
             Layout.horizontalSizePolicy: Layout.Expanding
-            onSelectedIndexChanged: loader.item[name] = model.get(selectedIndex).value
+            onSelectedIndexChanged: {
+                if (!ignoreUpdate) {
+                    loader.item[name] = model.get(selectedIndex).value
+                    propertyChanged()
+                }
+            }
 
 
             Component.onCompleted: selectedIndex = getDefaultIndex()
