@@ -1230,7 +1230,7 @@ QSGNode *QStyleItem::updatePaintNode(QSGNode *node, UpdatePaintNodeData *)
 
 void QStyleItem::updatePolish()
 {
-    if (width() > 0 && height() > 0) {
+    if (width() >= 1 && height() >= 1) { // Note these are reals so 1 pixel is minimum
         m_image = QImage(width(), height(), QImage::Format_ARGB32_Premultiplied);
         m_image.fill(Qt::transparent);
         QPainter painter(&m_image);
