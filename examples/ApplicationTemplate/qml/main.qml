@@ -71,13 +71,13 @@ ApplicationWindow {
     SplitView {
         anchors.fill: parent
         TableView {
-            frame: false
+            frameVisible: false
             highlightOnFocus: false
             model: 40
             TableViewColumn { title: "Left Column" }
         }
         TextArea {
-            frame: false
+            frameVisible: false
             highlightOnFocus: false
             text: "Hello World"
         }
