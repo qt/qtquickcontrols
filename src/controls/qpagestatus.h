@@ -42,8 +42,7 @@
 #ifndef QPAGESTATUS_H
 #define QPAGESTATUS_H
 
-#include <QtQml>
-#include <QtQuick>
+#include <QtCore/qobject.h>
 
 QT_BEGIN_NAMESPACE
 
