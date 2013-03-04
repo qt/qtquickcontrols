@@ -42,9 +42,8 @@
 #ifndef QSTYLEPLUGIN_P_H
 #define QSTYLEPLUGIN_P_H
 
-#include <QQmlExtensionPlugin>
-#include <QtCore/QTimer>
-#include <QtWidgets/QFileSystemModel>
+#include <QtQml/qqmlextensionplugin.h>
+#include <QtQml/qqmlengine.h>
 
 QT_BEGIN_NAMESPACE
 

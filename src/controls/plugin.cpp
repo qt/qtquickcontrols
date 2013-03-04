@@ -39,7 +39,6 @@
 **
 ****************************************************************************/
 
-#include <qqml.h>
 #include "plugin_p.h"
 #include "qtaction_p.h"
 #include "qtexclusivegroup_p.h"
@@ -47,13 +46,13 @@
 #include "qtmenubar_p.h"
 #include "qquicklinearlayout_p.h"
 #include "qpagestatus.h"
-#include <qqmlextensionplugin.h>
 
+#include <qimage.h>
+#include <qqml.h>
 #include <qqmlengine.h>
+#include <qqmlextensionplugin.h>
 #include <qquickimageprovider.h>
-#include <QtWidgets/QApplication>
-#include <QtQuick/QQuickWindow>
-#include <QImage>
+#include <qquickwindow.h>
 
 QT_BEGIN_NAMESPACE
 

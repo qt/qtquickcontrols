@@ -39,12 +39,13 @@
 **
 ****************************************************************************/
 
-#include <qqml.h>
 #include "qprivateplugin_p.h"
 #include "qrangemodel_p.h"
 #include "qwheelarea_p.h"
 #include "qstyleitem_p.h"
 #include "qquickcomponentsprivate_p.h"
+
+#include <qqml.h>
 
 QT_BEGIN_NAMESPACE
 
