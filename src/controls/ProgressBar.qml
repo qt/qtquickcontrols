@@ -84,7 +84,7 @@ Control {
     */
     property bool indeterminate: false
 
-    /*! \qmlproperty enum orientation
+    /*! \qmlproperty enumeration orientation
 
         This property holds the orientation of the progress bar.
 

@@ -67,7 +67,7 @@ Control {
     id: slider
 
     /*!
-        \qmlproperty enum Slider::orientation
+        \qmlproperty enumeration Slider::orientation
 
         This property holds the layout orientation of the slider.
         The default value is \c Qt.Horizontal
