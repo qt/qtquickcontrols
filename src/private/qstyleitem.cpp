@@ -440,6 +440,8 @@ void QStyleItem::initStyleOption()
             m_styleoption = new QStyleOptionSlider();
 
         QStyleOptionSlider *opt = qstyleoption_cast<QStyleOptionSlider*>(m_styleoption);
+        opt->orientation = horizontal() ? Qt::Horizontal : Qt::Vertical;
+        opt->upsideDown = !horizontal();
         opt->minimum = minimum();
         opt->maximum = maximum();
         opt->sliderPosition = value();

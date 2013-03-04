@@ -167,6 +167,9 @@ Control {
     /*! \internal */
     property bool __containsMouse: mouseArea.containsMouse
 
+    /*! \internal */
+    property bool __horizontal: orientation === Qt.Horizontal
+
     Accessible.role: Accessible.Slider
     Accessible.name: value
 
@@ -195,10 +198,10 @@ Control {
         maximumValue: 1.0
         value: 0
         stepSize: 0.0
-        inverted: false
+        inverted: __horizontal ? false : true
 
         positionAtMinimum: 0
-        positionAtMaximum: slider.width
+        positionAtMaximum: __horizontal ? slider.width : slider.height
     }
 
     Item { id: fakeHandle }
@@ -213,7 +216,7 @@ Control {
         height: parent.height
 
         drag.target: fakeHandle
-        drag.axis: Drag.XAxis
+        drag.axis: __horizontal ? Drag.XAxis : Drag.YAxis
         drag.minimumX: range.positionAtMinimum
         drag.maximumX: range.positionAtMaximum
 
@@ -222,22 +225,19 @@ Control {
                 slider.focus = true;
 
             // Clamp the value
-            var newX = Math.max(mouse.x, drag.minimumX);
-            newX = Math.min(newX, drag.maximumX);
-
-            // Debounce the press: a press event inside the handler will not
-            // change its position, the user needs to drag it.
-
-            // Note this really messes up things for scrollbar
-            // if (Math.abs(newX - fakeHandle.x) > handleLoader.width / 2)
-            range.position = newX;
+            var current = __horizontal ? mouse.x : mouse.y
+            var minimum = __horizontal ? drag.minimumX : drag.minimumY
+            var maximum = __horizontal ? drag.maximumX : drag.maximumY
+            var newVal = Math.max(current, minimum);
+            newVal = Math.min(newVal, maximum);
+            range.position = newVal;
         }
 
         onReleased: {
             // If we don't update while dragging, this is the only
             // moment that the range is updated.
             if (!slider.updateValueWhileDragging)
-                range.position = fakeHandle.x;
+                range.position = __horizontal ? fakeHandle.x : fakeHandle.y;
         }
     }
 
@@ -250,7 +250,7 @@ Control {
         when: updateValueWhileDragging || !mouseArea.pressed
         target: range
         property: "position"
-        value: fakeHandle.x
+        value: __horizontal ? fakeHandle.x : fakeHandle.y
     }
 
     // During the drag, we simply ignore position set from the range, this
@@ -259,10 +259,9 @@ Control {
     Binding {
         when: !mouseArea.drag.active
         target: fakeHandle
-        property: "x"
+        property: __horizontal ? "x" : "y"
         value: range.position
     }
-
 
     WheelArea {
         id: wheelarea

@@ -48,6 +48,14 @@ TestCase {
     width:400
     height:400
 
+    function test_vertical() {
+        var slider = Qt.createQmlObject('import QtQuick.Controls 1.0; Slider {}', testCase, '');
+        verify(slider.height < slider.width)
+
+        slider.orientation = Qt.Vertical;
+        verify(slider.height > slider.width)
+    }
+
     function test_minimumvalue() {
         var slider = Qt.createQmlObject('import QtQuick.Controls 1.0; Slider {}', testCase, '');
 
