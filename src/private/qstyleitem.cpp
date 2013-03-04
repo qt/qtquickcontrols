@@ -1141,17 +1141,21 @@ void QStyleItem::paint(QPainter *painter)
         qApp->style()->drawControl(QStyle::CE_ProgressBar, m_styleoption, painter);
         break;
     case ToolBar:
+        painter->fillRect(m_styleoption->rect, m_styleoption->palette.window().color());
         qApp->style()->drawControl(QStyle::CE_ToolBar, m_styleoption, painter);
+        painter->setPen(m_styleoption->palette.dark().color().darker(120));
+        painter->drawLine(m_styleoption->rect.bottomLeft(), m_styleoption->rect.bottomRight());
         break;
     case StatusBar:
         if (style() == "mac") {
-            m_styleoption->rect.adjust(0, 1, 0, 0);
             qApp->style()->drawControl(QStyle::CE_ToolBar, m_styleoption, painter);
-            m_styleoption->rect.adjust(0, -1, 0, 0);
             painter->setPen(m_styleoption->palette.dark().color().darker(120));
             painter->drawLine(m_styleoption->rect.topLeft(), m_styleoption->rect.topRight());
         } else {
-            qApp->style()->drawPrimitive(QStyle::PE_PanelToolBar, m_styleoption, painter);
+            painter->fillRect(m_styleoption->rect, m_styleoption->palette.window().color());
+            painter->setPen(m_styleoption->palette.dark().color().darker(120));
+            painter->drawLine(m_styleoption->rect.topLeft(), m_styleoption->rect.topRight());
+            qApp->style()->drawPrimitive(QStyle::PE_PanelStatusBar, m_styleoption, painter);
         }
         break;
     case GroupBox:
