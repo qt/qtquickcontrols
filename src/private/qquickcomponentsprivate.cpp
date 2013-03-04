@@ -40,8 +40,10 @@
 ****************************************************************************/
 
 #include "qquickcomponentsprivate_p.h"
-#include <QToolTip>
-#include <QQuickWindow>
+
+#include <qtooltip.h>
+#include <qquickwindow.h>
+#include <qquickitem.h>
 
 QT_BEGIN_NAMESPACE
 

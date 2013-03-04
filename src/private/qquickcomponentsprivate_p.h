@@ -42,10 +42,12 @@
 #ifndef QQUICKCOMPONENTSPRIVATE_P_H
 #define QQUICKCOMPONENTSPRIVATE_P_H
 
-#include <QObject>
-#include <QQuickItem>
+#include <QtCore/qobject.h>
 
 QT_BEGIN_NAMESPACE
+
+class QPointF;
+class QQuickItem;
 
 class QQuickComponentsPrivate : public QObject
 {
