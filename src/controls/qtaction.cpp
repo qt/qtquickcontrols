@@ -173,24 +173,26 @@ void QtAction::setIconSource(const QUrl &iconSource)
         return;
 
     m_iconSource = iconSource;
-    QString fileString = QQmlFile::urlToLocalFileOrQrc(iconSource);
-    m_icon = QIcon(fileString);
+    if (m_iconName.isEmpty() || m_icon.isNull()) {
+        QString fileString = QQmlFile::urlToLocalFileOrQrc(iconSource);
+        m_icon = QIcon(fileString);
 
+        emit iconChanged();
+    }
     emit iconSourceChanged();
-    emit iconChanged();
 }
 
 QString QtAction::iconName() const
 {
-    return m_icon.name();
+    return m_iconName;
 }
 
 void QtAction::setIconName(const QString &iconName)
 {
-    if (iconName == m_icon.name())
+    if (iconName == m_iconName)
         return;
-
-    m_icon = QIcon::fromTheme(iconName, QIcon(QQmlFile::urlToLocalFileOrQrc(m_iconSource)));
+    m_iconName = iconName;
+    m_icon = QIcon::fromTheme(m_iconName, QIcon(QQmlFile::urlToLocalFileOrQrc(m_iconSource)));
     emit iconNameChanged();
     emit iconChanged();
 }

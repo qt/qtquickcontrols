@@ -131,6 +131,7 @@ Q_SIGNALS:
 private:
     QString m_text;
     QUrl m_iconSource;
+    QString m_iconName;
     QIcon m_icon;
     bool m_enabled;
     bool m_checkable;
