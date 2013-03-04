@@ -41,8 +41,8 @@
 
 #include "qtexclusivegroup_p.h"
 
-#include <QtCore/QVariant>
-#include <QtCore/qdebug.h>
+#include <qvariant.h>
+#include <qdebug.h>
 
 #define CHECKED_PROPERTY "checked"
 

@@ -42,8 +42,8 @@
 #ifndef QTEXCLUSIVEGROUP_H
 #define QTEXCLUSIVEGROUP_H
 
-#include <QtCore/QObject>
-#include <QtCore/QMetaMethod>
+#include <QtCore/qobject.h>
+#include <QtCore/qmetaobject.h>
 
 QT_BEGIN_NAMESPACE
 
