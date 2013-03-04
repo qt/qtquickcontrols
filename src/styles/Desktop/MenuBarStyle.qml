@@ -47,22 +47,25 @@ import QtQuick.Controls.Private 1.0
 Style {
     property Component frame: StyleItem {
         elementType: "menubar"
-        width: control.__contentItem.width
-        height: parent ? parent.contentHeight : 0
-        //        + 2 * (pixelMetric("menuvmargin") + pixelMetric("menupanelwidth"))
+        contentWidth: control.__contentItem.width
+        contentHeight: parent ? parent.contentHeight : 0
+        width: implicitWidth + 2 * (pixelMetric("menubarhmargin") + pixelMetric("menubarpanelwidth"))
+        height: implicitHeight + 2 * (pixelMetric("menubarvmargin") + pixelMetric("menubarpanelwidth"))
+                + pixelMetric("spacebelowmenubar")
     }
 
     property Component menuItem: StyleItem {
         elementType: "menubaritem"
-    //    x: pixelMetric("menuhmargin") + pixelMetric("menupanelwidth")
-    //    y: pixelMetric("menuvmargin") + pixelMetric("menupanelwidth")
+        x: pixelMetric("menubarhmargin") + pixelMetric("menubarpanelwidth")
+        y: pixelMetric("menubarvmargin") + pixelMetric("menubarpanelwidth")
 
         text: menuItem.text
         contentWidth: textWidth(text)
         contentHeight: textHeight(text)
+        width: implicitWidth + pixelMetric("menubaritemspacing")
 
         enabled: menuItem.enabled
         selected: parent.selected
-        sunken: parent.selected
+        sunken: parent.sunken
     }
 }

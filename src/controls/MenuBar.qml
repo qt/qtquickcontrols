@@ -140,25 +140,29 @@ MenuBarPrivate {
             anchors.fill: parent
             hoverEnabled: true
 
-            onPositionChanged: updateCurrentItem(mouse)
+            onPositionChanged: updateCurrentItem(mouse, false)
             onPressed: {
-                menuBarLoader.preselectMenuItem = false
-                menuBarLoader.openedMenuIndex = currentItem.menuItemIndex
+                if (updateCurrentItem(mouse)) {
+                    menuBarLoader.preselectMenuItem = false
+                    menuBarLoader.openedMenuIndex = currentItem.menuItemIndex
+                }
             }
 
             property Item currentItem: null
+            property Item hoveredItem: null
             function updateCurrentItem(mouse) {
                 var pos = mapToItem(row, mouse.x, mouse.y)
-                if (!currentItem || !currentItem.contains(Qt.point(pos.x - currentItem.x, pos.y - currentItem.y))) {
-                    var newCurrentItem = row.childAt(pos.x, pos.y)
-                    if (!newCurrentItem)
-                        return;
-                    currentItem = newCurrentItem
+                if (!hoveredItem || !hoveredItem.contains(Qt.point(pos.x - currentItem.x, pos.y - currentItem.y))) {
+                    hoveredItem = row.childAt(pos.x, pos.y)
+                    if (!hoveredItem)
+                        return false;
+                    currentItem = hoveredItem
                     if (menuBarLoader.openedMenuIndex !== -1) {
                         menuBarLoader.preselectMenuItem = false
                         menuBarLoader.openedMenuIndex = currentItem.menuItemIndex
                     }
                 }
+                return true;
             }
 
             Row {
@@ -171,7 +175,8 @@ MenuBarPrivate {
                         id: menuItemLoader
 
                         property var menuItem: modelData
-                        property bool selected: menuItem.__popupVisible || menuBarLoader.openedMenuIndex === index
+                        property bool selected: menuMouseArea.hoveredItem === menuItemLoader
+                        property bool sunken: menuItem.__popupVisible || menuBarLoader.openedMenuIndex === index
 
                         sourceComponent: menuBarLoader.menuItemStyle
                         property int menuItemIndex: index

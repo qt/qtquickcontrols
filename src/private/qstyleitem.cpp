@@ -49,6 +49,8 @@
 #include <qapplication.h>
 #include <qsgsimpletexturenode.h>
 #include <qquickwindow.h>
+#include "private/qguiapplication_p.h"
+#include <QtGui/qpa/qplatformtheme.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -342,6 +344,12 @@ void QStyleItem::initStyleOption()
         QStyleOptionMenuItem *opt = qstyleoption_cast<QStyleOptionMenuItem*>(m_styleoption);
         opt->text = text();
         opt->menuItemType = QStyleOptionMenuItem::Normal;
+
+        if (const QFont *font = QGuiApplicationPrivate::platformTheme()->font(QPlatformTheme::MenuBarFont)) {
+            opt->font = *font;
+            opt->fontMetrics = QFontMetrics(opt->font);
+            m_font = opt->font;
+        }
     }
         break;
     case Menu: {
@@ -383,6 +391,12 @@ void QStyleItem::initStyleOption()
             }
             if (m_properties["icon"].canConvert<QIcon>())
                 opt->icon = m_properties["icon"].value<QIcon>();
+
+            if (const QFont *font = QGuiApplicationPrivate::platformTheme()->font(QPlatformTheme::MenuFont)) {
+                opt->font = *font;
+                opt->fontMetrics = QFontMetrics(opt->font);
+                m_font = opt->font;
+            }
         }
     }
         break;
@@ -696,10 +710,10 @@ QSize QStyleItem::sizeFromContents(int width, int height)
     case Item: //fall through
         size = qApp->style()->sizeFromContents(QStyle::CT_ItemViewItem, m_styleoption, QSize(width,height));
         break;
-    case MenuBarItem: //fall through
+    case MenuBarItem:
         size = qApp->style()->sizeFromContents(QStyle::CT_MenuBarItem, m_styleoption, QSize(width,height));
         break;
-    case MenuBar: //fall through
+    case MenuBar:
         size = qApp->style()->sizeFromContents(QStyle::CT_MenuBar, m_styleoption, QSize(width,height));
         break;
     case Menu:
@@ -763,6 +777,16 @@ int QStyleItem::pixelMetric(const QString &metric)
         return qApp->style()->pixelMetric(QStyle::PM_TabBarBaseHeight, 0 );
     else if (metric == "tabvshift")
         return qApp->style()->pixelMetric(QStyle::PM_TabBarTabShiftVertical, 0 );
+    else if (metric == "menubarhmargin")
+        return qApp->style()->pixelMetric(QStyle::PM_MenuBarHMargin, 0 );
+    else if (metric == "menubarvmargin")
+        return qApp->style()->pixelMetric(QStyle::PM_MenuBarVMargin, 0 );
+    else if (metric == "menubarpanelwidth")
+        return qApp->style()->pixelMetric(QStyle::PM_MenuBarPanelWidth, 0 );
+    else if (metric == "menubaritemspacing")
+        return qApp->style()->pixelMetric(QStyle::PM_MenuBarItemSpacing, 0 );
+    else if (metric == "spacebelowmenubar")
+        return qApp->style()->styleHint(QStyle::SH_MainWindow_SpaceBelowMenuBar, m_styleoption);
     else if (metric == "menuhmargin")
         return qApp->style()->pixelMetric(QStyle::PM_MenuHMargin, 0 );
     else if (metric == "menuvmargin")
@@ -972,6 +996,8 @@ QRectF QStyleItem::subControlRect(const QString &subcontrolString)
 void QStyleItem::paint(QPainter *painter)
 {
     initStyleOption();
+    if (QStyleOptionMenuItem *opt = qstyleoption_cast<QStyleOptionMenuItem*>(m_styleoption))
+        painter->setFont(opt->font);
 
     switch (m_itemType) {
     case Button:
