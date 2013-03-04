@@ -42,12 +42,13 @@
 #ifndef QSTYLEITEM_P_H
 #define QSTYLEITEM_P_H
 
+#include <QtGui/qimage.h>
 #include <QtQuick/qquickitem.h>
-#include <QtWidgets/QStyle>
-#include <QtGui/QImage>
-#include <QEvent>
 
 QT_BEGIN_NAMESPACE
+
+class QWidget;
+class QStyleOption;
 
 class QStyleItem: public QQuickItem
 {

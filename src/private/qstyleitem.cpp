@@ -41,18 +41,14 @@
 
 #include "qstyleitem_p.h"
 
-#include <QtGui/QPainter>
-#include <QtWidgets/QStyle>
-#include <QtWidgets/QStyleOption>
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QMainWindow>
-#include <QtWidgets/QGroupBox>
-#include <QtWidgets/QToolBar>
-#include <QtWidgets/QMenu>
-#include <QtWidgets/QtWidgets>
-#include <QtCore/QStringBuilder>
-#include <QtQuick/QSGSimpleTextureNode>
-#include <QtQuick/QQuickWindow>
+#include <qstringbuilder.h>
+#include <qpainter.h>
+#include <qpixmapcache.h>
+#include <qstyle.h>
+#include <qstyleoption.h>
+#include <qapplication.h>
+#include <qsgsimpletexturenode.h>
+#include <qquickwindow.h>
 
 QT_BEGIN_NAMESPACE
 
