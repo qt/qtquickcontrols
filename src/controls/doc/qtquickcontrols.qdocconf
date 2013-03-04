@@ -20,6 +20,7 @@ headerdirs += ../
 sourcedirs += ../
 
 sources += ../../private/qstyleitem.cpp \
+           ../../private/AbstractCheckable.qml \
            ../../private/BasicButton.qml \
            ../../private/FocusFrame.qml \
            ../../private/ModalPopupBehavior.qml \

@@ -47,6 +47,7 @@ import QtQuick.Controls 1.0
     \ingroup controls
     \brief An abstract representation of a checkable control with a label
     \qmlabstract
+    \internal
 
     A checkable control is one that has two states: checked (on) and
     unchecked (off). AbstractCheckable encapsulates the basic behavior and

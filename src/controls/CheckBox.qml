@@ -54,7 +54,7 @@ import "Styles/Settings.js" as Settings
     (unchecked). Checkboxes are typically used to represent features in an
     application that can be enabled or disabled without affecting others.
 
-    The state of the checkbox can be set with the \l checked property.
+    The state of the checkbox can be set with the \l {AbstractCheckable::checked}{checked} property.
 
     In addition to the checked and unchecked states, there is a third state:
     partially checked. This state indicates that the
@@ -65,11 +65,11 @@ import "Styles/Settings.js" as Settings
     The partially checked state can be made available to the user by setting
     \l partiallyCheckedEnabled to \c true, or set directly by setting
     \l checkedState to \c Qt.PartiallyChecked. \l checkedState behaves
-    identically to \l checked when \l partiallyCheckedEnabled is \c false;
-    setting one will appropriately set the other.
+    identically to \l {AbstractCheckable::checked}{checked} when \l partiallyCheckedEnabled
+    is \c false; setting one will appropriately set the other.
 
-    The text of the label shown next to the checkbox can be set with the \l text
-    property.
+    The text of the label shown next to the checkbox can be set with the
+    \l {AbstractCheckable::text}{text} property.
 
     Whenever a CheckBox is clicked, it emits the clicked() signal.
 */
@@ -78,6 +78,8 @@ AbstractCheckable {
     id: checkBox
 
     /*!
+        \qmlproperty enumeration CheckBox::checkedState
+
         This property indicates the current checked state of the checkbox.
 
         Possible values:
@@ -86,8 +88,8 @@ AbstractCheckable {
         \c Qt.PartiallyChecked - The checkbox is in a partially checked (or
         "mixed") state.
 
-        The \l checked property also determines whether this property is
-        \c Qt.Checked or \c Qt.UnChecked, and vice versa.
+        The \l {AbstractCheckable::checked}{checked} property also determines whether
+        this property is \c Qt.Checked or \c Qt.UnChecked, and vice versa.
     */
     property int checkedState: checked ? Qt.Checked : Qt.Unchecked
 
@@ -101,7 +103,7 @@ AbstractCheckable {
         Setting \l checkedState to \c Qt.PartiallyChecked will implicitly set
         this property to \c true.
 
-        If this property is \c true, \l checked will be \c false.
+        If this property is \c true, \l {AbstractCheckable::checked}{checked} will be \c false.
 
         By default, this property is \c false.
     */
