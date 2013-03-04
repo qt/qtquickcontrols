@@ -1252,7 +1252,9 @@ QSGNode *QStyleItem::updatePaintNode(QSGNode *node, UpdatePaintNodeData *)
 void QStyleItem::updatePolish()
 {
     if (width() >= 1 && height() >= 1) { // Note these are reals so 1 pixel is minimum
-        m_image = QImage(width(), height(), QImage::Format_ARGB32_Premultiplied);
+        float devicePixelRatio = window() ? window()->devicePixelRatio() : qApp->devicePixelRatio();
+        m_image = QImage(width() * devicePixelRatio, height() * devicePixelRatio, QImage::Format_ARGB32_Premultiplied);
+        m_image.setDevicePixelRatio(devicePixelRatio);
         m_image.fill(Qt::transparent);
         QPainter painter(&m_image);
         paint(&painter);
