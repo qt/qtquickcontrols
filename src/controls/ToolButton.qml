@@ -40,7 +40,7 @@
 
 import QtQuick 2.0
 import QtQuick.Controls 1.0
-import QtQuick.Controls.Private 1.0 as Private
+import QtQuick.Controls.Private 1.0
 import "Styles/Settings.js" as Settings
 
 /*!
@@ -59,7 +59,7 @@ import "Styles/Settings.js" as Settings
      \endcode
 */
 
-Private.BasicButton {
+BasicButton {
     id: button
 
     /*! The image label source. */
