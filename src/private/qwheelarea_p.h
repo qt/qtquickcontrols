@@ -43,7 +43,6 @@
 #define QWHEELAREA_P_H
 
 #include <QtGui/qevent.h>
-#include <QtWidgets/qgraphicssceneevent.h>
 #include <QtQuick/qquickitem.h>
 
 QT_BEGIN_NAMESPACE
