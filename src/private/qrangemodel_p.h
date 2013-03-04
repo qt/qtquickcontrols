@@ -43,8 +43,6 @@
 #define QRANGEMODEL_P_H
 
 #include <QtCore/qobject.h>
-//#include <QtGui/qgraphicsitem.h>
-#include <QtWidgets/qabstractslider.h>
 #include <QtQml/qqml.h>
 
 QT_BEGIN_NAMESPACE

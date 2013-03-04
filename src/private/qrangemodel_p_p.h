@@ -53,9 +53,9 @@
 // We mean it.
 //
 
-QT_BEGIN_NAMESPACE
-
 #include "qrangemodel_p.h"
+
+QT_BEGIN_NAMESPACE
 
 class QRangeModelPrivate
 {

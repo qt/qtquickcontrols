@@ -50,15 +50,6 @@
     be updated due to the new position range.
 */
 
-#include <QEvent>
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QGraphicsSceneEvent>
-#include <QDebug>
-
-#ifndef QT_NO_ACCESSIBILITY
-#include <QAccessible>
-#endif
-
 #include "qrangemodel_p.h"
 #include "qrangemodel_p_p.h"
 
