@@ -62,20 +62,18 @@ import "Styles/Settings.js" as Settings
 BasicButton {
     id: button
 
-    /*! The image label source. */
+    /*! The image label source as file name or resource. */
     property url iconSource
+
+    /*! The image label source as theme name.
+        When an icon from the platform icon theme is found this takes
+        precedence over iconSource.
+    */
+    property url iconName
 
     /*! The label text. */
     property string text
 
-    Image {
-        id: image
-        anchors.centerIn: parent
-        source: button.iconSource
-        width: Math.min(button.width, image.implicitWidth)
-        height: Math.min(button.height, image.implicitHeight)
-        fillMode: Image.PreserveAspectFit
-    }
     Accessible.name: text
 
     style: Qt.createComponent(Settings.THEME_PATH + "/ToolButtonStyle.qml", button)

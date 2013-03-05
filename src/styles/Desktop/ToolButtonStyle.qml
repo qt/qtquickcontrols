@@ -54,22 +54,11 @@ Style {
         hasFocus: control.activeFocus
         hints: control.styleHints.concat([control.__position])
 
-        contentWidth: Math.max(textitem.paintedWidth, 32)
+        contentWidth: 30
         contentHeight: 30
 
-        Image {
-            id: image
-            anchors.centerIn: parent
-            source: button.iconSource
-            sourceSize.width: Math.min(control.width, image.implicitWidth)
-            sourceSize.height: Math.min(control.height, image.implicitHeight)
-        }
-
-        Text {
-            id: textitem
-            text: control.text
-            anchors.centerIn: parent
-            visible: control.iconSource.toString() === ""
+        properties: {
+            "icon": control.__action.__icon
         }
     }
 }

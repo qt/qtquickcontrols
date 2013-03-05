@@ -255,6 +255,9 @@ void QStyleItem::initStyleOption()
         opt->subControls = QStyle::SC_ToolButton;
         opt->state |= QStyle::State_AutoRaise;
         opt->activeSubControls = QStyle::SC_ToolButton;
+        opt->icon = m_properties["icon"].value<QIcon>();
+        int e = qApp->style()->pixelMetric(QStyle::PM_ToolBarIconSize, m_styleoption, 0);
+        opt->iconSize = QSize(e, e);
     }
         break;
     case ToolBar: {
