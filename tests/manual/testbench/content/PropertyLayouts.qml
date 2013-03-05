@@ -134,7 +134,7 @@ QtObject {
             height: 20
             anchors.right: parent.right
             Layout.horizontalSizePolicy: Layout.Expanding
-            text: loader.item[name] ? loader.item[name] : ""
+            text: loader.item[name] !== undefined ? loader.item[name] : ""
         }
     }
 
