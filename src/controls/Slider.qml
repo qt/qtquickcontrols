@@ -221,8 +221,8 @@ Control {
         drag.maximumX: range.positionAtMaximum
 
         onPressed: {
-            if (activeFocusOnPress)
-                slider.focus = true;
+            if (slider.activeFocusOnPress)
+                slider.forceActiveFocus();
 
             // Clamp the value
             var current = __horizontal ? mouse.x : mouse.y
