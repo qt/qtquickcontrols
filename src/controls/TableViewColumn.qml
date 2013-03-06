@@ -64,7 +64,8 @@ QtObject {
     /*! The visible status of the column. */
     property bool visible: true
 
-    /*! The text elide mode of the column.
+    /*! \qmlproperty enumeration TableViewColumn::elideMode
+    The text elide mode of the column.
     Allowed values are:
     \list
         \li Text.ElideNone
@@ -75,7 +76,8 @@ QtObject {
     \sa {QtQuick2::}{Text::elide} */
     property int elideMode: Text.ElideRight
 
-    /*! The horizontal text alignment of the column.
+    /*! \qmlproperty enumeration TableViewColumn::horizontalAlignment
+    The horizontal text alignment of the column.
     Allowed values are:
     \list
         \li Text.AlignLeft - the default
