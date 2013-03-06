@@ -44,46 +44,78 @@ import QtQuick.Controls.Private 1.0
 import QtQuick.Controls.Styles 1.0
 
 /*!
-        \qmltype BasicButton
-        \internal
-        \qmlabstract
-        \inqmlmodule QtQuick.Controls.Private 1.0
+    \qmltype BasicButton
+    \internal
+    \qmlabstract
+    \inqmlmodule QtQuick.Controls.Private 1.0
 */
 
 Control {
     id: button
 
+    /*! This signal is emitted when the button is clicked. */
     signal clicked
+
+    /*! \qmlproperty bool BasicButton::pressed
+
+        This property holds whether the button is pressed. */
     property alias pressed: behavior.effectivePressed
+
+    /*! This property holds whether the button is checkable.
+
+        The default value is \c false. */
     property bool checkable: false
+
+    /*! This property holds whether the button is checked.
+
+        Only checkable buttons can be checked.
+
+        The default value is \c false. */
     property bool checked: false
+
+    /*! This property holds the ExclusiveGroup that the button belongs to.
+
+        The default value is \c null. */
     property ExclusiveGroup exclusiveGroup: null
 
+    /*! This property holds the associated button action.
+
+        If a button has an action associated, the action defines the
+        button's properties like checked, text, tooltip etc.
+
+        The default value is \c null. */
     property Action action: null
 
+    /*! This property specifies whether the button should gain active focus when pressed.
+
+        The default value is \c false. */
+    property bool activeFocusOnPress: false
+
+    /*! This property holds the button text color.
+
+        The default value is SystemPalette::text. */
+    property color textColor: syspal.text
+
+    /*! This property holds the button tooltip. */
+    property string tooltip
+
+    /*! \internal */
+    property string __position: "only"
+    /*! \internal */
+    property alias __containsMouse: behavior.containsMouse
+    /*! \internal */
+    property Action __action: action || ownAction
+
+    /*! \internal */
     onExclusiveGroupChanged: {
         if (exclusiveGroup)
             exclusiveGroup.bindCheckable(button)
     }
 
-    property bool activeFocusOnPress: false
-
-    property color textColor: syspal.text
-    property string tooltip
-
     Accessible.role: Accessible.Button
     Accessible.description: tooltip
 
-    signal tooltipTriggered
-
-    // implementation
-    property string __position: "only"
-    /*! \internal */
-    property alias __containsMouse: behavior.containsMouse
-
-    Action { id: ownAction; onTriggered: console.log("triggered", ownAction.text) }
-    /*! \internal */
-    property Action __action: action || ownAction
+    Action { id: ownAction }
 
     Connections {
         target: __action
