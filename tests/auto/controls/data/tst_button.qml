@@ -48,9 +48,9 @@ TestCase {
     width:400
     height:400
 
-    function test_defaultbutton() {
+    function test_isDefault() {
         var tmp = Qt.createQmlObject('import QtQuick.Controls 1.0; Button {id: button1}', testCase, '');
-        compare(tmp.defaultbutton, false);
+        compare(tmp.isDefault, false);
     }
 
     function test_text() {

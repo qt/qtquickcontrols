@@ -147,7 +147,7 @@ Window {
             property int role: acceptRole
             visible: buttons & ok
             text: "OK"
-            defaultbutton: true
+            isDefault: true
             onClicked: {
                 visible: dialog.visible = false
                 clickedButton = okbutton

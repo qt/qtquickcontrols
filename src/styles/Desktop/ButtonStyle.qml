@@ -52,6 +52,6 @@ Style {
         hasFocus: control.activeFocus
         hints: control.styleHints
         // If no icon, let the style do the drawing
-        activeControl: control.defaultbutton ? "default" : "f"
+        activeControl: control.isDefault ? "default" : "f"
     }
 }
