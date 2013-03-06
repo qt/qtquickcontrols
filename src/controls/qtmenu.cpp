@@ -265,7 +265,10 @@ void QtMenu::__popup(qreal x, qreal y, int atItemIndex)
             m_popupWindow->setItemAt(visualItem);
         }
 
-        m_popupWindow->setGeometry(x, y, m_menuContentItem->width(), m_menuContentItem->height());
+        qreal initialWidth = qMax(qreal(1), m_menuContentItem->width());
+        qreal initialHeight = qMax(qreal(1), m_menuContentItem->height());
+
+        m_popupWindow->setGeometry(x, y, initialWidth, initialHeight);
         m_popupWindow->show();
         m_popupWindow->setMouseGrabEnabled(true); // Needs to be done after calling show()
         m_popupWindow->setKeyboardGrabEnabled(true);
