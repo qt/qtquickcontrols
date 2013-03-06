@@ -57,6 +57,7 @@ public:
     void setMenuContentItem(QQuickItem *contentItem);
     void setItemAt(const QQuickItem *menuItem);
     void setParentWindow(QQuickWindow *parentWindow);
+    void setGeometry(int posx, int posy, int w, int h);
 
 public Q_SLOTS:
     void dismissMenu();

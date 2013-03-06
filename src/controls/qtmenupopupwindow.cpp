@@ -44,6 +44,7 @@
 
 #include <qguiapplication.h>
 #include <qquickitem.h>
+#include <QtGui/QScreen>
 
 QT_BEGIN_NAMESPACE
 
@@ -89,6 +90,29 @@ void QtMenuPopupWindow::setParentWindow(QQuickWindow *parentWindow)
     }
 }
 
+void QtMenuPopupWindow::setGeometry(int posx, int posy, int w, int h)
+{
+    QSize s = screen()->size();
+    if (posx + w > s.width()) {
+        if (QtMenuPopupWindow *pw = qobject_cast<QtMenuPopupWindow *>(transientParent())) {
+            // reposition submenu window on the parent menu's left side
+            int submenuOverlap = pw->x() + pw->width() - posx;
+            posx -= pw->width() + w - 2 * submenuOverlap;
+        } else {
+            posx = s.width() - w;
+        }
+    } else if (posx < 0) {
+        posx = 0;
+    }
+
+    if (posy + h > s.height())
+            posy = s.height() - h;
+    else if (posy < 0)
+        posy = 0;
+
+    QQuickWindow::setGeometry(posx, posy, w, h);
+}
+
 void QtMenuPopupWindow::dismissMenu()
 {
     close();
@@ -99,14 +123,13 @@ void QtMenuPopupWindow::dismissMenu()
 void QtMenuPopupWindow::updateSize()
 {
     QSize contentSize = contentItem()->childrenRect().size().toSize();
-    setWidth(contentSize.width());
-    setHeight(contentSize.height());
+    setGeometry(position().x(), position().y(), contentSize.width(), contentSize.height());
 }
 
 void QtMenuPopupWindow::updatePosition()
 {
     QPointF newPos = position() + m_oldItemPos - m_itemAt->position();
-    setPosition(newPos.toPoint());
+    setGeometry(newPos.x(), newPos.y(), width(), height());
 }
 
 void QtMenuPopupWindow::mouseMoveEvent(QMouseEvent *e)
