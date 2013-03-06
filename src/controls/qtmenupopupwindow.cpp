@@ -128,6 +128,7 @@ void QtMenuPopupWindow::mouseReleaseEvent(QMouseEvent *e)
             QQuickWindow::mousePressEvent(&pe);
             QQuickWindow::mouseReleaseEvent(e);
         }
+        m_mouseMoved = true; // Initial mouse release counts as move.
     } else {
         forwardEventToTransientParent(e);
     }
