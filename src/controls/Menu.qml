@@ -208,6 +208,12 @@ MenuPrivate {
 
             onPositionChanged: updateCurrentItem(mouse)
             onReleased: menuFrameLoader.triggerAndDismiss()
+            onExited: {
+                if (currentItem && !currentItem.menuItem.__popupVisible) {
+                    currentItem = null
+                    root.__currentIndex = -1
+                }
+            }
 
             property Item currentItem: null
 
