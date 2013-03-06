@@ -459,13 +459,13 @@ import "Private/PageStack.js" as JSArray
 Item {
     id: root
 
-    /*! \qmlproperty int QtQuickComponents.Mt1.0::PageStack::depth
+    /*! \qmlproperty int PageStack::depth
         \readonly
         The number of pages currently pushed onto the stack.
     */
     readonly property alias depth: root.__depth
 
-    /*! \qmlproperty Item QtQuickComponents.Mt1.0::PageStack::currentPage
+    /*! \qmlproperty Item PageStack::currentPage
         \readonly
         The currently top-most page in the stack.
     */
