@@ -55,16 +55,27 @@ QtObject {
     property string role
 
     /*! The current width of the column
-    The default value depends on platform.  */
+    The default value depends on platform. */
     property int width: 160
 
     /*! The horizontal offset of the column. */
     property int x
 
-    /*! The visible status of the column.*/
+    /*! The visible status of the column. */
     property bool visible: true
 
     /*! The text elide mode of the column.
+    Allowed values are:
+    \list
+        \li Text.ElideNone
+        \li Text.ElideLeft
+        \li Text.ElideMiddle
+        \li Text.ElideRight - the default
+    \endlist
+    \sa {QtQuick2::}{Text::elide} */
+    property int elideMode: Text.ElideRight
+
+    /*! The horizontal text alignment of the column.
     Allowed values are:
     \list
         \li Text.AlignLeft - the default
@@ -72,11 +83,7 @@ QtObject {
         \li Text.AlignHCenter
         \li Text.AlignJustify
     \endlist
-    \sa Text::elide */
-    property int elideMode: Text.ElideRight
-
-    /*! The text elide mode of the column.
-    \sa Text::horizontalAlignment: */
+    \sa {QtQuick2::}{Text::horizontalAlignment} */
     property int horizontalAlignment: Text.AlignLeft
 
     /*! The delegate of the column. This can be used to set the
