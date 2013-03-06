@@ -53,11 +53,11 @@ FocusScope {
 
     Keys.onRightPressed: {
         if (tabView && tabView.currentIndex < tabView.count - 1)
-            tabView.current = tabView.current + 1
+            tabView.currentIndex = tabView.currentIndex + 1
     }
     Keys.onLeftPressed: {
-        if (tabView && tabView.current > 0)
-            tabView.current = tabView.current - 1
+        if (tabView && tabView.currentIndex > 0)
+            tabView.currentIndex = tabView.currentIndex - 1
     }
 
     onTabViewChanged: parent = tabView
