@@ -300,8 +300,13 @@ void QtMenu::__closeMenu()
 
 void QtMenu::__dismissMenu()
 {
-    if (m_popupWindow)
-        m_popupWindow->dismissMenu();
+    QtMenuPopupWindow *topMenuWindow = m_popupWindow;
+    while (topMenuWindow) {
+        QtMenuPopupWindow *pw = qobject_cast<QtMenuPopupWindow *>(topMenuWindow->transientParent());
+        if (!pw)
+            topMenuWindow->dismissMenu();
+        topMenuWindow = pw;
+    }
 }
 
 void QtMenu::windowVisibleChanged(bool v)

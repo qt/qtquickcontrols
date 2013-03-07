@@ -86,7 +86,7 @@ void QtMenuPopupWindow::setParentWindow(QQuickWindow *parentWindow)
     if (parentWindow) {
         connect(parentWindow, SIGNAL(destroyed()), this, SLOT(dismissMenu()));
         if (QtMenuPopupWindow *pw = qobject_cast<QtMenuPopupWindow *>(parentWindow))
-            connect(this, SIGNAL(menuDismissed()), pw, SLOT(dismissMenu()));
+            connect(pw, SIGNAL(menuDismissed()), this, SLOT(dismissMenu()));
     }
 }
 
@@ -106,7 +106,7 @@ void QtMenuPopupWindow::setGeometry(int posx, int posy, int w, int h)
     }
 
     if (posy + h > s.height())
-            posy = s.height() - h;
+        posy = s.height() - h;
     else if (posy < 0)
         posy = 0;
 
@@ -115,9 +115,8 @@ void QtMenuPopupWindow::setGeometry(int posx, int posy, int w, int h)
 
 void QtMenuPopupWindow::dismissMenu()
 {
-    close();
-
     emit menuDismissed();
+    close();
 }
 
 void QtMenuPopupWindow::updateSize()
