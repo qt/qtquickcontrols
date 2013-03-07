@@ -69,8 +69,8 @@ Item {
             recursionGuard = true
             wheelarea.availableWidth = viewport.width
             wheelarea.availableHeight = viewport.height
-            wheelarea.contentWidth = flickableItem.contentWidth
-            wheelarea.contentHeight = flickableItem.contentHeight
+            wheelarea.contentWidth = flickableItem !== null ? flickableItem.contentWidth : 0
+            wheelarea.contentHeight = flickableItem !== null ? flickableItem.contentHeight : 0
             recursionGuard = false
         }
     }

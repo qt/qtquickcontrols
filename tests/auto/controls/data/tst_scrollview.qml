@@ -66,7 +66,7 @@ TestCase {
 
         scrollView.contentItem = bigItem
         scrollView.visible = true
-        verify(scrollView.flickableItem, "flickableItem should not be null")
+        verify(scrollView.flickableItem !== null, "flickableItem should not be null")
         verify(scrollView.flickableItem !== scrollView.contentItem)
         verify(scrollView.flickableItem.contentHeight === 0, "ContentHeight not set")
 

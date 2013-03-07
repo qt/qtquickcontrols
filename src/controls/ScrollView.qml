@@ -146,7 +146,7 @@ FocusScope {
             internal.flickableItem = contentItem // "Use content if it is a flickable
         } else {
             internal.flickableItem = flickableComponent.createObject(this)
-            contentItem.parent = flickableItem.contentItem
+            contentItem.parent = internal.flickableItem
         }
         internal.flickableItem.parent = viewportItem
         internal.flickableItem.anchors.fill = viewportItem
