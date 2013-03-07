@@ -46,6 +46,7 @@ import QtQuick.Controls.Private 1.0 as Private
 /*!
     \qmltype SplitView
     \inqmlmodule QtQuick.Controls 1.0
+    \ingroup views
     \brief SplitView is a component that lays out items horizontally or
     vertically with a draggable splitter between each item.
 
