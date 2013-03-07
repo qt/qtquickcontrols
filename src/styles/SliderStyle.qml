@@ -68,10 +68,9 @@ Style {
 
     property Component background:  Rectangle {
             anchors.verticalCenter: parent.verticalCenter
-            width: parent.width
-
-            implicitWidth: 12
+            implicitWidth: 100
             implicitHeight: 6
+
             gradient: Gradient {
                 GradientStop {color: Qt.darker(backgroundColor, 1.2) ; position: 0}
                 GradientStop {color: Qt.darker(backgroundColor, 1.5) ; position: 1}
@@ -82,15 +81,16 @@ Style {
     }
 
     property Component panel: Item {
-        implicitWidth: 200
-        implicitHeight: 20
+        id: root
+
+        implicitWidth: backgroundControl.implicitWidth
+        implicitHeight: backgroundControl.implicitHeight
 
         property Control __cref: control
+
         Loader {
             id: backgroundControl
             sourceComponent: background
-            width: parent.width
-            anchors.verticalCenter: parent.verticalCenter
             property Control control: __cref
             property Item handle: handleLoader.item
         }
@@ -99,7 +99,7 @@ Style {
             id: handleLoader
             sourceComponent: handle
             anchors.verticalCenter: backgroundControl.verticalCenter
-            x: leftMargin + control.value / control.maximumValue * (parent.width - leftMargin - rightMargin - width)
+            x: leftMargin + control.value / control.maximumValue * (root.width - leftMargin - rightMargin - width/2)
             property Control control: __cref
         }
     }

@@ -72,8 +72,6 @@ Page {
     Component {
         id: touchStyle
         SliderStyle {
-            implicitHeight: 50
-            implicitWidth: 400
             handle: Rectangle {
                 width: 30
                 height: 30
@@ -81,17 +79,23 @@ Page {
                 antialiasing: true
                 color: Qt.lighter("#468bb7", 1.2)
             }
-            background: Rectangle {
-                implicitHeight: 8
-                implicitWidth: 300
-                color: "#444"
-                opacity: 0.8
+
+            background: Item {
+                implicitHeight: 50
+                implicitWidth: 400
                 Rectangle {
-                    antialiasing: true
-                    radius: 1
-                    color: "#468bb7"
-                    height: parent.height
-                    width: parent.width * control.value / control.maximumValue
+                    height: 8
+                    width: parent.width
+                    anchors.verticalCenter: parent.verticalCenter
+                    color: "#444"
+                    opacity: 0.8
+                    Rectangle {
+                        antialiasing: true
+                        radius: 1
+                        color: "#468bb7"
+                        height: parent.height
+                        width: parent.width * control.value / control.maximumValue
+                    }
                 }
             }
         }
