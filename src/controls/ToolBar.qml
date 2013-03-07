@@ -46,14 +46,14 @@ import QtQuick.Controls.Private 1.0
     \qmltype ToolBar
     \inqmlmodule QtQuick.Controls 1.0
     \ingroup applicationwindow
-    \brief ToolBar is for containing ToolButton and related controls.
+    \brief Contains ToolButton and related controls.
 
-    The common way of using ToolBar is in relation to \l ApplicationWindow.
-    It provides styling and is generally designed to work well with ToolButton as well
-    as other controls.
+    The common way of using ToolBar is in relation to \l ApplicationWindow. It
+    provides styling and is generally designed to work well with ToolButton as
+    well as other controls.
 
-    Note that the ToolBar does not provide a layout of its own but requires you to
-    position its contents, for instance by creating a Row.
+    Note that the ToolBar does not provide a layout of its own but requires you
+    to position its contents, for instance by creating a Row.
 
     \code
     ApplicationWindow {
