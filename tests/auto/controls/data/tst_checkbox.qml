@@ -43,13 +43,15 @@ import QtTest 1.0
 
 Item {
     id: container
+    width: 200
+    height: 200
 
     TestCase {
         id: testCase
         name: "Tests_CheckBox"
         when: windowShown
-        width: 50
-        height: 50
+        width: 200
+        height: 200
 
         property var checkBox
 

@@ -43,6 +43,8 @@ import QtTest 1.0
 
 Item {
     id: container
+    width: 400
+    height: 400
 
     TestCase {
         id: testCase
