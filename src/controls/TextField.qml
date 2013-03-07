@@ -48,12 +48,12 @@ import "Styles/Settings.js" as Settings
     \qmltype TextField
     \inqmlmodule QtQuick.Controls 1.0
     \ingroup controls
-    \brief TextField displays a single line of editable plain text.
+    \brief Displays a single line of editable plain text.
 
-    TextField is used to accept a line of text input. Input constraints
-    can be placed on a TextField item (for example, through a \l validator or \l inputMask),
-    and setting \l echoMode to an appropriate value enables TextField to be used for
-    a password input field.
+    TextField is used to accept a line of text input. Input constraints can be
+    placed on a TextField item (for example, through a \l validator or \l
+    inputMask). Setting \l echoMode to an appropriate value enables
+    TextField to be used for a password input field.
 
     \sa TextArea, TextInput
 */
@@ -64,12 +64,16 @@ Control {
     /*!
         \qmlproperty bool TextField::acceptableInput
 
-        This property is always true unless a validator or input mask has been set.
-        If a validator or input mask has been set, this property will only be true
-        if the current text is acceptable to the validator or input mask as a final
-        string (not as an intermediate string).
+        Returns \c true if the text field contains acceptable
+        text.
 
-        \sa validator, inputMask
+        If a validator or input mask was set, this property will return \c
+        true if the current text satisfies the validator or mask as
+        a final string (not as an intermediate string).
+
+        The default value is \c true.
+
+        \sa validator, inputMask, accepted
 
     */
     readonly property alias acceptableInput: textInput.acceptableInput // read only
@@ -77,52 +81,55 @@ Control {
     /*!
         \qmlproperty bool TextField::activeFocusOnPress
 
-        Whether the TextField should gain active focus on a mouse press. By default this is
-        set to \c true.
+        This property is set to \c true if the TextField should gain active
+        focus on a mouse press.
+
+        The default value is \c true.
     */
     property alias activeFocusOnPress: textInput.activeFocusOnPress
 
     /*!
         \qmlproperty bool TextField::canPaste
 
-        Returns true if the TextField is writable and the content of the clipboard is
-        suitable for pasting into the TextField.
+        Returns \c true if the TextField is writable and the content of the
+        clipboard is suitable for pasting into the TextField.
     */
     readonly property alias canPaste: textInput.canPaste
 
     /*!
         \qmlproperty bool TextField::canRedo
 
-        Returns true if the TextField is writable and there are \l {undo}{undone}
-        operations that can be redone.
+        Returns \c true if the TextField is writable and there are \l
+        {undo}{undone} operations that can be redone.
     */
     readonly property alias canRedo: textInput.canRedo
 
     /*!
         \qmlproperty bool TextField::canUndo
 
-        Returns true if the TextField is writable and there are previous operations
-        that can be undone.
+        Returns \c true if the TextField is writable and there are previous
+        operations that can be undone.
     */
     readonly property alias canUndo: textInput.canUndo
 
     /*!
         \qmlproperty color TextField::textColor
 
-        The text color.
+        This property holds the text color.
     */
     property alias textColor: textInput.color
 
     /*!
         \qmlproperty int TextField::cursorPosition
-        The position of the cursor in the TextField.
+
+        This property holds the position of the cursor in the TextField.
     */
     property alias cursorPosition: textInput.cursorPosition
 
     /*!
        \qmlproperty string TextField::displayText
 
-       This is the text displayed in the TextField.
+       This property holds the text displayed in the TextField.
 
        If \l echoMode is set to TextInput::Normal, this holds the
        same value as the TextField::text property. Otherwise,
@@ -134,13 +141,16 @@ Control {
     /*!
         \qmlproperty enumeration TextField::echoMode
 
-        Specifies how the text should be displayed in the TextField.
+        Specifies how the text should be displayed in the
+        TextField.
+
+        The possible modes are:
         \list
         \li TextInput.Normal - Displays the text as it is. (Default)
         \li TextInput.Password - Displays asterisks instead of characters.
         \li TextInput.NoEcho - Displays nothing.
-        \li TextInput.PasswordEchoOnEdit - Displays characters as they are entered
-        while editing, otherwise displays asterisks.
+        \li TextInput.PasswordEchoOnEdit - Displays characters as they are
+        entered while editing, otherwise displays asterisks.
         \endlist
     */
     property alias echoMode: textInput.echoMode
@@ -148,7 +158,7 @@ Control {
     /*!
         \qmlproperty font TextField::font
 
-        The font of the TextField.
+        Sets the font of the TextField.
     */
     property alias font: textInput.font
 
@@ -157,25 +167,34 @@ Control {
 
         Sets the alignment of the text within the TextField item's width.
 
-        By default, the horizontal text alignment follows the natural alignment of the text,
-        for example text that is read from left to right will be aligned to the left.
+        By default, the horizontal text alignment follows the natural alignment
+        of the text, for example text that is read from left to right will be
+        aligned to the left.
 
-        The valid values for \c horizontalAlignment are \c TextInput.AlignLeft, \c TextInput.AlignRight and
-        \c TextInput.AlignHCenter.
+        The possible alignment values are:
+        \list
+        \li TextInput.AlignLeft
+        \li TextInput.AlignRight
+        \li TextInput.AlignHCenter
+        \endlist
 
-        When using the attached property LayoutMirroring::enabled to mirror application
-        layouts, the horizontal alignment of text will also be mirrored. However, the property
-        \c horizontalAlignment will remain unchanged. To query the effective horizontal alignment
-        of TextField, use the read-only property \c effectiveHorizontalAlignment.
+        When using the attached property, LayoutMirroring::enabled, to mirror
+        application layouts, the horizontal alignment of text will also be
+        mirrored. However, the property \c horizontalAlignment will remain
+        unchanged. To query the effective horizontal alignment of TextField, use
+        the read-only property \c effectiveHorizontalAlignment.
     */
     property alias horizontalAlignment: textInput.horizontalAlignment
 
     /*!
         \qmlproperty enumeration TextField::effectiveHorizontalAlignment
 
-        Gets the effective horizontal alignment of the text within the TextField item's width.
+        Gets the effective horizontal alignment of the text within the TextField
+        item's width.
 
-        To set/get the default horizontal alignment of TextField, use the property \c horizontalAlignment.
+        \l horizontalAlignment contains the default horizontal alignment.
+
+        \sa horizontalAlignment
 
     */
     readonly property alias effectiveHorizontalAlignment: textInput.effectiveHorizontalAlignment
@@ -185,17 +204,21 @@ Control {
 
         Sets the alignment of the text within the TextField item's height.
 
-        The valid valid values for \c verticalAlignment are \c TextInput.AlignTop,
-        \c TextInput.AlignBottom \c TextInput.AlignVCenter (default).
+        The possible alignment values are
+        \list
+        \li TextInput.AlignTop
+        \li TextInput.AlignBottom
+        \li TextInput.AlignVCenter (default).
+        \endlist
     */
     property alias verticalAlignment: textInput.verticalAlignment
 
     /*!
         \qmlproperty string TextField::inputMask
 
-        Allows you to set an input mask on the TextField, restricting the allowable
-        text inputs. See QLineEdit::inputMask for further details, as the exact
-        same mask strings are used by TextField.
+        Sets an input mask on the TextField, restricting the allowable text
+        inputs. See QLineEdit::inputMask for further details, as the exact same
+        mask strings are used by TextField.
 
         \sa acceptableInput, validator
     */
@@ -204,12 +227,13 @@ Control {
     /*!
         \qmlproperty enumeration TextField::inputMethodHints
 
-        Provides hints to the input method about the expected content of the text field and how it
-        should operate.
+        Provides hints to the input method about the expected content of the
+        text field and how it should operate.
 
-        The value is a bit-wise combination of flags, or Qt.ImhNone if no hints are set.
+        The value is a bit-wise combination of flags, or \c Qt.ImhNone if no
+        hints are set.
 
-        The default value is Qt.ImhNone.
+        The default value is \c Qt.ImhNone.
 
         Flags that alter behavior are:
 
@@ -223,7 +247,7 @@ Control {
         \li Qt.ImhPreferNumbers - Numbers are preferred (but not required).
         \li Qt.ImhPreferUppercase - Upper case letters are preferred (but not required).
         \li Qt.ImhPreferLowercase - Lower case letters are preferred (but not required).
-        \li Qt.ImhNoPredictiveText - Do not use predictive text (i.e. dictionary lookup) while typing.
+        \li Qt.ImhNoPredictiveText - Do not use predictive text (for example, dictionary lookup) while typing.
 
         \li Qt.ImhDate - The text editor functions as a date field.
         \li Qt.ImhTime - The text editor functions as a time field.
@@ -242,7 +266,6 @@ Control {
         \endlist
 
         Masks:
-
         \list
         \li Qt.ImhExclusiveInputMask - This mask yields nonzero if any of the exclusive flags are used.
         \endlist
@@ -254,17 +277,21 @@ Control {
 
         Returns the total number of characters in the TextField item.
 
-        If the TextField has an inputMask the length will include mask characters and may differ
-        from the length of the string returned by the \l text property.
+        If the TextField has an input mask, the length will include mask
+        characters and may differ from the length of the string returned by the
+        \l text property.
 
-        This property can be faster than querying the length the \l text property as it doesn't
-        require any copying or conversion of the TextField's internal string data.
+        This property can be faster than querying the length the \l text
+        property as it doesn't require any copying or conversion of the
+        TextField's internal string data.
     */
     readonly property alias length: textInput.length
 
     /*!
         \qmlproperty int TextField::maximumLength
-        The maximum permitted length of the text in the TextField.
+
+        This property holds the maximum permitted length of the text in the
+        TextField.
 
         If the text is too long, it is truncated at the limit.
     */
@@ -273,36 +300,35 @@ Control {
     /*!
         \qmlproperty string TextField::placeholderText
 
-        The text that is shown in the text field when the text field is empty
-        and has no focus.
+        This property contains the text that is shown in the text field when the
+        text field is empty and has no focus.
     */
     property alias placeholderText: placeholderTextComponent.text
 
     /*!
         \qmlproperty bool TextField::readOnly
 
-        Sets whether user input can modify the contents of the TextField.
-        The difference from a disabled text field is that it will appear
-        to be active and text can be selected and copied.
+        Sets whether user input can modify the contents of the TextField. Read-
+        only is different from a disabled text field in that the text field will
+        appear to be active and text can still be selected and copied.
 
-        If readOnly is set to true, then user input will not affect the text
-        property. Any bindings or attempts to set the text property will still
-        work.
+        If readOnly is set to \c true, then user input will not affect the text.
+        Any bindings or attempts to set the text property will still
+        work, however.
     */
     property alias readOnly: textInput.readOnly
 
     /*!
         \qmlproperty string TextField::selectedText
 
-        This read-only property provides the text currently selected in the
-        text input.
+        Provides the text currently selected in the text input.
 
         It is equivalent to the following snippet, but is faster and easier
         to use.
 
-        \js
+        \code
         myTextField.text.toString().substring(myTextField.selectionStart, myTextField.selectionEnd);
-        \endjs
+        \endcode
     */
     readonly property alias selectedText: textInput.selectedText
 
@@ -311,8 +337,8 @@ Control {
 
         The cursor position after the last character in the current selection.
 
-        This property is read-only. To change the selection, use select(start,end),
-        selectAll(), or selectWord().
+        This property is read-only. To change the selection, use
+        select(start,end), selectAll(), or selectWord().
 
         \sa selectionStart, cursorPosition, selectedText
     */
@@ -333,7 +359,7 @@ Control {
     /*!
         \qmlproperty string TextField::text
 
-        The text in the TextField.
+        This property contains the text in the TextField.
     */
     property alias text: textInput.text
 
@@ -342,12 +368,13 @@ Control {
 
         Allows you to set a validator on the TextField. When a validator is set
         the TextField will only accept input which leaves the text property in
-        an or intermediate state. The accepted signal will only be sent
+        an intermediate state. The accepted signal will only be sent
         if the text is in an acceptable state when enter is pressed.
 
-        Currently supported validators are IntValidator, DoubleValidator and
-        RegExpValidator. An example of using validators is shown below, which allows
-        input of integers between 11 and 31 into the text input:
+        Currently supported validators are \l{QtQuick2::IntValidator},
+        \l{QtQuick2::DoubleValidator}, and \l{QtQuick2::RegExpValidator}. An
+        example of using validators is shown below, which allows input of
+        integers between 11 and 31 into the text input:
 
         \code
         import QtQuick 2.0
@@ -359,7 +386,7 @@ Control {
         }
         \endcode
 
-        \sa acceptableInput, inputMask
+        \sa acceptableInput, inputMask, accepted
     */
     property alias validator: textInput.validator
 
@@ -403,7 +430,8 @@ Control {
     /*!
         \qmlmethod string TextField::getText(int start, int end)
 
-        Removes the section of text that is between the \a start and \a end positions from the TextField.
+        Removes the section of text that is between the \a start and \a end
+        positions from the TextField.
     */
     function getText(start, end) {
         return textInput.getText(start, end);
@@ -412,7 +440,7 @@ Control {
     /*!
         \qmlmethod TextField::insert(int position, string text)
 
-        Inserts \a text into the TextField at position.
+        Inserts \a text into the TextField at \a position.
     */
     function insert(position, text) {
         textInput.insert(position, text);
@@ -421,7 +449,7 @@ Control {
     /*!
         \qmlmethod bool TextField::isRightToLeft(int start, int end)
 
-        Returns true if the natural reading direction of the editor text
+        Returns \c true if the natural reading direction of the editor text
         found between positions \a start and \a end is right to left.
     */
     function isRightToLeft(start, end) {
@@ -431,7 +459,8 @@ Control {
     /*!
         \qmlmethod TextField::paste()
 
-        Replaces the currently selected text by the contents of the system clipboard.
+        Replaces the currently selected text by the contents of the system
+        clipboard.
     */
     function paste() {
         textInput.paste()
@@ -440,7 +469,7 @@ Control {
     /*!
         \qmlmethod TextField::redo()
 
-        Redoes the last operation if redo is \l {canRedo}{available}.
+        Performs the last operation if redo is \l {canRedo}{available}.
     */
     function redo() {
         textInput.redo();
@@ -453,7 +482,7 @@ Control {
 
         If either start or end is out of range, the selection is not changed.
 
-        After calling this, selectionStart will become the lesser
+        After calling select, selectionStart will become the lesser
         and selectionEnd will become the greater (regardless of the order passed
         to this method).
 
@@ -484,9 +513,9 @@ Control {
     /*!
         \qmlmethod TextField::undo()
 
-        Undoes the last operation if undo is \l {canUndo}{available}. Deselects any
-        current selection, and updates the selection start to the current cursor
-        position.
+        Reverts the last operation if undo is \l {canUndo}{available}. undo()
+        deselects any current selection and updates the selection start to the
+        current cursor position.
     */
     function undo() {
         textInput.undo();
