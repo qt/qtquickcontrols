@@ -255,6 +255,18 @@ Item {
             compare(spinbox.value, spinbox.maximumValue)
         }
 
+        function test_initialization_order()
+        {
+            var spinbox = Qt.createQmlObject("import QtQuick.Controls 1.0; SpinBox { id: spinbox;"  +
+                                             "maximumValue: 2000; value: 1000; implicitWidth:80}",
+                                             container, '')
+            compare(spinbox.value, 1000);
+
+            spinbox = Qt.createQmlObject('import QtQuick.Controls 1.0; SpinBox { minimumValue: -1000 ; value:-1000}',
+                                             container, '')
+            compare(spinbox.value, -1000);
+        }
+
         function test_ImplicitSize() // Verify if we correctly grow and shrink depending on contents
         {
             var spinbox = Qt.createQmlObject('import QtQuick.Controls 1.0; SpinBox {}', container, '')

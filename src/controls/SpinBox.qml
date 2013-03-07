@@ -153,6 +153,8 @@ Control {
     }
 
     /*! \internal */
+    property bool __initialized: false
+    /*! \internal */
     readonly property bool __upEnabled: value != maximumValue;
     /*! \internal */
     readonly property bool __downEnabled: value != minimumValue;
@@ -196,9 +198,13 @@ Control {
     /*! \internal */
     onMinimumValueChanged: input.setValue(value)
     /*! \internal */
-    Component.onCompleted: input.setValue(value)
+    Component.onCompleted: {
+        __initialized = true;
+        input.setValue(value)
+    }
+
     /*! \internal */
-    onValueChanged: input.setValue(value)
+    onValueChanged: if (__initialized) input.setValue(value)
 
     Accessible.name: input.text
     Accessible.role: Accessible.SpinBox
