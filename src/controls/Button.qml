@@ -49,29 +49,38 @@ import "Styles/Settings.js" as Settings
     \ingroup controls
     \brief A push button with a text label.
 
-    A normal push button. Similar to the QPushButton widget.
+    The push button is perhaps the most commonly used widget in any graphical
+    user interface. Pushing (or clicking) a button commands the computer to
+    perform some action or to answer a question. Common examples of buttons are
+    OK, Apply, Cancel, Close, Yes, No, and Help buttons.
 
-    The push button is perhaps the most commonly used widget in any graphical user interface.
-    Push (click) a button to command the computer to perform some action, or to answer a question.
-    Typical buttons are OK, Apply, Cancel, Close, Yes, No and Help.
+    Button is similar to the QPushButton widget.
 
  */
 BasicButton {
     id: button
 
     /*! This property holds whether the push button is the default button.
-        Default buttons decide what happens when the user presses enter in a dialog without giving a button explicit focus.
-        \note This property is currently ignored by Dialog
+        Default buttons decide what happens when the user presses enter in a
+        dialog without giving a button explicit focus. \note This property is
+        ignored by Dialog.
+
         The default value is \c false.
     */
     property bool isDefault: false
 
-    /*! This property holds the text shown on the button.
-        If the button has no text, the \l text property will be an empty string. */
+    /*! This property holds the text shown on the button. If the button has no
+        text, the \l text property will be an empty string.
+
+        The default value is the empty string.
+    */
     property string text
 
-    /*! This property holds the icon shown on the button.
-        If the button has no icon, the \l iconSource property will be an empty string. */
+    /*! This property holds the icon shown on the button. If the button has no
+        icon, the \l iconSource property will be an empty string.
+
+        The default value is the empty string.
+    */
     property url iconSource
 
     Accessible.name: text
