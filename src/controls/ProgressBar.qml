@@ -99,13 +99,18 @@ Control {
     style: Qt.createComponent(Settings.THEME_PATH + "/ProgressBarStyle.qml", progressbar)
 
     /*! \internal */
+    property bool __initialized: false
+    /*! \internal */
     onMaximumValueChanged: setValue(value)
     /*! \internal */
     onMinimumValueChanged: setValue(value)
     /*! \internal */
-    Component.onCompleted: setValue(value)
+    onValueChanged: if (__initialized) setValue(value)
     /*! \internal */
-    onValueChanged: setValue(value)
+    Component.onCompleted: {
+        __initialized = true;
+        setValue(value)
+    }
 
     Accessible.role: Accessible.ProgressBar
     Accessible.name: value

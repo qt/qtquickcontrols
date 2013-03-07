@@ -95,4 +95,24 @@ TestCase {
         var progressBar2 = Qt.createQmlObject('import QtQuick.Controls 1.0; ProgressBar {minimumValue: 10; maximumValue: 4; value: 5}', testCase, '');
         compare(progressBar.value, progressBar.minimumValue)
     }
+
+    function test_initialization_order()
+    {
+        var spinbox = Qt.createQmlObject("import QtQuick.Controls 1.0; ProgressBar {maximumValue: 100; value: 50}",
+                                         testCase, '')
+        compare(spinbox.value, 50);
+
+        spinbox = Qt.createQmlObject("import QtQuick.Controls 1.0; ProgressBar {" +
+                                         "value: 50; maximumValue: 100}",
+                                         testCase, '')
+        compare(spinbox.value, 50);
+
+        spinbox = Qt.createQmlObject("import QtQuick.Controls 1.0; ProgressBar { minimumValue: -50 ; value:-10}",
+                                         testCase, '')
+        compare(spinbox.value, -10);
+
+        spinbox = Qt.createQmlObject("import QtQuick.Controls 1.0; ProgressBar { value:-10; minimumValue: -50}",
+                                         testCase, '')
+        compare(spinbox.value, -10);
+    }
 }
