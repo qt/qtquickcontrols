@@ -86,13 +86,13 @@ ApplicationWindow {
         id:frame
         anchors.fill: parent
         anchors.margins: 4
-        frame: false
+        frameVisible: frameCheck.checked
         Tab {
             title: "Rectangle"
             ScrollView {
                 anchors.fill: parent
                 anchors.margins:4
-                frame: frameCheck.checked
+                frameVisible: frameCheck.checked
                 Rectangle {
                     width: widthSpinBox.value
                     height: heightSpinBox.value
@@ -104,12 +104,12 @@ ApplicationWindow {
             ScrollView {
                 anchors.fill: parent
                 anchors.margins:4
-                frame: frameCheck.checked
+                frameVisible: frameCheck.checked
                 Image {
                     width: widthSpinBox.value
                     height: heightSpinBox.value
                     fillMode: Image.Tile
-                    source: "../../examples/touch/images/button_pressed.png"
+                    source: "../../../examples/touch/images/button_pressed.png"
                 }
             }
         }
@@ -118,7 +118,7 @@ ApplicationWindow {
             ScrollView{
                 anchors.fill: parent
                 anchors.margins:4
-                frame: true
+                frameVisible: frameCheck.checked
                 Flickable {
                     contentWidth: widthSpinBox.value
                     contentHeight: heightSpinBox.value
@@ -126,7 +126,7 @@ ApplicationWindow {
                         width: widthSpinBox.value
                         height: heightSpinBox.value
                         fillMode: Image.Tile
-                        source: "../../examples/touch/images/button_pressed.png"
+                        source: "../../../examples/touch/images/button_pressed.png"
                     }
                 }
             }
@@ -136,7 +136,7 @@ ApplicationWindow {
             TextArea {
                 id: area
                 anchors.margins:4
-                frame: frameCheck.checked
+                frameVisible: frameCheck.checked
                 text: loremIpsum + loremIpsum + loremIpsum + loremIpsum
                 anchors.fill: parent
             }
@@ -146,7 +146,7 @@ ApplicationWindow {
             ScrollView{
                 anchors.fill: parent
                 anchors.margins:4
-                frame: true
+                frameVisible: frameCheck.checked
                 ListView {
                     width: 400
                     model: 30
@@ -175,7 +175,7 @@ ApplicationWindow {
                 anchors.margins:4
                 anchors.fill: parent
                 model: 10
-                frame: frameCheck.checked
+                frameVisible: frameCheck.checked
 
                 TableViewColumn {title: "first"
                     width: view.viewport.width
