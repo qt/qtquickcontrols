@@ -69,8 +69,6 @@ import QtQuick.Controls.Private 1.0
 */
 
 Item {
-    width: toolbar.width
-    height: toolbar.height
     implicitHeight: toolbar.implicitHeight
     implicitWidth: parent ? parent.width : toolbar.implicitWidth
     Accessible.role: Accessible.ToolBar
