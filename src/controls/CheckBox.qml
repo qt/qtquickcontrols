@@ -71,7 +71,21 @@ import "Styles/Settings.js" as Settings
     The text of the label shown next to the checkbox can be set with the
     \l {AbstractCheckable::text}{text} property.
 
-    Whenever a CheckBox is clicked, it emits the clicked() signal.
+    \qml
+    Column {
+        CheckBox {
+            text: qsTr("Breakfast")
+        }
+        CheckBox {
+            text: qsTr("Lunch")
+        }
+        CheckBox {
+            text: qsTr("Dinner")
+        }
+    }
+    \endqml
+
+    Whenever a CheckBox is clicked, it emits the \l {AbstractCheckable::clicked}{clicked()} signal.
 */
 
 AbstractCheckable {
