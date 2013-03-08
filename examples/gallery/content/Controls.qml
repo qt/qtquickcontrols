@@ -133,7 +133,6 @@ Item {
                 id: group1
                 title: "CheckBox"
                 width: area.width
-                adjustToContentSize: true
                 Row {
                     CheckBox {
                         id: frameCheckbox
@@ -160,7 +159,6 @@ Item {
                 id: group2
                 title:"Tab Position"
                 width: area.width
-                adjustToContentSize: true
                 ExclusiveGroup { id: tabPositionGroup }
                 Row {
                     RadioButton {
