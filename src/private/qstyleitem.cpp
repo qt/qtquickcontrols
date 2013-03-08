@@ -132,7 +132,12 @@ QStyleItem::QStyleItem(QQuickItem *parent)
     m_contentHeight(0)
 
 {
-    if (!qApp->style()) {
+    // Check on QApplication, allowing for "qmlplugindump" to query our interfaces.
+    QCoreApplication *coreApp = QCoreApplication::instance();
+    Q_ASSERT(coreApp);
+    if (!qobject_cast<QApplication *>(coreApp)) {
+        if (QCoreApplication::applicationFilePath().contains(QLatin1String("qmlplugindump"), Qt::CaseInsensitive))
+            return;
         qWarning("\nError: No widget style available. \n\nQt Quick Controls"
                "currently depend on the widget module to function. \n"
                "Use QApplication when creating standalone executables.\n\n");
