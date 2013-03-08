@@ -41,10 +41,7 @@
 import QtQuick 2.0
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Private 1.0
-
 import "Styles/Settings.js" as Settings
-
-// jb : Size should not depend on background, we should make it consistent
 
 /*!
     \qmltype RadioButton
@@ -57,6 +54,24 @@ import "Styles/Settings.js" as Settings
     choice. In a group of radio buttons, only one radio button at a time can be
     checked; if the user selects another button, the previously selected button
     is switched off.
+
+    \qml
+    GroupBox {
+        title: qsTr("Search")
+        Column {
+            ExclusiveGroup { id: group }
+            RadioButton {
+                text: qsTr("From top")
+                exclusiveGroup: group
+                checked: true
+            }
+            RadioButton {
+                text: qsTr("From cursor")
+                exclusiveGroup: group
+            }
+        }
+    }
+    \endqml
 */
 
 AbstractCheckable {
