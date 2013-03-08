@@ -60,21 +60,24 @@ import "Styles/Settings.js" as Settings
 
     \qml
         GroupBox {
-            title: "Package selection"
-            adjustToContentSize: true
+            title: qsTr("Package selection")
             Column {
                 CheckBox {
-                    text: "Update system"
+                    text: qsTr("Update system")
                 }
                 CheckBox {
-                    text: "Update applications"
+                    text: qsTr("Update applications")
                 }
                 CheckBox {
-                    text: "Update documentation"
+                    text: qsTr("Update documentation")
                 }
             }
         }
     \endqml
+
+    \note The default size of the GroupBox is calculated based on the size of its children. If you need to use anchors
+    inside a GroupBox, it is recommended to specify a width and height to the GroupBox or to add an intermediate Item
+    inside the GroupBox.
 */
 
 Item {
@@ -132,15 +135,6 @@ Item {
         This property holds the height of the content.
     */
     readonly property real contentHeight: content.childrenRect.height
-
-    /*!
-        This property holds whether the group box resizes itself to fit the contents.
-
-        By default, group boxes do not resize itself to fit the contents.
-
-        \note When adjustToContentSize is enabled, children cannot be anchored.
-    */
-    property bool adjustToContentSize: false
 
     /*! \internal */
     property Component style: Qt.createComponent(Settings.THEME_PATH + "/GroupBoxStyle.qml", groupbox)
