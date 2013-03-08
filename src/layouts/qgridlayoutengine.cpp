@@ -497,6 +497,10 @@ QGridLayoutItem::QGridLayoutItem(/*QGridLayoutEngine *engine, */
     //q_engine->insertItem(this, itemAtIndex);###
 }
 
+QGridLayoutItem::~QGridLayoutItem()
+{
+}
+
 int QGridLayoutItem::firstRow(Qt::Orientation orientation) const
 {
     return q_firstRows[orientation == Qt::Vertical];

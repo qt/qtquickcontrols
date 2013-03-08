@@ -290,8 +290,8 @@ void QQuickGridLayoutBase::onItemDestroyed()
 
 void QQuickGridLayoutBase::onItemImplicitSizeChanged()
 {
-    QQuickItem *item = static_cast<QQuickItem *>(sender());
-    Q_ASSERT(item);
+    //QQuickItem *item = static_cast<QQuickItem *>(sender());
+    //Q_ASSERT(item);
     //invalidate(item);
 }
 

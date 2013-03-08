@@ -201,7 +201,7 @@ SizePolicy | Layout.horizontalSizePolicy    | Expanding if layout, Fixed if item
 
         // If that fails, make an ultimate fallback to width/height
 
-        if ( (!info && prefWidth <= 0) || (prefHeight <= 0))
+        if (!info && (prefWidth <= 0 || prefHeight <= 0))
             info = static_cast<QQuickLayoutAttached *>(qmlAttachedPropertiesObject<QQuickLayout>(m_item));
 
         const bool was = info->setChangesNotificationEnabled(false);

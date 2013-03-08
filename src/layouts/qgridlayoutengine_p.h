@@ -344,6 +344,7 @@ class QGridLayoutItem
 public:
     QGridLayoutItem(int row, int column, int rowSpan = 1, int columnSpan = 1,
                     Qt::Alignment alignment = 0);
+    virtual ~QGridLayoutItem();
 
     inline int firstRow() const { return q_firstRows[Ver]; }
     inline int firstColumn() const { return q_firstRows[Hor]; }
