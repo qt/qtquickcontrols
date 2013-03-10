@@ -96,7 +96,7 @@ public:
     inline QStyle *style() const { return 0; }
     inline QWidget *widget() const { return 0; }
     inline bool operator==(const QLayoutStyleInfo &other) const
-    { return m_defaultSpacing[0] == other.m_defaultSpacing[0] && m_defaultSpacing[1] == other.m_defaultSpacing[1]; }
+    { return m_defaultSpacing[0] == other.m_defaultSpacing[0] && m_defaultSpacing[1] == other.m_defaultSpacing[1] && m_valid == other.m_valid;}
     inline bool operator!=(const QLayoutStyleInfo &other) const
         { return !(*this == other); }
 
