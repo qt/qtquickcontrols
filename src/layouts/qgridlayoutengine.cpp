@@ -936,16 +936,17 @@ Qt::Alignment QGridLayoutEngine::effectiveAlignment(const QGridLayoutItem *layou
         // no vertical alignment, respect the row alignment
         int y = layoutItem->firstRow();
         align |= (rowAlignment(y, Qt::Vertical) & Qt::AlignVertical_Mask);
-        if (!align)
-            align = Qt::AlignVCenter;
+        if (!(align & Qt::AlignVertical_Mask))
+            align |= Qt::AlignVCenter;
     }
     if (!(align & Qt::AlignHorizontal_Mask)) {
         // no horizontal alignment, respect the column alignment
         int x = layoutItem->firstColumn();
         align |= (rowAlignment(x, Qt::Horizontal) & Qt::AlignHorizontal_Mask);
-        if (!align)
-            align = Qt::AlignHCenter;
+        if (!(align & Qt::AlignHorizontal_Mask))
+            align |= Qt::AlignHCenter;
     }
+
     return align;
 }
 
