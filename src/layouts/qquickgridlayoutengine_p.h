@@ -283,13 +283,12 @@ prefS   [1, 2, 3]   [1, 3, 3] [1, 1, 3] [2, 3, 3] [2, 2, 3] [1, 1, 3] ###No chan
 
     QLayoutPolicy::Policy sizePolicy(Qt::Orientation orientation) const
     {
-        if (QObject *attached = qmlAttachedPropertiesObject<QQuickLayout>(m_item, false)) {
-            QQuickLayoutAttached *info = static_cast<QQuickLayoutAttached *>(attached);
-            if (info) {
-                QLayoutPolicy sp(fromSizePolicy(info->horizontalSizePolicy()), fromSizePolicy(info->verticalSizePolicy()));
-                return (orientation == Qt::Horizontal) ? sp.horizontalPolicy()
-                                                       : sp.verticalPolicy();
-            }
+        if (QQuickLayoutAttached *info = attachedLayoutObject(m_item, false)) {
+            QQuickLayout::SizePolicy sp = (orientation == Qt::Horizontal
+                                        ? info->horizontalSizePolicy()
+                                        : info->verticalSizePolicy());
+            if (sp != QQuickLayout::Unspecified)
+                return fromSizePolicy(sp);
         }
         // ### Correct way is to, go through all child items and combine the policies.
         return qobject_cast<QQuickLayout*>(m_item) ? QLayoutPolicy::Preferred : QLayoutPolicy::Fixed;

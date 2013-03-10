@@ -65,6 +65,7 @@ class QQuickLayout : public QQuickItem
     Q_ENUMS(SizePolicy)
 public:
     enum SizePolicy {
+        Unspecified = 0,
         Fixed,
         Expanding
     };
