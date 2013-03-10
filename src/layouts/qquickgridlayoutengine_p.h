@@ -194,8 +194,8 @@ SizePolicy | Layout.horizontalSizePolicy    | Expanding if layout, Fixed if item
 
         //--- GATHER PREFERRED SIZE HINTS ---
         // First, from implicitWidth/Height
-        qreal &prefWidth = cachedSizeHints[Qt::PreferredSize].rwidth();
-        qreal &prefHeight = cachedSizeHints[Qt::PreferredSize].rheight();
+        qreal &prefWidth = prefS.rwidth();
+        qreal &prefHeight = prefS.rheight();
         combineHints(prefWidth, m_item->implicitWidth());
         combineHints(prefHeight, m_item->implicitHeight());
 
@@ -204,17 +204,29 @@ SizePolicy | Layout.horizontalSizePolicy    | Expanding if layout, Fixed if item
         if (!info && (prefWidth <= 0 || prefHeight <= 0))
             info = static_cast<QQuickLayoutAttached *>(qmlAttachedPropertiesObject<QQuickLayout>(m_item));
 
-        const bool was = info->setChangesNotificationEnabled(false);
-        if (prefWidth <= 0) {
-            prefWidth = m_item->width();
-            info->setPreferredWidth(prefWidth);
+        if (info) {
+            /* This block is a bit hacky, but if we want to support using width/height
+               as preferred size hints in layouts, (which we think most people expect),
+               we only want to use the initial width.
+               This is because the width will change due to layout rearrangement, and the preferred
+               width should return the same value, regardless of the current width.
+               We therefore store the width in the Layout.preferredWidth attached property.
+               Since the layout listens to changes of Layout.preferredWidth, (it will
+               basically cause an invalidation of the layout, we have to disable that
+               notification while we set the preferred width.
+            */
+            //### Breaks with items that has Layout.preferredWidth: 0
+            const bool was = info->setChangesNotificationEnabled(false);
+            if (prefWidth <= 0) {
+                prefWidth = m_item->width();
+                info->setPreferredWidth(prefWidth);
+            }
+            if (prefHeight <= 0) {
+                prefHeight = m_item->height();
+                info->setPreferredHeight(prefHeight);
+            }
+            info->setChangesNotificationEnabled(was);
         }
-        if (prefHeight <= 0) {
-            prefHeight = m_item->height();
-            info->setPreferredHeight(prefHeight);
-        }
-        info->setChangesNotificationEnabled(was);
-
         //--- GATHER MAXIMUM SIZE HINTS ---
         // They are always q_declarativeLayoutMaxSize
         combineHints(cachedSizeHints[Qt::MaximumSize].rwidth(), q_declarativeLayoutMaxSize);
@@ -237,6 +249,7 @@ maxS    [1, 2, 3]   [1, 3, 3] [2, 1, 3] [2, 3, 3] [3, 2, 3] [3, 1, 3]
 minS    [1, 2, 3]   [1, 3, 3] [1, 1, 3] [2, 3, 3] [2, 2, 3] [1, 1, 3]
 prefS   [1, 2, 3]   [1, 3, 3] [1, 1, 3] [2, 3, 3] [2, 2, 3] [1, 1, 3] ###No change here.
 */
+        expandSize(minS, QSizeF(0,0));
         boundSize(minS, maxS);
         expandSize(prefS, minS);
         boundSize(prefS, maxS);
