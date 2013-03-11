@@ -162,9 +162,6 @@ Control {
     property bool tickmarksEnabled: false
 
     /*! \internal */
-    property string tickPosition: "Below" // "Above", "Below", "BothSides"
-
-    /*! \internal */
     property bool __containsMouse: mouseArea.containsMouse
 
     /*! \internal */
