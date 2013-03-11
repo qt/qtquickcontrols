@@ -51,7 +51,7 @@ import QtQuick.Controls.Private 1.0
     \brief Provides a top-level application window.
 
     ApplicationWindow is a \l Window, but adds convenience for positioning items
-    such as \l MenuBar, \l ToolBar and \l StatusBar in a platform independent
+    such as \l MenuBar, \l ToolBar, and \l StatusBar in a platform independent
     manner.
 
     \code
@@ -89,19 +89,19 @@ Window {
 
         This property holds the \l MenuBar.
 
-        By default this value is not set.
+        By default, this value is not set.
     */
     property MenuBar menuBar: null
 
     /*!
         \qmlproperty Item ApplicationWindow::toolBar
 
-        This property holds the tool bar \l Item.
+        This property holds the toolbar \l Item.
 
         It can be set to any Item type but is generally used with \l ToolBar.
 
-        By default this value is not set. When you set the toolBar Item, it will
-        be anchored automatically into the ApplicationWindow.
+        By default, this value is not set. When you set the toolbar item, it will
+        be anchored automatically into the application window.
     */
     property Item toolBar
 
@@ -112,8 +112,8 @@ Window {
 
         It can be set to any Item type but is generally used with \l StatusBar.
 
-        By default this value is not set. When you set the statusBar Item, it
-        will be anchored automatically into the ApplicationWindow.
+        By default, this value is not set. When you set the status bar item, it
+        will be anchored automatically into the application window.
     */
     property Item statusBar
 
