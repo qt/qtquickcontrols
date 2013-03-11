@@ -141,6 +141,13 @@ void QtMenuPopupWindow::mouseMoveEvent(QMouseEvent *e)
         forwardEventToTransientParent(e);
 }
 
+void QtMenuPopupWindow::mousePressEvent(QMouseEvent *e)
+{
+    QRect rect = QRect(QPoint(), size());
+    if (!rect.contains(e->pos()))
+        forwardEventToTransientParent(e);
+}
+
 void QtMenuPopupWindow::mouseReleaseEvent(QMouseEvent *e)
 {
     QRect rect = QRect(QPoint(), size());
@@ -159,7 +166,8 @@ void QtMenuPopupWindow::mouseReleaseEvent(QMouseEvent *e)
 void QtMenuPopupWindow::forwardEventToTransientParent(QMouseEvent *e)
 {
     if (!qobject_cast<QtMenuPopupWindow*>(transientParent())
-        && m_mouseMoved && e->type() == QEvent::MouseButtonRelease) {
+        && (m_mouseMoved && e->type() == QEvent::MouseButtonRelease
+            || e->type() == QEvent::MouseButtonPress)) {
         // Clicked outside any menu
         dismissMenu();
     } else if (transientParent()) {

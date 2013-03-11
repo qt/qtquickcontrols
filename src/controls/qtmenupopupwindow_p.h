@@ -68,6 +68,7 @@ Q_SIGNALS:
     void menuDismissed();
 
 protected:
+    void mousePressEvent(QMouseEvent *);
     void mouseReleaseEvent(QMouseEvent *);
     void mouseMoveEvent(QMouseEvent *);
 
