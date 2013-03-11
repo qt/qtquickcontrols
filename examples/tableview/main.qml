@@ -153,7 +153,7 @@ Rectangle {
                         visible: true
                     }
 
-                    frame: frameCheckbox.checked
+                    frameVisible: frameCheckbox.checked
                     headerVisible: headerCheckbox.checked
                     sortIndicatorVisible: sortableCheckbox.checked
                     alternateRowColor: alternateCheckbox.checked
@@ -195,7 +195,7 @@ Rectangle {
                         }
                     }
 
-                    frame: frameCheckbox.checked
+                    frameVisible: frameCheckbox.checked
                     headerVisible: headerCheckbox.checked
                     sortIndicatorVisible: sortableCheckbox.checked
                     alternateRowColor: alternateCheckbox.checked
@@ -223,7 +223,7 @@ Rectangle {
                         title: "Gender"
                         width: 120
                     }
-                    frame: frameCheckbox.checked
+                    frameVisible: frameCheckbox.checked
                     headerVisible: headerCheckbox.checked
                     sortIndicatorVisible: sortableCheckbox.checked
                     alternateRowColor: alternateCheckbox.checked
@@ -232,141 +232,145 @@ Rectangle {
 
             Tab {
                 title: "Delegates"
+                Item {
+                    anchors.fill: parent
 
-                ListModel {
-                    id: delegatemenu
-                    ListElement { text: "Shiny delegate" }
-                    ListElement { text: "Scale selected" }
-                    ListElement { text: "Editable items" }
-                }
 
-                Component {
-                    id: delegate1
-                    Item {
-                        clip: true
-                        Text {
-                            width: parent.width
-                            anchors.margins: 4
-                            anchors.left: parent.left
-                            anchors.verticalCenter: parent.verticalCenter
-                            elide: itemElideMode
-                            text: itemValue ? itemValue : ""
-                            color: itemForeground
-                        }
-                    }
-                }
-
-                Component {
-                    id: slickRowDelegate
-                    Rectangle { color: itemAlternateBackground ? "#cef" : "white" }
-                }
-
-                Component {
-                    id: delegate2
-                    Item {
-                        height: itemSelected? 60 : 20
-                        Behavior on height{ NumberAnimation{} }
-                        Text {
-                            width: parent.width
-                            anchors.margins: 4
-                            anchors.left: parent.left
-                            anchors.verticalCenter: parent.verticalCenter
-                            elide: itemElideMode
-                            text: itemValue ? itemValue : ""
-                            color: itemForeground
-                        }
-                    }
-                }
-
-                Component {
-                    id: editableDelegate
-                    Item {
-                        Text {
-                            width: parent.width
-                            anchors.margins: 4
-                            anchors.left: parent.left
-                            anchors.verticalCenter: parent.verticalCenter
-                            elide: itemElideMode
-                            text: itemValue ? itemValue : ""
-                            color: itemForeground
-                            visible: !itemSelected
-                        }
-                        Loader { // Initialize text editor lazily to improve performance
-                            anchors.fill: parent
-                            anchors.margins: 4
-                            property string modelText: itemValue
-                            property string editorText: item ? item.text : itemValue
-                            onEditorTextChanged: model.setProperty(rowIndex, role, editorText)
-                            sourceComponent: itemSelected ? editor : null
-                            Component {id: editor ; TextInput{ color: itemForeground ; text: modelText} }
-                        }
-                    }
-                }
-                TableView {
-                    model: largeModel
-                    anchors.margins: 12
-                    anchors.fill:parent
-                    frame: frameCheckbox.checked
-                    headerVisible: headerCheckbox.checked
-                    sortIndicatorVisible: sortableCheckbox.checked
-                    alternateRowColor: alternateCheckbox.checked
-
-                    TableViewColumn {
-                        role: "name"
-                        title: "Name"
-                        width: 120
-                    }
-                    TableViewColumn {
-                        role: "age"
-                        title: "Age"
-                        width: 120
-                    }
-                    TableViewColumn {
-                        role: "sex"
-                        title: "Sex"
-                        width: 120
+                    ListModel {
+                        id: delegatemenu
+                        ListElement { text: "Shiny delegate" }
+                        ListElement { text: "Scale selected" }
+                        ListElement { text: "Editable items" }
                     }
 
-                    headerDelegate: BorderImage{
-                        source: "images/header.png"
-                        border{left:2;right:2;top:2;bottom:2}
-                        Text {
-                            text: itemValue
-                            anchors.centerIn:parent
-                            color:"#333"
-                        }
-                    }
-
-                    rowDelegate: Rectangle {
-                        height: 20
-                        color: itemSelected ? "#448" : (itemAlternateBackground ? "#eee" : "#fff")
-                        border.color:"#ccc"
-                        border.width: 1
-                        anchors.left: parent ? parent.left : undefined
-                        anchors.leftMargin: -2
-                        anchors.rightMargin: -1
-                        BorderImage{
-                            id: selected
-                            anchors.fill: parent
-                            source: "images/selectedrow.png"
-                            visible: itemSelected
-                            border{left:2; right:2; top:2; bottom:2}
-                            SequentialAnimation {
-                                running: true; loops: Animation.Infinite
-                                NumberAnimation { target:selected; property: "opacity"; to: 1.0; duration: 900}
-                                NumberAnimation { target:selected; property: "opacity"; to: 0.5; duration: 900}
+                    Component {
+                        id: delegate1
+                        Item {
+                            clip: true
+                            Text {
+                                width: parent.width
+                                anchors.margins: 4
+                                anchors.left: parent.left
+                                anchors.verticalCenter: parent.verticalCenter
+                                elide: itemElideMode
+                                text: itemValue ? itemValue : ""
+                                color: itemForeground
                             }
                         }
                     }
 
-                    itemDelegate: {
-                        switch (delegateChooser.selectedIndex) {
-                        case 0:
-                            return delegate1
-                        case 1:
-                            return delegate2
-                        case 2:
-                            return editableDelegate
+                    Component {
+                        id: slickRowDelegate
+                        Rectangle { color: itemAlternateBackground ? "#cef" : "white" }
+                    }
+
+                    Component {
+                        id: delegate2
+                        Item {
+                            height: itemSelected? 60 : 20
+                            Behavior on height{ NumberAnimation{} }
+                            Text {
+                                width: parent.width
+                                anchors.margins: 4
+                                anchors.left: parent.left
+                                anchors.verticalCenter: parent.verticalCenter
+                                elide: itemElideMode
+                                text: itemValue ? itemValue : ""
+                                color: itemForeground
+                            }
+                        }
+                    }
+
+                    Component {
+                        id: editableDelegate
+                        Item {
+                            Text {
+                                width: parent.width
+                                anchors.margins: 4
+                                anchors.left: parent.left
+                                anchors.verticalCenter: parent.verticalCenter
+                                elide: itemElideMode
+                                text: itemValue ? itemValue : ""
+                                color: itemForeground
+                                visible: !itemSelected
+                            }
+                            Loader { // Initialize text editor lazily to improve performance
+                                anchors.fill: parent
+                                anchors.margins: 4
+                                property string modelText: itemValue
+                                property string editorText: item ? item.text : itemValue
+                                onEditorTextChanged: model.setProperty(rowIndex, role, editorText)
+                                sourceComponent: itemSelected ? editor : null
+                                Component {id: editor ; TextInput{ color: itemForeground ; text: modelText} }
+                            }
+                        }
+                    }
+                    TableView {
+                        model: largeModel
+                        anchors.margins: 12
+                        anchors.fill:parent
+                        frameVisible: frameCheckbox.checked
+                        headerVisible: headerCheckbox.checked
+                        sortIndicatorVisible: sortableCheckbox.checked
+                        alternateRowColor: alternateCheckbox.checked
+
+                        TableViewColumn {
+                            role: "name"
+                            title: "Name"
+                            width: 120
+                        }
+                        TableViewColumn {
+                            role: "age"
+                            title: "Age"
+                            width: 120
+                        }
+                        TableViewColumn {
+                            role: "sex"
+                            title: "Sex"
+                            width: 120
+                        }
+
+                        headerDelegate: BorderImage{
+                            source: "images/header.png"
+                            border{left:2;right:2;top:2;bottom:2}
+                            Text {
+                                text: itemValue
+                                anchors.centerIn:parent
+                                color:"#333"
+                            }
+                        }
+
+                        rowDelegate: Rectangle {
+                            height: 20
+                            color: itemSelected ? "#448" : (itemAlternateBackground ? "#eee" : "#fff")
+                            border.color:"#ccc"
+                            border.width: 1
+                            anchors.left: parent ? parent.left : undefined
+                            anchors.leftMargin: -2
+                            anchors.rightMargin: -1
+                            BorderImage{
+                                id: selected
+                                anchors.fill: parent
+                                source: "images/selectedrow.png"
+                                visible: itemSelected
+                                border{left:2; right:2; top:2; bottom:2}
+                                SequentialAnimation {
+                                    running: true; loops: Animation.Infinite
+                                    NumberAnimation { target:selected; property: "opacity"; to: 1.0; duration: 900}
+                                    NumberAnimation { target:selected; property: "opacity"; to: 0.5; duration: 900}
+                                }
+                            }
+                        }
+
+                        itemDelegate: {
+                            switch (delegateChooser.selectedIndex) {
+                            case 0:
+                                return delegate1
+                            case 1:
+                                return delegate2
+                            case 2:
+                                return editableDelegate
+                            }
                         }
                     }
                 }
