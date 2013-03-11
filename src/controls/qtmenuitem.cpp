@@ -67,8 +67,10 @@ void QtMenuBase::setVisible(bool v)
     if (v != m_visible) {
         m_visible = v;
 
-        if (m_platformItem)
+        if (m_platformItem) {
             m_platformItem->setVisible(m_visible);
+            syncWithPlatformMenu();
+        }
 
         emit visibleChanged();
     }
