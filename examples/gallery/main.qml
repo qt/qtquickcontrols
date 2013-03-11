@@ -266,7 +266,7 @@ ApplicationWindow {
     TabView {
         id:frame
         enabled: enabledCheck.checked
-        tabPosition: controlPage.item ? controlPage.item.tabPosition : "Top"
+        tabPosition: controlPage.item ? controlPage.item.tabPosition : Qt.TopEdge
         anchors.top: toolbar.bottom
         anchors.bottom: parent.bottom
         anchors.right: parent.right

@@ -69,14 +69,14 @@ FocusScope {
     property bool tabsVisible: true
 
     /*!
-        \qmlproperty string TabView::tabPosition
+        \qmlproperty enumeration TabView::tabPosition
 
         \list
-        \li "Top" (default)
-        \li "Bottom"
+        \li Qt.TopEdge (default)
+        \li Qt.BottomEdge
         \endlist
     */
-    property string tabPosition: "Top"
+    property int tabPosition: Qt.TopEdge
 
     /*! \internal */
     default property alias data: stack.data
@@ -169,8 +169,8 @@ FocusScope {
         z: tabbarItem.z - 1
 
         anchors.fill: parent
-        anchors.topMargin: tabbarItem && tabsVisible && tabPosition == "Top" ? Math.max(0, tabbarItem.height - stack.baseOverlap) : 0
-        anchors.bottomMargin: tabbarItem && tabsVisible && tabPosition == "Bottom" ? Math.max(0, tabbarItem.height - stack.baseOverlap) : 0
+        anchors.topMargin: tabbarItem && tabsVisible && tabPosition == Qt.TopEdge ? Math.max(0, tabbarItem.height - stack.baseOverlap) : 0
+        anchors.bottomMargin: tabbarItem && tabsVisible && tabPosition == Qt.BottomEdge ? Math.max(0, tabbarItem.height - stack.baseOverlap) : 0
         sourceComponent: frameVisible && loader.item ? loader.item.frame : null
         property var control: root
 
@@ -201,7 +201,7 @@ FocusScope {
     states: [
         State {
             name: "Bottom"
-            when: tabPosition == "Bottom" && tabbarItem != undefined
+            when: tabPosition == Qt.BottomEdge && tabbarItem != undefined
             PropertyChanges {
                 target: tabbarItem
                 anchors.topMargin: tabbarItem.height

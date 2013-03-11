@@ -51,6 +51,7 @@ Style {
     property string tabBarAlignment: __barstyle.styleHint("tabbaralignment");
     property int tabOverlap: __barstyle.pixelMetric("taboverlap");
     property int tabBaseOverlap: __barstyle.pixelMetric("tabbaseoverlap");
+    property string tabPosition: control.tabPosition == Qt.TopEdge ? "Top" : "Bottom"
 
     property Component frame: StyleItem {
         id: styleitem
@@ -58,7 +59,7 @@ Style {
         anchors.topMargin: 1//stack.baseOverlap
         z: style == "oxygen" ? 1 : 0
         elementType: "tabframe"
-        hints: control.tabPosition
+        hints: tabPosition
         value: tabbarItem && tabsVisible && tabbarItem.tab(currentIndex) ? tabbarItem.tab(currentIndex).x : 0
         minimum: tabbarItem && tabsVisible && tabbarItem.tab(currentIndex) ? tabbarItem.tab(currentIndex).width : 0
         maximum: tabbarItem && tabsVisible ? tabbarItem.width : width
@@ -85,7 +86,7 @@ Style {
             anchors.fill: parent
             anchors.leftMargin: (selected && style == "mac") ? -1 : 0
 
-            hints: [control.tabsPosition, tabpos, selectedpos]
+            hints: [tabPosition, tabpos, selectedpos]
 
             selected: tab.selected
             text:  title

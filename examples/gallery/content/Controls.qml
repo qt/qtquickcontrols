@@ -51,7 +51,7 @@ Item {
     anchors.fill: parent
     enabled: enabledCheck.checked
 
-    property string tabPosition: tabPositionGroup.current === r2 ? "Bottom" : "Top"
+    property int tabPosition: tabPositionGroup.current === r2 ? Qt.BottomEdge : Qt.TopEdge
 
     Row {
         id: contentRow
@@ -163,7 +163,7 @@ Item {
                 Row {
                     RadioButton {
                         id: r1
-                        text: "North"
+                        text: "Top"
                         KeyNavigation.tab: r2
                         checked: true
                         exclusiveGroup: tabPositionGroup
@@ -171,7 +171,7 @@ Item {
                     }
                     RadioButton {
                         id: r2
-                        text: "South"
+                        text: "Bottom"
                         KeyNavigation.tab: area
                         exclusiveGroup: tabPositionGroup
                     }
