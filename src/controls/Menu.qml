@@ -51,7 +51,7 @@ import "Styles/Settings.js" as Settings
 
     \code
     Menu {
-        text: "Edit"
+        title: "Edit"
 
         MenuItem {
             text: "Cut"
@@ -74,7 +74,7 @@ import "Styles/Settings.js" as Settings
         MenuSeparator { }
 
         Menu {
-            text: "More Stuff"
+            title: "More Stuff"
 
             MenuItem {
                 text: "Do Nothing"
@@ -246,9 +246,10 @@ MenuPrivate {
                         id: menuItemLoader
 
                         property var menuItem: modelData
-                        property bool isSeparator: menuItem ? !menuItem.hasOwnProperty("text") : false
+                        property bool isSeparator: menuItem ? !menuItem.hasOwnProperty("enabled") : true
                         property bool hasSubmenu: menuItem ? !!menuItem["items"] : false
                         property bool selected: !isSeparator && root.__currentIndex === index
+                        property string text: hasSubmenu ? menuItem.title : !isSeparator ? menuItem.text : ""
 
                         property int menuItemIndex: index
 

@@ -192,7 +192,7 @@ void QtMenuText::updateText()
         platformItem()->setText(text());
         syncWithPlatformMenu();
     }
-    emit textChanged();
+    emit __textChanged();
 }
 
 void QtMenuText::updateEnabled()
@@ -359,6 +359,8 @@ void QtMenuText::updateIcon()
 QtMenuItem::QtMenuItem(QObject *parent)
     : QtMenuText(parent), m_boundAction(0)
 {
+    connect(this, SIGNAL(__textChanged()), this, SIGNAL(textChanged()));
+
     connect(action(), SIGNAL(triggered()), this, SIGNAL(triggered()));
     connect(action(), SIGNAL(toggled(bool)), this, SLOT(updateChecked()));
     if (platformItem())

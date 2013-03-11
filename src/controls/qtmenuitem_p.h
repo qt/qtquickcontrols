@@ -104,7 +104,6 @@ public:
 class QtMenuText: public QtMenuBase
 {
     Q_OBJECT
-    Q_PROPERTY(QString text READ text WRITE setText NOTIFY textChanged)
     Q_PROPERTY(bool enabled READ enabled WRITE setEnabled NOTIFY enabledChanged)
     Q_PROPERTY(QUrl iconSource READ iconSource WRITE setIconSource NOTIFY iconSourceChanged)
     Q_PROPERTY(QString iconName READ iconName WRITE setIconName NOTIFY iconNameChanged)
@@ -112,11 +111,11 @@ class QtMenuText: public QtMenuBase
     Q_PROPERTY(QVariant __icon READ iconVariant NOTIFY __iconChanged)
 
 Q_SIGNALS:
-    void textChanged();
     void enabledChanged();
     void iconSourceChanged();
     void iconNameChanged();
 
+    void __textChanged();
     void __iconChanged();
 
 public:
@@ -152,6 +151,7 @@ private:
 class QtMenuItem: public QtMenuText
 {
     Q_OBJECT
+    Q_PROPERTY(QString text READ text WRITE setText NOTIFY textChanged)
     Q_PROPERTY(bool checkable READ checkable WRITE setCheckable NOTIFY checkableChanged)
     Q_PROPERTY(bool checked READ checked WRITE setChecked NOTIFY toggled)
     Q_PROPERTY(QtExclusiveGroup *exclusiveGroup READ exclusiveGroup WRITE setExclusiveGroup NOTIFY exclusiveGroupChanged)
@@ -165,6 +165,7 @@ Q_SIGNALS:
     void triggered();
     void toggled(bool checked);
 
+    void textChanged();
     void checkableChanged();
     void exclusiveGroupChanged();
     void shortcutChanged();

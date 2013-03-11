@@ -82,9 +82,9 @@ QT_BEGIN_NAMESPACE
 */
 
 /*!
-    \qmlproperty string Menu::text
+    \qmlproperty string Menu::title
 
-    Text for the menu as a submenu or in a menubar.
+    Title for the menu as a submenu or in a menubar.
 
     Mnemonics are supported by prefixing the shortcut letter with \&.
     For instance, \c "\&File" will bind the \c Alt-F shortcut to the
@@ -142,6 +142,8 @@ QtMenu::QtMenu(QObject *parent)
       m_menuContentItem(0),
       m_popupVisible(false)
 {
+    connect(this, SIGNAL(__textChanged()), this, SIGNAL(titleChanged()));
+
     m_platformMenu = QGuiApplicationPrivate::platformTheme()->createPlatformMenu();
     if (m_platformMenu) {
         connect(m_platformMenu, SIGNAL(aboutToHide()), this, SLOT(__closeMenu()));

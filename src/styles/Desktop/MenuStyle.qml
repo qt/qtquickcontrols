@@ -75,7 +75,7 @@ Style {
         x: pixelMetric("menuhmargin") + pixelMetric("menupanelwidth")
         y: pixelMetric("menuvmargin") + pixelMetric("menupanelwidth")
 
-        text: isSeparator || !menuItem ? "" : menuItem.text
+        text: control.text
         property string textAndShorcut: text + (properties.shortcut ? "\t" + properties.shortcut : "")
         contentWidth: textWidth(textAndShorcut)
         contentHeight: textHeight(textAndShorcut)

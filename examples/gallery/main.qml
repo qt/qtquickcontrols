@@ -161,7 +161,7 @@ ApplicationWindow {
             MenuItem { action: pasteAction }
             MenuSeparator {}
             Menu {
-                text: "Text Format"
+                title: "Text Format"
                 MenuItem { action: a1 }
                 MenuItem { action: a2 }
                 MenuItem { action: a3 }
@@ -169,25 +169,25 @@ ApplicationWindow {
                 MenuItem { text: "Allow Hyphenation"; checkable: true }
                 MenuSeparator { }
                 Menu {
-                    text: "More Stuff"
+                    title: "More Stuff"
                     MenuItem { action: cutAction }
                     MenuItem { action: copyAction }
                     MenuItem { action: pasteAction }
                     MenuSeparator { }
                     Menu {
-                        text: "More Stuff"
+                        title: "More Stuff"
                         MenuItem { action: cutAction }
                         MenuItem { action: copyAction }
                         MenuItem { action: pasteAction }
                         MenuSeparator { }
                         Menu {
-                            text: "More Stuff"
+                            title: "More Stuff"
                             MenuItem { action: cutAction }
                             MenuItem { action: copyAction }
                             MenuItem { action: pasteAction }
                             MenuSeparator { }
                             Menu {
-                                text: "More Stuff"
+                                title: "More Stuff"
                                 MenuItem { action: cutAction }
                                 MenuItem { action: copyAction }
                                 MenuItem { action: pasteAction }
@@ -197,7 +197,7 @@ ApplicationWindow {
                 }
             }
             Menu {
-                text: "Font Style"
+                title: "Font Style"
                 MenuItem { text: "Bold"; checkable: true }
                 MenuItem { text: "Italic"; checkable: true }
                 MenuItem { text: "Underline"; checkable: true }
@@ -220,7 +220,7 @@ ApplicationWindow {
 
     menuBar: MenuBar {
         Menu {
-            text: "&File"
+            title: "&File"
             MenuItem { action: openAction }
             MenuItem {
                 text: "Close"
@@ -229,7 +229,7 @@ ApplicationWindow {
             }
         }
         Menu {
-            text: "&Edit"
+            title: "&Edit"
             MenuItem { action: cutAction }
             MenuItem { action: copyAction }
             MenuItem { action: pasteAction }
@@ -245,7 +245,7 @@ ApplicationWindow {
                 visible: false
             }
             Menu {
-                text: "Me Neither"
+                title: "Me Neither"
                 visible: false
             }
         }

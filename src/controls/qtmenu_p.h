@@ -58,6 +58,7 @@ class QQuickWindow;
 class QtMenu : public QtMenuText
 {
     Q_OBJECT
+    Q_PROPERTY(QString title READ text WRITE setText NOTIFY titleChanged)
     Q_PROPERTY(QQmlListProperty<QtMenuBase> items READ menuItems NOTIFY itemsChanged)
     Q_CLASSINFO("DefaultProperty", "items")
     Q_PROPERTY(int selectedIndex READ selectedIndex WRITE setSelectedIndex NOTIFY selectedIndexChanged)
@@ -87,6 +88,7 @@ Q_SIGNALS:
     void selectedIndexChanged();
     void modelChanged(const QVariant &newModel);
     void itemsChanged();
+    void titleChanged();
 
     void __menuClosed();
     void popupVisibleChanged();
@@ -94,8 +96,6 @@ Q_SIGNALS:
 public:
     QtMenu(QObject *parent = 0);
     virtual ~QtMenu();
-
-    void setText(const QString &text);
 
     int selectedIndex() const { return m_selectedIndex; }
     void setSelectedIndex(int index);

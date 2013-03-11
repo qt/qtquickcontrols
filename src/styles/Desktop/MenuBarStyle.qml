@@ -59,7 +59,7 @@ Style {
         x: pixelMetric("menubarhmargin") + pixelMetric("menubarpanelwidth")
         y: pixelMetric("menubarvmargin") + pixelMetric("menubarpanelwidth")
 
-        text: menuItem.text
+        text: menuItem.title
         contentWidth: textWidth(text)
         contentHeight: textHeight(text)
         width: implicitWidth + pixelMetric("menubaritemspacing")

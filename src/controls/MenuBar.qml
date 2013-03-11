@@ -54,13 +54,13 @@ import "Styles/Settings.js" as Settings
     \code
     MenuBar {
         Menu {
-            text: "File"
+            title: "File"
             MenuItem { text: "Open..." }
             MenuItem { text: "Close" }
         }
 
         Menu {
-            text: "Edit"
+            title: "Edit"
             MenuItem { text: "Cut" }
             MenuItem { text: "Copy" }
             MenuItem { text: "Paste" }

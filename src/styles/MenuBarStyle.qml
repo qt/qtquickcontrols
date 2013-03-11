@@ -63,7 +63,7 @@ Style {
 
         Text {
             id: text
-            text: menuItem.text
+            text: menuItem.title
             anchors.centerIn: parent
             renderType: Text.NativeRendering
             color: selected ? __syspal.highlightedText : __syspal.windowText
