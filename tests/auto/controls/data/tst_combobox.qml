@@ -57,29 +57,27 @@ TestCase {
     }
 
     function test_keyupdown() {
-        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.0 ; ComboBox {}', testCase, '');
-        comboBox.model = 4
+        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.0 ; ComboBox { model: 4 }', testCase, '');
 
-        compare(comboBox.selectedIndex, 0)
+        compare(comboBox.currentIndex, 0)
 
         comboBox.forceActiveFocus()
 
         keyPress(Qt.Key_Down)
-        compare(comboBox.selectedIndex, 1)
+        compare(comboBox.currentIndex, 1)
         keyPress(Qt.Key_Down)
-        compare(comboBox.selectedIndex, 2)
+        compare(comboBox.currentIndex, 2)
         keyPress(Qt.Key_Up)
-        compare(comboBox.selectedIndex, 1)
+        compare(comboBox.currentIndex, 1)
     }
 
     function test_textrole() {
         var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.0 ; ComboBox {}', testCase, '');
         comboBox.textRole = "text"
         comboBox.model = model
-        compare(comboBox.selectedIndex, 0)
-        compare(comboBox.selectedText, "Banana")
+        compare(comboBox.currentIndex, 0)
+        compare(comboBox.currentText, "Banana")
         comboBox.textRole = "color"
-        compare(comboBox.selectedIndex, 0)
-        compare(comboBox.selectedText, "Yellow")
+        compare(comboBox.currentText, "Yellow")
     }
 }

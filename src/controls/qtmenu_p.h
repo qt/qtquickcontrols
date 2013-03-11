@@ -64,8 +64,8 @@ class QtMenu : public QtMenuText
     Q_PROPERTY(QString title READ text WRITE setText NOTIFY titleChanged)
     Q_PROPERTY(QQmlListProperty<QObject> items READ menuItems NOTIFY itemsChanged)
     Q_CLASSINFO("DefaultProperty", "items")
-    Q_PROPERTY(int selectedIndex READ selectedIndex WRITE setSelectedIndex NOTIFY selectedIndexChanged)
 
+    Q_PROPERTY(int __selectedIndex READ selectedIndex WRITE setSelectedIndex NOTIFY __selectedIndexChanged)
     Q_PROPERTY(bool __popupVisible READ popupVisible NOTIFY popupVisibleChanged)
     Q_PROPERTY(QQuickItem *__contentItem READ menuContentItem WRITE setMenuContentItem)
     Q_PROPERTY(int __minimumWidth READ minimumWidth WRITE setMinimumWidth)
@@ -86,10 +86,10 @@ public Q_SLOTS:
     void __dismissMenu();
 
 Q_SIGNALS:
-    void selectedIndexChanged();
     void itemsChanged();
     void titleChanged();
 
+    void __selectedIndexChanged();
     void __menuClosed();
     void popupVisibleChanged();
 

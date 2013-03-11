@@ -55,11 +55,11 @@ Style {
             width: parent.width
             anchors.verticalCenter: parent.verticalCenter
             elementType: "combobox"
-            sunken: control.pressed
+            sunken: control.__pressed
             raised: !sunken
             hover: control.__containsMouse
             enabled: control.enabled
-            text: control.selectedText
+            text: control.currentText
             hasFocus: control.activeFocus
             contentHeight: 18
             contentWidth: 80

@@ -49,19 +49,8 @@ import "Styles/Settings.js" as Settings
     \ingroup controls
     \brief ComboBox is a combined button and popup list.
 
-    The popup menu itself is platform native, and cannot by styled from QML code.
-
-    Add menu items to the comboBox by either adding MenuItem children inside the popup, or
-    assign it a ListModel (or both).
-
-    The ComboBox contains the following API (in addition to the BasicButton API):
-
-    ListModel model - this model will be used, in addition to MenuItem children, to
-      create items inside the popup menu
-    int selectedIndex - the index of the selected item in the popup menu.
-    string selectedText - the text of the selected menu item.
-
-    Example 1:
+    Add menu items to the comboBox by either adding MenuItem children inside the popup or
+    assign it a ListModel, or a list of strings.
 
     \qml
        ComboBox {
@@ -72,7 +61,7 @@ import "Styles/Settings.js" as Settings
                ListElement { text: "Coconut"; color: "Brown" }
            }
            width: 200
-           onSelectedIndexChanged: console.debug(selectedText + ", " + menuItems.get(selectedIndex).color)
+           onCurrentIndexChanged: console.debug(currentText + ", " + menuItems.get(currentIndex).color)
        }
     \endqml
 
@@ -81,15 +70,8 @@ import "Styles/Settings.js" as Settings
     \qml
        ComboBox {
            width: 200
-           MenuItem {
-               text: "Pineapple"
-               onSelected: console.debug(text)
-
-           }
-           MenuItem {
-               text: "Grape"
-               onSelected: console.debug(text)
-           }
+           MenuItem { text: "Pineapple" }
+           MenuItem { text: "Grape" }
        }
     \endqml
 */
@@ -98,14 +80,17 @@ Control {
     id: comboBox
 
     default property alias items: popup.items
+    /*! The model to populate the ComboBox from. */
     property alias model: popup.model
     property alias textRole: popup.textRole
 
-    property alias selectedIndex: popup.selectedIndex
-    readonly property alias selectedText: popup.selectedText
+    /*! The index of the currently selected item in the ComboBox. */
+    property alias currentIndex: popup.__selectedIndex
+    /*! The text of the currently selected item in the ComboBox. */
+    readonly property alias currentText: popup.selectedText
 
-    readonly property bool pressed: mouseArea.pressed && mouseArea.containsMouse || popup.__popupVisible
-
+    /* \internal */
+    readonly property bool __pressed: mouseArea.pressed && mouseArea.containsMouse || popup.__popupVisible
     /* \internal */
     property alias __containsMouse: mouseArea.containsMouse
 
@@ -123,8 +108,8 @@ Control {
     StyleItem { id: styleItem }
 
     Component.onCompleted: {
-        if (selectedIndex === -1)
-            selectedIndex = 0
+        if (currentIndex === -1)
+            currentIndex = 0
         if (styleItem.style == "mac") {
             popup.x -= 10
             popup.y += 4
@@ -137,14 +122,14 @@ Control {
 
         style: __style.popupStyle
 
-        readonly property string selectedText: items[selectedIndex] ? items[selectedIndex].text : ""
+        readonly property string selectedText: items[__selectedIndex] ? items[__selectedIndex].text : ""
         property string textRole: ""
         property var model
         property int modelSize: 0
         property bool ready: false
 
         // 'centerSelectedText' means that the menu will be positioned
-        //  so that the selected text' top left corner will be at x, y.
+        //  so that the current text' top left corner will be at x, y.
         property bool centerSelectedText: true
 
         property int x: 0
@@ -206,10 +191,10 @@ Control {
         }
 
         function show() {
-            if (items[comboBox.selectedIndex])
-                items[comboBox.selectedIndex].checked = true
-            __currentIndex = comboBox.selectedIndex
-            __popup(x, y, centerSelectedText ? comboBox.selectedIndex : 0)
+            if (items[__selectedIndex])
+                items[__selectedIndex].checked = true
+            __currentIndex = comboBox.currentIndex
+            __popup(x, y, centerSelectedText ? __selectedIndex : 0)
         }
     }
 
@@ -219,6 +204,6 @@ Control {
         if (!popup.popupVisible)
             popup.show()
     }
-    Keys.onUpPressed: { if (selectedIndex > 0) selectedIndex-- }
-    Keys.onDownPressed: { if (selectedIndex < popup.modelSize - 1) selectedIndex++ }
+    Keys.onUpPressed: { if (currentIndex > 0) currentIndex-- }
+    Keys.onDownPressed: { if (currentIndex < popup.modelSize - 1) currentIndex++ }
 }

@@ -116,12 +116,6 @@ QT_BEGIN_NAMESPACE
 */
 
 /*!
-    \qmlproperty int Menu::selectedIndex
-
-    The index of the last selected item in the menu.
-*/
-
-/*!
     \qmlmethod void Menu::popup()
 
     Opens this menu under the mouse cursor.
@@ -188,7 +182,7 @@ void QtMenu::setSelectedIndex(int index)
         return;
 
     m_selectedIndex = index;
-    emit selectedIndexChanged();
+    emit __selectedIndexChanged();
 }
 
 void QtMenu::updateSelectedIndex()

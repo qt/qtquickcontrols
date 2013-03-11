@@ -53,8 +53,8 @@ Style {
         implicitHeight: 20
 
         gradient: Gradient{
-            GradientStop{color: control.pressed ? "lightgray" : "white" ; position: 0}
-            GradientStop{color: control.pressed ? "lightgray" : "lightgray" ; position: 1}
+            GradientStop{color: control.__pressed ? "lightgray" : "white" ; position: 0}
+            GradientStop{color: control.__pressed ? "lightgray" : "lightgray" ; position: 1}
         }
 
         radius:4
@@ -62,7 +62,7 @@ Style {
 
         Text {
             anchors.centerIn: parent
-            text: control.selectedText
+            text: control.currentText
         }
     }
 

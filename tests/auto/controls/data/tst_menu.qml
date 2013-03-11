@@ -56,7 +56,7 @@ TestCase {
     SignalSpy {
         id: menuSpy
         target: testcase.menu
-        signalName: "selectedIndexChanged"
+        signalName: "__selectedIndexChanged"
     }
 
     SignalSpy {
@@ -113,7 +113,7 @@ TestCase {
 
         compare(menuItemSpy.count, 1)
         compare(menuSpy.count, 1)
-        compare(menu.selectedIndex, 2)
+        compare(menu.__selectedIndex, 2)
     }
 
     function test_check() {
@@ -138,7 +138,7 @@ TestCase {
 
         compare(menuItemSpy.count, 2)
         compare(menuSpy.count, 2)
-        compare(menu.selectedIndex, 3)
+        compare(menu.__selectedIndex, 3)
     }
 
     ExclusiveGroup { id: eg }
@@ -167,19 +167,19 @@ TestCase {
 
         compare(menuItemSpy.count, 2)
         compare(menuSpy.count, 2)
-        compare(menu.selectedIndex, 3)
+        compare(menu.__selectedIndex, 3)
     }
 
-    function test_selectedIndex() {
+    function test___selectedIndex() {
         for (var i = 0; i < menu.items.length; i++)
             menu.items[i].checkable = true
 
-        menu.selectedIndex = 3
-        compare(menu.selectedIndex, 3)
-        verify(!menu.items[menu.selectedIndex].checked)
+        menu.__selectedIndex = 3
+        compare(menu.__selectedIndex, 3)
+        verify(!menu.items[menu.__selectedIndex].checked)
 
         menu.items[2].trigger()
-        compare(menu.selectedIndex, 2)
-        verify(menu.items[menu.selectedIndex].checked)
+        compare(menu.__selectedIndex, 2)
+        verify(menu.items[menu.__selectedIndex].checked)
     }
 }
