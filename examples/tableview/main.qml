@@ -156,7 +156,7 @@ Rectangle {
                     frameVisible: frameCheckbox.checked
                     headerVisible: headerCheckbox.checked
                     sortIndicatorVisible: sortableCheckbox.checked
-                    alternateRowColor: alternateCheckbox.checked
+                    alternatingRowColors: alternateCheckbox.checked
                 }
             }
             Tab {
@@ -191,14 +191,14 @@ Rectangle {
                             anchors.verticalCenter: parent.verticalCenter
                             elide: itemElideMode
                             text: itemValue.get(0).description
-                            color: itemForeground
+                            color: itemTextColor
                         }
                     }
 
                     frameVisible: frameCheckbox.checked
                     headerVisible: headerCheckbox.checked
                     sortIndicatorVisible: sortableCheckbox.checked
-                    alternateRowColor: alternateCheckbox.checked
+                    alternatingRowColors: alternateCheckbox.checked
                 }
             }
             Tab {
@@ -226,7 +226,7 @@ Rectangle {
                     frameVisible: frameCheckbox.checked
                     headerVisible: headerCheckbox.checked
                     sortIndicatorVisible: sortableCheckbox.checked
-                    alternateRowColor: alternateCheckbox.checked
+                    alternatingRowColors: alternateCheckbox.checked
                 }
             }
 
@@ -254,14 +254,14 @@ Rectangle {
                                 anchors.verticalCenter: parent.verticalCenter
                                 elide: itemElideMode
                                 text: itemValue ? itemValue : ""
-                                color: itemForeground
+                                color: itemTextColor
                             }
                         }
                     }
 
                     Component {
                         id: slickRowDelegate
-                        Rectangle { color: itemAlternateBackground ? "#cef" : "white" }
+                        Rectangle { color: alternateBackground ? "#cef" : "white" }
                     }
 
                     Component {
@@ -276,7 +276,7 @@ Rectangle {
                                 anchors.verticalCenter: parent.verticalCenter
                                 elide: itemElideMode
                                 text: itemValue ? itemValue : ""
-                                color: itemForeground
+                                color: itemTextColor
                             }
                         }
                     }
@@ -291,7 +291,7 @@ Rectangle {
                                 anchors.verticalCenter: parent.verticalCenter
                                 elide: itemElideMode
                                 text: itemValue ? itemValue : ""
-                                color: itemForeground
+                                color: itemTextColor
                                 visible: !itemSelected
                             }
                             Loader { // Initialize text editor lazily to improve performance
@@ -301,7 +301,7 @@ Rectangle {
                                 property string editorText: item ? item.text : itemValue
                                 onEditorTextChanged: model.setProperty(rowIndex, role, editorText)
                                 sourceComponent: itemSelected ? editor : null
-                                Component {id: editor ; TextInput{ color: itemForeground ; text: modelText} }
+                                Component {id: editor ; TextInput{ color: itemTextColor ; text: modelText} }
                             }
                         }
                     }
@@ -312,7 +312,7 @@ Rectangle {
                         frameVisible: frameCheckbox.checked
                         headerVisible: headerCheckbox.checked
                         sortIndicatorVisible: sortableCheckbox.checked
-                        alternateRowColor: alternateCheckbox.checked
+                        alternatingRowColors: alternateCheckbox.checked
 
                         TableViewColumn {
                             role: "name"
@@ -342,7 +342,7 @@ Rectangle {
 
                         rowDelegate: Rectangle {
                             height: 20
-                            color: itemSelected ? "#448" : (itemAlternateBackground ? "#eee" : "#fff")
+                            color: rowSelected ? "#448" : (alternateBackground ? "#eee" : "#fff")
                             border.color:"#ccc"
                             border.width: 1
                             anchors.left: parent ? parent.left : undefined
@@ -352,7 +352,7 @@ Rectangle {
                                 id: selected
                                 anchors.fill: parent
                                 source: "images/selectedrow.png"
-                                visible: itemSelected
+                                visible: rowSelected
                                 border{left:2; right:2; top:2; bottom:2}
                                 SequentialAnimation {
                                     running: true; loops: Animation.Infinite

@@ -44,7 +44,7 @@ import QtQuick 2.0
     \qmltype TableViewColumn
     \inqmlmodule QtQuick.Controls 1.0
     \ingroup viewitems
-    \brief Used by the \l TableView to define a column header.
+    \brief Used to define columns in a \l TableView.
 */
 
 QtObject {
@@ -57,9 +57,6 @@ QtObject {
     /*! The current width of the column
     The default value depends on platform. */
     property int width: 160
-
-    /*! The horizontal offset of the column. */
-    property int x
 
     /*! The visible status of the column. */
     property bool visible: true

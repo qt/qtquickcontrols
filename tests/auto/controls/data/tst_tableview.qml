@@ -67,8 +67,8 @@ TestCase {
         verify(table !== null, "table created is null")
         table.forceActiveFocus();
 
-        verify(table.currentItem !== undefined, "No current item found")
-        var label = findAChild(table.currentItem, "label")
+        verify(table.currentRowItem !== undefined, "No current item found")
+        var label = findAChild(table.currentRowItem, "label")
         verify(label !== undefined)
         compare(label.text, data.expected.toString());
     }
@@ -85,8 +85,8 @@ TestCase {
         var valuefrommodel = table.model.value;
         verify(valuefrommodel !== undefined, "The model has no defined value")
 
-        verify(table.currentItem !== undefined, "No current item found")
-        var label = findAChild(table.currentItem, "label")
+        verify(table.currentRowItem !== undefined, "No current item found")
+        var label = findAChild(table.currentRowItem, "label")
         verify(label !== undefined)
         compare(label.text, valuefrommodel.toString());
     }
@@ -103,11 +103,11 @@ TestCase {
         table.__incrementCurrentIndex()
 
         // read data from the model directly
-        var valuefrommodel = table.model.dataAt(table.currentIndex)
+        var valuefrommodel = table.model.dataAt(table.currentRow)
         verify(valuefrommodel !== undefined, "The model has no defined value")
 
-        verify(table.currentItem !== undefined, "No current item found")
-        var label = findAChild(table.currentItem, "label")
+        verify(table.currentRowItem !== undefined, "No current item found")
+        var label = findAChild(table.currentRowItem, "label")
         verify(label !== undefined)
         compare(label.text, valuefrommodel.toString())
     }
@@ -130,13 +130,13 @@ TestCase {
         // to go to next row (this model has 3 rows, read the second row)
         table.__incrementCurrentIndex()
 
-        verify(table.currentItem !== undefined, "No current item found")
-        var label = findAChild(table.currentItem, "label")
+        verify(table.currentRowItem !== undefined, "No current item found")
+        var label = findAChild(table.currentRowItem, "label")
         verify(label !== undefined)
         compare(label.text, data.expected.toString());
     }
 
-    // In TableView, drawn text = table.currentItem.children[1].children[1].itemAt(0).children[0].children[0].text
+    // In TableView, drawn text = table.currentRowItem.children[1].children[1].itemAt(0).children[0].children[0].text
 
     function findAChild(item, name)
     {

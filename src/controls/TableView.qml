@@ -86,8 +86,8 @@ import QtQuick.Controls.Private 1.0
    on the model and enable sort indicators on headers.
 
 \list
-    \li sortColumn - The index of the currently selected sort header
-    \li sortIndicatorVisible - If sort indicators should be enabled
+    \li sortColumnIndex - The index of the current sort column
+    \li sortIndicatorVisible - If the sort indicator should be enabled
     \li sortIndicatorOrder - Qt.AscendingOrder or Qt.DescendingOrder depending on state
 \endlist
 */
@@ -95,7 +95,8 @@ import QtQuick.Controls.Private 1.0
 ScrollView {
     id: root
 
-    /*! This property holds the model providing data for the list.
+    /*! \qmlproperty model TableView::model
+    This property holds the model providing data for the table view.
 
     The model provides the set of data that is used to create the items in the view.
     Models can be created directly in QML using ListModel, XmlListModel or VisualItemModel,
@@ -103,28 +104,19 @@ ScrollView {
 
     Example model:
 
-     \code
-     model: ListModel {
+    \code
+    model: ListModel {
         ListElement{ column1: "value 1" ; column2: "value 2" }
         ListElement{ column1: "value 3" ; column2: "value 4" }
-     }
-    \endcode */
+    }
+    \endcode
+    \sa {qml-data-models}{Data Models}
+    */
     property variant model
-
-    width: 200
-    height: 200
-
-    /*! \internal */
-    __scrollBarTopMargin: styleitem.style == "mac" ? headerrow.height : 0
-
-    /*! This property sets if the frame should paint the focus frame around its contents.
-        The default value is \c false.
-        \note Only certain platforms such as Mac OS X will be affected by this property */
-    property bool highlightOnFocus: false
 
     /*! This property is set to \c true if the view alternates the row color.
         The default value is \c true. */
-    property bool alternateRowColor: true
+    property bool alternatingRowColors: true
 
     /*! This property determines if the header is visible.
         The default value is \c true. */
@@ -134,30 +126,37 @@ ScrollView {
 
     In the item delegate you have access to the following special properties:
     \list
-    \li  itemHeight - default platform size of item
-    \li  itemWidth - default platform width of item
-    \li  itemSelected - if the row is currently selected
-    \li  itemValue - The text for this item
-    \li  itemForeground - The default text color for an item
+    \li  itemSelected - if the item is currently selected
+    \li  itemValue - the value or text for this item
+    \li  itemTextColor - the default text color for an item
+    \li  rowIndex - the index of the row
+    \li  columnIndex - the index of the column
+    \li  itemElideMode - the elide mode of the column
+    \li  itemTextAlignment - the horizontal text alignment of the column
     \endlist
     Example:
-     \code
-       itemDelegate: Item {
-           Text {
-               anchors.verticalCenter: parent.verticalCenter
-               color: itemForeground
-               elide: Text.ElideRight
-               text: itemValue
-            }
+    \code
+    itemDelegate: Item {
+        Text {
+            anchors.verticalCenter: parent.verticalCenter
+            color: itemTextColor
+            elide: itemElideMode
+            text: itemValue
         }
+    }
     \endcode */
     property Component itemDelegate: standardDelegate
 
-    /*! This property defines a delegate to draw a row. */
-    property Component rowDelegate: rowDelegate
+    /*! This property defines a delegate to draw a row.
 
-    /*! This property defines a delegate to draw a header. */
-    property Component headerDelegate: headerDelegate
+    In the row delegate you have access to the following special properties:
+    \list
+    \li  alternateBackground - if the row uses the alternate background color
+    \li  rowSelected - if the row is currently selected
+    \li  index - the index of the row
+    \endlist
+    */
+    property Component rowDelegate: rowDelegate
 
     /*! \qmlproperty color TableView::backgroundColor
 
@@ -165,13 +164,12 @@ ScrollView {
         The default value is the base color of the SystemPalette. */
     property alias backgroundColor: colorRect.color
 
-    /*! This property sets if the frame should be visible.
-        The default value is \c true. */
-    frameVisible: true
+    /*! This property defines a delegate to draw a header. */
+    property Component headerDelegate: headerDelegate
 
-    /*! Index of the currently selected sort column
+    /*! Index of the current sort column.
         The default value is \c 0. */
-    property int sortColumn
+    property int sortColumnIndex
 
     /*! This property shows or hides the sort indicator
         The default value is \c false.
@@ -186,9 +184,9 @@ ScrollView {
        \endlist  */
     property string sortIndicatorOrder: Qt.AscendingOrder
 
-    /*! \qmlproperty Component TableView::header
-    This property contains the TableViewHeader items */
-    default property alias header: listView.columnheader
+    /*! \qmlproperty list<TableViewColumn> TableView::columns
+    This property contains the TableViewColumn items */
+    default property alias columns: listView.columnheader
 
     /*! \qmlproperty Component TableView::contentHeader
     This is the content header of the TableView */
@@ -198,27 +196,40 @@ ScrollView {
     This is the content footer of the TableView */
     property alias contentFooter: listView.footer
 
-    /*! \qmlproperty Item TableView::currentItem
+    /*! \qmlproperty Item TableView::currentRowItem
     This is the current item of the TableView */
-    property alias currentItem: listView.currentItem
+    property alias currentRowItem: listView.currentItem
 
-    /*! \qmlproperty int TableView::count
+    /*! \qmlproperty int TableView::rowCount
     The current number of rows */
-    property alias count: listView.count
+    property alias rowCount: listView.count
 
-    /*! \qmlproperty string TableView::section
-    The section of the view. \sa ListView::section */
-    readonly property alias section: listView.section
+    /*! The current number of columns */
+    property int columnCount: columns.length
 
-    /*! \qmlproperty int TableView::currentIndex
+    /*! \qmlproperty string TableView::section.property
+        \qmlproperty enumeration TableView::section.criteria
+        \qmlproperty Component TableView::section.delegate
+        \qmlproperty enumeration TableView::section.labelPositioning
+    These properties determine the section labels.
+    \sa ListView::section */
+    property alias section: listView.section
+
+    /*! \qmlproperty int TableView::currentRow
     The current row index of the view. */
-    property alias currentIndex: listView.currentIndex
-
-    Accessible.role: Accessible.Table
+    property alias currentRow: listView.currentIndex
 
     /*! \qmlsignal TableView::activated()
         Emitted when a new row is selected by the user. */
     signal activated
+
+    Accessible.role: Accessible.Table
+
+    width: 200
+    height: 200
+
+    frameVisible: true
+    __scrollBarTopMargin: styleitem.style == "mac" ? headerrow.height : 0
 
     /*! \internal */
     function __decrementCurrentIndex() {
@@ -317,7 +328,7 @@ ScrollView {
             property int count: flickableItem.count
             y: flickableItem.contentHeight
             width: parent.width
-            visible: flickableItem.contentHeight > 0 && alternateRowColor
+            visible: flickableItem.contentHeight > 0 && alternatingRowColors
             height: viewport.height - flickableItem.contentHeight
             Repeater {
                 model: visible ? parent.paddedRowCount : 0
@@ -325,8 +336,8 @@ ScrollView {
                     width: rowfiller.width
                     height: rowfiller.rowHeight
                     sourceComponent: root.rowDelegate
-                    property bool itemAlternateBackground: (index + count) % 2 === 1
-                    property bool itemSelected: false
+                    property bool alternateBackground: (index + rowCount) % 2 === 1
+                    property bool rowSelected: false
                     property variant model: listView.model
                     property variant modelData: null
                 }
@@ -355,7 +366,7 @@ ScrollView {
             height: rowstyle.height
 
             property int rowIndex: model.index
-            property bool itemAlternateBackground: alternateRowColor && rowIndex % 2 == 1
+            property bool alternateBackground: alternatingRowColors && rowIndex % 2 == 1
             property variant itemModelData: typeof modelData == "undefined" ? null : modelData
             property variant itemModel: model
 
@@ -368,8 +379,9 @@ ScrollView {
                 width: parent.width + __scroller.horizontalScrollBar.width
                 x: flickableItem.contentX
 
-                property bool itemAlternateBackground: rowitem.itemAlternateBackground
-                property bool itemSelected: rowitem.ListView.isCurrentItem
+                // these properties are exposed to the row delegate
+                property bool alternateBackground: rowitem.alternateBackground
+                property bool rowSelected: rowitem.ListView.isCurrentItem
                 property int index: rowitem.rowIndex
                 property variant model: listView.model
                 property variant modelData: rowitem.itemModelData
@@ -381,35 +393,37 @@ ScrollView {
                 height: parent.height
                 Repeater {
                     id: repeater
-                    model: root.header.length
+                    model: root.columns.length
                     Loader {
                         id: itemDelegateLoader
-                        height: parent.height
-                        visible: header[index].visible
-                        sourceComponent: header[index].delegate ? header[index].delegate : itemDelegate
+                        width: columns[index].width
+                        height: parent ? parent.height : 0
+                        visible: columns[index].visible
+                        sourceComponent: columns[index].delegate ? columns[index].delegate : itemDelegate
+
+                        // these properties are exposed to the item delegate
                         property variant model: listView.model
-                        property variant role: header[index].role
                         property variant modelData: itemModelData
 
-                        width: header[index].width
+                        property variant itemValue: __getValue()
+                        property bool itemSelected: rowitem.ListView.isCurrentItem
+                        property color itemTextColor: itemSelected ? rowstyleitem.highlightedTextColor : rowstyleitem.textColor
+                        property int rowIndex: rowitem.rowIndex
+                        property int columnIndex: index
+                        property int itemElideMode: columns[index].elideMode
+                        property int itemTextAlignment: columns[index].horizontalAlignment
 
-                        function getValue() {
-                            if (header[index].role.length && itemModel.hasOwnProperty(header[index].role))
-                                return itemModel[header[index].role] // Qml ListModel and QAbstractItemModel
-                            else if (modelData != undefined && modelData.hasOwnProperty(header[index].role))
-                                return modelData[header[index].role] // QObjectList / QObject
+                        function __getValue() {
+                            var role = columns[index].role
+                            if (role.length && itemModel.hasOwnProperty(role))
+                                return itemModel[role] // Qml ListModel and QAbstractItemModel
+                            else if (modelData != undefined && modelData.hasOwnProperty(role))
+                                return modelData[role] // QObjectList / QObject
                             else if (modelData != undefined)
                                 return modelData // Models without role
                             else
                                 return ""
                         }
-                        property variant itemValue: getValue()
-                        property bool itemSelected: rowitem.ListView.isCurrentItem
-                        property color itemForeground: itemSelected ? rowstyleitem.highlightedTextColor : rowstyleitem.textColor
-                        property int rowIndex: rowitem.rowIndex
-                        property int columnIndex: index
-                        property int itemElideMode: header[index].elideMode
-                        property int itemTextAlignment: header[index].horizontalAlignment
                     }
                 }
                 onWidthChanged: listView.contentWidth = width
@@ -446,12 +460,12 @@ ScrollView {
                     property int targetIndex: -1
                     property int dragIndex: -1
 
-                    model: header.length
+                    model: columns.length
 
                     delegate: Item {
                         z:-index
-                        width: header[index].width
-                        visible: header[index].visible
+                        width: columns[index].width
+                        visible: columns[index].visible
                         height: headerStyle.height
 
                         Loader {
@@ -459,12 +473,12 @@ ScrollView {
                             sourceComponent: root.headerDelegate
                             anchors.left: parent.left
                             anchors.right: parent.right
-                            property string itemValue: header[index].title
-                            property string itemSort:  (sortIndicatorVisible && index == sortColumn) ? (sortIndicatorOrder == Qt.AscendingOrder ? "up" : "down") : "";
+                            property string itemValue: columns[index].title
+                            property string itemSort:  (sortIndicatorVisible && index == sortColumnIndex) ? (sortIndicatorOrder == Qt.AscendingOrder ? "up" : "down") : "";
                             property bool itemPressed: headerClickArea.pressed
                             property bool itemContainsMouse: headerClickArea.containsMouse
-                            property string itemPosition: header.length === 1 ? "only" :
-                                                                                index===header.length-1 ? "end" :
+                            property string itemPosition: columns.length === 1 ? "only" :
+                                                                                index===columns.length-1 ? "end" :
                                                                                                           index===0 ? "beginning" : ""
                         }
                         Rectangle{
@@ -482,16 +496,16 @@ ScrollView {
                             hoverEnabled: true
                             anchors.fill: parent
                             onClicked: {
-                                if (sortColumn == index)
+                                if (sortColumnIndex == index)
                                     sortIndicatorOrder = sortIndicatorOrder == Qt.AscendingOrder ? Qt.DescendingOrder : Qt.AscendingOrder
-                                sortColumn = index
+                                sortColumnIndex = index
                             }
                             // Here we handle moving header sections
                             // NOTE: the direction is different from the master branch
                             // so this indicates that I am using an invalid assumption on item ordering
                             onPositionChanged: {
                                 if (pressed) { // only do this while dragging
-                                    for (var h = header.length-1 ; h >= 0 ; --h) {
+                                    for (var h = columns.length-1 ; h >= 0 ; --h) {
                                         if (drag.target.x > headerrow.children[h].x) {
                                             repeater.targetIndex = h
                                             break
@@ -509,13 +523,13 @@ ScrollView {
                                 if (repeater.targetIndex >= 0 && repeater.targetIndex != index ) {
                                     // Rearrange the header sections
                                     var items = new Array
-                                    for (var i = 0 ; i< header.length ; ++i)
-                                        items.push(header[i])
+                                    for (var i = 0 ; i< columns.length ; ++i)
+                                        items.push(columns[i])
                                     items.splice(index, 1);
-                                    items.splice(repeater.targetIndex, 0, header[index]);
-                                    header = items
-                                    if (sortColumn == index)
-                                        sortColumn = repeater.targetIndex
+                                    items.splice(repeater.targetIndex, 0, columns[index]);
+                                    columns = items
+                                    if (sortColumnIndex == index)
+                                        sortColumnIndex = repeater.targetIndex
                                 }
                                 repeater.targetIndex = -1
                             }
@@ -526,14 +540,14 @@ ScrollView {
 
                         Loader {
                             id: draghandle
-                            property string itemValue: header[index].title
-                            property string itemSort:  (sortIndicatorVisible && index == sortColumn) ? (sortIndicatorOrder == Qt.AscendingOrder ? "up" : "down") : "";
+                            property string itemValue: columns[index].title
+                            property string itemSort:  (sortIndicatorVisible && index == sortColumnIndex) ? (sortIndicatorOrder == Qt.AscendingOrder ? "up" : "down") : "";
                             property bool itemPressed: headerClickArea.pressed
                             property bool itemContainsMouse: headerClickArea.containsMouse
                             property string itemPosition
 
                             parent: tableHeader
-                            width: header[index].width
+                            width: columns[index].width
                             height: parent.height
                             sourceComponent: root.headerDelegate
                             visible: headerClickArea.pressed
@@ -549,8 +563,8 @@ ScrollView {
                             width: 16 ; height: parent.height
                             anchors.right: parent.right
                             onPositionChanged:  {
-                                var newHeaderWidth = header[index].width + (mouseX - offset)
-                                header[index].width = Math.max(minimumSize, newHeaderWidth)
+                                var newHeaderWidth = columns[index].width + (mouseX - offset)
+                                columns[index].width = Math.max(minimumSize, newHeaderWidth)
                             }
                             property bool found:false
 
@@ -565,7 +579,7 @@ ScrollView {
                                         minWidth = Math.max(minWidth, item.children[1].children[index].children[0].implicitWidth)
                                 }
                                 if (minWidth)
-                                    header[index].width = minWidth
+                                    columns[index].width = minWidth
                             }
                             onPressedChanged: if (pressed) offset=mouseX
                             cursorShape: Qt.SplitHCursor
@@ -587,7 +601,7 @@ ScrollView {
                 anchors.rightMargin: -2
                 sourceComponent: root.headerDelegate
                 width: root.width - headerrow.width + 2
-                visible: root.header.length
+                visible: root.columns.length
                 z:-1
             }
 
@@ -608,7 +622,7 @@ ScrollView {
                         anchors.verticalCenter: parent.verticalCenter
                         elide: itemElideMode
                         text: itemValue != undefined ? itemValue : ""
-                        color: itemForeground
+                        color: itemTextColor
                         renderType: Text.NativeRendering
                     }
                     Text {
@@ -649,8 +663,8 @@ ScrollView {
                 StyleItem {
                     id: rowstyle
                     elementType: "itemrow"
-                    activeControl: itemAlternateBackground ? "alternate" : ""
-                    selected: itemSelected ? true : false
+                    activeControl: alternateBackground ? "alternate" : ""
+                    selected: rowSelected ? true : false
                     height: Math.max(16, styleitem.implicitHeight)
                     active: root.activeFocus
                 }
