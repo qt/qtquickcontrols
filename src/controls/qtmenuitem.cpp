@@ -42,6 +42,7 @@
 #include "qtmenuitem_p.h"
 #include "qtaction_p.h"
 #include "qtmenu_p.h"
+#include "qtmenuitemcontainer_p.h"
 
 #include <private/qguiapplication_p.h>
 #include <QtGui/qpa/qplatformtheme.h>
@@ -51,15 +52,18 @@
 QT_BEGIN_NAMESPACE
 
 QtMenuBase::QtMenuBase(QObject *parent)
-    : QObject(parent), m_visible(true),
-      m_parentMenu(0), m_visualItem(0)
+    : QObject(parent), m_visible(true), m_parentMenu(0), m_container(0), m_visualItem(0)
 {
     m_platformItem = QGuiApplicationPrivate::platformTheme()->createPlatformMenuItem();
 }
 
 QtMenuBase::~QtMenuBase()
 {
-    delete m_platformItem;
+    setParentMenu(0);
+    if (m_platformItem) {
+        delete m_platformItem;
+        m_platformItem = 0;
+    }
 }
 
 void QtMenuBase::setVisible(bool v)
@@ -83,14 +87,27 @@ QtMenu *QtMenuBase::parentMenu() const
 
 void QtMenuBase::setParentMenu(QtMenu *parentMenu)
 {
+    if (m_parentMenu && m_parentMenu->platformMenu())
+        m_parentMenu->platformMenu()->removeMenuItem(m_platformItem);
+
     m_parentMenu = parentMenu;
+}
+
+QtMenuItemContainer *QtMenuBase::container() const
+{
+    return m_container;
+}
+
+void QtMenuBase::setContainer(QtMenuItemContainer *c)
+{
+    m_container = c;
 }
 
 void QtMenuBase::syncWithPlatformMenu()
 {
-    QtMenu *menu = qobject_cast<QtMenu *>(parent());
+    QtMenu *menu = parentMenu();
     if (menu && menu->platformMenu() && platformItem()
-        && menu->m_menuItems.contains(this)) // If not, it'll be added later and then sync'ed
+        && menu->contains(this)) // If not, it'll be added later and then sync'ed
         menu->platformMenu()->syncMenuItem(platformItem());
 }
 
@@ -379,7 +396,8 @@ QtMenuItem::~QtMenuItem()
 void QtMenuItem::setParentMenu(QtMenu *parentMenu)
 {
     QtMenuText::setParentMenu(parentMenu);
-    connect(this, SIGNAL(triggered()), parentMenu, SLOT(updateSelectedIndex()));
+    if (parentMenu)
+        connect(this, SIGNAL(triggered()), parentMenu, SLOT(updateSelectedIndex()));
 }
 
 void QtMenuItem::bindToAction(QtAction *action)
@@ -541,6 +559,7 @@ void QtMenuItem::updateChecked()
         platformItem()->setChecked(checked);
         syncWithPlatformMenu();
     }
+
     emit toggled(checked);
 }
 

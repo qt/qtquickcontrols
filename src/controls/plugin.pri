@@ -5,6 +5,7 @@ HEADERS += \
     $$PWD/qtmenu_p.h \
     $$PWD/qtmenubar_p.h \
     $$PWD/qtmenuitem_p.h \
+    $$PWD/qtmenuitemcontainer_p.h \
     $$PWD/qtmenupopupwindow_p.h \
     $$PWD/qpagestatus.h
 

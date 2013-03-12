@@ -120,8 +120,6 @@ Control {
         onPressedChanged: if (pressed) popup.show()
     }
 
-    ExclusiveGroup { id: eg }
-
     StyleItem { id: styleItem }
 
     Component.onCompleted: {
@@ -134,10 +132,16 @@ Control {
         }
     }
 
-    ContextMenu {
+    Menu {
         id: popup
 
         style: __style.popupStyle
+
+        readonly property string selectedText: items[selectedIndex] ? items[selectedIndex].text : ""
+        property string textRole: ""
+        property var model
+        property int modelSize: 0
+        property bool ready: false
 
         // 'centerSelectedText' means that the menu will be positioned
         //  so that the selected text' top left corner will be at x, y.
@@ -148,9 +152,57 @@ Control {
         __minimumWidth: comboBox.width
         __visualItem: comboBox
 
-        function finalizeItem(item) {
-            item.checkable = true
-            item.exclusiveGroup = eg
+        property ExclusiveGroup eg: ExclusiveGroup { id: eg }
+
+        onModelChanged: rebuildMenu()
+        onTextRoleChanged: rebuildMenu()
+
+        Component.onCompleted: { ready = true; rebuildMenu() }
+
+        function rebuildMenu() {
+            if (!ready) return;
+            clear()
+            if (!model) return;
+
+            var isNumberModel = typeof(model) === "number"
+            modelSize = isNumberModel ? model : (model.count || model.length)
+            var effectiveTextRole = textRole
+            if (effectiveTextRole === ""
+                && model.count !== undefined
+                && model.get && model.get(0)) {
+                // No text role set, check whether model has a suitable role
+                // If 'text' is found, or there's only one role, pick that.
+                var listElement = model.get(0)
+                var roleName = ""
+                var roleCount = 0
+                for (var role in listElement) {
+                    if (role === "text") {
+                        roleName = role
+                        break
+                    } else if (!roleName) {
+                        roleName = role
+                    }
+                    ++roleCount
+                }
+                if (roleCount > 1 && roleName !== "text") {
+                    console.warn("No suitable 'textRole' found for ComboBox.")
+                } else {
+                    effectiveTextRole = roleName
+                }
+            }
+            for (var i = 0; i < modelSize; ++i) {
+                var textValue
+                if (isNumberModel)
+                    textValue = i + ""
+                else if (effectiveTextRole !== "")
+                    textValue = model.get(i)[effectiveTextRole]
+                else
+                    textValue = model[i]
+
+                var item = addItem(textValue)
+                item.checkable = true
+                item.exclusiveGroup = eg
+            }
         }
 
         function show() {
@@ -168,5 +220,5 @@ Control {
             popup.show()
     }
     Keys.onUpPressed: { if (selectedIndex > 0) selectedIndex-- }
-    Keys.onDownPressed: { if (selectedIndex < model.count - 1) selectedIndex++ }
+    Keys.onDownPressed: { if (selectedIndex < popup.modelSize - 1) selectedIndex++ }
 }

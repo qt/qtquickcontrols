@@ -47,6 +47,7 @@
 #include <QtCore/qpointer.h>
 #include <QtCore/qurl.h>
 #include <QtGui/qicon.h>
+#include <QtQml/QQmlListProperty>
 
 QT_BEGIN_NAMESPACE
 
@@ -56,6 +57,7 @@ class QQuickItem;
 class QtAction;
 class QtExclusiveGroup;
 class QtMenu;
+class QtMenuItemContainer;
 
 class QtMenuBase: public QObject
 {
@@ -79,6 +81,9 @@ public:
     QtMenu *parentMenu() const;
     virtual void setParentMenu(QtMenu *parentMenu);
 
+    QtMenuItemContainer *container() const;
+    void setContainer(QtMenuItemContainer *);
+
     inline QPlatformMenuItem *platformItem() { return m_platformItem; }
     void syncWithPlatformMenu();
 
@@ -90,6 +95,7 @@ public:
 private:
     bool m_visible;
     QtMenu *m_parentMenu;
+    QtMenuItemContainer *m_container;
     QPlatformMenuItem *m_platformItem;
     QPointer<QQuickItem> m_visualItem;
 };

@@ -4,7 +4,6 @@ ApplicationWindow 1.0 ApplicationWindow.qml
 Button 1.0 Button.qml
 CheckBox 1.0 CheckBox.qml
 ComboBox 1.0 ComboBox.qml
-ContextMenu 1.0 ContextMenu.qml
 GroupBox 1.0 GroupBox.qml
 Label 1.0 Label.qml
 MenuBar 1.0 MenuBar.qml

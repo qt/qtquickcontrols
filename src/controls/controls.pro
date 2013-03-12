@@ -10,7 +10,6 @@ QML_FILES = \
     Button.qml \
     CheckBox.qml \
     ComboBox.qml \
-    ContextMenu.qml \
     GroupBox.qml \
     Label.qml \
     MenuBar.qml \

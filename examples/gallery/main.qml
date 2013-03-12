@@ -60,8 +60,8 @@ ApplicationWindow {
 
     width: 580
     height: 400
-    minimumHeight: 400
-    minimumWidth: 340
+//    minimumHeight: 400
+//    minimumWidth: 340
     property string loremIpsum:
             "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor "+
             "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor "+

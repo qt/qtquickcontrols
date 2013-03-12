@@ -40,6 +40,7 @@
 ****************************************************************************/
 
 #include "qtmenu_p.h"
+#include "qtmenuitemcontainer_p.h"
 #include "qtaction_p.h"
 #include "qtmenupopupwindow_p.h"
 
@@ -133,14 +134,14 @@ QT_BEGIN_NAMESPACE
 
 QtMenu::QtMenu(QObject *parent)
     : QtMenuText(parent),
+      m_itemsCount(0),
       m_selectedIndex(-1),
-      m_highlightedIndex(0),
       m_parentWindow(0),
-      m_hasNativeModel(false),
       m_minimumWidth(0),
       m_popupWindow(0),
       m_menuContentItem(0),
-      m_popupVisible(false)
+      m_popupVisible(false),
+      m_containersCount(0)
 {
     connect(this, SIGNAL(__textChanged()), this, SIGNAL(titleChanged()));
 
@@ -155,6 +156,7 @@ QtMenu::QtMenu(QObject *parent)
 QtMenu::~QtMenu()
 {
     delete m_platformMenu;
+    m_platformMenu = 0;
 }
 
 void QtMenu::updateText()
@@ -191,15 +193,15 @@ void QtMenu::setSelectedIndex(int index)
 
 void QtMenu::updateSelectedIndex()
 {
-    if (QtMenuBase *menuItem = qobject_cast<QtMenuItem*>(sender())) {
-        int index = m_menuItems.indexOf(menuItem);
+    if (QtMenuItem *menuItem = qobject_cast<QtMenuItem*>(sender())) {
+        int index = indexOfMenuItem(menuItem);
         setSelectedIndex(index);
     }
 }
 
-QQmlListProperty<QtMenuBase> QtMenu::menuItems()
+QtMenuItems QtMenu::menuItems()
 {
-    return QQmlListProperty<QtMenuBase>(this, 0, &QtMenu::append_menuItems, &QtMenu::count_menuItems, &QtMenu::at_menuItems, 0);
+    return QtMenuItems(this, 0, &QtMenu::append_menuItems, &QtMenu::count_menuItems, &QtMenu::at_menuItems, 0);
 }
 
 QQuickWindow *QtMenu::findParentWindow()
@@ -228,12 +230,7 @@ void QtMenu::__popup(qreal x, qreal y, int atItemIndex)
 
     setPopupVisible(true);
 
-    // If atItemIndex is valid, x and y is specified from the
-    // the position of the corresponding QtMenuItem:
-    QtMenuItem *atItem = 0;
-    if (atItemIndex >= 0)
-        while (!atItem && atItemIndex < m_menuItems.size())
-            atItem = qobject_cast<QtMenuItem *>(m_menuItems[atItemIndex++]);
+    QtMenuBase *atItem = menuItemAtIndex(atItemIndex);
 
     QQuickWindow *parentWindow = findParentWindow();
 
@@ -324,91 +321,211 @@ void QtMenu::windowVisibleChanged(bool v)
     }
 }
 
+void QtMenu::itemIndexToListIndex(int itemIndex, int *listIndex, int *containerIndex) const
+{
+    *listIndex = -1;
+    QtMenuItemContainer *container = 0;
+    while (itemIndex >= 0 && ++*listIndex < m_menuItems.count())
+        if ((container = qobject_cast<QtMenuItemContainer *>(m_menuItems[*listIndex])))
+            itemIndex -= container->items().count();
+        else
+            --itemIndex;
+
+    if (container)
+        *containerIndex = container->items().count() + itemIndex;
+    else
+        *containerIndex = -1;
+}
+
+int QtMenu::itemIndexForListIndex(int listIndex) const
+{
+    int index = 0;
+    int i = 0;
+    while (i < listIndex && i < m_menuItems.count())
+        if (QtMenuItemContainer *container = qobject_cast<QtMenuItemContainer *>(m_menuItems[i++]))
+            index += container->items().count();
+        else
+            ++index;
+
+    return index;
+}
+
+QtMenuBase *QtMenu::nextMenuItem(QtMenu::MenuItemIterator *it) const
+{
+    if (it->containerIndex != -1) {
+        QtMenuItemContainer *container = qobject_cast<QtMenuItemContainer *>(m_menuItems[it->index]);
+        if (++it->containerIndex < container->items().count())
+            return container->items()[it->containerIndex];
+    }
+
+    if (++it->index < m_menuItems.count()) {
+        if (QtMenuItemContainer *container = qobject_cast<QtMenuItemContainer *>(m_menuItems[it->index])) {
+            it->containerIndex = 0;
+            return container->items()[0];
+        } else {
+            it->containerIndex = -1;
+            return m_menuItems[it->index];
+        }
+    }
+
+    return 0;
+}
+
+QtMenuBase *QtMenu::menuItemAtIndex(int index) const
+{
+    if (0 <= index && index < m_itemsCount) {
+        if (!m_containersCount) {
+            return m_menuItems[index];
+        } else if (m_containersCount == 1 && m_menuItems.count() == 1) {
+            QtMenuItemContainer *container = qobject_cast<QtMenuItemContainer *>(m_menuItems[0]);
+            return container->items()[index];
+        } else {
+            int containerIndex;
+            int i;
+            itemIndexToListIndex(index, &i, &containerIndex);
+            if (containerIndex != -1) {
+                QtMenuItemContainer *container = qobject_cast<QtMenuItemContainer *>(m_menuItems[i]);
+                return container->items()[containerIndex];
+            } else {
+                return m_menuItems[i];
+            }
+        }
+    }
+
+    return 0;
+}
+
+bool QtMenu::contains(QtMenuBase *item)
+{
+    if (item->container())
+        return item->container()->items().contains(item);
+
+    return m_menuItems.contains(item);
+}
+
+int QtMenu::indexOfMenuItem(QtMenuBase *item) const
+{
+    if (!item)
+        return -1;
+    if (item->container()) {
+        int containerIndex = m_menuItems.indexOf(item->container());
+        if (containerIndex == -1)
+            return -1;
+        int index = item->container()->items().indexOf(item);
+        return index == -1 ? -1 : itemIndexForListIndex(containerIndex) + index;
+    } else {
+        int index = m_menuItems.indexOf(item);
+        return index == -1 ? -1 : itemIndexForListIndex(index);
+    }
+}
+
+QtMenuItem *QtMenu::addItem(QString title)
+{
+    QtMenuItem *item = new QtMenuItem(this);
+    item->setText(title);
+    insertItem(m_itemsCount, item);
+    return item;
+}
+
+void QtMenu::insertItem(int index, QtMenuBase *menuItem)
+{
+    if (!menuItem)
+        return;
+    int itemIndex;
+    if (m_containersCount) {
+        QtMenuItemContainer *container = menuItem->parent() != this ? m_containers[menuItem->parent()] : 0;
+        if (container) {
+            container->insertItem(index, menuItem);
+            itemIndex = itemIndexForListIndex(m_menuItems.indexOf(container)) + index;
+        } else {
+            itemIndex = itemIndexForListIndex(index);
+            m_menuItems.insert(itemIndex, menuItem);
+        }
+    } else {
+        itemIndex = index;
+        m_menuItems.insert(index, menuItem);
+    }
+
+    setupMenuItem(menuItem, itemIndex);
+    emit itemsChanged();
+}
+
+void QtMenu::removeItem(QtMenuBase *menuItem)
+{
+    if (!menuItem)
+        return;
+    menuItem->setParentMenu(0);
+
+    QtMenuItemContainer *container = menuItem->parent() != this ? m_containers[menuItem->parent()] : 0;
+    if (container)
+        container->removeItem(menuItem);
+    else
+        m_menuItems.removeOne(menuItem);
+
+    --m_itemsCount;
+    emit itemsChanged();
+}
+
 void QtMenu::clear()
 {
-    foreach (QtMenuBase *item, m_menuItems) {
-        if (m_platformMenu)
-            m_platformMenu->removeMenuItem(item->platformItem());
-        delete item;
-    }
-    m_menuItems.clear();
+    m_containers.clear();
+    m_containersCount = 0;
+
+    while (!m_menuItems.empty())
+        delete m_menuItems.takeFirst();
+    m_itemsCount = 0;
 }
 
-void QtMenu::addMenuItem(QtMenuBase *menuItem)
+void QtMenu::setupMenuItem(QtMenuBase *item, int platformIndex)
 {
-    menuItem->setParentMenu(this);
-    m_menuItems.append(menuItem);
-    if (QPlatformMenuItem *platformItem = menuItem->platformItem()) {
-        if (m_platformMenu)
-            m_platformMenu->insertMenuItem(platformItem, 0 /* append */);
+    item->setParentMenu(this);
+    if (m_platformMenu) {
+        QPlatformMenuItem *before = 0;
+        if (platformIndex != -1)
+            before = m_platformMenu->menuItemAt(platformIndex);
+        m_platformMenu->insertMenuItem(item->platformItem(), before);
+    }
+    ++m_itemsCount;
+}
+
+void QtMenu::append_menuItems(QtMenuItems *list, QObject *o)
+{
+    if (QtMenu *menu = qobject_cast<QtMenu *>(list->object)) {
+        Q_ASSERT(o->parent() == menu);
+
+        if (QtMenuBase *menuItem = qobject_cast<QtMenuBase *>(o)) {
+            menu->m_menuItems.append(menuItem);
+            menu->setupMenuItem(menuItem);
+        } else {
+            QtMenuItemContainer *menuItemContainer = new QtMenuItemContainer(menu);
+            menu->m_menuItems.append(menuItemContainer);
+            menu->m_containers.insert(o, menuItemContainer);
+            menuItemContainer->setParentMenu(menu);
+            ++menu->m_containersCount;
+            foreach (QObject *child, o->children()) {
+                if (QtMenuBase *item = qobject_cast<QtMenuBase *>(child)) {
+                    menuItemContainer->insertItem(-1, item);
+                    menu->setupMenuItem(item);
+                }
+            }
+        }
     }
 }
 
-QtMenuItem *QtMenu::addItem(const QString &text)
-{
-    QtMenuItem *menuItem = new QtMenuItem(this);
-    menuItem->setText(text);
-    addMenuItem(menuItem);
-
-    emit itemsChanged();
-    return menuItem;
-}
-
-QString QtMenu::__modelTextAt(int index) const
-{
-    if (QAbstractItemModel *model = qobject_cast<QAbstractItemModel*>(m_model.value<QObject*>())) {
-        return model->data(model->index(index, 0)).toString();
-    } else if (m_model.canConvert(QVariant::StringList)) {
-        return m_model.toStringList().at(index);
-    }
-    return "";
-}
-
-int QtMenu::__modelCount() const
-{
-    if (QAbstractItemModel *model = qobject_cast<QAbstractItemModel*>(m_model.value<QObject*>())) {
-        return model->rowCount();
-    } else if (m_model.canConvert(QVariant::StringList)) {
-        return m_model.toStringList().count();
-    }
-    return -1;
-}
-
-void QtMenu::append_menuItems(QQmlListProperty<QtMenuBase> *list, QtMenuBase *menuItem)
+int QtMenu::count_menuItems(QtMenuItems *list)
 {
     if (QtMenu *menu = qobject_cast<QtMenu *>(list->object))
-        menu->addMenuItem(menuItem);
-}
+        return menu->m_itemsCount;
 
-int QtMenu::count_menuItems(QQmlListProperty<QtMenuBase> *list)
-{
-    QtMenu *menu = qobject_cast<QtMenu *>(list->object);
-    if (menu)
-        return menu->m_menuItems.size();
     return 0;
 }
 
-QtMenuBase *QtMenu::at_menuItems(QQmlListProperty<QtMenuBase> *list, int index)
+QObject *QtMenu::at_menuItems(QtMenuItems *list, int index)
 {
-    QtMenu *menu = qobject_cast<QtMenu *>(list->object);
-    if (menu && 0 <= index && index < menu->m_menuItems.size())
-        return menu->m_menuItems[index];
+    if (QtMenu *menu = qobject_cast<QtMenu *>(list->object))
+        return menu->menuItemAtIndex(index);
+
     return 0;
-}
-
-
-void QtMenu::setModel(const QVariant &newModel) {
-    if (m_model != newModel) {
-        m_hasNativeModel = false;
-        m_model = newModel;
-
-        if (qobject_cast<QAbstractItemModel*>(newModel.value<QObject*>()))
-            m_hasNativeModel = true;
-        else if (newModel.canConvert(QVariant::StringList))
-            m_hasNativeModel = true;
-
-        emit modelChanged(m_model);
-    }
 }
 
 QT_END_NAMESPACE

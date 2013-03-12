@@ -95,10 +95,11 @@ TestCase {
         id: modelCreationComponent
         // TODO Update when model patch is in
         // Menu { MenuItemRepeater { model: testcase.itemsText MenuItem { text: modelData } }
-        ContextMenu { model: testcase.itemsText }
+        Menu {}
     }
 
     function test_modelCreation() {
+        testcase.skip("No support for model in Menu. It'll come back")
         var menu = modelCreationComponent.createObject(testcase)
         compare(menu.items.length, testcase.itemsText.length)
         for (var i = 0; i < menu.items.length; i++)

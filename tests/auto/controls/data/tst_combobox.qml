@@ -58,7 +58,7 @@ TestCase {
 
     function test_keyupdown() {
         var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.0 ; ComboBox {}', testCase, '');
-        comboBox.model = model
+        comboBox.model = 4
 
         compare(comboBox.selectedIndex, 0)
 
@@ -74,10 +74,12 @@ TestCase {
 
     function test_textrole() {
         var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.0 ; ComboBox {}', testCase, '');
-        comboBox.model = model
         comboBox.textRole = "text"
+        comboBox.model = model
         compare(comboBox.selectedIndex, 0)
-        expectFail('', "QTCOMPONENTS-1301")
         compare(comboBox.selectedText, "Banana")
+        comboBox.textRole = "color"
+        compare(comboBox.selectedIndex, 0)
+        compare(comboBox.selectedText, "Yellow")
     }
 }

@@ -39,62 +39,60 @@
 **
 ****************************************************************************/
 
-#include "plugin_p.h"
-#include "qtaction_p.h"
-#include "qtexclusivegroup_p.h"
-#include "qtmenu_p.h"
-#include "qtmenubar_p.h"
-#include "qtmenuitemcontainer_p.h"
-#include "qpagestatus.h"
+#ifndef QTMENUITEMSCONTAINER_P_H
+#define QTMENUITEMSCONTAINER_P_H
 
-#include <qimage.h>
-#include <qqml.h>
-#include <qqmlengine.h>
-#include <qqmlextensionplugin.h>
-#include <qquickimageprovider.h>
-#include <qquickwindow.h>
+#include "qtmenuitem_p.h"
+#include <QtCore/qlist.h>
 
 QT_BEGIN_NAMESPACE
 
-// Load icons from desktop theme
-class DesktopIconProvider : public QQuickImageProvider
+class QtMenuItemContainer : public QtMenuBase
 {
+    Q_OBJECT
 public:
-    DesktopIconProvider()
-        : QQuickImageProvider(QQuickImageProvider::Pixmap)
+    explicit QtMenuItemContainer(QObject *parent = 0)
+        : QtMenuBase(parent)
+    { }
+
+    ~QtMenuItemContainer()
     {
+        clear();
     }
 
-    QPixmap requestPixmap(const QString &id, QSize *size, const QSize &requestedSize)
+    void insertItem(int index, QtMenuBase *item)
     {
-        Q_UNUSED(requestedSize);
-        Q_UNUSED(size);
-        int pos = id.lastIndexOf('/');
-        QString iconName = id.right(id.length() - pos);
-        int width = requestedSize.width();
-        return QIcon::fromTheme(iconName).pixmap(width);
+        if (index == -1)
+            index = m_menuItems.count();
+        m_menuItems.insert(index, item);
+        item->setContainer(this);
     }
+
+    void removeItem(QtMenuBase *item)
+    {
+        item->setParentMenu(0);
+        item->setContainer(0);
+        m_menuItems.removeOne(item);
+    }
+
+    const QList<QtMenuBase *> &items()
+    {
+        return m_menuItems;
+    }
+
+    void clear()
+    {
+        while (!m_menuItems.empty()) {
+            QtMenuBase *item = m_menuItems.takeFirst();
+            item->setParentMenu(0);
+            item->setContainer(0);
+        }
+    }
+
+private:
+    QList<QtMenuBase *> m_menuItems;
 };
 
-void StylePlugin::registerTypes(const char *uri)
-{
-    qmlRegisterType<QtAction>(uri, 1, 0, "Action");
-    qmlRegisterType<QtExclusiveGroup>(uri, 1, 0, "ExclusiveGroup");
-    qmlRegisterType<QtMenu>(uri, 1, 0, "MenuPrivate");
-    qmlRegisterType<QtMenuBar>(uri, 1, 0, "MenuBarPrivate");
-    qmlRegisterType<QtMenuItem>(uri, 1, 0, "MenuItem");
-    qmlRegisterType<QtMenuItemContainer>(uri, 1, 0, "MenuItemContainer");
-    qmlRegisterType<QtMenuSeparator>(uri, 1, 0, "MenuSeparator");
-    qmlRegisterUncreatableType<QtMenuBase>(uri, 1, 0, "MenuBase",
-                                           QLatin1String("Do not create objects of type MenuBase"));
-
-    qmlRegisterUncreatableType<QPageStatus>(uri, 1, 0, "PageStatus", QLatin1String("Do not create objects of type PageStatus"));
-}
-
-void StylePlugin::initializeEngine(QQmlEngine *engine, const char *uri)
-{
-    Q_UNUSED(uri);
-    engine->addImageProvider("desktoptheme", new DesktopIconProvider);
-}
-
 QT_END_NAMESPACE
+
+#endif // QTMENUITEMCONTAINER_H
