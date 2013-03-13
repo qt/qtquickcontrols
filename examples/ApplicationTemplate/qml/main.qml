@@ -53,11 +53,11 @@ ApplicationWindow {
 
     menuBar: MenuBar {
         Menu {
-            text: "File"
+            title: "File"
             MenuItem { text: "Quit"; onTriggered: Qt.quit() }
         }
         Menu {
-            text: "Help"
+            title: "Help"
             MenuItem { text: "About..."; enabled: false }
         }
     }
