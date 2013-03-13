@@ -147,7 +147,10 @@ Control {
         function rebuildMenu() {
             if (!ready) return;
             clear()
-            if (!model) return;
+            if (!model) {
+                __selectedIndexChanged();
+                return;
+            }
 
             var isNumberModel = typeof(model) === "number"
             modelSize = isNumberModel ? model : (model.count || model.length)
@@ -188,6 +191,7 @@ Control {
                 item.checkable = true
                 item.exclusiveGroup = eg
             }
+            __selectedIndexChanged();
         }
 
         function show() {
