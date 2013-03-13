@@ -543,10 +543,16 @@ void QStyleItem::initStyleOption()
     m_styleoption->styleObject = this;
     m_styleoption->rect = QRect(m_paintMargins, m_paintMargins, width() - 2* m_paintMargins, height() - 2 * m_paintMargins);
 
-    if (isEnabled())
+    if (isEnabled()) {
         m_styleoption->state |= QStyle::State_Enabled;
+        m_styleoption->palette.setCurrentColorGroup(QPalette::Active);
+    } else {
+        m_styleoption->palette.setCurrentColorGroup(QPalette::Disabled);
+    }
     if (m_active)
         m_styleoption->state |= QStyle::State_Active;
+    else
+        m_styleoption->palette.setCurrentColorGroup(QPalette::Inactive);
     if (m_sunken)
         m_styleoption->state |= QStyle::State_Sunken;
     if (m_raised)

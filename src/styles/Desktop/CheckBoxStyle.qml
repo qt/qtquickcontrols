@@ -79,8 +79,12 @@ Style {
                 anchors.right: parent.right
                 renderType: Text.NativeRendering
                 elide: Text.ElideRight
+                enabled: control.enabled
                 color: syspal.windowText
-                SystemPalette { id: syspal }
+                SystemPalette {
+                    id: syspal
+                    colorGroup: enabled ? SystemPalette.Active : SystemPalette.Disabled
+                }
             }
         }
     }
