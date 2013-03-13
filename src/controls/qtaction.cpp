@@ -100,7 +100,6 @@ QtAction::QtAction(QObject *parent)
     , m_enabled(true)
     , m_checkable(false)
     , m_checked(false)
-    , m_exclusiveGroup(0)
 {
 }
 
@@ -108,6 +107,7 @@ QtAction::~QtAction()
 {
     setShortcut(QString());
     setMnemonicFromText(QString());
+    setExclusiveGroup(0);
 }
 
 void QtAction::setText(const QString &text)
@@ -227,6 +227,11 @@ void QtAction::setChecked(bool c)
         return;
     m_checked = c;
     emit toggled(m_checked);
+}
+
+QtExclusiveGroup *QtAction::exclusiveGroup() const
+{
+    return m_exclusiveGroup.data();
 }
 
 void QtAction::setExclusiveGroup(QtExclusiveGroup *eg)

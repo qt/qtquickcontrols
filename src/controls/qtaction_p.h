@@ -47,6 +47,7 @@
 #include <QtCore/qvariant.h>
 #include <QtGui/qicon.h>
 #include <QtGui/qkeysequence.h>
+#include <QtCore/qpointer.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -100,8 +101,8 @@ public:
     bool isChecked() const { return m_checked; }
     void setChecked(bool c);
 
-    QtExclusiveGroup *exclusiveGroup() const { return m_exclusiveGroup; }
-    void setExclusiveGroup(QtExclusiveGroup * arg);
+    QtExclusiveGroup *exclusiveGroup() const;
+    void setExclusiveGroup(QtExclusiveGroup *arg);
 
     QIcon icon() const { return m_icon; }
     QVariant iconVariant() const { return QVariant(m_icon); }
@@ -136,7 +137,7 @@ private:
     bool m_enabled;
     bool m_checkable;
     bool m_checked;
-    QtExclusiveGroup *m_exclusiveGroup;
+    QPointer<QtExclusiveGroup> m_exclusiveGroup;
     QKeySequence m_shortcut;
     QKeySequence m_mnemonic;
     QString m_tooltip;

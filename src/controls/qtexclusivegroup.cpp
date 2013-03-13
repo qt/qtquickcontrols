@@ -171,6 +171,8 @@ void QtExclusiveGroup::bindCheckable(QObject *o)
 
 void QtExclusiveGroup::unbindCheckable(QObject *o)
 {
+    if (m_current == o)
+        setCurrent(0);
     for (const char **signalName = checkableSignals; *signalName; signalName++) {
         int signalIndex = o->metaObject()->indexOfSignal(*signalName);
         if (signalIndex != -1) {
