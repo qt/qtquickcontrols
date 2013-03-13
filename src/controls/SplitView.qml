@@ -398,4 +398,13 @@ Item {
         id: lastItem
         onVisibleChanged: d.updateExpandingIndex()
     }
+
+    Component.onDestruction: {
+        for (var i=0; i<splitterItems.children.length; ++i) {
+            var item = splitterItems.children[i];
+            item.visibleChanged.disconnect(d.updateExpandingIndex)
+            item.Layout.horizontalSizePolicyChanged.disconnect(d.updateExpandingIndex)
+            item.Layout.verticalSizePolicyChanged.disconnect(d.updateExpandingIndex)
+        }
+    }
 }
