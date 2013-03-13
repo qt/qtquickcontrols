@@ -47,7 +47,8 @@ import "Styles/Settings.js" as Settings
     \qmltype Menu
     \inqmlmodule QtQuick.Controls 1.0
     \ingroup applicationwindow
-    \brief Menu provides a menu component for use in menu bars, context menus, and other popup menus.
+    \brief Provides a menu component for use in menu bars, context menus,
+    and other popup menus.
 
     \code
     Menu {
@@ -83,10 +84,18 @@ import "Styles/Settings.js" as Settings
     }
     \endcode
 
-    Note that some properties, like \c enabled, \c text, or \c iconSource, only make sense
-    depending on the context in which the menu is being used. The three main use cases are
-    as a \l MenuBar top-level menu, as a submenu inside another menu, or as a standalone,
-    or context, menu.
+    The main uses for menus:
+    \table
+    \row
+       as a \e top-level menu in a \l MenuBar
+    \row
+       as a \e submenu inside another menu
+    \row
+       as a standalone or \e context menu
+    \endtable
+
+    Note that some properties, such as \c enabled, \c text, or \c iconSource,
+    only make sense in a particular use case of the menu.
 
     \sa MenuBar, MenuItem, MenuSeparator
 */
