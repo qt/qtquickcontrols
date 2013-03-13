@@ -166,7 +166,7 @@ void QtMenuPopupWindow::mouseReleaseEvent(QMouseEvent *e)
 void QtMenuPopupWindow::forwardEventToTransientParent(QMouseEvent *e)
 {
     if (!qobject_cast<QtMenuPopupWindow*>(transientParent())
-        && (m_mouseMoved && e->type() == QEvent::MouseButtonRelease
+        && ((m_mouseMoved && e->type() == QEvent::MouseButtonRelease)
             || e->type() == QEvent::MouseButtonPress)) {
         // Clicked outside any menu
         dismissMenu();
