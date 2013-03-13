@@ -44,7 +44,6 @@
 #include "qtexclusivegroup_p.h"
 #include "qtmenu_p.h"
 #include "qtmenubar_p.h"
-#include "qtmenuitemcontainer_p.h"
 #include "qpagestatus.h"
 
 #include <qimage.h>
@@ -83,7 +82,6 @@ void StylePlugin::registerTypes(const char *uri)
     qmlRegisterType<QtMenu>(uri, 1, 0, "MenuPrivate");
     qmlRegisterType<QtMenuBar>(uri, 1, 0, "MenuBarPrivate");
     qmlRegisterType<QtMenuItem>(uri, 1, 0, "MenuItem");
-    qmlRegisterType<QtMenuItemContainer>(uri, 1, 0, "MenuItemContainer");
     qmlRegisterType<QtMenuSeparator>(uri, 1, 0, "MenuSeparator");
     qmlRegisterUncreatableType<QtMenuBase>(uri, 1, 0, "MenuBase",
                                            QLatin1String("Do not create objects of type MenuBase"));
