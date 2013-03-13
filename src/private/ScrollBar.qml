@@ -93,9 +93,9 @@ Item {
         onMouseXChanged: styleItem.activeControl = styleItem.hitTest(mouseX, mouseY)
         hoverEnabled: true
 
-        property variant control
-        property variant pressedX
-        property variant pressedY
+        property var control
+        property var pressedX
+        property var pressedY
         property int oldPosition
         property int grooveSize
 

@@ -112,7 +112,7 @@ ScrollView {
     \endcode
     \sa {qml-data-models}{Data Models}
     */
-    property variant model
+    property var model
 
     /*! This property is set to \c true if the view alternates the row color.
         The default value is \c true. */
@@ -338,8 +338,8 @@ ScrollView {
                     sourceComponent: root.rowDelegate
                     property bool alternateBackground: (index + rowCount) % 2 === 1
                     property bool rowSelected: false
-                    property variant model: listView.model
-                    property variant modelData: null
+                    property var model: listView.model
+                    property var modelData: null
                 }
             }
         }
@@ -367,8 +367,8 @@ ScrollView {
 
             property int rowIndex: model.index
             property bool alternateBackground: alternatingRowColors && rowIndex % 2 == 1
-            property variant itemModelData: typeof modelData == "undefined" ? null : modelData
-            property variant itemModel: model
+            property var itemModelData: typeof modelData == "undefined" ? null : modelData
+            property var itemModel: model
 
             Loader {
                 id: rowstyle
@@ -383,9 +383,9 @@ ScrollView {
                 property bool alternateBackground: rowitem.alternateBackground
                 property bool rowSelected: rowitem.ListView.isCurrentItem
                 property int index: rowitem.rowIndex
-                property variant model: listView.model
-                property variant modelData: rowitem.itemModelData
-                property variant itemModel: rowitem.itemModel
+                property var model: listView.model
+                property var modelData: rowitem.itemModelData
+                property var itemModel: rowitem.itemModel
             }
             Row {
                 id: row
@@ -402,10 +402,10 @@ ScrollView {
                         sourceComponent: columns[index].delegate ? columns[index].delegate : itemDelegate
 
                         // these properties are exposed to the item delegate
-                        property variant model: listView.model
-                        property variant modelData: itemModelData
+                        property var model: listView.model
+                        property var modelData: itemModelData
 
-                        property variant itemValue: __getValue()
+                        property var itemValue: __getValue()
                         property bool itemSelected: rowitem.ListView.isCurrentItem
                         property color itemTextColor: itemSelected ? rowstyleitem.highlightedTextColor : rowstyleitem.textColor
                         property int rowIndex: rowitem.rowIndex

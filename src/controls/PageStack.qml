@@ -485,7 +485,7 @@ Item {
         \endlist
         \sa push
     */
-    property variant initialPage: null
+    property var initialPage: null
 
     /*! \readonly
         \a busy is \c true if a page transition is running, and \c false otherwise. */
