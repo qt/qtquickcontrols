@@ -383,6 +383,7 @@ Item {
     Item {
         id: contents
         visible: false
+        anchors.fill: parent
     }
     Item {
         id: splitterItems
