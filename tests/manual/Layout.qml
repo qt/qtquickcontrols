@@ -719,6 +719,67 @@ Item {
                     Text {
                         text: "Norwegian flag"
                     }
+                    // [1]
+                    GridLayout {
+                        columns: 4
+                        flow: GridLayout.LeftToRight
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        Rectangle {
+                            color: "green"
+                            width: 20
+                            height: 20
+                            Layout.horizontalSizePolicy: Layout.Expanding
+                            Layout.verticalSizePolicy: Layout.Expanding
+                        }
+                        Rectangle {
+                            color: "green"
+                            width: 20
+                            height: 20
+                            Layout.row: 1
+                            Layout.column: 1
+                            Layout.rowSpan: 2
+                            Layout.columnSpan: 2
+                            Layout.horizontalSizePolicy: Layout.Expanding
+                            Layout.verticalSizePolicy: Layout.Expanding
+                        }
+                        Rectangle {
+                            color: "green"
+                            width: 20
+                            height: 20
+                            Layout.row: 0
+                            Layout.column: 1
+                            Layout.horizontalSizePolicy: Layout.Expanding
+                            Layout.verticalSizePolicy: Layout.Expanding
+                        }
+                        Rectangle {
+                            color: "green"
+                            width: 20
+                            height: 20
+                            Layout.rowSpan: 2
+                            Layout.horizontalSizePolicy: Layout.Expanding
+                            Layout.verticalSizePolicy: Layout.Expanding
+                        }
+                        Repeater {
+                            model: 10
+                            Rectangle {
+                                color: Qt.rgba(1, 0, 0, 1 - (index/10.0))
+                                width: 20
+                                height: 20
+                                Layout.horizontalSizePolicy: Layout.Expanding
+                                Layout.verticalSizePolicy: Layout.Expanding
+                                Text { text: index }
+                            }
+                        }
+                        Rectangle {
+                            color: "green"
+                            width: 20
+                            Layout.columnSpan:2
+                            height: 20
+                            Layout.horizontalSizePolicy: Layout.Expanding
+                            Layout.verticalSizePolicy: Layout.Expanding
+                        }
+                    }
                 }
             }
         }

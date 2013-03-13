@@ -71,7 +71,7 @@ public:
 protected:
     void updateLayoutItems();
     void rearrange(const QSizeF &size);
-    virtual void insertLayoutItem(QQuickItem *item);
+    virtual void insertLayoutItems() = 0;
     void removeLayoutItem(QQuickItem *item);
     void itemChange(ItemChange change, const ItemChangeData &data);
     void geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry);
@@ -111,16 +111,36 @@ class QQuickGridLayout : public QQuickGridLayoutBase
     Q_OBJECT
     Q_PROPERTY(qreal columnSpacing READ columnSpacing WRITE setColumnSpacing NOTIFY columnSpacingChanged)
     Q_PROPERTY(qreal rowSpacing READ rowSpacing WRITE setRowSpacing NOTIFY rowSpacingChanged)
+    Q_PROPERTY(int columns READ columns WRITE setColumns NOTIFY columnsChanged)
+    Q_PROPERTY(int rows READ rows WRITE setRows NOTIFY rowsChanged)
+    Q_PROPERTY(Flow flow READ flow WRITE setFlow NOTIFY flowChanged)
 public:
     explicit QQuickGridLayout(QQuickItem *parent = 0);
     qreal columnSpacing() const;
     void setColumnSpacing(qreal spacing);
     qreal rowSpacing() const;
     void setRowSpacing(qreal spacing);
+
+    int columns() const;
+    void setColumns(int columns);
+    int rows() const;
+    void setRows(int rows);
+
+    Q_ENUMS(Flow)
+    enum Flow { LeftToRight, TopToBottom };
+    Flow flow() const;
+    void setFlow(Flow flow);
+
+    void insertLayoutItems();
+
 signals:
     void columnSpacingChanged();
     void rowSpacingChanged();
 
+    void columnsChanged();
+    void rowsChanged();
+
+    void flowChanged();
 private:
     Q_DECLARE_PRIVATE(QQuickGridLayout)
 };
@@ -129,9 +149,12 @@ class QQuickGridLayoutPrivate : public QQuickGridLayoutBasePrivate
 {
     Q_DECLARE_PUBLIC(QQuickGridLayout)
 public:
-    QQuickGridLayoutPrivate() {}
+    QQuickGridLayoutPrivate(): columns(-1), rows(-1), flow(QQuickGridLayout::LeftToRight) {}
     qreal columnSpacing;
     qreal rowSpacing;
+    int columns;
+    int rows;
+    QQuickGridLayout::Flow flow;
 };
 
 
@@ -151,6 +174,8 @@ public:
     void insertLayoutItem(QQuickItem *item);
     qreal spacing() const;
     void setSpacing(qreal spacing);
+
+    void insertLayoutItems();
 
 signals:
     void spacingChanged();

@@ -54,8 +54,8 @@ QQuickLayoutAttached::QQuickLayoutAttached(QObject *parent)
       m_preferredHeight(0),
       m_maximumWidth(q_declarativeLayoutMaxSize),
       m_maximumHeight(q_declarativeLayoutMaxSize),
-      m_row(0),
-      m_column(0),
+      m_row(-1),
+      m_column(-1),
       m_rowSpan(1),
       m_columnSpan(1),
       m_fillWidth(false),
@@ -147,6 +147,18 @@ void QQuickLayoutAttached::setFillHeight(bool fill)
         invalidateItem();
         emit fillHeightChanged();
     }
+}
+
+void QQuickLayoutAttached::setRow(int row)
+{
+    if (row >= 0 && row != m_row)
+        m_row = row;
+}
+
+void QQuickLayoutAttached::setColumn(int column)
+{
+    if (column >= 0 && column != m_column)
+        m_column = column;
 }
 
 void QQuickLayoutAttached::invalidateItem()
