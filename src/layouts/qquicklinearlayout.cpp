@@ -416,8 +416,6 @@ void QQuickLinearLayout::insertLayoutItem(QQuickItem *item)
     d->engine.insertItem(layoutItem, index);
 
     setupItemLayout(item);
-
-    invalidate();
 }
 
 
