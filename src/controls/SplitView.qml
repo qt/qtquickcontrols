@@ -120,7 +120,7 @@ Item {
                                  between the first and the second item will get index 0,
                                  the next handle index 1 etc.
         \li bool \c pressed: the handle is being pressed.
-        \li bool \c dragged: the handle is being dragged.
+        \li bool \c resizing: the handle is being dragged.
         \endlist
     */
     property Component handleDelegate: Rectangle {
@@ -128,6 +128,12 @@ Item {
         height: 1
         color: Qt.darker(pal.window, 1.5)
     }
+
+    /*!
+        This propery is \c true when the user is resizing any of the items by
+        dragging on the splitter handles.
+    */
+    property bool resizing: false
 
     /*! \internal */
     default property alias __contents: contents.data
@@ -295,7 +301,7 @@ Item {
             property int handleIndex: -1
             property alias containsMouse: mouseArea.containsMouse
             property alias pressed: mouseArea.pressed
-            property bool dragged: mouseArea.drag.active
+            property bool resizing: mouseArea.drag.active
 
             visible: __items[handleIndex + ((d.expandingIndex >= handleIndex) ? 0 : 1)].visible
             sourceComponent: handleDelegate
@@ -303,6 +309,7 @@ Item {
             onHeightChanged: d.updateLayout()
             onXChanged: moveHandle()
             onYChanged: moveHandle()
+            onResizingChanged: root.resizing = resizing
 
             MouseArea {
                 id: mouseArea
