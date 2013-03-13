@@ -191,7 +191,53 @@ Item {
             var row = Qt.createQmlObject(test_layoutStr, container, '');
             compare(row.implicitWidth, 50 + 10 + 40);
             compare(row.implicitHeight, 6);
+        }
 
+        function test_countGeometryChanges() {
+            var test_layoutStr =
+               'import QtQuick 2.0;                             \
+                import QtQuick.Layouts 1.0;                     \
+                ColumnLayout {                                  \
+                    id : col;                                   \
+                    property alias row: _row;                   \
+                    objectName: "col";                          \
+                    anchors.fill: parent;                       \
+                    RowLayout {                                 \
+                        id : _row;                              \
+                        property alias r1: _r1;                 \
+                        property alias r2: _r2;                 \
+                        objectName: "row";                      \
+                        spacing: 0;                             \
+                        property int counter : 0;               \
+                        onWidthChanged: { ++counter; }          \
+                        Rectangle {                             \
+                            id: _r1;                            \
+                            color: "red";                       \
+                            implicitWidth: 50;                  \
+                            implicitHeight: 20;                 \
+                            property int counter : 0;           \
+                            onWidthChanged: { ++counter; }      \
+                            Layout.horizontalSizePolicy: Layout.Expanding;    \
+                        }                                       \
+                        Rectangle {                             \
+                            id: _r2;                            \
+                            color: "green";                     \
+                            implicitWidth: 50;                  \
+                            implicitHeight: 20;                 \
+                            property int counter : 0;           \
+                            onWidthChanged: { ++counter; }      \
+                            Layout.horizontalSizePolicy: Layout.Expanding;    \
+                        }                                       \
+                    }                                           \
+                }                                               '
+            var col = Qt.createQmlObject(test_layoutStr, container, '');
+            compare(col.width, 200);
+            compare(col.row.width, 200);
+            compare(col.row.r1.width, 100);
+            compare(col.row.r2.width, 100);
+            compare(col.row.r1.counter, 1);
+            compare(col.row.r2.counter, 1);
+            verify(col.row.counter <= 2);
         }
     }
 }
