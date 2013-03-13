@@ -153,10 +153,12 @@ Control {
             }
 
             var isNumberModel = typeof(model) === "number"
-            modelSize = isNumberModel ? model : (model.count || model.length)
+            var modelMayHaveRoles = model.count !== undefined
+            modelSize = isNumberModel ? model :
+                        modelMayHaveRoles ? model.count : model.length
             var effectiveTextRole = textRole
             if (effectiveTextRole === ""
-                && model.count !== undefined
+                && modelMayHaveRoles
                 && model.get && model.get(0)) {
                 // No text role set, check whether model has a suitable role
                 // If 'text' is found, or there's only one role, pick that.
