@@ -261,6 +261,10 @@ void QtMenu::__popup(qreal x, qreal y, int atItemIndex)
         qreal initialWidth = qMax(qreal(1), m_menuContentItem->width());
         qreal initialHeight = qMax(qreal(1), m_menuContentItem->height());
 
+        if (!qobject_cast<QtMenuPopupWindow *>(parentWindow)) // No need for parent menu windows
+            if (QQuickItem *mg = parentWindow->mouseGrabberItem())
+                mg->ungrabMouse();
+
         m_popupWindow->setGeometry(x, y, initialWidth, initialHeight);
         m_popupWindow->show();
         m_popupWindow->setMouseGrabEnabled(true); // Needs to be done after calling show()
