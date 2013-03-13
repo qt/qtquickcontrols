@@ -70,7 +70,7 @@ public:
 
 protected:
     void updateLayoutItems();
-    void rearrange();
+    void rearrange(const QSizeF &size);
     virtual void insertLayoutItem(QQuickItem *item);
     void removeLayoutItem(QQuickItem *item);
     void itemChange(ItemChange change, const ItemChangeData &data);
@@ -93,9 +93,11 @@ class QQuickGridLayoutBasePrivate : public QQuickLayoutPrivate
     Q_DECLARE_PUBLIC(QQuickGridLayoutBase)
 
 public:
-    QQuickGridLayoutBasePrivate() { }
+    QQuickGridLayoutBasePrivate() : m_disableRearrange(true) { }
     QQuickGridLayoutEngine engine;
     Qt::Orientation orientation;
+    bool m_disableRearrange;
+
 };
 
 /**********************************

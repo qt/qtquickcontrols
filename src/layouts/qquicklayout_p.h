@@ -87,8 +87,7 @@ public:
     virtual void invalidate(QQuickItem * childItem = 0);
 protected:
     bool event(QEvent *e);
-    void rearrangeTopDown();
-    virtual void rearrange();
+    virtual void rearrange(const QSizeF &);
     void setupItemLayout(QQuickItem *item);
 
 

@@ -196,7 +196,7 @@ QQuickLayoutAttached *QQuickLayout::qmlAttachedProperties(QObject *object)
 bool QQuickLayout::event(QEvent *e)
 {
     if (e->type() == QEvent::LayoutRequest)
-        rearrangeTopDown();
+        rearrange(QSizeF(width(), height()));
 
     return QQuickItem::event(e);
 }
@@ -221,26 +221,9 @@ void QQuickLayout::invalidate(QQuickItem * /*childItem*/)
     }
 }
 
-void QQuickLayout::rearrangeTopDown()
+void QQuickLayout::rearrange(const QSizeF &/*size*/)
 {
-    quickLayoutDebug() << "QQuickLayout::rearrangeTopDown()";
-    const QList<QQuickItem *> &children = childItems();
-
-    rearrange();
-
-    foreach (QQuickItem *child, children) {
-        QQuickLayout *layout = qobject_cast<QQuickLayout *>(child);
-
-        if (layout && layout->m_dirty)
-            layout->rearrangeTopDown();
-    }
-
     m_dirty = false;
-}
-
-void QQuickLayout::rearrange()
-{
-
 }
 
 QT_END_NAMESPACE

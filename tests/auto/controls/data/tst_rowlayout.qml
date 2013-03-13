@@ -123,5 +123,75 @@ Item {
             compare(tmp.r1.width, 10);
             compare(tmp.r2.width, 20);
         }
+
+        function test_initialNestedLayouts() {
+            var test_layoutStr =
+               'import QtQuick 2.0;                             \
+                import QtQuick.Layouts 1.0;                     \
+                ColumnLayout {                                  \
+                    id : col;                                   \
+                    property alias row: _row;                   \
+                    objectName: "col";                          \
+                    anchors.fill: parent;                       \
+                    RowLayout {                                 \
+                        id : _row;                              \
+                        property alias r1: _r1;                 \
+                        property alias r2: _r2;                 \
+                        objectName: "row";                      \
+                        spacing: 0;                             \
+                        Rectangle {                             \
+                            id: _r1;                            \
+                            color: "red";                       \
+                            implicitWidth: 50;                  \
+                            implicitHeight: 20;                 \
+                        }                                       \
+                        Rectangle {                             \
+                            id: _r2;                            \
+                            color: "green";                     \
+                            implicitWidth: 50;                  \
+                            implicitHeight: 20;                 \
+                            Layout.horizontalSizePolicy: Layout.Expanding;    \
+                        }                                       \
+                    }                                           \
+                }                                               '
+            var col = Qt.createQmlObject(test_layoutStr, container, '');
+            tryCompare(col, 'width', 200);
+            tryCompare(col.row, 'width', 200);
+            tryCompare(col.row.r1, 'width', 50);
+            tryCompare(col.row.r2, 'width', 150);
+        }
+
+        function test_implicitSize() {
+            var test_layoutStr =
+               'import QtQuick 2.0;                             \
+                import QtQuick.Layouts 1.0;                     \
+                RowLayout {                                     \
+                    id: row;                                    \
+                    objectName: "row";                          \
+                    spacing: 0;                                 \
+                    height: 30;                                 \
+                    anchors.left: parent.left;                  \
+                    anchors.right: parent.right;                \
+                    Rectangle {                                 \
+                        color: "red";                           \
+                        height: 2;                              \
+                        Layout.minimumWidth: 50;                \
+                    }                                           \
+                    Rectangle {                                 \
+                        color: "green";                         \
+                        width: 10;                              \
+                        Layout.minimumHeight: 4;                \
+                    }                                           \
+                    Rectangle {                                 \
+                        implicitWidth: 1000;                    \
+                        Layout.maximumWidth: 40;                \
+                        implicitHeight: 6                       \
+                    }                                           \
+                }                                               '
+            var row = Qt.createQmlObject(test_layoutStr, container, '');
+            compare(row.implicitWidth, 50 + 10 + 40);
+            compare(row.implicitHeight, 6);
+
+        }
     }
 }

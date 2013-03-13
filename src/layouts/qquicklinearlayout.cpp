@@ -88,11 +88,17 @@ void QQuickGridLayoutBase::setOrientation(Qt::Orientation orientation)
 
 void QQuickGridLayoutBase::componentComplete()
 {
-    QQuickLayout::componentComplete();
-    quickLayoutDebug() << "QQuickGridLayoutBase::componentComplete()";
+    Q_D(QQuickGridLayoutBase);
+    quickLayoutDebug() << objectName() << "QQuickGridLayoutBase::componentComplete()" << parent();
+    d->m_disableRearrange = true;
+    QQuickLayout::componentComplete();    // will call our geometryChange(), (where isComponentComplete() == true)
+    d->m_disableRearrange = false;
     updateLayoutItems();
-    quickLayoutDebug() << "QQuickGridLayoutBase::componentComplete() DONE";
 
+    QQuickItem *par = parentItem();
+    if (qobject_cast<QQuickLayout*>(par))
+        return;
+    rearrange(QSizeF(width(), height()));
 }
 
 /*
@@ -207,11 +213,12 @@ void QQuickGridLayoutBase::itemChange(ItemChange change, const ItemChangeData &v
 
 void QQuickGridLayoutBase::geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry)
 {
+    Q_D(QQuickGridLayoutBase);
     QQuickLayout::geometryChanged(newGeometry, oldGeometry);
-    if (!isComponentComplete() || !newGeometry.isValid())
+    if (d->m_disableRearrange || !isComponentComplete() || !newGeometry.isValid())
         return;
     quickLayoutDebug() << "QQuickGridLayoutBase::geometryChanged" << newGeometry << oldGeometry;
-    rearrange();
+    rearrange(newGeometry.size());
 }
 
 void QQuickGridLayoutBase::insertLayoutItem(QQuickItem *item)
@@ -295,13 +302,13 @@ void QQuickGridLayoutBase::onItemImplicitSizeChanged()
     //invalidate(item);
 }
 
-void QQuickGridLayoutBase::rearrange()
+void QQuickGridLayoutBase::rearrange(const QSizeF &size)
 {
     Q_D(QQuickGridLayoutBase);
     if (!isComponentComplete())
         return;
 
-    quickLayoutDebug() << "QQuickGridLayoutBase::rearrange()";
+    quickLayoutDebug() << objectName() << "QQuickGridLayoutBase::rearrange()" << size;
     Qt::LayoutDirection visualDir = Qt::LeftToRight;    // ### Fix if RTL support is needed
     d->engine.setVisualDirection(visualDir);
 
@@ -312,9 +319,9 @@ void QQuickGridLayoutBase::rearrange()
         qSwap(left, right);
     */
 
-    QRectF effectiveRect(0, 0, width(), height());
-    d->engine.setGeometries(effectiveRect);
+    d->engine.setGeometries(QRectF(QPointF(0,0), size));
 
+    QQuickLayout::rearrange(size);
     // propagate hints to upper levels
     propagateLayoutSizeHints();
 }
