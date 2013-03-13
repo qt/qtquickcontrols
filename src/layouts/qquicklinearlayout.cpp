@@ -159,7 +159,7 @@ void QQuickGridLayoutBase::updateLayoutItems()
 
     invalidate();
     quickLayoutDebug() << "QQuickGridLayoutBase::updateLayoutItems LEAVING";
-    //propagateLayoutSizeHints();
+    propagateLayoutSizeHints();
 }
 
 void QQuickGridLayoutBase::propagateLayoutSizeHints()
