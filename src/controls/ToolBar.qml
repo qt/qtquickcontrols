@@ -52,7 +52,7 @@ import QtQuick.Controls.Private 1.0
     provides styling and is generally designed to work well with ToolButton as
     well as other controls.
 
-    Note that the ToolBar does not provide a layout of its own but requires you
+    Note that the ToolBar does not provide a layout of its own, but requires you
     to position its contents, for instance by creating a Row.
 
     \code
