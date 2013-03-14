@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.0
+import QtQuick 2.1
 import QtTest 1.0
 
 Item {
@@ -54,7 +54,7 @@ Item {
 
         function test_fixedAndExpanding() {
             var test_layoutStr =
-               'import QtQuick 2.0;                     \
+               'import QtQuick 2.1;                     \
                 import QtQuick.Layouts 1.0;             \
                 RowLayout {                             \
                     id: row;                            \
@@ -91,7 +91,7 @@ Item {
 
         function test_allExpanding() {
             var test_layoutStr =
-               'import QtQuick 2.0;                     \
+               'import QtQuick 2.1;                     \
                 import QtQuick.Layouts 1.0;             \
                 RowLayout {                             \
                     id: row;                            \

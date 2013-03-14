@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.0
+import QtQuick 2.1
 import QtTest 1.0
 
 TestCase {
@@ -50,7 +50,7 @@ TestCase {
 
     property var model
     function init() {
-        model = Qt.createQmlObject("import QtQuick 2.0; ListModel {}", testCase, '')
+        model = Qt.createQmlObject("import QtQuick 2.1; ListModel {}", testCase, '')
         model.append({ text: "Banana", color: "Yellow" })
         model.append({ text: "Apple", color: "Green" })
         model.append({ text: "Coconut", color: "Brown" })

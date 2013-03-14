@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.0
+import QtQuick 2.1
 import QtTest 1.0
 
 Item {
@@ -135,7 +135,7 @@ Item {
         }
 
         function test_exclusiveGroup() {
-            var root = Qt.createQmlObject("import QtQuick 2.0; import QtQuick.Controls 1.0; \n"
+            var root = Qt.createQmlObject("import QtQuick 2.1; import QtQuick.Controls 1.0; \n"
                 + "Row { \n"
                 + "    property alias radioButton1: radioButton1 \n"
                 + "    property alias radioButton2: radioButton2 \n"

@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.0
+import QtQuick 2.1
 import QtTest 1.0
 
 Item {
@@ -165,7 +165,7 @@ Item {
         }
 
         function test_exclusiveGroup() {
-            var root = Qt.createQmlObject("import QtQuick 2.0; import QtQuick.Controls 1.0; \n"
+            var root = Qt.createQmlObject("import QtQuick 2.1; import QtQuick.Controls 1.0; \n"
                 + "Row { \n"
                 + "    property alias checkBox1: checkBox1 \n"
                 + "    property alias checkBox2: checkBox2 \n"

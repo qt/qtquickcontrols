@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.0
+import QtQuick 2.1
 import QtTest 1.0
 
 TestCase {
@@ -53,7 +53,7 @@ TestCase {
     }
 
     function test_repeater() {
-        var tabView = Qt.createQmlObject('import QtQuick 2.0; import QtQuick.Controls 1.0; TabView { Repeater { model: 3; Tab { } } }', testCase, '');
+        var tabView = Qt.createQmlObject('import QtQuick 2.1; import QtQuick.Controls 1.0; TabView { Repeater { model: 3; Tab { } } }', testCase, '');
         compare(tabView.count, 3)
     }
 
@@ -63,7 +63,7 @@ TestCase {
     }
 
     function test_changeIndex() {
-        var tabView = Qt.createQmlObject('import QtQuick 2.0; import QtQuick.Controls 1.0; TabView { Repeater { model: 3; Tab { Text { text: index } } } }', testCase, '');
+        var tabView = Qt.createQmlObject('import QtQuick 2.1; import QtQuick.Controls 1.0; TabView { Repeater { model: 3; Tab { Text { text: index } } } }', testCase, '');
         compare(tabView.count, 3)
         verify(tabView.tabAt(1).item == undefined)
         tabView.currentIndex = 1
@@ -75,7 +75,7 @@ TestCase {
 
 
     function test_addRemoveTab() {
-        var tabView = Qt.createQmlObject('import QtQuick 2.0; import QtQuick.Controls 1.0; TabView { }', testCase, '');
+        var tabView = Qt.createQmlObject('import QtQuick 2.1; import QtQuick.Controls 1.0; TabView { }', testCase, '');
         compare(tabView.count, 0)
         tabView.addTab("title 1", newTab)
         compare(tabView.count, 1)
