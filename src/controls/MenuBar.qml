@@ -147,6 +147,7 @@ MenuBarPrivate {
                     menuBarLoader.openedMenuIndex = currentItem.menuItemIndex
                 }
             }
+            onExited: hoveredItem = null
 
             property Item currentItem: null
             property Item hoveredItem: null
