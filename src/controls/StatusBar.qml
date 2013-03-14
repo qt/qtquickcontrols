@@ -50,7 +50,7 @@ import QtQuick.Controls.Private 1.0
 
     The common way of using StatusBar is in relation to \l ApplicationWindow.
 
-    Note that the StatusBar does not provide a layout of its own but requires
+    Note that the StatusBar does not provide a layout of its own, but requires
     you to position its contents, for instance by creating a \l Row.
 
     \code
