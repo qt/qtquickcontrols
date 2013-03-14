@@ -49,7 +49,7 @@ import "Styles/Settings.js" as Settings
     \inqmlmodule QtQuick.Controls 1.0
     \ingroup applicationwindow
     \inherits Item
-    \brief The MenuBar item provides a horizontal menu bar.
+    \brief Provides a horizontal menu bar.
 
     \code
     MenuBar {
