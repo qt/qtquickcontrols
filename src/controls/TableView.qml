@@ -348,8 +348,8 @@ ScrollView {
         highlightFollowsCurrentItem: true
         model: root.model
 
-        Keys.onUpPressed: root.decrementCurrentIndex()
-        Keys.onDownPressed: root.incrementCurrentIndex()
+        Keys.onUpPressed: root.__decrementCurrentIndex()
+        Keys.onDownPressed: root.__incrementCurrentIndex()
 
         Keys.onPressed: {
             if (event.key === Qt.Key_PageUp) {
