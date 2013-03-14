@@ -49,10 +49,57 @@
 QT_BEGIN_NAMESPACE
 
 QtMenuPopupWindow::QtMenuPopupWindow(QWindow *parent) :
-    QQuickWindow(parent), m_mouseMoved(false), m_itemAt(0)
+    QQuickWindow(parent), m_mouseMoved(false), m_itemAt(0),
+    m_parentItem(0), m_menuContentItem(0)
 {
     setFlags(Qt::Popup);
     setModality(Qt::WindowModal);
+}
+
+void QtMenuPopupWindow::show()
+{
+    qreal posx = x();
+    qreal posy = y();
+    if (QQuickWindow *parentWindow = qobject_cast<QQuickWindow *>(transientParent())) {
+        if (m_parentItem) {
+            QPointF pos = m_parentItem->mapToItem(parentWindow->contentItem(), QPointF(posx, posy));
+            posx = pos.x();
+            posy = pos.y();
+        }
+
+        posx += parentWindow->geometry().left();
+        posy += parentWindow->geometry().top();
+    }
+
+    if (m_itemAt) {
+        QPointF pos = m_itemAt->position();
+        posx -= pos.x();
+        posy -= pos.y();
+    }
+
+    if (m_menuContentItem) {
+        qreal initialWidth = qMax(qreal(1), m_menuContentItem->width());
+        qreal initialHeight = qMax(qreal(1), m_menuContentItem->height());
+        setGeometry(posx, posy, initialWidth, initialHeight);
+    } else {
+        setPosition(posx, posy);
+    }
+
+    if (!qobject_cast<QtMenuPopupWindow *>(transientParent())) // No need for parent menu windows
+        if (QQuickWindow *w = qobject_cast<QQuickWindow *>(transientParent()))
+            if (QQuickItem *mg = w->mouseGrabberItem())
+                mg->ungrabMouse();
+
+    QQuickWindow::show();
+    setMouseGrabEnabled(true); // Needs to be done after calling show()
+    setKeyboardGrabEnabled(true);
+}
+
+void QtMenuPopupWindow::setParentItem(QQuickItem *item)
+{
+    m_parentItem = item;
+    if (m_parentItem)
+        setParentWindow(m_parentItem->window());
 }
 
 void QtMenuPopupWindow::setMenuContentItem(QQuickItem *contentItem)
@@ -63,9 +110,10 @@ void QtMenuPopupWindow::setMenuContentItem(QQuickItem *contentItem)
     contentItem->setParentItem(this->contentItem());
     connect(contentItem, SIGNAL(widthChanged()), this, SLOT(updateSize()));
     connect(contentItem, SIGNAL(heightChanged()), this, SLOT(updateSize()));
+    m_menuContentItem = contentItem;
 }
 
-void QtMenuPopupWindow::setItemAt(const QQuickItem *menuItem)
+void QtMenuPopupWindow::setItemAt(QQuickItem *menuItem)
 {
     if (m_itemAt) {
         disconnect(m_itemAt, SIGNAL(xChanged()), this, SLOT(updatePosition()));

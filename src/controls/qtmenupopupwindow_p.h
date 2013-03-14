@@ -52,14 +52,24 @@ class QQuickItem;
 class QtMenuPopupWindow : public QQuickWindow
 {
     Q_OBJECT
+    Q_PROPERTY(QQuickItem *contentItem READ menuContentItem WRITE setMenuContentItem)
+    Q_CLASSINFO("DefaultProperty", "contentItem")
+    Q_PROPERTY(QQuickItem *parentItem READ parentItem WRITE setParentItem)
 public:
     QtMenuPopupWindow(QWindow *parent = 0);
+
+    QQuickItem *menuContentItem() const { return m_menuContentItem; }
     void setMenuContentItem(QQuickItem *contentItem);
-    void setItemAt(const QQuickItem *menuItem);
+
+    void setItemAt(QQuickItem *menuItem);
     void setParentWindow(QQuickWindow *parentWindow);
     void setGeometry(int posx, int posy, int w, int h);
 
+    QQuickItem *parentItem() const { return m_parentItem; }
+    void setParentItem(QQuickItem *);
+
 public Q_SLOTS:
+    void show();
     void dismissMenu();
     void updateSize();
     void updatePosition();
@@ -76,8 +86,10 @@ private:
     void forwardEventToTransientParent(QMouseEvent *);
 
     bool m_mouseMoved;
-    const QQuickItem *m_itemAt;
+    QQuickItem *m_itemAt;
     QPointF m_oldItemPos;
+    QQuickItem *m_parentItem;
+    QQuickItem *m_menuContentItem;
 };
 
 QT_END_NAMESPACE

@@ -235,40 +235,17 @@ void QtMenu::__popup(qreal x, qreal y, int atItemIndex)
         m_platformMenu->showPopup(parentWindow, screenPosition.toPoint(), atItem ? atItem->platformItem() : 0);
     } else {
         m_popupWindow = new QtMenuPopupWindow();
-        m_popupWindow->setParentWindow(parentWindow);
+        if (visualItem())
+            m_popupWindow->setParentItem(visualItem());
+        else
+            m_popupWindow->setParentWindow(parentWindow);
         m_popupWindow->setMenuContentItem(m_menuContentItem);
+        m_popupWindow->setItemAt(atItem ? atItem->visualItem() : 0);
+
         connect(m_popupWindow, SIGNAL(visibleChanged(bool)), this, SLOT(windowVisibleChanged(bool)));
 
-        if (parentWindow) {
-            if (visualItem()) {
-                QPointF pos = visualItem()->mapToItem(parentWindow->contentItem(), QPointF(x, y));
-                x = pos.x();
-                y = pos.y();
-            }
-
-            x += parentWindow->geometry().left();
-            y += parentWindow->geometry().top();
-        }
-
-        QQuickItem *visualItem = atItem ? atItem->visualItem() : 0;
-        if (visualItem) {
-            QPointF pos = visualItem->position();
-            x -= pos.x();
-            y -= pos.y();
-            m_popupWindow->setItemAt(visualItem);
-        }
-
-        qreal initialWidth = qMax(qreal(1), m_menuContentItem->width());
-        qreal initialHeight = qMax(qreal(1), m_menuContentItem->height());
-
-        if (!qobject_cast<QtMenuPopupWindow *>(parentWindow)) // No need for parent menu windows
-            if (QQuickItem *mg = parentWindow->mouseGrabberItem())
-                mg->ungrabMouse();
-
-        m_popupWindow->setGeometry(x, y, initialWidth, initialHeight);
+        m_popupWindow->setPosition(x, y);
         m_popupWindow->show();
-        m_popupWindow->setMouseGrabEnabled(true); // Needs to be done after calling show()
-        m_popupWindow->setKeyboardGrabEnabled(true);
     }
 }
 
