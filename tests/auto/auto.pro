@@ -1,2 +1,3 @@
 TEMPLATE = subdirs
-SUBDIRS += controls testplugin
+SUBDIRS += testplugin controls
+CONFIG += ordered
