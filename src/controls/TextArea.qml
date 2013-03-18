@@ -346,6 +346,33 @@ ScrollView {
     property alias wrapMode: edit.wrapMode
 
     /*!
+        \qmlproperty bool TextArea::selectByMouse
+
+        This property determines if the user can select the text with the
+        mouse.
+
+        The default value is \c true.
+    */
+    property alias selectByMouse: edit.selectByMouse
+
+    /*!
+        \qmlproperty bool TextArea::selectByKeyboard
+
+        This property determines if the user can select the text with the
+        keyboard.
+
+        If set to \c true, the user can use the keyboard to select the text
+        even if the editor is read-only. If set to \c false, the user cannot
+        use the keyboard to select the text even if the editor is editable.
+
+        The default value is \c true when the editor is editable,
+        and \c false when read-only.
+
+        \sa readOnly
+    */
+    property alias selectByKeyboard: edit.selectByKeyboard
+
+    /*!
         \qmlsignal TextArea::linkActivated(string link)
 
         This signal is emitted when the user clicks on a link embedded in the text.

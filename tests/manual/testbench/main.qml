@@ -191,6 +191,9 @@ ApplicationWindow {
                                     case "FrameVisible":
                                     case "AdjustToContentSize":
                                     case "Flat":
+                                    case "SelectByMouse":
+                                    case "SelectByKeyboard":
+                                    case "ReadOnly":
                                         layout = layouts.boolLayout
                                         typeName = "Boolean";
                                         break
