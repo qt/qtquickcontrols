@@ -149,13 +149,13 @@ QtObject {
             height: 20
             width: parent.width
             model: enumModel
-            onSelectedIndexChanged: {
+            onCurrentIndexChanged: {
                 if (!ignoreUpdate) {
-                    loader.item[name] = model.get(selectedIndex).value
+                    loader.item[name] = model.get(currentIndex).value
                     propertyChanged()
                 }
             }
-            Component.onCompleted: selectedIndex = getDefaultIndex()
+            Component.onCompleted: currentIndex = getDefaultIndex()
             function getDefaultIndex() {
                 for (var index = 0 ; index < model.count ; ++index) {
                     if ( model.get(index).value === result )

@@ -72,6 +72,7 @@ ApplicationWindow {
                 id: selector
                 width: 200
                 model: components.componentModel
+                textRole: "name"
             }
             CheckBox {
                 id: patternCheckBox
@@ -151,7 +152,7 @@ ApplicationWindow {
                 Loader {
                     id: loader
                     focus: true
-                    sourceComponent: selector.model.get(selector.selectedIndex).component
+                    sourceComponent: selector.model.get(selector.currentIndex).component
                     anchors.fill: parent
                     PropertyLayouts{ id: layouts }
                     onStatusChanged: {
