@@ -53,8 +53,6 @@ import "Styles/Settings.js" as Settings
 
 FocusScope {
     id: root
-    width: 100
-    height: 100
 
     /*! The current tab index */
     property int currentIndex: 0
