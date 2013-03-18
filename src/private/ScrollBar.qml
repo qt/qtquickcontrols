@@ -67,6 +67,7 @@ Item {
     readonly property alias downPressed: internal.downPressed
     readonly property alias pageUpPressed: internal.pageUpPressed
     readonly property alias pageDownPressed: internal.pageDownPressed
+    readonly property alias handlePressed: internal.handlePressed
 
     MouseArea {
         id: internal
@@ -88,12 +89,11 @@ Item {
         property bool scrollToClickPosition: styleItem ? styleItem.scrollToClickPosition : 0
 
         // Update hover item
-        onEntered: styleItem.activeControl = styleItem.hitTest(mouseX, mouseY)
-        onExited: styleItem.activeControl = "none"
-        onMouseXChanged: styleItem.activeControl = styleItem.hitTest(mouseX, mouseY)
+        onEntered: if (!pressed) styleItem.activeControl = styleItem.hitTest(mouseX, mouseY)
+        onExited: if (!pressed) styleItem.activeControl = "none"
+        onMouseXChanged: if (!pressed) styleItem.activeControl = styleItem.hitTest(mouseX, mouseY)
         hoverEnabled: true
 
-        property var control
         property var pressedX
         property var pressedY
         property int oldPosition
@@ -109,14 +109,20 @@ Item {
             running: internal.autoincrement
             interval: 60
             repeat: true
-            onTriggered: upPressed ? internal.decrement() : downPressed ? internal.increment() :
-                                                            pageUpPressed ? internal.decrementPage() :
-                                                                            internal.incrementPage()
+            onTriggered: {
+                if (upPressed && internal.containsMouse)
+                    internal.decrement();
+                else if (downPressed && internal.containsMouse)
+                    internal.increment();
+                else if (pageUpPressed)
+                    internal.decrementPage();
+                else if (pageDownPressed)
+                    internal.incrementPage();
+            }
         }
 
         onPositionChanged: {
-            if (pressed && control === "handle") {
-                //slider.positionAtMaximum = grooveSize
+            if (pressed && styleItem.activeControl === "handle") {
                 if (!horizontal)
                     slider.position = oldPosition + (mouseY - pressedY)
                 else
@@ -125,31 +131,31 @@ Item {
         }
 
         onPressed: {
-            control = styleItem.hitTest(mouseX, mouseY)
+            styleItem.activeControl = styleItem.hitTest(mouseX, mouseY)
             scrollToClickposition = scrollToClickPosition
             var handleRect = styleItem.subControlRect("handle")
             grooveSize =  horizontal ? styleItem.subControlRect("groove").width -
                                        handleRect.width:
                                        styleItem.subControlRect("groove").height -
                                        handleRect.height;
-            if (control == "handle") {
-                pressedX = mouseX
-                pressedY = mouseY
-                internal.handlePressed = true
-                oldPosition = slider.position
-            } else if (control == "up") {
+            if (styleItem.activeControl === "handle") {
+                pressedX = mouseX;
+                pressedY = mouseY;
+                internal.handlePressed = true;
+                oldPosition = slider.position;
+            } else if (styleItem.activeControl === "up") {
                 decrement();
-                internal.upPressed = true
-            } else if (control == "down") {
+                internal.upPressed = Qt.binding(function() {return containsMouse});
+            } else if (styleItem.activeControl === "down") {
                 increment();
-                internal.downPressed = true
+                internal.downPressed = Qt.binding(function() {return containsMouse});
             } else if (!scrollToClickposition){
-                if (control == "upPage") {
+                if (styleItem.activeControl === "upPage") {
                     decrementPage();
-                    internal.pageUpPressed = true
-                } else if (control == "downPage") {
+                    internal.pageUpPressed = true;
+                } else if (styleItem.activeControl === "downPage") {
                     incrementPage();
-                    internal.pageDownPressed = true
+                    internal.pageDownPressed = true;
                 }
             } else {
                 slider.position = horizontal ? mouseX -  handleRect.width/2
@@ -158,13 +164,13 @@ Item {
         }
 
         onReleased: {
+            styleItem.activeControl = styleItem.hitTest(mouseX, mouseY);
             autoincrement = false;
             internal.upPressed = false;
             internal.downPressed = false;
-            handlePressed = false
-            internal.pageUpPressed = false
-            internal.pageDownPressed = false
-            control = ""
+            internal.handlePressed = false;
+            internal.pageUpPressed = false;
+            internal.pageDownPressed = false;
         }
 
         function incrementPage() {

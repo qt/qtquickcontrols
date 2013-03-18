@@ -522,11 +522,10 @@ void QStyleItem::initStyleOption()
         opt->sliderPosition = value();
         opt->sliderValue = value();
         opt->activeSubControls = (activeControl() == QLatin1String("up"))
-                ? QStyle::SC_ScrollBarSubLine :
-                  (activeControl() == QLatin1String("down")) ?
+                ? QStyle::SC_ScrollBarSubLine : (activeControl() == QLatin1String("down")) ?
                       QStyle::SC_ScrollBarAddLine :
-                  (activeControl() != QLatin1String("none") || sunken()) ?
-                      QStyle::SC_ScrollBarSlider : QStyle::SC_None;
+                  (activeControl() == QLatin1String("handle")) ?
+                      QStyle::SC_ScrollBarSlider : hover() ? QStyle::SC_ScrollBarGroove : QStyle::SC_None;
         if (raised())
             opt->state |= QStyle::State_On;
 
