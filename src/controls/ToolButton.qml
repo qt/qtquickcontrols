@@ -47,9 +47,9 @@ import "Styles/Settings.js" as Settings
     \qmltype ToolButton
     \inqmlmodule QtQuick.Controls 1.0
     \ingroup applicationwindow
-    \brief ToolButton provides a button type that is typically used within a ToolBar.
+    \brief Provides a button type that is typically used within a ToolBar.
 
-     ToolButton is functionally similar to \l Button but can provide a look that is more
+     ToolButton is functionally similar to \l Button, but can provide a look that is more
      suitable within a \l ToolBar.
 
      \code
@@ -66,7 +66,7 @@ BasicButton {
     property url iconSource
 
     /*! The image label source as theme name.
-        When an icon from the platform icon theme is found this takes
+        When an icon from the platform icon theme is found, this takes
         precedence over iconSource.
     */
     property url iconName
