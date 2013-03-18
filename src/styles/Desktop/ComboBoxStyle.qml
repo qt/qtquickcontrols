@@ -69,4 +69,33 @@ Style {
     property Component popupStyle: MenuStyle {
         __menuItemType: "comboboxitem"
     }
+
+    property Component dropDownStyle: Style {
+        property Component frame: StyleItem {
+            elementType: "frame"
+
+            width: (parent ? parent.contentWidth : 0)
+            height: (parent ? parent.contentHeight : 0) + 2 * pixelMetric("defaultframewidth")
+        }
+
+        property Component menuItem: StyleItem {
+            elementType: "itemrow"
+            selected: parent ? parent.selected : false
+
+            x: pixelMetric("defaultframewidth")
+            y: pixelMetric("defaultframewidth")
+
+            implicitWidth: textItem.contentWidth
+            implicitHeight: textItem.contentHeight
+
+            StyleItem {
+                id: textItem
+                elementType: "item"
+                contentWidth: textWidth(text)
+                contentHeight: textHeight(text)
+                text: parent && parent.parent ? parent.parent.text : ""
+                selected: parent ? parent.selected : false
+            }
+        }
+    }
 }

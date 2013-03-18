@@ -47,21 +47,14 @@ import "Styles/Settings.js" as Settings
     \qmltype ComboBox
     \inqmlmodule QtQuick.Controls 1.0
     \ingroup controls
-    \brief ComboBox is a combined button and popup list.
+    \brief ComboBox is a combined button and popup or drop-down list.
 
-    Add menu items to the comboBox by either adding MenuItem children inside the popup or
-    assign it a ListModel, or a list of strings.
+    Add items to the comboBox by assigning it a ListModel, or a list of strings to the \l model property.
 
     \qml
        ComboBox {
-           model: ListModel {
-               id: menuItems
-               ListElement { text: "Banana"; color: "Yellow" }
-               ListElement { text: "Apple"; color: "Green" }
-               ListElement { text: "Coconut"; color: "Brown" }
-           }
            width: 200
-           onCurrentIndexChanged: console.debug(currentText + ", " + menuItems.get(currentIndex).color)
+           model: [ "Banana", "Apple", "Coconut" ]
        }
     \endqml
 
@@ -69,9 +62,14 @@ import "Styles/Settings.js" as Settings
 
     \qml
        ComboBox {
+           model: ListModel {
+               id: cbItems
+               ListElement { text: "Banana"; color: "Yellow" }
+               ListElement { text: "Apple"; color: "Green" }
+               ListElement { text: "Coconut"; color: "Brown" }
+           }
            width: 200
-           MenuItem { text: "Pineapple" }
-           MenuItem { text: "Grape" }
+           onCurrentIndexChanged: console.debug(currentText + ", " + cbItems.get(currentIndex).color)
        }
     \endqml
 */
@@ -79,7 +77,6 @@ import "Styles/Settings.js" as Settings
 Control {
     id: comboBox
 
-    default property alias items: popup.items
     /*! The model to populate the ComboBox from. */
     property alias model: popup.model
     property alias textRole: popup.textRole
@@ -120,20 +117,17 @@ Control {
     Menu {
         id: popup
 
-        style: __style.popupStyle
+        style: isPopup ? __style.popupStyle : __style.dropDownStyle
 
         readonly property string selectedText: items[__selectedIndex] ? items[__selectedIndex].text : ""
         property string textRole: ""
         property var model
         property int modelSize: 0
         property bool ready: false
-
-        // 'centerSelectedText' means that the menu will be positioned
-        //  so that the current text' top left corner will be at x, y.
-        property bool centerSelectedText: true
+        property bool isPopup: comboBox.__panel.popup
 
         property int x: 0
-        property int y: centerSelectedText ? 0 : comboBox.height
+        property int y: isPopup ? 0 : comboBox.height
         __minimumWidth: comboBox.width
         __visualItem: comboBox
 
@@ -200,7 +194,7 @@ Control {
             if (items[__selectedIndex])
                 items[__selectedIndex].checked = true
             __currentIndex = comboBox.currentIndex
-            __popup(x, y, centerSelectedText ? __selectedIndex : 0)
+            __popup(x, y, isPopup ? __selectedIndex : 0)
         }
     }
 

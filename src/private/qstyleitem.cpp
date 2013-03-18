@@ -424,6 +424,7 @@ void QStyleItem::initStyleOption()
             m_styleoption = new QStyleOptionComboBox();
         QStyleOptionComboBox *opt = qstyleoption_cast<QStyleOptionComboBox*>(m_styleoption);
         opt->currentText = text();
+        opt->editable = false;
     }
         break;
     case SpinBox: {
