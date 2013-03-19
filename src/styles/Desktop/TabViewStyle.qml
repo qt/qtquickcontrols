@@ -71,11 +71,12 @@ Style {
     }
 
     property Component tab: Item {
+        id: item
         property string tabpos: control.count === 1 ? "only" : index === 0 ? "beginning" : index === control.count - 1 ? "end" : "middle"
         property string selectedpos: nextSelected ? "next" : previousSelected ? "previous" : ""
         property int tabHSpace: __barstyle.pixelMetric("tabhspace");
         property int tabVSpace: __barstyle.pixelMetric("tabvspace");
-        implicitWidth: Math.max(50, textitem.width) + tabHSpace + 2
+        implicitWidth: Math.max(50, styleitem.textWidth(title)) + tabHSpace + 2
         implicitHeight: Math.max(styleitem.font.pixelSize + tabVSpace + 6, 0)
 
         StyleItem {
@@ -89,7 +90,7 @@ Style {
             hints: [tabPosition, tabpos, selectedpos]
 
             selected: tab.selected
-            text:  title
+            text: elidedText(title, tabbarItem.elide, width - item.tabHSpace)
             hover: tab.hover
             hasFocus: tabbarItem.activeFocus && selected
             anchors.margins: paintMargins

@@ -75,6 +75,8 @@ FocusScope {
     property int tabOverlap: styleItem ? styleItem.tabOverlap : 0
     property int tabBaseOverlap: styleItem ? styleItem.tabBaseOverlap : 0
 
+    property int elide: Text.ElideRight
+
     function tab(index) {
         for (var i = 0; i < tabrow.children.length; ++i) {
             if (tabrow.children[i].tabindex == index) {
