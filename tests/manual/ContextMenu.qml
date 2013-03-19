@@ -63,7 +63,7 @@ Rectangle {
             text : "Click to set color"
         }
 
-        ContextMenu {
+        Menu {
             id : editMenu
             MenuItem { text : "orange"  ; onTriggered: selectedColor = text }
             MenuItem { text : "lightsteelblue" ; onTriggered: selectedColor = text }
@@ -76,7 +76,7 @@ Rectangle {
             id: mouse
             anchors.fill: parent
             acceptedButtons : Qt.LeftButton
-            onClicked: editMenu.showPopup(mouseX, mouseY, 0)
+            onClicked: editMenu.popup()
         }
     }
 }

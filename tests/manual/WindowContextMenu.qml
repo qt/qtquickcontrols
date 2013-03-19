@@ -54,7 +54,7 @@ Window {
         text : editMenu.selectedIndex >= 0 ? editMenu.items[editMenu.selectedIndex].text : "No selection"
     }
 
-    ContextMenu {
+    Menu {
         id : editMenu
 
         MenuItem {
