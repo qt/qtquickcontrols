@@ -541,7 +541,7 @@ void QStyleItem::initStyleOption()
         m_styleoption = new QStyleOption();
 
     m_styleoption->styleObject = this;
-    m_styleoption->rect = QRect(m_paintMargins, m_paintMargins, width() - 2* m_paintMargins, height() - 2 * m_paintMargins);
+    m_styleoption->rect = QRect(m_paintMargins, 0, width() - 2* m_paintMargins, height());
 
     if (isEnabled()) {
         m_styleoption->state |= QStyle::State_Enabled;

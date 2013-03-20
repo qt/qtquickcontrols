@@ -83,9 +83,12 @@ Style {
             id: styleitem
 
             elementType: "tab"
+            paintMargins: 2
 
             anchors.fill: parent
-            anchors.leftMargin: (selected && style == "mac") ? -1 : 0
+            anchors.rightMargin: -paintMargins + (style == "mac" ? -1 : 0)
+            anchors.bottomMargin: -1
+            anchors.leftMargin: -paintMargins
 
             hints: [tabPosition, tabpos, selectedpos]
 
@@ -93,7 +96,6 @@ Style {
             text: elidedText(title, tabbarItem.elide, width - item.tabHSpace)
             hover: tab.hover
             hasFocus: tabbarItem.activeFocus && selected
-            anchors.margins: paintMargins
 
             Text {
                 id: textitem
