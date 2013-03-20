@@ -46,8 +46,8 @@ import "Styles/Settings.js" as Settings
 /*!
     \qmltype Menu
     \inqmlmodule QtQuick.Controls 1.0
-    \ingroup applicationwindow
-    \brief Provides a menu component for use in menu bars, context menus,
+    \ingroup menus
+    \brief Provides a menu component for use in menu bars, as context menu,
     and other popup menus.
 
     \code
@@ -85,14 +85,14 @@ import "Styles/Settings.js" as Settings
     \endcode
 
     The main uses for menus:
-    \table
-    \row
+    \list
+    \li
        as a \e top-level menu in a \l MenuBar
-    \row
+    \li
        as a \e submenu inside another menu
-    \row
+    \li
        as a standalone or \e context menu
-    \endtable
+    \endlist
 
     Note that some properties, such as \c enabled, \c text, or \c iconSource,
     only make sense in a particular use case of the menu.
@@ -103,8 +103,10 @@ import "Styles/Settings.js" as Settings
 MenuPrivate {
     id: root
 
-    /*!
-        Adds a submenu to the menu. Returns the newly created \l Menu.
+    /*! \internal
+      \omit
+      See qtmenu.cpp.
+      \endomit
     */
     function addMenu(title) {
         if (!__selfComponent)
@@ -114,7 +116,7 @@ MenuPrivate {
         return submenu
     }
 
-    /*! internal */
+    /*! \internal */
     property Component __selfComponent: null
 
     /*! \internal */

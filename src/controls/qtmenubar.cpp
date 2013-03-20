@@ -62,7 +62,7 @@ QT_BEGIN_NAMESPACE
  */
 
 /*!
-    \qmlproperty readonly list MenuBar::menus
+    \qmlproperty list<Menu> MenuBar::menus
     \default
 
     The list of menus in the menubar.

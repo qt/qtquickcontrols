@@ -126,7 +126,7 @@ void QtMenuBase::setVisualItem(QQuickItem *item)
     \instantiates QtMenuSeparator
     \inqmlmodule QtQuick.Controls 1.0
     \ingroup menus
-    \brief MenuSeparator provides a separator for your items inside a menu.
+    \brief MenuSeparator provides a separator for items inside a menu.
 
     \sa Menu, MenuItem
 */
@@ -135,6 +135,12 @@ void QtMenuBase::setVisualItem(QQuickItem *item)
     \qmlproperty bool MenuSeparator::visible
 
     Whether the menu separator should be visible.
+*/
+
+/*!
+    \qmlproperty enumeration MenuSeparator::type
+
+    This property is read-only and constant, and its value is \l MenuItemType.Separator.
 */
 
 QtMenuSeparator::QtMenuSeparator(QObject *parent)
@@ -269,30 +275,40 @@ void QtMenuText::updateIcon()
 /*!
     \qmlproperty bool MenuItem::visible
 
-    Whether the menu item should be visible.
+    Whether the menu item should be visible. Defaults to \c true.
+*/
+
+/*!
+    \qmlproperty enumeration MenuItem::type
+
+    This property is read-only and constant, and its value is \l MenuItemType.Item.
 */
 
 /*!
     \qmlproperty string MenuItem::text
 
-    Text for the menu item. Can be overridden after setting \l action.
+    Text for the menu item. Overrides the item's bound action \c text property.
 
     Mnemonics are supported by prefixing the shortcut letter with \&.
     For instance, \c "\&Open" will bind the \c Alt-O shortcut to the
     \c "Open" menu item. Note that not all platforms support mnemonics.
+
+    Defaults to the empty string.
+
+    \sa Action::text
 */
 
 /*!
     \qmlproperty bool MenuItem::enabled
 
-    Whether the menu item is enabled, and responsive to user interaction.
+    Whether the menu item is enabled, and responsive to user interaction. Defaults to \c true.
 */
 
 /*!
     \qmlproperty url MenuItem::iconSource
 
     Sets the icon file or resource url for the \l MenuItem icon.
-    Can be overridden after setting \l action.
+    Overrides the item's bound action \c iconSource property. Defaults to the empty URL.
 
     \sa iconName, Action::iconSource
 */
@@ -301,8 +317,8 @@ void QtMenuText::updateIcon()
     \qmlproperty string MenuItem::iconName
 
     Sets the icon name for the \l MenuItem icon. This will pick the icon
-    with the given name from the current theme. Can be overridden after
-    setting \l action.
+    with the given name from the current theme. Overrides the item's bound
+    action \c iconName property. Defaults to the empty string.
 
     \sa iconSource, Action::iconName
 */
@@ -324,7 +340,7 @@ void QtMenuText::updateIcon()
 /*!
     \qmlproperty string MenuItem::shortcut
 
-    Shorcut bound to the menu item.
+    Shorcut bound to the menu item. Defaults to the empty string.
 
     \sa Action::shortcut
 */
@@ -332,7 +348,7 @@ void QtMenuText::updateIcon()
 /*!
     \qmlproperty bool MenuItem::checkable
 
-    Whether the menu item can be checked, or toggled.
+    Whether the menu item can be checked, or toggled. Defaults to \c false.
 
     \sa checked
 */
@@ -340,7 +356,7 @@ void QtMenuText::updateIcon()
 /*!
     \qmlproperty bool MenuItem::checked
 
-    If the menu item is checkable, this property reflects its checked state.
+    If the menu item is checkable, this property reflects its checked state. Defaults to \c false.
 
     \sa checkable, Action::toggled()
 */
@@ -348,8 +364,11 @@ void QtMenuText::updateIcon()
 /*! \qmlproperty ExclusiveGroup MenuItem::exclusiveGroup
 
     If a menu item is checkable, an \l ExclusiveGroup can be attached to it.
-    All the menu items sharing the same exclusive group become mutually exclusive
-    selectable, meaning that only the last checked menu item will actually be checked.
+    All the menu items sharing the same exclusive group, and by extension, any \l Action sharing it,
+    become mutually exclusive selectable, meaning that only the last checked menu item will
+    actually be checked.
+
+    Defaults to \c null, meaning no exclusive behavior is to be expected.
 
     \sa checked, checkable
 */
@@ -365,14 +384,14 @@ void QtMenuText::updateIcon()
 /*!
     \qmlproperty Action MenuItem::action
 
-    The action bound to this menu item. Setting this property to a valid
-    \l Action will override all the menu item's properties except \l text,
-    \l iconSource, and \l iconName.
+    The action bound to this menu item. It will provide values for all the properties of the menu item.
+    However, it is possible to override the action's \c text, \c iconSource, and \c iconName
+    properties by just assigning these properties, allowing some customization.
 
     In addition, the menu item \c triggered() and \c toggled() signals will not be emitted.
     Instead, the action \c triggered() and \c toggled() signals will be.
 
-    \sa Action
+    Defaults to \c null, meaning no action is bound to the menu item.
 */
 
 QtMenuItem::QtMenuItem(QObject *parent)

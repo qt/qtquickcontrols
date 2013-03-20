@@ -115,7 +115,7 @@ public Q_SLOTS:
 
 Q_SIGNALS:
     void triggered();
-    void toggled(bool);
+    void toggled(bool checked);
 
     void textChanged();
     void shortcutChanged(QString shortcut);

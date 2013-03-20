@@ -92,17 +92,34 @@ static bool isChecked(const QObject *o)
 
     \endcode
 
-    Several controls already support \c ExclusiveGroup, e.g. \l MenuItem, \l Button, and \l RadioButton.
+    Several controls already support \l ExclusiveGroup, e.g. \l Action, \l MenuItem, \l Button, and \l RadioButton.
 
-    It is possible to add support for \c ExclusiveGroup for an object, or control. It should have a \c checked
+    It is possible to add support for \l ExclusiveGroup for an object, or control. It should have a \c checked
     property, and either a \c checkedChanged, \c toggled(), or \c toggled(bool) signal. It also needs
-    to be bound with \c ExclusiveGroup::bindCheckable(object) when its \c ExclusiveGroup property is set.
+    to be bound with \l ExclusiveGroup::bindCheckable(object) when its \l ExclusiveGroup ty[ped property is set.
+
+    \code
+    Item {
+        id: myItem
+
+        property bool checked: false
+        property ExclusiveGroup exclusiveGroup: null
+
+        onExclusiveGroupChanged: {
+            if (exclusiveGroup)
+                exclusiveGroup.bindCheckable(myItem)
+        }
+    }
+    \endcode
+
+    The example above shows the minimum necessary to add \l ExclusiveGroup support to any item.
 */
 
 /*!
-    \qmlproperty QtObject ExclusiveGroup::current
+    \qmlproperty object ExclusiveGroup::current
 
-    The currently selected object.
+    The currently selected object. Defaults to the first checked object bound to the \l ExclusiveGroup.
+    If there is none, then it defaults to \c null.
 */
 
 /*!
@@ -166,7 +183,7 @@ void QtExclusiveGroup::bindCheckable(QObject *o)
         }
     }
 
-    qWarning() << "QtExclusiveGroup::bindCheckable(): Cannot register" << o;
+    qWarning() << "QtExclusiveGroup::bindCheckable(): Cannot bind to" << o;
 }
 
 void QtExclusiveGroup::unbindCheckable(QObject *o)

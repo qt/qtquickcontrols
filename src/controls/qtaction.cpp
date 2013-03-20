@@ -53,46 +53,113 @@ QT_BEGIN_NAMESPACE
     \inqmlmodule QtQuick.Controls 1.0
     \brief Action provides an abstract user interface action that can be bound to items
 
-    \sa MenuItem, ExclusiveGroup
+    In applications many common commands can be invoked via menus, toolbar buttons, and keyboard
+    shortcuts. Since the user expects each command to be performed in the same way, regardless of
+    the user interface used, it is useful to represent each command as an \e action.
+
+    An action can be bound to a menu item and a toolbar button, and it will automatically keep them in sync.
+    For example, in a word processor, if the user presses a Bold toolbar button, the Bold menu item will
+    automatically be checked.
+
+    QtQuick Controls supports actions in \l Button, \l ToolButton, and \l MenuItem.
 */
 
 /*!
     \qmlproperty string Action::text
+
+    Text for the action. This text will show as the button text, or
+    as title in a menu item.
+
+    Mnemonics are supported by prefixing the shortcut letter with \&.
+    For instance, \c "\&Open" will bind the \c Alt-O shortcut to the
+    \c "Open" menu item. Note that not all platforms support mnemonics.
+
+    Defaults to the empty string.
 */
 
 /*!
     \qmlproperty url Action::iconSource
+
+    Sets the icon file or resource url for the action. Defaults to the empty URL.
 */
 
 /*!
     \qmlproperty string Action::iconName
+
+    Sets the icon name for the action. This will pick the icon
+    with the given name from the current theme.
+
+    Defaults to the empty string.
 */
 
 /*!
     \qmlproperty string Action::tooltip
+
+    Tooltip to be shown when hovering the control bound to this action.
+    Not all controls support tooltips on all platforms, especially \l MenuItem.
+
+    Defaults to the empty string.
 */
 
 /*!
     \qmlproperty bool Action::enabled
+
+    Whether the action is enabled, and can be triggered. Defaults to \c true.
+
+    \sa tigger(), triggered()
 */
 
 /*!
     \qmlproperty bool Action::checkable
+
+     Whether the menu item can be checked, or toggled. Defaults to \c false.
+
+     \sa checked, exclusiveGroup
 */
 
 /*!
     \qmlproperty bool Action::checked
 
+    If the action is \l checkable, this property reflects its checked state. Defaults to \c false.
+    Its value is also false while \l checkable is false.
+
+    \sa toggled(), exclusiveGroup
 */
 
 /*!
     \qmlproperty ExclusiveGroup Action::exclusiveGroup
 
-    \sa ExclusiveGroup
+    If an action is checkable, an \l ExclusiveGroup can be attached to it.
+    All the actions sharing the same exclusive group become mutually exclusive
+    selectable, meaning that only the last checked action will actually be checked.
+
+    Defaults to \c null, meaning no exclusive behavior is to be expected.
+
+    \sa checkable, checked
 */
 
 /*!
     \qmlproperty string Action::shortcut
+
+    Shortcut bound to the action. Defaults to the empty string.
+*/
+
+/*! \qmlsignal Action::triggered()
+
+    Emitted when either the menu item or its bound action have been activated.
+    You shouldn't need to emit this signal, use \l trigger() instead.
+*/
+
+/*! \qmlmethod Action::trigger()
+
+    Will emit the \l triggered() signal if the action is enabled. Will also emit the
+    \l toggled() signal if it is checkable.
+*/
+
+/*! \qmlsignal Action::toggled(checked)
+
+    Emitted whenever a action's \l checked property changes.
+    This usually happens at the same time as \l triggered().
 */
 
 QtAction::QtAction(QObject *parent)

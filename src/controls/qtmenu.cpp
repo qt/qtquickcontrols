@@ -67,10 +67,42 @@ QT_BEGIN_NAMESPACE
  */
 
 /*!
-    \qmlproperty readonly list Menu::items
+    \qmlproperty list<Object> Menu::items
     \default
 
     The list of items in the menu.
+
+    \l Menu only accepts objects of type \l Menu, \l MenuItem, and \l MenuSeparator
+    as children. It also supports \l Instantiator objects as long as the insertion is
+    being done manually using \l insertItem().
+
+    \code
+    Menu {
+        id: recentFilesMenu
+
+        Instantiator {
+            model: recentFilesModel
+            MenuItem {
+                text: model.fileName
+            }
+            onObjectAdded: recentFilesMenu.insertItem(index, object)
+            onObjectRemoved: recentFilesMenu.removeItem(object)
+        }
+
+        MenuSeparator {
+            visible: recentFilesModel.count > 0
+        }
+
+        MenuItem {
+            text: "Clear menu"
+            enabled: recentFilesModel.count > 0
+            onTriggered: recentFilesModel.clear()
+        }
+    \endcode
+
+    Note that in this case, the \c index parameter passed to \l insertItem() is relative
+    to the position of the \l Instatiator in the menu, as opposed to absolute position
+    in the menu.
 
     \sa MenuItem, MenuSeparator
 */
@@ -79,7 +111,13 @@ QT_BEGIN_NAMESPACE
     \qmlproperty bool Menu::visible
 
     Whether the menu should be visible. This is only enabled when the menu is used as
-    a submenu.
+    a submenu. Its value defaults to \c true.
+*/
+
+/*!
+    \qmlproperty enumeration Menu::type
+
+    This property is read-only and constant, and its value is \l MenuItemType.Menu.
 */
 
 /*!
@@ -90,18 +128,22 @@ QT_BEGIN_NAMESPACE
     Mnemonics are supported by prefixing the shortcut letter with \&.
     For instance, \c "\&File" will bind the \c Alt-F shortcut to the
     \c "File" menu. Note that not all platforms support mnemonics.
+
+    Its value defaults to the empty string.
 */
 
 /*!
     \qmlproperty bool Menu::enabled
 
     Whether the menu is enabled, and responsive to user interaction as a submenu.
+    Its value defaults to \c true.
 */
 
 /*!
     \qmlproperty url Menu::iconSource
 
     Sets the icon file or resource url for the menu icon as a submenu.
+    Defaults to the empty URL.
 
     \sa iconName
 */
@@ -111,6 +153,8 @@ QT_BEGIN_NAMESPACE
 
     Sets the icon name for the menu icon. This will pick the icon
     with the given name from the current theme. Only works as a submenu.
+
+    Its value defaults to the empty string.
 
     \sa iconSource
 */
@@ -123,7 +167,7 @@ QT_BEGIN_NAMESPACE
 */
 
 /*!
-    \qmlmethod MenuItem Menu::addItem(text)
+    \qmlmethod MenuItem Menu::addItem(string text)
 
     Adds an item to the menu. Returns the newly created \l MenuItem.
 */
@@ -135,7 +179,12 @@ QT_BEGIN_NAMESPACE
 */
 
 /*!
-    \qmlmethod void Menu::insertItem(before, item)
+    \qmlmethod Menu Menu::addMenu(string title)
+    Adds a submenu to the menu. Returns the newly created \l Menu.
+*/
+
+/*!
+    \qmlmethod void Menu::insertItem(int before, object item)
 
     Inserts the \c item at the index \c before in the current menu.
     In this case, \c item can be either a \l MenuItem, a \l MenuSeparator,
@@ -152,10 +201,6 @@ QT_BEGIN_NAMESPACE
     or a \l Menu.
 
     \sa insertItem()
-*/
-
-/*!
-    \qmlproperty var Menu::model
 */
 
 QtMenu::QtMenu(QObject *parent)
