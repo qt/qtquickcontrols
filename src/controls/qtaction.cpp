@@ -286,6 +286,12 @@ void QtAction::setCheckable(bool c)
         return;
     m_checkable = c;
     emit checkableChanged();
+
+    // Setting checkable to false will show checked as false, while setting checkable to
+    // true will reveal checked's value again. If checked's internal value is true, we send
+    // the signal to notify its visible value.
+    if (m_checked)
+        emit toggled(m_checkable);
 }
 
 void QtAction::setChecked(bool c)
@@ -293,7 +299,10 @@ void QtAction::setChecked(bool c)
     if (c == m_checked)
         return;
     m_checked = c;
-    emit toggled(m_checked);
+
+    // Its value shows as false while checkable is false. See also comment in setCheckable().
+    if (m_checkable)
+        emit toggled(m_checked);
 }
 
 QtExclusiveGroup *QtAction::exclusiveGroup() const

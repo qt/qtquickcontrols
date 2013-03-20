@@ -98,7 +98,7 @@ public:
     bool isCheckable() const { return m_checkable; }
     void setCheckable(bool c);
 
-    bool isChecked() const { return m_checked; }
+    bool isChecked() const { return m_checkable && m_checked; }
     void setChecked(bool c);
 
     QtExclusiveGroup *exclusiveGroup() const;
