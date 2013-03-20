@@ -195,6 +195,7 @@ void QQuickGridLayoutBase::itemChange(ItemChange change, const ItemChangeData &v
         QObject::connect(item, SIGNAL(destroyed()), this, SLOT(onItemDestroyed()));
         QObject::connect(item, SIGNAL(visibleChanged()), this, SLOT(onItemVisibleChanged()));
         QObject::connect(item, SIGNAL(implicitWidthChanged()), this, SLOT(onItemImplicitSizeChanged()));
+        QObject::connect(item, SIGNAL(implicitHeightChanged()), this, SLOT(onItemImplicitSizeChanged()));
 
         if (isComponentComplete() && isVisible())
             updateLayoutItems();
@@ -204,6 +205,7 @@ void QQuickGridLayoutBase::itemChange(ItemChange change, const ItemChangeData &v
         QObject::disconnect(item, SIGNAL(destroyed()), this, SLOT(onItemDestroyed()));
         QObject::disconnect(item, SIGNAL(visibleChanged()), this, SLOT(onItemVisibleChanged()));
         QObject::disconnect(item, SIGNAL(implicitWidthChanged()), this, SLOT(onItemImplicitSizeChanged()));
+        QObject::disconnect(item, SIGNAL(implicitHeightChanged()), this, SLOT(onItemImplicitSizeChanged()));
         if (isComponentComplete() && isVisible())
             updateLayoutItems();
     }
@@ -297,9 +299,10 @@ void QQuickGridLayoutBase::onItemDestroyed()
 
 void QQuickGridLayoutBase::onItemImplicitSizeChanged()
 {
-    //QQuickItem *item = static_cast<QQuickItem *>(sender());
-    //Q_ASSERT(item);
-    //invalidate(item);
+    QQuickItem *item = static_cast<QQuickItem *>(sender());
+    Q_ASSERT(item);
+    invalidate(item);
+    propagateLayoutSizeHints();
 }
 
 void QQuickGridLayoutBase::rearrange(const QSizeF &size)
