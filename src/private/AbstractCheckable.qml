@@ -142,7 +142,8 @@ Control {
     Keys.onReleased: {
         if (event.key === Qt.Key_Space && !event.isAutoRepeat && mouseArea.keyPressed) {
             mouseArea.keyPressed = false;
-            __cycleStatesHandler();
+            if (!exclusiveGroup || !checked)
+                __cycleStatesHandler();
             clicked();
         }
     }
