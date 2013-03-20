@@ -192,11 +192,12 @@ ApplicationWindow {
             ToolButton { action: copy }
             ToolButton { action: cut }
             ToolButton { action: paste }
-
+            Item { width: 4 }
             ToolButton { action: bold }
             ToolButton { action: italic }
             ToolButton { action: underline }
 
+            Item { width: 4 }
             ToolButton { action: alignLeft }
             ToolButton { action: alignCenter }
             ToolButton { action: alignRight }
@@ -209,6 +210,7 @@ ApplicationWindow {
 
         RowLayout {
             anchors.fill: parent
+            anchors.margins: 4
             ComboBox {
                 model: document.defaultFontSizes
                 onCurrentTextChanged: document.fontSize = currentText
