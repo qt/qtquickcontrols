@@ -54,9 +54,6 @@ Style {
         hasFocus: control.activeFocus
         hints: control.styleHints.concat([control.__position])
 
-        contentWidth: 30
-        contentHeight: 30
-
         properties: {
             "icon": control.__action.__icon
         }

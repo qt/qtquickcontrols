@@ -155,10 +155,18 @@ ApplicationWindow {
         onAccepted: document.fileUrl = fileUrl
     }
 
+    Action {
+        id: fileOpen
+        iconSource: "images/fileopen.png"
+        iconName: "document-open"
+        text: "Open"
+        onTriggered: file.open()
+    }
+
     menuBar: MenuBar {
         Menu {
             title: "&File"
-            MenuItem { text: "Open"; onTriggered: file.open() }
+            MenuItem { action: fileOpen }
             MenuItem { text: "Quit"; onTriggered: Qt.quit() }
         }
         Menu {
@@ -191,6 +199,11 @@ ApplicationWindow {
         id: mainToolBar
         width: parent.width
         RowLayout {
+            anchors.fill: parent
+            spacing: 1
+            ToolButton { action: fileOpen }
+
+            Item { width: 4 }
             ToolButton { action: copy }
             ToolButton { action: cut }
             ToolButton { action: paste }
@@ -204,6 +217,7 @@ ApplicationWindow {
             ToolButton { action: alignCenter }
             ToolButton { action: alignRight }
             ToolButton { action: alignJustify }
+            Item { Layout.horizontalSizePolicy: Layout.Expanding }
         }
     }
     ToolBar {

@@ -663,9 +663,31 @@ QSize QStyleItem::sizeFromContents(int width, int height)
         break;
     case ToolButton: {
         QStyleOptionToolButton *btn = qstyleoption_cast<QStyleOptionToolButton*>(m_styleoption);
-        int newWidth = qMax(width, btn->fontMetrics.width(btn->text));
-        int newHeight = qMax(height, btn->fontMetrics.height());
-        size = qApp->style()->sizeFromContents(QStyle::CT_ToolButton, m_styleoption, QSize(newWidth, newHeight)); }
+        int w = 0;
+        int h = 0;
+        if (btn->toolButtonStyle != Qt::ToolButtonTextOnly) {
+            QSize icon = btn->iconSize;
+            w = icon.width();
+            h = icon.height();
+        }
+        if (btn->toolButtonStyle != Qt::ToolButtonIconOnly) {
+            QSize textSize = btn->fontMetrics.size(Qt::TextShowMnemonic, text());
+            textSize.setWidth(textSize.width() + btn->fontMetrics.width(QLatin1Char(' '))*2);
+            if (btn->toolButtonStyle == Qt::ToolButtonTextUnderIcon) {
+                h += 4 + textSize.height();
+                if (textSize.width() > w)
+                    w = textSize.width();
+            } else if (btn->toolButtonStyle == Qt::ToolButtonTextBesideIcon) {
+                w += 4 + textSize.width();
+                if (textSize.height() > h)
+                    h = textSize.height();
+            } else { // TextOnly
+                w = textSize.width();
+                h = textSize.height();
+            }
+        }
+        btn->rect.setSize(QSize(w, h));
+        size = qApp->style()->sizeFromContents(QStyle::CT_ToolButton, m_styleoption, QSize(w, h)); }
         break;
     case Button: {
         QStyleOptionButton *btn = qstyleoption_cast<QStyleOptionButton*>(m_styleoption);
