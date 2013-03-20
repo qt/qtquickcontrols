@@ -68,13 +68,11 @@ Item {
                     text: "Button 1"
                     width: 96
                     tooltip:"This is an interesting tool tip"
-                    KeyNavigation.tab: button2
                 }
                 Button {
                     id:button2
                     text:"Button 2"
                     width:96
-                    KeyNavigation.tab: combo
                 }
             }
             ComboBox {
@@ -82,7 +80,6 @@ Item {
                 model: choices;
                 width: parent.width;
                 currentIndex: 2
-                KeyNavigation.tab: t1
             }
             Row {
                 spacing: 8
@@ -92,18 +89,14 @@ Item {
 
                     minimumValue: -50
                     value: -20
-
-                    KeyNavigation.tab: t2
                 }
                 SpinBox {
                     id: t2
                     width:97
-                    KeyNavigation.tab: t3
                 }
             }
             TextField {
                 id: t3
-                KeyNavigation.tab: slider
                 placeholderText: "This is a placeholder for a TextField"
                 width: 200
             }
@@ -118,7 +111,6 @@ Item {
                 id: slider
                 value: 0.5
                 tickmarksEnabled: tickmarkCheck.checked
-                KeyNavigation.tab: frameCheckbox
             }
         }
         Column {
@@ -138,20 +130,17 @@ Item {
                         id: frameCheckbox
                         text: "Text frame"
                         checked: true
-                        KeyNavigation.tab: tickmarkCheck
                         width: 100
                     }
                     CheckBox {
                         id: tickmarkCheck
                         text: "Tickmarks"
                         checked: false
-                        KeyNavigation.tab: wrapCheck
                     }
                     CheckBox {
                         id: wrapCheck
                         text: "Word wrap"
                         checked: true
-                        KeyNavigation.tab: r1
                     }
                 }
             }
@@ -164,7 +153,6 @@ Item {
                     RadioButton {
                         id: r1
                         text: "Top"
-                        KeyNavigation.tab: r2
                         checked: true
                         exclusiveGroup: tabPositionGroup
                         width: 100
@@ -172,7 +160,6 @@ Item {
                     RadioButton {
                         id: r2
                         text: "Bottom"
-                        KeyNavigation.tab: area
                         exclusiveGroup: tabPositionGroup
                     }
                 }
@@ -182,7 +169,6 @@ Item {
                 id: area
                 frameVisible: frameCheckbox.checked
                 text: loremIpsum + loremIpsum
-                KeyNavigation.tab: button1
                 wrapMode: wrapCheck.checked ? TextEdit.WordWrap : TextEdit.NoWrap
                 width: contentRow.width - firstColumn.width - contentRow.spacing
                 height: parent.height - group1.height - group2.height - 2 * parent.spacing
