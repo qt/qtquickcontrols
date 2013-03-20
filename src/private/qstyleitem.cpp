@@ -260,6 +260,8 @@ void QStyleItem::initStyleOption()
         opt->subControls = QStyle::SC_ToolButton;
         opt->state |= QStyle::State_AutoRaise;
         opt->activeSubControls = QStyle::SC_ToolButton;
+        opt->toolButtonStyle = Qt::ToolButtonIconOnly;
+        opt->text = text();
         opt->icon = m_properties["icon"].value<QIcon>();
         int e = qApp->style()->pixelMetric(QStyle::PM_ToolBarIconSize, m_styleoption, 0);
         opt->iconSize = QSize(e, e);
@@ -671,7 +673,7 @@ QSize QStyleItem::sizeFromContents(int width, int height)
             h = icon.height();
         }
         if (btn->toolButtonStyle != Qt::ToolButtonIconOnly) {
-            QSize textSize = btn->fontMetrics.size(Qt::TextShowMnemonic, text());
+            QSize textSize = btn->fontMetrics.size(Qt::TextShowMnemonic, btn->text);
             textSize.setWidth(textSize.width() + btn->fontMetrics.width(QLatin1Char(' '))*2);
             if (btn->toolButtonStyle == Qt::ToolButtonTextUnderIcon) {
                 h += 4 + textSize.height();

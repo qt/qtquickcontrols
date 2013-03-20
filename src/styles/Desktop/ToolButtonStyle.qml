@@ -53,6 +53,7 @@ Style {
         hover: control.__containsMouse
         hasFocus: control.activeFocus
         hints: control.styleHints.concat([control.__position])
+        text: control.text
 
         properties: {
             "icon": control.__action.__icon
