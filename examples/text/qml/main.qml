@@ -50,6 +50,8 @@ ApplicationWindow {
     minimumWidth: 400
     minimumHeight: 300
 
+    title: document.documentTitle + " - Text Editor Example"
+
     Action {
         id: cut
         text: "Cut"

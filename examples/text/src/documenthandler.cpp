@@ -43,6 +43,7 @@
 #include <QtGui/QTextDocument>
 #include <QtGui/QTextCursor>
 #include <QtGui/QFontDatabase>
+#include <QtCore/QFileInfo>
 
 DocumentHandler::DocumentHandler()
     : m_target(0)
@@ -74,16 +75,38 @@ void DocumentHandler::setFileUrl(const QUrl &arg)
 {
     if (m_fileUrl != arg) {
         m_fileUrl = arg;
-        if (QFile::exists(QQmlFile::urlToLocalFileOrQrc(arg))) {
-            QFile file(QQmlFile::urlToLocalFileOrQrc(arg));
+        QString fileName = QQmlFile::urlToLocalFileOrQrc(arg);
+        if (QFile::exists(fileName)) {
+            QFile file(fileName);
             if (file.open(QFile::ReadOnly)) {
                 QByteArray data = file.readAll();
                 QTextCodec *codec = QTextCodec::codecForHtml(data);
                 setText(codec->toUnicode(data));
+                if (m_doc)
+                    m_doc->setModified(false);
+                if (fileName.isEmpty())
+                    m_documentTitle = QStringLiteral("untitled.txt");
+                else
+                    m_documentTitle = QFileInfo(fileName).fileName();
+
                 emit textChanged();
+                emit documentTitleChanged();
             }
         }
         emit fileUrlChanged();
+    }
+}
+
+QString DocumentHandler::documentTitle() const
+{
+    return m_documentTitle;
+}
+
+void DocumentHandler::setDocumentTitle(QString arg)
+{
+    if (m_documentTitle != arg) {
+        m_documentTitle = arg;
+        emit documentTitleChanged();
     }
 }
 
