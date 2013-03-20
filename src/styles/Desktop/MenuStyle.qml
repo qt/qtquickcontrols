@@ -88,7 +88,7 @@ Style {
             "checkable": !!menuItem && !!menuItem["checkable"],
             "exclusive": !!menuItem && !!menuItem["exclusiveGroup"],
             "shortcut": !!menuItem && menuItem["shortcut"] || "",
-            "hasSubmenu": hasSubmenu,
+            "isSubmenu": isSubmenu,
             "icon": !!menuItem && menuItem.__icon
         }
     }

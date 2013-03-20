@@ -368,7 +368,7 @@ void QStyleItem::initStyleOption()
         } else {
             opt->text = text();
 
-            if (m_properties["hasSubmenu"].toBool()) {
+            if (m_properties["isSubmenu"].toBool()) {
                 opt->menuItemType = QStyleOptionMenuItem::SubMenu;
             } else {
                 QString shortcut = m_properties["shortcut"].toString();

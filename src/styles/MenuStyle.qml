@@ -72,7 +72,7 @@ Style {
         Text {
             id: text
             visible: !isSeparator
-            text: menuItem.text + (hasSubmenu ? "  \u25b6" : "")
+            text: menuItem.text + (isSubmenu ? "  \u25b6" : "")
             x: 6
             anchors.verticalCenter: parent.verticalCenter
             renderType: Text.NativeRendering

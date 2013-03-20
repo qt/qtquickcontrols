@@ -103,6 +103,20 @@ import "Styles/Settings.js" as Settings
 MenuPrivate {
     id: root
 
+    /*!
+        Adds a submenu to the menu. Returns the newly created \l Menu.
+    */
+    function addMenu(title) {
+        if (!__selfComponent)
+            __selfComponent = Qt.createComponent("Menu.qml", root)
+        var submenu = __selfComponent.createObject(__selfComponent, { "title": title })
+        root.insertItem(items.length, submenu)
+        return submenu
+    }
+
+    /*! internal */
+    property Component __selfComponent: null
+
     /*! \internal */
     property Component style: Qt.createComponent(Settings.THEME_PATH + "/MenuStyle.qml", root)
 
@@ -183,7 +197,7 @@ MenuPrivate {
 
         Keys.onRightPressed: {
             var item = itemsRepeater.itemAt(root.__currentIndex)
-            if (item && item.hasSubmenu) {
+            if (item && item.isSubmenu) {
                 item.showSubMenu(true)
                 item.menuItem.__currentIndex = 0
             }
@@ -197,7 +211,7 @@ MenuPrivate {
             var item = itemsRepeater.itemAt(root.__currentIndex)
             if (item && !item.isSeparator) {
                 root.__dismissMenu()
-                if (!item.hasSubmenu)
+                if (!item.isSubmenu)
                     item.menuItem.trigger()
             }
         }
@@ -229,12 +243,12 @@ MenuPrivate {
             function updateCurrentItem(mouse) {
                 var pos = mapToItem(column, mouse.x, mouse.y)
                 if (!currentItem || !currentItem.contains(Qt.point(pos.x - currentItem.x, pos.y - currentItem.y))) {
-                    if (currentItem && !pressed && currentItem.hasSubmenu)
+                    if (currentItem && !pressed && currentItem.isSubmenu)
                         currentItem.closeSubMenu()
                     currentItem = column.childAt(pos.x, pos.y)
                     if (currentItem) {
                         root.__currentIndex = currentItem.menuItemIndex
-                        if (currentItem.hasSubmenu && !currentItem.menuItem.__popupVisible)
+                        if (currentItem.isSubmenu && !currentItem.menuItem.__popupVisible)
                             currentItem.showSubMenu(false)
                     } else {
                         root.__currentIndex = -1
@@ -255,10 +269,10 @@ MenuPrivate {
                         id: menuItemLoader
 
                         property var menuItem: modelData
-                        property bool isSeparator: menuItem ? !menuItem.hasOwnProperty("enabled") : true
-                        property bool hasSubmenu: menuItem ? !!menuItem["items"] : false
+                        readonly property bool isSeparator: !!menuItem && menuItem.type === MenuItemType.Separator
+                        readonly property bool isSubmenu: !!menuItem && menuItem.type === MenuItemType.Menu
                         property bool selected: !isSeparator && root.__currentIndex === index
-                        property string text: hasSubmenu ? menuItem.title : !isSeparator ? menuItem.text : ""
+                        property string text: isSubmenu ? menuItem.title : !isSeparator ? menuItem.text : ""
 
                         property int menuItemIndex: index
 

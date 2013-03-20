@@ -74,6 +74,7 @@ class QtMenu : public QtMenuText
 public:
     Q_INVOKABLE void popup();
     Q_INVOKABLE QtMenuItem *addItem(QString);
+    Q_INVOKABLE QtMenuSeparator *addSeparator();
 
     Q_INVOKABLE void __popup(qreal x, qreal y, int atActionIndex = -1);
 
@@ -115,6 +116,7 @@ public:
     QQuickItem *menuContentItem() const { return m_menuContentItem; }
     bool popupVisible() const { return m_popupVisible; }
 
+    QtMenuItemType::MenuItemType type() { return QtMenuItemType::Menu; }
     bool isNative() { return m_platformMenu != 0; }
 
 protected Q_SLOTS:

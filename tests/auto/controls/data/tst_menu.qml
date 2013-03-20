@@ -93,13 +93,20 @@ TestCase {
 
     Component {
         id: modelCreationComponent
-        // TODO Update when model patch is in
-        // Menu { MenuItemRepeater { model: testcase.itemsText MenuItem { text: modelData } }
-        Menu {}
+        Menu {
+            id: modelMenu
+            Instantiator {
+                model: itemsText
+                MenuItem {
+                    text: modelData
+                }
+                onObjectAdded: modelMenu.insertItem(index, object)
+            }
+
+        }
     }
 
     function test_modelCreation() {
-        testcase.skip("No support for model in Menu. It'll come back")
         var menu = modelCreationComponent.createObject(testcase)
         compare(menu.items.length, testcase.itemsText.length)
         for (var i = 0; i < menu.items.length; i++)
@@ -181,5 +188,33 @@ TestCase {
         menu.items[2].trigger()
         compare(menu.__selectedIndex, 2)
         verify(menu.items[menu.__selectedIndex].checked)
+    }
+
+    function test_dynamicItems() {
+        menu.clear()
+        compare(menu.items.length, 0)
+        var n = 6
+        var separatorIdx = 4
+        var submenuIdx = 5
+        for (var i = 0; i < n; ++i) {
+            if (i === separatorIdx)
+                var item = menu.addSeparator()
+            else if (i === submenuIdx)
+                item = menu.addMenu("Submenu")
+            else
+                item = menu.addItem("Item " + i)
+        }
+        compare(menu.items.length, n)
+
+        for (i = 0; i < n; ++i) {
+            item = menu.items[i]
+            compare(item.type, i === submenuIdx ? MenuItemType.Menu :
+                               i === separatorIdx ? MenuItemType.Separator :
+                                                    MenuItemType.Item)
+            if (i === submenuIdx)
+                compare(item.title, "Submenu")
+            else if (i !== separatorIdx)
+                compare(item.text, "Item " + i)
+        }
     }
 }

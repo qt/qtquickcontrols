@@ -123,6 +123,38 @@ QT_BEGIN_NAMESPACE
 */
 
 /*!
+    \qmlmethod MenuItem Menu::addItem(text)
+
+    Adds an item to the menu. Returns the newly created \l MenuItem.
+*/
+
+/*!
+    \qmlmethod MenuSeparator Menu::addSeparator()
+
+    Adds a separator to the menu. Returns the newly created \l MenuSeparator.
+*/
+
+/*!
+    \qmlmethod void Menu::insertItem(before, item)
+
+    Inserts the \c item at the index \c before in the current menu.
+    In this case, \c item can be either a \l MenuItem, a \l MenuSeparator,
+    or a \l Menu.
+
+    \sa removeItem()
+*/
+
+/*!
+    \qmlmethod void Menu::removeItem(item)
+
+    Removes the \c item from the menu.
+    In this case, \c item can be either a \l MenuItem, a \l MenuSeparator,
+    or a \l Menu.
+
+    \sa insertItem()
+*/
+
+/*!
     \qmlproperty var Menu::model
 */
 
@@ -398,6 +430,13 @@ QtMenuItem *QtMenu::addItem(QString title)
 {
     QtMenuItem *item = new QtMenuItem(this);
     item->setText(title);
+    insertItem(m_itemsCount, item);
+    return item;
+}
+
+QtMenuSeparator *QtMenu::addSeparator()
+{
+    QtMenuSeparator *item = new QtMenuSeparator(this);
     insertItem(m_itemsCount, item);
     return item;
 }

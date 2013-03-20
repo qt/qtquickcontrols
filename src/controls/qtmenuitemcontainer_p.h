@@ -75,7 +75,7 @@ public:
         m_menuItems.removeOne(item);
     }
 
-    const QList<QtMenuBase *> &items()
+    const QList<QPointer<QtMenuBase> > &items()
     {
         return m_menuItems;
     }
@@ -84,13 +84,15 @@ public:
     {
         while (!m_menuItems.empty()) {
             QtMenuBase *item = m_menuItems.takeFirst();
-            item->setParentMenu(0);
-            item->setContainer(0);
+            if (item) {
+                item->setParentMenu(0);
+                item->setContainer(0);
+            }
         }
     }
 
 private:
-    QList<QtMenuBase *> m_menuItems;
+    QList<QPointer<QtMenuBase> > m_menuItems;
 };
 
 QT_END_NAMESPACE

@@ -59,10 +59,24 @@ class QtExclusiveGroup;
 class QtMenu;
 class QtMenuItemContainer;
 
+class QtMenuItemType
+{
+    Q_GADGET
+    Q_ENUMS(MenuItemType)
+
+public:
+    enum MenuItemType {
+        Separator,
+        Item,
+        Menu
+    };
+};
+
 class QtMenuBase: public QObject
 {
     Q_OBJECT
     Q_PROPERTY(bool visible READ visible WRITE setVisible NOTIFY visibleChanged)
+    Q_PROPERTY(QtMenuItemType::MenuItemType type READ type CONSTANT)
 
     Q_PROPERTY(QtMenu *__parentMenu READ parentMenu CONSTANT)
     Q_PROPERTY(bool __isNative READ isNative CONSTANT)
@@ -90,6 +104,7 @@ public:
     QQuickItem *visualItem() const;
     void setVisualItem(QQuickItem *item);
 
+    virtual QtMenuItemType::MenuItemType type() { return QtMenuItemType::Item; }
     virtual bool isNative() { return m_platformItem != 0; }
 
 private:
@@ -105,6 +120,8 @@ class QtMenuSeparator : public QtMenuBase
     Q_OBJECT
 public:
     QtMenuSeparator(QObject *parent = 0);
+
+     QtMenuItemType::MenuItemType type() { return QtMenuItemType::Separator; }
 };
 
 class QtMenuText: public QtMenuBase
