@@ -120,7 +120,7 @@ Rectangle {
         TabView {
             id:frame
             focus:true
-            enabled: toolbar.enabled
+            enabled: enabledCheck.checked
 
             property int margins : styleitem.style == "mac" ? 16 : 0
             height: parent.height - 34
@@ -160,7 +160,7 @@ Rectangle {
                 }
             }
             Tab {
-                title: "Multivalue "
+                title: "Multivalue"
 
                 TableView {
                     model: nestedModel
