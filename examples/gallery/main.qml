@@ -129,29 +129,27 @@ ApplicationWindow {
             onTriggered: lastFocusObject.paste()
         }
 
-        ExclusiveGroup { id: textFormatGroup }
+        ExclusiveGroup {
+            id: textFormatGroup
 
-        Action {
-            id: a1
-            text: "Align Left"
-            checkable: true
+            Action {
+                id: a1
+                text: "Align Left"
+                checkable: true
+                Component.onCompleted: checked = true
+            }
 
-            Component.onCompleted: checked = true
-            exclusiveGroup: textFormatGroup
-        }
+            Action {
+                id: a2
+                text: "Center"
+                checkable: true
+            }
 
-        Action {
-            id: a2
-            text: "Center"
-            checkable: true
-            exclusiveGroup: textFormatGroup
-        }
-
-        Action {
-            id: a3
-            text: "Align Right"
-            checkable: true
-            exclusiveGroup: textFormatGroup
+            Action {
+                id: a3
+                text: "Align Right"
+                checkable: true
+            }
         }
 
         Menu {

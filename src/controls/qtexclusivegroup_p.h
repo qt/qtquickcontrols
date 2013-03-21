@@ -44,20 +44,27 @@
 
 #include <QtCore/qobject.h>
 #include <QtCore/qmetaobject.h>
+#include <QtQml/qqmllist.h>
 
 QT_BEGIN_NAMESPACE
+
+class QtAction;
 
 class QtExclusiveGroup : public QObject
 {
     Q_OBJECT
 
     Q_PROPERTY(QObject *current READ current WRITE setCurrent NOTIFY currentChanged)
+    Q_PROPERTY(QQmlListProperty<QtAction> __actions READ actions)
+    Q_CLASSINFO("DefaultProperty", "__actions")
 
 public:
     explicit QtExclusiveGroup(QObject *parent = 0);
 
     QObject *current() const { return m_current; }
     void setCurrent(QObject * o);
+
+    QQmlListProperty<QtAction> actions();
 
 public Q_SLOTS:
     void bindCheckable(QObject *o);
@@ -70,6 +77,8 @@ private Q_SLOTS:
     void updateCurrent();
 
 private:
+    static void append_actions(QQmlListProperty<QtAction> *list, QtAction *action);
+
     QObject * m_current;
     QMetaMethod m_updateCurrentMethod;
 };

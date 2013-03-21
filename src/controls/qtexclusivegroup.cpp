@@ -43,6 +43,7 @@
 
 #include <qvariant.h>
 #include <qdebug.h>
+#include "qtaction_p.h"
 
 #define CHECKED_PROPERTY "checked"
 
@@ -66,33 +67,68 @@ static bool isChecked(const QObject *o)
     \qmltype ExclusiveGroup
     \instantiates QtExclusiveGroup
     \inqmlmodule QtQuick.Controls 1.0
-    \ingroup containers
     \brief ExclusiveGroup provides a way to declare several checkable controls as mutually exclusive.
 
+    ExclusiveGroup can contain several \l Action items, and those will automatically get their
+    \l Action::exclusiveGroup property assigned.
+
     \code
-    ExclusiveGroup { id: radioInputGroup }
+    ExclusiveGroup {
+        id: radioInputGroup
 
-    Action {
-        id: dabRadioInput
-        text: "DAB"
-        exclusiveGroup: radioInputGroup
+        Action {
+            id: dabRadioInput
+            text: "DAB"
+            checkable: true
+        }
+
+        Action {
+            id: fmRadioInput
+            text: "FM"
+            checkable: true
+        }
+
+        Action {
+            id: amRadioInput
+            text: "AM"
+            checkable: true
+        }
     }
-
-    Action {
-        id: fmRadioInput
-        text: "FM"
-        exclusiveGroup: radioInputGroup
-    }
-
-    Action {
-        id: amRadioInput
-        text: "AM"
-        exclusiveGroup: radioInputGroup
-    }
-
     \endcode
 
     Several controls already support \l ExclusiveGroup, e.g. \l Action, \l MenuItem, \l Button, and \l RadioButton.
+
+    Since \l ExclusiveGroup only supports \l Action as child items, we need to manually assign the \c exclusiveGroup
+    property for other objects.
+
+    \code
+    ExclusiveGroup { id: textAlignmentGroup }
+
+    Menu {
+        MenuItem {
+            text: "Alignt Left"
+            checkable: true
+            exclusiveGroup: textAlignmentGroup
+        }
+        MenuItem {
+            text: "Alignt Right"
+            checkable: true
+            exclusiveGroup: textAlignmentGroup
+        }
+        MenuItem {
+            text: "Center"
+            checkable: true
+            exclusiveGroup: textAlignmentGroup
+        }
+        MenuItem {
+            text: "Justify"
+            checkable: true
+            exclusiveGroup: textAlignmentGroup
+        }
+    }
+    \endcode
+
+    \section1 Adding support to ExclusiveGroup
 
     It is possible to add support for \l ExclusiveGroup for an object, or control. It should have a \c checked
     property, and either a \c checkedChanged, \c toggled(), or \c toggled(bool) signal. It also needs
@@ -147,6 +183,17 @@ QtExclusiveGroup::QtExclusiveGroup(QObject *parent)
 {
     int index = metaObject()->indexOfMethod("updateCurrent()");
     m_updateCurrentMethod = metaObject()->method(index);
+}
+
+QQmlListProperty<QtAction> QtExclusiveGroup::actions()
+{
+    return QQmlListProperty<QtAction>(this, 0, &QtExclusiveGroup::append_actions, 0, 0, 0);
+}
+
+void QtExclusiveGroup::append_actions(QQmlListProperty<QtAction> *list, QtAction *action)
+{
+    if (QtExclusiveGroup *eg = qobject_cast<QtExclusiveGroup *>(list->object))
+        action->setExclusiveGroup(eg);
 }
 
 void QtExclusiveGroup::setCurrent(QObject * o)
