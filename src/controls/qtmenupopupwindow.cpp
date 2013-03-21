@@ -140,23 +140,26 @@ void QtMenuPopupWindow::setParentWindow(QQuickWindow *parentWindow)
 
 void QtMenuPopupWindow::setGeometry(int posx, int posy, int w, int h)
 {
-    QSize s = screen()->size();
-    if (posx + w > s.width()) {
-        if (QtMenuPopupWindow *pw = qobject_cast<QtMenuPopupWindow *>(transientParent())) {
+    QWindow *pw = transientParent();
+    if (!pw && m_parentItem )
+        pw = m_parentItem->window();
+    if (!pw)
+        pw = this;
+    QRect g = pw->screen()->availableVirtualGeometry();
+
+    if (posx + w > g.right()) {
+        if (qobject_cast<QtMenuPopupWindow *>(transientParent())) {
             // reposition submenu window on the parent menu's left side
             int submenuOverlap = pw->x() + pw->width() - posx;
             posx -= pw->width() + w - 2 * submenuOverlap;
         } else {
-            posx = s.width() - w;
+            posx = g.right() - w;
         }
-    } else if (posx < 0) {
-        posx = 0;
+    } else {
+        posx = qMax(posx, g.left());
     }
 
-    if (posy + h > s.height())
-        posy = s.height() - h;
-    else if (posy < 0)
-        posy = 0;
+    posy = qBound(g.top(), posy, g.bottom() - h);
 
     QQuickWindow::setGeometry(posx, posy, w, h);
 }
