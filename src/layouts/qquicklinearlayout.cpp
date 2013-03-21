@@ -43,19 +43,104 @@
 #include <QtCore/qnumeric.h>
 #include "qdebug.h"
 #include <limits>
+
 /*!
     \qmltype RowLayout
     \instantiates QQuickRowLayout
-    \inqmlmodule QtDesktop 1.0
-    \brief RowLayout is doing bla...bla...
+    \inqmlmodule QtQuick.Layouts 1.0
+    \ingroup layouts
+    \brief RowLayout is the same as a \l GridLayout with just one row.
+
+    It is available as a convenience for developers, as it offers a cleaner API.
+
+    \sa ColumnLayout
+    \sa GridLayout
 */
 
 /*!
     \qmltype ColumnLayout
     \instantiates QQuickColumnLayout
-    \inqmlmodule QtDesktop 1.0
-    \brief ColumnLayout is doing bla...bla...
+    \inqmlmodule QtQuick.Layouts 1.0
+    \ingroup layouts
+    \brief ColumnLayout is the same as a \l GridLayout with just one column.
+
+    It is available as a convenience for developers, as it offers a cleaner API.
+
+    \sa RowLayout
+    \sa GridLayout
 */
+
+
+/*!
+    \qmltype GridLayout
+    \instantiates QQuickGridLayout
+    \inqmlmodule QtQuick.Layouts 1.0
+    \ingroup layouts
+    \brief Provides a way of dynamically arranging items in a grid.
+
+    If the GridLayout is resized, all items in the layout will be rearranged. It is similar
+    to the widget-based QGridLayout. All children of the GridLayout element will belong to
+    the layout. If you want a layout with just one row or one column, you can use the
+    \l RowLayout or \l ColumnLayout. These offers a bit more convenient API, and improves
+    readability.
+
+    By default items will be arranged according to the \l flow property. The default value of
+    the \l flow property is \c GridLayout.LeftToRight.
+
+    If the \l columns property is specified, it will be treated as a maximum bound of how many
+    columns the layout can have, before the auto-positioning wraps back to the beginning of the
+    next row. The \l columns property is only used when \l flow is  \c GridLayout.LeftToRight.
+
+    \code
+        GridLayout {
+            id: grid
+            columns: 3
+            Text { text: "Three" }
+            Text { text: "words" }
+            Text { text: "in" }
+            Text { text: "a" }
+            Text { text: "row" }
+        }
+    \endcode
+
+    The \l rows property works in a similar way, but items are auto-positioned vertically.
+    The \l rows property is only used when \l flow is  \c GridLayout.TopToBottom.
+
+    You can specify which cell you want an item to occupy by setting the \c Layout.row
+    and \c Layout.column properties. You can also specify the row span or column span by
+    setting the \c Layout.rowSpan or \c Layout.columnSpan properties.
+
+    When the layout is resized, items may grow or shrink. Due to this, items have a
+    minimum size, preferred size and a maximum size.
+
+    Minimum size can be specified with the
+    Layout.minimumWidth and Layout.minimumHeight properties. These properties are 0 by default.
+
+    Preferred size can be specified with the Layout.preferredWidth and Layout.preferredHeight
+    properties. If Layout.preferredWidth or Layout.preferredHeight is not specified, it will
+    use the items implicitWidth or implicitHeight as the items preferred size. Finally, if
+    neither of these properties are set, it will use the width and height properties of the item.
+
+    \note It is not recommended to have bindings to the width and height properties of items in a
+    GridLayout, since this would conflict with the goal of the GridLayout.
+
+    Maximum size can be specified with the Layout.maximumWidth and Layout.maximumHeight
+    properties. If not set, these properties will be interpreted as infinite.
+
+    \note They are not actually infinite, but simply set to a very high value. The result of
+    the arrangement is virtually the same as if it was infinite.
+
+    The \c Layout.fillWidth and \c Layout.fillHeight can either be
+    \c true or \c false. If it is \c false, the items size will be fixed to its preferred size.
+    Otherwise, it will grow or shrink between its minimum
+    and maximum bounds.
+
+    \sa RowLayout
+    \sa ColumnLayout
+
+*/
+
+
 
 QT_BEGIN_NAMESPACE
 
@@ -307,6 +392,12 @@ QQuickGridLayout::QQuickGridLayout(QQuickItem *parent /* = 0*/)
     d->engine.setSpacing(q_declarativeLayoutDefaultSpacing, Qt::Horizontal | Qt::Vertical);
 }
 
+/*!
+    \qmlproperty double GridLayout::columnSpacing
+
+    This property holds the spacing between each column.
+    The default value is 4.
+*/
 qreal QQuickGridLayout::columnSpacing() const
 {
     Q_D(const QQuickGridLayout);
@@ -324,6 +415,12 @@ void QQuickGridLayout::setColumnSpacing(qreal spacing)
     invalidate();
 }
 
+/*!
+    \qmlproperty double GridLayout::rowSpacing
+
+    This property holds the spacing between each row.
+    The default value is 4.
+*/
 qreal QQuickGridLayout::rowSpacing() const
 {
     Q_D(const QQuickGridLayout);
@@ -341,6 +438,13 @@ void QQuickGridLayout::setRowSpacing(qreal spacing)
     invalidate();
 }
 
+/*!
+    \qmlproperty int GridLayout::columns
+
+    This property holds the column bound for items positioned if \l flow is
+    \c GridLayout.LeftToRight.
+    The default value is treated as infinite.
+*/
 int QQuickGridLayout::columns() const
 {
     Q_D(const QQuickGridLayout);
@@ -357,6 +461,13 @@ void QQuickGridLayout::setColumns(int columns)
     emit columnsChanged();
 }
 
+
+/*!
+    \qmlproperty int GridLayout::rows
+
+    This property holds the row bound for items positioned if \l flow is \c GridLayout.TopToBottom.
+    The default value is treated as infinite.
+*/
 int QQuickGridLayout::rows() const
 {
     Q_D(const QQuickGridLayout);
@@ -373,6 +484,27 @@ void QQuickGridLayout::setRows(int rows)
     emit rowsChanged();
 }
 
+
+/*!
+    \qmlproperty enumeration GridLayout::flow
+
+    This property holds the flow direction of items that does not have an explicit cell
+    position set.
+    It is used together with the \l columns or \l rows property, where
+    they specify when flow is reset to the next row or column respectively.
+
+    Possible values are:
+
+    \list
+    \li GridLayout.LeftToRight (default) - Items are positioned next to
+       each other, then wrapped to the next line.
+    \li GridLayout.TopToBottom - Items are positioned next to each
+       other from top to bottom, then wrapped to the next column.
+    \endlist
+
+    \sa rows
+    \sa columns
+*/
 QQuickGridLayout::Flow QQuickGridLayout::flow() const
 {
     Q_D(const QQuickGridLayout);
@@ -515,6 +647,19 @@ QQuickLinearLayout::QQuickLinearLayout(Qt::Orientation orientation,
     d->spacing = q_declarativeLayoutDefaultSpacing;
     d->engine.setSpacing(d->spacing, Qt::Horizontal | Qt::Vertical);
 }
+
+/*!
+    \qmlproperty double RowLayout::spacing
+
+    This property holds the spacing between each cell.
+    The default value 4.
+*/
+/*!
+    \qmlproperty double ColumnLayout::spacing
+
+    This property holds the spacing between each cell.
+    The default value 4.
+*/
 
 qreal QQuickLinearLayout::spacing() const
 {

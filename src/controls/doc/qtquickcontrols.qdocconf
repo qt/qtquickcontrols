@@ -29,7 +29,7 @@ qhp.qtquickcontrols.subprojects.styleqmltypes.indexTitle = Qt Quick Controls Sty
 qhp.qtquickcontrols.subprojects.styleqmltypes.selectors = class fake:qmlclass
 qhp.qtquickcontrols.subprojects.styleqmltypes.sortPages = true
 
-depends = qtqml qtquick qtwidgets qtdoc
+depends = qtqml qtquick qtwidgets qtdoc qtquicklayouts
 
 exampledirs += ../../../examples/
 
