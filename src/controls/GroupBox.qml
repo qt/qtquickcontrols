@@ -40,6 +40,7 @@
 
 import QtQuick 2.1
 import QtQuick.Controls 1.0
+import QtQuick.Controls.Styles 1.0
 import "Styles/Settings.js" as Settings
 
 /*!
@@ -129,12 +130,15 @@ Item {
     /*!
         This property holds the width of the content.
     */
-    readonly property real contentWidth: content.childrenRect.width
+    readonly property real contentWidth: content.childrenRect.width  + 2 * __margin
 
     /*!
         This property holds the height of the content.
     */
-    readonly property real contentHeight: content.childrenRect.height
+    readonly property real contentHeight: content.childrenRect.height + 2 * __margin
+
+    /*! \internal */
+    property int __margin: 8
 
     /*! \internal */
     property Component style: Qt.createComponent(Settings.THEME_PATH + "/GroupBoxStyle.qml", groupbox)
@@ -145,8 +149,8 @@ Item {
     /*! \internal */
     property alias __checkbox: check
 
-    implicitWidth: Math.max(200, contentWidth + (loader.item ? loader.item.implicitWidth: 0) )
-    implicitHeight: contentHeight + (loader.item ? loader.item.implicitHeight : 0) + 4
+    implicitWidth: Math.max(200, (loader.item ? loader.item.implicitWidth: 0) )
+    implicitHeight: (loader.item ? loader.item.implicitHeight : 0)
 
     Accessible.role: Accessible.Grouping
     Accessible.name: title
@@ -157,7 +161,7 @@ Item {
         id: loader
         property alias control: groupbox
         anchors.fill: parent
-        property int topMargin: title.length > 0 || checkable ? 22 : 4
+        property int topMargin: (title.length > 0 || checkable ? 16 : 0) + __margin
         property int bottomMargin: 4
         property int leftMargin: 4
         property int rightMargin: 4
@@ -174,6 +178,7 @@ Item {
         anchors.left: parent.left
         anchors.right: parent.right
         height: loader.topMargin
+        style: CheckBoxStyle { panel: Item{} }
     }
 
     Item {
@@ -181,9 +186,9 @@ Item {
         z: 1
         focus: true
         anchors.topMargin: loader.topMargin
-        anchors.leftMargin: 8
-        anchors.rightMargin: 8
-        anchors.bottomMargin: 8
+        anchors.leftMargin: __margin
+        anchors.rightMargin: __margin
+        anchors.bottomMargin: __margin
         anchors.fill: parent
         enabled: (!groupbox.checkable || groupbox.checked)
     }

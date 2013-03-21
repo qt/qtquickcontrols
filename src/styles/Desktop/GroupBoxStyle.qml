@@ -44,10 +44,11 @@ import QtQuick.Controls.Private 1.0
 StyleItem {
     id: styleitem
     elementType: "groupbox"
-    text: control.checkable? "" : control.title
+    text: control.title
     on: control.checked
     hasFocus: control.activeFocus
     activeControl: checkable ? "checkbox" : ""
-    sunken: !flat
-    contentHeight:  (title.length > 0 || checkable) ? 24 : 4
+    properties: { "checkable" : checkable , "sunken" : !flat}
+    contentWidth: control.contentWidth
+    contentHeight: control.contentHeight
 }

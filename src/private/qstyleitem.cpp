@@ -502,12 +502,12 @@ void QStyleItem::initStyleOption()
         opt->lineWidth = 1;
         opt->subControls = QStyle::SC_GroupBoxLabel;
         opt->features = 0;
-        if (sunken()) { // Qt draws an ugly line here so I ignore it
+        if (m_properties["sunken"].toBool()) { // Qt draws an ugly line here so I ignore it
             opt->subControls |= QStyle::SC_GroupBoxFrame;
         } else {
             opt->features |= QStyleOptionFrame::Flat;
         }
-        if (activeControl() == "checkbox")
+        if (m_properties["checkable"].toBool())
             opt->subControls |= QStyle::SC_GroupBoxCheckBox;
 
     }
@@ -723,8 +723,18 @@ QSize QStyleItem::sizeFromContents(int width, int height)
         if (hints().indexOf("rounded") != -1)
             size += QSize(0, 3);
         break;
-    case GroupBox:
-        size = qApp->style()->sizeFromContents(QStyle::CT_GroupBox, m_styleoption, QSize(width,height));
+    case GroupBox: {
+            QStyleOptionGroupBox *box = qstyleoption_cast<QStyleOptionGroupBox*>(m_styleoption);
+            QFontMetrics metrics(box->fontMetrics);
+            int baseWidth = metrics.width(box->text) + metrics.width(QLatin1Char(' '));
+            int baseHeight = metrics.height() + m_contentHeight;
+            if (box->subControls & QStyle::SC_GroupBoxCheckBox) {
+                baseWidth += qApp->style()->pixelMetric(QStyle::PM_IndicatorWidth);
+                baseWidth += qApp->style()->pixelMetric(QStyle::PM_CheckBoxLabelSpacing);
+                baseHeight = qMax(baseHeight, qApp->style()->pixelMetric(QStyle::PM_IndicatorHeight));
+            }
+            size = qApp->style()->sizeFromContents(QStyle::CT_GroupBox, m_styleoption, QSize(qMax(baseWidth, m_contentWidth), baseHeight));
+        }
         break;
     case Header:
         size = qApp->style()->sizeFromContents(QStyle::CT_HeaderSection, m_styleoption, QSize(width,height));
