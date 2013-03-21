@@ -276,8 +276,12 @@ void QStyleItem::initStyleOption()
         if (!m_styleoption)
             m_styleoption = new QStyleOptionTab();
 
+
         QStyleOptionTab *opt = qstyleoption_cast<QStyleOptionTab*>(m_styleoption);
         opt->text = text();
+
+        if (m_properties["hasFrame"].toBool())
+            opt->features |= QStyleOptionTab::HasFrame;
 
         if (hints().length() > 2) {
             QString shape = hints()[0];

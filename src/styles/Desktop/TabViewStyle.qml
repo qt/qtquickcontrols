@@ -89,7 +89,7 @@ Style {
             anchors.rightMargin: -paintMargins + (style == "mac" ? -1 : 0)
             anchors.bottomMargin: -1
             anchors.leftMargin: -paintMargins
-
+            properties: { "hasFrame" : true }
             hints: [tabPosition, tabpos, selectedpos]
 
             selected: tab.selected
