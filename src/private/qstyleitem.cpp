@@ -260,9 +260,14 @@ void QStyleItem::initStyleOption()
         opt->subControls = QStyle::SC_ToolButton;
         opt->state |= QStyle::State_AutoRaise;
         opt->activeSubControls = QStyle::SC_ToolButton;
-        opt->toolButtonStyle = Qt::ToolButtonIconOnly;
         opt->text = text();
         opt->icon = m_properties["icon"].value<QIcon>();
+
+        // For now icon only is displayed by default.
+        opt->toolButtonStyle = Qt::ToolButtonIconOnly;
+        if (opt->icon.isNull() && !opt->text.isEmpty())
+            opt->toolButtonStyle = Qt::ToolButtonTextOnly;
+
         int e = qApp->style()->pixelMetric(QStyle::PM_ToolBarIconSize, m_styleoption, 0);
         opt->iconSize = QSize(e, e);
     }
