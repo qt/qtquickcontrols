@@ -44,7 +44,6 @@
 
 import QtQuick 2.1
 import QtQuick.Controls 1.0
-import QtQuick.Controls.Private 1.0
 import QtQuick.XmlListModel 2.0
 
 Rectangle {
@@ -122,7 +121,8 @@ Rectangle {
             focus:true
             enabled: enabledCheck.checked
 
-            property int margins : styleitem.style == "mac" ? 16 : 0
+            property int margins: Qt.platform.os === "mac" ? 16 : 0
+
             height: parent.height - 34
             anchors.right: parent.right
             anchors.left: parent.left

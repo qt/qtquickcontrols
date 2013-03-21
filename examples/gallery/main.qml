@@ -45,7 +45,6 @@
 import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Layouts 1.0
-import QtQuick.Controls.Private 1.0
 import "content"
 
 ApplicationWindow {
@@ -251,7 +250,6 @@ ApplicationWindow {
 
 
     SystemPalette {id: syspal}
-    StyleItem{ id: styleitem}
     color: syspal.window
     ListModel {
         id: choices
@@ -269,7 +267,7 @@ ApplicationWindow {
         anchors.bottom: parent.bottom
         anchors.right: parent.right
         anchors.left: parent.left
-        anchors.margins: styleitem.style == "mac" ? 12 : 0
+        anchors.margins: Qt.platform.os === "mac" ? 12 : 2
 
         Tab {
             id: controlPage
