@@ -51,6 +51,8 @@ Style {
         StyleItem {
             id: styleitem
             elementType: "radiobutton"
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.verticalCenterOffset: macStyle ? -1 : 0
             sunken: control.pressed
             on: control.checked || control.pressed
             hover: control.__containsMouse
@@ -59,7 +61,8 @@ Style {
             hints: control.styleHints
             contentHeight: textitem.implicitHeight
             contentWidth: textitem.implicitWidth + indicatorWidth
-            property int indicatorWidth: pixelMetric("indicatorwidth") + 2
+            property int indicatorWidth: pixelMetric("indicatorwidth") + (macStyle ? 2 : 4)
+            property bool macStyle: (style === "mac")
 
             Text {
                 id: textitem
@@ -67,6 +70,7 @@ Style {
                 anchors.left: parent.left
                 anchors.leftMargin: parent.indicatorWidth
                 anchors.verticalCenter: parent.verticalCenter
+                anchors.verticalCenterOffset: parent.macStyle ? 2 : 0
                 anchors.right: parent.right
                 renderType: Text.NativeRendering
                 elide: Text.ElideRight
