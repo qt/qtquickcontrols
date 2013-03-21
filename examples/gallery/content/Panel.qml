@@ -87,7 +87,7 @@ Rectangle {
                 anchors.left: parent.left
                 anchors.top: parent.top
                 width: show ? 160 : 40
-                height:parent.height
+                height:root.height
                 Behavior on width { NumberAnimation { easing.type: Easing.OutSine ; duration: 250 } }
                 property bool show: false
                 border.left: 0;
