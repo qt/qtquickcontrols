@@ -78,8 +78,8 @@ Control {
     id: comboBox
 
     /*! The model to populate the ComboBox from. */
-    property alias model: popup.model
-    property alias textRole: popup.textRole
+    property alias model: popupItems.model
+    property string textRole: ""
 
     /*! The index of the currently selected item in the ComboBox. */
     property alias currentIndex: popup.__selectedIndex
@@ -114,7 +114,12 @@ Control {
             popup.y += 4
             popup.__font.pointSize = 13
         }
+
+        popup.ready = true
+        popup.resolveTextValue(textRole)
     }
+
+    onTextRoleChanged: popup.resolveTextValue(textRole)
 
     Menu {
         id: popup
@@ -123,8 +128,7 @@ Control {
 
         readonly property string selectedText: items[__selectedIndex] ? items[__selectedIndex].text : ""
         property string textRole: ""
-        property var model
-        property int modelSize: 0
+
         property bool ready: false
         property bool isPopup: comboBox.__panel.popup
 
@@ -135,27 +139,26 @@ Control {
 
         property ExclusiveGroup eg: ExclusiveGroup { id: eg }
 
-        onModelChanged: rebuildMenu()
-        onTextRoleChanged: rebuildMenu()
-
-        Component.onCompleted: { ready = true; rebuildMenu() }
-
-        function rebuildMenu() {
-            if (!ready) return;
-            clear()
-            if (!model) {
-                __selectedIndexChanged();
-                return;
+        Instantiator {
+            id: popupItems
+            active: popup.ready
+            MenuItem {
+                text: popup.textRole === "" ? modelData :
+                      (model[popup.textRole] || "")
+                checkable: true
+                exclusiveGroup: eg
             }
+            onObjectAdded: popup.insertItem(index, object)
+            onObjectRemoved: popup.removeItem(object)
+        }
 
-            var isNumberModel = typeof(model) === "number"
-            var modelMayHaveRoles = model.count !== undefined
-            modelSize = isNumberModel ? model :
-                        modelMayHaveRoles ? model.count : model.length
-            var effectiveTextRole = textRole
-            if (effectiveTextRole === ""
-                && modelMayHaveRoles
-                && model.get && model.get(0)) {
+        function resolveTextValue(initialTextRole) {
+            if (!ready || !model)
+                return;
+
+            var modelMayHaveRoles = model["get"] !== undefined
+            textRole = initialTextRole
+            if (textRole === "" && modelMayHaveRoles && model.get(0)) {
                 // No text role set, check whether model has a suitable role
                 // If 'text' is found, or there's only one role, pick that.
                 var listElement = model.get(0)
@@ -173,23 +176,9 @@ Control {
                 if (roleCount > 1 && roleName !== "text") {
                     console.warn("No suitable 'textRole' found for ComboBox.")
                 } else {
-                    effectiveTextRole = roleName
+                    textRole = roleName
                 }
             }
-            for (var i = 0; i < modelSize; ++i) {
-                var textValue
-                if (isNumberModel)
-                    textValue = i + ""
-                else if (effectiveTextRole !== "")
-                    textValue = model.get(i)[effectiveTextRole]
-                else
-                    textValue = model[i]
-
-                var item = addItem(textValue)
-                item.checkable = true
-                item.exclusiveGroup = eg
-            }
-            __selectedIndexChanged();
         }
 
         function show() {
@@ -207,5 +196,5 @@ Control {
             popup.show()
     }
     Keys.onUpPressed: { if (currentIndex > 0) currentIndex-- }
-    Keys.onDownPressed: { if (currentIndex < popup.modelSize - 1) currentIndex++ }
+    Keys.onDownPressed: { if (currentIndex < popupItems.count - 1) currentIndex++ }
 }
