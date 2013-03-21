@@ -83,12 +83,13 @@ Style {
             id: styleitem
 
             elementType: "tab"
-            paintMargins: 2
+            paintMargins: style === "mac" ? 0 : 2
 
             anchors.fill: parent
-            anchors.rightMargin: -paintMargins + (style == "mac" ? -1 : 0)
+            anchors.topMargin: style === "mac" ? 2 : 0
+            anchors.rightMargin: -paintMargins
             anchors.bottomMargin: -1
-            anchors.leftMargin: -paintMargins
+            anchors.leftMargin: -paintMargins + (style === "mac" && selected ? -1 : 0)
             properties: { "hasFrame" : true }
             hints: [tabPosition, tabpos, selectedpos]
 
@@ -96,12 +97,6 @@ Style {
             text: elidedText(title, tabbarItem.elide, width - item.tabHSpace)
             hover: tab.hover
             hasFocus: tabbarItem.activeFocus && selected
-
-            Text {
-                id: textitem
-                visible: false
-                text: styleitem.text
-            }
         }
     }
 }

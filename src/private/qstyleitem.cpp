@@ -303,7 +303,7 @@ void QStyleItem::initStyleOption()
                 opt->selectedPosition = QStyleOptionTab::NextIsSelected;
             else if (selectedPosition == QLatin1String("previous"))
                 opt->selectedPosition = QStyleOptionTab::PreviousIsSelected;
-           else
+            else
                 opt->selectedPosition = QStyleOptionTab::NotAdjacent;
         }
 
@@ -1100,7 +1100,14 @@ void QStyleItem::paint(QPainter *painter)
         qApp->style()->drawComplexControl(QStyle::CC_ToolButton, qstyleoption_cast<QStyleOptionComplex*>(m_styleoption), painter);
         break;
     case Tab:
-        qApp->style()->drawControl(QStyle::CE_TabBarTab, m_styleoption, painter);
+        if (style() == "mac") {
+            m_styleoption->rect.translate(0, 1); // Unhack QMacStyle's hack
+            qApp->style()->drawControl(QStyle::CE_TabBarTabShape, m_styleoption, painter);
+            m_styleoption->rect.translate(0, -1);
+            qApp->style()->drawControl(QStyle::CE_TabBarTabLabel, m_styleoption, painter);
+        } else {
+            qApp->style()->drawControl(QStyle::CE_TabBarTab, m_styleoption, painter);
+        }
         break;
     case Frame:
         qApp->style()->drawControl(QStyle::CE_ShapedFrame, m_styleoption, painter);
