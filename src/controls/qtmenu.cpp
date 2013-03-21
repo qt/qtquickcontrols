@@ -272,7 +272,8 @@ void QtMenu::updateSelectedIndex()
 
 QtMenuItems QtMenu::menuItems()
 {
-    return QtMenuItems(this, 0, &QtMenu::append_menuItems, &QtMenu::count_menuItems, &QtMenu::at_menuItems, 0);
+    return QtMenuItems(this, 0, &QtMenu::append_menuItems, &QtMenu::count_menuItems,
+                       &QtMenu::at_menuItems, &QtMenu::clear_menuItems);
 }
 
 QQuickWindow *QtMenu::findParentWindow()
@@ -585,6 +586,12 @@ QObject *QtMenu::at_menuItems(QtMenuItems *list, int index)
         return menu->menuItemAtIndex(index);
 
     return 0;
+}
+
+void QtMenu::clear_menuItems(QtMenuItems *list)
+{
+    if (QtMenu *menu = qobject_cast<QtMenu *>(list->object))
+        menu->clear();
 }
 
 QT_END_NAMESPACE

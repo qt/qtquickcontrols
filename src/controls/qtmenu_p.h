@@ -145,6 +145,7 @@ private:
     static void append_menuItems(QtMenuItems *list, QObject *o);
     static int count_menuItems(QtMenuItems *list);
     static QObject *at_menuItems(QtMenuItems *list, int index);
+    static void clear_menuItems(QtMenuItems *list);
     void setupMenuItem(QtMenuBase *item, int platformIndex = -1);
 
     QPlatformMenu *m_platformMenu;
