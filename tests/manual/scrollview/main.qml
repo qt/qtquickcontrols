@@ -78,7 +78,7 @@ ApplicationWindow {
                 value: 1000
                 implicitWidth: 80
             }
-            Item { Layout.horizontalSizePolicy: Layout.Expanding }
+            Item { Layout.fillWidth: true }
         }
     }
 

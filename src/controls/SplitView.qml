@@ -57,7 +57,7 @@ import QtQuick.Controls.Private 1.0 as Private
     Being expanding means that the item will get all the remaining space when other
     items have been laid out according to their own width and height.
     By default, the last visible child of the SplitView will be expanding, but
-    this can be changed by setting Layout.horizontalSizePolicy to \c Layout.Expanding.
+    this can be changed by setting Layout.fillWidth to \c true.
     Since the expanding item will automatically be resized to fit the extra space, it
     will ignore explicit assignments to width and height.
 
@@ -69,7 +69,7 @@ import QtQuick.Controls.Private 1.0 as Private
 
     SplitView supports setting attached Layout properties on child items, which means that you
     can control minimumWidth, minimumHeight, maximumWidth and maximumHeight (in addition
-    to horizontalSizePolicy/verticalSizePolicy) for each child.
+    to fillWidth/fillHeight) for each child.
 
     Example:
 
@@ -89,7 +89,7 @@ import QtQuick.Controls.Private 1.0 as Private
            Rectangle {
                id: centerItem
                Layout.minimumWidth: 50
-               Layout.horizontalSizePolicy: Layout.Expanding
+               Layout.fillWidth: true
                color: "darkgray"
            }
            Rectangle {
@@ -182,8 +182,8 @@ Item {
                 item.Layout.maximumHeightChanged.connect(d.updateLayout)
                 item.Layout.minimumHeightChanged.connect(d.updateLayout)
                 item.visibleChanged.connect(d.updateExpandingIndex)
-                item.Layout.horizontalSizePolicyChanged.connect(d.updateExpandingIndex)
-                item.Layout.verticalSizePolicyChanged.connect(d.updateExpandingIndex)
+                item.Layout.fillWidthChanged.connect(d.updateExpandingIndex)
+                item.Layout.fillHeightChanged.connect(d.updateExpandingIndex)
             }
 
             d.updateLayoutGuard = false
@@ -194,9 +194,9 @@ Item {
         {
             if (!lastItem.visible)
                 return
-            var policy = (root.orientation === Qt.Horizontal) ? "horizontalSizePolicy" : "verticalSizePolicy"
+            var policy = (root.orientation === Qt.Horizontal) ? "fillWidth" : "fillHeight"
             for (var i=0; i<__items.length-1; ++i) {
-                if (__items[i].Layout[policy] === Layout.Expanding)
+                if (__items[i].Layout[policy] === true)
                     break;
             }
 
@@ -410,8 +410,8 @@ Item {
         for (var i=0; i<splitterItems.children.length; ++i) {
             var item = splitterItems.children[i];
             item.visibleChanged.disconnect(d.updateExpandingIndex)
-            item.Layout.horizontalSizePolicyChanged.disconnect(d.updateExpandingIndex)
-            item.Layout.verticalSizePolicyChanged.disconnect(d.updateExpandingIndex)
+            item.Layout.fillWidthChanged.disconnect(d.updateExpandingIndex)
+            item.Layout.fillHeightChanged.disconnect(d.updateExpandingIndex)
         }
     }
 }

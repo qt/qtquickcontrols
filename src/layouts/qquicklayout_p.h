@@ -62,14 +62,7 @@ class QQuickLayoutPrivate;
 class QQuickLayout : public QQuickItem
 {
     Q_OBJECT
-    Q_ENUMS(SizePolicy)
 public:
-    enum SizePolicy {
-        Unspecified = 0,
-        Fixed,
-        Expanding
-    };
-
     enum SizeHint {
         MinimumSize = 0,
         PreferredSize,
@@ -121,8 +114,8 @@ class QQuickLayoutAttached : public QObject
     Q_PROPERTY(qreal preferredHeight READ preferredHeight WRITE setPreferredHeight NOTIFY preferredHeightChanged)
     Q_PROPERTY(qreal maximumWidth READ maximumWidth WRITE setMaximumWidth NOTIFY maximumWidthChanged)
     Q_PROPERTY(qreal maximumHeight READ maximumHeight WRITE setMaximumHeight NOTIFY maximumHeightChanged)
-    Q_PROPERTY(QQuickLayout::SizePolicy verticalSizePolicy READ verticalSizePolicy WRITE setVerticalSizePolicy)
-    Q_PROPERTY(QQuickLayout::SizePolicy horizontalSizePolicy READ horizontalSizePolicy WRITE setHorizontalSizePolicy)
+    Q_PROPERTY(bool fillHeight READ fillHeight WRITE setFillHeight)
+    Q_PROPERTY(bool fillWidth READ fillWidth WRITE setFillWidth)
     Q_PROPERTY(int row READ row WRITE setRow)
     Q_PROPERTY(int column READ column WRITE setColumn)
     Q_PROPERTY(int rowSpan READ rowSpan WRITE setRowSpan)
@@ -149,11 +142,13 @@ public:
     qreal maximumHeight() const { return m_maximumHeight; }
     void setMaximumHeight(qreal height);
 
-    QQuickLayout::SizePolicy verticalSizePolicy() const { return m_verticalSizePolicy; }
-    void setVerticalSizePolicy(QQuickLayout::SizePolicy policy);
+    bool fillWidth() const { return m_fillWidth; }
+    void setFillWidth(bool fill);
+    bool isFillWidthSet() const { return m_isFillWidthSet; }
 
-    QQuickLayout::SizePolicy horizontalSizePolicy() const { return m_horizontalSizePolicy; }
-    void setHorizontalSizePolicy(QQuickLayout::SizePolicy policy);
+    bool fillHeight() const { return m_fillHeight; }
+    void setFillHeight(bool fill);
+    bool isFillHeightSet() const { return m_isFillHeightSet; }
 
     int row() const { return m_row; }
     void setRow(int row) { m_row = row; }
@@ -179,8 +174,8 @@ signals:
     void preferredHeightChanged();
     void maximumWidthChanged();
     void maximumHeightChanged();
-    void verticalSizePolicyChanged();
-    void horizontalSizePolicyChanged();
+    void fillWidthChanged();
+    void fillHeightChanged();
 
 private:
     void invalidateItem();
@@ -193,8 +188,6 @@ private:
     qreal m_preferredHeight;
     qreal m_maximumWidth;
     qreal m_maximumHeight;
-    QQuickLayout::SizePolicy m_verticalSizePolicy;
-    QQuickLayout::SizePolicy m_horizontalSizePolicy;
 
     // GridLayout specific properties
     int m_row;
@@ -202,8 +195,11 @@ private:
     int m_rowSpan;
     int m_columnSpan;
 
-    bool m_changesNotificationEnabled;
-
+    unsigned m_fillWidth : 1;
+    unsigned m_fillHeight : 1;
+    unsigned m_isFillWidthSet : 1;
+    unsigned m_isFillHeightSet : 1;
+    unsigned m_changesNotificationEnabled : 1;
     friend class QQuickLayout;
 };
 

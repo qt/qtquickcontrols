@@ -159,7 +159,7 @@ Item {
                             height: parent.height
                             Layout.minimumWidth: 50
                             Layout.maximumWidth: 100
-                            Layout.horizontalSizePolicy: Layout.Expanding
+                            Layout.fillWidth: true
                         }
                         Rectangle {
                             color: "green"
@@ -167,14 +167,14 @@ Item {
                             visible: !ckHideGreen.checked
                             Layout.minimumWidth: 100
                             Layout.maximumWidth: 200
-                            Layout.horizontalSizePolicy: Layout.Expanding
+                            Layout.fillWidth: true
                         }
                         Rectangle {
                             color: "blue"
                             height: parent.height
                             Layout.minimumWidth: 200
                             Layout.maximumWidth: 400
-                            Layout.horizontalSizePolicy: Layout.Expanding
+                            Layout.fillWidth: true
                         }
                     }
 
@@ -190,20 +190,20 @@ Item {
                             color: "red"
                             height: parent.height
                             Layout.minimumWidth: 100
-                            Layout.horizontalSizePolicy: Layout.Expanding
+                            Layout.fillWidth: true
                         }
                         Rectangle {
                             color: "green"
                             height: parent.height
                             visible: !ckHideGreen.checked
                             Layout.minimumWidth: 200
-                            Layout.horizontalSizePolicy: Layout.Expanding
+                            Layout.fillWidth: true
                         }
                         Rectangle {
                             color: "blue"
                             height: parent.height
                             Layout.minimumWidth: 300
-                            Layout.horizontalSizePolicy: Layout.Expanding
+                            Layout.fillWidth: true
                         }
                     }
 
@@ -219,7 +219,7 @@ Item {
                             height: parent.height
                             Layout.minimumWidth: 200
                             Layout.maximumWidth: 500
-                            Layout.horizontalSizePolicy: Layout.Expanding
+                            Layout.fillWidth: true
                         }
                     }
 
@@ -238,13 +238,13 @@ Item {
                                 color: "red"
                                 height: parent.height
                                 Layout.minimumWidth: 100
-                                Layout.horizontalSizePolicy: Layout.Expanding
+                                Layout.fillWidth: true
                             }
                             Rectangle {
                                 color: "blue"
                                 height: parent.height
                                 Layout.minimumWidth: 200
-                                Layout.horizontalSizePolicy: Layout.Expanding
+                                Layout.fillWidth: true
                             }
                         }
 
@@ -258,14 +258,14 @@ Item {
                                 width: 40
                                 visible: !ckHideGreen.checked
                                 Layout.maximumWidth: 300
-                                Layout.horizontalSizePolicy: Layout.Expanding
+                                Layout.fillWidth: true
                             }
                             Rectangle {
                                 color: "red"
                                 height: parent.height
                                 Layout.minimumWidth: 40
                                 Layout.maximumWidth: 100
-                                Layout.horizontalSizePolicy: Layout.Expanding
+                                Layout.fillWidth: true
                             }
                         }
                     }
@@ -354,7 +354,7 @@ Item {
                             height: 60
                             Layout.minimumHeight: 50
                             Layout.maximumHeight: 100
-                            Layout.verticalSizePolicy: Layout.Expanding
+                            Layout.fillHeight: true
                         }
                         Rectangle {
                             color: "green"
@@ -363,14 +363,14 @@ Item {
                             visible: !ckHideGreen.checked
                             Layout.minimumHeight: 75
                             Layout.maximumHeight: 125
-                            Layout.verticalSizePolicy: Layout.Expanding
+                            Layout.fillHeight: true
                         }
                         Rectangle {
                             color: "blue"
                             width: parent.width
                             height: 120
                             Layout.minimumHeight: 100
-                            Layout.verticalSizePolicy: Layout.Expanding
+                            Layout.fillHeight: true
                         }
                     }
 
@@ -385,20 +385,20 @@ Item {
                             color: "red"
                             width: parent.width
                             Layout.minimumHeight: 100
-                            Layout.verticalSizePolicy: Layout.Expanding
+                            Layout.fillHeight: true
                         }
                         Rectangle {
                             color: "green"
                             width: parent.width
                             visible: !ckHideGreen.checked
                             Layout.minimumHeight: 200
-                            Layout.verticalSizePolicy: Layout.Expanding
+                            Layout.fillHeight: true
                         }
                         Rectangle {
                             color: "blue"
                             width: parent.width
                             Layout.minimumHeight: 300
-                            Layout.verticalSizePolicy: Layout.Expanding
+                            Layout.fillHeight: true
                         }
                     }
 
@@ -412,20 +412,20 @@ Item {
                         ColumnLayout {
                             spacing: 10
                             width: parent.width
-                            Layout.verticalSizePolicy: Layout.Expanding
+                            Layout.fillHeight: true
 
                             Rectangle {
                                 color: "red"
                                 width: parent.width
                                 Layout.minimumHeight: 100
                                 Layout.maximumHeight: 300
-                                Layout.verticalSizePolicy: Layout.Expanding
+                                Layout.fillHeight: true
                             }
                             Rectangle {
                                 color: "blue"
                                 width: parent.width
                                 Layout.minimumHeight: 100
-                                Layout.verticalSizePolicy: Layout.Expanding
+                                Layout.fillHeight: true
                                 Layout.maximumHeight: 200
                             }
                         }
@@ -434,21 +434,21 @@ Item {
                             spacing: 10
                             width: parent.width
                             Layout.maximumHeight: 200
-                            Layout.verticalSizePolicy: Layout.Expanding
+                            Layout.fillHeight: true
                             Rectangle {
                                 color: "green"
                                 width: parent.width
                                 height: 50
                                 visible: !ckHideGreen.checked
                                 Layout.maximumHeight: 300
-                                Layout.verticalSizePolicy: Layout.Expanding
+                                Layout.fillHeight: true
                             }
                             Rectangle {
                                 color: "red"
                                 width: parent.width
                                 height: 50
                                 Layout.minimumHeight: 40
-                                Layout.verticalSizePolicy: Layout.Expanding
+                                Layout.fillHeight: true
                             }
                         }
                     }
@@ -472,7 +472,7 @@ Item {
                         Rectangle {
                             color: "red"
                             height: parent.height
-                            Layout.horizontalSizePolicy: Layout.Expanding
+                            Layout.fillWidth: true
                         }
                         Rectangle {
                             color: "green"
@@ -483,7 +483,7 @@ Item {
                         Rectangle {
                             color: "blue"
                             height: parent.height
-                            Layout.horizontalSizePolicy: Layout.Expanding
+                            Layout.fillWidth: true
                         }
                     }
 
@@ -495,8 +495,8 @@ Item {
                         anchors.right: parent.right
                         Layout.minimumHeight: 10
                         Layout.maximumHeight: 30
-                        Layout.horizontalSizePolicy: Layout.Expanding
-                        Layout.verticalSizePolicy: Layout.Expanding
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
                     }
 
                     // [3]
@@ -509,7 +509,7 @@ Item {
                             color: "red"
                             height: parent.height
                             Layout.maximumHeight: 200
-                            Layout.horizontalSizePolicy: Layout.Expanding
+                            Layout.fillWidth: true
                         }
                         Rectangle {
                             color: "blue"
@@ -527,7 +527,7 @@ Item {
                                     anchors.right: parent.right
                                     Layout.minimumHeight: 100
                                     Layout.maximumHeight: 200
-                                    Layout.verticalSizePolicy: Layout.Expanding
+                                    Layout.fillHeight: true
                                 }
 
                                 Rectangle {
@@ -535,7 +535,7 @@ Item {
                                     height: parent.height
                                     anchors.left: parent.left
                                     anchors.right: parent.right
-                                    Layout.verticalSizePolicy: Layout.Expanding
+                                    Layout.fillHeight: true
                                 }
                             }
                         }
@@ -570,8 +570,8 @@ Item {
                             height: 52
                             Layout.row: 0
                             Layout.column: 0
-                            Layout.horizontalSizePolicy: Layout.Expanding
-                            Layout.verticalSizePolicy: Layout.Expanding
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
                         }
                         Rectangle {
                             color: "white"
@@ -579,8 +579,8 @@ Item {
                             height: 52
                             Layout.row: 0
                             Layout.column: 1
-                            Layout.horizontalSizePolicy: Layout.Expanding
-                            Layout.verticalSizePolicy: Layout.Expanding
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
                         }
                         Rectangle {
                             color: "blue"
@@ -589,8 +589,8 @@ Item {
                             Layout.row: 0
                             Layout.column: 2
                             Layout.rowSpan: 2
-                            Layout.horizontalSizePolicy: Layout.Expanding
-                            Layout.verticalSizePolicy: Layout.Expanding
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
                         }
                         Rectangle {
                             color: "white"
@@ -598,8 +598,8 @@ Item {
                             height: 52
                             Layout.row: 0
                             Layout.column: 3
-                            Layout.horizontalSizePolicy: Layout.Expanding
-                            Layout.verticalSizePolicy: Layout.Expanding
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
                         }
                         Rectangle {
                             color: "red"
@@ -607,8 +607,8 @@ Item {
                             height: 52
                             Layout.row: 0
                             Layout.column: 4
-                            Layout.horizontalSizePolicy: Layout.Expanding
-                            Layout.verticalSizePolicy: Layout.Expanding
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
                         }
 
                         // row 1
@@ -619,8 +619,8 @@ Item {
                             Layout.row: 1
                             Layout.column: 0
                             Layout.columnSpan: 2
-                            Layout.horizontalSizePolicy: Layout.Expanding
-                            Layout.verticalSizePolicy: Layout.Expanding
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
                         }
                         Rectangle {
                             color: "white"
@@ -629,8 +629,8 @@ Item {
                             Layout.row: 1
                             Layout.column: 3
                             Layout.columnSpan: 2
-                            Layout.horizontalSizePolicy: Layout.Expanding
-                            Layout.verticalSizePolicy: Layout.Expanding
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
                         }
 
                         // row 2
@@ -641,8 +641,8 @@ Item {
                             Layout.row: 2
                             Layout.column: 0
                             Layout.columnSpan: 5
-                            Layout.horizontalSizePolicy: Layout.Expanding
-                            Layout.verticalSizePolicy: Layout.Expanding
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
                         }
 
                         // row 3
@@ -653,8 +653,8 @@ Item {
                             Layout.row: 3
                             Layout.column: 0
                             Layout.columnSpan: 2
-                            Layout.horizontalSizePolicy: Layout.Expanding
-                            Layout.verticalSizePolicy: Layout.Expanding
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
                         }
                         Rectangle {
                             color: "blue"
@@ -663,8 +663,8 @@ Item {
                             Layout.row: 3
                             Layout.column: 2
                             Layout.rowSpan: 2
-                            Layout.horizontalSizePolicy: Layout.Expanding
-                            Layout.verticalSizePolicy: Layout.Expanding
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
                         }
                         Rectangle {
                             color: "white"
@@ -673,8 +673,8 @@ Item {
                             Layout.row: 3
                             Layout.column: 3
                             Layout.columnSpan: 2
-                            Layout.horizontalSizePolicy: Layout.Expanding
-                            Layout.verticalSizePolicy: Layout.Expanding
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
                         }
 
                         // row 4
@@ -684,8 +684,8 @@ Item {
                             height: 52
                             Layout.row: 4
                             Layout.column: 0
-                            Layout.horizontalSizePolicy: Layout.Expanding
-                            Layout.verticalSizePolicy: Layout.Expanding
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
                         }
                         Rectangle {
                             color: "white"
@@ -693,8 +693,8 @@ Item {
                             height: 52
                             Layout.row: 4
                             Layout.column: 1
-                            Layout.horizontalSizePolicy: Layout.Expanding
-                            Layout.verticalSizePolicy: Layout.Expanding
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
                         }
                         Rectangle {
                             color: "white"
@@ -702,8 +702,8 @@ Item {
                             height: 52
                             Layout.row: 4
                             Layout.column: 3
-                            Layout.horizontalSizePolicy: Layout.Expanding
-                            Layout.verticalSizePolicy: Layout.Expanding
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
                         }
                         Rectangle {
                             color: "red"
@@ -711,8 +711,8 @@ Item {
                             height: 52
                             Layout.row: 4
                             Layout.column: 4
-                            Layout.horizontalSizePolicy: Layout.Expanding
-                            Layout.verticalSizePolicy: Layout.Expanding
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
                         }
                     }
 

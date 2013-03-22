@@ -64,7 +64,7 @@ QtObject {
             value: result
             maximumValue: 9999
             minimumValue: -9999
-            Layout.horizontalSizePolicy: Layout.Expanding
+            Layout.fillWidth: true
             onValueChanged: {
                 if (!ignoreUpdate) {
                     loader.item[name] = value
@@ -87,7 +87,7 @@ QtObject {
             stepSize: 0.5
             maximumValue: 9999
             minimumValue: -9999
-            Layout.horizontalSizePolicy: Layout.Expanding
+            Layout.fillWidth: true
             onValueChanged: {
                 if (!ignoreUpdate) {
                     loader.item[name] = value
@@ -114,7 +114,7 @@ QtObject {
         TextField {
             id: tf
             text: result
-            Layout.horizontalSizePolicy: Layout.Expanding
+            Layout.fillWidth: true
             onTextChanged: {
                 if (!ignoreUpdate) {
                     loader.item[name] = tf.text
@@ -134,7 +134,7 @@ QtObject {
         Label {
             height: 20
             anchors.right: parent.right
-            Layout.horizontalSizePolicy: Layout.Expanding
+            Layout.fillWidth: true
             text: loader.item[name] !== undefined ? loader.item[name] : ""
         }
     }

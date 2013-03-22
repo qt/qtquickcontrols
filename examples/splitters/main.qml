@@ -71,7 +71,7 @@ ApplicationWindow {
 
         SplitView {
             orientation: Qt.Vertical
-            Layout.horizontalSizePolicy: Layout.Expanding
+            Layout.fillWidth: true
 
             Rectangle {
                 id: row1

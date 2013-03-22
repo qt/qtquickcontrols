@@ -217,7 +217,7 @@ ApplicationWindow {
             ToolButton { action: alignCenter }
             ToolButton { action: alignRight }
             ToolButton { action: alignJustify }
-            Item { Layout.horizontalSizePolicy: Layout.Expanding }
+            Item { Layout.fillWidth: true }
         }
     }
     ToolBar {
@@ -233,7 +233,7 @@ ApplicationWindow {
                 currentIndex: document.defaultFontSizes.indexOf(document.fontSize + "")
             }
             TextField { id: fontEdit; enabled: false }
-            Item { Layout.horizontalSizePolicy: Layout.Expanding }
+            Item { Layout.fillWidth: true }
         }
     }
 

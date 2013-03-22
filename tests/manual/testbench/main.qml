@@ -108,7 +108,7 @@ ApplicationWindow {
         Flickable {
             id: testBenchRect
             clip: true
-            Layout.horizontalSizePolicy: Layout.Expanding
+            Layout.fillWidth: true
 
             Image {
                 anchors.fill: parent

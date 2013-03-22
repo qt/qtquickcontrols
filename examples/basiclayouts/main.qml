@@ -63,7 +63,7 @@ ApplicationWindow {
             id: rowBox
             title: "Row layout"
 
-            Layout.horizontalSizePolicy: Layout.Expanding
+            Layout.fillWidth: true
             RowLayout {
                 id: rowLayout
                 spacing: 6
@@ -85,7 +85,7 @@ ApplicationWindow {
         GroupBox {
             id: gridBox
             title: "Grid layout"
-            Layout.horizontalSizePolicy: Layout.Expanding
+            Layout.fillWidth: true
             GridLayout {
                 id: gridLayout
                 horizontalSpacing: 6
@@ -122,8 +122,8 @@ ApplicationWindow {
                     Layout.row: 0
                     Layout.column: 2
                     Layout.rowSpan: 3
-                    Layout.verticalSizePolicy: Layout.Expanding
-                    Layout.horizontalSizePolicy: Layout.Expanding
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
                 }
             }
         }
@@ -132,8 +132,8 @@ ApplicationWindow {
             placeholderText: "This is a placeholder for a TextField"
             width: 200
             height: 400
-            Layout.verticalSizePolicy: Layout.Expanding
-            Layout.horizontalSizePolicy: Layout.Expanding
+            Layout.fillHeight: true
+            Layout.fillWidth: true
         }
     }
 }

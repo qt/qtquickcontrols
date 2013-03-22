@@ -66,7 +66,7 @@ Item {
                         width: 5;                       \
                         height: 10;                     \
                         color: "#8080ff";               \
-                        Layout.horizontalSizePolicy: Layout.Fixed    \
+                        Layout.fillWidth: false         \
                     }                                   \
                     property alias r2: _r2;             \
                     Rectangle {                         \
@@ -74,7 +74,7 @@ Item {
                         width: 10;                      \
                         height: 20;                     \
                         color: "#c0c0ff";               \
-                        Layout.horizontalSizePolicy: Layout.Expanding    \
+                        Layout.fillWidth: true          \
                     }                                   \
                 }                                       '
 
@@ -103,7 +103,7 @@ Item {
                         width: 5;                       \
                         height: 10;                     \
                         color: "#8080ff";               \
-                        Layout.horizontalSizePolicy: Layout.Expanding    \
+                        Layout.fillWidth: true          \
                     }                                   \
                     property alias r2: _r2;             \
                     Rectangle {                         \
@@ -111,7 +111,7 @@ Item {
                         width: 10;                      \
                         height: 20;                     \
                         color: "#c0c0ff";               \
-                        Layout.horizontalSizePolicy: Layout.Expanding    \
+                        Layout.fillWidth: true          \
                     }                                   \
                 }                                       '
 
@@ -150,7 +150,7 @@ Item {
                             color: "green";                     \
                             implicitWidth: 50;                  \
                             implicitHeight: 20;                 \
-                            Layout.horizontalSizePolicy: Layout.Expanding;    \
+                            Layout.fillWidth: true;             \
                         }                                       \
                     }                                           \
                 }                                               '
@@ -217,7 +217,7 @@ Item {
                             implicitHeight: 20;                 \
                             property int counter : 0;           \
                             onWidthChanged: { ++counter; }      \
-                            Layout.horizontalSizePolicy: Layout.Expanding;    \
+                            Layout.fillWidth: true;             \
                         }                                       \
                         Rectangle {                             \
                             id: _r2;                            \
@@ -226,7 +226,7 @@ Item {
                             implicitHeight: 20;                 \
                             property int counter : 0;           \
                             onWidthChanged: { ++counter; }      \
-                            Layout.horizontalSizePolicy: Layout.Expanding;    \
+                            Layout.fillWidth: true;             \
                         }                                       \
                     }                                           \
                 }                                               '

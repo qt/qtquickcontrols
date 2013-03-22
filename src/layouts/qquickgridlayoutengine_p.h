@@ -186,7 +186,7 @@ public:
       PREF | Layout.preferredWidth          | implicitWidth     | width
       MAX  | Layout.maximumWidth            |                   | 100000
       -----+--------------------------------+-------------------+--------
-SizePolicy | Layout.horizontalSizePolicy    | Expanding if layout, Fixed if item |
+  Fixed    | Layout.fillWidth               | Expanding if layout, Fixed if item |
 
 */
         //--- GATHER MINIMUM SIZE HINTS ---
@@ -276,22 +276,22 @@ prefS   [1, 2, 3]   [1, 3, 3] [1, 1, 3] [2, 3, 3] [2, 2, 3] [1, 1, 3] ###No chan
         sizeHintCacheDirty = true;
     }
 
-
-    static QLayoutPolicy::Policy fromSizePolicy(QQuickLayout::SizePolicy policy) {
-        return (policy == QQuickLayout::Fixed ? QLayoutPolicy::Fixed : QLayoutPolicy::Preferred);
-    }
-
     QLayoutPolicy::Policy sizePolicy(Qt::Orientation orientation) const
     {
+        bool fillExtent = false;
+        bool isSet = false;
         if (QQuickLayoutAttached *info = attachedLayoutObject(m_item, false)) {
-            QQuickLayout::SizePolicy sp = (orientation == Qt::Horizontal
-                                        ? info->horizontalSizePolicy()
-                                        : info->verticalSizePolicy());
-            if (sp != QQuickLayout::Unspecified)
-                return fromSizePolicy(sp);
+            if (orientation == Qt::Horizontal) {
+                isSet = info->isFillWidthSet();
+                if (isSet) fillExtent = info->fillWidth();
+            } else {
+                isSet = info->isFillHeightSet();
+                if (isSet) fillExtent = info->fillHeight();
+            }
         }
-        // ### Correct way is to, go through all child items and combine the policies.
-        return qobject_cast<QQuickLayout*>(m_item) ? QLayoutPolicy::Preferred : QLayoutPolicy::Fixed;
+        if (!isSet && qobject_cast<QQuickLayout*>(m_item))
+            fillExtent = true;
+        return fillExtent ? QLayoutPolicy::Preferred : QLayoutPolicy::Fixed;
     }
 
     void setGeometry(const QRectF &rect)

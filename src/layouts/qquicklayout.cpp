@@ -54,12 +54,14 @@ QQuickLayoutAttached::QQuickLayoutAttached(QObject *parent)
       m_preferredHeight(0),
       m_maximumWidth(q_declarativeLayoutMaxSize),
       m_maximumHeight(q_declarativeLayoutMaxSize),
-      m_verticalSizePolicy(QQuickLayout::Unspecified),
-      m_horizontalSizePolicy(QQuickLayout::Unspecified),
       m_row(0),
       m_column(0),
       m_rowSpan(1),
       m_columnSpan(1),
+      m_fillWidth(false),
+      m_fillHeight(false),
+      m_isFillWidthSet(false),
+      m_isFillHeightSet(false),
       m_changesNotificationEnabled(true)
 {
 
@@ -127,21 +129,23 @@ void QQuickLayoutAttached::setMaximumHeight(qreal height)
     emit maximumHeightChanged();
 }
 
-void QQuickLayoutAttached::setVerticalSizePolicy(QQuickLayout::SizePolicy policy)
+void QQuickLayoutAttached::setFillWidth(bool fill)
 {
-    if (m_verticalSizePolicy != policy) {
-        m_verticalSizePolicy = policy;
+    m_isFillWidthSet = true;
+    if (m_fillWidth != fill) {
+        m_fillWidth = fill;
         invalidateItem();
-        emit verticalSizePolicyChanged();
+        emit fillWidthChanged();
     }
 }
 
-void QQuickLayoutAttached::setHorizontalSizePolicy(QQuickLayout::SizePolicy policy)
+void QQuickLayoutAttached::setFillHeight(bool fill)
 {
-    if (m_horizontalSizePolicy != policy) {
-        m_horizontalSizePolicy = policy;
+    m_isFillHeightSet = true;
+    if (m_fillHeight != fill) {
+        m_fillHeight = fill;
         invalidateItem();
-        emit horizontalSizePolicyChanged();
+        emit fillHeightChanged();
     }
 }
 
