@@ -109,17 +109,17 @@ class QQuickGridLayoutPrivate;
 class QQuickGridLayout : public QQuickGridLayoutBase
 {
     Q_OBJECT
-    Q_PROPERTY(qreal horizontalSpacing READ horizontalSpacing WRITE setHorizontalSpacing NOTIFY horizontalSpacingChanged)
-    Q_PROPERTY(qreal verticalSpacing READ verticalSpacing WRITE setVerticalSpacing NOTIFY verticalSpacingChanged)
+    Q_PROPERTY(qreal columnSpacing READ columnSpacing WRITE setHorizontalSpacing NOTIFY columnSpacingChanged)
+    Q_PROPERTY(qreal rowSpacing READ rowSpacing WRITE setVerticalSpacing NOTIFY rowSpacingChanged)
 public:
     explicit QQuickGridLayout(QQuickItem *parent = 0);
-    qreal horizontalSpacing() const;
+    qreal columnSpacing() const;
     void setHorizontalSpacing(qreal spacing);
-    qreal verticalSpacing() const;
+    qreal rowSpacing() const;
     void setVerticalSpacing(qreal spacing);
 signals:
-    void horizontalSpacingChanged();
-    void verticalSpacingChanged();
+    void columnSpacingChanged();
+    void rowSpacingChanged();
 
 private:
     Q_DECLARE_PRIVATE(QQuickGridLayout)
@@ -130,8 +130,8 @@ class QQuickGridLayoutPrivate : public QQuickGridLayoutBasePrivate
     Q_DECLARE_PUBLIC(QQuickGridLayout)
 public:
     QQuickGridLayoutPrivate() {}
-    qreal horizontalSpacing;
-    qreal verticalSpacing;
+    qreal columnSpacing;
+    qreal rowSpacing;
 };
 
 

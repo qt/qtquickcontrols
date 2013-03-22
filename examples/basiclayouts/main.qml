@@ -88,8 +88,8 @@ ApplicationWindow {
             Layout.fillWidth: true
             GridLayout {
                 id: gridLayout
-                horizontalSpacing: 6
-                verticalSpacing: 6
+                rowSpacing: 6
+                columnSpacing: 6
                 Label {
                     text: "Line 1"
                     Layout.row: 0

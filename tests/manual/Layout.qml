@@ -559,8 +559,8 @@ Item {
                     // [1]
                     GridLayout {
                         id: flag
-                        verticalSpacing: spacingSlider.value
-                        horizontalSpacing: spacingSlider.value
+                        rowSpacing: spacingSlider.value
+                        columnSpacing: spacingSlider.value
                         // row 0
                         anchors.left: parent.left
                         anchors.right: parent.right

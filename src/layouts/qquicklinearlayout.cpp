@@ -339,42 +339,42 @@ QQuickGridLayout::QQuickGridLayout(QQuickItem *parent /* = 0*/)
     : QQuickGridLayoutBase(*new QQuickGridLayoutPrivate, Qt::Horizontal, parent)
 {
     Q_D(QQuickGridLayout);
-    d->horizontalSpacing = q_declarativeLayoutDefaultSpacing;
-    d->verticalSpacing = q_declarativeLayoutDefaultSpacing;
-    d->engine.setSpacing(d->horizontalSpacing, Qt::Horizontal);
-    d->engine.setSpacing(d->verticalSpacing, Qt::Vertical);
+    d->columnSpacing = q_declarativeLayoutDefaultSpacing;
+    d->rowSpacing = q_declarativeLayoutDefaultSpacing;
+    d->engine.setSpacing(d->columnSpacing, Qt::Horizontal);
+    d->engine.setSpacing(d->rowSpacing, Qt::Vertical);
 }
 
-qreal QQuickGridLayout::horizontalSpacing() const
+qreal QQuickGridLayout::columnSpacing() const
 {
     Q_D(const QQuickGridLayout);
-    return d->horizontalSpacing;
+    return d->columnSpacing;
 }
 
 void QQuickGridLayout::setHorizontalSpacing(qreal spacing)
 {
     Q_D(QQuickGridLayout);
-    if (qIsNaN(spacing) || d->horizontalSpacing == spacing)
+    if (qIsNaN(spacing) || d->columnSpacing == spacing)
         return;
 
-    d->horizontalSpacing = spacing;
+    d->columnSpacing = spacing;
     d->engine.setSpacing(spacing, Qt::Horizontal | Qt::Vertical);
     invalidate();
 }
 
-qreal QQuickGridLayout::verticalSpacing() const
+qreal QQuickGridLayout::rowSpacing() const
 {
     Q_D(const QQuickGridLayout);
-    return d->verticalSpacing;
+    return d->rowSpacing;
 }
 
 void QQuickGridLayout::setVerticalSpacing(qreal spacing)
 {
     Q_D(QQuickGridLayout);
-    if (qIsNaN(spacing) || d->verticalSpacing == spacing)
+    if (qIsNaN(spacing) || d->rowSpacing == spacing)
         return;
 
-    d->verticalSpacing = spacing;
+    d->rowSpacing = spacing;
     d->engine.setSpacing(spacing, Qt::Horizontal | Qt::Vertical);
     invalidate();
 }
