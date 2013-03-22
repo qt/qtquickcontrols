@@ -45,6 +45,7 @@
 import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Layouts 1.0
+import QtQuick.Dialogs 1.0
 import "content"
 
 ApplicationWindow {
@@ -66,6 +67,14 @@ ApplicationWindow {
             "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor "+
             "incididunt ut labore et dolore magna aliqua.\n Ut enim ad minim veniam, quis nostrud "+
             "exercitation ullamco laboris nisi ut aliquip ex ea commodo cosnsequat. ";
+
+    ImageViewer { id: imageViewer }
+
+    FileDialog {
+        id: fileDialog
+        nameFilters: [ "Image files (*.png *.jpg)" ]
+        onAccepted: imageViewer.open(fileUrl)
+    }
 
     ToolBar {
         id: toolbar
@@ -97,7 +106,7 @@ ApplicationWindow {
             text: "&Open"
             shortcut: "Ctrl+O"
             iconSource: "images/document-open.png"
-            onTriggered: console.log("Imagine a gorgeous file dialog...")
+            onTriggered: fileDialog.open()
             tooltip: "(Pretend to) open a file"
         }
 

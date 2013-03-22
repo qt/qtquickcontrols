@@ -45,11 +45,20 @@
 import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Styles 1.0
+import QtQuick.Dialogs 1.0
 
 Item {
     id: root
     width: 300
     height: 200
+
+    ColorDialog {
+        id: colorDialog
+        color: "#afe"
+        property color last: "#afe"
+        onRejected: color = last
+        onVisibleChanged: if (visible) last = color
+    }
 
     Column {
         anchors.margins: 20
@@ -60,8 +69,9 @@ Item {
         Row {
             spacing: 8
             Button {
-                text: "Push me"
-                style: ButtonStyle { backgroundColor: "#afe" }
+                text: "Set color…"
+                style: ButtonStyle { backgroundColor: colorDialog.color }
+                onClicked: colorDialog.open()
             }
             Button {
                 text: "Push me"
@@ -75,7 +85,7 @@ Item {
         Row {
             spacing: 8
             TextField {
-                style: TextFieldStyle { backgroundColor: "#afe" }
+                style: TextFieldStyle { backgroundColor: colorDialog.color }
             }
             TextField {
                 style: TextFieldStyle { backgroundColor: "#eee" }
@@ -87,7 +97,7 @@ Item {
         Row {
             spacing: 8
             SpinBox {
-                style: SpinBoxStyle { backgroundColor: "#afe" }
+                style: SpinBoxStyle { backgroundColor: colorDialog.color }
             }
             SpinBox {
                 style: SpinBoxStyle { backgroundColor: "#eee" }
@@ -103,7 +113,7 @@ Item {
                 value: 50
                 maximumValue: 100
                 width: 100
-                style: SliderStyle { backgroundColor: "#afe"}
+                style: SliderStyle { backgroundColor: colorDialog.color}
             }
             Slider {
                 value: 50
@@ -125,7 +135,7 @@ Item {
                 value: 50
                 maximumValue: 100
                 width: 100
-                style: ProgressBarStyle{ backgroundColor: "#afe" }
+                style: ProgressBarStyle{ backgroundColor: colorDialog.color }
             }
             ProgressBar {
                 value: 50
