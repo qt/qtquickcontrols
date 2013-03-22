@@ -62,11 +62,14 @@ ApplicationWindow {
         GroupBox {
             id: rowBox
             title: "Row layout"
-
+            contentWidth: rowLayout.implicitWidth
+            contentHeight: rowLayout.implicitHeight
             Layout.fillWidth: true
+
             RowLayout {
                 id: rowLayout
                 spacing: 6
+                anchors.fill: parent
                 Button {
                     text: "Button 1"
                 }
@@ -79,17 +82,24 @@ ApplicationWindow {
                 Button {
                     text: "Button 4"
                 }
+                Item {
+                    Layout.fillWidth: true
+                }
             }
         }
 
         GroupBox {
             id: gridBox
             title: "Grid layout"
+            contentWidth: gridLayout.implicitWidth
+            contentHeight: gridLayout.implicitHeight
             Layout.fillWidth: true
+
             GridLayout {
                 id: gridLayout
                 rowSpacing: 6
                 columnSpacing: 6
+                anchors.fill: parent
                 Label {
                     text: "Line 1"
                     Layout.row: 0
