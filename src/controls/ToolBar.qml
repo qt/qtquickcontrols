@@ -69,7 +69,7 @@ import QtQuick.Controls.Private 1.0
 */
 
 Item {
-    implicitHeight: toolbar.implicitHeight
+    implicitHeight: Math.max(childrenRect.height, toolbar.implicitHeight)
     implicitWidth: parent ? parent.width : toolbar.implicitWidth
     activeFocusOnTab: false
     Accessible.role: Accessible.ToolBar
