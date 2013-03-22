@@ -51,19 +51,19 @@ PageTransition {
 
     property bool horizontal: true
 
-    function getAnimation(properties)
+    function getTransition(properties)
     {
         return root[horizontal ? "horizontalSlide" : "verticalSlide"][properties.name]
     }
 
-    function cleanupAnimation(properties)
+    function transitionFinished(properties)
     {
         properties.exitPage.x = 0
         properties.exitPage.y = 0
     }
 
     property QtObject horizontalSlide: QtObject {
-        property Component pushAnimation: PageAnimation {
+        property Component pushTransition: StackViewTransition {
             PropertyAnimation {
                 target: enterPage
                 property: "x"
@@ -80,7 +80,7 @@ PageTransition {
             }
         }
 
-        property Component popAnimation: PageAnimation {
+        property Component popTransition: StackViewTransition {
             PropertyAnimation {
                 target: enterPage
                 property: "x"
@@ -96,11 +96,11 @@ PageTransition {
                 duration: 300
             }
         }
-        property Component replaceAnimation: pushAnimation
+        property Component replaceTransition: pushTransition
     }
 
     property QtObject verticalSlide: QtObject {
-        property Component pushAnimation: PageAnimation {
+        property Component pushTransition: StackViewTransition {
             PropertyAnimation {
                 target: enterPage
                 property: "y"
@@ -117,7 +117,7 @@ PageTransition {
             }
         }
 
-        property Component popAnimation: PageAnimation {
+        property Component popTransition: StackViewTransition {
             PropertyAnimation {
                 target: enterPage
                 property: "y"
@@ -132,7 +132,7 @@ PageTransition {
                 to: target.height
                 duration: 300
             }
-            property Component replaceAnimation: pushAnimation
+            property Component replaceTransition: pushTransition
         }
     }
 }

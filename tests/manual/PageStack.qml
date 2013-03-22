@@ -53,13 +53,13 @@ Window {
     }
 
     property PageTransition fadeTransition:  PageTransition {
-        function cleanupAnimation(properties)
+        function transitionFinished(properties)
         {
             properties.exitPage.visible = false
             properties.exitPage.opacity = 1
         }
 
-        property Component pushAnimation: PageAnimation {
+        property Component pushTransition: StackViewTransition {
             PropertyAnimation {
                 target: enterPage
                 property: "opacity"
@@ -76,13 +76,13 @@ Window {
     }
 
     property PageTransition rotateTransition:  PageTransition {
-        function cleanupAnimation(properties)
+        function transitionFinished(properties)
         {
             properties.exitPage.x = 0
             properties.exitPage.rotation = 0
         }
 
-        property Component pushAnimation: PageAnimation {
+        property Component pushTransition: StackViewTransition {
             SequentialAnimation {
                 ScriptAction {
                     script: enterPage.rotation = 90
@@ -110,12 +110,12 @@ Window {
     }
 
     property PageTransition slideTransition:  PageTransition {
-        function cleanupAnimation(properties)
+        function transitionFinished(properties)
         {
             properties.exitPage.x = 0
         }
 
-        property Component pushAnimation: PageAnimation {
+        property Component pushTransition: StackViewTransition {
             PropertyAnimation {
                 target: enterPage
                 property: "x"

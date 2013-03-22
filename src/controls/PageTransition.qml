@@ -53,19 +53,19 @@ import QtQuick 2.1
 QtObject {
     id: root
 
-    function getAnimation(properties)
+    function getTransition(properties)
     {
         return root[properties.name]
     }
 
-    function cleanupAnimation(properties)
+    function transitionFinished(properties)
     {
         console.warn("Warning: PageTransition: the current transition did not override "
-                     + "cleanupAnimation(properties). This can cause the exit page to "
+                     + "transitionFinished(properties). This can cause the exit page to "
                      + "be left in a state that makes it unusable for further usage!")
     }
 
-    property Component pushAnimation: PageAnimation {}
-    property Component popAnimation: root["pushAnimation"]
-    property Component replaceAnimation: root["pushAnimation"]
+    property Component pushTransition: StackViewTransition {}
+    property Component popTransition: root["pushTransition"]
+    property Component replaceTransition: root["pushTransition"]
 }

@@ -275,13 +275,13 @@ import "Private/PageStack.js" as JSArray
     or the application developer. How pages should visually enter and leave the stack
     is therefore completely controlled from the outside.
 
-    When the transition starts, the pagestack will search for an animation that
-    matches the operation executed. There are three animations to choose
-    from: pushAnimation, popAnimation, and replaceAnimation. Each implements how
-    enterPage should animate in, and exitPage out. The animations are
-    collected inside a PageTransition object assigned to
-    \l {PageStack::pageTransition}{pageTransition}. By default, popAnimation and
-    replaceAnimation will be the same as PushAnimation, unless you set them
+    When the transition starts, the pagestack will search for a transition that
+    matches the operation executed. There are three transitions to choose
+    from: pushTransition, popTransition, and replaceTransition. Each implements how
+    enterPage should animate in, and exitPage out. The transitions are
+    collected inside a StackViewDelegate object assigned to
+    \l {PageStack::delegate}{delegate}. By default, popTransition and
+    replaceTransition will be the same as pushTransition, unless you set them
     to something else.
 
     A simple fade transition could be implemented as:
@@ -289,12 +289,12 @@ import "Private/PageStack.js" as JSArray
     \qml
     PageStack {
         pageTransition: PageTransition {
-            function cleanupAnimation(properties)
+            function transitionFinished(properties)
             {
                 properties.exitPage.opacity = 1
             }
 
-            property Component pushAnimation: PageAnimation {
+            property Component pushTransition: StackViewTransition {
                 PropertyAnimation {
                     target: enterPage
                     property: "opacity"
@@ -312,12 +312,12 @@ import "Private/PageStack.js" as JSArray
     }
     \endqml
 
-    PushAnimation needs to inherit from PageAnimation, which is a ParallelAnimation that
+    PushTransition needs to inherit from StackViewTransition, which is a ParallelAnimation that
     contains the properties \c enterPage and \c exitPage. You set the target of your
     inner animations to those pages. Since the same page instance can be pushed several
     times to a pagestack, and since pages also can override transitions, your PageTransition
     always need to override
-    \l {PageTransition::cleanupAnimation(properties)}{PageTransition.cleanupAnimation(properties)}.
+    \l {PageTransition::transitionFinished(properties)}{PageTransition.transitionFinished(properties)}.
     Implement this function to reset any properties animated on the exitPage so that later
     transitions can expect the pages to be in a default state.
 
@@ -327,13 +327,13 @@ import "Private/PageStack.js" as JSArray
     \qml
     PageStack {
         pageTransition: PageTransition {
-            function cleanupAnimation(properties)
+            function transitionFinished(properties)
             {
                 properties.exitPage.x = 0
                 properties.exitPage.rotation = 0
             }
 
-            property Component pushAnimation: PageAnimation {
+            property Component pushTransition: StackViewTransition {
                 SequentialAnimation {
                     ScriptAction {
                         script: enterPage.rotation = 90
@@ -369,12 +369,12 @@ import "Private/PageStack.js" as JSArray
 
     After PageStack finds the correct transition to use (it first checks
      \l{Stack::pageTransition}{Stack.pageTransition}, then \l {PageStack::pageTransition}{pageTransition})
-    it calls \l {PageTransition::getAnimation(properties)}{PageTransition.getAnimation(properties)}.
+    it calls \l {PageTransition::getTransition(properties)}{PageTransition.getTransition(properties)}.
     The base implementation of this function just looks for a property named \c properties.name inside
-    itself (root), which is how it finds \c {property Component pushAnimation} in the examples above.
+    itself (root), which is how it finds \c {property Component pushTransition} in the examples above.
 
     \code
-    function getAnimation(properties)
+    function getTransition(properties)
     {
         return root[properties.name]
     }
@@ -399,12 +399,12 @@ import "Private/PageStack.js" as JSArray
 
     \qml
     PageTransition {
-        function getAnimation(properties)
+        function getTransition(properties)
         {
             return (properties.enterPage.index % 2) ? horizontalAnimation : verticalAnimation
         }
 
-        function cleanupAnimation(properties)
+        function transitionFinished(properties)
         {
             properties.exitPage.x = 0
             properties.exitPage.y = 0
@@ -886,7 +886,7 @@ Item {
             __currentTransition.animation.complete()
         __loadElement(transition.inElement)
 
-        transition.name = transition.replace ? "replaceAnimation" : (transition.push ? "pushAnimation" : "popAnimation")
+        transition.name = transition.replace ? "replaceTransition" : (transition.push ? "pushTransition" : "popTransition")
         var enterPage = transition.inElement.page
         transition.enterPage = enterPage
 
@@ -942,7 +942,7 @@ Item {
                 "enterPage":transition.enterPage,
                 "exitPage":transition.exitPage,
                 "immediate":transition.immediate }
-            var anim = source.getAnimation(transition.properties)
+            var anim = source.getTransition(transition.properties)
             if (anim.createObject) {
                 anim = anim.createObject(null, transition.properties)
                 anim.runningChanged.connect(function(){ if (anim.running === false) anim.destroy() })
@@ -962,7 +962,7 @@ Item {
         __setPageStatus(__currentTransition.exitPage, Stack.Inactive);
         __setPageStatus(__currentTransition.enterPage, Stack.Active);
         __currentTransition.properties.animation = __currentTransition.animation
-        __currentTransition.pageTransition.cleanupAnimation(__currentTransition.properties)
+        __currentTransition.pageTransition.transitionFinished(__currentTransition.properties)
 
         if (!__currentTransition.push || __currentTransition.replace)
             __cleanup(__currentTransition.outElement)
