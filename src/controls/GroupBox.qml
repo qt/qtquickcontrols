@@ -130,18 +130,15 @@ Item {
     /*!
         This property holds the width of the content.
     */
-    readonly property real contentWidth: content.childrenRect.width  + 2 * __margin
+    property real contentWidth: content.childrenRect.width
 
     /*!
         This property holds the height of the content.
     */
-    readonly property real contentHeight: content.childrenRect.height + 2 * __margin
+    property real contentHeight: content.childrenRect.height
 
     /*! \internal */
-    property int __margin: 8
-
-    /*! \internal */
-    property Component style: Qt.createComponent(Settings.THEME_PATH + "/GroupBoxStyle.qml", groupbox)
+    property Component __style: Qt.createComponent(Settings.THEME_PATH + "/GroupBoxStyle.qml", groupbox)
 
     /*! \internal */
     default property alias data: content.data
@@ -161,12 +158,16 @@ Item {
         id: loader
         property alias control: groupbox
         anchors.fill: parent
-        property int topMargin: (title.length > 0 || checkable ? 16 : 0) + __margin
+        property int topMargin: (title.length > 0 || checkable ? 16 : 0) + content.margin
         property int bottomMargin: 4
         property int leftMargin: 4
         property int rightMargin: 4
-        sourceComponent: style
+        sourceComponent: styleLoader.item ? styleLoader.item.panel : null
         onLoaded: item.z = -1
+        Loader {
+            id: styleLoader
+            sourceComponent: __style
+        }
     }
 
     CheckBox {
@@ -185,10 +186,11 @@ Item {
         id:content
         z: 1
         focus: true
+        property int margin: styleLoader.item ? styleLoader.item.margin : 0
         anchors.topMargin: loader.topMargin
-        anchors.leftMargin: __margin
-        anchors.rightMargin: __margin
-        anchors.bottomMargin: __margin
+        anchors.leftMargin: margin
+        anchors.rightMargin: margin
+        anchors.bottomMargin: margin
         anchors.fill: parent
         enabled: (!groupbox.checkable || groupbox.checked)
     }

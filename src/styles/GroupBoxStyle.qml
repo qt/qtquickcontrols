@@ -39,20 +39,23 @@
 ****************************************************************************/
 import QtQuick 2.1
 import QtQuick.Controls 1.0
+import QtQuick.Controls.Styles 1.0
 
 /*!
     \qmltype GroupBoxStyle
     \internal
     \inqmlmodule QtQuick.Controls.Styles 1.0
 */
-Item {
-    implicitWidth: Math.max(200, contentWidth + 30)
-    implicitHeight: contentHeight
-
-    Text {
-        anchors.top: parent.top
-        anchors.left: parent.left
-        anchors.margins: 4
-        text: control.title
+Style {
+    property int margin: 8
+    property Component panel: Item {
+        implicitWidth: Math.max(200, contentWidth + 30)
+        implicitHeight: contentHeight
+        Text {
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.margins: 4
+            text: control.title
+        }
     }
 }

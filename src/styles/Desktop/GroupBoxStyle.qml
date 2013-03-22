@@ -40,15 +40,21 @@
 import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Private 1.0
+import QtQuick.Controls.Styles 1.0
 
-StyleItem {
-    id: styleitem
-    elementType: "groupbox"
-    text: control.title
-    on: control.checked
-    hasFocus: control.activeFocus
-    activeControl: checkable ? "checkbox" : ""
-    properties: { "checkable" : checkable , "sunken" : !flat}
-    contentWidth: control.contentWidth
-    contentHeight: control.contentHeight
+
+Style {
+    property int margin: 8
+
+    property Component panel: StyleItem {
+        id: styleitem
+        elementType: "groupbox"
+        text: control.title
+        on: control.checked
+        hasFocus: control.activeFocus
+        activeControl: checkable ? "checkbox" : ""
+        properties: { "checkable" : checkable , "sunken" : !flat}
+        contentWidth: control.contentWidth + 2 * margin
+        contentHeight: control.contentHeight + 2 * margin
+    }
 }
