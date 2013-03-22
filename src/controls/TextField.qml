@@ -549,6 +549,7 @@ Control {
         id: mouseArea
         anchors.fill: parent
         hoverEnabled: true
+        cursorShape: Qt.IBeamCursor
         onClicked: textfield.forceActiveFocus()
     }
 
@@ -586,10 +587,5 @@ Control {
         elide: Text.ElideRight
         renderType: Text.NativeRendering
         Behavior on opacity { NumberAnimation { duration: 90 } }
-    }
-    MouseArea {
-        anchors.fill: parent
-        cursorShape: Qt.IBeamCursor
-        acceptedButtons: Qt.NoButton
     }
 }
