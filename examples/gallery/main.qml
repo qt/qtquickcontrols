@@ -100,7 +100,7 @@ ApplicationWindow {
             shortcut: "Ctrl+O"
             iconSource: "images/document-open.png"
             onTriggered: fileDialog.open()
-            tooltip: "(Pretend to) open a file"
+            tooltip: "open an image"
         }
 
         Action {
