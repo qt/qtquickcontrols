@@ -52,7 +52,7 @@ Window {
         initialPage: pageComponent
     }
 
-    property PageTransition fadeTransition:  PageTransition {
+    property StackViewDelegate fadeTransition: StackViewDelegate {
         function transitionFinished(properties)
         {
             properties.exitPage.visible = false
@@ -75,7 +75,7 @@ Window {
         }
     }
 
-    property PageTransition rotateTransition:  PageTransition {
+    property StackViewDelegate rotateTransition: StackViewDelegate {
         function transitionFinished(properties)
         {
             properties.exitPage.x = 0
@@ -109,7 +109,7 @@ Window {
         }
     }
 
-    property PageTransition slideTransition:  PageTransition {
+    property StackViewDelegate slideTransition: StackViewDelegate {
         function transitionFinished(properties)
         {
             properties.exitPage.x = 0
@@ -140,7 +140,6 @@ Window {
             Component.onDestruction: console.log("destroyed component page: " + Stack.index)
             property bool pushFromOnCompleted: false
             Component.onCompleted: if (pushFromOnCompleted) pageStack.push(pageComponent)
-            //pageTransition: rotateTransition
 
             Rectangle {
                 anchors.fill: parent
