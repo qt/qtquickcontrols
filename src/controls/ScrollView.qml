@@ -146,11 +146,11 @@ FocusScope {
         if (contentItem.hasOwnProperty("contentY") && // Check if flickable
                 contentItem.hasOwnProperty("contentHeight")) {
             internal.flickableItem = contentItem // "Use content if it is a flickable
+            internal.flickableItem.parent = viewportItem
         } else {
-            internal.flickableItem = flickableComponent.createObject(internal)
+            internal.flickableItem = flickableComponent.createObject(viewportItem)
             contentItem.parent = internal.flickableItem.contentItem
         }
-        internal.flickableItem.parent = viewportItem
         internal.flickableItem.anchors.fill = viewportItem
     }
 
