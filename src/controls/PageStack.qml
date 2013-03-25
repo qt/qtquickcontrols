@@ -383,16 +383,16 @@ import "Private/PageStack.js" as JSArray
     You can override this function for your transition if you need extra logic to decide which
     animation to run. You could for example introspect the pages, and return different animations
     depending on the their internal state. PageStack will expect you to return a Component that
-    contains a PageAnimation, or a PageAnimation directly. The former is easier, as PageStack will
+    contains a StackViewTransition, or a StackViewTransition directly. The former is easier, as PageStack will
     then create the animation and later destroy it when it's done, while avoiding any sideeffects
-    caused by the animation being alive long after it ran. Returning a PageAnimation directly
+    caused by the animation being alive long after it ran. Returning a StackViewTransition directly
     can be useful if you need to write some sort of animation caching for performance reasons.
     As an optimization, you can also return \c null to signal that you just want to show/hide the pages
     immediately without creating or running any animations.
 
-    \c properties contains the same properties that will be assigned to the PageAnimation object by
-    PageStack. In fact, you can add more properties to this object during the call
-    if you need to initialize additional properties of your custom PageAnimation when the returned
+    \c properties contains the properties that will be assigned to the StackViewTransition before
+    it runs. In fact, you can add more properties to this object during the call
+    if you need to initialize additional properties of your custom StackViewTransition when the returned
     component is instanciated.
 
     The following example shows how you can decide run-time which animation to use:
@@ -410,7 +410,7 @@ import "Private/PageStack.js" as JSArray
             properties.exitPage.y = 0
         }
 
-        property Component horizontalAnimation: PageAnimation {
+        property Component horizontalAnimation: StackViewTransition {
             PropertyAnimation {
                 target: enterPage
                 property: "x"
@@ -427,7 +427,7 @@ import "Private/PageStack.js" as JSArray
             }
         }
 
-        property Component verticalAnimation: PageAnimation {
+        property Component verticalAnimation: StackViewTransition {
             PropertyAnimation {
                 target: enterPage
                 property: "y"

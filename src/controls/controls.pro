@@ -14,7 +14,6 @@ QML_FILES = \
     Label.qml \
     MenuBar.qml \
     Menu.qml \
-    PageAnimation.qml \
     PageStack.qml \
     ProgressBar.qml \
     RadioButton.qml \
@@ -23,6 +22,7 @@ QML_FILES = \
     SpinBox.qml \
     SplitView.qml \
     StackViewDelegate.qml \
+    StackViewTransition.qml \
     StatusBar.qml \
     Tab.qml \
     TabView.qml \
