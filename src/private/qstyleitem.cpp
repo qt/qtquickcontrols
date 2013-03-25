@@ -198,6 +198,8 @@ void QStyleItem::initStyleOption()
         opt->features = (activeControl() == "default") ?
                     QStyleOptionButton::DefaultButton :
                     QStyleOptionButton::None;
+        if (const QFont *font = QGuiApplicationPrivate::platformTheme()->font(QPlatformTheme::PushButtonFont))
+            opt->fontMetrics = QFontMetrics(*font);
     }
         break;
     case ItemRow: {
@@ -229,6 +231,10 @@ void QStyleItem::initStyleOption()
         QPalette pal = m_styleoption->palette;
         pal.setBrush(QPalette::Base, Qt::NoBrush);
         m_styleoption->palette = pal;
+        if (const QFont *font = QGuiApplicationPrivate::platformTheme()->font(QPlatformTheme::ItemViewFont)) {
+            opt->fontMetrics = QFontMetrics(*font);
+            opt->font = *font;
+        }
     }
         break;
     case Header: {
@@ -249,6 +255,8 @@ void QStyleItem::initStyleOption()
             opt->position = QStyleOptionHeader::OnlyOneSection;
         else
             opt->position = QStyleOptionHeader::Middle;
+        if (const QFont *font = QGuiApplicationPrivate::platformTheme()->font(QPlatformTheme::HeaderViewFont))
+            opt->fontMetrics = QFontMetrics(*font);
     }
         break;
     case ToolButton: {
@@ -270,6 +278,12 @@ void QStyleItem::initStyleOption()
 
         int e = qApp->style()->pixelMetric(QStyle::PM_ToolBarIconSize, m_styleoption, 0);
         opt->iconSize = QSize(e, e);
+
+        if (const QFont *font = QGuiApplicationPrivate::platformTheme()->font(QPlatformTheme::ToolButtonFont)) {
+            opt->fontMetrics = QFontMetrics(*font);
+            opt->font = *font;
+        }
+
     }
         break;
     case ToolBar: {
@@ -400,7 +414,7 @@ void QStyleItem::initStyleOption()
             if (m_properties["icon"].canConvert<QIcon>())
                 opt->icon = m_properties["icon"].value<QIcon>();
 
-            if (const QFont *font = QGuiApplicationPrivate::platformTheme()->font(QPlatformTheme::MenuFont)) {
+            if (const QFont *font = QGuiApplicationPrivate::platformTheme()->font(m_itemType == ComboBoxItem ? QPlatformTheme::ComboMenuItemFont : QPlatformTheme::MenuFont)) {
                 opt->font = *font;
                 opt->fontMetrics = QFontMetrics(opt->font);
                 m_font = opt->font;
@@ -434,6 +448,8 @@ void QStyleItem::initStyleOption()
         if (!m_styleoption)
             m_styleoption = new QStyleOptionComboBox();
         QStyleOptionComboBox *opt = qstyleoption_cast<QStyleOptionComboBox*>(m_styleoption);
+        if (const QFont *font = QGuiApplicationPrivate::platformTheme()->font(QPlatformTheme::PushButtonFont))
+            opt->fontMetrics = QFontMetrics(*font);
         opt->currentText = text();
         opt->editable = false;
     }
