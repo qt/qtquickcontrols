@@ -399,7 +399,7 @@ void QStyleItem::initStyleOption()
                 QString shortcut = m_properties["shortcut"].toString();
                 if (!shortcut.isEmpty()) {
                     opt->text += QLatin1Char('\t') + shortcut;
-                    opt->tabWidth = qMax(opt->tabWidth, textWidth(shortcut));
+                    opt->tabWidth = qMax(opt->tabWidth, qRound(textWidth(shortcut)));
                 }
 
                 if (m_properties["checkable"].toBool()) {
@@ -1284,19 +1284,22 @@ void QStyleItem::paint(QPainter *painter)
     }
 }
 
-int QStyleItem::textWidth(const QString &text)
+qreal QStyleItem::textWidth(const QString &text)
 {
-    return QFontMetrics(m_font).boundingRect(text).width();
+    QFontMetricsF fm = QFontMetricsF(m_styleoption->fontMetrics);
+    return fm.boundingRect(text).width();
 }
 
-int QStyleItem::textHeight(const QString &text)
+qreal QStyleItem::textHeight(const QString &text)
 {
-    return QFontMetrics(m_font).boundingRect(text).height();
+    QFontMetricsF fm = QFontMetricsF(m_styleoption->fontMetrics);
+    return text.isEmpty() ? fm.height() :
+                            fm.boundingRect(text).height();
 }
 
 QString QStyleItem::elidedText(const QString &text, int elideMode, int width)
 {
-    return qApp->fontMetrics().elidedText(text, Qt::TextElideMode(elideMode), width);
+    return m_styleoption->fontMetrics.elidedText(text, Qt::TextElideMode(elideMode), width);
 }
 
 bool QStyleItem::hasThemeIcon(const QString &icon) const
