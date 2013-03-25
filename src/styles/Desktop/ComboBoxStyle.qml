@@ -43,8 +43,6 @@ import QtQuick.Controls.Private 1.0
 
 Style {
     property Component panel: Item {
-        width: implicitWidth
-        height: implicitHeight
         implicitWidth: styleitem.implicitWidth
         implicitHeight: styleitem.implicitHeight
 
@@ -61,8 +59,8 @@ Style {
             enabled: control.enabled
             text: control.currentText
             hasFocus: control.activeFocus
-            contentHeight: 18
-            contentWidth: 80
+            contentHeight: textHeight(control.currentText)
+            contentWidth: textWidth(control.currentText)
         }
     }
 
