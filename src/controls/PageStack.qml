@@ -288,7 +288,7 @@ import "Private/PageStack.js" as JSArray
 
     \qml
     PageStack {
-        pageTransition: PageTransition {
+        delegate: StackViewDelegate {
             function transitionFinished(properties)
             {
                 properties.exitPage.opacity = 1
@@ -315,9 +315,9 @@ import "Private/PageStack.js" as JSArray
     PushTransition needs to inherit from StackViewTransition, which is a ParallelAnimation that
     contains the properties \c enterPage and \c exitPage. You set the target of your
     inner animations to those pages. Since the same page instance can be pushed several
-    times to a pagestack, and since pages also can override transitions, your PageTransition
+    times to a pagestack, and since pages also can override transitions, your StackViewDelegate
     always need to override
-    \l {PageTransition::transitionFinished(properties)}{PageTransition.transitionFinished(properties)}.
+    \l {StackViewDelegate::transitionFinished(properties)}{StackViewDelegate.transitionFinished(properties)}.
     Implement this function to reset any properties animated on the exitPage so that later
     transitions can expect the pages to be in a default state.
 
@@ -326,7 +326,7 @@ import "Private/PageStack.js" as JSArray
 
     \qml
     PageStack {
-        pageTransition: PageTransition {
+        delegate: StackViewDelegate {
             function transitionFinished(properties)
             {
                 properties.exitPage.x = 0
@@ -363,13 +363,13 @@ import "Private/PageStack.js" as JSArray
     \endqml
 
     A single Page can also override the transition to use when itself is pushed or popped. This can
-    be done by just assigning another PageTransition object to \l{Stack::pageTransition}{Stack.pageTransition}.
+    be done by just assigning another StackViewDelegate object to \l{Stack::delegate}{Stack.delegate}.
 
     \section2 Advanced usage
 
     After PageStack finds the correct transition to use (it first checks
-     \l{Stack::pageTransition}{Stack.pageTransition}, then \l {PageStack::pageTransition}{pageTransition})
-    it calls \l {PageTransition::getTransition(properties)}{PageTransition.getTransition(properties)}.
+     \l{Stack::delegate}{Stack.delegate}, then \l {PageStack::delegate}{delegate})
+    it calls \l {StackViewDelegate::getTransition(properties)}{StackViewDelegate.getTransition(properties)}.
     The base implementation of this function just looks for a property named \c properties.name inside
     itself (root), which is how it finds \c {property Component pushTransition} in the examples above.
 
@@ -398,7 +398,7 @@ import "Private/PageStack.js" as JSArray
     The following example shows how you can decide run-time which animation to use:
 
     \qml
-    PageTransition {
+    StackViewDelegate {
         function getTransition(properties)
         {
             return (properties.enterPage.index % 2) ? horizontalAnimation : verticalAnimation
@@ -482,10 +482,10 @@ Item {
         \a busy is \c true if a page transition is running, and \c false otherwise. */
     readonly property bool busy: __currentTransition !== null
 
-    /*! The animations to use for page transitions.
-        For better understanding on how to apply custom page transitions, read \l{Transitions}.
-        \sa {Stack::animations}{Stack.transitions} */
-    property PageTransition pageTransition: PageSlideTransition {}
+    /*! The transitions to use when pushing or popping items.
+        For better understanding on how to apply custom transitions, read \l{Transitions}.
+        \sa {Stack::transitions}{Stack.transitions} */
+    property StackViewDelegate delegate: StackViewSlideDelegate {}
 
     /*! Pushes a page onto the stack. The function takes a property list as argument, which
         should contain one or more of the following properties:
@@ -909,9 +909,9 @@ Item {
         if (enterPage === exitPage)
              return
 
-        __searchForAnimationIn(transition.transitionElement.page.Stack.pageTransition, transition)
+        __searchForAnimationIn(transition.transitionElement.page.Stack.delegate, transition)
         if (!transition.animation)
-            __searchForAnimationIn(root.pageTransition, transition)
+            __searchForAnimationIn(root.delegate, transition)
         if (!transition.animation) {
             console.warn("Warning: PageStack: no", transition.name, "found!")
             return
@@ -933,16 +933,16 @@ Item {
     }
 
     /*! \internal */
-    function __searchForAnimationIn(source, transition)
+    function __searchForAnimationIn(delegate, transition)
     {
-        if (source) {
-            transition.pageTransition = source
+        if (delegate) {
+            transition.delegate = delegate
             transition.properties = {
                 "name":transition.name,
                 "enterPage":transition.enterPage,
                 "exitPage":transition.exitPage,
                 "immediate":transition.immediate }
-            var anim = source.getTransition(transition.properties)
+            var anim = delegate.getTransition(transition.properties)
             if (anim.createObject) {
                 anim = anim.createObject(null, transition.properties)
                 anim.runningChanged.connect(function(){ if (anim.running === false) anim.destroy() })
@@ -962,7 +962,7 @@ Item {
         __setPageStatus(__currentTransition.exitPage, Stack.Inactive);
         __setPageStatus(__currentTransition.enterPage, Stack.Active);
         __currentTransition.properties.animation = __currentTransition.animation
-        __currentTransition.pageTransition.transitionFinished(__currentTransition.properties)
+        __currentTransition.delegate.transitionFinished(__currentTransition.properties)
 
         if (!__currentTransition.push || __currentTransition.replace)
             __cleanup(__currentTransition.outElement)

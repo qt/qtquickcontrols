@@ -238,8 +238,6 @@ Window {
         height: parent.height
         Component.onDestruction: console.log("destroyed inline page: " + Stack.index)
 
-        Stack.pageTransition: rotateTransition
-
         Rectangle {
             anchors.fill: parent
             color: pageInline.Stack.index % 2 ? "green" : "yellow"

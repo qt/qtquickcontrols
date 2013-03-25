@@ -41,10 +41,10 @@
 import QtQuick 2.1
 
 /*!
-        \qmltype PageTransition
+        \qmltype StackViewDelegate
         \inqmlmodule QtQuick.Controls 1.0
 
-        \brief The component for managing page transitions.
+        \brief A delegate used by PageStack for loading transitions.
 
         See the documentation for the \l {QtQuick.Controls1::PageStack} {PageStack}
         component.
@@ -60,7 +60,7 @@ QtObject {
 
     function transitionFinished(properties)
     {
-        console.warn("Warning: PageTransition: the current transition did not override "
+        console.warn("Warning: StackViewDelegate: the current transition did not override "
                      + "transitionFinished(properties). This can cause the exit page to "
                      + "be left in a state that makes it unusable for further usage!")
     }

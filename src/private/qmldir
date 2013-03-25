@@ -7,4 +7,4 @@ BasicButton 1.0 BasicButton.qml
 ScrollBar 1.0 ScrollBar.qml
 ScrollViewHelper 1.0 ScrollViewHelper.qml
 TabBar 1.0 TabBar.qml
-PageSlideTransition 1.0 PageSlideTransition.qml
+StackViewSlideDelegate 1.0 StackViewSlideDelegate.qml

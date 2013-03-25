@@ -42,11 +42,11 @@ import QtQuick 2.1
 import QtQuick.Controls 1.0
 
 /*!
-        \qmltype PageSlideTransition
+        \qmltype StackViewSlideTransition
         \internal
         \inqmlmodule QtQuick.Controls.Private 1.0
 */
-PageTransition {
+StackViewDelegate {
     id: root
 
     property bool horizontal: true

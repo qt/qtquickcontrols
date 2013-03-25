@@ -65,7 +65,7 @@ QtStack::QtStack(QObject *object)
       m_index(-1),
       m_status(Inactive),
       m_pageStack(0),
-      m_pageTransition(0)
+      m_delegate(0)
 {
 }
 
@@ -141,23 +141,23 @@ void QtStack::setPageStack(QQuickItem *pageStack)
 }
 
 /*!
-    \qmlproperty PageTransition Stack::pageTransition
+    \qmlproperty delegate Stack::delegate
 
     This property can be set to override the default animations used
     during a page transition. To better understand how to use this
     property, refer to the \l{PageStack#Transitions}{transition documentation} in PageStack.
     \sa {PageStack::animations}{PageStack.animations}
 */
-QObject *QtStack::pageTransition() const
+QObject *QtStack::delegate() const
 {
-    return m_pageTransition;
+    return m_delegate;
 }
 
-void QtStack::setPageTransition(QObject* pageTransition)
+void QtStack::setdelegate(QObject* delegate)
 {
-    if (m_pageTransition != pageTransition) {
-        m_pageTransition = pageTransition;
-        emit pageTransitionChanged();
+    if (m_delegate != delegate) {
+        m_delegate = delegate;
+        emit delegateChanged();
     }
 }
 

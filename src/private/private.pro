@@ -28,7 +28,7 @@ QML_FILES += \
     BasicButton.qml \
     Control.qml \
     ModalPopupBehavior.qml \
-    PageSlideTransition.qml \
+    StackViewSlideDelegate.qml \
     PageStack.js \
     ScrollViewHelper.qml \
     ScrollBar.qml \
