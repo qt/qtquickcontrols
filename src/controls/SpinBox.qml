@@ -47,10 +47,10 @@ import "Styles/Settings.js" as Settings
     \qmltype SpinBox
     \inqmlmodule QtQuick.Controls 1.0
     \ingroup controls
-    \brief SpinBox provides a spin box control.
+    \brief Provides a spin box control.
 
-    SpinBox allows the user to choose a value by clicking the up/down buttons or pressing up/down on the keyboard to increase/decrease
-    the value currently displayed. The user can also type the value in manually.
+    SpinBox allows the user to choose a value by clicking the up or down buttons, or by
+    pressing up or down on the keyboard. The user can also type the value in manually.
 
     By default the SpinBox provides discrete values in the range [0-99] with a \l stepSize of 1 and 0 \l decimals.
 
@@ -77,7 +77,7 @@ Control {
     /*!
         The value of this SpinBox, clamped to \l minimumValue and \l maximumValue.
 
-        The default value is \c 0
+        The default value is \c{0.0}.
     */
     property real value: 0
 
@@ -85,7 +85,7 @@ Control {
         The minimum value of the SpinBox range.
         The \l value is clamped to this value.
 
-        The default value is \c 0
+        The default value is \c{0.0}.
     */
     property real minimumValue: 0
 
@@ -94,7 +94,7 @@ Control {
         The \l value is clamped to this value. If maximumValue is smaller than
         \l minimumValue, \l minimumValue will be enforced.
 
-        The default value is \c 99
+        The default value is \c{99}.
     */
     property real maximumValue: 99
 
@@ -102,7 +102,7 @@ Control {
         The amount by which the \l value is incremented/decremented when a
         spin button is pressed.
 
-        The default value is 1.0.
+        The default value is \c{1.0}.
     */
     property real stepSize: 1.0
 
@@ -115,7 +115,7 @@ Control {
     /*! This property indicates the amount of decimals.
       Note that if you enter more decimals than specified, they will
       be truncated to the specified amount of decimal places.
-      The default value is \c 0
+      The default value is \c{0}.
     */
     property int decimals: 0
 
@@ -127,7 +127,7 @@ Control {
 
     /*! This property indicates if the Spinbox should get active
       focus when pressed.
-      The default value is \c true
+      The default value is \c true.
     */
     property bool activeFocusOnPress: true
 

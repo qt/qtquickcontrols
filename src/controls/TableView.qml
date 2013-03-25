@@ -50,7 +50,7 @@ import QtQuick.Controls.Private 1.0
 
    \image tableview.png
 
-   A TableView is similar to \l ListView and adds scroll bars, selection and
+   A TableView is similar to \l ListView, and adds scroll bars, selection, and
    resizable header sections. As with \l ListView, data for each row is provided through a \l model:
 
  \code
@@ -75,19 +75,19 @@ import QtQuick.Controls.Private 1.0
  \endcode
 
    The header sections are attached to values in the \l model by defining
-   the model role they attach to. Each property in the model, will
+   the model role they attach to. Each property in the model will
    then be shown in their corresponding column.
 
    You can customize the look by overriding the \l itemDelegate,
-   \l rowDelegate or \l headerDelegate properties.
+   \l rowDelegate, or \l headerDelegate properties.
 
    The view itself does not provide sorting. This has to
    be done on the model itself. However you can provide sorting
-   on the model and enable sort indicators on headers.
+   on the model, and enable sort indicators on headers.
 
 \list
     \li sortColumnIndex - The index of the current sort column
-    \li sortIndicatorVisible - If the sort indicator should be enabled
+    \li sortIndicatorVisible - Whether the sort indicator should be enabled
     \li sortIndicatorOrder - Qt.AscendingOrder or Qt.DescendingOrder depending on state
 \endlist
 */
@@ -168,7 +168,7 @@ ScrollView {
     property Component headerDelegate: headerDelegate
 
     /*! Index of the current sort column.
-        The default value is \c 0. */
+        The default value is \c {0}. */
     property int sortColumnIndex
 
     /*! This property shows or hides the sort indicator
@@ -317,7 +317,7 @@ ScrollView {
 
             onDoubleClicked: { root.activated() }
 
-            // Note by prevent stealing we are keeping the flickable from
+            // Note:  with boolean preventStealing we are keeping the flickable from
             // eating our mouse press events
             preventStealing: true
         }

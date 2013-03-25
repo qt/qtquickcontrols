@@ -51,7 +51,7 @@ import "Styles/Settings.js" as Settings
 
     The push button is perhaps the most commonly used widget in any graphical
     user interface. Pushing (or clicking) a button commands the computer to
-    perform some action or to answer a question. Common examples of buttons are
+    perform some action or answer a question. Common examples of buttons are
     OK, Apply, Cancel, Close, Yes, No, and Help buttons.
 
     Button is similar to the QPushButton widget.

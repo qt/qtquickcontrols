@@ -68,7 +68,7 @@ import "Styles/Settings.js" as Settings
     identically to \l {AbstractCheckable::checked}{checked} when \l partiallyCheckedEnabled
     is \c false; setting one will appropriately set the other.
 
-    The text of the label shown next to the checkbox can be set with the
+    The label is shown next to the checkbox, and you can set the label text using its
     \l {AbstractCheckable::text}{text} property.
 
     \qml

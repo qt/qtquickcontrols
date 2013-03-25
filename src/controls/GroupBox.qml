@@ -98,7 +98,7 @@ Item {
         If this property is enabled, only the top part of the frame is drawn in most styles;
         otherwise, the whole frame is drawn.
 
-        By default, this property is disabled, i.e., group boxes are not flat unless explicitly specified.
+        By default, this property is disabled, so group boxes are not flat unless explicitly specified.
 
         \note In some styles, flat and non-flat group boxes have similar representations and may not be as
               distinguishable as they are in other styles.

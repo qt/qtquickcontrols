@@ -204,7 +204,7 @@ Control {
 
         Sets the alignment of the text within the TextField item's height.
 
-        The possible alignment values are
+        The possible alignment values are:
         \list
         \li TextInput.AlignTop
         \li TextInput.AlignBottom
@@ -245,8 +245,8 @@ Control {
         \li Qt.ImhNoAutoUppercase - The input method should not try to automatically switch to upper case
                 when a sentence ends.
         \li Qt.ImhPreferNumbers - Numbers are preferred (but not required).
-        \li Qt.ImhPreferUppercase - Upper case letters are preferred (but not required).
-        \li Qt.ImhPreferLowercase - Lower case letters are preferred (but not required).
+        \li Qt.ImhPreferUppercase - Uppercase letters are preferred (but not required).
+        \li Qt.ImhPreferLowercase - Lowercase letters are preferred (but not required).
         \li Qt.ImhNoPredictiveText - Do not use predictive text (for example, dictionary lookup) while typing.
 
         \li Qt.ImhDate - The text editor functions as a date field.
@@ -258,8 +258,8 @@ Control {
         \list
         \li Qt.ImhDigitsOnly - Only digits are allowed.
         \li Qt.ImhFormattedNumbersOnly - Only number input is allowed. This includes decimal point and minus sign.
-        \li Qt.ImhUppercaseOnly - Only upper case letter input is allowed.
-        \li Qt.ImhLowercaseOnly - Only lower case letter input is allowed.
+        \li Qt.ImhUppercaseOnly - Only uppercase letter input is allowed.
+        \li Qt.ImhLowercaseOnly - Only lowercase letter input is allowed.
         \li Qt.ImhDialableCharactersOnly - Only characters suitable for phone dialing are allowed.
         \li Qt.ImhEmailCharactersOnly - Only characters suitable for email addresses are allowed.
         \li Qt.ImhUrlCharactersOnly - Only characters suitable for URLs are allowed.
@@ -281,7 +281,7 @@ Control {
         characters and may differ from the length of the string returned by the
         \l text property.
 
-        This property can be faster than querying the length the \l text
+        This property can be faster than querying the length of the \l text
         property as it doesn't require any copying or conversion of the
         TextField's internal string data.
     */
@@ -366,7 +366,7 @@ Control {
     /*!
         \qmlproperty Validator TextField::validator
 
-        Allows you to set a validator on the TextField. When a validator is set
+        Allows you to set a validator on the TextField. When a validator is set,
         the TextField will only accept input which leaves the text property in
         an intermediate state. The accepted signal will only be sent
         if the text is in an acceptable state when enter is pressed.

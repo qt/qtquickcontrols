@@ -46,10 +46,10 @@ import QtQuick.Controls.Private 1.0
     \qmltype ScrollView
     \inqmlmodule QtQuick.Controls 1.0
     \ingroup views
-    \brief The ScrollView class provides a scrolling view onto another Item.
+    \brief Provides a scrolling view within another Item.
 
-    A ScrollView can be used either instead of a \l Flickable or to decorate an
-    existing Flickable. Depending on the platform it will add scroll bars and
+    A ScrollView can be used either to replace a \l Flickable or decorate an
+    existing \l Flickable. Depending on the platform, it will add scroll bars and
     a content frame.
 
     Only one Item can be a direct child of the ScrollView and the child is implicitly anchored
@@ -86,10 +86,10 @@ FocusScope {
     implicitHeight: 100
 
     /*!
-        This property tells the scroll view if it should render
-        a frame around it's content.
+        This property tells the ScrollView if it should render
+        a frame around its content.
 
-        The default value is \c false
+        The default value is \c false.
     */
     property bool frameVisible: false
 
@@ -97,7 +97,7 @@ FocusScope {
         This property controls if there should be a highlight
         around the frame when the ScrollView has input focus.
 
-        The default value is \c false
+        The default value is \c false.
 
         \note This property is only applicable on some platforms, such
         as Mac OS.
@@ -107,8 +107,8 @@ FocusScope {
     /*!
         \qmlproperty Item ScrollView::viewport
 
-        The viewport determines the current "window" on to the contentItem.
-        In other words it clips it and the size of the viewport tells you
+        The viewport determines the current "window" on the contentItem.
+        In other words, it clips it and the size of the viewport tells you
         how much of the content area is visible.
     */
     property alias viewport: viewportItem
