@@ -42,26 +42,20 @@ import QtQuick.Controls.Styles 1.0
 import QtQuick.Controls.Private 1.0
 
 Style {
-    property Component panel: Item {
-        implicitWidth: styleitem.implicitWidth
-        implicitHeight: styleitem.implicitHeight
+    property Component panel: StyleItem {
+        property int popup: styleHint("comboboxpopup")
 
-        property int popup: styleitem.styleHint("comboboxpopup");
-
-        StyleItem {
-            id: styleitem
-            width: parent.width
-            anchors.verticalCenter: parent.verticalCenter
-            elementType: "combobox"
-            sunken: control.__pressed
-            raised: !sunken
-            hover: control.__containsMouse
-            enabled: control.enabled
-            text: control.currentText
-            hasFocus: control.activeFocus
-            contentHeight: textHeight(control.currentText)
-            contentWidth: textWidth(control.currentText)
-        }
+        width: parent.width
+        anchors.verticalCenter: parent.verticalCenter
+        elementType: "combobox"
+        sunken: control.__pressed
+        raised: !sunken
+        hover: control.__containsMouse
+        enabled: control.enabled
+        text: control.currentText
+        hasFocus: control.activeFocus
+        contentHeight: 18
+        contentWidth: textWidth(text)
     }
 
     property Component popupStyle: MenuStyle {

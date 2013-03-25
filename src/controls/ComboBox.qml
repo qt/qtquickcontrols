@@ -133,7 +133,7 @@ Control {
         property bool isPopup: comboBox.__panel.popup
 
         property int x: 0
-        property int y: isPopup ? 0 : comboBox.height
+        property int y: isPopup ? (comboBox.__panel.height - comboBox.__panel.implicitHeight) / 2.0 : comboBox.__panel.height
         __minimumWidth: comboBox.width
         __visualItem: comboBox
 
