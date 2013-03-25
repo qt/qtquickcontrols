@@ -1,9 +1,9 @@
 /****************************************************************************
 **
-** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
-** This file is part of the Qt Components project.
+** This file is part of the Qt Quick Controls module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:BSD$
 ** You may use this file under the terms of the BSD license as follows:
@@ -37,20 +37,17 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-import QtQuick 2.0
-import QtDesktop 1.0
+import QtQuick 2.1
+import QtQuick.Controls 1.0
+import QtQuick.Controls.Private 1.0
 
 /*!
     \qmltype SliderStyle
-    \inqmlmodule QtDesktop.Styles 1.0
-    \brief SliderStyle is doing bla...bla...
+    \internal
+    \inqmlmodule QtQuick.Controls.Styles 1.0
 */
-
-Item {
+Style {
     id: styleitem
-
-    implicitWidth: 200
-    implicitHeight: 20
 
     property int leftMargin
     property int rightMargin
@@ -69,13 +66,11 @@ Item {
         border.color: Qt.darker(backgroundColor, 1.8)
     }
 
-    property Component background: Item {
-        Rectangle {
+    property Component background:  Rectangle {
             anchors.verticalCenter: parent.verticalCenter
-            width: parent.width
-
-            implicitWidth: 12
+            implicitWidth: 100
             implicitHeight: 6
+
             gradient: Gradient {
                 GradientStop {color: Qt.darker(backgroundColor, 1.2) ; position: 0}
                 GradientStop {color: Qt.darker(backgroundColor, 1.5) ; position: 1}
@@ -83,19 +78,29 @@ Item {
             antialiasing: true
             radius: height / 2.0
             border.color: Qt.darker(backgroundColor, 1.8)
+    }
+
+    property Component panel: Item {
+        id: root
+
+        implicitWidth: backgroundControl.implicitWidth
+        implicitHeight: backgroundControl.implicitHeight
+
+        property Control __cref: control
+
+        Loader {
+            id: backgroundControl
+            sourceComponent: background
+            property Control control: __cref
+            property Item handle: handleLoader.item
         }
-    }
 
-    Loader {
-        id: backgroundControl
-        sourceComponent: background
-        width: parent.width
-        anchors.verticalCenter: parent.verticalCenter
-    }
-
-    Loader {
-        sourceComponent: handle
-        anchors.verticalCenter: backgroundControl.verticalCenter
-        x: leftMargin + control.value / control.maximumValue * (parent.width - leftMargin - rightMargin - width)
+        Loader {
+            id: handleLoader
+            sourceComponent: handle
+            anchors.verticalCenter: backgroundControl.verticalCenter
+            x: leftMargin + control.value / control.maximumValue * (root.width - leftMargin - rightMargin - width/2)
+            property Control control: __cref
+        }
     }
 }

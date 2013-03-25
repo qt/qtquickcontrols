@@ -1,9 +1,9 @@
 /****************************************************************************
 **
-** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
-** This file is part of the Qt Components project.
+** This file is part of the Qt Quick Controls module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:BSD$
 ** You may use this file under the terms of the BSD license as follows:
@@ -37,23 +37,26 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-import QtQuick 2.0
-import QtDesktop 1.0
+import QtQuick 2.1
+import QtQuick.Controls.Styles 1.0
+import QtQuick.Controls.Private 1.0
 
-StyleItem {
-    elementType: "slider"
-    sunken: pressed
+Style {
+    property Component panel: StyleItem {
+        elementType: "slider"
+        sunken: control.pressed
+        implicitWidth: 200
+        contentHeight: horizontal ? 20 : 200
+        contentWidth: horizontal ? 200 : 20
 
-    contentHeight: horizontal ? 20 : 200
-    contentWidth: horizontal ? 200 : 20
-
-    maximum: control.maximumValue*100
-    minimum: control.minimumValue*100
-    step: control.stepSize*100
-    value: control.value*100
-    horizontal: control.orientation === Qt.Horizontal
-    enabled: control.enabled
-    hasFocus: control.focus
-    hint: control.styleHints
-    activeControl: tickmarksEnabled ? tickPosition.toLowerCase() : ""
+        maximum: control.maximumValue*100
+        minimum: control.minimumValue*100
+        step: control.stepSize*100
+        value: control.value*100
+        horizontal: control.orientation === Qt.Horizontal
+        enabled: control.enabled
+        hasFocus: control.activeFocus
+        hints: control.styleHints
+        activeControl: control.tickmarksEnabled ? "ticks" : ""
+    }
 }

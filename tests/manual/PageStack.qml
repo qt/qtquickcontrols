@@ -1,9 +1,9 @@
 /****************************************************************************
 **
-** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
-** This file is part of the Qt Components project.
+** This file is part of the Qt Quick Controls module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:BSD$
 ** You may use this file under the terms of the BSD license as follows:
@@ -38,8 +38,9 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.0
-import QtDesktop 1.0
+import QtQuick 2.1
+import QtQuick.Window 2.1
+import QtQuick.Controls 1.0
 
 Window {
     width: 480
@@ -132,23 +133,25 @@ Window {
 
     Component {
         id: pageComponent
-        Page {
+        Item {
             id: page
-            Component.onDestruction: console.log("destroyed component page: " + index)
+            width: parent.width
+            height: parent.height
+            Component.onDestruction: console.log("destroyed component page: " + Stack.index)
             property bool pushFromOnCompleted: false
             Component.onCompleted: if (pushFromOnCompleted) pageStack.push(pageComponent)
             //pageTransition: rotateTransition
 
             Rectangle {
                 anchors.fill: parent
-                color: index % 2 ? "green" : "yellow"
+                color: page.Stack.index % 2 ? "green" : "yellow"
 
                 Column {
                     Text {
-                        text: "This is component page: " + page.index
+                        text: "This is component page: " + page.Stack.index
                     }
                     Text {
-                        text: "Current status: " + page.status
+                        text: "Current status: " + page.Stack.status
                     }
                     Text { text:" " }
                     Button {
@@ -193,11 +196,11 @@ Window {
                     }
                     Button {
                         text: "Search for page 3, and pop down to it"
-                        onClicked: pageStack.pop(pageStack.find(function(page) { if (page.index === 3) return true }))
+                        onClicked: pageStack.pop(pageStack.find(function(page) { if (page.Stack.index === 3) return true }))
                     }
                     Button {
                         text: "Search for page 3, and pop down to it (dontLoad == true)"
-                        onClicked: pageStack.pop(pageStack.find(function(page) { if (page.index === 3) return true }, true))
+                        onClicked: pageStack.pop(pageStack.find(function(page) { if (page.Stack.index === 3) return true }, true))
                     }
                     Button {
                         text: "Clear"
@@ -228,22 +231,25 @@ Window {
         }
     }
 
-    Page {
+    Item {
         id: pageInline
-        Component.onDestruction: console.log("destroyed inline page: " + index)
+        visible: false
+        width: parent.width
+        height: parent.height
+        Component.onDestruction: console.log("destroyed inline page: " + Stack.index)
 
-        pageTransition: rotateTransition
+        Stack.pageTransition: rotateTransition
 
         Rectangle {
             anchors.fill: parent
-            color: pageInline.index % 2 ? "green" : "yellow"
+            color: pageInline.Stack.index % 2 ? "green" : "yellow"
 
             Column {
                 Text {
-                    text: "This is inline page: " + pageInline.index
+                    text: "This is inline page: " + pageInline.Stack.index
                 }
                 Text {
-                    text: "Current status: " + pageInline.status
+                    text: "Current status: " + pageInline.Stack.status
                 }
                 Button {
                     text: "Push component page"
@@ -279,11 +285,11 @@ Window {
                 }
                 Button {
                     text: "Search for page 3, and pop down to it"
-                    onClicked: pageStack.pop(pageStack.find(function(page) { if (page.index === 3) return true }))
+                    onClicked: pageStack.pop(pageStack.find(function(page) { if (pageInline.Stack.index === 3) return true }))
                 }
                 Button {
                     text: "Search for page 3, and pop down to it (dontLoad == true)"
-                    onClicked: pageStack.pop(pageStack.find(function(page) { if (page.index === 3) return true }, true))
+                    onClicked: pageStack.pop(pageStack.find(function(page) { if (pageInline.Stack.index === 3) return true }, true))
                 }
                 Button {
                     text: "Clear"

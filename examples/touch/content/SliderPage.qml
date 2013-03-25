@@ -1,9 +1,9 @@
 /****************************************************************************
 **
-** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
-** This file is part of the Qt Components project.
+** This file is part of the Qt Quick Controls module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:BSD$
 ** You may use this file under the terms of the BSD license as follows:
@@ -38,11 +38,18 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.0
-import QtDesktop 1.0
-import QtDesktop.Styles 1.0
 
-Page {
+
+
+
+import QtQuick 2.1
+import QtQuick.Controls 1.0
+import QtQuick.Controls.Styles 1.0
+
+Item {
+    width: parent.width
+    height: parent.height
+
     Column {
         spacing: 12
         anchors.centerIn: parent
@@ -68,8 +75,6 @@ Page {
     Component {
         id: touchStyle
         SliderStyle {
-            implicitHeight: 50
-            implicitWidth: 400
             handle: Rectangle {
                 width: 30
                 height: 30
@@ -77,17 +82,23 @@ Page {
                 antialiasing: true
                 color: Qt.lighter("#468bb7", 1.2)
             }
-            background: Rectangle {
-                implicitHeight: 8
-                implicitWidth: 300
-                color: "#444"
-                opacity: 0.8
+
+            background: Item {
+                implicitHeight: 50
+                implicitWidth: 400
                 Rectangle {
-                    antialiasing: true
-                    radius: 1
-                    color: "#468bb7"
-                    height: parent.height
-                    width: parent.width * control.value / control.maximumValue
+                    height: 8
+                    width: parent.width
+                    anchors.verticalCenter: parent.verticalCenter
+                    color: "#444"
+                    opacity: 0.8
+                    Rectangle {
+                        antialiasing: true
+                        radius: 1
+                        color: "#468bb7"
+                        height: parent.height
+                        width: parent.width * control.value / control.maximumValue
+                    }
                 }
             }
         }

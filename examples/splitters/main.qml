@@ -1,9 +1,9 @@
 /****************************************************************************
 **
-** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
-** This file is part of the Qt Components project.
+** This file is part of the Qt Quick Controls module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:BSD$
 ** You may use this file under the terms of the BSD license as follows:
@@ -38,33 +38,46 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.0
-import QtDesktop 1.0
+
+
+
+
+import QtQuick 2.1
+import QtQuick.Controls 1.0
+import QtQuick.Layouts 1.0
 
 ApplicationWindow {
     width: 600
     height: 400
 
-    SplitterRow {
+    SplitView {
         anchors.fill: parent
 
         Rectangle {
             id: column
             width: 200
-            Splitter.minimumWidth: 100
+            Layout.minimumWidth: 100
+            Layout.maximumWidth: 300
             color: "lightsteelblue"
         }
 
-        handleWidth: 1
+        Rectangle {
+            id: column1
+            width: 200
+            Layout.minimumWidth: 100
+            Layout.maximumWidth: 300
+            color: "lightsteelblue"
+        }
 
-        SplitterColumn {
-            id: column2
+        SplitView {
+            orientation: Qt.Vertical
+            Layout.fillWidth: true
 
             Rectangle {
                 id: row1
                 height: 200
                 color: "lightblue"
-                Splitter.minimumHeight: 1
+                Layout.minimumHeight: 1
             }
 
             Rectangle {

@@ -1,9 +1,9 @@
 /****************************************************************************
 **
-** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
-** This file is part of the Qt Components project.
+** This file is part of the Qt Quick Controls module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:BSD$
 ** You may use this file under the terms of the BSD license as follows:
@@ -37,16 +37,24 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-import QtQuick 2.0
-import QtDesktop 1.0
+import QtQuick 2.1
+import QtQuick.Controls 1.0
+import QtQuick.Controls.Private 1.0
+import QtQuick.Controls.Styles 1.0
 
-StyleItem {
-    id: styleitem
-    elementType: "groupbox"
-    text: control.title
-    on: control.checked
-    hasFocus: control.activeFocus
-    activeControl: checkable ? "checkbox" : ""
-    sunken: !flat
-    contentHeight:  (title.length > 0 || checkable) ? 24 : 4
+
+Style {
+    property int margin: 8
+
+    property Component panel: StyleItem {
+        id: styleitem
+        elementType: "groupbox"
+        text: control.title
+        on: control.checked
+        hasFocus: control.activeFocus
+        activeControl: checkable ? "checkbox" : ""
+        properties: { "checkable" : checkable , "sunken" : !flat}
+        contentWidth: control.contentWidth + 2 * margin
+        contentHeight: control.contentHeight + 2 * margin
+    }
 }

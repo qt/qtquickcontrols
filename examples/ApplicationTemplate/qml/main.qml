@@ -1,9 +1,9 @@
 /****************************************************************************
 **
-** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
-** This file is part of the Qt Components project.
+** This file is part of the Qt Quick Controls module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:BSD$
 ** You may use this file under the terms of the BSD license as follows:
@@ -38,7 +38,12 @@
 **
 ****************************************************************************/
 
-import QtDesktop 1.0
+
+
+
+
+import QtQuick.Controls 1.0
+import QtQuick.Layouts 1.0
 
 ApplicationWindow {
     width: 640
@@ -48,13 +53,12 @@ ApplicationWindow {
 
     menuBar: MenuBar {
         Menu {
-            text: "Menu 1"
-            MenuItem { text: "Item 1" }
-            MenuItem { text: "Item 2" }
+            title: "File"
+            MenuItem { text: "Quit"; onTriggered: Qt.quit() }
         }
         Menu {
-            text: "Menu 2"
-            MenuItem { text: "Item 3" }
+            title: "Help"
+            MenuItem { text: "About..."; enabled: false }
         }
     }
 
@@ -65,17 +69,16 @@ ApplicationWindow {
         }
     }
 
-    SplitterRow {
+    SplitView {
         anchors.fill: parent
-        handleWidth: 1
         TableView {
-            frame: false
+            frameVisible: false
             highlightOnFocus: false
             model: 40
-            TableColumn { title: "Left Column" }
+            TableViewColumn { title: "Left Column" }
         }
         TextArea {
-            frame: false
+            frameVisible: false
             highlightOnFocus: false
             text: "Hello World"
         }

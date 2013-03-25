@@ -1,9 +1,9 @@
 /****************************************************************************
 **
-** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
-** This file is part of the Qt Components project.
+** This file is part of the Qt Quick Controls module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:BSD$
 ** You may use this file under the terms of the BSD license as follows:
@@ -38,11 +38,17 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.0
-import QtDesktop 1.0
-import QtDesktop.Styles 1.0
 
-Page {
+
+
+
+import QtQuick 2.1
+import QtQuick.Controls 1.0
+import QtQuick.Controls.Styles 1.0
+
+Item {
+    width: parent.width
+    height: parent.height
 
     property real progress: 0
     SequentialAnimation on progress {
@@ -90,9 +96,9 @@ Page {
     Component {
         id: touchStyle
         ProgressBarStyle {
-            implicitHeight: 15
-            implicitWidth: 300
             background: Rectangle {
+                implicitHeight: 15
+                implicitWidth: 400
                 color: "#444"
                 opacity: 0.8
                 Rectangle {

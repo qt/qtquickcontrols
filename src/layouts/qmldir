@@ -1,0 +1,3 @@
+module QtQuick.Layouts
+plugin qquicklayoutsplugin
+typeinfo plugins.qmltypes

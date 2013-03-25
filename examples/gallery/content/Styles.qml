@@ -1,9 +1,9 @@
 /****************************************************************************
 **
-** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
-** This file is part of the examples of the Qt Toolkit.
+** This file is part of the Qt Quick Controls module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:BSD$
 ** You may use this file under the terms of the BSD license as follows:
@@ -38,14 +38,27 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.0
-import QtDesktop 1.0
-import QtDesktop.Styles 1.0
+
+
+
+
+import QtQuick 2.1
+import QtQuick.Controls 1.0
+import QtQuick.Controls.Styles 1.0
+import QtQuick.Dialogs 1.0
 
 Item {
     id: root
     width: 300
     height: 200
+
+    ColorDialog {
+        id: colorDialog
+        color: "#afe"
+        property color last: "#afe"
+        onRejected: color = last
+        onVisibleChanged: if (visible) last = color
+    }
 
     Column {
         anchors.margins: 20
@@ -56,8 +69,9 @@ Item {
         Row {
             spacing: 8
             Button {
-                text: "Push me"
-                style: ButtonStyle { backgroundColor: "#afe" }
+                text: "Set color…"
+                style: ButtonStyle { backgroundColor: colorDialog.color }
+                onClicked: colorDialog.open()
             }
             Button {
                 text: "Push me"
@@ -71,7 +85,7 @@ Item {
         Row {
             spacing: 8
             TextField {
-                style: TextFieldStyle { backgroundColor: "#afe" }
+                style: TextFieldStyle { backgroundColor: colorDialog.color }
             }
             TextField {
                 style: TextFieldStyle { backgroundColor: "#eee" }
@@ -83,7 +97,7 @@ Item {
         Row {
             spacing: 8
             SpinBox {
-                style: SpinBoxStyle { backgroundColor: "#afe" }
+                style: SpinBoxStyle { backgroundColor: colorDialog.color }
             }
             SpinBox {
                 style: SpinBoxStyle { backgroundColor: "#eee" }
@@ -99,7 +113,7 @@ Item {
                 value: 50
                 maximumValue: 100
                 width: 100
-                style: SliderStyle { backgroundColor: "#afe"}
+                style: SliderStyle { backgroundColor: colorDialog.color}
             }
             Slider {
                 value: 50
@@ -121,7 +135,7 @@ Item {
                 value: 50
                 maximumValue: 100
                 width: 100
-                style: ProgressBarStyle{ backgroundColor: "#afe" }
+                style: ProgressBarStyle{ backgroundColor: colorDialog.color }
             }
             ProgressBar {
                 value: 50
@@ -138,14 +152,26 @@ Item {
         }
 
         Row {
-            TabFrame {
+            spacing: 8
+            CheckBox {
+                text: "CheckBox"
+                style: CheckBoxStyle{}
+            }
+            RadioButton {
+                style: RadioButtonStyle{}
+                text: "RadioButton"
+            }
+        }
+
+        Row {
+            TabView {
                 width: 400
                 height: 30
                 Tab { title: "One" ; Item {}}
                 Tab { title: "Two" ; Item {}}
                 Tab { title: "Three" ; Item {}}
                 Tab { title: "Four" ; Item {}}
-                style: tabFrameStyle
+                style: tabViewStyle
             }
         }
     }
@@ -153,9 +179,9 @@ Item {
     // Style delegates:
 
     property Component buttonStyle: ButtonStyle {
-        implicitHeight: 20
-        implicitWidth: 100
         background: Rectangle {
+            implicitHeight: 20
+            implicitWidth: 100
             color: control.pressed ? "darkGray" : "lightGray"
             antialiasing: true
             border.color: "gray"
@@ -164,9 +190,9 @@ Item {
     }
 
     property Component textfieldStyle: TextFieldStyle {
-        implicitWidth: 100
-        implicitHeight: 20
         background: Rectangle {
+            implicitWidth: 100
+            implicitHeight: 20
             color: "#f0f0f0"
             antialiasing: true
             border.color: "gray"
@@ -175,9 +201,6 @@ Item {
     }
 
     property Component sliderStyle: SliderStyle {
-        implicitWidth: 100
-        implicitHeight: 20
-
         handle: Rectangle {
             width: 14
             height: 14
@@ -189,6 +212,9 @@ Item {
 
         background: Rectangle {
             height: 8
+            implicitWidth: 100
+            implicitHeight: 20
+
             antialiasing: true
             color: "darkGray"
             border.color: "gray"
@@ -219,7 +245,8 @@ Item {
             radius: height/2
         }
     }
-    property Component tabFrameStyle: TabFrameStyle {
+
+    property Component tabViewStyle: TabViewStyle {
         tabOverlap: 16
         leftMargin: 12
 
@@ -232,7 +259,7 @@ Item {
                 anchors.fill: parent
                 anchors.topMargin: -4
                 border.color: "#898989"
-                 Rectangle { anchors.fill: parent ; anchors.margins: 1 ; border.color: "white" ; color: "transparent" }
+                Rectangle { anchors.fill: parent ; anchors.margins: 1 ; border.color: "white" ; color: "transparent" }
             }
         }
         tab: Item {

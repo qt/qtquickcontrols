@@ -1,9 +1,9 @@
 /****************************************************************************
 **
-** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
-** This file is part of the Qt Components project.
+** This file is part of the Qt Quick Controls module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:BSD$
 ** You may use this file under the terms of the BSD license as follows:
@@ -37,55 +37,47 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-import QtQuick 2.0
-import QtDesktop 1.0
+import QtQuick 2.1
+import QtQuick.Controls.Styles 1.0
+import QtQuick.Controls.Private 1.0
 
-StyleItem {
-    anchors.fill: parent
-    elementType: "edit"
-    sunken: true
-    hasFocus: textfield.activeFocus
-    hover: containsMouse
-
-    SystemPalette {
-        id: syspal
-        colorGroup: control.enabled ?
-                        SystemPalette.Active :
-                        SystemPalette.Disabled
-    }
-
-    contentWidth: 200
-    contentHeight: 18
-
-    property bool rounded: hint.indexOf("rounded")
-    property int topMargin: 4
-    property int leftMargin: rounded > -1 ? 8 : 4
-    property int rightMargin: 4
-    property int bottomMargin: 4
-
-    property color foregroundColor: syspal.text
-    property color backgroundColor: syspal.base
-    property color placeholderTextColor: "darkGray"
-    property color selectionColor: syspal.highlight
-    property color selectedTextColor: syspal.highlightedText
-
-
-    hint: control.styleHints
-
-    Item {
-        id: focusFrame
+Style {
+    property Component panel: StyleItem {
+        id: textfieldstyle
+        elementType: "edit"
         anchors.fill: parent
-        parent: textfield
-        visible: framestyle.styleHint("focuswidget")
-        StyleItem {
-            id: framestyle
-            hint: control.styleHints
-            anchors.margins: -2
-            anchors.rightMargin:-4
-            anchors.bottomMargin:-4
+
+        sunken: true
+        hasFocus: control.activeFocus
+        hover: __containsMouse
+        hints: control.styleHints
+
+        SystemPalette {
+            id: syspal
+            colorGroup: control.enabled ?
+                            SystemPalette.Active :
+                            SystemPalette.Disabled
+        }
+
+        property color foregroundColor: syspal.text
+        property color backgroundColor: syspal.base
+        property color placeholderTextColor: "darkGray"
+        property color selectionColor: syspal.highlight
+        property color selectedTextColor: syspal.highlightedText
+
+
+        property bool rounded: hints.indexOf("rounded") > -1
+        property int topMargin: 1
+        property int leftMargin: rounded ? 8 : 4
+        property int rightMargin: 4
+        property int bottomMargin: 1
+
+        contentWidth: 100
+        contentHeight: 18
+
+        FocusFrame {
             anchors.fill: parent
-            visible: textfield.activeFocus
-            elementType: "focusframe"
+            visible: textfield.activeFocus && textfieldstyle.styleHint("focuswidget")
         }
     }
 }

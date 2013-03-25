@@ -1,9 +1,9 @@
 /****************************************************************************
 **
-** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
-** This file is part of the Qt Components project.
+** This file is part of the Qt Quick Controls module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:BSD$
 ** You may use this file under the terms of the BSD license as follows:
@@ -37,19 +37,18 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-import QtQuick 2.0
-import QtDesktop 1.0
+import QtQuick 2.1
+import QtQuick.Controls 1.0
 
 /*!
     \qmltype ToolBarStyle
-    \inqmlmodule QtDesktop.Styles 1.0
-    \brief ToolBarStyle is doing bla...bla...
+    \internal
+    \inqmlmodule QtQuick.Controls.Styles 1.0
 */
-
 Item {
 
     property int __overlap : 1
-    property string position: "North"
+    property string position: "Top"
     property string tabBarAlignment: "Center"
     property int tabOverlap: 1
     property int tabBaseOverlap: 1

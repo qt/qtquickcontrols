@@ -1,9 +1,9 @@
 /****************************************************************************
 **
-** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
-** This file is part of the examples of the Qt Toolkit.
+** This file is part of the Qt Quick Controls module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:BSD$
 ** You may use this file under the terms of the BSD license as follows:
@@ -38,456 +38,686 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.0
-import QtDesktop 1.0
+import QtQuick 2.1
+import QtQuick.Controls 1.0
+import QtQuick.Layouts 1.0
 
 Item {
+    id: window
     width: 600
     height: 400
 
     property real defaultWidth: 30
     property real defaultHeight: 30
 
-    TabFrame {
-        id:frame
-        anchors.fill: parent
+    Column {
+        anchors {
+            top: parent.top
+            left: parent.left
+            right: parent.right
+        }
+        Row {
+            width: parent.width
+            height: 20
+            CheckBox {
+                id: ckHideGreen
+                text: "Hide green rectangles"
+                checked: false
+                height: parent.height
+            }
+            Slider {
+                id: spacingSlider
+                value: 4
+                minimumValue: 0
+                maximumValue: 100
+                width: 200
+                height: parent.height
+            }
 
-        Tab {
-            title: "Horizontal"
+        }
+        TabView {
+            id:frame
+            width: parent.width
+            height: window.height - ckHideGreen.height
 
-            Column {
-                spacing: 4
+            Tab {
+                title: "Horizontal"
 
-                anchors {
-                    top: parent.top
-                    left: parent.left
-                    right: parent.right
-                    margins: 10
-                }
+                Column {
+                    spacing: 4
 
-                // [1]
-                RowLayout {
-                    height: defaultHeight
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-
-                    Rectangle {
-                        color: "red"
-                        height: parent.height
+                    anchors {
+                        top: parent.top
+                        left: parent.left
+                        right: parent.right
+                        margins: 10
                     }
-                    Rectangle {
-                        color: "green"
-                        height: parent.height
-                    }
-                    Rectangle {
-                        color: "blue"
-                        height: parent.height
-                    }
-                }
 
-                // [2]
-                RowLayout {
-                    height: defaultHeight
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-
-                    spacing: 5
-
-                    Rectangle {
-                        color: "red"
-                        height: parent.height
-                    }
-                    Rectangle {
-                        color: "green"
-                        height: parent.height
-                    }
-                    Item {
-                        implicitWidth: 10
-                    }
-                    Rectangle {
-                        color: "blue"
-                        height: parent.height
-                    }
-                }
-
-                // [3]
-                RowLayout {
-                    height: defaultHeight
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-
-                    Rectangle {
-                        color: "red"
-                        height: parent.height
-                        Layout.minimumWidth: 50
-                        Layout.maximumWidth: 100
-                        Layout.horizontalSizePolicy: Layout.Expanding
-                    }
-                    Rectangle {
-                        color: "green"
-                        height: parent.height
-                        Layout.minimumWidth: 100
-                        Layout.maximumWidth: 200
-                        Layout.horizontalSizePolicy: Layout.Expanding
-                    }
-                    Rectangle {
-                        color: "blue"
-                        height: parent.height
-                        Layout.minimumWidth: 200
-                        Layout.maximumWidth: 400
-                        Layout.horizontalSizePolicy: Layout.Expanding
-                    }
-                }
-
-                // [4]
-                RowLayout {
-                    spacing: 100
-                    height: defaultHeight
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-
-                    Rectangle {
-                        color: "red"
-                        height: parent.height
-                        Layout.minimumWidth: 100
-                        Layout.horizontalSizePolicy: Layout.Expanding
-                    }
-                    Rectangle {
-                        color: "green"
-                        height: parent.height
-                        Layout.minimumWidth: 200
-                        Layout.horizontalSizePolicy: Layout.Expanding
-                    }
-                    Rectangle {
-                        color: "blue"
-                        height: parent.height
-                        Layout.minimumWidth: 300
-                        Layout.horizontalSizePolicy: Layout.Expanding
-                    }
-                }
-
-                // [5]
-                RowLayout {
-                    height: defaultHeight
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-
-                    Rectangle {
-                        color: "red"
-                        height: parent.height
-                        Layout.minimumWidth: 200
-                        Layout.maximumWidth: 500
-                        Layout.horizontalSizePolicy: Layout.Expanding
-                    }
-                }
-
-                // [6]
-                RowLayout {
-                    spacing: 40
-                    height: defaultHeight
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-
+                    // [1]
                     RowLayout {
-                        spacing: 10
-                        height: parent.height
+                        height: defaultHeight
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        spacing: spacingSlider.value
+
+                        Rectangle {
+                            color: "red"
+                            width: 50
+                            height: parent.height
+                        }
+                        Rectangle {
+                            color: "green"
+                            width: 100
+                            height: parent.height
+                            visible: !ckHideGreen.checked
+                        }
+                        Rectangle {
+                            color: "blue"
+                            width: 200
+                            height: parent.height
+                        }
+                    }
+
+                    // [2]
+                    RowLayout {
+                        height: defaultHeight
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+
+                        spacing: spacingSlider.value
+
+                        Rectangle {
+                            color: "red"
+                            width: 40
+                            height: parent.height
+                        }
+                        Rectangle {
+                            color: "green"
+                            width: 40
+                            height: parent.height
+                            visible: !ckHideGreen.checked
+                        }
+                        Item {
+                            implicitWidth: 10
+                        }
+                        Rectangle {
+                            color: "blue"
+                            width: 40
+                            height: parent.height
+                        }
+                    }
+
+                    // [3]
+                    RowLayout {
+                        height: defaultHeight
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        spacing: spacingSlider.value
 
                         Rectangle {
                             color: "red"
                             height: parent.height
+                            Layout.minimumWidth: 50
+                            Layout.maximumWidth: 100
+                            Layout.fillWidth: true
+                        }
+                        Rectangle {
+                            color: "green"
+                            height: parent.height
+                            visible: !ckHideGreen.checked
                             Layout.minimumWidth: 100
-                            Layout.horizontalSizePolicy: Layout.Expanding
+                            Layout.maximumWidth: 200
+                            Layout.fillWidth: true
                         }
                         Rectangle {
                             color: "blue"
                             height: parent.height
                             Layout.minimumWidth: 200
-                            Layout.horizontalSizePolicy: Layout.Expanding
+                            Layout.maximumWidth: 400
+                            Layout.fillWidth: true
                         }
                     }
 
+                    // [4]
                     RowLayout {
-                        spacing: 10
-                        height: parent.height
+                        spacing: 100 + spacingSlider.value
 
-                        Rectangle {
-                            color: "green"
-                            height: parent.height
-                            Layout.maximumWidth: 300
-                            Layout.horizontalSizePolicy: Layout.Expanding
-                        }
+                        height: defaultHeight
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+
                         Rectangle {
                             color: "red"
                             height: parent.height
-                            Layout.minimumWidth: 40
-                            Layout.maximumWidth: 100
-                            Layout.horizontalSizePolicy: Layout.Expanding
+                            Layout.minimumWidth: 100
+                            Layout.fillWidth: true
+                        }
+                        Rectangle {
+                            color: "green"
+                            height: parent.height
+                            visible: !ckHideGreen.checked
+                            Layout.minimumWidth: 200
+                            Layout.fillWidth: true
+                        }
+                        Rectangle {
+                            color: "blue"
+                            height: parent.height
+                            Layout.minimumWidth: 300
+                            Layout.fillWidth: true
+                        }
+                    }
+
+                    // [5]
+                    RowLayout {
+                        spacing: spacingSlider.value
+                        height: defaultHeight
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+
+                        Rectangle {
+                            color: "red"
+                            height: parent.height
+                            Layout.minimumWidth: 200
+                            Layout.maximumWidth: 500
+                            Layout.fillWidth: true
+                        }
+                    }
+
+                    // [6]
+                    RowLayout {
+                        spacing: 40 + spacingSlider.value
+                        height: defaultHeight
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+
+                        RowLayout {
+                            spacing: 10
+                            height: parent.height
+
+                            Rectangle {
+                                color: "red"
+                                height: parent.height
+                                Layout.minimumWidth: 100
+                                Layout.fillWidth: true
+                            }
+                            Rectangle {
+                                color: "blue"
+                                height: parent.height
+                                Layout.minimumWidth: 200
+                                Layout.fillWidth: true
+                            }
+                        }
+
+                        RowLayout {
+                            spacing: 10
+                            height: parent.height
+
+                            Rectangle {
+                                color: "green"
+                                height: parent.height
+                                width: 40
+                                visible: !ckHideGreen.checked
+                                Layout.maximumWidth: 300
+                                Layout.fillWidth: true
+                            }
+                            Rectangle {
+                                color: "red"
+                                height: parent.height
+                                Layout.minimumWidth: 40
+                                Layout.maximumWidth: 100
+                                Layout.fillWidth: true
+                            }
                         }
                     }
                 }
             }
-        }
 
 
-        Tab {
-            title: "Vertical"
+            Tab {
+                title: "Vertical"
 
-            Row {
-                spacing: 4
+                Row {
+                    spacing: 4
 
-                anchors {
-                    top: parent.top
-                    left: parent.left
-                    bottom: parent.bottom
-                    margins: 10
-                }
+                    anchors {
+                        top: parent.top
 
-                // [1]
-                ColumnLayout {
-                    width: defaultWidth
-                    anchors.top: parent.top
-                    anchors.bottom: parent.bottom
-
-                    Rectangle {
-                        color: "red"
-                        width: parent.width
+                        left: parent.left
+                        bottom: parent.bottom
+                        margins: 10
                     }
-                    Rectangle {
-                        color: "green"
-                        width: parent.width
-                    }
-                    Rectangle {
-                        color: "blue"
-                        width: parent.width
-                    }
-                }
 
-                // [2]
-                ColumnLayout {
-                    width: defaultWidth
-                    anchors.top: parent.top
-                    anchors.bottom: parent.bottom
-
-                    spacing: 5
-
-                    Rectangle {
-                        color: "red"
-                        width: parent.width
-                    }
-                    Rectangle {
-                        color: "green"
-                        width: parent.width
-                    }
-                    Item {
-                        implicitWidth: 10
-                    }
-                    Rectangle {
-                        color: "blue"
-                        width: parent.width
-                    }
-                }
-
-                // [3]
-                ColumnLayout {
-                    width: defaultWidth
-                    anchors.top: parent.top
-                    anchors.bottom: parent.bottom
-
-                    Rectangle {
-                        color: "red"
-                        width: parent.width
-                        Layout.minimumHeight: 50
-                        Layout.maximumHeight: 100
-                        Layout.verticalSizePolicy: Layout.Expanding
-                    }
-                    Rectangle {
-                        color: "green"
-                        width: parent.width
-                        Layout.minimumHeight: 100
-                        Layout.maximumHeight: 200
-                        Layout.verticalSizePolicy: Layout.Expanding
-                    }
-                    Rectangle {
-                        color: "blue"
-                        width: parent.width
-                        Layout.minimumHeight: 200
-                        Layout.maximumHeight: 400
-                        Layout.verticalSizePolicy: Layout.Expanding
-                    }
-                }
-
-                // [4]
-                ColumnLayout {
-                    spacing: 100
-                    width: defaultWidth
-                    anchors.top: parent.top
-                    anchors.bottom: parent.bottom
-
-                    Rectangle {
-                        color: "red"
-                        width: parent.width
-                        Layout.minimumHeight: 100
-                        Layout.verticalSizePolicy: Layout.Expanding
-                    }
-                    Rectangle {
-                        color: "green"
-                        width: parent.width
-                        Layout.minimumHeight: 200
-                        Layout.verticalSizePolicy: Layout.Expanding
-                    }
-                    Rectangle {
-                        color: "blue"
-                        width: parent.width
-                        Layout.minimumHeight: 300
-                        Layout.verticalSizePolicy: Layout.Expanding
-                    }
-                }
-
-                // [5]
-                ColumnLayout {
-                    width: defaultWidth
-                    anchors.top: parent.top
-                    anchors.bottom: parent.bottom
-
-                    Rectangle {
-                        color: "red"
-                        width: parent.width
-                        Layout.minimumHeight: 200
-                        Layout.maximumHeight: 500
-                        Layout.verticalSizePolicy: Layout.Expanding
-                    }
-                }
-
-                // [6]
-                ColumnLayout {
-                    spacing: 40
-                    width: defaultWidth
-                    anchors.top: parent.top
-                    anchors.bottom: parent.bottom
-
+                    // [1]
                     ColumnLayout {
-                        spacing: 10
-                        width: parent.width
+                        width: defaultWidth
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
+                        spacing: spacingSlider.value
+
+                        Rectangle {
+                            color: "red"
+                            width: parent.width
+                            height: 40
+                        }
+                        Rectangle {
+                            color: "green"
+                            width: parent.width
+                            height: 80
+                            visible: !ckHideGreen.checked
+                        }
+                        Rectangle {
+                            color: "blue"
+                            width: parent.width
+                            height: 120
+                        }
+                    }
+
+                    // [2]
+                    ColumnLayout {
+                        width: defaultWidth
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
+
+                        spacing: spacingSlider.value
+
+                        Rectangle {
+                            color: "red"
+                            width: parent.width
+                            height: 40
+                        }
+                        Rectangle {
+                            color: "green"
+                            width: parent.width
+                            visible: !ckHideGreen.checked
+                            height: 80
+                        }
+                        Item {
+                            implicitHeight: 10
+                        }
+                        Rectangle {
+                            color: "blue"
+                            width: parent.width
+                            height: 40
+                        }
+                    }
+
+                    // [3]
+                    ColumnLayout {
+                        width: defaultWidth
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
+                        spacing: spacingSlider.value
+
+                        Rectangle {
+                            color: "red"
+                            width: parent.width
+                            height: 60
+                            Layout.minimumHeight: 50
+                            Layout.maximumHeight: 100
+                            Layout.fillHeight: true
+                        }
+                        Rectangle {
+                            color: "green"
+                            width: parent.width
+                            height: 90
+                            visible: !ckHideGreen.checked
+                            Layout.minimumHeight: 75
+                            Layout.maximumHeight: 125
+                            Layout.fillHeight: true
+                        }
+                        Rectangle {
+                            color: "blue"
+                            width: parent.width
+                            height: 120
+                            Layout.minimumHeight: 100
+                            Layout.fillHeight: true
+                        }
+                    }
+
+                    // [4]
+                    ColumnLayout {
+                        spacing: 100 + spacingSlider.value
+                        width: defaultWidth
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
 
                         Rectangle {
                             color: "red"
                             width: parent.width
                             Layout.minimumHeight: 100
-                            Layout.verticalSizePolicy: Layout.Expanding
+                            Layout.fillHeight: true
+                        }
+                        Rectangle {
+                            color: "green"
+                            width: parent.width
+                            visible: !ckHideGreen.checked
+                            Layout.minimumHeight: 200
+                            Layout.fillHeight: true
                         }
                         Rectangle {
                             color: "blue"
                             width: parent.width
-                            Layout.minimumHeight: 200
-                            Layout.verticalSizePolicy: Layout.Expanding
+                            Layout.minimumHeight: 300
+                            Layout.fillHeight: true
                         }
                     }
 
+                    // [5]
                     ColumnLayout {
-                        spacing: 10
-                        width: parent.width
+                        spacing: 40 + spacingSlider.value
+                        width: defaultWidth
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
 
-                        Rectangle {
-                            color: "green"
+                        ColumnLayout {
+                            spacing: 10
                             width: parent.width
-                            Layout.maximumHeight: 300
-                            Layout.verticalSizePolicy: Layout.Expanding
+                            Layout.fillHeight: true
+
+                            Rectangle {
+                                color: "red"
+                                width: parent.width
+                                Layout.minimumHeight: 100
+                                Layout.maximumHeight: 300
+                                Layout.fillHeight: true
+                            }
+                            Rectangle {
+                                color: "blue"
+                                width: parent.width
+                                Layout.minimumHeight: 100
+                                Layout.fillHeight: true
+                                Layout.maximumHeight: 200
+                            }
                         }
-                        Rectangle {
-                            color: "red"
+
+                        ColumnLayout {
+                            spacing: 10
                             width: parent.width
-                            Layout.minimumHeight: 40
-                            Layout.maximumHeight: 100
-                            Layout.verticalSizePolicy: Layout.Expanding
+                            Layout.maximumHeight: 200
+                            Layout.fillHeight: true
+                            Rectangle {
+                                color: "green"
+                                width: parent.width
+                                height: 50
+                                visible: !ckHideGreen.checked
+                                Layout.maximumHeight: 300
+                                Layout.fillHeight: true
+                            }
+                            Rectangle {
+                                color: "red"
+                                width: parent.width
+                                height: 50
+                                Layout.minimumHeight: 40
+                                Layout.fillHeight: true
+                            }
                         }
                     }
                 }
             }
-        }
 
+            Tab {
+                title: "Horizontal and Vertical"
 
-        Tab {
-            title: "Horizontal and Vertical"
+                ColumnLayout {
+                    anchors.fill: parent
 
-            ColumnLayout {
-                anchors.fill: parent
+                    // [1]
+                    RowLayout {
+                        height: defaultHeight
+                        anchors.left: parent.left
+                        anchors.right: parent.right
 
-                // [1]
-                RowLayout {
-                    height: defaultHeight
-                    anchors.left: parent.left
-                    anchors.right: parent.right
+                        Layout.minimumHeight: 100
 
-                    Layout.minimumHeight: 100
-
-                    Rectangle {
-                        color: "red"
-                        height: parent.height
-                        Layout.horizontalSizePolicy: Layout.Expanding
+                        Rectangle {
+                            color: "red"
+                            height: parent.height
+                            Layout.fillWidth: true
+                        }
+                        Rectangle {
+                            color: "green"
+                            height: parent.height
+                            visible: !ckHideGreen.checked
+                            implicitWidth: 100
+                        }
+                        Rectangle {
+                            color: "blue"
+                            height: parent.height
+                            Layout.fillWidth: true
+                        }
                     }
+
+                    // [2]
                     Rectangle {
-                        color: "green"
+                        color: "yellow"
                         height: parent.height
-                        implicitWidth: 100
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        Layout.minimumHeight: 10
+                        Layout.maximumHeight: 30
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
                     }
-                    Rectangle {
-                        color: "blue"
-                        height: parent.height
-                        Layout.horizontalSizePolicy: Layout.Expanding
-                    }
-                }
 
-                // [2]
-                Rectangle {
-                    color: "yellow"
-                    height: parent.height
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    Layout.minimumHeight: 10
-                    Layout.maximumHeight: 30
-                    Layout.horizontalSizePolicy: Layout.Expanding
-                    Layout.verticalSizePolicy: Layout.Expanding
-                }
+                    // [3]
+                    RowLayout {
+                        height: defaultHeight
+                        anchors.left: parent.left
+                        anchors.right: parent.right
 
-                // [3]
-                RowLayout {
-                    height: defaultHeight
-                    anchors.left: parent.left
-                    anchors.right: parent.right
+                        Rectangle {
+                            color: "red"
+                            height: parent.height
+                            Layout.maximumHeight: 200
+                            Layout.fillWidth: true
+                        }
+                        Rectangle {
+                            color: "blue"
+                            height: parent.height
 
-                    Rectangle {
-                        color: "red"
-                        height: parent.height
-                        Layout.maximumHeight: 200
-                        Layout.horizontalSizePolicy: Layout.Expanding
-                    }
-                    Rectangle {
-                        color: "blue"
-                        height: parent.height
+                            ColumnLayout {
+                                anchors.fill: parent
+                                spacing: 10
+                                opacity: 0.6
 
-                        ColumnLayout {
-                            anchors.fill: parent
-                            spacing: 10
-                            opacity: 0.6
+                                Rectangle {
+                                    color: "darkRed"
+                                    height: parent.height
+                                    anchors.left: parent.left
+                                    anchors.right: parent.right
+                                    Layout.minimumHeight: 100
+                                    Layout.maximumHeight: 200
+                                    Layout.fillHeight: true
+                                }
 
-                            Rectangle {
-                                color: "darkRed"
-                                height: parent.height
-                                anchors.left: parent.left
-                                anchors.right: parent.right
-                                Layout.minimumHeight: 100
-                                Layout.maximumHeight: 200
-                                Layout.verticalSizePolicy: Layout.Expanding
-                            }
-
-                            Rectangle {
-                                color: "darkGreen"
-                                height: parent.height
-                                anchors.left: parent.left
-                                anchors.right: parent.right
-                                Layout.verticalSizePolicy: Layout.Expanding
+                                Rectangle {
+                                    color: "darkGreen"
+                                    height: parent.height
+                                    anchors.left: parent.left
+                                    anchors.right: parent.right
+                                    Layout.fillHeight: true
+                                }
                             }
                         }
+                    }
+                }
+            }
+
+            Tab {
+                title: "Grid"
+                Column {
+                    spacing: 4
+
+                    anchors {
+                        top: parent.top
+                        left: parent.left
+                        right: parent.right
+                        bottom: parent.bottom
+                        margins: 10
+                    }
+
+                    // [1]
+                    GridLayout {
+                        id: flag
+                        rowSpacing: spacingSlider.value
+                        columnSpacing: spacingSlider.value
+                        // row 0
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        Rectangle {
+                            color: "red"
+                            width: 52
+                            height: 52
+                            Layout.row: 0
+                            Layout.column: 0
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
+                        }
+                        Rectangle {
+                            color: "white"
+                            width: 8
+                            height: 52
+                            Layout.row: 0
+                            Layout.column: 1
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
+                        }
+                        Rectangle {
+                            color: "blue"
+                            width: 18
+                            height: 60
+                            Layout.row: 0
+                            Layout.column: 2
+                            Layout.rowSpan: 2
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
+                        }
+                        Rectangle {
+                            color: "white"
+                            width: 8
+                            height: 52
+                            Layout.row: 0
+                            Layout.column: 3
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
+                        }
+                        Rectangle {
+                            color: "red"
+                            width: 140
+                            height: 52
+                            Layout.row: 0
+                            Layout.column: 4
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
+                        }
+
+                        // row 1
+                        Rectangle {
+                            color: "white"
+                            width: 60
+                            height: 8
+                            Layout.row: 1
+                            Layout.column: 0
+                            Layout.columnSpan: 2
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
+                        }
+                        Rectangle {
+                            color: "white"
+                            width: 60
+                            height: 8
+                            Layout.row: 1
+                            Layout.column: 3
+                            Layout.columnSpan: 2
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
+                        }
+
+                        // row 2
+                        Rectangle {
+                            color: "blue"
+                            width: 226
+                            height: 18
+                            Layout.row: 2
+                            Layout.column: 0
+                            Layout.columnSpan: 5
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
+                        }
+
+                        // row 3
+                        Rectangle {
+                            color: "white"
+                            width: 60
+                            height: 8
+                            Layout.row: 3
+                            Layout.column: 0
+                            Layout.columnSpan: 2
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
+                        }
+                        Rectangle {
+                            color: "blue"
+                            width: 18
+                            height: 60
+                            Layout.row: 3
+                            Layout.column: 2
+                            Layout.rowSpan: 2
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
+                        }
+                        Rectangle {
+                            color: "white"
+                            width: 140
+                            height: 8
+                            Layout.row: 3
+                            Layout.column: 3
+                            Layout.columnSpan: 2
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
+                        }
+
+                        // row 4
+                        Rectangle {
+                            color: "red"
+                            width: 52
+                            height: 52
+                            Layout.row: 4
+                            Layout.column: 0
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
+                        }
+                        Rectangle {
+                            color: "white"
+                            width: 8
+                            height: 52
+                            Layout.row: 4
+                            Layout.column: 1
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
+                        }
+                        Rectangle {
+                            color: "white"
+                            width: 8
+                            height: 52
+                            Layout.row: 4
+                            Layout.column: 3
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
+                        }
+                        Rectangle {
+                            color: "red"
+                            width: 140
+                            height: 52
+                            Layout.row: 4
+                            Layout.column: 4
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
+                        }
+                    }
+
+                    Text {
+                        text: "Norwegian flag"
                     }
                 }
             }

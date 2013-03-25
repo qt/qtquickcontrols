@@ -1,9 +1,9 @@
 /****************************************************************************
 **
-** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
-** This file is part of the Qt Components project.
+** This file is part of the Qt Quick Controls module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:BSD$
 ** You may use this file under the terms of the BSD license as follows:
@@ -37,21 +37,25 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-import QtQuick 2.0
-import QtDesktop 1.0
+import QtQuick 2.1
+import QtQuick.Controls.Styles 1.0
+import QtQuick.Controls.Private 1.0
 
-StyleItem {
-    anchors.fill: parent
-    elementType: "progressbar"
-    // XXX: since desktop uses int instead of real, the progressbar
-    // range [0..1] must be stretched to a good precision
-    property int factor : 1000
-    value:   indeterminate ? 0 : progressbar.value * factor // does indeterminate value need to be 1 on windows?
-    minimum: indeterminate ? 0 : progressbar.minimumValue * factor
-    maximum: indeterminate ? 0 : progressbar.maximumValue * factor
-    enabled: progressbar.enabled
-    horizontal: progressbar.orientation == Qt.Horizontal
-    hint: progressbar.styleHints
-    contentWidth: 23
-    contentHeight: 23
+Style {
+    property Component panel: StyleItem {
+        anchors.fill: parent
+        elementType: "progressbar"
+        // XXX: since desktop uses int instead of real, the progressbar
+        // range [0..1] must be stretched to a good precision
+        property int factor : 1000
+        property int decimals: 3
+        value:   indeterminate ? 0 : control.value.toFixed(decimals) * factor // does indeterminate value need to be 1 on windows?
+        minimum: indeterminate ? 0 : control.minimumValue.toFixed(decimals) * factor
+        maximum: indeterminate ? 0 : control.maximumValue.toFixed(decimals) * factor
+        enabled: control.enabled
+        horizontal: control.orientation == Qt.Horizontal
+        hints: control.styleHints
+        contentWidth: 23
+        contentHeight: 23
+    }
 }

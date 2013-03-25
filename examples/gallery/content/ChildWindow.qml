@@ -1,9 +1,9 @@
 /****************************************************************************
 **
-** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
-** This file is part of the examples of the Qt Toolkit.
+** This file is part of the Qt Quick Controls module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:BSD$
 ** You may use this file under the terms of the BSD license as follows:
@@ -38,8 +38,13 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.0
-import QtDesktop 1.0
+
+
+
+
+import QtQuick 2.1
+import QtQuick.Window 2.1
+import QtQuick.Controls 1.0
 
 Window {
     id: window1
@@ -59,18 +64,6 @@ Window {
             anchors.top: parent.top
             width: parent.width
             horizontalAlignment: Text.AlignHCenter
-
-            text: {
-                if (Desktop.screenCount == 1) {
-                    "You have only a single screen.\nThe dimensions of your screen are: " + Desktop.screenWidth + " x " + Desktop.screenHeight;
-                } else {
-                    var text = "You have " + Desktop.screenCount + " screens.\nThe dimensions of your screens are: "
-                    for(var i=0; i<Desktop.screenCount; i++) {
-                        text += "\n" + Desktop.screenGeometry(i).width + " x " + Desktop.screenGeometry(i).height
-                    }
-                    return text;
-                }
-            }
         }
 
         Text {
@@ -79,14 +72,6 @@ Window {
             anchors.top: dimensionsText.bottom
             width: parent.width
             horizontalAlignment: Text.AlignHCenter
-
-            text: {
-                var text = "The available dimensions of your screens are: "
-                for(var i=0; i<Desktop.screenCount; i++) {
-                    text += "\n" + Desktop.availableGeometry(i).width + " x " + Desktop.availableGeometry(i).height
-                }
-                return text;
-            }
         }
 
         Text {
@@ -111,7 +96,7 @@ Window {
             text:"Maximize"
             width: 98
             tooltip:"Press me, to maximize this window again"
-            onClicked: window1.windowState = Qt.WindowMaximized;
+            onClicked: window1.visibility = Window.Maximized;
         }
         Button {
             anchors.horizontalCenter: closeText.horizontalCenter
@@ -120,7 +105,7 @@ Window {
             text:"Normalize"
             width: 98
             tooltip:"Press me, to normalize this window again"
-            onClicked: window1.windowState = Qt.WindowNoState;
+            onClicked: window1.visibility = Window.Windowed;
         }
         Button {
             anchors.horizontalCenter: closeText.horizontalCenter
@@ -129,7 +114,7 @@ Window {
             text:"Minimize"
             width: 98
             tooltip:"Press me, to minimize this window again"
-            onClicked: window1.windowState = Qt.WindowMinimized;
+            onClicked: window1.visibility = Window.Minimized;
         }
     }
 }

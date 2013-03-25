@@ -1,9 +1,9 @@
 /****************************************************************************
 **
-** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
-** This file is part of the examples of the Qt Toolkit.
+** This file is part of the Qt Quick Controls module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:BSD$
 ** You may use this file under the terms of the BSD license as follows:
@@ -38,8 +38,8 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.0
-import QtDesktop 1.0
+import QtQuick 2.1
+import QtQuick.Controls 1.0
 
 
 Rectangle {
@@ -63,7 +63,7 @@ Rectangle {
             text : "Click to set color"
         }
 
-        ContextMenu {
+        Menu {
             id : editMenu
             MenuItem { text : "orange"  ; onTriggered: selectedColor = text }
             MenuItem { text : "lightsteelblue" ; onTriggered: selectedColor = text }
@@ -76,7 +76,7 @@ Rectangle {
             id: mouse
             anchors.fill: parent
             acceptedButtons : Qt.LeftButton
-            onClicked: editMenu.showPopup(mouseX, mouseY, 0)
+            onClicked: editMenu.popup()
         }
     }
 }

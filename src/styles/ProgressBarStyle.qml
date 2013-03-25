@@ -1,9 +1,9 @@
 /****************************************************************************
 **
-** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
-** This file is part of the Qt Components project.
+** This file is part of the Qt Quick Controls module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:BSD$
 ** You may use this file under the terms of the BSD license as follows:
@@ -38,25 +38,25 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.0
-import QtDesktop 1.0
+import QtQuick 2.1
+import QtQuick.Controls 1.0
 
 /*!
     \qmltype ProgressBarStyle
-    \inqmlmodule QtDesktop.Styles 1.0
-    \brief ProgressBarStyle is doing bla...bla...
+    \internal
+    \inqmlmodule QtQuick.Controls.Styles 1.0
+    \brief provides custom styling for ProgressBar
 */
 
-Item {
-    anchors.fill: parent
-    implicitWidth: 200
-    implicitHeight: 20
-
+Style {
     property color backgroundColor: "darkgrey"
     property color progressColor: "#47f"
 
     property Component background: Rectangle {
         id: styleitem
+        anchors.fill: parent
+        implicitWidth: 200
+        implicitHeight: 20
         clip: true
         radius: 2
         antialiasing: true
@@ -90,9 +90,18 @@ Item {
         }
     }
 
-    Loader {
-        id: backgroundLoader
+    property Component panel: Item {
+        property Item controlref: control
         anchors.fill: parent
-        sourceComponent: background
+
+        implicitWidth: backgroundLoader.implicitWidth
+        implicitHeight: backgroundLoader.implicitHeight
+
+        Loader {
+            id: backgroundLoader
+            anchors.fill: parent
+            sourceComponent: background
+            property Item control: controlref
+        }
     }
 }

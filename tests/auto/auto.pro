@@ -1,2 +1,3 @@
 TEMPLATE = subdirs
-SUBDIRS += qtdesktop testplugin
+SUBDIRS += testplugin controls activeFocusOnTab
+CONFIG += ordered

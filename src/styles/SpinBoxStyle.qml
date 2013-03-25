@@ -1,9 +1,9 @@
 /****************************************************************************
 **
-** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
-** This file is part of the Qt Components project.
+** This file is part of the Qt Quick Controls module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:BSD$
 ** You may use this file under the terms of the BSD license as follows:
@@ -37,46 +37,35 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-import QtQuick 2.0
-import QtDesktop 1.0
+import QtQuick 2.1
+import QtQuick.Controls 1.0
 
 /*!
     \qmltype SpinBoxStyle
-    \inqmlmodule QtDesktop.Styles 1.0
-    \brief SpinBoxStyle is doing bla...bla...
+    \internal
+    \inqmlmodule QtQuick.Controls.Styles 1.0
+    \brief provides custom styling for SpinBox
 */
 
-Item {
-    id: styleitem
-    implicitWidth: 100
-    implicitHeight: 21
-
-    property rect upRect: Qt.rect(width - upControlLoader.implicitWidth, 0, upControlLoader.implicitWidth, height / 2 + 1)
-    property rect downRect: Qt.rect(width - downControlLoader.implicitWidth, height / 2, downControlLoader.implicitWidth, height / 2)
+Style {
+    id: spinboxStyle
 
     property int topMargin: 0
     property int leftMargin: 4
     property int rightMargin: 12
     property int bottomMargin: 0
-    property int horizontalTextAlignment: Qt.AlignLeft
-    property int verticalTextAlignment: Qt.AlignVCenter
 
     property color foregroundColor: syspal.text
     property color backgroundColor: syspal.base
     property color selectionColor: syspal.highlight
     property color selectedTextColor: syspal.highlightedText
 
-    SystemPalette {
-        id: syspal
-        colorGroup: control.enabled ? SystemPalette.Active : SystemPalette.Disabled
-    }
-
     property Component upControl: Rectangle {
         anchors.centerIn: parent
         implicitWidth: 12
         gradient: Gradient {
-            GradientStop {color: control.upPressed ? "lightgray" : "white" ; position: 0}
-            GradientStop {color: control.upPressed ? "lightgray" : "lightgray" ; position: 1}
+            GradientStop {color: control.__upPressed ? "lightgray" : "white" ; position: 0}
+            GradientStop {color: control.__upPressed ? "lightgray" : "lightgray" ; position: 1}
         }
         border.color: Qt.darker(backgroundColor, 2)
         Image {
@@ -88,8 +77,8 @@ Item {
     property Component downControl: Rectangle {
         implicitWidth: 12
         gradient: Gradient {
-            GradientStop {color: control.downPressed ? "lightgray" : "white" ; position: 0}
-            GradientStop {color: control.downPressed ? "lightgray" : "lightgray" ; position: 1}
+            GradientStop {color: control.__downPressed ? "lightgray" : "white" ; position: 0}
+            GradientStop {color: control.__downPressed ? "lightgray" : "lightgray" ; position: 1}
         }
         border.color: Qt.darker(backgroundColor, 2)
         Image {
@@ -109,28 +98,60 @@ Item {
         border.color: Qt.darker(backgroundColor, 2)
     }
 
-    Loader {
-        id: backgroundLoader
-        anchors.fill: parent
-        sourceComponent: background
-    }
 
-    Loader {
-        id: upControlLoader
-        x: upRect.x
-        y: upRect.y
-        width: upRect.width
-        height: upRect.height
-        sourceComponent: upControl
-    }
+    property Component panel:  Item {
+        id: styleitem
+        implicitWidth: 100
+        implicitHeight: 21
 
-    Loader {
-        id: downControlLoader
-        x: downRect.x
-        y: downRect.y
-        width: downRect.width
-        height: downRect.height
-        sourceComponent: downControl
-    }
+        property color foregroundColor: spinboxStyle.foregroundColor
+        property color backgroundColor: spinboxStyle.backgroundColor
+        property color selectionColor: spinboxStyle.selectionColor
+        property color selectedTextColor: spinboxStyle.selectedTextColor
 
+        property int leftMargin: spinboxStyle.leftMargin
+        property int rightMargin: spinboxStyle.rightMargin
+        property int topMargin: spinboxStyle.topMargin
+        property int bottomMargin: spinboxStyle.bottomMargin
+
+        property rect upRect: Qt.rect(width - upControlLoader.implicitWidth, 0, upControlLoader.implicitWidth, height / 2 + 1)
+        property rect downRect: Qt.rect(width - downControlLoader.implicitWidth, height / 2, downControlLoader.implicitWidth, height / 2)
+
+        property int horizontalTextAlignment: Qt.AlignLeft
+        property int verticalTextAlignment: Qt.AlignVCenter
+
+        property SpinBox cref: control
+
+        SystemPalette {
+            id: syspal
+            colorGroup: control.enabled ? SystemPalette.Active : SystemPalette.Disabled
+        }
+
+        Loader {
+            id: backgroundLoader
+            anchors.fill: parent
+            sourceComponent: background
+            property SpinBox control: cref
+        }
+
+        Loader {
+            id: upControlLoader
+            x: upRect.x
+            y: upRect.y
+            width: upRect.width
+            height: upRect.height
+            sourceComponent: upControl
+            property SpinBox control: cref
+        }
+
+        Loader {
+            id: downControlLoader
+            x: downRect.x
+            y: downRect.y
+            width: downRect.width
+            height: downRect.height
+            sourceComponent: downControl
+            property SpinBox control: cref
+        }
+    }
 }

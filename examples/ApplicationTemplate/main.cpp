@@ -1,9 +1,9 @@
 /****************************************************************************
 **
-** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
-** This file is part of the Qt Components project.
+** This file is part of the Qt Quick Controls module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:BSD$
 ** You may use this file under the terms of the BSD license as follows:
@@ -38,6 +38,7 @@
 **
 ****************************************************************************/
 
+
 #include <QtWidgets/QApplication>
 #include <QtQml>
 #include <QtQuick/QQuickView>
@@ -59,6 +60,7 @@ int main(int argc, char *argv[])
         qWarning("Error: Your root item has to be a Window.");
         return -1;
     }
+    QObject::connect(&engine, SIGNAL(quit()), &app, SLOT(quit()));
     window->show();
     return app.exec();
 }

@@ -1,19 +1,20 @@
-TARGETPATH = QtDesktop/Styles
+TARGETPATH = QtQuick/Controls/Styles
 
 QML_FILES = \
     ButtonStyle.qml \
     CheckBoxStyle.qml \
     ComboBoxStyle.qml \
-    FrameStyle.qml \
     GroupBoxStyle.qml \
+    MenuBarStyle.qml \
+    MenuStyle.qml \
     ProgressBarStyle.qml \
     RadioButtonStyle.qml \
-    ScrollAreaStyle.qml \
     ScrollBarStyle.qml \
     Settings.js \
     SliderStyle.qml \
     SpinBoxStyle.qml \
-    TabFrameStyle.qml \
+    Style.qml \
+    TabViewStyle.qml \
     TextFieldStyle.qml \
     ToolBarStyle.qml \
     ToolButtonStyle.qml
@@ -23,15 +24,15 @@ QML_FILES += \
     Desktop/ButtonStyle.qml \
     Desktop/CheckBoxStyle.qml \
     Desktop/ComboBoxStyle.qml \
-    Desktop/FrameStyle.qml \
     Desktop/GroupBoxStyle.qml \
+    Desktop/MenuBarStyle.qml \
+    Desktop/MenuStyle.qml \
     Desktop/ProgressBarStyle.qml \
     Desktop/RadioButtonStyle.qml \
-    Desktop/ScrollAreaStyle.qml \
     Desktop/ScrollBarStyle.qml \
     Desktop/SliderStyle.qml \
     Desktop/SpinBoxStyle.qml \
-    Desktop/TabFrameStyle.qml \
+    Desktop/TabViewStyle.qml \
     Desktop/TextFieldStyle.qml \
     Desktop/ToolBarStyle.qml \
     Desktop/ToolButtonStyle.qml

@@ -1,9 +1,9 @@
 /****************************************************************************
 **
-** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
-** This file is part of the Qt Components project.
+** This file is part of the Qt Quick Controls module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:BSD$
 ** You may use this file under the terms of the BSD license as follows:
@@ -37,29 +37,57 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-import QtQuick 2.0
-import QtDesktop 1.0
+import QtQuick 2.1
+import QtQuick.Controls.Styles 1.0
+import QtQuick.Controls.Private 1.0
 
-StyleItem {
-    elementType: "checkbox"
-    sunken: pressed
-    on: checked || pressed
-    hover: containsMouse
-    enabled: control.enabled
-    hasFocus: control.activeFocus
-    hint: control.styleHints
-    contentHeight: textitem.implicitHeight
-    contentWidth: textitem.implicitWidth + indicatorWidth
-    Text {
-        id: textitem
-        text: control.text
-        anchors.left: parent.left
-        anchors.leftMargin: parent.indicatorWidth
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.right: parent.right
-        elide: Text.ElideRight
-        color: syspal.windowText
-        SystemPalette { id: syspal }
+Style {
+    property Component panel: Item {
+        anchors.fill: parent
+
+        implicitWidth: styleitem.implicitWidth
+        implicitHeight: styleitem.implicitHeight
+
+        StyleItem {
+            id: styleitem
+            elementType: "checkbox"
+            sunken: control.pressed
+            on: control.checked || control.pressed
+            hover: control.__containsMouse
+            enabled: control.enabled
+            hasFocus: control.activeFocus
+            hints: {
+                if (control.checkedState === Qt.PartiallyChecked)
+                    control.styleHints.push("partiallyChecked");
+                else {
+                    var index = control.styleHints.indexOf("partiallyChecked");
+                    if (index !== -1)
+                        control.styleHints.splice(index, 1);
+                }
+                control.styleHints;
+            }
+            contentHeight: textitem.implicitHeight
+            contentWidth: textitem.implicitWidth + indicatorWidth
+            property int indicatorWidth: pixelMetric("indicatorwidth") + (macStyle ? 2 : 4)
+            property bool macStyle: (style === "mac")
+
+            Text {
+                id: textitem
+                text: control.text
+                anchors.left: parent.left
+                anchors.leftMargin: parent.indicatorWidth
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.verticalCenterOffset: parent.macStyle ? 1 : 0
+                anchors.right: parent.right
+                renderType: Text.NativeRendering
+                elide: Text.ElideRight
+                enabled: control.enabled
+                color: syspal.windowText
+                SystemPalette {
+                    id: syspal
+                    colorGroup: enabled ? SystemPalette.Active : SystemPalette.Disabled
+                }
+            }
+        }
     }
-    property int indicatorWidth: pixelMetric("indicatorwidth") + 2
 }

@@ -1,9 +1,9 @@
 /****************************************************************************
 **
-** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
-** This file is part of the Qt Components project.
+** This file is part of the Qt Quick Controls module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:BSD$
 ** You may use this file under the terms of the BSD license as follows:
@@ -38,8 +38,8 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.0
-import QtDesktop 1.0
+import QtQuick 2.1
+import QtQuick.Controls 1.0
 
 Rectangle {
   width: 360
@@ -58,7 +58,7 @@ Rectangle {
       model: model_listmodel // qml
       anchors { left: parent.left; right: parent.right }
       height: 70
-      TableColumn {
+      TableViewColumn {
         role: "value"
         width: 100
       }
@@ -67,7 +67,7 @@ Rectangle {
       model: 3 // qml
       anchors { left: parent.left; right: parent.right }
       height: 70
-      TableColumn {
+      TableViewColumn {
         width: 100
       }
     }
@@ -75,7 +75,7 @@ Rectangle {
       model: ["A", "B", "C"] // qml
       anchors { left: parent.left; right: parent.right }
       height: 70
-      TableColumn {
+      TableViewColumn {
         width: 100
       }
     }
@@ -83,7 +83,7 @@ Rectangle {
       model: Item { x: 10 } // qml
       anchors { left: parent.left; right: parent.right }
       height: 70
-      TableColumn {
+      TableViewColumn {
         role: "x"
         width: 100
       }
@@ -92,7 +92,7 @@ Rectangle {
       model: model_qobjectlist // c++
       anchors { left: parent.left; right: parent.right }
       height: 70
-      TableColumn {
+      TableViewColumn {
         role: "value"
         width: 100
       }
@@ -101,7 +101,7 @@ Rectangle {
       model: model_qaim // c++
       anchors { left: parent.left; right: parent.right }
       height: 70
-      TableColumn {
+      TableViewColumn {
         role: "test"
         width: 100
       }
@@ -110,7 +110,7 @@ Rectangle {
       model: model_qstringlist // c++
       anchors { left: parent.left; right: parent.right }
       height: 70
-      TableColumn {
+      TableViewColumn {
         width: 100
       }
     }
@@ -118,7 +118,7 @@ Rectangle {
       model: model_qobject // c++
       anchors { left: parent.left; right: parent.right }
       height: 70
-      TableColumn {
+      TableViewColumn {
         role: "value"
         width: 100
       }

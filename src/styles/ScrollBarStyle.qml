@@ -1,9 +1,9 @@
 /****************************************************************************
 **
-** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
-** This file is part of the Qt Components project.
+** This file is part of the Qt Quick Controls module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:BSD$
 ** You may use this file under the terms of the BSD license as follows:
@@ -38,15 +38,14 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.0
-import QtDesktop 1.0
+import QtQuick 2.1
+import QtQuick.Controls 1.0
 
 /*!
     \qmltype ScrollBarStyle
-    \inqmlmodule QtDesktop.Styles 1.0
-    \brief ScrollBarStyle is doing bla...bla...
+    \internal
+    \inqmlmodule QtQuick.Controls.Styles 1.0
 */
-
 Rectangle {
     id: styleitem
 
@@ -176,7 +175,7 @@ Rectangle {
     Loader{
         id: handleControl
         property int totalextent: horizontal ? bg.width : bg.height
-        property int extent: Math.max(minimumHandleLength, totalextent - control.maximumValue + 2 * handleOverlap)
+        property int extent: Math.max(minimumHandleLength, 100 * totalextent / (control.maximumValue - control.minimumValue) + 2 * handleOverlap)
         property bool mouseOver: activeControl === "handle"
 
         height: horizontal ? implicitHeight : extent

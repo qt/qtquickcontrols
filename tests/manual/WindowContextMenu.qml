@@ -1,9 +1,9 @@
 /****************************************************************************
 **
-** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
-** This file is part of the examples of the Qt Toolkit.
+** This file is part of the Qt Quick Controls module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:BSD$
 ** You may use this file under the terms of the BSD license as follows:
@@ -38,9 +38,9 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.0
-import QtDesktop 1.0
-import QtQuick.Window 2.0   // overrides any definition of Window in QtDesktop
+import QtQuick 2.1
+import QtQuick.Controls 1.0
+import QtQuick.Window 2.1
 
 Window {
     width: 540
@@ -51,10 +51,10 @@ Window {
     Text {
         id : selctedLabel
         anchors.centerIn: parent
-        text : editMenu.itemTextAt(editMenu.selectedIndex)
+        text : editMenu.selectedIndex >= 0 ? editMenu.items[editMenu.selectedIndex].text : "No selection"
     }
 
-    ContextMenu {
+    Menu {
         id : editMenu
 
         MenuItem {
@@ -76,6 +76,6 @@ Window {
     MouseArea {
         anchors.fill: parent
         acceptedButtons : Qt.RightButton
-        onClicked: editMenu.showPopup(mouseX, mouseY, 0)
+        onClicked: editMenu.popup()
     }
 }

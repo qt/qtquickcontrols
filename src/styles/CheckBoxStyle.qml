@@ -1,9 +1,9 @@
 /****************************************************************************
 **
-** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
-** This file is part of the Qt Components project.
+** This file is part of the Qt Quick Controls module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:BSD$
 ** You may use this file under the terms of the BSD license as follows:
@@ -37,55 +37,67 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-import QtQuick 2.0
-import QtDesktop 1.0
+import QtQuick 2.1
+import QtQuick.Controls 1.0
 
 /*!
     \qmltype CheckBoxStyle
-    \inqmlmodule QtDesktop.Styles 1.0
-    \brief CheckBoxStyle is doing bla...bla...
+    \internal
+    \inqmlmodule QtQuick.Controls.Styles 1.0
+    \brief provides custom styling for CheckBox
 */
+Style {
 
-Item {
-    implicitWidth: 100
-    implicitHeight: 20
+    property int labelSpacing: 6
 
     property Component indicator: Rectangle {
-        height:20
+        height: 20
         width: 20
         antialiasing: true
-        gradient: Gradient{
+        gradient: Gradient {
             GradientStop{color: control.pressed ? "lightgray" : "white" ; position: 0}
             GradientStop{color: control.pressed ? "lightgray" : "lightgray" ; position: 1}
         }
-        radius:4
+        radius: 2
         border.color: "#aaa"
         Rectangle {
-            height:20
+            height: 20
             width: 20
             antialiasing: true
             visible: control.checked
-            gradient: Gradient{
-                GradientStop{color: "darkgray" ; position: 1}
-                GradientStop{color: "lightgray" ; position: 0}
-            }
-            radius:2
+            color: "#444"
+            radius: 1
             anchors.margins: 5
             anchors.fill: parent
-            border.color: "gray"
+            border.color: "black"
         }
     }
 
-    Loader {
-        id: indicatorLoader
-        sourceComponent: indicator
-    }
-
-    Text {
-        anchors.left: parent.left
-        anchors.leftMargin: 24
-        anchors.verticalCenter: parent.verticalCenter
+    property Component label: Text {
         text: control.text
         renderType: Text.NativeRendering
+    }
+
+    property Component panel: Item {
+        implicitWidth: row.width
+        implicitHeight: row.height
+        property var _cref: control
+
+        Row {
+            id: row
+            spacing: labelSpacing
+            Loader {
+                id: indicatorLoader
+                sourceComponent: indicator
+                anchors.verticalCenter: parent.verticalCenter
+                property CheckBox control: _cref
+            }
+            Loader {
+                id: labelLoader
+                sourceComponent: label
+                anchors.verticalCenter: parent.verticalCenter
+                property CheckBox control: _cref
+            }
+        }
     }
 }

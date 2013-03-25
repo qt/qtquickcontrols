@@ -1,9 +1,9 @@
 /****************************************************************************
 **
-** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
-** This file is part of the examples of the Qt Toolkit.
+** This file is part of the Qt Quick Controls module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:BSD$
 ** You may use this file under the terms of the BSD license as follows:
@@ -38,8 +38,14 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.0
-import QtDesktop 1.0
+
+
+
+
+import QtQuick 2.1
+import QtQuick.Controls 1.0
+import QtQuick.Layouts 1.0
+import QtQuick.Dialogs 1.0
 import "content"
 
 ApplicationWindow {
@@ -55,15 +61,21 @@ ApplicationWindow {
             "incididunt ut labore et dolore magna aliqua.\n Ut enim ad minim veniam, quis nostrud "+
             "exercitation ullamco laboris nisi ut aliquip ex ea commodo cosnsequat. ";
 
+    ImageViewer { id: imageViewer }
+
+    FileDialog {
+        id: fileDialog
+        nameFilters: [ "Image files (*.png *.jpg)" ]
+        onAccepted: imageViewer.open(fileUrl)
+    }
+
     ToolBar {
         id: toolbar
         width: parent.width
-        height: 40
         RowLayout {
             spacing: 2
             anchors.verticalCenter: parent.verticalCenter
             ToolButton {
-                iconName: "window-new"
                 iconSource: "images/window-new.png"
                 anchors.verticalCenter: parent.verticalCenter
                 onClicked: window1.visible = !window1.visible
@@ -71,81 +83,129 @@ ApplicationWindow {
                 tooltip: "Toggle visibility of the second window"
             }
             ToolButton {
-                iconName: "document-open"
-                iconSource: "images/document-open.png"
-                anchors.verticalCenter: parent.verticalCenter
-                onClicked: fileDialogLoad.open()
-                tooltip: "(Pretend to) open a file"
+                action: openAction
             }
             ToolButton {
-                iconName: "document-save-as"
                 iconSource: "images/document-save-as.png"
                 anchors.verticalCenter: parent.verticalCenter
-                onClicked: fileDialogSave.open()
                 tooltip: "(Pretend to) save as..."
             }
-        }
-
-        FileDialog {
-            id: fileDialogLoad
-            folder: "/tmp"
-            title: "Choose a file to open"
-            selectMultiple: true
-            nameFilters: [ "Image files (*.png *.jpg)", "All files (*)" ]
-
-            onAccepted: { console.log("Accepted: " + filePaths) }
-        }
-
-        FileDialog {
-            id: fileDialogSave
-            folder: "/tmp"
-            title: "Save as..."
-            modal: true
-            selectExisting: false
-
-            onAccepted: { console.log("Accepted: " + filePath) }
         }
 
         ChildWindow { id: window1 }
 
         Action {
             id: openAction
-            text: "Open"
+            text: "&Open"
             shortcut: "Ctrl+O"
-            onTriggered: fileDialogLoad.open();
+            iconSource: "images/document-open.png"
+            onTriggered: fileDialog.open()
+            tooltip: "open an image"
         }
 
         Action {
             id: copyAction
-            text: "Copy"
+            text: "&Copy"
             shortcut: "Ctrl+C"
             iconName: "edit-copy"
+            enabled: (!!activeFocusItem && !!activeFocusItem["copy"])
+            onTriggered: activeFocusItem.copy()
         }
 
         Action {
             id: cutAction
-            text: "Cut"
+            text: "Cu&t"
             shortcut: "Ctrl+X"
             iconName: "edit-cut"
+            enabled: (!!activeFocusItem && !!activeFocusItem["cut"])
+            onTriggered: activeFocusItem.cut()
         }
 
         Action {
             id: pasteAction
-            text: "Paste"
+            text: "&Paste"
             shortcut: "Ctrl+V"
             iconName: "edit-paste"
+            enabled: (!!activeFocusItem && !!activeFocusItem["paste"])
+            onTriggered: activeFocusItem.paste()
         }
 
-        ContextMenu {
+        ExclusiveGroup {
+            id: textFormatGroup
+
+            Action {
+                id: a1
+                text: "Align Left"
+                checkable: true
+                Component.onCompleted: checked = true
+            }
+
+            Action {
+                id: a2
+                text: "Center"
+                checkable: true
+            }
+
+            Action {
+                id: a3
+                text: "Align Right"
+                checkable: true
+            }
+        }
+
+        Menu {
             id: editmenu
-            MenuItem { text: "Copy" ;  iconName: "edit-copy" }
-            MenuItem { text: "Cut" ;   iconName: "edit-cut" }
-            MenuItem { text: "Paste" ; iconName: "edit-paste" }
+            MenuItem { action: cutAction }
+            MenuItem { action: copyAction }
+            MenuItem { action: pasteAction }
+            MenuSeparator {}
+            Menu {
+                title: "Text Format"
+                MenuItem { action: a1 }
+                MenuItem { action: a2 }
+                MenuItem { action: a3 }
+                MenuSeparator { }
+                MenuItem { text: "Allow Hyphenation"; checkable: true }
+                MenuSeparator { }
+                Menu {
+                    title: "More Stuff"
+                    MenuItem { action: cutAction }
+                    MenuItem { action: copyAction }
+                    MenuItem { action: pasteAction }
+                    MenuSeparator { }
+                    Menu {
+                        title: "More Stuff"
+                        MenuItem { action: cutAction }
+                        MenuItem { action: copyAction }
+                        MenuItem { action: pasteAction }
+                        MenuSeparator { }
+                        Menu {
+                            title: "More Stuff"
+                            MenuItem { action: cutAction }
+                            MenuItem { action: copyAction }
+                            MenuItem { action: pasteAction }
+                            MenuSeparator { }
+                            Menu {
+                                title: "More Stuff"
+                                MenuItem { action: cutAction }
+                                MenuItem { action: copyAction }
+                                MenuItem { action: pasteAction }
+                            }
+                        }
+                    }
+                }
+            }
+            Menu {
+                title: "Font Style"
+                MenuItem { text: "Bold"; checkable: true }
+                MenuItem { text: "Italic"; checkable: true }
+                MenuItem { text: "Underline"; checkable: true }
+            }
         }
         MouseArea {
             anchors.fill:  parent
             acceptedButtons: Qt.RightButton
-            onPressed: editmenu.showPopup(mouseX, mouseY)
+            onPressed: editmenu.popup()
         }
 
         CheckBox {
@@ -159,12 +219,8 @@ ApplicationWindow {
 
     menuBar: MenuBar {
         Menu {
-            text: "File"
-            MenuItem {
-                text: "Open"
-                shortcut: "Ctrl+O"
-                onTriggered: fileDialogLoad.open();
-            }
+            title: "&File"
+            MenuItem { action: openAction }
             MenuItem {
                 text: "Close"
                 shortcut: "Ctrl+Q"
@@ -172,19 +228,30 @@ ApplicationWindow {
             }
         }
         Menu {
-            text: "Edit"
+            title: "&Edit"
+            MenuItem { action: cutAction }
+            MenuItem { action: copyAction }
+            MenuItem { action: pasteAction }
+            MenuSeparator { }
             MenuItem {
-                text: "Copy"
+                text: "Do Nothing"
+                shortcut: "Ctrl+E,Shift+Ctrl+X"
+                enabled: false
             }
             MenuItem {
-                text: "Paste"
+                text: "Not Even There"
+                shortcut: "Ctrl+E,Shift+Ctrl+Y"
+                visible: false
+            }
+            Menu {
+                title: "Me Neither"
+                visible: false
             }
         }
     }
 
 
     SystemPalette {id: syspal}
-    StyleItem{ id: styleitem}
     color: syspal.window
     ListModel {
         id: choices
@@ -194,30 +261,28 @@ ApplicationWindow {
         ListElement { text: "Coconut" }
     }
 
-    TabFrame {
+    TabView {
         id:frame
         enabled: enabledCheck.checked
-        position: controlPage.tabPosition
+        tabPosition: controlPage.item ? controlPage.item.tabPosition : Qt.TopEdge
         anchors.top: toolbar.bottom
         anchors.bottom: parent.bottom
         anchors.right: parent.right
         anchors.left: parent.left
-        anchors.margins: styleitem.style == "mac" ? 12 : 0
+        anchors.margins: Qt.platform.os === "mac" ? 12 : 2
+
         Tab {
+            id: controlPage
             title: "Control"
-            Controls { id: controlPage }
+            Controls { }
         }
         Tab {
             title: "Itemviews"
             ModelView { }
         }
         Tab {
-            title: "Range"
-            RangeTab { }
-        }
-        Tab {
             title: "Styles"
-            Styles { anchors.fill: parent}
+            Styles { anchors.fill: parent }
         }
         Tab {
             title: "Sidebar"

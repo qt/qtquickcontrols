@@ -1,9 +1,9 @@
 /****************************************************************************
 **
-** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
-** This file is part of the Qt Components project.
+** This file is part of the Qt Quick Controls module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:BSD$
 ** You may use this file under the terms of the BSD license as follows:
@@ -37,27 +37,65 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-import QtQuick 2.0
-import QtDesktop 1.0
+import QtQuick 2.1
+import QtQuick.Controls.Styles 1.0
+import QtQuick.Controls.Private 1.0
 
-Item {
-    width: implicitWidth
-    height: implicitHeight
-    implicitWidth: styleitem.implicitWidth
-    implicitHeight: styleitem.implicitHeight
-    StyleItem {
-        id: styleitem
-        width: parent.width
-        anchors.verticalCenter: parent.verticalCenter
-        elementType: "combobox"
-        sunken: comboBox.pressed
-        raised: !sunken
-        hover: comboBox.containsMouse
-        enabled: comboBox.enabled
-        text: comboBox.selectedText
-        hasFocus: comboBox.focus
-        contentHeight: 18
-        contentWidth: 80
-        Component.onCompleted: popup.center = styleHint("comboboxpopup");
+Style {
+    property Component panel: Item {
+        width: implicitWidth
+        height: implicitHeight
+        implicitWidth: styleitem.implicitWidth
+        implicitHeight: styleitem.implicitHeight
+
+        property int popup: styleitem.styleHint("comboboxpopup");
+
+        StyleItem {
+            id: styleitem
+            width: parent.width
+            anchors.verticalCenter: parent.verticalCenter
+            elementType: "combobox"
+            sunken: control.__pressed
+            raised: !sunken
+            hover: control.__containsMouse
+            enabled: control.enabled
+            text: control.currentText
+            hasFocus: control.activeFocus
+            contentHeight: 18
+            contentWidth: 80
+        }
+    }
+
+    property Component popupStyle: MenuStyle {
+        __menuItemType: "comboboxitem"
+    }
+
+    property Component dropDownStyle: Style {
+        property Component frame: StyleItem {
+            elementType: "frame"
+
+            width: (parent ? parent.contentWidth : 0)
+            height: (parent ? parent.contentHeight : 0) + 2 * pixelMetric("defaultframewidth")
+        }
+
+        property Component menuItem: StyleItem {
+            elementType: "itemrow"
+            selected: parent ? parent.selected : false
+
+            x: pixelMetric("defaultframewidth")
+            y: pixelMetric("defaultframewidth")
+
+            implicitWidth: textItem.contentWidth
+            implicitHeight: textItem.contentHeight
+
+            StyleItem {
+                id: textItem
+                elementType: "item"
+                contentWidth: textWidth(text)
+                contentHeight: textHeight(text)
+                text: parent && parent.parent ? parent.parent.text : ""
+                selected: parent ? parent.selected : false
+            }
+        }
     }
 }

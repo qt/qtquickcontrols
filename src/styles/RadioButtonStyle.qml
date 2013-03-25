@@ -1,9 +1,9 @@
 /****************************************************************************
 **
-** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
-** This file is part of the Qt Components project.
+** This file is part of the Qt Quick Controls module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:BSD$
 ** You may use this file under the terms of the BSD license as follows:
@@ -37,55 +37,63 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-import QtQuick 2.0
-import QtDesktop 1.0
+import QtQuick 2.1
+import QtQuick.Controls 1.0
 
 /*!
     \qmltype RadioButtonStyle
-    \inqmlmodule QtDesktop.Styles 1.0
-    \brief RadioButtonStyle is doing bla...bla...
+    \internal
+    \inqmlmodule QtQuick.Controls.Styles 1.0
+    \brief provides custom styling for RadioButton
 */
+Style {
 
-Item {
-    implicitWidth: 100
-    implicitHeight: 20
+    property int labelSpacing: 6
 
-    property Component indicator: Rectangle {
-        id: styleitem
-        height:20
+    property Component indicator:  Rectangle {
         width: 20
-        gradient: Gradient{
-            GradientStop{color: control.pressed ? "lightgray" : "white" ; position: 0}
-            GradientStop{color: control.pressed ? "lightgray" : "lightgray" ; position: 1}
-        }
-        radius: width/2
-        border.color: "#aaa"
+        height: 20
+        color: "#f0f0f0"
+        border.color: "gray"
         antialiasing: true
+        radius: height/2
+
         Rectangle {
-            height:20
-            width: 20
-            antialiasing: true
+            anchors.centerIn: parent
             visible: control.checked
-            gradient: Gradient{
-                GradientStop{color: "darkgray" ; position: 1}
-                GradientStop{color: "lightgray" ; position: 0}
-            }
-            radius: width/2
-            anchors.margins: 5
-            anchors.fill: parent
-            border.color: "gray"
+            width: 10
+            height: 10
+            color: "#444"
+            border.color: "black"
+            antialiasing: true
+            radius: height/2
         }
     }
-
-    Loader {
-        id: indicatorLoader
-        sourceComponent: indicator
+    property Component label: Text {
+        text: control.text
+        renderType: Text.NativeRendering
     }
 
-    Text {
-        anchors.left: parent.left
-        anchors.leftMargin: 24
-        anchors.verticalCenter: parent.verticalCenter
-        text: control.text
+    property Component panel: Item {
+        implicitWidth: row.width
+        implicitHeight: row.height
+        property var _cref: control
+
+        Row {
+            id: row
+            spacing: labelSpacing
+            Loader {
+                id: indicatorLoader
+                sourceComponent: indicator
+                anchors.verticalCenter: parent.verticalCenter
+                property Item control: _cref
+            }
+            Loader {
+                id: labelLoader
+                sourceComponent: label
+                anchors.verticalCenter: parent.verticalCenter
+                property Item control: _cref
+            }
+        }
     }
 }

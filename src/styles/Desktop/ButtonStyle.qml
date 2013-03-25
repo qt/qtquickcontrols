@@ -1,9 +1,9 @@
 /****************************************************************************
 **
-** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
-** This file is part of the Qt Components project.
+** This file is part of the Qt Quick Controls module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:BSD$
 ** You may use this file under the terms of the BSD license as follows:
@@ -37,26 +37,21 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-import QtQuick 2.0
-import QtDesktop 1.0
+import QtQuick 2.1
+import QtQuick.Controls.Styles 1.0
+import QtQuick.Controls.Private 1.0
 
-Item {
-    width: implicitWidth
-    height: implicitHeight
-    implicitWidth: styleitem.implicitWidth
-    implicitHeight: styleitem.implicitHeight
-    StyleItem {
+Style {
+    property Component panel: StyleItem {
         id: styleitem
-        width: parent.width
-        anchors.verticalCenter: parent.verticalCenter
         elementType: "button"
         sunken: control.pressed || control.checked
         raised: !(control.pressed || control.checked)
-        hover: control.containsMouse
+        hover: control.__containsMouse
         text: control.iconSource === "" ? "" : control.text
-        hasFocus: control.focus
-        hint: control.styleHints
+        hasFocus: control.activeFocus
+        hints: control.styleHints
         // If no icon, let the style do the drawing
-        activeControl: defaultbutton ? "default" : "f"
+        activeControl: control.isDefault ? "default" : "f"
     }
 }

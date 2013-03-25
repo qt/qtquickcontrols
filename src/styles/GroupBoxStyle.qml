@@ -1,9 +1,9 @@
 /****************************************************************************
 **
-** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
-** This file is part of the Qt Components project.
+** This file is part of the Qt Quick Controls module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:BSD$
 ** You may use this file under the terms of the BSD license as follows:
@@ -37,23 +37,25 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-import QtQuick 2.0
-import QtDesktop 1.0
+import QtQuick 2.1
+import QtQuick.Controls 1.0
+import QtQuick.Controls.Styles 1.0
 
 /*!
     \qmltype GroupBoxStyle
-    \inqmlmodule QtDesktop.Styles 1.0
-    \brief GroupBoxStyle is doing bla...bla...
+    \internal
+    \inqmlmodule QtQuick.Controls.Styles 1.0
 */
-
-Item {
-    implicitWidth: Math.max(200, contentWidth + 30)
-    implicitHeight: contentHeight
-
-    Text {
-        anchors.top: parent.top
-        anchors.left: parent.left
-        anchors.margins: 4
-        text: control.title
+Style {
+    property int margin: 8
+    property Component panel: Item {
+        implicitWidth: Math.max(200, contentWidth + 30)
+        implicitHeight: contentHeight
+        Text {
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.margins: 4
+            text: control.title
+        }
     }
 }

@@ -1,9 +1,9 @@
 /****************************************************************************
 **
-** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
-** This file is part of the Qt Components project.
+** This file is part of the Qt Quick Controls module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:BSD$
 ** You may use this file under the terms of the BSD license as follows:
@@ -37,25 +37,26 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-import QtQuick 2.0
-import QtDesktop 1.0
+import QtQuick 2.1
+import QtQuick.Controls.Styles 1.0
+import QtQuick.Controls.Private 1.0
 
-StyleItem {
-    id: styleitem
-    anchors.fill: parent
-    elementType: "toolbutton"
-    on: pressed | checked
-    sunken: pressed
-    raised: containsMouse
-    hover: containsMouse
-    info: __position
-    hint: control.styleHints
-    contentWidth: Math.max(textitem.paintedWidth, 32)
-    contentHeight: 30
-    Text {
-        id: textitem
+Style {
+    property Component panel: StyleItem {
+        id: styleitem
+
+        anchors.fill: parent
+        elementType: "toolbutton"
+        on: control.pressed | control.checked
+        sunken: control.pressed
+        raised: control.__containsMouse
+        hover: control.__containsMouse
+        hasFocus: control.activeFocus
+        hints: control.styleHints.concat([control.__position])
         text: control.text
-        anchors.centerIn: parent
-        visible: control.iconSource == ""
+
+        properties: {
+            "icon": control.__action.__icon
+        }
     }
 }

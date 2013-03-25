@@ -1,9 +1,9 @@
 /****************************************************************************
 **
-** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
-** This file is part of the Qt Components project.
+** This file is part of the Qt Quick Controls module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:BSD$
 ** You may use this file under the terms of the BSD license as follows:
@@ -37,40 +37,30 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-import QtQuick 2.0
-import QtDesktop 1.0
+import QtQuick 2.1
+import QtQuick.Controls 1.0
 
 /*!
     \qmltype TextFieldStyle
-    \inqmlmodule QtDesktop.Styles 1.0
-    \brief TextFieldStyle is doing bla...bla...
+    \internal
+    \inqmlmodule QtQuick.Controls.Styles 1.0
+    \brief provides custom styling for TextField.
 */
 
-Item {
+Style {
     id: style
-    anchors.fill: parent
-
-    implicitWidth: backgroundLoader.implicitWidth ? backgroundLoader.implicitWidth : 100
-    implicitHeight: backgroundLoader.implicitHeight ? backgroundLoader.implicitHeight : 20
 
     property int topMargin: 4
     property int leftMargin: 8
     property int rightMargin: 8
     property int bottomMargin: 4
 
-    property color foregroundColor: syspal.text
-    property color backgroundColor: syspal.base
-    property color placeholderTextColor: Qt.rgba(0, 0, 0, 0.5)
-    property color selectionColor: syspal.highlight
-    property color selectedTextColor: syspal.highlightedText
-    property font font
+    property color foregroundColor: "black"
+    property color backgroundColor: "white"
+    property color selectionColor: "blue"
+    property color selectedTextColor: "white"
 
-    SystemPalette {
-        id: syspal
-        colorGroup: control.enabled ?
-                        SystemPalette.Active :
-                        SystemPalette.Disabled
-    }
+    property font font
 
     property Component background: Rectangle {
         id: styleitem
@@ -83,9 +73,29 @@ Item {
         antialiasing: true
     }
 
-    Loader {
-        id: backgroundLoader
-        sourceComponent: background
+    property Component panel: Item {
         anchors.fill: parent
+
+        property int topMargin: style.topMargin
+        property int leftMargin: style.leftMargin
+        property int rightMargin: style.rightMargin
+        property int bottomMargin: style.bottomMargin
+
+        property color foregroundColor: style.foregroundColor
+        property color backgroundColor: style.backgroundColor
+        property color selectionColor: style.selectionColor
+        property color selectedTextColor: style.selectedTextColor
+
+        implicitWidth: backgroundLoader.implicitWidth ? backgroundLoader.implicitWidth : 100
+        implicitHeight: backgroundLoader.implicitHeight ? backgroundLoader.implicitHeight : 20
+
+        property color placeholderTextColor: Qt.rgba(0, 0, 0, 0.5)
+        property font font: style.font
+
+        Loader {
+            id: backgroundLoader
+            sourceComponent: background
+            anchors.fill: parent
+        }
     }
 }

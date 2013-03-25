@@ -1,9 +1,9 @@
 /****************************************************************************
 **
-** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
-** This file is part of the Qt Components project.
+** This file is part of the Qt Quick Controls module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:BSD$
 ** You may use this file under the terms of the BSD license as follows:
@@ -37,89 +37,84 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-import QtQuick 2.0
-import QtDesktop 1.0
+import QtQuick 2.1
+import QtQuick.Controls 1.0
+import QtQuick.Controls.Styles 1.0
+import QtQuick.Controls.Private 1.0
 
-Item {
-    id: style
+Style {
+    property Component panel: Item {
+        id: style
 
-    property rect upRect
-    property rect downRect
+        property rect upRect
+        property rect downRect
 
-    property int topMargin: edit.anchors.topMargin
-    property int leftMargin: 2 + edit.anchors.leftMargin
-    property int rightMargin: 2 + edit.anchors.rightMargin
-    property int bottomMargin: edit.anchors.bottomMargin
-    property int horizontalTextAlignment: Qt.AlignLeft
-    property int verticalTextAlignment: Qt.AlignVCenter
+        property int topMargin: edit.anchors.topMargin
+        property int leftMargin: 2 + edit.anchors.leftMargin
+        property int rightMargin: 2 + edit.anchors.rightMargin
+        property int bottomMargin: edit.anchors.bottomMargin
+        property int horizontalTextAlignment: Qt.AlignLeft
+        property int verticalTextAlignment: Qt.AlignVCenter
 
-    property color foregroundColor: syspal.text
-    property color backgroundColor: syspal.base
-    property color selectionColor: syspal.highlight
-    property color selectedTextColor: syspal.highlightedText
+        property color foregroundColor: syspal.text
+        property color backgroundColor: syspal.base
+        property color selectionColor: syspal.highlight
+        property color selectedTextColor: syspal.highlightedText
 
-    SystemPalette {
-        id: syspal
-        colorGroup: control.enabled ? SystemPalette.Active : SystemPalette.Disabled
-    }
-
-    width: 100
-    height: styleitem.implicitHeight
-
-    implicitWidth: styleitem.implicitWidth
-    implicitHeight: styleitem.implicitHeight
-
-    Item {
-        id: edit
-        anchors.fill: parent
-        Rectangle {
-            color: "white"
-            anchors.fill: parent
-            anchors.margins: -1
+        SystemPalette {
+            id: syspal
+            colorGroup: control.enabled ? SystemPalette.Active : SystemPalette.Disabled
         }
-    }
 
-    Item {
-        id: focusFrame
-        anchors.fill: edit
-        anchors.margins: -6
-        visible: frameitem.styleHint("focuswidget")
+        width: 100
+        height: styleitem.implicitHeight
+
+        implicitWidth: styleitem.implicitWidth
+        implicitHeight: styleitem.implicitHeight
+
+        Item {
+            id: edit
+            anchors.fill: parent
+            Rectangle {
+                color: "white"
+                anchors.fill: parent
+                anchors.margins: -1
+            }
+            FocusFrame {
+                focusMargin:-6
+                visible: spinbox.activeFocus && styleitem.styleHint("focuswidget")
+            }
+        }
+
+        function updateRect() {
+            style.upRect = styleitem.subControlRect("up");
+            style.downRect = styleitem.subControlRect("down");
+            var inputRect = styleitem.subControlRect("edit");
+            edit.anchors.topMargin = inputRect.y
+            edit.anchors.leftMargin = inputRect.x
+            edit.anchors.rightMargin = style.width - inputRect.width - edit.anchors.leftMargin
+            edit.anchors.bottomMargin = style.height - inputRect.height - edit.anchors.topMargin
+        }
+
+        Component.onCompleted: updateRect()
+        onWidthChanged: updateRect()
+        onHeightChanged: updateRect()
+
         StyleItem {
-            id: frameitem
+            id: styleitem
+            elementType: "spinbox"
             anchors.fill: parent
-            visible: spinbox.activeFocus
-            elementType: "focusframe"
+            sunken: (control.__downEnabled && control.__downPressed) || (control.__upEnabled && control.__upPressed)
+            hover: __containsMouse
+            hints: control.styleHints
+            hasFocus: control.activeFocus
+            enabled: control.enabled
+            value: (control.__upPressed ? 1 : 0)           |
+                   (control.__downPressed ? 1<<1 : 0) |
+                   (control.__upEnabled ? (1<<2) : 0)      |
+                   (control.__downEnabled ? (1<<3) : 0)
+            contentWidth: control.__contentWidth
+            contentHeight: control.__contentHeight
         }
-    }
-
-    function updateRect() {
-        style.upRect = styleitem.subControlRect("up");
-        style.downRect = styleitem.subControlRect("down");
-        var inputRect = styleitem.subControlRect("edit");
-        edit.anchors.topMargin = inputRect.y
-        edit.anchors.leftMargin = inputRect.x
-        edit.anchors.rightMargin = style.width - inputRect.width - edit.anchors.leftMargin
-        edit.anchors.bottomMargin = style.height - inputRect.height - edit.anchors.topMargin
-    }
-
-    Component.onCompleted: updateRect()
-    onWidthChanged: updateRect()
-    onHeightChanged: updateRect()
-
-    StyleItem {
-        id: styleitem
-        elementType: "spinbox"
-        anchors.fill: parent
-        sunken: (downEnabled && downPressed) | (upEnabled && upPressed)
-        hover: containsMouse
-        hint: control.styleHints
-        hasFocus: control.focus
-        enabled: control.enabled
-        value: (upPressed ? 1 : 0)           |
-               (downPressed == 1 ? 1<<1 : 0) |
-               (upEnabled ? (1<<2) : 0)      |
-               (downEnabled == 1 ? (1<<3) : 0)
-        contentWidth: 200
-        contentHeight: 25
     }
 }

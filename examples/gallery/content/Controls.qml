@@ -1,9 +1,9 @@
 /****************************************************************************
 **
-** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
-** This file is part of the examples of the Qt Toolkit.
+** This file is part of the Qt Quick Controls module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:BSD$
 ** You may use this file under the terms of the BSD license as follows:
@@ -38,16 +38,20 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.0
-import QtDesktop 1.0
-import QtDesktop.Styles 1.0
+
+
+
+
+import QtQuick 2.1
+import QtQuick.Controls 1.0
+import QtQuick.Controls.Styles 1.0
 
 Item {
     id: flickable
     anchors.fill: parent
     enabled: enabledCheck.checked
 
-    property string tabPosition: tabPositionGroup.checkedButton == r2 ? "South" : "North"
+    property int tabPosition: tabPositionGroup.current === r2 ? Qt.BottomEdge : Qt.TopEdge
 
     Row {
         id: contentRow
@@ -55,6 +59,7 @@ Item {
         anchors.margins: 8
         spacing: 16
         Column {
+            id: firstColumn
             spacing: 9
             Row {
                 spacing:8
@@ -63,20 +68,18 @@ Item {
                     text: "Button 1"
                     width: 96
                     tooltip:"This is an interesting tool tip"
-                    KeyNavigation.tab: button2
                 }
                 Button {
                     id:button2
                     text:"Button 2"
                     width:96
-                    KeyNavigation.tab: combo
                 }
             }
             ComboBox {
                 id: combo;
                 model: choices;
                 width: parent.width;
-                KeyNavigation.tab: t1
+                currentIndex: 2
             }
             Row {
                 spacing: 8
@@ -86,19 +89,16 @@ Item {
 
                     minimumValue: -50
                     value: -20
-
-                    KeyNavigation.tab: t2
                 }
                 SpinBox {
                     id: t2
                     width:97
-                    KeyNavigation.tab: t3
                 }
             }
             TextField {
                 id: t3
-                KeyNavigation.tab: slider
                 placeholderText: "This is a placeholder for a TextField"
+                width: 200
             }
             ProgressBar {
                 // normalize value [0.0 .. 1.0]
@@ -111,30 +111,36 @@ Item {
                 id: slider
                 value: 0.5
                 tickmarksEnabled: tickmarkCheck.checked
-                KeyNavigation.tab: frameCheckbox
             }
         }
         Column {
             id: rightcol
             spacing: 12
+            anchors {
+                top: parent.top
+                bottom: parent.bottom
+            }
+
             GroupBox {
                 id: group1
                 title: "CheckBox"
                 width: area.width
-                adjustToContentSize: true
-                ButtonRow {
-                    exclusive: false
+                Row {
                     CheckBox {
                         id: frameCheckbox
                         text: "Text frame"
                         checked: true
-                        KeyNavigation.tab: tickmarkCheck
+                        width: 100
                     }
                     CheckBox {
                         id: tickmarkCheck
                         text: "Tickmarks"
+                        checked: false
+                    }
+                    CheckBox {
+                        id: wrapCheck
+                        text: "Word wrap"
                         checked: true
-                        KeyNavigation.tab: r1
                     }
                 }
             }
@@ -142,29 +148,31 @@ Item {
                 id: group2
                 title:"Tab Position"
                 width: area.width
-                adjustToContentSize: true
-                ButtonRow {
-                    id: tabPositionGroup
-                    exclusive: true
+                ExclusiveGroup { id: tabPositionGroup }
+                Row {
                     RadioButton {
                         id: r1
-                        text: "North"
-                        KeyNavigation.tab: r2
+                        text: "Top"
                         checked: true
+                        exclusiveGroup: tabPositionGroup
+                        width: 100
                     }
                     RadioButton {
                         id: r2
-                        text: "South"
-                        KeyNavigation.tab: area
+                        text: "Bottom"
+                        exclusiveGroup: tabPositionGroup
                     }
                 }
             }
 
             TextArea {
                 id: area
-                frame: frameCheckbox.checked
+                frameVisible: frameCheckbox.checked
                 text: loremIpsum + loremIpsum
-                KeyNavigation.tab: button1
+                wrapMode: wrapCheck.checked ? TextEdit.WordWrap : TextEdit.NoWrap
+                width: contentRow.width - firstColumn.width - contentRow.spacing
+                height: parent.height - group1.height - group2.height - 2 * parent.spacing
+                anchors { right: parent.right }
             }
         }
     }

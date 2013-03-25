@@ -1,9 +1,9 @@
 /****************************************************************************
 **
-** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
-** This file is part of the examples of the Qt Toolkit.
+** This file is part of the Qt Quick Controls module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:BSD$
 ** You may use this file under the terms of the BSD license as follows:
@@ -38,16 +38,20 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.0
-import QtDesktop 1.0
-//import QtQuick.XmlListModel 2.0
+
+
+
+
+import QtQuick 2.1
+import QtQuick.Controls 1.0
+//import QtQuick.XmlListModel 2.1
 
 Item {
     id: root
     width: 600
     height: 300
     anchors.fill: parent
-    anchors.margins: styleitem.style == "mac" ? 12 : 0
+    anchors.margins: Qt.platform.os === "mac" ? 12 : 0
 
 //    XmlListModel {
 //        id: flickerModel
@@ -72,17 +76,17 @@ Item {
         model: dummyModel
         anchors.fill: parent
 
-        TableColumn {
+        TableViewColumn {
             role: "title"
             title: "Title"
             width: 120
         }
-        TableColumn {
+        TableViewColumn {
             role: "credit"
             title: "Credit"
             width: 120
         }
-        TableColumn {
+        TableViewColumn {
             role: "imagesource"
             title: "Image source"
             width: 200
