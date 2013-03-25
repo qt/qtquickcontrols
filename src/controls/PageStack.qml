@@ -362,14 +362,10 @@ import "Private/PageStack.js" as JSArray
     }
     \endqml
 
-    A single Page can also override the transition to use when itself is pushed or popped. This can
-    be done by just assigning another StackViewDelegate object to \l{Stack::delegate}{Stack.delegate}.
-
     \section2 Advanced usage
 
-    After PageStack finds the correct transition to use (it first checks
-     \l{Stack::delegate}{Stack.delegate}, then \l {PageStack::delegate}{delegate})
-    it calls \l {StackViewDelegate::getTransition(properties)}{StackViewDelegate.getTransition(properties)}.
+    When the PageStack needs a new transition, it first calls
+    \l {StackViewDelegate::getTransition(properties)}{StackViewDelegate.getTransition(properties)}.
     The base implementation of this function just looks for a property named \c properties.name inside
     itself (root), which is how it finds \c {property Component pushTransition} in the examples above.
 
@@ -380,15 +376,16 @@ import "Private/PageStack.js" as JSArray
     }
     \endcode
 
-    You can override this function for your transition if you need extra logic to decide which
-    animation to run. You could for example introspect the pages, and return different animations
+    You can override this function for your delegate if you need extra logic to decide which
+    transition to return. You could for example introspect the pages, and return different animations
     depending on the their internal state. PageStack will expect you to return a Component that
     contains a StackViewTransition, or a StackViewTransition directly. The former is easier, as PageStack will
-    then create the animation and later destroy it when it's done, while avoiding any sideeffects
-    caused by the animation being alive long after it ran. Returning a StackViewTransition directly
-    can be useful if you need to write some sort of animation caching for performance reasons.
+    then create the transition and later destroy it when it's done, while avoiding any sideeffects
+    caused by the transition being alive long after it ran. Returning a StackViewTransition directly
+    can be useful if you need to write some sort of transition caching for performance reasons.
     As an optimization, you can also return \c null to signal that you just want to show/hide the pages
-    immediately without creating or running any animations.
+    immediately without creating or running any transitions. You can also override this function if
+    you need to alter the pages in any way before the transition starts.
 
     \c properties contains the properties that will be assigned to the StackViewTransition before
     it runs. In fact, you can add more properties to this object during the call
@@ -401,7 +398,7 @@ import "Private/PageStack.js" as JSArray
     StackViewDelegate {
         function getTransition(properties)
         {
-            return (properties.enterPage.index % 2) ? horizontalAnimation : verticalAnimation
+            return (properties.enterPage.Stack.index % 2) ? horizontalTransition : verticalTransition
         }
 
         function transitionFinished(properties)
@@ -410,7 +407,7 @@ import "Private/PageStack.js" as JSArray
             properties.exitPage.y = 0
         }
 
-        property Component horizontalAnimation: StackViewTransition {
+        property Component horizontalTransition: StackViewTransition {
             PropertyAnimation {
                 target: enterPage
                 property: "x"
@@ -427,7 +424,7 @@ import "Private/PageStack.js" as JSArray
             }
         }
 
-        property Component verticalAnimation: StackViewTransition {
+        property Component verticalTransition: StackViewTransition {
             PropertyAnimation {
                 target: enterPage
                 property: "y"
@@ -909,14 +906,24 @@ Item {
         if (enterPage === exitPage)
              return
 
-        __searchForAnimationIn(transition.transitionElement.page.Stack.delegate, transition)
-        if (!transition.animation)
-            __searchForAnimationIn(root.delegate, transition)
+        if (root.delegate) {
+            transition.properties = {
+                "name":transition.name,
+                "enterPage":transition.enterPage,
+                "exitPage":transition.exitPage,
+                "immediate":transition.immediate }
+            var anim = root.delegate.getTransition(transition.properties)
+            if (anim.createObject) {
+                anim = anim.createObject(null, transition.properties)
+                anim.runningChanged.connect(function(){ if (anim.running === false) anim.destroy() })
+            }
+            transition.animation = anim
+        }
+
         if (!transition.animation) {
             console.warn("Warning: PageStack: no", transition.name, "found!")
             return
         }
-
         if (enterPage.anchors.fill || exitPage.anchors.fill)
             console.warn("Warning: PageStack: cannot transition a page that is anchored!")
 
@@ -933,25 +940,6 @@ Item {
     }
 
     /*! \internal */
-    function __searchForAnimationIn(delegate, transition)
-    {
-        if (delegate) {
-            transition.delegate = delegate
-            transition.properties = {
-                "name":transition.name,
-                "enterPage":transition.enterPage,
-                "exitPage":transition.exitPage,
-                "immediate":transition.immediate }
-            var anim = delegate.getTransition(transition.properties)
-            if (anim.createObject) {
-                anim = anim.createObject(null, transition.properties)
-                anim.runningChanged.connect(function(){ if (anim.running === false) anim.destroy() })
-            }
-            transition.animation = anim
-        }
-    }
-
-    /*! \internal */
     function animationFinished()
     {
         if (!__currentTransition || __currentTransition.animation.running)
@@ -962,7 +950,7 @@ Item {
         __setPageStatus(__currentTransition.exitPage, Stack.Inactive);
         __setPageStatus(__currentTransition.enterPage, Stack.Active);
         __currentTransition.properties.animation = __currentTransition.animation
-        __currentTransition.delegate.transitionFinished(__currentTransition.properties)
+        root.delegate.transitionFinished(__currentTransition.properties)
 
         if (!__currentTransition.push || __currentTransition.replace)
             __cleanup(__currentTransition.outElement)

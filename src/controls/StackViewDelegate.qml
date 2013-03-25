@@ -60,9 +60,6 @@ QtObject {
 
     function transitionFinished(properties)
     {
-        console.warn("Warning: StackViewDelegate: the current transition did not override "
-                     + "transitionFinished(properties). This can cause the exit page to "
-                     + "be left in a state that makes it unusable for further usage!")
     }
 
     property Component pushTransition: StackViewTransition {}
