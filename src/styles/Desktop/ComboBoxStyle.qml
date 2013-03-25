@@ -54,7 +54,8 @@ Style {
         enabled: control.enabled
         text: control.currentText
         hasFocus: control.activeFocus
-        contentHeight: 18
+        // contentHeight as in QComboBox
+        contentHeight: Math.max(Math.ceil(textHeight("")), 14) + 2
         contentWidth: textWidth(text)
     }
 
