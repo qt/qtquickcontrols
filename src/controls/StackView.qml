@@ -41,17 +41,17 @@
 import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Private 1.0
-import "Private/PageStack.js" as JSArray
+import "Private/StackView.js" as JSArray
 
 /*!
-    \qmltype PageStack
+    \qmltype StackView
     \inherits Item
     \ingroup views
     \inqmlmodule QtQuick.Controls 1.0
 
     \brief Provides a stack-based navigation model.
 
-    PageStack implements a stack-based navigation model for an application.
+    StackView implements a stack-based navigation model for an application.
     A stack-based navigation model means that "pages" (discrete views of information)
     are pushed onto a stack as the user navigates
     deeper into the application page hierarchy. Similarily, the user can return back to
@@ -59,23 +59,23 @@ import "Private/PageStack.js" as JSArray
     top of the stack and re-activating them (make them visible on screen).
     The \l Stack attached property provides information about items pushed onto a stack.
 
-    \section1 Using PageStack in an Application
-    Using the PageStack in the application is typically a simple matter of adding
-    the PageStack as a child to e.g the applications top-level
+    \section1 Using StackView in an Application
+    Using the StackView in the application is typically a simple matter of adding
+    the StackView as a child to e.g the applications top-level
     \l{http://doc.qt.nokia.com/latest/qml-item.html} {Item}. The stack is usually
     anchored to the edges of the window, except at the top or bottom where it might
     be anchored to a status bar, or some other similar UI component.
     The stack can then be used by invoking its navigation methods. The first page
-    to show in the PageStack is commonly loaded assigning it to \l initialPage.
+    to show in the StackView is commonly loaded assigning it to \l initialPage.
 
     \section1 Basic Navigation
-    There are three primary navigation operations in PageStack: push(), pop() and
+    There are three primary navigation operations in StackView: push(), pop() and
     replace (you replace by specifying argument \c replace to push()).
     These correspond to classic stack operations where "push" adds a page to the
     top of a stack, "pop" removes the top page from the stack, and "replace" is like a
     pop followed by a push in that it replaces the topmost page on the stack with
     a new page (but the applied transtition might be different). The topmost page
-    in the stack corresponds to the one that is \l{PageStack::currentPage} {current},
+    in the stack corresponds to the one that is \l{StackView::currentPage} {current},
     i.e. the one that is visible on
     screen. That means that "push" is the logical equivalent of navigating forward or
     deeper into the application, "pop" is the equivalent of navigation back and
@@ -119,7 +119,7 @@ import "Private/PageStack.js" as JSArray
     you e.g. push a set of pages to the top of the stack, or that you completely reset
     the stack to a given state.
 
-    The API for deep linking in PageStack is the same as for basic navigation. If
+    The API for deep linking in StackView is the same as for basic navigation. If
     you push an array instead of a single page then all the pages in that array will
     be pushed onto the stack. The transition animation, however, will be conducted as
     if only the last page in the array was pushed onto the stack. The normal semantics
@@ -140,10 +140,10 @@ import "Private/PageStack.js" as JSArray
 
     \section1 Pushing pages
 
-    A page you push onto the PageStack can be either a \l Page, a \l{http://doc.qt.nokia.com/latest/qml-url.html}{URL}, a
+    A page you push onto the StackView can be either a \l Page, a \l{http://doc.qt.nokia.com/latest/qml-url.html}{URL}, a
     string with a URL, an \l{http://doc.qt.nokia.com/latest/qml-item.html}{Item}, or a
     \l{http://doc.qt.nokia.com/latest/qml-component.html}{Component}. To push it, you assign it
-    to a property "page" inside a property list, and send it as argument to \l{PageStack::push}{push}:
+    to a property "page" inside a property list, and send it as argument to \l{StackView::push}{push}:
 
     \code
     pageStack.push({page: yourPage})
@@ -161,9 +161,9 @@ import "Private/PageStack.js" as JSArray
     \li \c replace: Set this property to replace the current page on the stack. When pushing
         an array, you only need to set this property on the first element to replace
         as many elements on the stack as inside the array.
-    \li \c destroyOnPop: Set this property to be explicit to whether or not PageStack should
+    \li \c destroyOnPop: Set this property to be explicit to whether or not StackView should
         destroy the page when its popped off the stack. By default (if \a destroyOnPop is
-        not specified), PageStack will destroy pages pushed as components or URLs. Pages
+        not specified), StackView will destroy pages pushed as components or URLs. Pages
         not destroyed will be reparented back to the original parents they had before being
         pushed onto the stack, and hidden. If you need to set this property, do it with
         care, so that pages are not leaked.
@@ -177,7 +177,7 @@ import "Private/PageStack.js" as JSArray
     \endcode
 
     You can push several pages in one go by using an array of property lists. This is
-    optimizing compared to pushing pages one by one, since PageStack then can load only the
+    optimizing compared to pushing pages one by one, since StackView then can load only the
     last page in the list. The rest will be loaded as they are about to become
     the current page (which happends when the stack is popped). The following example shows how
     to push an array of pages:
@@ -187,11 +187,11 @@ import "Private/PageStack.js" as JSArray
     \endcode
 
     If inline pages/items are pushed, the page gets re-parented into an internal
-    container in the PageStack. When the page is later popped off, it gets
+    container in the StackView. When the page is later popped off, it gets
     re-parented back to its original owner. If, however, a page is pushed
     as a component or a URL, the actual page will be created as a page from that component. This
     happens automatically when the page is about to become the current page in the stack. Ownership
-    over the item will then normally be taken by the PageStack. It will as such automatically
+    over the item will then normally be taken by the StackView. It will as such automatically
     destroy the page when it is later popped off. The component that declared the page, by
     contrast, remains in the ownership of the application and is not destroyed by the page stack.
     You can override this behavior if needed by explicitly setting "destroyOnPop" in the list
@@ -280,14 +280,14 @@ import "Private/PageStack.js" as JSArray
     from: pushTransition, popTransition, and replaceTransition. Each implements how
     enterPage should animate in, and exitPage out. The transitions are
     collected inside a StackViewDelegate object assigned to
-    \l {PageStack::delegate}{delegate}. By default, popTransition and
+    \l {StackView::delegate}{delegate}. By default, popTransition and
     replaceTransition will be the same as pushTransition, unless you set them
     to something else.
 
     A simple fade transition could be implemented as:
 
     \qml
-    PageStack {
+    StackView {
         delegate: StackViewDelegate {
             function transitionFinished(properties)
             {
@@ -325,7 +325,7 @@ import "Private/PageStack.js" as JSArray
     they are rotated up in an upright position:
 
     \qml
-    PageStack {
+    StackView {
         delegate: StackViewDelegate {
             function transitionFinished(properties)
             {
@@ -364,7 +364,7 @@ import "Private/PageStack.js" as JSArray
 
     \section2 Advanced usage
 
-    When the PageStack needs a new transition, it first calls
+    When the StackView needs a new transition, it first calls
     \l {StackViewDelegate::getTransition(properties)}{StackViewDelegate.getTransition(properties)}.
     The base implementation of this function just looks for a property named \c properties.name inside
     itself (root), which is how it finds \c {property Component pushTransition} in the examples above.
@@ -378,8 +378,8 @@ import "Private/PageStack.js" as JSArray
 
     You can override this function for your delegate if you need extra logic to decide which
     transition to return. You could for example introspect the pages, and return different animations
-    depending on the their internal state. PageStack will expect you to return a Component that
-    contains a StackViewTransition, or a StackViewTransition directly. The former is easier, as PageStack will
+    depending on the their internal state. StackView will expect you to return a Component that
+    contains a StackViewTransition, or a StackViewTransition directly. The former is easier, as StackView will
     then create the transition and later destroy it when it's done, while avoiding any sideeffects
     caused by the transition being alive long after it ran. Returning a StackViewTransition directly
     can be useful if you need to write some sort of transition caching for performance reasons.
@@ -447,21 +447,21 @@ import "Private/PageStack.js" as JSArray
 Item {
     id: root
 
-    /*! \qmlproperty int PageStack::depth
+    /*! \qmlproperty int StackView::depth
         \readonly
         The number of pages currently pushed onto the stack.
     */
     readonly property alias depth: root.__depth
 
-    /*! \qmlproperty Item PageStack::currentPage
+    /*! \qmlproperty Item StackView::currentPage
         \readonly
         The currently top-most page in the stack.
     */
     readonly property alias currentPage: root.__currentPage
 
-    /*! The first \l Page that should be shown when the PageStack is created.
-        \a initialPage can take same value as the first argument to \l{PageStack::push()}
-        {PageStack.push()}. Note that this is just a convenience for writing
+    /*! The first \l Page that should be shown when the StackView is created.
+        \a initialPage can take same value as the first argument to \l{StackView::push()}
+        {StackView.push()}. Note that this is just a convenience for writing
         \c{Component.onCompleted: pageStack.push(myInitialPage)}
 
         Examples:
@@ -501,9 +501,9 @@ Item {
         \li \c replace: Set this property to replace the current page on the stack. When pushing
             an array, you only need to set this property on the first element to replace
             as many elements on the stack as inside the array.
-        \li \c destroyOnPop: Set this property to be explicit to whether or not PageStack should
+        \li \c destroyOnPop: Set this property to be explicit to whether or not StackView should
             destroy the page when its popped off the stack. By default (if \a destroyOnPop is
-            not specified), PageStack will destroy pages pushed as components or URLs. Pages
+            not specified), StackView will destroy pages pushed as components or URLs. Pages
             not destroyed will be reparented back to the original parents they had before being
             pushed onto the stack, and hidden. If you need to set this property, do it with
             care, so that pages are not leaked.
@@ -542,7 +542,7 @@ Item {
         var replace = arguments[3]
         var arrayPushed = (page instanceof Array)
         var firstPage = arrayPushed ? page[0] : page
-        immediate = (immediate || JSArray.pageStack.length === 0)
+        immediate = (immediate || JSArray.stackView.length === 0)
 
         if (firstPage && firstPage.page && firstPage.hasOwnProperty("x") === false) {
             // Property list API used:
@@ -676,7 +676,7 @@ Item {
         not loaded into memory */
     function find(func, onlySearchLoadedPages) {
         for (var i=__depth-1; i>=0; --i) {
-            var element = JSArray.pageStack[i];
+            var element = JSArray.stackView[i];
             if (onlySearchLoadedPages !== true)
                 __loadElement(element)
             else if (!element.page)
@@ -693,9 +693,9 @@ Item {
         will be returned if not yet loaded) */
     function get(index, dontLoad)
     {
-        if (index < 0 || index >= JSArray.pageStack.length)
+        if (index < 0 || index >= JSArray.stackView.length)
             return null
-        var element = JSArray.pageStack[index]
+        var element = JSArray.stackView[index]
         if (dontLoad !== true) {
             __loadElement(element)
             return element.page
@@ -757,7 +757,7 @@ Item {
     function __recursionGuard(use)
     {
         if (use && __guard) {
-            console.warn("Warning: PageStack: You cannot push/pop recursively!")
+            console.warn("Warning: StackView: You cannot push/pop recursively!")
             console.trace()
             return true
         }
@@ -770,14 +770,14 @@ Item {
         if (element.loaded) {
             if (!element.page) {
                 element.page = invalidPageReplacement.createObject(root)
-                element.page.text = "\nError: The page has been deleted outside PageStack!"
+                element.page.text = "\nError: The page has been deleted outside StackView!"
             }
             return
         }
         if (!element.pageComponent) {
             element.page = invalidPageReplacement.createObject(root)
             element.page.text = "\nError: Invalid page (page was 'null'). "
-                    + "This might indicate that the page was deleted outside PageStack!"
+                    + "This might indicate that the page was deleted outside StackView!"
             return
         }
 
@@ -787,7 +787,7 @@ Item {
         if (!element.properties)
             element.properties = {}
         element.properties.__index = element.index
-        element.properties.__pageStack = root
+        element.properties.__stackView = root
 
         if (comp.hasOwnProperty("createObject")) {
             if (comp.status === Component.Error) {
@@ -818,7 +818,7 @@ Item {
         element.page.height = Qt.binding(function() { return root.height })
 
         delete element.properties.__index
-        delete element.properties.__pageStack
+        delete element.properties.__stackView
         element.loaded = true
     }
 
@@ -856,11 +856,11 @@ Item {
         if (element.destroyOnPop) {
             page.destroy()
         } else {
-            // Mark the page as no longer part of the PageStack. It
+            // Mark the page as no longer part of the StackView. It
             // might reenter on pop if pushed several times:
             page.visible = false
             __setPageStatus(page, Stack.Inactive)
-            page.Stack.__pageStack = null
+            page.Stack.__stackView = null
             page.Stack.__index = -1
             if (element.originalParent)
                 page.parent = element.originalParent
@@ -889,7 +889,7 @@ Item {
 
         // Since a page can be pushed several times, we need to update its properties:
         enterPage.parent = root
-        enterPage.Stack.__pageStack = root
+        enterPage.Stack.__stackView = root
         enterPage.Stack.__index = transition.inElement.index
         __currentPage = enterPage
 
@@ -921,11 +921,11 @@ Item {
         }
 
         if (!transition.animation) {
-            console.warn("Warning: PageStack: no", transition.name, "found!")
+            console.warn("Warning: StackView: no", transition.name, "found!")
             return
         }
         if (enterPage.anchors.fill || exitPage.anchors.fill)
-            console.warn("Warning: PageStack: cannot transition a page that is anchored!")
+            console.warn("Warning: StackView: cannot transition a page that is anchored!")
 
         __currentTransition = transition
         __setPageStatus(exitPage, Stack.Deactivating)

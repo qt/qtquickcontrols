@@ -29,7 +29,7 @@ QML_FILES += \
     Control.qml \
     ModalPopupBehavior.qml \
     StackViewSlideDelegate.qml \
-    PageStack.js \
+    StackView.js \
     ScrollViewHelper.qml \
     ScrollBar.qml \
     FocusFrame.qml

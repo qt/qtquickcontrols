@@ -14,7 +14,7 @@ QML_FILES = \
     Label.qml \
     MenuBar.qml \
     Menu.qml \
-    PageStack.qml \
+    StackView.qml \
     ProgressBar.qml \
     RadioButton.qml \
     ScrollView.qml \

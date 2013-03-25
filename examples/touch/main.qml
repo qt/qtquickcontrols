@@ -129,7 +129,7 @@ ApplicationWindow {
         }
     }
 
-    PageStack {
+    StackView {
         id: pageStack
         anchors.fill: parent
 

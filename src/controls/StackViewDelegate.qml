@@ -44,9 +44,9 @@ import QtQuick 2.1
         \qmltype StackViewDelegate
         \inqmlmodule QtQuick.Controls 1.0
 
-        \brief A delegate used by PageStack for loading transitions.
+        \brief A delegate used by StackView for loading transitions.
 
-        See the documentation for the \l {QtQuick.Controls1::PageStack} {PageStack}
+        See the documentation for the \l {QtQuick.Controls1::StackView} {StackView}
         component.
 
 */

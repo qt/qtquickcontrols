@@ -54,7 +54,7 @@ class QtStack : public QObject
     Q_PROPERTY(Status status READ status NOTIFY statusChanged)
     Q_PROPERTY(Status __status READ status WRITE setStatus NOTIFY statusChanged)
     Q_PROPERTY(QQuickItem* pageStack READ pageStack NOTIFY pageStackChanged)
-    Q_PROPERTY(QQuickItem* __pageStack READ pageStack WRITE setPageStack NOTIFY pageStackChanged)
+    Q_PROPERTY(QQuickItem* __stackView READ pageStack WRITE setStackView NOTIFY pageStackChanged)
     Q_ENUMS(Status)
 
 public:
@@ -76,7 +76,7 @@ public:
     void setStatus(Status status);
 
     QQuickItem *pageStack() const;
-    void setPageStack(QQuickItem *pageStack);
+    void setStackView(QQuickItem *pageStack);
 
 signals:
     void statusChanged();
