@@ -281,6 +281,6 @@ FocusScope {
                 clip: true
             }
         }
-        FocusFrame { visible: highlightOnFocus && area.activeFocus }
+        FocusFrame { visible: highlightOnFocus && root.activeFocus }
     }
 }
