@@ -51,44 +51,40 @@ import "Private/StackView.js" as JSArray
 
     \brief Provides a stack-based navigation model.
 
-    StackView implements a stack-based navigation model for an application.
-    A stack-based navigation model means that "pages" (discrete views of information)
-    are pushed onto a stack as the user navigates
-    deeper into the application page hierarchy. Similarily, the user can return back to
-    previous pages at a later point, which from a stack point of view means popping pages from the
-    top of the stack and re-activating them (make them visible on screen).
-    The \l Stack attached property provides information about items pushed onto a stack.
+    StackView implements a stack-based navigation model. You use this view when you
+    have a set of interlinked information pages for the user to browse.
+    Items are pushed onto the stack as the user navigates deeper into the material, and
+    popped off again when he chooses to go back.
 
     \section1 Using StackView in an Application
     Using the StackView in the application is typically a simple matter of adding
-    the StackView as a child to e.g the applications top-level
-    \l{http://doc.qt.nokia.com/latest/qml-item.html} {Item}. The stack is usually
+    the StackView as a child of a Window. The stack is usually
     anchored to the edges of the window, except at the top or bottom where it might
     be anchored to a status bar, or some other similar UI component.
-    The stack can then be used by invoking its navigation methods. The first page
+    The stack can then be used by invoking its navigation methods. The first item
     to show in the StackView is commonly loaded assigning it to \l initialItem.
 
     \section1 Basic Navigation
     There are three primary navigation operations in StackView: push(), pop() and
     replace (you replace by specifying argument \c replace to push()).
-    These correspond to classic stack operations where "push" adds a page to the
-    top of a stack, "pop" removes the top page from the stack, and "replace" is like a
-    pop followed by a push in that it replaces the topmost page on the stack with
-    a new page (but the applied transtition might be different). The topmost page
+    These correspond to classic stack operations where "push" adds an item to the
+    top of a stack, "pop" removes the top item from the stack, and "replace" is like a
+    pop followed by a push in that it replaces the topmost item on the stack with
+    a new item (but the applied transtition might be different). The topmost item
     in the stack corresponds to the one that is \l{StackView::currentItem} {current},
     i.e. the one that is visible on
     screen. That means that "push" is the logical equivalent of navigating forward or
     deeper into the application, "pop" is the equivalent of navigation back and
-    "replace" is the equivalent of replacing the current page with a different page.
+    "replace" is the equivalent of replacing the current item with a different item.
 
     Sometimes it is necessary to go back more than a single step in the stack, e.g.
-    to return to a "main" page or some kind of section page in the application.
-    For this use case, pop() can be provided with a page to pop to. This is called
-    an "unwind" operation as the stack gets unwound to the specified page. If the
-    page is not found then the stack unwinds until there is only a single page in
-    the stack, which becomes the current page. To explicitly unwind to the bottom
+    to return to a "main" item or some kind of section item in the application.
+    For this use case, pop() can be provided with a item to pop to. This is called
+    an "unwind" operation as the stack gets unwound to the specified item. If the
+    item is not found then the stack unwinds until there is only a single item in
+    the stack, which becomes the current item. To explicitly unwind to the bottom
     of the stack it is recommended to use \l{pop()} {pop(null)}, though technically any
-    non-existent page will do.
+    non-existent item will do.
 
     Given the stack [A, B, C]:
 
@@ -102,33 +98,31 @@ import "Private/StackView.js" as JSArray
     Note that when the stack is empty, a push() will not perform a
     transition animation because there is nothing to transition from (which will
     typically happend during application start-up). A pop() on a stack with
-    depth 1 or 0 is a no-operation. If removing all pages from the stack is
+    depth 1 or 0 is a no-operation. If removing all items from the stack is
     needed, a separate function clear() is available.
 
-    Calling push() returns the page that was pushed onto the stack.
-    Calling pop() returns the page that was popped off the stack. When pop() is
-    called in an unwind operation the top-most page (the first page that was
+    Calling push() returns the item that was pushed onto the stack.
+    Calling pop() returns the item that was popped off the stack. When pop() is
+    called in an unwind operation the top-most item (the first item that was
     popped, which will also be the one transitioning out) is returned.
 
     \section1 Deep Linking
     Deep linking means launching an application into a particular state. For example
     a Newspaper application could be launched into showing a particular article,
-    bypassing the front page (and possible a section page) that would normally have
-    to be navigated through to get to the article in question. In terms of page
-    stacks deep linking means the ability to modify the state of the stack so that
-    you e.g. push a set of pages to the top of the stack, or that you completely reset
+    bypassing the front item (and possible a section item) that would normally have
+    to be navigated through to get to the article in question. In terms of StackView, deep
+    linking means the ability to modify the state of the stack so that
+    you e.g. push a set of items to the top of the stack, or that you completely reset
     the stack to a given state.
 
     The API for deep linking in StackView is the same as for basic navigation. If
-    you push an array instead of a single page then all the pages in that array will
+    you push an array instead of a single item then all the items in that array will
     be pushed onto the stack. The transition animation, however, will be conducted as
-    if only the last page in the array was pushed onto the stack. The normal semantics
+    if only the last item in the array was pushed onto the stack. The normal semantics
     of push() apply for deep linking, meaning that push() adds whatever you push onto
-    the stack. Note also that only the last item in the array will actually be loaded
-    (in case of a \l{http://doc.qt.nokia.com/latest/qml-url.html}{URL} or
-    \l{http://doc.qt.nokia.com/latest/qml-component.html}{Component}).
+    the stack. Note also that only the last item in the array will actually be loaded.
     The rest will be lazy loaded as needed when entering
-    the screen upon subsequent calls to pop (or when requesting the page by using \a get).
+    the screen upon subsequent calls to pop (or when requesting the item by using \a get).
 
     This gives us the following result, given the stack [A, B, C]:
 
@@ -138,92 +132,91 @@ import "Private/StackView.js" as JSArray
     \li clear(); \l{push()}{push([D, E, F])} => [D, E, F] - no transition animation (since the stack was empty)
     \endlist
 
-    \section1 Pushing pages
+    \section1 Pushing items
 
-    A page you push onto the StackView can be either a \l Page, a \l{http://doc.qt.nokia.com/latest/qml-url.html}{URL}, a
-    string with a URL, an \l{http://doc.qt.nokia.com/latest/qml-item.html}{Item}, or a
-    \l{http://doc.qt.nokia.com/latest/qml-component.html}{Component}. To push it, you assign it
-    to a property "page" inside a property list, and send it as argument to \l{StackView::push}{push}:
+    An item you push onto the StackView can be either an Item, a URL, a
+    string with a URL, or a Component. To push it, you assign it
+    to a property "item" inside a property list, and send it as argument to \l{StackView::push}{push}:
 
     \code
-    pageStack.push({page: yourPage})
+    stackView.push({item: yourItem})
     \endcode
 
-    The list can contain several properties that controls how the page should be pushed:
+    The list can contain several properties that controls how the item should be pushed:
     \list
-    \li \c page: This property is required, and holds the page you want to push.
+    \li \c item: This property is required, and holds the item you want to push.
     \li \c properties: You can set a property list of QML properties that should be assigned
-        to the page upon push. These properties will be copied into the page at the
-        time the page is loaded, or about to become the current page (normally upon push).
+        to the item upon push. These properties will be copied into the item at the
+        time the item is loaded, or about to become the current item (normally upon push).
     \li \c immediate: Set this property to \c true to skip transition effects. When pushing
         an array, you only need to set this property on the first element to make the
         whole operation immediate.
-    \li \c replace: Set this property to replace the current page on the stack. When pushing
+    \li \c replace: Set this property to replace the current item on the stack. When pushing
         an array, you only need to set this property on the first element to replace
         as many elements on the stack as inside the array.
     \li \c destroyOnPop: Set this property to be explicit to whether or not StackView should
-        destroy the page when its popped off the stack. By default (if \a destroyOnPop is
-        not specified), StackView will destroy pages pushed as components or URLs. Pages
+        destroy the item when its popped off the stack. By default (if \a destroyOnPop is
+        not specified), StackView will destroy items pushed as components or URLs. Items
         not destroyed will be reparented back to the original parents they had before being
         pushed onto the stack, and hidden. If you need to set this property, do it with
-        care, so that pages are not leaked.
+        care, so that items are not leaked.
     \endlist
 
-    If the only argument needed is "page", you can also, as a short-hand
+    If the only argument needed is "item", you can also, as a short-hand
     notation, do:
 
     \code
-    pageStack.push(yourPage).
+    stackView.push(yourItem).
     \endcode
 
-    You can push several pages in one go by using an array of property lists. This is
-    optimizing compared to pushing pages one by one, since StackView then can load only the
-    last page in the list. The rest will be loaded as they are about to become
-    the current page (which happends when the stack is popped). The following example shows how
-    to push an array of pages:
+    You can push several items in one go by using an array of property lists. This is
+    optimizing compared to pushing items one by one, since StackView then can load only the
+    last item in the list. The rest will be loaded as they are about to become
+    the current item (which happends when the stack is popped). The following example shows how
+    to push an array of items:
 
     \code
-    pageStack.push([{page: yourPage1}, {page: yourPage2}])
+    stackView.push([{item: yourItem1}, {item: yourItem2}])
     \endcode
 
-    If inline pages/items are pushed, the page gets re-parented into an internal
-    container in the StackView. When the page is later popped off, it gets
-    re-parented back to its original owner. If, however, a page is pushed
-    as a component or a URL, the actual page will be created as a page from that component. This
-    happens automatically when the page is about to become the current page in the stack. Ownership
+    If inline items are pushed, the item gets re-parented into an internal
+    container in the StackView. When the item is later popped off, it gets
+    re-parented back to its original owner. If, however, an item is pushed
+    as a component or a URL, the actual item will be created as a item from that component. This
+    happens automatically when the item is about to become the current item in the stack. Ownership
     over the item will then normally be taken by the StackView. It will as such automatically
-    destroy the page when it is later popped off. The component that declared the page, by
-    contrast, remains in the ownership of the application and is not destroyed by the page stack.
+    destroy the item when it is later popped off. The component that declared the item, by
+    contrast, remains in the ownership of the application and is not destroyed by the stack.
     You can override this behavior if needed by explicitly setting "destroyOnPop" in the list
     argument given to push.
 
     If you specify the \c properties property to push, these properties will be copied into
-    the page at the time the page is loaded (in case of a component or URL), or instead when
-    its about to become the current page (in case of an inline item). This normally happends when
-    the page is pushed. The following example shows how this can be done:
+    the item at the time the item is loaded (in case of a component or URL), or instead when
+    its about to become the current item (in case of an inline item). This normally happens when
+    the item is pushed. The following example shows how this can be done:
 
     \code
-    pageStack.push({page: examplePage, properties: {fgcolor: "red", bgcolor: "blue"}});
+    stackView.push({item: someItem, properties: {fgcolor: "red", bgcolor: "blue"}});
     \endcode
 
-    Note that if a page is declared in an item that is destroyed - even if a component
-    was used - then that page also gets destroyed.
+    Note that if an item is declared inside another item that is destroyed - even if a component
+    was used - that child item also gets destroyed.
     This follows normal Qt parent-child destruction rules but sometimes comes as a surprise
-    for developers. In practice this means that if you declare a page B as a child of
-    page A and then do a replace from page A to page B, then page B will be destroyed when
-    page A was destroyed (as it was popped off the stack) and the application will effectively
-    be switching to a page that has been destroyed.
+    for developers. In practice this means that if you declare a item B as a child of
+    item A and then do a replace from item A to item B, then item B will be destroyed when
+    item A was destroyed (as it was popped off the stack) and the application will effectively
+    be switching to a item that has been destroyed.
 
     \section1 Lifecycle
-    The page lifecycle goes from instantiation to inactive, activating, active, deactivating,
-    inactive, and when no longer needed, destruction.
-    It can move any number of times between inactive and active. When a page is activated,
-    it's visible on the screen and is considered to be the current item. A page
-    in a page stack that is not visible is not activated, even if the page is currently the
-    top-most page in the stack. When the stack becomes visible the page that is top-most gets
-    activated. Likewise if the page stack is then hidden the top-most page would be deactivated.
-    Popping the page off the top of the stack at this point would not result in further
-    deactivation since the page is not active.
+    An items lifecycle in the StackView goes from instantiation to inactive, activating, active,
+    deactivating, inactive, and when no longer needed, destruction.
+    It can move any number of times between inactive and active. When an item is activated,
+    it's visible on the screen and is considered to be the current item. An item
+    in a StackView that is not visible is not activated, even if the item is currently the
+    top-most item in the stack. When the stack becomes visible the item that is top-most gets
+    activated. Likewise if the stack is then hidden, the top-most item would be deactivated.
+    Popping the item off the top of the stack at this point would not result in further
+    deactivation since the item is not active.
 
     There is an attached \l{Stack::status}{Stack.status} property that tracks the lifecycle. The value of status is
     an enumeration with values \c Stack.Inactive, \c Stack.Activating, \c Stack.Active
@@ -239,46 +232,46 @@ import "Private/StackView.js" as JSArray
     \li Destruction: Component.onDestruction()
     \endlist
 
-    \section1 Finding Pages
-    Sometimes it is necessary to search for a page, e.g. in order to unwind the stack to
-    a page to which the application does not have a reference. This is facilitated using a
-    function find() in the page stack. The find() function takes a callback function as its
-    only argument. The callback gets invoked for each page in the stack (starting at the top).
+    \section1 Finding items
+    Sometimes it is necessary to search for a item, e.g. in order to unwind the stack to
+    an item to which the application does not have a reference. This is facilitated using a
+    function find() in StackView. The find() function takes a callback function as its
+    only argument. The callback gets invoked for each item in the stack (starting at the top).
     If the callback returns true then it signals that a match has been found and the find()
-    function returns that page. If the callback fails to return true (i.e. no match is found)
+    function returns that item. If the callback fails to return true (i.e. no match is found)
     then find() returns \c null.
 
-    The code below searches for a page in the stack that has a name "foo" and then unwinds to
-    that page. Note that since find() returns null if no page is found and since pop unwinds to
-    the bottom of the stack if null is given as the target page, the code works well even in the
-    case that no matching page was found.
+    The code below searches for an item in the stack that has a name "foo" and then unwinds to
+    that item. Note that since find() returns null if no item is found and since pop unwinds to
+    the bottom of the stack if null is given as the target item, the code works well even in the
+    case that no matching item was found.
 
     \code
-    pageStack.pop(pageStack.find(function(page) {
-        return page.name == "foo";
+    stackView.pop(stackView.find(function(item) {
+        return item.name == "foo";
     }));
     \endcode
 
-    You can also get to a page in the page stack using get(index). You should use
-    this function if your page depends on another page in the stack, as the function will
-    ensure that the page at the given index gets loaded before it is returned.
+    You can also get to a item in the stack using get(index). You should use
+    this function if your item depends on another item in the stack, as the function will
+    ensure that the item at the given index gets loaded before it is returned.
 
     \code
-    previousPage = pageStack.get(myPage.index - 1));
+    previousItem = stackView.get(myItem.Stack.index - 1));
     \endcode
 
     \section1 Transitions
 
-    A transition is performed whenever a page is pushed or popped, and consists of
-    two pages: enterPage and exitPage. The pagestack itself will never move pages
-    around, but instead delegate the job to an external animation set by the style
-    or the application developer. How pages should visually enter and leave the stack
-    is therefore completely controlled from the outside.
+    A transition is performed whenever a item is pushed or popped, and consists of
+    two items: enterItem and exitItem. The StackView itself will never move items
+    around, but instead delegate the job to an external animation set provided
+    by the style or the application developer. How items should visually enter and leave the stack
+    (and the geometry they should end up with) is therefore completely controlled from the outside.
 
-    When the transition starts, the pagestack will search for a transition that
+    When the transition starts, the StackView will search for a transition that
     matches the operation executed. There are three transitions to choose
     from: pushTransition, popTransition, and replaceTransition. Each implements how
-    enterPage should animate in, and exitPage out. The transitions are
+    enterItem should animate in, and exitItem out. The transitions are
     collected inside a StackViewDelegate object assigned to
     \l {StackView::delegate}{delegate}. By default, popTransition and
     replaceTransition will be the same as pushTransition, unless you set them
@@ -291,18 +284,18 @@ import "Private/StackView.js" as JSArray
         delegate: StackViewDelegate {
             function transitionFinished(properties)
             {
-                properties.exitPage.opacity = 1
+                properties.exitItem.opacity = 1
             }
 
             property Component pushTransition: StackViewTransition {
                 PropertyAnimation {
-                    target: enterPage
+                    target: enterItem
                     property: "opacity"
                     from: 0
                     to: 1
                 }
                 PropertyAnimation {
-                    target: exitPage
+                    target: exitItem
                     property: "opacity"
                     from: 1
                     to: 0
@@ -313,15 +306,14 @@ import "Private/StackView.js" as JSArray
     \endqml
 
     PushTransition needs to inherit from StackViewTransition, which is a ParallelAnimation that
-    contains the properties \c enterPage and \c exitPage. You set the target of your
-    inner animations to those pages. Since the same page instance can be pushed several
-    times to a pagestack, and since pages also can override transitions, your StackViewDelegate
-    always need to override
+    contains the properties \c enterItem and \c exitItem. You set the target of your
+    inner animations to those items. Since the same items instance can be pushed several
+    times to a StackView, you should always override
     \l {StackViewDelegate::transitionFinished(properties)}{StackViewDelegate.transitionFinished(properties)}.
-    Implement this function to reset any properties animated on the exitPage so that later
-    transitions can expect the pages to be in a default state.
+    Implement this function to reset any properties animated on the exitItem so that later
+    transitions can expect the items to be in a default state.
 
-    A more complex example could look like the following. Here, the pages slides in lying on the side before
+    A more complex example could look like the following. Here, the items slides in lying on the side before
     they are rotated up in an upright position:
 
     \qml
@@ -329,33 +321,33 @@ import "Private/StackView.js" as JSArray
         delegate: StackViewDelegate {
             function transitionFinished(properties)
             {
-                properties.exitPage.x = 0
-                properties.exitPage.rotation = 0
+                properties.exitItem.x = 0
+                properties.exitItem.rotation = 0
             }
 
             property Component pushTransition: StackViewTransition {
                 SequentialAnimation {
                     ScriptAction {
-                        script: enterPage.rotation = 90
+                        script: enterItem.rotation = 90
                     }
                     PropertyAnimation {
-                        target: enterPage
+                        target: enterItem
                         property: "x"
-                        from: enterPage.width
+                        from: enterItem.width
                         to: 0
                     }
                     PropertyAnimation {
-                        target: enterPage
+                        target: enterItem
                         property: "rotation"
                         from: 90
                         to: 0
                     }
                 }
                 PropertyAnimation {
-                    target: exitPage
+                    target: exitItem
                     property: "x"
                     from: 0
-                    to: -exitPage.width
+                    to: -exitItem.width
                 }
             }
         }
@@ -377,15 +369,15 @@ import "Private/StackView.js" as JSArray
     \endcode
 
     You can override this function for your delegate if you need extra logic to decide which
-    transition to return. You could for example introspect the pages, and return different animations
+    transition to return. You could for example introspect the items, and return different animations
     depending on the their internal state. StackView will expect you to return a Component that
     contains a StackViewTransition, or a StackViewTransition directly. The former is easier, as StackView will
     then create the transition and later destroy it when it's done, while avoiding any sideeffects
     caused by the transition being alive long after it ran. Returning a StackViewTransition directly
     can be useful if you need to write some sort of transition caching for performance reasons.
-    As an optimization, you can also return \c null to signal that you just want to show/hide the pages
+    As an optimization, you can also return \c null to signal that you just want to show/hide the items
     immediately without creating or running any transitions. You can also override this function if
-    you need to alter the pages in any way before the transition starts.
+    you need to alter the items in any way before the transition starts.
 
     \c properties contains the properties that will be assigned to the StackViewTransition before
     it runs. In fact, you can add more properties to this object during the call
@@ -398,25 +390,25 @@ import "Private/StackView.js" as JSArray
     StackViewDelegate {
         function getTransition(properties)
         {
-            return (properties.enterPage.Stack.index % 2) ? horizontalTransition : verticalTransition
+            return (properties.enterItem.Stack.index % 2) ? horizontalTransition : verticalTransition
         }
 
         function transitionFinished(properties)
         {
-            properties.exitPage.x = 0
-            properties.exitPage.y = 0
+            properties.exitItem.x = 0
+            properties.exitItem.y = 0
         }
 
         property Component horizontalTransition: StackViewTransition {
             PropertyAnimation {
-                target: enterPage
+                target: enterItem
                 property: "x"
                 from: target.width
                 to: 0
                 duration: 300
             }
             PropertyAnimation {
-                target: exitPage
+                target: exitItem
                 property: "x"
                 from: 0
                 to: target.width
@@ -426,14 +418,14 @@ import "Private/StackView.js" as JSArray
 
         property Component verticalTransition: StackViewTransition {
             PropertyAnimation {
-                target: enterPage
+                target: enterItem
                 property: "y"
                 from: target.height
                 to: 0
                 duration: 300
             }
             PropertyAnimation {
-                target: exitPage
+                target: exitItem
                 property: "y"
                 from: 0
                 to: target.height
@@ -449,34 +441,34 @@ Item {
 
     /*! \qmlproperty int StackView::depth
         \readonly
-        The number of pages currently pushed onto the stack.
+        The number of items currently pushed onto the stack.
     */
     readonly property alias depth: root.__depth
 
     /*! \qmlproperty Item StackView::currentItem
         \readonly
-        The currently top-most page in the stack.
+        The currently top-most item in the stack.
     */
     readonly property alias currentItem: root.__currentItem
 
-    /*! The first \l Page that should be shown when the StackView is created.
+    /*! The first \l item that should be shown when the StackView is created.
         \a initialItem can take same value as the first argument to \l{StackView::push()}
         {StackView.push()}. Note that this is just a convenience for writing
-        \c{Component.onCompleted: pageStack.push(myInitialPage)}
+        \c{Component.onCompleted: stackView.push(myInitialItem)}
 
         Examples:
 
         \list
-        \li initialItem: Qt.resolvedUrl("MyPage.qml")
+        \li initialItem: Qt.resolvedUrl("MyItem.qml")
         \li initialItem: myItem
-        \li initialItem: {"page" : Qt.resolvedUrl("MyPage.qml"), "properties" : {"color" : "red"}}
+        \li initialItem: {"item" : Qt.resolvedUrl("MyRectangle.qml"), "properties" : {"color" : "red"}}
         \endlist
         \sa push
     */
     property var initialItem: null
 
     /*! \readonly
-        \a busy is \c true if a page transition is running, and \c false otherwise. */
+        \a busy is \c true if a transition is running, and \c false otherwise. */
     readonly property bool busy: __currentTransition !== null
 
     /*! The transitions to use when pushing or popping items.
@@ -484,54 +476,51 @@ Item {
         \sa {Stack::transitions}{Stack.transitions} */
     property StackViewDelegate delegate: StackViewSlideDelegate {}
 
-    /*! Pushes a page onto the stack. The function takes a property list as argument, which
+    /*! Pushes an item onto the stack. The function takes a property list as argument, which
         should contain one or more of the following properties:
         \list
-        \li \c page: This property is required, and holds the page you want to push.
-            It can be a \l Page, a \l{http://doc.qt.nokia.com/latest/qml-url.html}{URL}, a string with a
-            URL, an \l{http://doc.qt.nokia.com/latest/qml-item.html}{Item}, a
-            \l{http://doc.qt.nokia.com/latest/qml-component.html}{Component}.
+        \li \c item: This property is required, and holds the item you want to push.
         \li \c properties: You can set a property list of QML properties that should be assigned
-            to the page upon push. These properties will be copied into the page at the
-            time the page is loaded (in case of a component or URL), or else the first time it
-            becomes the current page (normally upon push).
+            to the item upon push. These properties will be copied into the item at the
+            time the item is loaded (in case of a component or URL), or else the first time it
+            becomes the current item (normally upon push).
         \li \c immediate: Set this property to \c true to skip transition effects. When pushing
             an array, you only need to set this property on the first element to make the
             whole operation immediate.
-        \li \c replace: Set this property to replace the current page on the stack. When pushing
+        \li \c replace: Set this property to replace the current item on the stack. When pushing
             an array, you only need to set this property on the first element to replace
             as many elements on the stack as inside the array.
         \li \c destroyOnPop: Set this property to be explicit to whether or not StackView should
-            destroy the page when its popped off the stack. By default (if \a destroyOnPop is
-            not specified), StackView will destroy pages pushed as components or URLs. Pages
+            destroy the item when its popped off the stack. By default (if \a destroyOnPop is
+            not specified), StackView will destroy items pushed as components or URLs. Items
             not destroyed will be reparented back to the original parents they had before being
             pushed onto the stack, and hidden. If you need to set this property, do it with
-            care, so that pages are not leaked.
+            care, so that items are not leaked.
         \endlist
 
-        You can also push an array of pages (property lists) if you need to push several pages
-        in one go. A transition will then only occur between the current page and the last
-        page in the list. The other pages will be deferred loaded until needed.
+        You can also push an array of items (property lists) if you need to push several items
+        in one go. A transition will then only occur between the current item and the last
+        item in the list. The other items will be deferred loaded until needed.
 
         Examples:
         \list
-        \li pageStack.push({page:aPage})
-        \li pageStack.push({page:aURL, immediate: true, replace: true})
-        \li pageStack.push({page:aRectangle, properties:{color:"red"}})
-        \li pageStack.push({page:aComponent, properties:{color:"red"}})
-        \li pageStack.push({page:aComponent.createObject(), destroyOnPop:true})
-        \li pageStack.push([{page:aPage, immediate:true}, {page:aURL}])
+        \li stackView.push({item:anItem})
+        \li stackView.push({item:aURL, immediate: true, replace: true})
+        \li stackView.push({item:aRectangle, properties:{color:"red"}})
+        \li stackView.push({item:aComponent, properties:{color:"red"}})
+        \li stackView.push({item:aComponent.createObject(), destroyOnPop:true})
+        \li stackView.push([{item:anitem, immediate:true}, {item:aURL}])
         \endlist
 
-        Note: If the only argument needed is "page", you can also, as a short-hand
-        notation, do: \c{pageStack.push(aPage)}.
+        Note: If the only argument needed is "item", you can also, as a short-hand
+        notation, do: \c{stackView.push(anItem)}.
 
-        Returns the page that became current.
+        Returns the item that became current.
 
         \sa initialItem
-        \sa {Pushing pages}
+        \sa {Pushing items}
     */
-    function push(page) {
+    function push(item) {
         // Note: we support two different APIs in this function; The old meego API, and
         // the new "property list" API. Hence the reason for hiding the fact that you
         // can pass more arguments than shown in the signature:
@@ -540,97 +529,95 @@ Item {
         var properties = arguments[1]
         var immediate = arguments[2]
         var replace = arguments[3]
-        var arrayPushed = (page instanceof Array)
-        var firstPage = arrayPushed ? page[0] : page
+        var arrayPushed = (item instanceof Array)
+        var firstItem = arrayPushed ? item[0] : item
         immediate = (immediate || JSArray.stackView.length === 0)
 
-        if (firstPage && firstPage.page && firstPage.hasOwnProperty("x") === false) {
+        if (firstItem && firstItem.item && firstItem.hasOwnProperty("x") === false) {
             // Property list API used:
-            immediate = immediate || firstPage.immediate
-            replace = replace || firstPage.replace
+            immediate = immediate || firstItem.immediate
+            replace = replace || firstItem.replace
         }
 
         // Create, and push, a new javascript object, called "element", onto the stack.
-        // This element contains all the information necessary to construct the page, and
-        // will, after loaded, also contain the loaded page:
+        // This element contains all the information necessary to construct the item, and
+        // will, after loaded, also contain the loaded item:
         if (arrayPushed) {
-            if (page.length === 0)
+            if (item.length === 0)
                 return
             var outElement = replace ? JSArray.pop() : JSArray.current()
-            for (var i=0; i<page.length; ++i)
-                JSArray.push({"pageComponent" : page[i], loaded: false, index: __depth, properties: properties});
+            for (var i=0; i<item.length; ++i)
+                JSArray.push({itemComponent:item[i], loaded: false, index: __depth, properties: properties});
         } else {
             outElement = replace ? JSArray.pop() : JSArray.current()
-            JSArray.push({"pageComponent" : page, loaded: false, index: __depth, properties: properties})
+            JSArray.push({itemComponent:item, loaded: false, index: __depth, properties: properties})
         }
 
         var currentElement = JSArray.current()
         var transition = {
             inElement: currentElement,
             outElement: outElement,
-            transitionElement: currentElement,
             immediate: immediate,
             replace: replace,
             push: true
         }
-        __performPageTransition(transition)
+        __performTransition(transition)
         __recursionGuard(false)
         return __currentItem
     }
 
-    /*! Pops one or more pages off the stack. The function takes a property list as argument
+    /*! Pops one or more items off the stack. The function takes a property list as argument
         which can contain one or more of the following properties:
         \list
-        \li \c page: If specified, all pages down to (but not including) \a page will be
-            popped off. if \a page is \c null, all pages down to (but not including) the
-            first page will be popped. If not specified, only the current page will be
+        \li \c item: If specified, all items down to (but not including) \a item will be
+            popped off. if \a item is \c null, all items down to (but not including) the
+            first item will be popped. If not specified, only the current item will be
             popped.
         \li \c immediate: Set this property to \c true to skip transition effects.
         \endlist
 
         Examples:
         \list
-        \li pageStack.pop()
-        \li pageStack.pop({page:somePage, immediate: true})
-        \li pageStack.pop({immediate: true})
-        \li pageStack.pop(null)
+        \li stackView.pop()
+        \li stackView.pop({item:someItem, immediate: true})
+        \li stackView.pop({immediate: true})
+        \li stackView.pop(null)
         \endlist
 
-        Note: If the only argument needed is "page", you can also, as a short-hand
-        notation, do: \c{pageStack.pop(aPage)}.
+        Note: If the only argument needed is "item", you can also, as a short-hand
+        notation, do: \c{stackView.pop(anItem)}.
 
-        Returns the page that was popped off
+        Returns the item that was popped off
         \sa clear()
     */
-    function pop(page) {
+    function pop(item) {
         if (__depth <= 1)
             return null
-        if (page && page.hasOwnProperty("x") === false) {
+        if (item && item.hasOwnProperty("x") === false) {
             // Property list API used:
-            var immediate = (page.immediate === true)
-            page = page.page
+            var immediate = (item.immediate === true)
+            item = item.item
         } else {
             immediate = (arguments[1] === true)
         }
 
-        if (page === __currentItem)
+        if (item === __currentItem)
             return
 
         if (__recursionGuard(true))
             return
 
         var outElement = JSArray.pop()
-        var transitionElement = outElement
         var inElement = JSArray.current()
 
-        if (__depth > 1 && page !== undefined && page !== inElement.page) {
-            // Pop from the top until we find 'page', and return the corresponding
-            // element. Skip all non-loaded pages (except the first), since no one
-            // has any references to such pages anyway:
+        if (__depth > 1 && item !== undefined && item !== inElement.item) {
+            // Pop from the top until we find 'item', and return the corresponding
+            // element. Skip all non-loaded items (except the first), since no one
+            // has any references to such items anyway:
             while (__depth > 1 && !JSArray.current().loaded)
                 JSArray.pop()
             inElement = JSArray.current()
-            while (__depth > 1 && page !== inElement.page) {
+            while (__depth > 1 && item !== inElement.item) {
                 JSArray.pop()
                 __cleanup(inElement)
                 while (__depth > 1 && !JSArray.current().loaded)
@@ -642,17 +629,16 @@ Item {
         var transition = {
             inElement: inElement,
             outElement: outElement,
-            transitionElement: transitionElement,
             immediate: immediate,
             replace: false,
             push: false
         }
-        __performPageTransition(transition)
+        __performTransition(transition)
         __recursionGuard(false)
-        return outElement.page;
+        return outElement.item;
     }
 
-    /*! Remove all pages from the stack. No animations will be applied. */
+    /*! Remove all items from the stack. No animations will be applied. */
     function clear() {
         if (__recursionGuard(true))
             return
@@ -662,34 +648,34 @@ Item {
         var count = __depth
         for (var i=0; i<count; ++i) {
             var element = JSArray.pop()
-            if (element.page)
+            if (element.item)
                 __cleanup(element);
         }
         __recursionGuard(false)
     }
 
-    /*! Search for a specific page inside the stack. \a func will
-        be called for each page in the stack (with the page as argument)
-        until the function returns true. Return value will be the page found. E.g:
-        find(function(page, index) { return page.isTheOne })
-        Set \a onlySearchLoadedPages to \c true to not load pages that are
+    /*! Search for a specific item inside the stack. \a func will
+        be called for each item in the stack (with the item as argument)
+        until the function returns true. Return value will be the item found. E.g:
+        find(function(item, index) { return item.isTheOne })
+        Set \a onlySearchLoadedItems to \c true to not load items that are
         not loaded into memory */
-    function find(func, onlySearchLoadedPages) {
+    function find(func, onlySearchLoadedItems) {
         for (var i=__depth-1; i>=0; --i) {
             var element = JSArray.stackView[i];
-            if (onlySearchLoadedPages !== true)
+            if (onlySearchLoadedItems !== true)
                 __loadElement(element)
-            else if (!element.page)
+            else if (!element.item)
                 continue
-            if (func(element.page))
-                return element.page
+            if (func(element.item))
+                return element.item
         }
         return null;
     }
 
-    /*! Returns the page at position \a index in
-        the page stack. If \a dontLoad is true, the
-        page will not be forced to load (and \c null
+    /*! Returns the item at position \a index in
+        the stack. If \a dontLoad is true, the
+        item will not be forced to load (and \c null
         will be returned if not yet loaded) */
     function get(index, dontLoad)
     {
@@ -698,9 +684,9 @@ Item {
         var element = JSArray.stackView[index]
         if (dontLoad !== true) {
             __loadElement(element)
-            return element.page
-        } else if (element.page) {
-            return element.page
+            return element.item
+        } else if (element.item) {
+            return element.item
         } else {
             return null
         }
@@ -722,8 +708,8 @@ Item {
 
     /*! \internal
         \deprecated Use Push() instead */
-    function replace(page, properties, immediate) {
-        push(page, properties, immediate, true)
+    function replace(item, properties, immediate) {
+        push(item, properties, immediate, true)
     }
 
     /********* PRIVATE API *********/
@@ -731,13 +717,13 @@ Item {
     width: parent ? parent.width : 0
     height: parent ? parent.height : 0
 
-    /*! \internal The currently top-most page in the stack. */
+    /*! \internal The currently top-most item on the stack. */
     property Item __currentItem: null
-    /*! \internal The number of pages currently pushed onto the stack. */
+    /*! \internal The number of items currently pushed onto the stack. */
     property int __depth: 0
     /*! \internal Stores the transition info while a transition is ongoing */
     property var __currentTransition: null
-    /*! \internal Stops the user from pushing pages while preparing a transition */
+    /*! \internal Stops the user from pushing items while preparing a transition */
     property bool __guard: false
 
     /*! \internal */
@@ -768,22 +754,22 @@ Item {
     function __loadElement(element)
     {
         if (element.loaded) {
-            if (!element.page) {
-                element.page = invalidPageReplacement.createObject(root)
-                element.page.text = "\nError: The page has been deleted outside StackView!"
+            if (!element.item) {
+                element.item = invalidItemReplacement.createObject(root)
+                element.item.text = "\nError: The item has been deleted outside StackView!"
             }
             return
         }
-        if (!element.pageComponent) {
-            element.page = invalidPageReplacement.createObject(root)
-            element.page.text = "\nError: Invalid page (page was 'null'). "
-                    + "This might indicate that the page was deleted outside StackView!"
+        if (!element.itemComponent) {
+            element.item = invalidItemReplacement.createObject(root)
+            element.item.text = "\nError: Invalid item (item was 'null'). "
+                    + "This might indicate that the item was deleted outside StackView!"
             return
         }
 
-        var comp = __resolvePageComponent(element.pageComponent, element)
+        var comp = __resolveComponent(element.itemComponent, element)
 
-        // Assign properties to Page:
+        // Assign properties to item:
         if (!element.properties)
             element.properties = {}
         element.properties.__index = element.index
@@ -791,31 +777,31 @@ Item {
 
         if (comp.hasOwnProperty("createObject")) {
             if (comp.status === Component.Error) {
-                element.page = invalidPageReplacement.createObject(root)
-                element.page.text = "\nError: Could not load: " + comp.errorString()
+                element.item = invalidItemReplacement.createObject(root)
+                element.item.text = "\nError: Could not load: " + comp.errorString()
             } else {
-                element.page = comp.createObject(root, element.properties)
-                // Destroy pages we create unless the user specified something else:
+                element.item = comp.createObject(root, element.properties)
+                // Destroy items we create unless the user specified something else:
                 if (!element.hasOwnProperty("destroyOnPop"))
                     element.destroyOnPop = true
             }
         } else {
-            // comp is already an Item, so just reparent it into the pagestack:
-            element.page = comp
+            // comp is already an Item, so just reparent it into the StackView:
+            element.item = comp
             element.originalParent = parent
-            element.page.parent = root
+            element.item.parent = root
             for (var prop in element.properties) {
-                if (element.page.hasOwnProperty(prop))
-                    element.page[prop] = element.properties[prop];
+                if (element.item.hasOwnProperty(prop))
+                    element.item[prop] = element.properties[prop];
             }
-            // Do not destroy pages we didn't create, unless the user specified something else:
+            // Do not destroy items we didn't create, unless the user specified something else:
             if (!element.hasOwnProperty("destroyOnPop"))
                 element.destroyOnPop = false
         }
 
-        // Let page fill all available space by default:
-        element.page.width = Qt.binding(function() { return root.width })
-        element.page.height = Qt.binding(function() { return root.height })
+        // Let item fill all available space by default:
+        element.item.width = Qt.binding(function() { return root.width })
+        element.item.height = Qt.binding(function() { return root.height })
 
         delete element.properties.__index
         delete element.properties.__stackView
@@ -823,7 +809,7 @@ Item {
     }
 
     /*! \internal */
-    function __resolvePageComponent(unknownObjectType, element)
+    function __resolveComponent(unknownObjectType, element)
     {
         // We need this extra resolve function since we dont really
         // know what kind of object the user pushed. So we try to
@@ -834,14 +820,14 @@ Item {
             return Qt.createComponent(unknownObjectType)
         } else if (unknownObjectType.hasOwnProperty("x")) {
             return unknownObjectType
-        } else if (unknownObjectType.hasOwnProperty("page")) {
+        } else if (unknownObjectType.hasOwnProperty("item")) {
             // INVARIANT: user pushed a JS-object
             element.properties = unknownObjectType.properties
-            if (!unknownObjectType.page)
-                unknownObjectType.page = invalidPageReplacement
+            if (!unknownObjectType.item)
+                unknownObjectType.item = invalidItemReplacement
             if (unknownObjectType.hasOwnProperty("destroyOnPop"))
                 element.destroyOnPop = unknownObjectType.destroyOnPop
-            return __resolvePageComponent(unknownObjectType.page, element)
+            return __resolveComponent(unknownObjectType.item, element)
         } else {
             // We cannot determine the type, so assume its a URL:
             return Qt.createComponent(unknownObjectType)
@@ -851,57 +837,57 @@ Item {
     /*! \internal */
     function __cleanup(element) {
         // INVARIANT: element has been removed from JSArray. Destroy its
-        // page, or reparent it back to the parent it had before it was pushed:
-        var page = element.page
+        // item, or reparent it back to the parent it had before it was pushed:
+        var item = element.item
         if (element.destroyOnPop) {
-            page.destroy()
+            item.destroy()
         } else {
-            // Mark the page as no longer part of the StackView. It
+            // Mark the item as no longer part of the StackView. It
             // might reenter on pop if pushed several times:
-            page.visible = false
-            __setPageStatus(page, Stack.Inactive)
-            page.Stack.__stackView = null
-            page.Stack.__index = -1
+            item.visible = false
+            __setStatus(item, Stack.Inactive)
+            item.Stack.__stackView = null
+            item.Stack.__index = -1
             if (element.originalParent)
-                page.parent = element.originalParent
+                item.parent = element.originalParent
         }
     }
 
     /*! \internal */
-    function __setPageStatus(page, status) {
-        page.Stack.__status = status
+    function __setStatus(item, status) {
+        item.Stack.__status = status
     }
 
     /*! \internal */
-    function __performPageTransition(transition)
+    function __performTransition(transition)
     {
-        // Animate page in "outElement" out, and page in "inElement" in. Set a guard to protect
-        // the user from pushing new pages on signals that will fire while preparing for the transition
+        // Animate item in "outElement" out, and item in "inElement" in. Set a guard to protect
+        // the user from pushing new items on signals that will fire while preparing for the transition
         // (e.g Stack.onCompleted, Stack.onStatusChanged, Stack.onIndexChanged etc). Otherwise, we will enter
-        // this function several times, which causes the pages to be half-way updated.
+        // this function several times, which causes the items to be half-way updated.
         if (__currentTransition)
             __currentTransition.animation.complete()
         __loadElement(transition.inElement)
 
         transition.name = transition.replace ? "replaceTransition" : (transition.push ? "pushTransition" : "popTransition")
-        var enterPage = transition.inElement.page
+        var enterPage = transition.inElement.item
         transition.enterPage = enterPage
 
-        // Since a page can be pushed several times, we need to update its properties:
+        // Since an item can be pushed several times, we need to update its properties:
         enterPage.parent = root
         enterPage.Stack.__stackView = root
         enterPage.Stack.__index = transition.inElement.index
         __currentItem = enterPage
 
         if (!transition.outElement) {
-            // A transition consists of two pages, but we got just one. So just show the page:
+            // A transition consists of two items, but we got just one. So just show the item:
             enterPage.visible = true
-            __setPageStatus(enterPage, Stack.Activating)
-            __setPageStatus(enterPage, Stack.Active)
+            __setStatus(enterPage, Stack.Activating)
+            __setStatus(enterPage, Stack.Active)
             return
         }
 
-        var exitPage = transition.outElement.page
+        var exitPage = transition.outElement.item
         transition.exitPage = exitPage
         if (enterPage === exitPage)
              return
@@ -925,12 +911,12 @@ Item {
             return
         }
         if (enterPage.anchors.fill || exitPage.anchors.fill)
-            console.warn("Warning: StackView: cannot transition a page that is anchored!")
+            console.warn("Warning: StackView: cannot transition an item that is anchored!")
 
         __currentTransition = transition
-        __setPageStatus(exitPage, Stack.Deactivating)
+        __setStatus(exitPage, Stack.Deactivating)
         enterPage.visible = true
-        __setPageStatus(enterPage, Stack.Activating)
+        __setStatus(enterPage, Stack.Activating)
         transition.animation.runningChanged.connect(animationFinished)
         transition.animation.start()
         // NB! For empty animations, "animationFinished" is already
@@ -947,8 +933,8 @@ Item {
 
         __currentTransition.animation.runningChanged.disconnect(animationFinished)
         __currentTransition.exitPage.visible = false
-        __setPageStatus(__currentTransition.exitPage, Stack.Inactive);
-        __setPageStatus(__currentTransition.enterPage, Stack.Active);
+        __setStatus(__currentTransition.exitPage, Stack.Inactive);
+        __setStatus(__currentTransition.enterPage, Stack.Active);
         __currentTransition.properties.animation = __currentTransition.animation
         root.delegate.transitionFinished(__currentTransition.properties)
 
@@ -959,7 +945,7 @@ Item {
     }
 
     /*! \internal */
-    property Component invalidPageReplacement: Component {
+    property Component invalidItemReplacement: Component {
         Text {
             width: parent.width
             height: parent.height
