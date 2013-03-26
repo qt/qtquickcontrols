@@ -94,7 +94,7 @@ Style {
             hints: [tabPosition, tabpos, selectedpos]
 
             selected: tab.selected
-            text: elidedText(title, tabbarItem.elide, width - item.tabHSpace)
+            text: elidedText(title, tabbarItem.elide, item.width - item.tabHSpace)
             hover: tab.hover
             hasFocus: tabbarItem.activeFocus && selected
         }
