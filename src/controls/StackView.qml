@@ -772,8 +772,6 @@ Item {
         // Assign properties to item:
         if (!element.properties)
             element.properties = {}
-        element.properties.__index = element.index
-        element.properties.__stackView = root
 
         if (comp.hasOwnProperty("createObject")) {
             if (comp.status === Component.Error) {
@@ -799,12 +797,11 @@ Item {
                 element.destroyOnPop = false
         }
 
+        element.item.Stack.__index = element.index
+        element.item.Stack.__stackView = root
         // Let item fill all available space by default:
         element.item.width = Qt.binding(function() { return root.width })
         element.item.height = Qt.binding(function() { return root.height })
-
-        delete element.properties.__index
-        delete element.properties.__stackView
         element.loaded = true
     }
 
