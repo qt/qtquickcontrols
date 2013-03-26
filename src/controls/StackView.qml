@@ -75,7 +75,7 @@ import "Private/StackView.js" as JSArray
     top of a stack, "pop" removes the top page from the stack, and "replace" is like a
     pop followed by a push in that it replaces the topmost page on the stack with
     a new page (but the applied transtition might be different). The topmost page
-    in the stack corresponds to the one that is \l{StackView::currentPage} {current},
+    in the stack corresponds to the one that is \l{StackView::currentItem} {current},
     i.e. the one that is visible on
     screen. That means that "push" is the logical equivalent of navigating forward or
     deeper into the application, "pop" is the equivalent of navigation back and
@@ -453,11 +453,11 @@ Item {
     */
     readonly property alias depth: root.__depth
 
-    /*! \qmlproperty Item StackView::currentPage
+    /*! \qmlproperty Item StackView::currentItem
         \readonly
         The currently top-most page in the stack.
     */
-    readonly property alias currentPage: root.__currentPage
+    readonly property alias currentItem: root.__currentItem
 
     /*! The first \l Page that should be shown when the StackView is created.
         \a initialPage can take same value as the first argument to \l{StackView::push()}
@@ -575,7 +575,7 @@ Item {
         }
         __performPageTransition(transition)
         __recursionGuard(false)
-        return __currentPage
+        return __currentItem
     }
 
     /*! Pops one or more pages off the stack. The function takes a property list as argument
@@ -613,7 +613,7 @@ Item {
             immediate = (arguments[1] === true)
         }
 
-        if (page === __currentPage)
+        if (page === __currentItem)
             return
 
         if (__recursionGuard(true))
@@ -658,7 +658,7 @@ Item {
             return
         if (__currentTransition)
             __currentTransition.animation.complete()
-        __currentPage = null
+        __currentItem = null
         var count = __depth
         for (var i=0; i<count; ++i) {
             var element = JSArray.pop()
@@ -732,7 +732,7 @@ Item {
     height: parent ? parent.height : 0
 
     /*! \internal The currently top-most page in the stack. */
-    property Item __currentPage: null
+    property Item __currentItem: null
     /*! \internal The number of pages currently pushed onto the stack. */
     property int __depth: 0
     /*! \internal Stores the transition info while a transition is ongoing */
@@ -750,7 +750,7 @@ Item {
     Component.onDestruction: {
         if (__currentTransition)
             __currentTransition.animation.complete()
-        __currentPage = null
+        __currentItem = null
     }
 
     /*! \internal */
@@ -891,7 +891,7 @@ Item {
         enterPage.parent = root
         enterPage.Stack.__stackView = root
         enterPage.Stack.__index = transition.inElement.index
-        __currentPage = enterPage
+        __currentItem = enterPage
 
         if (!transition.outElement) {
             // A transition consists of two pages, but we got just one. So just show the page:
