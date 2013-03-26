@@ -58,21 +58,21 @@ StackViewDelegate {
 
     function transitionFinished(properties)
     {
-        properties.exitPage.x = 0
-        properties.exitPage.y = 0
+        properties.exitItem.x = 0
+        properties.exitItem.y = 0
     }
 
     property QtObject horizontalSlide: QtObject {
         property Component pushTransition: StackViewTransition {
             PropertyAnimation {
-                target: enterPage
+                target: enterItem
                 property: "x"
                 from: target.width
                 to: 0
                 duration: 300
             }
             PropertyAnimation {
-                target: exitPage
+                target: exitItem
                 property: "x"
                 from: 0
                 to: -target.width
@@ -82,14 +82,14 @@ StackViewDelegate {
 
         property Component popTransition: StackViewTransition {
             PropertyAnimation {
-                target: enterPage
+                target: enterItem
                 property: "x"
                 from: -target.width
                 to: 0
                 duration: 300
             }
             PropertyAnimation {
-                target: exitPage
+                target: exitItem
                 property: "x"
                 from: 0
                 to: target.width
@@ -102,14 +102,14 @@ StackViewDelegate {
     property QtObject verticalSlide: QtObject {
         property Component pushTransition: StackViewTransition {
             PropertyAnimation {
-                target: enterPage
+                target: enterItem
                 property: "y"
                 from: target.height
                 to: 0
                 duration: 300
             }
             PropertyAnimation {
-                target: exitPage
+                target: exitItem
                 property: "y"
                 from: 0
                 to: -target.height
@@ -119,14 +119,14 @@ StackViewDelegate {
 
         property Component popTransition: StackViewTransition {
             PropertyAnimation {
-                target: enterPage
+                target: enterItem
                 property: "y"
                 from: -target.height
                 to: 0
                 duration: 300
             }
             PropertyAnimation {
-                target: exitPage
+                target: exitItem
                 property: "y"
                 from: 0
                 to: target.height

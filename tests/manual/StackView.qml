@@ -55,19 +55,19 @@ Window {
     property StackViewDelegate fadeTransition: StackViewDelegate {
         function transitionFinished(properties)
         {
-            properties.exitPage.visible = false
-            properties.exitPage.opacity = 1
+            properties.exitItem.visible = false
+            properties.exitItem.opacity = 1
         }
 
         property Component pushTransition: StackViewTransition {
             PropertyAnimation {
-                target: enterPage
+                target: enterItem
                 property: "opacity"
                 from: 0
                 to: 1
             }
             PropertyAnimation {
-                target: exitPage
+                target: exitItem
                 property: "opacity"
                 from: 1
                 to: 0
@@ -78,33 +78,33 @@ Window {
     property StackViewDelegate rotateTransition: StackViewDelegate {
         function transitionFinished(properties)
         {
-            properties.exitPage.x = 0
-            properties.exitPage.rotation = 0
+            properties.exitItem.x = 0
+            properties.exitItem.rotation = 0
         }
 
         property Component pushTransition: StackViewTransition {
             SequentialAnimation {
                 ScriptAction {
-                    script: enterPage.rotation = 90
+                    script: enterItem.rotation = 90
                 }
                 PropertyAnimation {
-                    target: enterPage
+                    target: enterItem
                     property: "x"
-                    from: enterPage.width
+                    from: enterItem.width
                     to: 0
                 }
                 PropertyAnimation {
-                    target: enterPage
+                    target: enterItem
                     property: "rotation"
                     from: 90
                     to: 0
                 }
             }
             PropertyAnimation {
-                target: exitPage
+                target: exitItem
                 property: "x"
                 from: 0
-                to: -exitPage.width
+                to: -exitItem.width
             }
         }
     }
@@ -112,21 +112,21 @@ Window {
     property StackViewDelegate slideTransition: StackViewDelegate {
         function transitionFinished(properties)
         {
-            properties.exitPage.x = 0
+            properties.exitItem.x = 0
         }
 
         property Component pushTransition: StackViewTransition {
             PropertyAnimation {
-                target: enterPage
+                target: enterItem
                 property: "x"
-                from: enterPage.width
+                from: enterItem.width
                 to: 0
             }
             PropertyAnimation {
-                target: exitPage
+                target: exitItem
                 property: "x"
                 from: 0
-                to: exitPage.width
+                to: exitItem.width
             }
         }
     }

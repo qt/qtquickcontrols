@@ -44,17 +44,17 @@ ParallelAnimation {
     id: root
     /*! The name of the animation that is running. Can be one of the following:
     \list
-    \li 'PushAnimation'
-    \li 'PopAnimation'
-    \li 'ReplaceAnimation'
+    \li 'PushTransition'
+    \li 'PopTransition'
+    \li 'ReplaceTransition'
     \endlist
     */
     property string name
     /*! The page that is transitioning in. */
-    property Item enterPage
+    property Item enterItem
     /*! The page that is transitioning out */
-    property Item exitPage
-    /*! Set to \c true if the animation is told to
+    property Item exitItem
+    /*! Set to \c true if the transition is told to
         fast-forward directly to its end-state */
     property bool immediate
 }

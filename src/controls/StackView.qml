@@ -870,33 +870,33 @@ Item {
         __loadElement(transition.inElement)
 
         transition.name = transition.replace ? "replaceTransition" : (transition.push ? "pushTransition" : "popTransition")
-        var enterPage = transition.inElement.item
-        transition.enterPage = enterPage
+        var enterItem = transition.inElement.item
+        transition.enterItem = enterItem
 
         // Since an item can be pushed several times, we need to update its properties:
-        enterPage.parent = root
-        enterPage.Stack.__stackView = root
-        enterPage.Stack.__index = transition.inElement.index
-        __currentItem = enterPage
+        enterItem.parent = root
+        enterItem.Stack.__stackView = root
+        enterItem.Stack.__index = transition.inElement.index
+        __currentItem = enterItem
 
         if (!transition.outElement) {
             // A transition consists of two items, but we got just one. So just show the item:
-            enterPage.visible = true
-            __setStatus(enterPage, Stack.Activating)
-            __setStatus(enterPage, Stack.Active)
+            enterItem.visible = true
+            __setStatus(enterItem, Stack.Activating)
+            __setStatus(enterItem, Stack.Active)
             return
         }
 
-        var exitPage = transition.outElement.item
-        transition.exitPage = exitPage
-        if (enterPage === exitPage)
+        var exitItem = transition.outElement.item
+        transition.exitItem = exitItem
+        if (enterItem === exitItem)
              return
 
         if (root.delegate) {
             transition.properties = {
                 "name":transition.name,
-                "enterPage":transition.enterPage,
-                "exitPage":transition.exitPage,
+                "enterItem":transition.enterItem,
+                "exitItem":transition.exitItem,
                 "immediate":transition.immediate }
             var anim = root.delegate.getTransition(transition.properties)
             if (anim.createObject) {
@@ -910,13 +910,13 @@ Item {
             console.warn("Warning: StackView: no", transition.name, "found!")
             return
         }
-        if (enterPage.anchors.fill || exitPage.anchors.fill)
+        if (enterItem.anchors.fill || exitItem.anchors.fill)
             console.warn("Warning: StackView: cannot transition an item that is anchored!")
 
         __currentTransition = transition
-        __setStatus(exitPage, Stack.Deactivating)
-        enterPage.visible = true
-        __setStatus(enterPage, Stack.Activating)
+        __setStatus(exitItem, Stack.Deactivating)
+        enterItem.visible = true
+        __setStatus(enterItem, Stack.Activating)
         transition.animation.runningChanged.connect(animationFinished)
         transition.animation.start()
         // NB! For empty animations, "animationFinished" is already
@@ -932,9 +932,9 @@ Item {
             return
 
         __currentTransition.animation.runningChanged.disconnect(animationFinished)
-        __currentTransition.exitPage.visible = false
-        __setStatus(__currentTransition.exitPage, Stack.Inactive);
-        __setStatus(__currentTransition.enterPage, Stack.Active);
+        __currentTransition.exitItem.visible = false
+        __setStatus(__currentTransition.exitItem, Stack.Inactive);
+        __setStatus(__currentTransition.enterItem, Stack.Active);
         __currentTransition.properties.animation = __currentTransition.animation
         root.delegate.transitionFinished(__currentTransition.properties)
 
