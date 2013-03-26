@@ -194,6 +194,7 @@ ApplicationWindow {
                                     case "SelectByMouse":
                                     case "SelectByKeyboard":
                                     case "ReadOnly":
+                                    case "Indeterminate":
                                         layout = layouts.boolLayout
                                         typeName = "Boolean";
                                         break
