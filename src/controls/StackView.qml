@@ -66,7 +66,7 @@ import "Private/StackView.js" as JSArray
     anchored to the edges of the window, except at the top or bottom where it might
     be anchored to a status bar, or some other similar UI component.
     The stack can then be used by invoking its navigation methods. The first page
-    to show in the StackView is commonly loaded assigning it to \l initialPage.
+    to show in the StackView is commonly loaded assigning it to \l initialItem.
 
     \section1 Basic Navigation
     There are three primary navigation operations in StackView: push(), pop() and
@@ -460,20 +460,20 @@ Item {
     readonly property alias currentItem: root.__currentItem
 
     /*! The first \l Page that should be shown when the StackView is created.
-        \a initialPage can take same value as the first argument to \l{StackView::push()}
+        \a initialItem can take same value as the first argument to \l{StackView::push()}
         {StackView.push()}. Note that this is just a convenience for writing
         \c{Component.onCompleted: pageStack.push(myInitialPage)}
 
         Examples:
 
         \list
-        \li initialPage: Qt.resolvedUrl("MyPage.qml")
-        \li initialPage: myItem
-        \li initialPage: {"page" : Qt.resolvedUrl("MyPage.qml"), "properties" : {"color" : "red"}}
+        \li initialItem: Qt.resolvedUrl("MyPage.qml")
+        \li initialItem: myItem
+        \li initialItem: {"page" : Qt.resolvedUrl("MyPage.qml"), "properties" : {"color" : "red"}}
         \endlist
         \sa push
     */
-    property var initialPage: null
+    property var initialItem: null
 
     /*! \readonly
         \a busy is \c true if a page transition is running, and \c false otherwise. */
@@ -528,7 +528,7 @@ Item {
 
         Returns the page that became current.
 
-        \sa initialPage
+        \sa initialItem
         \sa {Pushing pages}
     */
     function push(page) {
@@ -742,8 +742,8 @@ Item {
 
     /*! \internal */
     Component.onCompleted: {
-        if (initialPage)
-            push(initialPage)
+        if (initialItem)
+            push(initialItem)
     }
 
     /*! \internal */

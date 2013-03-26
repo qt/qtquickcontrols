@@ -133,7 +133,7 @@ ApplicationWindow {
         id: pageStack
         anchors.fill: parent
 
-        initialPage: Item {
+        initialItem: Item {
             width: parent.width
             height: parent.height
             ListView {

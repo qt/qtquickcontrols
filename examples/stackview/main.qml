@@ -50,7 +50,7 @@ ApplicationWindow {
     StackView {
         id: stackView
         anchors.fill: parent
-        initialPage: componentPage
+        initialItem: componentPage
     }
 
     Component {

@@ -49,7 +49,7 @@ Window {
     StackView {
         id: stackView
         anchors.fill: parent
-        initialPage: pageComponent
+        initialItem: pageComponent
     }
 
     property StackViewDelegate fadeTransition: StackViewDelegate {
