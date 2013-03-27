@@ -198,6 +198,8 @@ void QStyleItem::initStyleOption()
         opt->features = (activeControl() == "default") ?
                     QStyleOptionButton::DefaultButton :
                     QStyleOptionButton::None;
+        if (const QFont *font = QGuiApplicationPrivate::platformTheme()->font(QPlatformTheme::PushButtonFont))
+            opt->fontMetrics = QFontMetrics(*font);
     }
         break;
     case ItemRow: {
@@ -229,6 +231,10 @@ void QStyleItem::initStyleOption()
         QPalette pal = m_styleoption->palette;
         pal.setBrush(QPalette::Base, Qt::NoBrush);
         m_styleoption->palette = pal;
+        if (const QFont *font = QGuiApplicationPrivate::platformTheme()->font(QPlatformTheme::ItemViewFont)) {
+            opt->fontMetrics = QFontMetrics(*font);
+            opt->font = *font;
+        }
     }
         break;
     case Header: {
@@ -249,6 +255,8 @@ void QStyleItem::initStyleOption()
             opt->position = QStyleOptionHeader::OnlyOneSection;
         else
             opt->position = QStyleOptionHeader::Middle;
+        if (const QFont *font = QGuiApplicationPrivate::platformTheme()->font(QPlatformTheme::HeaderViewFont))
+            opt->fontMetrics = QFontMetrics(*font);
     }
         break;
     case ToolButton: {
@@ -270,6 +278,12 @@ void QStyleItem::initStyleOption()
 
         int e = qApp->style()->pixelMetric(QStyle::PM_ToolBarIconSize, m_styleoption, 0);
         opt->iconSize = QSize(e, e);
+
+        if (const QFont *font = QGuiApplicationPrivate::platformTheme()->font(QPlatformTheme::ToolButtonFont)) {
+            opt->fontMetrics = QFontMetrics(*font);
+            opt->font = *font;
+        }
+
     }
         break;
     case ToolBar: {
@@ -385,7 +399,7 @@ void QStyleItem::initStyleOption()
                 QString shortcut = m_properties["shortcut"].toString();
                 if (!shortcut.isEmpty()) {
                     opt->text += QLatin1Char('\t') + shortcut;
-                    opt->tabWidth = qMax(opt->tabWidth, textWidth(shortcut));
+                    opt->tabWidth = qMax(opt->tabWidth, qRound(textWidth(shortcut)));
                 }
 
                 if (m_properties["checkable"].toBool()) {
@@ -400,7 +414,7 @@ void QStyleItem::initStyleOption()
             if (m_properties["icon"].canConvert<QIcon>())
                 opt->icon = m_properties["icon"].value<QIcon>();
 
-            if (const QFont *font = QGuiApplicationPrivate::platformTheme()->font(QPlatformTheme::MenuFont)) {
+            if (const QFont *font = QGuiApplicationPrivate::platformTheme()->font(m_itemType == ComboBoxItem ? QPlatformTheme::ComboMenuItemFont : QPlatformTheme::MenuFont)) {
                 opt->font = *font;
                 opt->fontMetrics = QFontMetrics(opt->font);
                 m_font = opt->font;
@@ -434,6 +448,8 @@ void QStyleItem::initStyleOption()
         if (!m_styleoption)
             m_styleoption = new QStyleOptionComboBox();
         QStyleOptionComboBox *opt = qstyleoption_cast<QStyleOptionComboBox*>(m_styleoption);
+        if (const QFont *font = QGuiApplicationPrivate::platformTheme()->font(QPlatformTheme::PushButtonFont))
+            opt->fontMetrics = QFontMetrics(*font);
         opt->currentText = text();
         opt->editable = false;
     }
@@ -1268,19 +1284,22 @@ void QStyleItem::paint(QPainter *painter)
     }
 }
 
-int QStyleItem::textWidth(const QString &text)
+qreal QStyleItem::textWidth(const QString &text)
 {
-    return QFontMetrics(m_font).boundingRect(text).width();
+    QFontMetricsF fm = QFontMetricsF(m_styleoption->fontMetrics);
+    return fm.boundingRect(text).width();
 }
 
-int QStyleItem::textHeight(const QString &text)
+qreal QStyleItem::textHeight(const QString &text)
 {
-    return QFontMetrics(m_font).boundingRect(text).height();
+    QFontMetricsF fm = QFontMetricsF(m_styleoption->fontMetrics);
+    return text.isEmpty() ? fm.height() :
+                            fm.boundingRect(text).height();
 }
 
 QString QStyleItem::elidedText(const QString &text, int elideMode, int width)
 {
-    return qApp->fontMetrics().elidedText(text, Qt::TextElideMode(elideMode), width);
+    return m_styleoption->fontMetrics.elidedText(text, Qt::TextElideMode(elideMode), width);
 }
 
 bool QStyleItem::hasThemeIcon(const QString &icon) const

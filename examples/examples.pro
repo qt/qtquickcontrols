@@ -3,7 +3,8 @@ TEMPLATE = subdirs
 SUBDIRS += \
     ApplicationTemplate \
     gallery \
-    splitters \
+    splitview \
+    stackview \
     tableview \
     text \
     touch

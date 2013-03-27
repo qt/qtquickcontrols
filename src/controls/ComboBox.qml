@@ -104,7 +104,11 @@ Control {
         onPressedChanged: if (pressed) popup.show()
     }
 
-    StyleItem { id: styleItem }
+    StyleItem {
+        id: styleItem
+        elementType: "comboboxitem"
+        visible: false
+    }
 
     Component.onCompleted: {
         if (currentIndex === -1)
@@ -112,7 +116,6 @@ Control {
         if (styleItem.style == "mac") {
             popup.x -= 10
             popup.y += 4
-            popup.__font.pointSize = 13
         }
 
         popup.ready = true
@@ -133,9 +136,10 @@ Control {
         property bool isPopup: comboBox.__panel.popup
 
         property int x: 0
-        property int y: isPopup ? 0 : comboBox.height
+        property int y: isPopup ? (comboBox.__panel.height - comboBox.__panel.implicitHeight) / 2.0 : comboBox.__panel.height
         __minimumWidth: comboBox.width
         __visualItem: comboBox
+        __font: styleItem.font
 
         property ExclusiveGroup eg: ExclusiveGroup { id: eg }
 

@@ -816,6 +816,10 @@ Item {
                 element.destroyOnPop = false
         }
 
+        // Let page fill all available space by default:
+        element.page.width = Qt.binding(function() { return root.width })
+        element.page.height = Qt.binding(function() { return root.height })
+
         delete element.properties.__index
         delete element.properties.__pageStack
         element.loaded = true
@@ -929,16 +933,16 @@ Item {
     }
 
     /*! \internal */
-    function __searchForAnimationIn(obj, transition)
+    function __searchForAnimationIn(source, transition)
     {
-        if (obj) {
-            transition.pageTransition = obj
+        if (source) {
+            transition.pageTransition = source
             transition.properties = {
                 "name":transition.name,
                 "enterPage":transition.enterPage,
                 "exitPage":transition.exitPage,
                 "immediate":transition.immediate }
-            var anim = obj.getAnimation(transition.properties)
+            var anim = source.getAnimation(transition.properties)
             if (anim.createObject) {
                 anim = anim.createObject(null, transition.properties)
                 anim.runningChanged.connect(function(){ if (anim.running === false) anim.destroy() })

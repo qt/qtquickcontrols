@@ -37,58 +37,13 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
+
 import QtQuick 2.1
-import QtQuick.Controls.Styles 1.0
-import QtQuick.Controls.Private 1.0
+import QtQuick.Controls 1.0
 
-Style {
-    property Component panel: StyleItem {
-        property int popup: styleHint("comboboxpopup")
-
-        width: parent.width
-        anchors.verticalCenter: parent.verticalCenter
-        elementType: "combobox"
-        sunken: control.__pressed
-        raised: !sunken
-        hover: control.__containsMouse
-        enabled: control.enabled
-        text: control.currentText
-        hasFocus: control.activeFocus
-        // contentHeight as in QComboBox
-        contentHeight: Math.max(Math.ceil(textHeight("")), 14) + 2
-        contentWidth: textWidth(text)
-    }
-
-    property Component popupStyle: MenuStyle {
-        __menuItemType: "comboboxitem"
-    }
-
-    property Component dropDownStyle: Style {
-        property Component frame: StyleItem {
-            elementType: "frame"
-
-            width: (parent ? parent.contentWidth : 0)
-            height: (parent ? parent.contentHeight : 0) + 2 * pixelMetric("defaultframewidth")
-        }
-
-        property Component menuItem: StyleItem {
-            elementType: "itemrow"
-            selected: parent ? parent.selected : false
-
-            x: pixelMetric("defaultframewidth")
-            y: pixelMetric("defaultframewidth")
-
-            implicitWidth: textItem.contentWidth
-            implicitHeight: textItem.contentHeight
-
-            StyleItem {
-                id: textItem
-                elementType: "item"
-                contentWidth: textWidth(text)
-                contentHeight: textHeight(text)
-                text: parent && parent.parent ? parent.parent.text : ""
-                selected: parent ? parent.selected : false
-            }
-        }
+Rectangle {
+    color: "green"
+    ButtonMenu {
+        index: parent.Stack.index
     }
 }

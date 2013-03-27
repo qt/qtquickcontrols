@@ -1,8 +1,10 @@
 include($QT_INSTALL_DOCS/global/qt-module-defaults.qdocconf)
 
 # Name of the project.
-project = QtQuickControls
-description = Qt Quick Controls Documentation
+project                 = QtQuickControls
+description             = Qt Quick Controls Documentation
+url                     = http://qt-project.org/doc/qt-$QT_VER/qtquickcontrols/
+version                 = $QT_VERSION
 
 depends = qtqml qtquick qtwidgets qtdoc
 
@@ -60,7 +62,7 @@ qhp.qtquickcontrols.file = qtquickcontrols.qhp
 
 # Namespace for the output file. This namespace is used to distinguish between
 # different documentation files in Creator/Assistant.
-qhp.qtquickcontrols.namespace = qtquickcontrols.100
+qhp.qtquickcontrols.namespace = org.qt-project.qtquickcontrols.$QT_VERSION_TAG
 
 # Title for the package, will be the main title for the package in
 # Assistant/Creator.

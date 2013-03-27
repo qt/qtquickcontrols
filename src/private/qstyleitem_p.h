@@ -171,8 +171,8 @@ public:
 
     virtual void initStyleOption ();
 
-    Q_INVOKABLE int textWidth(const QString &);
-    Q_INVOKABLE int textHeight(const QString &);
+    Q_INVOKABLE qreal textWidth(const QString &);
+    Q_INVOKABLE qreal textHeight(const QString &);
 
 public Q_SLOTS:
     int pixelMetric(const QString&);
