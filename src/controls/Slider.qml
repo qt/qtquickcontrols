@@ -90,10 +90,6 @@ Control {
     */
     property alias maximumValue: range.maximumValue
 
-    /*! \internal */
-    property alias inverted: range.inverted
-
-
     /*!
         \qmlproperty bool Slider::updateValueWhileDragging
 
@@ -269,14 +265,20 @@ Control {
         horizontalMaximumValue: slider.maximumValue
         verticalMinimumValue: slider.minimumValue
         verticalMaximumValue: slider.maximumValue
-        property double step: (slider.maximumValue - slider.minimumValue)/100
+        property double step: (slider.maximumValue - slider.minimumValue)/(range.positionAtMaximum - range.positionAtMinimum)
 
         onVerticalWheelMoved: {
-            value += verticalDelta/4*step
+            if (verticalDelta !== 0) {
+                var delta = Math.abs(verticalDelta)*step > stepSize ? verticalDelta*step : verticalDelta/Math.abs(verticalDelta)*stepSize
+                value += delta
+            }
         }
 
         onHorizontalWheelMoved: {
-            value += horizontalDelta/4*step
+            if (horizontalDelta !== 0) {
+                var delta = Math.abs(horizontalDelta)*step > stepSize ? horizontalDelta*step : horizontalDelta/Math.abs(horizontalDelta)*stepSize
+                value += delta
+            }
         }
     }
 }

@@ -41,38 +41,102 @@
 import QtQuick 2.1
 import QtTest 1.0
 
-TestCase {
-    id: testCase
-    name: "Tests_Slider"
-    when:windowShown
-    width:400
-    height:400
+Item {
+    id: container
+    width: 500
+    height: 500
 
-    function test_vertical() {
-        var slider = Qt.createQmlObject('import QtQuick.Controls 1.0; Slider {}', testCase, '');
-        verify(slider.height < slider.width)
+    TestCase {
+        id: testCase
+        name: "Tests_Slider"
+        when:windowShown
+        width:400
+        height:400
 
-        slider.orientation = Qt.Vertical;
-        verify(slider.height > slider.width)
-    }
+        function test_vertical() {
+            var slider = Qt.createQmlObject('import QtQuick.Controls 1.0; Slider {}', testCase, '');
+            verify(slider.height < slider.width)
 
-    function test_minimumvalue() {
-        var slider = Qt.createQmlObject('import QtQuick.Controls 1.0; Slider {}', testCase, '');
+            slider.orientation = Qt.Vertical;
+            verify(slider.height > slider.width)
+        }
 
-        slider.minimumValue = 5
-        slider.maximumValue = 10
-        slider.value = 2
-        compare(slider.minimumValue, 5)
-        compare(slider.value, 5)
-    }
+        function test_minimumvalue() {
+            var slider = Qt.createQmlObject('import QtQuick.Controls 1.0; Slider {}', testCase, '');
 
-    function test_maximumvalue() {
-        var slider = Qt.createQmlObject('import QtQuick.Controls 1.0; Slider {}', testCase, '');
+            slider.minimumValue = 5
+            slider.maximumValue = 10
+            slider.value = 2
+            compare(slider.minimumValue, 5)
+            compare(slider.value, 5)
+        }
 
-        slider.minimumValue = 5
-        slider.maximumValue = 10
-        slider.value = 15
-        compare(slider.maximumValue, 10)
-        compare(slider.value, 10)
+        function test_maximumvalue() {
+            var slider = Qt.createQmlObject('import QtQuick.Controls 1.0; Slider {}', testCase, '');
+
+            slider.minimumValue = 5
+            slider.maximumValue = 10
+            slider.value = 15
+            compare(slider.maximumValue, 10)
+            compare(slider.value, 10)
+        }
+
+        function test_rightLeftKeyPressed() {
+            var slider = Qt.createQmlObject('import QtQuick.Controls 1.0; Slider {}', container, '');
+            slider.forceActiveFocus()
+            slider.maximumValue = 20
+            slider.minimumValue = 0
+            slider.value = 1
+            slider.stepSize = 1
+            var keyStep = 2 // (maximumValue - minimumValue)/10.0
+            keyPress(Qt.Key_Right)
+            keyPress(Qt.Key_Right)
+            compare(slider.value, 1 + keyStep * 2)
+            keyPress(Qt.Key_Left)
+            compare(slider.value, 1 + keyStep)
+        }
+
+        function test_mouseWheel() {
+            var slider = Qt.createQmlObject('import QtQuick.Controls 1.0; Slider {}', container, '');
+            slider.forceActiveFocus()
+            slider.value = 0
+            slider.maximumValue = 300
+            slider.minimumValue = 0
+            slider.stepSize = 2
+            slider.width = 300
+
+            var defaultScrollSpeed = 20.0
+            var mouseStep = 15.0
+            var deltatUnit = 8.0
+
+            var mouseRatio = deltatUnit * mouseStep / defaultScrollSpeed;
+            var sliderDeltaRatio = 1; //(slider.maximumValue - slider.minimumValue)/slider.width
+            var ratio = mouseRatio / sliderDeltaRatio
+
+            mouseWheel(slider, 5, 5, 20 * ratio, 0)
+            compare(slider.value, 20)
+
+            slider.maximumValue = 30
+            slider.minimumValue = 0
+            slider.stepSize = 1
+            slider.value = 10
+            sliderDeltaRatio = 0.1 //(slider.maximumValue - slider.minimumValue)/slider.width
+            ratio = mouseRatio / sliderDeltaRatio
+
+            compare(slider.value, 10)
+
+            var previousValue = slider.value
+            mouseWheel(slider, 5, 5, 6 * ratio, 0)
+            compare(slider.value, Math.round(previousValue + 6))
+
+            mouseWheel(slider, 5, 5, -6 * ratio, 0)
+            compare(slider.value, previousValue)
+
+            // Reach maximum
+            slider.value = 0
+            mouseWheel(slider, 5, 5, 40 * ratio, 0)
+            compare(slider.value, slider.maximumValue)
+
+        }
     }
 }
