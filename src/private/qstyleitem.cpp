@@ -721,6 +721,12 @@ QSize QStyleItem::sizeFromContents(int width, int height)
         int newWidth = qMax(width, btn->fontMetrics.width(btn->text));
         int newHeight = qMax(height, btn->fontMetrics.height());
         size = qApp->style()->sizeFromContents(QStyle::CT_PushButton, m_styleoption, QSize(newWidth, newHeight)); }
+#ifdef Q_OS_MAC
+        if (style() == "mac") {
+            // Cancel out QMacStylePrivate::PushButton*Offset, or part of it
+            size -= QSize(7, 6);
+        }
+#endif
         break;
     case ComboBox: {
         QStyleOptionComboBox *btn = qstyleoption_cast<QStyleOptionComboBox*>(m_styleoption);
@@ -1063,6 +1069,12 @@ void QStyleItem::paint(QPainter *painter)
 
     switch (m_itemType) {
     case Button:
+#ifdef Q_OS_MAC
+        if (style() == "mac") {
+            // Add back what was substracted in sizeFromContents()
+            m_styleoption->rect.adjust(-4, -2, 3, 4);
+        }
+#endif
         qApp->style()->drawControl(QStyle::CE_PushButton, m_styleoption, painter);
         break;
     case ItemRow :{
