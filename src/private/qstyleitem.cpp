@@ -621,7 +621,7 @@ QString QStyleItem::style() const
         style = style.right(style.length() - 1);
     if (style.endsWith("style"))
         style = style.left(style.length() - 5);
-    return style.toLower();
+    return style;
 }
 
 QString QStyleItem::hitTest(int px, int py)
