@@ -1121,12 +1121,15 @@ void QStyleItem::paint(QPainter *painter)
         qApp->style()->drawComplexControl(QStyle::CC_ToolButton, qstyleoption_cast<QStyleOptionComplex*>(m_styleoption), painter);
         break;
     case Tab:
+#ifdef Q_OS_MAC
         if (style() == "mac") {
             m_styleoption->rect.translate(0, 1); // Unhack QMacStyle's hack
             qApp->style()->drawControl(QStyle::CE_TabBarTabShape, m_styleoption, painter);
             m_styleoption->rect.translate(0, -1);
             qApp->style()->drawControl(QStyle::CE_TabBarTabLabel, m_styleoption, painter);
-        } else {
+        } else
+#endif
+        {
             qApp->style()->drawControl(QStyle::CE_TabBarTab, m_styleoption, painter);
         }
         break;
@@ -1134,9 +1137,11 @@ void QStyleItem::paint(QPainter *painter)
         qApp->style()->drawControl(QStyle::CE_ShapedFrame, m_styleoption, painter);
         break;
     case FocusFrame:
+#ifdef Q_OS_MAC
         if (style() == "mac" && hints().indexOf("rounded") != -1)
             break; // embedded in the line itself
         else
+#endif
             qApp->style()->drawControl(QStyle::CE_FocusFrame, m_styleoption, painter);
         break;
     case TabFrame:
@@ -1242,11 +1247,14 @@ void QStyleItem::paint(QPainter *painter)
         painter->drawLine(m_styleoption->rect.bottomLeft(), m_styleoption->rect.bottomRight());
         break;
     case StatusBar:
+#ifdef Q_OS_MAC
         if (style() == "mac") {
             qApp->style()->drawControl(QStyle::CE_ToolBar, m_styleoption, painter);
             painter->setPen(m_styleoption->palette.dark().color().darker(120));
             painter->drawLine(m_styleoption->rect.topLeft(), m_styleoption->rect.topRight());
-        } else {
+        } else
+#endif
+        {
             painter->fillRect(m_styleoption->rect, m_styleoption->palette.window().color());
             painter->setPen(m_styleoption->palette.dark().color().darker(120));
             painter->drawLine(m_styleoption->rect.topLeft(), m_styleoption->rect.topRight());
