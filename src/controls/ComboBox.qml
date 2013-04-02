@@ -86,9 +86,9 @@ Control {
     /*! The text of the currently selected item in the ComboBox. */
     readonly property alias currentText: popup.selectedText
 
-    /* \internal */
+    /*! \internal */
     readonly property bool __pressed: mouseArea.pressed && mouseArea.containsMouse || popup.__popupVisible
-    /* \internal */
+    /*! \internal */
     property alias __containsMouse: mouseArea.containsMouse
 
     style: Qt.createComponent(Settings.THEME_PATH + "/ComboBoxStyle.qml", comboBox)
