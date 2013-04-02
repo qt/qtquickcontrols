@@ -143,12 +143,16 @@ Control {
 
         property ExclusiveGroup eg: ExclusiveGroup { id: eg }
 
+        property bool __modelIsArray: popupItems.model ? popupItems.model.constructor === Array : false
+
         Instantiator {
             id: popupItems
             active: popup.ready
             MenuItem {
-                text: popup.textRole === "" ? modelData :
-                      (model[popup.textRole] || "")
+                text: popup.textRole === '' ?
+                        modelData :
+                        ((popup.__modelIsArray ? modelData[popup.textRole] : model[popup.textRole]) || '')
+
                 checkable: true
                 exclusiveGroup: eg
             }
@@ -160,12 +164,17 @@ Control {
             if (!ready || !model)
                 return;
 
-            var modelMayHaveRoles = model["get"] !== undefined
+            var get = model['get'];
+            if (!get && popup.__modelIsArray) {
+                get = function(i) { return model[i]; }
+            }
+
+            var modelMayHaveRoles = get !== undefined
             textRole = initialTextRole
-            if (textRole === "" && modelMayHaveRoles && model.get(0)) {
+            if (textRole === "" && modelMayHaveRoles && get(0)) {
                 // No text role set, check whether model has a suitable role
                 // If 'text' is found, or there's only one role, pick that.
-                var listElement = model.get(0)
+                var listElement = get(0)
                 var roleName = ""
                 var roleCount = 0
                 for (var role in listElement) {

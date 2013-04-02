@@ -80,4 +80,33 @@ TestCase {
         comboBox.textRole = "color"
         compare(comboBox.currentText, "Yellow")
     }
+
+    function test_arraymodel() {
+        var arrayModel = [
+            'Banana',
+            'Apple',
+            'Coconut'
+        ];
+
+        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.0 ; ComboBox {}', testCase, '');
+        comboBox.model = arrayModel
+        compare(comboBox.currentIndex, 0)
+        compare(comboBox.currentText, "Banana")
+    }
+
+    function test_arraymodelwithtextrole() {
+        var arrayModel = [
+            {text: 'Banana', color: 'Yellow'},
+            {text: 'Apple', color: 'Green'},
+            {text: 'Coconut', color: 'Brown'}
+        ];
+
+        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.0 ; ComboBox {}', testCase, '');
+        comboBox.textRole = "text"
+        comboBox.model = arrayModel
+        compare(comboBox.currentIndex, 0)
+        compare(comboBox.currentText, "Banana")
+        comboBox.textRole = "color"
+        compare(comboBox.currentText, "Yellow")
+    }
 }
