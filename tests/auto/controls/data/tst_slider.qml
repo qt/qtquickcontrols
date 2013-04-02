@@ -53,6 +53,14 @@ Item {
         width:400
         height:400
 
+        SignalSpy{
+            id: spy
+        }
+
+        TestUtil {
+            id: util
+        }
+
         function test_vertical() {
             var slider = Qt.createQmlObject('import QtQuick.Controls 1.0; Slider {}', testCase, '');
             verify(slider.height < slider.width)
@@ -222,6 +230,29 @@ Item {
             verify(control.control1.activeFocus)
             verify(!control.control2.activeFocus)
             verify(!control.control3.activeFocus)
+            control.destroy()
+        }
+
+        function test_updateValueWhileDragging() {
+            var control = Qt.createQmlObject('import QtQuick.Controls 1.0; Slider {x: 0; y: 0; width: 200; height: 50}', container, '')
+            control.maximumValue = 200
+            control.minimumValue = 0
+            control.stepSize = 0.1
+            control.value = 0
+            container.forceActiveFocus()
+
+            spy.target = control
+            spy.signalName = "valueChanged"
+
+            control.updateValueWhileDragging = false
+            mouseDrag(control, 0,1, 100 + util.dragThreshold + 1 , 0, Qt.LeftButton)
+            compare(control.value, 100)
+            compare(spy.count, 1)
+
+            control.updateValueWhileDragging = true
+            mouseDrag(control, 100,1, 80 + util.dragThreshold + 1 , 0, Qt.LeftButton)
+            compare(control.value, 180)
+            compare(spy.count, 4)
             control.destroy()
         }
     }
