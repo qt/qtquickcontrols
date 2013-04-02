@@ -41,6 +41,11 @@
 import QtQuick 2.1
 import QtTest 1.0
 
+Item {
+    id: container
+    width: 300
+    height: 300
+
 TestCase {
     id: testCase
     name: "Tests_ToolButton"
@@ -51,5 +56,18 @@ TestCase {
     function test_createToolButton() {
         var toolButton = Qt.createQmlObject('import QtQuick.Controls 1.0; ToolButton {}', testCase, '');
     }
+
+    function test_activeFocusOnPress(){
+        var control = Qt.createQmlObject('import QtQuick.Controls 1.0; ToolButton {x: 20; y: 20; width: 100; height: 50}', container, '')
+        control.activeFocusOnPress = false
+        verify(!control.activeFocus)
+        mouseClick(control, 30, 30)
+        verify(!control.activeFocus)
+        control.activeFocusOnPress = true
+        verify(!control.activeFocus)
+        mouseClick(control, 30, 30)
+        verify(control.activeFocus)
+    }
+}
 }
 

@@ -138,5 +138,17 @@ Item {
             compare(slider.value, slider.maximumValue)
 
         }
+
+        function test_activeFocusOnPress(){
+            var control = Qt.createQmlObject('import QtQuick.Controls 1.0; Slider {x: 20; y: 20; width: 100; height: 50}', container, '')
+            control.activeFocusOnPress = false
+            verify(!control.activeFocus)
+            mouseClick(control, 30, 30)
+            verify(!control.activeFocus)
+            control.activeFocusOnPress = true
+            verify(!control.activeFocus)
+            mousePress(control, 30, 30)
+            verify(control.activeFocus)
+        }
     }
 }

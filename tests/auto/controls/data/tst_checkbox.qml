@@ -219,5 +219,16 @@ Item {
             root.checkBox1.partiallyCheckedEnabled = false;
             root.checkBox2.partiallyCheckedEnabled = false;
         }
+
+        function test_activeFocusOnPress(){
+            checkBox.activeFocusOnPress = false
+            verify(!checkBox.activeFocus)
+            mouseClick(checkBox, checkBox.x + 1, checkBox.y + 1)
+            verify(!checkBox.activeFocus)
+            checkBox.activeFocusOnPress = true
+            verify(!checkBox.activeFocus)
+            mouseClick(checkBox, checkBox.x + 1, checkBox.y + 1)
+            verify(checkBox.activeFocus)
+        }
     }
 }
