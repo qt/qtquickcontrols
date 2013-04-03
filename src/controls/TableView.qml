@@ -247,6 +247,8 @@ ScrollView {
 
     ListView {
         id: listView
+        focus: true
+        activeFocusOnTab: true
         anchors.topMargin: tableHeader.height
         anchors.fill: parent
 
