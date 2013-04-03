@@ -28,8 +28,8 @@ QML_FILES += \
     BasicButton.qml \
     Control.qml \
     ModalPopupBehavior.qml \
-    PageSlideTransition.qml \
-    PageStack.js \
+    StackViewSlideDelegate.qml \
+    StackView.js \
     ScrollViewHelper.qml \
     ScrollBar.qml \
     FocusFrame.qml

@@ -39,30 +39,30 @@
 **
 ****************************************************************************/
 
-var pageStack = [];
+var stackView = [];
 
 function push(p)
 {
     if (!p)
         return
-    pageStack.push(p)
+    stackView.push(p)
     __depth++
     return p
 }
 
 function pop()
 {
-    if (pageStack.length === 0)
+    if (stackView.length === 0)
         return null
-    var p = pageStack.pop()
+    var p = stackView.pop()
     __depth--
     return p
 }
 
 function current()
 {
-    if (pageStack.length === 0)
+    if (stackView.length === 0)
         return null
-    return pageStack[pageStack.length-1]
+    return stackView[stackView.length-1]
 }
 

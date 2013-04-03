@@ -29,7 +29,15 @@
     \page qtquickcontrols-index.html
     \title Qt Quick Controls
 
-    \brief The Qt Quick Controls module is an add-on module of Qt.
+    \brief The Qt Quick Controls module provides a set of reusable Qt Quick UI components.
+
+    The Qt Quick Controls module provides a set of reusable UI components to create
+    classic desktop-style user interfaces using Qt Quick.
+
+    The module is new in Qt 5.1 and requires \l{Qt Quick} 2.1.
+
+    \note The current focus is on desktop, but in the long term Qt Quick Controls
+    are expected to be supported on mobile platforms too.
 
     \section1 Getting started
 

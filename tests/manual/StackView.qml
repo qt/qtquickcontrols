@@ -46,28 +46,28 @@ Window {
     width: 480
     height: 640
 
-    PageStack {
-        id: pageStack
+    StackView {
+        id: stackView
         anchors.fill: parent
-        initialPage: pageComponent
+        initialItem: itemComponent
     }
 
-    property PageTransition fadeTransition:  PageTransition {
-        function cleanupAnimation(properties)
+    property StackViewDelegate fadeTransition: StackViewDelegate {
+        function transitionFinished(properties)
         {
-            properties.exitPage.visible = false
-            properties.exitPage.opacity = 1
+            properties.exitItem.visible = false
+            properties.exitItem.opacity = 1
         }
 
-        property Component pushAnimation: PageAnimation {
+        property Component pushTransition: StackViewTransition {
             PropertyAnimation {
-                target: enterPage
+                target: enterItem
                 property: "opacity"
                 from: 0
                 to: 1
             }
             PropertyAnimation {
-                target: exitPage
+                target: exitItem
                 property: "opacity"
                 from: 1
                 to: 0
@@ -75,156 +75,155 @@ Window {
         }
     }
 
-    property PageTransition rotateTransition:  PageTransition {
-        function cleanupAnimation(properties)
+    property StackViewDelegate rotateTransition: StackViewDelegate {
+        function transitionFinished(properties)
         {
-            properties.exitPage.x = 0
-            properties.exitPage.rotation = 0
+            properties.exitItem.x = 0
+            properties.exitItem.rotation = 0
         }
 
-        property Component pushAnimation: PageAnimation {
+        property Component pushTransition: StackViewTransition {
             SequentialAnimation {
                 ScriptAction {
-                    script: enterPage.rotation = 90
+                    script: enterItem.rotation = 90
                 }
                 PropertyAnimation {
-                    target: enterPage
+                    target: enterItem
                     property: "x"
-                    from: enterPage.width
+                    from: enterItem.width
                     to: 0
                 }
                 PropertyAnimation {
-                    target: enterPage
+                    target: enterItem
                     property: "rotation"
                     from: 90
                     to: 0
                 }
             }
             PropertyAnimation {
-                target: exitPage
+                target: exitItem
                 property: "x"
                 from: 0
-                to: -exitPage.width
+                to: -exitItem.width
             }
         }
     }
 
-    property PageTransition slideTransition:  PageTransition {
-        function cleanupAnimation(properties)
+    property StackViewDelegate slideTransition: StackViewDelegate {
+        function transitionFinished(properties)
         {
-            properties.exitPage.x = 0
+            properties.exitItem.x = 0
         }
 
-        property Component pushAnimation: PageAnimation {
+        property Component pushTransition: StackViewTransition {
             PropertyAnimation {
-                target: enterPage
+                target: enterItem
                 property: "x"
-                from: enterPage.width
+                from: enterItem.width
                 to: 0
             }
             PropertyAnimation {
-                target: exitPage
+                target: exitItem
                 property: "x"
                 from: 0
-                to: exitPage.width
+                to: exitItem.width
             }
         }
     }
 
     Component {
-        id: pageComponent
+        id: itemComponent
         Item {
-            id: page
+            id: item
             width: parent.width
             height: parent.height
-            Component.onDestruction: console.log("destroyed component page: " + Stack.index)
+            Component.onDestruction: console.log("destroyed component item: " + Stack.index)
             property bool pushFromOnCompleted: false
-            Component.onCompleted: if (pushFromOnCompleted) pageStack.push(pageComponent)
-            //pageTransition: rotateTransition
+            Component.onCompleted: if (pushFromOnCompleted) stackView.push(itemComponent)
 
             Rectangle {
                 anchors.fill: parent
-                color: page.Stack.index % 2 ? "green" : "yellow"
+                color: item.Stack.index % 2 ? "green" : "yellow"
 
                 Column {
                     Text {
-                        text: "This is component page: " + page.Stack.index
+                        text: "This is component item: " + item.Stack.index
                     }
                     Text {
-                        text: "Current status: " + page.Stack.status
+                        text: "Current status: " + item.Stack.status
                     }
                     Text { text:" " }
                     Button {
-                        text: "Push component page"
-                        onClicked: pageStack.push(pageComponent)
+                        text: "Push component item"
+                        onClicked: stackView.push(itemComponent)
                     }
                     Button {
-                        text: "Push inline page"
-                        onClicked: pageStack.push(pageInline)
+                        text: "Push inline item"
+                        onClicked: stackView.push(itemInline)
                     }
                     Button {
-                        text: "Push page as JS object"
-                        onClicked: pageStack.push({page:pageComponent})
+                        text: "Push item as JS object"
+                        onClicked: stackView.push({item:itemComponent})
                     }
                     Button {
                         text: "Push immediate"
-                        onClicked: pageStack.push({page:pageComponent, immediate:true})
+                        onClicked: stackView.push({item:itemComponent, immediate:true})
                     }
                     Button {
                         text: "Push replace"
-                        onClicked: pageStack.push({page:pageComponent, replace:true})
+                        onClicked: stackView.push({item:itemComponent, replace:true})
                     }
                     Button {
-                        text: "Push inline page with destroyOnPop == true"
-                        onClicked: pageStack.push({page:pageInline, destroyOnPop:true})
+                        text: "Push inline item with destroyOnPop == true"
+                        onClicked: stackView.push({item:itemInline, destroyOnPop:true})
                     }
                     Button {
-                        text: "Push component page with destroyOnPop == false"
-                        onClicked: pageStack.push({page:pageComponent, destroyOnPop:false})
+                        text: "Push component item with destroyOnPop == false"
+                        onClicked: stackView.push({item:itemComponent, destroyOnPop:false})
                     }
                     Button {
-                        text: "Push from Page.onCompleted"
-                        onClicked: pageStack.push({page:pageComponent, properties:{pushFromOnCompleted:true}})
+                        text: "Push from item.onCompleted"
+                        onClicked: stackView.push({item:itemComponent, properties:{pushFromOnCompleted:true}})
                     }
                     Button {
                         text: "Pop"
-                        onClicked: pageStack.pop()
+                        onClicked: stackView.pop()
                     }
                     Button {
                         text: "Pop(null)"
-                        onClicked: pageStack.pop(null)
+                        onClicked: stackView.pop(null)
                     }
                     Button {
-                        text: "Search for page 3, and pop down to it"
-                        onClicked: pageStack.pop(pageStack.find(function(page) { if (page.Stack.index === 3) return true }))
+                        text: "Search for item 3, and pop down to it"
+                        onClicked: stackView.pop(stackView.find(function(item) { if (item.Stack.index === 3) return true }))
                     }
                     Button {
-                        text: "Search for page 3, and pop down to it (dontLoad == true)"
-                        onClicked: pageStack.pop(pageStack.find(function(page) { if (page.Stack.index === 3) return true }, true))
+                        text: "Search for item 3, and pop down to it (dontLoad == true)"
+                        onClicked: stackView.pop(stackView.find(function(item) { if (item.Stack.index === 3) return true }, true))
                     }
                     Button {
                         text: "Clear"
-                        onClicked: pageStack.clear()
+                        onClicked: stackView.clear()
                     }
                     Button {
-                        text: "Push array of 100 pages"
+                        text: "Push array of 100 items"
                         onClicked: {
                             var a = new Array
                             for (var i=0; i<100; ++i)
-                                a.push(pageComponent)
-                            pageStack.push(a)
+                                a.push(itemComponent)
+                            stackView.push(a)
                         }
                     }
                     Button {
-                        text: "Push 10 pages one by one"
+                        text: "Push 10 items one by one"
                         onClicked: {
                             for (var i=0; i<10; ++i)
-                                pageStack.push(pageComponent)
+                                stackView.push(itemComponent)
                         }
                     }
                     Button {
                         text: "Complete transition"
-                        onClicked: pageStack.completeTransition()
+                        onClicked: stackView.completeTransition()
                     }
                 }
             }
@@ -232,88 +231,86 @@ Window {
     }
 
     Item {
-        id: pageInline
+        id: itemInline
         visible: false
         width: parent.width
         height: parent.height
-        Component.onDestruction: console.log("destroyed inline page: " + Stack.index)
-
-        Stack.pageTransition: rotateTransition
+        Component.onDestruction: console.log("destroyed inline item: " + Stack.index)
 
         Rectangle {
             anchors.fill: parent
-            color: pageInline.Stack.index % 2 ? "green" : "yellow"
+            color: itemInline.Stack.index % 2 ? "green" : "yellow"
 
             Column {
                 Text {
-                    text: "This is inline page: " + pageInline.Stack.index
+                    text: "This is inline item: " + itemInline.Stack.index
                 }
                 Text {
-                    text: "Current status: " + pageInline.Stack.status
+                    text: "Current status: " + itemInline.Stack.status
                 }
                 Button {
-                    text: "Push component page"
-                    onClicked: pageStack.push(pageComponent)
+                    text: "Push component item"
+                    onClicked: stackView.push(itemComponent)
                 }
                 Button {
-                    text: "Push inline page"
-                    onClicked: pageStack.push(pageInline)
+                    text: "Push inline item"
+                    onClicked: stackView.push(itemInline)
                 }
                 Button {
-                    text: "Push page as JS object"
-                    onClicked: pageStack.push({page:pageComponent})
+                    text: "Push item as JS object"
+                    onClicked: stackView.push({item:itemComponent})
                 }
                 Button {
                     text: "Push immediate"
-                    onClicked: pageStack.push({page:pageComponent, immediate:true})
+                    onClicked: stackView.push({item:itemComponent, immediate:true})
                 }
                 Button {
-                    text: "Push inline page with destroyOnPop == true"
-                    onClicked: pageStack.push({page:pageInline, destroyOnPop:true})
+                    text: "Push inline item with destroyOnPop == true"
+                    onClicked: stackView.push({item:itemInline, destroyOnPop:true})
                 }
                 Button {
-                    text: "Push component page with destroyOnPop == false"
-                    onClicked: pageStack.push({page:pageComponent, destroyOnPop:false})
+                    text: "Push component item with destroyOnPop == false"
+                    onClicked: stackView.push({item:itemComponent, destroyOnPop:false})
                 }
                 Button {
                     text: "Pop"
-                    onClicked: pageStack.pop()
+                    onClicked: stackView.pop()
                 }
                 Button {
                     text: "Pop(null)"
-                    onClicked: pageStack.pop(null)
+                    onClicked: stackView.pop(null)
                 }
                 Button {
-                    text: "Search for page 3, and pop down to it"
-                    onClicked: pageStack.pop(pageStack.find(function(page) { if (pageInline.Stack.index === 3) return true }))
+                    text: "Search for item 3, and pop down to it"
+                    onClicked: stackView.pop(stackView.find(function(item) { if (itemInline.Stack.index === 3) return true }))
                 }
                 Button {
-                    text: "Search for page 3, and pop down to it (dontLoad == true)"
-                    onClicked: pageStack.pop(pageStack.find(function(page) { if (pageInline.Stack.index === 3) return true }, true))
+                    text: "Search for item 3, and pop down to it (dontLoad == true)"
+                    onClicked: stackView.pop(stackView.find(function(item) { if (itemInline.Stack.index === 3) return true }, true))
                 }
                 Button {
                     text: "Clear"
-                    onClicked: pageStack.clear()
+                    onClicked: stackView.clear()
                 }
                 Button {
-                    text: "Push array of 100 pages"
+                    text: "Push array of 100 items"
                     onClicked: {
                         var a = new Array
                         for (var i=0; i<100; ++i)
-                            a.push(pageComponent)
-                        pageStack.push(a)
+                            a.push(itemComponent)
+                        stackView.push(a)
                     }
                 }
                 Button {
-                    text: "Push 10 pages one by one"
+                    text: "Push 10 items one by one"
                     onClicked: {
                         for (var i=0; i<10; ++i)
-                            pageStack.push(pageComponent)
+                            stackView.push(itemComponent)
                     }
                 }
                 Button {
                     text: "Complete transition"
-                    onClicked: pageStack.completeTransition()
+                    onClicked: stackView.completeTransition()
                 }
             }
         }

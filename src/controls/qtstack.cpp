@@ -48,7 +48,7 @@ QT_BEGIN_NAMESPACE
     \instantiates QtStack
     \inqmlmodule QtQuick.Controls 1.0
     \ingroup views
-    \brief Provides attached properties for items pushed onto a PageStack.
+    \brief Provides attached properties for items pushed onto a StackView.
 
     The Stack attached property provides information when an item becomes
     active or inactive through the \l{Stack::status}{Stack.status} property.
@@ -57,15 +57,14 @@ QT_BEGIN_NAMESPACE
     transition stops. When it leaves the screen, it will be
     \c Stack.Deactivating, and then \c Stack.Inactive.
 
-    \sa PageStack
+    \sa StackView
 */
 
 QtStack::QtStack(QObject *object)
     : QObject(object),
       m_index(-1),
       m_status(Inactive),
-      m_pageStack(0),
-      m_pageTransition(0)
+      m_pageStack(0)
 {
 }
 
@@ -78,8 +77,8 @@ QtStack *QtStack::qmlAttachedProperties(QObject *object)
     \readonly
     \qmlproperty int Stack::index
 
-    This property holds the index of the item inside \l{pageStack}{PageStack},
-    so that \l{PageStack::get()}{pageStack.get(index)} will return the item itself.
+    This property holds the index of the item inside \l{pageStack}{StackView},
+    so that \l{StackView::get()}{pageStack.get(index)} will return the item itself.
     If \l{Stack::pageStack}{pageStack} is \c null, \a index will be \c -1.
 */
 int QtStack::index() const
@@ -122,42 +121,21 @@ void QtStack::setStatus(Status status)
 
 /*!
     \readonly
-    \qmlproperty PageStack Stack::pageStack
+    \qmlproperty StackView Stack::pageStack
 
-    This property holds the PageStack the item is in. If the item is not inside
-    a PageStack, \a pageStack will be \c null.
+    This property holds the StackView the item is in. If the item is not inside
+    a StackView, \a pageStack will be \c null.
 */
 QQuickItem *QtStack::pageStack() const
 {
     return m_pageStack;
 }
 
-void QtStack::setPageStack(QQuickItem *pageStack)
+void QtStack::setStackView(QQuickItem *pageStack)
 {
     if (m_pageStack != pageStack) {
         m_pageStack = pageStack;
         emit pageStackChanged();
-    }
-}
-
-/*!
-    \qmlproperty PageTransition Stack::pageTransition
-
-    This property can be set to override the default animations used
-    during a page transition. To better understand how to use this
-    property, refer to the \l{PageStack#Transitions}{transition documentation} in PageStack.
-    \sa {PageStack::animations}{PageStack.animations}
-*/
-QObject *QtStack::pageTransition() const
-{
-    return m_pageTransition;
-}
-
-void QtStack::setPageTransition(QObject* pageTransition)
-{
-    if (m_pageTransition != pageTransition) {
-        m_pageTransition = pageTransition;
-        emit pageTransitionChanged();
     }
 }
 

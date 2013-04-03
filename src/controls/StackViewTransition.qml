@@ -40,32 +40,21 @@
 
 import QtQuick 2.1
 
-/*!
-        \qmltype PageTransition
-        \inqmlmodule QtQuick.Controls 1.0
-
-        \brief The component for managing page transitions.
-
-        See the documentation for the \l {QtQuick.Controls1::PageStack} {PageStack}
-        component.
-
-*/
-QtObject {
+ParallelAnimation {
     id: root
-
-    function getAnimation(properties)
-    {
-        return root[properties.name]
-    }
-
-    function cleanupAnimation(properties)
-    {
-        console.warn("Warning: PageTransition: the current transition did not override "
-                     + "cleanupAnimation(properties). This can cause the exit page to "
-                     + "be left in a state that makes it unusable for further usage!")
-    }
-
-    property Component pushAnimation: PageAnimation {}
-    property Component popAnimation: root["pushAnimation"]
-    property Component replaceAnimation: root["pushAnimation"]
+    /*! The name of the animation that is running. Can be one of the following:
+    \list
+    \li 'PushTransition'
+    \li 'PopTransition'
+    \li 'ReplaceTransition'
+    \endlist
+    */
+    property string name
+    /*! The page that is transitioning in. */
+    property Item enterItem
+    /*! The page that is transitioning out */
+    property Item exitItem
+    /*! Set to \c true if the transition is told to
+        fast-forward directly to its end-state */
+    property bool immediate
 }

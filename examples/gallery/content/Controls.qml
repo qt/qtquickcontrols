@@ -66,13 +66,13 @@ Item {
                 Button {
                     id: button1
                     text: "Button 1"
-                    width: 96
+                    width: 97
                     tooltip:"This is an interesting tool tip"
                 }
                 Button {
                     id:button2
                     text:"Button 2"
-                    width:96
+                    width:97
                 }
             }
             ComboBox {

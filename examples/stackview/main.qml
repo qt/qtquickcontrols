@@ -47,10 +47,10 @@ ApplicationWindow {
     property alias stackView: stackView
     property alias componentPage: componentPage
 
-    PageStack {
+    StackView {
         id: stackView
         anchors.fill: parent
-        initialPage: componentPage
+        initialItem: componentPage
     }
 
     Component {

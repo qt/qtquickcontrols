@@ -42,37 +42,37 @@ import QtQuick 2.1
 import QtQuick.Controls 1.0
 
 /*!
-        \qmltype PageSlideTransition
+        \qmltype StackViewSlideTransition
         \internal
         \inqmlmodule QtQuick.Controls.Private 1.0
 */
-PageTransition {
+StackViewDelegate {
     id: root
 
     property bool horizontal: true
 
-    function getAnimation(properties)
+    function getTransition(properties)
     {
         return root[horizontal ? "horizontalSlide" : "verticalSlide"][properties.name]
     }
 
-    function cleanupAnimation(properties)
+    function transitionFinished(properties)
     {
-        properties.exitPage.x = 0
-        properties.exitPage.y = 0
+        properties.exitItem.x = 0
+        properties.exitItem.y = 0
     }
 
     property QtObject horizontalSlide: QtObject {
-        property Component pushAnimation: PageAnimation {
+        property Component pushTransition: StackViewTransition {
             PropertyAnimation {
-                target: enterPage
+                target: enterItem
                 property: "x"
                 from: target.width
                 to: 0
                 duration: 300
             }
             PropertyAnimation {
-                target: exitPage
+                target: exitItem
                 property: "x"
                 from: 0
                 to: -target.width
@@ -80,36 +80,36 @@ PageTransition {
             }
         }
 
-        property Component popAnimation: PageAnimation {
+        property Component popTransition: StackViewTransition {
             PropertyAnimation {
-                target: enterPage
+                target: enterItem
                 property: "x"
                 from: -target.width
                 to: 0
                 duration: 300
             }
             PropertyAnimation {
-                target: exitPage
+                target: exitItem
                 property: "x"
                 from: 0
                 to: target.width
                 duration: 300
             }
         }
-        property Component replaceAnimation: pushAnimation
+        property Component replaceTransition: pushTransition
     }
 
     property QtObject verticalSlide: QtObject {
-        property Component pushAnimation: PageAnimation {
+        property Component pushTransition: StackViewTransition {
             PropertyAnimation {
-                target: enterPage
+                target: enterItem
                 property: "y"
                 from: target.height
                 to: 0
                 duration: 300
             }
             PropertyAnimation {
-                target: exitPage
+                target: exitItem
                 property: "y"
                 from: 0
                 to: -target.height
@@ -117,22 +117,22 @@ PageTransition {
             }
         }
 
-        property Component popAnimation: PageAnimation {
+        property Component popTransition: StackViewTransition {
             PropertyAnimation {
-                target: enterPage
+                target: enterItem
                 property: "y"
                 from: -target.height
                 to: 0
                 duration: 300
             }
             PropertyAnimation {
-                target: exitPage
+                target: exitItem
                 property: "y"
                 from: 0
                 to: target.height
                 duration: 300
             }
-            property Component replaceAnimation: pushAnimation
+            property Component replaceTransition: pushTransition
         }
     }
 }

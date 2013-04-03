@@ -42,21 +42,31 @@ import QtQuick.Controls.Styles 1.0
 import QtQuick.Controls.Private 1.0
 
 Style {
-    property Component panel: StyleItem {
-        property int popup: styleHint("comboboxpopup")
+    property Component panel: Item {
+        property int popup: styleItem.styleHint("comboboxpopup")
 
+        implicitWidth: 80
+        implicitHeight: styleItem.implicitHeight
         width: parent.width
-        anchors.verticalCenter: parent.verticalCenter
-        elementType: "combobox"
-        sunken: control.__pressed
-        raised: !sunken
-        hover: control.__containsMouse
-        enabled: control.enabled
-        text: control.currentText
-        hasFocus: control.activeFocus
-        // contentHeight as in QComboBox
-        contentHeight: Math.max(Math.ceil(textHeight("")), 14) + 2
-        contentWidth: textWidth(text)
+        height: parent.height
+        StyleItem {
+            id: styleItem
+
+            height: parent.height
+            width: parent.width
+            elementType: "combobox"
+            sunken: control.__pressed
+            raised: !sunken
+            hover: control.__containsMouse
+            enabled: control.enabled
+            // The style makes sure the text rendering won't overlap the decoration.
+            // In that case, 35 pixels margin in this case looks good enough. Worst
+            // case, the ellipsis will be truncated (2nd worst, not visible at all).
+            text: elidedText(control.currentText, Text.ElideRight, parent.width - 35)
+            hasFocus: control.activeFocus
+            // contentHeight as in QComboBox
+            contentHeight: Math.max(Math.ceil(textHeight("")), 14) + 2
+        }
     }
 
     property Component popupStyle: MenuStyle {

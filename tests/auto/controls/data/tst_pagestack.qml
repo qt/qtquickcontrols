@@ -44,7 +44,7 @@ import QtQuick.Controls 1.0
 
 TestCase {
     id: testCase
-    name: "Tests_PageStack"
+    name: "Tests_StackView"
     when: windowShown
     width: 400
     height: 400
@@ -57,7 +57,7 @@ TestCase {
 
     Component {
         id: stackComponent
-        PageStack {}
+        StackView {}
     }
 
     function test_pagestack() {

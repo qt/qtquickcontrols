@@ -59,7 +59,7 @@ TestCase {
     }
 
     function test_pageStack() {
-        var item = Qt.createQmlObject('import QtQuick 2.0; import QtQuick.Controls 1.0; Item { property PageStack pageStack: Stack.pageStack }', testCase, '');
+        var item = Qt.createQmlObject('import QtQuick 2.0; import QtQuick.Controls 1.0; Item { property StackView pageStack: Stack.pageStack }', testCase, '');
         compare(item.pageStack, null);
     }
 }

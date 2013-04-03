@@ -171,5 +171,16 @@ Item {
             compare(root.radioButton1.checked, true);
             compare(root.radioButton2.checked, false);
         }
+
+        function test_activeFocusOnPress(){
+            radioButton.activeFocusOnPress = false
+            verify(!radioButton.activeFocus)
+            mouseClick(radioButton, radioButton.x + 1, radioButton.y + 1)
+            verify(!radioButton.activeFocus)
+            radioButton.activeFocusOnPress = true
+            verify(!radioButton.activeFocus)
+            mouseClick(radioButton, radioButton.x + 1, radioButton.y + 1)
+            verify(radioButton.activeFocus)
+        }
     }
 }

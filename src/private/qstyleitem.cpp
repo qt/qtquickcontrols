@@ -621,7 +621,7 @@ QString QStyleItem::style() const
         style = style.right(style.length() - 1);
     if (style.endsWith("style"))
         style = style.left(style.length() - 5);
-    return style.toLower();
+    return style;
 }
 
 QString QStyleItem::hitTest(int px, int py)
@@ -721,6 +721,12 @@ QSize QStyleItem::sizeFromContents(int width, int height)
         int newWidth = qMax(width, btn->fontMetrics.width(btn->text));
         int newHeight = qMax(height, btn->fontMetrics.height());
         size = qApp->style()->sizeFromContents(QStyle::CT_PushButton, m_styleoption, QSize(newWidth, newHeight)); }
+#ifdef Q_OS_MAC
+        if (style() == "mac") {
+            // Cancel out QMacStylePrivate::PushButton*Offset, or part of it
+            size -= QSize(7, 6);
+        }
+#endif
         break;
     case ComboBox: {
         QStyleOptionComboBox *btn = qstyleoption_cast<QStyleOptionComboBox*>(m_styleoption);
@@ -1063,6 +1069,12 @@ void QStyleItem::paint(QPainter *painter)
 
     switch (m_itemType) {
     case Button:
+#ifdef Q_OS_MAC
+        if (style() == "mac") {
+            // Add back what was substracted in sizeFromContents()
+            m_styleoption->rect.adjust(-4, -2, 3, 4);
+        }
+#endif
         qApp->style()->drawControl(QStyle::CE_PushButton, m_styleoption, painter);
         break;
     case ItemRow :{
@@ -1121,12 +1133,15 @@ void QStyleItem::paint(QPainter *painter)
         qApp->style()->drawComplexControl(QStyle::CC_ToolButton, qstyleoption_cast<QStyleOptionComplex*>(m_styleoption), painter);
         break;
     case Tab:
+#ifdef Q_OS_MAC
         if (style() == "mac") {
             m_styleoption->rect.translate(0, 1); // Unhack QMacStyle's hack
             qApp->style()->drawControl(QStyle::CE_TabBarTabShape, m_styleoption, painter);
             m_styleoption->rect.translate(0, -1);
             qApp->style()->drawControl(QStyle::CE_TabBarTabLabel, m_styleoption, painter);
-        } else {
+        } else
+#endif
+        {
             qApp->style()->drawControl(QStyle::CE_TabBarTab, m_styleoption, painter);
         }
         break;
@@ -1134,9 +1149,11 @@ void QStyleItem::paint(QPainter *painter)
         qApp->style()->drawControl(QStyle::CE_ShapedFrame, m_styleoption, painter);
         break;
     case FocusFrame:
+#ifdef Q_OS_MAC
         if (style() == "mac" && hints().indexOf("rounded") != -1)
             break; // embedded in the line itself
         else
+#endif
             qApp->style()->drawControl(QStyle::CE_FocusFrame, m_styleoption, painter);
         break;
     case TabFrame:
@@ -1242,11 +1259,14 @@ void QStyleItem::paint(QPainter *painter)
         painter->drawLine(m_styleoption->rect.bottomLeft(), m_styleoption->rect.bottomRight());
         break;
     case StatusBar:
+#ifdef Q_OS_MAC
         if (style() == "mac") {
             qApp->style()->drawControl(QStyle::CE_ToolBar, m_styleoption, painter);
             painter->setPen(m_styleoption->palette.dark().color().darker(120));
             painter->drawLine(m_styleoption->rect.topLeft(), m_styleoption->rect.topRight());
-        } else {
+        } else
+#endif
+        {
             painter->fillRect(m_styleoption->rect, m_styleoption->palette.window().color());
             painter->setPen(m_styleoption->palette.dark().color().darker(120));
             painter->drawLine(m_styleoption->rect.topLeft(), m_styleoption->rect.topRight());

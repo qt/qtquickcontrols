@@ -194,6 +194,9 @@ ApplicationWindow {
                                     case "SelectByMouse":
                                     case "SelectByKeyboard":
                                     case "ReadOnly":
+                                    case "Indeterminate":
+                                    case "UpdateValueWhileDragging":
+                                    case "TickmarksEnabled":
                                         layout = layouts.boolLayout
                                         typeName = "Boolean";
                                         break

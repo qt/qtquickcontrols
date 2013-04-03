@@ -40,21 +40,29 @@
 
 import QtQuick 2.1
 
-ParallelAnimation {
+/*!
+        \qmltype StackViewDelegate
+        \inqmlmodule QtQuick.Controls 1.0
+
+        \brief A delegate used by StackView for loading transitions.
+
+        See the documentation for the \l {QtQuick.Controls1::StackView} {StackView}
+        component.
+
+*/
+QtObject {
     id: root
-    /*! The name of the animation that is running. Can be one of the following:
-    \list
-    \li 'PushAnimation'
-    \li 'PopAnimation'
-    \li 'ReplaceAnimation'
-    \endlist
-    */
-    property string name
-    /*! The page that is transitioning in. */
-    property Item enterPage
-    /*! The page that is transitioning out */
-    property Item exitPage
-    /*! Set to \c true if the animation is told to
-        fast-forward directly to its end-state */
-    property bool immediate
+
+    function getTransition(properties)
+    {
+        return root[properties.name]
+    }
+
+    function transitionFinished(properties)
+    {
+    }
+
+    property Component pushTransition: StackViewTransition {}
+    property Component popTransition: root["pushTransition"]
+    property Component replaceTransition: root["pushTransition"]
 }

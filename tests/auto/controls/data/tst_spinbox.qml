@@ -267,6 +267,18 @@ Item {
             compare(spinbox.value, -1000);
         }
 
+        function test_activeFocusOnPress(){
+            var spinbox = Qt.createQmlObject('import QtQuick.Controls 1.0; SpinBox {x: 20; y: 20; width: 100; height: 50}', container, '')
+            spinbox.activeFocusOnPress = false
+            verify(!spinbox.activeFocus)
+            mouseClick(spinbox, 30, 30)
+            verify(!spinbox.activeFocus)
+            spinbox.activeFocusOnPress = true
+            verify(!spinbox.activeFocus)
+            mouseClick(spinbox, 30, 30)
+            verify(spinbox.activeFocus)
+        }
+
         function test_ImplicitSize() // Verify if we correctly grow and shrink depending on contents
         {
             var spinbox = Qt.createQmlObject('import QtQuick.Controls 1.0; SpinBox {}', container, '')

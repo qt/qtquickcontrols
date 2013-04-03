@@ -14,15 +14,15 @@ QML_FILES = \
     Label.qml \
     MenuBar.qml \
     Menu.qml \
-    PageAnimation.qml \
-    PageStack.qml \
-    PageTransition.qml \
+    StackView.qml \
     ProgressBar.qml \
     RadioButton.qml \
     ScrollView.qml \
     Slider.qml \
     SpinBox.qml \
     SplitView.qml \
+    StackViewDelegate.qml \
+    StackViewTransition.qml \
     StatusBar.qml \
     Tab.qml \
     TabView.qml \
