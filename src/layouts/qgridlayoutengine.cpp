@@ -943,8 +943,6 @@ Qt::Alignment QGridLayoutEngine::effectiveAlignment(const QGridLayoutItem *layou
         // no horizontal alignment, respect the column alignment
         int x = layoutItem->firstColumn();
         align |= (rowAlignment(x, Qt::Horizontal) & Qt::AlignHorizontal_Mask);
-        if (!(align & Qt::AlignHorizontal_Mask))
-            align |= Qt::AlignHCenter;
     }
 
     return align;
