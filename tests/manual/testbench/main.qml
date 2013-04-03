@@ -184,6 +184,7 @@ ApplicationWindow {
                                     switch (substr) {
 
                                     case "ActiveFocusOnPress":
+                                    case "ActiveFocusOnTab":
                                     case "Enabled":
                                     case "Visible":
                                     case "Checkable":
