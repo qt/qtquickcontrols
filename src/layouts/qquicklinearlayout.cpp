@@ -341,8 +341,7 @@ QQuickGridLayout::QQuickGridLayout(QQuickItem *parent /* = 0*/)
     Q_D(QQuickGridLayout);
     d->columnSpacing = q_declarativeLayoutDefaultSpacing;
     d->rowSpacing = q_declarativeLayoutDefaultSpacing;
-    d->engine.setSpacing(d->columnSpacing, Qt::Horizontal);
-    d->engine.setSpacing(d->rowSpacing, Qt::Vertical);
+    d->engine.setSpacing(q_declarativeLayoutDefaultSpacing, Qt::Horizontal | Qt::Vertical);
 }
 
 qreal QQuickGridLayout::columnSpacing() const
@@ -351,14 +350,14 @@ qreal QQuickGridLayout::columnSpacing() const
     return d->columnSpacing;
 }
 
-void QQuickGridLayout::setHorizontalSpacing(qreal spacing)
+void QQuickGridLayout::setColumnSpacing(qreal spacing)
 {
     Q_D(QQuickGridLayout);
     if (qIsNaN(spacing) || d->columnSpacing == spacing)
         return;
 
     d->columnSpacing = spacing;
-    d->engine.setSpacing(spacing, Qt::Horizontal | Qt::Vertical);
+    d->engine.setSpacing(spacing, Qt::Horizontal);
     invalidate();
 }
 
@@ -368,14 +367,14 @@ qreal QQuickGridLayout::rowSpacing() const
     return d->rowSpacing;
 }
 
-void QQuickGridLayout::setVerticalSpacing(qreal spacing)
+void QQuickGridLayout::setRowSpacing(qreal spacing)
 {
     Q_D(QQuickGridLayout);
     if (qIsNaN(spacing) || d->rowSpacing == spacing)
         return;
 
     d->rowSpacing = spacing;
-    d->engine.setSpacing(spacing, Qt::Horizontal | Qt::Vertical);
+    d->engine.setSpacing(spacing, Qt::Vertical);
     invalidate();
 }
 

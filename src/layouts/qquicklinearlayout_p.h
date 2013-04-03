@@ -109,14 +109,14 @@ class QQuickGridLayoutPrivate;
 class QQuickGridLayout : public QQuickGridLayoutBase
 {
     Q_OBJECT
-    Q_PROPERTY(qreal columnSpacing READ columnSpacing WRITE setHorizontalSpacing NOTIFY columnSpacingChanged)
-    Q_PROPERTY(qreal rowSpacing READ rowSpacing WRITE setVerticalSpacing NOTIFY rowSpacingChanged)
+    Q_PROPERTY(qreal columnSpacing READ columnSpacing WRITE setColumnSpacing NOTIFY columnSpacingChanged)
+    Q_PROPERTY(qreal rowSpacing READ rowSpacing WRITE setRowSpacing NOTIFY rowSpacingChanged)
 public:
     explicit QQuickGridLayout(QQuickItem *parent = 0);
     qreal columnSpacing() const;
-    void setHorizontalSpacing(qreal spacing);
+    void setColumnSpacing(qreal spacing);
     qreal rowSpacing() const;
-    void setVerticalSpacing(qreal spacing);
+    void setRowSpacing(qreal spacing);
 signals:
     void columnSpacingChanged();
     void rowSpacingChanged();
