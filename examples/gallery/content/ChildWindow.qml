@@ -53,6 +53,7 @@ Window {
     height: 400
 
     title: "child window"
+    flags: Qt.Dialog
 
     Rectangle {
         color: syspal.window
