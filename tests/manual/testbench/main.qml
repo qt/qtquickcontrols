@@ -79,6 +79,18 @@ ApplicationWindow {
                 checked: false
                 text: "Background"
             }
+            CheckBox {
+                id: customStyle
+                visible: components.customStyles.get(selector.currentIndex).component !== undefined
+                checked: false
+                text: !checked ? "Load Custom Style" : "Custom Style loaded"
+                onCheckedChanged: {
+                    if (checked) {
+                        loader.item.style = components.customStyles.get(selector.currentIndex).component
+                        enabled = false
+                    }
+                }
+            }
         }
 
         CheckBox {
@@ -158,6 +170,8 @@ ApplicationWindow {
                     onStatusChanged: {
 
                         startStopAnim.visible = false
+                        customStyle.enabled = true
+                        customStyle.checked = false
 
                         if (status == Loader.Ready) {
                             propertyMap = []

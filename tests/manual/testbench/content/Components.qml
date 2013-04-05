@@ -40,6 +40,7 @@
 
 import QtQuick 2.1
 import QtQuick.Controls 1.0
+import QtQuick.Controls.Styles 1.0
 
 Item {
     property Component button: Button { text: "Push me"}
@@ -128,6 +129,46 @@ Item {
             append({ name: "GroupBox",      component: groupbox});
             append({ name: "TabView",       component: tabView});
             append({ name: "Label",         component: label});
+        }
+    }
+
+    property Component buttonStyle: ButtonStyle {}
+    property Component toolbuttonStyle: ToolButtonStyle {}
+    property Component checkboxStyle: CheckBoxStyle {}
+    property Component comboboxStyle: ComboBoxStyle {}
+    property Component radiobuttonStyle: RadioButtonStyle {}
+    property Component sliderStyle: SliderStyle {}
+    property Component progressbarStyle: ProgressBarStyle {}
+    property Component textfieldStyle: TextFieldStyle {}
+    property Component textareaStyle: null
+    property Component spinboxStyle: SpinBoxStyle {}
+    property Component toolbarStyle: ToolBarStyle {}
+    property Component statusbarStyle: StatusBarStyle {}
+    property Component tableviewStyle: TableViewStyle {}
+    property Component scrollviewStyle: ScrollViewStyle {}
+    property Component groupboxStyle: GroupBoxStyle {}
+    property Component tabViewStyle: TabViewStyle {}
+    property Component labelStyle: null
+
+    property var customStyles: ListModel {
+        Component.onCompleted: {
+            append({ name: "Button",        component: buttonStyle});
+            append({ name: "ToolButton",    component: toolbuttonStyle});
+            append({ name: "CheckBox",      component: checkboxStyle});
+            append({ name: "ComboBox",      component: comboboxStyle});
+            append({ name: "RadioButton",   component: radiobuttonStyle});
+            append({ name: "Slider",        component: sliderStyle});
+            append({ name: "ProgressBar",   component: progressbarStyle});
+            append({ name: "TextField",     component: textfieldStyle});
+            append({ name: "TextArea",      component: textareaStyle});
+            append({ name: "SpinBox",       component: spinboxStyle});
+            append({ name: "ToolBar",       component: toolbarStyle});
+            append({ name: "StatusBar",     component: statusbarStyle});
+            append({ name: "TableView",     component: tableviewStyle});
+            append({ name: "ScrollView",    component: scrollviewStyle});
+            append({ name: "GroupBox",      component: groupboxStyle});
+            append({ name: "TabView",       component: tabViewStyle});
+            append({ name: "Label",         component: labelStyle});
         }
     }
 }
