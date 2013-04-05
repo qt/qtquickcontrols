@@ -322,9 +322,14 @@ Item {
             layout.destroy();
         }
 
-
         Component {
-            id: layout_spans_Component
+            id: layout_spanAcrossEmptyRows_Component
+            /* This test has a large number of empty rows and columns, but there is one item
+               that spans across some of these empty rows/columns.
+               Do not modify (especially do not add items unless you understand what this is
+               testing)
+             */
+
             GridLayout {
                 columnSpacing: 0
                 rowSpacing: 0
@@ -333,46 +338,59 @@ Item {
                     // (0,0)
                     id: r0
                     color: "black"
-                    width: 20
-                    height: 20
                     Layout.row: 0
                     Layout.column: 0
+                    Layout.preferredWidth: 20
+                    Layout.preferredHeight: 20
+                    Layout.maximumWidth: 40
+                    Layout.maximumHeight: 40
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
                 }
                 Rectangle {
                     // (0,1)
                     id: r1
                     color: "black"
-                    width: 20
-                    height: 20
                     Layout.row: 0
                     Layout.column: 1
                     Layout.columnSpan: 2
                     Layout.rowSpan: 2
+                    Layout.preferredWidth: 20
+                    Layout.preferredHeight: 20
+                    Layout.maximumWidth: 40
+                    Layout.maximumHeight: 40
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
                 }
                 Rectangle {
-                    // (99,99)
+                    // (0,99)
                     id: r2
                     color: "black"
-                    width: 20
-                    height: 20
-                    Layout.row: 99
+                    Layout.row: 0
                     Layout.column: 99
+                    Layout.preferredWidth: 20
+                    Layout.preferredHeight: 20
+                    Layout.maximumWidth: 40
+                    Layout.maximumHeight: 40
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
                 }
             }
         }
 
-        function test_spans() {
-            var layout = layout_spans_Component.createObject(container);
+        function test_spanAcrossEmptyRows() {
+            var layout = layout_spanAcrossEmptyRows_Component.createObject(container);
             compare(layout.children[0].x, 0);
             compare(layout.children[0].y, 0);
             compare(layout.children[1].x, 20);
             compare(layout.children[1].y, 0);
             compare(layout.children[2].x, 40);
-            compare(layout.children[2].y, 20);
+            compare(layout.children[2].y, 0);
+
+            compare(layout.implicitWidth, 60);
+            compare(layout.Layout.maximumWidth, 120);
 
             layout.destroy();
         }
-
-
     }
 }
