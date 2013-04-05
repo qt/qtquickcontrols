@@ -322,5 +322,57 @@ Item {
             layout.destroy();
         }
 
+
+        Component {
+            id: layout_spans_Component
+            GridLayout {
+                columnSpacing: 0
+                rowSpacing: 0
+                // black rectangles are explicitly positioned with row,column
+                Rectangle {
+                    // (0,0)
+                    id: r0
+                    color: "black"
+                    width: 20
+                    height: 20
+                    Layout.row: 0
+                    Layout.column: 0
+                }
+                Rectangle {
+                    // (0,1)
+                    id: r1
+                    color: "black"
+                    width: 20
+                    height: 20
+                    Layout.row: 0
+                    Layout.column: 1
+                    Layout.columnSpan: 2
+                    Layout.rowSpan: 2
+                }
+                Rectangle {
+                    // (99,99)
+                    id: r2
+                    color: "black"
+                    width: 20
+                    height: 20
+                    Layout.row: 99
+                    Layout.column: 99
+                }
+            }
+        }
+
+        function test_spans() {
+            var layout = layout_spans_Component.createObject(container);
+            compare(layout.children[0].x, 0);
+            compare(layout.children[0].y, 0);
+            compare(layout.children[1].x, 20);
+            compare(layout.children[1].y, 0);
+            compare(layout.children[2].x, 40);
+            compare(layout.children[2].y, 20);
+
+            layout.destroy();
+        }
+
+
     }
 }

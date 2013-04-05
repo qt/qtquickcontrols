@@ -1419,7 +1419,7 @@ void QGridLayoutEngine::fillRowData(QGridLayoutRowData *rowData,
 
                     int effectiveRowSpan = 1;
                     for (int i = 1; i < itemRowSpan; ++i) {
-                        if (!rowData->ignore.testBit(i))
+                        if (!rowData->ignore.testBit(i + itemRow))
                             ++effectiveRowSpan;
                     }
 
