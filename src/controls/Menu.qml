@@ -105,14 +105,23 @@ MenuPrivate {
 
     /*! \internal
       \omit
-      See qtmenu.cpp.
+      Documented in qtmenu.cpp.
       \endomit
     */
     function addMenu(title) {
+        return root.insertMenu(items.length, title)
+    }
+
+    /*! \internal
+      \omit
+      Documented in qtmenu.cpp.
+      \endomit
+    */
+    function insertMenu(index, title) {
         if (!__selfComponent)
             __selfComponent = Qt.createComponent("Menu.qml", root)
         var submenu = __selfComponent.createObject(__selfComponent, { "title": title })
-        root.insertItem(items.length, submenu)
+        root.insertItem(index, submenu)
         return submenu
     }
 

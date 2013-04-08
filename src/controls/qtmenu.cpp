@@ -169,17 +169,49 @@ QT_BEGIN_NAMESPACE
     \qmlmethod MenuItem Menu::addItem(string text)
 
     Adds an item to the menu. Returns the newly created \l MenuItem.
+
+    \sa insertItem(int before, string title)
 */
 
 /*!
-    \qmlmethod MenuSeparator Menu::addSeparator()
+    \qmlmethod MenuItem Menu::insertItem(int before, string title)
 
-    Adds a separator to the menu. Returns the newly created \l MenuSeparator.
+    Creates and inserts an item with title \c title at the index \c before in the current menu.
+    Returns the newly created \l MenuItem.
+
+    \sa addItem()
+*/
+
+/*!
+    \qmlmethod void Menu::addSeparator()
+
+    Adds a separator to the menu.
+
+    \sa insertSeparator()
+*/
+
+/*!
+    \qmlmethod void Menu::insertSeparator(int before)
+
+    Creates and inserts a separator at the index \c before in the current menu.
+
+    \sa addSeparator()
 */
 
 /*!
     \qmlmethod Menu Menu::addMenu(string title)
     Adds a submenu to the menu. Returns the newly created \l Menu.
+
+    \sa insertMenu()
+*/
+
+/*!
+    \qmlmethod MenuItem Menu::insertMenu(int before, string title)
+
+    Creates and inserts a submenu with title \c title at the index \c before in the current menu.
+    Returns the newly created \l Menu.
+
+    \sa addMenu()
 */
 
 /*!
@@ -478,17 +510,26 @@ int QtMenu::indexOfMenuItem(QtMenuBase *item) const
 
 QtMenuItem *QtMenu::addItem(QString title)
 {
+    return insertItem(m_itemsCount, title);
+}
+
+QtMenuItem *QtMenu::insertItem(int index, QString title)
+{
     QtMenuItem *item = new QtMenuItem(this);
     item->setText(title);
-    insertItem(m_itemsCount, item);
+    insertItem(index, item);
     return item;
 }
 
-QtMenuSeparator *QtMenu::addSeparator()
+void QtMenu::addSeparator()
+{
+    insertSeparator(m_itemsCount);
+}
+
+void QtMenu::insertSeparator(int index)
 {
     QtMenuSeparator *item = new QtMenuSeparator(this);
-    insertItem(m_itemsCount, item);
-    return item;
+    insertItem(index, item);
 }
 
 void QtMenu::insertItem(int index, QtMenuBase *menuItem)

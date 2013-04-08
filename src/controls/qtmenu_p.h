@@ -74,15 +74,17 @@ class QtMenu : public QtMenuText
 public:
     Q_INVOKABLE void popup();
     Q_INVOKABLE QtMenuItem *addItem(QString);
-    Q_INVOKABLE QtMenuSeparator *addSeparator();
+    Q_INVOKABLE QtMenuItem *insertItem(int, QString);
+    Q_INVOKABLE void addSeparator();
+    Q_INVOKABLE void insertSeparator(int);
+
+    Q_INVOKABLE void insertItem(int, QtMenuBase *);
+    Q_INVOKABLE void removeItem(QtMenuBase *);
+    Q_INVOKABLE void clear();
 
     Q_INVOKABLE void __popup(qreal x, qreal y, int atActionIndex = -1);
 
 public Q_SLOTS:
-    void insertItem(int, QtMenuBase *);
-    void removeItem(QtMenuBase *);
-    void clear();
-
     void __closeMenu();
     void __dismissMenu();
 
