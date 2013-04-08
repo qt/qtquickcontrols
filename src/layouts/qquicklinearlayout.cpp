@@ -155,7 +155,7 @@ void QQuickGridLayoutBase::invalidate(QQuickItem *childItem)
 void QQuickGridLayoutBase::updateLayoutItems()
 {
     Q_D(QQuickGridLayoutBase);
-    if (!isComponentComplete())
+    if (!isComponentComplete() || !isVisible())
         return;
     quickLayoutDebug() << "QQuickGridLayoutBase::updateLayoutItems";
     d->engine.deleteItems();

@@ -392,5 +392,30 @@ Item {
 
             layout.destroy();
         }
+
+
+        function test_sizeHints() {
+            var layout = layout_spanAcrossEmptyRows_Component.createObject(container);
+            compare(layout.visible, true)
+
+            var minWidth  = layout.Layout.minimumWidth
+            var minHeight = layout.Layout.minimumHeight
+
+            var prefWidth  = layout.implicitWidth
+            var prefHeight = layout.implicitHeight
+
+            var maxWidth  = layout.Layout.maximumWidth
+            var maxHeight = layout.Layout.maximumHeight
+
+            layout.visible = false
+            compare(minWidth, layout.Layout.minimumWidth)
+            compare(minHeight, layout.Layout.minimumHeight)
+            compare(prefWidth, layout.implicitWidth)
+            compare(prefHeight, layout.implicitHeight)
+            compare(maxWidth, layout.Layout.maximumWidth)
+            compare(maxHeight, layout.Layout.maximumHeight)
+
+            layout.destroy();
+        }
     }
 }
