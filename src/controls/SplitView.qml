@@ -145,9 +145,7 @@ Item {
 
     clip: true
     Component.onCompleted: d.init()
-    /*! \internal */
     onWidthChanged: d.updateLayout()
-    /*! \internal */
     onHeightChanged: d.updateLayout()
 
     SystemPalette { id: pal }

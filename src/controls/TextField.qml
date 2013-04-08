@@ -530,10 +530,8 @@ Control {
     /*! \internal */
     property alias __contentWidth: textInput.contentWidth
 
-    /*! \internal */
     style: Qt.createComponent(Settings.THEME_PATH + "/TextFieldStyle.qml", textInput)
 
-    /*! \internal */
     onFocusChanged: {
         if (textfield.activeFocus)
             textInput.forceActiveFocus();

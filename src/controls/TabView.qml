@@ -131,7 +131,6 @@ FocusScope {
     /*! \internal */
     property var __styleItem: loader.item
 
-    /*! \internal */
     onCurrentIndexChanged: __setOpacities()
 
     /*! \internal */
@@ -188,7 +187,6 @@ FocusScope {
             property string style
             property int baseOverlap
 
-            /*! \internal */
             Component.onCompleted: {
                 for (var i = 0 ; i < stack.children.length ; ++i) {
                     if (stack.children[i].Accessible.role === Accessible.PageTab)

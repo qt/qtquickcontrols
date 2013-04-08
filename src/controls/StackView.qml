@@ -726,13 +726,11 @@ Item {
     /*! \internal Stops the user from pushing items while preparing a transition */
     property bool __guard: false
 
-    /*! \internal */
     Component.onCompleted: {
         if (initialItem)
             push(initialItem)
     }
 
-    /*! \internal */
     Component.onDestruction: {
         if (__currentTransition)
             __currentTransition.animation.complete()

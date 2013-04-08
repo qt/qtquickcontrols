@@ -131,7 +131,6 @@ Control {
     */
     property bool activeFocusOnPress: true
 
-    /*! \internal */
     style: Qt.createComponent(Settings.THEME_PATH + "/SpinBoxStyle.qml", spinbox)
 
     /*! \internal */
@@ -191,19 +190,14 @@ Control {
         visible: false
     }
 
-    /*! \internal */
     onDecimalsChanged: input.setValue(value)
-    /*! \internal */
     onMaximumValueChanged: input.setValue(value)
-    /*! \internal */
     onMinimumValueChanged: input.setValue(value)
-    /*! \internal */
     Component.onCompleted: {
         __initialized = true;
         input.setValue(value)
     }
 
-    /*! \internal */
     onValueChanged: if (__initialized) input.setValue(value)
 
     activeFocusOnTab: true

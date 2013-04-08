@@ -140,7 +140,6 @@ FocusScope {
 
     activeFocusOnTab: true
 
-    /*! \internal */
     onContentItemChanged: {
 
         if (contentItem.hasOwnProperty("contentY") && // Check if flickable

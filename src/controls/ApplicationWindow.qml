@@ -117,10 +117,8 @@ Window {
     */
     property Item statusBar
 
-    /*! \internal */
     onToolBarChanged: { if (toolBar) { toolBar.parent = toolBarArea } }
 
-    /*! \internal */
     onStatusBarChanged: { if (statusBar) { statusBar.parent = statusBarArea } }
 
     /*! \internal */
