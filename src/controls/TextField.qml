@@ -532,11 +532,6 @@ Control {
 
     style: Qt.createComponent(Settings.THEME_PATH + "/TextFieldStyle.qml", textInput)
 
-    onFocusChanged: {
-        if (textfield.activeFocus)
-            textInput.forceActiveFocus();
-    }
-
     activeFocusOnTab: true
 
     Accessible.name: text
@@ -553,6 +548,7 @@ Control {
 
     TextInput {
         id: textInput
+        focus: true
         selectByMouse: true
         selectionColor: __panel ? __panel.selectionColor : "darkred"
         selectedTextColor: __panel ? __panel.selectedTextColor : "white"
