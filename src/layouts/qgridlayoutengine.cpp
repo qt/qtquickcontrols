@@ -432,6 +432,8 @@ QGridLayoutBox QGridLayoutRowData::totalBox(int start, int end) const
         result.q_maximumSize = 0.0;
         qreal nextSpacing = 0.0;
         for (int i = start; i < end; ++i) {
+            if (ignore.testBit(i))
+                continue;
             result.add(boxes.at(i), stretches.at(i), nextSpacing);
             nextSpacing = spacings.at(i);
         }
@@ -943,8 +945,6 @@ Qt::Alignment QGridLayoutEngine::effectiveAlignment(const QGridLayoutItem *layou
         // no horizontal alignment, respect the column alignment
         int x = layoutItem->firstColumn();
         align |= (rowAlignment(x, Qt::Horizontal) & Qt::AlignHorizontal_Mask);
-        if (!(align & Qt::AlignHorizontal_Mask))
-            align |= Qt::AlignHCenter;
     }
 
     return align;
@@ -1421,7 +1421,7 @@ void QGridLayoutEngine::fillRowData(QGridLayoutRowData *rowData,
 
                     int effectiveRowSpan = 1;
                     for (int i = 1; i < itemRowSpan; ++i) {
-                        if (!rowData->ignore.testBit(i))
+                        if (!rowData->ignore.testBit(i + itemRow))
                             ++effectiveRowSpan;
                     }
 

@@ -750,7 +750,20 @@ QSize QStyleItem::sizeFromContents(int width, int height)
         size = qApp->style()->sizeFromContents(QStyle::CT_ProgressBar, m_styleoption, QSize(width,height));
         break;
     case Edit:
-        size = qApp->style()->sizeFromContents(QStyle::CT_LineEdit, m_styleoption, QSize(width,height));
+#ifdef Q_OS_MAC
+        if (style() =="mac") {
+            if (m_hints.indexOf("small") != -1 || m_hints.indexOf("mini") != -1)
+                size = QSize(width, 19);
+            else
+                size = QSize(width, 21);
+        } else
+#endif
+        {
+            size = QSize(width, height);
+            if (const QStyleOptionFrame *f = qstyleoption_cast<const QStyleOptionFrame *>(m_styleoption))
+                size += QSize(2*f->lineWidth, 2*f->lineWidth);
+        }
+
         if (hints().indexOf("rounded") != -1)
             size += QSize(0, 3);
         break;

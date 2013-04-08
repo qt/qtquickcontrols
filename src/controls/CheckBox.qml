@@ -68,7 +68,7 @@ import "Styles/Settings.js" as Settings
     identically to \l {AbstractCheckable::checked}{checked} when \l partiallyCheckedEnabled
     is \c false; setting one will appropriately set the other.
 
-    The text of the label shown next to the checkbox can be set with the
+    The label is shown next to the checkbox, and you can set the label text using its
     \l {AbstractCheckable::text}{text} property.
 
     \qml
@@ -139,13 +139,11 @@ AbstractCheckable {
 
     __cycleStatesHandler: __cycleCheckBoxStates
 
-    /*! \internal */
     onCheckedChanged: {
         if (!__ignoreChecked)
             checkedState = checked ? Qt.Checked : Qt.Unchecked;
     }
 
-    /*! \internal */
     onCheckedStateChanged: {
         __ignoreChecked = true;
         if (checkedState === Qt.PartiallyChecked) {
@@ -157,14 +155,12 @@ AbstractCheckable {
         __ignoreChecked = false;
     }
 
-    /*! \internal */
     onPartiallyCheckedEnabledChanged: {
         if (exclusiveGroup && partiallyCheckedEnabled) {
             console.warn("Cannot have partially checked boxes in an ExclusiveGroup.");
         }
     }
 
-    /*! \internal */
     onExclusiveGroupChanged: {
         if (exclusiveGroup && partiallyCheckedEnabled) {
             console.warn("Cannot have partially checked boxes in an ExclusiveGroup.");

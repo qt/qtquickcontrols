@@ -67,13 +67,14 @@ Style {
 
 
         property bool rounded: hints.indexOf("rounded") > -1
-        property int topMargin: 1
+        property int topMargin: style === "mac" ? 4 : 5
         property int leftMargin: rounded ? 8 : 4
         property int rightMargin: 4
         property int bottomMargin: 1
 
         contentWidth: 100
-        contentHeight: 18
+        // Form QLineEdit::sizeHint
+        contentHeight: Math.max(control.__contentHeight, 14) + topMargin + bottomMargin
 
         FocusFrame {
             anchors.fill: parent

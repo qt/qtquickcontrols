@@ -58,7 +58,6 @@ ApplicationWindow {
         id: mainLayout
         anchors.fill: parent
         anchors.margins: margin
-        spacing: 6
         GroupBox {
             id: rowBox
             title: "Row layout"
@@ -68,22 +67,13 @@ ApplicationWindow {
 
             RowLayout {
                 id: rowLayout
-                spacing: 6
                 anchors.fill: parent
-                Button {
-                    text: "Button 1"
-                }
-                Button {
-                    text: "Button 2"
-                }
-                Button {
-                    text: "Button 3"
-                }
-                Button {
-                    text: "Button 4"
-                }
-                Item {
+                TextField {
+                    placeholderText: "This wants to grow horizontally"
                     Layout.fillWidth: true
+                }
+                Button {
+                    text: "Button"
                 }
             }
         }
@@ -97,49 +87,30 @@ ApplicationWindow {
 
             GridLayout {
                 id: gridLayout
-                rowSpacing: 6
-                columnSpacing: 6
+                rows: 3
+                flow: GridLayout.TopToBottom
                 anchors.fill: parent
-                Label {
-                    text: "Line 1"
-                    Layout.row: 0
-                    Layout.column: 0
-                }
-                Label {
-                    text: "Line 2"
-                    Layout.row: 1
-                    Layout.column: 0
-                }
-                Label {
-                    text: "Line 3"
-                    Layout.row: 2
-                    Layout.column: 0
-                }
-                TextField {
-                    Layout.row: 0
-                    Layout.column: 1
-                }
-                TextField {
-                    Layout.row: 1
-                    Layout.column: 1
-                }
-                TextField {
-                    Layout.row: 2
-                    Layout.column: 1
-                }
+
+                Label { text: "Line 1" }
+                Label { text: "Line 2" }
+                Label { text: "Line 3" }
+
+                TextField { }
+                TextField { }
+                TextField { }
+
                 TextArea {
-                    text: "This widget spans over three rows in the grid layout"
-                    Layout.row: 0
-                    Layout.column: 2
+                    text: "This widget spans over three rows in the GridLayout.\n"
+                        + "All items in the GridLayout are implicitly positioned from top to bottom."
                     Layout.rowSpan: 3
                     Layout.fillHeight: true
                     Layout.fillWidth: true
                 }
             }
         }
-        TextField {
+        TextArea {
             id: t3
-            placeholderText: "This is a placeholder for a TextField"
+            text: "This fills the whole cell"
             width: 200
             height: 400
             Layout.fillHeight: true

@@ -150,10 +150,12 @@ public:
     void setFillHeight(bool fill);
     bool isFillHeightSet() const { return m_isFillHeightSet; }
 
-    int row() const { return m_row; }
-    void setRow(int row) { m_row = row; }
-    int column() const { return m_column; }
-    void setColumn(int column) { m_column = column; }
+    int row() const { return qMax(m_row, 0); }
+    void setRow(int row);
+    bool isRowSet() const { return m_row >= 0; }
+    int column() const { return qMax(m_column, 0); }
+    void setColumn(int column);
+    bool isColumnSet() const { return m_column >= 0; }
 
     int rowSpan() const { return m_rowSpan; }
     void setRowSpan(int span) { m_rowSpan = span; }

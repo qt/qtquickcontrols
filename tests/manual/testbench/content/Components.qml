@@ -53,6 +53,7 @@ Item {
     property Component textarea: TextArea { text: loremIpsum }
     property Component toolbar: ToolBar { }
     property Component statusbar: StatusBar { }
+    property Component label: Label {text: "I am a label" }
     property Component tableview: TableView { model: testDataModel ; TableViewColumn {title: "Column 1"}}
     property Component tabView: TabView { Repeater { model: 3 ; delegate:Tab { title: "Tab " + index } }}
     property Component scrollview: ScrollView {
@@ -126,6 +127,7 @@ Item {
             append({ name: "ScrollView",    component: scrollview});
             append({ name: "GroupBox",      component: groupbox});
             append({ name: "TabView",       component: tabView});
+            append({ name: "Label",         component: label});
         }
     }
 }

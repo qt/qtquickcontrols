@@ -47,7 +47,7 @@ import "Styles/Settings.js" as Settings
     \qmltype ComboBox
     \inqmlmodule QtQuick.Controls 1.0
     \ingroup controls
-    \brief ComboBox is a combined button and popup or drop-down list.
+    \brief Provides a drop-down list functionality.
 
     Add items to the comboBox by assigning it a ListModel, or a list of strings to the \l model property.
 

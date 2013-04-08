@@ -45,7 +45,7 @@ Style {
     property Component panel: Item {
         property int popup: styleItem.styleHint("comboboxpopup")
 
-        implicitWidth: 80
+        implicitWidth: 115
         implicitHeight: styleItem.implicitHeight
         width: parent.width
         height: parent.height

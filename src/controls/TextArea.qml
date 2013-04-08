@@ -45,7 +45,7 @@ import QtQuick.Controls.Private 1.0
     \qmltype TextArea
     \inqmlmodule QtQuick.Controls 1.0
     \ingroup controls
-    \brief TextArea displays multiple lines of editable formatted text.
+    \brief Displays multiple lines of editable formatted text.
 
     It can display both plain and rich text. For example:
 
@@ -140,7 +140,7 @@ ScrollView {
         Sets the alignment of the text within the TextArea item's width.
 
         By default, the horizontal text alignment follows the natural alignment of the text,
-        for example text that is read from left to right will be aligned to the left.
+        for example, text that is read from left to right will be aligned to the left.
 
         The valid values for \c horizontalAlignment are:
         \list
@@ -183,7 +183,7 @@ ScrollView {
     /*!
         \qmlproperty enumeration TextArea::inputMethodHints
 
-        Provides hints to the input method about the expected content of the text edit and how it
+        Provides hints to the input method about the expected content of the text edit, and how it
         should operate.
 
         The value is a bit-wise combination of flags or Qt.ImhNone if no hints are set.
@@ -232,7 +232,7 @@ ScrollView {
 
         Returns the total number of plain text characters in the TextArea item.
 
-        As this number doesn't include any formatting markup it may not be the same as the
+        As this number doesn't include any formatting markup, it may not be the same as the
         length of the string returned by the \l text property.
 
         This property can be faster than querying the length the \l text property as it doesn't
@@ -253,9 +253,9 @@ ScrollView {
         Whether the user can interact with the TextArea item.
 
         The difference from a disabled text field is that it will appear
-        to be active and text can be selected and copied.
+        to be active, and text can be selected and copied.
 
-        If this property is set to true the text cannot be edited by user interaction.
+        If this property is set to \c true, the text cannot be edited by user interaction.
 
         By default this property is \c false.
     */
@@ -296,7 +296,7 @@ ScrollView {
     /*!
         \qmlproperty bool TextArea::tabChangesFocus
 
-        This property holds whether Tab changes focus or is accepted as input.
+        This property holds whether Tab changes focus, or is accepted as input.
 
         Defaults to \c false.
     */
@@ -425,7 +425,7 @@ ScrollView {
 
         Returns the section of text that is between the \a start and \a end positions.
 
-        The returned text will be formatted according the \l textFormat property.
+        The returned text will be formatted according to the \l textFormat property.
     */
     function getFormattedText(start, end) {
         return edit.getFormattedText(start, end);
@@ -491,12 +491,12 @@ ScrollView {
             moveCursorSelection(7, TextEdit.SelectCharacters)
         \endcode
 
-        This moves the cursor to position 5, extend the selection end from 5 to 9
-        and then retract the selection end from 9 to 7, leaving the text from position 5 to 7
-        selected (the 6th and 7th characters).
+        This moves the cursor to the 5th position, extends the selection end from 5 to 9,
+        and then retracts the selection end from 9 to 7, leaving the text from the 5th
+        position to the 7th position selected (the 6th and 7th characters).
 
         The same sequence with TextEdit.SelectWords will extend the selection start to a word boundary
-        before or on position 5 and extend the selection end to a word boundary on or past position 9.
+        before or on the 5th position, and extend the selection end to a word boundary on or past the 9th position.
     */
     function moveCursorSelection(position, mode) {
         edit.moveCursorSelection(position, mode);

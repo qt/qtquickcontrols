@@ -47,7 +47,7 @@ import "Styles/Settings.js" as Settings
     \qmltype Slider
     \inqmlmodule QtQuick.Controls 1.0
     \ingroup controls
-    \brief Slider provides a vertical or horizontal slider control.
+    \brief Provides a vertical or horizontal slider control.
 
     The slider is the classic control for providing a bounded value. It lets
     the user move a slider handle along a horizontal or vertical groove
@@ -70,15 +70,15 @@ Control {
         \qmlproperty enumeration Slider::orientation
 
         This property holds the layout orientation of the slider.
-        The default value is \c Qt.Horizontal
+        The default value is \c Qt.Horizontal.
     */
     property int orientation: Qt.Horizontal
 
     /*!
         \qmlproperty double Slider::minimumValue
 
-        This property holds the minimum value of the Slider
-        The default value is \c 0.0
+        This property holds the minimum value of the Slider.
+        The default value is \c{0.0}.
     */
     property alias minimumValue: range.minimumValue
 
@@ -86,26 +86,26 @@ Control {
         \qmlproperty double Slider::maximumValue
 
         This property holds the maximum value of the Slider
-        The default value is \c 1.0
+        The default value is \c{1.0}.
     */
     property alias maximumValue: range.maximumValue
 
     /*!
         \qmlproperty bool Slider::updateValueWhileDragging
 
-        This property indicates if the current \l value should update while
-        the user is moving the slider handle or only when the button has been released.
-        The property can for instance be used if changing the slider value can be
-        time consuming.
+        This property indicates whether the current \l value should be updated while
+        the user is moving the slider handle, or only when the button has been released.
+        This property could for instance be modified if changing the slider value would turn
+        out to be too time consuming.
 
-        The default value is \c true
+        The default value is \c true.
     */
     property bool updateValueWhileDragging: true
 
     /*!
         \qmlproperty bool Slider::pressed
 
-        This property indicates if slider handle is currently being pressed
+        This property indicates if slider handle is currently being pressed.
     */
     property alias pressed: mouseArea.pressed
 
@@ -118,7 +118,7 @@ Control {
         continuous range between \l minimumValue and \l maximumValue.
 
         Any non 0 value indicates a discrete stepSize. The following example
-        will generate a slider with integer values in the range [0-5]
+        will generate a slider with integer values in the range [0-5].
 
         \qml
         Slider {
@@ -127,15 +127,15 @@ Control {
         }
         \endqml
 
-        The default value is \c 0
+        The default value is \c{0.0}.
     */
     property alias stepSize: range.stepSize
 
     /*!
         \qmlproperty double Slider::value
 
-        This property holds the current value of the Slider
-        The default value is \c 0.0
+        This property holds the current value of the Slider.
+        The default value is \c{0.0}.
     */
     property alias value: range.value
 
@@ -153,7 +153,7 @@ Control {
         This property indicates if the Slider should display tickmarks
         at step intervals.
 
-        The default value is \c false
+        The default value is \c false.
     */
     property bool tickmarksEnabled: false
 
@@ -181,7 +181,6 @@ Control {
         return Math.round(v);
     }
 
-    /* \internal */
     style: Qt.createComponent(Settings.THEME_PATH + "/SliderStyle.qml", slider)
 
     Keys.onRightPressed: value += (maximumValue - minimumValue)/10.0
@@ -248,7 +247,7 @@ Control {
         value: __horizontal ? fakeHandle.x : fakeHandle.y
     }
 
-    // During the drag, we simply ignore position set from the range, this
+    // During the drag, we simply ignore the position set from the range, this
     // means that setting a value while dragging will not "interrupt" the
     // dragging activity.
     Binding {

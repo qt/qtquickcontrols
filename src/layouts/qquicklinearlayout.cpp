@@ -42,6 +42,7 @@
 #include "qquicklinearlayout_p.h"
 #include <QtCore/qnumeric.h>
 #include "qdebug.h"
+#include <limits>
 /*!
     \qmltype RowLayout
     \instantiates QQuickRowLayout
@@ -158,10 +159,7 @@ void QQuickGridLayoutBase::updateLayoutItems()
         return;
     quickLayoutDebug() << "QQuickGridLayoutBase::updateLayoutItems";
     d->engine.deleteItems();
-    foreach (QQuickItem *child,  childItems()) {
-        if (child->isVisible())
-            insertLayoutItem(child);
-    }
+    insertLayoutItems();
 
     invalidate();
     quickLayoutDebug() << "QQuickGridLayoutBase::updateLayoutItems LEAVING";
@@ -221,41 +219,6 @@ void QQuickGridLayoutBase::geometryChanged(const QRectF &newGeometry, const QRec
         return;
     quickLayoutDebug() << "QQuickGridLayoutBase::geometryChanged" << newGeometry << oldGeometry;
     rearrange(newGeometry.size());
-}
-
-void QQuickGridLayoutBase::insertLayoutItem(QQuickItem *item)
-{
-    Q_D(QQuickGridLayoutBase);
-    if (!item) {
-        qWarning("QGraphicsGridLayout::addItem: cannot add null item");
-        return;
-    }
-    QQuickLayoutAttached *info = attachedLayoutObject(item, false);
-    int row = 0;
-    int column = 0;
-    int rowSpan = 1;
-    int columnSpan = 1;
-    Qt::Alignment alignment = 0;
-    if (info) {
-        row = info->row();
-        column = info->column();
-        rowSpan = info->rowSpan();
-        columnSpan = info->columnSpan();
-    }
-    if (row < 0 || column < 0) {
-        qWarning("QQuickGridLayoutBase::insertLayoutItemAt: invalid row/column: %d",
-                 row < 0 ? row : column);
-        return;
-    }
-    if (columnSpan < 1 || rowSpan < 1) {
-        qWarning("QQuickGridLayoutBase::addItem: invalid row span/column span: %d",
-                 rowSpan < 1 ? rowSpan : columnSpan);
-        return;
-    }
-    QQuickGridLayoutItem *layoutItem = new QQuickGridLayoutItem(item, row, column, rowSpan, columnSpan, alignment);
-    d->engine.insertItem(layoutItem, -1);
-
-    setupItemLayout(item);
 }
 
 void QQuickGridLayoutBase::removeGridItem(QGridLayoutItem *gridItem)
@@ -378,6 +341,168 @@ void QQuickGridLayout::setRowSpacing(qreal spacing)
     invalidate();
 }
 
+int QQuickGridLayout::columns() const
+{
+    Q_D(const QQuickGridLayout);
+    return d->columns;
+}
+
+void QQuickGridLayout::setColumns(int columns)
+{
+    Q_D(QQuickGridLayout);
+    if (d->columns == columns)
+        return;
+    d->columns = columns;
+    invalidate();
+    emit columnsChanged();
+}
+
+int QQuickGridLayout::rows() const
+{
+    Q_D(const QQuickGridLayout);
+    return d->rows;
+}
+
+void QQuickGridLayout::setRows(int rows)
+{
+    Q_D(QQuickGridLayout);
+    if (d->rows == rows)
+        return;
+    d->rows = rows;
+    invalidate();
+    emit rowsChanged();
+}
+
+QQuickGridLayout::Flow QQuickGridLayout::flow() const
+{
+    Q_D(const QQuickGridLayout);
+    return d->flow;
+}
+
+void QQuickGridLayout::setFlow(QQuickGridLayout::Flow flow)
+{
+    Q_D(QQuickGridLayout);
+    if (d->flow == flow)
+        return;
+    d->flow = flow;
+    invalidate();
+    emit flowChanged();
+}
+
+void QQuickGridLayout::insertLayoutItems()
+{
+    Q_D(QQuickGridLayout);
+
+    int nextCellPos[2] = {0,0};
+    int &nextColumn = nextCellPos[0];
+    int &nextRow = nextCellPos[1];
+
+    const int flowOrientation = flow();
+    int &flowColumn = nextCellPos[flowOrientation];
+    int &flowRow = nextCellPos[1 - flowOrientation];
+    int flowBound = (flowOrientation == QQuickGridLayout::LeftToRight) ? columns() : rows();
+
+    if (flowBound < 0)
+        flowBound = std::numeric_limits<int>::max();
+
+    foreach (QQuickItem *child,  childItems()) {
+        if (child->isVisible()) {
+            QQuickLayoutAttached *info = attachedLayoutObject(child, false);
+
+            // Will skip Repeater among other things
+            const bool skipItem = !info && (!child->width() || !child->height())
+                      && (!child->implicitWidth() || !child->implicitHeight());
+            if (skipItem)
+                continue;
+
+            int row = -1;
+            int column = -1;
+            int span[2] = {1,1};
+            int &columnSpan = span[0];
+            int &rowSpan = span[1];
+
+            bool invalidRowColumn = false;
+            if (info) {
+                if (info->isRowSet() || info->isColumnSet()) {
+                    // If row is specified and column is not specified (or vice versa),
+                    // the unspecified component of the cell position should default to 0
+                    row = column = 0;
+                    if (info->isRowSet()) {
+                        row = info->row();
+                        invalidRowColumn = row < 0;
+                    }
+                    if (info->isColumnSet()) {
+                        column = info->column();
+                        invalidRowColumn = column < 0;
+                    }
+                }
+                if (invalidRowColumn) {
+                    qWarning("QQuickGridLayoutBase::insertLayoutItems: invalid row/column: %d",
+                             row < 0 ? row : column);
+                    return;
+                }
+                rowSpan = info->rowSpan();
+                columnSpan = info->columnSpan();
+                if (columnSpan < 1 || rowSpan < 1) {
+                    qWarning("QQuickGridLayoutBase::addItem: invalid row span/column span: %d",
+                             rowSpan < 1 ? rowSpan : columnSpan);
+                    return;
+                }
+            }
+
+            Q_ASSERT(columnSpan >= 1);
+            Q_ASSERT(rowSpan >= 1);
+
+            if (row >= 0)
+                nextRow = row;
+            if (column >= 0)
+                nextColumn = column;
+
+            if (row < 0 || column < 0) {
+                /* if row or column is not specified, find next position by
+                   advancing in the flow direction until there is a cell that
+                   can accept the item.
+
+                   The acceptance rules are pretty simple, but complexity arises
+                   when an item requires several cells (due to spans):
+                   1. Check if the cells that the item will require
+                      does not extend beyond columns (for LeftToRight) or
+                      rows (for TopToBottom).
+                   2. Check if the cells that the item will require is not already
+                      taken by another item.
+                */
+                bool cellAcceptsItem;
+                while (true) {
+                    // Check if the item does not span beyond the layout bound
+                    cellAcceptsItem = (flowColumn + span[flowOrientation]) <= flowBound;
+
+                    // Check if all the required cells are not taken
+                    for (int rs = 0; cellAcceptsItem && rs < rowSpan; ++rs) {
+                        for (int cs = 0; cellAcceptsItem && cs < columnSpan; ++cs) {
+                            if (d->engine.itemAt(nextRow + rs, nextColumn + cs)) {
+                                cellAcceptsItem = false;
+                            }
+                        }
+                    }
+                    if (cellAcceptsItem)
+                        break;
+                    ++flowColumn;
+                    if (flowColumn == flowBound) {
+                        flowColumn = 0;
+                        ++flowRow;
+                    }
+                }
+            }
+            column = nextColumn;
+            row = nextRow;
+            QQuickGridLayoutItem *layoutItem = new QQuickGridLayoutItem(child, row, column, rowSpan, columnSpan);
+
+            d->engine.insertItem(layoutItem, -1);
+
+            setupItemLayout(child);
+        }
+    }
+}
 
 /**********************************
  **
@@ -410,23 +535,25 @@ void QQuickLinearLayout::setSpacing(qreal spacing)
     invalidate();
 }
 
-
-void QQuickLinearLayout::insertLayoutItem(QQuickItem *item)
+void QQuickLinearLayout::insertLayoutItems()
 {
     Q_D(QQuickLinearLayout);
-    const int index = d->engine.rowCount(d->orientation);
-    d->engine.insertRow(index, d->orientation);
+    foreach (QQuickItem *child,  childItems()) {
+        Q_ASSERT(child);
+        if (child->isVisible()) {
+            const int index = d->engine.rowCount(d->orientation);
+            d->engine.insertRow(index, d->orientation);
 
-    int gridRow = 0;
-    int gridColumn = index;
-    if (d->orientation == Qt::Vertical)
-        qSwap(gridRow, gridColumn);
-    QQuickGridLayoutItem *layoutItem = new QQuickGridLayoutItem(item, gridRow, gridColumn, 1, 1, 0);
-    d->engine.insertItem(layoutItem, index);
+            int gridRow = 0;
+            int gridColumn = index;
+            if (d->orientation == Qt::Vertical)
+                qSwap(gridRow, gridColumn);
+            QQuickGridLayoutItem *layoutItem = new QQuickGridLayoutItem(child, gridRow, gridColumn, 1, 1, 0);
+            d->engine.insertItem(layoutItem, index);
 
-    setupItemLayout(item);
+            setupItemLayout(child);
+        }
+    }
 }
-
-
 
 QT_END_NAMESPACE

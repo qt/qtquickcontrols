@@ -47,8 +47,7 @@ import QtQuick.Controls.Private 1.0 as Private
     \qmltype SplitView
     \inqmlmodule QtQuick.Controls 1.0
     \ingroup views
-    \brief SplitView is a component that lays out items horizontally or
-    vertically with a draggable splitter between each item.
+    \brief Lays out items with a draggable splitter between each item.
 
     SplitView is a control that lays out items horizontally or
     vertically with a draggable splitter between each item.
@@ -58,23 +57,25 @@ import QtQuick.Controls.Private 1.0 as Private
     items have been laid out according to their own width and height.
     By default, the last visible child of the SplitView will be expanding, but
     this can be changed by setting Layout.fillWidth to \c true.
-    Since the expanding item will automatically be resized to fit the extra space, it
+    As the expanding item will automatically be resized to fit the extra space, it
     will ignore explicit assignments to width and height.
 
-    A handle can belong to the item on the left/top side, or the right/bottom side, of the
-    handle. Which one depends on the expanding item. If the expanding item is to the right
-    of the handle, the handle will belong to the item on the left. If it is to the left, it
-    will belong to the item on the right. This will again control which item that gets resized
-    when the user drags a handle, and which handle that gets hidden when an item is told to hide.
+    A handle can belong to the item either on the left or top side, or on the right or bottom side:
+    \list
+    \li If the expanding item is to the right: the handle belongs to the left item.
+    \li if the expanding item is on the left: the handle belongs to the right item.
+    \endlist
 
+    This will again control which item gets resized when the user drags a handle,
+    and which handle gets hidden when an item is told to hide.
     SplitView supports setting attached Layout properties on child items, which means that you
     can control minimumWidth, minimumHeight, maximumWidth and maximumHeight (in addition
     to fillWidth/fillHeight) for each child.
 
     Example:
 
-    To create a SplitView with three items, and let
-    the center item be expanding, one could do the following:
+    To create a SplitView with three items, and let the center item be expanding, one
+    could do the following:
 
     \qml
        SplitView {
@@ -106,7 +107,7 @@ Item {
     /*!
         \qmlproperty enumeration SplitView::orientation
 
-        This property holds the orientation of the split view.
+        This property holds the orientation of the SplitView.
         The value can be either \c Qt.Horizontal or \c Qt.Vertical.
         The default value is \c Qt.Horizontal.
     */
@@ -114,7 +115,7 @@ Item {
 
     /*!
         This property holds the delegate that will be instantiated between each
-        child item. Inside the delegate, the following properties are available:
+        child item. Inside the delegate the following properties are available:
         \list
         \li int \c handleIndex - specifies the index of the splitter handle. The handle
                                  between the first and the second item will get index 0,
@@ -144,9 +145,7 @@ Item {
 
     clip: true
     Component.onCompleted: d.init()
-    /*! \internal */
     onWidthChanged: d.updateLayout()
-    /*! \internal */
     onHeightChanged: d.updateLayout()
 
     SystemPalette { id: pal }
@@ -327,8 +326,8 @@ Item {
             function moveHandle() {
                 // Moving the handle means resizing an item. Which one,
                 // left or right, depends on where the expanding item is.
-                // 'updateLayout' will override in case new width violates max/min.
-                // And 'updateLayout will be triggered when an item changes width.
+                // 'updateLayout' will be overridden in case new width violates max/min.
+                // 'updateLayout' will be triggered when an item changes width.
                 if (d.updateLayoutGuard)
                     return
 

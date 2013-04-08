@@ -297,8 +297,13 @@ void QtMenu::popup()
 
 void QtMenu::__popup(qreal x, qreal y, int atItemIndex)
 {
-    if (popupVisible())
+    if (popupVisible()) {
         __closeMenu();
+        // Mac and Windows would normally move the menu under the cursor, so we should not
+        // return here. However, very often we want to re-contextualize the menu, and this
+        // has to be done at the application level.
+        return;
+    }
 
     setPopupVisible(true);
 

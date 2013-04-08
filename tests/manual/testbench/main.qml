@@ -70,7 +70,7 @@ ApplicationWindow {
             height: parent.height
             ComboBox {
                 id: selector
-                width: 200
+                Layout.preferredWidth: 140
                 model: components.componentModel
                 textRole: "name"
             }
@@ -184,6 +184,7 @@ ApplicationWindow {
                                     switch (substr) {
 
                                     case "ActiveFocusOnPress":
+                                    case "ActiveFocusOnTab":
                                     case "Enabled":
                                     case "Visible":
                                     case "Checkable":

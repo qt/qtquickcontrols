@@ -54,6 +54,7 @@ Window {
 
     width: 400
     height: 200
+    flags: Qt.Dialog
 
     signal closed
     signal accepted

@@ -82,7 +82,7 @@ FocusScope {
     default property alias data: stack.data
 
     /*! Adds a new tab page with title with and optional Component.
-        \return the newly added tab
+        Returns the newly added tab.
     */
     function addTab(title, component) {
         var tab = tabcomp.createObject(this);
@@ -95,7 +95,7 @@ FocusScope {
     }
 
     /*! Inserts a new tab with title at index, with an optional Component.
-        \return the newly added tab
+        Returns the newly added tab.
     */
     function insertTab(index, title, component) {
         var tab = tabcomp.createObject(this);
@@ -107,7 +107,7 @@ FocusScope {
         return tab
     }
 
-    /*! Removes and destroys a tab at the given index */
+    /*! Removes and destroys a tab at the given \a index. */
     function removeTab(index) {
         var tab = __tabs[index]
         __tabs.splice(index, 1);
@@ -117,7 +117,7 @@ FocusScope {
         __setOpacities()
     }
 
-    /*! Returns the \l Tab item at index */
+    /*! Returns the \l Tab item at \a index. */
     function tabAt(index) {
         return __tabs[index]
     }
@@ -131,7 +131,6 @@ FocusScope {
     /*! \internal */
     property var __styleItem: loader.item
 
-    /*! \internal */
     onCurrentIndexChanged: __setOpacities()
 
     /*! \internal */
@@ -188,7 +187,6 @@ FocusScope {
             property string style
             property int baseOverlap
 
-            /*! \internal */
             Component.onCompleted: {
                 for (var i = 0 ; i < stack.children.length ; ++i) {
                     if (stack.children[i].Accessible.role === Accessible.PageTab)
