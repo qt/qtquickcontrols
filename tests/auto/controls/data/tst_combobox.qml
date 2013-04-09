@@ -224,5 +224,91 @@ TestCase {
         verify(comboBox.activeFocus)
         comboBox.destroy()
     }
+
+    function test_spaceKey(){
+        if (Qt.platform.os === "mac")
+            skip("When the menu pops up on OS X, it does not return and the test fails after time out")
+
+        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.0 ; ComboBox { model: 4 }', container, '');
+        var menuIndex = getMenuIndex(comboBox)
+        verify(menuIndex !== -1)
+        comboBox.forceActiveFocus()
+        verify(!comboBox.data[menuIndex].__popupVisible)
+        keyPress(Qt.Key_Space)
+        verify(comboBox.data[menuIndex].__popupVisible)
+
+        // close the menu before destroying the combobox
+        comboBox.data[menuIndex].__closeMenu()
+        verify(!comboBox.data[menuIndex].__popupVisible)
+
+        comboBox.destroy()
+    }
+
+    function test_currentIndexInMenu() {
+        if (Qt.platform.os === "mac")
+            skip("When the menu pops up on OS X, it does not return and the test fails after time out")
+
+        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.0 ; ComboBox { model: 4 }', container, '');
+        var menuIndex = getMenuIndex(comboBox)
+        comboBox.currentIndex = 2
+        verify(menuIndex !== -1)
+        comboBox.forceActiveFocus()
+        keyPress(Qt.Key_Space)
+        verify(comboBox.data[menuIndex].__popupVisible)
+        compare(comboBox.data[menuIndex].__currentIndex, comboBox.currentIndex)
+        for (var i = 0; i < comboBox.data[menuIndex].items.length; i++)
+        {
+            if ( i !== comboBox.currentIndex)
+                verify(!comboBox.data[menuIndex].items[i].checked)
+            else
+                verify(comboBox.data[menuIndex].items[i].checked)
+        }
+        // close the menu before destroying the combobox
+        comboBox.data[menuIndex].__closeMenu()
+        verify(!comboBox.data[menuIndex].__popupVisible)
+        comboBox.destroy()
+    }
+
+    function test_addRemoveItemsInModel_QTBUG_30379() {
+        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.0 ; ComboBox {}', testCase, '');
+        comboBox.textRole = "text"
+        comboBox.model = model
+        var menuIndex = getMenuIndex(comboBox)
+        verify(menuIndex !== -1)
+        compare(comboBox.model.count, 3)
+        compare(comboBox.data[menuIndex].items.length, 3)
+        comboBox.model.append({ text: "Tomato", color: "Red" })
+        compare(comboBox.model.count, 4)
+        expectFailContinue('', 'QTBUG-30379')
+        compare(comboBox.data[menuIndex].items.length, 4)
+        comboBox.model.remove(2, 2)
+        compare(comboBox.model.count, 2)
+        expectFailContinue('', 'QTBUG-30379')
+        compare(comboBox.data[menuIndex].items.length, 2)
+        comboBox.destroy()
+    }
+
+    function test_width_QTBUG_30377() {
+        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.0 ; ComboBox { model: ["A", "BB", "CCCCC"] }', testCase, '');
+        compare(comboBox.currentIndex, 0)
+        var initialWidth = comboBox.width
+        comboBox.currentIndex = 1
+        compare(comboBox.width, initialWidth)
+        comboBox.currentIndex = 2
+        compare(comboBox.width, initialWidth)
+        comboBox.destroy()
+    }
+
+    function getMenuIndex(control) {
+        var index = -1
+        for (var i = 0; i < control.data.length; i++)
+        {
+            if (control.data[i].objectName === 'popup') {
+                index = i
+                break
+            }
+        }
+        return index
+    }
 }
 }

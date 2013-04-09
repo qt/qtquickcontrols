@@ -126,6 +126,7 @@ Control {
 
     Menu {
         id: popup
+        objectName: "popup"
 
         style: isPopup ? __style.popupStyle : __style.dropDownStyle
 
