@@ -42,6 +42,9 @@
 #include "qquickaction_p.h"
 #include "qquickexclusivegroup_p.h"
 
+#include <QtGui/qguiapplication.h>
+#include <QtQuick/qquickitem.h>
+#include <QtQuick/qquickwindow.h>
 #include <private/qguiapplication_p.h>
 #include <qqmlfile.h>
 
@@ -186,12 +189,27 @@ void QQuickAction::setText(const QString &text)
     emit textChanged();
 }
 
-bool qShortcutContextMatcher(QObject *, Qt::ShortcutContext)
+bool qShortcutContextMatcher(QObject *o, Qt::ShortcutContext context)
 {
-    // the context matching is only interesting for non window-wide shortcuts
-    // it might be interesting to check for the action's window being active
-    // we currently only support the window wide focus so we can safely ignore this
-    return true;
+    switch (context) {
+    case Qt::ApplicationShortcut:
+        return true;
+    case Qt::WindowShortcut: {
+        QObject *w = o;
+        while (w && !w->isWindowType()) {
+            w = w->parent();
+            if (QQuickItem * item = qobject_cast<QQuickItem*>(w))
+                w = item->window();
+        }
+        if (w && w == QGuiApplication::focusWindow())
+            return true;
+    }
+    case Qt::WidgetShortcut:
+    case Qt::WidgetWithChildrenShortcut:
+        break;
+    }
+
+    return false;
 }
 
 QString QQuickAction::shortcut() const
