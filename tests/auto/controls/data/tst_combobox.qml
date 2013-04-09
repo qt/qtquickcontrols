@@ -54,6 +54,15 @@ TestCase {
     height:400
 
     property var model
+
+    Timer {
+        id: timer
+        running: true
+        repeat: false
+        interval: 500
+        onTriggered: testCase.keyPress(Qt.Key_Escape)
+    }
+
     function init() {
         model = Qt.createQmlObject("import QtQuick 2.1; ListModel {}", testCase, '')
         model.append({ text: "Banana", color: "Yellow" })
@@ -191,6 +200,29 @@ TestCase {
         verify(!control.control2.activeFocus)
         verify(!control.control3.activeFocus)
         control.destroy()
+    }
+
+    function test_activeFocusOnPress(){
+        if (Qt.platform.os === "mac")
+            skip("When the menu pops up on OS X, it does not return and the test fails after time out")
+
+        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.0 ; ComboBox { model: 4 }', container, '');
+        comboBox.activeFocusOnPress = false
+        verify(!comboBox.activeFocus)
+        if (Qt.platform.os === "mac") // on mac when the menu open, the __popup function does not return
+            timer.start()
+        else // two mouse clicks to open and close the popup menu
+            mouseClick(comboBox, comboBox.x + 1, comboBox.y + 1)
+        mouseClick(comboBox, comboBox.x + 1, comboBox.y + 1)
+        verify(!comboBox.activeFocus)
+        comboBox.activeFocusOnPress = true
+        if (Qt.platform.os === "mac") // on mac when the menu open, the __popup function does not return
+            timer.start()
+        else // two mouse clicks to open and close the popup menu
+            mouseClick(comboBox, comboBox.x + 1, comboBox.y + 1)
+        mouseClick(comboBox, comboBox.x + 1, comboBox.y + 1)
+        verify(comboBox.activeFocus)
+        comboBox.destroy()
     }
 }
 }

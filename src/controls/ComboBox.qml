@@ -85,6 +85,10 @@ Control {
     /*! The text of the currently selected item in the ComboBox. */
     readonly property alias currentText: popup.selectedText
 
+    /*! This property specifies whether the combobox should gain active focus when pressed.
+        The default value is \c false. */
+    property bool activeFocusOnPress: false
+
     /*! \internal */
     readonly property bool __pressed: mouseArea.pressed && mouseArea.containsMouse || popup.__popupVisible
     /*! \internal */
@@ -100,7 +104,11 @@ Control {
         id: mouseArea
         anchors.fill: parent
         hoverEnabled: true
-        onPressedChanged: if (pressed) popup.show()
+        onPressed: {
+            if (comboBox.activeFocusOnPress)
+                forceActiveFocus()
+            popup.show()
+        }
     }
 
     Component.onCompleted: {
