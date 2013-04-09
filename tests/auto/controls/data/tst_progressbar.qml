@@ -59,6 +59,7 @@ TestCase {
 
         progressBar.minimumValue = 7
         compare(progressBar.value, 7)
+        progressBar.destroy()
     }
 
     function test_maximumvalue() {
@@ -72,6 +73,7 @@ TestCase {
 
         progressBar.maximumValue = 8
         compare(progressBar.value, 8)
+        progressBar.destroy()
     }
 
     function test_invalidMinMax() {
@@ -94,25 +96,31 @@ TestCase {
 
         var progressBar2 = Qt.createQmlObject('import QtQuick.Controls 1.0; ProgressBar {minimumValue: 10; maximumValue: 4; value: 5}', testCase, '');
         compare(progressBar.value, progressBar.minimumValue)
+        progressBar.destroy()
+        progressBar2.destroy()
     }
 
     function test_initialization_order()
     {
-        var spinbox = Qt.createQmlObject("import QtQuick.Controls 1.0; ProgressBar {maximumValue: 100; value: 50}",
+        var progressBar = Qt.createQmlObject("import QtQuick.Controls 1.0; ProgressBar {maximumValue: 100; value: 50}",
                                          testCase, '')
-        compare(spinbox.value, 50);
+        compare(progressBar.value, 50);
 
-        spinbox = Qt.createQmlObject("import QtQuick.Controls 1.0; ProgressBar {" +
+        var progressBar2 = Qt.createQmlObject("import QtQuick.Controls 1.0; ProgressBar {" +
                                          "value: 50; maximumValue: 100}",
                                          testCase, '')
-        compare(spinbox.value, 50);
+        compare(progressBar2.value, 50);
 
-        spinbox = Qt.createQmlObject("import QtQuick.Controls 1.0; ProgressBar { minimumValue: -50 ; value:-10}",
+        var progressBar3 = Qt.createQmlObject("import QtQuick.Controls 1.0; ProgressBar { minimumValue: -50 ; value:-10}",
                                          testCase, '')
-        compare(spinbox.value, -10);
+        compare(progressBar3.value, -10);
 
-        spinbox = Qt.createQmlObject("import QtQuick.Controls 1.0; ProgressBar { value:-10; minimumValue: -50}",
+        var progressBar4 = Qt.createQmlObject("import QtQuick.Controls 1.0; ProgressBar { value:-10; minimumValue: -50}",
                                          testCase, '')
-        compare(spinbox.value, -10);
+        compare(progressBar4.value, -10);
+        progressBar.destroy()
+        progressBar2.destroy()
+        progressBar3.destroy()
+        progressBar4.destroy()
     }
 }

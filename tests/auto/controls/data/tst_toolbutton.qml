@@ -55,6 +55,7 @@ TestCase {
 
     function test_createToolButton() {
         var toolButton = Qt.createQmlObject('import QtQuick.Controls 1.0; ToolButton {}', testCase, '');
+        toolButton.destroy()
     }
 
     function test_activeFocusOnPress(){
@@ -67,6 +68,7 @@ TestCase {
         verify(!control.activeFocus)
         mouseClick(control, 30, 30)
         verify(control.activeFocus)
+        control.destroy()
     }
 }
 }

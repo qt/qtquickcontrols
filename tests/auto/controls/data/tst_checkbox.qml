@@ -64,6 +64,9 @@ Item {
         }
 
         function cleanup() {
+            if (checkBox !== null) {
+                checkBox.destroy()
+            }
             signalSpy.clear();
         }
 

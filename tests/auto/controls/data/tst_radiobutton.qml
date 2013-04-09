@@ -64,6 +64,9 @@ Item {
         }
 
         function cleanup() {
+            if (radioButton !== null) {
+                radioButton.destroy()
+            }
             signalSpy.clear();
         }
 
@@ -170,6 +173,7 @@ Item {
             compare(signalSpy.count, 1);
             compare(root.radioButton1.checked, true);
             compare(root.radioButton2.checked, false);
+            root.destroy()
         }
 
         function test_activeFocusOnPress(){

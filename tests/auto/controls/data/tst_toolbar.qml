@@ -50,6 +50,7 @@ TestCase {
 
     function test_createToolBar() {
         var toolBar = Qt.createQmlObject('import QtQuick.Controls 1.0; ToolBar {}', testCase, '');
+        toolBar.destroy()
     }
 }
 

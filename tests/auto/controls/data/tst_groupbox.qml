@@ -73,6 +73,11 @@ TestCase {
         groupBox = groupboxComponent.createObject(testCase)
     }
 
+    function cleanup() {
+        if (groupBox !== 0)
+            groupBox.destroy()
+    }
+
     function test_checkable() {
         compare(groupBox.checkable, false)
         compare(groupBox.child1.enabled, true)

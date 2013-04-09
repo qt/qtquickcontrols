@@ -56,6 +56,7 @@ TestCase {
     function test_isDefault() {
         var tmp = Qt.createQmlObject('import QtQuick.Controls 1.0; Button {id: button1}', testCase, '');
         compare(tmp.isDefault, false);
+        tmp.destroy()
     }
 
     function test_text() {
@@ -66,6 +67,8 @@ TestCase {
 
         var tmp2 = Qt.createQmlObject('import QtQuick.Controls 1.0; Button {id: button2_2; text: "Hello"}', testCase, '');
         compare(tmp2.text, "Hello");
+        tmp1.destroy()
+        tmp2.destroy()
     }
 
     SignalSpy {
@@ -102,6 +105,7 @@ TestCase {
         clickSpy.target = tmp.button
         tmp.testAction.trigger()
         compare(clickSpy.count, 1)
+        tmp.destroy()
     }
 
     function test_activeFocusOnPress(){
@@ -114,6 +118,7 @@ TestCase {
         verify(!control.activeFocus)
         mouseClick(control, 30, 30)
         verify(control.activeFocus)
+        control.destroy()
     }
 }
 }

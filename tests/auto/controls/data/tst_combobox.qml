@@ -56,6 +56,11 @@ TestCase {
         model.append({ text: "Coconut", color: "Brown" })
     }
 
+    function cleanup() {
+        if (model !== 0)
+            model.destroy()
+    }
+
     function test_keyupdown() {
         var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.0 ; ComboBox { model: 4 }', testCase, '');
 
@@ -69,6 +74,7 @@ TestCase {
         compare(comboBox.currentIndex, 2)
         keyPress(Qt.Key_Up)
         compare(comboBox.currentIndex, 1)
+        comboBox.destroy()
     }
 
     function test_textrole() {
@@ -79,6 +85,7 @@ TestCase {
         compare(comboBox.currentText, "Banana")
         comboBox.textRole = "color"
         compare(comboBox.currentText, "Yellow")
+        comboBox.destroy()
     }
 
     function test_arraymodel() {
@@ -92,6 +99,7 @@ TestCase {
         comboBox.model = arrayModel
         compare(comboBox.currentIndex, 0)
         compare(comboBox.currentText, "Banana")
+        comboBox.destroy()
     }
 
     function test_arraymodelwithtextrole() {
@@ -108,5 +116,6 @@ TestCase {
         compare(comboBox.currentText, "Banana")
         comboBox.textRole = "color"
         compare(comboBox.currentText, "Yellow")
+        comboBox.destroy()
     }
 }

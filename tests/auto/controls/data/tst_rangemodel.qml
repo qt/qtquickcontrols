@@ -56,8 +56,6 @@ TestCase {
     }
 
     function init() {
-        if (range !== undefined)
-            range.destroy()
         var component = Qt.createComponent("rangemodel/rangemodel.qml");
         compare(component.status, Component.Ready)
         range =  component.createObject(testCase);
@@ -65,6 +63,8 @@ TestCase {
     }
 
     function cleanup() {
+        if (range !== 0)
+            range.destroy()
         spy.clear()
     }
 

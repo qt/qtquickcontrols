@@ -81,6 +81,7 @@ TestCase {
 
         scrollView.flickableItem.contentX = 300
         verify(scrollView.flickableItem.contentX === 300, "ContentX not set")
+        scrollView.destroy()
     }
 
     function test_viewport() {
@@ -104,5 +105,6 @@ TestCase {
         scrollView.frameVisible = true
         verify(scrollView.frameVisible, "Frame should be true")
         verify(scrollView.viewport.width < prevViewportWidth, "Viewport should be smaller with frame")
+        scrollView.destroy()
     }
 }

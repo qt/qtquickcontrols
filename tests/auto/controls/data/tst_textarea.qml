@@ -63,6 +63,7 @@ TestCase {
 
         textarea.append("name");
         compare(textarea.text, "my\nname")
+        textarea.destroy()
     }
 
     function test_activeFocusOnPress(){
@@ -75,6 +76,7 @@ TestCase {
         verify(!control.activeFocus)
         mouseClick(control, 30, 30)
         verify(control.activeFocus)
+        control.destroy()
     }
 }
 }

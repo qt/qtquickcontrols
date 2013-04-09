@@ -87,6 +87,7 @@ Item {
             compare(lay.r1.width, 5);
             compare(lay.r2.x, 5);
             compare(lay.r2.width, 25);
+            lay.destroy()
         }
 
         function test_allExpanding() {
@@ -122,6 +123,7 @@ Item {
             tmp.width = 30
             compare(tmp.r1.width, 10);
             compare(tmp.r2.width, 20);
+            tmp.destroy()
         }
 
         function test_initialNestedLayouts() {
@@ -159,6 +161,7 @@ Item {
             tryCompare(col.row, 'width', 200);
             tryCompare(col.row.r1, 'width', 50);
             tryCompare(col.row.r2, 'width', 150);
+            col.destroy()
         }
 
         function test_implicitSize() {
@@ -191,6 +194,7 @@ Item {
             var row = Qt.createQmlObject(test_layoutStr, container, '');
             compare(row.implicitWidth, 50 + 10 + 40);
             compare(row.implicitHeight, 6);
+            row.destroy()
         }
 
         function test_countGeometryChanges() {
@@ -238,6 +242,7 @@ Item {
             compare(col.row.r1.counter, 1);
             compare(col.row.r2.counter, 1);
             verify(col.row.counter <= 2);
+            col.destroy()
         }
     }
 }

@@ -59,6 +59,7 @@ Item {
 
             slider.orientation = Qt.Vertical;
             verify(slider.height > slider.width)
+            slider.destroy()
         }
 
         function test_minimumvalue() {
@@ -69,6 +70,7 @@ Item {
             slider.value = 2
             compare(slider.minimumValue, 5)
             compare(slider.value, 5)
+            slider.destroy()
         }
 
         function test_maximumvalue() {
@@ -79,6 +81,7 @@ Item {
             slider.value = 15
             compare(slider.maximumValue, 10)
             compare(slider.value, 10)
+            slider.destroy()
         }
 
         function test_rightLeftKeyPressed() {
@@ -94,6 +97,7 @@ Item {
             compare(slider.value, 1 + keyStep * 2)
             keyPress(Qt.Key_Left)
             compare(slider.value, 1 + keyStep)
+            slider.destroy()
         }
 
         function test_mouseWheel() {
@@ -136,7 +140,7 @@ Item {
             slider.value = 0
             mouseWheel(slider, 5, 5, 40 * ratio, 0)
             compare(slider.value, slider.maximumValue)
-
+            slider.destroy()
         }
 
         function test_activeFocusOnPress(){
@@ -149,6 +153,7 @@ Item {
             verify(!control.activeFocus)
             mousePress(control, 30, 30)
             verify(control.activeFocus)
+            control.destroy()
         }
     }
 }

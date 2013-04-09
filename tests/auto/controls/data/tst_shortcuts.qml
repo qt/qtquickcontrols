@@ -60,6 +60,11 @@ TestCase {
         rootObject.forceActiveFocus();
     }
 
+    function cleanup() {
+        if (rootObject !== null)
+            rootObject.destroy()
+    }
+
     function test_shortcut_data() {
         return [
             { key: Qt.Key_A, modifier: Qt.NoModifier, expected: "a pressed" },

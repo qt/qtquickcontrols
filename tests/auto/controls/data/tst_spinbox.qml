@@ -68,6 +68,7 @@ Item {
             compare(spinbox.value, spinbox.maximumValue)
             keyPress(Qt.Key_Up)
             compare(spinbox.value, spinbox.maximumValue)
+            spinbox.destroy()
         }
 
         function test_decrement_key() {
@@ -83,6 +84,7 @@ Item {
             compare(spinbox.value, spinbox.minimumValue)
             keyPress(Qt.Key_Down)
             compare(spinbox.value, spinbox.minimumValue)
+            spinbox.destroy()
         }
 
         function test_increment_mouse() {
@@ -98,6 +100,7 @@ Item {
             compare(spinbox.value, spinbox.maximumValue)
             mouseClick(spinbox, upCoord.x, upCoord.y, Qt.LeftButton)
             compare(spinbox.value, spinbox.maximumValue)
+            spinbox.destroy()
         }
 
         function test_decrement_mouse() {
@@ -113,6 +116,7 @@ Item {
             compare(spinbox.value, spinbox.minimumValue)
             mouseClick(spinbox, downCoord.x, downCoord.y, Qt.LeftButton)
             compare(spinbox.value, spinbox.minimumValue)
+            spinbox.destroy()
         }
 
         function test_move_mouse() {
@@ -137,6 +141,7 @@ Item {
             compare(spinbox.__containsMouse, false)
             compare(spinbox.__upHovered, false)
             compare(spinbox.__downHovered, false)
+            spinbox.destroy()
         }
 
         function test_maxvalue() {
@@ -153,6 +158,7 @@ Item {
             spinbox.minimumValue = 0;
             spinbox.value = 10;
             compare(spinbox.value, 5)
+            spinbox.destroy()
         }
 
         function test_minvalue() {
@@ -169,6 +175,7 @@ Item {
             spinbox.minimumValue = 6;
             spinbox.value = 0;
             compare(spinbox.value, 6)
+            spinbox.destroy()
         }
 
         function test_nanvalue() {
@@ -178,6 +185,7 @@ Item {
             spinbox.value = NaN
             compare(spinbox.value, NaN)
             compare(spinbox.__text, "nan")
+            spinbox.destroy()
         }
 
         function test_decimals() {
@@ -204,6 +212,7 @@ Item {
             spinbox.decimals = 6
             compare(spinbox.value, 1.00001)
             compare(spinbox.__text, "1.000010")
+            spinbox.destroy()
         }
 
         function test_stepsize()
@@ -222,6 +231,7 @@ Item {
             var previousValue = spinbox.value
             keyPress(Qt.Key_Down)
             compare(spinbox.value, previousValue - spinbox.stepSize)
+            spinbox.destroy()
         }
 
         function test_negativeStepSize()
@@ -253,6 +263,7 @@ Item {
             spinbox.value = 49
             keyPress(Qt.Key_Down)
             compare(spinbox.value, spinbox.maximumValue)
+            spinbox.destroy()
         }
 
         function test_initialization_order()
@@ -262,9 +273,11 @@ Item {
                                              container, '')
             compare(spinbox.value, 1000);
 
-            spinbox = Qt.createQmlObject('import QtQuick.Controls 1.0; SpinBox { minimumValue: -1000 ; value:-1000}',
+            var spinbox2 = Qt.createQmlObject('import QtQuick.Controls 1.0; SpinBox { minimumValue: -1000 ; value:-1000}',
                                              container, '')
-            compare(spinbox.value, -1000);
+            compare(spinbox2.value, -1000);
+            spinbox.destroy()
+            spinbox2.destroy()
         }
 
         function test_activeFocusOnPress(){
@@ -277,6 +290,7 @@ Item {
             verify(!spinbox.activeFocus)
             mouseClick(spinbox, 30, 30)
             verify(spinbox.activeFocus)
+            spinbox.destroy()
         }
 
         function test_ImplicitSize() // Verify if we correctly grow and shrink depending on contents
@@ -312,6 +326,7 @@ Item {
             oldSize = spinbox.implicitWidth
             spinbox.decimals = 4
             verify(oldSize < spinbox.implicitWidth)
+            spinbox.destroy()
         }
 
         function setCoordinates(item)

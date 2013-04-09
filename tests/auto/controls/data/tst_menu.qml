@@ -82,7 +82,8 @@ TestCase {
     function cleanup() {
         menuSpy.clear()
         menuItemSpy.clear()
-        menu.destroy()
+        if (menu !== 0)
+            menu.destroy()
     }
 
     function test_creation() {
