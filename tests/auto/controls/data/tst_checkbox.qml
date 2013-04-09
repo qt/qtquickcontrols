@@ -233,5 +233,78 @@ Item {
             mouseClick(checkBox, checkBox.x + 1, checkBox.y + 1)
             verify(checkBox.activeFocus)
         }
+
+        function test_activeFocusOnTab() {
+            checkBox.destroy()
+            wait(0) //QTBUG-30523 so processEvents is called
+            var test_control = 'import QtQuick 2.1; \
+            import QtQuick.Controls 1.0;            \
+            Item {                                  \
+                width: 200;                         \
+                height: 200;                        \
+                property alias control1: _control1; \
+                property alias control2: _control2; \
+                property alias control3: _control3; \
+                CheckBox  {                         \
+                    y: 20;                          \
+                    id: _control1;                  \
+                    activeFocusOnTab: true;         \
+                    text: "control1"                \
+                }                                   \
+                CheckBox  {                         \
+                    y: 70;                          \
+                    id: _control2;                  \
+                    activeFocusOnTab: false;        \
+                    text: "control2"                \
+                }                                   \
+                CheckBox  {                         \
+                    y: 120;                         \
+                    id: _control3;                  \
+                    activeFocusOnTab: true;         \
+                    text: "control3"                \
+                }                                   \
+            }                                       '
+
+            var control = Qt.createQmlObject(test_control, container, '')
+            control.control1.forceActiveFocus()
+            verify(control.control1.activeFocus)
+            verify(!control.control2.activeFocus)
+            verify(!control.control3.activeFocus)
+            keyPress(Qt.Key_Tab)
+            verify(!control.control1.activeFocus)
+            verify(!control.control2.activeFocus)
+            verify(control.control3.activeFocus)
+            keyPress(Qt.Key_Tab)
+            verify(control.control1.activeFocus)
+            verify(!control.control2.activeFocus)
+            verify(!control.control3.activeFocus)
+            keyPress(Qt.Key_Tab, Qt.ShiftModifier)
+            verify(!control.control1.activeFocus)
+            verify(!control.control2.activeFocus)
+            verify(control.control3.activeFocus)
+            keyPress(Qt.Key_Tab, Qt.ShiftModifier)
+            verify(control.control1.activeFocus)
+            verify(!control.control2.activeFocus)
+            verify(!control.control3.activeFocus)
+            control.control2.activeFocusOnTab = true
+            control.control3.activeFocusOnTab = false
+            keyPress(Qt.Key_Tab)
+            verify(!control.control1.activeFocus)
+            verify(control.control2.activeFocus)
+            verify(!control.control3.activeFocus)
+            keyPress(Qt.Key_Tab)
+            verify(control.control1.activeFocus)
+            verify(!control.control2.activeFocus)
+            verify(!control.control3.activeFocus)
+            keyPress(Qt.Key_Tab, Qt.ShiftModifier)
+            verify(!control.control1.activeFocus)
+            verify(control.control2.activeFocus)
+            verify(!control.control3.activeFocus)
+            keyPress(Qt.Key_Tab, Qt.ShiftModifier)
+            verify(control.control1.activeFocus)
+            verify(!control.control2.activeFocus)
+            verify(!control.control3.activeFocus)
+            control.destroy()
+        }
     }
 }
