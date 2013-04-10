@@ -219,6 +219,7 @@ ApplicationWindow {
                                     case "MaximumValue":
                                     case "MinimumValue":
                                     case "Decimals":
+                                    case "CurrentIndex":
                                         layout = layouts.intLayout
                                         typeName = "Int"
                                         break;
@@ -237,6 +238,7 @@ ApplicationWindow {
                                     case "ActiveFocus":
                                     case "ImplicitWidth":
                                     case "Pressed":
+                                    case "CurrentText":
                                         layout = layouts.readonlyLayout
                                         typeName = "ReadOnly"
                                         break;
