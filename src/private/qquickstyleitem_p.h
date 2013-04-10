@@ -39,8 +39,8 @@
 **
 ****************************************************************************/
 
-#ifndef QSTYLEITEM_P_H
-#define QSTYLEITEM_P_H
+#ifndef QQUICKSTYLEITEM_P_H
+#define QQUICKSTYLEITEM_P_H
 
 #include <QtGui/qimage.h>
 #include <QtQuick/qquickitem.h>
@@ -50,7 +50,7 @@ QT_BEGIN_NAMESPACE
 class QWidget;
 class QStyleOption;
 
-class QStyleItem: public QQuickItem
+class QQuickStyleItem: public QQuickItem
 {
     Q_OBJECT
 
@@ -82,8 +82,8 @@ class QStyleItem: public QQuickItem
     Q_PROPERTY( int contentHeight READ contentHeight() WRITE setContentHeight NOTIFY contentHeightChanged)
 
 public:
-    QStyleItem(QQuickItem *parent = 0);
-    ~QStyleItem();
+    QQuickStyleItem(QQuickItem *parent = 0);
+    ~QQuickStyleItem();
 
     enum Type {
         Undefined,
@@ -255,4 +255,4 @@ protected:
 
 QT_END_NAMESPACE
 
-#endif // QSTYLEITEM_P_H
+#endif // QQUICKSTYLEITEM_P_H

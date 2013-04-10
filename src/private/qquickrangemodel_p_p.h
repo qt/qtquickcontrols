@@ -39,8 +39,8 @@
 **
 ****************************************************************************/
 
-#ifndef QRANGEMODEL_P_P_H
-#define QRANGEMODEL_P_P_H
+#ifndef QQUICKRANGEMODEL_P_P_H
+#define QQUICKRANGEMODEL_P_P_H
 
 //
 //  W A R N I N G
@@ -53,16 +53,16 @@
 // We mean it.
 //
 
-#include "qrangemodel_p.h"
+#include "qquickrangemodel_p.h"
 
 QT_BEGIN_NAMESPACE
 
-class QRangeModelPrivate
+class QQuickRangeModelPrivate
 {
-    Q_DECLARE_PUBLIC(QRangeModel)
+    Q_DECLARE_PUBLIC(QQuickRangeModel)
 public:
-    QRangeModelPrivate(QRangeModel *qq);
-    virtual ~QRangeModelPrivate();
+    QQuickRangeModelPrivate(QQuickRangeModel *qq);
+    virtual ~QQuickRangeModelPrivate();
 
     void init();
 
@@ -71,7 +71,7 @@ public:
 
     uint inverted : 1;
 
-    QRangeModel *q_ptr;
+    QQuickRangeModel *q_ptr;
 
     inline qreal effectivePosAtMin() const {
         return inverted ? posatmax : posatmin;
@@ -108,4 +108,4 @@ public:
 
 QT_END_NAMESPACE
 
-#endif // QRANGEMODEL_P_P_H
+#endif // QQUICKRANGEMODEL_P_P_H

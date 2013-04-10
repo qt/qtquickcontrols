@@ -39,17 +39,17 @@
 **
 ****************************************************************************/
 
-#ifndef QRANGEMODEL_P_H
-#define QRANGEMODEL_P_H
+#ifndef QQUICKRANGEMODEL_P_H
+#define QQUICKRANGEMODEL_P_H
 
 #include <QtCore/qobject.h>
 #include <QtQml/qqml.h>
 
 QT_BEGIN_NAMESPACE
 
-class QRangeModelPrivate;
+class QQuickRangeModelPrivate;
 
-class QRangeModel : public QObject
+class QQuickRangeModel : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(qreal value READ value WRITE setValue NOTIFY valueChanged USER true)
@@ -62,8 +62,8 @@ class QRangeModel : public QObject
     Q_PROPERTY(bool inverted READ inverted WRITE setInverted NOTIFY invertedChanged)
 
 public:
-    QRangeModel(QObject *parent = 0);
-    virtual ~QRangeModel();
+    QQuickRangeModel(QObject *parent = 0);
+    virtual ~QQuickRangeModel();
 
     void setRange(qreal min, qreal max);
     void setPositionRange(qreal min, qreal max);
@@ -112,17 +112,17 @@ Q_SIGNALS:
     void positionAtMaximumChanged(qreal max);
 
 protected:
-    QRangeModel(QRangeModelPrivate &dd, QObject *parent);
-    QRangeModelPrivate* d_ptr;
+    QQuickRangeModel(QQuickRangeModelPrivate &dd, QObject *parent);
+    QQuickRangeModelPrivate* d_ptr;
 
 private:
-    Q_DISABLE_COPY(QRangeModel)
-    Q_DECLARE_PRIVATE(QRangeModel)
+    Q_DISABLE_COPY(QQuickRangeModel)
+    Q_DECLARE_PRIVATE(QQuickRangeModel)
 
 };
 
 QT_END_NAMESPACE
 
-QML_DECLARE_TYPE(QRangeModel)
+QML_DECLARE_TYPE(QQuickRangeModel)
 
-#endif // QRANGEMODEL_P_H
+#endif // QQUICKRANGEMODEL_P_H

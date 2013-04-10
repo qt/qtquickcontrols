@@ -39,7 +39,7 @@
 **
 ****************************************************************************/
 
-#include "qstyleitem_p.h"
+#include "qquickstyleitem_p.h"
 
 #include <qstringbuilder.h>
 #include <qpainter.h>
@@ -95,10 +95,10 @@ CGContextRef qt_mac_cg_context(const QPaintDevice *pdev)
 
 #endif
 
-class QStyleNode : public QSGSimpleTextureNode
+class QQuickStyleNode : public QSGSimpleTextureNode
 {
 public:
-    ~QStyleNode()
+    ~QQuickStyleNode()
     {
         delete texture();
     }
@@ -110,7 +110,7 @@ public:
     }
 };
 
-QStyleItem::QStyleItem(QQuickItem *parent)
+QQuickStyleItem::QQuickStyleItem(QQuickItem *parent)
     : QQuickItem(parent),
     m_styleoption(0),
     m_itemType(Undefined),
@@ -176,13 +176,13 @@ QStyleItem::QStyleItem(QQuickItem *parent)
     connect(this, SIGNAL(widthChanged()), this, SLOT(updateRect()));
 }
 
-QStyleItem::~QStyleItem()
+QQuickStyleItem::~QQuickStyleItem()
 {
     delete m_styleoption;
     m_styleoption = 0;
 }
 
-void QStyleItem::initStyleOption()
+void QQuickStyleItem::initStyleOption()
 {
     QString type = elementType();
     if (m_styleoption)
@@ -613,7 +613,7 @@ void QStyleItem::initStyleOption()
  *   QFusionStyle = "fusion"
  */
 
-QString QStyleItem::style() const
+QString QQuickStyleItem::style() const
 {
     QString style = qApp->style()->metaObject()->className();
     style = style.toLower();
@@ -624,7 +624,7 @@ QString QStyleItem::style() const
     return style;
 }
 
-QString QStyleItem::hitTest(int px, int py)
+QString QQuickStyleItem::hitTest(int px, int py)
 {
     QStyle::SubControl subcontrol = QStyle::SC_All;
     switch (m_itemType) {
@@ -673,7 +673,7 @@ QString QStyleItem::hitTest(int px, int py)
     return "none";
 }
 
-QSize QStyleItem::sizeFromContents(int width, int height)
+QSize QQuickStyleItem::sizeFromContents(int width, int height)
 {
     initStyleOption();
 
@@ -809,7 +809,7 @@ QSize QStyleItem::sizeFromContents(int width, int height)
     }    return size;
 }
 
-void QStyleItem::setContentWidth(int arg)
+void QQuickStyleItem::setContentWidth(int arg)
 {
     if (m_contentWidth != arg) {
         m_contentWidth = arg;
@@ -817,7 +817,7 @@ void QStyleItem::setContentWidth(int arg)
     }
 }
 
-void QStyleItem::setContentHeight(int arg)
+void QQuickStyleItem::setContentHeight(int arg)
 {
     if (m_contentHeight != arg) {
         m_contentHeight = arg;
@@ -825,19 +825,19 @@ void QStyleItem::setContentHeight(int arg)
     }
 }
 
-void QStyleItem::updateSizeHint()
+void QQuickStyleItem::updateSizeHint()
 {
     QSize implicitSize = sizeFromContents(m_contentWidth, m_contentHeight);
     setImplicitSize(implicitSize.width(), implicitSize.height());
 }
 
-void QStyleItem::updateRect()
+void QQuickStyleItem::updateRect()
 {
     initStyleOption();
     m_styleoption->rect.setWidth(width());
 }
 
-int QStyleItem::pixelMetric(const QString &metric)
+int QQuickStyleItem::pixelMetric(const QString &metric)
 {
 
     if (metric == "scrollbarExtent")
@@ -883,7 +883,7 @@ int QStyleItem::pixelMetric(const QString &metric)
     return 0;
 }
 
-QVariant QStyleItem::styleHint(const QString &metric)
+QVariant QQuickStyleItem::styleHint(const QString &metric)
 {
     initStyleOption();
     if (metric == "comboboxpopup") {
@@ -910,7 +910,7 @@ QVariant QStyleItem::styleHint(const QString &metric)
     // Add SH_Menu_SpaceActivatesItem, SH_Menu_SubMenuPopupDelay
 }
 
-void QStyleItem::setHints(const QStringList &str)
+void QQuickStyleItem::setHints(const QStringList &str)
 {
     if (m_hints != str) {
         m_hints = str;
@@ -929,7 +929,7 @@ void QStyleItem::setHints(const QStringList &str)
 }
 
 
-void QStyleItem::setElementType(const QString &str)
+void QQuickStyleItem::setElementType(const QString &str)
 {
     if (m_type == str)
         return;
@@ -1016,7 +1016,7 @@ void QStyleItem::setElementType(const QString &str)
     updateSizeHint();
 }
 
-QRectF QStyleItem::subControlRect(const QString &subcontrolString)
+QRectF QQuickStyleItem::subControlRect(const QString &subcontrolString)
 {
     QStyle::SubControl subcontrol = QStyle::SC_None;
     initStyleOption();
@@ -1074,7 +1074,7 @@ QRectF QStyleItem::subControlRect(const QString &subcontrolString)
     return QRectF();
 }
 
-void QStyleItem::paint(QPainter *painter)
+void QQuickStyleItem::paint(QPainter *painter)
 {
     initStyleOption();
     if (QStyleOptionMenuItem *opt = qstyleoption_cast<QStyleOptionMenuItem*>(m_styleoption))
@@ -1317,30 +1317,30 @@ void QStyleItem::paint(QPainter *painter)
     }
 }
 
-qreal QStyleItem::textWidth(const QString &text)
+qreal QQuickStyleItem::textWidth(const QString &text)
 {
     QFontMetricsF fm = QFontMetricsF(m_styleoption->fontMetrics);
     return fm.boundingRect(text).width();
 }
 
-qreal QStyleItem::textHeight(const QString &text)
+qreal QQuickStyleItem::textHeight(const QString &text)
 {
     QFontMetricsF fm = QFontMetricsF(m_styleoption->fontMetrics);
     return text.isEmpty() ? fm.height() :
                             fm.boundingRect(text).height();
 }
 
-QString QStyleItem::elidedText(const QString &text, int elideMode, int width)
+QString QQuickStyleItem::elidedText(const QString &text, int elideMode, int width)
 {
     return m_styleoption->fontMetrics.elidedText(text, Qt::TextElideMode(elideMode), width);
 }
 
-bool QStyleItem::hasThemeIcon(const QString &icon) const
+bool QQuickStyleItem::hasThemeIcon(const QString &icon) const
 {
     return QIcon::hasThemeIcon(icon);
 }
 
-bool QStyleItem::event(QEvent *ev)
+bool QQuickStyleItem::event(QEvent *ev)
 {
     if (ev->type() == QEvent::StyleAnimationUpdate) {
         polish();
@@ -1349,23 +1349,23 @@ bool QStyleItem::event(QEvent *ev)
     return QQuickItem::event(ev);
 }
 
-QSGNode *QStyleItem::updatePaintNode(QSGNode *node, UpdatePaintNodeData *)
+QSGNode *QQuickStyleItem::updatePaintNode(QSGNode *node, UpdatePaintNodeData *)
 {
     if (m_image.isNull()) {
         delete node;
         return 0;
     }
 
-    QStyleNode *styleNode = static_cast<QStyleNode *>(node);
+    QQuickStyleNode *styleNode = static_cast<QQuickStyleNode *>(node);
     if (!styleNode)
-        styleNode = new QStyleNode;
+        styleNode = new QQuickStyleNode;
 
     styleNode->setTexture(window()->createTextureFromImage(m_image));
     styleNode->setRect(boundingRect());
     return styleNode;
 }
 
-void QStyleItem::updatePolish()
+void QQuickStyleItem::updatePolish()
 {
     if (width() >= 1 && height() >= 1) { // Note these are reals so 1 pixel is minimum
         float devicePixelRatio = window() ? window()->devicePixelRatio() : qApp->devicePixelRatio();

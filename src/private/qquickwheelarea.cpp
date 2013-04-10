@@ -39,7 +39,7 @@
 **
 ****************************************************************************/
 
-#include "qwheelarea_p.h"
+#include "qquickwheelarea_p.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -56,7 +56,7 @@ static const qreal pixelDeltaAdjustment = 0.5;
 // comes originally from QTextEdit, which sets 20px steps by default.
 static const qreal defaultScrollSpeed = 20.0;
 
-QWheelArea::QWheelArea(QQuickItem *parent)
+QQuickWheelArea::QQuickWheelArea(QQuickItem *parent)
     : QQuickItem(parent),
       m_horizontalMinimumValue(0),
       m_horizontalMaximumValue(0),
@@ -71,12 +71,12 @@ QWheelArea::QWheelArea(QQuickItem *parent)
 
 }
 
-QWheelArea::~QWheelArea()
+QQuickWheelArea::~QQuickWheelArea()
 {
 
 }
 
-void QWheelArea::wheelEvent(QWheelEvent *we)
+void QQuickWheelArea::wheelEvent(QWheelEvent *we)
 {
     QPoint numPixels = we->pixelDelta();
     QPoint numDegrees = we->angleDelta() / 8;
@@ -92,47 +92,47 @@ void QWheelArea::wheelEvent(QWheelEvent *we)
     we->accept();
 }
 
-void QWheelArea::setHorizontalMinimumValue(qreal value)
+void QQuickWheelArea::setHorizontalMinimumValue(qreal value)
 {
     m_horizontalMinimumValue = value;
 }
 
-qreal QWheelArea::horizontalMinimumValue() const
+qreal QQuickWheelArea::horizontalMinimumValue() const
 {
     return m_horizontalMinimumValue;
 }
 
-void QWheelArea::setHorizontalMaximumValue(qreal value)
+void QQuickWheelArea::setHorizontalMaximumValue(qreal value)
 {
     m_horizontalMaximumValue = value;
 }
 
-qreal QWheelArea::horizontalMaximumValue() const
+qreal QQuickWheelArea::horizontalMaximumValue() const
 {
     return m_horizontalMaximumValue;
 }
 
-void QWheelArea::setVerticalMinimumValue(qreal value)
+void QQuickWheelArea::setVerticalMinimumValue(qreal value)
 {
     m_verticalMinimumValue = value;
 }
 
-qreal QWheelArea::verticalMinimumValue() const
+qreal QQuickWheelArea::verticalMinimumValue() const
 {
     return m_verticalMinimumValue;
 }
 
-void QWheelArea::setVerticalMaximumValue(qreal value)
+void QQuickWheelArea::setVerticalMaximumValue(qreal value)
 {
     m_verticalMaximumValue = value;
 }
 
-qreal QWheelArea::verticalMaximumValue() const
+qreal QQuickWheelArea::verticalMaximumValue() const
 {
     return m_verticalMaximumValue;
 }
 
-void QWheelArea::setHorizontalValue(qreal value)
+void QQuickWheelArea::setHorizontalValue(qreal value)
 {
     value = qBound<qreal>(m_horizontalMinimumValue, value, m_horizontalMaximumValue);
 
@@ -142,12 +142,12 @@ void QWheelArea::setHorizontalValue(qreal value)
     }
 }
 
-qreal QWheelArea::horizontalValue() const
+qreal QQuickWheelArea::horizontalValue() const
 {
     return m_horizontalValue;
 }
 
-void QWheelArea::setVerticalValue(qreal value)
+void QQuickWheelArea::setVerticalValue(qreal value)
 {
     value = qBound<qreal>(m_verticalMinimumValue, value, m_verticalMaximumValue);
 
@@ -157,12 +157,12 @@ void QWheelArea::setVerticalValue(qreal value)
     }
 }
 
-qreal QWheelArea::verticalValue() const
+qreal QQuickWheelArea::verticalValue() const
 {
     return m_verticalValue;
 }
 
-void QWheelArea::setVerticalDelta(qreal value)
+void QQuickWheelArea::setVerticalDelta(qreal value)
 {
     m_verticalDelta = value;
     setVerticalValue(m_verticalValue - m_verticalDelta);
@@ -170,12 +170,12 @@ void QWheelArea::setVerticalDelta(qreal value)
     emit verticalWheelMoved();
 }
 
-qreal QWheelArea::verticalDelta() const
+qreal QQuickWheelArea::verticalDelta() const
 {
     return m_verticalDelta;
 }
 
-void QWheelArea::setHorizontalDelta(qreal value)
+void QQuickWheelArea::setHorizontalDelta(qreal value)
 {
     m_horizontalDelta = value;
     setHorizontalValue(m_horizontalValue - m_horizontalDelta);
@@ -183,12 +183,12 @@ void QWheelArea::setHorizontalDelta(qreal value)
     emit horizontalWheelMoved();
 }
 
-qreal QWheelArea::horizontalDelta() const
+qreal QQuickWheelArea::horizontalDelta() const
 {
     return m_horizontalDelta;
 }
 
-void QWheelArea::setScrollSpeed(qreal value)
+void QQuickWheelArea::setScrollSpeed(qreal value)
 {
     if (value != m_scrollSpeed) {
         m_scrollSpeed = value;
@@ -196,7 +196,7 @@ void QWheelArea::setScrollSpeed(qreal value)
     }
 }
 
-qreal QWheelArea::scrollSpeed() const
+qreal QQuickWheelArea::scrollSpeed() const
 {
     return m_scrollSpeed;
 }

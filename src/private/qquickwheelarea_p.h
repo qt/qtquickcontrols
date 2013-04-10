@@ -39,15 +39,15 @@
 **
 ****************************************************************************/
 
-#ifndef QWHEELAREA_P_H
-#define QWHEELAREA_P_H
+#ifndef QQUICKWHEELAREA_P_H
+#define QQUICKWHEELAREA_P_H
 
 #include <QtGui/qevent.h>
 #include <QtQuick/qquickitem.h>
 
 QT_BEGIN_NAMESPACE
 
-class QWheelArea : public QQuickItem
+class QQuickWheelArea : public QQuickItem
 {
     Q_OBJECT
     Q_PROPERTY(qreal verticalDelta READ verticalDelta WRITE setVerticalDelta NOTIFY verticalWheelMoved)
@@ -61,8 +61,8 @@ class QWheelArea : public QQuickItem
     Q_PROPERTY(qreal scrollSpeed READ scrollSpeed WRITE setScrollSpeed NOTIFY scrollSpeedChanged)
 
 public:
-    QWheelArea(QQuickItem *parent = 0);
-    virtual ~QWheelArea();
+    QQuickWheelArea(QQuickItem *parent = 0);
+    virtual ~QQuickWheelArea();
 
     void setHorizontalMinimumValue(qreal value);
     qreal horizontalMinimumValue() const;
@@ -111,11 +111,11 @@ private:
     qreal m_horizontalDelta;
     qreal m_scrollSpeed;
 
-    Q_DISABLE_COPY(QWheelArea)
+    Q_DISABLE_COPY(QQuickWheelArea)
 };
 
 QT_END_NAMESPACE
 
-QML_DECLARE_TYPE(QWheelArea)
+QML_DECLARE_TYPE(QQuickWheelArea)
 
-#endif // QWHEELAREA_P_H
+#endif // QQUICKWHEELAREA_P_H
