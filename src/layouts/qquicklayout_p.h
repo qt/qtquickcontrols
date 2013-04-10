@@ -81,8 +81,6 @@ public:
 protected:
     bool event(QEvent *e);
     virtual void rearrange(const QSizeF &);
-    void setupItemLayout(QQuickItem *item);
-
 
     enum Orientation {
         Vertical = 0,

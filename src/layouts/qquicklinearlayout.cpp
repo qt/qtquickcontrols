@@ -498,8 +498,6 @@ void QQuickGridLayout::insertLayoutItems()
             QQuickGridLayoutItem *layoutItem = new QQuickGridLayoutItem(child, row, column, rowSpan, columnSpan);
 
             d->engine.insertItem(layoutItem, -1);
-
-            setupItemLayout(child);
         }
     }
 }
@@ -550,8 +548,6 @@ void QQuickLinearLayout::insertLayoutItems()
                 qSwap(gridRow, gridColumn);
             QQuickGridLayoutItem *layoutItem = new QQuickGridLayoutItem(child, gridRow, gridColumn, 1, 1, 0);
             d->engine.insertItem(layoutItem, index);
-
-            setupItemLayout(child);
         }
     }
 }

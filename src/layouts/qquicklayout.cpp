@@ -198,12 +198,6 @@ QQuickLayout::~QQuickLayout()
 
 }
 
-void QQuickLayout::setupItemLayout(QQuickItem *item)
-{
-    //### not needed anymore, since these are deducted from hierarcy?
-    qmlAttachedPropertiesObject<QQuickLayout>(item);
-}
-
 QQuickLayoutAttached *QQuickLayout::qmlAttachedProperties(QObject *object)
 {
     return new QQuickLayoutAttached(object);
