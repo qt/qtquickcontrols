@@ -39,27 +39,31 @@
 **
 ****************************************************************************/
 
-#ifndef QQUICKCOMPONENTSPRIVATE_P_H
-#define QQUICKCOMPONENTSPRIVATE_P_H
+#include "qquicktooltip_p.h"
 
-#include <QtCore/qobject.h>
+#include <qtooltip.h>
+#include <qquickwindow.h>
+#include <qquickitem.h>
 
 QT_BEGIN_NAMESPACE
 
-class QPointF;
-class QQuickItem;
-
-class QQuickComponentsPrivate : public QObject
+QQuickTooltip::QQuickTooltip(QObject *parent)
+    : QObject(parent)
 {
-    Q_OBJECT
 
-public:
-    QQuickComponentsPrivate(QObject *parent = 0);
+}
 
-    Q_INVOKABLE void showTooltip(QQuickItem *item, const QPointF &pos, const QString &text);
-    Q_INVOKABLE void hideTooltip();
-};
+void QQuickTooltip::showText(QQuickItem *item, const QPointF &pos, const QString &str)
+{
+    if (!item || !item->window())
+        return;
+
+    QToolTip::showText(item->window()->mapToGlobal(item->mapToScene(pos).toPoint()), str);
+}
+
+void QQuickTooltip::hideText()
+{
+    QToolTip::hideText();
+}
 
 QT_END_NAMESPACE
-
-#endif // QQUICKCOMPONENTSPRIVATE_P_H

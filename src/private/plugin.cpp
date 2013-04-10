@@ -42,18 +42,18 @@
 #include "qrangemodel_p.h"
 #include "qwheelarea_p.h"
 #include "qstyleitem_p.h"
-#include "qquickcomponentsprivate_p.h"
+#include "qquicktooltip_p.h"
 
 #include <qqml.h>
 #include <qqmlextensionplugin.h>
 
 QT_BEGIN_NAMESPACE
 
-QObject *registerPrivateModule(QQmlEngine *engine, QJSEngine *jsEngine)
+static QObject *registerTooltipModule(QQmlEngine *engine, QJSEngine *jsEngine)
 {
     Q_UNUSED(engine);
     Q_UNUSED(jsEngine);
-    return new QQuickComponentsPrivate();
+    return new QQuickTooltip();
 }
 
 class QtQuickControlsPrivatePlugin : public QQmlExtensionPlugin
@@ -70,7 +70,7 @@ void QtQuickControlsPrivatePlugin::registerTypes(const char *uri)
     qmlRegisterType<QRangeModel>(uri, 1, 0, "RangeModel");
     qmlRegisterType<QWheelArea>(uri, 1, 0, "WheelArea");
     qmlRegisterType<QStyleItem>(uri, 1, 0, "StyleItem");
-    qmlRegisterSingletonType<QQuickComponentsPrivate>(uri, 1, 0, "PrivateHelper", registerPrivateModule);
+    qmlRegisterSingletonType<QQuickTooltip>(uri, 1, 0, "Tooltip", registerTooltipModule);
 }
 
 QT_END_NAMESPACE

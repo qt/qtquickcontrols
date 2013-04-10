@@ -4,7 +4,7 @@ TARGETPATH = QtQuick/Controls/Private
 QT += qml quick widgets gui-private core-private
 
 HEADERS += \
-    $$PWD/qquickcomponentsprivate_p.h \
+    $$PWD/qquicktooltip_p.h \
     $$PWD/qrangemodel_p.h \
     $$PWD/qrangemodel_p_p.h \
     $$PWD/qwheelarea_p.h \
@@ -12,7 +12,7 @@ HEADERS += \
 
 SOURCES += \
     $$PWD/plugin.cpp \
-    $$PWD/qquickcomponentsprivate.cpp \
+    $$PWD/qquicktooltip.cpp \
     $$PWD/qstyleitem.cpp \
     $$PWD/qrangemodel.cpp\
     $$PWD/qwheelarea.cpp
