@@ -39,13 +39,13 @@
 **
 ****************************************************************************/
 
-#include "qprivateplugin_p.h"
 #include "qrangemodel_p.h"
 #include "qwheelarea_p.h"
 #include "qstyleitem_p.h"
 #include "qquickcomponentsprivate_p.h"
 
 #include <qqml.h>
+#include <qqmlextensionplugin.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -56,8 +56,16 @@ QObject *registerPrivateModule(QQmlEngine *engine, QJSEngine *jsEngine)
     return new QQuickComponentsPrivate();
 }
 
+class QtQuickControlsPrivatePlugin : public QQmlExtensionPlugin
+{
+    Q_OBJECT
+    Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QQmlExtensionInterface/1.0")
 
-void StylePlugin::registerTypes(const char *uri)
+public:
+    void registerTypes(const char *uri);
+};
+
+void QtQuickControlsPrivatePlugin::registerTypes(const char *uri)
 {
     qmlRegisterType<QRangeModel>(uri, 1, 0, "RangeModel");
     qmlRegisterType<QWheelArea>(uri, 1, 0, "WheelArea");
@@ -66,3 +74,5 @@ void StylePlugin::registerTypes(const char *uri)
 }
 
 QT_END_NAMESPACE
+
+#include "plugin.moc"
