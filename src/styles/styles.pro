@@ -11,9 +11,12 @@ QML_FILES = \
     RadioButtonStyle.qml \
     ScrollBarStyle.qml \
     Settings.js \
+    ScrollViewStyle.qml\
     SliderStyle.qml \
     SpinBoxStyle.qml \
     Style.qml \
+    StatusBarStyle.qml \
+    TableViewStyle.qml \
     TabViewStyle.qml \
     TextFieldStyle.qml \
     ToolBarStyle.qml \
@@ -29,10 +32,13 @@ QML_FILES += \
     Desktop/MenuStyle.qml \
     Desktop/ProgressBarStyle.qml \
     Desktop/RadioButtonStyle.qml \
+    Desktop/ScrollViewStyle.qml \
     Desktop/ScrollBarStyle.qml \
     Desktop/SliderStyle.qml \
     Desktop/SpinBoxStyle.qml \
+    Desktop/StatusBarStyle.qml\
     Desktop/TabViewStyle.qml \
+    Desktop/TableViewStyle.qml \
     Desktop/TextFieldStyle.qml \
     Desktop/ToolBarStyle.qml \
     Desktop/ToolButtonStyle.qml

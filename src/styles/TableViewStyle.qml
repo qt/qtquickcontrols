@@ -37,45 +37,67 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-
 import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Private 1.0
-import "Styles/Settings.js" as Settings
+import QtQuick.Controls.Styles 1.0
 
-/*!
-    \qmltype StatusBar
-    \inqmlmodule QtQuick.Controls 1.0
-    \ingroup applicationwindow
-    \brief Contains status information in your app.
+ScrollViewStyle {
+    id: root
 
-    The common way of using StatusBar is in relation to \l ApplicationWindow.
+    property color textColor: "black"
+    property color highlightedTextColor: "white"
 
-    Note that the StatusBar does not provide a layout of its own, but requires
-    you to position its contents, for instance by creating a \l Row.
-
-    \code
-    ApplicationWindow {
-        statusBar: StatusBar {
-            Label {
-                text: "Read Only"
-                anchors.centerIn: parent
-            }
+    property Component headerDelegate: Rectangle {
+        color: "white"
+        implicitHeight: 16
+        implicitWidth: 80
+        Text {
+            anchors.fill: parent
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignLeft
+            anchors.leftMargin: 4
+            text: itemValue
+            renderType: Text.NativeRendering
+        }
+        Rectangle {
+            anchors.bottom: parent.bottom
+            width: parent.width
+            height: 1
+            color: "#bbb"
         }
     }
-    \endcode
-*/
 
-Item {
-    id: statusbar
-    activeFocusOnTab: false
-    Accessible.role: Accessible.StatusBar
-    implicitWidth: parent ? parent.width : loader.item ? loader.item.implicitHeight : 0
-    implicitHeight: loader.item ? loader.item.implicitHeight : 0
-    property Component style: Qt.createComponent(Settings.THEME_PATH + "/StatusBarStyle.qml", statusbar)
-    Loader {
-        id: loader
-        anchors.fill: parent
-        sourceComponent: style
+    property Component rowDelegate: Rectangle {
+        color: rowSelected ? "lightsteelblue" : alternateBackground ? "#eee" : "white"
+        implicitHeight: 20
+        implicitWidth: 80
+    }
+
+    property Component standardDelegate: Item {
+        height: Math.max(16, label.implicitHeight)
+        property int implicitWidth: sizehint.paintedWidth + 4
+
+        Text {
+            id: label
+            objectName: "label"
+            width: parent.width
+            anchors.margins: 6
+            anchors.left: parent.left
+            anchors.right: parent.right
+            horizontalAlignment: itemTextAlignment
+            anchors.verticalCenter: parent.verticalCenter
+            elide: itemElideMode
+            text: itemValue != undefined ? itemValue : ""
+            color: itemTextColor
+            renderType: Text.NativeRendering
+        }
+        Text {
+            id: sizehint
+            font: label.font
+            text: itemValue ? itemValue : ""
+            visible: false
+        }
     }
 }
+

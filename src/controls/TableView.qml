@@ -41,6 +41,7 @@
 import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Private 1.0
+import "Styles/Settings.js" as Settings
 
 /*!
    \qmltype TableView
@@ -145,7 +146,7 @@ ScrollView {
         }
     }
     \endcode */
-    property Component itemDelegate: standardDelegate
+    property Component itemDelegate: __style ? __style.standardDelegate : null
 
     /*! This property defines a delegate to draw a row.
 
@@ -156,7 +157,7 @@ ScrollView {
     \li  index - the index of the row
     \endlist
     */
-    property Component rowDelegate: rowDelegate
+    property Component rowDelegate: __style ? __style.rowDelegate : null
 
     /*! \qmlproperty color TableView::backgroundColor
 
@@ -165,7 +166,7 @@ ScrollView {
     property alias backgroundColor: colorRect.color
 
     /*! This property defines a delegate to draw a header. */
-    property Component headerDelegate: headerDelegate
+    property Component headerDelegate: __style ? __style.headerDelegate : null
 
     /*! Index of the current sort column.
         The default value is \c {0}. */
@@ -223,13 +224,17 @@ ScrollView {
         Emitted when a new row is selected by the user. */
     signal activated
 
+
+    style: Qt.createComponent(Settings.THEME_PATH + "/TableViewStyle.qml", root)
+
+
     Accessible.role: Accessible.Table
 
     width: 200
     height: 200
 
     frameVisible: true
-    __scrollBarTopMargin: styleitem.style == "mac" ? headerrow.height : 0
+    __scrollBarTopMargin: Qt.platform.os === "mac" ? headerrow.height : 0
 
     /*! \internal */
     function __decrementCurrentIndex() {
@@ -264,12 +269,6 @@ ScrollView {
             anchors.fill: parent
             color: palette.base
             z: -1
-        }
-
-        StyleItem {
-            id: itemstyle
-            elementType: "item"
-            visible: false
         }
 
         MouseArea {
@@ -388,6 +387,7 @@ ScrollView {
                 property var model: listView.model
                 property var modelData: rowitem.itemModelData
                 property var itemModel: rowitem.itemModel
+                property bool hasFocus: root.activeFocus
             }
             Row {
                 id: row
@@ -409,7 +409,7 @@ ScrollView {
 
                         property var itemValue: __getValue()
                         property bool itemSelected: rowitem.ListView.isCurrentItem
-                        property color itemTextColor: itemSelected ? rowstyleitem.highlightedTextColor : rowstyleitem.textColor
+                        property color itemTextColor: itemSelected ? __style.highlightedTextColor : __style.textColor
                         property int rowIndex: rowitem.rowIndex
                         property int columnIndex: index
                         property int itemElideMode: columns[index].elideMode
@@ -605,87 +605,6 @@ ScrollView {
                 width: root.width - headerrow.width + 2
                 visible: root.columns.length
                 z:-1
-            }
-
-            Component {
-                id: standardDelegate
-                Item {
-                    height: Math.max(16, styleitem.implicitHeight)
-                    property int implicitWidth: sizehint.paintedWidth + 4
-                    Text {
-                        id: label
-                        objectName: "label"
-                        width: parent.width
-                        anchors.margins: 6
-                        font: itemstyle.font
-                        anchors.left: parent.left
-                        anchors.right: parent.right
-                        horizontalAlignment: itemTextAlignment
-                        anchors.verticalCenter: parent.verticalCenter
-                        elide: itemElideMode
-                        text: itemValue != undefined ? itemValue : ""
-                        color: itemTextColor
-                        renderType: Text.NativeRendering
-                    }
-                    Text {
-                        id: sizehint
-                        font: label.font
-                        text: itemValue ? itemValue : ""
-                        visible: false
-                    }
-                }
-            }
-
-            Component {
-                id: nativeDelegate
-                // This gives more native styling, but might be less performant
-                StyleItem {
-                    elementType: "item"
-                    text:   itemValue
-                    selected: itemSelected
-                    active: root.activeFocus
-                }
-            }
-
-            Component {
-                id: headerDelegate
-                StyleItem {
-                    elementType: "header"
-                    activeControl: itemSort
-                    raised: true
-                    sunken: itemPressed
-                    text: itemValue
-                    hover: itemContainsMouse
-                    hints: itemPosition
-                }
-            }
-
-            Component {
-                id: rowDelegate
-                StyleItem {
-                    id: rowstyle
-                    elementType: "itemrow"
-                    activeControl: alternateBackground ? "alternate" : ""
-                    selected: rowSelected ? true : false
-                    height: Math.max(16, styleitem.implicitHeight)
-                    active: root.activeFocus
-                }
-            }
-
-            StyleItem {
-                id: styleitem
-                elementType: "header"
-                visible:false
-                contentWidth: 16
-                contentHeight: font.pixelSize
-            }
-
-            StyleItem {
-                id: rowstyleitem
-                property color textColor: styleHint("textColor")
-                property color highlightedTextColor: styleHint("highlightedTextColor")
-                elementType: "item"
-                visible: false
             }
         }
     }

@@ -41,11 +41,17 @@ import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Private 1.0
 
-StyleItem {
-    id: toolbar
-    width: parent ? parent.width : 200
-    height: implicitHeight
-    elementType: "toolbar"
-
-    Accessible.role: Accessible.ToolBar
+/*!
+    \qmltype StatusBarStyle
+    \internal
+    \inqmlmodule QtQuick.Controls.Styles 1.0
+*/
+Item {
+    implicitHeight: Math.max(childrenRect.height, toolbar.implicitHeight)
+    implicitWidth: parent ? parent.width : toolbar.implicitWidth
+    StyleItem {
+        id: toolbar
+        anchors.fill: parent
+        elementType: "toolbar"
+    }
 }

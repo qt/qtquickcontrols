@@ -48,14 +48,20 @@ import QtQuick.Controls.Styles 1.0
 */
 Style {
     property int margin: 8
-    property Component panel: Item {
-        implicitWidth: Math.max(200, contentWidth + 30)
-        implicitHeight: contentHeight
+
+    property Component panel: Rectangle {
+        implicitWidth: control.contentWidth + 2 * margin
+        implicitHeight: control.contentHeight + 2 * margin + 16
+
         Text {
             anchors.top: parent.top
             anchors.left: parent.left
             anchors.margins: 4
             text: control.title
         }
+        border.color: "#999"
+        border.width: 1
+        color: "transparent"
+        radius: 4
     }
 }

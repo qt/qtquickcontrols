@@ -79,7 +79,7 @@ Style {
     }
 
     property Component panel: Item {
-        implicitWidth: row.width
+        implicitWidth: row.width + 4
         implicitHeight: row.height
         property var _cref: control
 

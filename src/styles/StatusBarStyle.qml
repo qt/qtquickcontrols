@@ -37,45 +37,33 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-
 import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Private 1.0
-import "Styles/Settings.js" as Settings
 
 /*!
-    \qmltype StatusBar
-    \inqmlmodule QtQuick.Controls 1.0
-    \ingroup applicationwindow
-    \brief Contains status information in your app.
-
-    The common way of using StatusBar is in relation to \l ApplicationWindow.
-
-    Note that the StatusBar does not provide a layout of its own, but requires
-    you to position its contents, for instance by creating a \l Row.
-
-    \code
-    ApplicationWindow {
-        statusBar: StatusBar {
-            Label {
-                text: "Read Only"
-                anchors.centerIn: parent
-            }
-        }
-    }
-    \endcode
+    \qmltype StatusBarStyle
+    \internal
+    \inqmlmodule QtQuick.Controls.Styles 1.0
 */
-
 Item {
-    id: statusbar
-    activeFocusOnTab: false
-    Accessible.role: Accessible.StatusBar
-    implicitWidth: parent ? parent.width : loader.item ? loader.item.implicitHeight : 0
-    implicitHeight: loader.item ? loader.item.implicitHeight : 0
-    property Component style: Qt.createComponent(Settings.THEME_PATH + "/StatusBarStyle.qml", statusbar)
-    Loader {
-        id: loader
+    implicitHeight: 42
+    implicitWidth: 200
+
+    Rectangle {
+
         anchors.fill: parent
-        sourceComponent: style
+
+        gradient: Gradient{
+            GradientStop{color: "#eee" ; position: 0}
+            GradientStop{color: "#ccc" ; position: 1}
+        }
+
+        Rectangle {
+            anchors.bottom: parent.bottom
+            width: parent.width
+            height: 1
+            color: "#999"
+        }
     }
 }

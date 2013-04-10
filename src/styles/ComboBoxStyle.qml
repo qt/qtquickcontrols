@@ -48,7 +48,10 @@ import QtQuick.Controls.Styles 1.0
 
 Style {
     property Component panel: Rectangle {
-        id: styleitem
+
+        property int popup: 0
+        property font font: textitem.font
+
         implicitWidth: 200
         implicitHeight: 20
 
@@ -61,10 +64,26 @@ Style {
         border.color: "#aaa"
 
         Text {
+            id: textitem
             anchors.centerIn: parent
             text: control.currentText
         }
     }
 
-    property Component popupStyle: MenuStyle { }
+    property Component dropDownStyle: MenuStyle { }
+
+    property Component popupStyle: Style {
+
+        property Component frame: Rectangle {
+            width: (parent ? parent.contentWidth : 0)
+            height: (parent ? parent.contentHeight : 0) + 2
+            border.color: "#777"
+        }
+
+        property Component menuItem: Rectangle {
+            implicitWidth: textItem.contentWidth
+            implicitHeight: textItem.contentHeight
+            border.color: "#777"
+        }
+    }
 }

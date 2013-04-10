@@ -104,16 +104,10 @@ Control {
         onPressedChanged: if (pressed) popup.show()
     }
 
-    StyleItem {
-        id: styleItem
-        elementType: "comboboxitem"
-        visible: false
-    }
-
     Component.onCompleted: {
         if (currentIndex === -1)
             currentIndex = 0
-        if (styleItem.style == "mac") {
+        if (Qt.platform.os === "mac") {
             popup.x -= 10
             popup.y += 4
         }
@@ -139,7 +133,7 @@ Control {
         property int y: isPopup ? (comboBox.__panel.height - comboBox.__panel.implicitHeight) / 2.0 : comboBox.__panel.height
         __minimumWidth: comboBox.width
         __visualItem: comboBox
-        __font: styleItem.font
+        __font: __panel.font
 
         property ExclusiveGroup eg: ExclusiveGroup { id: eg }
 

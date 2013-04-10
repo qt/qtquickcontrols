@@ -68,7 +68,7 @@ Style {
 
     property Component background:  Rectangle {
             anchors.verticalCenter: parent.verticalCenter
-            implicitWidth: 100
+            implicitWidth: 200
             implicitHeight: 6
 
             gradient: Gradient {

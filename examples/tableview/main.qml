@@ -81,7 +81,6 @@ Rectangle {
     }
 
     SystemPalette {id: syspal}
-    StyleItem{ id: styleitem}
     color: syspal.window
 
     XmlListModel {

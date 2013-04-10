@@ -138,7 +138,7 @@ Item {
     property real contentHeight: content.childrenRect.height
 
     /*! \internal */
-    property Component __style: Qt.createComponent(Settings.THEME_PATH + "/GroupBoxStyle.qml", groupbox)
+    property Component style: Qt.createComponent(Settings.THEME_PATH + "/GroupBoxStyle.qml", groupbox)
 
     /*! \internal */
     default property alias data: content.data
@@ -166,7 +166,7 @@ Item {
         onLoaded: item.z = -1
         Loader {
             id: styleLoader
-            sourceComponent: __style
+            sourceComponent: groupbox.style
         }
     }
 

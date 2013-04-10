@@ -37,45 +37,67 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-
 import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Private 1.0
-import "Styles/Settings.js" as Settings
 
-/*!
-    \qmltype StatusBar
-    \inqmlmodule QtQuick.Controls 1.0
-    \ingroup applicationwindow
-    \brief Contains status information in your app.
+ScrollViewStyle {
+    id: root
 
-    The common way of using StatusBar is in relation to \l ApplicationWindow.
+    property color textColor: __styleitem.styleHint("textColor")
+    property color highlightedTextColor: __styleitem.styleHint("highlightedTextColor")
 
-    Note that the StatusBar does not provide a layout of its own, but requires
-    you to position its contents, for instance by creating a \l Row.
+    property StyleItem __styleitem: StyleItem{
+        property color textColor: styleHint("textColor")
+        property color highlightedTextColor: styleHint("highlightedTextColor")
+        elementType: "item"
+        visible: false
+    }
 
-    \code
-    ApplicationWindow {
-        statusBar: StatusBar {
-            Label {
-                text: "Read Only"
-                anchors.centerIn: parent
-            }
+    property Component headerDelegate: StyleItem {
+        elementType: "header"
+        activeControl: itemSort
+        raised: true
+        sunken: itemPressed
+        text: itemValue
+        hover: itemContainsMouse
+        hints: itemPosition
+    }
+
+    property Component rowDelegate: StyleItem {
+        id: rowstyle
+        elementType: "itemrow"
+        activeControl: alternateBackground ? "alternate" : ""
+        selected: rowSelected ? true : false
+        height: Math.max(16, rowstyle.implicitHeight)
+        active: hasFocus
+    }
+
+    property Component standardDelegate: Item {
+        height: Math.max(16, label.implicitHeight)
+        property int implicitWidth: sizehint.paintedWidth + 4
+
+        Text {
+            id: label
+            objectName: "label"
+            width: parent.width
+            anchors.margins: 6
+            font: __styleitem.font
+            anchors.left: parent.left
+            anchors.right: parent.right
+            horizontalAlignment: itemTextAlignment
+            anchors.verticalCenter: parent.verticalCenter
+            elide: itemElideMode
+            text: itemValue != undefined ? itemValue : ""
+            color: itemTextColor
+            renderType: Text.NativeRendering
+        }
+        Text {
+            id: sizehint
+            font: label.font
+            text: itemValue ? itemValue : ""
+            visible: false
         }
     }
-    \endcode
-*/
-
-Item {
-    id: statusbar
-    activeFocusOnTab: false
-    Accessible.role: Accessible.StatusBar
-    implicitWidth: parent ? parent.width : loader.item ? loader.item.implicitHeight : 0
-    implicitHeight: loader.item ? loader.item.implicitHeight : 0
-    property Component style: Qt.createComponent(Settings.THEME_PATH + "/StatusBarStyle.qml", statusbar)
-    Loader {
-        id: loader
-        anchors.fill: parent
-        sourceComponent: style
-    }
 }
+

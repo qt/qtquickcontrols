@@ -41,6 +41,8 @@
 import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Private 1.0
+import QtQuick.Controls.Styles 1.0
+import "Styles/Settings.js" as Settings
 
 /*!
     \qmltype ScrollView
@@ -137,6 +139,11 @@ FocusScope {
     property alias horizontalScrollBar: scroller.horizontalScrollBar
     /*! \internal */
     property alias verticalScrollBar: scroller.verticalScrollBar
+    /*! \internal */
+    property Component style: Qt.createComponent(Settings.THEME_PATH + "/ScrollViewStyle.qml", root)
+
+    /* \internal */
+    property Style __style: styleLoader.item
 
     activeFocusOnTab: true
 
@@ -158,6 +165,16 @@ FocusScope {
         id: internal
 
         property Flickable flickableItem
+
+        Loader {
+            id: styleLoader
+            sourceComponent: style
+            onStatusChanged: {
+                if (status === Loader.Error)
+                    console.error("Failed to load Style for", root)
+            }
+            property alias control: root
+        }
 
         Binding {
             target: flickableItem
@@ -253,19 +270,17 @@ FocusScope {
         ScrollViewHelper {
             id: scroller
             anchors.fill: parent
-            property int frameWidth: frameVisible ? styleitem.pixelMetric("defaultframewidth") : 0
-            property bool outerFrame: !frameVisible || !styleitem.styleHint("frameOnlyAroundContents")
-            property int scrollBarSpacing: outerFrame ? 0 : styleitem.pixelMetric("scrollbarspacing")
+            property int frameWidth: frameVisible ? __style.defaultFrameWidth : 0
+            property bool outerFrame: !frameVisible || !(__style ? __style.frameOnlyAroundContents : 0)
+            property int scrollBarSpacing: outerFrame ? 0 : (__style ? __style.scrollBarSpacing : 0)
             property int verticalScrollbarOffset: verticalScrollBar.visible && !verticalScrollBar.isTransient ?
                                                       verticalScrollBar.width + scrollBarSpacing : 0
             property int horizontalScrollbarOffset: horizontalScrollBar.visible && !horizontalScrollBar.isTransient ?
                                                         horizontalScrollBar.height + scrollBarSpacing : 0
 
-            StyleItem {
-                id: styleitem
-                elementType: "frame"
-                sunken: true
-                visible: frameVisible
+            Loader {
+                id: frameLoader
+                sourceComponent: __style ? __style.frame : null
                 anchors.fill: parent
                 anchors.rightMargin: scroller.outerFrame ? 0 : scroller.verticalScrollbarOffset
                 anchors.bottomMargin: scroller.outerFrame ? 0 : scroller.horizontalScrollbarOffset
@@ -273,7 +288,7 @@ FocusScope {
 
             Item {
                 id: viewportItem
-                anchors.fill: styleitem
+                anchors.fill: frameLoader
                 anchors.margins: scroller.frameWidth
                 anchors.rightMargin: scroller.frameWidth + (scroller.outerFrame ? scroller.verticalScrollbarOffset : 0)
                 anchors.bottomMargin: scroller.frameWidth + (scroller.outerFrame ? scroller.horizontalScrollbarOffset : 0)
