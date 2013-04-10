@@ -20,7 +20,4 @@ HEADERS += \
     qquicklayout_p.h \
     qquicklinearlayout_p.h
 
-OTHER_FILES += \
-    $$PWD/plugin.json
-
 load(qml_plugin)
