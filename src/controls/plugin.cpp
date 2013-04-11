@@ -39,7 +39,6 @@
 **
 ****************************************************************************/
 
-#include "plugin_p.h"
 #include "qtaction_p.h"
 #include "qtexclusivegroup_p.h"
 #include "qtmenu_p.h"
@@ -75,7 +74,17 @@ public:
     }
 };
 
-void StylePlugin::registerTypes(const char *uri)
+class QtQuickControlsPlugin : public QQmlExtensionPlugin
+{
+    Q_OBJECT
+    Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QQmlExtensionInterface/1.0")
+
+public:
+    void registerTypes(const char *uri);
+    void initializeEngine(QQmlEngine *engine, const char *uri);
+};
+
+void QtQuickControlsPlugin::registerTypes(const char *uri)
 {
     qmlRegisterType<QtAction>(uri, 1, 0, "Action");
     qmlRegisterType<QtExclusiveGroup>(uri, 1, 0, "ExclusiveGroup");
@@ -91,10 +100,12 @@ void StylePlugin::registerTypes(const char *uri)
     qmlRegisterUncreatableType<QtStack>(uri, 1, 0, "Stack", QLatin1String("Do not create objects of type Stack"));
 }
 
-void StylePlugin::initializeEngine(QQmlEngine *engine, const char *uri)
+void QtQuickControlsPlugin::initializeEngine(QQmlEngine *engine, const char *uri)
 {
     Q_UNUSED(uri);
     engine->addImageProvider("desktoptheme", new DesktopIconProvider);
 }
 
 QT_END_NAMESPACE
+
+#include "plugin.moc"

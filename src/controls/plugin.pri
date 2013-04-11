@@ -1,5 +1,4 @@
 HEADERS += \
-    $$PWD/plugin_p.h \
     $$PWD/qtaction_p.h \
     $$PWD/qtexclusivegroup_p.h \
     $$PWD/qtmenu_p.h \
@@ -18,6 +17,3 @@ SOURCES += \
     $$PWD/qtmenuitem.cpp \
     $$PWD/qtmenupopupwindow.cpp \
     $$PWD/qtstack.cpp
-
-OTHER_FILES += \
-    $$PWD/plugin.json
