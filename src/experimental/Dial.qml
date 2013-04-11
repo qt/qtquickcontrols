@@ -138,7 +138,7 @@ Item {
         enabled: dial.enabled
         step: range.stepSize * 100
         activeControl: tickmarksEnabled ? "tick" : ""
-        property double visualPos : range.value
+        property real visualPos : range.value
 
         Behavior on visualPos {
             enabled: !mouseArea.inDrag
@@ -155,7 +155,7 @@ Item {
 //        horizontalMaximumValue: dial.maximumValue
 //        verticalMinimumValue: dial.minimumValue
 //        verticalMaximumValue: dial.maximumValue
-//        property double step: (dial.maximumValue - dial.minimumValue)/100
+//        property real step: (dial.maximumValue - dial.minimumValue)/100
 
 //        onVerticalWheelMoved: {
 //            value += verticalDelta/4*step

@@ -207,8 +207,8 @@ FocusScope {
 
             property int acceleration: 40
             property int flickThreshold: 20
-            property double speedThreshold: 3
-            property double ignored: 0.001 // ## flick() does not work with 0 yVelocity
+            property real speedThreshold: 3
+            property real ignored: 0.001 // ## flick() does not work with 0 yVelocity
             property int maxFlick: 400
 
             property bool horizontalRecursionGuard: false
