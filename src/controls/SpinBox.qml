@@ -233,6 +233,7 @@ Control {
         TextInput {
             id: input
             anchors.verticalCenter: parent.verticalCenter
+            focus: true
             activeFocusOnPress: spinbox.activeFocusOnPress
             function setValue(v) {
                 var newval = parseFloat(v)
