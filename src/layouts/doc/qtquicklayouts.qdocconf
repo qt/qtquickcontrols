@@ -35,7 +35,7 @@ qhp.qtquicklayouts.file = qtquicklayouts.qhp
 
 # Namespace for the output file. This namespace is used to distinguish between
 # different documentation files in Creator/Assistant.
-qhp.qtquicklayouts.namespace = qtquicklayouts.100
+qhp.qtquicklayouts.namespace = org.qt-project.qtquicklayouts.$QT_VERSION_TAG
 
 # Title for the package, will be the main title for the package in
 # Assistant/Creator.
