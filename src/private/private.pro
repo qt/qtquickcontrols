@@ -5,6 +5,7 @@ QT += qml quick gui-private core-private
 
 HEADERS += \
     $$PWD/qquicktooltip_p.h \
+    $$PWD/qquickspinboxvalidator_p.h \
     $$PWD/qquickrangemodel_p.h \
     $$PWD/qquickrangemodel_p_p.h \
     $$PWD/qquickcontrolsettings_p.h \
@@ -13,6 +14,7 @@ HEADERS += \
 SOURCES += \
     $$PWD/plugin.cpp \
     $$PWD/qquicktooltip.cpp \
+    $$PWD/qquickspinboxvalidator.cpp \
     $$PWD/qquickrangemodel.cpp \
     $$PWD/qquickcontrolsettings.cpp \
     $$PWD/qquickwheelarea.cpp

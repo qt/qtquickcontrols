@@ -78,7 +78,7 @@ Control {
 
         The default value is \c{0.0}.
     */
-    property real value: 0
+    property alias value: validator.value
 
     /*!
         The minimum value of the SpinBox range.
@@ -86,7 +86,7 @@ Control {
 
         The default value is \c{0.0}.
     */
-    property real minimumValue: 0
+    property alias minimumValue: validator.minimumValue
 
     /*!
         The maximum value of the SpinBox range.
@@ -95,7 +95,7 @@ Control {
 
         The default value is \c{99}.
     */
-    property real maximumValue: 99
+    property alias maximumValue: validator.maximumValue
 
     /*!
         The amount by which the \l value is incremented/decremented when a
@@ -103,20 +103,20 @@ Control {
 
         The default value is \c{1.0}.
     */
-    property real stepSize: 1.0
+    property alias stepSize: validator.stepSize
 
     /*! The suffix for the value. I.e "cm" */
-    property string suffix
+    property alias suffix: validator.suffix
 
     /*! The prefix for the value. I.e "$" */
-    property string prefix
+    property alias prefix: validator.prefix
 
     /*! This property indicates the amount of decimals.
       Note that if you enter more decimals than specified, they will
       be truncated to the specified amount of decimal places.
       The default value is \c{0}.
     */
-    property int decimals: 0
+    property alias decimals: validator.decimals
 
     /*! \qmlproperty font SpinBox::font
 
@@ -134,24 +134,16 @@ Control {
 
     /*! \internal */
     function __increment() {
-        input.setValue(input.text)
-        value += stepSize
-        if (value > maximumValue)
-            value = maximumValue
-        input.text = value.toFixed(decimals)
+        validator.increment()
+        input.selectValue()
     }
 
     /*! \internal */
     function __decrement() {
-        input.setValue(input.text)
-        value -= stepSize
-        if (value < minimumValue)
-            value = minimumValue
-        input.text =  value.toFixed(decimals)
+        validator.decrement()
+        input.selectValue()
     }
 
-    /*! \internal */
-    property bool __initialized: false
     /*! \internal */
     readonly property bool __upEnabled: value != maximumValue;
     /*! \internal */
@@ -171,35 +163,26 @@ Control {
     /*! \internal */
     readonly property int __contentHeight: Math.max(input.implicitHeight, 20)
     /*! \internal */
-    readonly property int __contentWidth: suffixItem.implicitWidth +
-                                   Math.max(maxSizeHint.implicitWidth,
-                                            minSizeHint.implicitWidth) +
-                                   prefixItem.implicitWidth
+    readonly property int __contentWidth: Math.max(maxSizeHint.implicitWidth,
+                                                   minSizeHint.implicitWidth)
+
     Text {
         id: maxSizeHint
-        text: maximumValue.toFixed(decimals)
+        text: prefix + maximumValue.toFixed(decimals) + suffix
         font: input.font
         visible: false
     }
 
     Text {
         id: minSizeHint
-        text: minimumValue.toFixed(decimals)
+        text: prefix + minimumValue.toFixed(decimals) + suffix
         font: input.font
         visible: false
     }
 
-    onDecimalsChanged: input.setValue(value)
-    onMaximumValueChanged: input.setValue(value)
-    onMinimumValueChanged: input.setValue(value)
-    Component.onCompleted: {
-        __initialized = true;
-        input.setValue(value)
-    }
-
-    onValueChanged: if (__initialized) input.setValue(value)
-
     activeFocusOnTab: true
+
+    onActiveFocusChanged: if (activeFocus) input.selectValue()
 
     Accessible.name: input.text
     Accessible.role: Accessible.SpinBox
@@ -211,65 +194,41 @@ Control {
         onPressed: if (activeFocusOnPress) input.forceActiveFocus()
     }
 
-    Row {
-        id: textLayout
-        anchors.fill: parent
-        spacing: 1
+    TextInput {
+        id: input
         clip: true
+        anchors.fill: parent
         anchors.leftMargin: __panel ? __panel.leftMargin : 0
         anchors.topMargin: __panel ? __panel.topMargin : 0
         anchors.rightMargin: __panel ? __panel.rightMargin: 0
         anchors.bottomMargin: __panel ? __panel.bottomMargin: 0
 
-        Text {
-            id: prefixItem
-            text: prefix
-            color: __panel ? __panel.foregroundColor : "black"
-            anchors.verticalCenter: parent.verticalCenter
-            renderType: Text.NativeRendering
+        focus: true
+        activeFocusOnPress: spinbox.activeFocusOnPress
+
+        horizontalAlignment: __panel ? __panel.horizontalTextAlignment : Qt.AlignLeft
+        verticalAlignment: __panel ? __panel.verticalTextAlignment : Qt.AlignVCenter
+        selectByMouse: true
+
+        validator: SpinBoxValidator {
+            id: validator
+            onTextChanged: input.text = validator.text
+            Component.onCompleted: input.text = validator.text
+        }
+        onAccepted: {
+            input.text = validator.text
+            selectValue()
         }
 
-        TextInput {
-            id: input
-            anchors.verticalCenter: parent.verticalCenter
-            focus: true
-            activeFocusOnPress: spinbox.activeFocusOnPress
-            function setValue(v) {
-                var newval = parseFloat(v)
+        color: __panel ? __panel.foregroundColor : "black"
+        selectionColor: __panel ? __panel.selectionColor : "black"
+        selectedTextColor: __panel ? __panel.selectedTextColor : "black"
 
-                if (!isNaN(newval)) {
-                    // we give minimumValue priority over maximum if they are inconsistent
-                    if (newval > maximumValue && maximumValue >= minimumValue)
-                        newval = maximumValue
-                    else if (v < minimumValue)
-                        newval = minimumValue
-                    newval = newval.toFixed(decimals)
-                    spinbox.value = parseFloat(newval)
-                    input.text = newval
-                } else {
-                    input.text = parseFloat(spinbox.value)
-                }
-            }
+        opacity: parent.enabled ? 1 : 0.5
+        renderType: Text.NativeRendering
 
-            horizontalAlignment: __panel ? __panel.horizontalTextAlignment : Qt.AlignLeft
-            verticalAlignment: __panel ? __panel.verticalTextAlignment : Qt.AlignVCenter
-            selectByMouse: true
-
-            validator: DoubleValidator { bottom: minimumValue; top: maximumValue; }
-            onAccepted: setValue(input.text)
-            color: __panel ? __panel.foregroundColor : "black"
-            selectionColor: __panel ? __panel.selectionColor : "black"
-            selectedTextColor: __panel ? __panel.selectedTextColor : "black"
-
-            opacity: parent.enabled ? 1 : 0.5
-            renderType: Text.NativeRendering
-        }
-        Text {
-            id: suffixItem
-            text: suffix
-            color: __panel ? __panel.foregroundColor : "black"
-            anchors.verticalCenter: parent.verticalCenter
-            renderType: Text.NativeRendering
+        function selectValue() {
+            select(prefix.length, text.length - suffix.length)
         }
     }
 
