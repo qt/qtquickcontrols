@@ -3,29 +3,40 @@ import QtQuick.tooling 1.1
 // This file describes the plugin-supplied types contained in the library.
 // It is used for QML tooling purposes only.
 //
-// This file was auto-generated with the command 'qmlplugindump.exe QtQuick.Layouts 2.1'.
-
+// This file was auto-generated with the command 'T:\dev\qt-5-stable\qtbase\bin\qmlplugindump.exe QtQuick.Layouts 1.0'.
 
 Module {
     Component {
         name: "QQuickColumnLayout"
         defaultProperty: "data"
         prototype: "QQuickLinearLayout"
-        exports: ["ColumnLayout 2.1"]
+        exports: ["ColumnLayout 1.0"]
     }
+    Component {
+        name: "QQuickGridLayout"
+        defaultProperty: "data"
+        prototype: "QQuickGridLayoutBase"
+        exports: ["GridLayout 1.0"]
+        Enum {
+            name: "Flow"
+            values: {
+                "LeftToRight": 0,
+                "TopToBottom": 1
+            }
+        }
+        Property { name: "columnSpacing"; type: "double" }
+        Property { name: "rowSpacing"; type: "double" }
+        Property { name: "columns"; type: "int" }
+        Property { name: "rows"; type: "int" }
+        Property { name: "flow"; type: "Flow" }
+    }
+    Component { name: "QQuickGridLayoutBase"; defaultProperty: "data"; prototype: "QQuickLayout" }
     Component {
         name: "QQuickLayout"
         defaultProperty: "data"
-        prototype: "QQuickImplicitSizeItem"
-        exports: ["Layout 2.1"]
+        prototype: "QQuickItem"
+        exports: ["Layout 1.0"]
         attachedType: "QQuickLayoutAttached"
-        Enum {
-            name: "SizePolicy"
-            values: {
-                "Fixed": 0,
-                "Expanding": 1
-            }
-        }
     }
     Component {
         name: "QQuickLayoutAttached"
@@ -36,19 +47,23 @@ Module {
         Property { name: "preferredHeight"; type: "double" }
         Property { name: "maximumWidth"; type: "double" }
         Property { name: "maximumHeight"; type: "double" }
-        Property { name: "verticalSizePolicy"; type: "QQuickLayout::SizePolicy" }
-        Property { name: "horizontalSizePolicy"; type: "QQuickLayout::SizePolicy" }
+        Property { name: "fillHeight"; type: "bool" }
+        Property { name: "fillWidth"; type: "bool" }
+        Property { name: "row"; type: "int" }
+        Property { name: "column"; type: "int" }
+        Property { name: "rowSpan"; type: "int" }
+        Property { name: "columnSpan"; type: "int" }
     }
     Component {
         name: "QQuickLinearLayout"
         defaultProperty: "data"
-        prototype: "QQuickLayout"
+        prototype: "QQuickGridLayoutBase"
         Property { name: "spacing"; type: "double" }
     }
     Component {
         name: "QQuickRowLayout"
         defaultProperty: "data"
         prototype: "QQuickLinearLayout"
-        exports: ["RowLayout 2.1"]
+        exports: ["RowLayout 1.0"]
     }
 }
