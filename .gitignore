@@ -3,6 +3,7 @@
 
 examples/ApplicationTemplate/application
 examples/text/text
+tests/auto/activeFocusOnTab/tst_activeFocusOnTab
 tests/auto/controls/tst_controls
 tests/auto/qtdesktop/tst_qtdesktop
 
