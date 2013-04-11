@@ -87,7 +87,7 @@
     By default items will be arranged according to the \l flow property. The default value of
     the \l flow property is \c GridLayout.LeftToRight.
 
-    If the \l columns property is specified, it will be treated as a maximum bound of how many
+    If the \l columns property is specified, it will be treated as a maximum limit of how many
     columns the layout can have, before the auto-positioning wraps back to the beginning of the
     next row. The \l columns property is only used when \l flow is  \c GridLayout.LeftToRight.
 
@@ -103,37 +103,35 @@
         }
     \endcode
 
-    The \l rows property works in a similar way, but items are auto-positioned vertically.
-    The \l rows property is only used when \l flow is  \c GridLayout.TopToBottom.
+    The \l rows property works in a similar way, but items are auto-positioned vertically. The \l
+    rows property is only used when \l flow is \c GridLayout.TopToBottom.
 
-    You can specify which cell you want an item to occupy by setting the \c Layout.row
-    and \c Layout.column properties. You can also specify the row span or column span by
-    setting the \c Layout.rowSpan or \c Layout.columnSpan properties.
+    You can specify which cell you want an item to occupy by setting the
+    \l{Layout::row}{Layout.row} and \l{Layout::column}{Layout.column} properties. You can also
+    specify the row span or column span by setting the \l{Layout::rowSpan}{Layout.rowSpan} or
+    \l{Layout::columnSpan}{Layout.columnSpan} properties.
 
     When the layout is resized, items may grow or shrink. Due to this, items have a
-    minimum size, preferred size and a maximum size.
+    \l{Layout::minimumWidth}{minimum size}, \l{Layout::preferredWidth}{preferred size} and a
+    \l{Layout::maximumWidth}{maximum size}.
 
-    Minimum size can be specified with the
-    Layout.minimumWidth and Layout.minimumHeight properties. These properties are 0 by default.
+    Preferred size may come from one of several sources. It can be specified with the
+    \l{Layout::preferredWidth}{Layout.preferredWidth} and
+    \l{Layout::preferredHeight}{Layout.preferredHeight} properties. If these properties are not
+    specified, it will use the items' \l{Item::implicitWidth}{implicitWidth} or
+    \l{Item::implicitHeight}{implicitHeight} as the preferred size.
+    Finally, if neither of these properties are set, it will use the \l{Item::width}{width} and
+    \l{Item::height}{height} properties of the item. Note that is provided only as a final
+    fallback. If you want to override the preferred size, you should use
+    \l{Layout::preferredWidth}{Layout.preferredWidth} or
+    \l{Layout::preferredHeight}{Layout.preferredHeight}.
 
-    Preferred size can be specified with the Layout.preferredWidth and Layout.preferredHeight
-    properties. If Layout.preferredWidth or Layout.preferredHeight is not specified, it will
-    use the items' implicitWidth or implicitHeight as the preferred size. Finally, if
-    neither of these properties are set, it will use the width and height properties of the item.
+    The \l{Layout::fillWidth}{Layout.fillWidth} and \l{Layout::fillHeight}{Layout.fillHeight} can
+    either be \c true or \c false. If it is \c false, the items size will be fixed to its preferred
+    size. Otherwise, it will grow or shrink between its minimum and maximum size.
 
     \note It is not recommended to have bindings to the width and height properties of items in a
     GridLayout, since this would conflict with the goal of the GridLayout.
-
-    Maximum size can be specified with the Layout.maximumWidth and Layout.maximumHeight
-    properties. If not set, these properties will be interpreted as infinite.
-
-    \note They are not actually infinite, but simply set to a very high value. The result of
-    the arrangement is virtually the same as if it was infinite.
-
-    The \c Layout.fillWidth and \c Layout.fillHeight can either be
-    \c true or \c false. If it is \c false, the items size will be fixed to its preferred size.
-    Otherwise, it will grow or shrink between its minimum
-    and maximum bounds.
 
     \sa RowLayout
     \sa ColumnLayout
