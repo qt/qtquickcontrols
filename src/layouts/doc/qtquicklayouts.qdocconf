@@ -1,17 +1,30 @@
 include($QT_INSTALL_DOCS/global/qt-module-defaults.qdocconf)
 
-# Name of the project.
-project = QtQuickLayouts
-description = Qt Quick Layouts Documentation
+project                 = QtQuickLayouts
+description             = Qt Quick Layouts Reference Documentation
+url                     = http://qt-project.org/doc/qt-$QT_VER/qtquicklayouts/
+version                 = $QT_VERSION
 
-depends = qtqml qtquick qtwidgets qtdoc qtquickcontrols
+qhp.projects            = qtquicklayouts
 
-# Directories in which to search for files to document and images.
-# By default set to the root directory of the project for sources
-# and headers and qdoc will therefore generate output for each file.
-# Images should be placed in <rootdir>/dic/images and examples in
-# <rootdir>/examples.
-# Paths are relative to the  location of this file.
+qhp.qtquicklayouts.file           = qtquicklayouts.qhp
+qhp.qtquicklayouts.namespace      = org.qt-project.qtquicklayouts.$QT_VERSION_TAG
+qhp.qtquicklayouts.virtualFolder  = qtquicklayouts
+qhp.qtquicklayouts.indexTitle     = Qt Quick Layouts
+qhp.qtquicklayouts.indexRoot      =
+#qhp.qtquicklayouts.extraFiles = style/qtquicklayouts.css
+
+qhp.qtquicklayouts.filterAttributes    = qtquicklayouts $QT_VERSION qtrefdoc
+qhp.qtquicklayouts.customFilters.Qt.name = QtQuickLayouts $QT_VERSION
+qhp.qtquicklayouts.customFilters.Qt.filterAttributes = qtquicklayouts $QT_VERSION
+
+qhp.qtquicklayouts.subprojects = qtquicklayoutsqmltypes
+qhp.qtquicklayouts.subprojects.qtquicklayoutsqmltypes.title = Layouts QML Types
+qhp.qtquicklayouts.subprojects.qtquicklayoutsqmltypes.indexTitle = Qt Quick Layouts QML Types
+qhp.qtquicklayouts.subprojects.qtquicklayoutsqmltypes.selectors = class fake:headerfile
+qhp.qtquicklayouts.subprojects.qtquicklayoutsqmltypes.sortPages = true
+
+depends = qtqml qtquick qtwidgets qtdoc qtquicklayouts
 
 exampledirs += ../../../examples/
 
@@ -20,36 +33,3 @@ headerdirs += ../
 sourcedirs += ../
 
 imagedirs += images
-
-# The following parameters are for creating a qhp file, the qhelpgenerator
-# program can convert the qhp file into a qch file which can be opened in
-# Qt Assistant and/or Qt Creator.
-
-# Defines the name of the project. You cannot use operators (+, =, -) in
-# the name. Properties for this project are set using a qhp.<projectname>.property
-# format.
-qhp.projects = qtquicklayouts
-
-# Sets the name of the output qhp file.
-qhp.qtquicklayouts.file = qtquicklayouts.qhp
-
-# Namespace for the output file. This namespace is used to distinguish between
-# different documentation files in Creator/Assistant.
-qhp.qtquicklayouts.namespace = org.qt-project.qtquicklayouts.$QT_VERSION_TAG
-
-# Title for the package, will be the main title for the package in
-# Assistant/Creator.
-qhp.qtquicklayouts.indexTitle = Qt Quick Layouts
-
-# Extra files to add to the output which are not linked to from anywhere
-# using a qdoc \l command.
-#qhp.qtquicklayouts.extraFiles = style/qtquicklayouts.css
-
-# Only update the name of the project for the next variables.
-qhp.qtquicklayouts.virtualFolder  = qtquicklayouts
-
-qhp.qtquicklayouts.subprojects = qtquicklayoutsqmltypes
-qhp.qtquicklayouts.subprojects.qtquicklayoutsqmltypes.title = Qt Quick Layouts QML Types
-qhp.qtquicklayouts.subprojects.qtquicklayoutsqmltypes.indexTitle = Qt Quick Layouts QML Types
-qhp.qtquicklayouts.subprojects.qtquicklayoutsqmltypes.selectors = class fake:headerfile
-qhp.qtquicklayouts.subprojects.qtquicklayoutsqmltypes.sortPages = true
