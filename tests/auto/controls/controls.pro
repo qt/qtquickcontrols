@@ -22,7 +22,6 @@ OTHER_FILES += \
     $$PWD/data/tst_menu.qml \
     $$PWD/data/tst_textfield.qml \
     $$PWD/data/tst_textarea.qml \
-    $$PWD/data/tst_applicationwindow.qml \
     $$PWD/data/tst_combobox.qml \
     $$PWD/data/tst_progressbar.qml \
     $$PWD/data/tst_radiobutton.qml \
