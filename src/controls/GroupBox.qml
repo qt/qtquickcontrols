@@ -40,8 +40,8 @@
 
 import QtQuick 2.1
 import QtQuick.Controls 1.0
+import QtQuick.Controls.Private 1.0
 import QtQuick.Controls.Styles 1.0
-import "Styles/Settings.js" as Settings
 
 /*!
     \qmltype GroupBox
@@ -138,7 +138,7 @@ Item {
     property real contentHeight: content.childrenRect.height
 
     /*! \internal */
-    property Component style: Qt.createComponent(Settings.THEME_PATH + "/GroupBoxStyle.qml", groupbox)
+    property Component style: Qt.createComponent(Settings.theme() + "/GroupBoxStyle.qml", groupbox)
 
     /*! \internal */
     default property alias data: content.data

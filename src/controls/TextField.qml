@@ -42,7 +42,6 @@ import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Private 1.0
 import "Styles"
-import "Styles/Settings.js" as Settings
 
 /*!
     \qmltype TextField
@@ -530,7 +529,7 @@ Control {
     /*! \internal */
     property alias __contentWidth: textInput.contentWidth
 
-    style: Qt.createComponent(Settings.THEME_PATH + "/TextFieldStyle.qml", textInput)
+    style: Qt.createComponent(Settings.theme() + "/TextFieldStyle.qml", textInput)
 
     activeFocusOnTab: true
 

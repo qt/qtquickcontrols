@@ -40,10 +40,12 @@
 ****************************************************************************/
 
 #include "qquicktooltip_p.h"
-
-#include <qtooltip.h>
 #include <qquickwindow.h>
 #include <qquickitem.h>
+
+#ifndef QT_NO_WIDGETS
+#include <qtooltip.h>
+#endif
 
 QT_BEGIN_NAMESPACE
 
@@ -57,13 +59,20 @@ void QQuickTooltip::showText(QQuickItem *item, const QPointF &pos, const QString
 {
     if (!item || !item->window())
         return;
-
+#ifndef QT_NO_WIDGETS
     QToolTip::showText(item->window()->mapToGlobal(item->mapToScene(pos).toPoint()), str);
+#else
+    Q_UNUSED(item);
+    Q_UNUSED(pos);
+    Q_UNUSED(str);
+#endif
 }
 
 void QQuickTooltip::hideText()
 {
+#ifndef QT_NO_WIDGETS
     QToolTip::hideText();
+#endif
 }
 
 QT_END_NAMESPACE

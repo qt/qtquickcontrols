@@ -58,4 +58,5 @@ Style {
         visible: frameVisible
     }
 
+    property Component corner: StyleItem { elementType: "scrollareacorner" }
 }

@@ -41,7 +41,6 @@
 import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Private 1.0
-import "Styles/Settings.js" as Settings
 
 /*!
     \qmltype ToolBar
@@ -75,7 +74,7 @@ Item {
     Accessible.role: Accessible.ToolBar
     implicitWidth: loader.item ? loader.item.implicitWidth : 0
     implicitHeight: loader.item ? loader.item.implicitHeight : 0
-    property Component style: Qt.createComponent(Settings.THEME_PATH + "/ToolBarStyle.qml", toolbar)
+    property Component style: Qt.createComponent(Settings.theme() + "/ToolBarStyle.qml", toolbar)
     Loader {
         id: loader
         anchors.fill: parent

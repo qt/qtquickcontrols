@@ -1,7 +1,6 @@
-QT += widgets qml quick
+QT += qml quick widgets
 CONFIG += console
 TARGET = application
-
 SOURCES += \
     main.cpp
 

@@ -132,17 +132,6 @@ QQuickStyleItem::QQuickStyleItem(QQuickItem *parent)
     m_contentHeight(0)
 
 {
-    // Check on QApplication, allowing for "qmlplugindump" to query our interfaces.
-    QCoreApplication *coreApp = QCoreApplication::instance();
-    Q_ASSERT(coreApp);
-    if (!qobject_cast<QApplication *>(coreApp)) {
-        if (QCoreApplication::applicationFilePath().contains(QLatin1String("qmlplugindump"), Qt::CaseInsensitive))
-            return;
-        qWarning("\nError: No widget style available. \n\nQt Quick Controls"
-               "currently depend on the widget module to function. \n"
-               "Use QApplication when creating standalone executables.\n\n");
-        exit(-1);
-    }
     m_font = qApp->font();
     setFlag(QQuickItem::ItemHasContents, true);
     setSmooth(false);

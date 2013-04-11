@@ -41,7 +41,6 @@
 import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Private 1.0
-import "Styles/Settings.js" as Settings
 
 /*!
     \qmltype ComboBox
@@ -91,7 +90,7 @@ Control {
     /*! \internal */
     property alias __containsMouse: mouseArea.containsMouse
 
-    style: Qt.createComponent(Settings.THEME_PATH + "/ComboBoxStyle.qml", comboBox)
+    style: Qt.createComponent(Settings.theme() + "/ComboBoxStyle.qml", comboBox)
 
     activeFocusOnTab: true
 

@@ -4,13 +4,13 @@ QML_FILES = \
     ButtonStyle.qml \
     CheckBoxStyle.qml \
     ComboBoxStyle.qml \
+    FocusFrameStyle.qml \
     GroupBoxStyle.qml \
     MenuBarStyle.qml \
     MenuStyle.qml \
     ProgressBarStyle.qml \
     RadioButtonStyle.qml \
     ScrollBarStyle.qml \
-    Settings.js \
     ScrollViewStyle.qml\
     SliderStyle.qml \
     SpinBoxStyle.qml \
@@ -27,6 +27,7 @@ QML_FILES += \
     Desktop/ButtonStyle.qml \
     Desktop/CheckBoxStyle.qml \
     Desktop/ComboBoxStyle.qml \
+    Desktop/FocusFrameStyle.qml \
     Desktop/GroupBoxStyle.qml \
     Desktop/MenuBarStyle.qml \
     Desktop/MenuStyle.qml \

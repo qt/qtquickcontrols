@@ -1,2 +1,2 @@
-module QtQuickControlsTests
+    module QtQuickControlsTests
 plugin testplugin

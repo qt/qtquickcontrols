@@ -41,7 +41,6 @@
 import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Private 1.0
-import "Styles/Settings.js" as Settings
 
 /*!
     \qmltype StatusBar
@@ -72,7 +71,7 @@ Item {
     Accessible.role: Accessible.StatusBar
     implicitWidth: parent ? parent.width : loader.item ? loader.item.implicitHeight : 0
     implicitHeight: loader.item ? loader.item.implicitHeight : 0
-    property Component style: Qt.createComponent(Settings.THEME_PATH + "/StatusBarStyle.qml", statusbar)
+    property Component style: Qt.createComponent(Settings.theme() + "/StatusBarStyle.qml", statusbar)
     Loader {
         id: loader
         anchors.fill: parent

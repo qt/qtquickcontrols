@@ -56,7 +56,6 @@
 #include "qgridlayoutengine_p.h"
 #include "qquickitem.h"
 #include "qquicklayout_p.h"
-#include <QtWidgets/qsizepolicy.h>
 #include "qdebug.h"
 QT_BEGIN_NAMESPACE
 

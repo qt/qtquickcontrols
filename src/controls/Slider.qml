@@ -41,7 +41,6 @@
 import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Private 1.0
-import "Styles/Settings.js" as Settings
 
 /*!
     \qmltype Slider
@@ -181,7 +180,7 @@ Control {
         return Math.round(v);
     }
 
-    style: Qt.createComponent(Settings.THEME_PATH + "/SliderStyle.qml", slider)
+    style: Qt.createComponent(Settings.theme() + "/SliderStyle.qml", slider)
 
     Keys.onRightPressed: value += (maximumValue - minimumValue)/10.0
     Keys.onLeftPressed: value -= (maximumValue - minimumValue)/10.0

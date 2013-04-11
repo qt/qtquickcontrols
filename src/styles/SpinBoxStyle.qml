@@ -55,10 +55,14 @@ Style {
     property int rightMargin: 12
     property int bottomMargin: 0
 
-    property color foregroundColor: syspal.text
-    property color backgroundColor: syspal.base
-    property color selectionColor: syspal.highlight
-    property color selectedTextColor: syspal.highlightedText
+    property color foregroundColor: __syspal.text
+    property color backgroundColor: __syspal.base
+    property color selectionColor: __syspal.highlight
+    property color selectedTextColor: __syspal.highlightedText
+
+    property var __syspal: SystemPalette {
+        colorGroup: control.enabled ? SystemPalette.Active : SystemPalette.Disabled
+    }
 
     property Component upControl: Rectangle {
         anchors.centerIn: parent
@@ -101,7 +105,7 @@ Style {
 
     property Component panel:  Item {
         id: styleitem
-        implicitWidth: 100
+        implicitWidth: control.__contentWidth + 26
         implicitHeight: 21
 
         property color foregroundColor: spinboxStyle.foregroundColor
@@ -121,11 +125,6 @@ Style {
         property int verticalTextAlignment: Qt.AlignVCenter
 
         property SpinBox cref: control
-
-        SystemPalette {
-            id: syspal
-            colorGroup: control.enabled ? SystemPalette.Active : SystemPalette.Disabled
-        }
 
         Loader {
             id: backgroundLoader

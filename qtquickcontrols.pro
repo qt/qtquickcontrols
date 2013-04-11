@@ -1,5 +1,3 @@
-requires(qtHaveModule(widgets))
-
 load(qt_parts)
 
 # We need accessibility

@@ -42,7 +42,6 @@ import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Styles 1.0
 import QtQuick.Controls.Private 1.0
-import "Styles/Settings.js" as Settings
 
 /*!
     \qmltype MenuBar
@@ -74,7 +73,7 @@ MenuBarPrivate {
     id: root
 
     /*! \internal */
-    property Component style: Qt.createComponent(Settings.THEME_PATH + "/MenuBarStyle.qml", root)
+    property Component style: Qt.createComponent(Settings.theme() + "/MenuBarStyle.qml", root)
 
     /*! \internal */
     __contentItem: Loader {

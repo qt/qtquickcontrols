@@ -39,55 +39,23 @@
 **
 ****************************************************************************/
 
-#include "qquickrangemodel_p.h"
-#include "qquickwheelarea_p.h"
-#include "qquickstyleitem_p.h"
-#include "qquicktooltip_p.h"
-#include "qquickcontrolsettings_p.h"
+#ifndef QQUICKCONTROLSETTINGS_P_H
+#define QQUICKCONTROLSETTINGS_P_H
 
-#ifndef QT_NO_WIDGETS
-#include "qquickstyleitem_p.h"
-#endif
-
-#include <qqml.h>
-#include <qqmlextensionplugin.h>
+#include <QtCore/qobject.h>
 
 QT_BEGIN_NAMESPACE
 
-static QObject *registerTooltipModule(QQmlEngine *engine, QJSEngine *jsEngine)
-{
-    Q_UNUSED(engine);
-    Q_UNUSED(jsEngine);
-    return new QQuickTooltip();
-}
-
-static QObject *registerSettingsModule(QQmlEngine *engine, QJSEngine *jsEngine)
-{
-    Q_UNUSED(engine);
-    Q_UNUSED(jsEngine);
-    return new QQuickControlSettings();
-}
-
-class QtQuickControlsPrivatePlugin : public QQmlExtensionPlugin
+class QQuickControlSettings : public QObject
 {
     Q_OBJECT
-    Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QQmlExtensionInterface/1.0")
 
 public:
-    void registerTypes(const char *uri);
-};
+    QQuickControlSettings(QObject *parent = 0);
 
-void QtQuickControlsPrivatePlugin::registerTypes(const char *uri)
-{
-    qmlRegisterType<QQuickRangeModel>(uri, 1, 0, "RangeModel");
-    qmlRegisterType<QQuickWheelArea>(uri, 1, 0, "WheelArea");
-    qmlRegisterSingletonType<QQuickTooltip>(uri, 1, 0, "Tooltip", registerTooltipModule);
-    qmlRegisterSingletonType<QQuickControlSettings>(uri, 1, 0, "Settings", registerSettingsModule);
-#ifndef QT_NO_WIDGETS
-    qmlRegisterType<QQuickStyleItem>(uri, 1, 0, "StyleItem");
-#endif
-}
+    Q_INVOKABLE QString theme();
+};
 
 QT_END_NAMESPACE
 
-#include "plugin.moc"
+#endif // QQUICKCONTROLSETTINGS_P_H

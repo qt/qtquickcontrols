@@ -41,7 +41,6 @@
 import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Private 1.0
-import "Styles/Settings.js" as Settings
 
 /*!
     \qmltype TabView
@@ -126,7 +125,7 @@ FocusScope {
     property var __tabs: new Array()
 
     /*! \internal */
-    property Component style: Qt.createComponent(Settings.THEME_PATH + "/TabViewStyle.qml", root)
+    property Component style: Qt.createComponent(Settings.theme() + "/TabViewStyle.qml", root)
 
     /*! \internal */
     property var __styleItem: loader.item

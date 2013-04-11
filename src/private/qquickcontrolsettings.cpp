@@ -38,5 +38,30 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-.pragma library
-var THEME_PATH = "Styles/Desktop"
+
+#include "qquickcontrolsettings_p.h"
+#include <qquickitem.h>
+#include <qcoreapplication.h>
+
+QT_BEGIN_NAMESPACE
+
+QQuickControlSettings::QQuickControlSettings(QObject *parent)
+    : QObject(parent)
+{
+}
+
+QString QQuickControlSettings::theme()
+{
+    static QString currentTheme;
+    if (currentTheme.isEmpty()) {
+        currentTheme = QLatin1String("Styles");
+#ifndef QT_NO_WIDGETS
+        // Only enable QStyle support when we are using QApplication
+        if (QCoreApplication::instance()->inherits("QApplication"))
+            currentTheme = QLatin1String("Styles/Desktop");
+#endif
+    }
+    return currentTheme;
+}
+
+QT_END_NAMESPACE

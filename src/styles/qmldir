@@ -2,6 +2,7 @@ module QtQuick.Controls.Styles
 ButtonStyle 1.0 ButtonStyle.qml
 CheckBoxStyle 1.0 CheckBoxStyle.qml
 ComboBoxStyle 1.0 ComboBoxStyle.qml
+FocusFrameStyle 1.0 FocusFrameStyle.qml
 GroupBoxStyle 1.0 GroupBoxStyle.qml
 ProgressBarStyle 1.0 ProgressBarStyle.qml
 RadioButtonStyle 1.0 RadioButtonStyle.qml

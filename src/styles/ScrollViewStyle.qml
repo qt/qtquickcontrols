@@ -45,17 +45,10 @@ import QtQuick.Controls.Styles 1.0
 Style {
     id: root
 
-    property bool frameOnlyAroundContents: __styleitem.styleHint("frameOnlyAroundContents")
-    property int scrollBarSpacing: __styleitem.pixelMetric("scrollbarspacing")
-    property int defaultFrameWidth: __styleitem.pixelMetric("defaultframewidth")
+    property bool frameOnlyAroundContents: false
+    property int scrollBarSpacing: 4
+    property int defaultFrameWidth: 1
 
-    property StyleItem __styleitem: StyleItem { elementType: "frame" }
-
-    property Component frame: StyleItem {
-        id: styleitem
-        elementType: "frame"
-        sunken: true
-        visible: control.frameVisible
-    }
-
+    property Component frame: Rectangle { visible: frameVisible }
+    property Component corner: Rectangle { color: "red"  }
 }

@@ -41,7 +41,6 @@
 import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Private 1.0
-import "Styles/Settings.js" as Settings
 
 /*!
    \qmltype TableView
@@ -225,7 +224,7 @@ ScrollView {
     signal activated
 
 
-    style: Qt.createComponent(Settings.THEME_PATH + "/TableViewStyle.qml", root)
+    style: Qt.createComponent(Settings.theme() + "/TableViewStyle.qml", root)
 
 
     Accessible.role: Accessible.Table

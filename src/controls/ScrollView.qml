@@ -42,7 +42,6 @@ import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Private 1.0
 import QtQuick.Controls.Styles 1.0
-import "Styles/Settings.js" as Settings
 
 /*!
     \qmltype ScrollView
@@ -140,7 +139,7 @@ FocusScope {
     /*! \internal */
     property alias verticalScrollBar: scroller.verticalScrollBar
     /*! \internal */
-    property Component style: Qt.createComponent(Settings.THEME_PATH + "/ScrollViewStyle.qml", root)
+    property Component style: Qt.createComponent(Settings.theme() + "/ScrollViewStyle.qml", root)
 
     /* \internal */
     property Style __style: styleLoader.item

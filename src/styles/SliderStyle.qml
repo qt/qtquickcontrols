@@ -83,8 +83,9 @@ Style {
     property Component panel: Item {
         id: root
 
-        implicitWidth: backgroundControl.implicitWidth
-        implicitHeight: backgroundControl.implicitHeight
+        property bool horizontal : control.orientation === Qt.Horizontal
+        implicitWidth: horizontal ? backgroundControl.implicitWidth : backgroundControl.implicitHeight
+        implicitHeight: horizontal ? backgroundControl.implicitHeight : backgroundControl.implicitWidth
 
         property Control __cref: control
 

@@ -3,7 +3,7 @@ TARGET = tst_controls
 
 IMPORTPATH = $$OUT_PWD/../testplugin
 
-QT += widgets
+qtHaveModule(widgets) { QT += widgets }
 
 CONFIG += qmltestcase console
 

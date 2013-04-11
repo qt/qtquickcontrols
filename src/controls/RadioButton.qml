@@ -41,7 +41,6 @@
 import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Private 1.0
-import "Styles/Settings.js" as Settings
 
 /*!
     \qmltype RadioButton
@@ -87,7 +86,7 @@ AbstractCheckable {
 
         \codeline Qt.createComponent("path/to/style.qml", radioButtonId);
     */
-    style: Qt.createComponent(Settings.THEME_PATH + "/RadioButtonStyle.qml", radioButton)
+    style: Qt.createComponent(Settings.theme() + "/RadioButtonStyle.qml", radioButton)
 
     __cycleStatesHandler: function() { checked = !checked; }
 }

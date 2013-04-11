@@ -1,7 +1,7 @@
 TARGET  = plugin
 TARGETPATH = QtQuick/Controls
 
-QT += qml quick widgets gui-private core-private
+QT += qml quick gui-private core-private
 
 QMAKE_DOCS = $$PWD/doc/qtquickcontrols.qdocconf
 

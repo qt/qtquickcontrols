@@ -37,54 +37,19 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-
 import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Private 1.0
 
 /*!
-    \qmltype Button
-    \inqmlmodule QtQuick.Controls 1.0
-    \ingroup controls
-    \brief A push button with a text label.
-
-    The push button is perhaps the most commonly used widget in any graphical
-    user interface. Pushing (or clicking) a button commands the computer to
-    perform some action or answer a question. Common examples of buttons are
-    OK, Apply, Cancel, Close, Yes, No, and Help buttons.
-
-    Button is similar to the QPushButton widget.
-
- */
-BasicButton {
-    id: button
-
-    /*! This property holds whether the push button is the default button.
-        Default buttons decide what happens when the user presses enter in a
-        dialog without giving a button explicit focus. \note This property is
-        ignored by Dialog.
-
-        The default value is \c false.
-    */
-    property bool isDefault: false
-
-    /*! This property holds the text shown on the button. If the button has no
-        text, the \l text property will be an empty string.
-
-        The default value is the empty string.
-    */
-    property string text
-
-    /*! This property holds the icon shown on the button. If the button has no
-        icon, the \l iconSource property will be an empty string.
-
-        The default value is the empty string.
-    */
-    property url iconSource
-
-    activeFocusOnTab: true
-
-    Accessible.name: text
-
-    style: Qt.createComponent(Settings.theme() + "/ButtonStyle.qml", button)
+    \qmltype FocusFrameStyle
+    \internal
+    \inqmlmodule QtQuick.Controls.Styles 1.0
+*/
+StyleItem {
+    property int margin: -3
+    anchors.fill: parent
+    elementType: "focusframe"
 }
+
+
