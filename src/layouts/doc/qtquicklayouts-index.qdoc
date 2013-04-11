@@ -29,7 +29,7 @@
     \page qtquicklayouts-index.html
     \title Qt Quick Layouts
 
-    \brief The Qt Quick Layouts module is an add-on module of Qt.
+    \brief A module with a set of QML elements that arranges QML items in an user interface.
 
     \section1 Getting started
 
@@ -40,9 +40,10 @@
     \endcode
 
     \section1 Layouts
-    Layouts are items that are used to arrange items in the user interface. Layout are dynamic -
-    when the layout changes geometry it will typically incluence the arrangement of its child
-    items.
+    Layouts are items that are used to arrange items in the user interface. The layout is dynamic -
+    when the layout changes geometry it will typically influence the arrangement of its child
+    items. Since a layout is an item, layouts can consequently be nested.
+
     \annotatedlist layouts
 
 */

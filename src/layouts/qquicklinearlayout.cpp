@@ -49,7 +49,7 @@
     \instantiates QQuickRowLayout
     \inqmlmodule QtQuick.Layouts 1.0
     \ingroup layouts
-    \brief RowLayout is the same as a \l GridLayout with just one row.
+    \brief Identical to \l GridLayout, but having only one row.
 
     It is available as a convenience for developers, as it offers a cleaner API.
 
@@ -62,7 +62,7 @@
     \instantiates QQuickColumnLayout
     \inqmlmodule QtQuick.Layouts 1.0
     \ingroup layouts
-    \brief ColumnLayout is the same as a \l GridLayout with just one column.
+    \brief Identical to \l GridLayout, but having only one column.
 
     It is available as a convenience for developers, as it offers a cleaner API.
 
@@ -118,7 +118,7 @@
 
     Preferred size can be specified with the Layout.preferredWidth and Layout.preferredHeight
     properties. If Layout.preferredWidth or Layout.preferredHeight is not specified, it will
-    use the items implicitWidth or implicitHeight as the items preferred size. Finally, if
+    use the items' implicitWidth or implicitHeight as the preferred size. Finally, if
     neither of these properties are set, it will use the width and height properties of the item.
 
     \note It is not recommended to have bindings to the width and height properties of items in a
@@ -396,7 +396,7 @@ QQuickGridLayout::QQuickGridLayout(QQuickItem *parent /* = 0*/)
     \qmlproperty double GridLayout::columnSpacing
 
     This property holds the spacing between each column.
-    The default value is 4.
+    The default value is \c 4.
 */
 qreal QQuickGridLayout::columnSpacing() const
 {
@@ -419,7 +419,7 @@ void QQuickGridLayout::setColumnSpacing(qreal spacing)
     \qmlproperty double GridLayout::rowSpacing
 
     This property holds the spacing between each row.
-    The default value is 4.
+    The default value is \c 4.
 */
 qreal QQuickGridLayout::rowSpacing() const
 {
@@ -441,9 +441,9 @@ void QQuickGridLayout::setRowSpacing(qreal spacing)
 /*!
     \qmlproperty int GridLayout::columns
 
-    This property holds the column bound for items positioned if \l flow is
+    This property holds the column limit for items positioned if \l flow is
     \c GridLayout.LeftToRight.
-    The default value is treated as infinite.
+    The default value is that there is no limit.
 */
 int QQuickGridLayout::columns() const
 {
@@ -465,8 +465,8 @@ void QQuickGridLayout::setColumns(int columns)
 /*!
     \qmlproperty int GridLayout::rows
 
-    This property holds the row bound for items positioned if \l flow is \c GridLayout.TopToBottom.
-    The default value is treated as infinite.
+    This property holds the row limit for items positioned if \l flow is \c GridLayout.TopToBottom.
+    The default value is that there is no limit.
 */
 int QQuickGridLayout::rows() const
 {
@@ -652,13 +652,13 @@ QQuickLinearLayout::QQuickLinearLayout(Qt::Orientation orientation,
     \qmlproperty double RowLayout::spacing
 
     This property holds the spacing between each cell.
-    The default value 4.
+    The default value is \c 4.
 */
 /*!
     \qmlproperty double ColumnLayout::spacing
 
     This property holds the spacing between each cell.
-    The default value 4.
+    The default value is \c 4.
 */
 
 qreal QQuickLinearLayout::spacing() const
