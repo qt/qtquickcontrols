@@ -39,8 +39,8 @@
 **
 ****************************************************************************/
 
-#ifndef QTEXCLUSIVEGROUP_H
-#define QTEXCLUSIVEGROUP_H
+#ifndef QQUICKEXCLUSIVEGROUP_H
+#define QQUICKEXCLUSIVEGROUP_H
 
 #include <QtCore/qobject.h>
 #include <QtCore/qmetaobject.h>
@@ -50,7 +50,7 @@ QT_BEGIN_NAMESPACE
 
 class QQuickAction;
 
-class QtExclusiveGroup : public QObject
+class QQuickExclusiveGroup : public QObject
 {
     Q_OBJECT
 
@@ -59,7 +59,7 @@ class QtExclusiveGroup : public QObject
     Q_CLASSINFO("DefaultProperty", "__actions")
 
 public:
-    explicit QtExclusiveGroup(QObject *parent = 0);
+    explicit QQuickExclusiveGroup(QObject *parent = 0);
 
     QObject *current() const { return m_current; }
     void setCurrent(QObject * o);
@@ -85,4 +85,4 @@ private:
 
 QT_END_NAMESPACE
 
-#endif // QTEXCLUSIVEGROUP_H
+#endif // QQUICKEXCLUSIVEGROUP_H

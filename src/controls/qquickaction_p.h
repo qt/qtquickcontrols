@@ -51,7 +51,7 @@
 
 QT_BEGIN_NAMESPACE
 
-class QtExclusiveGroup;
+class QQuickExclusiveGroup;
 
 class QQuickAction : public QObject
 {
@@ -66,7 +66,7 @@ class QQuickAction : public QObject
     Q_PROPERTY(bool checkable READ isCheckable WRITE setCheckable NOTIFY checkableChanged)
     Q_PROPERTY(bool checked READ isChecked WRITE setChecked DESIGNABLE isCheckable NOTIFY toggled)
 
-    Q_PROPERTY(QtExclusiveGroup *exclusiveGroup READ exclusiveGroup WRITE setExclusiveGroup NOTIFY exclusiveGroupChanged)
+    Q_PROPERTY(QQuickExclusiveGroup *exclusiveGroup READ exclusiveGroup WRITE setExclusiveGroup NOTIFY exclusiveGroupChanged)
 #ifndef QT_NO_SHORTCUT
     Q_PROPERTY(QString shortcut READ shortcut WRITE setShortcut NOTIFY shortcutChanged)
 #endif
@@ -101,8 +101,8 @@ public:
     bool isChecked() const { return m_checkable && m_checked; }
     void setChecked(bool c);
 
-    QtExclusiveGroup *exclusiveGroup() const;
-    void setExclusiveGroup(QtExclusiveGroup *arg);
+    QQuickExclusiveGroup *exclusiveGroup() const;
+    void setExclusiveGroup(QQuickExclusiveGroup *arg);
 
     QIcon icon() const { return m_icon; }
     QVariant iconVariant() const { return QVariant(m_icon); }
@@ -137,7 +137,7 @@ private:
     bool m_enabled;
     bool m_checkable;
     bool m_checked;
-    QPointer<QtExclusiveGroup> m_exclusiveGroup;
+    QPointer<QQuickExclusiveGroup> m_exclusiveGroup;
     QKeySequence m_shortcut;
     QKeySequence m_mnemonic;
     QString m_tooltip;

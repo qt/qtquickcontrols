@@ -40,7 +40,7 @@
 ****************************************************************************/
 
 #include "qquickaction_p.h"
-#include "qtexclusivegroup_p.h"
+#include "qquickexclusivegroup_p.h"
 
 #include <private/qguiapplication_p.h>
 #include <qqmlfile.h>
@@ -305,12 +305,12 @@ void QQuickAction::setChecked(bool c)
         emit toggled(m_checked);
 }
 
-QtExclusiveGroup *QQuickAction::exclusiveGroup() const
+QQuickExclusiveGroup *QQuickAction::exclusiveGroup() const
 {
     return m_exclusiveGroup.data();
 }
 
-void QQuickAction::setExclusiveGroup(QtExclusiveGroup *eg)
+void QQuickAction::setExclusiveGroup(QQuickExclusiveGroup *eg)
 {
     if (m_exclusiveGroup == eg)
         return;

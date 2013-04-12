@@ -1,6 +1,6 @@
 HEADERS += \
     $$PWD/qquickaction_p.h \
-    $$PWD/qtexclusivegroup_p.h \
+    $$PWD/qquickexclusivegroup_p.h \
     $$PWD/qtmenu_p.h \
     $$PWD/qtmenubar_p.h \
     $$PWD/qtmenuitem_p.h \
@@ -11,7 +11,7 @@ HEADERS += \
 SOURCES += \
     $$PWD/plugin.cpp \
     $$PWD/qquickaction.cpp \
-    $$PWD/qtexclusivegroup.cpp \
+    $$PWD/qquickexclusivegroup.cpp \
     $$PWD/qtmenu.cpp \
     $$PWD/qtmenubar.cpp \
     $$PWD/qtmenuitem.cpp \

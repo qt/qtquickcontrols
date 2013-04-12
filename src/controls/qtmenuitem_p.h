@@ -55,7 +55,7 @@ class QUrl;
 class QPlatformMenuItem;
 class QQuickItem;
 class QQuickAction;
-class QtExclusiveGroup;
+class QQuickExclusiveGroup;
 class QtMenu;
 class QtMenuItemContainer;
 
@@ -177,7 +177,7 @@ class QtMenuItem: public QtMenuText
     Q_PROPERTY(QString text READ text WRITE setText NOTIFY textChanged)
     Q_PROPERTY(bool checkable READ checkable WRITE setCheckable NOTIFY checkableChanged)
     Q_PROPERTY(bool checked READ checked WRITE setChecked NOTIFY toggled)
-    Q_PROPERTY(QtExclusiveGroup *exclusiveGroup READ exclusiveGroup WRITE setExclusiveGroup NOTIFY exclusiveGroupChanged)
+    Q_PROPERTY(QQuickExclusiveGroup *exclusiveGroup READ exclusiveGroup WRITE setExclusiveGroup NOTIFY exclusiveGroupChanged)
     Q_PROPERTY(QString shortcut READ shortcut WRITE setShortcut NOTIFY shortcutChanged)
     Q_PROPERTY(QQuickAction *action READ boundAction WRITE setBoundAction NOTIFY actionChanged)
 
@@ -217,8 +217,8 @@ public:
     bool checked() const;
     void setChecked(bool checked);
 
-    QtExclusiveGroup *exclusiveGroup() const;
-    void setExclusiveGroup(QtExclusiveGroup *);
+    QQuickExclusiveGroup *exclusiveGroup() const;
+    void setExclusiveGroup(QQuickExclusiveGroup *);
 
     void setParentMenu(QtMenu *parentMenu);
 

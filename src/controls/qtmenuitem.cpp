@@ -582,12 +582,12 @@ void QtMenuItem::updateChecked()
     emit toggled(checked);
 }
 
-QtExclusiveGroup *QtMenuItem::exclusiveGroup() const
+QQuickExclusiveGroup *QtMenuItem::exclusiveGroup() const
 {
     return action()->exclusiveGroup();
 }
 
-void QtMenuItem::setExclusiveGroup(QtExclusiveGroup *eg)
+void QtMenuItem::setExclusiveGroup(QQuickExclusiveGroup *eg)
 {
     if (!m_boundAction)
         action()->setExclusiveGroup(eg);
