@@ -39,14 +39,14 @@
 **
 ****************************************************************************/
 
-#ifndef QTSTACK_P_H
-#define QTSTACK_P_H
+#ifndef QQUICKSTACK_P_H
+#define QQUICKSTACK_P_H
 
 #include <QtQuick/qquickitem.h>
 
 QT_BEGIN_NAMESPACE
 
-class QtStack : public QObject
+class QQuickStack : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(int index READ index NOTIFY indexChanged)
@@ -58,9 +58,9 @@ class QtStack : public QObject
     Q_ENUMS(Status)
 
 public:
-    QtStack(QObject *object = 0);
+    QQuickStack(QObject *object = 0);
 
-    static QtStack *qmlAttachedProperties(QObject *object);
+    static QQuickStack *qmlAttachedProperties(QObject *object);
 
     int index() const;
     void setIndex(int index);
@@ -91,7 +91,7 @@ private:
 
 QT_END_NAMESPACE
 
-QML_DECLARE_TYPE(QtStack)
-QML_DECLARE_TYPEINFO(QtStack, QML_HAS_ATTACHED_PROPERTIES)
+QML_DECLARE_TYPE(QQuickStack)
+QML_DECLARE_TYPEINFO(QQuickStack, QML_HAS_ATTACHED_PROPERTIES)
 
-#endif // QTSTACK_P_H
+#endif // QQUICKSTACK_P_H

@@ -43,7 +43,7 @@
 #include "qquickexclusivegroup_p.h"
 #include "qquickmenu_p.h"
 #include "qquickmenubar_p.h"
-#include "qtstack_p.h"
+#include "qquickstack_p.h"
 
 #include <qimage.h>
 #include <qqml.h>
@@ -97,7 +97,7 @@ void QtQuickControlsPlugin::registerTypes(const char *uri)
     qmlRegisterUncreatableType<QQuickMenuBase>(uri, 1, 0, "MenuBase",
                                                QLatin1String("Do not create objects of type MenuBase"));
 
-    qmlRegisterUncreatableType<QtStack>(uri, 1, 0, "Stack", QLatin1String("Do not create objects of type Stack"));
+    qmlRegisterUncreatableType<QQuickStack>(uri, 1, 0, "Stack", QLatin1String("Do not create objects of type Stack"));
 }
 
 void QtQuickControlsPlugin::initializeEngine(QQmlEngine *engine, const char *uri)

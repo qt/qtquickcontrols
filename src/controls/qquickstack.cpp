@@ -39,13 +39,13 @@
 **
 ****************************************************************************/
 
-#include "qtstack_p.h"
+#include "qquickstack_p.h"
 
 QT_BEGIN_NAMESPACE
 
 /*!
     \qmltype Stack
-    \instantiates QtStack
+    \instantiates QQuickStack
     \inqmlmodule QtQuick.Controls 1.0
     \ingroup views
     \brief Provides attached properties for items pushed onto a StackView.
@@ -60,7 +60,7 @@ QT_BEGIN_NAMESPACE
     \sa StackView
 */
 
-QtStack::QtStack(QObject *object)
+QQuickStack::QQuickStack(QObject *object)
     : QObject(object),
       m_index(-1),
       m_status(Inactive),
@@ -68,9 +68,9 @@ QtStack::QtStack(QObject *object)
 {
 }
 
-QtStack *QtStack::qmlAttachedProperties(QObject *object)
+QQuickStack *QQuickStack::qmlAttachedProperties(QObject *object)
 {
-    return new QtStack(object);
+    return new QQuickStack(object);
 }
 
 /*!
@@ -81,12 +81,12 @@ QtStack *QtStack::qmlAttachedProperties(QObject *object)
     so that \l{StackView::get()}{pageStack.get(index)} will return the item itself.
     If \l{Stack::pageStack}{pageStack} is \c null, \a index will be \c -1.
 */
-int QtStack::index() const
+int QQuickStack::index() const
 {
     return m_index;
 }
 
-void QtStack::setIndex(int index)
+void QQuickStack::setIndex(int index)
 {
     if (m_index != index) {
         m_index = index;
@@ -106,12 +106,12 @@ void QtStack::setIndex(int index)
     \li \c Stack.Deactivating: the item is transitioning into becoming inactive
     \endlist
 */
-QtStack::Status QtStack::status() const
+QQuickStack::Status QQuickStack::status() const
 {
     return m_status;
 }
 
-void QtStack::setStatus(Status status)
+void QQuickStack::setStatus(Status status)
 {
     if (m_status != status) {
         m_status = status;
@@ -126,12 +126,12 @@ void QtStack::setStatus(Status status)
     This property holds the StackView the item is in. If the item is not inside
     a StackView, \a pageStack will be \c null.
 */
-QQuickItem *QtStack::pageStack() const
+QQuickItem *QQuickStack::pageStack() const
 {
     return m_pageStack;
 }
 
-void QtStack::setStackView(QQuickItem *pageStack)
+void QQuickStack::setStackView(QQuickItem *pageStack)
 {
     if (m_pageStack != pageStack) {
         m_pageStack = pageStack;

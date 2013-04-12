@@ -6,7 +6,7 @@ HEADERS += \
     $$PWD/qquickmenuitem_p.h \
     $$PWD/qquickmenuitemcontainer_p.h \
     $$PWD/qquickmenupopupwindow_p.h \
-    $$PWD/qtstack_p.h
+    $$PWD/qquickstack_p.h
 
 SOURCES += \
     $$PWD/plugin.cpp \
@@ -16,4 +16,4 @@ SOURCES += \
     $$PWD/qquickmenubar.cpp \
     $$PWD/qquickmenuitem.cpp \
     $$PWD/qquickmenupopupwindow.cpp \
-    $$PWD/qtstack.cpp
+    $$PWD/qquickstack.cpp
