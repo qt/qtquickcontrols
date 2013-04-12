@@ -71,6 +71,7 @@ TestCase {
         var label = findAChild(table.currentRowItem, "label")
         verify(label !== undefined)
         compare(label.text, data.expected.toString());
+        table.destroy();
     }
 
     function test_usingcppqobjectmodel() {
@@ -89,6 +90,7 @@ TestCase {
         var label = findAChild(table.currentRowItem, "label")
         verify(label !== undefined)
         compare(label.text, valuefrommodel.toString());
+        table.destroy();
     }
 
     function test_usingcppqabstractitemmodel() {
@@ -110,6 +112,7 @@ TestCase {
         var label = findAChild(table.currentRowItem, "label")
         verify(label !== undefined)
         compare(label.text, valuefrommodel.toString())
+        table.destroy();
     }
 
     function test_usingcpplistmodel_data() {
@@ -134,6 +137,7 @@ TestCase {
         var label = findAChild(table.currentRowItem, "label")
         verify(label !== undefined)
         compare(label.text, data.expected.toString());
+        table.destroy();
     }
 
     // In TableView, drawn text = table.currentRowItem.children[1].children[1].itemAt(0).children[0].children[0].text
