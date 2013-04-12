@@ -308,7 +308,60 @@ Item {
             compare(itemRect(layout.children[2]), [20, 40, 20, 20]);
             compare(itemRect(layout.children[3]), [45, 40, 10, 10]);
             compare(itemRect(layout.children[4]), [30, 60, 30, 30]);
+            layout.destroy();
+        }
 
+        Component {
+            id: layout_sizeHintNormalization_Component
+            GridLayout {
+                columnSpacing: 0
+                rowSpacing: 0
+                Rectangle {
+                    id: r1
+                    color: "red"
+                    Layout.minimumWidth: 1
+                    Layout.preferredWidth: 2
+                    Layout.maximumWidth: 3
+
+                    Layout.minimumHeight: 20
+                    Layout.preferredHeight: 20
+                    Layout.maximumHeight: 20
+                    Layout.fillWidth: true
+                }
+            }
+        }
+
+        function test_sizeHintNormalization_data() {
+            return [
+                    { tag: "fallbackValues",  widthHints: [-1, -1, -1], expected:[0,42,1000000000], implicitWidth: 42},
+                    { tag: "acceptZeroWidths",  widthHints: [0, 0, 0], expected:[0,0,0], implicitWidth: 42},
+                    { tag: "123",  widthHints: [1,2,3],  expected:[1,2,3]},
+                    { tag: "132",  widthHints: [1,3,2],  expected:[1,2,2]},
+                    { tag: "213",  widthHints: [2,1,3],  expected:[2,2,3]},
+                    { tag: "231",  widthHints: [2,3,1],  expected:[1,1,1]},
+                    { tag: "321",  widthHints: [3,2,1],  expected:[1,1,1]},
+                    { tag: "312",  widthHints: [3,1,2],  expected:[2,2,2]},
+
+                    { tag: "1i3",  widthHints: [1,-1,3],  expected:[1,2,3], implicitWidth: 2},
+                    { tag: "1i2",  widthHints: [1,-1,2],  expected:[1,2,2], implicitWidth: 3},
+                    { tag: "2i3",  widthHints: [2,-1,3],  expected:[2,2,3], implicitWidth: 1},
+                    { tag: "2i1",  widthHints: [2,-1,1],  expected:[1,1,1], implicitWidth: 3},
+                    { tag: "3i1",  widthHints: [3,-1,1],  expected:[1,1,1], implicitWidth: 2},
+                    { tag: "3i2",  widthHints: [3,-1,2],  expected:[2,2,2], implicitWidth: 1},
+                    ];
+        }
+
+        function test_sizeHintNormalization(data) {
+            var layout = layout_sizeHintNormalization_Component.createObject(container);
+            if (data.implicitWidth !== undefined) {
+                layout.children[0].implicitWidth = data.implicitWidth
+            }
+            layout.children[0].Layout.minimumWidth = data.widthHints[0];
+            layout.children[0].Layout.preferredWidth = data.widthHints[1];
+            layout.children[0].Layout.maximumWidth = data.widthHints[2];
+            wait(0);    // Trigger processEvents() (allow LayoutRequest to be processed)
+            var normalizedResult = [layout.Layout.minimumWidth, layout.implicitWidth, layout.Layout.maximumWidth]
+            compare(normalizedResult, data.expected);
             layout.destroy();
         }
     }
