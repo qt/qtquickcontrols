@@ -39,10 +39,10 @@
 **
 ****************************************************************************/
 
-#include "qtmenuitem_p.h"
+#include "qquickmenuitem_p.h"
 #include "qquickaction_p.h"
-#include "qtmenu_p.h"
-#include "qtmenuitemcontainer_p.h"
+#include "qquickmenu_p.h"
+#include "qquickmenuitemcontainer_p.h"
 
 #include <private/qguiapplication_p.h>
 #include <QtGui/qpa/qplatformtheme.h>
@@ -51,13 +51,13 @@
 
 QT_BEGIN_NAMESPACE
 
-QtMenuBase::QtMenuBase(QObject *parent)
+QQuickMenuBase::QQuickMenuBase(QObject *parent)
     : QObject(parent), m_visible(true), m_parentMenu(0), m_container(0), m_visualItem(0)
 {
     m_platformItem = QGuiApplicationPrivate::platformTheme()->createPlatformMenuItem();
 }
 
-QtMenuBase::~QtMenuBase()
+QQuickMenuBase::~QQuickMenuBase()
 {
     setParentMenu(0);
     if (m_platformItem) {
@@ -66,7 +66,7 @@ QtMenuBase::~QtMenuBase()
     }
 }
 
-void QtMenuBase::setVisible(bool v)
+void QQuickMenuBase::setVisible(bool v)
 {
     if (v != m_visible) {
         m_visible = v;
@@ -80,12 +80,12 @@ void QtMenuBase::setVisible(bool v)
     }
 }
 
-QtMenu *QtMenuBase::parentMenu() const
+QQuickMenu *QQuickMenuBase::parentMenu() const
 {
     return m_parentMenu;
 }
 
-void QtMenuBase::setParentMenu(QtMenu *parentMenu)
+void QQuickMenuBase::setParentMenu(QQuickMenu *parentMenu)
 {
     if (m_parentMenu && m_parentMenu->platformMenu())
         m_parentMenu->platformMenu()->removeMenuItem(m_platformItem);
@@ -93,37 +93,37 @@ void QtMenuBase::setParentMenu(QtMenu *parentMenu)
     m_parentMenu = parentMenu;
 }
 
-QtMenuItemContainer *QtMenuBase::container() const
+QQuickMenuItemContainer *QQuickMenuBase::container() const
 {
     return m_container;
 }
 
-void QtMenuBase::setContainer(QtMenuItemContainer *c)
+void QQuickMenuBase::setContainer(QQuickMenuItemContainer *c)
 {
     m_container = c;
 }
 
-void QtMenuBase::syncWithPlatformMenu()
+void QQuickMenuBase::syncWithPlatformMenu()
 {
-    QtMenu *menu = parentMenu();
+    QQuickMenu *menu = parentMenu();
     if (menu && menu->platformMenu() && platformItem()
         && menu->contains(this)) // If not, it'll be added later and then sync'ed
         menu->platformMenu()->syncMenuItem(platformItem());
 }
 
-QQuickItem *QtMenuBase::visualItem() const
+QQuickItem *QQuickMenuBase::visualItem() const
 {
     return m_visualItem;
 }
 
-void QtMenuBase::setVisualItem(QQuickItem *item)
+void QQuickMenuBase::setVisualItem(QQuickItem *item)
 {
     m_visualItem = item;
 }
 
 /*!
     \qmltype MenuSeparator
-    \instantiates QtMenuSeparator
+    \instantiates QQuickMenuSeparator
     \inqmlmodule QtQuick.Controls 1.0
     \ingroup menus
     \brief MenuSeparator provides a separator for items inside a menu.
@@ -143,15 +143,15 @@ void QtMenuBase::setVisualItem(QQuickItem *item)
     This property is read-only and constant, and its value is \l MenuItemType.Separator.
 */
 
-QtMenuSeparator::QtMenuSeparator(QObject *parent)
-    : QtMenuBase(parent)
+QQuickMenuSeparator::QQuickMenuSeparator(QObject *parent)
+    : QQuickMenuBase(parent)
 {
     if (platformItem())
         platformItem()->setIsSeparator(true);
 }
 
-QtMenuText::QtMenuText(QObject *parent)
-    : QtMenuBase(parent), m_action(new QQuickAction(this))
+QQuickMenuText::QQuickMenuText(QObject *parent)
+    : QQuickMenuBase(parent), m_action(new QQuickAction(this))
 {
     connect(m_action, SIGNAL(enabledChanged()), this, SLOT(updateEnabled()));
     connect(m_action, SIGNAL(textChanged()), this, SLOT(updateText()));
@@ -161,57 +161,57 @@ QtMenuText::QtMenuText(QObject *parent)
     connect(m_action, SIGNAL(iconSourceChanged()), this, SIGNAL(iconSourceChanged()));
 }
 
-QtMenuText::~QtMenuText()
+QQuickMenuText::~QQuickMenuText()
 {
     delete m_action;
 }
 
-bool QtMenuText::enabled() const
+bool QQuickMenuText::enabled() const
 {
     return action()->isEnabled();
 }
 
-void QtMenuText::setEnabled(bool e)
+void QQuickMenuText::setEnabled(bool e)
 {
     action()->setEnabled(e);
 }
 
-QString QtMenuText::text() const
+QString QQuickMenuText::text() const
 {
     return m_action->text();
 }
 
-void QtMenuText::setText(const QString &t)
+void QQuickMenuText::setText(const QString &t)
 {
     m_action->setText(t);
 }
 
-QUrl QtMenuText::iconSource() const
+QUrl QQuickMenuText::iconSource() const
 {
     return m_action->iconSource();
 }
 
-void QtMenuText::setIconSource(const QUrl &iconSource)
+void QQuickMenuText::setIconSource(const QUrl &iconSource)
 {
     m_action->setIconSource(iconSource);
 }
 
-QString QtMenuText::iconName() const
+QString QQuickMenuText::iconName() const
 {
     return m_action->iconName();
 }
 
-void QtMenuText::setIconName(const QString &iconName)
+void QQuickMenuText::setIconName(const QString &iconName)
 {
     m_action->setIconName(iconName);
 }
 
-QIcon QtMenuText::icon() const
+QIcon QQuickMenuText::icon() const
 {
     return m_action->icon();
 }
 
-void QtMenuText::updateText()
+void QQuickMenuText::updateText()
 {
     if (platformItem()) {
         platformItem()->setText(text());
@@ -220,7 +220,7 @@ void QtMenuText::updateText()
     emit __textChanged();
 }
 
-void QtMenuText::updateEnabled()
+void QQuickMenuText::updateEnabled()
 {
     if (platformItem()) {
         platformItem()->setEnabled(enabled());
@@ -229,7 +229,7 @@ void QtMenuText::updateEnabled()
     emit enabledChanged();
 }
 
-void QtMenuText::updateIcon()
+void QQuickMenuText::updateIcon()
 {
     if (platformItem()) {
         platformItem()->setIcon(icon());
@@ -240,7 +240,7 @@ void QtMenuText::updateIcon()
 
 /*!
     \qmltype MenuItem
-    \instantiates QtMenuItem
+    \instantiates QQuickMenuItem
     \ingroup menus
     \inqmlmodule QtQuick.Controls 1.0
     \brief MenuItem provides an item to add in a menu or a menu bar.
@@ -394,8 +394,8 @@ void QtMenuText::updateIcon()
     Defaults to \c null, meaning no action is bound to the menu item.
 */
 
-QtMenuItem::QtMenuItem(QObject *parent)
-    : QtMenuText(parent), m_boundAction(0)
+QQuickMenuItem::QQuickMenuItem(QObject *parent)
+    : QQuickMenuText(parent), m_boundAction(0)
 {
     connect(this, SIGNAL(__textChanged()), this, SIGNAL(textChanged()));
 
@@ -405,21 +405,21 @@ QtMenuItem::QtMenuItem(QObject *parent)
         connect(platformItem(), SIGNAL(activated()), this, SLOT(trigger()));
 }
 
-QtMenuItem::~QtMenuItem()
+QQuickMenuItem::~QQuickMenuItem()
 {
     unbindFromAction(m_boundAction);
     if (platformItem())
         disconnect(platformItem(), SIGNAL(activated()), this, SLOT(trigger()));
 }
 
-void QtMenuItem::setParentMenu(QtMenu *parentMenu)
+void QQuickMenuItem::setParentMenu(QQuickMenu *parentMenu)
 {
-    QtMenuText::setParentMenu(parentMenu);
+    QQuickMenuText::setParentMenu(parentMenu);
     if (parentMenu)
         connect(this, SIGNAL(triggered()), parentMenu, SLOT(updateSelectedIndex()));
 }
 
-void QtMenuItem::bindToAction(QQuickAction *action)
+void QQuickMenuItem::bindToAction(QQuickAction *action)
 {
     m_boundAction = action;
 
@@ -447,7 +447,7 @@ void QtMenuItem::bindToAction(QQuickAction *action)
     }
 }
 
-void QtMenuItem::unbindFromAction(QObject *o)
+void QQuickMenuItem::unbindFromAction(QObject *o)
 {
     if (!o)
         return;
@@ -474,14 +474,14 @@ void QtMenuItem::unbindFromAction(QObject *o)
     disconnect(action, SIGNAL(iconSourceChanged()), this, SIGNAL(iconSourceChanged()));
 }
 
-QQuickAction *QtMenuItem::action() const
+QQuickAction *QQuickMenuItem::action() const
 {
     if (m_boundAction)
         return m_boundAction;
-    return QtMenuText::action();
+    return QQuickMenuText::action();
 }
 
-void QtMenuItem::setBoundAction(QQuickAction *a)
+void QQuickMenuItem::setBoundAction(QQuickAction *a)
 {
     if (a == m_boundAction)
         return;
@@ -497,50 +497,50 @@ void QtMenuItem::setBoundAction(QQuickAction *a)
     emit actionChanged();
 }
 
-QString QtMenuItem::text() const
+QString QQuickMenuItem::text() const
 {
-    QString ownText = QtMenuText::text();
+    QString ownText = QQuickMenuText::text();
     if (!ownText.isEmpty())
         return ownText;
     return m_boundAction ? m_boundAction->text() : QString();
 }
 
-QUrl QtMenuItem::iconSource() const
+QUrl QQuickMenuItem::iconSource() const
 {
-    QUrl ownIconSource = QtMenuText::iconSource();
+    QUrl ownIconSource = QQuickMenuText::iconSource();
     if (!ownIconSource.isEmpty())
         return ownIconSource;
     return m_boundAction ? m_boundAction->iconSource() : QUrl();
 }
 
-QString QtMenuItem::iconName() const
+QString QQuickMenuItem::iconName() const
 {
-    QString ownIconName = QtMenuText::iconName();
+    QString ownIconName = QQuickMenuText::iconName();
     if (!ownIconName.isEmpty())
         return ownIconName;
     return m_boundAction ? m_boundAction->iconName() : QString();
 }
 
-QIcon QtMenuItem::icon() const
+QIcon QQuickMenuItem::icon() const
 {
-    QIcon ownIcon = QtMenuText::icon();
+    QIcon ownIcon = QQuickMenuText::icon();
     if (!ownIcon.isNull())
         return ownIcon;
     return m_boundAction ? m_boundAction->icon() : QIcon();
 }
 
-QString QtMenuItem::shortcut() const
+QString QQuickMenuItem::shortcut() const
 {
     return action()->shortcut();
 }
 
-void QtMenuItem::setShortcut(const QString &shortcut)
+void QQuickMenuItem::setShortcut(const QString &shortcut)
 {
     if (!m_boundAction)
         action()->setShortcut(shortcut);
 }
 
-void QtMenuItem::updateShortcut()
+void QQuickMenuItem::updateShortcut()
 {
     if (platformItem()) {
         platformItem()->setShortcut(QKeySequence(shortcut()));
@@ -549,29 +549,29 @@ void QtMenuItem::updateShortcut()
     emit shortcutChanged();
 }
 
-bool QtMenuItem::checkable() const
+bool QQuickMenuItem::checkable() const
 {
     return action()->isCheckable();
 }
 
-void QtMenuItem::setCheckable(bool checkable)
+void QQuickMenuItem::setCheckable(bool checkable)
 {
     if (!m_boundAction)
         action()->setCheckable(checkable);
 }
 
-bool QtMenuItem::checked() const
+bool QQuickMenuItem::checked() const
 {
     return action()->isChecked();
 }
 
-void QtMenuItem::setChecked(bool checked)
+void QQuickMenuItem::setChecked(bool checked)
 {
     if (!m_boundAction)
         action()->setChecked(checked);
 }
 
-void QtMenuItem::updateChecked()
+void QQuickMenuItem::updateChecked()
 {
     bool checked = this->checked();
     if (platformItem()) {
@@ -582,24 +582,24 @@ void QtMenuItem::updateChecked()
     emit toggled(checked);
 }
 
-QQuickExclusiveGroup *QtMenuItem::exclusiveGroup() const
+QQuickExclusiveGroup *QQuickMenuItem::exclusiveGroup() const
 {
     return action()->exclusiveGroup();
 }
 
-void QtMenuItem::setExclusiveGroup(QQuickExclusiveGroup *eg)
+void QQuickMenuItem::setExclusiveGroup(QQuickExclusiveGroup *eg)
 {
     if (!m_boundAction)
         action()->setExclusiveGroup(eg);
 }
 
-void QtMenuItem::setEnabled(bool enabled)
+void QQuickMenuItem::setEnabled(bool enabled)
 {
     if (!m_boundAction)
         action()->setEnabled(enabled);
 }
 
-void QtMenuItem::trigger()
+void QQuickMenuItem::trigger()
 {
     action()->trigger();
 }

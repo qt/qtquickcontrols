@@ -39,8 +39,8 @@
 **
 ****************************************************************************/
 
-#ifndef QTMENUPOPUPWINDOW_H
-#define QTMENUPOPUPWINDOW_H
+#ifndef QQUICKMENUPOPUPWINDOW_H
+#define QQUICKMENUPOPUPWINDOW_H
 
 #include <QtQuick/qquickwindow.h>
 
@@ -49,14 +49,14 @@ QT_BEGIN_NAMESPACE
 class QEvent;
 class QQuickItem;
 
-class QtMenuPopupWindow : public QQuickWindow
+class QQuickMenuPopupWindow : public QQuickWindow
 {
     Q_OBJECT
     Q_PROPERTY(QQuickItem *contentItem READ menuContentItem WRITE setMenuContentItem)
     Q_CLASSINFO("DefaultProperty", "contentItem")
     Q_PROPERTY(QQuickItem *parentItem READ parentItem WRITE setParentItem)
 public:
-    QtMenuPopupWindow(QWindow *parent = 0);
+    QQuickMenuPopupWindow(QWindow *parent = 0);
 
     QQuickItem *menuContentItem() const { return m_menuContentItem; }
     void setMenuContentItem(QQuickItem *contentItem);
@@ -94,4 +94,4 @@ private:
 
 QT_END_NAMESPACE
 
-#endif // QTMENUPOPUPWINDOW_H
+#endif // QQUICKMENUPOPUPWINDOW_H

@@ -39,7 +39,7 @@
 **
 ****************************************************************************/
 
-#include "qtmenubar_p.h"
+#include "qquickmenubar_p.h"
 
 #include <private/qguiapplication_p.h>
 #include <QtGui/qpa/qplatformtheme.h>
@@ -50,13 +50,13 @@ QT_BEGIN_NAMESPACE
 
 
 /*!
-  \class QtMenuBar
+  \class QQuickMenuBar
   \internal
  */
 
 /*!
   \qmltype MenuBarPrivate
-  \instantiates QtMenuBar
+  \instantiates QQuickMenuBar
   \internal
   \inqmlmodule QtQuick.Controls 1.0
  */
@@ -70,27 +70,27 @@ QT_BEGIN_NAMESPACE
     \sa Menu
 */
 
-QtMenuBar::QtMenuBar(QObject *parent)
+QQuickMenuBar::QQuickMenuBar(QObject *parent)
     : QObject(parent), m_contentItem(0), m_parentWindow(0)
 {
     m_platformMenuBar = QGuiApplicationPrivate::platformTheme()->createPlatformMenuBar();
 }
 
-QtMenuBar::~QtMenuBar()
+QQuickMenuBar::~QQuickMenuBar()
 {
 }
 
-QQmlListProperty<QtMenu> QtMenuBar::menus()
+QQmlListProperty<QQuickMenu> QQuickMenuBar::menus()
 {
-    return QQmlListProperty<QtMenu>(this, 0, &QtMenuBar::append_menu, &QtMenuBar::count_menu, &QtMenuBar::at_menu, 0);
+    return QQmlListProperty<QQuickMenu>(this, 0, &QQuickMenuBar::append_menu, &QQuickMenuBar::count_menu, &QQuickMenuBar::at_menu, 0);
 }
 
-bool QtMenuBar::isNative()
+bool QQuickMenuBar::isNative()
 {
     return m_platformMenuBar != 0;
 }
 
-void QtMenuBar::setContentItem(QQuickItem *item)
+void QQuickMenuBar::setContentItem(QQuickItem *item)
 {
     if (item != m_contentItem) {
         m_contentItem = item;
@@ -98,7 +98,7 @@ void QtMenuBar::setContentItem(QQuickItem *item)
     }
 }
 
-void QtMenuBar::setParentWindow(QQuickWindow *newParentWindow)
+void QQuickMenuBar::setParentWindow(QQuickWindow *newParentWindow)
 {
     if (newParentWindow != m_parentWindow) {
         m_parentWindow = newParentWindow;
@@ -107,9 +107,9 @@ void QtMenuBar::setParentWindow(QQuickWindow *newParentWindow)
     }
 }
 
-void QtMenuBar::append_menu(QQmlListProperty<QtMenu> *list, QtMenu *menu)
+void QQuickMenuBar::append_menu(QQmlListProperty<QQuickMenu> *list, QQuickMenu *menu)
 {
-    if (QtMenuBar *menuBar = qobject_cast<QtMenuBar *>(list->object)) {
+    if (QQuickMenuBar *menuBar = qobject_cast<QQuickMenuBar *>(list->object)) {
         menu->setParent(menuBar);
         menuBar->m_menus.append(menu);
 
@@ -120,16 +120,16 @@ void QtMenuBar::append_menu(QQmlListProperty<QtMenu> *list, QtMenu *menu)
     }
 }
 
-int QtMenuBar::count_menu(QQmlListProperty<QtMenu> *list)
+int QQuickMenuBar::count_menu(QQmlListProperty<QQuickMenu> *list)
 {
-    if (QtMenuBar *menuBar = qobject_cast<QtMenuBar *>(list->object))
+    if (QQuickMenuBar *menuBar = qobject_cast<QQuickMenuBar *>(list->object))
         return menuBar->m_menus.size();
     return 0;
 }
 
-QtMenu *QtMenuBar::at_menu(QQmlListProperty<QtMenu> *list, int index)
+QQuickMenu *QQuickMenuBar::at_menu(QQmlListProperty<QQuickMenu> *list, int index)
 {
-    QtMenuBar *menuBar = qobject_cast<QtMenuBar *>(list->object);
+    QQuickMenuBar *menuBar = qobject_cast<QQuickMenuBar *>(list->object);
     if (menuBar &&  0 <= index && index < menuBar->m_menus.size())
         return menuBar->m_menus[index];
     return 0;

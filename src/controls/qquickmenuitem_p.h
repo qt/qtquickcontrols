@@ -39,8 +39,8 @@
 **
 ****************************************************************************/
 
-#ifndef QTMENUITEM_P_H
-#define QTMENUITEM_P_H
+#ifndef QQUICKMENUITEM_P_H
+#define QQUICKMENUITEM_P_H
 
 #include <QtCore/qobject.h>
 #include <QtCore/qvariant.h>
@@ -56,10 +56,10 @@ class QPlatformMenuItem;
 class QQuickItem;
 class QQuickAction;
 class QQuickExclusiveGroup;
-class QtMenu;
-class QtMenuItemContainer;
+class QQuickMenu;
+class QQuickMenuItemContainer;
 
-class QtMenuItemType
+class QQuickMenuItemType
 {
     Q_GADGET
     Q_ENUMS(MenuItemType)
@@ -72,13 +72,13 @@ public:
     };
 };
 
-class QtMenuBase: public QObject
+class QQuickMenuBase: public QObject
 {
     Q_OBJECT
     Q_PROPERTY(bool visible READ visible WRITE setVisible NOTIFY visibleChanged)
-    Q_PROPERTY(QtMenuItemType::MenuItemType type READ type CONSTANT)
+    Q_PROPERTY(QQuickMenuItemType::MenuItemType type READ type CONSTANT)
 
-    Q_PROPERTY(QtMenu *__parentMenu READ parentMenu CONSTANT)
+    Q_PROPERTY(QQuickMenu *__parentMenu READ parentMenu CONSTANT)
     Q_PROPERTY(bool __isNative READ isNative CONSTANT)
     Q_PROPERTY(QQuickItem *__visualItem READ visualItem WRITE setVisualItem)
 
@@ -86,17 +86,17 @@ Q_SIGNALS:
     void visibleChanged();
 
 public:
-    QtMenuBase(QObject *parent = 0);
-    ~QtMenuBase();
+    QQuickMenuBase(QObject *parent = 0);
+    ~QQuickMenuBase();
 
     bool visible() const { return m_visible; }
     void setVisible(bool);
 
-    QtMenu *parentMenu() const;
-    virtual void setParentMenu(QtMenu *parentMenu);
+    QQuickMenu *parentMenu() const;
+    virtual void setParentMenu(QQuickMenu *parentMenu);
 
-    QtMenuItemContainer *container() const;
-    void setContainer(QtMenuItemContainer *);
+    QQuickMenuItemContainer *container() const;
+    void setContainer(QQuickMenuItemContainer *);
 
     inline QPlatformMenuItem *platformItem() { return m_platformItem; }
     void syncWithPlatformMenu();
@@ -104,27 +104,27 @@ public:
     QQuickItem *visualItem() const;
     void setVisualItem(QQuickItem *item);
 
-    virtual QtMenuItemType::MenuItemType type() { return QtMenuItemType::Item; }
+    virtual QQuickMenuItemType::MenuItemType type() { return QQuickMenuItemType::Item; }
     virtual bool isNative() { return m_platformItem != 0; }
 
 private:
     bool m_visible;
-    QtMenu *m_parentMenu;
-    QtMenuItemContainer *m_container;
+    QQuickMenu *m_parentMenu;
+    QQuickMenuItemContainer *m_container;
     QPlatformMenuItem *m_platformItem;
     QPointer<QQuickItem> m_visualItem;
 };
 
-class QtMenuSeparator : public QtMenuBase
+class QQuickMenuSeparator : public QQuickMenuBase
 {
     Q_OBJECT
 public:
-    QtMenuSeparator(QObject *parent = 0);
+    QQuickMenuSeparator(QObject *parent = 0);
 
-     QtMenuItemType::MenuItemType type() { return QtMenuItemType::Separator; }
+     QQuickMenuItemType::MenuItemType type() { return QQuickMenuItemType::Separator; }
 };
 
-class QtMenuText: public QtMenuBase
+class QQuickMenuText : public QQuickMenuBase
 {
     Q_OBJECT
     Q_PROPERTY(bool enabled READ enabled WRITE setEnabled NOTIFY enabledChanged)
@@ -142,8 +142,8 @@ Q_SIGNALS:
     void __iconChanged();
 
 public:
-    QtMenuText(QObject *parent = 0);
-    ~QtMenuText();
+    QQuickMenuText(QObject *parent = 0);
+    ~QQuickMenuText();
 
     bool enabled() const;
     virtual void setEnabled(bool enabled);
@@ -171,7 +171,7 @@ private:
     QQuickAction *m_action;
 };
 
-class QtMenuItem: public QtMenuText
+class QQuickMenuItem : public QQuickMenuText
 {
     Q_OBJECT
     Q_PROPERTY(QString text READ text WRITE setText NOTIFY textChanged)
@@ -195,8 +195,8 @@ Q_SIGNALS:
     void actionChanged();
 
 public:
-    QtMenuItem(QObject *parent = 0);
-    ~QtMenuItem();
+    QQuickMenuItem(QObject *parent = 0);
+    ~QQuickMenuItem();
 
     void setEnabled(bool enabled);
 
@@ -220,7 +220,7 @@ public:
     QQuickExclusiveGroup *exclusiveGroup() const;
     void setExclusiveGroup(QQuickExclusiveGroup *);
 
-    void setParentMenu(QtMenu *parentMenu);
+    void setParentMenu(QQuickMenu *parentMenu);
 
 protected Q_SLOTS:
     void updateShortcut();
@@ -238,4 +238,4 @@ private:
 
 QT_END_NAMESPACE
 
-#endif //QTMENUITEM_P_H
+#endif // QQUICKMENUITEM_P_H

@@ -39,10 +39,10 @@
 **
 ****************************************************************************/
 
-#ifndef QTMENUBAR_P_H
-#define QTMENUBAR_P_H
+#ifndef QQUICKMENUBAR_P_H
+#define QQUICKMENUBAR_P_H
 
-#include "qtmenu_p.h"
+#include "qquickmenu_p.h"
 
 #include <QtCore/qobject.h>
 #include <QtQuick/qquickitem.h>
@@ -52,11 +52,11 @@ QT_BEGIN_NAMESPACE
 class QPlatformMenuBar;
 class QQuickItem;
 
-class QtMenuBar: public QObject
+class QQuickMenuBar: public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(QQmlListProperty<QtMenu> menus READ menus NOTIFY menusChanged)
+    Q_PROPERTY(QQmlListProperty<QQuickMenu> menus READ menus NOTIFY menusChanged)
     Q_CLASSINFO("DefaultProperty", "menus")
 
     Q_PROPERTY(QQuickItem *__contentItem READ contentItem WRITE setContentItem NOTIFY contentItemChanged)
@@ -69,10 +69,10 @@ Q_SIGNALS:
     void contentItemChanged();
 
 public:
-    QtMenuBar(QObject *parent = 0);
-    ~QtMenuBar();
+    QQuickMenuBar(QObject *parent = 0);
+    ~QQuickMenuBar();
 
-    QQmlListProperty<QtMenu> menus();
+    QQmlListProperty<QQuickMenu> menus();
 
     bool isNative();
 
@@ -83,12 +83,12 @@ public:
     void setParentWindow(QQuickWindow *);
 
 private:
-    static void append_menu(QQmlListProperty<QtMenu> *list, QtMenu *menu);
-    static int count_menu(QQmlListProperty<QtMenu> *list);
-    static QtMenu *at_menu(QQmlListProperty<QtMenu> *list, int index);
+    static void append_menu(QQmlListProperty<QQuickMenu> *list, QQuickMenu *menu);
+    static int count_menu(QQmlListProperty<QQuickMenu> *list);
+    static QQuickMenu *at_menu(QQmlListProperty<QQuickMenu> *list, int index);
 
 private:
-    QList<QtMenu *> m_menus;
+    QList<QQuickMenu *> m_menus;
     QPlatformMenuBar *m_platformMenuBar;
     QQuickItem *m_contentItem;
     QQuickWindow *m_parentWindow;
@@ -96,4 +96,4 @@ private:
 
 QT_END_NAMESPACE
 
-#endif //QTMENUBAR_P_H
+#endif // QQUICKMENUBAR_P_H
