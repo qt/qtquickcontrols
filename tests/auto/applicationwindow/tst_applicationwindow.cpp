@@ -47,6 +47,9 @@
 #include <QtQuick/qquickview.h>
 #include <QtQuick/private/qquickitem_p.h>
 #include "../shared/util.h"
+#include "../shared/visualtestutil.h"
+
+using namespace QQuickVisualTestUtil;
 
 class tst_applicationwindow : public QQmlDataTest
 {
@@ -55,6 +58,8 @@ public:
 
 private slots:
     void qmlCreation();
+    void activeFocusOnTab1();
+    void activeFocusOnTab2();
 };
 
 void tst_applicationwindow::qmlCreation()
@@ -80,6 +85,110 @@ void tst_applicationwindow::qmlCreation()
 
     QQuickItem* toolBar = qvariant_cast<QQuickItem*>(created->property("toolBar"));
     QVERIFY(!toolBar);
+}
+
+void tst_applicationwindow::activeFocusOnTab1()
+{
+    QQmlEngine engine;
+    QQmlComponent component(&engine);
+    component.loadUrl(testFileUrl("activefocusontab.qml"));
+    QObject* created = component.create();
+    QScopedPointer<QObject> cleanup(created);
+    QVERIFY(created);
+
+    QQuickWindow* window = qobject_cast<QQuickWindow*>(created);
+    QVERIFY(window);
+    window->show();
+    window->requestActivate();
+    QVERIFY(QTest::qWaitForWindowActive(window));
+    QVERIFY(QGuiApplication::focusWindow() == window);
+
+    QQuickItem* contentItem = window->contentItem();
+    QVERIFY(contentItem);
+    QVERIFY(contentItem->hasActiveFocus());
+
+    QQuickItem* item = findItem<QQuickItem>(window->contentItem(), "sub1");
+    QVERIFY(item);
+    QVERIFY(!item->hasActiveFocus());
+
+    // Tab: contentItem->sub1
+    QKeyEvent key(QEvent::KeyPress, Qt::Key_Tab, Qt::NoModifier, "", false, 1);
+    QGuiApplication::sendEvent(window, &key);
+    QVERIFY(key.isAccepted());
+
+    item = findItem<QQuickItem>(window->contentItem(), "sub1");
+    QVERIFY(item);
+    QVERIFY(item->hasActiveFocus());
+
+    // Tab: sub1->sub2
+    key = QKeyEvent(QEvent::KeyPress, Qt::Key_Tab, Qt::NoModifier, "", false, 1);
+    QGuiApplication::sendEvent(window, &key);
+    QVERIFY(key.isAccepted());
+
+    item = findItem<QQuickItem>(window->contentItem(), "sub2");
+    QVERIFY(item);
+    QVERIFY(item->hasActiveFocus());
+
+    // Tab: sub2->sub1
+    key = QKeyEvent(QEvent::KeyPress, Qt::Key_Tab, Qt::NoModifier, "", false, 1);
+    QGuiApplication::sendEvent(window, &key);
+    QVERIFY(key.isAccepted());
+
+    item = findItem<QQuickItem>(window->contentItem(), "sub1");
+    QVERIFY(item);
+    QVERIFY(item->hasActiveFocus());
+}
+
+void tst_applicationwindow::activeFocusOnTab2()
+{
+    QQmlEngine engine;
+    QQmlComponent component(&engine);
+    component.loadUrl(testFileUrl("activefocusontab.qml"));
+    QObject* created = component.create();
+    QScopedPointer<QObject> cleanup(created);
+    QVERIFY(created);
+
+    QQuickWindow* window = qobject_cast<QQuickWindow*>(created);
+    QVERIFY(window);
+    window->show();
+    window->requestActivate();
+    QVERIFY(QTest::qWaitForWindowActive(window));
+    QVERIFY(QGuiApplication::focusWindow() == window);
+
+    QQuickItem* contentItem = window->contentItem();
+    QVERIFY(contentItem);
+    QVERIFY(contentItem->hasActiveFocus());
+
+    QQuickItem* item = findItem<QQuickItem>(window->contentItem(), "sub2");
+    QVERIFY(item);
+    QVERIFY(!item->hasActiveFocus());
+
+    // BackTab: contentItem->sub2
+    QKeyEvent key(QEvent::KeyPress, Qt::Key_Tab, Qt::ShiftModifier, "", false, 1);
+    QGuiApplication::sendEvent(window, &key);
+    QVERIFY(key.isAccepted());
+
+    item = findItem<QQuickItem>(window->contentItem(), "sub2");
+    QVERIFY(item);
+    QVERIFY(item->hasActiveFocus());
+
+    // BackTab: sub2->sub1
+    key = QKeyEvent(QEvent::KeyPress, Qt::Key_Tab, Qt::ShiftModifier, "", false, 1);
+    QGuiApplication::sendEvent(window, &key);
+    QVERIFY(key.isAccepted());
+
+    item = findItem<QQuickItem>(window->contentItem(), "sub1");
+    QVERIFY(item);
+    QVERIFY(item->hasActiveFocus());
+
+    // BackTab: sub1->sub2
+    key = QKeyEvent(QEvent::KeyPress, Qt::Key_Tab, Qt::ShiftModifier, "", false, 1);
+    QGuiApplication::sendEvent(window, &key);
+    QVERIFY(key.isAccepted());
+
+    item = findItem<QQuickItem>(window->contentItem(), "sub2");
+    QVERIFY(item);
+    QVERIFY(item->hasActiveFocus());
 }
 
 QTEST_MAIN(tst_applicationwindow)

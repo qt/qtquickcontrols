@@ -124,6 +124,14 @@ Window {
     /*! \internal */
     default property alias data: contentArea.data
 
+    /*! \internal */
+    Binding {
+        target: contentItem
+        property: "activeFocusOnTab"
+        when: activeFocusItem
+        value: activeFocusItem ? ( (activeFocusItem != contentItem) ? !activeFocusItem.activeFocusOnTab : true ) : false
+    }
+
     color: syspal.window
 
     SystemPalette {id: syspal}
