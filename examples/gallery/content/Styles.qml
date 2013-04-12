@@ -161,6 +161,11 @@ Item {
                 style: RadioButtonStyle{}
                 text: "RadioButton"
             }
+
+            ComboBox {
+                model: ["Paris", "Oslo", "New York"]
+                style: ComboBoxStyle{}
+            }
         }
 
         Row {
