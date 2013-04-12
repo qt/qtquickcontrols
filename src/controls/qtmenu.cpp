@@ -41,7 +41,6 @@
 
 #include "qtmenu_p.h"
 #include "qtmenuitemcontainer_p.h"
-#include "qtaction_p.h"
 #include "qtmenupopupwindow_p.h"
 
 #include <qdebug.h>

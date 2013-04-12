@@ -43,7 +43,7 @@
 
 #include <qvariant.h>
 #include <qdebug.h>
-#include "qtaction_p.h"
+#include "qquickaction_p.h"
 
 #define CHECKED_PROPERTY "checked"
 
@@ -185,12 +185,12 @@ QtExclusiveGroup::QtExclusiveGroup(QObject *parent)
     m_updateCurrentMethod = metaObject()->method(index);
 }
 
-QQmlListProperty<QtAction> QtExclusiveGroup::actions()
+QQmlListProperty<QQuickAction> QtExclusiveGroup::actions()
 {
-    return QQmlListProperty<QtAction>(this, 0, &QtExclusiveGroup::append_actions, 0, 0, 0);
+    return QQmlListProperty<QQuickAction>(this, 0, &QtExclusiveGroup::append_actions, 0, 0, 0);
 }
 
-void QtExclusiveGroup::append_actions(QQmlListProperty<QtAction> *list, QtAction *action)
+void QtExclusiveGroup::append_actions(QQmlListProperty<QQuickAction> *list, QQuickAction *action)
 {
     if (QtExclusiveGroup *eg = qobject_cast<QtExclusiveGroup *>(list->object))
         action->setExclusiveGroup(eg);

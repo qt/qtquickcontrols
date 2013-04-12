@@ -54,7 +54,7 @@ QT_BEGIN_NAMESPACE
 class QUrl;
 class QPlatformMenuItem;
 class QQuickItem;
-class QtAction;
+class QQuickAction;
 class QtExclusiveGroup;
 class QtMenu;
 class QtMenuItemContainer;
@@ -160,7 +160,7 @@ public:
 
 protected:
     virtual QIcon icon() const;
-    virtual QtAction *action() const { return m_action; }
+    virtual QQuickAction *action() const { return m_action; }
 
 protected Q_SLOTS:
     virtual void updateText();
@@ -168,7 +168,7 @@ protected Q_SLOTS:
     void updateIcon();
 
 private:
-    QtAction *m_action;
+    QQuickAction *m_action;
 };
 
 class QtMenuItem: public QtMenuText
@@ -179,7 +179,7 @@ class QtMenuItem: public QtMenuText
     Q_PROPERTY(bool checked READ checked WRITE setChecked NOTIFY toggled)
     Q_PROPERTY(QtExclusiveGroup *exclusiveGroup READ exclusiveGroup WRITE setExclusiveGroup NOTIFY exclusiveGroupChanged)
     Q_PROPERTY(QString shortcut READ shortcut WRITE setShortcut NOTIFY shortcutChanged)
-    Q_PROPERTY(QtAction *action READ boundAction WRITE setBoundAction NOTIFY actionChanged)
+    Q_PROPERTY(QQuickAction *action READ boundAction WRITE setBoundAction NOTIFY actionChanged)
 
 public Q_SLOTS:
     void trigger();
@@ -205,8 +205,8 @@ public:
     QUrl iconSource() const;
     QString iconName() const;
 
-    QtAction *boundAction() { return m_boundAction; }
-    void setBoundAction(QtAction *a);
+    QQuickAction *boundAction() { return m_boundAction; }
+    void setBoundAction(QQuickAction *a);
 
     QString shortcut() const;
     void setShortcut(const QString &shortcut);
@@ -225,15 +225,15 @@ public:
 protected Q_SLOTS:
     void updateShortcut();
     void updateChecked();
-    void bindToAction(QtAction *action);
+    void bindToAction(QQuickAction *action);
     void unbindFromAction(QObject *action);
 
 protected:
     QIcon icon() const;
-    QtAction *action() const;
+    QQuickAction *action() const;
 
 private:
-    QtAction *m_boundAction;
+    QQuickAction *m_boundAction;
 };
 
 QT_END_NAMESPACE

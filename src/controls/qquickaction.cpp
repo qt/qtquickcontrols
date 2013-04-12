@@ -39,7 +39,7 @@
 **
 ****************************************************************************/
 
-#include "qtaction_p.h"
+#include "qquickaction_p.h"
 #include "qtexclusivegroup_p.h"
 
 #include <private/qguiapplication_p.h>
@@ -49,7 +49,7 @@ QT_BEGIN_NAMESPACE
 
 /*!
     \qmltype Action
-    \instantiates QtAction
+    \instantiates QQuickAction
     \inqmlmodule QtQuick.Controls 1.0
     \brief Action provides an abstract user interface action that can be bound to items
 
@@ -162,7 +162,7 @@ QT_BEGIN_NAMESPACE
     This usually happens at the same time as \l triggered().
 */
 
-QtAction::QtAction(QObject *parent)
+QQuickAction::QQuickAction(QObject *parent)
     : QObject(parent)
     , m_enabled(true)
     , m_checkable(false)
@@ -170,14 +170,14 @@ QtAction::QtAction(QObject *parent)
 {
 }
 
-QtAction::~QtAction()
+QQuickAction::~QQuickAction()
 {
     setShortcut(QString());
     setMnemonicFromText(QString());
     setExclusiveGroup(0);
 }
 
-void QtAction::setText(const QString &text)
+void QQuickAction::setText(const QString &text)
 {
     if (text == m_text)
         return;
@@ -194,12 +194,12 @@ bool qShortcutContextMatcher(QObject *, Qt::ShortcutContext)
     return true;
 }
 
-QString QtAction::shortcut() const
+QString QQuickAction::shortcut() const
 {
     return m_shortcut.toString(QKeySequence::NativeText);
 }
 
-void QtAction::setShortcut(const QString &arg)
+void QQuickAction::setShortcut(const QString &arg)
 {
     QKeySequence sequence = QKeySequence::fromString(arg);
     if (sequence == m_shortcut)
@@ -217,7 +217,7 @@ void QtAction::setShortcut(const QString &arg)
     emit shortcutChanged(shortcut());
 }
 
-void QtAction::setMnemonicFromText(const QString &text)
+void QQuickAction::setMnemonicFromText(const QString &text)
 {
     QKeySequence sequence = QKeySequence::mnemonic(text);
     if (m_mnemonic == sequence)
@@ -234,7 +234,7 @@ void QtAction::setMnemonicFromText(const QString &text)
     }
 }
 
-void QtAction::setIconSource(const QUrl &iconSource)
+void QQuickAction::setIconSource(const QUrl &iconSource)
 {
     if (iconSource == m_iconSource)
         return;
@@ -249,12 +249,12 @@ void QtAction::setIconSource(const QUrl &iconSource)
     emit iconSourceChanged();
 }
 
-QString QtAction::iconName() const
+QString QQuickAction::iconName() const
 {
     return m_iconName;
 }
 
-void QtAction::setIconName(const QString &iconName)
+void QQuickAction::setIconName(const QString &iconName)
 {
     if (iconName == m_iconName)
         return;
@@ -264,7 +264,7 @@ void QtAction::setIconName(const QString &iconName)
     emit iconChanged();
 }
 
-void QtAction::setTooltip(const QString &arg)
+void QQuickAction::setTooltip(const QString &arg)
 {
     if (m_tooltip != arg) {
         m_tooltip = arg;
@@ -272,7 +272,7 @@ void QtAction::setTooltip(const QString &arg)
     }
 }
 
-void QtAction::setEnabled(bool e)
+void QQuickAction::setEnabled(bool e)
 {
     if (e == m_enabled)
         return;
@@ -280,7 +280,7 @@ void QtAction::setEnabled(bool e)
     emit enabledChanged();
 }
 
-void QtAction::setCheckable(bool c)
+void QQuickAction::setCheckable(bool c)
 {
     if (c == m_checkable)
         return;
@@ -294,7 +294,7 @@ void QtAction::setCheckable(bool c)
         emit toggled(m_checkable);
 }
 
-void QtAction::setChecked(bool c)
+void QQuickAction::setChecked(bool c)
 {
     if (c == m_checked)
         return;
@@ -305,12 +305,12 @@ void QtAction::setChecked(bool c)
         emit toggled(m_checked);
 }
 
-QtExclusiveGroup *QtAction::exclusiveGroup() const
+QtExclusiveGroup *QQuickAction::exclusiveGroup() const
 {
     return m_exclusiveGroup.data();
 }
 
-void QtAction::setExclusiveGroup(QtExclusiveGroup *eg)
+void QQuickAction::setExclusiveGroup(QtExclusiveGroup *eg)
 {
     if (m_exclusiveGroup == eg)
         return;
@@ -324,7 +324,7 @@ void QtAction::setExclusiveGroup(QtExclusiveGroup *eg)
     emit exclusiveGroupChanged();
 }
 
-bool QtAction::event(QEvent *e)
+bool QQuickAction::event(QEvent *e)
 {
     if (!m_enabled)
         return false;
@@ -335,10 +335,10 @@ bool QtAction::event(QEvent *e)
     QShortcutEvent *se = static_cast<QShortcutEvent *>(e);
 
     Q_ASSERT_X(se->key() == m_shortcut || se->key() == m_mnemonic,
-               "QtAction::event",
+               "QQuickAction::event",
                "Received shortcut event from incorrect shortcut");
     if (se->isAmbiguous()) {
-        qWarning("QtAction::event: Ambiguous shortcut overload: %s", se->key().toString(QKeySequence::NativeText).toLatin1().constData());
+        qWarning("QQuickAction::event: Ambiguous shortcut overload: %s", se->key().toString(QKeySequence::NativeText).toLatin1().constData());
         return false;
     }
 
@@ -347,7 +347,7 @@ bool QtAction::event(QEvent *e)
     return true;
 }
 
-void QtAction::trigger()
+void QQuickAction::trigger()
 {
     if (!m_enabled)
         return;

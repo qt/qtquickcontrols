@@ -39,8 +39,8 @@
 **
 ****************************************************************************/
 
-#ifndef QTACTION_H
-#define QTACTION_H
+#ifndef QQUICKACTION_H
+#define QQUICKACTION_H
 
 #include <QtCore/qobject.h>
 #include <QtCore/qurl.h>
@@ -53,7 +53,7 @@ QT_BEGIN_NAMESPACE
 
 class QtExclusiveGroup;
 
-class QtAction : public QObject
+class QQuickAction : public QObject
 {
     Q_OBJECT
 
@@ -72,8 +72,8 @@ class QtAction : public QObject
 #endif
 
 public:
-    explicit QtAction(QObject *parent = 0);
-    ~QtAction();
+    explicit QQuickAction(QObject *parent = 0);
+    ~QQuickAction();
 
     QString text() const { return m_text; }
     void setText(const QString &text);
@@ -145,4 +145,4 @@ private:
 
 QT_END_NAMESPACE
 
-#endif // QTACTION_H
+#endif // QQUICKACTION_H

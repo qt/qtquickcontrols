@@ -40,7 +40,7 @@
 ****************************************************************************/
 
 #include "qtmenuitem_p.h"
-#include "qtaction_p.h"
+#include "qquickaction_p.h"
 #include "qtmenu_p.h"
 #include "qtmenuitemcontainer_p.h"
 
@@ -151,7 +151,7 @@ QtMenuSeparator::QtMenuSeparator(QObject *parent)
 }
 
 QtMenuText::QtMenuText(QObject *parent)
-    : QtMenuBase(parent), m_action(new QtAction(this))
+    : QtMenuBase(parent), m_action(new QQuickAction(this))
 {
     connect(m_action, SIGNAL(enabledChanged()), this, SLOT(updateEnabled()));
     connect(m_action, SIGNAL(textChanged()), this, SLOT(updateText()));
@@ -419,7 +419,7 @@ void QtMenuItem::setParentMenu(QtMenu *parentMenu)
         connect(this, SIGNAL(triggered()), parentMenu, SLOT(updateSelectedIndex()));
 }
 
-void QtMenuItem::bindToAction(QtAction *action)
+void QtMenuItem::bindToAction(QQuickAction *action)
 {
     m_boundAction = action;
 
@@ -455,7 +455,7 @@ void QtMenuItem::unbindFromAction(QObject *o)
     if (o == m_boundAction)
         m_boundAction = 0;
 
-    QtAction *action = qobject_cast<QtAction *>(o);
+    QQuickAction *action = qobject_cast<QQuickAction *>(o);
     if (!action)
         return;
 
@@ -474,14 +474,14 @@ void QtMenuItem::unbindFromAction(QObject *o)
     disconnect(action, SIGNAL(iconSourceChanged()), this, SIGNAL(iconSourceChanged()));
 }
 
-QtAction *QtMenuItem::action() const
+QQuickAction *QtMenuItem::action() const
 {
     if (m_boundAction)
         return m_boundAction;
     return QtMenuText::action();
 }
 
-void QtMenuItem::setBoundAction(QtAction *a)
+void QtMenuItem::setBoundAction(QQuickAction *a)
 {
     if (a == m_boundAction)
         return;

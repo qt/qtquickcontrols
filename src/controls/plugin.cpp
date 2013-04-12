@@ -39,7 +39,7 @@
 **
 ****************************************************************************/
 
-#include "qtaction_p.h"
+#include "qquickaction_p.h"
 #include "qtexclusivegroup_p.h"
 #include "qtmenu_p.h"
 #include "qtmenubar_p.h"
@@ -86,7 +86,7 @@ public:
 
 void QtQuickControlsPlugin::registerTypes(const char *uri)
 {
-    qmlRegisterType<QtAction>(uri, 1, 0, "Action");
+    qmlRegisterType<QQuickAction>(uri, 1, 0, "Action");
     qmlRegisterType<QtExclusiveGroup>(uri, 1, 0, "ExclusiveGroup");
     qmlRegisterType<QtMenu>(uri, 1, 0, "MenuPrivate");
     qmlRegisterType<QtMenuBar>(uri, 1, 0, "MenuBarPrivate");
