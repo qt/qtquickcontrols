@@ -88,6 +88,7 @@ FocusScope {
 
     Row {
         id: tabrow
+        objectName: "tabrow"
         Accessible.role: Accessible.PageTabList
         spacing: -tabOverlap
 
@@ -114,6 +115,7 @@ FocusScope {
 
         Repeater {
             id: repeater
+            objectName: "repeater"
             focus: true
             model: tabView.count
 
@@ -148,9 +150,13 @@ FocusScope {
 
                 MouseArea {
                     id: mousearea
+                    objectName: "mousearea"
                     anchors.fill: parent
                     hoverEnabled: true
-                    onPressed: tabView.currentIndex = index
+                    onPressed: {
+                        tabView.currentIndex = index;
+                        tabbar.nextItemInFocusChain(true).forceActiveFocus();
+                    }
                     onPressAndHold: tabitem.parent = null
                 }
                 Accessible.role: Accessible.PageTab

@@ -41,6 +41,11 @@
 import QtQuick 2.1
 import QtTest 1.0
 
+Item {
+    id: container
+    width: 300
+    height: 300
+
 TestCase {
     id: testCase
     name: "Tests_TabView"
@@ -134,5 +139,147 @@ TestCase {
         wait(0)
         compare(tabView.count, 0)
     }
-}
 
+    function test_mousePressOnTabBar() {
+        var test_tabView = 'import QtQuick 2.1;             \
+        import QtQuick.Controls 1.0;                        \
+        TabView {                                           \
+            width: 200; height: 100;                        \
+            property alias tab1: _tab1;                     \
+            property alias tab2: _tab2;                     \
+            Tab {                                           \
+                id: _tab1;                                  \
+                title: "Tab1";                              \
+                active: true;                               \
+                Column {                                    \
+                    objectName: "column1";                  \
+                    property alias button1: _button1;       \
+                    property alias button2: _button2;       \
+                    anchors.fill: parent;                   \
+                    Button {                                \
+                        id: _button1;                       \
+                        text: "button 1 in Tab1";           \
+                    }                                       \
+                    Button {                                \
+                        id: _button2;                       \
+                        text: "button 2 in Tab1";           \
+                    }                                       \
+                }                                           \
+            }                                               \
+            Tab {                                           \
+                id: _tab2;                                  \
+                title: "Tab2";                              \
+                active: true;                               \
+                Column {                                    \
+                    objectName: "column2";                  \
+                    property alias button3: _button3;       \
+                    property alias button4: _button4;       \
+                    anchors.fill: parent;                   \
+                    Button {                                \
+                        id: _button3;                       \
+                        text: "button 1 in Tab2";           \
+                    }                                       \
+                    Button {                                \
+                        id: _button4;                       \
+                        text: "button 2 in Tab2";           \
+                    }                                       \
+                }                                           \
+            }                                               \
+        }                                                   '
+
+        var tabView = Qt.createQmlObject(test_tabView, container, '')
+        compare(tabView.count, 2)
+        verify(tabView.tab1.status === Loader.Ready)
+        verify(tabView.tab2.status === Loader.Ready)
+
+        var column1 = getColumnItem(tabView.tab1, "column1")
+        verify(column1 !== null)
+        var column2 = getColumnItem(tabView.tab2, "column2")
+        verify(column2 !== null)
+
+        var button1 = column1.button1
+        verify(button1 !== null)
+        var button3 = column2.button3
+        verify(button3 !== null)
+
+        var tabbarItem = getTabBarItem(tabView)
+        verify(tabbarItem !== null)
+
+        var tabrowItem = getTabRowItem(tabbarItem)
+        verify(tabrowItem !== null)
+
+        var mouseareas = populateMouseAreaItems(tabrowItem)
+        verify(mouseareas.length, 2)
+
+        var tab1 = mouseareas[0].parent
+        verify(tab1 !== null)
+        //printGeometry(tab1)
+
+        waitForRendering(tab1)
+        mouseClick(tab1, tab1.width/2, tab1.height/2)
+        verify(button1.activeFocus)
+
+        var tab2 = mouseareas[1].parent
+        verify(tab2 !== null)
+        //printGeometry(tab2)
+
+        waitForRendering(tab2)
+        mouseClick(tab2, tab2.width/2, tab2.height/2)
+        verify(button3.activeFocus)
+
+        waitForRendering(tab1)
+        mouseClick(tab1, tab1.width/2, tab1.height/2)
+        verify(button1.activeFocus)
+
+        waitForRendering(tab2)
+        mouseClick(tab2, tab2.width/2, tab2.height/2)
+        verify(button3.activeFocus)
+
+        tabView.destroy()
+    }
+
+    function printGeometry(control) {
+        console.log("printGeometry:" + control)
+        console.log("x=" + control.x + ",y=" + control.y + ",w=" + control.width + ",h=" + control.height)
+        var g = control.mapToItem(null, control.x, control.y, control.width, control.height)
+        console.log("x=" + g.x + ",y=" + g.y + ",w=" + g.width + ",h=" + g.height)
+    }
+
+    function getTabBarItem(control) {
+        for (var i = 0; i < control.children.length; i++) {
+            if (control.children[i].objectName === 'tabbar')
+                return control.children[i]
+        }
+        return null
+    }
+
+    function getTabRowItem(control) {
+        for (var i = 0; i < control.children.length; i++) {
+            if (control.children[i].objectName === 'tabrow')
+                return control.children[i]
+        }
+        return null
+    }
+
+    function getColumnItem(control, name) {
+        for (var i = 0; i < control.children.length; i++) {
+            if (control.children[i].objectName === name)
+                return control.children[i]
+        }
+        return null
+    }
+
+    function populateMouseAreaItems(control) {
+        var value = new Array()
+        for (var i = 0; i < control.children.length; i++) {
+            var sub = control.children[i]
+            for (var j = 0; j < sub.children.length; j++) {
+                var ssub = sub.children[j]
+                if (ssub.objectName === "mousearea")
+                    value.push(ssub)
+            }
+        }
+        return value
+    }
+}
+}
