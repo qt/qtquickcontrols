@@ -84,7 +84,7 @@ FocusScope {
         Returns the newly added tab.
     */
     function addTab(title, component) {
-        var tab = tabcomp.createObject(this);
+        var tab = tabcomp.createObject(stack)
         tab.sourceComponent = component
         __tabs.push(tab)
         tab.parent = stack
@@ -97,7 +97,7 @@ FocusScope {
         Returns the newly added tab.
     */
     function insertTab(index, title, component) {
-        var tab = tabcomp.createObject(this);
+        var tab = tabcomp.createObject(stack)
         tab.sourceComponent = component
         tab.parent = stack
         tab.title = title
@@ -193,8 +193,32 @@ FocusScope {
                 }
                 __setOpacities()
             }
+
+            function onDynamicTabDestroyed() {
+                for (var i = 0; i < stack.children.length; ++i) {
+                    if (this === stack.children[i]) {
+                        root.removeTab(i)
+                        break
+                    }
+                }
+            }
         }
         onLoaded: { item.z = -1 }
+    }
+
+    onChildrenChanged: {
+        var tabAdded = false
+        for (var i = 0; i < children.length; ++i) {
+            var child = children[i]
+            if (child.Accessible.role === Accessible.PageTab) {
+                __tabs.push(child)
+                child.parent = stack
+                child.Component.onDestruction.connect(stack.onDynamicTabDestroyed.bind(child))
+                tabAdded = true
+            }
+        }
+        if (tabAdded)
+            __setOpacities()
     }
 
     states: [

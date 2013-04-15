@@ -119,5 +119,20 @@ TestCase {
         compare(tabView.count, 0)
         tabView.destroy()
     }
+
+    function test_dynamicTabs() {
+        var tabView = Qt.createQmlObject('import QtQuick 2.1; import QtQuick.Controls 1.0; TabView { property Component tabComponent: Component { Tab { } } }', testCase, '');
+        compare(tabView.count, 0)
+        var tab1 = tabView.tabComponent.createObject(tabView)
+        compare(tabView.count, 1)
+        var tab2 = tabView.tabComponent.createObject(tabView)
+        compare(tabView.count, 2)
+        tab1.destroy()
+        wait(0)
+        compare(tabView.count, 1)
+        tab2.destroy()
+        wait(0)
+        compare(tabView.count, 0)
+    }
 }
 
