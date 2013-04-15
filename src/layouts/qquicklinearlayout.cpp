@@ -539,6 +539,7 @@ void QQuickGridLayout::insertLayoutItems()
 
     foreach (QQuickItem *child,  childItems()) {
         if (child->isVisible()) {
+            Qt::Alignment alignment = 0;
             QQuickLayoutAttached *info = attachedLayoutObject(child, false);
 
             // Will skip Repeater among other things
@@ -580,6 +581,8 @@ void QQuickGridLayout::insertLayoutItems()
                              rowSpan < 1 ? rowSpan : columnSpan);
                     return;
                 }
+
+                alignment = info->alignment();
             }
 
             Q_ASSERT(columnSpan >= 1);
@@ -627,7 +630,7 @@ void QQuickGridLayout::insertLayoutItems()
             }
             column = nextColumn;
             row = nextRow;
-            QQuickGridLayoutItem *layoutItem = new QQuickGridLayoutItem(child, row, column, rowSpan, columnSpan);
+            QQuickGridLayoutItem *layoutItem = new QQuickGridLayoutItem(child, row, column, rowSpan, columnSpan, alignment);
 
             d->engine.insertItem(layoutItem, -1);
         }

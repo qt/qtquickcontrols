@@ -62,7 +62,8 @@ QQuickLayoutAttached::QQuickLayoutAttached(QObject *parent)
       m_fillHeight(false),
       m_isFillWidthSet(false),
       m_isFillHeightSet(false),
-      m_changesNotificationEnabled(true)
+      m_changesNotificationEnabled(true),
+      m_alignment(0)
 {
 
 }
@@ -161,6 +162,14 @@ void QQuickLayoutAttached::setColumn(int column)
         m_column = column;
 }
 
+
+/*!
+    \qmlproperty Qt.Alignment Layout::alignment
+
+    This property allows you to specify the alignment of an item within the cell(s) it occupies.
+
+    The default value is \c 0, which means it will be \c{Qt.AlignVCenter | Qt.AlignLeft}
+*/
 void QQuickLayoutAttached::invalidateItem()
 {
     quickLayoutDebug() << "QQuickLayoutAttached::invalidateItem";
