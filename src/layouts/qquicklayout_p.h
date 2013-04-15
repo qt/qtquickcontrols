@@ -141,6 +141,9 @@ public:
     qreal maximumHeight() const { return m_maximumHeight; }
     void setMaximumHeight(qreal height);
 
+    void setMinimumImplicitSize(const QSizeF &sz);
+    void setMaximumImplicitSize(const QSizeF &sz);
+
     bool fillWidth() const { return m_fillWidth; }
     void setFillWidth(bool fill);
     bool isFillWidthSet() const { return m_isFillWidthSet; }
@@ -203,7 +206,12 @@ private:
     unsigned m_fillHeight : 1;
     unsigned m_isFillWidthSet : 1;
     unsigned m_isFillHeightSet : 1;
-
+    unsigned m_isMinimumWidthSet : 1;
+    unsigned m_isMinimumHeightSet : 1;
+    // preferredWidth and preferredHeight are always explicit, since
+    // their implicit equivalent is implicitWidth and implicitHeight
+    unsigned m_isMaximumWidthSet : 1;
+    unsigned m_isMaximumHeightSet : 1;
     unsigned m_changesNotificationEnabled : 1;
     Qt::Alignment m_alignment;
     friend class QQuickLayout;

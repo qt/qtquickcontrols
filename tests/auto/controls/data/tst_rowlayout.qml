@@ -355,5 +355,101 @@ Item {
             compare(normalizedResult, data.expected);
             layout.destroy();
         }
+
+        Component {
+            id: layout_sizeHint_Component
+            RowLayout {
+                property int implicitWidthChangedCount : 0
+                onImplicitWidthChanged: { ++implicitWidthChangedCount }
+                GridLayout {
+                    columnSpacing: 0
+                    rowSpacing: 0
+                    Rectangle {
+                        id: r1
+                        color: "red"
+                        Layout.minimumWidth: 1
+                        Layout.preferredWidth: 2
+                        Layout.maximumWidth: 3
+
+                        Layout.minimumHeight: 20
+                        Layout.preferredHeight: 20
+                        Layout.maximumHeight: 20
+                        Layout.fillWidth: true
+                    }
+                }
+            }
+        }
+
+        function test_sizeHint_data() {
+            return [
+                    { tag: "propagateNone",            layoutHints: [10, 20, 30], childHints: [11, 21, 31], expected:[10, 20, 30]},
+                    { tag: "propagateMinimumWidth",    layoutHints: [-1, 20, 30], childHints: [10, 21, 31], expected:[10, 20, 30]},
+                    { tag: "propagatePreferredWidth",  layoutHints: [10, -1, 30], childHints: [11, 20, 31], expected:[10, 20, 30]},
+                    { tag: "propagateMaximumWidth",    layoutHints: [10, 20, -1], childHints: [11, 21, 30], expected:[10, 20, 30]},
+                    { tag: "propagateAll",             layoutHints: [-1, -1, -1], childHints: [10, 20, 30], expected:[10, 20, 30]},
+                    { tag: "propagateCrazy",           layoutHints: [-1, -1, -1], childHints: [40, 21, 30], expected:[30, 30, 30]},
+                    ];
+        }
+
+        function itemSizeHints(item) {
+            return [item.Layout.minimumWidth, item.implicitWidth, item.Layout.maximumWidth]
+        }
+
+        function test_sizeHint(data) {
+            var layout = layout_sizeHint_Component.createObject(container)
+            layout.Layout.minimumWidth = data.layoutHints[0]
+            layout.Layout.preferredWidth = data.layoutHints[1]
+            layout.Layout.maximumWidth = data.layoutHints[2]
+
+            var child = layout.children[0].children[0]
+            if (data.implicitWidth !== undefined) {
+                child.implicitWidth = data.implicitWidth
+            }
+
+            child.Layout.minimumWidth = data.childHints[0]
+            child.Layout.preferredWidth = data.childHints[1]
+            child.Layout.maximumWidth = data.childHints[2]
+
+            var grid = layout.children[0]
+            var preferredWidth = layout.Layout.preferredWidth >= 0 ? layout.Layout.preferredWidth : layout.implicitWidth
+            var effectiveSizeHintResult = [layout.Layout.minimumWidth, preferredWidth, layout.Layout.maximumWidth]
+            compare(effectiveSizeHintResult, data.expected)
+            layout.destroy()
+        }
+
+        function test_sizeHintPropagationCount() {
+            var layout = layout_sizeHint_Component.createObject(container)
+            var child = layout.children[0].children[0]
+
+            child.Layout.minimumWidth = -1
+            compare(itemSizeHints(layout), [0, 2, 3])
+            child.Layout.preferredWidth = -1
+            compare(itemSizeHints(layout), [0, 0, 3])
+            child.Layout.maximumWidth = -1
+            compare(itemSizeHints(layout), [0, 0, 1000000000])
+
+            layout.implicitWidthChangedCount = 0
+            child.Layout.minimumWidth = 10
+            compare(itemSizeHints(layout), [10, 10, 1000000000])
+            compare(layout.implicitWidthChangedCount, 1)
+
+            child.Layout.preferredWidth = 20
+            compare(itemSizeHints(layout), [10, 20, 1000000000])
+            compare(layout.implicitWidthChangedCount, 2)
+
+            child.Layout.maximumWidth = 30
+            compare(itemSizeHints(layout), [10, 20, 30])
+            compare(layout.implicitWidthChangedCount, 2)
+
+            child.Layout.maximumWidth = 15
+            compare(itemSizeHints(layout), [10, 15, 15])
+            compare(layout.implicitWidthChangedCount, 3)
+
+            child.Layout.maximumWidth = 30
+            compare(itemSizeHints(layout), [10, 20, 30])
+            compare(layout.implicitWidthChangedCount, 4)
+
+            layout.destroy()
+        }
     }
 }

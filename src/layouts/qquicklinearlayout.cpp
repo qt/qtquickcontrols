@@ -233,6 +233,26 @@ void QQuickGridLayoutBase::invalidate(QQuickItem *childItem)
     d->engine.invalidate();
 
     QQuickLayout::invalidate(this);
+
+    QObject *attached = qmlAttachedPropertiesObject<QQuickLayout>(this);
+    QQuickLayoutAttached *info = static_cast<QQuickLayoutAttached *>(attached);
+
+
+    const QSizeF min = d->engine.sizeHint(Qt::MinimumSize, QSizeF());
+    const QSizeF pref = d->engine.sizeHint(Qt::PreferredSize, QSizeF());
+    const QSizeF max = d->engine.sizeHint(Qt::MaximumSize, QSizeF());
+
+    const bool old = info->setChangesNotificationEnabled(false);
+    info->setMinimumImplicitSize(min);
+    info->setMaximumImplicitSize(max);
+    info->setChangesNotificationEnabled(old);
+    if (pref.width() == implicitWidth() && pref.height() == implicitHeight()) {
+        // In case setImplicitSize does not emit implicit{Width|Height}Changed
+        if (QQuickLayout *parentLayout = qobject_cast<QQuickLayout *>(parentItem()))
+            parentLayout->invalidate(this);
+    } else {
+        setImplicitSize(pref.width(), pref.height());
+    }
 }
 
 void QQuickGridLayoutBase::updateLayoutItems()
@@ -246,26 +266,6 @@ void QQuickGridLayoutBase::updateLayoutItems()
 
     invalidate();
     quickLayoutDebug() << "QQuickGridLayoutBase::updateLayoutItems LEAVING";
-    propagateLayoutSizeHints();
-}
-
-void QQuickGridLayoutBase::propagateLayoutSizeHints()
-{
-    Q_D(QQuickGridLayoutBase);
-    quickLayoutDebug() << "propagateLayoutSizeHints()";
-    QObject *attached = qmlAttachedPropertiesObject<QQuickLayout>(this);
-    QQuickLayoutAttached *info = static_cast<QQuickLayoutAttached *>(attached);
-
-    const QSizeF min = d->engine.sizeHint(Qt::MinimumSize, QSizeF());
-    const QSizeF pref = d->engine.sizeHint(Qt::PreferredSize, QSizeF());
-    const QSizeF max = d->engine.sizeHint(Qt::MaximumSize, QSizeF());
-
-    info->setMinimumWidth(min.width());
-    info->setMinimumHeight(min.height());
-    setImplicitWidth(pref.width());
-    setImplicitHeight(pref.height());
-    info->setMaximumWidth(max.width());
-    info->setMaximumHeight(max.height());
 }
 
 void QQuickGridLayoutBase::itemChange(ItemChange change, const ItemChangeData &value)
@@ -348,7 +348,6 @@ void QQuickGridLayoutBase::onItemImplicitSizeChanged()
     QQuickItem *item = static_cast<QQuickItem *>(sender());
     Q_ASSERT(item);
     invalidate(item);
-    propagateLayoutSizeHints();
 }
 
 void QQuickGridLayoutBase::rearrange(const QSizeF &size)
@@ -371,8 +370,6 @@ void QQuickGridLayoutBase::rearrange(const QSizeF &size)
     d->engine.setGeometries(QRectF(QPointF(0,0), size));
 
     QQuickLayout::rearrange(size);
-    // propagate hints to upper levels
-    propagateLayoutSizeHints();
 }
 
 
