@@ -685,6 +685,18 @@ void QQuickLinearLayout::insertLayoutItems()
     foreach (QQuickItem *child,  childItems()) {
         Q_ASSERT(child);
         if (child->isVisible()) {
+
+            QQuickLayoutAttached *info = attachedLayoutObject(child, false);
+            // Will skip Repeater among other things
+            const bool skipItem = !info && (!child->width() || !child->height())
+                      && (!child->implicitWidth() || !child->implicitHeight());
+            if (skipItem)
+                continue;
+
+            Qt::Alignment alignment = 0;
+            if (info)
+                alignment = info->alignment();
+
             const int index = d->engine.rowCount(d->orientation);
             d->engine.insertRow(index, d->orientation);
 
@@ -692,7 +704,7 @@ void QQuickLinearLayout::insertLayoutItems()
             int gridColumn = index;
             if (d->orientation == Qt::Vertical)
                 qSwap(gridRow, gridColumn);
-            QQuickGridLayoutItem *layoutItem = new QQuickGridLayoutItem(child, gridRow, gridColumn, 1, 1, 0);
+            QQuickGridLayoutItem *layoutItem = new QQuickGridLayoutItem(child, gridRow, gridColumn, 1, 1, alignment);
             d->engine.insertItem(layoutItem, index);
         }
     }

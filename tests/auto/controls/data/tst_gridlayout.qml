@@ -53,6 +53,11 @@ Item {
         width: 200
         height: 200
 
+        function itemRect(item)
+        {
+            return [item.x, item.y, item.width, item.height];
+        }
+
         Component {
             id: layout_flowLeftToRight_Component
             GridLayout {
@@ -417,5 +422,67 @@ Item {
 
             layout.destroy();
         }
+
+        Component {
+            id: layout_alignment_Component
+            GridLayout {
+                columns: 2
+                columnSpacing: 0
+                rowSpacing: 0
+                Rectangle {
+                    // First one should auto position itself at (0,0)
+                    color: "red"
+                    Layout.preferredWidth: 20
+                    Layout.preferredHeight: 20
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                }
+                Rectangle {
+                    // (0,1)
+                    color: "red"
+                    Layout.preferredWidth: 20
+                    Layout.preferredHeight: 20
+                    Layout.alignment: Qt.AlignBottom
+                }
+                Rectangle {
+                    // (1,0)
+                    color: "red"
+                    Layout.preferredWidth: 20
+                    Layout.preferredHeight: 20
+                    Layout.alignment: Qt.AlignRight
+                }
+                Rectangle {
+                    // (1,1)
+                    color: "red"
+                    Layout.preferredWidth: 10
+                    Layout.preferredHeight: 10
+                    Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
+                }
+                Rectangle {
+                    // (2,0)
+                    color: "red"
+                    Layout.preferredWidth: 30
+                    Layout.preferredHeight: 30
+                    Layout.alignment: Qt.AlignRight
+                    Layout.columnSpan: 2
+                }
+            }
+        }
+
+        function test_alignment()
+        {
+            var layout = layout_alignment_Component.createObject(container);
+            layout.width = 60;
+            layout.height = 90;
+
+            compare(itemRect(layout.children[0]), [ 0,  0, 40, 40]);
+            compare(itemRect(layout.children[1]), [40, 20, 20, 20]);
+            compare(itemRect(layout.children[2]), [20, 40, 20, 20]);
+            compare(itemRect(layout.children[3]), [45, 40, 10, 10]);
+            compare(itemRect(layout.children[4]), [30, 60, 30, 30]);
+
+            layout.destroy();
+        }
+
     }
 }
