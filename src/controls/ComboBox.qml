@@ -107,8 +107,7 @@ Control {
         if (currentIndex === -1)
             currentIndex = 0
         if (Qt.platform.os === "mac") {
-            popup.x -= 10
-            popup.y += 4
+            popup.y += 6
         }
 
         popup.ready = true
