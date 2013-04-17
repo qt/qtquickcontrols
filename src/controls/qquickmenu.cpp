@@ -257,6 +257,12 @@ QQuickMenu::QQuickMenu(QObject *parent)
 
 QQuickMenu::~QQuickMenu()
 {
+    while (!m_menuItems.empty()) {
+        QQuickMenuBase *item = m_menuItems.takeFirst();
+        if (item)
+            item->setParentMenu(0);
+    }
+
     delete m_platformMenu;
     m_platformMenu = 0;
 }

@@ -59,6 +59,8 @@ QQuickMenuBase::QQuickMenuBase(QObject *parent)
 
 QQuickMenuBase::~QQuickMenuBase()
 {
+    if (parentMenu())
+        parentMenu()->removeItem(this);
     setParentMenu(0);
     if (m_platformItem) {
         delete m_platformItem;

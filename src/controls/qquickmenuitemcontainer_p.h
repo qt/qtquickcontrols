@@ -58,6 +58,14 @@ public:
     ~QQuickMenuItemContainer()
     {
         clear();
+        setParentMenu(0);
+    }
+
+    void setParentMenu(QQuickMenu *parentMenu)
+    {
+        QQuickMenuBase::setParentMenu(parentMenu);
+        Q_FOREACH (QQuickMenuBase *item, m_menuItems)
+            item->setParentMenu(parentMenu);
     }
 
     void insertItem(int index, QQuickMenuBase *item)
