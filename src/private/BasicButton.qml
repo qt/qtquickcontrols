@@ -115,6 +115,11 @@ Control {
     Accessible.role: Accessible.Button
     Accessible.description: tooltip
 
+    /*! \internal */
+    function accessiblePressAction() {
+        __action.trigger()
+    }
+
     Action { id: ownAction }
 
     Connections {
