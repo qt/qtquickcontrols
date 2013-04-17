@@ -188,7 +188,7 @@ FocusScope {
 
             Component.onCompleted: {
                 for (var i = 0 ; i < stack.children.length ; ++i) {
-                    if (stack.children[i].Accessible.role === Accessible.PageTab)
+                    if (stack.children[i].Accessible.role === Accessible.LayeredPane)
                         __tabs.push(stack.children[i])
                 }
                 __setOpacities()
@@ -210,7 +210,7 @@ FocusScope {
         var tabAdded = false
         for (var i = 0; i < children.length; ++i) {
             var child = children[i]
-            if (child.Accessible.role === Accessible.PageTab) {
+            if (child.Accessible.role === Accessible.LayeredPane) {
                 __tabs.push(child)
                 child.parent = stack
                 child.Component.onDestruction.connect(stack.onDynamicTabDestroyed.bind(child))

@@ -56,7 +56,7 @@ Loader {
 
     /*! This property holds the title of the tab. */
     property string title
-    Accessible.role: Accessible.PageTab
+    Accessible.role: Accessible.LayeredPane
     active: false
     visible: false
 
