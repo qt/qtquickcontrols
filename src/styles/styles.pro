@@ -46,6 +46,12 @@ QML_FILES += \
 
 # Images
 QML_FILES += \
+    images/button.png \
+    images/button_down.png \
+    images/tab.png \
+    images/groupbox.png \
+    images/tab_selected.png \
+    images/editbox.png \
     images/arrow-up.png \
     images/arrow-down.png
 

@@ -51,9 +51,9 @@ Style {
     property int labelSpacing: 6
 
     property Component indicator:  Rectangle {
-        width: 20
-        height: 20
-        color: "#f0f0f0"
+        width: 17
+        height: 17
+        color: "white"
         border.color: "gray"
         antialiasing: true
         radius: height/2
@@ -61,10 +61,10 @@ Style {
         Rectangle {
             anchors.centerIn: parent
             visible: control.checked
-            width: 10
-            height: 10
-            color: "#444"
-            border.color: "black"
+            width: 9
+            height: 9
+            color: "#666"
+            border.color: "#222"
             antialiasing: true
             radius: height/2
         }

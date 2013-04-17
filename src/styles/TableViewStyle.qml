@@ -49,7 +49,11 @@ ScrollViewStyle {
     property color highlightedTextColor: "white"
 
     property Component headerDelegate: Rectangle {
-        color: "white"
+        gradient: Gradient {
+            GradientStop {position: 0 ; color: "#eee"}
+            GradientStop {position: 1 ; color: "#ddd"}
+        }
+
         implicitHeight: 16
         implicitWidth: 80
         Text {
@@ -65,6 +69,14 @@ ScrollViewStyle {
             width: parent.width
             height: 1
             color: "#bbb"
+        }
+        Rectangle {
+            anchors.right: parent.right
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 2
+            width: 1
+            color: "#ccc"
         }
     }
 

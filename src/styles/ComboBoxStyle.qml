@@ -47,26 +47,34 @@ import QtQuick.Controls.Styles 1.0
 */
 
 Style {
-    property Component panel: Rectangle {
 
-        property int popup: 0
-        property font font: textitem.font
+    property Component panel: Item {
+        implicitWidth: 100
+        implicitHeight: 24
+        property bool popup: false
+        property alias font: textitem.font
 
-        implicitWidth: 200
-        implicitHeight: 20
+        BorderImage {
+            anchors.fill: parent
+            source: control.__pressed ? "images/button_down.png" : "images/button.png"
+            border.top: 6
+            border.bottom: 6
+            border.left: 6
+            border.right: 6
+            Text {
+                id: textitem
+                anchors.centerIn: parent
+                text: control.currentText
+                renderType: Text.NativeRendering
+            }
+            Image {
+                source: "images/arrow-down.png"
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.right: parent.right
+                anchors.rightMargin: 8
+                opacity: 0.7
+            }
 
-        gradient: Gradient{
-            GradientStop{color: control.__pressed ? "lightgray" : "white" ; position: 0}
-            GradientStop{color: control.__pressed ? "lightgray" : "lightgray" ; position: 1}
-        }
-
-        radius:4
-        border.color: "#aaa"
-
-        Text {
-            id: textitem
-            anchors.centerIn: parent
-            text: control.currentText
         }
     }
 

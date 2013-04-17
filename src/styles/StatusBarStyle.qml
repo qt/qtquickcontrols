@@ -60,7 +60,7 @@ Item {
         }
 
         Rectangle {
-            anchors.bottom: parent.bottom
+            anchors.top: parent.top
             width: parent.width
             height: 1
             color: "#999"

@@ -125,7 +125,7 @@ Control {
         property string textRole: ""
 
         property bool ready: false
-        property bool isPopup: comboBox.__panel.popup
+        property bool isPopup: __panel ? __panel.popup : false
 
         property int x: 0
         property int y: isPopup ? (comboBox.__panel.height - comboBox.__panel.implicitHeight) / 2.0 : comboBox.__panel.height

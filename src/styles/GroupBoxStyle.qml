@@ -47,21 +47,27 @@ import QtQuick.Controls.Styles 1.0
     \inqmlmodule QtQuick.Controls.Styles 1.0
 */
 Style {
-    property int margin: 8
+    property int margin: 9
 
-    property Component panel: Rectangle {
+    property Component panel:
+        Item {
         implicitWidth: control.contentWidth + 2 * margin
-        implicitHeight: control.contentHeight + 2 * margin + 16
-
+        implicitHeight: control.contentHeight + 2 * margin + 12
         Text {
             anchors.top: parent.top
             anchors.left: parent.left
             anchors.margins: 4
             text: control.title
+            renderType: Text.NativeRendering
         }
-        border.color: "#999"
-        border.width: 1
-        color: "transparent"
-        radius: 4
+        BorderImage {
+            anchors.fill: parent
+            anchors.topMargin: 20
+            source: "images/groupbox.png"
+            border.left: 8
+            border.right: 8
+            border.top: 8
+            border.bottom: 8
+        }
     }
 }

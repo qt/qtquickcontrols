@@ -110,6 +110,7 @@ Item {
             Slider {
                 id: slider
                 value: 0.5
+                width: 200
                 tickmarksEnabled: tickmarkCheck.checked
             }
         }

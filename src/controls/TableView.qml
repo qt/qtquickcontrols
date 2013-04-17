@@ -449,8 +449,6 @@ ScrollView {
 
             height: headerVisible ? headerrow.height : 0
 
-            Behavior on height { NumberAnimation{ duration: 80 } }
-
             Row {
                 id: headerrow
                 x: -listView.contentX

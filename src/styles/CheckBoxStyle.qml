@@ -50,26 +50,35 @@ Style {
 
     property int labelSpacing: 6
 
-    property Component indicator: Rectangle {
-        height: 20
-        width: 20
-        antialiasing: true
-        gradient: Gradient {
-            GradientStop{color: control.pressed ? "lightgray" : "white" ; position: 0}
-            GradientStop{color: control.pressed ? "lightgray" : "lightgray" ; position: 1}
+    property Component indicator: Item {
+        implicitWidth: 18
+        implicitHeight: 18
+        BorderImage {
+            anchors.fill: parent
+            source: "images/editbox.png"
+            border.top: 6
+            border.bottom: 6
+            border.left: 6
+            border.right: 6
         }
-        radius: 2
-        border.color: "#aaa"
         Rectangle {
-            height: 20
-            width: 20
+            height: 16
+            width: 16
             antialiasing: true
             visible: control.checked
-            color: "#444"
+            color: "#666"
             radius: 1
-            anchors.margins: 5
+            anchors.margins: 4
             anchors.fill: parent
-            border.color: "black"
+            anchors.topMargin: 3
+            anchors.bottomMargin: 5
+            border.color: "#222"
+            Rectangle {
+                anchors.fill: parent
+                anchors.margins: 1
+                color: "transparent"
+                border.color: "#33ffffff"
+            }
         }
     }
 
@@ -79,7 +88,7 @@ Style {
     }
 
     property Component panel: Item {
-        implicitWidth: row.width + 4
+        implicitWidth: Math.round(row.width + 4)
         implicitHeight: row.height
         property var _cref: control
 

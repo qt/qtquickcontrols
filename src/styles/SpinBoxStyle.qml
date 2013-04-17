@@ -65,7 +65,6 @@ Style {
     }
 
     property Component upControl: Rectangle {
-        anchors.centerIn: parent
         implicitWidth: 12
         gradient: Gradient {
             GradientStop {color: control.__upPressed ? "lightgray" : "white" ; position: 0}
@@ -75,6 +74,7 @@ Style {
         Image {
             source: "images/arrow-up.png"
             anchors.centerIn: parent
+            opacity: 0.7
         }
     }
 
@@ -88,25 +88,26 @@ Style {
         Image {
             source: "images/arrow-down.png"
             anchors.centerIn: parent
+            opacity: 0.7
         }
     }
 
-    property Component background: Rectangle {
-        anchors.fill: parent
-        gradient: Gradient {
-            GradientStop{color: Qt.darker(backgroundColor, 1.1) ; position: 0}
-            GradientStop{color: Qt.lighter(backgroundColor, 1.2) ; position: 1}
+    property Component background: Item {
+        BorderImage {
+            anchors.fill: parent
+            source: "images/editbox.png"
+            border.left: 4
+            border.right: 4
+            border.top: 4
+            border.bottom: 4
+            anchors.bottomMargin: -2
         }
-        radius: 3
-        antialiasing: true
-        border.color: Qt.darker(backgroundColor, 2)
     }
-
 
     property Component panel:  Item {
         id: styleitem
         implicitWidth: control.__contentWidth + 26
-        implicitHeight: 21
+        implicitHeight: 23
 
         property color foregroundColor: spinboxStyle.foregroundColor
         property color backgroundColor: spinboxStyle.backgroundColor

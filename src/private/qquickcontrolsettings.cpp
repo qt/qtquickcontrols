@@ -56,9 +56,11 @@ QString QQuickControlSettings::theme()
     if (currentTheme.isEmpty()) {
         currentTheme = QLatin1String("Styles");
 #ifndef QT_NO_WIDGETS
-        // Only enable QStyle support when we are using QApplication
-        if (QCoreApplication::instance()->inherits("QApplication"))
-            currentTheme = QLatin1String("Styles/Desktop");
+        //Only enable QStyle support when we are using QApplication
+        if (QCoreApplication::instance()->inherits("QApplication")) {
+            if (qgetenv("QT_QUICK_CONTROLS_NO_WIDGETS").toInt() < 1)
+                currentTheme = QLatin1String("Styles/Desktop");
+        }
 #endif
     }
     return currentTheme;
