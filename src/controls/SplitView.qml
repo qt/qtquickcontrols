@@ -241,7 +241,7 @@ Item {
                 if (i !== d.expandingIndex) {
                     var item = __items[i];
                     if (item.Layout[maximum] !== undefined) {
-                        if (item[d.size] > item.Layout[maximum])
+                        if (item.Layout[maximum] >= 0 && item[d.size] > item.Layout[maximum])
                             item[d.size] = item.Layout[maximum]
                     }
                     if (item.Layout[minimum] !== undefined) {
