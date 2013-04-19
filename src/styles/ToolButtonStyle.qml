@@ -71,7 +71,18 @@ Style {
             id: icon
             anchors.centerIn: parent
             source: control.iconSource
-
+        }
+        BorderImage {
+            anchors.fill: parent
+            anchors.margins: -1
+            anchors.topMargin: -2
+            anchors.rightMargin: 0
+            source: "images/focusframe.png"
+            visible: control.activeFocus
+            border.left: 4
+            border.right: 4
+            border.top: 4
+            border.bottom: 4
         }
     }
 }

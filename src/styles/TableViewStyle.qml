@@ -81,23 +81,24 @@ ScrollViewStyle {
     }
 
     property Component rowDelegate: Rectangle {
-        gradient: Gradient {
-            GradientStop { color: rowSelected ? Qt.lighter("#49e", 1.1)  : alternateBackground ? "#eee" : "white" ; position: 1 }
-            GradientStop { color: rowSelected ? Qt.lighter("#49e", 1.2)  : alternateBackground ? "#eee" : "white" ; position: 0 }
-        }
         implicitHeight: 20
         implicitWidth: 80
+        property color selectedColor: control.activeFocus ? "#49e" : "#999"
+        gradient: Gradient {
+            GradientStop { color: rowSelected ? Qt.lighter(selectedColor, 1.1)  : alternateBackground ? "#eee" : "white" ; position: 1 }
+            GradientStop { color: rowSelected ? Qt.lighter(selectedColor, 1.2)  : alternateBackground ? "#eee" : "white" ; position: 0 }
+        }
         Rectangle {
             anchors.bottom: parent.bottom
             width: parent.width
             height: 1
-            color: rowSelected ? "#18a" : "transparent"
+            color: rowSelected ? Qt.darker(selectedColor, 1.1) : "transparent"
         }
         Rectangle {
             anchors.top: parent.top
             width: parent.width
             height: 1
-            color: rowSelected ? "#18a" : "transparent"
+            color: rowSelected ? Qt.darker(selectedColor, 1.1) : Qt.darker(parent.color, 1.15)
         }
     }
 
