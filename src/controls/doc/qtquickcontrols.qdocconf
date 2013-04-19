@@ -5,29 +5,29 @@ description             = Qt Quick Controls Reference Documentation
 url                     = http://qt-project.org/doc/qt-$QT_VER/qtquickcontrols/
 version                 = $QT_VERSION
 
-qhp.projects            = qtquickcontrols
+qhp.projects            = QtQuickControls
 
-qhp.qtquickcontrols.file          = qtquickcontrols.qhp
-qhp.qtquickcontrols.namespace     = org.qt-project.qtquickcontrols.$QT_VERSION_TAG
-qhp.qtquickcontrols.virtualFolder = qtquickcontrols
-qhp.qtquickcontrols.indexTitle    = Qt Quick Controls
-qhp.qtquickcontrols.indexRoot     =
-#qhp.qtquickcontrols.extraFiles = style/qtquickcontrols.css
+qhp.QtQuickControls.file          = qtquickcontrols.qhp
+qhp.QtQuickControls.namespace     = org.qt-project.qtquickcontrols.$QT_VERSION_TAG
+qhp.QtQuickControls.virtualFolder = qtquickcontrols
+qhp.QtQuickControls.indexTitle    = Qt Quick Controls
+qhp.QtQuickControls.indexRoot     =
+#qhp.QtQuickControls.extraFiles = style/qtquickcontrols.css
 
-qhp.qtquickcontrols.filterAttributes    = qtcontrols $QT_VERSION qtrefdoc
-qhp.qtquickcontrols.customFilters.Qt.name = QtQuickControls $QT_VERSION
-qhp.qtquickcontrols.customFilters.Qt.filterAttributes = qtquickcontrols $QT_VERSION
+qhp.QtQuickControls.filterAttributes    = qtcontrols $QT_VERSION qtrefdoc
+qhp.QtQuickControls.customFilters.Qt.name = QtQuickControls $QT_VERSION
+qhp.QtQuickControls.customFilters.Qt.filterAttributes = qtquickcontrols $QT_VERSION
 
-qhp.qtquickcontrols.subprojects = qtquickcontrolsqmltypes styleqmltypes
-qhp.qtquickcontrols.subprojects.qtquickcontrolsqmltypes.title = QML Types
-qhp.qtquickcontrols.subprojects.qtquickcontrolsqmltypes.indexTitle = Qt Quick Controls QML Types
-qhp.qtquickcontrols.subprojects.qtquickcontrolsqmltypes.selectors = class fake:qmlclass
-qhp.qtquickcontrols.subprojects.qtquickcontrolsqmltypes.sortPages = true
+qhp.QtQuickControls.subprojects = qtquickcontrolsqmltypes styleqmltypes
+qhp.QtQuickControls.subprojects.qtquickcontrolsqmltypes.title = QML Types
+qhp.QtQuickControls.subprojects.qtquickcontrolsqmltypes.indexTitle = Qt Quick Controls QML Types
+qhp.QtQuickControls.subprojects.qtquickcontrolsqmltypes.selectors = class fake:qmlclass
+qhp.QtQuickControls.subprojects.qtquickcontrolsqmltypes.sortPages = true
 
-qhp.qtquickcontrols.subprojects.styleqmltypes.title = Styles QML Types
-qhp.qtquickcontrols.subprojects.styleqmltypes.indexTitle = Qt Quick Controls Styles QML Types
-qhp.qtquickcontrols.subprojects.styleqmltypes.selectors = class fake:qmlclass
-qhp.qtquickcontrols.subprojects.styleqmltypes.sortPages = true
+qhp.QtQuickControls.subprojects.styleqmltypes.title = Styles QML Types
+qhp.QtQuickControls.subprojects.styleqmltypes.indexTitle = Qt Quick Controls Styles QML Types
+qhp.QtQuickControls.subprojects.styleqmltypes.selectors = class fake:qmlclass
+qhp.QtQuickControls.subprojects.styleqmltypes.sortPages = true
 
 depends = qtqml qtquick qtwidgets qtdoc qtquicklayouts
 
