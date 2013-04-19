@@ -57,8 +57,12 @@ Style {
 
     property color foregroundColor: "black"
     property color backgroundColor: "white"
-    property color selectionColor: "blue"
-    property color selectedTextColor: "white"
+    property color selectionColor: __syspal.highlight
+    property color selectedTextColor: __syspal.highlightedText
+
+    property SystemPalette __syspal: SystemPalette {
+        colorGroup: control.enabled ? SystemPalette.Active : SystemPalette.Disabled
+    }
 
     property font font
 
