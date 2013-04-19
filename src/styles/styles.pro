@@ -50,6 +50,7 @@ QML_FILES += \
     images/button_down.png \
     images/tab.png \
     images/groupbox.png \
+    images/focusframe.png \
     images/tab_selected.png \
     images/editbox.png \
     images/arrow-up.png \

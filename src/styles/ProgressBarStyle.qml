@@ -65,7 +65,7 @@ Style {
         }
         Rectangle {
             id: progressItem
-            implicitWidth: parent.width * control.value / control.maximumValue
+            implicitWidth: control.indeterminate ? parent.width : parent.width * control.value / control.maximumValue
             radius: 2
             antialiasing: true
             height: parent.height - 2

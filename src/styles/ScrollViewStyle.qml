@@ -47,16 +47,15 @@ Style {
 
     property bool frameOnlyAroundContents: false
     property int scrollBarSpacing: 4
-    property int defaultFrameWidth: 3
+    property int defaultFrameWidth: 1
 
-    property Component frame: BorderImage {
-        source: "images/editbox.png"
-        border.left: 4
-        border.right: 4
-        border.top: 4
-        border.bottom: 4
+    property Component corner: Rectangle { color: "#ccc" }
+
+    property Component frame: Rectangle {
+        color: "white"
+        border.color: "#999"
+        border.width: 1
+        radius: 1
         visible: frameVisible
     }
-
-    property Component corner: Rectangle { color: "lightgray"  }
 }

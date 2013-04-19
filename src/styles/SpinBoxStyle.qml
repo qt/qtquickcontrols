@@ -64,30 +64,24 @@ Style {
         colorGroup: control.enabled ? SystemPalette.Active : SystemPalette.Disabled
     }
 
-    property Component upControl: Rectangle {
-        implicitWidth: 12
-        gradient: Gradient {
-            GradientStop {color: control.__upPressed ? "lightgray" : "white" ; position: 0}
-            GradientStop {color: control.__upPressed ? "lightgray" : "lightgray" ; position: 1}
-        }
-        border.color: Qt.darker(backgroundColor, 2)
+    property Component upControl: Item {
+        implicitWidth: 18
         Image {
             source: "images/arrow-up.png"
             anchors.centerIn: parent
+            anchors.verticalCenterOffset: 1
             opacity: 0.7
+            anchors.horizontalCenterOffset:  -1
         }
     }
 
-    property Component downControl: Rectangle {
-        implicitWidth: 12
-        gradient: Gradient {
-            GradientStop {color: control.__downPressed ? "lightgray" : "white" ; position: 0}
-            GradientStop {color: control.__downPressed ? "lightgray" : "lightgray" ; position: 1}
-        }
-        border.color: Qt.darker(backgroundColor, 2)
+    property Component downControl: Item {
+        implicitWidth: 18
         Image {
             source: "images/arrow-down.png"
             anchors.centerIn: parent
+            anchors.verticalCenterOffset: -1
+            anchors.horizontalCenterOffset:  -1
             opacity: 0.7
         }
     }
@@ -153,5 +147,19 @@ Style {
             sourceComponent: downControl
             property SpinBox control: cref
         }
+
+        BorderImage {
+            anchors.fill: parent
+            anchors.margins: -1
+            anchors.topMargin: -2
+            anchors.rightMargin: 0
+            source: "images/focusframe.png"
+            visible: control.activeFocus
+            border.left: 4
+            border.right: 4
+            border.top: 4
+            border.bottom: 4
+        }
+
     }
 }

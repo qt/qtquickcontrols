@@ -68,7 +68,7 @@ ScrollViewStyle {
             anchors.bottom: parent.bottom
             width: parent.width
             height: 1
-            color: "#bbb"
+            color: "#aaa"
         }
         Rectangle {
             anchors.right: parent.right
@@ -81,9 +81,24 @@ ScrollViewStyle {
     }
 
     property Component rowDelegate: Rectangle {
-        color: rowSelected ? "lightsteelblue" : alternateBackground ? "#eee" : "white"
+        gradient: Gradient {
+            GradientStop { color: rowSelected ? Qt.lighter("#49e", 1.1)  : alternateBackground ? "#eee" : "white" ; position: 1 }
+            GradientStop { color: rowSelected ? Qt.lighter("#49e", 1.2)  : alternateBackground ? "#eee" : "white" ; position: 0 }
+        }
         implicitHeight: 20
         implicitWidth: 80
+        Rectangle {
+            anchors.bottom: parent.bottom
+            width: parent.width
+            height: 1
+            color: rowSelected ? "#18a" : "transparent"
+        }
+        Rectangle {
+            anchors.top: parent.top
+            width: parent.width
+            height: 1
+            color: rowSelected ? "#18a" : "transparent"
+        }
     }
 
     property Component standardDelegate: Item {

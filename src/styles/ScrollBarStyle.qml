@@ -60,63 +60,79 @@ Rectangle {
     property Component background: Item {
         implicitWidth: 16
         implicitHeight: 16
+        clip: true
         Rectangle {
             anchors.fill: parent
             color: "#ddd"
             border.color: "#aaa"
-            anchors.rightMargin: horizontal ? -2 : 0
+            anchors.rightMargin: horizontal ? -2 : -1
             anchors.leftMargin: horizontal ? -2 : 0
             anchors.topMargin: horizontal ? 0 : -2
-            anchors.bottomMargin: horizontal ? 0 : -2
+            anchors.bottomMargin: horizontal ? -1 : -2
         }
     }
 
-    property Component handle: Rectangle {
+    property Component handle: Item {
         implicitWidth: 16
         implicitHeight: 16
-        color: mouseOver ? "#ddd" : "lightgray"
-        border.color: "#aaa"
-
         Rectangle {
             anchors.fill: parent
-            anchors.margins: 1
-            color: "transparent"
-            border.color: "#66ffffff"
-
+            color: mouseOver ? "#ddd" : "lightgray"
+            border.color: "#aaa"
+            anchors.rightMargin: horizontal ? 0 : -1
+            anchors.bottomMargin: horizontal ? -1 : 0
+            Rectangle {
+                anchors.fill: parent
+                anchors.margins: 1
+                color: "transparent"
+                border.color: "#44ffffff"
+            }
         }
     }
 
     property Component incrementControl: Rectangle {
         implicitWidth: 16
         implicitHeight: 16
-        border.color: "#aaa"
-        Image {
-            source: "images/arrow-down.png"
-            rotation: horizontal ? -90 : 0
-            anchors.centerIn: parent
-            opacity: 0.7
-        }
-        gradient: Gradient {
-            GradientStop {color: control.downPressed ? "lightgray" : "white" ; position: 0}
-            GradientStop {color: control.downPressed ? "lightgray" : "lightgray" ; position: 1}
+        Rectangle {
+            anchors.fill: parent
+            anchors.bottomMargin: -1
+            anchors.rightMargin: -1
+            border.color: "#aaa"
+            Image {
+                source: "images/arrow-down.png"
+                rotation: horizontal ? -90 : 0
+                anchors.centerIn: parent
+                opacity: 0.7
+            }
+            gradient: Gradient {
+                GradientStop {color: control.downPressed ? "lightgray" : "white" ; position: 0}
+                GradientStop {color: control.downPressed ? "lightgray" : "lightgray" ; position: 1}
+            }
         }
     }
 
     property Component decrementControl: Rectangle {
         implicitWidth: 16
         implicitHeight: 16
-        color: "lightgray"
-        Image {
-            source: "images/arrow-up.png"
-            rotation: horizontal ? -90 : 0
-            anchors.centerIn: parent
-            opacity: 0.7
+        Rectangle {
+            anchors.fill: parent
+            anchors.topMargin: horizontal ? 0 : -1
+            anchors.leftMargin:  horizontal ? -1 : 0
+            anchors.bottomMargin: horizontal ? -1 : 0
+            anchors.rightMargin: horizontal ? 0 : -1
+            color: "lightgray"
+            Image {
+                source: "images/arrow-up.png"
+                rotation: horizontal ? -90 : 0
+                anchors.centerIn: parent
+                opacity: 0.7
+            }
+            gradient: Gradient {
+                GradientStop {color: control.upPressed ? "lightgray" : "white" ; position: 0}
+                GradientStop {color: control.upPressed ? "lightgray" : "lightgray" ; position: 1}
+            }
+            border.color: "#aaa"
         }
-        gradient: Gradient {
-            GradientStop {color: control.upPressed ? "lightgray" : "white" ; position: 0}
-            GradientStop {color: control.upPressed ? "lightgray" : "lightgray" ; position: 1}
-        }
-        border.color: "#aaa"
     }
 
     property string activeControl: ""
@@ -185,6 +201,7 @@ Rectangle {
         width: parent.width
         anchors.top: horizontal ? undefined : upControl.bottom
         anchors.bottom: horizontal ? undefined : downControl.top
+        anchors.bottomMargin: -1
         anchors.left:  horizontal ? upControl.right : undefined
         anchors.right: horizontal ? downControl.left : undefined
         sourceComponent: background
@@ -193,6 +210,7 @@ Rectangle {
     Loader {
         id: downControl
         anchors.bottom: horizontal ? undefined : parent.bottom
+        anchors.bottomMargin: -1
         anchors.right: horizontal ? parent.right : undefined
         sourceComponent: incrementControl
         property bool mouseOver: activeControl === "down"

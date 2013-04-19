@@ -54,7 +54,7 @@ Style {
         width: 17
         height: 17
         color: "white"
-        border.color: "gray"
+        border.color: control.activeFocus ? "#16c" : "gray"
         antialiasing: true
         radius: height/2
 

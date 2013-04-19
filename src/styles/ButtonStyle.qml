@@ -75,6 +75,22 @@ Style {
             border.left: 6
             border.right: 6
         }
+
+        BorderImage {
+            property int margin: 0
+            anchors.fill: parent
+            anchors.margins: -1
+            anchors.topMargin: -2
+            anchors.rightMargin: 0
+            anchors.bottomMargin: 1
+            source: "images/focusframe.png"
+            visible: control.activeFocus
+            border.left: 4
+            border.right: 4
+            border.top: 4
+            border.bottom: 4
+        }
+
     }
 
     property Component panel: Item {

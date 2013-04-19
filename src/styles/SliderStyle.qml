@@ -64,6 +64,19 @@ Style {
             border.bottom: 6
             border.left: 6
             border.right: 6
+            BorderImage {
+                anchors.fill: parent
+                anchors.margins: -1
+                anchors.topMargin: -2
+                anchors.rightMargin: 0
+                anchors.bottomMargin: 1
+                source: "images/focusframe.png"
+                visible: control.activeFocus
+                border.left: 4
+                border.right: 4
+                border.top: 4
+                border.bottom: 4
+            }
         }
     }
 
@@ -106,5 +119,6 @@ Style {
             x: Math.round(leftMargin + control.value / control.maximumValue * (root.width - leftMargin - rightMargin - width/2))
             property Control control: __cref
         }
+
     }
 }
