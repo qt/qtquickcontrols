@@ -61,6 +61,20 @@ Style {
             border.bottom: 6
             border.left: 6
             border.right: 6
+            anchors.bottomMargin: -1
+            BorderImage {
+                anchors.fill: parent
+                anchors.margins: -1
+                anchors.topMargin: -2
+                anchors.rightMargin: 0
+                anchors.bottomMargin: 1
+                source: "images/focusframe.png"
+                visible: control.activeFocus
+                border.left: 4
+                border.right: 4
+                border.top: 4
+                border.bottom: 4
+            }
             Text {
                 id: textitem
                 anchors.centerIn: parent
@@ -73,20 +87,6 @@ Style {
                 anchors.right: parent.right
                 anchors.rightMargin: 8
                 opacity: 0.7
-            }
-            BorderImage {
-                property int margin: 0
-                anchors.fill: parent
-                anchors.margins: -1
-                anchors.topMargin: -2
-                anchors.rightMargin: 0
-                anchors.bottomMargin: 1
-                source: "images/focusframe.png"
-                visible: control.activeFocus
-                border.left: 4
-                border.right: 4
-                border.top: 4
-                border.bottom: 4
             }
         }
     }
