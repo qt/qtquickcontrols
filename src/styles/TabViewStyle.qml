@@ -107,6 +107,19 @@ Style {
                 border.right: 6
                 anchors.topMargin: control.tabPosition === Qt.TopEdge ? (tab.selected ? 0 : 1) : 0
             }
+            BorderImage {
+                anchors.fill: parent
+                anchors.topMargin: -2
+                anchors.leftMargin: -2
+                anchors.rightMargin: -1
+                source: "images/focusframe.png"
+                visible: tabbarItem.activeFocus && tab.selected
+                border.left: 4
+                border.right: 4
+                border.top: 4
+                border.bottom: 4
+            }
+
         }
         Text {
             id: textitem
