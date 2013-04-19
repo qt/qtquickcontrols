@@ -47,7 +47,7 @@ import QtQuick.Controls.Private 1.0
     \inqmlmodule QtQuick.Controls.Styles 1.0
 */
 Item {
-    implicitHeight: 42
+    implicitHeight: 22
     implicitWidth: 200
 
     Rectangle {
