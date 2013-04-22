@@ -111,8 +111,8 @@ ApplicationWindow {
         TextArea {
             id: t3
             text: "This fills the whole cell"
-            width: 200
-            height: 400
+            Layout.preferredWidth: 200
+            Layout.preferredHeight: 400
             Layout.fillHeight: true
             Layout.fillWidth: true
         }
