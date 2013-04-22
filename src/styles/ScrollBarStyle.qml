@@ -50,47 +50,90 @@ Rectangle {
     id: styleitem
 
     readonly property bool horizontal: control.orientation === Qt.Horizontal
+    property bool scrollToClickPosition: true
+    property int minimumHandleLength: 30
+    property int handleOverlap: 1
 
     implicitWidth: horizontal ? 200 : bg.implicitWidth
     implicitHeight: horizontal ? bg.implicitHeight : 200
 
-    property Component background: Rectangle {
+    property Component background: Item {
         implicitWidth: 16
         implicitHeight: 16
-        color: "gray"
+        clip: true
+        Rectangle {
+            anchors.fill: parent
+            color: "#ddd"
+            border.color: "#aaa"
+            anchors.rightMargin: horizontal ? -2 : -1
+            anchors.leftMargin: horizontal ? -2 : 0
+            anchors.topMargin: horizontal ? 0 : -2
+            anchors.bottomMargin: horizontal ? -1 : -2
+        }
     }
 
-    property Component handle: Rectangle {
+    property Component handle: Item {
         implicitWidth: 16
         implicitHeight: 16
-        color: "lightgray"
-        border.color: "#aaa"
+        Rectangle {
+            anchors.fill: parent
+            color: mouseOver ? "#ddd" : "lightgray"
+            border.color: "#aaa"
+            anchors.rightMargin: horizontal ? 0 : -1
+            anchors.bottomMargin: horizontal ? -1 : 0
+            Rectangle {
+                anchors.fill: parent
+                anchors.margins: 1
+                color: "transparent"
+                border.color: "#44ffffff"
+            }
+        }
     }
 
     property Component incrementControl: Rectangle {
         implicitWidth: 16
         implicitHeight: 16
-        gradient: Gradient {
-            GradientStop {color: control.downPressed ? "lightgray" : "white" ; position: 0}
-            GradientStop {color: control.downPressed ? "lightgray" : "lightgray" ; position: 1}
+        Rectangle {
+            anchors.fill: parent
+            anchors.bottomMargin: -1
+            anchors.rightMargin: -1
+            border.color: "#aaa"
+            Image {
+                source: "images/arrow-down.png"
+                rotation: horizontal ? -90 : 0
+                anchors.centerIn: parent
+                opacity: 0.7
+            }
+            gradient: Gradient {
+                GradientStop {color: control.downPressed ? "lightgray" : "white" ; position: 0}
+                GradientStop {color: control.downPressed ? "lightgray" : "lightgray" ; position: 1}
+            }
         }
-        border.color: "#aaa"
     }
 
     property Component decrementControl: Rectangle {
         implicitWidth: 16
         implicitHeight: 16
-        color: "lightgray"
-        gradient: Gradient {
-            GradientStop {color: control.upPressed ? "lightgray" : "white" ; position: 0}
-            GradientStop {color: control.upPressed ? "lightgray" : "lightgray" ; position: 1}
+        Rectangle {
+            anchors.fill: parent
+            anchors.topMargin: horizontal ? 0 : -1
+            anchors.leftMargin:  horizontal ? -1 : 0
+            anchors.bottomMargin: horizontal ? -1 : 0
+            anchors.rightMargin: horizontal ? 0 : -1
+            color: "lightgray"
+            Image {
+                source: "images/arrow-up.png"
+                rotation: horizontal ? -90 : 0
+                anchors.centerIn: parent
+                opacity: 0.7
+            }
+            gradient: Gradient {
+                GradientStop {color: control.upPressed ? "lightgray" : "white" ; position: 0}
+                GradientStop {color: control.upPressed ? "lightgray" : "lightgray" ; position: 1}
+            }
+            border.color: "#aaa"
         }
-        border.color: "#aaa"
     }
-
-    property bool scrollToClickPosition: true
-    property int minimumHandleLength: 30
-    property int handleOverlap: 1
 
     property string activeControl: ""
     function pixelMetric(arg) {
@@ -158,6 +201,7 @@ Rectangle {
         width: parent.width
         anchors.top: horizontal ? undefined : upControl.bottom
         anchors.bottom: horizontal ? undefined : downControl.top
+        anchors.bottomMargin: -1
         anchors.left:  horizontal ? upControl.right : undefined
         anchors.right: horizontal ? downControl.left : undefined
         sourceComponent: background
@@ -166,6 +210,7 @@ Rectangle {
     Loader {
         id: downControl
         anchors.bottom: horizontal ? undefined : parent.bottom
+        anchors.bottomMargin: -1
         anchors.right: horizontal ? parent.right : undefined
         sourceComponent: incrementControl
         property bool mouseOver: activeControl === "down"
@@ -175,14 +220,14 @@ Rectangle {
     Loader{
         id: handleControl
         property int totalextent: horizontal ? bg.width : bg.height
-        property int extent: Math.max(minimumHandleLength, 100 * totalextent / (control.maximumValue - control.minimumValue) + 2 * handleOverlap)
+        property int extent: Math.min (totalextent, Math.max(minimumHandleLength, 100 *  totalextent / (control.maximumValue - control.minimumValue)))
         property bool mouseOver: activeControl === "handle"
 
         height: horizontal ? implicitHeight : extent
         width: horizontal ? extent : implicitWidth
         anchors.top: bg.top
         anchors.left: bg.left
-        anchors.topMargin: horizontal ? 0 : -handleOverlap + (control.value / control.maximumValue) * (bg.height + 2 * handleOverlap- height)
+        anchors.topMargin: horizontal ? 0 : -1 -handleOverlap + (control.value / control.maximumValue) * (bg.height + 2 * handleOverlap- height)
         anchors.leftMargin: horizontal ? -handleOverlap + (control.value / control.maximumValue) * (bg.width + 2 * handleOverlap - width) : 0
         sourceComponent: handle
     }

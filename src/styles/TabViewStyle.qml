@@ -68,34 +68,59 @@ Style {
     /*! This property holds the amount of overlap there are between
       individual tab buttons. The default value is 0
     */
-    property int tabOverlap: 0
+    property int tabOverlap: 3
 
     property int tabvshift : 0
-    property int tabBaseOverlap: 0
+    property int tabBaseOverlap: 2
 
     property Component frame: Item {
         Rectangle {
             anchors.fill: parent
-            anchors.topMargin: -10
-            color: "lightgray"
-            border.color: "gray"
+            anchors.topMargin: -tabBaseOverlap
+            color: "#dcdcdc"
+            border.color: "#aaa"
+
+            Rectangle {
+                anchors.fill: parent
+                color: "transparent"
+                border.color: "#66ffffff"
+                anchors.margins: 1
+            }
         }
     }
 
     property Component tab: Item {
-        implicitWidth: textitem.implicitWidth + 20
-        implicitHeight: textitem.implicitHeight + 4
-
-        Rectangle {
+        scale: control.tabPosition === Qt.TopEdge ? 1 : -1
+        implicitWidth: Math.round(textitem.implicitWidth + 20)
+        implicitHeight: Math.round(textitem.implicitHeight + 10)
+        clip: true
+        Item {
             anchors.fill: parent
-            gradient: Gradient{
-                GradientStop { color: tab.selected ? "lightgray" : "white" ; position: 0}
-                GradientStop { color: tab.selected ? "lightgray" : "lightgray" ; position: 1}
+            anchors.bottomMargin: tab.selected ? 0 : 2
+            clip: true
+            BorderImage {
+                anchors.fill: parent
+                source: tab.selected ? "images/tab_selected.png" : "images/tab.png"
+                border.top: 6
+                border.bottom: 6
+                border.left: 6
+                border.right: 6
+                anchors.topMargin: control.tabPosition === Qt.TopEdge ? (tab.selected ? 0 : 1) : 0
             }
-            border.color: "#aaa"
+            BorderImage {
+                anchors.fill: parent
+                anchors.topMargin: -2
+                anchors.leftMargin: -2
+                anchors.rightMargin: -1
+                source: "images/focusframe.png"
+                visible: tabbarItem.activeFocus && tab.selected
+                border.left: 4
+                border.right: 4
+                border.top: 4
+                border.bottom: 4
+            }
 
         }
-
         Text {
             id: textitem
             anchors.centerIn: parent
@@ -103,5 +128,4 @@ Style {
             renderType: Text.NativeRendering
         }
     }
-
 }

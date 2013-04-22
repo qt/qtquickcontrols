@@ -41,7 +41,6 @@
 import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Private 1.0
-import "../Styles/Settings.js" as Settings
 
 /*!
         \qmltype ScrollBar
@@ -56,7 +55,7 @@ Item {
     property alias maximumValue: slider.maximumValue
     property alias value: slider.value
 
-    property Component style: Qt.createComponent("../" + Settings.THEME_PATH + "/ScrollBarStyle.qml", scrollbar)
+    property Component style: Qt.createComponent("../" + Settings.theme() + "/ScrollBarStyle.qml", scrollbar)
     property alias styleItem: loader.item
 
     activeFocusOnTab: false

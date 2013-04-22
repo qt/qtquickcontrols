@@ -67,12 +67,14 @@ import QtQuick.Controls.Private 1.0
 
 Item {
     id: statusbar
-    implicitHeight: 20
-    implicitWidth: parent ? parent.width : style.implicitWidth
     activeFocusOnTab: false
-    StyleItem {
-        id: style
+    Accessible.role: Accessible.StatusBar
+    implicitWidth: parent ? parent.width : loader.item ? loader.item.implicitHeight : 0
+    implicitHeight: loader.item ? loader.item.implicitHeight : 0
+    property Component style: Qt.createComponent(Settings.theme() + "/StatusBarStyle.qml", statusbar)
+    Loader {
+        id: loader
         anchors.fill: parent
-        elementType: "statusbar"
+        sourceComponent: style
     }
 }

@@ -3,7 +3,9 @@ CONFIG += plugin
 TARGET  = testplugin
 TARGETPATH = QtQuickControlsTests
 
-QT += qml quick widgets
+QT += qml quick
+qtHaveModule(widgets) { QT += widgets }
+
 
 QMLDIR = $$PWD/$$TARGETPATH/qmldir
 

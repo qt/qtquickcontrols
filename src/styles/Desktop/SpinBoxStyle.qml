@@ -81,6 +81,7 @@ Style {
                 anchors.margins: -1
             }
             FocusFrame {
+                anchors.fill: parent
                 focusMargin:-6
                 visible: spinbox.activeFocus && styleitem.styleHint("focuswidget")
             }

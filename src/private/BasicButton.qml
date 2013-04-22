@@ -115,6 +115,11 @@ Control {
     Accessible.role: Accessible.Button
     Accessible.description: tooltip
 
+    /*! \internal */
+    function accessiblePressAction() {
+        __action.trigger()
+    }
+
     Action { id: ownAction }
 
     Connections {
@@ -148,14 +153,14 @@ Control {
         enabled: !keyPressed
 
         onReleased: if (containsMouse) __action.trigger()
-        onExited: PrivateHelper.hideTooltip()
-        onCanceled: PrivateHelper.hideTooltip()
+        onExited: Tooltip.hideText()
+        onCanceled: Tooltip.hideText()
         onPressed: if (activeFocusOnPress) button.forceActiveFocus()
 
         Timer {
             interval: 1000
             running: behavior.containsMouse && !pressed && tooltip.length
-            onTriggered: PrivateHelper.showTooltip(behavior, Qt.point(behavior.mouseX, behavior.mouseY), tooltip)
+            onTriggered: Tooltip.showText(behavior, Qt.point(behavior.mouseX, behavior.mouseY), tooltip)
         }
     }
 

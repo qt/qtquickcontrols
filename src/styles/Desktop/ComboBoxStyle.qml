@@ -44,6 +44,12 @@ import QtQuick.Controls.Private 1.0
 Style {
     property Component panel: Item {
         property int popup: styleItem.styleHint("comboboxpopup")
+        property font font: itemstyle.font
+        StyleItem {
+            id: itemstyle
+            elementType: "comboboxitem"
+            visible: false
+        }
 
         implicitWidth: 115
         implicitHeight: styleItem.implicitHeight

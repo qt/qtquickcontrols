@@ -39,12 +39,11 @@
 **
 ****************************************************************************/
 
-#include "plugin_p.h"
-#include "qtaction_p.h"
-#include "qtexclusivegroup_p.h"
-#include "qtmenu_p.h"
-#include "qtmenubar_p.h"
-#include "qtstack_p.h"
+#include "qquickaction_p.h"
+#include "qquickexclusivegroup_p.h"
+#include "qquickmenu_p.h"
+#include "qquickmenubar_p.h"
+#include "qquickstack_p.h"
 
 #include <qimage.h>
 #include <qqml.h>
@@ -75,26 +74,38 @@ public:
     }
 };
 
-void StylePlugin::registerTypes(const char *uri)
+class QtQuickControlsPlugin : public QQmlExtensionPlugin
 {
-    qmlRegisterType<QtAction>(uri, 1, 0, "Action");
-    qmlRegisterType<QtExclusiveGroup>(uri, 1, 0, "ExclusiveGroup");
-    qmlRegisterType<QtMenu>(uri, 1, 0, "MenuPrivate");
-    qmlRegisterType<QtMenuBar>(uri, 1, 0, "MenuBarPrivate");
-    qmlRegisterType<QtMenuItem>(uri, 1, 0, "MenuItem");
-    qmlRegisterUncreatableType<QtMenuItemType>(uri, 1, 0, "MenuItemType",
-                                               QLatin1String("Do not create objects of type MenuItemType"));
-    qmlRegisterType<QtMenuSeparator>(uri, 1, 0, "MenuSeparator");
-    qmlRegisterUncreatableType<QtMenuBase>(uri, 1, 0, "MenuBase",
-                                           QLatin1String("Do not create objects of type MenuBase"));
+    Q_OBJECT
+    Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QQmlExtensionInterface/1.0")
 
-    qmlRegisterUncreatableType<QtStack>(uri, 1, 0, "Stack", QLatin1String("Do not create objects of type Stack"));
+public:
+    void registerTypes(const char *uri);
+    void initializeEngine(QQmlEngine *engine, const char *uri);
+};
+
+void QtQuickControlsPlugin::registerTypes(const char *uri)
+{
+    qmlRegisterType<QQuickAction>(uri, 1, 0, "Action");
+    qmlRegisterType<QQuickExclusiveGroup>(uri, 1, 0, "ExclusiveGroup");
+    qmlRegisterType<QQuickMenu>(uri, 1, 0, "MenuPrivate");
+    qmlRegisterType<QQuickMenuBar>(uri, 1, 0, "MenuBarPrivate");
+    qmlRegisterType<QQuickMenuItem>(uri, 1, 0, "MenuItem");
+    qmlRegisterUncreatableType<QQuickMenuItemType>(uri, 1, 0, "MenuItemType",
+                                                   QLatin1String("Do not create objects of type MenuItemType"));
+    qmlRegisterType<QQuickMenuSeparator>(uri, 1, 0, "MenuSeparator");
+    qmlRegisterUncreatableType<QQuickMenuBase>(uri, 1, 0, "MenuBase",
+                                               QLatin1String("Do not create objects of type MenuBase"));
+
+    qmlRegisterUncreatableType<QQuickStack>(uri, 1, 0, "Stack", QLatin1String("Do not create objects of type Stack"));
 }
 
-void StylePlugin::initializeEngine(QQmlEngine *engine, const char *uri)
+void QtQuickControlsPlugin::initializeEngine(QQmlEngine *engine, const char *uri)
 {
     Q_UNUSED(uri);
     engine->addImageProvider("desktoptheme", new DesktopIconProvider);
 }
 
 QT_END_NAMESPACE
+
+#include "plugin.moc"

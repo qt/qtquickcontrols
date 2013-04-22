@@ -50,11 +50,13 @@ TestCase {
 
     function test_createTabView() {
         var tabView = Qt.createQmlObject('import QtQuick.Controls 1.0; TabView {}', testCase, '');
+        tabView.destroy()
     }
 
     function test_repeater() {
         var tabView = Qt.createQmlObject('import QtQuick 2.1; import QtQuick.Controls 1.0; TabView { Repeater { model: 3; Tab { } } }', testCase, '');
         compare(tabView.count, 3)
+        tabView.destroy()
     }
 
     Component {
@@ -71,6 +73,7 @@ TestCase {
         verify(tabView.tabAt(2).item == undefined)
         tabView.currentIndex = 1
         verify(tabView.tabAt(2).item !== undefined)
+        tabView.destroy()
     }
 
 
@@ -113,6 +116,22 @@ TestCase {
         compare(tabView.tabAt(0).title, "title 1")
 
         tabView.removeTab(0)
+        compare(tabView.count, 0)
+        tabView.destroy()
+    }
+
+    function test_dynamicTabs() {
+        var tabView = Qt.createQmlObject('import QtQuick 2.1; import QtQuick.Controls 1.0; TabView { property Component tabComponent: Component { Tab { } } }', testCase, '');
+        compare(tabView.count, 0)
+        var tab1 = tabView.tabComponent.createObject(tabView)
+        compare(tabView.count, 1)
+        var tab2 = tabView.tabComponent.createObject(tabView)
+        compare(tabView.count, 2)
+        tab1.destroy()
+        wait(0)
+        compare(tabView.count, 1)
+        tab2.destroy()
+        wait(0)
         compare(tabView.count, 0)
     }
 }

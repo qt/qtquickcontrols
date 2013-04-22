@@ -3,7 +3,7 @@ TARGET = tst_controls
 
 IMPORTPATH = $$OUT_PWD/../testplugin
 
-QT += widgets
+qtHaveModule(widgets) { QT += widgets }
 
 CONFIG += qmltestcase console
 
@@ -22,7 +22,6 @@ OTHER_FILES += \
     $$PWD/data/tst_menu.qml \
     $$PWD/data/tst_textfield.qml \
     $$PWD/data/tst_textarea.qml \
-    $$PWD/data/tst_applicationwindow.qml \
     $$PWD/data/tst_combobox.qml \
     $$PWD/data/tst_progressbar.qml \
     $$PWD/data/tst_radiobutton.qml \
@@ -39,4 +38,5 @@ OTHER_FILES += \
     $$PWD/data/tst_toolbar.qml \
     $$PWD/data/tst_toolbutton.qml \
     $$PWD/data/tst_checkbox.qml \
-    $$PWD/data/tst_groupbox.qml
+    $$PWD/data/tst_groupbox.qml \
+    $$PWD/data/tst_splitview.qml

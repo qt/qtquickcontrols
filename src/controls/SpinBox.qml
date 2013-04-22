@@ -41,7 +41,6 @@
 import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Private 1.0
-import "Styles/Settings.js" as Settings
 
 /*!
     \qmltype SpinBox
@@ -131,7 +130,7 @@ Control {
     */
     property bool activeFocusOnPress: true
 
-    style: Qt.createComponent(Settings.THEME_PATH + "/SpinBoxStyle.qml", spinbox)
+    style: Qt.createComponent(Settings.theme() + "/SpinBoxStyle.qml", spinbox)
 
     /*! \internal */
     function __increment() {
@@ -233,6 +232,7 @@ Control {
         TextInput {
             id: input
             anchors.verticalCenter: parent.verticalCenter
+            focus: true
             activeFocusOnPress: spinbox.activeFocusOnPress
             function setValue(v) {
                 var newval = parseFloat(v)

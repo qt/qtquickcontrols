@@ -41,7 +41,7 @@
 import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Styles 1.0
-import "Styles/Settings.js" as Settings
+import QtQuick.Controls.Private 1.0
 
 /*!
     \qmltype Menu
@@ -105,14 +105,23 @@ MenuPrivate {
 
     /*! \internal
       \omit
-      See qtmenu.cpp.
+      Documented in qtmenu.cpp.
       \endomit
     */
     function addMenu(title) {
+        return root.insertMenu(items.length, title)
+    }
+
+    /*! \internal
+      \omit
+      Documented in qtmenu.cpp.
+      \endomit
+    */
+    function insertMenu(index, title) {
         if (!__selfComponent)
             __selfComponent = Qt.createComponent("Menu.qml", root)
         var submenu = __selfComponent.createObject(__selfComponent, { "title": title })
-        root.insertItem(items.length, submenu)
+        root.insertItem(index, submenu)
         return submenu
     }
 
@@ -120,7 +129,7 @@ MenuPrivate {
     property Component __selfComponent: null
 
     /*! \internal */
-    property Component style: Qt.createComponent(Settings.THEME_PATH + "/MenuStyle.qml", root)
+    property Component style: Qt.createComponent(Settings.theme() + "/MenuStyle.qml", root)
 
     /*! \internal */
     property var __menuBar: null

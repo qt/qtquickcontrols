@@ -50,5 +50,6 @@ TestCase {
 
     function test_createMenuBar() {
         var menuBar = Qt.createQmlObject('import QtQuick.Controls 1.0; MenuBar {}', testCase, '');
+        menuBar.destroy()
     }
 }

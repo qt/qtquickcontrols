@@ -41,7 +41,6 @@
 import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Private 1.0
-import "Styles/Settings.js" as Settings
 
 /*!
     \qmltype ProgressBar
@@ -97,7 +96,7 @@ Control {
     property int orientation: Qt.Horizontal
 
     /*! \internal */
-    style: Qt.createComponent(Settings.THEME_PATH + "/ProgressBarStyle.qml", progressbar)
+    style: Qt.createComponent(Settings.theme() + "/ProgressBarStyle.qml", progressbar)
 
     /*! \internal */
     property bool __initialized: false

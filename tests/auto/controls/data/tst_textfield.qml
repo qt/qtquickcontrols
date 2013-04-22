@@ -58,6 +58,7 @@ TestCase {
         compare(textfield.text, "")
         textfield.text = "hello world"
         compare(textfield.text, "hello world")
+        textfield.destroy()
     }
 
     function test_maximumLength() {
@@ -66,6 +67,7 @@ TestCase {
         textfield.text = "hello world"
         textfield.maximumLength = 5
         compare(textfield.text, "hello")
+        textfield.destroy()
     }
 
     function test_length() {
@@ -73,6 +75,7 @@ TestCase {
 
         textfield.text = "hello world"
         compare(textfield.length, 11)
+        textfield.destroy()
     }
 
 
@@ -85,6 +88,7 @@ TestCase {
         textfield.readOnly = true
         keyPress(Qt.Key_9)
         compare(textfield.text,"hello")
+        textfield.destroy()
     }
 
     function test_inputMask() {
@@ -123,6 +127,7 @@ TestCase {
         keyPress(Qt.Key_3)
         compare(textfield.acceptableInput, false)
         compare(textfield.text,"-93")
+        textfield.destroy()
     }
 
     function test_validator() {
@@ -136,6 +141,7 @@ TestCase {
 
         textfield.text = "bluee"
         compare(textfield.acceptableInput, false)
+        textfield.destroy()
     }
 
     function test_selectAll() {
@@ -147,6 +153,7 @@ TestCase {
 
         keyPress(Qt.Key_Delete)
         compare(textfield.text, "")
+        textfield.destroy()
     }
 
     function test_select() {
@@ -161,6 +168,7 @@ TestCase {
         compare(textfield.selectedText, "is ")
         keyPress(Qt.Key_Delete)
         compare(textfield.text, "this my text")
+        textfield.destroy()
     }
 
     function test_cursorPosition() {
@@ -176,6 +184,7 @@ TestCase {
         textfield.cursorPosition = 1
         keyPress(Qt.Key_A)
         compare(textfield.text, "may")
+        textfield.destroy()
     }
 
     function test_selectWord() {
@@ -188,6 +197,7 @@ TestCase {
         textfield.cursorPosition = 2
         textfield.selectWord();
         compare(textfield.selectedText, "this")
+        textfield.destroy()
     }
 
     function copy() {
@@ -195,6 +205,7 @@ TestCase {
         textfield.text = "this is my text"
         textfield.select(0, 5)
         textfield.copy()
+        textfield.destroy()
     }
 
     function test_getText() {
@@ -204,6 +215,7 @@ TestCase {
         textfield.text = "this is my text"
         var gettext = textfield.getText(0, 4)
         compare(gettext, "this")
+        textfield.destroy()
     }
 
     function test_insert() {
@@ -213,6 +225,7 @@ TestCase {
         textfield.text = "this is my text"
         textfield.insert(8, "not ")
         compare(textfield.text, "this is not my text")
+        textfield.destroy()
     }
 
     function test_deselect() {
@@ -223,6 +236,7 @@ TestCase {
         textfield.selectWord();
         textfield.deselect()
         compare(textfield.selectedText, "")
+        textfield.destroy()
     }
 
     function test_undo() {
@@ -234,6 +248,7 @@ TestCase {
         compare(textfield.canUndo, true)
         textfield.undo()
         compare(textfield.text, "this is my text")
+        textfield.destroy()
     }
 
     function test_redo() {
@@ -246,6 +261,7 @@ TestCase {
         compare(textfield.canRedo, true)
         textfield.redo()
         compare(textfield.text, "this is not my text")
+        textfield.destroy()
     }
 
     function test_activeFocusOnPress(){
@@ -258,6 +274,84 @@ TestCase {
         verify(!control.activeFocus)
         mouseClick(control, 30, 30)
         verify(control.activeFocus)
+        control.destroy()
+    }
+
+    function test_activeFocusOnTab() {
+        // Set TextField readonly so the tab/backtab can be tested toward the navigation
+        var test_control = 'import QtQuick 2.1; \
+        import QtQuick.Controls 1.0;            \
+        Item {                                  \
+            width: 200;                         \
+            height: 200;                        \
+            property alias control1: _control1; \
+            property alias control2: _control2; \
+            property alias control3: _control3; \
+            TextField  {                         \
+                y: 20;                          \
+                id: _control1;                  \
+                activeFocusOnTab: true;         \
+                text: "control1";               \
+                readOnly: true                  \
+            }                                   \
+            TextField  {                         \
+                y: 70;                          \
+                id: _control2;                  \
+                activeFocusOnTab: false;        \
+                text: "control2";               \
+                readOnly: true                  \
+            }                                   \
+            TextField  {                         \
+                y: 120;                         \
+                id: _control3;                  \
+                activeFocusOnTab: true;         \
+                text: "control3";               \
+                readOnly: true                  \
+            }                                   \
+        }                                       '
+
+        var control = Qt.createQmlObject(test_control, container, '')
+
+        control.control1.forceActiveFocus()
+        verify(control.control1.activeFocus)
+        verify(!control.control2.activeFocus)
+        verify(!control.control3.activeFocus)
+        keyPress(Qt.Key_Tab)
+        verify(!control.control1.activeFocus)
+        verify(!control.control2.activeFocus)
+        verify(control.control3.activeFocus)
+        keyPress(Qt.Key_Tab)
+        verify(control.control1.activeFocus)
+        verify(!control.control2.activeFocus)
+        verify(!control.control3.activeFocus)
+        keyPress(Qt.Key_Tab, Qt.ShiftModifier)
+        verify(!control.control1.activeFocus)
+        verify(!control.control2.activeFocus)
+        verify(control.control3.activeFocus)
+        keyPress(Qt.Key_Tab, Qt.ShiftModifier)
+        verify(control.control1.activeFocus)
+        verify(!control.control2.activeFocus)
+        verify(!control.control3.activeFocus)
+
+        control.control2.activeFocusOnTab = true
+        control.control3.activeFocusOnTab = false
+        keyPress(Qt.Key_Tab)
+        verify(!control.control1.activeFocus)
+        verify(control.control2.activeFocus)
+        verify(!control.control3.activeFocus)
+        keyPress(Qt.Key_Tab)
+        verify(control.control1.activeFocus)
+        verify(!control.control2.activeFocus)
+        verify(!control.control3.activeFocus)
+        keyPress(Qt.Key_Tab, Qt.ShiftModifier)
+        verify(!control.control1.activeFocus)
+        verify(control.control2.activeFocus)
+        verify(!control.control3.activeFocus)
+        keyPress(Qt.Key_Tab, Qt.ShiftModifier)
+        verify(control.control1.activeFocus)
+        verify(!control.control2.activeFocus)
+        verify(!control.control3.activeFocus)
+        control.destroy()
     }
 }
 }

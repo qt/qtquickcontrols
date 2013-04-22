@@ -56,7 +56,6 @@
 #include "qgridlayoutengine_p.h"
 #include "qquickitem.h"
 #include "qquicklayout_p.h"
-#include <QtWidgets/qsizepolicy.h>
 #include "qdebug.h"
 QT_BEGIN_NAMESPACE
 
@@ -72,45 +71,45 @@ QT_BEGIN_NAMESPACE
     3. If descent > minimum, set descent = minimum      (### verify if this is correct, it might
                                                         need some refinements to multiline texts)
 
-    If any values are "not set" (i.e. 0 or less), they will be left untouched, so that we
+    If any values are "not set" (i.e. negative), they will be left untouched, so that we
     know which values needs to be fetched from the implicit hints (not user hints).
   */
 static void normalizeHints(qreal &minimum, qreal &preferred, qreal &maximum, qreal &descent)
 {
-    if (minimum > 0 && maximum > 0 && minimum > maximum)
+    if (minimum >= 0 && maximum >= 0 && minimum > maximum)
         minimum = maximum;
 
-    if (preferred > 0) {
-        if (minimum > 0 && preferred < minimum) {
+    if (preferred >= 0) {
+        if (minimum >= 0 && preferred < minimum) {
             preferred = minimum;
-        } else if (maximum > 0 && preferred > maximum) {
+        } else if (maximum >= 0 && preferred > maximum) {
             preferred = maximum;
         }
     }
 
-    if (minimum > 0 && descent > minimum)
+    if (minimum >= 0 && descent > minimum)
         descent = minimum;
 }
 
 static void boundSize(QSizeF &result, const QSizeF &size)
 {
-    if (size.width() > 0 && size.width() < result.width())
+    if (size.width() >= 0 && size.width() < result.width())
         result.setWidth(size.width());
-    if (size.height() > 0 && size.height() < result.height())
+    if (size.height() >= 0 && size.height() < result.height())
         result.setHeight(size.height());
 }
 
 static void expandSize(QSizeF &result, const QSizeF &size)
 {
-    if (size.width() > 0 && size.width() > result.width())
+    if (size.width() >= 0 && size.width() > result.width())
         result.setWidth(size.width());
-    if (size.height() > 0 && size.height() > result.height())
+    if (size.height() >= 0 && size.height() > result.height())
         result.setHeight(size.height());
 }
 
 static inline void combineHints(qreal &current, qreal fallbackHint)
 {
-    if (current <= 0)
+    if (current < 0)
         current = fallbackHint;
 }
 
@@ -184,7 +183,7 @@ public:
       -----+--------------------------------+-------------------+-------
       MIN  | Layout.minimumWidth            |                   | 0
       PREF | Layout.preferredWidth          | implicitWidth     | width
-      MAX  | Layout.maximumWidth            |                   | 100000
+      MAX  | Layout.maximumWidth            |                   | 1000000000 (-1)
       -----+--------------------------------+-------------------+--------
   Fixed    | Layout.fillWidth               | Expanding if layout, Fixed if item |
 
@@ -196,12 +195,14 @@ public:
         // First, from implicitWidth/Height
         qreal &prefWidth = prefS.rwidth();
         qreal &prefHeight = prefS.rheight();
-        combineHints(prefWidth, m_item->implicitWidth());
-        combineHints(prefHeight, m_item->implicitHeight());
+        if (prefWidth < 0 && m_item->implicitWidth() > 0)
+            prefWidth = m_item->implicitWidth();
+        if (prefHeight < 0 &&  m_item->implicitHeight() > 0)
+            prefHeight =  m_item->implicitHeight();
 
         // If that fails, make an ultimate fallback to width/height
 
-        if (!info && (prefWidth <= 0 || prefHeight <= 0))
+        if (!info && (prefWidth < 0 || prefHeight < 0))
             info = static_cast<QQuickLayoutAttached *>(qmlAttachedPropertiesObject<QQuickLayout>(m_item));
 
         if (info) {
@@ -215,13 +216,12 @@ public:
                basically cause an invalidation of the layout, we have to disable that
                notification while we set the preferred width.
             */
-            //### Breaks with items that has Layout.preferredWidth: 0
             const bool was = info->setChangesNotificationEnabled(false);
-            if (prefWidth <= 0) {
+            if (prefWidth < 0) {
                 prefWidth = m_item->width();
                 info->setPreferredWidth(prefWidth);
             }
-            if (prefHeight <= 0) {
+            if (prefHeight < 0) {
                 prefHeight = m_item->height();
                 info->setPreferredHeight(prefHeight);
             }

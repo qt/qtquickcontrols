@@ -51,26 +51,45 @@ Style {
     id: style
 
     property int topMargin: 4
-    property int leftMargin: 8
-    property int rightMargin: 8
+    property int leftMargin: 6
+    property int rightMargin: 6
     property int bottomMargin: 4
 
     property color foregroundColor: "black"
     property color backgroundColor: "white"
-    property color selectionColor: "blue"
-    property color selectedTextColor: "white"
+    property color selectionColor: __syspal.highlight
+    property color selectedTextColor: __syspal.highlightedText
+
+    property SystemPalette __syspal: SystemPalette {
+        colorGroup: control.enabled ? SystemPalette.Active : SystemPalette.Disabled
+    }
 
     property font font
 
-    property Component background: Rectangle {
-        id: styleitem
-        border.color: Qt.darker(backgroundColor, 2)
-        gradient: Gradient {
-            GradientStop{color: Qt.darker(backgroundColor, 1.1) ; position: 0}
-            GradientStop{color: Qt.lighter(backgroundColor, 1.2) ; position: 1}
+    property Component background: Item {
+        implicitWidth: 100
+        implicitHeight: 25
+        BorderImage {
+            anchors.fill: parent
+            source: "images/editbox.png"
+            border.left: 4
+            border.right: 4
+            border.top: 4
+            border.bottom: 4
+            BorderImage {
+                anchors.fill: parent
+                anchors.margins: -1
+                anchors.topMargin: -2
+                anchors.rightMargin: 0
+                anchors.bottomMargin: 1
+                source: "images/focusframe.png"
+                visible: control.activeFocus
+                border.left: 4
+                border.right: 4
+                border.top: 4
+                border.bottom: 4
+            }
         }
-        radius: 3
-        antialiasing: true
     }
 
     property Component panel: Item {

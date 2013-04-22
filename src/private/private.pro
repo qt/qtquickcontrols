@@ -1,25 +1,21 @@
 TARGET  = privateplugin
 TARGETPATH = QtQuick/Controls/Private
 
-QT += qml quick widgets gui-private core-private
+QT += qml quick gui-private core-private
 
 HEADERS += \
-    $$PWD/qquickcomponentsprivate_p.h \
-    $$PWD/qprivateplugin_p.h\
-    $$PWD/qrangemodel_p.h \
-    $$PWD/qrangemodel_p_p.h \
-    $$PWD/qwheelarea_p.h \
-    $$PWD/qstyleitem_p.h
+    $$PWD/qquicktooltip_p.h \
+    $$PWD/qquickrangemodel_p.h \
+    $$PWD/qquickrangemodel_p_p.h \
+    $$PWD/qquickcontrolsettings_p.h \
+    $$PWD/qquickwheelarea_p.h
 
 SOURCES += \
-    $$PWD/qquickcomponentsprivate.cpp \
-    $$PWD/qprivateplugin.cpp\
-    $$PWD/qstyleitem.cpp \
-    $$PWD/qrangemodel.cpp\
-    $$PWD/qwheelarea.cpp
-
-OTHER_FILES += \
-    $$PWD/privateplugin.json
+    $$PWD/plugin.cpp \
+    $$PWD/qquicktooltip.cpp \
+    $$PWD/qquickrangemodel.cpp \
+    $$PWD/qquickcontrolsettings.cpp \
+    $$PWD/qquickwheelarea.cpp
 
 # private qml files
 QML_FILES += \
@@ -33,6 +29,13 @@ QML_FILES += \
     ScrollViewHelper.qml \
     ScrollBar.qml \
     FocusFrame.qml
+
+
+qtHaveModule(widgets) {
+    QT += widgets
+    HEADERS += $$PWD/qquickstyleitem_p.h
+    SOURCES += $$PWD/qquickstyleitem.cpp
+}
 
 mac {
     LIBS += -framework Carbon

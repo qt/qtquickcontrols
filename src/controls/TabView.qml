@@ -41,7 +41,6 @@
 import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Private 1.0
-import "Styles/Settings.js" as Settings
 
 /*!
     \qmltype TabView
@@ -85,7 +84,7 @@ FocusScope {
         Returns the newly added tab.
     */
     function addTab(title, component) {
-        var tab = tabcomp.createObject(this);
+        var tab = tabcomp.createObject(stack)
         tab.sourceComponent = component
         __tabs.push(tab)
         tab.parent = stack
@@ -98,7 +97,7 @@ FocusScope {
         Returns the newly added tab.
     */
     function insertTab(index, title, component) {
-        var tab = tabcomp.createObject(this);
+        var tab = tabcomp.createObject(stack)
         tab.sourceComponent = component
         tab.parent = stack
         tab.title = title
@@ -126,7 +125,7 @@ FocusScope {
     property var __tabs: new Array()
 
     /*! \internal */
-    property Component style: Qt.createComponent(Settings.THEME_PATH + "/TabViewStyle.qml", root)
+    property Component style: Qt.createComponent(Settings.theme() + "/TabViewStyle.qml", root)
 
     /*! \internal */
     property var __styleItem: loader.item
@@ -189,13 +188,37 @@ FocusScope {
 
             Component.onCompleted: {
                 for (var i = 0 ; i < stack.children.length ; ++i) {
-                    if (stack.children[i].Accessible.role === Accessible.PageTab)
+                    if (stack.children[i].Accessible.role === Accessible.LayeredPane)
                         __tabs.push(stack.children[i])
                 }
                 __setOpacities()
             }
+
+            function onDynamicTabDestroyed() {
+                for (var i = 0; i < stack.children.length; ++i) {
+                    if (this === stack.children[i]) {
+                        root.removeTab(i)
+                        break
+                    }
+                }
+            }
         }
         onLoaded: { item.z = -1 }
+    }
+
+    onChildrenChanged: {
+        var tabAdded = false
+        for (var i = 0; i < children.length; ++i) {
+            var child = children[i]
+            if (child.Accessible.role === Accessible.LayeredPane) {
+                __tabs.push(child)
+                child.parent = stack
+                child.Component.onDestruction.connect(stack.onDynamicTabDestroyed.bind(child))
+                tabAdded = true
+            }
+        }
+        if (tabAdded)
+            __setOpacities()
     }
 
     states: [

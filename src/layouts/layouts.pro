@@ -5,7 +5,7 @@ IMPORT_VERSION = 2.1
 
 QT *= qml-private quick-private v8-private gui-private core-private
 
-#QMAKE_DOCS = $$PWD/doc/qtquicklayouts.qdocconf
+QMAKE_DOCS = $$PWD/doc/qtquicklayouts.qdocconf
 
 SOURCES += plugin.cpp \
     qlayoutpolicy.cpp \
@@ -19,8 +19,5 @@ HEADERS += \
     qquickgridlayoutengine_p.h \
     qquicklayout_p.h \
     qquicklinearlayout_p.h
-
-OTHER_FILES += \
-$$PWD/plugin.json
 
 load(qml_plugin)

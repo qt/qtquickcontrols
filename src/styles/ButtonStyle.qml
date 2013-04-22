@@ -64,18 +64,31 @@ Style {
         }
     }
 
-    property Component background: Rectangle {
-        implicitWidth: 80
-        implicitHeight: 21
-        gradient: Gradient {
-            GradientStop {color: control.pressed ? Qt.lighter(buttonstyle.backgroundColor, 1.1) :
-                                                   Qt.lighter(buttonstyle.backgroundColor, 1.8)  ; position: 0}
-            GradientStop {color: control.pressed ? Qt.lighter(buttonstyle.backgroundColor, 1.1) :
-                                                   buttonstyle.backgroundColor ; position: 1.4}
+    property Component background: Item {
+        implicitWidth: 100
+        implicitHeight: 25
+        BorderImage {
+            anchors.fill: parent
+            source: control.pressed ? "images/button_down.png" : "images/button.png"
+            border.top: 6
+            border.bottom: 6
+            border.left: 6
+            border.right: 6
+            anchors.bottomMargin: -1
+            BorderImage {
+                anchors.fill: parent
+                anchors.margins: -1
+                anchors.topMargin: -2
+                anchors.rightMargin: 0
+                anchors.bottomMargin: 1
+                source: "images/focusframe.png"
+                visible: control.activeFocus
+                border.left: 4
+                border.right: 4
+                border.top: 4
+                border.bottom: 4
+            }
         }
-        border.color: Qt.darker(buttonstyle.backgroundColor, 1.4)
-        radius: 3
-        antialiasing: true
     }
 
     property Component panel: Item {

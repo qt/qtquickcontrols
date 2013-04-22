@@ -46,23 +46,19 @@ import QtQuick.Controls 1.0
     \inqmlmodule QtQuick.Controls.Styles 1.0
 */
 Item {
-
-    property int __overlap : 1
-    property string position: "Top"
-    property string tabBarAlignment: "Center"
-    property int tabOverlap: 1
-    property int tabBaseOverlap: 1
-    property int tabHSpace: 0
-    property int tabVSpace: 0
-
-    property Component tab: Rectangle {
-        id: styleitem
-        implicitWidth: 200
-        implicitHeight: 40
+    implicitHeight: 42
+    implicitWidth: 200
+    Rectangle {
+        anchors.fill: parent
         gradient: Gradient{
-            GradientStop{color: "lightgray" ; position: 0}
-            GradientStop{color:  "lightgray" ; position: 1}
+            GradientStop{color: "#eee" ; position: 0}
+            GradientStop{color: "#ccc" ; position: 1}
         }
-        border.color: "#aaa"
+        Rectangle {
+            anchors.bottom: parent.bottom
+            width: parent.width
+            height: 1
+            color: "#999"
+        }
     }
 }

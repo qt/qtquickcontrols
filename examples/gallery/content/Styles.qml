@@ -97,12 +97,15 @@ Item {
         Row {
             spacing: 8
             SpinBox {
+                width: 100
                 style: SpinBoxStyle { backgroundColor: colorDialog.color }
             }
             SpinBox {
+                width: 100
                 style: SpinBoxStyle { backgroundColor: "#eee" }
             }
             SpinBox {
+                width: 100
                 style: spinboxStyle
             }
         }
@@ -160,6 +163,11 @@ Item {
             RadioButton {
                 style: RadioButtonStyle{}
                 text: "RadioButton"
+            }
+
+            ComboBox {
+                model: ["Paris", "Oslo", "New York"]
+                style: ComboBoxStyle{}
             }
         }
 

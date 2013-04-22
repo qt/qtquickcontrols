@@ -729,8 +729,8 @@ Item {
                             color: "green"
                             width: 20
                             height: 20
-                            Layout.horizontalSizePolicy: Layout.Expanding
-                            Layout.verticalSizePolicy: Layout.Expanding
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
                         }
                         Rectangle {
                             color: "green"
@@ -740,8 +740,8 @@ Item {
                             Layout.column: 1
                             Layout.rowSpan: 2
                             Layout.columnSpan: 2
-                            Layout.horizontalSizePolicy: Layout.Expanding
-                            Layout.verticalSizePolicy: Layout.Expanding
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
                         }
                         Rectangle {
                             color: "green"
@@ -749,16 +749,16 @@ Item {
                             height: 20
                             Layout.row: 0
                             Layout.column: 1
-                            Layout.horizontalSizePolicy: Layout.Expanding
-                            Layout.verticalSizePolicy: Layout.Expanding
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
                         }
                         Rectangle {
                             color: "green"
                             width: 20
                             height: 20
                             Layout.rowSpan: 2
-                            Layout.horizontalSizePolicy: Layout.Expanding
-                            Layout.verticalSizePolicy: Layout.Expanding
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
                         }
                         Repeater {
                             model: 10
@@ -766,8 +766,8 @@ Item {
                                 color: Qt.rgba(1, 0, 0, 1 - (index/10.0))
                                 width: 20
                                 height: 20
-                                Layout.horizontalSizePolicy: Layout.Expanding
-                                Layout.verticalSizePolicy: Layout.Expanding
+                                Layout.fillWidth: true
+                                Layout.fillHeight: true
                                 Text { text: index }
                             }
                         }
@@ -776,8 +776,8 @@ Item {
                             width: 20
                             Layout.columnSpan:2
                             height: 20
-                            Layout.horizontalSizePolicy: Layout.Expanding
-                            Layout.verticalSizePolicy: Layout.Expanding
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
                         }
                     }
                 }

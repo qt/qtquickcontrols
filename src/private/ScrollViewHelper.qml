@@ -99,16 +99,15 @@ Item {
         }
     }
 
-    StyleItem {
-        // This is the filled corner between scrollbars
+    Loader {
         id: cornerFill
-        elementType: "scrollareacorner"
-        width: visible ? vscrollbar.width : 0
+        sourceComponent: __style.corner
         anchors.right: parent.right
-        height: visible ? hscrollbar.height : 0
         anchors.bottom: parent.bottom
         anchors.bottomMargin: frameMargin
         anchors.rightMargin: frameMargin
+        width: visible ? vscrollbar.width : 0
+        height: visible ? hscrollbar.height : 0
         visible: hscrollbar.visible && !hscrollbar.isTransient && vscrollbar.visible && !vscrollbar.isTransient
     }
 

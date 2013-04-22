@@ -59,6 +59,7 @@ Item {
 
             slider.orientation = Qt.Vertical;
             verify(slider.height > slider.width)
+            slider.destroy()
         }
 
         function test_minimumvalue() {
@@ -69,6 +70,7 @@ Item {
             slider.value = 2
             compare(slider.minimumValue, 5)
             compare(slider.value, 5)
+            slider.destroy()
         }
 
         function test_maximumvalue() {
@@ -79,6 +81,7 @@ Item {
             slider.value = 15
             compare(slider.maximumValue, 10)
             compare(slider.value, 10)
+            slider.destroy()
         }
 
         function test_rightLeftKeyPressed() {
@@ -94,6 +97,7 @@ Item {
             compare(slider.value, 1 + keyStep * 2)
             keyPress(Qt.Key_Left)
             compare(slider.value, 1 + keyStep)
+            slider.destroy()
         }
 
         function test_mouseWheel() {
@@ -136,7 +140,7 @@ Item {
             slider.value = 0
             mouseWheel(slider, 5, 5, 40 * ratio, 0)
             compare(slider.value, slider.maximumValue)
-
+            slider.destroy()
         }
 
         function test_activeFocusOnPress(){
@@ -149,6 +153,76 @@ Item {
             verify(!control.activeFocus)
             mousePress(control, 30, 30)
             verify(control.activeFocus)
+            control.destroy()
+        }
+
+        function test_activeFocusOnTab() {
+            var test_control = 'import QtQuick 2.1; \
+            import QtQuick.Controls 1.0;            \
+            Item {                                  \
+                width: 200;                         \
+                height: 200;                        \
+                property alias control1: _control1; \
+                property alias control2: _control2; \
+                property alias control3: _control3; \
+                Slider  {                           \
+                    y: 20;                          \
+                    id: _control1;                  \
+                    activeFocusOnTab: true;         \
+                }                                   \
+                Slider  {                           \
+                    y: 70;                          \
+                    id: _control2;                  \
+                    activeFocusOnTab: false;        \
+                }                                   \
+                Slider  {                           \
+                    y: 120;                         \
+                    id: _control3;                  \
+                    activeFocusOnTab: true;         \
+                }                                   \
+            }                                       '
+
+            var control = Qt.createQmlObject(test_control, container, '')
+            control.control1.forceActiveFocus()
+            verify(control.control1.activeFocus)
+            verify(!control.control2.activeFocus)
+            verify(!control.control3.activeFocus)
+            keyPress(Qt.Key_Tab)
+            verify(!control.control1.activeFocus)
+            verify(!control.control2.activeFocus)
+            verify(control.control3.activeFocus)
+            keyPress(Qt.Key_Tab)
+            verify(control.control1.activeFocus)
+            verify(!control.control2.activeFocus)
+            verify(!control.control3.activeFocus)
+            keyPress(Qt.Key_Tab, Qt.ShiftModifier)
+            verify(!control.control1.activeFocus)
+            verify(!control.control2.activeFocus)
+            verify(control.control3.activeFocus)
+            keyPress(Qt.Key_Tab, Qt.ShiftModifier)
+            verify(control.control1.activeFocus)
+            verify(!control.control2.activeFocus)
+            verify(!control.control3.activeFocus)
+
+            control.control2.activeFocusOnTab = true
+            control.control3.activeFocusOnTab = false
+            keyPress(Qt.Key_Tab)
+            verify(!control.control1.activeFocus)
+            verify(control.control2.activeFocus)
+            verify(!control.control3.activeFocus)
+            keyPress(Qt.Key_Tab)
+            verify(control.control1.activeFocus)
+            verify(!control.control2.activeFocus)
+            verify(!control.control3.activeFocus)
+            keyPress(Qt.Key_Tab, Qt.ShiftModifier)
+            verify(!control.control1.activeFocus)
+            verify(control.control2.activeFocus)
+            verify(!control.control3.activeFocus)
+            keyPress(Qt.Key_Tab, Qt.ShiftModifier)
+            verify(control.control1.activeFocus)
+            verify(!control.control2.activeFocus)
+            verify(!control.control3.activeFocus)
+            control.destroy()
         }
     }
 }

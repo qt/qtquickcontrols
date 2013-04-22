@@ -81,8 +81,6 @@ public:
 protected:
     bool event(QEvent *e);
     virtual void rearrange(const QSizeF &);
-    void setupItemLayout(QQuickItem *item);
-
 
     enum Orientation {
         Vertical = 0,
@@ -120,6 +118,7 @@ class QQuickLayoutAttached : public QObject
     Q_PROPERTY(int column READ column WRITE setColumn)
     Q_PROPERTY(int rowSpan READ rowSpan WRITE setRowSpan)
     Q_PROPERTY(int columnSpan READ columnSpan WRITE setColumnSpan)
+    Q_PROPERTY(Qt::Alignment alignment READ alignment WRITE setAlignment)
 
 public:
     QQuickLayoutAttached(QObject *object);
@@ -162,6 +161,9 @@ public:
     int columnSpan() const { return m_columnSpan; }
     void setColumnSpan(int span) { m_columnSpan = span; }
 
+    Qt::Alignment alignment() const { return m_alignment; }
+    void setAlignment (Qt::Alignment align) { m_alignment = align; }
+
     bool setChangesNotificationEnabled(bool enabled)
     {
         const bool old = m_changesNotificationEnabled;
@@ -201,7 +203,9 @@ private:
     unsigned m_fillHeight : 1;
     unsigned m_isFillWidthSet : 1;
     unsigned m_isFillHeightSet : 1;
+
     unsigned m_changesNotificationEnabled : 1;
+    Qt::Alignment m_alignment;
     friend class QQuickLayout;
 };
 

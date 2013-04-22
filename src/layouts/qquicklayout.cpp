@@ -44,16 +44,42 @@
 #include <QtCore/qcoreapplication.h>
 #include <QtCore/qnumeric.h>
 
+/*!
+    \qmltype Layout
+    \instantiates QQuickLayoutAttached
+    \inqmlmodule QtQuick.Layouts 1.0
+    \ingroup layouts
+    \brief Provides attached properties for items pushed onto a \l GridLayout,
+    \l RowLayout or \l ColumnLayout.
+
+    An object of type Layout is attached to children of the layout to provide layout specific
+    information about the item.
+    The properties of the attached object influences how the layout will arrange the items.
+
+    For instance, you can specify \l minimumWidth, \l preferredWidth, and
+    \l maximumWidth if the default values are not satisfactory.
+
+    \l fillWidth and \l fillHeight allows you to specify whether an item should
+    fill the cell(s) it occupies. This allows it to stretch between \l minimumWidth
+    and \l maximumWidth (or \l minimumHeight and \l maximumHeight if \l fillHeight is \c true).
+
+    If \l fillWidth or \l fillHeight is \c false, the items' size will be fixed to its preferred size.
+
+    \sa GridLayout
+    \sa RowLayout
+    \sa ColumnLayout
+*/
+
 QT_BEGIN_NAMESPACE
 
 QQuickLayoutAttached::QQuickLayoutAttached(QObject *parent)
     : QObject(parent),
       m_minimumWidth(0),
       m_minimumHeight(0),
-      m_preferredWidth(0),
-      m_preferredHeight(0),
-      m_maximumWidth(q_declarativeLayoutMaxSize),
-      m_maximumHeight(q_declarativeLayoutMaxSize),
+      m_preferredWidth(-1),
+      m_preferredHeight(-1),
+      m_maximumWidth(-1),
+      m_maximumHeight(-1),
       m_row(-1),
       m_column(-1),
       m_rowSpan(1),
@@ -62,11 +88,21 @@ QQuickLayoutAttached::QQuickLayoutAttached(QObject *parent)
       m_fillHeight(false),
       m_isFillWidthSet(false),
       m_isFillHeightSet(false),
-      m_changesNotificationEnabled(true)
+      m_changesNotificationEnabled(true),
+      m_alignment(0)
 {
 
 }
 
+/*!
+    \qmlproperty real Layout::minimumWidth
+
+    This property holds the minimum width of an item in a layout.
+    The default is \c 0.
+
+    \sa preferredWidth
+    \sa maximumWidth
+*/
 void QQuickLayoutAttached::setMinimumWidth(qreal width)
 {
     if (qIsNaN(width) || m_minimumWidth == width)
@@ -77,6 +113,15 @@ void QQuickLayoutAttached::setMinimumWidth(qreal width)
     emit minimumWidthChanged();
 }
 
+/*!
+    \qmlproperty real Layout::minimumHeight
+
+    This property holds the minimum height of an item in a layout.
+    The default is \c 0.
+
+    \sa preferredHeight
+    \sa maximumHeight
+*/
 void QQuickLayoutAttached::setMinimumHeight(qreal height)
 {
     if (qIsNaN(height) || m_minimumHeight == height)
@@ -87,6 +132,17 @@ void QQuickLayoutAttached::setMinimumHeight(qreal height)
     emit minimumHeightChanged();
 }
 
+/*!
+    \qmlproperty real Layout::preferredWidth
+
+    This property holds the preferred width of an item in a layout.
+    If the preferred width is -1 it will be ignored, and the layout
+    will use {Item::implicitWidth}{implicitWidth} instead.
+    The default is \c -1.
+
+    \sa minimumWidth
+    \sa maximumWidth
+*/
 void QQuickLayoutAttached::setPreferredWidth(qreal width)
 {
     if (qIsNaN(width) || m_preferredWidth == width)
@@ -98,6 +154,17 @@ void QQuickLayoutAttached::setPreferredWidth(qreal width)
     emit preferredWidthChanged();
 }
 
+/*!
+    \qmlproperty real Layout::preferredHeight
+
+    This property holds the preferred height of an item in a layout.
+    If the preferred height is -1 it will be ignored, and the layout
+    will use {Item::implicitHeight}{implicitHeight} instead.
+    The default is \c -1.
+
+    \sa minimumHeight
+    \sa maximumHeight
+*/
 void QQuickLayoutAttached::setPreferredHeight(qreal height)
 {
     if (qIsNaN(height) || m_preferredHeight == height)
@@ -109,6 +176,18 @@ void QQuickLayoutAttached::setPreferredHeight(qreal height)
     emit preferredHeightChanged();
 }
 
+/*!
+    \qmlproperty real Layout::maximumWidth
+
+    This property holds the maximum width of an item in a layout.
+    The default is \c -1, which means it there is no limit on the maxiumum width.
+
+    \note There is actually a limit on the maximum width, but it's set to such a
+    large number that the arrangement is virtually the same as if it didn't have a limit.
+
+    \sa minimumWidth
+    \sa preferredWidth
+*/
 void QQuickLayoutAttached::setMaximumWidth(qreal width)
 {
     if (qIsNaN(width) || m_maximumWidth == width)
@@ -119,6 +198,18 @@ void QQuickLayoutAttached::setMaximumWidth(qreal width)
     emit maximumWidthChanged();
 }
 
+/*!
+    \qmlproperty real Layout::maximumHeight
+
+    This property holds the maximum height of an item in a layout.
+    The default is \c -1, which means it there is no limit on the maxiumum height.
+
+    \note There is actually a limit on the maximum height, but it's set to such a
+    large number that the arrangement is virtually the same as if it didn't have a limit.
+
+    \sa minimumHeight
+    \sa preferredHeight
+*/
 void QQuickLayoutAttached::setMaximumHeight(qreal height)
 {
     if (qIsNaN(height) || m_maximumHeight == height)
@@ -129,6 +220,16 @@ void QQuickLayoutAttached::setMaximumHeight(qreal height)
     emit maximumHeightChanged();
 }
 
+/*!
+    \qmlproperty bool Layout::fillWidth
+
+    If this property is \c true, the item will be as wide as possible while respecting
+    the given constraints. If the property is \c false, the item will have a fixed width
+    set to the preferred width.
+    The default is \c false, except for layouts themselves which defaults to \c true.
+
+    \sa fillHeight
+*/
 void QQuickLayoutAttached::setFillWidth(bool fill)
 {
     m_isFillWidthSet = true;
@@ -139,6 +240,16 @@ void QQuickLayoutAttached::setFillWidth(bool fill)
     }
 }
 
+/*!
+    \qmlproperty bool Layout::fillHeight
+
+    If this property is \c true, the item will be as tall as possible while respecting
+    the given constraints. If the property is \c false, the item will have a fixed height
+    set to the preferred height.
+    The default is \c false, except for layouts themselves which defaults to \c true.
+
+    \sa fillWidth
+*/
 void QQuickLayoutAttached::setFillHeight(bool fill)
 {
     m_isFillHeightSet = true;
@@ -149,17 +260,74 @@ void QQuickLayoutAttached::setFillHeight(bool fill)
     }
 }
 
+/*!
+    \qmlproperty int Layout::row
+
+    This property allows you to specify the row position of an item in a \l GridLayout.
+
+    If both \l column and this property are not set, it is up to the layout to assign a cell to the item.
+
+    The default value is \c 0.
+
+    \sa column
+    \sa rowSpan
+*/
 void QQuickLayoutAttached::setRow(int row)
 {
     if (row >= 0 && row != m_row)
         m_row = row;
 }
 
+/*!
+    \qmlproperty int Layout::column
+
+    This property allows you to specify the column position of an item in a \l GridLayout.
+
+    If both \l row and this property are not set, it is up to the layout to assign a cell to the item.
+
+    The default value is \c 0.
+
+    \sa row
+    \sa columnSpan
+*/
 void QQuickLayoutAttached::setColumn(int column)
 {
     if (column >= 0 && column != m_column)
         m_column = column;
 }
+
+
+/*!
+    \qmlproperty Qt.Alignment Layout::alignment
+
+    This property allows you to specify the alignment of an item within the cell(s) it occupies.
+
+    The default value is \c 0, which means it will be \c{Qt.AlignVCenter | Qt.AlignLeft}
+*/
+
+
+/*!
+    \qmlproperty int Layout::rowSpan
+
+    This property allows you to specify the row span of an item in a \l GridLayout.
+
+    The default value is \c 1.
+
+    \sa columnSpan
+    \sa row
+*/
+
+
+/*!
+    \qmlproperty int Layout::columnSpan
+
+    This property allows you to specify the column span of an item in a \l GridLayout.
+
+    The default value is \c 1.
+
+    \sa rowSpan
+    \sa column
+*/
 
 void QQuickLayoutAttached::invalidateItem()
 {
@@ -196,12 +364,6 @@ QQuickLayout::QQuickLayout(QQuickLayoutPrivate &dd, QQuickItem *parent)
 QQuickLayout::~QQuickLayout()
 {
 
-}
-
-void QQuickLayout::setupItemLayout(QQuickItem *item)
-{
-    //### not needed anymore, since these are deducted from hierarcy?
-    qmlAttachedPropertiesObject<QQuickLayout>(item);
 }
 
 QQuickLayoutAttached *QQuickLayout::qmlAttachedProperties(QObject *object)

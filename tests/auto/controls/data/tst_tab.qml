@@ -50,6 +50,7 @@ TestCase {
 
     function test_createTab() {
         var tab = Qt.createQmlObject('import QtQuick.Controls 1.0; Tab {}', testCase, '');
+        tab.destroy()
     }
 }
 

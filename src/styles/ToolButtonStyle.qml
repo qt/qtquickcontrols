@@ -45,18 +45,44 @@ import QtQuick.Controls 1.0
     \internal
     \inqmlmodule QtQuick.Controls.Styles 1.0
 */
-Rectangle {
-    id: styleitem
-    implicitWidth: 32
-    implicitHeight: 32
-    gradient: Gradient{
-        GradientStop{color: control.pressed ? "lightgray" : "white" ; position: 0}
-        GradientStop{color: control.pressed ? "lightgray" : "lightgray" ; position: 1}
-    }
-    radius:4
-    border.color: "#aaa"
-    Text {
-        anchors.centerIn: parent
-        text: control.text
+Style {
+    property Component panel: Item {
+        id: styleitem
+        implicitWidth: 36
+        implicitHeight: 36
+
+        Rectangle {
+            anchors.fill: parent
+            visible: control.pressed
+            gradient: Gradient{
+                GradientStop{color: control.pressed ? "lightgray" : "white" ; position: 0}
+                GradientStop{color: control.pressed ? "lightgray" : "lightgray" ; position: 1}
+            }
+            radius:4
+            border.color: "#aaa"
+        }
+        Text {
+            id: label
+            visible: icon.status != Image.Ready
+            anchors.centerIn: parent
+            text: control.text
+        }
+        Image {
+            id: icon
+            anchors.centerIn: parent
+            source: control.iconSource
+        }
+        BorderImage {
+            anchors.fill: parent
+            anchors.margins: -1
+            anchors.topMargin: -2
+            anchors.rightMargin: 0
+            source: "images/focusframe.png"
+            visible: control.activeFocus
+            border.left: 4
+            border.right: 4
+            border.top: 4
+            border.bottom: 4
+        }
     }
 }

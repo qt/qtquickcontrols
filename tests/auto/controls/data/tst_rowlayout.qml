@@ -40,6 +40,7 @@
 
 import QtQuick 2.1
 import QtTest 1.0
+import QtQuick.Layouts 1.0
 
 Item {
     id: container
@@ -51,6 +52,11 @@ Item {
         when: windowShown
         width: 200
         height: 200
+
+        function itemRect(item)
+        {
+            return [item.x, item.y, item.width, item.height];
+        }
 
         function test_fixedAndExpanding() {
             var test_layoutStr =
@@ -87,6 +93,7 @@ Item {
             compare(lay.r1.width, 5);
             compare(lay.r2.x, 5);
             compare(lay.r2.width, 25);
+            lay.destroy()
         }
 
         function test_allExpanding() {
@@ -122,6 +129,7 @@ Item {
             tmp.width = 30
             compare(tmp.r1.width, 10);
             compare(tmp.r2.width, 20);
+            tmp.destroy()
         }
 
         function test_initialNestedLayouts() {
@@ -159,6 +167,7 @@ Item {
             tryCompare(col.row, 'width', 200);
             tryCompare(col.row.r1, 'width', 50);
             tryCompare(col.row.r2, 'width', 150);
+            col.destroy()
         }
 
         function test_implicitSize() {
@@ -191,6 +200,7 @@ Item {
             var row = Qt.createQmlObject(test_layoutStr, container, '');
             compare(row.implicitWidth, 50 + 10 + 40);
             compare(row.implicitHeight, 6);
+            row.destroy()
         }
 
         function test_countGeometryChanges() {
@@ -238,6 +248,112 @@ Item {
             compare(col.row.r1.counter, 1);
             compare(col.row.r2.counter, 1);
             verify(col.row.counter <= 2);
+            col.destroy()
+        }
+
+        Component {
+            id: layout_alignment_Component
+            RowLayout {
+                spacing: 0
+                Rectangle {
+                    color: "red"
+                    Layout.preferredWidth: 20
+                    Layout.preferredHeight: 20
+                    Layout.fillHeight: true
+                }
+                Rectangle {
+                    color: "red"
+                    Layout.preferredWidth: 20
+                    Layout.preferredHeight: 20
+                    // use default alignment
+                }
+                Rectangle {
+                    color: "red"
+                    Layout.preferredWidth: 20
+                    Layout.preferredHeight: 20
+                    Layout.alignment: Qt.AlignTop
+                }
+                Rectangle {
+                    color: "red"
+                    Layout.preferredWidth: 20
+                    Layout.preferredHeight: 20
+                    Layout.alignment: Qt.AlignVCenter
+                }
+                Rectangle {
+                    color: "red"
+                    Layout.preferredWidth: 20
+                    Layout.preferredHeight: 20
+                    Layout.alignment: Qt.AlignBottom
+                }
+            }
+        }
+
+        function test_alignment()
+        {
+            var layout = layout_alignment_Component.createObject(container);
+            layout.width = 100;
+            layout.height = 40;
+
+            compare(itemRect(layout.children[0]), [ 0,  0, 20, 40]);
+            compare(itemRect(layout.children[1]), [20, 10, 20, 20]);
+            compare(itemRect(layout.children[2]), [40,  0, 20, 20]);
+            compare(itemRect(layout.children[3]), [60, 10, 20, 20]);
+            compare(itemRect(layout.children[4]), [80, 20, 20, 20]);
+            layout.destroy();
+        }
+
+        Component {
+            id: layout_sizeHintNormalization_Component
+            GridLayout {
+                columnSpacing: 0
+                rowSpacing: 0
+                Rectangle {
+                    id: r1
+                    color: "red"
+                    Layout.minimumWidth: 1
+                    Layout.preferredWidth: 2
+                    Layout.maximumWidth: 3
+
+                    Layout.minimumHeight: 20
+                    Layout.preferredHeight: 20
+                    Layout.maximumHeight: 20
+                    Layout.fillWidth: true
+                }
+            }
+        }
+
+        function test_sizeHintNormalization_data() {
+            return [
+                    { tag: "fallbackValues",  widthHints: [-1, -1, -1], expected:[0,42,1000000000], implicitWidth: 42},
+                    { tag: "acceptZeroWidths",  widthHints: [0, 0, 0], expected:[0,0,0], implicitWidth: 42},
+                    { tag: "123",  widthHints: [1,2,3],  expected:[1,2,3]},
+                    { tag: "132",  widthHints: [1,3,2],  expected:[1,2,2]},
+                    { tag: "213",  widthHints: [2,1,3],  expected:[2,2,3]},
+                    { tag: "231",  widthHints: [2,3,1],  expected:[1,1,1]},
+                    { tag: "321",  widthHints: [3,2,1],  expected:[1,1,1]},
+                    { tag: "312",  widthHints: [3,1,2],  expected:[2,2,2]},
+
+                    { tag: "1i3",  widthHints: [1,-1,3],  expected:[1,2,3], implicitWidth: 2},
+                    { tag: "1i2",  widthHints: [1,-1,2],  expected:[1,2,2], implicitWidth: 3},
+                    { tag: "2i3",  widthHints: [2,-1,3],  expected:[2,2,3], implicitWidth: 1},
+                    { tag: "2i1",  widthHints: [2,-1,1],  expected:[1,1,1], implicitWidth: 3},
+                    { tag: "3i1",  widthHints: [3,-1,1],  expected:[1,1,1], implicitWidth: 2},
+                    { tag: "3i2",  widthHints: [3,-1,2],  expected:[2,2,2], implicitWidth: 1},
+                    ];
+        }
+
+        function test_sizeHintNormalization(data) {
+            var layout = layout_sizeHintNormalization_Component.createObject(container);
+            if (data.implicitWidth !== undefined) {
+                layout.children[0].implicitWidth = data.implicitWidth
+            }
+            layout.children[0].Layout.minimumWidth = data.widthHints[0];
+            layout.children[0].Layout.preferredWidth = data.widthHints[1];
+            layout.children[0].Layout.maximumWidth = data.widthHints[2];
+            wait(0);    // Trigger processEvents() (allow LayoutRequest to be processed)
+            var normalizedResult = [layout.Layout.minimumWidth, layout.implicitWidth, layout.Layout.maximumWidth]
+            compare(normalizedResult, data.expected);
+            layout.destroy();
         }
     }
 }

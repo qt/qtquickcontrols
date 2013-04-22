@@ -61,6 +61,7 @@ TestCase {
         verify (view !== null, "splitview created is null")
         verify (view.orientation === Qt.Horizontal)
         verify (view.__items.length === 2)
+        view.destroy()
     }
 
 }

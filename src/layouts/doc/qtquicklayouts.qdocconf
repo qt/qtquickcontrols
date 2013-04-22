@@ -1,0 +1,35 @@
+include($QT_INSTALL_DOCS/global/qt-module-defaults.qdocconf)
+
+project                 = QtQuickLayouts
+description             = Qt Quick Layouts Reference Documentation
+url                     = http://qt-project.org/doc/qt-$QT_VER/qtquicklayouts/
+version                 = $QT_VERSION
+
+qhp.projects            = qtquicklayouts
+
+qhp.qtquicklayouts.file           = qtquicklayouts.qhp
+qhp.qtquicklayouts.namespace      = org.qt-project.qtquicklayouts.$QT_VERSION_TAG
+qhp.qtquicklayouts.virtualFolder  = qtquicklayouts
+qhp.qtquicklayouts.indexTitle     = Qt Quick Layouts
+qhp.qtquicklayouts.indexRoot      =
+#qhp.qtquicklayouts.extraFiles = style/qtquicklayouts.css
+
+qhp.qtquicklayouts.filterAttributes    = qtquicklayouts $QT_VERSION qtrefdoc
+qhp.qtquicklayouts.customFilters.Qt.name = QtQuickLayouts $QT_VERSION
+qhp.qtquicklayouts.customFilters.Qt.filterAttributes = qtquicklayouts $QT_VERSION
+
+qhp.qtquicklayouts.subprojects = qtquicklayoutsqmltypes
+qhp.qtquicklayouts.subprojects.qtquicklayoutsqmltypes.title = Layouts QML Types
+qhp.qtquicklayouts.subprojects.qtquicklayoutsqmltypes.indexTitle = Qt Quick Layouts QML Types
+qhp.qtquicklayouts.subprojects.qtquicklayoutsqmltypes.selectors = class fake:headerfile
+qhp.qtquicklayouts.subprojects.qtquicklayoutsqmltypes.sortPages = true
+
+depends = qtqml qtquick qtwidgets qtdoc qtquicklayouts
+
+exampledirs += ../../../examples/
+
+headerdirs += ../
+
+sourcedirs += ../
+
+imagedirs += images

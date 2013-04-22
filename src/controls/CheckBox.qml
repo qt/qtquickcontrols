@@ -42,8 +42,6 @@ import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Private 1.0
 
-import "Styles/Settings.js" as Settings
-
 /*!
     \qmltype CheckBox
     \inqmlmodule QtQuick.Controls 1.0
@@ -130,7 +128,7 @@ AbstractCheckable {
     */
     property bool __ignoreChecked: false
 
-    style: Qt.createComponent(Settings.THEME_PATH + "/CheckBoxStyle.qml", checkBox)
+    style: Qt.createComponent(Settings.theme() + "/CheckBoxStyle.qml", checkBox)
 
     activeFocusOnTab: true
 

@@ -54,43 +54,60 @@ Style {
 
     property color backgroundColor: "lightgray"
 
-    property Component handle: Rectangle {
-        implicitWidth: 12
-        implicitHeight: 14
-        gradient: Gradient {
-            GradientStop {color: backgroundColor ; position: 0}
-            GradientStop {color: Qt.darker(backgroundColor, 1.2) ; position: 1}
+    property Component handle: Item {
+        implicitWidth: 20
+        implicitHeight: 18
+        BorderImage {
+            anchors.fill: parent
+            source: "images/button.png"
+            border.top: 6
+            border.bottom: 6
+            border.left: 6
+            border.right: 6
+            BorderImage {
+                anchors.fill: parent
+                anchors.margins: -1
+                anchors.topMargin: -2
+                anchors.rightMargin: 0
+                anchors.bottomMargin: 1
+                source: "images/focusframe.png"
+                visible: control.activeFocus
+                border.left: 4
+                border.right: 4
+                border.top: 4
+                border.bottom: 4
+            }
         }
-        antialiasing: true
-        radius: height/2
-        border.color: Qt.darker(backgroundColor, 1.8)
     }
 
-    property Component background:  Rectangle {
-            anchors.verticalCenter: parent.verticalCenter
-            implicitWidth: 100
-            implicitHeight: 6
-
-            gradient: Gradient {
-                GradientStop {color: Qt.darker(backgroundColor, 1.2) ; position: 0}
-                GradientStop {color: Qt.darker(backgroundColor, 1.5) ; position: 1}
-            }
-            antialiasing: true
-            radius: height / 2.0
-            border.color: Qt.darker(backgroundColor, 1.8)
+    property Component background: Item {
+        anchors.verticalCenter: parent.verticalCenter
+        implicitWidth: 100
+        implicitHeight: 8
+        BorderImage {
+            anchors.fill: parent
+            source: "images/button_down.png"
+            border.top: 3
+            border.bottom: 3
+            border.left: 6
+            border.right: 6
+        }
     }
 
     property Component panel: Item {
         id: root
 
-        implicitWidth: backgroundControl.implicitWidth
-        implicitHeight: backgroundControl.implicitHeight
+        property bool horizontal : control.orientation === Qt.Horizontal
+        implicitWidth: horizontal ? backgroundControl.implicitWidth : backgroundControl.implicitHeight
+        implicitHeight: horizontal ? backgroundControl.implicitHeight : backgroundControl.implicitWidth
 
         property Control __cref: control
 
         Loader {
             id: backgroundControl
             sourceComponent: background
+            anchors.left: parent.left
+            anchors.right: parent.right
             property Control control: __cref
             property Item handle: handleLoader.item
         }
@@ -99,8 +116,9 @@ Style {
             id: handleLoader
             sourceComponent: handle
             anchors.verticalCenter: backgroundControl.verticalCenter
-            x: leftMargin + control.value / control.maximumValue * (root.width - leftMargin - rightMargin - width/2)
+            x: Math.round(leftMargin + control.value / control.maximumValue * (root.width - leftMargin - rightMargin - width/2))
             property Control control: __cref
         }
+
     }
 }

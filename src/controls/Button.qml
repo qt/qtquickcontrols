@@ -41,7 +41,6 @@
 import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Private 1.0
-import "Styles/Settings.js" as Settings
 
 /*!
     \qmltype Button
@@ -87,5 +86,5 @@ BasicButton {
 
     Accessible.name: text
 
-    style: Qt.createComponent(Settings.THEME_PATH + "/ButtonStyle.qml", button)
+    style: Qt.createComponent(Settings.theme() + "/ButtonStyle.qml", button)
 }

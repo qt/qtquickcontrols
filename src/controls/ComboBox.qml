@@ -41,7 +41,6 @@
 import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Private 1.0
-import "Styles/Settings.js" as Settings
 
 /*!
     \qmltype ComboBox
@@ -86,12 +85,16 @@ Control {
     /*! The text of the currently selected item in the ComboBox. */
     readonly property alias currentText: popup.selectedText
 
+    /*! This property specifies whether the combobox should gain active focus when pressed.
+        The default value is \c false. */
+    property bool activeFocusOnPress: false
+
     /*! \internal */
     readonly property bool __pressed: mouseArea.pressed && mouseArea.containsMouse || popup.__popupVisible
     /*! \internal */
     property alias __containsMouse: mouseArea.containsMouse
 
-    style: Qt.createComponent(Settings.THEME_PATH + "/ComboBoxStyle.qml", comboBox)
+    style: Qt.createComponent(Settings.theme() + "/ComboBoxStyle.qml", comboBox)
 
     activeFocusOnTab: true
 
@@ -101,21 +104,18 @@ Control {
         id: mouseArea
         anchors.fill: parent
         hoverEnabled: true
-        onPressedChanged: if (pressed) popup.show()
-    }
-
-    StyleItem {
-        id: styleItem
-        elementType: "comboboxitem"
-        visible: false
+        onPressed: {
+            if (comboBox.activeFocusOnPress)
+                forceActiveFocus()
+            popup.show()
+        }
     }
 
     Component.onCompleted: {
         if (currentIndex === -1)
             currentIndex = 0
-        if (styleItem.style == "mac") {
-            popup.x -= 10
-            popup.y += 4
+        if (Qt.platform.os === "mac") {
+            popup.y += 6
         }
 
         popup.ready = true
@@ -126,6 +126,7 @@ Control {
 
     Menu {
         id: popup
+        objectName: "popup"
 
         style: isPopup ? __style.popupStyle : __style.dropDownStyle
 
@@ -133,22 +134,26 @@ Control {
         property string textRole: ""
 
         property bool ready: false
-        property bool isPopup: comboBox.__panel.popup
+        property bool isPopup: __panel ? __panel.popup : false
 
         property int x: 0
         property int y: isPopup ? (comboBox.__panel.height - comboBox.__panel.implicitHeight) / 2.0 : comboBox.__panel.height
         __minimumWidth: comboBox.width
         __visualItem: comboBox
-        __font: styleItem.font
+        __font: __panel.font
 
         property ExclusiveGroup eg: ExclusiveGroup { id: eg }
+
+        property bool __modelIsArray: popupItems.model ? popupItems.model.constructor === Array : false
 
         Instantiator {
             id: popupItems
             active: popup.ready
             MenuItem {
-                text: popup.textRole === "" ? modelData :
-                      (model[popup.textRole] || "")
+                text: popup.textRole === '' ?
+                        modelData :
+                        ((popup.__modelIsArray ? modelData[popup.textRole] : model[popup.textRole]) || '')
+
                 checkable: true
                 exclusiveGroup: eg
             }
@@ -160,12 +165,17 @@ Control {
             if (!ready || !model)
                 return;
 
-            var modelMayHaveRoles = model["get"] !== undefined
+            var get = model['get'];
+            if (!get && popup.__modelIsArray) {
+                get = function(i) { return model[i]; }
+            }
+
+            var modelMayHaveRoles = get !== undefined
             textRole = initialTextRole
-            if (textRole === "" && modelMayHaveRoles && model.get(0)) {
+            if (textRole === "" && modelMayHaveRoles && get(0)) {
                 // No text role set, check whether model has a suitable role
                 // If 'text' is found, or there's only one role, pick that.
-                var listElement = model.get(0)
+                var listElement = get(0)
                 var roleName = ""
                 var roleCount = 0
                 for (var role in listElement) {

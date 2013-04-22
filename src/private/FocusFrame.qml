@@ -42,17 +42,26 @@ import QtQuick 2.1
 import QtQuick.Controls.Private 1.0
 
 /*!
-        \qmltype FocusFrame
-        \internal
-        \inqmlmodule QtQuick.Controls.Private 1.0
+    \qmltype FocusFrame
+    \internal
+    \inqmlmodule QtQuick.Controls.Private 1.0
 */
-StyleItem {
-    z: 2
-    anchors.fill: parent
-    property int focusMargin: -3
+Item {
+    id: root
+    activeFocusOnTab: false
+    Accessible.role: Accessible.StatusBar
+
     anchors.topMargin: focusMargin
     anchors.leftMargin: focusMargin
     anchors.rightMargin: focusMargin
     anchors.bottomMargin: focusMargin
-    elementType: "focusframe"
+
+    property int focusMargin: loader.item ? loader.item.margin : -3
+
+    Loader {
+        id: loader
+        z: 2
+        anchors.fill: parent
+        sourceComponent: Qt.createComponent( "../" + Settings.theme() + "/FocusFrameStyle.qml", root)
+    }
 }

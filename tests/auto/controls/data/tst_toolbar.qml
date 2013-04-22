@@ -41,6 +41,11 @@
 import QtQuick 2.1
 import QtTest 1.0
 
+Item {
+    id: container
+    width: 400
+    height: 400
+
 TestCase {
     id: testCase
     name: "Tests_ToolBar"
@@ -50,6 +55,74 @@ TestCase {
 
     function test_createToolBar() {
         var toolBar = Qt.createQmlObject('import QtQuick.Controls 1.0; ToolBar {}', testCase, '');
+        toolBar.destroy()
     }
+
+    function test_activeFocusOnTab() {
+        var test_control = 'import QtQuick 2.1; \
+    import QtQuick.Controls 1.0;            \
+    Item {                                  \
+        width: 200;                         \
+        height: 200;                        \
+        property alias control1: _control1; \
+        property alias control2: _control2; \
+        property alias control3: _control3; \
+        ToolBar {                           \
+            id: _control1;                  \
+            activeFocusOnTab: true;         \
+        }                                   \
+        ToolBar {                           \
+            id: _control2;                  \
+            activeFocusOnTab: false;        \
+        }                                   \
+        ToolBar {                           \
+            id: _control3;                  \
+            activeFocusOnTab: true;         \
+        }                                   \
+    }                                       '
+
+        var control = Qt.createQmlObject(test_control, container, '')
+        control.control1.forceActiveFocus()
+        verify(control.control1.activeFocus)
+        verify(!control.control2.activeFocus)
+        verify(!control.control3.activeFocus)
+        keyPress(Qt.Key_Tab)
+        verify(!control.control1.activeFocus)
+        verify(!control.control2.activeFocus)
+        verify(control.control3.activeFocus)
+        keyPress(Qt.Key_Tab)
+        verify(control.control1.activeFocus)
+        verify(!control.control2.activeFocus)
+        verify(!control.control3.activeFocus)
+        keyPress(Qt.Key_Tab, Qt.ShiftModifier)
+        verify(!control.control1.activeFocus)
+        verify(!control.control2.activeFocus)
+        verify(control.control3.activeFocus)
+        keyPress(Qt.Key_Tab, Qt.ShiftModifier)
+        verify(control.control1.activeFocus)
+        verify(!control.control2.activeFocus)
+        verify(!control.control3.activeFocus)
+
+        control.control2.activeFocusOnTab = true
+        control.control3.activeFocusOnTab = false
+        keyPress(Qt.Key_Tab)
+        verify(!control.control1.activeFocus)
+        verify(control.control2.activeFocus)
+        verify(!control.control3.activeFocus)
+        keyPress(Qt.Key_Tab)
+        verify(control.control1.activeFocus)
+        verify(!control.control2.activeFocus)
+        verify(!control.control3.activeFocus)
+        keyPress(Qt.Key_Tab, Qt.ShiftModifier)
+        verify(!control.control1.activeFocus)
+        verify(control.control2.activeFocus)
+        verify(!control.control3.activeFocus)
+        keyPress(Qt.Key_Tab, Qt.ShiftModifier)
+        verify(control.control1.activeFocus)
+        verify(!control.control2.activeFocus)
+        verify(!control.control3.activeFocus)
+        control.destroy()
+    }
+}
 }
 

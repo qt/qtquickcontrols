@@ -50,31 +50,27 @@ import QtQuick.Controls 1.0
 
 Style {
     property color backgroundColor: "darkgrey"
-    property color progressColor: "#47f"
+    property color progressColor: "#49d"
 
-    property Component background: Rectangle {
-        id: styleitem
-        anchors.fill: parent
+    property Component background: Item {
         implicitWidth: 200
-        implicitHeight: 20
-        clip: true
-        radius: 2
-        antialiasing: true
-        border.color: "#aaa"
-
-        gradient: Gradient {
-            GradientStop {color: Qt.lighter(backgroundColor, 1.6)  ; position: 0}
-            GradientStop {color: backgroundColor ; position: 1.55}
+        implicitHeight: 24
+        BorderImage {
+            anchors.fill: parent
+            source: "images/editbox.png"
+            border.left: 4
+            border.right: 4
+            border.top: 4
+            border.bottom: 4
         }
-
         Rectangle {
             id: progressItem
-            implicitWidth: parent.width * control.value / control.maximumValue
+            implicitWidth: control.indeterminate ? parent.width : parent.width * control.value / control.maximumValue
             radius: 2
             antialiasing: true
-            implicitHeight: 20
+            height: parent.height - 2
             gradient: Gradient {
-                GradientStop {color: Qt.lighter(progressColor, 1.6)  ; position: 0}
+                GradientStop {color: Qt.lighter(progressColor, 1.3)  ; position: 0}
                 GradientStop {color: progressColor ; position: 1.4}
             }
             border.width: 1
@@ -85,7 +81,7 @@ Style {
                 antialiasing: true
                 anchors.fill: parent
                 anchors.margins: 1
-                border.color: Qt.rgba(1,1,1,0.2)
+                border.color: Qt.rgba(1,1,1,0.3)
             }
         }
     }

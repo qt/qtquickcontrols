@@ -4,16 +4,19 @@ QML_FILES = \
     ButtonStyle.qml \
     CheckBoxStyle.qml \
     ComboBoxStyle.qml \
+    FocusFrameStyle.qml \
     GroupBoxStyle.qml \
     MenuBarStyle.qml \
     MenuStyle.qml \
     ProgressBarStyle.qml \
     RadioButtonStyle.qml \
     ScrollBarStyle.qml \
-    Settings.js \
+    ScrollViewStyle.qml\
     SliderStyle.qml \
     SpinBoxStyle.qml \
     Style.qml \
+    StatusBarStyle.qml \
+    TableViewStyle.qml \
     TabViewStyle.qml \
     TextFieldStyle.qml \
     ToolBarStyle.qml \
@@ -24,21 +27,32 @@ QML_FILES += \
     Desktop/ButtonStyle.qml \
     Desktop/CheckBoxStyle.qml \
     Desktop/ComboBoxStyle.qml \
+    Desktop/FocusFrameStyle.qml \
     Desktop/GroupBoxStyle.qml \
     Desktop/MenuBarStyle.qml \
     Desktop/MenuStyle.qml \
     Desktop/ProgressBarStyle.qml \
     Desktop/RadioButtonStyle.qml \
+    Desktop/ScrollViewStyle.qml \
     Desktop/ScrollBarStyle.qml \
     Desktop/SliderStyle.qml \
     Desktop/SpinBoxStyle.qml \
+    Desktop/StatusBarStyle.qml\
     Desktop/TabViewStyle.qml \
+    Desktop/TableViewStyle.qml \
     Desktop/TextFieldStyle.qml \
     Desktop/ToolBarStyle.qml \
     Desktop/ToolButtonStyle.qml
 
 # Images
 QML_FILES += \
+    images/button.png \
+    images/button_down.png \
+    images/tab.png \
+    images/groupbox.png \
+    images/focusframe.png \
+    images/tab_selected.png \
+    images/editbox.png \
     images/arrow-up.png \
     images/arrow-down.png
 

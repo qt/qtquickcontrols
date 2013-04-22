@@ -47,24 +47,64 @@ import QtQuick.Controls.Styles 1.0
 */
 
 Style {
-    property Component panel: Rectangle {
-        id: styleitem
-        implicitWidth: 200
-        implicitHeight: 20
 
-        gradient: Gradient{
-            GradientStop{color: control.__pressed ? "lightgray" : "white" ; position: 0}
-            GradientStop{color: control.__pressed ? "lightgray" : "lightgray" ; position: 1}
-        }
+    property Component panel: Item {
+        implicitWidth: 100
+        implicitHeight: 24
+        property bool popup: false
+        property alias font: textitem.font
 
-        radius:4
-        border.color: "#aaa"
-
-        Text {
-            anchors.centerIn: parent
-            text: control.currentText
+        BorderImage {
+            anchors.fill: parent
+            source: control.__pressed ? "images/button_down.png" : "images/button.png"
+            border.top: 6
+            border.bottom: 6
+            border.left: 6
+            border.right: 6
+            anchors.bottomMargin: -1
+            BorderImage {
+                anchors.fill: parent
+                anchors.margins: -1
+                anchors.topMargin: -2
+                anchors.rightMargin: 0
+                anchors.bottomMargin: 1
+                source: "images/focusframe.png"
+                visible: control.activeFocus
+                border.left: 4
+                border.right: 4
+                border.top: 4
+                border.bottom: 4
+            }
+            Text {
+                id: textitem
+                anchors.centerIn: parent
+                text: control.currentText
+                renderType: Text.NativeRendering
+            }
+            Image {
+                source: "images/arrow-down.png"
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.right: parent.right
+                anchors.rightMargin: 8
+                opacity: 0.7
+            }
         }
     }
 
-    property Component popupStyle: MenuStyle { }
+    property Component dropDownStyle: MenuStyle { }
+
+    property Component popupStyle: Style {
+
+        property Component frame: Rectangle {
+            width: (parent ? parent.contentWidth : 0)
+            height: (parent ? parent.contentHeight : 0) + 2
+            border.color: "#777"
+        }
+
+        property Component menuItem: Rectangle {
+            implicitWidth: textItem.contentWidth
+            implicitHeight: textItem.contentHeight
+            border.color: "#777"
+        }
+    }
 }

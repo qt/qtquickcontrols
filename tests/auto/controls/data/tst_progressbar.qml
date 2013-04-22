@@ -41,6 +41,11 @@
 import QtQuick 2.1
 import QtTest 1.0
 
+Item {
+    id: container
+    width: 400
+    height: 400
+
 TestCase {
     id: testCase
     name: "Tests_ProgressBar"
@@ -59,6 +64,7 @@ TestCase {
 
         progressBar.minimumValue = 7
         compare(progressBar.value, 7)
+        progressBar.destroy()
     }
 
     function test_maximumvalue() {
@@ -72,6 +78,7 @@ TestCase {
 
         progressBar.maximumValue = 8
         compare(progressBar.value, 8)
+        progressBar.destroy()
     }
 
     function test_invalidMinMax() {
@@ -94,25 +101,101 @@ TestCase {
 
         var progressBar2 = Qt.createQmlObject('import QtQuick.Controls 1.0; ProgressBar {minimumValue: 10; maximumValue: 4; value: 5}', testCase, '');
         compare(progressBar.value, progressBar.minimumValue)
+        progressBar.destroy()
+        progressBar2.destroy()
     }
 
     function test_initialization_order()
     {
-        var spinbox = Qt.createQmlObject("import QtQuick.Controls 1.0; ProgressBar {maximumValue: 100; value: 50}",
+        var progressBar = Qt.createQmlObject("import QtQuick.Controls 1.0; ProgressBar {maximumValue: 100; value: 50}",
                                          testCase, '')
-        compare(spinbox.value, 50);
+        compare(progressBar.value, 50);
 
-        spinbox = Qt.createQmlObject("import QtQuick.Controls 1.0; ProgressBar {" +
+        var progressBar2 = Qt.createQmlObject("import QtQuick.Controls 1.0; ProgressBar {" +
                                          "value: 50; maximumValue: 100}",
                                          testCase, '')
-        compare(spinbox.value, 50);
+        compare(progressBar2.value, 50);
 
-        spinbox = Qt.createQmlObject("import QtQuick.Controls 1.0; ProgressBar { minimumValue: -50 ; value:-10}",
+        var progressBar3 = Qt.createQmlObject("import QtQuick.Controls 1.0; ProgressBar { minimumValue: -50 ; value:-10}",
                                          testCase, '')
-        compare(spinbox.value, -10);
+        compare(progressBar3.value, -10);
 
-        spinbox = Qt.createQmlObject("import QtQuick.Controls 1.0; ProgressBar { value:-10; minimumValue: -50}",
+        var progressBar4 = Qt.createQmlObject("import QtQuick.Controls 1.0; ProgressBar { value:-10; minimumValue: -50}",
                                          testCase, '')
-        compare(spinbox.value, -10);
+        compare(progressBar4.value, -10);
+        progressBar.destroy()
+        progressBar2.destroy()
+        progressBar3.destroy()
+        progressBar4.destroy()
     }
+
+    function test_activeFocusOnTab() {
+        var test_control = 'import QtQuick 2.1; \
+        import QtQuick.Controls 1.0;            \
+        Item {                                  \
+            width: 200;                         \
+            height: 200;                        \
+            property alias control1: _control1; \
+            property alias control2: _control2; \
+            property alias control3: _control3; \
+            ProgressBar  {                      \
+                y: 20;                          \
+                id: _control1;                  \
+                activeFocusOnTab: true;         \
+            }                                   \
+            ProgressBar  {                      \
+                y: 70;                          \
+                id: _control2;                  \
+                activeFocusOnTab: false;        \
+            }                                   \
+            ProgressBar  {                      \
+                y: 120;                         \
+                id: _control3;                  \
+                activeFocusOnTab: true;         \
+            }                                   \
+        }                                       '
+
+        var control = Qt.createQmlObject(test_control, container, '')
+        control.control1.forceActiveFocus()
+        verify(control.control1.activeFocus)
+        verify(!control.control2.activeFocus)
+        verify(!control.control3.activeFocus)
+        keyPress(Qt.Key_Tab)
+        verify(!control.control1.activeFocus)
+        verify(!control.control2.activeFocus)
+        verify(control.control3.activeFocus)
+        keyPress(Qt.Key_Tab)
+        verify(control.control1.activeFocus)
+        verify(!control.control2.activeFocus)
+        verify(!control.control3.activeFocus)
+        keyPress(Qt.Key_Tab, Qt.ShiftModifier)
+        verify(!control.control1.activeFocus)
+        verify(!control.control2.activeFocus)
+        verify(control.control3.activeFocus)
+        keyPress(Qt.Key_Tab, Qt.ShiftModifier)
+        verify(control.control1.activeFocus)
+        verify(!control.control2.activeFocus)
+        verify(!control.control3.activeFocus)
+
+        control.control2.activeFocusOnTab = true
+        control.control3.activeFocusOnTab = false
+        keyPress(Qt.Key_Tab)
+        verify(!control.control1.activeFocus)
+        verify(control.control2.activeFocus)
+        verify(!control.control3.activeFocus)
+        keyPress(Qt.Key_Tab)
+        verify(control.control1.activeFocus)
+        verify(!control.control2.activeFocus)
+        verify(!control.control3.activeFocus)
+        keyPress(Qt.Key_Tab, Qt.ShiftModifier)
+        verify(!control.control1.activeFocus)
+        verify(control.control2.activeFocus)
+        verify(!control.control3.activeFocus)
+        keyPress(Qt.Key_Tab, Qt.ShiftModifier)
+        verify(control.control1.activeFocus)
+        verify(!control.control2.activeFocus)
+        verify(!control.control3.activeFocus)
+        control.destroy()
+    }
+}
 }

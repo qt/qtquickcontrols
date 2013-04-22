@@ -47,15 +47,27 @@ import QtQuick.Controls.Styles 1.0
     \inqmlmodule QtQuick.Controls.Styles 1.0
 */
 Style {
-    property int margin: 8
-    property Component panel: Item {
-        implicitWidth: Math.max(200, contentWidth + 30)
-        implicitHeight: contentHeight
+    property int margin: 9
+
+    property Component panel:
+        Item {
+        implicitWidth: control.contentWidth + 2 * margin
+        implicitHeight: control.contentHeight + 2 * margin + 12
         Text {
             anchors.top: parent.top
             anchors.left: parent.left
             anchors.margins: 4
             text: control.title
+            renderType: Text.NativeRendering
+        }
+        BorderImage {
+            anchors.fill: parent
+            anchors.topMargin: 20
+            source: "images/groupbox.png"
+            border.left: 8
+            border.right: 8
+            border.top: 8
+            border.bottom: 8
         }
     }
 }

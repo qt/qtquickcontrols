@@ -76,6 +76,7 @@ FocusScope {
         Loader {
             id: styleLoader
             sourceComponent: style
+            property Item control: root
             onStatusChanged: {
                 if (status === Loader.Error)
                     console.error("Failed to load Style for", root)

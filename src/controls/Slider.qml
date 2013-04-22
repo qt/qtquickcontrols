@@ -41,7 +41,6 @@
 import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Private 1.0
-import "Styles/Settings.js" as Settings
 
 /*!
     \qmltype Slider
@@ -75,7 +74,7 @@ Control {
     property int orientation: Qt.Horizontal
 
     /*!
-        \qmlproperty double Slider::minimumValue
+        \qmlproperty real Slider::minimumValue
 
         This property holds the minimum value of the Slider.
         The default value is \c{0.0}.
@@ -83,7 +82,7 @@ Control {
     property alias minimumValue: range.minimumValue
 
     /*!
-        \qmlproperty double Slider::maximumValue
+        \qmlproperty real Slider::maximumValue
 
         This property holds the maximum value of the Slider
         The default value is \c{1.0}.
@@ -110,7 +109,7 @@ Control {
     property alias pressed: mouseArea.pressed
 
     /*!
-        \qmlproperty double Slider::stepSize
+        \qmlproperty real Slider::stepSize
 
         This property indicates the slider step size.
 
@@ -132,7 +131,7 @@ Control {
     property alias stepSize: range.stepSize
 
     /*!
-        \qmlproperty double Slider::value
+        \qmlproperty real Slider::value
 
         This property holds the current value of the Slider.
         The default value is \c{0.0}.
@@ -181,7 +180,7 @@ Control {
         return Math.round(v);
     }
 
-    style: Qt.createComponent(Settings.THEME_PATH + "/SliderStyle.qml", slider)
+    style: Qt.createComponent(Settings.theme() + "/SliderStyle.qml", slider)
 
     Keys.onRightPressed: value += (maximumValue - minimumValue)/10.0
     Keys.onLeftPressed: value -= (maximumValue - minimumValue)/10.0
@@ -264,7 +263,7 @@ Control {
         horizontalMaximumValue: slider.maximumValue
         verticalMinimumValue: slider.minimumValue
         verticalMaximumValue: slider.maximumValue
-        property double step: (slider.maximumValue - slider.minimumValue)/(range.positionAtMaximum - range.positionAtMinimum)
+        property real step: (slider.maximumValue - slider.minimumValue)/(range.positionAtMaximum - range.positionAtMinimum)
 
         onVerticalWheelMoved: {
             if (verticalDelta !== 0) {
