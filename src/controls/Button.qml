@@ -61,8 +61,9 @@ BasicButton {
 
     /*! This property holds whether the push button is the default button.
         Default buttons decide what happens when the user presses enter in a
-        dialog without giving a button explicit focus. \note This property is
-        ignored by Dialog.
+        dialog without giving a button explicit focus. \note This property only
+        changes the style of the button. The expected behavior needs to be
+        implemented by the user.
 
         The default value is \c false.
     */
