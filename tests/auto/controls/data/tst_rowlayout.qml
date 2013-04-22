@@ -252,6 +252,73 @@ Item {
         }
 
         Component {
+            id: layoutItem_Component
+            Rectangle {
+                implicitWidth: 20
+                implicitHeight: 20
+            }
+        }
+
+        Component {
+            id: columnLayoutItem_Component
+            ColumnLayout {
+            }
+        }
+
+        Component {
+            id: layout_addAndRemoveItems_Component
+            RowLayout {
+                spacing: 0
+            }
+        }
+
+        function test_addAndRemoveItems()
+        {
+            var layout = layout_addAndRemoveItems_Component.createObject(container)
+            compare(layout.implicitWidth, 0)
+            compare(layout.implicitHeight, 0)
+
+            var rect0 = layoutItem_Component.createObject(layout)
+            compare(layout.implicitWidth, 20)
+            compare(layout.implicitHeight, 20)
+
+            var rect1 = layoutItem_Component.createObject(layout)
+            rect1.Layout.preferredWidth = 30;
+            rect1.Layout.preferredHeight = 30;
+            compare(layout.implicitWidth, 50)
+            compare(layout.implicitHeight, 30)
+
+            var col = columnLayoutItem_Component.createObject(layout)
+            var rect2 = layoutItem_Component.createObject(col)
+            rect2.Layout.fillHeight = true
+            var rect3 = layoutItem_Component.createObject(col)
+            rect3.Layout.fillHeight = true
+
+            compare(layout.implicitWidth, 70)
+            compare(layout.implicitHeight, 30)
+
+            rect3.destroy()
+            wait(0)     // this will hopefully effectuate the destruction of the object
+
+            col.destroy()
+            wait(0)
+            compare(layout.implicitWidth, 50)
+            compare(layout.implicitHeight, 30)
+
+            rect0.destroy()
+            wait(0)
+            compare(layout.implicitWidth, 30)
+            compare(layout.implicitHeight, 30)
+
+            rect1.destroy()
+            wait(0)
+            compare(layout.implicitWidth, 0)
+            compare(layout.implicitHeight, 0)
+
+            layout.destroy()
+        }
+
+        Component {
             id: layout_alignment_Component
             RowLayout {
                 spacing: 0
