@@ -43,13 +43,17 @@
 #include "qquickgridlayoutengine_p.h"
 #include "qquicklayout_p.h"
 
-void QQuickGridLayoutItem::effectiveSizeHint_helper(QQuickItem *item, QSizeF *cachedSizeHints, bool useFallbackToWidthOrHeight)
-{
-    QQuickLayoutAttached *info = 0;
-    // First, retrieve the user-specified hints from the attached "Layout." properties
-    if (QObject *attached = qmlAttachedPropertiesObject<QQuickLayout>(item, false)) {
-        info = static_cast<QQuickLayoutAttached *>(attached);
+/*!
+    \internal
+    Note: Can potentially return the attached QQuickLayoutAttached object through \a attachedInfo.
 
+    It is like this is because it enables it to be reused.
+ */
+void QQuickGridLayoutItem::effectiveSizeHints_helper(QQuickItem *item, QSizeF *cachedSizeHints, QQuickLayoutAttached **attachedInfo, bool useFallbackToWidthOrHeight)
+{
+    QQuickLayoutAttached *info = attachedLayoutObject(item, false);
+    // First, retrieve the user-specified hints from the attached "Layout." properties
+    if (info) {
         struct Getters {
             SizeGetter call[NSizes];
         };
@@ -115,7 +119,7 @@ Fixed    | Layout.fillWidth               | Expanding if layout, Fixed if item |
     // If that fails, make an ultimate fallback to width/height
 
     if (!info && (prefWidth < 0 || prefHeight < 0))
-        info = static_cast<QQuickLayoutAttached *>(qmlAttachedPropertiesObject<QQuickLayout>(item));
+        info = attachedLayoutObject(item);
 
     if (useFallbackToWidthOrHeight && info) {
         /* This block is a bit hacky, but if we want to support using width/height
@@ -156,5 +160,31 @@ Fixed    | Layout.fillWidth               | Expanding if layout, Fixed if item |
     boundSize(minS, maxS);
     expandSize(prefS, minS);
     boundSize(prefS, maxS);
+
+    if (attachedInfo)
+        *attachedInfo = info;
 }
 
+/*!
+    \internal
+
+    Assumes \a info is set (if the object has an attached property)
+ */
+QLayoutPolicy::Policy QQuickGridLayoutItem::effectiveSizePolicy_helper(QQuickItem *item, Qt::Orientation orientation, QQuickLayoutAttached *info)
+{
+    bool fillExtent = false;
+    bool isSet = false;
+    if (info) {
+        if (orientation == Qt::Horizontal) {
+            isSet = info->isFillWidthSet();
+            if (isSet) fillExtent = info->fillWidth();
+        } else {
+            isSet = info->isFillHeightSet();
+            if (isSet) fillExtent = info->fillHeight();
+        }
+    }
+    if (!isSet && qobject_cast<QQuickLayout*>(item))
+        fillExtent = true;
+    return fillExtent ? QLayoutPolicy::Preferred : QLayoutPolicy::Fixed;
+
+}

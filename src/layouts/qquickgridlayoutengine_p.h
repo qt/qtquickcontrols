@@ -128,18 +128,27 @@ public:
         return effectiveSizeHints()[which];
     }
 
-    static void effectiveSizeHint_helper(QQuickItem *item, QSizeF *cachedSizeHints, bool useFallbackToWidthOrHeight);
+    static void effectiveSizeHints_helper(QQuickItem *item, QSizeF *cachedSizeHints, QQuickLayoutAttached **info, bool useFallbackToWidthOrHeight);
+    static QLayoutPolicy::Policy effectiveSizePolicy_helper(QQuickItem *item, Qt::Orientation orientation, QQuickLayoutAttached *info);
 
     QSizeF *effectiveSizeHints() const
     {
         if (!sizeHintCacheDirty)
             return cachedSizeHints;
 
-        effectiveSizeHint_helper(m_item, cachedSizeHints, useFallbackToWidthOrHeight);
+        effectiveSizeHints_helper(m_item, cachedSizeHints, 0, useFallbackToWidthOrHeight);
         useFallbackToWidthOrHeight = false;
 
         sizeHintCacheDirty = false;
         return cachedSizeHints;
+    }
+
+    void setCachedSizeHints(QSizeF *sizeHints)
+    {
+        for (int i = 0; i < Qt::NSizeHints; ++i) {
+            cachedSizeHints[i] = sizeHints[i];
+        }
+        sizeHintCacheDirty = false;
     }
 
     void invalidate()
@@ -150,20 +159,7 @@ public:
 
     QLayoutPolicy::Policy sizePolicy(Qt::Orientation orientation) const
     {
-        bool fillExtent = false;
-        bool isSet = false;
-        if (QQuickLayoutAttached *info = attachedLayoutObject(m_item, false)) {
-            if (orientation == Qt::Horizontal) {
-                isSet = info->isFillWidthSet();
-                if (isSet) fillExtent = info->fillWidth();
-            } else {
-                isSet = info->isFillHeightSet();
-                if (isSet) fillExtent = info->fillHeight();
-            }
-        }
-        if (!isSet && qobject_cast<QQuickLayout*>(m_item))
-            fillExtent = true;
-        return fillExtent ? QLayoutPolicy::Preferred : QLayoutPolicy::Fixed;
+        return effectiveSizePolicy_helper(m_item, orientation, attachedLayoutObject(m_item, false));
     }
 
     void setGeometry(const QRectF &rect)

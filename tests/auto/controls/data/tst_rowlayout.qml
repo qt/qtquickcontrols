@@ -451,5 +451,28 @@ Item {
 
             layout.destroy()
         }
+        Component {
+            id: layout_addIgnoredItem_Component
+            RowLayout {
+                spacing: 0
+                Rectangle {
+                    id: r
+                }
+            }
+        }
+
+        function test_addIgnoredItem()
+        {
+            var layout = layout_addIgnoredItem_Component.createObject(container)
+            compare(layout.implicitWidth, 0)
+            compare(layout.implicitHeight, 0)
+            var r = layout.children[0]
+            r.Layout.preferredWidth = 20
+            r.Layout.preferredHeight = 30
+            compare(layout.implicitWidth, 20)
+            compare(layout.implicitHeight, 30)
+
+            layout.destroy();
+        }
     }
 }
