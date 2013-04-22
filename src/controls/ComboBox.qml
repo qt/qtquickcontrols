@@ -164,7 +164,8 @@ Control {
 
             var get = model['get'];
             if (!get && popup.__modelIsArray) {
-                get = function(i) { return model[i]; }
+                if (model[0].constructor !== String) // arrays of strings don't have textRole
+                    get = function(i) { return model[i]; }
             }
 
             var modelMayHaveRoles = get !== undefined

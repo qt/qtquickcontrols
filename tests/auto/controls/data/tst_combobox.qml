@@ -133,6 +133,16 @@ TestCase {
         comboBox.destroy()
     }
 
+    function test_arrayModelWithoutTextRole() {
+        var arrayModel = ['Banana', 'Coconut', 'Apple']
+
+        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.0 ; ComboBox {}', testCase, '');
+        comboBox.model = arrayModel
+        compare(comboBox.currentIndex, 0)
+        compare(comboBox.currentText, "Banana")
+        comboBox.destroy()
+    }
+
     function test_activeFocusOnTab() {
         var test_control = 'import QtQuick 2.1; \
         import QtQuick.Controls 1.0;            \
