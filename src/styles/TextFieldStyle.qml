@@ -55,7 +55,7 @@ Style {
     property int rightMargin: 6
     property int bottomMargin: 4
 
-    property color foregroundColor: "black"
+    property color foregroundColor: __syspal.text
     property color backgroundColor: "white"
     property color selectionColor: __syspal.highlight
     property color selectedTextColor: __syspal.highlightedText

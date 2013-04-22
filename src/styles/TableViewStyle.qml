@@ -45,8 +45,12 @@ import QtQuick.Controls.Styles 1.0
 ScrollViewStyle {
     id: root
 
-    property color textColor: "black"
+    property color textColor: __syspal.text
     property color highlightedTextColor: "white"
+
+    property SystemPalette __syspal: SystemPalette {
+        colorGroup: control.enabled ? SystemPalette.Active : SystemPalette.Disabled
+    }
 
     property Component headerDelegate: Rectangle {
         gradient: Gradient {
@@ -62,6 +66,7 @@ ScrollViewStyle {
             horizontalAlignment: Text.AlignLeft
             anchors.leftMargin: 4
             text: itemValue
+            color: textColor
             renderType: Text.NativeRendering
         }
         Rectangle {

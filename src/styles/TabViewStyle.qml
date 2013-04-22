@@ -73,6 +73,12 @@ Style {
     property int tabvshift : 0
     property int tabBaseOverlap: 2
 
+    property color textColor: __syspal.text
+
+    property var __syspal: SystemPalette {
+        colorGroup: control.enabled ? SystemPalette.Active : SystemPalette.Disabled
+    }
+
     property Component frame: Item {
         Rectangle {
             anchors.fill: parent
@@ -125,6 +131,7 @@ Style {
             id: textitem
             anchors.centerIn: parent
             text: tab.title
+            color: textColor
             renderType: Text.NativeRendering
         }
     }

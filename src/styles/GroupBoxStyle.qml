@@ -48,6 +48,11 @@ import QtQuick.Controls.Styles 1.0
 */
 Style {
     property int margin: 9
+    property color textColor: __syspal.text
+
+    property SystemPalette __syspal: SystemPalette {
+        colorGroup: control.enabled ? SystemPalette.Active : SystemPalette.Disabled
+    }
 
     property Component panel:
         Item {
@@ -58,6 +63,7 @@ Style {
             anchors.left: parent.left
             anchors.margins: 4
             text: control.title
+            color: textColor
             renderType: Text.NativeRendering
         }
         BorderImage {

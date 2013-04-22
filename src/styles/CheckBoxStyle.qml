@@ -49,6 +49,11 @@ import QtQuick.Controls 1.0
 Style {
 
     property int labelSpacing: 6
+    property color textColor: __syspal.text
+
+    property SystemPalette __syspal: SystemPalette {
+        colorGroup: control.enabled ? SystemPalette.Active : SystemPalette.Disabled
+    }
 
     property Component indicator: Item {
         implicitWidth: 18
@@ -97,6 +102,7 @@ Style {
 
     property Component label: Text {
         text: control.text
+        color: textColor
         renderType: Text.NativeRendering
     }
 
