@@ -198,7 +198,6 @@ Rectangle {
 
     Loader {
         id: bg
-        width: parent.width
         anchors.top: horizontal ? undefined : upControl.bottom
         anchors.bottom: horizontal ? undefined : downControl.top
         anchors.bottomMargin: -1
@@ -219,10 +218,11 @@ Rectangle {
 
     Loader{
         id: handleControl
-        property int totalextent: horizontal ? bg.width : bg.height
-        property int extent: Math.min (totalextent, Math.max(minimumHandleLength, 100 *  totalextent / (control.maximumValue - control.minimumValue)))
         property bool mouseOver: activeControl === "handle"
-
+        property var flickableItem: control.parent.parent.flickableItem
+        property int extent: Math.max(minimumHandleLength, horizontal ?
+                                          (flickableItem.width/flickableItem.contentWidth) * bg.width :
+                                          (flickableItem.height/flickableItem.contentHeight) * bg.height)
         height: horizontal ? implicitHeight : extent
         width: horizontal ? extent : implicitWidth
         anchors.top: bg.top
