@@ -31,15 +31,17 @@
     \ingroup qmlmodules
     \brief Provides QML types for qt quick controls support.
 
-    This is just a demo page.
-
     \section1 Overview
 
-    The QML types for Qt Quick Controls support the basic use cases such as:
-    \list
-     \li sth 1,
-     \li sth 2,
-    \endlist
+    The \l{Qt Quick Controls} module provides a set QML types for creating
+    user interfaces.
+
+    \note The Qt Quick Controls use the QML types provided by the \l{Qt Quick} module.
+    You can also use those primitive types with Qt Quick Controls. See \l{Qt Quick QML Types}
+    for a complete description.
 
     \section1 QML types
+
+    Below you will find the types provided by the \l{Qt Quick Controls} module:
+
 */
