@@ -1063,11 +1063,38 @@ QRectF QQuickStyleItem::subControlRect(const QString &subcontrolString)
     return QRectF();
 }
 
+namespace  {
+class QHighDpiPixmapsEnabler {
+public:
+    QHighDpiPixmapsEnabler()
+    :wasEnabled(false)
+    {
+        if (!qApp->testAttribute(Qt::AA_UseHighDpiPixmaps)) {
+            qApp->setAttribute(Qt::AA_UseHighDpiPixmaps);
+            wasEnabled = true;
+        }
+    }
+
+    ~QHighDpiPixmapsEnabler()
+    {
+        if (wasEnabled)
+            qApp->setAttribute(Qt::AA_UseHighDpiPixmaps, false);
+    }
+private:
+    bool wasEnabled;
+};
+}
+
 void QQuickStyleItem::paint(QPainter *painter)
 {
     initStyleOption();
     if (QStyleOptionMenuItem *opt = qstyleoption_cast<QStyleOptionMenuItem*>(m_styleoption))
         painter->setFont(opt->font);
+
+    // Set AA_UseHighDpiPixmaps when calling style code to make QIcon return
+    // "retina" pixmaps. The flag is controlled by the application so we can't
+    // set it unconditinally.
+    QHighDpiPixmapsEnabler enabler;
 
     switch (m_itemType) {
     case Button:
