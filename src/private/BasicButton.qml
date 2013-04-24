@@ -155,7 +155,12 @@ Control {
         onReleased: if (containsMouse) __action.trigger()
         onExited: Tooltip.hideText()
         onCanceled: Tooltip.hideText()
-        onPressed: if (activeFocusOnPress) button.forceActiveFocus()
+        onPressed: {
+            if (activeFocusOnPress)
+                button.forceActiveFocus()
+            if (button.checkable)
+                button.checked = !button.checked
+        }
 
         Timer {
             interval: 1000

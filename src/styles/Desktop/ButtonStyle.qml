@@ -45,8 +45,8 @@ Style {
     property Component panel: StyleItem {
         id: styleitem
         elementType: "button"
-        sunken: control.pressed || control.checked
-        raised: !(control.pressed || control.checked)
+        sunken: control.pressed || (control.checkable && control.checked)
+        raised: !(control.pressed || (control.checkable && control.checked))
         hover: control.__containsMouse
         text: control.iconSource === "" ? "" : control.text
         hasFocus: control.activeFocus
