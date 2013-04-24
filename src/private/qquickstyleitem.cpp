@@ -184,6 +184,9 @@ void QQuickStyleItem::initStyleOption()
 
         QStyleOptionButton *opt = qstyleoption_cast<QStyleOptionButton*>(m_styleoption);
         opt->text = text();
+        opt->icon = m_properties["icon"].value<QIcon>();
+        int e = qApp->style()->pixelMetric(QStyle::PM_ButtonIconSize, m_styleoption, 0);
+        opt->iconSize = QSize(e, e);
         opt->features = (activeControl() == "default") ?
                     QStyleOptionButton::DefaultButton :
                     QStyleOptionButton::None;

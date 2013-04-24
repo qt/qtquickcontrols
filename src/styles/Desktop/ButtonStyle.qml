@@ -53,5 +53,9 @@ Style {
         hints: control.styleHints
         // If no icon, let the style do the drawing
         activeControl: control.isDefault ? "default" : "f"
+
+        properties: {
+            "icon": control.__action.__icon
+        }
     }
 }
