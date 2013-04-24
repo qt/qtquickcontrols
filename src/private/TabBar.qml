@@ -157,7 +157,6 @@ FocusScope {
                         tabView.currentIndex = index;
                         tabbar.nextItemInFocusChain(true).forceActiveFocus();
                     }
-                    onPressAndHold: tabitem.parent = null
                 }
                 Accessible.role: Accessible.PageTab
                 Accessible.name: tabView.__tabs[index].title
