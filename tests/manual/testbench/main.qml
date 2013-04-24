@@ -248,6 +248,7 @@ ApplicationWindow {
                                     case "Text":
                                     case "Title":
                                     case "Tooltip":
+                                    case "IconSource":
                                         layout = layouts.stringLayout
                                         typeName = "String";
                                         break;
