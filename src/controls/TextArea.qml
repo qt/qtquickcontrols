@@ -390,7 +390,7 @@ ScrollView {
         if (length)
             string = "\n" + string
         text += string
-        verticalScrollBar.value = verticalScrollBar.maximumValue
+        __verticalScrollBar.value = __verticalScrollBar.maximumValue
     }
 
     /*!
@@ -651,10 +651,10 @@ ScrollView {
             if (!recursionGuard) {
                 recursionGuard = true
                 if (wrapMode == TextEdit.NoWrap) {
-                    horizontalScrollBar.visible = edit.paintedWidth + (2 * documentMargins) > area.viewport.width
+                    __horizontalScrollBar.visible = edit.paintedWidth + (2 * documentMargins) > area.viewport.width
                     edit.width = edit.paintedWidth + (2 * documentMargins)
                 } else {
-                    horizontalScrollBar.visible = false
+                    __horizontalScrollBar.visible = false
                     edit.width = area.viewport.width - (2 * documentMargins)
                 }
                 edit.height = Math.max(area.viewport.height - (2 * documentMargins), paintedHeight + (2 * documentMargins))
@@ -711,9 +711,9 @@ ScrollView {
 
     Keys.onPressed: {
         if (event.key == Qt.Key_PageUp) {
-            verticalScrollBar.value -= area.height
+            __verticalScrollBar.value -= area.height
         } else if (event.key == Qt.Key_PageDown)
-            verticalScrollBar.value += area.height
+            __verticalScrollBar.value += area.height
     }
 
 }

@@ -51,6 +51,8 @@ Style {
 
     property StyleItem __styleitem: StyleItem { elementType: "frame" }
 
+    property Component scrollBar: ScrollBar {}
+
     property Component frame: StyleItem {
         id: styleitem
         elementType: "frame"

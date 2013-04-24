@@ -135,9 +135,9 @@ FocusScope {
     /*! \internal */
     property int __scrollBarTopMargin: 0
     /*! \internal */
-    property alias horizontalScrollBar: scroller.horizontalScrollBar
+    property alias __horizontalScrollBar: scroller.horizontalScrollBar
     /*! \internal */
-    property alias verticalScrollBar: scroller.verticalScrollBar
+    property alias __verticalScrollBar: scroller.verticalScrollBar
     /*! \internal */
     property Component style: Qt.createComponent(Settings.theme() + "/ScrollViewStyle.qml", root)
 

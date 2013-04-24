@@ -49,13 +49,13 @@ Style {
     property int scrollBarSpacing: 4
     property int defaultFrameWidth: 1
 
+    property Component scrollBar: ScrollBarStyle{}
     property Component corner: Rectangle { color: "#ccc" }
-
     property Component frame: Rectangle {
         color: "white"
         border.color: "#999"
         border.width: 1
         radius: 1
-        visible: frameVisible
+        visible: control.frameVisible
     }
 }
