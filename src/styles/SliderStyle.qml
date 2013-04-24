@@ -96,29 +96,30 @@ Style {
 
     property Component panel: Item {
         id: root
-
         property bool horizontal : control.orientation === Qt.Horizontal
-        implicitWidth: horizontal ? backgroundControl.implicitWidth : backgroundControl.implicitHeight
-        implicitHeight: horizontal ? backgroundControl.implicitHeight : backgroundControl.implicitWidth
-
         property Control __cref: control
-
-        Loader {
-            id: backgroundControl
-            sourceComponent: background
-            anchors.left: parent.left
-            anchors.right: parent.right
-            property Control control: __cref
-            property Item handle: handleLoader.item
+        implicitWidth: horizontal ? backgroundLoader.implicitWidth : Math.max(handleLoader.implicitHeight, backgroundLoader.implicitHeight)
+        implicitHeight: horizontal ? Math.max(handleLoader.implicitHeight, backgroundLoader.implicitHeight) : backgroundLoader.implicitWidth
+        y: horizontal ? 0 : height
+        rotation: horizontal ? 0 : -90
+        transformOrigin: Item.TopLeft
+        Item {
+            anchors.fill: parent
+            Loader {
+                id: backgroundLoader
+                property Control control: __cref
+                property Item handle: handleLoader.item
+                sourceComponent: background
+                width: horizontal ? parent.width : parent.height
+                y: Math.round(horizontal ? parent.height/2 : parent.width/2) - backgroundLoader.item.height/2
+            }
+            Loader {
+                id: handleLoader
+                property Control control: __cref
+                sourceComponent: handle
+                anchors.verticalCenter: backgroundLoader.verticalCenter
+                x: Math.round(leftMargin + control.value / control.maximumValue * ((horizontal ? root.width : root.height) - leftMargin - rightMargin - item.width))
+            }
         }
-
-        Loader {
-            id: handleLoader
-            sourceComponent: handle
-            anchors.verticalCenter: backgroundControl.verticalCenter
-            x: Math.round(leftMargin + control.value / control.maximumValue * (root.width - leftMargin - rightMargin - width/2))
-            property Control control: __cref
-        }
-
     }
 }
