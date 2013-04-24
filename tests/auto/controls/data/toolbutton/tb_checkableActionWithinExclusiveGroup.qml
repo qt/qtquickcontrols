@@ -37,25 +37,56 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
+
 import QtQuick 2.1
-import QtQuick.Controls.Private 1.0
+import QtQuick.Controls 1.0
 
-Style {
-    property Component panel: StyleItem {
-        id: styleitem
+Row {
+    width: 200
+    height: 100
+    spacing: 10
+    focus: true
 
-        anchors.fill: parent
-        elementType: "toolbutton"
-        on: control.pressed || (control.checkable && control.checked)
-        sunken: control.pressed || (control.checkable && control.checked)
-        raised: !(control.checkable && control.checked) && control.__containsMouse
-        hover: control.__containsMouse
-        hasFocus: control.activeFocus
-        hints: control.styleHints.concat([control.__position])
-        text: control.text
+    property alias tb1: _tb1
+    property alias tb2: _tb2
+    property alias text: textinput
 
-        properties: {
-            "icon": control.__action.__icon
+    ExclusiveGroup{
+        Action {
+            id: bold
+            text: "Bold"
+            checkable: true
+            checked: textinput.font.bold
         }
+        Action {
+            id: underline
+            text: "Underline"
+            checkable: true
+            checked: textinput.font.underline
+        }
+    }
+    Binding {
+        target: textinput
+        property: "font.bold"
+        value: bold.checked
+    }
+    Binding {
+        target: textinput
+        property: "font.underline"
+        value: underline.checked
+    }
+    ToolButton {
+        id: _tb1
+        action: bold
+    }
+    ToolButton {
+        id: _tb2
+        action: underline
+    }
+    TextInput {
+        id: textinput
+        text: "Hello"
+        property bool isBold: font.bold
+        property bool isUnderline: font.underline
     }
 }
