@@ -413,6 +413,7 @@ ScrollView {
                         property int columnIndex: index
                         property int itemElideMode: columns[index].elideMode
                         property int itemTextAlignment: columns[index].horizontalAlignment
+                        property string role: columns[index].role
 
                         function __getValue() {
                             var role = columns[index].role
