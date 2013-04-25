@@ -116,6 +116,24 @@ FocusScope {
         __setOpacities()
     }
 
+    /*! Moves a tab \a from index \a to another. */
+    function moveTab(from, to) {
+        __tabs.move(from, to, 1)
+
+        if (currentIndex == from) {
+            currentIndex = to
+        } else {
+            var start = Math.min(from, to)
+            var end = Math.max(from, to)
+            if (currentIndex >= start && currentIndex <= end) {
+                if (from < to)
+                    --currentIndex
+                else
+                    ++currentIndex
+            }
+        }
+    }
+
     /*! Returns the \l Tab item at \a index. */
     function tabAt(index) {
         return __tabs[index]

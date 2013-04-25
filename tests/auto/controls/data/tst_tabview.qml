@@ -125,6 +125,72 @@ TestCase {
         tabView.destroy()
     }
 
+    function test_moveTab_data() {
+        return [
+            {tag:"0->1 (0)", from: 0, to: 1, currentBefore: 0, currentAfter: 1},
+            {tag:"0->1 (1)", from: 0, to: 1, currentBefore: 1, currentAfter: 0},
+            {tag:"0->1 (2)", from: 0, to: 1, currentBefore: 2, currentAfter: 2},
+
+            {tag:"0->2 (0)", from: 0, to: 2, currentBefore: 0, currentAfter: 2},
+            {tag:"0->2 (1)", from: 0, to: 2, currentBefore: 1, currentAfter: 0},
+            {tag:"0->2 (2)", from: 0, to: 2, currentBefore: 2, currentAfter: 1},
+
+            {tag:"1->0 (0)", from: 1, to: 0, currentBefore: 0, currentAfter: 1},
+            {tag:"1->0 (1)", from: 1, to: 0, currentBefore: 1, currentAfter: 0},
+            {tag:"1->0 (2)", from: 1, to: 0, currentBefore: 2, currentAfter: 2},
+
+            {tag:"1->2 (0)", from: 1, to: 2, currentBefore: 0, currentAfter: 0},
+            {tag:"1->2 (1)", from: 1, to: 2, currentBefore: 1, currentAfter: 2},
+            {tag:"1->2 (2)", from: 1, to: 2, currentBefore: 2, currentAfter: 1},
+
+            {tag:"2->0 (0)", from: 2, to: 0, currentBefore: 0, currentAfter: 1},
+            {tag:"2->0 (1)", from: 2, to: 0, currentBefore: 1, currentAfter: 2},
+            {tag:"2->0 (2)", from: 2, to: 0, currentBefore: 2, currentAfter: 0},
+
+            {tag:"2->1 (0)", from: 2, to: 1, currentBefore: 0, currentAfter: 0},
+            {tag:"2->1 (1)", from: 2, to: 1, currentBefore: 1, currentAfter: 2},
+            {tag:"2->1 (2)", from: 2, to: 1, currentBefore: 2, currentAfter: 1},
+
+            {tag:"0->0", from: 0, to: 0, currentBefore: 0, currentAfter: 0},
+            {tag:"-1->0", from: 0, to: 0, currentBefore: 1, currentAfter: 1},
+            {tag:"0->-1", from: 0, to: 0, currentBefore: 2, currentAfter: 2},
+            {tag:"1->10", from: 0, to: 0, currentBefore: 0, currentAfter: 0},
+            {tag:"10->2", from: 0, to: 0, currentBefore: 1, currentAfter: 1},
+            {tag:"10->-1", from: 0, to: 0, currentBefore: 2, currentAfter: 2}
+        ]
+    }
+
+    function test_moveTab(data) {
+        var tabView = Qt.createQmlObject('import QtQuick 2.1; import QtQuick.Controls 1.0; TabView { }', testCase, '');
+        compare(tabView.count, 0)
+
+        var titles = ["title 1", "title 2", "title 3"]
+
+        var i = 0;
+        for (i = 0; i < titles.length; ++i)
+            tabView.addTab(titles[i], newTab)
+
+        compare(tabView.count, titles.length)
+        for (i = 0; i < tabView.count; ++i)
+            compare(tabView.tabAt(i).title, titles[i])
+
+        tabView.currentIndex = data.currentBefore
+        tabView.moveTab(data.from, data.to)
+
+        compare(tabView.count, titles.length)
+        compare(tabView.currentIndex, data.currentAfter)
+
+        var title = titles[data.from]
+        titles.splice(data.from, 1)
+        titles.splice(data.to, 0, title)
+
+        compare(tabView.count, titles.length)
+        for (i = 0; i < tabView.count; ++i)
+            compare(tabView.tabAt(i).title, titles[i])
+
+        tabView.destroy()
+    }
+
     function test_dynamicTabs() {
         var tabView = Qt.createQmlObject('import QtQuick 2.1; import QtQuick.Controls 1.0; TabView { property Component tabComponent: Component { Tab { } } }', testCase, '');
         compare(tabView.count, 0)
