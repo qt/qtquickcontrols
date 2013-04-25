@@ -41,6 +41,7 @@
 import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Styles 1.0
+import "./style.js" as StyleHelpers
 
 Style {
     id: styleRoot
@@ -153,7 +154,7 @@ Style {
         Text {
             id: text
             visible: !isSeparator
-            text: itemText
+            text: StyleHelpers.stylizeMnemonics(itemText)
             x: __menuItemType === "menuitem" ? 24 : 6
             anchors.verticalCenter: parent.verticalCenter
             renderType: Text.NativeRendering

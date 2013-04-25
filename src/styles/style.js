@@ -38,38 +38,15 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.1
-import QtQuick.Controls.Styles 1.0
-import "./style.js" as StyleHelpers
+.pragma library
 
-/*!
-    \qmltype MenuBarStyle
-    \internal
-    \inqmlmodule QtQuick.Controls.Styles 1.0
-*/
+function replaceAmpersands(match, p1, p2, p3) {
+    if (p2 === "&")
+        return p1.concat(p2, p3)
+    return p1.concat("<u>", p2, "</u>", p3)
+}
 
-Style {
-    readonly property color __backgroundColor: "#dcdcdc"
+function stylizeMnemonics(text) {
 
-    property Component frame: Rectangle {
-        width: control.__contentItem.width
-        height: contentHeight
-        color: __backgroundColor
-    }
-
-    property Component menuItem: Rectangle {
-        width: text.width + 12
-        height: text.height + 4
-        color: sunken ? "#49d" :__backgroundColor
-
-        SystemPalette { id: syspal }
-
-        Text {
-            id: text
-            text: StyleHelpers.stylizeMnemonics(menuItem.title)
-            anchors.centerIn: parent
-            renderType: Text.NativeRendering
-            color: sunken ? "white" : syspal.windowText
-        }
-    }
+    return text.replace(/([^&]*)&(.)([^&]*)/g, replaceAmpersands)
 }
