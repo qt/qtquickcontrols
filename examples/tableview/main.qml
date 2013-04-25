@@ -55,6 +55,13 @@ Rectangle {
         id: toolbar
         width: parent.width
 
+        ListModel {
+            id: delegatemenu
+            ListElement { text: "Shiny delegate" }
+            ListElement { text: "Scale selected" }
+            ListElement { text: "Editable items" }
+        }
+
         MouseArea {
             anchors.fill:  parent
             acceptedButtons: Qt.RightButton
@@ -63,9 +70,10 @@ Rectangle {
 
         ComboBox {
             id: delegateChooser
-            opacity: frame.current === 3 ? 1 : 0
+            opacity: frame.currentIndex === 3 ? 1 : 0
             Behavior on opacity{ NumberAnimation{} }
             model: delegatemenu
+            width: 150
             anchors.left: parent.left
             anchors.leftMargin: 8
             anchors.verticalCenter: parent.verticalCenter
@@ -172,8 +180,7 @@ Rectangle {
                         width: 220
                     }
 
-                    itemDelegate:
-                    Item {
+                    itemDelegate: Item {
                         Rectangle{
                             color: itemValue.get(0).color
                             anchors.top:parent.top
@@ -234,14 +241,6 @@ Rectangle {
                 Item {
                     anchors.fill: parent
 
-
-                    ListModel {
-                        id: delegatemenu
-                        ListElement { text: "Shiny delegate" }
-                        ListElement { text: "Scale selected" }
-                        ListElement { text: "Editable items" }
-                    }
-
                     Component {
                         id: delegate1
                         Item {
@@ -252,7 +251,7 @@ Rectangle {
                                 anchors.left: parent.left
                                 anchors.verticalCenter: parent.verticalCenter
                                 elide: itemElideMode
-                                text: itemValue ? itemValue : ""
+                                text: itemValue !== undefined  ? itemValue : ""
                                 color: itemTextColor
                             }
                         }
@@ -274,7 +273,7 @@ Rectangle {
                                 anchors.left: parent.left
                                 anchors.verticalCenter: parent.verticalCenter
                                 elide: itemElideMode
-                                text: itemValue ? itemValue : ""
+                                text: itemValue !== undefined  ? itemValue : ""
                                 color: itemTextColor
                             }
                         }
@@ -283,24 +282,45 @@ Rectangle {
                     Component {
                         id: editableDelegate
                         Item {
+
                             Text {
                                 width: parent.width
                                 anchors.margins: 4
                                 anchors.left: parent.left
                                 anchors.verticalCenter: parent.verticalCenter
                                 elide: itemElideMode
-                                text: itemValue ? itemValue : ""
+                                text: itemValue !== undefined ? itemValue : ""
                                 color: itemTextColor
                                 visible: !itemSelected
                             }
                             Loader { // Initialize text editor lazily to improve performance
+                                id: loaderEditor
                                 anchors.fill: parent
                                 anchors.margins: 4
-                                property string modelText: itemValue
-                                property string editorText: item ? item.text : itemValue
-                                onEditorTextChanged: model.setProperty(rowIndex, role, editorText)
+                                Connections {
+                                    target: loaderEditor.item
+                                    onAccepted: {
+                                        if (typeof itemValue === 'number')
+                                            model.setProperty(rowIndex, role, Number(parseFloat(loaderEditor.item.text).toFixed(0)))
+                                        else
+                                            model.setProperty(rowIndex, role, loaderEditor.item.text)
+                                    }
+                                }
                                 sourceComponent: itemSelected ? editor : null
-                                Component {id: editor ; TextInput{ color: itemTextColor ; text: modelText} }
+                                Component {
+                                    id: editor
+                                    TextInput {
+                                        id: textinput
+                                        color: itemTextColor
+                                        text: itemValue
+                                        MouseArea {
+                                            id: mouseArea
+                                            anchors.fill: parent
+                                            hoverEnabled: true
+                                            onClicked: textinput.forceActiveFocus()
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -324,8 +344,8 @@ Rectangle {
                             width: 120
                         }
                         TableViewColumn {
-                            role: "sex"
-                            title: "Sex"
+                            role: "gender"
+                            title: "Gender"
                             width: 120
                         }
 
@@ -362,7 +382,7 @@ Rectangle {
                         }
 
                         itemDelegate: {
-                            switch (delegateChooser.selectedIndex) {
+                            switch (delegateChooser.currentIndex) {
                             case 0:
                                 return delegate1
                             case 1:
