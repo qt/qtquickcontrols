@@ -97,7 +97,9 @@ Style {
         }
     }
 
-    property Component dropDownStyle: MenuStyle { }
+    property Component dropDownStyle: MenuStyle {
+        __menuItemType: "comboboxitem"
+    }
 
     property Component popupStyle: Style {
 
