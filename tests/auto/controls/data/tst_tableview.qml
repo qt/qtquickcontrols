@@ -43,6 +43,11 @@ import QtTest 1.0
 import QtQuick.Controls 1.0
 import QtQuickControlsTests 1.0
 
+Item {
+    id: container
+    width: 400
+    height: 400
+
 TestCase {
     id: testCase
     name: "Tests_TableView"
@@ -140,6 +145,18 @@ TestCase {
         table.destroy();
     }
 
+    function test_forwardClickToChild() {
+        var component = Qt.createComponent("tableview/table_delegate.qml")
+        compare(component.status, Component.Ready)
+        var table =  component.createObject(container);
+        verify(table !== null, "table created is null")
+        table.forceActiveFocus();
+        compare(table.test, 0)
+        mouseClick(table, 15 , 55, Qt.LeftButton)
+        compare(table.test, 1)
+        table.destroy()
+    }
+
     // In TableView, drawn text = table.currentRowItem.children[1].children[1].itemAt(0).children[0].children[0].text
 
     function findAChild(item, name)
@@ -170,4 +187,5 @@ TestCase {
         }
         return undefined // no matching child found
     }
+}
 }

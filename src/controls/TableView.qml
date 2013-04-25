@@ -311,6 +311,7 @@ ScrollView {
                 var x = Math.min(flickableItem.contentWidth - 5, Math.max(mouseX + flickableItem.contentX, 0))
                 var y = Math.min(flickableItem.contentHeight - 5, Math.max(mouseY + flickableItem.contentY, 0))
                 listView.currentIndex = listView.indexAt(x, y)
+                mouse.accepted = false
             }
 
             onDoubleClicked: { root.activated() }
