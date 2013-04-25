@@ -454,7 +454,7 @@ ScrollView {
             anchors.left: parent.left
             anchors.right: parent.right
 
-            height: headerVisible ? headerrow.height : 0
+            height: headerrow.height
 
             Row {
                 id: headerrow
@@ -472,7 +472,7 @@ ScrollView {
                         z:-index
                         width: columns[index].width
                         visible: columns[index].visible
-                        height: headerStyle.height
+                        height: headerVisible ? headerStyle.height : 0
 
                         Loader {
                             id: headerStyle

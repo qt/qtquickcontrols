@@ -45,18 +45,41 @@ import QtQuick.Controls 1.0
     \qmltype ScrollBarStyle
     \internal
     \inqmlmodule QtQuick.Controls.Styles 1.0
+    \brief provides custom styling for scroll bars
+
+    The ScrollBar style can only be set as part of a
+    a \l ScrollViewStyle.
 */
-Rectangle {
+Style {
     id: styleitem
 
+    /*! This is the current orientation of the scroll bar. */
     readonly property bool horizontal: control.orientation === Qt.Horizontal
+
+    /*! This property determines if the scrollBar should directly move to
+        the offset that is clicked by the user or if it should simply increment
+        or decrement it's position.
+
+        The default value is \cfalse.
+    */
     property bool scrollToClickPosition: true
+
+    /*! This is the minimum extent of the scroll bar handle.
+
+        The default value is \c 30.
+    */
     property int minimumHandleLength: 30
+
+    /*! This property controls the edge overlap
+        between the handle and the increment/decrement buttons.
+
+        The default value is \c 30.
+    */
     property int handleOverlap: 1
 
-    implicitWidth: horizontal ? 200 : bg.implicitWidth
-    implicitHeight: horizontal ? bg.implicitHeight : 200
-
+    /*! This component controls the appearance of the
+        scroll bar background.
+    */
     property Component background: Item {
         implicitWidth: 16
         implicitHeight: 16
@@ -72,6 +95,9 @@ Rectangle {
         }
     }
 
+    /*! This component controls the appearance of the
+        scroll bar handle.
+    */
     property Component handle: Item {
         implicitWidth: 16
         implicitHeight: 16
@@ -90,6 +116,9 @@ Rectangle {
         }
     }
 
+    /*! This component controls the appearance of the
+        scroll bar increment button.
+    */
     property Component incrementControl: Rectangle {
         implicitWidth: 16
         implicitHeight: 16
@@ -111,6 +140,9 @@ Rectangle {
         }
     }
 
+    /*! This component controls the appearance of the
+        scroll bar decrement button.
+    */
     property Component decrementControl: Rectangle {
         implicitWidth: 16
         implicitHeight: 16
@@ -135,100 +167,106 @@ Rectangle {
         }
     }
 
-    property string activeControl: ""
-    function pixelMetric(arg) {
-        if (arg === "scrollbarExtent")
-            return (styleitem.horizontal ? bg.height : bg.width);
-        return 0;
-    }
+    /*! \internal */
+    property Component panel: Item {
 
-    function styleHint(arg) {
-        return false;
-    }
+        property string activeControl: ""
 
-    function hitTest(argX, argY) {
-        if (itemIsHit(handleControl, argX, argY))
-            return "handle"
-        else if (itemIsHit(upControl, argX, argY))
-            return "up";
-        else if (itemIsHit(downControl, argX, argY))
-            return "down";
-        else if (itemIsHit(bg, argX, argY)) {
-            if (styleitem.horizontal && argX < handleControl.x || !styleitem.horizontal && argY < handleControl.y)
-                return "upPage"
-            else
-                return "downPage"
+        implicitWidth: horizontal ? 200 : bg.implicitWidth
+        implicitHeight: horizontal ? bg.implicitHeight : 200
+
+        function pixelMetric(arg) {
+            if (arg === "scrollbarExtent")
+                return (styleitem.horizontal ? bg.height : bg.width);
+            return 0;
         }
 
-        return "none";
-    }
+        function styleHint(arg) {
+            return false;
+        }
 
-    function subControlRect(arg) {
-        if (arg === "handle") {
-            return Qt.rect(handleControl.x, handleControl.y, handleControl.width, handleControl.height);
-        } else if (arg === "groove") {
-            if (styleitem.horizontal) {
-                return Qt.rect(upControl.width - styleitem.handleOverlap,
-                               0,
-                               control.width - (upControl.width + downControl.width - styleitem.handleOverlap * 2),
-                               control.height);
-            } else {
-                return Qt.rect(0,
-                               upControl.height - styleitem.handleOverlap,
-                               control.width,
-                               control.height - (upControl.height + downControl.height - styleitem.handleOverlap * 2));
+        function hitTest(argX, argY) {
+            if (itemIsHit(handleControl, argX, argY))
+                return "handle"
+            else if (itemIsHit(upControl, argX, argY))
+                return "up";
+            else if (itemIsHit(downControl, argX, argY))
+                return "down";
+            else if (itemIsHit(bg, argX, argY)) {
+                if (styleitem.horizontal && argX < handleControl.x || !styleitem.horizontal && argY < handleControl.y)
+                    return "upPage"
+                else
+                    return "downPage"
             }
+
+            return "none";
         }
-        return Qt.rect(0,0,0,0);
-    }
 
-    function itemIsHit(argItem, argX, argY) {
-        var pos = argItem.mapFromItem(control, argX, argY);
-        return (pos.x >= 0 && pos.x <= argItem.width && pos.y >= 0 && pos.y <= argItem.height);
-    }
+        function subControlRect(arg) {
+            if (arg === "handle") {
+                return Qt.rect(handleControl.x, handleControl.y, handleControl.width, handleControl.height);
+            } else if (arg === "groove") {
+                if (styleitem.horizontal) {
+                    return Qt.rect(upControl.width - styleitem.handleOverlap,
+                                   0,
+                                   control.width - (upControl.width + downControl.width - styleitem.handleOverlap * 2),
+                                   control.height);
+                } else {
+                    return Qt.rect(0,
+                                   upControl.height - styleitem.handleOverlap,
+                                   control.width,
+                                   control.height - (upControl.height + downControl.height - styleitem.handleOverlap * 2));
+                }
+            }
+            return Qt.rect(0,0,0,0);
+        }
 
-    Loader {
-        id: upControl
-        anchors.top: parent.top
-        anchors.left: parent.left
-        sourceComponent: decrementControl
-        property bool mouseOver: activeControl === "up"
-        property bool pressed: control.upPressed
-    }
+        function itemIsHit(argItem, argX, argY) {
+            var pos = argItem.mapFromItem(control, argX, argY);
+            return (pos.x >= 0 && pos.x <= argItem.width && pos.y >= 0 && pos.y <= argItem.height);
+        }
 
-    Loader {
-        id: bg
-        anchors.top: horizontal ? undefined : upControl.bottom
-        anchors.bottom: horizontal ? undefined : downControl.top
-        anchors.bottomMargin: -1
-        anchors.left:  horizontal ? upControl.right : undefined
-        anchors.right: horizontal ? downControl.left : undefined
-        sourceComponent: background
-    }
+        Loader {
+            id: upControl
+            anchors.top: parent.top
+            anchors.left: parent.left
+            sourceComponent: decrementControl
+            property bool mouseOver: activeControl === "up"
+            property bool pressed: control.upPressed
+        }
 
-    Loader {
-        id: downControl
-        anchors.bottom: horizontal ? undefined : parent.bottom
-        anchors.bottomMargin: -1
-        anchors.right: horizontal ? parent.right : undefined
-        sourceComponent: incrementControl
-        property bool mouseOver: activeControl === "down"
-        property bool pressed: control.downPressed
-    }
+        Loader {
+            id: bg
+            anchors.top: horizontal ? undefined : upControl.bottom
+            anchors.bottom: horizontal ? undefined : downControl.top
+            anchors.left:  horizontal ? upControl.right : undefined
+            anchors.right: horizontal ? downControl.left : undefined
+            sourceComponent: background
+        }
 
-    Loader{
-        id: handleControl
-        property bool mouseOver: activeControl === "handle"
-        property var flickableItem: control.parent.parent.flickableItem
-        property int extent: Math.max(minimumHandleLength, horizontal ?
-                                          (flickableItem.width/flickableItem.contentWidth) * bg.width :
-                                          (flickableItem.height/flickableItem.contentHeight) * bg.height)
-        height: horizontal ? implicitHeight : extent
-        width: horizontal ? extent : implicitWidth
-        anchors.top: bg.top
-        anchors.left: bg.left
-        anchors.topMargin: horizontal ? 0 : -1 -handleOverlap + (control.value / control.maximumValue) * (bg.height + 2 * handleOverlap- height)
-        anchors.leftMargin: horizontal ? -handleOverlap + (control.value / control.maximumValue) * (bg.width + 2 * handleOverlap - width) : 0
-        sourceComponent: handle
+        Loader {
+            id: downControl
+            anchors.bottom: horizontal ? undefined : parent.bottom
+            anchors.right: horizontal ? parent.right : undefined
+            sourceComponent: incrementControl
+            property bool mouseOver: activeControl === "down"
+            property bool pressed: control.downPressed
+        }
+
+        Loader{
+            id: handleControl
+            property bool mouseOver: activeControl === "handle"
+            property var flickableItem: control.parent.parent.flickableItem
+            property int extent: Math.max(minimumHandleLength, horizontal ?
+                                              (flickableItem.width/flickableItem.contentWidth) * bg.width :
+                                              (flickableItem.height/flickableItem.contentHeight) * bg.height)
+            height: horizontal ? implicitHeight : extent
+            width: horizontal ? extent : implicitWidth
+            anchors.top: bg.top
+            anchors.left: bg.left
+            anchors.topMargin: horizontal ? 0 : -1 -handleOverlap + (control.value / control.maximumValue) * (bg.height + 2 * handleOverlap- height)
+            anchors.leftMargin: horizontal ? -handleOverlap + (control.value / control.maximumValue) * (bg.width + 2 * handleOverlap - width) : 0
+            sourceComponent: handle
+        }
     }
 }

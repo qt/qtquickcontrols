@@ -42,15 +42,44 @@ import QtQuick.Controls 1.0
 import QtQuick.Controls.Private 1.0
 import QtQuick.Controls.Styles 1.0
 
+/*!
+    \qmltype ScrollViewStyle
+    \internal
+    \inqmlmodule QtQuick.Controls.Styles 1.0
+    \brief provides custom styling for ScrollView
+*/
 Style {
     id: root
 
-    property bool frameOnlyAroundContents: false
-    property int scrollBarSpacing: 4
-    property int defaultFrameWidth: 1
+    /*! This property controls if the scroll bars
+        should stay outside or inside the scroll view
+        frame.
 
-    property Component scrollBar: ScrollBarStyle{}
+        The default value is \c false.
+    */
+    property bool externalScrollBars: false
+
+    /*! This property controls the spacing between the
+        scroll bars and the frame when \l externalScrollBars
+        is \c true.
+
+        The default value is \c 4.
+    */
+    property int scrollBarSpacing: 4
+
+    /*! This property controls the frame width of the scrollView.
+
+        The default value is \c 1.
+    */
+    property int frameWidth: 1
+
+    /*! This property controls the  scroll bar appearance */
+    property Component scrollBar: ScrollBarStyle {}
+
+    /*! This Component paints the corner area between scroll bars */
     property Component corner: Rectangle { color: "#ccc" }
+
+    /*! This Component paints the frame around scroll bars. */
     property Component frame: Rectangle {
         color: "white"
         border.color: "#999"

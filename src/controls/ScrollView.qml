@@ -269,8 +269,8 @@ FocusScope {
         ScrollViewHelper {
             id: scroller
             anchors.fill: parent
-            property int frameWidth: frameVisible ? __style.defaultFrameWidth : 0
-            property bool outerFrame: !frameVisible || !(__style ? __style.frameOnlyAroundContents : 0)
+            property int frameWidth: frameVisible ? __style.frameWidth : 0
+            property bool outerFrame: !frameVisible || !(__style ? __style.externalScrollBars : 0)
             property int scrollBarSpacing: outerFrame ? 0 : (__style ? __style.scrollBarSpacing : 0)
             property int verticalScrollbarOffset: verticalScrollBar.visible && !verticalScrollBar.isTransient ?
                                                       verticalScrollBar.width + scrollBarSpacing : 0

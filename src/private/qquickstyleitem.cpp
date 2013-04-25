@@ -891,7 +891,7 @@ QVariant QQuickStyleItem::styleHint(const QString &metric)
         if (result == Qt::AlignCenter)
             return "center";
         return "left";
-    } else if (metric == "frameOnlyAroundContents") {
+    } else if (metric == "externalScrollBars") {
         return qApp->style()->styleHint(QStyle::SH_ScrollView_FrameOnlyAroundContents);
     } else if (metric == "scrollToClickPosition")
         return qApp->style()->styleHint(QStyle::SH_ScrollBar_LeftClickAbsolutePosition);
