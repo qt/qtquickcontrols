@@ -61,7 +61,8 @@ Style {
     property Component menuItem: Rectangle {
         x: 1
         y: 1
-        implicitWidth: Math.max((parent ? parent.width : 0), 18 + text.paintedWidth + (isSubmenu ? 48 : 12))
+        implicitWidth: Math.max((parent ? parent.width : 0),
+                                18 + text.paintedWidth + (rightDecoration.visible ? rightDecoration.width + 40 : 12))
         implicitHeight: isSeparator ? text.font.pixelSize / 2 : text.paintedHeight + 4
         color: selected && enabled ? "" : backgroundColor
         gradient: selected && enabled ? selectedGradient : undefined
@@ -162,14 +163,20 @@ Style {
         }
 
         Text {
-            visible: isSubmenu
-            text: "\u25b8" // BLACK RIGHT-POINTING SMALL TRIANGLE
+            id: rightDecoration
+            readonly property string shortcut: !!menuItem && menuItem["shortcut"] || ""
+            visible: isSubmenu || shortcut !== ""
+            text: isSubmenu ? "\u25b8" // BLACK RIGHT-POINTING SMALL TRIANGLE
+                            : shortcut
             anchors {
                 right: parent.right
                 rightMargin: 6
+                baseline: isSubmenu ? undefined : text.baseline
             }
+            font.pixelSize: isSubmenu ? text.font.pixelSize : text.font.pixelSize * 0.9
             color: text.color
-            style: selected ? Text.Normal : Text.Raised; styleColor: Qt.lighter(color, 4)
+            renderType: Text.NativeRendering
+            style: selected || !isSubmenu ? Text.Normal : Text.Raised; styleColor: Qt.lighter(color, 4)
         }
 
         Rectangle {
