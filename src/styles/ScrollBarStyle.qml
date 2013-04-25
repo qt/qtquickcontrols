@@ -40,6 +40,7 @@
 
 import QtQuick 2.1
 import QtQuick.Controls 1.0
+import QtQuick.Controls.Private 1.0
 
 /*!
     \qmltype ScrollBarStyle

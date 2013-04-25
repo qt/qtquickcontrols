@@ -25,6 +25,8 @@ QML_FILES += \
     TabBar.qml \
     BasicButton.qml \
     Control.qml \
+    Style.qml \
+    style.js \
     ModalPopupBehavior.qml \
     StackViewSlideDelegate.qml \
     StackView.js \

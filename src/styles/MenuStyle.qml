@@ -40,8 +40,8 @@
 
 import QtQuick 2.1
 import QtQuick.Controls 1.0
-import QtQuick.Controls.Styles 1.0
-import "./style.js" as StyleHelpers
+import QtQuick.Controls.Private 1.0
+import "../Private/style.js" as StyleHelpers
 
 Style {
     id: styleRoot

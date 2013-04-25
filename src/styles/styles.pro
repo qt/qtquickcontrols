@@ -14,8 +14,6 @@ QML_FILES = \
     ScrollViewStyle.qml\
     SliderStyle.qml \
     SpinBoxStyle.qml \
-    Style.qml \
-    style.js \
     StatusBarStyle.qml \
     TableViewStyle.qml \
     TabViewStyle.qml \
