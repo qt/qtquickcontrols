@@ -117,7 +117,7 @@ FocusScope {
             id: repeater
             objectName: "repeater"
             focus: true
-            model: tabView.count
+            model: tabView.__tabs
 
             delegate: Item {
                 id: tabitem
@@ -128,7 +128,7 @@ FocusScope {
                 property bool selected : tabView.currentIndex == index
                 property bool hover: mousearea.containsMouse
                 property bool first: index === 0
-                property string title: tabView.__tabs[index].title
+                property string title: modelData.title
 
                 z: selected ? 1 : -index
                 implicitWidth: Math.min(tabloader.implicitWidth, tabbar.width/repeater.count) + 1
@@ -159,7 +159,7 @@ FocusScope {
                     }
                 }
                 Accessible.role: Accessible.PageTab
-                Accessible.name: tabView.__tabs[index].title
+                Accessible.name: modelData.title
             }
         }
     }

@@ -86,7 +86,7 @@ FocusScope {
     function addTab(title, component) {
         var tab = tabcomp.createObject(stack)
         tab.sourceComponent = component
-        __tabs.push(tab)
+        __tabs.append({tab: tab})
         tab.parent = stack
         tab.title = title
         __setOpacities()
@@ -101,15 +101,15 @@ FocusScope {
         tab.sourceComponent = component
         tab.parent = stack
         tab.title = title
-        __tabs.splice(index, 0, tab);
+        __tabs.insert(index, {tab: tab})
         __setOpacities()
         return tab
     }
 
     /*! Removes and destroys a tab at the given \a index. */
     function removeTab(index) {
-        var tab = __tabs[index]
-        __tabs.splice(index, 1);
+        var tab = __tabs.get(index).tab
+        __tabs.remove(index, 1)
         tab.destroy()
         if (currentIndex > 0)
             currentIndex--
@@ -136,11 +136,11 @@ FocusScope {
 
     /*! Returns the \l Tab item at \a index. */
     function tabAt(index) {
-        return __tabs[index]
+        return __tabs.get(index).tab
     }
 
     /*! \internal */
-    property var __tabs: new Array()
+    property ListModel __tabs: ListModel { }
 
     /*! \internal */
     property Component style: Qt.createComponent(Settings.theme() + "/TabViewStyle.qml", root)
@@ -152,11 +152,11 @@ FocusScope {
 
     /*! \internal */
     function __setOpacities() {
-        for (var i = 0; i < __tabs.length; ++i) {
-            var child = __tabs[i];
+        for (var i = 0; i < __tabs.count; ++i) {
+            var child = __tabs.get(i).tab
             child.visible = (i == currentIndex ? true : false)
         }
-        count = __tabs.length
+        count = __tabs.count
     }
 
     activeFocusOnTab: false
@@ -208,7 +208,7 @@ FocusScope {
             Component.onCompleted: {
                 for (var i = 0 ; i < stack.children.length ; ++i) {
                     if (stack.children[i].Accessible.role === Accessible.LayeredPane)
-                        __tabs.push(stack.children[i])
+                        __tabs.append({tab: stack.children[i]})
                 }
                 __setOpacities()
             }
@@ -230,7 +230,7 @@ FocusScope {
         for (var i = 0; i < children.length; ++i) {
             var child = children[i]
             if (child.Accessible.role === Accessible.LayeredPane) {
-                __tabs.push(child)
+                __tabs.append({tab: child})
                 child.parent = stack
                 child.Component.onDestruction.connect(stack.onDynamicTabDestroyed.bind(child))
                 tabAdded = true
