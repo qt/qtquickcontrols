@@ -68,7 +68,7 @@ Style {
         border.color: selected && enabled ? Qt.darker(selectedColor, 1) : color
         readonly property int leftMargin: __menuItemType === "menuitem" ? 18 : 0
 
-        readonly property color backgroundColor: "lightgray"
+        readonly property color backgroundColor: "#dcdcdc"
         readonly property color selectedColor: "#49d"
         Gradient {
             id: selectedGradient
