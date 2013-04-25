@@ -44,6 +44,7 @@ import QtQuick.Controls.Styles 1.0
 Style {
     id: root
 
+    property bool tabsMovable: false
     property int tabsLeftPadding: 0
     property int tabsRightPadding: 0
     property int tabsAlignment: __barstyle.styleHint("tabbaralignment") === "center" ? Qt.AlignHCenter : Qt.AlignLeft;

@@ -83,6 +83,10 @@ Style {
     /*! The \l ScrollView attached to this style. */
     readonly property TabView control: __control
 
+    /*! This property holds whether the user can move the tabs.
+        Tabs are not movable by default. */
+    property bool tabsMovable: false
+
     /*! This property holds the horizontal alignment of
         the tab buttons. Supported values are:
         \list

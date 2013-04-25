@@ -69,6 +69,8 @@ FocusScope {
     property var style
     property var styleItem: tabView.__styleItem ? tabView.__styleItem : null
 
+    property bool tabsMovable: styleItem ? styleItem.tabsMovable : false
+
     property int tabsAlignment: styleItem ? styleItem.tabsAlignment : Qt.AlignLeft
 
     property int tabOverlap: styleItem ? styleItem.tabOverlap : 0
@@ -84,11 +86,25 @@ FocusScope {
         return null;
     }
 
-    Row {
+    ListView {
         id: tabrow
         objectName: "tabrow"
         Accessible.role: Accessible.PageTabList
         spacing: -tabOverlap
+        orientation: Qt.Horizontal
+        interactive: false
+        focus: true
+
+        width: contentItem ? contentItem.width : 0
+        height: currentItem ? currentItem.height : 0
+
+        displaced: Transition {
+            NumberAnimation {
+                property: "x"
+                duration: 125
+                easing.type: Easing.OutQuad
+            }
+        }
 
         states: [
             State {
@@ -110,60 +126,113 @@ FocusScope {
             }
         ]
 
+        model: tabView.__tabs
 
-        Repeater {
-            id: repeater
-            objectName: "repeater"
+        delegate: MouseArea {
+            id: tabitem
+            objectName: "mousearea"
+            hoverEnabled: true
             focus: true
-            model: tabView.__tabs
 
-            delegate: Item {
-                id: tabitem
-                focus: true
+            drag.target: tabsMovable ? tabloader : null
+            drag.axis: Drag.XAxis
+            drag.minimumX: drag.active ? 0 : -Number.MAX_VALUE
+            drag.maximumX: tabrow.width - tabitem.width
 
-                property int tabindex: index
-                property bool selected : tabView.currentIndex === index
-                property bool hover: mousearea.containsMouse
-                property string title: modelData.title
-                property bool nextSelected: tabView.currentIndex === index + 1
-                property bool previousSelected: tabView.currentIndex === index - 1
+            property int tabindex: index
+            property bool selected : tabView.currentIndex === index
+            property bool hover: containsMouse
+            property string title: modelData.title
+            property bool nextSelected: tabView.currentIndex === index + 1
+            property bool previousSelected: tabView.currentIndex === index - 1
 
-                z: selected ? 1 : -index
-                implicitWidth: Math.min(tabloader.implicitWidth, tabbar.width/repeater.count) + 1
-                implicitHeight: tabloader.implicitHeight
+            z: selected ? 1 : -index
+            implicitWidth: Math.min(tabloader.implicitWidth, tabbar.width/tabrow.count) + 1
+            implicitHeight: tabloader.implicitHeight
 
-                Loader {
-                    id: tabloader
+            onPressed: {
+                tabView.currentIndex = index;
+                tabbar.nextItemInFocusChain(true).forceActiveFocus();
+            }
 
-                    sourceComponent: loader.item ? loader.item.tab : null
-                    anchors.fill: parent
+            Loader {
+                id: tabloader
 
-                    property Item control: tabView
-                    property int index: tabindex
+                property Item control: tabView
+                property int index: tabindex
 
-                    property QtObject tab: QtObject {
-                        readonly property alias index: tabitem.tabindex
-                        readonly property alias selected: tabitem.selected
-                        readonly property alias title: tabitem.title
-                        readonly property alias nextSelected: tabitem.nextSelected
-                        readonly property alias previsousSelected: tabitem.previousSelected
-                        readonly property alias hovered: tabitem.hover
-                        readonly property bool activeFocus: tabbar.activeFocus
+                property QtObject tab: QtObject {
+                    readonly property alias index: tabitem.tabindex
+                    readonly property alias selected: tabitem.selected
+                    readonly property alias title: tabitem.title
+                    readonly property alias nextSelected: tabitem.nextSelected
+                    readonly property alias previsousSelected: tabitem.previousSelected
+                    readonly property alias hovered: tabitem.hover
+                    readonly property bool activeFocus: tabbar.activeFocus
+                }
+
+                sourceComponent: loader.item ? loader.item.tab : null
+
+                Drag.keys: "application/x-tabbartab"
+                Drag.active: tabitem.drag.active
+                Drag.source: tabitem
+
+                property real __prevX: 0
+                property real __dragX: 0
+                onXChanged: {
+                    if (Drag.active) {
+                        // keep track for the snap back animation
+                        __dragX = tabitem.mapFromItem(tabrow, tabloader.x, 0).x
+
+                        // when moving to the left, the hot spot is the left edge and vice versa
+                        Drag.hotSpot.x = x < __prevX ? 0 : width
+                        __prevX = x
                     }
                 }
 
-                MouseArea {
-                    id: mousearea
-                    objectName: "mousearea"
-                    anchors.fill: parent
-                    hoverEnabled: true
-                    onPressed: {
-                        tabView.currentIndex = index;
-                        tabbar.nextItemInFocusChain(true).forceActiveFocus();
+                width: tabitem.width
+                state: Drag.active ? "drag" : ""
+
+                transitions: [
+                    Transition {
+                        to: "drag"
+                        PropertyAction { target: tabloader; property: "parent"; value: tabrow }
+                    },
+                    Transition {
+                        from: "drag"
+                        SequentialAnimation {
+                            PropertyAction { target: tabloader; property: "parent"; value: tabitem }
+                            NumberAnimation {
+                                target: tabloader
+                                duration: 50
+                                easing.type: Easing.OutQuad
+                                property: "x"
+                                from: tabloader.__dragX
+                                to: 0
+                            }
+                        }
                     }
-                }
-                Accessible.role: Accessible.PageTab
-                Accessible.name: modelData.title
+                ]
+            }
+
+            Accessible.role: Accessible.PageTab
+            Accessible.name: modelData.title
+        }
+    }
+
+    DropArea {
+        anchors.fill: tabrow
+        keys: "application/x-tabbartab"
+        onPositionChanged: {
+            var source = drag.source
+            var target = tabrow.itemAt(drag.x, drag.y)
+            if (source && target && source !== target) {
+                source = source.drag.target
+                target = target.drag.target
+                var center = target.parent.x + target.width / 2
+                if ((source.index > target.index && source.x < center)
+                        || (source.index < target.index && source.x + source.width > center))
+                    tabView.moveTab(source.index, target.index)
             }
         }
     }

@@ -274,6 +274,7 @@ TestCase {
         compare(tabView.count, 2)
         verify(tabView.tab1.status === Loader.Ready)
         verify(tabView.tab2.status === Loader.Ready)
+        waitForRendering(tabView)
 
         var column1 = getColumnItem(tabView.tab1, "column1")
         verify(column1 !== null)
@@ -294,7 +295,7 @@ TestCase {
         var mouseareas = populateMouseAreaItems(tabrowItem)
         verify(mouseareas.length, 2)
 
-        var tab1 = mouseareas[0].parent
+        var tab1 = mouseareas[0]
         verify(tab1 !== null)
         //printGeometry(tab1)
 
@@ -302,7 +303,7 @@ TestCase {
         mouseClick(tab1, tab1.width/2, tab1.height/2)
         verify(child1.activeFocus)
 
-        var tab2 = mouseareas[1].parent
+        var tab2 = mouseareas[1]
         verify(tab2 !== null)
         //printGeometry(tab2)
 

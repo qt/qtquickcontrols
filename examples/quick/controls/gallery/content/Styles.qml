@@ -242,6 +242,7 @@ Item {
         tabOverlap: 16
         tabsLeftPadding: 12
         frameOverlap: 4
+        tabsMovable: true
 
         frame: Rectangle {
             gradient: Gradient{
