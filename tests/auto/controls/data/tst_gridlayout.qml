@@ -59,6 +59,46 @@ Item {
         }
 
         Component {
+            id: layout_flow_Component
+            GridLayout {
+                columns: 4
+                columnSpacing: 0
+                rowSpacing: 0
+                Repeater {
+                    model: 6
+                    Rectangle {
+                        color: "red"
+                        Layout.preferredWidth: 10
+                        Layout.preferredHeight: 10
+                        Text { text: index }
+                    }
+                }
+            }
+        }
+
+        function test_flow()
+        {
+            var layout = layout_flow_Component.createObject(container);
+            compare(itemRect(layout.children[0]), [ 0,  0, 10, 10])
+            compare(itemRect(layout.children[1]), [10,  0, 10, 10])
+            compare(itemRect(layout.children[2]), [20,  0, 10, 10])
+            compare(itemRect(layout.children[3]), [30,  0, 10, 10])
+
+            compare(itemRect(layout.children[4]), [ 0, 10, 10, 10])
+            compare(itemRect(layout.children[5]), [10, 10, 10, 10])
+
+            layout.rows = 4
+            layout.flow = GridLayout.TopToBottom
+            compare(itemRect(layout.children[0]), [ 0,  0, 10, 10])
+            compare(itemRect(layout.children[1]), [ 0, 10, 10, 10])
+            compare(itemRect(layout.children[2]), [ 0, 20, 10, 10])
+            compare(itemRect(layout.children[3]), [ 0, 30, 10, 10])
+
+            compare(itemRect(layout.children[4]), [10,  0, 10, 10])
+            compare(itemRect(layout.children[5]), [10, 10, 10, 10])
+        }
+
+        Component {
             id: layout_flowLeftToRight_Component
             GridLayout {
                 columns: 4

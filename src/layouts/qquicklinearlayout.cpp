@@ -515,7 +515,8 @@ void QQuickGridLayout::setFlow(QQuickGridLayout::Flow flow)
     if (d->flow == flow)
         return;
     d->flow = flow;
-    invalidate();
+    // If flow is changed, the layout needs to be repopulated
+    updateLayoutItems();
     emit flowChanged();
 }
 
