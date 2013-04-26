@@ -216,7 +216,9 @@ ScrollView {
     property alias section: listView.section
 
     /*! \qmlproperty int TableView::currentRow
-    The current row index of the view. */
+    The current row index of the view.
+    The default value is \c -1 to indicate that no row is selected.
+    */
     property alias currentRow: listView.currentIndex
 
     /*! \qmlsignal TableView::activated()
@@ -255,6 +257,7 @@ ScrollView {
         activeFocusOnTab: true
         anchors.topMargin: tableHeader.height
         anchors.fill: parent
+        currentIndex: -1
 
         flickableDirection: Flickable.HorizontalFlick
         SystemPalette {

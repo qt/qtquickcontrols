@@ -64,6 +64,29 @@ TestCase {
                 ]
     }
 
+    function test_basic_setup() {
+        var test_instanceStr =
+           'import QtQuick 2.1;             \
+            import QtQuick.Controls 1.0;    \
+            TableView {                     \
+                TableViewColumn {           \
+                }                           \
+                model: 10                   \
+            }'
+
+        var table = Qt.createQmlObject(test_instanceStr, testCase, '')
+        compare(table.currentRow, -1)
+        verify(table.rowCount === 10)
+        verify (table.currentRowItem === null)
+        table.currentRow = 0
+        verify(table.currentRowItem !== null)
+        verify (table.currentRow === 0)
+        table.currentRow = 3
+        verify(table.currentRowItem !== null)
+        verify (table.currentRow === 3)
+        table.destroy()
+    }
+
     function test_usingqmlmodel(data) {
 
         var component = Qt.createComponent(data.a)

@@ -45,6 +45,7 @@ import QtQuickControlsTests 1.0
 TableView {
     model: model_qstringlist
     height: 70
+    currentRow: 0
     TableViewColumn {
         width: 100
     }

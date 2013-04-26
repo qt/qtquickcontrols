@@ -42,6 +42,7 @@ import QtQuick 2.1
 import QtQuick.Controls 1.0
 
 TableView {
+    currentRow: 0
 
     model:  ListModel {
         ListElement { value: "A" }
