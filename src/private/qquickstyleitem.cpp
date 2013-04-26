@@ -177,6 +177,10 @@ void QQuickStyleItem::initStyleOption()
     if (m_styleoption)
         m_styleoption->state = 0;
 
+    QPlatformTheme::Font platformFont = (m_hints.indexOf("mini") != -1) ? QPlatformTheme::MiniFont :
+                                        (m_hints.indexOf("small") != -1) ? QPlatformTheme::SmallFont :
+                                        QPlatformTheme::SystemFont;
+
     switch (m_itemType) {
     case Button: {
         if (!m_styleoption)
@@ -190,7 +194,10 @@ void QQuickStyleItem::initStyleOption()
         opt->features = (activeControl() == "default") ?
                     QStyleOptionButton::DefaultButton :
                     QStyleOptionButton::None;
-        if (const QFont *font = QGuiApplicationPrivate::platformTheme()->font(QPlatformTheme::PushButtonFont))
+        if (platformFont == QPlatformTheme::SystemFont)
+            platformFont = QPlatformTheme::PushButtonFont;
+        const QFont *font = QGuiApplicationPrivate::platformTheme()->font(platformFont);
+        if (font)
             opt->fontMetrics = QFontMetrics(*font);
     }
         break;
@@ -439,8 +446,12 @@ void QQuickStyleItem::initStyleOption()
     case ComboBox :{
         if (!m_styleoption)
             m_styleoption = new QStyleOptionComboBox();
+
         QStyleOptionComboBox *opt = qstyleoption_cast<QStyleOptionComboBox*>(m_styleoption);
-        const QFont *font = QGuiApplicationPrivate::platformTheme()->font(QPlatformTheme::PushButtonFont);
+
+        if (platformFont == QPlatformTheme::SystemFont)
+            platformFont = QPlatformTheme::PushButtonFont;
+        const QFont *font = QGuiApplicationPrivate::platformTheme()->font(platformFont);
         if (font)
             opt->fontMetrics = QFontMetrics(*font);
         opt->currentText = text();
@@ -448,7 +459,14 @@ void QQuickStyleItem::initStyleOption()
 #ifdef Q_OS_MAC
         if (m_properties["popup"].canConvert<QObject *>() && style() == "mac") {
             QObject *popup = m_properties["popup"].value<QObject *>();
-            popup->setProperty("__yOffset", 6);
+            if (platformFont == QPlatformTheme::MiniFont) {
+                popup->setProperty("__xOffset", -2);
+                popup->setProperty("__yOffset", 5);
+            } else {
+                if (platformFont == QPlatformTheme::SmallFont)
+                    popup->setProperty("__xOffset", -1);
+                popup->setProperty("__yOffset", 6);
+            }
             if (font)
                 popup->setProperty("__font", *font);
         }
@@ -1102,6 +1120,14 @@ void QQuickStyleItem::paint(QPainter *painter)
     initStyleOption();
     if (QStyleOptionMenuItem *opt = qstyleoption_cast<QStyleOptionMenuItem*>(m_styleoption))
         painter->setFont(opt->font);
+    else {
+        QPlatformTheme::Font platformFont = (m_styleoption->state & QStyle::State_Mini) ? QPlatformTheme::MiniFont :
+                                            (m_styleoption->state & QStyle::State_Small) ? QPlatformTheme::SmallFont :
+                                            QPlatformTheme::NFonts;
+        if (platformFont != QPlatformTheme::NFonts)
+            if (const QFont *font = QGuiApplicationPrivate::platformTheme()->font(platformFont))
+                painter->setFont(*font);
+    }
 
     // Set AA_UseHighDpiPixmaps when calling style code to make QIcon return
     // "retina" pixmaps. The flag is controlled by the application so we can't

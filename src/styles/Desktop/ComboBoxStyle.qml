@@ -67,6 +67,7 @@ Style {
             // contentHeight as in QComboBox
             contentHeight: Math.max(Math.ceil(textHeight("")), 14) + 2
 
+            hints: control.styleHints
             properties: {
                 "popup": control.__popup
             }
