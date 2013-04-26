@@ -31,7 +31,7 @@ qhp.QtQuickControls.subprojects.styleqmltypes.sortPages = true
 
 depends = qtqml qtquick qtwidgets qtdoc qtquicklayouts
 
-exampledirs += ../../../examples/
+exampledirs += ../../../examples/quick/controls
 
 headerdirs += ../
 

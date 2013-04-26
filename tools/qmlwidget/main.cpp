@@ -54,7 +54,7 @@ int main(int argc, char ** argv)
 
     QQuickView quickView;
     quickView.setObjectName("quick view");
-    quickView.setSource(QUrl::fromLocalFile("../examples/Gallery.qml"));
+    quickView.setSource(QUrl::fromLocalFile("../examples/quick/controls/Gallery.qml"));
 
     QWindowWidget windowWidget;
     windowWidget.setObjectName("window widget");

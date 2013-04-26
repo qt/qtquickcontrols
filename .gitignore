@@ -1,8 +1,8 @@
 # This file is used to ignore files which are generated in the Qt build system
 # ----------------------------------------------------------------------------
 
-examples/ApplicationTemplate/application
-examples/text/text
+examples/quick/controls/ApplicationTemplate/application
+examples/quick/controls/text/text
 tests/auto/activeFocusOnTab/tst_activeFocusOnTab
 tests/auto/controls/tst_controls
 tests/auto/qtdesktop/tst_qtdesktop

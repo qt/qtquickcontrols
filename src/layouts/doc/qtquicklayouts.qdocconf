@@ -26,7 +26,7 @@ qhp.qtquicklayouts.subprojects.qtquicklayoutsqmltypes.type = manual
 
 depends = qtqml qtquick qtwidgets qtdoc qtquicklayouts
 
-exampledirs += ../../../examples/
+exampledirs += ../../../examples/quick/controls/
 
 headerdirs += ../
 

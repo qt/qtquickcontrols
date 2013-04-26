@@ -109,7 +109,7 @@ ApplicationWindow {
                     width: widthSpinBox.value
                     height: heightSpinBox.value
                     fillMode: Image.Tile
-                    source: "../../../examples/touch/images/button_pressed.png"
+                    source: "../../../examples/quick/controls/touch/images/button_pressed.png"
                 }
             }
         }
@@ -126,7 +126,7 @@ ApplicationWindow {
                         width: widthSpinBox.value
                         height: heightSpinBox.value
                         fillMode: Image.Tile
-                        source: "../../../examples/touch/images/button_pressed.png"
+                        source: "../../../examples/quick/controls/touch/images/button_pressed.png"
                     }
                 }
             }
