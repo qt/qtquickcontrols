@@ -340,10 +340,11 @@ ScrollView {
                     width: rowfiller.width
                     height: rowfiller.rowHeight
                     sourceComponent: root.rowDelegate
-                    property bool alternateBackground: (index + rowCount) % 2 === 1
-                    property bool rowSelected: false
-                    property var model: listView.model
-                    property var modelData: null
+                    readonly property bool alternateBackground: (index + rowCount) % 2 === 1
+                    readonly property bool rowSelected: false
+                    readonly property var model: listView.model
+                    readonly property var modelData: null
+                    readonly property bool hasActiveFocus: root.activeFocus
                 }
             }
         }
@@ -384,13 +385,14 @@ ScrollView {
                 x: flickableItem.contentX
 
                 // these properties are exposed to the row delegate
-                property bool alternateBackground: rowitem.alternateBackground
-                property bool rowSelected: rowitem.ListView.isCurrentItem
-                property int index: rowitem.rowIndex
-                property var model: listView.model
-                property var modelData: rowitem.itemModelData
-                property var itemModel: rowitem.itemModel
-                property bool hasFocus: root.activeFocus
+                // Note: these properties should be mirrored in the row filler as well
+                readonly property bool alternateBackground: rowitem.alternateBackground
+                readonly property bool rowSelected: rowitem.ListView.isCurrentItem
+                readonly property int index: rowitem.rowIndex
+                readonly property var model: listView.model
+                readonly property var modelData: rowitem.itemModelData
+                readonly property var itemModel: rowitem.itemModel
+                readonly property bool hasActiveFocus: root.activeFocus
             }
             Row {
                 id: row

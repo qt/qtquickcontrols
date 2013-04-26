@@ -88,7 +88,7 @@ ScrollViewStyle {
     property Component rowDelegate: Rectangle {
         implicitHeight: 20
         implicitWidth: 80
-        property color selectedColor: control.activeFocus ? "#49e" : "#999"
+        property color selectedColor: hasActiveFocus ? "#49e" : "#999"
         gradient: Gradient {
             GradientStop { color: rowSelected ? Qt.lighter(selectedColor, 1.1)  : alternateBackground ? "#eee" : "white" ; position: 1 }
             GradientStop { color: rowSelected ? Qt.lighter(selectedColor, 1.2)  : alternateBackground ? "#eee" : "white" ; position: 0 }
