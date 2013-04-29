@@ -226,6 +226,41 @@ ScrollView {
     */
     signal activated
 
+    /*!
+        \qmlmethod TableView::positionViewAtIndex
+
+    Positions the view such that the \a index is at the position specified by \a mode:
+       \list
+       \li ListView.Beginning - position item at the top of the view.
+       \li ListView.Center - position item in the center of the view.
+       \li ListView.End - position item at bottom of the view.
+       \li ListView.Visible - if any part of the item is visible then take no action, otherwise bring the item into view.
+       \li ListView.Contain - ensure the entire item is visible. If the item is larger than the view the item is positioned
+           at the top of the view.
+       \endlist
+
+    If using the \a index to position the view creates an empty space at the beginning
+    or end of the view, then the view is positioned at the boundary.
+
+    The correct way to bring an item into view is with positionViewAtIndex.
+
+    Note that this method should only be called after the Component has completed.
+    To position the view at startup, this method should be called by Component.onCompleted.
+    For example, to position the view at the end at startup:
+
+    \code
+    Component.onCompleted: table.positionViewAtIndex(rowCount -1, ListView.Contain)
+    \endcode
+
+    Depending on how the model is populated, the model may not be ready when
+    TableView Component.onCompleted is called. In that case you may need to
+    delay the call to positionViewAtIndex by using a \l {Timer}.
+
+    */
+
+    function positionViewAtIndex(index, mode) {
+        listView.positionViewAtIndex(index, mode)
+    }
 
     style: Qt.createComponent(Settings.theme() + "/TableViewStyle.qml", root)
 
