@@ -128,147 +128,15 @@ public:
         return effectiveSizeHints()[which];
     }
 
+    static void effectiveSizeHint_helper(QQuickItem *item, QSizeF *cachedSizeHints, bool useFallbackToWidthOrHeight);
+
     QSizeF *effectiveSizeHints() const
     {
         if (!sizeHintCacheDirty)
             return cachedSizeHints;
 
-        QQuickLayoutAttached *info = 0;
-        // First, retrieve the user-specified hints from the attached "Layout." properties
-        if (QObject *attached = qmlAttachedPropertiesObject<QQuickLayout>(m_item, false)) {
-            info = static_cast<QQuickLayoutAttached *>(attached);
-
-            struct Getters {
-                SizeGetter call[NSizes];
-            };
-
-            static Getters horGetters = {
-                {&QQuickLayoutAttached::minimumWidth, &QQuickLayoutAttached::preferredWidth, &QQuickLayoutAttached::maximumWidth},
-            };
-
-            static Getters verGetters = {
-                {&QQuickLayoutAttached::minimumHeight, &QQuickLayoutAttached::preferredHeight, &QQuickLayoutAttached::maximumHeight}
-            };
-            for (int i = 0; i < NSizes; ++i) {
-                SizeGetter getter = horGetters.call[i];
-                Q_ASSERT(getter);
-                cachedSizeHints[i].setWidth((info->*getter)());
-                getter = verGetters.call[i];
-                Q_ASSERT(getter);
-                cachedSizeHints[i].setHeight((info->*getter)());
-            }
-        } else {
-            for (int i = 0; i < NSizes; ++i)
-                cachedSizeHints[i] = QSize();
-        }
-        cachedSizeHints[Qt::MinimumDescent] = QSize();  //### FIXME when baseline support is added
-
-        QSizeF &minS = cachedSizeHints[Qt::MinimumSize];
-        QSizeF &prefS = cachedSizeHints[Qt::PreferredSize];
-        QSizeF &maxS = cachedSizeHints[Qt::MaximumSize];
-        QSizeF &descentS = cachedSizeHints[Qt::MinimumDescent];
-
-        // For instance, will normalize the following user-set hints
-        // from: [10, 5, 60]
-        // to:   [10, 10, 60]
-        normalizeHints(minS.rwidth(), prefS.rwidth(), maxS.rwidth(), descentS.rwidth());
-        normalizeHints(minS.rheight(), prefS.rheight(), maxS.rheight(), descentS.rheight());
-/*
-      The following table illustrates the preference of the properties used for measuring layout
-      items. If present, the USER properties will be preferred. If USER properties are not present,
-      the HINT 1 properties will be preferred. Finally, the HINT 2 properties will be used as an
-      ultimate fallback.
-
-           | USER                           | HINT 1            | HINT 2
-      -----+--------------------------------+-------------------+-------
-      MIN  | Layout.minimumWidth            |                   | 0
-      PREF | Layout.preferredWidth          | implicitWidth     | width
-      MAX  | Layout.maximumWidth            |                   | 1000000000 (-1)
-      -----+--------------------------------+-------------------+--------
-  Fixed    | Layout.fillWidth               | Expanding if layout, Fixed if item |
-
-*/
-        //--- GATHER MINIMUM SIZE HINTS ---
-        // They are always 0
-
-        //--- GATHER PREFERRED SIZE HINTS ---
-        // First, from implicitWidth/Height
-        qreal &prefWidth = prefS.rwidth();
-        qreal &prefHeight = prefS.rheight();
-        if (prefWidth < 0 && m_item->implicitWidth() > 0)
-            prefWidth = m_item->implicitWidth();
-        if (prefHeight < 0 &&  m_item->implicitHeight() > 0)
-            prefHeight =  m_item->implicitHeight();
-
-        // If that fails, make an ultimate fallback to width/height
-
-        if (!info && (prefWidth < 0 || prefHeight < 0))
-            info = static_cast<QQuickLayoutAttached *>(qmlAttachedPropertiesObject<QQuickLayout>(m_item));
-
-        if (useFallbackToWidthOrHeight && info) {
-            /* This block is a bit hacky, but if we want to support using width/height
-               as preferred size hints in layouts, (which we think most people expect),
-               we only want to use the initial width.
-               This is because the width will change due to layout rearrangement, and the preferred
-               width should return the same value, regardless of the current width.
-               We therefore store the width in the Layout.preferredWidth attached property.
-               Since the layout listens to changes of Layout.preferredWidth, (it will
-               basically cause an invalidation of the layout, we have to disable that
-               notification while we set the preferred width.
-
-               Only use this fallback the first time the size hint is queried. Otherwise, we might
-               end up picking a width that is different than what was specified in the QML.
-            */
-            const bool was = info->setChangesNotificationEnabled(false);
-            if (prefWidth < 0) {
-                prefWidth = m_item->width();
-                info->setPreferredWidth(prefWidth);
-            }
-            if (prefHeight < 0) {
-                prefHeight = m_item->height();
-                info->setPreferredHeight(prefHeight);
-            }
-            info->setChangesNotificationEnabled(was);
-        }
+        effectiveSizeHint_helper(m_item, cachedSizeHints, useFallbackToWidthOrHeight);
         useFallbackToWidthOrHeight = false;
-        //--- GATHER MAXIMUM SIZE HINTS ---
-        // They are always q_declarativeLayoutMaxSize
-        combineHints(cachedSizeHints[Qt::MaximumSize].rwidth(), q_declarativeLayoutMaxSize);
-        combineHints(cachedSizeHints[Qt::MaximumSize].rheight(), q_declarativeLayoutMaxSize);
-
-        //--- GATHER DESCENT
-        // ### Not implemented
-
-
-        // Normalize again after the implicit hints have been gathered
-        // (using different rules than normalizeHints actually??))
-        // This is consistent with QGraphicsLayoutItemPrivate::effectiveSizeHints()
-/*
-The following shows how the different [min,pref,max] combinations are normalized after performing
-each normalization stage (maxS, minS and prefS):
-
-input   [1, 2, 3]   [1, 3, 2] [2, 1, 3] [2, 3, 1] [3, 2, 1] [3, 1, 2]
-------------------------------------------------------------------
-maxS    [1, 2, 3]   [1, 3, 3] [2, 1, 3] [2, 3, 3] [3, 2, 3] [3, 1, 3]
-minS    [1, 2, 3]   [1, 3, 3] [1, 1, 3] [2, 3, 3] [2, 2, 3] [1, 1, 3]
-prefS   [1, 2, 3]   [1, 3, 3] [1, 1, 3] [2, 3, 3] [2, 2, 3] [1, 1, 3] ###No change here.
-*/
-        expandSize(minS, QSizeF(0,0));
-        boundSize(minS, maxS);
-        expandSize(prefS, minS);
-        boundSize(prefS, maxS);
-        //expandSize(maxS, prefS);    // [3,2,1] > [3,2,2]
-        //expandSize(maxS, minS);
-        //boundSize(maxS, QSizeF(q_declarativeLayoutMaxSize, q_declarativeLayoutMaxSize));
-
-
-        //boundSize(minS, prefS);     // [3,2,1] > [2,2,1]
-        //boundSize(minS, maxS);
-
-        // Both of these are invariants and inconsistent with the above combinations of the
-        // "symmetric" combination (i.e. boundSize(minS, prefS) and expandSize(maxS, prefS)
-        //expandSize(prefS, minS);    //[3,2,1] > [3,3,1]
-        //boundSize(prefS, maxS);     //[3,2,1] > [3,1,1]
 
         sizeHintCacheDirty = false;
         return cachedSizeHints;

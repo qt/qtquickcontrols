@@ -11,7 +11,8 @@ SOURCES += plugin.cpp \
     qlayoutpolicy.cpp \
     qgridlayoutengine.cpp \
     qquicklayout.cpp \
-    qquicklinearlayout.cpp
+    qquicklinearlayout.cpp \
+    qquickgridlayoutengine.cpp
 
 HEADERS += \
     qlayoutpolicy_p.h \
