@@ -243,7 +243,9 @@ QQuickMenu::QQuickMenu(QObject *parent)
       m_popupWindow(0),
       m_menuContentItem(0),
       m_popupVisible(false),
-      m_containersCount(0)
+      m_containersCount(0),
+      m_xOffset(0),
+      m_yOffset(0)
 {
     connect(this, SIGNAL(__textChanged()), this, SIGNAL(titleChanged()));
 
@@ -288,6 +290,16 @@ void QQuickMenu::setFont(const QFont &arg)
 {
     if (m_platformMenu)
         m_platformMenu->setFont(arg);
+}
+
+void QQuickMenu::setXOffset(qreal x)
+{
+    m_xOffset = x;
+}
+
+void QQuickMenu::setYOffset(qreal y)
+{
+    m_yOffset = y;
 }
 
 void QQuickMenu::setSelectedIndex(int index)
@@ -349,7 +361,7 @@ void QQuickMenu::__popup(qreal x, qreal y, int atItemIndex)
     QQuickWindow *parentWindow = findParentWindow();
 
     if (m_platformMenu) {
-        QPointF screenPosition(x, y);
+        QPointF screenPosition(x + m_xOffset, y + m_yOffset);
         if (visualItem())
             screenPosition = visualItem()->mapToScene(screenPosition);
         m_platformMenu->showPopup(parentWindow, screenPosition.toPoint(), atItem ? atItem->platformItem() : 0);
@@ -364,7 +376,7 @@ void QQuickMenu::__popup(qreal x, qreal y, int atItemIndex)
 
         connect(m_popupWindow, SIGNAL(visibleChanged(bool)), this, SLOT(windowVisibleChanged(bool)));
 
-        m_popupWindow->setPosition(x, y);
+        m_popupWindow->setPosition(x + m_xOffset, y + m_yOffset);
         m_popupWindow->show();
     }
 }

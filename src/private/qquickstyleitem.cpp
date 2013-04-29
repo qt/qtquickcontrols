@@ -440,10 +440,19 @@ void QQuickStyleItem::initStyleOption()
         if (!m_styleoption)
             m_styleoption = new QStyleOptionComboBox();
         QStyleOptionComboBox *opt = qstyleoption_cast<QStyleOptionComboBox*>(m_styleoption);
-        if (const QFont *font = QGuiApplicationPrivate::platformTheme()->font(QPlatformTheme::PushButtonFont))
+        const QFont *font = QGuiApplicationPrivate::platformTheme()->font(QPlatformTheme::PushButtonFont);
+        if (font)
             opt->fontMetrics = QFontMetrics(*font);
         opt->currentText = text();
         opt->editable = false;
+#ifdef Q_OS_MAC
+        if (m_properties["popup"].canConvert<QObject *>() && style() == "mac") {
+            QObject *popup = m_properties["popup"].value<QObject *>();
+            popup->setProperty("__yOffset", 6);
+            if (font)
+                popup->setProperty("__font", *font);
+        }
+#endif
     }
         break;
     case SpinBox: {

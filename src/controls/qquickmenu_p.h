@@ -70,6 +70,8 @@ class QQuickMenu : public QQuickMenuText
     Q_PROPERTY(QQuickItem *__contentItem READ menuContentItem WRITE setMenuContentItem)
     Q_PROPERTY(int __minimumWidth READ minimumWidth WRITE setMinimumWidth)
     Q_PROPERTY(QFont __font WRITE setFont)
+    Q_PROPERTY(qreal __xOffset READ xOffset WRITE setXOffset)
+    Q_PROPERTY(qreal __yOffset READ yOffset WRITE setYOffset)
 
 public:
     Q_INVOKABLE void popup();
@@ -114,6 +116,11 @@ public:
     void setMinimumWidth(int w);
 
     void setFont(const QFont &font);
+
+    qreal xOffset() const { return m_xOffset; }
+    void setXOffset(qreal);
+    qreal yOffset() const { return m_yOffset; }
+    void setYOffset(qreal);
 
     QQuickItem *menuContentItem() const { return m_menuContentItem; }
     bool popupVisible() const { return m_popupVisible; }
@@ -162,6 +169,8 @@ private:
     QQuickItem * m_menuContentItem;
     bool m_popupVisible;
     int m_containersCount;
+    qreal m_xOffset;
+    qreal m_yOffset;
 };
 
 QT_END_NAMESPACE

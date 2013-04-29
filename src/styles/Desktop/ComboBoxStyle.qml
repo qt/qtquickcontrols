@@ -44,12 +44,6 @@ import QtQuick.Controls.Private 1.0
 Style {
     property Component panel: Item {
         property int popup: styleItem.styleHint("comboboxpopup")
-        property font font: itemstyle.font
-        StyleItem {
-            id: itemstyle
-            elementType: "comboboxitem"
-            visible: false
-        }
 
         implicitWidth: 115
         implicitHeight: styleItem.implicitHeight
@@ -72,6 +66,10 @@ Style {
             hasFocus: control.activeFocus
             // contentHeight as in QComboBox
             contentHeight: Math.max(Math.ceil(textHeight("")), 14) + 2
+
+            properties: {
+                "popup": control.__popup
+            }
         }
     }
 

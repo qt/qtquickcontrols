@@ -93,6 +93,8 @@ Control {
     readonly property bool __pressed: mouseArea.pressed && mouseArea.containsMouse || popup.__popupVisible
     /*! \internal */
     property alias __containsMouse: mouseArea.containsMouse
+    /*! \internal */
+    property var __popup: popup
 
     style: Qt.createComponent(Settings.theme() + "/ComboBoxStyle.qml", comboBox)
 
@@ -114,9 +116,6 @@ Control {
     Component.onCompleted: {
         if (currentIndex === -1)
             currentIndex = 0
-        if (Qt.platform.os === "mac") {
-            popup.y += 6
-        }
 
         popup.ready = true
         popup.resolveTextValue(textRole)
@@ -136,11 +135,9 @@ Control {
         property bool ready: false
         property bool isPopup: __panel ? __panel.popup : false
 
-        property int x: 0
         property int y: isPopup ? (comboBox.__panel.height - comboBox.__panel.implicitHeight) / 2.0 : comboBox.__panel.height
         __minimumWidth: comboBox.width
         __visualItem: comboBox
-        __font: __panel.font
 
         property ExclusiveGroup eg: ExclusiveGroup { id: eg }
 
@@ -199,7 +196,7 @@ Control {
             if (items[__selectedIndex])
                 items[__selectedIndex].checked = true
             __currentIndex = comboBox.currentIndex
-            __popup(x, y, isPopup ? __selectedIndex : 0)
+            __popup(0, y, isPopup ? __selectedIndex : 0)
         }
     }
 
