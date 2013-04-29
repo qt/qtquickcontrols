@@ -180,6 +180,24 @@ TestCase {
         table.destroy()
     }
 
+    function test_columnCount() {
+        var component = Qt.createComponent("tableview/table_multicolumns.qml")
+        compare(component.status, Component.Ready)
+        var table =  component.createObject(container);
+        verify(table !== null, "table created is null")
+        compare(table.columnCount, 3)
+        table.destroy()
+    }
+
+    function test_rowCount() {
+        var component = Qt.createComponent("tableview/table_multicolumns.qml")
+        compare(component.status, Component.Ready)
+        var table =  component.createObject(container);
+        verify(table !== null, "table created is null")
+        compare(table.rowCount, 3)
+        table.destroy()
+    }
+
     // In TableView, drawn text = table.currentRowItem.children[1].children[1].itemAt(0).children[0].children[0].text
 
     function findAChild(item, name)
