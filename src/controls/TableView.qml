@@ -202,10 +202,10 @@ ScrollView {
 
     /*! \qmlproperty int TableView::rowCount
     The current number of rows */
-    property alias rowCount: listView.count
+    readonly property alias rowCount: listView.count
 
     /*! The current number of columns */
-    property int columnCount: columns.length
+    readonly property int columnCount: columns.length
 
     /*! \qmlproperty string TableView::section.property
         \qmlproperty enumeration TableView::section.criteria
