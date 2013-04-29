@@ -91,14 +91,11 @@ Control {
         The default value is \c false. */
     property bool activeFocusOnPress: false
 
-    /*! This property holds the button text color.
-
-        The default value is SystemPalette::text. */
-    property color textColor: syspal.text
-
     /*! This property holds the button tooltip. */
     property string tooltip
 
+    /*! \internal */
+    property color __textColor: syspal.text
     /*! \internal */
     property string __position: "only"
     /*! \internal */
@@ -155,7 +152,12 @@ Control {
         onReleased: if (containsMouse) __action.trigger()
         onExited: Tooltip.hideText()
         onCanceled: Tooltip.hideText()
-        onPressed: if (activeFocusOnPress) button.forceActiveFocus()
+        onPressed: {
+            if (activeFocusOnPress)
+                button.forceActiveFocus()
+            if (button.checkable)
+                button.checked = !button.checked
+        }
 
         Timer {
             interval: 1000

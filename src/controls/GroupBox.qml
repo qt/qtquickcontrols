@@ -166,6 +166,7 @@ Item {
         onLoaded: item.z = -1
         Loader {
             id: styleLoader
+            property alias control: groupbox
             sourceComponent: groupbox.style
         }
     }

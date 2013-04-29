@@ -38,20 +38,23 @@
 **
 ****************************************************************************/
 import QtQuick 2.1
-import QtQuick.Controls.Styles 1.0
 import QtQuick.Controls.Private 1.0
 
 Style {
     property Component panel: StyleItem {
         id: styleitem
         elementType: "button"
-        sunken: control.pressed || control.checked
-        raised: !(control.pressed || control.checked)
+        sunken: control.pressed || (control.checkable && control.checked)
+        raised: !(control.pressed || (control.checkable && control.checked))
         hover: control.__containsMouse
         text: control.iconSource === "" ? "" : control.text
         hasFocus: control.activeFocus
         hints: control.styleHints
         // If no icon, let the style do the drawing
         activeControl: control.isDefault ? "default" : "f"
+
+        properties: {
+            "icon": control.__action.__icon
+        }
     }
 }

@@ -40,13 +40,16 @@
 import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Private 1.0
-import QtQuick.Controls.Styles 1.0
 
 ScrollViewStyle {
     id: root
 
-    property color textColor: "black"
+    property color textColor: __syspal.text
     property color highlightedTextColor: "white"
+
+    property SystemPalette __syspal: SystemPalette {
+        colorGroup: control.enabled ? SystemPalette.Active : SystemPalette.Disabled
+    }
 
     property Component headerDelegate: Rectangle {
         gradient: Gradient {
@@ -62,6 +65,7 @@ ScrollViewStyle {
             horizontalAlignment: Text.AlignLeft
             anchors.leftMargin: 4
             text: itemValue
+            color: textColor
             renderType: Text.NativeRendering
         }
         Rectangle {
@@ -83,7 +87,7 @@ ScrollViewStyle {
     property Component rowDelegate: Rectangle {
         implicitHeight: 20
         implicitWidth: 80
-        property color selectedColor: control.activeFocus ? "#49e" : "#999"
+        property color selectedColor: hasActiveFocus ? "#49e" : "#999"
         gradient: Gradient {
             GradientStop { color: rowSelected ? Qt.lighter(selectedColor, 1.1)  : alternateBackground ? "#eee" : "white" ; position: 1 }
             GradientStop { color: rowSelected ? Qt.lighter(selectedColor, 1.2)  : alternateBackground ? "#eee" : "white" ; position: 0 }

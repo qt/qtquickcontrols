@@ -45,6 +45,7 @@ import QtQuickControlsTests 1.0
 TableView {
     model: TestItemModel {}
     height: 70
+    currentRow: 0
     TableViewColumn {
         role: "test"
         width: 100

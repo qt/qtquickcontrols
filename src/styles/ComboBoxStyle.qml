@@ -39,6 +39,7 @@
 ****************************************************************************/
 import QtQuick 2.1
 import QtQuick.Controls.Styles 1.0
+import QtQuick.Controls.Private 1.0
 
 /*!
     \qmltype ComboBoxStyle
@@ -47,6 +48,11 @@ import QtQuick.Controls.Styles 1.0
 */
 
 Style {
+    property color foregroundColor: __syspal.text
+
+    property var __syspal: SystemPalette {
+        colorGroup: control.enabled ? SystemPalette.Active : SystemPalette.Disabled
+    }
 
     property Component panel: Item {
         implicitWidth: 100
@@ -79,6 +85,7 @@ Style {
                 id: textitem
                 anchors.centerIn: parent
                 text: control.currentText
+                color: foregroundColor
                 renderType: Text.NativeRendering
             }
             Image {
@@ -91,7 +98,9 @@ Style {
         }
     }
 
-    property Component dropDownStyle: MenuStyle { }
+    property Component dropDownStyle: MenuStyle {
+        __menuItemType: "comboboxitem"
+    }
 
     property Component popupStyle: Style {
 

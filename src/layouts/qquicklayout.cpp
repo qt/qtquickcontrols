@@ -88,6 +88,10 @@ QQuickLayoutAttached::QQuickLayoutAttached(QObject *parent)
       m_fillHeight(false),
       m_isFillWidthSet(false),
       m_isFillHeightSet(false),
+      m_isMinimumWidthSet(false),
+      m_isMinimumHeightSet(false),
+      m_isMaximumWidthSet(false),
+      m_isMaximumHeightSet(false),
       m_changesNotificationEnabled(true),
       m_alignment(0)
 {
@@ -105,7 +109,10 @@ QQuickLayoutAttached::QQuickLayoutAttached(QObject *parent)
 */
 void QQuickLayoutAttached::setMinimumWidth(qreal width)
 {
-    if (qIsNaN(width) || m_minimumWidth == width)
+    if (qIsNaN(width))
+        return;
+    m_isMinimumWidthSet = width >= 0;
+    if (m_minimumWidth == width)
         return;
 
     m_minimumWidth = width;
@@ -124,7 +131,10 @@ void QQuickLayoutAttached::setMinimumWidth(qreal width)
 */
 void QQuickLayoutAttached::setMinimumHeight(qreal height)
 {
-    if (qIsNaN(height) || m_minimumHeight == height)
+    if (qIsNaN(height))
+        return;
+    m_isMinimumHeightSet = height >= 0;
+    if (m_minimumHeight == height)
         return;
 
     m_minimumHeight = height;
@@ -149,8 +159,7 @@ void QQuickLayoutAttached::setPreferredWidth(qreal width)
         return;
 
     m_preferredWidth = width;
-    if (m_changesNotificationEnabled)
-        invalidateItem();
+    invalidateItem();
     emit preferredWidthChanged();
 }
 
@@ -171,8 +180,7 @@ void QQuickLayoutAttached::setPreferredHeight(qreal height)
         return;
 
     m_preferredHeight = height;
-    if (m_changesNotificationEnabled)
-        invalidateItem();
+    invalidateItem();
     emit preferredHeightChanged();
 }
 
@@ -190,7 +198,10 @@ void QQuickLayoutAttached::setPreferredHeight(qreal height)
 */
 void QQuickLayoutAttached::setMaximumWidth(qreal width)
 {
-    if (qIsNaN(width) || m_maximumWidth == width)
+    if (qIsNaN(width))
+        return;
+    m_isMaximumWidthSet = width >= 0;
+    if (m_maximumWidth == width)
         return;
 
     m_maximumWidth = width;
@@ -212,12 +223,61 @@ void QQuickLayoutAttached::setMaximumWidth(qreal width)
 */
 void QQuickLayoutAttached::setMaximumHeight(qreal height)
 {
-    if (qIsNaN(height) || m_maximumHeight == height)
+    if (qIsNaN(height))
+        return;
+    m_isMaximumHeightSet = height >= 0;
+    if (m_maximumHeight == height)
         return;
 
     m_maximumHeight = height;
     invalidateItem();
     emit maximumHeightChanged();
+}
+
+void QQuickLayoutAttached::setMinimumImplicitSize(const QSizeF &sz)
+{
+    bool emitWidthChanged = false;
+    bool emitHeightChanged = false;
+    if (!m_isMinimumWidthSet && m_minimumWidth != sz.width()) {
+        m_minimumWidth = sz.width();
+        emitWidthChanged = true;
+    }
+    if (!m_isMinimumHeightSet && m_minimumHeight != sz.height()) {
+        m_minimumHeight = sz.height();
+        emitHeightChanged = true;
+    }
+    // Only invalidate the item once, and make sure we emit signal changed after the call to
+    // invalidateItem()
+    if (emitWidthChanged || emitHeightChanged) {
+        invalidateItem();
+        if (emitWidthChanged)
+            emit minimumWidthChanged();
+        if (emitHeightChanged)
+            emit minimumHeightChanged();
+    }
+}
+
+void QQuickLayoutAttached::setMaximumImplicitSize(const QSizeF &sz)
+{
+    bool emitWidthChanged = false;
+    bool emitHeightChanged = false;
+    if (!m_isMaximumWidthSet && m_maximumWidth != sz.width()) {
+        m_maximumWidth = sz.width();
+        emitWidthChanged = true;
+    }
+    if (!m_isMaximumHeightSet && m_maximumHeight != sz.height()) {
+        m_maximumHeight = sz.height();
+        emitHeightChanged = true;
+    }
+    // Only invalidate the item once, and make sure we emit changed signal after the call to
+    // invalidateItem()
+    if (emitWidthChanged || emitHeightChanged) {
+        invalidateItem();
+        if (emitWidthChanged)
+            emit maximumWidthChanged();
+        if (emitHeightChanged)
+            emit maximumHeightChanged();
+    }
 }
 
 /*!
@@ -331,6 +391,8 @@ void QQuickLayoutAttached::setColumn(int column)
 
 void QQuickLayoutAttached::invalidateItem()
 {
+    if (!m_changesNotificationEnabled)
+        return;
     quickLayoutDebug() << "QQuickLayoutAttached::invalidateItem";
     if (QQuickLayout *layout = parentLayout()) {
         layout->invalidate(item());
@@ -391,9 +453,7 @@ void QQuickLayout::invalidate(QQuickItem * /*childItem*/)
 
     m_dirty = true;
 
-    if (QQuickLayout *parentLayout = qobject_cast<QQuickLayout *>(parentItem())) {
-        parentLayout->invalidate(this);
-    } else {
+    if (!qobject_cast<QQuickLayout *>(parentItem())) {
         quickLayoutDebug() << "QQuickLayout::invalidate(), postEvent";
         QCoreApplication::postEvent(this, new QEvent(QEvent::LayoutRequest));
     }

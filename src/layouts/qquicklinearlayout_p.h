@@ -83,7 +83,6 @@ protected slots:
 
 private:
     void removeGridItem(QGridLayoutItem *gridItem);
-    void propagateLayoutSizeHints();
     Q_DECLARE_PRIVATE(QQuickGridLayoutBase)
 };
 

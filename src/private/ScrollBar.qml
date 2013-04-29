@@ -47,7 +47,7 @@ import QtQuick.Controls.Private 1.0
         \internal
         \inqmlmodule QtQuick.Controls.Private 1.0
 */
-Item {
+Control {
     id: scrollbar
 
     property int orientation: Qt.Horizontal
@@ -55,14 +55,11 @@ Item {
     property alias maximumValue: slider.maximumValue
     property alias value: slider.value
 
-    property Component style: Qt.createComponent("../" + Settings.theme() + "/ScrollBarStyle.qml", scrollbar)
-    property alias styleItem: loader.item
-
     activeFocusOnTab: false
 
     Accessible.role: Accessible.ScrollBar
-    implicitWidth: loader.implicitWidth
-    implicitHeight: loader.implicitHeight
+    implicitWidth: __panel.implicitWidth
+    implicitHeight: __panel.implicitHeight
 
     readonly property alias upPressed: internal.upPressed
     readonly property alias downPressed: internal.downPressed
@@ -87,12 +84,12 @@ Item {
         anchors.fill: parent
 
         property bool autoincrement: false
-        property bool scrollToClickPosition: styleItem ? styleItem.scrollToClickPosition : 0
+        property bool scrollToClickPosition: __style ? __style.scrollToClickPosition : 0
 
         // Update hover item
-        onEntered: if (!pressed) styleItem.activeControl = styleItem.hitTest(mouseX, mouseY)
-        onExited: if (!pressed) styleItem.activeControl = "none"
-        onMouseXChanged: if (!pressed) styleItem.activeControl = styleItem.hitTest(mouseX, mouseY)
+        onEntered: if (!pressed) __panel.activeControl = __panel.hitTest(mouseX, mouseY)
+        onExited: if (!pressed) __panel.activeControl = "none"
+        onMouseXChanged: if (!pressed) __panel.activeControl = __panel.hitTest(mouseX, mouseY)
         hoverEnabled: true
 
         property var pressedX
@@ -123,7 +120,7 @@ Item {
         }
 
         onPositionChanged: {
-            if (pressed && styleItem.activeControl === "handle") {
+            if (pressed && __panel.activeControl === "handle") {
                 if (!horizontal)
                     slider.position = oldPosition + (mouseY - pressedY)
                 else
@@ -132,29 +129,29 @@ Item {
         }
 
         onPressed: {
-            styleItem.activeControl = styleItem.hitTest(mouseX, mouseY)
+            __panel.activeControl = __panel.hitTest(mouseX, mouseY)
             scrollToClickposition = scrollToClickPosition
-            var handleRect = styleItem.subControlRect("handle")
-            grooveSize =  horizontal ? styleItem.subControlRect("groove").width -
+            var handleRect = __panel.subControlRect("handle")
+            grooveSize =  horizontal ? __panel.subControlRect("groove").width -
                                        handleRect.width:
-                                       styleItem.subControlRect("groove").height -
+                                       __panel.subControlRect("groove").height -
                                        handleRect.height;
-            if (styleItem.activeControl === "handle") {
+            if (__panel.activeControl === "handle") {
                 pressedX = mouseX;
                 pressedY = mouseY;
                 internal.handlePressed = true;
                 oldPosition = slider.position;
-            } else if (styleItem.activeControl === "up") {
+            } else if (__panel.activeControl === "up") {
                 decrement();
                 internal.upPressed = Qt.binding(function() {return containsMouse});
-            } else if (styleItem.activeControl === "down") {
+            } else if (__panel.activeControl === "down") {
                 increment();
                 internal.downPressed = Qt.binding(function() {return containsMouse});
             } else if (!scrollToClickposition){
-                if (styleItem.activeControl === "upPage") {
+                if (__panel.activeControl === "upPage") {
                     decrementPage();
                     internal.pageUpPressed = true;
-                } else if (styleItem.activeControl === "downPage") {
+                } else if (__panel.activeControl === "downPage") {
                     incrementPage();
                     internal.pageDownPressed = true;
                 }
@@ -165,7 +162,7 @@ Item {
         }
 
         onReleased: {
-            styleItem.activeControl = styleItem.hitTest(mouseX, mouseY);
+            __panel.activeControl = __panel.hitTest(mouseX, mouseY);
             autoincrement = false;
             internal.upPressed = false;
             internal.downPressed = false;
@@ -197,14 +194,6 @@ Item {
             if (value < minimumValue)
                 value = minimumValue
         }
-
-        Loader {
-            id: loader
-            property Item control: scrollbar
-            sourceComponent: style
-            anchors.fill: parent
-        }
-
 
         RangeModel {
             id: slider

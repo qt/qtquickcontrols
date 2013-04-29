@@ -37,43 +37,34 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
+
 import QtQuick 2.1
 import QtQuick.Controls 1.0
-import QtQuick.Controls.Private 1.0
 
-/*!
-    \qmltype GroupBoxStyle
-    \internal
-    \inqmlmodule QtQuick.Controls.Styles 1.0
-*/
-Style {
-    property int margin: 9
-    property color textColor: __syspal.text
+TableView {
+    id: table
+    model: [{"text": "text1"}, {"text": "text2"}, {"text": "text3"}]
+    property var test: 0
 
-    property SystemPalette __syspal: SystemPalette {
-        colorGroup: control.enabled ? SystemPalette.Active : SystemPalette.Disabled
+    TableViewColumn {
+        title: "Text"
+        role: "text"
+        width: 100
     }
-
-    property Component panel:
-        Item {
-        implicitWidth: control.contentWidth + 2 * margin
-        implicitHeight: control.contentHeight + 2 * margin + 12
-        Text {
-            anchors.top: parent.top
-            anchors.left: parent.left
-            anchors.margins: 4
-            text: control.title
-            color: textColor
-            renderType: Text.NativeRendering
-        }
-        BorderImage {
+    headerDelegate: Text {
+        height: 40
+        text: itemValue
+    }
+    itemDelegate: Text {
+        width: parent.width
+        anchors.left: parent.left
+        anchors.verticalCenter: parent.verticalCenter
+        text: itemValue !== undefined ? itemValue : ""
+        color: itemTextColor
+        MouseArea {
             anchors.fill: parent
-            anchors.topMargin: 20
-            source: "images/groupbox.png"
-            border.left: 8
-            border.right: 8
-            border.top: 8
-            border.bottom: 8
+            onClicked: table.test = 1
         }
     }
 }
+

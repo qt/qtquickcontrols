@@ -94,7 +94,6 @@ MenuBarPrivate {
         onStatusChanged: if (status === Loader.Error) console.error("Failed to load panel for", root)
 
         visible: status === Loader.Ready
-        active: !root.isNative
         sourceComponent: __style ? __style.frame : undefined
 
         Loader {

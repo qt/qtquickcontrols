@@ -184,6 +184,9 @@ void QQuickStyleItem::initStyleOption()
 
         QStyleOptionButton *opt = qstyleoption_cast<QStyleOptionButton*>(m_styleoption);
         opt->text = text();
+        opt->icon = m_properties["icon"].value<QIcon>();
+        int e = qApp->style()->pixelMetric(QStyle::PM_ButtonIconSize, m_styleoption, 0);
+        opt->iconSize = QSize(e, e);
         opt->features = (activeControl() == "default") ?
                     QStyleOptionButton::DefaultButton :
                     QStyleOptionButton::None;
@@ -888,7 +891,7 @@ QVariant QQuickStyleItem::styleHint(const QString &metric)
         if (result == Qt::AlignCenter)
             return "center";
         return "left";
-    } else if (metric == "frameOnlyAroundContents") {
+    } else if (metric == "externalScrollBars") {
         return qApp->style()->styleHint(QStyle::SH_ScrollView_FrameOnlyAroundContents);
     } else if (metric == "scrollToClickPosition")
         return qApp->style()->styleHint(QStyle::SH_ScrollBar_LeftClickAbsolutePosition);
@@ -1063,11 +1066,38 @@ QRectF QQuickStyleItem::subControlRect(const QString &subcontrolString)
     return QRectF();
 }
 
+namespace  {
+class QHighDpiPixmapsEnabler {
+public:
+    QHighDpiPixmapsEnabler()
+    :wasEnabled(false)
+    {
+        if (!qApp->testAttribute(Qt::AA_UseHighDpiPixmaps)) {
+            qApp->setAttribute(Qt::AA_UseHighDpiPixmaps);
+            wasEnabled = true;
+        }
+    }
+
+    ~QHighDpiPixmapsEnabler()
+    {
+        if (wasEnabled)
+            qApp->setAttribute(Qt::AA_UseHighDpiPixmaps, false);
+    }
+private:
+    bool wasEnabled;
+};
+}
+
 void QQuickStyleItem::paint(QPainter *painter)
 {
     initStyleOption();
     if (QStyleOptionMenuItem *opt = qstyleoption_cast<QStyleOptionMenuItem*>(m_styleoption))
         painter->setFont(opt->font);
+
+    // Set AA_UseHighDpiPixmaps when calling style code to make QIcon return
+    // "retina" pixmaps. The flag is controlled by the application so we can't
+    // set it unconditinally.
+    QHighDpiPixmapsEnabler enabler;
 
     switch (m_itemType) {
     case Button:

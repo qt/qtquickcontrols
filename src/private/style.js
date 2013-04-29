@@ -37,43 +37,16 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-import QtQuick 2.1
-import QtQuick.Controls 1.0
-import QtQuick.Controls.Private 1.0
 
-/*!
-    \qmltype GroupBoxStyle
-    \internal
-    \inqmlmodule QtQuick.Controls.Styles 1.0
-*/
-Style {
-    property int margin: 9
-    property color textColor: __syspal.text
+.pragma library
 
-    property SystemPalette __syspal: SystemPalette {
-        colorGroup: control.enabled ? SystemPalette.Active : SystemPalette.Disabled
-    }
+function replaceAmpersands(match, p1, p2, p3) {
+    if (p2 === "&")
+        return p1.concat(p2, p3)
+    return p1.concat("<u>", p2, "</u>", p3)
+}
 
-    property Component panel:
-        Item {
-        implicitWidth: control.contentWidth + 2 * margin
-        implicitHeight: control.contentHeight + 2 * margin + 12
-        Text {
-            anchors.top: parent.top
-            anchors.left: parent.left
-            anchors.margins: 4
-            text: control.title
-            color: textColor
-            renderType: Text.NativeRendering
-        }
-        BorderImage {
-            anchors.fill: parent
-            anchors.topMargin: 20
-            source: "images/groupbox.png"
-            border.left: 8
-            border.right: 8
-            border.top: 8
-            border.bottom: 8
-        }
-    }
+function stylizeMnemonics(text) {
+
+    return text.replace(/([^&]*)&(.)([^&]*)/g, replaceAmpersands)
 }

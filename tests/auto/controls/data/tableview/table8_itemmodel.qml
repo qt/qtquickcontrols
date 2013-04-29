@@ -44,6 +44,7 @@ import QtQuick.Controls 1.0
 TableView {
     model: Item { x: 10 }// qml
     height: 70
+    currentRow: 0
     TableViewColumn {
         role: "x"
         width: 100

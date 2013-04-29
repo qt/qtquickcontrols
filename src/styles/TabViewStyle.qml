@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 import QtQuick 2.1
-import QtQuick.Controls.Styles 1.0
+import QtQuick.Controls.Private 1.0
 
 /*!
     \qmltype TabViewStyle
@@ -72,6 +72,12 @@ Style {
 
     property int tabvshift : 0
     property int tabBaseOverlap: 2
+
+    property color textColor: __syspal.text
+
+    property var __syspal: SystemPalette {
+        colorGroup: control.enabled ? SystemPalette.Active : SystemPalette.Disabled
+    }
 
     property Component frame: Item {
         Rectangle {
@@ -125,6 +131,7 @@ Style {
             id: textitem
             anchors.centerIn: parent
             text: tab.title
+            color: textColor
             renderType: Text.NativeRendering
         }
     }

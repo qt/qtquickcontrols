@@ -216,7 +216,9 @@ ScrollView {
     property alias section: listView.section
 
     /*! \qmlproperty int TableView::currentRow
-    The current row index of the view. */
+    The current row index of the view.
+    The default value is \c -1 to indicate that no row is selected.
+    */
     property alias currentRow: listView.currentIndex
 
     /*! \qmlsignal TableView::activated()
@@ -255,6 +257,7 @@ ScrollView {
         activeFocusOnTab: true
         anchors.topMargin: tableHeader.height
         anchors.fill: parent
+        currentIndex: -1
 
         flickableDirection: Flickable.HorizontalFlick
         SystemPalette {
@@ -311,6 +314,7 @@ ScrollView {
                 var x = Math.min(flickableItem.contentWidth - 5, Math.max(mouseX + flickableItem.contentX, 0))
                 var y = Math.min(flickableItem.contentHeight - 5, Math.max(mouseY + flickableItem.contentY, 0))
                 listView.currentIndex = listView.indexAt(x, y)
+                mouse.accepted = false
             }
 
             onDoubleClicked: { root.activated() }
@@ -336,10 +340,11 @@ ScrollView {
                     width: rowfiller.width
                     height: rowfiller.rowHeight
                     sourceComponent: root.rowDelegate
-                    property bool alternateBackground: (index + rowCount) % 2 === 1
-                    property bool rowSelected: false
-                    property var model: listView.model
-                    property var modelData: null
+                    readonly property bool alternateBackground: (index + rowCount) % 2 === 1
+                    readonly property bool rowSelected: false
+                    readonly property var model: listView.model
+                    readonly property var modelData: null
+                    readonly property bool hasActiveFocus: root.activeFocus
                 }
             }
         }
@@ -380,13 +385,14 @@ ScrollView {
                 x: flickableItem.contentX
 
                 // these properties are exposed to the row delegate
-                property bool alternateBackground: rowitem.alternateBackground
-                property bool rowSelected: rowitem.ListView.isCurrentItem
-                property int index: rowitem.rowIndex
-                property var model: listView.model
-                property var modelData: rowitem.itemModelData
-                property var itemModel: rowitem.itemModel
-                property bool hasFocus: root.activeFocus
+                // Note: these properties should be mirrored in the row filler as well
+                readonly property bool alternateBackground: rowitem.alternateBackground
+                readonly property bool rowSelected: rowitem.ListView.isCurrentItem
+                readonly property int index: rowitem.rowIndex
+                readonly property var model: listView.model
+                readonly property var modelData: rowitem.itemModelData
+                readonly property var itemModel: rowitem.itemModel
+                readonly property bool hasActiveFocus: root.activeFocus
             }
             Row {
                 id: row
@@ -413,6 +419,7 @@ ScrollView {
                         property int columnIndex: index
                         property int itemElideMode: columns[index].elideMode
                         property int itemTextAlignment: columns[index].horizontalAlignment
+                        property string role: columns[index].role
 
                         function __getValue() {
                             var role = columns[index].role
@@ -447,7 +454,7 @@ ScrollView {
             anchors.left: parent.left
             anchors.right: parent.right
 
-            height: headerVisible ? headerrow.height : 0
+            height: headerrow.height
 
             Row {
                 id: headerrow
@@ -465,7 +472,7 @@ ScrollView {
                         z:-index
                         width: columns[index].width
                         visible: columns[index].visible
-                        height: headerStyle.height
+                        height: headerVisible ? headerStyle.height : 0
 
                         Loader {
                             id: headerStyle

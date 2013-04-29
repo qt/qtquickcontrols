@@ -39,7 +39,8 @@
 ****************************************************************************/
 
 import QtQuick 2.1
-import QtQuick.Controls.Styles 1.0
+import QtQuick.Controls.Private 1.0
+import "../Private/style.js" as StyleHelpers
 
 /*!
     \qmltype MenuBarStyle
@@ -48,25 +49,27 @@ import QtQuick.Controls.Styles 1.0
 */
 
 Style {
-    property var __syspal: SystemPalette { id: syspal }
+    readonly property color __backgroundColor: "#dcdcdc"
 
-    property Component panel: Rectangle {
-        width: control.width
-        height: 20
-        color: __syspal.window
+    property Component frame: Rectangle {
+        width: control.__contentItem.width
+        height: contentHeight
+        color: __backgroundColor
     }
 
     property Component menuItem: Rectangle {
         width: text.width + 12
         height: text.height + 4
-        color: selected ? __syspal.highlight : __syspal.window
+        color: sunken ? "#49d" :__backgroundColor
+
+        SystemPalette { id: syspal }
 
         Text {
             id: text
-            text: menuItem.title
+            text: StyleHelpers.stylizeMnemonics(menuItem.title)
             anchors.centerIn: parent
             renderType: Text.NativeRendering
-            color: selected ? __syspal.highlightedText : __syspal.windowText
+            color: sunken ? "white" : syspal.windowText
         }
     }
 }

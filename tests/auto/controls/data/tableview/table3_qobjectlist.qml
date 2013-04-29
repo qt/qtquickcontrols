@@ -44,6 +44,7 @@ import QtQuickControlsTests 1.0
 
 TableView {
     model: model_qobjectlist
+    currentRow: 0
     height: 70
     TableViewColumn {
         role: "value"

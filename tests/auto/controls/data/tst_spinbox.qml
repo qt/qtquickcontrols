@@ -87,6 +87,59 @@ Item {
             spinbox.destroy()
         }
 
+        function test_keyboard_input_data() {
+            return [
+                {tag: "1", input: [Qt.Key_1], value: 1},
+                {tag: "10", input: [Qt.Key_1, Qt.Key_0], value: 10},
+                // max 99 -> last '0' ignored
+                {tag: "100", input: [Qt.Key_1, Qt.Key_0, Qt.Key_0], value: 10},
+
+                {tag: "1.1", input: [Qt.Key_1, Qt.locale().decimalPoint, Qt.Key_1], value: 1.1, decimals: 1},
+                {tag: "10.10", input: [Qt.Key_1, Qt.Key_0, Qt.locale().decimalPoint, Qt.Key_1, Qt.Key_0], value: 10.10, decimals: 2},
+                // max 99 -> '3' ignored, decimals 2 -> '6' ignored
+                {tag: "123.456", input: [Qt.Key_1, Qt.Key_2, Qt.Key_3, Qt.locale().decimalPoint, Qt.Key_4, Qt.Key_5, Qt.Key_6], value: 12.45, decimals: 2},
+
+                {tag: "-1", input: [Qt.Key_Minus, Qt.Key_1], value: -1, minimumValue: -99},
+                {tag: "-10", input: [Qt.Key_Minus, Qt.Key_1, Qt.Key_0], value: -10, minimumValue: -99},
+                // min -99 -> last 0 ignored
+                {tag: "-100", input: [Qt.Key_Minus, Qt.Key_1, Qt.Key_0, Qt.Key_0], value: -10, minimumValue: -99},
+
+                {tag: "-1.1", input: [Qt.Key_Minus, Qt.Key_1, Qt.locale().decimalPoint, Qt.Key_1], value: -1.1, decimals: 1, minimumValue: -99},
+                {tag: "-10.10", input: [Qt.Key_Minus, Qt.Key_1, Qt.Key_0, Qt.locale().decimalPoint, Qt.Key_1, Qt.Key_0], value: -10.10, decimals: 2, minimumValue: -99},
+                // min -99 -> '3' ignored, decimals 2 -> '6' ignored
+                {tag: "-123.456", input: [Qt.Key_Minus, Qt.Key_1, Qt.Key_2, Qt.Key_3, Qt.locale().decimalPoint, Qt.Key_4, Qt.Key_5, Qt.Key_6], value: -12.45, decimals: 2, minimumValue: -99},
+
+                {tag: "2.54cm", input: [Qt.Key_2, Qt.locale().decimalPoint, Qt.Key_5, Qt.Key_4, Qt.Key_C, Qt.Key_M], value: 2.54, suffix: "cm", decimals: 2},
+                {tag: "$100", input: [Qt.Key_Dollar, Qt.Key_1, Qt.Key_0, Qt.Key_0], value: 100, maximumValue: 100},
+
+                {tag: "asdf foo", input: [Qt.Key_A, Qt.Key_S, Qt.Key_D, Qt.Key_F, Qt.Key_Space, Qt.Key_F, Qt.Key_O, Qt.Key_O], value: 0},
+                {tag: "a1b2c3d4e5", input: [Qt.Key_A, Qt.Key_1, Qt.Key_B, Qt.Key_2, Qt.Key_C, Qt.Key_3, Qt.Key_D, Qt.Key_4, Qt.Key_E, Qt.Key_5], value: 1234, maximumValue: 2000},
+            ]
+        }
+
+        function test_keyboard_input(data) {
+            var spinbox = Qt.createQmlObject('import QtQuick.Controls 1.0; SpinBox {}', container, '')
+            spinbox.forceActiveFocus()
+
+            if (data.decimals !== undefined)
+                spinbox.decimals = data.decimals
+            if (data.minimumValue !== undefined)
+                spinbox.minimumValue = data.minimumValue
+            if (data.maximumValue !== undefined)
+                spinbox.maximumValue = data.maximumValue
+            if (data.prefix !== undefined)
+                spinbox.prefix = data.prefix
+            if (data.suffix !== undefined)
+                spinbox.suffix = data.suffix
+
+            // select all & input
+            keyClick(Qt.Key_A, Qt.ControlModifier)
+            for (var i = 0; i < data.input.length; ++i)
+                keyClick(data.input[i])
+
+            compare(spinbox.value, data.value)
+        }
+
         function test_increment_mouse() {
             var spinbox = Qt.createQmlObject('import QtQuick.Controls 1.0; SpinBox {maximumValue: 50}', container, '')
             spinbox.forceActiveFocus()
@@ -178,16 +231,6 @@ Item {
             spinbox.destroy()
         }
 
-        function test_nanvalue() {
-            var spinbox = Qt.createQmlObject('import QtQuick.Controls 1.0; SpinBox {}', container, '')
-            // It is not possible to set a string to the spinbox value.
-            // Nan is a valid number though
-            spinbox.value = NaN
-            compare(spinbox.value, NaN)
-            compare(spinbox.__text, "nan")
-            spinbox.destroy()
-        }
-
         function test_decimals() {
             var spinbox = Qt.createQmlObject('import QtQuick.Controls 1.0; SpinBox {}', container, '')
 
@@ -199,19 +242,19 @@ Item {
             spinbox.decimals = 1
             spinbox.value = 1.00001
             compare(spinbox.value, 1)
-            compare(spinbox.__text, "1.0")
+            compare(spinbox.__text, "1" + Qt.locale().decimalPoint + "0")
             spinbox.value = 1.1
             compare(spinbox.value, 1.1)
-            compare(spinbox.__text, "1.1")
+            compare(spinbox.__text, "1" + Qt.locale().decimalPoint + "1")
 
             spinbox.decimals = 5
             spinbox.value = 1.00001
             compare(spinbox.value, 1.00001)
-            compare(spinbox.__text, "1.00001")
+            compare(spinbox.__text, "1" + Qt.locale().decimalPoint + "00001")
 
             spinbox.decimals = 6
             compare(spinbox.value, 1.00001)
-            compare(spinbox.__text, "1.000010")
+            compare(spinbox.__text, "1" + Qt.locale().decimalPoint + "000010")
             spinbox.destroy()
         }
 

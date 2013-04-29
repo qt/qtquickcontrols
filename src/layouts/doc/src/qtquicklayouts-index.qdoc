@@ -28,6 +28,7 @@
 /*!
     \page qtquicklayouts-index.html
     \title Qt Quick Layouts
+    \ingroup qmlmodules
 
     \brief A module with a set of QML elements that arranges QML items in an user interface.
 

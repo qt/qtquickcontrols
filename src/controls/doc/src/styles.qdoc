@@ -29,17 +29,9 @@
     \qmlmodule QtQuick.Controls.Styles 1
     \title Qt Quick Controls Styles QML Types
     \ingroup qmlmodules
-    \brief Provides QML types for qt quick controls styles support.
+    \brief Provides QML types for Qt Quick Controls styles.
 
-    This is just a demo page.
+    The \l{Qt Quick Controls} module provides a set of QML types for handling
+    styles.
 
-    \section1 Overview
-
-    The QML types for Qt Quick Controls Styles support the basic use cases such as:
-    \list
-     \li sth 1,
-     \li sth 2,
-    \endlist
-
-    \section1 QML types
 */

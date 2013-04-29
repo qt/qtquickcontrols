@@ -40,16 +40,18 @@
 import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Private 1.0
-import QtQuick.Controls.Styles 1.0
+import "." as Desktop
 
 Style {
     id: root
 
-    property bool frameOnlyAroundContents: __styleitem.styleHint("frameOnlyAroundContents")
-    property int scrollBarSpacing: __styleitem.pixelMetric("scrollbarspacing")
-    property int defaultFrameWidth: __styleitem.pixelMetric("defaultframewidth")
+    readonly property bool externalScrollBars: __styleitem.styleHint("externalScrollBars")
+    readonly property int scrollBarSpacing: __styleitem.pixelMetric("scrollbarspacing")
+    readonly property int frameWidth: __styleitem.pixelMetric("defaultframewidth")
 
     property StyleItem __styleitem: StyleItem { elementType: "frame" }
+
+    property Component scrollBar: Desktop.ScrollBarStyle {}
 
     property Component frame: StyleItem {
         id: styleitem

@@ -150,6 +150,7 @@ FocusScope {
 
     TabBar {
         id: tabbarItem
+        objectName: "tabbar"
         tabView: root
         style: loader.item
         anchors.top: parent.top

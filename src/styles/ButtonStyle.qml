@@ -39,6 +39,7 @@
 ****************************************************************************/
 import QtQuick 2.1
 import QtQuick.Controls 1.0
+import QtQuick.Controls.Private 1.0
 
 /*!
     \qmltype ButtonStyle
@@ -51,7 +52,11 @@ Style {
     id: buttonstyle
     property font font
     property color backgroundColor: "lightGray"
-    property color foregroundColor: "black"
+    property color foregroundColor: __syspal.text
+
+    property var __syspal: SystemPalette {
+        colorGroup: control.enabled ? SystemPalette.Active : SystemPalette.Disabled
+    }
 
     property Component label: Item {
         Text {

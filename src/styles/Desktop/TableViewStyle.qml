@@ -70,7 +70,7 @@ ScrollViewStyle {
         activeControl: alternateBackground ? "alternate" : ""
         selected: rowSelected ? true : false
         height: Math.max(16, rowstyle.implicitHeight)
-        active: hasFocus
+        active: hasActiveFocus
     }
 
     property Component standardDelegate: Item {

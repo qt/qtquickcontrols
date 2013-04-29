@@ -113,8 +113,9 @@ Item {
 
     ScrollBar {
         id: hscrollbar
-        property bool isTransient: !!styleItem && styleItem.styleHint("transientScrollBars")
-        property bool active: !!styleItem && (styleItem.sunken || styleItem.activeControl != "none")
+        property bool isTransient: !!__panel && __panel.styleHint("transientScrollBars")
+        property bool active: !!__panel && (__panel.sunken || __panel.activeControl != "none")
+        style: root.__style.scrollBar
         orientation: Qt.Horizontal
         visible: contentWidth > availableWidth
         height: visible ? implicitHeight : 0
@@ -132,23 +133,24 @@ Item {
             }
         }
         Binding {
-            target: hscrollbar.styleItem
+            target: hscrollbar.__panel
             property: "raised"
             value: vscrollbar.active
             when: hscrollbar.isTransient
         }
         function flash() {
             if (hscrollbar.isTransient) {
-                hscrollbar.styleItem.on = true
-                hscrollbar.styleItem.visible = true
+                hscrollbar.__panel.on = true
+                hscrollbar.__panel.visible = true
             }
         }
     }
 
     ScrollBar {
         id: vscrollbar
-        property bool isTransient: !!styleItem && styleItem.styleHint("transientScrollBars")
-        property bool active: !!styleItem && (styleItem.sunken || styleItem.activeControl != "none")
+        property bool isTransient: !!__panel && __panel.styleHint("transientScrollBars")
+        property bool active: !!__panel && (__panel.sunken || __panel.activeControl !== "none")
+        style: root.__style.scrollBar
         orientation: Qt.Vertical
         visible: contentHeight > availableHeight
         width: visible ? implicitWidth : 0
@@ -167,15 +169,15 @@ Item {
             }
         }
         Binding {
-            target: vscrollbar.styleItem
+            target: vscrollbar.__panel
             property: "raised"
             value: hscrollbar.active
             when: vscrollbar.isTransient
         }
         function flash() {
             if (vscrollbar.isTransient) {
-                vscrollbar.styleItem.on = true
-                vscrollbar.styleItem.visible = true
+                vscrollbar.__panel.on = true
+                vscrollbar.__panel.visible = true
             }
         }
     }

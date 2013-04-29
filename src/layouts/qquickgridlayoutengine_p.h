@@ -117,7 +117,7 @@ class QQuickGridLayoutItem : public QGridLayoutItem {
 public:
     QQuickGridLayoutItem(QQuickItem *item, int row, int column,
                          int rowSpan = 1, int columnSpan = 1, Qt::Alignment alignment = 0)
-        : QGridLayoutItem(row, column, rowSpan, columnSpan, alignment), m_item(item), sizeHintCacheDirty(true) {}
+        : QGridLayoutItem(row, column, rowSpan, columnSpan, alignment), m_item(item), sizeHintCacheDirty(true), useFallbackToWidthOrHeight(true) {}
 
 
     typedef qreal (QQuickLayoutAttached::*SizeGetter)() const;
@@ -205,7 +205,7 @@ public:
         if (!info && (prefWidth < 0 || prefHeight < 0))
             info = static_cast<QQuickLayoutAttached *>(qmlAttachedPropertiesObject<QQuickLayout>(m_item));
 
-        if (info) {
+        if (useFallbackToWidthOrHeight && info) {
             /* This block is a bit hacky, but if we want to support using width/height
                as preferred size hints in layouts, (which we think most people expect),
                we only want to use the initial width.
@@ -215,6 +215,9 @@ public:
                Since the layout listens to changes of Layout.preferredWidth, (it will
                basically cause an invalidation of the layout, we have to disable that
                notification while we set the preferred width.
+
+               Only use this fallback the first time the size hint is queried. Otherwise, we might
+               end up picking a width that is different than what was specified in the QML.
             */
             const bool was = info->setChangesNotificationEnabled(false);
             if (prefWidth < 0) {
@@ -227,6 +230,7 @@ public:
             }
             info->setChangesNotificationEnabled(was);
         }
+        useFallbackToWidthOrHeight = false;
         //--- GATHER MAXIMUM SIZE HINTS ---
         // They are always q_declarativeLayoutMaxSize
         combineHints(cachedSizeHints[Qt::MaximumSize].rwidth(), q_declarativeLayoutMaxSize);
@@ -305,7 +309,8 @@ prefS   [1, 2, 3]   [1, 3, 3] [1, 1, 3] [2, 3, 3] [2, 2, 3] [1, 1, 3] ###No chan
     QQuickItem *m_item;
 private:
     mutable QSizeF cachedSizeHints[Qt::NSizeHints];
-    mutable bool sizeHintCacheDirty;
+    mutable unsigned sizeHintCacheDirty : 1;
+    mutable unsigned useFallbackToWidthOrHeight : 1;
 };
 
 class QQuickGridLayoutEngine : public QGridLayoutEngine {
