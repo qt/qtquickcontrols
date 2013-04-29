@@ -59,7 +59,7 @@ Control {
     /*! \qmlproperty bool BasicButton::pressed
 
         This property holds whether the button is pressed. */
-    property alias pressed: behavior.effectivePressed
+    readonly property bool pressed: behavior.effectivePressed
 
     /*! This property holds whether the button is checkable.
 
@@ -165,6 +165,9 @@ Control {
             onTriggered: Tooltip.showText(behavior, Qt.point(behavior.mouseX, behavior.mouseY), tooltip)
         }
     }
+
+    /*! \internal */
+    property var __behavior: behavior
 
     SystemPalette { id: syspal }
 

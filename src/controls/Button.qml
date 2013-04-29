@@ -83,9 +83,46 @@ BasicButton {
     */
     property url iconSource
 
+    /*! Assign a \l Menu to this property to get a pull-down menu button.
+
+        The default value is \c null.
+     */
+    property Menu menu: null
+
     activeFocusOnTab: true
 
     Accessible.name: text
 
     style: Qt.createComponent(Settings.theme() + "/ButtonStyle.qml", button)
+
+    readonly property bool pressed: __behavior.effectivePressed || menu && menu.__popupVisible
+
+    Binding {
+        target: menu
+        property: "__minimumWidth"
+        value: button.__panel.width
+    }
+
+    Binding {
+        target: menu
+        property: "__visualItem"
+        value: button
+    }
+
+    Connections {
+        target: __behavior
+        onEffectivePressedChanged: {
+            if (__behavior.effectivePressed && menu)
+                popupMenuTimer.start()
+        }
+    }
+
+    Timer {
+        id: popupMenuTimer
+        interval: 10
+        onTriggered: {
+            __behavior.keyPressed = false
+            menu.__popup(0, button.height, 0)
+        }
+    }
 }

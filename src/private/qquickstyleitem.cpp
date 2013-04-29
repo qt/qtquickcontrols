@@ -199,6 +199,25 @@ void QQuickStyleItem::initStyleOption()
         const QFont *font = QGuiApplicationPrivate::platformTheme()->font(platformFont);
         if (font)
             opt->fontMetrics = QFontMetrics(*font);
+        if (QObject * menu = m_properties["menu"].value<QObject *>()) {
+            opt->features |= QStyleOptionButton::HasMenu;
+#ifdef Q_OS_MAC
+            if (style() == "mac") {
+                if (platformFont == QPlatformTheme::PushButtonFont)
+                    menu->setProperty("__xOffset", 12);
+                else
+                    menu->setProperty("__xOffset", 11);
+                if (platformFont == QPlatformTheme::MiniFont)
+                    menu->setProperty("__yOffset", 5);
+                else if (platformFont == QPlatformTheme::SmallFont)
+                    menu->setProperty("__yOffset", 6);
+                else
+                    menu->setProperty("__yOffset", 3);
+                if (font)
+                    menu->setProperty("__font", *font);
+            }
+#endif
+        }
     }
         break;
     case ItemRow: {

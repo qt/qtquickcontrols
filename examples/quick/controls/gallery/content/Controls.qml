@@ -66,13 +66,18 @@ Item {
                 Button {
                     id: button1
                     text: "Button 1"
-                    width: 97
+                    width: 92
                     tooltip:"This is an interesting tool tip"
                 }
                 Button {
                     id:button2
                     text:"Button 2"
-                    width:97
+                    width: 102
+                    menu: Menu {
+                        MenuItem { text: "This Button" }
+                        MenuItem { text: "Happens To Have" }
+                        MenuItem { text: "A Menu Assigned" }
+                    }
                 }
             }
             ComboBox {
