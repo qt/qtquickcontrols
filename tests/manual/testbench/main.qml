@@ -213,6 +213,7 @@ ApplicationWindow {
                                     case "UpdateValueWhileDragging":
                                     case "TickmarksEnabled":
                                     case "SortIndicatorVisible":
+                                    case "IsDefault":
                                         layout = layouts.boolLayout
                                         typeName = "Boolean";
                                         break
