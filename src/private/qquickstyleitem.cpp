@@ -927,9 +927,13 @@ QVariant QQuickStyleItem::styleHint(const QString &metric)
     if (metric == "comboboxpopup") {
         return qApp->style()->styleHint(QStyle::SH_ComboBox_Popup, m_styleoption);
     } else if (metric == "highlightedTextColor") {
-        return qApp->palette().highlightedText().color().name();
+        QPalette pal = qApp->palette();
+        pal.setCurrentColorGroup(active()? QPalette::Active : QPalette::Inactive);
+        return pal.highlightedText().color().name();
     } else if (metric == "textColor") {
-        return qApp->palette().text().color().name();
+        QPalette pal = qApp->palette();
+        pal.setCurrentColorGroup(active()? QPalette::Active : QPalette::Inactive);
+        return pal.text().color().name();
     } else if (metric == "focuswidget") {
         return qApp->style()->styleHint(QStyle::SH_FocusFrame_AboveWidget);
     } else if (metric == "tabbaralignment") {

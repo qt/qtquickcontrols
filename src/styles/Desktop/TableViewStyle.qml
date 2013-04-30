@@ -52,6 +52,7 @@ ScrollViewStyle {
         property color highlightedTextColor: styleHint("highlightedTextColor")
         elementType: "item"
         visible: false
+        active: control.activeFocus
     }
 
     property Component headerDelegate: StyleItem {
