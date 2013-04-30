@@ -43,6 +43,60 @@
 #include "qquickgridlayoutengine_p.h"
 #include "qquicklayout_p.h"
 
+
+/*
+  The layout engine assumes:
+    1. minimum <= preferred <= maximum
+    2. descent is within minimum and maximum bounds     (### verify)
+
+    This function helps to ensure that by the following rules (in the following order):
+    1. If minimum > maximum, set minimum = maximum
+    2. Make sure preferred is not outside the [minimum,maximum] range.
+    3. If descent > minimum, set descent = minimum      (### verify if this is correct, it might
+                                                        need some refinements to multiline texts)
+
+    If any values are "not set" (i.e. negative), they will be left untouched, so that we
+    know which values needs to be fetched from the implicit hints (not user hints).
+  */
+static void normalizeHints(qreal &minimum, qreal &preferred, qreal &maximum, qreal &descent)
+{
+    if (minimum >= 0 && maximum >= 0 && minimum > maximum)
+        minimum = maximum;
+
+    if (preferred >= 0) {
+        if (minimum >= 0 && preferred < minimum) {
+            preferred = minimum;
+        } else if (maximum >= 0 && preferred > maximum) {
+            preferred = maximum;
+        }
+    }
+
+    if (minimum >= 0 && descent > minimum)
+        descent = minimum;
+}
+
+static void boundSize(QSizeF &result, const QSizeF &size)
+{
+    if (size.width() >= 0 && size.width() < result.width())
+        result.setWidth(size.width());
+    if (size.height() >= 0 && size.height() < result.height())
+        result.setHeight(size.height());
+}
+
+static void expandSize(QSizeF &result, const QSizeF &size)
+{
+    if (size.width() >= 0 && size.width() > result.width())
+        result.setWidth(size.width());
+    if (size.height() >= 0 && size.height() > result.height())
+        result.setHeight(size.height());
+}
+
+static inline void combineHints(qreal &current, qreal fallbackHint)
+{
+    if (current < 0)
+        current = fallbackHint;
+}
+
 /*!
     \internal
     Note: Can potentially return the attached QQuickLayoutAttached object through \a attachedInfo.
