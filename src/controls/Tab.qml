@@ -57,6 +57,10 @@ Loader {
 
     /*! This property holds the title of the tab. */
     property string title
+
+    /*! \internal */
+    property bool __inserted: false
+
     Accessible.role: Accessible.LayeredPane
     active: false
     visible: false

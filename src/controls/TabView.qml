@@ -85,13 +85,7 @@ FocusScope {
         Returns the newly added tab.
     */
     function addTab(title, component) {
-        var tab = tabcomp.createObject(stack)
-        tab.sourceComponent = component
-        __tabs.append({tab: tab})
-        tab.parent = stack
-        tab.title = title
-        __setOpacities()
-        return tab
+        return insertTab(__tabs.count, title, component)
     }
 
     /*! Inserts a new tab with title at index, with an optional Component.
@@ -102,6 +96,7 @@ FocusScope {
         tab.sourceComponent = component
         tab.parent = stack
         tab.title = title
+        tab.__inserted = true
         __tabs.insert(index, {tab: tab})
         __setOpacities()
         return tab
@@ -206,12 +201,26 @@ FocusScope {
             property string style
             property int baseOverlap
 
-            Component.onCompleted: {
-                for (var i = 0 ; i < stack.children.length ; ++i) {
-                    if (stack.children[i].Accessible.role === Accessible.LayeredPane)
-                        __tabs.append({tab: stack.children[i]})
+            Component.onCompleted: addTabs(stack.children)
+
+            function addTabs(tabs) {
+                var tabAdded = false
+                for (var i = 0 ; i < tabs.length ; ++i) {
+                    var tab = tabs[i]
+                    if (!tab.__inserted && tab.Accessible.role === Accessible.LayeredPane) {
+                        tab.__inserted = true
+                        if (tab.parent === root) {
+                            tab.parent = stack
+                            // a tab added dynamically by Component::createObject() and passing the
+                            // tab view as a parent should also get automatically removed when destructed
+                            tab.Component.onDestruction.connect(stack.onDynamicTabDestroyed.bind(tab))
+                        }
+                        __tabs.append({tab: tab})
+                        tabAdded = true
+                    }
                 }
-                __setOpacities()
+                if (tabAdded)
+                    __setOpacities()
             }
 
             function onDynamicTabDestroyed() {
@@ -226,20 +235,7 @@ FocusScope {
         onLoaded: { item.z = -1 }
     }
 
-    onChildrenChanged: {
-        var tabAdded = false
-        for (var i = 0; i < children.length; ++i) {
-            var child = children[i]
-            if (child.Accessible.role === Accessible.LayeredPane) {
-                __tabs.append({tab: child})
-                child.parent = stack
-                child.Component.onDestruction.connect(stack.onDynamicTabDestroyed.bind(child))
-                tabAdded = true
-            }
-        }
-        if (tabAdded)
-            __setOpacities()
-    }
+    onChildrenChanged: stack.addTabs(root.children)
 
     states: [
         State {

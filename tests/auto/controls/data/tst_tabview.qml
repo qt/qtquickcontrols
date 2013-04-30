@@ -192,18 +192,35 @@ TestCase {
     }
 
     function test_dynamicTabs() {
-        var tabView = Qt.createQmlObject('import QtQuick 2.1; import QtQuick.Controls 1.0; TabView { property Component tabComponent: Component { Tab { } } }', testCase, '');
-        compare(tabView.count, 0)
-        var tab1 = tabView.tabComponent.createObject(tabView)
-        compare(tabView.count, 1)
-        var tab2 = tabView.tabComponent.createObject(tabView)
-        compare(tabView.count, 2)
-        tab1.destroy()
+        var test_tabView = '                                \
+        import QtQuick 2.1;                                 \
+        import QtQuick.Controls 1.0;                        \
+        TabView {                                           \
+            id: tabView;                                    \
+            Tab { title: "static" }                         \
+            property Component tabComponent: Component {    \
+                id: tabComponent;                           \
+                Tab { title: "dynamic" }                    \
+            }                                               \
+            Component.onCompleted: {                        \
+                addTab("added", tabComponent);              \
+                insertTab(0, "inserted", tabComponent);     \
+                tabComponent.createObject(tabView);         \
+            }                                               \
+        }                                                   '
+
+        var tabView = Qt.createQmlObject(test_tabView, testCase, '')
+        // insertTab(), addTab(), createObject() and static Tab {}
+        compare(tabView.count, 4)
+        compare(tabView.tabAt(0).title, "inserted")
+
+        var tab = tabView.tabComponent.createObject(tabView)
+        compare(tabView.count, 5)
+        compare(tabView.tabAt(4).title, "dynamic")
+        tab.destroy()
         wait(0)
-        compare(tabView.count, 1)
-        tab2.destroy()
-        wait(0)
-        compare(tabView.count, 0)
+        compare(tabView.count, 4)
+        tabView.destroy()
     }
 
     function test_mousePressOnTabBar() {
