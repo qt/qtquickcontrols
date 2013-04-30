@@ -11,10 +11,8 @@ ScrollBarStyle 1.0 ScrollBarStyle.qml
 SliderStyle 1.0 SliderStyle.qml
 SpinBoxStyle 1.0 SpinBoxStyle.qml
 StatusBarStyle 1.0 StatusBarStyle.qml
-TabStyle 1.0 TabStyle.qml
 TabViewStyle 1.0 TabViewStyle.qml
 TableViewStyle 1.0 TableViewStyle.qml
-TextAreaStyle 1.0 TextAreaStyle.qml
 TextFieldStyle 1.0 TextFieldStyle.qml
 ToolBarStyle 1.0 ToolBarStyle.qml
 ToolButtonStyle 1.0 ToolButtonStyle.qml
