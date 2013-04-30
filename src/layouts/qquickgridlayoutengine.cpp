@@ -43,6 +43,7 @@
 #include "qquickgridlayoutengine_p.h"
 #include "qquicklayout_p.h"
 
+QT_BEGIN_NAMESPACE
 
 /*
   The layout engine assumes:
@@ -242,3 +243,4 @@ QLayoutPolicy::Policy QQuickGridLayoutItem::effectiveSizePolicy_helper(QQuickIte
     return fillExtent ? QLayoutPolicy::Preferred : QLayoutPolicy::Fixed;
 
 }
+QT_END_NAMESPACE
