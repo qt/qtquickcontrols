@@ -401,16 +401,19 @@ void QQuickLayoutAttached::invalidateItem()
 
 QQuickLayout *QQuickLayoutAttached::parentLayout() const
 {
-    QQuickItem *parentItem = item()->parentItem();
-    if (qobject_cast<QQuickLayout *>(parentItem))
-        return static_cast<QQuickLayout *>(parentItem);
+    QQuickItem *parentItem = item();
+    if (parentItem) {
+        parentItem = parentItem->parentItem();
+        return qobject_cast<QQuickLayout *>(parentItem);
+    } else {
+        qWarning("Layout must be attached to Item elements");
+    }
     return 0;
 }
 
 QQuickItem *QQuickLayoutAttached::item() const
 {
-    Q_ASSERT(qobject_cast<QQuickItem*>(parent()));
-    return static_cast<QQuickItem*>(parent());
+    return qobject_cast<QQuickItem *>(parent());
 }
 
 
