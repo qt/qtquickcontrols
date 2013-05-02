@@ -289,11 +289,9 @@ TestCase {
         compare(comboBox.data[menuIndex].items.length, 3)
         comboBox.model.append({ text: "Tomato", color: "Red" })
         compare(comboBox.model.count, 4)
-        expectFailContinue('', 'QTBUG-30379')
         compare(comboBox.data[menuIndex].items.length, 4)
         comboBox.model.remove(2, 2)
         compare(comboBox.model.count, 2)
-        expectFailContinue('', 'QTBUG-30379')
         compare(comboBox.data[menuIndex].items.length, 2)
         comboBox.destroy()
     }
