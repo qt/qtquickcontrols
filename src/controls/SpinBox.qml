@@ -192,6 +192,12 @@ Control {
         anchors.fill: parent
         hoverEnabled: true
         onPressed: if (activeFocusOnPress) input.forceActiveFocus()
+        onWheel: {
+            if (wheel.angleDelta.y > 0)
+                __increment();
+            else
+                __decrement();
+        }
     }
 
     TextInput {
