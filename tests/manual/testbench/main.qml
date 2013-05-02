@@ -212,6 +212,7 @@ ApplicationWindow {
                                     case "Indeterminate":
                                     case "UpdateValueWhileDragging":
                                     case "TickmarksEnabled":
+                                    case "SortIndicatorVisible":
                                         layout = layouts.boolLayout
                                         typeName = "Boolean";
                                         break
@@ -220,6 +221,7 @@ ApplicationWindow {
                                     case "MinimumValue":
                                     case "Decimals":
                                     case "CurrentIndex":
+                                    case "SortColumnIndex":
                                         layout = layouts.intLayout
                                         typeName = "Int"
                                         break;
@@ -321,6 +323,14 @@ ApplicationWindow {
                                         enumModelData.append({ text: "Amber",       value: "#FF7E00"});
                                         enumModelData.append({ text: "Azure",       value: "#007FFF"});
                                         enumModelData.append({ text: "Carmine red", value: "#FF0038"});
+                                        break;
+
+                                    case "SortIndicatorOrder":
+                                        layout = layouts.enumLayout
+                                        enumModelData = Qt.createQmlObject('import QtQuick 2.1; import QtQuick.Controls 1.0; ListModel {}', layout, '');
+                                        typeName = "Enum";
+                                        enumModelData.append({ text: "Qt.AscendingOrder",    value: Qt.AscendingOrder});
+                                        enumModelData.append({ text: "Qt.DescendingOrder",   value: Qt.DescendingOrder});
                                         break;
 
 

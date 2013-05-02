@@ -176,13 +176,17 @@ ScrollView {
         \note The view itself does not sort the data. */
     property bool sortIndicatorVisible: false
 
-    /*! This sets the sorting order of the sort indicator
+    /*!
+       \qmlproperty enumeration TableView::sortIndicatorOrder
+
+       This sets the sorting order of the sort indicator
        The allowed values are:
        \list
        \li Qt.AscendingOrder - the default
        \li Qt.DescendingOrder
-       \endlist  */
-    property string sortIndicatorOrder: Qt.AscendingOrder
+       \endlist
+    */
+    property int sortIndicatorOrder: Qt.AscendingOrder
 
     /*! \qmlproperty list<TableViewColumn> TableView::columns
     This property contains the TableViewColumn items */
