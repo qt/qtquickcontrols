@@ -442,6 +442,20 @@ Item {
             spinbox.destroy()
         }
 
+        function test_wheel() {
+            var spinbox = Qt.createQmlObject('import QtQuick.Controls 1.0; SpinBox {}', container, '')
+            spinbox.forceActiveFocus()
+            spinbox.minimumValue = 0
+            spinbox.maximumValue = 99
+            spinbox.value = 10
+            mouseWheel(spinbox, 5, 5, 0, 120)
+            compare(spinbox.value, 11)
+            mouseWheel(spinbox, 5, 5, 0, -120)
+            mouseWheel(spinbox, 5, 5, 0, -120)
+            compare(spinbox.value, 9)
+            spinbox.destroy()
+        }
+
         function setCoordinates(item)
         {
             mainCoord.x = item.x + 1
