@@ -103,9 +103,9 @@ Rectangle {
 
     ListModel {
         id: nestedModel
-        ListElement{attributes:  ListElement { description: "Core" ; color:"#ffaacc"}}
-        ListElement{attributes: ListElement { description: "Second" ; color:"#ffccaa"}}
-        ListElement{attributes: ListElement { description: "Third" ; color:"#ffffaa"}}
+        ListElement{controlState:  ListElement { description: "Core" ; color:"#ffaacc"}}
+        ListElement{controlState: ListElement { description: "Second" ; color:"#ffccaa"}}
+        ListElement{controlState: ListElement { description: "Third" ; color:"#ffffaa"}}
     }
 
     ListModel {
@@ -175,7 +175,7 @@ Rectangle {
                     anchors.margins: 12
 
                     TableViewColumn {
-                        role: "attributes"
+                        role: "controlState"
                         title: "Text and Color"
                         width: 220
                     }

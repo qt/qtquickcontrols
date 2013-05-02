@@ -38,67 +38,106 @@
 **
 ****************************************************************************/
 import QtQuick 2.1
+import QtQuick.Controls 1.0
 import QtQuick.Controls.Private 1.0
 
 /*!
     \qmltype TabViewStyle
-    \internal
     \inqmlmodule QtQuick.Controls.Styles 1.0
-    \brief provides custom styling for TabView
+    \since QtQuick.Controls.Styles 1.0
+    \brief Provides custom styling for TabView
+
+\qml
+    TabView {
+        id: frame
+        anchors.fill: parent
+        anchors.margins: 4
+        Tab { title: "Tab 1" }
+        Tab { title: "Tab 2" }
+        Tab { title: "Tab 3" }
+
+        style: TabViewStyle {
+            frameOverlap: 1
+            tab: Rectangle {
+                color: tab.selected ? "steelblue" :"lightsteelblue"
+                border.color:  "steelblue"
+                implicitWidth: Math.max(text.width + 4, 80)
+                implicitHeight: 20
+                radius: 2
+                Text {
+                    id: text
+                    anchors.centerIn: parent
+                    text: tab.title
+                    color: tab.selected ? "white" : "black"
+                }
+            }
+            frame: Rectangle { color: "steelblue" }
+        }
+    }
+\endqml
+
 */
 
 Style {
 
-    /*! This property holds the base alignment of the tab bar.
-      The default value is "left". Supporeted alignments are
-      "left", "center" or "right".
-    */
-    property string tabBarAlignment: "left"
+    /*! The \l ScrollView attached to this style. */
+    readonly property TabView control: __control
 
-    /*! This property holds the left margin of the tab bar.
-      It will only affect tabs \l tabBarAligment set to "right".
+    /*! This property holds the horizontal alignment of
+        the tab buttons. Supported values are:
+        \list
+        \li Qt.AlignLeft (default)
+        \li Qt.AlignHCenter
+        \li Qt.AlignRight
+        \endlist
     */
-    property int leftMargin: 0
+    property int tabsAlignment: Qt.AlignLeft
 
-    /*! This property holds the right margin of the tab bar.
-      It will only affect tabs \l tabBarAligment set to "right".
-    */
-    property int rightMargin: 0
+    /*! This property holds the left padding of the tab bar.  */
+    property int tabsLeftPadding: 0
+
+    /*! This property holds the right padding of the tab bar.  */
+    property int tabsRightPadding: 0
 
     /*! This property holds the amount of overlap there are between
-      individual tab buttons. The default value is 0
-    */
-    property int tabOverlap: 3
+      individual tab buttons. */
+    property int tabOverlap: 1
 
-    property int tabvshift : 0
-    property int tabBaseOverlap: 2
+    /*! This property holds the amount of overlap there are between
+      individual tab buttons and the frame. */
+    property int frameOverlap: 2
 
-    property color textColor: __syspal.text
+    /*! This defines the tab frame. */
+    property Component frame: Rectangle {
+        color: "#dcdcdc"
+        border.color: "#aaa"
 
-    property var __syspal: SystemPalette {
-        colorGroup: control.enabled ? SystemPalette.Active : SystemPalette.Disabled
-    }
-
-    property Component frame: Item {
         Rectangle {
             anchors.fill: parent
-            anchors.topMargin: -tabBaseOverlap
-            color: "#dcdcdc"
-            border.color: "#aaa"
-
-            Rectangle {
-                anchors.fill: parent
-                color: "transparent"
-                border.color: "#66ffffff"
-                anchors.margins: 1
-            }
+            color: "transparent"
+            border.color: "#66ffffff"
+            anchors.margins: 1
         }
     }
 
+    /*! This defines the tab. You can access the tab state through the
+        \c tab property, with the following properties:
+
+        \table
+            \li readonly property int index - This is the current tab index.
+            \li readonly property bool selected - This is the active tab.
+            \li readonly property string title - Tab title text.
+            \li readonly property bool nextSelected = The next tab is selected.
+            \li readonly property bool previsousSelected - The previous tab is selected.
+            \li readonly property bool hovered - The tab is currently under the mouse.
+        \endtable
+    */
     property Component tab: Item {
         scale: control.tabPosition === Qt.TopEdge ? 1 : -1
+
         implicitWidth: Math.round(textitem.implicitWidth + 20)
         implicitHeight: Math.round(textitem.implicitHeight + 10)
+
         clip: true
         Item {
             anchors.fill: parent
@@ -111,7 +150,7 @@ Style {
                 border.bottom: 6
                 border.left: 6
                 border.right: 6
-                anchors.topMargin: control.tabPosition === Qt.TopEdge ? (tab.selected ? 0 : 1) : 0
+                anchors.topMargin: tab.selected ? 0 : 1
             }
             BorderImage {
                 anchors.fill: parent
@@ -119,20 +158,20 @@ Style {
                 anchors.leftMargin: -2
                 anchors.rightMargin: -1
                 source: "images/focusframe.png"
-                visible: tabbarItem.activeFocus && tab.selected
+                visible: control.activeFocus && tab.selected
                 border.left: 4
                 border.right: 4
                 border.top: 4
                 border.bottom: 4
             }
-
-        }
-        Text {
-            id: textitem
-            anchors.centerIn: parent
-            text: tab.title
-            color: textColor
-            renderType: Text.NativeRendering
+            Text {
+                id: textitem
+                anchors.centerIn: parent
+                text: tab.title
+                renderType: Text.NativeRendering
+                scale: control.tabPosition === Qt.TopEdge ? 1 : -1
+                color: __syspal.text
+            }
         }
     }
 }

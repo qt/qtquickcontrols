@@ -38,9 +38,11 @@
 **
 ****************************************************************************/
 import QtQuick 2.1
+import QtQuick.Controls 1.0
 import QtQuick.Controls.Private 1.0
 
 Style {
+    readonly property RadioButton control: __control
     property Component panel: Item {
         anchors.fill: parent
 
@@ -74,11 +76,7 @@ Style {
                 renderType: Text.NativeRendering
                 elide: Text.ElideRight
                 enabled: control.enabled
-                color: syspal.windowText
-                SystemPalette {
-                    id: syspal
-                    colorGroup: enabled ? SystemPalette.Active : SystemPalette.Disabled
-                }
+                color: __syspal.windowText
             }
         }
     }

@@ -43,32 +43,45 @@ import QtQuick.Controls.Private 1.0
 
 /*!
     \qmltype ButtonStyle
-    \internal
     \inqmlmodule QtQuick.Controls.Styles 1.0
-    \brief provides custom styling for Button
+    \since QtQuick.Controls.Styles 1.0
+    \brief Provides custom styling for Button
+
+    You can create a custom button by replacing the "background" delegate
+    of the ButtonStyle with a custom design.
+
+    Example:
+    \qml
+    Button {
+        text: "A button"
+        style: ButtonStyle {
+            background: Rectangle {
+                implicitWidth: 100
+                implicitHeight: 25
+                border.width: control.activeFocus ? 2 : 1
+                border.color: "#888"
+                radius: 4
+                gradient: Gradient {
+                    GradientStop { position: 0 ; color: control.pressed ? "#ccc" : "#eee" }
+                    GradientStop { position: 1 ; color: control.pressed ? "#aaa" : "#ccc" }
+                }
+            }
+        }
+    }
+    \endqml
+    If you need a custom label, you can replace the label item.
 */
 
 Style {
     id: buttonstyle
-    property font font
-    property color backgroundColor: "lightGray"
-    property color foregroundColor: __syspal.text
 
-    property var __syspal: SystemPalette {
-        colorGroup: control.enabled ? SystemPalette.Active : SystemPalette.Disabled
-    }
+    /*! The \l Button attached to this style. */
+    readonly property Button control: __control
 
-    property Component label: Item {
-        Text {
-            id: textitem
-            anchors.centerIn: parent
-            renderType: Text.NativeRendering
-            text: control.text
-            color: buttonstyle.foregroundColor
-            font: buttonstyle.font
-        }
-    }
+    /*! The padding between the background and the label components. */
+    property Margins padding: Margins { top: 4 ; left: 4 ; right: 4 ; bottom: 4 }
 
+    /*! The background of the button. */
     property Component background: Item {
         implicitWidth: 100
         implicitHeight: 25
@@ -94,29 +107,47 @@ Style {
                 border.bottom: 4
             }
         }
+        Image {
+            id: imageItem
+            visible: control.menu !== null
+            source: "images/arrow-down.png"
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.right: parent.right
+            anchors.rightMargin: 8
+            opacity: control.enabled ? 0.7 : 0.5
+        }
     }
 
-    property Component panel: Item {
-        property Item controlref: control
-        anchors.fill: parent
+    /*! The label of the button. */
+    property Component label: Text {
+        renderType: Text.NativeRendering
+        verticalAlignment: Text.AlignVCenter
+        horizontalAlignment: Text.AlignHCenter
+        text: control.text
+        color: __syspal.text
+    }
 
-        implicitWidth: backgroundLoader.implicitWidth
-        implicitHeight: backgroundLoader.implicitHeight
+    /*! \internal */
+    property Component panel: Item {
+        anchors.centerIn: parent
+        anchors.fill: parent
+        implicitWidth: Math.max(labelLoader.implicitWidth + padding.left + padding.right, backgroundLoader.implicitWidth)
+        implicitHeight: Math.max(labelLoader.implicitHeight + padding.top + padding.bottom, backgroundLoader.implicitHeight)
 
         Loader {
             id: backgroundLoader
             anchors.fill: parent
             sourceComponent: background
-            property Item control: controlref
-            property Item label: labelLoader.item
         }
 
         Loader {
             id: labelLoader
             sourceComponent: label
             anchors.fill: parent
-            property Item control: controlref
+            anchors.leftMargin: padding.left
+            anchors.topMargin: padding.top
+            anchors.rightMargin: padding.right
+            anchors.bottomMargin: padding.bottom
         }
     }
 }
-

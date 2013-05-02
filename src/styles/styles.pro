@@ -10,7 +10,6 @@ QML_FILES = \
     MenuStyle.qml \
     ProgressBarStyle.qml \
     RadioButtonStyle.qml \
-    ScrollBarStyle.qml \
     ScrollViewStyle.qml\
     SliderStyle.qml \
     SpinBoxStyle.qml \
@@ -33,7 +32,6 @@ QML_FILES += \
     Desktop/ProgressBarStyle.qml \
     Desktop/RadioButtonStyle.qml \
     Desktop/ScrollViewStyle.qml \
-    Desktop/ScrollBarStyle.qml \
     Desktop/SliderStyle.qml \
     Desktop/SpinBoxStyle.qml \
     Desktop/StatusBarStyle.qml\

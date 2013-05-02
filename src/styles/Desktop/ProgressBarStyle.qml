@@ -52,9 +52,9 @@ Style {
         minimum: indeterminate ? 0 : control.minimumValue.toFixed(decimals) * factor
         maximum: indeterminate ? 0 : control.maximumValue.toFixed(decimals) * factor
         enabled: control.enabled
-        horizontal: control.orientation == Qt.Horizontal
+        horizontal: control.orientation === Qt.Horizontal
         hints: control.styleHints
-        contentWidth: 23
-        contentHeight: 23
+        contentWidth: horizontal ? 200 : 23
+        contentHeight: horizontal ? 23 : 200
     }
 }

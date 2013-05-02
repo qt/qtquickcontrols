@@ -44,6 +44,8 @@ import QtQuick.Controls.Private 1.0
 /*!
     \qmltype SliderStyle
     \inqmlmodule QtQuick.Controls.Styles 1.0
+    \since QtQuick.Controls.Styles 1.0
+    \brief Provides custom styling for Slider
 
     The slider style allows you to create a custom appearance for
     a \l Slider control.
@@ -55,27 +57,21 @@ import QtQuick.Controls.Private 1.0
     Example:
     \qml
     Slider {
+        anchors.centerIn: parent
         style: SliderStyle {
-            background: Rectangle {
+            groove: Rectangle {
                 implicitWidth: 200
                 implicitHeight: 8
                 color: "gray"
                 radius: 8
-                Rectangle {
-                    height: parent.height
-                    width: handlePosition
-                    radius: 8
-                    border.color: "gray"
-                    border.width: 2
-                    color: "lightsteelblue"
-                }
             }
             handle: Rectangle {
+                anchors.centerIn: parent
                 color: control.pressed ? "white" : "lightgray"
                 border.color: "gray"
                 border.width: 2
-                width: 24
-                height: 24
+                width: 34
+                height: 34
                 radius: 12
             }
         }
@@ -84,6 +80,12 @@ import QtQuick.Controls.Private 1.0
 */
 Style {
     id: styleitem
+
+    /*! The \l Slider attached to this style. */
+    readonly property Slider control: __control
+
+    /*! The padding around the groove item. */
+    property Margins padding: Margins { top: 0 ; left: 0 ; right: 0 ; bottom: 0 }
 
     /*! This property holds the item for the slider handle.
         You can access the slider through the \c control property
@@ -114,12 +116,10 @@ Style {
         }
     }
 
-    /*! This property holds the background for the slider.
-
-        You can access the slider through the \c control property.
+    /*! This property holds the background groove of the slider.
         You can access the handle position through the \c handlePosition property.
     */
-    property Component background: Item {
+    property Component groove: Item {
         anchors.verticalCenter: parent.verticalCenter
         implicitWidth: 100
         implicitHeight: 8
@@ -140,29 +140,32 @@ Style {
     property Component panel: Item {
         id: root
         property bool horizontal : control.orientation === Qt.Horizontal
-        property Control __cref: control
-        implicitWidth: horizontal ? backgroundLoader.implicitWidth : Math.max(handleLoader.implicitHeight, backgroundLoader.implicitHeight)
-        implicitHeight: horizontal ? Math.max(handleLoader.implicitHeight, backgroundLoader.implicitHeight) : backgroundLoader.implicitWidth
+        property int horizontalSize: grooveLoader.implicitWidth + padding.left + padding.right
+        property int verticalSize: Math.max(handleLoader.implicitHeight, grooveLoader.implicitHeight) + padding.top + padding.bottom
+
+        implicitWidth: horizontal ? horizontalSize : verticalSize
+        implicitHeight: horizontal ? verticalSize : horizontalSize
+
         y: horizontal ? 0 : height
         rotation: horizontal ? 0 : -90
         transformOrigin: Item.TopLeft
-        Item {
-            anchors.fill: parent
-            Loader {
-                id: backgroundLoader
-                property Control control: __cref
-                property Item handle: handleLoader.item
-                property int handlePosition: handleLoader.x + handleLoader.width/2
 
-                sourceComponent: background
-                width: horizontal ? parent.width : parent.height
-                y: Math.round(horizontal ? parent.height/2 : parent.width/2) - backgroundLoader.item.height/2
+        Item {
+
+            anchors.fill: parent
+
+            Loader {
+                id: grooveLoader
+                property int handlePosition: handleLoader.x + handleLoader.width/2
+                x: padding.left
+                sourceComponent: groove
+                width: (horizontal ? parent.width : parent.height) - padding.left - padding.right
+                y:  padding.top +  (Math.round(horizontal ? parent.height : parent.width - padding.top - padding.bottom) - grooveLoader.item.height)/2
             }
             Loader {
                 id: handleLoader
-                property Control control: __cref
                 sourceComponent: handle
-                anchors.verticalCenter: backgroundLoader.verticalCenter
+                anchors.verticalCenter: grooveLoader.verticalCenter
                 x: Math.round(control.value / control.maximumValue * ((horizontal ? root.width : root.height)- item.width))
             }
         }

@@ -38,31 +38,32 @@
 **
 ****************************************************************************/
 import QtQuick 2.1
+import QtQuick.Controls 1.0
 import QtQuick.Controls.Styles 1.0
 import QtQuick.Controls.Private 1.0
 
 /*!
     \qmltype ComboBoxStyle
-    \internal
     \inqmlmodule QtQuick.Controls.Styles 1.0
+    \since QtQuick.Controls.Styles 1.0
+    \brief Provides custom styling for ComboBox
 */
 
 Style {
-    property color foregroundColor: __syspal.text
 
-    property var __syspal: SystemPalette {
-        colorGroup: control.enabled ? SystemPalette.Active : SystemPalette.Disabled
-    }
+    /*! The \l ComboBox attached to this style. */
+    readonly property ComboBox control: __control
 
-    property Component panel: Item {
+    /*! The padding between the background and the label components. */
+    property Margins padding: Margins { top: 4 ; left: 6 ; right: 6 ; bottom:4 }
+
+    /*! The background of the button. */
+    property Component background: Item {
         implicitWidth: 100
-        implicitHeight: 24
-        property bool popup: false
-        property alias font: textitem.font
-
+        implicitHeight: 25
         BorderImage {
             anchors.fill: parent
-            source: control.__pressed ? "images/button_down.png" : "images/button.png"
+            source: control.pressed ? "images/button_down.png" : "images/button.png"
             border.top: 6
             border.bottom: 6
             border.left: 6
@@ -81,28 +82,61 @@ Style {
                 border.top: 4
                 border.bottom: 4
             }
-            Text {
-                id: textitem
-                anchors.centerIn: parent
-                text: control.currentText
-                color: foregroundColor
-                renderType: Text.NativeRendering
-            }
             Image {
+                id: imageItem
                 source: "images/arrow-down.png"
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.right: parent.right
                 anchors.rightMargin: 8
-                opacity: 0.7
+                opacity: control.enabled ? 0.7 : 0.5
             }
         }
     }
 
-    property Component dropDownStyle: MenuStyle {
+    /*! The label of the button. */
+    property Component label: Item {
+        implicitWidth: textitem.implicitWidth + 20
+        Text {
+            id: textitem
+            anchors.centerIn: parent
+            text: control.currentText
+            renderType: Text.NativeRendering
+            color: __syspal.text
+        }
+    }
+
+    /*! \internal */
+    property Component panel: Item {
+        property bool popup: false
+        anchors.centerIn: parent
+        anchors.fill: parent
+        implicitWidth: Math.max(labelLoader.implicitWidth + padding.left + padding.right, backgroundLoader.implicitWidth)
+        implicitHeight: Math.max(labelLoader.implicitHeight + padding.top + padding.bottom, backgroundLoader.implicitHeight)
+
+        Loader {
+            id: backgroundLoader
+            anchors.fill: parent
+            sourceComponent: background
+        }
+
+        Loader {
+            id: labelLoader
+            sourceComponent: label
+            anchors.fill: parent
+            anchors.leftMargin: padding.left
+            anchors.topMargin: padding.top
+            anchors.rightMargin: padding.right
+            anchors.bottomMargin: padding.bottom
+        }
+    }
+
+    /*! \internal */
+    property Component __dropDownStyle: MenuStyle {
         __menuItemType: "comboboxitem"
     }
 
-    property Component popupStyle: Style {
+    /*! \internal */
+    property Component __popupStyle: Style {
 
         property Component frame: Rectangle {
             width: (parent ? parent.contentWidth : 0)
@@ -111,9 +145,15 @@ Style {
         }
 
         property Component menuItem: Rectangle {
+            property string textRef: text
             implicitWidth: textItem.contentWidth
             implicitHeight: textItem.contentHeight
             border.color: "#777"
+            Text {
+                id: textItem
+                visible: false
+                text: textRef
+            }
         }
     }
 }

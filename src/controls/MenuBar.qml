@@ -99,6 +99,7 @@ MenuBarPrivate {
 
         Loader {
             id: styleLoader
+            property alias __control: menuBarLoader
             sourceComponent: root.style
             onStatusChanged: {
                 if (status === Loader.Error)

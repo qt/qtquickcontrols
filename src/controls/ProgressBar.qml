@@ -118,8 +118,8 @@ Control {
     Accessible.role: Accessible.ProgressBar
     Accessible.name: value
 
-    implicitWidth: orientation === Qt.Horizontal ? 200 : (__panel ? __panel.implicitHeight : 0)
-    implicitHeight: orientation === Qt.Horizontal ? (__panel ? __panel.implicitHeight : 0) : 200
+    implicitWidth:(__panel ? __panel.implicitWidth : 0)
+    implicitHeight: (__panel ? __panel.implicitHeight: 0)
 
     /* \internal */
     function setValue(v) {

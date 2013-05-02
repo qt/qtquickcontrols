@@ -58,9 +58,12 @@ Item {
     property int contentHeight
     property int contentWidth
 
-    anchors.fill: parent
+    property int leftMargin: outerFrame ? root.__style.padding.left : 0
+    property int rightMargin: outerFrame ? root.__style.padding.right : 0
+    property int topMargin: outerFrame ? root.__style.padding.top : 0
+    property int bottomMargin: outerFrame ? root.__style.padding.bottom : 0
 
-    property int frameMargin: outerFrame ? frameWidth : 0
+    anchors.fill: parent
 
     property bool recursionGuard: false
 
@@ -101,11 +104,12 @@ Item {
 
     Loader {
         id: cornerFill
+        z: 1
         sourceComponent: __style.corner
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: frameMargin
-        anchors.rightMargin: frameMargin
+        anchors.bottomMargin: bottomMargin
+        anchors.rightMargin: rightMargin
         width: visible ? vscrollbar.width : 0
         height: visible ? hscrollbar.height : 0
         visible: hscrollbar.visible && !hscrollbar.isTransient && vscrollbar.visible && !vscrollbar.isTransient
@@ -115,7 +119,6 @@ Item {
         id: hscrollbar
         property bool isTransient: !!__panel && __panel.styleHint("transientScrollBars")
         property bool active: !!__panel && (__panel.sunken || __panel.activeControl != "none")
-        style: root.__style.scrollBar
         orientation: Qt.Horizontal
         visible: contentWidth > availableWidth
         height: visible ? implicitHeight : 0
@@ -125,8 +128,8 @@ Item {
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: cornerFill.left
-        anchors.leftMargin: frameMargin
-        anchors.bottomMargin: frameMargin
+        anchors.leftMargin:  leftMargin
+        anchors.bottomMargin: bottomMargin
         onValueChanged: {
             if (!blockUpdates) {
                 flickableItem.contentX = value
@@ -150,19 +153,17 @@ Item {
         id: vscrollbar
         property bool isTransient: !!__panel && __panel.styleHint("transientScrollBars")
         property bool active: !!__panel && (__panel.sunken || __panel.activeControl !== "none")
-        style: root.__style.scrollBar
         orientation: Qt.Vertical
         visible: contentHeight > availableHeight
         width: visible ? implicitWidth : 0
         z: 1
         anchors.bottom: cornerFill.top
-        anchors.bottomMargin: hscrollbar.visible ? 0 : frameMargin
         maximumValue: contentHeight > availableHeight ? contentHeight - availableHeight + __viewTopMargin : 0
         minimumValue: 0
         anchors.right: parent.right
         anchors.top: parent.top
-        anchors.topMargin: __scrollBarTopMargin + frameMargin
-        anchors.rightMargin: frameMargin
+        anchors.topMargin: __scrollBarTopMargin + topMargin
+        anchors.rightMargin: rightMargin
         onValueChanged: {
             if (flickableItem && !blockUpdates && enabled) {
                 flickableItem.contentY = value

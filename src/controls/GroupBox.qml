@@ -157,7 +157,6 @@ Item {
 
     Loader {
         id: loader
-        property alias control: groupbox
         anchors.fill: parent
         property int topMargin: (title.length > 0 || checkable ? 16 : 0) + content.margin
         property int bottomMargin: 4
@@ -167,7 +166,7 @@ Item {
         onLoaded: item.z = -1
         Loader {
             id: styleLoader
-            property alias control: groupbox
+            property alias __control: groupbox
             sourceComponent: groupbox.style
         }
     }

@@ -146,26 +146,22 @@ Control {
     }
 
     /*! \internal */
-    readonly property bool __upEnabled: value != maximumValue;
-    /*! \internal */
-    readonly property bool __downEnabled: value != minimumValue;
-    /*! \internal */
-    readonly property alias __upPressed: mouseUp.pressed
-    /*! \internal */
-    readonly property alias __downPressed: mouseDown.pressed
-    /*! \internal */
-    property alias __upHovered: mouseUp.containsMouse
-    /*! \internal */
-    property alias __downHovered: mouseDown.containsMouse
-    /*! \internal */
-    property alias __containsMouse: mouseArea.containsMouse
-    /*! \internal */
     property alias __text: input.text
-    /*! \internal */
-    readonly property int __contentHeight: Math.max(input.implicitHeight, 20)
-    /*! \internal */
-    readonly property int __contentWidth: Math.max(maxSizeHint.implicitWidth,
-                                                   minSizeHint.implicitWidth)
+
+    __controlState: QtObject {
+        readonly property bool upEnabled: value != maximumValue;
+        readonly property alias upHovered: mouseUp.containsMouse
+        readonly property alias upPressed: mouseUp.pressed
+
+        readonly property bool downEnabled: value != minimumValue;
+        readonly property alias downPressed: mouseDown.pressed
+        readonly property alias downHovered: mouseDown.containsMouse
+
+        readonly property alias containsMouse: mouseArea.containsMouse
+
+        readonly property int contentHeight: Math.max(input.implicitHeight, 20)
+        readonly property int contentWidth: Math.max(maxSizeHint.implicitWidth, minSizeHint.implicitWidth)
+    }
 
     Text {
         id: maxSizeHint
@@ -205,10 +201,10 @@ Control {
         id: input
         clip: true
         anchors.fill: parent
-        anchors.leftMargin: __panel ? __panel.leftMargin : 0
-        anchors.topMargin: __panel ? __panel.topMargin : 0
-        anchors.rightMargin: __panel ? __panel.rightMargin: 0
-        anchors.bottomMargin: __panel ? __panel.bottomMargin: 0
+        anchors.leftMargin: __panel ? __panel.margins.left : 0
+        anchors.topMargin: __panel ? __panel.margins.top : 0
+        anchors.rightMargin: __panel ? __panel.margins.right: 0
+        anchors.bottomMargin: __panel ? __panel.margins.bottom: 0
 
         focus: true
         activeFocusOnPress: spinbox.activeFocusOnPress

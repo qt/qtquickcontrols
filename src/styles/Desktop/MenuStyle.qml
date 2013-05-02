@@ -57,15 +57,13 @@ Style {
 
         property int subMenuOverlap: pixelMetric("submenuoverlap")
 
-        SystemPalette { id: syspal }
-
         Rectangle {
             visible: anchors.margins > 0
             anchors {
                 fill: parent
                 margins: pixelMetric("menupanelwidth")
             }
-            color: syspal.window
+            color: __syspal.window
         }
     }
 

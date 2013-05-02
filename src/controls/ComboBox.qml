@@ -91,7 +91,7 @@ Control {
     property bool activeFocusOnPress: false
 
     /*! \internal */
-    readonly property bool __pressed: mouseArea.pressed && mouseArea.containsMouse || popup.__popupVisible
+    readonly property bool pressed: mouseArea.pressed && mouseArea.containsMouse || popup.__popupVisible
     /*! \internal */
     property alias __containsMouse: mouseArea.containsMouse
     /*! \internal */
@@ -128,7 +128,7 @@ Control {
         id: popup
         objectName: "popup"
 
-        style: isPopup ? __style.popupStyle : __style.dropDownStyle
+        style: isPopup ? __style.__popupStyle : __style.__dropDownStyle
 
         readonly property string selectedText: items[__selectedIndex] ? items[__selectedIndex].text : ""
         property string textRole: ""

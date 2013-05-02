@@ -37,33 +37,17 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-
 import QtQuick 2.1
-import QtQuick.Controls 1.0
-import QtQuick.Controls.Private 1.0
 import QtQuick.Controls.Styles 1.0
 
-Style {
-    id: scrollbarStyle
-    readonly property bool horizontal: control.orientation === Qt.Horizontal
-    property bool scrollToClickPosition: control.__panel.scrollToClickPosition
-
-    property Component panel: StyleItem {
-        id: styleitem
-        anchors.fill:parent
-        elementType: "scrollbar"
-        hover: activeControl != "none"
-        activeControl: "none"
-        sunken: control.upPressed | control.downPressed | control.handlePressed
-        minimum: control.minimumValue
-        maximum: control.maximumValue
-        value: control.value
-        horizontal: scrollbarStyle.horizontal
-        enabled: control.enabled
-
-        implicitWidth: horizontal ? 200 : pixelMetric("scrollbarExtent")
-        implicitHeight: horizontal ? pixelMetric("scrollbarExtent") : 200
-        property int scrollToClickPosition: styleHint("scrollToClickPosition")
-    }
+/*!
+        \qmltype Margins
+        \internal
+        \inqmlmodule QtQuick.Controls.Private 1.0
+*/
+QtObject {
+    property int top
+    property int left
+    property int right
+    property int bottom
 }
-

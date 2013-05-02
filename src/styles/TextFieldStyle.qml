@@ -43,30 +43,49 @@ import QtQuick.Controls.Private 1.0
 
 /*!
     \qmltype TextFieldStyle
-    \internal
     \inqmlmodule QtQuick.Controls.Styles 1.0
-    \brief provides custom styling for TextField.
+    \since QtQuick.Controls.Styles 1.0
+    \brief Provides custom styling for TextField.
+
+    Example:
+    \qml
+    TextField {
+        style: TextFieldStyle {
+            textColor: "black"
+            background: Rectangle {
+                radius: 2
+                implicitWidth: 100
+                implicitHeight: 24
+                border.color: "#333"
+                border.width: 1
+            }
+        }
+    }
+    \endqml
 */
 
 Style {
     id: style
 
-    property int topMargin: 4
-    property int leftMargin: 6
-    property int rightMargin: 6
-    property int bottomMargin: 4
+    /*! The \l TextField attached to this style. */
+    readonly property TextField control: __control
 
-    property color foregroundColor: __syspal.text
-    property color backgroundColor: "white"
-    property color selectionColor: __syspal.highlight
-    property color selectedTextColor: __syspal.highlightedText
+    /*! The content margins of the text field. */
+    property Margins padding: Margins { top: 4 ; left: 6 ; right: 6 ; bottom:4 }
 
-    property SystemPalette __syspal: SystemPalette {
-        colorGroup: control.enabled ? SystemPalette.Active : SystemPalette.Disabled
-    }
-
+    /*! The current font. */
     property font font
 
+    /*! The text color. */
+    property color textColor: __syspal.text
+
+    /*! The text highlight color, used behind selections. */
+    property color selectionColor: __syspal.highlight
+
+    /*! The highlighted text color, used in selections. */
+    property color selectedTextColor: __syspal.highlightedText
+
+    /*! The background of the text field. */
     property Component background: Item {
         implicitWidth: 100
         implicitHeight: 25
@@ -93,16 +112,16 @@ Style {
         }
     }
 
+    /*! \internal */
     property Component panel: Item {
         anchors.fill: parent
 
-        property int topMargin: style.topMargin
-        property int leftMargin: style.leftMargin
-        property int rightMargin: style.rightMargin
-        property int bottomMargin: style.bottomMargin
+        property int topMargin: padding.top
+        property int leftMargin: padding.left
+        property int rightMargin: padding.right
+        property int bottomMargin: padding.bottom
 
-        property color foregroundColor: style.foregroundColor
-        property color backgroundColor: style.backgroundColor
+        property color textColor: style.textColor
         property color selectionColor: style.selectionColor
         property color selectedTextColor: style.selectedTextColor
 

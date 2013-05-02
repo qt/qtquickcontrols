@@ -45,13 +45,15 @@ import "." as Desktop
 Style {
     id: root
 
-    readonly property bool externalScrollBars: __styleitem.styleHint("externalScrollBars")
-    readonly property int scrollBarSpacing: __styleitem.pixelMetric("scrollbarspacing")
-    readonly property int frameWidth: __styleitem.pixelMetric("defaultframewidth")
+    property Margins padding: Margins {
+        property int frameWidth: __styleitem.pixelMetric("defaultframewidth")
+        left: frameWidth
+        top: frameWidth
+        bottom: frameWidth
+        right: frameWidth
+    }
 
     property StyleItem __styleitem: StyleItem { elementType: "frame" }
-
-    property Component scrollBar: Desktop.ScrollBarStyle {}
 
     property Component frame: StyleItem {
         id: styleitem
@@ -61,4 +63,26 @@ Style {
     }
 
     property Component corner: StyleItem { elementType: "scrollareacorner" }
+
+    readonly property bool __externalScrollBars: __styleitem.styleHint("externalScrollBars")
+    readonly property int __scrollBarSpacing: __styleitem.pixelMetric("scrollbarspacing")
+    readonly property bool scrollToClickedPosition: __styleitem.styleHint("scrollToClickPosition") !== 0
+
+    property Component __scrollbar: StyleItem {
+        readonly property bool isTransient: __styleitem.styleHint("transientScrollBars")
+        anchors.fill:parent
+        elementType: "scrollbar"
+        hover: activeControl != "none"
+        activeControl: "none"
+        sunken: __control.upPressed | __control.downPressed | __control.handlePressed
+        minimum: __control.minimumValue
+        maximum: __control.maximumValue
+        value: __control.value
+        horizontal: __control.orientation === Qt.Horizontal
+        enabled: __control.enabled
+
+        implicitWidth: horizontal ? 200 : pixelMetric("scrollbarExtent")
+        implicitHeight: horizontal ? pixelMetric("scrollbarExtent") : 200
+    }
+
 }

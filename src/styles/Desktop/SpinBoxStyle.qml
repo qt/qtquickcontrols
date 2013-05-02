@@ -42,28 +42,27 @@ import QtQuick.Controls 1.0
 import QtQuick.Controls.Private 1.0
 
 Style {
+    readonly property SpinBox control: __control
     property Component panel: Item {
         id: style
 
         property rect upRect
         property rect downRect
 
-        property int topMargin: edit.anchors.topMargin
-        property int leftMargin: 2 + edit.anchors.leftMargin
-        property int rightMargin: 2 + edit.anchors.rightMargin
-        property int bottomMargin: edit.anchors.bottomMargin
+        property Margins margins: Margins{
+            top: edit.anchors.topMargin
+            left: 2 + edit.anchors.leftMargin
+            right: 2 + edit.anchors.leftMargin
+            bottom: edit.anchors.bottomMargin
+        }
+
         property int horizontalTextAlignment: Qt.AlignLeft
         property int verticalTextAlignment: Qt.AlignVCenter
 
-        property color foregroundColor: syspal.text
-        property color backgroundColor: syspal.base
-        property color selectionColor: syspal.highlight
-        property color selectedTextColor: syspal.highlightedText
-
-        SystemPalette {
-            id: syspal
-            colorGroup: control.enabled ? SystemPalette.Active : SystemPalette.Disabled
-        }
+        property color foregroundColor: __syspal.text
+        property color backgroundColor: __syspal.base
+        property color selectionColor: __syspal.highlight
+        property color selectedTextColor: __syspal.highlightedText
 
         width: 100
         height: styleitem.implicitHeight
@@ -104,17 +103,17 @@ Style {
             id: styleitem
             elementType: "spinbox"
             anchors.fill: parent
-            sunken: (control.__downEnabled && control.__downPressed) || (control.__upEnabled && control.__upPressed)
-            hover: __containsMouse
+            sunken: (controlState.downEnabled && controlState.downPressed) || (controlState.upEnabled && controlState.upPressed)
+            hover: controlState.containsMouse
             hints: control.styleHints
             hasFocus: control.activeFocus
             enabled: control.enabled
-            value: (control.__upPressed ? 1 : 0)           |
-                   (control.__downPressed ? 1<<1 : 0) |
-                   (control.__upEnabled ? (1<<2) : 0)      |
-                   (control.__downEnabled ? (1<<3) : 0)
-            contentWidth: control.__contentWidth
-            contentHeight: control.__contentHeight
+            value: (controlState.upPressed ? 1 : 0)           |
+                   (controlState.downPressed ? 1<<1 : 0) |
+                   (controlState.upEnabled ? (1<<2) : 0)      |
+                   (controlState.downEnabled ? (1<<3) : 0)
+            contentWidth: controlState.contentWidth
+            contentHeight: controlState.contentHeight
         }
     }
 }

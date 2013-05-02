@@ -41,17 +41,31 @@ import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Private 1.0
 
+/*!
+    \qmltype TableViewStyle
+    \inqmlmodule QtQuick.Controls.Styles 1.0
+    \since QtQuick.Controls.Styles 1.0
+    \brief Provides custom styling for TableView
+
+    Note that this class derives from \l ScrollViewStyle
+    and supports all of the properties defined there.
+*/
 ScrollViewStyle {
     id: root
 
-    property bool activateItemOnSingleClick: false
+    /*! The \l TableView attached to this style. */
+    readonly property TableView control: __control
+
+    /*! The text color. */
     property color textColor: __syspal.text
+
+    /*! The text highlight color, used behind selections. */
     property color highlightedTextColor: "white"
 
-    property SystemPalette __syspal: SystemPalette {
-        colorGroup: control.enabled ? SystemPalette.Active : SystemPalette.Disabled
-    }
+    /*! Activates items on single click. */
+    property bool activateItemOnSingleClick: false
 
+    /* Delegate for header. This delegate is described in \l TableView::headerDelegate */
     property Component headerDelegate: Rectangle {
         gradient: Gradient {
             GradientStop {position: 0 ; color: "#eee"}
@@ -85,6 +99,7 @@ ScrollViewStyle {
         }
     }
 
+    /* Delegate for header. This delegate is described in \l TableView::rowDelegate */
     property Component rowDelegate: Rectangle {
         implicitHeight: 20
         implicitWidth: 80
@@ -107,7 +122,8 @@ ScrollViewStyle {
         }
     }
 
-    property Component standardDelegate: Item {
+    /* Delegate for header. This delegate is described in \l TableView::itemDelegate */
+    property Component itemDelegate: Item {
         height: Math.max(16, label.implicitHeight)
         property int implicitWidth: sizehint.paintedWidth + 4
 

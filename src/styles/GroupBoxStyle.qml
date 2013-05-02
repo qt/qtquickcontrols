@@ -45,15 +45,20 @@ import QtQuick.Controls.Private 1.0
     \qmltype GroupBoxStyle
     \internal
     \inqmlmodule QtQuick.Controls.Styles 1.0
+    \since QtQuick.Controls.Styles 1.0
 */
 Style {
+
+    /*! The \l GroupBox attached to this style. */
+    readonly property GroupBox control: __control
+
+    /*! The margin. */
     property int margin: 9
+
+    /*! The title text color. */
     property color textColor: __syspal.text
 
-    property SystemPalette __syspal: SystemPalette {
-        colorGroup: control.enabled ? SystemPalette.Active : SystemPalette.Disabled
-    }
-
+    /*! The groupbox frame. */
     property Component panel:
         Item {
         implicitWidth: control.contentWidth + 2 * margin

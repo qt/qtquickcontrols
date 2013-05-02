@@ -61,6 +61,9 @@ import QtQuick.Controls.Private 1.0
 
     The Slider value is by default in the range [0, 1]. If integer values are
     needed, you can set the \l stepSize.
+
+    You can create a custom appearance for a Slider by
+    assigning a SliderStyle.
 */
 
 Control {

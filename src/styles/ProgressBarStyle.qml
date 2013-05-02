@@ -44,61 +44,119 @@ import QtQuick.Controls.Private 1.0
 
 /*!
     \qmltype ProgressBarStyle
-    \internal
+
     \inqmlmodule QtQuick.Controls.Styles 1.0
-    \brief provides custom styling for ProgressBar
+    \since QtQuick.Controls.Styles 1.0
+    \brief Provides custom styling for ProgressBar
+
+    Example:
+    \qml
+    ProgressBar {
+        value: slider.value
+        style: ProgressBarStyle {
+            background: Rectangle {
+                radius: 2
+                color: "lightgray"
+                border.color: "gray"
+                border.width: 1
+                implicitWidth: 200
+                implicitHeight: 24
+            }
+            progress: Rectangle {
+                color: "lightsteelblue"
+                border.color: "steelblue"
+            }
+        }
+    }
+    \endqml
 */
 
 Style {
-    property color backgroundColor: "darkgrey"
-    property color progressColor: "#49d"
+    id: progressBarStyle
+
+    /*! The \l ProgressBar attached to this style. */
+    readonly property ProgressBar control: __control
+
+    /*! A value in the range [0-1] indicating the current progress. */
+    readonly property real currentProgress: control.indeterminate ? 1.0 :
+                                                                    control.value / control.maximumValue
+
+    /*! This property holds the visible contents of the progress bar
+        You can access the Slider through the \c control property.
+
+        For convenience, you can also access the readonly property \c controlState.progress
+        which provides the current progress as a \c real in the range [0-1]
+    */
+    property Margins padding: Margins { top: 0 ; left: 0 ; right: 0 ; bottom: 0 }
+
+
+    property Component progress: Rectangle {
+        property color progressColor: "#49d"
+        anchors.fill: parent
+        radius: 2
+        antialiasing: true
+        gradient: Gradient {
+            GradientStop {color: Qt.lighter(progressColor, 1.3)  ; position: 0}
+            GradientStop {color: progressColor ; position: 1.4}
+        }
+        border.width: 1
+        border.color: Qt.darker(progressColor, 1.2)
+        Rectangle {
+            color: "transparent"
+            radius: 1.5
+            antialiasing: true
+            anchors.fill: parent
+            anchors.margins: 1
+            border.color: Qt.rgba(1,1,1,0.3)
+        }
+    }
 
     property Component background: Item {
         implicitWidth: 200
         implicitHeight: 24
         BorderImage {
             anchors.fill: parent
+            anchors.bottomMargin: -2
+            anchors.leftMargin: -1
+            anchors.rightMargin: -1
             source: "images/editbox.png"
             border.left: 4
             border.right: 4
             border.top: 4
             border.bottom: 4
         }
-        Rectangle {
-            id: progressItem
-            implicitWidth: control.indeterminate ? parent.width : parent.width * control.value / control.maximumValue
-            radius: 2
-            antialiasing: true
-            height: parent.height - 2
-            gradient: Gradient {
-                GradientStop {color: Qt.lighter(progressColor, 1.3)  ; position: 0}
-                GradientStop {color: progressColor ; position: 1.4}
-            }
-            border.width: 1
-            border.color: Qt.darker(progressColor, 1.2)
-            Rectangle {
-                color: "transparent"
-                radius: 1.5
-                antialiasing: true
-                anchors.fill: parent
-                anchors.margins: 1
-                border.color: Qt.rgba(1,1,1,0.3)
-            }
-        }
     }
 
-    property Component panel: Item {
-        property Item controlref: control
-        anchors.fill: parent
+    property Component panel: Item{
+        property bool horizontal: control.orientation == Qt.Horizontal
+        implicitWidth: horizontal ? backgroundLoader.implicitWidth : backgroundLoader.implicitHeight
+        implicitHeight: horizontal ? backgroundLoader.implicitHeight : backgroundLoader.implicitWidth
 
-        implicitWidth: backgroundLoader.implicitWidth
-        implicitHeight: backgroundLoader.implicitHeight
+        Item {
+            width: horizontal ? parent.width : parent.height
+            height: !horizontal ? parent.width : parent.height
+            y: horizontal ? 0 : width
+            rotation: horizontal ? 0 : -90
+            transformOrigin: Item.TopLeft
 
-        Loader {
-            id: backgroundLoader
-            anchors.fill: parent
-            sourceComponent: background
-            property Item control: controlref
+            Loader {
+                id: backgroundLoader
+                anchors.fill: parent
+                sourceComponent: background
+            }
+
+            Loader {
+                sourceComponent: progressBarStyle.progress
+                anchors.topMargin: padding.top
+                anchors.leftMargin: padding.left
+                anchors.rightMargin: padding.right
+                anchors.bottomMargin: padding.bottom
+
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.bottom: parent.bottom
+                width: currentProgress * (parent.width - padding.left - padding.right)
+            }
         }
     }
 }

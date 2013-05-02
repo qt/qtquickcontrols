@@ -166,6 +166,7 @@ MenuPrivate {
             id: styleLoader
             active: !root.isNative
             sourceComponent: root.style
+            property alias __control: menuFrameLoader
             onStatusChanged: {
                 if (status === Loader.Error)
                     console.error("Failed to load Style for", root)

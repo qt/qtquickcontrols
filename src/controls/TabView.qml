@@ -49,6 +49,8 @@ import QtQuick.Controls.Private 1.0
     \ingroup views
     \brief A control that allows the user to select one of multiple stacked items.
 
+    You can create a custom appearance for a TabView by
+    assigning a TabViewStyle.
 */
 
 FocusScope {
@@ -176,7 +178,7 @@ FocusScope {
         id: loader
         z: tabbarItem.z - 1
         sourceComponent: style
-        property var control: root
+        property var __control: root
     }
 
     Loader {
@@ -184,10 +186,11 @@ FocusScope {
         z: tabbarItem.z - 1
 
         anchors.fill: parent
-        anchors.topMargin: tabbarItem && tabsVisible && tabPosition == Qt.TopEdge ? Math.max(0, tabbarItem.height - stack.baseOverlap) : 0
-        anchors.bottomMargin: tabbarItem && tabsVisible && tabPosition == Qt.BottomEdge ? Math.max(0, tabbarItem.height - stack.baseOverlap) : 0
+        anchors.topMargin: tabPosition === Qt.TopEdge && tabbarItem && tabsVisible  ? Math.max(0, tabbarItem.height - baseOverlap) : 0
+        anchors.bottomMargin: tabPosition === Qt.BottomEdge && tabbarItem && tabsVisible ? Math.max(0, tabbarItem.height -baseOverlap) : 0
         sourceComponent: frameVisible && loader.item ? loader.item.frame : null
-        property var control: root
+
+        property int baseOverlap: __styleItem ? __styleItem.frameOverlap : 0
 
         Item {
             id: stack
@@ -199,7 +202,6 @@ FocusScope {
 
             property int frameWidth
             property string style
-            property int baseOverlap
 
             Component.onCompleted: addTabs(stack.children)
 
@@ -240,15 +242,14 @@ FocusScope {
     states: [
         State {
             name: "Bottom"
-            when: tabPosition == Qt.BottomEdge && tabbarItem != undefined
+            when: tabPosition === Qt.BottomEdge && tabbarItem != undefined
             PropertyChanges {
                 target: tabbarItem
-                anchors.topMargin: tabbarItem.height
+                anchors.topMargin: -frameLoader.baseOverlap
             }
             AnchorChanges {
                 target: tabbarItem
-                anchors.top: undefined
-                anchors.bottom: root.bottom
+                anchors.top: frameLoader.bottom
             }
         }
     ]

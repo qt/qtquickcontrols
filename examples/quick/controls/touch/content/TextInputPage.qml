@@ -87,7 +87,7 @@ Item {
         id: touchStyle
 
         TextFieldStyle {
-            foregroundColor: "white"
+            textColor: "white"
             font.pixelSize: 28
             background: Item {
                 implicitHeight: 50

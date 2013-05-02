@@ -44,7 +44,7 @@ import QtQuick.Controls.Private 1.0
 
 Style {
     property int margin: 8
-
+    readonly property GroupBox control: __control
     property Component panel: StyleItem {
         id: styleitem
         elementType: "groupbox"

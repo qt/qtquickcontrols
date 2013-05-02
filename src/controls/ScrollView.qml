@@ -80,6 +80,8 @@ import QtQuick.Controls.Styles 1.0
     In this case the content size of the ScrollView will simply mirror that of its contained
     \l flickableItem.
 
+    You can create a custom appearance for a ScrollView by
+    assigning a ScrollViewStyle.
 */
 
 FocusScope {
@@ -175,7 +177,7 @@ FocusScope {
                 if (status === Loader.Error)
                     console.error("Failed to load Style for", root)
             }
-            property alias control: root
+            property alias __control: root
         }
 
         Binding {
@@ -272,9 +274,8 @@ FocusScope {
         ScrollViewHelper {
             id: scroller
             anchors.fill: parent
-            property int frameWidth: frameVisible ? __style.frameWidth : 0
-            property bool outerFrame: !frameVisible || !(__style ? __style.externalScrollBars : 0)
-            property int scrollBarSpacing: outerFrame ? 0 : (__style ? __style.scrollBarSpacing : 0)
+            property bool outerFrame: !frameVisible || !(__style ? __style.__externalScrollBars : 0)
+            property int scrollBarSpacing: outerFrame ? 0 : (__style ? __style.__scrollBarSpacing : 0)
             property int verticalScrollbarOffset: verticalScrollBar.visible && !verticalScrollBar.isTransient ?
                                                       verticalScrollBar.width + scrollBarSpacing : 0
             property int horizontalScrollbarOffset: horizontalScrollBar.visible && !horizontalScrollBar.isTransient ?
@@ -291,9 +292,10 @@ FocusScope {
             Item {
                 id: viewportItem
                 anchors.fill: frameLoader
-                anchors.margins: scroller.frameWidth
-                anchors.rightMargin: scroller.frameWidth + (scroller.outerFrame ? scroller.verticalScrollbarOffset : 0)
-                anchors.bottomMargin: scroller.frameWidth + (scroller.outerFrame ? scroller.horizontalScrollbarOffset : 0)
+                anchors.topMargin: frameVisible ? __style.padding.top : 0
+                anchors.leftMargin: frameVisible ? __style.padding.left : 0
+                anchors.rightMargin:  (frameVisible ? __style.padding.right : 0) +  (scroller.outerFrame ? scroller.verticalScrollbarOffset : 0)
+                anchors.bottomMargin: (frameVisible ? __style.padding.bottom : 0) + (scroller.outerFrame ? scroller.horizontalScrollbarOffset : 0)
                 clip: true
             }
         }

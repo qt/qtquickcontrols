@@ -80,5 +80,6 @@ Item {
         id: loader
         anchors.fill: parent
         sourceComponent: style
+        property var __control: toolbar
     }
 }

@@ -45,48 +45,53 @@ import QtQuick.Controls.Private 1.0
     \qmltype SpinBoxStyle
     \internal
     \inqmlmodule QtQuick.Controls.Styles 1.0
-    \brief provides custom styling for SpinBox
+    \since QtQuick.Controls.Styles 1.0
+    \brief Provides custom styling for SpinBox
 */
 
 Style {
     id: spinboxStyle
 
-    property int topMargin: 0
-    property int leftMargin: 4
-    property int rightMargin: 12
-    property int bottomMargin: 0
+    /*! The \l SpinBox attached to this style. */
+    readonly property SpinBox control: __control
 
-    property color foregroundColor: __syspal.text
-    property color backgroundColor: __syspal.base
+    /*! The content margins of the text field. */
+    property Margins margins: Margins { top: 0 ; left: 4 ; right: 12 ; bottom: 0 }
+
+    /*! The text color. */
+    property color textColor: __syspal.text
+
+    /*! The text highlight color, used behind selections. */
     property color selectionColor: __syspal.highlight
+
+    /*! The highlighted text color, used in selections. */
     property color selectedTextColor: __syspal.highlightedText
 
-    property var __syspal: SystemPalette {
-        colorGroup: control.enabled ? SystemPalette.Active : SystemPalette.Disabled
-    }
-
-    property Component upControl: Item {
+    /*! The button used to increment the value. */
+    property Component incrementControl: Item {
         implicitWidth: 18
         Image {
             source: "images/arrow-up.png"
             anchors.centerIn: parent
             anchors.verticalCenterOffset: 1
-            opacity: 0.7
+            opacity: control.enabled ? 0.7 : 0.5
             anchors.horizontalCenterOffset:  -1
         }
     }
 
-    property Component downControl: Item {
+    /*! The button used to decrement the value. */
+    property Component decrementControl: Item {
         implicitWidth: 18
         Image {
             source: "images/arrow-down.png"
             anchors.centerIn: parent
             anchors.verticalCenterOffset: -1
             anchors.horizontalCenterOffset:  -1
-            opacity: 0.7
+            opacity: control.enabled ? 0.7 : 0.5
         }
     }
 
+    /*! The background of the SpinBox. */
     property Component background: Item {
         BorderImage {
             anchors.fill: parent
@@ -96,71 +101,62 @@ Style {
             border.top: 4
             border.bottom: 4
             anchors.bottomMargin: -2
+            BorderImage {
+                anchors.fill: parent
+                anchors.margins: -1
+                anchors.topMargin: -2
+                anchors.bottomMargin: 1
+                anchors.rightMargin: 0
+                source: "images/focusframe.png"
+                visible: control.activeFocus
+                border.left: 4
+                border.right: 4
+                border.top: 4
+                border.bottom: 4
+            }
         }
     }
 
-    property Component panel:  Item {
+    /*! \internal */
+    property Component panel: Item {
         id: styleitem
-        implicitWidth: control.__contentWidth + 26
+        implicitWidth: controlState.contentWidth + 26
         implicitHeight: 23
 
-        property color foregroundColor: spinboxStyle.foregroundColor
-        property color backgroundColor: spinboxStyle.backgroundColor
+        property color foregroundColor: spinboxStyle.textColor
         property color selectionColor: spinboxStyle.selectionColor
         property color selectedTextColor: spinboxStyle.selectedTextColor
 
-        property int leftMargin: spinboxStyle.leftMargin
-        property int rightMargin: spinboxStyle.rightMargin
-        property int topMargin: spinboxStyle.topMargin
-        property int bottomMargin: spinboxStyle.bottomMargin
+        property var margins: spinboxStyle.margins
 
-        property rect upRect: Qt.rect(width - upControlLoader.implicitWidth, 0, upControlLoader.implicitWidth, height / 2 + 1)
-        property rect downRect: Qt.rect(width - downControlLoader.implicitWidth, height / 2, downControlLoader.implicitWidth, height / 2)
+        property rect upRect: Qt.rect(width - incrementControlLoader.implicitWidth, 0, incrementControlLoader.implicitWidth, height / 2 + 1)
+        property rect downRect: Qt.rect(width - decrementControlLoader.implicitWidth, height / 2, decrementControlLoader.implicitWidth, height / 2)
 
         property int horizontalTextAlignment: Qt.AlignLeft
         property int verticalTextAlignment: Qt.AlignVCenter
-
-        property SpinBox cref: control
 
         Loader {
             id: backgroundLoader
             anchors.fill: parent
             sourceComponent: background
-            property SpinBox control: cref
         }
 
         Loader {
-            id: upControlLoader
+            id: incrementControlLoader
             x: upRect.x
             y: upRect.y
             width: upRect.width
             height: upRect.height
-            sourceComponent: upControl
-            property SpinBox control: cref
+            sourceComponent: incrementControl
         }
 
         Loader {
-            id: downControlLoader
+            id: decrementControlLoader
             x: downRect.x
             y: downRect.y
             width: downRect.width
             height: downRect.height
-            sourceComponent: downControl
-            property SpinBox control: cref
+            sourceComponent: decrementControl
         }
-
-        BorderImage {
-            anchors.fill: parent
-            anchors.margins: -1
-            anchors.topMargin: -2
-            anchors.rightMargin: 0
-            source: "images/focusframe.png"
-            visible: control.activeFocus
-            border.left: 4
-            border.right: 4
-            border.top: 4
-            border.bottom: 4
-        }
-
     }
 }

@@ -147,7 +147,7 @@ ScrollView {
         }
     }
     \endcode */
-    property Component itemDelegate: __style ? __style.standardDelegate : null
+    property Component itemDelegate: __style ? __style.itemDelegate : null
 
     /*! This property defines a delegate to draw a row.
 
@@ -496,8 +496,10 @@ ScrollView {
             parent: __scroller
             visible: headerVisible
             anchors.top: parent.top
+            anchors.topMargin: viewport.anchors.topMargin
+            anchors.leftMargin: viewport.anchors.leftMargin
             anchors.margins: viewport.anchors.margins
-            anchors.rightMargin: __scroller.frameWidth +
+            anchors.rightMargin: __scroller.rightMargin +
                                  (__scroller.outerFrame && __scrollBarTopMargin ? 0 : __scroller.verticalScrollBar.width
                                                           + __scroller.scrollBarSpacing)
 

@@ -83,7 +83,7 @@ Item {
                 color: Qt.lighter("#468bb7", 1.2)
             }
 
-            background: Item {
+            groove: Item {
                 implicitHeight: 50
                 implicitWidth: 400
                 Rectangle {

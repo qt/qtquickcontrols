@@ -70,7 +70,8 @@ Item {
     Component {
         id: touchStyle
         TabViewStyle {
-            tabBarAlignment: "center"
+            tabsAlignment: Qt.AlignVCenter
+            tabOverlap: 0
             frame: Item { }
             tab: Item {
                 implicitWidth: control.width/control.count

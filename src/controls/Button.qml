@@ -56,6 +56,9 @@ import QtQuick.Controls.Private 1.0
 
     Button is similar to the QPushButton widget.
 
+    You can create a custom appearance for a Button by
+    assigning a ButtonStyle.
+
  */
 BasicButton {
     id: button
@@ -90,13 +93,16 @@ BasicButton {
      */
     property Menu menu: null
 
+    /*! \qmlproperty bool BasicButton::pressed
+
+        This property holds whether the button is pressed. */
+    readonly property bool pressed: __behavior.effectivePressed || menu && menu.__popupVisible
+
     activeFocusOnTab: true
 
     Accessible.name: text
 
     style: Qt.createComponent(Settings.theme() + "/ButtonStyle.qml", button)
-
-    readonly property bool pressed: __behavior.effectivePressed || menu && menu.__popupVisible
 
     Binding {
         target: menu

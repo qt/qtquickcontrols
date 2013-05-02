@@ -47,6 +47,7 @@ import QtQuick.Controls.Private 1.0
     \inqmlmodule QtQuick.Controls.Styles 1.0
 */
 Style {
+    readonly property ToolButton control: __control
     property Component panel: Item {
         id: styleitem
         implicitWidth: 36

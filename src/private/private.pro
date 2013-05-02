@@ -25,6 +25,7 @@ QML_FILES += \
     TabBar.qml \
     BasicButton.qml \
     Control.qml \
+    Margins.qml \
     Style.qml \
     style.js \
     ModalPopupBehavior.qml \

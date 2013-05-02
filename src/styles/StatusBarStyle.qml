@@ -45,6 +45,7 @@ import QtQuick.Controls.Private 1.0
     \qmltype StatusBarStyle
     \internal
     \inqmlmodule QtQuick.Controls.Styles 1.0
+    \since QtQuick.Controls.Styles 1.0
 */
 Item {
     implicitHeight: 22

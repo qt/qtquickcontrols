@@ -75,7 +75,7 @@ ScrollViewStyle {
         active: hasActiveFocus
     }
 
-    property Component standardDelegate: Item {
+    property Component itemDelegate: Item {
         height: Math.max(16, label.implicitHeight)
         property int implicitWidth: sizehint.paintedWidth + 4
 

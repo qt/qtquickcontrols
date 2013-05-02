@@ -58,8 +58,7 @@ Style {
                             SystemPalette.Disabled
         }
 
-        property color foregroundColor: syspal.text
-        property color backgroundColor: syspal.base
+        property color textColor: syspal.text
         property color placeholderTextColor: "darkGray"
         property color selectionColor: syspal.highlight
         property color selectedTextColor: syspal.highlightedText

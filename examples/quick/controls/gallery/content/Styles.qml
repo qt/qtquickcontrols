@@ -70,12 +70,12 @@ Item {
             spacing: 8
             Button {
                 text: "Set color…"
-                style: ButtonStyle { backgroundColor: colorDialog.color }
+                style: ButtonStyle { }
                 onClicked: colorDialog.open()
             }
             Button {
                 text: "Push me"
-                style: ButtonStyle { backgroundColor: "#eee" }
+                style: ButtonStyle { }
             }
             Button {
                 text: "Push me"
@@ -85,28 +85,13 @@ Item {
         Row {
             spacing: 8
             TextField {
-                style: TextFieldStyle { backgroundColor: colorDialog.color }
+                style: TextFieldStyle { }
             }
             TextField {
-                style: TextFieldStyle { backgroundColor: "#eee" }
+                style: TextFieldStyle { }
             }
             TextField {
                 style: textfieldStyle
-            }
-        }
-        Row {
-            spacing: 8
-            SpinBox {
-                width: 100
-                style: SpinBoxStyle { backgroundColor: colorDialog.color }
-            }
-            SpinBox {
-                width: 100
-                style: SpinBoxStyle { backgroundColor: "#eee" }
-            }
-            SpinBox {
-                width: 100
-                style: spinboxStyle
             }
         }
 
@@ -138,13 +123,13 @@ Item {
                 value: 50
                 maximumValue: 100
                 width: 100
-                style: ProgressBarStyle{ backgroundColor: colorDialog.color }
+                style: ProgressBarStyle{ }
             }
             ProgressBar {
                 value: 50
                 maximumValue: 100
                 width: 100
-                style: ProgressBarStyle{ backgroundColor: "#eee" }
+                style: ProgressBarStyle{ }
             }
             ProgressBar {
                 value: 50
@@ -187,13 +172,17 @@ Item {
     // Style delegates:
 
     property Component buttonStyle: ButtonStyle {
-        background: Rectangle {
+        panel: Rectangle {
             implicitHeight: 20
             implicitWidth: 100
             color: control.pressed ? "darkGray" : "lightGray"
             antialiasing: true
             border.color: "gray"
             radius: height/2
+            Text {
+                anchors.centerIn: parent
+                text: control.text
+            }
         }
     }
 
@@ -218,7 +207,7 @@ Item {
             radius: height/2
         }
 
-        background: Rectangle {
+        groove: Rectangle {
             height: 8
             implicitWidth: 100
             implicitHeight: 20
@@ -230,45 +219,38 @@ Item {
         }
     }
 
-    property Component spinboxStyle: SpinBoxStyle {
-        leftMargin: 8
-        topMargin: 1
-        background: Rectangle {
-            width: 100
-            height: 20
-            color: "#f0f0f0"
-            border.color: "gray"
-            antialiasing: true
-            radius: height/2
-        }
-    }
-
     property Component progressbarStyle: ProgressBarStyle {
-        background: Rectangle {
-            width: 100
-            height: 20
+        panel: Rectangle {
+            implicitWidth: 100
+            implicitHeight: 20
             color: "#f0f0f0"
             border.color: "gray"
             antialiasing: true
             radius: height/2
+            Rectangle {
+                implicitWidth: 100
+                implicitHeight: 20
+                color: "#f0f0f0"
+                border.color: "gray"
+                antialiasing: true
+                radius: height/2
+            }
         }
     }
 
     property Component tabViewStyle: TabViewStyle {
         tabOverlap: 16
-        leftMargin: 12
+        tabsLeftPadding: 12
+        frameOverlap: 4
 
-        frame: Item {
-            Rectangle {
-                gradient: Gradient{
-                    GradientStop { color: "#e5e5e5" ; position: 0 }
-                    GradientStop { color: "#e0e0e0" ; position: 1 }
-                }
-                anchors.fill: parent
-                anchors.topMargin: -4
-                border.color: "#898989"
-                Rectangle { anchors.fill: parent ; anchors.margins: 1 ; border.color: "white" ; color: "transparent" }
+        frame: Rectangle {
+            gradient: Gradient{
+                GradientStop { color: "#e5e5e5" ; position: 0 }
+                GradientStop { color: "#e0e0e0" ; position: 1 }
             }
+            border.color: "#898989"
+            Rectangle { anchors.fill: parent ; anchors.margins: 1 ; border.color: "white" ; color: "transparent" }
+
         }
         tab: Item {
             implicitWidth: image.sourceSize.width

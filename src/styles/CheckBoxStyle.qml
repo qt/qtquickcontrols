@@ -43,20 +43,57 @@ import QtQuick.Controls.Private 1.0
 
 /*!
     \qmltype CheckBoxStyle
-    \internal
     \inqmlmodule QtQuick.Controls.Styles 1.0
-    \brief provides custom styling for CheckBox
+    \since QtQuick.Controls.Styles 1.0
+    \brief Provides custom styling for CheckBox
+
+    Example:
+    \qml
+    CheckBox {
+        text: "Check Box"
+        style: CheckBoxStyle{
+            indicator: Rectangle {
+                    implicitWidth: 16
+                    implicitHeight: 16
+                    radius: 3
+                    border.color: control.activeFocus ? "darkblue" : "gray"
+                    border.width: 1
+                    Rectangle {
+                        visible: control.checked
+                        color: "#555"
+                        border.color: "#333"
+                        radius: 1
+                        anchors.margins: 4
+                        anchors.fill: parent
+                    }
+                }
+            }
+        }
+    }
+    \endqml
 */
 Style {
+    id: checkboxStyle
 
-    property int labelSpacing: 6
-    property color textColor: __syspal.text
+    /*! The \l CheckBox attached to this style. */
+    readonly property CheckBox control: __control
 
-    property SystemPalette __syspal: SystemPalette {
-        colorGroup: control.enabled ? SystemPalette.Active : SystemPalette.Disabled
+    /*! The text label. */
+    property Component label: Text {
+        text: control.text
+        color: __syspal.text
+        renderType: Text.NativeRendering
+        verticalAlignment: Text.AlignVCenter
     }
 
-    property Component indicator: Item {
+    /*! The content padding. */
+    property Margins padding: Margins { top: 0 ; left: 0 ; right: 4 ; bottom: 0 }
+
+    /*! The spacing between indicator and label. */
+    property int spacing: 4
+
+    /*! The indicator button. */
+    property Component indicator:  Item {
         implicitWidth: 18
         implicitHeight: 18
         BorderImage {
@@ -79,6 +116,7 @@ Style {
             anchors.topMargin: 3
             anchors.bottomMargin: 5
             border.color: "#222"
+            opacity: control.enabled ? 1 : 0.5
             Rectangle {
                 anchors.fill: parent
                 anchors.margins: 1
@@ -101,31 +139,26 @@ Style {
         }
     }
 
-    property Component label: Text {
-        text: control.text
-        color: textColor
-        renderType: Text.NativeRendering
-    }
-
+    /*! \internal */
     property Component panel: Item {
-        implicitWidth: Math.round(row.width + 4)
-        implicitHeight: row.height
-        property var _cref: control
+        implicitWidth: Math.round(row.width + padding.left + padding.right)
+        implicitHeight: Math.max(indicatorLoader.implicitHeight, labelLoader.implicitHeight) + padding.top + padding.bottom
 
         Row {
             id: row
-            spacing: labelSpacing
+            y: padding.top
+            x: padding.left
+            spacing: checkboxStyle.spacing
             Loader {
                 id: indicatorLoader
                 sourceComponent: indicator
                 anchors.verticalCenter: parent.verticalCenter
-                property CheckBox control: _cref
             }
             Loader {
                 id: labelLoader
                 sourceComponent: label
-                anchors.verticalCenter: parent.verticalCenter
-                property CheckBox control: _cref
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
             }
         }
     }

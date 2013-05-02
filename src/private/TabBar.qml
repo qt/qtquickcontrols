@@ -69,11 +69,9 @@ FocusScope {
     property var style
     property var styleItem: tabView.__styleItem ? tabView.__styleItem : null
 
-    property string tabBarAlignment: styleItem ? styleItem.tabBarAlignment : "left"
-    property string position: tabView ? tabView.tabPosition : "Top"
+    property int tabsAlignment: styleItem ? styleItem.tabsAlignment : Qt.AlignLeft
 
     property int tabOverlap: styleItem ? styleItem.tabOverlap : 0
-    property int tabBaseOverlap: styleItem ? styleItem.tabBaseOverlap : 0
 
     property int elide: Text.ElideRight
 
@@ -95,20 +93,20 @@ FocusScope {
         states: [
             State {
                 name: "left"
-                when: tabBarAlignment == "left"
+                when: tabsAlignment === Qt.AlignLeft
                 AnchorChanges { target:tabrow ; anchors.left: parent.left }
-                PropertyChanges { target:tabrow ; anchors.leftMargin: styleItem ? styleItem.leftMargin : 0 }
+                PropertyChanges { target:tabrow ; anchors.leftMargin: styleItem ? styleItem.tabsLeftPadding : 0 }
             },
             State {
                 name: "center"
-                when: tabBarAlignment == "center"
+                when: tabsAlignment === Qt.AlignHCenter
                 AnchorChanges { target:tabrow ; anchors.horizontalCenter: tabbar.horizontalCenter }
             },
             State {
                 name: "right"
-                when: tabBarAlignment == "right"
+                when: tabsAlignment === Qt.AlignRight
                 AnchorChanges { target:tabrow ; anchors.right: parent.right }
-                PropertyChanges { target:tabrow ; anchors.rightMargin: styleItem ? styleItem.rightMargin : 0 }
+                PropertyChanges { target:tabrow ; anchors.rightMargin: styleItem ? styleItem.tabsRightPadding : 0 }
             }
         ]
 
@@ -124,11 +122,11 @@ FocusScope {
                 focus: true
 
                 property int tabindex: index
-                property bool selectedHelper: selected
-                property bool selected : tabView.currentIndex == index
+                property bool selected : tabView.currentIndex === index
                 property bool hover: mousearea.containsMouse
-                property bool first: index === 0
                 property string title: modelData.title
+                property bool nextSelected: tabView.currentIndex === index + 1
+                property bool previousSelected: tabView.currentIndex === index - 1
 
                 z: selected ? 1 : -index
                 implicitWidth: Math.min(tabloader.implicitWidth, tabbar.width/repeater.count) + 1
@@ -141,11 +139,16 @@ FocusScope {
                     anchors.fill: parent
 
                     property Item control: tabView
-                    property Item tab: tabitem
                     property int index: tabindex
-                    property bool nextSelected: tabView.currentIndex === index + 1
-                    property bool previousSelected: tabView.currentIndex === index - 1
-                    property string title: tab.title
+
+                    property QtObject tab: QtObject {
+                        readonly property alias index: tabitem.tabindex
+                        readonly property alias selected: tabitem.selected
+                        readonly property alias title: tabitem.title
+                        readonly property alias nextSelected: tabitem.nextSelected
+                        readonly property alias previsousSelected: tabitem.previousSelected
+                        readonly property alias hovered: tabitem.hover
+                    }
                 }
 
                 MouseArea {

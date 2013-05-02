@@ -96,7 +96,7 @@ Item {
     Component {
         id: touchStyle
         ProgressBarStyle {
-            background: Rectangle {
+            panel: Rectangle {
                 implicitHeight: 15
                 implicitWidth: 400
                 color: "#444"

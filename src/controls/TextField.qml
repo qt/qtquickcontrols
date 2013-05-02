@@ -55,6 +55,9 @@ import "Styles"
     inputMask). Setting \l echoMode to an appropriate value enables
     TextField to be used for a password input field.
 
+    You can create a custom appearance for a TextField by
+    assigning a TextFieldStyle.
+
     \sa TextArea, TextInput
 */
 
@@ -562,7 +565,7 @@ Control {
         anchors.fill: parent
         verticalAlignment: Text.AlignVCenter
 
-        color: __panel ? __panel.foregroundColor : "darkgray"
+        color: __panel ? __panel.textColor : "darkgray"
         clip: true
         renderType: Text.NativeRendering
 
