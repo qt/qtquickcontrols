@@ -265,7 +265,7 @@ ScrollView {
         anchors.fill: parent
         currentIndex: -1
 
-        flickableDirection: Flickable.HorizontalFlick
+        interactive: false
         SystemPalette {
             id: palette
             colorGroup: enabled ? SystemPalette.Active : SystemPalette.Disabled
