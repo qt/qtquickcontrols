@@ -116,13 +116,13 @@ Item {
                 value: 50
                 maximumValue: 100
                 width: 100
-                style: SliderStyle { backgroundColor: colorDialog.color}
+                style: SliderStyle { }
             }
             Slider {
                 value: 50
                 maximumValue: 100
                 width: 100
-                style: SliderStyle { backgroundColor: "#eee"}
+                style: SliderStyle { }
             }
             Slider {
                 value: 50

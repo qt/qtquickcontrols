@@ -43,17 +43,51 @@ import QtQuick.Controls.Private 1.0
 
 /*!
     \qmltype SliderStyle
-    \internal
     \inqmlmodule QtQuick.Controls.Styles 1.0
+
+    The slider style allows you to create a custom appearance for
+    a \l Slider control.
+
+    The implicit size of the slider is calculated based on the
+    maximum implicit size of the \c background and \c handle
+    delegates combined.
+
+    Example:
+    \qml
+    Slider {
+        style: SliderStyle {
+            background: Rectangle {
+                implicitWidth: 200
+                implicitHeight: 8
+                color: "gray"
+                radius: 8
+                Rectangle {
+                    height: parent.height
+                    width: handlePosition
+                    radius: 8
+                    border.color: "gray"
+                    border.width: 2
+                    color: "lightsteelblue"
+                }
+            }
+            handle: Rectangle {
+                color: control.pressed ? "white" : "lightgray"
+                border.color: "gray"
+                border.width: 2
+                width: 24
+                height: 24
+                radius: 12
+            }
+        }
+    }
+    \endqml
 */
 Style {
     id: styleitem
 
-    property int leftMargin
-    property int rightMargin
-
-    property color backgroundColor: "lightgray"
-
+    /*! This property holds the item for the slider handle.
+        You can access the slider through the \c control property
+    */
     property Component handle: Item {
         implicitWidth: 20
         implicitHeight: 18
@@ -80,6 +114,11 @@ Style {
         }
     }
 
+    /*! This property holds the background for the slider.
+
+        You can access the slider through the \c control property.
+        You can access the handle position through the \c handlePosition property.
+    */
     property Component background: Item {
         anchors.verticalCenter: parent.verticalCenter
         implicitWidth: 100
@@ -94,6 +133,10 @@ Style {
         }
     }
 
+    /*! This property holds the slider style panel.
+
+        Note that it is generally not recommended to override this.
+    */
     property Component panel: Item {
         id: root
         property bool horizontal : control.orientation === Qt.Horizontal
@@ -109,6 +152,8 @@ Style {
                 id: backgroundLoader
                 property Control control: __cref
                 property Item handle: handleLoader.item
+                property int handlePosition: handleLoader.x + handleLoader.width/2
+
                 sourceComponent: background
                 width: horizontal ? parent.width : parent.height
                 y: Math.round(horizontal ? parent.height/2 : parent.width/2) - backgroundLoader.item.height/2
@@ -118,7 +163,7 @@ Style {
                 property Control control: __cref
                 sourceComponent: handle
                 anchors.verticalCenter: backgroundLoader.verticalCenter
-                x: Math.round(leftMargin + control.value / control.maximumValue * ((horizontal ? root.width : root.height) - leftMargin - rightMargin - item.width))
+                x: Math.round(control.value / control.maximumValue * ((horizontal ? root.width : root.height)- item.width))
             }
         }
     }
