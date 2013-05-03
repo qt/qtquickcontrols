@@ -129,8 +129,7 @@ Style {
             anchors.rightMargin: -1
             border.color: "#aaa"
             Image {
-                source: "images/arrow-down.png"
-                rotation: horizontal ? -90 : 0
+                source: horizontal ? "images/arrow-right.png" : "images/arrow-down.png"
                 anchors.centerIn: parent
                 opacity: 0.7
             }
@@ -155,8 +154,7 @@ Style {
             anchors.rightMargin: horizontal ? 0 : -1
             color: "lightgray"
             Image {
-                source: "images/arrow-up.png"
-                rotation: horizontal ? -90 : 0
+                source: horizontal ? "images/arrow-left.png" : "images/arrow-up.png"
                 anchors.centerIn: parent
                 opacity: 0.7
             }

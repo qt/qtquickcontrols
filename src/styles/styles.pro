@@ -55,6 +55,10 @@ QML_FILES += \
     images/arrow-up.png \
     images/arrow-up@2x.png \
     images/arrow-down.png \
-    images/arrow-down@2x.png
+    images/arrow-down@2x.png \
+    images/arrow-left.png \
+    images/arrow-left@2x.png \
+    images/arrow-right.png \
+    images/arrow-right@2x.png
 
 load(qml_module)
