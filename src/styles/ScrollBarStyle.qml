@@ -156,6 +156,8 @@ Style {
             Image {
                 source: horizontal ? "images/arrow-left.png" : "images/arrow-up.png"
                 anchors.centerIn: parent
+                anchors.verticalCenterOffset: horizontal ? 0 : -1
+                anchors.horizontalCenterOffset: horizontal ? -1 : 0
                 opacity: 0.7
             }
             gradient: Gradient {
@@ -263,7 +265,7 @@ Style {
             width: horizontal ? extent : implicitWidth
             anchors.top: bg.top
             anchors.left: bg.left
-            anchors.topMargin: horizontal ? 0 : -1 -handleOverlap + (control.value / control.maximumValue) * (bg.height + 2 * handleOverlap- height)
+            anchors.topMargin: horizontal ? 0 : -handleOverlap + (control.value / control.maximumValue) * (bg.height + 2 * handleOverlap- height)
             anchors.leftMargin: horizontal ? -handleOverlap + (control.value / control.maximumValue) * (bg.width + 2 * handleOverlap - width) : 0
             sourceComponent: handle
         }
