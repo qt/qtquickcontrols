@@ -157,7 +157,7 @@ Item {
         z: 1
         anchors.bottom: cornerFill.top
         anchors.bottomMargin: hscrollbar.visible ? 0 : frameMargin
-        maximumValue: contentHeight > availableHeight ? contentHeight - availableHeight : 0
+        maximumValue: contentHeight > availableHeight ? contentHeight - availableHeight + __viewTopMargin : 0
         minimumValue: 0
         anchors.right: parent.right
         anchors.top: parent.top

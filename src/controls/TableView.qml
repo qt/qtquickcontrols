@@ -240,6 +240,7 @@ ScrollView {
 
     frameVisible: true
     __scrollBarTopMargin: Qt.platform.os === "mac" ? headerrow.height : 0
+    __viewTopMargin: headerrow.height
 
     /*! \internal */
     function __decrementCurrentIndex() {

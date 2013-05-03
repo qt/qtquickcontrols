@@ -135,6 +135,8 @@ FocusScope {
     /*! \internal */
     property int __scrollBarTopMargin: 0
     /*! \internal */
+    property int __viewTopMargin: 0
+    /*! \internal */
     property alias __horizontalScrollBar: scroller.horizontalScrollBar
     /*! \internal */
     property alias __verticalScrollBar: scroller.verticalScrollBar
@@ -231,7 +233,7 @@ FocusScope {
             property bool verticalRecursionGuard: false
 
             horizontalMaximumValue: flickableItem ? flickableItem.contentWidth - viewport.width : 0
-            verticalMaximumValue: flickableItem ? flickableItem.contentHeight - viewport.height : 0
+            verticalMaximumValue: flickableItem ? flickableItem.contentHeight - viewport.height + __viewTopMargin : 0
 
             Connections {
                 target: flickableItem
