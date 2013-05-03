@@ -53,6 +53,8 @@ QML_FILES += \
     images/tab_selected.png \
     images/editbox.png \
     images/arrow-up.png \
-    images/arrow-down.png
+    images/arrow-up@2x.png \
+    images/arrow-down.png \
+    images/arrow-down@2x.png
 
 load(qml_module)
