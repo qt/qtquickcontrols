@@ -284,8 +284,11 @@ Item {
             // it already got, and assume that SplitView ends up with implicit size as size:
             if (root[d.size] != 0) {
                 var fillItem = __items[fillIndex]
-                var min = fillItem.Layout[minimum] !== undefined ? fillItem.Layout[minimum] : 0
-                fillItem[d.size] = Math.max(min, root[d.size] - d.accumulatedSize(0, __items.length, false))
+                var superfluous = root[d.size] - d.accumulatedSize(0, __items.length, false)
+                var s = Math.max(superfluous, fillItem.Layout[minimum])
+                if (fillItem.Layout[maximum] !== -1)
+                    s = Math.min(s, fillItem.Layout[maximum])
+                fillItem[d.size] = s
             }
 
             // Position items and handles according to their width:
@@ -296,7 +299,7 @@ Item {
                 if (item.visible) {
                     item[d.offset] = lastVisibleHandle ? lastVisibleHandle[d.offset] + lastVisibleHandle[d.size] : 0
                     item[d.otherOffset] = 0
-                    item[d.otherSize] = root[d.otherSize]
+                    item[d.otherSize] = clampedMinMax(root[otherSize], item.Layout[otherMinimum], item.Layout[otherMaximum])
                     lastVisibleItem = item
 
                     handle = __handles[i]
