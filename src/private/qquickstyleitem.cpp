@@ -199,7 +199,8 @@ void QQuickStyleItem::initStyleOption()
         const QFont *font = QGuiApplicationPrivate::platformTheme()->font(platformFont);
         if (font)
             opt->fontMetrics = QFontMetrics(*font);
-        if (QObject * menu = m_properties["menu"].value<QObject *>()) {
+        QObject * menu = m_properties["menu"].value<QObject *>();
+        if (menu) {
             opt->features |= QStyleOptionButton::HasMenu;
 #ifdef Q_OS_MAC
             if (style() == "mac") {
