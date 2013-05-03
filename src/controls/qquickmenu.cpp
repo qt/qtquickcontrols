@@ -255,6 +255,8 @@ QQuickMenu::QQuickMenu(QObject *parent)
         if (platformItem())
             platformItem()->setMenu(m_platformMenu);
     }
+    if (const QFont *font = QGuiApplicationPrivate::platformTheme()->font(QPlatformTheme::MenuItemFont))
+        m_font = *const_cast<QFont*>(font);
 }
 
 QQuickMenu::~QQuickMenu()
@@ -288,6 +290,10 @@ void QQuickMenu::setMinimumWidth(int w)
 
 void QQuickMenu::setFont(const QFont &arg)
 {
+    if (arg == m_font)
+        return;
+
+    m_font = arg;
     if (m_platformMenu)
         m_platformMenu->setFont(arg);
 }
