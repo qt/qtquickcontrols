@@ -33,6 +33,9 @@ depends = qtqml qtquick qtwidgets qtdoc qtquicklayouts
 
 exampledirs += ../../../examples/quick/controls
 
+# Specify the install path under QT_INSTALL_EXAMPLES
+examplesinstallpath = quick/controls
+
 headerdirs += ../
 
 sourcedirs += ../
