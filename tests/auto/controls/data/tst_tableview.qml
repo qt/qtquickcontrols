@@ -180,6 +180,36 @@ TestCase {
         table.destroy()
     }
 
+    function test_activated() {
+        var component = Qt.createComponent("tableview/table_activated.qml")
+        compare(component.status, Component.Ready)
+        var table = component.createObject(container);
+        verify(table !== null, "table created is null")
+        table.forceActiveFocus();
+        compare(table.test, false)
+        if (!table.__activateItemOnSingleClick)
+            mouseDoubleClick(table, 15 , 15, Qt.LeftButton)
+        else
+            mouseClick(table, 15, 15, Qt.LeftButton)
+        compare(table.test, true)
+        table.destroy()
+    }
+
+    function test_activated_withItemDelegate() {
+        var component = Qt.createComponent("tableview/table_delegate.qml")
+        compare(component.status, Component.Ready)
+        var table = component.createObject(container);
+        verify(table !== null, "table created is null")
+        table.forceActiveFocus();
+        compare(table.activatedTest, false)
+        if (!table.__activateItemOnSingleClick)
+            mouseDoubleClick(table, 15 , 50, Qt.LeftButton)
+        else
+            mouseClick(table, 15, 50, Qt.LeftButton)
+        compare(table.activatedTest, true)
+        table.destroy()
+    }
+
     function test_columnCount() {
         var component = Qt.createComponent("tableview/table_multicolumns.qml")
         compare(component.status, Component.Ready)

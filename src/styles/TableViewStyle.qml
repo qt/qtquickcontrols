@@ -44,6 +44,7 @@ import QtQuick.Controls.Private 1.0
 ScrollViewStyle {
     id: root
 
+    property bool activateItemOnSingleClick: false
     property color textColor: __syspal.text
     property color highlightedTextColor: "white"
 

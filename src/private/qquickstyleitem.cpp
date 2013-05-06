@@ -946,6 +946,8 @@ QVariant QQuickStyleItem::styleHint(const QString &metric)
         return qApp->style()->styleHint(QStyle::SH_ScrollView_FrameOnlyAroundContents);
     } else if (metric == "scrollToClickPosition")
         return qApp->style()->styleHint(QStyle::SH_ScrollBar_LeftClickAbsolutePosition);
+    else if (metric == "activateItemOnSingleClick")
+        return qApp->style()->styleHint(QStyle::SH_ItemView_ActivateItemOnSingleClick);
     else if (metric == "transientScrollBars")
         return qApp->style()->styleHint(QStyle::SH_ScrollBar_Transient, m_styleoption);
     return 0;

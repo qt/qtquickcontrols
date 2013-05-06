@@ -41,6 +41,7 @@
 import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Private 1.0
+import QtQuick.Controls.Styles 1.0
 
 /*!
    \qmltype TableView
@@ -221,7 +222,8 @@ ScrollView {
     property alias currentRow: listView.currentIndex
 
     /*! \qmlsignal TableView::activated()
-        Emitted when a new row is selected by the user. */
+        Emitted when the user activates an item by single or double-clicking (depending on the platform).
+    */
     signal activated
 
 
@@ -236,6 +238,9 @@ ScrollView {
     frameVisible: true
     __scrollBarTopMargin: Qt.platform.os === "mac" ? headerrow.height : 0
     __viewTopMargin: headerrow.height
+
+    /*! \internal */
+    property bool __activateItemOnSingleClick: __style ? __style.activateItemOnSingleClick : false
 
     /*! \internal */
     function __decrementCurrentIndex() {
@@ -277,6 +282,7 @@ ScrollView {
             id: mousearea
 
             anchors.fill: listView
+            propagateComposedEvents: true
 
             property bool autoincrement: false
             property bool autodecrement: false
@@ -309,19 +315,28 @@ ScrollView {
                     listView.currentIndex = listView.indexAt(0, y);
             }
 
-            onPressed:  {
+            onClicked: {
+                if (root.__activateItemOnSingleClick)
+                    root.activated()
+                mouse.accepted = false
+            }
+
+            onPressed: {
                 listView.forceActiveFocus()
                 var x = Math.min(flickableItem.contentWidth - 5, Math.max(mouseX + flickableItem.contentX, 0))
                 var y = Math.min(flickableItem.contentHeight - 5, Math.max(mouseY + flickableItem.contentY, 0))
                 listView.currentIndex = listView.indexAt(x, y)
-                mouse.accepted = false
             }
 
-            onDoubleClicked: { root.activated() }
+            onDoubleClicked: {
+                if (!root.__activateItemOnSingleClick)
+                    root.activated()
+            }
 
             // Note:  with boolean preventStealing we are keeping the flickable from
             // eating our mouse press events
             preventStealing: true
+
         }
 
         // Fills extra rows with alternate color

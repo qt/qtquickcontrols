@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2013 Tasuku Suzuki <stasuku@gmail.com>
 ** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the Qt Quick Controls module of the Qt Toolkit.
@@ -42,32 +42,13 @@ import QtQuick 2.1
 import QtQuick.Controls 1.0
 
 TableView {
-    id: table
-    model: [{"text": "text1"}, {"text": "text2"}, {"text": "text3"}]
-    property var test: 0
+    height: 70
+    model: 10
 
-    property bool activatedTest: false
-    onActivated: activatedTest = true
+    property bool test: false
+    onActivated: test = true
 
     TableViewColumn {
-        title: "Text"
-        role: "text"
         width: 100
     }
-    headerDelegate: Text {
-        height: 40
-        text: itemValue
-    }
-    itemDelegate: Text {
-        width: parent.width
-        anchors.left: parent.left
-        anchors.verticalCenter: parent.verticalCenter
-        text: itemValue !== undefined ? itemValue : ""
-        color: itemTextColor
-        MouseArea {
-            anchors.fill: parent
-            onClicked: table.test = 1
-        }
-    }
 }
-
