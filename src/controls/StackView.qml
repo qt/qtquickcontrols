@@ -48,6 +48,7 @@ import "Private/StackView.js" as JSArray
     \inherits Item
     \ingroup views
     \inqmlmodule QtQuick.Controls 1.0
+    \since QtQuick.Controls 1.0
 
     \brief Provides a stack-based navigation model.
 

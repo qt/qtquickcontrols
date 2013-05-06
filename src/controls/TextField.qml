@@ -46,6 +46,7 @@ import "Styles"
 /*!
     \qmltype TextField
     \inqmlmodule QtQuick.Controls 1.0
+    \since QtQuick.Controls 1.0
     \ingroup controls
     \brief Displays a single line of editable plain text.
 

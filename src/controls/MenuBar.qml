@@ -46,6 +46,7 @@ import QtQuick.Controls.Private 1.0
 /*!
     \qmltype MenuBar
     \inqmlmodule QtQuick.Controls 1.0
+    \since QtQuick.Controls 1.0
     \ingroup menus
     \brief Provides a horizontal menu bar.
 
