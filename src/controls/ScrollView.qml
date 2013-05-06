@@ -46,6 +46,7 @@ import QtQuick.Controls.Styles 1.0
 /*!
     \qmltype ScrollView
     \inqmlmodule QtQuick.Controls 1.0
+    \since  QtQuick.Controls 1.0
     \ingroup views
     \brief Provides a scrolling view within another Item.
 

@@ -46,6 +46,7 @@ import QtQuick.Controls.Private 1.0
 
 /*!
     \qmltype ApplicationWindow
+    \since QtQuick.Controls 1.0
     \inqmlmodule QtQuick.Controls 1.0
     \ingroup applicationwindow
     \brief Provides a top-level application window.
