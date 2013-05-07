@@ -52,39 +52,38 @@ import "Private/StackView.js" as JSArray
 
     \brief Provides a stack-based navigation model.
 
-    StackView implements a stack-based navigation model. You use this view when you
-    have a set of interlinked information pages for the user to browse.
-    Items are pushed onto the stack as the user navigates deeper into the material, and
-    popped off again when he chooses to go back.
+    StackView implements a stack-based navigation model, which can be used
+    with a set of interlinked information pages. Items are pushed onto the stack
+    as the user navigates deeper into the material, and popped off again when he
+    chooses to go back.
 
     \section1 Using StackView in an Application
     Using the StackView in the application is typically a simple matter of adding
-    the StackView as a child of a Window. The stack is usually
-    anchored to the edges of the window, except at the top or bottom where it might
-    be anchored to a status bar, or some other similar UI component.
-    The stack can then be used by invoking its navigation methods. The first item
-    to show in the StackView is commonly loaded assigning it to \l initialItem.
+    the StackView as a child of a Window. The stack is usually anchored to the
+    edges of the window, except at the top or bottom where it might be anchored
+    to a status bar, or some other similar UI component. The stack can then be
+    used by invoking its navigation methods. The first item to show in the StackView
+    is commonly loaded assigning it to \l initialItem.
 
     \note Items pushed onto the stack view have \l{Supported Attached Properties}{Stack attached properties}.
 
     \section1 Basic Navigation
-    There are three primary navigation operations in StackView: push(), pop() and
-    replace (you replace by specifying argument \c replace to push()).
+    There are three primary navigation operations in StackView: push(), pop(), and
+    replace (replace by specifying argument \c replace to push()).
     These correspond to classic stack operations where "push" adds an item to the
     top of a stack, "pop" removes the top item from the stack, and "replace" is like a
     pop followed by a push in that it replaces the topmost item on the stack with
     a new item (but the applied transtition might be different). The topmost item
-    in the stack corresponds to the one that is \l{StackView::currentItem} {current},
-    i.e. the one that is visible on
-    screen. That means that "push" is the logical equivalent of navigating forward or
-    deeper into the application, "pop" is the equivalent of navigation back and
-    "replace" is the equivalent of replacing the current item with a different item.
+    in the stack corresponds to the one that is \l{StackView::currentItem} {currently}
+    visible on the screen. That means that "push" is the logical equivalent of navigating
+    forward or deeper into the application, "pop" is the equivalent of navigating back,
+    and "replace" is the equivalent of replacing the current item.
 
-    Sometimes it is necessary to go back more than a single step in the stack, e.g.
-    to return to a "main" item or some kind of section item in the application.
-    For this use case, pop() can be provided with a item to pop to. This is called
-    an "unwind" operation as the stack gets unwound to the specified item. If the
-    item is not found then the stack unwinds until there is only a single item in
+    Sometimes it is necessary to go back more than a single step in the stack, for
+    example, to return to a "main" item or some kind of section item in the application.
+    For this use case, it is possible to specify an item as a parameter for pop().
+    This is called an "unwind" operation as the stack gets unwound to the specified item.
+    If the item is not found then the stack unwinds until there is only a single item in
     the stack, which becomes the current item. To explicitly unwind to the bottom
     of the stack it is recommended to use \l{pop()} {pop(null)}, though technically any
     non-existent item will do.
@@ -98,11 +97,11 @@ import "Private/StackView.js" as JSArray
     \li \l{pop()}{pop(A)} => [A] - "pop" transition between C and A
     \endlist
 
-    Note that when the stack is empty, a push() will not perform a
-    transition animation because there is nothing to transition from (which will
-    typically happend during application start-up). A pop() on a stack with
-    depth 1 or 0 is a no-operation. If removing all items from the stack is
-    needed, a separate function clear() is available.
+    \note Note that when the stack is empty, a push() will not perform a
+    transition animation because there is nothing to transition from (typically during
+    application start-up). A pop() on a stack with depth 1 or 0 is a no-operation.
+    If removing all items from the stack is needed, a separate function clear() is
+    available.
 
     Calling push() returns the item that was pushed onto the stack.
     Calling pop() returns the item that was popped off the stack. When pop() is
@@ -110,22 +109,22 @@ import "Private/StackView.js" as JSArray
     popped, which will also be the one transitioning out) is returned.
 
     \section1 Deep Linking
-    Deep linking means launching an application into a particular state. For example
-    a Newspaper application could be launched into showing a particular article,
-    bypassing the front item (and possible a section item) that would normally have
-    to be navigated through to get to the article in question. In terms of StackView, deep
-    linking means the ability to modify the state of the stack so that
-    you e.g. push a set of items to the top of the stack, or that you completely reset
+    \e{Deep linking} means launching an application into a particular state. For example,
+    a newspaper application could be launched into showing a particular article,
+    bypassing the front item (and possibly a section item) that would normally have
+    to be navigated through to get to the article concerned. In terms of StackView, deep
+    linking means the ability to modify the state of the stack, so much so that it is
+    possible to push a set of items to the top of the stack, or to completely reset
     the stack to a given state.
 
-    The API for deep linking in StackView is the same as for basic navigation. If
-    you push an array instead of a single item then all the items in that array will
+    The API for deep linking in StackView is the same as for basic navigation. Pushing
+    an array instead of a single item, will involve that all the items in that array will
     be pushed onto the stack. The transition animation, however, will be conducted as
     if only the last item in the array was pushed onto the stack. The normal semantics
-    of push() apply for deep linking, meaning that push() adds whatever you push onto
-    the stack. Note also that only the last item in the array will actually be loaded.
-    The rest will be lazy loaded as needed when entering
-    the screen upon subsequent calls to pop (or when requesting the item by using \a get).
+    of push() apply for deep linking, meaning that push() adds whatever is pushed onto
+    the stack. Note also that only the last item of the array will be loaded.
+    The rest will be lazy-loaded as needed when entering the screen upon subsequent
+    calls to pop (or when requesting the item by using \a get).
 
     This gives us the following result, given the stack [A, B, C]:
 
@@ -137,93 +136,95 @@ import "Private/StackView.js" as JSArray
 
     \section1 Pushing items
 
-    An item you push onto the StackView can be either an Item, a URL, a
-    string with a URL, or a Component. To push it, you assign it
-    to a property "item" inside a property list, and send it as argument to \l{StackView::push}{push}:
+    An item pushed onto the StackView can be either an Item, a URL, a string
+    with a URL, or a Component. To push it, assign it to a property "item"
+    inside a property list, and send it as an argument to \l{StackView::push}{push}:
 
     \code
     stackView.push({item: yourItem})
     \endcode
 
-    The list can contain several properties that controls how the item should be pushed:
+    The list can contain several properties that control how the item should be pushed:
     \list
-    \li \c item: This property is required, and holds the item you want to push.
-    \li \c properties: You can set a property list of QML properties that should be assigned
-        to the item upon push. These properties will be copied into the item at the
-        time the item is loaded, or about to become the current item (normally upon push).
-    \li \c immediate: Set this property to \c true to skip transition effects. When pushing
-        an array, you only need to set this property on the first element to make the
+    \li \c item: this property is required, and holds the item to be pushed.
+    \li \c properties: a list of QML properties to be assigned to the item upon push. These
+        properties will be copied into the item at load time, or when the item will become
+        the current item (normally upon push).
+    \li \c immediate: set this property to \c true to skip transition effects. When pushing
+        an array, this property only needs to be set on the first element to make the
         whole operation immediate.
-    \li \c replace: Set this property to replace the current item on the stack. When pushing
+    \li \c replace: set this property to replace the current item on the stack. When pushing
         an array, you only need to set this property on the first element to replace
         as many elements on the stack as inside the array.
-    \li \c destroyOnPop: Set this property to be explicit to whether or not StackView should
-        destroy the item when its popped off the stack. By default (if \a destroyOnPop is
-        not specified), StackView will destroy items pushed as components or URLs. Items
-        not destroyed will be reparented back to the original parents they had before being
-        pushed onto the stack, and hidden. If you need to set this property, do it with
-        care, so that items are not leaked.
+    \li \c destroyOnPop: set this boolean to true if StackView needs to destroy the item when
+        it is popped off the stack. By default (if \a destroyOnPop is not specified), StackView
+        will destroy items pushed as components or URLs. Items not destroyed will be re-parented
+        back to the original parents they had before being pushed onto the stack and hidden.
+        If you need to set this property, do it with care, so that items are not leaked.
     \endlist
 
-    If the only argument needed is "item", you can also, as a short-hand
-    notation, do:
+    If the only argument needed is "item", the following short-hand notation can be applied:
 
     \code
-    stackView.push(yourItem).
+    stackView.push(yourItem)
     \endcode
 
     You can push several items in one go by using an array of property lists. This is
     optimizing compared to pushing items one by one, since StackView then can load only the
     last item in the list. The rest will be loaded as they are about to become
-    the current item (which happends when the stack is popped). The following example shows how
+    the current item (which happens when the stack is popped). The following example shows how
     to push an array of items:
 
     \code
     stackView.push([{item: yourItem1}, {item: yourItem2}])
     \endcode
 
-    If inline items are pushed, the item gets re-parented into an internal
-    container in the StackView. When the item is later popped off, it gets
-    re-parented back to its original owner. If, however, an item is pushed
-    as a component or a URL, the actual item will be created as a item from that component. This
-    happens automatically when the item is about to become the current item in the stack. Ownership
-    over the item will then normally be taken by the StackView. It will as such automatically
-    destroy the item when it is later popped off. The component that declared the item, by
+    If an inline item is pushed, the item is temporarily re-parented into the StackView. When the item
+    is later popped off, it gets re-parented back to its original owner again.
+    If, however, an item is pushed as a component or a URL, the actual item will be created as an
+    item from that component. This happens automatically when the item is about to become the current
+    item in the stack. Ownership of the item will then normally be taken by the StackView. It will as
+    such automatically destroy the item when it is later popped off. The component that declared the item, by
     contrast, remains in the ownership of the application and is not destroyed by the stack.
-    You can override this behavior if needed by explicitly setting "destroyOnPop" in the list
-    argument given to push.
+    This can be overridden by explicitly setting \c{destroyOnPop} in the list of arguments given to push.
 
-    If you specify the \c properties property to push, these properties will be copied into
-    the item at the time the item is loaded (in case of a component or URL), or instead when
-    its about to become the current item (in case of an inline item). This normally happens when
-    the item is pushed. The following example shows how this can be done:
+    If the \c properties to be pushed are specified, they will be copied into the item at loading time
+    (in case of a component or URL), or when the item will become the current item (in case of an inline
+    item). The following example shows how this can be done:
 
     \code
-    stackView.push({item: someItem, properties: {fgcolor: "red", bgcolor: "blue"}});
+    stackView.push({item: someItem, properties: {fgcolor: "red", bgcolor: "blue"}})
     \endcode
 
-    Note that if an item is declared inside another item that is destroyed - even if a component
-    was used - that child item also gets destroyed.
-    This follows normal Qt parent-child destruction rules but sometimes comes as a surprise
-    for developers. In practice this means that if you declare a item B as a child of
-    item A and then do a replace from item A to item B, then item B will be destroyed when
-    item A was destroyed (as it was popped off the stack) and the application will effectively
-    be switching to a item that has been destroyed.
+
+    \note Note that if an item is declared inside another item, and if that parent gets destroyed,
+    (even if a component was used), that child item will also be destroyed.
+    This follows normal Qt parent-child destruction rules, but sometimes comes as a surprise
+    for developers.
 
     \section1 Lifecycle
-    An items lifecycle in the StackView goes from instantiation to inactive, activating, active,
-    deactivating, inactive, and when no longer needed, destruction.
+    An item's lifecycle in the StackView can have the following transitions:
+    \list 1
+    \li instantiation
+    \li inactive
+    \li activating
+    \li active
+    \li deactivating
+    \li inactive
+    \li destruction
+    \endlist
+
     It can move any number of times between inactive and active. When an item is activated,
     it's visible on the screen and is considered to be the current item. An item
     in a StackView that is not visible is not activated, even if the item is currently the
-    top-most item in the stack. When the stack becomes visible the item that is top-most gets
-    activated. Likewise if the stack is then hidden, the top-most item would be deactivated.
+    top-most item in the stack. When the stack becomes visible, the item that is top-most gets
+    activated. Likewise if the stack is then hidden, the topmost item would be deactivated.
     Popping the item off the top of the stack at this point would not result in further
     deactivation since the item is not active.
 
-    There is an attached \l{Stack::status}{Stack.status} property that tracks the lifecycle. The value of status is
-    an enumeration with values \c Stack.Inactive, \c Stack.Activating, \c Stack.Active
-    and \c Stack.Deactivating. Combined with the normal \c Component.onComplete and
+    There is an attached \l{Stack::status}{Stack.status} property that tracks the lifecycle. The
+    status values list is an enumeration with values \c Stack.Inactive, \c Stack.Activating,
+    \c Stack.Active and \c Stack.Deactivating. Combined with the normal \c Component.onComplete and
     \c Component.onDestruction signals the entire lifecycle is thus:
 
     \list
@@ -236,26 +237,26 @@ import "Private/StackView.js" as JSArray
     \endlist
 
     \section1 Finding items
-    Sometimes it is necessary to search for a item, e.g. in order to unwind the stack to
+    Sometimes it is necessary to search for an item, for example, in order to unwind the stack to
     an item to which the application does not have a reference. This is facilitated using a
     function find() in StackView. The find() function takes a callback function as its
     only argument. The callback gets invoked for each item in the stack (starting at the top).
-    If the callback returns true then it signals that a match has been found and the find()
-    function returns that item. If the callback fails to return true (i.e. no match is found)
+    If the callback returns true, then it signals that a match has been found and the find()
+    function returns that item. If the callback fails to return true (no match is found),
     then find() returns \c null.
 
-    The code below searches for an item in the stack that has a name "foo" and then unwinds to
-    that item. Note that since find() returns null if no item is found and since pop unwinds to
-    the bottom of the stack if null is given as the target item, the code works well even in the
-    case that no matching item was found.
+    The code below searches for an item in the stack that has a name "order_id" and then unwinds to
+    that item. Note that since find() returns \c {null} if no item is found, and since pop unwinds to
+    the bottom of the stack if null is given as the target item, the code works well even in
+    case no matching item is found.
 
     \code
     stackView.pop(stackView.find(function(item) {
-        return item.name == "foo";
+        return item.name == "order_id";
     }));
     \endcode
 
-    You can also get to a item in the stack using get(index). You should use
+    You can also get to an item in the stack using \l {get()}{get(index)}. You should use
     this function if your item depends on another item in the stack, as the function will
     ensure that the item at the given index gets loaded before it is returned.
 
@@ -316,8 +317,8 @@ import "Private/StackView.js" as JSArray
     Implement this function to reset any properties animated on the exitItem so that later
     transitions can expect the items to be in a default state.
 
-    A more complex example could look like the following. Here, the items slides in lying on the side before
-    they are rotated up in an upright position:
+    A more complex example could look like the following. Here, the items are lying on the side before
+    being rotated to an upright position:
 
     \qml
     StackView {
@@ -376,7 +377,7 @@ import "Private/StackView.js" as JSArray
     depending on the their internal state. StackView will expect you to return a Component that
     contains a StackViewTransition, or a StackViewTransition directly. The former is easier, as StackView will
     then create the transition and later destroy it when it's done, while avoiding any sideeffects
-    caused by the transition being alive long after it ran. Returning a StackViewTransition directly
+    caused by the transition being alive long after it has run. Returning a StackViewTransition directly
     can be useful if you need to write some sort of transition caching for performance reasons.
     As an optimization, you can also return \c null to signal that you just want to show/hide the items
     immediately without creating or running any transitions. You can also override this function if
@@ -385,9 +386,9 @@ import "Private/StackView.js" as JSArray
     \c properties contains the properties that will be assigned to the StackViewTransition before
     it runs. In fact, you can add more properties to this object during the call
     if you need to initialize additional properties of your custom StackViewTransition when the returned
-    component is instanciated.
+    component is instantiated.
 
-    The following example shows how you can decide run-time which animation to use:
+    The following example shows how you can decide which animation to use during runtime :
 
     \qml
     StackViewDelegate {
@@ -491,28 +492,28 @@ Item {
     /*! Pushes an item onto the stack. The function takes a property list as argument, which
         should contain one or more of the following properties:
         \list
-        \li \c item: This property is required, and holds the item you want to push.
-        \li \c properties: You can set a property list of QML properties that should be assigned
-            to the item upon push. These properties will be copied into the item at the
-            time the item is loaded (in case of a component or URL), or else the first time it
-            becomes the current item (normally upon push).
-        \li \c immediate: Set this property to \c true to skip transition effects. When pushing
+        \li \c item: this property is required, and holds the item you want to push.
+        \li \c properties: a list of QML properties that should be assigned
+            to the item upon push. These properties will be copied into the item when it is
+            loaded (in case of a component or URL), or when it becomes the current item for the
+            first time (normally upon push).
+        \li \c immediate: set this property to \c true to skip transition effects. When pushing
             an array, you only need to set this property on the first element to make the
             whole operation immediate.
-        \li \c replace: Set this property to replace the current item on the stack. When pushing
+        \li \c replace: set this property to replace the current item on the stack. When pushing
             an array, you only need to set this property on the first element to replace
             as many elements on the stack as inside the array.
-        \li \c destroyOnPop: Set this property to be explicit to whether or not StackView should
-            destroy the item when its popped off the stack. By default (if \a destroyOnPop is
-            not specified), StackView will destroy items pushed as components or URLs. Items
-            not destroyed will be reparented back to the original parents they had before being
+        \li \c destroyOnPop: set this property to specify if the item needs to be destroyed
+            when its popped off the stack. By default (if \a destroyOnPop is not specified),
+            StackView will destroy items pushed as components or URLs. Items
+            not destroyed will be re-parented to the original parents they had before being
             pushed onto the stack, and hidden. If you need to set this property, do it with
             care, so that items are not leaked.
         \endlist
 
         You can also push an array of items (property lists) if you need to push several items
         in one go. A transition will then only occur between the current item and the last
-        item in the list. The other items will be deferred loaded until needed.
+        item in the list. Loading the other items will be deferred until needed.
 
         Examples:
         \list
@@ -524,8 +525,8 @@ Item {
         \li stackView.push([{item:anitem, immediate:true}, {item:aURL}])
         \endlist
 
-        Note: If the only argument needed is "item", you can also, as a short-hand
-        notation, do: \c{stackView.push(anItem)}.
+        \note Note: if the only argument needed is "item", you can apply the following short-
+        hand notation: \c{stackView.push(anItem)}.
 
         Returns the item that became current.
 
@@ -581,11 +582,11 @@ Item {
     /*! Pops one or more items off the stack. The function takes a property list as argument
         which can contain one or more of the following properties:
         \list
-        \li \c item: If specified, all items down to (but not including) \a item will be
-            popped off. if \a item is \c null, all items down to (but not including) the
+        \li \c item: if specified, all items down to (but not including) \a item will be
+            popped off. If \a item is \c null, all items down to (but not including) the
             first item will be popped. If not specified, only the current item will be
             popped.
-        \li \c immediate: Set this property to \c true to skip transition effects.
+        \li \c immediate: set this property to \c true to skip transition effects.
         \endlist
 
         Examples:
@@ -596,8 +597,8 @@ Item {
         \li stackView.pop(null)
         \endlist
 
-        Note: If the only argument needed is "item", you can also, as a short-hand
-        notation, do: \c{stackView.pop(anItem)}.
+        \note Note: If the only argument needed is "item", you can apply the following short-
+        hand notation: \c{stackView.pop(anItem)}.
 
         Returns the item that was popped off
         \sa clear()
@@ -668,7 +669,8 @@ Item {
 
     /*! Search for a specific item inside the stack. \a func will
         be called for each item in the stack (with the item as argument)
-        until the function returns true. Return value will be the item found. E.g:
+        until the function returns true. Return value will be the item found. For
+        example:
         find(function(item, index) { return item.isTheOne })
         Set \a onlySearchLoadedItems to \c true to not load items that are
         not loaded into memory */
@@ -794,7 +796,7 @@ Item {
                     element.destroyOnPop = true
             }
         } else {
-            // comp is already an Item, so just reparent it into the StackView:
+            // comp is already an Item, so just re-parent it into the StackView:
             element.item = comp
             element.originalParent = parent
             element.item.parent = root
@@ -844,7 +846,7 @@ Item {
     /*! \internal */
     function __cleanup(element) {
         // INVARIANT: element has been removed from JSArray. Destroy its
-        // item, or reparent it back to the parent it had before it was pushed:
+        // item, or re-parent it back to the parent it had before it was pushed:
         var item = element.item
         if (element.destroyOnPop) {
             item.destroy()
@@ -871,7 +873,7 @@ Item {
         // Animate item in "outElement" out, and item in "inElement" in. Set a guard to protect
         // the user from pushing new items on signals that will fire while preparing for the transition
         // (e.g Stack.onCompleted, Stack.onStatusChanged, Stack.onIndexChanged etc). Otherwise, we will enter
-        // this function several times, which causes the items to be half-way updated.
+        // this function several times, which causes the items to be updated half-way.
         if (__currentTransition)
             __currentTransition.animation.complete()
         __loadElement(transition.inElement)
