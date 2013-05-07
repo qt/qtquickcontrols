@@ -45,6 +45,8 @@
 #include <QtQml/qqmlcontext.h>
 #include <QtQuick/qquickview.h>
 #include <QtQuick/private/qquickitem_p.h>
+#include <QtGui/private/qguiapplication_p.h>
+#include <QtGui/qpa/qplatformtheme.h>
 #include "../shared/util.h"
 #include "../shared/visualtestutil.h"
 
@@ -61,8 +63,14 @@ private slots:
     void cleanup();
 
     void activeFocusOnTab();
+    void activeFocusOnTab2();
 private:
     QQmlEngine engine;
+    bool qt_tab_all_widgets() {
+        if (const QPlatformTheme *theme = QGuiApplicationPrivate::platformTheme())
+            return theme->themeHint(QPlatformTheme::TabAllWidgets).toBool();
+        return true;
+    }
 };
 
 tst_activeFocusOnTab::tst_activeFocusOnTab()
@@ -80,6 +88,9 @@ void tst_activeFocusOnTab::cleanup()
 
 void tst_activeFocusOnTab::activeFocusOnTab()
 {
+    if (!qt_tab_all_widgets())
+        QSKIP("This function doesn't support NOT iterating all.");
+
     QQuickView *window = new QQuickView(0);
     window->setBaseSize(QSize(800,600));
 
@@ -215,7 +226,16 @@ void tst_activeFocusOnTab::activeFocusOnTab()
     QVERIFY(item);
     QVERIFY(item->hasActiveFocus());
 
-    // Tab: textfield->textarea
+    // Tab: textfield->tableview
+    key = QKeyEvent(QEvent::KeyPress, Qt::Key_Tab, Qt::NoModifier, "", false, 1);
+    QGuiApplication::sendEvent(window, &key);
+    QVERIFY(key.isAccepted());
+
+    item = findItem<QQuickItem>(window->rootObject(), "tableview");
+    QVERIFY(item);
+    QVERIFY(item->hasActiveFocus());
+
+    // Tab: tableview->textarea
     key = QKeyEvent(QEvent::KeyPress, Qt::Key_Tab, Qt::NoModifier, "", false, 1);
     QGuiApplication::sendEvent(window, &key);
     QVERIFY(key.isAccepted());
@@ -224,7 +244,16 @@ void tst_activeFocusOnTab::activeFocusOnTab()
     QVERIFY(item);
     QVERIFY(item->hasActiveFocus());
 
-    // BackTab: textarea->textfield
+    // BackTab: textarea->tableview
+    key = QKeyEvent(QEvent::KeyPress, Qt::Key_Tab, Qt::ShiftModifier, "", false, 1);
+    QGuiApplication::sendEvent(window, &key);
+    QVERIFY(key.isAccepted());
+
+    item = findItem<QQuickItem>(window->rootObject(), "tableview");
+    QVERIFY(item);
+    QVERIFY(item->hasActiveFocus());
+
+    // BackTab: tableview->textfield
     key = QKeyEvent(QEvent::KeyPress, Qt::Key_Tab, Qt::ShiftModifier, "", false, 1);
     QGuiApplication::sendEvent(window, &key);
     QVERIFY(key.isAccepted());
@@ -416,6 +445,101 @@ void tst_activeFocusOnTab::activeFocusOnTab()
     QVERIFY(key.isAccepted());
 
     item = findItem<QQuickItem>(window->rootObject(), "textarea");
+    QVERIFY(item);
+    QVERIFY(item->hasActiveFocus());
+
+    delete window;
+}
+
+void tst_activeFocusOnTab::activeFocusOnTab2()
+{
+    if (qt_tab_all_widgets())
+        QSKIP("This function doesn't support iterating all.");
+
+    QQuickView *window = new QQuickView(0);
+    window->setBaseSize(QSize(800,600));
+
+    window->setSource(testFileUrl("activeFocusOnTab.qml"));
+    window->show();
+    window->requestActivate();
+    QVERIFY(QTest::qWaitForWindowActive(window));
+    QVERIFY(QGuiApplication::focusWindow() == window);
+
+    // original: spinbox
+    QQuickItem *item = findItem<QQuickItem>(window->rootObject(), "spinbox");
+    QVERIFY(item);
+    item->forceActiveFocus();
+    QVERIFY(item->hasActiveFocus());
+
+    // Tab: spinbox->textfield
+    QKeyEvent key(QEvent::KeyPress, Qt::Key_Tab, Qt::NoModifier, "", false, 1);
+    QGuiApplication::sendEvent(window, &key);
+    QVERIFY(key.isAccepted());
+
+    item = findItem<QQuickItem>(window->rootObject(), "textfield");
+    QVERIFY(item);
+    QVERIFY(item->hasActiveFocus());
+
+    // Tab: textfield->tableview
+    key = QKeyEvent(QEvent::KeyPress, Qt::Key_Tab, Qt::NoModifier, "", false, 1);
+    QGuiApplication::sendEvent(window, &key);
+    QVERIFY(key.isAccepted());
+
+    item = findItem<QQuickItem>(window->rootObject(), "tableview");
+    QVERIFY(item);
+    QVERIFY(item->hasActiveFocus());
+
+    // Tab: tableview->textarea
+    key = QKeyEvent(QEvent::KeyPress, Qt::Key_Tab, Qt::NoModifier, "", false, 1);
+    QGuiApplication::sendEvent(window, &key);
+    QVERIFY(key.isAccepted());
+
+    item = findItem<QQuickItem>(window->rootObject(), "textarea");
+    QVERIFY(item);
+    QVERIFY(item->hasActiveFocus());
+
+    // BackTab: textarea->tableview
+    key = QKeyEvent(QEvent::KeyPress, Qt::Key_Tab, Qt::ShiftModifier, "", false, 1);
+    QGuiApplication::sendEvent(window, &key);
+    QVERIFY(key.isAccepted());
+
+    item = findItem<QQuickItem>(window->rootObject(), "tableview");
+    QVERIFY(item);
+    QVERIFY(item->hasActiveFocus());
+
+    // BackTab: tableview->textfield
+    key = QKeyEvent(QEvent::KeyPress, Qt::Key_Tab, Qt::ShiftModifier, "", false, 1);
+    QGuiApplication::sendEvent(window, &key);
+    QVERIFY(key.isAccepted());
+
+    item = findItem<QQuickItem>(window->rootObject(), "textfield");
+    QVERIFY(item);
+    QVERIFY(item->hasActiveFocus());
+
+    // BackTab: textfield->spinbox
+    key = QKeyEvent(QEvent::KeyPress, Qt::Key_Tab, Qt::ShiftModifier, "", false, 1);
+    QGuiApplication::sendEvent(window, &key);
+    QVERIFY(key.isAccepted());
+
+    item = findItem<QQuickItem>(window->rootObject(), "spinbox");
+    QVERIFY(item);
+    QVERIFY(item->hasActiveFocus());
+
+    // BackTab: spinbox->textarea
+    key = QKeyEvent(QEvent::KeyPress, Qt::Key_Tab, Qt::ShiftModifier, "", false, 1);
+    QGuiApplication::sendEvent(window, &key);
+    QVERIFY(key.isAccepted());
+
+    item = findItem<QQuickItem>(window->rootObject(), "textarea");
+    QVERIFY(item);
+    QVERIFY(item->hasActiveFocus());
+
+    // BackTab: textarea->tableview
+    key = QKeyEvent(QEvent::KeyPress, Qt::Key_Tab, Qt::ShiftModifier, "", false, 1);
+    QGuiApplication::sendEvent(window, &key);
+    QVERIFY(key.isAccepted());
+
+    item = findItem<QQuickItem>(window->rootObject(), "tableview");
     QVERIFY(item);
     QVERIFY(item->hasActiveFocus());
 

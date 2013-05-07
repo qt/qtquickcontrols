@@ -40,6 +40,7 @@
 
 import QtQuick 2.1
 import QtTest 1.0
+import QtQuickControlsTests 1.0
 
 Item {
     id: container
@@ -237,6 +238,10 @@ Item {
         function test_activeFocusOnTab() {
             checkBox.destroy()
             wait(0) //QTBUG-30523 so processEvents is called
+
+            if (!SystemInfo.tabAllWidgets)
+                skip("This function doesn't support NOT iterating all.")
+
             var test_control = 'import QtQuick 2.1; \
             import QtQuick.Controls 1.0;            \
             Item {                                  \

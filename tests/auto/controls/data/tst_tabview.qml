@@ -236,16 +236,16 @@ TestCase {
                 active: true;                               \
                 Column {                                    \
                     objectName: "column1";                  \
-                    property alias button1: _button1;       \
-                    property alias button2: _button2;       \
+                    property alias child1: _child1;         \
+                    property alias child2: _child2;         \
                     anchors.fill: parent;                   \
-                    Button {                                \
-                        id: _button1;                       \
-                        text: "button 1 in Tab1";           \
+                    TextField {                             \
+                        id: _child1;                        \
+                        text: "textfile 1 in Tab1";         \
                     }                                       \
-                    Button {                                \
-                        id: _button2;                       \
-                        text: "button 2 in Tab1";           \
+                    TextField {                             \
+                        id: _child2;                        \
+                        text: "textfile 2 in Tab1";         \
                     }                                       \
                 }                                           \
             }                                               \
@@ -255,16 +255,16 @@ TestCase {
                 active: true;                               \
                 Column {                                    \
                     objectName: "column2";                  \
-                    property alias button3: _button3;       \
-                    property alias button4: _button4;       \
+                    property alias child3: _child3;         \
+                    property alias child4: _child4;         \
                     anchors.fill: parent;                   \
-                    Button {                                \
-                        id: _button3;                       \
-                        text: "button 1 in Tab2";           \
+                    TextField {                             \
+                        id: _child3;                        \
+                        text: "textfile 1 in Tab2";         \
                     }                                       \
-                    Button {                                \
-                        id: _button4;                       \
-                        text: "button 2 in Tab2";           \
+                    TextField {                             \
+                        id: _child4;                        \
+                        text: "textfile 2 in Tab2";         \
                     }                                       \
                 }                                           \
             }                                               \
@@ -280,10 +280,10 @@ TestCase {
         var column2 = getColumnItem(tabView.tab2, "column2")
         verify(column2 !== null)
 
-        var button1 = column1.button1
-        verify(button1 !== null)
-        var button3 = column2.button3
-        verify(button3 !== null)
+        var child1 = column1.child1
+        verify(child1 !== null)
+        var child3 = column2.child3
+        verify(child3 !== null)
 
         var tabbarItem = getTabBarItem(tabView)
         verify(tabbarItem !== null)
@@ -300,7 +300,7 @@ TestCase {
 
         waitForRendering(tab1)
         mouseClick(tab1, tab1.width/2, tab1.height/2)
-        verify(button1.activeFocus)
+        verify(child1.activeFocus)
 
         var tab2 = mouseareas[1].parent
         verify(tab2 !== null)
@@ -308,15 +308,15 @@ TestCase {
 
         waitForRendering(tab2)
         mouseClick(tab2, tab2.width/2, tab2.height/2)
-        verify(button3.activeFocus)
+        verify(child3.activeFocus)
 
         waitForRendering(tab1)
         mouseClick(tab1, tab1.width/2, tab1.height/2)
-        verify(button1.activeFocus)
+        verify(child1.activeFocus)
 
         waitForRendering(tab2)
         mouseClick(tab2, tab2.width/2, tab2.height/2)
-        verify(button3.activeFocus)
+        verify(child3.activeFocus)
 
         tabView.destroy()
     }

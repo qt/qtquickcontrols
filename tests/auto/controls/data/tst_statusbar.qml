@@ -40,6 +40,7 @@
 
 import QtQuick 2.1
 import QtTest 1.0
+import QtQuickControlsTests 1.0
 
 Item {
     id: container
@@ -59,6 +60,9 @@ TestCase {
     }
 
     function test_activeFocusOnTab() {
+        if (!SystemInfo.tabAllWidgets)
+            skip("This function doesn't support NOT iterating all.")
+
             var test_control = 'import QtQuick 2.1; \
         import QtQuick.Controls 1.0;            \
         Item {                                  \
