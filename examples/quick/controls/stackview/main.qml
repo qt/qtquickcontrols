@@ -40,6 +40,7 @@
 
 import QtQuick 2.1
 import QtQuick.Controls 1.0
+import QtQuick.Layouts 1.0
 
 ApplicationWindow {
     width: 480
@@ -55,9 +56,13 @@ ApplicationWindow {
 
     Component {
         id: componentPage
-        Rectangle {
-            color: "yellow"
+        ColumnLayout {
+            Label {
+                text:"Component loaded with index: " + parent.Stack.index
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+            }
             ButtonMenu {
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                 index: parent.Stack.index
             }
         }

@@ -40,10 +40,15 @@
 
 import QtQuick 2.1
 import QtQuick.Controls 1.0
+import QtQuick.Layouts 1.0
 
-Rectangle {
-    color: "green"
+ColumnLayout {
+    Label {
+        text:"View.qml loaded with index: " + parent.Stack.index
+        Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+    }
     ButtonMenu {
+        Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
         index: parent.Stack.index
     }
 }
