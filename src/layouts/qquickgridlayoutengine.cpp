@@ -182,24 +182,26 @@ Fixed    | Layout.fillWidth               | Expanding if layout, Fixed if item |
            we only want to use the initial width.
            This is because the width will change due to layout rearrangement, and the preferred
            width should return the same value, regardless of the current width.
-           We therefore store the width in the Layout.preferredWidth attached property.
-           Since the layout listens to changes of Layout.preferredWidth, (it will
-           basically cause an invalidation of the layout, we have to disable that
-           notification while we set the preferred width.
+           We therefore store the width in the implicitWidth attached property.
+           Since the layout listens to changes of implicitWidth, (it will
+           basically cause an invalidation of the layout), we have to disable that
+           notification while we set the implicit width (and height).
 
            Only use this fallback the first time the size hint is queried. Otherwise, we might
            end up picking a width that is different than what was specified in the QML.
         */
-        const bool was = info->setChangesNotificationEnabled(false);
-        if (prefWidth < 0) {
-            prefWidth = item->width();
-            info->setPreferredWidth(prefWidth);
+        if (prefWidth < 0 || prefHeight < 0) {
+            item->blockSignals(true);
+            if (prefWidth < 0) {
+                prefWidth = item->width();
+                item->setImplicitWidth(prefWidth);
+            }
+            if (prefHeight < 0) {
+                prefHeight = item->height();
+                item->setImplicitHeight(prefHeight);
+            }
+            item->blockSignals(false);
         }
-        if (prefHeight < 0) {
-            prefHeight = item->height();
-            info->setPreferredHeight(prefHeight);
-        }
-        info->setChangesNotificationEnabled(was);
     }
     //--- GATHER MAXIMUM SIZE HINTS ---
     // They are always q_declarativeLayoutMaxSize

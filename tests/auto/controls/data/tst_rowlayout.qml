@@ -262,6 +262,7 @@ Item {
         Component {
             id: columnLayoutItem_Component
             ColumnLayout {
+                spacing: 0
             }
         }
 
@@ -295,7 +296,8 @@ Item {
             rect3.Layout.fillHeight = true
 
             compare(layout.implicitWidth, 70)
-            compare(layout.implicitHeight, 30)
+            compare(col.implicitHeight, 40)
+            compare(layout.implicitHeight, 40)
 
             rect3.destroy()
             wait(0)     // this will hopefully effectuate the destruction of the object
