@@ -42,6 +42,7 @@ import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Private 1.0
 import QtQuick.Controls.Styles 1.0
+import QtQuick.Layouts 1.0
 
 /*!
     \qmltype GroupBox
@@ -149,6 +150,9 @@ Item {
 
     implicitWidth: Math.max(200, (loader.item ? loader.item.implicitWidth: 0) )
     implicitHeight: (loader.item ? loader.item.implicitHeight : 0)
+
+    Layout.minimumWidth: implicitWidth
+    Layout.minimumHeight: implicitHeight
 
     Accessible.role: Accessible.Grouping
     Accessible.name: title
