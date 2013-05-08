@@ -86,6 +86,7 @@
     \title Qt Quick Controls - Stack View Example
     \ingroup qtquickcontrols_examples
     \brief An example for a stack-based navigation model.
+    \image qtquickcontrols-example-stackview.png
 
     This example shows how to implement a stack-based navigation model
     in a Qt Quick application using a \l{StackView} component from
