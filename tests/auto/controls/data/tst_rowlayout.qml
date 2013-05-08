@@ -129,6 +129,8 @@ Item {
             tmp.width = 30
             compare(tmp.r1.width, 10);
             compare(tmp.r2.width, 20);
+            compare(tmp.Layout.minimumWidth, 0)
+            compare(tmp.Layout.maximumWidth, Number.POSITIVE_INFINITY)
             tmp.destroy()
         }
 
@@ -393,8 +395,8 @@ Item {
 
         function test_sizeHintNormalization_data() {
             return [
-                    { tag: "fallbackValues",  widthHints: [-1, -1, -1], expected:[0,42,1000000000], implicitWidth: 42},
-                    { tag: "acceptZeroWidths",  widthHints: [0, 0, 0], expected:[0,0,0], implicitWidth: 42},
+                    { tag: "fallbackValues",  widthHints: [-1, -1, -1], implicitWidth: 42, expected:[0,42,Number.POSITIVE_INFINITY]},
+                    { tag: "acceptZeroWidths",  widthHints: [0, 0, 0], implicitWidth: 42, expected:[0,0,0]},
                     { tag: "123",  widthHints: [1,2,3],  expected:[1,2,3]},
                     { tag: "132",  widthHints: [1,3,2],  expected:[1,2,2]},
                     { tag: "213",  widthHints: [2,1,3],  expected:[2,2,3]},
@@ -402,12 +404,12 @@ Item {
                     { tag: "321",  widthHints: [3,2,1],  expected:[1,1,1]},
                     { tag: "312",  widthHints: [3,1,2],  expected:[2,2,2]},
 
-                    { tag: "1i3",  widthHints: [1,-1,3],  expected:[1,2,3], implicitWidth: 2},
-                    { tag: "1i2",  widthHints: [1,-1,2],  expected:[1,2,2], implicitWidth: 3},
-                    { tag: "2i3",  widthHints: [2,-1,3],  expected:[2,2,3], implicitWidth: 1},
-                    { tag: "2i1",  widthHints: [2,-1,1],  expected:[1,1,1], implicitWidth: 3},
-                    { tag: "3i1",  widthHints: [3,-1,1],  expected:[1,1,1], implicitWidth: 2},
-                    { tag: "3i2",  widthHints: [3,-1,2],  expected:[2,2,2], implicitWidth: 1},
+                    { tag: "1i3",  widthHints: [1,-1,3], implicitWidth: 2,  expected:[1,2,3]},
+                    { tag: "1i2",  widthHints: [1,-1,2], implicitWidth: 3,  expected:[1,2,2]},
+                    { tag: "2i3",  widthHints: [2,-1,3], implicitWidth: 1,  expected:[2,2,3]},
+                    { tag: "2i1",  widthHints: [2,-1,1], implicitWidth: 3,  expected:[1,1,1]},
+                    { tag: "3i1",  widthHints: [3,-1,1], implicitWidth: 2,  expected:[1,1,1]},
+                    { tag: "3i2",  widthHints: [3,-1,2], implicitWidth: 1,  expected:[2,2,2]},
                     ];
         }
 
@@ -495,15 +497,19 @@ Item {
             child.Layout.preferredWidth = -1
             compare(itemSizeHints(layout), [0, 0, 3])
             child.Layout.maximumWidth = -1
-            compare(itemSizeHints(layout), [0, 0, 1000000000])
+            compare(itemSizeHints(layout), [0, 0, Number.POSITIVE_INFINITY])
+            layout.Layout.maximumWidth = 1000
+            compare(itemSizeHints(layout), [0, 0, 1000])
+            layout.Layout.maximumWidth = -1
+            compare(itemSizeHints(layout), [0, 0, Number.POSITIVE_INFINITY])
 
             layout.implicitWidthChangedCount = 0
             child.Layout.minimumWidth = 10
-            compare(itemSizeHints(layout), [10, 10, 1000000000])
+            compare(itemSizeHints(layout), [10, 10, Number.POSITIVE_INFINITY])
             compare(layout.implicitWidthChangedCount, 1)
 
             child.Layout.preferredWidth = 20
-            compare(itemSizeHints(layout), [10, 20, 1000000000])
+            compare(itemSizeHints(layout), [10, 20, Number.POSITIVE_INFINITY])
             compare(layout.implicitWidthChangedCount, 2)
 
             child.Layout.maximumWidth = 30
@@ -517,6 +523,11 @@ Item {
             child.Layout.maximumWidth = 30
             compare(itemSizeHints(layout), [10, 20, 30])
             compare(layout.implicitWidthChangedCount, 4)
+
+            layout.Layout.maximumWidth = 29
+            compare(layout.Layout.maximumWidth, 29)
+            layout.Layout.maximumWidth = -1
+            compare(layout.Layout.maximumWidth, 30)
 
             layout.destroy()
         }

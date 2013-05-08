@@ -68,6 +68,7 @@ public:
     void invalidate(QQuickItem *childItem = 0);
     Qt::Orientation orientation() const;
     void setOrientation(Qt::Orientation orientation);
+    QSizeF sizeHint(Qt::SizeHint whichSizeHint) const Q_DECL_OVERRIDE;
 
 protected:
     void updateLayoutItems();
