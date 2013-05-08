@@ -49,10 +49,12 @@ import QtQuick.Layouts 1.0
 ApplicationWindow {
     title: "Basic layouts"
     property int margin: 11
-    minimumWidth: mainLayout.implicitWidth + 2 * margin
-    minimumHeight: mainLayout.implicitHeight + 2 * margin
-    width: minimumWidth
-    height: minimumHeight
+    width: mainLayout.implicitWidth + 2 * margin
+    height: mainLayout.implicitHeight + 2 * margin
+    minimumWidth: mainLayout.Layout.minimumWidth + 2 * margin
+    minimumHeight: mainLayout.Layout.minimumHeight + 2 * margin
+    maximumWidth: mainLayout.Layout.maximumWidth + 2 * margin
+    maximumHeight: mainLayout.Layout.maximumHeight + 2 * margin
 
     ColumnLayout {
         id: mainLayout
@@ -111,8 +113,8 @@ ApplicationWindow {
         TextArea {
             id: t3
             text: "This fills the whole cell"
-            Layout.preferredWidth: 200
-            Layout.preferredHeight: 400
+            Layout.minimumHeight: 30
+            Layout.maximumHeight: 300
             Layout.fillHeight: true
             Layout.fillWidth: true
         }
