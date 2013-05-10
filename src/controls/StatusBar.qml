@@ -70,7 +70,8 @@ Item {
     id: statusbar
     activeFocusOnTab: false
     Accessible.role: Accessible.StatusBar
-    implicitWidth: parent ? parent.width : loader.item ? loader.item.implicitHeight : 0
+    width: parent ? parent.width : implicitWidth
+    implicitWidth: loader.item.implicitHeight
     implicitHeight: loader.item ? loader.item.implicitHeight : 0
     property Component style: Qt.createComponent(Settings.theme() + "/StatusBarStyle.qml", statusbar)
     Loader {

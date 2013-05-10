@@ -73,6 +73,7 @@ Item {
     id: toolbar
     activeFocusOnTab: false
     Accessible.role: Accessible.ToolBar
+    width: parent ? parent.width : implicitWidth
     implicitWidth: loader.item ? loader.item.implicitWidth : 0
     implicitHeight: loader.item ? loader.item.implicitHeight : 0
     property Component style: Qt.createComponent(Settings.theme() + "/ToolBarStyle.qml", toolbar)

@@ -69,9 +69,8 @@ ApplicationWindow {
         onAccepted: imageViewer.open(fileUrl)
     }
 
-    ToolBar {
+    toolBar: ToolBar {
         id: toolbar
-        width: parent.width
         RowLayout {
             spacing: 2
             anchors.verticalCenter: parent.verticalCenter
@@ -265,10 +264,7 @@ ApplicationWindow {
         id:frame
         enabled: enabledCheck.checked
         tabPosition: controlPage.item ? controlPage.item.tabPosition : Qt.TopEdge
-        anchors.top: toolbar.bottom
-        anchors.bottom: parent.bottom
-        anchors.right: parent.right
-        anchors.left: parent.left
+        anchors.fill: parent
         anchors.margins: Qt.platform.os === "mac" ? 12 : 2
 
         Tab {

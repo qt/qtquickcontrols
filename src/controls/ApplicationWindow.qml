@@ -141,11 +141,12 @@ Window {
         id: backgroundItem
         anchors.fill: parent
 
-        Row {
+        Item {
             id: toolBarArea
             anchors.top: parent.top
             anchors.left: parent.left
             anchors.right: parent.right
+            height: childrenRect.height
         }
 
         Item {
@@ -156,11 +157,12 @@ Window {
             anchors.bottom: statusBarArea.top
         }
 
-        Row {
+        Item {
             id: statusBarArea
             anchors.bottom: parent.bottom
             anchors.left: parent.left
             anchors.right: parent.right
+            height: childrenRect.height
         }
 
         onVisibleChanged: if (visible && menuBar) menuBar.__parentWindow = root
