@@ -231,9 +231,9 @@ Item {
 
         function clampedMinMax(value, minimum, maximum)
         {
-            if (minimum !== -1 && value < minimum)
+            if (value < minimum)
                 value = minimum
-            if (maximum !== -1 && value > maximum)
+            if (value > maximum)
                 value = maximum
             return value
         }
@@ -286,8 +286,7 @@ Item {
                 var fillItem = __items[fillIndex]
                 var superfluous = root[d.size] - d.accumulatedSize(0, __items.length, false)
                 var s = Math.max(superfluous, fillItem.Layout[minimum])
-                if (fillItem.Layout[maximum] !== -1)
-                    s = Math.min(s, fillItem.Layout[maximum])
+                s = Math.min(s, fillItem.Layout[maximum])
                 fillItem[d.size] = s
             }
 
