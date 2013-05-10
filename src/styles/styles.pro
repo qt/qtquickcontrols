@@ -52,6 +52,7 @@ QML_FILES += \
     images/tab_selected.png \
     images/scrollbar-handle-horizontal.png \
     images/scrollbar-handle-vertical.png \
+    images/progress-indeterminate.png \
     images/editbox.png \
     images/arrow-up.png \
     images/arrow-up@2x.png \

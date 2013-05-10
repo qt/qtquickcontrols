@@ -104,10 +104,24 @@ Style {
         Rectangle {
             color: "transparent"
             radius: 1.5
+            clip: true
             antialiasing: true
             anchors.fill: parent
             anchors.margins: 1
             border.color: Qt.rgba(1,1,1,0.3)
+            Image {
+                visible: control.indeterminate
+                NumberAnimation on x {
+                    from: -39
+                    to: 0
+                    running: control.indeterminate
+                    duration: 800
+                    loops: Animation.Infinite
+                }
+                fillMode: Image.Tile
+                width: parent.width + 25
+                source: "images/progress-indeterminate.png"
+            }
         }
     }
 
