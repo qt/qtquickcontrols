@@ -43,7 +43,6 @@
 #include <QEvent>
 #include <QtCore/qcoreapplication.h>
 #include <QtCore/qnumeric.h>
-#include <limits>
 
 /*!
     \qmltype Layout
@@ -79,8 +78,8 @@ QQuickLayoutAttached::QQuickLayoutAttached(QObject *parent)
       m_minimumHeight(0),
       m_preferredWidth(-1),
       m_preferredHeight(-1),
-      m_maximumWidth(std::numeric_limits<qreal>::infinity()),
-      m_maximumHeight(std::numeric_limits<qreal>::infinity()),
+      m_maximumWidth(-1),
+      m_maximumHeight(-1),
       m_row(-1),
       m_column(-1),
       m_rowSpan(1),
@@ -102,15 +101,8 @@ QQuickLayoutAttached::QQuickLayoutAttached(QObject *parent)
 /*!
     \qmlproperty real Layout::minimumWidth
 
-    This property holds the maximum width of an item in a layout.
-    The default value is the items implicit minimum width.
-
-    If the item is a layout, the implicit minimum width will be the minimum width the layout can
-    have without any of its items shrink beyond their minimum width.
-    The implicit minimum width for any other item is \c 0.
-
-    Setting this value to -1 will reset the width back to its implicit minimum width.
-
+    This property holds the minimum width of an item in a layout.
+    The default is \c 0.
 
     \sa preferredWidth
     \sa maximumWidth
@@ -131,13 +123,8 @@ void QQuickLayoutAttached::setMinimumWidth(qreal width)
 /*!
     \qmlproperty real Layout::minimumHeight
 
-    The default value is the items implicit minimum height.
-
-    If the item is a layout, the implicit minimum height will be the minimum height the layout can
-    have without any of its items shrink beyond their minimum height.
-    The implicit minimum height for any other item is \c 0.
-
-    Setting this value to -1 will reset the height back to its implicit minimum height.
+    This property holds the minimum height of an item in a layout.
+    The default is \c 0.
 
     \sa preferredHeight
     \sa maximumHeight
@@ -201,13 +188,10 @@ void QQuickLayoutAttached::setPreferredHeight(qreal height)
     \qmlproperty real Layout::maximumWidth
 
     This property holds the maximum width of an item in a layout.
-    The default value is the items implicit maximum width.
+    The default is \c -1, which means it there is no limit on the maxiumum width.
 
-    If the item is a layout, the implicit maximum width will be the maximum width the layout can
-    have without any of its items grow beyond their maximum width.
-    The implicit maximum width for any other item is \c Number.POSITIVE_INFINITE.
-
-    Setting this value to -1 will reset the width back to its implicit maximum width.
+    \note There is actually a limit on the maximum width, but it's set to such a
+    large number that the arrangement is virtually the same as if it didn't have a limit.
 
     \sa minimumWidth
     \sa preferredWidth
@@ -228,13 +212,11 @@ void QQuickLayoutAttached::setMaximumWidth(qreal width)
 /*!
     \qmlproperty real Layout::maximumHeight
 
-    The default value is the items implicit maximum height.
+    This property holds the maximum height of an item in a layout.
+    The default is \c -1, which means it there is no limit on the maxiumum height.
 
-    If the item is a layout, the implicit maximum height will be the maximum height the layout can
-    have without any of its items grow beyond their maximum height.
-    The implicit maximum height for any other item is \c Number.POSITIVE_INFINITE.
-
-    Setting this value to -1 will reset the height back to its implicit maximum height.
+    \note There is actually a limit on the maximum height, but it's set to such a
+    large number that the arrangement is virtually the same as if it didn't have a limit.
 
     \sa minimumHeight
     \sa preferredHeight
@@ -406,20 +388,6 @@ void QQuickLayoutAttached::setColumn(int column)
     \sa rowSpan
     \sa column
 */
-
-
-qreal QQuickLayoutAttached::sizeHint(Qt::SizeHint which, Qt::Orientation orientation) const
-{
-    qreal result = 0;
-    if (QQuickLayout *layout = qobject_cast<QQuickLayout *>(item())) {
-        const QSizeF sz = layout->sizeHint(which);
-        result = (orientation == Qt::Horizontal ? sz.width() : sz.height());
-    } else {
-        if (which == Qt::MaximumSize)
-            result = std::numeric_limits<qreal>::infinity();
-    }
-    return result;
-}
 
 void QQuickLayoutAttached::invalidateItem()
 {

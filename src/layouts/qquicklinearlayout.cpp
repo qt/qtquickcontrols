@@ -171,12 +171,6 @@ void QQuickGridLayoutBase::setOrientation(Qt::Orientation orientation)
     invalidate();
 }
 
-QSizeF QQuickGridLayoutBase::sizeHint(Qt::SizeHint whichSizeHint) const
-{
-    Q_D(const QQuickGridLayoutBase);
-    return d->engine.sizeHint(whichSizeHint, QSizeF());
-}
-
 void QQuickGridLayoutBase::componentComplete()
 {
     Q_D(QQuickGridLayoutBase);
@@ -247,9 +241,9 @@ void QQuickGridLayoutBase::invalidate(QQuickItem *childItem)
 
     QQuickLayoutAttached *info = attachedLayoutObject(this);
 
-    const QSizeF min = sizeHint(Qt::MinimumSize);
-    const QSizeF pref = sizeHint(Qt::PreferredSize);
-    const QSizeF max = sizeHint(Qt::MaximumSize);
+    const QSizeF min = d->engine.sizeHint(Qt::MinimumSize, QSizeF());
+    const QSizeF pref = d->engine.sizeHint(Qt::PreferredSize, QSizeF());
+    const QSizeF max = d->engine.sizeHint(Qt::MaximumSize, QSizeF());
 
     const bool old = info->setChangesNotificationEnabled(false);
     info->setMinimumImplicitSize(min);
