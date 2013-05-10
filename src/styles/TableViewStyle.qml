@@ -65,15 +65,11 @@ ScrollViewStyle {
     /*! Activates items on single click. */
     property bool activateItemOnSingleClick: false
 
-    /* Delegate for header. This delegate is described in \l TableView::headerDelegate */
-    property Component headerDelegate: Rectangle {
-        gradient: Gradient {
-            GradientStop {position: 0 ; color: "#eee"}
-            GradientStop {position: 1 ; color: "#ddd"}
-        }
+    padding.top: control.headerVisible ? 0 : 1
 
-        implicitHeight: 16
-        implicitWidth: 80
+    /* Delegate for header. This delegate is described in \l TableView::headerDelegate */
+    property Component headerDelegate: BorderImage {
+        source: "images/header.png"
         Text {
             anchors.fill: parent
             verticalAlignment: Text.AlignVCenter
@@ -84,16 +80,10 @@ ScrollViewStyle {
             renderType: Text.NativeRendering
         }
         Rectangle {
-            anchors.bottom: parent.bottom
-            width: parent.width
-            height: 1
-            color: "#aaa"
-        }
-        Rectangle {
             anchors.right: parent.right
             anchors.top: parent.top
             anchors.bottom: parent.bottom
-            anchors.bottomMargin: 2
+            anchors.bottomMargin: 1
             width: 1
             color: "#ccc"
         }
@@ -103,22 +93,21 @@ ScrollViewStyle {
     property Component rowDelegate: Rectangle {
         implicitHeight: 20
         implicitWidth: 80
-        property color selectedColor: hasActiveFocus ? "#49e" : "#999"
+        property color selectedColor: hasActiveFocus ? "#38d" : "#999"
         gradient: Gradient {
-            GradientStop { color: rowSelected ? Qt.lighter(selectedColor, 1.1)  : alternateBackground ? "#eee" : "white" ; position: 1 }
-            GradientStop { color: rowSelected ? Qt.lighter(selectedColor, 1.2)  : alternateBackground ? "#eee" : "white" ; position: 0 }
+            GradientStop { color: rowSelected ? Qt.lighter(selectedColor, 1.3)  : alternateBackground ? "#f2f2f2" : "white" ; position: 0 }
+            GradientStop { color: rowSelected ? Qt.lighter(selectedColor, 1.0)  : alternateBackground ? "#f2f2f2" : "white" ; position: 1 }
         }
         Rectangle {
             anchors.bottom: parent.bottom
             width: parent.width
             height: 1
-            color: rowSelected ? Qt.darker(selectedColor, 1.1) : "transparent"
+            color: rowSelected ? Qt.darker(selectedColor, 1.4) : "transparent"
         }
         Rectangle {
             anchors.top: parent.top
-            width: parent.width
-            height: 1
-            color: rowSelected ? Qt.darker(selectedColor, 1.1) : Qt.darker(parent.color, 1.15)
+            width: parent.width ; height: 1
+            color: rowSelected ? Qt.darker(selectedColor, 1.1) : "transparent"
         }
     }
 
@@ -136,6 +125,7 @@ ScrollViewStyle {
             anchors.right: parent.right
             horizontalAlignment: itemTextAlignment
             anchors.verticalCenter: parent.verticalCenter
+            anchors.verticalCenterOffset: 1
             elide: itemElideMode
             text: itemValue != undefined ? itemValue : ""
             color: itemTextColor

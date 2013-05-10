@@ -56,7 +56,7 @@ Style {
     readonly property SpinBox control: __control
 
     /*! The content margins of the text field. */
-    property Margins margins: Margins { top: 0 ; left: 4 ; right: 12 ; bottom: 0 }
+    property Margins margins: Margins { top: 0 ; left: 5 ; right: 12 ; bottom: 0 }
 
     /*! The text color. */
     property color textColor: __syspal.text
@@ -85,7 +85,7 @@ Style {
         Image {
             source: "images/arrow-down.png"
             anchors.centerIn: parent
-            anchors.verticalCenterOffset: -1
+            anchors.verticalCenterOffset: -2
             anchors.horizontalCenterOffset:  -1
             opacity: control.enabled ? 0.7 : 0.5
         }
@@ -93,14 +93,17 @@ Style {
 
     /*! The background of the SpinBox. */
     property Component background: Item {
+        implicitHeight: 25
+        implicitWidth: 80
         BorderImage {
+            id: image
             anchors.fill: parent
             source: "images/editbox.png"
             border.left: 4
             border.right: 4
             border.top: 4
             border.bottom: 4
-            anchors.bottomMargin: -2
+            anchors.bottomMargin: -1
             BorderImage {
                 anchors.fill: parent
                 anchors.margins: -1
@@ -121,7 +124,7 @@ Style {
     property Component panel: Item {
         id: styleitem
         implicitWidth: controlState.contentWidth + 26
-        implicitHeight: 23
+        implicitHeight: backgroundLoader.implicitHeight
 
         property color foregroundColor: spinboxStyle.textColor
         property color selectionColor: spinboxStyle.selectionColor

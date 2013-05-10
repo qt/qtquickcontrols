@@ -148,6 +148,7 @@ FocusScope {
                         readonly property alias nextSelected: tabitem.nextSelected
                         readonly property alias previsousSelected: tabitem.previousSelected
                         readonly property alias hovered: tabitem.hover
+                        readonly property bool activeFocus: tabbar.activeFocus
                     }
                 }
 

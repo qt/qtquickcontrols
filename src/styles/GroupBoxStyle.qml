@@ -62,7 +62,7 @@ Style {
     property Component panel:
         Item {
         implicitWidth: control.contentWidth + 2 * margin
-        implicitHeight: control.contentHeight + 2 * margin + 12
+        implicitHeight: control.contentHeight + 2 * margin + 11
         Text {
             anchors.top: parent.top
             anchors.left: parent.left

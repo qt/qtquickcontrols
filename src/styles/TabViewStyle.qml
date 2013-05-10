@@ -130,6 +130,7 @@ Style {
             \li readonly property bool nextSelected = The next tab is selected.
             \li readonly property bool previsousSelected - The previous tab is selected.
             \li readonly property bool hovered - The tab is currently under the mouse.
+            \li readonly property bool activeFocus - The tab button has keyboard focus.
         \endtable
     */
     property Component tab: Item {
@@ -158,20 +159,20 @@ Style {
                 anchors.leftMargin: -2
                 anchors.rightMargin: -1
                 source: "images/focusframe.png"
-                visible: control.activeFocus && tab.selected
+                visible: tab.activeFocus && tab.selected
                 border.left: 4
                 border.right: 4
                 border.top: 4
                 border.bottom: 4
             }
-            Text {
-                id: textitem
-                anchors.centerIn: parent
-                text: tab.title
-                renderType: Text.NativeRendering
-                scale: control.tabPosition === Qt.TopEdge ? 1 : -1
-                color: __syspal.text
-            }
+        }
+        Text {
+            id: textitem
+            anchors.centerIn: parent
+            text: tab.title
+            renderType: Text.NativeRendering
+            scale: control.tabPosition === Qt.TopEdge ? 1 : -1
+            color: __syspal.text
         }
     }
 }

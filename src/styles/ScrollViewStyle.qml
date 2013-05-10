@@ -121,22 +121,13 @@ Style {
         \endlist
     */
 
-    property Component handle: Item {
-        implicitWidth: 16
-        implicitHeight: 16
-        Rectangle {
-            anchors.fill: parent
-            color: hovered ? "#ddd" : "lightgray"
-            border.color: "#aaa"
-            anchors.rightMargin: horizontal ? 0 : -1
-            anchors.bottomMargin: horizontal ? -1 : 0
-            Rectangle {
-                anchors.fill: parent
-                anchors.margins: 1
-                color: "transparent"
-                border.color: "#44ffffff"
-            }
-        }
+    property Component handle: BorderImage{
+        opacity: pressed ? 0.5 : hovered ? 1 : 0.8
+        source: "images/scrollbar-handle-" + (horizontal ? "horizontal" : "vertical") + ".png"
+        border.left: 2
+        border.top: 2
+        border.right: 2
+        border.bottom: 2
     }
 
     /*! This component controls the appearance of the
@@ -158,6 +149,12 @@ Style {
             anchors.bottomMargin: -1
             anchors.rightMargin: -1
             border.color: "#aaa"
+            Rectangle {
+                anchors.fill: parent
+                anchors.margins: 1
+                color: "transparent"
+                border.color: "#88ffffff"
+            }
             Image {
                 source: horizontal ? "images/arrow-right.png" : "images/arrow-down.png"
                 anchors.centerIn: parent
@@ -189,6 +186,12 @@ Style {
             anchors.bottomMargin: horizontal ? -1 : 0
             anchors.rightMargin: horizontal ? 0 : -1
             color: "lightgray"
+            Rectangle {
+                anchors.fill: parent
+                anchors.margins: 1
+                color: "transparent"
+                border.color: "#88ffffff"
+            }
             Image {
                 source: horizontal ? "images/arrow-left.png" : "images/arrow-up.png"
                 anchors.centerIn: parent

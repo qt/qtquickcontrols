@@ -46,9 +46,12 @@ QML_FILES += \
     images/button.png \
     images/button_down.png \
     images/tab.png \
+    images/header.png \
     images/groupbox.png \
     images/focusframe.png \
     images/tab_selected.png \
+    images/scrollbar-handle-horizontal.png \
+    images/scrollbar-handle-vertical.png \
     images/editbox.png \
     images/arrow-up.png \
     images/arrow-up@2x.png \

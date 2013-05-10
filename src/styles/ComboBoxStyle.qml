@@ -98,7 +98,9 @@ Style {
         implicitWidth: textitem.implicitWidth + 20
         Text {
             id: textitem
-            anchors.centerIn: parent
+            anchors.left: parent.left
+            anchors.leftMargin: 4
+            anchors.verticalCenter: parent.verticalCenter
             text: control.currentText
             renderType: Text.NativeRendering
             color: __syspal.text
