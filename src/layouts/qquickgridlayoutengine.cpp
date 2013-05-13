@@ -204,9 +204,8 @@ Fixed    | Layout.fillWidth               | Expanding if layout, Fixed if item |
         }
     }
     //--- GATHER MAXIMUM SIZE HINTS ---
-    // They are always q_declarativeLayoutMaxSize
-    combineHints(cachedSizeHints[Qt::MaximumSize].rwidth(), q_declarativeLayoutMaxSize);
-    combineHints(cachedSizeHints[Qt::MaximumSize].rheight(), q_declarativeLayoutMaxSize);
+    combineHints(cachedSizeHints[Qt::MaximumSize].rwidth(), std::numeric_limits<qreal>::infinity());
+    combineHints(cachedSizeHints[Qt::MaximumSize].rheight(), std::numeric_limits<qreal>::infinity());
 
     //--- GATHER DESCENT
     // ### Not implemented
