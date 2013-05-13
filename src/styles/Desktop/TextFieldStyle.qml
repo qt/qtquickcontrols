@@ -65,10 +65,10 @@ Style {
 
 
         property bool rounded: hints.indexOf("rounded") > -1
-        property int topMargin: style === "mac" ? 4 : 5
+        property int topMargin: style === "mac" ? 3 : 2
         property int leftMargin: rounded ? 8 : 4
-        property int rightMargin: 4
-        property int bottomMargin: 1
+        property int rightMargin: leftMargin
+        property int bottomMargin: 2
 
         contentWidth: 100
         // Form QLineEdit::sizeHint
