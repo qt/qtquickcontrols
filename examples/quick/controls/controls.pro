@@ -3,7 +3,6 @@ TEMPLATE = subdirs
 SUBDIRS += \
     gallery \
     splitview \
-    stackview \
     tableview \
     touch \
     basiclayouts
