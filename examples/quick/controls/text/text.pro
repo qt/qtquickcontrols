@@ -1,5 +1,4 @@
 QT += qml quick
-CONFIG += console
 TARGET = text
 qtHaveModule(widgets) {
     QT += widgets
