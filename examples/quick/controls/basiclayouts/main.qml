@@ -53,8 +53,6 @@ ApplicationWindow {
     height: mainLayout.implicitHeight + 2 * margin
     minimumWidth: mainLayout.Layout.minimumWidth + 2 * margin
     minimumHeight: mainLayout.Layout.minimumHeight + 2 * margin
-    maximumWidth: mainLayout.Layout.maximumWidth + 2 * margin
-    maximumHeight: mainLayout.Layout.maximumHeight + 2 * margin
 
     ColumnLayout {
         id: mainLayout
@@ -114,7 +112,6 @@ ApplicationWindow {
             id: t3
             text: "This fills the whole cell"
             Layout.minimumHeight: 30
-            Layout.maximumHeight: 300
             Layout.fillHeight: true
             Layout.fillWidth: true
         }
