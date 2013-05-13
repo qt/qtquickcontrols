@@ -1,5 +1,5 @@
 QT += qml quick
-TARGET = splitview
+TARGET = basiclayouts
 qtHaveModule(widgets) {
     QT += widgets
 }

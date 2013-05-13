@@ -1,0 +1,7 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource prefix="/">
+  <file>main.qml</file>
+  <file>images/selectedrow.png</file>
+  <file>images/header.png</file>
+</qresource>
+</RCC>

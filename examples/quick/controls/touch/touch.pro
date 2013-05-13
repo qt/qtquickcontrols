@@ -1,4 +1,10 @@
-TEMPLATE = aux
+QT += qml quick
+TARGET = touch
+qtHaveModule(widgets) {
+    QT += widgets
+}
+
+include(src/src.pri)
 
 OTHER_FILES += \
     main.qml \
@@ -8,3 +14,11 @@ OTHER_FILES += \
     content/SliderPage.qml \
     content/TabBarPage.qml \
     content/TextInputPage.qml
+
+RESOURCES += \
+    resources.qrc
+
+MOC_DIR = ./.moc
+OBJECTS_DIR = ./.obj
+UI_DIR = ./.ui
+RCC_DIR = ./.rcc

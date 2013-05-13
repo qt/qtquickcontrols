@@ -5,7 +5,8 @@ SUBDIRS += \
     splitview \
     stackview \
     tableview \
-    touch
+    touch \
+    basiclayouts
 
 qtHaveModule(widgets) {
     SUBDIRS += text \

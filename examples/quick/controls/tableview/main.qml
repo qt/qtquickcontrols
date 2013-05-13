@@ -43,10 +43,11 @@
 
 
 import QtQuick 2.1
+import QtQuick.Window 2.1
 import QtQuick.Controls 1.0
 import QtQuick.XmlListModel 2.0
 
-Rectangle {
+Window {
 
     width: 538 + frame.margins * 2
     height: 360 + frame.margins * 2
