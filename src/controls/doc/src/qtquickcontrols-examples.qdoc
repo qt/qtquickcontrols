@@ -71,17 +71,6 @@
 */
 
 /*!
-    \example ApplicationTemplate
-    \title Qt Quick Controls - Application Template
-    \ingroup qtquickcontrols_examples
-    \brief A simple application template with a few basic UI components.
-    \image qtquickcontrols-example-applicationtemplate.png
-
-    This is a simple, easily extensible template project for a
-    desktop application using \l{Qt Quick Controls}.
-*/
-
-/*!
     \example tableview
     \title Qt Quick Controls - Table View Example
     \ingroup qtquickcontrols_examples

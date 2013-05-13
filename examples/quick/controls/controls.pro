@@ -8,6 +8,5 @@ SUBDIRS += \
     basiclayouts
 
 qtHaveModule(widgets) {
-    SUBDIRS += text \
-        ApplicationTemplate
+    SUBDIRS += text
 }
