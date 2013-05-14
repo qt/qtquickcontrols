@@ -111,8 +111,9 @@ public:
 
     void setGeometry(const QRectF &rect)
     {
-        m_item->setPosition(rect.topLeft());
-        m_item->setSize(rect.size());
+        const QRect r(rect.toRect());
+        m_item->setPosition(r.topLeft());
+        m_item->setSize(r.size());
     }
 
     QQuickItem *layoutItem() const { return m_item; }

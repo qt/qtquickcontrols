@@ -543,5 +543,36 @@ Item {
 
             layout.destroy();
         }
+
+
+        Component {
+            id: layout_alignToPixelGrid_Component
+            RowLayout {
+                spacing: 2
+                Rectangle {
+                    implicitWidth: 10
+                    implicitHeight: 10
+                    Layout.alignment: Qt.AlignVCenter
+                }
+                Rectangle {
+                    implicitWidth: 10
+                    implicitHeight: 10
+                    Layout.alignment: Qt.AlignVCenter
+                }
+            }
+        }
+        function test_alignToPixelGrid()
+        {
+            var layout = layout_alignToPixelGrid_Component.createObject(container)
+            layout.width  = 21
+            layout.height = 21
+            var r0 = layout.children[0]
+            compare(r0.x, 0) // 0.0
+            compare(r0.y, 6) // 5.5
+            var r1 = layout.children[1]
+            compare(r1.x, 12) // 11.5
+            compare(r1.y, 6) // 5.5
+            layout.destroy();
+        }
     }
 }
