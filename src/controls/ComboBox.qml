@@ -146,7 +146,7 @@ Control {
 
         Instantiator {
             id: popupItems
-            active: popup.ready
+            active: false
             MenuItem {
                 text: popup.textRole === '' ?
                         modelData :
@@ -157,11 +157,14 @@ Control {
             }
             onObjectAdded: popup.insertItem(index, object)
             onObjectRemoved: popup.removeItem(object)
+
         }
 
         function resolveTextValue(initialTextRole) {
-            if (!ready || !model)
+            if (!ready || !model) {
+                popupItems.active = false
                 return;
+            }
 
             var get = model['get'];
             if (!get && popup.__modelIsArray) {
@@ -192,6 +195,7 @@ Control {
                     textRole = roleName
                 }
             }
+            popupItems.active = true
         }
 
         function show() {
