@@ -304,8 +304,9 @@ ScrollView {
         anchors.topMargin: tableHeader.height
         anchors.fill: parent
         currentIndex: -1
-
+        visible: columns.length > 0
         interactive: false
+
         SystemPalette {
             id: palette
             colorGroup: enabled ? SystemPalette.Active : SystemPalette.Disabled
