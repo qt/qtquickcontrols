@@ -202,10 +202,6 @@ ScrollView {
     This is the content footer of the TableView */
     property alias contentFooter: listView.footer
 
-    /*! \qmlproperty Item TableView::currentRowItem
-    This is the current item of the TableView */
-    property alias currentRowItem: listView.currentItem
-
     /*! \qmlproperty int TableView::rowCount
     The current number of rows */
     readonly property alias rowCount: listView.count
@@ -227,15 +223,18 @@ ScrollView {
     */
     property alias currentRow: listView.currentIndex
 
+    /*! \internal */
+    property alias __currentRowItem: listView.currentItem
+
     /*! \qmlsignal TableView::activated()
         Emitted when the user activates an item by single or double-clicking (depending on the platform).
     */
     signal activated
 
     /*!
-        \qmlmethod TableView::positionViewAtIndex
+        \qmlmethod TableView::positionViewAtRow( int row, PositionMode mode )
 
-    Positions the view such that the \a index is at the position specified by \a mode:
+    Positions the view such that the specified \a row is at the position defined by \a mode:
        \list
        \li ListView.Beginning - position item at the top of the view.
        \li ListView.Center - position item in the center of the view.
@@ -245,27 +244,25 @@ ScrollView {
            at the top of the view.
        \endlist
 
-    If using the \a index to position the view creates an empty space at the beginning
+    If positioning the \a row creates an empty space at the beginning
     or end of the view, then the view is positioned at the boundary.
-
-    The correct way to bring an item into view is with positionViewAtIndex.
 
     Note that this method should only be called after the Component has completed.
     To position the view at startup, this method should be called by Component.onCompleted.
     For example, to position the view at the end at startup:
 
     \code
-    Component.onCompleted: table.positionViewAtIndex(rowCount -1, ListView.Contain)
+    Component.onCompleted: table.positionViewAtRow(rowCount -1, ListView.Contain)
     \endcode
 
     Depending on how the model is populated, the model may not be ready when
     TableView Component.onCompleted is called. In that case you may need to
-    delay the call to positionViewAtIndex by using a \l {Timer}.
+    delay the call to positionViewAtRow by using a \l {Timer}.
 
     */
 
-    function positionViewAtIndex(index, mode) {
-        listView.positionViewAtIndex(index, mode)
+    function positionViewAtRow(row, mode) {
+        listView.positionViewAtRow(row, mode)
     }
 
     style: Qt.createComponent(Settings.theme() + "/TableViewStyle.qml", root)

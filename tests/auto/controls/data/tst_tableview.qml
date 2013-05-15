@@ -77,12 +77,12 @@ TestCase {
         var table = Qt.createQmlObject(test_instanceStr, testCase, '')
         compare(table.currentRow, -1)
         verify(table.rowCount === 10)
-        verify (table.currentRowItem === null)
+        verify (table.__currentRowItem === null)
         table.currentRow = 0
-        verify(table.currentRowItem !== null)
+        verify(table.__currentRowItem !== null)
         verify (table.currentRow === 0)
         table.currentRow = 3
-        verify(table.currentRowItem !== null)
+        verify(table.__currentRowItem !== null)
         verify (table.currentRow === 3)
         table.destroy()
     }
@@ -95,8 +95,8 @@ TestCase {
         verify(table !== null, "table created is null")
         table.forceActiveFocus();
 
-        verify(table.currentRowItem !== undefined, "No current item found")
-        var label = findAChild(table.currentRowItem, "label")
+        verify(table.__currentRowItem !== undefined, "No current item found")
+        var label = findAChild(table.__currentRowItem, "label")
         verify(label !== undefined)
         compare(label.text, data.expected.toString());
         table.destroy();
@@ -114,8 +114,8 @@ TestCase {
         var valuefrommodel = table.model.value;
         verify(valuefrommodel !== undefined, "The model has no defined value")
 
-        verify(table.currentRowItem !== undefined, "No current item found")
-        var label = findAChild(table.currentRowItem, "label")
+        verify(table.__currentRowItem !== undefined, "No current item found")
+        var label = findAChild(table.__currentRowItem, "label")
         verify(label !== undefined)
         compare(label.text, valuefrommodel.toString());
         table.destroy();
@@ -136,8 +136,8 @@ TestCase {
         var valuefrommodel = table.model.dataAt(table.currentRow)
         verify(valuefrommodel !== undefined, "The model has no defined value")
 
-        verify(table.currentRowItem !== undefined, "No current item found")
-        var label = findAChild(table.currentRowItem, "label")
+        verify(table.__currentRowItem !== undefined, "No current item found")
+        var label = findAChild(table.__currentRowItem, "label")
         verify(label !== undefined)
         compare(label.text, valuefrommodel.toString())
         table.destroy();
@@ -161,8 +161,8 @@ TestCase {
         // to go to next row (this model has 3 rows, read the second row)
         table.__incrementCurrentIndex()
 
-        verify(table.currentRowItem !== undefined, "No current item found")
-        var label = findAChild(table.currentRowItem, "label")
+        verify(table.__currentRowItem !== undefined, "No current item found")
+        var label = findAChild(table.__currentRowItem, "label")
         verify(label !== undefined)
         compare(label.text, data.expected.toString());
         table.destroy();
@@ -228,7 +228,7 @@ TestCase {
         table.destroy()
     }
 
-    // In TableView, drawn text = table.currentRowItem.children[1].children[1].itemAt(0).children[0].children[0].text
+    // In TableView, drawn text = table.__currentRowItem.children[1].children[1].itemAt(0).children[0].children[0].text
 
     function findAChild(item, name)
     {
