@@ -106,7 +106,7 @@ MenuPrivate {
 
     /*! \internal
       \omit
-      Documented in qtmenu.cpp.
+      Documented in qqquickmenu.cpp.
       \endomit
     */
     function addMenu(title) {
@@ -115,7 +115,7 @@ MenuPrivate {
 
     /*! \internal
       \omit
-      Documented in qtmenu.cpp.
+      Documented in qquickmenu.cpp.
       \endomit
     */
     function insertMenu(index, title) {

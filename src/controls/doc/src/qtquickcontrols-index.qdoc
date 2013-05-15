@@ -61,6 +61,10 @@
     Controls are typically items that are used to present or receive input from the user.
     \annotatedlist controls
 
+    \section1 Menus
+    Types that can be used to build menus.
+    \annotatedlist menus
+
     \section1 Related information
 
     \section2 Guides
