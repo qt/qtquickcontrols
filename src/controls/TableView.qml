@@ -247,8 +247,6 @@ ScrollView {
     If positioning the \a row creates an empty space at the beginning
     or end of the view, then the view is positioned at the boundary.
 
-    Note that this method should only be called after the Component has completed.
-    To position the view at startup, this method should be called by Component.onCompleted.
     For example, to position the view at the end at startup:
 
     \code
@@ -259,11 +257,28 @@ ScrollView {
     TableView Component.onCompleted is called. In that case you may need to
     delay the call to positionViewAtRow by using a \l {Timer}.
 
+    \note This method should only be called after the component has completed.
     */
 
     function positionViewAtRow(row, mode) {
         listView.positionViewAtRow(row, mode)
     }
+
+    /*!
+        \qmlmethod int TableView::rowAt( int x, int y )
+
+        Returns the index of the visible row at the point \a x, \a y in content
+        coordinates. If there is no visible row at the point specified, \c -1 is returned.
+
+        \note This method should only be called after the component has completed.
+    */
+
+    function rowAt(x, y) {
+        if (headerVisible)
+            y -= headerrow.height
+        return listView.indexAt(x, y)
+    }
+
 
     style: Qt.createComponent(Settings.theme() + "/TableViewStyle.qml", root)
 
