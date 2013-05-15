@@ -88,9 +88,9 @@ import QtQuick.Controls.Styles 1.0
    on the model, and enable sort indicators on headers.
 
 \list
-    \li sortColumnIndex - The index of the current sort column
-    \li sortIndicatorVisible - Whether the sort indicator should be enabled
-    \li sortIndicatorOrder - Qt.AscendingOrder or Qt.DescendingOrder depending on state
+    \li int sortIndicatorColumn - The index of the current sort column
+    \li bool sortIndicatorVisible - Whether the sort indicator should be enabled
+    \li enum sortIndicatorOrder - Qt.AscendingOrder or Qt.DescendingOrder depending on state
 \endlist
 */
 
@@ -171,7 +171,7 @@ ScrollView {
 
     /*! Index of the current sort column.
         The default value is \c {0}. */
-    property int sortColumnIndex
+    property int sortIndicatorColumn
 
     /*! This property shows or hides the sort indicator
         The default value is \c false.
@@ -539,7 +539,7 @@ ScrollView {
                             anchors.left: parent.left
                             anchors.right: parent.right
                             property string itemValue: columns[index].title
-                            property string itemSort:  (sortIndicatorVisible && index == sortColumnIndex) ? (sortIndicatorOrder == Qt.AscendingOrder ? "up" : "down") : "";
+                            property string itemSort:  (sortIndicatorVisible && index == sortIndicatorColumn) ? (sortIndicatorOrder == Qt.AscendingOrder ? "up" : "down") : "";
                             property bool itemPressed: headerClickArea.pressed
                             property bool itemContainsMouse: headerClickArea.containsMouse
                             property string itemPosition: columns.length === 1 ? "only" :
@@ -561,9 +561,9 @@ ScrollView {
                             hoverEnabled: true
                             anchors.fill: parent
                             onClicked: {
-                                if (sortColumnIndex == index)
+                                if (sortIndicatorColumn == index)
                                     sortIndicatorOrder = sortIndicatorOrder == Qt.AscendingOrder ? Qt.DescendingOrder : Qt.AscendingOrder
-                                sortColumnIndex = index
+                                sortIndicatorColumn = index
                             }
                             // Here we handle moving header sections
                             // NOTE: the direction is different from the master branch
@@ -593,8 +593,8 @@ ScrollView {
                                     items.splice(index, 1);
                                     items.splice(repeater.targetIndex, 0, columns[index]);
                                     columns = items
-                                    if (sortColumnIndex == index)
-                                        sortColumnIndex = repeater.targetIndex
+                                    if (sortIndicatorColumn == index)
+                                        sortIndicatorColumn = repeater.targetIndex
                                 }
                                 repeater.targetIndex = -1
                             }
@@ -606,7 +606,7 @@ ScrollView {
                         Loader {
                             id: draghandle
                             property string itemValue: columns[index].title
-                            property string itemSort:  (sortIndicatorVisible && index == sortColumnIndex) ? (sortIndicatorOrder == Qt.AscendingOrder ? "up" : "down") : "";
+                            property string itemSort:  (sortIndicatorVisible && index == sortIndicatorColumn) ? (sortIndicatorOrder == Qt.AscendingOrder ? "up" : "down") : "";
                             property bool itemPressed: headerClickArea.pressed
                             property bool itemContainsMouse: headerClickArea.containsMouse
                             property string itemPosition

@@ -222,7 +222,7 @@ ApplicationWindow {
                                     case "MinimumValue":
                                     case "Decimals":
                                     case "CurrentIndex":
-                                    case "SortColumnIndex":
+                                    case "SortIndicatorColumn":
                                         layout = layouts.intLayout
                                         typeName = "Int"
                                         break;
