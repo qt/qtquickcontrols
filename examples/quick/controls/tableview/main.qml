@@ -302,9 +302,9 @@ Window {
                                     target: loaderEditor.item
                                     onAccepted: {
                                         if (typeof itemValue === 'number')
-                                            model.setProperty(rowIndex, role, Number(parseFloat(loaderEditor.item.text).toFixed(0)))
+                                            model.setProperty(row, role, Number(parseFloat(loaderEditor.item.text).toFixed(0)))
                                         else
-                                            model.setProperty(rowIndex, role, loaderEditor.item.text)
+                                            model.setProperty(row, role, loaderEditor.item.text)
                                     }
                                 }
                                 sourceComponent: itemSelected ? editor : null

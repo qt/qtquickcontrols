@@ -131,8 +131,8 @@ ScrollView {
     \li  itemSelected - if the item is currently selected
     \li  itemValue - the value or text for this item
     \li  itemTextColor - the default text color for an item
-    \li  rowIndex - the index of the row
-    \li  columnIndex - the index of the column
+    \li  row - the index of the row
+    \li  column - the index of the column
     \li  itemElideMode - the elide mode of the column
     \li  itemTextAlignment - the horizontal text alignment of the column
     \endlist
@@ -421,7 +421,7 @@ ScrollView {
 
         delegate: Item {
             id: rowitem
-            width: row.width
+            width: itemrow.width
             height: rowstyle.height
 
             property int rowIndex: model.index
@@ -442,14 +442,14 @@ ScrollView {
                 // Note: these properties should be mirrored in the row filler as well
                 readonly property bool alternateBackground: rowitem.alternateBackground
                 readonly property bool rowSelected: rowitem.ListView.isCurrentItem
-                readonly property int index: rowitem.rowIndex
+                readonly property int row: rowitem.rowIndex
                 readonly property var model: listView.model
                 readonly property var modelData: rowitem.itemModelData
                 readonly property var itemModel: rowitem.itemModel
                 readonly property bool hasActiveFocus: root.activeFocus
             }
             Row {
-                id: row
+                id: itemrow
                 anchors.left: parent.left
                 height: parent.height
                 Repeater {
@@ -469,8 +469,8 @@ ScrollView {
                         property var itemValue: __getValue()
                         property bool itemSelected: rowitem.ListView.isCurrentItem
                         property color itemTextColor: itemSelected ? __style.highlightedTextColor : __style.textColor
-                        property int rowIndex: rowitem.rowIndex
-                        property int columnIndex: index
+                        property int row: rowitem.rowIndex
+                        property int column: index
                         property int itemElideMode: columns[index].elideMode
                         property int itemTextAlignment: columns[index].horizontalAlignment
                         property string role: columns[index].role
