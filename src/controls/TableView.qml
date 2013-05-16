@@ -450,6 +450,7 @@ ScrollView {
                 sourceComponent: root.rowDelegate
                 // Row fills the view width regardless of item size
                 // But scrollbar should not adjust to it
+                height: item ? item.height : 16
                 width: parent.width + __scroller.horizontalScrollBar.width
                 x: flickableItem.contentX
 
