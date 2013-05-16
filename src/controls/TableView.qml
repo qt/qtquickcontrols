@@ -315,7 +315,7 @@ ScrollView {
         anchors.topMargin: tableHeader.height
         anchors.fill: parent
         currentIndex: -1
-        visible: columns.length > 0
+        visible: columnCount > 0
         interactive: false
 
         SystemPalette {
@@ -346,8 +346,8 @@ ScrollView {
             }
 
             // Handle vertical scrolling whem dragging mouse outside boundraries
-            Timer { running: mousearea.autoincrement && __scroller.verticalScrollBar.visible; repeat: true; interval: 20 ; onTriggered: __incrementCurrentIndex()}
-            Timer { running: mousearea.autodecrement && __scroller.verticalScrollBar.visible; repeat: true; interval: 20 ; onTriggered: __decrementCurrentIndex()}
+            Timer { running: mousearea.autoincrement && __verticalScrollBar.visible; repeat: true; interval: 20 ; onTriggered: __incrementCurrentIndex()}
+            Timer { running: mousearea.autodecrement && __verticalScrollBar.visible; repeat: true; interval: 20 ; onTriggered: __decrementCurrentIndex()}
 
             onPositionChanged: {
                 if (mouseY > listView.height && pressed) {
@@ -362,7 +362,7 @@ ScrollView {
                     autoincrement = false;
                     autodecrement = false;
                 }
-                var y = Math.min(flickableItem.contentY + listView.height - 5, Math.max(mouseY + flickableItem.contentY, flickableItem.contentY));
+                var y = Math.min(listView.contentY + listView.height - 5, Math.max(mouseY + listView.contentY, listView.contentY));
                 var newIndex = listView.indexAt(0, y);
                 if (newIndex >= 0)
                     listView.currentIndex = listView.indexAt(0, y);
@@ -376,8 +376,8 @@ ScrollView {
 
             onPressed: {
                 listView.forceActiveFocus()
-                var x = Math.min(flickableItem.contentWidth - 5, Math.max(mouseX + flickableItem.contentX, 0))
-                var y = Math.min(flickableItem.contentHeight - 5, Math.max(mouseY + flickableItem.contentY, 0))
+                var x = Math.min(listView.contentWidth - 5, Math.max(mouseX + listView.contentX, 0))
+                var y = Math.min(listView.contentHeight - 5, Math.max(mouseY + listView.contentY, 0))
                 listView.currentIndex = listView.indexAt(x, y)
             }
 
@@ -395,13 +395,13 @@ ScrollView {
         // Fills extra rows with alternate color
         Column {
             id: rowfiller
-            property int rowHeight: flickableItem.contentHeight/count
+            property int rowHeight: listView.contentHeight/count
             property int paddedRowCount: height/rowHeight
-            property int count: flickableItem.count
-            y: flickableItem.contentHeight
+            property int count: listView.count
+            y: listView.contentHeight
             width: parent.width
-            visible: flickableItem.contentHeight > 0 && alternatingRowColors
-            height: viewport.height - flickableItem.contentHeight
+            visible: listView.contentHeight > 0 && alternatingRowColors
+            height: viewport.height - listView.contentHeight
             Repeater {
                 model: visible ? parent.paddedRowCount : 0
                 Loader {
@@ -426,9 +426,9 @@ ScrollView {
 
         Keys.onPressed: {
             if (event.key === Qt.Key_PageUp) {
-                verticalScrollBar.value = __scroller.verticalScrollBar.value - listView.height
+                verticalScrollBar.value = __verticalScrollBar.value - listView.height
             } else if (event.key === Qt.Key_PageDown)
-                verticalScrollBar.value = __scroller.verticalScrollBar.value + listView.height
+                verticalScrollBar.value = __verticalScrollBar.value + listView.height
         }
 
         Keys.onReturnPressed: root.activated();
@@ -438,10 +438,12 @@ ScrollView {
             width: itemrow.width
             height: rowstyle.height
 
-            property int rowIndex: model.index
-            property bool alternateBackground: alternatingRowColors && rowIndex % 2 == 1
-            property var itemModelData: typeof modelData == "undefined" ? null : modelData
-            property var itemModel: model
+            readonly property int rowIndex: model.index
+            readonly property bool alternateBackground: alternatingRowColors && rowIndex % 2 == 1
+            readonly property var itemModelData: typeof modelData == "undefined" ? null : modelData
+            readonly property var itemModel: model
+            readonly property bool itemSelected: ListView.isCurrentItem
+            readonly property color itemTextColor: itemSelected ? __style.highlightedTextColor : __style.textColor
 
             Loader {
                 id: rowstyle
@@ -450,57 +452,50 @@ ScrollView {
                 // Row fills the view width regardless of item size
                 // But scrollbar should not adjust to it
                 height: item ? item.height : 16
-                width: parent.width + __scroller.horizontalScrollBar.width
-                x: flickableItem.contentX
+                width: parent.width + __horizontalScrollBar.width
+                x: listView.contentX
 
                 // these properties are exposed to the row delegate
                 // Note: these properties should be mirrored in the row filler as well
                 readonly property bool alternateBackground: rowitem.alternateBackground
-                readonly property bool rowSelected: rowitem.ListView.isCurrentItem
+                readonly property bool rowSelected: rowitem.itemSelected
                 readonly property int row: rowitem.rowIndex
                 readonly property var model: listView.model
                 readonly property var modelData: rowitem.itemModelData
-                readonly property var itemModel: rowitem.itemModel
                 readonly property bool hasActiveFocus: root.activeFocus
             }
             Row {
                 id: itemrow
-                anchors.left: parent.left
                 height: parent.height
                 Repeater {
                     id: repeater
-                    model: root.columns.length
+                    model: root.columnCount
+
                     Loader {
                         id: itemDelegateLoader
-                        width: columns[index].width
+                        width:  __column.width
                         height: parent ? parent.height : 0
-                        visible: columns[index].visible
-                        sourceComponent: columns[index].delegate ? columns[index].delegate : itemDelegate
+                        visible: __column.visible
+                        sourceComponent: __column.delegate ? __column.delegate : itemDelegate
 
                         // these properties are exposed to the item delegate
-                        property var model: listView.model
-                        property var modelData: itemModelData
+                        readonly property var model: listView.model
+                        readonly property var modelData: itemModelData
 
-                        property var itemValue: __getValue()
-                        property bool itemSelected: rowitem.ListView.isCurrentItem
-                        property color itemTextColor: itemSelected ? __style.highlightedTextColor : __style.textColor
-                        property int row: rowitem.rowIndex
-                        property int column: index
-                        property int itemElideMode: columns[index].elideMode
-                        property int itemTextAlignment: columns[index].horizontalAlignment
-                        property string role: columns[index].role
+                        readonly property var itemValue: __hasModelRole ? itemModel[role] // Qml ListModel and QAbstractItemModel
+                                                                        : __hasModelDataRole ? modelData[role] // QObjectList / QObject
+                                                                        : modelData != undefined ? modelData : "" // Models without role
+                        readonly property bool itemSelected: rowitem.itemSelected
+                        readonly property color itemTextColor: rowitem.itemTextColor
+                        readonly property int row: rowitem.rowIndex
+                        readonly property int column: index
+                        readonly property int itemElideMode: __column.elideMode
+                        readonly property int itemTextAlignment: __column.horizontalAlignment
+                        readonly property string role: __column.role
 
-                        function __getValue() {
-                            var role = columns[index].role
-                            if (role.length && itemModel.hasOwnProperty(role))
-                                return itemModel[role] // Qml ListModel and QAbstractItemModel
-                            else if (modelData != undefined && modelData.hasOwnProperty(role))
-                                return modelData[role] // QObjectList / QObject
-                            else if (modelData != undefined)
-                                return modelData // Models without role
-                            else
-                                return ""
-                        }
+                        readonly property TableViewColumn __column: columns[index]
+                        readonly property bool __hasModelRole: role && itemModel.hasOwnProperty(role)
+                        readonly property bool __hasModelDataRole: role && modelData && modelData.hasOwnProperty(role)
                     }
                 }
                 onWidthChanged: listView.contentWidth = width
@@ -519,7 +514,7 @@ ScrollView {
             anchors.leftMargin: viewport.anchors.leftMargin
             anchors.margins: viewport.anchors.margins
             anchors.rightMargin: __scroller.rightMargin +
-                                 (__scroller.outerFrame && __scrollBarTopMargin ? 0 : __scroller.verticalScrollBar.width
+                                 (__scroller.outerFrame && __scrollBarTopMargin ? 0 : __verticalScrollBar.width
                                                           + __scroller.scrollBarSpacing)
 
             anchors.left: parent.left
@@ -537,7 +532,7 @@ ScrollView {
                     property int targetIndex: -1
                     property int dragIndex: -1
 
-                    model: columns.length
+                    model: columnCount
 
                     delegate: Item {
                         z:-index
@@ -554,8 +549,8 @@ ScrollView {
                             property string itemSort:  (sortIndicatorVisible && index == sortIndicatorColumn) ? (sortIndicatorOrder == Qt.AscendingOrder ? "up" : "down") : "";
                             property bool itemPressed: headerClickArea.pressed
                             property bool itemContainsMouse: headerClickArea.containsMouse
-                            property string itemPosition: columns.length === 1 ? "only" :
-                                                                                index===columns.length-1 ? "end" :
+                            property string itemPosition: columnCount === 1 ? "only" :
+                                                                                index===columnCount-1 ? "end" :
                                                                                                           index===0 ? "beginning" : ""
                         }
                         Rectangle{
@@ -582,7 +577,7 @@ ScrollView {
                             // so this indicates that I am using an invalid assumption on item ordering
                             onPositionChanged: {
                                 if (pressed) { // only do this while dragging
-                                    for (var h = columns.length-1 ; h >= 0 ; --h) {
+                                    for (var h = columnCount-1 ; h >= 0 ; --h) {
                                         if (drag.target.x > headerrow.children[h].x) {
                                             repeater.targetIndex = h
                                             break
@@ -600,7 +595,7 @@ ScrollView {
                                 if (repeater.targetIndex >= 0 && repeater.targetIndex != index ) {
                                     // Rearrange the header sections
                                     var items = new Array
-                                    for (var i = 0 ; i< columns.length ; ++i)
+                                    for (var i = 0 ; i< columnCount ; ++i)
                                         items.push(columns[i])
                                     items.splice(index, 1);
                                     items.splice(repeater.targetIndex, 0, columns[index]);
@@ -678,7 +673,7 @@ ScrollView {
                 anchors.rightMargin: -2
                 sourceComponent: root.headerDelegate
                 width: root.width - headerrow.width + 2
-                visible: root.columns.length
+                visible: root.columnCount
                 z:-1
             }
         }

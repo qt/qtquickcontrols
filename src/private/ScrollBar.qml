@@ -130,7 +130,7 @@ Item {
         }
 
         onPositionChanged: {
-            if (pressed && __panel.activeControl === "handle") {
+            if (handlePressed) {
                 if (!horizontal)
                     slider.position = oldPosition + (mouseY - pressedY)
                 else
