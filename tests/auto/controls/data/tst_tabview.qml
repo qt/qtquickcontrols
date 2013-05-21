@@ -226,10 +226,15 @@ TestCase {
     function test_mousePressOnTabBar() {
         var test_tabView = 'import QtQuick 2.1;             \
         import QtQuick.Controls 1.0;                        \
+        Column {                                            \
+            property alias tabview: _tabview;               \
+            property alias textfield: _textfield;           \
         TabView {                                           \
+            id: _tabview;                                   \
             width: 200; height: 100;                        \
             property alias tab1: _tab1;                     \
             property alias tab2: _tab2;                     \
+            property alias tab3: _tab3;                     \
             Tab {                                           \
                 id: _tab1;                                  \
                 title: "Tab1";                              \
@@ -268,18 +273,53 @@ TestCase {
                     }                                       \
                 }                                           \
             }                                               \
+            Tab {                                           \
+                id: _tab3;                                  \
+                title: "Tab3";                              \
+                active: true;                               \
+                Column {                                    \
+                    objectName: "column3";                  \
+                    property alias child5: _child5;         \
+                    property alias child6: _child6;         \
+                    anchors.fill: parent;                   \
+                    Button {                                \
+                        id: _child5;                        \
+                        activeFocusOnTab: false;            \
+                        text: "button 1 in Tab3";           \
+                    }                                       \
+                    Button {                                \
+                        id: _child6;                        \
+                        activeFocusOnTab: false;            \
+                        text: "button 2 in Tab3";           \
+                    }                                       \
+                }                                           \
+            }                                               \
+        }                                                   \
+        TextField {                                         \
+            id: _textfield;                                 \
+            text: "textfile outside of tabview";            \
+        }                                                   \
         }                                                   '
 
-        var tabView = Qt.createQmlObject(test_tabView, container, '')
-        compare(tabView.count, 2)
+        var item = Qt.createQmlObject(test_tabView, container, '')
+
+        var textField = item.textfield
+        verify(textField !== null)
+
+        var tabView = item.tabview
+        verify(tabView !== null)
+        compare(tabView.count, 3)
         verify(tabView.tab1.status === Loader.Ready)
         verify(tabView.tab2.status === Loader.Ready)
+        verify(tabView.tab3.status === Loader.Ready)
         waitForRendering(tabView)
 
         var column1 = getColumnItem(tabView.tab1, "column1")
         verify(column1 !== null)
         var column2 = getColumnItem(tabView.tab2, "column2")
         verify(column2 !== null)
+        var column3 = getColumnItem(tabView.tab3, "column3")
+        verify(column3 !== null)
 
         var child1 = column1.child1
         verify(child1 !== null)
@@ -293,7 +333,7 @@ TestCase {
         verify(tabrowItem !== null)
 
         var mouseareas = populateMouseAreaItems(tabrowItem)
-        verify(mouseareas.length, 2)
+        verify(mouseareas.length, 3)
 
         var tab1 = mouseareas[0]
         verify(tab1 !== null)
@@ -318,6 +358,15 @@ TestCase {
         waitForRendering(tab2)
         mouseClick(tab2, tab2.width/2, tab2.height/2)
         verify(child3.activeFocus)
+
+        var tab3 = mouseareas[2]
+        verify(tab3 !== null)
+        //printGeometry(tab3)
+
+        waitForRendering(tab3)
+        mouseClick(tab3, tab3.width/2, tab3.height/2)
+        verify(tab3.activeFocus)
+        verify(!textField.activeFocus)
 
         tabView.destroy()
     }

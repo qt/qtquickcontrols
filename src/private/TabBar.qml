@@ -86,6 +86,20 @@ FocusScope {
         return null;
     }
 
+    /*! \internal */
+    function __isAncestorOf(item, child) {
+        //TODO: maybe removed from 5.2 if the function was merged in qtdeclarative
+        if (child === item)
+            return false;
+
+        while (child) {
+            child = child.parent;
+            if (child === item)
+                return true;
+        }
+        return false;
+    }
+
     ListView {
         id: tabrow
         objectName: "tabrow"
@@ -152,7 +166,11 @@ FocusScope {
 
             onPressed: {
                 tabView.currentIndex = index;
-                tabbar.nextItemInFocusChain(true).forceActiveFocus();
+                var next = tabbar.nextItemInFocusChain(true);
+                if (__isAncestorOf(tabView.tabAt(currentIndex), next))
+                    next.forceActiveFocus();
+                else
+                    tabitem.forceActiveFocus();
             }
 
             Loader {
