@@ -274,9 +274,8 @@ ScrollView {
     */
 
     function rowAt(x, y) {
-        if (headerVisible)
-            y -= headerrow.height
-        return listView.indexAt(x, y)
+        var obj = root.mapToItem(listView.contentItem, x, y)
+        return listView.indexAt(obj.x, obj.y)
     }
 
 
