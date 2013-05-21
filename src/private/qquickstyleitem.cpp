@@ -543,7 +543,7 @@ void QQuickStyleItem::initStyleOption()
         if (opt->tickPosition != QSlider::NoTicks)
             opt->subControls |= QStyle::SC_SliderTickmarks;
 
-        opt->activeSubControls = QStyle::SC_None;
+        opt->activeSubControls = QStyle::SC_SliderHandle;
     }
         break;
     case ProgressBar: {

@@ -166,6 +166,9 @@ Control {
     /*! \internal */
     property bool __horizontal: orientation === Qt.Horizontal
 
+    /*! \internal */
+    property real __handlePos: range.valueForPosition(__horizontal ? fakeHandle.x : fakeHandle.y)
+
     activeFocusOnTab: true
 
     Accessible.role: Accessible.Slider
@@ -198,10 +201,16 @@ Control {
         inverted: __horizontal ? false : true
 
         positionAtMinimum: 0
-        positionAtMaximum: __horizontal ? slider.width : slider.height
+        positionAtMaximum: __horizontal ? slider.width - fakeHandle.width : slider.height - fakeHandle.height
     }
 
-    Item { id: fakeHandle }
+    Item {
+        id: fakeHandle
+        anchors.verticalCenter: __horizontal ? parent.verticalCenter : undefined
+        anchors.horizontalCenter: !__horizontal ? parent.horizontalCenter : undefined
+        width: __panel.handleWidth
+        height: __panel.handleHeight
+    }
 
     MouseArea {
         id: mouseArea
@@ -212,22 +221,27 @@ Control {
         width: parent.width
         height: parent.height
 
-        drag.target: fakeHandle
-        drag.axis: __horizontal ? Drag.XAxis : Drag.YAxis
-        drag.minimumX: range.positionAtMinimum
-        drag.maximumX: range.positionAtMaximum
+        function clamp ( val ) {
+            return Math.max(range.positionAtMinimum, Math.min(range.positionAtMaximum, val))
+        }
+
+        onMouseXChanged: {
+            if (pressed && __horizontal) {
+                var pos = clamp (mouse.x - fakeHandle.width/2)
+                fakeHandle.x = pos
+            }
+        }
+
+        onMouseYChanged: {
+            if (pressed && !__horizontal) {
+                var pos = clamp (mouse.y - fakeHandle.height/2)
+                fakeHandle.y = pos
+            }
+        }
 
         onPressed: {
             if (slider.activeFocusOnPress)
                 slider.forceActiveFocus();
-
-            // Clamp the value
-            var current = __horizontal ? mouse.x : mouse.y
-            var minimum = __horizontal ? drag.minimumX : drag.minimumY
-            var maximum = __horizontal ? drag.maximumX : drag.maximumY
-            var newVal = Math.max(current, minimum);
-            newVal = Math.min(newVal, maximum);
-            range.position = newVal;
         }
 
         onReleased: {
@@ -238,13 +252,10 @@ Control {
         }
     }
 
-
-
-    // Range position normally follow fakeHandle, except when
-    // 'updateValueWhileDragging' is false. In this case it will only follow
-    // if the user is not pressing the handle.
+    // Range position normally follows handle, except when
+    // 'updateValueWhileDragging' is false.
     Binding {
-        when: updateValueWhileDragging || !mouseArea.pressed
+        when: updateValueWhileDragging && !mouseArea.drag.active
         target: range
         property: "position"
         value: __horizontal ? fakeHandle.x : fakeHandle.y

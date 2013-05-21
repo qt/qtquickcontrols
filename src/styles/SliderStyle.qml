@@ -139,6 +139,9 @@ Style {
     */
     property Component panel: Item {
         id: root
+        property int handleWidth: handleLoader.width
+        property int handleHeight: handleLoader.height
+
         property bool horizontal : control.orientation === Qt.Horizontal
         property int horizontalSize: grooveLoader.implicitWidth + padding.left + padding.right
         property int verticalSize: Math.max(handleLoader.implicitHeight, grooveLoader.implicitHeight) + padding.top + padding.bottom
@@ -166,7 +169,7 @@ Style {
                 id: handleLoader
                 sourceComponent: handle
                 anchors.verticalCenter: grooveLoader.verticalCenter
-                x: Math.round(control.value / control.maximumValue * ((horizontal ? root.width : root.height)- item.width))
+                x: Math.round(control.__handlePos / control.maximumValue * ((horizontal ? root.width : root.height) - item.width))
             }
         }
     }

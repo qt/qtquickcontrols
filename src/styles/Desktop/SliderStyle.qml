@@ -51,11 +51,14 @@ Style {
         maximum: control.maximumValue*100
         minimum: control.minimumValue*100
         step: control.stepSize*100
-        value: control.value*100
+        value: control.__handlePos*100
         horizontal: control.orientation === Qt.Horizontal
         enabled: control.enabled
         hasFocus: control.activeFocus
         hints: control.styleHints
         activeControl: control.tickmarksEnabled ? "ticks" : ""
+        property int handleWidth: 15
+        property int handleHeight: 15
     }
+    property Margins padding: Margins { top: 0 ; left: 0 ; right: 0 ; bottom: 0 }
 }
