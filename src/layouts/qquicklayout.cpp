@@ -160,7 +160,7 @@ void QQuickLayoutAttached::setMinimumHeight(qreal height)
 
     This property holds the preferred width of an item in a layout.
     If the preferred width is -1 it will be ignored, and the layout
-    will use {Item::implicitWidth}{implicitWidth} instead.
+    will use \l{Item::implicitWidth}{implicitWidth} instead.
     The default is \c -1.
 
     \sa minimumWidth
@@ -181,7 +181,7 @@ void QQuickLayoutAttached::setPreferredWidth(qreal width)
 
     This property holds the preferred height of an item in a layout.
     If the preferred height is -1 it will be ignored, and the layout
-    will use {Item::implicitHeight}{implicitHeight} instead.
+    will use \l{Item::implicitHeight}{implicitHeight} instead.
     The default is \c -1.
 
     \sa minimumHeight
