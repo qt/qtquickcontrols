@@ -100,7 +100,7 @@ PaddedStyle {
             style.upRect = styleitem.subControlRect("up");
             style.downRect = styleitem.subControlRect("down");
             var inputRect = styleitem.subControlRect("edit");
-            edit.anchors.topMargin = inputRect.y
+            edit.anchors.topMargin = inputRect.y + (styleitem.style === "mac" ? 1 : 0)
             edit.anchors.leftMargin = inputRect.x
             edit.anchors.rightMargin = style.width - inputRect.width - edit.anchors.leftMargin
             edit.anchors.bottomMargin = style.height - inputRect.height - edit.anchors.topMargin

@@ -159,7 +159,7 @@ Control {
 
         readonly property alias containsMouse: mouseArea.containsMouse
 
-        readonly property int contentHeight: Math.max(input.implicitHeight, 20)
+        readonly property int contentHeight: Math.max(input.implicitHeight, 16)
         readonly property int contentWidth: Math.max(maxSizeHint.implicitWidth, minSizeHint.implicitWidth)
     }
 

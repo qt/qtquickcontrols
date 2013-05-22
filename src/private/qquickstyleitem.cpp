@@ -780,12 +780,6 @@ QSize QQuickStyleItem::sizeFromContents(int width, int height)
         int newHeight = qMax(height, btn->fontMetrics.height());
         size = qApp->style()->sizeFromContents(QStyle::CT_ComboBox, m_styleoption, QSize(newWidth, newHeight)); }
         break;
-    case SpinBox: {
-        QStyleOptionSpinBox *box = qstyleoption_cast<QStyleOptionSpinBox*>(m_styleoption);
-        int newWidth = qMax(width, box->fontMetrics.width(QLatin1String("0.0")));
-        int newHeight = qMax(height, box->fontMetrics.height());
-        size = qApp->style()->sizeFromContents(QStyle::CT_SpinBox, m_styleoption, QSize(newWidth, newHeight)); }
-        break;
     case Tab:
         size = qApp->style()->sizeFromContents(QStyle::CT_TabBarTab, m_styleoption, QSize(width,height));
         break;
@@ -795,6 +789,13 @@ QSize QQuickStyleItem::sizeFromContents(int width, int height)
     case ProgressBar:
         size = qApp->style()->sizeFromContents(QStyle::CT_ProgressBar, m_styleoption, QSize(width,height));
         break;
+    case SpinBox:
+#ifdef Q_OS_MAC
+        if (style() == "mac") {
+            size = qApp->style()->sizeFromContents(QStyle::CT_SpinBox, m_styleoption, QSize(width, height + 4));
+            break;
+        }
+#endif // fall trough if not mac
     case Edit:
 #ifdef Q_OS_MAC
         if (style() =="mac") {
@@ -805,13 +806,13 @@ QSize QQuickStyleItem::sizeFromContents(int width, int height)
         } else
 #endif
         {
-            size = QSize(width, height);
-            if (const QStyleOptionFrame *f = qstyleoption_cast<const QStyleOptionFrame *>(m_styleoption))
-                size += QSize(2*f->lineWidth, 2*f->lineWidth);
+            // We have to create a new style option since we might be calling with a QStyleOptionSpinBox
+            QStyleOptionFrame frame;
+            frame.state = m_styleoption->state;
+            frame.lineWidth = qApp->style()->pixelMetric(QStyle::PM_DefaultFrameWidth, m_styleoption, 0);
+            frame.rect = m_styleoption->rect;
+            size = qApp->style()->sizeFromContents(QStyle::CT_LineEdit, &frame, QSize(width, height));
         }
-
-        if (hints().indexOf("rounded") != -1)
-            size += QSize(0, 3);
         break;
     case GroupBox: {
             QStyleOptionGroupBox *box = qstyleoption_cast<QStyleOptionGroupBox*>(m_styleoption);

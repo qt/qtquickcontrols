@@ -72,7 +72,7 @@ Style {
 
         contentWidth: 100
         // Form QLineEdit::sizeHint
-        contentHeight: Math.max(control.__contentHeight, 14) + topMargin + bottomMargin
+        contentHeight: Math.max(control.__contentHeight, 16)
 
         FocusFrame {
             anchors.fill: parent
