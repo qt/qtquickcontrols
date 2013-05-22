@@ -557,6 +557,54 @@ Item {
 
 
         Component {
+            id: layout_rowLayout_Component
+            RowLayout {
+            }
+        }
+
+        function test_stretchItem_data()
+        {
+            return [
+                    { expectedWidth: 0},
+                    { preferredWidth: 20, expectedWidth: 20},
+                    { preferredWidth: 0, expectedWidth: 0},
+                    { preferredWidth: 20, fillWidth: true, expectedWidth: 100},
+                    { width: 20, fillWidth: true, expectedWidth: 100},
+                    { width: 0, fillWidth: true, expectedWidth: 100},
+                    { preferredWidth: 0, fillWidth: true, expectedWidth: 100},
+                    { preferredWidth: 1, maximumWidth: 0, fillWidth: true, expectedWidth: 0},
+                    { preferredWidth: 0, minimumWidth: 1, expectedWidth: 1},
+                    ];
+        }
+
+        function test_stretchItem(data)
+        {
+            var layout = layout_rowLayout_Component.createObject(container)
+            var r = layoutItem_Component.createObject(layout)
+            // Reset previously relevant properties
+            r.width = 0
+            r.implicitWidth = 0
+            compare(layout.implicitWidth, 0)
+
+            if (data.preferredWidth !== undefined)
+                r.Layout.preferredWidth = data.preferredWidth
+            if (data.fillWidth !== undefined)
+                r.Layout.fillWidth = data.fillWidth
+            if (data.width !== undefined)
+                r.width = data.width
+            if (data.minimumWidth !== undefined)
+                r.Layout.minimumWidth = data.minimumWidth
+            if (data.maximumWidth !== undefined)
+                r.Layout.maximumWidth = data.maximumWidth
+
+            layout.width = 100
+
+            compare(r.width, data.expectedWidth)
+
+            layout.destroy();
+        }
+
+        Component {
             id: layout_alignToPixelGrid_Component
             RowLayout {
                 spacing: 2
