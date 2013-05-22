@@ -131,8 +131,8 @@ Style {
             \li readonly property int index - This is the current tab index.
             \li readonly property bool selected - This is the active tab.
             \li readonly property string title - Tab title text.
-            \li readonly property bool nextSelected = The next tab is selected.
-            \li readonly property bool previsousSelected - The previous tab is selected.
+            \li readonly property bool nextSelected - The next tab is selected.
+            \li readonly property bool previousSelected - The previous tab is selected.
             \li readonly property bool hovered - The tab is currently under the mouse.
             \li readonly property bool activeFocus - The tab button has keyboard focus.
         \endtable
