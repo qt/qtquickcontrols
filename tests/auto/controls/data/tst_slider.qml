@@ -268,5 +268,19 @@ Item {
             compare(spy.count, 5)
             control.destroy()
         }
+
+        function test_sliderOffset() {
+            var control = Qt.createQmlObject('import QtQuick.Controls 1.0; Slider {x: 20; y: 20; width: 100; height: 50}', container, '')
+            // Don't move slider value if mouse is inside handle regtion
+            mouseClick(control, control.width/2, control.height/2)
+            compare(control.value, 0.5)
+            mouseClick(control, control.width/2 + 5, control.height/2)
+            compare(control.value, 0.5)
+            mouseClick(control, control.width/2 - 5, control.height/2)
+            compare(control.value, 0.5)
+            mouseClick(control, control.width/2 + 25, control.height/2)
+            verify(control.value > 0.5)
+            control.destroy()
+        }
     }
 }

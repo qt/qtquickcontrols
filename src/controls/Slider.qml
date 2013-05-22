@@ -221,20 +221,22 @@ Control {
         width: parent.width
         height: parent.height
 
+        property int clickOffset: 0
+
         function clamp ( val ) {
             return Math.max(range.positionAtMinimum, Math.min(range.positionAtMaximum, val))
         }
 
         onMouseXChanged: {
             if (pressed && __horizontal) {
-                var pos = clamp (mouse.x - fakeHandle.width/2)
+                var pos = clamp (mouse.x + clickOffset - fakeHandle.width/2)
                 fakeHandle.x = pos
             }
         }
 
         onMouseYChanged: {
             if (pressed && !__horizontal) {
-                var pos = clamp (mouse.y - fakeHandle.height/2)
+                var pos = clamp (mouse.y + clickOffset- fakeHandle.height/2)
                 fakeHandle.y = pos
             }
         }
@@ -242,6 +244,11 @@ Control {
         onPressed: {
             if (slider.activeFocusOnPress)
                 slider.forceActiveFocus();
+
+            var point = mouseArea.mapToItem(fakeHandle, mouse.x, mouse.y)
+            if (fakeHandle.contains(Qt.point(point.x, point.y))) {
+                clickOffset = __horizontal ? fakeHandle.width/2 - point.x : fakeHandle.height/2 - point.y
+            }
         }
 
         onReleased: {
@@ -249,6 +256,7 @@ Control {
             // moment that the range is updated.
             if (!slider.updateValueWhileDragging)
                 range.position = __horizontal ? fakeHandle.x : fakeHandle.y;
+            clickOffset = 0
         }
     }
 
