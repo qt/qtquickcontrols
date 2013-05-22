@@ -58,13 +58,18 @@ import QtQuick.Layouts 1.0
     You can minimize the space consumption of a group box by enabling the flat property.
     In most styles, enabling this property results in the removal of the left, right and bottom edges of the frame.
 
-    GroupBox doesn't automatically lay out the child controls (which are often \l{CheckBox}{CheckBoxes} or \l{RadioButton}{RadioButtons} but can be any controls).
-    The following example shows how we can set up a GroupBox with a column:
+    To add content to a group box, you can reparent it to its contentItem property.
+
+    The implicit size of the GroupBox is calculated based on the size of its content. If you want to anchor
+    items inside the group box, you must specify an explicit width and height on the GroupBox itself.
+
+    The following example shows how we use a GroupBox with a column:
 
     \qml
         GroupBox {
             title: qsTr("Package selection")
             Column {
+                spacing: 2
                 CheckBox {
                     text: qsTr("Update system")
                 }
@@ -78,9 +83,8 @@ import QtQuick.Layouts 1.0
         }
     \endqml
 
-    \note The default size of the GroupBox is calculated based on the size of its children. If you need to use anchors
-    inside a GroupBox, it is recommended to specify a width and height to the GroupBox or to add an intermediate Item
-    inside the GroupBox.
+    \sa CheckBox, RadioButton, Layout
+
 */
 
 Item {
@@ -129,27 +133,34 @@ Item {
     */
     property alias checked: check.checked
 
-    /*!
-        This property holds the width of the content.
-    */
-    property real contentWidth: content.childrenRect.width
+
+    /*! \internal */
+    default property alias __content: container.data
 
     /*!
-        This property holds the height of the content.
+        \qmlproperty Item GroupBox::contentItem
+
+        This property holds the content Item of the group box.
+
+        Items declared as children of a GroupBox are automatically parented to the GroupBox's contentItem.
+        Items created dynamically need to be explicitly parented to the contentItem:
+
+        \note The implicit size of the GroupBox is calculated based on the size of its content. If you want to anchor
+        items inside the group box, you must specify an explicit width and height on the GroupBox itself.
     */
-    property real contentHeight: content.childrenRect.height
+    readonly property alias contentItem: container
 
     /*! \internal */
     property Component style: Qt.createComponent(Settings.theme() + "/GroupBoxStyle.qml", groupbox)
 
     /*! \internal */
-    default property alias data: content.data
-
-    /*! \internal */
     property alias __checkbox: check
 
-    implicitWidth: Math.max(200, (loader.item ? loader.item.implicitWidth: 0) )
-    implicitHeight: (loader.item ? loader.item.implicitHeight : 0)
+    /*! \internal */
+    property alias __style: styleLoader.item
+
+    implicitWidth: (!anchors.fill ? container.calcWidth() : 0) + loader.leftMargin + loader.rightMargin
+    implicitHeight: (!anchors.fill ? container.calcHeight() : 0) + loader.topMargin + loader.bottomMargin
 
     Layout.minimumWidth: implicitWidth
     Layout.minimumHeight: implicitHeight
@@ -159,44 +170,49 @@ Item {
 
     activeFocusOnTab: false
 
-    Loader {
-        id: loader
-        anchors.fill: parent
-        property int topMargin: (title.length > 0 || checkable ? 16 : 0) + content.margin
-        property int bottomMargin: 4
-        property int leftMargin: 4
-        property int rightMargin: 4
-        sourceComponent: styleLoader.item ? styleLoader.item.panel : null
-        onLoaded: item.z = -1
+
+    data: [
         Loader {
-            id: styleLoader
-            property alias __control: groupbox
-            sourceComponent: groupbox.style
-        }
-    }
+            id: loader
+            anchors.fill: parent
+            property int topMargin: __style ? __style.padding.top : 0
+            property int bottomMargin: __style ? __style.padding.bottom : 0
+            property int leftMargin: __style ? __style.padding.left : 0
+            property int rightMargin: __style ? __style.padding.right : 0
+            sourceComponent: styleLoader.item ? styleLoader.item.panel : null
+            onLoaded: item.z = -1
+            Loader {
+                id: styleLoader
+                property alias __control: groupbox
+                sourceComponent: groupbox.style
+            }
+        },
+        CheckBox {
+            id: check
+            checked: true
+            text: groupbox.title
+            visible: checkable
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.right: parent.right
+            height: loader.topMargin
+            activeFocusOnTab: groupbox.checkable
+            style: CheckBoxStyle { panel: Item{} }
+        },
+        Item {
+            id: container
+            z: 1
+            focus: true
+            anchors.fill: parent
 
-    CheckBox {
-        id: check
-        checked: true
-        text: groupbox.title
-        visible: checkable
-        anchors.top: parent.top
-        anchors.left: parent.left
-        anchors.right: parent.right
-        height: loader.topMargin
-        style: CheckBoxStyle { panel: Item{} }
-    }
+            anchors.topMargin: loader.topMargin
+            anchors.leftMargin: loader.leftMargin
+            anchors.rightMargin: loader.rightMargin
+            anchors.bottomMargin: loader.bottomMargin
+            enabled: (!groupbox.checkable || groupbox.checked)
 
-    Item {
-        id:content
-        z: 1
-        focus: true
-        property int margin: styleLoader.item ? styleLoader.item.margin : 0
-        anchors.topMargin: loader.topMargin
-        anchors.leftMargin: margin
-        anchors.rightMargin: margin
-        anchors.bottomMargin: margin
-        anchors.fill: parent
-        enabled: (!groupbox.checkable || groupbox.checked)
-    }
+            property Item layoutItem: container.children.length === 1 ? container.children[0] : null
+            function calcWidth () { return (layoutItem ? (layoutItem.implicitWidth || layoutItem.width) : container.childrenRect.width) }
+            function calcHeight () { return (layoutItem ? (layoutItem.implicitHeight || layoutItem.height) : container.childrenRect.height) }
+        }]
 }

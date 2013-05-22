@@ -61,8 +61,6 @@ ApplicationWindow {
         GroupBox {
             id: rowBox
             title: "Row layout"
-            contentWidth: rowLayout.implicitWidth
-            contentHeight: rowLayout.implicitHeight
             Layout.fillWidth: true
 
             RowLayout {
@@ -81,8 +79,6 @@ ApplicationWindow {
         GroupBox {
             id: gridBox
             title: "Grid layout"
-            contentWidth: gridLayout.implicitWidth
-            contentHeight: gridLayout.implicitHeight
             Layout.fillWidth: true
 
             GridLayout {

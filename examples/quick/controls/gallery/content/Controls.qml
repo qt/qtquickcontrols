@@ -154,8 +154,8 @@ Item {
                 id: group2
                 title:"Tab Position"
                 width: area.width
-                ExclusiveGroup { id: tabPositionGroup }
                 Row {
+                    ExclusiveGroup { id: tabPositionGroup }
                     RadioButton {
                         id: r1
                         text: "Top"
