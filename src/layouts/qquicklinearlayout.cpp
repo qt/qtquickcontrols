@@ -384,7 +384,7 @@ void QQuickGridLayoutBase::rearrange(const QSizeF &size)
 bool QQuickGridLayoutBase::shouldIgnoreItem(QQuickItem *child, QQuickLayoutAttached *&info, QSizeF *sizeHints)
 {
     Q_D(QQuickGridLayoutBase);
-    bool ignoreItem = false;
+    bool ignoreItem = true;
     if (child->isVisible()) {
         QQuickGridLayoutItem::effectiveSizeHints_helper(child, sizeHints, &info, true);
         QSizeF effectiveMaxSize = sizeHints[Qt::MaximumSize];
