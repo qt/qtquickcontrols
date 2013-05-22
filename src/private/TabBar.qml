@@ -114,7 +114,7 @@ FocusScope {
         width: Math.min(availableWidth, count ? contentWidth : availableWidth)
         height: currentItem ? currentItem.height : 0
 
-        displaced: Transition {
+        moveDisplaced: Transition {
             NumberAnimation {
                 property: "x"
                 duration: 125
