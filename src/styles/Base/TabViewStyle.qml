@@ -134,7 +134,10 @@ Style {
     property Component tab: Item {
         scale: control.tabPosition === Qt.TopEdge ? 1 : -1
 
-        implicitWidth: Math.round(textitem.implicitWidth + 20)
+        property int totalOverlap: tabOverlap * (control.count - 1)
+        property real maxTabWidth: (availableWidth + totalOverlap) / control.count
+
+        implicitWidth: Math.round(Math.min(maxTabWidth, textitem.implicitWidth + 20))
         implicitHeight: Math.round(textitem.implicitHeight + 10)
 
         clip: true

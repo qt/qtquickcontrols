@@ -163,7 +163,7 @@ FocusScope {
             property bool previousSelected: tabView.currentIndex === index - 1
 
             z: selected ? 1 : -index
-            implicitWidth: Math.min(tabloader.implicitWidth, availableWidth/tabrow.count) + 1
+            implicitWidth: tabloader.implicitWidth
             implicitHeight: tabloader.implicitHeight
 
             onPressed: {
@@ -180,6 +180,7 @@ FocusScope {
 
                 property Item control: tabView
                 property int index: tabindex
+                property real availableWidth: tabbar.availableWidth
 
                 property QtObject tab: QtObject {
                     readonly property alias index: tabitem.tabindex

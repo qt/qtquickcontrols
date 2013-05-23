@@ -73,7 +73,9 @@ Style {
         property string orientation: control.tabPosition === Qt.TopEdge ? "Top" : "Bottom"
         property int tabHSpace: __barstyle.pixelMetric("tabhspace");
         property int tabVSpace: __barstyle.pixelMetric("tabvspace");
-        implicitWidth: Math.max(50, styleitem.textWidth(tab.title)) + tabHSpace + 2
+        property int totalOverlap: tabOverlap * (control.count - 1)
+        property real maxTabWidth: (control.width + totalOverlap) / control.count
+        implicitWidth: Math.min(maxTabWidth, Math.max(50, styleitem.textWidth(tab.title)) + tabHSpace + 2)
         implicitHeight: Math.max(styleitem.font.pixelSize + tabVSpace + 6, 0)
 
         StyleItem {
