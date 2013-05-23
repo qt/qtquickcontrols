@@ -45,8 +45,6 @@ Style {
     id: root
 
     property bool tabsMovable: false
-    property int tabsLeftPadding: 0
-    property int tabsRightPadding: 0
     property int tabsAlignment: __barstyle.styleHint("tabbaralignment") === "center" ? Qt.AlignHCenter : Qt.AlignLeft;
     property int tabOverlap: __barstyle.pixelMetric("taboverlap");
     property int frameOverlap: __barstyle.pixelMetric("tabbaseoverlap");
@@ -98,4 +96,7 @@ Style {
             hasFocus: tabbarItem.activeFocus && selected
         }
     }
+
+    property Component leftCorner: null
+    property Component rightCorner: null
 }

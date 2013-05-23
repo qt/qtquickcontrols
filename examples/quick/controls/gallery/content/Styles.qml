@@ -240,7 +240,6 @@ Item {
 
     property Component tabViewStyle: TabViewStyle {
         tabOverlap: 16
-        tabsLeftPadding: 12
         frameOverlap: 4
         tabsMovable: true
 
@@ -269,6 +268,7 @@ Item {
                 anchors.centerIn: parent
             }
         }
+        leftCorner: Item { implicitWidth: 12 }
     }
 }
 

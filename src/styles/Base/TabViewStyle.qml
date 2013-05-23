@@ -97,12 +97,6 @@ Style {
     */
     property int tabsAlignment: Qt.AlignLeft
 
-    /*! This property holds the left padding of the tab bar.  */
-    property int tabsLeftPadding: 0
-
-    /*! This property holds the right padding of the tab bar.  */
-    property int tabsRightPadding: 0
-
     /*! This property holds the amount of overlap there are between
       individual tab buttons. */
     property int tabOverlap: 1
@@ -179,4 +173,10 @@ Style {
             color: __syspal.text
         }
     }
+
+    /*! This defines the left corner. */
+    property Component leftCorner: null
+
+    /*! This defines the right corner. */
+    property Component rightCorner: null
 }

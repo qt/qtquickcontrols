@@ -48,8 +48,8 @@ import QtQuick.Controls 1.0
 */
 FocusScope {
     id: tabbar
-    height: tabrow.height
-    width: tabrow.width
+    height: Math.max(tabrow.height, Math.max(leftCorner.height, rightCorner.height))
+    width: tabView.width
 
     activeFocusOnTab: true
 
@@ -76,6 +76,8 @@ FocusScope {
     property int tabOverlap: styleItem ? styleItem.tabOverlap : 0
 
     property int elide: Text.ElideRight
+
+    property real availableWidth: tabbar.width - leftCorner.width - rightCorner.width
 
     function tab(index) {
         for (var i = 0; i < tabrow.children.length; ++i) {
@@ -109,7 +111,7 @@ FocusScope {
         interactive: false
         focus: true
 
-        width: contentItem ? contentItem.width : 0
+        width: Math.min(availableWidth, count ? contentWidth : availableWidth)
         height: currentItem ? currentItem.height : 0
 
         displaced: Transition {
@@ -125,7 +127,7 @@ FocusScope {
                 name: "left"
                 when: tabsAlignment === Qt.AlignLeft
                 AnchorChanges { target:tabrow ; anchors.left: parent.left }
-                PropertyChanges { target:tabrow ; anchors.leftMargin: styleItem ? styleItem.tabsLeftPadding : 0 }
+                PropertyChanges { target:tabrow ; anchors.leftMargin: leftCorner.width }
             },
             State {
                 name: "center"
@@ -136,7 +138,7 @@ FocusScope {
                 name: "right"
                 when: tabsAlignment === Qt.AlignRight
                 AnchorChanges { target:tabrow ; anchors.right: parent.right }
-                PropertyChanges { target:tabrow ; anchors.rightMargin: styleItem ? styleItem.tabsRightPadding : 0 }
+                PropertyChanges { target:tabrow ; anchors.rightMargin: rightCorner.width }
             }
         ]
 
@@ -161,7 +163,7 @@ FocusScope {
             property bool previousSelected: tabView.currentIndex === index - 1
 
             z: selected ? 1 : -index
-            implicitWidth: Math.min(tabloader.implicitWidth, tabbar.width/tabrow.count) + 1
+            implicitWidth: Math.min(tabloader.implicitWidth, availableWidth/tabrow.count) + 1
             implicitHeight: tabloader.implicitHeight
 
             onPressed: {
@@ -236,6 +238,24 @@ FocusScope {
             Accessible.role: Accessible.PageTab
             Accessible.name: modelData.title
         }
+    }
+
+    Loader {
+        id: leftCorner
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.left: parent.left
+        sourceComponent: styleItem ? styleItem.leftCorner : undefined
+        width: item ? item.implicitWidth : 0
+        height: item ? item.implicitHeight : 0
+    }
+
+    Loader {
+        id: rightCorner
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.right: parent.right
+        sourceComponent: styleItem ? styleItem.rightCorner : undefined
+        width: item ? item.implicitWidth : 0
+        height: item ? item.implicitHeight : 0
     }
 
     DropArea {
