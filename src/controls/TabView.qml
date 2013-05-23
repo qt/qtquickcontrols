@@ -50,7 +50,7 @@ import QtQuick.Controls.Private 1.0
     \brief A control that allows the user to select one of multiple stacked items.
 
     You can create a custom appearance for a TabView by
-    assigning a TabViewStyle.
+    assigning a \l TabViewStyle.
 */
 
 FocusScope {

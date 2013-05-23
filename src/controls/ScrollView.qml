@@ -81,7 +81,7 @@ import QtQuick.Controls.Styles 1.0
     \l flickableItem.
 
     You can create a custom appearance for a ScrollView by
-    assigning a ScrollViewStyle.
+    assigning a \l ScrollViewStyle.
 */
 
 FocusScope {
@@ -147,7 +147,7 @@ FocusScope {
     property Component style: Qt.createComponent(Settings.style + "/ScrollViewStyle.qml", root)
 
     /* \internal */
-    property Style __style: styleLoader.item
+    property PaddedStyle __style: styleLoader.item
 
     activeFocusOnTab: true
 

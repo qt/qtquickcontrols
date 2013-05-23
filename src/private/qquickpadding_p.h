@@ -39,60 +39,53 @@
 **
 ****************************************************************************/
 
-#include "qquickrangemodel_p.h"
-#include "qquickwheelarea_p.h"
-#include "qquickstyleitem_p.h"
-#include "qquicktooltip_p.h"
-#include "qquickcontrolsettings_p.h"
-#include "qquickspinboxvalidator_p.h"
-#include "qquickpaddedstyle_p.h"
+#ifndef QQUICKPADDING_H
+#define QQUICKPADDING_H
 
-#ifndef QT_NO_WIDGETS
-#include "qquickstyleitem_p.h"
-#endif
-
-#include <qqml.h>
-#include <qqmlextensionplugin.h>
+#include <QtCore/qobject.h>
 
 QT_BEGIN_NAMESPACE
 
-static QObject *registerTooltipModule(QQmlEngine *engine, QJSEngine *jsEngine)
-{
-    Q_UNUSED(engine);
-    Q_UNUSED(jsEngine);
-    return new QQuickTooltip();
-}
-
-static QObject *registerSettingsModule(QQmlEngine *engine, QJSEngine *jsEngine)
-{
-    Q_UNUSED(engine);
-    Q_UNUSED(jsEngine);
-    return new QQuickControlSettings(engine);
-}
-
-class QtQuickControlsPrivatePlugin : public QQmlExtensionPlugin
+class QQuickPadding : public QObject
 {
     Q_OBJECT
-    Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QQmlExtensionInterface/1.0")
+
+    Q_PROPERTY(int left READ left WRITE setLeft NOTIFY leftChanged)
+    Q_PROPERTY(int top READ top WRITE setTop NOTIFY topChanged)
+    Q_PROPERTY(int right READ right WRITE setRight NOTIFY rightChanged)
+    Q_PROPERTY(int bottom READ bottom WRITE setBottom NOTIFY bottomChanged)
+
+    int m_left;
+    int m_top;
+    int m_right;
+    int m_bottom;
 
 public:
-    void registerTypes(const char *uri);
-};
+    QQuickPadding(QObject *parent = 0) :
+        QObject(parent),
+        m_left(0),
+        m_top(0),
+        m_right(0),
+        m_bottom(0) {}
 
-void QtQuickControlsPrivatePlugin::registerTypes(const char *uri)
-{
-    qmlRegisterType<QQuickPaddedStyle>(uri, 1, 0, "PaddedStyle");
-    qmlRegisterType<QQuickPadding>();
-    qmlRegisterType<QQuickRangeModel>(uri, 1, 0, "RangeModel");
-    qmlRegisterType<QQuickWheelArea>(uri, 1, 0, "WheelArea");
-    qmlRegisterType<QQuickSpinBoxValidator>(uri, 1, 0, "SpinBoxValidator");
-    qmlRegisterSingletonType<QQuickTooltip>(uri, 1, 0, "Tooltip", registerTooltipModule);
-    qmlRegisterSingletonType<QQuickControlSettings>(uri, 1, 0, "Settings", registerSettingsModule);
-#ifndef QT_NO_WIDGETS
-    qmlRegisterType<QQuickStyleItem>(uri, 1, 0, "StyleItem");
-#endif
-}
+    int left() const { return m_left; }
+    int top() const { return m_top; }
+    int right() const { return m_right; }
+    int bottom() const { return m_bottom; }
+
+public slots:
+    void setLeft(int arg) { if (m_left != arg) {m_left = arg; emit leftChanged();}}
+    void setTop(int arg) { if (m_top != arg) {m_top = arg; emit topChanged();}}
+    void setRight(int arg) { if (m_right != arg) {m_right = arg; emit rightChanged();}}
+    void setBottom(int arg) {if (m_bottom != arg) {m_bottom = arg; emit bottomChanged();}}
+
+signals:
+    void leftChanged();
+    void topChanged();
+    void rightChanged();
+    void bottomChanged();
+};
 
 QT_END_NAMESPACE
 
-#include "plugin.moc"
+#endif // QQUICKPADDING_H

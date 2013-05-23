@@ -57,8 +57,7 @@ import QtQuick.Controls.Private 1.0
     Button is similar to the QPushButton widget.
 
     You can create a custom appearance for a Button by
-    assigning a ButtonStyle.
-
+    assigning a \l ButtonStyle.
  */
 BasicButton {
     id: button
@@ -66,7 +65,7 @@ BasicButton {
     /*! This property holds whether the push button is the default button.
         Default buttons decide what happens when the user presses enter in a
         dialog without giving a button explicit focus. \note This property only
-        changes the style of the button. The expected behavior needs to be
+        changes the appearance of the button. The expected behavior needs to be
         implemented by the user.
 
         The default value is \c false.

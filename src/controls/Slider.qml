@@ -63,7 +63,7 @@ import QtQuick.Controls.Private 1.0
     needed, you can set the \l stepSize.
 
     You can create a custom appearance for a Slider by
-    assigning a SliderStyle.
+    assigning a \l SliderStyle.
 */
 
 Control {

@@ -72,14 +72,25 @@ import QtQuick.Controls.Private 1.0
     If you need a custom label, you can replace the label item.
 */
 
-Style {
+PaddedStyle {
     id: buttonstyle
 
     /*! The \l Button attached to this style. */
     readonly property Button control: __control
 
+    /*! \internal */
+    property var __syspal: SystemPalette {
+        colorGroup: control.enabled ?
+                        SystemPalette.Active : SystemPalette.Disabled
+    }
+
     /*! The padding between the background and the label components. */
-    property Margins padding: Margins { top: 4 ; left: 4 ; right: 4 ; bottom: 4 }
+    padding {
+        top: 4
+        left: 4
+        right: 4
+        bottom: 4
+    }
 
     /*! The background of the button. */
     property Component background: Item {

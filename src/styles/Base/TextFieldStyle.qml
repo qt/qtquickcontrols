@@ -64,14 +64,19 @@ import QtQuick.Controls.Private 1.0
     \endqml
 */
 
-Style {
+PaddedStyle {
     id: style
 
+    /*! \internal */
+    property var __syspal: SystemPalette {
+        colorGroup: control.enabled ?
+                        SystemPalette.Active : SystemPalette.Disabled
+    }
     /*! The \l TextField attached to this style. */
     readonly property TextField control: __control
 
     /*! The content margins of the text field. */
-    property Margins padding: Margins { top: 4 ; left: 6 ; right: 6 ; bottom:4 }
+    padding { top: 4 ; left: 6 ; right: 6 ; bottom:4 }
 
     /*! The current font. */
     property font font

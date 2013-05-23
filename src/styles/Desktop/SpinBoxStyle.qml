@@ -41,20 +41,26 @@ import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Private 1.0
 
-Style {
+PaddedStyle {
     readonly property SpinBox control: __control
+
+    property var __syspal: SystemPalette {
+        colorGroup: control.enabled ?
+                        SystemPalette.Active : SystemPalette.Disabled
+    }
+
+    padding {
+       top: control.__panel ? control.__panel.topPadding : 0
+       left: control.__panel ? control.__panel.leftPadding : 0
+       right: control.__panel ? control.__panel.rightPadding : 0
+       bottom: control.__panel ? control.__panel.bottomPadding : 0
+   }
+
     property Component panel: Item {
         id: style
 
         property rect upRect
         property rect downRect
-
-        property Margins margins: Margins{
-            top: edit.anchors.topMargin
-            left: 2 + edit.anchors.leftMargin
-            right: 2 + edit.anchors.leftMargin
-            bottom: edit.anchors.bottomMargin
-        }
 
         property int horizontalTextAlignment: Qt.AlignLeft
         property int verticalTextAlignment: Qt.AlignVCenter
@@ -63,6 +69,11 @@ Style {
         property color backgroundColor: __syspal.base
         property color selectionColor: __syspal.highlight
         property color selectedTextColor: __syspal.highlightedText
+
+        property int topPadding: edit.anchors.topMargin
+        property int leftPadding: 2 + edit.anchors.leftMargin
+        property int rightPadding: 2 + edit.anchors.leftMargin
+        property int bottomPadding: edit.anchors.bottomMargin
 
         width: 100
         height: styleitem.implicitHeight

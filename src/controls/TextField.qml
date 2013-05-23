@@ -56,7 +56,7 @@ import "Styles"
     TextField to be used for a password input field.
 
     You can create a custom appearance for a TextField by
-    assigning a TextFieldStyle.
+    assigning a \l TextFieldStyle.
 
     \sa TextArea, TextInput
 */

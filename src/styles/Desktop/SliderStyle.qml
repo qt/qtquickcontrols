@@ -40,7 +40,8 @@
 import QtQuick 2.1
 import QtQuick.Controls.Private 1.0
 
-Style {
+PaddedStyle {
+    readonly property Item control: __control
     property Component panel: StyleItem {
         elementType: "slider"
         sunken: control.pressed
@@ -60,5 +61,5 @@ Style {
         property int handleWidth: 15
         property int handleHeight: 15
     }
-    property Margins padding: Margins { top: 0 ; left: 0 ; right: 0 ; bottom: 0 }
+    padding { top: 0 ; left: 0 ; right: 0 ; bottom: 0 }
 }

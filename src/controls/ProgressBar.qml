@@ -52,6 +52,8 @@ import QtQuick.Controls.Private 1.0
     The ProgressBar is used to give an indication of the progress of an operation.
     \l value is updated regularly and must be between \l minimumValue and \l maximumValue.
 
+    You can create a custom appearance for a ProgressBar by
+    assigning a \l ProgressBarStyle.
 */
 
 Control {

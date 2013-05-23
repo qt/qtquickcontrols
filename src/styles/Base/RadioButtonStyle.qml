@@ -72,9 +72,14 @@ import QtQuick.Controls.Private 1.0
     \endqml
 */
 
-Style {
+PaddedStyle {
     id: radiobuttonStyle
 
+    /*! \internal */
+    property var __syspal: SystemPalette {
+        colorGroup: control.enabled ?
+                        SystemPalette.Active : SystemPalette.Disabled
+    }
     /*! The \l RadioButton attached to this style. */
     readonly property RadioButton control: __control
 
@@ -87,7 +92,7 @@ Style {
     }
 
     /*! The content padding. */
-    property Margins padding: Margins { top: 0 ; left: 0 ; right: 4 ; bottom: 0 }
+    padding { top: 0 ; left: 0 ; right: 4 ; bottom: 0 }
 
     /*! The spacing between indicator and label. */
     property int spacing: 4

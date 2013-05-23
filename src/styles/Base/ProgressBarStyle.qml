@@ -71,9 +71,14 @@ import QtQuick.Controls.Private 1.0
     \endqml
 */
 
-Style {
+PaddedStyle {
     id: progressBarStyle
 
+    /*! \internal */
+    property var __syspal: SystemPalette {
+        colorGroup: control.enabled ?
+                        SystemPalette.Active : SystemPalette.Disabled
+    }
     /*! The \l ProgressBar attached to this style. */
     readonly property ProgressBar control: __control
 
@@ -87,8 +92,7 @@ Style {
         For convenience, you can also access the readonly property \c controlState.progress
         which provides the current progress as a \c real in the range [0-1]
     */
-    property Margins padding: Margins { top: 0 ; left: 0 ; right: 0 ; bottom: 0 }
-
+    padding { top: 0 ; left: 0 ; right: 0 ; bottom: 0 }
 
     property Component progress: Rectangle {
         property color progressColor: "#49d"

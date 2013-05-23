@@ -31,7 +31,11 @@
     \ingroup qmlmodules
     \brief Provides QML types for Qt Quick Controls styles.
 
-    The \l{Qt Quick Controls} module provides a set of QML types for handling
+    The \l{Qt Quick Controls} module provides a set of QML types for handling
     styles.
+
+    Some of the controls allow custom styling similar to widget style sheets.
+    A styling object is usually a collection of properties that control behavior and simple delegates
+    that can be replaced with custom QML snippets.
 
 */

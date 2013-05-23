@@ -39,60 +39,29 @@
 **
 ****************************************************************************/
 
-#include "qquickrangemodel_p.h"
-#include "qquickwheelarea_p.h"
-#include "qquickstyleitem_p.h"
-#include "qquicktooltip_p.h"
-#include "qquickcontrolsettings_p.h"
-#include "qquickspinboxvalidator_p.h"
-#include "qquickpaddedstyle_p.h"
+#ifndef QQUICKPADDEDSTYLE_H
+#define QQUICKPADDEDSTYLE_H
 
-#ifndef QT_NO_WIDGETS
-#include "qquickstyleitem_p.h"
-#endif
-
-#include <qqml.h>
-#include <qqmlextensionplugin.h>
+#include <QtQuick/QQuickItem>
+#include <QtQml/QQmlListProperty>
+#include "qquickpadding_p.h"
 
 QT_BEGIN_NAMESPACE
 
-static QObject *registerTooltipModule(QQmlEngine *engine, QJSEngine *jsEngine)
-{
-    Q_UNUSED(engine);
-    Q_UNUSED(jsEngine);
-    return new QQuickTooltip();
-}
-
-static QObject *registerSettingsModule(QQmlEngine *engine, QJSEngine *jsEngine)
-{
-    Q_UNUSED(engine);
-    Q_UNUSED(jsEngine);
-    return new QQuickControlSettings(engine);
-}
-
-class QtQuickControlsPrivatePlugin : public QQmlExtensionPlugin
+class QQuickPaddedStyle : public QQuickItem
 {
     Q_OBJECT
-    Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QQmlExtensionInterface/1.0")
+
+    Q_PROPERTY(QQuickPadding* padding READ padding CONSTANT)
 
 public:
-    void registerTypes(const char *uri);
-};
+    QQuickPaddedStyle(QQuickItem *parent = 0);
+    QQuickPadding* padding() { return &m_padding; }
 
-void QtQuickControlsPrivatePlugin::registerTypes(const char *uri)
-{
-    qmlRegisterType<QQuickPaddedStyle>(uri, 1, 0, "PaddedStyle");
-    qmlRegisterType<QQuickPadding>();
-    qmlRegisterType<QQuickRangeModel>(uri, 1, 0, "RangeModel");
-    qmlRegisterType<QQuickWheelArea>(uri, 1, 0, "WheelArea");
-    qmlRegisterType<QQuickSpinBoxValidator>(uri, 1, 0, "SpinBoxValidator");
-    qmlRegisterSingletonType<QQuickTooltip>(uri, 1, 0, "Tooltip", registerTooltipModule);
-    qmlRegisterSingletonType<QQuickControlSettings>(uri, 1, 0, "Settings", registerSettingsModule);
-#ifndef QT_NO_WIDGETS
-    qmlRegisterType<QQuickStyleItem>(uri, 1, 0, "StyleItem");
-#endif
-}
+private:
+    QQuickPadding m_padding;
+};
 
 QT_END_NAMESPACE
 
-#include "plugin.moc"
+#endif // QQUICKPADDEDSTYLE_H

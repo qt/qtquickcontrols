@@ -78,14 +78,18 @@ import QtQuick.Controls.Private 1.0
     }
     \endqml
 */
-Style {
+PaddedStyle {
     id: styleitem
 
+    /*! \internal */
+    property var __syspal: SystemPalette {
+        colorGroup: control.enabled ?
+                        SystemPalette.Active : SystemPalette.Disabled
+    }
     /*! The \l Slider attached to this style. */
     readonly property Slider control: __control
 
-    /*! The padding around the groove item. */
-    property Margins padding: Margins { top: 0 ; left: 0 ; right: 0 ; bottom: 0 }
+    padding { top: 0 ; left: 0 ; right: 0 ; bottom: 0 }
 
     /*! This property holds the item for the slider handle.
         You can access the slider through the \c control property

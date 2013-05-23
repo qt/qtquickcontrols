@@ -47,13 +47,18 @@ import QtQuick.Controls.Private 1.0
     \inqmlmodule QtQuick.Controls.Styles 1.0
     \since QtQuick.Controls.Styles 1.0
 */
-Style {
+PaddedStyle {
 
+    /*! \internal */
+    property var __syspal: SystemPalette {
+        colorGroup: control.enabled ?
+                        SystemPalette.Active : SystemPalette.Disabled
+    }
     /*! The \l GroupBox attached to this style. */
     readonly property GroupBox control: __control
 
     /*! The margin from the content item to the groupbox. */
-    property Margins padding: Margins {
+    padding {
         top: (control.title.length > 0 || control.checkable ? 16 : 0) + 10
         left: 8
         right: 8

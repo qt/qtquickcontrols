@@ -72,11 +72,16 @@ import QtQuick.Controls.Private 1.0
     }
     \endqml
 */
-Style {
+PaddedStyle {
     id: checkboxStyle
 
     /*! The \l CheckBox attached to this style. */
     readonly property CheckBox control: __control
+    /*! \internal */
+    property var __syspal: SystemPalette {
+        colorGroup: control.enabled ?
+                        SystemPalette.Active : SystemPalette.Disabled
+    }
 
     /*! The text label. */
     property Component label: Text {
@@ -87,7 +92,12 @@ Style {
     }
 
     /*! The content padding. */
-    property Margins padding: Margins { top: 0 ; left: 0 ; right: 4 ; bottom: 0 }
+    padding {
+        top: 0
+        left: 0
+        right: 4
+        bottom: 0
+    }
 
     /*! The spacing between indicator and label. */
     property int spacing: 4

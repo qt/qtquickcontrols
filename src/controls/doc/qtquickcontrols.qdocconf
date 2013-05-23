@@ -51,6 +51,8 @@ sources += ../../private/qstyleitem.cpp \
            ../../private/ScrollBar.qml \
            ../../private/TabBar.qml \
            ../../private/Control.qml \
-           ../../private/Style.qml
+           ../../private/Style.qml \
+           ../../private/qquickpaddedstyle.h \
+           ../../private/qquickpaddedstyle.cpp
 
 imagedirs += images

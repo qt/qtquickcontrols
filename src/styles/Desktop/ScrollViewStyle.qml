@@ -42,10 +42,10 @@ import QtQuick.Controls 1.0
 import QtQuick.Controls.Private 1.0
 import "." as Desktop
 
-Style {
+PaddedStyle {
     id: root
 
-    property Margins padding: Margins {
+    padding {
         property int frameWidth: __styleitem.pixelMetric("defaultframewidth")
         left: frameWidth
         top: frameWidth

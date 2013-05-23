@@ -42,7 +42,7 @@ import QtQuick.Controls 1.0
 import QtQuick.Controls.Private 1.0
 
 
-Style {
+PaddedStyle {
     readonly property GroupBox control: __control
 
     property var __style: StyleItem { id: style }
@@ -54,7 +54,7 @@ Style {
             titleHeight = 9
     }
 
-    property Margins padding: Margins {
+    padding {
         top: (control.title.length > 0 || control.checkable ? titleHeight : 0) + 6
         left: 8
         right: 8

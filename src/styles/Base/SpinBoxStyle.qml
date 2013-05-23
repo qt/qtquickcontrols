@@ -49,14 +49,20 @@ import QtQuick.Controls.Private 1.0
     \brief Provides custom styling for SpinBox
 */
 
-Style {
+PaddedStyle {
     id: spinboxStyle
 
     /*! The \l SpinBox attached to this style. */
     readonly property SpinBox control: __control
 
+    /*! \internal */
+    property var __syspal: SystemPalette {
+        colorGroup: control.enabled ?
+                        SystemPalette.Active : SystemPalette.Disabled
+    }
+
     /*! The content margins of the text field. */
-    property Margins margins: Margins { top: 0 ; left: 5 ; right: 12 ; bottom: 0 }
+    padding { top: 0 ; left: 5 ; right: 12 ; bottom: 0 }
 
     /*! The text color. */
     property color textColor: __syspal.text
@@ -130,7 +136,7 @@ Style {
         property color selectionColor: spinboxStyle.selectionColor
         property color selectedTextColor: spinboxStyle.selectedTextColor
 
-        property var margins: spinboxStyle.margins
+        property var margins: spinboxStyle.padding
 
         property rect upRect: Qt.rect(width - incrementControlLoader.implicitWidth, 0, incrementControlLoader.implicitWidth, height / 2 + 1)
         property rect downRect: Qt.rect(width - decrementControlLoader.implicitWidth, height / 2, decrementControlLoader.implicitWidth, height / 2)

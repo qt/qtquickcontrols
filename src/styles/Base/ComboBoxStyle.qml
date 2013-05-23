@@ -49,13 +49,18 @@ import QtQuick.Controls.Private 1.0
     \brief Provides custom styling for ComboBox
 */
 
-Style {
+PaddedStyle {
 
+    /*! \internal */
+    property var __syspal: SystemPalette {
+        colorGroup: control.enabled ?
+                        SystemPalette.Active : SystemPalette.Disabled
+    }
     /*! The \l ComboBox attached to this style. */
     readonly property ComboBox control: __control
 
     /*! The padding between the background and the label components. */
-    property Margins padding: Margins { top: 4 ; left: 6 ; right: 6 ; bottom:4 }
+    padding { top: 4 ; left: 6 ; right: 6 ; bottom:4 }
 
     /*! The background of the button. */
     property Component background: Item {

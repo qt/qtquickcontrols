@@ -201,10 +201,10 @@ Control {
         id: input
         clip: true
         anchors.fill: parent
-        anchors.leftMargin: __panel ? __panel.margins.left : 0
-        anchors.topMargin: __panel ? __panel.margins.top : 0
-        anchors.rightMargin: __panel ? __panel.margins.right: 0
-        anchors.bottomMargin: __panel ? __panel.margins.bottom: 0
+        anchors.leftMargin: __style ? __style.padding.left : 0
+        anchors.topMargin: __style ? __style.padding.top : 0
+        anchors.rightMargin: __style ? __style.padding.right: 0
+        anchors.bottomMargin: __style ? __style.padding.bottom: 0
 
         focus: true
         activeFocusOnPress: spinbox.activeFocusOnPress

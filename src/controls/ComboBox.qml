@@ -72,6 +72,9 @@ import QtQuick.Controls.Private 1.0
            onCurrentIndexChanged: console.debug(currentText + ", " + cbItems.get(currentIndex).color)
        }
     \endqml
+
+    You can create a custom appearance for a ComboBox by
+    assigning a \l ComboBoxStyle.
 */
 
 Control {
