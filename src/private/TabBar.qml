@@ -114,6 +114,10 @@ FocusScope {
         width: Math.min(availableWidth, count ? contentWidth : availableWidth)
         height: currentItem ? currentItem.height : 0
 
+        highlightMoveDuration: 0
+        currentIndex: tabView.currentIndex
+        onCurrentIndexChanged: tabrow.positionViewAtIndex(currentIndex, ListView.Contain)
+
         moveDisplaced: Transition {
             NumberAnimation {
                 property: "x"
