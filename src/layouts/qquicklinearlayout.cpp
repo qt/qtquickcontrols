@@ -389,13 +389,10 @@ bool QQuickGridLayoutBase::shouldIgnoreItem(QQuickItem *child, QQuickLayoutAttac
         QQuickGridLayoutItem::effectiveSizeHints_helper(child, sizeHints, &info, true);
         QSizeF effectiveMaxSize = sizeHints[Qt::MaximumSize];
         if (!effectiveMaxSize.isNull()) {
-            bool effectiveFillWidth = QQuickGridLayoutItem::effectiveSizePolicy_helper(child, Qt::Horizontal, info);
-            bool effectiveFillHeight = QQuickGridLayoutItem::effectiveSizePolicy_helper(child, Qt::Vertical, info);
-
             QSizeF &prefS = sizeHints[Qt::PreferredSize];
-            if (!effectiveFillWidth)
+            if (QQuickGridLayoutItem::effectiveSizePolicy_helper(child, Qt::Horizontal, info) == QLayoutPolicy::Fixed)
                 effectiveMaxSize.setWidth(prefS.width());
-            if (!effectiveFillHeight)
+            if (QQuickGridLayoutItem::effectiveSizePolicy_helper(child, Qt::Vertical, info) == QLayoutPolicy::Fixed)
                 effectiveMaxSize.setHeight(prefS.height());
         }
         ignoreItem = effectiveMaxSize.isNull();
