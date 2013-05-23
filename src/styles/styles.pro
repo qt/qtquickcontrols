@@ -1,24 +1,25 @@
 TARGETPATH = QtQuick/Controls/Styles
 
+# Base
 QML_FILES = \
-    ButtonStyle.qml \
-    CheckBoxStyle.qml \
-    ComboBoxStyle.qml \
-    FocusFrameStyle.qml \
-    GroupBoxStyle.qml \
-    MenuBarStyle.qml \
-    MenuStyle.qml \
-    ProgressBarStyle.qml \
-    RadioButtonStyle.qml \
-    ScrollViewStyle.qml\
-    SliderStyle.qml \
-    SpinBoxStyle.qml \
-    StatusBarStyle.qml \
-    TableViewStyle.qml \
-    TabViewStyle.qml \
-    TextFieldStyle.qml \
-    ToolBarStyle.qml \
-    ToolButtonStyle.qml
+    Base/ButtonStyle.qml \
+    Base/CheckBoxStyle.qml \
+    Base/ComboBoxStyle.qml \
+    Base/FocusFrameStyle.qml \
+    Base/GroupBoxStyle.qml \
+    Base/MenuBarStyle.qml \
+    Base/MenuStyle.qml \
+    Base/ProgressBarStyle.qml \
+    Base/RadioButtonStyle.qml \
+    Base/ScrollViewStyle.qml\
+    Base/SliderStyle.qml \
+    Base/SpinBoxStyle.qml \
+    Base/StatusBarStyle.qml \
+    Base/TableViewStyle.qml \
+    Base/TabViewStyle.qml \
+    Base/TextFieldStyle.qml \
+    Base/ToolBarStyle.qml \
+    Base/ToolButtonStyle.qml
 
 # Desktop
 QML_FILES += \
@@ -43,24 +44,24 @@ QML_FILES += \
 
 # Images
 QML_FILES += \
-    images/button.png \
-    images/button_down.png \
-    images/tab.png \
-    images/header.png \
-    images/groupbox.png \
-    images/focusframe.png \
-    images/tab_selected.png \
-    images/scrollbar-handle-horizontal.png \
-    images/scrollbar-handle-vertical.png \
-    images/progress-indeterminate.png \
-    images/editbox.png \
-    images/arrow-up.png \
-    images/arrow-up@2x.png \
-    images/arrow-down.png \
-    images/arrow-down@2x.png \
-    images/arrow-left.png \
-    images/arrow-left@2x.png \
-    images/arrow-right.png \
-    images/arrow-right@2x.png
+    Base/images/button.png \
+    Base/images/button_down.png \
+    Base/images/tab.png \
+    Base/images/header.png \
+    Base/images/groupbox.png \
+    Base/images/focusframe.png \
+    Base/images/tab_selected.png \
+    Base/images/scrollbar-handle-horizontal.png \
+    Base/images/scrollbar-handle-vertical.png \
+    Base/images/progress-indeterminate.png \
+    Base/images/editbox.png \
+    Base/images/arrow-up.png \
+    Base/images/arrow-up@2x.png \
+    Base/images/arrow-down.png \
+    Base/images/arrow-down@2x.png \
+    Base/images/arrow-left.png \
+    Base/images/arrow-left@2x.png \
+    Base/images/arrow-right.png \
+    Base/images/arrow-right@2x.png
 
 load(qml_module)

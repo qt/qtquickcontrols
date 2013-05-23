@@ -37,10 +37,10 @@ exampledirs += ../../../examples/quick/controls
 examplesinstallpath = quick/controls
 
 headerdirs += ../
-headerdirs += ../ ../../styles
+headerdirs += ../ ../../styles/Base
 
 sourcedirs += ../
-sourcedirs += ../ ../../styles
+sourcedirs += ../ ../../styles/Base
 
 sources += ../../private/qstyleitem.cpp \
            ../../private/AbstractCheckable.qml \
@@ -51,19 +51,6 @@ sources += ../../private/qstyleitem.cpp \
            ../../private/ScrollBar.qml \
            ../../private/TabBar.qml \
            ../../private/Control.qml \
-           ../../styles/Style.qml \
-           ../../styles/ButtonStyle.qml \
-           ../../styles/CheckBoxStyle.qml \
-           ../../styles/ComboBoxStyle.qml \
-           ../../styles/GroupBoxStyle.qml \
-           ../../styles/MenuBarStyle.qml \
-           ../../styles/ProgressBarStyle.qml \
-           ../../styles/RadioButtonStyle.qml \
-           ../../styles/SliderStyle.qml \
-           ../../styles/SpinBoxStyle.qml \
-           ../../styles/TabViewStyle.qml \
-           ../../styles/TextFieldStyle.qml \
-           ../../styles/ToolBarStyle.qml \
-           ../../styles/ToolButtonStyle.qml
+           ../../private/Style.qml
 
 imagedirs += images

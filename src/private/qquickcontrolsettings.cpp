@@ -54,7 +54,7 @@ QString QQuickControlSettings::theme()
 {
     static QString currentTheme;
     if (currentTheme.isEmpty()) {
-        currentTheme = QLatin1String("Styles");
+        currentTheme = QLatin1String("Styles/Base");
 #ifndef QT_NO_WIDGETS
         //Only enable QStyle support when we are using QApplication
         if (QCoreApplication::instance()->inherits("QApplication")) {
