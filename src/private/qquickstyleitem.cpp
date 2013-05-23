@@ -322,11 +322,11 @@ void QQuickStyleItem::initStyleOption()
             opt->features |= QStyleOptionTab::HasFrame;
 
         if (hints().length() > 2) {
-            QString shape = hints()[0];
+            QString orientation = hints()[0];
             QString position = hints()[1];
             QString selectedPosition = hints()[2];
 
-            opt->shape = (shape == "Bottom") ? QTabBar::RoundedSouth : QTabBar::RoundedNorth;
+            opt->shape = (orientation == "Bottom") ? QTabBar::RoundedSouth : QTabBar::RoundedNorth;
 
             if (position == QLatin1String("beginning"))
                 opt->position = QStyleOptionTab::Beginning;

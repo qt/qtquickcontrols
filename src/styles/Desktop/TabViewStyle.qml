@@ -72,6 +72,7 @@ Style {
         id: item
         property string tabpos: control.count === 1 ? "only" : index === 0 ? "beginning" : index === control.count - 1 ? "end" : "middle"
         property string selectedpos: tab.nextSelected ? "next" : tab.previousSelected ? "previous" : ""
+        property string orientation: control.tabPosition === Qt.TopEdge ? "Top" : "Bottom"
         property int tabHSpace: __barstyle.pixelMetric("tabhspace");
         property int tabVSpace: __barstyle.pixelMetric("tabvspace");
         implicitWidth: Math.max(50, styleitem.textWidth(tab.title)) + tabHSpace + 2
@@ -89,7 +90,7 @@ Style {
             anchors.bottomMargin: -1
             anchors.leftMargin: -paintMargins + (style === "mac" && selected ? -1 : 0)
             properties: { "hasFrame" : true }
-            hints: [tabPosition, tabpos, selectedpos]
+            hints: [orientation, tabpos, selectedpos]
 
             selected: tab.selected
             text: elidedText(tab.title, tabbarItem.elide, item.width - item.tabHSpace)
