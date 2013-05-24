@@ -357,6 +357,13 @@ void QQuickStyleItem::initStyleOption()
         opt->midLineWidth = 1;
     }
         break;
+    case FocusRect: {
+        if (!m_styleoption)
+            m_styleoption = new QStyleOptionFocusRect();
+        // Needed on windows
+        m_styleoption->state |= QStyle::State_KeyboardFocusChange;
+    }
+        break;
     case TabFrame: {
         if (!m_styleoption)
             m_styleoption = new QStyleOptionTabWidgetFrame();
@@ -1043,6 +1050,8 @@ void QQuickStyleItem::setElementType(const QString &str)
         m_itemType = Widget;
     } else if (str == "focusframe") {
         m_itemType = FocusFrame;
+    } else if (str == "focusrect") {
+        m_itemType = FocusRect;
     } else if (str == "dial") {
         m_itemType = Dial;
     } else if (str == "statusbar") {
@@ -1248,6 +1257,9 @@ void QQuickStyleItem::paint(QPainter *painter)
         else
 #endif
             qApp->style()->drawControl(QStyle::CE_FocusFrame, m_styleoption, painter);
+        break;
+    case FocusRect:
+        qApp->style()->drawPrimitive(QStyle::PE_FrameFocusRect, m_styleoption, painter);
         break;
     case TabFrame:
         qApp->style()->drawPrimitive(QStyle::PE_FrameTabWidget, m_styleoption, painter);

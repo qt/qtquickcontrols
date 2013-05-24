@@ -54,7 +54,7 @@ Style {
             on: control.checked || control.pressed
             hover: control.__containsMouse
             enabled: control.enabled
-            hasFocus: control.activeFocus
+            hasFocus: control.activeFocus && styleitem.style == "mac"
             hints: {
                 if (control.checkedState === Qt.PartiallyChecked)
                     control.styleHints.push("partiallyChecked");
@@ -82,6 +82,16 @@ Style {
                 elide: Text.ElideRight
                 enabled: control.enabled
                 color: __syspal.windowText
+                StyleItem {
+                    elementType: "focusrect"
+                    anchors.margins: -1
+                    anchors.leftMargin: -2
+                    anchors.top: parent.top
+                    anchors.left: parent.left
+                    anchors.bottom: parent.bottom
+                    width: textitem.implicitWidth + 3
+                    visible: control.activeFocus
+                }
             }
         }
     }

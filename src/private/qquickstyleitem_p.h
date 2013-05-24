@@ -99,6 +99,7 @@ public:
         TabFrame,
         Frame,
         FocusFrame,
+        FocusRect,
         SpinBox,
         Slider,
         ScrollBar,
