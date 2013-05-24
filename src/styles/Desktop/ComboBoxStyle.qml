@@ -49,8 +49,7 @@ Style {
 
         implicitWidth: 115
         implicitHeight: styleItem.implicitHeight
-        width: parent.width
-        height: parent.height
+        anchors.fill: parent
         StyleItem {
             id: styleItem
 
