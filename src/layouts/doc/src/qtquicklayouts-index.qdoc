@@ -29,7 +29,14 @@
     \page qtquicklayouts-index.html
     \title Qt Quick Layouts
 
-    \brief A module with a set of QML elements that arranges QML items in an user interface.
+    \brief A module with a set of QML elements that arrange QML items in a user interface.
+
+    Qt Quick Layouts are a set of QML types used to arrange items in a user interface. In contrast
+    to \l{Item Positioners}{positioners}, Qt Quick Layouts can also resize their items. This makes
+    them well suited for resizable user interfaces. Since layouts are items they can consequently
+    be nested.
+
+    The module is new in Qt 5.1 and requires \l{Qt Quick} 2.1.
 
     \section1 Getting started
 
@@ -40,9 +47,6 @@
     \endcode
 
     \section1 Layouts
-    Layouts are items that are used to arrange items in the user interface. The layout is dynamic -
-    when the layout changes geometry it will typically influence the arrangement of its child
-    items. Since a layout is an item, layouts can consequently be nested.
 
     \annotatedlist layouts
 
