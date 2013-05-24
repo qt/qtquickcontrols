@@ -78,5 +78,5 @@ BasicButton {
 
     Accessible.name: text
 
-    style: Qt.createComponent(Settings.theme() + "/ToolButtonStyle.qml", button)
+    style: Qt.createComponent(Settings.style + "/ToolButtonStyle.qml", button)
 }

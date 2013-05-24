@@ -73,7 +73,7 @@ Item {
     width: parent ? parent.width : implicitWidth
     implicitWidth: loader.item.implicitHeight
     implicitHeight: loader.item ? loader.item.implicitHeight : 0
-    property Component style: Qt.createComponent(Settings.theme() + "/StatusBarStyle.qml", statusbar)
+    property Component style: Qt.createComponent(Settings.style + "/StatusBarStyle.qml", statusbar)
     Loader {
         id: loader
         anchors.fill: parent

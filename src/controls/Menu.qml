@@ -130,7 +130,7 @@ MenuPrivate {
     property Component __selfComponent: null
 
     /*! \internal */
-    property Component style: Qt.createComponent(Settings.theme() + "/MenuStyle.qml", root)
+    property Component style: Qt.createComponent(Settings.style + "/MenuStyle.qml", root)
 
     /*! \internal */
     property var __menuBar: null

@@ -151,7 +151,7 @@ Item {
     readonly property alias contentItem: container
 
     /*! \internal */
-    property Component style: Qt.createComponent(Settings.theme() + "/GroupBoxStyle.qml", groupbox)
+    property Component style: Qt.createComponent(Settings.style + "/GroupBoxStyle.qml", groupbox)
 
     /*! \internal */
     property alias __checkbox: check

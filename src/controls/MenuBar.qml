@@ -74,7 +74,7 @@ MenuBarPrivate {
     id: root
 
     /*! \internal */
-    property Component style: Qt.createComponent(Settings.theme() + "/MenuBarStyle.qml", root)
+    property Component style: Qt.createComponent(Settings.style + "/MenuBarStyle.qml", root)
 
     /*! \internal */
     __contentItem: Loader {

@@ -144,7 +144,7 @@ FocusScope {
     /*! \internal */
     property alias __verticalScrollBar: scroller.verticalScrollBar
     /*! \internal */
-    property Component style: Qt.createComponent(Settings.theme() + "/ScrollViewStyle.qml", root)
+    property Component style: Qt.createComponent(Settings.style + "/ScrollViewStyle.qml", root)
 
     /* \internal */
     property Style __style: styleLoader.item

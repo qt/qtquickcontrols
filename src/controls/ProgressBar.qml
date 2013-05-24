@@ -97,7 +97,7 @@ Control {
     property int orientation: Qt.Horizontal
 
     /*! \internal */
-    style: Qt.createComponent(Settings.theme() + "/ProgressBarStyle.qml", progressbar)
+    style: Qt.createComponent(Settings.style + "/ProgressBarStyle.qml", progressbar)
 
     /*! \internal */
     property bool __initialized: false

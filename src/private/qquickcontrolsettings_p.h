@@ -42,18 +42,41 @@
 #ifndef QQUICKCONTROLSETTINGS_P_H
 #define QQUICKCONTROLSETTINGS_P_H
 
+#include <QtCore/qurl.h>
 #include <QtCore/qobject.h>
 
 QT_BEGIN_NAMESPACE
 
+class QQmlEngine;
+
 class QQuickControlSettings : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(QUrl style READ style NOTIFY styleChanged)
+    Q_PROPERTY(QString styleName READ styleName WRITE setStyleName NOTIFY styleNameChanged)
+    Q_PROPERTY(QString stylePath READ stylePath WRITE setStylePath NOTIFY stylePathChanged)
 
 public:
-    QQuickControlSettings(QObject *parent = 0);
+    QQuickControlSettings(QQmlEngine *engine);
 
-    Q_INVOKABLE QString theme();
+    QUrl style() const;
+
+    QString styleName() const;
+    void setStyleName(const QString &name);
+
+    QString stylePath() const;
+    void setStylePath(const QString &path);
+
+signals:
+    void styleChanged();
+    void styleNameChanged();
+    void stylePathChanged();
+
+private:
+    QString styleFilePath() const;
+
+    QString m_name;
+    QString m_path;
 };
 
 QT_END_NAMESPACE

@@ -187,7 +187,7 @@ Control {
         return Math.round(v);
     }
 
-    style: Qt.createComponent(Settings.theme() + "/SliderStyle.qml", slider)
+    style: Qt.createComponent(Settings.style + "/SliderStyle.qml", slider)
 
     Keys.onRightPressed: value += (maximumValue - minimumValue)/10.0
     Keys.onLeftPressed: value -= (maximumValue - minimumValue)/10.0

@@ -533,7 +533,7 @@ Control {
     /*! \internal */
     property alias __contentWidth: textInput.contentWidth
 
-    style: Qt.createComponent(Settings.theme() + "/TextFieldStyle.qml", textInput)
+    style: Qt.createComponent(Settings.style + "/TextFieldStyle.qml", textInput)
 
     activeFocusOnTab: true
 

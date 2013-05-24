@@ -279,7 +279,7 @@ ScrollView {
     }
 
 
-    style: Qt.createComponent(Settings.theme() + "/TableViewStyle.qml", root)
+    style: Qt.createComponent(Settings.style + "/TableViewStyle.qml", root)
 
 
     Accessible.role: Accessible.Table

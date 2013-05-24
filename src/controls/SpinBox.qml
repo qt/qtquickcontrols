@@ -131,7 +131,7 @@ Control {
     */
     property bool activeFocusOnPress: true
 
-    style: Qt.createComponent(Settings.theme() + "/SpinBoxStyle.qml", spinbox)
+    style: Qt.createComponent(Settings.style + "/SpinBoxStyle.qml", spinbox)
 
     /*! \internal */
     function __increment() {

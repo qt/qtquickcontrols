@@ -66,7 +66,7 @@ static QObject *registerSettingsModule(QQmlEngine *engine, QJSEngine *jsEngine)
 {
     Q_UNUSED(engine);
     Q_UNUSED(jsEngine);
-    return new QQuickControlSettings();
+    return new QQuickControlSettings(engine);
 }
 
 class QtQuickControlsPrivatePlugin : public QQmlExtensionPlugin

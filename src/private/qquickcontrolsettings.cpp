@@ -42,34 +42,95 @@
 #include "qquickcontrolsettings_p.h"
 #include <qquickitem.h>
 #include <qcoreapplication.h>
+#include <qqmlengine.h>
+#include <qdir.h>
 
 QT_BEGIN_NAMESPACE
 
-QQuickControlSettings::QQuickControlSettings(QObject *parent)
-    : QObject(parent)
+static QString defaultStyleName()
 {
+    //Only enable QStyle support when we are using QApplication
+    if (QCoreApplication::instance()->inherits("QApplication"))
+        return QLatin1String("Desktop");
+    return QLatin1String("Base");
 }
 
-QString QQuickControlSettings::theme()
+static QString styleImportName()
 {
-    static QString currentTheme;
-    if (currentTheme.isEmpty()) {
-        //Following variable is for internal use only. It is very possible
-        //that it will disappear in future releases.
-        currentTheme = qgetenv("QT_QUICK_CONTROLS_STYLE");
+    QString name = qgetenv("QT_QUICK_CONTROLS_STYLE");
+    if (name.isEmpty())
+        name = defaultStyleName();
+    return QFileInfo(name).fileName();
+}
 
-        if (currentTheme.isEmpty()) {
-            //Only enable QStyle support when we are using QApplication
-            if (QCoreApplication::instance()->inherits("QApplication"))
-                currentTheme = QLatin1String("Desktop");
-            else
-                currentTheme = QLatin1String("Base");
+static QString styleImportPath(QQmlEngine *engine, const QString &styleName)
+{
+    QString path = qgetenv("QT_QUICK_CONTROLS_STYLE");
+    QFileInfo info(path);
+    if (info.isRelative()) {
+        foreach (const QString &import, engine->importPathList()) {
+            QDir dir(import + QLatin1String("/QtQuick/Controls/Styles"));
+            if (dir.exists(styleName)) {
+                path = dir.absolutePath();
+                break;
+            }
         }
-
-        if (!currentTheme.startsWith(QLatin1String("Styles/")))
-            currentTheme.prepend(QLatin1String("Styles/"));
+    } else {
+        path = info.absolutePath();
     }
-    return currentTheme;
+    return path;
+}
+
+QQuickControlSettings::QQuickControlSettings(QQmlEngine *engine)
+{
+    m_name = styleImportName();
+    m_path = styleImportPath(engine, m_name);
+
+    if (!QFile::exists(styleFilePath())) {
+        QString unknownStyle = m_name;
+        m_name = defaultStyleName();
+        m_path = styleImportPath(engine, m_name);
+        qWarning() << "WARNING: Cannot find style" << unknownStyle << "- fallback:" << styleFilePath();
+    }
+
+    connect(this, SIGNAL(styleNameChanged()), SIGNAL(styleChanged()));
+    connect(this, SIGNAL(stylePathChanged()), SIGNAL(styleChanged()));
+}
+
+QUrl QQuickControlSettings::style() const
+{
+    return QUrl::fromLocalFile(styleFilePath());
+}
+
+QString QQuickControlSettings::styleName() const
+{
+    return m_name;
+}
+
+void QQuickControlSettings::setStyleName(const QString &name)
+{
+    if (m_name != name) {
+        m_name = name;
+        emit styleNameChanged();
+    }
+}
+
+QString QQuickControlSettings::stylePath() const
+{
+    return m_path;
+}
+
+void QQuickControlSettings::setStylePath(const QString &path)
+{
+    if (m_path != path) {
+        m_path = path;
+        emit stylePathChanged();
+    }
+}
+
+QString QQuickControlSettings::styleFilePath() const
+{
+    return m_path + QLatin1Char('/') + m_name;
 }
 
 QT_END_NAMESPACE
