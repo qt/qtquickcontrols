@@ -49,7 +49,12 @@ Style {
     property int tabOverlap: __barstyle.pixelMetric("taboverlap");
     property int frameOverlap: __barstyle.pixelMetric("tabbaseoverlap");
 
-    property StyleItem __barstyle: StyleItem { elementType: "tabbar" ; visible: false }
+    property StyleItem __barstyle: StyleItem {
+        elementType: "tab"
+        hints: [control.tabPosition === Qt.TopEdge ? "Top" : "Bottom"]
+        visible: false
+    }
+
     property Component frame: StyleItem {
         id: styleitem
         anchors.fill: parent

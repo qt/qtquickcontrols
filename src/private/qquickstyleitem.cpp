@@ -886,7 +886,7 @@ int QQuickStyleItem::pixelMetric(const QString &metric)
     else if (metric == "taboverlap")
         return qApp->style()->pixelMetric(QStyle::PM_TabBarTabOverlap, 0 );
     else if (metric == "tabbaseoverlap")
-        return qApp->style()->pixelMetric(QStyle::PM_TabBarBaseOverlap, 0 );
+        return qApp->style()->pixelMetric(QStyle::PM_TabBarBaseOverlap, m_styleoption );
     else if (metric == "tabhspace")
         return qApp->style()->pixelMetric(QStyle::PM_TabBarTabHSpace, 0 );
     else if (metric == "indicatorwidth")
