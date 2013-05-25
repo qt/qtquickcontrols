@@ -79,6 +79,8 @@ FocusScope {
 
     property real availableWidth: tabbar.width - leftCorner.width - rightCorner.width
 
+    property var __selectedTabRect
+
     function tab(index) {
         for (var i = 0; i < tabrow.children.length; ++i) {
             if (tabrow.children[i].tabindex == index) {
@@ -153,6 +155,13 @@ FocusScope {
             objectName: "mousearea"
             hoverEnabled: true
             focus: true
+
+            Binding {
+                target: tabbar
+                when: selected
+                property: "__selectedTabRect"
+                value: Qt.rect(x, y, width, height)
+            }
 
             drag.target: tabsMovable ? tabloader : null
             drag.axis: Drag.XAxis

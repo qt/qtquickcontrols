@@ -368,7 +368,9 @@ void QQuickStyleItem::initStyleOption()
         if (!m_styleoption)
             m_styleoption = new QStyleOptionTabWidgetFrame();
         QStyleOptionTabWidgetFrame *opt = qstyleoption_cast<QStyleOptionTabWidgetFrame*>(m_styleoption);
-        opt->shape = hints().contains("South") ? QTabBar::RoundedSouth : QTabBar::RoundedNorth;
+
+        opt->selectedTabRect = m_properties["selectedTabRect"].toRect();
+        opt->shape = m_properties["orientation"] == Qt::BottomEdge ? QTabBar::RoundedSouth : QTabBar::RoundedNorth;
         if (minimum())
             opt->selectedTabRect = QRect(value(), 0, minimum(), height());
         opt->tabBarSize = QSize(minimum() , height());

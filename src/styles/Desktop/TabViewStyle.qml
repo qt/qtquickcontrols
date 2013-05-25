@@ -61,10 +61,10 @@ Style {
         anchors.topMargin: 1//stack.baseOverlap
         z: style == "oxygen" ? 1 : 0
         elementType: "tabframe"
-        hints: control.tabPosition === Qt.TopEdge ? "Top" : "Bottom"
         value: tabbarItem && tabsVisible && tabbarItem.tab(currentIndex) ? tabbarItem.tab(currentIndex).x : 0
         minimum: tabbarItem && tabsVisible && tabbarItem.tab(currentIndex) ? tabbarItem.tab(currentIndex).width : 0
         maximum: tabbarItem && tabsVisible ? tabbarItem.width : width
+        properties: { "selectedTabRect" : tabbarItem.__selectedTabRect, "orientation" : control.tabPosition }
         Component.onCompleted: {
             stack.frameWidth = styleitem.pixelMetric("defaultframewidth");
             stack.style = style;
