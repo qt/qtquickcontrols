@@ -46,8 +46,8 @@ PaddedStyle {
         elementType: "slider"
         sunken: control.pressed
         implicitWidth: 200
-        contentHeight: horizontal ? 20 : 200
-        contentWidth: horizontal ? 200 : 20
+        contentHeight: horizontal ? 22 : 200
+        contentWidth: horizontal ? 200 : 22
 
         maximum: control.maximumValue*100
         minimum: control.minimumValue*100
