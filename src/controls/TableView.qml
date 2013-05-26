@@ -515,7 +515,7 @@ ScrollView {
             anchors.margins: viewport.anchors.margins
             anchors.rightMargin: __scroller.rightMargin +
                                  (__scroller.outerFrame && __scrollBarTopMargin ? 0 : __verticalScrollBar.width
-                                                          + __scroller.scrollBarSpacing)
+                                                          + __scroller.scrollBarSpacing + root.__style.padding.right)
 
             anchors.left: parent.left
             anchors.right: parent.right
