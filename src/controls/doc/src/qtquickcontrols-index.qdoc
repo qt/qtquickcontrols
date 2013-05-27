@@ -82,6 +82,9 @@
       \li \l{Qt Quick Controls Examples}
      \endlist
 
-    \l {Qt Quick Controls Styles QML Types}
+    \section2 Styles
+    \list
+     \li \l {Qt Quick Controls Styles QML Types}
+    \endlist
 
 */
