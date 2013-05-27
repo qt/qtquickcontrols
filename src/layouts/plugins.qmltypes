@@ -3,7 +3,7 @@ import QtQuick.tooling 1.1
 // This file describes the plugin-supplied types contained in the library.
 // It is used for QML tooling purposes only.
 //
-// This file was auto-generated with the command '/Users/thohartm/dev/qt5/qtbase/bin/qmlplugindump.app/Contents/MacOS/qmlplugindump QtQuick.Layouts 1.0 -notrelocatable'.
+// This file was auto-generated with the command 'qmlplugindump QtQuick.Layouts 1.0 -notrelocatable'.
 
 Module {
     Component {
@@ -11,12 +11,14 @@ Module {
         defaultProperty: "data"
         prototype: "QQuickLinearLayout"
         exports: ["QtQuick.Layouts/ColumnLayout 1.0"]
+        exportMetaObjectRevisions: [0]
     }
     Component {
         name: "QQuickGridLayout"
         defaultProperty: "data"
         prototype: "QQuickGridLayoutBase"
         exports: ["QtQuick.Layouts/GridLayout 1.0"]
+        exportMetaObjectRevisions: [0]
         Enum {
             name: "Flow"
             values: {
@@ -36,6 +38,7 @@ Module {
         defaultProperty: "data"
         prototype: "QQuickItem"
         exports: ["QtQuick.Layouts/Layout 1.0"]
+        exportMetaObjectRevisions: [0]
         attachedType: "QQuickLayoutAttached"
     }
     Component {
@@ -66,5 +69,6 @@ Module {
         defaultProperty: "data"
         prototype: "QQuickLinearLayout"
         exports: ["QtQuick.Layouts/RowLayout 1.0"]
+        exportMetaObjectRevisions: [0]
     }
 }

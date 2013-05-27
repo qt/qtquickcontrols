@@ -3,7 +3,7 @@ import QtQuick.tooling 1.1
 // This file describes the plugin-supplied types contained in the library.
 // It is used for QML tooling purposes only.
 //
-// This file was auto-generated with the command '/home/jpnurmi/Projects/qt5-stable/qtbase/bin/qmlplugindump -notrelocatable QtQuick.Controls 1.0'.
+// This file was auto-generated with the command 'qmlplugindump -notrelocatable QtQuick.Controls 1.0'.
 
 Module {
     Component {
@@ -67,6 +67,8 @@ Module {
         Property { name: "__contentItem"; type: "QQuickItem"; isPointer: true }
         Property { name: "__minimumWidth"; type: "int" }
         Property { name: "__font"; type: "QFont" }
+        Property { name: "__xOffset"; type: "double" }
+        Property { name: "__yOffset"; type: "double" }
         Signal { name: "__menuClosed" }
         Signal { name: "popupVisibleChanged" }
         Method { name: "__closeMenu" }
