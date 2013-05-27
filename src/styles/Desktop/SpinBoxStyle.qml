@@ -50,7 +50,7 @@ PaddedStyle {
     }
 
     padding {
-       top: control.__panel ? control.__panel.topPadding : 0
+       top: control.__panel ? control.__panel.topPadding + (control.__panel.style === "mac" ? 1 : 0) : 0
        left: control.__panel ? control.__panel.leftPadding : 0
        right: control.__panel ? control.__panel.rightPadding : 0
        bottom: control.__panel ? control.__panel.bottomPadding : 0
@@ -100,7 +100,7 @@ PaddedStyle {
             style.upRect = styleitem.subControlRect("up");
             style.downRect = styleitem.subControlRect("down");
             var inputRect = styleitem.subControlRect("edit");
-            edit.anchors.topMargin = inputRect.y + (styleitem.style === "mac" ? 1 : 0)
+            edit.anchors.topMargin = inputRect.y
             edit.anchors.leftMargin = inputRect.x
             edit.anchors.rightMargin = style.width - inputRect.width - edit.anchors.leftMargin
             edit.anchors.bottomMargin = style.height - inputRect.height - edit.anchors.topMargin

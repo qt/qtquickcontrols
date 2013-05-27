@@ -794,7 +794,7 @@ QSize QQuickStyleItem::sizeFromContents(int width, int height)
     case SpinBox:
 #ifdef Q_OS_MAC
         if (style() == "mac") {
-            size = qApp->style()->sizeFromContents(QStyle::CT_SpinBox, m_styleoption, QSize(width, height + 4));
+            size = qApp->style()->sizeFromContents(QStyle::CT_SpinBox, m_styleoption, QSize(width, height + 5));
             break;
         }
 #endif // fall trough if not mac
@@ -804,7 +804,7 @@ QSize QQuickStyleItem::sizeFromContents(int width, int height)
             if (m_hints.indexOf("small") != -1 || m_hints.indexOf("mini") != -1)
                 size = QSize(width, 19);
             else
-                size = QSize(width, 21);
+                size = QSize(width, 22);
         } else
 #endif
         {
