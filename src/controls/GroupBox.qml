@@ -212,7 +212,11 @@ Item {
             enabled: (!groupbox.checkable || groupbox.checked)
 
             property Item layoutItem: container.children.length === 1 ? container.children[0] : null
-            function calcWidth () { return (layoutItem ? (layoutItem.implicitWidth || layoutItem.width) : container.childrenRect.width) }
-            function calcHeight () { return (layoutItem ? (layoutItem.implicitHeight || layoutItem.height) : container.childrenRect.height) }
+            function calcWidth () { return (layoutItem ? (layoutItem.implicitWidth || layoutItem.width) +
+                                                         (layoutItem.anchors.fill ? layoutItem.anchors.leftMargin +
+                                                                                    layoutItem.anchors.rightMargin : 0) : container.childrenRect.width) }
+            function calcHeight () { return (layoutItem ? (layoutItem.implicitHeight || layoutItem.height) +
+                                                          (layoutItem.anchors.fill ? layoutItem.anchors.topMargin +
+                                                                                     layoutItem.anchors.bottomMargin : 0) : container.childrenRect.height) }
         }]
 }

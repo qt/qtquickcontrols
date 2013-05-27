@@ -281,8 +281,8 @@ ApplicationWindow {
             Styles { anchors.fill: parent }
         }
         Tab {
-            title: "Sidebar"
-            Panel { anchors.fill:parent }
+            title: "Layouts"
+            Layouts { anchors.fill:parent }
         }
     }
 }
