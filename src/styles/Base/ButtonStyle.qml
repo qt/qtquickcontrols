@@ -92,7 +92,13 @@ PaddedStyle {
         bottom: 4
     }
 
-    /*! The background of the button. */
+    /*! This defines the background of the button. In addition to the public
+        properties of \c control, the following state properties are available:
+
+        \table
+            \li readonly property bool styleData.hovered - The button is currently hovered.
+        \endtable
+    */
     property Component background: Item {
         implicitWidth: 100
         implicitHeight: 25
@@ -129,7 +135,13 @@ PaddedStyle {
         }
     }
 
-    /*! The label of the button. */
+    /*! This defines the label of the button. In addition to the public
+        properties of \c control, the following state properties are available:
+
+        \table
+            \li readonly property bool styleData.hovered - The button is currently hovered.
+        \endtable
+    */
     property Component label: Text {
         renderType: Text.NativeRendering
         verticalAlignment: Text.AlignVCenter
@@ -149,6 +161,9 @@ PaddedStyle {
             id: backgroundLoader
             anchors.fill: parent
             sourceComponent: background
+            property QtObject styleData: QtObject {
+                readonly property bool hovered: control.__containsMouse
+            }
         }
 
         Loader {
@@ -159,6 +174,9 @@ PaddedStyle {
             anchors.topMargin: padding.top
             anchors.rightMargin: padding.right
             anchors.bottomMargin: padding.bottom
+            property QtObject styleData: QtObject {
+                readonly property bool hovered: control.__containsMouse
+            }
         }
     }
 }

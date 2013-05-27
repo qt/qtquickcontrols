@@ -172,17 +172,13 @@ Item {
     // Style delegates:
 
     property Component buttonStyle: ButtonStyle {
-        panel: Rectangle {
+        background: Rectangle {
             implicitHeight: 20
             implicitWidth: 100
             color: control.pressed ? "darkGray" : "lightGray"
             antialiasing: true
             border.color: "gray"
             radius: height/2
-            Text {
-                anchors.centerIn: parent
-                text: control.text
-            }
         }
     }
 
@@ -220,21 +216,21 @@ Item {
     }
 
     property Component progressbarStyle: ProgressBarStyle {
-        panel: Rectangle {
+        background: Rectangle {
             implicitWidth: 100
             implicitHeight: 20
             color: "#f0f0f0"
             border.color: "gray"
             antialiasing: true
             radius: height/2
-            Rectangle {
-                implicitWidth: 100
-                implicitHeight: 20
-                color: "#f0f0f0"
-                border.color: "gray"
-                antialiasing: true
-                radius: height/2
-            }
+        }
+        progress: Rectangle {
+            implicitWidth: 100
+            implicitHeight: 20
+            color: "#c0c0c0"
+            border.color: "gray"
+            antialiasing: true
+            radius: height/2
         }
     }
 
