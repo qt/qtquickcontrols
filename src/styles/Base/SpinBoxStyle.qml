@@ -129,7 +129,7 @@ PaddedStyle {
     /*! \internal */
     property Component panel: Item {
         id: styleitem
-        implicitWidth: controlState.contentWidth + 26
+        implicitWidth: styleData.contentWidth + 26
         implicitHeight: backgroundLoader.implicitHeight
 
         property color foregroundColor: spinboxStyle.textColor

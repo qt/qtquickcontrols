@@ -104,9 +104,9 @@ Window {
 
     ListModel {
         id: nestedModel
-        ListElement{controlState:  ListElement { description: "Core" ; color:"#ffaacc"}}
-        ListElement{controlState: ListElement { description: "Second" ; color:"#ffccaa"}}
-        ListElement{controlState: ListElement { description: "Third" ; color:"#ffffaa"}}
+        ListElement{content: ListElement { description: "Core" ; color:"#ffaacc"}}
+        ListElement{content: ListElement { description: "Second" ; color:"#ffccaa"}}
+        ListElement{content: ListElement { description: "Third" ; color:"#ffffaa"}}
     }
 
     ListModel {
@@ -176,7 +176,7 @@ Window {
                     anchors.margins: 12
 
                     TableViewColumn {
-                        role: "controlState"
+                        role: "content"
                         title: "Text and Color"
                         width: 220
                     }

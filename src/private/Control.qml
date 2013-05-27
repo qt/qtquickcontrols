@@ -71,7 +71,7 @@ FocusScope {
     activeFocusOnTab: false
 
     /*! \internal */
-    property alias __controlState: styleLoader.controlState
+    property alias __styleData: styleLoader.styleData
 
     Loader {
         id: panelLoader
@@ -82,7 +82,7 @@ FocusScope {
             id: styleLoader
             sourceComponent: style
             property Item __control: root
-            property QtObject controlState: null
+            property QtObject styleData: null
             onStatusChanged: {
                 if (status === Loader.Error)
                     console.error("Failed to load Style for", root)

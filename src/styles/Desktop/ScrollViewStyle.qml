@@ -74,11 +74,11 @@ PaddedStyle {
         elementType: "scrollbar"
         hover: activeControl != "none"
         activeControl: "none"
-        sunken: __control.upPressed | __control.downPressed | __control.handlePressed
+        sunken: __styleData.upPressed | __styleData.downPressed | __styleData.handlePressed
         minimum: __control.minimumValue
         maximum: __control.maximumValue
         value: __control.value
-        horizontal: __control.orientation === Qt.Horizontal
+        horizontal: __styleData.horizontal
         enabled: __control.enabled
 
         implicitWidth: horizontal ? 200 : pixelMetric("scrollbarExtent")

@@ -75,7 +75,7 @@ Item {
         sourceComponent: __style ? __style.__scrollbar : null
         onStatusChanged: if (status === Loader.Error) console.error("Failed to load Style for", root)
         property alias __control: scrollbar
-        property QtObject controlState: QtObject {
+        property QtObject __styleData: QtObject {
             readonly property alias horizontal: internal.horizontal
             readonly property alias upPressed: scrollbar.upPressed
             readonly property alias downPressed: scrollbar.downPressed

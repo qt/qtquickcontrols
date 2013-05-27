@@ -178,22 +178,22 @@ Item {
             setCoordinates(spinbox)
 
             mouseMove(spinbox, mainCoord.x, mainCoord.y)
-            compare(spinbox.__controlState.containsMouse, true)
-            compare(spinbox.__controlState.upHovered, false)
-            compare(spinbox.__controlState.downHovered, false)
+            compare(spinbox.__styleData.containsMouse, true)
+            compare(spinbox.__styleData.upHovered, false)
+            compare(spinbox.__styleData.downHovered, false)
 
             mouseMove(spinbox.parent, upCoord.x, upCoord.y)
-            compare(spinbox.__controlState.upHovered, true)
-            compare(spinbox.__controlState.downHovered, false)
+            compare(spinbox.__styleData.upHovered, true)
+            compare(spinbox.__styleData.downHovered, false)
 
             mouseMove(spinbox, downCoord.x, downCoord.y)
-            compare(spinbox.__controlState.upHovered, false)
-            compare(spinbox.__controlState.downHovered, true)
+            compare(spinbox.__styleData.upHovered, false)
+            compare(spinbox.__styleData.downHovered, true)
 
             mouseMove(spinbox, mainCoord.x - 2, mainCoord.y - 2)
-            compare(spinbox.__controlState.containsMouse, false)
-            compare(spinbox.__controlState.upHovered, false)
-            compare(spinbox.__controlState.downHovered, false)
+            compare(spinbox.__styleData.containsMouse, false)
+            compare(spinbox.__styleData.upHovered, false)
+            compare(spinbox.__styleData.downHovered, false)
             spinbox.destroy()
         }
 

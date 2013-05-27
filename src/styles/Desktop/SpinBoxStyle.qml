@@ -114,17 +114,17 @@ PaddedStyle {
             id: styleitem
             elementType: "spinbox"
             anchors.fill: parent
-            sunken: (controlState.downEnabled && controlState.downPressed) || (controlState.upEnabled && controlState.upPressed)
-            hover: controlState.containsMouse
+            sunken: (styleData.downEnabled && styleData.downPressed) || (styleData.upEnabled && styleData.upPressed)
+            hover: styleData.containsMouse
             hints: control.styleHints
             hasFocus: control.activeFocus
             enabled: control.enabled
-            value: (controlState.upPressed ? 1 : 0)           |
-                   (controlState.downPressed ? 1<<1 : 0) |
-                   (controlState.upEnabled ? (1<<2) : 0)      |
-                   (controlState.downEnabled ? (1<<3) : 0)
-            contentWidth: controlState.contentWidth
-            contentHeight: controlState.contentHeight
+            value: (styleData.upPressed ? 1 : 0)           |
+                   (styleData.downPressed ? 1<<1 : 0) |
+                   (styleData.upEnabled ? (1<<2) : 0)      |
+                   (styleData.downEnabled ? (1<<3) : 0)
+            contentWidth: styleData.contentWidth
+            contentHeight: styleData.contentHeight
         }
     }
 }

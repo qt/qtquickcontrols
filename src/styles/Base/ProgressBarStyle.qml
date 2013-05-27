@@ -89,7 +89,7 @@ PaddedStyle {
     /*! This property holds the visible contents of the progress bar
         You can access the Slider through the \c control property.
 
-        For convenience, you can also access the readonly property \c controlState.progress
+        For convenience, you can also access the readonly property \c styleData.progress
         which provides the current progress as a \c real in the range [0-1]
     */
     padding { top: 0 ; left: 0 ; right: 0 ; bottom: 0 }

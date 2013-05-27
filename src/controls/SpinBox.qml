@@ -148,7 +148,7 @@ Control {
     /*! \internal */
     property alias __text: input.text
 
-    __controlState: QtObject {
+    __styleData: QtObject {
         readonly property bool upEnabled: value != maximumValue;
         readonly property alias upHovered: mouseUp.containsMouse
         readonly property alias upPressed: mouseUp.pressed

@@ -95,9 +95,11 @@ PaddedStyle {
     /*! This component controls the appearance of the
         scroll bar background.
 
+        You can access the following state properties:
+
         \list
-        \li property bool hovered
-        \li property bool horizontal
+        \li property bool styleData.hovered
+        \li property bool styleData.horizontal
         \endlist
     */
 
@@ -109,26 +111,28 @@ PaddedStyle {
             anchors.fill: parent
             color: "#ddd"
             border.color: "#aaa"
-            anchors.rightMargin: horizontal ? -2 : -1
-            anchors.leftMargin: horizontal ? -2 : 0
-            anchors.topMargin: horizontal ? 0 : -2
-            anchors.bottomMargin: horizontal ? -1 : -2
+            anchors.rightMargin: styleData.horizontal ? -2 : -1
+            anchors.leftMargin: styleData.horizontal ? -2 : 0
+            anchors.topMargin: styleData.horizontal ? 0 : -2
+            anchors.bottomMargin: styleData.horizontal ? -1 : -2
         }
     }
 
     /*! This component controls the appearance of the
         scroll bar handle.
 
+        You can access the following state properties:
+
         \list
-        \li property bool hovered
-        \li property bool pressed
-        \li property bool horizontal
+        \li property bool styleData.hovered
+        \li property bool styleData.pressed
+        \li property bool styleData.horizontal
         \endlist
     */
 
     property Component handle: BorderImage{
-        opacity: pressed ? 0.5 : hovered ? 1 : 0.8
-        source: "images/scrollbar-handle-" + (horizontal ? "horizontal" : "vertical") + ".png"
+        opacity: styleData.pressed ? 0.5 : styleData.hovered ? 1 : 0.8
+        source: "images/scrollbar-handle-" + (styleData.horizontal ? "horizontal" : "vertical") + ".png"
         border.left: 2
         border.top: 2
         border.right: 2
@@ -141,9 +145,9 @@ PaddedStyle {
         You can access the following state properties:
 
         \list
-        \li property bool hovered
-        \li property bool pressed
-        \li property bool horizontal
+        \li property bool styleData.hovered
+        \li property bool styleData.pressed
+        \li property bool styleData.horizontal
         \endlist
     */
     property Component incrementControl: Rectangle {
@@ -161,13 +165,13 @@ PaddedStyle {
                 border.color: "#88ffffff"
             }
             Image {
-                source: horizontal ? "images/arrow-right.png" : "images/arrow-down.png"
+                source: styleData.horizontal ? "images/arrow-right.png" : "images/arrow-down.png"
                 anchors.centerIn: parent
                 opacity: control.enabled ? 0.7 : 0.5
             }
             gradient: Gradient {
-                GradientStop {color: pressed ? "lightgray" : "white" ; position: 0}
-                GradientStop {color: pressed ? "lightgray" : "lightgray" ; position: 1}
+                GradientStop {color: styleData.pressed ? "lightgray" : "white" ; position: 0}
+                GradientStop {color: styleData.pressed ? "lightgray" : "lightgray" ; position: 1}
             }
         }
     }
@@ -175,10 +179,12 @@ PaddedStyle {
     /*! This component controls the appearance of the
         scroll bar decrement button.
 
+        You can access the following state properties:
+
         \list
-        \li property bool hovered
-        \li property bool pressed
-        \li property bool horizontal
+        \li property bool styleData.hovered
+        \li property bool styleData.pressed
+        \li property bool styleData.horizontal
         \endlist
     */
     property Component decrementControl: Rectangle {
@@ -186,10 +192,10 @@ PaddedStyle {
         implicitHeight: 16
         Rectangle {
             anchors.fill: parent
-            anchors.topMargin: horizontal ? 0 : -1
-            anchors.leftMargin:  horizontal ? -1 : 0
-            anchors.bottomMargin: horizontal ? -1 : 0
-            anchors.rightMargin: horizontal ? 0 : -1
+            anchors.topMargin: styleData.horizontal ? 0 : -1
+            anchors.leftMargin:  styleData.horizontal ? -1 : 0
+            anchors.bottomMargin: styleData.horizontal ? -1 : 0
+            anchors.rightMargin: styleData.horizontal ? 0 : -1
             color: "lightgray"
             Rectangle {
                 anchors.fill: parent
@@ -198,15 +204,15 @@ PaddedStyle {
                 border.color: "#88ffffff"
             }
             Image {
-                source: horizontal ? "images/arrow-left.png" : "images/arrow-up.png"
+                source: styleData.horizontal ? "images/arrow-left.png" : "images/arrow-up.png"
                 anchors.centerIn: parent
-                anchors.verticalCenterOffset: horizontal ? 0 : -1
-                anchors.horizontalCenterOffset: horizontal ? -1 : 0
+                anchors.verticalCenterOffset: styleData.horizontal ? 0 : -1
+                anchors.horizontalCenterOffset: styleData.horizontal ? -1 : 0
                 opacity: control.enabled ? 0.7 : 0.5
             }
             gradient: Gradient {
-                GradientStop {color: pressed ? "lightgray" : "white" ; position: 0}
-                GradientStop {color: pressed ? "lightgray" : "lightgray" ; position: 1}
+                GradientStop {color: styleData.pressed ? "lightgray" : "white" ; position: 0}
+                GradientStop {color: styleData.pressed ? "lightgray" : "lightgray" ; position: 1}
             }
             border.color: "#aaa"
         }
@@ -217,14 +223,13 @@ PaddedStyle {
         id: panel
         property string activeControl: ""
         property bool scrollToClickPosition: true
-        property var controlStateRef: controlState
 
-        implicitWidth: controlState.horizontal ? 200 : bg.implicitWidth
-        implicitHeight: controlState.horizontal ? bg.implicitHeight : 200
+        implicitWidth: __styleData.horizontal ? 200 : bg.implicitWidth
+        implicitHeight: __styleData.horizontal ? bg.implicitHeight : 200
 
         function pixelMetric(arg) {
             if (arg === "scrollbarExtent")
-                return (controlState.horizontal ? bg.height : bg.width);
+                return (__styleData.horizontal ? bg.height : bg.width);
             return 0;
         }
 
@@ -240,7 +245,7 @@ PaddedStyle {
             else if (itemIsHit(decrementLoader, argX, argY))
                 return "down";
             else if (itemIsHit(bg, argX, argY)) {
-                if (controlState.horizontal && argX < handleControl.x || !controlState.horizontal && argY < handleControl.y)
+                if (__styleData.horizontal && argX < handleControl.x || !__styleData.horizontal && argY < handleControl.y)
                     return "upPage"
                 else
                     return "downPage"
@@ -253,7 +258,7 @@ PaddedStyle {
             if (arg === "handle") {
                 return Qt.rect(handleControl.x, handleControl.y, handleControl.width, handleControl.height);
             } else if (arg === "groove") {
-                if (controlState.horizontal) {
+                if (__styleData.horizontal) {
                     return Qt.rect(incrementLoader.width - handleOverlap,
                                    0,
                                    __control.width - (incrementLoader.width + decrementLoader.width - handleOverlap * 2),
@@ -278,49 +283,57 @@ PaddedStyle {
             anchors.top: parent.top
             anchors.left: parent.left
             sourceComponent: decrementControl
-            property bool hovered: activeControl === "up"
-            property bool pressed: controlState.upPressed
-            property bool horizontal: controlState.horizontal
+            property QtObject styleData: QtObject {
+                readonly property bool hovered: activeControl === "up"
+                readonly property bool pressed: __styleData.upPressed
+                readonly property bool horizontal: __styleData.horizontal
+            }
         }
 
         Loader {
             id: bg
-            anchors.top: controlState.horizontal ? undefined : incrementLoader.bottom
-            anchors.bottom: controlState.horizontal ? undefined : decrementLoader.top
-            anchors.left:  controlState.horizontal ? incrementLoader.right : undefined
-            anchors.right: controlState.horizontal ? decrementLoader.left : undefined
+            anchors.top: __styleData.horizontal ? undefined : incrementLoader.bottom
+            anchors.bottom: __styleData.horizontal ? undefined : decrementLoader.top
+            anchors.left:  __styleData.horizontal ? incrementLoader.right : undefined
+            anchors.right: __styleData.horizontal ? decrementLoader.left : undefined
             sourceComponent: scrollBarBackground
-            property bool horizontal: controlState.horizontal
-            property bool hovered: activeControl !== "none"
+            property QtObject styleData: QtObject {
+                readonly property bool horizontal: __styleData.horizontal
+                readonly property bool hovered: activeControl !== "none"
+            }
         }
 
         Loader {
             id: decrementLoader
-            anchors.bottom: controlState.horizontal ? undefined : parent.bottom
-            anchors.right: controlState.horizontal ? parent.right : undefined
+            anchors.bottom: __styleData.horizontal ? undefined : parent.bottom
+            anchors.right: __styleData.horizontal ? parent.right : undefined
             sourceComponent: incrementControl
-            property bool hovered: activeControl === "down"
-            property bool pressed: controlState.downPressed
-            property bool horizontal: controlState.horizontal
+            property QtObject styleData: QtObject {
+                readonly property bool hovered: activeControl === "down"
+                readonly property bool pressed: __styleData.downPressed
+                readonly property bool horizontal: __styleData.horizontal
+            }
         }
 
         property var flickableItem: control.flickableItem
-        property int extent: Math.max(minimumHandleLength, controlState.horizontal ?
+        property int extent: Math.max(minimumHandleLength, __styleData.horizontal ?
                                           (flickableItem ? flickableItem.width/flickableItem.contentWidth : 0 ) * bg.width :
                                           (flickableItem ? flickableItem.height/flickableItem.contentHeight : 0) * bg.height)
 
         Loader {
             id: handleControl
-            height: controlState.horizontal ? implicitHeight : extent
-            width: controlState.horizontal ? extent : implicitWidth
+            height: __styleData.horizontal ? implicitHeight : extent
+            width: __styleData.horizontal ? extent : implicitWidth
             anchors.top: bg.top
             anchors.left: bg.left
-            anchors.topMargin: controlState.horizontal ? 0 : -handleOverlap + (__control.value / __control.maximumValue) * (bg.height + 2 * handleOverlap- height)
-            anchors.leftMargin: controlState.horizontal ? -handleOverlap + (__control.value / __control.maximumValue) * (bg.width + 2 * handleOverlap - width) : 0
+            anchors.topMargin: __styleData.horizontal ? 0 : -handleOverlap + (__control.value / __control.maximumValue) * (bg.height + 2 * handleOverlap- height)
+            anchors.leftMargin: __styleData.horizontal ? -handleOverlap + (__control.value / __control.maximumValue) * (bg.width + 2 * handleOverlap - width) : 0
             sourceComponent: handle
-            property bool hovered: activeControl === "handle"
-            property bool pressed: controlState.handlePressed
-            property bool horizontal: controlState.horizontal
+            property QtObject styleData: QtObject {
+                readonly property bool hovered: activeControl === "handle"
+                readonly property bool pressed: __styleData.handlePressed
+                readonly property bool horizontal: __styleData.horizontal
+            }
         }
     }
 
