@@ -938,8 +938,8 @@ QVariant QQuickStyleItem::styleHint(const QString &metric)
     if (metric == "comboboxpopup") {
         return qApp->style()->styleHint(QStyle::SH_ComboBox_Popup, m_styleoption);
     } else if (metric == "highlightedTextColor") {
-        QPalette pal = qApp->palette();
-        pal.setCurrentColorGroup(active()? QPalette::Active : QPalette::Inactive);
+        QPalette pal = QApplication::palette("QAbstractItemView");
+        pal.setCurrentColorGroup(m_styleoption->palette.currentColorGroup());
         return pal.highlightedText().color().name();
     } else if (metric == "textColor") {
         QPalette pal = qApp->palette();
@@ -1192,8 +1192,11 @@ void QQuickStyleItem::paint(QPainter *painter)
             pixmap.fill(Qt::transparent);
             QPainter pixpainter(&pixmap);
             qApp->style()->drawPrimitive(QStyle::PE_PanelItemViewRow, m_styleoption, &pixpainter);
-            if (!qApp->style()->styleHint(QStyle::SH_ItemView_ShowDecorationSelected) && selected())
-                pixpainter.fillRect(m_styleoption->rect, m_styleoption->palette.highlight());
+            if ((style() == "mac" || !qApp->style()->styleHint(QStyle::SH_ItemView_ShowDecorationSelected)) && selected()) {
+                QPalette pal = QApplication::palette("QAbstractItemView");
+                pal.setCurrentColorGroup(m_styleoption->palette.currentColorGroup());
+                pixpainter.fillRect(m_styleoption->rect, pal.highlight());
+            }
             QPixmapCache::insert(pmKey, pixmap);
         }
         painter->drawPixmap(0, 0, pixmap);

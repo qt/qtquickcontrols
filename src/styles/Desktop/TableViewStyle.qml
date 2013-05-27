@@ -46,8 +46,8 @@ ScrollViewStyle {
 
     readonly property TableView control: __control
     property bool activateItemOnSingleClick: __styleitem.styleHint("activateItemOnSingleClick")
-    property color textColor: __styleitem.styleHint("textColor")
-    property color highlightedTextColor: __styleitem.styleHint("highlightedTextColor")
+    property color textColor: __styleitem.textColor
+    property color highlightedTextColor: __styleitem.highlightedTextColor
 
     property StyleItem __styleitem: StyleItem{
         property color textColor: styleHint("textColor")
@@ -55,6 +55,10 @@ ScrollViewStyle {
         elementType: "item"
         visible: false
         active: control.activeFocus
+        onActiveChanged: {
+            highlightedTextColor = styleHint("highlightedTextColor")
+            textColor = styleHint("textColor")
+        }
     }
 
     property Component headerDelegate: StyleItem {
