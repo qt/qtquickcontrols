@@ -80,11 +80,11 @@ Item {
                     anchors.fill: parent
                     border.bottom: 8
                     border.top: 8
-                    source: tab.selected ? "../images/tab_selected.png":"../images/tabs_standard.png"
+                    source: styleData.selected ? "../images/tab_selected.png":"../images/tabs_standard.png"
                     Text {
                         anchors.centerIn: parent
                         color: "white"
-                        text: tab.title.toUpperCase()
+                        text: styleData.title.toUpperCase()
                         font.pixelSize: 16
                     }
                     Rectangle {

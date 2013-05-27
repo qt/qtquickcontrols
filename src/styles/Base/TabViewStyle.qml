@@ -59,7 +59,7 @@ import QtQuick.Controls.Private 1.0
         style: TabViewStyle {
             frameOverlap: 1
             tab: Rectangle {
-                color: tab.selected ? "steelblue" :"lightsteelblue"
+                color: styleData.selected ? "steelblue" :"lightsteelblue"
                 border.color:  "steelblue"
                 implicitWidth: Math.max(text.width + 4, 80)
                 implicitHeight: 20
@@ -67,8 +67,8 @@ import QtQuick.Controls.Private 1.0
                 Text {
                     id: text
                     anchors.centerIn: parent
-                    text: tab.title
-                    color: tab.selected ? "white" : "black"
+                    text: styleData.title
+                    color: styleData.selected ? "white" : "black"
                 }
             }
             frame: Rectangle { color: "steelblue" }
@@ -119,16 +119,16 @@ Style {
     }
 
     /*! This defines the tab. You can access the tab state through the
-        \c tab property, with the following properties:
+        \c styleData property, with the following properties:
 
         \table
-            \li readonly property int index - This is the current tab index.
-            \li readonly property bool selected - This is the active tab.
-            \li readonly property string title - Tab title text.
-            \li readonly property bool nextSelected - The next tab is selected.
-            \li readonly property bool previousSelected - The previous tab is selected.
-            \li readonly property bool hovered - The tab is currently under the mouse.
-            \li readonly property bool activeFocus - The tab button has keyboard focus.
+            \li readonly property int styleData.index - This is the current tab index.
+            \li readonly property bool styleData.selected - This is the active tab.
+            \li readonly property string styleData.title - Tab title text.
+            \li readonly property bool styleData.nextSelected - The next tab is selected.
+            \li readonly property bool styleData.previousSelected - The previous tab is selected.
+            \li readonly property bool styleData.hovered - The tab is currently under the mouse.
+            \li readonly property bool styleData.activeFocus - The tab button has keyboard focus.
         \endtable
     */
     property Component tab: Item {
@@ -143,16 +143,16 @@ Style {
         clip: true
         Item {
             anchors.fill: parent
-            anchors.bottomMargin: tab.selected ? 0 : 2
+            anchors.bottomMargin: styleData.selected ? 0 : 2
             clip: true
             BorderImage {
                 anchors.fill: parent
-                source: tab.selected ? "images/tab_selected.png" : "images/tab.png"
+                source: styleData.selected ? "images/tab_selected.png" : "images/tab.png"
                 border.top: 6
                 border.bottom: 6
                 border.left: 6
                 border.right: 6
-                anchors.topMargin: tab.selected ? 0 : 1
+                anchors.topMargin: styleData.selected ? 0 : 1
             }
             BorderImage {
                 anchors.fill: parent
@@ -160,7 +160,7 @@ Style {
                 anchors.leftMargin: -2
                 anchors.rightMargin: -1
                 source: "images/focusframe.png"
-                visible: tab.activeFocus && tab.selected
+                visible: styleData.activeFocus && styleData.selected
                 border.left: 4
                 border.right: 4
                 border.top: 4
@@ -170,7 +170,7 @@ Style {
         Text {
             id: textitem
             anchors.centerIn: parent
-            text: tab.title
+            text: styleData.title
             renderType: Text.NativeRendering
             scale: control.tabPosition === Qt.TopEdge ? 1 : -1
             color: __syspal.text

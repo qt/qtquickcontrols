@@ -74,13 +74,13 @@ Style {
     property Component tab: Item {
         id: item
         property string tabpos: control.count === 1 ? "only" : index === 0 ? "beginning" : index === control.count - 1 ? "end" : "middle"
-        property string selectedpos: tab.nextSelected ? "next" : tab.previousSelected ? "previous" : ""
+        property string selectedpos: styleData.nextSelected ? "next" : styleData.previousSelected ? "previous" : ""
         property string orientation: control.tabPosition === Qt.TopEdge ? "Top" : "Bottom"
         property int tabHSpace: __barstyle.pixelMetric("tabhspace");
         property int tabVSpace: __barstyle.pixelMetric("tabvspace");
         property int totalOverlap: tabOverlap * (control.count - 1)
         property real maxTabWidth: (control.width + totalOverlap) / control.count
-        implicitWidth: Math.min(maxTabWidth, Math.max(50, styleitem.textWidth(tab.title)) + tabHSpace + 2)
+        implicitWidth: Math.min(maxTabWidth, Math.max(50, styleitem.textWidth(styleData.title)) + tabHSpace + 2)
         implicitHeight: Math.max(styleitem.font.pixelSize + tabVSpace + 6, 0)
 
         StyleItem {
@@ -97,9 +97,9 @@ Style {
             properties: { "hasFrame" : true }
             hints: [orientation, tabpos, selectedpos]
 
-            selected: tab.selected
-            text: elidedText(tab.title, tabbarItem.elide, item.width - item.tabHSpace)
-            hover: tab.hovered
+            selected: styleData.selected
+            text: elidedText(styleData.title, tabbarItem.elide, item.width - item.tabHSpace)
+            hover: styleData.hovered
             hasFocus: tabbarItem.activeFocus && selected
         }
     }

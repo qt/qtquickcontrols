@@ -258,13 +258,13 @@ Item {
             BorderImage {
                 id: image
                 anchors.fill: parent
-                source: tab.selected ? "../images/tab_selected.png" : "../images/tab.png"
+                source: styleData.selected ? "../images/tab_selected.png" : "../images/tab.png"
                 border.left: 50
                 smooth: false
                 border.right: 50
             }
             Text {
-                text: tab.title
+                text: styleData.title
                 anchors.centerIn: parent
             }
         }

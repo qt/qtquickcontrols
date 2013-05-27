@@ -195,7 +195,7 @@ FocusScope {
                 property int index: tabindex
                 property real availableWidth: tabbar.availableWidth
 
-                property QtObject tab: QtObject {
+                property QtObject styleData: QtObject {
                     readonly property alias index: tabitem.tabindex
                     readonly property alias selected: tabitem.selected
                     readonly property alias title: tabitem.title
