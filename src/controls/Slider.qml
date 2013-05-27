@@ -273,7 +273,7 @@ Control {
     // means that setting a value while dragging will not "interrupt" the
     // dragging activity.
     Binding {
-        when: !mouseArea.drag.active
+        when: !updateValueWhileDragging && !mouseArea.drag.active
         target: fakeHandle
         property: __horizontal ? "x" : "y"
         value: range.position
