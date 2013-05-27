@@ -1,4 +1,4 @@
-TARGET  = qtquickcontrolsprivate
+TARGET  = qtquickcontrolsprivateplugin
 TARGETPATH = QtQuick/Controls/Private
 
 QT += qml quick gui-private core-private
