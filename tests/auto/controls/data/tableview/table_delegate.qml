@@ -56,14 +56,14 @@ TableView {
     }
     headerDelegate: Text {
         height: 40
-        text: itemValue
+        text: styleData.value
     }
     itemDelegate: Text {
         width: parent.width
         anchors.left: parent.left
         anchors.verticalCenter: parent.verticalCenter
-        text: itemValue !== undefined ? itemValue : ""
-        color: itemTextColor
+        text: styleData.value !== undefined ? styleData.value : ""
+        color: styleData.textColor
         MouseArea {
             anchors.fill: parent
             onClicked: table.test = 1

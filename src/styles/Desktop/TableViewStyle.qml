@@ -65,19 +65,23 @@ ScrollViewStyle {
         elementType: "header"
         activeControl: itemSort
         raised: true
-        sunken: itemPressed
-        text: itemValue
-        hover: itemContainsMouse
-        hints: itemPosition
+        sunken: styleData.pressed
+        text: styleData.value
+        hover: styleData.containsMouse
+        hints: headerPosition
+        property string itemSort:  (control.sortIndicatorVisible && styleData.column === control.sortIndicatorColumn) ? (control.sortIndicatorOrder == Qt.AscendingOrder ? "up" : "down") : "";
+        property string headerPosition: control.columnCount === 1 ? "only" :
+                                                          styleData.column === control.columnCount-1 ? "end" :
+                                                                                  styleData.column === 0 ? "beginning" : ""
     }
 
     property Component rowDelegate: StyleItem {
         id: rowstyle
         elementType: "itemrow"
-        activeControl: alternateBackground ? "alternate" : ""
-        selected: rowSelected ? true : false
+        activeControl: styleData.alternate ? "alternate" : ""
+        selected: styleData.selected ? true : false
         height: Math.max(16, rowstyle.implicitHeight)
-        active: hasActiveFocus
+        active: styleData.hasActiveFocus
     }
 
     property Component itemDelegate: Item {
@@ -92,17 +96,17 @@ ScrollViewStyle {
             font: __styleitem.font
             anchors.left: parent.left
             anchors.right: parent.right
-            horizontalAlignment: itemTextAlignment
+            horizontalAlignment: styleData.textAlignment
             anchors.verticalCenter: parent.verticalCenter
-            elide: itemElideMode
-            text: itemValue != undefined ? itemValue : ""
-            color: itemTextColor
+            elide: styleData.elideMode
+            text: styleData.value !== undefined ? styleData.value : ""
+            color: styleData.textColor
             renderType: Text.NativeRendering
         }
         Text {
             id: sizehint
             font: label.font
-            text: itemValue ? itemValue : ""
+            text: styleData.value ? styleData.value : ""
             visible: false
         }
     }

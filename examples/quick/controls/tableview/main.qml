@@ -183,7 +183,7 @@ Window {
 
                     itemDelegate: Item {
                         Rectangle{
-                            color: itemValue.get(0).color
+                            color: styleData.value.get(0).color
                             anchors.top:parent.top
                             anchors.right:parent.right
                             anchors.bottom:parent.bottom
@@ -196,9 +196,9 @@ Window {
                             anchors.margins: 4
                             anchors.left: parent.left
                             anchors.verticalCenter: parent.verticalCenter
-                            elide: itemElideMode
-                            text: itemValue.get(0).description
-                            color: itemTextColor
+                            elide: styleData.elideMode
+                            text: styleData.value.get(0).description
+                            color: styleData.textColor
                         }
                     }
 
@@ -251,32 +251,23 @@ Window {
                                 anchors.margins: 4
                                 anchors.left: parent.left
                                 anchors.verticalCenter: parent.verticalCenter
-                                elide: itemElideMode
-                                text: itemValue !== undefined  ? itemValue : ""
-                                color: itemTextColor
+                                elide: styleData.elideMode
+                                text: styleData.value !== undefined  ? styleData.value : ""
+                                color: styleData.textColor
                             }
                         }
                     }
 
                     Component {
-                        id: slickRowDelegate
-                        Rectangle { color: alternateBackground ? "#cef" : "white" }
-                    }
-
-                    Component {
                         id: delegate2
-                        Item {
-                            height: itemSelected? 60 : 20
-                            Behavior on height{ NumberAnimation{} }
-                            Text {
-                                width: parent.width
-                                anchors.margins: 4
-                                anchors.left: parent.left
-                                anchors.verticalCenter: parent.verticalCenter
-                                elide: itemElideMode
-                                text: itemValue !== undefined  ? itemValue : ""
-                                color: itemTextColor
-                            }
+                        Text {
+                            width: parent.width
+                            anchors.margins: 4
+                            anchors.left: parent.left
+                            anchors.verticalCenter: parent.verticalCenter
+                            elide: styleData.elideMode
+                            text: styleData.value !== undefined  ? styleData.value : ""
+                            color: styleData.textColor
                         }
                     }
 
@@ -289,10 +280,10 @@ Window {
                                 anchors.margins: 4
                                 anchors.left: parent.left
                                 anchors.verticalCenter: parent.verticalCenter
-                                elide: itemElideMode
-                                text: itemValue !== undefined ? itemValue : ""
-                                color: itemTextColor
-                                visible: !itemSelected
+                                elide: styleData.elideMode
+                                text: styleData.value !== undefined ? styleData.value : ""
+                                color: styleData.textColor
+                                visible: !styleData.selected
                             }
                             Loader { // Initialize text editor lazily to improve performance
                                 id: loaderEditor
@@ -301,19 +292,19 @@ Window {
                                 Connections {
                                     target: loaderEditor.item
                                     onAccepted: {
-                                        if (typeof itemValue === 'number')
-                                            model.setProperty(row, role, Number(parseFloat(loaderEditor.item.text).toFixed(0)))
+                                        if (typeof styleData.value === 'number')
+                                            model.setProperty(styleData.row, styleData.role, Number(parseFloat(loaderEditor.item.text).toFixed(0)))
                                         else
-                                            model.setProperty(row, role, loaderEditor.item.text)
+                                            model.setProperty(styleData.row, styleData.role, loaderEditor.item.text)
                                     }
                                 }
-                                sourceComponent: itemSelected ? editor : null
+                                sourceComponent: styleData.selected ? editor : null
                                 Component {
                                     id: editor
                                     TextInput {
                                         id: textinput
-                                        color: itemTextColor
-                                        text: itemValue
+                                        color: styleData.textColor
+                                        text: styleData.value
                                         MouseArea {
                                             id: mouseArea
                                             anchors.fill: parent
@@ -354,25 +345,22 @@ Window {
                             source: "images/header.png"
                             border{left:2;right:2;top:2;bottom:2}
                             Text {
-                                text: itemValue
+                                text: styleData.value
                                 anchors.centerIn:parent
                                 color:"#333"
                             }
                         }
 
                         rowDelegate: Rectangle {
-                            height: 20
-                            color: rowSelected ? "#448" : (alternateBackground ? "#eee" : "#fff")
-                            border.color:"#ccc"
-                            border.width: 1
-                            anchors.left: parent ? parent.left : undefined
-                            anchors.leftMargin: -2
-                            anchors.rightMargin: -1
+                            height: (delegateChooser.currentIndex == 1 && styleData.selected) ? 30 : 20
+                            Behavior on height{ NumberAnimation{} }
+
+                            color: styleData.selected ? "#448" : (styleData.alternate? "#eee" : "#fff")
                             BorderImage{
                                 id: selected
                                 anchors.fill: parent
                                 source: "images/selectedrow.png"
-                                visible: rowSelected
+                                visible: styleData.selected
                                 border{left:2; right:2; top:2; bottom:2}
                                 SequentialAnimation {
                                     running: true; loops: Animation.Infinite
@@ -383,14 +371,10 @@ Window {
                         }
 
                         itemDelegate: {
-                            switch (delegateChooser.currentIndex) {
-                            case 0:
-                                return delegate1
-                            case 1:
-                                return delegate2
-                            case 2:
-                                return editableDelegate
-                            }
+                            if (delegateChooser.currentIndex == 2)
+                                return editableDelegate;
+                            else
+                                return delegate1;
                         }
                     }
                 }

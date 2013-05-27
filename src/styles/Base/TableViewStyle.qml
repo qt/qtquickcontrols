@@ -70,12 +70,13 @@ ScrollViewStyle {
     /* Delegate for header. This delegate is described in \l TableView::headerDelegate */
     property Component headerDelegate: BorderImage {
         source: "images/header.png"
+        border.left: 4
         Text {
             anchors.fill: parent
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignLeft
             anchors.leftMargin: 4
-            text: itemValue
+            text: styleData.value
             color: textColor
             renderType: Text.NativeRendering
         }
@@ -93,21 +94,21 @@ ScrollViewStyle {
     property Component rowDelegate: Rectangle {
         implicitHeight: 20
         implicitWidth: 80
-        property color selectedColor: hasActiveFocus ? "#38d" : "#999"
+        property color selectedColor: styleData.hasActiveFocus ? "#38d" : "#999"
         gradient: Gradient {
-            GradientStop { color: rowSelected ? Qt.lighter(selectedColor, 1.3)  : alternateBackground ? "#f2f2f2" : "white" ; position: 0 }
-            GradientStop { color: rowSelected ? Qt.lighter(selectedColor, 1.0)  : alternateBackground ? "#f2f2f2" : "white" ; position: 1 }
+            GradientStop { color: styleData.selected ? Qt.lighter(selectedColor, 1.3)  : styleData.alternate ? "#f2f2f2" : "white" ; position: 0 }
+            GradientStop { color: styleData.selected ? Qt.lighter(selectedColor, 1.0)  : styleData.alternate ? "#f2f2f2" : "white" ; position: 1 }
         }
         Rectangle {
             anchors.bottom: parent.bottom
             width: parent.width
             height: 1
-            color: rowSelected ? Qt.darker(selectedColor, 1.4) : "transparent"
+            color: styleData.elected ? Qt.darker(selectedColor, 1.4) : "transparent"
         }
         Rectangle {
             anchors.top: parent.top
             width: parent.width ; height: 1
-            color: rowSelected ? Qt.darker(selectedColor, 1.1) : "transparent"
+            color: styleData.elected ? Qt.darker(selectedColor, 1.1) : "transparent"
         }
     }
 
@@ -123,18 +124,18 @@ ScrollViewStyle {
             anchors.margins: 6
             anchors.left: parent.left
             anchors.right: parent.right
-            horizontalAlignment: itemTextAlignment
+            horizontalAlignment: styleData.textAlignment
             anchors.verticalCenter: parent.verticalCenter
             anchors.verticalCenterOffset: 1
-            elide: itemElideMode
-            text: itemValue != undefined ? itemValue : ""
-            color: itemTextColor
+            elide: styleData.elideMode
+            text: styleData.value != undefined ? styleData.value : ""
+            color: styleData.textColor
             renderType: Text.NativeRendering
         }
         Text {
             id: sizehint
             font: label.font
-            text: itemValue ? itemValue : ""
+            text: styleData.value ? styleData.value : ""
             visible: false
         }
     }
