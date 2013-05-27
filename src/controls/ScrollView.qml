@@ -236,11 +236,15 @@ FocusScope {
             property bool horizontalRecursionGuard: false
             property bool verticalRecursionGuard: false
 
-            horizontalMaximumValue: flickableItem ? flickableItem.contentWidth - viewport.width : 0
-            verticalMaximumValue: flickableItem ? flickableItem.contentHeight - viewport.height + __viewTopMargin : 0
+            horizontalMinimumValue: flickableItem ? flickableItem.originX : 0
+            horizontalMaximumValue: flickableItem ? flickableItem.originX + flickableItem.contentWidth - viewport.width : 0
+
+            verticalMinimumValue: flickableItem ? flickableItem.originY : 0
+            verticalMaximumValue: flickableItem ? flickableItem.originY + flickableItem.contentHeight - viewport.height + __viewTopMargin : 0
 
             Connections {
                 target: flickableItem
+
                 onContentYChanged: {
                     wheelArea.verticalRecursionGuard = true
                     wheelArea.verticalValue = flickableItem.contentY

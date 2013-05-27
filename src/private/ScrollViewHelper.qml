@@ -57,6 +57,8 @@ Item {
     property int availableWidth
     property int contentHeight
     property int contentWidth
+    property real originX
+    property real originY
 
     property int leftMargin: outerFrame ? root.__style.padding.left : 0
     property int rightMargin: outerFrame ? root.__style.padding.right : 0
@@ -74,6 +76,8 @@ Item {
             wheelarea.availableHeight = viewport.height
             wheelarea.contentWidth = flickableItem !== null ? flickableItem.contentWidth : 0
             wheelarea.contentHeight = flickableItem !== null ? flickableItem.contentHeight : 0
+            wheelarea.originX = flickableItem !== null ? flickableItem.originX : 0
+            wheelarea.originY = flickableItem !== null ? flickableItem.originY : 0
             recursionGuard = false
         }
     }
@@ -123,8 +127,8 @@ Item {
         visible: contentWidth > availableWidth
         height: visible ? implicitHeight : 0
         z: 1
-        maximumValue: contentWidth > availableWidth ? contentWidth - availableWidth : 0
-        minimumValue: 0
+        maximumValue: contentWidth > availableWidth ? originX + contentWidth - availableWidth : 0
+        minimumValue: originX
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: cornerFill.left
@@ -158,8 +162,8 @@ Item {
         width: visible ? implicitWidth : 0
         z: 1
         anchors.bottom: cornerFill.top
-        maximumValue: contentHeight > availableHeight ? contentHeight - availableHeight + __viewTopMargin : 0
-        minimumValue: 0
+        maximumValue: contentHeight > availableHeight ? originY + contentHeight - availableHeight + __viewTopMargin : 0
+        minimumValue: originY
         anchors.right: parent.right
         anchors.top: parent.top
         anchors.topMargin: __scrollBarTopMargin + topMargin
