@@ -181,7 +181,7 @@ FocusScope {
             onPressed: {
                 tabView.currentIndex = index;
                 var next = tabbar.nextItemInFocusChain(true);
-                if (__isAncestorOf(tabView.tabAt(currentIndex), next))
+                if (__isAncestorOf(tabView.getTab(currentIndex), next))
                     next.forceActiveFocus();
                 else
                     tabitem.forceActiveFocus();

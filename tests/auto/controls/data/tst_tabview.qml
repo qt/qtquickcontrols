@@ -72,12 +72,12 @@ TestCase {
     function test_changeIndex() {
         var tabView = Qt.createQmlObject('import QtQuick 2.1; import QtQuick.Controls 1.0; TabView { Repeater { model: 3; Tab { Text { text: index } } } }', testCase, '');
         compare(tabView.count, 3)
-        verify(tabView.tabAt(1).item == undefined)
+        verify(tabView.getTab(1).item == undefined)
         tabView.currentIndex = 1
-        verify(tabView.tabAt(1).item !== undefined)
-        verify(tabView.tabAt(2).item == undefined)
+        verify(tabView.getTab(1).item !== undefined)
+        verify(tabView.getTab(2).item == undefined)
         tabView.currentIndex = 1
-        verify(tabView.tabAt(2).item !== undefined)
+        verify(tabView.getTab(2).item !== undefined)
         tabView.destroy()
     }
 
@@ -89,36 +89,36 @@ TestCase {
         compare(tabView.count, 1)
         tabView.addTab("title 2", newTab)
         compare(tabView.count, 2)
-        compare(tabView.tabAt(0).title, "title 1")
-        compare(tabView.tabAt(1).title, "title 2")
+        compare(tabView.getTab(0).title, "title 1")
+        compare(tabView.getTab(1).title, "title 2")
 
         tabView.insertTab(1, "title 3")
         compare(tabView.count, 3)
-        compare(tabView.tabAt(0).title, "title 1")
-        compare(tabView.tabAt(1).title, "title 3")
-        compare(tabView.tabAt(2).title, "title 2")
+        compare(tabView.getTab(0).title, "title 1")
+        compare(tabView.getTab(1).title, "title 3")
+        compare(tabView.getTab(2).title, "title 2")
 
         tabView.insertTab(0, "title 4")
         compare(tabView.count, 4)
-        compare(tabView.tabAt(0).title, "title 4")
-        compare(tabView.tabAt(1).title, "title 1")
-        compare(tabView.tabAt(2).title, "title 3")
-        compare(tabView.tabAt(3).title, "title 2")
+        compare(tabView.getTab(0).title, "title 4")
+        compare(tabView.getTab(1).title, "title 1")
+        compare(tabView.getTab(2).title, "title 3")
+        compare(tabView.getTab(3).title, "title 2")
 
         tabView.removeTab(0)
         compare(tabView.count, 3)
-        compare(tabView.tabAt(0).title, "title 1")
-        compare(tabView.tabAt(1).title, "title 3")
-        compare(tabView.tabAt(2).title, "title 2")
+        compare(tabView.getTab(0).title, "title 1")
+        compare(tabView.getTab(1).title, "title 3")
+        compare(tabView.getTab(2).title, "title 2")
 
         tabView.removeTab(1)
         compare(tabView.count, 2)
-        compare(tabView.tabAt(0).title, "title 1")
-        compare(tabView.tabAt(1).title, "title 2")
+        compare(tabView.getTab(0).title, "title 1")
+        compare(tabView.getTab(1).title, "title 2")
 
         tabView.removeTab(1)
         compare(tabView.count, 1)
-        compare(tabView.tabAt(0).title, "title 1")
+        compare(tabView.getTab(0).title, "title 1")
 
         tabView.removeTab(0)
         compare(tabView.count, 0)
@@ -172,7 +172,7 @@ TestCase {
 
         compare(tabView.count, titles.length)
         for (i = 0; i < tabView.count; ++i)
-            compare(tabView.tabAt(i).title, titles[i])
+            compare(tabView.getTab(i).title, titles[i])
 
         tabView.currentIndex = data.currentBefore
         tabView.moveTab(data.from, data.to)
@@ -186,7 +186,7 @@ TestCase {
 
         compare(tabView.count, titles.length)
         for (i = 0; i < tabView.count; ++i)
-            compare(tabView.tabAt(i).title, titles[i])
+            compare(tabView.getTab(i).title, titles[i])
 
         tabView.destroy()
     }
@@ -212,11 +212,11 @@ TestCase {
         var tabView = Qt.createQmlObject(test_tabView, testCase, '')
         // insertTab(), addTab(), createObject() and static Tab {}
         compare(tabView.count, 4)
-        compare(tabView.tabAt(0).title, "inserted")
+        compare(tabView.getTab(0).title, "inserted")
 
         var tab = tabView.tabComponent.createObject(tabView)
         compare(tabView.count, 5)
-        compare(tabView.tabAt(4).title, "dynamic")
+        compare(tabView.getTab(4).title, "dynamic")
         tab.destroy()
         wait(0)
         compare(tabView.count, 4)

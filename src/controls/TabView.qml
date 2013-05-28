@@ -133,7 +133,7 @@ FocusScope {
     }
 
     /*! Returns the \l Tab item at \a index. */
-    function tabAt(index) {
+    function getTab(index) {
         return __tabs.get(index).tab
     }
 
