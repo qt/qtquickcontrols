@@ -143,8 +143,15 @@
 
 QT_BEGIN_NAMESPACE
 
-static const qreal q_declarativeLayoutDefaultSpacing = 4.0;
-
+static qreal quickLayoutDefaultSpacing()
+{
+    qreal spacing = 5.0;
+#ifndef Q_OS_MAC
+    // On mac the DPI is always 72 so we should not scale it
+    spacing = qRound(spacing * (qreal(qt_defaultDpiX()) / 96.0));
+#endif
+    return spacing;
+}
 
 QQuickGridLayoutBase::QQuickGridLayoutBase(QQuickGridLayoutBasePrivate &dd,
                                            Qt::Orientation orientation,
@@ -412,9 +419,10 @@ QQuickGridLayout::QQuickGridLayout(QQuickItem *parent /* = 0*/)
     : QQuickGridLayoutBase(*new QQuickGridLayoutPrivate, Qt::Horizontal, parent)
 {
     Q_D(QQuickGridLayout);
-    d->columnSpacing = q_declarativeLayoutDefaultSpacing;
-    d->rowSpacing = q_declarativeLayoutDefaultSpacing;
-    d->engine.setSpacing(q_declarativeLayoutDefaultSpacing, Qt::Horizontal | Qt::Vertical);
+    const qreal defaultSpacing = quickLayoutDefaultSpacing();
+    d->columnSpacing = defaultSpacing;
+    d->rowSpacing = defaultSpacing;
+    d->engine.setSpacing(defaultSpacing, Qt::Horizontal | Qt::Vertical);
 }
 
 /*!
@@ -672,7 +680,7 @@ QQuickLinearLayout::QQuickLinearLayout(Qt::Orientation orientation,
     : QQuickGridLayoutBase(*new QQuickLinearLayoutPrivate, orientation, parent)
 {
     Q_D(QQuickLinearLayout);
-    d->spacing = q_declarativeLayoutDefaultSpacing;
+    d->spacing = quickLayoutDefaultSpacing();
     d->engine.setSpacing(d->spacing, Qt::Horizontal | Qt::Vertical);
 }
 
