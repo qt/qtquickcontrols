@@ -75,8 +75,9 @@ ScrollViewStyle {
             anchors.fill: parent
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignLeft
-            anchors.leftMargin: 4
+            anchors.leftMargin: 12
             text: styleData.value
+            elide: Text.ElideRight
             color: textColor
             renderType: Text.NativeRendering
         }
@@ -92,8 +93,7 @@ ScrollViewStyle {
 
     /* Delegate for header. This delegate is described in \l TableView::rowDelegate */
     property Component rowDelegate: Rectangle {
-        implicitHeight: 20
-        implicitWidth: 80
+        height: 20
         property color selectedColor: styleData.hasActiveFocus ? "#38d" : "#999"
         gradient: Gradient {
             GradientStop { color: styleData.selected ? Qt.lighter(selectedColor, 1.3)  : styleData.alternate ? "#f2f2f2" : "white" ; position: 0 }
@@ -115,13 +115,13 @@ ScrollViewStyle {
     /* Delegate for header. This delegate is described in \l TableView::itemDelegate */
     property Component itemDelegate: Item {
         height: Math.max(16, label.implicitHeight)
-        property int implicitWidth: sizehint.paintedWidth + 4
+        property int implicitWidth: sizehint.paintedWidth + 20
 
         Text {
             id: label
             objectName: "label"
             width: parent.width
-            anchors.margins: 6
+            anchors.leftMargin: 12
             anchors.left: parent.left
             anchors.right: parent.right
             horizontalAlignment: styleData.textAlignment

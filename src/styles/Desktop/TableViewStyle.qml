@@ -86,13 +86,13 @@ ScrollViewStyle {
 
     property Component itemDelegate: Item {
         height: Math.max(16, label.implicitHeight)
-        property int implicitWidth: sizehint.paintedWidth + 4
+        property int implicitWidth: sizehint.paintedWidth + 16
 
         Text {
             id: label
             objectName: "label"
             width: parent.width
-            anchors.margins: 6
+            anchors.leftMargin: 8
             font: __styleitem.font
             anchors.left: parent.left
             anchors.right: parent.right
