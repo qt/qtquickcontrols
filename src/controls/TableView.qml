@@ -200,9 +200,8 @@ ScrollView {
     */
     property int sortIndicatorOrder: Qt.AscendingOrder
 
-    /*! \qmlproperty list<TableViewColumn> TableView::columns
-    This property contains the TableViewColumn items */
-    default property alias columns: listView.columnheader
+    /*! \internal */
+    default property alias __columns: root.data
 
     /*! \qmlproperty Component TableView::contentHeader
     This is the content header of the TableView */
@@ -216,8 +215,9 @@ ScrollView {
     The current number of rows */
     readonly property alias rowCount: listView.count
 
-    /*! The current number of columns */
-    readonly property int columnCount: columns.length
+    /*! \qmlproperty int TableView::columnCount
+    The current number of columns */
+    readonly property alias columnCount: columnModel.count
 
     /*! \qmlproperty string TableView::section.property
         \qmlproperty enumeration TableView::section.criteria
@@ -288,6 +288,73 @@ ScrollView {
         return listView.indexAt(obj.x, obj.y)
     }
 
+    /*! Adds a \a column and returns the added column.
+
+        The \a column argument can be an instance of TableViewColumn,
+        or a Component. The component has to contain a TableViewColumn.
+        Otherwise  \c null is returned.
+    */
+    function addColumn(column) {
+        return insertColumn(columnCount, column)
+    }
+
+    /*! Inserts a \a column at the given \a index and returns the inserted column.
+
+        The \a column argument can be an instance of TableViewColumn,
+        or a Component. The component has to contain a TableViewColumn.
+        Otherwise  \c null is returned.
+    */
+    function insertColumn(index, column) {
+        var object = column
+        if (typeof column['createObject'] === 'function')
+            object = column.createObject(root)
+
+        if (index >= 0 && index <= columnCount && object.Accessible.role === Accessible.ColumnHeader) {
+            columnModel.insert(index, {columnItem: object})
+            return object
+        }
+
+        if (object !== column)
+            object.destroy()
+        console.warn("TableView::insertColumn(): invalid argument")
+        return null
+    }
+
+    /*! Removes and destroys a column at the given \a index. */
+    function removeColumn(index) {
+        if (index < 0 || index >= columnCount) {
+            console.warn("TableView::removeColumn(): invalid argument")
+            return
+        }
+        var column = columnModel.get(index).columnItem
+        columnModel.remove(index, 1)
+        column.destroy()
+    }
+
+    /*! Moves a column \a from index \a to another. */
+    function moveColumn(from, to) {
+        if (from < 0 || from >= columnCount || to < 0 || to >= columnCount) {
+            console.warn("TableView::moveColumn(): invalid argument")
+            return
+        }
+        columnModel.move(from, to, 1)
+    }
+
+    /*! Returns the column at the given \a index
+        or \c null if the \a index is invalid. */
+    function getColumn(index) {
+        if (index < 0 || index >= columnCount)
+            return null
+        return columnModel.get(index).columnItem
+    }
+
+    Component.onCompleted: {
+        for (var i = 0; i < __columns.length; ++i) {
+            var column = __columns[i]
+            if (column.Accessible.role === Accessible.ColumnHeader)
+                addColumn(column)
+        }
+    }
 
     style: Qt.createComponent(Settings.style + "/TableViewStyle.qml", root)
 
@@ -429,7 +496,10 @@ ScrollView {
             }
         }
 
-        property list<TableViewColumn> columnheader
+        ListModel {
+            id: columnModel
+        }
+
         highlightFollowsCurrentItem: true
         model: root.model
 
@@ -483,7 +553,7 @@ ScrollView {
                 height: parent.height
                 Repeater {
                     id: repeater
-                    model: root.columnCount
+                    model: columnModel
 
                     Loader {
                         id: itemDelegateLoader
@@ -509,7 +579,7 @@ ScrollView {
                             readonly property string role: __column.role
                         }
 
-                        readonly property TableViewColumn __column: columns[index]
+                        readonly property TableViewColumn __column: columnItem
                         readonly property bool __hasModelRole: styleData.role && itemModel.hasOwnProperty(styleData.role)
                         readonly property bool __hasModelDataRole: styleData.role && modelData && modelData.hasOwnProperty(styleData.role)
                     }
@@ -548,12 +618,12 @@ ScrollView {
                     property int targetIndex: -1
                     property int dragIndex: -1
 
-                    model: columnCount
+                    model: columnModel
 
                     delegate: Item {
                         z:-index
-                        width: columns[index].width
-                        visible: columns[index].visible
+                        width: modelData.width
+                        visible: modelData.visible
                         height: headerVisible ? headerStyle.height : 0
 
                         Loader {
@@ -562,7 +632,7 @@ ScrollView {
                             anchors.left: parent.left
                             anchors.right: parent.right
                             property QtObject styleData: QtObject {
-                                readonly property string value: columns[index].title
+                                readonly property string value: modelData.title
                                 readonly property bool pressed: headerClickArea.pressed
                                 readonly property bool containsMouse: headerClickArea.containsMouse
                                 readonly property int column: index
@@ -608,13 +678,7 @@ ScrollView {
 
                             onReleased: {
                                 if (repeater.targetIndex >= 0 && repeater.targetIndex != index ) {
-                                    // Rearrange the header sections
-                                    var items = new Array
-                                    for (var i = 0 ; i< columnCount ; ++i)
-                                        items.push(columns[i])
-                                    items.splice(index, 1);
-                                    items.splice(repeater.targetIndex, 0, columns[index]);
-                                    columns = items
+                                    columnModel.move(index, repeater.targetIndex, 1)
                                     if (sortIndicatorColumn == index)
                                         sortIndicatorColumn = repeater.targetIndex
                                 }
@@ -628,14 +692,14 @@ ScrollView {
                         Loader {
                             id: draghandle
                             property QtObject styleData: QtObject{
-                                readonly property string value: columns[index].title
+                                readonly property string value: modelData.title
                                 readonly property bool pressed: headerClickArea.pressed
                                 readonly property bool containsMouse: headerClickArea.containsMouse
                                 readonly property int column: index
                             }
 
                             parent: tableHeader
-                            width: columns[index].width
+                            width: modelData.width
                             height: parent.height
                             sourceComponent: root.headerDelegate
                             visible: headerClickArea.pressed
@@ -651,8 +715,8 @@ ScrollView {
                             width: 16 ; height: parent.height
                             anchors.right: parent.right
                             onPositionChanged:  {
-                                var newHeaderWidth = columns[index].width + (mouseX - offset)
-                                columns[index].width = Math.max(minimumSize, newHeaderWidth)
+                                var newHeaderWidth = modelData.width + (mouseX - offset)
+                                modelData.width = Math.max(minimumSize, newHeaderWidth)
                             }
                             property bool found:false
 
@@ -667,7 +731,7 @@ ScrollView {
                                         minWidth = Math.max(minWidth, item.children[1].children[index].children[0].implicitWidth)
                                 }
                                 if (minWidth)
-                                    columns[index].width = minWidth
+                                    modelData.width = minWidth
                             }
                             onPressedChanged: if (pressed) offset=mouseX
                             cursorShape: Qt.SplitHCursor

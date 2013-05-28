@@ -39,56 +39,27 @@
 ****************************************************************************/
 
 import QtQuick 2.1
+import QtQuick.Controls 1.0
 
-/*!
-    \qmltype TableViewColumn
-    \inqmlmodule QtQuick.Controls 1.0
-    \since QtQuick.Controls 1.0
-    \ingroup viewitems
-    \brief Used to define columns in a \l TableView.
-*/
+TableView {
+    id: tableView
 
-QtObject {
-    /*! The title text of the column. */
-    property string title
+    TableViewColumn { title: "static" }
 
-    /*! The model \c role of the column. */
-    property string role
+    Component {
+        id: component
+        TableViewColumn { }
+    }
 
-    /*! The current width of the column
-    The default value depends on platform. */
-    property int width: 160
+    Component.onCompleted: {
+        addColumn(component.createObject(tableView, {title: "added item"}))
 
-    /*! The visible status of the column. */
-    property bool visible: true
+        var col1 = addColumn(component)
+        col1.title = "added component"
 
-    /*! \qmlproperty enumeration TableViewColumn::elideMode
-    The text elide mode of the column.
-    Allowed values are:
-    \list
-        \li Text.ElideNone
-        \li Text.ElideLeft
-        \li Text.ElideMiddle
-        \li Text.ElideRight - the default
-    \endlist
-    \sa {QtQuick2::}{Text::elide} */
-    property int elideMode: Text.ElideRight
+        insertColumn(0, component.createObject(tableView, {title: "inserted item"}))
 
-    /*! \qmlproperty enumeration TableViewColumn::horizontalAlignment
-    The horizontal text alignment of the column.
-    Allowed values are:
-    \list
-        \li Text.AlignLeft - the default
-        \li Text.AligntRight
-        \li Text.AlignHCenter
-        \li Text.AlignJustify
-    \endlist
-    \sa {QtQuick2::}{Text::horizontalAlignment} */
-    property int horizontalAlignment: Text.AlignLeft
-
-    /*! The delegate of the column. This can be used to set the
-    \l TableView::itemDelegate for a specific column. */
-    property Component delegate
-
-    Accessible.role: Accessible.ColumnHeader
+        var col2 = insertColumn(0, component)
+        col2.title = "inserted component"
+    }
 }
