@@ -401,6 +401,7 @@ QQuickMenuItem::QQuickMenuItem(QObject *parent)
 {
     connect(this, SIGNAL(__textChanged()), this, SIGNAL(textChanged()));
 
+    connect(action(), SIGNAL(shortcutChanged(QString)), this, SLOT(updateShortcut()));
     connect(action(), SIGNAL(triggered()), this, SIGNAL(triggered()));
     connect(action(), SIGNAL(toggled(bool)), this, SLOT(updateChecked()));
     if (platformItem())
