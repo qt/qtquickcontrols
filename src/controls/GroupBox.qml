@@ -159,7 +159,8 @@ Item {
     /*! \internal */
     property alias __style: styleLoader.item
 
-    implicitWidth: (!anchors.fill ? container.calcWidth() : 0) + loader.leftMargin + loader.rightMargin
+    implicitWidth: Math.max((!anchors.fill ? container.calcWidth() : 0) + loader.leftMargin + loader.rightMargin,
+                            sizeHint.implicitWidth + (checkable ? 24 : 6))
     implicitHeight: (!anchors.fill ? container.calcHeight() : 0) + loader.topMargin + loader.bottomMargin
 
     Layout.minimumWidth: implicitWidth
@@ -181,6 +182,7 @@ Item {
             property int rightMargin: __style ? __style.padding.right : 0
             sourceComponent: styleLoader.item ? styleLoader.item.panel : null
             onLoaded: item.z = -1
+            Text { id: sizeHint ; visible: false ; text: title }
             Loader {
                 id: styleLoader
                 property alias __control: groupbox

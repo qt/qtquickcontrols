@@ -55,10 +55,10 @@ PaddedStyle {
     }
 
     padding {
-        top: (control.title.length > 0 || control.checkable ? titleHeight : 0) + 6
-        left: 8
-        right: 8
-        bottom: 6
+        top: Math.round(Settings.dpiScaleFactor * (control.title.length > 0 || control.checkable ? titleHeight : 0) + (style.style == "mac" ? 9 : 6))
+        left: Math.round(Settings.dpiScaleFactor * 8)
+        right: Math.round(Settings.dpiScaleFactor * 8)
+        bottom: Math.round(Settings.dpiScaleFactor * 7 + (style.style.indexOf("windows") > -1 ? 2 : 0))
     }
 
     property Component panel: StyleItem {

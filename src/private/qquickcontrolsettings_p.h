@@ -55,6 +55,7 @@ class QQuickControlSettings : public QObject
     Q_PROPERTY(QUrl style READ style NOTIFY styleChanged)
     Q_PROPERTY(QString styleName READ styleName WRITE setStyleName NOTIFY styleNameChanged)
     Q_PROPERTY(QString stylePath READ stylePath WRITE setStylePath NOTIFY stylePathChanged)
+    Q_PROPERTY(qreal dpiScaleFactor READ dpiScaleFactor CONSTANT)
 
 public:
     QQuickControlSettings(QQmlEngine *engine);
@@ -66,6 +67,8 @@ public:
 
     QString stylePath() const;
     void setStylePath(const QString &path);
+
+    qreal dpiScaleFactor() const;
 
 signals:
     void styleChanged();

@@ -133,4 +133,15 @@ QString QQuickControlSettings::styleFilePath() const
     return m_path + QLatin1Char('/') + m_name;
 }
 
+extern Q_GUI_EXPORT int qt_defaultDpiX();
+
+qreal QQuickControlSettings::dpiScaleFactor() const
+{
+#ifndef Q_OS_MAC
+    return (qreal(qt_defaultDpiX()) / 96.0);
+#endif
+    return 1.0;
+}
+
+
 QT_END_NAMESPACE
