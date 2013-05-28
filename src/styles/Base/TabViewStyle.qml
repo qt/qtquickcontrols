@@ -127,7 +127,7 @@ Style {
             \li readonly property string styleData.title - Tab title text.
             \li readonly property bool styleData.nextSelected - The next tab is selected.
             \li readonly property bool styleData.previousSelected - The previous tab is selected.
-            \li readonly property bool styleData.hovered - The tab is currently under the mouse.
+            \li readonly property bool styleData.hovered - The tab is being hovered.
             \li readonly property bool styleData.activeFocus - The tab button has keyboard focus.
         \endtable
     */

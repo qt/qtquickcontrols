@@ -96,7 +96,7 @@ PaddedStyle {
         properties of \c control, the following state properties are available:
 
         \table
-            \li readonly property bool styleData.hovered - The button is currently hovered.
+            \li readonly property bool styleData.hovered - The control is being hovered.
         \endtable
     */
     property Component background: Item {
@@ -139,7 +139,7 @@ PaddedStyle {
         properties of \c control, the following state properties are available:
 
         \table
-            \li readonly property bool styleData.hovered - The button is currently hovered.
+            \li readonly property bool styleData.hovered - The control is being hovered.
         \endtable
     */
     property Component label: Text {

@@ -163,12 +163,14 @@ PaddedStyle {
                 id: indicatorLoader
                 sourceComponent: indicator
                 anchors.verticalCenter: parent.verticalCenter
+                property QtObject styleData: QtObject { readonly property bool hovered: control.__containsMouse }
             }
             Loader {
                 id: labelLoader
                 sourceComponent: label
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
+                property QtObject styleData: QtObject { readonly property bool hovered: control.__containsMouse }
             }
         }
     }

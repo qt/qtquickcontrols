@@ -170,7 +170,6 @@ FocusScope {
 
             property int tabindex: index
             property bool selected : tabView.currentIndex === index
-            property bool hover: containsMouse
             property string title: modelData.title
             property bool nextSelected: tabView.currentIndex === index + 1
             property bool previousSelected: tabView.currentIndex === index - 1
@@ -201,7 +200,7 @@ FocusScope {
                     readonly property alias title: tabitem.title
                     readonly property alias nextSelected: tabitem.nextSelected
                     readonly property alias previsousSelected: tabitem.previousSelected
-                    readonly property alias hovered: tabitem.hover
+                    readonly property alias hovered: tabitem.containsMouse
                     readonly property bool activeFocus: tabbar.activeFocus
                 }
 

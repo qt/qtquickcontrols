@@ -117,14 +117,17 @@ Item {
     /*!
         This property holds the delegate that will be instantiated between each
         child item. Inside the delegate the following properties are available:
-        \list
-        \li int \c handleIndex - specifies the index of the splitter handle. The handle
-                                 between the first and the second item will get index 0,
-                                 the next handle index 1 etc.
-        \li bool \c pressed: the handle is being pressed.
-        \li bool \c resizing: the handle is being dragged.
-        \endlist
-    */
+
+        \table
+            \li readonly property bool styleData.index - Specifies the index of the splitter handle. The handle
+                                                         between the first and the second item will get index 0,
+                                                         the next handle index 1 etc.
+            \li readonly property bool styleData.hovered - The handle is being hovered.
+            \li readonly property bool styleData.pressed - The handle is being pressed.
+            \li readonly property bool styleData.resizing - The handle is being dragged.
+        \endtable
+
+*/
     property Component handleDelegate: Rectangle {
         width: 1
         height: 1
@@ -176,7 +179,7 @@ Item {
                     continue
 
                 if (splitterItems.children.length > 0)
-                    handleLoader.createObject(splitterHandles, {"handleIndex":splitterItems.children.length - 1})
+                    handleLoader.createObject(splitterHandles, {"__handleIndex":splitterItems.children.length - 1})
                 item.parent = splitterItems
                 i-- // item was removed from list
                 item.widthChanged.connect(d.updateLayout)
@@ -319,18 +322,21 @@ Item {
         id: handleLoader
         Loader {
             id: itemHandle
-            property int handleIndex: -1
-            property alias containsMouse: mouseArea.containsMouse
-            property alias pressed: mouseArea.pressed
-            property bool resizing: mouseArea.drag.active
 
-            visible: __items[handleIndex + ((d.fillIndex >= handleIndex) ? 0 : 1)].visible
+            property int __handleIndex: -1
+            property QtObject styleData: QtObject {
+                readonly property int index: __handleIndex
+                readonly property alias hovered: mouseArea.containsMouse
+                readonly property alias pressed: mouseArea.pressed
+                readonly property bool resizing: mouseArea.drag.active
+                onResizingChanged: root.resizing = resizing
+            }
+            visible: __items[__handleIndex + ((d.fillIndex >= __handleIndex) ? 0 : 1)].visible
             sourceComponent: handleDelegate
             onWidthChanged: d.updateLayout()
             onHeightChanged: d.updateLayout()
             onXChanged: moveHandle()
             onYChanged: moveHandle()
-            onResizingChanged: root.resizing = resizing
 
             MouseArea {
                 id: mouseArea
@@ -357,12 +363,12 @@ Item {
                 var leftEdge, rightEdge, newWidth, leftStopX, rightStopX
                 var i
 
-                if (d.fillIndex > handleIndex) {
+                if (d.fillIndex > __handleIndex) {
                     // Resize item to the left.
                     // Ensure that the handle is not crossing other handles. So
                     // find the first visible handle to the left to determine the left edge:
                     leftEdge = 0
-                    for (i=handleIndex-1; i>=0; --i) {
+                    for (i=__handleIndex-1; i>=0; --i) {
                         leftHandle = __handles[i]
                         if (leftHandle.visible) {
                             leftEdge = leftHandle[d.offset] + leftHandle[d.size]
@@ -371,13 +377,13 @@ Item {
                     }
 
                     // Ensure: leftStopX >= itemHandle[d.offset] >= rightStopX
-                    var min = d.accumulatedSize(handleIndex+1, __items.length, true)
+                    var min = d.accumulatedSize(__handleIndex+1, __items.length, true)
                     rightStopX = root[d.size] - min - itemHandle[d.size]
                     leftStopX = Math.max(leftEdge, itemHandle[d.offset])
                     itemHandle[d.offset] = Math.min(rightStopX, Math.max(leftStopX, itemHandle[d.offset]))
 
                     newWidth = itemHandle[d.offset] - leftEdge
-                    leftItem = __items[handleIndex]
+                    leftItem = __items[__handleIndex]
                     // The next line will trigger 'updateLayout':
                     leftItem[d.size] = newWidth
                 } else {
@@ -385,7 +391,7 @@ Item {
                     // Ensure that the handle is not crossing other handles. So
                     // find the first visible handle to the right to determine the right edge:
                     rightEdge = root[d.size]
-                    for (i=handleIndex+1; i<__handles.length; ++i) {
+                    for (i=__handleIndex+1; i<__handles.length; ++i) {
                         rightHandle = __handles[i]
                         if (rightHandle.visible) {
                             rightEdge = rightHandle[d.offset]
@@ -394,13 +400,13 @@ Item {
                     }
 
                     // Ensure: leftStopX <= itemHandle[d.offset] <= rightStopX
-                    min = d.accumulatedSize(0, handleIndex+1, true)
+                    min = d.accumulatedSize(0, __handleIndex+1, true)
                     leftStopX = min - itemHandle[d.size]
                     rightStopX = Math.min((rightEdge - itemHandle[d.size]), itemHandle[d.offset])
                     itemHandle[d.offset] = Math.max(leftStopX, Math.min(itemHandle[d.offset], rightStopX))
 
                     newWidth = rightEdge - (itemHandle[d.offset] + itemHandle[d.size])
-                    rightItem = __items[handleIndex+1]
+                    rightItem = __items[__handleIndex+1]
                     // The next line will trigger 'updateLayout':
                     rightItem[d.size] = newWidth
                 }
