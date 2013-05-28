@@ -161,12 +161,6 @@ ScrollView {
     */
     property Component rowDelegate: __style ? __style.rowDelegate : null
 
-    /*! \qmlproperty color TableView::backgroundColor
-
-        This property sets the background color of the viewport.
-        The default value is the base color of the SystemPalette. */
-    property alias backgroundColor: colorRect.color
-
     /*! This property defines a delegate to draw a header.
 
     In the header delegate you have access to the following special properties:
@@ -404,7 +398,7 @@ ScrollView {
             id: colorRect
             parent: viewport
             anchors.fill: parent
-            color: palette.base
+            color: __style ? __style.backgroundColor : palette.base
             z: -1
         }
 

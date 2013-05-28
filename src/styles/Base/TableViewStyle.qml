@@ -59,7 +59,13 @@ ScrollViewStyle {
     /*! The text color. */
     property color textColor: __syspal.text
 
-    /*! The text highlight color, used behind selections. */
+    /*! The background color. */
+    property color backgroundColor: __syspal.base
+
+    /*! The alternate background color. */
+    property color alternateBackgroundColor: Qt.darker(__syspal.base, 1.06)
+
+    /*! The text highlight color, used within selections. */
     property color highlightedTextColor: "white"
 
     /*! Activates items on single click. */
@@ -96,8 +102,16 @@ ScrollViewStyle {
         height: 20
         property color selectedColor: styleData.hasActiveFocus ? "#38d" : "#999"
         gradient: Gradient {
-            GradientStop { color: styleData.selected ? Qt.lighter(selectedColor, 1.3)  : styleData.alternate ? "#f2f2f2" : "white" ; position: 0 }
-            GradientStop { color: styleData.selected ? Qt.lighter(selectedColor, 1.0)  : styleData.alternate ? "#f2f2f2" : "white" ; position: 1 }
+            GradientStop {
+                color: styleData.selected ? Qt.lighter(selectedColor, 1.3) :
+                                            styleData.alternate ? alternateBackgroundColor : backgroundColor
+                position: 0
+            }
+            GradientStop {
+                color: styleData.selected ? Qt.lighter(selectedColor, 1.0) :
+                                            styleData.alternate ? alternateBackgroundColor : backgroundColor
+                position: 1
+            }
         }
         Rectangle {
             anchors.bottom: parent.bottom
