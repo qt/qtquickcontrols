@@ -103,12 +103,12 @@ ScrollViewStyle {
             anchors.bottom: parent.bottom
             width: parent.width
             height: 1
-            color: styleData.elected ? Qt.darker(selectedColor, 1.4) : "transparent"
+            color: styleData.selected ? Qt.darker(selectedColor, 1.4) : "transparent"
         }
         Rectangle {
             anchors.top: parent.top
             width: parent.width ; height: 1
-            color: styleData.elected ? Qt.darker(selectedColor, 1.1) : "transparent"
+            color: styleData.selected ? Qt.darker(selectedColor, 1.1) : "transparent"
         }
     }
 
