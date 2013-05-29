@@ -58,8 +58,8 @@ TestCase {
         compare(item.status, 0); // Stack.Inactive
     }
 
-    function test_pageStack() {
-        var item = Qt.createQmlObject('import QtQuick 2.0; import QtQuick.Controls 1.0; Item { property StackView pageStack: Stack.pageStack }', testCase, '');
-        compare(item.pageStack, null);
+    function test_view() {
+        var item = Qt.createQmlObject('import QtQuick 2.0; import QtQuick.Controls 1.0; Item { property StackView view: Stack.view }', testCase, '');
+        compare(item.view, null);
     }
 }

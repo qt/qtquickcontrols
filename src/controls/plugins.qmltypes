@@ -199,7 +199,7 @@ Module {
         Property { name: "__index"; type: "int" }
         Property { name: "status"; type: "Status"; isReadonly: true }
         Property { name: "__status"; type: "Status" }
-        Property { name: "pageStack"; type: "QQuickItem"; isReadonly: true; isPointer: true }
-        Property { name: "__stackView"; type: "QQuickItem"; isPointer: true }
+        Property { name: "view"; type: "QQuickItem"; isReadonly: true; isPointer: true }
+        Property { name: "__view"; type: "QQuickItem"; isPointer: true }
     }
 }

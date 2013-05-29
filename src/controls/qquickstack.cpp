@@ -64,7 +64,7 @@ QQuickStack::QQuickStack(QObject *object)
     : QObject(object),
       m_index(-1),
       m_status(Inactive),
-      m_pageStack(0)
+      m_view(0)
 {
 }
 
@@ -77,9 +77,9 @@ QQuickStack *QQuickStack::qmlAttachedProperties(QObject *object)
     \readonly
     \qmlproperty int Stack::index
 
-    This property holds the index of the item inside \l{pageStack}{StackView},
-    so that \l{StackView::get()}{pageStack.get(index)} will return the item itself.
-    If \l{Stack::pageStack}{pageStack} is \c null, \a index will be \c -1.
+    This property holds the index of the item inside \l{view}{StackView},
+    so that \l{StackView::get()}{StackView.get(index)} will return the item itself.
+    If \l{Stack::view}{view} is \c null, \a index will be \c -1.
 */
 int QQuickStack::index() const
 {
@@ -121,21 +121,21 @@ void QQuickStack::setStatus(Status status)
 
 /*!
     \readonly
-    \qmlproperty StackView Stack::pageStack
+    \qmlproperty StackView Stack::view
 
     This property holds the StackView the item is in. If the item is not inside
-    a StackView, \a pageStack will be \c null.
+    a StackView, \a view will be \c null.
 */
-QQuickItem *QQuickStack::pageStack() const
+QQuickItem *QQuickStack::view() const
 {
-    return m_pageStack;
+    return m_view;
 }
 
-void QQuickStack::setStackView(QQuickItem *pageStack)
+void QQuickStack::setView(QQuickItem *view)
 {
-    if (m_pageStack != pageStack) {
-        m_pageStack = pageStack;
-        emit pageStackChanged();
+    if (m_view != view) {
+        m_view = view;
+        emit viewChanged();
     }
 }
 

@@ -797,7 +797,7 @@ Item {
         }
 
         element.item.Stack.__index = element.index
-        element.item.Stack.__stackView = root
+        element.item.Stack.__view = root
         // Let item fill all available space by default:
         element.item.width = Qt.binding(function() { return root.width })
         element.item.height = Qt.binding(function() { return root.height })
@@ -842,7 +842,7 @@ Item {
             // might reenter on pop if pushed several times:
             item.visible = false
             __setStatus(item, Stack.Inactive)
-            item.Stack.__stackView = null
+            item.Stack.__view = null
             item.Stack.__index = -1
             if (element.originalParent)
                 item.parent = element.originalParent
@@ -871,7 +871,7 @@ Item {
 
         // Since an item can be pushed several times, we need to update its properties:
         enterItem.parent = root
-        enterItem.Stack.__stackView = root
+        enterItem.Stack.__view = root
         enterItem.Stack.__index = transition.inElement.index
         __currentItem = enterItem
 
