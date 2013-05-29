@@ -177,8 +177,9 @@ void QQuickStyleItem::initStyleOption()
     if (m_styleoption)
         m_styleoption->state = 0;
 
-    QPlatformTheme::Font platformFont = (m_hints.indexOf("mini") != -1) ? QPlatformTheme::MiniFont :
-                                        (m_hints.indexOf("small") != -1) ? QPlatformTheme::SmallFont :
+    QString sizeHint = m_hints.value("size").toString();
+    QPlatformTheme::Font platformFont = (sizeHint == "mini") ? QPlatformTheme::MiniFont :
+                                        (sizeHint == "small") ? QPlatformTheme::SmallFont :
                                         QPlatformTheme::SystemFont;
 
     switch (m_itemType) {
@@ -266,11 +267,12 @@ void QQuickStyleItem::initStyleOption()
                     QStyleOptionHeader::SortDown
                   : activeControl() == "up" ?
                         QStyleOptionHeader::SortUp : QStyleOptionHeader::None;
-        if (hints().contains("beginning"))
+        QString headerpos = m_properties.value("headerpos").toString();
+        if (headerpos == "beginning")
             opt->position = QStyleOptionHeader::Beginning;
-        else if (hints().contains("end"))
+        else if (headerpos == "end")
             opt->position = QStyleOptionHeader::End;
-        else if (hints().contains("only"))
+        else if (headerpos == "only")
             opt->position = QStyleOptionHeader::OnlyOneSection;
         else
             opt->position = QStyleOptionHeader::Middle;
@@ -318,32 +320,30 @@ void QQuickStyleItem::initStyleOption()
         QStyleOptionTab *opt = qstyleoption_cast<QStyleOptionTab*>(m_styleoption);
         opt->text = text();
 
-        if (m_properties["hasFrame"].toBool())
+        if (m_properties.value("hasFrame").toBool())
             opt->features |= QStyleOptionTab::HasFrame;
 
-        if (hints().length() > 2) {
-            QString orientation = hints()[0];
-            QString position = hints()[1];
-            QString selectedPosition = hints()[2];
+        QString orientation = m_properties.value("orientation").toString();
+        QString position = m_properties.value("tabpos").toString();
+        QString selectedPosition = m_properties.value("selectedpos").toString();
 
-            opt->shape = (orientation == "Bottom") ? QTabBar::RoundedSouth : QTabBar::RoundedNorth;
+        opt->shape = (orientation == "Bottom") ? QTabBar::RoundedSouth : QTabBar::RoundedNorth;
+        if (position == QLatin1String("beginning"))
+            opt->position = QStyleOptionTab::Beginning;
+        else if (position == QLatin1String("end"))
+            opt->position = QStyleOptionTab::End;
+        else if (position == QLatin1String("only"))
+            opt->position = QStyleOptionTab::OnlyOneTab;
+        else
+            opt->position = QStyleOptionTab::Middle;
 
-            if (position == QLatin1String("beginning"))
-                opt->position = QStyleOptionTab::Beginning;
-            else if (position == QLatin1String("end"))
-                opt->position = QStyleOptionTab::End;
-            else if (position == QLatin1String("only"))
-                opt->position = QStyleOptionTab::OnlyOneTab;
-            else
-                opt->position = QStyleOptionTab::Middle;
+        if (selectedPosition == QLatin1String("next"))
+            opt->selectedPosition = QStyleOptionTab::NextIsSelected;
+        else if (selectedPosition == QLatin1String("previous"))
+            opt->selectedPosition = QStyleOptionTab::PreviousIsSelected;
+        else
+            opt->selectedPosition = QStyleOptionTab::NotAdjacent;
 
-            if (selectedPosition == QLatin1String("next"))
-                opt->selectedPosition = QStyleOptionTab::NextIsSelected;
-            else if (selectedPosition == QLatin1String("previous"))
-                opt->selectedPosition = QStyleOptionTab::PreviousIsSelected;
-            else
-                opt->selectedPosition = QStyleOptionTab::NotAdjacent;
-        }
 
     } break;
 
@@ -459,7 +459,7 @@ void QQuickStyleItem::initStyleOption()
         QStyleOptionButton *opt = qstyleoption_cast<QStyleOptionButton*>(m_styleoption);
         if (!on())
             opt->state |= QStyle::State_Off;
-        if (m_hints.contains("partiallyChecked"))
+        if (m_properties.value("partiallyChecked").toBool())
             opt->state |= QStyle::State_NoChange;
         opt->text = text();
     }
@@ -643,9 +643,9 @@ void QQuickStyleItem::initStyleOption()
     if (m_horizontal)
         m_styleoption->state |= QStyle::State_Horizontal;
 
-    if (m_hints.indexOf("mini") != -1) {
+    if (sizeHint == "mini") {
         m_styleoption->state |= QStyle::State_Mini;
-    } else if (m_hints.indexOf("small") != -1) {
+    } else if (sizeHint == "small") {
         m_styleoption->state |= QStyle::State_Small;
     }
 
@@ -801,10 +801,14 @@ QSize QQuickStyleItem::sizeFromContents(int width, int height)
     case Edit:
 #ifdef Q_OS_MAC
         if (style() =="mac") {
-            if (m_hints.indexOf("small") != -1 || m_hints.indexOf("mini") != -1)
+            QString sizeHint = m_hints.value("size").toString();
+            if ((sizeHint == "small") || (sizeHint == "mini"))
                 size = QSize(width, 19);
             else
                 size = QSize(width, 22);
+            if (style() == "mac" && hints().value("rounded").toBool())
+                size += QSize(4, 4);
+
         } else
 #endif
         {
@@ -965,7 +969,7 @@ QVariant QQuickStyleItem::styleHint(const QString &metric)
     // Add SH_Menu_SpaceActivatesItem, SH_Menu_SubMenuPopupDelay
 }
 
-void QQuickStyleItem::setHints(const QStringList &str)
+void QQuickStyleItem::setHints(const QVariantMap &str)
 {
     if (m_hints != str) {
         m_hints = str;
@@ -981,6 +985,11 @@ void QQuickStyleItem::setHints(const QStringList &str)
             emit hintChanged();
         }
     }
+}
+
+void QQuickStyleItem::resetHints()
+{
+    m_hints.clear();
 }
 
 
@@ -1211,7 +1220,7 @@ void QQuickStyleItem::paint(QPainter *painter)
     case ToolButton:
 
 #ifdef Q_OS_MAC
-        if (style() == "mac" && hints().indexOf("segmented") != -1) {
+        if (style() == "mac" && hints().value("segmented").toBool()) {
             const QPaintDevice *target = painter->device();
              HIThemeSegmentDrawInfo sgi;
             sgi.version = 0;
@@ -1227,9 +1236,10 @@ void QQuickStyleItem::paint(QPainter *painter)
             }
             SInt32 button_height;
             GetThemeMetric(kThemeMetricButtonRoundedHeight, &button_height);
-            sgi.position = hints().contains("leftmost") ? kHIThemeSegmentPositionFirst:
-                           hints().contains("rightmost") ? kHIThemeSegmentPositionLast :
-                           hints().contains("h_middle") ? kHIThemeSegmentPositionMiddle :
+            QString buttonPos = m_properties.value("position").toString();
+            sgi.position = buttonPos == "leftmost" ? kHIThemeSegmentPositionFirst :
+                           buttonPos == "rightmost" ? kHIThemeSegmentPositionLast :
+                           buttonPos == "h_middle" ? kHIThemeSegmentPositionMiddle :
                            kHIThemeSegmentPositionOnly;
             QRect centered = m_styleoption->rect;
             centered.setHeight(button_height);
@@ -1257,12 +1267,7 @@ void QQuickStyleItem::paint(QPainter *painter)
         qApp->style()->drawControl(QStyle::CE_ShapedFrame, m_styleoption, painter);
         break;
     case FocusFrame:
-#ifdef Q_OS_MAC
-        if (style() == "mac" && hints().indexOf("rounded") != -1)
-            break; // embedded in the line itself
-        else
-#endif
-            qApp->style()->drawControl(QStyle::CE_FocusFrame, m_styleoption, painter);
+        qApp->style()->drawControl(QStyle::CE_FocusFrame, m_styleoption, painter);
         break;
     case FocusRect:
         qApp->style()->drawPrimitive(QStyle::PE_FrameFocusRect, m_styleoption, painter);
@@ -1288,7 +1293,7 @@ void QQuickStyleItem::paint(QPainter *painter)
         break;
     case Edit: {
 #ifdef Q_OS_MAC
-        if (style() == "mac" && hints().indexOf("rounded") != -1) {
+        if (style() == "mac" && hints().value("rounded").toBool()) {
             const QPaintDevice *target = painter->device();
             HIThemeFrameDrawInfo fdi;
             fdi.version = 0;
@@ -1299,9 +1304,7 @@ void QQuickStyleItem::paint(QPainter *painter)
             if ((m_styleoption->state & QStyle::State_ReadOnly) || !(m_styleoption->state & QStyle::State_Enabled))
                 fdi.state = kThemeStateInactive;
             fdi.isFocused = hasFocus();
-            HIRect hirect = qt_hirectForQRect(m_styleoption->rect,
-                                              QRect(frame_size, frame_size,
-                                                    frame_size * 2, frame_size * 2));
+            HIRect hirect = qt_hirectForQRect(m_styleoption->rect.adjusted(2, 2, -2, 2), QRect(0, 0, 0, 0));
             HIThemeDrawFrame(&hirect, &fdi, qt_mac_cg_context(target), kHIThemeOrientationNormal);
         } else
 #endif

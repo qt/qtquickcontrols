@@ -73,7 +73,8 @@ ScrollViewStyle {
         sunken: styleData.pressed
         text: styleData.value
         hover: styleData.containsMouse
-        hints: headerPosition
+        hints: control.styleHints
+        properties: {"headerpos": headerPosition}
         property string itemSort:  (control.sortIndicatorVisible && styleData.column === control.sortIndicatorColumn) ? (control.sortIndicatorOrder == Qt.AscendingOrder ? "up" : "down") : "";
         property string headerPosition: control.columnCount === 1 ? "only" :
                                                           styleData.column === control.columnCount-1 ? "end" :

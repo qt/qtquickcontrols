@@ -67,7 +67,7 @@ class QQuickStyleItem: public QQuickItem
     Q_PROPERTY( QString text READ text WRITE setText NOTIFY textChanged)
     Q_PROPERTY( QString activeControl READ activeControl WRITE setActiveControl NOTIFY activeControlChanged)
     Q_PROPERTY( QString style READ style NOTIFY styleChanged)
-    Q_PROPERTY( QStringList hints READ hints WRITE setHints NOTIFY hintChanged)
+    Q_PROPERTY( QVariantMap hints READ hints WRITE setHints NOTIFY hintChanged RESET resetHints)
     Q_PROPERTY( QVariantMap properties READ properties WRITE setProperties NOTIFY propertiesChanged)
     Q_PROPERTY( QFont font READ font NOTIFY fontChanged)
 
@@ -140,7 +140,7 @@ public:
     QString elementType() const { return m_type; }
     QString text() const { return m_text; }
     QString activeControl() const { return m_activeControl; }
-    QStringList hints() const { return m_hints; }
+    QVariantMap hints() const { return m_hints; }
     QVariantMap properties() const { return m_properties; }
     QFont font() const { return m_font;}
     QString style() const;
@@ -161,8 +161,9 @@ public:
     void setElementType(const QString &str);
     void setText(const QString &str) { if (m_text != str) {m_text = str; emit textChanged();}}
     void setActiveControl(const QString &str) { if (m_activeControl != str) {m_activeControl = str; emit activeControlChanged();}}
-    void setHints(const QStringList &str);
+    void setHints(const QVariantMap &str);
     void setProperties(const QVariantMap &props) { if (m_properties != props) { m_properties = props; emit propertiesChanged(); } }
+    void resetHints();
 
     int contentWidth() const { return m_contentWidth; }
     void setContentWidth(int arg);
@@ -228,7 +229,7 @@ protected:
     QString m_type;
     QString m_text;
     QString m_activeControl;
-    QStringList m_hints;
+    QVariantMap m_hints;
     QVariantMap m_properties;
     QFont m_font;
 

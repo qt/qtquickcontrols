@@ -51,11 +51,12 @@ Style {
         raised: !(control.checkable && control.checked) && control.__containsMouse
         hover: control.__containsMouse
         hasFocus: control.activeFocus
-        hints: control.styleHints.concat([control.__position])
+        hints: control.styleHints
         text: control.text
 
         properties: {
-            "icon": control.__action.__icon
+            "icon": control.__action.__icon,
+            "position": control.__position
         }
     }
 }
