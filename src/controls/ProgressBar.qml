@@ -123,7 +123,7 @@ Control {
     implicitWidth:(__panel ? __panel.implicitWidth : 0)
     implicitHeight: (__panel ? __panel.implicitHeight: 0)
 
-    /* \internal */
+    /*! \internal */
     function setValue(v) {
         var newval = parseFloat(v)
         if (!isNaN(newval)) {

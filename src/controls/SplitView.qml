@@ -53,13 +53,14 @@ import QtQuick.Controls.Private 1.0 as Private
     SplitView is a control that lays out items horizontally or
     vertically with a draggable splitter between each item.
 
-    There will always be one (and only one) item in the SplitView that has \l {Layout}{Layout.fillWidth}
-    set to \c true (or Layout.fillHeight, if orientation is Qt.Vertical). This means that the
+    There will always be one (and only one) item in the SplitView that has \l{Layout::fillWidth}{Layout.fillWidth}
+    set to \c true (or \l{Layout::fillHeight}{Layout.fillHeight}, if orientation is Qt.Vertical). This means that the
     item will get all leftover space when other items have been laid out.
     By default, the last visible child of the SplitView will have this set, but
     it can be changed by explicitly setting fillWidth to \c true on another item.
     As the fillWidth item will automatically be resized to fit the extra space, explicit assignments
-    to width and height will be ignored (but Layout.minimumWidth and Layout.maximumWidth will still be respected).
+    to width and height will be ignored (but \l{Layout::minimumWidth}{Layout.minimumWidth} and
+    \l{Layout::maximumWidth}{Layout.maximumWidth} will still be respected).
 
     A handle can belong to the item either on the left or top side, or on the right or bottom side:
     \list
@@ -69,9 +70,19 @@ import QtQuick.Controls.Private 1.0 as Private
 
     This will again control which item gets resized when the user drags a handle,
     and which handle gets hidden when an item is told to hide.
-    SplitView supports setting attached \l Layout properties on child items, which means that you
-    can control minimumWidth, minimumHeight, maximumWidth and maximumHeight (in addition
-    to fillWidth/fillHeight) for each child.
+
+    SplitView supports setting attached Layout properties on child items, which
+    means that you can set the following attached properties for each child:
+    \list
+        \li \l{Layout::minimumWidth}{Layout.minimumWidth}
+        \li \l{Layout::minimumHeight}{Layout.minimumHeight}
+        \li \l{Layout::preferredWidth}{Layout.preferredWidth}
+        \li \l{Layout::preferredHeight}{Layout.preferredHeight}
+        \li \l{Layout::maximumWidth}{Layout.maximumWidth}
+        \li \l{Layout::maximumHeight}{Layout.maximumHeight}
+        \li \l{Layout::fillWidth}{Layout.fillWidth} (\c true for only one child)
+        \li \l{Layout::fillHeight}{Layout.fillHeight} (\c true for only one child)
+    \endlist
 
     Example:
 

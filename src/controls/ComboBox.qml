@@ -80,13 +80,19 @@ import QtQuick.Controls.Private 1.0
 Control {
     id: comboBox
 
-    /*! The model to populate the ComboBox from. */
+    /*! \qmlproperty model ComboBox::model
+        The model to populate the ComboBox from. */
     property alias model: popupItems.model
+
+    /*! The model role used for populating the ComboBox. */
     property string textRole: ""
 
-    /*! The index of the currently selected item in the ComboBox. */
+    /*! \qmlproperty int ComboBox::currentIndex
+        The index of the currently selected item in the ComboBox. */
     property alias currentIndex: popup.__selectedIndex
-    /*! The text of the currently selected item in the ComboBox. */
+
+    /*! \qmlproperty string ComboBox::currentText
+        The text of the currently selected item in the ComboBox. */
     readonly property alias currentText: popup.selectedText
 
     /*! This property specifies whether the combobox should gain active focus when pressed.
