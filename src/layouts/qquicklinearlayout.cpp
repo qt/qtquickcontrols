@@ -184,12 +184,18 @@ QSizeF QQuickGridLayoutBase::sizeHint(Qt::SizeHint whichSizeHint) const
     return d->engine.sizeHint(whichSizeHint, QSizeF());
 }
 
+QQuickGridLayoutBase::~QQuickGridLayoutBase()
+{
+    d_func()->m_isReady = false;
+}
+
 void QQuickGridLayoutBase::componentComplete()
 {
     Q_D(QQuickGridLayoutBase);
     quickLayoutDebug() << objectName() << "QQuickGridLayoutBase::componentComplete()" << parent();
     d->m_disableRearrange = true;
     QQuickLayout::componentComplete();    // will call our geometryChange(), (where isComponentComplete() == true)
+    d->m_isReady = true;
     d->m_disableRearrange = false;
     updateLayoutItems();
 
@@ -235,7 +241,7 @@ void QQuickGridLayoutBase::componentComplete()
 void QQuickGridLayoutBase::invalidate(QQuickItem *childItem)
 {
     Q_D(QQuickGridLayoutBase);
-    if (!isComponentComplete())
+    if (!isReady())
         return;
     quickLayoutDebug() << "QQuickGridLayoutBase::invalidate()";
 
@@ -274,7 +280,7 @@ void QQuickGridLayoutBase::invalidate(QQuickItem *childItem)
 void QQuickGridLayoutBase::updateLayoutItems()
 {
     Q_D(QQuickGridLayoutBase);
-    if (!isComponentComplete() || !isVisible())
+    if (!isReady() || !isVisible())
         return;
     quickLayoutDebug() << "QQuickGridLayoutBase::updateLayoutItems";
     d->engine.deleteItems();
@@ -294,7 +300,7 @@ void QQuickGridLayoutBase::itemChange(ItemChange change, const ItemChangeData &v
         QObject::connect(item, SIGNAL(implicitWidthChanged()), this, SLOT(onItemImplicitSizeChanged()));
         QObject::connect(item, SIGNAL(implicitHeightChanged()), this, SLOT(onItemImplicitSizeChanged()));
 
-        if (isComponentComplete() && isVisible())
+        if (isReady() && isVisible())
             updateLayoutItems();
     } else if (change == ItemChildRemovedChange) {
         quickLayoutDebug() << "ItemChildRemovedChange";
@@ -303,7 +309,7 @@ void QQuickGridLayoutBase::itemChange(ItemChange change, const ItemChangeData &v
         QObject::disconnect(item, SIGNAL(visibleChanged()), this, SLOT(onItemVisibleChanged()));
         QObject::disconnect(item, SIGNAL(implicitWidthChanged()), this, SLOT(onItemImplicitSizeChanged()));
         QObject::disconnect(item, SIGNAL(implicitHeightChanged()), this, SLOT(onItemImplicitSizeChanged()));
-        if (isComponentComplete() && isVisible())
+        if (isReady() && isVisible())
             updateLayoutItems();
     }
 
@@ -314,7 +320,7 @@ void QQuickGridLayoutBase::geometryChanged(const QRectF &newGeometry, const QRec
 {
     Q_D(QQuickGridLayoutBase);
     QQuickLayout::geometryChanged(newGeometry, oldGeometry);
-    if (d->m_disableRearrange || !isComponentComplete() || !newGeometry.isValid())
+    if (d->m_disableRearrange || !isReady() || !newGeometry.isValid())
         return;
     quickLayoutDebug() << "QQuickGridLayoutBase::geometryChanged" << newGeometry << oldGeometry;
     rearrange(newGeometry.size());
@@ -326,6 +332,11 @@ void QQuickGridLayoutBase::removeGridItem(QGridLayoutItem *gridItem)
     const int index = gridItem->firstRow(d->orientation);
     d->engine.removeItem(gridItem);
     d->engine.removeRows(index, 1, d->orientation);
+}
+
+bool QQuickGridLayoutBase::isReady() const
+{
+    return d_func()->m_isReady;
 }
 
 void QQuickGridLayoutBase::removeLayoutItem(QQuickItem *item)
@@ -341,7 +352,7 @@ void QQuickGridLayoutBase::removeLayoutItem(QQuickItem *item)
 
 void QQuickGridLayoutBase::onItemVisibleChanged()
 {
-    if (!isComponentComplete())
+    if (!isReady())
         return;
     quickLayoutDebug() << "QQuickGridLayoutBase::onItemVisibleChanged";
     updateLayoutItems();
@@ -349,6 +360,8 @@ void QQuickGridLayoutBase::onItemVisibleChanged()
 
 void QQuickGridLayoutBase::onItemDestroyed()
 {
+    if (!isReady())
+        return;
     Q_D(QQuickGridLayoutBase);
     quickLayoutDebug() << "QQuickGridLayoutBase::onItemDestroyed";
     QQuickItem *inDestruction = static_cast<QQuickItem *>(sender());
@@ -361,6 +374,8 @@ void QQuickGridLayoutBase::onItemDestroyed()
 
 void QQuickGridLayoutBase::onItemImplicitSizeChanged()
 {
+    if (!isReady())
+        return;
     QQuickItem *item = static_cast<QQuickItem *>(sender());
     Q_ASSERT(item);
     invalidate(item);
@@ -369,7 +384,7 @@ void QQuickGridLayoutBase::onItemImplicitSizeChanged()
 void QQuickGridLayoutBase::rearrange(const QSizeF &size)
 {
     Q_D(QQuickGridLayoutBase);
-    if (!isComponentComplete())
+    if (!isReady())
         return;
 
     quickLayoutDebug() << objectName() << "QQuickGridLayoutBase::rearrange()" << size;

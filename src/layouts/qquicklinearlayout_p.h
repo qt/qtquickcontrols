@@ -62,8 +62,7 @@ public:
     explicit QQuickGridLayoutBase(QQuickGridLayoutBasePrivate &dd,
                                   Qt::Orientation orientation,
                                   QQuickItem *parent = 0);
-    ~QQuickGridLayoutBase() {}
-
+    ~QQuickGridLayoutBase();
     void componentComplete();
     void invalidate(QQuickItem *childItem = 0);
     Qt::Orientation orientation() const;
@@ -86,6 +85,7 @@ protected slots:
 
 private:
     void removeGridItem(QGridLayoutItem *gridItem);
+    bool isReady() const;
     Q_DECLARE_PRIVATE(QQuickGridLayoutBase)
 };
 
@@ -95,10 +95,11 @@ class QQuickGridLayoutBasePrivate : public QQuickLayoutPrivate
     Q_DECLARE_PUBLIC(QQuickGridLayoutBase)
 
 public:
-    QQuickGridLayoutBasePrivate() : m_disableRearrange(true) { }
+    QQuickGridLayoutBasePrivate() : m_disableRearrange(true), m_isReady(false) { }
     QQuickGridLayoutEngine engine;
     Qt::Orientation orientation;
     bool m_disableRearrange;
+    bool m_isReady;
     QSet<QQuickItem *> m_ignoredItems;
 };
 

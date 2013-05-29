@@ -633,5 +633,25 @@ Item {
             compare(r1.y, 6) // 5.5
             layout.destroy();
         }
+
+
+        Component {
+            id: layout_deleteLayout
+            ColumnLayout {
+                property int dummyproperty: 0   // yes really - its needed
+                RowLayout {
+                    Text { text: "label1" }     // yes, both are needed
+                    Text { text: "label2" }
+                }
+            }
+        }
+
+        function test_destroyLayout()
+        {
+            var layout = layout_deleteLayout.createObject(container)
+            layout.children[0].children[0].visible = true
+            layout.visible = false
+            layout.destroy()    // Do not crash
+        }
     }
 }
