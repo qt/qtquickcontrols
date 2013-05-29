@@ -46,11 +46,16 @@ import QtQuick.Controls.Private 1.0
     \internal
     \inqmlmodule QtQuick.Controls.Styles 1.0
 */
-Item {
-    implicitHeight: 20
-    implicitWidth: parent ? parent.width : style.implicitWidth
-    StyleItem {
-        id: style
+Style {
+
+    padding.left: 4
+    padding.right: 4
+    padding.top: 3
+    padding.bottom: 2
+
+    property Component panel: StyleItem {
+        implicitHeight: 16
+        implicitWidth: 200
         anchors.fill: parent
         elementType: "statusbar"
     }

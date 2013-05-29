@@ -734,7 +734,7 @@ QSize QQuickStyleItem::sizeFromContents(int width, int height)
         size =  qApp->style()->sizeFromContents(QStyle::CT_CheckBox, m_styleoption, QSize(width,height));
         break;
     case ToolBar:
-        size = QSize(200, 40);
+        size = QSize(200, style().contains("windows") ? 30 : 42);
         break;
     case ToolButton: {
         QStyleOptionToolButton *btn = qstyleoption_cast<QStyleOptionToolButton*>(m_styleoption);
