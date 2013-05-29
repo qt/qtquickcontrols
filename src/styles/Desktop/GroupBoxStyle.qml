@@ -42,7 +42,7 @@ import QtQuick.Controls 1.0
 import QtQuick.Controls.Private 1.0
 
 
-PaddedStyle {
+Style {
     readonly property GroupBox control: __control
 
     property var __style: StyleItem { id: style }

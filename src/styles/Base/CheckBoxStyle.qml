@@ -72,7 +72,7 @@ import QtQuick.Controls.Private 1.0
     }
     \endqml
 */
-PaddedStyle {
+Style {
     id: checkboxStyle
 
     /*! The \l CheckBox attached to this style. */

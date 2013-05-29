@@ -49,7 +49,7 @@ import QtQuick.Controls.Private 1.0
     \brief Provides custom styling for ComboBox
 */
 
-PaddedStyle {
+Style {
 
     /*! \internal */
     property var __syspal: SystemPalette {

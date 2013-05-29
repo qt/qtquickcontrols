@@ -52,7 +52,7 @@ sources += ../../private/qstyleitem.cpp \
            ../../private/TabBar.qml \
            ../../private/Control.qml \
            ../../private/Style.qml \
-           ../../private/qquickpaddedstyle.h \
-           ../../private/qquickpaddedstyle.cpp
+           ../../private/qquickabstractstyle.h \
+           ../../private/qquickabstractstyle.cpp
 
 imagedirs += images

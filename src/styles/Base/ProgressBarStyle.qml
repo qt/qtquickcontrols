@@ -71,7 +71,7 @@ import QtQuick.Controls.Private 1.0
     \endqml
 */
 
-PaddedStyle {
+Style {
     id: progressBarStyle
 
     /*! \internal */

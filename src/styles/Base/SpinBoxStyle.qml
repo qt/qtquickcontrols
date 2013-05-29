@@ -49,7 +49,7 @@ import QtQuick.Controls.Private 1.0
     \brief Provides custom styling for SpinBox
 */
 
-PaddedStyle {
+Style {
     id: spinboxStyle
 
     /*! The \l SpinBox attached to this style. */

@@ -72,7 +72,7 @@ import QtQuick.Controls.Private 1.0
     If you need a custom label, you can replace the label item.
 */
 
-PaddedStyle {
+Style {
     id: buttonstyle
 
     /*! The \l Button attached to this style. */

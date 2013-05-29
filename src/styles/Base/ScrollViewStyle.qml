@@ -47,7 +47,7 @@ import QtQuick.Controls.Private 1.0
     \since QtQuick.Controls.Styles 1.0
     \brief Provides custom styling for ScrollView
 */
-PaddedStyle {
+Style {
     id: root
 
     /*! \internal */

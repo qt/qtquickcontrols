@@ -41,7 +41,7 @@ import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Private 1.0
 
-PaddedStyle {
+Style {
     readonly property SpinBox control: __control
 
     property var __syspal: SystemPalette {
