@@ -192,7 +192,6 @@ FocusScope {
 
                 property Item control: tabView
                 property int index: tabindex
-                property real availableWidth: tabbar.availableWidth
 
                 property QtObject styleData: QtObject {
                     readonly property alias index: tabitem.tabindex
@@ -202,6 +201,7 @@ FocusScope {
                     readonly property alias previsousSelected: tabitem.previousSelected
                     readonly property alias hovered: tabitem.containsMouse
                     readonly property bool activeFocus: tabbar.activeFocus
+                    readonly property real availableWidth: tabbar.availableWidth
                 }
 
                 sourceComponent: loader.item ? loader.item.tab : null
