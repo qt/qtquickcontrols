@@ -50,12 +50,9 @@ QT_BEGIN_NAMESPACE
     \ingroup views
     \brief Provides attached properties for items pushed onto a StackView.
 
-    The Stack attached property provides information when an item becomes
-    active or inactive through the \l{Stack::status}{Stack.status} property.
-    Status will be \c Stack.Activating when an item is transitioning into
-    being the current item on the screen, and \c Stack.Active once the
-    transition stops. When it leaves the screen, it will be
-    \c Stack.Deactivating, and then \c Stack.Inactive.
+    The Stack type provides attached properties for items pushed onto a \l StackView.
+    It gives specific information about the item, such as its \l status and
+    \l index in the stack \l view the item is in.
 
     \sa StackView
 */
@@ -75,7 +72,7 @@ QQuickStack *QQuickStack::qmlAttachedProperties(QObject *object)
 
 /*!
     \readonly
-    \qmlproperty int Stack::index
+    \qmlattachedproperty int Stack::index
 
     This property holds the index of the item inside \l{view}{StackView},
     so that \l{StackView::get()}{StackView.get(index)} will return the item itself.
@@ -96,7 +93,7 @@ void QQuickStack::setIndex(int index)
 
 /*!
     \readonly
-    \qmlproperty enumeration Stack::status
+    \qmlattachedproperty enumeration Stack::status
 
     This property holds the status of the item. It can have one of the following values:
     \list
@@ -121,7 +118,7 @@ void QQuickStack::setStatus(Status status)
 
 /*!
     \readonly
-    \qmlproperty StackView Stack::view
+    \qmlattachedproperty StackView Stack::view
 
     This property holds the StackView the item is in. If the item is not inside
     a StackView, \a view will be \c null.

@@ -65,6 +65,8 @@ import "Private/StackView.js" as JSArray
     The stack can then be used by invoking its navigation methods. The first item
     to show in the StackView is commonly loaded assigning it to \l initialItem.
 
+    \note Items pushed onto the stack view have \l{Supported Attached Properties}{Stack attached properties}.
+
     \section1 Basic Navigation
     There are three primary navigation operations in StackView: push(), pop() and
     replace (you replace by specifying argument \c replace to push()).
@@ -435,6 +437,15 @@ import "Private/StackView.js" as JSArray
         }
     }
     \endqml
+
+    \section1 Supported Attached Properties
+
+    Items in a StackView support these attached properties:
+    \list
+        \li \l{Stack::index}{Stack.index} - Contains the index of the item inside the StackView
+        \li \l{Stack::view}{Stack.view} - Contains the StackView the item is in
+        \li \l{Stack::status}{Stack.status} - Contains the status of the item
+    \endlist
 */
 
 Item {
