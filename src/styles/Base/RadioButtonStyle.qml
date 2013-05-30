@@ -87,7 +87,7 @@ Style {
         properties of \c control, the following state properties are available:
 
         \table
-            \li readonly property bool styleData.hovered - The control is being hovered.
+            \row \li readonly property bool \b styleData.hovered \li The control is being hovered.
         \endtable
     */
     property Component label: Text {
@@ -107,7 +107,7 @@ Style {
         properties of \c control, the following state properties are available:
 
         \table
-            \li readonly property bool styleData.hovered - The control is being hovered.
+            \row \li readonly property bool \b styleData.hovered \li The control is being hovered.
         \endtable
     */
     property Component indicator: Rectangle {
