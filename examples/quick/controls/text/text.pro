@@ -7,7 +7,8 @@ qtHaveModule(widgets) {
 include(src/src.pri)
 
 OTHER_FILES += \
-    qml/main.qml
+    qml/main.qml \
+    qml/ToolBarSeparator.qml
 
 RESOURCES += \
     resources.qrc

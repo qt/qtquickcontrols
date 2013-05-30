@@ -38,44 +38,24 @@
 **
 ****************************************************************************/
 
-
-
-
-
 import QtQuick 2.1
-import QtQuick.Controls 1.0
-import QtQuick.Layouts 1.0
 
-ApplicationWindow {
-    width: 600
-    height: 400
-
-    SplitView {
-        anchors.fill: parent
-
-        Rectangle {
-            id: column
-            width: 200
-            Layout.minimumWidth: 100
-            Layout.maximumWidth: 300
-            color: "lightsteelblue"
-        }
-
-        SplitView {
-            orientation: Qt.Vertical
-            Layout.fillWidth: true
-
-            Rectangle {
-                id: row1
-                height: 200
-                color: "lightblue"
-                Layout.minimumHeight: 1
-            }
-
-            Rectangle {
-                id: row2
-                color: "lightgray"
-            }
-        }
+Item {
+    width: 8
+    anchors.top: parent.top
+    anchors.bottom: parent.bottom
+    anchors.margins: 6
+    Rectangle {
+        width: 1
+        height: parent.height
+        anchors.horizontalCenter: parent.horizontalCenter
+        color: "#22000000"
+    }
+    Rectangle {
+        width: 1
+        height: parent.height
+        anchors.horizontalCenterOffset: 1
+        anchors.horizontalCenter: parent.horizontalCenter
+        color: "#33ffffff"
     }
 }

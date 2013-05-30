@@ -45,127 +45,132 @@
 import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Styles 1.0
-import QtQuick.Dialogs 1.0
+import QtQuick.Layouts 1.0
 
 Item {
     id: root
     width: 300
     height: 200
 
-    ColorDialog {
-        id: colorDialog
-        color: "#afe"
-        property color last: "#afe"
-        onRejected: color = last
-        onVisibleChanged: if (visible) last = color
-    }
-
-    Column {
-        anchors.margins: 20
-        anchors.horizontalCenter: parent.horizontalCenter
+    property int columnWidth: 120
+    GridLayout {
+        rowSpacing: 12
+        columnSpacing: 30
         anchors.top: parent.top
-        spacing: 20
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.margins: 30
 
-        Row {
-            spacing: 8
-            Button {
-                text: "Set color…"
-                style: ButtonStyle { }
-                onClicked: colorDialog.open()
-            }
-            Button {
-                text: "Push me"
-                style: ButtonStyle { }
-            }
-            Button {
-                text: "Push me"
-                style: buttonStyle
-            }
+        Button {
+            text: "Push me"
+            style: ButtonStyle { }
+            onClicked: colorDialog.open()
+            implicitWidth: columnWidth
         }
-        Row {
-            spacing: 8
-            TextField {
-                style: TextFieldStyle { }
-            }
-            TextField {
-                style: TextFieldStyle { }
-            }
-            TextField {
-                style: textfieldStyle
-            }
+        Button {
+            text: "Push me"
+            style: ButtonStyle { }
+            implicitWidth: columnWidth
+        }
+        Button {
+            text: "Push me"
+            style: buttonStyle
+            implicitWidth: columnWidth
         }
 
-        Row {
-            spacing: 8
-            Slider {
-                value: 50
-                maximumValue: 100
-                width: 100
-                style: SliderStyle { }
-            }
-            Slider {
-                value: 50
-                maximumValue: 100
-                width: 100
-                style: SliderStyle { }
-            }
-            Slider {
-                value: 50
-                maximumValue: 100
-                width: 100
-                style: sliderStyle
-            }
+        TextField {
+            Layout.row: 1
+            style: TextFieldStyle { }
+            implicitWidth: columnWidth
+        }
+        TextField {
+            style: TextFieldStyle { }
+            implicitWidth: columnWidth
+        }
+        TextField {
+            style: textfieldStyle
+            implicitWidth: columnWidth
         }
 
-        Row {
-            spacing: 8
-            ProgressBar {
-                value: 50
-                maximumValue: 100
-                width: 100
-                style: ProgressBarStyle{ }
-            }
-            ProgressBar {
-                value: 50
-                maximumValue: 100
-                width: 100
-                style: ProgressBarStyle{ }
-            }
-            ProgressBar {
-                value: 50
-                maximumValue: 100
-                width: 100
-                style: progressbarStyle
-            }
+        Slider {
+            Layout.row: 2
+            value: 50
+            maximumValue: 100
+            implicitWidth: columnWidth
+            style: SliderStyle { }
+        }
+        Slider {
+            value: 50
+            maximumValue: 100
+            implicitWidth: columnWidth
+            style: SliderStyle { }
+        }
+        Slider {
+            value: 50
+            maximumValue: 100
+            implicitWidth: columnWidth
+            style: sliderStyle
         }
 
-        Row {
-            spacing: 8
-            CheckBox {
-                text: "CheckBox"
-                style: CheckBoxStyle{}
-            }
-            RadioButton {
-                style: RadioButtonStyle{}
-                text: "RadioButton"
-            }
-
-            ComboBox {
-                model: ["Paris", "Oslo", "New York"]
-                style: ComboBoxStyle{}
-            }
+        ProgressBar {
+            Layout.row: 3
+            value: 50
+            maximumValue: 100
+            implicitWidth: columnWidth
+            style: ProgressBarStyle{ }
+        }
+        ProgressBar {
+            value: 50
+            maximumValue: 100
+            implicitWidth: columnWidth
+            style: ProgressBarStyle{ }
+        }
+        ProgressBar {
+            value: 50
+            maximumValue: 100
+            implicitWidth: columnWidth
+            style: progressbarStyle
         }
 
-        Row {
-            TabView {
-                width: 400
-                height: 30
-                Tab { title: "One" ; Item {}}
-                Tab { title: "Two" ; Item {}}
-                Tab { title: "Three" ; Item {}}
-                Tab { title: "Four" ; Item {}}
-                style: tabViewStyle
-            }
+        CheckBox {
+            text: "CheckBox"
+            style: CheckBoxStyle{}
+            Layout.row: 4
+            implicitWidth: columnWidth
+        }
+        RadioButton {
+            style: RadioButtonStyle{}
+            text: "RadioButton"
+            implicitWidth: columnWidth
+        }
+
+        ComboBox {
+            model: ["Paris", "Oslo", "New York"]
+            style: ComboBoxStyle{}
+            implicitWidth: columnWidth
+        }
+
+        TabView {
+            Layout.row: 5
+            Layout.columnSpan: 3
+            Layout.fillWidth: true
+            implicitHeight: 30
+            Tab { title: "One" ; Item {}}
+            Tab { title: "Two" ; Item {}}
+            Tab { title: "Three" ; Item {}}
+            Tab { title: "Four" ; Item {}}
+            style: TabViewStyle {}
+        }
+
+        TabView {
+            Layout.row: 6
+            Layout.columnSpan: 3
+            Layout.fillWidth: true
+            implicitHeight: 30
+            Tab { title: "One" ; Item {}}
+            Tab { title: "Two" ; Item {}}
+            Tab { title: "Three" ; Item {}}
+            Tab { title: "Four" ; Item {}}
+            style: tabViewStyle
         }
     }
 
@@ -174,7 +179,7 @@ Item {
     property Component buttonStyle: ButtonStyle {
         background: Rectangle {
             implicitHeight: 20
-            implicitWidth: 100
+            implicitWidth: columnWidth
             color: control.pressed ? "darkGray" : "lightGray"
             antialiasing: true
             border.color: "gray"
@@ -184,7 +189,7 @@ Item {
 
     property Component textfieldStyle: TextFieldStyle {
         background: Rectangle {
-            implicitWidth: 100
+            implicitWidth: columnWidth
             implicitHeight: 20
             color: "#f0f0f0"
             antialiasing: true
@@ -205,7 +210,7 @@ Item {
 
         groove: Rectangle {
             height: 8
-            implicitWidth: 100
+            implicitWidth: columnWidth
             implicitHeight: 20
 
             antialiasing: true
@@ -217,7 +222,7 @@ Item {
 
     property Component progressbarStyle: ProgressBarStyle {
         background: Rectangle {
-            implicitWidth: 100
+            implicitWidth: columnWidth
             implicitHeight: 20
             color: "#f0f0f0"
             border.color: "gray"
@@ -225,7 +230,7 @@ Item {
             radius: height/2
         }
         progress: Rectangle {
-            implicitWidth: 100
+            implicitWidth: columnWidth
             implicitHeight: 20
             color: "#c0c0c0"
             border.color: "gray"
@@ -246,18 +251,18 @@ Item {
             }
             border.color: "#898989"
             Rectangle { anchors.fill: parent ; anchors.margins: 1 ; border.color: "white" ; color: "transparent" }
-
         }
         tab: Item {
-            implicitWidth: image.sourceSize.width
+            property int totalOverlap: tabOverlap * (control.count - 1)
+            implicitWidth: Math.min ((styleData.availableWidth + totalOverlap)/control.count - 4, image.sourceSize.width)
             implicitHeight: image.sourceSize.height
             BorderImage {
                 id: image
                 anchors.fill: parent
                 source: styleData.selected ? "../images/tab_selected.png" : "../images/tab.png"
-                border.left: 50
+                border.left: 30
                 smooth: false
-                border.right: 50
+                border.right: 30
             }
             Text {
                 text: styleData.title

@@ -166,13 +166,11 @@ void DocumentHandler::mergeFormatOnWordOrSelection(const QTextCharFormat &format
 void DocumentHandler::setSelectionStart(int position)
 {
     m_selectionStart = position;
-//    emit selectionStartChanged();
 }
 
 void DocumentHandler::setSelectionEnd(int position)
 {
     m_selectionEnd = position;
-//    emit selectionEndChanged();
 }
 
 void DocumentHandler::setAlignment(Qt::Alignment a)
@@ -188,10 +186,8 @@ void DocumentHandler::setAlignment(Qt::Alignment a)
 
 Qt::Alignment DocumentHandler::alignment() const
 {
-//    if (!m_doc || m_doc->isEmpty() || m_cursorPosition < 0)
-//        return Qt::AlignLeft;
     QTextCursor cursor = textCursor();
-    if (cursor.isNull() || cursor.blockNumber() == 0)
+    if (cursor.isNull())
         return Qt::AlignLeft;
     return textCursor().blockFormat().alignment();
 }
@@ -199,7 +195,7 @@ Qt::Alignment DocumentHandler::alignment() const
 bool DocumentHandler::bold() const
 {
     QTextCursor cursor = textCursor();
-    if (cursor.isNull() || cursor.blockNumber() == 0)
+    if (cursor.isNull())
         return false;
     return textCursor().charFormat().fontWeight() == QFont::Bold;
 }
@@ -207,7 +203,7 @@ bool DocumentHandler::bold() const
 bool DocumentHandler::italic() const
 {
     QTextCursor cursor = textCursor();
-    if (cursor.isNull() || cursor.blockNumber() == 0)
+    if (cursor.isNull())
         return false;
     return textCursor().charFormat().fontItalic();
 }
@@ -215,7 +211,7 @@ bool DocumentHandler::italic() const
 bool DocumentHandler::underline() const
 {
     QTextCursor cursor = textCursor();
-    if (cursor.isNull() || cursor.blockNumber() == 0)
+    if (cursor.isNull())
         return false;
     return textCursor().charFormat().fontUnderline();
 }

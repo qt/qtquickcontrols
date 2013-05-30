@@ -1,6 +1,7 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource prefix="/">
   <file>qml/main.qml</file>
+  <file>qml/ToolBarSeparator.qml</file>
   <file>qml/images/logo32.png</file>
   <file>qml/images/editcopy.png</file>
   <file>qml/images/editcut.png</file>
