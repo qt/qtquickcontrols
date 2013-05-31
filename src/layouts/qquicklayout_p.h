@@ -175,6 +175,22 @@ public:
 
     qreal sizeHint(Qt::SizeHint which, Qt::Orientation orientation) const;
 
+    bool isExtentExplicitlySet(Qt::Orientation o, Qt::SizeHint whichSize) const
+    {
+        switch (whichSize) {
+        case Qt::MinimumSize:
+            return o == Qt::Horizontal ? m_isMinimumWidthSet : m_isMinimumHeightSet;
+        case Qt::MaximumSize:
+            return o == Qt::Horizontal ? m_isMaximumWidthSet : m_isMaximumHeightSet;
+        case Qt::PreferredSize:
+            return true;            // Layout.preferredWidth is always explicitly set
+        case Qt::MinimumDescent:    // Not supported
+        case Qt::NSizeHints:
+            return false;
+        }
+        return false;
+    }
+
 signals:
     void minimumWidthChanged();
     void minimumHeightChanged();
