@@ -44,6 +44,7 @@
 
 #include "qquicklayout_p.h"
 #include "qquickgridlayoutengine_p.h"
+#include <QtCore/qset.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -67,6 +68,7 @@ public:
     void invalidate(QQuickItem *childItem = 0);
     Qt::Orientation orientation() const;
     void setOrientation(Qt::Orientation orientation);
+    QSizeF sizeHint(Qt::SizeHint whichSizeHint) const Q_DECL_OVERRIDE;
 
 protected:
     void updateLayoutItems();
@@ -75,6 +77,7 @@ protected:
     void removeLayoutItem(QQuickItem *item);
     void itemChange(ItemChange change, const ItemChangeData &data);
     void geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry);
+    bool shouldIgnoreItem(QQuickItem *child, QQuickLayoutAttached *&info, QSizeF *sizeHints);
 
 protected slots:
     void onItemVisibleChanged();
@@ -96,7 +99,7 @@ public:
     QQuickGridLayoutEngine engine;
     Qt::Orientation orientation;
     bool m_disableRearrange;
-
+    QSet<QQuickItem *> m_ignoredItems;
 };
 
 /**********************************

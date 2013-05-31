@@ -40,6 +40,7 @@
 
 import QtQuick 2.1
 import QtTest 1.0
+import QtQuickControlsTests 1.0
 
 Item {
     id: container
@@ -72,6 +73,9 @@ TestCase {
     }
 
     function test_activeFocusOnTab() {
+        if (!SystemInfo.tabAllWidgets)
+            skip("This function doesn't support NOT iterating all.")
+
         var test_control = 'import QtQuick 2.1; \
         import QtQuick.Controls 1.0;            \
         Item {                                  \
@@ -142,6 +146,87 @@ TestCase {
         verify(!control.control2.activeFocus)
         verify(!control.control3.activeFocus)
         control.destroy()
+    }
+
+    function test_checkableWithinExclusiveGroup_QTBUG31033() {
+        var component = Qt.createComponent("toolbutton/tb_exclusivegroup.qml")
+        compare(component.status, Component.Ready)
+        var test =  component.createObject(container);
+        verify(test !== null, "test control created is null")
+        test.forceActiveFocus()
+        verify(test.tb1.checked === false)
+        verify(test.tb2.checked === false)
+        mouseClick(test.tb1, 5, 5)
+        verify(test.tb1.checked === true)
+        verify(test.tb2.checked === false)
+        mouseClick(test.tb2, 5, 5)
+        verify(test.tb1.checked === false)
+        verify(test.tb2.checked === true)
+        mouseClick(test.tb2, 5, 5)
+        verify(test.tb1.checked === false)
+        verify(test.tb2.checked === true)
+        test.destroy()
+    }
+
+    function test_checkableWithAction_QTBUG30971() {
+        var component = Qt.createComponent("toolbutton/tb_withCheckableAction.qml")
+        compare(component.status, Component.Ready)
+        var test =  component.createObject(container);
+        verify(test !== null, "test control created is null")
+        test.forceActiveFocus()
+        verify(test.tb.checked === false)
+        verify(test.text1.isBold === false)
+        verify(test.text2.isBold === false)
+        mouseClick(test.text1, 5, 5)
+        mouseClick(test.tb, 5, 5)
+        verify(test.tb.checked === true)
+        verify(test.text1.isBold === true)
+        verify(test.text2.isBold === false)
+        mouseClick(test.text2, 5, 5)
+        verify(test.tb.checked === false)
+        verify(test.text1.isBold === true)
+        verify(test.text2.isBold === false)
+        mouseClick(test.tb, 5, 5)
+        verify(test.tb.checked === true)
+        verify(test.text1.isBold === true)
+        verify(test.text2.isBold === true)
+        mouseClick(test.text1, 5, 5)
+        mouseClick(test.tb, 5, 5)
+        verify(test.tb.checked === false)
+        verify(test.text1.isBold === false)
+        verify(test.text2.isBold === true)
+        test.destroy()
+    }
+
+    function test_checkableActionsWithinExclusiveGroup() {
+        var component = Qt.createComponent("toolbutton/tb_checkableActionWithinExclusiveGroup.qml")
+        compare(component.status, Component.Ready)
+        var test = component.createObject(container);
+        verify(test !== null, "test control created is null")
+        test.forceActiveFocus()
+        verify(test.tb1.checked === false)
+        verify(test.tb2.checked === false)
+        verify(test.text.isBold === false)
+        verify(test.text.isUnderline === false)
+        // clicking bold toolbutton
+        mouseClick(test.tb1, 5, 5)
+        verify(test.tb1.checked === true)
+        verify(test.tb2.checked === false)
+        verify(test.text.isBold === true)
+        verify(test.text.isUnderline === false)
+        // clicking in checked toolbutton does nothing
+        mouseClick(test.tb1, 5, 5)
+        verify(test.tb1.checked === true)
+        verify(test.tb2.checked === false)
+        verify(test.text.isBold === true)
+        verify(test.text.isUnderline === false)
+        // clicking underline toolbutton
+        mouseClick(test.tb2, 5, 5)
+        verify(test.tb1.checked === false)
+        verify(test.tb2.checked === true)
+        verify(test.text.isBold === false)
+        verify(test.text.isUnderline === true)
+        test.destroy()
     }
 }
 }

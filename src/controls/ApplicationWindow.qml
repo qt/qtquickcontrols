@@ -46,6 +46,7 @@ import QtQuick.Controls.Private 1.0
 
 /*!
     \qmltype ApplicationWindow
+    \since QtQuick.Controls 1.0
     \inqmlmodule QtQuick.Controls 1.0
     \ingroup applicationwindow
     \brief Provides a top-level application window.
@@ -124,14 +125,6 @@ Window {
     /*! \internal */
     default property alias data: contentArea.data
 
-    /*! \internal */
-    Binding {
-        target: contentItem
-        property: "activeFocusOnTab"
-        when: activeFocusItem
-        value: activeFocusItem ? ( (activeFocusItem != contentItem) ? !activeFocusItem.activeFocusOnTab : true ) : false
-    }
-
     color: syspal.window
 
     SystemPalette {id: syspal}
@@ -140,11 +133,12 @@ Window {
         id: backgroundItem
         anchors.fill: parent
 
-        Row {
+        Item {
             id: toolBarArea
             anchors.top: parent.top
             anchors.left: parent.left
             anchors.right: parent.right
+            height: childrenRect.height
         }
 
         Item {
@@ -155,11 +149,12 @@ Window {
             anchors.bottom: statusBarArea.top
         }
 
-        Row {
+        Item {
             id: statusBarArea
             anchors.bottom: parent.bottom
             anchors.left: parent.left
             anchors.right: parent.right
+            height: childrenRect.height
         }
 
         onVisibleChanged: if (visible && menuBar) menuBar.__parentWindow = root

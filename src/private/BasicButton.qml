@@ -59,7 +59,7 @@ Control {
     /*! \qmlproperty bool BasicButton::pressed
 
         This property holds whether the button is pressed. */
-    property alias pressed: behavior.effectivePressed
+    readonly property bool pressed: behavior.effectivePressed
 
     /*! This property holds whether the button is checkable.
 
@@ -117,7 +117,10 @@ Control {
         __action.trigger()
     }
 
-    Action { id: ownAction }
+    Action {
+        id: ownAction
+        iconSource: !button.action ? button.iconSource : ""
+    }
 
     Connections {
         target: __action
@@ -140,8 +143,6 @@ Control {
 
     MouseArea {
         id: behavior
-        property bool checkable: __action.checkable
-        property bool checked: __action.checked
         property bool keyPressed: false
         property bool effectivePressed: pressed && containsMouse || keyPressed
 
@@ -155,7 +156,7 @@ Control {
         onPressed: {
             if (activeFocusOnPress)
                 button.forceActiveFocus()
-            if (button.checkable)
+            if (button.checkable && !button.action && !(button.checked && button.exclusiveGroup))
                 button.checked = !button.checked
         }
 
@@ -166,24 +167,12 @@ Control {
         }
     }
 
+    /*! \internal */
+    property var __behavior: behavior
+
     SystemPalette { id: syspal }
 
     states: [
-        State {
-            name: "ownAction"
-            when: action === null
-            PropertyChanges {
-                target: ownAction
-                enabled: button.enabled
-                checkable: button.checkable
-                checked: button.checked
-                exclusiveGroup: button.exclusiveGroup
-                text: button.text
-                iconSource: button.iconSource
-                tooltip: button.tooltip
-            }
-        },
-
         State {
             name: "boundAction"
             when: action !== null
@@ -192,7 +181,6 @@ Control {
                 enabled: action.enabled
                 checkable: action.checkable
                 checked: action.checked
-                exclusiveGroup: action.exclusiveGroup
                 text: action.text
                 iconSource: action.iconSource
                 tooltip: action.tooltip

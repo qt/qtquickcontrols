@@ -47,7 +47,7 @@ import QtQuick.Controls.Private 1.0
         \internal
         \inqmlmodule QtQuick.Controls.Private 1.0
 */
-Control {
+Item {
     id: scrollbar
 
     property int orientation: Qt.Horizontal
@@ -58,23 +58,33 @@ Control {
     activeFocusOnTab: false
 
     Accessible.role: Accessible.ScrollBar
-    implicitWidth: __panel.implicitWidth
-    implicitHeight: __panel.implicitHeight
+    implicitWidth: panelLoader.implicitWidth
+    implicitHeight: panelLoader.implicitHeight
 
-    readonly property alias upPressed: internal.upPressed
-    readonly property alias downPressed: internal.downPressed
-    readonly property alias pageUpPressed: internal.pageUpPressed
-    readonly property alias pageDownPressed: internal.pageDownPressed
-    readonly property alias handlePressed: internal.handlePressed
+    property bool upPressed
+    property bool downPressed
+    property bool pageUpPressed
+    property bool pageDownPressed
+    property bool handlePressed
+
+
+    property Item __panel: panelLoader.item
+    Loader {
+        id: panelLoader
+        anchors.fill: parent
+        sourceComponent: __style ? __style.__scrollbar : null
+        onStatusChanged: if (status === Loader.Error) console.error("Failed to load Style for", root)
+        property alias __control: scrollbar
+        property QtObject __styleData: QtObject {
+            readonly property alias horizontal: internal.horizontal
+            readonly property alias upPressed: scrollbar.upPressed
+            readonly property alias downPressed: scrollbar.downPressed
+            readonly property alias handlePressed: scrollbar.handlePressed
+        }
+    }
 
     MouseArea {
         id: internal
-
-        property bool upPressed
-        property bool downPressed
-        property bool pageUpPressed
-        property bool pageDownPressed
-        property bool handlePressed
 
         property bool horizontal: orientation === Qt.Horizontal
         property int pageStep: internal.horizontal ? width : height
@@ -84,7 +94,7 @@ Control {
         anchors.fill: parent
 
         property bool autoincrement: false
-        property bool scrollToClickPosition: __style ? __style.scrollToClickPosition : 0
+        property bool scrollToClickPosition: __style ? __style.scrollToClickedPosition : 0
 
         // Update hover item
         onEntered: if (!pressed) __panel.activeControl = __panel.hitTest(mouseX, mouseY)
@@ -120,7 +130,7 @@ Control {
         }
 
         onPositionChanged: {
-            if (pressed && __panel.activeControl === "handle") {
+            if (handlePressed) {
                 if (!horizontal)
                     slider.position = oldPosition + (mouseY - pressedY)
                 else
@@ -139,21 +149,21 @@ Control {
             if (__panel.activeControl === "handle") {
                 pressedX = mouseX;
                 pressedY = mouseY;
-                internal.handlePressed = true;
+                handlePressed = true;
                 oldPosition = slider.position;
             } else if (__panel.activeControl === "up") {
                 decrement();
-                internal.upPressed = Qt.binding(function() {return containsMouse});
+                upPressed = Qt.binding(function() {return containsMouse});
             } else if (__panel.activeControl === "down") {
                 increment();
-                internal.downPressed = Qt.binding(function() {return containsMouse});
+                downPressed = Qt.binding(function() {return containsMouse});
             } else if (!scrollToClickposition){
                 if (__panel.activeControl === "upPage") {
                     decrementPage();
-                    internal.pageUpPressed = true;
+                    pageUpPressed = true;
                 } else if (__panel.activeControl === "downPage") {
                     incrementPage();
-                    internal.pageDownPressed = true;
+                    pageDownPressed = true;
                 }
             } else {
                 slider.position = horizontal ? mouseX -  handleRect.width/2
@@ -164,11 +174,11 @@ Control {
         onReleased: {
             __panel.activeControl = __panel.hitTest(mouseX, mouseY);
             autoincrement = false;
-            internal.upPressed = false;
-            internal.downPressed = false;
-            internal.handlePressed = false;
-            internal.pageUpPressed = false;
-            internal.pageDownPressed = false;
+            upPressed = false;
+            downPressed = false;
+            handlePressed = false;
+            pageUpPressed = false;
+            pageDownPressed = false;
         }
 
         function incrementPage() {

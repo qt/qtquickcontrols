@@ -64,7 +64,7 @@ Style {
         width: implicitWidth + pixelMetric("menubaritemspacing")
 
         enabled: menuItem.enabled
-        selected: parent.selected || sunken
-        sunken: parent.sunken
+        selected: (parent && parent.selected) || sunken
+        sunken: parent && parent.sunken
     }
 }

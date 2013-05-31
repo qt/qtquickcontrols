@@ -43,40 +43,46 @@ import QtQuick.Controls.Styles 1.0
 /*!
         \qmltype Control
         \internal
+        \qmlabstract
         \inqmlmodule QtQuick.Controls.Private 1.0
 */
 FocusScope {
     id: root
 
+    /*! \qmlproperty Component Control::style
+
+        The style Component for this control.
+        \sa {Qt Quick Controls Styles QML Types}
+
+    */
     property Component style
 
-    /* \internal */
-    property Style __style: styleLoader.item
+    /*! \internal */
+    property QtObject __style: styleLoader.item
 
-    /* \internal */
+    /*! \internal */
     property Item __panel: panelLoader.item
 
-    /* \internal */
+    /*! \internal */
     property var styleHints: []
 
-    /* \internal */
     implicitWidth: __panel ? __panel.implicitWidth: 0
-
-    /* \internal */
     implicitHeight: __panel ? __panel.implicitHeight: 0
-
     activeFocusOnTab: false
+
+    /*! \internal */
+    property alias __styleData: styleLoader.styleData
 
     Loader {
         id: panelLoader
         anchors.fill: parent
         sourceComponent: __style ? __style.panel : null
-        property alias control: root
         onStatusChanged: if (status === Loader.Error) console.error("Failed to load Style for", root)
         Loader {
             id: styleLoader
             sourceComponent: style
-            property Item control: root
+            property Item __control: root
+            property QtObject styleData: null
             onStatusChanged: {
                 if (status === Loader.Error)
                     console.error("Failed to load Style for", root)

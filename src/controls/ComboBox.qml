@@ -45,6 +45,7 @@ import QtQuick.Controls.Private 1.0
 /*!
     \qmltype ComboBox
     \inqmlmodule QtQuick.Controls 1.0
+    \since QtQuick.Controls 1.0
     \ingroup controls
     \brief Provides a drop-down list functionality.
 
@@ -71,6 +72,9 @@ import QtQuick.Controls.Private 1.0
            onCurrentIndexChanged: console.debug(currentText + ", " + cbItems.get(currentIndex).color)
        }
     \endqml
+
+    You can create a custom appearance for a ComboBox by
+    assigning a \l ComboBoxStyle.
 */
 
 Control {
@@ -90,11 +94,13 @@ Control {
     property bool activeFocusOnPress: false
 
     /*! \internal */
-    readonly property bool __pressed: mouseArea.pressed && mouseArea.containsMouse || popup.__popupVisible
+    readonly property bool pressed: mouseArea.pressed && mouseArea.containsMouse || popup.__popupVisible
     /*! \internal */
     property alias __containsMouse: mouseArea.containsMouse
+    /*! \internal */
+    property var __popup: popup
 
-    style: Qt.createComponent(Settings.theme() + "/ComboBoxStyle.qml", comboBox)
+    style: Qt.createComponent(Settings.style + "/ComboBoxStyle.qml", comboBox)
 
     activeFocusOnTab: true
 
@@ -114,9 +120,6 @@ Control {
     Component.onCompleted: {
         if (currentIndex === -1)
             currentIndex = 0
-        if (Qt.platform.os === "mac") {
-            popup.y += 6
-        }
 
         popup.ready = true
         popup.resolveTextValue(textRole)
@@ -128,7 +131,7 @@ Control {
         id: popup
         objectName: "popup"
 
-        style: isPopup ? __style.popupStyle : __style.dropDownStyle
+        style: isPopup ? __style.__popupStyle : __style.__dropDownStyle
 
         readonly property string selectedText: items[__selectedIndex] ? items[__selectedIndex].text : ""
         property string textRole: ""
@@ -136,11 +139,9 @@ Control {
         property bool ready: false
         property bool isPopup: __panel ? __panel.popup : false
 
-        property int x: 0
         property int y: isPopup ? (comboBox.__panel.height - comboBox.__panel.implicitHeight) / 2.0 : comboBox.__panel.height
         __minimumWidth: comboBox.width
         __visualItem: comboBox
-        __font: __panel.font
 
         property ExclusiveGroup eg: ExclusiveGroup { id: eg }
 
@@ -148,7 +149,7 @@ Control {
 
         Instantiator {
             id: popupItems
-            active: popup.ready
+            active: false
             MenuItem {
                 text: popup.textRole === '' ?
                         modelData :
@@ -159,15 +160,19 @@ Control {
             }
             onObjectAdded: popup.insertItem(index, object)
             onObjectRemoved: popup.removeItem(object)
+
         }
 
         function resolveTextValue(initialTextRole) {
-            if (!ready || !model)
+            if (!ready || !model) {
+                popupItems.active = false
                 return;
+            }
 
             var get = model['get'];
             if (!get && popup.__modelIsArray) {
-                get = function(i) { return model[i]; }
+                if (model[0].constructor !== String) // arrays of strings don't have textRole
+                    get = function(i) { return model[i]; }
             }
 
             var modelMayHaveRoles = get !== undefined
@@ -193,13 +198,14 @@ Control {
                     textRole = roleName
                 }
             }
+            popupItems.active = true
         }
 
         function show() {
             if (items[__selectedIndex])
                 items[__selectedIndex].checked = true
             __currentIndex = comboBox.currentIndex
-            __popup(x, y, isPopup ? __selectedIndex : 0)
+            __popup(0, y, isPopup ? __selectedIndex : 0)
         }
     }
 

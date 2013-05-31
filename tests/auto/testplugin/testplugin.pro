@@ -3,7 +3,7 @@ CONFIG += plugin
 TARGET  = testplugin
 TARGETPATH = QtQuickControlsTests
 
-QT += qml quick
+QT += qml quick core-private gui-private
 qtHaveModule(widgets) { QT += widgets }
 
 

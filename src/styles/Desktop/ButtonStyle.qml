@@ -54,7 +54,8 @@ Style {
         activeControl: control.isDefault ? "default" : "f"
 
         properties: {
-            "icon": control.__action.__icon
+            "icon": control.__action.__icon,
+            "menu": control.menu
         }
     }
 }

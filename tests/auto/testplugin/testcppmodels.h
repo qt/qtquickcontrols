@@ -44,6 +44,33 @@
 
 #include <QAbstractListModel>
 #include <QVariant>
+#include <QtGui/private/qguiapplication_p.h>
+#include <qpa/qplatformtheme.h>
+#include <QtQml/QQmlEngine>
+#include <QtQml/QJSEngine>
+
+class SystemInfo : public QObject
+{
+    Q_OBJECT
+    Q_PROPERTY(bool tabAllWidgets READ tabAllWidgets CONSTANT)
+
+public:
+    SystemInfo() {}
+    bool tabAllWidgets() const {
+        if (const QPlatformTheme *theme = QGuiApplicationPrivate::platformTheme())
+            return theme->themeHint(QPlatformTheme::TabAllWidgets).toBool();
+        return true;
+    }
+};
+
+static QObject *systeminfo_provider(QQmlEngine *engine, QJSEngine *scriptEngine)
+{
+    Q_UNUSED(engine)
+    Q_UNUSED(scriptEngine)
+
+    SystemInfo *systemInfo = new SystemInfo();
+    return systemInfo;
+}
 
 class TestObject : public QObject
 {

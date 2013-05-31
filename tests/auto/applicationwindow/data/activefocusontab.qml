@@ -59,6 +59,7 @@ ApplicationWindow {
                 id: sub1
                 objectName: "sub1"
                 activeFocusOnTab: true
+                Accessible.role: Accessible.Table
                 width: 100
                 height: 50
                 Rectangle {
@@ -70,6 +71,7 @@ ApplicationWindow {
                 id: sub2
                 objectName: "sub2"
                 activeFocusOnTab: true
+                Accessible.role: Accessible.Table
                 width: 100
                 height: 50
                 Rectangle {

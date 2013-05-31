@@ -45,12 +45,15 @@ import QtQuick.Controls.Private 1.0
 /*!
     \qmltype ProgressBar
     \inqmlmodule QtQuick.Controls 1.0
+    \since QtQuick.Controls 1.0
     \ingroup controls
     \brief A progress indicator.
 
     The ProgressBar is used to give an indication of the progress of an operation.
     \l value is updated regularly and must be between \l minimumValue and \l maximumValue.
 
+    You can create a custom appearance for a ProgressBar by
+    assigning a \l ProgressBarStyle.
 */
 
 Control {
@@ -96,7 +99,7 @@ Control {
     property int orientation: Qt.Horizontal
 
     /*! \internal */
-    style: Qt.createComponent(Settings.theme() + "/ProgressBarStyle.qml", progressbar)
+    style: Qt.createComponent(Settings.style + "/ProgressBarStyle.qml", progressbar)
 
     /*! \internal */
     property bool __initialized: false
@@ -117,8 +120,8 @@ Control {
     Accessible.role: Accessible.ProgressBar
     Accessible.name: value
 
-    implicitWidth: orientation === Qt.Horizontal ? 200 : (__panel ? __panel.implicitHeight : 0)
-    implicitHeight: orientation === Qt.Horizontal ? (__panel ? __panel.implicitHeight : 0) : 200
+    implicitWidth:(__panel ? __panel.implicitWidth : 0)
+    implicitHeight: (__panel ? __panel.implicitHeight: 0)
 
     /* \internal */
     function setValue(v) {

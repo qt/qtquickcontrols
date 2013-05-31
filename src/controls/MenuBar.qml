@@ -46,7 +46,8 @@ import QtQuick.Controls.Private 1.0
 /*!
     \qmltype MenuBar
     \inqmlmodule QtQuick.Controls 1.0
-    \ingroup menus
+    \since QtQuick.Controls 1.0
+    \ingroup applicationwindow
     \brief Provides a horizontal menu bar.
 
     \code
@@ -73,7 +74,7 @@ MenuBarPrivate {
     id: root
 
     /*! \internal */
-    property Component style: Qt.createComponent(Settings.theme() + "/MenuBarStyle.qml", root)
+    property Component style: Qt.createComponent(Settings.style + "/MenuBarStyle.qml", root)
 
     /*! \internal */
     __contentItem: Loader {
@@ -98,6 +99,7 @@ MenuBarPrivate {
 
         Loader {
             id: styleLoader
+            property alias __control: menuBarLoader
             sourceComponent: root.style
             onStatusChanged: {
                 if (status === Loader.Error)

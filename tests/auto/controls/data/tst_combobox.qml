@@ -40,6 +40,7 @@
 
 import QtQuick 2.1
 import QtTest 1.0
+import QtQuickControlsTests 1.0
 
 Item {
     id: container
@@ -133,7 +134,20 @@ TestCase {
         comboBox.destroy()
     }
 
+    function test_arrayModelWithoutTextRole() {
+        var arrayModel = ['Banana', 'Coconut', 'Apple']
+
+        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.0 ; ComboBox {}', testCase, '');
+        comboBox.model = arrayModel
+        compare(comboBox.currentIndex, 0)
+        compare(comboBox.currentText, "Banana")
+        comboBox.destroy()
+    }
+
     function test_activeFocusOnTab() {
+        if (!SystemInfo.tabAllWidgets)
+            skip("This function doesn't support NOT iterating all.")
+
         var test_control = 'import QtQuick 2.1; \
         import QtQuick.Controls 1.0;            \
         Item {                                  \
@@ -279,11 +293,9 @@ TestCase {
         compare(comboBox.data[menuIndex].items.length, 3)
         comboBox.model.append({ text: "Tomato", color: "Red" })
         compare(comboBox.model.count, 4)
-        expectFailContinue('', 'QTBUG-30379')
         compare(comboBox.data[menuIndex].items.length, 4)
         comboBox.model.remove(2, 2)
         compare(comboBox.model.count, 2)
-        expectFailContinue('', 'QTBUG-30379')
         compare(comboBox.data[menuIndex].items.length, 2)
         comboBox.destroy()
     }

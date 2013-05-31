@@ -1,4 +1,4 @@
-TARGET  = privateplugin
+TARGET  = qtquickcontrolsprivateplugin
 TARGETPATH = QtQuick/Controls/Private
 
 QT += qml quick gui-private core-private
@@ -9,7 +9,9 @@ HEADERS += \
     $$PWD/qquickrangemodel_p.h \
     $$PWD/qquickrangemodel_p_p.h \
     $$PWD/qquickcontrolsettings_p.h \
-    $$PWD/qquickwheelarea_p.h
+    $$PWD/qquickwheelarea_p.h \
+    $$PWD/qquickpaddedstyle_p.h \
+    $$PWD/qquickpadding_p.h
 
 SOURCES += \
     $$PWD/plugin.cpp \
@@ -17,7 +19,8 @@ SOURCES += \
     $$PWD/qquickspinboxvalidator.cpp \
     $$PWD/qquickrangemodel.cpp \
     $$PWD/qquickcontrolsettings.cpp \
-    $$PWD/qquickwheelarea.cpp
+    $$PWD/qquickwheelarea.cpp \
+    $$PWD/qquickpaddedstyle.cpp
 
 # private qml files
 QML_FILES += \

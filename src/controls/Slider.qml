@@ -45,6 +45,7 @@ import QtQuick.Controls.Private 1.0
 /*!
     \qmltype Slider
     \inqmlmodule QtQuick.Controls 1.0
+    \since QtQuick.Controls 1.0
     \ingroup controls
     \brief Provides a vertical or horizontal slider control.
 
@@ -60,6 +61,9 @@ import QtQuick.Controls.Private 1.0
 
     The Slider value is by default in the range [0, 1]. If integer values are
     needed, you can set the \l stepSize.
+
+    You can create a custom appearance for a Slider by
+    assigning a \l SliderStyle.
 */
 
 Control {
@@ -162,6 +166,9 @@ Control {
     /*! \internal */
     property bool __horizontal: orientation === Qt.Horizontal
 
+    /*! \internal */
+    property real __handlePos: range.valueForPosition(__horizontal ? fakeHandle.x : fakeHandle.y)
+
     activeFocusOnTab: true
 
     Accessible.role: Accessible.Slider
@@ -180,7 +187,7 @@ Control {
         return Math.round(v);
     }
 
-    style: Qt.createComponent(Settings.theme() + "/SliderStyle.qml", slider)
+    style: Qt.createComponent(Settings.style + "/SliderStyle.qml", slider)
 
     Keys.onRightPressed: value += (maximumValue - minimumValue)/10.0
     Keys.onLeftPressed: value -= (maximumValue - minimumValue)/10.0
@@ -194,10 +201,16 @@ Control {
         inverted: __horizontal ? false : true
 
         positionAtMinimum: 0
-        positionAtMaximum: __horizontal ? slider.width : slider.height
+        positionAtMaximum: __horizontal ? slider.width - fakeHandle.width : slider.height - fakeHandle.height
     }
 
-    Item { id: fakeHandle }
+    Item {
+        id: fakeHandle
+        anchors.verticalCenter: __horizontal ? parent.verticalCenter : undefined
+        anchors.horizontalCenter: !__horizontal ? parent.horizontalCenter : undefined
+        width: __panel.handleWidth
+        height: __panel.handleHeight
+    }
 
     MouseArea {
         id: mouseArea
@@ -208,22 +221,34 @@ Control {
         width: parent.width
         height: parent.height
 
-        drag.target: fakeHandle
-        drag.axis: __horizontal ? Drag.XAxis : Drag.YAxis
-        drag.minimumX: range.positionAtMinimum
-        drag.maximumX: range.positionAtMaximum
+        property int clickOffset: 0
+
+        function clamp ( val ) {
+            return Math.max(range.positionAtMinimum, Math.min(range.positionAtMaximum, val))
+        }
+
+        onMouseXChanged: {
+            if (pressed && __horizontal) {
+                var pos = clamp (mouse.x + clickOffset - fakeHandle.width/2)
+                fakeHandle.x = pos
+            }
+        }
+
+        onMouseYChanged: {
+            if (pressed && !__horizontal) {
+                var pos = clamp (mouse.y + clickOffset- fakeHandle.height/2)
+                fakeHandle.y = pos
+            }
+        }
 
         onPressed: {
             if (slider.activeFocusOnPress)
                 slider.forceActiveFocus();
 
-            // Clamp the value
-            var current = __horizontal ? mouse.x : mouse.y
-            var minimum = __horizontal ? drag.minimumX : drag.minimumY
-            var maximum = __horizontal ? drag.maximumX : drag.maximumY
-            var newVal = Math.max(current, minimum);
-            newVal = Math.min(newVal, maximum);
-            range.position = newVal;
+            var point = mouseArea.mapToItem(fakeHandle, mouse.x, mouse.y)
+            if (fakeHandle.contains(Qt.point(point.x, point.y))) {
+                clickOffset = __horizontal ? fakeHandle.width/2 - point.x : fakeHandle.height/2 - point.y
+            }
         }
 
         onReleased: {
@@ -231,16 +256,14 @@ Control {
             // moment that the range is updated.
             if (!slider.updateValueWhileDragging)
                 range.position = __horizontal ? fakeHandle.x : fakeHandle.y;
+            clickOffset = 0
         }
     }
 
-
-
-    // Range position normally follow fakeHandle, except when
-    // 'updateValueWhileDragging' is false. In this case it will only follow
-    // if the user is not pressing the handle.
+    // Range position normally follows handle, except when
+    // 'updateValueWhileDragging' is false.
     Binding {
-        when: updateValueWhileDragging || !mouseArea.pressed
+        when: updateValueWhileDragging && !mouseArea.drag.active
         target: range
         property: "position"
         value: __horizontal ? fakeHandle.x : fakeHandle.y

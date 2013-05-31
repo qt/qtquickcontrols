@@ -45,9 +45,12 @@ import QtQuick.Controls.Private 1.0
 /*!
     \qmltype TabView
     \inqmlmodule QtQuick.Controls 1.0
+    \since QtQuick.Controls 1.0
     \ingroup views
     \brief A control that allows the user to select one of multiple stacked items.
 
+    You can create a custom appearance for a TabView by
+    assigning a \l TabViewStyle.
 */
 
 FocusScope {
@@ -84,13 +87,7 @@ FocusScope {
         Returns the newly added tab.
     */
     function addTab(title, component) {
-        var tab = tabcomp.createObject(stack)
-        tab.sourceComponent = component
-        __tabs.push(tab)
-        tab.parent = stack
-        tab.title = title
-        __setOpacities()
-        return tab
+        return insertTab(__tabs.count, title, component)
     }
 
     /*! Inserts a new tab with title at index, with an optional Component.
@@ -101,31 +98,50 @@ FocusScope {
         tab.sourceComponent = component
         tab.parent = stack
         tab.title = title
-        __tabs.splice(index, 0, tab);
+        tab.__inserted = true
+        __tabs.insert(index, {tab: tab})
         __setOpacities()
         return tab
     }
 
     /*! Removes and destroys a tab at the given \a index. */
     function removeTab(index) {
-        var tab = __tabs[index]
-        __tabs.splice(index, 1);
+        var tab = __tabs.get(index).tab
+        __tabs.remove(index, 1)
         tab.destroy()
         if (currentIndex > 0)
             currentIndex--
         __setOpacities()
     }
 
+    /*! Moves a tab \a from index \a to another. */
+    function moveTab(from, to) {
+        __tabs.move(from, to, 1)
+
+        if (currentIndex == from) {
+            currentIndex = to
+        } else {
+            var start = Math.min(from, to)
+            var end = Math.max(from, to)
+            if (currentIndex >= start && currentIndex <= end) {
+                if (from < to)
+                    --currentIndex
+                else
+                    ++currentIndex
+            }
+        }
+    }
+
     /*! Returns the \l Tab item at \a index. */
     function tabAt(index) {
-        return __tabs[index]
+        return __tabs.get(index).tab
     }
 
     /*! \internal */
-    property var __tabs: new Array()
+    property ListModel __tabs: ListModel { }
 
     /*! \internal */
-    property Component style: Qt.createComponent(Settings.theme() + "/TabViewStyle.qml", root)
+    property Component style: Qt.createComponent(Settings.style + "/TabViewStyle.qml", root)
 
     /*! \internal */
     property var __styleItem: loader.item
@@ -134,11 +150,11 @@ FocusScope {
 
     /*! \internal */
     function __setOpacities() {
-        for (var i = 0; i < __tabs.length; ++i) {
-            var child = __tabs[i];
+        for (var i = 0; i < __tabs.count; ++i) {
+            var child = __tabs.get(i).tab
             child.visible = (i == currentIndex ? true : false)
         }
-        count = __tabs.length
+        count = __tabs.count
     }
 
     activeFocusOnTab: false
@@ -162,7 +178,7 @@ FocusScope {
         id: loader
         z: tabbarItem.z - 1
         sourceComponent: style
-        property var control: root
+        property var __control: root
     }
 
     Loader {
@@ -170,10 +186,11 @@ FocusScope {
         z: tabbarItem.z - 1
 
         anchors.fill: parent
-        anchors.topMargin: tabbarItem && tabsVisible && tabPosition == Qt.TopEdge ? Math.max(0, tabbarItem.height - stack.baseOverlap) : 0
-        anchors.bottomMargin: tabbarItem && tabsVisible && tabPosition == Qt.BottomEdge ? Math.max(0, tabbarItem.height - stack.baseOverlap) : 0
+        anchors.topMargin: tabPosition === Qt.TopEdge && tabbarItem && tabsVisible  ? Math.max(0, tabbarItem.height - baseOverlap) : 0
+        anchors.bottomMargin: tabPosition === Qt.BottomEdge && tabbarItem && tabsVisible ? Math.max(0, tabbarItem.height -baseOverlap) : 0
         sourceComponent: frameVisible && loader.item ? loader.item.frame : null
-        property var control: root
+
+        property int baseOverlap: __styleItem ? __styleItem.frameOverlap : 0
 
         Item {
             id: stack
@@ -185,14 +202,27 @@ FocusScope {
 
             property int frameWidth
             property string style
-            property int baseOverlap
 
-            Component.onCompleted: {
-                for (var i = 0 ; i < stack.children.length ; ++i) {
-                    if (stack.children[i].Accessible.role === Accessible.LayeredPane)
-                        __tabs.push(stack.children[i])
+            Component.onCompleted: addTabs(stack.children)
+
+            function addTabs(tabs) {
+                var tabAdded = false
+                for (var i = 0 ; i < tabs.length ; ++i) {
+                    var tab = tabs[i]
+                    if (!tab.__inserted && tab.Accessible.role === Accessible.LayeredPane) {
+                        tab.__inserted = true
+                        if (tab.parent === root) {
+                            tab.parent = stack
+                            // a tab added dynamically by Component::createObject() and passing the
+                            // tab view as a parent should also get automatically removed when destructed
+                            tab.Component.onDestruction.connect(stack.onDynamicTabDestroyed.bind(tab))
+                        }
+                        __tabs.append({tab: tab})
+                        tabAdded = true
+                    }
                 }
-                __setOpacities()
+                if (tabAdded)
+                    __setOpacities()
             }
 
             function onDynamicTabDestroyed() {
@@ -207,33 +237,19 @@ FocusScope {
         onLoaded: { item.z = -1 }
     }
 
-    onChildrenChanged: {
-        var tabAdded = false
-        for (var i = 0; i < children.length; ++i) {
-            var child = children[i]
-            if (child.Accessible.role === Accessible.LayeredPane) {
-                __tabs.push(child)
-                child.parent = stack
-                child.Component.onDestruction.connect(stack.onDynamicTabDestroyed.bind(child))
-                tabAdded = true
-            }
-        }
-        if (tabAdded)
-            __setOpacities()
-    }
+    onChildrenChanged: stack.addTabs(root.children)
 
     states: [
         State {
             name: "Bottom"
-            when: tabPosition == Qt.BottomEdge && tabbarItem != undefined
+            when: tabPosition === Qt.BottomEdge && tabbarItem != undefined
             PropertyChanges {
                 target: tabbarItem
-                anchors.topMargin: tabbarItem.height
+                anchors.topMargin: -frameLoader.baseOverlap
             }
             AnchorChanges {
                 target: tabbarItem
-                anchors.top: undefined
-                anchors.bottom: root.bottom
+                anchors.top: frameLoader.bottom
             }
         }
     ]

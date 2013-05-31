@@ -45,6 +45,7 @@ import QtQuick.Controls.Private 1.0
 /*!
     \qmltype Button
     \inqmlmodule QtQuick.Controls 1.0
+    \since QtQuick.Controls 1.0
     \ingroup controls
     \brief A push button with a text label.
 
@@ -55,6 +56,8 @@ import QtQuick.Controls.Private 1.0
 
     Button is similar to the QPushButton widget.
 
+    You can create a custom appearance for a Button by
+    assigning a \l ButtonStyle.
  */
 BasicButton {
     id: button
@@ -62,7 +65,7 @@ BasicButton {
     /*! This property holds whether the push button is the default button.
         Default buttons decide what happens when the user presses enter in a
         dialog without giving a button explicit focus. \note This property only
-        changes the style of the button. The expected behavior needs to be
+        changes the appearance of the button. The expected behavior needs to be
         implemented by the user.
 
         The default value is \c false.
@@ -83,9 +86,49 @@ BasicButton {
     */
     property url iconSource
 
+    /*! Assign a \l Menu to this property to get a pull-down menu button.
+
+        The default value is \c null.
+     */
+    property Menu menu: null
+
+    /*! \qmlproperty bool BasicButton::pressed
+
+        This property holds whether the button is pressed. */
+    readonly property bool pressed: __behavior.effectivePressed || menu && menu.__popupVisible
+
     activeFocusOnTab: true
 
     Accessible.name: text
 
-    style: Qt.createComponent(Settings.theme() + "/ButtonStyle.qml", button)
+    style: Qt.createComponent(Settings.style + "/ButtonStyle.qml", button)
+
+    Binding {
+        target: menu
+        property: "__minimumWidth"
+        value: button.__panel.width
+    }
+
+    Binding {
+        target: menu
+        property: "__visualItem"
+        value: button
+    }
+
+    Connections {
+        target: __behavior
+        onEffectivePressedChanged: {
+            if (__behavior.effectivePressed && menu)
+                popupMenuTimer.start()
+        }
+    }
+
+    Timer {
+        id: popupMenuTimer
+        interval: 10
+        onTriggered: {
+            __behavior.keyPressed = false
+            menu.__popup(0, button.height, 0)
+        }
+    }
 }

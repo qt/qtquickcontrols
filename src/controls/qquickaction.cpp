@@ -53,6 +53,7 @@ QT_BEGIN_NAMESPACE
 /*!
     \qmltype Action
     \instantiates QQuickAction
+    \ingroup applicationwindow
     \inqmlmodule QtQuick.Controls 1.0
     \brief Action provides an abstract user interface action that can be bound to items
 
@@ -65,6 +66,19 @@ QT_BEGIN_NAMESPACE
     automatically be checked.
 
     QtQuick Controls supports actions in \l Button, \l ToolButton, and \l MenuItem.
+
+    Example:
+    \qml
+        Action {
+            id: openAction
+            text: "&Open"
+            shortcut: "Ctrl+O"
+            iconSource: "images/document-open.png"
+            onTriggered: fileDialog.open()
+            tooltip: "Open an Image"
+        }
+    \endqml
+
 */
 
 /*!

@@ -40,6 +40,7 @@
 
 import QtQuick 2.1
 import QtTest 1.0
+import QtQuickControlsTests 1.0
 
 Item {
     id: container
@@ -126,7 +127,7 @@ Item {
             var ratio = mouseRatio / sliderDeltaRatio
 
             mouseWheel(slider, 5, 5, 20 * ratio, 0)
-            compare(slider.value, 20)
+            compare(slider.value, 22)
 
             slider.maximumValue = 30
             slider.minimumValue = 0
@@ -165,6 +166,9 @@ Item {
         }
 
         function test_activeFocusOnTab() {
+            if (!SystemInfo.tabAllWidgets)
+                skip("This function doesn't support NOT iterating all.")
+
             var test_control = 'import QtQuick 2.1; \
             import QtQuick.Controls 1.0;            \
             Item {                                  \
@@ -234,7 +238,15 @@ Item {
         }
 
         function test_updateValueWhileDragging() {
-            var control = Qt.createQmlObject('import QtQuick.Controls 1.0; Slider {x: 0; y: 0; width: 200; height: 50}', container, '')
+            var controlString =
+                    'import QtQuick 2.1 ;                     \
+                     import QtQuick.Controls 1.0 ;            \
+                     import QtQuick.Controls.Styles 1.0;      \
+                     Slider {                                 \
+                         width: 200 ;                         \
+                         height : 50;                         \
+                         style: SliderStyle{ handle: Item{ } }}'
+            var control = Qt.createQmlObject(controlString, container, '')
             control.maximumValue = 200
             control.minimumValue = 0
             control.stepSize = 0.1
@@ -245,14 +257,29 @@ Item {
             spy.signalName = "valueChanged"
 
             control.updateValueWhileDragging = false
-            mouseDrag(control, 0,1, 100 + util.dragThreshold + 1 , 0, Qt.LeftButton)
+            mouseDrag(control, 0,1, 100 , 0, Qt.LeftButton)
             compare(control.value, 100)
             compare(spy.count, 1)
 
             control.updateValueWhileDragging = true
-            mouseDrag(control, 100,1, 80 + util.dragThreshold + 1 , 0, Qt.LeftButton)
+
+            mouseDrag(control, 100,1, 80 , 0, Qt.LeftButton)
             compare(control.value, 180)
-            compare(spy.count, 4)
+            compare(spy.count, 5)
+            control.destroy()
+        }
+
+        function test_sliderOffset() {
+            var control = Qt.createQmlObject('import QtQuick.Controls 1.0; Slider {x: 20; y: 20; width: 100; height: 50}', container, '')
+            // Don't move slider value if mouse is inside handle regtion
+            mouseClick(control, control.width/2, control.height/2)
+            compare(control.value, 0.5)
+            mouseClick(control, control.width/2 + 5, control.height/2)
+            compare(control.value, 0.5)
+            mouseClick(control, control.width/2 - 5, control.height/2)
+            compare(control.value, 0.5)
+            mouseClick(control, control.width/2 + 25, control.height/2)
+            verify(control.value > 0.5)
             control.destroy()
         }
     }

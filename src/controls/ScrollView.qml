@@ -46,6 +46,7 @@ import QtQuick.Controls.Styles 1.0
 /*!
     \qmltype ScrollView
     \inqmlmodule QtQuick.Controls 1.0
+    \since  QtQuick.Controls 1.0
     \ingroup views
     \brief Provides a scrolling view within another Item.
 
@@ -79,6 +80,8 @@ import QtQuick.Controls.Styles 1.0
     In this case the content size of the ScrollView will simply mirror that of its contained
     \l flickableItem.
 
+    You can create a custom appearance for a ScrollView by
+    assigning a \l ScrollViewStyle.
 */
 
 FocusScope {
@@ -135,14 +138,16 @@ FocusScope {
     /*! \internal */
     property int __scrollBarTopMargin: 0
     /*! \internal */
+    property int __viewTopMargin: 0
+    /*! \internal */
     property alias __horizontalScrollBar: scroller.horizontalScrollBar
     /*! \internal */
     property alias __verticalScrollBar: scroller.verticalScrollBar
     /*! \internal */
-    property Component style: Qt.createComponent(Settings.theme() + "/ScrollViewStyle.qml", root)
+    property Component style: Qt.createComponent(Settings.style + "/ScrollViewStyle.qml", root)
 
     /* \internal */
-    property Style __style: styleLoader.item
+    property PaddedStyle __style: styleLoader.item
 
     activeFocusOnTab: true
 
@@ -157,6 +162,7 @@ FocusScope {
             contentItem.parent = internal.flickableItem.contentItem
         }
         internal.flickableItem.anchors.fill = viewportItem
+        internal.flickableItem.interactive = false
     }
 
 
@@ -172,7 +178,7 @@ FocusScope {
                 if (status === Loader.Error)
                     console.error("Failed to load Style for", root)
             }
-            property alias control: root
+            property alias __control: root
         }
 
         Binding {
@@ -230,11 +236,15 @@ FocusScope {
             property bool horizontalRecursionGuard: false
             property bool verticalRecursionGuard: false
 
-            horizontalMaximumValue: flickableItem ? flickableItem.contentWidth - viewport.width : 0
-            verticalMaximumValue: flickableItem ? flickableItem.contentHeight - viewport.height : 0
+            horizontalMinimumValue: flickableItem ? flickableItem.originX : 0
+            horizontalMaximumValue: flickableItem ? flickableItem.originX + flickableItem.contentWidth - viewport.width : 0
+
+            verticalMinimumValue: flickableItem ? flickableItem.originY : 0
+            verticalMaximumValue: flickableItem ? flickableItem.originY + flickableItem.contentHeight - viewport.height + __viewTopMargin : 0
 
             Connections {
                 target: flickableItem
+
                 onContentYChanged: {
                     wheelArea.verticalRecursionGuard = true
                     wheelArea.verticalValue = flickableItem.contentY
@@ -269,9 +279,8 @@ FocusScope {
         ScrollViewHelper {
             id: scroller
             anchors.fill: parent
-            property int frameWidth: frameVisible ? __style.frameWidth : 0
-            property bool outerFrame: !frameVisible || !(__style ? __style.externalScrollBars : 0)
-            property int scrollBarSpacing: outerFrame ? 0 : (__style ? __style.scrollBarSpacing : 0)
+            property bool outerFrame: !frameVisible || !(__style ? __style.__externalScrollBars : 0)
+            property int scrollBarSpacing: outerFrame ? 0 : (__style ? __style.__scrollBarSpacing : 0)
             property int verticalScrollbarOffset: verticalScrollBar.visible && !verticalScrollBar.isTransient ?
                                                       verticalScrollBar.width + scrollBarSpacing : 0
             property int horizontalScrollbarOffset: horizontalScrollBar.visible && !horizontalScrollBar.isTransient ?
@@ -288,9 +297,10 @@ FocusScope {
             Item {
                 id: viewportItem
                 anchors.fill: frameLoader
-                anchors.margins: scroller.frameWidth
-                anchors.rightMargin: scroller.frameWidth + (scroller.outerFrame ? scroller.verticalScrollbarOffset : 0)
-                anchors.bottomMargin: scroller.frameWidth + (scroller.outerFrame ? scroller.horizontalScrollbarOffset : 0)
+                anchors.topMargin: frameVisible ? __style.padding.top : 0
+                anchors.leftMargin: frameVisible ? __style.padding.left : 0
+                anchors.rightMargin:  (frameVisible ? __style.padding.right : 0) +  (scroller.outerFrame ? scroller.verticalScrollbarOffset : 0)
+                anchors.bottomMargin: (frameVisible ? __style.padding.bottom : 0) + (scroller.outerFrame ? scroller.horizontalScrollbarOffset : 0)
                 clip: true
             }
         }

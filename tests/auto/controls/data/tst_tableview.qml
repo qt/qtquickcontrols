@@ -77,12 +77,12 @@ TestCase {
         var table = Qt.createQmlObject(test_instanceStr, testCase, '')
         compare(table.currentRow, -1)
         verify(table.rowCount === 10)
-        verify (table.currentRowItem === null)
+        verify (table.__currentRowItem === null)
         table.currentRow = 0
-        verify(table.currentRowItem !== null)
+        verify(table.__currentRowItem !== null)
         verify (table.currentRow === 0)
         table.currentRow = 3
-        verify(table.currentRowItem !== null)
+        verify(table.__currentRowItem !== null)
         verify (table.currentRow === 3)
         table.destroy()
     }
@@ -95,8 +95,8 @@ TestCase {
         verify(table !== null, "table created is null")
         table.forceActiveFocus();
 
-        verify(table.currentRowItem !== undefined, "No current item found")
-        var label = findAChild(table.currentRowItem, "label")
+        verify(table.__currentRowItem !== undefined, "No current item found")
+        var label = findAChild(table.__currentRowItem, "label")
         verify(label !== undefined)
         compare(label.text, data.expected.toString());
         table.destroy();
@@ -114,8 +114,8 @@ TestCase {
         var valuefrommodel = table.model.value;
         verify(valuefrommodel !== undefined, "The model has no defined value")
 
-        verify(table.currentRowItem !== undefined, "No current item found")
-        var label = findAChild(table.currentRowItem, "label")
+        verify(table.__currentRowItem !== undefined, "No current item found")
+        var label = findAChild(table.__currentRowItem, "label")
         verify(label !== undefined)
         compare(label.text, valuefrommodel.toString());
         table.destroy();
@@ -136,8 +136,8 @@ TestCase {
         var valuefrommodel = table.model.dataAt(table.currentRow)
         verify(valuefrommodel !== undefined, "The model has no defined value")
 
-        verify(table.currentRowItem !== undefined, "No current item found")
-        var label = findAChild(table.currentRowItem, "label")
+        verify(table.__currentRowItem !== undefined, "No current item found")
+        var label = findAChild(table.__currentRowItem, "label")
         verify(label !== undefined)
         compare(label.text, valuefrommodel.toString())
         table.destroy();
@@ -161,8 +161,8 @@ TestCase {
         // to go to next row (this model has 3 rows, read the second row)
         table.__incrementCurrentIndex()
 
-        verify(table.currentRowItem !== undefined, "No current item found")
-        var label = findAChild(table.currentRowItem, "label")
+        verify(table.__currentRowItem !== undefined, "No current item found")
+        var label = findAChild(table.__currentRowItem, "label")
         verify(label !== undefined)
         compare(label.text, data.expected.toString());
         table.destroy();
@@ -180,7 +180,55 @@ TestCase {
         table.destroy()
     }
 
-    // In TableView, drawn text = table.currentRowItem.children[1].children[1].itemAt(0).children[0].children[0].text
+    function test_activated() {
+        var component = Qt.createComponent("tableview/table_activated.qml")
+        compare(component.status, Component.Ready)
+        var table = component.createObject(container);
+        verify(table !== null, "table created is null")
+        table.forceActiveFocus();
+        compare(table.test, false)
+        if (!table.__activateItemOnSingleClick)
+            mouseDoubleClick(table, 15 , 15, Qt.LeftButton)
+        else
+            mouseClick(table, 15, 15, Qt.LeftButton)
+        compare(table.test, true)
+        table.destroy()
+    }
+
+    function test_activated_withItemDelegate() {
+        var component = Qt.createComponent("tableview/table_delegate.qml")
+        compare(component.status, Component.Ready)
+        var table = component.createObject(container);
+        verify(table !== null, "table created is null")
+        table.forceActiveFocus();
+        compare(table.activatedTest, false)
+        if (!table.__activateItemOnSingleClick)
+            mouseDoubleClick(table, 15 , 50, Qt.LeftButton)
+        else
+            mouseClick(table, 15, 50, Qt.LeftButton)
+        compare(table.activatedTest, true)
+        table.destroy()
+    }
+
+    function test_columnCount() {
+        var component = Qt.createComponent("tableview/table_multicolumns.qml")
+        compare(component.status, Component.Ready)
+        var table =  component.createObject(container);
+        verify(table !== null, "table created is null")
+        compare(table.columnCount, 3)
+        table.destroy()
+    }
+
+    function test_rowCount() {
+        var component = Qt.createComponent("tableview/table_multicolumns.qml")
+        compare(component.status, Component.Ready)
+        var table =  component.createObject(container);
+        verify(table !== null, "table created is null")
+        compare(table.rowCount, 3)
+        table.destroy()
+    }
+
+    // In TableView, drawn text = table.__currentRowItem.children[1].children[1].itemAt(0).children[0].children[0].text
 
     function findAChild(item, name)
     {

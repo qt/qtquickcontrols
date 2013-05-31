@@ -45,6 +45,7 @@ import QtQuick.Controls.Private 1.0
 /*!
     \qmltype ToolButton
     \inqmlmodule QtQuick.Controls 1.0
+    \since QtQtuick.Controls 1.0
     \ingroup applicationwindow
     \brief Provides a button type that is typically used within a ToolBar.
 
@@ -77,5 +78,5 @@ BasicButton {
 
     Accessible.name: text
 
-    style: Qt.createComponent(Settings.theme() + "/ToolButtonStyle.qml", button)
+    style: Qt.createComponent(Settings.style + "/ToolButtonStyle.qml", button)
 }

@@ -38,12 +38,21 @@
 **
 ****************************************************************************/
 import QtQuick 2.1
-
+import QtQuick.Controls 1.0
 
 /*!
-        \qmltype Style
-        \internal
-        \inqmlmodule QtQuick.Controls.Styles 1.0
+    \qmltype Style
+    \internal
+    \inqmlmodule QtQuick.Controls.Private 1.0
 */
 
-QtObject { }
+QtObject {
+    /*! The control attached to this style */
+    readonly property Item control: __control
+
+    /*! \internal */
+    property var __syspal: SystemPalette {
+        colorGroup: control.enabled ?
+                        SystemPalette.Active : SystemPalette.Disabled
+    }
+}

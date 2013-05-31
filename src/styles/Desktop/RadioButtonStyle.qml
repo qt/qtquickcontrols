@@ -38,9 +38,11 @@
 **
 ****************************************************************************/
 import QtQuick 2.1
+import QtQuick.Controls 1.0
 import QtQuick.Controls.Private 1.0
 
 Style {
+    readonly property RadioButton control: __control
     property Component panel: Item {
         anchors.fill: parent
 
@@ -56,7 +58,7 @@ Style {
             on: control.checked || control.pressed
             hover: control.__containsMouse
             enabled: control.enabled
-            hasFocus: control.activeFocus
+            hasFocus: control.activeFocus && styleitem.style == "mac"
             hints: control.styleHints
             contentHeight: textitem.implicitHeight
             contentWidth: textitem.implicitWidth + indicatorWidth
@@ -74,10 +76,16 @@ Style {
                 renderType: Text.NativeRendering
                 elide: Text.ElideRight
                 enabled: control.enabled
-                color: syspal.windowText
-                SystemPalette {
-                    id: syspal
-                    colorGroup: enabled ? SystemPalette.Active : SystemPalette.Disabled
+                color: __syspal.windowText
+                StyleItem {
+                    elementType: "focusrect"
+                    anchors.margins: -1
+                    anchors.leftMargin: -2
+                    anchors.top: parent.top
+                    anchors.left: parent.left
+                    anchors.bottom: parent.bottom
+                    width: textitem.implicitWidth + 3
+                    visible: control.activeFocus
                 }
             }
         }

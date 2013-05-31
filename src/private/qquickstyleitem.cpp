@@ -177,6 +177,10 @@ void QQuickStyleItem::initStyleOption()
     if (m_styleoption)
         m_styleoption->state = 0;
 
+    QPlatformTheme::Font platformFont = (m_hints.indexOf("mini") != -1) ? QPlatformTheme::MiniFont :
+                                        (m_hints.indexOf("small") != -1) ? QPlatformTheme::SmallFont :
+                                        QPlatformTheme::SystemFont;
+
     switch (m_itemType) {
     case Button: {
         if (!m_styleoption)
@@ -190,8 +194,31 @@ void QQuickStyleItem::initStyleOption()
         opt->features = (activeControl() == "default") ?
                     QStyleOptionButton::DefaultButton :
                     QStyleOptionButton::None;
-        if (const QFont *font = QGuiApplicationPrivate::platformTheme()->font(QPlatformTheme::PushButtonFont))
+        if (platformFont == QPlatformTheme::SystemFont)
+            platformFont = QPlatformTheme::PushButtonFont;
+        const QFont *font = QGuiApplicationPrivate::platformTheme()->font(platformFont);
+        if (font)
             opt->fontMetrics = QFontMetrics(*font);
+        QObject * menu = m_properties["menu"].value<QObject *>();
+        if (menu) {
+            opt->features |= QStyleOptionButton::HasMenu;
+#ifdef Q_OS_MAC
+            if (style() == "mac") {
+                if (platformFont == QPlatformTheme::PushButtonFont)
+                    menu->setProperty("__xOffset", 12);
+                else
+                    menu->setProperty("__xOffset", 11);
+                if (platformFont == QPlatformTheme::MiniFont)
+                    menu->setProperty("__yOffset", 5);
+                else if (platformFont == QPlatformTheme::SmallFont)
+                    menu->setProperty("__yOffset", 6);
+                else
+                    menu->setProperty("__yOffset", 3);
+                if (font)
+                    menu->setProperty("__font", *font);
+            }
+#endif
+        }
     }
         break;
     case ItemRow: {
@@ -295,11 +322,11 @@ void QQuickStyleItem::initStyleOption()
             opt->features |= QStyleOptionTab::HasFrame;
 
         if (hints().length() > 2) {
-            QString shape = hints()[0];
+            QString orientation = hints()[0];
             QString position = hints()[1];
             QString selectedPosition = hints()[2];
 
-            opt->shape = (shape == "Bottom") ? QTabBar::RoundedSouth : QTabBar::RoundedNorth;
+            opt->shape = (orientation == "Bottom") ? QTabBar::RoundedSouth : QTabBar::RoundedNorth;
 
             if (position == QLatin1String("beginning"))
                 opt->position = QStyleOptionTab::Beginning;
@@ -330,11 +357,20 @@ void QQuickStyleItem::initStyleOption()
         opt->midLineWidth = 1;
     }
         break;
+    case FocusRect: {
+        if (!m_styleoption)
+            m_styleoption = new QStyleOptionFocusRect();
+        // Needed on windows
+        m_styleoption->state |= QStyle::State_KeyboardFocusChange;
+    }
+        break;
     case TabFrame: {
         if (!m_styleoption)
             m_styleoption = new QStyleOptionTabWidgetFrame();
         QStyleOptionTabWidgetFrame *opt = qstyleoption_cast<QStyleOptionTabWidgetFrame*>(m_styleoption);
-        opt->shape = hints().contains("South") ? QTabBar::RoundedSouth : QTabBar::RoundedNorth;
+
+        opt->selectedTabRect = m_properties["selectedTabRect"].toRect();
+        opt->shape = m_properties["orientation"] == Qt::BottomEdge ? QTabBar::RoundedSouth : QTabBar::RoundedNorth;
         if (minimum())
             opt->selectedTabRect = QRect(value(), 0, minimum(), height());
         opt->tabBarSize = QSize(minimum() , height());
@@ -439,11 +475,31 @@ void QQuickStyleItem::initStyleOption()
     case ComboBox :{
         if (!m_styleoption)
             m_styleoption = new QStyleOptionComboBox();
+
         QStyleOptionComboBox *opt = qstyleoption_cast<QStyleOptionComboBox*>(m_styleoption);
-        if (const QFont *font = QGuiApplicationPrivate::platformTheme()->font(QPlatformTheme::PushButtonFont))
+
+        if (platformFont == QPlatformTheme::SystemFont)
+            platformFont = QPlatformTheme::PushButtonFont;
+        const QFont *font = QGuiApplicationPrivate::platformTheme()->font(platformFont);
+        if (font)
             opt->fontMetrics = QFontMetrics(*font);
         opt->currentText = text();
         opt->editable = false;
+#ifdef Q_OS_MAC
+        if (m_properties["popup"].canConvert<QObject *>() && style() == "mac") {
+            QObject *popup = m_properties["popup"].value<QObject *>();
+            if (platformFont == QPlatformTheme::MiniFont) {
+                popup->setProperty("__xOffset", -2);
+                popup->setProperty("__yOffset", 5);
+            } else {
+                if (platformFont == QPlatformTheme::SmallFont)
+                    popup->setProperty("__xOffset", -1);
+                popup->setProperty("__yOffset", 6);
+            }
+            if (font)
+                popup->setProperty("__font", *font);
+        }
+#endif
     }
         break;
     case SpinBox: {
@@ -496,7 +552,7 @@ void QQuickStyleItem::initStyleOption()
         if (opt->tickPosition != QSlider::NoTicks)
             opt->subControls |= QStyle::SC_SliderTickmarks;
 
-        opt->activeSubControls = QStyle::SC_None;
+        opt->activeSubControls = QStyle::SC_SliderHandle;
     }
         break;
     case ProgressBar: {
@@ -726,12 +782,6 @@ QSize QQuickStyleItem::sizeFromContents(int width, int height)
         int newHeight = qMax(height, btn->fontMetrics.height());
         size = qApp->style()->sizeFromContents(QStyle::CT_ComboBox, m_styleoption, QSize(newWidth, newHeight)); }
         break;
-    case SpinBox: {
-        QStyleOptionSpinBox *box = qstyleoption_cast<QStyleOptionSpinBox*>(m_styleoption);
-        int newWidth = qMax(width, box->fontMetrics.width(QLatin1String("0.0")));
-        int newHeight = qMax(height, box->fontMetrics.height());
-        size = qApp->style()->sizeFromContents(QStyle::CT_SpinBox, m_styleoption, QSize(newWidth, newHeight)); }
-        break;
     case Tab:
         size = qApp->style()->sizeFromContents(QStyle::CT_TabBarTab, m_styleoption, QSize(width,height));
         break;
@@ -741,23 +791,30 @@ QSize QQuickStyleItem::sizeFromContents(int width, int height)
     case ProgressBar:
         size = qApp->style()->sizeFromContents(QStyle::CT_ProgressBar, m_styleoption, QSize(width,height));
         break;
+    case SpinBox:
+#ifdef Q_OS_MAC
+        if (style() == "mac") {
+            size = qApp->style()->sizeFromContents(QStyle::CT_SpinBox, m_styleoption, QSize(width, height + 5));
+            break;
+        }
+#endif // fall trough if not mac
     case Edit:
 #ifdef Q_OS_MAC
         if (style() =="mac") {
             if (m_hints.indexOf("small") != -1 || m_hints.indexOf("mini") != -1)
                 size = QSize(width, 19);
             else
-                size = QSize(width, 21);
+                size = QSize(width, 22);
         } else
 #endif
         {
-            size = QSize(width, height);
-            if (const QStyleOptionFrame *f = qstyleoption_cast<const QStyleOptionFrame *>(m_styleoption))
-                size += QSize(2*f->lineWidth, 2*f->lineWidth);
+            // We have to create a new style option since we might be calling with a QStyleOptionSpinBox
+            QStyleOptionFrame frame;
+            frame.state = m_styleoption->state;
+            frame.lineWidth = qApp->style()->pixelMetric(QStyle::PM_DefaultFrameWidth, m_styleoption, 0);
+            frame.rect = m_styleoption->rect;
+            size = qApp->style()->sizeFromContents(QStyle::CT_LineEdit, &frame, QSize(width, height));
         }
-
-        if (hints().indexOf("rounded") != -1)
-            size += QSize(0, 3);
         break;
     case GroupBox: {
             QStyleOptionGroupBox *box = qstyleoption_cast<QStyleOptionGroupBox*>(m_styleoption);
@@ -839,7 +896,7 @@ int QQuickStyleItem::pixelMetric(const QString &metric)
     else if (metric == "taboverlap")
         return qApp->style()->pixelMetric(QStyle::PM_TabBarTabOverlap, 0 );
     else if (metric == "tabbaseoverlap")
-        return qApp->style()->pixelMetric(QStyle::PM_TabBarBaseOverlap, 0 );
+        return qApp->style()->pixelMetric(QStyle::PM_TabBarBaseOverlap, m_styleoption );
     else if (metric == "tabhspace")
         return qApp->style()->pixelMetric(QStyle::PM_TabBarTabHSpace, 0 );
     else if (metric == "indicatorwidth")
@@ -881,9 +938,13 @@ QVariant QQuickStyleItem::styleHint(const QString &metric)
     if (metric == "comboboxpopup") {
         return qApp->style()->styleHint(QStyle::SH_ComboBox_Popup, m_styleoption);
     } else if (metric == "highlightedTextColor") {
-        return qApp->palette().highlightedText().color().name();
+        QPalette pal = QApplication::palette("QAbstractItemView");
+        pal.setCurrentColorGroup(m_styleoption->palette.currentColorGroup());
+        return pal.highlightedText().color().name();
     } else if (metric == "textColor") {
-        return qApp->palette().text().color().name();
+        QPalette pal = qApp->palette();
+        pal.setCurrentColorGroup(active()? QPalette::Active : QPalette::Inactive);
+        return pal.text().color().name();
     } else if (metric == "focuswidget") {
         return qApp->style()->styleHint(QStyle::SH_FocusFrame_AboveWidget);
     } else if (metric == "tabbaralignment") {
@@ -895,6 +956,8 @@ QVariant QQuickStyleItem::styleHint(const QString &metric)
         return qApp->style()->styleHint(QStyle::SH_ScrollView_FrameOnlyAroundContents);
     } else if (metric == "scrollToClickPosition")
         return qApp->style()->styleHint(QStyle::SH_ScrollBar_LeftClickAbsolutePosition);
+    else if (metric == "activateItemOnSingleClick")
+        return qApp->style()->styleHint(QStyle::SH_ItemView_ActivateItemOnSingleClick);
     else if (metric == "transientScrollBars")
         return qApp->style()->styleHint(QStyle::SH_ScrollBar_Transient, m_styleoption);
     return 0;
@@ -990,6 +1053,8 @@ void QQuickStyleItem::setElementType(const QString &str)
         m_itemType = Widget;
     } else if (str == "focusframe") {
         m_itemType = FocusFrame;
+    } else if (str == "focusrect") {
+        m_itemType = FocusRect;
     } else if (str == "dial") {
         m_itemType = Dial;
     } else if (str == "statusbar") {
@@ -1093,6 +1158,14 @@ void QQuickStyleItem::paint(QPainter *painter)
     initStyleOption();
     if (QStyleOptionMenuItem *opt = qstyleoption_cast<QStyleOptionMenuItem*>(m_styleoption))
         painter->setFont(opt->font);
+    else {
+        QPlatformTheme::Font platformFont = (m_styleoption->state & QStyle::State_Mini) ? QPlatformTheme::MiniFont :
+                                            (m_styleoption->state & QStyle::State_Small) ? QPlatformTheme::SmallFont :
+                                            QPlatformTheme::NFonts;
+        if (platformFont != QPlatformTheme::NFonts)
+            if (const QFont *font = QGuiApplicationPrivate::platformTheme()->font(platformFont))
+                painter->setFont(*font);
+    }
 
     // Set AA_UseHighDpiPixmaps when calling style code to make QIcon return
     // "retina" pixmaps. The flag is controlled by the application so we can't
@@ -1119,8 +1192,11 @@ void QQuickStyleItem::paint(QPainter *painter)
             pixmap.fill(Qt::transparent);
             QPainter pixpainter(&pixmap);
             qApp->style()->drawPrimitive(QStyle::PE_PanelItemViewRow, m_styleoption, &pixpainter);
-            if (!qApp->style()->styleHint(QStyle::SH_ItemView_ShowDecorationSelected) && selected())
-                pixpainter.fillRect(m_styleoption->rect, m_styleoption->palette.highlight());
+            if ((style() == "mac" || !qApp->style()->styleHint(QStyle::SH_ItemView_ShowDecorationSelected)) && selected()) {
+                QPalette pal = QApplication::palette("QAbstractItemView");
+                pal.setCurrentColorGroup(m_styleoption->palette.currentColorGroup());
+                pixpainter.fillRect(m_styleoption->rect, pal.highlight());
+            }
             QPixmapCache::insert(pmKey, pixmap);
         }
         painter->drawPixmap(0, 0, pixmap);
@@ -1187,6 +1263,9 @@ void QQuickStyleItem::paint(QPainter *painter)
         else
 #endif
             qApp->style()->drawControl(QStyle::CE_FocusFrame, m_styleoption, painter);
+        break;
+    case FocusRect:
+        qApp->style()->drawPrimitive(QStyle::PE_FrameFocusRect, m_styleoption, painter);
         break;
     case TabFrame:
         qApp->style()->drawPrimitive(QStyle::PE_FrameTabWidget, m_styleoption, painter);

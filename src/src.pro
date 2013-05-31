@@ -1,5 +1,5 @@
 TEMPLATE = subdirs
 
-SUBDIRS += controls styles experimental private
+SUBDIRS += controls styles private styles/private
 
 SUBDIRS += layouts

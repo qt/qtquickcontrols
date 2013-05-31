@@ -44,8 +44,8 @@ import QtQuick.Controls 1.0
 Item {
     id: main
     objectName: "main"
-    width: 800
-    height: 600
+    width: 400
+    height: 800
     focus: true
     Component.onCompleted: button1.focus = true
     Column {
@@ -196,6 +196,10 @@ Item {
             id: textfield
             objectName: "textfield"
             text: "abc"
+        }
+        TableView {
+            id: tableview
+            objectName: "tableview"
         }
         TextArea {
             id: textarea

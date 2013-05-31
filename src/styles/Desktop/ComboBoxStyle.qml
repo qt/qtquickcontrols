@@ -38,30 +38,25 @@
 **
 ****************************************************************************/
 import QtQuick 2.1
+import QtQuick.Controls 1.0
 import QtQuick.Controls.Styles 1.0
 import QtQuick.Controls.Private 1.0
 
 Style {
+    readonly property ComboBox control: __control
     property Component panel: Item {
-        property int popup: styleItem.styleHint("comboboxpopup")
-        property font font: itemstyle.font
-        StyleItem {
-            id: itemstyle
-            elementType: "comboboxitem"
-            visible: false
-        }
+        property bool popup: !!styleItem.styleHint("comboboxpopup")
 
         implicitWidth: 115
         implicitHeight: styleItem.implicitHeight
-        width: parent.width
-        height: parent.height
+        anchors.fill: parent
         StyleItem {
             id: styleItem
 
             height: parent.height
             width: parent.width
             elementType: "combobox"
-            sunken: control.__pressed
+            sunken: control.pressed
             raised: !sunken
             hover: control.__containsMouse
             enabled: control.enabled
@@ -72,14 +67,19 @@ Style {
             hasFocus: control.activeFocus
             // contentHeight as in QComboBox
             contentHeight: Math.max(Math.ceil(textHeight("")), 14) + 2
+
+            hints: control.styleHints
+            properties: {
+                "popup": control.__popup
+            }
         }
     }
 
-    property Component popupStyle: MenuStyle {
+    property Component __popupStyle: MenuStyle {
         __menuItemType: "comboboxitem"
     }
 
-    property Component dropDownStyle: Style {
+    property Component __dropDownStyle: Style {
         property Component frame: StyleItem {
             elementType: "frame"
 

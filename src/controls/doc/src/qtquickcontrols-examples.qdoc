@@ -29,5 +29,79 @@
     \group qtquickcontrols_examples
     \ingroup all-examples
     \title Qt Quick Controls Examples
-    \brief Demonstrates the ... functionality provided by Qt.
+    \brief A Collection of examples for \l{Qt Quick Controls}, written in QML.
+
+    These examples show how to create user interfaces using
+    \l{Qt Quick Controls}.
 */
+
+/*!
+    \example gallery
+    \title Qt Quick Controls - Gallery
+    \ingroup qtquickcontrols_examples
+    \brief A collection of components for a classic desktop-style UI.
+    \image qtquickcontrols-example-gallery.png
+
+    This example project demonstrates the various UI components provided by
+    \l{Qt Quick Controls}.
+*/
+
+/*!
+    \example basiclayouts
+    \title Qt Quick Controls - Basic Layouts Example
+    \ingroup qtquickcontrols_examples
+    \brief Demonstrates how to use layout types to arrange a UI
+    \image qtquickcontrols-example-basiclayouts.png
+
+    This example shows how to easily arrange UI components into
+    \l{Qt Quick Layouts}{layouts} with \l{GridLayout}, \l{RowLayout}, and
+    \l{ColumnLayout}.
+*/
+
+/*!
+    \example splitview
+    \title Qt Quick Controls - Split View Example
+    \ingroup qtquickcontrols_examples
+    \brief An example for the SplitView UI control.
+    \image qtquickcontrols-example-splitview.png
+
+    This example project demonstrates the usage of \l {SplitView} from
+    \l{Qt Quick Controls} - a control that lays out items horizontally or
+    vertically with a draggable splitter between each item.
+*/
+
+/*!
+    \example tableview
+    \title Qt Quick Controls - Table View Example
+    \ingroup qtquickcontrols_examples
+    \brief An example for the TableView control.
+    \image qtquickcontrols-example-tableview.png
+
+    This example shows how a \l{TableView} from \l{Qt Quick Controls}
+    can be used together with different types of data models to display
+    lists of information with support for scroll bars, selections and
+    resizable header sections.
+*/
+
+/*!
+    \example text
+    \title Qt Quick Controls - Text Editor Example
+    \ingroup qtquickcontrols_examples
+    \brief A text editor application.
+    \image qtquickcontrols-example-text.png
+
+    This example implements a text editor using \l{Qt Quick Controls},
+    complete with text formatting options, copy-paste and undo/redo.
+*/
+
+/*!
+    \example touch
+    \title Qt Quick Controls - Touch Gallery
+    \ingroup qtquickcontrols_examples
+    \brief Demonstrates UI controls for a touch interface
+    \image qtquickcontrols-example-touch.png
+
+    This example shows how to implement a UI suitable
+    for touch input using \l{Qt Quick Controls}.
+*/
+

@@ -45,6 +45,7 @@ import QtQuick.Controls.Private 1.0
 /*!
     \qmltype ToolBar
     \inqmlmodule QtQuick.Controls 1.0
+    \since QtQuick.Controls 1.0
     \ingroup applicationwindow
     \brief Contains ToolButton and related controls.
 
@@ -72,12 +73,14 @@ Item {
     id: toolbar
     activeFocusOnTab: false
     Accessible.role: Accessible.ToolBar
+    width: parent ? parent.width : implicitWidth
     implicitWidth: loader.item ? loader.item.implicitWidth : 0
     implicitHeight: loader.item ? loader.item.implicitHeight : 0
-    property Component style: Qt.createComponent(Settings.theme() + "/ToolBarStyle.qml", toolbar)
+    property Component style: Qt.createComponent(Settings.style + "/ToolBarStyle.qml", toolbar)
     Loader {
         id: loader
         anchors.fill: parent
         sourceComponent: style
+        property var __control: toolbar
     }
 }

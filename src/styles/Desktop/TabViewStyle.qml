@@ -44,13 +44,16 @@ import QtQuick.Controls.Styles 1.0
 Style {
     id: root
 
-    property int leftMargin: 0
-    property int rightMargin: 0
-    property StyleItem __barstyle: StyleItem { elementType: "tabbar" ; visible: false }
-    property string tabBarAlignment: __barstyle.styleHint("tabbaralignment");
+    property bool tabsMovable: false
+    property int tabsAlignment: __barstyle.styleHint("tabbaralignment") === "center" ? Qt.AlignHCenter : Qt.AlignLeft;
     property int tabOverlap: __barstyle.pixelMetric("taboverlap");
-    property int tabBaseOverlap: __barstyle.pixelMetric("tabbaseoverlap");
-    property string tabPosition: control.tabPosition == Qt.TopEdge ? "Top" : "Bottom"
+    property int frameOverlap: __barstyle.pixelMetric("tabbaseoverlap");
+
+    property StyleItem __barstyle: StyleItem {
+        elementType: "tab"
+        hints: [control.tabPosition === Qt.TopEdge ? "Top" : "Bottom"]
+        visible: false
+    }
 
     property Component frame: StyleItem {
         id: styleitem
@@ -58,24 +61,26 @@ Style {
         anchors.topMargin: 1//stack.baseOverlap
         z: style == "oxygen" ? 1 : 0
         elementType: "tabframe"
-        hints: tabPosition
         value: tabbarItem && tabsVisible && tabbarItem.tab(currentIndex) ? tabbarItem.tab(currentIndex).x : 0
         minimum: tabbarItem && tabsVisible && tabbarItem.tab(currentIndex) ? tabbarItem.tab(currentIndex).width : 0
         maximum: tabbarItem && tabsVisible ? tabbarItem.width : width
+        properties: { "selectedTabRect" : tabbarItem.__selectedTabRect, "orientation" : control.tabPosition }
         Component.onCompleted: {
             stack.frameWidth = styleitem.pixelMetric("defaultframewidth");
             stack.style = style;
-            stack.baseOverlap = root.tabBaseOverlap;
         }
     }
 
     property Component tab: Item {
         id: item
         property string tabpos: control.count === 1 ? "only" : index === 0 ? "beginning" : index === control.count - 1 ? "end" : "middle"
-        property string selectedpos: nextSelected ? "next" : previousSelected ? "previous" : ""
+        property string selectedpos: styleData.nextSelected ? "next" : styleData.previousSelected ? "previous" : ""
+        property string orientation: control.tabPosition === Qt.TopEdge ? "Top" : "Bottom"
         property int tabHSpace: __barstyle.pixelMetric("tabhspace");
         property int tabVSpace: __barstyle.pixelMetric("tabvspace");
-        implicitWidth: Math.max(50, styleitem.textWidth(title)) + tabHSpace + 2
+        property int totalOverlap: tabOverlap * (control.count - 1)
+        property real maxTabWidth: (control.width + totalOverlap) / control.count
+        implicitWidth: Math.min(maxTabWidth, Math.max(50, styleitem.textWidth(styleData.title)) + tabHSpace + 2)
         implicitHeight: Math.max(styleitem.font.pixelSize + tabVSpace + 6, 0)
 
         StyleItem {
@@ -90,12 +95,15 @@ Style {
             anchors.bottomMargin: -1
             anchors.leftMargin: -paintMargins + (style === "mac" && selected ? -1 : 0)
             properties: { "hasFrame" : true }
-            hints: [tabPosition, tabpos, selectedpos]
+            hints: [orientation, tabpos, selectedpos]
 
-            selected: tab.selected
-            text: elidedText(title, tabbarItem.elide, item.width - item.tabHSpace)
-            hover: tab.hover
+            selected: styleData.selected
+            text: elidedText(styleData.title, tabbarItem.elide, item.width - item.tabHSpace)
+            hover: styleData.hovered
             hasFocus: tabbarItem.activeFocus && selected
         }
     }
+
+    property Component leftCorner: null
+    property Component rightCorner: null
 }

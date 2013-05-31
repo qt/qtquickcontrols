@@ -46,6 +46,7 @@ import QtQuick.Controls.Private 1.0
 /*!
     \qmltype Menu
     \inqmlmodule QtQuick.Controls 1.0
+    \since QtQuick.Controls 1.0
     \ingroup menus
     \brief Provides a menu component for use in menu bars, as context menu,
     and other popup menus.
@@ -105,7 +106,7 @@ MenuPrivate {
 
     /*! \internal
       \omit
-      Documented in qtmenu.cpp.
+      Documented in qqquickmenu.cpp.
       \endomit
     */
     function addMenu(title) {
@@ -114,7 +115,7 @@ MenuPrivate {
 
     /*! \internal
       \omit
-      Documented in qtmenu.cpp.
+      Documented in qquickmenu.cpp.
       \endomit
     */
     function insertMenu(index, title) {
@@ -129,7 +130,7 @@ MenuPrivate {
     property Component __selfComponent: null
 
     /*! \internal */
-    property Component style: Qt.createComponent(Settings.theme() + "/MenuStyle.qml", root)
+    property Component style: Qt.createComponent(Settings.style + "/MenuStyle.qml", root)
 
     /*! \internal */
     property var __menuBar: null
@@ -165,6 +166,7 @@ MenuPrivate {
             id: styleLoader
             active: !root.isNative
             sourceComponent: root.style
+            property alias __control: menuFrameLoader
             onStatusChanged: {
                 if (status === Loader.Error)
                     console.error("Failed to load Style for", root)

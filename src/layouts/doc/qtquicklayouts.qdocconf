@@ -24,9 +24,9 @@ qhp.qtquicklayouts.subprojects.qtquicklayoutsqmltypes.selectors = class fake:hea
 qhp.qtquicklayouts.subprojects.qtquicklayoutsqmltypes.sortPages = true
 qhp.qtquicklayouts.subprojects.qtquicklayoutsqmltypes.type = manual
 
-depends = qtqml qtquick qtwidgets qtdoc qtquicklayouts
+depends = qtqml qtquick qtwidgets qtdoc qtquickcontrols
 
-exampledirs += ../../../examples/
+exampledirs += ../../../examples/quick/controls/
 
 headerdirs += ../
 

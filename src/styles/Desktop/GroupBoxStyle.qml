@@ -42,18 +42,33 @@ import QtQuick.Controls 1.0
 import QtQuick.Controls.Private 1.0
 
 
-Style {
-    property int margin: 8
+PaddedStyle {
+    readonly property GroupBox control: __control
+
+    property var __style: StyleItem { id: style }
+    property int titleHeight: 18
+
+    Component.onCompleted: {
+        var stylename = __style.style
+        if (stylename.indexOf("windows") > -1)
+            titleHeight = 9
+    }
+
+    padding {
+        top: (control.title.length > 0 || control.checkable ? titleHeight : 0) + 6
+        left: 8
+        right: 8
+        bottom: 6
+    }
 
     property Component panel: StyleItem {
+        anchors.fill: parent
         id: styleitem
         elementType: "groupbox"
         text: control.title
         on: control.checked
         hasFocus: control.activeFocus
-        activeControl: checkable ? "checkbox" : ""
-        properties: { "checkable" : checkable , "sunken" : !flat}
-        contentWidth: control.contentWidth + 2 * margin
-        contentHeight: control.contentHeight + 2 * margin
+        activeControl: control.checkable ? "checkbox" : ""
+        properties: { "checkable" : control.checkable , "sunken" : !control.flat}
     }
 }

@@ -46,6 +46,9 @@ TableView {
     model: [{"text": "text1"}, {"text": "text2"}, {"text": "text3"}]
     property var test: 0
 
+    property bool activatedTest: false
+    onActivated: activatedTest = true
+
     TableViewColumn {
         title: "Text"
         role: "text"
@@ -53,14 +56,14 @@ TableView {
     }
     headerDelegate: Text {
         height: 40
-        text: itemValue
+        text: styleData.value
     }
     itemDelegate: Text {
         width: parent.width
         anchors.left: parent.left
         anchors.verticalCenter: parent.verticalCenter
-        text: itemValue !== undefined ? itemValue : ""
-        color: itemTextColor
+        text: styleData.value !== undefined ? styleData.value : ""
+        color: styleData.textColor
         MouseArea {
             anchors.fill: parent
             onClicked: table.test = 1

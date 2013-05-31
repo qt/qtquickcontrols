@@ -78,6 +78,12 @@ ApplicationWindow {
                 value: 1000
                 implicitWidth: 80
             }
+            CheckBox {
+                id: largeCheck
+                text: "Large"
+                checked: false
+                implicitWidth: 80
+            }
             Item { Layout.fillWidth: true }
         }
     }
@@ -109,7 +115,7 @@ ApplicationWindow {
                     width: widthSpinBox.value
                     height: heightSpinBox.value
                     fillMode: Image.Tile
-                    source: "../../../examples/touch/images/button_pressed.png"
+                    source: "../../../examples/quick/controls/touch/images/button_pressed.png"
                 }
             }
         }
@@ -126,7 +132,7 @@ ApplicationWindow {
                         width: widthSpinBox.value
                         height: heightSpinBox.value
                         fillMode: Image.Tile
-                        source: "../../../examples/touch/images/button_pressed.png"
+                        source: "../../../examples/quick/controls/touch/images/button_pressed.png"
                     }
                 }
             }
@@ -139,6 +145,7 @@ ApplicationWindow {
                 frameVisible: frameCheck.checked
                 text: loremIpsum + loremIpsum + loremIpsum + loremIpsum
                 anchors.fill: parent
+                font.pixelSize: largeCheck.checked ? 26 : 13
             }
         }
         Tab {
@@ -152,7 +159,7 @@ ApplicationWindow {
                     model: 30
                     delegate: Rectangle {
                         width: parent.width
-                        height: 30
+                        height: largeCheck.checked ? 60 : 30
                         Text {
                             anchors.fill: parent
                             anchors.margins: 4
@@ -176,6 +183,17 @@ ApplicationWindow {
                 anchors.fill: parent
                 model: 10
                 frameVisible: frameCheck.checked
+
+                rowDelegate: Rectangle {
+                     width: parent.width
+                     height: largeCheck.checked ? 60 : 30
+                     Rectangle {
+                         anchors.bottom: parent.bottom
+                         width: parent.width
+                         height: 1
+                         color: "darkgray"
+                     }
+                 }
 
                 TableViewColumn {title: "first"
                     width: view.viewport.width

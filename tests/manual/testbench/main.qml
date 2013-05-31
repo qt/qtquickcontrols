@@ -108,10 +108,11 @@ ApplicationWindow {
             anchors.left: parent.left
             anchors.leftMargin: 8
             anchors.verticalCenter: parent.verticalCenter
-            Label { text: "X: " + topLeftHandle.x ; width: 50}
-            Label { text: "Y: " + topLeftHandle.y  ; width: 50}
-            Label { text: "Width: " + container.width  ; width: 70}
-            Label { text: "Height: "+container.height  ; width: 70}
+            spacing: 5
+            Label { text: "X: " + topLeftHandle.x; width: 70 }
+            Label { text: "Y: " + topLeftHandle.y; width: 70 }
+            Label { text: "Width: " + container.width; width: 80 }
+            Label { text: "Height: "+container.height; width: 80 }
         }
     }
 
@@ -212,6 +213,10 @@ ApplicationWindow {
                                     case "Indeterminate":
                                     case "UpdateValueWhileDragging":
                                     case "TickmarksEnabled":
+                                    case "SortIndicatorVisible":
+                                    case "IsDefault":
+                                    case "PartiallyCheckedEnabled":
+                                    case "AlternatingRowColors":
                                         layout = layouts.boolLayout
                                         typeName = "Boolean";
                                         break
@@ -220,6 +225,7 @@ ApplicationWindow {
                                     case "MinimumValue":
                                     case "Decimals":
                                     case "CurrentIndex":
+                                    case "SortIndicatorColumn":
                                         layout = layouts.intLayout
                                         typeName = "Int"
                                         break;
@@ -321,6 +327,23 @@ ApplicationWindow {
                                         enumModelData.append({ text: "Amber",       value: "#FF7E00"});
                                         enumModelData.append({ text: "Azure",       value: "#007FFF"});
                                         enumModelData.append({ text: "Carmine red", value: "#FF0038"});
+                                        break;
+
+                                    case "SortIndicatorOrder":
+                                        layout = layouts.enumLayout
+                                        enumModelData = Qt.createQmlObject('import QtQuick 2.1; import QtQuick.Controls 1.0; ListModel {}', layout, '');
+                                        typeName = "Enum";
+                                        enumModelData.append({ text: "Qt.AscendingOrder",    value: Qt.AscendingOrder});
+                                        enumModelData.append({ text: "Qt.DescendingOrder",   value: Qt.DescendingOrder});
+                                        break;
+
+                                    case "CheckedState":
+                                        layout = layouts.enumLayout
+                                        enumModelData = Qt.createQmlObject('import QtQuick 2.1; import QtQuick.Controls 1.0; ListModel {}', layout, '');
+                                        typeName = "Enum";
+                                        enumModelData.append({ text: "Qt.Checked",          value: Qt.Checked});
+                                        enumModelData.append({ text: "Qt.Unchecked",        value: Qt.Unchecked});
+                                        enumModelData.append({ text: "Qt.PartiallyChecked", value: Qt.PartiallyChecked});
                                         break;
 
 

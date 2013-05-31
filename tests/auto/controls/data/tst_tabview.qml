@@ -125,44 +125,132 @@ TestCase {
         tabView.destroy()
     }
 
+    function test_moveTab_data() {
+        return [
+            {tag:"0->1 (0)", from: 0, to: 1, currentBefore: 0, currentAfter: 1},
+            {tag:"0->1 (1)", from: 0, to: 1, currentBefore: 1, currentAfter: 0},
+            {tag:"0->1 (2)", from: 0, to: 1, currentBefore: 2, currentAfter: 2},
+
+            {tag:"0->2 (0)", from: 0, to: 2, currentBefore: 0, currentAfter: 2},
+            {tag:"0->2 (1)", from: 0, to: 2, currentBefore: 1, currentAfter: 0},
+            {tag:"0->2 (2)", from: 0, to: 2, currentBefore: 2, currentAfter: 1},
+
+            {tag:"1->0 (0)", from: 1, to: 0, currentBefore: 0, currentAfter: 1},
+            {tag:"1->0 (1)", from: 1, to: 0, currentBefore: 1, currentAfter: 0},
+            {tag:"1->0 (2)", from: 1, to: 0, currentBefore: 2, currentAfter: 2},
+
+            {tag:"1->2 (0)", from: 1, to: 2, currentBefore: 0, currentAfter: 0},
+            {tag:"1->2 (1)", from: 1, to: 2, currentBefore: 1, currentAfter: 2},
+            {tag:"1->2 (2)", from: 1, to: 2, currentBefore: 2, currentAfter: 1},
+
+            {tag:"2->0 (0)", from: 2, to: 0, currentBefore: 0, currentAfter: 1},
+            {tag:"2->0 (1)", from: 2, to: 0, currentBefore: 1, currentAfter: 2},
+            {tag:"2->0 (2)", from: 2, to: 0, currentBefore: 2, currentAfter: 0},
+
+            {tag:"2->1 (0)", from: 2, to: 1, currentBefore: 0, currentAfter: 0},
+            {tag:"2->1 (1)", from: 2, to: 1, currentBefore: 1, currentAfter: 2},
+            {tag:"2->1 (2)", from: 2, to: 1, currentBefore: 2, currentAfter: 1},
+
+            {tag:"0->0", from: 0, to: 0, currentBefore: 0, currentAfter: 0},
+            {tag:"-1->0", from: 0, to: 0, currentBefore: 1, currentAfter: 1},
+            {tag:"0->-1", from: 0, to: 0, currentBefore: 2, currentAfter: 2},
+            {tag:"1->10", from: 0, to: 0, currentBefore: 0, currentAfter: 0},
+            {tag:"10->2", from: 0, to: 0, currentBefore: 1, currentAfter: 1},
+            {tag:"10->-1", from: 0, to: 0, currentBefore: 2, currentAfter: 2}
+        ]
+    }
+
+    function test_moveTab(data) {
+        var tabView = Qt.createQmlObject('import QtQuick 2.1; import QtQuick.Controls 1.0; TabView { }', testCase, '');
+        compare(tabView.count, 0)
+
+        var titles = ["title 1", "title 2", "title 3"]
+
+        var i = 0;
+        for (i = 0; i < titles.length; ++i)
+            tabView.addTab(titles[i], newTab)
+
+        compare(tabView.count, titles.length)
+        for (i = 0; i < tabView.count; ++i)
+            compare(tabView.tabAt(i).title, titles[i])
+
+        tabView.currentIndex = data.currentBefore
+        tabView.moveTab(data.from, data.to)
+
+        compare(tabView.count, titles.length)
+        compare(tabView.currentIndex, data.currentAfter)
+
+        var title = titles[data.from]
+        titles.splice(data.from, 1)
+        titles.splice(data.to, 0, title)
+
+        compare(tabView.count, titles.length)
+        for (i = 0; i < tabView.count; ++i)
+            compare(tabView.tabAt(i).title, titles[i])
+
+        tabView.destroy()
+    }
+
     function test_dynamicTabs() {
-        var tabView = Qt.createQmlObject('import QtQuick 2.1; import QtQuick.Controls 1.0; TabView { property Component tabComponent: Component { Tab { } } }', testCase, '');
-        compare(tabView.count, 0)
-        var tab1 = tabView.tabComponent.createObject(tabView)
-        compare(tabView.count, 1)
-        var tab2 = tabView.tabComponent.createObject(tabView)
-        compare(tabView.count, 2)
-        tab1.destroy()
+        var test_tabView = '                                \
+        import QtQuick 2.1;                                 \
+        import QtQuick.Controls 1.0;                        \
+        TabView {                                           \
+            id: tabView;                                    \
+            Tab { title: "static" }                         \
+            property Component tabComponent: Component {    \
+                id: tabComponent;                           \
+                Tab { title: "dynamic" }                    \
+            }                                               \
+            Component.onCompleted: {                        \
+                addTab("added", tabComponent);              \
+                insertTab(0, "inserted", tabComponent);     \
+                tabComponent.createObject(tabView);         \
+            }                                               \
+        }                                                   '
+
+        var tabView = Qt.createQmlObject(test_tabView, testCase, '')
+        // insertTab(), addTab(), createObject() and static Tab {}
+        compare(tabView.count, 4)
+        compare(tabView.tabAt(0).title, "inserted")
+
+        var tab = tabView.tabComponent.createObject(tabView)
+        compare(tabView.count, 5)
+        compare(tabView.tabAt(4).title, "dynamic")
+        tab.destroy()
         wait(0)
-        compare(tabView.count, 1)
-        tab2.destroy()
-        wait(0)
-        compare(tabView.count, 0)
+        compare(tabView.count, 4)
+        tabView.destroy()
     }
 
     function test_mousePressOnTabBar() {
         var test_tabView = 'import QtQuick 2.1;             \
         import QtQuick.Controls 1.0;                        \
+        Column {                                            \
+            property alias tabview: _tabview;               \
+            property alias textfield: _textfield;           \
         TabView {                                           \
+            id: _tabview;                                   \
             width: 200; height: 100;                        \
             property alias tab1: _tab1;                     \
             property alias tab2: _tab2;                     \
+            property alias tab3: _tab3;                     \
             Tab {                                           \
                 id: _tab1;                                  \
                 title: "Tab1";                              \
                 active: true;                               \
                 Column {                                    \
                     objectName: "column1";                  \
-                    property alias button1: _button1;       \
-                    property alias button2: _button2;       \
+                    property alias child1: _child1;         \
+                    property alias child2: _child2;         \
                     anchors.fill: parent;                   \
-                    Button {                                \
-                        id: _button1;                       \
-                        text: "button 1 in Tab1";           \
+                    TextField {                             \
+                        id: _child1;                        \
+                        text: "textfile 1 in Tab1";         \
                     }                                       \
-                    Button {                                \
-                        id: _button2;                       \
-                        text: "button 2 in Tab1";           \
+                    TextField {                             \
+                        id: _child2;                        \
+                        text: "textfile 2 in Tab1";         \
                     }                                       \
                 }                                           \
             }                                               \
@@ -172,35 +260,71 @@ TestCase {
                 active: true;                               \
                 Column {                                    \
                     objectName: "column2";                  \
-                    property alias button3: _button3;       \
-                    property alias button4: _button4;       \
+                    property alias child3: _child3;         \
+                    property alias child4: _child4;         \
                     anchors.fill: parent;                   \
-                    Button {                                \
-                        id: _button3;                       \
-                        text: "button 1 in Tab2";           \
+                    TextField {                             \
+                        id: _child3;                        \
+                        text: "textfile 1 in Tab2";         \
                     }                                       \
-                    Button {                                \
-                        id: _button4;                       \
-                        text: "button 2 in Tab2";           \
+                    TextField {                             \
+                        id: _child4;                        \
+                        text: "textfile 2 in Tab2";         \
                     }                                       \
                 }                                           \
             }                                               \
+            Tab {                                           \
+                id: _tab3;                                  \
+                title: "Tab3";                              \
+                active: true;                               \
+                Column {                                    \
+                    objectName: "column3";                  \
+                    property alias child5: _child5;         \
+                    property alias child6: _child6;         \
+                    anchors.fill: parent;                   \
+                    Button {                                \
+                        id: _child5;                        \
+                        activeFocusOnTab: false;            \
+                        text: "button 1 in Tab3";           \
+                    }                                       \
+                    Button {                                \
+                        id: _child6;                        \
+                        activeFocusOnTab: false;            \
+                        text: "button 2 in Tab3";           \
+                    }                                       \
+                }                                           \
+            }                                               \
+        }                                                   \
+        TextField {                                         \
+            id: _textfield;                                 \
+            text: "textfile outside of tabview";            \
+        }                                                   \
         }                                                   '
 
-        var tabView = Qt.createQmlObject(test_tabView, container, '')
-        compare(tabView.count, 2)
+        var item = Qt.createQmlObject(test_tabView, container, '')
+
+        var textField = item.textfield
+        verify(textField !== null)
+
+        var tabView = item.tabview
+        verify(tabView !== null)
+        compare(tabView.count, 3)
         verify(tabView.tab1.status === Loader.Ready)
         verify(tabView.tab2.status === Loader.Ready)
+        verify(tabView.tab3.status === Loader.Ready)
+        waitForRendering(tabView)
 
         var column1 = getColumnItem(tabView.tab1, "column1")
         verify(column1 !== null)
         var column2 = getColumnItem(tabView.tab2, "column2")
         verify(column2 !== null)
+        var column3 = getColumnItem(tabView.tab3, "column3")
+        verify(column3 !== null)
 
-        var button1 = column1.button1
-        verify(button1 !== null)
-        var button3 = column2.button3
-        verify(button3 !== null)
+        var child1 = column1.child1
+        verify(child1 !== null)
+        var child3 = column2.child3
+        verify(child3 !== null)
 
         var tabbarItem = getTabBarItem(tabView)
         verify(tabbarItem !== null)
@@ -209,31 +333,40 @@ TestCase {
         verify(tabrowItem !== null)
 
         var mouseareas = populateMouseAreaItems(tabrowItem)
-        verify(mouseareas.length, 2)
+        verify(mouseareas.length, 3)
 
-        var tab1 = mouseareas[0].parent
+        var tab1 = mouseareas[0]
         verify(tab1 !== null)
         //printGeometry(tab1)
 
         waitForRendering(tab1)
         mouseClick(tab1, tab1.width/2, tab1.height/2)
-        verify(button1.activeFocus)
+        verify(child1.activeFocus)
 
-        var tab2 = mouseareas[1].parent
+        var tab2 = mouseareas[1]
         verify(tab2 !== null)
         //printGeometry(tab2)
 
         waitForRendering(tab2)
         mouseClick(tab2, tab2.width/2, tab2.height/2)
-        verify(button3.activeFocus)
+        verify(child3.activeFocus)
 
         waitForRendering(tab1)
         mouseClick(tab1, tab1.width/2, tab1.height/2)
-        verify(button1.activeFocus)
+        verify(child1.activeFocus)
 
         waitForRendering(tab2)
         mouseClick(tab2, tab2.width/2, tab2.height/2)
-        verify(button3.activeFocus)
+        verify(child3.activeFocus)
+
+        var tab3 = mouseareas[2]
+        verify(tab3 !== null)
+        //printGeometry(tab3)
+
+        waitForRendering(tab3)
+        mouseClick(tab3, tab3.width/2, tab3.height/2)
+        verify(tab3.activeFocus)
+        verify(!textField.activeFocus)
 
         tabView.destroy()
     }

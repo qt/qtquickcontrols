@@ -178,22 +178,22 @@ Item {
             setCoordinates(spinbox)
 
             mouseMove(spinbox, mainCoord.x, mainCoord.y)
-            compare(spinbox.__containsMouse, true)
-            compare(spinbox.__upHovered, false)
-            compare(spinbox.__downHovered, false)
+            compare(spinbox.__styleData.containsMouse, true)
+            compare(spinbox.__styleData.upHovered, false)
+            compare(spinbox.__styleData.downHovered, false)
 
             mouseMove(spinbox.parent, upCoord.x, upCoord.y)
-            compare(spinbox.__upHovered, true)
-            compare(spinbox.__downHovered, false)
+            compare(spinbox.__styleData.upHovered, true)
+            compare(spinbox.__styleData.downHovered, false)
 
             mouseMove(spinbox, downCoord.x, downCoord.y)
-            compare(spinbox.__upHovered, false)
-            compare(spinbox.__downHovered, true)
+            compare(spinbox.__styleData.upHovered, false)
+            compare(spinbox.__styleData.downHovered, true)
 
             mouseMove(spinbox, mainCoord.x - 2, mainCoord.y - 2)
-            compare(spinbox.__containsMouse, false)
-            compare(spinbox.__upHovered, false)
-            compare(spinbox.__downHovered, false)
+            compare(spinbox.__styleData.containsMouse, false)
+            compare(spinbox.__styleData.upHovered, false)
+            compare(spinbox.__styleData.downHovered, false)
             spinbox.destroy()
         }
 
@@ -439,6 +439,20 @@ Item {
             oldSize = spinbox.implicitWidth
             spinbox.decimals = 4
             verify(oldSize < spinbox.implicitWidth)
+            spinbox.destroy()
+        }
+
+        function test_wheel() {
+            var spinbox = Qt.createQmlObject('import QtQuick.Controls 1.0; SpinBox {}', container, '')
+            spinbox.forceActiveFocus()
+            spinbox.minimumValue = 0
+            spinbox.maximumValue = 99
+            spinbox.value = 10
+            mouseWheel(spinbox, 5, 5, 0, 120)
+            compare(spinbox.value, 11)
+            mouseWheel(spinbox, 5, 5, 0, -120)
+            mouseWheel(spinbox, 5, 5, 0, -120)
+            compare(spinbox.value, 9)
             spinbox.destroy()
         }
 

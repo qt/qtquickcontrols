@@ -46,6 +46,7 @@ import "Styles"
 /*!
     \qmltype TextField
     \inqmlmodule QtQuick.Controls 1.0
+    \since QtQuick.Controls 1.0
     \ingroup controls
     \brief Displays a single line of editable plain text.
 
@@ -53,6 +54,9 @@ import "Styles"
     placed on a TextField item (for example, through a \l validator or \l
     inputMask). Setting \l echoMode to an appropriate value enables
     TextField to be used for a password input field.
+
+    You can create a custom appearance for a TextField by
+    assigning a \l TextFieldStyle.
 
     \sa TextArea, TextInput
 */
@@ -529,7 +533,7 @@ Control {
     /*! \internal */
     property alias __contentWidth: textInput.contentWidth
 
-    style: Qt.createComponent(Settings.theme() + "/TextFieldStyle.qml", textInput)
+    style: Qt.createComponent(Settings.style + "/TextFieldStyle.qml", textInput)
 
     activeFocusOnTab: true
 
@@ -561,7 +565,7 @@ Control {
         anchors.fill: parent
         verticalAlignment: Text.AlignVCenter
 
-        color: __panel ? __panel.foregroundColor : "darkgray"
+        color: __panel ? __panel.textColor : "darkgray"
         clip: true
         renderType: Text.NativeRendering
 

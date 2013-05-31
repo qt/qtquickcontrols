@@ -36,6 +36,8 @@
 
     The module is new in Qt 5.1 and requires \l{Qt Quick} 2.1.
 
+    \note \l{Qt Quick Layouts} can be used to arrange Qt Quick Controls in a user interface.
+
     \note The current focus is on desktop, but in the long term Qt Quick Controls
     are expected to be supported on mobile platforms too.
 
@@ -59,10 +61,9 @@
     Controls are typically items that are used to present or receive input from the user.
     \annotatedlist controls
 
-    \section1 Layouts
-    \l{Qt Quick Layouts}{Layouts} can be used to have dynamic user interfaces where the UI
-    adapts to the available geometry.
-    \annotatedlist layouts
+    \section1 Menus
+    Types that can be used to build menus.
+    \annotatedlist menus
 
     \section1 Related information
 
@@ -80,4 +81,10 @@
      \list
       \li \l{Qt Quick Controls Examples}
      \endlist
+
+    \section2 Styles
+    \list
+     \li \l {Qt Quick Controls Styles QML Types}
+    \endlist
+
 */

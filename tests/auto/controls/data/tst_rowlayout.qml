@@ -129,6 +129,8 @@ Item {
             tmp.width = 30
             compare(tmp.r1.width, 10);
             compare(tmp.r2.width, 20);
+            compare(tmp.Layout.minimumWidth, 0)
+            compare(tmp.Layout.maximumWidth, Number.POSITIVE_INFINITY)
             tmp.destroy()
         }
 
@@ -252,6 +254,75 @@ Item {
         }
 
         Component {
+            id: layoutItem_Component
+            Rectangle {
+                implicitWidth: 20
+                implicitHeight: 20
+            }
+        }
+
+        Component {
+            id: columnLayoutItem_Component
+            ColumnLayout {
+                spacing: 0
+            }
+        }
+
+        Component {
+            id: layout_addAndRemoveItems_Component
+            RowLayout {
+                spacing: 0
+            }
+        }
+
+        function test_addAndRemoveItems()
+        {
+            var layout = layout_addAndRemoveItems_Component.createObject(container)
+            compare(layout.implicitWidth, 0)
+            compare(layout.implicitHeight, 0)
+
+            var rect0 = layoutItem_Component.createObject(layout)
+            compare(layout.implicitWidth, 20)
+            compare(layout.implicitHeight, 20)
+
+            var rect1 = layoutItem_Component.createObject(layout)
+            rect1.Layout.preferredWidth = 30;
+            rect1.Layout.preferredHeight = 30;
+            compare(layout.implicitWidth, 50)
+            compare(layout.implicitHeight, 30)
+
+            var col = columnLayoutItem_Component.createObject(layout)
+            var rect2 = layoutItem_Component.createObject(col)
+            rect2.Layout.fillHeight = true
+            var rect3 = layoutItem_Component.createObject(col)
+            rect3.Layout.fillHeight = true
+
+            compare(layout.implicitWidth, 70)
+            compare(col.implicitHeight, 40)
+            compare(layout.implicitHeight, 40)
+
+            rect3.destroy()
+            wait(0)     // this will hopefully effectuate the destruction of the object
+
+            col.destroy()
+            wait(0)
+            compare(layout.implicitWidth, 50)
+            compare(layout.implicitHeight, 30)
+
+            rect0.destroy()
+            wait(0)
+            compare(layout.implicitWidth, 30)
+            compare(layout.implicitHeight, 30)
+
+            rect1.destroy()
+            wait(0)
+            compare(layout.implicitWidth, 0)
+            compare(layout.implicitHeight, 0)
+
+            layout.destroy()
+        }
+
+        Component {
             id: layout_alignment_Component
             RowLayout {
                 spacing: 0
@@ -324,8 +395,8 @@ Item {
 
         function test_sizeHintNormalization_data() {
             return [
-                    { tag: "fallbackValues",  widthHints: [-1, -1, -1], expected:[0,42,1000000000], implicitWidth: 42},
-                    { tag: "acceptZeroWidths",  widthHints: [0, 0, 0], expected:[0,0,0], implicitWidth: 42},
+                    { tag: "fallbackValues",  widthHints: [-1, -1, -1], implicitWidth: 42, expected:[0,42,Number.POSITIVE_INFINITY]},
+                    { tag: "acceptZeroWidths",  widthHints: [0, 0, 0], implicitWidth: 42, expected:[0,0,0]},
                     { tag: "123",  widthHints: [1,2,3],  expected:[1,2,3]},
                     { tag: "132",  widthHints: [1,3,2],  expected:[1,2,2]},
                     { tag: "213",  widthHints: [2,1,3],  expected:[2,2,3]},
@@ -333,12 +404,12 @@ Item {
                     { tag: "321",  widthHints: [3,2,1],  expected:[1,1,1]},
                     { tag: "312",  widthHints: [3,1,2],  expected:[2,2,2]},
 
-                    { tag: "1i3",  widthHints: [1,-1,3],  expected:[1,2,3], implicitWidth: 2},
-                    { tag: "1i2",  widthHints: [1,-1,2],  expected:[1,2,2], implicitWidth: 3},
-                    { tag: "2i3",  widthHints: [2,-1,3],  expected:[2,2,3], implicitWidth: 1},
-                    { tag: "2i1",  widthHints: [2,-1,1],  expected:[1,1,1], implicitWidth: 3},
-                    { tag: "3i1",  widthHints: [3,-1,1],  expected:[1,1,1], implicitWidth: 2},
-                    { tag: "3i2",  widthHints: [3,-1,2],  expected:[2,2,2], implicitWidth: 1},
+                    { tag: "1i3",  widthHints: [1,-1,3], implicitWidth: 2,  expected:[1,2,3]},
+                    { tag: "1i2",  widthHints: [1,-1,2], implicitWidth: 3,  expected:[1,2,2]},
+                    { tag: "2i3",  widthHints: [2,-1,3], implicitWidth: 1,  expected:[2,2,3]},
+                    { tag: "2i1",  widthHints: [2,-1,1], implicitWidth: 3,  expected:[1,1,1]},
+                    { tag: "3i1",  widthHints: [3,-1,1], implicitWidth: 2,  expected:[1,1,1]},
+                    { tag: "3i2",  widthHints: [3,-1,2], implicitWidth: 1,  expected:[2,2,2]},
                     ];
         }
 
@@ -426,15 +497,19 @@ Item {
             child.Layout.preferredWidth = -1
             compare(itemSizeHints(layout), [0, 0, 3])
             child.Layout.maximumWidth = -1
-            compare(itemSizeHints(layout), [0, 0, 1000000000])
+            compare(itemSizeHints(layout), [0, 0, Number.POSITIVE_INFINITY])
+            layout.Layout.maximumWidth = 1000
+            compare(itemSizeHints(layout), [0, 0, 1000])
+            layout.Layout.maximumWidth = -1
+            compare(itemSizeHints(layout), [0, 0, Number.POSITIVE_INFINITY])
 
             layout.implicitWidthChangedCount = 0
             child.Layout.minimumWidth = 10
-            compare(itemSizeHints(layout), [10, 10, 1000000000])
+            compare(itemSizeHints(layout), [10, 10, Number.POSITIVE_INFINITY])
             compare(layout.implicitWidthChangedCount, 1)
 
             child.Layout.preferredWidth = 20
-            compare(itemSizeHints(layout), [10, 20, 1000000000])
+            compare(itemSizeHints(layout), [10, 20, Number.POSITIVE_INFINITY])
             compare(layout.implicitWidthChangedCount, 2)
 
             child.Layout.maximumWidth = 30
@@ -449,7 +524,114 @@ Item {
             compare(itemSizeHints(layout), [10, 20, 30])
             compare(layout.implicitWidthChangedCount, 4)
 
+            layout.Layout.maximumWidth = 29
+            compare(layout.Layout.maximumWidth, 29)
+            layout.Layout.maximumWidth = -1
+            compare(layout.Layout.maximumWidth, 30)
+
             layout.destroy()
+        }
+        Component {
+            id: layout_addIgnoredItem_Component
+            RowLayout {
+                spacing: 0
+                Rectangle {
+                    id: r
+                }
+            }
+        }
+
+        function test_addIgnoredItem()
+        {
+            var layout = layout_addIgnoredItem_Component.createObject(container)
+            compare(layout.implicitWidth, 0)
+            compare(layout.implicitHeight, 0)
+            var r = layout.children[0]
+            r.Layout.preferredWidth = 20
+            r.Layout.preferredHeight = 30
+            compare(layout.implicitWidth, 20)
+            compare(layout.implicitHeight, 30)
+
+            layout.destroy();
+        }
+
+
+        Component {
+            id: layout_rowLayout_Component
+            RowLayout {
+            }
+        }
+
+        function test_stretchItem_data()
+        {
+            return [
+                    { expectedWidth: 0},
+                    { preferredWidth: 20, expectedWidth: 20},
+                    { preferredWidth: 0, expectedWidth: 0},
+                    { preferredWidth: 20, fillWidth: true, expectedWidth: 100},
+                    { width: 20, fillWidth: true, expectedWidth: 100},
+                    { width: 0, fillWidth: true, expectedWidth: 100},
+                    { preferredWidth: 0, fillWidth: true, expectedWidth: 100},
+                    { preferredWidth: 1, maximumWidth: 0, fillWidth: true, expectedWidth: 0},
+                    { preferredWidth: 0, minimumWidth: 1, expectedWidth: 1},
+                    ];
+        }
+
+        function test_stretchItem(data)
+        {
+            var layout = layout_rowLayout_Component.createObject(container)
+            var r = layoutItem_Component.createObject(layout)
+            // Reset previously relevant properties
+            r.width = 0
+            r.implicitWidth = 0
+            compare(layout.implicitWidth, 0)
+
+            if (data.preferredWidth !== undefined)
+                r.Layout.preferredWidth = data.preferredWidth
+            if (data.fillWidth !== undefined)
+                r.Layout.fillWidth = data.fillWidth
+            if (data.width !== undefined)
+                r.width = data.width
+            if (data.minimumWidth !== undefined)
+                r.Layout.minimumWidth = data.minimumWidth
+            if (data.maximumWidth !== undefined)
+                r.Layout.maximumWidth = data.maximumWidth
+
+            layout.width = 100
+
+            compare(r.width, data.expectedWidth)
+
+            layout.destroy();
+        }
+
+        Component {
+            id: layout_alignToPixelGrid_Component
+            RowLayout {
+                spacing: 2
+                Rectangle {
+                    implicitWidth: 10
+                    implicitHeight: 10
+                    Layout.alignment: Qt.AlignVCenter
+                }
+                Rectangle {
+                    implicitWidth: 10
+                    implicitHeight: 10
+                    Layout.alignment: Qt.AlignVCenter
+                }
+            }
+        }
+        function test_alignToPixelGrid()
+        {
+            var layout = layout_alignToPixelGrid_Component.createObject(container)
+            layout.width  = 21
+            layout.height = 21
+            var r0 = layout.children[0]
+            compare(r0.x, 0) // 0.0
+            compare(r0.y, 6) // 5.5
+            var r1 = layout.children[1]
+            compare(r1.x, 12) // 11.5
+            compare(r1.y, 6) // 5.5
+            layout.destroy();
         }
     }
 }

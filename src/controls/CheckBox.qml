@@ -45,6 +45,7 @@ import QtQuick.Controls.Private 1.0
 /*!
     \qmltype CheckBox
     \inqmlmodule QtQuick.Controls 1.0
+    \since QtQuick.Controls 1.0
     \ingroup controls
     \brief A checkbox with a text label.
 
@@ -84,6 +85,9 @@ import QtQuick.Controls.Private 1.0
     \endqml
 
     Whenever a CheckBox is clicked, it emits the \l {AbstractCheckable::clicked}{clicked()} signal.
+
+    You can create a custom appearance for a CheckBox by
+    assigning a \l CheckBoxStyle.
 */
 
 AbstractCheckable {
@@ -128,7 +132,7 @@ AbstractCheckable {
     */
     property bool __ignoreChecked: false
 
-    style: Qt.createComponent(Settings.theme() + "/CheckBoxStyle.qml", checkBox)
+    style: Qt.createComponent(Settings.style + "/CheckBoxStyle.qml", checkBox)
 
     activeFocusOnTab: true
 

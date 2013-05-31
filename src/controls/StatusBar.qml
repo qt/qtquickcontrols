@@ -45,6 +45,7 @@ import QtQuick.Controls.Private 1.0
 /*!
     \qmltype StatusBar
     \inqmlmodule QtQuick.Controls 1.0
+    \since QtQuick.Controls 1.0
     \ingroup applicationwindow
     \brief Contains status information in your app.
 
@@ -69,12 +70,14 @@ Item {
     id: statusbar
     activeFocusOnTab: false
     Accessible.role: Accessible.StatusBar
-    implicitWidth: parent ? parent.width : loader.item ? loader.item.implicitHeight : 0
+    width: parent ? parent.width : implicitWidth
+    implicitWidth: loader.item.implicitHeight
     implicitHeight: loader.item ? loader.item.implicitHeight : 0
-    property Component style: Qt.createComponent(Settings.theme() + "/StatusBarStyle.qml", statusbar)
+    property Component style: Qt.createComponent(Settings.style + "/StatusBarStyle.qml", statusbar)
     Loader {
         id: loader
         anchors.fill: parent
         sourceComponent: style
+        property var __control: statusbar
     }
 }

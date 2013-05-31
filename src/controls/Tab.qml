@@ -43,6 +43,7 @@ import QtQuick 2.1
 /*!
     \qmltype Tab
     \inqmlmodule QtQuick.Controls 1.0
+    \since QtQuick.Controls 1.0
     \ingroup viewaddons
     \brief Tab represents the content of a tab in a TabView.
 
@@ -56,6 +57,10 @@ Loader {
 
     /*! This property holds the title of the tab. */
     property string title
+
+    /*! \internal */
+    property bool __inserted: false
+
     Accessible.role: Accessible.LayeredPane
     active: false
     visible: false

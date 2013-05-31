@@ -44,6 +44,7 @@ import QtQuick.Controls.Private 1.0
 /*!
     \qmltype TextArea
     \inqmlmodule QtQuick.Controls 1.0
+    \since QtQuick.Controls 1.0
     \ingroup controls
     \brief Displays multiple lines of editable formatted text.
 
@@ -608,12 +609,11 @@ ScrollView {
     property alias backgroundColor: colorRect.color
 
     /*! \internal */
-    property int documentMargins: 4
+    property int __documentMargin: 4
 
     width: 280
     height: 120
 
-    flickableItem.contentWidth: edit.paintedWidth + (2 * documentMargins)
     frameVisible: true
 
     activeFocusOnTab: true
@@ -628,84 +628,100 @@ ScrollView {
     */
     property alias textDocument: edit.textDocument
 
-    TextEdit {
-        id: edit
-        focus: true
+    Flickable {
+        id: flickable
 
-        SystemPalette {
-            id: palette
-            colorGroup: enabled ? SystemPalette.Active : SystemPalette.Disabled
-        }
+        interactive: false
+        anchors.fill: parent
 
-        Rectangle {
-            id: colorRect
-            parent: viewport
-            anchors.fill: parent
-            color: palette.base
-            z: -1
-        }
+        TextEdit {
+            id: edit
+            focus: true
 
-        property bool recursionGuard: false
-
-        function doLayout() {
-            if (!recursionGuard) {
-                recursionGuard = true
-                if (wrapMode == TextEdit.NoWrap) {
-                    __horizontalScrollBar.visible = edit.paintedWidth + (2 * documentMargins) > area.viewport.width
-                    edit.width = edit.paintedWidth + (2 * documentMargins)
-                } else {
-                    __horizontalScrollBar.visible = false
-                    edit.width = area.viewport.width - (2 * documentMargins)
-                }
-                edit.height = Math.max(area.viewport.height - (2 * documentMargins), paintedHeight + (2 * documentMargins))
-                recursionGuard = false
+            SystemPalette {
+                id: palette
+                colorGroup: enabled ? SystemPalette.Active : SystemPalette.Disabled
             }
-        }
 
-        Connections {
-            target: area.viewport
-            onWidthChanged: edit.doLayout()
-            onHeightChanged: edit.doLayout()
-        }
-        onPaintedWidthChanged: edit.doLayout()
-        onPaintedHeightChanged: edit.doLayout()
-        onWrapModeChanged: edit.doLayout()
+            Rectangle {
+                id: colorRect
+                parent: viewport
+                anchors.fill: parent
+                color: palette.base
+                z: -1
+            }
 
-        renderType: Text.NativeRendering
+            property int layoutRecursionDepth: 0
 
-        color: palette.text
-        selectionColor: palette.highlight
-        selectedTextColor: palette.highlightedText
-        wrapMode: TextEdit.WordWrap
-        x: documentMargins
-        y: documentMargins
+            function doLayout() {
+                // scrollbars affect the document/viewport size and vice versa, so we
+                // must allow the layout loop to recurse twice until the sizes stabilize
+                if (layoutRecursionDepth <= 2) {
+                    layoutRecursionDepth++
 
-        selectByMouse: true
-        readOnly: false
+                    var margins = 2 * __documentMargin
 
-        KeyNavigation.priority: KeyNavigation.BeforeItem
-        KeyNavigation.tab: area.tabChangesFocus ? area.KeyNavigation.tab : null
-        KeyNavigation.backtab: area.tabChangesFocus ? area.KeyNavigation.backtab : null
+                    if (wrapMode == TextEdit.NoWrap) {
+                        __horizontalScrollBar.visible = edit.contentWidth > viewport.width - margins
+                        edit.width = Math.max(viewport.width - margins, edit.contentWidth)
+                    } else {
+                        __horizontalScrollBar.visible = false
+                        edit.width = viewport.width - margins
+                    }
+                    edit.height = Math.max(viewport.height - margins, edit.contentHeight)
 
-        // keep textcursor within scroll view
-        onCursorPositionChanged: {
-            if (cursorRectangle.y >= flickableItem.contentY + viewport.height - 1.5*cursorRectangle.height - documentMargins)
-                flickableItem.contentY = cursorRectangle.y - viewport.height + 1.5*cursorRectangle.height + documentMargins
-            else if (cursorRectangle.y < flickableItem.contentY)
-                flickableItem.contentY = cursorRectangle.y
+                    flickable.contentWidth = edit.contentWidth + margins
+                    flickable.contentHeight = edit.contentHeight + margins
 
-            if (cursorRectangle.x >= flickableItem.contentX + viewport.width - documentMargins) {
-                flickableItem.contentX = cursorRectangle.x - viewport.width + documentMargins
-            } else if (cursorRectangle.x < flickableItem.contentX)
-                flickableItem.contentX = cursorRectangle.x
-        }
-        onLinkActivated: area.linkActivated(link)
+                    layoutRecursionDepth--
+                }
+            }
 
-        MouseArea {
-            parent: area.viewport
-            anchors.fill: parent
-            cursorShape: Qt.IBeamCursor
-            acceptedButtons: Qt.NoButton
+            Connections {
+                target: area.viewport
+                onWidthChanged: edit.doLayout()
+                onHeightChanged: edit.doLayout()
+            }
+            onContentWidthChanged: edit.doLayout()
+            onContentHeightChanged: edit.doLayout()
+            onWrapModeChanged: edit.doLayout()
+
+            renderType: Text.NativeRendering
+
+            color: palette.text
+            selectionColor: palette.highlight
+            selectedTextColor: palette.highlightedText
+            wrapMode: TextEdit.WordWrap
+            x: __documentMargin
+            y: __documentMargin
+
+            selectByMouse: true
+            readOnly: false
+
+            KeyNavigation.priority: KeyNavigation.BeforeItem
+            KeyNavigation.tab: area.tabChangesFocus ? area.KeyNavigation.tab : null
+            KeyNavigation.backtab: area.tabChangesFocus ? area.KeyNavigation.backtab : null
+
+            // keep textcursor within scroll view
+            onCursorPositionChanged: {
+                if (cursorRectangle.y >= flickableItem.contentY + viewport.height - 1.5*cursorRectangle.height - __documentMargin)
+                    flickableItem.contentY = cursorRectangle.y - viewport.height + 1.5*cursorRectangle.height + __documentMargin
+                else if (cursorRectangle.y < flickableItem.contentY)
+                    flickableItem.contentY = cursorRectangle.y
+
+                if (cursorRectangle.x >= flickableItem.contentX + viewport.width - __documentMargin) {
+                    flickableItem.contentX = cursorRectangle.x - viewport.width + __documentMargin
+                } else if (cursorRectangle.x < flickableItem.contentX)
+                    flickableItem.contentX = cursorRectangle.x
+            }
+            onLinkActivated: area.linkActivated(link)
+
+            MouseArea {
+                parent: area.viewport
+                anchors.fill: parent
+                cursorShape: Qt.IBeamCursor
+                acceptedButtons: Qt.NoButton
+            }
         }
     }
 
