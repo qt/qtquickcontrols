@@ -89,4 +89,6 @@ QtObject {
     /*! The delegate of the column. This can be used to set the
     \l TableView::itemDelegate for a specific column. */
     property Component delegate
+
+    Accessible.role: Accessible.ColumnHeader
 }

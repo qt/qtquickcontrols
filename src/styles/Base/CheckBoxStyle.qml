@@ -72,7 +72,7 @@ import QtQuick.Controls.Private 1.0
     }
     \endqml
 */
-PaddedStyle {
+Style {
     id: checkboxStyle
 
     /*! The \l CheckBox attached to this style. */
@@ -83,7 +83,13 @@ PaddedStyle {
                         SystemPalette.Active : SystemPalette.Disabled
     }
 
-    /*! The text label. */
+    /*! This defines the text label. In addition to the public
+        properties of \c control, the following state properties are available:
+
+        \table
+            \row \li readonly property bool \b styleData.hovered \li The control is being hovered.
+        \endtable
+    */
     property Component label: Text {
         text: control.text
         color: __syspal.text
@@ -102,7 +108,13 @@ PaddedStyle {
     /*! The spacing between indicator and label. */
     property int spacing: 4
 
-    /*! The indicator button. */
+    /*! This defines the indicator button. In addition to the public
+        properties of \c control, the following state properties are available:
+
+        \table
+            \row \li readonly property bool \b styleData.hovered \li The control is being hovered.
+        \endtable
+    */
     property Component indicator:  Item {
         implicitWidth: 18
         implicitHeight: 18
@@ -163,12 +175,14 @@ PaddedStyle {
                 id: indicatorLoader
                 sourceComponent: indicator
                 anchors.verticalCenter: parent.verticalCenter
+                property QtObject styleData: QtObject { readonly property bool hovered: control.__containsMouse }
             }
             Loader {
                 id: labelLoader
                 sourceComponent: label
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
+                property QtObject styleData: QtObject { readonly property bool hovered: control.__containsMouse }
             }
         }
     }

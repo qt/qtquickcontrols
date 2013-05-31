@@ -72,7 +72,7 @@ import QtQuick.Controls.Private 1.0
     If you need a custom label, you can replace the label item.
 */
 
-PaddedStyle {
+Style {
     id: buttonstyle
 
     /*! The \l Button attached to this style. */
@@ -96,7 +96,7 @@ PaddedStyle {
         properties of \c control, the following state properties are available:
 
         \table
-            \li readonly property bool styleData.hovered - The button is currently hovered.
+            \row \li readonly property bool \b styleData.hovered \li The control is being hovered.
         \endtable
     */
     property Component background: Item {
@@ -139,7 +139,7 @@ PaddedStyle {
         properties of \c control, the following state properties are available:
 
         \table
-            \li readonly property bool styleData.hovered - The button is currently hovered.
+            \row \li readonly property bool \b styleData.hovered  \li The control is being hovered.
         \endtable
     */
     property Component label: Text {

@@ -146,8 +146,8 @@ FocusScope {
     /*! \internal */
     property Component style: Qt.createComponent(Settings.style + "/ScrollViewStyle.qml", root)
 
-    /* \internal */
-    property PaddedStyle __style: styleLoader.item
+    /*! \internal */
+    property Style __style: styleLoader.item
 
     activeFocusOnTab: true
 

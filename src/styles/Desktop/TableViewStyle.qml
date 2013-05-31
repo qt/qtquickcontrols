@@ -44,9 +44,14 @@ import QtQuick.Controls.Private 1.0
 ScrollViewStyle {
     id: root
 
+    property var __syspal: SystemPalette {
+        colorGroup: control.enabled ?
+                        SystemPalette.Active : SystemPalette.Disabled
+    }
     readonly property TableView control: __control
     property bool activateItemOnSingleClick: __styleitem.styleHint("activateItemOnSingleClick")
     property color textColor: __styleitem.textColor
+    property color backgroundColor: __syspal.base
     property color highlightedTextColor: __styleitem.highlightedTextColor
 
     property StyleItem __styleitem: StyleItem{
@@ -68,7 +73,8 @@ ScrollViewStyle {
         sunken: styleData.pressed
         text: styleData.value
         hover: styleData.containsMouse
-        hints: headerPosition
+        hints: control.styleHints
+        properties: {"headerpos": headerPosition}
         property string itemSort:  (control.sortIndicatorVisible && styleData.column === control.sortIndicatorColumn) ? (control.sortIndicatorOrder == Qt.AscendingOrder ? "up" : "down") : "";
         property string headerPosition: control.columnCount === 1 ? "only" :
                                                           styleData.column === control.columnCount-1 ? "end" :
@@ -86,13 +92,13 @@ ScrollViewStyle {
 
     property Component itemDelegate: Item {
         height: Math.max(16, label.implicitHeight)
-        property int implicitWidth: sizehint.paintedWidth + 4
+        property int implicitWidth: sizehint.paintedWidth + 16
 
         Text {
             id: label
             objectName: "label"
             width: parent.width
-            anchors.margins: 6
+            anchors.leftMargin: 8
             font: __styleitem.font
             anchors.left: parent.left
             anchors.right: parent.right

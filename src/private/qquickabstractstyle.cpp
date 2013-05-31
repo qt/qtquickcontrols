@@ -39,30 +39,60 @@
 **
 ****************************************************************************/
 
-#include "qquickpaddedstyle_p.h"
-#include "qquickpadding_p.h"
+#include "qquickabstractstyle_p.h"
+
+QT_BEGIN_NAMESPACE
 
 /*!
-    \qmltype PaddedStyle
-    \instantiates QQuickPaddedStyle
+    \qmltype AbstractStyle
+    \instantiates QQuickAbstractStyle
     \qmlabstract
     \internal
 */
 
-QT_BEGIN_NAMESPACE
-
-QQuickPaddedStyle::QQuickPaddedStyle(QQuickItem *parent) :
-    QQuickItem(parent)
-{
-}
-
 /*!
-    \qmlproperty int PaddedStyle::padding.top
-    \qmlproperty int PaddedStyle::padding.left
-    \qmlproperty int PaddedStyle::padding.right
-    \qmlproperty int PaddedStyle::padding.bottom
+    \qmlproperty int AbstractStyle::padding.top
+    \qmlproperty int AbstractStyle::padding.left
+    \qmlproperty int AbstractStyle::padding.right
+    \qmlproperty int AbstractStyle::padding.bottom
 
     This grouped property holds the \c top, \c left, \c right and \c bottom padding.
 */
+
+QQuickAbstractStyle::QQuickAbstractStyle(QObject *parent) : QObject(parent)
+{
+}
+
+QQmlListProperty<QObject> QQuickAbstractStyle::data()
+{
+    return QQmlListProperty<QObject>(this, 0, &QQuickAbstractStyle::data_append, &QQuickAbstractStyle::data_count,
+                                     &QQuickAbstractStyle::data_at, &QQuickAbstractStyle::data_clear);
+}
+
+void QQuickAbstractStyle::data_append(QQmlListProperty<QObject> *list, QObject *object)
+{
+    if (QQuickAbstractStyle *style = qobject_cast<QQuickAbstractStyle *>(list->object))
+        style->m_data.append(object);
+}
+
+int QQuickAbstractStyle::data_count(QQmlListProperty<QObject> *list)
+{
+    if (QQuickAbstractStyle *style = qobject_cast<QQuickAbstractStyle *>(list->object))
+        return style->m_data.count();
+    return 0;
+}
+
+QObject *QQuickAbstractStyle::data_at(QQmlListProperty<QObject> *list, int index)
+{
+    if (QQuickAbstractStyle *style = qobject_cast<QQuickAbstractStyle *>(list->object))
+        return style->m_data.at(index);
+    return 0;
+}
+
+void QQuickAbstractStyle::data_clear(QQmlListProperty<QObject> *list)
+{
+    if (QQuickAbstractStyle *style = qobject_cast<QQuickAbstractStyle *>(list->object))
+        style->m_data.clear();
+}
 
 QT_END_NAMESPACE

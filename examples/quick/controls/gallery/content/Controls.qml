@@ -180,6 +180,14 @@ Item {
                 height: parent.height - group1.height - group2.height - 2 * parent.spacing
                 anchors { right: parent.right }
             }
+
+            MouseArea {
+                id: contextMenu
+                parent: area.viewport
+                anchors.fill: parent
+                acceptedButtons: Qt.RightButton
+                onPressed: editmenu.popup()
+            }
         }
     }
 }

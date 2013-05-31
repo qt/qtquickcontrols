@@ -64,9 +64,9 @@ Style {
         property color selectedTextColor: syspal.highlightedText
 
 
-        property bool rounded: hints.indexOf("rounded") > -1
+        property bool rounded: !!hints["rounded"]
         property int topMargin: style === "mac" ? 3 : 2
-        property int leftMargin: rounded ? 8 : 4
+        property int leftMargin: rounded ? 12 : 4
         property int rightMargin: leftMargin
         property int bottomMargin: 2
 
@@ -76,7 +76,7 @@ Style {
 
         FocusFrame {
             anchors.fill: parent
-            visible: textfield.activeFocus && textfieldstyle.styleHint("focuswidget")
+            visible: textfield.activeFocus && textfieldstyle.styleHint("focuswidget") && !rounded
         }
     }
 }

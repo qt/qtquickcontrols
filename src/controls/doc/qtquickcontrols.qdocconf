@@ -47,12 +47,11 @@ sources += ../../private/qstyleitem.cpp \
            ../../private/BasicButton.qml \
            ../../private/FocusFrame.qml \
            ../../private/ModalPopupBehavior.qml \
-           ../../private/PageSlideTransition.qml \
            ../../private/ScrollBar.qml \
            ../../private/TabBar.qml \
            ../../private/Control.qml \
            ../../private/Style.qml \
-           ../../private/qquickpaddedstyle.h \
-           ../../private/qquickpaddedstyle.cpp
+           ../../private/qquickabstractstyle.h \
+           ../../private/qquickabstractstyle.cpp
 
 imagedirs += images

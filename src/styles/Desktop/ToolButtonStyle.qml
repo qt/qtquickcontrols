@@ -46,16 +46,17 @@ Style {
 
         anchors.fill: parent
         elementType: "toolbutton"
-        on: control.pressed || (control.checkable && control.checked)
-        sunken: control.pressed || (control.checkable && control.checked)
+        on: control.checkable && control.checked
+        sunken: control.pressed
         raised: !(control.checkable && control.checked) && control.__containsMouse
         hover: control.__containsMouse
         hasFocus: control.activeFocus
-        hints: control.styleHints.concat([control.__position])
+        hints: control.styleHints
         text: control.text
 
         properties: {
-            "icon": control.__action.__icon
+            "icon": control.__action.__icon,
+            "position": control.__position
         }
     }
 }

@@ -37,56 +37,29 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
+
 import QtQuick 2.1
-import QtQuick.Controls.Styles 1.0
+import QtQuick.Controls 1.0
 
-/*!
-        \qmltype Control
-        \internal
-        \qmlabstract
-        \inqmlmodule QtQuick.Controls.Private 1.0
-*/
-FocusScope {
-    id: root
+TableView {
+    id: tableView
 
-    /*! \qmlproperty Component Control::style
+    TableViewColumn { title: "static" }
 
-        The style Component for this control.
-        \sa {Qt Quick Controls Styles QML Types}
+    Component {
+        id: component
+        TableViewColumn { }
+    }
 
-    */
-    property Component style
+    Component.onCompleted: {
+        addColumn(component.createObject(tableView, {title: "added item"}))
 
-    /*! \internal */
-    property QtObject __style: styleLoader.item
+        var col1 = addColumn(component)
+        col1.title = "added component"
 
-    /*! \internal */
-    property Item __panel: panelLoader.item
+        insertColumn(0, component.createObject(tableView, {title: "inserted item"}))
 
-    /*! \internal */
-    property var styleHints
-
-    implicitWidth: __panel ? __panel.implicitWidth: 0
-    implicitHeight: __panel ? __panel.implicitHeight: 0
-    activeFocusOnTab: false
-
-    /*! \internal */
-    property alias __styleData: styleLoader.styleData
-
-    Loader {
-        id: panelLoader
-        anchors.fill: parent
-        sourceComponent: __style ? __style.panel : null
-        onStatusChanged: if (status === Loader.Error) console.error("Failed to load Style for", root)
-        Loader {
-            id: styleLoader
-            sourceComponent: style
-            property Item __control: root
-            property QtObject styleData: null
-            onStatusChanged: {
-                if (status === Loader.Error)
-                    console.error("Failed to load Style for", root)
-            }
-        }
+        var col2 = insertColumn(0, component)
+        col2.title = "inserted component"
     }
 }

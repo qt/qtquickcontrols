@@ -174,19 +174,6 @@ Control {
     Accessible.role: Accessible.Slider
     Accessible.name: value
 
-    /*!
-        \qmlmethod Slider::formatValue
-
-        This method returns the current slider value in a way that is more suitable
-        for user display, such as the \l value rounded to only two decimal places.
-
-        By default this function returns the nearest \c int value.
-    */
-
-    function formatValue(v) {
-        return Math.round(v);
-    }
-
     style: Qt.createComponent(Settings.style + "/SliderStyle.qml", slider)
 
     Keys.onRightPressed: value += (maximumValue - minimumValue)/10.0

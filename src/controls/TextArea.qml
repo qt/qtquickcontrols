@@ -621,7 +621,7 @@ ScrollView {
     Accessible.role: Accessible.EditableText
 
     /*!
-        \qmlproperty textDocument TextArea::textDocument
+        \qmlproperty TextDocument TextArea::textDocument
 
         This property exposes the \l QTextDocument of this TextArea.
         \sa TextEdit::textDocument

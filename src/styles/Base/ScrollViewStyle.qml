@@ -47,7 +47,7 @@ import QtQuick.Controls.Private 1.0
     \since QtQuick.Controls.Styles 1.0
     \brief Provides custom styling for ScrollView
 */
-PaddedStyle {
+Style {
     id: root
 
     /*! \internal */
@@ -97,10 +97,10 @@ PaddedStyle {
 
         You can access the following state properties:
 
-        \list
-        \li property bool styleData.hovered
-        \li property bool styleData.horizontal
-        \endlist
+        \table
+            \row \li property bool \b styleData.hovered
+            \row \li property bool \b styleData.horizontal
+        \endtable
     */
 
     property Component scrollBarBackground: Item {
@@ -123,11 +123,11 @@ PaddedStyle {
 
         You can access the following state properties:
 
-        \list
-        \li property bool styleData.hovered
-        \li property bool styleData.pressed
-        \li property bool styleData.horizontal
-        \endlist
+        \table
+            \row \li property bool \b styleData.hovered
+            \row \li property bool \b styleData.pressed
+            \row \li property bool \b styleData.horizontal
+        \endtable
     */
 
     property Component handle: BorderImage{
@@ -144,11 +144,11 @@ PaddedStyle {
 
         You can access the following state properties:
 
-        \list
-        \li property bool styleData.hovered
-        \li property bool styleData.pressed
-        \li property bool styleData.horizontal
-        \endlist
+        \table
+            \row \li property bool \b styleData.hovered
+            \row \li property bool \b styleData.pressed
+            \row \li property bool \b styleData.horizontal
+        \endtable
     */
     property Component incrementControl: Rectangle {
         implicitWidth: 16
@@ -181,11 +181,11 @@ PaddedStyle {
 
         You can access the following state properties:
 
-        \list
-        \li property bool styleData.hovered
-        \li property bool styleData.pressed
-        \li property bool styleData.horizontal
-        \endlist
+        \table
+            \row \li property bool \b styleData.hovered
+            \row \li property bool \b styleData.pressed
+            \row \li property bool \b styleData.horizontal
+        \endtable
     */
     property Component decrementControl: Rectangle {
         implicitWidth: 16

@@ -47,7 +47,7 @@ import QtQuick.Controls.Private 1.0
     \inqmlmodule QtQuick.Controls.Styles 1.0
     \since QtQuick.Controls.Styles 1.0
 */
-PaddedStyle {
+Style {
 
     /*! \internal */
     property var __syspal: SystemPalette {

@@ -51,7 +51,7 @@ Style {
 
     property StyleItem __barstyle: StyleItem {
         elementType: "tab"
-        hints: [control.tabPosition === Qt.TopEdge ? "Top" : "Bottom"]
+        properties: { "tabposition" : (control.tabPosition === Qt.TopEdge ? "Top" : "Bottom") }
         visible: false
     }
 
@@ -65,6 +65,7 @@ Style {
         minimum: tabbarItem && tabsVisible && tabbarItem.tab(currentIndex) ? tabbarItem.tab(currentIndex).width : 0
         maximum: tabbarItem && tabsVisible ? tabbarItem.width : width
         properties: { "selectedTabRect" : tabbarItem.__selectedTabRect, "orientation" : control.tabPosition }
+        hints: control.styleHints
         Component.onCompleted: {
             stack.frameWidth = styleitem.pixelMetric("defaultframewidth");
             stack.style = style;
@@ -94,8 +95,8 @@ Style {
             anchors.rightMargin: -paintMargins
             anchors.bottomMargin: -1
             anchors.leftMargin: -paintMargins + (style === "mac" && selected ? -1 : 0)
-            properties: { "hasFrame" : true }
-            hints: [orientation, tabpos, selectedpos]
+            properties: { "hasFrame" : true, "orientation": orientation, "tabpos": tabpos, "selectedpos": selectedpos }
+            hints: control.styleHints
 
             selected: styleData.selected
             text: elidedText(styleData.title, tabbarItem.elide, item.width - item.tabHSpace)

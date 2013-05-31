@@ -76,7 +76,6 @@ Item {
             GridLayout {
                 id: gridLayout
                 anchors.fill: parent
-                anchors.margins: 4
                 rows: 3
                 flow: GridLayout.TopToBottom
 
