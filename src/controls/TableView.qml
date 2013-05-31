@@ -303,7 +303,12 @@ ScrollView {
         if (typeof column['createObject'] === 'function')
             object = column.createObject(root)
 
+        else if (object.__view) {
+            console.warn("TableView::insertColumn(): you cannot add a column to multiple views")
+            return null
+        }
         if (index >= 0 && index <= columnCount && object.Accessible.role === Accessible.ColumnHeader) {
+            object.__view = root
             columnModel.insert(index, {columnItem: object})
             return object
         }
@@ -616,7 +621,7 @@ ScrollView {
 
                     delegate: Item {
                         z:-index
-                        width: modelData.width
+                        width: columnCount == 1 ? viewport.width + __verticalScrollBar.width : modelData.width
                         visible: modelData.visible
                         height: headerVisible ? headerStyle.height : 0
 
@@ -655,7 +660,7 @@ ScrollView {
                             // NOTE: the direction is different from the master branch
                             // so this indicates that I am using an invalid assumption on item ordering
                             onPositionChanged: {
-                                if (pressed) { // only do this while dragging
+                                if (pressed && columnCount > 1) { // only do this while dragging
                                     for (var h = columnCount-1 ; h >= 0 ; --h) {
                                         if (drag.target.x > headerrow.children[h].x) {
                                             repeater.targetIndex = h
@@ -680,7 +685,7 @@ ScrollView {
                             }
                             drag.maximumX: 1000
                             drag.minimumX: -1000
-                            drag.target: draghandle
+                            drag.target: columnCount > 1 ? draghandle : null
                         }
 
                         Loader {
@@ -708,6 +713,7 @@ ScrollView {
                             anchors.rightMargin: -width/2
                             width: 16 ; height: parent.height
                             anchors.right: parent.right
+                            enabled: columnCount > 1
                             onPositionChanged:  {
                                 var newHeaderWidth = modelData.width + (mouseX - offset)
                                 modelData.width = Math.max(minimumSize, newHeaderWidth)
@@ -728,7 +734,7 @@ ScrollView {
                                     modelData.width = minWidth
                             }
                             onPressedChanged: if (pressed) offset=mouseX
-                            cursorShape: Qt.SplitHCursor
+                            cursorShape: enabled ? Qt.SplitHCursor : Qt.ArrowCursor
                         }
                     }
                 }
