@@ -44,6 +44,7 @@ import QtQuick.Controls.Private 1.0
 /*!
     \qmltype StatusBarStyle
     \internal
+    \ingroup applicationwindowstyling
     \inqmlmodule QtQuick.Controls.Styles 1.0
     \since QtQuick.Controls.Styles 1.0
 */

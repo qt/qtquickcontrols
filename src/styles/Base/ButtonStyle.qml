@@ -45,6 +45,7 @@ import QtQuick.Controls.Private 1.0
     \qmltype ButtonStyle
     \inqmlmodule QtQuick.Controls.Styles 1.0
     \since QtQuick.Controls.Styles 1.0
+    \ingroup controlsstyling
     \brief Provides custom styling for Button
 
     You can create a custom button by replacing the "background" delegate

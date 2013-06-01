@@ -45,6 +45,7 @@ import "../../Private/style.js" as StyleHelpers
 /*!
     \qmltype MenuBarStyle
     \internal
+    \ingroup applicationwindowstyling
     \inqmlmodule QtQuick.Controls.Styles 1.0
 */
 

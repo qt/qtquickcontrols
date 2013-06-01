@@ -44,6 +44,7 @@ import QtQuick.Controls.Private 1.0
 /*!
     \qmltype ToolBarStyle
     \internal
+    \ingroup applicationwindowstyling
     \inqmlmodule QtQuick.Controls.Styles 1.0
 */
 Style {

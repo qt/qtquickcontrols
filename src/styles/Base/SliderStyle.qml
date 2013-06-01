@@ -45,6 +45,7 @@ import QtQuick.Controls.Private 1.0
     \qmltype SliderStyle
     \inqmlmodule QtQuick.Controls.Styles 1.0
     \since QtQuick.Controls.Styles 1.0
+    \ingroup controlsstyling
     \brief Provides custom styling for Slider
 
     The slider style allows you to create a custom appearance for

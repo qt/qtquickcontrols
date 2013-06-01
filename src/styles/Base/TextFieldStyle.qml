@@ -45,6 +45,7 @@ import QtQuick.Controls.Private 1.0
     \qmltype TextFieldStyle
     \inqmlmodule QtQuick.Controls.Styles 1.0
     \since QtQuick.Controls.Styles 1.0
+    \ingroup controlsstyling
     \brief Provides custom styling for TextField.
 
     Example:

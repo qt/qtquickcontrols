@@ -45,13 +45,14 @@ import QtQuick.Controls.Private 1.0
     \qmltype RadioButtonStyle
     \inqmlmodule QtQuick.Controls.Styles 1.0
     \since QtQuick.Controls.Styles 1.0
+    \ingroup controlsstyling
     \brief Provides custom styling for RadioButton
 
     Example:
     \qml
     RadioButton {
         text: "Radio Button"
-        style: RadioButtonStyle{
+        style: RadioButtonStyle {
             indicator: Rectangle {
                     implicitWidth: 16
                     implicitHeight: 16
@@ -65,10 +66,9 @@ import QtQuick.Controls.Private 1.0
                         radius: 9
                         anchors.margins: 4
                     }
-                }
             }
         }
-    }
+     }
     \endqml
 */
 

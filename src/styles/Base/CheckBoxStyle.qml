@@ -45,13 +45,14 @@ import QtQuick.Controls.Private 1.0
     \qmltype CheckBoxStyle
     \inqmlmodule QtQuick.Controls.Styles 1.0
     \since QtQuick.Controls.Styles 1.0
+    \ingroup controlsstyling
     \brief Provides custom styling for CheckBox
 
     Example:
     \qml
     CheckBox {
         text: "Check Box"
-        style: CheckBoxStyle{
+        style: CheckBoxStyle {
             indicator: Rectangle {
                     implicitWidth: 16
                     implicitHeight: 16
@@ -66,7 +67,6 @@ import QtQuick.Controls.Private 1.0
                         anchors.margins: 4
                         anchors.fill: parent
                     }
-                }
             }
         }
     }

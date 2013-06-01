@@ -25,6 +25,63 @@
 **
 ****************************************************************************/
 
+
+
+/*!
+    \group applicationwindowstyling
+    \title Styling Application Window
+    \internal
+*/
+
+/*!
+    \group viewsstyling
+    \title Styling Views
+*/
+
+/*!
+    \group controlsstyling
+    \title Styling Controls
+*/
+
+/*!
+    \group menusstyling
+    \title Styling Menus
+    \internal
+*/
+
+
+/*!
+    \page qtquickcontrolsstyles-index.html
+    \title Qt Quick Controls Styles
+    \brief The Qt Quick Controls Styles submodule provides custom styles for Qt Quick Controls.
+
+    The Qt Quick Controls Styles submodule allows custom styling for \l {Qt Quick Controls}.
+
+    The submodule is new in Qt 5.1 and requires \l{Qt Quick} 2.1.
+
+    \section1 Getting started
+
+    The QML types can be imported into your application using the following import statement in your \c {.qml} file.
+
+    \code
+    import QtQuick.Controls.Styles 1.0
+    \endcode
+
+    \section1 Styling Views
+    \annotatedlist viewsstyling
+
+    \section1 Styling Controls
+    \annotatedlist controlsstyling
+
+    \section1 Related information
+
+    \section2 QML Types
+     \list
+      \li \l{Qt Quick Controls Styles QML Types}
+     \endlist
+
+*/
+
 /*!
     \qmlmodule QtQuick.Controls.Styles 1
     \title Qt Quick Controls Styles QML Types
