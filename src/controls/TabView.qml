@@ -198,7 +198,7 @@ FocusScope {
             anchors.fill: parent
             anchors.margins: (frameVisible ? frameWidth : 0)
             anchors.topMargin: anchors.margins + (style =="mac" ? 6 : 0)
-            anchors.bottomMargin: anchors.margins + (style =="mac" ? 6 : 0)
+            anchors.bottomMargin: anchors.margins
 
             property int frameWidth
             property string style
