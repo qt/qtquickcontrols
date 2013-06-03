@@ -55,7 +55,8 @@ import QtQuick.Controls.Private 1.0
 
 FocusScope {
     id: root
-    implicitWidth: 150
+
+    implicitWidth: 240
     implicitHeight: 150
 
     /*! The current tab index */

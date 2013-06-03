@@ -611,9 +611,6 @@ ScrollView {
     /*! \internal */
     property int __documentMargin: 4
 
-    width: 280
-    height: 120
-
     frameVisible: true
 
     activeFocusOnTab: true

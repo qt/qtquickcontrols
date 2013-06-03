@@ -359,8 +359,8 @@ ScrollView {
 
     Accessible.role: Accessible.Table
 
-    width: 200
-    height: 200
+    implicitWidth: 200
+    implicitHeight: 150
 
     frameVisible: true
     __scrollBarTopMargin: Qt.platform.os === "mac" ? headerrow.height : 0
