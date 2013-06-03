@@ -62,18 +62,6 @@ import QtQuick.Controls.Private 1.0
 BasicButton {
     id: button
 
-    /*! The image label source as file name or resource. */
-    property url iconSource
-
-    /*! The image label source as theme name.
-        When an icon from the platform icon theme is found, this takes
-        precedence over iconSource.
-    */
-    property url iconName
-
-    /*! The label text. */
-    property string text
-
     activeFocusOnTab: true
 
     Accessible.name: text

@@ -76,7 +76,7 @@ ApplicationWindow {
         shortcut: "Ctrl+O"
         iconSource: "images/document-open.png"
         onTriggered: fileDialog.open()
-        tooltip: "open an image"
+        tooltip: "Open an image"
     }
 
     Action {
@@ -168,7 +168,7 @@ ApplicationWindow {
             ToolButton { action: openAction }
             ToolButton {
                 iconSource: "images/document-save-as.png"
-                tooltip: "(Pretend to) save as..."
+                tooltip: "(Pretend to) Save as..."
             }
             Item { Layout.fillWidth: true }
             CheckBox {

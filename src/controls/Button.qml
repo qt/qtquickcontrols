@@ -72,20 +72,6 @@ BasicButton {
     */
     property bool isDefault: false
 
-    /*! This property holds the text shown on the button. If the button has no
-        text, the \l text property will be an empty string.
-
-        The default value is the empty string.
-    */
-    property string text
-
-    /*! This property holds the icon shown on the button. If the button has no
-        icon, the iconSource property will be an empty string.
-
-        The default value is the empty string.
-    */
-    property url iconSource
-
     /*! Assign a \l Menu to this property to get a pull-down menu button.
 
         The default value is \c null.
@@ -113,6 +99,14 @@ BasicButton {
         target: menu
         property: "__visualItem"
         value: button
+    }
+
+    Binding {
+        target: button
+        property: "tooltip"
+        // We don't want a tooltip if it's the same as the button text
+        when: !!text && !(action && (!!action.tooltip || action.tooltip === text))
+        value: ""
     }
 
     Connections {

@@ -503,7 +503,7 @@ void QQuickMenuItem::setBoundAction(QQuickAction *a)
 QString QQuickMenuItem::text() const
 {
     QString ownText = QQuickMenuText::text();
-    if (!ownText.isEmpty())
+    if (!ownText.isNull())
         return ownText;
     return m_boundAction ? m_boundAction->text() : QString();
 }

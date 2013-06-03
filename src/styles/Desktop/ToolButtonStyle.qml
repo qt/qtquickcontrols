@@ -55,7 +55,7 @@ Style {
         text: control.text
 
         properties: {
-            "icon": control.__action.__icon,
+            "icon": control.__iconAction.__icon,
             "position": control.__position
         }
     }

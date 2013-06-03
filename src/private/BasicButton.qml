@@ -42,6 +42,7 @@ import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Private 1.0
 import QtQuick.Controls.Styles 1.0
+import "style.js" as StyleHelpers
 
 /*!
     \qmltype BasicButton
@@ -83,6 +84,9 @@ Control {
         If a button has an action associated, the action defines the
         button's properties like checked, text, tooltip etc.
 
+        When an action is set, it's still possible to override the \l text,
+        \l tooltip, \l iconSource, and \l iconName properties.
+
         The default value is \c null. */
     property Action action: null
 
@@ -91,8 +95,28 @@ Control {
         The default value is \c false. */
     property bool activeFocusOnPress: false
 
+    /*! This property holds the text shown on the button. If the button has no
+        text, the \l text property will be an empty string.
+
+        The default value is the empty string.
+    */
+    property string text: action ? action.text : ""
+
     /*! This property holds the button tooltip. */
-    property string tooltip
+    property string tooltip: action ? (action.tooltip || StyleHelpers.removeMnemonics(action.text)) : ""
+
+    /*! This property holds the icon shown on the button. If the button has no
+        icon, the iconSource property will be an empty string.
+
+        The default value is the empty string.
+    */
+    property url iconSource: action ? action.iconSource : ""
+
+    /*! The image label source as theme name.
+        When an icon from the platform icon theme is found, this takes
+        precedence over iconSource.
+    */
+    property string iconName: action ? action.iconName : ""
 
     /*! \internal */
     property color __textColor: syspal.text
@@ -101,7 +125,11 @@ Control {
     /*! \internal */
     property alias __containsMouse: behavior.containsMouse
     /*! \internal */
+    readonly property bool __iconOverriden: button.action && (button.action.iconSource !== button.iconSource || button.action.iconName !== button.iconName)
+    /*! \internal */
     property Action __action: action || ownAction
+    /*! \internal */
+    readonly property Action __iconAction: __iconOverriden ? ownAction : __action
 
     /*! \internal */
     onExclusiveGroupChanged: {
@@ -119,7 +147,8 @@ Control {
 
     Action {
         id: ownAction
-        iconSource: !button.action ? button.iconSource : ""
+        iconSource: !button.action || __iconOverriden ? button.iconSource : ""
+        iconName: !button.action || __iconOverriden ? button.iconName : ""
     }
 
     Connections {
@@ -181,9 +210,6 @@ Control {
                 enabled: action.enabled
                 checkable: action.checkable
                 checked: action.checked
-                text: action.text
-                iconSource: action.iconSource
-                tooltip: action.tooltip
             }
         }
     ]
