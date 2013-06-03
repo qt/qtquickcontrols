@@ -609,6 +609,9 @@ ScrollView {
     property alias backgroundColor: colorRect.color
 
     /*! \internal */
+    default property alias data: area.data
+
+    /*! \internal */
     property int __documentMargin: 4
 
     frameVisible: true
