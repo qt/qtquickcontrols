@@ -182,4 +182,7 @@ Style {
 
     /*! This defines the right corner. */
     property Component rightCorner: null
+
+    /*! This defines the tab bar background. */
+    property Component tabBar: null
 }

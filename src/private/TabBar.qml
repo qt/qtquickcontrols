@@ -103,6 +103,11 @@ FocusScope {
         }
         return false;
     }
+    Loader {
+        id: background
+        anchors.fill: parent
+        sourceComponent: styleItem ? styleItem.tabBar : undefined
+    }
 
     ListView {
         id: tabrow
@@ -179,13 +184,24 @@ FocusScope {
             implicitWidth: tabloader.implicitWidth
             implicitHeight: tabloader.implicitHeight
 
-            onPressed: {
+            function changeTab() {
                 tabView.currentIndex = index;
                 var next = tabbar.nextItemInFocusChain(true);
                 if (__isAncestorOf(tabView.tabAt(currentIndex), next))
                     next.forceActiveFocus();
                 else
                     tabitem.forceActiveFocus();
+            }
+
+            onClicked: {
+                if (tabrow.interactive) {
+                    changeTab()
+                }
+            }
+            onPressed: {
+                if (!tabrow.interactive) {
+                    changeTab()
+                }
             }
 
             Loader {
