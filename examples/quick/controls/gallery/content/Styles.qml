@@ -63,7 +63,6 @@ Item {
         Button {
             text: "Push me"
             style: ButtonStyle { }
-            onClicked: colorDialog.open()
             implicitWidth: columnWidth
         }
         Button {
