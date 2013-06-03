@@ -198,12 +198,27 @@ TestCase {
         var table = component.createObject(container);
         verify(table !== null, "table created is null")
         table.forceActiveFocus();
-        compare(table.test, false)
+        compare(table.test, -1)
+        compare(table.testClick, table.currentRow)
+
+        if (!table.__activateItemOnSingleClick)
+            mouseDoubleClick(table, 15 , 45, Qt.LeftButton)
+        else
+            mouseClick(table, 15, 45, Qt.LeftButton)
+
+        compare(table.testDoubleClick, table.currentRow)
+        compare(table.test, table.currentRow)
+        compare(table.testClick, table.currentRow)
+
         if (!table.__activateItemOnSingleClick)
             mouseDoubleClick(table, 15 , 15, Qt.LeftButton)
         else
             mouseClick(table, 15, 15, Qt.LeftButton)
-        compare(table.test, true)
+
+        compare(table.testDoubleClick, table.currentRow)
+        compare(table.testClick, table.currentRow)
+        compare(table.test, table.currentRow)
+
         table.destroy()
     }
 
@@ -214,6 +229,7 @@ TestCase {
         verify(table !== null, "table created is null")
         table.forceActiveFocus();
         compare(table.activatedTest, false)
+        waitForRendering(table)
         if (!table.__activateItemOnSingleClick)
             mouseDoubleClick(table, 15 , 50, Qt.LeftButton)
         else

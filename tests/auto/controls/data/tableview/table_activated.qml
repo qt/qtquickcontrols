@@ -42,11 +42,22 @@ import QtQuick 2.1
 import QtQuick.Controls 1.0
 
 TableView {
-    height: 70
+    height: 120
     model: 10
 
-    property bool test: false
-    onActivated: test = true
+    headerVisible: false
+    frameVisible: false
+    rowDelegate: Rectangle {
+        width: parent.width
+        height: 20
+    }
+
+    property int test: -1
+    property int testClick: -1
+    property int testDoubleClick: -1
+    onActivated: test = row
+    onClicked: testClick = row
+    onDoubleClicked: testDoubleClick = row
 
     TableViewColumn {
         width: 100
