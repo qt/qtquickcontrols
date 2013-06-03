@@ -130,12 +130,12 @@ Item {
         child item. Inside the delegate the following properties are available:
 
         \table
-            \li readonly property bool styleData.index - Specifies the index of the splitter handle. The handle
+            \row \li readonly property bool styleData.index \li Specifies the index of the splitter handle. The handle
                                                          between the first and the second item will get index 0,
                                                          the next handle index 1 etc.
-            \li readonly property bool styleData.hovered - The handle is being hovered.
-            \li readonly property bool styleData.pressed - The handle is being pressed.
-            \li readonly property bool styleData.resizing - The handle is being dragged.
+            \row \li readonly property bool styleData.hovered \li The handle is being hovered.
+            \row \li readonly property bool styleData.pressed \li The handle is being pressed.
+            \row \li readonly property bool styleData.resizing \li The handle is being dragged.
         \endtable
 
 */

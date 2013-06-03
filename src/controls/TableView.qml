@@ -65,8 +65,7 @@ import QtQuick.Controls.Styles 1.0
  \endcode
 
    You provide title and size of a column header
-   by adding a \l TableViewColumn to the default \l header property
-   as demonstrated below.
+   by adding a \l TableViewColumn as demonstrated below.
  \code
 
  TableView {
@@ -259,7 +258,7 @@ ScrollView {
 
     Depending on how the model is populated, the model may not be ready when
     TableView Component.onCompleted is called. In that case you may need to
-    delay the call to positionViewAtRow by using a \l {Timer}.
+    delay the call to positionViewAtRow by using a \l {QtQml::Timer}{Timer}.
 
     \note This method should only be called after the component has completed.
     */

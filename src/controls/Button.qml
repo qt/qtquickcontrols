@@ -80,7 +80,7 @@ BasicButton {
     property string text
 
     /*! This property holds the icon shown on the button. If the button has no
-        icon, the \l iconSource property will be an empty string.
+        icon, the iconSource property will be an empty string.
 
         The default value is the empty string.
     */
