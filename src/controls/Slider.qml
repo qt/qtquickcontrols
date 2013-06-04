@@ -197,6 +197,14 @@ Control {
         anchors.horizontalCenter: !__horizontal ? parent.horizontalCenter : undefined
         width: __panel.handleWidth
         height: __panel.handleHeight
+
+        function updatePos() {
+            if (updateValueWhileDragging && !mouseArea.drag.active)
+                            range.position = __horizontal ? x : y
+        }
+
+        onXChanged: updatePos();
+        onYChanged: updatePos();
     }
 
     MouseArea {
@@ -247,14 +255,6 @@ Control {
         }
     }
 
-    // Range position normally follows handle, except when
-    // 'updateValueWhileDragging' is false.
-    Binding {
-        when: updateValueWhileDragging && !mouseArea.drag.active
-        target: range
-        property: "position"
-        value: __horizontal ? fakeHandle.x : fakeHandle.y
-    }
 
     // During the drag, we simply ignore the position set from the range, this
     // means that setting a value while dragging will not "interrupt" the
