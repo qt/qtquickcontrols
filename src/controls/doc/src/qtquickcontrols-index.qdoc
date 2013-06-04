@@ -29,25 +29,63 @@
     \page qtquickcontrols-index.html
     \title Qt Quick Controls
 
-    \brief The Qt Quick Controls module provides a set of reusable Qt Quick UI components.
+    \brief The Qt Quick Controls module provides a set of UI controls for Qt Quick.
 
-    The Qt Quick Controls module provides a set of reusable UI components to create
-    classic desktop-style user interfaces using Qt Quick.
+    The Qt Quick Controls module provides a set of controls that can be used to
+    build complete interfaces in Qt Quick.
 
     The module is new in Qt 5.1 and requires \l{Qt Quick} 2.1.
 
-    \note \l{Qt Quick Layouts} can be used to arrange Qt Quick Controls in a user interface.
+    \image qtquickcontrols-example-gallery.png
 
-    \note The current focus is on desktop, but in the long term Qt Quick Controls
-    are expected to be supported on mobile platforms too.
-
-    \section1 Getting started
+    \section1 Getting Started
 
     The QML types can be imported into your application using the following import statement in your \c {.qml} file.
 
     \code
      import QtQuick.Controls 1.0
     \endcode
+
+    A basic example of a QML file that makes use of controls is shown here:
+
+    \code
+    import QtQuick.Controls 1.0
+
+    ApplicationWindow {
+        title: "My Application"
+
+        Button {
+            text: "Push Me"
+            anchors.centerIn: parent
+        }
+    }
+    \endcode
+
+    \section2 Setting Up Controls from C++
+
+    While we traditionally have used a QQuickView window to display QML files
+    in a C++ application, doing this means you can only set window properties from C++.
+
+    With Qt Quick Controls, declare an ApplicationWindow as the root item of your application and launch it by using the
+    QQmlApplicationEngine instead. This ensures that you can control top level window properties from QML.
+
+    A basic example of a source file that makes use of controls is shown here:
+
+    \code
+    #include <QApplication>
+    #include <QQmlApplicationEngine>
+
+    int main(int argc, char *argv[])
+    {
+        QApplication app(argc, argv);
+        QQmlApplicationEngine engine("main.qml");
+        return app.exec();
+    }
+    \endcode
+
+    \note We are using QApplication and not QGuiApplication in this example.
+    Though you can use QGuiApplication instead, doing this will eliminate platform-dependent styling.
+    This is because it is relying on the widget module to provide the native look and feel.
 
     \section1 Application Window
     Components used to describe the basic window properties of an application.
