@@ -85,32 +85,34 @@ ApplicationWindow {
     }
 
     Action {
-        id: cut
+        id: cutAction
         text: "Cut"
         shortcut: "ctrl+x"
         iconSource: "images/editcut.png"
         iconName: "edit-cut"
+        onTriggered: textArea.cut()
     }
 
     Action {
-        id: copy
+        id: copyAction
         text: "Copy"
         shortcut: "Ctrl+C"
         iconSource: "images/editcopy.png"
         iconName: "edit-copy"
-        onTriggered: console.log("Ctrl C pressed - in action...")
+        onTriggered: textArea.copy()
     }
 
     Action {
-        id: paste
+        id: pasteAction
         text: "Paste"
         shortcut: "ctrl+v"
         iconSource: "qrc:images/editpaste.png"
         iconName: "edit-paste"
+        onTriggered: textArea.paste()
     }
 
     Action {
-        id: alignLeft
+        id: alignLeftAction
         text: "&Left"
         iconSource: "images/textleft.png"
         iconName: "format-justify-left"
@@ -120,16 +122,16 @@ ApplicationWindow {
         checked: document.alignment == Qt.AlignLeft
     }
     Action {
-        id: alignCenter
+        id: alignCenterAction
         text: "C&enter"
         iconSource: "images/textcenter.png"
         iconName: "format-justify-center"
-        onTriggered: document.alignment = Qt.AlignCenter
+        onTriggered: document.alignment = Qt.AlignHCenter
         checkable: true
-        checked: document.alignment == Qt.AlignCenter
+        checked: document.alignment == Qt.AlignHCenter
     }
     Action {
-        id: alignRight
+        id: alignRightAction
         text: "&Right"
         iconSource: "images/textright.png"
         iconName: "format-justify-right"
@@ -138,7 +140,7 @@ ApplicationWindow {
         checked: document.alignment == Qt.AlignRight
     }
     Action {
-        id: alignJustify
+        id: alignJustifyAction
         text: "&Justify"
         iconSource: "images/textjustify.png"
         iconName: "format-justify-fill"
@@ -148,7 +150,7 @@ ApplicationWindow {
     }
 
     Action {
-        id: bold
+        id: boldAction
         text: "&Bold"
         iconSource: "images/textbold.png"
         iconName: "format-text-bold"
@@ -156,8 +158,9 @@ ApplicationWindow {
         checkable: true
         checked: document.bold
     }
+
     Action {
-        id: italic
+        id: italicAction
         text: "&Italic"
         iconSource: "images/textitalic.png"
         iconName: "format-text-italic"
@@ -166,7 +169,7 @@ ApplicationWindow {
         checked: document.italic
     }
     Action {
-        id: underline
+        id: underlineAction
         text: "&Underline"
         iconSource: "images/textunder.png"
         iconName: "format-text-underline"
@@ -176,41 +179,55 @@ ApplicationWindow {
     }
 
     FileDialog {
-        id: file
+        id: fileDialog
         nameFilters: ["Text files (*.txt)", "HTML files (*.html)"]
         onAccepted: document.fileUrl = fileUrl
     }
 
+    ColorDialog {
+        id: colorDialog
+        color: "black"
+        onAccepted: document.textColor = color
+    }
+
     Action {
-        id: fileOpen
+        id: fileOpenAction
         iconSource: "images/fileopen.png"
         iconName: "document-open"
         text: "Open"
-        onTriggered: file.open()
+        onTriggered: fileDialog.open()
     }
 
     menuBar: MenuBar {
         Menu {
             title: "&File"
-            MenuItem { action: fileOpen }
+            MenuItem { action: fileOpenAction }
             MenuItem { text: "Quit"; onTriggered: Qt.quit() }
         }
         Menu {
             title: "&Edit"
-            MenuItem { action: copy }
-            MenuItem { action: cut }
-            MenuItem { action: paste }
+            MenuItem { action: copyAction }
+            MenuItem { action: cutAction }
+            MenuItem { action: pasteAction }
         }
         Menu {
             title: "F&ormat"
-            MenuItem { action: bold }
-            MenuItem { action: italic }
-            MenuItem { action: underline }
+            MenuItem { action: boldAction }
+            MenuItem { action: italicAction }
+            MenuItem { action: underlineAction }
             MenuSeparator {}
-            MenuItem { action: alignLeft }
-            MenuItem { action: alignCenter }
-            MenuItem { action: alignRight }
-            MenuItem { action: alignJustify }
+            MenuItem { action: alignLeftAction }
+            MenuItem { action: alignCenterAction }
+            MenuItem { action: alignRightAction }
+            MenuItem { action: alignJustifyAction }
+            MenuSeparator {}
+            MenuItem {
+                text: "&Color ..."
+                onTriggered: {
+                    colorDialog.color = document.textColor
+                    colorDialog.open()
+                }
+            }
         }
         Menu {
             title: "&Help"
@@ -224,26 +241,71 @@ ApplicationWindow {
         RowLayout {
             anchors.fill: parent
             spacing: 0
-            ToolButton { action: fileOpen }
+            ToolButton { action: fileOpenAction }
 
             ToolBarSeparator {}
 
-            ToolButton { action: copy }
-            ToolButton { action: cut }
-            ToolButton { action: paste }
+            ToolButton { action: copyAction }
+            ToolButton { action: cutAction }
+            ToolButton { action: pasteAction }
 
             ToolBarSeparator {}
 
-            ToolButton { action: bold }
-            ToolButton { action: italic }
-            ToolButton { action: underline }
+            ToolButton { action: boldAction }
+            ToolButton { action: italicAction }
+            ToolButton { action: underlineAction }
 
             ToolBarSeparator {}
 
-            ToolButton { action: alignLeft }
-            ToolButton { action: alignCenter }
-            ToolButton { action: alignRight }
-            ToolButton { action: alignJustify }
+            ToolButton { action: alignLeftAction }
+            ToolButton { action: alignCenterAction }
+            ToolButton { action: alignRightAction }
+            ToolButton { action: alignJustifyAction }
+
+            ToolBarSeparator {}
+
+            ToolButton {
+                id: colorButton
+                property var color : document.textColor
+                Rectangle {
+                    id: colorRect
+                    anchors.fill: parent
+                    anchors.margins: 8
+                    color: Qt.darker(document.textColor, colorButton.pressed ? 1.4 : 1)
+                    border.width: 1
+                    border.color: Qt.darker(colorRect.color, 2)
+                }
+                onClicked: {
+                    colorDialog.color = document.textColor
+                    colorDialog.open()
+                }
+            }
+            Item { Layout.fillWidth: true }
+        }
+    }
+
+    ToolBar {
+        id: secondaryToolBar
+        width: parent.width
+
+        RowLayout {
+            anchors.fill: parent
+            ComboBox {
+                id: fontFamilyComboBox
+                implicitWidth: 150
+                model: Qt.fontFamilies()
+                property bool special : false
+                onCurrentTextChanged: {
+                    if (special == false || currentIndex != 0)
+                        document.fontFamily = currentText
+                }
+            }
+            SpinBox {
+                id: fontSizeSpinBox
+                implicitWidth: 50
+                value: 0
+                onValueChanged: document.fontSize = value
+            }
             Item { Layout.fillWidth: true }
         }
     }
@@ -253,7 +315,7 @@ ApplicationWindow {
         id: textArea
         frameVisible: false
         width: parent.width
-        anchors.top: parent.top
+        anchors.top: secondaryToolBar.bottom
         anchors.bottom: parent.bottom
         text: document.text
         textFormat: Qt.RichText
@@ -266,5 +328,17 @@ ApplicationWindow {
         cursorPosition: textArea.cursorPosition
         selectionStart: textArea.selectionStart
         selectionEnd: textArea.selectionEnd
+        Component.onCompleted: document.fileUrl = "qrc:/example.html"
+        onFontSizeChanged: fontSizeSpinBox.value = document.fontSize
+        onFontFamilyChanged: {
+            var index = Qt.fontFamilies().indexOf(document.fontFamily)
+            if (index == -1) {
+                fontFamilyComboBox.currentIndex = 0
+                fontFamilyComboBox.special = true
+            } else {
+                fontFamilyComboBox.currentIndex = index
+                fontFamilyComboBox.special = false
+            }
+        }
     }
 }
