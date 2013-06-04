@@ -470,7 +470,7 @@ ScrollView {
         // Fills extra rows with alternate color
         Column {
             id: rowfiller
-            property int rowHeight: listView.contentHeight/count
+            property int rowHeight: count ? listView.contentHeight/count : height
             property int paddedRowCount: height/rowHeight
             property int count: listView.count
             y: listView.contentHeight
