@@ -50,7 +50,7 @@ QT_BEGIN_NAMESPACE
 
 QQuickMenuPopupWindow::QQuickMenuPopupWindow(QWindow *parent) :
     QQuickWindow(parent), m_mouseMoved(false), m_needsActivatedEvent(true),
-    m_itemAt(0), m_parentItem(0), m_menuContentItem(0)
+    m_dismissed(false), m_itemAt(0), m_parentItem(0), m_menuContentItem(0)
 {
     setFlags(Qt::Popup);
     setModality(Qt::WindowModal);
@@ -176,6 +176,7 @@ void QQuickMenuPopupWindow::setGeometry(int posx, int posy, int w, int h)
 
 void QQuickMenuPopupWindow::dismissMenu()
 {
+    m_dismissed = true;
     emit menuDismissed();
     close();
 }
@@ -210,7 +211,9 @@ void QQuickMenuPopupWindow::mouseMoveEvent(QMouseEvent *e)
 void QQuickMenuPopupWindow::mousePressEvent(QMouseEvent *e)
 {
     QRect rect = QRect(QPoint(), size());
-    if (!rect.contains(e->pos()))
+    if (rect.contains(e->pos()))
+        QQuickWindow::mousePressEvent(e);
+    else
         forwardEventToTransientParent(e);
 }
 
@@ -221,7 +224,8 @@ void QQuickMenuPopupWindow::mouseReleaseEvent(QMouseEvent *e)
         if (m_mouseMoved) {
             QMouseEvent pe = QMouseEvent(QEvent::MouseButtonPress, e->pos(), e->button(), e->buttons(), e->modifiers());
             QQuickWindow::mousePressEvent(&pe);
-            QQuickWindow::mouseReleaseEvent(e);
+            if (!m_dismissed)
+                QQuickWindow::mouseReleaseEvent(e);
         }
         m_mouseMoved = true; // Initial mouse release counts as move.
     } else {

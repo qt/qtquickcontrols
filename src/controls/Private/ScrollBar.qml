@@ -56,6 +56,7 @@ Item {
     property alias minimumValue: slider.minimumValue
     property alias maximumValue: slider.maximumValue
     property alias value: slider.value
+    property int singleStep: 20
 
     activeFocusOnTab: false
 
@@ -89,7 +90,6 @@ Item {
         id: internal
         property bool horizontal: orientation === Qt.Horizontal
         property int pageStep: internal.horizontal ? width : height
-        property int singleStep: 20
         property bool scrollToClickposition: internal.scrollToClickPosition
         anchors.fill: parent
         cursorShape: __panel.visible ? Qt.ArrowCursor : Qt.IBeamCursor // forces a cursor change

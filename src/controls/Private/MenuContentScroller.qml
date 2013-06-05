@@ -37,51 +37,38 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
+
 import QtQuick 2.1
-import QtQuick.Controls 1.1
-import QtQuick.Controls.Private 1.0
 
-Style {
-    id: root
+MouseArea {
+    property string direction
 
-    padding {
-        property int frameWidth: __styleitem.pixelMetric("defaultframewidth")
-        left: frameWidth
-        top: frameWidth
-        bottom: frameWidth
-        right: frameWidth
+    anchors {
+        top: direction === "up" ? parent.top : undefined
+        bottom: direction === "down" ? parent.bottom : undefined
     }
 
-    property StyleItem __styleitem: StyleItem { elementType: "frame" }
+    hoverEnabled: visible
+    height: scrollerLoader.item.height
+    width: parent.width
 
-    property Component frame: StyleItem {
-        id: styleitem
-        elementType: "frame"
-        sunken: true
-        visible: control.frameVisible
+    Loader {
+        id: scrollerLoader
+
+        sourceComponent: menuItemDelegate
+        property int index: -1
+        property var modelData: {
+            "visible": true,
+            "scrollerDirection": direction,
+            "enabled": true
+        }
     }
 
-    property Component corner: StyleItem { elementType: "scrollareacorner" }
-
-    readonly property bool __externalScrollBars: __styleitem.styleHint("externalScrollBars")
-    readonly property int __scrollBarSpacing: __styleitem.pixelMetric("scrollbarspacing")
-    readonly property bool scrollToClickedPosition: __styleitem.styleHint("scrollToClickPosition") !== 0
-
-    property Component __scrollbar: StyleItem {
-        readonly property bool isTransient: __styleitem.parent && __styleitem.transient
-        anchors.fill:parent
-        elementType: "scrollbar"
-        hover: activeControl != "none"
-        activeControl: "none"
-        sunken: __styleData.upPressed | __styleData.downPressed | __styleData.handlePressed
-        minimum: __control.minimumValue
-        maximum: __control.maximumValue
-        value: __control.value
-        horizontal: __styleData.horizontal
-        enabled: __control.enabled
-
-        implicitWidth: horizontal ? 200 : pixelMetric("scrollbarExtent")
-        implicitHeight: horizontal ? pixelMetric("scrollbarExtent") : 200
+    Timer {
+        interval: 100
+        repeat: true
+        triggeredOnStart: true
+        running: parent.containsMouse
+        onTriggered: scrollABit()
     }
-
 }

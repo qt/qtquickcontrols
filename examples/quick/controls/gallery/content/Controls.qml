@@ -87,6 +87,11 @@ Item {
                 currentIndex: 2
             }
             ComboBox {
+                model: Qt.fontFamilies()
+                width: parent.width
+                currentIndex: 47
+            }
+            ComboBox {
                 id: editableCombo
                 editable: true
                 model: choices

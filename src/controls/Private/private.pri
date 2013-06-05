@@ -37,6 +37,8 @@ PRIVATE_QML_FILES += \
     $$PWD/ScrollViewHelper.qml \
     $$PWD/ScrollBar.qml \
     $$PWD/FocusFrame.qml \
+    $$PWD/ColumnMenuContent.qml \
+    $$PWD/MenuContentScroller.qml \
     $$PWD/qmldir
 
 QML_FILES += $$PRIVATE_QML_FILES

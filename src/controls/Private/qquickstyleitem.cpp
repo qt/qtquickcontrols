@@ -418,7 +418,13 @@ void QQuickStyleItem::initStyleOption()
         QStyleOptionMenuItem *opt = qstyleoption_cast<QStyleOptionMenuItem*>(m_styleoption);
         // For GTK style. See below, in setElementType()
         setProperty("_q_isComboBoxPopupItem", m_itemType == ComboBoxItem);
-        if (text().isEmpty()) {
+
+        QString scrollerDirection = m_properties["scrollerDirection"].toString();
+        if (!scrollerDirection.isEmpty()) {
+            opt->menuItemType = QStyleOptionMenuItem::Scroller;
+            opt->state |= scrollerDirection == "up" ?
+                        QStyle::State_UpArrow : QStyle::State_DownArrow;
+        } else if (text().isEmpty()) {
             opt->menuItemType = QStyleOptionMenuItem::Separator;
         } else {
             opt->text = text();
@@ -861,7 +867,12 @@ QSize QQuickStyleItem::sizeFromContents(int width, int height)
         break;
     case MenuItem:
     case ComboBoxItem:
-        size = qApp->style()->sizeFromContents(QStyle::CT_MenuItem, m_styleoption, QSize(width,height));
+        if (static_cast<QStyleOptionMenuItem *>(m_styleoption)->menuItemType == QStyleOptionMenuItem::Scroller) {
+            size.setHeight(qMax(QApplication::globalStrut().height(),
+                                qApp->style()->pixelMetric(QStyle::PM_MenuScrollerHeight, 0, 0)));
+        } else {
+            size = qApp->style()->sizeFromContents(QStyle::CT_MenuItem, m_styleoption, QSize(width,height));
+        }
         break;
     default:
         break;
@@ -1286,8 +1297,12 @@ void QQuickStyleItem::paint(QPainter *painter)
         qApp->style()->drawControl(QStyle::CE_MenuBarItem, m_styleoption, painter);
         break;
     case MenuItem:
-    case ComboBoxItem: // fall through
-        qApp->style()->drawControl(QStyle::CE_MenuItem, m_styleoption, painter);
+    case ComboBoxItem: { // fall through
+        QStyle::ControlElement menuElement =
+                static_cast<QStyleOptionMenuItem *>(m_styleoption)->menuItemType == QStyleOptionMenuItem::Scroller ?
+                    QStyle::CE_MenuScroller : QStyle::CE_MenuItem;
+        qApp->style()->drawControl(menuElement, m_styleoption, painter);
+        }
         break;
     case CheckBox:
         qApp->style()->drawControl(QStyle::CE_CheckBox, m_styleoption, painter);

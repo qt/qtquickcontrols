@@ -39,6 +39,7 @@
 ****************************************************************************/
 
 import QtQuick 2.1
+import QtQuick.Window 2.1
 import QtQuick.Controls 1.1
 import QtQuick.Controls.Private 1.0
 
@@ -56,6 +57,8 @@ Style {
         height: implicitHeight + 2 * (pixelMetric("menuvmargin") + pixelMetric("menupanelwidth"))
 
         property int subMenuOverlap: pixelMetric("submenuoverlap")
+        property real maxHeight: Screen.desktopAvailableHeight * 0.99
+        property int margin: pixelMetric("menuvmargin") + pixelMetric("menupanelwidth")
 
         Rectangle {
             visible: anchors.margins > 0
@@ -90,10 +93,20 @@ Style {
             "exclusive": !!menuItem && !!menuItem["exclusiveGroup"],
             "shortcut": !!menuItem && menuItem["shortcut"] || "",
             "isSubmenu": isSubmenu,
+            "scrollerDirection": scrollerDirection,
             "icon": !!menuItem && menuItem.__icon
         }
 
         Accessible.role: Accessible.MenuItem
         Accessible.name: StyleHelpers.removeMnemonics(text)
+    }
+
+    property Component scrollerStyle: Style {
+        padding { left: 0; right: 0; top: 0; bottom: 0 }
+        property bool scrollToClickedPosition: false
+        property Component frame: Item { visible: false }
+        property Component corner: Item { visible: false }
+        property Component __scrollbar: Item { visible: false }
+        property bool useScrollers: true
     }
 }

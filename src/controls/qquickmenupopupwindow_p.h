@@ -89,6 +89,7 @@ private:
 
     bool m_mouseMoved;
     bool m_needsActivatedEvent;
+    bool m_dismissed;
     QQuickItem *m_itemAt;
     QPointF m_oldItemPos;
     QQuickItem *m_parentItem;

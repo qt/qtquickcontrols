@@ -38,6 +38,7 @@
 **
 ****************************************************************************/
 import QtQuick 2.1
+import QtQuick.Window 2.1
 import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
 import QtQuick.Controls.Private 1.0
@@ -188,7 +189,11 @@ Style {
 
     /*! \internal */
     property Component __dropDownStyle: MenuStyle {
+        maxPopupHeight: 600
         __menuItemType: "comboboxitem"
+        scrollerStyle: ScrollViewStyle {
+            property bool useScrollers: false
+        }
     }
 
     /*! \internal */
@@ -198,6 +203,8 @@ Style {
             width: (parent ? parent.contentWidth : 0)
             height: (parent ? parent.contentHeight : 0) + 2
             border.color: "#777"
+            property real maxHeight: Math.min(500, Screen.desktopAvailableHeight)
+            property int margin: 1
         }
 
         property Component menuItem: Rectangle {
@@ -210,6 +217,15 @@ Style {
                 visible: false
                 text: textRef
             }
+        }
+
+        property Component scrollerStyle: Style {
+            padding { left: 0; right: 0; top: 0; bottom: 0 }
+            property bool scrollToClickedPosition: false
+            property Component frame: Item { visible: false }
+            property Component corner: Item { visible: false }
+            property Component __scrollbar: Item { visible: false }
+            property bool useScrollers: true
         }
     }
 }

@@ -298,6 +298,8 @@ void QQuickMenu::setMinimumWidth(int w)
     m_minimumWidth = w;
     if (m_platformMenu)
         m_platformMenu->setMinimumWidth(w);
+
+    emit minimumWidthChanged();
 }
 
 void QQuickMenu::setFont(const QFont &arg)

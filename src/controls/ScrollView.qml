@@ -137,6 +137,8 @@ FocusScope {
     /*! \internal */
     property Item __scroller: scroller
     /*! \internal */
+    property alias __wheelAreaScrollSpeed: wheelArea.scrollSpeed
+    /*! \internal */
     property int __scrollBarTopMargin: 0
     /*! \internal */
     property int __viewTopMargin: 0
@@ -287,7 +289,6 @@ FocusScope {
                                                       verticalScrollBar.width + scrollBarSpacing : 0
             property int horizontalScrollbarOffset: horizontalScrollBar.visible && !horizontalScrollBar.isTransient ?
                                                         horizontalScrollBar.height + scrollBarSpacing : 0
-
             Loader {
                 id: frameLoader
                 sourceComponent: __style ? __style.frame : null

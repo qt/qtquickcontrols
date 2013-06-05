@@ -16,3 +16,5 @@ SpinBoxStyle 1.0 ../Styles/Base/SpinBoxStyle.qml
 ToolBarStyle 1.0 ../Styles/Base/ToolBarStyle.qml
 StatusBarStyle 1.0 ../Styles/Base/StatusBarStyle.qml
 ToolButtonStyle 1.0 ../Styles/Base/ToolButtonStyle.qml
+MenuContentScroller 1.0 MenuContentScroller.qml
+ColumnMenuContent 1.0 ColumnMenuContent.qml
