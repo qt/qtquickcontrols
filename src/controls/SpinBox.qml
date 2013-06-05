@@ -134,11 +134,18 @@ Control {
     */
     property alias font: input.font
 
-    /*! This property indicates if the Spinbox should get active
+    /*! This property indicates whether the Spinbox should get active
       focus when pressed.
       The default value is \c true.
     */
     property bool activeFocusOnPress: true
+
+    /*!
+        \qmlproperty bool SpinBox::hovered
+
+        This property indicates whether the control is being hovered.
+    */
+    readonly property alias hovered: mouseArea.containsMouse
 
     style: Qt.createComponent(Settings.style + "/SpinBoxStyle.qml", spinbox)
 
@@ -165,8 +172,6 @@ Control {
         readonly property bool downEnabled: value != minimumValue;
         readonly property alias downPressed: mouseDown.pressed
         readonly property alias downHovered: mouseDown.containsMouse
-
-        readonly property alias hovered: mouseArea.containsMouse
 
         readonly property int contentHeight: Math.max(input.implicitHeight, 16)
         readonly property int contentWidth: Math.max(maxSizeHint.implicitWidth, minSizeHint.implicitWidth)

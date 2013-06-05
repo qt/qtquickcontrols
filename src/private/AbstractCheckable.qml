@@ -69,10 +69,16 @@ Control {
     /*!
         \qmlproperty bool AbstractCheckable::pressed
 
-        This property is \c true if the control is pressed.
+        This property is \c true if the control is being pressed.
         Set this property to manually invoke a mouse click.
     */
-    readonly property alias pressed: mouseArea.effectivePressed
+    property alias pressed: mouseArea.effectivePressed
+
+    /*! \qmlproperty bool AbstractCheckcable::hovered
+
+        This property indicates whether the control is being hovered.
+    */
+    readonly property alias hovered: mouseArea.containsMouse
 
     /*!
         This property is \c true if the control is checked.
@@ -98,13 +104,6 @@ Control {
 
     /*! \internal */
     property var __cycleStatesHandler: cycleRadioButtonStates
-
-    /*! \internal
-
-        This property is \c true if the control currently contains the
-        mouse cursor.
-    */
-    readonly property alias __containsMouse: mouseArea.containsMouse
 
     activeFocusOnTab: true
 

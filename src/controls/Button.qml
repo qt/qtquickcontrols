@@ -80,7 +80,7 @@ BasicButton {
 
     /*! \qmlproperty bool BasicButton::pressed
 
-        This property holds whether the button is pressed. */
+        This property holds whether the button is being pressed. */
     readonly property bool pressed: __behavior.effectivePressed || menu && menu.__popupVisible
 
     activeFocusOnTab: true

@@ -116,7 +116,7 @@ Style {
             elementType: "spinbox"
             anchors.fill: parent
             sunken: (styleData.downEnabled && styleData.downPressed) || (styleData.upEnabled && styleData.upPressed)
-            hover: styleData.hovered
+            hover: control.hovered
             hints: control.styleHints
             hasFocus: control.activeFocus
             enabled: control.enabled

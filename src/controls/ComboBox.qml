@@ -99,10 +99,17 @@ Control {
         The default value is \c false. */
     property bool activeFocusOnPress: false
 
-    /*! \internal */
+    /*! \qmlproperty bool ComboBox::pressed
+
+        This property holds whether the button is being pressed. */
     readonly property bool pressed: mouseArea.pressed && mouseArea.containsMouse || popup.__popupVisible
-    /*! \internal */
-    property alias __containsMouse: mouseArea.containsMouse
+
+    /*! \qmlproperty bool ComboBox::hovered
+
+        This property indicates whether the control is being hovered.
+    */
+    readonly property alias hovered: mouseArea.containsMouse
+
     /*! \internal */
     property var __popup: popup
 

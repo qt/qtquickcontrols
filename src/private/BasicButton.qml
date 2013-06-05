@@ -59,8 +59,14 @@ Control {
 
     /*! \qmlproperty bool BasicButton::pressed
 
-        This property holds whether the button is pressed. */
-    readonly property bool pressed: behavior.effectivePressed
+        This property holds whether the button is being pressed. */
+    readonly property alias pressed: behavior.effectivePressed
+
+    /*! \qmlproperty bool BasicButton::hovered
+
+        This property indicates whether the control is being hovered.
+    */
+    readonly property alias hovered: behavior.containsMouse
 
     /*! This property holds whether the button is checkable.
 
@@ -122,8 +128,6 @@ Control {
     property color __textColor: syspal.text
     /*! \internal */
     property string __position: "only"
-    /*! \internal */
-    property alias __containsMouse: behavior.containsMouse
     /*! \internal */
     readonly property bool __iconOverriden: button.action && (button.action.iconSource !== button.iconSource || button.action.iconName !== button.iconName)
     /*! \internal */
