@@ -45,6 +45,7 @@
 import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Styles 1.0
+import QtQuick.Particles 2.0
 import QtQuick.Layouts 1.0
 
 Item {
@@ -67,7 +68,12 @@ Item {
         }
         Button {
             text: "Push me"
-            style: ButtonStyle { }
+            style: ButtonStyle {
+                background: BorderImage {
+                    source: control.pressed ? "../images/button-pressed.png" : "../images/button.png"
+                    border.left: 4 ; border.right: 4 ; border.top: 4 ; border.bottom: 4
+                }
+            }
             implicitWidth: columnWidth
         }
         Button {
@@ -82,7 +88,12 @@ Item {
             implicitWidth: columnWidth
         }
         TextField {
-            style: TextFieldStyle { }
+            style: TextFieldStyle {
+                background: BorderImage {
+                    source: "../images/textfield.png"
+                    border.left: 4 ; border.right: 4 ; border.top: 4 ; border.bottom: 4
+                }
+            }
             implicitWidth: columnWidth
         }
         TextField {
@@ -91,43 +102,65 @@ Item {
         }
 
         Slider {
+            id: slider1
             Layout.row: 2
-            value: 50
-            maximumValue: 100
+            value: 0.5
             implicitWidth: columnWidth
             style: SliderStyle { }
         }
         Slider {
-            value: 50
-            maximumValue: 100
+            id: slider2
+            value: 0.5
             implicitWidth: columnWidth
-            style: SliderStyle { }
+            style: SliderStyle {
+                groove: BorderImage {
+                    height: 6
+                    border.top: 1
+                    border.bottom: 1
+                    source: "../images/progress-background.png"
+                    border.left: 6
+                    border.right: 6
+                    BorderImage {
+                        anchors.verticalCenter: parent.verticalCenter
+                        source: "../images/progress-fill.png"
+                        border.left: 5 ; border.top: 1
+                        border.right: 5 ; border.bottom: 1
+                        width: styleData.handlePosition
+                        height: parent.height
+                    }
+                }
+                handle: Item {
+                    width: 13
+                    height: 13
+                    Image {
+                        anchors.centerIn: parent
+                        source: "../images/slider-handle.png"
+                    }
+                }
+            }
         }
         Slider {
-            value: 50
-            maximumValue: 100
+            id: slider3
+            value: 0.5
             implicitWidth: columnWidth
             style: sliderStyle
         }
 
         ProgressBar {
             Layout.row: 3
-            value: 50
-            maximumValue: 100
+            value: slider1.value
             implicitWidth: columnWidth
             style: ProgressBarStyle{ }
         }
         ProgressBar {
-            value: 50
-            maximumValue: 100
+            value: slider2.value
             implicitWidth: columnWidth
-            style: ProgressBarStyle{ }
+            style: progressBarStyle
         }
         ProgressBar {
-            value: 50
-            maximumValue: 100
+            value: slider3.value
             implicitWidth: columnWidth
-            style: progressbarStyle
+            style: progressBarStyle2
         }
 
         CheckBox {
@@ -177,64 +210,144 @@ Item {
 
     property Component buttonStyle: ButtonStyle {
         background: Rectangle {
-            implicitHeight: 20
+            implicitHeight: 22
             implicitWidth: columnWidth
-            color: control.pressed ? "darkGray" : "lightGray"
+            color: control.pressed ? "darkGray" : control.activeFocus ? "#cdd" : "#ccc"
             antialiasing: true
             border.color: "gray"
             radius: height/2
+            Rectangle {
+                anchors.fill: parent
+                anchors.margins: 1
+                color: "transparent"
+                antialiasing: true
+                visible: !control.pressed
+                border.color: "#aaffffff"
+                radius: height/2
+            }
         }
     }
 
     property Component textfieldStyle: TextFieldStyle {
         background: Rectangle {
             implicitWidth: columnWidth
-            implicitHeight: 20
+            implicitHeight: 22
             color: "#f0f0f0"
             antialiasing: true
             border.color: "gray"
             radius: height/2
+            Rectangle {
+                anchors.fill: parent
+                anchors.margins: 1
+                color: "transparent"
+                antialiasing: true
+                border.color: "#aaffffff"
+                radius: height/2
+            }
         }
     }
 
     property Component sliderStyle: SliderStyle {
         handle: Rectangle {
-            width: 14
-            height: 14
+            width: 18
+            height: 18
             color: control.pressed ? "darkGray" : "lightGray"
             border.color: "gray"
             antialiasing: true
             radius: height/2
+            Rectangle {
+                anchors.fill: parent
+                anchors.margins: 1
+                color: "transparent"
+                antialiasing: true
+                border.color: "#eee"
+                radius: height/2
+            }
         }
 
         groove: Rectangle {
             height: 8
             implicitWidth: columnWidth
-            implicitHeight: 20
+            implicitHeight: 22
 
             antialiasing: true
-            color: "darkGray"
-            border.color: "gray"
+            color: "#ccc"
+            border.color: "#777"
             radius: height/2
+            Rectangle {
+                anchors.fill: parent
+                anchors.margins: 1
+                color: "transparent"
+                antialiasing: true
+                border.color: "#66ffffff"
+                radius: height/2
+            }
         }
     }
 
-    property Component progressbarStyle: ProgressBarStyle {
+    property Component progressBarStyle: ProgressBarStyle {
+        background: BorderImage {
+            source: "../images/progress-background.png"
+            border.left: 2 ; border.right: 2 ; border.top: 2 ; border.bottom: 2
+        }
+        progress: Item {
+            clip: true
+            BorderImage {
+                anchors.fill: parent
+                anchors.rightMargin: (control.value < control.maximumValue) ? -4 : 0
+                source: "../images/progress-fill.png"
+                border.left: 10 ; border.right: 10
+                Rectangle {
+                    width: 1
+                    color: "#a70"
+                    opacity: 0.8
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
+                    anchors.bottomMargin: 1
+                    anchors.right: parent.right
+                    visible: control.value < control.maximumValue
+                    anchors.rightMargin: -parent.anchors.rightMargin
+                }
+            }
+            ParticleSystem{ id: bubbles }
+            ImageParticle{
+                id: fireball
+                system: bubbles
+                source: "../images/bubble.png"
+                opacity: 0.7
+            }
+            Emitter{
+                system: bubbles
+                anchors.bottom: parent.bottom
+                anchors.margins: 4
+                anchors.bottomMargin: -4
+                anchors.left: parent.left
+                anchors.right: parent.right
+                size: 4
+                sizeVariation: 4
+                acceleration: PointDirection{ y: -6; xVariation: 3 }
+                emitRate: 6 * control.value
+                lifeSpan: 3000
+            }
+        }
+    }
+
+    property Component progressBarStyle2: ProgressBarStyle {
         background: Rectangle {
             implicitWidth: columnWidth
-            implicitHeight: 20
+            implicitHeight: 24
             color: "#f0f0f0"
             border.color: "gray"
-            antialiasing: true
-            radius: height/2
         }
         progress: Rectangle {
-            implicitWidth: columnWidth
-            implicitHeight: 20
-            color: "#c0c0c0"
+            color: "#ccc"
             border.color: "gray"
-            antialiasing: true
-            radius: height/2
+            Rectangle {
+                color: "transparent"
+                border.color: "#44ffffff"
+                anchors.fill: parent
+                anchors.margins: 1
+            }
         }
     }
 
