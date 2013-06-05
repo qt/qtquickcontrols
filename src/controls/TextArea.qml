@@ -599,14 +599,13 @@ ScrollView {
         edit.undo();
     }
 
-    /*!
-        \qmlproperty color TextArea::backgroundColor
+    /*! \qmlproperty bool TextArea::backgroundVisible
 
-        This property sets the background color of the viewport.
+        This property determines if the background should be filled or not.
 
-        The default value is the base color of the SystemPalette.
+        The default value is \c true.
     */
-    property alias backgroundColor: colorRect.color
+    property alias backgroundVisible: colorRect.visible
 
     /*! \internal */
     default property alias data: area.data

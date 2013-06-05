@@ -123,6 +123,16 @@ ScrollView {
         The default value is \c true. */
     property bool headerVisible: true
 
+    /*! \qmlproperty bool TableView::backgroundVisible
+
+        This property determines if the background should be filled or not.
+
+        The default value is \c true.
+
+        \note The rowDelegate is not affected by this property
+    */
+    property alias backgroundVisible: colorRect.visible
+
     /*! This property defines a delegate to draw a specific cell.
 
     In the item delegate you have access to the following special properties:
