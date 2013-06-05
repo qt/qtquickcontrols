@@ -77,9 +77,10 @@ public:
     void componentComplete();
     virtual QSizeF sizeHint(Qt::SizeHint whichSizeHint) const = 0;
     virtual void invalidate(QQuickItem * childItem = 0);
+    virtual void rearrange(const QSizeF &);
+    bool arrangementIsDirty() const { return m_dirty; }
 protected:
     bool event(QEvent *e);
-    virtual void rearrange(const QSizeF &);
 
     enum Orientation {
         Vertical = 0,

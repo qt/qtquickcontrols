@@ -658,5 +658,50 @@ Item {
             layout.visible = false
             layout.destroy()    // Do not crash
         }
+
+
+        Component {
+            id: rearrangeNestedLayouts_Component
+            RowLayout {
+                id: layout
+                anchors.fill: parent
+                width: 200
+                height: 20
+                RowLayout {
+                    id: row
+                    spacing: 0
+
+                    Rectangle {
+                        id: fixed
+                        color: 'red'
+                        implicitWidth: 20
+                        implicitHeight: 20
+                    }
+                    Rectangle {
+                        id: filler
+                        color: 'grey'
+                        Layout.fillWidth: true
+                        implicitHeight: 20
+                    }
+                }
+            }
+        }
+
+        function test_rearrangeNestedLayouts()
+        {
+            var layout = rearrangeNestedLayouts_Component.createObject(container)
+            var fixed = layout.children[0].children[0]
+            var filler = layout.children[0].children[1]
+
+            compare(itemRect(fixed),  [0,0,20,20])
+            compare(itemRect(filler), [20,0,180,20])
+
+            fixed.implicitWidth = 100
+            wait(20);    // wait for at least 20 ms (this matches the time between two frame
+                         // repaints for 50hz displays)
+            compare(itemRect(fixed),  [0,0,100,20])
+            compare(itemRect(filler), [100,0,100,20])
+
+        }
     }
 }
