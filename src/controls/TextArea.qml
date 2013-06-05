@@ -623,7 +623,7 @@ ScrollView {
     /*!
         \qmlproperty TextDocument TextArea::textDocument
 
-        This property exposes the \l QTextDocument of this TextArea.
+        This property exposes the \l QQuickTextDocument of this TextArea.
         \sa TextEdit::textDocument
     */
     property alias textDocument: edit.textDocument
