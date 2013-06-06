@@ -490,12 +490,9 @@ QQuickLayoutAttached *QQuickLayout::qmlAttachedProperties(QObject *object)
     return new QQuickLayoutAttached(object);
 }
 
-bool QQuickLayout::event(QEvent *e)
+void QQuickLayout::updatePolish()
 {
-    if (e->type() == QEvent::LayoutRequest)
-        rearrange(QSizeF(width(), height()));
-
-    return QQuickItem::event(e);
+    rearrange(QSizeF(width(), height()));
 }
 
 void QQuickLayout::componentComplete()
@@ -511,8 +508,8 @@ void QQuickLayout::invalidate(QQuickItem * /*childItem*/)
     m_dirty = true;
 
     if (!qobject_cast<QQuickLayout *>(parentItem())) {
-        quickLayoutDebug() << "QQuickLayout::invalidate(), postEvent";
-        QCoreApplication::postEvent(this, new QEvent(QEvent::LayoutRequest));
+        quickLayoutDebug() << "QQuickLayout::invalidate(), polish()";
+        polish();
     }
 }
 

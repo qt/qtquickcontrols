@@ -80,7 +80,7 @@ public:
     virtual void rearrange(const QSizeF &);
     bool arrangementIsDirty() const { return m_dirty; }
 protected:
-    bool event(QEvent *e);
+    void updatePolish() Q_DECL_OVERRIDE;
 
     enum Orientation {
         Vertical = 0,
