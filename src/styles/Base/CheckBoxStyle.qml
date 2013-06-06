@@ -90,6 +90,8 @@ Style {
         renderType: Text.NativeRendering
         verticalAlignment: Text.AlignVCenter
     }
+    /*! The background under indicator and label. */
+    property Component background
 
     /*! The content padding. */
     padding {
@@ -151,13 +153,23 @@ Style {
 
     /*! \internal */
     property Component panel: Item {
-        implicitWidth: Math.round(row.width + padding.left + padding.right)
-        implicitHeight: Math.max(indicatorLoader.implicitHeight, labelLoader.implicitHeight) + padding.top + padding.bottom
+        implicitWidth: Math.max(backgroundLoader.implicitWidth, row.implicitWidth + padding.left + padding.right)
+        implicitHeight: Math.max(backgroundLoader.implicitHeight, labelLoader.implicitHeight + padding.top + padding.bottom,indicatorLoader.implicitHeight + padding.top + padding.bottom)
 
+        Loader {
+            id:backgroundLoader
+            sourceComponent: background
+            anchors.fill: parent
+        }
         Row {
             id: row
-            y: padding.top
-            x: padding.left
+            anchors.fill: parent
+
+            anchors.leftMargin: padding.left
+            anchors.rightMargin: padding.right
+            anchors.topMargin: padding.top
+            anchors.bottomMargin: padding.bottom
+
             spacing: checkboxStyle.spacing
             Loader {
                 id: indicatorLoader
