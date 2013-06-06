@@ -183,8 +183,6 @@ FocusScope {
                 var next = tabbar.nextItemInFocusChain(true);
                 if (__isAncestorOf(tabView.getTab(currentIndex), next))
                     next.forceActiveFocus();
-                else
-                    tabitem.forceActiveFocus();
             }
 
             Loader {
