@@ -282,5 +282,16 @@ Item {
             verify(control.value > 0.5)
             control.destroy()
         }
+
+        function test_valueAndHandlePosition()
+        {
+            var slider = Qt.createQmlObject('import QtQuick.Controls 1.0; Slider {minimumValue: 0; maximumValue: 100; width: 100; height: 20; stepSize: 1}', container, '');
+            slider.forceActiveFocus()
+            slider.value = 0
+            compare(slider.__handlePos, 0)
+            slider.value = 50
+            compare(slider.__handlePos, 50)
+            slider.destroy()
+        }
     }
 }

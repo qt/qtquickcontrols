@@ -61,14 +61,6 @@ ApplicationWindow {
             color: "lightsteelblue"
         }
 
-        Rectangle {
-            id: column1
-            width: 200
-            Layout.minimumWidth: 100
-            Layout.maximumWidth: 300
-            color: "lightsteelblue"
-        }
-
         SplitView {
             orientation: Qt.Vertical
             Layout.fillWidth: true

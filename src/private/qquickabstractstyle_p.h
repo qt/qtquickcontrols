@@ -39,29 +39,40 @@
 **
 ****************************************************************************/
 
-#ifndef QQUICKPADDEDSTYLE_H
-#define QQUICKPADDEDSTYLE_H
+#ifndef QQUICKABSTRACTSTYLE_H
+#define QQUICKABSTRACTSTYLE_H
 
-#include <QtQuick/QQuickItem>
-#include <QtQml/QQmlListProperty>
+#include <QtCore/qobject.h>
+#include <QtQml/qqmllist.h>
 #include "qquickpadding_p.h"
 
 QT_BEGIN_NAMESPACE
 
-class QQuickPaddedStyle : public QQuickItem
+class QQuickAbstractStyle : public QObject
 {
     Q_OBJECT
 
     Q_PROPERTY(QQuickPadding* padding READ padding CONSTANT)
+    Q_PROPERTY(QQmlListProperty<QObject> data READ data DESIGNABLE false)
+    Q_CLASSINFO("DefaultProperty", "data")
 
 public:
-    QQuickPaddedStyle(QQuickItem *parent = 0);
+    QQuickAbstractStyle(QObject *parent = 0);
+
     QQuickPadding* padding() { return &m_padding; }
 
+    QQmlListProperty<QObject> data();
+
 private:
+    static void data_append(QQmlListProperty<QObject> *list, QObject *object);
+    static int data_count(QQmlListProperty<QObject> *list);
+    static QObject *data_at(QQmlListProperty<QObject> *list, int index);
+    static void data_clear(QQmlListProperty<QObject> *list);
+
     QQuickPadding m_padding;
+    QList<QObject *> m_data;
 };
 
 QT_END_NAMESPACE
 
-#endif // QQUICKPADDEDSTYLE_H
+#endif // QQUICKABSTRACTSTYLE_H

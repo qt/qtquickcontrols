@@ -52,19 +52,11 @@ Style {
             elementType: "checkbox"
             sunken: control.pressed
             on: control.checked || control.pressed
-            hover: control.__containsMouse
+            hover: control.hovered
             enabled: control.enabled
             hasFocus: control.activeFocus && styleitem.style == "mac"
-            hints: {
-                if (control.checkedState === Qt.PartiallyChecked)
-                    control.styleHints.push("partiallyChecked");
-                else {
-                    var index = control.styleHints.indexOf("partiallyChecked");
-                    if (index !== -1)
-                        control.styleHints.splice(index, 1);
-                }
-                control.styleHints;
-            }
+            hints: control.styleHints
+            properties: {"partiallyChecked": (control.checkedState === Qt.PartiallyChecked) }
             contentHeight: textitem.implicitHeight
             contentWidth: textitem.implicitWidth + indicatorWidth
             property int indicatorWidth: pixelMetric("indicatorwidth") + (macStyle ? 2 : 4)

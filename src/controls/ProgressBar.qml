@@ -98,6 +98,12 @@ Control {
     */
     property int orientation: Qt.Horizontal
 
+    /*! \qmlproperty bool ProgressBar::hovered
+
+        This property indicates whether the control is being hovered.
+    */
+    readonly property alias hovered: hoverArea.containsMouse
+
     /*! \internal */
     style: Qt.createComponent(Settings.style + "/ProgressBarStyle.qml", progressbar)
 
@@ -123,7 +129,13 @@ Control {
     implicitWidth:(__panel ? __panel.implicitWidth : 0)
     implicitHeight: (__panel ? __panel.implicitHeight: 0)
 
-    /* \internal */
+    MouseArea {
+        id: hoverArea
+        anchors.fill: parent
+        hoverEnabled: true
+    }
+
+    /*! \internal */
     function setValue(v) {
         var newval = parseFloat(v)
         if (!isNaN(newval)) {

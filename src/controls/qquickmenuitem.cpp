@@ -329,14 +329,14 @@ void QQuickMenuText::updateIcon()
 
     Emitted when either the menu item or its bound action have been activated.
 
-    \sa trigger(), Action::triggered(), Action::toggled()
+    \sa trigger(), Action::triggered, Action::toggled
 */
 
 /*! \qmlmethod MenuItem::trigger()
 
     Manually trigger a menu item. Will also trigger the item's bound action.
 
-    \sa triggered(), Action::trigger()
+    \sa triggered, Action::trigger()
 */
 
 /*!
@@ -360,7 +360,7 @@ void QQuickMenuText::updateIcon()
 
     If the menu item is checkable, this property reflects its checked state. Defaults to \c false.
 
-    \sa checkable, Action::toggled()
+    \sa checkable, Action::toggled
 */
 
 /*! \qmlproperty ExclusiveGroup MenuItem::exclusiveGroup
@@ -378,9 +378,9 @@ void QQuickMenuText::updateIcon()
 /*! \qmlsignal MenuItem::toggled(checked)
 
     Emitted whenever a menu item's \c checked property changes.
-    This usually happens at the same time as \l triggered().
+    This usually happens at the same time as \l triggered.
 
-    \sa checked, triggered(), Action::triggered(), Action::toggled()
+    \sa checked, triggered, Action::triggered, Action::toggled
 */
 
 /*!
@@ -401,6 +401,7 @@ QQuickMenuItem::QQuickMenuItem(QObject *parent)
 {
     connect(this, SIGNAL(__textChanged()), this, SIGNAL(textChanged()));
 
+    connect(action(), SIGNAL(shortcutChanged(QString)), this, SLOT(updateShortcut()));
     connect(action(), SIGNAL(triggered()), this, SIGNAL(triggered()));
     connect(action(), SIGNAL(toggled(bool)), this, SLOT(updateChecked()));
     if (platformItem())
@@ -502,7 +503,7 @@ void QQuickMenuItem::setBoundAction(QQuickAction *a)
 QString QQuickMenuItem::text() const
 {
     QString ownText = QQuickMenuText::text();
-    if (!ownText.isEmpty())
+    if (!ownText.isNull())
         return ownText;
     return m_boundAction ? m_boundAction->text() : QString();
 }

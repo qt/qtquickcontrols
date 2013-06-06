@@ -45,6 +45,7 @@ import QtQuick.Controls.Private 1.0
     \qmltype TableViewStyle
     \inqmlmodule QtQuick.Controls.Styles 1.0
     \since QtQuick.Controls.Styles 1.0
+    \ingroup viewsstyling
     \brief Provides custom styling for TableView
 
     Note that this class derives from \l ScrollViewStyle
@@ -59,7 +60,13 @@ ScrollViewStyle {
     /*! The text color. */
     property color textColor: __syspal.text
 
-    /*! The text highlight color, used behind selections. */
+    /*! The background color. */
+    property color backgroundColor: __syspal.base
+
+    /*! The alternate background color. */
+    property color alternateBackgroundColor: Qt.darker(__syspal.base, 1.06)
+
+    /*! The text highlight color, used within selections. */
     property color highlightedTextColor: "white"
 
     /*! Activates items on single click. */
@@ -67,7 +74,9 @@ ScrollViewStyle {
 
     padding.top: control.headerVisible ? 0 : 1
 
-    /* Delegate for header. This delegate is described in \l TableView::headerDelegate */
+    /*! \qmlproperty Component TableViewStyle::headerDelegate
+    Delegate for header. This delegate is described in \l {TableView::headerDelegate}
+    */
     property Component headerDelegate: BorderImage {
         source: "images/header.png"
         border.left: 4
@@ -75,8 +84,9 @@ ScrollViewStyle {
             anchors.fill: parent
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignLeft
-            anchors.leftMargin: 4
+            anchors.leftMargin: 12
             text: styleData.value
+            elide: Text.ElideRight
             color: textColor
             renderType: Text.NativeRendering
         }
@@ -90,38 +100,49 @@ ScrollViewStyle {
         }
     }
 
-    /* Delegate for header. This delegate is described in \l TableView::rowDelegate */
+    /*! \qmlproperty Component TableViewStyle::rowDelegate
+    Delegate for header. This delegate is described in \l {TableView::rowDelegate}
+    */
     property Component rowDelegate: Rectangle {
-        implicitHeight: 20
-        implicitWidth: 80
+        height: 20
         property color selectedColor: styleData.hasActiveFocus ? "#38d" : "#999"
         gradient: Gradient {
-            GradientStop { color: styleData.selected ? Qt.lighter(selectedColor, 1.3)  : styleData.alternate ? "#f2f2f2" : "white" ; position: 0 }
-            GradientStop { color: styleData.selected ? Qt.lighter(selectedColor, 1.0)  : styleData.alternate ? "#f2f2f2" : "white" ; position: 1 }
+            GradientStop {
+                color: styleData.selected ? Qt.lighter(selectedColor, 1.3) :
+                                            styleData.alternate ? alternateBackgroundColor : backgroundColor
+                position: 0
+            }
+            GradientStop {
+                color: styleData.selected ? Qt.lighter(selectedColor, 1.0) :
+                                            styleData.alternate ? alternateBackgroundColor : backgroundColor
+                position: 1
+            }
         }
         Rectangle {
             anchors.bottom: parent.bottom
             width: parent.width
             height: 1
-            color: styleData.elected ? Qt.darker(selectedColor, 1.4) : "transparent"
+            color: styleData.selected ? Qt.darker(selectedColor, 1.4) : "transparent"
         }
         Rectangle {
             anchors.top: parent.top
             width: parent.width ; height: 1
-            color: styleData.elected ? Qt.darker(selectedColor, 1.1) : "transparent"
+            color: styleData.selected ? Qt.darker(selectedColor, 1.1) : "transparent"
         }
     }
 
-    /* Delegate for header. This delegate is described in \l TableView::itemDelegate */
+    /*! \qmlproperty Component TableViewStyle::rowDelegate
+    Delegate for item. This delegate is described in \l {TableView::itemDelegate}
+    */
     property Component itemDelegate: Item {
         height: Math.max(16, label.implicitHeight)
-        property int implicitWidth: sizehint.paintedWidth + 4
+        property int implicitWidth: sizehint.paintedWidth + 20
 
         Text {
             id: label
             objectName: "label"
             width: parent.width
-            anchors.margins: 6
+            anchors.leftMargin: 12
             anchors.left: parent.left
             anchors.right: parent.right
             horizontalAlignment: styleData.textAlignment

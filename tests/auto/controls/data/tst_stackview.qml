@@ -60,10 +60,10 @@ TestCase {
         StackView {}
     }
 
-    function test_pagestack() {
+    function test_stackview() {
         var component = stackComponent
         var stack = component.createObject(testCase);
-        verify (stack !== null, "pagestack created is null")
+        verify (stack !== null, "stackview created is null")
         verify (stack.depth === 0)
         stack.push(anItem)
         verify (stack.depth === 1)

@@ -42,6 +42,7 @@ import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Layouts 1.0
 import QtQuick.Dialogs 1.0
+import QtQuick.Window 2.1
 import org.qtproject.example 1.0
 
 ApplicationWindow {
@@ -51,6 +52,37 @@ ApplicationWindow {
     minimumHeight: 300
 
     title: document.documentTitle + " - Text Editor Example"
+
+    ApplicationWindow {
+        id: aboutBox
+
+        width: 280
+        height: 120
+        title: "About Text"
+
+        ColumnLayout {
+            anchors.fill: parent
+            anchors.margins: 8
+            Item {
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                Label {
+                    anchors.centerIn: parent
+                    horizontalAlignment: Text.AlignHCenter
+                    text: "This is a basic text editor \nwritten with Qt Quick Controls"
+                }
+            }
+            Button {
+                text: "Ok"
+                isDefault: true
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.bottom: parent.bottom
+                onClicked: aboutBox.close()
+            }
+            Keys.onReturnPressed: aboutBox.close()
+            focus: true
+        }
+    }
 
     Action {
         id: cut
@@ -142,12 +174,6 @@ ApplicationWindow {
         checkable: true
         checked: document.underline
     }
-    Action {
-        id: color
-        text: "&Color ..."
-        iconSource: "images/textcolor.png"
-        iconName: "format-text-color"
-    }
 
     FileDialog {
         id: file
@@ -185,13 +211,10 @@ ApplicationWindow {
             MenuItem { action: alignCenter }
             MenuItem { action: alignRight }
             MenuItem { action: alignJustify }
-            MenuSeparator {}
-            MenuItem { action: color }
         }
         Menu {
             title: "&Help"
-            MenuItem { text: "About..." }
-            MenuItem { text: "About Qt" }
+            MenuItem { text: "About..." ; onTriggered: aboutBox.show() }
         }
     }
 
@@ -200,19 +223,23 @@ ApplicationWindow {
         width: parent.width
         RowLayout {
             anchors.fill: parent
-            spacing: 1
+            spacing: 0
             ToolButton { action: fileOpen }
 
-            Item { width: 4 }
+            ToolBarSeparator {}
+
             ToolButton { action: copy }
             ToolButton { action: cut }
             ToolButton { action: paste }
-            Item { width: 4 }
+
+            ToolBarSeparator {}
+
             ToolButton { action: bold }
             ToolButton { action: italic }
             ToolButton { action: underline }
 
-            Item { width: 4 }
+            ToolBarSeparator {}
+
             ToolButton { action: alignLeft }
             ToolButton { action: alignCenter }
             ToolButton { action: alignRight }
@@ -220,28 +247,13 @@ ApplicationWindow {
             Item { Layout.fillWidth: true }
         }
     }
-    ToolBar {
-        id: secondaryToolBar
-        width: parent.width
-
-        RowLayout {
-            anchors.fill: parent
-            anchors.margins: 4
-            ComboBox {
-                model: document.defaultFontSizes
-                onCurrentTextChanged: document.fontSize = currentText
-                currentIndex: document.defaultFontSizes.indexOf(document.fontSize + "")
-            }
-            TextField { id: fontEdit; enabled: false }
-            Item { Layout.fillWidth: true }
-        }
-    }
 
     TextArea {
         Accessible.name: "document"
         id: textArea
+        frameVisible: false
         width: parent.width
-        anchors.top: secondaryToolBar.bottom
+        anchors.top: parent.top
         anchors.bottom: parent.bottom
         text: document.text
         textFormat: Qt.RichText
@@ -254,8 +266,5 @@ ApplicationWindow {
         cursorPosition: textArea.cursorPosition
         selectionStart: textArea.selectionStart
         selectionEnd: textArea.selectionEnd
-        onCurrentFontChanged: {
-            fontEdit.text = currentFont.family
-        }
     }
 }

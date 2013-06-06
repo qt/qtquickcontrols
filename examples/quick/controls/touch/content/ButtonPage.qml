@@ -86,7 +86,7 @@ Item {
             anchors.margins: 20
             style: touchStyle
             text: "Dont press me"
-            onClicked: if (pageStack) pageStack.pop()
+            onClicked: if (stackView) stackView.pop()
         }
 
     }

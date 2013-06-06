@@ -18,18 +18,13 @@ qhp.QtQuickControls.filterAttributes    = qtcontrols $QT_VERSION qtrefdoc
 qhp.QtQuickControls.customFilters.Qt.name = QtQuickControls $QT_VERSION
 qhp.QtQuickControls.customFilters.Qt.filterAttributes = qtquickcontrols $QT_VERSION
 
-qhp.QtQuickControls.subprojects = qtquickcontrolsqmltypes styleqmltypes
+qhp.QtQuickControls.subprojects = qtquickcontrolsqmltypes
 qhp.QtQuickControls.subprojects.qtquickcontrolsqmltypes.title = QML Types
 qhp.QtQuickControls.subprojects.qtquickcontrolsqmltypes.indexTitle = Qt Quick Controls QML Types
 qhp.QtQuickControls.subprojects.qtquickcontrolsqmltypes.selectors = class fake:qmlclass
 qhp.QtQuickControls.subprojects.qtquickcontrolsqmltypes.sortPages = true
 
-qhp.QtQuickControls.subprojects.styleqmltypes.title = Styles QML Types
-qhp.QtQuickControls.subprojects.styleqmltypes.indexTitle = Qt Quick Controls Styles QML Types
-qhp.QtQuickControls.subprojects.styleqmltypes.selectors = class fake:qmlclass
-qhp.QtQuickControls.subprojects.styleqmltypes.sortPages = true
-
-depends = qtqml qtquick qtwidgets qtdoc qtquicklayouts
+depends = qtqml qtquick qtwidgets qtdoc qtquicklayouts qtquickcontrolsstyles
 
 exampledirs += ../../../examples/quick/controls
 
@@ -37,22 +32,15 @@ exampledirs += ../../../examples/quick/controls
 examplesinstallpath = quick/controls
 
 headerdirs += ../
-headerdirs += ../ ../../styles/Base
 
 sourcedirs += ../
-sourcedirs += ../ ../../styles/Base
 
-sources += ../../private/qstyleitem.cpp \
-           ../../private/AbstractCheckable.qml \
+sources += ../../private/AbstractCheckable.qml \
            ../../private/BasicButton.qml \
            ../../private/FocusFrame.qml \
            ../../private/ModalPopupBehavior.qml \
-           ../../private/PageSlideTransition.qml \
            ../../private/ScrollBar.qml \
            ../../private/TabBar.qml \
            ../../private/Control.qml \
-           ../../private/Style.qml \
-           ../../private/qquickpaddedstyle.h \
-           ../../private/qquickpaddedstyle.cpp
 
 imagedirs += images

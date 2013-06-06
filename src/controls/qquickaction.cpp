@@ -123,7 +123,7 @@ QT_BEGIN_NAMESPACE
 
     Whether the action is enabled, and can be triggered. Defaults to \c true.
 
-    \sa tigger(), triggered()
+    \sa trigger(), triggered
 */
 
 /*!
@@ -140,7 +140,7 @@ QT_BEGIN_NAMESPACE
     If the action is \l checkable, this property reflects its checked state. Defaults to \c false.
     Its value is also false while \l checkable is false.
 
-    \sa toggled(), exclusiveGroup
+    \sa toggled, exclusiveGroup
 */
 
 /*!
@@ -169,14 +169,14 @@ QT_BEGIN_NAMESPACE
 
 /*! \qmlmethod Action::trigger()
 
-    Will emit the \l triggered() signal if the action is enabled. Will also emit the
-    \l toggled() signal if it is checkable.
+    Will emit the \l triggered signal if the action is enabled. Will also emit the
+    \l toggled signal if it is checkable.
 */
 
 /*! \qmlsignal Action::toggled(checked)
 
     Emitted whenever a action's \l checked property changes.
-    This usually happens at the same time as \l triggered().
+    This usually happens at the same time as \l triggered.
 */
 
 QQuickAction::QQuickAction(QObject *parent)

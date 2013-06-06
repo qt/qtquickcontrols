@@ -48,33 +48,63 @@
 /*!
     \qmltype RowLayout
     \instantiates QQuickRowLayout
+    \inherits Item
     \inqmlmodule QtQuick.Layouts 1.0
     \ingroup layouts
     \brief Identical to \l GridLayout, but having only one row.
 
     It is available as a convenience for developers, as it offers a cleaner API.
 
+    Items in a RowLayout support these attached properties:
+    \list
+        \li \l{Layout::minimumWidth}{Layout.minimumWidth}
+        \li \l{Layout::minimumHeight}{Layout.minimumHeight}
+        \li \l{Layout::preferredWidth}{Layout.preferredWidth}
+        \li \l{Layout::preferredHeight}{Layout.preferredHeight}
+        \li \l{Layout::maximumWidth}{Layout.maximumWidth}
+        \li \l{Layout::maximumHeight}{Layout.maximumHeight}
+        \li \l{Layout::fillWidth}{Layout.fillWidth}
+        \li \l{Layout::fillHeight}{Layout.fillHeight}
+        \li \l{Layout::alignment}{Layout.alignment}
+    \endlist
     \sa ColumnLayout
     \sa GridLayout
+    \sa Row
 */
 
 /*!
     \qmltype ColumnLayout
     \instantiates QQuickColumnLayout
+    \inherits Item
     \inqmlmodule QtQuick.Layouts 1.0
     \ingroup layouts
     \brief Identical to \l GridLayout, but having only one column.
 
     It is available as a convenience for developers, as it offers a cleaner API.
 
+    Items in a ColumnLayout support these attached properties:
+    \list
+        \li \l{Layout::minimumWidth}{Layout.minimumWidth}
+        \li \l{Layout::minimumHeight}{Layout.minimumHeight}
+        \li \l{Layout::preferredWidth}{Layout.preferredWidth}
+        \li \l{Layout::preferredHeight}{Layout.preferredHeight}
+        \li \l{Layout::maximumWidth}{Layout.maximumWidth}
+        \li \l{Layout::maximumHeight}{Layout.maximumHeight}
+        \li \l{Layout::fillWidth}{Layout.fillWidth}
+        \li \l{Layout::fillHeight}{Layout.fillHeight}
+        \li \l{Layout::alignment}{Layout.alignment}
+    \endlist
+
     \sa RowLayout
     \sa GridLayout
+    \sa Column
 */
 
 
 /*!
     \qmltype GridLayout
     \instantiates QQuickGridLayout
+    \inherits Item
     \inqmlmodule QtQuick.Layouts 1.0
     \ingroup layouts
     \brief Provides a way of dynamically arranging items in a grid.
@@ -112,39 +142,42 @@
     specify the row span or column span by setting the \l{Layout::rowSpan}{Layout.rowSpan} or
     \l{Layout::columnSpan}{Layout.columnSpan} properties.
 
-    When the layout is resized, items may grow or shrink. Due to this, items have a
-    \l{Layout::minimumWidth}{minimum size}, \l{Layout::preferredWidth}{preferred size} and a
-    \l{Layout::maximumWidth}{maximum size}.
 
-    Preferred size may come from one of several sources. It can be specified with the
-    \l{Layout::preferredWidth}{Layout.preferredWidth} and
-    \l{Layout::preferredHeight}{Layout.preferredHeight} properties. If these properties are not
-    specified, it will use the items' \l{Item::implicitWidth}{implicitWidth} or
-    \l{Item::implicitHeight}{implicitHeight} as the preferred size.
-    Finally, if neither of these properties are set, it will use the \l{Item::width}{width} and
-    \l{Item::height}{height} properties of the item. Note that is provided only as a final
-    fallback. If you want to override the preferred size, you should use
-    \l{Layout::preferredWidth}{Layout.preferredWidth} or
-    \l{Layout::preferredHeight}{Layout.preferredHeight}.
-
-    The \l{Layout::fillWidth}{Layout.fillWidth} and \l{Layout::fillHeight}{Layout.fillHeight} can
-    either be \c true or \c false. If it is \c false, the items size will be fixed to its preferred
-    size. Otherwise, it will grow or shrink between its minimum and maximum size.
-
-    \note It is not recommended to have bindings to the width and height properties of items in a
-    GridLayout, since this would conflict with the goal of the GridLayout.
+    Items in a GridLayout support these attached properties:
+    \list
+        \li \l{Layout::row}{Layout.row}
+        \li \l{Layout::column}{Layout.column}
+        \li \l{Layout::rowSpan}{Layout.rowSpan}
+        \li \l{Layout::columnSpan}{Layout.columnSpan}
+        \li \l{Layout::minimumWidth}{Layout.minimumWidth}
+        \li \l{Layout::minimumHeight}{Layout.minimumHeight}
+        \li \l{Layout::preferredWidth}{Layout.preferredWidth}
+        \li \l{Layout::preferredHeight}{Layout.preferredHeight}
+        \li \l{Layout::maximumWidth}{Layout.maximumWidth}
+        \li \l{Layout::maximumHeight}{Layout.maximumHeight}
+        \li \l{Layout::fillWidth}{Layout.fillWidth}
+        \li \l{Layout::fillHeight}{Layout.fillHeight}
+        \li \l{Layout::alignment}{Layout.alignment}
+    \endlist
 
     \sa RowLayout
     \sa ColumnLayout
-
+    \sa Grid
 */
 
 
 
 QT_BEGIN_NAMESPACE
 
-static const qreal q_declarativeLayoutDefaultSpacing = 4.0;
-
+static qreal quickLayoutDefaultSpacing()
+{
+    qreal spacing = 5.0;
+#ifndef Q_OS_MAC
+    // On mac the DPI is always 72 so we should not scale it
+    spacing = qRound(spacing * (qreal(qt_defaultDpiX()) / 96.0));
+#endif
+    return spacing;
+}
 
 QQuickGridLayoutBase::QQuickGridLayoutBase(QQuickGridLayoutBasePrivate &dd,
                                            Qt::Orientation orientation,
@@ -177,12 +210,18 @@ QSizeF QQuickGridLayoutBase::sizeHint(Qt::SizeHint whichSizeHint) const
     return d->engine.sizeHint(whichSizeHint, QSizeF());
 }
 
+QQuickGridLayoutBase::~QQuickGridLayoutBase()
+{
+    d_func()->m_isReady = false;
+}
+
 void QQuickGridLayoutBase::componentComplete()
 {
     Q_D(QQuickGridLayoutBase);
     quickLayoutDebug() << objectName() << "QQuickGridLayoutBase::componentComplete()" << parent();
     d->m_disableRearrange = true;
     QQuickLayout::componentComplete();    // will call our geometryChange(), (where isComponentComplete() == true)
+    d->m_isReady = true;
     d->m_disableRearrange = false;
     updateLayoutItems();
 
@@ -228,7 +267,7 @@ void QQuickGridLayoutBase::componentComplete()
 void QQuickGridLayoutBase::invalidate(QQuickItem *childItem)
 {
     Q_D(QQuickGridLayoutBase);
-    if (!isComponentComplete())
+    if (!isReady())
         return;
     quickLayoutDebug() << "QQuickGridLayoutBase::invalidate()";
 
@@ -267,7 +306,7 @@ void QQuickGridLayoutBase::invalidate(QQuickItem *childItem)
 void QQuickGridLayoutBase::updateLayoutItems()
 {
     Q_D(QQuickGridLayoutBase);
-    if (!isComponentComplete() || !isVisible())
+    if (!isReady() || !isVisible())
         return;
     quickLayoutDebug() << "QQuickGridLayoutBase::updateLayoutItems";
     d->engine.deleteItems();
@@ -287,7 +326,7 @@ void QQuickGridLayoutBase::itemChange(ItemChange change, const ItemChangeData &v
         QObject::connect(item, SIGNAL(implicitWidthChanged()), this, SLOT(onItemImplicitSizeChanged()));
         QObject::connect(item, SIGNAL(implicitHeightChanged()), this, SLOT(onItemImplicitSizeChanged()));
 
-        if (isComponentComplete() && isVisible())
+        if (isReady() && isVisible())
             updateLayoutItems();
     } else if (change == ItemChildRemovedChange) {
         quickLayoutDebug() << "ItemChildRemovedChange";
@@ -296,7 +335,7 @@ void QQuickGridLayoutBase::itemChange(ItemChange change, const ItemChangeData &v
         QObject::disconnect(item, SIGNAL(visibleChanged()), this, SLOT(onItemVisibleChanged()));
         QObject::disconnect(item, SIGNAL(implicitWidthChanged()), this, SLOT(onItemImplicitSizeChanged()));
         QObject::disconnect(item, SIGNAL(implicitHeightChanged()), this, SLOT(onItemImplicitSizeChanged()));
-        if (isComponentComplete() && isVisible())
+        if (isReady() && isVisible())
             updateLayoutItems();
     }
 
@@ -307,7 +346,7 @@ void QQuickGridLayoutBase::geometryChanged(const QRectF &newGeometry, const QRec
 {
     Q_D(QQuickGridLayoutBase);
     QQuickLayout::geometryChanged(newGeometry, oldGeometry);
-    if (d->m_disableRearrange || !isComponentComplete() || !newGeometry.isValid())
+    if (d->m_disableRearrange || !isReady() || !newGeometry.isValid())
         return;
     quickLayoutDebug() << "QQuickGridLayoutBase::geometryChanged" << newGeometry << oldGeometry;
     rearrange(newGeometry.size());
@@ -319,6 +358,11 @@ void QQuickGridLayoutBase::removeGridItem(QGridLayoutItem *gridItem)
     const int index = gridItem->firstRow(d->orientation);
     d->engine.removeItem(gridItem);
     d->engine.removeRows(index, 1, d->orientation);
+}
+
+bool QQuickGridLayoutBase::isReady() const
+{
+    return d_func()->m_isReady;
 }
 
 void QQuickGridLayoutBase::removeLayoutItem(QQuickItem *item)
@@ -334,7 +378,7 @@ void QQuickGridLayoutBase::removeLayoutItem(QQuickItem *item)
 
 void QQuickGridLayoutBase::onItemVisibleChanged()
 {
-    if (!isComponentComplete())
+    if (!isReady())
         return;
     quickLayoutDebug() << "QQuickGridLayoutBase::onItemVisibleChanged";
     updateLayoutItems();
@@ -342,6 +386,8 @@ void QQuickGridLayoutBase::onItemVisibleChanged()
 
 void QQuickGridLayoutBase::onItemDestroyed()
 {
+    if (!isReady())
+        return;
     Q_D(QQuickGridLayoutBase);
     quickLayoutDebug() << "QQuickGridLayoutBase::onItemDestroyed";
     QQuickItem *inDestruction = static_cast<QQuickItem *>(sender());
@@ -354,6 +400,8 @@ void QQuickGridLayoutBase::onItemDestroyed()
 
 void QQuickGridLayoutBase::onItemImplicitSizeChanged()
 {
+    if (!isReady())
+        return;
     QQuickItem *item = static_cast<QQuickItem *>(sender());
     Q_ASSERT(item);
     invalidate(item);
@@ -362,7 +410,7 @@ void QQuickGridLayoutBase::onItemImplicitSizeChanged()
 void QQuickGridLayoutBase::rearrange(const QSizeF &size)
 {
     Q_D(QQuickGridLayoutBase);
-    if (!isComponentComplete())
+    if (!isReady())
         return;
 
     quickLayoutDebug() << objectName() << "QQuickGridLayoutBase::rearrange()" << size;
@@ -412,9 +460,10 @@ QQuickGridLayout::QQuickGridLayout(QQuickItem *parent /* = 0*/)
     : QQuickGridLayoutBase(*new QQuickGridLayoutPrivate, Qt::Horizontal, parent)
 {
     Q_D(QQuickGridLayout);
-    d->columnSpacing = q_declarativeLayoutDefaultSpacing;
-    d->rowSpacing = q_declarativeLayoutDefaultSpacing;
-    d->engine.setSpacing(q_declarativeLayoutDefaultSpacing, Qt::Horizontal | Qt::Vertical);
+    const qreal defaultSpacing = quickLayoutDefaultSpacing();
+    d->columnSpacing = defaultSpacing;
+    d->rowSpacing = defaultSpacing;
+    d->engine.setSpacing(defaultSpacing, Qt::Horizontal | Qt::Vertical);
 }
 
 /*!
@@ -672,7 +721,7 @@ QQuickLinearLayout::QQuickLinearLayout(Qt::Orientation orientation,
     : QQuickGridLayoutBase(*new QQuickLinearLayoutPrivate, orientation, parent)
 {
     Q_D(QQuickLinearLayout);
-    d->spacing = q_declarativeLayoutDefaultSpacing;
+    d->spacing = quickLayoutDefaultSpacing();
     d->engine.setSpacing(d->spacing, Qt::Horizontal | Qt::Vertical);
 }
 

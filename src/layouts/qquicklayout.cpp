@@ -60,11 +60,33 @@
     For instance, you can specify \l minimumWidth, \l preferredWidth, and
     \l maximumWidth if the default values are not satisfactory.
 
-    \l fillWidth and \l fillHeight allows you to specify whether an item should
-    fill the cell(s) it occupies. This allows it to stretch between \l minimumWidth
-    and \l maximumWidth (or \l minimumHeight and \l maximumHeight if \l fillHeight is \c true).
+    When a layout is resized, items may grow or shrink. Due to this, items have a
+    \l{Layout::minimumWidth}{minimum size}, \l{Layout::preferredWidth}{preferred size} and a
+    \l{Layout::maximumWidth}{maximum size}.
 
-    If \l fillWidth or \l fillHeight is \c false, the items' size will be fixed to its preferred size.
+    For each item, preferred size may come from one of several sources. It can be specified with
+    the \l preferredWidth and \l preferredHeight properties. If these properties are not
+    specified, it will use the item's \l{Item::implicitWidth}{implicitWidth} or
+    \l{Item::implicitHeight}{implicitHeight} as the preferred size.
+    Finally, if neither of these properties are set, it will use the \l{Item::width}{width} and
+    \l{Item::height}{height} properties of the item. Note that is provided only as a final
+    fallback. If you want to override the preferred size, you should use
+    \l preferredWidth or \l preferredHeight.
+
+    If minimum size have not been explicitly specified on an item, the size is set to \c 0.
+    If maximum size have not been explicitly specified on an item, the size is set to
+    \c Number.POSITIVE_INFINITY.
+
+    For layouts, the implicit minimum and maximum size depends on the content of the layouts.
+
+    The \l fillWidth and \l fillHeight properties can either be \c true or \c false. If it is \c
+    false, the item's size will be fixed to its preferred size. Otherwise, it will grow or shrink
+    between its minimum and maximum size as the layout is resized.
+
+    \note It is not recommended to have bindings to the x, y, width, or height properties of items
+    in a layout, since this would conflict with the goal of the Layout, and also cause binding
+    loops.
+
 
     \sa GridLayout
     \sa RowLayout
@@ -100,7 +122,7 @@ QQuickLayoutAttached::QQuickLayoutAttached(QObject *parent)
 }
 
 /*!
-    \qmlproperty real Layout::minimumWidth
+    \qmlattachedproperty real Layout::minimumWidth
 
     This property holds the maximum width of an item in a layout.
     The default value is the items implicit minimum width.
@@ -129,7 +151,7 @@ void QQuickLayoutAttached::setMinimumWidth(qreal width)
 }
 
 /*!
-    \qmlproperty real Layout::minimumHeight
+    \qmlattachedproperty real Layout::minimumHeight
 
     The default value is the items implicit minimum height.
 
@@ -156,7 +178,7 @@ void QQuickLayoutAttached::setMinimumHeight(qreal height)
 }
 
 /*!
-    \qmlproperty real Layout::preferredWidth
+    \qmlattachedproperty real Layout::preferredWidth
 
     This property holds the preferred width of an item in a layout.
     If the preferred width is -1 it will be ignored, and the layout
@@ -177,7 +199,7 @@ void QQuickLayoutAttached::setPreferredWidth(qreal width)
 }
 
 /*!
-    \qmlproperty real Layout::preferredHeight
+    \qmlattachedproperty real Layout::preferredHeight
 
     This property holds the preferred height of an item in a layout.
     If the preferred height is -1 it will be ignored, and the layout
@@ -198,14 +220,14 @@ void QQuickLayoutAttached::setPreferredHeight(qreal height)
 }
 
 /*!
-    \qmlproperty real Layout::maximumWidth
+    \qmlattachedproperty real Layout::maximumWidth
 
     This property holds the maximum width of an item in a layout.
     The default value is the items implicit maximum width.
 
     If the item is a layout, the implicit maximum width will be the maximum width the layout can
     have without any of its items grow beyond their maximum width.
-    The implicit maximum width for any other item is \c Number.POSITIVE_INFINITE.
+    The implicit maximum width for any other item is \c Number.POSITIVE_INFINITY.
 
     Setting this value to -1 will reset the width back to its implicit maximum width.
 
@@ -226,13 +248,13 @@ void QQuickLayoutAttached::setMaximumWidth(qreal width)
 }
 
 /*!
-    \qmlproperty real Layout::maximumHeight
+    \qmlattachedproperty real Layout::maximumHeight
 
     The default value is the items implicit maximum height.
 
     If the item is a layout, the implicit maximum height will be the maximum height the layout can
     have without any of its items grow beyond their maximum height.
-    The implicit maximum height for any other item is \c Number.POSITIVE_INFINITE.
+    The implicit maximum height for any other item is \c Number.POSITIVE_INFINITY.
 
     Setting this value to -1 will reset the height back to its implicit maximum height.
 
@@ -299,7 +321,7 @@ void QQuickLayoutAttached::setMaximumImplicitSize(const QSizeF &sz)
 }
 
 /*!
-    \qmlproperty bool Layout::fillWidth
+    \qmlattachedproperty bool Layout::fillWidth
 
     If this property is \c true, the item will be as wide as possible while respecting
     the given constraints. If the property is \c false, the item will have a fixed width
@@ -319,7 +341,7 @@ void QQuickLayoutAttached::setFillWidth(bool fill)
 }
 
 /*!
-    \qmlproperty bool Layout::fillHeight
+    \qmlattachedproperty bool Layout::fillHeight
 
     If this property is \c true, the item will be as tall as possible while respecting
     the given constraints. If the property is \c false, the item will have a fixed height
@@ -339,7 +361,7 @@ void QQuickLayoutAttached::setFillHeight(bool fill)
 }
 
 /*!
-    \qmlproperty int Layout::row
+    \qmlattachedproperty int Layout::row
 
     This property allows you to specify the row position of an item in a \l GridLayout.
 
@@ -357,7 +379,7 @@ void QQuickLayoutAttached::setRow(int row)
 }
 
 /*!
-    \qmlproperty int Layout::column
+    \qmlattachedproperty int Layout::column
 
     This property allows you to specify the column position of an item in a \l GridLayout.
 
@@ -376,7 +398,7 @@ void QQuickLayoutAttached::setColumn(int column)
 
 
 /*!
-    \qmlproperty Qt.Alignment Layout::alignment
+    \qmlattachedproperty Qt.Alignment Layout::alignment
 
     This property allows you to specify the alignment of an item within the cell(s) it occupies.
 
@@ -385,7 +407,7 @@ void QQuickLayoutAttached::setColumn(int column)
 
 
 /*!
-    \qmlproperty int Layout::rowSpan
+    \qmlattachedproperty int Layout::rowSpan
 
     This property allows you to specify the row span of an item in a \l GridLayout.
 
@@ -397,7 +419,7 @@ void QQuickLayoutAttached::setColumn(int column)
 
 
 /*!
-    \qmlproperty int Layout::columnSpan
+    \qmlattachedproperty int Layout::columnSpan
 
     This property allows you to specify the column span of an item in a \l GridLayout.
 

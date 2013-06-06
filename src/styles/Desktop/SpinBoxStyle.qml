@@ -41,7 +41,7 @@ import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Private 1.0
 
-PaddedStyle {
+Style {
     readonly property SpinBox control: __control
 
     property var __syspal: SystemPalette {
@@ -50,11 +50,12 @@ PaddedStyle {
     }
 
     padding {
-       top: control.__panel ? control.__panel.topPadding + (control.__panel.style === "mac" ? 1 : 0) : 0
+       top: control.__panel ? control.__panel.topPadding + (styleitem.style === "mac" ? 2 : 0) : 0
        left: control.__panel ? control.__panel.leftPadding : 0
        right: control.__panel ? control.__panel.rightPadding : 0
        bottom: control.__panel ? control.__panel.bottomPadding : 0
    }
+    StyleItem {id: styleitem ; visible: false}
 
     property Component panel: Item {
         id: style
@@ -115,7 +116,7 @@ PaddedStyle {
             elementType: "spinbox"
             anchors.fill: parent
             sunken: (styleData.downEnabled && styleData.downPressed) || (styleData.upEnabled && styleData.upPressed)
-            hover: styleData.containsMouse
+            hover: control.hovered
             hints: control.styleHints
             hasFocus: control.activeFocus
             enabled: control.enabled

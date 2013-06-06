@@ -43,6 +43,13 @@ import QtQuick.Controls 1.0
 import QtQuick.Controls.Private 1.0
 import "../../Private/style.js" as StyleHelpers
 
+/*!
+    \qmltype MenuStyle
+    \internal
+    \ingroup menusstyling
+    \inqmlmodule QtQuick.Controls.Styles 1.0
+*/
+
 Style {
     id: styleRoot
 

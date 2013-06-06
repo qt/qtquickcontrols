@@ -49,6 +49,10 @@ import QtQuick 2.1
 */
 
 QtObject {
+
+    /*! \internal */
+    property Item __view: null
+
     /*! The title text of the column. */
     property string title
 
@@ -56,8 +60,10 @@ QtObject {
     property string role
 
     /*! The current width of the column
-    The default value depends on platform. */
-    property int width: 160
+    The default value depends on platform. If only one
+    column is defined, the width expands to the viewport.
+    */
+    property int width: (__view && __view.columnCount === 1) ? __view.viewport.width : 160
 
     /*! The visible status of the column. */
     property bool visible: true
@@ -89,4 +95,6 @@ QtObject {
     /*! The delegate of the column. This can be used to set the
     \l TableView::itemDelegate for a specific column. */
     property Component delegate
+
+    Accessible.role: Accessible.ColumnHeader
 }

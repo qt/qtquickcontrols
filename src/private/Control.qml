@@ -64,7 +64,7 @@ FocusScope {
     property Item __panel: panelLoader.item
 
     /*! \internal */
-    property var styleHints: []
+    property var styleHints
 
     implicitWidth: __panel ? __panel.implicitWidth: 0
     implicitHeight: __panel ? __panel.implicitHeight: 0

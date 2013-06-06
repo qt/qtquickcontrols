@@ -75,6 +75,8 @@ Control {
     id: spinbox
 
     /*!
+        \qmlproperty real SpinBox::value
+
         The value of this SpinBox, clamped to \l minimumValue and \l maximumValue.
 
         The default value is \c{0.0}.
@@ -82,6 +84,8 @@ Control {
     property alias value: validator.value
 
     /*!
+        \qmlproperty real SpinBox::minimumValue
+
         The minimum value of the SpinBox range.
         The \l value is clamped to this value.
 
@@ -90,6 +94,8 @@ Control {
     property alias minimumValue: validator.minimumValue
 
     /*!
+        \qmlproperty real SpinBox::maximumValue
+
         The maximum value of the SpinBox range.
         The \l value is clamped to this value. If maximumValue is smaller than
         \l minimumValue, \l minimumValue will be enforced.
@@ -98,7 +104,7 @@ Control {
     */
     property alias maximumValue: validator.maximumValue
 
-    /*!
+    /*! \qmlproperty real SpinBox::stepSize
         The amount by which the \l value is incremented/decremented when a
         spin button is pressed.
 
@@ -106,13 +112,16 @@ Control {
     */
     property alias stepSize: validator.stepSize
 
-    /*! The suffix for the value. I.e "cm" */
+    /*! \qmlproperty string SpinBox::suffix
+        The suffix for the value. I.e "cm" */
     property alias suffix: validator.suffix
 
-    /*! The prefix for the value. I.e "$" */
+    /*! \qmlproperty string SpinBox::prefix
+        The prefix for the value. I.e "$" */
     property alias prefix: validator.prefix
 
-    /*! This property indicates the amount of decimals.
+    /*! \qmlproperty int SpinBox::decimals
+      This property indicates the amount of decimals.
       Note that if you enter more decimals than specified, they will
       be truncated to the specified amount of decimal places.
       The default value is \c{0}.
@@ -125,11 +134,18 @@ Control {
     */
     property alias font: input.font
 
-    /*! This property indicates if the Spinbox should get active
+    /*! This property indicates whether the Spinbox should get active
       focus when pressed.
       The default value is \c true.
     */
     property bool activeFocusOnPress: true
+
+    /*!
+        \qmlproperty bool SpinBox::hovered
+
+        This property indicates whether the control is being hovered.
+    */
+    readonly property alias hovered: mouseArea.containsMouse
 
     style: Qt.createComponent(Settings.style + "/SpinBoxStyle.qml", spinbox)
 
@@ -156,8 +172,6 @@ Control {
         readonly property bool downEnabled: value != minimumValue;
         readonly property alias downPressed: mouseDown.pressed
         readonly property alias downHovered: mouseDown.containsMouse
-
-        readonly property alias containsMouse: mouseArea.containsMouse
 
         readonly property int contentHeight: Math.max(input.implicitHeight, 16)
         readonly property int contentWidth: Math.max(maxSizeHint.implicitWidth, minSizeHint.implicitWidth)

@@ -175,7 +175,6 @@ FocusScope {
 
             property int tabindex: index
             property bool selected : tabView.currentIndex === index
-            property bool hover: containsMouse
             property string title: modelData.title
             property bool nextSelected: tabView.currentIndex === index + 1
             property bool previousSelected: tabView.currentIndex === index - 1
@@ -187,7 +186,7 @@ FocusScope {
             function changeTab() {
                 tabView.currentIndex = index;
                 var next = tabbar.nextItemInFocusChain(true);
-                if (__isAncestorOf(tabView.tabAt(currentIndex), next))
+                if (__isAncestorOf(tabView.getTab(currentIndex), next))
                     next.forceActiveFocus();
                 else
                     tabitem.forceActiveFocus();
@@ -209,7 +208,6 @@ FocusScope {
 
                 property Item control: tabView
                 property int index: tabindex
-                property real availableWidth: tabbar.availableWidth
 
                 property QtObject styleData: QtObject {
                     readonly property alias index: tabitem.tabindex
@@ -217,8 +215,9 @@ FocusScope {
                     readonly property alias title: tabitem.title
                     readonly property alias nextSelected: tabitem.nextSelected
                     readonly property alias previsousSelected: tabitem.previousSelected
-                    readonly property alias hovered: tabitem.hover
+                    readonly property alias hovered: tabitem.containsMouse
                     readonly property bool activeFocus: tabbar.activeFocus
+                    readonly property real availableWidth: tabbar.availableWidth
                 }
 
                 sourceComponent: loader.item ? loader.item.tab : null

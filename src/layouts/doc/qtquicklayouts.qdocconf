@@ -5,31 +5,29 @@ description             = Qt Quick Layouts Reference Documentation
 url                     = http://qt-project.org/doc/qt-$QT_VER/qtquicklayouts/
 version                 = $QT_VERSION
 
-qhp.projects            = qtquicklayouts
+qhp.projects            = QtQuickLayouts
 
-qhp.qtquicklayouts.file           = qtquicklayouts.qhp
-qhp.qtquicklayouts.namespace      = org.qt-project.qtquicklayouts.$QT_VERSION_TAG
-qhp.qtquicklayouts.virtualFolder  = qtquicklayouts
-qhp.qtquicklayouts.indexTitle     = Qt Quick Layouts
-qhp.qtquicklayouts.indexRoot      =
+qhp.QtQuickLayouts.file           = qtquicklayouts.qhp
+qhp.QtQuickLayouts.namespace      = org.qt-project.qtquicklayouts.$QT_VERSION_TAG
+qhp.QtQuickLayouts.virtualFolder  = qtquicklayouts
+qhp.QtQuickLayouts.indexTitle     = Qt Quick Layouts
+qhp.QtQuickLayouts.indexRoot      =
 
-qhp.qtquicklayouts.filterAttributes    = qtquicklayouts $QT_VERSION qtrefdoc
-qhp.qtquicklayouts.customFilters.Qt.name = QtQuickLayouts $QT_VERSION
-qhp.qtquicklayouts.customFilters.Qt.filterAttributes = qtquicklayouts $QT_VERSION
+qhp.QtQuickLayouts.filterAttributes    = qtquicklayouts $QT_VERSION qtrefdoc
+qhp.QtQuickLayouts.customFilters.Qt.name = QtQuickLayouts $QT_VERSION
+qhp.QtQuickLayouts.customFilters.Qt.filterAttributes = qtquicklayouts $QT_VERSION
 
-qhp.qtquicklayouts.subprojects = qtquicklayoutsqmltypes
-qhp.qtquicklayouts.subprojects.qtquicklayoutsqmltypes.title = QML Types
-qhp.qtquicklayouts.subprojects.qtquicklayoutsqmltypes.indexTitle = Qt Quick Layouts
-qhp.qtquicklayouts.subprojects.qtquicklayoutsqmltypes.selectors = class fake:headerfile
-qhp.qtquicklayouts.subprojects.qtquicklayoutsqmltypes.sortPages = true
-qhp.qtquicklayouts.subprojects.qtquicklayoutsqmltypes.type = manual
+qhp.QtQuickLayouts.subprojects = qtquicklayoutsqmltypes
+qhp.QtQuickLayouts.subprojects.qtquicklayoutsqmltypes.title = QML Types
+qhp.QtQuickLayouts.subprojects.qtquicklayoutsqmltypes.indexTitle = Qt Quick Layouts
+qhp.QtQuickLayouts.subprojects.qtquicklayoutsqmltypes.selectors = class fake:qmlClass
+qhp.QtQuickLayouts.subprojects.qtquicklayoutsqmltypes.sortPages = true
+qhp.QtQuickLayouts.subprojects.qtquicklayoutsqmltypes.type = manual
 
 depends = qtqml qtquick qtwidgets qtdoc qtquickcontrols
 
-exampledirs += ../../../examples/quick/controls/
+headerdirs += ..
 
-headerdirs += ../
-
-sourcedirs += ../
+sourcedirs += ..
 
 imagedirs += images

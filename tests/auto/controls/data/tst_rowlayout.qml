@@ -459,6 +459,12 @@ Item {
                     { tag: "propagateMaximumWidth",    layoutHints: [10, 20, -1], childHints: [11, 21, 30], expected:[10, 20, 30]},
                     { tag: "propagateAll",             layoutHints: [-1, -1, -1], childHints: [10, 20, 30], expected:[10, 20, 30]},
                     { tag: "propagateCrazy",           layoutHints: [-1, -1, -1], childHints: [40, 21, 30], expected:[30, 30, 30]},
+                    { tag: "expandMinToExplicitPref",  layoutHints: [-1,  1, -1], childHints: [11, 21, 31], expected:[ 1,  1, 31]},
+                    { tag: "expandMaxToExplicitPref",  layoutHints: [-1, 99, -1], childHints: [11, 21, 31], expected:[11, 99, 99]},
+                    { tag: "expandAllToExplicitMin",   layoutHints: [99, -1, -1], childHints: [11, 21, 31], expected:[99, 99, 99]},
+                    { tag: "expandPrefToExplicitMin",  layoutHints: [24, -1, -1], childHints: [11, 21, 31], expected:[24, 24, 31]},
+                    { tag: "boundPrefToExplicitMax",   layoutHints: [-1, -1, 19], childHints: [11, 21, 31], expected:[11, 19, 19]},
+                    { tag: "boundAllToExplicitMax",    layoutHints: [-1, -1,  9], childHints: [11, 21, 31], expected:[ 9,  9,  9]},
                     ];
         }
 
@@ -468,22 +474,21 @@ Item {
 
         function test_sizeHint(data) {
             var layout = layout_sizeHint_Component.createObject(container)
-            layout.Layout.minimumWidth = data.layoutHints[0]
-            layout.Layout.preferredWidth = data.layoutHints[1]
-            layout.Layout.maximumWidth = data.layoutHints[2]
 
-            var child = layout.children[0].children[0]
+            var grid = layout.children[0]
+            grid.Layout.minimumWidth = data.layoutHints[0]
+            grid.Layout.preferredWidth = data.layoutHints[1]
+            grid.Layout.maximumWidth = data.layoutHints[2]
+
+            var child = grid.children[0]
             if (data.implicitWidth !== undefined) {
                 child.implicitWidth = data.implicitWidth
             }
-
             child.Layout.minimumWidth = data.childHints[0]
             child.Layout.preferredWidth = data.childHints[1]
             child.Layout.maximumWidth = data.childHints[2]
 
-            var grid = layout.children[0]
-            var preferredWidth = layout.Layout.preferredWidth >= 0 ? layout.Layout.preferredWidth : layout.implicitWidth
-            var effectiveSizeHintResult = [layout.Layout.minimumWidth, preferredWidth, layout.Layout.maximumWidth]
+            var effectiveSizeHintResult = [layout.Layout.minimumWidth, layout.implicitWidth, layout.Layout.maximumWidth]
             compare(effectiveSizeHintResult, data.expected)
             layout.destroy()
         }
@@ -632,6 +637,71 @@ Item {
             compare(r1.x, 12) // 11.5
             compare(r1.y, 6) // 5.5
             layout.destroy();
+        }
+
+
+        Component {
+            id: layout_deleteLayout
+            ColumnLayout {
+                property int dummyproperty: 0   // yes really - its needed
+                RowLayout {
+                    Text { text: "label1" }     // yes, both are needed
+                    Text { text: "label2" }
+                }
+            }
+        }
+
+        function test_destroyLayout()
+        {
+            var layout = layout_deleteLayout.createObject(container)
+            layout.children[0].children[0].visible = true
+            layout.visible = false
+            layout.destroy()    // Do not crash
+        }
+
+
+        Component {
+            id: rearrangeNestedLayouts_Component
+            RowLayout {
+                id: layout
+                anchors.fill: parent
+                width: 200
+                height: 20
+                RowLayout {
+                    id: row
+                    spacing: 0
+
+                    Rectangle {
+                        id: fixed
+                        color: 'red'
+                        implicitWidth: 20
+                        implicitHeight: 20
+                    }
+                    Rectangle {
+                        id: filler
+                        color: 'grey'
+                        Layout.fillWidth: true
+                        implicitHeight: 20
+                    }
+                }
+            }
+        }
+
+        function test_rearrangeNestedLayouts()
+        {
+            var layout = rearrangeNestedLayouts_Component.createObject(container)
+            var fixed = layout.children[0].children[0]
+            var filler = layout.children[0].children[1]
+
+            compare(itemRect(fixed),  [0,0,20,20])
+            compare(itemRect(filler), [20,0,180,20])
+
+            fixed.implicitWidth = 100
+            wait(20);    // wait for at least 20 ms (this matches the time between two frame
+                         // repaints for 50hz displays)
+            compare(itemRect(fixed),  [0,0,100,20])
+            compare(itemRect(filler), [100,0,100,20])
+
         }
     }
 }

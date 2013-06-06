@@ -80,23 +80,36 @@ import QtQuick.Controls.Private 1.0
 Control {
     id: comboBox
 
-    /*! The model to populate the ComboBox from. */
+    /*! \qmlproperty model ComboBox::model
+        The model to populate the ComboBox from. */
     property alias model: popupItems.model
+
+    /*! The model role used for populating the ComboBox. */
     property string textRole: ""
 
-    /*! The index of the currently selected item in the ComboBox. */
+    /*! \qmlproperty int ComboBox::currentIndex
+        The index of the currently selected item in the ComboBox. */
     property alias currentIndex: popup.__selectedIndex
-    /*! The text of the currently selected item in the ComboBox. */
+
+    /*! \qmlproperty string ComboBox::currentText
+        The text of the currently selected item in the ComboBox. */
     readonly property alias currentText: popup.selectedText
 
     /*! This property specifies whether the combobox should gain active focus when pressed.
         The default value is \c false. */
     property bool activeFocusOnPress: false
 
-    /*! \internal */
+    /*! \qmlproperty bool ComboBox::pressed
+
+        This property holds whether the button is being pressed. */
     readonly property bool pressed: mouseArea.pressed && mouseArea.containsMouse || popup.__popupVisible
-    /*! \internal */
-    property alias __containsMouse: mouseArea.containsMouse
+
+    /*! \qmlproperty bool ComboBox::hovered
+
+        This property indicates whether the control is being hovered.
+    */
+    readonly property alias hovered: mouseArea.containsMouse
+
     /*! \internal */
     property var __popup: popup
 

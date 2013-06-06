@@ -46,10 +46,11 @@ import QtQuick.Controls.Private 1.0
     \qmltype ComboBoxStyle
     \inqmlmodule QtQuick.Controls.Styles 1.0
     \since QtQuick.Controls.Styles 1.0
+    \ingroup controlsstyling
     \brief Provides custom styling for ComboBox
 */
 
-PaddedStyle {
+Style {
 
     /*! \internal */
     property var __syspal: SystemPalette {
@@ -62,7 +63,7 @@ PaddedStyle {
     /*! The padding between the background and the label components. */
     padding { top: 4 ; left: 6 ; right: 6 ; bottom:4 }
 
-    /*! The background of the button. */
+    /*! This defines the background of the button. */
     property Component background: Item {
         implicitWidth: 100
         implicitHeight: 25
@@ -98,7 +99,7 @@ PaddedStyle {
         }
     }
 
-    /*! The label of the button. */
+    /*! This defines the label of the button. */
     property Component label: Item {
         implicitWidth: textitem.implicitWidth + 20
         Text {
