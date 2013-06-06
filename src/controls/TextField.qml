@@ -524,8 +524,11 @@ Control {
         textInput.undo();
     }
 
-    /*! \internal */
-    property alias __containsMouse: mouseArea.containsMouse
+    /*! \qmlproperty bool TextField::hovered
+
+        This property holds whether the control is being hovered.
+    */
+    readonly property alias hovered: mouseArea.containsMouse
 
     /*! \internal */
     property alias __contentHeight: textInput.contentHeight

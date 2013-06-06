@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2012 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the documentation of the Qt Toolkit.
@@ -26,16 +26,21 @@
 ****************************************************************************/
 
 /*!
-    \qmlmodule QtQuick.Controls.Styles 1
-    \title Qt Quick Controls Styles QML Types
+    \qmlmodule QtQuick.Layouts 1
+    \title Qt Quick Layouts QML Types
     \ingroup qmlmodules
-    \brief Provides QML types for Qt Quick Controls styles.
+    \brief Provides QML types for arranging QML items in a user interface.
 
-    The \l{Qt Quick Controls} module provides a set of QML types for handling
-    styles.
+    The \l{Qt Quick Layouts} module provides QML types for arranging
+    QML items in a user interface.
+    These QML types work in conjunction with \l{Qt Quick} and
+    \l{Qt Quick Controls}.
 
-    Some of the controls allow custom styling similar to widget style sheets.
-    A styling object is usually a collection of properties that control behavior and simple delegates
-    that can be replaced with custom QML snippets.
+    The QML types can be imported into your application using the
+    following import statement in your .qml file.
+
+    \code
+    import QtQuick.Layouts 1.0
+    \endcode
 
 */

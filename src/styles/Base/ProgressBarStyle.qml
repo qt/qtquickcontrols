@@ -47,6 +47,7 @@ import QtQuick.Controls.Private 1.0
 
     \inqmlmodule QtQuick.Controls.Styles 1.0
     \since QtQuick.Controls.Styles 1.0
+    \ingroup controlsstyling
     \brief Provides custom styling for ProgressBar
 
     Example:
@@ -71,7 +72,7 @@ import QtQuick.Controls.Private 1.0
     \endqml
 */
 
-PaddedStyle {
+Style {
     id: progressBarStyle
 
     /*! \internal */
@@ -94,6 +95,9 @@ PaddedStyle {
     */
     padding { top: 0 ; left: 0 ; right: 0 ; bottom: 0 }
 
+    /*! \qmlproperty Component ProgressBarStyle::progress
+        The progress component for this style.
+    */
     property Component progress: Rectangle {
         property color progressColor: "#49d"
         anchors.fill: parent
@@ -129,6 +133,9 @@ PaddedStyle {
         }
     }
 
+    /*! \qmlproperty Component ProgressBarStyle::background
+        The background component for this style.
+    */
     property Component background: Item {
         implicitWidth: 200
         implicitHeight: 24
@@ -145,6 +152,9 @@ PaddedStyle {
         }
     }
 
+    /*! \qmlproperty Component ProgressBarStyle::panel
+        The panel component for this style.
+    */
     property Component panel: Item{
         property bool horizontal: control.orientation == Qt.Horizontal
         implicitWidth: horizontal ? backgroundLoader.implicitWidth : backgroundLoader.implicitHeight

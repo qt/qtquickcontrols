@@ -54,8 +54,8 @@ ApplicationWindow {
     // Implements back key navigation
     Keys.onReleased: {
         if (event.key === Qt.Key_Back) {
-            if (pageStack.depth > 1) {
-                pageStack.pop();
+            if (stackView.depth > 1) {
+                stackView.pop();
                 event.accepted = true;
             } else { Qt.quit(); }
         }
@@ -72,7 +72,7 @@ ApplicationWindow {
             width: opacity ? 60 : 0
             anchors.left: parent.left
             anchors.leftMargin: 20
-            opacity: pageStack.depth > 1 ? 1 : 0
+            opacity: stackView.depth > 1 ? 1 : 0
             anchors.verticalCenter: parent.verticalCenter
             antialiasing: true
             height: 60
@@ -87,7 +87,7 @@ ApplicationWindow {
                 id: backmouse
                 anchors.fill: parent
                 anchors.margins: -10
-                onClicked: pageStack.pop()
+                onClicked: stackView.pop()
             }
         }
 
@@ -126,7 +126,7 @@ ApplicationWindow {
     }
 
     StackView {
-        id: pageStack
+        id: stackView
         anchors.fill: parent
 
         initialItem: Item {
@@ -137,7 +137,7 @@ ApplicationWindow {
                 anchors.fill: parent
                 delegate: AndroidDelegate {
                     text: title
-                    onClicked: pageStack.push(Qt.resolvedUrl(page))
+                    onClicked: stackView.push(Qt.resolvedUrl(page))
                 }
             }
         }

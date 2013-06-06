@@ -10,7 +10,7 @@ HEADERS += \
     $$PWD/qquickrangemodel_p_p.h \
     $$PWD/qquickcontrolsettings_p.h \
     $$PWD/qquickwheelarea_p.h \
-    $$PWD/qquickpaddedstyle_p.h \
+    $$PWD/qquickabstractstyle_p.h \
     $$PWD/qquickpadding_p.h
 
 SOURCES += \
@@ -20,7 +20,7 @@ SOURCES += \
     $$PWD/qquickrangemodel.cpp \
     $$PWD/qquickcontrolsettings.cpp \
     $$PWD/qquickwheelarea.cpp \
-    $$PWD/qquickpaddedstyle.cpp
+    $$PWD/qquickabstractstyle.cpp
 
 # private qml files
 QML_FILES += \

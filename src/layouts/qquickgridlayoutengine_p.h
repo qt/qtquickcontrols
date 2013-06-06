@@ -112,8 +112,16 @@ public:
     void setGeometry(const QRectF &rect)
     {
         const QRect r(rect.toRect());
+        const QSize newSize(r.size());
         m_item->setPosition(r.topLeft());
-        m_item->setSize(r.size());
+        QSizeF oldSize(m_item->width(), m_item->height());
+        if (newSize == oldSize) {
+            if (QQuickLayout *lay = qobject_cast<QQuickLayout *>(m_item))
+                if (lay->arrangementIsDirty())
+                    lay->rearrange(newSize);
+        } else {
+            m_item->setSize(newSize);
+        }
     }
 
     QQuickItem *layoutItem() const { return m_item; }

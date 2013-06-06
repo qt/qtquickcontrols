@@ -97,9 +97,9 @@ static bool isChecked(const QObject *o)
     }
     \endcode
 
-    Several controls already support \l ExclusiveGroup, e.g. \l Action, \l MenuItem, \l Button, and \l RadioButton.
+    Several controls already support ExclusiveGroup, e.g. \l Action, \l MenuItem, \l Button, and \l RadioButton.
 
-    Since \l ExclusiveGroup only supports \l Action as child items, we need to manually assign the \c exclusiveGroup
+    Since ExclusiveGroup only supports \l Action as child items, we need to manually assign the \c exclusiveGroup
     property for other objects.
 
     \code
@@ -131,9 +131,9 @@ static bool isChecked(const QObject *o)
 
     \section1 Adding support to ExclusiveGroup
 
-    It is possible to add support for \l ExclusiveGroup for an object, or control. It should have a \c checked
+    It is possible to add support for ExclusiveGroup for an object, or control. It should have a \c checked
     property, and either a \c checkedChanged, \c toggled(), or \c toggled(bool) signal. It also needs
-    to be bound with \l ExclusiveGroup::bindCheckable(object) when its \l ExclusiveGroup ty[ped property is set.
+    to be bound with \l ExclusiveGroup::bindCheckable() when its ExclusiveGroup ty[ped property is set.
 
     \code
     Item {
@@ -149,13 +149,13 @@ static bool isChecked(const QObject *o)
     }
     \endcode
 
-    The example above shows the minimum necessary to add \l ExclusiveGroup support to any item.
+    The example above shows the minimum necessary to add ExclusiveGroup support to any item.
 */
 
 /*!
     \qmlproperty object ExclusiveGroup::current
 
-    The currently selected object. Defaults to the first checked object bound to the \l ExclusiveGroup.
+    The currently selected object. Defaults to the first checked object bound to the ExclusiveGroup.
     If there is none, then it defaults to \c null.
 */
 
@@ -166,7 +166,7 @@ static bool isChecked(const QObject *o)
 
     You should only need to call this function when creating a component you want to be compatible with \c ExclusiveGroup.
 
-    \sa ExclusiveGroup::unbindCheckable(object)
+    \sa ExclusiveGroup::unbindCheckable()
 */
 
 /*!
@@ -176,7 +176,7 @@ static bool isChecked(const QObject *o)
 
     You should only need to call this function when creating a component you want to be compatible with \c ExclusiveGroup.
 
-    \sa ExclusiveGroup::bindCheckable(object)
+    \sa ExclusiveGroup::bindCheckable()
 */
 
 QQuickExclusiveGroup::QQuickExclusiveGroup(QObject *parent)

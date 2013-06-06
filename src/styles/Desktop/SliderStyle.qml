@@ -40,7 +40,7 @@
 import QtQuick 2.1
 import QtQuick.Controls.Private 1.0
 
-PaddedStyle {
+Style {
     readonly property Item control: __control
     property Component panel: StyleItem {
         elementType: "slider"

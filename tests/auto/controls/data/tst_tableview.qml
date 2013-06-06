@@ -55,6 +55,11 @@ TestCase {
     width:400
     height:400
 
+    Component {
+        id: newColumn
+        TableViewColumn { }
+    }
+
     function test_usingqmlmodel_data() {
         return [
                     {tag: "listmodel", a: "tableview/table5_listmodel.qml", expected: "A"},
@@ -173,7 +178,14 @@ TestCase {
         compare(component.status, Component.Ready)
         var table =  component.createObject(container);
         verify(table !== null, "table created is null")
-        table.forceActiveFocus();
+
+        // wait for items to be created
+        var timeout = 2000
+        while (timeout >= 0 && table.rowAt(15, 55) === -1) {
+            timeout -= 50
+            wait(50)
+        }
+
         compare(table.test, 0)
         mouseClick(table, 15 , 55, Qt.LeftButton)
         compare(table.test, 1)
@@ -226,6 +238,145 @@ TestCase {
         verify(table !== null, "table created is null")
         compare(table.rowCount, 3)
         table.destroy()
+    }
+
+    function test_columnWidth() {
+        var tableView = Qt.createQmlObject('import QtQuick 2.1; import QtQuick.Controls 1.0; TableView { }', testCase, '');
+        compare(tableView.columnCount, 0)
+        var column = newColumn.createObject(testCase, {title: "title 1"});
+        verify(column.__view === null)
+        compare(column.width, 160)
+        compare(column.title, "title 1")
+        tableView.addColumn(column)
+        compare(column.__view, tableView)
+        compare(column.width, tableView.viewport.width)
+        var tableView2 = Qt.createQmlObject('import QtQuick 2.1; import QtQuick.Controls 1.0; TableView { }', testCase, '');
+        tableView2.addColumn(column) // should not work
+        compare(column.__view, tableView) //same as before
+        tableView2.destroy()
+        tableView.destroy()
+    }
+
+    function test_dynamicColumns() {
+        var component = Qt.createComponent("tableview/table_dynamiccolumns.qml")
+        compare(component.status, Component.Ready)
+        var table = component.createObject(container)
+
+        // insertColumn(component), insertColumn(item),
+        // addColumn(component), addColumn(item), and static TableViewColumn {}
+        compare(table.columnCount, 5)
+        compare(table.getColumn(0).title, "inserted component")
+        compare(table.getColumn(1).title, "inserted item")
+        table.destroy()
+    }
+
+    function test_addRemoveColumn() {
+        var tableView = Qt.createQmlObject('import QtQuick 2.1; import QtQuick.Controls 1.0; TableView { }', testCase, '');
+        compare(tableView.columnCount, 0)
+        tableView.addColumn(newColumn.createObject(testCase, {title: "title 1"}))
+        compare(tableView.columnCount, 1)
+        tableView.addColumn(newColumn.createObject(testCase, {title: "title 2"}))
+        compare(tableView.columnCount, 2)
+        compare(tableView.getColumn(0).title, "title 1")
+        compare(tableView.getColumn(1).title, "title 2")
+
+        tableView.insertColumn(1, newColumn.createObject(testCase, {title: "title 3"}))
+        compare(tableView.columnCount, 3)
+        compare(tableView.getColumn(0).title, "title 1")
+        compare(tableView.getColumn(1).title, "title 3")
+        compare(tableView.getColumn(2).title, "title 2")
+
+        tableView.insertColumn(0, newColumn.createObject(testCase, {title: "title 4"}))
+        compare(tableView.columnCount, 4)
+        compare(tableView.getColumn(0).title, "title 4")
+        compare(tableView.getColumn(1).title, "title 1")
+        compare(tableView.getColumn(2).title, "title 3")
+        compare(tableView.getColumn(3).title, "title 2")
+
+        tableView.removeColumn(0)
+        compare(tableView.columnCount, 3)
+        compare(tableView.getColumn(0).title, "title 1")
+        compare(tableView.getColumn(1).title, "title 3")
+        compare(tableView.getColumn(2).title, "title 2")
+
+        tableView.removeColumn(1)
+        compare(tableView.columnCount, 2)
+        compare(tableView.getColumn(0).title, "title 1")
+        compare(tableView.getColumn(1).title, "title 2")
+
+        tableView.removeColumn(1)
+        compare(tableView.columnCount, 1)
+        compare(tableView.getColumn(0).title, "title 1")
+
+        tableView.removeColumn(0)
+        compare(tableView.columnCount, 0)
+        tableView.destroy()
+    }
+
+    function test_moveColumn_data() {
+        return [
+            {tag:"0->1 (0)", from: 0, to: 1},
+            {tag:"0->1 (1)", from: 0, to: 1},
+            {tag:"0->1 (2)", from: 0, to: 1},
+
+            {tag:"0->2 (0)", from: 0, to: 2},
+            {tag:"0->2 (1)", from: 0, to: 2},
+            {tag:"0->2 (2)", from: 0, to: 2},
+
+            {tag:"1->0 (0)", from: 1, to: 0},
+            {tag:"1->0 (1)", from: 1, to: 0},
+            {tag:"1->0 (2)", from: 1, to: 0},
+
+            {tag:"1->2 (0)", from: 1, to: 2},
+            {tag:"1->2 (1)", from: 1, to: 2},
+            {tag:"1->2 (2)", from: 1, to: 2},
+
+            {tag:"2->0 (0)", from: 2, to: 0},
+            {tag:"2->0 (1)", from: 2, to: 0},
+            {tag:"2->0 (2)", from: 2, to: 0},
+
+            {tag:"2->1 (0)", from: 2, to: 1},
+            {tag:"2->1 (1)", from: 2, to: 1},
+            {tag:"2->1 (2)", from: 2, to: 1},
+
+            {tag:"0->0", from: 0, to: 0},
+            {tag:"-1->0", from: -1, to: 0},
+            {tag:"0->-1", from: 0, to: -1},
+            {tag:"1->10", from: 1, to: 10},
+            {tag:"10->2", from: 10, to: 2},
+            {tag:"10->-1", from: 10, to: -1}
+        ]
+    }
+
+    function test_moveColumn(data) {
+        var tableView = Qt.createQmlObject('import QtQuick 2.1; import QtQuick.Controls 1.0; TableView { }', testCase, '');
+        compare(tableView.columnCount, 0)
+
+        var titles = ["title 1", "title 2", "title 3"]
+
+        var i = 0;
+        for (i = 0; i < titles.length; ++i)
+            tableView.addColumn(newColumn.createObject(testCase, {title: titles[i]}))
+
+        compare(tableView.columnCount, titles.length)
+        for (i = 0; i < tableView.columnCount; ++i)
+            compare(tableView.getColumn(i).title, titles[i])
+
+        tableView.moveColumn(data.from, data.to)
+
+        compare(tableView.columnCount, titles.length)
+
+        if (data.from >= 0 && data.from < tableView.columnCount && data.to >= 0 && data.to < tableView.columnCount) {
+            var title = titles[data.from]
+            titles.splice(data.from, 1)
+            titles.splice(data.to, 0, title)
+        }
+
+        compare(tableView.columnCount, titles.length)
+        for (i = 0; i < tableView.columnCount; ++i)
+            compare(tableView.getColumn(i).title, titles[i])
+
+        tableView.destroy()
     }
 
     // In TableView, drawn text = table.__currentRowItem.children[1].children[1].itemAt(0).children[0].children[0].text

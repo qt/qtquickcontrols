@@ -599,20 +599,19 @@ ScrollView {
         edit.undo();
     }
 
-    /*!
-        \qmlproperty color TextArea::backgroundColor
+    /*! \qmlproperty bool TextArea::backgroundVisible
 
-        This property sets the background color of the viewport.
+        This property determines if the background should be filled or not.
 
-        The default value is the base color of the SystemPalette.
+        The default value is \c true.
     */
-    property alias backgroundColor: colorRect.color
+    property alias backgroundVisible: colorRect.visible
+
+    /*! \internal */
+    default property alias data: area.data
 
     /*! \internal */
     property int __documentMargin: 4
-
-    width: 280
-    height: 120
 
     frameVisible: true
 
@@ -621,9 +620,9 @@ ScrollView {
     Accessible.role: Accessible.EditableText
 
     /*!
-        \qmlproperty textDocument TextArea::textDocument
+        \qmlproperty TextDocument TextArea::textDocument
 
-        This property exposes the \l QTextDocument of this TextArea.
+        This property exposes the \l QQuickTextDocument of this TextArea.
         \sa TextEdit::textDocument
     */
     property alias textDocument: edit.textDocument

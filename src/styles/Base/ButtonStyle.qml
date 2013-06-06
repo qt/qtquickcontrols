@@ -45,6 +45,7 @@ import QtQuick.Controls.Private 1.0
     \qmltype ButtonStyle
     \inqmlmodule QtQuick.Controls.Styles 1.0
     \since QtQuick.Controls.Styles 1.0
+    \ingroup controlsstyling
     \brief Provides custom styling for Button
 
     You can create a custom button by replacing the "background" delegate
@@ -72,7 +73,7 @@ import QtQuick.Controls.Private 1.0
     If you need a custom label, you can replace the label item.
 */
 
-PaddedStyle {
+Style {
     id: buttonstyle
 
     /*! The \l Button attached to this style. */
@@ -92,13 +93,7 @@ PaddedStyle {
         bottom: 4
     }
 
-    /*! This defines the background of the button. In addition to the public
-        properties of \c control, the following state properties are available:
-
-        \table
-            \li readonly property bool styleData.hovered - The button is currently hovered.
-        \endtable
-    */
+    /*! This defines the background of the button. */
     property Component background: Item {
         implicitWidth: 100
         implicitHeight: 25
@@ -135,13 +130,7 @@ PaddedStyle {
         }
     }
 
-    /*! This defines the label of the button. In addition to the public
-        properties of \c control, the following state properties are available:
-
-        \table
-            \li readonly property bool styleData.hovered - The button is currently hovered.
-        \endtable
-    */
+    /*! This defines the label of the button.  */
     property Component label: Text {
         renderType: Text.NativeRendering
         verticalAlignment: Text.AlignVCenter
@@ -161,9 +150,6 @@ PaddedStyle {
             id: backgroundLoader
             anchors.fill: parent
             sourceComponent: background
-            property QtObject styleData: QtObject {
-                readonly property bool hovered: control.__containsMouse
-            }
         }
 
         Loader {
@@ -174,9 +160,6 @@ PaddedStyle {
             anchors.topMargin: padding.top
             anchors.rightMargin: padding.right
             anchors.bottomMargin: padding.bottom
-            property QtObject styleData: QtObject {
-                readonly property bool hovered: control.__containsMouse
-            }
         }
     }
 }

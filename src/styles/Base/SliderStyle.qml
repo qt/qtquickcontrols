@@ -45,6 +45,7 @@ import QtQuick.Controls.Private 1.0
     \qmltype SliderStyle
     \inqmlmodule QtQuick.Controls.Styles 1.0
     \since QtQuick.Controls.Styles 1.0
+    \ingroup controlsstyling
     \brief Provides custom styling for Slider
 
     The slider style allows you to create a custom appearance for
@@ -78,7 +79,7 @@ import QtQuick.Controls.Private 1.0
     }
     \endqml
 */
-PaddedStyle {
+Style {
     id: styleitem
 
     /*! \internal */
@@ -121,7 +122,8 @@ PaddedStyle {
     }
 
     /*! This property holds the background groove of the slider.
-        You can access the handle position through the \c handlePosition property.
+
+        You can access the handle position through the \c styleData.handlePosition property.
     */
     property Component groove: Item {
         anchors.verticalCenter: parent.verticalCenter
@@ -163,7 +165,9 @@ PaddedStyle {
 
             Loader {
                 id: grooveLoader
-                property int handlePosition: handleLoader.x + handleLoader.width/2
+                property QtObject styleData: QtObject {
+                    readonly property int handlePosition: handleLoader.x + handleLoader.width/2
+                }
                 x: padding.left
                 sourceComponent: groove
                 width: (horizontal ? parent.width : parent.height) - padding.left - padding.right

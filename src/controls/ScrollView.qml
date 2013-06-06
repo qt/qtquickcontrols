@@ -86,8 +86,9 @@ import QtQuick.Controls.Styles 1.0
 
 FocusScope {
     id: root
-    implicitWidth: 200
-    implicitHeight: 100
+
+    implicitWidth: 240
+    implicitHeight: 150
 
     /*!
         This property tells the ScrollView if it should render
@@ -146,8 +147,8 @@ FocusScope {
     /*! \internal */
     property Component style: Qt.createComponent(Settings.style + "/ScrollViewStyle.qml", root)
 
-    /* \internal */
-    property PaddedStyle __style: styleLoader.item
+    /*! \internal */
+    property Style __style: styleLoader.item
 
     activeFocusOnTab: true
 

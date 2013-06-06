@@ -44,16 +44,20 @@ import QtQuick.Controls.Private 1.0
 /*!
     \qmltype StatusBarStyle
     \internal
+    \ingroup applicationwindowstyling
     \inqmlmodule QtQuick.Controls.Styles 1.0
     \since QtQuick.Controls.Styles 1.0
 */
-Item {
-    implicitHeight: 22
-    implicitWidth: 200
+Style {
 
-    Rectangle {
+    padding.left: 3
+    padding.right: 3
+    padding.top: 3
+    padding.bottom: 2
 
-        anchors.fill: parent
+    property Component panel: Rectangle {
+        implicitHeight: 16
+        implicitWidth: 200
 
         gradient: Gradient{
             GradientStop{color: "#eee" ; position: 0}

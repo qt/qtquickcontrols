@@ -45,13 +45,14 @@ import QtQuick.Controls.Private 1.0
     \qmltype CheckBoxStyle
     \inqmlmodule QtQuick.Controls.Styles 1.0
     \since QtQuick.Controls.Styles 1.0
+    \ingroup controlsstyling
     \brief Provides custom styling for CheckBox
 
     Example:
     \qml
     CheckBox {
         text: "Check Box"
-        style: CheckBoxStyle{
+        style: CheckBoxStyle {
             indicator: Rectangle {
                     implicitWidth: 16
                     implicitHeight: 16
@@ -66,13 +67,12 @@ import QtQuick.Controls.Private 1.0
                         anchors.margins: 4
                         anchors.fill: parent
                     }
-                }
             }
         }
     }
     \endqml
 */
-PaddedStyle {
+Style {
     id: checkboxStyle
 
     /*! The \l CheckBox attached to this style. */
@@ -83,7 +83,7 @@ PaddedStyle {
                         SystemPalette.Active : SystemPalette.Disabled
     }
 
-    /*! The text label. */
+    /*! This defines the text label. */
     property Component label: Text {
         text: control.text
         color: __syspal.text
@@ -102,7 +102,7 @@ PaddedStyle {
     /*! The spacing between indicator and label. */
     property int spacing: 4
 
-    /*! The indicator button. */
+    /*! This defines the indicator button. */
     property Component indicator:  Item {
         implicitWidth: 18
         implicitHeight: 18

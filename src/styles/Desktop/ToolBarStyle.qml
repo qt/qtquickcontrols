@@ -46,10 +46,16 @@ import QtQuick.Controls.Private 1.0
     \internal
     \inqmlmodule QtQuick.Controls.Styles 1.0
 */
-Item {
-    implicitHeight: Math.max(childrenRect.height, toolbar.implicitHeight)
-    implicitWidth: parent ? parent.width : toolbar.implicitWidth
-    StyleItem {
+Style {
+
+    padding.left: 6
+    padding.right: 6
+    padding.top: 1
+    padding.bottom: style.style == "mac" ? 1 : 2
+
+    StyleItem { id: style ; visible: false}
+
+    property Component panel: StyleItem {
         id: toolbar
         anchors.fill: parent
         elementType: "toolbar"

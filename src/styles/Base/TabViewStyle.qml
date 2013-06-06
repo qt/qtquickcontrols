@@ -45,6 +45,7 @@ import QtQuick.Controls.Private 1.0
     \qmltype TabViewStyle
     \inqmlmodule QtQuick.Controls.Styles 1.0
     \since QtQuick.Controls.Styles 1.0
+    \ingroup viewsstyling
     \brief Provides custom styling for TabView
 
 \qml
@@ -122,20 +123,21 @@ Style {
         \c styleData property, with the following properties:
 
         \table
-            \li readonly property int styleData.index - This is the current tab index.
-            \li readonly property bool styleData.selected - This is the active tab.
-            \li readonly property string styleData.title - Tab title text.
-            \li readonly property bool styleData.nextSelected - The next tab is selected.
-            \li readonly property bool styleData.previousSelected - The previous tab is selected.
-            \li readonly property bool styleData.hovered - The tab is currently under the mouse.
-            \li readonly property bool styleData.activeFocus - The tab button has keyboard focus.
+            \row \li readonly property int \b styleData.index \li This is the current tab index.
+            \row \li readonly property bool \b styleData.selected \li This is the active tab.
+            \row \li readonly property string \b styleData.title \li Tab title text.
+            \row \li readonly property bool \b styleData.nextSelected \li The next tab is selected.
+            \row \li readonly property bool \b styleData.previousSelected \li The previous tab is selected.
+            \row \li readonly property bool \b styleData.hovered \li The tab is being hovered.
+            \row \li readonly property bool \b styleData.activeFocus \li The tab button has keyboard focus.
+            \row \li readonly property bool \b styleData.availableWidth \li The available width for the tabs.
         \endtable
     */
     property Component tab: Item {
         scale: control.tabPosition === Qt.TopEdge ? 1 : -1
 
         property int totalOverlap: tabOverlap * (control.count - 1)
-        property real maxTabWidth: (availableWidth + totalOverlap) / control.count
+        property real maxTabWidth: (styleData.availableWidth + totalOverlap) / control.count
 
         implicitWidth: Math.round(Math.min(maxTabWidth, textitem.implicitWidth + 20))
         implicitHeight: Math.round(textitem.implicitHeight + 10)

@@ -53,13 +53,14 @@ import QtQuick.Controls.Private 1.0 as Private
     SplitView is a control that lays out items horizontally or
     vertically with a draggable splitter between each item.
 
-    There will always be one (and only one) item in the SplitView that has \l {Layout}{Layout.fillWidth}
-    set to \c true (or Layout.fillHeight, if orientation is Qt.Vertical). This means that the
+    There will always be one (and only one) item in the SplitView that has \l{Layout::fillWidth}{Layout.fillWidth}
+    set to \c true (or \l{Layout::fillHeight}{Layout.fillHeight}, if orientation is Qt.Vertical). This means that the
     item will get all leftover space when other items have been laid out.
     By default, the last visible child of the SplitView will have this set, but
     it can be changed by explicitly setting fillWidth to \c true on another item.
     As the fillWidth item will automatically be resized to fit the extra space, explicit assignments
-    to width and height will be ignored (but Layout.minimumWidth and Layout.maximumWidth will still be respected).
+    to width and height will be ignored (but \l{Layout::minimumWidth}{Layout.minimumWidth} and
+    \l{Layout::maximumWidth}{Layout.maximumWidth} will still be respected).
 
     A handle can belong to the item either on the left or top side, or on the right or bottom side:
     \list
@@ -69,9 +70,19 @@ import QtQuick.Controls.Private 1.0 as Private
 
     This will again control which item gets resized when the user drags a handle,
     and which handle gets hidden when an item is told to hide.
-    SplitView supports setting attached \l Layout properties on child items, which means that you
-    can control minimumWidth, minimumHeight, maximumWidth and maximumHeight (in addition
-    to fillWidth/fillHeight) for each child.
+
+    SplitView supports setting attached Layout properties on child items, which
+    means that you can set the following attached properties for each child:
+    \list
+        \li \l{Layout::minimumWidth}{Layout.minimumWidth}
+        \li \l{Layout::minimumHeight}{Layout.minimumHeight}
+        \li \l{Layout::preferredWidth}{Layout.preferredWidth}
+        \li \l{Layout::preferredHeight}{Layout.preferredHeight}
+        \li \l{Layout::maximumWidth}{Layout.maximumWidth}
+        \li \l{Layout::maximumHeight}{Layout.maximumHeight}
+        \li \l{Layout::fillWidth}{Layout.fillWidth} (\c true for only one child)
+        \li \l{Layout::fillHeight}{Layout.fillHeight} (\c true for only one child)
+    \endlist
 
     Example:
 
@@ -117,14 +128,17 @@ Item {
     /*!
         This property holds the delegate that will be instantiated between each
         child item. Inside the delegate the following properties are available:
-        \list
-        \li int \c handleIndex - specifies the index of the splitter handle. The handle
-                                 between the first and the second item will get index 0,
-                                 the next handle index 1 etc.
-        \li bool \c pressed: the handle is being pressed.
-        \li bool \c resizing: the handle is being dragged.
-        \endlist
-    */
+
+        \table
+            \row \li readonly property bool styleData.index \li Specifies the index of the splitter handle. The handle
+                                                         between the first and the second item will get index 0,
+                                                         the next handle index 1 etc.
+            \row \li readonly property bool styleData.hovered \li The handle is being hovered.
+            \row \li readonly property bool styleData.pressed \li The handle is being pressed.
+            \row \li readonly property bool styleData.resizing \li The handle is being dragged.
+        \endtable
+
+*/
     property Component handleDelegate: Rectangle {
         width: 1
         height: 1
@@ -176,7 +190,7 @@ Item {
                     continue
 
                 if (splitterItems.children.length > 0)
-                    handleLoader.createObject(splitterHandles, {"handleIndex":splitterItems.children.length - 1})
+                    handleLoader.createObject(splitterHandles, {"__handleIndex":splitterItems.children.length - 1})
                 item.parent = splitterItems
                 i-- // item was removed from list
                 item.widthChanged.connect(d.updateLayout)
@@ -319,18 +333,21 @@ Item {
         id: handleLoader
         Loader {
             id: itemHandle
-            property int handleIndex: -1
-            property alias containsMouse: mouseArea.containsMouse
-            property alias pressed: mouseArea.pressed
-            property bool resizing: mouseArea.drag.active
 
-            visible: __items[handleIndex + ((d.fillIndex >= handleIndex) ? 0 : 1)].visible
+            property int __handleIndex: -1
+            property QtObject styleData: QtObject {
+                readonly property int index: __handleIndex
+                readonly property alias hovered: mouseArea.containsMouse
+                readonly property alias pressed: mouseArea.pressed
+                readonly property bool resizing: mouseArea.drag.active
+                onResizingChanged: root.resizing = resizing
+            }
+            visible: __items[__handleIndex + ((d.fillIndex >= __handleIndex) ? 0 : 1)].visible
             sourceComponent: handleDelegate
             onWidthChanged: d.updateLayout()
             onHeightChanged: d.updateLayout()
             onXChanged: moveHandle()
             onYChanged: moveHandle()
-            onResizingChanged: root.resizing = resizing
 
             MouseArea {
                 id: mouseArea
@@ -357,12 +374,12 @@ Item {
                 var leftEdge, rightEdge, newWidth, leftStopX, rightStopX
                 var i
 
-                if (d.fillIndex > handleIndex) {
+                if (d.fillIndex > __handleIndex) {
                     // Resize item to the left.
                     // Ensure that the handle is not crossing other handles. So
                     // find the first visible handle to the left to determine the left edge:
                     leftEdge = 0
-                    for (i=handleIndex-1; i>=0; --i) {
+                    for (i=__handleIndex-1; i>=0; --i) {
                         leftHandle = __handles[i]
                         if (leftHandle.visible) {
                             leftEdge = leftHandle[d.offset] + leftHandle[d.size]
@@ -371,13 +388,13 @@ Item {
                     }
 
                     // Ensure: leftStopX >= itemHandle[d.offset] >= rightStopX
-                    var min = d.accumulatedSize(handleIndex+1, __items.length, true)
+                    var min = d.accumulatedSize(__handleIndex+1, __items.length, true)
                     rightStopX = root[d.size] - min - itemHandle[d.size]
                     leftStopX = Math.max(leftEdge, itemHandle[d.offset])
                     itemHandle[d.offset] = Math.min(rightStopX, Math.max(leftStopX, itemHandle[d.offset]))
 
                     newWidth = itemHandle[d.offset] - leftEdge
-                    leftItem = __items[handleIndex]
+                    leftItem = __items[__handleIndex]
                     // The next line will trigger 'updateLayout':
                     leftItem[d.size] = newWidth
                 } else {
@@ -385,7 +402,7 @@ Item {
                     // Ensure that the handle is not crossing other handles. So
                     // find the first visible handle to the right to determine the right edge:
                     rightEdge = root[d.size]
-                    for (i=handleIndex+1; i<__handles.length; ++i) {
+                    for (i=__handleIndex+1; i<__handles.length; ++i) {
                         rightHandle = __handles[i]
                         if (rightHandle.visible) {
                             rightEdge = rightHandle[d.offset]
@@ -394,13 +411,13 @@ Item {
                     }
 
                     // Ensure: leftStopX <= itemHandle[d.offset] <= rightStopX
-                    min = d.accumulatedSize(0, handleIndex+1, true)
+                    min = d.accumulatedSize(0, __handleIndex+1, true)
                     leftStopX = min - itemHandle[d.size]
                     rightStopX = Math.min((rightEdge - itemHandle[d.size]), itemHandle[d.offset])
                     itemHandle[d.offset] = Math.max(leftStopX, Math.min(itemHandle[d.offset], rightStopX))
 
                     newWidth = rightEdge - (itemHandle[d.offset] + itemHandle[d.size])
-                    rightItem = __items[handleIndex+1]
+                    rightItem = __items[__handleIndex+1]
                     // The next line will trigger 'updateLayout':
                     rightItem[d.size] = newWidth
                 }
