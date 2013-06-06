@@ -178,7 +178,7 @@ Item {
             setCoordinates(spinbox)
 
             mouseMove(spinbox, mainCoord.x, mainCoord.y)
-            compare(spinbox.__styleData.hovered, true)
+            compare(spinbox.hovered, true)
             compare(spinbox.__styleData.upHovered, false)
             compare(spinbox.__styleData.downHovered, false)
 
@@ -191,7 +191,7 @@ Item {
             compare(spinbox.__styleData.downHovered, true)
 
             mouseMove(spinbox, mainCoord.x - 2, mainCoord.y - 2)
-            compare(spinbox.__styleData.hovered, false)
+            compare(spinbox.hovered, false)
             compare(spinbox.__styleData.upHovered, false)
             compare(spinbox.__styleData.downHovered, false)
             spinbox.destroy()

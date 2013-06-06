@@ -65,8 +65,7 @@ import QtQuick.Controls.Styles 1.0
  \endcode
 
    You provide title and size of a column header
-   by adding a \l TableViewColumn to the default \l header property
-   as demonstrated below.
+   by adding a \l TableViewColumn as demonstrated below.
  \code
 
  TableView {
@@ -123,6 +122,16 @@ ScrollView {
     /*! This property determines if the header is visible.
         The default value is \c true. */
     property bool headerVisible: true
+
+    /*! \qmlproperty bool TableView::backgroundVisible
+
+        This property determines if the background should be filled or not.
+
+        The default value is \c true.
+
+        \note The rowDelegate is not affected by this property
+    */
+    property alias backgroundVisible: colorRect.visible
 
     /*! This property defines a delegate to draw a specific cell.
 
@@ -259,7 +268,7 @@ ScrollView {
 
     Depending on how the model is populated, the model may not be ready when
     TableView Component.onCompleted is called. In that case you may need to
-    delay the call to positionViewAtRow by using a \l {Timer}.
+    delay the call to positionViewAtRow by using a \l {QtQml::Timer}{Timer}.
 
     \note This method should only be called after the component has completed.
     */
@@ -303,7 +312,12 @@ ScrollView {
         if (typeof column['createObject'] === 'function')
             object = column.createObject(root)
 
+        else if (object.__view) {
+            console.warn("TableView::insertColumn(): you cannot add a column to multiple views")
+            return null
+        }
         if (index >= 0 && index <= columnCount && object.Accessible.role === Accessible.ColumnHeader) {
+            object.__view = root
             columnModel.insert(index, {columnItem: object})
             return object
         }
@@ -355,8 +369,8 @@ ScrollView {
 
     Accessible.role: Accessible.Table
 
-    width: 200
-    height: 200
+    implicitWidth: 200
+    implicitHeight: 150
 
     frameVisible: true
     __scrollBarTopMargin: Qt.platform.os === "mac" ? headerrow.height : 0
@@ -466,7 +480,7 @@ ScrollView {
         // Fills extra rows with alternate color
         Column {
             id: rowfiller
-            property int rowHeight: listView.contentHeight/count
+            property int rowHeight: count ? listView.contentHeight/count : height
             property int paddedRowCount: height/rowHeight
             property int count: listView.count
             y: listView.contentHeight
@@ -593,7 +607,7 @@ ScrollView {
             anchors.topMargin: viewport.anchors.topMargin
             anchors.leftMargin: viewport.anchors.leftMargin
             anchors.margins: viewport.anchors.margins
-            anchors.rightMargin: __scroller.rightMargin +
+            anchors.rightMargin: (frameVisible ? __scroller.rightMargin : 0) +
                                  (__scroller.outerFrame && __scrollBarTopMargin ? 0 : __verticalScrollBar.width
                                                           + __scroller.scrollBarSpacing + root.__style.padding.right)
 
@@ -616,7 +630,7 @@ ScrollView {
 
                     delegate: Item {
                         z:-index
-                        width: modelData.width
+                        width: columnCount == 1 ? viewport.width + __verticalScrollBar.width : modelData.width
                         visible: modelData.visible
                         height: headerVisible ? headerStyle.height : 0
 
@@ -655,7 +669,7 @@ ScrollView {
                             // NOTE: the direction is different from the master branch
                             // so this indicates that I am using an invalid assumption on item ordering
                             onPositionChanged: {
-                                if (pressed) { // only do this while dragging
+                                if (pressed && columnCount > 1) { // only do this while dragging
                                     for (var h = columnCount-1 ; h >= 0 ; --h) {
                                         if (drag.target.x > headerrow.children[h].x) {
                                             repeater.targetIndex = h
@@ -680,7 +694,7 @@ ScrollView {
                             }
                             drag.maximumX: 1000
                             drag.minimumX: -1000
-                            drag.target: draghandle
+                            drag.target: columnCount > 1 ? draghandle : null
                         }
 
                         Loader {
@@ -708,6 +722,7 @@ ScrollView {
                             anchors.rightMargin: -width/2
                             width: 16 ; height: parent.height
                             anchors.right: parent.right
+                            enabled: columnCount > 1
                             onPositionChanged:  {
                                 var newHeaderWidth = modelData.width + (mouseX - offset)
                                 modelData.width = Math.max(minimumSize, newHeaderWidth)
@@ -728,7 +743,7 @@ ScrollView {
                                     modelData.width = minWidth
                             }
                             onPressedChanged: if (pressed) offset=mouseX
-                            cursorShape: Qt.SplitHCursor
+                            cursorShape: enabled ? Qt.SplitHCursor : Qt.ArrowCursor
                         }
                     }
                 }

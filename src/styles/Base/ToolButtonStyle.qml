@@ -44,6 +44,7 @@ import QtQuick.Controls.Private 1.0
 /*!
     \qmltype ToolButtonStyle
     \internal
+    \ingroup controlsstyling
     \inqmlmodule QtQuick.Controls.Styles 1.0
 */
 Style {

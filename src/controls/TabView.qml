@@ -55,7 +55,8 @@ import QtQuick.Controls.Private 1.0
 
 FocusScope {
     id: root
-    implicitWidth: 150
+
+    implicitWidth: 240
     implicitHeight: 150
 
     /*! The current tab index */
@@ -198,7 +199,7 @@ FocusScope {
             anchors.fill: parent
             anchors.margins: (frameVisible ? frameWidth : 0)
             anchors.topMargin: anchors.margins + (style =="mac" ? 6 : 0)
-            anchors.bottomMargin: anchors.margins + (style =="mac" ? 6 : 0)
+            anchors.bottomMargin: anchors.margins
 
             property int frameWidth
             property string style

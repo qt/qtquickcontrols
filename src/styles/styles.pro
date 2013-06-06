@@ -1,5 +1,7 @@
 TARGETPATH = QtQuick/Controls/Styles
 
+QMAKE_DOCS = $$PWD/doc/qtquickcontrolsstyles.qdocconf
+
 # Base
 QML_FILES = \
     Base/ButtonStyle.qml \

@@ -45,6 +45,7 @@ import QtQuick.Controls.Private 1.0
     \qmltype TableViewStyle
     \inqmlmodule QtQuick.Controls.Styles 1.0
     \since QtQuick.Controls.Styles 1.0
+    \ingroup viewsstyling
     \brief Provides custom styling for TableView
 
     Note that this class derives from \l ScrollViewStyle
@@ -73,7 +74,9 @@ ScrollViewStyle {
 
     padding.top: control.headerVisible ? 0 : 1
 
-    /* Delegate for header. This delegate is described in \l TableView::headerDelegate */
+    /*! \qmlproperty Component TableViewStyle::headerDelegate
+    Delegate for header. This delegate is described in \l {TableView::headerDelegate}
+    */
     property Component headerDelegate: BorderImage {
         source: "images/header.png"
         border.left: 4
@@ -97,7 +100,9 @@ ScrollViewStyle {
         }
     }
 
-    /* Delegate for header. This delegate is described in \l TableView::rowDelegate */
+    /*! \qmlproperty Component TableViewStyle::rowDelegate
+    Delegate for header. This delegate is described in \l {TableView::rowDelegate}
+    */
     property Component rowDelegate: Rectangle {
         height: 20
         property color selectedColor: styleData.hasActiveFocus ? "#38d" : "#999"
@@ -126,7 +131,9 @@ ScrollViewStyle {
         }
     }
 
-    /* Delegate for header. This delegate is described in \l TableView::itemDelegate */
+    /*! \qmlproperty Component TableViewStyle::rowDelegate
+    Delegate for item. This delegate is described in \l {TableView::itemDelegate}
+    */
     property Component itemDelegate: Item {
         height: Math.max(16, label.implicitHeight)
         property int implicitWidth: sizehint.paintedWidth + 20

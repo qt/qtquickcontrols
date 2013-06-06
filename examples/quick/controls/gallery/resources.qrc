@@ -16,5 +16,12 @@
         <file>images/tab_selected.png</file>
         <file>images/window-new.png</file>
         <file>images/window-new@2x.png</file>
+        <file>images/bubble.png</file>
+        <file>images/button-pressed.png</file>
+        <file>images/button.png</file>
+        <file>images/progress-background.png</file>
+        <file>images/progress-fill.png</file>
+        <file>images/textfield.png</file>
+        <file>images/slider-handle.png</file>
     </qresource>
 </RCC>

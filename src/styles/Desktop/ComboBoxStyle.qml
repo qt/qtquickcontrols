@@ -58,7 +58,7 @@ Style {
             elementType: "combobox"
             sunken: control.pressed
             raised: !sunken
-            hover: control.__containsMouse
+            hover: control.hovered
             enabled: control.enabled
             // The style makes sure the text rendering won't overlap the decoration.
             // In that case, 35 pixels margin in this case looks good enough. Worst

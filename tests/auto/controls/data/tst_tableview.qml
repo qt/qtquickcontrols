@@ -240,6 +240,23 @@ TestCase {
         table.destroy()
     }
 
+    function test_columnWidth() {
+        var tableView = Qt.createQmlObject('import QtQuick 2.1; import QtQuick.Controls 1.0; TableView { }', testCase, '');
+        compare(tableView.columnCount, 0)
+        var column = newColumn.createObject(testCase, {title: "title 1"});
+        verify(column.__view === null)
+        compare(column.width, 160)
+        compare(column.title, "title 1")
+        tableView.addColumn(column)
+        compare(column.__view, tableView)
+        compare(column.width, tableView.viewport.width)
+        var tableView2 = Qt.createQmlObject('import QtQuick 2.1; import QtQuick.Controls 1.0; TableView { }', testCase, '');
+        tableView2.addColumn(column) // should not work
+        compare(column.__view, tableView) //same as before
+        tableView2.destroy()
+        tableView.destroy()
+    }
+
     function test_dynamicColumns() {
         var component = Qt.createComponent("tableview/table_dynamiccolumns.qml")
         compare(component.status, Component.Ready)

@@ -100,7 +100,7 @@ QT_BEGIN_NAMESPACE
     \endcode
 
     Note that in this case, the \c index parameter passed to \l insertItem() is relative
-    to the position of the \l Instatiator in the menu, as opposed to absolute position
+    to the position of the \l Instantiator in the menu, as opposed to absolute position
     in the menu.
 
     \sa MenuItem, MenuSeparator
@@ -170,7 +170,7 @@ QT_BEGIN_NAMESPACE
 
     Adds an item to the menu. Returns the newly created \l MenuItem.
 
-    \sa insertItem(int before, string title)
+    \sa insertItem()
 */
 
 /*!

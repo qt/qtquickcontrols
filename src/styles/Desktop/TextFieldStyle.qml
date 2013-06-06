@@ -48,7 +48,7 @@ Style {
 
         sunken: true
         hasFocus: control.activeFocus
-        hover: __containsMouse
+        hover: hovered
         hints: control.styleHints
 
         SystemPalette {

@@ -52,7 +52,7 @@ Style {
             elementType: "checkbox"
             sunken: control.pressed
             on: control.checked || control.pressed
-            hover: control.__containsMouse
+            hover: control.hovered
             enabled: control.enabled
             hasFocus: control.activeFocus && styleitem.style == "mac"
             hints: control.styleHints

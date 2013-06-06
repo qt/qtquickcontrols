@@ -108,9 +108,16 @@ Control {
     /*!
         \qmlproperty bool Slider::pressed
 
-        This property indicates if slider handle is currently being pressed.
+        This property indicates whether the slider handle is being pressed.
     */
-    property alias pressed: mouseArea.pressed
+    readonly property alias pressed: mouseArea.pressed
+
+    /*!
+        \qmlproperty bool Slider::hovered
+
+        This property indicates whether the control is being hovered.
+    */
+    readonly property alias hovered: mouseArea.containsMouse
 
     /*!
         \qmlproperty real Slider::stepSize
@@ -145,7 +152,7 @@ Control {
     /*!
         \qmlproperty bool Slider::activeFocusOnPress
 
-        This property indicates if the Slider should receive active focus when
+        This property indicates whether the Slider should receive active focus when
         pressed.
     */
     property bool activeFocusOnPress: false
@@ -153,15 +160,12 @@ Control {
     /*!
         \qmlproperty bool Slider::tickmarksEnabled
 
-        This property indicates if the Slider should display tickmarks
+        This property indicates whether the Slider should display tickmarks
         at step intervals.
 
         The default value is \c false.
     */
     property bool tickmarksEnabled: false
-
-    /*! \internal */
-    property bool __containsMouse: mouseArea.containsMouse
 
     /*! \internal */
     property bool __horizontal: orientation === Qt.Horizontal
@@ -197,6 +201,14 @@ Control {
         anchors.horizontalCenter: !__horizontal ? parent.horizontalCenter : undefined
         width: __panel.handleWidth
         height: __panel.handleHeight
+
+        function updatePos() {
+            if (updateValueWhileDragging && !mouseArea.drag.active)
+                            range.position = __horizontal ? x : y
+        }
+
+        onXChanged: updatePos();
+        onYChanged: updatePos();
     }
 
     MouseArea {
@@ -247,14 +259,6 @@ Control {
         }
     }
 
-    // Range position normally follows handle, except when
-    // 'updateValueWhileDragging' is false.
-    Binding {
-        when: updateValueWhileDragging && !mouseArea.drag.active
-        target: range
-        property: "position"
-        value: __horizontal ? fakeHandle.x : fakeHandle.y
-    }
 
     // During the drag, we simply ignore the position set from the range, this
     // means that setting a value while dragging will not "interrupt" the

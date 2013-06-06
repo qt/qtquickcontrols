@@ -57,11 +57,11 @@ class QQuickAction : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(QString text READ text WRITE setText NOTIFY textChanged)
-    Q_PROPERTY(QUrl iconSource READ iconSource WRITE setIconSource NOTIFY iconSourceChanged)
+    Q_PROPERTY(QString text READ text WRITE setText NOTIFY textChanged RESET resetText)
+    Q_PROPERTY(QUrl iconSource READ iconSource WRITE setIconSource NOTIFY iconSourceChanged RESET resetIconSource)
     Q_PROPERTY(QString iconName READ iconName WRITE setIconName NOTIFY iconNameChanged)
     Q_PROPERTY(QVariant __icon READ iconVariant NOTIFY iconChanged)
-    Q_PROPERTY(QString tooltip READ tooltip WRITE setTooltip NOTIFY tooltipChanged)
+    Q_PROPERTY(QString tooltip READ tooltip WRITE setTooltip NOTIFY tooltipChanged RESET resetTooltip)
     Q_PROPERTY(bool enabled READ isEnabled WRITE setEnabled NOTIFY enabledChanged)
     Q_PROPERTY(bool checkable READ isCheckable WRITE setCheckable NOTIFY checkableChanged)
     Q_PROPERTY(bool checked READ isChecked WRITE setChecked DESIGNABLE isCheckable NOTIFY toggled)
@@ -76,6 +76,7 @@ public:
     ~QQuickAction();
 
     QString text() const { return m_text; }
+    void resetText() { setText(QString()); }
     void setText(const QString &text);
 
     QString shortcut() const;
@@ -87,9 +88,11 @@ public:
     void setIconName(const QString &iconName);
 
     QUrl iconSource() const { return m_iconSource; }
+    void resetIconSource() { setIconSource(QString()); }
     void setIconSource(const QUrl &iconSource);
 
     QString tooltip() const { return m_tooltip; }
+    void resetTooltip() { setTooltip(QString()); }
     void setTooltip(const QString &tooltip);
 
     bool isEnabled() const { return m_enabled; }

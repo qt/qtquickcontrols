@@ -45,6 +45,7 @@ import QtQuick.Controls.Private 1.0
     \qmltype GroupBoxStyle
     \internal
     \inqmlmodule QtQuick.Controls.Styles 1.0
+    \ingroup controlsstyling
     \since QtQuick.Controls.Styles 1.0
 */
 Style {

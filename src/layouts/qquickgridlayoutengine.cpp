@@ -98,14 +98,62 @@ static inline void combineHints(qreal &current, qreal fallbackHint)
         current = fallbackHint;
 }
 
+static inline void combineSize(QSizeF &result, const QSizeF &fallbackSize)
+{
+    combineHints(result.rwidth(), fallbackSize.width());
+    combineHints(result.rheight(), fallbackSize.height());
+}
+
+static inline void combineImplicitHints(QQuickLayoutAttached *info, Qt::SizeHint which, QSizeF *size)
+{
+    if (!info) return;
+
+    Q_ASSERT(which == Qt::MinimumSize || which == Qt::MaximumSize);
+
+    const QSizeF constraint(which == Qt::MinimumSize
+                            ? QSizeF(info->minimumWidth(), info->minimumHeight())
+                            : QSizeF(info->maximumWidth(), info->maximumHeight()));
+
+    if (!info->isExtentExplicitlySet(Qt::Horizontal, which))
+        combineHints(size->rwidth(),  constraint.width());
+    if (!info->isExtentExplicitlySet(Qt::Vertical, which))
+        combineHints(size->rheight(), constraint.height());
+}
+
 /*!
     \internal
     Note: Can potentially return the attached QQuickLayoutAttached object through \a attachedInfo.
 
     It is like this is because it enables it to be reused.
+
+    The goal of this function is to return the effective minimum, preferred and maximum size hints
+    that the layout will use for this item.
+    This function takes care of gathering all explicitly set size hints, normalizes them so
+    that min < pref < max.
+    Further, the hints _not_explicitly_ set will then be initialized with the implicit size hints,
+    which is usually derived from the content of the layouts (or items).
+
+    The following table illustrates the preference of the properties used for measuring layout
+    items. If present, the USER properties will be preferred. If USER properties are not present,
+    the HINT properties will be preferred. Finally, the FALLBACK properties will be used as an
+    ultimate fallback.
+
+    Note that one can query if the value of Layout.minimumWidth or Layout.maximumWidth has been
+    explicitly or implicitly set with QQuickLayoutAttached::isExtentExplicitlySet(). This
+    determines if it should be used as a USER or as a HINT value.
+
+
+                 | *Minimum*            | *Preferred*           | *Maximum*                |
++----------------+----------------------+-----------------------+--------------------------+
+|USER (explicit) | Layout.minimumWidth  | Layout.preferredWidth | Layout.maximumWidth      |
+|HINT (implicit) | Layout.minimumWidth  | implicitWidth         | Layout.maximumWidth      |
+|FALLBACK        | 0                    | width                 | Number.POSITIVE_INFINITY |
++----------------+----------------------+-----------------------+--------------------------+
  */
 void QQuickGridLayoutItem::effectiveSizeHints_helper(QQuickItem *item, QSizeF *cachedSizeHints, QQuickLayoutAttached **attachedInfo, bool useFallbackToWidthOrHeight)
 {
+    for (int i = 0; i < Qt::NSizeHints; ++i)
+        cachedSizeHints[i] = QSizeF();
     QQuickLayoutAttached *info = attachedLayoutObject(item, false);
     // First, retrieve the user-specified hints from the attached "Layout." properties
     if (info) {
@@ -123,16 +171,16 @@ void QQuickGridLayoutItem::effectiveSizeHints_helper(QQuickItem *item, QSizeF *c
         for (int i = 0; i < NSizes; ++i) {
             SizeGetter getter = horGetters.call[i];
             Q_ASSERT(getter);
-            cachedSizeHints[i].setWidth((info->*getter)());
+
+            if (info->isExtentExplicitlySet(Qt::Horizontal, (Qt::SizeHint)i))
+                cachedSizeHints[i].setWidth((info->*getter)());
+
             getter = verGetters.call[i];
             Q_ASSERT(getter);
-            cachedSizeHints[i].setHeight((info->*getter)());
+            if (info->isExtentExplicitlySet(Qt::Vertical, (Qt::SizeHint)i))
+                cachedSizeHints[i].setHeight((info->*getter)());
         }
-    } else {
-        for (int i = 0; i < NSizes; ++i)
-            cachedSizeHints[i] = QSize();
     }
-    cachedSizeHints[Qt::MinimumDescent] = QSize();  //### FIXME when baseline support is added
 
     QSizeF &minS = cachedSizeHints[Qt::MinimumSize];
     QSizeF &prefS = cachedSizeHints[Qt::PreferredSize];
@@ -144,23 +192,21 @@ void QQuickGridLayoutItem::effectiveSizeHints_helper(QQuickItem *item, QSizeF *c
     // to:   [10, 10, 60]
     normalizeHints(minS.rwidth(), prefS.rwidth(), maxS.rwidth(), descentS.rwidth());
     normalizeHints(minS.rheight(), prefS.rheight(), maxS.rheight(), descentS.rheight());
-/*
-  The following table illustrates the preference of the properties used for measuring layout
-  items. If present, the USER properties will be preferred. If USER properties are not present,
-  the HINT 1 properties will be preferred. Finally, the HINT 2 properties will be used as an
-  ultimate fallback.
 
-       | USER                           | HINT 1            | HINT 2
-  -----+--------------------------------+-------------------+-------
-  MIN  | Layout.minimumWidth            |                   | 0
-  PREF | Layout.preferredWidth          | implicitWidth     | width
-  MAX  | Layout.maximumWidth            |                   | 1000000000 (-1)
-  -----+--------------------------------+-------------------+--------
-Fixed    | Layout.fillWidth               | Expanding if layout, Fixed if item |
+    // All explicit values gathered, now continue to gather the implicit sizes
 
-*/
+    //--- GATHER MAXIMUM SIZE HINTS ---
+    combineImplicitHints(info, Qt::MaximumSize, &maxS);
+    combineSize(maxS, QSizeF(std::numeric_limits<qreal>::infinity(), std::numeric_limits<qreal>::infinity()));
+    // implicit max or min sizes should not limit an explicitly set preferred size
+    expandSize(maxS, prefS);
+    expandSize(maxS, minS);
+
     //--- GATHER MINIMUM SIZE HINTS ---
-    // They are always 0
+    combineImplicitHints(info, Qt::MinimumSize, &minS);
+    expandSize(minS, QSizeF(0,0));
+    boundSize(minS, prefS);
+    boundSize(minS, maxS);
 
     //--- GATHER PREFERRED SIZE HINTS ---
     // First, from implicitWidth/Height
@@ -203,17 +249,12 @@ Fixed    | Layout.fillWidth               | Expanding if layout, Fixed if item |
             item->blockSignals(false);
         }
     }
-    //--- GATHER MAXIMUM SIZE HINTS ---
-    combineHints(cachedSizeHints[Qt::MaximumSize].rwidth(), std::numeric_limits<qreal>::infinity());
-    combineHints(cachedSizeHints[Qt::MaximumSize].rheight(), std::numeric_limits<qreal>::infinity());
 
     //--- GATHER DESCENT
     // ### Not implemented
 
 
     // Normalize again after the implicit hints have been gathered
-    expandSize(minS, QSizeF(0,0));
-    boundSize(minS, maxS);
     expandSize(prefS, minS);
     boundSize(prefS, maxS);
 

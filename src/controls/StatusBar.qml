@@ -79,7 +79,7 @@ Item {
     Accessible.role: Accessible.StatusBar
 
     width: parent ? parent.width : implicitWidth
-    implicitWidth:  loader.item ? loader.item.implicitWidth : 200
+    implicitWidth: container.leftMargin + container.rightMargin + container.calcWidth()
     implicitHeight: Math.max(container.topMargin + container.bottomMargin + container.calcHeight(),
                              loader.item ? loader.item.implicitHeight : 19)
 
@@ -134,6 +134,10 @@ Item {
             property int rightMargin: __style ? __style.padding.right : 0
 
             property Item layoutItem: container.children.length === 1 ? container.children[0] : null
+            function calcWidth() { return (layoutItem ? (layoutItem.implicitWidth || layoutItem.width) +
+                                                          (layoutItem.anchors.fill ? layoutItem.anchors.leftMargin +
+                                                                                     layoutItem.anchors.rightMargin : 0) :
+                                                          loader.item ? loader.item.implicitWidth: 0) }
             function calcHeight () { return (layoutItem ? (layoutItem.implicitHeight || layoutItem.height) +
                                                           (layoutItem.anchors.fill ? layoutItem.anchors.topMargin +
                                                                                      layoutItem.anchors.bottomMargin : 0) : loader.item ? loader.item.implicitHeight : 0) }
