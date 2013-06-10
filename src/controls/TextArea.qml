@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.1
+import QtQuick 2.2
 import QtQuick.Controls 1.0
 import QtQuick.Controls.Private 1.0
 /*!
@@ -383,6 +383,30 @@ ScrollView {
     signal linkActivated(string link)
 
     /*!
+        \qmlsignal TextArea::linkHovered(string link)
+        \since QtQuick.Controls 1.1
+
+        This signal is emitted when the user hovers a link embedded in the text.
+        The link must be in rich text or HTML format and the
+        \a link string provides access to the particular link.
+
+        \sa hoveredLink
+    */
+    signal linkHovered(string link)
+
+    /*!
+        \qmlproperty string TextArea::hoveredLink
+        \since QtQuick.Controls 1.1
+
+        This property contains the link string when user hovers a link
+        embedded in the text. The link must be in rich text or HTML format
+        and the link string provides access to the particular link.
+
+        \sa onLinkHovered
+    */
+    readonly property alias hoveredLink: edit.hoveredLink
+
+    /*!
         \qmlmethod TextArea::append(string)
 
         Appends \a string as a new line to the end of the text area.
@@ -714,6 +738,7 @@ ScrollView {
                     flickableItem.contentX = cursorRectangle.x
             }
             onLinkActivated: area.linkActivated(link)
+            onLinkHovered: area.linkHovered(link)
 
             MouseArea {
                 parent: area.viewport
