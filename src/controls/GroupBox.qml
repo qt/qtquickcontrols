@@ -87,7 +87,7 @@ import QtQuick.Layouts 1.0
 
 */
 
-Item {
+FocusScope {
     id: groupbox
 
     /*!
@@ -191,6 +191,7 @@ Item {
         },
         CheckBox {
             id: check
+            objectName: "check"
             checked: true
             text: groupbox.title
             visible: checkable
@@ -203,6 +204,7 @@ Item {
         },
         Item {
             id: container
+            objectName: "container"
             z: 1
             focus: true
             anchors.fill: parent

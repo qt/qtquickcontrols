@@ -37,38 +37,50 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
+
 import QtQuick 2.1
 import QtQuick.Controls 1.0
-import QtQuick.Controls.Private 1.0
 
-
-Style {
-    readonly property GroupBox control: __control
-
-    property var __style: StyleItem { id: style }
-    property int titleHeight: 18
-
-    Component.onCompleted: {
-        var stylename = __style.style
-        if (stylename.indexOf("windows") > -1)
-            titleHeight = 9
+Column {
+    width: 200
+    height: 200
+    property alias control1: _control1
+    property alias control2: _control2
+    GroupBox  {
+        id: _control1
+        title: "control1"
+        checkable: true
+        Column {
+            objectName: "column1"
+            property alias child1: _child1
+            property alias child2: _child2
+            anchors.fill: parent
+            Button {
+                id: _child1
+                text: "child1"
+            }
+            Button {
+                id: _child2
+                text: "child2"
+            }
+        }
     }
-
-    padding {
-        top: Math.round(Settings.dpiScaleFactor * (control.title.length > 0 || control.checkable ? titleHeight : 0) + (style.style == "mac" ? 9 : 6))
-        left: Math.round(Settings.dpiScaleFactor * 8)
-        right: Math.round(Settings.dpiScaleFactor * 8)
-        bottom: Math.round(Settings.dpiScaleFactor * 7 + (style.style.indexOf("windows") > -1 ? 2 : 0))
-    }
-
-    property Component panel: StyleItem {
-        anchors.fill: parent
-        id: styleitem
-        elementType: "groupbox"
-        text: control.title
-        on: control.checked
-        hasFocus: control.__checkbox.activeFocus
-        activeControl: control.checkable ? "checkbox" : ""
-        properties: { "checkable" : control.checkable , "sunken" : !control.flat}
+    GroupBox  {
+        id: _control2
+        title: "control2"
+        Column {
+            objectName: "column2"
+            property alias child3: _child3
+            property alias child4: _child4
+            anchors.fill: parent
+            Button {
+                id: _child3
+                text: "child3"
+            }
+            Button {
+                id: _child4
+                text: "child4"
+            }
+        }
     }
 }
