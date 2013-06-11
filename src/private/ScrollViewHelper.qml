@@ -121,7 +121,7 @@ Item {
 
     ScrollBar {
         id: hscrollbar
-        property bool isTransient: !!__panel && __panel.styleHint("transientScrollBars")
+        property bool isTransient: !!__panel && __panel.transient
         property bool active: !!__panel && (__panel.sunken || __panel.activeControl != "none")
         orientation: Qt.Horizontal
         visible: contentWidth > availableWidth
@@ -145,6 +145,12 @@ Item {
             value: vscrollbar.active
             when: hscrollbar.isTransient
         }
+        Binding {
+            target: hscrollbar.__panel
+            property: "visible"
+            value: true
+            when: !hscrollbar.isTransient
+        }
         function flash() {
             if (hscrollbar.isTransient) {
                 hscrollbar.__panel.on = true
@@ -155,7 +161,7 @@ Item {
 
     ScrollBar {
         id: vscrollbar
-        property bool isTransient: !!__panel && __panel.styleHint("transientScrollBars")
+        property bool isTransient: !!__panel && __panel.transient
         property bool active: !!__panel && (__panel.sunken || __panel.activeControl !== "none")
         orientation: Qt.Vertical
         visible: contentHeight > availableHeight
@@ -178,6 +184,12 @@ Item {
             property: "raised"
             value: hscrollbar.active
             when: vscrollbar.isTransient
+        }
+        Binding {
+            target: vscrollbar.__panel
+            property: "visible"
+            value: true
+            when: !vscrollbar.isTransient
         }
         function flash() {
             if (vscrollbar.isTransient) {

@@ -69,7 +69,7 @@ Style {
     readonly property bool scrollToClickedPosition: __styleitem.styleHint("scrollToClickPosition") !== 0
 
     property Component __scrollbar: StyleItem {
-        readonly property bool isTransient: __styleitem.styleHint("transientScrollBars")
+        readonly property bool isTransient: __styleitem.parent && __styleitem.transient
         anchors.fill:parent
         elementType: "scrollbar"
         hover: activeControl != "none"
