@@ -395,6 +395,39 @@ TestCase {
         tableView.destroy()
     }
 
+    function test_positionViewAtRow() {
+        var test_instanceStr =
+           'import QtQuick 2.1;             \
+            import QtQuick.Controls 1.0;    \
+            TableView {                     \
+                TableViewColumn {           \
+                }                           \
+                model: 1000;                \
+                headerVisible: false;       \
+            }'
+
+        var table = Qt.createQmlObject(test_instanceStr, testCase, '')
+        waitForRendering(table)
+
+        var beginPos = table.mapFromItem(table.viewport, 0, 0)
+
+        table.positionViewAtRow(0, ListView.Beginning)
+        compare(table.rowAt(beginPos.x, beginPos.y), 0)
+
+        table.positionViewAtRow(100, ListView.Beginning)
+        compare(table.rowAt(beginPos.x, beginPos.y), 100)
+
+        var endPos = table.mapFromItem(table.viewport, 0, table.viewport.height - 1)
+
+        table.positionViewAtRow(900, ListView.End)
+        compare(table.rowAt(endPos.x, endPos.y), 900)
+
+        table.positionViewAtRow(999, ListView.End)
+        compare(table.rowAt(endPos.x, endPos.y), 999)
+
+        table.destroy()
+    }
+
     // In TableView, drawn text = table.__currentRowItem.children[1].children[1].itemAt(0).children[0].children[0].text
 
     function findAChild(item, name)

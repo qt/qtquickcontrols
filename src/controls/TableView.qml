@@ -294,7 +294,7 @@ ScrollView {
     */
 
     function positionViewAtRow(row, mode) {
-        listView.positionViewAtRow(row, mode)
+        listView.positionViewAtIndex(row, mode)
     }
 
     /*!
