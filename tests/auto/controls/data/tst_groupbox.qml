@@ -91,7 +91,7 @@ TestCase {
 
     function test_dynamicSize() {
 
-        var groupbox = Qt.createQmlObject('import QtQuick.Controls 1.0; import QtQuick.Controls.Styles.Private 1.0 ; GroupBox {style:GroupBoxStyle{}}', container, '')
+        var groupbox = Qt.createQmlObject('import QtQuick.Controls 1.0; import QtQuick.Controls.Private 1.0 ; GroupBox {style:GroupBoxStyle{}}', container, '')
         compare(groupbox.width, 16)
         compare(groupbox.height, 16)
 

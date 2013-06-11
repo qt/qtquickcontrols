@@ -39,50 +39,40 @@
 **
 ****************************************************************************/
 
-#ifndef QQUICKCONTROLSETTINGS_P_H
-#define QQUICKCONTROLSETTINGS_P_H
-
-#include <QtCore/qurl.h>
-#include <QtCore/qobject.h>
+#include <QtQml>
 
 QT_BEGIN_NAMESPACE
 
-class QQmlEngine;
-
-class QQuickControlSettings : public QObject
+class QtQuickControlsStylesPlugin : public QQmlExtensionPlugin
 {
     Q_OBJECT
-    Q_PROPERTY(QString style READ style NOTIFY styleChanged)
-    Q_PROPERTY(QString styleName READ styleName WRITE setStyleName NOTIFY styleNameChanged)
-    Q_PROPERTY(QString stylePath READ stylePath WRITE setStylePath NOTIFY stylePathChanged)
-    Q_PROPERTY(qreal dpiScaleFactor READ dpiScaleFactor CONSTANT)
+    Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QQmlExtensionInterface/1.0")
 
 public:
-    QQuickControlSettings(QQmlEngine *engine);
-
-    QString style() const;
-
-    QString styleName() const;
-    void setStyleName(const QString &name);
-
-    QString stylePath() const;
-    void setStylePath(const QString &path);
-
-    qreal dpiScaleFactor() const;
-
-signals:
-    void styleChanged();
-    void styleNameChanged();
-    void stylePathChanged();
-
-private:
-    QString styleFilePath() const;
-
-    QString m_name;
-    QString m_path;
-    bool m_fromResources;
+    void registerTypes(const char *uri);
+    void initializeEngine(QQmlEngine *engine, const char *uri);
 };
+
+void QtQuickControlsStylesPlugin::registerTypes(const char *uri)
+{
+    qmlRegisterType(QUrl("qrc:/Base/ButtonStyle.qml"), uri, 1, 0, "ButtonStyle");
+    qmlRegisterType(QUrl("qrc:/Base/CheckBoxStyle.qml"), uri, 1, 0, "CheckBoxStyle");
+    qmlRegisterType(QUrl("qrc:/Base/ComboBoxStyle.qml"), uri, 1, 0, "ComboBoxStyle");
+    qmlRegisterType(QUrl("qrc:/Base/ProgressBarStyle.qml"), uri, 1, 0, "ProgressBarStyle");
+    qmlRegisterType(QUrl("qrc:/Base/RadioButtonStyle.qml"), uri, 1, 0, "RadioButtonStyle");
+    qmlRegisterType(QUrl("qrc:/Base/ScrollViewStyle.qml"), uri, 1, 0, "ScrollViewStyle");
+    qmlRegisterType(QUrl("qrc:/Base/SliderStyle.qml"), uri, 1, 0, "SliderStyle");
+    qmlRegisterType(QUrl("qrc:/Base/TabViewStyle.qml"), uri, 1, 0, "TabViewStyle");
+    qmlRegisterType(QUrl("qrc:/Base/TableViewStyle.qml"), uri, 1, 0, "TableViewStyle");
+    qmlRegisterType(QUrl("qrc:/Base/TextFieldStyle.qml"), uri, 1, 0, "TextFieldStyle");
+}
+
+void QtQuickControlsStylesPlugin::initializeEngine(QQmlEngine *engine, const char *uri)
+{
+    Q_UNUSED(uri)
+    engine->addPluginPath("qrc:/Base");
+}
 
 QT_END_NAMESPACE
 
-#endif // QQUICKCONTROLSETTINGS_P_H
+#include "plugin.moc"

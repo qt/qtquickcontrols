@@ -63,17 +63,23 @@ static QString styleImportName()
     return QFileInfo(name).fileName();
 }
 
-static QString styleImportPath(QQmlEngine *engine, const QString &styleName)
+static QString styleImportPath(QQmlEngine *engine, const QString &styleName, bool &fromResources)
 {
     QString path = qgetenv("QT_QUICK_CONTROLS_STYLE");
     QFileInfo info(path);
     if (info.isRelative()) {
+        bool found = false;
         foreach (const QString &import, engine->importPathList()) {
             QDir dir(import + QLatin1String("/QtQuick/Controls/Styles"));
             if (dir.exists(styleName)) {
+                found = true;
                 path = dir.absolutePath();
                 break;
             }
+        }
+        if (!found) {
+            fromResources = true;
+            path = "qrc:";
         }
     } else {
         path = info.absolutePath();
@@ -83,23 +89,27 @@ static QString styleImportPath(QQmlEngine *engine, const QString &styleName)
 
 QQuickControlSettings::QQuickControlSettings(QQmlEngine *engine)
 {
+    m_fromResources = false;
     m_name = styleImportName();
-    m_path = styleImportPath(engine, m_name);
+    m_path = styleImportPath(engine, m_name, m_fromResources);
 
-    if (!QFile::exists(styleFilePath())) {
+    if (!m_fromResources && !QFile::exists(styleFilePath())) {
         QString unknownStyle = m_name;
         m_name = defaultStyleName();
-        m_path = styleImportPath(engine, m_name);
-        qWarning() << "WARNING: Cannot find style" << unknownStyle << "- fallback:" << styleFilePath();
+        m_path = styleImportPath(engine, m_name, m_fromResources);
+        qWarning() << "WARNING: Cannot find style" << unknownStyle << " locally - fallback:" << styleFilePath();
     }
 
     connect(this, SIGNAL(styleNameChanged()), SIGNAL(styleChanged()));
     connect(this, SIGNAL(stylePathChanged()), SIGNAL(styleChanged()));
 }
 
-QUrl QQuickControlSettings::style() const
+QString QQuickControlSettings::style() const
 {
-    return QUrl::fromLocalFile(styleFilePath());
+    if (m_fromResources)
+        return styleFilePath();
+    else
+        return QUrl::fromLocalFile(styleFilePath()).toString();
 }
 
 QString QQuickControlSettings::styleName() const

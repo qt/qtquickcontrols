@@ -23,7 +23,7 @@ SOURCES += \
     $$PWD/qquickabstractstyle.cpp
 
 # private qml files
-QML_FILES += \
+OTHER_FILES += \
     AbstractCheckable.qml \
     TabBar.qml \
     BasicButton.qml \
@@ -50,3 +50,6 @@ mac {
 
 CONFIG += no_cxx_module
 load(qml_plugin)
+
+RESOURCES += \
+    resources.qrc

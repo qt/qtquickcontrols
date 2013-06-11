@@ -1,12 +1,7 @@
 module QtQuick.Controls.Private
 plugin qtquickcontrolsprivateplugin
-AbstractCheckable 1.0 AbstractCheckable.qml
-Control 1.0 Control.qml
-FocusFrame 1.0 FocusFrame.qml
-Margins 1.0 Margins.qml
-BasicButton 1.0 BasicButton.qml
-ScrollBar 1.0 ScrollBar.qml
-ScrollViewHelper 1.0 ScrollViewHelper.qml
-Style 1.0 Style.qml
-TabBar 1.0 TabBar.qml
-StackViewSlideDelegate 1.0 StackViewSlideDelegate.qml
+GroupBoxStyle 1.0 qrc:/Base/GroupBoxStyle.qml
+SpinBoxStyle 1.0 qrc:/Base/SpinBoxStyle.qml
+ToolBarStyle 1.0 qrc:/Base/ToolBarStyle.qml
+StatusBarStyle 1.0 qrc:/Base/StatusBarStyle.qml
+ToolButtonStyle 1.0 qrc:/Base/ToolButtonStyle.qml

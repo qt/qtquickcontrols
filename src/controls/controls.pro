@@ -5,7 +5,7 @@ QT += qml quick gui-private core-private
 
 QMAKE_DOCS = $$PWD/doc/qtquickcontrols.qdocconf
 
-QML_FILES = \
+OTHER_FILES = \
     ApplicationWindow.qml \
     Button.qml \
     CheckBox.qml \
@@ -37,3 +37,6 @@ include(plugin.pri)
 
 CONFIG += no_cxx_module
 load(qml_plugin)
+
+RESOURCES += \
+    resources.qrc

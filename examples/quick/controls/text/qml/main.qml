@@ -319,6 +319,7 @@ ApplicationWindow {
         anchors.bottom: parent.bottom
         text: document.text
         textFormat: Qt.RichText
+        baseUrl: "qrc:/"
         Component.onCompleted: forceActiveFocus()
     }
 

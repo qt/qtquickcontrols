@@ -1,9 +1,12 @@
+TARGET = qtquickcontrolsstylesplugin
 TARGETPATH = QtQuick/Controls/Styles
+
+QT += qml quick gui-private core-private
 
 QMAKE_DOCS = $$PWD/doc/qtquickcontrolsstyles.qdocconf
 
 # Base
-QML_FILES = \
+OTHER_FILES = \
     Base/ButtonStyle.qml \
     Base/CheckBoxStyle.qml \
     Base/ComboBoxStyle.qml \
@@ -24,7 +27,7 @@ QML_FILES = \
     Base/ToolButtonStyle.qml
 
 # Desktop
-QML_FILES += \
+OTHER_FILES += \
     Desktop/ButtonStyle.qml \
     Desktop/CheckBoxStyle.qml \
     Desktop/ComboBoxStyle.qml \
@@ -45,7 +48,7 @@ QML_FILES += \
     Desktop/ToolButtonStyle.qml
 
 # Images
-QML_FILES += \
+OTHER_FILES += \
     Base/images/button.png \
     Base/images/button_down.png \
     Base/images/tab.png \
@@ -66,4 +69,11 @@ QML_FILES += \
     Base/images/arrow-right.png \
     Base/images/arrow-right@2x.png
 
-load(qml_module)
+SOURCES += \
+    $$PWD/plugin.cpp
+
+RESOURCES += \
+    $$PWD/resources.qrc
+
+CONFIG += no_cxx_module
+load(qml_plugin)
