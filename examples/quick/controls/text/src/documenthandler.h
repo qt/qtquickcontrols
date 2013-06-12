@@ -63,7 +63,8 @@ class DocumentHandler : public QObject
     Q_PROPERTY(int selectionStart READ selectionStart WRITE setSelectionStart NOTIFY selectionStartChanged)
     Q_PROPERTY(int selectionEnd READ selectionEnd WRITE setSelectionEnd NOTIFY selectionEndChanged)
 
-    Q_PROPERTY(QFont currentFont READ currentFont NOTIFY currentFontChanged)
+    Q_PROPERTY(QColor textColor READ textColor WRITE setTextColor NOTIFY textColorChanged)
+    Q_PROPERTY(QString fontFamily READ fontFamily WRITE setFontFamily NOTIFY fontFamilyChanged)
     Q_PROPERTY(Qt::Alignment alignment READ alignment WRITE setAlignment NOTIFY alignmentChanged)
 
     Q_PROPERTY(bool bold READ bold WRITE setBold NOTIFY boldChanged)
@@ -93,7 +94,9 @@ public:
     int selectionStart() const { return m_selectionStart; }
     int selectionEnd() const { return m_selectionEnd; }
 
-    QFont currentFont() const;
+    QString fontFamily() const;
+
+    QColor textColor() const;
 
     Qt::Alignment alignment() const;
     void setAlignment(Qt::Alignment a);
@@ -114,6 +117,8 @@ public Q_SLOTS:
     void setItalic(bool arg);
     void setUnderline(bool arg);
     void setFontSize(int arg);
+    void setTextColor(const QColor &arg);
+    void setFontFamily(const QString &arg);
 
     void setFileUrl(const QUrl &arg);
     void setText(const QString &arg);
@@ -126,7 +131,8 @@ Q_SIGNALS:
     void selectionStartChanged();
     void selectionEndChanged();
 
-    void currentFontChanged();
+    void fontFamilyChanged();
+    void textColorChanged();
     void alignmentChanged();
 
     void boldChanged();
@@ -142,6 +148,7 @@ Q_SIGNALS:
     void documentTitleChanged();
 
 private:
+    void reset();
     QTextCursor textCursor() const;
     void mergeFormatOnWordOrSelection(const QTextCharFormat &format);
 
@@ -153,9 +160,6 @@ private:
     int m_selectionEnd;
 
     QFont m_font;
-    bool m_bold;
-    bool m_italic;
-    bool m_underline;
     int m_fontSize;
     QUrl m_fileUrl;
     QString m_text;

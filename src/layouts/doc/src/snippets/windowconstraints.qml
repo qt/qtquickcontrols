@@ -1,9 +1,9 @@
 /****************************************************************************
 **
-** Copyright (C) 2013 Tasuku Suzuki <stasuku@gmail.com>
+** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
-** This file is part of the Qt Quick Controls module of the Qt Toolkit.
+** This file is part of the documentation of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:BSD$
 ** You may use this file under the terms of the BSD license as follows:
@@ -38,28 +38,52 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.1
+import QtQuick 2.0
 import QtQuick.Controls 1.0
+import QtQuick.Layouts 1.0
 
-TableView {
-    height: 120
-    model: 10
+ApplicationWindow {
+    //! [binddefaultsize]
+    width: layout.implicitWidth
+    height: layout.implicitHeight
+    //! [binddefaultsize]
+    //! [bindconstraints]
+    minimumWidth: layout.Layout.minimumWidth
+    minimumHeight: layout.Layout.minimumHeight
+    maximumWidth: 1000
+    maximumHeight: layout.Layout.maximumHeight
+    //! [bindconstraints]
 
-    headerVisible: false
-    frameVisible: false
-    rowDelegate: Rectangle {
-        width: parent.width
-        height: 20
+    //! [rowlayout]
+    //! [anchoring]
+    RowLayout {
+        id: layout
+        anchors.fill: parent
+    //! [anchoring]
+        spacing: 6
+        Rectangle {
+            color: 'azure'
+            Layout.fillWidth: true
+            Layout.minimumWidth: 50
+            Layout.preferredWidth: 100
+            Layout.maximumWidth: 300
+            Layout.minimumHeight: 150
+            Text {
+                anchors.centerIn: parent
+                text: parent.width + 'x' + parent.height
+            }
+        }
+        Rectangle {
+            color: 'plum'
+            Layout.fillWidth: true
+            Layout.minimumWidth: 100
+            Layout.preferredWidth: 200
+            Layout.preferredHeight: 100
+            Text {
+                anchors.centerIn: parent
+                text: parent.width + 'x' + parent.height
+            }
+        }
     }
-
-    property int test: -1
-    property int testClick: -1
-    property int testDoubleClick: -1
-    onActivated: test = row
-    onClicked: testClick = row
-    onDoubleClicked: testDoubleClick = row
-
-    TableViewColumn {
-        width: 100
-    }
+    //! [rowlayout]
 }

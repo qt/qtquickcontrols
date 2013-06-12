@@ -198,12 +198,27 @@ TestCase {
         var table = component.createObject(container);
         verify(table !== null, "table created is null")
         table.forceActiveFocus();
-        compare(table.test, false)
+        compare(table.test, -1)
+        compare(table.testClick, table.currentRow)
+
+        if (!table.__activateItemOnSingleClick)
+            mouseDoubleClick(table, 15 , 45, Qt.LeftButton)
+        else
+            mouseClick(table, 15, 45, Qt.LeftButton)
+
+        compare(table.testDoubleClick, table.currentRow)
+        compare(table.test, table.currentRow)
+        compare(table.testClick, table.currentRow)
+
         if (!table.__activateItemOnSingleClick)
             mouseDoubleClick(table, 15 , 15, Qt.LeftButton)
         else
             mouseClick(table, 15, 15, Qt.LeftButton)
-        compare(table.test, true)
+
+        compare(table.testDoubleClick, table.currentRow)
+        compare(table.testClick, table.currentRow)
+        compare(table.test, table.currentRow)
+
         table.destroy()
     }
 
@@ -214,6 +229,7 @@ TestCase {
         verify(table !== null, "table created is null")
         table.forceActiveFocus();
         compare(table.activatedTest, false)
+        waitForRendering(table)
         if (!table.__activateItemOnSingleClick)
             mouseDoubleClick(table, 15 , 50, Qt.LeftButton)
         else
@@ -377,6 +393,39 @@ TestCase {
             compare(tableView.getColumn(i).title, titles[i])
 
         tableView.destroy()
+    }
+
+    function test_positionViewAtRow() {
+        var test_instanceStr =
+           'import QtQuick 2.1;             \
+            import QtQuick.Controls 1.0;    \
+            TableView {                     \
+                TableViewColumn {           \
+                }                           \
+                model: 1000;                \
+                headerVisible: false;       \
+            }'
+
+        var table = Qt.createQmlObject(test_instanceStr, testCase, '')
+        waitForRendering(table)
+
+        var beginPos = table.mapFromItem(table.viewport, 0, 0)
+
+        table.positionViewAtRow(0, ListView.Beginning)
+        compare(table.rowAt(beginPos.x, beginPos.y), 0)
+
+        table.positionViewAtRow(100, ListView.Beginning)
+        compare(table.rowAt(beginPos.x, beginPos.y), 100)
+
+        var endPos = table.mapFromItem(table.viewport, 0, table.viewport.height - 1)
+
+        table.positionViewAtRow(900, ListView.End)
+        compare(table.rowAt(endPos.x, endPos.y), 900)
+
+        table.positionViewAtRow(999, ListView.End)
+        compare(table.rowAt(endPos.x, endPos.y), 999)
+
+        table.destroy()
     }
 
     // In TableView, drawn text = table.__currentRowItem.children[1].children[1].itemAt(0).children[0].children[0].text
