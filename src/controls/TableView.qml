@@ -239,10 +239,30 @@ ScrollView {
     /*! \internal */
     property alias __currentRowItem: listView.currentItem
 
-    /*! \qmlsignal TableView::activated()
-        Emitted when the user activates an item by single or double-clicking (depending on the platform).
+    /*! \qmlsignal TableView::activated(int row)
+
+        Emitted when the user activates an item by mouse or keyboard interaction.
+        Mouse activation is triggered by single- or double-clicking, depending on the platform.
+
+        \a row int provides access to the activated row index.
     */
-    signal activated
+    signal activated(int row)
+
+    /*! \qmlsignal TableView::clicked(int row)
+
+        Emitted when the user clicks a valid row by single clicking
+
+        \a row int provides access to the clicked row index.
+    */
+    signal clicked(int row)
+
+    /*! \qmlsignal TableView::doubleClicked(int row)
+
+        Emitted when the user double clicks a valid row.
+
+        \a row int provides access to the clicked row index.
+    */
+    signal doubleClicked(int row)
 
     /*!
         \qmlmethod TableView::positionViewAtRow( int row, PositionMode mode )
@@ -274,7 +294,7 @@ ScrollView {
     */
 
     function positionViewAtRow(row, mode) {
-        listView.positionViewAtRow(row, mode)
+        listView.positionViewAtIndex(row, mode)
     }
 
     /*!
@@ -447,28 +467,39 @@ ScrollView {
                     autoincrement = false;
                     autodecrement = false;
                 }
-                var y = Math.min(listView.contentY + listView.height - 5, Math.max(mouseY + listView.contentY, listView.contentY));
-                var newIndex = listView.indexAt(0, y);
-                if (newIndex >= 0)
-                    listView.currentIndex = listView.indexAt(0, y);
+
+                if (pressed) {
+                    var newIndex = listView.indexAt(0, mouseY + listView.contentY)
+                    if (newIndex >= 0)
+                        listView.currentIndex = newIndex;
+                }
             }
 
             onClicked: {
-                if (root.__activateItemOnSingleClick)
-                    root.activated()
+                var clickIndex = listView.indexAt(0, mouseY + listView.contentY)
+                if (clickIndex > -1) {
+                    if (root.__activateItemOnSingleClick)
+                        root.activated(clickIndex)
+                    root.clicked(clickIndex)
+                }
                 mouse.accepted = false
             }
 
             onPressed: {
+                var newIndex = listView.indexAt(0, mouseY + listView.contentY)
                 listView.forceActiveFocus()
-                var x = Math.min(listView.contentWidth - 5, Math.max(mouseX + listView.contentX, 0))
-                var y = Math.min(listView.contentHeight - 5, Math.max(mouseY + listView.contentY, 0))
-                listView.currentIndex = listView.indexAt(x, y)
+                if (newIndex > -1) {
+                    listView.currentIndex = newIndex
+                }
             }
 
             onDoubleClicked: {
-                if (!root.__activateItemOnSingleClick)
-                    root.activated()
+                var clickIndex = listView.indexAt(0, mouseY + listView.contentY)
+                if (clickIndex > -1) {
+                    if (!root.__activateItemOnSingleClick)
+                        root.activated(clickIndex)
+                    root.doubleClicked(clickIndex)
+                }
             }
 
             // Note:  with boolean preventStealing we are keeping the flickable from
@@ -511,8 +542,15 @@ ScrollView {
         highlightFollowsCurrentItem: true
         model: root.model
 
-        Keys.onUpPressed: root.__decrementCurrentIndex()
-        Keys.onDownPressed: root.__incrementCurrentIndex()
+        Keys.onUpPressed: {
+            event.accepted = false
+            root.__decrementCurrentIndex()
+        }
+
+        Keys.onDownPressed: {
+            event.accepted = false
+            root.__incrementCurrentIndex()
+        }
 
         Keys.onPressed: {
             if (event.key === Qt.Key_PageUp) {
@@ -521,7 +559,11 @@ ScrollView {
                 verticalScrollBar.value = __verticalScrollBar.value + listView.height
         }
 
-        Keys.onReturnPressed: root.activated();
+        Keys.onReturnPressed: {
+            event.accepted = false
+            if (currentRow > -1)
+                root.activated(currentRow);
+        }
 
         delegate: Item {
             id: rowitem

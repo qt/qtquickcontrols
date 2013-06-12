@@ -145,75 +145,129 @@ TestCase {
         if (!SystemInfo.tabAllWidgets)
             skip("This function doesn't support NOT iterating all.")
 
-        var test_control = 'import QtQuick 2.1; \
-        import QtQuick.Controls 1.0;            \
-        Item {                                  \
-            width: 200;                         \
-            height: 200;                        \
-            property alias control1: _control1; \
-            property alias control2: _control2; \
-            property alias control3: _control3; \
-            GroupBox  {                         \
-                y: 20;                          \
-                id: _control1;                  \
-                activeFocusOnTab: true;         \
-                title: "control1"               \
-            }                                   \
-            GroupBox  {                         \
-                y: 70;                          \
-                id: _control2;                  \
-                activeFocusOnTab: false;        \
-                title: "control2"               \
-            }                                   \
-            GroupBox  {                         \
-                y: 120;                         \
-                id: _control3;                  \
-                activeFocusOnTab: true;         \
-                title: "control3"               \
-            }                                   \
-        }                                       '
+        var component = Qt.createComponent("groupbox/gb_activeFocusOnTab.qml")
+        compare(component.status, Component.Ready)
+        var control =  component.createObject(container);
+        verify(control !== null, "test control created is null")
 
-        var control = Qt.createQmlObject(test_control, container, '')
-        control.control1.forceActiveFocus()
-        verify(control.control1.activeFocus)
-        verify(!control.control2.activeFocus)
-        verify(!control.control3.activeFocus)
-        keyPress(Qt.Key_Tab)
-        verify(!control.control1.activeFocus)
-        verify(!control.control2.activeFocus)
-        verify(control.control3.activeFocus)
-        keyPress(Qt.Key_Tab)
-        verify(control.control1.activeFocus)
-        verify(!control.control2.activeFocus)
-        verify(!control.control3.activeFocus)
-        keyPress(Qt.Key_Tab, Qt.ShiftModifier)
-        verify(!control.control1.activeFocus)
-        verify(!control.control2.activeFocus)
-        verify(control.control3.activeFocus)
-        keyPress(Qt.Key_Tab, Qt.ShiftModifier)
-        verify(control.control1.activeFocus)
-        verify(!control.control2.activeFocus)
-        verify(!control.control3.activeFocus)
+        var gp1 = control.control1
+        var gp2 = control.control2
+        verify(gp1 !== null)
+        verify(gp2 !== null)
 
-        control.control2.activeFocusOnTab = true
-        control.control3.activeFocusOnTab = false
+        var check = getCheckBoxItem(gp1)
+        verify(check !== null)
+
+        var column1 = getColumnItem(gp1, "column1")
+        verify(column1 !== null)
+        var column2 = getColumnItem(gp2, "column2")
+        verify(column2 !== null)
+
+        var child1 = column1.child1
+        verify(child1 !== null)
+        var child2 = column1.child2
+        verify(child2 !== null)
+        var child3 = column2.child3
+        verify(child3 !== null)
+        var child4 = column2.child4
+        verify(child4 !== null)
+
+        control.forceActiveFocus()
         keyPress(Qt.Key_Tab)
-        verify(!control.control1.activeFocus)
-        verify(control.control2.activeFocus)
-        verify(!control.control3.activeFocus)
+        verify(check.activeFocus)
+        verify(!child1.activeFocus)
+        verify(!child2.activeFocus)
+        verify(!child3.activeFocus)
+        verify(!child4.activeFocus)
         keyPress(Qt.Key_Tab)
-        verify(control.control1.activeFocus)
-        verify(!control.control2.activeFocus)
-        verify(!control.control3.activeFocus)
+        verify(!check.activeFocus)
+        verify(child1.activeFocus)
+        verify(!child2.activeFocus)
+        verify(!child3.activeFocus)
+        verify(!child4.activeFocus)
+        keyPress(Qt.Key_Tab)
+        verify(!check.activeFocus)
+        verify(!child1.activeFocus)
+        verify(child2.activeFocus)
+        verify(!child3.activeFocus)
+        verify(!child4.activeFocus)
+        keyPress(Qt.Key_Tab)
+        verify(!check.activeFocus)
+        verify(!child1.activeFocus)
+        verify(!child2.activeFocus)
+        verify(child3.activeFocus)
+        verify(!child4.activeFocus)
+        keyPress(Qt.Key_Tab)
+        verify(!check.activeFocus)
+        verify(!child1.activeFocus)
+        verify(!child2.activeFocus)
+        verify(!child3.activeFocus)
+        verify(child4.activeFocus)
+        keyPress(Qt.Key_Tab)
+        verify(check.activeFocus)
+        verify(!child1.activeFocus)
+        verify(!child2.activeFocus)
+        verify(!child3.activeFocus)
+        verify(!child4.activeFocus)
         keyPress(Qt.Key_Tab, Qt.ShiftModifier)
-        verify(!control.control1.activeFocus)
-        verify(control.control2.activeFocus)
-        verify(!control.control3.activeFocus)
+        verify(!check.activeFocus)
+        verify(!child1.activeFocus)
+        verify(!child2.activeFocus)
+        verify(!child3.activeFocus)
+        verify(child4.activeFocus)
         keyPress(Qt.Key_Tab, Qt.ShiftModifier)
-        verify(control.control1.activeFocus)
-        verify(!control.control2.activeFocus)
-        verify(!control.control3.activeFocus)
+        verify(!check.activeFocus)
+        verify(!child1.activeFocus)
+        verify(!child2.activeFocus)
+        verify(child3.activeFocus)
+        verify(!child4.activeFocus)
+        keyPress(Qt.Key_Tab, Qt.ShiftModifier)
+        verify(!check.activeFocus)
+        verify(!child1.activeFocus)
+        verify(child2.activeFocus)
+        verify(!child3.activeFocus)
+        verify(!child4.activeFocus)
+        keyPress(Qt.Key_Tab, Qt.ShiftModifier)
+        verify(!check.activeFocus)
+        verify(child1.activeFocus)
+        verify(!child2.activeFocus)
+        verify(!child3.activeFocus)
+        verify(!child4.activeFocus)
+        keyPress(Qt.Key_Tab, Qt.ShiftModifier)
+        verify(check.activeFocus)
+        verify(!child1.activeFocus)
+        verify(!child2.activeFocus)
+        verify(!child3.activeFocus)
+        verify(!child4.activeFocus)
+        keyPress(Qt.Key_Tab, Qt.ShiftModifier)
+        verify(!check.activeFocus)
+        verify(!child1.activeFocus)
+        verify(!child2.activeFocus)
+        verify(!child3.activeFocus)
+        verify(child4.activeFocus)
+
         control.destroy()
+    }
+
+    function getCheckBoxItem(control) {
+        for (var i = 0; i < control.children.length; i++) {
+            if (control.children[i].objectName === 'check')
+                return control.children[i]
+        }
+        return null
+    }
+
+    function getColumnItem(control, name) {
+        for (var i = 0; i < control.children.length; i++) {
+            if (control.children[i].objectName === 'container') {
+                var sub = control.children[i]
+                for (var j = 0; j < sub.children.length; j++) {
+                    if (sub.children[j].objectName === name)
+                        return sub.children[j]
+                }
+            }
+        }
+        return null
     }
 }
 }

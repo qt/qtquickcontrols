@@ -365,7 +365,7 @@ TestCase {
 
         waitForRendering(tab3)
         mouseClick(tab3, tab3.width/2, tab3.height/2)
-        verify(tab3.activeFocus)
+        verify(!tab3.activeFocus)
         verify(!textField.activeFocus)
 
         tabView.destroy()

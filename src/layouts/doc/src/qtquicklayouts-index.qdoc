@@ -52,6 +52,16 @@
 
     \section1 Related information
 
+    \section2 Guides
+     \list
+      \li \l{Qt Quick Layouts Overview}
+     \endlist
+
+    \section2 Examples
+     \list
+      \li \l{Qt Quick Controls - Basic Layouts Example}
+     \endlist
+
     \section2 Reference
      \list
       \li \l{Qt Quick Layouts QML Types}{Qt Quick Layouts QML Types}

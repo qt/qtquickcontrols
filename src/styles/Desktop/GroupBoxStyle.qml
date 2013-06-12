@@ -67,7 +67,7 @@ Style {
         elementType: "groupbox"
         text: control.title
         on: control.checked
-        hasFocus: control.activeFocus
+        hasFocus: control.__checkbox.activeFocus
         activeControl: control.checkable ? "checkbox" : ""
         properties: { "checkable" : control.checkable , "sunken" : !control.flat}
     }

@@ -52,7 +52,6 @@ DocumentHandler::DocumentHandler()
     , m_selectionStart(0)
     , m_selectionEnd(0)
 {
-    setFileUrl(QUrl("qrc:/example.html"));
 }
 
 void DocumentHandler::setTarget(QQuickItem *target)
@@ -91,6 +90,8 @@ void DocumentHandler::setFileUrl(const QUrl &arg)
 
                 emit textChanged();
                 emit documentTitleChanged();
+
+                reset();
             }
         }
         emit fileUrlChanged();
@@ -135,12 +136,18 @@ void DocumentHandler::setCursorPosition(int position)
 
     m_cursorPosition = position;
 
-    emit currentFontChanged();
+    reset();
+}
+
+void DocumentHandler::reset()
+{
+    emit fontFamilyChanged();
     emit alignmentChanged();
     emit boldChanged();
     emit italicChanged();
     emit underlineChanged();
     emit fontSizeChanged();
+    emit textColorChanged();
 }
 
 QTextCursor DocumentHandler::textCursor() const
@@ -260,13 +267,44 @@ void DocumentHandler::setFontSize(int arg)
     emit fontSizeChanged();
 }
 
-QFont DocumentHandler::currentFont() const
+QColor DocumentHandler::textColor() const
 {
     QTextCursor cursor = textCursor();
     if (cursor.isNull())
-        return QFont();
+        return QColor(Qt::black);
     QTextCharFormat format = cursor.charFormat();
-    return format.font();
+    return format.foreground().color();
+}
+
+void DocumentHandler::setTextColor(const QColor &c)
+{
+    QTextCursor cursor = textCursor();
+    if (cursor.isNull())
+        return;
+    QTextCharFormat format;
+    format.setForeground(QBrush(c));
+    mergeFormatOnWordOrSelection(format);
+    emit textColorChanged();
+}
+
+QString DocumentHandler::fontFamily() const
+{
+    QTextCursor cursor = textCursor();
+    if (cursor.isNull())
+        return QString();
+    QTextCharFormat format = cursor.charFormat();
+    return format.font().family();
+}
+
+void DocumentHandler::setFontFamily(const QString &arg)
+{
+    QTextCursor cursor = textCursor();
+    if (cursor.isNull())
+        return;
+    QTextCharFormat format;
+    format.setFontFamily(arg);
+    mergeFormatOnWordOrSelection(format);
+    emit fontFamilyChanged();
 }
 
 QStringList DocumentHandler::defaultFontSizes() const

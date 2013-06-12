@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2013 Tasuku Suzuki <stasuku@gmail.com>
+** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the Qt Quick Controls module of the Qt Toolkit.
@@ -41,25 +41,46 @@
 import QtQuick 2.1
 import QtQuick.Controls 1.0
 
-TableView {
-    height: 120
-    model: 10
-
-    headerVisible: false
-    frameVisible: false
-    rowDelegate: Rectangle {
-        width: parent.width
-        height: 20
+Column {
+    width: 200
+    height: 200
+    property alias control1: _control1
+    property alias control2: _control2
+    GroupBox  {
+        id: _control1
+        title: "control1"
+        checkable: true
+        Column {
+            objectName: "column1"
+            property alias child1: _child1
+            property alias child2: _child2
+            anchors.fill: parent
+            Button {
+                id: _child1
+                text: "child1"
+            }
+            Button {
+                id: _child2
+                text: "child2"
+            }
+        }
     }
-
-    property int test: -1
-    property int testClick: -1
-    property int testDoubleClick: -1
-    onActivated: test = row
-    onClicked: testClick = row
-    onDoubleClicked: testDoubleClick = row
-
-    TableViewColumn {
-        width: 100
+    GroupBox  {
+        id: _control2
+        title: "control2"
+        Column {
+            objectName: "column2"
+            property alias child3: _child3
+            property alias child4: _child4
+            anchors.fill: parent
+            Button {
+                id: _child3
+                text: "child3"
+            }
+            Button {
+                id: _child4
+                text: "child4"
+            }
+        }
     }
 }

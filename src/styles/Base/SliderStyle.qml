@@ -177,7 +177,7 @@ Style {
                 id: handleLoader
                 sourceComponent: handle
                 anchors.verticalCenter: grooveLoader.verticalCenter
-                x: Math.round(control.__handlePos / control.maximumValue * ((horizontal ? root.width : root.height) - item.width))
+                x: Math.round((control.__handlePos - control.minimumValue) / (control.maximumValue - control.minimumValue) * ((horizontal ? root.width : root.height) - item.width))
             }
         }
     }

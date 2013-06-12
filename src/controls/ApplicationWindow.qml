@@ -134,19 +134,19 @@ Window {
         anchors.fill: parent
 
         Item {
-            id: toolBarArea
-            anchors.top: parent.top
-            anchors.left: parent.left
-            anchors.right: parent.right
-            height: childrenRect.height
-        }
-
-        Item {
             id: contentArea
             anchors.top: toolBarArea.bottom
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.bottom: statusBarArea.top
+        }
+
+        Item {
+            id: toolBarArea
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.right: parent.right
+            height: childrenRect.height
         }
 
         Item {
