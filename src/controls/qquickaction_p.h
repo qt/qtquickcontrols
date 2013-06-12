@@ -68,7 +68,7 @@ class QQuickAction : public QObject
 
     Q_PROPERTY(QQuickExclusiveGroup *exclusiveGroup READ exclusiveGroup WRITE setExclusiveGroup NOTIFY exclusiveGroupChanged)
 #ifndef QT_NO_SHORTCUT
-    Q_PROPERTY(QString shortcut READ shortcut WRITE setShortcut NOTIFY shortcutChanged)
+    Q_PROPERTY(QVariant shortcut READ shortcut WRITE setShortcut NOTIFY shortcutChanged)
 #endif
 
 public:
@@ -79,8 +79,8 @@ public:
     void resetText() { setText(QString()); }
     void setText(const QString &text);
 
-    QString shortcut() const;
-    void setShortcut(const QString &shortcut);
+    QVariant shortcut() const;
+    void setShortcut(const QVariant &shortcut);
 
     void setMnemonicFromText(const QString &mnemonic);
 
@@ -121,7 +121,7 @@ Q_SIGNALS:
     void toggled(bool checked);
 
     void textChanged();
-    void shortcutChanged(QString shortcut);
+    void shortcutChanged(QVariant shortcut);
 
     void iconChanged();
     void iconNameChanged();

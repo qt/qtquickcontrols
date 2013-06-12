@@ -156,9 +156,20 @@ QT_BEGIN_NAMESPACE
 */
 
 /*!
-    \qmlproperty string Action::shortcut
+    \qmlproperty keysequence Action::shortcut
 
-    Shortcut bound to the action. Defaults to the empty string.
+    Shortcut bound to the action. The keysequence can be a string
+    or a \l {QKeySequence::StandardKey}{standard key}.
+
+    Defaults to an empty string.
+
+    \qml
+    Action {
+        id: copyAction
+        text: qsTr("&Copy")
+        shortcut: StandardKey.Copy
+    }
+    \endqml
 */
 
 /*! \qmlsignal Action::triggered()
@@ -226,14 +237,19 @@ bool qShortcutContextMatcher(QObject *o, Qt::ShortcutContext context)
     return false;
 }
 
-QString QQuickAction::shortcut() const
+QVariant QQuickAction::shortcut() const
 {
     return m_shortcut.toString(QKeySequence::NativeText);
 }
 
-void QQuickAction::setShortcut(const QString &arg)
+void QQuickAction::setShortcut(const QVariant &arg)
 {
-    QKeySequence sequence = QKeySequence::fromString(arg);
+    QKeySequence sequence;
+    if (arg.type() == QVariant::Int)
+        sequence = QKeySequence(static_cast<QKeySequence::StandardKey>(arg.toInt()));
+    else
+        sequence = QKeySequence::fromString(arg.toString());
+
     if (sequence == m_shortcut)
         return;
 

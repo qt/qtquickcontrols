@@ -42,7 +42,7 @@
 
 
 
-import QtQuick 2.1
+import QtQuick 2.2
 import QtQuick.Controls 1.0
 import QtQuick.Layouts 1.0
 import QtQuick.Dialogs 1.0
@@ -73,7 +73,7 @@ ApplicationWindow {
     Action {
         id: openAction
         text: "&Open"
-        shortcut: "Ctrl+O"
+        shortcut: StandardKey.Open
         iconSource: "images/document-open.png"
         onTriggered: fileDialog.open()
         tooltip: "Open an image"
@@ -82,7 +82,7 @@ ApplicationWindow {
     Action {
         id: copyAction
         text: "&Copy"
-        shortcut: "Ctrl+C"
+        shortcut: StandardKey.Copy
         iconName: "edit-copy"
         enabled: (!!activeFocusItem && !!activeFocusItem["copy"])
         onTriggered: activeFocusItem.copy()
@@ -91,7 +91,7 @@ ApplicationWindow {
     Action {
         id: cutAction
         text: "Cu&t"
-        shortcut: "Ctrl+X"
+        shortcut: StandardKey.Cut
         iconName: "edit-cut"
         enabled: (!!activeFocusItem && !!activeFocusItem["cut"])
         onTriggered: activeFocusItem.cut()
@@ -100,7 +100,7 @@ ApplicationWindow {
     Action {
         id: pasteAction
         text: "&Paste"
-        shortcut: "Ctrl+V"
+        shortcut: StandardKey.Paste
         iconName: "edit-paste"
         enabled: (!!activeFocusItem && !!activeFocusItem["paste"])
         onTriggered: activeFocusItem.paste()
@@ -185,7 +185,7 @@ ApplicationWindow {
             MenuItem { action: openAction }
             MenuItem {
                 text: "Close"
-                shortcut: "Ctrl+Q"
+                shortcut: StandardKey.Quit
                 onTriggered: Qt.quit()
             }
         }

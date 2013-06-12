@@ -178,7 +178,7 @@ class QQuickMenuItem : public QQuickMenuText
     Q_PROPERTY(bool checkable READ checkable WRITE setCheckable NOTIFY checkableChanged)
     Q_PROPERTY(bool checked READ checked WRITE setChecked NOTIFY toggled)
     Q_PROPERTY(QQuickExclusiveGroup *exclusiveGroup READ exclusiveGroup WRITE setExclusiveGroup NOTIFY exclusiveGroupChanged)
-    Q_PROPERTY(QString shortcut READ shortcut WRITE setShortcut NOTIFY shortcutChanged)
+    Q_PROPERTY(QVariant shortcut READ shortcut WRITE setShortcut NOTIFY shortcutChanged)
     Q_PROPERTY(QQuickAction *action READ boundAction WRITE setBoundAction NOTIFY actionChanged)
 
 public Q_SLOTS:
@@ -208,8 +208,8 @@ public:
     QQuickAction *boundAction() { return m_boundAction; }
     void setBoundAction(QQuickAction *a);
 
-    QString shortcut() const;
-    void setShortcut(const QString &shortcut);
+    QVariant shortcut() const;
+    void setShortcut(const QVariant &shortcut);
 
     bool checkable() const;
     void setCheckable(bool checkable);
