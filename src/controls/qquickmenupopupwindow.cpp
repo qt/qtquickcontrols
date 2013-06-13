@@ -66,8 +66,16 @@ void QQuickMenuPopupWindow::show()
             posy = pos.y();
         }
 
-        posx += parentWindow->geometry().left();
-        posy += parentWindow->geometry().top();
+        if (parentWindow->parent()) {
+            // If the parent window is embedded in another window, the offset needs to be relative to
+            // its top-level window container, or to global coordinates, which is the same in the end.
+            QPoint parentWindowOffset = parentWindow->mapToGlobal(QPoint());
+            posx += parentWindowOffset.x();
+            posy += parentWindowOffset.y();
+        } else {
+            posx += parentWindow->geometry().left();
+            posy += parentWindow->geometry().top();
+        }
     }
 
     if (m_itemAt) {
