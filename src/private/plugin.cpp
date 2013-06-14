@@ -91,17 +91,6 @@ void QtQuickControlsPrivatePlugin::registerTypes(const char *uri)
 #ifndef QT_NO_WIDGETS
     qmlRegisterType<QQuickStyleItem>(uri, 1, 0, "StyleItem");
 #endif
-
-    qmlRegisterType(QUrl("qrc:/private/AbstractCheckable.qml"), uri, 1, 0, "AbstractCheckable");
-    qmlRegisterType(QUrl("qrc:/private/BasicButton.qml"), uri, 1, 0, "BasicButton");
-    qmlRegisterType(QUrl("qrc:/private/Control.qml"), uri, 1, 0, "Control");
-    qmlRegisterType(QUrl("qrc:/private/FocusFrame.qml"), uri, 1, 0, "FocusFrame");
-    qmlRegisterType(QUrl("qrc:/private/ModalPopupBehavior.qml"), uri, 1, 0, "ModalPopupBehavior");
-    qmlRegisterType(QUrl("qrc:/private/ScrollBar.qml"), uri, 1, 0, "ScrollBar");
-    qmlRegisterType(QUrl("qrc:/private/ScrollViewHelper.qml"), uri, 1, 0, "ScrollViewHelper");
-    qmlRegisterType(QUrl("qrc:/private/StackViewSlideDelegate.qml"), uri, 1, 0, "StackViewSlideDelegate");
-    qmlRegisterType(QUrl("qrc:/private/Style.qml"), uri, 1, 0, "Style");
-    qmlRegisterType(QUrl("qrc:/private/TabBar.qml"), uri, 1, 0, "TabBar");
 }
 
 QT_END_NAMESPACE

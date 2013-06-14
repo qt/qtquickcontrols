@@ -52,7 +52,7 @@ class QQmlEngine;
 class QQuickControlSettings : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QString style READ style NOTIFY styleChanged)
+    Q_PROPERTY(QUrl style READ style NOTIFY styleChanged)
     Q_PROPERTY(QString styleName READ styleName WRITE setStyleName NOTIFY styleNameChanged)
     Q_PROPERTY(QString stylePath READ stylePath WRITE setStylePath NOTIFY stylePathChanged)
     Q_PROPERTY(qreal dpiScaleFactor READ dpiScaleFactor CONSTANT)
@@ -60,7 +60,7 @@ class QQuickControlSettings : public QObject
 public:
     QQuickControlSettings(QQmlEngine *engine);
 
-    QString style() const;
+    QUrl style() const;
 
     QString styleName() const;
     void setStyleName(const QString &name);
@@ -80,7 +80,6 @@ private:
 
     QString m_name;
     QString m_path;
-    bool m_fromResources;
 };
 
 QT_END_NAMESPACE

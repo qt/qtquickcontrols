@@ -98,34 +98,6 @@ void QtQuickControlsPlugin::registerTypes(const char *uri)
                                                QLatin1String("Do not create objects of type MenuBase"));
 
     qmlRegisterUncreatableType<QQuickStack>(uri, 1, 0, "Stack", QLatin1String("Do not create objects of type Stack"));
-
-    // Controls in resources file
-    qmlRegisterType(QUrl("qrc:/controls/ApplicationWindow.qml"), uri, 1, 0, "ApplicationWindow");
-    qmlRegisterType(QUrl("qrc:/controls/Button.qml"), uri, 1, 0, "Button");
-    qmlRegisterType(QUrl("qrc:/controls/CheckBox.qml"), uri, 1, 0, "CheckBox");
-    qmlRegisterType(QUrl("qrc:/controls/ComboBox.qml"), uri, 1, 0, "ComboBox");
-    qmlRegisterType(QUrl("qrc:/controls/GroupBox.qml"), uri, 1, 0, "GroupBox");
-    qmlRegisterType(QUrl("qrc:/controls/Label.qml"), uri, 1, 0, "Label");
-    qmlRegisterType(QUrl("qrc:/controls/Menu.qml"), uri, 1, 0, "Menu");
-    qmlRegisterType(QUrl("qrc:/controls/MenuBar.qml"), uri, 1, 0, "MenuBar");
-    qmlRegisterType(QUrl("qrc:/controls/ProgressBar.qml"), uri, 1, 0, "ProgressBar");
-    qmlRegisterType(QUrl("qrc:/controls/RadioButton.qml"), uri, 1, 0, "RadioButton");
-    qmlRegisterType(QUrl("qrc:/controls/ScrollView.qml"), uri, 1, 0, "ScrollView");
-    qmlRegisterType(QUrl("qrc:/controls/Slider.qml"), uri, 1, 0, "Slider");
-    qmlRegisterType(QUrl("qrc:/controls/SpinBox.qml"), uri, 1, 0, "SpinBox");
-    qmlRegisterType(QUrl("qrc:/controls/SplitView.qml"), uri, 1, 0, "SplitView");
-    qmlRegisterType(QUrl("qrc:/controls/StackView.qml"), uri, 1, 0, "StackView");
-    qmlRegisterType(QUrl("qrc:/controls/StackViewDelegate.qml"), uri, 1, 0, "StackViewDelegate");
-    qmlRegisterType(QUrl("qrc:/controls/StackViewTransition.qml"), uri, 1, 0, "StackViewTransition");
-    qmlRegisterType(QUrl("qrc:/controls/StatusBar.qml"), uri, 1, 0, "StatusBar");
-    qmlRegisterType(QUrl("qrc:/controls/Tab.qml"), uri, 1, 0, "Tab");
-    qmlRegisterType(QUrl("qrc:/controls/TableView.qml"), uri, 1, 0, "TableView");
-    qmlRegisterType(QUrl("qrc:/controls/TableViewColumn.qml"), uri, 1, 0, "TableViewColumn");
-    qmlRegisterType(QUrl("qrc:/controls/TextField.qml"), uri, 1, 0, "TextField");
-    qmlRegisterType(QUrl("qrc:/controls/TabView.qml"), uri, 1, 0, "TabView");
-    qmlRegisterType(QUrl("qrc:/controls/TextArea.qml"), uri, 1, 0, "TextArea");
-    qmlRegisterType(QUrl("qrc:/controls/ToolBar.qml"), uri, 1, 0, "ToolBar");
-    qmlRegisterType(QUrl("qrc:/controls/ToolButton.qml"), uri, 1, 0, "ToolButton");
 }
 
 void QtQuickControlsPlugin::initializeEngine(QQmlEngine *engine, const char *uri)

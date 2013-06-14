@@ -1,2 +1,28 @@
 module QtQuick.Controls
 plugin qtquickcontrolsplugin
+ApplicationWindow 1.0 ApplicationWindow.qml
+Button 1.0 Button.qml
+CheckBox 1.0 CheckBox.qml
+ComboBox 1.0 ComboBox.qml
+GroupBox 1.0 GroupBox.qml
+Label 1.0 Label.qml
+MenuBar 1.0 MenuBar.qml
+Menu 1.0 Menu.qml
+StackView 1.0 StackView.qml
+ProgressBar 1.0 ProgressBar.qml
+RadioButton 1.0 RadioButton.qml
+ScrollView 1.0 ScrollView.qml
+Slider 1.0 Slider.qml
+SpinBox 1.0 SpinBox.qml
+SplitView 1.0 SplitView.qml
+StackViewDelegate 1.0 StackViewDelegate.qml
+StackViewTransition 1.0 StackViewTransition.qml
+StatusBar 1.0 StatusBar.qml
+Tab 1.0 Tab.qml
+TabView 1.0 TabView.qml
+TableView 1.0 TableView.qml
+TableViewColumn 1.0 TableViewColumn.qml
+TextArea 1.0 TextArea.qml
+TextField 1.0 TextField.qml
+ToolBar 1.0 ToolBar.qml
+ToolButton 1.0 ToolButton.qml
