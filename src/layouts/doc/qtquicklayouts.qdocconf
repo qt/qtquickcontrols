@@ -20,7 +20,7 @@ qhp.QtQuickLayouts.customFilters.Qt.filterAttributes = qtquicklayouts $QT_VERSIO
 qhp.QtQuickLayouts.subprojects = qtquicklayoutsqmltypes
 qhp.QtQuickLayouts.subprojects.qtquicklayoutsqmltypes.title = QML Types
 qhp.QtQuickLayouts.subprojects.qtquicklayoutsqmltypes.indexTitle = Qt Quick Layouts
-qhp.QtQuickLayouts.subprojects.qtquicklayoutsqmltypes.selectors = class fake:qmlClass
+qhp.QtQuickLayouts.subprojects.qtquicklayoutsqmltypes.selectors = class fake:qmlclass
 qhp.QtQuickLayouts.subprojects.qtquicklayoutsqmltypes.sortPages = true
 qhp.QtQuickLayouts.subprojects.qtquicklayoutsqmltypes.type = manual
 
