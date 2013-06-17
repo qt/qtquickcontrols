@@ -741,7 +741,7 @@ ScrollView {
             MouseArea {
                 parent: area.viewport
                 anchors.fill: parent
-                cursorShape: Qt.IBeamCursor
+                cursorShape: edit.hoveredLink ? Qt.PointingHandCursor : Qt.IBeamCursor
                 acceptedButtons: Qt.NoButton
             }
         }

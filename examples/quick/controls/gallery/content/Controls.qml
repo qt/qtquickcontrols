@@ -175,6 +175,7 @@ Item {
                 id: area
                 frameVisible: frameCheckbox.checked
                 text: loremIpsum + loremIpsum
+                textFormat: Qt.RichText
                 wrapMode: wrapCheck.checked ? TextEdit.WordWrap : TextEdit.NoWrap
                 width: contentRow.width - firstColumn.width - contentRow.spacing
                 height: parent.height - group1.height - group2.height - 2 * parent.spacing
