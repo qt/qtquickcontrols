@@ -412,9 +412,7 @@ ScrollView {
         Appends \a string as a new line to the end of the text area.
     */
     function append (string) {
-        if (length)
-            string = "\n" + string
-        text += string
+        edit.append(string)
         __verticalScrollBar.value = __verticalScrollBar.maximumValue
     }
 
