@@ -611,7 +611,7 @@ ScrollView {
     default property alias data: area.data
 
     /*! \internal */
-    property int __documentMargin: 4
+    property alias __documentMargin: edit.textMargin
 
     frameVisible: true
 
@@ -658,19 +658,17 @@ ScrollView {
                 if (layoutRecursionDepth <= 2) {
                     layoutRecursionDepth++
 
-                    var margins = 2 * __documentMargin
-
                     if (wrapMode == TextEdit.NoWrap) {
-                        __horizontalScrollBar.visible = edit.contentWidth > viewport.width - margins
-                        edit.width = Math.max(viewport.width - margins, edit.contentWidth)
+                        __horizontalScrollBar.visible = edit.contentWidth > viewport.width
+                        edit.width = Math.max(viewport.width, edit.contentWidth)
                     } else {
                         __horizontalScrollBar.visible = false
-                        edit.width = viewport.width - margins
+                        edit.width = viewport.width
                     }
-                    edit.height = Math.max(viewport.height - margins, edit.contentHeight)
+                    edit.height = Math.max(viewport.height, edit.contentHeight)
 
-                    flickable.contentWidth = edit.contentWidth + margins
-                    flickable.contentHeight = edit.contentHeight + margins
+                    flickable.contentWidth = edit.contentWidth
+                    flickable.contentHeight = edit.contentHeight
 
                     layoutRecursionDepth--
                 }
@@ -691,8 +689,7 @@ ScrollView {
             selectionColor: palette.highlight
             selectedTextColor: palette.highlightedText
             wrapMode: TextEdit.WordWrap
-            x: __documentMargin
-            y: __documentMargin
+            textMargin: 4
 
             selectByMouse: true
             readOnly: false
@@ -703,15 +700,21 @@ ScrollView {
 
             // keep textcursor within scroll view
             onCursorPositionChanged: {
-                if (cursorRectangle.y >= flickableItem.contentY + viewport.height - 1.5*cursorRectangle.height - __documentMargin)
-                    flickableItem.contentY = cursorRectangle.y - viewport.height + 1.5*cursorRectangle.height + __documentMargin
-                else if (cursorRectangle.y < flickableItem.contentY)
-                    flickableItem.contentY = cursorRectangle.y
+                if (cursorRectangle.y >= flickableItem.contentY + viewport.height - cursorRectangle.height - textMargin) {
+                    // moving down
+                    flickableItem.contentY = cursorRectangle.y - viewport.height +  cursorRectangle.height + textMargin
+                } else if (cursorRectangle.y < flickableItem.contentY) {
+                    // moving up
+                    flickableItem.contentY = cursorRectangle.y - textMargin
+                }
 
-                if (cursorRectangle.x >= flickableItem.contentX + viewport.width - __documentMargin) {
-                    flickableItem.contentX = cursorRectangle.x - viewport.width + __documentMargin
-                } else if (cursorRectangle.x < flickableItem.contentX)
-                    flickableItem.contentX = cursorRectangle.x
+                if (cursorRectangle.x >= flickableItem.contentX + viewport.width - textMargin) {
+                    // moving right
+                    flickableItem.contentX = cursorRectangle.x - viewport.width + textMargin
+                } else if (cursorRectangle.x < flickableItem.contentX) {
+                    // moving left
+                    flickableItem.contentX = cursorRectangle.x - textMargin
+                }
             }
             onLinkActivated: area.linkActivated(link)
 
