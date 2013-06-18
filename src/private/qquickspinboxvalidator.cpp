@@ -51,6 +51,10 @@ QQuickSpinBoxValidator::QQuickSpinBoxValidator(QObject *parent)
     m_validator.setDecimals(0);
     m_validator.setNotation(QDoubleValidator::StandardNotation);
 
+    QLocale locale;
+    locale.setNumberOptions(QLocale::OmitGroupSeparator);
+    setLocale(locale);
+
     connect(this, SIGNAL(valueChanged()), this, SIGNAL(textChanged()));
     connect(this, SIGNAL(minimumValueChanged()), this, SIGNAL(textChanged()));
     connect(this, SIGNAL(maximumValueChanged()), this, SIGNAL(textChanged()));
