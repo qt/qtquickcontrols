@@ -42,32 +42,36 @@ import QtQuick 2.1
 import QtQuick.Controls 1.0
 
 TableView {
+    width:400
     id: table
     model: [{"text": "text1"}, {"text": "text2"}, {"text": "text3"}]
-    property var test: 0
+    property bool _pressed: false
+    property bool _clicked: false
+    property bool _released: false
+    property bool _doubleClicked: false
 
-    property bool activatedTest: false
-    onActivated: activatedTest = true
+    headerVisible: false
+
+    function clearTestData() {
+        _pressed = false
+        _released = false
+        _clicked = false
+        _doubleClicked = false
+    }
 
     TableViewColumn {
-        title: "Text"
+        id: column1
+        title: 'Text'
         role: "text"
-        width: 100
     }
-    headerDelegate: Text {
-        height: 40
-        text: styleData.value
-    }
-    itemDelegate: Text {
-        width: parent.width
-        anchors.left: parent.left
-        anchors.verticalCenter: parent.verticalCenter
-        text: styleData.value !== undefined ? styleData.value : ""
-        color: styleData.textColor
-        MouseArea {
-            anchors.fill: parent
-            onClicked: table.test = 1
-        }
+
+    MouseArea {
+        anchors.fill: parent
+        hoverEnabled: true
+        acceptedButtons: Qt.RightButton
+        onPressed: table._pressed = true
+        onClicked: table._clicked = true
+        onReleased: table._released = true
+        onDoubleClicked: table._doubleClicked = true
     }
 }
-
