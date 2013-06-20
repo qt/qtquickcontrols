@@ -36,56 +36,7 @@
 
     The module is new in Qt 5.1 and requires \l{Qt Quick} 2.1.
 
-    \image qtquickcontrols-example-gallery.png
-
-    \section1 Getting Started
-
-    The QML types can be imported into your application using the following import statement in your \c {.qml} file.
-
-    \code
-     import QtQuick.Controls 1.0
-    \endcode
-
-    A basic example of a QML file that makes use of controls is shown here:
-
-    \code
-    import QtQuick.Controls 1.0
-
-    ApplicationWindow {
-        title: "My Application"
-
-        Button {
-            text: "Push Me"
-            anchors.centerIn: parent
-        }
-    }
-    \endcode
-
-    \section2 Setting Up Controls from C++
-
-    While we traditionally have used a QQuickView window to display QML files
-    in a C++ application, doing this means you can only set window properties from C++.
-
-    With Qt Quick Controls, declare an ApplicationWindow as the root item of your application and launch it by using the
-    QQmlApplicationEngine instead. This ensures that you can control top level window properties from QML.
-
-    A basic example of a source file that makes use of controls is shown here:
-
-    \code
-    #include <QApplication>
-    #include <QQmlApplicationEngine>
-
-    int main(int argc, char *argv[])
-    {
-        QApplication app(argc, argv);
-        QQmlApplicationEngine engine("main.qml");
-        return app.exec();
-    }
-    \endcode
-
-    \note We are using QApplication and not QGuiApplication in this example.
-    Though you can use QGuiApplication instead, doing this will eliminate platform-dependent styling.
-    This is because it is relying on the widget module to provide the native look and feel.
+    Visit the \l{Qt Quick Controls Overview} page to get started.
 
     \section1 Application Window
     Components used to describe the basic window properties of an application.
@@ -105,29 +56,12 @@
 
     \section1 Related information
 
-    \section2 Guides
      \list
+      \li \l{Qt Quick}
       \li \l{Qt Quick Controls Overview}
-     \endlist
-
-    \section2 Reference
-     \list
       \li \l{Qt Quick Controls QML Types}{Qt Quick Controls QML Types}
-     \endlist
-
-    \section2 Examples
-     \list
       \li \l{Qt Quick Controls Examples}
+      \li \l{Qt Quick Controls Styles}
+      \li \l{Qt Quick Layouts}
      \endlist
-
-    \section2 Styles
-    \list
-     \li \l {Qt Quick Controls Styles}
-    \endlist
-
-    \section2 Layouts
-    \list
-     \li \l {Qt Quick Layouts}
-    \endlist
-
 */
