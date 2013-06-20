@@ -122,6 +122,7 @@ QQuickStyleItem::QQuickStyleItem(QQuickItem *parent)
     m_hover(false),
     m_on(false),
     m_horizontal(true),
+    m_transient(false),
     m_sharedWidget(false),
     m_minimum(0),
     m_maximum(100),
@@ -153,6 +154,7 @@ QQuickStyleItem::QQuickStyleItem(QQuickItem *parent)
     connect(this, SIGNAL(minimumChanged()), this, SLOT(updateItem()));
     connect(this, SIGNAL(valueChanged()), this, SLOT(updateItem()));
     connect(this, SIGNAL(horizontalChanged()), this, SLOT(updateItem()));
+    connect(this, SIGNAL(transientChanged()), this, SLOT(updateItem()));
     connect(this, SIGNAL(activeControlChanged()), this, SLOT(updateItem()));
     connect(this, SIGNAL(hasFocusChanged()), this, SLOT(updateItem()));
     connect(this, SIGNAL(activeControlChanged()), this, SLOT(updateItem()));
@@ -606,6 +608,8 @@ void QQuickStyleItem::initStyleOption()
 
         opt->sliderValue = value();
         opt->subControls = QStyle::SC_All;
+
+        setTransient(qApp->style()->styleHint(QStyle::SH_ScrollBar_Transient, m_styleoption));
         break;
     }
     default:
@@ -962,8 +966,6 @@ QVariant QQuickStyleItem::styleHint(const QString &metric)
         return qApp->style()->styleHint(QStyle::SH_ScrollBar_LeftClickAbsolutePosition);
     else if (metric == "activateItemOnSingleClick")
         return qApp->style()->styleHint(QStyle::SH_ItemView_ActivateItemOnSingleClick);
-    else if (metric == "transientScrollBars")
-        return qApp->style()->styleHint(QStyle::SH_ScrollBar_Transient, m_styleoption);
     return 0;
 
     // Add SH_Menu_SpaceActivatesItem, SH_Menu_SubMenuPopupDelay
@@ -1446,6 +1448,9 @@ bool QQuickStyleItem::event(QEvent *ev)
     if (ev->type() == QEvent::StyleAnimationUpdate) {
         polish();
         return true;
+    } else if (ev->type() == QEvent::StyleChange) {
+        if (m_itemType == ScrollBar)
+            initStyleOption();
     }
     return QQuickItem::event(ev);
 }

@@ -40,29 +40,38 @@
 
 import QtQuick 2.1
 import QtQuick.Controls 1.0
-import QtQuick.Controls.Private 1.0
 
-/*!
-    \qmltype FocusFrame
-    \internal
-    \inqmlmodule QtQuick.Controls.Private 1.0
-*/
-Item {
-    id: root
-    activeFocusOnTab: false
-    Accessible.role: Accessible.StatusBar
+TableView {
+    id: table
+    model: 5
+    property bool _pressed: false
+    property bool _clicked: false
+    property bool _released: false
+    property bool _doubleClicked: false
 
-    anchors.topMargin: focusMargin
-    anchors.leftMargin: focusMargin
-    anchors.rightMargin: focusMargin
-    anchors.bottomMargin: focusMargin
+    headerVisible: false
 
-    property int focusMargin: loader.item ? loader.item.margin : -3
+    function clearTestData() {
+        _pressed = false
+        _released = false
+        _clicked = false
+        _doubleClicked = false
+    }
 
-    Loader {
-        id: loader
-        z: 2
-        anchors.fill: parent
-        sourceComponent: Qt.createComponent(Settings.style + "/FocusFrameStyle.qml", root)
+    TableViewColumn {
+        id: column1
+        title: 'Title'
+        role: "text"
+            delegate: Text {
+                text: "left"
+                MouseArea {
+                    acceptedButtons: Qt.LeftButton
+                    anchors.fill: parent
+                    onPressed: table._pressed = true
+                    onClicked: table._clicked = true
+                    onReleased: table._released = true
+                    onDoubleClicked: table._doubleClicked = true
+                }
+            }
     }
 }

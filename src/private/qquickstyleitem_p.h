@@ -62,6 +62,7 @@ class QQuickStyleItem: public QQuickItem
     Q_PROPERTY( bool on READ on WRITE setOn NOTIFY onChanged)
     Q_PROPERTY( bool hover READ hover WRITE setHover NOTIFY hoverChanged)
     Q_PROPERTY( bool horizontal READ horizontal WRITE setHorizontal NOTIFY horizontalChanged)
+    Q_PROPERTY( bool transient READ transient WRITE setTransient NOTIFY transientChanged)
 
     Q_PROPERTY( QString elementType READ elementType WRITE setElementType NOTIFY elementTypeChanged)
     Q_PROPERTY( QString text READ text WRITE setText NOTIFY textChanged)
@@ -130,6 +131,7 @@ public:
     bool on() const { return m_on; }
     bool hover() const { return m_hover; }
     bool horizontal() const { return m_horizontal; }
+    bool transient() const { return m_transient; }
 
     int minimum() const { return m_minimum; }
     int maximum() const { return m_maximum; }
@@ -153,6 +155,7 @@ public:
     void setOn(bool on) { if (m_on != on) {m_on = on ; emit onChanged();}}
     void setHover(bool hover) { if (m_hover != hover) {m_hover = hover ; emit hoverChanged();}}
     void setHorizontal(bool horizontal) { if (m_horizontal != horizontal) {m_horizontal = horizontal; emit horizontalChanged();}}
+    void setTransient(bool transient) { if (m_transient != transient) {m_transient = transient; emit transientChanged();}}
     void setMinimum(int minimum) { if (m_minimum!= minimum) {m_minimum = minimum; emit minimumChanged();}}
     void setMaximum(int maximum) { if (m_maximum != maximum) {m_maximum = maximum; emit maximumChanged();}}
     void setValue(int value) { if (m_value!= value) {m_value = value; emit valueChanged();}}
@@ -198,6 +201,7 @@ Q_SIGNALS:
     void onChanged();
     void hoverChanged();
     void horizontalChanged();
+    void transientChanged();
     void minimumChanged();
     void maximumChanged();
     void stepChanged();
@@ -241,6 +245,7 @@ protected:
     bool m_hover;
     bool m_on;
     bool m_horizontal;
+    bool m_transient;
     bool m_sharedWidget;
 
     int m_minimum;

@@ -258,6 +258,16 @@ Item {
             spinbox.destroy()
         }
 
+        function test_groupSeparators() {
+            var spinbox = Qt.createQmlObject('import QtQuick.Controls 1.0; SpinBox { maximumValue: 1000 }', container, '')
+
+            spinbox.value = 1000
+            // QTBUG-31839: SpinBox displays group separators
+            compare(spinbox.__text.indexOf(Qt.locale().groupSeparator), -1)
+
+            spinbox.destroy()
+        }
+
         function test_stepsize()
         {
             var spinbox = Qt.createQmlObject('import QtQuick.Controls 1.0; SpinBox {}', container, '')

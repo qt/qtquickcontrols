@@ -552,6 +552,20 @@ Control {
         onClicked: textfield.forceActiveFocus()
     }
 
+    Text {
+        id: placeholderTextComponent
+        anchors.fill: textInput
+        font: textInput.font
+        horizontalAlignment: textInput.horizontalAlignment
+        verticalAlignment: textInput.verticalAlignment
+        opacity: !textInput.text.length ? 1 : 0
+        color: __panel ? __panel.placeholderTextColor : "darkgray"
+        clip: true
+        elide: Text.ElideRight
+        renderType: Text.NativeRendering
+        Behavior on opacity { NumberAnimation { duration: 90 } }
+    }
+
     TextInput {
         id: textInput
         focus: true
@@ -573,19 +587,5 @@ Control {
         renderType: Text.NativeRendering
 
         onAccepted: textfield.accepted()
-    }
-
-    Text {
-        id: placeholderTextComponent
-        anchors.fill: textInput
-        font: textInput.font
-        horizontalAlignment: textInput.horizontalAlignment
-        verticalAlignment: textInput.verticalAlignment
-        opacity: !textInput.text.length && !textInput.activeFocus ? 1 : 0
-        color: __panel ? __panel.placeholderTextColor : "darkgray"
-        clip: true
-        elide: Text.ElideRight
-        renderType: Text.NativeRendering
-        Behavior on opacity { NumberAnimation { duration: 90 } }
     }
 }

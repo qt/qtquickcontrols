@@ -40,29 +40,39 @@
 
 import QtQuick 2.1
 import QtQuick.Controls 1.0
-import QtQuick.Controls.Private 1.0
 
-/*!
-    \qmltype FocusFrame
-    \internal
-    \inqmlmodule QtQuick.Controls.Private 1.0
-*/
-Item {
-    id: root
-    activeFocusOnTab: false
-    Accessible.role: Accessible.StatusBar
+TableView {
+    id: table
 
-    anchors.topMargin: focusMargin
-    anchors.leftMargin: focusMargin
-    anchors.rightMargin: focusMargin
-    anchors.bottomMargin: focusMargin
+    headerVisible: false
+    model: ["text1", "text2", "text3"]
 
-    property int focusMargin: loader.item ? loader.item.margin : -3
+    property int tableClickCount: 0
+    property int buttonPressCount: 0
+    property int buttonReleaseCount: 0
+    property int buttonClickCount: 0
 
-    Loader {
-        id: loader
-        z: 2
-        anchors.fill: parent
-        sourceComponent: Qt.createComponent(Settings.style + "/FocusFrameStyle.qml", root)
+    onClicked: ++clickCount
+
+    TableViewColumn {
+        width: 100
+    }
+    rowDelegate: Item {
+        height: 40
+        width: parent.width
+    }
+    itemDelegate: Button {
+        height: 40
+        width: parent.width
+        text: styleData.value
+        activeFocusOnPress: true
+        onClicked: ++table.buttonClickCount
+        onPressedChanged: {
+            if (pressed)
+                ++table.buttonPressCount
+            else
+                ++table.buttonReleaseCount
+        }
     }
 }
+

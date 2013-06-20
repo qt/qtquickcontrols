@@ -245,6 +245,8 @@ ScrollView {
         Mouse activation is triggered by single- or double-clicking, depending on the platform.
 
         \a row int provides access to the activated row index.
+
+        \note This signal is only emitted for mouse interaction that is not blocked in the row or item delegate.
     */
     signal activated(int row)
 
@@ -253,6 +255,8 @@ ScrollView {
         Emitted when the user clicks a valid row by single clicking
 
         \a row int provides access to the clicked row index.
+
+        \note This signal is only emitted if the row or item delegate does not accept mouse events.
     */
     signal clicked(int row)
 
@@ -261,6 +265,8 @@ ScrollView {
         Emitted when the user double clicks a valid row.
 
         \a row int provides access to the clicked row index.
+
+        \note This signal is only emitted if the row or item delegate does not accept mouse events.
     */
     signal doubleClicked(int row)
 
@@ -433,12 +439,13 @@ ScrollView {
             parent: viewport
             anchors.fill: parent
             color: __style ? __style.backgroundColor : palette.base
-            z: -1
+            z: -2
         }
 
         MouseArea {
             id: mousearea
 
+            z: -1
             anchors.fill: listView
             propagateComposedEvents: true
 
@@ -482,7 +489,6 @@ ScrollView {
                         root.activated(clickIndex)
                     root.clicked(clickIndex)
                 }
-                mouse.accepted = false
             }
 
             onPressed: {
@@ -565,7 +571,7 @@ ScrollView {
                 root.activated(currentRow);
         }
 
-        delegate: Item {
+        delegate: FocusScope {
             id: rowitem
             width: itemrow.width
             height: rowstyle.height
@@ -576,6 +582,11 @@ ScrollView {
             readonly property var itemModel: model
             readonly property bool itemSelected: ListView.isCurrentItem
             readonly property color itemTextColor: itemSelected ? __style.highlightedTextColor : __style.textColor
+
+            onActiveFocusChanged: {
+                if (activeFocus)
+                    listView.currentIndex = rowIndex
+            }
 
             Loader {
                 id: rowstyle
