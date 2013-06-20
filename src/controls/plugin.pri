@@ -10,7 +10,6 @@ HEADERS += \
     $$PWD/qquickdesktopiconprovider_p.h
 
 SOURCES += \
-    $$PWD/plugin.cpp \
     $$PWD/qquickaction.cpp \
     $$PWD/qquickexclusivegroup.cpp \
     $$PWD/qquickmenu.cpp \
