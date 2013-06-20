@@ -317,6 +317,7 @@ ApplicationWindow {
         width: parent.width
         anchors.top: secondaryToolBar.bottom
         anchors.bottom: parent.bottom
+        baseUrl: "qrc:/"
         text: document.text
         textFormat: Qt.RichText
         Component.onCompleted: forceActiveFocus()
