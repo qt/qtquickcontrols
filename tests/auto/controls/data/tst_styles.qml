@@ -62,7 +62,7 @@ Item {
 
         function test_createToolButtonStyle() {
             var control = Qt.createQmlObject(
-                        'import QtQuick 2.1; import QtQuick.Controls 1.0; import QtQuick.Controls.Styles.Private 1.0; \
+                        'import QtQuick 2.1; import QtQuick.Controls 1.0; import QtQuick.Controls.Private 1.0; \
                     Rectangle { width: 50; height: 50;  property Component style: ToolButtonStyle {}}'
                         , container, '')
         }
@@ -111,21 +111,21 @@ Item {
 
         function test_createSpinBoxStyle() {
             var control = Qt.createQmlObject(
-                        'import QtQuick 2.1; import QtQuick.Controls 1.0; import QtQuick.Controls.Styles.Private 1.0; \
+                        'import QtQuick 2.1; import QtQuick.Controls 1.0; import QtQuick.Controls.Private 1.0; \
                     Rectangle { width: 50; height: 50;  property Component style: SpinBoxStyle {}}'
                         , container, '')
         }
 
         function test_createToolBarStyle() {
             var control = Qt.createQmlObject(
-                        'import QtQuick 2.1; import QtQuick.Controls 1.0; import QtQuick.Controls.Styles.Private 1.0; \
+                        'import QtQuick 2.1; import QtQuick.Controls 1.0; import QtQuick.Controls.Private 1.0; \
                     Rectangle { width: 50; height: 50;  property Component style: ToolBarStyle {}}'
                         , container, '')
         }
 
         function test_createStatusBarStyle() {
             var control = Qt.createQmlObject(
-                        'import QtQuick 2.1; import QtQuick.Controls 1.0; import QtQuick.Controls.Styles.Private 1.0; \
+                        'import QtQuick 2.1; import QtQuick.Controls 1.0; import QtQuick.Controls.Private 1.0; \
                     Rectangle { width: 50; height: 50;  property Component style: StatusBarStyle {}}'
                         , container, '')
         }
@@ -146,7 +146,7 @@ Item {
 
         function test_createGroupBoxStyle() {
             var control = Qt.createQmlObject(
-                        'import QtQuick 2.1; import QtQuick.Controls 1.0; import QtQuick.Controls.Styles.Private 1.0; \
+                        'import QtQuick 2.1; import QtQuick.Controls 1.0; import QtQuick.Controls.Private 1.0; \
                     Rectangle { width: 50; height: 50;  property Component style: GroupBoxStyle {}}'
                         , container, '')
         }
