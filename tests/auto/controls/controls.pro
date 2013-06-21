@@ -40,4 +40,5 @@ OTHER_FILES += \
     $$PWD/data/tst_checkbox.qml \
     $$PWD/data/tst_groupbox.qml \
     $$PWD/data/tst_splitview.qml \
-    $$PWD/data/tst_styles.qml
+    $$PWD/data/tst_styles.qml \
+    $$PWD/data/tst_layout.qml

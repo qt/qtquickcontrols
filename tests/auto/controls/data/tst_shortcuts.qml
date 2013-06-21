@@ -67,18 +67,19 @@ TestCase {
 
     function test_shortcut_data() {
         return [
-            { key: Qt.Key_A, modifier: Qt.NoModifier, expected: "a pressed" },
-            { key: Qt.Key_B, modifier: Qt.NoModifier, expected: "b pressed" },
-            { key: Qt.Key_C, modifier: Qt.NoModifier, expected: "no key press" },
-            { key: Qt.Key_C, modifier: Qt.ControlModifier, expected: "ctrl c pressed" },
-            { key: Qt.Key_D, modifier: Qt.NoModifier, expected: "d pressed" },
-            { key: Qt.Key_D, modifier: Qt.ControlModifier, expected: "no key press" },
+            { tag: "a_pressed", key: Qt.Key_A, modifier: Qt.NoModifier, expected: "a pressed" },
+            { tag: "b_pressed", key: Qt.Key_B, modifier: Qt.NoModifier, expected: "b pressed" },
+            { tag: "nokey_pressed1", key: Qt.Key_C, modifier: Qt.NoModifier, expected: "no key press" },
+            { tag: "ctrlc_pressed", key: Qt.Key_C, modifier: Qt.ControlModifier, expected: "ctrl c pressed" },
+            { tag: "dpressed", key: Qt.Key_D, modifier: Qt.NoModifier, expected: "d pressed" },
+            { tag: "nokey_pressed2", key: Qt.Key_D, modifier: Qt.ControlModifier, expected: "no key press" },
             // shift d is not triggered because it is overloaded
-            { key: Qt.Key_D, modifier: Qt.ShiftModifier, expected: "no key press" },
-            { key: Qt.Key_D, modifier: Qt.AltModifier, expected: "alt d pressed" },
-            { key: Qt.Key_T, modifier: Qt.NoModifier, expected: "no key press" },
+            { tag: "overloaded", key: Qt.Key_D, modifier: Qt.ShiftModifier, expected: "no key press",
+                        warning: "QQuickAction::event: Ambiguous shortcut overload: Shift+D" },
+            { tag: "aldd_pressed", key: Qt.Key_D, modifier: Qt.AltModifier, expected: "alt d pressed" },
+            { tag: "nokey_pressed3", key: Qt.Key_T, modifier: Qt.NoModifier, expected: "no key press" },
             // on mac we don't have mnemonics
-            { key: Qt.Key_T, modifier: Qt.AltModifier, expected: Qt.platform.os === "osx" ? "no key press" : "alt t pressed" },
+            { tag: "mnemonics", key: Qt.Key_T, modifier: Qt.AltModifier, expected: Qt.platform.os === "osx" ? "no key press" : "alt t pressed" },
         ]
     }
 
@@ -88,6 +89,12 @@ TestCase {
         var text = rootObject.children[0];
         text.text = "no key press";
 
+        if (data.warning !== undefined) {
+            if (Qt.platform.os === "osx" && data.tag === "overloaded")
+                ignoreWarning("QQuickAction::event: Ambiguous shortcut overload: ?D") // QTBUG_32089
+            else
+                ignoreWarning(data.warning)
+        }
         keyPress(data.key, data.modifier);
 
         verify(text != undefined);

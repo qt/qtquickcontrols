@@ -55,7 +55,7 @@ TestCase {
     height:400
 
     function test_createStatusBar() {
-        var statusBar = Qt.createQmlObject('import QtQuick.Controls 1.0; StatusBar {}', testCase, '');
+        var statusBar = Qt.createQmlObject('import QtQuick.Controls 1.0; StatusBar {}', container, '');
         statusBar.destroy()
     }
 
