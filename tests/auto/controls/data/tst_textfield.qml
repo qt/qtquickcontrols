@@ -200,11 +200,14 @@ TestCase {
         textfield.destroy()
     }
 
-    function copy() {
+    function test_copyPaste() {
         var textfield = Qt.createQmlObject('import QtQuick.Controls 1.0; TextField {}', testCase, '')
         textfield.text = "this is my text"
         textfield.select(0, 5)
         textfield.copy()
+        textfield.cursorPosition = 0
+        textfield.paste()
+        compare(textfield.text, "this this is my text")
         textfield.destroy()
     }
 
