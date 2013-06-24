@@ -149,7 +149,7 @@ ScrollViewStyle {
             anchors.verticalCenter: parent.verticalCenter
             anchors.verticalCenterOffset: 1
             elide: styleData.elideMode
-            text: styleData.value != undefined ? styleData.value : ""
+            text: styleData.value !== undefined ? styleData.value : ""
             color: styleData.textColor
             renderType: Text.NativeRendering
         }
