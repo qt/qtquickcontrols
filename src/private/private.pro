@@ -3,24 +3,9 @@ TARGETPATH = QtQuick/Controls/Private
 
 QT += qml quick gui-private core-private
 
-HEADERS += \
-    $$PWD/qquicktooltip_p.h \
-    $$PWD/qquickspinboxvalidator_p.h \
-    $$PWD/qquickrangemodel_p.h \
-    $$PWD/qquickrangemodel_p_p.h \
-    $$PWD/qquickcontrolsettings_p.h \
-    $$PWD/qquickwheelarea_p.h \
-    $$PWD/qquickabstractstyle_p.h \
-    $$PWD/qquickpadding_p.h
+include(private.pri)
 
-SOURCES += \
-    $$PWD/plugin.cpp \
-    $$PWD/qquicktooltip.cpp \
-    $$PWD/qquickspinboxvalidator.cpp \
-    $$PWD/qquickrangemodel.cpp \
-    $$PWD/qquickcontrolsettings.cpp \
-    $$PWD/qquickwheelarea.cpp \
-    $$PWD/qquickabstractstyle.cpp
+SOURCES += $$PWD/plugin.cpp
 
 # private qml files
 QML_FILES += \
@@ -36,13 +21,6 @@ QML_FILES += \
     ScrollViewHelper.qml \
     ScrollBar.qml \
     FocusFrame.qml
-
-
-qtHaveModule(widgets) {
-    QT += widgets
-    HEADERS += $$PWD/qquickstyleitem_p.h
-    SOURCES += $$PWD/qquickstyleitem.cpp
-}
 
 mac {
     LIBS += -framework Carbon

@@ -14,7 +14,7 @@ qhp.QtQuickControlsStyles.indexTitle    = Qt Quick Controls Styles
 qhp.QtQuickControlsStyles.indexRoot     =
 #qhp.QtQuickControlsStyles.extraFiles = style/qtquickcontrolsstyles.css
 
-qhp.QtQuickControlsStyles.filterAttributes    = qtcontrolsstyles $QT_VERSION qtrefdoc
+qhp.QtQuickControlsStyles.filterAttributes    = qtquickcontrolsstyles $QT_VERSION qtrefdoc
 qhp.QtQuickControlsStyles.customFilters.Qt.name = QtQuickControlsStyles $QT_VERSION
 qhp.QtQuickControlsStyles.customFilters.Qt.filterAttributes = qtquickcontrolsstyles $QT_VERSION
 

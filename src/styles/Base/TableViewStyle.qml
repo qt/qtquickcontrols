@@ -131,7 +131,7 @@ ScrollViewStyle {
         }
     }
 
-    /*! \qmlproperty Component TableViewStyle::rowDelegate
+    /*! \qmlproperty Component TableViewStyle::itemDelegate
     Delegate for item. This delegate is described in \l {TableView::itemDelegate}
     */
     property Component itemDelegate: Item {

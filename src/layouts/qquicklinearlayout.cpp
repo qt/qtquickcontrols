@@ -67,6 +67,8 @@
         \li \l{Layout::fillHeight}{Layout.fillHeight}
         \li \l{Layout::alignment}{Layout.alignment}
     \endlist
+
+    Read more about attached properties \l{QML Object Attributes}{here}.
     \sa ColumnLayout
     \sa GridLayout
     \sa Row
@@ -94,6 +96,8 @@
         \li \l{Layout::fillHeight}{Layout.fillHeight}
         \li \l{Layout::alignment}{Layout.alignment}
     \endlist
+
+    Read more about attached properties \l{QML Object Attributes}{here}.
 
     \sa RowLayout
     \sa GridLayout
@@ -159,6 +163,8 @@
         \li \l{Layout::fillHeight}{Layout.fillHeight}
         \li \l{Layout::alignment}{Layout.alignment}
     \endlist
+
+    Read more about attached properties \l{QML Object Attributes}{here}.
 
     \sa RowLayout
     \sa ColumnLayout

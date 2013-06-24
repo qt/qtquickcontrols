@@ -10,3 +10,10 @@ ScrollViewHelper 1.0 ScrollViewHelper.qml
 Style 1.0 Style.qml
 TabBar 1.0 TabBar.qml
 StackViewSlideDelegate 1.0 StackViewSlideDelegate.qml
+StyleHelpers 1.0 style.js
+JSArray 1.0 StackView.js
+GroupBoxStyle 1.0 ../Styles/Base/GroupBoxStyle.qml
+SpinBoxStyle 1.0 ../Styles/Base/SpinBoxStyle.qml
+ToolBarStyle 1.0 ../Styles/Base/ToolBarStyle.qml
+StatusBarStyle 1.0 ../Styles/Base/StatusBarStyle.qml
+ToolButtonStyle 1.0 ../Styles/Base/ToolButtonStyle.qml

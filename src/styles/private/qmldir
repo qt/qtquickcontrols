@@ -1,7 +1,0 @@
-module QtQuick.Controls.Styles.Private
-
-GroupBoxStyle 1.0 ../Base/GroupBoxStyle.qml
-SpinBoxStyle 1.0 ../Base/SpinBoxStyle.qml
-ToolBarStyle 1.0 ../Base/ToolBarStyle.qml
-StatusBarStyle 1.0 ../Base/StatusBarStyle.qml
-ToolButtonStyle 1.0 ../Base/ToolButtonStyle.qml

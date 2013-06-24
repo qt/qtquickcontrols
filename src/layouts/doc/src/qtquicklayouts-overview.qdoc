@@ -33,6 +33,13 @@
     Qt Quick Layouts are items that are used to arrange items in a user interface. Since Qt Quick
     Layouts also resize their items, they are well suited for resizable user interfaces.
 
+    \section1 Getting started
+
+    The QML types can be imported into your application using the following import statement in your \c {.qml} file.
+
+    \code
+     import QtQuick.Layouts 1.0
+    \endcode
 
     \section1 Key Features
 

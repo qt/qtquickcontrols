@@ -33,6 +33,8 @@ QML_FILES = \
     ToolBar.qml \
     ToolButton.qml
 
+SOURCES += $$PWD/plugin.cpp
+
 include(plugin.pri)
 
 CONFIG += no_cxx_module

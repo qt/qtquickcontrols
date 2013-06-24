@@ -46,6 +46,7 @@
 #include "qquickcontrolsettings_p.h"
 #include "qquickspinboxvalidator_p.h"
 #include "qquickabstractstyle_p.h"
+#include "qquickcontrolsprivate_p.h"
 
 #ifndef QT_NO_WIDGETS
 #include "qquickstyleitem_p.h"
@@ -55,20 +56,6 @@
 #include <qqmlextensionplugin.h>
 
 QT_BEGIN_NAMESPACE
-
-static QObject *registerTooltipModule(QQmlEngine *engine, QJSEngine *jsEngine)
-{
-    Q_UNUSED(engine);
-    Q_UNUSED(jsEngine);
-    return new QQuickTooltip();
-}
-
-static QObject *registerSettingsModule(QQmlEngine *engine, QJSEngine *jsEngine)
-{
-    Q_UNUSED(engine);
-    Q_UNUSED(jsEngine);
-    return new QQuickControlSettings(engine);
-}
 
 class QtQuickControlsPrivatePlugin : public QQmlExtensionPlugin
 {
@@ -86,8 +73,8 @@ void QtQuickControlsPrivatePlugin::registerTypes(const char *uri)
     qmlRegisterType<QQuickRangeModel>(uri, 1, 0, "RangeModel");
     qmlRegisterType<QQuickWheelArea>(uri, 1, 0, "WheelArea");
     qmlRegisterType<QQuickSpinBoxValidator>(uri, 1, 0, "SpinBoxValidator");
-    qmlRegisterSingletonType<QQuickTooltip>(uri, 1, 0, "Tooltip", registerTooltipModule);
-    qmlRegisterSingletonType<QQuickControlSettings>(uri, 1, 0, "Settings", registerSettingsModule);
+    qmlRegisterSingletonType<QQuickTooltip>(uri, 1, 0, "Tooltip", QQuickControlsPrivate::registerTooltipModule);
+    qmlRegisterSingletonType<QQuickControlSettings>(uri, 1, 0, "Settings", QQuickControlsPrivate::registerSettingsModule);
 #ifndef QT_NO_WIDGETS
     qmlRegisterType<QQuickStyleItem>(uri, 1, 0, "StyleItem");
 #endif
