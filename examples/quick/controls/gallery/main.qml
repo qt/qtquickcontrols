@@ -228,7 +228,7 @@ ApplicationWindow {
         enabled: enabledCheck.checked
         tabPosition: controlPage.item ? controlPage.item.tabPosition : Qt.TopEdge
         anchors.fill: parent
-        anchors.margins: Qt.platform.os === "mac" ? 12 : 2
+        anchors.margins: Qt.platform.os === "osx" ? 12 : 2
 
         Tab {
             id: controlPage

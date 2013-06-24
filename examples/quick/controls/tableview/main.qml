@@ -129,7 +129,7 @@ Window {
             focus:true
             enabled: enabledCheck.checked
 
-            property int margins: Qt.platform.os === "mac" ? 16 : 0
+            property int margins: Qt.platform.os === "osx" ? 16 : 0
 
             height: parent.height - 34
             anchors.right: parent.right
