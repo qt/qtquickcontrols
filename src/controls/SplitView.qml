@@ -84,6 +84,9 @@ import QtQuick.Controls.Private 1.0 as Private
         \li \l{Layout::fillHeight}{Layout.fillHeight} (\c true for only one child)
     \endlist
 
+    \note Please import QtQuick.Layout 1.0 in your QML file in order to use the Layout
+    attached properties inside SplitView.
+
     Example:
 
     To create a SplitView with three items, and let the center item get superfluous space, one
