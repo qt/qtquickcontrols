@@ -32,3 +32,5 @@ headerdirs += ..
 sourcedirs += ..
 
 imagedirs += images
+
+navigation.landingpage = "Qt Quick Layouts"
