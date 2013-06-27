@@ -217,20 +217,20 @@ TestCase {
     }
 
     function test_activeFocusOnPress(){
-        if (Qt.platform.os === "mac")
+        if (Qt.platform.os === "osx")
             skip("When the menu pops up on OS X, it does not return and the test fails after time out")
 
         var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.0 ; ComboBox { model: 4 }', container, '');
         comboBox.activeFocusOnPress = false
         verify(!comboBox.activeFocus)
-        if (Qt.platform.os === "mac") // on mac when the menu open, the __popup function does not return
+        if (Qt.platform.os === "osx") // on mac when the menu open, the __popup function does not return
             timer.start()
         else // two mouse clicks to open and close the popup menu
             mouseClick(comboBox, comboBox.x + 1, comboBox.y + 1)
         mouseClick(comboBox, comboBox.x + 1, comboBox.y + 1)
         verify(!comboBox.activeFocus)
         comboBox.activeFocusOnPress = true
-        if (Qt.platform.os === "mac") // on mac when the menu open, the __popup function does not return
+        if (Qt.platform.os === "osx") // on mac when the menu open, the __popup function does not return
             timer.start()
         else // two mouse clicks to open and close the popup menu
             mouseClick(comboBox, comboBox.x + 1, comboBox.y + 1)
@@ -240,7 +240,7 @@ TestCase {
     }
 
     function test_spaceKey(){
-        if (Qt.platform.os === "mac")
+        if (Qt.platform.os === "osx")
             skip("When the menu pops up on OS X, it does not return and the test fails after time out")
 
         var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.0 ; ComboBox { model: 4 }', container, '');
@@ -259,7 +259,7 @@ TestCase {
     }
 
     function test_currentIndexInMenu() {
-        if (Qt.platform.os === "mac")
+        if (Qt.platform.os === "osx")
             skip("When the menu pops up on OS X, it does not return and the test fails after time out")
 
         var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.0 ; ComboBox { model: 4 }', container, '');

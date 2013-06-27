@@ -78,7 +78,7 @@ TestCase {
             { key: Qt.Key_D, modifier: Qt.AltModifier, expected: "alt d pressed" },
             { key: Qt.Key_T, modifier: Qt.NoModifier, expected: "no key press" },
             // on mac we don't have mnemonics
-            { key: Qt.Key_T, modifier: Qt.AltModifier, expected: Qt.platform.os === "mac" ? "no key press" : "alt t pressed" },
+            { key: Qt.Key_T, modifier: Qt.AltModifier, expected: Qt.platform.os === "osx" ? "no key press" : "alt t pressed" },
         ]
     }
 

@@ -51,7 +51,7 @@ Item {
     width: 600
     height: 300
     anchors.fill: parent
-    anchors.margins: Qt.platform.os === "mac" ? 12 : 6
+    anchors.margins: Qt.platform.os === "osx" ? 12 : 6
 
 //    XmlListModel {
 //        id: flickerModel

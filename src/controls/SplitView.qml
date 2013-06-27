@@ -76,13 +76,14 @@ import QtQuick.Controls.Private 1.0 as Private
     \list
         \li \l{Layout::minimumWidth}{Layout.minimumWidth}
         \li \l{Layout::minimumHeight}{Layout.minimumHeight}
-        \li \l{Layout::preferredWidth}{Layout.preferredWidth}
-        \li \l{Layout::preferredHeight}{Layout.preferredHeight}
         \li \l{Layout::maximumWidth}{Layout.maximumWidth}
         \li \l{Layout::maximumHeight}{Layout.maximumHeight}
         \li \l{Layout::fillWidth}{Layout.fillWidth} (\c true for only one child)
         \li \l{Layout::fillHeight}{Layout.fillHeight} (\c true for only one child)
     \endlist
+
+    \note Please import QtQuick.Layout 1.0 in your QML file in order to use the Layout
+    attached properties inside SplitView.
 
     Example:
 
