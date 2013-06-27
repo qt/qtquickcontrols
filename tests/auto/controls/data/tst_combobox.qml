@@ -311,6 +311,34 @@ TestCase {
         comboBox.destroy()
     }
 
+    function test_stringListModel() {
+        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.0 ; ComboBox { }', testCase, '');
+        comboBox.model = model_qstringlist;
+        compare(comboBox.currentIndex, 0)
+        compare(comboBox.currentText, "A")
+        comboBox.currentIndex = 1
+        compare(comboBox.currentIndex, 1)
+        compare(comboBox.currentText, "B")
+        comboBox.currentIndex = 2
+        compare(comboBox.currentIndex, 2)
+        compare(comboBox.currentText, "C")
+        comboBox.destroy()
+    }
+
+    function test_variantListModel() {
+        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.0 ; ComboBox { }', testCase, '');
+        comboBox.model = model_qvarlist;
+        compare(comboBox.currentIndex, 0)
+        compare(comboBox.currentText, "3")
+        comboBox.currentIndex = 1
+        compare(comboBox.currentIndex, 1)
+        compare(comboBox.currentText, "2")
+        comboBox.currentIndex = 2
+        compare(comboBox.currentIndex, 2)
+        compare(comboBox.currentText, "1")
+        comboBox.destroy()
+    }
+
     function getMenuIndex(control) {
         var index = -1
         for (var i = 0; i < control.data.length; i++)

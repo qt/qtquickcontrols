@@ -184,7 +184,7 @@ Control {
 
             var get = model['get'];
             if (!get && popup.__modelIsArray) {
-                if (model[0].constructor !== String) // arrays of strings don't have textRole
+                if (model[0].constructor !== String && model[0].constructor !== Number)
                     get = function(i) { return model[i]; }
             }
 
@@ -197,6 +197,8 @@ Control {
                 var roleName = ""
                 var roleCount = 0
                 for (var role in listElement) {
+                    if (listElement[role].constructor === Function)
+                        continue;
                     if (role === "text") {
                         roleName = role
                         break
@@ -213,7 +215,6 @@ Control {
             }
             popupItems.active = true
         }
-
         function show() {
             if (items[__selectedIndex])
                 items[__selectedIndex].checked = true
