@@ -41,7 +41,6 @@
 
 #include "qquickrangemodel_p.h"
 #include "qquickwheelarea_p.h"
-#include "qquickstyleitem_p.h"
 #include "qquicktooltip_p.h"
 #include "qquickcontrolsettings_p.h"
 #include "qquickspinboxvalidator_p.h"
