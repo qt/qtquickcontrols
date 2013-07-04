@@ -363,6 +363,7 @@ TestCase {
         compare(column.__view, tableView)
         compare(column.width, tableView.viewport.width)
         var tableView2 = Qt.createQmlObject('import QtQuick 2.1; import QtQuick.Controls 1.0; TableView { }', testCase, '');
+        ignoreWarning("TableView::insertColumn(): you cannot add a column to multiple views")
         tableView2.addColumn(column) // should not work
         compare(column.__view, tableView) //same as before
         tableView2.destroy()
@@ -452,11 +453,11 @@ TestCase {
             {tag:"2->1 (2)", from: 2, to: 1},
 
             {tag:"0->0", from: 0, to: 0},
-            {tag:"-1->0", from: -1, to: 0},
-            {tag:"0->-1", from: 0, to: -1},
-            {tag:"1->10", from: 1, to: 10},
-            {tag:"10->2", from: 10, to: 2},
-            {tag:"10->-1", from: 10, to: -1}
+                    {tag:"-1->0", from: -1, to: 0, warning: "TableView::moveColumn(): invalid argument"},
+            {tag:"0->-1", from: 0, to: -1, warning: "TableView::moveColumn(): invalid argument"},
+            {tag:"1->10", from: 1, to: 10, warning: "TableView::moveColumn(): invalid argument"},
+            {tag:"10->2", from: 10, to: 2, warning: "TableView::moveColumn(): invalid argument"},
+            {tag:"10->-1", from: 10, to: -1, warning: "TableView::moveColumn(): invalid argument"}
         ]
     }
 
@@ -474,6 +475,8 @@ TestCase {
         for (i = 0; i < tableView.columnCount; ++i)
             compare(tableView.getColumn(i).title, titles[i])
 
+        if (data.warning !== undefined)
+            ignoreWarning(data.warning)
         tableView.moveColumn(data.from, data.to)
 
         compare(tableView.columnCount, titles.length)

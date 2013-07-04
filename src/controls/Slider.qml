@@ -217,6 +217,8 @@ Control {
         hoverEnabled: true
         anchors.centerIn: parent
 
+        preventStealing: true
+
         width: parent.width
         height: parent.height
 

@@ -55,7 +55,7 @@ TestCase {
     height:400
 
     function test_createToolBar() {
-        var toolBar = Qt.createQmlObject('import QtQuick.Controls 1.0; ToolBar {}', testCase, '');
+        var toolBar = Qt.createQmlObject('import QtQuick.Controls 1.0; ToolBar {}', container, '');
         toolBar.destroy()
     }
 

@@ -68,4 +68,9 @@ void TestPlugin::initializeEngine(QQmlEngine *engine, const char * /*uri*/)
     model_qstringlist << QStringLiteral("C");
     engine->rootContext()->setContextProperty("model_qstringlist", model_qstringlist);
 
+    QList<QVariant> model_qvarlist;
+    model_qvarlist << 3;
+    model_qvarlist << 2;
+    model_qvarlist << 1;
+    engine->rootContext()->setContextProperty("model_qvarlist", model_qvarlist);
 }
