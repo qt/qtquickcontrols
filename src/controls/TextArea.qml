@@ -632,8 +632,11 @@ ScrollView {
     /*! \internal */
     default property alias data: area.data
 
-    /*! \internal */
-    property alias __documentMargin: edit.textMargin
+    /*! \qmlproperty int TextArea::textMargin
+
+        The margin, in pixels, around the text in the TextArea.
+    */
+    property alias textMargin: edit.textMargin
 
     frameVisible: true
 
