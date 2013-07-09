@@ -163,12 +163,13 @@ Item {
     Component.onCompleted: d.init()
     onWidthChanged: d.updateLayout()
     onHeightChanged: d.updateLayout()
+    onOrientationChanged: d.changeOrientation()
 
     SystemPalette { id: pal }
 
     QtObject {
         id: d
-        readonly property bool horizontal: orientation == Qt.Horizontal
+        property bool horizontal: orientation == Qt.Horizontal
         readonly property string minimum: horizontal ? "minimumWidth" : "minimumHeight"
         readonly property string maximum: horizontal ? "maximumWidth" : "maximumHeight"
         readonly property string otherMinimum: horizontal ? "minimumHeight" : "minimumWidth"
@@ -222,6 +223,39 @@ Item {
 
             d.fillIndex = i
             d.updateLayout()
+        }
+
+        function changeOrientation()
+        {
+            if (__items.length == 0)
+                return;
+            d.updateLayoutGuard = true
+
+            // Swap width/height for items and handles:
+            for (var i=0; i<__items.length; ++i) {
+                var item = __items[i]
+                var tmp = item.x
+                item.x = item.y
+                item.y = tmp
+                tmp = item.width
+                item.width = item.height
+                item.height = tmp
+
+                var handle = __handles[i]
+                if (handle) {
+                    tmp = handle.x
+                    handle.x = handle.y
+                    handle.y = handle.x
+                    tmp = handle.width
+                    handle.width = handle.height
+                    handle.height = tmp
+                }
+            }
+
+            // Change d.horizontal explicit, since the binding will change too late:
+            d.horizontal = orientation == Qt.Horizontal
+            d.updateLayoutGuard = false
+            d.updateFillIndex()
         }
 
         function calculateImplicitSize()
