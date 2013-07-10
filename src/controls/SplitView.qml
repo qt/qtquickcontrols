@@ -213,7 +213,7 @@ Item {
 
         function updateFillIndex()
         {
-            if (!lastItem.visible)
+            if (lastItem.visible !== root.visible)
                 return
             var policy = (root.orientation === Qt.Horizontal) ? "fillWidth" : "fillHeight"
             for (var i=0; i<__items.length-1; ++i) {
@@ -294,7 +294,7 @@ Item {
             var w = 0
             for (var i=firstIndex; i<lastIndex; ++i) {
                 var item = __items[i]
-                if (item.visible) {
+                if (item.visible || i == d.fillIndex) {
                     if (i !== d.fillIndex)
                         w += item[d.size];
                     else if (includeFillItemMinimum && item.Layout[minimum] !== undefined)
@@ -344,7 +344,7 @@ Item {
             for (i=0; i<__items.length; ++i) {
                 // Position item to the right of the previous visible handle:
                 item = __items[i];
-                if (item.visible) {
+                if (item.visible || i == d.fillIndex) {
                     item[d.offset] = lastVisibleHandle ? lastVisibleHandle[d.offset] + lastVisibleHandle[d.size] : 0
                     item[d.otherOffset] = 0
                     item[d.otherSize] = clampedMinMax(root[otherSize], item.Layout[otherMinimum], item.Layout[otherMaximum])
@@ -377,7 +377,8 @@ Item {
                 readonly property bool resizing: mouseArea.drag.active
                 onResizingChanged: root.resizing = resizing
             }
-            visible: __items[__handleIndex + ((d.fillIndex > __handleIndex) ? 0 : 1)].visible
+            property bool resizeLeftItem: (d.fillIndex > __handleIndex)
+            visible: __items[__handleIndex + (resizeLeftItem ? 0 : 1)].visible
             sourceComponent: handleDelegate
             onWidthChanged: d.updateLayout()
             onHeightChanged: d.updateLayout()
@@ -409,8 +410,7 @@ Item {
                 var leftEdge, rightEdge, newWidth, leftStopX, rightStopX
                 var i
 
-                if (d.fillIndex > __handleIndex) {
-                    // Resize item to the left.
+                if (resizeLeftItem) {
                     // Ensure that the handle is not crossing other handles. So
                     // find the first visible handle to the left to determine the left edge:
                     leftEdge = 0
