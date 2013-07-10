@@ -301,7 +301,7 @@ Item {
                         w += item.Layout[minimum]
 
                     var handle = __handles[i]
-                    if (handle)
+                    if (handle && handle.visible)
                         w += handle[d.size]
                 }
             }
@@ -351,7 +351,7 @@ Item {
                     lastVisibleItem = item
 
                     handle = __handles[i]
-                    if (handle) {
+                    if (handle && handle.visible) {
                         handle[d.offset] = lastVisibleItem[d.offset] + Math.max(0, lastVisibleItem[d.size])
                         handle[d.otherOffset] = 0
                         handle[d.otherSize] = root[d.otherSize]
@@ -377,7 +377,7 @@ Item {
                 readonly property bool resizing: mouseArea.drag.active
                 onResizingChanged: root.resizing = resizing
             }
-            visible: __items[__handleIndex + ((d.fillIndex >= __handleIndex) ? 0 : 1)].visible
+            visible: __items[__handleIndex + ((d.fillIndex > __handleIndex) ? 0 : 1)].visible
             sourceComponent: handleDelegate
             onWidthChanged: d.updateLayout()
             onHeightChanged: d.updateLayout()

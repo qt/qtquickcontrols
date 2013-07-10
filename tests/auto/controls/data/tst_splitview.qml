@@ -140,4 +140,42 @@ TestCase {
         compare (view.item2.height, 500)
         view.destroy()
     }
+
+    function test_04_hide_item()
+    {
+        var component = splitView
+        var view = component.createObject(testCase);
+        verify (view.item1.visible)
+        verify (view.item2.visible)
+        view.item1.visible = false
+        verify (view.item1.visible === false)
+
+        compare (view.item1.x, 0)
+        compare (view.item1.y, 0)
+        compare (view.item1.width, 100)
+        compare (view.item1.height, 500)
+        compare (view.item2.x, 0)
+        compare (view.item2.y, 0)
+        compare (view.item2.width, testCase.width)
+        compare (view.item2.height, 500)
+    }
+
+    function test_05_hide_fillWidth_item()
+    {
+        var component = splitView
+        var view = component.createObject(testCase);
+        verify (view.item1.visible)
+        verify (view.item2.visible)
+        view.item2.visible = false
+        verify (view.item2.visible === false)
+
+        compare (view.item1.x, 0)
+        compare (view.item1.y, 0)
+        compare (view.item1.width, 100)
+        compare (view.item1.height, 500)
+        compare (view.item2.x, view.item1.x + view.item1.width + handleWidth)
+        compare (view.item2.y, 0)
+        compare (view.item2.width, testCase.width - view.item1.width - handleWidth)
+        compare (view.item2.height, 500)
+    }
 }
