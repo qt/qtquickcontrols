@@ -524,5 +524,73 @@ Item {
             layout.destroy();
         }
 
+
+        Component {
+            id: layout_rightToLeft_Component
+            GridLayout {
+                layoutDirection: Qt.RightToLeft
+                columnSpacing: 0
+                rowSpacing: 0
+                columns: 3
+                Rectangle {
+                    color: "#cbffc4"
+                    Layout.preferredWidth: 50
+                    Layout.preferredHeight: 50
+                    Layout.alignment: Qt.AlignCenter
+                }
+                Rectangle {
+                    color: "#c4d1ff"
+                    Layout.preferredWidth: 50
+                    Layout.preferredHeight: 50
+                    Layout.alignment: Qt.AlignRight
+                }
+                Rectangle {
+                    color: "#ffd5c4"
+                    Layout.preferredWidth: 50
+                    Layout.preferredHeight: 50
+                    Layout.alignment: Qt.AlignLeft
+                }
+            }
+        }
+
+        function verifyIsRightToLeft(layout)
+        {
+            compare(itemRect(layout.children[0]), [125, 0, 50, 50]);
+            compare(itemRect(layout.children[1]), [60,  0, 50, 50]);
+            compare(itemRect(layout.children[2]), [10,  0, 50, 50]);
+        }
+
+        function verifyIsLeftToRight(layout)
+        {
+            compare(itemRect(layout.children[0]), [5,   0, 50, 50]);
+            compare(itemRect(layout.children[1]), [70,  0, 50, 50]);
+            compare(itemRect(layout.children[2]), [120, 0, 50, 50]);
+        }
+
+        function test_rightToLeft()
+        {
+            var layout = layout_rightToLeft_Component.createObject(container);
+            layout.width = 180;
+            layout.height = 50;
+
+            // Right To Left
+            verifyIsRightToLeft(layout)
+            layout.LayoutMirroring.enabled = true
+            layout.layoutDirection = Qt.LeftToRight
+            waitForRendering(layout)
+            verifyIsRightToLeft(layout)
+
+
+            // Left To Right
+            layout.LayoutMirroring.enabled = false
+            layout.layoutDirection = Qt.LeftToRight
+            waitForRendering(layout)
+            layout.LayoutMirroring.enabled = true
+            layout.layoutDirection = Qt.RightToLeft
+            waitForRendering(layout)
+
+            layout.destroy();
+        }
+
     }
 }

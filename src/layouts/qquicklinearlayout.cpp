@@ -216,6 +216,42 @@ QSizeF QQuickGridLayoutBase::sizeHint(Qt::SizeHint whichSizeHint) const
     return d->engine.sizeHint(whichSizeHint, QSizeF());
 }
 
+/*!
+    \qmlproperty enumeration GridLayout::layoutDirection
+
+    This property holds the layout direction of the grid layout - it controls whether items are
+    laid out from left ro right or right to left. If \c Qt.RightToLeft is specified,
+    left-aligned items will be right-aligned and right-aligned items will be left-aligned.
+
+    Possible values:
+
+    \list
+    \li Qt.LeftToRight (default) - Items are laid out from left to right.
+    \li Qt.RightToLeft - Items are laid out from right to left
+    \endlist
+
+    \sa RowLayout::layoutDirection, ColumnLayout::layoutDirection
+*/
+Qt::LayoutDirection QQuickGridLayoutBase::layoutDirection() const
+{
+    Q_D(const QQuickGridLayoutBase);
+    return d->m_layoutDirection;
+}
+
+void QQuickGridLayoutBase::setLayoutDirection(Qt::LayoutDirection dir)
+{
+    Q_D(QQuickGridLayoutBase);
+    d->m_layoutDirection = dir;
+    invalidate();
+}
+
+Qt::LayoutDirection QQuickGridLayoutBase::effectiveLayoutDirection() const
+{
+    Q_D(const QQuickGridLayoutBase);
+    return !d->effectiveLayoutMirror == (layoutDirection() == Qt::LeftToRight)
+                                      ? Qt::LeftToRight : Qt::RightToLeft;
+}
+
 QQuickGridLayoutBase::~QQuickGridLayoutBase()
 {
     d_func()->m_isReady = false;
@@ -420,7 +456,7 @@ void QQuickGridLayoutBase::rearrange(const QSizeF &size)
         return;
 
     quickLayoutDebug() << objectName() << "QQuickGridLayoutBase::rearrange()" << size;
-    Qt::LayoutDirection visualDir = Qt::LeftToRight;    // ### Fix if RTL support is needed
+    Qt::LayoutDirection visualDir = effectiveLayoutDirection();
     d->engine.setVisualDirection(visualDir);
 
     /*
@@ -730,6 +766,40 @@ QQuickLinearLayout::QQuickLinearLayout(Qt::Orientation orientation,
     d->spacing = quickLayoutDefaultSpacing();
     d->engine.setSpacing(d->spacing, Qt::Horizontal | Qt::Vertical);
 }
+
+/*!
+    \qmlproperty enumeration RowLayout::layoutDirection
+
+    This property holds the layout direction of the row layout - it controls whether items are laid
+    out from left ro right or right to left. If \c Qt.RightToLeft is specified,
+    left-aligned items will be right-aligned and right-aligned items will be left-aligned.
+
+    Possible values:
+
+    \list
+    \li Qt.LeftToRight (default) - Items are laid out from left to right.
+    \li Qt.RightToLeft - Items are laid out from right to left
+    \endlist
+
+    \sa GridLayout::layoutDirection, ColumnLayout::layoutDirection
+*/
+/*!
+    \qmlproperty enumeration ColumnLayout::layoutDirection
+
+    This property holds the layout direction of the column layout - it controls whether items are laid
+    out from left ro right or right to left. If \c Qt.RightToLeft is specified,
+    left-aligned items will be right-aligned and right-aligned items will be left-aligned.
+
+    Possible values:
+
+    \list
+    \li Qt.LeftToRight (default) - Items are laid out from left to right.
+    \li Qt.RightToLeft - Items are laid out from right to left
+    \endlist
+
+    \sa GridLayout::layoutDirection, RowLayout::layoutDirection
+*/
+
 
 /*!
     \qmlproperty real RowLayout::spacing
