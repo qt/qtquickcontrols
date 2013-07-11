@@ -131,12 +131,24 @@ Style {
     }
 
     /*! This defines the label of the button.  */
-    property Component label: Text {
-        renderType: Text.NativeRendering
-        verticalAlignment: Text.AlignVCenter
-        horizontalAlignment: Text.AlignHCenter
-        text: control.text
-        color: __syspal.text
+    property Component label: Item {
+        implicitWidth: row.implicitWidth
+        implicitHeight: row.implicitHeight
+        Row {
+            id: row
+            anchors.centerIn: parent
+            spacing: 2
+            Image {
+                source: control.iconSource
+                anchors.verticalCenter: parent.verticalCenter
+            }
+            Text {
+                renderType: Text.NativeRendering
+                anchors.verticalCenter: parent.verticalCenter
+                text: control.text
+                color: __syspal.text
+            }
+        }
     }
 
     /*! \internal */

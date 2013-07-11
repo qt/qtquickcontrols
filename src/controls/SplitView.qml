@@ -163,12 +163,13 @@ Item {
     Component.onCompleted: d.init()
     onWidthChanged: d.updateLayout()
     onHeightChanged: d.updateLayout()
+    onOrientationChanged: d.changeOrientation()
 
     SystemPalette { id: pal }
 
     QtObject {
         id: d
-        readonly property bool horizontal: orientation == Qt.Horizontal
+        property bool horizontal: orientation == Qt.Horizontal
         readonly property string minimum: horizontal ? "minimumWidth" : "minimumHeight"
         readonly property string maximum: horizontal ? "maximumWidth" : "maximumHeight"
         readonly property string otherMinimum: horizontal ? "minimumHeight" : "minimumWidth"
@@ -212,7 +213,7 @@ Item {
 
         function updateFillIndex()
         {
-            if (!lastItem.visible)
+            if (lastItem.visible !== root.visible)
                 return
             var policy = (root.orientation === Qt.Horizontal) ? "fillWidth" : "fillHeight"
             for (var i=0; i<__items.length-1; ++i) {
@@ -222,6 +223,39 @@ Item {
 
             d.fillIndex = i
             d.updateLayout()
+        }
+
+        function changeOrientation()
+        {
+            if (__items.length == 0)
+                return;
+            d.updateLayoutGuard = true
+
+            // Swap width/height for items and handles:
+            for (var i=0; i<__items.length; ++i) {
+                var item = __items[i]
+                var tmp = item.x
+                item.x = item.y
+                item.y = tmp
+                tmp = item.width
+                item.width = item.height
+                item.height = tmp
+
+                var handle = __handles[i]
+                if (handle) {
+                    tmp = handle.x
+                    handle.x = handle.y
+                    handle.y = handle.x
+                    tmp = handle.width
+                    handle.width = handle.height
+                    handle.height = tmp
+                }
+            }
+
+            // Change d.horizontal explicit, since the binding will change too late:
+            d.horizontal = orientation == Qt.Horizontal
+            d.updateLayoutGuard = false
+            d.updateFillIndex()
         }
 
         function calculateImplicitSize()
@@ -260,14 +294,14 @@ Item {
             var w = 0
             for (var i=firstIndex; i<lastIndex; ++i) {
                 var item = __items[i]
-                if (item.visible) {
+                if (item.visible || i == d.fillIndex) {
                     if (i !== d.fillIndex)
                         w += item[d.size];
                     else if (includeFillItemMinimum && item.Layout[minimum] !== undefined)
                         w += item.Layout[minimum]
 
                     var handle = __handles[i]
-                    if (handle)
+                    if (handle && handle.visible)
                         w += handle[d.size]
                 }
             }
@@ -290,7 +324,9 @@ Item {
             for (var i=0; i<__items.length; ++i) {
                 if (i !== d.fillIndex) {
                     var item = __items[i];
-                    item[d.size] = clampedMinMax(item[d.size], item.Layout[d.minimum], item.Layout[d.maximum])
+                    var clampedSize = clampedMinMax(item[d.size], item.Layout[d.minimum], item.Layout[d.maximum])
+                    if (clampedSize != item[d.size])
+                        item[d.size] = clampedSize
                 }
             }
 
@@ -310,14 +346,14 @@ Item {
             for (i=0; i<__items.length; ++i) {
                 // Position item to the right of the previous visible handle:
                 item = __items[i];
-                if (item.visible) {
+                if (item.visible || i == d.fillIndex) {
                     item[d.offset] = lastVisibleHandle ? lastVisibleHandle[d.offset] + lastVisibleHandle[d.size] : 0
                     item[d.otherOffset] = 0
                     item[d.otherSize] = clampedMinMax(root[otherSize], item.Layout[otherMinimum], item.Layout[otherMaximum])
                     lastVisibleItem = item
 
                     handle = __handles[i]
-                    if (handle) {
+                    if (handle && handle.visible) {
                         handle[d.offset] = lastVisibleItem[d.offset] + Math.max(0, lastVisibleItem[d.size])
                         handle[d.otherOffset] = 0
                         handle[d.otherSize] = root[d.otherSize]
@@ -343,7 +379,8 @@ Item {
                 readonly property bool resizing: mouseArea.drag.active
                 onResizingChanged: root.resizing = resizing
             }
-            visible: __items[__handleIndex + ((d.fillIndex >= __handleIndex) ? 0 : 1)].visible
+            property bool resizeLeftItem: (d.fillIndex > __handleIndex)
+            visible: __items[__handleIndex + (resizeLeftItem ? 0 : 1)].visible
             sourceComponent: handleDelegate
             onWidthChanged: d.updateLayout()
             onHeightChanged: d.updateLayout()
@@ -375,8 +412,7 @@ Item {
                 var leftEdge, rightEdge, newWidth, leftStopX, rightStopX
                 var i
 
-                if (d.fillIndex > __handleIndex) {
-                    // Resize item to the left.
+                if (resizeLeftItem) {
                     // Ensure that the handle is not crossing other handles. So
                     // find the first visible handle to the left to determine the left edge:
                     leftEdge = 0

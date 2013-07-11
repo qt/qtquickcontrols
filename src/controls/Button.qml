@@ -101,14 +101,6 @@ BasicButton {
         value: button
     }
 
-    Binding {
-        target: button
-        property: "tooltip"
-        // We don't want a tooltip if it's the same as the button text
-        when: !!text && !(action && (!!action.tooltip || action.tooltip === text))
-        value: ""
-    }
-
     Connections {
         target: __behavior
         onEffectivePressedChanged: {

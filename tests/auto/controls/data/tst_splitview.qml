@@ -41,27 +41,141 @@
 import QtQuick 2.1
 import QtTest 1.0
 import QtQuick.Controls 1.0
+import QtQuickControlsTests 1.0
 
 TestCase {
     id: testCase
     name: "Tests_SplitView"
     when: windowShown
     width: 400
-    height: 400
-
+    height: 500
+    visible: true
+    property int handleWidth: 1
+    property int handleHeight: 5
 
     Component {
         id: splitView
-        SplitView { Item {}  Item {} }
+        SplitView {
+            anchors.fill: parent
+            property alias item1: item1
+            property alias item2: item2
+            handleDelegate: Rectangle { width: handleWidth; height: handleHeight; color: "black" }
+
+            Rectangle {
+                id: item1
+                width: 100
+                height: 80
+                color: "red"
+            }
+            Rectangle {
+                id: item2
+                width: 200
+                height: 90
+                color: "blue"
+            }
+        }
     }
 
-    function test_splitView() {
+    function test_01_splitView() {
         var component = splitView
         var view = component.createObject(testCase);
         verify (view !== null, "splitview created is null")
         verify (view.orientation === Qt.Horizontal)
-        verify (view.__items.length === 2)
+        compare (view.__items.length, 2)
+        compare (view.item1.x, 0)
+        compare (view.item1.y, 0)
+        compare (view.item1.width, 100)
+        compare (view.item1.height, 500)
+        compare (view.item2.x, view.item1.x + view.item1.width + handleWidth)
+        compare (view.item2.y, 0)
+        compare (view.item2.width, testCase.width - view.item1.width - handleWidth)
+        compare (view.item2.height, 500)
         view.destroy()
     }
 
+    function test_02_splitView_initial_orientation_vertical() {
+        var component = splitView
+        var view = component.createObject(testCase, {orientation:Qt.Vertical});
+        verify (view !== null, "splitview created is null")
+        compare (view.orientation, Qt.Vertical)
+        compare (view.__items.length, 2)
+        compare (view.item1.x, 0)
+        compare (view.item1.y, 0)
+        compare (view.item1.width, 400)
+        compare (view.item1.height, 80)
+        compare (view.item2.x, 0)
+        compare (view.item2.y, view.item1.y + view.item1.height + handleHeight)
+        compare (view.item2.width, 400)
+        compare (view.item2.height, testCase.height - view.item1.height - handleHeight)
+        view.destroy()
+    }
+
+    function test_03_orientation_change()
+    {
+        var component = splitView
+        var view = component.createObject(testCase);
+        verify (view.orientation === Qt.Horizontal)
+
+        view.orientation = Qt.Vertical
+        verify (view.orientation === Qt.Vertical)
+        compare (view.item1.x, 0)
+        compare (view.item1.y, 0)
+        compare (view.item1.width, 400)
+        compare (view.item1.height, 100)
+        compare (view.item2.x, 0)
+        // We use handleWidth rather than handleHeight, since the layout is just flipped:
+        compare (view.item2.y, view.item1.y + view.item1.height + handleWidth)
+        compare (view.item2.width, 400)
+        compare (view.item2.height, testCase.height - view.item1.height - handleWidth)
+
+        view.orientation = Qt.Horizontal
+        verify (view.orientation === Qt.Horizontal)
+        compare (view.item1.x, 0)
+        compare (view.item1.y, 0)
+        compare (view.item1.width, 100)
+        compare (view.item1.height, 500)
+        compare (view.item2.x, view.item1.x + view.item1.width + handleWidth)
+        compare (view.item2.y, 0)
+        compare (view.item2.width, testCase.width - view.item1.width - handleWidth)
+        compare (view.item2.height, 500)
+        view.destroy()
+    }
+
+    function test_04_hide_item()
+    {
+        var component = splitView
+        var view = component.createObject(testCase);
+        verify (view.item1.visible)
+        verify (view.item2.visible)
+        view.item1.visible = false
+        verify (view.item1.visible === false)
+
+        compare (view.item1.x, 0)
+        compare (view.item1.y, 0)
+        compare (view.item1.width, 100)
+        compare (view.item1.height, 500)
+        compare (view.item2.x, 0)
+        compare (view.item2.y, 0)
+        compare (view.item2.width, testCase.width)
+        compare (view.item2.height, 500)
+    }
+
+    function test_05_hide_fillWidth_item()
+    {
+        var component = splitView
+        var view = component.createObject(testCase);
+        verify (view.item1.visible)
+        verify (view.item2.visible)
+        view.item2.visible = false
+        verify (view.item2.visible === false)
+
+        compare (view.item1.x, 0)
+        compare (view.item1.y, 0)
+        compare (view.item1.width, 100)
+        compare (view.item1.height, 500)
+        compare (view.item2.x, view.item1.x + view.item1.width + handleWidth)
+        compare (view.item2.y, 0)
+        compare (view.item2.width, testCase.width - view.item1.width - handleWidth)
+        compare (view.item2.height, 500)
+    }
 }
