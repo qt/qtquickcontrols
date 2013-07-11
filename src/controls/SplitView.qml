@@ -324,7 +324,9 @@ Item {
             for (var i=0; i<__items.length; ++i) {
                 if (i !== d.fillIndex) {
                     var item = __items[i];
-                    item[d.size] = clampedMinMax(item[d.size], item.Layout[d.minimum], item.Layout[d.maximum])
+                    var clampedSize = clampedMinMax(item[d.size], item.Layout[d.minimum], item.Layout[d.maximum])
+                    if (clampedSize != item[d.size])
+                        item[d.size] = clampedSize
                 }
             }
 
