@@ -121,8 +121,9 @@ Item {
 
     ScrollBar {
         id: hscrollbar
-        property bool isTransient: !!__panel && !!__panel.transient
-        property bool active: !!__panel && (__panel.sunken || __panel.activeControl != "none")
+        isTransient: !!__panel && !!__panel.transient
+        active: !!__panel && (__panel.sunken || __panel.activeControl !== "none")
+        enabled: !isTransient || __panel.visible
         orientation: Qt.Horizontal
         visible: contentWidth > availableWidth
         height: visible ? implicitHeight : 0
@@ -161,8 +162,9 @@ Item {
 
     ScrollBar {
         id: vscrollbar
-        property bool isTransient: !!__panel && !!__panel.transient
-        property bool active: !!__panel && (__panel.sunken || __panel.activeControl !== "none")
+        isTransient: !!__panel && !!__panel.transient
+        active: !!__panel && (__panel.sunken || __panel.activeControl !== "none")
+        enabled: !isTransient || __panel.visible
         orientation: Qt.Vertical
         visible: contentHeight > availableHeight
         width: visible ? implicitWidth : 0
