@@ -1,6 +1,7 @@
 TEMPLATE = subdirs
 
 SUBDIRS += \
+    calendar \
     gallery \
     splitview \
     tableview \

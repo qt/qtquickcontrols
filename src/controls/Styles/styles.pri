@@ -3,6 +3,7 @@
 STYLES_QML_FILES = \
     $$PWD/Base/ButtonStyle.qml \
     $$PWD/Base/BusyIndicatorStyle.qml \
+    $$PWD/Base/CalendarStyle.qml \
     $$PWD/Base/CheckBoxStyle.qml \
     $$PWD/Base/ComboBoxStyle.qml \
     $$PWD/Base/FocusFrameStyle.qml \
@@ -28,6 +29,7 @@ STYLES_QML_FILES += \
     $$PWD/Desktop/qmldir \
     $$PWD/Desktop/RowItemSingleton.qml \
     $$PWD/Desktop/ButtonStyle.qml \
+    $$PWD/Desktop/CalendarStyle.qml \
     $$PWD/Desktop/BusyIndicatorStyle.qml \
     $$PWD/Desktop/CheckBoxStyle.qml \
     $$PWD/Desktop/ComboBoxStyle.qml \

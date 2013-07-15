@@ -1,6 +1,7 @@
 module QtQuick.Controls.Styles
 ButtonStyle 1.0 Base/ButtonStyle.qml
 BusyIndicatorStyle 1.1 Base/BusyIndicatorStyle.qml
+CalendarStyle 1.1 Base/CalendarStyle.qml
 CheckBoxStyle 1.0 Base/CheckBoxStyle.qml
 ComboBoxStyle 1.0 Base/ComboBoxStyle.qml
 MenuStyle 1.2 Base/MenuStyle.qml

@@ -49,6 +49,9 @@
 #include "qquickstack_p.h"
 #include "qquickdesktopiconprovider_p.h"
 #include "qquickselectionmode_p.h"
+
+#include "Private/qquickcalendarmodel_p.h"
+#include "Private/qquickrangeddate_p.h"
 #include "Private/qquickrangemodel_p.h"
 #include "Private/qquickwheelarea_p.h"
 #include "Private/qquicktooltip_p.h"
@@ -75,6 +78,7 @@ static const struct {
 } qmldir [] = {
     { "ApplicationWindow", 1, 0 },
     { "Button", 1, 0 },
+    { "Calendar", 1, 2 },
     { "CheckBox", 1, 0 },
     { "ComboBox", 1, 0 },
     { "GroupBox", 1, 0 },
@@ -131,7 +135,9 @@ void QtQuickControlsPlugin::initializeEngine(QQmlEngine *engine, const char *uri
     // Register private API
     const char *private_uri = "QtQuick.Controls.Private";
     qmlRegisterType<QQuickAbstractStyle>(private_uri, 1, 0, "AbstractStyle");
+    qmlRegisterType<QQuickCalendarModel>(private_uri, 1, 0, "CalendarModel");
     qmlRegisterType<QQuickPadding>();
+    qmlRegisterType<QQuickRangedDate>(private_uri, 1, 0, "RangedDate");
     qmlRegisterType<QQuickRangeModel>(private_uri, 1, 0, "RangeModel");
     qmlRegisterType<QQuickWheelArea>(private_uri, 1, 0, "WheelArea");
     qmlRegisterType<QQuickSpinBoxValidator>(private_uri, 1, 0, "SpinBoxValidator");
