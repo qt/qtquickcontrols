@@ -3,6 +3,7 @@
 STYLES_QML_FILES = \
     $$PWD/Base/ButtonStyle.qml \
     $$PWD/Base/BusyIndicatorStyle.qml \
+    $$PWD/Base/CalendarStyle.qml \
     $$PWD/Base/CheckBoxStyle.qml \
     $$PWD/Base/ComboBoxStyle.qml \
     $$PWD/Base/FocusFrameStyle.qml \

@@ -10,6 +10,9 @@ CONTROLS_QML_FILES = \
     ApplicationWindow.qml \
     Button.qml \
     BusyIndicator.qml \
+    Calendar.qml \
+    CalendarModel.qml \
+    CalendarHeaderModel.qml \
     CheckBox.qml \
     ComboBox.qml \
     GroupBox.qml \

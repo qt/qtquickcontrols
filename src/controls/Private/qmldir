@@ -1,6 +1,7 @@
 module QtQuick.Controls.Private
 AbstractCheckable 1.0 AbstractCheckable.qml
 Control 1.0 Control.qml
+DateUtils 1.0 DateUtils.js
 FocusFrame 1.0 FocusFrame.qml
 Margins 1.0 Margins.qml
 BasicButton 1.0 BasicButton.qml

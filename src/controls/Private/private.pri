@@ -3,6 +3,7 @@ HEADERS += \
     $$PWD/qquickspinboxvalidator_p.h \
     $$PWD/qquickrangemodel_p.h \
     $$PWD/qquickrangemodel_p_p.h \
+    $$PWD/qquickrangeddate_p.h \
     $$PWD/qquickcontrolsettings_p.h \
     $$PWD/qquickwheelarea_p.h \
     $$PWD/qquickabstractstyle_p.h \
@@ -13,6 +14,7 @@ SOURCES += \
     $$PWD/qquicktooltip.cpp \
     $$PWD/qquickspinboxvalidator.cpp \
     $$PWD/qquickrangemodel.cpp \
+    $$PWD/qquickrangeddate.cpp \
     $$PWD/qquickcontrolsettings.cpp \
     $$PWD/qquickwheelarea.cpp \
     $$PWD/qquickabstractstyle.cpp
@@ -30,6 +32,7 @@ PRIVATE_QML_FILES += \
     $$PWD/TabBar.qml \
     $$PWD/BasicButton.qml \
     $$PWD/Control.qml \
+    $$PWD/DateUtils.js \
     $$PWD/FastGlow.qml \
     $$PWD/SourceProxy.qml\
     $$PWD/Style.qml \
