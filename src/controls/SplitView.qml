@@ -195,6 +195,8 @@ Item {
                     handleLoader.createObject(splitterHandles, {"__handleIndex":splitterItems.children.length - 1})
                 item.parent = splitterItems
                 i-- // item was removed from list
+
+                // should match disconnections in Component.onDestruction
                 item.widthChanged.connect(d.updateLayout)
                 item.heightChanged.connect(d.updateLayout)
                 item.Layout.maximumWidthChanged.connect(d.updateLayout)
@@ -484,6 +486,14 @@ Item {
     Component.onDestruction: {
         for (var i=0; i<splitterItems.children.length; ++i) {
             var item = splitterItems.children[i];
+
+            // should match connections in init()
+            item.widthChanged.disconnect(d.updateLayout)
+            item.heightChanged.disconnect(d.updateLayout)
+            item.Layout.maximumWidthChanged.disconnect(d.updateLayout)
+            item.Layout.minimumWidthChanged.disconnect(d.updateLayout)
+            item.Layout.maximumHeightChanged.disconnect(d.updateLayout)
+            item.Layout.minimumHeightChanged.disconnect(d.updateLayout)
             item.visibleChanged.disconnect(d.updateFillIndex)
             item.Layout.fillWidthChanged.disconnect(d.updateFillIndex)
             item.Layout.fillHeightChanged.disconnect(d.updateFillIndex)
