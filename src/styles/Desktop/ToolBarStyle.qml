@@ -51,7 +51,7 @@ Style {
     padding.left: 6
     padding.right: 6
     padding.top: 1
-    padding.bottom: style.style == "mac" ? 1 : 2
+    padding.bottom: style.style === "mac" ? 1 : style.style === "fusion" ? 3 : 2
 
     StyleItem { id: style ; visible: false}
 

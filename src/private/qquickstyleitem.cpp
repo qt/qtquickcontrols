@@ -1371,8 +1371,11 @@ void QQuickStyleItem::paint(QPainter *painter)
     case ToolBar:
         painter->fillRect(m_styleoption->rect, m_styleoption->palette.window().color());
         qApp->style()->drawControl(QStyle::CE_ToolBar, m_styleoption, painter);
-        painter->setPen(m_styleoption->palette.dark().color().darker(120));
+        painter->save();
+        painter->setPen(style() != "fusion" ? m_styleoption->palette.dark().color().darker(120) :
+                                              m_styleoption->palette.window().color().lighter(107));
         painter->drawLine(m_styleoption->rect.bottomLeft(), m_styleoption->rect.bottomRight());
+        painter->restore();
         break;
     case StatusBar:
 #ifdef Q_OS_MAC

@@ -50,6 +50,8 @@ import QtQuick.Controls.Private 1.0
 Item {
     id: scrollbar
 
+    property bool isTransient: false
+    property bool active: false
     property int orientation: Qt.Horizontal
     property alias minimumValue: slider.minimumValue
     property alias maximumValue: slider.maximumValue
@@ -85,13 +87,12 @@ Item {
 
     MouseArea {
         id: internal
-
         property bool horizontal: orientation === Qt.Horizontal
         property int pageStep: internal.horizontal ? width : height
         property int singleStep: 20
         property bool scrollToClickposition: internal.scrollToClickPosition
-
         anchors.fill: parent
+        cursorShape: __panel.visible ? Qt.ArrowCursor : Qt.IBeamCursor // forces a cursor change
 
         property bool autoincrement: false
         property bool scrollToClickPosition: __style ? __style.scrollToClickedPosition : 0
