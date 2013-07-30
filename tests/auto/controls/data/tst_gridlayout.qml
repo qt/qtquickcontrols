@@ -592,5 +592,61 @@ Item {
             layout.destroy();
         }
 
+        Component {
+            id: layout_columnsOrRowsChanged_Component
+            GridLayout {
+                id: layout
+                rowSpacing: 0
+                columnSpacing: 0
+                Repeater {
+                    model: 4
+                    Rectangle {
+                        width: 10
+                        height: 10
+                        color: "#ff0000"
+                    }
+                }
+            }
+        }
+
+        function test_columnsChanged()
+        {
+            var layout = layout_columnsOrRowsChanged_Component.createObject(container);
+            layout.width = 40;
+            layout.height = 20;
+            waitForRendering(layout)
+            compare(itemRect(layout.children[0]), [ 0,  5,  10, 10])
+            compare(itemRect(layout.children[1]), [10,  5,  10, 10])
+            compare(itemRect(layout.children[2]), [20,  5,  10, 10])
+            compare(itemRect(layout.children[3]), [30,  5,  10, 10])
+
+            layout.columns = 2
+            waitForRendering(layout)
+            compare(itemRect(layout.children[0]), [ 0,  0,  10, 10])
+            compare(itemRect(layout.children[1]), [20,  0,  10, 10])
+            compare(itemRect(layout.children[2]), [ 0, 10,  10, 10])
+            compare(itemRect(layout.children[3]), [20, 10,  10, 10])
+        }
+
+        function test_rowsChanged()
+        {
+            var layout = layout_columnsOrRowsChanged_Component.createObject(container);
+            layout.flow = GridLayout.TopToBottom
+            layout.width = 20;
+            layout.height = 40;
+            waitForRendering(layout)
+            compare(itemRect(layout.children[0]), [ 0,  0,  10, 10])
+            compare(itemRect(layout.children[1]), [ 0, 10,  10, 10])
+            compare(itemRect(layout.children[2]), [ 0, 20,  10, 10])
+            compare(itemRect(layout.children[3]), [ 0, 30,  10, 10])
+
+            layout.rows = 2
+            waitForRendering(layout)
+            compare(itemRect(layout.children[0]), [ 0,  5,  10, 10])
+            compare(itemRect(layout.children[1]), [ 0, 25,  10, 10])
+            compare(itemRect(layout.children[2]), [10,  5,  10, 10])
+            compare(itemRect(layout.children[3]), [10, 25,  10, 10])
+        }
+
     }
 }

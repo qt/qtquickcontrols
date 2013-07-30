@@ -573,7 +573,7 @@ void QQuickGridLayout::setColumns(int columns)
     if (d->columns == columns)
         return;
     d->columns = columns;
-    invalidate();
+    updateLayoutItems();
     emit columnsChanged();
 }
 
@@ -596,7 +596,7 @@ void QQuickGridLayout::setRows(int rows)
     if (d->rows == rows)
         return;
     d->rows = rows;
-    invalidate();
+    updateLayoutItems();
     emit rowsChanged();
 }
 
