@@ -153,7 +153,6 @@ Style {
 
     /*! \internal */
     property Component panel: Item {
-        anchors.centerIn: parent
         anchors.fill: parent
         implicitWidth: Math.max(labelLoader.implicitWidth + padding.left + padding.right, backgroundLoader.implicitWidth)
         implicitHeight: Math.max(labelLoader.implicitHeight + padding.top + padding.bottom, backgroundLoader.implicitHeight)
