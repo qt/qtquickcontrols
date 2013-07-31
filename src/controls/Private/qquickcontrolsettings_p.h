@@ -60,7 +60,7 @@ class QQuickControlSettings : public QObject
 public:
     QQuickControlSettings(QQmlEngine *engine);
 
-    QUrl style() const;
+    QString style() const;
 
     QString styleName() const;
     void setStyleName(const QString &name);

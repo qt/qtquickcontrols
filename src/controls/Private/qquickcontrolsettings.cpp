@@ -63,18 +63,27 @@ static QString styleImportName()
     return QFileInfo(name).fileName();
 }
 
+static bool fromResource(const QString &path)
+{
+    return path.startsWith("qrc:");
+}
+
 static QString styleImportPath(QQmlEngine *engine, const QString &styleName)
 {
     QString path = qgetenv("QT_QUICK_CONTROLS_STYLE");
     QFileInfo info(path);
     if (info.isRelative()) {
+        bool found = false;
         foreach (const QString &import, engine->importPathList()) {
             QDir dir(import + QLatin1String("/QtQuick/Controls/Styles"));
             if (dir.exists(styleName)) {
+                found = true;
                 path = dir.absolutePath();
                 break;
             }
         }
+        if (!found)
+            path = "qrc:/QtQuick/Controls/Styles";
     } else {
         path = info.absolutePath();
     }
@@ -86,7 +95,11 @@ QQuickControlSettings::QQuickControlSettings(QQmlEngine *engine)
     m_name = styleImportName();
     m_path = styleImportPath(engine, m_name);
 
-    if (!QFile::exists(styleFilePath())) {
+    QString path = styleFilePath();
+    if (fromResource(path))
+        path = path.remove(0, 3); // remove qrc from the path
+
+    if (!QDir(path).exists()) {
         QString unknownStyle = m_name;
         m_name = defaultStyleName();
         m_path = styleImportPath(engine, m_name);
@@ -97,9 +110,12 @@ QQuickControlSettings::QQuickControlSettings(QQmlEngine *engine)
     connect(this, SIGNAL(stylePathChanged()), SIGNAL(styleChanged()));
 }
 
-QUrl QQuickControlSettings::style() const
+QString QQuickControlSettings::style() const
 {
-    return QUrl::fromLocalFile(styleFilePath());
+    if (fromResource(styleFilePath()))
+        return styleFilePath();
+    else
+        return QUrl::fromLocalFile(styleFilePath()).toString();
 }
 
 QString QQuickControlSettings::styleName() const

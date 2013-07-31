@@ -62,6 +62,38 @@
 
 QT_BEGIN_NAMESPACE
 
+static const struct {
+    const char *type;
+    int major, minor;
+} qmldir [] = {
+    { "ApplicationWindow", 1, 0 },
+    { "Button", 1, 0 },
+    { "CheckBox", 1, 0 },
+    { "ComboBox", 1, 0 },
+    { "GroupBox", 1, 0 },
+    { "Label", 1, 0 },
+    { "MenuBar", 1, 0 },
+    { "Menu", 1, 0 },
+    { "StackView", 1, 0 },
+    { "ProgressBar", 1, 0 },
+    { "RadioButton", 1, 0 },
+    { "ScrollView", 1, 0 },
+    { "Slider", 1, 0 },
+    { "SpinBox", 1, 0 },
+    { "SplitView", 1, 0 },
+    { "StackViewDelegate", 1, 0 },
+    { "StackViewTransition", 1, 0 },
+    { "StatusBar", 1, 0 },
+    { "Tab", 1, 0 },
+    { "TabView", 1, 0 },
+    { "TableView", 1, 0 },
+    { "TableViewColumn", 1, 0 },
+    { "TextArea", 1, 0 },
+    { "TextField", 1, 0 },
+    { "ToolBar", 1, 0 },
+    { "ToolButton", 1, 0 }
+};
+
 void QtQuickControlsPlugin::registerTypes(const char *uri)
 {
     qmlRegisterType<QQuickAction>(uri, 1, 0, "Action");
@@ -76,6 +108,10 @@ void QtQuickControlsPlugin::registerTypes(const char *uri)
                                                QLatin1String("Do not create objects of type MenuBase"));
 
     qmlRegisterUncreatableType<QQuickStack>(uri, 1, 0, "Stack", QLatin1String("Do not create objects of type Stack"));
+
+    const QString filesLocation = fileLocation();
+    for (int i = 0; i < int(sizeof(qmldir)/sizeof(qmldir[0])); i++)
+        qmlRegisterType(QUrl(filesLocation + "/" + qmldir[i].type + ".qml"), uri, qmldir[i].major, qmldir[i].minor, qmldir[i].type);
 }
 
 void QtQuickControlsPlugin::initializeEngine(QQmlEngine *engine, const char *uri)
@@ -96,6 +132,24 @@ void QtQuickControlsPlugin::initializeEngine(QQmlEngine *engine, const char *uri
 #endif
 
     engine->addImageProvider("desktoptheme", new QQuickDesktopIconProvider);
+    if (isLoadedFromResource())
+        engine->addImportPath(QStringLiteral("qrc:/"));
+}
+
+QString QtQuickControlsPlugin::fileLocation() const
+{
+    if (isLoadedFromResource())
+        return "qrc:/QtQuick/Controls";
+    return baseUrl().toString();
+}
+
+bool QtQuickControlsPlugin::isLoadedFromResource() const
+{
+    // If one file is missing, it will load all the files from the resource
+    QFile file(baseUrl().toLocalFile() + "/ApplicationWindow.qml");
+    if (!file.exists())
+        return true;
+    return false;
 }
 
 QT_END_NAMESPACE

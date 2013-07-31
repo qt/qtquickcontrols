@@ -47,6 +47,7 @@ Makefile*
 moc_*.cpp
 ui_*.h
 qrc_*.cpp
+/src/controls/controls.qrc
 
 # xemacs temporary files
 *.flc
