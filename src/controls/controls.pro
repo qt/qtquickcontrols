@@ -5,7 +5,7 @@ QT += qml quick gui-private core-private
 
 QMAKE_DOCS = $$PWD/doc/qtquickcontrols.qdocconf
 
-QML_FILES = \
+CONTROLS_QML_FILES = \
     ApplicationWindow.qml \
     Button.qml \
     CheckBox.qml \
@@ -33,9 +33,16 @@ QML_FILES = \
     ToolBar.qml \
     ToolButton.qml
 
+QML_FILES += $$CONTROLS_QML_FILES
+
 SOURCES += $$PWD/plugin.cpp
+HEADERS += $$PWD/plugin.h
 
 include(plugin.pri)
+include(Private/private.pri)
+include(Styles/styles.pri)
+
+osx: LIBS += -framework Carbon
 
 CONFIG += no_cxx_module
 load(qml_plugin)

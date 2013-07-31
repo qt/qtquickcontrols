@@ -84,6 +84,17 @@
 */
 
 /*!
+    \page qtquickcontrolsstyles-structure.html
+    \title Qt Quick Controls Styles Structure
+     \list
+      \li \l{Qt Quick Controls Styles}
+          \list
+          \li \l{Qt Quick Controls Styles QML Types}{Styles QMl Types}
+          \endlist
+     \endlist
+*/
+
+/*!
     \qmlmodule QtQuick.Controls.Styles 1
     \title Qt Quick Controls Styles QML Types
     \ingroup qmlmodules
@@ -96,4 +107,7 @@
     A styling object is usually a collection of properties that control behavior and simple delegates
     that can be replaced with custom QML snippets.
 
+    \code
+    import QtQuick.Controls.Styles 1.0
+    \endcode
 */

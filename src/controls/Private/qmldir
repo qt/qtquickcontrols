@@ -1,5 +1,4 @@
 module QtQuick.Controls.Private
-plugin qtquickcontrolsprivateplugin
 AbstractCheckable 1.0 AbstractCheckable.qml
 Control 1.0 Control.qml
 FocusFrame 1.0 FocusFrame.qml

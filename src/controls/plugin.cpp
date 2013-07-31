@@ -39,6 +39,8 @@
 **
 ****************************************************************************/
 
+#include "plugin.h"
+
 #include "qquickaction_p.h"
 #include "qquickexclusivegroup_p.h"
 #include "qquickmenu_p.h"
@@ -46,22 +48,19 @@
 #include "qquickstack_p.h"
 #include "qquickdesktopiconprovider_p.h"
 
-#include <qqml.h>
-#include <qqmlengine.h>
-#include <qqmlextensionplugin.h>
-#include <qquickwindow.h>
+#include "Private/qquickrangemodel_p.h"
+#include "Private/qquickwheelarea_p.h"
+#include "Private/qquicktooltip_p.h"
+#include "Private/qquickcontrolsettings_p.h"
+#include "Private/qquickspinboxvalidator_p.h"
+#include "Private/qquickabstractstyle_p.h"
+#include "Private/qquickcontrolsprivate_p.h"
+
+#ifndef QT_NO_WIDGETS
+#include "Private/qquickstyleitem_p.h"
+#endif
 
 QT_BEGIN_NAMESPACE
-
-class QtQuickControlsPlugin : public QQmlExtensionPlugin
-{
-    Q_OBJECT
-    Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QQmlExtensionInterface/1.0")
-
-public:
-    void registerTypes(const char *uri);
-    void initializeEngine(QQmlEngine *engine, const char *uri);
-};
 
 void QtQuickControlsPlugin::registerTypes(const char *uri)
 {
@@ -82,9 +81,21 @@ void QtQuickControlsPlugin::registerTypes(const char *uri)
 void QtQuickControlsPlugin::initializeEngine(QQmlEngine *engine, const char *uri)
 {
     Q_UNUSED(uri);
+
+    // Register private API
+    const char *private_uri = "QtQuick.Controls.Private";
+    qmlRegisterType<QQuickAbstractStyle>(private_uri, 1, 0, "AbstractStyle");
+    qmlRegisterType<QQuickPadding>();
+    qmlRegisterType<QQuickRangeModel>(private_uri, 1, 0, "RangeModel");
+    qmlRegisterType<QQuickWheelArea>(private_uri, 1, 0, "WheelArea");
+    qmlRegisterType<QQuickSpinBoxValidator>(private_uri, 1, 0, "SpinBoxValidator");
+    qmlRegisterSingletonType<QQuickTooltip>(private_uri, 1, 0, "Tooltip", QQuickControlsPrivate::registerTooltipModule);
+    qmlRegisterSingletonType<QQuickControlSettings>(private_uri, 1, 0, "Settings", QQuickControlsPrivate::registerSettingsModule);
+#ifndef QT_NO_WIDGETS
+    qmlRegisterType<QQuickStyleItem>(private_uri, 1, 0, "StyleItem");
+#endif
+
     engine->addImageProvider("desktoptheme", new QQuickDesktopIconProvider);
 }
 
 QT_END_NAMESPACE
-
-#include "plugin.moc"
