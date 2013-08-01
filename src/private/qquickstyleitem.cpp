@@ -620,6 +620,7 @@ void QQuickStyleItem::initStyleOption()
         m_styleoption = new QStyleOption();
 
     m_styleoption->styleObject = this;
+    m_styleoption->direction = qApp->layoutDirection();
     m_styleoption->rect = QRect(m_paintMargins, 0, width() - 2* m_paintMargins, height());
 
     if (isEnabled()) {
@@ -1482,6 +1483,7 @@ void QQuickStyleItem::updatePolish()
         m_image.setDevicePixelRatio(devicePixelRatio);
         m_image.fill(Qt::transparent);
         QPainter painter(&m_image);
+        painter.setLayoutDirection(qApp->layoutDirection());
         paint(&painter);
         QQuickItem::update();
     } else if (!m_image.isNull()) {
