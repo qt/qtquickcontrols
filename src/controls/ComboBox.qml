@@ -223,7 +223,10 @@ Control {
             if (items[__selectedIndex])
                 items[__selectedIndex].checked = true
             __currentIndex = comboBox.currentIndex
-            __popup(0, y, isPopup ? __selectedIndex : 0)
+            if (Qt.application.layoutDirection === Qt.RightToLeft)
+                __popup(comboBox.width, y, isPopup ? __selectedIndex : 0)
+            else
+                __popup(0, y, isPopup ? __selectedIndex : 0)
         }
     }
 

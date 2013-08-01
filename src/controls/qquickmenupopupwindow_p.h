@@ -90,6 +90,7 @@ private:
     QPointF m_oldItemPos;
     QQuickItem *m_parentItem;
     QQuickItem *m_menuContentItem;
+    QPointF m_initialPos;
 };
 
 QT_END_NAMESPACE

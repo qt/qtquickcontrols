@@ -167,6 +167,8 @@ MenuBarPrivate {
 
             Row {
                 id: row
+                width: parent.width
+                LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft
 
                 Repeater {
                     id: itemsRepeater
@@ -185,7 +187,10 @@ MenuBarPrivate {
                             target: menuBarLoader
                             onOpenedMenuIndexChanged: {
                                 if (menuBarLoader.openedMenuIndex === index) {
-                                    menuItem.__popup(0, menuBarLoader.height, 0)
+                                    if (row.LayoutMirroring.enabled)
+                                        menuItem.__popup(menuItemLoader.width, menuBarLoader.height, 0)
+                                    else
+                                        menuItem.__popup(0, menuBarLoader.height, 0)
                                     if (menuBarLoader.preselectMenuItem)
                                         menuItem.__currentIndex = 0
                                 } else {

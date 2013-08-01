@@ -296,8 +296,12 @@ MenuPrivate {
 
                         function showSubMenu(immediately) {
                             if (immediately) {
-                                if (root.__currentIndex === menuItemIndex)
-                                    menuItem.__popup(menuFrameLoader.subMenuXPos, 0, -1)
+                                if (root.__currentIndex === menuItemIndex) {
+                                    if (Qt.application.layoutDirection === Qt.RightToLeft)
+                                        menuItem.__popup(0, 0, -1)
+                                    else
+                                        menuItem.__popup(menuFrameLoader.subMenuXPos, 0, -1)
+                                }
                             } else {
                                 openMenuTimer.start()
                             }

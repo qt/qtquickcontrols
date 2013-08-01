@@ -114,7 +114,10 @@ BasicButton {
         interval: 10
         onTriggered: {
             __behavior.keyPressed = false
-            menu.__popup(0, button.height, 0)
+            if (Qt.application.layoutDirection === Qt.RightToLeft)
+                menu.__popup(button.width, button.height, 0)
+            else
+                menu.__popup(0, button.height, 0)
         }
     }
 }

@@ -368,8 +368,11 @@ void QQuickMenu::__popup(qreal x, qreal y, int atItemIndex)
 
     if (m_platformMenu) {
         QPointF screenPosition(x + m_xOffset, y + m_yOffset);
-        if (visualItem())
+        if (visualItem()) {
+            if (qGuiApp->isRightToLeft())
+                screenPosition.rx() -= qMax(static_cast<qreal>(m_minimumWidth), m_menuContentItem->width());
             screenPosition = visualItem()->mapToScene(screenPosition);
+        }
         m_platformMenu->showPopup(parentWindow, screenPosition.toPoint(), atItem ? atItem->platformItem() : 0);
     } else {
         m_popupWindow = new QQuickMenuPopupWindow();

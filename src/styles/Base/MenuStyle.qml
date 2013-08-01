@@ -91,10 +91,11 @@ Style {
         }
 
         readonly property string itemText: parent ? parent.text : ""
+        readonly property bool mirrored: Qt.application.layoutDirection === Qt.RightToLeft
 
         Loader {
             id: checkMark
-            x: 4
+            x: mirrored ? parent.width - width - 4 : 4
             y: 6
             active: __menuItemType === "menuitem" && !!menuItem && !!menuItem["checkable"]
             sourceComponent: exclusive ? exclusiveCheckMark : nonExclusiveCheckMark
@@ -162,7 +163,8 @@ Style {
             id: text
             visible: !isSeparator
             text: StyleHelpers.stylizeMnemonics(itemText)
-            x: __menuItemType === "menuitem" ? 24 : 6
+            readonly property real offset: __menuItemType === "menuitem" ? 24 : 6
+            x: mirrored ? parent.width - width - offset : offset
             anchors.verticalCenter: parent.verticalCenter
             renderType: Text.NativeRendering
             color: selected && enabled ? "white" : syspal.text
@@ -172,8 +174,9 @@ Style {
             id: rightDecoration
             readonly property string shortcut: !!menuItem && menuItem["shortcut"] || ""
             visible: isSubmenu || shortcut !== ""
-            text: isSubmenu ? "\u25b8" // BLACK RIGHT-POINTING SMALL TRIANGLE
+            text: isSubmenu ? mirrored ? "\u25c2" : "\u25b8" // BLACK LEFT/RIGHT-POINTING SMALL TRIANGLE
                             : shortcut
+            LayoutMirroring.enabled: mirrored
             anchors {
                 right: parent.right
                 rightMargin: 6

@@ -84,6 +84,8 @@ void QQuickMenuPopupWindow::show()
         posy -= pos.y();
     }
 
+    m_initialPos = QPointF(posx, posy);
+
     if (m_menuContentItem) {
         qreal initialWidth = qMax(qreal(1), m_menuContentItem->width());
         qreal initialHeight = qMax(qreal(1), m_menuContentItem->height());
@@ -180,7 +182,11 @@ void QQuickMenuPopupWindow::dismissMenu()
 void QQuickMenuPopupWindow::updateSize()
 {
     QSize contentSize = contentItem()->childrenRect().size().toSize();
-    setGeometry(position().x(), position().y(), contentSize.width(), contentSize.height());
+    qreal x = m_initialPos.x();
+    qreal y = m_initialPos.y();
+    if (qGuiApp->layoutDirection() == Qt::RightToLeft)
+        x -= contentSize.width();
+    setGeometry(x, y, contentSize.width(), contentSize.height());
 }
 
 void QQuickMenuPopupWindow::updatePosition()
