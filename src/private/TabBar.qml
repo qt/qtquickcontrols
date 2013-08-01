@@ -113,6 +113,7 @@ FocusScope {
         id: tabrow
         objectName: "tabrow"
         Accessible.role: Accessible.PageTabList
+        LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft
         spacing: -tabOverlap
         orientation: Qt.Horizontal
         interactive: false
