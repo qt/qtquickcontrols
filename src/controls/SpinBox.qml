@@ -213,7 +213,7 @@ Control {
 
     TextInput {
         id: input
-        clip: true
+        clip: contentWidth > width
         anchors.fill: parent
         anchors.leftMargin: __style ? __style.padding.left : 0
         anchors.topMargin: __style ? __style.padding.top : 0

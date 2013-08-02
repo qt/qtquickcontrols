@@ -559,7 +559,7 @@ Control {
         verticalAlignment: textInput.verticalAlignment
         opacity: !textInput.text.length ? 1 : 0
         color: __panel ? __panel.placeholderTextColor : "darkgray"
-        clip: true
+        clip: contentWidth > width;
         elide: Text.ElideRight
         renderType: Text.NativeRendering
         Behavior on opacity { NumberAnimation { duration: 90 } }
@@ -582,7 +582,8 @@ Control {
         verticalAlignment: Text.AlignVCenter
 
         color: __panel ? __panel.textColor : "darkgray"
-        clip: true
+        clip: contentWidth > width
+
         renderType: Text.NativeRendering
 
         onAccepted: textfield.accepted()
