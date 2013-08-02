@@ -69,7 +69,7 @@ import QtQuick.Controls.Private 1.0
                ListElement { text: "Coconut"; color: "Brown" }
            }
            width: 200
-           onCurrentIndexChanged: console.debug(currentText + ", " + cbItems.get(currentIndex).color)
+           onCurrentIndexChanged: console.debug(cbItems.get(currentIndex).text + ", " + cbItems.get(currentIndex).color)
        }
     \endqml
 
@@ -92,7 +92,11 @@ Control {
     property alias currentIndex: popup.__selectedIndex
 
     /*! \qmlproperty string ComboBox::currentText
-        The text of the currently selected item in the ComboBox. */
+        The text of the currently selected item in the ComboBox.
+
+        \note Since \c currentText depends on \c currentIndex, there's no way to ensure \c currentText
+        will be up to date whenever a \c onCurrentIndexChanged handler is called.
+    */
     readonly property alias currentText: popup.selectedText
 
     /*! This property specifies whether the combobox should gain active focus when pressed.
