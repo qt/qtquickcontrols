@@ -66,7 +66,8 @@ QQuickWheelArea::QQuickWheelArea(QQuickItem *parent)
       m_verticalValue(0),
       m_verticalDelta(0),
       m_horizontalDelta(0),
-      m_scrollSpeed(defaultScrollSpeed)
+      m_scrollSpeed(defaultScrollSpeed),
+      m_active(false)
 {
 
 }
@@ -78,6 +79,11 @@ QQuickWheelArea::~QQuickWheelArea()
 
 void QQuickWheelArea::wheelEvent(QWheelEvent *we)
 {
+    if (we->phase() == Qt::ScrollBegin)
+        setActive(true);
+    else if (we->phase() == Qt::ScrollEnd)
+        setActive(false);
+
     QPoint numPixels = we->pixelDelta();
     QPoint numDegrees = we->angleDelta() / 8;
 
@@ -199,6 +205,19 @@ void QQuickWheelArea::setScrollSpeed(qreal value)
 qreal QQuickWheelArea::scrollSpeed() const
 {
     return m_scrollSpeed;
+}
+
+bool QQuickWheelArea::isActive() const
+{
+    return m_active;
+}
+
+void QQuickWheelArea::setActive(bool active)
+{
+    if (active != m_active) {
+        m_active = active;
+        emit activeChanged();
+    }
 }
 
 QT_END_NAMESPACE

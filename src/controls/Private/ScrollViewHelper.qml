@@ -59,6 +59,7 @@ Item {
     property int contentWidth
     property real originX
     property real originY
+    property bool active
 
     property int leftMargin: outerFrame ? root.__style.padding.left : 0
     property int rightMargin: outerFrame ? root.__style.padding.right : 0
@@ -143,14 +144,14 @@ Item {
         Binding {
             target: hscrollbar.__panel
             property: "raised"
-            value: vscrollbar.active
+            value: vscrollbar.active || wheelarea.active
             when: hscrollbar.isTransient
         }
         Binding {
             target: hscrollbar.__panel
             property: "visible"
             value: true
-            when: !hscrollbar.isTransient
+            when: !hscrollbar.isTransient || wheelarea.active
         }
         function flash() {
             if (hscrollbar.isTransient) {
@@ -184,14 +185,14 @@ Item {
         Binding {
             target: vscrollbar.__panel
             property: "raised"
-            value: hscrollbar.active
+            value: hscrollbar.active || wheelarea.active
             when: vscrollbar.isTransient
         }
         Binding {
             target: vscrollbar.__panel
             property: "visible"
             value: true
-            when: !vscrollbar.isTransient
+            when: !vscrollbar.isTransient || wheelarea.active
         }
         function flash() {
             if (vscrollbar.isTransient) {
