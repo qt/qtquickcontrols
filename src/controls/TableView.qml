@@ -560,9 +560,9 @@ ScrollView {
 
         Keys.onPressed: {
             if (event.key === Qt.Key_PageUp) {
-                verticalScrollBar.value = __verticalScrollBar.value - listView.height
+                __verticalScrollBar.value = __verticalScrollBar.value - listView.height
             } else if (event.key === Qt.Key_PageDown)
-                verticalScrollBar.value = __verticalScrollBar.value + listView.height
+                __verticalScrollBar.value = __verticalScrollBar.value + listView.height
         }
 
         Keys.onReturnPressed: {
