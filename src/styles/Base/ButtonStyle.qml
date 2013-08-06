@@ -99,7 +99,7 @@ Style {
         implicitHeight: 25
         BorderImage {
             anchors.fill: parent
-            source: control.pressed ? "images/button_down.png" : "images/button.png"
+            source: control.pressed || (control.checkable && control.checked) ? "images/button_down.png" : "images/button.png"
             border.top: 6
             border.bottom: 6
             border.left: 6
