@@ -93,7 +93,19 @@ QtObject {
     property int horizontalAlignment: Text.AlignLeft
 
     /*! The delegate of the column. This can be used to set the
-    \l TableView::itemDelegate for a specific column. */
+    \l TableView::itemDelegate for a specific column.
+
+    In the delegate you have access to the following special properties:
+    \list
+    \li  styleData.selected - if the item is currently selected
+    \li  styleData.value - the value or text for this item
+    \li  styleData.textColor - the default text color for an item
+    \li  styleData.row - the index of the row
+    \li  styleData.column - the index of the column
+    \li  styleData.elideMode - the elide mode of the column
+    \li  styleData.textAlignment - the horizontal text alignment of the column
+    \endlist
+    */
     property Component delegate
 
     Accessible.role: Accessible.ColumnHeader
