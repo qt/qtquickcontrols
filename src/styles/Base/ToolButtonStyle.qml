@@ -56,11 +56,8 @@ Style {
 
         Rectangle {
             anchors.fill: parent
-            visible: control.pressed
-            gradient: Gradient{
-                GradientStop{color: control.pressed ? "lightgray" : "white" ; position: 0}
-                GradientStop{color: control.pressed ? "lightgray" : "lightgray" ; position: 1}
-            }
+            visible: control.pressed || (control.checkable && control.checked)
+            color: "lightgray"
             radius:4
             border.color: "#aaa"
         }
