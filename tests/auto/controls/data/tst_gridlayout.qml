@@ -648,5 +648,67 @@ Item {
             compare(itemRect(layout.children[3]), [10, 25,  10, 10])
         }
 
+        Component {
+            id: layout_columnOrRowChanged_Component
+            GridLayout {
+                id: layout
+                rowSpacing: 0
+                columnSpacing: 0
+                Rectangle {
+                    width: 10
+                    height: 10
+                    Layout.column: 0
+                    color: "#ff0000"
+                }
+                Rectangle {
+                    Layout.column: 1
+                    width: 10
+                    height: 10
+                    color: "#ff0000"
+                }
+                Rectangle {
+                    //Layout.column: 2
+                    width: 10
+                    height: 10
+                    color: "#ff0000"
+                }
+            }
+        }
+
+        function test_columnOrRowChanged()
+        {
+            var layout = layout_columnOrRowChanged_Component.createObject(container);
+            layout.width = layout.implicitWidth
+            layout.height = layout.implicitHeight
+            waitForRendering(layout)
+            // c0-c1-c2
+            compare(itemRect(layout.children[0]), [ 0,  0,  10, 10])
+            compare(itemRect(layout.children[1]), [10,  0,  10, 10])
+            compare(itemRect(layout.children[2]), [20,  0,  10, 10])
+
+            layout.children[0].Layout.column = 3
+            waitForRendering(layout)
+            //c1-c2-c0
+            compare(itemRect(layout.children[0]), [20,  0,  10, 10])
+            compare(itemRect(layout.children[1]), [ 0,  0,  10, 10])
+            compare(itemRect(layout.children[2]), [10,  0,  10, 10])
+
+            layout.children[2].Layout.column = 4
+            waitForRendering(layout)
+            //c1-c0-c2
+            compare(itemRect(layout.children[0]), [10,  0,  10, 10])
+            compare(itemRect(layout.children[1]), [ 0,  0,  10, 10])
+            compare(itemRect(layout.children[2]), [20,  0,  10, 10])
+
+            layout.children[0].Layout.row = 1
+            // two rows, so we adjust it to its new implicitHeight
+            layout.height = layout.implicitHeight
+            waitForRendering(layout)
+            //c1  c2
+            //  c0
+            compare(itemRect(layout.children[0]), [10, 10,  10, 10])
+            compare(itemRect(layout.children[1]), [ 0,  0,  10, 10])
+            compare(itemRect(layout.children[2]), [20,  0,  10, 10])
+        }
     }
 }

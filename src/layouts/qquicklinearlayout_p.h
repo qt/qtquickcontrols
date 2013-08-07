@@ -77,7 +77,7 @@ public:
     Qt::LayoutDirection effectiveLayoutDirection() const;
 
 protected:
-    void updateLayoutItems();
+    void updateLayoutItems() Q_DECL_OVERRIDE;
     void rearrange(const QSizeF &size);
     virtual void insertLayoutItems() = 0;
     void removeLayoutItem(QQuickItem *item);

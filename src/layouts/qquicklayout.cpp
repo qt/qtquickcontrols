@@ -374,8 +374,11 @@ void QQuickLayoutAttached::setFillHeight(bool fill)
 */
 void QQuickLayoutAttached::setRow(int row)
 {
-    if (row >= 0 && row != m_row)
+    if (row >= 0 && row != m_row) {
         m_row = row;
+        repopulateLayout();
+        emit rowChanged();
+    }
 }
 
 /*!
@@ -392,8 +395,11 @@ void QQuickLayoutAttached::setRow(int row)
 */
 void QQuickLayoutAttached::setColumn(int column)
 {
-    if (column >= 0 && column != m_column)
+    if (column >= 0 && column != m_column) {
         m_column = column;
+        repopulateLayout();
+        emit columnChanged();
+    }
 }
 
 
@@ -451,6 +457,12 @@ void QQuickLayoutAttached::invalidateItem()
     if (QQuickLayout *layout = parentLayout()) {
         layout->invalidate(item());
     }
+}
+
+void QQuickLayoutAttached::repopulateLayout()
+{
+    if (QQuickLayout *layout = parentLayout())
+        layout->updateLayoutItems();
 }
 
 QQuickLayout *QQuickLayoutAttached::parentLayout() const

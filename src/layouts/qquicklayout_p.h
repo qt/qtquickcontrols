@@ -77,6 +77,7 @@ public:
     void componentComplete();
     virtual QSizeF sizeHint(Qt::SizeHint whichSizeHint) const = 0;
     virtual void invalidate(QQuickItem * childItem = 0);
+    virtual void updateLayoutItems() = 0;
     virtual void rearrange(const QSizeF &);
     bool arrangementIsDirty() const { return m_dirty; }
 protected:
@@ -114,8 +115,8 @@ class QQuickLayoutAttached : public QObject
     Q_PROPERTY(qreal maximumHeight READ maximumHeight WRITE setMaximumHeight NOTIFY maximumHeightChanged)
     Q_PROPERTY(bool fillHeight READ fillHeight WRITE setFillHeight)
     Q_PROPERTY(bool fillWidth READ fillWidth WRITE setFillWidth)
-    Q_PROPERTY(int row READ row WRITE setRow)
-    Q_PROPERTY(int column READ column WRITE setColumn)
+    Q_PROPERTY(int row READ row WRITE setRow NOTIFY rowChanged)
+    Q_PROPERTY(int column READ column WRITE setColumn NOTIFY columnChanged)
     Q_PROPERTY(int rowSpan READ rowSpan WRITE setRowSpan)
     Q_PROPERTY(int columnSpan READ columnSpan WRITE setColumnSpan)
     Q_PROPERTY(Qt::Alignment alignment READ alignment WRITE setAlignment)
@@ -201,9 +202,12 @@ signals:
     void maximumHeightChanged();
     void fillWidthChanged();
     void fillHeightChanged();
+    void rowChanged();
+    void columnChanged();
 
 private:
     void invalidateItem();
+    void repopulateLayout();
     QQuickLayout *parentLayout() const;
     QQuickItem *item() const;
 private:
