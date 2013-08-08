@@ -54,7 +54,7 @@
 
 QT_BEGIN_NAMESPACE
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_OSX
 #include <Carbon/Carbon.h>
 
 static inline HIRect qt_hirectForQRect(const QRect &convertRect, const QRect &rect = QRect())
@@ -205,7 +205,7 @@ void QQuickStyleItem::initStyleOption()
         QObject * menu = m_properties["menu"].value<QObject *>();
         if (menu) {
             opt->features |= QStyleOptionButton::HasMenu;
-#ifdef Q_OS_MAC
+#ifdef Q_OS_OSX
             if (style() == "mac") {
                 if (platformFont == QPlatformTheme::PushButtonFont)
                     menu->setProperty("__xOffset", 12);
@@ -487,7 +487,7 @@ void QQuickStyleItem::initStyleOption()
             opt->fontMetrics = QFontMetrics(*font);
         opt->currentText = text();
         opt->editable = false;
-#ifdef Q_OS_MAC
+#ifdef Q_OS_OSX
         if (m_properties["popup"].canConvert<QObject *>() && style() == "mac") {
             QObject *popup = m_properties["popup"].value<QObject *>();
             if (platformFont == QPlatformTheme::MiniFont) {
@@ -774,7 +774,7 @@ QSize QQuickStyleItem::sizeFromContents(int width, int height)
         int newWidth = qMax(width, btn->fontMetrics.width(btn->text));
         int newHeight = qMax(height, btn->fontMetrics.height());
         size = qApp->style()->sizeFromContents(QStyle::CT_PushButton, m_styleoption, QSize(newWidth, newHeight)); }
-#ifdef Q_OS_MAC
+#ifdef Q_OS_OSX
         if (style() == "mac") {
             // Cancel out QMacStylePrivate::PushButton*Offset, or part of it
             size -= QSize(7, 6);
@@ -797,14 +797,14 @@ QSize QQuickStyleItem::sizeFromContents(int width, int height)
         size = qApp->style()->sizeFromContents(QStyle::CT_ProgressBar, m_styleoption, QSize(width,height));
         break;
     case SpinBox:
-#ifdef Q_OS_MAC
+#ifdef Q_OS_OSX
         if (style() == "mac") {
             size = qApp->style()->sizeFromContents(QStyle::CT_SpinBox, m_styleoption, QSize(width, height + 5));
             break;
         }
 #endif // fall trough if not mac
     case Edit:
-#ifdef Q_OS_MAC
+#ifdef Q_OS_OSX
         if (style() =="mac") {
             QString sizeHint = m_hints.value("size").toString();
             if ((sizeHint == "small") || (sizeHint == "mini"))
@@ -840,7 +840,7 @@ QSize QQuickStyleItem::sizeFromContents(int width, int height)
         break;
     case Header:
         size = qApp->style()->sizeFromContents(QStyle::CT_HeaderSection, m_styleoption, QSize(width,height));
-#ifdef Q_OS_MAC
+#ifdef Q_OS_OSX
         if (style() =="mac")
             size.setHeight(15);
 #endif
@@ -1015,7 +1015,7 @@ void QQuickStyleItem::setElementType(const QString &str)
     } else if (str == "menuitem") {
         m_itemType = MenuItem;
     } else if (str == "item" || str == "itemrow" || str == "header") {
-#ifdef Q_OS_MAC
+#ifdef Q_OS_OSX
         m_font.setPointSize(11.0);
         emit fontChanged();
 #endif
@@ -1186,7 +1186,7 @@ void QQuickStyleItem::paint(QPainter *painter)
 
     switch (m_itemType) {
     case Button:
-#ifdef Q_OS_MAC
+#ifdef Q_OS_OSX
         if (style() == "mac") {
             // Add back what was substracted in sizeFromContents()
             m_styleoption->rect.adjust(-4, -2, 3, 4);
@@ -1222,7 +1222,7 @@ void QQuickStyleItem::paint(QPainter *painter)
         break;
     case ToolButton:
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_OSX
         if (style() == "mac" && hints().value("segmented").toBool()) {
             const QPaintDevice *target = painter->device();
              HIThemeSegmentDrawInfo sgi;
@@ -1254,7 +1254,7 @@ void QQuickStyleItem::paint(QPainter *painter)
         qApp->style()->drawComplexControl(QStyle::CC_ToolButton, qstyleoption_cast<QStyleOptionComplex*>(m_styleoption), painter);
         break;
     case Tab:
-#ifdef Q_OS_MAC
+#ifdef Q_OS_OSX
         if (style() == "mac") {
             m_styleoption->rect.translate(0, 1); // Unhack QMacStyle's hack
             qApp->style()->drawControl(QStyle::CE_TabBarTabShape, m_styleoption, painter);
@@ -1295,7 +1295,7 @@ void QQuickStyleItem::paint(QPainter *painter)
         qApp->style()->drawControl(QStyle::CE_RadioButton, m_styleoption, painter);
         break;
     case Edit: {
-#ifdef Q_OS_MAC
+#ifdef Q_OS_OSX
         if (style() == "mac" && hints().value("rounded").toBool()) {
             const QPaintDevice *target = painter->device();
             HIThemeFrameDrawInfo fdi;
@@ -1315,7 +1315,7 @@ void QQuickStyleItem::paint(QPainter *painter)
     }
         break;
     case MacHelpButton:
-#ifdef Q_OS_MAC
+#ifdef Q_OS_OSX
     {
         const QPaintDevice *target = painter->device();
         HIThemeButtonDrawInfo fdi;
@@ -1379,7 +1379,7 @@ void QQuickStyleItem::paint(QPainter *painter)
         painter->restore();
         break;
     case StatusBar:
-#ifdef Q_OS_MAC
+#ifdef Q_OS_OSX
         if (style() == "mac") {
             qApp->style()->drawControl(QStyle::CE_ToolBar, m_styleoption, painter);
             painter->setPen(m_styleoption->palette.dark().color().darker(120));

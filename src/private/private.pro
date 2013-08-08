@@ -22,9 +22,7 @@ QML_FILES += \
     ScrollBar.qml \
     FocusFrame.qml
 
-mac {
-    LIBS += -framework Carbon
-}
+osx: LIBS += -framework Carbon
 
 CONFIG += no_cxx_module
 load(qml_plugin)
