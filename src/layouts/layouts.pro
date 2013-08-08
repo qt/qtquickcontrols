@@ -3,7 +3,7 @@ TARGET  = qquicklayoutsplugin
 TARGETPATH = QtQuick/Layouts
 IMPORT_VERSION = 2.1
 
-QT *= qml-private quick-private v8-private gui-private core-private
+QT *= qml-private quick-private gui-private core-private
 
 QMAKE_DOCS = $$PWD/doc/qtquicklayouts.qdocconf
 
