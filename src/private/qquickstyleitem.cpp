@@ -1470,7 +1470,7 @@ QSGNode *QQuickStyleItem::updatePaintNode(QSGNode *node, UpdatePaintNodeData *)
     if (!styleNode)
         styleNode = new QQuickStyleNode;
 
-    styleNode->setTexture(window()->createTextureFromImage(m_image));
+    styleNode->setTexture(window()->createTextureFromImage(m_image, QQuickWindow::TextureCanUseAtlas));
     styleNode->setRect(boundingRect());
     return styleNode;
 }
