@@ -82,6 +82,8 @@ public:
     QQuickWindow *parentWindow() const { return m_parentWindow; }
     void setParentWindow(QQuickWindow *);
 
+    QPlatformMenuBar *platformMenuBar() const { return m_platformMenuBar; }
+
 private:
     static void append_menu(QQmlListProperty<QQuickMenu> *list, QQuickMenu *menu);
     static int count_menu(QQmlListProperty<QQuickMenu> *list);

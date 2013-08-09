@@ -40,6 +40,7 @@
 ****************************************************************************/
 
 #include "qquickmenu_p.h"
+#include "qquickmenubar_p.h"
 #include "qquickmenuitemcontainer_p.h"
 #include "qquickmenupopupwindow_p.h"
 
@@ -110,7 +111,7 @@ QT_BEGIN_NAMESPACE
     \qmlproperty bool Menu::visible
 
     Whether the menu should be visible. This is only enabled when the menu is used as
-    a submenu. Its value defaults to \c true.
+    a submenu or in the menubar. Its value defaults to \c true.
 */
 
 /*!
@@ -269,6 +270,17 @@ QQuickMenu::~QQuickMenu()
 
     delete m_platformMenu;
     m_platformMenu = 0;
+}
+
+void QQuickMenu::setVisible(bool v)
+{
+    QQuickMenuBase::setVisible(v);
+    if (m_platformMenu) {
+        m_platformMenu->setVisible(v);
+        QQuickMenuBar *menubar = qobject_cast<QQuickMenuBar *>(parent());
+        if (menubar && menubar->platformMenuBar())
+            menubar->platformMenuBar()->syncMenu(m_platformMenu);
+    }
 }
 
 void QQuickMenu::updateText()

@@ -180,6 +180,7 @@ MenuBarPrivate {
 
                         sourceComponent: menuBarLoader.menuItemStyle
                         property int menuItemIndex: index
+                        visible: menuItem.visible
 
                         Connections {
                             target: menuBarLoader

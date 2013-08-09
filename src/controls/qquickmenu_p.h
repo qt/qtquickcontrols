@@ -103,6 +103,8 @@ public:
     QQuickMenu(QObject *parent = 0);
     virtual ~QQuickMenu();
 
+    void setVisible(bool);
+
     int selectedIndex() const { return m_selectedIndex; }
     void setSelectedIndex(int index);
 
