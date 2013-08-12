@@ -68,6 +68,9 @@ QtObject {
     /*! The visible status of the column. */
     property bool visible: true
 
+    /*! Determines if the column should be resizable. */
+    property bool resizable: true
+
     /*! \qmlproperty enumeration TableViewColumn::elideMode
     The text elide mode of the column.
     Allowed values are:

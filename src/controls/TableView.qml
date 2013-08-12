@@ -775,7 +775,7 @@ ScrollView {
                             anchors.rightMargin: -width/2
                             width: 16 ; height: parent.height
                             anchors.right: parent.right
-                            enabled: columnCount > 1
+                            enabled: modelData.resizable && columnCount > 1
                             onPositionChanged:  {
                                 var newHeaderWidth = modelData.width + (mouseX - offset)
                                 modelData.width = Math.max(minimumSize, newHeaderWidth)
