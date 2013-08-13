@@ -51,22 +51,21 @@ Style {
     readonly property ToolButton control: __control
     property Component panel: Item {
         id: styleitem
-        implicitWidth: 36
-        implicitHeight: 36
+        implicitWidth: hasIcon ? 36 : Math.max(label.implicitWidth + frame.border.left + frame.border.right, 36)
+        implicitHeight: hasIcon ? 36 : Math.max(label.implicitHeight, 36)
+
+        readonly property bool hasIcon: icon.status === Image.Ready || icon.status === Image.Loading
 
         Rectangle {
             anchors.fill: parent
-            visible: control.pressed
-            gradient: Gradient{
-                GradientStop{color: control.pressed ? "lightgray" : "white" ; position: 0}
-                GradientStop{color: control.pressed ? "lightgray" : "lightgray" ; position: 1}
-            }
+            visible: control.pressed || (control.checkable && control.checked)
+            color: "lightgray"
             radius:4
             border.color: "#aaa"
         }
         Text {
             id: label
-            visible: icon.status != Image.Ready
+            visible: !hasIcon
             anchors.centerIn: parent
             text: control.text
         }
@@ -76,6 +75,7 @@ Style {
             source: control.iconSource
         }
         BorderImage {
+            id: frame
             anchors.fill: parent
             anchors.margins: -1
             anchors.topMargin: -2

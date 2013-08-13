@@ -182,28 +182,40 @@ Item {
             pageDownPressed = false;
         }
 
-        function incrementPage() {
-            value += pageStep
-            if (value > maximumValue)
-                value = maximumValue
+        onWheel: {
+            var stepCount = -(wheel.angleDelta.x ? wheel.angleDelta.x : wheel.angleDelta.y) / 120
+            if (stepCount != 0) {
+                if (wheel.modifiers & Qt.ControlModifier || wheel.modifiers & Qt.ShiftModifier)
+                   incrementPage(stepCount)
+                else
+                   increment(stepCount)
+            }
         }
 
-        function decrementPage() {
-            value -= pageStep
-            if (value < minimumValue)
-                value = minimumValue
+        function incrementPage(stepCount) {
+            value = boundValue(value + getSteps(pageStep, stepCount))
         }
 
-        function increment() {
-            value += singleStep
-            if (value > maximumValue)
-                value = maximumValue
+        function decrementPage(stepCount) {
+            value = boundValue(value - getSteps(pageStep, stepCount))
         }
 
-        function decrement() {
-            value -= singleStep
-            if (value < minimumValue)
-                value = minimumValue
+        function increment(stepCount) {
+            value = boundValue(value + getSteps(singleStep, stepCount))
+        }
+
+        function decrement(stepCount) {
+            value = boundValue(value - getSteps(singleStep, stepCount))
+        }
+
+        function boundValue(val) {
+            return Math.min(Math.max(val, minimumValue), maximumValue)
+        }
+
+        function getSteps(step, count) {
+            if (count)
+                step *= count
+            return step
         }
 
         RangeModel {

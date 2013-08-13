@@ -42,6 +42,8 @@
 #include "qquicktooltip_p.h"
 #include <qquickwindow.h>
 #include <qquickitem.h>
+#include <private/qguiapplication_p.h>
+#include <qpa/qplatformintegration.h>
 
 #ifndef QT_NO_WIDGETS
 #include <qtooltip.h>
@@ -60,7 +62,10 @@ void QQuickTooltip::showText(QQuickItem *item, const QPointF &pos, const QString
     if (!item || !item->window())
         return;
 #ifndef QT_NO_WIDGETS
-    QToolTip::showText(item->window()->mapToGlobal(item->mapToScene(pos).toPoint()), str);
+    if (QGuiApplicationPrivate::platformIntegration()->
+            hasCapability(QPlatformIntegration::MultipleWindows) &&
+            QCoreApplication::instance()->inherits("QApplication"))
+        QToolTip::showText(item->window()->mapToGlobal(item->mapToScene(pos).toPoint()), str);
 #else
     Q_UNUSED(item);
     Q_UNUSED(pos);
