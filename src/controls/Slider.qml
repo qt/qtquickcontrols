@@ -161,7 +161,8 @@ Control {
         \qmlproperty bool Slider::tickmarksEnabled
 
         This property indicates whether the Slider should display tickmarks
-        at step intervals.
+        at step intervals. Tick mark spacing is calculated based on the
+        \l stepSize property.
 
         The default value is \c false.
     */

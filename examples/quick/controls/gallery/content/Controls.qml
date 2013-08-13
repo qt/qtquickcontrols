@@ -117,6 +117,7 @@ Item {
                 value: 0.5
                 width: 200
                 tickmarksEnabled: tickmarkCheck.checked
+                stepSize: tickmarksEnabled ? 0.1 : 0
             }
         }
         Column {

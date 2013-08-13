@@ -139,6 +139,21 @@ Style {
         }
     }
 
+    /*! This property holds the tick mark labels
+
+        You can access the handle width through the \c styleData.handleWidth property.
+    */
+    property Component tickmarks: Repeater {
+        id: repeater
+        model: control.stepSize > 0 ? 1 + (control.maximumValue - control.minimumValue) / control.stepSize : 0
+        Rectangle {
+            color: "#777"
+            width: 1 ; height: 3
+            y: repeater.height
+            x: styleData.handleWidth / 2 + index * ((repeater.width - styleData.handleWidth) / (repeater.count-1))
+        }
+    }
+
     /*! This property holds the slider style panel.
 
         Note that it is generally not recommended to override this.
@@ -172,6 +187,12 @@ Style {
                 sourceComponent: groove
                 width: (horizontal ? parent.width : parent.height) - padding.left - padding.right
                 y:  padding.top +  (Math.round(horizontal ? parent.height : parent.width - padding.top - padding.bottom) - grooveLoader.item.height)/2
+            }
+            Loader {
+                id: tickMarkLoader
+                anchors.fill: parent
+                sourceComponent: control.tickmarksEnabled ? tickmarks : null
+                property QtObject styleData: QtObject { readonly property int handleWidth: control.__panel.handleWidth }
             }
             Loader {
                 id: handleLoader
