@@ -88,7 +88,7 @@ QtObject {
     Allowed values are:
     \list
         \li Text.AlignLeft - the default
-        \li Text.AligntRight
+        \li Text.AlignRight
         \li Text.AlignHCenter
         \li Text.AlignJustify
     \endlist
