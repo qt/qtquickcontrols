@@ -53,6 +53,9 @@ QtObject {
     /*! \internal */
     property Item __view: null
 
+    /*! \internal */
+    property int __index: -1
+
     /*! The title text of the column. */
     property string title
 
@@ -119,4 +122,22 @@ QtObject {
     property Component delegate
 
     Accessible.role: Accessible.ColumnHeader
+
+    /*! Resizes the column so that the implicitWidth of the contents on every row will fit.
+        \since QtQuick.Controls 1.2 */
+    function resizeToContents() {
+        var minWidth = 0
+        var listdata = __view.__listView.children[0]
+        for (var i = 0; __index < 0 && i < __view.__columns.length; ++i)
+            if (__view.__columns[i] === this)
+                __index = i
+        for (var row = 0 ; row < listdata.children.length ; ++row) {
+            var item = listdata.children[row+1]
+            if (item && item.children[1] && item.children[1].children[__index] && item.children[1].children[__index].children[0] &&
+                    item.children[1].children[__index].children[0].hasOwnProperty("implicitWidth"))
+                minWidth = Math.max(minWidth, item.children[1].children[__index].children[0].implicitWidth)
+        }
+        if (minWidth)
+            width = minWidth
+    }
 }

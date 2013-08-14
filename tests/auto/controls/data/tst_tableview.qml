@@ -805,6 +805,22 @@ TestCase {
         table.destroy()
     }
 
+    function test_resize_columns() {
+        var component = Qt.createComponent("tableview/table_resizecolumns.qml")
+        compare(component.status, Component.Ready)
+        var table = component.createObject(container);
+        verify(table !== null, "table created is null")
+        waitForRendering(table)
+        compare(table.getColumn(0).width, 20)
+        table.getColumn(0).resizeToContents()
+        compare(table.getColumn(0).width, 50)
+        table.getColumn(0).width = 20
+        compare(table.getColumn(0).width, 20)
+        table.resizeColumnsToContents()
+        compare(table.getColumn(0).width, 50)
+        table.destroy()
+    }
+
     // In TableView, drawn text = table.__currentRowItem.children[1].children[1].itemAt(0).children[0].children[0].text
 
     function findAChild(item, name)

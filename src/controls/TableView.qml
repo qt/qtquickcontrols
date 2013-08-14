@@ -243,6 +243,9 @@ ScrollView {
     /*! \internal */
     property alias __currentRowItem: listView.currentItem
 
+    /*! \internal */
+    property alias __listView: listView
+
     /*! \qmlsignal TableView::activated(int row)
 
         Emitted when the user activates an item by mouse or keyboard interaction.
@@ -458,6 +461,21 @@ ScrollView {
         \endlist
     */
     property int selectionMode: SelectionMode.SingleSelection
+
+    /*! Resizes all columns to ensure that the column contents and the headers will fit.
+        \since QtQuick.Controls 1.2 */
+    function resizeColumnsToContents () {
+        for (var i = 0; i < __columns.length; ++i) {
+            var col = getColumn(i)
+            var header = repeater.itemAt(i)
+            if (col) {
+                col.__index = i
+                col.resizeToContents()
+                if (col.width < header.implicitWidth)
+                    col.width = header.implicitWidth
+            }
+        }
+    }
 
     Component.onCompleted: {
         for (var i = 0; i < __columns.length; ++i) {
@@ -868,6 +886,7 @@ ScrollView {
                     delegate: Item {
                         z:-index
                         width: columnCount == 1 ? viewport.width + __verticalScrollBar.width : modelData.width
+                        implicitWidth: headerStyle.implicitWidth
                         visible: modelData.visible
                         height: headerVisible ? headerStyle.height : 0
 
@@ -972,19 +991,7 @@ ScrollView {
                             }
                             property bool found:false
 
-                            onDoubleClicked: {
-                                var row
-                                var minWidth =  0
-                                var listdata = listView.children[0]
-                                for (row = 0 ; row < listdata.children.length ; ++row){
-                                    var item = listdata.children[row+1]
-                                    if (item && item.children[1] && item.children[1].children[index] &&
-                                            item.children[1].children[index].children[0].hasOwnProperty("implicitWidth"))
-                                        minWidth = Math.max(minWidth, item.children[1].children[index].children[0].implicitWidth)
-                                }
-                                if (minWidth)
-                                    modelData.width = minWidth
-                            }
+                            onDoubleClicked: getColumn(index).resizeToContents()
                             onPressedChanged: if (pressed) offset=mouseX
                             cursorShape: enabled ? Qt.SplitHCursor : Qt.ArrowCursor
                         }
