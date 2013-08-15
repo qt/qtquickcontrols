@@ -26,7 +26,7 @@ qhp.QtQuickControls.subprojects.qtquickcontrolsqmltypes.sortPages = true
 
 depends = qtqml qtquick qtwidgets qtdoc qtquicklayouts qtquickcontrolsstyles
 
-exampledirs += ../../../examples/quick/controls
+exampledirs += ../../../examples/quick
 
 # Specify the install path under QT_INSTALL_EXAMPLES
 examplesinstallpath = quick/controls
