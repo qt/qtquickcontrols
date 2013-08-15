@@ -81,6 +81,8 @@ Item {
 
     activeFocusOnTab: false
     Accessible.role: Accessible.ToolBar
+    LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft
+    LayoutMirroring.childrenInherit: true
 
     width: parent ? parent.width : implicitWidth
     implicitWidth: container.leftMargin + container.rightMargin + container.calcWidth()
