@@ -212,6 +212,7 @@ ApplicationWindow {
                                     case "isDefault":
                                     case "partiallyCheckedEnabled":
                                     case "alternatingRowColors":
+                                    case "movableColumns":
                                         layout = layouts.boolLayout
                                         typeName = "Boolean";
                                         break

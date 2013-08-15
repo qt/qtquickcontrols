@@ -57,7 +57,7 @@ Item {
     property Component toolbar: ToolBar { }
     property Component statusbar: StatusBar { }
     property Component label: Label {text: "I am a label" }
-    property Component tableview: TableView { model: testDataModel ; TableViewColumn {title: "Column 1"}}
+    property Component tableview: TableView { property bool movableColumns: true; model: testDataModel ; TableViewColumn {title: "Column 1"; movable: movableColumns} TableViewColumn {title: "Column 2"; movable: movableColumns} }
     property Component tabView: TabView { Repeater { model: 3 ; delegate:Tab { title: "Tab " + index } }}
     property Component scrollview: ScrollView {
         Rectangle {

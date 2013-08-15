@@ -708,6 +708,7 @@ ScrollView {
                             opacity: (index == repeater.targetIndex && repeater.targetIndex != repeater.dragIndex) ? 0.5 : 0
                             Behavior on opacity { NumberAnimation{duration:160}}
                             color: palette.highlight
+                            visible: modelData.movable
                         }
 
                         MouseArea{
@@ -724,7 +725,7 @@ ScrollView {
                             // NOTE: the direction is different from the master branch
                             // so this indicates that I am using an invalid assumption on item ordering
                             onPositionChanged: {
-                                if (pressed && columnCount > 1) { // only do this while dragging
+                                if (modelData.movable && pressed && columnCount > 1) { // only do this while dragging
                                     for (var h = columnCount-1 ; h >= 0 ; --h) {
                                         if (drag.target.x > headerrow.children[h].x) {
                                             repeater.targetIndex = h
@@ -741,15 +742,18 @@ ScrollView {
 
                             onReleased: {
                                 if (repeater.targetIndex >= 0 && repeater.targetIndex != index ) {
-                                    columnModel.move(index, repeater.targetIndex, 1)
-                                    if (sortIndicatorColumn == index)
-                                        sortIndicatorColumn = repeater.targetIndex
+                                    var targetColumn = columnModel.get(repeater.targetIndex).columnItem
+                                    if (targetColumn.movable) {
+                                        columnModel.move(index, repeater.targetIndex, 1)
+                                        if (sortIndicatorColumn == index)
+                                            sortIndicatorColumn = repeater.targetIndex
+                                    }
                                 }
                                 repeater.targetIndex = -1
                             }
                             drag.maximumX: 1000
                             drag.minimumX: -1000
-                            drag.target: columnCount > 1 ? draghandle : null
+                            drag.target: modelData.movable && columnCount > 1 ? draghandle : null
                         }
 
                         Loader {

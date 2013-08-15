@@ -72,6 +72,12 @@ QtObject {
     \since QtQuick.Controls 1.1 */
     property bool resizable: true
 
+    /*! Determines if the column should be movable.
+    The default value is \c true.
+    \note A non-movable column may get indirectly moved if adjacent columns are movable.
+    \since QtQuick.Controls 1.1 */
+    property bool movable: true
+
     /*! \qmlproperty enumeration TableViewColumn::elideMode
     The text elide mode of the column.
     Allowed values are:
