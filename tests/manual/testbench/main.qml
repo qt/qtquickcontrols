@@ -268,6 +268,15 @@ ApplicationWindow {
                                         enumModelData.append({ text: "TextEdit.AlignHCenter", value: TextEdit.AlignHCenter});
                                         break;
 
+                                    case "TextFormat":
+                                        layout = layouts.enumLayout
+                                        enumModelData = Qt.createQmlObject('import QtQuick 2.1; import QtQuick.Controls 1.0; ListModel {}', layout, '');
+                                        typeName = "Enum";
+                                        enumModelData.append({ text: "TextEdit.RichText",      value: TextEdit.RichText});
+                                        enumModelData.append({ text: "TextEdit.PlainText",   value: TextEdit.PlainText});
+                                        enumModelData.append({ text: "TextEdit.AutoText",  value: TextEdit.AutoText});
+                                        break;
+
                                     case "VerticalAlignment":
                                         layout = layouts.enumLayout
                                         enumModelData = Qt.createQmlObject('import QtQuick 2.1; import QtQuick.Controls 1.0; ListModel {}', layout, '');

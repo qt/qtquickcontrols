@@ -106,7 +106,7 @@ Item {
     }
 
     property string loremIpsum:
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor "+
+        "<a href='lipsum.com'>Lorem ipsum</a> dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor "+
         "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor "+
         "incididunt ut labore et dolore magna aliqua.\n Ut enim ad minim veniam, quis nostrud "+
         "exercitation ullamco laboris nisi ut aliquip ex ea commodo cosnsequat. ";
