@@ -185,81 +185,75 @@ ApplicationWindow {
                                     continue;
                                 }
 
-                                if (!prop.indexOf("on")) { // look only for properties
-                                    if (prop.indexOf("Changed") !== (prop.length - 7))
-                                        continue;
-                                    var substr = prop.slice(2, prop.length - 7)
-                                    if (!substr.indexOf("__")) // filter private
-                                        continue;
-
+                                if (!(item[prop] instanceof Function)) { // We only want properties
                                     var typeName = "None";
                                     var layout
                                     var enumModelData
                                     var isColor = false
-                                    switch (substr) {
+                                    switch (prop) {
 
-                                    case "ActiveFocusOnPress":
-                                    case "ActiveFocusOnTab":
-                                    case "Enabled":
-                                    case "Visible":
-                                    case "Checkable":
-                                    case "Checked":
-                                    case "FrameVisible":
-                                    case "AdjustToContentSize":
-                                    case "Flat":
-                                    case "SelectByMouse":
-                                    case "SelectByKeyboard":
-                                    case "ReadOnly":
-                                    case "Indeterminate":
-                                    case "UpdateValueWhileDragging":
-                                    case "TickmarksEnabled":
-                                    case "SortIndicatorVisible":
-                                    case "IsDefault":
-                                    case "PartiallyCheckedEnabled":
-                                    case "AlternatingRowColors":
+                                    case "activeFocusOnPress":
+                                    case "activeFocusOnTab":
+                                    case "enabled":
+                                    case "visible":
+                                    case "checkable":
+                                    case "checked":
+                                    case "frameVisible":
+                                    case "adjustToContentSize":
+                                    case "flat":
+                                    case "selectByMouse":
+                                    case "selectByKeyboard":
+                                    case "readOnly":
+                                    case "indeterminate":
+                                    case "updateValueWhileDragging":
+                                    case "tickmarksEnabled":
+                                    case "sortIndicatorVisible":
+                                    case "isDefault":
+                                    case "partiallyCheckedEnabled":
+                                    case "alternatingRowColors":
                                         layout = layouts.boolLayout
                                         typeName = "Boolean";
                                         break
 
-                                    case "MaximumValue":
-                                    case "MinimumValue":
-                                    case "Decimals":
-                                    case "CurrentIndex":
-                                    case "SortIndicatorColumn":
+                                    case "maximumValue":
+                                    case "minimumValue":
+                                    case "decimals":
+                                    case "currentIndex":
+                                    case "sortIndicatorColumn":
                                         layout = layouts.intLayout
                                         typeName = "Int"
                                         break;
 
-                                    case "Scale":
-                                    case "Height":
-                                    case "Width":
-                                    case "StepSize":
-                                    case "Value":
-                                    case "Opacity":
+                                    case "scale":
+                                    case "height":
+                                    case "width":
+                                    case "stepSize":
+                                    case "value":
+                                    case "opacity":
                                         layout = layouts.realLayout
                                         typeName = "Real";
                                         break;
 
-                                    case "ImplicitHeight":
-                                    case "ActiveFocus":
-                                    case "ImplicitWidth":
-                                    case "Pressed":
-                                    case "CurrentText":
+                                    case "implicitHeight":
+                                    case "activeFocus":
+                                    case "implicitWidth":
+                                    case "pressed":
+                                    case "currentText":
                                         layout = layouts.readonlyLayout
                                         typeName = "ReadOnly"
                                         break;
 
-                                    case "Prefix":
-                                    case "Suffix":
-                                    case "Text":
-                                    case "Title":
-                                    case "Tooltip":
-                                    case "IconSource":
+                                    case "prefix":
+                                    case "suffix":
+                                    case "text":
+                                    case "title":
+                                    case "tooltip":
+                                    case "iconSource":
                                         layout = layouts.stringLayout
                                         typeName = "String";
                                         break;
 
-                                    case "HorizontalAlignment":
+                                    case "horizontalAlignment":
                                         layout = layouts.enumLayout
                                         enumModelData = Qt.createQmlObject('import QtQuick 2.1; import QtQuick.Controls 1.0; ListModel {}', layout, '');
                                         typeName = "Enum";
@@ -268,7 +262,7 @@ ApplicationWindow {
                                         enumModelData.append({ text: "TextEdit.AlignHCenter", value: TextEdit.AlignHCenter});
                                         break;
 
-                                    case "TextFormat":
+                                    case "textFormat":
                                         layout = layouts.enumLayout
                                         enumModelData = Qt.createQmlObject('import QtQuick 2.1; import QtQuick.Controls 1.0; ListModel {}', layout, '');
                                         typeName = "Enum";
@@ -277,7 +271,7 @@ ApplicationWindow {
                                         enumModelData.append({ text: "TextEdit.AutoText",  value: TextEdit.AutoText});
                                         break;
 
-                                    case "VerticalAlignment":
+                                    case "verticalAlignment":
                                         layout = layouts.enumLayout
                                         enumModelData = Qt.createQmlObject('import QtQuick 2.1; import QtQuick.Controls 1.0; ListModel {}', layout, '');
                                         typeName = "Enum";
@@ -286,7 +280,16 @@ ApplicationWindow {
                                         enumModelData.append({ text: "TextEdit.AlignVCenter",  value: TextEdit.AlignVCenter});
                                         break;
 
-                                    case "InputMethodHints":
+                                    case "textFormat":
+                                        layout = layouts.enumLayout
+                                        enumModelData = Qt.createQmlObject('import QtQuick 2.1; import QtQuick.Controls 1.0; ListModel {}', layout, '');
+                                        typeName = "Enum";
+                                        enumModelData.append({ text: "TextEdit.RichText",      value: TextEdit.RichText});
+                                        enumModelData.append({ text: "TextEdit.PlainText",   value: TextEdit.PlainText});
+                                        enumModelData.append({ text: "TextEdit.AutoText",  value: TextEdit.AutoText});
+                                        break;
+
+                                    case "inputMethodHints":
                                         layout = layouts.enumLayout
                                         enumModelData = Qt.createQmlObject('import QtQuick 2.1; import QtQuick.Controls 1.0; ListModel {}', layout, '');
                                         typeName = "Enum";
@@ -309,7 +312,7 @@ ApplicationWindow {
                                         enumModelData.append({ text: "Qt.ImhUrlCharactersOnly",     value: Qt.ImhUrlCharactersOnly});
                                         break;
 
-                                    case "Orientation":
+                                    case "orientation":
                                         layout = layouts.enumLayout
                                         enumModelData = Qt.createQmlObject('import QtQuick 2.1; import QtQuick.Controls 1.0; ListModel {}', layout, '');
                                         typeName = "Enum";
@@ -317,7 +320,7 @@ ApplicationWindow {
                                         enumModelData.append({ text: "Qt.Vertical",      value: Qt.Vertical});
                                         break;
 
-                                    case "EchoMode":
+                                    case "echoMode":
                                         layout = layouts.enumLayout
                                         enumModelData = Qt.createQmlObject('import QtQuick 2.1; import QtQuick.Controls 1.0; ListModel {}', layout, '');
                                         typeName = "Enum";
@@ -327,8 +330,8 @@ ApplicationWindow {
                                         enumModelData.append({ text: "TextInput.PasswordEchoOnEdit",value: TextInput.PasswordEchoOnEdit});
                                         break;
 
-                                    case "BackgroundColor":
-                                    case "TextColor":
+                                    case "backgroundColor":
+                                    case "textColor":
                                         isColor = true
                                         layout = layouts.enumLayout
                                         enumModelData = Qt.createQmlObject('import QtQuick 2.1; import QtQuick.Controls 1.0; ListModel {}', layout, '');
@@ -338,7 +341,7 @@ ApplicationWindow {
                                         enumModelData.append({ text: "Carmine red", value: "#FF0038"});
                                         break;
 
-                                    case "SortIndicatorOrder":
+                                    case "sortIndicatorOrder":
                                         layout = layouts.enumLayout
                                         enumModelData = Qt.createQmlObject('import QtQuick 2.1; import QtQuick.Controls 1.0; ListModel {}', layout, '');
                                         typeName = "Enum";
@@ -346,7 +349,7 @@ ApplicationWindow {
                                         enumModelData.append({ text: "Qt.DescendingOrder",   value: Qt.DescendingOrder});
                                         break;
 
-                                    case "CheckedState":
+                                    case "checkedState":
                                         layout = layouts.enumLayout
                                         enumModelData = Qt.createQmlObject('import QtQuick 2.1; import QtQuick.Controls 1.0; ListModel {}', layout, '');
                                         typeName = "Enum";
@@ -360,12 +363,7 @@ ApplicationWindow {
                                         break;
                                     }
 
-                                    if (substr.length > 1)
-                                        substr = substr[0].toLowerCase() + substr.substring(1)
-                                    else
-                                        substr = substr.toLowerCase()
-
-                                    var val = item[substr] + "" // All model properties must be the same type
+                                    var val = item[prop] + "" // All model properties must be the same type
 
                                     if (typeName != "None" && val !== undefined) {
                                         if (isColor)
@@ -373,7 +371,7 @@ ApplicationWindow {
 
                                         if (arr[typeName] === undefined)
                                             arr[typeName] = []
-                                        arr[typeName].push({name: substr , result: val, typeString: typeName, layoutComponent: layout, enumModel: enumModelData})
+                                        arr[typeName].push({name: prop , result: val, typeString: typeName, layoutComponent: layout, enumModel: enumModelData})
                                     }
                                 }
                                 propertyMap = arr;
