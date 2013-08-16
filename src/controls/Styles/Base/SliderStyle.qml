@@ -140,6 +140,7 @@ Style {
     }
 
     /*! This property holds the tick mark labels
+        \since QtQuick.Controls.Styles 1.1
 
         You can access the handle width through the \c styleData.handleWidth property.
     */

@@ -632,7 +632,8 @@ ScrollView {
     /*! \internal */
     default property alias data: area.data
 
-    /*! \qmlproperty int TextArea::textMargin
+    /*! \qmlproperty real TextArea::textMargin
+        \since QtQuick.Controls 1.1
 
         The margin, in pixels, around the text in the TextArea.
     */
