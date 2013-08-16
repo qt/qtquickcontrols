@@ -47,7 +47,7 @@ Style {
     property Component panel: Item {
         property bool popup: !!styleItem.styleHint("comboboxpopup")
 
-        implicitWidth: 115
+        implicitWidth: 125
         implicitHeight: styleItem.implicitHeight
         anchors.fill: parent
         StyleItem {
@@ -70,7 +70,8 @@ Style {
 
             hints: control.styleHints
             properties: {
-                "popup": control.__popup
+                "popup": control.__popup,
+                "editable" : control.editable
             }
         }
     }

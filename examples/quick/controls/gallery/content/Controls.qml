@@ -60,7 +60,7 @@ Item {
         spacing: 16
         Column {
             id: firstColumn
-            spacing: 9
+            spacing: 7
             Row {
                 spacing:8
                 Button {
@@ -81,10 +81,23 @@ Item {
                 }
             }
             ComboBox {
-                id: combo;
-                model: choices;
-                width: parent.width;
+                id: combo
+                model: choices
+                width: parent.width
                 currentIndex: 2
+            }
+            ComboBox {
+                id: editableCombo
+                editable: true
+                model: choices
+                width: parent.width
+                currentIndex: 2
+                onAccepted: {
+                    if (editableCombo.find(currentText) === -1) {
+                        choices.append({text: editText})
+                        currentIndex = editableCombo.find(editText)
+                    }
+                }
             }
             Row {
                 spacing: 8

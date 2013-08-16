@@ -99,6 +99,44 @@ Style {
         }
     }
 
+    /*! \internal */
+    property Component __editor: Item {
+        implicitWidth: 100
+        implicitHeight: 25
+        clip: true
+        BorderImage {
+            anchors.fill: parent
+            anchors.rightMargin: -2
+            source: "images/editbox.png"
+            border.left: 4
+            border.right: 4
+            border.top: 4
+            border.bottom: 4
+            BorderImage {
+                anchors.fill: parent
+                anchors.margins: -1
+                anchors.topMargin: -2
+                anchors.rightMargin: 0
+                anchors.bottomMargin: 1
+                source: "images/focusframe.png"
+                visible: control.activeFocus
+                border.left: 4
+                border.right: 4
+                border.top: 4
+                border.bottom: 4
+            }
+        }
+        Rectangle {
+            color: "#aaa"
+            anchors.right: parent.right
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 3
+            anchors.topMargin: 1
+            width: 1
+        }
+    }
+
     /*! This defines the label of the button. */
     property Component label: Item {
         implicitWidth: textitem.implicitWidth + 20
@@ -118,18 +156,28 @@ Style {
         property bool popup: false
         anchors.centerIn: parent
         anchors.fill: parent
-        implicitWidth: Math.max(labelLoader.implicitWidth + padding.left + padding.right, backgroundLoader.implicitWidth)
+        implicitWidth: 125
         implicitHeight: Math.max(labelLoader.implicitHeight + padding.top + padding.bottom, backgroundLoader.implicitHeight)
 
         Loader {
             id: backgroundLoader
             anchors.fill: parent
             sourceComponent: background
+
+        }
+
+        Loader {
+            id: editorLoader
+            anchors.fill: parent
+            anchors.rightMargin: 20
+            anchors.bottomMargin: -1
+            sourceComponent: control.editable ? __editor : null
         }
 
         Loader {
             id: labelLoader
             sourceComponent: label
+            visible: !control.editable
             anchors.fill: parent
             anchors.leftMargin: padding.left
             anchors.topMargin: padding.top

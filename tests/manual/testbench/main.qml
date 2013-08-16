@@ -199,6 +199,7 @@ ApplicationWindow {
                                     case "checkable":
                                     case "checked":
                                     case "running":
+                                    case "editable":
                                     case "frameVisible":
                                     case "adjustToContentSize":
                                     case "flat":
@@ -239,6 +240,7 @@ ApplicationWindow {
                                     case "implicitHeight":
                                     case "activeFocus":
                                     case "implicitWidth":
+                                    case "acceptableInput":
                                     case "pressed":
                                     case "currentText":
                                         layout = layouts.readonlyLayout
