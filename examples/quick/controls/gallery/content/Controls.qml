@@ -43,7 +43,7 @@
 
 
 import QtQuick 2.1
-import QtQuick.Controls 1.0
+import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.0
 
 Item {
@@ -119,6 +119,17 @@ Item {
                 tickmarksEnabled: tickmarkCheck.checked
                 stepSize: tickmarksEnabled ? 0.1 : 0
             }
+            MouseArea {
+                id: busyCheck
+                width: parent.width
+                height: 40
+                hoverEnabled:true
+                BusyIndicator {
+                    running: busyCheck.containsMouse
+                    anchors.horizontalCenter: parent.horizontalCenter
+                }
+            }
+
         }
         Column {
             id: rightcol

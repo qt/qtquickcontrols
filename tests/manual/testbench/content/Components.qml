@@ -49,6 +49,7 @@ Item {
     property Component toolbutton: ToolButton { text: "A ToolButton" }
     property Component radiobutton: RadioButton { text: "A RadioButton" }
     property Component textfield: TextField { }
+    property Component busyIndicator: BusyIndicator { }
     property Component spinbox: SpinBox {}
     property Component slider : Slider {}
     property Component combobox: ComboBox { model: testDataModel }
@@ -114,6 +115,7 @@ Item {
     property var componentModel: ListModel {
         Component.onCompleted: {
             append({ name: "Button",        component: button});
+            append({ name: "BusyIndicator", component: busyIndicator});
             append({ name: "ToolButton",    component: toolbutton});
             append({ name: "CheckBox",      component: checkbox});
             append({ name: "ComboBox",      component: combobox});
@@ -149,11 +151,13 @@ Item {
     property Component scrollviewStyle: ScrollViewStyle {}
     property Component groupboxStyle: GroupBoxStyle {}
     property Component tabViewStyle: TabViewStyle {}
+    property Component busyIndicatorStyle: BusyIndicatorStyle {}
     property Component labelStyle: null
 
     property var customStyles: ListModel {
         Component.onCompleted: {
             append({ name: "Button",        component: buttonStyle});
+            append({ name: "BusyIndicator", component: busyIndicatorStyle});
             append({ name: "ToolButton",    component: toolbuttonStyle});
             append({ name: "CheckBox",      component: checkboxStyle});
             append({ name: "ComboBox",      component: comboboxStyle});

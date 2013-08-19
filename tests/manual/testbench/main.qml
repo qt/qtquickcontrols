@@ -198,6 +198,7 @@ ApplicationWindow {
                                     case "visible":
                                     case "checkable":
                                     case "checked":
+                                    case "running":
                                     case "frameVisible":
                                     case "adjustToContentSize":
                                     case "flat":

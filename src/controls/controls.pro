@@ -9,6 +9,7 @@ QMAKE_DOCS = $$PWD/doc/qtquickcontrols.qdocconf
 CONTROLS_QML_FILES = \
     ApplicationWindow.qml \
     Button.qml \
+    BusyIndicator.qml \
     CheckBox.qml \
     ComboBox.qml \
     GroupBox.qml \

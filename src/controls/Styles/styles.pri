@@ -2,6 +2,7 @@
 # Base
 STYLES_QML_FILES = \
     $$PWD/Base/ButtonStyle.qml \
+    $$PWD/Base/BusyIndicatorStyle.qml \
     $$PWD/Base/CheckBoxStyle.qml \
     $$PWD/Base/ComboBoxStyle.qml \
     $$PWD/Base/FocusFrameStyle.qml \
@@ -23,6 +24,7 @@ STYLES_QML_FILES = \
 # Desktop
 STYLES_QML_FILES += \
     $$PWD/Desktop/ButtonStyle.qml \
+    $$PWD/Desktop/BusyIndicatorStyle.qml \
     $$PWD/Desktop/CheckBoxStyle.qml \
     $$PWD/Desktop/ComboBoxStyle.qml \
     $$PWD/Desktop/FocusFrameStyle.qml \
