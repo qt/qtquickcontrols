@@ -8,5 +8,5 @@ SUBDIRS += \
     basiclayouts
 
 qtHaveModule(widgets) {
-    SUBDIRS += text
+    SUBDIRS += texteditor
 }

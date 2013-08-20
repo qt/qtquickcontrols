@@ -1,5 +1,5 @@
 QT += qml quick
-TARGET = text
+TARGET = texteditor
 qtHaveModule(widgets) {
     QT += widgets
 }

@@ -84,7 +84,7 @@
 */
 
 /*!
-    \example controls/text
+    \example controls/texteditor
     \title Qt Quick Controls - Text Editor Example
     \ingroup qtquickcontrols_examples
     \brief A text editor application.
