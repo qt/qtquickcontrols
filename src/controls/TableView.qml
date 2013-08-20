@@ -178,6 +178,7 @@ ScrollView {
     \li  styleData.column - the index of the column
     \li  styleData.pressed - true when the column is being pressed
     \li  styleData.containsMouse - true when the column is under the mouse
+    \li  styleData.textAlignment - the horizontal text alignment of the column (since QtQuickControls 1.1)
     \endlist
     */
     property Component headerDelegate: __style ? __style.headerDelegate : null
@@ -697,6 +698,7 @@ ScrollView {
                                 readonly property bool pressed: headerClickArea.pressed
                                 readonly property bool containsMouse: headerClickArea.containsMouse
                                 readonly property int column: index
+                                readonly property int textAlignment: modelData.horizontalAlignment
                             }
                         }
                         Rectangle{
@@ -757,6 +759,7 @@ ScrollView {
                                 readonly property bool pressed: headerClickArea.pressed
                                 readonly property bool containsMouse: headerClickArea.containsMouse
                                 readonly property int column: index
+                                readonly property int textAlignment: modelData.horizontalAlignment
                             }
 
                             parent: tableHeader
@@ -808,6 +811,7 @@ ScrollView {
                     readonly property bool pressed: false
                     readonly property bool containsMouse: false
                     readonly property int column: -1
+                    readonly property int textAlignment: Text.AlignLeft
                 }
 
                 anchors.top: parent.top
