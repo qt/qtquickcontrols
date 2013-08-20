@@ -1,10 +1,17 @@
 # This file is used to ignore files which are generated in the Qt build system
 # ----------------------------------------------------------------------------
 
-examples/quick/controls/text/text
-tests/auto/activeFocusOnTab/tst_activeFocusOnTab
-tests/auto/controls/tst_controls
-tests/auto/qtdesktop/tst_qtdesktop
+/examples/quick/controls/basiclayouts/basiclayouts
+/examples/quick/controls/gallery/gallery
+/examples/quick/controls/splitview/splitview
+/examples/quick/controls/tableview/tableview
+/examples/quick/controls/touch/touch
+/examples/quick/controls/text/text
+/tests/auto/activeFocusOnTab/tst_activeFocusOnTab
+/tests/auto/controls/tst_controls
+/tests/auto/qtdesktop/tst_qtdesktop
+/tests/auto/applicationwindow/tst_applicationwindow
+/tests/auto/testplugin/QtQuickControlsTests/testplugin.*
 
 callgrind.out.*
 pcviewer.cfg
@@ -97,3 +104,6 @@ qtc-debugging-helper
 
 # linux shared libraries
 *.so*
+
+# windows shared libraries
+*.dll
