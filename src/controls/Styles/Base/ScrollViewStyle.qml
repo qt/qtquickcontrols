@@ -71,7 +71,7 @@ Style {
 
     /*! This Component paints the frame around scroll bars. */
     property Component frame: Rectangle {
-        color: "white"
+        color: control["backgroundVisible"] ? "white": "transparent"
         border.color: "#999"
         border.width: 1
         radius: 1

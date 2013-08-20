@@ -90,7 +90,7 @@ public:
     ~QQuickMenuBase();
 
     bool visible() const { return m_visible; }
-    void setVisible(bool);
+    virtual void setVisible(bool);
 
     QQuickMenu *parentMenu() const;
     virtual void setParentMenu(QQuickMenu *parentMenu);

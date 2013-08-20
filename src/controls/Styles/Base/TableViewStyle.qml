@@ -61,7 +61,7 @@ ScrollViewStyle {
     property color textColor: __syspal.text
 
     /*! The background color. */
-    property color backgroundColor: __syspal.base
+    property color backgroundColor: control.backgroundVisible ? __syspal.base : "transparent"
 
     /*! The alternate background color. */
     property color alternateBackgroundColor: Qt.darker(__syspal.base, 1.06)

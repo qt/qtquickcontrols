@@ -131,9 +131,9 @@ static bool isChecked(const QObject *o)
 
     \section1 Adding support to ExclusiveGroup
 
-    It is possible to add support for ExclusiveGroup for an object, or control. It should have a \c checked
+    It is possible to add support for ExclusiveGroup for an object or control. It should have a \c checked
     property, and either a \c checkedChanged, \c toggled(), or \c toggled(bool) signal. It also needs
-    to be bound with \l ExclusiveGroup::bindCheckable() when its ExclusiveGroup ty[ped property is set.
+    to be bound with \l ExclusiveGroup::bindCheckable() when its ExclusiveGroup typed property is set.
 
     \code
     Item {
@@ -149,7 +149,7 @@ static bool isChecked(const QObject *o)
     }
     \endcode
 
-    The example above shows the minimum necessary to add ExclusiveGroup support to any item.
+    The example above shows the minimum code necessary to add ExclusiveGroup support to any item.
 */
 
 /*!

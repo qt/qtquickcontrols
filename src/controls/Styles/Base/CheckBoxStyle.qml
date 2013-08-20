@@ -179,8 +179,7 @@ Style {
             Loader {
                 id: labelLoader
                 sourceComponent: label
-                anchors.top: parent.top
-                anchors.bottom: parent.bottom
+                anchors.verticalCenter: parent.verticalCenter
             }
         }
     }
