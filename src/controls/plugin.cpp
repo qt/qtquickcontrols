@@ -84,6 +84,7 @@ static const struct {
     { "StackViewDelegate", 1, 0 },
     { "StackViewTransition", 1, 0 },
     { "StatusBar", 1, 0 },
+    { "Switch", 1, 1 },
     { "Tab", 1, 0 },
     { "TabView", 1, 0 },
     { "TableView", 1, 0 },

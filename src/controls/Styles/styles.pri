@@ -14,6 +14,7 @@ STYLES_QML_FILES = \
     $$PWD/Base/ScrollViewStyle.qml\
     $$PWD/Base/SliderStyle.qml \
     $$PWD/Base/SpinBoxStyle.qml \
+    $$PWD/Base/SwitchStyle.qml \
     $$PWD/Base/StatusBarStyle.qml \
     $$PWD/Base/TableViewStyle.qml \
     $$PWD/Base/TabViewStyle.qml \
@@ -36,6 +37,7 @@ STYLES_QML_FILES += \
     $$PWD/Desktop/ScrollViewStyle.qml \
     $$PWD/Desktop/SliderStyle.qml \
     $$PWD/Desktop/SpinBoxStyle.qml \
+    $$PWD/Desktop/SwitchStyle.qml \
     $$PWD/Desktop/StatusBarStyle.qml\
     $$PWD/Desktop/TabViewStyle.qml \
     $$PWD/Desktop/TableViewStyle.qml \

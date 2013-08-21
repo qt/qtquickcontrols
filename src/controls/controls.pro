@@ -26,6 +26,7 @@ CONTROLS_QML_FILES = \
     StackViewDelegate.qml \
     StackViewTransition.qml \
     StatusBar.qml \
+    Switch.qml \
     Tab.qml \
     TabView.qml \
     TableView.qml \
