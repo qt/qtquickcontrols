@@ -1,6 +1,6 @@
 TARGET  = qtquickcontrolsplugin
 TARGETPATH = QtQuick/Controls
-IMPORT_VERSION = 1.0
+IMPORT_VERSION = 1.1
 
 QT += qml quick gui-private core-private
 
