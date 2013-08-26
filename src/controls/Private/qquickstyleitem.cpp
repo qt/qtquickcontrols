@@ -486,7 +486,7 @@ void QQuickStyleItem::initStyleOption()
         if (font)
             opt->fontMetrics = QFontMetrics(*font);
         opt->currentText = text();
-        opt->editable = false;
+        opt->editable = m_properties["editable"].toBool();
 #ifdef Q_OS_OSX
         if (m_properties["popup"].canConvert<QObject *>() && style() == "mac") {
             QObject *popup = m_properties["popup"].value<QObject *>();
