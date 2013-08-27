@@ -59,7 +59,7 @@ Control {
     /*! \qmlproperty bool BasicButton::pressed
 
         This property holds whether the button is being pressed. */
-    readonly property alias pressed: behavior.effectivePressed
+    readonly property alias pressed: button.__effectivePressed
 
     /*! \qmlproperty bool BasicButton::hovered
 
@@ -201,6 +201,9 @@ Control {
 
     /*! \internal */
     property var __behavior: behavior
+
+    /*! \internal */
+    property bool __effectivePressed: behavior.effectivePressed
 
     SystemPalette { id: syspal }
 
