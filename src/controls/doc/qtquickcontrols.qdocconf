@@ -31,10 +31,11 @@ qhp.QtQuickControls.subprojects.qtquickcontrolsstyles.type       = manual
 
 depends = qtqml qtquick qtwidgets qtdoc qtquicklayouts
 
-exampledirs += ../../../examples/quick
-
 # Specify the install path under QT_INSTALL_EXAMPLES
-examplesinstallpath = quick/controls
+# Examples will be installed under quick/controls - 'controls' subdirectory
+# is given as part of \example commands
+exampledirs += ../../../examples/quick
+examplesinstallpath = quick
 
 headerdirs += ../ \
               Styles/Base
