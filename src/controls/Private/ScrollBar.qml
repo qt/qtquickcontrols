@@ -143,10 +143,9 @@ Item {
             __panel.activeControl = __panel.hitTest(mouseX, mouseY)
             scrollToClickposition = scrollToClickPosition
             var handleRect = __panel.subControlRect("handle")
-            grooveSize =  horizontal ? __panel.subControlRect("groove").width -
-                                       handleRect.width:
-                                       __panel.subControlRect("groove").height -
-                                       handleRect.height;
+            var grooveRect = __panel.subControlRect("groove")
+            grooveSize =  horizontal ? grooveRect.width - handleRect.width:
+                                       grooveRect.height - handleRect.height;
             if (__panel.activeControl === "handle") {
                 pressedX = mouseX;
                 pressedY = mouseY;
@@ -166,9 +165,13 @@ Item {
                     incrementPage();
                     pageDownPressed = true;
                 }
-            } else {
-                slider.position = horizontal ? mouseX -  handleRect.width/2
-                                             : mouseY - handleRect.height/2
+            } else { // scroll to click position
+                slider.position = horizontal ? mouseX -  handleRect.width/2 - grooveRect.x
+                                             : mouseY - handleRect.height/2 - grooveRect.y
+                pressedX = mouseX;
+                pressedY = mouseY;
+                handlePressed = true;
+                oldPosition = slider.position;
             }
         }
 
