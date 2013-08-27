@@ -90,6 +90,30 @@ TestCase {
         scrollView.destroy()
     }
 
+    function test_clickToCenter() {
+
+        var test_control = 'import QtQuick 2.1; \
+        import QtQuick.Controls 1.0;            \
+        import QtQuick.Controls.Styles 1.0;     \
+        ScrollView {                            \
+            id: _control1;                      \
+            width: 100 ; height: 100;           \
+            Item { width: 200; height: 200 }\
+            activeFocusOnTab: true;             \
+            style:ScrollViewStyle{}             \
+        }                                       '
+        var scrollView = Qt.createQmlObject(test_control, container, '')
+        verify(scrollView !== null, "view created is null")
+        verify(scrollView.flickableItem.contentY === 0)
+
+        mouseClick(scrollView, scrollView.width -2, scrollView.height/2, Qt.LeftButton)
+        verify(Math.round(scrollView.flickableItem.contentY) === 100)
+
+        verify(scrollView.flickableItem.contentX === 0)
+        mouseClick(scrollView, scrollView.width/2, scrollView.height - 2, Qt.LeftButton)
+        verify(Math.round(scrollView.flickableItem.contentX) === 100)
+    }
+
     function test_viewport() {
         var component = scrollViewComponent
         var scrollView =  component.createObject(testCase);
