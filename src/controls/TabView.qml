@@ -95,12 +95,14 @@ FocusScope {
         Returns the newly added tab.
     */
     function insertTab(index, title, component) {
-        var tab = tabcomp.createObject(stack)
+        var tab = tabcomp.createObject()
         tab.sourceComponent = component
-        tab.parent = stack
         tab.title = title
-        tab.__inserted = true
+        // insert at appropriate index first, then set the parent to
+        // avoid onChildrenChanged appending it to the end of the list
         __tabs.insert(index, {tab: tab})
+        tab.__inserted = true
+        tab.parent = stack
         __setOpacities()
         return tab
     }
@@ -203,8 +205,17 @@ FocusScope {
 
             property int frameWidth
             property string style
+            property bool completed: false
 
-            Component.onCompleted: addTabs(stack.children)
+            Component.onCompleted: {
+                addTabs(stack.children)
+                completed = true
+            }
+
+            onChildrenChanged: {
+                if (completed)
+                    stack.addTabs(stack.children)
+            }
 
             function addTabs(tabs) {
                 var tabAdded = false
@@ -212,12 +223,11 @@ FocusScope {
                     var tab = tabs[i]
                     if (!tab.__inserted && tab.Accessible.role === Accessible.LayeredPane) {
                         tab.__inserted = true
-                        if (tab.parent === root) {
-                            tab.parent = stack
-                            // a tab added dynamically by Component::createObject() and passing the
-                            // tab view as a parent should also get automatically removed when destructed
+                        // reparent tabs created dynamically by createObject(tabView)
+                        tab.parent = stack
+                        // a dynamically added tab should also get automatically removed when destructed
+                        if (completed)
                             tab.Component.onDestruction.connect(stack.onDynamicTabDestroyed.bind(tab))
-                        }
                         __tabs.append({tab: tab})
                         tabAdded = true
                     }
@@ -227,9 +237,10 @@ FocusScope {
             }
 
             function onDynamicTabDestroyed() {
-                for (var i = 0; i < stack.children.length; ++i) {
-                    if (this === stack.children[i]) {
-                        root.removeTab(i)
+                for (var i = 0; i < __tabs.count; ++i) {
+                    if (__tabs.get(i).tab === this) {
+                        __tabs.remove(i, 1)
+                        __setOpacities()
                         break
                     }
                 }
