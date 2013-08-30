@@ -49,7 +49,7 @@ TestCase {
     height:400
 
     function test_createTableViewColumn() {
-        var tableViewColumn = Qt.createQmlObject('import QtQuick.Controls 1.0; TableViewColumn {}', testCase, '');
+        var tableViewColumn = Qt.createQmlObject('import QtQuick.Controls 1.1; TableViewColumn {}', testCase, '');
         tableViewColumn.destroy()
     }
 }

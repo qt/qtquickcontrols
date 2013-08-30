@@ -39,12 +39,12 @@
 ****************************************************************************/
 
 import QtQuick 2.1
-import QtQuick.Controls 1.0
+import QtQuick.Controls 1.1
 import QtQuick.Controls.Private 1.0
 
 /*!
     \qmltype TextField
-    \inqmlmodule QtQuick.Controls 1.0
+    \inqmlmodule QtQuick.Controls
     \since QtQuick.Controls 1.0
     \ingroup controls
     \brief Displays a single line of editable plain text.
@@ -380,7 +380,7 @@ Control {
 
         \code
         import QtQuick 2.1
-        import QtQuick.Controls 1.0
+        import QtQuick.Controls 1.1
 
         TextField {
             validator: IntValidator {bottom: 11; top: 31;}

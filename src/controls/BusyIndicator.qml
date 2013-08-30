@@ -44,7 +44,7 @@ import QtQuick.Controls.Private 1.0
 
 /*!
     \qmltype BusyIndicator
-    \inqmlmodule QtQuick.Controls 1.1
+    \inqmlmodule QtQuick.Controls
     \since QtQuick.Controls 1.1
     \ingroup controls
     \brief A busy indicator.

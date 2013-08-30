@@ -49,17 +49,17 @@ TestCase {
     height:400
 
     function test_index() {
-        var item = Qt.createQmlObject('import QtQuick 2.0; import QtQuick.Controls 1.0; Item { property int index: Stack.index }', testCase, '');
+        var item = Qt.createQmlObject('import QtQuick 2.0; import QtQuick.Controls 1.1; Item { property int index: Stack.index }', testCase, '');
         compare(item.index, -1);
     }
 
     function test_status() {
-        var item = Qt.createQmlObject('import QtQuick 2.0; import QtQuick.Controls 1.0; Item { property int status: Stack.status }', testCase, '');
+        var item = Qt.createQmlObject('import QtQuick 2.0; import QtQuick.Controls 1.1; Item { property int status: Stack.status }', testCase, '');
         compare(item.status, 0); // Stack.Inactive
     }
 
     function test_view() {
-        var item = Qt.createQmlObject('import QtQuick 2.0; import QtQuick.Controls 1.0; Item { property StackView view: Stack.view }', testCase, '');
+        var item = Qt.createQmlObject('import QtQuick 2.0; import QtQuick.Controls 1.1; Item { property StackView view: Stack.view }', testCase, '');
         compare(item.view, null);
     }
 }

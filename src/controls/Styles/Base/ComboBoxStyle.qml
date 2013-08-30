@@ -38,13 +38,13 @@
 **
 ****************************************************************************/
 import QtQuick 2.1
-import QtQuick.Controls 1.0
-import QtQuick.Controls.Styles 1.0
+import QtQuick.Controls 1.1
+import QtQuick.Controls.Styles 1.1
 import QtQuick.Controls.Private 1.0
 
 /*!
     \qmltype ComboBoxStyle
-    \inqmlmodule QtQuick.Controls.Styles 1.0
+    \inqmlmodule QtQuick.Controls.Styles
     \since QtQuick.Controls.Styles 1.0
     \ingroup controlsstyling
     \brief Provides custom styling for ComboBox

@@ -41,7 +41,7 @@
     following import statement in your .qml file.
 
     \code
-    import QtQuick.Controls 1.0
+    import QtQuick.Controls 1.1
     \endcode
 
 */

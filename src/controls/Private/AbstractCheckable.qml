@@ -39,11 +39,11 @@
 ****************************************************************************/
 
 import QtQuick 2.1
-import QtQuick.Controls 1.0
+import QtQuick.Controls 1.1
 
 /*!
     \qmltype AbstractCheckable
-    \inqmlmodule QtQuick.Controls 1.0
+    \inqmlmodule QtQuick.Controls
     \ingroup controls
     \brief An abstract representation of a checkable control with a label
     \qmlabstract

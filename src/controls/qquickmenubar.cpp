@@ -58,7 +58,7 @@ QT_BEGIN_NAMESPACE
   \qmltype MenuBarPrivate
   \instantiates QQuickMenuBar
   \internal
-  \inqmlmodule QtQuick.Controls 1.0
+  \inqmlmodule QtQuick.Controls
  */
 
 /*!

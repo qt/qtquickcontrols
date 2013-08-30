@@ -49,7 +49,7 @@ TestCase {
     height:400
 
     function test_createTab() {
-        var tab = Qt.createQmlObject('import QtQuick.Controls 1.0; Tab {}', testCase, '');
+        var tab = Qt.createQmlObject('import QtQuick.Controls 1.1; Tab {}', testCase, '');
         tab.destroy()
     }
 }

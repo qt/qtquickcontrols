@@ -61,7 +61,7 @@ Item {
         }
 
         function init() {
-            checkBox = Qt.createQmlObject("import QtQuick.Controls 1.0; CheckBox { }", container, "");
+            checkBox = Qt.createQmlObject("import QtQuick.Controls 1.1; CheckBox { }", container, "");
         }
 
         function cleanup() {
@@ -169,7 +169,7 @@ Item {
         }
 
         function test_exclusiveGroup() {
-            var root = Qt.createQmlObject("import QtQuick 2.1; import QtQuick.Controls 1.0; \n"
+            var root = Qt.createQmlObject("import QtQuick 2.1; import QtQuick.Controls 1.1; \n"
                 + "Row { \n"
                 + "    property alias checkBox1: checkBox1 \n"
                 + "    property alias checkBox2: checkBox2 \n"
@@ -243,7 +243,7 @@ Item {
                 skip("This function doesn't support NOT iterating all.")
 
             var test_control = 'import QtQuick 2.1; \
-            import QtQuick.Controls 1.0;            \
+            import QtQuick.Controls 1.1;            \
             Item {                                  \
                 width: 200;                         \
                 height: 200;                        \

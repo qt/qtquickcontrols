@@ -42,7 +42,7 @@ import QtQuick 2.1
 
 /*!
         \qmltype StackViewDelegate
-        \inqmlmodule QtQuick.Controls 1.0
+        \inqmlmodule QtQuick.Controls
         \since QtQuick.Controls 1.0
 
         \brief A delegate used by StackView for loading transitions.

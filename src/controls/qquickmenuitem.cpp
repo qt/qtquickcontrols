@@ -126,7 +126,7 @@ void QQuickMenuBase::setVisualItem(QQuickItem *item)
 /*!
     \qmltype MenuSeparator
     \instantiates QQuickMenuSeparator
-    \inqmlmodule QtQuick.Controls 1.0
+    \inqmlmodule QtQuick.Controls
     \ingroup menus
     \brief MenuSeparator provides a separator for items inside a menu.
 
@@ -244,7 +244,7 @@ void QQuickMenuText::updateIcon()
     \qmltype MenuItem
     \instantiates QQuickMenuItem
     \ingroup menus
-    \inqmlmodule QtQuick.Controls 1.0
+    \inqmlmodule QtQuick.Controls
     \brief MenuItem provides an item to add in a menu or a menu bar.
 
     \code

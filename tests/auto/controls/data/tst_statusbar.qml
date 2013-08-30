@@ -55,7 +55,7 @@ TestCase {
     height:400
 
     function test_createStatusBar() {
-        var statusBar = Qt.createQmlObject('import QtQuick.Controls 1.0; StatusBar {}', container, '');
+        var statusBar = Qt.createQmlObject('import QtQuick.Controls 1.1; StatusBar {}', container, '');
         statusBar.destroy()
     }
 
@@ -64,7 +64,7 @@ TestCase {
             skip("This function doesn't support NOT iterating all.")
 
             var test_control = 'import QtQuick 2.1; \
-        import QtQuick.Controls 1.0;            \
+        import QtQuick.Controls 1.1;            \
         Item {                                  \
             width: 200;                         \
             height: 200;                        \

@@ -40,14 +40,14 @@
 
 import QtQuick.Window 2.1
 import QtQuick 2.1
-import QtQuick.Controls 1.0
+import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.0
 import QtQuick.Controls.Private 1.0
 
 /*!
     \qmltype ApplicationWindow
     \since QtQuick.Controls 1.0
-    \inqmlmodule QtQuick.Controls 1.0
+    \inqmlmodule QtQuick.Controls
     \ingroup applicationwindow
     \brief Provides a top-level application window.
 

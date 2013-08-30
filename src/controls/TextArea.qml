@@ -39,11 +39,11 @@
 ****************************************************************************/
 
 import QtQuick 2.2
-import QtQuick.Controls 1.0
+import QtQuick.Controls 1.1
 import QtQuick.Controls.Private 1.0
 /*!
     \qmltype TextArea
-    \inqmlmodule QtQuick.Controls 1.0
+    \inqmlmodule QtQuick.Controls
     \since QtQuick.Controls 1.0
     \ingroup controls
     \brief Displays multiple lines of editable formatted text.

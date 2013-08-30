@@ -39,13 +39,13 @@
 ****************************************************************************/
 
 import QtQuick 2.1
-import QtQuick.Controls 1.0
+import QtQuick.Controls 1.1
 import QtQuick.Controls.Private 1.0
-import QtQuick.Controls.Styles 1.0
+import QtQuick.Controls.Styles 1.1
 
 /*!
     \qmltype ScrollView
-    \inqmlmodule QtQuick.Controls 1.0
+    \inqmlmodule QtQuick.Controls
     \since  QtQuick.Controls 1.0
     \ingroup views
     \brief Provides a scrolling view within another Item.

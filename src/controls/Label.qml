@@ -42,7 +42,7 @@ import QtQuick 2.1
 
 /*!
     \qmltype Label
-    \inqmlmodule QtQuick.Controls 1.0
+    \inqmlmodule QtQuick.Controls
     \since QtQuick.Controls 1.0
     \ingroup controls
     \brief A text label.

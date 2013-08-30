@@ -39,13 +39,13 @@
 ****************************************************************************/
 
 import QtQuick 2.1
-import QtQuick.Controls 1.0
+import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.0
 import QtQuick.Controls.Private 1.0 as Private
 
 /*!
     \qmltype SplitView
-    \inqmlmodule QtQuick.Controls 1.0
+    \inqmlmodule QtQuick.Controls
     \since QtQuick.Controls 1.0
     \ingroup views
     \brief Lays out items with a draggable splitter between each item.

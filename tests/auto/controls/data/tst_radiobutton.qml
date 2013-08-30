@@ -61,7 +61,7 @@ Item {
         }
 
         function init() {
-            radioButton = Qt.createQmlObject('import QtQuick.Controls 1.0; RadioButton {}', container, '');
+            radioButton = Qt.createQmlObject('import QtQuick.Controls 1.1; RadioButton {}', container, '');
         }
 
         function cleanup() {
@@ -139,7 +139,7 @@ Item {
         }
 
         function test_exclusiveGroup() {
-            var root = Qt.createQmlObject("import QtQuick 2.1; import QtQuick.Controls 1.0; \n"
+            var root = Qt.createQmlObject("import QtQuick 2.1; import QtQuick.Controls 1.1; \n"
                 + "Row { \n"
                 + "    property alias radioButton1: radioButton1 \n"
                 + "    property alias radioButton2: radioButton2 \n"
@@ -196,7 +196,7 @@ Item {
                 skip("This function doesn't support NOT iterating all.")
 
             var test_control = 'import QtQuick 2.1; \
-            import QtQuick.Controls 1.0;            \
+            import QtQuick.Controls 1.1;            \
             Item {                                  \
                 width: 200;                         \
                 height: 200;                        \

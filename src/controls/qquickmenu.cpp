@@ -63,7 +63,7 @@ QT_BEGIN_NAMESPACE
   \qmltype MenuPrivate
   \instantiates QQuickMenu
   \internal
-  \inqmlmodule QtQuick.Controls 1.0
+  \inqmlmodule QtQuick.Controls
  */
 
 /*!
