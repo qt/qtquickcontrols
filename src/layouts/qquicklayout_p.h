@@ -124,10 +124,10 @@ class QQuickLayoutAttached : public QObject
 public:
     QQuickLayoutAttached(QObject *object);
 
-    qreal minimumWidth() const { return m_minimumWidth < 0 ? sizeHint(Qt::MinimumSize, Qt::Horizontal) : m_minimumWidth; }
+    qreal minimumWidth() const { return !m_isMinimumWidthSet ? sizeHint(Qt::MinimumSize, Qt::Horizontal) : m_minimumWidth; }
     void setMinimumWidth(qreal width);
 
-    qreal minimumHeight() const { return m_minimumHeight < 0 ? sizeHint(Qt::MinimumSize, Qt::Vertical) : m_minimumHeight; }
+    qreal minimumHeight() const { return !m_isMinimumHeightSet ? sizeHint(Qt::MinimumSize, Qt::Vertical) : m_minimumHeight; }
     void setMinimumHeight(qreal height);
 
     qreal preferredWidth() const { return m_preferredWidth; }
@@ -136,10 +136,10 @@ public:
     qreal preferredHeight() const { return m_preferredHeight; }
     void setPreferredHeight(qreal width);
 
-    qreal maximumWidth() const { return m_maximumWidth < 0 ? sizeHint(Qt::MaximumSize, Qt::Horizontal) : m_maximumWidth; }
+    qreal maximumWidth() const { return !m_isMaximumWidthSet ? sizeHint(Qt::MaximumSize, Qt::Horizontal) : m_maximumWidth; }
     void setMaximumWidth(qreal width);
 
-    qreal maximumHeight() const { return m_maximumHeight < 0 ? sizeHint(Qt::MaximumSize, Qt::Vertical) : m_maximumHeight; }
+    qreal maximumHeight() const { return !m_isMaximumHeightSet ? sizeHint(Qt::MaximumSize, Qt::Vertical) : m_maximumHeight; }
     void setMaximumHeight(qreal height);
 
     void setMinimumImplicitSize(const QSizeF &sz);
