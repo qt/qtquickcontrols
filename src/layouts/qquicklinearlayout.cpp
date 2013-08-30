@@ -256,6 +256,18 @@ Qt::LayoutDirection QQuickGridLayoutBase::effectiveLayoutDirection() const
 QQuickGridLayoutBase::~QQuickGridLayoutBase()
 {
     d_func()->m_isReady = false;
+
+    /* Avoid messy deconstruction, should give:
+        * Faster deconstruction
+        * Less risk of signals reaching already deleted objects
+    */
+    for (int i = 0; i < itemCount(); ++i) {
+        QQuickItem *item = itemAt(i);
+        QObject::disconnect(item, SIGNAL(destroyed()), this, SLOT(onItemDestroyed()));
+        QObject::disconnect(item, SIGNAL(visibleChanged()), this, SLOT(onItemVisibleChanged()));
+        QObject::disconnect(item, SIGNAL(implicitWidthChanged()), this, SLOT(onItemImplicitSizeChanged()));
+        QObject::disconnect(item, SIGNAL(implicitHeightChanged()), this, SLOT(onItemImplicitSizeChanged()));
+    }
 }
 
 void QQuickGridLayoutBase::componentComplete()
@@ -357,6 +369,18 @@ void QQuickGridLayoutBase::updateLayoutItems()
 
     invalidate();
     quickLayoutDebug() << "QQuickGridLayoutBase::updateLayoutItems LEAVING";
+}
+
+QQuickItem *QQuickGridLayoutBase::itemAt(int index) const
+{
+    Q_D(const QQuickGridLayoutBase);
+    return static_cast<QQuickGridLayoutItem*>(d->engine.itemAt(index))->layoutItem();
+}
+
+int QQuickGridLayoutBase::itemCount() const
+{
+    Q_D(const QQuickGridLayoutBase);
+    return d->engine.itemCount();
 }
 
 void QQuickGridLayoutBase::itemChange(ItemChange change, const ItemChangeData &value)

@@ -78,6 +78,9 @@ public:
 
 protected:
     void updateLayoutItems() Q_DECL_OVERRIDE;
+    QQuickItem *itemAt(int index) const Q_DECL_OVERRIDE;
+    int itemCount() const Q_DECL_OVERRIDE;
+
     void rearrange(const QSizeF &size);
     virtual void insertLayoutItems() = 0;
     void removeLayoutItem(QQuickItem *item);

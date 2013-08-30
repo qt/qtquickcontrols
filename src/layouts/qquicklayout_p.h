@@ -78,6 +78,11 @@ public:
     virtual QSizeF sizeHint(Qt::SizeHint whichSizeHint) const = 0;
     virtual void invalidate(QQuickItem * childItem = 0);
     virtual void updateLayoutItems() = 0;
+
+    // iterator
+    virtual QQuickItem *itemAt(int index) const = 0;
+    virtual int itemCount() const = 0;
+
     virtual void rearrange(const QSizeF &);
     bool arrangementIsDirty() const { return m_dirty; }
 protected:
