@@ -410,6 +410,14 @@ void QQuickLayoutAttached::setColumn(int column)
 
     The default value is \c 0, which means it will be \c{Qt.AlignVCenter | Qt.AlignLeft}
 */
+void QQuickLayoutAttached::setAlignment(Qt::Alignment align)
+{
+    if (align != m_alignment) {
+        m_alignment = align;
+        invalidateItem();
+        emit alignmentChanged();
+    }
+}
 
 
 /*!
@@ -422,6 +430,14 @@ void QQuickLayoutAttached::setColumn(int column)
     \sa columnSpan
     \sa row
 */
+void QQuickLayoutAttached::setRowSpan(int span)
+{
+    if (span != m_rowSpan) {
+        m_rowSpan = span;
+        repopulateLayout();
+        emit rowSpanChanged();
+    }
+}
 
 
 /*!
@@ -434,6 +450,14 @@ void QQuickLayoutAttached::setColumn(int column)
     \sa rowSpan
     \sa column
 */
+void QQuickLayoutAttached::setColumnSpan(int span)
+{
+    if (span != m_columnSpan) {
+        m_columnSpan = span;
+        repopulateLayout();
+        emit columnSpanChanged();
+    }
+}
 
 
 qreal QQuickLayoutAttached::sizeHint(Qt::SizeHint which, Qt::Orientation orientation) const

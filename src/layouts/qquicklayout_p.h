@@ -117,9 +117,9 @@ class QQuickLayoutAttached : public QObject
     Q_PROPERTY(bool fillWidth READ fillWidth WRITE setFillWidth NOTIFY fillWidthChanged)
     Q_PROPERTY(int row READ row WRITE setRow NOTIFY rowChanged)
     Q_PROPERTY(int column READ column WRITE setColumn NOTIFY columnChanged)
-    Q_PROPERTY(int rowSpan READ rowSpan WRITE setRowSpan)
-    Q_PROPERTY(int columnSpan READ columnSpan WRITE setColumnSpan)
-    Q_PROPERTY(Qt::Alignment alignment READ alignment WRITE setAlignment)
+    Q_PROPERTY(int rowSpan READ rowSpan WRITE setRowSpan NOTIFY rowSpanChanged)
+    Q_PROPERTY(int columnSpan READ columnSpan WRITE setColumnSpan NOTIFY columnSpanChanged)
+    Q_PROPERTY(Qt::Alignment alignment READ alignment WRITE setAlignment NOTIFY alignmentChanged)
 
 public:
     QQuickLayoutAttached(QObject *object);
@@ -161,12 +161,12 @@ public:
     bool isColumnSet() const { return m_column >= 0; }
 
     int rowSpan() const { return m_rowSpan; }
-    void setRowSpan(int span) { m_rowSpan = span; }
+    void setRowSpan(int span);
     int columnSpan() const { return m_columnSpan; }
-    void setColumnSpan(int span) { m_columnSpan = span; }
+    void setColumnSpan(int span);
 
     Qt::Alignment alignment() const { return m_alignment; }
-    void setAlignment (Qt::Alignment align) { m_alignment = align; }
+    void setAlignment(Qt::Alignment align);
 
     bool setChangesNotificationEnabled(bool enabled)
     {
@@ -204,6 +204,9 @@ signals:
     void fillHeightChanged();
     void rowChanged();
     void columnChanged();
+    void rowSpanChanged();
+    void columnSpanChanged();
+    void alignmentChanged();
 
 private:
     void invalidateItem();
