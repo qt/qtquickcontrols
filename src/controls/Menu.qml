@@ -258,7 +258,15 @@ MenuPrivate {
                 if (!currentItem || !currentItem.contains(Qt.point(pos.x - currentItem.x, pos.y - currentItem.y))) {
                     if (currentItem && !pressed && currentItem.isSubmenu)
                         currentItem.closeSubMenu()
-                    currentItem = column.childAt(pos.x, pos.y)
+                    var itemUnderMouse = column.childAt(pos.x, pos.y)
+                    if (itemUnderMouse) {
+                        currentItem = itemUnderMouse
+                    } else {
+                        var itemItem = currentItem.item
+                        if (!itemItem.contains(itemItem.mapFromItem(column, pos)))
+                            currentItem = null
+                    }
+
                     if (currentItem) {
                         root.__currentIndex = currentItem.menuItemIndex
                         if (currentItem.isSubmenu && !currentItem.menuItem.__popupVisible)
