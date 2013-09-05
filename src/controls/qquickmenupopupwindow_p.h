@@ -81,11 +81,14 @@ protected:
     void mousePressEvent(QMouseEvent *);
     void mouseReleaseEvent(QMouseEvent *);
     void mouseMoveEvent(QMouseEvent *);
+    void exposeEvent(QExposeEvent *);
+    void hideEvent(QHideEvent *);
 
 private:
     void forwardEventToTransientParent(QMouseEvent *);
 
     bool m_mouseMoved;
+    bool m_needsActivatedEvent;
     QQuickItem *m_itemAt;
     QPointF m_oldItemPos;
     QQuickItem *m_parentItem;
