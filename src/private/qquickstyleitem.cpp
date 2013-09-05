@@ -318,7 +318,6 @@ void QQuickStyleItem::initStyleOption()
         if (!m_styleoption)
             m_styleoption = new QStyleOptionTab();
 
-
         QStyleOptionTab *opt = qstyleoption_cast<QStyleOptionTab*>(m_styleoption);
         opt->text = text();
 
@@ -396,6 +395,7 @@ void QQuickStyleItem::initStyleOption()
         QStyleOptionMenuItem *opt = qstyleoption_cast<QStyleOptionMenuItem*>(m_styleoption);
         opt->text = text();
         opt->menuItemType = QStyleOptionMenuItem::Normal;
+        setProperty("_q_showUnderlined", m_hints["showUnderlined"].toBool());
 
         if (const QFont *font = QGuiApplicationPrivate::platformTheme()->font(QPlatformTheme::MenuBarFont)) {
             opt->font = *font;
@@ -443,6 +443,7 @@ void QQuickStyleItem::initStyleOption()
             }
             if (m_properties["icon"].canConvert<QIcon>())
                 opt->icon = m_properties["icon"].value<QIcon>();
+            setProperty("_q_showUnderlined", m_hints["showUnderlined"].toBool());
 
             if (const QFont *font = QGuiApplicationPrivate::platformTheme()->font(m_itemType == ComboBoxItem ? QPlatformTheme::ComboMenuItemFont : QPlatformTheme::MenuFont)) {
                 opt->font = *font;

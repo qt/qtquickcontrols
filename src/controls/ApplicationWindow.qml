@@ -133,6 +133,8 @@ Window {
         id: backgroundItem
         anchors.fill: parent
 
+        Keys.forwardTo: [menuBar.__contentItem]
+
         Item {
             id: contentArea
             anchors.top: toolBarArea.bottom

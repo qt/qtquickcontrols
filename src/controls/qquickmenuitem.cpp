@@ -84,6 +84,13 @@ void QQuickMenuBase::setVisible(bool v)
     }
 }
 
+QObject *QQuickMenuBase::parentMenuOrMenuBar() const
+{
+    if (!m_parentMenu)
+        return parent();
+    return m_parentMenu;
+}
+
 QQuickMenu *QQuickMenuBase::parentMenu() const
 {
     return m_parentMenu;

@@ -51,6 +51,8 @@ Style {
         width: implicitWidth + 2 * (pixelMetric("menubarhmargin") + pixelMetric("menubarpanelwidth"))
         height: implicitHeight + 2 * (pixelMetric("menubarvmargin") + pixelMetric("menubarpanelwidth"))
                 + pixelMetric("spacebelowmenubar")
+
+        Accessible.role: Accessible.MenuBar
     }
 
     property Component menuItem: StyleItem {
@@ -66,5 +68,10 @@ Style {
         enabled: menuItem.enabled
         selected: (parent && parent.selected) || sunken
         sunken: parent && parent.sunken
+
+        hints: { "showUnderlined": showUnderlined }
+
+        Accessible.role: Accessible.MenuItem
+        Accessible.name: StyleHelpers.removeMnemonics(text)
     }
 }

@@ -82,6 +82,8 @@ MenuBarPrivate {
         sourceComponent: __menuBarComponent
         active: !root.__isNative
         focus: true
+        Keys.forwardTo: [item]
+        property bool altPressed: item ? item.altPressed : false
     }
 
     /*! \internal */
@@ -118,7 +120,51 @@ MenuBarPrivate {
             value: menuMouseArea.z - 1
         }
 
-        focus: openedMenuIndex !== -1
+        focus: true
+
+        property bool altPressed: false
+        property bool altPressedAgain: false
+        property var mnemonicsMap: ({})
+
+        Keys.onPressed: {
+            var action = null
+            if (event.key === Qt.Key_Alt) {
+                if (!altPressed)
+                    altPressed = true
+                else
+                    altPressedAgain = true
+            } else if (altPressed && (action = mnemonicsMap[event.text.toUpperCase()])) {
+                preselectMenuItem = true
+                action.trigger()
+                event.accepted = true
+            }
+        }
+
+        function dismissActiveFocus(event, reason) {
+            if (reason) {
+                altPressedAgain = false
+                altPressed = false
+                openedMenuIndex = -1
+                root.__contentItem.parent.forceActiveFocus()
+            } else {
+                event.accepted = false
+            }
+        }
+
+        Keys.onReleased: dismissActiveFocus(event, altPressedAgain && openedMenuIndex === -1)
+        Keys.onEscapePressed: dismissActiveFocus(event, openedMenuIndex === -1)
+
+        function maybeOpenFirstMenu(event) {
+            if (altPressed && openedMenuIndex === -1) {
+                preselectMenuItem = true
+                openedMenuIndex = 0
+            } else {
+                event.accepted = false
+            }
+        }
+
+        Keys.onUpPressed: maybeOpenFirstMenu(event)
+        Keys.onDownPressed: maybeOpenFirstMenu(event)
 
         Keys.onLeftPressed: {
             if (openedMenuIndex > 0) {
@@ -128,7 +174,7 @@ MenuBarPrivate {
         }
 
         Keys.onRightPressed: {
-            if (openedMenuIndex < root.menus.length - 1) {
+            if (openedMenuIndex !== -1 && openedMenuIndex < root.menus.length - 1) {
                 preselectMenuItem = true
                 openedMenuIndex++
             }
@@ -177,6 +223,7 @@ MenuBarPrivate {
                         property var menuItem: modelData
                         property bool selected: menuMouseArea.hoveredItem === menuItemLoader
                         property bool sunken: menuItem.__popupVisible || menuBarLoader.openedMenuIndex === index
+                        property bool showUnderlined: menuBarLoader.altPressed
 
                         sourceComponent: menuBarLoader.menuItemStyle
                         property int menuItemIndex: index
@@ -203,9 +250,18 @@ MenuBarPrivate {
                             }
                         }
 
+                        Connections {
+                            target: menuItem.__action
+                            onTriggered: menuBarLoader.openedMenuIndex = menuItemIndex
+                        }
+
                         Component.onCompleted: {
                             menuItem.__visualItem = menuItemLoader
-                            menuItem.__menuBar = menuBarLoader
+
+                            var title = menuItem.title
+                            var ampersandPos = title.indexOf("&")
+                            if (ampersandPos !== -1)
+                                menuBarLoader.mnemonicsMap[title[ampersandPos + 1].toUpperCase()] = menuItem.__action
                         }
                     }
                 }
