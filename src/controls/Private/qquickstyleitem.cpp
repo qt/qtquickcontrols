@@ -1470,6 +1470,14 @@ QSGNode *QQuickStyleItem::updatePaintNode(QSGNode *node, UpdatePaintNodeData *)
     if (!styleNode)
         styleNode = new QQuickStyleNode;
 
+#ifdef QSG_RUNTIME_DESCRIPTION
+    qsgnode_set_description(styleNode,
+                            QString::fromLatin1("%1:%2, '%3'")
+                            .arg(style())
+                            .arg(elementType())
+                            .arg(text()));
+#endif
+
     styleNode->setTexture(window()->createTextureFromImage(m_image, QQuickWindow::TextureCanUseAtlas));
     styleNode->setRect(boundingRect());
     return styleNode;
