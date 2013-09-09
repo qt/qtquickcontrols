@@ -94,7 +94,7 @@ signals:
 protected slots:
     void onItemVisibleChanged();
     void onItemDestroyed();
-    void onItemImplicitSizeChanged();
+    void invalidateSenderItem();
 
 private:
     void removeGridItem(QGridLayoutItem *gridItem);

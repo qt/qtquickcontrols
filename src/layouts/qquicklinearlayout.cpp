@@ -265,8 +265,8 @@ QQuickGridLayoutBase::~QQuickGridLayoutBase()
         QQuickItem *item = itemAt(i);
         QObject::disconnect(item, SIGNAL(destroyed()), this, SLOT(onItemDestroyed()));
         QObject::disconnect(item, SIGNAL(visibleChanged()), this, SLOT(onItemVisibleChanged()));
-        QObject::disconnect(item, SIGNAL(implicitWidthChanged()), this, SLOT(onItemImplicitSizeChanged()));
-        QObject::disconnect(item, SIGNAL(implicitHeightChanged()), this, SLOT(onItemImplicitSizeChanged()));
+        QObject::disconnect(item, SIGNAL(implicitWidthChanged()), this, SLOT(invalidateSenderItem()));
+        QObject::disconnect(item, SIGNAL(implicitHeightChanged()), this, SLOT(invalidateSenderItem()));
     }
 }
 
@@ -390,8 +390,9 @@ void QQuickGridLayoutBase::itemChange(ItemChange change, const ItemChangeData &v
         QQuickItem *item = value.item;
         QObject::connect(item, SIGNAL(destroyed()), this, SLOT(onItemDestroyed()));
         QObject::connect(item, SIGNAL(visibleChanged()), this, SLOT(onItemVisibleChanged()));
-        QObject::connect(item, SIGNAL(implicitWidthChanged()), this, SLOT(onItemImplicitSizeChanged()));
-        QObject::connect(item, SIGNAL(implicitHeightChanged()), this, SLOT(onItemImplicitSizeChanged()));
+        QObject::connect(item, SIGNAL(implicitWidthChanged()), this, SLOT(invalidateSenderItem()));
+        QObject::connect(item, SIGNAL(implicitHeightChanged()), this, SLOT(invalidateSenderItem()));
+        QObject::connect(item, SIGNAL(baselineOffsetChanged(qreal)), this, SLOT(invalidateSenderItem()));
 
         if (isReady() && isVisible())
             updateLayoutItems();
@@ -400,8 +401,9 @@ void QQuickGridLayoutBase::itemChange(ItemChange change, const ItemChangeData &v
         QQuickItem *item = value.item;
         QObject::disconnect(item, SIGNAL(destroyed()), this, SLOT(onItemDestroyed()));
         QObject::disconnect(item, SIGNAL(visibleChanged()), this, SLOT(onItemVisibleChanged()));
-        QObject::disconnect(item, SIGNAL(implicitWidthChanged()), this, SLOT(onItemImplicitSizeChanged()));
-        QObject::disconnect(item, SIGNAL(implicitHeightChanged()), this, SLOT(onItemImplicitSizeChanged()));
+        QObject::disconnect(item, SIGNAL(implicitWidthChanged()), this, SLOT(invalidateSenderItem()));
+        QObject::disconnect(item, SIGNAL(implicitHeightChanged()), this, SLOT(invalidateSenderItem()));
+        QObject::disconnect(item, SIGNAL(baselineOffsetChanged(qreal)), this, SLOT(invalidateSenderItem()));
         if (isReady() && isVisible())
             updateLayoutItems();
     }
@@ -465,7 +467,7 @@ void QQuickGridLayoutBase::onItemDestroyed()
     }
 }
 
-void QQuickGridLayoutBase::onItemImplicitSizeChanged()
+void QQuickGridLayoutBase::invalidateSenderItem()
 {
     if (!isReady())
         return;

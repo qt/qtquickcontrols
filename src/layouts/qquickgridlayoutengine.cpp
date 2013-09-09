@@ -250,13 +250,17 @@ void QQuickGridLayoutItem::effectiveSizeHints_helper(QQuickItem *item, QSizeF *c
         }
     }
 
-    //--- GATHER DESCENT
-    // ### Not implemented
 
 
     // Normalize again after the implicit hints have been gathered
     expandSize(prefS, minS);
     boundSize(prefS, maxS);
+
+    //--- GATHER DESCENT
+    // Minimum descent is only applicable for the effective minimum height,
+    // so we gather the descent last.
+    const qreal minimumDescent = minS.height() - item->baselineOffset();
+    descentS.setHeight(minimumDescent);
 
     if (attachedInfo)
         *attachedInfo = info;
