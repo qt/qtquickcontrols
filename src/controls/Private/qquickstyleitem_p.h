@@ -184,6 +184,7 @@ public Q_SLOTS:
     QVariant styleHint(const QString&);
     void updateSizeHint();
     void updateRect();
+    void updateBaselineOffset();
     void updateItem(){polish();}
     QString hitTest(int x, int y);
     QRectF subControlRect(const QString &subcontrolString);
@@ -224,6 +225,7 @@ protected:
 
 private:
     QSize sizeFromContents(int width, int height);
+    qreal baselineOffset();
 
 protected:
     QWidget *m_dummywidget;

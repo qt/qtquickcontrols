@@ -68,6 +68,7 @@ FocusScope {
 
     implicitWidth: __panel ? __panel.implicitWidth: 0
     implicitHeight: __panel ? __panel.implicitHeight: 0
+    baselineOffset: __panel ? __panel.baselineOffset: 0
     activeFocusOnTab: false
 
     /*! \internal */

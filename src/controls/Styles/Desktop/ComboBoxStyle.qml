@@ -51,6 +51,7 @@ Style {
 
         implicitWidth: 125
         implicitHeight: styleItem.implicitHeight
+        baselineOffset: styleItem.baselineOffset
         anchors.fill: parent
         StyleItem {
             id: styleItem

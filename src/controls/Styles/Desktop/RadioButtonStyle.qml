@@ -48,6 +48,7 @@ Style {
 
         implicitWidth:  styleitem.implicitWidth
         implicitHeight: styleitem.implicitHeight
+        baselineOffset: styleitem.baselineOffset
 
         StyleItem {
             id: styleitem

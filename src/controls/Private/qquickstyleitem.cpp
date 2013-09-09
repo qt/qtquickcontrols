@@ -165,6 +165,10 @@ QQuickStyleItem::QQuickStyleItem(QQuickItem *parent)
     connect(this, SIGNAL(contentWidthChanged(int)), this, SLOT(updateSizeHint()));
     connect(this, SIGNAL(contentHeightChanged(int)), this, SLOT(updateSizeHint()));
     connect(this, SIGNAL(widthChanged()), this, SLOT(updateRect()));
+    connect(this, SIGNAL(heightChanged()), this, SLOT(updateRect()));
+
+    connect(this, SIGNAL(heightChanged()), this, SLOT(updateBaselineOffset()));
+    connect(this, SIGNAL(contentHeightChanged(int)), this, SLOT(updateBaselineOffset()));
 }
 
 QQuickStyleItem::~QQuickStyleItem()
@@ -879,6 +883,69 @@ QSize QQuickStyleItem::sizeFromContents(int width, int height)
     }    return size;
 }
 
+qreal QQuickStyleItem::baselineOffset()
+{
+    QRect r;
+    switch (m_itemType) {
+    case RadioButton:
+        r = qApp->style()->subElementRect(QStyle::SE_RadioButtonContents, m_styleoption);
+        break;
+    case Button:
+        r = qApp->style()->subElementRect(QStyle::SE_PushButtonContents, m_styleoption);
+        break;
+    case CheckBox:
+        r = qApp->style()->subElementRect(QStyle::SE_CheckBoxContents, m_styleoption);
+        break;
+    case Edit:
+        r = qApp->style()->subElementRect(QStyle::SE_LineEditContents, m_styleoption);
+        break;
+    case ComboBox:
+        if (const QStyleOptionComboBox *combo = qstyleoption_cast<const QStyleOptionComboBox *>(m_styleoption)) {
+            r = qApp->style()->subControlRect(QStyle::CC_ComboBox, combo, QStyle::SC_ComboBoxEditField);
+            if (style() != QStringLiteral("mac"))
+                r.adjust(0,0,0,1);
+        }
+        break;
+    case SpinBox:
+        if (const QStyleOptionSpinBox *spinbox = qstyleoption_cast<const QStyleOptionSpinBox *>(m_styleoption))
+            r = qApp->style()->subControlRect(QStyle::CC_SpinBox, spinbox, QStyle::SC_SpinBoxEditField);
+        break;
+    default:
+        break;
+    }
+    if (r.isValid()) {
+        const QFontMetrics &fm = m_styleoption->fontMetrics;
+        const float surplus = r.height() - fm.height();
+        float result = float(r.top()) + surplus/2.0 + fm.ascent();
+#ifdef Q_OS_OSX
+        if (style() == QStringLiteral("mac")) {
+            switch (m_itemType) {
+            case Button:
+            case Edit:
+                result -= 1;
+                break;
+            case ComboBox:
+                // adjust back the adjustments done in drawControl(CE_ComboBoxLabel)
+                result += 1;
+                break;
+            default:
+                break;
+            }
+        }
+#endif
+        return result;
+    }
+
+    return 0.;
+}
+
+void QQuickStyleItem::updateBaselineOffset()
+{
+    const qreal baseline = baselineOffset();
+    if (baseline > 0)
+        setBaselineOffset(baseline);
+}
+
 void QQuickStyleItem::setContentWidth(int arg)
 {
     if (m_contentWidth != arg) {
@@ -905,6 +972,7 @@ void QQuickStyleItem::updateRect()
 {
     initStyleOption();
     m_styleoption->rect.setWidth(width());
+    m_styleoption->rect.setHeight(height());
 }
 
 int QQuickStyleItem::pixelMetric(const QString &metric)
