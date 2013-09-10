@@ -3,7 +3,7 @@ import QtQuick.tooling 1.1
 // This file describes the plugin-supplied types contained in the library.
 // It is used for QML tooling purposes only.
 //
-// This file was auto-generated with the command 'qmlplugindump QtQuick.Layouts 1.0 -notrelocatable'.
+// This file was auto-generated with the command 'qmlplugindump -nonrelocatable QtQuick.Layouts 1.1'.
 
 Module {
     Component {
@@ -32,7 +32,14 @@ Module {
         Property { name: "rows"; type: "int" }
         Property { name: "flow"; type: "Flow" }
     }
-    Component { name: "QQuickGridLayoutBase"; defaultProperty: "data"; prototype: "QQuickLayout" }
+    Component {
+        name: "QQuickGridLayoutBase"
+        defaultProperty: "data"
+        prototype: "QQuickLayout"
+        exports: ["QtQuick.Layouts/LayoutBase 1.1"]
+        exportMetaObjectRevisions: [1]
+        Property { name: "layoutDirection"; revision: 1; type: "Qt::LayoutDirection" }
+    }
     Component {
         name: "QQuickLayout"
         defaultProperty: "data"

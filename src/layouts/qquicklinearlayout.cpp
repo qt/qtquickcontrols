@@ -49,7 +49,7 @@
     \qmltype RowLayout
     \instantiates QQuickRowLayout
     \inherits Item
-    \inqmlmodule QtQuick.Layouts 1.0
+    \inqmlmodule QtQuick.Layouts 1.1
     \ingroup layouts
     \brief Identical to \l GridLayout, but having only one row.
 
@@ -78,7 +78,7 @@
     \qmltype ColumnLayout
     \instantiates QQuickColumnLayout
     \inherits Item
-    \inqmlmodule QtQuick.Layouts 1.0
+    \inqmlmodule QtQuick.Layouts 1.1
     \ingroup layouts
     \brief Identical to \l GridLayout, but having only one column.
 
@@ -109,7 +109,7 @@
     \qmltype GridLayout
     \instantiates QQuickGridLayout
     \inherits Item
-    \inqmlmodule QtQuick.Layouts 1.0
+    \inqmlmodule QtQuick.Layouts 1.1
     \ingroup layouts
     \brief Provides a way of dynamically arranging items in a grid.
 
@@ -218,6 +218,7 @@ QSizeF QQuickGridLayoutBase::sizeHint(Qt::SizeHint whichSizeHint) const
 
 /*!
     \qmlproperty enumeration GridLayout::layoutDirection
+    \since QtQuick.Layouts 1.1
 
     This property holds the layout direction of the grid layout - it controls whether items are
     laid out from left ro right or right to left. If \c Qt.RightToLeft is specified,
@@ -769,6 +770,7 @@ QQuickLinearLayout::QQuickLinearLayout(Qt::Orientation orientation,
 
 /*!
     \qmlproperty enumeration RowLayout::layoutDirection
+    \since QtQuick.Layouts 1.1
 
     This property holds the layout direction of the row layout - it controls whether items are laid
     out from left ro right or right to left. If \c Qt.RightToLeft is specified,
@@ -785,6 +787,7 @@ QQuickLinearLayout::QQuickLinearLayout(Qt::Orientation orientation,
 */
 /*!
     \qmlproperty enumeration ColumnLayout::layoutDirection
+    \since QtQuick.Layouts 1.1
 
     This property holds the layout direction of the column layout - it controls whether items are laid
     out from left ro right or right to left. If \c Qt.RightToLeft is specified,

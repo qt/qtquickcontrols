@@ -59,7 +59,7 @@ class QQuickGridLayoutBase : public QQuickLayout
 {
     Q_OBJECT
 
-    Q_PROPERTY(Qt::LayoutDirection layoutDirection READ layoutDirection WRITE setLayoutDirection NOTIFY layoutDirectionChanged)
+    Q_PROPERTY(Qt::LayoutDirection layoutDirection READ layoutDirection WRITE setLayoutDirection NOTIFY layoutDirectionChanged REVISION 1)
 
 public:
     explicit QQuickGridLayoutBase(QQuickGridLayoutBasePrivate &dd,
@@ -86,7 +86,7 @@ protected:
     bool shouldIgnoreItem(QQuickItem *child, QQuickLayoutAttached *&info, QSizeF *sizeHints);
 
 signals:
-    void layoutDirectionChanged();
+    Q_REVISION(1) void layoutDirectionChanged();
 
 protected slots:
     void onItemVisibleChanged();
