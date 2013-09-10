@@ -87,6 +87,16 @@ Item {
             spinbox.destroy()
         }
 
+        function test_initial_value() {
+            var spinbox = Qt.createQmlObject('import QtQuick.Controls 1.0; SpinBox {decimals: 3 ; value: 0.25}', container, '')
+            compare(spinbox.value, 0.25)
+            spinbox.destroy()
+
+            spinbox = Qt.createQmlObject('import QtQuick.Controls 1.0; SpinBox {value: 0.25 ; decimals: 3}', container, '')
+            compare(spinbox.value, 0.25)
+            spinbox.destroy()
+        }
+
         function test_keyboard_input_data() {
             return [
                 {tag: "1", input: [Qt.Key_1], value: 1},

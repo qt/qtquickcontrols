@@ -229,8 +229,9 @@ Control {
 
         validator: SpinBoxValidator {
             id: validator
-            onTextChanged: input.text = validator.text
-            Component.onCompleted: input.text = validator.text
+            property bool ready: false // Delay validation until all properties are ready
+            onTextChanged: if (ready) input.text = validator.text
+            Component.onCompleted: {input.text = validator.text ; ready = true}
         }
         onAccepted: {
             input.text = validator.text
