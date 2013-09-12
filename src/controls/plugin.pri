@@ -7,6 +7,7 @@ HEADERS += \
     $$PWD/qquickmenuitemcontainer_p.h \
     $$PWD/qquickmenupopupwindow_p.h \
     $$PWD/qquickstack_p.h \
+    $$PWD/qquickselectionmode_p.h \
     $$PWD/qquickdesktopiconprovider_p.h
 
 SOURCES += \

@@ -47,7 +47,7 @@
 #include "qquickmenubar_p.h"
 #include "qquickstack_p.h"
 #include "qquickdesktopiconprovider_p.h"
-
+#include "qquickselectionmode_p.h"
 #include "Private/qquickrangemodel_p.h"
 #include "Private/qquickwheelarea_p.h"
 #include "Private/qquicktooltip_p.h"
@@ -110,6 +110,7 @@ void QtQuickControlsPlugin::registerTypes(const char *uri)
                                                QLatin1String("Do not create objects of type MenuBase"));
 
     qmlRegisterUncreatableType<QQuickStack>(uri, 1, 0, "Stack", QLatin1String("Do not create objects of type Stack"));
+    qmlRegisterUncreatableType<QQuickSelectionMode>(uri, 1, 1, "SelectionMode", QLatin1String("Do not create objects of type SelectionMode"));
 
     const QString filesLocation = fileLocation();
     for (int i = 0; i < int(sizeof(qmldir)/sizeof(qmldir[0])); i++)

@@ -36,6 +36,7 @@ PRIVATE_QML_FILES += \
     $$PWD/StackView.js \
     $$PWD/ScrollViewHelper.qml \
     $$PWD/ScrollBar.qml \
+    $$PWD/TableViewSelection.qml \
     $$PWD/FocusFrame.qml \
     $$PWD/ColumnMenuContent.qml \
     $$PWD/MenuContentScroller.qml \
