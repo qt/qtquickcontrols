@@ -397,6 +397,7 @@ Item {
                 anchors.topMargin: (parent.height <= 1) ? -2 : 0
                 anchors.bottomMargin: (parent.height <= 1) ? -2 : 0
                 hoverEnabled: true
+                drag.threshold: 0
                 drag.target: parent
                 drag.axis: root.orientation === Qt.Horizontal ? Drag.XAxis : Drag.YAxis
                 cursorShape: root.orientation === Qt.Horizontal ? Qt.SplitHCursor : Qt.SplitVCursor
