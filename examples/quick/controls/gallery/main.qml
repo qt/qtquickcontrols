@@ -232,7 +232,7 @@ ApplicationWindow {
 
         Tab {
             id: controlPage
-            title: "Control"
+            title: "Controls"
             Controls { }
         }
         Tab {
