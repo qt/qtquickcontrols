@@ -122,7 +122,7 @@ Item {
 
     ScrollBar {
         id: hscrollbar
-        isTransient: !!__panel && !!__panel.transient
+        isTransient: !!__panel && !!__panel.isTransient
         active: !!__panel && (__panel.sunken || __panel.activeControl !== "none")
         enabled: !isTransient || __panel.visible
         orientation: Qt.Horizontal
@@ -157,13 +157,19 @@ Item {
             if (hscrollbar.isTransient) {
                 hscrollbar.__panel.on = true
                 hscrollbar.__panel.visible = true
+                hFlasher.start()
             }
+        }
+        Timer {
+            id: hFlasher
+            interval: 10
+            onTriggered: hscrollbar.__panel.on = false
         }
     }
 
     ScrollBar {
         id: vscrollbar
-        isTransient: !!__panel && !!__panel.transient
+        isTransient: !!__panel && !!__panel.isTransient
         active: !!__panel && (__panel.sunken || __panel.activeControl !== "none")
         enabled: !isTransient || __panel.visible
         orientation: Qt.Vertical
@@ -198,7 +204,13 @@ Item {
             if (vscrollbar.isTransient) {
                 vscrollbar.__panel.on = true
                 vscrollbar.__panel.visible = true
+                vFlasher.start()
             }
+        }
+        Timer {
+            id: vFlasher
+            interval: 10
+            onTriggered: vscrollbar.__panel.on = false
         }
     }
 }

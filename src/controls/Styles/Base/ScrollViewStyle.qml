@@ -69,6 +69,12 @@ Style {
     mouse location when clicked. */
     property bool scrollToClickedPosition: true
 
+    /*! This property holds whether the scroll bars are transient. Transient scroll bars
+        appear when the content is scrolled and disappear when they are no longer needed.
+
+        The default value is platform dependent. */
+    property bool transientScrollBars: Qt.platform.os === "android" || Qt.platform.os === "ios"
+
     /*! This Component paints the frame around scroll bars. */
     property Component frame: Rectangle {
         color: control["backgroundVisible"] ? "white": "transparent"
@@ -105,9 +111,13 @@ Style {
     */
 
     property Component scrollBarBackground: Item {
+        property bool sticky: false
+        property bool hovered: styleData.hovered
         implicitWidth: 16
         implicitHeight: 16
         clip: true
+        opacity: transientScrollBars ? 0.5 : 1.0
+        visible: !transientScrollBars || sticky
         Rectangle {
             anchors.fill: parent
             color: "#ddd"
@@ -117,6 +127,7 @@ Style {
             anchors.topMargin: styleData.horizontal ? 0 : -2
             anchors.bottomMargin: styleData.horizontal ? -1 : -2
         }
+        onHoveredChanged: if (hovered) sticky = true
     }
 
     /*! This component controls the appearance of the
@@ -131,13 +142,30 @@ Style {
         \endtable
     */
 
-    property Component handle: BorderImage{
-        opacity: styleData.pressed ? 0.5 : styleData.hovered ? 1 : 0.8
-        source: "images/scrollbar-handle-" + (styleData.horizontal ? "horizontal" : "vertical") + ".png"
-        border.left: 2
-        border.top: 2
-        border.right: 2
-        border.bottom: 2
+    property Component handle: Item {
+        property bool sticky: false
+        property bool hovered: __activeControl !== "none"
+        implicitWidth: img.implicitWidth
+        implicitHeight: img.implicitHeight
+        BorderImage {
+            id: img
+            opacity: styleData.pressed && !transientScrollBars ? 0.5 : styleData.hovered ? 1 : 0.8
+            source: "images/scrollbar-handle-" + (transientScrollBars ? "transient" : styleData.horizontal ? "horizontal" : "vertical") + ".png"
+            border.left: transientScrollBars ? 5 : 2
+            border.top: transientScrollBars ? 5 : 2
+            border.right: transientScrollBars ? 5 : 2
+            border.bottom: transientScrollBars ? 5 : 2
+            anchors.top: !styleData.horizontal ? parent.top : undefined
+            anchors.margins: transientScrollBars ? 2 : 0
+            anchors.bottom: parent.bottom
+            anchors.right: parent.right
+            anchors.left: styleData.horizontal ? parent.left : undefined
+            width: !styleData.horizontal && transientScrollBars ? sticky ? 13 : 10 : img.implicitWidth
+            height: styleData.horizontal && transientScrollBars ? sticky ? 13 : 10 : img.implicitHeight
+            Behavior on width { enabled: !styleData.horizontal && transientScrollBars; NumberAnimation { duration: 100 } }
+            Behavior on height { enabled: styleData.horizontal && transientScrollBars; NumberAnimation { duration: 100 } }
+        }
+        onHoveredChanged: if (hovered) sticky = true
     }
 
     /*! This component controls the appearance of the
@@ -152,8 +180,9 @@ Style {
         \endtable
     */
     property Component incrementControl: Rectangle {
-        implicitWidth: 16
-        implicitHeight: 16
+        visible: !transientScrollBars
+        implicitWidth: transientScrollBars ? 0 : 16
+        implicitHeight: transientScrollBars ? 0 : 16
         Rectangle {
             anchors.fill: parent
             anchors.bottomMargin: -1
@@ -189,8 +218,9 @@ Style {
         \endtable
     */
     property Component decrementControl: Rectangle {
-        implicitWidth: 16
-        implicitHeight: 16
+        visible: !transientScrollBars
+        implicitWidth: transientScrollBars ? 0 : 16
+        implicitHeight: transientScrollBars ? 0 : 16
         Rectangle {
             anchors.fill: parent
             anchors.topMargin: styleData.horizontal ? 0 : -1
@@ -222,8 +252,39 @@ Style {
     /*! \internal */
     property Component __scrollbar: Item {
         id: panel
-        property string activeControl: ""
+        property string activeControl: "none"
         property bool scrollToClickPosition: true
+        property bool isTransient: transientScrollBars
+
+        property bool on: false
+        property bool raised: false
+        property bool sunken: __styleData.upPressed | __styleData.downPressed | __styleData.handlePressed
+
+        states: State {
+            name: "out"
+            when: isTransient && panel.activeControl === "none" && !panel.on && !panel.raised
+            PropertyChanges { target: panel; opacity: 0 }
+        }
+
+        transitions: Transition {
+            to: "out"
+            SequentialAnimation {
+                PauseAnimation { duration: 450 }
+                NumberAnimation { properties: "opacity"; duration: 200 }
+                PropertyAction { target: panel; property: "visible"; value: false }
+                PropertyAction { target: handleControl.item; property: "sticky"; value: false }
+                PropertyAction { target: bg.item; property: "sticky"; value: false }
+            }
+        }
+
+        // once a sbar has been hovered, it sticks on the screen. however, if this
+        // sbar gets raised because the other sbar is hovered => clear the sticky bit
+        onRaisedChanged: {
+            if (raised) {
+                bg.item.sticky = false
+                handleControl.item.sticky = false
+            }
+        }
 
         implicitWidth: __styleData.horizontal ? 200 : bg.implicitWidth
         implicitHeight: __styleData.horizontal ? bg.implicitHeight : 200
@@ -335,6 +396,7 @@ Style {
                 readonly property bool pressed: __styleData.handlePressed
                 readonly property bool horizontal: __styleData.horizontal
             }
+            readonly property alias __activeControl: panel.activeControl
         }
     }
 

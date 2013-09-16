@@ -1482,7 +1482,6 @@ void QQuickStyleItem::paint(QPainter *painter)
         break;
     case ScrollBar:
         qApp->style()->drawComplexControl(QStyle::CC_ScrollBar, qstyleoption_cast<QStyleOptionComplex*>(m_styleoption), painter);
-        setOn(false);
         break;
     case Menu: {
         QStyleHintReturnMask val;
