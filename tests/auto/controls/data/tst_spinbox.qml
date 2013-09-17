@@ -466,6 +466,28 @@ Item {
             spinbox.destroy()
         }
 
+        function test_construction() {
+            // onValueChanged should not be emitted during construction.
+            var root = Qt.createQmlObject("
+                import QtQuick 2.1
+                import QtQuick.Controls 1.1
+                Item {
+                    id: root
+                    property bool ok: true
+                    Item {
+                        SpinBox {
+                            value: 42
+                            onValueChanged: { if (check === null) root.ok = false; }
+                        }
+                    }
+                    Rectangle {
+                        id: check
+                    }
+                }",
+            container, "");
+            verify(root.ok);
+        }
+
         function setCoordinates(item)
         {
             mainCoord.x = item.x + 1

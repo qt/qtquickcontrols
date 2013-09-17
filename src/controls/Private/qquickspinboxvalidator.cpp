@@ -86,7 +86,9 @@ void QQuickSpinBoxValidator::setValue(qreal value)
 
     if (m_value != value) {
         m_value = value;
-        emit valueChanged();
+
+        if (m_initialized)
+            emit valueChanged();
     }
 }
 
