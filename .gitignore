@@ -108,3 +108,6 @@ qtc-debugging-helper
 
 # windows shared libraries
 *.dll
+
+# osx shared libraries
+*.dylib
