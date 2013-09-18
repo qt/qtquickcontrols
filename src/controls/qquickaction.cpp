@@ -173,16 +173,18 @@ QT_BEGIN_NAMESPACE
     \endqml
 */
 
-/*! \qmlsignal Action::triggered()
+/*! \qmlsignal Action::triggered(QObject *source)
 
-    Emitted when either the menu item or its bound action have been activated.
+    Emitted when either the menu item or its bound action have been activated. Includes
+    the object that triggered the event if relevant (e.g. a Button or MenuItem).
     You shouldn't need to emit this signal, use \l trigger() instead.
 */
 
-/*! \qmlmethod Action::trigger()
+/*! \qmlmethod Action::trigger(QObject *source)
 
-    Will emit the \l triggered signal if the action is enabled. Will also emit the
-    \l toggled signal if it is checkable.
+    Will emit the \l triggered signal if the action is enabled. You may provide a source
+    object if the Action would benefit from knowing the origin of the triggering (e.g.
+    for analytics). Will also emit the \l toggled signal if it is checkable.
 */
 
 /*! \qmlsignal Action::toggled(checked)
@@ -430,7 +432,7 @@ bool QQuickAction::event(QEvent *e)
     return true;
 }
 
-void QQuickAction::trigger()
+void QQuickAction::trigger(QObject *source)
 {
     if (!m_enabled)
         return;
@@ -438,7 +440,7 @@ void QQuickAction::trigger()
     if (m_checkable && !(m_checked && m_exclusiveGroup))
         setChecked(!m_checked);
 
-    emit triggered();
+    emit triggered(source);
 }
 
 QT_END_NAMESPACE

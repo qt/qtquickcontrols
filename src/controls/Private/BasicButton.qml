@@ -145,7 +145,7 @@ Control {
 
     /*! \internal */
     function accessiblePressAction() {
-        __action.trigger()
+        __action.trigger(button)
     }
 
     Action {
@@ -169,7 +169,7 @@ Control {
     Keys.onReleased: {
         if (event.key === Qt.Key_Space && !event.isAutoRepeat && behavior.keyPressed) {
             behavior.keyPressed = false;
-            __action.trigger()
+            __action.trigger(button)
         }
     }
 
@@ -182,7 +182,7 @@ Control {
         hoverEnabled: true
         enabled: !keyPressed
 
-        onReleased: if (containsMouse) __action.trigger()
+        onReleased: if (containsMouse) __action.trigger(button)
         onExited: Tooltip.hideText()
         onCanceled: Tooltip.hideText()
         onPressed: {

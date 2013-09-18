@@ -114,10 +114,10 @@ public:
     bool event(QEvent *e);
 
 public Q_SLOTS:
-    void trigger();
+    void trigger(QObject *source = 0);
 
 Q_SIGNALS:
-    void triggered();
+    void triggered(QObject *source = 0);
     void toggled(bool checked);
 
     void textChanged();

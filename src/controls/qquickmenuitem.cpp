@@ -630,7 +630,7 @@ void QQuickMenuItem::setEnabled(bool enabled)
 
 void QQuickMenuItem::trigger()
 {
-    action()->trigger();
+    action()->trigger(this);
 }
 
 QT_END_NAMESPACE
