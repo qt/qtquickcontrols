@@ -55,6 +55,8 @@ QQuickMenuBase::QQuickMenuBase(QObject *parent)
     : QObject(parent), m_visible(true), m_parentMenu(0), m_container(0), m_visualItem(0)
 {
     m_platformItem = QGuiApplicationPrivate::platformTheme()->createPlatformMenuItem();
+    if (m_platformItem)
+        m_platformItem->setRole(QPlatformMenuItem::TextHeuristicRole);
 }
 
 QQuickMenuBase::~QQuickMenuBase()
@@ -80,6 +82,13 @@ void QQuickMenuBase::setVisible(bool v)
 
         emit visibleChanged();
     }
+}
+
+QObject *QQuickMenuBase::parentMenuOrMenuBar() const
+{
+    if (!m_parentMenu)
+        return parent();
+    return m_parentMenu;
 }
 
 QQuickMenu *QQuickMenuBase::parentMenu() const

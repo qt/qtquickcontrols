@@ -133,7 +133,7 @@ MenuPrivate {
     property Component style: Qt.createComponent(Settings.style + "/MenuStyle.qml", root)
 
     /*! \internal */
-    property var __menuBar: null
+    property var __parentContentItem: __parentMenu.__contentItem
     /*! \internal */
     property int __currentIndex: -1
     /*! \internal */
@@ -144,6 +144,8 @@ MenuPrivate {
         sourceComponent: __menuComponent
         active: !root.__isNative && root.__popupVisible
         focus: true
+        Keys.forwardTo: item ? [item, root.__parentContentItem] : []
+        property bool altPressed: root.__parentContentItem ? root.__parentContentItem.altPressed : false
     }
 
     /*! \internal */
@@ -174,14 +176,30 @@ MenuPrivate {
         }
 
         focus: true
-        Keys.forwardTo: __menuBar ? [__menuBar] : []
+        property var mnemonicsMap: ({})
+
+        Keys.onPressed: {
+            var item = null
+            if (!(event.modifiers & Qt.AltModifier)
+                && (item = mnemonicsMap[event.text.toUpperCase()])) {
+                if (item.isSubmenu) {
+                    root.__currentIndex = item.menuItemIndex
+                    item.showSubMenu(true)
+                    item.menuItem.__currentIndex = 0
+                } else {
+                    triggerAndDismiss(item)
+                }
+                event.accepted = true
+            } else {
+                event.accepted = false
+            }
+        }
+
         Keys.onEscapePressed: root.__dismissMenu()
 
         Keys.onDownPressed: {
-            if (root.__currentIndex < 0) {
-                root.__currentIndex = 0
-                return
-            }
+            if (root.__currentIndex < 0)
+                root.__currentIndex = -1
 
             for (var i = root.__currentIndex + 1;
                  i < root.items.length && !canBeHovered(i); i++)
@@ -204,13 +222,13 @@ MenuPrivate {
         }
 
         Keys.onLeftPressed: {
-            if (root.__parentMenu)
+            if ((event.accepted = root.__parentMenu.hasOwnProperty("title")))
                 __closeMenu()
         }
 
         Keys.onRightPressed: {
             var item = itemsRepeater.itemAt(root.__currentIndex)
-            if (item && item.isSubmenu) {
+            if ((event.accepted = (item && item.isSubmenu))) {
                 item.showSubMenu(true)
                 item.menuItem.__currentIndex = 0
             }
@@ -220,8 +238,9 @@ MenuPrivate {
         Keys.onReturnPressed: menuFrameLoader.triggerAndDismiss()
         Keys.onEnterPressed: menuFrameLoader.triggerAndDismiss()
 
-        function triggerAndDismiss() {
-            var item = itemsRepeater.itemAt(root.__currentIndex)
+        function triggerAndDismiss(item) {
+            if (!item)
+                item = itemsRepeater.itemAt(root.__currentIndex)
             if (item && !item.isSeparator) {
                 root.__dismissMenu()
                 if (!item.isSubmenu)
@@ -258,7 +277,15 @@ MenuPrivate {
                 if (!currentItem || !currentItem.contains(Qt.point(pos.x - currentItem.x, pos.y - currentItem.y))) {
                     if (currentItem && !pressed && currentItem.isSubmenu)
                         currentItem.closeSubMenu()
-                    currentItem = column.childAt(pos.x, pos.y)
+                    var itemUnderMouse = column.childAt(pos.x, pos.y)
+                    if (itemUnderMouse) {
+                        currentItem = itemUnderMouse
+                    } else if (currentItem) {
+                        var itemItem = currentItem.item
+                        if (!itemItem.contains(itemItem.mapFromItem(column, pos)))
+                            currentItem = null
+                    }
+
                     if (currentItem) {
                         root.__currentIndex = currentItem.menuItemIndex
                         if (currentItem.isSubmenu && !currentItem.menuItem.__popupVisible)
@@ -286,6 +313,7 @@ MenuPrivate {
                         readonly property bool isSubmenu: !!menuItem && menuItem.type === MenuItemType.Menu
                         property bool selected: !isSeparator && root.__currentIndex === index
                         property string text: isSubmenu ? menuItem.title : !isSeparator ? menuItem.text : ""
+                        property bool showUnderlined: __contentItem.altPressed
 
                         property int menuItemIndex: index
 
@@ -324,7 +352,14 @@ MenuPrivate {
                             }
                         }
 
-                        Component.onCompleted: menuItem.__visualItem = menuItemLoader
+                        Component.onCompleted: {
+                            menuItem.__visualItem = menuItemLoader
+
+                            var title = text
+                            var ampersandPos = title.indexOf("&")
+                            if (ampersandPos !== -1)
+                                menuFrameLoader.mnemonicsMap[title[ampersandPos + 1].toUpperCase()] = menuItemLoader
+                        }
                     }
                 }
 

@@ -223,6 +223,28 @@ TestCase {
         tabView.destroy()
     }
 
+    function test_dynamicModel() {
+        var test_tabView = '                                \
+        import QtQuick 2.1;                                 \
+        import QtQuick.Controls 1.0;                        \
+        TabView {                                           \
+            id: tabView;                                    \
+            property alias repeater: repeater;              \
+            Repeater { id: repeater; Tab { } }              \
+        }                                                   '
+
+        var tabView = Qt.createQmlObject(test_tabView, testCase, '')
+        compare(tabView.count, 0)
+
+        tabView.repeater.model = 4
+        compare(tabView.count, 4)
+
+        tabView.repeater.model = 0
+        compare(tabView.count, 0)
+
+        tabView.destroy()
+    }
+
     function test_mousePressOnTabBar() {
         var test_tabView = 'import QtQuick 2.1;             \
         import QtQuick.Controls 1.1;                        \

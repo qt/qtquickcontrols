@@ -42,14 +42,15 @@
 #include "qquickmenupopupwindow_p.h"
 
 #include <qguiapplication.h>
+#include <qpa/qwindowsysteminterface.h>
 #include <qquickitem.h>
 #include <QtGui/QScreen>
 
 QT_BEGIN_NAMESPACE
 
 QQuickMenuPopupWindow::QQuickMenuPopupWindow(QWindow *parent) :
-    QQuickWindow(parent), m_mouseMoved(false), m_itemAt(0),
-    m_parentItem(0), m_menuContentItem(0)
+    QQuickWindow(parent), m_mouseMoved(false), m_needsActivatedEvent(true),
+    m_itemAt(0), m_parentItem(0), m_menuContentItem(0)
 {
     setFlags(Qt::Popup);
     setModality(Qt::WindowModal);
@@ -239,6 +240,29 @@ void QQuickMenuPopupWindow::forwardEventToTransientParent(QMouseEvent *e)
         QMouseEvent pe = QMouseEvent(e->type(), parentPos, e->button(), e->buttons(), e->modifiers());
         QGuiApplication::sendEvent(transientParent(), &pe);
     }
+}
+
+void QQuickMenuPopupWindow::exposeEvent(QExposeEvent *e)
+{
+    if (isExposed() && m_needsActivatedEvent) {
+        m_needsActivatedEvent = false;
+        QWindowSystemInterface::handleWindowActivated(this, Qt::PopupFocusReason);
+    } else if (!isExposed() && !m_needsActivatedEvent) {
+        m_needsActivatedEvent = true;
+        if (QWindow *tp = transientParent())
+            QWindowSystemInterface::handleWindowActivated(tp, Qt::PopupFocusReason);
+    }
+    QQuickWindow::exposeEvent(e);
+}
+
+void QQuickMenuPopupWindow::hideEvent(QHideEvent *e)
+{
+    if (QWindow *tp = !m_needsActivatedEvent ? transientParent() : 0) {
+        m_needsActivatedEvent = true;
+        QWindowSystemInterface::handleWindowActivated(tp, Qt::PopupFocusReason);
+    }
+
+    QQuickWindow::hideEvent(e);
 }
 
 QT_END_NAMESPACE

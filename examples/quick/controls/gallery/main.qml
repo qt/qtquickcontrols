@@ -111,20 +111,20 @@ ApplicationWindow {
 
         Action {
             id: a1
-            text: "Align Left"
+            text: "Align &Left"
             checkable: true
             Component.onCompleted: checked = true
         }
 
         Action {
             id: a2
-            text: "Center"
+            text: "&Center"
             checkable: true
         }
 
         Action {
             id: a3
-            text: "Align Right"
+            text: "Align &Right"
             checkable: true
         }
     }
@@ -138,18 +138,18 @@ ApplicationWindow {
         MenuItem { action: pasteAction }
         MenuSeparator {}
         Menu {
-            title: "Text Format"
+            title: "Text &Format"
             MenuItem { action: a1 }
             MenuItem { action: a2 }
             MenuItem { action: a3 }
             MenuSeparator { }
-            MenuItem { text: "Allow Hyphenation"; checkable: true }
+            MenuItem { text: "Allow &Hyphenation"; checkable: true }
         }
         Menu {
-            title: "Font Style"
-            MenuItem { text: "Bold"; checkable: true }
-            MenuItem { text: "Italic"; checkable: true }
-            MenuItem { text: "Underline"; checkable: true }
+            title: "Font &Style"
+            MenuItem { text: "&Bold"; checkable: true }
+            MenuItem { text: "&Italic"; checkable: true }
+            MenuItem { text: "&Underline"; checkable: true }
         }
     }
 

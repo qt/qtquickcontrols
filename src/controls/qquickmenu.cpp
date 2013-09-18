@@ -404,8 +404,10 @@ void QQuickMenu::__popup(qreal x, qreal y, int atItemIndex)
 
 void QQuickMenu::setMenuContentItem(QQuickItem *item)
 {
-    if (m_menuContentItem != item)
+    if (m_menuContentItem != item) {
         m_menuContentItem = item;
+        emit menuContentItemChanged();
+    }
 }
 
 void QQuickMenu::setPopupVisible(bool v)
