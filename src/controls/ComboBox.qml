@@ -416,7 +416,7 @@ Control {
         property string textRole: ""
 
         property bool ready: false
-        property bool isPopup: __panel ? __panel.popup : false
+        property bool isPopup: !editable && !!__panel && __panel.popup
 
         property int y: isPopup ? (comboBox.__panel.height - comboBox.__panel.implicitHeight) / 2.0 : comboBox.__panel.height
         __minimumWidth: comboBox.width
