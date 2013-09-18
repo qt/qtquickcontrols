@@ -193,6 +193,7 @@ void QQuickMenuPopupWindow::updateSize()
 void QQuickMenuPopupWindow::updatePosition()
 {
     QPointF newPos = position() + m_oldItemPos - m_itemAt->position();
+    m_initialPos += m_oldItemPos - m_itemAt->position();
     setGeometry(newPos.x(), newPos.y(), width(), height());
 }
 
