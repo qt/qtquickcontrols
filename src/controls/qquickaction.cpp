@@ -41,6 +41,7 @@
 
 #include "qquickaction_p.h"
 #include "qquickexclusivegroup_p.h"
+#include "qquickmenuitem_p.h"
 
 #include <QtGui/qguiapplication.h>
 #include <QtQuick/qquickitem.h>
@@ -214,6 +215,8 @@ void QQuickAction::setText(const QString &text)
     emit textChanged();
 }
 
+namespace {
+
 bool qShortcutContextMatcher(QObject *o, Qt::ShortcutContext context)
 {
     switch (context) {
@@ -236,6 +239,38 @@ bool qShortcutContextMatcher(QObject *o, Qt::ShortcutContext context)
 
     return false;
 }
+
+bool qMnemonicContextMatcher(QObject *o, Qt::ShortcutContext context)
+{
+    switch (context) {
+    case Qt::ApplicationShortcut:
+        return true;
+    case Qt::WindowShortcut: {
+        QObject *w = o;
+        while (w && !w->isWindowType()) {
+            w = w->parent();
+            if (QQuickItem * item = qobject_cast<QQuickItem*>(w))
+                w = item->window();
+            else if (QQuickMenuBase *mb = qobject_cast<QQuickMenuBase *>(w)) {
+                QQuickItem *vi = mb->visualItem();
+                if (vi && vi->isVisible())
+                    w = vi->window();
+                else
+                    break; // Non visible menu objects don't get mnemonic match
+            }
+        }
+        if (w && w == QGuiApplication::focusWindow())
+            return true;
+    }
+    case Qt::WidgetShortcut:
+    case Qt::WidgetWithChildrenShortcut:
+        break;
+    }
+
+    return false;
+}
+
+} // namespace
 
 QVariant QQuickAction::shortcut() const
 {
@@ -278,7 +313,7 @@ void QQuickAction::setMnemonicFromText(const QString &text)
 
     if (!m_mnemonic.isEmpty()) {
         Qt::ShortcutContext context = Qt::WindowShortcut;
-        QGuiApplicationPrivate::instance()->shortcutMap.addShortcut(this, m_mnemonic, context, qShortcutContextMatcher);
+        QGuiApplicationPrivate::instance()->shortcutMap.addShortcut(this, m_mnemonic, context, qMnemonicContextMatcher);
     }
 }
 

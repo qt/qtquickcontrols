@@ -68,11 +68,12 @@ class QQuickMenu : public QQuickMenuText
 
     Q_PROPERTY(int __selectedIndex READ selectedIndex WRITE setSelectedIndex NOTIFY __selectedIndexChanged)
     Q_PROPERTY(bool __popupVisible READ popupVisible NOTIFY popupVisibleChanged)
-    Q_PROPERTY(QQuickItem *__contentItem READ menuContentItem WRITE setMenuContentItem)
+    Q_PROPERTY(QQuickItem *__contentItem READ menuContentItem WRITE setMenuContentItem NOTIFY menuContentItemChanged)
     Q_PROPERTY(int __minimumWidth READ minimumWidth WRITE setMinimumWidth)
     Q_PROPERTY(QFont __font READ font WRITE setFont)
     Q_PROPERTY(qreal __xOffset READ xOffset WRITE setXOffset)
     Q_PROPERTY(qreal __yOffset READ yOffset WRITE setYOffset)
+    Q_PROPERTY(QQuickAction *__action READ action CONSTANT)
 
 public:
     Q_INVOKABLE void popup();
@@ -98,6 +99,7 @@ Q_SIGNALS:
     void __selectedIndexChanged();
     void __menuClosed();
     void popupVisibleChanged();
+    void menuContentItemChanged();
 
 public:
     QQuickMenu(QObject *parent = 0);

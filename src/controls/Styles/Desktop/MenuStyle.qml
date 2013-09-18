@@ -65,6 +65,8 @@ Style {
             }
             color: __syspal.window
         }
+
+        Accessible.role: Accessible.PopupMenu
     }
 
     property Component menuItem: StyleItem {
@@ -81,6 +83,8 @@ Style {
         selected: !!parent && parent.selected
         on: !!menuItem && !!menuItem["checkable"] && menuItem.checked
 
+        hints: { "showUnderlined": showUnderlined }
+
         properties: {
             "checkable": !!menuItem && !!menuItem["checkable"],
             "exclusive": !!menuItem && !!menuItem["exclusiveGroup"],
@@ -88,5 +92,8 @@ Style {
             "isSubmenu": isSubmenu,
             "icon": !!menuItem && menuItem.__icon
         }
+
+        Accessible.role: Accessible.MenuItem
+        Accessible.name: StyleHelpers.removeMnemonics(text)
     }
 }
