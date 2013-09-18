@@ -41,6 +41,7 @@
 import QtQuick 2.1
 import QtTest 1.0
 import QtQuick.Controls 1.0
+import QtQuick.Layouts 1.0
 import QtQuickControlsTests 1.0
 
 TestCase {
@@ -72,6 +73,29 @@ TestCase {
                 width: 200
                 height: 90
                 color: "blue"
+            }
+        }
+    }
+
+    Component {
+        id: splitView_hide_item_after_fillWidth
+        SplitView {
+            anchors.fill: parent
+            property alias item3: item3
+            handleDelegate: Rectangle { width: handleWidth; height: handleHeight; color: "black" }
+            Rectangle {
+                color: "yellow"
+                Layout.fillWidth: true
+            }
+            Rectangle {
+                color: "green"
+                Layout.minimumWidth: 100
+                visible: false
+            }
+            Rectangle {
+                id: item3
+                color: "blue"
+                Layout.minimumWidth: 100
             }
         }
     }
@@ -178,6 +202,15 @@ TestCase {
         compare (view.item2.y, 0)
         compare (view.item2.width, testCase.width - view.item1.width - handleWidth)
         compare (view.item2.height, 500)
+        view.destroy()
+    }
+
+    function test_hide_item_after_fillWidth() {
+        // QTBUG-33448
+        var view = splitView_hide_item_after_fillWidth.createObject(testCase);
+        verify (view !== null, "splitview created is null")
+        waitForRendering(view)
+        compare (view.item3.x, view.width - view.item3.width)
         view.destroy()
     }
 }

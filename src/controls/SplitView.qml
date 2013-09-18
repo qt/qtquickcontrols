@@ -293,17 +293,18 @@ Item {
             // calculate their acummulated width.
             var w = 0
             for (var i=firstIndex; i<lastIndex; ++i) {
+
                 var item = __items[i]
                 if (item.visible || i == d.fillIndex) {
                     if (i !== d.fillIndex)
                         w += item[d.size];
                     else if (includeFillItemMinimum && item.Layout[minimum] !== undefined)
                         w += item.Layout[minimum]
-
-                    var handle = __handles[i]
-                    if (handle && handle.visible)
-                        w += handle[d.size]
                 }
+
+                var handle = __handles[i]
+                if (handle && handle.visible)
+                    w += handle[d.size]
             }
             return w
         }
@@ -351,14 +352,14 @@ Item {
                     item[d.otherOffset] = 0
                     item[d.otherSize] = clampedMinMax(root[otherSize], item.Layout[otherMinimum], item.Layout[otherMaximum])
                     lastVisibleItem = item
+                }
 
-                    handle = __handles[i]
-                    if (handle && handle.visible) {
-                        handle[d.offset] = lastVisibleItem[d.offset] + Math.max(0, lastVisibleItem[d.size])
-                        handle[d.otherOffset] = 0
-                        handle[d.otherSize] = root[d.otherSize]
-                        lastVisibleHandle = handle
-                    }
+                handle = __handles[i]
+                if (handle && handle.visible) {
+                    handle[d.offset] = lastVisibleItem[d.offset] + Math.max(0, lastVisibleItem[d.size])
+                    handle[d.otherOffset] = 0
+                    handle[d.otherSize] = root[d.otherSize]
+                    lastVisibleHandle = handle
                 }
             }
 
