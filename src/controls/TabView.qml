@@ -95,7 +95,9 @@ FocusScope {
         Returns the newly added tab.
     */
     function insertTab(index, title, component) {
-        var tab = tabcomp.createObject()
+        // 'loader' parent is a pending workaround while waiting for:
+        // https://codereview.qt-project.org/#change,65788
+        var tab = tabcomp.createObject(loader)
         tab.sourceComponent = component
         tab.title = title
         // insert at appropriate index first, then set the parent to
