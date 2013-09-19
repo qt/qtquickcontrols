@@ -67,7 +67,7 @@ static bool isChecked(const QObject *o)
     \qmltype ExclusiveGroup
     \instantiates QQuickExclusiveGroup
     \ingroup controls
-    \inqmlmodule QtQuick.Controls 1.0
+    \inqmlmodule QtQuick.Controls
     \brief ExclusiveGroup provides a way to declare several checkable controls as mutually exclusive.
 
     ExclusiveGroup can contain several \l Action items, and those will automatically get their

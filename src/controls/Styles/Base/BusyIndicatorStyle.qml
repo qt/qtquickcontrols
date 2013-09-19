@@ -43,7 +43,7 @@ import QtQuick.Controls.Private 1.0
 
 /*!
     \qmltype BusyIndicatorStyle
-    \inqmlmodule QtQuick.Controls.Styles 1.1
+    \inqmlmodule QtQuick.Controls.Styles
     \since QtQuick.Controls.Styles 1.1
     \ingroup controlsstyling
     \brief Provides custom styling for BusyIndicatorStyle

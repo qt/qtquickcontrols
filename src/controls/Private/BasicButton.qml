@@ -47,7 +47,7 @@ import QtQuick.Controls.Styles 1.1
     \qmltype BasicButton
     \internal
     \qmlabstract
-    \inqmlmodule QtQuick.Controls.Private 1.0
+    \inqmlmodule QtQuick.Controls.Private
 */
 
 Control {

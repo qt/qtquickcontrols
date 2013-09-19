@@ -44,7 +44,7 @@ import QtQuick.Controls 1.1
 /*!
         \qmltype StackViewSlideTransition
         \internal
-        \inqmlmodule QtQuick.Controls.Private 1.0
+        \inqmlmodule QtQuick.Controls.Private
 */
 StackViewDelegate {
     id: root

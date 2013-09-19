@@ -45,7 +45,7 @@ import QtQuick.Controls.Private 1.0
 /*!
     \qmltype FocusFrame
     \internal
-    \inqmlmodule QtQuick.Controls.Private 1.0
+    \inqmlmodule QtQuick.Controls.Private
 */
 Item {
     id: root

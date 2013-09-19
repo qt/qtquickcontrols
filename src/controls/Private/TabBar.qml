@@ -44,7 +44,7 @@ import QtQuick.Controls 1.1
 /*!
         \qmltype TabBar
         \internal
-        \inqmlmodule QtQuick.Controls.Private 1.0
+        \inqmlmodule QtQuick.Controls.Private
 */
 FocusScope {
     id: tabbar
