@@ -202,20 +202,17 @@ Style {
         property Component frame: Rectangle {
             width: (parent ? parent.contentWidth : 0)
             height: (parent ? parent.contentHeight : 0) + 2
-            border.color: "#777"
-            property real maxHeight: Math.min(500, Screen.desktopAvailableHeight)
+            border.color: "white"
+            property real maxHeight: 500
             property int margin: 1
         }
 
-        property Component menuItem: Rectangle {
-            property string textRef: text
-            implicitWidth: textItem.contentWidth
-            implicitHeight: textItem.contentHeight
-            border.color: "#777"
-            Text {
-                id: textItem
-                visible: false
-                text: textRef
+        property Component menuItem: Text {
+            text: "NOT IMPLEMENTED"
+            color: "red"
+            font {
+                pixelSize: 14
+                bold: true
             }
         }
 
