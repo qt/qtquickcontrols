@@ -118,7 +118,7 @@ ScrollView {
         The text color.
 
         \qml
-         TextArea { color: "orange" }
+         TextArea { textColor: "orange" }
         \endqml
     */
     property alias textColor: edit.color
