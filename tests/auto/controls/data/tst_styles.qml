@@ -111,7 +111,7 @@ Item {
 
         function test_createSpinBoxStyle() {
             var control = Qt.createQmlObject(
-                        'import QtQuick 2.1; import QtQuick.Controls 1.1; import QtQuick.Controls.Private 1.0; \
+                        'import QtQuick 2.1; import QtQuick.Controls 1.1; import QtQuick.Controls.Styles 1.1; \
                     Rectangle { width: 50; height: 50;  property Component style: SpinBoxStyle {}}'
                         , container, '')
         }

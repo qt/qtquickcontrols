@@ -43,11 +43,24 @@ import QtQuick.Controls.Private 1.0
 
 /*!
     \qmltype SpinBoxStyle
-    \internal
     \inqmlmodule QtQuick.Controls.Styles
-    \since QtQuick.Controls.Styles 1.0
+    \since QtQuick.Controls.Styles 1.1
     \ingroup controlsstyling
     \brief Provides custom styling for SpinBox
+
+    Example:
+    \qml
+    SpinBox {
+        style: SpinBoxStyle{
+            background: Rectangle {
+                implicitWidth: 100
+                implicitHeight: 20
+                border.color: "gray"
+                radius: 2
+            }
+        }
+    }
+    \endqml
 */
 
 Style {
