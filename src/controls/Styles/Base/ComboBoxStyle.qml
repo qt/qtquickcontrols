@@ -66,7 +66,7 @@ Style {
 
     /*! This defines the background of the button. */
     property Component background: Item {
-        implicitWidth: 100
+        implicitWidth: 125
         implicitHeight: 25
         BorderImage {
             anchors.fill: parent
@@ -157,7 +157,7 @@ Style {
         property bool popup: false
         anchors.centerIn: parent
         anchors.fill: parent
-        implicitWidth: 125
+        implicitWidth: backgroundLoader.implicitWidth
         implicitHeight: Math.max(labelLoader.implicitHeight + padding.top + padding.bottom, backgroundLoader.implicitHeight)
 
         Loader {
