@@ -133,7 +133,7 @@ Window {
         id: backgroundItem
         anchors.fill: parent
 
-        Keys.forwardTo: [menuBar.__contentItem]
+        Keys.forwardTo: menuBar ? [menuBar.__contentItem] : []
 
         Item {
             id: contentArea
