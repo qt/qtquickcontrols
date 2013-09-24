@@ -46,7 +46,7 @@ import QtQuick.Controls.Private 1.0
     \internal
     \ingroup applicationwindowstyling
     \inqmlmodule QtQuick.Controls.Styles
-    \since QtQuick.Controls.Styles 1.0
+    \since 5.1
 */
 Style {
 

@@ -45,7 +45,7 @@ import QtQuick.Controls.Private 1.0
 /*!
     \qmltype ToolButton
     \inqmlmodule QtQuick.Controls
-    \since QtQuick.Controls 1.0
+    \since 5.1
     \ingroup controls
     \brief Provides a button type that is typically used within a ToolBar.
 

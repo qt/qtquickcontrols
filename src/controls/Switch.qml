@@ -45,7 +45,7 @@ import QtQuick.Controls.Private 1.0
 /*!
     \qmltype Switch
     \inqmlmodule QtQuick.Controls
-    \since QtQuick.Controls 1.1
+    \since 5.2
     \ingroup controls
     \brief A switch.
 

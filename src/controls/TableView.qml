@@ -46,7 +46,7 @@ import QtQuick.Controls.Styles 1.1
 /*!
    \qmltype TableView
    \inqmlmodule QtQuick.Controls
-   \since QtQuick.Controls 1.0
+   \since 5.1
    \ingroup views
    \brief Provides a list view with scroll bars, styling and header sections.
 

@@ -45,7 +45,7 @@ import QtQuick.Controls.Private 1.0
 /*!
     \qmltype StatusBar
     \inqmlmodule QtQuick.Controls
-    \since QtQuick.Controls 1.0
+    \since 5.1
     \ingroup applicationwindow
     \brief Contains status information in your app.
 

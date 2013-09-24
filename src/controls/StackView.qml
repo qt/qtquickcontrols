@@ -47,7 +47,7 @@ import QtQuick.Controls.Private 1.0
     \inherits Item
     \ingroup views
     \inqmlmodule QtQuick.Controls
-    \since QtQuick.Controls 1.0
+    \since 5.1
 
     \brief Provides a stack-based navigation model.
 
