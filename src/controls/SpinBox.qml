@@ -140,6 +140,23 @@ Control {
     */
     property bool activeFocusOnPress: true
 
+    /*! \qmlproperty enumeration horizontalAlignment
+        \since 5.2
+
+        This property indicates how the content is horizontally aligned
+        within the text field.
+
+        The supported values are:
+        \list
+        \li Qt.AlignLeft
+        \li Qt.AlignHCenter
+        \li Qt.AlignRight
+        \endlist
+
+      The default value is style dependent.
+    */
+    property int horizontalAlignment: __panel ? __panel.horizontalAlignment : Qt.AlignLeft
+
     /*!
         \qmlproperty bool SpinBox::hovered
 
@@ -223,8 +240,8 @@ Control {
         focus: true
         activeFocusOnPress: spinbox.activeFocusOnPress
 
-        horizontalAlignment: __panel ? __panel.horizontalTextAlignment : Qt.AlignLeft
-        verticalAlignment: __panel ? __panel.verticalTextAlignment : Qt.AlignVCenter
+        horizontalAlignment: spinbox.horizontalAlignment
+        verticalAlignment: __panel ? __panel.verticalAlignment : Qt.AlignVCenter
         selectByMouse: true
 
         validator: SpinBoxValidator {
