@@ -51,7 +51,8 @@ Style {
     readonly property ToolButton control: __control
     property Component panel: Item {
         id: styleitem
-        implicitWidth: hasIcon ? 36 : Math.max(label.implicitWidth + frame.border.left + frame.border.right, 36)
+        implicitWidth: (hasIcon ? 36 : Math.max(label.implicitWidth + frame.border.left + frame.border.right, 36))
+                                 + (arrow.visible ? 10 : 0)
         implicitHeight: hasIcon ? 36 : Math.max(label.implicitHeight, 36)
 
         readonly property bool hasIcon: icon.status === Image.Ready || icon.status === Image.Loading
@@ -63,17 +64,25 @@ Style {
             radius:4
             border.color: "#aaa"
         }
-        Text {
-            id: label
-            visible: !hasIcon
-            anchors.centerIn: parent
-            text: control.text
+        Item {
+            anchors.left: parent.left
+            anchors.right: arrow.left
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            clip: true
+            Text {
+                id: label
+                visible: !hasIcon
+                anchors.centerIn: parent
+                text: control.text
+            }
+            Image {
+                id: icon
+                anchors.centerIn: parent
+                source: control.iconSource
+            }
         }
-        Image {
-            id: icon
-            anchors.centerIn: parent
-            source: control.iconSource
-        }
+
         BorderImage {
             id: frame
             anchors.fill: parent
@@ -86,6 +95,16 @@ Style {
             border.right: 4
             border.top: 4
             border.bottom: 4
+        }
+
+        Image {
+            id: arrow
+            visible: control.menu !== null
+            source: visible ? "images/arrow-down.png" : ""
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.right: parent.right
+            anchors.rightMargin: visible ? 3 : 0
+            opacity: control.enabled ? 0.7 : 0.5
         }
     }
 }

@@ -57,14 +57,12 @@ import QtQuick.Controls.Private 1.0
         iconSource: "edit-cut.png"
      }
      \endcode
+
+    You can create a custom appearance for a ToolButton by
+    assigning a \l ButtonStyle.
 */
 
-BasicButton {
+Button {
     id: button
-
-    activeFocusOnTab: true
-
-    Accessible.name: text
-
     style: Qt.createComponent(Settings.style + "/ToolButtonStyle.qml", button)
 }

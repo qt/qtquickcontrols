@@ -57,7 +57,8 @@ Style {
 
         properties: {
             "icon": control.__iconAction.__icon,
-            "position": control.__position
+            "position": control.__position,
+            "menu" : control.menu !== null
         }
     }
 }

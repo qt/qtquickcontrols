@@ -298,6 +298,11 @@ void QQuickStyleItem::initStyleOption()
         opt->text = text();
         opt->icon = m_properties["icon"].value<QIcon>();
 
+        if (m_properties.value("menu").toBool()) {
+            opt->subControls |= QStyle::SC_ToolButtonMenu;
+            opt->features = QStyleOptionToolButton::HasMenu;
+        }
+
         // For now icon only is displayed by default.
         opt->toolButtonStyle = Qt::ToolButtonIconOnly;
         if (opt->icon.isNull() && !opt->text.isEmpty())
