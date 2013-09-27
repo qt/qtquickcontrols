@@ -165,7 +165,8 @@ FocusScope {
             contentItem.parent = internal.flickableItem.contentItem
         }
         internal.flickableItem.anchors.fill = viewportItem
-        internal.flickableItem.interactive = false
+        if (!Settings.hasTouchScreen)
+            internal.flickableItem.interactive = false
     }
 
 

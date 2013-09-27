@@ -73,7 +73,7 @@ Style {
         appear when the content is scrolled and disappear when they are no longer needed.
 
         The default value is platform dependent. */
-    property bool transientScrollBars: Qt.platform.os === "android" || Qt.platform.os === "ios"
+    property bool transientScrollBars: Settings.hasTouchScreen
 
     /*! This Component paints the frame around scroll bars. */
     property Component frame: Rectangle {
