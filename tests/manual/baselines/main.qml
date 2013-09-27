@@ -38,223 +38,264 @@
 **
 ****************************************************************************/
 
+
+
+
+
 import QtQuick 2.1
 import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.1
 
-import "content"
-
-Item {
+ApplicationWindow {
     id: window
-    width: 1024
-    height: 400
-    Row {
-        id: row
-        Text {
-            text: "font size:"
-        }
-        SpinBox {
-            value: 30
-            onValueChanged: {
-                if (textWithBaseLine) { // This might be emitted before the SpinBox is completed
-                    textWithBaseLine.font.pixelSize = value
-                    textWithBaseLineB.pixelSize = value
-                    label.font.pixelSize = value
-                }
-            }
-        }
-        Text {
-            text: "element height:"
-        }
-        SpinBox {
-            value: 36
-            onValueChanged: {
-                if (textWithBaseLine) { // This might be emitted before the SpinBox is completed
-                    textWithBaseLine.height = value
-                    textWithBaseLineB.implicitHeight = value
-                }
-            }
+    property variant defaultAlignment: Qt.AlignBaseline
+    title: "Layouts with baselines"
+    property int margin: 11
+    width: mainLayout.implicitWidth + 2 * margin
+    height: mainLayout.implicitHeight + 2 * margin
+    minimumWidth: mainLayout.Layout.minimumWidth + 2 * margin
+    minimumHeight: mainLayout.Layout.minimumHeight + 2 * margin
+
+    Component {
+        id: visualBaselineComponent
+        Rectangle {
+            height: 1
+            width: 1
+            color: 'red'
         }
     }
 
-    RectangleText {
-        id: textWithBaseLine
-        font.pixelSize: 30
-        verticalAlignment: Text.AlignVCenter
-        anchors.top: row.bottom
-    }
-
-    RectangleText {
-        id: textWithBaseLine2
-        font.pixelSize: 12
-        anchors.left: textWithBaseLine.right
-        anchors.baseline: textWithBaseLine.baseline
-    }
-
-    RectangleText {
-        verticalAlignment: Text.AlignVCenter
-        anchors.left: textWithBaseLine2.right
-        anchors.baseline: textWithBaseLine.baseline
-        height: 80
-        baselineOffset: 20
-    }
-
-
-    Rectangle {
-        x: 0
-        y: textWithBaseLine.baselineOffset + textWithBaseLine.y
-        height: 1
+    Item {
+        id: visualBaselinesContainer
         width: parent.width
-        opacity: 0.2
-        color: "red"
+        z: 1
+        opacity: 0.5
+
+        function setBaselinesVisible(showBaselines) {
+            for (var i = 0; i < visualBaselinesContainer.children.length; ++i) {
+                visualBaselinesContainer.children[i].destroy();
+            }
+            if (showBaselines) {
+                // assumes mainLayout/GroupBox/Layout/<child_items> hierarchy
+                // Iterates over all <child_items> and gathers their baseline positions,
+                var map_baselines = {}
+                for (var i = 0; i < mainLayout.children.length; ++i) {
+                    var grp = mainLayout.children[i]
+                    var lay = grp.contentItem.children[0]
+                    var y = mainLayout.y + grp.y + grp.contentItem.y + lay.y
+                    var x = mainLayout.x + grp.x + grp.contentItem.x + lay.x
+                    var w = lay.width
+                    for (var j = 0; j < lay.children.length; ++j) {
+                        var child = lay.children[j];
+                        if (child.visible && child.baselineOffset > 0) {
+                            var baseline = y + child.y + child.baselineOffset
+                            map_baselines[baseline] = {x: x, width: w};
+                        }
+                    }
+                }
+
+                for (var key in map_baselines) {
+                    var o = map_baselines[key];
+                    var visualBaseline = visualBaselineComponent.createObject(visualBaselinesContainer, o);
+                    visualBaseline.y = key;
+                }
+            }
+        }
+        Timer {
+            // This is a kludge to wait until the layout has been rearranged, since that won't
+            // happen until we get a polish event.
+            // This will wait minimum of one full vertical scan (17 milliseconds), which
+            // should usually be enough
+            id: refreshBaselinesTimer
+            running: false
+            interval: 17
+            onTriggered: {
+                visualBaselinesContainer.setBaselinesVisible(ckShowBaselines.checked);
+            }
+        }
     }
 
     ColumnLayout {
-        height: Math.ceil(implicitHeight)
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-        Text {
-            text: "Qt Quick Controls"
+        id: mainLayout
+        anchors.fill: parent
+        anchors.margins: margin
+
+        GroupBox {
+            id: rowBoxTools
+            title: "Developer tools"
             Layout.fillWidth: true
-        }
-        RowLayout {
-            Rectangle {
-                color: "blue"
-                implicitWidth: 1
-                implicitHeight: 40
-                Layout.fillHeight: true
-                Rectangle {
-                    y: textWithBaseLineC.y + textWithBaseLineC.baselineOffset
-                    height: 1
-                    width: window.width
-                    opacity: 0.5
-                    color: "red"
+            RowLayout {
+                anchors.fill: parent
+                CheckBox {
+                    id: ckShowBaselines
+                    text: "Show baselines"
+                    checked: false
+                    onCheckedChanged: {
+                        visualBaselinesContainer.setBaselinesVisible(checked);
+                    }
                 }
-                z: 1
+                Label {
+                    text: "Alignment:"
+                }
+                ComboBox {
+                    model: ListModel {
+                        id: cbItems
+                        ListElement { text: "Default"; value: 0 }
+                        ListElement { text: "Align Left"; value: Qt.AlignLeft }
+                        ListElement { text: "Align Right"; value: Qt.AlignRight }
+                        ListElement { text: "Align HCenter"; value: Qt.AlignHCenter }
+                        ListElement { text: "Align Baseline"; value: Qt.AlignBaseline }
+                        ListElement { text: "Align Top"; value: Qt.AlignTop }
+                        ListElement { text: "Align Bottom"; value: Qt.AlignBottom }
+                        ListElement { text: "Align VCenter"; value: Qt.AlignVCenter }
+                    }
+                    onCurrentIndexChanged: {
+                        // assumes mainLayout/GroupBox/Layout/<child_items> hierarchy
+                        // Iterates over all <child_items> and modifies their baseline alignment
+                        for (var i = 0; i < mainLayout.children.length; ++i) {
+                            var grp = mainLayout.children[i]
+                            var lay = grp.contentItem.children[0]
+                            for (var j = 0; j < lay.children.length; ++j) {
+                                var child = lay.children[j];
+                                child.Layout.alignment = cbItems.get(currentIndex).value
+                            }
+                        }
+                        refreshBaselinesTimer.start();
+                    }
+                }
+
+                Item {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                }
             }
-            RectangleText {
-                id: textWithBaseLineC
-                font.pixelSize: 20
-                Layout.alignment: Qt.AlignBaseline
-            }
-            Label {
-                id: label
-                text: "Typography"
-                Layout.alignment: Qt.AlignBaseline
-            }
-            Button {
-                text: "Typography"
-                Layout.alignment: Qt.AlignBaseline
-            }
-            CheckBox {
-                text: "Typography"
-                Layout.alignment: Qt.AlignBaseline
-            }
-            ComboBox {
-                id: combo;
-                model: ["Typography"]
-                currentIndex: 0
-                Layout.alignment: Qt.AlignBaseline
-            }
-            RadioButton {
-                text: "Typography"
-                Layout.alignment: Qt.AlignBaseline
-            }
-            SpinBox {
-                value: 42
-                Layout.alignment: Qt.AlignBaseline
-            }
-            TextField {
-                text: "Typography"
-                Layout.alignment: Qt.AlignBaseline
-            }
-            TextArea {
-                text: "The quick brown fox jumps over the lazy dog"
-                Layout.alignment: Qt.AlignBaseline
-                implicitWidth: 100
-                implicitHeight: 60
+        }
+        GroupBox {
+            id: rowBox
+            title: "Row layout"
+            Layout.fillWidth: true
+
+            RowLayout {
+                id: rowLayout
+                anchors.fill: parent
+                Repeater {
+                    model: 3
+                    Text {
+                        text: "Typography"
+                        font.pixelSize: 10 + 4*index
+                        Layout.alignment: defaultAlignment
+                        Layout.fillWidth: index == 2
+                    }
+                }
             }
         }
 
-        Text {
-            text: "Qml Elements"
+        GroupBox {
+            id: gridBox
+            title: "Grid layout"
             Layout.fillWidth: true
-        }
-        RowLayout {
-            id: rowlayout
-            Rectangle {
-                color: "blue"
-                implicitWidth: 1
-                Layout.fillHeight: true
-                Rectangle {
-                    y: textWithBaseLineB.baselineOffset + textWithBaseLineB.y
-                    height: 1
-                    width: window.width
-                    opacity: 0.2
-                    color: "red"
+
+            GridLayout {
+                id: gridLayout
+                anchors.fill: parent
+                rows: 2
+                flow: GridLayout.TopToBottom
+                Repeater {
+                    model: 6
+                    Text {
+                        text: "Typography"
+                        font.pixelSize: 8 + 4*index
+                        Layout.alignment: defaultAlignment
+                    }
                 }
             }
-            Item {
-                id: textWithBaseLineB
-                property alias pixelSize: txt2.font.pixelSize
+        }
 
-                implicitWidth: txt2.implicitWidth
-                implicitHeight: txt2.implicitHeight + 40
-                // Note that we use 20 instead of txt2.y on the below line
-                // This is because we cannot depend on a geometry (that the layout controls)
-                // when we return size hints. size hints should never rely on the current arrangement
-                baselineOffset: 20 + txt2.baselineOffset
-                Rectangle {
-                    anchors.fill: parent
-                    color: "red"
-                    opacity: 0.2
+
+        GroupBox {
+            id: rowBoxWithControls
+            title: "Row layout with Controls"
+            Layout.fillWidth: true
+
+            RowLayout {
+                id: rowLayoutWithControls
+                anchors.fill: parent
+                Label {
+                    id: rowlabel
+                    text: "Typo"
+                    Layout.alignment: defaultAlignment
                 }
-                Text {
-                    id: txt2
-                    font.pixelSize: 30
-                    opacity: 1.0
-                    anchors.centerIn: parent
+                Button {
+                    text: "Typo"
+                    Layout.alignment: defaultAlignment
+                }
+                CheckBox {
+                    text: "Typo"
+                    Layout.alignment: defaultAlignment
+                }
+                ComboBox {
+                    model: ["Typo"]
+                    currentIndex: 0
+                    Layout.alignment: defaultAlignment
+                }
+                RadioButton {
+                    text: "Typo"
+                    Layout.alignment: defaultAlignment
+                }
+                SpinBox {
+                    value: 42
+                    Layout.alignment: defaultAlignment
+                }
+                TextField {
+                    text: "Typo"
+                    Layout.alignment: defaultAlignment
+                    Layout.maximumWidth: 40
+                }
+            }
+
+        }
+
+        GroupBox {
+            id: gridBoxWithControls
+            title: "Grid layout with Controls"
+            Layout.fillWidth: true
+
+            GridLayout {
+                id: gridLayoutWithControls
+                columns: 3
+                flow: GridLayout.LeftToRight
+                anchors.fill: parent
+                Label {
                     text: "Typography"
+                    Layout.alignment: defaultAlignment
                 }
-                Layout.alignment: Qt.AlignBaseline
-                Layout.fillWidth: true
-            }
-
-            RectangleText {
-                font.pixelSize: 12
-                Layout.alignment: Qt.AlignBaseline
-                Layout.fillWidth: true
-            }
-
-            Item {
-                implicitWidth: txt.implicitWidth
-                implicitHeight: txt.implicitHeight + 40
-                baselineOffset: txt.y + txt.baselineOffset
-                Rectangle {
-                    anchors.fill: parent
-                    color: "red"
-                    opacity: 0.2
+                Button {
+                    text: "Typography"
+                    Layout.alignment: defaultAlignment
                 }
-                Text {
-                    id: txt
-                    opacity: 1.0
-                    anchors.centerIn: parent
-                    text:"Typography"
+                CheckBox {
+                    text: "Typography"
+                    Layout.alignment: defaultAlignment
                 }
-                Layout.alignment: Qt.AlignBaseline
-                Layout.fillWidth: true
+                ComboBox {
+                    model: ["Typography"]
+                    currentIndex: 0
+                    Layout.alignment: defaultAlignment
+                }
+                RadioButton {
+                    text: "Typography"
+                    Layout.alignment: defaultAlignment
+                }
+                SpinBox {
+                    value: 42
+                    Layout.alignment: defaultAlignment
+                }
+                TextField {
+                    id: gridTextField
+                    text: "Typography"
+                    Layout.alignment: defaultAlignment
+                }
             }
-
-            RectangleText {
-                verticalAlignment: Text.AlignVCenter
-                Layout.alignment: Qt.AlignBaseline
-                baselineOffset: 60
-                height: 80  // Needed for baselineOffset to be interpreted correctly
-                Layout.preferredHeight: 80
-                Layout.minimumHeight: Layout.preferredHeight
-                Layout.fillWidth: true
-            }
-        }   // RowLayout
-    }   // ColumnLayout
+        }
+    }
 }
