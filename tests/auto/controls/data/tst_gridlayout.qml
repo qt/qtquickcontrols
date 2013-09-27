@@ -521,6 +521,23 @@ Item {
             compare(itemRect(layout.children[3]), [45, 40, 10, 10]);
             compare(itemRect(layout.children[4]), [30, 60, 30, 30]);
 
+
+            layout.children[1].Layout.alignment = Qt.AlignTop
+            waitForRendering(layout)
+            compare(itemRect(layout.children[1]), [40,  0, 20, 20]);
+
+            layout.children[2].Layout.alignment = Qt.AlignLeft
+            waitForRendering(layout)
+            compare(itemRect(layout.children[2]), [0,  40, 20, 20]);
+
+            layout.children[3].Layout.alignment = Qt.AlignLeft|Qt.AlignVCenter
+            waitForRendering(layout)
+            compare(itemRect(layout.children[3]), [40, 45, 10, 10]);
+
+            layout.children[4].Layout.alignment = Qt.AlignLeft
+            waitForRendering(layout)
+            compare(itemRect(layout.children[4]), [0, 60, 30, 30]);
+
             layout.destroy();
         }
 
@@ -739,9 +756,6 @@ Item {
 
             layout.children[0].Layout.alignment = Qt.AlignBaseline
             layout.children[1].Layout.alignment = Qt.AlignBaseline
-
-            // Workaround, force full invalidation (QTBUG-33773)
-            layout.children[1].visible = false; layout.children[1].visible = true;
 
             compare(itemRect(layout.children[0]), [ 0, 0, 10, 10])
             compare(itemRect(layout.children[1]), [10, 10, 10, 10])

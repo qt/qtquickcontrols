@@ -426,7 +426,10 @@ void QQuickLayoutAttached::setAlignment(Qt::Alignment align)
 {
     if (align != m_alignment) {
         m_alignment = align;
-        invalidateItem();
+        if (QQuickLayout *layout = parentLayout()) {
+            layout->setAlignment(item(), align);
+            invalidateItem();
+        }
         emit alignmentChanged();
     }
 }

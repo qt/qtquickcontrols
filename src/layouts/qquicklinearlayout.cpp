@@ -253,6 +253,12 @@ Qt::LayoutDirection QQuickGridLayoutBase::effectiveLayoutDirection() const
                                       ? Qt::LeftToRight : Qt::RightToLeft;
 }
 
+void QQuickGridLayoutBase::setAlignment(QQuickItem *item, Qt::Alignment alignment)
+{
+    Q_D(QQuickGridLayoutBase);
+    d->engine.setAlignment(item, alignment);
+}
+
 QQuickGridLayoutBase::~QQuickGridLayoutBase()
 {
     d_func()->m_isReady = false;

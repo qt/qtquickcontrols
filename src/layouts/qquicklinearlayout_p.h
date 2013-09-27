@@ -75,6 +75,7 @@ public:
     Qt::LayoutDirection layoutDirection() const;
     void setLayoutDirection(Qt::LayoutDirection dir);
     Qt::LayoutDirection effectiveLayoutDirection() const;
+    void setAlignment(QQuickItem *item, Qt::Alignment align) Q_DECL_OVERRIDE;
 
 protected:
     void updateLayoutItems() Q_DECL_OVERRIDE;
