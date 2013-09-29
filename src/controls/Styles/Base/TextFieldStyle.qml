@@ -91,6 +91,11 @@ Style {
     /*! The highlighted text color, used in selections. */
     property color selectedTextColor: __syspal.highlightedText
 
+    /*! The placeholder text color, used when the text field is empty.
+        \since 5.2
+    */
+    property color placeholderTextColor: Qt.rgba(0, 0, 0, 0.5)
+
     /*! The background of the text field. */
     property Component background: Item {
         implicitWidth: 100
@@ -134,7 +139,7 @@ Style {
         implicitWidth: backgroundLoader.implicitWidth ? backgroundLoader.implicitWidth : 100
         implicitHeight: backgroundLoader.implicitHeight ? backgroundLoader.implicitHeight : 20
 
-        property color placeholderTextColor: Qt.rgba(0, 0, 0, 0.5)
+        property color placeholderTextColor: style.placeholderTextColor
         property font font: style.font
 
         Loader {
