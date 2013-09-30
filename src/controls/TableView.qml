@@ -46,7 +46,7 @@ import QtQuick.Controls.Styles 1.1
 /*!
    \qmltype TableView
    \inqmlmodule QtQuick.Controls
-   \since QtQuick.Controls 1.0
+   \since 5.1
    \ingroup views
    \brief Provides a list view with scroll bars, styling and header sections.
 
@@ -519,7 +519,7 @@ ScrollView {
         anchors.fill: parent
         currentIndex: -1
         visible: columnCount > 0
-        interactive: false
+        interactive: Settings.hasTouchScreen
 
         SystemPalette {
             id: palette
@@ -580,7 +580,7 @@ ScrollView {
                     autodecrement = false;
                 }
 
-                if (pressed) {
+                if (pressed && !Settings.hasTouchScreen) {
                     var newIndex = Math.max(0, listView.indexAt(0, mouseY + listView.contentY))
                     if (newIndex >= 0 && newIndex != currentRow) {
                         listView.currentIndex = newIndex;
@@ -638,7 +638,7 @@ ScrollView {
 
             // Note:  with boolean preventStealing we are keeping the flickable from
             // eating our mouse press events
-            preventStealing: true
+            preventStealing: !Settings.hasTouchScreen
 
             TableViewSelection { id: selectionObject }
         }

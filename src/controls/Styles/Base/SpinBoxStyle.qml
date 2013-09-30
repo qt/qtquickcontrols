@@ -44,7 +44,7 @@ import QtQuick.Controls.Private 1.0
 /*!
     \qmltype SpinBoxStyle
     \inqmlmodule QtQuick.Controls.Styles
-    \since QtQuick.Controls.Styles 1.1
+    \since 5.2
     \ingroup controlsstyling
     \brief Provides custom styling for SpinBox
 
@@ -76,7 +76,22 @@ Style {
     }
 
     /*! The content margins of the text field. */
-    padding { top: 0 ; left: 5 ; right: 12 ; bottom: 0 }
+    padding { top: 0 ; left: 5 ; right: 18 ; bottom: 0 }
+
+    /*! \qmlproperty enumeration horizontalAlignment
+
+        This property defines the default text aligment.
+
+        The supported values are:
+        \list
+        \li Qt.AlignLeft
+        \li Qt.AlignHCenter
+        \li Qt.AlignRight
+        \endlist
+
+        The default value is Qt.AlignRight
+    */
+    property int horizontalAlignment: Qt.AlignRight
 
     /*! The text color. */
     property color textColor: __syspal.text
@@ -114,7 +129,7 @@ Style {
     /*! The background of the SpinBox. */
     property Component background: Item {
         implicitHeight: 25
-        implicitWidth: 80
+        implicitWidth: styleData.contentWidth + 26
         BorderImage {
             id: image
             anchors.fill: parent
@@ -143,7 +158,7 @@ Style {
     /*! \internal */
     property Component panel: Item {
         id: styleitem
-        implicitWidth: styleData.contentWidth + 26
+        implicitWidth: backgroundLoader.implicitWidth
         implicitHeight: backgroundLoader.implicitHeight
 
         property color foregroundColor: spinboxStyle.textColor
@@ -155,8 +170,8 @@ Style {
         property rect upRect: Qt.rect(width - incrementControlLoader.implicitWidth, 0, incrementControlLoader.implicitWidth, height / 2 + 1)
         property rect downRect: Qt.rect(width - decrementControlLoader.implicitWidth, height / 2, decrementControlLoader.implicitWidth, height / 2)
 
-        property int horizontalTextAlignment: Qt.AlignLeft
-        property int verticalTextAlignment: Qt.AlignVCenter
+        property int horizontalAlignment: spinboxStyle.horizontalAlignment
+        property int verticalAlignment: Qt.AlignVCenter
 
         Loader {
             id: backgroundLoader

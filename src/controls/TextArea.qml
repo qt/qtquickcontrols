@@ -44,7 +44,7 @@ import QtQuick.Controls.Private 1.0
 /*!
     \qmltype TextArea
     \inqmlmodule QtQuick.Controls
-    \since QtQuick.Controls 1.0
+    \since 5.1
     \ingroup controls
     \brief Displays multiple lines of editable formatted text.
 
@@ -118,7 +118,7 @@ ScrollView {
         The text color.
 
         \qml
-         TextArea { color: "orange" }
+         TextArea { textColor: "orange" }
         \endqml
     */
     property alias textColor: edit.color
@@ -384,7 +384,7 @@ ScrollView {
 
     /*!
         \qmlsignal TextArea::linkHovered(string link)
-        \since QtQuick.Controls 1.1
+        \since 5.2
 
         This signal is emitted when the user hovers a link embedded in the text.
         The link must be in rich text or HTML format and the

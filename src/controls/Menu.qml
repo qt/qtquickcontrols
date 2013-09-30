@@ -46,7 +46,7 @@ import QtQuick.Controls.Private 1.0
 /*!
     \qmltype Menu
     \inqmlmodule QtQuick.Controls
-    \since QtQuick.Controls 1.0
+    \since 5.1
     \ingroup menus
     \brief Provides a menu component for use in menu bars, as context menu,
     and other popup menus.

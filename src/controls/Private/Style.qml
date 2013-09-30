@@ -44,7 +44,7 @@ import QtQuick.Controls.Private 1.0
 /*!
     \qmltype Style
     \internal
-    \inqmlmodule QtQuick.Controls.Private 1.0
+    \inqmlmodule QtQuick.Controls.Private
 */
 
 AbstractStyle {

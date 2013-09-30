@@ -56,6 +56,7 @@ STYLES_QML_FILES += \
     $$PWD/Base/images/tab_selected.png \
     $$PWD/Base/images/scrollbar-handle-horizontal.png \
     $$PWD/Base/images/scrollbar-handle-vertical.png \
+    $$PWD/Base/images/scrollbar-handle-transient.png \
     $$PWD/Base/images/progress-indeterminate.png \
     $$PWD/Base/images/editbox.png \
     $$PWD/Base/images/arrow-up.png \

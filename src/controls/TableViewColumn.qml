@@ -43,7 +43,7 @@ import QtQuick 2.1
 /*!
     \qmltype TableViewColumn
     \inqmlmodule QtQuick.Controls
-    \since QtQuick.Controls 1.0
+    \since 5.1
     \ingroup viewitems
     \brief Used to define columns in a \l TableView.
 */

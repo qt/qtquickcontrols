@@ -45,7 +45,7 @@ import QtQuick.Controls.Private 1.0
 /*!
     \qmltype ToolButton
     \inqmlmodule QtQuick.Controls
-    \since QtQuick.Controls 1.0
+    \since 5.1
     \ingroup controls
     \brief Provides a button type that is typically used within a ToolBar.
 
@@ -57,14 +57,12 @@ import QtQuick.Controls.Private 1.0
         iconSource: "edit-cut.png"
      }
      \endcode
+
+    You can create a custom appearance for a ToolButton by
+    assigning a \l ButtonStyle.
 */
 
-BasicButton {
+Button {
     id: button
-
-    activeFocusOnTab: true
-
-    Accessible.name: text
-
     style: Qt.createComponent(Settings.style + "/ToolButtonStyle.qml", button)
 }

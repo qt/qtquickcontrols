@@ -68,6 +68,15 @@ static bool fromResource(const QString &path)
     return path.startsWith("qrc:");
 }
 
+bool QQuickControlSettings::hasTouchScreen() const
+{
+#if defined(Q_OS_IOS) || defined(Q_OS_ANDROID) || defined (Q_OS_BLACKBERRY)
+    return true;
+#else
+    return false;
+#endif
+}
+
 static QString styleImportPath(QQmlEngine *engine, const QString &styleName)
 {
     QString path = qgetenv("QT_QUICK_CONTROLS_STYLE");

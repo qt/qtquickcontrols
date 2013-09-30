@@ -62,7 +62,7 @@ class QQuickStyleItem: public QQuickItem
     Q_PROPERTY( bool on READ on WRITE setOn NOTIFY onChanged)
     Q_PROPERTY( bool hover READ hover WRITE setHover NOTIFY hoverChanged)
     Q_PROPERTY( bool horizontal READ horizontal WRITE setHorizontal NOTIFY horizontalChanged)
-    Q_PROPERTY( bool transient READ transient WRITE setTransient NOTIFY transientChanged)
+    Q_PROPERTY( bool isTransient READ isTransient WRITE setTransient NOTIFY transientChanged)
 
     Q_PROPERTY( QString elementType READ elementType WRITE setElementType NOTIFY elementTypeChanged)
     Q_PROPERTY( QString text READ text WRITE setText NOTIFY textChanged)
@@ -131,7 +131,7 @@ public:
     bool on() const { return m_on; }
     bool hover() const { return m_hover; }
     bool horizontal() const { return m_horizontal; }
-    bool transient() const { return m_transient; }
+    bool isTransient() const { return m_transient; }
 
     int minimum() const { return m_minimum; }
     int maximum() const { return m_maximum; }

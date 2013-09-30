@@ -46,7 +46,7 @@ import QtQuick.Controls.Private 1.0
 
 /*!
     \qmltype ApplicationWindow
-    \since QtQuick.Controls 1.0
+    \since 5.1
     \inqmlmodule QtQuick.Controls
     \ingroup applicationwindow
     \brief Provides a top-level application window.
@@ -133,7 +133,7 @@ Window {
         id: backgroundItem
         anchors.fill: parent
 
-        Keys.forwardTo: [menuBar.__contentItem]
+        Keys.forwardTo: menuBar ? [menuBar.__contentItem] : []
 
         Item {
             id: contentArea

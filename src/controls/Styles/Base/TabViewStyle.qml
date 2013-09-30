@@ -44,7 +44,7 @@ import QtQuick.Controls.Private 1.0
 /*!
     \qmltype TabViewStyle
     \inqmlmodule QtQuick.Controls.Styles
-    \since QtQuick.Controls.Styles 1.0
+    \since 5.1
     \ingroup viewsstyling
     \brief Provides custom styling for TabView
 

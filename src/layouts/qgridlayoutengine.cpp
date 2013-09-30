@@ -666,6 +666,7 @@ QRectF QGridLayoutItem::geometryWithin(qreal x, qreal y, qreal width, qreal heig
         }
         return QRectF(x, y, width, height);
     } else {
+        width = qMin(effectiveMaxSize(QSizeF(-1,-1)).width(), width);
         qreal descent = vBox.q_minimumDescent;
         qreal ascent = vBox.q_minimumSize - descent;
         return QRectF(x, y + height - rowDescent - ascent, width, ascent + descent);
