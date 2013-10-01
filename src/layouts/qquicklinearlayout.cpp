@@ -49,7 +49,7 @@
     \qmltype RowLayout
     \instantiates QQuickRowLayout
     \inherits Item
-    \inqmlmodule QtQuick.Layouts 1.1
+    \inqmlmodule QtQuick.Layouts
     \ingroup layouts
     \brief Identical to \l GridLayout, but having only one row.
 
@@ -78,7 +78,7 @@
     \qmltype ColumnLayout
     \instantiates QQuickColumnLayout
     \inherits Item
-    \inqmlmodule QtQuick.Layouts 1.1
+    \inqmlmodule QtQuick.Layouts
     \ingroup layouts
     \brief Identical to \l GridLayout, but having only one column.
 
@@ -109,7 +109,7 @@
     \qmltype GridLayout
     \instantiates QQuickGridLayout
     \inherits Item
-    \inqmlmodule QtQuick.Layouts 1.1
+    \inqmlmodule QtQuick.Layouts
     \ingroup layouts
     \brief Provides a way of dynamically arranging items in a grid.
 
