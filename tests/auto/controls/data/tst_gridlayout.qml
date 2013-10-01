@@ -710,5 +710,45 @@ Item {
             compare(itemRect(layout.children[1]), [ 0,  0,  10, 10])
             compare(itemRect(layout.children[2]), [20,  0,  10, 10])
         }
+
+        Component {
+            id: layout_baselines_Component
+            GridLayout {
+                id: layout
+                columnSpacing: 0
+                Rectangle {
+                    implicitWidth: 10
+                    implicitHeight: 10
+                    baselineOffset: 10
+                }
+                Rectangle {
+                    implicitWidth: 10
+                    implicitHeight: 10
+                }
+            }
+        }
+        function test_baselines()
+        {
+            var layout = layout_baselines_Component.createObject(container);
+            waitForRendering(layout)
+            compare(itemRect(layout.children[0]), [ 0, 0, 10, 10])
+            compare(itemRect(layout.children[1]), [10, 0, 10, 10])
+            compare(layout.implicitWidth, 20)
+            compare(layout.implicitHeight, 10)
+
+
+            layout.children[0].Layout.alignment = Qt.AlignBaseline
+            layout.children[1].Layout.alignment = Qt.AlignBaseline
+
+            // Workaround, force full invalidation (QTBUG-33773)
+            layout.children[1].visible = false; layout.children[1].visible = true;
+
+            compare(itemRect(layout.children[0]), [ 0, 0, 10, 10])
+            compare(itemRect(layout.children[1]), [10, 10, 10, 10])
+            compare(layout.implicitWidth, 20)
+            compare(layout.implicitHeight, 20)
+
+            layout.destroy();
+        }
     }
 }

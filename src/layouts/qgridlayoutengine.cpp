@@ -609,11 +609,13 @@ QGridLayoutBox QGridLayoutItem::box(Qt::Orientation orientation, qreal constrain
             result.q_maximumSize = result.q_preferredSize;
         }
 
-        result.q_minimumDescent = sizeHint(Qt::MinimumDescent, constraintSize).height();
-        if (result.q_minimumDescent != -1.0) {
-            const qreal minSizeHint = sizeHint(Qt::MinimumSize, constraintSize).height();
-            result.q_minimumDescent -= (minSizeHint - result.q_minimumSize);
-            result.q_minimumAscent = result.q_minimumSize - result.q_minimumDescent;
+        if (alignment() & Qt::AlignBaseline) {
+            result.q_minimumDescent = sizeHint(Qt::MinimumDescent, constraintSize).height();
+            if (result.q_minimumDescent != -1.0) {
+                const qreal minSizeHint = sizeHint(Qt::MinimumSize, constraintSize).height();
+                result.q_minimumDescent -= (minSizeHint - result.q_minimumSize);
+                result.q_minimumAscent = result.q_minimumSize - result.q_minimumDescent;
+            }
         }
     }
     if (policy & QLayoutPolicy::IgnoreFlag)
