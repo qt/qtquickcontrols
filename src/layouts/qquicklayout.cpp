@@ -48,7 +48,7 @@
 /*!
     \qmltype Layout
     \instantiates QQuickLayoutAttached
-    \inqmlmodule QtQuick.Layouts 1.1
+    \inqmlmodule QtQuick.Layouts
     \ingroup layouts
     \brief Provides attached properties for items pushed onto a \l GridLayout,
     \l RowLayout or \l ColumnLayout.
@@ -426,7 +426,10 @@ void QQuickLayoutAttached::setAlignment(Qt::Alignment align)
 {
     if (align != m_alignment) {
         m_alignment = align;
-        invalidateItem();
+        if (QQuickLayout *layout = parentLayout()) {
+            layout->setAlignment(item(), align);
+            invalidateItem();
+        }
         emit alignmentChanged();
     }
 }

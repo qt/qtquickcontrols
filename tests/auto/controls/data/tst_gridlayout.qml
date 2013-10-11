@@ -521,6 +521,23 @@ Item {
             compare(itemRect(layout.children[3]), [45, 40, 10, 10]);
             compare(itemRect(layout.children[4]), [30, 60, 30, 30]);
 
+
+            layout.children[1].Layout.alignment = Qt.AlignTop
+            waitForRendering(layout)
+            compare(itemRect(layout.children[1]), [40,  0, 20, 20]);
+
+            layout.children[2].Layout.alignment = Qt.AlignLeft
+            waitForRendering(layout)
+            compare(itemRect(layout.children[2]), [0,  40, 20, 20]);
+
+            layout.children[3].Layout.alignment = Qt.AlignLeft|Qt.AlignVCenter
+            waitForRendering(layout)
+            compare(itemRect(layout.children[3]), [40, 45, 10, 10]);
+
+            layout.children[4].Layout.alignment = Qt.AlignLeft
+            waitForRendering(layout)
+            compare(itemRect(layout.children[4]), [0, 60, 30, 30]);
+
             layout.destroy();
         }
 
@@ -709,6 +726,43 @@ Item {
             compare(itemRect(layout.children[0]), [10, 10,  10, 10])
             compare(itemRect(layout.children[1]), [ 0,  0,  10, 10])
             compare(itemRect(layout.children[2]), [20,  0,  10, 10])
+        }
+
+        Component {
+            id: layout_baselines_Component
+            GridLayout {
+                id: layout
+                columnSpacing: 0
+                Rectangle {
+                    implicitWidth: 10
+                    implicitHeight: 10
+                    baselineOffset: 10
+                }
+                Rectangle {
+                    implicitWidth: 10
+                    implicitHeight: 10
+                }
+            }
+        }
+        function test_baselines()
+        {
+            var layout = layout_baselines_Component.createObject(container);
+            waitForRendering(layout)
+            compare(itemRect(layout.children[0]), [ 0, 0, 10, 10])
+            compare(itemRect(layout.children[1]), [10, 0, 10, 10])
+            compare(layout.implicitWidth, 20)
+            compare(layout.implicitHeight, 10)
+
+
+            layout.children[0].Layout.alignment = Qt.AlignBaseline
+            layout.children[1].Layout.alignment = Qt.AlignBaseline
+
+            compare(itemRect(layout.children[0]), [ 0, 0, 10, 10])
+            compare(itemRect(layout.children[1]), [10, 10, 10, 10])
+            compare(layout.implicitWidth, 20)
+            compare(layout.implicitHeight, 20)
+
+            layout.destroy();
         }
     }
 }

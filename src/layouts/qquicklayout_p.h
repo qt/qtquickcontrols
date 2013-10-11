@@ -76,6 +76,7 @@ public:
 
     void componentComplete();
     virtual QSizeF sizeHint(Qt::SizeHint whichSizeHint) const = 0;
+    virtual void setAlignment(QQuickItem *item, Qt::Alignment align) = 0;
     virtual void invalidate(QQuickItem * childItem = 0);
     virtual void updateLayoutItems() = 0;
 

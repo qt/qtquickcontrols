@@ -289,4 +289,20 @@ QLayoutPolicy::Policy QQuickGridLayoutItem::effectiveSizePolicy_helper(QQuickIte
     return fillExtent ? QLayoutPolicy::Preferred : QLayoutPolicy::Fixed;
 
 }
+
+void QQuickGridLayoutEngine::setAlignment(QQuickItem *quickItem, Qt::Alignment alignment)
+{
+    if (QQuickGridLayoutItem *item = findLayoutItem(quickItem)) {
+        item->setAlignment(alignment);
+        invalidate();
+    }
+}
+
+Qt::Alignment QQuickGridLayoutEngine::alignment(QQuickItem *quickItem) const
+{
+    if (QGridLayoutItem *item = findLayoutItem(quickItem))
+        return item->alignment();
+    return 0;
+}
+
 QT_END_NAMESPACE

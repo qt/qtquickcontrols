@@ -82,9 +82,6 @@ import QtQuick.Controls.Private 1.0
 Window {
     id: root
 
-    width: 320
-    height: 240
-
     /*!
         \qmlproperty MenuBar ApplicationWindow::menuBar
 

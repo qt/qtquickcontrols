@@ -154,6 +154,10 @@ public:
         }
         return 0;
     }
+
+    void setAlignment(QQuickItem *quickItem, Qt::Alignment alignment);
+    Qt::Alignment alignment(QQuickItem *quickItem) const;
+
 };
 
 
