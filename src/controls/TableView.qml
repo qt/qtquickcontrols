@@ -553,8 +553,13 @@ ScrollView {
                 autoincrement = false
                 autodecrement = false
                 var clickIndex = listView.indexAt(0, mouseY + listView.contentY)
-                if (clickIndex > -1)
+                if (clickIndex > -1) {
+                    if (Settings.hasTouchScreen) {
+                        listView.currentIndex = clickIndex
+                        mouseSelect(clickIndex, mouse.modifiers)
+                    }
                     previousRow = clickIndex
+                }
 
                 if (mousearea.dragRow >= 0) {
                     selection.__select(selection.contains(mousearea.clickedRow), mousearea.clickedRow, mousearea.dragRow)
@@ -606,7 +611,7 @@ ScrollView {
             onPressed: {
                 var newIndex = listView.indexAt(0, mouseY + listView.contentY)
                 listView.forceActiveFocus()
-                if (newIndex > -1) {
+                if (newIndex > -1 && !Settings.hasTouchScreen) {
                     listView.currentIndex = newIndex
                     mouseSelect(newIndex, mouse.modifiers)
                     mousearea.clickedRow = newIndex
