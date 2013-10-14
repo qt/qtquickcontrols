@@ -96,8 +96,9 @@ Style {
         You can access the slider through the \c control property
     */
     property Component handle: Item {
-        implicitWidth: 20
-        implicitHeight: 18
+        implicitWidth:  implicitHeight * 1.1
+        implicitHeight: TextSingleton.implicitHeight
+
         BorderImage {
             anchors.fill: parent
             source: "images/button.png"

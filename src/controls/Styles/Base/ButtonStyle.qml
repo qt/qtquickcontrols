@@ -89,7 +89,7 @@ Style {
     padding {
         top: 4
         left: 4
-        right: 4
+        right:  control.menu !== null ? 16 : 4
         bottom: 4
     }
 

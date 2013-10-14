@@ -128,7 +128,7 @@ Style {
 
     /*! The background of the SpinBox. */
     property Component background: Item {
-        implicitHeight: 25
+        implicitHeight: Math.max(25, Math.round(TextSingleton.implicitHeight * 1.2))
         implicitWidth: styleData.contentWidth + 26
         BorderImage {
             id: image

@@ -78,9 +78,13 @@ ScrollViewStyle {
     Delegate for header. This delegate is described in \l {TableView::headerDelegate}
     */
     property Component headerDelegate: BorderImage {
+        height: textItem.implicitHeight * 1.2
         source: "images/header.png"
         border.left: 4
+        border.bottom: 2
+        border.top: 2
         Text {
+            id: textItem
             anchors.fill: parent
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignLeft
@@ -104,7 +108,7 @@ ScrollViewStyle {
     Delegate for header. This delegate is described in \l {TableView::rowDelegate}
     */
     property Component rowDelegate: Rectangle {
-        height: 20
+        height: TextSingleton.implicitHeight * 1.2
         property color selectedColor: styleData.hasActiveFocus ? "#38d" : "#999"
         gradient: Gradient {
             GradientStop {

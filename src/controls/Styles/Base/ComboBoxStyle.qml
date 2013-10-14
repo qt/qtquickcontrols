@@ -67,7 +67,7 @@ Style {
     /*! This defines the background of the button. */
     property Component background: Item {
         implicitWidth: 125
-        implicitHeight: 25
+        implicitHeight: Math.max(25, Math.round(TextSingleton.implicitHeight * 1.2))
         BorderImage {
             anchors.fill: parent
             source: control.pressed ? "images/button_down.png" : "images/button.png"
@@ -144,11 +144,14 @@ Style {
         Text {
             id: textitem
             anchors.left: parent.left
+            anchors.right: parent.right
             anchors.leftMargin: 4
+            anchors.rightMargin: 10
             anchors.verticalCenter: parent.verticalCenter
             text: control.currentText
             renderType: Text.NativeRendering
             color: __syspal.text
+            elide: Text.ElideRight
         }
     }
 

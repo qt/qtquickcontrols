@@ -51,10 +51,10 @@ import "content"
 ApplicationWindow {
     title: "Component Gallery"
 
-    width: 600
-    height: 400
+    width: 640
+    height: 420
     minimumHeight: 400
-    minimumWidth: 570
+    minimumWidth: 600
 
     property string loremIpsum:
             "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor "+

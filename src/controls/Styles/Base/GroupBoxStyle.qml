@@ -60,7 +60,7 @@ Style {
 
     /*! The margin from the content item to the groupbox. */
     padding {
-        top: (control.title.length > 0 || control.checkable ? 16 : 0) + 10
+        top: (control.title.length > 0 || control.checkable ? TextSingleton.implicitHeight : 0) + 10
         left: 8
         right: 8
         bottom: 6

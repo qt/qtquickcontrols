@@ -119,6 +119,7 @@ Style {
             border.color: Qt.rgba(1,1,1,0.3)
             Image {
                 visible: control.indeterminate
+                height: parent.height
                 NumberAnimation on x {
                     from: -39
                     to: 0
@@ -138,7 +139,7 @@ Style {
     */
     property Component background: Item {
         implicitWidth: 200
-        implicitHeight: 24
+        implicitHeight: Math.max(25, Math.round(TextSingleton.implicitHeight * 1.2))
         BorderImage {
             anchors.fill: parent
             anchors.bottomMargin: -2

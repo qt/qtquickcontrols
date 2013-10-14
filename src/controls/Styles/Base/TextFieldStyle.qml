@@ -99,7 +99,7 @@ Style {
     /*! The background of the text field. */
     property Component background: Item {
         implicitWidth: 100
-        implicitHeight: 25
+        implicitHeight: Math.max(25, Math.round(TextSingleton.implicitHeight * 1.2))
         BorderImage {
             anchors.fill: parent
             source: "images/editbox.png"
