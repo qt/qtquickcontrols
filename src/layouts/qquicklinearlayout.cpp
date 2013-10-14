@@ -114,9 +114,9 @@
     \brief Provides a way of dynamically arranging items in a grid.
 
     If the GridLayout is resized, all items in the layout will be rearranged. It is similar
-    to the widget-based QGridLayout. All children of the GridLayout element will belong to
+    to the widget-based QGridLayout. All visible children of the GridLayout element will belong to
     the layout. If you want a layout with just one row or one column, you can use the
-    \l RowLayout or \l ColumnLayout. These offers a bit more convenient API, and improves
+    \l RowLayout or \l ColumnLayout. These offer a bit more convenient API, and improve
     readability.
 
     By default items will be arranged according to the \l flow property. The default value of
