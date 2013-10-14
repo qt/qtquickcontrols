@@ -651,12 +651,22 @@ ScrollView {
         // Fills extra rows with alternate color
         Column {
             id: rowfiller
-            property int rowHeight: count ? listView.contentHeight/count : height
+            Loader {
+                id: rowSizeItem
+                sourceComponent: root.rowDelegate
+                visible: false
+                property QtObject styleData: QtObject {
+                    property bool alternate: false
+                    property bool selected: false
+                    property bool hasActiveFocus: false
+                }
+            }
+            property int rowHeight: rowSizeItem.implicitHeight
             property int paddedRowCount: height/rowHeight
             property int count: listView.count
             y: listView.contentHeight
             width: parent.width
-            visible: listView.contentHeight > 0 && alternatingRowColors
+            visible: alternatingRowColors
             height: viewport.height - listView.contentHeight
             Repeater {
                 model: visible ? parent.paddedRowCount : 0
