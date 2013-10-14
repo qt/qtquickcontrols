@@ -34,7 +34,7 @@
     The Qt Quick Controls module provides a set of controls that can be used to
     build complete interfaces in Qt Quick.
 
-    The module is new in Qt 5.1 and requires \l{Qt Quick} 2.1.
+    The module is new in Qt 5.1.
 
     Visit the \l{Qt Quick Controls Overview} page to get started.
 
