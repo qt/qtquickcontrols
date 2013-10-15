@@ -289,7 +289,7 @@ MenuPrivate {
 
                 sourceComponent: menuFrameLoader.menuItemStyle
                 enabled: visible && !isSeparator && !!menuItem && menuItem.enabled
-                visible: menuItem.visible
+                visible: !!menuItem && menuItem.visible
                 active: visible
 
                 function showSubMenu(immediately) {
