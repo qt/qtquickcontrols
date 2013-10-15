@@ -802,31 +802,29 @@ ScrollView {
 
                     Loader {
                         id: itemDelegateLoader
-                        width:  __column.width
+                        width:  columnItem.width
                         height: parent ? parent.height : 0
-                        visible: __column.visible
-                        sourceComponent: __column.delegate ? __column.delegate : itemDelegate
+                        visible: columnItem.visible
+                        sourceComponent: columnItem.delegate ? columnItem.delegate : itemDelegate
 
                         // these properties are exposed to the item delegate
                         readonly property var model: listView.model
                         readonly property var modelData: itemModelData
 
                         property QtObject styleData: QtObject {
-                            readonly property var value: __hasModelRole ? itemModel[role] // Qml ListModel and QAbstractItemModel
-                                                                            : __hasModelDataRole ? modelData[role] // QObjectList / QObject
-                                                                                                 : modelData != undefined ? modelData : "" // Models without role
                             readonly property int row: rowitem.rowIndex
                             readonly property int column: index
-                            readonly property int elideMode: __column.elideMode
-                            readonly property int textAlignment: __column.horizontalAlignment
+                            readonly property int elideMode: columnItem.elideMode
+                            readonly property int textAlignment: columnItem.horizontalAlignment
                             readonly property bool selected: rowitem.itemSelected
                             readonly property color textColor: rowitem.itemTextColor
-                            readonly property string role: __column.role
+                            readonly property string role: columnItem.role
+                            readonly property var value: itemModel.hasOwnProperty(role)
+                                                         ? itemModel[role] // Qml ListModel and QAbstractItemModel
+                                                         : modelData && modelData.hasOwnProperty(role)
+                                                           ? modelData[role] // QObjectList / QObject
+                                                           : modelData != undefined ? modelData : "" // Models without role
                         }
-
-                        readonly property TableViewColumn __column: columnItem
-                        readonly property bool __hasModelRole: styleData.role && itemModel.hasOwnProperty(styleData.role)
-                        readonly property bool __hasModelDataRole: styleData.role && modelData && modelData.hasOwnProperty(styleData.role)
                     }
                 }
                 onWidthChanged: listView.contentWidth = width
