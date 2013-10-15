@@ -86,6 +86,29 @@ Item {
         }
     }
 
+    ScrollView {
+        id: scrollView
+        anchors {
+            fill: parent
+            topMargin: content.margin + upScrollerHeight
+            bottomMargin: downScrollerHeight - content.margin - 1
+            rightMargin: -1
+        }
+
+        style: scrollerStyle
+        __wheelAreaScrollSpeed: itemHeight
+
+        ListView {
+            id: list
+            model: itemsModel
+            delegate: menuItemDelegate
+            snapMode: ListView.SnapToItem
+            boundsBehavior: Flickable.StopAtBounds
+            highlightFollowsCurrentItem: true
+            highlightMoveDuration: 0
+        }
+    }
+
     MouseArea {
         id: hoverArea
         anchors.left: scrollView.left
@@ -118,29 +141,6 @@ Item {
             visible: shouldUseScrollers && !list.atYEnd
             x: margin
             function scrollABit() { list.contentY += itemHeight }
-        }
-    }
-
-    ScrollView {
-        id: scrollView
-        anchors {
-            fill: parent
-            topMargin: content.margin + upScrollerHeight
-            bottomMargin: downScrollerHeight - content.margin - 1
-            rightMargin: -1
-        }
-
-        style: scrollerStyle
-        __wheelAreaScrollSpeed: itemHeight
-
-        ListView {
-            id: list
-            model: itemsModel
-            delegate: menuItemDelegate
-            snapMode: ListView.SnapToItem
-            boundsBehavior: Flickable.StopAtBounds
-            highlightFollowsCurrentItem: true
-            highlightMoveDuration: 0
         }
     }
 
