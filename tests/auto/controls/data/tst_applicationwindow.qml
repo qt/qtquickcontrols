@@ -94,5 +94,78 @@ TestCase {
         verify(contentArea.height < oldHeight)
         window.destroy()
     }
+
+
+    function test_defaultContentItemConstraints_data() {
+        return [
+                { tag: "height",
+                        input: {height: 100},
+                        expected: {implicitHeight: 100} },
+                { tag: "height_y",
+                        input: {height: 100, y: 10},
+                        expected: {implicitHeight: 110} },
+                { tag: "height_implicitHeight_anchorsFill",
+                        input: {height: 100, implicitHeight: 10, anchorsFill: true},
+                        expected: {implicitHeight: 10} },
+                { tag: "height_implicitHeight_anchorsFill_margins",
+                        input: {height: 100, implicitHeight: 10, anchorsFill: true, anchors_margins: 20},
+                        expected: {implicitHeight: 50} },
+                { tag: "height_anchorsFill_margins",
+                        input: {height: 100, anchorsFill: true, anchors_margins: 20},
+                        expected: {implicitHeight: 40} },
+                { tag: "anchorsFill_margins",       //Rectangle { anchors.fill: parent; anchors.margins: 20 }
+                        input: {anchorsFill: true, anchors_margins: 20},
+                        expected: {implicitHeight: 40} },
+                { tag: "anchorsFill_margins0",       //Rectangle { anchors.fill: parent; anchors.margins: 0 }
+                        input: {anchorsFill: true, anchors_margins: 0},
+                        expected: {implicitHeight: 0} },
+                { tag: "minimum_implicit_maximum_anchorsFill",
+                        input: {anchorsFill: true, Layout_minimumHeight: 10, implicitHeight: 100, Layout_maximumHeight: 150},
+                        expected: {minimumHeight: 10, implicitHeight: 100, maximumHeight: 150} },
+                { tag: "minimum_implicit_maximum_anchorsFill_margins",
+                        input: {anchorsFill: true, anchors_margins: 20, Layout_minimumHeight: 10, implicitHeight: 100, Layout_maximumHeight: 150},
+                        expected: {minimumHeight: 50, implicitHeight: 140, maximumHeight: 190} },
+                { tag: "minimum_height_maximum_anchorsFill",
+                        input: {anchorsFill: true, Layout_minimumHeight: 0, height: 100, Layout_maximumHeight: 150},
+                        expected: {minimumHeight: 0, implicitHeight: 0, maximumHeight: 150} },
+               ];
+    }
+    function test_defaultContentItemConstraints(data) {
+        var input = data.input
+        var expected = data.expected
+
+        var str = ''
+        // serialize....
+        for (var varName in input) {
+            var realName = varName.replace('_', '.')
+            // anchorsFill is special...
+            if (realName === 'anchorsFill') {
+                str += 'anchors.fill:parent;'
+            } else if (input[varName] !== undefined) {
+                // serialize the other properties...
+                str += realName + ':' + input[varName] +';'
+            }
+        }
+
+        var test_control = 'import QtQuick 2.1; \
+        import QtQuick.Controls 1.1;            \
+        import QtQuick.Layouts 1.1;             \
+        ApplicationWindow {                     \
+            id: window;                         \
+            Rectangle {                         \
+                id: rect;                       \
+                color: \'red\';                 \
+                ' + str + '\
+            }                                   \
+        }                                       '
+
+        var window = Qt.createQmlObject(test_control, container, '')
+        wait(0)
+
+        for (var propName in expected) {
+            compare(window.contentItem[propName], expected[propName])
+        }
+    }
+
 }
 }

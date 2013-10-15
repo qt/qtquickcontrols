@@ -115,6 +115,48 @@ Window {
     */
     property Item statusBar
 
+    // The below documentation was supposed to be written as a grouped property, but qdoc would
+    // not render it correctly due to a bug (https://bugreports.qt-project.org/browse/QTBUG-34206)
+    /*!
+        \qmlproperty ApplicationWindow::contentItem
+
+        This group holds the size constraints of the content item. This is the area between the
+        \l ToolBar and the \l StatusBar.
+        The \l ApplicationWindow will use this as input when calculating the effective size
+        constraints of the actual window.
+        It holds these 6 properties for describing the minimum, implicit and maximum sizes:
+        \table
+            \header \li Grouped property            \li Description
+            \row    \li contentItem.minimumWidth    \li The minimum width of the content item.
+            \row    \li contentItem.minimumHeight   \li The minimum height of the content item.
+            \row    \li contentItem.implicitWidth   \li The implicit width of the content item.
+            \row    \li contentItem.implicitHeight  \li The implicit height of the content item.
+            \row    \li contentItem.maximumWidth    \li The maximum width of the content item.
+            \row    \li contentItem.maximumHeight   \li The maximum height of the content item.
+        \endtable
+    */
+    property alias contentItem : contentArea
+
+    /*! \internal */
+    property real __topBottomMargins: contentArea.y + statusBarArea.height
+    /*! \internal
+        There is a similar macro QWINDOWSIZE_MAX in qwindow_p.h that is used to limit the
+        range of QWindow::maximum{Width,Height}
+        However, in case we have a very big number (> 2^31) conversion will fail, and it will be
+        converted to 0, resulting in that we will call setMaximumWidth(0)....
+        We therefore need to enforce the limit at a level where we are still operating on
+        floating point values.
+    */
+    readonly property real __qwindowsize_max: (1 << 24) - 1
+
+    width: contentArea.__noImplicitWidthGiven ? 0 : Math.min(Math.max(minimumWidth, contentArea.implicitWidth), maximumWidth)
+    height: contentArea.__noImplicitHeightGiven ? 0 : Math.min(Math.max(minimumHeight, contentArea.implicitHeight + __topBottomMargins), maximumHeight)
+
+    minimumWidth: contentArea.__noMinimumWidthGiven ? 0 : contentArea.minimumWidth
+    minimumHeight: contentArea.__noMinimumHeightGiven ? 0 : (contentArea.minimumHeight + __topBottomMargins)
+
+    maximumWidth: Math.min(__qwindowsize_max, contentArea.maximumWidth)
+    maximumHeight: Math.min(__qwindowsize_max, contentArea.maximumHeight + __topBottomMargins)
     onToolBarChanged: { if (toolBar) { toolBar.parent = toolBarArea } }
 
     onStatusBarChanged: { if (statusBar) { statusBar.parent = statusBarArea } }
@@ -140,7 +182,7 @@ Window {
 
         Keys.forwardTo: menuBar ? [menuBar.__contentItem] : []
 
-        Item {
+        ContentItem {
             id: contentArea
             anchors.top: toolBarArea.bottom
             anchors.left: parent.left
