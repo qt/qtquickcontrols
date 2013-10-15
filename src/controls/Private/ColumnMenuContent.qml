@@ -63,7 +63,7 @@ Item {
 
     readonly property int currentIndex: root.__currentIndex
     property Item currentItem: null
-    readonly property int itemHeight: list.count > 0 ? list.contentItem.children[0].height : 23
+    readonly property int itemHeight: (list.count > 0 && list.contentItem.children[0]) ? list.contentItem.children[0].height : 23
     readonly property int fittingItems: Math.floor((maxHeight - downScroller.height) / itemHeight)
     readonly property real fittedMaxHeight: itemHeight * fittingItems + downScroller.height
     readonly property bool shouldUseScrollers: scrollView.__style.useScrollers && itemsModel.length > fittingItems
