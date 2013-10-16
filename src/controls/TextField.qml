@@ -557,7 +557,7 @@ Control {
         font: textInput.font
         horizontalAlignment: textInput.horizontalAlignment
         verticalAlignment: textInput.verticalAlignment
-        opacity: !textInput.text.length ? 1 : 0
+        opacity: !textInput.text.length && !textInput.inputMethodComposing ? 1 : 0
         color: __panel ? __panel.placeholderTextColor : "darkgray"
         clip: contentWidth > width;
         elide: Text.ElideRight
