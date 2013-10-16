@@ -41,6 +41,7 @@ PRIVATE_QML_FILES += \
     $$PWD/TextSingleton.qml \
     $$PWD/FocusFrame.qml \
     $$PWD/ColumnMenuContent.qml \
+    $$PWD/MenuContentItem.qml \
     $$PWD/MenuContentScroller.qml \
     $$PWD/qmldir
 

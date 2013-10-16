@@ -61,7 +61,7 @@ Item {
     width: Math.max(list.contentWidth, minWidth)
     height: Math.min(list.contentHeight, fittedMaxHeight) + 2 * margin
 
-    readonly property int currentIndex: root.__currentIndex
+    readonly property int currentIndex: menu.__currentIndex
     property Item currentItem: null
     readonly property int itemHeight: (list.count > 0 && list.contentItem.children[0]) ? list.contentItem.children[0].height : 23
     readonly property int fittingItems: Math.floor((maxHeight - downScroller.height) / itemHeight)
@@ -77,11 +77,11 @@ Item {
                 currentItem.closeSubMenu()
             currentItem = list.itemAt(pos.x, pos.y)
             if (currentItem) {
-                root.__currentIndex = currentItem.menuItemIndex
+                menu.__currentIndex = currentItem.menuItemIndex
                 if (currentItem.isSubmenu && !currentItem.menuItem.__popupVisible)
                     currentItem.showSubMenu(false)
             } else {
-                root.__currentIndex = -1
+                menu.__currentIndex = -1
             }
         }
     }
@@ -123,7 +123,7 @@ Item {
         onExited: {
             if (currentItem && !currentItem.menuItem.__popupVisible) {
                 currentItem = null
-                root.__currentIndex = -1
+                menu.__currentIndex = -1
             }
         }
 
