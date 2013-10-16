@@ -25,6 +25,8 @@ STYLES_QML_FILES = \
 
 # Desktop
 STYLES_QML_FILES += \
+    $$PWD/Desktop/qmldir \
+    $$PWD/Desktop/RowItemSingleton.qml \
     $$PWD/Desktop/ButtonStyle.qml \
     $$PWD/Desktop/BusyIndicatorStyle.qml \
     $$PWD/Desktop/CheckBoxStyle.qml \

@@ -44,12 +44,21 @@
 
 #include <QtGui/qimage.h>
 #include <QtQuick/qquickitem.h>
+#include <QtQuick/qquickimageprovider.h>
 #include "qquickpadding_p.h"
 
 QT_BEGIN_NAMESPACE
 
 class QWidget;
 class QStyleOption;
+
+class QQuickTableRowImageProvider : public QQuickImageProvider
+{
+public:
+    QQuickTableRowImageProvider()
+        : QQuickImageProvider(QQuickImageProvider::Pixmap) {}
+    QPixmap requestPixmap(const QString &id, QSize *size, const QSize &requestedSize);
+};
 
 class QQuickStyleItem: public QQuickItem
 {

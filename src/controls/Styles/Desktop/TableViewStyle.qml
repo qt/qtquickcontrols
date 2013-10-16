@@ -40,6 +40,7 @@
 import QtQuick 2.1
 import QtQuick.Controls 1.1
 import QtQuick.Controls.Private 1.0
+import "."
 
 ScrollViewStyle {
     id: root
@@ -81,17 +82,13 @@ ScrollViewStyle {
                                                                                   styleData.column === 0 ? "beginning" : ""
     }
 
-    property Component rowDelegate: StyleItem {
-        id: rowstyle
-        elementType: "itemrow"
-        activeControl: styleData.alternate ? "alternate" : ""
-        selected: styleData.selected ? true : false
-        height: Math.max(16, rowstyle.implicitHeight)
-        active: styleData.hasActiveFocus
-        border.left: 4
-        border.right: 4
-        textureWidth: 16
-        textureHeight: 16
+    property Component rowDelegate: BorderImage {
+        visible: styleData.selected || styleData.alternate
+        source: "image://__tablerow/" + (styleData.alternate ? "alternate_" : "")
+                + (styleData.selected ? "selected_" : "")
+                + (styleData.hasActiveFocus ? "active" : "")
+        height: Math.max(16, RowItemSingleton.implicitHeight)
+        border.left: 4 ; border.right: 4
     }
 
     property Component itemDelegate: Item {
