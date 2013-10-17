@@ -42,6 +42,8 @@ import QtQuick.Controls 1.1
 import QtQuick.Controls.Private 1.0
 
 Style {
+    property int renderType: Text.NativeRendering
+
     property Component panel: StyleItem {
         id: textfieldstyle
         elementType: "edit"

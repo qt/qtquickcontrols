@@ -561,7 +561,7 @@ Control {
         color: __panel ? __panel.placeholderTextColor : "darkgray"
         clip: contentWidth > width;
         elide: Text.ElideRight
-        renderType: Text.NativeRendering
+        renderType: __style ? __style.renderType : Text.NativeRendering
         Behavior on opacity { NumberAnimation { duration: 90 } }
     }
 
@@ -584,7 +584,7 @@ Control {
         color: __panel ? __panel.textColor : "darkgray"
         clip: contentWidth > width
 
-        renderType: Text.NativeRendering
+        renderType: __style ? __style.renderType : Text.NativeRendering
 
         onAccepted: textfield.accepted()
     }

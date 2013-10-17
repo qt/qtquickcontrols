@@ -102,6 +102,21 @@ Style {
     /*! The highlighted text color, used in selections. */
     property color selectedTextColor: __syspal.highlightedText
 
+    /*!
+        \qmlproperty enumeration renderType
+
+        Override the default rendering type for the control.
+
+        Supported render types are:
+        \list
+        \li Text.QtRendering
+        \li Text.NativeRendering - the default
+        \endlist
+
+        \sa Text::renderType
+    */
+    property int renderType: Text.NativeRendering
+
     /*! The button used to increment the value. */
     property Component incrementControl: Item {
         implicitWidth: 18

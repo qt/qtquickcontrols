@@ -260,7 +260,7 @@ Control {
         selectedTextColor: __panel ? __panel.selectedTextColor : "black"
 
         opacity: parent.enabled ? 1 : 0.5
-        renderType: Text.NativeRendering
+        renderType: __style ? __style.renderType : Text.NativeRendering
 
         function selectValue() {
             select(prefix.length, text.length - suffix.length)

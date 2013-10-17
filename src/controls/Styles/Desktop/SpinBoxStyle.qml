@@ -57,6 +57,8 @@ Style {
    }
     StyleItem {id: styleitem ; visible: false}
 
+    property int renderType: Text.NativeRendering
+
     property Component panel: Item {
         id: style
 
