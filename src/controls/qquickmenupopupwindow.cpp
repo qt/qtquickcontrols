@@ -48,79 +48,23 @@
 
 QT_BEGIN_NAMESPACE
 
-QQuickMenuPopupWindow::QQuickMenuPopupWindow(QWindow *parent) :
-    QQuickWindow(parent), m_mouseMoved(false), m_needsActivatedEvent(true),
-    m_dismissed(false), m_itemAt(0), m_parentItem(0), m_menuContentItem(0)
-{
-    setFlags(Qt::Popup);
-    setModality(Qt::WindowModal);
-}
+QQuickMenuPopupWindow::QQuickMenuPopupWindow() :
+    QQuickPopupWindow(), m_itemAt(0)
+{ }
 
 void QQuickMenuPopupWindow::show()
 {
-    qreal posx = x();
-    qreal posy = y();
-    if (QQuickWindow *parentWindow = qobject_cast<QQuickWindow *>(transientParent())) {
-        if (m_parentItem) {
-            QPointF pos = m_parentItem->mapToItem(parentWindow->contentItem(), QPointF(posx, posy));
-            posx = pos.x();
-            posy = pos.y();
-        }
-
-        if (parentWindow->parent()) {
-            // If the parent window is embedded in another window, the offset needs to be relative to
-            // its top-level window container, or to global coordinates, which is the same in the end.
-            QPoint parentWindowOffset = parentWindow->mapToGlobal(QPoint());
-            posx += parentWindowOffset.x();
-            posy += parentWindowOffset.y();
-        } else {
-            posx += parentWindow->geometry().left();
-            posy += parentWindow->geometry().top();
-        }
-    }
-
-    if (m_itemAt) {
-        QPointF pos = m_itemAt->position();
-        posx -= pos.x();
-        posy -= pos.y();
-    }
-
-    m_initialPos = QPointF(posx, posy);
-
-    if (m_menuContentItem) {
-        qreal initialWidth = qMax(qreal(1), m_menuContentItem->width());
-        qreal initialHeight = qMax(qreal(1), m_menuContentItem->height());
-        setGeometry(posx, posy, initialWidth, initialHeight);
-    } else {
-        setPosition(posx, posy);
-    }
-
-    if (!qobject_cast<QQuickMenuPopupWindow *>(transientParent())) // No need for parent menu windows
-        if (QQuickWindow *w = qobject_cast<QQuickWindow *>(transientParent()))
-            if (QQuickItem *mg = w->mouseGrabberItem())
-                mg->ungrabMouse();
-
-    QQuickWindow::show();
-    setMouseGrabEnabled(true); // Needs to be done after calling show()
-    setKeyboardGrabEnabled(true);
+    QQuickPopupWindow::show();
+    // show() will reposition the popup at the last moment,
+    // so its initial position must be captured after the call.
+    m_initialPos = position();
 }
 
 void QQuickMenuPopupWindow::setParentItem(QQuickItem *item)
 {
-    m_parentItem = item;
-    if (m_parentItem)
-        setParentWindow(m_parentItem->window());
-}
-
-void QQuickMenuPopupWindow::setMenuContentItem(QQuickItem *contentItem)
-{
-    if (!contentItem)
-        return;
-
-    contentItem->setParentItem(this->contentItem());
-    connect(contentItem, SIGNAL(widthChanged()), this, SLOT(updateSize()));
-    connect(contentItem, SIGNAL(heightChanged()), this, SLOT(updateSize()));
-    m_menuContentItem = contentItem;
+    QQuickPopupWindow::setParentItem(item);
+    if (item)
+        setParentWindow(item->window());
 }
 
 void QQuickMenuPopupWindow::setItemAt(QQuickItem *menuItem)
@@ -140,19 +84,20 @@ void QQuickMenuPopupWindow::setItemAt(QQuickItem *menuItem)
 
 void QQuickMenuPopupWindow::setParentWindow(QQuickWindow *parentWindow)
 {
-    setTransientParent(parentWindow);
+    if (transientParent() != parentWindow)
+        setTransientParent(parentWindow);
     if (parentWindow) {
-        connect(parentWindow, SIGNAL(destroyed()), this, SLOT(dismissMenu()));
+        connect(parentWindow, SIGNAL(destroyed()), this, SLOT(dismissPopup()));
         if (QQuickMenuPopupWindow *pw = qobject_cast<QQuickMenuPopupWindow *>(parentWindow))
-            connect(pw, SIGNAL(menuDismissed()), this, SLOT(dismissMenu()));
+            connect(pw, SIGNAL(popupDismissed()), this, SLOT(dismissPopup()));
     }
 }
 
 void QQuickMenuPopupWindow::setGeometry(int posx, int posy, int w, int h)
 {
     QWindow *pw = transientParent();
-    if (!pw && m_parentItem )
-        pw = m_parentItem->window();
+    if (!pw && parentItem())
+        pw = parentItem()->window();
     if (!pw)
         pw = this;
     QRect g = pw->screen()->availableVirtualGeometry();
@@ -174,16 +119,9 @@ void QQuickMenuPopupWindow::setGeometry(int posx, int posy, int w, int h)
     QQuickWindow::setGeometry(posx, posy, w, h);
 }
 
-void QQuickMenuPopupWindow::dismissMenu()
-{
-    m_dismissed = true;
-    emit menuDismissed();
-    close();
-}
-
 void QQuickMenuPopupWindow::updateSize()
 {
-    QSize contentSize = contentItem()->childrenRect().size().toSize();
+    QSize contentSize = popupContentItem()->childrenRect().size().toSize();
     qreal x = m_initialPos.x();
     qreal y = m_initialPos.y();
     if (qGuiApp->layoutDirection() == Qt::RightToLeft)
@@ -196,78 +134,6 @@ void QQuickMenuPopupWindow::updatePosition()
     QPointF newPos = position() + m_oldItemPos - m_itemAt->position();
     m_initialPos += m_oldItemPos - m_itemAt->position();
     setGeometry(newPos.x(), newPos.y(), width(), height());
-}
-
-void QQuickMenuPopupWindow::mouseMoveEvent(QMouseEvent *e)
-{
-    QRect rect = QRect(QPoint(), size());
-    m_mouseMoved = true;
-    if (rect.contains(e->pos()))
-        QQuickWindow::mouseMoveEvent(e);
-    else
-        forwardEventToTransientParent(e);
-}
-
-void QQuickMenuPopupWindow::mousePressEvent(QMouseEvent *e)
-{
-    QRect rect = QRect(QPoint(), size());
-    if (rect.contains(e->pos()))
-        QQuickWindow::mousePressEvent(e);
-    else
-        forwardEventToTransientParent(e);
-}
-
-void QQuickMenuPopupWindow::mouseReleaseEvent(QMouseEvent *e)
-{
-    QRect rect = QRect(QPoint(), size());
-    if (rect.contains(e->pos())) {
-        if (m_mouseMoved) {
-            QMouseEvent pe = QMouseEvent(QEvent::MouseButtonPress, e->pos(), e->button(), e->buttons(), e->modifiers());
-            QQuickWindow::mousePressEvent(&pe);
-            if (!m_dismissed)
-                QQuickWindow::mouseReleaseEvent(e);
-        }
-        m_mouseMoved = true; // Initial mouse release counts as move.
-    } else {
-        forwardEventToTransientParent(e);
-    }
-}
-
-void QQuickMenuPopupWindow::forwardEventToTransientParent(QMouseEvent *e)
-{
-    if (!qobject_cast<QQuickMenuPopupWindow*>(transientParent())
-        && ((m_mouseMoved && e->type() == QEvent::MouseButtonRelease)
-            || e->type() == QEvent::MouseButtonPress)) {
-        // Clicked outside any menu
-        dismissMenu();
-    } else if (transientParent()) {
-        QPoint parentPos = transientParent()->mapFromGlobal(mapToGlobal(e->pos()));
-        QMouseEvent pe = QMouseEvent(e->type(), parentPos, e->button(), e->buttons(), e->modifiers());
-        QGuiApplication::sendEvent(transientParent(), &pe);
-    }
-}
-
-void QQuickMenuPopupWindow::exposeEvent(QExposeEvent *e)
-{
-    if (isExposed() && m_needsActivatedEvent) {
-        m_needsActivatedEvent = false;
-        QWindowSystemInterface::handleWindowActivated(this, Qt::PopupFocusReason);
-    } else if (!isExposed() && !m_needsActivatedEvent) {
-        m_needsActivatedEvent = true;
-        if (QWindow *tp = transientParent())
-            QWindowSystemInterface::handleWindowActivated(tp, Qt::PopupFocusReason);
-    }
-    QQuickWindow::exposeEvent(e);
-}
-
-void QQuickMenuPopupWindow::hideEvent(QHideEvent *e)
-{
-    if (QWindow *tp = !m_needsActivatedEvent ? transientParent() : 0) {
-        m_needsActivatedEvent = true;
-        QWindowSystemInterface::handleWindowActivated(tp, Qt::PopupFocusReason);
-    }
-
-    QQuickWindow::hideEvent(e);
 }
 
 QT_END_NAMESPACE

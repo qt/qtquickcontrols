@@ -394,7 +394,7 @@ void QQuickMenu::__popup(qreal x, qreal y, int atItemIndex)
             m_popupWindow->setParentItem(visualItem());
         else
             m_popupWindow->setParentWindow(parentWindow);
-        m_popupWindow->setMenuContentItem(m_menuContentItem);
+        m_popupWindow->setPopupContentItem(m_menuContentItem);
         m_popupWindow->setItemAt(atItem ? atItem->visualItem() : 0);
 
         connect(m_popupWindow, SIGNAL(visibleChanged(bool)), this, SLOT(windowVisibleChanged(bool)));
@@ -435,7 +435,7 @@ void QQuickMenu::__dismissMenu()
     while (topMenuWindow) {
         QQuickMenuPopupWindow *pw = qobject_cast<QQuickMenuPopupWindow *>(topMenuWindow->transientParent());
         if (!pw)
-            topMenuWindow->dismissMenu();
+            topMenuWindow->dismissPopup();
         topMenuWindow = pw;
     }
 }
