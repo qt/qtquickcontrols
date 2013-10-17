@@ -4,7 +4,7 @@ TARGET  = testplugin
 TARGETPATH = QtQuickControlsTests
 
 QT += qml quick core-private gui-private
-qtHaveModule(widgets) { QT += widgets }
+!android: !ios: !blackberry: qtHaveModule(widgets): QT += widgets
 
 
 QMLDIR = $$PWD/$$TARGETPATH/qmldir

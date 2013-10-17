@@ -56,7 +56,7 @@
 #include "Private/qquickabstractstyle_p.h"
 #include "Private/qquickcontrolsprivate_p.h"
 
-#ifndef QT_NO_WIDGETS
+#ifdef QT_WIDGETS_LIB
 #include "Private/qquickstyleitem_p.h"
 #endif
 
@@ -131,7 +131,8 @@ void QtQuickControlsPlugin::initializeEngine(QQmlEngine *engine, const char *uri
     qmlRegisterType<QQuickSpinBoxValidator>(private_uri, 1, 0, "SpinBoxValidator");
     qmlRegisterSingletonType<QQuickTooltip>(private_uri, 1, 0, "Tooltip", QQuickControlsPrivate::registerTooltipModule);
     qmlRegisterSingletonType<QQuickControlSettings>(private_uri, 1, 0, "Settings", QQuickControlsPrivate::registerSettingsModule);
-#ifndef QT_NO_WIDGETS
+
+#ifdef QT_WIDGETS_LIB
     qmlRegisterType<QQuickStyleItem>(private_uri, 1, 0, "StyleItem");
 #endif
 
