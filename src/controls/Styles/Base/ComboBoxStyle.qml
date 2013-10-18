@@ -67,9 +67,10 @@ Style {
     /*! This defines the background of the button. */
     property Component background: Item {
         implicitWidth: 125
-        implicitHeight: Math.max(25, Math.round(TextSingleton.implicitHeight * 1.2))
+        implicitHeight: Math.max(25, Math.round(TextSingleton.implicitHeight * 1.1))
         BorderImage {
             anchors.fill: parent
+            anchors.margins: -1
             source: control.pressed ? "images/button_down.png" : "images/button.png"
             border.top: 6
             border.bottom: 6
@@ -78,16 +79,20 @@ Style {
             anchors.bottomMargin: -1
             BorderImage {
                 anchors.fill: parent
-                anchors.margins: -1
-                anchors.topMargin: -2
-                anchors.rightMargin: 0
-                anchors.bottomMargin: 1
                 source: "images/focusframe.png"
-                visible: control.activeFocus
+                opacity: control.activeFocus ? 1 : 0
                 border.left: 4
                 border.right: 4
                 border.top: 4
                 border.bottom: 4
+            }
+            Rectangle {
+                anchors.fill: parent
+                anchors.margins: 2
+                radius: 2
+                color: "white"
+                opacity: control.hovered || control.activeFocus ? 0.2 : 0
+                Behavior on opacity {NumberAnimation{ duration: 100 }}
             }
             Image {
                 id: imageItem
@@ -102,11 +107,13 @@ Style {
 
     /*! \internal */
     property Component __editor: Item {
-        implicitWidth: 100
+        implicitWidth: 125
         implicitHeight: 25
         clip: true
         BorderImage {
             anchors.fill: parent
+            anchors.margins: -1
+            anchors.bottomMargin: 0
             anchors.rightMargin: -2
             source: "images/editbox.png"
             border.left: 4
@@ -115,10 +122,6 @@ Style {
             border.bottom: 4
             BorderImage {
                 anchors.fill: parent
-                anchors.margins: -1
-                anchors.topMargin: -2
-                anchors.rightMargin: 0
-                anchors.bottomMargin: 1
                 source: "images/focusframe.png"
                 visible: control.activeFocus
                 border.left: 4
@@ -132,7 +135,7 @@ Style {
             anchors.right: parent.right
             anchors.top: parent.top
             anchors.bottom: parent.bottom
-            anchors.bottomMargin: 3
+            anchors.bottomMargin: 2
             anchors.topMargin: 1
             width: 1
         }

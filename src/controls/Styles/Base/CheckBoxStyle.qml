@@ -88,10 +88,11 @@ Style {
         text: control.text
         color: __syspal.text
         renderType: Text.NativeRendering
-        verticalAlignment: Text.AlignVCenter
     }
     /*! The background under indicator and label. */
-    property Component background
+    property Component background: Item {
+        implicitWidth: 100
+    }
 
     /*! The content padding. */
     padding {
@@ -106,15 +107,26 @@ Style {
 
     /*! This defines the indicator button. */
     property Component indicator:  Item {
-        implicitWidth: 18
+        implicitWidth: 16
         implicitHeight: 18
         BorderImage {
             anchors.fill: parent
             source: "images/editbox.png"
+            anchors.margins: -1
             border.top: 6
             border.bottom: 6
             border.left: 6
             border.right: 6
+            anchors.bottomMargin: 1
+            BorderImage {
+                anchors.fill: parent
+                source: "images/focusframe.png"
+                visible: control.activeFocus
+                border.left: 4
+                border.right: 4
+                border.top: 4
+                border.bottom: 4
+            }
         }
         Rectangle {
             height: 16
@@ -123,10 +135,9 @@ Style {
             visible: control.checked
             color: "#666"
             radius: 1
-            anchors.margins: 4
-            anchors.fill: parent
-            anchors.topMargin: 3
+            anchors.margins: 3
             anchors.bottomMargin: 5
+            anchors.fill: parent
             border.color: "#222"
             opacity: control.enabled ? 1 : 0.5
             Rectangle {
@@ -136,19 +147,6 @@ Style {
                 border.color: "#33ffffff"
             }
         }
-        BorderImage {
-            anchors.fill: parent
-            anchors.margins: -1
-            anchors.topMargin: -2
-            anchors.rightMargin: 0
-            anchors.bottomMargin: 1
-            source: "images/focusframe.png"
-            visible: control.activeFocus
-            border.left: 4
-            border.right: 4
-            border.top: 4
-            border.bottom: 4
-        }
     }
 
     /*! \internal */
@@ -157,7 +155,7 @@ Style {
         implicitHeight: Math.max(backgroundLoader.implicitHeight, labelLoader.implicitHeight + padding.top + padding.bottom,indicatorLoader.implicitHeight + padding.top + padding.bottom)
 
         Loader {
-            id:backgroundLoader
+            id: backgroundLoader
             sourceComponent: background
             anchors.fill: parent
         }

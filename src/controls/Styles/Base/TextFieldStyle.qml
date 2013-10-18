@@ -114,9 +114,10 @@ Style {
     /*! The background of the text field. */
     property Component background: Item {
         implicitWidth: 100
-        implicitHeight: Math.max(25, Math.round(TextSingleton.implicitHeight * 1.2))
+        implicitHeight: Math.max(25, Math.round(TextSingleton.implicitHeight * 1.1))
         BorderImage {
             anchors.fill: parent
+            anchors.margins: -1
             source: "images/editbox.png"
             border.left: 4
             border.right: 4
@@ -124,10 +125,6 @@ Style {
             border.bottom: 4
             BorderImage {
                 anchors.fill: parent
-                anchors.margins: -1
-                anchors.topMargin: -2
-                anchors.rightMargin: 0
-                anchors.bottomMargin: 1
                 source: "images/focusframe.png"
                 visible: control.activeFocus
                 border.left: 4

@@ -76,7 +76,7 @@ Style {
     }
 
     /*! The content margins of the text field. */
-    padding { top: 0 ; left: 5 ; right: 18 ; bottom: 0 }
+    padding { top: 1 ; left: 5 ; right: 18 ; bottom: 0 }
 
     /*! \qmlproperty enumeration horizontalAlignment
 
@@ -125,7 +125,6 @@ Style {
             anchors.centerIn: parent
             anchors.verticalCenterOffset: 1
             opacity: control.enabled ? 0.7 : 0.5
-            anchors.horizontalCenterOffset:  -1
         }
     }
 
@@ -136,18 +135,18 @@ Style {
             source: "images/arrow-down.png"
             anchors.centerIn: parent
             anchors.verticalCenterOffset: -2
-            anchors.horizontalCenterOffset:  -1
             opacity: control.enabled ? 0.7 : 0.5
         }
     }
 
     /*! The background of the SpinBox. */
     property Component background: Item {
-        implicitHeight: Math.max(25, Math.round(TextSingleton.implicitHeight * 1.2))
+        implicitHeight: Math.max(25, Math.round(TextSingleton.implicitHeight * 1.1))
         implicitWidth: styleData.contentWidth + 26
         BorderImage {
             id: image
             anchors.fill: parent
+            anchors.margins: -1
             source: "images/editbox.png"
             border.left: 4
             border.right: 4
@@ -156,10 +155,6 @@ Style {
             anchors.bottomMargin: -1
             BorderImage {
                 anchors.fill: parent
-                anchors.margins: -1
-                anchors.topMargin: -2
-                anchors.bottomMargin: 1
-                anchors.rightMargin: 0
                 source: "images/focusframe.png"
                 visible: control.activeFocus
                 border.left: 4

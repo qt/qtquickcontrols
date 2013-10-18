@@ -116,7 +116,7 @@ Style {
             antialiasing: true
             anchors.fill: parent
             anchors.margins: 1
-            border.color: Qt.rgba(1,1,1,0.3)
+            border.color: Qt.rgba(1,1,1,0.1)
             Image {
                 visible: control.indeterminate
                 height: parent.height
@@ -139,12 +139,11 @@ Style {
     */
     property Component background: Item {
         implicitWidth: 200
-        implicitHeight: Math.max(25, Math.round(TextSingleton.implicitHeight * 1.2))
+        implicitHeight: Math.max(17, Math.round(TextSingleton.implicitHeight * 0.7))
         BorderImage {
             anchors.fill: parent
-            anchors.bottomMargin: -2
-            anchors.leftMargin: -1
-            anchors.rightMargin: -1
+            anchors.topMargin: -1
+            anchors.bottomMargin: -1
             source: "images/editbox.png"
             border.left: 4
             border.right: 4

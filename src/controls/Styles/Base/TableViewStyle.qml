@@ -64,7 +64,7 @@ ScrollViewStyle {
     property color backgroundColor: control.backgroundVisible ? __syspal.base : "transparent"
 
     /*! The alternate background color. */
-    property color alternateBackgroundColor: Qt.darker(__syspal.base, 1.06)
+    property color alternateBackgroundColor: "#f5f5f5"
 
     /*! The text highlight color, used within selections. */
     property color highlightedTextColor: "white"
@@ -108,31 +108,10 @@ ScrollViewStyle {
     Delegate for header. This delegate is described in \l {TableView::rowDelegate}
     */
     property Component rowDelegate: Rectangle {
-        height: TextSingleton.implicitHeight * 1.2
-        property color selectedColor: styleData.hasActiveFocus ? "#38d" : "#999"
-        gradient: Gradient {
-            GradientStop {
-                color: styleData.selected ? Qt.lighter(selectedColor, 1.3) :
-                                            styleData.alternate ? alternateBackgroundColor : backgroundColor
-                position: 0
-            }
-            GradientStop {
-                color: styleData.selected ? Qt.lighter(selectedColor, 1.0) :
-                                            styleData.alternate ? alternateBackgroundColor : backgroundColor
-                position: 1
-            }
-        }
-        Rectangle {
-            anchors.bottom: parent.bottom
-            width: parent.width
-            height: 1
-            color: styleData.selected ? Qt.darker(selectedColor, 1.4) : "transparent"
-        }
-        Rectangle {
-            anchors.top: parent.top
-            width: parent.width ; height: 1
-            color: styleData.selected ? Qt.darker(selectedColor, 1.1) : "transparent"
-        }
+        height: Math.round(TextSingleton.implicitHeight * 1.2)
+        property color selectedColor: styleData.hasActiveFocus ? "#07c" : "#999"
+        color: styleData.selected ? selectedColor :
+                                    !styleData.alternate ? alternateBackgroundColor : backgroundColor
     }
 
     /*! \qmlproperty Component TableViewStyle::itemDelegate

@@ -54,6 +54,8 @@ STYLES_QML_FILES += \
     $$PWD/Base/images/groupbox.png \
     $$PWD/Base/images/focusframe.png \
     $$PWD/Base/images/tab_selected.png \
+    $$PWD/Base/images/slider-handle.png \
+    $$PWD/Base/images/slider-groove.png \
     $$PWD/Base/images/scrollbar-handle-horizontal.png \
     $$PWD/Base/images/scrollbar-handle-vertical.png \
     $$PWD/Base/images/scrollbar-handle-transient.png \

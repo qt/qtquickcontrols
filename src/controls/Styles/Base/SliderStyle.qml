@@ -96,24 +96,29 @@ Style {
         You can access the slider through the \c control property
     */
     property Component handle: Item {
-        implicitWidth:  implicitHeight * 1.1
+        implicitWidth:  Math.round(implicitHeight * 1.1)
         implicitHeight: TextSingleton.implicitHeight
 
         BorderImage {
             anchors.fill: parent
-            source: "images/button.png"
-            border.top: 6
-            border.bottom: 6
-            border.left: 6
-            border.right: 6
+            anchors.margins: -1
+            source: "images/slider-handle.png"
+            border.top: 4
+            border.bottom: 4
+            border.left: 4
+            border.right: 4
+            Rectangle {
+                anchors.fill: parent
+                anchors.margins: 2
+                radius: 2
+                color: "white"
+                opacity: control.hovered || control.activeFocus ? 0.2 : 0
+                Behavior on opacity {NumberAnimation{ duration: 100 }}
+            }
             BorderImage {
                 anchors.fill: parent
-                anchors.margins: -1
-                anchors.topMargin: -2
-                anchors.rightMargin: 0
-                anchors.bottomMargin: 1
                 source: "images/focusframe.png"
-                visible: control.activeFocus
+                opacity: control.activeFocus ? 1 : 0
                 border.left: 4
                 border.right: 4
                 border.top: 4
@@ -132,7 +137,8 @@ Style {
         implicitHeight: 8
         BorderImage {
             anchors.fill: parent
-            source: "images/button_down.png"
+            source: "images/slider-groove.png"
+            opacity: 0.8
             border.top: 3
             border.bottom: 3
             border.left: 6

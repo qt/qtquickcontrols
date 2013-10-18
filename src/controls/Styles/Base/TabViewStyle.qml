@@ -158,9 +158,7 @@ Style {
             }
             BorderImage {
                 anchors.fill: parent
-                anchors.topMargin: -2
-                anchors.leftMargin: -2
-                anchors.rightMargin: -1
+                anchors.margins: -1
                 source: "images/focusframe.png"
                 visible: styleData.activeFocus && styleData.selected
                 border.left: 4

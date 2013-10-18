@@ -192,7 +192,7 @@ Style {
                 anchors.fill: parent
                 anchors.margins: 1
                 color: "transparent"
-                border.color: "#88ffffff"
+                border.color: "#44ffffff"
             }
             Image {
                 source: styleData.horizontal ? "images/arrow-right.png" : "images/arrow-down.png"
@@ -232,7 +232,7 @@ Style {
                 anchors.fill: parent
                 anchors.margins: 1
                 color: "transparent"
-                border.color: "#88ffffff"
+                border.color: "#44ffffff"
             }
             Image {
                 source: styleData.horizontal ? "images/arrow-left.png" : "images/arrow-up.png"
