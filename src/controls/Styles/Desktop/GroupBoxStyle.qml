@@ -70,5 +70,7 @@ Style {
         hasFocus: control.__checkbox.activeFocus
         activeControl: control.checkable ? "checkbox" : ""
         properties: { "checkable" : control.checkable , "sunken" : !control.flat}
+        textureHeight: 128
+        border {top: 32 ; bottom: 8}
     }
 }

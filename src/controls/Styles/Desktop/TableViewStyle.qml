@@ -88,6 +88,10 @@ ScrollViewStyle {
         selected: styleData.selected ? true : false
         height: Math.max(16, rowstyle.implicitHeight)
         active: styleData.hasActiveFocus
+        border.left: 4
+        border.right: 4
+        textureWidth: 16
+        textureHeight: 16
     }
 
     property Component itemDelegate: Item {

@@ -59,6 +59,14 @@ Style {
         elementType: "frame"
         sunken: true
         visible: control.frameVisible
+        textureHeight: 64
+        textureWidth: 64
+        border {
+            top: 16
+            left: 16
+            right: 16
+            bottom: 16
+        }
     }
 
     property Component corner: StyleItem { elementType: "scrollareacorner" }

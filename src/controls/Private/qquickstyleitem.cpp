@@ -95,19 +95,89 @@ CGContextRef qt_mac_cg_context(const QPaintDevice *pdev)
 
 #endif
 
-class QQuickStyleNode : public QSGSimpleTextureNode
+class QQuickStyleNode : public QSGGeometryNode
 {
 public:
-    ~QQuickStyleNode()
+    QQuickStyleNode()
+        : m_geometry(QSGGeometry::defaultAttributes_TexturedPoint2D(), 4)
     {
-        delete texture();
+        m_geometry.setDrawingMode(GL_TRIANGLE_STRIP);
+        setGeometry(&m_geometry);
+        setMaterial(&m_material);
     }
 
-    void setTexture(QSGTexture *texture)
+    ~QQuickStyleNode()
     {
-        delete QSGSimpleTextureNode::texture();
-        QSGSimpleTextureNode::setTexture(texture);
+        delete m_material.texture();
     }
+
+    void initialize(QSGTexture *texture,
+                    const QRectF &bounds,
+                    int left, int top, int right, int bottom) {
+
+        delete m_material.texture();
+        m_material.setTexture(texture);
+
+        if (left <= 0 && top <= 0 && right <= 0 && bottom <= 0) {
+            m_geometry.allocate(4, 0);
+            QSGGeometry::updateTexturedRectGeometry(&m_geometry, bounds, texture->normalizedTextureSubRect());
+            markDirty(QSGNode::DirtyGeometry | QSGNode::DirtyMaterial);
+            return;
+        }
+
+        QRectF tc = texture->normalizedTextureSubRect();
+        QSize ts = texture->textureSize();
+        qreal invtw = tc.width() / ts.width();
+        qreal invth = tc.height() / ts.height();
+
+        struct Coord { qreal p; qreal t; };
+        Coord cx[4] = { { bounds.left(), tc.left() },
+                        { bounds.left() + left, tc.left() + left * invtw },
+                        { bounds.right() - right, tc.right() - right * invtw },
+                        { bounds.right(), tc.right() }
+                      };
+        Coord cy[4] = { { bounds.top(), tc.top() },
+                        { bounds.top() + top, tc.top() + top * invth },
+                        { bounds.bottom() - bottom, tc.bottom() - bottom * invth },
+                        { bounds.bottom(), tc.bottom() }
+                      };
+
+        m_geometry.allocate(16, 28);
+        QSGGeometry::TexturedPoint2D *v = m_geometry.vertexDataAsTexturedPoint2D();
+        for (int y=0; y<4; ++y) {
+            for (int x=0; x<4; ++x) {
+                v->set(cx[x].p, cy[y].p, cx[x].t, cy[y].t);
+                ++v;
+            }
+        }
+
+        quint16 *i = m_geometry.indexDataAsUShort();
+        for (int r=0; r<3; ++r) {
+            if (r > 0)
+                *i++ = 4 * r;
+            for (int c=0; c<4; ++c) {
+                i[0] = 4 * r + c;
+                i[1] = 4 * r + c + 4;
+                i+=2;
+            }
+            if (r < 2)
+                *i++ = 4 * r + 3 + 4;
+        }
+
+        markDirty(QSGNode::DirtyGeometry | QSGNode::DirtyMaterial);
+
+//        v = m_geometry.vertexDataAsTexturedPoint2D();
+//        for (int j=0; j<m_geometry.vertexCount(); ++j)
+//            qDebug() << v[j].x << v[j].y << v[j].tx << v[j].ty;
+
+//        i = m_geometry.indexDataAsUShort();
+//        for (int j=0; j<m_geometry.indexCount(); ++j)
+//            qDebug() << i[j];
+
+    }
+
+    QSGGeometry m_geometry;
+    QSGTextureMaterial m_material;
 };
 
 QQuickStyleItem::QQuickStyleItem(QQuickItem *parent)
@@ -130,8 +200,9 @@ QQuickStyleItem::QQuickStyleItem(QQuickItem *parent)
     m_step(0),
     m_paintMargins(0),
     m_contentWidth(0),
-    m_contentHeight(0)
-
+    m_contentHeight(0),
+    m_textureWidth(0),
+    m_textureHeight(0)
 {
     m_font = qApp->font();
     setFlag(QQuickItem::ItemHasContents, true);
@@ -637,7 +708,11 @@ void QQuickStyleItem::initStyleOption()
 
     m_styleoption->styleObject = this;
     m_styleoption->direction = qApp->layoutDirection();
-    m_styleoption->rect = QRect(m_paintMargins, 0, width() - 2* m_paintMargins, height());
+
+    int w = m_textureWidth > 0 ? m_textureWidth : width();
+    int h = m_textureHeight > 0 ? m_textureHeight : height();
+
+    m_styleoption->rect = QRect(m_paintMargins, 0, w - 2* m_paintMargins, h);
 
     if (isEnabled()) {
         m_styleoption->state |= QStyle::State_Enabled;
@@ -1547,6 +1622,24 @@ bool QQuickStyleItem::event(QEvent *ev)
     return QQuickItem::event(ev);
 }
 
+void QQuickStyleItem::setTextureWidth(int w)
+{
+    if (m_textureWidth == w)
+        return;
+    m_textureWidth = w;
+    emit textureWidthChanged(m_textureWidth);
+    update();
+}
+
+void QQuickStyleItem::setTextureHeight(int h)
+{
+    if (m_textureHeight == h)
+        return;
+    m_textureHeight = h;
+    emit textureHeightChanged(m_textureHeight);
+    update();
+}
+
 QSGNode *QQuickStyleItem::updatePaintNode(QSGNode *node, UpdatePaintNodeData *)
 {
     if (m_image.isNull()) {
@@ -1566,8 +1659,9 @@ QSGNode *QQuickStyleItem::updatePaintNode(QSGNode *node, UpdatePaintNodeData *)
                             .arg(text()));
 #endif
 
-    styleNode->setTexture(window()->createTextureFromImage(m_image, QQuickWindow::TextureCanUseAtlas));
-    styleNode->setRect(boundingRect());
+    styleNode->initialize(window()->createTextureFromImage(m_image, QQuickWindow::TextureCanUseAtlas),
+                          boundingRect(),
+                          m_border.left(), m_border.top(), m_border.right(), m_border.bottom());
     return styleNode;
 }
 
@@ -1575,7 +1669,9 @@ void QQuickStyleItem::updatePolish()
 {
     if (width() >= 1 && height() >= 1) { // Note these are reals so 1 pixel is minimum
         float devicePixelRatio = window() ? window()->devicePixelRatio() : qApp->devicePixelRatio();
-        m_image = QImage(width() * devicePixelRatio, height() * devicePixelRatio, QImage::Format_ARGB32_Premultiplied);
+        int w = m_textureWidth > 0 ? m_textureWidth : width();
+        int h = m_textureHeight > 0 ? m_textureHeight : height();
+        m_image = QImage(w * devicePixelRatio, h * devicePixelRatio, QImage::Format_ARGB32_Premultiplied);
         m_image.setDevicePixelRatio(devicePixelRatio);
         m_image.fill(Qt::transparent);
         QPainter painter(&m_image);

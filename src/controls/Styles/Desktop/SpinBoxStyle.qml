@@ -129,6 +129,8 @@ Style {
                    (styleData.downEnabled ? (1<<3) : 0)
             contentWidth: styleData.contentWidth
             contentHeight: styleData.contentHeight
+            textureHeight: implicitHeight
+            border {top: 6 ; bottom: 6}
         }
     }
 }
