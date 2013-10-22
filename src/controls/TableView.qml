@@ -695,7 +695,7 @@ ScrollView {
         function keySelect(shiftPressed, row) {
             if (row < 0 || row === rowCount - 1)
                 return
-            if (shiftPressed) {
+            if (shiftPressed && (selectionMode >= SelectionMode.ExtendedSelection)) {
                 selection.__ranges = new Array()
                 selection.select(mousearea.firstKeyRow, row)
             } else {
