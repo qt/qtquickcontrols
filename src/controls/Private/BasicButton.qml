@@ -182,14 +182,18 @@ Control {
         hoverEnabled: true
         enabled: !keyPressed
 
-        onReleased: if (containsMouse) __action.trigger(button)
+        onReleased: {
+            if (containsMouse) {
+                if (button.checkable && !button.action && !(button.checked && button.exclusiveGroup))
+                    button.checked = !button.checked
+                __action.trigger(button)
+            }
+        }
         onExited: Tooltip.hideText()
         onCanceled: Tooltip.hideText()
         onPressed: {
             if (activeFocusOnPress)
                 button.forceActiveFocus()
-            if (button.checkable && !button.action && !(button.checked && button.exclusiveGroup))
-                button.checked = !button.checked
         }
 
         Timer {
