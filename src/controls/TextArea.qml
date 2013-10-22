@@ -64,6 +64,9 @@ import QtQuick.Controls.Private 1.0
     You can translate between cursor positions (characters from the start of the document) and pixel
     points using positionAt() and positionToRectangle().
 
+    You can create a custom appearance for a TextArea by
+    assigning a \l{QtQuick.Controls.Styles::TextAreaStyle}{TextAreaStyle}.
+
     \sa TextField, TextEdit
 */
 
@@ -645,6 +648,8 @@ ScrollView {
 
     Accessible.role: Accessible.EditableText
 
+    style: Qt.createComponent(Settings.style + "/TextAreaStyle.qml", area)
+
     /*!
         \qmlproperty TextDocument TextArea::textDocument
 
@@ -663,16 +668,11 @@ ScrollView {
             id: edit
             focus: true
 
-            SystemPalette {
-                id: palette
-                colorGroup: enabled ? SystemPalette.Active : SystemPalette.Disabled
-            }
-
             Rectangle {
                 id: colorRect
                 parent: viewport
                 anchors.fill: parent
-                color: palette.base
+                color: __style ? __style.backgroundColor : "white"
                 z: -1
             }
 
@@ -709,11 +709,11 @@ ScrollView {
             onContentHeightChanged: edit.doLayout()
             onWrapModeChanged: edit.doLayout()
 
-            renderType: Text.NativeRendering
-
-            color: palette.text
-            selectionColor: palette.highlight
-            selectedTextColor: palette.highlightedText
+            renderType: __style ? __style.renderType : Text.NativeRendering
+            font: __style ? __style.font : font
+            color: __style ? __style.textColor : "darkgray"
+            selectionColor: __style ? __style.selectionColor : "darkred"
+            selectedTextColor: __style ? __style.selectedTextColor : "white"
             wrapMode: TextEdit.WordWrap
             textMargin: 4
 

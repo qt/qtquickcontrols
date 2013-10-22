@@ -18,6 +18,7 @@ STYLES_QML_FILES = \
     $$PWD/Base/StatusBarStyle.qml \
     $$PWD/Base/TableViewStyle.qml \
     $$PWD/Base/TabViewStyle.qml \
+    $$PWD/Base/TextAreaStyle.qml \
     $$PWD/Base/TextFieldStyle.qml \
     $$PWD/Base/ToolBarStyle.qml \
     $$PWD/Base/ToolButtonStyle.qml
@@ -41,6 +42,7 @@ STYLES_QML_FILES += \
     $$PWD/Desktop/StatusBarStyle.qml\
     $$PWD/Desktop/TabViewStyle.qml \
     $$PWD/Desktop/TableViewStyle.qml \
+    $$PWD/Desktop/TextAreaStyle.qml \
     $$PWD/Desktop/TextFieldStyle.qml \
     $$PWD/Desktop/ToolBarStyle.qml \
     $$PWD/Desktop/ToolButtonStyle.qml

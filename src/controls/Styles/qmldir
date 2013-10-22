@@ -11,4 +11,5 @@ SpinBoxStyle 1.1 Base/SpinBoxStyle.qml
 SwitchStyle 1.1 Base/SwitchStyle.qml
 TabViewStyle 1.0 Base/TabViewStyle.qml
 TableViewStyle 1.0 Base/TableViewStyle.qml
+TextAreaStyle 1.1 Base/TextAreaStyle.qml
 TextFieldStyle 1.0 Base/TextFieldStyle.qml

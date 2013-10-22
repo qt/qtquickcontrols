@@ -143,7 +143,7 @@ Item {
     property Component sliderStyle: SliderStyle {}
     property Component progressbarStyle: ProgressBarStyle {}
     property Component textfieldStyle: TextFieldStyle {}
-    property Component textareaStyle: null
+    property Component textareaStyle: TextAreaStyle {}
     property Component spinboxStyle: SpinBoxStyle {}
     property Component toolbarStyle: ToolBarStyle {}
     property Component statusbarStyle: StatusBarStyle {}
