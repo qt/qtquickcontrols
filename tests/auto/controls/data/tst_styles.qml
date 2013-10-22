@@ -48,7 +48,7 @@ Item {
 
     TestCase {
         id: testCase
-        name: "Tests_ToolBar"
+        name: "Tests_Styles"
         when:windowShown
         width:400
         height:400
