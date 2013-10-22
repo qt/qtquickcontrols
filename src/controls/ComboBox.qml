@@ -336,7 +336,7 @@ Control {
         SystemPalette { id: syspal }
 
         property bool blockUpdate: false
-        property string prevText: null
+        property string prevText
 
         function find (text, searchType) {
             for (var i = 0 ; i < popupItems.count ; ++i) {
