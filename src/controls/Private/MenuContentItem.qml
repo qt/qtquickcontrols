@@ -226,7 +226,8 @@ Loader {
             Binding {
                 target: menuItemLoader.item
                 property: "width"
-                value: Math.max(menu.__minimumWidth, content.width)
+                property alias menuItem: menuItemLoader.item
+                value: menuItem ? Math.max(menu.__minimumWidth, content.width) - 2 * menuItem.x : 0
             }
         }
     }
