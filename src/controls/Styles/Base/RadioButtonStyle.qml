@@ -92,12 +92,7 @@ Style {
     }
 
     /*! The background under indicator and label. */
-    property Component background: Item {
-        implicitWidth: 100
-    }
-
-    /*! The content padding. */
-    padding { top: 0 ; left: 0 ; right: 4 ; bottom: 0 }
+    property Component background
 
     /*! The spacing between indicator and label. */
     property int spacing: 4

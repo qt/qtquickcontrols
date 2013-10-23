@@ -169,20 +169,24 @@ Item {
                 title: "CheckBox"
                 Layout.fillWidth: true
                 RowLayout {
+                    Layout.fillWidth: true
                     CheckBox {
                         id: frameCheckbox
                         text: "Text frame"
                         checked: true
+                        Layout.minimumWidth: 100
                     }
                     CheckBox {
                         id: tickmarkCheck
                         text: "Tickmarks"
                         checked: false
+                        Layout.minimumWidth: 100
                     }
                     CheckBox {
                         id: wrapCheck
                         text: "Word wrap"
                         checked: true
+                        Layout.minimumWidth: 100
                     }
                 }
             }
@@ -197,11 +201,13 @@ Item {
                         text: "Top"
                         checked: true
                         exclusiveGroup: tabPositionGroup
+                        Layout.minimumWidth: 100
                     }
                     RadioButton {
                         id: r2
                         text: "Bottom"
                         exclusiveGroup: tabPositionGroup
+                        Layout.minimumWidth: 100
                     }
                 }
             }
