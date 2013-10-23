@@ -55,7 +55,7 @@ import QtQuick.Controls.Private 1.0
     TextField to be used for a password input field.
 
     You can create a custom appearance for a TextField by
-    assigning a \l TextFieldStyle.
+    assigning a \l {QtQuick.Controls.Styles::TextFieldStyle}{TextFieldStyle}.
 
     \sa TextArea, TextInput
 */

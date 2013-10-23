@@ -91,6 +91,9 @@ import QtQuick.Controls.Styles 1.1
     \li bool sortIndicatorVisible - Whether the sort indicator should be enabled
     \li enum sortIndicatorOrder - Qt.AscendingOrder or Qt.DescendingOrder depending on state
 \endlist
+
+    You can create a custom appearance for a TableView by
+    assigning a \l {QtQuick.Controls.Styles::TableViewStyle}{TableViewStyle}.
 */
 
 ScrollView {

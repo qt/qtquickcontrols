@@ -100,7 +100,7 @@ import QtQuick.Controls.Private 1.0
 
 
     You can create a custom appearance for a ComboBox by
-    assigning a \l ComboBoxStyle.
+    assigning a \l {QtQuick.Controls.Styles::ComboBoxStyle}{ComboBoxStyle}.
 */
 
 Control {

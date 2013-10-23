@@ -53,7 +53,7 @@ import QtQuick.Controls.Private 1.0
     being loaded or the UI is blocked waiting for a resource to become available.
 
     You can create a custom appearance for a Busy Indicator by
-    assigning a \l BusyIndicatorStyle.
+    assigning a \l {QtQuick.Controls.Styles::BusyIndicatorStyle}{BusyIndicatorStyle}.
  */
 Control {
     id: indicator

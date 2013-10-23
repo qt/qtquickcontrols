@@ -64,7 +64,7 @@ import QtQuick.Controls.Private 1.0
     \endqml
 
     You can create a custom appearance for a Switch by
-    assigning a \l SwitchStyle.
+    assigning a \l {QtQuick.Controls.Styles::SwitchStyle}{SwitchStyle}.
 */
 
 Control {
