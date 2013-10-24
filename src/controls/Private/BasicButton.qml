@@ -166,10 +166,13 @@ Control {
             behavior.keyPressed = true;
     }
 
+    onFocusChanged: if (!focus) behavior.keyPressed = false
+
     Keys.onReleased: {
         if (event.key === Qt.Key_Space && !event.isAutoRepeat && behavior.keyPressed) {
             behavior.keyPressed = false;
             __action.trigger(button)
+            behavior.toggle()
         }
     }
 
@@ -182,10 +185,14 @@ Control {
         hoverEnabled: true
         enabled: !keyPressed
 
+        function toggle() {
+            if (button.checkable && !button.action && !(button.checked && button.exclusiveGroup))
+                button.checked = !button.checked
+        }
+
         onReleased: {
             if (containsMouse) {
-                if (button.checkable && !button.action && !(button.checked && button.exclusiveGroup))
-                    button.checked = !button.checked
+                toggle()
                 __action.trigger(button)
             }
         }
