@@ -118,15 +118,13 @@ TestCase {
     }
 
     function test_arraymodelwithtextrole() {
-        var arrayModel = [
-            {text: 'Banana', color: 'Yellow'},
-            {text: 'Apple', color: 'Green'},
-            {text: 'Coconut', color: 'Brown'}
-        ];
-
-        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.1 ; ComboBox {}', testCase, '');
-        comboBox.textRole = "text"
-        comboBox.model = arrayModel
+        // FIXME The use-case before this change should work.
+        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.1 ; \
+                ComboBox { \
+                    model: [ { "text": "Banana", "color": "Yellow"}, \
+                             { "text": "Apple", "color": "Green"}, \
+                             { "text": "Coconut", "color": "Brown"} ]; \
+                    textRole: "text" }', testCase, '');
         compare(comboBox.currentIndex, 0)
         compare(comboBox.currentText, "Banana")
         comboBox.textRole = "color"
@@ -532,6 +530,65 @@ TestCase {
         // close the menu before destroying the combobox
         comboBox.data[menuIndex].__closeMenu()
         verify(!comboBox.data[menuIndex].__popupVisible)
+        comboBox.destroy()
+    }
+
+    SignalSpy {
+        id: modelSpy
+        signalName: "modelChanged"
+    }
+
+    SignalSpy {
+        id: textSpy
+        signalName: "currentTextChanged"
+    }
+
+    SignalSpy {
+        id: indexSpy
+        signalName: "currentIndexChanged"
+    }
+
+    function test_modelChange() {
+        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.1 ; ComboBox { model: ["a", "b", "c", "d"] }', container, '');
+        modelSpy.target = textSpy.target = indexSpy.target = comboBox
+
+        compare(comboBox.currentIndex, 0)
+        compare(comboBox.currentText, "a")
+
+        // 1st model change
+        comboBox.model = ["A", "B", "C", "D"]
+        compare(comboBox.currentIndex, 0)
+        compare(modelSpy.count, 1)
+        compare(indexSpy.count, 0)
+        compare(textSpy.count, 1)
+        modelSpy.clear()
+        indexSpy.clear()
+        textSpy.clear()
+
+        // Setting currentIndex
+        comboBox.currentIndex = 3
+        compare(indexSpy.count, 1)
+        compare(textSpy.count, 1)
+        indexSpy.clear()
+        textSpy.clear()
+
+        // 2nd model change
+        comboBox.model = 4
+        compare(comboBox.currentIndex, 0)
+        compare(modelSpy.count, 1)
+        compare(indexSpy.count, 1)
+        compare(textSpy.count, 1)
+        modelSpy.clear()
+        indexSpy.clear()
+        textSpy.clear()
+
+        // 3rd model change
+        comboBox.model = ["a", "b", "c", "d"]
+        compare(comboBox.currentIndex, 0)
+        compare(modelSpy.count, 1)
+        compare(indexSpy.count, 0)
+        compare(textSpy.count, 1)
+
         comboBox.destroy()
     }
 
