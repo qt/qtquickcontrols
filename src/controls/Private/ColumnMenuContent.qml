@@ -61,9 +61,9 @@ Item {
     width: Math.max(list.contentWidth, minWidth)
     height: Math.min(list.contentHeight, fittedMaxHeight) + 2 * margin
 
-    readonly property int currentIndex: root.__currentIndex
+    readonly property int currentIndex: menu.__currentIndex
     property Item currentItem: null
-    readonly property int itemHeight: list.count > 0 ? list.contentItem.children[0].height : 23
+    readonly property int itemHeight: (list.count > 0 && list.contentItem.children[0]) ? list.contentItem.children[0].height : 23
     readonly property int fittingItems: Math.floor((maxHeight - downScroller.height) / itemHeight)
     readonly property real fittedMaxHeight: itemHeight * fittingItems + downScroller.height
     readonly property bool shouldUseScrollers: scrollView.__style.useScrollers && itemsModel.length > fittingItems
@@ -77,47 +77,12 @@ Item {
                 currentItem.closeSubMenu()
             currentItem = list.itemAt(pos.x, pos.y)
             if (currentItem) {
-                root.__currentIndex = currentItem.menuItemIndex
+                menu.__currentIndex = currentItem.menuItemIndex
                 if (currentItem.isSubmenu && !currentItem.menuItem.__popupVisible)
                     currentItem.showSubMenu(false)
             } else {
-                root.__currentIndex = -1
+                menu.__currentIndex = -1
             }
-        }
-    }
-
-    MouseArea {
-        id: hoverArea
-        anchors.left: scrollView.left
-        width: scrollView.width - scrollView.__verticalScrollBar.width
-        height: parent.height
-
-        hoverEnabled: true
-        acceptedButtons: Qt.AllButtons
-
-        onPositionChanged: updateCurrentItem(mouse)
-        onReleased: content.triggered(currentItem)
-        onExited: {
-            if (currentItem && !currentItem.menuItem.__popupVisible) {
-                currentItem = null
-                root.__currentIndex = -1
-            }
-        }
-
-        MenuContentScroller {
-            id: upScroller
-            direction: "up"
-            visible: shouldUseScrollers && !list.atYBeginning
-            x: margin
-            function scrollABit() { list.contentY -= itemHeight }
-        }
-
-        MenuContentScroller {
-            id: downScroller
-            direction: "down"
-            visible: shouldUseScrollers && !list.atYEnd
-            x: margin
-            function scrollABit() { list.contentY += itemHeight }
         }
     }
 
@@ -141,6 +106,41 @@ Item {
             boundsBehavior: Flickable.StopAtBounds
             highlightFollowsCurrentItem: true
             highlightMoveDuration: 0
+        }
+    }
+
+    MouseArea {
+        id: hoverArea
+        anchors.left: scrollView.left
+        width: scrollView.width - scrollView.__verticalScrollBar.width
+        height: parent.height
+
+        hoverEnabled: true
+        acceptedButtons: Qt.AllButtons
+
+        onPositionChanged: updateCurrentItem(mouse)
+        onReleased: content.triggered(currentItem)
+        onExited: {
+            if (currentItem && !currentItem.menuItem.__popupVisible) {
+                currentItem = null
+                menu.__currentIndex = -1
+            }
+        }
+
+        MenuContentScroller {
+            id: upScroller
+            direction: "up"
+            visible: shouldUseScrollers && !list.atYBeginning
+            x: margin
+            function scrollABit() { list.contentY -= itemHeight }
+        }
+
+        MenuContentScroller {
+            id: downScroller
+            direction: "down"
+            visible: shouldUseScrollers && !list.atYEnd
+            x: margin
+            function scrollABit() { list.contentY += itemHeight }
         }
     }
 

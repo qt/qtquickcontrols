@@ -221,6 +221,9 @@ namespace {
 
 bool qShortcutContextMatcher(QObject *o, Qt::ShortcutContext context)
 {
+    if (!static_cast<QQuickAction*>(o)->isEnabled())
+        return false;
+
     switch (context) {
     case Qt::ApplicationShortcut:
         return true;
@@ -244,6 +247,9 @@ bool qShortcutContextMatcher(QObject *o, Qt::ShortcutContext context)
 
 bool qMnemonicContextMatcher(QObject *o, Qt::ShortcutContext context)
 {
+    if (!static_cast<QQuickAction*>(o)->isEnabled())
+        return false;
+
     switch (context) {
     case Qt::ApplicationShortcut:
         return true;
@@ -362,6 +368,7 @@ void QQuickAction::setEnabled(bool e)
     if (e == m_enabled)
         return;
     m_enabled = e;
+
     emit enabledChanged();
 }
 

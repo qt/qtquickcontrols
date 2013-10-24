@@ -64,15 +64,6 @@
     \l{Layout::minimumWidth}{minimum size}, \l{Layout::preferredWidth}{preferred size} and a
     \l{Layout::maximumWidth}{maximum size}.
 
-    For each item, preferred size may come from one of several sources. It can be specified with
-    the \l preferredWidth and \l preferredHeight properties. If these properties are not
-    specified, it will use the item's \l{Item::implicitWidth}{implicitWidth} or
-    \l{Item::implicitHeight}{implicitHeight} as the preferred size.
-    Finally, if neither of these properties are set, it will use the \l{Item::width}{width} and
-    \l{Item::height}{height} properties of the item. Note that is provided only as a final
-    fallback. If you want to override the preferred size, you should use
-    \l preferredWidth or \l preferredHeight.
-
     If minimum size have not been explicitly specified on an item, the size is set to \c 0.
     If maximum size have not been explicitly specified on an item, the size is set to
     \c Number.POSITIVE_INFINITY.

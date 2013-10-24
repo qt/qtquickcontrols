@@ -53,7 +53,7 @@ import QtQuick.Controls.Private 1.0
     \l value is updated regularly and must be between \l minimumValue and \l maximumValue.
 
     You can create a custom appearance for a ProgressBar by
-    assigning a \l ProgressBarStyle.
+    assigning a \l {QtQuick.Controls.Styles::ProgressBarStyle}{ProgressBarStyle}.
 */
 
 Control {

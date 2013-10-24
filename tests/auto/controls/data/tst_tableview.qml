@@ -120,6 +120,37 @@ TestCase {
         return true;
     }
 
+
+    function test_keyboardSelection() {
+        var component = Qt.createComponent("tableview/table6_countmodel.qml")
+        compare(component.status, Component.Ready)
+        var table = component.createObject(container);
+        verify(table !== null, "table created is null")
+        table.model = 30
+        table.width = container.width
+        table.height = container.height
+        table.selectionMode = SelectionMode.SingleSelection
+        table.forceActiveFocus();
+        keyClick(Qt.Key_Down);
+        verify(table.selection.contains(1))
+        verify(table.selection.count === 1)
+        keyClick(Qt.Key_Down, Qt.ShiftModifier);
+        verify(table.selection.contains(2))
+        verify(table.selection.count === 1)
+        table.selectionMode = SelectionMode.ExtendedSelection
+        keyClick(Qt.Key_Down, Qt.ShiftModifier);
+        verify(table.selection.contains(2))
+        verify(table.selection.contains(3))
+        verify(table.selection.count === 2)
+        table.selectionMode = SelectionMode.MultiSelection
+        keyClick(Qt.Key_Down);
+        keyClick(Qt.Key_Down, Qt.ShiftModifier);
+        verify(table.selection.contains(4))
+        verify(table.selection.contains(5))
+        verify(table.selection.count === 2)
+        table.destroy()
+    }
+
     function test_selection() {
 
         var component = Qt.createComponent("tableview/table2_qabstractitemmodel.qml")

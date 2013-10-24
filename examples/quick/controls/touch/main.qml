@@ -123,6 +123,10 @@ ApplicationWindow {
             title: "TextInput"
             page: "content/TextInputPage.qml"
         }
+        ListElement {
+            title: "List"
+            page: "content/ListPage.qml"
+        }
     }
 
     StackView {

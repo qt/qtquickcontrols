@@ -91,6 +91,11 @@ Style {
         color: __syspal.text
     }
 
+    /*! The background under indicator and label. */
+    property Component background: Item {
+        implicitWidth: 100
+    }
+
     /*! The content padding. */
     padding { top: 0 ; left: 0 ; right: 4 ; bottom: 0 }
 
@@ -121,13 +126,23 @@ Style {
 
     /*! \internal */
     property Component panel: Item {
-        implicitWidth: Math.round(row.width + padding.left + padding.right)
-        implicitHeight: Math.max(indicatorLoader.implicitHeight, labelLoader.implicitHeight) + padding.top + padding.bottom
+        implicitWidth: Math.max(backgroundLoader.implicitWidth, row.implicitWidth + padding.left + padding.right)
+        implicitHeight: Math.max(backgroundLoader.implicitHeight, labelLoader.implicitHeight + padding.top + padding.bottom,indicatorLoader.implicitHeight + padding.top + padding.bottom)
 
+        Loader {
+            id:backgroundLoader
+            sourceComponent: background
+            anchors.fill: parent
+        }
         Row {
             id: row
-            y: padding.top
-            x: padding.left
+            anchors.fill: parent
+
+            anchors.leftMargin: padding.left
+            anchors.rightMargin: padding.right
+            anchors.topMargin: padding.top
+            anchors.bottomMargin: padding.bottom
+
             spacing: radiobuttonStyle.spacing
             Loader {
                 id: indicatorLoader

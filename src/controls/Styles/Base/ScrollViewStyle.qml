@@ -128,6 +128,7 @@ Style {
             anchors.bottomMargin: styleData.horizontal ? -1 : -2
         }
         onHoveredChanged: if (hovered) sticky = true
+        onVisibleChanged: if (!visible) sticky = false
     }
 
     /*! This component controls the appearance of the
@@ -166,6 +167,7 @@ Style {
             Behavior on height { enabled: styleData.horizontal && transientScrollBars; NumberAnimation { duration: 100 } }
         }
         onHoveredChanged: if (hovered) sticky = true
+        onVisibleChanged: if (!visible) sticky = false
     }
 
     /*! This component controls the appearance of the
@@ -192,7 +194,7 @@ Style {
                 anchors.fill: parent
                 anchors.margins: 1
                 color: "transparent"
-                border.color: "#88ffffff"
+                border.color: "#44ffffff"
             }
             Image {
                 source: styleData.horizontal ? "images/arrow-right.png" : "images/arrow-down.png"
@@ -232,7 +234,7 @@ Style {
                 anchors.fill: parent
                 anchors.margins: 1
                 color: "transparent"
-                border.color: "#88ffffff"
+                border.color: "#44ffffff"
             }
             Image {
                 source: styleData.horizontal ? "images/arrow-left.png" : "images/arrow-up.png"
@@ -272,17 +274,6 @@ Style {
                 PauseAnimation { duration: 450 }
                 NumberAnimation { properties: "opacity"; duration: 200 }
                 PropertyAction { target: panel; property: "visible"; value: false }
-                PropertyAction { target: handleControl.item; property: "sticky"; value: false }
-                PropertyAction { target: bg.item; property: "sticky"; value: false }
-            }
-        }
-
-        // once a sbar has been hovered, it sticks on the screen. however, if this
-        // sbar gets raised because the other sbar is hovered => clear the sticky bit
-        onRaisedChanged: {
-            if (raised) {
-                bg.item.sticky = false
-                handleControl.item.sticky = false
             }
         }
 

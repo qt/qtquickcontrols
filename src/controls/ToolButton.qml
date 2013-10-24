@@ -59,7 +59,7 @@ import QtQuick.Controls.Private 1.0
      \endcode
 
     You can create a custom appearance for a ToolButton by
-    assigning a \l ButtonStyle.
+    assigning a \l {QtQuick.Controls.Styles::ButtonStyle}{ButtonStyle}.
 */
 
 Button {

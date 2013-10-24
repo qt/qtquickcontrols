@@ -57,6 +57,8 @@ Style {
    }
     StyleItem {id: styleitem ; visible: false}
 
+    property int renderType: Text.NativeRendering
+
     property Component panel: Item {
         id: style
 
@@ -127,6 +129,8 @@ Style {
                    (styleData.downEnabled ? (1<<3) : 0)
             contentWidth: styleData.contentWidth
             contentHeight: styleData.contentHeight
+            textureHeight: implicitHeight
+            border {top: 6 ; bottom: 6}
         }
     }
 }

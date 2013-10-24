@@ -1,8 +1,6 @@
 QT += qml quick
 TARGET = basiclayouts
-qtHaveModule(widgets) {
-    QT += widgets
-}
+!android: !ios: !blackberry: qtHaveModule(widgets): QT += widgets
 
 include(src/src.pri)
 

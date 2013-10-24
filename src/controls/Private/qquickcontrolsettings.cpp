@@ -50,8 +50,10 @@ QT_BEGIN_NAMESPACE
 static QString defaultStyleName()
 {
     //Only enable QStyle support when we are using QApplication
+#if !defined(Q_OS_IOS) && !defined(Q_OS_ANDROID) && !defined (Q_OS_BLACKBERRY)
     if (QCoreApplication::instance()->inherits("QApplication"))
         return QLatin1String("Desktop");
+#endif
     return QLatin1String("Base");
 }
 

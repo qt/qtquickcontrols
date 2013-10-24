@@ -37,40 +37,63 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-
 import QtQuick 2.1
 import QtQuick.Controls 1.1
 import QtQuick.Controls.Private 1.0
 
 /*!
-    \qmltype BusyIndicator
-    \inqmlmodule QtQuick.Controls
+    \qmltype TextAreaStyle
+    \inqmlmodule QtQuick.Controls.Styles
     \since 5.2
-    \ingroup controls
-    \brief A busy indicator.
+    \ingroup controlsstyling
+    \brief Provides custom styling for TextArea.
 
-    The busy indicator should be used to indicate activity while content is
-    being loaded or the UI is blocked waiting for a resource to become available.
+    Example:
+    \qml
+    TextArea {
+        style: TextAreaStyle {
+            textColor: "#333"
+            selectionColor: "steelblue"
+            selectedTextColor: "#eee"
+            backgroundColor: "#eee"
+        }
+    }
+    \endqml
+*/
 
-    You can create a custom appearance for a Busy Indicator by
-    assigning a \l {QtQuick.Controls.Styles::BusyIndicatorStyle}{BusyIndicatorStyle}.
- */
-Control {
-    id: indicator
+ScrollViewStyle {
+    id: style
 
-    /*! \qmlproperty bool BusyIndicator::running
+    /*! The \l TextArea attached to this style. */
+    readonly property TextArea control: __control
 
-    This property holds whether the busy indicator is currently indicating
-    activity.
+    /*! The current font. */
+    property font font
 
-    \note The indicator is only visible when this property is set to \c true.
+    /*! The text color. */
+    property color textColor: __syspal.text
 
-    The default value is \c true.
+    /*! The text highlight color, used behind selections. */
+    property color selectionColor: __syspal.highlight
+
+    /*! The highlighted text color, used in selections. */
+    property color selectedTextColor: __syspal.highlightedText
+
+    /*! The background color. */
+    property color backgroundColor: control.backgroundVisible ? __syspal.base : "transparent"
+
+    /*!
+        \qmlproperty enumeration renderType
+
+        Override the default rendering type for the control.
+
+        Supported render types are:
+        \list
+        \li Text.QtRendering
+        \li Text.NativeRendering - the default
+        \endlist
+
+        \sa Text::renderType
     */
-    property bool running: true
-
-    Accessible.role: Accessible.Indicator
-    Accessible.name: "busy"
-
-    style: Qt.createComponent(Settings.style + "/BusyIndicatorStyle.qml", indicator)
+    property int renderType: Text.NativeRendering
 }

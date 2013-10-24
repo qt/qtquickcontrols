@@ -3,6 +3,7 @@
   <file>main.qml</file>
   <file>content/AndroidDelegate.qml</file>
   <file>content/ButtonPage.qml</file>
+  <file>content/ListPage.qml</file>
   <file>content/ProgressBarPage.qml</file>
   <file>content/SliderPage.qml</file>
   <file>content/TabBarPage.qml</file>

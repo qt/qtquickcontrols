@@ -111,6 +111,47 @@
     Thus, the layout cannot be narrower than 156 or be taller or shorter than 150 without breaking
     any of the constraints of its child items.
 
+    \section2 Specifying Preferred Size
+    For each item, the effective preferred size may come from one of several candidate properties.
+    For determining the effective preferred size, it will query these candidate properties in the
+    following order, and use the first candidate with a valid width or height.
+
+    \table
+    \header
+        \li Candidate properties
+        \li Description
+    \row
+        \li \l{Layout::preferredWidth}{Layout.preferredWidth} or
+            \l{Layout::preferredHeight}{Layout.preferredHeight}
+        \li These properties are supposed to be modified by the application if the default implicit
+            size does not give the optimal arrangement.
+    \row
+        \li \l{Item::implicitWidth}{implicitWidth} or \l{Item::implicitHeight}{implicitHeight}
+        \li These properties are supposed to be supplied by each item to give a meaningful ideal size,
+            for example the size needed to display all the contents of a \l Text type.
+            An implicit width or height of \c 0 is interpreted as invalid.
+    \row
+        \li \l{Item::width}{width} and \l{Item::height}{height}
+        \li If none of the above properties are valid, the layout will resort to the
+            \l{Item::width}{width} and \l{Item::height}{height} properties.
+    \endtable
+
+    An item can specify \l{Layout::preferredWidth}{Layout.preferredWidth} without having to specify
+    \l{Layout::preferredHeight}{Layout.preferredHeight}. In this case, the effective preferred
+    height will be determined from the \l{Item::implicitHeight}{implicitHeight} (or ultimately
+    \l{Item::height}{height}).
+
+    \note Resorting to \l{Item::width}{width} or \l{Item::height}{height} properties is only
+    provided as a final fallback. If you want to override the preferred size, it is recommended to
+    use \l{Layout::preferredWidth}{Layout.preferredWidth} or
+    \l{Layout::preferredHeight}{Layout.preferredHeight}. Relying on the \l{Item::width}{width} or
+    \l{Item::height}{height} properties for specifying the preferred size might give some
+    unexpected behavior. For instance, changing the \l{Item::width}{width} or
+    \l{Item::height}{height} properties won't trigger a layout rearrangement. Also, when the layout
+    is forced to do a full rebuild it might use the actual width and height, and not the width and
+    height specified in the QML file.
+
+
     \section1 Connecting windows and layouts
     You can just use normal anchoring concepts to ensure that the layout will follow the window
     resizing.

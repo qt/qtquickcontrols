@@ -45,7 +45,7 @@
 #include <private/qguiapplication_p.h>
 #include <qpa/qplatformintegration.h>
 
-#ifndef QT_NO_WIDGETS
+#ifdef QT_WIDGETS_LIB
 #include <qtooltip.h>
 #endif
 
@@ -61,7 +61,7 @@ void QQuickTooltip::showText(QQuickItem *item, const QPointF &pos, const QString
 {
     if (!item || !item->window())
         return;
-#ifndef QT_NO_WIDGETS
+#ifdef QT_WIDGETS_LIB
     if (QGuiApplicationPrivate::platformIntegration()->
             hasCapability(QPlatformIntegration::MultipleWindows) &&
             QCoreApplication::instance()->inherits("QApplication"))
@@ -75,7 +75,7 @@ void QQuickTooltip::showText(QQuickItem *item, const QPointF &pos, const QString
 
 void QQuickTooltip::hideText()
 {
-#ifndef QT_NO_WIDGETS
+#ifdef QT_WIDGETS_LIB
     QToolTip::hideText();
 #endif
 }

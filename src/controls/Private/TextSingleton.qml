@@ -39,38 +39,6 @@
 **
 ****************************************************************************/
 
-#ifndef QQUICKMENUPOPUPWINDOW_H
-#define QQUICKMENUPOPUPWINDOW_H
-
-#include "qquickpopupwindow_p.h"
-
-QT_BEGIN_NAMESPACE
-
-class QQuickMenuPopupWindow : public QQuickPopupWindow
-{
-    Q_OBJECT
-public:
-    QQuickMenuPopupWindow();
-
-    void setItemAt(QQuickItem *menuItem);
-    void setParentWindow(QQuickWindow *parentWindow);
-    void setGeometry(int posx, int posy, int w, int h);
-
-    void setParentItem(QQuickItem *);
-
-public Q_SLOTS:
-    void show();
-
-protected Q_SLOTS:
-    void updateSize();
-    void updatePosition();
-
-private:
-    QQuickItem *m_itemAt;
-    QPointF m_oldItemPos;
-    QPointF m_initialPos;
-};
-
-QT_END_NAMESPACE
-
-#endif // QQUICKMENUPOPUPWINDOW_H
+pragma Singleton
+import QtQuick 2.1
+Text {}

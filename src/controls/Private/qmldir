@@ -16,5 +16,8 @@ GroupBoxStyle 1.0 ../Styles/Base/GroupBoxStyle.qml
 ToolBarStyle 1.0 ../Styles/Base/ToolBarStyle.qml
 StatusBarStyle 1.0 ../Styles/Base/StatusBarStyle.qml
 ToolButtonStyle 1.0 ../Styles/Base/ToolButtonStyle.qml
+MenuContentItem 1.0 MenuContentItem.qml
 MenuContentScroller 1.0 MenuContentScroller.qml
 ColumnMenuContent 1.0 ColumnMenuContent.qml
+singleton TextSingleton 1.0 TextSingleton.qml
+

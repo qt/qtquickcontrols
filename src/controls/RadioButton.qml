@@ -74,7 +74,7 @@ import QtQuick.Controls.Private 1.0
     \endqml
 
     You can create a custom appearance for a RadioButton by
-    assigning a \l RadioButtonStyle.
+    assigning a \l {QtQuick.Controls.Styles::RadioButtonStyle}{RadioButtonStyle}.
 */
 
 AbstractCheckable {

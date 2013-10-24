@@ -46,7 +46,7 @@
 #include <QtQuick/QQuickView>
 #include <QtCore/QString>
 
-#ifndef QT_NO_WIDGETS
+#ifdef QT_WIDGETS_LIB
 #include <QtWidgets/QApplication>
 #else
 #include <QtGui/QGuiApplication>
@@ -54,7 +54,7 @@
 
 QT_BEGIN_NAMESPACE
 
-#ifndef QT_NO_WIDGETS
+#ifdef QT_WIDGETS_LIB
 #define Application QApplication
 #else
 #define Application QGuiApplication

@@ -59,5 +59,7 @@ Style {
         id: toolbar
         anchors.fill: parent
         elementType: "toolbar"
+        textureWidth: 64
+        border {left: 16 ; right: 16}
     }
 }

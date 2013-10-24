@@ -58,5 +58,7 @@ Style {
         implicitWidth: 200
         anchors.fill: parent
         elementType: "statusbar"
+        textureWidth: 64
+        border {left: 16 ; right: 16}
     }
 }

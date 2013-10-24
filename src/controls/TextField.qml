@@ -55,7 +55,7 @@ import QtQuick.Controls.Private 1.0
     TextField to be used for a password input field.
 
     You can create a custom appearance for a TextField by
-    assigning a \l TextFieldStyle.
+    assigning a \l {QtQuick.Controls.Styles::TextFieldStyle}{TextFieldStyle}.
 
     \sa TextArea, TextInput
 */
@@ -557,11 +557,11 @@ Control {
         font: textInput.font
         horizontalAlignment: textInput.horizontalAlignment
         verticalAlignment: textInput.verticalAlignment
-        opacity: !textInput.text.length ? 1 : 0
+        opacity: !textInput.text.length && !textInput.inputMethodComposing ? 1 : 0
         color: __panel ? __panel.placeholderTextColor : "darkgray"
         clip: contentWidth > width;
         elide: Text.ElideRight
-        renderType: Text.NativeRendering
+        renderType: __style ? __style.renderType : Text.NativeRendering
         Behavior on opacity { NumberAnimation { duration: 90 } }
     }
 
@@ -584,7 +584,7 @@ Control {
         color: __panel ? __panel.textColor : "darkgray"
         clip: contentWidth > width
 
-        renderType: Text.NativeRendering
+        renderType: __style ? __style.renderType : Text.NativeRendering
 
         onAccepted: textfield.accepted()
     }

@@ -89,16 +89,17 @@ Style {
     padding {
         top: 4
         left: 4
-        right: 4
+        right:  control.menu !== null ? 16 : 4
         bottom: 4
     }
 
     /*! This defines the background of the button. */
     property Component background: Item {
         implicitWidth: 100
-        implicitHeight: 25
+        implicitHeight: Math.max(25, Math.round(TextSingleton.implicitHeight * 1.1))
         BorderImage {
             anchors.fill: parent
+            anchors.margins: -1
             source: control.pressed || (control.checkable && control.checked) ? "images/button_down.png" : "images/button.png"
             border.top: 6
             border.bottom: 6
@@ -107,16 +108,20 @@ Style {
             anchors.bottomMargin: -1
             BorderImage {
                 anchors.fill: parent
-                anchors.margins: -1
-                anchors.topMargin: -2
-                anchors.rightMargin: 0
-                anchors.bottomMargin: 1
                 source: "images/focusframe.png"
-                visible: control.activeFocus
+                opacity: control.activeFocus ? 1 : 0
                 border.left: 4
                 border.right: 4
                 border.top: 4
                 border.bottom: 4
+            }
+            Rectangle {
+                anchors.fill: parent
+                anchors.margins: 2
+                radius: 2
+                color: "white"
+                opacity: control.hovered || control.activeFocus ? 0.2 : 0
+                Behavior on opacity {NumberAnimation{ duration: 100 }}
             }
         }
         Image {

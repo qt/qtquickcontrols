@@ -38,8 +38,11 @@
 **
 ****************************************************************************/
 
-
+#ifdef QT_WIDGETS_LIB
 #include <QtWidgets/QApplication>
+#else
+#include <QtGui/QGuiApplication>
+#endif
 #include <QtQml>
 #include <QtQuick/QQuickView>
 #include <QtCore/QString>
@@ -48,7 +51,11 @@
 
 int main(int argc, char *argv[])
 {
+#ifdef QT_WIDGETS_LIB
     QApplication app(argc, argv);
+#else
+    QGuiApplication app(argc, argv);
+#endif
     qmlRegisterType<DocumentHandler>("org.qtproject.example", 1, 0, "DocumentHandler");
     QQmlApplicationEngine engine(QUrl("qrc:/qml/main.qml"));
     QObject *topLevel = engine.rootObjects().value(0);

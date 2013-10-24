@@ -91,6 +91,21 @@ Style {
     /*! The highlighted text color, used in selections. */
     property color selectedTextColor: __syspal.highlightedText
 
+    /*!
+        \qmlproperty enumeration renderType
+
+        Override the default rendering type for the control.
+
+        Supported render types are:
+        \list
+        \li Text.QtRendering
+        \li Text.NativeRendering - the default
+        \endlist
+
+        \sa Text::renderType
+    */
+    property int renderType: Text.NativeRendering
+
     /*! The placeholder text color, used when the text field is empty.
         \since 5.2
     */
@@ -99,9 +114,10 @@ Style {
     /*! The background of the text field. */
     property Component background: Item {
         implicitWidth: 100
-        implicitHeight: 25
+        implicitHeight: Math.max(25, Math.round(TextSingleton.implicitHeight * 1.1))
         BorderImage {
             anchors.fill: parent
+            anchors.margins: -1
             source: "images/editbox.png"
             border.left: 4
             border.right: 4
@@ -109,10 +125,6 @@ Style {
             border.bottom: 4
             BorderImage {
                 anchors.fill: parent
-                anchors.margins: -1
-                anchors.topMargin: -2
-                anchors.rightMargin: 0
-                anchors.bottomMargin: 1
                 source: "images/focusframe.png"
                 visible: control.activeFocus
                 border.left: 4

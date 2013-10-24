@@ -88,11 +88,15 @@ ScrollViewStyle {
         selected: styleData.selected ? true : false
         height: Math.max(16, rowstyle.implicitHeight)
         active: styleData.hasActiveFocus
+        border.left: 4
+        border.right: 4
+        textureWidth: 16
+        textureHeight: 16
     }
 
     property Component itemDelegate: Item {
         height: Math.max(16, label.implicitHeight)
-        property int implicitWidth: sizehint.paintedWidth + 16
+        property int implicitWidth: label.implicitWidth + 16
 
         Text {
             id: label
@@ -108,12 +112,6 @@ ScrollViewStyle {
             text: styleData.value !== undefined ? styleData.value : ""
             color: styleData.textColor
             renderType: Text.NativeRendering
-        }
-        Text {
-            id: sizehint
-            font: label.font
-            text: styleData.value ? styleData.value : ""
-            visible: false
         }
     }
 }

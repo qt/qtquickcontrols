@@ -63,16 +63,9 @@ Window {
             ListElement { text: "Editable items" }
         }
 
-        MouseArea {
-            anchors.fill:  parent
-            acceptedButtons: Qt.RightButton
-            onPressed: editmenu.show(mouseX, mouseY)
-        }
-
         ComboBox {
             id: delegateChooser
-            opacity: frame.currentIndex === 3 ? 1 : 0
-            Behavior on opacity{ NumberAnimation{} }
+            enabled: frame.currentIndex === 3 ? 1 : 0
             model: delegatemenu
             width: 150
             anchors.left: parent.left

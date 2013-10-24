@@ -38,39 +38,45 @@
 **
 ****************************************************************************/
 
+
+
+
+
 import QtQuick 2.1
 import QtQuick.Controls 1.1
-import QtQuick.Controls.Private 1.0
+import QtQuick.Controls.Styles 1.1
 
-/*!
-    \qmltype BusyIndicator
-    \inqmlmodule QtQuick.Controls
-    \since 5.2
-    \ingroup controls
-    \brief A busy indicator.
+ScrollView {
+    width: parent.width
+    height: parent.height
 
-    The busy indicator should be used to indicate activity while content is
-    being loaded or the UI is blocked waiting for a resource to become available.
+    flickableItem.interactive: true
 
-    You can create a custom appearance for a Busy Indicator by
-    assigning a \l {QtQuick.Controls.Styles::BusyIndicatorStyle}{BusyIndicatorStyle}.
- */
-Control {
-    id: indicator
+    ListView {
+        anchors.fill: parent
+        model: 100
+        delegate: AndroidDelegate {
+            text: "Item #" + modelData
+        }
+    }
 
-    /*! \qmlproperty bool BusyIndicator::running
-
-    This property holds whether the busy indicator is currently indicating
-    activity.
-
-    \note The indicator is only visible when this property is set to \c true.
-
-    The default value is \c true.
-    */
-    property bool running: true
-
-    Accessible.role: Accessible.Indicator
-    Accessible.name: "busy"
-
-    style: Qt.createComponent(Settings.style + "/BusyIndicatorStyle.qml", indicator)
+    style: ScrollViewStyle {
+        transientScrollBars: true
+        handle: Item {
+            implicitWidth: 14
+            implicitHeight: 26
+            Rectangle {
+                color: "#424246"
+                anchors.fill: parent
+                anchors.topMargin: 6
+                anchors.leftMargin: 4
+                anchors.rightMargin: 4
+                anchors.bottomMargin: 6
+            }
+        }
+        scrollBarBackground: Item {
+            implicitWidth: 14
+            implicitHeight: 26
+        }
+    }
 }

@@ -91,6 +91,9 @@ import QtQuick.Controls.Styles 1.1
     \li bool sortIndicatorVisible - Whether the sort indicator should be enabled
     \li enum sortIndicatorOrder - Qt.AscendingOrder or Qt.DescendingOrder depending on state
 \endlist
+
+    You can create a custom appearance for a TableView by
+    assigning a \l {QtQuick.Controls.Styles::TableViewStyle}{TableViewStyle}.
 */
 
 ScrollView {
@@ -553,8 +556,13 @@ ScrollView {
                 autoincrement = false
                 autodecrement = false
                 var clickIndex = listView.indexAt(0, mouseY + listView.contentY)
-                if (clickIndex > -1)
+                if (clickIndex > -1) {
+                    if (Settings.hasTouchScreen) {
+                        listView.currentIndex = clickIndex
+                        mouseSelect(clickIndex, mouse.modifiers)
+                    }
                     previousRow = clickIndex
+                }
 
                 if (mousearea.dragRow >= 0) {
                     selection.__select(selection.contains(mousearea.clickedRow), mousearea.clickedRow, mousearea.dragRow)
@@ -606,7 +614,7 @@ ScrollView {
             onPressed: {
                 var newIndex = listView.indexAt(0, mouseY + listView.contentY)
                 listView.forceActiveFocus()
-                if (newIndex > -1) {
+                if (newIndex > -1 && !Settings.hasTouchScreen) {
                     listView.currentIndex = newIndex
                     mouseSelect(newIndex, mouse.modifiers)
                     mousearea.clickedRow = newIndex
@@ -646,12 +654,22 @@ ScrollView {
         // Fills extra rows with alternate color
         Column {
             id: rowfiller
-            property int rowHeight: count ? listView.contentHeight/count : height
+            Loader {
+                id: rowSizeItem
+                sourceComponent: root.rowDelegate
+                visible: false
+                property QtObject styleData: QtObject {
+                    property bool alternate: false
+                    property bool selected: false
+                    property bool hasActiveFocus: false
+                }
+            }
+            property int rowHeight: rowSizeItem.implicitHeight
             property int paddedRowCount: height/rowHeight
             property int count: listView.count
             y: listView.contentHeight
             width: parent.width
-            visible: listView.contentHeight > 0 && alternatingRowColors
+            visible: alternatingRowColors
             height: viewport.height - listView.contentHeight
             Repeater {
                 model: visible ? parent.paddedRowCount : 0
@@ -680,7 +698,7 @@ ScrollView {
         function keySelect(shiftPressed, row) {
             if (row < 0 || row === rowCount - 1)
                 return
-            if (shiftPressed) {
+            if (shiftPressed && (selectionMode >= SelectionMode.ExtendedSelection)) {
                 selection.__ranges = new Array()
                 selection.select(mousearea.firstKeyRow, row)
             } else {
@@ -787,31 +805,29 @@ ScrollView {
 
                     Loader {
                         id: itemDelegateLoader
-                        width:  __column.width
+                        width:  columnItem.width
                         height: parent ? parent.height : 0
-                        visible: __column.visible
-                        sourceComponent: __column.delegate ? __column.delegate : itemDelegate
+                        visible: columnItem.visible
+                        sourceComponent: columnItem.delegate ? columnItem.delegate : itemDelegate
 
                         // these properties are exposed to the item delegate
                         readonly property var model: listView.model
                         readonly property var modelData: itemModelData
 
                         property QtObject styleData: QtObject {
-                            readonly property var value: __hasModelRole ? itemModel[role] // Qml ListModel and QAbstractItemModel
-                                                                            : __hasModelDataRole ? modelData[role] // QObjectList / QObject
-                                                                                                 : modelData != undefined ? modelData : "" // Models without role
                             readonly property int row: rowitem.rowIndex
                             readonly property int column: index
-                            readonly property int elideMode: __column.elideMode
-                            readonly property int textAlignment: __column.horizontalAlignment
+                            readonly property int elideMode: columnItem.elideMode
+                            readonly property int textAlignment: columnItem.horizontalAlignment
                             readonly property bool selected: rowitem.itemSelected
                             readonly property color textColor: rowitem.itemTextColor
-                            readonly property string role: __column.role
+                            readonly property string role: columnItem.role
+                            readonly property var value: itemModel.hasOwnProperty(role)
+                                                         ? itemModel[role] // Qml ListModel and QAbstractItemModel
+                                                         : modelData && modelData.hasOwnProperty(role)
+                                                           ? modelData[role] // QObjectList / QObject
+                                                           : modelData != undefined ? modelData : "" // Models without role
                         }
-
-                        readonly property TableViewColumn __column: columnItem
-                        readonly property bool __hasModelRole: styleData.role && itemModel.hasOwnProperty(styleData.role)
-                        readonly property bool __hasModelDataRole: styleData.role && modelData && modelData.hasOwnProperty(styleData.role)
                     }
                 }
                 onWidthChanged: listView.contentWidth = width
