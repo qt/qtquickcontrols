@@ -523,20 +523,20 @@ Item {
 
 
             layout.children[1].Layout.alignment = Qt.AlignTop
-            waitForRendering(layout)
-            compare(itemRect(layout.children[1]), [40,  0, 20, 20]);
+            tryCompare(layout.children[1], "x", 40);
+            tryCompare(layout.children[1], "y", 0);
 
             layout.children[2].Layout.alignment = Qt.AlignLeft
-            waitForRendering(layout)
-            compare(itemRect(layout.children[2]), [0,  40, 20, 20]);
+            tryCompare(layout.children[2], "x", 0);
+            tryCompare(layout.children[2], "y", 40);
 
             layout.children[3].Layout.alignment = Qt.AlignLeft|Qt.AlignVCenter
-            waitForRendering(layout)
-            compare(itemRect(layout.children[3]), [40, 45, 10, 10]);
+            tryCompare(layout.children[3], "x", 40);
+            tryCompare(layout.children[3], "y", 45);
 
             layout.children[4].Layout.alignment = Qt.AlignLeft
-            waitForRendering(layout)
-            compare(itemRect(layout.children[4]), [0, 60, 30, 30]);
+            tryCompare(layout.children[4], "x", 0);
+            tryCompare(layout.children[4], "y", 60);
 
             layout.destroy();
         }
