@@ -39,6 +39,7 @@
 ****************************************************************************/
 import QtQuick 2.1
 import QtQuick.Controls 1.1
+import QtQuick.Window 2.1
 import QtQuick.Controls.Private 1.0
 
 /*!
@@ -84,58 +85,79 @@ Style {
     }
 
     /*! This defines the text label. */
-    property Component label: Text {
-        text: control.text
-        color: __syspal.text
-        renderType: Text.NativeRendering
+    property Component label: Item {
+        implicitWidth: text.implicitWidth + 2
+        implicitHeight: text.implicitHeight
+        Rectangle {
+            anchors.fill: text
+            anchors.margins: -1
+            anchors.leftMargin: -3
+            anchors.rightMargin: -3
+            visible: control.activeFocus
+            height: 6
+            radius: 3
+            color: "#224f9fef"
+            border.color: "#47b"
+            opacity: 0.6
+        }
+        Text {
+            id: text
+            text: control.text
+            anchors.centerIn: parent
+            color: __syspal.text
+            renderType: Text.NativeRendering
+        }
     }
     /*! The background under indicator and label. */
     property Component background
 
     /*! The spacing between indicator and label. */
-    property int spacing: 4
+    property int spacing: Math.round(TextSingleton.implicitHeight/4)
 
     /*! This defines the indicator button. */
     property Component indicator:  Item {
-        implicitWidth: 16
-        implicitHeight: 18
-        BorderImage {
+        implicitWidth: Math.round(TextSingleton.implicitHeight)
+        height: width
+        Rectangle {
             anchors.fill: parent
-            source: "images/editbox.png"
-            anchors.margins: -1
-            border.top: 6
-            border.bottom: 6
-            border.left: 6
-            border.right: 6
-            anchors.bottomMargin: 1
-            BorderImage {
-                anchors.fill: parent
-                source: "images/focusframe.png"
-                visible: control.activeFocus
-                border.left: 4
-                border.right: 4
-                border.top: 4
-                border.bottom: 4
-            }
+            anchors.bottomMargin: -1
+            color: "#44ffffff"
+            radius: baserect.radius
         }
         Rectangle {
-            height: 16
-            width: 16
-            antialiasing: true
-            visible: control.checked
-            color: "#666"
-            radius: 1
-            anchors.margins: 3
-            anchors.bottomMargin: 5
-            anchors.fill: parent
-            border.color: "#222"
-            opacity: control.enabled ? 1 : 0.5
-            Rectangle {
-                anchors.fill: parent
-                anchors.margins: 1
-                color: "transparent"
-                border.color: "#33ffffff"
+            id: baserect
+            gradient: Gradient {
+                GradientStop {color: "#eee" ; position: 0}
+                GradientStop {color: control.pressed ? "#eee" : "#fff" ; position: 0.1}
+                GradientStop {color: "#fff" ; position: 1}
             }
+            radius: TextSingleton.implicitHeight * 0.16
+            anchors.fill: parent
+            border.color: control.activeFocus ? "#47b" : "#999"
+        }
+
+        Image {
+            source: "images/check.png"
+            opacity: control.checkedState === Qt.Checked ? control.enabled ? 1 : 0.5 : 0
+            anchors.centerIn: parent
+            anchors.verticalCenterOffset: 1
+            Behavior on opacity {NumberAnimation {duration: 80}}
+        }
+
+        Rectangle {
+            anchors.fill: parent
+            anchors.margins: Math.round(baserect.radius)
+            antialiasing: true
+            gradient: Gradient {
+                GradientStop {color: control.pressed ? "#555" : "#999" ; position: 0}
+                GradientStop {color: "#555" ; position: 1}
+            }
+            radius: baserect.radius - 1
+            anchors.centerIn: parent
+            anchors.alignWhenCentered: true
+            border.color: "#222"
+            Behavior on opacity {NumberAnimation {duration: 80}}
+            opacity: control.checkedState === Qt.PartiallyChecked ? control.enabled ? 1 : 0.5 : 0
         }
     }
 

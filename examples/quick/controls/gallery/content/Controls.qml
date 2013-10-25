@@ -61,12 +61,10 @@ Item {
         spacing: 16
         ColumnLayout {
             id: firstColumn
-            spacing: 7
             Layout.minimumWidth: implicitWidth
             Layout.fillWidth: false
             RowLayout {
                 id: buttonrow
-                spacing:8
                 Button {
                     id: button1
                     text: "Button 1"
@@ -109,7 +107,6 @@ Item {
                 }
             }
             RowLayout {
-                spacing: 8
                 SpinBox {
                     id: t1
                     Layout.fillWidth: true
@@ -157,7 +154,6 @@ Item {
         }
         ColumnLayout {
             id: rightcol
-            spacing: 12
             Layout.fillWidth: true
             anchors {
                 top: parent.top

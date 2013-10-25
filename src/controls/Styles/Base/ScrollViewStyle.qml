@@ -113,8 +113,8 @@ Style {
     property Component scrollBarBackground: Item {
         property bool sticky: false
         property bool hovered: styleData.hovered
-        implicitWidth: 16
-        implicitHeight: 16
+        implicitWidth: Math.round(TextSingleton.implicitHeight)
+        implicitHeight: Math.round(TextSingleton.implicitHeight)
         clip: true
         opacity: transientScrollBars ? 0.5 : 1.0
         visible: !transientScrollBars || sticky
@@ -146,8 +146,8 @@ Style {
     property Component handle: Item {
         property bool sticky: false
         property bool hovered: __activeControl !== "none"
-        implicitWidth: img.implicitWidth
-        implicitHeight: img.implicitHeight
+        implicitWidth: Math.round(TextSingleton.implicitHeight) + 1
+        implicitHeight: Math.round(TextSingleton.implicitHeight) + 1
         BorderImage {
             id: img
             opacity: styleData.pressed && !transientScrollBars ? 0.5 : styleData.hovered ? 1 : 0.8
@@ -161,8 +161,8 @@ Style {
             anchors.bottom: parent.bottom
             anchors.right: parent.right
             anchors.left: styleData.horizontal ? parent.left : undefined
-            width: !styleData.horizontal && transientScrollBars ? sticky ? 13 : 10 : img.implicitWidth
-            height: styleData.horizontal && transientScrollBars ? sticky ? 13 : 10 : img.implicitHeight
+            width: !styleData.horizontal && transientScrollBars ? sticky ? 13 : 10 : parent.width
+            height: styleData.horizontal && transientScrollBars ? sticky ? 13 : 10 : parent.height
             Behavior on width { enabled: !styleData.horizontal && transientScrollBars; NumberAnimation { duration: 100 } }
             Behavior on height { enabled: styleData.horizontal && transientScrollBars; NumberAnimation { duration: 100 } }
         }
@@ -183,8 +183,8 @@ Style {
     */
     property Component incrementControl: Rectangle {
         visible: !transientScrollBars
-        implicitWidth: transientScrollBars ? 0 : 16
-        implicitHeight: transientScrollBars ? 0 : 16
+        implicitWidth: transientScrollBars ? 0 : Math.round(TextSingleton.implicitHeight)
+        implicitHeight: transientScrollBars ? 0 : Math.round(TextSingleton.implicitHeight)
         Rectangle {
             anchors.fill: parent
             anchors.bottomMargin: -1
@@ -199,7 +199,7 @@ Style {
             Image {
                 source: styleData.horizontal ? "images/arrow-right.png" : "images/arrow-down.png"
                 anchors.centerIn: parent
-                opacity: control.enabled ? 0.7 : 0.5
+                opacity: control.enabled ? 0.6 : 0.5
             }
             gradient: Gradient {
                 GradientStop {color: styleData.pressed ? "lightgray" : "white" ; position: 0}
@@ -221,8 +221,8 @@ Style {
     */
     property Component decrementControl: Rectangle {
         visible: !transientScrollBars
-        implicitWidth: transientScrollBars ? 0 : 16
-        implicitHeight: transientScrollBars ? 0 : 16
+        implicitWidth: transientScrollBars ? 0 : Math.round(TextSingleton.implicitHeight)
+        implicitHeight: transientScrollBars ? 0 : Math.round(TextSingleton.implicitHeight)
         Rectangle {
             anchors.fill: parent
             anchors.topMargin: styleData.horizontal ? 0 : -1
@@ -241,7 +241,7 @@ Style {
                 anchors.centerIn: parent
                 anchors.verticalCenterOffset: styleData.horizontal ? 0 : -1
                 anchors.horizontalCenterOffset: styleData.horizontal ? -1 : 0
-                opacity: control.enabled ? 0.7 : 0.5
+                opacity: control.enabled ? 0.6 : 0.5
             }
             gradient: Gradient {
                 GradientStop {color: styleData.pressed ? "lightgray" : "white" ; position: 0}

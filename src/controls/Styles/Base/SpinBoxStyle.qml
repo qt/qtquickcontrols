@@ -76,7 +76,7 @@ Style {
     }
 
     /*! The content margins of the text field. */
-    padding { top: 1 ; left: 5 ; right: 18 ; bottom: 0 }
+    padding { top: 1 ; left: Math.round(TextSingleton.implicitHeight/2) ; right: Math.round(TextSingleton.implicitHeight) ; bottom: 0 }
 
     /*! \qmlproperty enumeration horizontalAlignment
 
@@ -119,49 +119,46 @@ Style {
 
     /*! The button used to increment the value. */
     property Component incrementControl: Item {
-        implicitWidth: 18
+        implicitWidth: padding.right
         Image {
             source: "images/arrow-up.png"
             anchors.centerIn: parent
             anchors.verticalCenterOffset: 1
-            opacity: control.enabled ? 0.7 : 0.5
+            opacity: control.enabled ? (styleData.upPressed ? 1 : 0.6) : 0.5
         }
     }
 
     /*! The button used to decrement the value. */
     property Component decrementControl: Item {
-        implicitWidth: 18
+        implicitWidth: padding.right
         Image {
             source: "images/arrow-down.png"
             anchors.centerIn: parent
             anchors.verticalCenterOffset: -2
-            opacity: control.enabled ? 0.7 : 0.5
+            opacity: control.enabled ? (styleData.downPressed ? 1 : 0.6) : 0.5
         }
     }
 
     /*! The background of the SpinBox. */
     property Component background: Item {
-        implicitHeight: Math.max(25, Math.round(TextSingleton.implicitHeight * 1.1))
+        implicitHeight: Math.max(25, Math.round(TextSingleton.implicitHeight * 1.2))
         implicitWidth: styleData.contentWidth + 26
-        BorderImage {
-            id: image
+        Rectangle {
             anchors.fill: parent
-            anchors.margins: -1
-            source: "images/editbox.png"
-            border.left: 4
-            border.right: 4
-            border.top: 4
-            border.bottom: 4
             anchors.bottomMargin: -1
-            BorderImage {
-                anchors.fill: parent
-                source: "images/focusframe.png"
-                visible: control.activeFocus
-                border.left: 4
-                border.right: 4
-                border.top: 4
-                border.bottom: 4
+            color: "#44ffffff"
+            radius: baserect.radius
+        }
+        Rectangle {
+            id: baserect
+            gradient: Gradient {
+                GradientStop {color: "#eee" ; position: 0}
+                GradientStop {color: "#fff" ; position: 0.1}
+                GradientStop {color: "#fff" ; position: 1}
             }
+            radius: TextSingleton.implicitHeight * 0.16
+            anchors.fill: parent
+            border.color: control.activeFocus ? "#47b" : "#999"
         }
     }
 

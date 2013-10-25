@@ -84,38 +84,61 @@ Style {
     readonly property RadioButton control: __control
 
     /*! This defines the text label. */
-    property Component label: Text {
-        text: control.text
-        renderType: Text.NativeRendering
-        verticalAlignment: Text.AlignVCenter
-        color: __syspal.text
+    property Component label: Item {
+        implicitWidth: text.implicitWidth + 2
+        implicitHeight: text.implicitHeight
+        Rectangle {
+            anchors.fill: text
+            anchors.margins: -1
+            anchors.leftMargin: -3
+            anchors.rightMargin: -3
+            visible: control.activeFocus
+            height: 6
+            radius: 3
+            color: "#224f9fef"
+            border.color: "#47b"
+            opacity: 0.6
+        }
+        Text {
+            id: text
+            text: control.text
+            anchors.centerIn: parent
+            color: __syspal.text
+            renderType: Text.NativeRendering
+        }
     }
 
     /*! The background under indicator and label. */
     property Component background
 
     /*! The spacing between indicator and label. */
-    property int spacing: 4
+    property int spacing: Math.round(TextSingleton.implicitHeight/4)
 
     /*! This defines the indicator button.  */
     property Component indicator: Rectangle {
-        width: 17
-        height: 17
-        color: "white"
+        width:  Math.round(TextSingleton.implicitHeight)
+        height: width
+        gradient: Gradient {
+            GradientStop {color: "#eee" ; position: 0}
+            GradientStop {color: control.pressed ? "#eee" : "#fff" ; position: 0.4}
+            GradientStop {color: "#fff" ; position: 1}
+        }
         border.color: control.activeFocus ? "#16c" : "gray"
         antialiasing: true
         radius: height/2
-
         Rectangle {
             anchors.centerIn: parent
-            visible: control.checked
-            width: 9
-            height: 9
-            color: "#666"
+            width: Math.round(parent.width * 0.5)
+            height: width
+            gradient: Gradient {
+                GradientStop {color: "#999" ; position: 0}
+                GradientStop {color: "#555" ; position: 1}
+            }
             border.color: "#222"
             antialiasing: true
             radius: height/2
-            opacity: control.enabled ? 1 : 0.5
+            Behavior on opacity {NumberAnimation {duration: 80}}
+            opacity: control.checked ? control.enabled ? 1 : 0.5 : 0
         }
     }
 

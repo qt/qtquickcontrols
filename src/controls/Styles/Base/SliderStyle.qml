@@ -95,54 +95,75 @@ Style {
     /*! This property holds the item for the slider handle.
         You can access the slider through the \c control property
     */
-    property Component handle: Item {
-        implicitWidth:  Math.round(implicitHeight * 1.1)
-        implicitHeight: TextSingleton.implicitHeight
+    property Component handle: Item{
+            implicitWidth:  implicitHeight
+            implicitHeight: TextSingleton.implicitHeight * 1.2
 
-        BorderImage {
-            anchors.fill: parent
-            anchors.margins: -1
-            source: "images/slider-handle.png"
-            border.top: 4
-            border.bottom: 4
-            border.left: 4
-            border.right: 4
+            FastGlow {
+                source: handle
+                anchors.fill: parent
+                anchors.bottomMargin: -1
+                anchors.topMargin: 1
+                smooth: true
+                color: "#11000000"
+                spread: 0.8
+                transparentBorder: true
+                blur: 0.1
+
+            }
             Rectangle {
+                id: handle
                 anchors.fill: parent
-                anchors.margins: 2
-                radius: 2
-                color: "white"
-                opacity: control.hovered || control.activeFocus ? 0.2 : 0
-                Behavior on opacity {NumberAnimation{ duration: 100 }}
-            }
-            BorderImage {
-                anchors.fill: parent
-                source: "images/focusframe.png"
-                opacity: control.activeFocus ? 1 : 0
-                border.left: 4
-                border.right: 4
-                border.top: 4
-                border.bottom: 4
-            }
-        }
-    }
 
+                radius: width/2
+                gradient: Gradient {
+                    GradientStop { color: control.pressed ? "#e0e0e0" : "#fff" ; position: 1 }
+                    GradientStop { color: "#eee" ; position: 0 }
+                }
+                Rectangle {
+                    anchors.fill: parent
+                    anchors.margins: 1
+                    radius: width/2
+                    border.color: "#99ffffff"
+                    color: control.activeFocus ? "#224f7fbf" : "transparent"
+                }
+                border.color: control.activeFocus ? "#47b" : "#777"
+            }
+
+    }
     /*! This property holds the background groove of the slider.
 
         You can access the handle position through the \c styleData.handlePosition property.
     */
     property Component groove: Item {
+        property color fillColor: "#49d"
         anchors.verticalCenter: parent.verticalCenter
-        implicitWidth: 100
-        implicitHeight: 8
-        BorderImage {
+        implicitWidth: Math.round(TextSingleton.implicitHeight * 4.5)
+        implicitHeight: Math.max(6, Math.round(TextSingleton.implicitHeight * 0.3))
+        Rectangle {
+            radius: height/2
             anchors.fill: parent
-            source: "images/slider-groove.png"
-            opacity: 0.8
-            border.top: 3
-            border.bottom: 3
-            border.left: 6
-            border.right: 6
+            border.width: 1
+            border.color: "#888"
+            gradient: Gradient {
+                GradientStop { color: "#bbb" ; position: 0 }
+                GradientStop { color: "#ccc" ; position: 0.6 }
+                GradientStop { color: "#ccc" ; position: 1 }
+            }
+        }
+        Item {
+            clip: true
+            width: styleData.handlePosition
+            height: parent.height
+            Rectangle {
+                anchors.fill: parent
+                border.color: Qt.darker(fillColor, 1.2)
+                radius: height/2
+                gradient: Gradient {
+                    GradientStop {color: Qt.lighter(fillColor, 1.3)  ; position: 0}
+                    GradientStop {color: fillColor ; position: 1.4}
+                }
+            }
         }
     }
 
@@ -194,7 +215,7 @@ Style {
                 x: padding.left
                 sourceComponent: groove
                 width: (horizontal ? parent.width : parent.height) - padding.left - padding.right
-                y:  padding.top +  (Math.round(horizontal ? parent.height : parent.width - padding.top - padding.bottom) - grooveLoader.item.height)/2
+                y:  Math.round(padding.top + (Math.round(horizontal ? parent.height : parent.width - padding.top - padding.bottom) - grooveLoader.item.height)/2)
             }
             Loader {
                 id: tickMarkLoader

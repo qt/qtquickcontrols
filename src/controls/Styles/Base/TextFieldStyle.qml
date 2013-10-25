@@ -77,7 +77,7 @@ Style {
     readonly property TextField control: __control
 
     /*! The content margins of the text field. */
-    padding { top: 4 ; left: 6 ; right: 6 ; bottom:4 }
+    padding { top: 4 ; left: TextSingleton.implicitHeight/3 ; right: TextSingleton.implicitHeight/3 ; bottom:4 }
 
     /*! The current font. */
     property font font
@@ -113,25 +113,24 @@ Style {
 
     /*! The background of the text field. */
     property Component background: Item {
-        implicitWidth: 100
-        implicitHeight: Math.max(25, Math.round(TextSingleton.implicitHeight * 1.1))
-        BorderImage {
+        implicitWidth: Math.round(TextSingleton.implicitHeight * 8)
+        implicitHeight: Math.max(25, Math.round(TextSingleton.implicitHeight * 1.2))
+        Rectangle {
             anchors.fill: parent
-            anchors.margins: -1
-            source: "images/editbox.png"
-            border.left: 4
-            border.right: 4
-            border.top: 4
-            border.bottom: 4
-            BorderImage {
-                anchors.fill: parent
-                source: "images/focusframe.png"
-                visible: control.activeFocus
-                border.left: 4
-                border.right: 4
-                border.top: 4
-                border.bottom: 4
+            anchors.bottomMargin: -1
+            color: "#44ffffff"
+            radius: baserect.radius
+        }
+        Rectangle {
+            id: baserect
+            gradient: Gradient {
+                GradientStop {color: "#e0e0e0" ; position: 0}
+                GradientStop {color: "#fff" ; position: 0.1}
+                GradientStop {color: "#fff" ; position: 1}
             }
+            radius: TextSingleton.implicitHeight * 0.16
+            anchors.fill: parent
+            border.color: control.activeFocus ? "#47b" : "#999"
         }
     }
 

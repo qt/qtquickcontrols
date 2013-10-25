@@ -46,6 +46,7 @@ import "." as Desktop
 
 Style {
     readonly property ComboBox control: __control
+    property int drowDownButtonWidth: 24
     property Component panel: Item {
         property bool popup: !!styleItem.styleHint("comboboxpopup")
 

@@ -99,6 +99,7 @@ ScrollViewStyle {
             anchors.top: parent.top
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 1
+            anchors.topMargin: 1
             width: 1
             color: "#ccc"
         }

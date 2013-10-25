@@ -64,79 +64,78 @@ Style {
     /*! The padding between the background and the label components. */
     padding { top: 4 ; left: 6 ; right: 6 ; bottom:4 }
 
+    /*! The size of the drop down button when the combobox is editable. */
+    property int drowDownButtonWidth: Math.round(TextSingleton.implicitHeight)
+
     /*! This defines the background of the button. */
     property Component background: Item {
-        implicitWidth: 125
-        implicitHeight: Math.max(25, Math.round(TextSingleton.implicitHeight * 1.1))
-        BorderImage {
+        implicitWidth: Math.round(TextSingleton.implicitHeight * 4.5)
+        implicitHeight: Math.max(25, Math.round(TextSingleton.implicitHeight * 1.2))
+        Rectangle {
             anchors.fill: parent
-            anchors.margins: -1
-            source: control.pressed ? "images/button_down.png" : "images/button.png"
-            border.top: 6
-            border.bottom: 6
-            border.left: 6
-            border.right: 6
-            anchors.bottomMargin: -1
-            BorderImage {
-                anchors.fill: parent
-                source: "images/focusframe.png"
-                opacity: control.activeFocus ? 1 : 0
-                border.left: 4
-                border.right: 4
-                border.top: 4
-                border.bottom: 4
+            anchors.bottomMargin: control.pressed ? 0 : -1
+            color: "#10000000"
+            radius: baserect.radius
+        }
+        Rectangle {
+            id: baserect
+            gradient: Gradient {
+                GradientStop {color: control.pressed ? "#bababa" : "#fefefe" ; position: 0}
+                GradientStop {color: control.pressed ? "#ccc" : "#e3e3e3" ; position: 1}
             }
+            radius: TextSingleton.implicitHeight * 0.16
+            anchors.fill: parent
+            border.color: control.activeFocus ? "#47b" : "#999"
             Rectangle {
                 anchors.fill: parent
-                anchors.margins: 2
-                radius: 2
-                color: "white"
-                opacity: control.hovered || control.activeFocus ? 0.2 : 0
+                radius: parent.radius
+                color: control.activeFocus ? "#47b" : "white"
+                opacity: control.hovered || control.activeFocus ? 0.1 : 0
                 Behavior on opacity {NumberAnimation{ duration: 100 }}
             }
-            Image {
-                id: imageItem
-                source: "images/arrow-down.png"
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.right: parent.right
-                anchors.rightMargin: 8
-                opacity: control.enabled ? 0.7 : 0.5
-            }
+        }
+        Image {
+            id: imageItem
+            visible: control.menu !== null
+            source: "images/arrow-down.png"
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.right: parent.right
+            anchors.rightMargin: drowDownButtonWidth / 2
+            opacity: control.enabled ? 0.6 : 0.3
         }
     }
 
     /*! \internal */
     property Component __editor: Item {
-        implicitWidth: 125
-        implicitHeight: 25
+        implicitWidth: 100
+        implicitHeight: Math.max(25, Math.round(TextSingleton.implicitHeight * 1.2))
         clip: true
-        BorderImage {
+        Rectangle {
             anchors.fill: parent
-            anchors.margins: -1
             anchors.bottomMargin: 0
-            anchors.rightMargin: -2
-            source: "images/editbox.png"
-            border.left: 4
-            border.right: 4
-            border.top: 4
-            border.bottom: 4
-            BorderImage {
-                anchors.fill: parent
-                source: "images/focusframe.png"
-                visible: control.activeFocus
-                border.left: 4
-                border.right: 4
-                border.top: 4
-                border.bottom: 4
+            color: "#44ffffff"
+            radius: baserect.radius
+        }
+        Rectangle {
+            id: baserect
+            anchors.rightMargin: -radius
+            anchors.bottomMargin: 1
+            gradient: Gradient {
+                GradientStop {color: "#e0e0e0" ; position: 0}
+                GradientStop {color: "#fff" ; position: 0.1}
+                GradientStop {color: "#fff" ; position: 1}
             }
+            radius: TextSingleton.implicitHeight * 0.16
+            anchors.fill: parent
+            border.color: control.activeFocus ? "#47b" : "#999"
         }
         Rectangle {
             color: "#aaa"
+            anchors.bottomMargin: 2
+            anchors.topMargin: 1
             anchors.right: parent.right
             anchors.top: parent.top
             anchors.bottom: parent.bottom
-            anchors.bottomMargin: 2
-            anchors.topMargin: 1
             width: 1
         }
     }
@@ -176,7 +175,7 @@ Style {
         Loader {
             id: editorLoader
             anchors.fill: parent
-            anchors.rightMargin: 20
+            anchors.rightMargin: drowDownButtonWidth + padding.right
             anchors.bottomMargin: -1
             sourceComponent: control.editable ? __editor : null
         }

@@ -317,7 +317,8 @@ Control {
 
         anchors.fill: parent
         anchors.leftMargin: 8
-        anchors.rightMargin: 24
+        anchors.rightMargin: __style.drowDownButtonWidth
+
         verticalAlignment: Text.AlignVCenter
 
         renderType: Text.NativeRendering
