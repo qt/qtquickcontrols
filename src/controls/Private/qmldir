@@ -15,8 +15,6 @@ TableViewSelection 1.0 TableViewSelection.qml
 FastGlow 1.0 FastGlow.qml
 SourceProxy 1.0 SourceProxy.qml
 GroupBoxStyle 1.0 ../Styles/Base/GroupBoxStyle.qml
-ToolBarStyle 1.0 ../Styles/Base/ToolBarStyle.qml
-StatusBarStyle 1.0 ../Styles/Base/StatusBarStyle.qml
 ToolButtonStyle 1.0 ../Styles/Base/ToolButtonStyle.qml
 MenuContentItem 1.0 MenuContentItem.qml
 MenuContentScroller 1.0 MenuContentScroller.qml
