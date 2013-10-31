@@ -476,7 +476,7 @@ ScrollView {
     implicitHeight: 150
 
     frameVisible: true
-    __scrollBarTopMargin: Qt.platform.os === "osx" ? headerrow.height : 0
+    __scrollBarTopMargin: (__style && __style.transientScrollBars || Qt.platform.os === "osx") ? headerrow.height : 0
     __viewTopMargin: headerrow.height
 
     /*! \internal */

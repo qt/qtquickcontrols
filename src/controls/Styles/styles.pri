@@ -70,7 +70,9 @@ STYLES_QML_FILES += \
     $$PWD/Base/images/arrow-left.png \
     $$PWD/Base/images/arrow-left@2x.png \
     $$PWD/Base/images/arrow-right.png \
-    $$PWD/Base/images/arrow-right@2x.png
+    $$PWD/Base/images/arrow-right@2x.png \
+    $$PWD/Base/images/check.png \
+    $$PWD/Base/images/check@2x.png
 
 STYLES_QML_FILES += $$PWD/qmldir
 
