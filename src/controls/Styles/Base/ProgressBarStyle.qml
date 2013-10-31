@@ -161,6 +161,9 @@ Style {
 
     /*! \qmlproperty Component ProgressBarStyle::background
         The background component for this style.
+
+        \note The implicitWidth and implicitHeight of the background component
+        must be set.
     */
     property Component background: Item {
         implicitWidth: 200
