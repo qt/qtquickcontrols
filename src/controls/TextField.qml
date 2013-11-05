@@ -586,6 +586,10 @@ Control {
 
         renderType: __style ? __style.renderType : Text.NativeRendering
 
-        onAccepted: textfield.accepted()
+        onAccepted: {
+            Qt.inputMethod.commit()
+            Qt.inputMethod.hide()
+            textfield.accepted()
+        }
     }
 }
