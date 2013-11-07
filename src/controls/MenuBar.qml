@@ -73,7 +73,6 @@ import QtQuick.Controls.Private 1.0
 MenuBarPrivate {
     id: root
 
-    /*! \internal */
     property Component style: Qt.createComponent(Settings.style + "/MenuBarStyle.qml", root)
 
     /*! \internal */
@@ -83,21 +82,18 @@ MenuBarPrivate {
         active: !root.__isNative
         focus: true
         Keys.forwardTo: [item]
-        property bool altPressed: item ? item.altPressed : false
+        property bool altPressed: item ? item.__altPressed : false
     }
 
     /*! \internal */
     property Component __menuBarComponent: Loader {
         id: menuBarLoader
 
-        property Style __style: styleLoader.item
-        property Component menuItemStyle: __style ? __style.menuItem : null
 
-        property var control: root
         onStatusChanged: if (status === Loader.Error) console.error("Failed to load panel for", root)
 
         visible: status === Loader.Ready
-        sourceComponent: __style ? __style.frame : undefined
+        sourceComponent: d.style ? d.style.background : undefined
 
         Loader {
             id: styleLoader
@@ -109,9 +105,8 @@ MenuBarPrivate {
             }
         }
 
-        property int openedMenuIndex: -1
-        property bool preselectMenuItem: false
-        property alias contentHeight: row.height
+        width: root.__contentItem.width
+        height: Math.max(row.height + d.heightPadding, item ? item.implicitHeight : 0)
 
         Binding {
             // Make sure the styled menu bar is in the background
@@ -120,63 +115,145 @@ MenuBarPrivate {
             value: menuMouseArea.z - 1
         }
 
-        focus: true
+        QtObject {
+            id: d
 
-        property bool altPressed: false
-        property bool altPressedAgain: false
-        property var mnemonicsMap: ({})
+            property Style style: styleLoader.item
+
+            property int openedMenuIndex: -1
+            property bool preselectMenuItem: false
+            property real heightPadding: style ? style.padding.top + style.padding.bottom : 0
+
+            property bool altPressed: false
+            property bool altPressedAgain: false
+            property var mnemonicsMap: ({})
+
+            function dismissActiveFocus(event, reason) {
+                if (reason) {
+                    altPressedAgain = false
+                    altPressed = false
+                    openedMenuIndex = -1
+                    root.__contentItem.parent.forceActiveFocus()
+                } else {
+                    event.accepted = false
+                }
+            }
+
+            function maybeOpenFirstMenu(event) {
+                if (altPressed && openedMenuIndex === -1) {
+                    preselectMenuItem = true
+                    openedMenuIndex = 0
+                } else {
+                    event.accepted = false
+                }
+            }
+        }
+        property alias __altPressed: d.altPressed // Needed for the menu contents
+
+        focus: true
 
         Keys.onPressed: {
             var action = null
             if (event.key === Qt.Key_Alt) {
-                if (!altPressed)
-                    altPressed = true
+                if (!d.altPressed)
+                    d.altPressed = true
                 else
-                    altPressedAgain = true
-            } else if (altPressed && (action = mnemonicsMap[event.text.toUpperCase()])) {
-                preselectMenuItem = true
+                    d.altPressedAgain = true
+            } else if (d.altPressed && (action = d.mnemonicsMap[event.text.toUpperCase()])) {
+                d.preselectMenuItem = true
                 action.trigger()
                 event.accepted = true
             }
         }
 
-        function dismissActiveFocus(event, reason) {
-            if (reason) {
-                altPressedAgain = false
-                altPressed = false
-                openedMenuIndex = -1
-                root.__contentItem.parent.forceActiveFocus()
-            } else {
-                event.accepted = false
-            }
-        }
+        Keys.onReleased: d.dismissActiveFocus(event, d.altPressedAgain && d.openedMenuIndex === -1)
+        Keys.onEscapePressed: d.dismissActiveFocus(event, d.openedMenuIndex === -1)
 
-        Keys.onReleased: dismissActiveFocus(event, altPressedAgain && openedMenuIndex === -1)
-        Keys.onEscapePressed: dismissActiveFocus(event, openedMenuIndex === -1)
-
-        function maybeOpenFirstMenu(event) {
-            if (altPressed && openedMenuIndex === -1) {
-                preselectMenuItem = true
-                openedMenuIndex = 0
-            } else {
-                event.accepted = false
-            }
-        }
-
-        Keys.onUpPressed: maybeOpenFirstMenu(event)
-        Keys.onDownPressed: maybeOpenFirstMenu(event)
+        Keys.onUpPressed: d.maybeOpenFirstMenu(event)
+        Keys.onDownPressed: d.maybeOpenFirstMenu(event)
 
         Keys.onLeftPressed: {
-            if (openedMenuIndex > 0) {
-                preselectMenuItem = true
-                openedMenuIndex--
+            if (d.openedMenuIndex > 0) {
+                d.preselectMenuItem = true
+                d.openedMenuIndex--
             }
         }
 
         Keys.onRightPressed: {
-            if (openedMenuIndex !== -1 && openedMenuIndex < root.menus.length - 1) {
-                preselectMenuItem = true
-                openedMenuIndex++
+            if (d.openedMenuIndex !== -1 && d.openedMenuIndex < root.menus.length - 1) {
+                d.preselectMenuItem = true
+                d.openedMenuIndex++
+            }
+        }
+
+        Row {
+            id: row
+            x: d.style ? d.style.padding.left : 0
+            y: d.style ? d.style.padding.top : 0
+            width: parent.width - (d.style ? d.style.padding.left + d.style.padding.right : 0)
+            LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft
+
+            Repeater {
+                id: itemsRepeater
+                model: root.menus
+                Loader {
+                    id: menuItemLoader
+
+                    property var styleData: QtObject {
+                        readonly property int index: __menuItemIndex
+                        readonly property string text: !!__menuItem && __menuItem.title
+                        readonly property bool enabled: !!__menuItem && __menuItem.enabled
+                        readonly property bool selected: menuMouseArea.hoveredItem === menuItemLoader
+                        readonly property bool open: !!__menuItem && __menuItem.__popupVisible || d.openedMenuIndex === index
+                        readonly property bool underlineMnemonic: d.altPressed
+                    }
+
+                    height: Math.max(menuBarLoader.height - d.heightPadding,
+                                     menuItemLoader.item ? menuItemLoader.item.implicitHeight : 0)
+
+                    readonly property var __menuItem: modelData
+                    readonly property int __menuItemIndex: index
+                    sourceComponent: d.style ? d.style.itemDelegate : null
+                    visible: __menuItem.visible
+
+                    Connections {
+                        target: d
+                        onOpenedMenuIndexChanged: {
+                            if (d.openedMenuIndex === index) {
+                                if (__menuItem.__usingDefaultStyle)
+                                    __menuItem.style = d.style.menuStyle
+                                __menuItem.__popup(row.LayoutMirroring.enabled ? menuItemLoader.width : 0,
+                                                   menuBarLoader.height - d.heightPadding, 0)
+                                if (d.preselectMenuItem)
+                                    __menuItem.__currentIndex = 0
+                            } else {
+                                __menuItem.__closeMenu()
+                            }
+                        }
+                    }
+
+                    Connections {
+                        target: __menuItem
+                        onPopupVisibleChanged: {
+                            if (!__menuItem.__popupVisible && d.openedMenuIndex === index)
+                                d.openedMenuIndex = -1
+                        }
+                    }
+
+                    Connections {
+                        target: __menuItem.__action
+                        onTriggered: d.openedMenuIndex = __menuItemIndex
+                    }
+
+                    Component.onCompleted: {
+                        __menuItem.__visualItem = menuItemLoader
+
+                        var title = __menuItem.title
+                        var ampersandPos = title.indexOf("&")
+                        if (ampersandPos !== -1)
+                            d.mnemonicsMap[title[ampersandPos + 1].toUpperCase()] = __menuItem.__action
+                    }
+                }
             }
         }
 
@@ -188,8 +265,8 @@ MenuBarPrivate {
             onPositionChanged: updateCurrentItem(mouse, false)
             onPressed: {
                 if (updateCurrentItem(mouse)) {
-                    menuBarLoader.preselectMenuItem = false
-                    menuBarLoader.openedMenuIndex = currentItem.menuItemIndex
+                    d.preselectMenuItem = false
+                    d.openedMenuIndex = currentItem.__menuItemIndex
                 }
             }
             onExited: hoveredItem = null
@@ -203,73 +280,12 @@ MenuBarPrivate {
                     if (!hoveredItem)
                         return false;
                     currentItem = hoveredItem
-                    if (menuBarLoader.openedMenuIndex !== -1) {
-                        menuBarLoader.preselectMenuItem = false
-                        menuBarLoader.openedMenuIndex = currentItem.menuItemIndex
+                    if (d.openedMenuIndex !== -1) {
+                        d.preselectMenuItem = false
+                        d.openedMenuIndex = currentItem.__menuItemIndex
                     }
                 }
                 return true;
-            }
-
-            Row {
-                id: row
-                width: parent.width
-                LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft
-
-                Repeater {
-                    id: itemsRepeater
-                    model: root.menus
-                    Loader {
-                        id: menuItemLoader
-
-                        property var menuItem: modelData
-                        property bool selected: menuMouseArea.hoveredItem === menuItemLoader
-                        property bool sunken: menuItem.__popupVisible || menuBarLoader.openedMenuIndex === index
-                        property bool showUnderlined: menuBarLoader.altPressed
-
-                        sourceComponent: menuBarLoader.menuItemStyle
-                        property int menuItemIndex: index
-                        visible: menuItem.visible
-
-                        Connections {
-                            target: menuBarLoader
-                            onOpenedMenuIndexChanged: {
-                                if (menuBarLoader.openedMenuIndex === index) {
-                                    if (row.LayoutMirroring.enabled)
-                                        menuItem.__popup(menuItemLoader.width, menuBarLoader.height, 0)
-                                    else
-                                        menuItem.__popup(0, menuBarLoader.height, 0)
-                                    if (menuBarLoader.preselectMenuItem)
-                                        menuItem.__currentIndex = 0
-                                } else {
-                                    menuItem.__closeMenu()
-                                }
-                            }
-                        }
-
-                        Connections {
-                            target: menuItem
-                            onPopupVisibleChanged: {
-                                if (!menuItem.__popupVisible && menuBarLoader.openedMenuIndex === index)
-                                    menuBarLoader.openedMenuIndex = -1
-                            }
-                        }
-
-                        Connections {
-                            target: menuItem.__action
-                            onTriggered: menuBarLoader.openedMenuIndex = menuItemIndex
-                        }
-
-                        Component.onCompleted: {
-                            menuItem.__visualItem = menuItemLoader
-
-                            var title = menuItem.title
-                            var ampersandPos = title.indexOf("&")
-                            if (ampersandPos !== -1)
-                                menuBarLoader.mnemonicsMap[title[ampersandPos + 1].toUpperCase()] = menuItem.__action
-                        }
-                    }
-                }
             }
         }
     }

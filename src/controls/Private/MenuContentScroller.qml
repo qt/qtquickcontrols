@@ -39,27 +39,36 @@
 ****************************************************************************/
 
 import QtQuick 2.1
+import QtQuick.Controls 1.1
 
 MouseArea {
-    property string direction
+    id: scrollIndicator
+    property int direction: 0
 
     anchors {
-        top: direction === "up" ? parent.top : undefined
-        bottom: direction === "down" ? parent.bottom : undefined
+        top: direction === Qt.UpArrow ? parent.top : undefined
+        bottom: direction === Qt.DownArrow ? parent.bottom : undefined
     }
 
     hoverEnabled: visible
-    height: scrollerLoader.item.height
+    height: scrollerLoader.height
     width: parent.width
 
     Loader {
         id: scrollerLoader
 
-        sourceComponent: menuItemDelegate
-        property int index: -1
-        property var modelData: {
-            "visible": true,
-            "scrollerDirection": direction,
+        width: parent.width
+        sourceComponent: scrollIndicatorStyle
+        // Extra property values for desktop style
+        property var __menuItem: null
+        property var styleData: {
+            "index": -1,
+            "type": MenuItemType.ScrollIndicator,
+            "text": "",
+            "selected": scrollIndicator.containsMouse,
+            "scrollerDirection": scrollIndicator.direction,
+            "checkable": false,
+            "checked": false,
             "enabled": true
         }
     }

@@ -45,42 +45,66 @@ import QtQuick.Controls.Styles 1.1
 Loader {
     id: menuFrameLoader
 
-    readonly property Style __style: styleLoader.item
-    readonly property Component menuItemStyle: __style ? __style.menuItem : null
-
-    property var menu: root
-    property alias contentWidth: content.width
-    property alias contentHeight: content.height
-
-    readonly property int subMenuXPos: width + (item && item["subMenuOverlap"] || 0)
+    property var __menu: root
 
     visible: status === Loader.Ready
-    sourceComponent: __style ? __style.frame : undefined
+    width: content.width + (d.style ? d.style.padding.left + d.style.padding.right : 0)
+    height: content.height + (d.style ? d.style.padding.top + d.style.padding.bottom : 0)
 
     Loader {
         id: styleLoader
-        active: !menu.isNative
-        sourceComponent: menu.style
+        active: !__menu.isNative
+        sourceComponent: __menu.style
         property alias __control: menuFrameLoader
         onStatusChanged: {
             if (status === Loader.Error)
-                console.error("Failed to load Style for", menu)
+                console.error("Failed to load Style for", __menu)
+        }
+    }
+    sourceComponent: d.style ? d.style.frame : undefined
+
+    QtObject {
+        id: d
+        property var mnemonicsMap: ({})
+        readonly property Style style: styleLoader.item
+        readonly property Component menuItemPanel: style ? style.menuItemPanel : null
+
+        function canBeHovered(index) {
+            var item = content.menuItemAt(index)
+            if (item && item.styleData.type !== MenuItemType.Separator && item.styleData.enabled) {
+                __menu.__currentIndex = index
+                return true
+            }
+            return false
+        }
+
+        function triggerCurrent() {
+            var item = content.menuItemAt(__menu.__currentIndex)
+            if (item)
+                content.triggered(item)
+        }
+
+        function triggerAndDismiss(item) {
+            if (item && item.styleData.type !== MenuItemType.Separator) {
+                __menu.__dismissMenu()
+                if (item.styleData.type !== MenuItemType.Menu)
+                    item.__menuItem.trigger()
+            }
         }
     }
 
     focus: true
-    property var mnemonicsMap: ({})
 
     Keys.onPressed: {
         var item = null
         if (!(event.modifiers & Qt.AltModifier)
-                && (item = mnemonicsMap[event.text.toUpperCase()])) {
-            if (item.isSubmenu) {
-                menu.__currentIndex = item.menuItemIndex
-                item.showSubMenu(true)
-                item.menuItem.__currentIndex = 0
+                && (item = d.mnemonicsMap[event.text.toUpperCase()])) {
+            if (item.styleData.type === MenuItemType.Menu) {
+                __menu.__currentIndex = item.__menuItemIndex
+                item.__showSubMenu(true)
+                item.__menuItem.__currentIndex = 0
             } else {
-                triggerAndDismiss(item)
+                d.triggerAndDismiss(item)
             }
             event.accepted = true
         } else {
@@ -88,64 +112,41 @@ Loader {
         }
     }
 
-    Keys.onEscapePressed: menu.__dismissMenu()
+    Keys.onEscapePressed: __menu.__dismissMenu()
 
     Keys.onDownPressed: {
-        if (menu.__currentIndex < 0)
-            menu.__currentIndex = -1
+        if (__menu.__currentIndex < 0)
+            __menu.__currentIndex = -1
 
-        for (var i = menu.__currentIndex + 1;
-             i < menu.items.length && !canBeHovered(i); i++)
+        for (var i = __menu.__currentIndex + 1;
+             i < __menu.items.length && !d.canBeHovered(i); i++)
             ;
         event.accepted = true
     }
 
     Keys.onUpPressed: {
-        for (var i = menu.__currentIndex - 1;
-             i >= 0 && !canBeHovered(i); i--)
+        for (var i = __menu.__currentIndex - 1;
+             i >= 0 && !d.canBeHovered(i); i--)
             ;
         event.accepted = true
     }
 
-    function canBeHovered(index) {
-        var item = content.menuItemAt(index)
-        if (item && !item["isSeparator"] && item.enabled) {
-            menu.__currentIndex = index
-            return true
-        }
-        return false
-    }
-
     Keys.onLeftPressed: {
-        if ((event.accepted = menu.__parentMenu.hasOwnProperty("title")))
+        if ((event.accepted = __menu.__parentMenu.hasOwnProperty("title")))
             __closeMenu()
     }
 
     Keys.onRightPressed: {
-        var item = content.menuItemAt(menu.__currentIndex)
-        if ((event.accepted = (item && item.isSubmenu))) {
-            item.showSubMenu(true)
-            item.menuItem.__currentIndex = 0
+        var item = content.menuItemAt(__menu.__currentIndex)
+        if ((event.accepted = (item && item.styleData.type === MenuItemType.Menu))) {
+            item.__showSubMenu(true)
+            item.__menuItem.__currentIndex = 0
         }
     }
 
-    Keys.onSpacePressed: triggerCurrent()
-    Keys.onReturnPressed: triggerCurrent()
-    Keys.onEnterPressed: triggerCurrent()
-
-    function triggerCurrent() {
-        var item = content.menuItemAt(menu.__currentIndex)
-        if (item)
-            content.triggered(item)
-    }
-
-    function triggerAndDismiss(item) {
-        if (item && !item.isSeparator) {
-            menu.__dismissMenu()
-            if (!item.isSubmenu)
-                item.menuItem.trigger()
-        }
-    }
+    Keys.onSpacePressed: d.triggerCurrent()
+    Keys.onReturnPressed: d.triggerCurrent()
+    Keys.onEnterPressed: d.triggerCurrent()
 
     Binding {
         // Make sure the styled frame is in the background
@@ -156,13 +157,15 @@ Loader {
 
     ColumnMenuContent {
         id: content
+        x: d.style ? d.style.padding.left : 0
+        y: d.style ? d.style.padding.top : 0
         menuItemDelegate: menuItemComponent
-        scrollerStyle: __style ? __style.scrollerStyle : undefined
-        itemsModel: menu.items
-        margin: menuFrameLoader.item ? menuFrameLoader.item.margin : 0
-        minWidth: menu.__minimumWidth
-        maxHeight: menuFrameLoader.item ? menuFrameLoader.item.maxHeight : 0
-        onTriggered: triggerAndDismiss(item)
+        scrollIndicatorStyle: d.style && d.style.scrollIndicator
+        scrollerStyle: d.style && d.style.__scrollerStyle
+        itemsModel: __menu.items
+        minWidth: __menu.__minimumWidth
+        maxHeight: d.style ? d.style.__maxPopupHeight : 0
+        onTriggered: d.triggerAndDismiss(item)
     }
 
     Component {
@@ -170,25 +173,38 @@ Loader {
         Loader {
             id: menuItemLoader
 
-            property var menuItem: modelData
-            readonly property bool isSeparator: !!menuItem && menuItem.type === MenuItemType.Separator
-            readonly property bool isSubmenu: !!menuItem && menuItem.type === MenuItemType.Menu
-            property bool selected: !(isSeparator || !!scrollerDirection) && menu.__currentIndex === index
-            property string text: isSubmenu ? menuItem.title : !(isSeparator || !!scrollerDirection) ? menuItem.text : ""
-            property bool showUnderlined: menu.__contentItem.altPressed
-            readonly property var scrollerDirection: menuItem["scrollerDirection"]
+            property QtObject styleData: QtObject {
+                id: opts
+                readonly property int index: __menuItemIndex
+                readonly property int type: __menuItem ? __menuItem.type : -1
+                readonly property bool selected: type !== MenuItemType.Separator && __menu.__currentIndex === index
+                readonly property string text: type === MenuItemType.Menu ? __menuItem.title :
+                                               type !== MenuItemType.Separator ? __menuItem.text : ""
+                readonly property bool underlineMnemonic: __menu.__contentItem.altPressed
+                readonly property string shortcut: !!__menuItem && __menuItem["shortcut"] || ""
+                readonly property var iconSource: !!__menuItem && __menuItem["iconSource"] || undefined
+                readonly property bool enabled: type !== MenuItemType.Separator && !!__menuItem && __menuItem.enabled
+                readonly property bool checked: !!__menuItem && !!__menuItem["checked"]
+                readonly property bool checkable: !!__menuItem && !!__menuItem["checkable"]
+                readonly property bool exclusive: !!__menuItem && !!__menuItem["exclusiveGroup"]
+                readonly property int scrollerDirection: Qt.NoArrow
+            }
 
-            property int menuItemIndex: index
+            readonly property var __menuItem: modelData
+            readonly property int __menuItemIndex: index
 
-            sourceComponent: menuFrameLoader.menuItemStyle
-            enabled: visible && !isSeparator && !!menuItem && menuItem.enabled
-            visible: !!menuItem && menuItem.visible
+            sourceComponent: d.menuItemPanel
+            enabled: visible && opts.enabled
+            visible: !!__menuItem && __menuItem.visible
             active: visible
 
-            function showSubMenu(immediately) {
+            function __showSubMenu(immediately) {
                 if (immediately) {
-                    if (menu.__currentIndex === menuItemIndex)
-                        menuItem.__popup(menuFrameLoader.subMenuXPos, 0, -1)
+                    if (__menu.__currentIndex === __menuItemIndex) {
+                        if (__menuItem.__usingDefaultStyle)
+                            __menuItem.style = __menu.style
+                        __menuItem.__popup(menuFrameLoader.width - (d.style.submenuOverlap + d.style.padding.right), -d.style.padding.top, -1)
+                    }
                 } else {
                     openMenuTimer.start()
                 }
@@ -197,37 +213,37 @@ Loader {
             Timer {
                 id: openMenuTimer
                 interval: 50
-                onTriggered: menuItemLoader.showSubMenu(true)
+                onTriggered: menuItemLoader.__showSubMenu(true)
             }
 
-            function closeSubMenu() { closeMenuTimer.start() }
+            function __closeSubMenu() { closeMenuTimer.start() }
 
             Timer {
                 id: closeMenuTimer
                 interval: 1
                 onTriggered: {
-                    if (menu.__currentIndex !== menuItemIndex)
-                        menuItem.__closeMenu()
+                    if (__menu.__currentIndex !== __menuItemIndex)
+                        __menuItem.__closeMenu()
                 }
             }
 
             onLoaded: {
-                menuItem.__visualItem = menuItemLoader
+                __menuItem.__visualItem = menuItemLoader
 
                 if (content.width < item.implicitWidth)
                     content.width = item.implicitWidth
 
-                var title = text
+                var title = opts.text
                 var ampersandPos = title.indexOf("&")
                 if (ampersandPos !== -1)
-                    menuFrameLoader.mnemonicsMap[title[ampersandPos + 1].toUpperCase()] = menuItemLoader
+                    d.mnemonicsMap[title[ampersandPos + 1].toUpperCase()] = menuItemLoader
             }
 
             Binding {
                 target: menuItemLoader.item
                 property: "width"
                 property alias menuItem: menuItemLoader.item
-                value: menuItem ? Math.max(menu.__minimumWidth, content.width) - 2 * menuItem.x : 0
+                value: menuItem ? Math.max(__menu.__minimumWidth, content.width) - 2 * menuItem.x : 0
             }
         }
     }

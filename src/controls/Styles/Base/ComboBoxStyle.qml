@@ -213,15 +213,15 @@ Style {
 
     /*! \internal */
     property Component __dropDownStyle: MenuStyle {
-        maxPopupHeight: 600
+        __maxPopupHeight: 600
         __menuItemType: "comboboxitem"
-        scrollerStyle: ScrollViewStyle {
-            property bool useScrollers: false
-        }
+        __scrollerStyle: ScrollViewStyle { }
     }
 
     /*! \internal */
     property Component __popupStyle: Style {
+        property int __maxPopupHeight: 400
+        property int submenuOverlap: 0
 
         property Component frame: Rectangle {
             width: (parent ? parent.contentWidth : 0)
@@ -231,7 +231,7 @@ Style {
             property int margin: 1
         }
 
-        property Component menuItem: Text {
+        property Component menuItemPanel: Text {
             text: "NOT IMPLEMENTED"
             color: "red"
             font {
@@ -240,13 +240,6 @@ Style {
             }
         }
 
-        property Component scrollerStyle: Style {
-            padding { left: 0; right: 0; top: 0; bottom: 0 }
-            property bool scrollToClickedPosition: false
-            property Component frame: Item { visible: false }
-            property Component corner: Item { visible: false }
-            property Component __scrollbar: Item { visible: false }
-            property bool useScrollers: true
-        }
+        property Component __scrollerStyle: null
     }
 }

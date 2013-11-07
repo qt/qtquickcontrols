@@ -45,11 +45,11 @@ Item {
     id: content
 
     property Component menuItemDelegate
+    property Component scrollIndicatorStyle
     property Component scrollerStyle
     property var itemsModel
     property int minWidth: 100
     property real maxHeight: 800
-    property int margin: 1
 
     signal triggered(var item)
 
@@ -59,30 +59,43 @@ Item {
     }
 
     width: Math.max(list.contentWidth, minWidth)
-    height: Math.min(list.contentHeight, fittedMaxHeight) + 2 * margin
+    height: Math.min(list.contentHeight, fittedMaxHeight)
 
-    readonly property int currentIndex: menu.__currentIndex
+    readonly property int currentIndex: __menu.__currentIndex
     property Item currentItem: null
     readonly property int itemHeight: (list.count > 0 && list.contentItem.children[0]) ? list.contentItem.children[0].height : 23
     readonly property int fittingItems: Math.floor((maxHeight - downScroller.height) / itemHeight)
     readonly property real fittedMaxHeight: itemHeight * fittingItems + downScroller.height
-    readonly property bool shouldUseScrollers: scrollView.__style.useScrollers && itemsModel.length > fittingItems
+    readonly property bool shouldUseScrollers: scrollView.style === emptyScrollerStyle && itemsModel.length > fittingItems
     readonly property real upScrollerHeight: upScroller.visible ? upScroller.height : 0
     readonly property real downScrollerHeight: downScroller.visible ? downScroller.height : 0
 
     function updateCurrentItem(mouse) {
         var pos = mapToItem(list.contentItem, mouse.x, mouse.y)
         if (!currentItem || !currentItem.contains(Qt.point(pos.x - currentItem.x, pos.y - currentItem.y))) {
-            if (currentItem && !hoverArea.pressed && currentItem.isSubmenu)
-                currentItem.closeSubMenu()
+            if (currentItem && !hoverArea.pressed
+                && currentItem.styleData.type === MenuItemType.Menu)
+                currentItem.__closeSubMenu()
             currentItem = list.itemAt(pos.x, pos.y)
             if (currentItem) {
-                menu.__currentIndex = currentItem.menuItemIndex
-                if (currentItem.isSubmenu && !currentItem.menuItem.__popupVisible)
-                    currentItem.showSubMenu(false)
+                __menu.__currentIndex = currentItem.__menuItemIndex
+                if (currentItem.styleData.type === MenuItemType.Menu
+                    && !currentItem.__menuItem.__popupVisible)
+                    currentItem.__showSubMenu(false)
             } else {
-                menu.__currentIndex = -1
+                __menu.__currentIndex = -1
             }
+        }
+    }
+
+    Component {
+        id: emptyScrollerStyle
+        Style {
+            padding { left: 0; right: 0; top: 0; bottom: 0 }
+            property bool scrollToClickedPosition: false
+            property Component frame: Item { visible: false }
+            property Component corner: Item { visible: false }
+            property Component __scrollbar: Item { visible: false }
         }
     }
 
@@ -90,12 +103,11 @@ Item {
         id: scrollView
         anchors {
             fill: parent
-            topMargin: content.margin + upScrollerHeight
-            bottomMargin: downScrollerHeight - content.margin - 1
-            rightMargin: -1
+            topMargin: upScrollerHeight
+            bottomMargin: downScrollerHeight
         }
 
-        style: scrollerStyle
+        style: scrollerStyle || emptyScrollerStyle
         __wheelAreaScrollSpeed: itemHeight
 
         ListView {
@@ -121,25 +133,23 @@ Item {
         onPositionChanged: updateCurrentItem(mouse)
         onReleased: content.triggered(currentItem)
         onExited: {
-            if (currentItem && !currentItem.menuItem.__popupVisible) {
+            if (currentItem && !currentItem.__menuItem.__popupVisible) {
                 currentItem = null
-                menu.__currentIndex = -1
+                __menu.__currentIndex = -1
             }
         }
 
         MenuContentScroller {
             id: upScroller
-            direction: "up"
+            direction: Qt.UpArrow
             visible: shouldUseScrollers && !list.atYBeginning
-            x: margin
             function scrollABit() { list.contentY -= itemHeight }
         }
 
         MenuContentScroller {
             id: downScroller
-            direction: "down"
+            direction: Qt.DownArrow
             visible: shouldUseScrollers && !list.atYEnd
-            x: margin
             function scrollABit() { list.contentY += itemHeight }
         }
     }
@@ -148,7 +158,7 @@ Item {
         interval: 1
         running: true
         repeat: false
-        onTriggered: list.positionViewAtIndex(currentIndex, scrollView.__style.useScrollers
+        onTriggered: list.positionViewAtIndex(currentIndex, !scrollView.__style
                                                             ? ListView.Center : ListView.Beginning)
     }
 

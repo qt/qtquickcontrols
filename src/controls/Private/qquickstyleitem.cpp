@@ -51,6 +51,7 @@
 #include <qquickwindow.h>
 #include "private/qguiapplication_p.h"
 #include <QtGui/qpa/qplatformtheme.h>
+#include "../qquickmenuitem_p.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -503,19 +504,23 @@ void QQuickStyleItem::initStyleOption()
         // For GTK style. See below, in setElementType()
         setProperty("_q_isComboBoxPopupItem", m_itemType == ComboBoxItem);
 
-        QString scrollerDirection = m_properties["scrollerDirection"].toString();
-        if (!scrollerDirection.isEmpty()) {
+        QQuickMenuItemType::MenuItemType type =
+                static_cast<QQuickMenuItemType::MenuItemType>(m_properties["type"].toInt());
+        if (type == QQuickMenuItemType::ScrollIndicator) {
+            int scrollerDirection = m_properties["scrollerDirection"].toInt();
             opt->menuItemType = QStyleOptionMenuItem::Scroller;
-            opt->state |= scrollerDirection == "up" ?
+            opt->state |= scrollerDirection == Qt::UpArrow ?
                         QStyle::State_UpArrow : QStyle::State_DownArrow;
-        } else if (text().isEmpty()) {
+        } else if (type == QQuickMenuItemType::Separator) {
             opt->menuItemType = QStyleOptionMenuItem::Separator;
         } else {
             opt->text = text();
 
-            if (m_properties["isSubmenu"].toBool()) {
+            if (type == QQuickMenuItemType::Menu) {
                 opt->menuItemType = QStyleOptionMenuItem::SubMenu;
             } else {
+                opt->menuItemType = QStyleOptionMenuItem::Normal;
+
                 QString shortcut = m_properties["shortcut"].toString();
                 if (!shortcut.isEmpty()) {
                     opt->text += QLatin1Char('\t') + shortcut;
@@ -527,8 +532,6 @@ void QQuickStyleItem::initStyleOption()
                     QVariant exclusive = m_properties["exclusive"];
                     opt->checkType = exclusive.toBool() ? QStyleOptionMenuItem::Exclusive :
                                                           QStyleOptionMenuItem::NonExclusive;
-                } else {
-                    opt->menuItemType = QStyleOptionMenuItem::Normal;
                 }
             }
             if (m_properties["icon"].canConvert<QIcon>())

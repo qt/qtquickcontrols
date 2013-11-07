@@ -68,7 +68,8 @@ public:
     enum MenuItemType {
         Separator = 0,
         Item,
-        Menu
+        Menu,
+        ScrollIndicator
     };
 };
 

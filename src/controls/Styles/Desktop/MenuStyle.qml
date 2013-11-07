@@ -48,18 +48,16 @@ Style {
 
     property string __menuItemType: "menuitem"
 
+    property int submenuOverlap: 0
+    property int __maxPopupHeight: 0
+
     property Component frame: StyleItem {
         elementType: "menu"
 
-        contentWidth: parent ? parent.contentWidth : 0
-        contentHeight: parent ? parent.contentHeight : 0
-        width: implicitWidth
-        height: implicitHeight
-
-        property int subMenuOverlap: -2 * pixelMetric("menupanelwidth")
-        property real maxHeight: Screen.desktopAvailableHeight * 0.99
-        property int margin: pixelMetric("menuvmargin") + pixelMetric("menupanelwidth")
-
+        contentWidth: parent ? Math.round(parent.contentWidth) : 0
+        contentHeight: parent ? Math.round(parent.contentHeight) : 0
+        width: implicitWidth + 2 * (pixelMetric("menuhmargin") + pixelMetric("menupanelwidth"))
+        height: implicitHeight + 2 * (pixelMetric("menuvmargin") + pixelMetric("menupanelwidth"))
         Rectangle {
             visible: anchors.margins > 0
             anchors {
@@ -70,43 +68,57 @@ Style {
         }
 
         Accessible.role: Accessible.PopupMenu
+
+        Binding {
+            target: styleRoot
+            property: "submenuOverlap"
+            value: 2 * pixelMetric("menupanelwidth")
+        }
+
+        Binding {
+            target: styleRoot
+            property: "margin"
+            value: pixelMetric("menuvmargin") + pixelMetric("menupanelwidth")
+        }
+
+        // ### The Screen attached property can only be set on an Item,
+        // ### and will get its values only when put on a Window.
+        readonly property int desktopAvailableHeight: Screen.desktopAvailableHeight
+        Binding {
+            target: styleRoot
+            property: "__maxPopupHeight"
+            value: desktopAvailableHeight * 0.99
+        }
     }
 
-    property Component menuItem: StyleItem {
+    property Component menuItemPanel: StyleItem {
         elementType: __menuItemType
-        x: pixelMetric("menuhmargin") + pixelMetric("menupanelwidth")
-        y: pixelMetric("menuvmargin")
 
-        text: !!parent && parent.text
-        property string textAndShorcut: text + (properties.shortcut ? "\t" + properties.shortcut : "")
+        text: styleData.text
+        property string textAndShorcut: text + (styleData.shortcut ? "\t" + styleData.shortcut : "")
         contentWidth: textWidth(textAndShorcut)
         contentHeight: textHeight(textAndShorcut)
 
-        enabled: !!parent && parent.enabled
-        selected: !!parent && parent.selected
-        on: !!menuItem && !!menuItem["checkable"] && menuItem.checked
+        enabled: styleData.enabled
+        selected: styleData.selected
+        on: styleData.checkable && styleData.checked
 
-        hints: { "showUnderlined": showUnderlined }
+        hints: { "showUnderlined": styleData.underlineMnemonics }
 
         properties: {
-            "checkable": !!menuItem && !!menuItem["checkable"],
-            "exclusive": !!menuItem && !!menuItem["exclusiveGroup"],
-            "shortcut": !!menuItem && menuItem["shortcut"] || "",
-            "isSubmenu": isSubmenu,
-            "scrollerDirection": scrollerDirection,
-            "icon": !!menuItem && menuItem.__icon
+            "checkable": styleData.checkable,
+            "exclusive": styleData.exclusive,
+            "shortcut": styleData.shortcut,
+            "type": styleData.type,
+            "scrollerDirection": styleData.scrollerDirection,
+            "icon": !!__menuItem && __menuItem.__icon
         }
 
         Accessible.role: Accessible.MenuItem
         Accessible.name: StyleHelpers.removeMnemonics(text)
     }
 
-    property Component scrollerStyle: Style {
-        padding { left: 0; right: 0; top: 0; bottom: 0 }
-        property bool scrollToClickedPosition: false
-        property Component frame: Item { visible: false }
-        property Component corner: Item { visible: false }
-        property Component __scrollbar: Item { visible: false }
-        property bool useScrollers: true
-    }
+    property Component scrollIndicator: menuItemPanel
+
+    property Component __scrollerStyle: null
 }

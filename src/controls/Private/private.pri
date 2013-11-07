@@ -34,6 +34,7 @@ PRIVATE_QML_FILES += \
     $$PWD/SourceProxy.qml\
     $$PWD/Style.qml \
     $$PWD/style.js \
+    $$PWD/MenuItemSubControls.qml \
     $$PWD/ModalPopupBehavior.qml \
     $$PWD/StackViewSlideDelegate.qml \
     $$PWD/StackView.js \

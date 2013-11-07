@@ -40,7 +40,6 @@
 import QtQuick 2.1
 import QtQuick.Window 2.1
 import QtQuick.Controls 1.1
-import QtQuick.Controls.Styles 1.1
 import QtQuick.Controls.Private 1.0
 import "." as Desktop
 
@@ -86,18 +85,18 @@ Style {
     }
 
     property Component __dropDownStyle: Style {
+        property int __maxPopupHeight: 600
+        property int submenuOverlap: 0
+
         property Component frame: StyleItem {
             elementType: "frame"
-
             width: (parent ? parent.contentWidth : 0)
             height: (parent ? parent.contentHeight : 0) + 2 * pixelMetric("defaultframewidth")
-            property real maxHeight: 600
-            property int margin: pixelMetric("menuvmargin") + pixelMetric("menupanelwidth")
         }
 
-        property Component menuItem: StyleItem {
+        property Component menuItemPanel: StyleItem {
             elementType: "itemrow"
-            selected: parent ? parent.selected : false
+            selected: styleData.selected
 
             x: pixelMetric("defaultframewidth")
             y: pixelMetric("defaultframewidth")
@@ -110,13 +109,11 @@ Style {
                 elementType: "item"
                 contentWidth: textWidth(text)
                 contentHeight: textHeight(text)
-                text: parent && parent.parent ? parent.parent.text : ""
+                text: styleData.text
                 selected: parent ? parent.selected : false
             }
         }
 
-        property Component scrollerStyle: Desktop.ScrollViewStyle {
-            property bool useScrollers: false
-        }
+        property Component __scrollerStyle: Desktop.ScrollViewStyle { }
     }
 }

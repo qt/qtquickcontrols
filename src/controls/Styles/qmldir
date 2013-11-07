@@ -3,6 +3,8 @@ ButtonStyle 1.0 Base/ButtonStyle.qml
 BusyIndicatorStyle 1.1 Base/BusyIndicatorStyle.qml
 CheckBoxStyle 1.0 Base/CheckBoxStyle.qml
 ComboBoxStyle 1.0 Base/ComboBoxStyle.qml
+MenuStyle 1.2 Base/MenuStyle.qml
+MenuBarStyle 1.2 Base/MenuBarStyle.qml
 ProgressBarStyle 1.0 Base/ProgressBarStyle.qml
 RadioButtonStyle 1.0 Base/RadioButtonStyle.qml
 ScrollViewStyle 1.0 Base/ScrollViewStyle.qml

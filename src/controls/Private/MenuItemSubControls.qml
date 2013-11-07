@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2014 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the Qt Quick Controls module of the Qt Toolkit.
@@ -39,36 +39,11 @@
 ****************************************************************************/
 
 import QtQuick 2.1
-import QtQuick.Controls 1.1
-import QtQuick.Controls.Private 1.0
-import "." as Desktop
 
-Style {
-    property Component background: StyleItem {
-        elementType: "menubar"
-        width: implicitWidth + 2 * (pixelMetric("menubarhmargin") + pixelMetric("menubarpanelwidth"))
-        height: implicitHeight + 2 * (pixelMetric("menubarvmargin") + pixelMetric("menubarpanelwidth"))
-                + pixelMetric("spacebelowmenubar")
-
-        Accessible.role: Accessible.MenuBar
-    }
-
-    property Component itemDelegate: StyleItem {
-        elementType: "menubaritem"
-
-        text: styleData.text
-        contentWidth: textWidth(text)
-        contentHeight: textHeight(text)
-        width: implicitWidth + pixelMetric("menubaritemspacing")
-
-        enabled: styleData.enabled
-        sunken: styleData.open
-
-        hints: { "showUnderlined": styleData.underlineMnemonic }
-
-        Accessible.role: Accessible.MenuItem
-        Accessible.name: StyleHelpers.removeMnemonics(text)
-    }
-
-    property Component menuStyle: Desktop.MenuStyle { }
+QtObject {
+    property Component background: null
+    property Component label: null
+    property Component submenuIndicator: null
+    property Component shortcut: null
+    property Component checkmarkIndicator: null
 }
