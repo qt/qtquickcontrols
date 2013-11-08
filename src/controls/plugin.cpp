@@ -57,6 +57,7 @@
 #include "Private/qquickcontrolsprivate_p.h"
 
 #ifdef QT_WIDGETS_LIB
+#include <QtQuick/qquickimageprovider.h>
 #include "Private/qquickstyleitem_p.h"
 #endif
 
@@ -134,8 +135,8 @@ void QtQuickControlsPlugin::initializeEngine(QQmlEngine *engine, const char *uri
 
 #ifdef QT_WIDGETS_LIB
     qmlRegisterType<QQuickStyleItem>(private_uri, 1, 0, "StyleItem");
+    engine->addImageProvider("__tablerow", new QQuickTableRowImageProvider);
 #endif
-
     engine->addImageProvider("desktoptheme", new QQuickDesktopIconProvider);
     if (isLoadedFromResource())
         engine->addImportPath(QStringLiteral("qrc:/"));

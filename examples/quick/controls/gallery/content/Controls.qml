@@ -61,12 +61,10 @@ Item {
         spacing: 16
         ColumnLayout {
             id: firstColumn
-            spacing: 7
             Layout.minimumWidth: implicitWidth
             Layout.fillWidth: false
             RowLayout {
                 id: buttonrow
-                spacing:8
                 Button {
                     id: button1
                     text: "Button 1"
@@ -109,7 +107,6 @@ Item {
                 }
             }
             RowLayout {
-                spacing: 8
                 SpinBox {
                     id: t1
                     Layout.fillWidth: true
@@ -157,7 +154,6 @@ Item {
         }
         ColumnLayout {
             id: rightcol
-            spacing: 12
             Layout.fillWidth: true
             anchors {
                 top: parent.top
@@ -169,20 +165,24 @@ Item {
                 title: "CheckBox"
                 Layout.fillWidth: true
                 RowLayout {
+                    Layout.fillWidth: true
                     CheckBox {
                         id: frameCheckbox
                         text: "Text frame"
                         checked: true
+                        Layout.minimumWidth: 100
                     }
                     CheckBox {
                         id: tickmarkCheck
                         text: "Tickmarks"
                         checked: false
+                        Layout.minimumWidth: 100
                     }
                     CheckBox {
                         id: wrapCheck
                         text: "Word wrap"
                         checked: true
+                        Layout.minimumWidth: 100
                     }
                 }
             }
@@ -197,11 +197,13 @@ Item {
                         text: "Top"
                         checked: true
                         exclusiveGroup: tabPositionGroup
+                        Layout.minimumWidth: 100
                     }
                     RadioButton {
                         id: r2
                         text: "Bottom"
                         exclusiveGroup: tabPositionGroup
+                        Layout.minimumWidth: 100
                     }
                 }
             }

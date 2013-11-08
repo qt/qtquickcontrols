@@ -107,14 +107,20 @@ Control {
     id: comboBox
 
     /*! \qmlproperty model ComboBox::model
-        The model to populate the ComboBox from. */
+        The model to populate the ComboBox from.
+
+        Changing the model after initialization will reset \l currentIndex to \c 0.
+    */
     property alias model: popupItems.model
 
     /*! The model role used for populating the ComboBox. */
     property string textRole: ""
 
     /*! \qmlproperty int ComboBox::currentIndex
-        The index of the currently selected item in the ComboBox. */
+        The index of the currently selected item in the ComboBox.
+
+        \sa model
+    */
     property alias currentIndex: popup.__selectedIndex
 
     /*! \qmlproperty string ComboBox::currentText
@@ -311,7 +317,8 @@ Control {
 
         anchors.fill: parent
         anchors.leftMargin: 8
-        anchors.rightMargin: 24
+        anchors.rightMargin: __style.drowDownButtonWidth
+
         verticalAlignment: Text.AlignVCenter
 
         renderType: Text.NativeRendering
@@ -412,7 +419,8 @@ Control {
         property string currentText: selectedText
         onSelectedTextChanged: if (selectedText) popup.currentText = selectedText
 
-        readonly property string selectedText: items[__selectedIndex] ? items[__selectedIndex].text : ""
+        property string selectedText
+        on__SelectedIndexChanged: updateSelectedText()
         property string textRole: ""
 
         property bool ready: false
@@ -429,6 +437,20 @@ Control {
         Instantiator {
             id: popupItems
             active: false
+
+            property bool updatingModel: false
+            onModelChanged: {
+                if (active) {
+                    if (updatingModel && popup.__selectedIndex === 0) {
+                        // We still want to update the currentText
+                        popup.updateSelectedText()
+                    } else {
+                        updatingModel = true
+                        popup.__selectedIndex = 0
+                    }
+                }
+            }
+
             MenuItem {
                 text: popup.textRole === '' ?
                         modelData :
@@ -441,7 +463,11 @@ Control {
                 checkable: true
                 exclusiveGroup: eg
             }
-            onObjectAdded: popup.insertItem(index, object)
+            onObjectAdded: {
+                popup.insertItem(index, object)
+                if (!updatingModel && index === popup.__selectedIndex)
+                    popup.selectedText = object["text"]
+            }
             onObjectRemoved: popup.removeItem(object)
 
         }
@@ -483,8 +509,13 @@ Control {
                     textRole = roleName
                 }
             }
-            popupItems.active = true
+
+            if (!popupItems.active)
+                popupItems.active = true
+            else
+                updateSelectedText()
         }
+
         function show() {
             if (items[__selectedIndex])
                 items[__selectedIndex].checked = true
@@ -493,6 +524,12 @@ Control {
                 __popup(comboBox.width, y, isPopup ? __selectedIndex : 0)
             else
                 __popup(0, y, isPopup ? __selectedIndex : 0)
+        }
+
+        function updateSelectedText() {
+            var selectedItem;
+            if (__selectedIndex !== -1 && (selectedItem = items[__selectedIndex]))
+                selectedText = selectedItem.text
         }
     }
 

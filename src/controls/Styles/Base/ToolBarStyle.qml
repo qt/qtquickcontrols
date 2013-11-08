@@ -43,18 +43,50 @@ import QtQuick.Controls.Private 1.0
 
 /*!
     \qmltype ToolBarStyle
-    \internal
-    \ingroup applicationwindowstyling
     \inqmlmodule QtQuick.Controls.Styles
+    \ingroup controlsstyling
+    \since 5.2
+    \brief Provides custom styling for ToolBar
+
+    The tool bar can be defined by overriding the background component and
+    setting the content padding.
+
+    Example:
+    \qml
+    ToolBar {
+        style: ToolBarStyle {
+            padding {
+                left: 8
+                right: 8
+                top: 3
+                bottom: 3
+            }
+            background: Rectangle {
+                implicitWidth: 100
+                implicitHeight: 40
+                border.color: "#999"
+                gradient: Gradient {
+                    GradientStop { position: 0 ; color: "#fff" }
+                    GradientStop { position: 1 ; color: "#eee" }
+                }
+            }
+        }
+    }
+    \endqml
 */
+
 Style {
 
-    padding.left: 6
-    padding.right: 6
-    padding.top: 3
-    padding.bottom: 3
+    /*! The content padding inside the tool bar. */
+    padding {
+        left: 6
+        right: 6
+        top: 3
+        bottom: 3
+    }
 
-    property Component panel: Item {
+    /*! This defines the background of the tool bar. */
+    property Component background: Item {
         implicitHeight: 40
         implicitWidth: 200
         Rectangle {
@@ -70,5 +102,9 @@ Style {
                 color: "#999"
             }
         }
+    }
+
+    property Component panel: Loader {
+        sourceComponent: background
     }
 }

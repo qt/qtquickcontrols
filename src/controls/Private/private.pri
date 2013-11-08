@@ -30,6 +30,8 @@ PRIVATE_QML_FILES += \
     $$PWD/TabBar.qml \
     $$PWD/BasicButton.qml \
     $$PWD/Control.qml \
+    $$PWD/FastGlow.qml \
+    $$PWD/SourceProxy.qml\
     $$PWD/Style.qml \
     $$PWD/style.js \
     $$PWD/ModalPopupBehavior.qml \

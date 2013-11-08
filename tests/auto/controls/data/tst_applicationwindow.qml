@@ -37,78 +37,62 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
+
 import QtQuick 2.1
-import QtQuick.Controls 1.1
-import QtQuick.Controls.Private 1.0
+import QtTest 1.0
+import QtQuickControlsTests 1.0
 
-/*!
-    \qmltype StatusBarStyle
-    \inqmlmodule QtQuick.Controls.Styles
-    \ingroup controlsstyling
-    \since 5.2
-    \brief Provides custom styling for StatusBar
+Item {
+    id: container
+    width: 400
+    height: 400
 
-    The status bar can be defined by overriding the background component and
-    setting the content padding.
+TestCase {
+    id: testCase
+    name: "Tests_ApplicationWindow"
+    when:windowShown
+    width:400
+    height:400
 
-    Example:
-    \qml
-    StatusBar {
-        style: StatusBarStyle {
-            padding {
-                left: 8
-                right: 8
-                top: 3
-                bottom: 3
-            }
-            background: Rectangle {
-                implicitHeight: 16
-                implicitWidth: 200
-                gradient: Gradient{
-                    GradientStop{color: "#eee" ; position: 0}
-                    GradientStop{color: "#ccc" ; position: 1}
-                }
-                Rectangle {
-                    anchors.top: parent.top
-                    width: parent.width
-                    height: 1
-                    color: "#999"
-                }
-            }
-        }
+    function test_minimumHeight() {
+        var test_control = 'import QtQuick 2.1; \
+        import QtQuick.Controls 1.1;            \
+        ApplicationWindow {                     \
+            width: 100; height: 100;            \
+            property alias contentArea: rect;   \
+            statusBar: StatusBar {              \
+                visible: false;                 \
+                Label {                         \
+                    text: "Ready";              \
+                }                               \
+            }                                   \
+                                                \
+            toolBar: ToolBar {                  \
+                visible: false;                 \
+                ToolButton {                    \
+                    text: "One";                \
+                }                               \
+            }                                   \
+            Rectangle {                         \
+                id: rect;                       \
+                anchors.fill: parent;           \
+            }                                   \
+        }                                       '
+
+        var window = Qt.createQmlObject(test_control, container, '')
+        wait(0)
+        var contentArea = window.contentArea
+        var oldHeight = contentArea.height
+        compare(contentArea.height, 100)
+        window.statusBar.visible = true
+        wait(0)
+        verify(contentArea.height < oldHeight)
+
+        oldHeight = contentArea.height;
+        window.toolBar.visible = true
+        wait(0)
+        verify(contentArea.height < oldHeight)
+        window.destroy()
     }
-    \endqml
-*/
-
-Style {
-
-    /*! The content padding inside the status bar. */
-    padding {
-        left: 3
-        right: 3
-        top: 3
-        bottom: 2
-    }
-
-    /*! This defines the background of the tool bar. */
-    property Component background: Rectangle {
-        implicitHeight: 16
-        implicitWidth: 200
-
-        gradient: Gradient{
-            GradientStop{color: "#eee" ; position: 0}
-            GradientStop{color: "#ccc" ; position: 1}
-        }
-
-        Rectangle {
-            anchors.top: parent.top
-            width: parent.width
-            height: 1
-            color: "#999"
-        }
-    }
-
-    property Component panel: Loader {
-        sourceComponent: background
-    }
+}
 }

@@ -263,6 +263,19 @@ TestCase {
         verify(!button.checked)
         compare(checkSpy.count, checkCount)
 
+        // keyboard toggle
+        button.forceActiveFocus()
+        keyClick(Qt.Key_Space)
+        verify(button.checked)
+        compare(checkSpy.count, ++checkCount)
+
+        // toggle on release
+        keyPress(Qt.Key_Space)
+        verify(button.checked)
+        keyRelease(Qt.Key_Space)
+        verify(!button.checked)
+        compare(checkSpy.count, ++checkCount)
+
         button.destroy()
     }
 }

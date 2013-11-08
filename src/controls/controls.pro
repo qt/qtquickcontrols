@@ -45,7 +45,7 @@ include(plugin.pri)
 include(Private/private.pri)
 include(Styles/styles.pri)
 
-osx: LIBS += -framework Carbon
+osx: LIBS_PRIVATE += -framework Carbon
 
 # Create the resource file
 GENERATED_RESOURCE_FILE = $$OUT_PWD/controls.qrc

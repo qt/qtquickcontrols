@@ -25,6 +25,8 @@ STYLES_QML_FILES = \
 
 # Desktop
 STYLES_QML_FILES += \
+    $$PWD/Desktop/qmldir \
+    $$PWD/Desktop/RowItemSingleton.qml \
     $$PWD/Desktop/ButtonStyle.qml \
     $$PWD/Desktop/BusyIndicatorStyle.qml \
     $$PWD/Desktop/CheckBoxStyle.qml \
@@ -70,9 +72,10 @@ STYLES_QML_FILES += \
     $$PWD/Base/images/arrow-left.png \
     $$PWD/Base/images/arrow-left@2x.png \
     $$PWD/Base/images/arrow-right.png \
-    $$PWD/Base/images/arrow-right@2x.png
+    $$PWD/Base/images/arrow-right@2x.png \
+    $$PWD/Base/images/check.png \
+    $$PWD/Base/images/check@2x.png
 
 STYLES_QML_FILES += $$PWD/qmldir
 
 QML_FILES += $$STYLES_QML_FILES
-

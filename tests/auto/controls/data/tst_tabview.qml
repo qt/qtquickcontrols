@@ -390,7 +390,7 @@ TestCase {
         verify(!tab3.activeFocus)
         verify(!textField.activeFocus)
 
-        tabView.destroy()
+        item.destroy()
     }
 
     function printGeometry(control) {

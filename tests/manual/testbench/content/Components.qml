@@ -56,6 +56,7 @@ Item {
     property Component textarea: TextArea { text: loremIpsum }
     property Component toolbar: ToolBar { }
     property Component statusbar: StatusBar { }
+    property Component switchcontrol: Switch { }
     property Component label: Label {text: "I am a label" }
     property Component tableview: TableView { property bool movableColumns: true; model: testDataModel ; TableViewColumn {title: "Column 1"; movable: movableColumns} TableViewColumn {title: "Column 2"; movable: movableColumns} }
     property Component tabView: TabView { Repeater { model: 3 ; delegate:Tab { title: "Tab " + index } }}
@@ -121,6 +122,7 @@ Item {
             append({ name: "ComboBox",      component: combobox});
             append({ name: "RadioButton",   component: radiobutton});
             append({ name: "Slider",        component: slider});
+            append({ name: "Switch",        component: switchcontrol});
             append({ name: "ProgressBar",   component: progressbar});
             append({ name: "TextField",     component: textfield});
             append({ name: "TextArea",      component: textarea});
@@ -147,6 +149,7 @@ Item {
     property Component spinboxStyle: SpinBoxStyle {}
     property Component toolbarStyle: ToolBarStyle {}
     property Component statusbarStyle: StatusBarStyle {}
+    property Component switchStyle: SwitchStyle {}
     property Component tableviewStyle: TableViewStyle {}
     property Component scrollviewStyle: ScrollViewStyle {}
     property Component groupboxStyle: GroupBoxStyle {}
@@ -163,6 +166,7 @@ Item {
             append({ name: "ComboBox",      component: comboboxStyle});
             append({ name: "RadioButton",   component: radiobuttonStyle});
             append({ name: "Slider",        component: sliderStyle});
+            append({ name: "Switch",        component: switchStyle});
             append({ name: "ProgressBar",   component: progressbarStyle});
             append({ name: "TextField",     component: textfieldStyle});
             append({ name: "TextArea",      component: textareaStyle});

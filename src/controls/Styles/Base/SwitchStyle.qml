@@ -76,8 +76,9 @@ Style {
 
     /*! This defines the switch handle.  */
     property Component handle: Rectangle {
-        implicitWidth: 32
-        implicitHeight: 18
+        opacity: control.enabled ? 1.0 : 0.5
+        implicitWidth: Math.round((parent.parent.width - padding.left - padding.right)/2)
+        implicitHeight: control.height - padding.top - padding.bottom
 
         border.color: control.activeFocus ? Qt.darker(__syspal.highlight, 2) : Qt.darker(__syspal.button, 2)
         property color bg: control.activeFocus ? Qt.darker(__syspal.highlight, 1.2) : __syspal.button
@@ -94,8 +95,8 @@ Style {
         property color shadow: control.checked ? Qt.darker(__syspal.highlight, 1.2): "#999"
         property color bg: control.checked ? __syspal.highlight:"#bbb"
 
-        implicitWidth: 60
-        implicitHeight: 18
+        implicitWidth: Math.round(implicitHeight * 3)
+        implicitHeight: Math.max(16, Math.round(TextSingleton.implicitHeight))
 
         border.color: "gray"
         color: "red"

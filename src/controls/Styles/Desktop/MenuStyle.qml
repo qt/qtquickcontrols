@@ -53,10 +53,10 @@ Style {
 
         contentWidth: parent ? parent.contentWidth : 0
         contentHeight: parent ? parent.contentHeight : 0
-        width: implicitWidth + 2 * (pixelMetric("menuhmargin") + pixelMetric("menupanelwidth"))
-        height: implicitHeight + 2 * (pixelMetric("menuvmargin") + pixelMetric("menupanelwidth"))
+        width: implicitWidth
+        height: implicitHeight
 
-        property int subMenuOverlap: pixelMetric("submenuoverlap")
+        property int subMenuOverlap: -2 * pixelMetric("menupanelwidth")
         property real maxHeight: Screen.desktopAvailableHeight * 0.99
         property int margin: pixelMetric("menuvmargin") + pixelMetric("menupanelwidth")
 
@@ -75,7 +75,7 @@ Style {
     property Component menuItem: StyleItem {
         elementType: __menuItemType
         x: pixelMetric("menuhmargin") + pixelMetric("menupanelwidth")
-        y: pixelMetric("menuvmargin") + pixelMetric("menupanelwidth")
+        y: pixelMetric("menuvmargin")
 
         text: !!parent && parent.text
         property string textAndShorcut: text + (properties.shortcut ? "\t" + properties.shortcut : "")

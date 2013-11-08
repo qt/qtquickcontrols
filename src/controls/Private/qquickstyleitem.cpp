@@ -1684,4 +1684,45 @@ void QQuickStyleItem::updatePolish()
     }
 }
 
+QPixmap QQuickTableRowImageProvider::requestPixmap(const QString &id, QSize *size, const QSize &requestedSize)
+{
+    Q_UNUSED (requestedSize);
+    int width = 16;
+    int height = 16;
+    if (size)
+        *size = QSize(width, height);
+
+    QPixmap pixmap(width, height);
+
+    QStyleOptionViewItem opt;
+    opt.state |= QStyle::State_Enabled;
+    opt.rect = QRect(0, 0, width, height);
+    QString style = qApp->style()->metaObject()->className();
+    opt.features = 0;
+
+    if (id.contains("selected"))
+        opt.state |= QStyle::State_Selected;
+
+    if (id.contains("active")) {
+        opt.state |= QStyle::State_Active;
+        opt.palette.setCurrentColorGroup(QPalette::Active);
+    } else
+        opt.palette.setCurrentColorGroup(QPalette::Inactive);
+
+    if (id.contains("alternate"))
+        opt.features |= QStyleOptionViewItem::Alternate;
+
+    QPalette pal = QApplication::palette("QAbstractItemView");
+    if (opt.state & QStyle::State_Selected && (style.contains("Mac") ||
+                                               !qApp->style()->styleHint(QStyle::SH_ItemView_ShowDecorationSelected))) {
+        pal.setCurrentColorGroup(opt.palette.currentColorGroup());
+        pixmap.fill(pal.highlight().color());
+    } else {
+        pixmap.fill(pal.base().color());
+        QPainter pixpainter(&pixmap);
+        qApp->style()->drawPrimitive(QStyle::PE_PanelItemViewRow, &opt, &pixpainter);
+    }
+    return pixmap;
+}
+
 QT_END_NAMESPACE
