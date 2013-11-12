@@ -70,6 +70,8 @@ ApplicationWindow {
         onAccepted: imageViewer.open(fileUrl)
     }
 
+    AboutDialog { id: aboutDialog }
+
     Action {
         id: openAction
         text: "&Open"
@@ -104,6 +106,12 @@ ApplicationWindow {
         iconName: "edit-paste"
         enabled: (!!activeFocusItem && !!activeFocusItem["paste"])
         onTriggered: activeFocusItem.paste()
+    }
+
+    Action {
+        id: aboutAction
+        text: "About"
+        onTriggered: aboutDialog.open()
     }
 
     ExclusiveGroup {
@@ -209,6 +217,10 @@ ApplicationWindow {
                 title: "Me Neither"
                 visible: false
             }
+        }
+        Menu {
+            title: "&Help"
+            MenuItem { action: aboutAction }
         }
     }
 
