@@ -271,6 +271,7 @@ Control {
 
     MouseArea {
         id: mouseUp
+        objectName: "mouseUp"
         hoverEnabled: true
 
         property var upRect: __panel  ?  __panel.upRect : null
@@ -285,6 +286,7 @@ Control {
         height: upRect ? upRect.height : 0
 
         onClicked: __increment()
+        onPressed: if (activeFocusOnPress) input.forceActiveFocus()
 
         property bool autoincrement: false;
         onReleased: autoincrement = false
@@ -296,9 +298,12 @@ Control {
 
     MouseArea {
         id: mouseDown
+        objectName: "mouseDown"
         hoverEnabled: true
 
         onClicked: __decrement()
+        onPressed: if (activeFocusOnPress) input.forceActiveFocus()
+
         property var downRect: __panel ? __panel.downRect : null
 
         anchors.left: parent.left
