@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.1
+import QtQuick 2.2
 import QtQuick.Controls 1.1
 import QtQuick.Controls.Private 1.0
 
@@ -403,6 +403,18 @@ Control {
     signal accepted()
 
     /*!
+        \qmlsignal TextField::editingFinished()
+        \since 5.2
+
+        This signal is emitted when the Return or Enter key is pressed or
+        the text field loses focus. Note that if there is a validator or
+        inputMask set on the text field and enter/return is pressed, this
+        signal will only be emitted if the input follows
+        the inputMask and the validator returns an acceptable state.
+    */
+    signal editingFinished()
+
+    /*!
         \qmlmethod TextField::copy()
 
         Copies the currently selected text to the system clipboard.
@@ -591,5 +603,7 @@ Control {
             Qt.inputMethod.hide()
             textfield.accepted()
         }
+
+        onEditingFinished: textfield.editingFinished()
     }
 }
