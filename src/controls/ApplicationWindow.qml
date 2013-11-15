@@ -123,6 +123,7 @@ Window {
     default property alias data: contentArea.data
 
     color: syspal.window
+    flags: Qt.Window | Qt.WindowFullscreenButtonHint
 
     SystemPalette {id: syspal}
 
