@@ -45,6 +45,8 @@
 
 QT_BEGIN_NAMESPACE
 
+namespace LayoutEngineInQtQuickLayouts {
+
 void QLayoutPolicy::setControlType(ControlType type)
 {
     /*
@@ -132,5 +134,7 @@ QDebug operator<<(QDebug dbg, const QLayoutPolicy &p)
     return dbg.space();
 }
 #endif
+
+}   // namespace LayoutEngineInQtQuickLayouts
 
 QT_END_NAMESPACE

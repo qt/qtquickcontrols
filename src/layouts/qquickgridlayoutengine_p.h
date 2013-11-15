@@ -59,6 +59,7 @@
 #include "qdebug.h"
 QT_BEGIN_NAMESPACE
 
+using namespace LayoutEngineInQtQuickLayouts;
 
 class QQuickGridLayoutItem : public QGridLayoutItem {
 public:

@@ -55,6 +55,8 @@
 
 QT_BEGIN_NAMESPACE
 
+namespace LayoutEngineInQtQuickLayouts {
+
 template <typename T>
 static void insertOrRemoveItems(QVector<T> &items, int index, int delta)
 {
@@ -1681,6 +1683,8 @@ void QGridLayoutEngine::ensureGeometries(const QSizeF &size,
                 0, q_totalBoxes[Hor], q_infos[Hor]);
     }
 }
+
+}   // namespace LayoutEngineInQtQuickLayouts
 
 QT_END_NAMESPACE
 

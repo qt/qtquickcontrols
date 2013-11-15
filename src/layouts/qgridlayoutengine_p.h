@@ -71,6 +71,9 @@ class QStyle;
 class QWidget;
 
 class QStyleOption;
+
+namespace LayoutEngineInQtQuickLayouts {
+
 // ### FIX THIS GUY
 class QLayoutStyleInfo
 {
@@ -554,6 +557,8 @@ public:
 
     friend class QGridLayoutItem;
 };
+
+}   // namespace LayoutEngineInQtQuickLayouts
 
 QT_END_NAMESPACE
 

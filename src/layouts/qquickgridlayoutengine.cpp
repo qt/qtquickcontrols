@@ -45,6 +45,8 @@
 
 QT_BEGIN_NAMESPACE
 
+using namespace LayoutEngineInQtQuickLayouts;
+
 /*
   The layout engine assumes:
     1. minimum <= preferred <= maximum

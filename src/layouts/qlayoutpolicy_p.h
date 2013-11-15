@@ -49,6 +49,8 @@ QT_BEGIN_NAMESPACE
 
 class QVariant;
 
+namespace LayoutEngineInQtQuickLayouts {
+
 class QLayoutPolicy
 {
     Q_ENUMS(Policy)
@@ -174,6 +176,8 @@ inline void QLayoutPolicy::transpose() {
     setHorizontalStretch(vStretch);
     setVerticalStretch(hStretch);
 }
+
+}   // namespace LayoutEngineInQtQuickLayouts
 
 QT_END_NAMESPACE
 
