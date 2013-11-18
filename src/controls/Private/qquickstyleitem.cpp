@@ -112,7 +112,7 @@ public:
     }
 
     void initialize(QSGTexture *texture,
-                    const QRectF &bounds,
+                    const QRectF &bounds, qreal devicePixelRatio,
                     int left, int top, int right, int bottom) {
 
         delete m_material.texture();
@@ -127,6 +127,9 @@ public:
 
         QRectF tc = texture->normalizedTextureSubRect();
         QSize ts = texture->textureSize();
+        ts.setHeight(ts.height() / devicePixelRatio);
+        ts.setWidth(ts.width() / devicePixelRatio);
+
         qreal invtw = tc.width() / ts.width();
         qreal invth = tc.height() / ts.height();
 
@@ -1661,6 +1664,7 @@ QSGNode *QQuickStyleItem::updatePaintNode(QSGNode *node, UpdatePaintNodeData *)
 
     styleNode->initialize(window()->createTextureFromImage(m_image, QQuickWindow::TextureCanUseAtlas),
                           boundingRect(),
+                          window()->devicePixelRatio(),
                           m_border.left(), m_border.top(), m_border.right(), m_border.bottom());
     return styleNode;
 }
