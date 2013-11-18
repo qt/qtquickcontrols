@@ -38,10 +38,10 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.1
+import QtQuick 2.2
 import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.0
-import QtQuick.Dialogs 1.0
+import QtQuick.Dialogs 1.1
 import QtQuick.Window 2.1
 import org.qtproject.example 1.0
 
@@ -53,35 +53,11 @@ ApplicationWindow {
 
     title: document.documentTitle + " - Text Editor Example"
 
-    ApplicationWindow {
+    MessageDialog {
         id: aboutBox
-
-        width: 280
-        height: 120
         title: "About Text"
-
-        ColumnLayout {
-            anchors.fill: parent
-            anchors.margins: 8
-            Item {
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                Label {
-                    anchors.centerIn: parent
-                    horizontalAlignment: Text.AlignHCenter
-                    text: "This is a basic text editor \nwritten with Qt Quick Controls"
-                }
-            }
-            Button {
-                text: "Ok"
-                isDefault: true
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.bottom: parent.bottom
-                onClicked: aboutBox.close()
-            }
-            Keys.onReturnPressed: aboutBox.close()
-            focus: true
-        }
+        text: "This is a basic text editor \nwritten with Qt Quick Controls"
+        icon: StandardIcon.Information
     }
 
     Action {
@@ -231,7 +207,7 @@ ApplicationWindow {
         }
         Menu {
             title: "&Help"
-            MenuItem { text: "About..." ; onTriggered: aboutBox.show() }
+            MenuItem { text: "About..." ; onTriggered: aboutBox.open() }
         }
     }
 

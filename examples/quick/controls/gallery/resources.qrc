@@ -1,6 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
+        <file>content/AboutDialog.qml</file>
         <file>content/ChildWindow.qml</file>
         <file>content/Controls.qml</file>
         <file>content/ImageViewer.qml</file>

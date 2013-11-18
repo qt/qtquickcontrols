@@ -119,10 +119,13 @@ Window {
 
     onStatusBarChanged: { if (statusBar) { statusBar.parent = statusBarArea } }
 
+    onVisibleChanged: { if (visible && menuBar) { menuBar.__parentWindow = root } }
+
     /*! \internal */
     default property alias data: contentArea.data
 
     color: syspal.window
+    flags: Qt.Window | Qt.WindowFullscreenButtonHint
 
     SystemPalette {id: syspal}
 

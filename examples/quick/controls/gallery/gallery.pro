@@ -6,6 +6,7 @@ include(src/src.pri)
 
 OTHER_FILES += \
     main.qml \
+    content/AboutDialog.qml \
     content/ChildWindow.qml \
     content/Controls.qml \
     content/ImageViewer.qml \
