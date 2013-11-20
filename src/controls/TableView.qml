@@ -830,7 +830,6 @@ ScrollView {
                         }
                     }
                 }
-                onWidthChanged: listView.contentWidth = width
             }
         }
 
@@ -991,6 +990,7 @@ ScrollView {
                         }
                     }
                 }
+                onWidthChanged: listView.contentWidth = width
             }
             Loader {
                 id: loader
