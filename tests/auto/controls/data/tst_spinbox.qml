@@ -343,6 +343,16 @@ Item {
             spinbox2.destroy()
         }
 
+        function test_setFontsize(){
+            var control = Qt.createQmlObject('import QtQuick.Controls 1.1; import QtQuick.Controls.Styles 1.1; SpinBox {style: SpinBoxStyle{}}', container, '')
+            var width = control.width;
+            var height = control.height;
+            control.font.pixelSize = 40
+            verify(control.width > width) // ensure that the text field resizes
+            verify(control.height > height)
+            control.destroy()
+        }
+
         function test_get_active_focus_when_up_or_down_was_pressed(){
             var test_control = 'import QtQuick 2.1;             \
             import QtQuick.Controls 1.1;                        \

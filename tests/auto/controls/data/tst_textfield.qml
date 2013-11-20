@@ -280,6 +280,16 @@ TestCase {
         control.destroy()
     }
 
+    function test_setFontsize(){
+        var control = Qt.createQmlObject('import QtQuick.Controls 1.1; import QtQuick.Controls.Styles 1.1; TextField {style:TextFieldStyle{}}', container, '')
+        var width = control.width;
+        var height = control.height;
+        control.font.pixelSize = 40
+        verify(control.width > width) // ensure that the text field resizes
+        verify(control.height > height)
+        control.destroy()
+    }
+
     function test_activeFocusOnTab() {
         // Set TextField readonly so the tab/backtab can be tested toward the navigation
         var test_control = 'import QtQuick 2.1; \
