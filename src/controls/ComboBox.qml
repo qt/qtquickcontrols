@@ -323,8 +323,9 @@ Control {
 
         renderType: Text.NativeRendering
         selectByMouse: true
-        selectionColor: syspal.highlight
-        selectedTextColor: syspal.highlightedText
+        color: __style.__syspal.text
+        selectionColor: __style.__syspal.highlight
+        selectedTextColor: __style.__syspal.highlightedText
         onAccepted: {
             var idx = input.find(editText)
             if (idx > -1) {
@@ -339,8 +340,6 @@ Control {
             }
             comboBox.accepted();
         }
-
-        SystemPalette { id: syspal }
 
         property bool blockUpdate: false
         property string prevText
