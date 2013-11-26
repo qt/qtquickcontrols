@@ -618,7 +618,33 @@ Item {
             downCoord.y = item.y + item.height - arrowMargin
         }
 
+        function test_fixup() {
+            var spinbox = Qt.createQmlObject('import QtQuick.Controls 1.1; SpinBox { minimumValue: -1 }', container, '')
+            verify(spinbox)
+            spinbox.forceActiveFocus()
+            verify(spinbox.activeFocus)
 
+            keyClick(Qt.Key_Minus)
+            keyClick(Qt.Key_0)
+            compare(spinbox.__text, "-0")
+
+            // fixup "-0" to "0" on accept
+            keyClick(Qt.Key_Enter)
+            compare(spinbox.__text, "0")
+
+            spinbox.prefix = "pfx"
+            spinbox.suffix = "sfx"
+            keyClick(Qt.Key_A, Qt.ControlModifier)
+            keyClick(Qt.Key_Minus)
+            keyClick(Qt.Key_0)
+            compare(spinbox.__text, "pfx-0sfx")
+
+            // fixup "-0" to "0" on defocus
+            spinbox.focus = false
+            compare(spinbox.__text, "pfx0sfx")
+
+            spinbox.destroy()
+        }
     }
 }
 

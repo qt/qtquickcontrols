@@ -107,6 +107,9 @@ Q_SIGNALS:
     void suffixChanged();
     void textChanged();
 
+protected:
+    QString textFromValue(qreal value) const;
+
 private:
     qreal m_value;
     qreal m_step;
