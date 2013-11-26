@@ -385,7 +385,7 @@ Window {
             CheckBox{
                 id: sortableCheckbox
                 checked: false
-                text: "Sortindicator"
+                text: "Sort indicator"
                 anchors.verticalCenter: parent.verticalCenter
             }
             CheckBox{
