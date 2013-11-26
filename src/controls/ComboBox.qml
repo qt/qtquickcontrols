@@ -432,7 +432,7 @@ Control {
 
         property ExclusiveGroup eg: ExclusiveGroup { id: eg }
 
-        property bool __modelIsArray: popupItems.model ? popupItems.model.constructor === Array : false
+        property bool modelIsArray: false
 
         Instantiator {
             id: popupItems
@@ -440,6 +440,7 @@ Control {
 
             property bool updatingModel: false
             onModelChanged: {
+                popup.modelIsArray = !!model ? model.constructor === Array : false
                 if (active) {
                     if (updatingModel && popup.__selectedIndex === 0) {
                         // We still want to update the currentText
@@ -449,12 +450,13 @@ Control {
                         popup.__selectedIndex = 0
                     }
                 }
+                popup.resolveTextValue(comboBox.textRole)
             }
 
             MenuItem {
                 text: popup.textRole === '' ?
                         modelData :
-                          ((popup.__modelIsArray ? modelData[popup.textRole] : model[popup.textRole]) || '')
+                          ((popup.modelIsArray ? modelData[popup.textRole] : model[popup.textRole]) || '')
                 onTriggered: {
                     if (index !== currentIndex)
                         activated(index)
@@ -479,7 +481,7 @@ Control {
             }
 
             var get = model['get'];
-            if (!get && popup.__modelIsArray) {
+            if (!get && popup.modelIsArray && !!model[0]) {
                 if (model[0].constructor !== String && model[0].constructor !== Number)
                     get = function(i) { return model[i]; }
             }
