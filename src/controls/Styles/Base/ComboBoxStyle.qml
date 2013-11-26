@@ -52,6 +52,23 @@ import QtQuick.Controls.Private 1.0
 */
 
 Style {
+    id: style
+
+    /*!
+        \qmlproperty enumeration renderType
+        \since 5.3
+
+        Override the default rendering type for the control.
+
+        Supported render types are:
+        \list
+        \li Text.QtRendering
+        \li Text.NativeRendering - the default
+        \endlist
+
+        \sa Text::renderType
+    */
+    property int renderType: Text.NativeRendering
 
     /*! \internal */
     property var __syspal: SystemPalette {
@@ -151,7 +168,7 @@ Style {
             anchors.rightMargin: 10
             anchors.verticalCenter: parent.verticalCenter
             text: control.currentText
-            renderType: Text.NativeRendering
+            renderType: style.renderType
             color: __syspal.text
             elide: Text.ElideRight
         }

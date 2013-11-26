@@ -321,7 +321,7 @@ Control {
 
         verticalAlignment: Text.AlignVCenter
 
-        renderType: Text.NativeRendering
+        renderType: __style ? __style.renderType : Text.NativeRendering
         selectByMouse: true
         selectionColor: syspal.highlight
         selectedTextColor: syspal.highlightedText
