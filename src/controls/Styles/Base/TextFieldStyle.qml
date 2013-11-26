@@ -93,6 +93,7 @@ Style {
 
     /*!
         \qmlproperty enumeration renderType
+        \since 5.2
 
         Override the default rendering type for the control.
 
