@@ -125,7 +125,12 @@ Window {
     default property alias data: contentArea.data
 
     color: syspal.window
-    flags: Qt.Window | Qt.WindowFullscreenButtonHint
+
+    flags: Qt.Window | Qt.WindowFullscreenButtonHint |
+        Qt.WindowTitleHint | Qt.WindowSystemMenuHint | Qt.WindowMinMaxButtonsHint |
+        Qt.WindowCloseButtonHint | Qt.WindowFullscreenButtonHint
+    // QTBUG-35049: Windows is removing features we didn't ask for, even though Qt::CustomizeWindowHint is not set
+    // Otherwise Qt.Window | Qt.WindowFullscreenButtonHint would be enough
 
     SystemPalette {id: syspal}
 
