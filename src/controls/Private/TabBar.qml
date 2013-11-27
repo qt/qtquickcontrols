@@ -119,7 +119,10 @@ FocusScope {
         interactive: false
         focus: true
 
-        width: Math.min(availableWidth, count ? contentWidth : availableWidth)
+        // Note this will silence the binding loop warnings caused by QTBUG-35038
+        // and should be removed when this issue is resolved.
+        property int contentWidthWorkaround: contentWidth > 0 ? contentWidth: 0
+        width: Math.min(availableWidth, count ? contentWidthWorkaround : availableWidth)
         height: currentItem ? currentItem.height : 0
 
         highlightMoveDuration: 0
