@@ -43,6 +43,7 @@ import QtQuick.Controls 1.1
 import "content"
 
 ApplicationWindow {
+    visible: true
     width: 800
     height: 1280
 

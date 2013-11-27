@@ -47,6 +47,7 @@ import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.0
 
 ApplicationWindow {
+    visible: true
     width: 600
     height: 400
 

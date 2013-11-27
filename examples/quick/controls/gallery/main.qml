@@ -49,6 +49,7 @@ import QtQuick.Dialogs 1.0
 import "content"
 
 ApplicationWindow {
+    visible: true
     title: "Component Gallery"
 
     width: 640

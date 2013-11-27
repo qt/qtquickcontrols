@@ -46,6 +46,7 @@ import QtQuick.Window 2.1
 import org.qtproject.example 1.0
 
 ApplicationWindow {
+    visible: true
     width: 640
     height: 480
     minimumWidth: 400

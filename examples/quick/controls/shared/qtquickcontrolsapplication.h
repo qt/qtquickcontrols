@@ -39,12 +39,8 @@
 **
 ****************************************************************************/
 
-#ifndef QT_QUICK_CONTROLS_EXAMPLEMAIN_H
-#define QT_QUICK_CONTROLS_EXAMPLEMAIN_H
-
-#include <QtQml>
-#include <QtQuick/QQuickView>
-#include <QtCore/QString>
+#ifndef QTQUICKCONTROLSAPPLICATION_H
+#define QTQUICKCONTROLSAPPLICATION_H
 
 #ifdef QT_WIDGETS_LIB
 #include <QtWidgets/QApplication>
@@ -55,26 +51,11 @@
 QT_BEGIN_NAMESPACE
 
 #ifdef QT_WIDGETS_LIB
-#define Application QApplication
+#define QtQuickControlsApplication QApplication
 #else
-#define Application QGuiApplication
+#define QtQuickControlsApplication QGuiApplication
 #endif
-
-#define QT_QUICK_CONTROLS_EXAMPLE_MAIN(url) \
-    int main(int argc, char *argv[]) \
-    { \
-        Application app(argc, argv); \
-        QQmlApplicationEngine engine(QUrl(#url)); \
-        QObject *topLevel = engine.rootObjects().value(0); \
-        QQuickWindow *window = qobject_cast<QQuickWindow *>(topLevel); \
-        if ( !window ) { \
-            qWarning("Error: Your root item has to be a Window."); \
-            return -1; \
-        } \
-        window->show(); \
-        return app.exec(); \
-    }
 
 QT_END_NAMESPACE
 
-#endif // QT_QUICK_CONTROLS_EXAMPLEMAIN_H
+#endif // QTQUICKCONTROLSAPPLICATION_H
