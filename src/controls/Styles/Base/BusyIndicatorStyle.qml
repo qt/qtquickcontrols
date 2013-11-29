@@ -37,7 +37,7 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-import QtQuick 2.1
+import QtQuick 2.2
 import QtQuick.Controls 1.1
 import QtQuick.Controls.Private 1.0
 
@@ -77,36 +77,25 @@ Style {
 
     /*! This defines the appearance of the busy indicator. */
     property Component indicator: Item {
-        implicitWidth: 32
-        implicitHeight: 32
+        implicitWidth: 48
+        implicitHeight: 48
 
         opacity: control.running ? 1 : 0
-        Behavior on opacity { NumberAnimation { duration: 250 } }
+        Behavior on opacity { OpacityAnimator { duration: 250 } }
 
-        Timer {
-            interval: 16
-            running: control.running
-            repeat: true
-            onTriggered: { repeater.counter += 0.20 }
-        }
-
-        Repeater {
-            id: repeater
-            model: 9
-            anchors.fill: parent
-            property real counter: 0
-            Rectangle {
-                width: repeater.width/6 + 2
-                height: width
-                radius: width/2
-                x: repeater.width/2
-                transform: Rotation { origin.x: 0 ; origin.y: repeater.width/2 ; angle: 5 + (360/repeater.count) * index}
-                border.color: Qt.rgba(0, 0, 0, 0.24)
-                color: Qt.rgba(lum, lum, lum, lum/2 + 0.3)
-                property real lum: {
-                    var idx = ((repeater.count-index) + repeater.counter) % repeater.count
-                    return Math.max( 0.3, 1 - (idx/(repeater.count - 1)))
-                }
+        Image {
+            anchors.centerIn: parent
+            anchors.alignWhenCentered: true
+            width: Math.min(parent.width, parent.height)
+            height: width
+            source: width <= 32 ? "images/spinner_small.png" :
+                                  width >= 48 ? "images/spinner_large.png" :
+                                                "images/spinner_medium.png"
+            RotationAnimator on rotation {
+                duration: 800
+                loops: Animation.Infinite
+                from: 0
+                to: 360
             }
         }
     }

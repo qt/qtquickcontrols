@@ -343,6 +343,86 @@ Item {
             spinbox2.destroy()
         }
 
+        function test_setFontsize(){
+            var control = Qt.createQmlObject('import QtQuick.Controls 1.1; import QtQuick.Controls.Styles 1.1; SpinBox {style: SpinBoxStyle{}}', container, '')
+            var width = control.width;
+            var height = control.height;
+            control.font.pixelSize = 40
+            verify(control.width > width) // ensure that the text field resizes
+            verify(control.height > height)
+            control.destroy()
+        }
+
+        function test_get_active_focus_when_up_or_down_was_pressed(){
+            var test_control = 'import QtQuick 2.1;             \
+            import QtQuick.Controls 1.1;                        \
+            Column {                                            \
+                property alias spinbox: _spinbox;               \
+                property alias textfield: _textfield;           \
+                SpinBox  {                                      \
+                    id: _spinbox;                               \
+                }                                               \
+                TextField {                                     \
+                    id: _textfield;                             \
+                    text: "textfile";                           \
+                }                                               \
+            }                                                   '
+
+            var control = Qt.createQmlObject(test_control, container, '')
+            verify(control !== null)
+
+            var spinbox = control.spinbox
+            var textfield = control.textfield
+            verify(spinbox !== null)
+            verify(textfield !== null)
+
+            waitForRendering(control)
+
+            var up = getMouseArea(spinbox, "mouseUp")
+            verify(up !== null)
+            var down = getMouseArea(spinbox, "mouseDown")
+            verify(down !== null)
+
+            textfield.forceActiveFocus()
+            verify(!spinbox.activeFocus)
+            verify(textfield.activeFocus)
+
+            mouseClick(up, up.width/2, up.height/2)
+            verify(spinbox.activeFocus)
+            verify(!textfield.activeFocus)
+
+            textfield.forceActiveFocus()
+            verify(!spinbox.activeFocus)
+            verify(textfield.activeFocus)
+
+            mouseClick(down, down.width/2, down.height/2)
+            verify(spinbox.activeFocus)
+            verify(!textfield.activeFocus)
+
+            textfield.forceActiveFocus()
+            verify(!spinbox.activeFocus)
+            verify(textfield.activeFocus)
+            spinbox.activeFocusOnPress = false
+
+            mouseClick(up, up.width/2, up.height/2)
+            verify(!spinbox.activeFocus)
+            verify(textfield.activeFocus)
+
+            mouseClick(down, down.width/2, down.height/2)
+            verify(!spinbox.activeFocus)
+            verify(textfield.activeFocus)
+
+            control.destroy()
+        }
+
+        function getMouseArea(control, name) {
+            for (var i = 0; i < control.children.length; i++) {
+                if (control.children[i].objectName === name)
+                    return control.children[i]
+            }
+            return null
+        }
+
         function test_activeFocusOnPress(){
             var spinbox = Qt.createQmlObject('import QtQuick.Controls 1.1; SpinBox {x: 20; y: 20; width: 100; height: 50}', container, '')
             spinbox.activeFocusOnPress = false
@@ -474,6 +554,36 @@ Item {
             mouseWheel(spinbox, 5, 5, 0, -120)
             compare(spinbox.value, 9)
             spinbox.destroy()
+        }
+
+        function test_editingFinished() {
+            var component = Qt.createComponent("spinbox/sp_editingfinished.qml")
+            compare(component.status, Component.Ready)
+            var test =  component.createObject(container);
+            verify(test !== null, "test control created is null")
+            var control1 = test.control1
+            verify(control1 !== null)
+            var control2 = test.control2
+            verify(control2 !== null)
+
+            control1.forceActiveFocus()
+            verify(control1.activeFocus)
+            verify(!control2.activeFocus)
+
+            verify(control1.myeditingfinished === false)
+            verify(control2.myeditingfinished === false)
+
+            keyPress(Qt.Key_Tab)
+            verify(!control1.activeFocus)
+            verify(control2.activeFocus)
+            verify(control1.myeditingfinished === true)
+
+            keyPress(Qt.Key_Enter)
+            verify(!control1.activeFocus)
+            verify(control2.activeFocus)
+            verify(control2.myeditingfinished === true)
+
+            test.destroy()
         }
 
         function test_construction() {

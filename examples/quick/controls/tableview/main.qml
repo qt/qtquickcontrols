@@ -48,7 +48,7 @@ import QtQuick.Controls 1.1
 import QtQuick.XmlListModel 2.0
 
 Window {
-
+    visible: true
     width: 538 + frame.margins * 2
     height: 360 + frame.margins * 2
 

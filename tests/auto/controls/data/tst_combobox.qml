@@ -118,13 +118,15 @@ TestCase {
     }
 
     function test_arraymodelwithtextrole() {
-        // FIXME The use-case before this change should work.
-        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.1 ; \
-                ComboBox { \
-                    model: [ { "text": "Banana", "color": "Yellow"}, \
-                             { "text": "Apple", "color": "Green"}, \
-                             { "text": "Coconut", "color": "Brown"} ]; \
-                    textRole: "text" }', testCase, '');
+        var arrayModel = [
+            {text: 'Banana', color: 'Yellow'},
+            {text: 'Apple', color: 'Green'},
+            {text: 'Coconut', color: 'Brown'}
+        ];
+
+        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.1 ; ComboBox { }', testCase, '');
+        comboBox.textRole = "text"
+        comboBox.model = arrayModel
         compare(comboBox.currentIndex, 0)
         compare(comboBox.currentText, "Banana")
         comboBox.textRole = "color"

@@ -38,5 +38,12 @@
 **
 ****************************************************************************/
 
-#include "../../shared/qt_quick_controls_examplemain.h"
-QT_QUICK_CONTROLS_EXAMPLE_MAIN(qrc:/main.qml)
+#include "qtquickcontrolsapplication.h"
+#include <QtQml/QQmlApplicationEngine>
+
+int main(int argc, char *argv[])
+{
+    QtQuickControlsApplication app(argc, argv);
+    QQmlApplicationEngine engine(QUrl("qrc:/main.qml"));
+    return app.exec();
+}

@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.1
+import QtQuick 2.2
 import QtQuick.Controls 1.1
 import QtQuick.Controls.Private 1.0
 
@@ -164,6 +164,17 @@ Control {
     */
     readonly property alias hovered: mouseArea.containsMouse
 
+    /*!
+        \qmlsignal SpinBox::editingFinished()
+        \since 5.2
+
+        This signal is emitted when the Return or Enter key is pressed or
+        the control loses focus. Note that if there is a validator
+        set on the control and enter/return is pressed, this signal will
+        only be emitted if the validator returns an acceptable state.
+    */
+    signal editingFinished()
+
     style: Qt.createComponent(Settings.style + "/SpinBoxStyle.qml", spinbox)
 
     /*! \internal */
@@ -255,6 +266,8 @@ Control {
             selectValue()
         }
 
+        onEditingFinished: spinbox.editingFinished()
+
         color: __panel ? __panel.foregroundColor : "black"
         selectionColor: __panel ? __panel.selectionColor : "black"
         selectedTextColor: __panel ? __panel.selectedTextColor : "black"
@@ -271,6 +284,7 @@ Control {
 
     MouseArea {
         id: mouseUp
+        objectName: "mouseUp"
         hoverEnabled: true
 
         property var upRect: __panel  ?  __panel.upRect : null
@@ -285,6 +299,7 @@ Control {
         height: upRect ? upRect.height : 0
 
         onClicked: __increment()
+        onPressed: if (activeFocusOnPress) input.forceActiveFocus()
 
         property bool autoincrement: false;
         onReleased: autoincrement = false
@@ -296,9 +311,12 @@ Control {
 
     MouseArea {
         id: mouseDown
+        objectName: "mouseDown"
         hoverEnabled: true
 
         onClicked: __decrement()
+        onPressed: if (activeFocusOnPress) input.forceActiveFocus()
+
         property var downRect: __panel ? __panel.downRect : null
 
         anchors.left: parent.left

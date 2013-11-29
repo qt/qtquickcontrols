@@ -49,6 +49,7 @@ import QtQuick.Dialogs 1.0
 import "content"
 
 ApplicationWindow {
+    visible: true
     title: "Component Gallery"
 
     width: 640
@@ -69,6 +70,8 @@ ApplicationWindow {
         nameFilters: [ "Image files (*.png *.jpg)" ]
         onAccepted: imageViewer.open(fileUrl)
     }
+
+    AboutDialog { id: aboutDialog }
 
     Action {
         id: openAction
@@ -104,6 +107,12 @@ ApplicationWindow {
         iconName: "edit-paste"
         enabled: (!!activeFocusItem && !!activeFocusItem["paste"])
         onTriggered: activeFocusItem.paste()
+    }
+
+    Action {
+        id: aboutAction
+        text: "About"
+        onTriggered: aboutDialog.open()
     }
 
     ExclusiveGroup {
@@ -209,6 +218,10 @@ ApplicationWindow {
                 title: "Me Neither"
                 visible: false
             }
+        }
+        Menu {
+            title: "&Help"
+            MenuItem { action: aboutAction }
         }
     }
 

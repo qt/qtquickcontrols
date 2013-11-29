@@ -76,8 +76,7 @@ Style {
     }
 
     /*! The content margins of the text field. */
-    padding { top: 1 ; left: Math.round(TextSingleton.implicitHeight/2) ; right: Math.round(TextSingleton.implicitHeight) ; bottom: 0 }
-
+    padding { top: 1 ; left: Math.round(styleData.contentHeight/2) ; right: Math.max(22, Math.round(styleData.contentHeight)) ; bottom: 0 }
     /*! \qmlproperty enumeration horizontalAlignment
 
         This property defines the default text aligment.
@@ -141,8 +140,8 @@ Style {
 
     /*! The background of the SpinBox. */
     property Component background: Item {
-        implicitHeight: Math.max(25, Math.round(TextSingleton.implicitHeight * 1.2))
-        implicitWidth: styleData.contentWidth + 26
+        implicitHeight: Math.max(25, Math.round(styleData.contentHeight * 1.2))
+        implicitWidth: styleData.contentWidth + padding.left + padding.right
         Rectangle {
             anchors.fill: parent
             anchors.bottomMargin: -1
@@ -156,7 +155,7 @@ Style {
                 GradientStop {color: "#fff" ; position: 0.1}
                 GradientStop {color: "#fff" ; position: 1}
             }
-            radius: TextSingleton.implicitHeight * 0.16
+            radius: control.font.pixelSize * 0.16
             anchors.fill: parent
             border.color: control.activeFocus ? "#47b" : "#999"
         }

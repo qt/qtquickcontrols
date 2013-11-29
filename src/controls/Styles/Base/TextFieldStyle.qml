@@ -77,7 +77,7 @@ Style {
     readonly property TextField control: __control
 
     /*! The content margins of the text field. */
-    padding { top: 4 ; left: TextSingleton.implicitHeight/3 ; right: TextSingleton.implicitHeight/3 ; bottom:4 }
+    padding { top: 4 ; left: Math.round(control.__contentHeight/3) ; right: control.__contentHeight/3 ; bottom: 4 }
 
     /*! The current font. */
     property font font
@@ -93,6 +93,7 @@ Style {
 
     /*!
         \qmlproperty enumeration renderType
+        \since 5.2
 
         Override the default rendering type for the control.
 
@@ -113,8 +114,8 @@ Style {
 
     /*! The background of the text field. */
     property Component background: Item {
-        implicitWidth: Math.round(TextSingleton.implicitHeight * 8)
-        implicitHeight: Math.max(25, Math.round(TextSingleton.implicitHeight * 1.2))
+        implicitWidth: Math.round(control.__contentHeight * 8)
+        implicitHeight: Math.max(25, Math.round(control.__contentHeight * 1.2))
         Rectangle {
             anchors.fill: parent
             anchors.bottomMargin: -1
@@ -128,7 +129,7 @@ Style {
                 GradientStop {color: "#fff" ; position: 0.1}
                 GradientStop {color: "#fff" ; position: 1}
             }
-            radius: TextSingleton.implicitHeight * 0.16
+            radius: control.__contentHeight * 0.16
             anchors.fill: parent
             border.color: control.activeFocus ? "#47b" : "#999"
         }
