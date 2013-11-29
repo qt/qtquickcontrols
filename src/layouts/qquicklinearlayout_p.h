@@ -103,6 +103,7 @@ private:
     Q_DECLARE_PRIVATE(QQuickGridLayoutBase)
 };
 
+class QQuickLayoutStyleInfo;
 
 class QQuickGridLayoutBasePrivate : public QQuickLayoutPrivate
 {
@@ -120,6 +121,7 @@ public:
     Qt::LayoutDirection m_layoutDirection : 2;
 
     QSet<QQuickItem *> m_ignoredItems;
+    QQuickLayoutStyleInfo *styleInfo;
 };
 
 /**********************************
@@ -173,8 +175,6 @@ class QQuickGridLayoutPrivate : public QQuickGridLayoutBasePrivate
     Q_DECLARE_PUBLIC(QQuickGridLayout)
 public:
     QQuickGridLayoutPrivate(): columns(-1), rows(-1), flow(QQuickGridLayout::LeftToRight) {}
-    qreal columnSpacing;
-    qreal rowSpacing;
     int columns;
     int rows;
     QQuickGridLayout::Flow flow;
@@ -211,7 +211,6 @@ class QQuickLinearLayoutPrivate : public QQuickGridLayoutBasePrivate
     Q_DECLARE_PUBLIC(QQuickLinearLayout)
 public:
     QQuickLinearLayoutPrivate() {}
-    qreal spacing;
 };
 
 

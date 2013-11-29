@@ -53,13 +53,13 @@
 // We mean it.
 //
 
-#include "qgridlayoutengine_p.h"
+#include <QtGui/private/qgridlayoutengine_p.h>
+#include <QtGui/private/qlayoutpolicy_p.h>
+
 #include "qquickitem.h"
 #include "qquicklayout_p.h"
 #include "qdebug.h"
 QT_BEGIN_NAMESPACE
-
-using namespace LayoutEngineInQtQuickLayouts;
 
 class QQuickGridLayoutItem : public QGridLayoutItem {
 public:
@@ -136,7 +136,7 @@ private:
 
 class QQuickGridLayoutEngine : public QGridLayoutEngine {
 public:
-    QQuickGridLayoutEngine() : QGridLayoutEngine() {} //### not needed
+    QQuickGridLayoutEngine() : QGridLayoutEngine(Qt::AlignVCenter) { }
 
     int indexOf(QQuickItem *item) const {
         for (int i = 0; i < q_items.size(); ++i) {

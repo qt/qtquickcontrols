@@ -8,17 +8,15 @@ QT *= qml-private quick-private gui-private core-private
 QMAKE_DOCS = $$PWD/doc/qtquicklayouts.qdocconf
 
 SOURCES += plugin.cpp \
-    qlayoutpolicy.cpp \
-    qgridlayoutengine.cpp \
     qquicklayout.cpp \
     qquicklinearlayout.cpp \
-    qquickgridlayoutengine.cpp
+    qquickgridlayoutengine.cpp \
+    qquicklayoutstyleinfo.cpp
 
 HEADERS += \
-    qlayoutpolicy_p.h \
-    qgridlayoutengine_p.h \
-    qquickgridlayoutengine_p.h \
     qquicklayout_p.h \
-    qquicklinearlayout_p.h
+    qquicklinearlayout_p.h \
+    qquickgridlayoutengine_p.h \
+    qquicklayoutstyleinfo_p.h
 
 load(qml_plugin)
