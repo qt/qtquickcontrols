@@ -268,6 +268,28 @@ Control {
     }
 
     /*! \internal */
+    function __selectPrevItem() {
+        input.blockUpdate = true
+        if (currentIndex > 0) {
+            currentIndex--;
+            input.text = popup.currentText;
+            activated(currentIndex);
+        }
+        input.blockUpdate = false;
+    }
+
+    /*! \internal */
+    function __selectNextItem() {
+        input.blockUpdate = true;
+        if (currentIndex < popupItems.count - 1) {
+            currentIndex++;
+            input.text = popup.currentText;
+            activated(currentIndex);
+        }
+        input.blockUpdate = false;
+    }
+
+    /*! \internal */
     property var __popup: popup
 
     style: Qt.createComponent(Settings.style + "/ComboBoxStyle.qml", comboBox)
@@ -284,6 +306,13 @@ Control {
             if (comboBox.activeFocusOnPress)
                 forceActiveFocus()
             popup.show()
+        }
+        onWheel: {
+            if (wheel.angleDelta.y > 0) {
+                __selectPrevItem();
+            } else if (wheel.angleDelta.y < 0){
+                __selectNextItem();
+            }
         }
     }
 
@@ -541,23 +570,6 @@ Control {
             popup.show()
     }
 
-    Keys.onUpPressed: {
-        input.blockUpdate = true
-        if (currentIndex > 0) {
-            currentIndex--;
-            input.text = popup.currentText;
-            activated(currentIndex);
-        }
-        input.blockUpdate = false;
-    }
-
-    Keys.onDownPressed: {
-        input.blockUpdate = true;
-        if (currentIndex < popupItems.count - 1) {
-            currentIndex++;
-            input.text = popup.currentText;
-            activated(currentIndex);
-        }
-        input.blockUpdate = false;
-    }
+    Keys.onUpPressed: __selectPrevItem()
+    Keys.onDownPressed: __selectNextItem()
 }
