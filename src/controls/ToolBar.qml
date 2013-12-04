@@ -76,7 +76,7 @@ import QtQuick.Controls.Private 1.0
     \endcode
 */
 
-Item {
+FocusScope {
     id: toolbar
 
     activeFocusOnTab: false
