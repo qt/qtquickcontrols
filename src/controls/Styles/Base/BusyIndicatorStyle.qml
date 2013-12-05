@@ -77,6 +77,8 @@ Style {
 
     /*! This defines the appearance of the busy indicator. */
     property Component indicator: Item {
+        id: indicatorItem
+
         implicitWidth: 48
         implicitHeight: 48
 
@@ -96,6 +98,7 @@ Style {
                 loops: Animation.Infinite
                 from: 0
                 to: 360
+                running: indicatorItem.visible && (control.running || indicatorItem.opacity > 0);
             }
         }
     }
