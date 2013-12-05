@@ -69,7 +69,7 @@ QQuickSpinBoxValidator::~QQuickSpinBoxValidator()
 
 QString QQuickSpinBoxValidator::text() const
 {
-    return m_prefix + locale().toString(m_value, 'f', m_validator.decimals()) + m_suffix;
+    return textFromValue(m_value);
 }
 
 qreal QQuickSpinBoxValidator::value() const
@@ -178,7 +178,7 @@ void QQuickSpinBoxValidator::setSuffix(const QString &suffix)
 
 void QQuickSpinBoxValidator::fixup(QString &input) const
 {
-    input.remove(locale().groupSeparator());
+    input = textFromValue(m_value).remove(locale().groupSeparator());
 }
 
 QValidator::State QQuickSpinBoxValidator::validate(QString &input, int &pos) const
@@ -207,8 +207,11 @@ QValidator::State QQuickSpinBoxValidator::validate(QString &input, int &pos) con
     if (state == QValidator::Acceptable) {
         bool ok = false;
         qreal val = locale().toDouble(value, &ok);
-        if (ok)
+        if (ok) {
             const_cast<QQuickSpinBoxValidator *>(this)->setValue(val);
+            if (input != textFromValue(val))
+                state = QValidator::Intermediate;
+        }
     }
     return state;
 }
@@ -227,6 +230,11 @@ void QQuickSpinBoxValidator::increment()
 void QQuickSpinBoxValidator::decrement()
 {
     setValue(m_value - m_step);
+}
+
+QString QQuickSpinBoxValidator::textFromValue(qreal value) const
+{
+    return m_prefix + locale().toString(value, 'f', m_validator.decimals()) + m_suffix;
 }
 
 QT_END_NAMESPACE

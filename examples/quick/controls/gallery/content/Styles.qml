@@ -309,7 +309,7 @@ Item {
                     anchors.rightMargin: -parent.anchors.rightMargin
                 }
             }
-            ParticleSystem{ id: bubbles }
+            ParticleSystem{ id: bubbles; running: visible }
             ImageParticle{
                 id: fireball
                 system: bubbles

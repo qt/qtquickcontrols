@@ -60,7 +60,7 @@ import QtQuick.Controls.Styles 1.1
     Example:
     \code
     ScrollView {
-        Image { imageSource: "largeImage.png" }
+        Image { source: "largeImage.png" }
     }
     \endcode
 

@@ -181,8 +181,10 @@ Control {
 
     style: Qt.createComponent(Settings.style + "/SliderStyle.qml", slider)
 
-    Keys.onRightPressed: value += (maximumValue - minimumValue)/10.0
-    Keys.onLeftPressed: value -= (maximumValue - minimumValue)/10.0
+    Keys.onRightPressed: if (__horizontal) value += (maximumValue - minimumValue)/10.0
+    Keys.onLeftPressed: if (__horizontal) value -= (maximumValue - minimumValue)/10.0
+    Keys.onUpPressed: if (!__horizontal) value += (maximumValue - minimumValue)/10.0
+    Keys.onDownPressed: if (!__horizontal) value -= (maximumValue - minimumValue)/10.0
 
     RangeModel {
         id: range

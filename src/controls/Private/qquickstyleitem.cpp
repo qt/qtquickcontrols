@@ -211,6 +211,7 @@ QQuickStyleItem::QQuickStyleItem(QQuickItem *parent)
     setFlag(QQuickItem::ItemHasContents, true);
     setSmooth(false);
 
+    connect(this, SIGNAL(visibleChanged()), this, SLOT(updateItem()));
     connect(this, SIGNAL(widthChanged()), this, SLOT(updateItem()));
     connect(this, SIGNAL(heightChanged()), this, SLOT(updateItem()));
     connect(this, SIGNAL(enabledChanged()), this, SLOT(updateItem()));
@@ -1616,7 +1617,10 @@ bool QQuickStyleItem::hasThemeIcon(const QString &icon) const
 bool QQuickStyleItem::event(QEvent *ev)
 {
     if (ev->type() == QEvent::StyleAnimationUpdate) {
-        polish();
+        if (isVisible()) {
+            ev->accept();
+            polish();
+        }
         return true;
     } else if (ev->type() == QEvent::StyleChange) {
         if (m_itemType == ScrollBar)
