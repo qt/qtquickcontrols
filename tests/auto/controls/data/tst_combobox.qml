@@ -307,6 +307,24 @@ TestCase {
         compare(comboBox.editText, "Coco")
         compare(comboBox.currentIndex, 1)
 
+        comboBox.editText = ""
+        keyPress(Qt.Key_C)
+        keyPress(Qt.Key_O)
+        keyPress(Qt.Key_C) // autocompletes "coco"
+        keyPress(Qt.Key_Backspace)
+        keyPress(Qt.Key_Return) // Accept "coc"
+        compare(comboBox.editText, "coc")
+        compare(comboBox.currentText, "coc")
+
+        comboBox.editText = ""
+        keyPress(Qt.Key_C)
+        keyPress(Qt.Key_O)
+        keyPress(Qt.Key_C) // autocompletes "coc"
+        keyPress(Qt.Key_Space)
+        keyPress(Qt.Key_Return) // Accept "coc "
+        compare(comboBox.editText, "coc ")
+        compare(comboBox.currentText, "coc ")
+
         comboBox.destroy()
     }
 
