@@ -917,6 +917,7 @@ QSize QQuickStyleItem::sizeFromContents(int width, int height)
             frame.state = m_styleoption->state;
             frame.lineWidth = qApp->style()->pixelMetric(QStyle::PM_DefaultFrameWidth, m_styleoption, 0);
             frame.rect = m_styleoption->rect;
+            frame.styleObject = this;
             size = qApp->style()->sizeFromContents(QStyle::CT_LineEdit, &frame, QSize(width, height));
         }
         break;
@@ -1582,6 +1583,7 @@ void QQuickStyleItem::paint(QPainter *painter)
             frame.lineWidth = fw;
             frame.midLineWidth = 0;
             frame.rect = m_styleoption->rect;
+            frame.styleObject = this;
             qApp->style()->drawPrimitive(QStyle::PE_FrameMenu, &frame, painter);
         }
     }
