@@ -40,18 +40,20 @@
 
 import QtQuick 2.1
 import QtQuick.Controls 1.1
-import QtQuick.Dialogs 1.0
+import QtQuick.Controls.Private 1.0 as ControlsPrivate
+import QtQuick.Dialogs 1.1
+import QtQuick.Dialogs.Private 1.1
+import QtQuick.Layouts 1.1
 import QtQuick.Window 2.1
-import Qt.labs.folderlistmodel 2.0
-import "qml"
+import Qt.labs.folderlistmodel 2.1
+import Qt.labs.settings 1.0
 
 AbstractFileDialog {
     id: root
     onVisibleChanged: {
         if (visible) {
-            __selectedIndices = []
-            __lastClickedIdx = -1
-            currentPathField.visible = false
+            view.needsWidthAdjustment = true
+            view.selection.clear()
         }
     }
     onFolderChanged: {
@@ -62,58 +64,44 @@ AbstractFileDialog {
             view.model.folder = folder
     }
 
-    property real __textX: titleBar.height
-    property SystemPalette __palette
-    property var __selectedIndices: []
-    property int __lastClickedIdx: -1
+    Component.onCompleted: {
+        view.model.nameFilters = root.selectedNameFilterExtensions
+        filterField.currentIndex = root.selectedNameFilterIndex
+        root.favoriteFolders = settings.favoriteFolders
+    }
 
-    function __dirDown(path) {
+    Component.onDestruction: {
+        settings.favoriteFolders = root.favoriteFolders
+    }
+
+    property Settings settings: Settings {
+        category: "QQControlsFileDialog"
+        property alias width: root.width
+        property alias height: root.height
+        property alias sidebarWidth: sidebar.width
+        property alias sidebarSplit: shortcuts.height
+        property variant favoriteFolders: []
+    }
+
+    property bool showFocusHighlight: false
+    property SystemPalette palette: SystemPalette { }
+    property var favoriteFolders: []
+
+    function dirDown(path) {
         view.model.folder = "file://" + path
-        __lastClickedIdx = -1
-        __selectedIndices = []
+        view.selection.clear()
     }
-    function __dirUp() {
-        if (view.model.parentFolder == "")
-            view.model.folder = "file:///"
-        else
-            view.model.folder = view.model.parentFolder
-        __lastClickedIdx = -1
-        __selectedIndices = []
+    function dirUp() {
+        view.model.folder = view.model.parentFolder
+        view.selection.clear()
     }
-    function __up(extend) {
-        if (view.currentIndex > 0)
-            --view.currentIndex
-        else
-            view.currentIndex = 0
-        if (extend) {
-            if (__selectedIndices.indexOf(view.currentIndex) < 0) {
-                var selCopy = __selectedIndices
-                selCopy.push(view.currentIndex)
-                __selectedIndices = selCopy
-            }
-        } else
-            __selectedIndices = [view.currentIndex]
-    }
-    function __down(extend) {
-        if (view.currentIndex < view.model.count - 1)
-            ++view.currentIndex
-        else
-            view.currentIndex = view.model.count - 1
-        if (extend) {
-            if (__selectedIndices.indexOf(view.currentIndex) < 0) {
-                var selCopy = __selectedIndices
-                selCopy.push(view.currentIndex)
-                __selectedIndices = selCopy
-            }
-        } else
-            __selectedIndices = [view.currentIndex]
-    }
-    function __acceptSelection() {
+    function acceptSelection() {
+        // transfer the view's selections to QQuickFileDialog
         clearSelection()
-        if (selectFolder && __selectedIndices.length == 0)
+        if (selectFolder && view.selection.count === 0)
             addSelection(folder)
-        else if (__selectedIndices.length > 0) {
-            __selectedIndices.map(function(idx) {
+        else {
+            view.selection.forEach(function(idx) {
                 if (view.model.isFolder(idx)) {
                     if (selectFolder)
                         addSelection(view.model.get(idx, "fileURL"))
@@ -122,265 +110,297 @@ AbstractFileDialog {
                         addSelection(view.model.get(idx, "fileURL"))
                 }
             })
-        } else {
-            addSelection(pathToUrl(currentPathField.text))
         }
         accept()
     }
 
-    Rectangle {
-        id: content
-        property int maxSize: Math.min(Screen.desktopAvailableWidth, Screen.desktopAvailableHeight)
-        // TODO: QTBUG-29817 geometry from AbstractFileDialog
-        implicitWidth: Math.min(maxSize, Screen.pixelDensity * 100)
-        implicitHeight: Math.min(maxSize, Screen.pixelDensity * 80)
-        color: __palette.window
-        focus: root.visible && !currentPathField.visible
-        property real spacing: 6
-        property real outerSpacing: 12
-        SystemPalette { id: __palette }
+    property Action dirUpAction: Action {
+        text: "&Up"
+        shortcut: "Ctrl+U"
+        iconSource: "images/up.png"
+        onTriggered: if (view.model.parentFolder != "") dirUp()
+        tooltip: "Go up to the folder containing this one"
+    }
 
-        Component {
-            id: folderDelegate
-            Rectangle {
-                id: wrapper
-                function launch() {
-                    if (view.model.isFolder(index)) {
-                        __dirDown(filePath)
-                    } else {
-                        root.__acceptSelection()
-                    }
-                }
-                width: content.width
-                height: nameText.implicitHeight * 1.5
-                color: "transparent"
-                Rectangle {
-                    id: itemHighlight
-                    visible: root.__selectedIndices.indexOf(index) >= 0
-                    anchors.fill: parent
-                    color: __palette.highlight
-                }
-                Image {
-                    id: icon
-                    source: "images/folder.png"
-                    height: wrapper.height - y * 2; width: height
-                    x: (root.__textX - width) / 2
-                    y: 2
-                    visible: view.model.isFolder(index)
-                }
-                Text {
-                    id: nameText
-                    anchors.fill: parent; verticalAlignment: Text.AlignVCenter
-                    text: fileName
-                    anchors.leftMargin: root.__textX
-                    color: itemHighlight.visible ? __palette.highlightedText : __palette.windowText
-                    elide: Text.ElideRight
-                }
-                MouseArea {
-                    id: mouseRegion
-                    anchors.fill: parent
-                    onDoubleClicked: {
-                        __selectedIndices = [index]
-                        root.__lastClickedIdx = index
-                        launch()
-                    }
-                    onClicked: {
-                        view.currentIndex = index
-                        if (mouse.modifiers & Qt.ControlModifier && root.selectMultiple) {
-                            // modifying the contents of __selectedIndices doesn't notify,
-                            // so we have to re-assign the variable
-                            var selCopy = __selectedIndices
-                            var existingIdx = selCopy.indexOf(index)
-                            if (existingIdx >= 0)
-                                selCopy.splice(existingIdx, 1)
-                            else
-                                selCopy.push(index)
-                            __selectedIndices = selCopy
-                        } else if (mouse.modifiers & Qt.ShiftModifier && root.selectMultiple) {
-                            if (root.__lastClickedIdx >= 0) {
-                                var sel = []
-                                if (index > __lastClickedIdx) {
-                                    for (var i = root.__lastClickedIdx; i <= index; i++)
-                                        sel.push(i)
-                                } else {
-                                    for (var i = root.__lastClickedIdx; i >= index; i--)
-                                        sel.push(i)
+    Rectangle {
+        property int maxSize: Math.min(Screen.desktopAvailableWidth, Screen.desktopAvailableHeight)
+        implicitWidth: Math.min(maxSize, Math.max(Screen.pixelDensity * 100, splitter.implicitWidth))
+        implicitHeight: Math.min(maxSize, Screen.pixelDensity * 80)
+        id: window
+        color: root.palette.window
+
+        SplitView {
+            id: splitter
+            x: 0
+            width: parent.width
+            anchors.top: titleBar.bottom
+            anchors.bottom: bottomBar.top
+
+            Column {
+                id: sidebar
+                Component.onCompleted: if (width < 1) width = sidebarSplitter.maxShortcutWidth
+                height: parent.height
+                width: 0 // initial width only; settings and onCompleted will override it
+                SplitView {
+                    id: sidebarSplitter
+                    orientation: Qt.Vertical
+                    property real rowHeight: 10
+                    property real maxShortcutWidth: 50
+                    width: parent.width
+                    height: parent.height - favoritesButtons.height
+
+                    ScrollView {
+                        id: shortcuts
+                        Component.onCompleted: {
+                            if (height < 1)
+                                height = shortcutsView.model.count * sidebarSplitter.rowHeight
+                            Layout.minimumHeight = sidebarSplitter.rowHeight * 2.5
+                        }
+                        height: 0 // initial width only; settings and onCompleted will override it
+                        ListView {
+                            id: shortcutsView
+                            model: root.shortcuts
+                            anchors.bottomMargin: ControlsPrivate.Settings.hasTouchScreen ? Screen.pixelDensity * 3.5 : anchors.margins
+                            implicitHeight: model.count * sidebarSplitter.rowHeight
+                            delegate: Item {
+                                id: shortcutItem
+                                width: sidebarSplitter.width
+                                height: shortcutLabel.implicitHeight * 1.5
+                                Text {
+                                    id: shortcutLabel
+                                    text: shortcutsView.model[index]["name"]
+                                    anchors {
+                                        verticalCenter: parent.verticalCenter
+                                        left: parent.left
+                                        right: parent.right
+                                        margins: 4
+                                    }
+                                    elide: Text.ElideLeft
+                                    renderType: Text.NativeRendering
+                                    Component.onCompleted: {
+                                        sidebarSplitter.rowHeight = parent.height
+                                        if (implicitWidth * 1.2 > sidebarSplitter.maxShortcutWidth)
+                                            sidebarSplitter.maxShortcutWidth = implicitWidth * 1.2
+                                    }
                                 }
-                                __selectedIndices = sel
+                                MouseArea {
+                                    anchors.fill: parent
+                                    onClicked: root.folder = shortcutsView.model[index]["url"]
+                                }
                             }
-                        } else {
-                            __selectedIndices = [index]
-                            root.__lastClickedIdx = index
+                        }
+                    }
+
+                    ScrollView {
+                        Layout.minimumHeight: sidebarSplitter.rowHeight * 2.5
+                        ListView {
+                            id: favorites
+                            model: root.favoriteFolders
+                            anchors.topMargin: ControlsPrivate.Settings.hasTouchScreen ? Screen.pixelDensity * 3.5 : anchors.margins
+                            delegate: Item {
+                                width: favorites.width
+                                height: folderLabel.implicitHeight * 1.5
+                                Text {
+                                    id: folderLabel
+                                    text: root.favoriteFolders[index]
+                                    anchors {
+                                        verticalCenter: parent.verticalCenter
+                                        left: parent.left
+                                        right: parent.right
+                                        margins: 4
+                                    }
+                                    elide: Text.ElideLeft
+                                    renderType: Text.NativeRendering
+                                }
+                                Menu {
+                                    id: favoriteCtxMenu
+                                    title: root.favoriteFolders[index]
+                                    MenuItem {
+                                        text: "Remove favorite"
+                                        onTriggered: {
+                                            root.favoriteFolders.splice(index, 1)
+                                            favorites.model = root.favoriteFolders
+                                        }
+                                    }
+                                }
+                                MouseArea {
+                                    id: favoriteArea
+                                    anchors.fill: parent
+                                    acceptedButtons: Qt.LeftButton | Qt.RightButton
+                                    hoverEnabled: true
+                                    onClicked: {
+                                        if (mouse.button == Qt.LeftButton)
+                                            view.model.folder = root.favoriteFolders[index]
+                                        else if (mouse.button == Qt.RightButton)
+                                            favoriteCtxMenu.popup()
+                                    }
+                                    onExited: ControlsPrivate.Tooltip.hideText()
+                                    onCanceled: ControlsPrivate.Tooltip.hideText()
+                                    Timer {
+                                        interval: 1000
+                                        running: favoriteArea.containsMouse && !favoriteArea.pressed && folderLabel.truncated
+                                        onTriggered: ControlsPrivate.Tooltip.showText(favoriteArea,
+                                                Qt.point(favoriteArea.mouseX, favoriteArea.mouseY), urlToPath(root.favoriteFolders[index]))
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                Row {
+                    id: favoritesButtons
+                    height: plusButton.height
+                    Button {
+                        id: plusButton
+                        text: "+"
+                        width: height
+                        onClicked: {
+                            root.favoriteFolders.push(view.model.folder)
+                            favorites.model = root.favoriteFolders
                         }
                     }
                 }
             }
-        }
 
-        Keys.onPressed: {
-            event.accepted = true
-            switch (event.key) {
-            case Qt.Key_Up:
-                root.__up(event.modifiers & Qt.ShiftModifier && root.selectMultiple)
-                break
-            case Qt.Key_Down:
-                root.__down(event.modifiers & Qt.ShiftModifier && root.selectMultiple)
-                break
-            case Qt.Key_Left:
-                root.__dirUp()
-                break
-            case Qt.Key_Return:
-            case Qt.Key_Select:
-            case Qt.Key_Right:
-                if (view.currentItem)
-                    view.currentItem.launch()
-                else
-                    root.__acceptSelection()
-                break
-            case Qt.Key_Back:
-            case Qt.Key_Escape:
-                reject()
-                break
-            case Qt.Key_C:
-                if (event.modifiers & Qt.ControlModifier)
-                    currentPathField.copyAll()
-                break
-            case Qt.Key_V:
-                if (event.modifiers & Qt.ControlModifier) {
-                    currentPathField.visible = true
-                    currentPathField.paste()
+            TableView {
+                id: view
+                sortIndicatorVisible: true
+                Layout.fillWidth: true
+                Layout.minimumWidth: 40
+                property bool needsWidthAdjustment: true
+                selectionMode: root.selectMultiple ?
+                    (ControlsPrivate.Settings.hasTouchScreen ? SelectionMode.MultiSelection : SelectionMode.ExtendedSelection) :
+                    SelectionMode.SingleSelection
+                onRowCountChanged: if (needsWidthAdjustment && rowCount > 0) {
+                    resizeColumnsToContents()
+                    needsWidthAdjustment = false
                 }
-                break
-            default:
-                // do nothing
-                event.accepted = false
-                break
-            }
-        }
-
-        ListView {
-            id: view
-            anchors.top: titleBar.bottom
-            anchors.bottom: bottomBar.top
-            clip: true
-            x: 0
-            width: parent.width
-            model: FolderListModel {
-                onFolderChanged: {
-                    root.folder = folder
-                    currentPathField.text = root.urlToPath(view.model.folder)
+                model: FolderListModel {
+                    showFiles: !root.selectFolder
+                    nameFilters: root.selectedNameFilterExtensions
+                    onFolderChanged: root.folder = folder
+                    sortField: (view.sortIndicatorColumn === 0 ? FolderListModel.Name :
+                                (view.sortIndicatorColumn === 1 ? FolderListModel.Type :
+                                (view.sortIndicatorColumn === 2 ? FolderListModel.Size : FolderListModel.LastModified)))
+                    sortReversed: view.sortIndicatorOrder === Qt.DescendingOrder
                 }
+
+                onActivated: {
+                    if (view.model.isFolder(row)) {
+                        dirDown(view.model.get(row, "filePath"))
+                    } else {
+                        root.acceptSelection()
+                    }
+                }
+
+                TableViewColumn {
+                    id: fileNameColumn
+                    role: "fileName"
+                    title: "Filename"
+                    delegate: Item {
+                        implicitWidth: pathText.implicitWidth + pathText.anchors.leftMargin + pathText.anchors.rightMargin
+                        Image {
+                            id: fileIcon
+                            width: height
+                            x: 4
+                            height: parent.height - 2
+                            source: "images/folder.png"
+                            property var isDir: view.model.get(styleData.row, "fileIsDir")
+                            visible: isDir !== undefined && isDir
+                        }
+                        Text {
+                            id: pathText
+                            text: styleData.value
+                            anchors {
+                                left: parent.left
+                                right: parent.right
+                                leftMargin: fileIcon.width + 8
+                                rightMargin: 4
+                                verticalCenter: parent.verticalCenter
+                            }
+                            color: styleData.textColor
+                            elide: Text.ElideRight
+                            renderType: Text.NativeRendering
+                        }
+                    }
+                }
+                TableViewColumn {
+                    role: "fileSuffix"
+                    title: "Type"
+                    // TODO should not need to create a whole new component just to customize the text value
+                    // something like textFormat: function(text) { return view.model.get(styleData.row, "fileIsDir") ? "folder" : text }
+                    delegate: Item {
+                        implicitWidth: sizeText.implicitWidth + sizeText.anchors.leftMargin + sizeText.anchors.rightMargin
+                        Text {
+                            id: sizeText
+                            text: view.model.get(styleData.row, "fileIsDir") ? "folder" : styleData.value
+                            anchors {
+                                left: parent.left
+                                right: parent.right
+                                leftMargin: 4
+                                rightMargin: 4
+                                verticalCenter: parent.verticalCenter
+                            }
+                            color: styleData.textColor
+                            elide: Text.ElideRight
+                            renderType: Text.NativeRendering
+                        }
+                    }
+                }
+                TableViewColumn {
+                    role: "fileSize"
+                    title: "Size"
+                    horizontalAlignment: Text.AlignRight
+                }
+                TableViewColumn { role: "fileModified" ; title: "Modified" }
+                TableViewColumn { role: "fileAccessed" ; title: "Accessed" }
             }
-            delegate: folderDelegate
-            highlight: Rectangle {
-                color: "transparent"
-                border.color: Qt.darker(__palette.window, 1.3)
-            }
-            highlightMoveDuration: 0
-            highlightMoveVelocity: -1
         }
 
-        MouseArea {
-            anchors.fill: view
-            enabled: currentPathField.visible
-            onClicked: currentPathField.visible = false
-        }
-
-
-        Item {
+        ToolBar {
             id: titleBar
-            width: parent.width
-            height: currentPathField.height * 1.5
-            Rectangle {
-                anchors.fill: parent
-                color: Qt.darker(__palette.window, 1.1)
-                border.color: Qt.darker(__palette.window, 1.3)
-            }
-            Rectangle {
-                id: upButton
-                width: root.__textX
-                height: titleBar.height
-                color: "transparent"
-
-                Image {
-                    id: upButtonImage
-                    anchors.centerIn: parent; source: "images/up.png"
+            RowLayout {
+                width: parent.width
+                ToolButton {
+                    iconSource: "images/up.png"
+                    action: dirUpAction
                 }
-                MouseArea { id: upRegion; anchors.centerIn: parent
-                    width: 56
-                    height: parent.height
-                    onClicked: if (view.model.parentFolder !== "") __dirUp()
-                }
-                states: [
-                    State {
-                        name: "pressed"
-                        when: upRegion.pressed
-                        PropertyChanges { target: upButton; color: __palette.highlight }
-                    }
-                ]
-            }
-            Text {
-                id: currentPathText
-                anchors.left: parent.left; anchors.right: parent.right; anchors.verticalCenter: parent.verticalCenter
-                anchors.leftMargin: __textX; anchors.rightMargin: content.spacing
-                text: root.urlToPath(view.model.folder)
-                color: __palette.text
-                elide: Text.ElideLeft; horizontalAlignment: Text.AlignRight; verticalAlignment: Text.AlignVCenter
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: currentPathField.visible = true
-                }
-            }
-            TextField {
-                id: currentPathField
-                anchors.left: parent.left; anchors.right: parent.right; anchors.verticalCenter: parent.verticalCenter
-                anchors.leftMargin: __textX; anchors.rightMargin: content.spacing
-                visible: false
-                focus: visible
-                onAccepted: {
-                    root.clearSelection()
-                    if (root.addSelection(root.pathToUrl(text)))
-                        root.accept()
-                    else
-                        view.model.folder = root.pathFolder(text)
-                }
-                Keys.onPressed: {
-                    event.accepted = true
-                    switch (event.key) {
-                    case Qt.Key_Down:
-                        currentPathField.visible = false
-                        break
-                    case Qt.Key_Back:
-                    case Qt.Key_Escape:
-                        reject()
-                        break
+                TextField {
+                    id: currentPathField
+                    text: root.urlToPath(view.model.folder)
+                    Layout.fillWidth: true
+                    onAccepted: {
+                        root.clearSelection()
+                        if (root.addSelection(root.pathToUrl(text)))
+                            root.accept()
+                        else
+                            view.model.folder = root.pathFolder(text)
                     }
                 }
             }
         }
-        Rectangle {
+        Item {
             id: bottomBar
             width: parent.width
             height: buttonRow.height + buttonRow.spacing * 2
             anchors.bottom: parent.bottom
-            color: Qt.darker(__palette.window, 1.1)
-            border.color: Qt.darker(__palette.window, 1.3)
 
             Row {
                 id: buttonRow
                 anchors.right: parent.right
                 anchors.rightMargin: spacing
                 anchors.verticalCenter: parent.verticalCenter
-                spacing: content.spacing
-                TextField {
+                spacing: 4
+                ComboBox {
                     id: filterField
-                    text: root.selectedNameFilter
+                    model: root.nameFilters
                     visible: !selectFolder
                     width: bottomBar.width - cancelButton.width - okButton.width - parent.spacing * 5
                     anchors.verticalCenter: parent.verticalCenter
-                    onAccepted: {
-                        root.selectNameFilter(text)
-                        view.model.nameFilters = text
+                    onCurrentTextChanged: {
+                        root.selectNameFilter(currentText)
+                        view.model.nameFilters = root.selectedNameFilterExtensions
                     }
                 }
                 Button {
@@ -393,9 +413,9 @@ AbstractFileDialog {
                     text: "OK"
                     onClicked: {
                         if (view.model.isFolder(view.currentIndex) && !selectFolder)
-                            __dirDown(view.model.get(view.currentIndex, "filePath"))
+                            dirDown(view.model.get(view.currentIndex, "filePath"))
                         else
-                            root.__acceptSelection()
+                            root.acceptSelection()
                     }
                 }
             }

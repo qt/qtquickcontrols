@@ -67,7 +67,6 @@ class QQuickAbstractFileDialog : public QQuickAbstractDialog
     Q_PROPERTY(bool selectExisting READ selectExisting WRITE setSelectExisting NOTIFY fileModeChanged)
     Q_PROPERTY(bool selectMultiple READ selectMultiple WRITE setSelectMultiple NOTIFY fileModeChanged)
     Q_PROPERTY(bool selectFolder READ selectFolder WRITE setSelectFolder NOTIFY fileModeChanged)
-    Q_PROPERTY(QStringList shortcuts READ shortcuts CONSTANT)
     Q_PROPERTY(QUrl folder READ folder WRITE setFolder NOTIFY folderChanged)
     Q_PROPERTY(QStringList nameFilters READ nameFilters WRITE setNameFilters NOTIFY nameFiltersChanged)
     Q_PROPERTY(QString selectedNameFilter READ selectedNameFilter WRITE selectNameFilter NOTIFY filterSelected)
@@ -84,7 +83,6 @@ public:
     bool selectExisting() const { return m_selectExisting; }
     bool selectMultiple() const { return m_selectMultiple; }
     bool selectFolder() const { return m_selectFolder; }
-    QStringList shortcuts() const;
     QUrl folder() const;
     QStringList nameFilters() const { return m_options->nameFilters(); }
     QString selectedNameFilter() const;

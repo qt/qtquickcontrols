@@ -42,8 +42,11 @@
 #include "qquickfiledialog_p.h"
 #include <QQuickItem>
 #include <private/qguiapplication_p.h>
+#include <private/qv4object_p.h>
 
 QT_BEGIN_NAMESPACE
+
+using namespace QV4;
 
 /*!
     \qmltype AbstractFileDialog
@@ -106,6 +109,44 @@ QQuickFileDialog::~QQuickFileDialog()
 QList<QUrl> QQuickFileDialog::fileUrls() const
 {
     return m_selections;
+}
+
+
+void QQuickFileDialog::addShortcut(int &i, const QString &name, const QString &path)
+{
+    QJSEngine *engine = qmlEngine(this);
+    QJSValue o = engine->newObject();
+    o.setProperty("name", name);
+    o.setProperty("url", QUrl::fromLocalFile(path).toString());
+    m_shortcuts.setProperty(i++, o);
+}
+
+void QQuickFileDialog::addIfReadable(int &i, const QString &name, QStandardPaths::StandardLocation loc)
+{
+    QStringList paths = QStandardPaths::standardLocations(loc);
+    if (!paths.isEmpty() && QDir(paths.first()).isReadable())
+        addShortcut(i, name, paths.first());
+}
+
+QJSValue QQuickFileDialog::shortcuts()
+{
+    if (m_shortcuts.isUndefined()) {
+        QJSEngine *engine = qmlEngine(this);
+        m_shortcuts = engine->newArray();
+        int i = 0;
+
+        addIfReadable(i, "Desktop", QStandardPaths::DesktopLocation);
+        addIfReadable(i, "Documents", QStandardPaths::DocumentsLocation);
+        addIfReadable(i, "Music", QStandardPaths::MusicLocation);
+        addIfReadable(i, "Movies", QStandardPaths::MoviesLocation);
+        addIfReadable(i, "Pictures", QStandardPaths::PicturesLocation);
+        addIfReadable(i, "Home", QStandardPaths::HomeLocation);
+
+        QFileInfoList drives = QDir::drives();
+        foreach (QFileInfo fi, drives)
+            addShortcut(i, fi.absoluteFilePath(), fi.absoluteFilePath());
+    }
+    return m_shortcuts;
 }
 
 /*!

@@ -79,24 +79,6 @@ QString QQuickAbstractFileDialog::title() const
     return m_options->windowTitle();
 }
 
-QStringList QQuickAbstractFileDialog::shortcuts() const
-{
-    QStringList ret;
-    ret << QStandardPaths::standardLocations(QStandardPaths::DesktopLocation);
-    ret << QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation);
-    ret << QStandardPaths::standardLocations(QStandardPaths::MusicLocation);
-    ret << QStandardPaths::standardLocations(QStandardPaths::MoviesLocation);
-    ret << QStandardPaths::standardLocations(QStandardPaths::PicturesLocation);
-    ret << QStandardPaths::standardLocations(QStandardPaths::HomeLocation);
-    ret << QStandardPaths::writableLocation(QStandardPaths::TempLocation);
-    ret << QStandardPaths::writableLocation(QStandardPaths::ApplicationsLocation);
-
-    QFileInfoList drives = QDir::drives();
-    foreach (QFileInfo fi, drives)
-        ret << fi.absoluteFilePath();
-    return ret;
-}
-
 void QQuickAbstractFileDialog::setTitle(const QString &t)
 {
     if (m_options->windowTitle() == t) return;

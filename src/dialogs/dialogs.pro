@@ -63,7 +63,7 @@ DIALOGS_QML_FILES += \
     images/folder.png \
     images/up.png
 
-QT += quick-private gui gui-private core core-private qml
+QT += quick-private gui gui-private core core-private qml qml-private
 
 # Create the resource file
 GENERATED_RESOURCE_FILE = $$OUT_PWD/dialogs.qrc
