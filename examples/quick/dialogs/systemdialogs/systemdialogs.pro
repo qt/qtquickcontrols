@@ -1,0 +1,18 @@
+QT += qml quick
+!android: !ios: !blackberry: qtHaveModule(widgets): QT += widgets
+
+QT += quick qml
+SOURCES += main.cpp
+include(../../controls/shared/shared.pri)
+
+OTHER_FILES += \
+    systemdialogs.qml \
+    FileDialogs.qml \
+    ColorDialogs.qml \
+    FontDialogs.qml \
+    MessageDialogs.qml
+
+target.path = $$[QT_INSTALL_EXAMPLES]/quick/dialogs/systemdialogs
+INSTALLS += target
+
+RESOURCES += systemdialogs.qrc
