@@ -356,13 +356,10 @@ Control {
         selectionColor: __style.__syspal.highlight
         selectedTextColor: __style.__syspal.highlightedText
         onAccepted: {
-            var idx = input.find(editText)
+            var idx = input.find(editText, Qt.MatchFixedString)
             if (idx > -1) {
-                var string = textAt(idx);
-                if (string.length === editText.length) {
-                    currentIndex = idx;
-                    editText = string;
-                }
+                currentIndex = idx;
+                editText = textAt(idx);
             } else {
                 currentIndex = -1;
                 popup.currentText = editText;
@@ -381,6 +378,10 @@ Control {
                         return i;
                 } else if (searchType === Qt.CaseSensitive) {
                     if (currentString.indexOf(text) === 0)
+                        return i;
+                } else if (searchType === Qt.MatchFixedString) {
+                    if (currentString.toLowerCase().indexOf(text.toLowerCase()) === 0
+                            && currentString.length === text.length)
                         return i;
                 } else if (currentString.toLowerCase().indexOf(text.toLowerCase()) === 0) {
                     return i

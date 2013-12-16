@@ -142,11 +142,9 @@ Style {
         implicitWidth: Math.round(Math.min(maxTabWidth, textitem.implicitWidth + 20))
         implicitHeight: Math.round(textitem.implicitHeight + 10)
 
-        clip: true
         Item {
             anchors.fill: parent
             anchors.bottomMargin: styleData.selected ? 0 : 2
-            clip: true
             BorderImage {
                 anchors.fill: parent
                 source: styleData.selected ? "images/tab_selected.png" : "images/tab.png"
@@ -157,25 +155,27 @@ Style {
                 anchors.topMargin: styleData.selected ? 0 : 1
             }
         }
-        Rectangle {
-            anchors.fill: textitem
-            anchors.margins: -1
-            anchors.leftMargin: -3
-            anchors.rightMargin: -3
-            visible: (styleData.activeFocus && styleData.selected)
-            height: 6
-            radius: 3
-            color: "#224f9fef"
-            border.color: "#47b"
-        }
         Text {
             id: textitem
-            anchors.centerIn: parent
-            anchors.alignWhenCentered: true
+            anchors.fill: parent
+            anchors.leftMargin: 4
+            anchors.rightMargin: 4
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignHCenter
             text: styleData.title
+            elide: Text.ElideMiddle
             renderType: Text.NativeRendering
             scale: control.tabPosition === Qt.TopEdge ? 1 : -1
             color: __syspal.text
+            Rectangle {
+                anchors.centerIn: parent
+                width: textitem.paintedWidth + 6
+                height: textitem.paintedHeight + 4
+                visible: (styleData.activeFocus && styleData.selected)
+                radius: 3
+                color: "#224f9fef"
+                border.color: "#47b"
+            }
         }
     }
 

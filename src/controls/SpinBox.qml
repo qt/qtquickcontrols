@@ -180,13 +180,15 @@ Control {
     /*! \internal */
     function __increment() {
         validator.increment()
-        input.selectValue()
+        if (activeFocus)
+            input.selectValue()
     }
 
     /*! \internal */
     function __decrement() {
         validator.decrement()
-        input.selectValue()
+        if (activeFocus)
+            input.selectValue()
     }
 
     /*! \internal */
@@ -253,7 +255,7 @@ Control {
 
         horizontalAlignment: spinbox.horizontalAlignment
         verticalAlignment: __panel ? __panel.verticalAlignment : Qt.AlignVCenter
-        selectByMouse: true
+        selectByMouse: activeFocus || activeFocusOnPress
 
         validator: SpinBoxValidator {
             id: validator
