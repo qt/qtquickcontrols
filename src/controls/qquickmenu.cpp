@@ -236,7 +236,7 @@ QT_BEGIN_NAMESPACE
 */
 
 QQuickMenu::QQuickMenu(QObject *parent)
-    : QQuickMenuText(parent),
+    : QQuickMenuText(parent, QQuickMenuItemType::Menu),
       m_itemsCount(0),
       m_selectedIndex(-1),
       m_parentWindow(0),

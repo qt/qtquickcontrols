@@ -52,7 +52,7 @@ class QQuickMenuItemContainer : public QQuickMenuBase
     Q_OBJECT
 public:
     explicit QQuickMenuItemContainer(QObject *parent = 0)
-        : QQuickMenuBase(parent)
+        : QQuickMenuBase(parent, -1)
     { }
 
     ~QQuickMenuItemContainer()

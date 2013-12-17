@@ -66,7 +66,7 @@ class QQuickMenuItemType
 
 public:
     enum MenuItemType {
-        Separator,
+        Separator = 0,
         Item,
         Menu
     };
@@ -86,7 +86,7 @@ Q_SIGNALS:
     void visibleChanged();
 
 public:
-    QQuickMenuBase(QObject *parent = 0);
+    QQuickMenuBase(QObject *parent, int type);
     ~QQuickMenuBase();
 
     bool visible() const { return m_visible; }
@@ -105,11 +105,12 @@ public:
     QQuickItem *visualItem() const;
     void setVisualItem(QQuickItem *item);
 
-    virtual QQuickMenuItemType::MenuItemType type() { return QQuickMenuItemType::Item; }
+    QQuickMenuItemType::MenuItemType type() { return m_type; }
     virtual bool isNative() { return m_platformItem != 0; }
 
 private:
     bool m_visible;
+    QQuickMenuItemType::MenuItemType m_type;
     QQuickMenu *m_parentMenu;
     QQuickMenuItemContainer *m_container;
     QPlatformMenuItem *m_platformItem;
@@ -121,8 +122,6 @@ class QQuickMenuSeparator : public QQuickMenuBase
     Q_OBJECT
 public:
     QQuickMenuSeparator(QObject *parent = 0);
-
-     QQuickMenuItemType::MenuItemType type() { return QQuickMenuItemType::Separator; }
 };
 
 class QQuickMenuText : public QQuickMenuBase
@@ -143,7 +142,7 @@ Q_SIGNALS:
     void __iconChanged();
 
 public:
-    QQuickMenuText(QObject *parent = 0);
+    QQuickMenuText(QObject *parent, QQuickMenuItemType::MenuItemType type);
     ~QQuickMenuText();
 
     bool enabled() const;

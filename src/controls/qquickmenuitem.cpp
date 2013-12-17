@@ -51,12 +51,15 @@
 
 QT_BEGIN_NAMESPACE
 
-QQuickMenuBase::QQuickMenuBase(QObject *parent)
-    : QObject(parent), m_visible(true), m_parentMenu(0), m_container(0), m_visualItem(0)
+QQuickMenuBase::QQuickMenuBase(QObject *parent, int type)
+    : QObject(parent), m_visible(true), m_type(static_cast<QQuickMenuItemType::MenuItemType>(type))
+    , m_parentMenu(0), m_container(0), m_platformItem(0), m_visualItem(0)
 {
-    m_platformItem = QGuiApplicationPrivate::platformTheme()->createPlatformMenuItem();
-    if (m_platformItem)
-        m_platformItem->setRole(QPlatformMenuItem::TextHeuristicRole);
+    if (type >= 0) {
+        m_platformItem = QGuiApplicationPrivate::platformTheme()->createPlatformMenuItem();
+        if (m_platformItem)
+            m_platformItem->setRole(QPlatformMenuItem::TextHeuristicRole);
+    }
 }
 
 QQuickMenuBase::~QQuickMenuBase()
@@ -98,7 +101,7 @@ QQuickMenu *QQuickMenuBase::parentMenu() const
 
 void QQuickMenuBase::setParentMenu(QQuickMenu *parentMenu)
 {
-    if (m_parentMenu && m_parentMenu->platformMenu())
+    if (m_platformItem && m_parentMenu && m_parentMenu->platformMenu())
         m_parentMenu->platformMenu()->removeMenuItem(m_platformItem);
 
     m_parentMenu = parentMenu;
@@ -155,14 +158,14 @@ void QQuickMenuBase::setVisualItem(QQuickItem *item)
 */
 
 QQuickMenuSeparator::QQuickMenuSeparator(QObject *parent)
-    : QQuickMenuBase(parent)
+    : QQuickMenuBase(parent, QQuickMenuItemType::Separator)
 {
     if (platformItem())
         platformItem()->setIsSeparator(true);
 }
 
-QQuickMenuText::QQuickMenuText(QObject *parent)
-    : QQuickMenuBase(parent), m_action(new QQuickAction(this))
+QQuickMenuText::QQuickMenuText(QObject *parent, QQuickMenuItemType::MenuItemType type)
+    : QQuickMenuBase(parent, type), m_action(new QQuickAction(this))
 {
     connect(m_action, SIGNAL(enabledChanged()), this, SLOT(updateEnabled()));
     connect(m_action, SIGNAL(textChanged()), this, SLOT(updateText()));
@@ -417,7 +420,7 @@ void QQuickMenuText::updateIcon()
 */
 
 QQuickMenuItem::QQuickMenuItem(QObject *parent)
-    : QQuickMenuText(parent), m_boundAction(0)
+    : QQuickMenuText(parent, QQuickMenuItemType::Item), m_boundAction(0)
 {
     connect(this, SIGNAL(__textChanged()), this, SIGNAL(textChanged()));
 
