@@ -736,6 +736,9 @@ void QQuickGridLayout::insertLayoutItems()
 
         Q_ASSERT(columnSpan >= 1);
         Q_ASSERT(rowSpan >= 1);
+        const int sp = span[flowOrientation];
+        if (sp > flowBound)
+            return;
 
         if (row >= 0)
             nextRow = row;
@@ -758,7 +761,7 @@ void QQuickGridLayout::insertLayoutItems()
             bool cellAcceptsItem;
             while (true) {
                 // Check if the item does not span beyond the layout bound
-                cellAcceptsItem = (flowColumn + span[flowOrientation]) <= flowBound;
+                cellAcceptsItem = (flowColumn + sp) <= flowBound;
 
                 // Check if all the required cells are not taken
                 for (int rs = 0; cellAcceptsItem && rs < rowSpan; ++rs) {

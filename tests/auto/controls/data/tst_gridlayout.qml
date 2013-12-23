@@ -438,6 +438,28 @@ Item {
             layout.destroy();
         }
 
+        Component {
+            id: layout_spanIsMoreThanColumns_Component
+
+            GridLayout {
+                columnSpacing: 1
+                rowSpacing: 1
+                columns: 2
+
+                Rectangle {
+                    implicitWidth: 10
+                    implicitHeight: 10
+                    Layout.columnSpan: 3
+                }
+            }
+        }
+
+        function test_spanIsMoreThanColumns() {
+            var layout = layout_spanIsMoreThanColumns_Component.createObject(container);
+            // item was not added, therefore implicit width is 0
+            compare(layout.implicitWidth, 0);
+            layout.destroy();
+        }
 
         function test_sizeHints() {
             var layout = layout_spanAcrossEmptyRows_Component.createObject(container);
