@@ -545,7 +545,7 @@ QQuickGridLayout::QQuickGridLayout(QQuickItem *parent /* = 0*/)
     \qmlproperty real GridLayout::columnSpacing
 
     This property holds the spacing between each column.
-    The default value is \c 4.
+    The default value is \c 5.
 */
 qreal QQuickGridLayout::columnSpacing() const
 {
@@ -568,7 +568,7 @@ void QQuickGridLayout::setColumnSpacing(qreal spacing)
     \qmlproperty real GridLayout::rowSpacing
 
     This property holds the spacing between each row.
-    The default value is \c 4.
+    The default value is \c 5.
 */
 qreal QQuickGridLayout::rowSpacing() const
 {
@@ -843,13 +843,13 @@ QQuickLinearLayout::QQuickLinearLayout(Qt::Orientation orientation,
     \qmlproperty real RowLayout::spacing
 
     This property holds the spacing between each cell.
-    The default value is \c 4.
+    The default value is \c 5.
 */
 /*!
     \qmlproperty real ColumnLayout::spacing
 
     This property holds the spacing between each cell.
-    The default value is \c 4.
+    The default value is \c 5.
 */
 
 qreal QQuickLinearLayout::spacing() const
