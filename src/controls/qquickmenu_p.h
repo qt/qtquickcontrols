@@ -132,7 +132,6 @@ public:
     QQuickItem *menuContentItem() const { return m_menuContentItem; }
     bool popupVisible() const { return m_popupVisible; }
 
-    QQuickMenuItemType::MenuItemType type() { return QQuickMenuItemType::Menu; }
     bool isNative() { return m_platformMenu != 0; }
 
 protected Q_SLOTS:

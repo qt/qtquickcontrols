@@ -148,6 +148,34 @@ TestCase {
         verify(table.selection.contains(4))
         verify(table.selection.contains(5))
         verify(table.selection.count === 2)
+
+        // Navigate to end using arrow keys
+        table.selectionMode = SelectionMode.SingleSelection
+        table.model = 3
+        table.currentRow = -1
+        keyClick(Qt.Key_Down);
+        verify(table.currentRow === 0)
+        verify(rangeTest([[0,0]], table))
+        verify(table.selection.contains(0))
+        keyClick(Qt.Key_Down);
+        verify(table.currentRow === 1)
+        verify(table.selection.contains(1))
+        keyClick(Qt.Key_Down);
+        verify(table.currentRow === 2)
+        verify(table.selection.contains(2))
+        keyClick(Qt.Key_Down);
+        verify(table.currentRow === 2)
+        verify(table.selection.contains(2))
+        keyClick(Qt.Key_Up);
+        verify(table.currentRow === 1)
+        verify(table.selection.contains(1))
+        keyClick(Qt.Key_Up);
+        verify(table.currentRow === 0)
+        verify(table.selection.contains(0))
+        keyClick(Qt.Key_Up);
+        verify(table.currentRow === 0)
+        verify(table.selection.contains(0))
+
         table.destroy()
     }
 
