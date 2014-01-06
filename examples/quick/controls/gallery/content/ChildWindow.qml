@@ -59,7 +59,7 @@ Window {
         color: syspal.window
         anchors.fill: parent
 
-        Text {
+        Label {
             id: dimensionsText
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: parent.top
@@ -67,7 +67,7 @@ Window {
             horizontalAlignment: Text.AlignHCenter
         }
 
-        Text {
+        Label {
             id: availableDimensionsText
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: dimensionsText.bottom
@@ -75,7 +75,7 @@ Window {
             horizontalAlignment: Text.AlignHCenter
         }
 
-        Text {
+        Label {
             id: closeText
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: availableDimensionsText.bottom

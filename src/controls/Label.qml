@@ -88,4 +88,6 @@ Text {
         id: pal
         colorGroup: enabled ? SystemPalette.Active : SystemPalette.Disabled
     }
+    Accessible.name: text
+    Accessible.role: Accessible.StaticText
 }
