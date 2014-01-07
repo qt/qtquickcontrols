@@ -61,6 +61,11 @@
 #include "Private/qquickstyleitem_p.h"
 #endif
 
+static void initResources()
+{
+    Q_INIT_RESOURCE(controls);
+}
+
 QT_BEGIN_NAMESPACE
 
 static const struct {
@@ -100,6 +105,7 @@ static const struct {
 
 void QtQuickControlsPlugin::registerTypes(const char *uri)
 {
+    initResources();
     qmlRegisterType<QQuickAction>(uri, 1, 0, "Action");
     qmlRegisterType<QQuickExclusiveGroup>(uri, 1, 0, "ExclusiveGroup");
     qmlRegisterType<QQuickMenu>(uri, 1, 0, "MenuPrivate");
