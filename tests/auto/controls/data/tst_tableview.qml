@@ -43,7 +43,7 @@ import QtTest 1.0
 import QtQuick.Controls 1.1
 import QtQuickControlsTests 1.0
 
-Item {
+Rectangle {
     id: container
     width: 400
     height: 400
@@ -783,7 +783,7 @@ TestCase {
                 headerVisible: false;       \
             }'
 
-        var table = Qt.createQmlObject(test_instanceStr, testCase, '')
+        var table = Qt.createQmlObject(test_instanceStr, container, '')
         waitForRendering(table)
 
         var beginPos = table.mapFromItem(table.viewport, 0, 0)
