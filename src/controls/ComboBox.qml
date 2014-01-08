@@ -425,7 +425,7 @@ Control {
         Keys.onPressed: allowComplete = (event.key !== Qt.Key_Backspace && event.key !== Qt.Key_Delete);
 
         onTextChanged: {
-            if (editable && !blockUpdate && allowComplete) {
+            if (editable && !blockUpdate && allowComplete && text.length > 0) {
                 var completed = input.tryComplete(text)
                 if (completed.length > text.length) {
                     var oldtext = input.text;

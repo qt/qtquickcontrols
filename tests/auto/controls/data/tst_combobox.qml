@@ -267,6 +267,7 @@ TestCase {
         compare(comboBox.acceptedCount, 3)
 
         comboBox.editText = ""
+        compare(comboBox.editText, "")
 
         keyPress(Qt.Key_A)
         compare(comboBox.currentText, "Cocomuffin")
