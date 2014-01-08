@@ -42,6 +42,7 @@ import QtQuick 2.1
 import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.0
 import QtQuick.Controls.Private 1.0 as Private
+import QtQuick.Window 2.1
 
 /*!
     \qmltype SplitView
@@ -393,10 +394,11 @@ Item {
             MouseArea {
                 id: mouseArea
                 anchors.fill: parent
-                anchors.leftMargin: (parent.width <= 1) ? -2 : 0
-                anchors.rightMargin: (parent.width <= 1) ? -2 : 0
-                anchors.topMargin: (parent.height <= 1) ? -2 : 0
-                anchors.bottomMargin: (parent.height <= 1) ? -2 : 0
+                property real defaultMargin: Private.Settings.hasTouchScreen ? Screen.pixelDensity * 3.5 : 2
+                anchors.leftMargin: (parent.width <= 1) ? -defaultMargin : 0
+                anchors.rightMargin: (parent.width <= 1) ? -defaultMargin : 0
+                anchors.topMargin: (parent.height <= 1) ? -defaultMargin : 0
+                anchors.bottomMargin: (parent.height <= 1) ? -defaultMargin : 0
                 hoverEnabled: true
                 drag.threshold: 0
                 drag.target: parent
