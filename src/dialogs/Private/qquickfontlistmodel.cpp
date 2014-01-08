@@ -42,15 +42,10 @@
 #include "qquickfontlistmodel_p.h"
 #include <QtGui/qfontdatabase.h>
 #include <QtQml/qqmlcontext.h>
-#include <private/qqmlengine_p.h>
-#include <private/qv8engine_p.h>
-#include <private/qv4value_p.h>
-#include <private/qv4engine_p.h>
-#include <private/qv4object_p.h>
+#include <QtQml/qqml.h>
+#include <QtQml/qqmlengine.h>
 
 QT_BEGIN_NAMESPACE
-
-using namespace QV4;
 
 class QQuickFontListModelPrivate
 {
@@ -206,45 +201,35 @@ bool QQuickFontListModel::proportionalFonts() const
     return d->options->testOption(QFontDialogOptions::ProportionalFonts);
 }
 
-QQmlV4Handle QQuickFontListModel::get(int idx) const
+QJSValue QQuickFontListModel::get(int idx) const
 {
     Q_D(const QQuickFontListModel);
 
+    QJSEngine *engine = qmlEngine(this);
+
     if (idx < 0 || idx >= count())
-        return QQmlV4Handle(Encode::undefined());
+        return engine->newObject();
 
-    QQmlEngine *engine = qmlContext(this)->engine();
-    QV8Engine *v8engine = QQmlEnginePrivate::getV8Engine(engine);
-    ExecutionEngine *v4engine = QV8Engine::getV4(v8engine);
-    Scope scope(v4engine);
-    ScopedObject o(scope, v4engine->newObject());
-    ScopedString s(scope);
-    for (int ii = 0; ii < d->roleNames.keys().count(); ++ii) {
-        Property *p = o->insertMember((s = v4engine->newIdentifier(d->roleNames[Qt::UserRole + ii + 1])), PropertyAttributes());
-        p->value = v8engine->fromVariant(data(index(idx, 0), Qt::UserRole + ii + 1));
-    }
+    QJSValue result = engine->newObject();
+    int count = d->roleNames.keys().count();
+    for (int i = 0; i < count; ++i)
+        result.setProperty(QString(d->roleNames[Qt::UserRole + i + 1]), data(index(idx, 0), Qt::UserRole + i + 1).toString());
 
-    return QQmlV4Handle(o);
+    return result;
 }
 
-QQmlV4Handle QQuickFontListModel::pointSizes()
+QJSValue QQuickFontListModel::pointSizes()
 {
-    QQmlEngine *engine = qmlContext(this)->engine();
-    QV8Engine *v8engine = QQmlEnginePrivate::getV8Engine(engine);
-    ExecutionEngine *v4engine = QV8Engine::getV4(v8engine);
-    Scope scope(v4engine);
+    QJSEngine *engine = qmlEngine(this);
 
     QList<int> pss = QFontDatabase::standardSizes();
     int size = pss.size();
 
-    Scoped<QV4::ArrayObject> a(scope, v4engine->newArrayObject());
-    a->arrayReserve(size);
-    a->arrayData.length = size;
+    QJSValue result = engine->newArray(size);
     for (int i = 0; i < size; ++i)
-        a->arrayData.data[i].value = Primitive::fromInt32(pss.at(i));
-    a->setArrayLengthUnchecked(size);
+        result.setProperty(i, pss.at(i));
 
-    return QQmlV4Handle(ScopedValue(scope, a.asReturnedValue()));
+    return result;
 }
 
 void QQuickFontListModel::classBegin()
