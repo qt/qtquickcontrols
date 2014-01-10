@@ -397,10 +397,10 @@ ScrollView {
     \li function \b selectAll() - selects all rows
     \li function \b select(from, to) - select a range
     \li functton \b deselect(from, to) - de-selects a range
-    \li function \b forEach(callback) - Allows you to iterate over selected rows
-    \li function \b contains(index) - Allows you to iterate over selected rows
-    \li signal \b selectionChanged() - The current row selection changed
-    \li readonly property int \b count - The number of selected rows
+    \li function \b forEach(callback) - iterates over all selected rows
+    \li function \b contains(index) - checks whether the selection includes the given index
+    \li signal \b selectionChanged() - the current row selection changed
+    \li readonly property int \b count - the number of selected rows
     \endlist
 
     \b Example:
