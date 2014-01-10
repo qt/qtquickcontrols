@@ -132,7 +132,16 @@ void tst_activeFocusOnTab::activeFocusOnTab()
     QVERIFY(item);
     QVERIFY(item->hasActiveFocus());
 
-    // Tab: combobox->group1_checkbox
+    // Tab: combobox->editable_combobox
+    key = QKeyEvent(QEvent::KeyPress, Qt::Key_Tab, Qt::NoModifier, "", false, 1);
+    QGuiApplication::sendEvent(window, &key);
+    QVERIFY(key.isAccepted());
+
+    item = findItem<QQuickItem>(window->rootObject(), "editable_combobox");
+    QVERIFY(item);
+    QVERIFY(item->hasActiveFocus());
+
+    // Tab: editable_combobox->group1_checkbox
     key = QKeyEvent(QEvent::KeyPress, Qt::Key_Tab, Qt::NoModifier, "", false, 1);
     QGuiApplication::sendEvent(window, &key);
     QVERIFY(key.isAccepted());
@@ -403,7 +412,16 @@ void tst_activeFocusOnTab::activeFocusOnTab()
     QVERIFY(item);
     QVERIFY(item->hasActiveFocus());
 
-    // BackTab: group1_checkbox->combobox
+    // BackTab: group1_checkbox->editable_combobox
+    key = QKeyEvent(QEvent::KeyPress, Qt::Key_Tab, Qt::ShiftModifier, "", false, 1);
+    QGuiApplication::sendEvent(window, &key);
+    QVERIFY(key.isAccepted());
+
+    item = findItem<QQuickItem>(window->rootObject(), "editable_combobox");
+    QVERIFY(item);
+    QVERIFY(item->hasActiveFocus());
+
+    // BackTab: editable_combobox->combobox
     key = QKeyEvent(QEvent::KeyPress, Qt::Key_Tab, Qt::ShiftModifier, "", false, 1);
     QGuiApplication::sendEvent(window, &key);
     QVERIFY(key.isAccepted());
@@ -465,14 +483,23 @@ void tst_activeFocusOnTab::activeFocusOnTab2()
     QVERIFY(QTest::qWaitForWindowActive(window));
     QVERIFY(QGuiApplication::focusWindow() == window);
 
-    // original: spinbox
-    QQuickItem *item = findItem<QQuickItem>(window->rootObject(), "spinbox");
+    // original: editable_combobox
+    QQuickItem *item = findItem<QQuickItem>(window->rootObject(), "editable_combobox");
     QVERIFY(item);
     item->forceActiveFocus();
     QVERIFY(item->hasActiveFocus());
 
-    // Tab: spinbox->textfield
+    // Tab: editable_combobox->spinbox
     QKeyEvent key(QEvent::KeyPress, Qt::Key_Tab, Qt::NoModifier, "", false, 1);
+    QGuiApplication::sendEvent(window, &key);
+    QVERIFY(key.isAccepted());
+
+    item = findItem<QQuickItem>(window->rootObject(), "spinbox");
+    QVERIFY(item);
+    QVERIFY(item->hasActiveFocus());
+
+    // Tab: spinbox->textfield
+    key = QKeyEvent(QEvent::KeyPress, Qt::Key_Tab, Qt::NoModifier, "", false, 1);
     QGuiApplication::sendEvent(window, &key);
     QVERIFY(key.isAccepted());
 
@@ -525,7 +552,16 @@ void tst_activeFocusOnTab::activeFocusOnTab2()
     QVERIFY(item);
     QVERIFY(item->hasActiveFocus());
 
-    // BackTab: spinbox->textarea
+    // BackTab: spinbox->editable_combobox
+    key = QKeyEvent(QEvent::KeyPress, Qt::Key_Tab, Qt::ShiftModifier, "", false, 1);
+    QGuiApplication::sendEvent(window, &key);
+    QVERIFY(key.isAccepted());
+
+    item = findItem<QQuickItem>(window->rootObject(), "editable_combobox");
+    QVERIFY(item);
+    QVERIFY(item->hasActiveFocus());
+
+    // BackTab: editable_combobox->textarea
     key = QKeyEvent(QEvent::KeyPress, Qt::Key_Tab, Qt::ShiftModifier, "", false, 1);
     QGuiApplication::sendEvent(window, &key);
     QVERIFY(key.isAccepted());
