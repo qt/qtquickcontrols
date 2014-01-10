@@ -813,7 +813,6 @@ int QGridLayoutEngine::effectiveLastRow(Qt::Orientation orientation) const
 
 void QGridLayoutEngine::setSpacing(qreal spacing, Qt::Orientations orientations)
 {
-    Q_ASSERT(spacing >= 0.0);
     if (orientations & Qt::Horizontal)
         q_defaultSpacings[Hor].setUserValue(spacing);
     if (orientations & Qt::Vertical)
