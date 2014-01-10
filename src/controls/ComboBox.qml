@@ -119,6 +119,9 @@ Control {
     /*! \qmlproperty int ComboBox::currentIndex
         The index of the currently selected item in the ComboBox.
 
+        Setting currentIndex to \c -1 will reset the selection and clear the text
+        label. If \l editable is \c true, you may also need to manually clear \l editText.
+
         \sa model
     */
     property alias currentIndex: popup.__selectedIndex
@@ -342,7 +345,6 @@ Control {
         enabled: editable
         focus: true
         clip: contentWidth > width
-        text: currentText
 
         anchors.fill: parent
         anchors.leftMargin: 8
@@ -358,9 +360,11 @@ Control {
         onAccepted: {
             var idx = input.find(editText, Qt.MatchFixedString)
             if (idx > -1) {
+                editTextMatches = true;
                 currentIndex = idx;
                 editText = textAt(idx);
             } else {
+                editTextMatches = false;
                 currentIndex = -1;
                 popup.currentText = editText;
             }
@@ -369,6 +373,7 @@ Control {
 
         property bool blockUpdate: false
         property string prevText
+        property bool editTextMatches: true
 
         function find (text, searchType) {
             for (var i = 0 ; i < popupItems.count ; ++i) {
@@ -425,7 +430,7 @@ Control {
         Keys.onPressed: allowComplete = (event.key !== Qt.Key_Backspace && event.key !== Qt.Key_Delete);
 
         onTextChanged: {
-            if (editable && !blockUpdate && allowComplete) {
+            if (editable && !blockUpdate && allowComplete && text.length > 0) {
                 var completed = input.tryComplete(text)
                 if (completed.length > text.length) {
                     var oldtext = input.text;
@@ -435,6 +440,13 @@ Control {
             }
             prevText = text
         }
+    }
+
+    Binding {
+        target: input
+        property: "text"
+        value: popup.currentText
+        when: input.editTextMatches
     }
 
     onTextRoleChanged: popup.resolveTextValue(textRole)
@@ -449,7 +461,12 @@ Control {
         onSelectedTextChanged: if (selectedText) popup.currentText = selectedText
 
         property string selectedText
-        on__SelectedIndexChanged: updateSelectedText()
+        on__SelectedIndexChanged: {
+            if (__selectedIndex === -1)
+                popup.currentText = ""
+            else
+                updateSelectedText()
+        }
         property string textRole: ""
 
         property bool ready: false
@@ -559,8 +576,10 @@ Control {
 
         function updateSelectedText() {
             var selectedItem;
-            if (__selectedIndex !== -1 && (selectedItem = items[__selectedIndex]))
+            if (__selectedIndex !== -1 && (selectedItem = items[__selectedIndex])) {
+                input.editTextMatches = true
                 selectedText = selectedItem.text
+            }
         }
     }
 

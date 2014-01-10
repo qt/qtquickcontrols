@@ -267,6 +267,7 @@ TestCase {
         compare(comboBox.acceptedCount, 3)
 
         comboBox.editText = ""
+        compare(comboBox.editText, "")
 
         keyPress(Qt.Key_A)
         compare(comboBox.currentText, "Cocomuffin")
@@ -678,6 +679,23 @@ TestCase {
             }
         }
         return index
+    }
+
+    function test_minusOneIndexResetsSelection_QTBUG_35794() {
+        var qmlObjects = ['import QtQuick.Controls 1.1 ; ComboBox { model: ["A", "B", "C"] }',
+                          'import QtQuick.Controls 1.1 ; ComboBox { editable: true; model: ["A", "B", "C"] }']
+        for (var i = 0; i < qmlObjects.length; i++) {
+            var comboBox = Qt.createQmlObject(qmlObjects[i], testCase, '');
+            compare(comboBox.currentIndex, 0)
+            compare(comboBox.currentText, "A")
+            comboBox.currentIndex = -1
+            compare(comboBox.currentIndex, -1)
+            compare(comboBox.currentText, "")
+            comboBox.currentIndex = 1
+            compare(comboBox.currentIndex, 1)
+            compare(comboBox.currentText, "B")
+            comboBox.destroy()
+        }
     }
 }
 }
