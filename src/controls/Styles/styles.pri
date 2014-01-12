@@ -32,6 +32,7 @@ STYLES_QML_FILES += \
     $$PWD/Desktop/BusyIndicatorStyle.qml \
     $$PWD/Desktop/CheckBoxStyle.qml \
     $$PWD/Desktop/ComboBoxStyle.qml \
+    $$PWD/Desktop/CalendarStyle.qml \
     $$PWD/Desktop/FocusFrameStyle.qml \
     $$PWD/Desktop/GroupBoxStyle.qml \
     $$PWD/Desktop/MenuBarStyle.qml \

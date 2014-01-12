@@ -207,7 +207,7 @@ Control {
     */
     signal escapePressed
 
-    style: Qt.createComponent(/*Settings.style*/"Styles/Base" + "/CalendarStyle.qml", calendar)
+    style: Qt.createComponent(Settings.style + "/CalendarStyle.qml", calendar)
 
     Keys.forwardTo: [view]
 
