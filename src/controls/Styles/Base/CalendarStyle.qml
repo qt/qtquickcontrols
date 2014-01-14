@@ -248,8 +248,7 @@ Style {
                     color: "white"
                     anchors.fill: parent
                     Text {
-                        text: DateUtils.dayNameFromDayOfWeek(control.locale,
-                            control.dayOfWeekFormat, dayOfWeek)
+                        text: control.locale.dayName(dayOfWeek, control.dayOfWeekFormat)
                         anchors.centerIn: parent
                     }
                 }

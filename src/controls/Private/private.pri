@@ -1,4 +1,5 @@
 HEADERS += \
+    $$PWD/qquickcalendarmodel_p.h \
     $$PWD/qquicktooltip_p.h \
     $$PWD/qquickspinboxvalidator_p.h \
     $$PWD/qquickrangemodel_p.h \
@@ -11,6 +12,7 @@ HEADERS += \
     $$PWD/qquickcontrolsprivate_p.h
 
 SOURCES += \
+    $$PWD/qquickcalendarmodel.cpp \
     $$PWD/qquicktooltip.cpp \
     $$PWD/qquickspinboxvalidator.cpp \
     $$PWD/qquickrangemodel.cpp \

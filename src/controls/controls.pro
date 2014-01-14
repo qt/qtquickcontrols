@@ -11,7 +11,6 @@ CONTROLS_QML_FILES = \
     Button.qml \
     BusyIndicator.qml \
     Calendar.qml \
-    CalendarModel.qml \
     CalendarHeaderModel.qml \
     CheckBox.qml \
     ComboBox.qml \

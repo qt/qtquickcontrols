@@ -43,8 +43,6 @@ import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
 import QtQuick.Controls.Private 1.0
 
-//import "Private/DateUtils.js" as DateUtils
-
 /*!
     \qmltype Calendar
     \inqmlmodule QtQuick.Controls
@@ -55,9 +53,8 @@ import QtQuick.Controls.Private 1.0
     Calendar allows selection of dates from a grid of days, similar to a typical
     calendar. The selected date can be set through \l selectedDate, or with the
     mouse and directional arrow keys. The current month displayed can be changed
-    by clicking the previous and next month buttons, or pressing the left/right
-    arrow keys when the selected date is the first or last visible date,
-    respectively.
+    by clicking the previous and next month buttons, or by navigating with the
+    directional keys.
 
     A minimum and maximum date can be set through \l minimumDate and
     \l maximumDate. The earliest minimum date that can be set is 1 January, 1
@@ -67,7 +64,7 @@ import QtQuick.Controls.Private 1.0
     is displayed according to \l locale, and it can be accessed through the
     \l selectedDateText property.
 
-    \sa CalendarModel, CalendarHeaderModel
+    \sa CalendarHeaderModel
 */
 
 Control {
@@ -155,36 +152,20 @@ Control {
     property var locale: Qt.locale()
 
     /*!
-        \qmlproperty enum Calendar::selectedDateFormat
-        \qmlproperty string Calendar::selectedDateFormat
-
-        The format to display \l selectedDateText in.
-
-        This can be either one of the following enums, or a string:
-
-        \list
-            \li Locale.ShortFormat
-            \li Locale.LongFormat
-            \li Locale.NarrowFormat
-        \endlist
-
-        See QLocale::toString()/QLocale::toDateTime() for the full list of
-        formatting options.
-
-        The default value is \c "MMMM yyyy".
-    */
-    property var selectedDateFormat: "MMMM yyyy"
-
-    /*!
         The selected date converted to a string using \l locale.
     */
-    readonly property string selectedDateText: selectedDate.toLocaleDateString(locale, selectedDateFormat)
+    property string selectedDateText: locale.standaloneMonthName(selectedDate.getMonth())
+        + selectedDate.toLocaleDateString(locale, " yyyy")
 
     /*!
-        This property holds the CalendarModel that will be used by the Calendar
-        to populate the dates available to the user.
+        \internal
+
+        This property holds the model that will be used by the Calendar to
+        populate the dates available to the user.
     */
-    property CalendarModel model: CalendarModel { locale: calendar.locale }
+    property CalendarModel __model: CalendarModel {
+        locale: calendar.locale
+    }
 
     /*!
         \qmlsignal Calendar::doubleClicked(date selectedDate)
@@ -249,11 +230,10 @@ Control {
         // TODO: fix the reason behind + 1 stopping the flickableness..
         // might have something to do with the header
         height: cellHeight * (__style.weeksToShow + 1)
-        model: calendar.model
+        model: calendar.__model
+
         boundsBehavior: Flickable.StopAtBounds
         KeyNavigation.tab: __panel.navigationBarItem
-
-        property var previousDate
 
         Keys.onLeftPressed: {
             if (currentIndex != 0) {
@@ -261,7 +241,7 @@ Control {
                 // to, then we can calculate the date from that.
                 moveCurrentIndexLeft();
                 // This will cause the index to be set again (to the same value).
-                calendar.selectedDate = model.get(currentIndex).date;
+                calendar.selectedDate = model.dateAt(currentIndex);
             } else {
                 // We're at the left edge of the calendar on the first row;
                 // this day is the first of the week and the month, so
@@ -276,17 +256,17 @@ Control {
 
         Keys.onUpPressed: {
             moveCurrentIndexUp();
-            calendar.selectedDate = model.get(currentIndex).date;
+            calendar.selectedDate = model.dateAt(currentIndex);
         }
 
         Keys.onDownPressed: {
             moveCurrentIndexDown();
-            calendar.selectedDate = model.get(currentIndex).date;
+            calendar.selectedDate = model.dateAt(currentIndex);
         }
 
         Keys.onRightPressed: {
             moveCurrentIndexRight();
-            calendar.selectedDate = model.get(currentIndex).date;
+            calendar.selectedDate = model.dateAt(currentIndex);
         }
 
         Keys.onEscapePressed: {
@@ -294,7 +274,6 @@ Control {
         }
 
         Component.onCompleted: {
-            repopulate();
             dateChanged();
 
             if (visible) {
@@ -309,18 +288,9 @@ Control {
 
         function dateChanged() {
             if (model !== undefined && model.locale !== undefined) {
-                if (previousDate === undefined ||
-                    previousDate !== undefined &&
-                    previousDate.getMonth() != calendar.selectedDate.getMonth()) {
-                    repopulate();
-                }
-                previousDate = new Date(calendar.selectedDate);
-                currentIndex = model.indexFromDate(calendar.selectedDate);
+                __model.selectedDate = calendar.selectedDate;
+                currentIndex = __model.indexAt(calendar.selectedDate);
             }
-        }
-
-        function repopulate() {
-            model.populateFromDate(calendar.selectedDate);
         }
 
         delegate: Loader {

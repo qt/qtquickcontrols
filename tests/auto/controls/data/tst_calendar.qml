@@ -97,7 +97,8 @@ Item {
             compare(calendar.dayOfWeekFormat, Locale.ShortFormat);
             compare(calendar.locale, Qt.locale());
             compare(calendar.selectedDateText,
-                calendar.selectedDate.toLocaleDateString(calendar.locale, calendar.selectedDateFormat));
+                calendar.locale.standaloneMonthName(calendar.selectedDate.getMonth())
+                    + calendar.selectedDate.toLocaleDateString(calendar.locale, " yyyy"));
         }
 
         function test_setAfterConstructed() {
@@ -114,7 +115,8 @@ Item {
             compare(calendar.navigationBarVisible, false);
             compare(calendar.locale, Qt.locale("de_DE"));
             compare(calendar.selectedDateText,
-                calendar.selectedDate.toLocaleDateString(calendar.locale, calendar.selectedDateFormat))
+                calendar.locale.standaloneMonthName(calendar.selectedDate.getMonth())
+                    + calendar.selectedDate.toLocaleDateString(calendar.locale, " yyyy"));
         }
 
         function test_selectedDate() {
@@ -170,22 +172,12 @@ Item {
 
             var locales = [Qt.locale().name, "en_AU", "en_GB", "en_US", "de_DE", "nb_NO",
                 "pl_PL", "zh_CN", "fr_FR", "it_IT", "pt_BR", "ru_RU", "es_ES"];
-            var stringFormats = ["dd-MM-yyyy", "yyyy", "MM", "dd"];
-            var enumFormats = [Locale.ShortFormat, Locale.NarrowFormat, Locale.LongFormat];
 
             for (var i = 0; i < locales.length; ++i) {
                 calendar.locale = Qt.locale(locales[i]);
-                for (var formatIndex = 0; formatIndex < stringFormats.length; ++formatIndex) {
-                    calendar.selectedDateFormat = stringFormats[formatIndex];
-                    compare(calendar.selectedDateText,
-                        calendar.selectedDate.toLocaleDateString(calendar.locale, calendar.selectedDateFormat));
-                }
-
-                for (formatIndex = 0; formatIndex < enumFormats.length; ++formatIndex) {
-                    calendar.selectedDateFormat = enumFormats[formatIndex];
-                    compare(calendar.selectedDateText,
-                        calendar.selectedDate.toLocaleDateString(calendar.locale, calendar.selectedDateFormat));
-                }
+                compare(calendar.selectedDateText,
+                    calendar.locale.standaloneMonthName(calendar.selectedDate.getMonth())
+                        + calendar.selectedDate.toLocaleDateString(calendar.locale, " yyyy"));
             }
         }
 

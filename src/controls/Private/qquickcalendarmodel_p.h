@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2014 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the Qt Quick Controls module of the Qt Toolkit.
@@ -39,55 +39,53 @@
 **
 ****************************************************************************/
 
-#ifndef QQUICKRANGEDDATE_H
-#define QQUICKRANGEDDATE_H
+#ifndef QQUICKCALENDARMODEL_H
+#define QQUICKCALENDARMODEL_H
 
+#include <QObject>
+#include <QAbstractListModel>
+#include <QLocale>
+#include <QVariant>
 #include <QDate>
 
-#include <QtQml/qqml.h>
-
-QT_BEGIN_NAMESPACE
-
-class QQuickRangedDate : public QObject
+class QQuickCalendarModel : public QAbstractListModel
 {
     Q_OBJECT
-    Q_PROPERTY(QDate date READ date WRITE setDate NOTIFY dateChanged RESET resetDate)
-    Q_PROPERTY(QDate minimumDate READ minimumDate WRITE setMinimumDate NOTIFY minimumDateChanged RESET resetMinimumDate)
-    Q_PROPERTY(QDate maximumDate READ maximumDate WRITE setMaximumDate NOTIFY maximumDateChanged RESET resetMaximumDate)
+    Q_PROPERTY(QDate selectedDate READ selectedDate WRITE setSelectedDate NOTIFY selectedDateChanged)
+    Q_PROPERTY(QLocale locale READ locale WRITE setLocale NOTIFY localeChanged)
 public:
-    QQuickRangedDate();
-    ~QQuickRangedDate() {}
+    explicit QQuickCalendarModel(QObject *parent = 0);
 
-    QDate date() const { return mDate; }
-    void setDate(const QDate &date);
-    void resetDate() {}
+    enum {
+        // If this class is made public, this will have to be changed.
+        DateRole = Qt::UserRole + 1
+    };
 
-    QDate minimumDate() const { return mMinimumDate; }
-    void setMinimumDate(const QDate &minimumDate);
-    void resetMinimumDate() {}
+    QDate selectedDate() const;
+    void setSelectedDate(const QDate &selectedDate);
 
-    QDate maximumDate() const { return mMaximumDate; }
-    void setMaximumDate(const QDate &maximumDate);
-    void resetMaximumDate() {}
+    QLocale locale() const;
+    void setLocale(const QLocale &locale);
 
-Q_SIGNALS:
-    void dateChanged();
-    void minimumDateChanged();
-    void maximumDateChanged();
+    QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
 
+    int rowCount(const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
+
+    QHash<int, QByteArray> roleNames() const Q_DECL_OVERRIDE;
+
+    Q_INVOKABLE QDate dateAt(int index) const;
+    Q_INVOKABLE int indexAt(const QDate &selectedDate);
+signals:
+    void selectedDateChanged(const QDate &selectedDate);
+    void localeChanged(const QLocale &locale);
 protected:
+    void populateFromSelectedDate(const QDate &previousDate);
 
-private:
-    QDate mDate;
-    QDate mMinimumDate;
-    QDate mMaximumDate;
-
-    static const QDate jsMinimumDate;
-    static const QDate jsMaximumDate;
+    QDate mSelectedDate;
+    QDate mFirstVisibleDate;
+    QDate mLastVisibleDate;
+    QVector<QDate> mVisibleDates;
+    QLocale mLocale;
 };
 
-QML_DECLARE_TYPE(QQuickRangedDate)
-
-QT_END_NAMESPACE
-
-#endif // QQUICKRANGEDDATE_H
+#endif // QQUICKCALENDARMODEL_H

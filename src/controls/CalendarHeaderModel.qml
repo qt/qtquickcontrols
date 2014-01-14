@@ -64,7 +64,7 @@ import QtQuick 2.0
     \li \c Locale.Saturday
     \endlist
 
-    \sa Calendar, CalendarModel
+    \sa Calendar
  */
 
 ListModel {
