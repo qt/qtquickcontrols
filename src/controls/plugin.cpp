@@ -45,6 +45,7 @@
 #include "qquickexclusivegroup_p.h"
 #include "qquickmenu_p.h"
 #include "qquickmenubar_p.h"
+#include "qquickpopupwindow_p.h"
 #include "qquickstack_p.h"
 #include "qquickdesktopiconprovider_p.h"
 #include "qquickselectionmode_p.h"
@@ -139,6 +140,7 @@ void QtQuickControlsPlugin::initializeEngine(QQmlEngine *engine, const char *uri
 
     qmlRegisterType<QQuickMenu>(private_uri, 1, 0, "MenuPrivate");
     qmlRegisterType<QQuickMenuBar>(private_uri, 1, 0, "MenuBarPrivate");
+    qmlRegisterType<QQuickPopupWindow>(private_uri, 1, 0, "PopupWindow");
 
 #ifdef QT_WIDGETS_LIB
     qmlRegisterType<QQuickStyleItem>(private_uri, 1, 0, "StyleItem");
