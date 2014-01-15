@@ -108,8 +108,6 @@ void QtQuickControlsPlugin::registerTypes(const char *uri)
     initResources();
     qmlRegisterType<QQuickAction>(uri, 1, 0, "Action");
     qmlRegisterType<QQuickExclusiveGroup>(uri, 1, 0, "ExclusiveGroup");
-    qmlRegisterType<QQuickMenu>(uri, 1, 0, "MenuPrivate");
-    qmlRegisterType<QQuickMenuBar>(uri, 1, 0, "MenuBarPrivate");
     qmlRegisterType<QQuickMenuItem>(uri, 1, 0, "MenuItem");
     qmlRegisterUncreatableType<QQuickMenuItemType>(uri, 1, 0, "MenuItemType",
                                                    QLatin1String("Do not create objects of type MenuItemType"));
@@ -138,6 +136,9 @@ void QtQuickControlsPlugin::initializeEngine(QQmlEngine *engine, const char *uri
     qmlRegisterType<QQuickSpinBoxValidator>(private_uri, 1, 0, "SpinBoxValidator");
     qmlRegisterSingletonType<QQuickTooltip>(private_uri, 1, 0, "Tooltip", QQuickControlsPrivate::registerTooltipModule);
     qmlRegisterSingletonType<QQuickControlSettings>(private_uri, 1, 0, "Settings", QQuickControlsPrivate::registerSettingsModule);
+
+    qmlRegisterType<QQuickMenu>(private_uri, 1, 0, "MenuPrivate");
+    qmlRegisterType<QQuickMenuBar>(private_uri, 1, 0, "MenuBarPrivate");
 
 #ifdef QT_WIDGETS_LIB
     qmlRegisterType<QQuickStyleItem>(private_uri, 1, 0, "StyleItem");
