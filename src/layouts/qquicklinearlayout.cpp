@@ -499,9 +499,11 @@ void QQuickGridLayoutBase::rearrange(const QSizeF &size)
         qSwap(left, right);
     */
 
+    // Set m_dirty to false in case size hint changes during arrangement.
+    // This could happen if there is a binding like implicitWidth: height
+    QQuickLayout::rearrange(size);
     d->engine.setGeometries(QRectF(QPointF(0,0), size));
 
-    QQuickLayout::rearrange(size);
 }
 
 bool QQuickGridLayoutBase::shouldIgnoreItem(QQuickItem *child, QQuickLayoutAttached *&info, QSizeF *sizeHints)
