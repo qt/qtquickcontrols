@@ -42,6 +42,7 @@ import QtQuick 2.1
 import QtQuick.Controls 1.1
 import QtQuick.Controls.Private 1.0
 import QtQuick.Controls.Styles 1.1
+import QtQuick.Window 2.1
 
 /*!
    \qmltype TableView
@@ -982,7 +983,8 @@ ScrollView {
                             property int offset: 0
                             property int minimumSize: 20
                             anchors.rightMargin: -width/2
-                            width: 16 ; height: parent.height
+                            width: Settings.hasTouchScreen ? Screen.pixelDensity * 3.5 : 16
+                            height: parent.height
                             anchors.right: parent.right
                             enabled: modelData.resizable && columnCount > 1
                             onPositionChanged:  {
