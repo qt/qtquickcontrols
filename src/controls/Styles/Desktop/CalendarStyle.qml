@@ -80,6 +80,8 @@ Style {
 
         Button {
             id: previousMonth
+            width: parent.height * 0.6
+            height: width
             anchors.left: parent.left
             anchors.verticalCenter: parent.verticalCenter
             anchors.leftMargin: (parent.height - height) / 2
@@ -94,6 +96,8 @@ Style {
         }
         Button {
             id: nextMonth
+            width: parent.height * 0.6
+            height: width
             anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
             anchors.rightMargin: (parent.height - height) / 2
