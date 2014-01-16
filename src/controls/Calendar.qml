@@ -294,13 +294,20 @@ Control {
         }
 
         delegate: Loader {
-            sourceComponent: __style.dateDelegate
-
-            property date cellDate: date
-            readonly property bool isCurrentItem: GridView.isCurrentItem
-
+            id: delegateLoader
             width: view.cellWidth
             height: view.cellHeight
+            sourceComponent: __style.dateDelegate
+
+            readonly property int __index: index
+            readonly property var __model: model
+
+            property QtObject styleData: QtObject {
+                readonly property alias index: delegateLoader.__index
+                readonly property alias model: delegateLoader.__model
+                readonly property bool selected: delegateLoader.GridView.isCurrentItem
+                readonly property date date: model.date
+            }
 
             MouseArea {
                 anchors.fill: parent
@@ -312,18 +319,18 @@ Control {
                 }
 
                 onClicked: {
-                    setDateIfValid(cellDate)
+                    setDateIfValid(date)
                 }
 
                 onDoubleClicked: {
-                    if (cellDate.getTime() === calendar.selectedDate.getTime()) {
+                    if (date.getTime() === calendar.selectedDate.getTime()) {
                         // Only accept double clicks if the first click does not
                         // change the month displayed. This is because double-
                         // clicking on a date in the next month will first cause
                         // a single click which will change the month and the
                         // the release will be triggered on the same index but a
                         // different date (the date in the next month).
-                        calendar.doubleClicked(cellDate);
+                        calendar.doubleClicked(date);
                     }
                 }
             }

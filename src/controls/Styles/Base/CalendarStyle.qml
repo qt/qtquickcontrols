@@ -56,25 +56,25 @@ import QtQuick.Controls.Private 1.0
 
         style: CalendarStyle {
             dateDelegate: Rectangle {
-                readonly property bool thisMonth: cellDate.getMonth() === control.selectedDate.getMonth()
+                readonly property bool isSelectedMonth: styleData.date.getMonth() === control.selectedDate.getMonth()
 
                 gradient: Gradient {
                     GradientStop {
                         position: 0.00
-                        color: isCurrentItem ? "#111" : (thisMonth ? "#444" : "#666");
+                        color: styleData.selected ? "#111" : (isSelectedMonth ? "#444" : "#666");
                     }
                     GradientStop {
                         position: 1.00
-                        color: isCurrentItem ? "#444" : (thisMonth ? "#111" : "#666");
+                        color: styleData.selected ? "#444" : (isSelectedMonth ? "#111" : "#666");
                     }
                     GradientStop {
                         position: 1.00
-                        color: isCurrentItem ? "#777" : (thisMonth ? "#111" : "#666");
+                        color: styleData.selected ? "#777" : (isSelectedMonth ? "#111" : "#666");
                     }
                 }
 
                 Text {
-                    text: cellDate.getDate()
+                    text: styleData.date.getDate()
                     anchors.centerIn: parent
                     color: "white"
                 }
@@ -187,8 +187,6 @@ Style {
             anchors.rightMargin: (parent.height - height) / 2
             iconSource: "images/arrow-right.png"
 
-//            KeyNavigation.tab: control.view
-
             onClicked: control.nextMonth()
         }
     }
@@ -196,16 +194,17 @@ Style {
     /*!
         The delegate that styles each date in the calendar.
 
-        The properties provided by the view to each delegate are:
-        \list
-            \li property date cellDate
-            \li readonly property bool isCurrentItem
-        \endlist
+        The properties provided to each delegate are:
+        \table
+            \row \li readonly property date \b styleData.date \li The date this delegate represents.
+            \row \li readonly property bool \b styleData.selected \li \c true if this is the selected date.
+            \row \li readonly property int \b styleData.index \li The index of this delegate.
+            \row \li readonly property var \b styleData.model \li The model of the view.
+        \endtable
     */
     property Component dateDelegate: Rectangle {
         id: dayDelegate
-        color: cellDate !== undefined && isCurrentItem ? selectedDateColor : "white"
-//        radius: 1
+        color: styleData.date !== undefined && styleData.selected ? selectedDateColor : "white"
         readonly property color sameMonthDateTextColor: "black"
         readonly property color selectedDateColor: "steelblue"
         readonly property color selectedDateTextColor: "white"
@@ -214,17 +213,17 @@ Style {
 
         Text {
             id: dayDelegateText
-            text: cellDate.getDate()
+            text: styleData.date.getDate()
             font.pixelSize: 14
             anchors.centerIn: parent
             color: {
                 var color = invalidDatecolor;
-                if (control.isValidDate(cellDate)) {
+                if (control.isValidDate(styleData.date)) {
                     // Date is within the valid range.
-                    color = cellDate.getMonth() === control.selectedDate.getMonth()
+                    color = styleData.date.getMonth() === control.selectedDate.getMonth()
                         ? sameMonthDateTextColor : differentMonthDateTextColor;
 
-                    if (GridView.isCurrentItem) {
+                    if (styleData.selected) {
                         color = selectedDateTextColor
                     }
                 }

@@ -109,17 +109,18 @@ Style {
 
     property Component dateDelegate: Rectangle {
         id: dayDelegate
-        color: cellDate !== undefined && isCurrentItem ? __syspal.highlight : __syspal.base
+        color: styleData.date !== undefined && styleData.selected ? __syspal.highlight : __syspal.base
 
         Text {
             SystemPalette {
                 id: pal
-                colorGroup: cellDate.getMonth() === control.selectedDate.getMonth() ? SystemPalette.Active : SystemPalette.Disabled
+                colorGroup: styleData.date.getMonth() === control.selectedDate.getMonth()
+                    ? SystemPalette.Active : SystemPalette.Disabled
             }
             id: dayDelegateText
-            text: cellDate.getDate()
+            text: styleData.date.getDate()
             anchors.centerIn: parent
-            color: isCurrentItem ? pal.highlightedText : pal.text
+            color: styleData.selected ? pal.highlightedText : pal.text
         }
     }
 
