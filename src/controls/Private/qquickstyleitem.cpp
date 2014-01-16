@@ -971,6 +971,7 @@ QSize QQuickStyleItem::sizeFromContents(int width, int height)
 qreal QQuickStyleItem::baselineOffset()
 {
     QRect r;
+    bool ceilResult = true; // By default baseline offset rounding is done upwards
     switch (m_itemType) {
     case RadioButton:
         r = qApp->style()->subElementRect(QStyle::SE_RadioButtonContents, m_styleoption);
@@ -992,16 +993,20 @@ qreal QQuickStyleItem::baselineOffset()
         }
         break;
     case SpinBox:
-        if (const QStyleOptionSpinBox *spinbox = qstyleoption_cast<const QStyleOptionSpinBox *>(m_styleoption))
+        if (const QStyleOptionSpinBox *spinbox = qstyleoption_cast<const QStyleOptionSpinBox *>(m_styleoption)) {
             r = qApp->style()->subControlRect(QStyle::CC_SpinBox, spinbox, QStyle::SC_SpinBoxEditField);
+            ceilResult = false;
+        }
         break;
     default:
         break;
     }
-    if (r.isValid()) {
+    if (r.height() > 0) {
         const QFontMetrics &fm = m_styleoption->fontMetrics;
-        const float surplus = r.height() - fm.height();
-        float result = float(r.top()) + surplus/2.0 + fm.ascent();
+        int surplus = r.height() - fm.height();
+        if ((surplus & 1) && ceilResult)
+            surplus++;
+        int result = r.top() + surplus/2 + fm.ascent();
 #ifdef Q_OS_OSX
         if (style() == QStringLiteral("mac")) {
             switch (m_itemType) {
