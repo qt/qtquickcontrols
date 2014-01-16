@@ -233,25 +233,13 @@ Style {
     }
 
     /*!
-        The delegate that styles the header of the calendar.
+        The delegate that styles each weekday.
     */
-    property Component headerDelegate: Row {
-        id: headerRow
-        Repeater {
-            id: repeater
-            model: CalendarHeaderModel { locale: control.locale }
-            Item {
-                width: calendarStyle.cellWidth
-                height: calendarStyle.cellHeight
-                Rectangle {
-                    color: "white"
-                    anchors.fill: parent
-                    Text {
-                        text: control.locale.dayName(dayOfWeek, control.dayOfWeekFormat)
-                        anchors.centerIn: parent
-                    }
-                }
-            }
+    property Component weekdayDelegate: Rectangle {
+        color: "white"
+        Text {
+            text: control.locale.dayName(styleData.dayOfWeek, control.dayOfWeekFormat)
+            anchors.centerIn: parent
         }
     }
 

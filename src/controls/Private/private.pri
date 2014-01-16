@@ -34,6 +34,7 @@ PRIVATE_QML_FILES += \
     $$PWD/TabBar.qml \
     $$PWD/BasicButton.qml \
     $$PWD/Control.qml \
+    $$PWD/CalendarHeaderModel.qml \
     $$PWD/DateUtils.js \
     $$PWD/FastGlow.qml \
     $$PWD/SourceProxy.qml\

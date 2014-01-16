@@ -40,14 +40,8 @@
 
 import QtQuick 2.0
 
-/*!
-    \qmltype CalendarHeaderModel
-    \inqmlmodule QtQuick.Controls
-    \since QtQuick.Controls 1.1
-    \ingroup controls
-    \brief A model for days of the week
-
-    The CalendarHeaderModel model contains a list of the days of a week,
+/*
+    CalendarHeaderModel contains a list of the days of a week,
     according to a \l locale. The \l locale affects which day of the week
     is first in the model.
 
@@ -63,14 +57,12 @@ import QtQuick 2.0
     \li \c Locale.Friday
     \li \c Locale.Saturday
     \endlist
-
-    \sa Calendar
  */
 
 ListModel {
     id: root
 
-    /*!
+    /*
         The locale that this model should be based on.
         This affects which day of the week is first in the model.
     */

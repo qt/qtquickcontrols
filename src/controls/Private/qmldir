@@ -1,5 +1,6 @@
 module QtQuick.Controls.Private
 AbstractCheckable 1.0 AbstractCheckable.qml
+CalendarHeaderModel 1.0 CalendarHeaderModel.qml
 Control 1.0 Control.qml
 DateUtils 1.0 DateUtils.js
 FocusFrame 1.0 FocusFrame.qml

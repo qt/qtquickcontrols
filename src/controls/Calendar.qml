@@ -63,8 +63,6 @@ import QtQuick.Controls.Private 1.0
     Localization is supported through the \l locale property. The selected date
     is displayed according to \l locale, and it can be accessed through the
     \l selectedDateText property.
-
-    \sa CalendarHeaderModel
 */
 
 Control {
@@ -340,7 +338,26 @@ Control {
             width: view.width
             height: view.cellHeight
 
-            sourceComponent: __style.headerDelegate
+            sourceComponent: Row {
+                Repeater {
+                    id: repeater
+                    model: CalendarHeaderModel {
+                        locale: calendar.locale
+                    }
+                    Loader {
+                        id: dayOfWeekDelegateLoader
+                        sourceComponent: __style.weekdayDelegate
+                        width: view.cellWidth
+                        height: view.cellHeight
+
+                        readonly property var __dayOfWeek: dayOfWeek
+
+                        property QtObject styleData: QtObject {
+                            readonly property alias dayOfWeek: dayOfWeekDelegateLoader.__dayOfWeek
+                        }
+                    }
+                }
+            }
         }
     }
 }

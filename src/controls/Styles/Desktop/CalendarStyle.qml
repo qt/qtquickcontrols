@@ -124,23 +124,11 @@ Style {
         }
     }
 
-    property Component headerDelegate: Row {
-        id: headerRow
-        Repeater {
-            id: repeater
-            model: CalendarHeaderModel { locale: control.locale }
-            Item {
-                width: calendarStyle.cellWidth
-                height: calendarStyle.cellHeight
-                Rectangle {
-                    color: __syspal.base
-                    anchors.fill: parent
-                    Text {
-                        text: control.locale.dayName(dayOfWeek, control.dayOfWeekFormat)
-                        anchors.centerIn: parent
-                    }
-                }
-            }
+    property Component weekdayDelegate: Rectangle {
+        color: __syspal.base
+        Text {
+            text: control.locale.dayName(styleData.dayOfWeek, control.dayOfWeekFormat)
+            anchors.centerIn: parent
         }
     }
 
