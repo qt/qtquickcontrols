@@ -149,6 +149,15 @@ ApplicationWindow {
                         ListElement { text: "Align Bottom"; value: Qt.AlignBottom }
                         ListElement { text: "Align VCenter"; value: Qt.AlignVCenter }
                     }
+                    Component.onCompleted: {
+                        for (var i = 0; i < cbItems.count; ++i) {
+                            var v = cbItems.get(i).value;
+                            if (v == defaultAlignment) {
+                                currentIndex = i;
+                                break;
+                            }
+                        }
+                    }
                     onCurrentIndexChanged: {
                         // assumes mainLayout/GroupBox/Layout/<child_items> hierarchy
                         // Iterates over all <child_items> and modifies their baseline alignment
