@@ -85,6 +85,12 @@ Item {
             objectName: "combobox"
             model: choices;
         }
+        ComboBox {
+            id: editable_combobox;
+            objectName: "editable_combobox"
+            model: choices;
+            editable: true;
+        }
         GroupBox {
             id: group1
             objectName: "group1"

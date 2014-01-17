@@ -69,7 +69,6 @@ Style {
         \sa Text::renderType
     */
     property int renderType: Text.NativeRendering
-
     /*! \internal */
     property var __syspal: SystemPalette {
         colorGroup: control.enabled ?
@@ -82,7 +81,10 @@ Style {
     padding { top: 4 ; left: 6 ; right: 6 ; bottom:4 }
 
     /*! The size of the drop down button when the combobox is editable. */
-    property int drowDownButtonWidth: Math.round(TextSingleton.implicitHeight)
+    property int dropDownButtonWidth: Math.round(TextSingleton.implicitHeight)
+
+    /*! \internal Alias kept for backwards compatibility with a spelling mistake in 5.2.0) */
+    property alias drowDownButtonWidth: style.dropDownButtonWidth
 
     /*! This defines the background of the button. */
     property Component background: Item {
@@ -117,7 +119,7 @@ Style {
             source: "images/arrow-down.png"
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: parent.right
-            anchors.rightMargin: drowDownButtonWidth / 2
+            anchors.rightMargin: dropDownButtonWidth / 2
             opacity: control.enabled ? 0.6 : 0.3
         }
     }
@@ -192,7 +194,7 @@ Style {
         Loader {
             id: editorLoader
             anchors.fill: parent
-            anchors.rightMargin: drowDownButtonWidth + padding.right
+            anchors.rightMargin: dropDownButtonWidth + padding.right
             anchors.bottomMargin: -1
             sourceComponent: control.editable ? __editor : null
         }

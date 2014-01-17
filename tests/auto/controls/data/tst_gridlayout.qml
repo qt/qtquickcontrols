@@ -786,5 +786,46 @@ Item {
 
             layout.destroy();
         }
+
+        Component {
+            id: layout_spacings_Component
+            GridLayout {
+                id: layout
+                Repeater {
+                    model: 2
+                    Rectangle {
+                        implicitWidth: 10
+                        implicitHeight: 10
+                    }
+                }
+            }
+        }
+
+        function test_spacings()
+        {
+            var layout = layout_spacings_Component.createObject(container);
+            waitForRendering(layout)
+
+            // breaks down below -19. This is acceptable, since it means that the implicit size of the layout is negative
+            var testSpacings = [Number.NaN, 0, 10, -5, -19]
+            layout.rowSpacing = 0
+            for (var i = 0; i < testSpacings.length; ++i) {
+                var sp = testSpacings[i]
+                if (isNaN(sp)) {
+                    sp = 5  // Test defaults
+                } else {
+                    layout.columnSpacing = sp
+                }
+                compare(itemRect(layout.children[0]), [ 0,  0,  10,  10])
+                compare(itemRect(layout.children[1]), [10 + sp,  0,  10,  10])
+                compare(layout.implicitWidth, 20 + sp)
+            }
+
+            // do not crash
+            layout.columnSpacing = -100
+            waitForRendering(layout)
+            verify(isFinite(layout.implicitWidth))
+            layout.destroy();
+        }
     }
 }

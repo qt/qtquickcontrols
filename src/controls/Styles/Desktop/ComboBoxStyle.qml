@@ -47,7 +47,7 @@ import "." as Desktop
 Style {
     readonly property ComboBox control: __control
     property int renderType: Text.NativeRendering
-    property int drowDownButtonWidth: 24
+    property int dropDownButtonWidth: 24
     property Component panel: Item {
         property bool popup: !!styleItem.styleHint("comboboxpopup")
 
