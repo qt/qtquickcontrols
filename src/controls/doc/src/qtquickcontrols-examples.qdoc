@@ -105,3 +105,13 @@
     for touch input using \l{Qt Quick Controls}.
 */
 
+/*!
+    \example controls/calendar
+    \title Qt Quick Controls - Calendar Example
+    \ingroup qtquickcontrols_examples
+    \brief Demonstrates the use of Calendar to display events
+    \image qtquickcontrols-example-calendar.png
+
+    This example shows how Calendar can be used to view events retrieved from
+    an SQL database.
+*/
