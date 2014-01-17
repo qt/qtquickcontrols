@@ -68,6 +68,9 @@ import QtQuick.Controls.Private 1.0
 Control {
     id: calendar
 
+    implicitWidth: 250
+    implicitHeight: 250
+
     /*!
         \qmlproperty date Calendar::date
 
@@ -216,144 +219,171 @@ Control {
         calendar.selectedDate = DateUtils.setMonth(calendar.selectedDate, calendar.selectedDate.getMonth() + 1);
     }
 
-    GridView {
-        id: view
-        cellWidth: __style.cellWidth
-        cellHeight: __style.cellHeight
-        currentIndex: -1
-        anchors.left: parent.left
-        anchors.right: parent.right
-        y: __panel.navigationBarItem.y + __panel.navigationBarItem.height
-        width: cellWidth * DateUtils.daysInAWeek
-        // TODO: fix the reason behind + 1 stopping the flickableness..
-        // might have something to do with the header
-        height: cellHeight * (__style.weeksToShow + 1)
-        model: calendar.__model
+    Item {
+        /*
+            This is here instead of CalendarStyle, because the interactive
+            stuff shouldn't be in the style, and because the various components
+            of the calendar need to be anchored around the grid.
+        */
+        id: panel
 
-        boundsBehavior: Flickable.StopAtBounds
-        KeyNavigation.tab: __panel.navigationBarItem
+        anchors.fill: parent
 
-        Keys.onLeftPressed: {
-            if (currentIndex != 0) {
-                // Be lazy and let the view determine which index we're moving
-                // to, then we can calculate the date from that.
-                moveCurrentIndexLeft();
-                // This will cause the index to be set again (to the same value).
+        property alias navigationBarItem: navigationBarLoader.item
+
+        Loader {
+            id: backgroundLoader
+            anchors.fill: parent
+            sourceComponent: __style.background
+        }
+
+        Loader {
+            id: navigationBarLoader
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.top: parent.top
+            height: __style.__protectedScope.navigationBarHeight
+            sourceComponent: __style.navigationBar
+        }
+        GridView {
+            id: view
+            cellWidth: __style.__protectedScope.cellWidth
+            cellHeight: __style.__protectedScope.cellHeight
+            currentIndex: -1
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.top: navigationBarLoader.bottom
+            width: cellWidth * DateUtils.daysInAWeek
+            // TODO: fix the reason behind + 1 stopping the flickableness..
+            // might have something to do with the header
+            height: cellHeight * (__style.__protectedScope.weeksToShow + 1)
+            model: calendar.__model
+
+            boundsBehavior: Flickable.StopAtBounds
+            KeyNavigation.tab: panel.navigationBarItem
+
+            Keys.onLeftPressed: {
+                if (currentIndex != 0) {
+                    // Be lazy and let the view determine which index we're moving
+                    // to, then we can calculate the date from that.
+                    moveCurrentIndexLeft();
+                    // This will cause the index to be set again (to the same value).
+                    calendar.selectedDate = model.dateAt(currentIndex);
+                } else {
+                    // We're at the left edge of the calendar on the first row;
+                    // this day is the first of the week and the month, so
+                    // moving left should go to the last day of the previous month,
+                    // rather than do nothing (which is what GridView does when
+                    // keyNavigationWraps is false).
+                    var newDate = new Date(calendar.selectedDate);
+                    newDate.setDate(newDate.getDate() - 1);
+                    calendar.selectedDate = newDate;
+                }
+            }
+
+            Keys.onUpPressed: {
+                moveCurrentIndexUp();
                 calendar.selectedDate = model.dateAt(currentIndex);
-            } else {
-                // We're at the left edge of the calendar on the first row;
-                // this day is the first of the week and the month, so
-                // moving left should go to the last day of the previous month,
-                // rather than do nothing (which is what GridView does when
-                // keyNavigationWraps is false).
-                var newDate = new Date(calendar.selectedDate);
-                newDate.setDate(newDate.getDate() - 1);
-                calendar.selectedDate = newDate;
-            }
-        }
-
-        Keys.onUpPressed: {
-            moveCurrentIndexUp();
-            calendar.selectedDate = model.dateAt(currentIndex);
-        }
-
-        Keys.onDownPressed: {
-            moveCurrentIndexDown();
-            calendar.selectedDate = model.dateAt(currentIndex);
-        }
-
-        Keys.onRightPressed: {
-            moveCurrentIndexRight();
-            calendar.selectedDate = model.dateAt(currentIndex);
-        }
-
-        Keys.onEscapePressed: {
-            calendar.escapePressed();
-        }
-
-        Component.onCompleted: {
-            dateChanged();
-
-            if (visible) {
-                forceActiveFocus();
-            }
-        }
-
-        Connections {
-            target: calendar
-            onSelectedDateChanged: view.dateChanged()
-        }
-
-        function dateChanged() {
-            if (model !== undefined && model.locale !== undefined) {
-                __model.selectedDate = calendar.selectedDate;
-                currentIndex = __model.indexAt(calendar.selectedDate);
-            }
-        }
-
-        delegate: Loader {
-            id: delegateLoader
-            width: view.cellWidth
-            height: view.cellHeight
-            sourceComponent: __style.dateDelegate
-
-            readonly property int __index: index
-            readonly property var __model: model
-
-            property QtObject styleData: QtObject {
-                readonly property alias index: delegateLoader.__index
-                readonly property alias model: delegateLoader.__model
-                readonly property bool selected: delegateLoader.GridView.isCurrentItem
-                readonly property date date: model.date
             }
 
-            MouseArea {
-                anchors.fill: parent
+            Keys.onDownPressed: {
+                moveCurrentIndexDown();
+                calendar.selectedDate = model.dateAt(currentIndex);
+            }
 
-                function setDateIfValid(date) {
-                    if (calendar.isValidDate(date)) {
-                        calendar.selectedDate = date;
+            Keys.onRightPressed: {
+                moveCurrentIndexRight();
+                calendar.selectedDate = model.dateAt(currentIndex);
+            }
+
+            Keys.onEscapePressed: {
+                calendar.escapePressed();
+            }
+
+            Component.onCompleted: {
+                dateChanged();
+
+                if (visible) {
+                    forceActiveFocus();
+                }
+            }
+
+            Connections {
+                target: calendar
+                onSelectedDateChanged: view.dateChanged()
+            }
+
+            function dateChanged() {
+                if (model !== undefined && model.locale !== undefined) {
+                    __model.selectedDate = calendar.selectedDate;
+                    currentIndex = __model.indexAt(calendar.selectedDate);
+                }
+            }
+
+            delegate: Loader {
+                id: delegateLoader
+                width: view.cellWidth
+                height: view.cellHeight
+                sourceComponent: __style.dateDelegate
+
+                readonly property int __index: index
+                readonly property var __model: model
+
+                property QtObject styleData: QtObject {
+                    readonly property alias index: delegateLoader.__index
+                    readonly property alias model: delegateLoader.__model
+                    readonly property bool selected: delegateLoader.GridView.isCurrentItem
+                    readonly property date date: model.date
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+
+                    function setDateIfValid(date) {
+                        if (calendar.isValidDate(date)) {
+                            calendar.selectedDate = date;
+                        }
                     }
-                }
 
-                onClicked: {
-                    setDateIfValid(date)
-                }
+                    onClicked: {
+                        setDateIfValid(date)
+                    }
 
-                onDoubleClicked: {
-                    if (date.getTime() === calendar.selectedDate.getTime()) {
-                        // Only accept double clicks if the first click does not
-                        // change the month displayed. This is because double-
-                        // clicking on a date in the next month will first cause
-                        // a single click which will change the month and the
-                        // the release will be triggered on the same index but a
-                        // different date (the date in the next month).
-                        calendar.doubleClicked(date);
+                    onDoubleClicked: {
+                        if (date.getTime() === calendar.selectedDate.getTime()) {
+                            // Only accept double clicks if the first click does not
+                            // change the month displayed. This is because double-
+                            // clicking on a date in the next month will first cause
+                            // a single click which will change the month and the
+                            // the release will be triggered on the same index but a
+                            // different date (the date in the next month).
+                            calendar.doubleClicked(date);
+                        }
                     }
                 }
             }
-        }
 
-        header: Loader {
-            width: view.width
-            height: view.cellHeight
+            header: Loader {
+                width: view.width
+                height: view.cellHeight
 
-            sourceComponent: Row {
-                Repeater {
-                    id: repeater
-                    model: CalendarHeaderModel {
-                        locale: calendar.locale
-                    }
-                    Loader {
-                        id: dayOfWeekDelegateLoader
-                        sourceComponent: __style.weekdayDelegate
-                        width: view.cellWidth
-                        height: view.cellHeight
+                sourceComponent: Row {
+                    Repeater {
+                        id: repeater
+                        model: CalendarHeaderModel {
+                            locale: calendar.locale
+                        }
+                        Loader {
+                            id: dayOfWeekDelegateLoader
+                            sourceComponent: __style.weekdayDelegate
+                            width: view.cellWidth
+                            height: view.cellHeight
 
-                        readonly property var __dayOfWeek: dayOfWeek
+                            readonly property var __dayOfWeek: dayOfWeek
 
-                        property QtObject styleData: QtObject {
-                            readonly property alias dayOfWeek: dayOfWeekDelegateLoader.__dayOfWeek
+                            property QtObject styleData: QtObject {
+                                readonly property alias dayOfWeek: dayOfWeekDelegateLoader.__dayOfWeek
+                            }
                         }
                     }
                 }

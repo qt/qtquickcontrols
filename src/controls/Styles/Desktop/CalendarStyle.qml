@@ -48,17 +48,18 @@ import QtQuick.Controls.Private 1.0
 Style {
     id: calendarStyle
 
-    readonly property int weeksToShow: 6
+    property QtObject __protectedScope: QtObject {
+        readonly property int weeksToShow: 6
+        readonly property real navigationBarHeight: 40
 
-    readonly property real navigationBarHeight: 40
+        readonly property real cellWidth: control.width % 2 == 0
+            ? control.width / DateUtils.daysInAWeek
+            : Math.floor(control.width / DateUtils.daysInAWeek)
 
-    readonly property real cellWidth: control.width % 2 == 0
-        ? control.width / DateUtils.daysInAWeek
-        : Math.floor(control.width / DateUtils.daysInAWeek)
-
-    readonly property real cellHeight: {control.height - navigationBarHeight % 2 == 0
-        ? (parent.height - navigationBarHeight) / (weeksToShow + 1)
-        : Math.floor((control.height - navigationBarHeight) / (weeksToShow + 1))
+        readonly property real cellHeight: {control.height - navigationBarHeight % 2 == 0
+            ? (parent.height - navigationBarHeight) / (weeksToShow + 1)
+            : Math.floor((control.height - navigationBarHeight) / (weeksToShow + 1))
+        }
     }
 
     property Calendar control: __control
@@ -129,29 +130,6 @@ Style {
         Text {
             text: control.locale.dayName(styleData.dayOfWeek, control.dayOfWeekFormat)
             anchors.centerIn: parent
-        }
-    }
-
-    property Component panel: Item {
-        anchors.fill: parent
-        implicitWidth: 250
-        implicitHeight: 250
-
-        property alias navigationBarItem: navigationBarLoader.item
-
-        Loader {
-            id: backgroundLoader
-            anchors.fill: parent
-            sourceComponent: background
-        }
-
-        Loader {
-            id: navigationBarLoader
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.top: parent.top
-            height: calendarStyle.navigationBarHeight
-            sourceComponent: navigationBar
         }
     }
 }
