@@ -48,29 +48,18 @@ import QtQuick.Controls.Private 1.0
 Style {
     id: calendarStyle
 
-    property QtObject __protectedScope: QtObject {
-        readonly property int weeksToShow: 6
-        readonly property real navigationBarHeight: 40
-
-        readonly property real cellWidth: control.width % 2 == 0
-            ? control.width / DateUtils.daysInAWeek
-            : Math.floor(control.width / DateUtils.daysInAWeek)
-
-        readonly property real cellHeight: {control.height - navigationBarHeight % 2 == 0
-            ? (parent.height - navigationBarHeight) / (weeksToShow + 1)
-            : Math.floor((control.height - navigationBarHeight) / (weeksToShow + 1))
-        }
-    }
-
     property Calendar control: __control
+
+    property color gridColor: "#f0f0f0"
+
+    property real gridLineWidth: 1
 
     property Component background: Rectangle {
         color: __syspal.base
     }
 
     property Component navigationBar: Item {
-        visible: control.navigationBarVisible
-        anchors.fill: parent
+        height: 40
 
         Rectangle {
             anchors.fill: parent

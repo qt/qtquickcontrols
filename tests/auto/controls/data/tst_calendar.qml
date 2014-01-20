@@ -93,7 +93,7 @@ Item {
             compare(calendar.minimumDate, new Date(1, 0, 1));
             compare(calendar.maximumDate, new Date(4000, 0, 1));
             compare(calendar.selectedDate, new Date(new Date().setHours(0, 0, 0, 0)));
-            compare(calendar.navigationBarVisible, true);
+            compare(calendar.gridVisible, true);
             compare(calendar.dayOfWeekFormat, Locale.ShortFormat);
             compare(calendar.locale, Qt.locale());
             compare(calendar.selectedDateText,
@@ -105,14 +105,14 @@ Item {
             calendar.minimumDate = new Date(1900, 0, 1);
             calendar.maximumDate = new Date(1999, 11, 31);
             calendar.selectedDate = new Date(1980, 0, 1);
-            calendar.navigationBarVisible = false;
+            calendar.gridVisible = false;
             calendar.dayOfWeekFormat = Locale.NarrowFormat;
             calendar.locale = Qt.locale("de_DE");
 
             compare(calendar.minimumDate, new Date(1900, 0, 1));
             compare(calendar.maximumDate, new Date(1999, 11, 31));
             compare(calendar.selectedDate, new Date(1980, 0, 1));
-            compare(calendar.navigationBarVisible, false);
+            compare(calendar.gridVisible, false);
             compare(calendar.locale, Qt.locale("de_DE"));
             compare(calendar.selectedDateText,
                 calendar.locale.standaloneMonthName(calendar.selectedDate.getMonth())

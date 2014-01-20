@@ -53,6 +53,7 @@ import QtQuick.Controls.Private 1.0
     \qml
     Calendar {
         anchors.centerIn: parent
+        gridVisible: false
 
         style: CalendarStyle {
             dateDelegate: Rectangle {
@@ -101,24 +102,22 @@ import QtQuick.Controls.Private 1.0
 Style {
     id: calendarStyle
 
-    property QtObject __protectedScope: QtObject {
-        readonly property int weeksToShow: 6
-        readonly property real navigationBarHeight: 40
-
-        readonly property real cellWidth: control.width % 2 == 0
-            ? control.width / DateUtils.daysInAWeek
-            : Math.floor(control.width / DateUtils.daysInAWeek)
-
-        readonly property real cellHeight: {control.height - navigationBarHeight % 2 == 0
-            ? (parent.height - navigationBarHeight) / (weeksToShow + 1)
-            : Math.floor((control.height - navigationBarHeight) / (weeksToShow + 1))
-        }
-    }
-
     /*!
         The Calendar attached to this style.
     */
     property Calendar control: __control
+
+    /*!
+        The color of the grid lines.
+    */
+    property color gridColor: "#f0f0f0"
+
+    /*!
+        The width of each grid line.
+
+        The default value is \c 1.
+    */
+    property real gridLineWidth: 1
 
     /*!
         The background of the calendar.
@@ -138,13 +137,7 @@ Style {
         next month/previous month buttons and the selected date label.
     */
     property Component navigationBar: Item {
-        visible: control.navigationBarVisible
-        anchors.fill: parent
-
-        Rectangle {
-            anchors.fill: parent
-            color: "#464646"
-        }
+        height: 50
 
         KeyNavigation.tab: previousMonth
 
@@ -162,10 +155,15 @@ Style {
         Text {
             id: dateText
             text: control.selectedDateText
-            color: "#fff"
-
-            font.pixelSize: 12
-            anchors.centerIn: parent
+            elide: Text.ElideRight
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            font.pointSize: 14
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.left: previousMonth.right
+            anchors.leftMargin: 2
+            anchors.right: nextMonth.left
+            anchors.rightMargin: 2
         }
         Button {
             id: nextMonth
@@ -193,9 +191,9 @@ Style {
     */
     property Component dateDelegate: Rectangle {
         id: dayDelegate
-        color: styleData.date !== undefined && styleData.selected ? selectedDateColor : "white"
+        color: styleData.date !== undefined && styleData.selected ? selectedDateColor : "white"/*"transparent"*/
         readonly property color sameMonthDateTextColor: "black"
-        readonly property color selectedDateColor: "steelblue"
+        readonly property color selectedDateColor: __syspal.highlight
         readonly property color selectedDateTextColor: "white"
         readonly property color differentMonthDateTextColor: Qt.darker("darkgrey", 1.4);
         readonly property color invalidDatecolor: "#dddddd"
@@ -205,6 +203,7 @@ Style {
             text: styleData.date.getDate()
             font.pixelSize: 14
             anchors.centerIn: parent
+            horizontalAlignment: Text.AlignRight
             color: {
                 var color = invalidDatecolor;
                 if (control.isValidDate(styleData.date)) {
