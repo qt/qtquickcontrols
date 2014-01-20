@@ -56,18 +56,12 @@ AbstractFileDialog {
             view.selection.clear()
         }
     }
-    onFolderChanged: {
-        var str = new String(folder)
-        if (str.indexOf("qrc:") === 0)
-            folder = "file:" + str.slice(4)
-        if (view.model.folder != folder)
-            view.model.folder = folder
-    }
 
     Component.onCompleted: {
         view.model.nameFilters = root.selectedNameFilterExtensions
         filterField.currentIndex = root.selectedNameFilterIndex
         root.favoriteFolders = settings.favoriteFolders
+        root.folder = view.model.folder
     }
 
     Component.onDestruction: {
@@ -88,12 +82,13 @@ AbstractFileDialog {
     property var favoriteFolders: []
 
     function dirDown(path) {
-        view.model.folder = "file://" + path
         view.selection.clear()
+        root.folder = path
     }
     function dirUp() {
-        view.model.folder = view.model.parentFolder
         view.selection.clear()
+        if (view.model.parentFolder != "")
+            root.folder = view.model.parentFolder
     }
     function acceptSelection() {
         // transfer the view's selections to QQuickFileDialog
@@ -118,7 +113,7 @@ AbstractFileDialog {
         text: "&Up"
         shortcut: "Ctrl+U"
         iconSource: "images/up.png"
-        onTriggered: if (view.model.parentFolder != "") dirUp()
+        onTriggered: dirUp()
         tooltip: "Go up to the folder containing this one"
     }
 
@@ -128,6 +123,22 @@ AbstractFileDialog {
         implicitHeight: Math.min(maxSize, Screen.pixelDensity * 80)
         id: window
         color: root.palette.window
+
+        Binding {
+            target: root
+            property: "folder"
+            value: view.model.folder
+        }
+        Binding {
+            target: view.model
+            property: "folder"
+            value: root.folder
+        }
+        Binding {
+            target: currentPathField
+            property: "text"
+            value: root.urlToPath(root.folder)
+        }
 
         SplitView {
             id: splitter
@@ -230,7 +241,7 @@ AbstractFileDialog {
                                     hoverEnabled: true
                                     onClicked: {
                                         if (mouse.button == Qt.LeftButton)
-                                            view.model.folder = root.favoriteFolders[index]
+                                            root.folder = root.favoriteFolders[index]
                                         else if (mouse.button == Qt.RightButton)
                                             favoriteCtxMenu.popup()
                                     }
@@ -256,7 +267,7 @@ AbstractFileDialog {
                         text: "+"
                         width: height
                         onClicked: {
-                            root.favoriteFolders.push(view.model.folder)
+                            root.favoriteFolders.push(root.folder)
                             favorites.model = root.favoriteFolders
                         }
                     }
@@ -279,7 +290,6 @@ AbstractFileDialog {
                 model: FolderListModel {
                     showFiles: !root.selectFolder
                     nameFilters: root.selectedNameFilterExtensions
-                    onFolderChanged: root.folder = folder
                     sortField: (view.sortIndicatorColumn === 0 ? FolderListModel.Name :
                                 (view.sortIndicatorColumn === 1 ? FolderListModel.Type :
                                 (view.sortIndicatorColumn === 2 ? FolderListModel.Size : FolderListModel.LastModified)))
@@ -368,14 +378,13 @@ AbstractFileDialog {
                 }
                 TextField {
                     id: currentPathField
-                    text: root.urlToPath(view.model.folder)
                     Layout.fillWidth: true
                     onAccepted: {
                         root.clearSelection()
                         if (root.addSelection(root.pathToUrl(text)))
                             root.accept()
                         else
-                            view.model.folder = root.pathFolder(text)
+                            root.folder = root.pathFolder(text)
                     }
                 }
             }

@@ -116,9 +116,15 @@ QUrl QQuickAbstractFileDialog::folder() const
 
 void QQuickAbstractFileDialog::setFolder(const QUrl &f)
 {
+    QString lf = f.toLocalFile();
+    while (lf.startsWith("//"))
+        lf.remove(0, 1);
+    if (lf.isEmpty())
+        lf = QDir::currentPath();
+    QUrl u = QUrl::fromLocalFile(lf);
     if (m_dlgHelper)
-        m_dlgHelper->setDirectory(f);
-    m_options->setInitialDirectory(f);
+        m_dlgHelper->setDirectory(u);
+    m_options->setInitialDirectory(u);
     emit folderChanged();
 }
 
