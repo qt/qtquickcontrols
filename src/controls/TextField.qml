@@ -303,7 +303,7 @@ Control {
         \qmlproperty string TextField::placeholderText
 
         This property contains the text that is shown in the text field when the
-        text field is empty and has no focus.
+        text field is empty.
     */
     property alias placeholderText: placeholderTextComponent.text
 
