@@ -601,6 +601,7 @@ void QQuickStyleItem::initStyleOption()
 
         QStyleOptionSpinBox *opt = qstyleoption_cast<QStyleOptionSpinBox*>(m_styleoption);
         opt->frame = true;
+        opt->subControls = QStyle::SC_SpinBoxFrame | QStyle::SC_SpinBoxEditField;
         if (value() & 0x1)
             opt->activeSubControls = QStyle::SC_SpinBoxUp;
         else if (value() & (1<<1))
@@ -919,6 +920,9 @@ QSize QQuickStyleItem::sizeFromContents(int width, int height)
             frame.rect = m_styleoption->rect;
             frame.styleObject = this;
             size = qApp->style()->sizeFromContents(QStyle::CT_LineEdit, &frame, QSize(width, height));
+            if (m_itemType == SpinBox)
+                size.setWidth(qApp->style()->sizeFromContents(QStyle::CT_SpinBox,
+                                                              m_styleoption, QSize(width + 2, height)).width());
         }
         break;
     case GroupBox: {
