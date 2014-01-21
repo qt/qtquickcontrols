@@ -598,6 +598,8 @@ Control {
 
         renderType: __style ? __style.renderType : Text.NativeRendering
 
+        Keys.forwardTo: textfield
+
         onAccepted: {
             Qt.inputMethod.commit()
             Qt.inputMethod.hide()

@@ -720,6 +720,8 @@ ScrollView {
             selectByMouse: true
             readOnly: false
 
+            Keys.forwardTo: area
+
             KeyNavigation.priority: KeyNavigation.BeforeItem
             KeyNavigation.tab: area.tabChangesFocus ? area.KeyNavigation.tab : null
             KeyNavigation.backtab: area.tabChangesFocus ? area.KeyNavigation.backtab : null
