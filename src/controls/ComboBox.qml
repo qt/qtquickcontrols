@@ -348,7 +348,7 @@ Control {
 
         anchors.fill: parent
         anchors.leftMargin: 8
-        anchors.rightMargin: __style.drowDownButtonWidth
+        anchors.rightMargin: __style.dropDownButtonWidth
 
         verticalAlignment: Text.AlignVCenter
 
