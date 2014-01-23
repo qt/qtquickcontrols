@@ -841,5 +841,61 @@ Item {
             verify(isFinite(layout.implicitWidth))
             layout.destroy();
         }
+
+        Component {
+            id: layout_alignToPixelGrid_Component
+            GridLayout {
+                columns: 3
+                rowSpacing: 0
+                columnSpacing: 2
+                Repeater {
+                    model: 3*3
+                    Rectangle {
+                        color: "red"
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+                    }
+                }
+            }
+        }
+
+        function test_alignToPixelGrid()
+        {
+            var layout = layout_alignToPixelGrid_Component.createObject(container)
+            layout.width  = 30
+            layout.height = 28
+
+            var rectWidth = (layout.width - 2 * layout.columnSpacing)/3
+            var rectHeight = layout.height/3
+
+            waitForRendering(layout);
+
+            var sp = layout.columnSpacing
+            var idealGeom = [0,0,rectWidth,rectHeight]
+            for (var r = 0; r < 3; ++r) {
+                idealGeom[0] = 0
+                idealGeom[2] = rectWidth
+                for (var c = 0; c < 3; ++c) {
+                    var child = layout.children[3*r + c]
+                    var visualGeom = [child.x, child.y, child.x + child.width, child.y + child.height]
+
+                    // verify that visualGeom is an integer number
+                    for (var i = 0; i < 4; ++i)
+                        compare(visualGeom[i] % 1, 0)
+
+                    // verify that visualGeom is never outside the idealGeom
+                    verify(visualGeom[0] >= idealGeom[0])
+                    verify(visualGeom[1] >= idealGeom[1])
+                    verify(visualGeom[2] <= idealGeom[2])
+                    verify(visualGeom[3] <= idealGeom[3])
+                    idealGeom[0] = idealGeom[2] + sp
+                    idealGeom[2] = idealGeom[0]  + rectWidth
+                }
+                idealGeom[1] = idealGeom[3]
+                idealGeom[3] = idealGeom[1]  + rectHeight
+            }
+
+            layout.destroy()
+        }
     }
 }

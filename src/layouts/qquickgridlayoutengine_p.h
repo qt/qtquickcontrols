@@ -55,6 +55,7 @@
 
 #include <QtGui/private/qgridlayoutengine_p.h>
 #include <QtGui/private/qlayoutpolicy_p.h>
+#include <QtCore/qmath.h>
 
 #include "qquickitem.h"
 #include "qquicklayout_p.h"
@@ -112,9 +113,10 @@ public:
 
     void setGeometry(const QRectF &rect)
     {
-        const QRect r(rect.toRect());
-        const QSize newSize(r.size());
-        m_item->setPosition(r.topLeft());
+        const QPoint innerTopLeft(qCeil(rect.left()), qCeil(rect.top()));
+        const QPoint innerBottomRight(qFloor(rect.right()), qFloor(rect.bottom()));
+        const QSize newSize(innerBottomRight.x() - innerTopLeft.x(), innerBottomRight.y() - innerTopLeft.y());
+        m_item->setPosition(innerTopLeft);
         QSizeF oldSize(m_item->width(), m_item->height());
         if (newSize == oldSize) {
             if (QQuickLayout *lay = qobject_cast<QQuickLayout *>(m_item))
