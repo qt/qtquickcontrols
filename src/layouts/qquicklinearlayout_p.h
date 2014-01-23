@@ -114,6 +114,13 @@ public:
                                     , m_isReady(false)
                                     , m_layoutDirection(Qt::LeftToRight)
                                     {}
+
+    void mirrorChange() Q_DECL_OVERRIDE
+    {
+        Q_Q(QQuickGridLayoutBase);
+        q->invalidate();
+    }
+
     QQuickGridLayoutEngine engine;
     Qt::Orientation orientation;
     unsigned m_disableRearrange : 1;

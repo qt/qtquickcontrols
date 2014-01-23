@@ -630,6 +630,18 @@ Item {
             waitForRendering(layout)
             verifyIsLeftToRight(layout);
 
+            layout.LayoutMirroring.enabled = false
+            waitForRendering(layout)
+            verifyIsRightToLeft(layout)
+
+            layout.layoutDirection = Qt.LeftToRight
+            waitForRendering(layout)
+            verifyIsLeftToRight(layout);
+
+            layout.LayoutMirroring.enabled = true
+            waitForRendering(layout)
+            verifyIsRightToLeft(layout)
+
             layout.destroy();
         }
 
