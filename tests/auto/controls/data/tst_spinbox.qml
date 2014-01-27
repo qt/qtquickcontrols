@@ -645,6 +645,38 @@ Item {
 
             spinbox.destroy()
         }
+
+        function test_keys() {
+            var component = Qt.createComponent("spinbox/sb_keys.qml")
+            compare(component.status, Component.Ready)
+            var test =  component.createObject(container);
+            verify(test !== null, "test control created is null")
+            var control1 = test.control1
+            verify(control1 !== null)
+
+            control1.forceActiveFocus()
+            verify(control1.activeFocus)
+
+            verify(control1.gotit === false)
+            verify(control1.value === 9)
+
+            keyPress(Qt.Key_A)
+            verify(control1.activeFocus)
+            verify(control1.gotit === false)
+            verify(control1.value === 9)
+
+            keyPress(Qt.Key_B)
+            verify(control1.activeFocus)
+            verify(control1.gotit === true)
+            verify(control1.value === 7)
+
+            keyPress(Qt.Key_B)
+            verify(control1.activeFocus)
+            verify(control1.gotit === true)
+            verify(control1.value === 7)
+
+            test.destroy()
+        }
     }
 }
 

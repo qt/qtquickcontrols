@@ -268,6 +268,8 @@ Control {
             selectValue()
         }
 
+        Keys.forwardTo: spinbox
+
         onEditingFinished: spinbox.editingFinished()
 
         color: __panel ? __panel.foregroundColor : "black"

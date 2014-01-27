@@ -88,11 +88,6 @@ Style {
         Item {
             id: edit
             anchors.fill: parent
-            Rectangle {
-                color: "white"
-                anchors.fill: parent
-                anchors.margins: -1
-            }
             FocusFrame {
                 anchors.fill: parent
                 focusMargin:-6

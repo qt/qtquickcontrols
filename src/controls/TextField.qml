@@ -303,7 +303,7 @@ Control {
         \qmlproperty string TextField::placeholderText
 
         This property contains the text that is shown in the text field when the
-        text field is empty and has no focus.
+        text field is empty.
     */
     property alias placeholderText: placeholderTextComponent.text
 
@@ -597,6 +597,8 @@ Control {
         clip: contentWidth > width
 
         renderType: __style ? __style.renderType : Text.NativeRendering
+
+        Keys.forwardTo: textfield
 
         onAccepted: {
             Qt.inputMethod.commit()
