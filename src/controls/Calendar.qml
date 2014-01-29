@@ -50,12 +50,13 @@ import QtQuick.Controls.Private 1.0
     \ingroup controls
     \brief Provides a way to select dates from a calendar
 
-    Calendar allows selection of dates from a grid of days, similar to a typical
-    calendar. The selected date can be set through \l selectedDate, or with the
-    mouse and directional arrow keys. The current month displayed can be changed
-    by clicking the previous and next month buttons, or by navigating with the
-    directional keys.
+    Calendar allows selection of dates from a grid of days, similar to
+    QCalendarWidget.
 
+    The dates on the calendar can be selected with the mouse, or navigated
+    with the keyboard.
+
+    The selected date can be set through \l selectedDate.
     A minimum and maximum date can be set through \l minimumDate and
     \l maximumDate. The earliest minimum date that can be set is 1 January, 1
     AD. The latest maximum date that can be set is 25 October, 275759 AD.
@@ -339,6 +340,37 @@ Control {
 
                 Keys.onEscapePressed: {
                     calendar.escapePressed();
+                }
+
+                Keys.onPressed: {
+                    if (event.key === Qt.Key_Home) {
+                        var newDate = new Date(calendar.selectedDate);
+                        newDate.setDate(1);
+                        calendar.selectedDate = newDate;
+                        event.accepted = true;
+                    } else if (event.key === Qt.Key_End) {
+                        newDate = new Date(calendar.selectedDate);
+                        newDate.setDate(DateUtils.daysInMonth(newDate));
+                        calendar.selectedDate = newDate;
+                        event.accepted = true;
+                    } else if (event.key === Qt.Key_PageUp) {
+                        newDate = new Date(calendar.selectedDate);
+                        var oldDay = newDate.getDate();
+                        // Set the date to the first so we know we can change months without issues.
+                        newDate.setDate(1);
+                        newDate.setMonth(newDate.getMonth() - 1);
+                        newDate.setDate(Math.min(oldDay, DateUtils.daysInMonth(newDate)));
+                        calendar.selectedDate = newDate;
+                        event.accepted = true;
+                    } else if (event.key === Qt.Key_PageDown) {
+                        newDate = new Date(calendar.selectedDate);
+                        oldDay = newDate.getDate();
+                        newDate.setDate(1);
+                        newDate.setMonth(newDate.getMonth() + 1);
+                        newDate.setDate(Math.min(oldDay, DateUtils.daysInMonth(newDate)));
+                        calendar.selectedDate = newDate;
+                        event.accepted = true;
+                    }
                 }
 
                 Component.onCompleted: {

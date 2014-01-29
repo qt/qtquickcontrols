@@ -239,6 +239,58 @@ Item {
             compare(calendar.selectedDate, new Date(2013, 2, 31),
                 "Pressing the left key on the left edge of the first row should "
                 + "select the last date of the previous month.");
+
+            /*         January 2014                     January 2014
+                 M   T   W   T   F   S   S        M   T   W   T   F   S   S
+                30  31  [1]  2   3   4   5       30  31   1   2   3   4   5
+                 6   7   8   9  10  11  12        6   7   8   9  10  11  12
+                13  14  15  16  17  18  19  ==>  13  14  15  16  17  18  19
+                20  21  22  23  24  25  26       20  21  22  23  24  25  26
+                27  28  29  30  31   1   2       27  28  29  30 [31]  1   2
+                 3   4   5   6   7   8   9        3   4   5   6   7   8   9 */
+            calendar.selectedDate = new Date(2014, 0, 1);
+            keyPress(Qt.Key_End);
+            compare(calendar.selectedDate, new Date(2014, 0, 31),
+                "Pressing the end key should select the last date in the same month.");
+
+            /*         January 2014                     January 2014
+                 M   T   W   T   F   S   S        M   T   W   T   F   S   S
+                30  31   1   2   3   4   5       30  31  [1]  2   3   4   5
+                 6   7   8   9  10  11  12        6   7   8   9  10  11  12
+                13  14  15  16  17  18  19  ==>  13  14  15  16  17  18  19
+                20  21  22  23  24  25  26       20  21  22  23  24  25  26
+                27  28  29  30 [31]  1   2       27  28  29  30  31   1   2
+                 3   4   5   6   7   8   9        3   4   5   6   7   8   9 */
+            calendar.selectedDate = new Date(2014, 0, 31);
+            keyPress(Qt.Key_Home);
+            compare(calendar.selectedDate, new Date(2014, 0, 1),
+                "Pressing the home key should select the first date in the same month.");
+
+            /*         December 2013                     November 2013
+                 M   T   W   T   F   S   S        M   T   W   T   F   S   S
+                25  26  27  28  29  30   1       28  29  30  31  [1]  2   3
+                 2   3   4   5   6   7   8        4   5   6   7   8   9  10
+                 9  10  11  12  13  14  15  ==>  11  12  13  14  15  16  17
+                16  17  18  19  20  21  22       18  19  20  21  22  23  24
+                23  24  25  26  27  28  29       25  26  27  28  29 [30]  1
+                30 [31]  1   2   3   4   5        2   3   4   5   6   7   8 */
+            calendar.selectedDate = new Date(2013, 11, 31);
+            keyPress(Qt.Key_PageUp);
+            compare(calendar.selectedDate, new Date(2013, 10, 30),
+                "Pressing the page up key should select the equivalent date in the previous month.");
+
+            /*          November 2013                   December 2013
+                 M   T   W   T   F   S   S        M   T   W   T   F   S   S
+                28  29  30  31  [1]  2   3       25  26  27  28  29  30   1
+                 4   5   6   7   8   9  10        2   3   4   5   6   7   8
+                11  12  13  14  15  16  17  ==>   9  10  11  12  13  14  15
+                18  19  20  21  22  23  24       16  17  18  19  20  21  22
+                25  26  27  28  29 [30]  1       23  24  25  26  27  28  29
+                 2   3   4   5   6   7   8      [30]  31  1   2   3   4   5 */
+            calendar.selectedDate = new Date(2013, 10, 30);
+            keyPress(Qt.Key_PageDown);
+            compare(calendar.selectedDate, new Date(2013, 11, 30),
+                "Pressing the page down key should select the equivalent date in the next month.");
         }
 
         function test_previousMonth() {
