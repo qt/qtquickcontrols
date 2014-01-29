@@ -52,16 +52,6 @@ ApplicationWindow {
         anchors.fill: parent
     }
 
-    // Implements back key navigation
-    Keys.onReleased: {
-        if (event.key === Qt.Key_Back) {
-            if (stackView.depth > 1) {
-                stackView.pop();
-                event.accepted = true;
-            } else { Qt.quit(); }
-        }
-    }
-
     toolBar: BorderImage {
         border.bottom: 8
         source: "images/toolbar.png"
@@ -133,6 +123,12 @@ ApplicationWindow {
     StackView {
         id: stackView
         anchors.fill: parent
+        // Implements back key navigation
+        focus: true
+        Keys.onReleased: if (event.key === Qt.Key_Back && stackView.depth > 1) {
+                             stackView.pop();
+                             event.accepted = true;
+                         }
 
         initialItem: Item {
             width: parent.width
