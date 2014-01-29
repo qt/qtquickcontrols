@@ -77,7 +77,7 @@ Style {
             anchors.leftMargin: (parent.height - height) / 2
             iconName: "go-previous-view"
 
-            onClicked: control.previousMonth()
+            onClicked: control.selectPreviousMonth()
         }
         Text {
             id: dateText
@@ -93,7 +93,7 @@ Style {
             anchors.rightMargin: (parent.height - height) / 2
             iconName: "go-next-view"
 
-            onClicked: control.nextMonth()
+            onClicked: control.selectNextMonth()
         }
     }
 

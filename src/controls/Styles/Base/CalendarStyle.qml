@@ -150,7 +150,7 @@ Style {
             anchors.leftMargin: (parent.height - height) / 2
             iconSource: "images/arrow-left.png"
 
-            onClicked: control.previousMonth()
+            onClicked: control.selectPreviousMonth()
         }
         Text {
             id: dateText
@@ -174,7 +174,7 @@ Style {
             anchors.rightMargin: (parent.height - height) / 2
             iconSource: "images/arrow-right.png"
 
-            onClicked: control.nextMonth()
+            onClicked: control.selectNextMonth()
         }
     }
 

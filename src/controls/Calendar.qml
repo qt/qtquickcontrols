@@ -193,8 +193,6 @@ Control {
 
     style: Qt.createComponent(Settings.style + "/CalendarStyle.qml", calendar)
 
-    Keys.forwardTo: [view]
-
     /*!
         Returns true if \a date is not \c undefined and not less than
         \l minimumDate nor greater than \l maximumDate.
@@ -210,15 +208,73 @@ Control {
     /*!
         Selects the month before the current month in \l selectedDate.
     */
-    function previousMonth() {
+    function selectPreviousMonth() {
         calendar.selectedDate = DateUtils.setMonth(calendar.selectedDate, calendar.selectedDate.getMonth() - 1);
     }
 
     /*!
         Selects the month after the current month in \l selectedDate.
     */
-    function nextMonth() {
+    function selectNextMonth() {
         calendar.selectedDate = DateUtils.setMonth(calendar.selectedDate, calendar.selectedDate.getMonth() + 1);
+    }
+
+    /*!
+        Selects the week before the current week in \l selectedDate.
+    */
+    function selectPreviousWeek() {
+        view.moveCurrentIndexUp();
+        calendar.selectedDate = __model.dateAt(view.currentIndex);
+    }
+
+    /*!
+        Selects the week after the current week in \l selectedDate.
+    */
+    function selectNextWeek() {
+        view.moveCurrentIndexDown();
+        calendar.selectedDate = __model.dateAt(view.currentIndex);
+    }
+
+    /*!
+        Selects the first day of the current month in \l selectedDate.
+    */
+    function selectFirstDayOfMonth() {
+        var newDate = new Date(calendar.selectedDate);
+        newDate.setDate(1);
+        calendar.selectedDate = newDate;
+    }
+
+    /*!
+        Selects the last day of the current month in \l selectedDate.
+    */
+    function selectLastDayOfMonth() {
+        var newDate = new Date(calendar.selectedDate);
+        newDate.setDate(DateUtils.daysInMonth(newDate));
+        calendar.selectedDate = newDate;
+    }
+
+    function selectPreviousDay() {
+        if (view.currentIndex != 0) {
+            // Be lazy and let the view determine which index we're moving
+            // to, then we can calculate the date from that.
+            view.moveCurrentIndexLeft();
+            // This will cause the index to be set again (to the same value).
+            calendar.selectedDate = __model.dateAt(view.currentIndex);
+        } else {
+            // We're at the left edge of the calendar on the first row;
+            // this day is the first of the week and the month, so
+            // moving left should go to the last day of the previous month,
+            // rather than do nothing (which is what GridView does when
+            // keyNavigationWraps is false).
+            var newDate = new Date(calendar.selectedDate);
+            newDate.setDate(newDate.getDate() - 1);
+            calendar.selectedDate = newDate;
+        }
+    }
+
+    function selectNextDay() {
+        view.moveCurrentIndexRight();
+        calendar.selectedDate = __model.dateAt(view.currentIndex);
     }
 
     Item {
@@ -304,38 +360,22 @@ Control {
 
                 readonly property int weeksToShow: 6
 
+                Keys.forwardTo: [calendar]
+
                 Keys.onLeftPressed: {
-                    if (currentIndex != 0) {
-                        // Be lazy and let the view determine which index we're moving
-                        // to, then we can calculate the date from that.
-                        moveCurrentIndexLeft();
-                        // This will cause the index to be set again (to the same value).
-                        calendar.selectedDate = model.dateAt(currentIndex);
-                    } else {
-                        // We're at the left edge of the calendar on the first row;
-                        // this day is the first of the week and the month, so
-                        // moving left should go to the last day of the previous month,
-                        // rather than do nothing (which is what GridView does when
-                        // keyNavigationWraps is false).
-                        var newDate = new Date(calendar.selectedDate);
-                        newDate.setDate(newDate.getDate() - 1);
-                        calendar.selectedDate = newDate;
-                    }
+                    calendar.selectPreviousDay();
                 }
 
                 Keys.onUpPressed: {
-                    moveCurrentIndexUp();
-                    calendar.selectedDate = model.dateAt(currentIndex);
+                    calendar.selectPreviousWeek();
                 }
 
                 Keys.onDownPressed: {
-                    moveCurrentIndexDown();
-                    calendar.selectedDate = model.dateAt(currentIndex);
+                    calendar.selectNextWeek();
                 }
 
                 Keys.onRightPressed: {
-                    moveCurrentIndexRight();
-                    calendar.selectedDate = model.dateAt(currentIndex);
+                    calendar.selectNextDay();
                 }
 
                 Keys.onEscapePressed: {
@@ -344,31 +384,16 @@ Control {
 
                 Keys.onPressed: {
                     if (event.key === Qt.Key_Home) {
-                        var newDate = new Date(calendar.selectedDate);
-                        newDate.setDate(1);
-                        calendar.selectedDate = newDate;
+                        calendar.selectFirstDayOfMonth();
                         event.accepted = true;
                     } else if (event.key === Qt.Key_End) {
-                        newDate = new Date(calendar.selectedDate);
-                        newDate.setDate(DateUtils.daysInMonth(newDate));
-                        calendar.selectedDate = newDate;
+                        calendar.selectLastDayOfMonth();
                         event.accepted = true;
                     } else if (event.key === Qt.Key_PageUp) {
-                        newDate = new Date(calendar.selectedDate);
-                        var oldDay = newDate.getDate();
-                        // Set the date to the first so we know we can change months without issues.
-                        newDate.setDate(1);
-                        newDate.setMonth(newDate.getMonth() - 1);
-                        newDate.setDate(Math.min(oldDay, DateUtils.daysInMonth(newDate)));
-                        calendar.selectedDate = newDate;
+                        calendar.selectPreviousMonth();
                         event.accepted = true;
                     } else if (event.key === Qt.Key_PageDown) {
-                        newDate = new Date(calendar.selectedDate);
-                        oldDay = newDate.getDate();
-                        newDate.setDate(1);
-                        newDate.setMonth(newDate.getMonth() + 1);
-                        newDate.setDate(Math.min(oldDay, DateUtils.daysInMonth(newDate)));
-                        calendar.selectedDate = newDate;
+                        calendar.selectNextMonth();
                         event.accepted = true;
                     }
                 }

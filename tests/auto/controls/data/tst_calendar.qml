@@ -293,11 +293,11 @@ Item {
                 "Pressing the page down key should select the equivalent date in the next month.");
         }
 
-        function test_previousMonth() {
+        function test_selectPreviousMonth() {
             calendar.selectedDate = new Date(2013, 0, 1);
             compare(calendar.selectedDate, new Date(2013, 0, 1));
 
-            calendar.previousMonth();
+            calendar.selectPreviousMonth();
             compare(calendar.selectedDate, new Date(2012, 11, 1));
         }
 
@@ -312,14 +312,14 @@ Item {
             compare(calendar.selectedDate, new Date(2012, 11, 28));
         }
 
-        function test_nextMonth() {
+        function test_selectNextMonth() {
             calendar.selectedDate = new Date(2013, 0, 31);
             compare(calendar.selectedDate, new Date(2013, 0, 31));
 
-            calendar.nextMonth();
+            calendar.selectNextMonth();
             compare(calendar.selectedDate, new Date(2013, 1, 28));
 
-            calendar.nextMonth();
+            calendar.selectNextMonth();
             compare(calendar.selectedDate, new Date(2013, 2, 28));
         }
 
