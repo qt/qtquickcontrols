@@ -87,6 +87,7 @@ Style {
     property Component label: Item {
         implicitWidth: text.implicitWidth + 2
         implicitHeight: text.implicitHeight
+        baselineOffset: text.y + text.baselineOffset
         Rectangle {
             anchors.fill: text
             anchors.margins: -1
@@ -146,6 +147,7 @@ Style {
     property Component panel: Item {
         implicitWidth: Math.max(backgroundLoader.implicitWidth, row.implicitWidth + padding.left + padding.right)
         implicitHeight: Math.max(backgroundLoader.implicitHeight, labelLoader.implicitHeight + padding.top + padding.bottom,indicatorLoader.implicitHeight + padding.top + padding.bottom)
+        baselineOffset: labelLoader.item ? padding.top + labelLoader.item.baselineOffset : 0
 
         Loader {
             id:backgroundLoader

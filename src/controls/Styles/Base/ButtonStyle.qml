@@ -135,6 +135,7 @@ Style {
     property Component label: Item {
         implicitWidth: row.implicitWidth
         implicitHeight: row.implicitHeight
+        baselineOffset: row.y + text.y + text.baselineOffset
         Row {
             id: row
             anchors.centerIn: parent
@@ -144,6 +145,7 @@ Style {
                 anchors.verticalCenter: parent.verticalCenter
             }
             Text {
+                id: text
                 renderType: Text.NativeRendering
                 anchors.verticalCenter: parent.verticalCenter
                 text: control.text
@@ -157,6 +159,7 @@ Style {
         anchors.fill: parent
         implicitWidth: Math.max(labelLoader.implicitWidth + padding.left + padding.right, backgroundLoader.implicitWidth)
         implicitHeight: Math.max(labelLoader.implicitHeight + padding.top + padding.bottom, backgroundLoader.implicitHeight)
+        baselineOffset: labelLoader.item ? padding.top + labelLoader.item.baselineOffset : 0
 
         Loader {
             id: backgroundLoader

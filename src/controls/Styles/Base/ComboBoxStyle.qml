@@ -162,6 +162,7 @@ Style {
     /*! This defines the label of the button. */
     property Component label: Item {
         implicitWidth: textitem.implicitWidth + 20
+        baselineOffset: textitem.y + textitem.baselineOffset
         Text {
             id: textitem
             anchors.left: parent.left
@@ -183,6 +184,7 @@ Style {
         anchors.fill: parent
         implicitWidth: backgroundLoader.implicitWidth
         implicitHeight: Math.max(labelLoader.implicitHeight + padding.top + padding.bottom, backgroundLoader.implicitHeight)
+        baselineOffset: labelLoader.item ? padding.top + labelLoader.item.baselineOffset: 0
 
         Loader {
             id: backgroundLoader
