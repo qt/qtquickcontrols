@@ -253,6 +253,9 @@ Control {
         calendar.selectedDate = newDate;
     }
 
+    /*!
+        Selects the day before the current day in \l selectedDate.
+    */
     function selectPreviousDay() {
         if (view.currentIndex != 0) {
             // Be lazy and let the view determine which index we're moving
@@ -272,6 +275,9 @@ Control {
         }
     }
 
+    /*!
+        Selects the day after the current day in \l selectedDate.
+    */
     function selectNextDay() {
         view.moveCurrentIndexRight();
         calendar.selectedDate = __model.dateAt(view.currentIndex);
