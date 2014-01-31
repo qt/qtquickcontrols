@@ -74,7 +74,7 @@ import QtQuick.Controls.Private 1.0
                     }
                 }
 
-                Text {
+                Label {
                     text: styleData.date.getDate()
                     anchors.centerIn: parent
                     color: "white"
@@ -113,11 +113,11 @@ Style {
     property color gridColor: "#f0f0f0"
 
     /*!
-        The width of each grid line.
+        \internal
 
-        The default value is \c 1.
+        The width of each grid line.
     */
-    property real gridLineWidth: 1
+    property real __gridLineWidth: 1
 
     /*!
         The background of the calendar.
@@ -152,7 +152,7 @@ Style {
 
             onClicked: control.selectPreviousMonth()
         }
-        Text {
+        Label {
             id: dateText
             text: control.selectedDateText
             elide: Text.ElideRight
@@ -198,7 +198,7 @@ Style {
         readonly property color differentMonthDateTextColor: Qt.darker("darkgrey", 1.4);
         readonly property color invalidDatecolor: "#dddddd"
 
-        Text {
+        Label {
             id: dayDelegateText
             text: styleData.date.getDate()
             font.pixelSize: 14
@@ -225,9 +225,186 @@ Style {
     */
     property Component weekdayDelegate: Rectangle {
         color: "white"
-        Text {
+        Label {
             text: control.locale.dayName(styleData.dayOfWeek, control.dayOfWeekFormat)
             anchors.centerIn: parent
+        }
+    }
+
+    /*! \internal */
+    property Component panel: Item {
+        id: panel
+
+        implicitWidth: 200
+        implicitHeight: 200
+
+        property alias navigationBarItem: navigationBarLoader.item
+
+        Loader {
+            id: backgroundLoader
+            anchors.fill: parent
+            sourceComponent: background
+        }
+
+        Loader {
+            id: navigationBarLoader
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.top: parent.top
+            sourceComponent: navigationBar
+        }
+
+        Row {
+            id: weekdayHeaderRow
+            spacing: (control.gridVisible ? __gridLineWidth : 0)
+            anchors.top: navigationBarLoader.bottom
+            anchors.left: parent.left
+            anchors.leftMargin: (control.gridVisible ? __gridLineWidth : 0)
+            anchors.right: parent.right
+            height: 40
+
+            Repeater {
+                id: repeater
+                model: CalendarHeaderModel {
+                    locale: control.locale
+                }
+                Loader {
+                    id: dayOfWeekDelegateLoader
+                    sourceComponent: weekdayDelegate
+                    width: CalendarUtils.cellRectAt(index, view.columns, view.rows, view.availableWidth, view.availableHeight).width
+                        - (control.gridVisible ? __gridLineWidth : 0)
+                    height: weekdayHeaderRow.height
+
+                    readonly property var __dayOfWeek: dayOfWeek
+
+                    property QtObject styleData: QtObject {
+                        readonly property alias dayOfWeek: dayOfWeekDelegateLoader.__dayOfWeek
+                    }
+                }
+            }
+        }
+
+        // Contains the grid lines and the grid itself.
+        Item {
+            id: viewContainer
+            width: panel.width
+            height: panel.height - navigationBarLoader.height - weekdayHeaderRow.height
+            anchors.top: weekdayHeaderRow.bottom
+
+            Repeater {
+                id: verticalGridLineRepeater
+                model: view.columns + 1
+                delegate: Rectangle {
+                    // The last line will be an invalid index, so we must handle it
+                    x: index < view.columns
+                       ? CalendarUtils.cellRectAt(index, view.columns, view.rows, view.availableWidth, view.availableHeight).x
+                       : CalendarUtils.cellRectAt(view.columns - 1, view.columns, view.rows, view.availableWidth, view.availableHeight).x
+                         + CalendarUtils.cellRectAt(view.columns - 1, view.columns, view.rows, view.availableWidth, view.availableHeight).width
+                    y: 0
+                    width: __gridLineWidth
+                    height: viewContainer.height
+                    color: gridColor
+                    visible: control.gridVisible
+                }
+            }
+
+            Repeater {
+                id: horizontalGridLineRepeater
+                model: view.rows + 1
+                delegate: Rectangle {
+                    x: 0
+                    // The last line will be an invalid index, so we must handle it
+                    y: index < view.columns - 1
+                        ? CalendarUtils.cellRectAt(index * view.columns, view.columns, view.rows, view.availableWidth, view.availableHeight).y
+                        : CalendarUtils.cellRectAt((view.rows - 1) * view.columns, view.columns, view.rows, view.availableWidth, view.availableHeight).y
+                          + CalendarUtils.cellRectAt((view.rows - 1) * view.columns, view.columns, view.rows, view.availableWidth, view.availableHeight).height
+                    width: viewContainer.width
+                    height: __gridLineWidth
+                    color: gridColor
+                    visible: control.gridVisible
+                }
+            }
+
+            Connections {
+                target: control
+                onSelectedDateChanged: view.dateChanged()
+            }
+
+            Repeater {
+                id: view
+
+                property int currentIndex: -1
+
+                readonly property int weeksToShow: 6
+                readonly property int rows: weeksToShow
+                readonly property int columns: CalendarUtils.daysInAWeek
+
+                model: control.__model
+
+                Component.onCompleted: dateChanged()
+
+                function dateChanged() {
+                    if (model !== undefined && model.locale !== undefined) {
+                        model.selectedDate = control.selectedDate;
+                        currentIndex = model.indexAt(control.selectedDate);
+                    }
+                }
+
+                // The combined available width and height to be shared amongst each cell.
+                readonly property real availableWidth: (viewContainer.width - (control.gridVisible ? __gridLineWidth : 0))
+                readonly property real availableHeight: (viewContainer.height - (control.gridVisible ? __gridLineWidth : 0))
+
+                delegate: Loader {
+                    id: delegateLoader
+
+                    x: CalendarUtils.cellRectAt(index, view.columns, view.rows, view.availableWidth, view.availableHeight).x
+                        + (control.gridVisible ? __gridLineWidth : 0)
+                    y: CalendarUtils.cellRectAt(index, view.columns, view.rows, view.availableWidth, view.availableHeight).y
+                        + (control.gridVisible ? __gridLineWidth : 0)
+                    width: CalendarUtils.cellRectAt(index, view.columns, view.rows, view.availableWidth, view.availableHeight).width
+                        - (control.gridVisible ? __gridLineWidth : 0)
+                    height: CalendarUtils.cellRectAt(index, view.columns, view.rows, view.availableWidth, view.availableHeight).height
+                        - (control.gridVisible ? __gridLineWidth : 0)
+
+                    sourceComponent: dateDelegate
+
+                    readonly property int __index: index
+                    readonly property var __model: model
+
+                    property QtObject styleData: QtObject {
+                        readonly property alias index: delegateLoader.__index
+                        readonly property alias model: delegateLoader.__model
+                        readonly property bool selected: view.currentIndex == index
+                        readonly property date date: model.date
+                    }
+
+                    MouseArea {
+                        anchors.fill: parent
+
+                        function setDateIfValid(date) {
+                            if (control.isValidDate(date)) {
+                                control.selectedDate = date;
+                            }
+                        }
+
+                        onClicked: {
+                            setDateIfValid(date)
+                        }
+
+                        onDoubleClicked: {
+                            if (date.getTime() === control.selectedDate.getTime()) {
+                                // Only accept double clicks if the first click does not
+                                // change the month displayed. This is because double-
+                                // clicking on a date in the next month will first cause
+                                // a single click which will change the month and the
+                                // the release will be triggered on the same index but a
+                                // different date (the date in the next month).
+                                control.doubleClicked(date);
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

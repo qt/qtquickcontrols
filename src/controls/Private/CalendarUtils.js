@@ -73,3 +73,39 @@ function setMonth(date, month) {
     newDate.setDate(Math.min(oldDay, daysInMonth(newDate)));
     return newDate;
 }
+
+function cellRectAt(index, columns, rows, availableWidth, availableHeight) {
+    var col = Math.floor(index % columns);
+    var row = Math.floor(index / columns);
+
+    var remainingHorizontalSpace = Math.floor(availableWidth % columns);
+    var remainingVerticalSpace = Math.floor(availableHeight % rows);
+    var baseCellWidth = Math.floor(availableWidth / columns);
+    var baseCellHeight = Math.floor(availableHeight / rows);
+
+    var rect = Qt.rect(0, 0, 0, 0);
+
+    rect.x = baseCellWidth * col;
+    rect.width = baseCellWidth;
+    if (remainingHorizontalSpace > 0) {
+        if (col < remainingHorizontalSpace) {
+            ++rect.width;
+        }
+
+        // This cell's x position should be increased by 1 for every column above it.
+        rect.x += Math.min(remainingHorizontalSpace, col);
+    }
+
+    rect.y = baseCellHeight * row;
+    rect.height = baseCellHeight;
+    if (remainingVerticalSpace > 0) {
+        if (row < remainingVerticalSpace) {
+            ++rect.height;
+        }
+
+        // This cell's y position should be increased by 1 for every row above it.
+        rect.y += Math.min(remainingVerticalSpace, row);
+    }
+
+    return rect;
+}

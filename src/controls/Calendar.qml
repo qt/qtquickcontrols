@@ -64,10 +64,6 @@ import QtQuick.Controls.Private 1.0
     Localization is supported through the \l locale property. The selected date
     is displayed according to \l locale, and it can be accessed through the
     \l selectedDateText property.
-
-    \note Due to the fact that the cell sizes are calculated based on the
-    available space within the control, gaps can be seen between the bottom and
-    right edges when assigning certain sizes to the Calendar.
 */
 
 Control {
@@ -121,8 +117,8 @@ Control {
     RangedDate {
         id: rangedDate
         date: new Date()
-        minimumDate: DateUtils.minimumCalendarDate
-        maximumDate: DateUtils.maximumCalendarDate
+        minimumDate: CalendarUtils.minimumCalendarDate
+        maximumDate: CalendarUtils.maximumCalendarDate
     }
 
     /*!
@@ -182,15 +178,6 @@ Control {
     */
     signal doubleClicked(date selectedDate)
 
-    /*!
-        \qmlsignal Calendar::escapePressed()
-
-        This signal is emitted when escape is pressed while the view has focus.
-        When Calendar is used as a popup, this signal can be handled to close
-        the calendar.
-    */
-    signal escapePressed
-
     style: Qt.createComponent(Settings.style + "/CalendarStyle.qml", calendar)
 
     /*!
@@ -209,30 +196,32 @@ Control {
         Selects the month before the current month in \l selectedDate.
     */
     function selectPreviousMonth() {
-        calendar.selectedDate = DateUtils.setMonth(calendar.selectedDate, calendar.selectedDate.getMonth() - 1);
+        calendar.selectedDate = CalendarUtils.setMonth(calendar.selectedDate, calendar.selectedDate.getMonth() - 1);
     }
 
     /*!
         Selects the month after the current month in \l selectedDate.
     */
     function selectNextMonth() {
-        calendar.selectedDate = DateUtils.setMonth(calendar.selectedDate, calendar.selectedDate.getMonth() + 1);
+        calendar.selectedDate = CalendarUtils.setMonth(calendar.selectedDate, calendar.selectedDate.getMonth() + 1);
     }
 
     /*!
         Selects the week before the current week in \l selectedDate.
     */
     function selectPreviousWeek() {
-        view.moveCurrentIndexUp();
-        calendar.selectedDate = __model.dateAt(view.currentIndex);
+        var newDate = new Date(calendar.selectedDate);
+        newDate.setDate(newDate.getDate() - CalendarUtils.daysInAWeek);
+        calendar.selectedDate = newDate;
     }
 
     /*!
         Selects the week after the current week in \l selectedDate.
     */
     function selectNextWeek() {
-        view.moveCurrentIndexDown();
-        calendar.selectedDate = __model.dateAt(view.currentIndex);
+        var newDate = new Date(calendar.selectedDate);
+        newDate.setDate(newDate.getDate() + CalendarUtils.daysInAWeek);
+        calendar.selectedDate = newDate;
     }
 
     /*!
@@ -249,7 +238,7 @@ Control {
     */
     function selectLastDayOfMonth() {
         var newDate = new Date(calendar.selectedDate);
-        newDate.setDate(DateUtils.daysInMonth(newDate));
+        newDate.setDate(CalendarUtils.daysInMonth(newDate));
         calendar.selectedDate = newDate;
     }
 
@@ -257,243 +246,49 @@ Control {
         Selects the day before the current day in \l selectedDate.
     */
     function selectPreviousDay() {
-        if (view.currentIndex != 0) {
-            // Be lazy and let the view determine which index we're moving
-            // to, then we can calculate the date from that.
-            view.moveCurrentIndexLeft();
-            // This will cause the index to be set again (to the same value).
-            calendar.selectedDate = __model.dateAt(view.currentIndex);
-        } else {
-            // We're at the left edge of the calendar on the first row;
-            // this day is the first of the week and the month, so
-            // moving left should go to the last day of the previous month,
-            // rather than do nothing (which is what GridView does when
-            // keyNavigationWraps is false).
-            var newDate = new Date(calendar.selectedDate);
-            newDate.setDate(newDate.getDate() - 1);
-            calendar.selectedDate = newDate;
-        }
+        var newDate = new Date(calendar.selectedDate);
+        newDate.setDate(newDate.getDate() - 1);
+        calendar.selectedDate = newDate;
     }
 
     /*!
         Selects the day after the current day in \l selectedDate.
     */
     function selectNextDay() {
-        view.moveCurrentIndexRight();
-        calendar.selectedDate = __model.dateAt(view.currentIndex);
+        var newDate = new Date(calendar.selectedDate);
+        newDate.setDate(newDate.getDate() + 1);
+        calendar.selectedDate = newDate;
     }
 
-    Item {
-        /*
-            This is here instead of CalendarStyle, because the interactive
-            stuff shouldn't be in the style, and because the various components
-            of the calendar need to be anchored around the grid.
-        */
-        id: panel
+    Keys.onLeftPressed: {
+        calendar.selectPreviousDay();
+    }
 
-        anchors.fill: parent
+    Keys.onUpPressed: {
+        calendar.selectPreviousWeek();
+    }
 
-        property alias navigationBarItem: navigationBarLoader.item
+    Keys.onDownPressed: {
+        calendar.selectNextWeek();
+    }
 
-        Loader {
-            id: backgroundLoader
-            anchors.fill: parent
-            sourceComponent: __style.background
-        }
+    Keys.onRightPressed: {
+        calendar.selectNextDay();
+    }
 
-        Loader {
-            id: navigationBarLoader
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.top: parent.top
-            sourceComponent: __style.navigationBar
-        }
-
-        Item {
-            id: viewContainer
-            anchors.top: navigationBarLoader.bottom
-            width: view.cellWidth * DateUtils.daysInAWeek
-            height: view.cellHeight * (view.weeksToShow + 1)
-
-            Repeater {
-                id: verticalGridLineRepeater
-                model: DateUtils.daysInAWeek + 1
-                delegate: Rectangle {
-                    x: view.cellWidth * index
-                    y: 0
-                    width: __style.gridLineWidth
-                    height: view.cellHeight * (verticalGridLineRepeater.count - 1) + __style.gridLineWidth
-                    color: __style.gridColor
-                    visible: calendar.gridVisible
-                }
-            }
-
-            Repeater {
-                id: horizontalGridLineRepeater
-                model: view.weeksToShow + 2
-                delegate: Rectangle {
-                    x: 0
-                    y: view.cellHeight * index
-                    width: view.cellWidth * (horizontalGridLineRepeater.count - 1) + __style.gridLineWidth
-                    height: __style.gridLineWidth
-                    color: __style.gridColor
-                    visible: calendar.gridVisible
-                }
-            }
-
-            GridView {
-                id: view
-                /*
-                    The cells will be as big as possible without causing them to spill over into the next row.
-                    When gridVisible is true, we make the cells bigger to account for the grid lines.
-                */
-                cellWidth: Math.floor((calendar.width - (calendar.gridVisible ? __style.gridLineWidth : 0)) / DateUtils.daysInAWeek)
-                cellHeight: Math.floor((calendar.height - (calendar.gridVisible ? __style.gridLineWidth : 0)
-                    - navigationBarLoader.height) / (weeksToShow + 1))
-                currentIndex: -1
-                x: calendar.gridVisible ? __style.gridLineWidth : 0
-                y: calendar.gridVisible ? __style.gridLineWidth : 0
-                width: parent.width
-                height: parent.height
-
-                // TODO: fix the reason behind + 1 stopping the flickableness..
-                // might have something to do with the header
-
-                model: calendar.__model
-
-                boundsBehavior: Flickable.StopAtBounds
-                KeyNavigation.tab: panel.navigationBarItem
-
-                readonly property int weeksToShow: 6
-
-                Keys.forwardTo: [calendar]
-
-                Keys.onLeftPressed: {
-                    calendar.selectPreviousDay();
-                }
-
-                Keys.onUpPressed: {
-                    calendar.selectPreviousWeek();
-                }
-
-                Keys.onDownPressed: {
-                    calendar.selectNextWeek();
-                }
-
-                Keys.onRightPressed: {
-                    calendar.selectNextDay();
-                }
-
-                Keys.onEscapePressed: {
-                    calendar.escapePressed();
-                }
-
-                Keys.onPressed: {
-                    if (event.key === Qt.Key_Home) {
-                        calendar.selectFirstDayOfMonth();
-                        event.accepted = true;
-                    } else if (event.key === Qt.Key_End) {
-                        calendar.selectLastDayOfMonth();
-                        event.accepted = true;
-                    } else if (event.key === Qt.Key_PageUp) {
-                        calendar.selectPreviousMonth();
-                        event.accepted = true;
-                    } else if (event.key === Qt.Key_PageDown) {
-                        calendar.selectNextMonth();
-                        event.accepted = true;
-                    }
-                }
-
-                Component.onCompleted: {
-                    dateChanged();
-
-                    if (visible) {
-                        forceActiveFocus();
-                    }
-                }
-
-                Connections {
-                    target: calendar
-                    onSelectedDateChanged: view.dateChanged()
-                }
-
-                function dateChanged() {
-                    if (model !== undefined && model.locale !== undefined) {
-                        __model.selectedDate = calendar.selectedDate;
-                        currentIndex = __model.indexAt(calendar.selectedDate);
-                    }
-                }
-
-                delegate: Loader {
-                    id: delegateLoader
-                    width: view.cellWidth - (calendar.gridVisible ? __style.gridLineWidth : 0)
-                    height: view.cellHeight - (calendar.gridVisible ? __style.gridLineWidth : 0)
-                    sourceComponent: __style.dateDelegate
-
-                    readonly property int __index: index
-                    readonly property var __model: model
-
-                    property QtObject styleData: QtObject {
-                        readonly property alias index: delegateLoader.__index
-                        readonly property alias model: delegateLoader.__model
-                        readonly property bool selected: delegateLoader.GridView.isCurrentItem
-                        readonly property date date: model.date
-                    }
-
-                    MouseArea {
-                        anchors.fill: parent
-
-                        function setDateIfValid(date) {
-                            if (calendar.isValidDate(date)) {
-                                calendar.selectedDate = date;
-                            }
-                        }
-
-                        onClicked: {
-                            setDateIfValid(date)
-                        }
-
-                        onDoubleClicked: {
-                            if (date.getTime() === calendar.selectedDate.getTime()) {
-                                // Only accept double clicks if the first click does not
-                                // change the month displayed. This is because double-
-                                // clicking on a date in the next month will first cause
-                                // a single click which will change the month and the
-                                // the release will be triggered on the same index but a
-                                // different date (the date in the next month).
-                                calendar.doubleClicked(date);
-                            }
-                        }
-                    }
-                }
-
-                header: Loader {
-                    width: view.width
-                    height: view.cellHeight
-
-                    sourceComponent: Row {
-                        spacing: (calendar.gridVisible ? __style.gridLineWidth : 0)
-                        Repeater {
-                            id: repeater
-                            model: CalendarHeaderModel {
-                                locale: calendar.locale
-                            }
-                            Loader {
-                                id: dayOfWeekDelegateLoader
-                                sourceComponent: __style.weekdayDelegate
-                                width: view.cellWidth - (calendar.gridVisible ? __style.gridLineWidth : 0)
-                                height: view.cellHeight - (calendar.gridVisible ? __style.gridLineWidth : 0)
-
-                                readonly property var __dayOfWeek: dayOfWeek
-
-                                property QtObject styleData: QtObject {
-                                    readonly property alias dayOfWeek: dayOfWeekDelegateLoader.__dayOfWeek
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+    Keys.onPressed: {
+        if (event.key === Qt.Key_Home) {
+            calendar.selectFirstDayOfMonth();
+            event.accepted = true;
+        } else if (event.key === Qt.Key_End) {
+            calendar.selectLastDayOfMonth();
+            event.accepted = true;
+        } else if (event.key === Qt.Key_PageUp) {
+            calendar.selectPreviousMonth();
+            event.accepted = true;
+        } else if (event.key === Qt.Key_PageDown) {
+            calendar.selectNextMonth();
+            event.accepted = true;
         }
     }
 }

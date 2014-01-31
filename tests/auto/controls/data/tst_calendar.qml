@@ -51,7 +51,7 @@ Item {
         id: testcase
         name: "Tests_Calendar"
         when: windowShown
-        readonly property int cellWidth: calendar !== undefined ? calendar.width / DateUtils.daysInAWeek : 0
+        readonly property int cellWidth: calendar !== undefined ? calendar.width / CalendarUtils.daysInAWeek : 0
         readonly property int cellHeight: calendar !== undefined ? calendar.height / 7 - navigationBarHeight : 0
         readonly property int navigationBarHeight: 40
         readonly property int firstDateCellX: cellWidth / 2
@@ -146,14 +146,14 @@ Item {
 
         // Should be able to use the full JS date range.
         function test_minMaxJsDateRange() {
-            calendar.minimumDate = DateUtils.minimumCalendarDate;
-            calendar.maximumDate = DateUtils.maximumCalendarDate;
+            calendar.minimumDate = CalendarUtils.minimumCalendarDate;
+            calendar.maximumDate = CalendarUtils.maximumCalendarDate;
 
-            calendar.selectedDate = DateUtils.minimumCalendarDate;
-            compare(calendar.selectedDate, DateUtils.minimumCalendarDate);
+            calendar.selectedDate = CalendarUtils.minimumCalendarDate;
+            compare(calendar.selectedDate, CalendarUtils.minimumCalendarDate);
 
-            calendar.selectedDate = DateUtils.maximumCalendarDate;
-            compare(calendar.selectedDate, DateUtils.maximumCalendarDate);
+            calendar.selectedDate = CalendarUtils.maximumCalendarDate;
+            compare(calendar.selectedDate, CalendarUtils.maximumCalendarDate);
         }
 
         function test_minMaxUndefined() {
@@ -347,10 +347,10 @@ Item {
             compare(calendar.selectedDate, startDate);
 
             var firstVisibleDate = new Date(2012, 11, 30);
-            for (var week = 0; week < DateUtils.weeksOnACalendarMonth; ++week) {
-                for (var day = 0; day < DateUtils.daysInAWeek; ++day) {
+            for (var week = 0; week < CalendarUtils.weeksOnACalendarMonth; ++week) {
+                for (var day = 0; day < CalendarUtils.daysInAWeek; ++day) {
                     var expectedDate = new Date(firstVisibleDate);
-                    expectedDate.setDate(expectedDate.getDate() + (week * DateUtils.daysInAWeek + day));
+                    expectedDate.setDate(expectedDate.getDate() + (week * CalendarUtils.daysInAWeek + day));
 
                     mouseClick(calendar, toPixelsX(day), toPixelsY(week), Qt.LeftButton);
                     expectFail("", "TODO: Mouse click seems to go to cell above (header). Works manually.");
@@ -398,11 +398,110 @@ Item {
             }
         }
 
-        function test_escapePressed() {
-            signalSpy.signalName = "escapePressed";
-            signalSpy.target = calendar;
-            keyPress(Qt.Key_Escape);
-            compare(signalSpy.count, 1);
+        function ensureNoGapsBetweenCells(columns, rows, availableWidth, availableHeight) {
+            for (var row = 1; row < rows; ++row) {
+                for (var col = 1; col < columns; ++col) {
+                    var lastHorizontalRect = CalendarUtils.cellRectAt((row - 1) * columns + col - 1, columns, rows, availableWidth, availableHeight);
+                    var thisHorizontalRect = CalendarUtils.cellRectAt((row - 1) * columns + col, columns, rows, availableWidth, availableHeight);
+                    compare (lastHorizontalRect.x + lastHorizontalRect.width, thisHorizontalRect.x,
+                        "Gaps between column " + (col - 1) + " and " + col + " in a grid of " + columns + " columns and " + rows + " rows, "
+                        + "with an availableWidth of " + availableWidth + " and availableHeight of " + availableHeight);
+
+                    var lastVerticalRect = CalendarUtils.cellRectAt((row - 1) * columns + col - 1, columns, rows, availableWidth, availableHeight);
+                    var thisVerticalRect = CalendarUtils.cellRectAt(row * columns + col - 1, columns, rows, availableWidth, availableHeight);
+                    compare (lastVerticalRect.y + lastVerticalRect.height, thisVerticalRect.y,
+                        "Gaps between row " + (row - 1) + " and " + row + " in a grid of " + columns + " columns and " + rows + " rows, "
+                        + "with an availableWidth of " + availableWidth + " and availableHeight of " + availableHeight);
+                }
+            }
+        }
+
+        function test_cellRectCalculation() {
+            var columns = CalendarUtils.daysInAWeek;
+            var rows = CalendarUtils.weeksOnACalendarMonth;
+
+            // No extra space available.
+            var availableWidth = 10 * columns;
+            var availableHeight = 10 * rows;
+            var rect = CalendarUtils.cellRectAt(0, columns, rows, availableWidth, availableHeight);
+            compare(rect.x, 0);
+            compare(rect.y, 0);
+            compare(rect.width, 10);
+            compare(rect.height, 10);
+
+            rect = CalendarUtils.cellRectAt(columns - 1, columns, rows, availableWidth, availableHeight);
+            compare(rect.x, (columns - 1) * 10);
+            compare(rect.y, 0);
+            compare(rect.width, 10);
+            compare(rect.height, 10);
+
+            rect = CalendarUtils.cellRectAt(rows * columns - 1, columns, rows, availableWidth, availableHeight);
+            compare(rect.x, (columns - 1) * 10);
+            compare(rect.y, (rows - 1) * 10);
+            compare(rect.width, 10);
+            compare(rect.height, 10);
+
+            ensureNoGapsBetweenCells(columns, rows, availableWidth, availableHeight);
+
+            // 1 extra pixel of space in both width and height.
+            availableWidth = 10 * columns + 1;
+            availableHeight = 10 * rows + 1;
+            rect = CalendarUtils.cellRectAt(0, columns, rows, availableWidth, availableHeight);
+            compare(rect.x, 0);
+            compare(rect.y, 0);
+            compare(rect.width, 10 + 1);
+            compare(rect.height, 10 + 1);
+
+            rect = CalendarUtils.cellRectAt(columns - 1, columns, rows, availableWidth, availableHeight);
+            compare(rect.x, (columns - 1) * 10 + 1);
+            compare(rect.y, 0);
+            compare(rect.width, 10);
+            compare(rect.height, 10 + 1);
+
+            rect = CalendarUtils.cellRectAt(rows * columns - 1, columns, rows, availableWidth, availableHeight);
+            compare(rect.x, (columns - 1) * 10 + 1);
+            compare(rect.y, (rows - 1) * 10 + 1);
+            compare(rect.width, 10);
+            compare(rect.height, 10);
+
+            ensureNoGapsBetweenCells(columns, rows, availableWidth, availableHeight);
+
+            // 6 extra pixels in width, 5 in height.
+            availableWidth = 10 * columns + 6;
+            availableHeight = 10 * rows + 5;
+            rect = CalendarUtils.cellRectAt(0, columns, rows, availableWidth, availableHeight);
+            compare(rect.x, 0);
+            compare(rect.y, 0);
+            compare(rect.width, 10 + 1);
+            compare(rect.height, 10 + 1);
+
+            rect = CalendarUtils.cellRectAt(columns - 1, columns, rows, availableWidth, availableHeight);
+            compare(rect.x, (columns - 1) * 10 + 6);
+            compare(rect.y, 0);
+            compare(rect.width, 10);
+            compare(rect.height, 10 + 1);
+
+            rect = CalendarUtils.cellRectAt(rows * columns - 1, columns, rows, availableWidth, availableHeight);
+            compare(rect.x, (columns - 1) * 10 + 6);
+            compare(rect.y, (rows - 1) * 10 + 5);
+            compare(rect.width, 10);
+            compare(rect.height, 10);
+
+            ensureNoGapsBetweenCells(columns, rows, availableWidth, availableHeight);
+
+            availableWidth = 280;
+            availableHeight = 190;
+            ensureNoGapsBetweenCells(columns, rows, availableWidth, availableHeight);
+
+            for (var i = 0; i < columns; ++i) {
+                ++availableWidth;
+                ensureNoGapsBetweenCells(columns, rows, availableWidth, availableHeight);
+            }
+
+            for (i = 0; i < columns; ++i) {
+                ++availableHeight;
+                ensureNoGapsBetweenCells(columns, rows, availableWidth, availableHeight);
+            }
         }
     }
 }

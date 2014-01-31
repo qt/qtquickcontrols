@@ -43,22 +43,16 @@
 
 import QtQuick 2.1
 import QtQuick.Controls 1.1
-import QtQuick.Controls.Private 1.0
+import QtQuick.Controls.Styles 1.1
 
-Style {
+CalendarStyle {
     id: calendarStyle
 
-    property Calendar control: __control
-
-    property color gridColor: "#f0f0f0"
-
-    property real gridLineWidth: 1
-
-    property Component background: Rectangle {
+    background: Rectangle {
         color: __syspal.base
     }
 
-    property Component navigationBar: Item {
+    navigationBar: Item {
         height: 40
 
         Rectangle {
@@ -79,7 +73,7 @@ Style {
 
             onClicked: control.selectPreviousMonth()
         }
-        Text {
+        Label {
             id: dateText
             text: control.selectedDateText
             anchors.centerIn: parent
@@ -97,11 +91,11 @@ Style {
         }
     }
 
-    property Component dateDelegate: Rectangle {
+    dateDelegate: Rectangle {
         id: dayDelegate
         color: styleData.date !== undefined && styleData.selected ? __syspal.highlight : __syspal.base
 
-        Text {
+        Label {
             SystemPalette {
                 id: pal
                 colorGroup: styleData.date.getMonth() === control.selectedDate.getMonth()
@@ -114,9 +108,9 @@ Style {
         }
     }
 
-    property Component weekdayDelegate: Rectangle {
+    weekdayDelegate: Rectangle {
         color: __syspal.base
-        Text {
+        Label {
             text: control.locale.dayName(styleData.dayOfWeek, control.dayOfWeekFormat)
             anchors.centerIn: parent
         }

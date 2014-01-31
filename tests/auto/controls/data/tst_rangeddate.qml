@@ -63,11 +63,11 @@ Item {
         }
 
         function test_minMax() {
-            rangedDate.minimumDate = DateUtils.minimumCalendarDate;
-            rangedDate.maximumDate = DateUtils.maximumCalendarDate;
+            rangedDate.minimumDate = CalendarUtils.minimumCalendarDate;
+            rangedDate.maximumDate = CalendarUtils.maximumCalendarDate;
 
-            compare(rangedDate.minimumDate.getTime(), DateUtils.minimumCalendarDate.getTime());
-            compare(rangedDate.maximumDate.getTime(), DateUtils.maximumCalendarDate.getTime());
+            compare(rangedDate.minimumDate.getTime(), CalendarUtils.minimumCalendarDate.getTime());
+            compare(rangedDate.maximumDate.getTime(), CalendarUtils.maximumCalendarDate.getTime());
         }
 
         function test_constructionPropertyOrder() {
