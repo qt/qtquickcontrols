@@ -58,7 +58,6 @@ AbstractColorDialog {
         __valueSet = true
     }
     onCurrentColorChanged: __setControlsFromColor()
-    onSelectionAccepted: root.color = root.currentColor
 
     Rectangle {
         id: content

@@ -116,4 +116,10 @@ QQuickColorDialog::~QQuickColorDialog()
     \l Window or an \l Item.
 */
 
+void QQuickColorDialog::accept()
+{
+    setColor(m_currentColor);
+    QQuickAbstractColorDialog::accept();
+}
+
 QT_END_NAMESPACE
