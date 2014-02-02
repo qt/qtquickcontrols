@@ -404,8 +404,6 @@ ScrollView {
         This property contains the link string when user hovers a link
         embedded in the text. The link must be in rich text or HTML format
         and the link string provides access to the particular link.
-
-        \sa onLinkHovered
     */
     readonly property alias hoveredLink: edit.hoveredLink
 
