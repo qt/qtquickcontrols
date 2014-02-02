@@ -56,8 +56,8 @@ public:
     QFontDialogHelper() :
         QPlatformFontDialogHelper()
     {
-        connect(&m_dialog, SIGNAL(currentFontChanged(const QFont &)), this, SIGNAL(currentFontChanged(const QFont &)));
-        connect(&m_dialog, SIGNAL(fontSelected(const QFont &)), this, SIGNAL(fontSelected(const QFont &)));
+        connect(&m_dialog, SIGNAL(currentFontChanged(QFont)), this, SIGNAL(currentFontChanged(QFont)));
+        connect(&m_dialog, SIGNAL(fontSelected(QFont)), this, SIGNAL(fontSelected(QFont)));
         connect(&m_dialog, SIGNAL(accepted()), this, SIGNAL(accept()));
         connect(&m_dialog, SIGNAL(rejected()), this, SIGNAL(reject()));
     }
@@ -166,8 +166,8 @@ QPlatformFontDialogHelper *QQuickQFontDialog::helper()
 
     if (!m_dlgHelper) {
         m_dlgHelper = new QFontDialogHelper();
-        connect(m_dlgHelper, SIGNAL(currentFontChanged(const QFont &)), this, SLOT(setFont(const QFont &)));
-        connect(m_dlgHelper, SIGNAL(fontSelected(const QFont &)), this, SLOT(setFont(const QFont &)));
+        connect(m_dlgHelper, SIGNAL(currentFontChanged(QFont)), this, SLOT(setFont(QFont)));
+        connect(m_dlgHelper, SIGNAL(fontSelected(QFont)), this, SLOT(setFont(QFont)));
         connect(m_dlgHelper, SIGNAL(accept()), this, SLOT(accept()));
         connect(m_dlgHelper, SIGNAL(reject()), this, SLOT(reject()));
     }

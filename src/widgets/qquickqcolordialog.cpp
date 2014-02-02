@@ -56,8 +56,8 @@ public:
     QColorDialogHelper() :
         QPlatformColorDialogHelper()
     {
-        connect(&m_dialog, SIGNAL(currentColorChanged(const QColor&)), this, SIGNAL(currentColorChanged(const QColor&)));
-        connect(&m_dialog, SIGNAL(colorSelected(const QColor&)), this, SIGNAL(colorSelected(const QColor&)));
+        connect(&m_dialog, SIGNAL(currentColorChanged(QColor)), this, SIGNAL(currentColorChanged(QColor)));
+        connect(&m_dialog, SIGNAL(colorSelected(QColor)), this, SIGNAL(colorSelected(QColor)));
         connect(&m_dialog, SIGNAL(accepted()), this, SIGNAL(accept()));
         connect(&m_dialog, SIGNAL(rejected()), this, SIGNAL(reject()));
     }
@@ -163,8 +163,8 @@ QPlatformColorDialogHelper *QQuickQColorDialog::helper()
 
     if (!m_dlgHelper) {
         m_dlgHelper = new QColorDialogHelper();
-        connect(m_dlgHelper, SIGNAL(currentColorChanged(const QColor&)), this, SLOT(setCurrentColor(QColor)));
-        connect(m_dlgHelper, SIGNAL(colorSelected(const QColor&)), this, SLOT(setColor(QColor)));
+        connect(m_dlgHelper, SIGNAL(currentColorChanged(QColor)), this, SLOT(setCurrentColor(QColor)));
+        connect(m_dlgHelper, SIGNAL(colorSelected(QColor)), this, SLOT(setColor(QColor)));
         connect(m_dlgHelper, SIGNAL(accept()), this, SLOT(accept()));
         connect(m_dlgHelper, SIGNAL(reject()), this, SLOT(reject()));
     }

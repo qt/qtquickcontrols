@@ -128,8 +128,8 @@ QPlatformFileDialogHelper *QQuickQFileDialog::helper()
 
     if (!m_dlgHelper) {
         m_dlgHelper = new QFileDialogHelper();
-        connect(m_dlgHelper, SIGNAL(directoryEntered(const QUrl &)), this, SIGNAL(folderChanged()));
-        connect(m_dlgHelper, SIGNAL(filterSelected(const QString &)), this, SIGNAL(filterSelected()));
+        connect(m_dlgHelper, SIGNAL(directoryEntered(QUrl)), this, SIGNAL(folderChanged()));
+        connect(m_dlgHelper, SIGNAL(filterSelected(QString)), this, SIGNAL(filterSelected()));
         connect(m_dlgHelper, SIGNAL(accept()), this, SLOT(accept()));
         connect(m_dlgHelper, SIGNAL(reject()), this, SLOT(reject()));
     }
@@ -140,11 +140,11 @@ QPlatformFileDialogHelper *QQuickQFileDialog::helper()
 QFileDialogHelper::QFileDialogHelper() :
     QPlatformFileDialogHelper()
 {
-    connect(&m_dialog, SIGNAL(currentChanged(const QString&)), this, SLOT(currentChanged(const QString&)));
-    connect(&m_dialog, SIGNAL(directoryEntered(const QString&)), this, SLOT(directoryEntered(const QString&)));
-    connect(&m_dialog, SIGNAL(fileSelected(const QString&)), this, SLOT(fileSelected(const QString&)));
-    connect(&m_dialog, SIGNAL(filesSelected(const QStringList&)), this, SLOT(filesSelected(const QStringList&)));
-    connect(&m_dialog, SIGNAL(filterSelected(const QString&)), this, SIGNAL(filterSelected(const QString&)));
+    connect(&m_dialog, SIGNAL(currentChanged(QString)), this, SLOT(currentChanged(QString)));
+    connect(&m_dialog, SIGNAL(directoryEntered(QString)), this, SLOT(directoryEntered(QString)));
+    connect(&m_dialog, SIGNAL(fileSelected(QString)), this, SLOT(fileSelected(QString)));
+    connect(&m_dialog, SIGNAL(filesSelected(QStringList)), this, SLOT(filesSelected(QStringList)));
+    connect(&m_dialog, SIGNAL(filterSelected(QString)), this, SIGNAL(filterSelected(QString)));
     connect(&m_dialog, SIGNAL(accepted()), this, SIGNAL(accept()));
     connect(&m_dialog, SIGNAL(rejected()), this, SIGNAL(reject()));
 }
