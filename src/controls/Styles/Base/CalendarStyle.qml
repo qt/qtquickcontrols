@@ -446,21 +446,21 @@ Style {
                                 if (control.isValidDate(date)) {
                                     control.selectedDate = date;
                                 }
+                            }
 
-                                onClicked: {
-                                    setDateIfValid(date)
-                                }
+                            onClicked: {
+                                setDateIfValid(date)
+                            }
 
-                                onDoubleClicked: {
-                                    if (date.getTime() === control.selectedDate.getTime()) {
-                                        // Only accept double clicks if the first click does not
-                                        // change the month displayed. This is because double-
-                                        // clicking on a date in the next month will first cause
-                                        // a single click which will change the month and the
-                                        // the release will be triggered on the same index but a
-                                        // different date (the date in the next month).
-                                        control.doubleClicked(date);
-                                    }
+                            onDoubleClicked: {
+                                if (date.getTime() === control.selectedDate.getTime()) {
+                                    // Only accept double clicks if the first click does not
+                                    // change the month displayed. This is because double-
+                                    // clicking on a date in the next month will first cause
+                                    // a single click which will change the month and the
+                                    // the release will be triggered on the same index but a
+                                    // different date (the date in the next month).
+                                    control.doubleClicked(date);
                                 }
                             }
                         }
