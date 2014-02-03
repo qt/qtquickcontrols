@@ -52,7 +52,7 @@ import QtQuick.Controls.Private 1.0
 */
 
 Style {
-    id: style
+    id: cbStyle
 
     /*!
         \qmlproperty enumeration renderType
@@ -84,7 +84,7 @@ Style {
     property int dropDownButtonWidth: Math.round(TextSingleton.implicitHeight)
 
     /*! \internal Alias kept for backwards compatibility with a spelling mistake in 5.2.0) */
-    property alias drowDownButtonWidth: style.dropDownButtonWidth
+    property alias drowDownButtonWidth: cbStyle.dropDownButtonWidth
 
     /*! This defines the background of the button. */
     property Component background: Item {
@@ -170,7 +170,7 @@ Style {
             anchors.rightMargin: 10
             anchors.verticalCenter: parent.verticalCenter
             text: control.currentText
-            renderType: style.renderType
+            renderType: cbStyle.renderType
             color: __syspal.text
             elide: Text.ElideRight
         }
