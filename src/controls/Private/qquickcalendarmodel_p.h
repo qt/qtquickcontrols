@@ -53,6 +53,7 @@ class QQuickCalendarModel : public QAbstractListModel
     Q_OBJECT
     Q_PROPERTY(QDate selectedDate READ selectedDate WRITE setSelectedDate NOTIFY selectedDateChanged)
     Q_PROPERTY(QLocale locale READ locale WRITE setLocale NOTIFY localeChanged)
+    Q_PROPERTY(int count READ rowCount NOTIFY countChanged)
 public:
     explicit QQuickCalendarModel(QObject *parent = 0);
 
@@ -75,9 +76,11 @@ public:
 
     Q_INVOKABLE QDate dateAt(int index) const;
     Q_INVOKABLE int indexAt(const QDate &selectedDate);
+    Q_INVOKABLE int weekNumberAt(int row) const;
 signals:
     void selectedDateChanged(const QDate &selectedDate);
     void localeChanged(const QLocale &locale);
+    void countChanged(int count);
 protected:
     void populateFromSelectedDate(const QDate &previousDate);
 

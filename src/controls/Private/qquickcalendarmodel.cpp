@@ -197,6 +197,20 @@ int QQuickCalendarModel::indexAt(const QDate &date)
 }
 
 /*!
+    Returns the week number for the first day of the week corresponding to \a row,
+    or -1 if \a row is outside of our range.
+*/
+int QQuickCalendarModel::weekNumberAt(int row) const
+{
+    const int index = row * daysInAWeek;
+    const QDate date = dateAt(index);
+    if (date.isValid()) {
+        return date.weekNumber();
+    }
+    return -1;
+}
+
+/*!
     Called before selectedDateChanged() is emitted.
 
     This function is called even when just the day has changed, in which case
@@ -238,5 +252,6 @@ void QQuickCalendarModel::populateFromSelectedDate(const QDate &previousDate)
         emit dataChanged(index(0, 0), index(rowCount() - 1, 0));
     } else {
         endResetModel();
+        emit countChanged(rowCount());
     }
 }

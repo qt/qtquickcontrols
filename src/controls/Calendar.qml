@@ -64,6 +64,9 @@ import QtQuick.Controls.Private 1.0
     Localization is supported through the \l locale property. The selected date
     is displayed according to \l locale, and it can be accessed through the
     \l selectedDateText property.
+
+    Week numbers can be displayed by setting the weekNumbersVisible property to
+    \c true.
 */
 
 Control {
@@ -127,6 +130,13 @@ Control {
         The default value is \c true.
     */
     property bool gridVisible: true
+
+    /*!
+        This property determines the visibility of week numbers.
+
+        The default value is \c false.
+    */
+    property bool weekNumbersVisible: false
 
     /*!
         \qmlproperty enum Calendar::dayOfWeekFormat
