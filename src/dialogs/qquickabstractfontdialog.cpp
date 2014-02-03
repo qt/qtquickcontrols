@@ -121,6 +121,15 @@ void QQuickAbstractFontDialog::setFont(const QFont &arg)
         m_font = arg;
         emit fontChanged();
     }
+    setCurrentFont(arg);
+}
+
+void QQuickAbstractFontDialog::setCurrentFont(const QFont &arg)
+{
+    if (m_currentFont != arg) {
+        m_currentFont = arg;
+        emit currentFontChanged();
+    }
 }
 
 void QQuickAbstractFontDialog::setScalableFonts(bool arg)

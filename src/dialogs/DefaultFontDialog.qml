@@ -49,6 +49,7 @@ AbstractFontDialog {
     id: root
 
     property alias font: content.externalFont
+    property alias currentFont: content.font
 
     Rectangle {
         id: content
@@ -72,8 +73,6 @@ AbstractFontDialog {
         property string writingSystem
         property string writingSystemSample
         property var pointSizes
-
-        onFontChanged: externalFont = font
 
         onExternalFontChanged: {
             if (content.font != content.externalFont) {

@@ -58,6 +58,8 @@ Item {
         proportionalFonts: fontDialogProportionalFonts.checked
         title: "Choose a font"
         font: Qt.font({ family: "Arial", pointSize: 24, weight: Font.Normal })
+        currentFont: Qt.font({ family: "Arial", pointSize: 24, weight: Font.Normal })
+        onCurrentFontChanged: { console.log("CurrentFontChanged: " + currentFont) }
         onAccepted: { console.log("Accepted: " + font) }
         onRejected: { console.log("Rejected") }
     }

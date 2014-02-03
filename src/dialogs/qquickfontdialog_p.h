@@ -67,6 +67,9 @@ public:
     explicit QQuickFontDialog(QObject *parent = 0);
     ~QQuickFontDialog();
 
+protected Q_SLOTS:
+    virtual void accept();
+
 protected:
     virtual QPlatformFontDialogHelper *helper() { return 0; }
 

@@ -70,6 +70,7 @@ class QQuickAbstractFontDialog : public QQuickAbstractDialog
     Q_PROPERTY(bool monospacedFonts READ monospacedFonts WRITE setMonospacedFonts NOTIFY monospacedFontsChanged)
     Q_PROPERTY(bool proportionalFonts READ proportionalFonts WRITE setProportionalFonts NOTIFY proportionalFontsChanged)
     Q_PROPERTY(QFont font READ font WRITE setFont NOTIFY fontChanged)
+    Q_PROPERTY(QFont currentFont READ currentFont WRITE setCurrentFont NOTIFY currentFontChanged)
 
 public:
     QQuickAbstractFontDialog(QObject *parent = 0);
@@ -81,12 +82,14 @@ public:
     bool monospacedFonts() const;
     bool proportionalFonts() const;
     QFont font() const { return m_font; }
+    QFont currentFont() const { return m_currentFont; }
 
 public Q_SLOTS:
     void setVisible(bool v);
     void setModality(Qt::WindowModality m);
     void setTitle(const QString &t);
     void setFont(const QFont &arg);
+    void setCurrentFont(const QFont &arg);
     void setScalableFonts(bool arg);
     void setNonScalableFonts(bool arg);
     void setMonospacedFonts(bool arg);
@@ -98,12 +101,14 @@ Q_SIGNALS:
     void monospacedFontsChanged();
     void proportionalFontsChanged();
     void fontChanged();
+    void currentFontChanged();
     void selectionAccepted();
 
 protected:
     QPlatformFontDialogHelper *m_dlgHelper;
     QSharedPointer<QFontDialogOptions> m_options;
     QFont m_font;
+    QFont m_currentFont;
 
     Q_DISABLE_COPY(QQuickAbstractFontDialog)
 };

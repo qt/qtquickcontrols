@@ -117,4 +117,10 @@ QQuickFontDialog::~QQuickFontDialog()
     \l Window or an \l Item.
 */
 
+void QQuickFontDialog::accept()
+{
+    setFont(m_currentFont);
+    QQuickAbstractFontDialog::accept();
+}
+
 QT_END_NAMESPACE

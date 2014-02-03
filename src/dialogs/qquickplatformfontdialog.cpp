@@ -246,7 +246,15 @@ QPlatformFontDialogHelper *QQuickPlatformFontDialog::helper()
 /*!
     \qmlproperty font FontDialog::font
 
+    The font which the user selected and accepted.
+*/
+
+/*!
+    \qmlproperty font FontDialog::currentFont
+
     The font which the user selected.
+
+    \since 5.3
 */
 
 QT_END_NAMESPACE
