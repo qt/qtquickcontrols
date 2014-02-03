@@ -76,7 +76,7 @@ Control {
     implicitHeight: 250
 
     /*!
-        \qmlproperty date Calendar::date
+        \qmlproperty date Calendar::selectedDate
 
         The date that can be set by the user.
 
