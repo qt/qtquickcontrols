@@ -717,7 +717,7 @@ ScrollView {
             wrapMode: TextEdit.WordWrap
             textMargin: 4
 
-            selectByMouse: true
+            selectByMouse: Qt.platform.os !== "android" // Workaround for QTBUG-36515
             readOnly: false
 
             Keys.forwardTo: area

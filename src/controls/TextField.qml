@@ -580,7 +580,7 @@ Control {
     TextInput {
         id: textInput
         focus: true
-        selectByMouse: true
+        selectByMouse: Qt.platform.os !== "android" // Workaround for QTBUG-36515
         selectionColor: __panel ? __panel.selectionColor : "darkred"
         selectedTextColor: __panel ? __panel.selectedTextColor : "white"
 
