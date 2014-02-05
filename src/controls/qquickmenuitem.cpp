@@ -428,7 +428,7 @@ QQuickMenuItem::QQuickMenuItem(QObject *parent)
     connect(action(), SIGNAL(triggered()), this, SIGNAL(triggered()));
     connect(action(), SIGNAL(toggled(bool)), this, SLOT(updateChecked()));
     if (platformItem())
-        connect(platformItem(), SIGNAL(activated()), this, SLOT(trigger()));
+        connect(platformItem(), SIGNAL(activated()), this, SLOT(trigger()), Qt::QueuedConnection);
 }
 
 QQuickMenuItem::~QQuickMenuItem()
