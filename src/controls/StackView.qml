@@ -290,7 +290,7 @@ import QtQuick.Controls.Private 1.0
                 properties.exitItem.opacity = 1
             }
 
-            property Component pushTransition: StackViewTransition {
+            pushTransition: StackViewTransition {
                 PropertyAnimation {
                     target: enterItem
                     property: "opacity"
@@ -328,7 +328,7 @@ import QtQuick.Controls.Private 1.0
                 properties.exitItem.rotation = 0
             }
 
-            property Component pushTransition: StackViewTransition {
+            pushTransition: StackViewTransition {
                 SequentialAnimation {
                     ScriptAction {
                         script: enterItem.rotation = 90
