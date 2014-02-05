@@ -133,7 +133,7 @@ void QQuickAbstractFileDialog::setNameFilters(const QStringList &f)
     m_options->setNameFilters(f);
     if (f.isEmpty())
         selectNameFilter(QString());
-    else if (!f.contains(selectedNameFilter()))
+    else if (!f.contains(selectedNameFilter(), Qt::CaseInsensitive))
         selectNameFilter(f.first());
     emit nameFiltersChanged();
 }
