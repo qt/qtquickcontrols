@@ -71,6 +71,7 @@ Control {
 
         The default value is \c false. */
     property bool checkable: false
+    Accessible.checkable: checkable
 
     /*! This property holds whether the button is checked.
 
@@ -78,6 +79,7 @@ Control {
 
         The default value is \c false. */
     property bool checked: false
+    Accessible.checked: checked
 
     /*! This property holds the ExclusiveGroup that the button belongs to.
 

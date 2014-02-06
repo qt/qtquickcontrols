@@ -299,7 +299,9 @@ Control {
 
     activeFocusOnTab: true
 
+    Accessible.name: editable ? editText : currentText
     Accessible.role: Accessible.ComboBox
+    Accessible.editable: editable
 
     MouseArea {
         id: mouseArea

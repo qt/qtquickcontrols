@@ -84,6 +84,8 @@ Control {
         This property is \c true if the control is checked.
     */
     property bool checked: false
+    Accessible.checked: checked
+    Accessible.checkable: true
 
     /*!
         This property is \c true if the control takes the focus when it is
