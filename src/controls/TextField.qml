@@ -156,6 +156,7 @@ Control {
         \endlist
     */
     property alias echoMode: textInput.echoMode
+    Accessible.passwordEdit: echoMode == TextInput.Password || echoMode === TextInput.PasswordEchoOnEdit
 
     /*!
         \qmlproperty font TextField::font
@@ -319,6 +320,7 @@ Control {
         work, however.
     */
     property alias readOnly: textInput.readOnly
+    Accessible.readOnly: readOnly
 
     /*!
         \qmlproperty string TextField::selectedText
