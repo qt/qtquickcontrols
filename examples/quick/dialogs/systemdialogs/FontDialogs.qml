@@ -42,11 +42,12 @@ import QtQuick 2.2
 import QtQuick.Controls 1.1
 import QtQuick.Dialogs 1.1
 
-Item {
+Rectangle {
     width: 320
     height: 360
     SystemPalette { id: palette }
     clip: true
+    color: palette.window
 
     FontDialog {
         id: fontDialog

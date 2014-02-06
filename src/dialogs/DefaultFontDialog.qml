@@ -40,8 +40,10 @@
 
 import QtQuick 2.1
 import QtQuick.Controls 1.1
+import QtQuick.Controls.Styles 1.0
 import QtQuick.Dialogs 1.1
 import QtQuick.Dialogs.Private 1.1
+import QtQuick.Layouts 1.1
 import QtQuick.Window 2.1
 import "qml"
 
@@ -53,20 +55,14 @@ AbstractFontDialog {
 
     Rectangle {
         id: content
-        implicitWidth: Math.min(Screen.desktopAvailableWidth, implicitHeight * 1.2)
-        implicitHeight: Math.min(Screen.desktopAvailableHeight, settingsBottom.implicitHeight * 3)
-        color: palette.window
-        focus: root.visible
+        SystemPalette { id: palette }
+
+        property int maxSize: Math.min(Screen.desktopAvailableWidth, Screen.desktopAvailableHeight)
+        implicitWidth: Math.min(maxSize, Math.max(Screen.pixelDensity * 60, mainLayout.implicitWidth))
+        implicitHeight: Math.min(maxSize, Math.max(Screen.pixelDensity * 40, mainLayout.implicitHeight + outerSpacing * 2))
         property real spacing: 6
         property real outerSpacing: 12
-        property real listMargins: 4
-        property real delegateHeightMultiplier: 1.5
-        property real extraWidth: width > 400 ? width - 400 : 0
-        property real extraHeight: height > initialHeight ? height - initialHeight : 0
-        property real initialHeight: -1
-        onHeightChanged: if (visible && initialHeight < 0) initialHeight = height
-
-        property color borderColor: Qt.darker(palette.button, 1.5)
+        color: palette.window
 
         property font font: Qt.font({ family: "Helvetica", pointSize: 24, weight: Font.Normal })
         property font externalFont
@@ -75,13 +71,20 @@ AbstractFontDialog {
         property var pointSizes
 
         onExternalFontChanged: {
+            if (Component.status != Component.Ready)
+                return
+
             if (content.font != content.externalFont) {
                 font = externalFont
-                wsListView.reset()
+                wsComboBox.reset()
                 fontListView.reset()
                 weightListView.reset()
             }
         }
+
+        Component.onCompleted: externalFontChanged()
+
+        onWritingSystemSampleChanged: { sample.text = writingSystemSample; }
 
         Keys.onPressed: {
             event.accepted = true
@@ -102,318 +105,160 @@ AbstractFontDialog {
             }
         }
 
-        SystemPalette { id: palette }
+        ColumnLayout {
+            id: mainLayout
+            anchors { fill: parent; margins: content.outerSpacing }
+            spacing: content.spacing
 
-        Column {
-            id: contentColumn
-            anchors.fill: parent
-            anchors.margins: content.outerSpacing
-            spacing: content.outerSpacing
-
-            Grid {
-                id: settingsTop
+            GridLayout {
+                columnSpacing: content.spacing; rowSpacing: content.spacing
                 columns: 3
-                spacing: content.spacing
-                width: parent.width
-                height: parent.height - buttonRow.height - settingsBottom.height - parent.spacing * 2
-                property real columnHeight: height - writingSystemLabel.height - spacing
 
-                Text { id: writingSystemLabel; text: qsTr("Writing System"); font.bold: true }
-                Text { id: fontNameLabel; text: qsTr("Font"); font.bold: true }
-                Text { id: sizeLabel; text: qsTr("Size"); font.bold: true }
-                Rectangle {
-                    id: wsColumn
-                    radius: 3
-                    color: palette.window
-                    border.color: content.borderColor
-                    implicitWidth: Math.max(writingSystemLabel.implicitWidth, 100) + content.extraWidth / 5
-                    height: parent.columnHeight
-                    clip: true
-                    ListView {
-                        id: wsListView
-                        anchors.fill: parent
-                        anchors.margins: content.listMargins
-                        anchors.topMargin: 2
-                        highlightMoveDuration: 0
-                        onHeightChanged: positionViewAtIndex(currentIndex, ListView.Contain)
-                        function reset() {
-                            if (wsModel.count > 0) {
-                                content.writingSystem = wsModel.get(0).name;
-                                fontModel.writingSystem = content.writingSystem;
-                                content.writingSystemSample = wsModel.get(0).sample;
-                            }
-                        }
-
-                        model: WritingSystemListModel {
-                            id: wsModel
-                            Component.onCompleted: wsListView.reset()
-                        }
-                        highlight: Rectangle {
-                            color: palette.highlight
-                            x: 2 - wsListView.anchors.margins
-                            width: wsListView.parent.width - 4
-                        }
-                        delegate: Item {
-                            width: parent.width
-                            height: wsText.height * content.delegateHeightMultiplier
-                            Text {
-                                id: wsText
-                                text: name
-                                width: parent.width
-                                elide: Text.ElideRight
-                                color: index === wsListView.currentIndex ? palette.highlightedText : palette.windowText
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                            MouseArea {
-                                anchors.fill: parent
-                                onClicked: {
-                                    wsListView.currentIndex = index;
-                                    content.writingSystem = wsModel.get(wsListView.currentIndex).name;
-                                    fontModel.writingSystem = content.writingSystem;
-                                    content.writingSystemSample = wsModel.get(wsListView.currentIndex).sample;
-                                }
-                            }
-                        }
+                Label { id: fontNameLabel; Layout.fillWidth: true; text: qsTr("Font"); font.bold: true }
+                Label { id: weightLabel; text: qsTr("Weight"); font.bold: true }
+                Label { id: sizeLabel; text: qsTr("Size"); font.bold: true }
+                TableView {
+                    id: fontListView
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    Layout.minimumWidth: fontColumn.width + content.outerSpacing
+                    headerVisible: false
+                    function reset() {
+                        fontModel.findIndex()
+                        content.pointSizes = fontModel.pointSizes()
+                        fontModel.findPointSizesIndex()
                     }
-                }
-                Rectangle {
-                    radius: 3
-                    color: palette.window
-                    border.color: content.borderColor
-                    implicitWidth: Math.max(fontNameLabel.implicitWidth, parent.width - wsColumn.implicitWidth - pointSizesColumn.implicitWidth - parent.spacing * 2)
-                    height: parent.columnHeight
-                    clip: true
-                    ListView {
-                        id: fontListView
-                        anchors.fill: parent
-                        anchors.margins: content.listMargins
-                        anchors.topMargin: 2
-                        highlightMoveDuration: 0
-                        onHeightChanged: positionViewAtIndex(currentIndex, ListView.Contain)
-                        function reset() {
-                            fontModel.findIndex()
-                            content.pointSizes = fontModel.pointSizes()
-                            fontModel.findPointSizesIndex()
-                        }
+                    TableViewColumn{ id: fontColumn; role: "family"; title: qsTr("Font Family") }
+                    model: FontListModel {
+                        id: fontModel
+                        scalableFonts: root.scalableFonts
+                        nonScalableFonts: root.nonScalableFonts
+                        monospacedFonts: root.monospacedFonts
+                        proportionalFonts: root.proportionalFonts
+                        Component.onCompleted: fontListView.reset()
+                        onModelReset: { findIndex(); }
+                        function findIndex() {
+                            fontListView.selection.clear()
+                            if (fontModel.count <= 0 || fontListView.rowCount <= 0)
+                                return
 
-                        model: FontListModel {
-                            id: fontModel
-                            scalableFonts: root.scalableFonts
-                            nonScalableFonts: root.nonScalableFonts
-                            monospacedFonts: root.monospacedFonts
-                            proportionalFonts: root.proportionalFonts
-                            Component.onCompleted: fontListView.reset()
-                            onModelReset: { findIndex(); }
-                            function findIndex() {
-                                if (fontModel.count <= 0)
-                                    return
-
-                                if (content.font.family == "") {
-                                    content.font.family = fontModel.get(0).family
-                                    fontListView.currentIndex = 0
-                                } else {
-                                    var find = false
-                                    for (var i = 0; i < fontModel.count; ++i) {
-                                        if (content.font.family == fontModel.get(i).family) {
-                                            find = true
-                                            fontListView.currentIndex = i
-                                            break
-                                        }
-                                    }
-                                    if (find == false) {
-                                        content.font.family = fontModel.get(0).family
-                                        fontListView.currentIndex = 0
-                                    }
-                                }
-                            }
-                            function findPointSizesIndex() {
-                                if (content.pointSizes.length <= 0)
-                                    return
-
-                                var find = false
-                                for (var i = 0; i < content.pointSizes.length; ++i) {
-                                    if (content.font.pointSize == content.pointSizes[i]) {
-                                        find = true
-                                        pointSizesListView.currentIndex = i
+                            var currentRow = 0
+                            if (content.font.family != "") {
+                                for (var i = 0; i < fontModel.count; ++i) {
+                                    if (content.font.family == fontModel.get(i).family) {
+                                        currentRow = i
                                         break
                                     }
                                 }
-                                if (find == false) {
-                                    content.font.pointSize = content.pointSizes[0]
-                                    pointSizesListView.currentIndex = 0
+                            }
+                            content.font.family = fontModel.get(currentRow).family
+                            fontListView.selection.select(currentRow)
+                            fontListView.positionViewAtRow(currentRow, ListView.Contain)
+                            fontListView.clicked(currentRow)
+                        }
+                        function findPointSizesIndex() {
+                            pointSizesListView.selection.clear()
+                            if (content.pointSizes.length <= 0 || pointSizesListView.rowCount <= 0)
+                                return
+
+                            var currentRow = 0
+                            for (var i = 0; i < content.pointSizes.length; ++i) {
+                                if (content.font.pointSize == content.pointSizes[i]) {
+                                    currentRow = i
+                                    break
                                 }
                             }
-                        }
-                        highlight: Rectangle {
-                            color: palette.highlight
-                            x: 2 - fontListView.anchors.margins
-                            width: fontListView.parent.width - 4
-                        }
-                        delegate: Item {
-                            width: parent.width
-                            height: fontText.height * content.delegateHeightMultiplier
-                            Text {
-                                id: fontText
-                                text: family
-                                width: parent.width
-                                elide: Text.ElideRight
-                                color: index === fontListView.currentIndex ? palette.highlightedText : palette.windowText
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                            MouseArea {
-                                anchors.fill: parent
-                                onClicked: {
-                                    fontListView.currentIndex = index
-                                    content.font.family = fontModel.get(fontListView.currentIndex).family
-                                }
-                            }
+                            content.font.pointSize = content.pointSizes[currentRow]
+                            pointSizesListView.selection.select(currentRow)
+                            pointSizesListView.positionViewAtRow(currentRow, ListView.Contain)
+                            pointSizesListView.clicked(currentRow)
                         }
                     }
+                    onClicked: {
+                        if (row == -1)
+                            return
+                        content.font.family = fontModel.get(row).family
+                        positionViewAtRow(row, ListView.Contain)
+                    }
                 }
-                Rectangle {
-                    id: pointSizesColumn
-                    radius: 3
-                    color: palette.window
-                    border.color: content.borderColor
-                    implicitWidth:sizeLabel.implicitWidth * 2
-                    height: parent.columnHeight
-                    clip: true
-                    ListView {
-                        id: pointSizesListView
-                        anchors.fill: parent
-                        anchors.margins: content.listMargins
-                        anchors.topMargin: 2
-                        highlightMoveDuration: 0
-                        onHeightChanged: positionViewAtIndex(currentIndex, ListView.Contain)
-                        model: content.pointSizes
-                        highlight: Rectangle {
-                            color: palette.highlight
-                            x: 2 - pointSizesListView.anchors.margins
-                            width: pointSizesListView.parent.width - 4
+                TableView {
+                    id: weightListView
+                    implicitWidth: (Component.status == Component.Ready) ? (weightColumn.width + content.outerSpacing) : (100)
+                    Layout.fillHeight: true
+                    Component.onCompleted: resizeColumnsToContents();
+                    headerVisible: false
+                    function reset() {
+                        weightModel.findIndex()
+                    }
+                    TableViewColumn{ id: weightColumn; role: "name"; title: qsTr("Weight") }
+                    model: ListModel {
+                        id: weightModel
+                        ListElement {
+                            name: "Light"
+                            weight: Font.Light
                         }
-                        delegate: Item {
-                            width: parent.width
-                            height: pointSizesText.height * content.delegateHeightMultiplier
-                            Text {
-                                id: pointSizesText
-                                text: content.pointSizes[index]
-                                width: parent.width
-                                elide: Text.ElideRight
-                                color: index === pointSizesListView.currentIndex ? palette.highlightedText : palette.windowText
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                            MouseArea {
-                                anchors.fill: parent
-                                onClicked: {
-                                    pointSizesListView.currentIndex = index
-                                    content.font.pointSize = content.pointSizes[pointSizesListView.currentIndex]
+                        ListElement {
+                            name: "Normal"
+                            weight: Font.Normal
+                        }
+                        ListElement {
+                            name: "DemiBold"
+                            weight: Font.DemiBold
+                        }
+                        ListElement {
+                            name: "Bold"
+                            weight: Font.Bold
+                        }
+                        ListElement {
+                            name: "Black"
+                            weight: Font.Black
+                        }
+                        Component.onCompleted: weightListView.reset()
+                        function findIndex() {
+                            var currentRow = 1
+                            for (var i = 0; i < weightModel.count; ++i) {
+                                if (content.font.weight == weightModel.get(i).weight) {
+                                    currentRow = i
+                                    break
                                 }
                             }
+                            content.font.weight = weightModel.get(currentRow).family
+                            weightListView.selection.select(currentRow)
+                            weightListView.positionViewAtRow(currentRow, ListView.Contain)
+                            weightListView.clicked(currentRow)
                         }
+                    }
+                    onClicked: {
+                        if (row == -1)
+                            return
+                        content.font.weight = weightModel.get(row).weight
+                        positionViewAtRow(row, ListView.Contain)
+                    }
+                }
+                TableView {
+                    id: pointSizesListView
+                    Layout.fillHeight: true
+                    headerVisible: false
+                    implicitWidth: (Component.status == Component.Ready) ? (psColumn.width + content.outerSpacing) : (80)
+                    Component.onCompleted: resizeColumnsToContents();
+                    TableViewColumn{ id: psColumn; role: ""; title: qsTr("Size") }
+                    model: content.pointSizes
+                    onClicked: {
+                        if (row == -1)
+                            return
+                        content.font.pointSize = content.pointSizes[row]
+                        positionViewAtRow(row, ListView.Contain)
                     }
                 }
             }
 
-            Grid {
-                id: settingsBottom
-                columns: 3
+            RowLayout {
                 spacing: content.spacing
-                width: parent.width
-                height: initialHeight + content.extraHeight / 4
-                property real initialHeight
-                property real secondRowHeight: height - weightLabel.height - spacing
-                Component.onCompleted: initialHeight = implicitHeight
-
-                Text { id: weightLabel; text: qsTr("Weight"); font.bold: true }
-                Text { id: optionsLabel; text: qsTr("Style"); font.bold: true }
-                Text { id: sampleLabel; text: qsTr("Sample"); font.bold: true }
-                Rectangle {
-                    id: weightColumn
-                    radius: 3
-                    color: palette.window
-                    border.color: content.borderColor
-                    implicitWidth: optionsColumn.implicitWidth
-                    implicitHeight: optionsColumn.implicitHeight
-                    height: parent.secondRowHeight
-                    clip: true
-                    ListView {
-                        id: weightListView
-                        anchors.fill: parent
-                        anchors.margins: content.listMargins
-                        anchors.topMargin: 2
-                        highlightMoveDuration: 0
-                        onHeightChanged: positionViewAtIndex(currentIndex, ListView.Contain)
-                        function reset() {
-                            weightModel.findIndex()
-                        }
-
-                        model: ListModel {
-                            id: weightModel
-                            ListElement {
-                                name: "Light"
-                                weight: Font.Light
-                            }
-                            ListElement {
-                                name: "Normal"
-                                weight: Font.Normal
-                            }
-                            ListElement {
-                                name: "DemiBold"
-                                weight: Font.DemiBold
-                            }
-                            ListElement {
-                                name: "Bold"
-                                weight: Font.Bold
-                            }
-                            ListElement {
-                                name: "Black"
-                                weight: Font.Black
-                            }
-                            Component.onCompleted: weightListView.reset()
-                            function findIndex() {
-                                var find = false
-                                for (var i = 0; i < weightModel.count; ++i) {
-                                    if (content.font.weight == weightModel.get(i).weight) {
-                                        find = true
-                                        weightListView.currentIndex = i
-                                        break
-                                    }
-                                }
-                                if (find == false) {
-                                    content.font.weight = weightModel.get(1).family
-                                    fontListView.currentIndex = 1
-                                }
-                            }
-                        }
-                        highlight: Rectangle {
-                            color: palette.highlight
-                            x: 2 - weightListView.anchors.margins
-                            width: weightListView.parent.width - 4
-                        }
-                        delegate: Item {
-                            width: parent.width
-                            height: weightText.height * content.delegateHeightMultiplier
-                            Text {
-                                id: weightText
-                                text: name
-                                width: parent.width
-                                elide: Text.ElideRight
-                                color: index === weightListView.currentIndex ? palette.highlightedText : palette.windowText
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                            MouseArea {
-                                anchors.fill: parent
-                                onClicked: {
-                                    weightListView.currentIndex = index
-                                    content.font.weight = weightModel.get(weightListView.currentIndex).weight
-                                }
-                            }
-                        }
-                    }
-                }
-                Column {
-                    id: optionsColumn
-                    spacing: 4
+                Layout.fillHeight: false
+                ColumnLayout {
+                    spacing: content.spacing
+                    Layout.rowSpan: 3
+                    Label { id: optionsLabel; text: qsTr("Style"); font.bold: true }
                     CheckBox {
                         id: italicCheckBox
                         text: qsTr("Italic")
@@ -438,42 +283,75 @@ AbstractFontDialog {
                         checked: content.font.strikeout
                         onClicked: { content.font.strikeout = strikeoutCheckBox.checked }
                     }
+                    Item { Layout.fillHeight: true; } //spacer
+                    Label { id: writingSystemLabel; text: qsTr("Writing System"); font.bold: true }
+                    ComboBox {
+                        id: wsComboBox
+                        function reset() {
+                            if (wsModel.count > 0) {
+                                currentIndex = 0
+                            }
+                        }
+                        textRole: "name"
+                        model: WritingSystemListModel {
+                            id: wsModel
+                            Component.onCompleted: wsComboBox.reset()
+                        }
+                        onCurrentIndexChanged: {
+                            if (currentIndex == -1)
+                                return
+
+                            content.writingSystem = wsModel.get(currentIndex).name
+                            fontModel.writingSystem = content.writingSystem
+                            content.writingSystemSample = wsModel.get(currentIndex).sample
+                            fontListView.reset()
+                        }
+                    }
                 }
-                Rectangle {
-                    clip: true
-                    implicitWidth: sample.implicitWidth + parent.spacing
-                    implicitHeight: optionsColumn.implicitHeight
-                    width: parent.width - weightColumn.width - optionsColumn.width - parent.spacing * 2
-                    height: parent.secondRowHeight
-                    color: palette.window
-                    border.color: content.borderColor
-                    Text {
-                        id: sample
-                        anchors.centerIn: parent
-                        font: content.font
-                        text: content.writingSystemSample
+
+                ColumnLayout {
+                    Layout.rowSpan: 3
+                    spacing: content.spacing
+                    Layout.columnSpan: 2
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    Label { id: sampleLabel; text: qsTr("Sample"); font.bold: true }
+
+                    Rectangle {
+                        clip: true
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+                        implicitWidth: Math.min(360, sample.implicitWidth + parent.spacing)
+                        implicitHeight: Math.min(240, sample.implicitHeight + parent.spacing)
+                        color: "white"
+                        border.color: "#999"
+                        TextInput {
+                            id: sample
+                            activeFocusOnTab: true
+                            Accessible.name: text
+                            Accessible.role: Accessible.EditableText
+                            anchors.centerIn: parent
+                            font: content.font
+                            onFocusChanged: if (!focus && sample.text == "") sample.text = content.writingSystemSample
+                        }
                     }
                 }
             }
 
-            Item {
+            RowLayout {
                 id: buttonRow
-                height: buttonsOnly.height
-                width: parent.width
-                Row {
-                    id: buttonsOnly
-                    spacing: content.spacing
-                    anchors.right: parent.right
-                    Button {
-                        text: qsTr("Cancel")
-                        onClicked: root.reject()
-                    }
-                    Button {
-                        text: qsTr("OK")
-                        onClicked: {
-                            root.font = content.font
-                            root.accept()
-                        }
+                Layout.columnSpan: 3
+                spacing: content.spacing
+                Item { Layout.fillWidth: true; } //spacer
+                Button {
+                    text: qsTr("Cancel")
+                    onClicked: root.reject()
+                }
+                Button {
+                    text: qsTr("OK")
+                    onClicked: {
+                        root.font = content.font
+                        root.accept()
                     }
                 }
             }
