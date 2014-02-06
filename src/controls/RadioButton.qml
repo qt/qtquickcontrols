@@ -82,6 +82,7 @@ AbstractCheckable {
 
     activeFocusOnTab: true
 
+    Accessible.name: text
     Accessible.role: Accessible.RadioButton
 
     /*!
