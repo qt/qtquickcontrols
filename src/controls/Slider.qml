@@ -177,7 +177,6 @@ Control {
     activeFocusOnTab: true
 
     Accessible.role: Accessible.Slider
-    Accessible.name: value
 
     style: Qt.createComponent(Settings.style + "/SliderStyle.qml", slider)
 

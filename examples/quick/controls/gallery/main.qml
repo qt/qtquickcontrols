@@ -176,6 +176,7 @@ ApplicationWindow {
             }
             ToolButton { action: openAction }
             ToolButton {
+                Accessible.name: "Save as"
                 iconSource: "images/document-save-as.png"
                 tooltip: "(Pretend to) Save as..."
             }
