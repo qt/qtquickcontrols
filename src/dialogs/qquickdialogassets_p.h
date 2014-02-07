@@ -51,7 +51,7 @@ QT_BEGIN_NAMESPACE
 class QQuickStandardButton
 {
     Q_GADGET
-    Q_ENUMS(QQuickAbstractMessageDialog::StandardButton)
+    Q_ENUMS(QQuickAbstractDialog::StandardButton)
 };
 
 class QQuickStandardIcon

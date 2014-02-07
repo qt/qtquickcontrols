@@ -63,6 +63,9 @@ QT_BEGIN_NAMESPACE
 class QQuickAbstractDialog : public QObject
 {
     Q_OBJECT
+    // TODO move the enum to QQuickDialog at the same time that QQuickMessageDialog inherits from it
+    Q_ENUMS(StandardButton)
+    Q_FLAGS(StandardButtons)
     Q_PROPERTY(bool visible READ isVisible WRITE setVisible NOTIFY visibilityChanged)
     Q_PROPERTY(Qt::WindowModality modality READ modality WRITE setModality NOTIFY modalityChanged)
     Q_PROPERTY(QString title READ title WRITE setTitle NOTIFY titleChanged)
@@ -92,6 +95,30 @@ public:
     void setQmlImplementation(QObject* obj);
     bool isWindow() const { return m_hasNativeWindows; }
 
+    enum StandardButton {
+        NoButton           = QPlatformDialogHelper::NoButton,
+        Ok                 = QPlatformDialogHelper::Ok,
+        Save               = QPlatformDialogHelper::Save,
+        SaveAll            = QPlatformDialogHelper::SaveAll,
+        Open               = QPlatformDialogHelper::Open,
+        Yes                = QPlatformDialogHelper::Yes,
+        YesToAll           = QPlatformDialogHelper::YesToAll,
+        No                 = QPlatformDialogHelper::No,
+        NoToAll            = QPlatformDialogHelper::NoToAll,
+        Abort              = QPlatformDialogHelper::Abort,
+        Retry              = QPlatformDialogHelper::Retry,
+        Ignore             = QPlatformDialogHelper::Ignore,
+        Close              = QPlatformDialogHelper::Close,
+        Cancel             = QPlatformDialogHelper::Cancel,
+        Discard            = QPlatformDialogHelper::Discard,
+        Help               = QPlatformDialogHelper::Help,
+        Apply              = QPlatformDialogHelper::Apply,
+        Reset              = QPlatformDialogHelper::Reset,
+        RestoreDefaults    = QPlatformDialogHelper::RestoreDefaults,
+        NButtons
+    };
+    Q_DECLARE_FLAGS(StandardButtons, StandardButton)
+
 public Q_SLOTS:
     void open() { setVisible(true); }
     void close() { setVisible(false); }
@@ -114,6 +141,8 @@ protected Q_SLOTS:
     virtual void reject();
     void visibleChanged(bool v);
     void windowGeometryChanged();
+    void minimumWidthChanged();
+    void minimumHeightChanged();
 
 protected:
     virtual QPlatformDialogHelper *helper() = 0;
@@ -139,6 +168,8 @@ protected: // variables for pure-QML implementations only
 
     Q_DISABLE_COPY(QQuickAbstractDialog)
 };
+
+Q_DECLARE_OPERATORS_FOR_FLAGS(QQuickAbstractDialog::StandardButtons)
 
 QT_END_NAMESPACE
 

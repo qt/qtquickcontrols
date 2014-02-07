@@ -19,6 +19,7 @@ SOURCES += \
     qquickplatformfontdialog.cpp \
     qquickfontdialog.cpp \
     qquickabstractdialog.cpp \
+    qquickdialog.cpp \
     plugin.cpp
 
 HEADERS += \
@@ -35,7 +36,8 @@ HEADERS += \
     qquickabstractfontdialog_p.h \
     qquickplatformfontdialog_p.h \
     qquickfontdialog_p.h \
-    qquickabstractdialog_p.h
+    qquickabstractdialog_p.h \
+    qquickdialog_p.h
 
 DIALOGS_QML_FILES += \
     DefaultMessageDialog.qml \
@@ -46,6 +48,7 @@ DIALOGS_QML_FILES += \
     WidgetColorDialog.qml \
     DefaultFontDialog.qml \
     WidgetFontDialog.qml \
+    DefaultDialogWrapper.qml \
     qml/ColorSlider.qml \
     qml/DefaultWindowDecoration.qml \
     qml/qmldir \

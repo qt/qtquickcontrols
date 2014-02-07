@@ -10,7 +10,8 @@ OTHER_FILES += \
     FileDialogs.qml \
     ColorDialogs.qml \
     FontDialogs.qml \
-    MessageDialogs.qml
+    MessageDialogs.qml \
+    CustomDialogs.qml
 
 target.path = $$[QT_INSTALL_EXAMPLES]/quick/dialogs/systemdialogs
 INSTALLS += target

@@ -54,6 +54,7 @@
 #include "qquickfontdialog_p.h"
 #include "qquickabstractfontdialog_p.h"
 #include "qquickplatformfontdialog_p.h"
+#include "qquickdialog_p.h"
 #include <private/qguiapplication_p.h>
 #include <qpa/qplatformintegration.h>
 
@@ -162,6 +163,19 @@ public:
         else
 #endif
             registerWidgetOrQmlImplementation<QQuickFontDialog>(widgetsDir, qmlDir, "FontDialog", uri, hasTopLevelWindows, 1, 1);
+
+        // Dialog
+        {
+            // @uri QtQuick.Dialogs.AbstractDialog
+            qmlRegisterType<QQuickDialog>(uri, 1, 2, "AbstractDialog"); // implementation wrapper
+            QUrl dialogQmlPath = m_useResources ?
+                QUrl("qrc:/QtQuick/Dialogs/DefaultDialogWrapper.qml") :
+                QUrl::fromLocalFile(qmlDir.filePath("DefaultDialogWrapper.qml"));
+#ifdef DEBUG_REGISTRATION
+            qDebug() << "    registering DefaultDialogWrapper.qml as Dialog; success?" <<
+#endif
+            qmlRegisterType(dialogQmlPath, uri, 1, 2, "Dialog");
+        }
     }
 
 protected:

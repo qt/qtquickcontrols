@@ -39,8 +39,8 @@
 **
 ****************************************************************************/
 
-#ifndef QQUICKABSTRACTMESSAGEDIALOG_P_H
-#define QQUICKABSTRACTMESSAGEDIALOG_P_H
+#ifndef QQUICKDIALOG_P_H
+#define QQUICKDIALOG_P_H
 
 //
 //  W A R N I N G
@@ -53,68 +53,43 @@
 // We mean it.
 //
 
-#include <QtQml>
-#include <QQuickView>
-#include <QtGui/qpa/qplatformdialoghelper.h>
-#include <qpa/qplatformtheme.h>
-#include "qquickabstractdialog_p.h"
+#include "qquickabstractmessagedialog_p.h"
 
 QT_BEGIN_NAMESPACE
 
-class QQuickAbstractMessageDialog : public QQuickAbstractDialog
+class QQuickDialog : public QQuickAbstractDialog
 {
     Q_OBJECT
 
-    Q_ENUMS(Icon)
+    Q_ENUMS(StandardButton)
+    Q_FLAGS(StandardButtons)
 
-    Q_PROPERTY(QString text READ text WRITE setText NOTIFY textChanged)
-    Q_PROPERTY(QString informativeText READ informativeText WRITE setInformativeText NOTIFY informativeTextChanged)
-    Q_PROPERTY(QString detailedText READ detailedText WRITE setDetailedText NOTIFY detailedTextChanged)
-    Q_PROPERTY(Icon icon READ icon WRITE setIcon NOTIFY iconChanged)
-    Q_PROPERTY(QUrl standardIconSource READ standardIconSource NOTIFY iconChanged)
+    Q_PROPERTY(QString title READ title WRITE setTitle NOTIFY titleChanged)
     Q_PROPERTY(QQuickAbstractDialog::StandardButtons standardButtons READ standardButtons WRITE setStandardButtons NOTIFY standardButtonsChanged)
     Q_PROPERTY(QQuickAbstractDialog::StandardButton clickedButton READ clickedButton NOTIFY buttonClicked)
+    Q_PROPERTY(QObject* implementation READ qmlImplementation WRITE setQmlImplementation DESIGNABLE false)
+    Q_PROPERTY(QJSValue standardButtonsLeftModel READ standardButtonsLeftModel NOTIFY standardButtonsChanged)
+    Q_PROPERTY(QJSValue standardButtonsRightModel READ standardButtonsRightModel NOTIFY standardButtonsChanged)
+    Q_CLASSINFO("DefaultProperty", "implementation")    // Dialog in QML can have only one child
 
 public:
-    QQuickAbstractMessageDialog(QObject *parent = 0);
-    virtual ~QQuickAbstractMessageDialog();
+    explicit QQuickDialog(QObject *parent = 0);
+    ~QQuickDialog();
 
-    virtual QString title() const { return m_options->windowTitle(); }
-    QString text() const { return m_options->text(); }
-    QString informativeText() const { return m_options->informativeText(); }
-    QString detailedText() const { return m_options->detailedText(); }
-
-    enum Icon {
-        NoIcon = QMessageDialogOptions::NoIcon,
-        Information = QMessageDialogOptions::Information,
-        Warning = QMessageDialogOptions::Warning,
-        Critical = QMessageDialogOptions::Critical,
-        Question = QMessageDialogOptions::Question
-    };
-
-    Icon icon() const { return static_cast<Icon>(m_options->icon()); }
-
-    QUrl standardIconSource();
-
-    StandardButtons standardButtons() const { return static_cast<StandardButtons>(static_cast<int>(m_options->standardButtons())); }
-
+    StandardButtons standardButtons() const { return m_enabledButtons; }
     StandardButton clickedButton() const { return m_clickedButton; }
+    QJSValue standardButtonsLeftModel();
+    QJSValue standardButtonsRightModel();
+
+    QString title() const { return m_title; }
 
 public Q_SLOTS:
-    virtual void setVisible(bool v);
     virtual void setTitle(const QString &arg);
-    void setText(const QString &arg);
-    void setInformativeText(const QString &arg);
-    void setDetailedText(const QString &arg);
-    void setIcon(Icon icon);
     void setStandardButtons(StandardButtons buttons);
     void click(QQuickAbstractDialog::StandardButton button);
 
 Q_SIGNALS:
-    void textChanged();
-    void informativeTextChanged();
-    void detailedTextChanged();
-    void iconChanged();
+    void titleChanged();
     void standardButtonsChanged();
     void buttonClicked();
     void discard();
@@ -125,16 +100,28 @@ Q_SIGNALS:
     void reset();
 
 protected:
+    virtual QPlatformDialogHelper *helper() { return 0; }
     void click(QPlatformDialogHelper::StandardButton button, QPlatformDialogHelper::ButtonRole);
 
-protected:
-    QPlatformMessageDialogHelper *m_dlgHelper;
-    QSharedPointer<QMessageDialogOptions> m_options;
-    StandardButton m_clickedButton;
+protected Q_SLOTS:
+    virtual void accept();
+    virtual void reject();
+    void clicked();
 
-    Q_DISABLE_COPY(QQuickAbstractMessageDialog)
+private:
+    void updateStandardButtons();
+
+private:
+    QString m_title;
+    StandardButton m_clickedButton;
+    StandardButtons m_enabledButtons;
+    QJSValue m_standardButtonsLeftModel;
+    QJSValue m_standardButtonsRightModel;
+    Q_DISABLE_COPY(QQuickDialog)
 };
 
 QT_END_NAMESPACE
 
-#endif // QQUICKABSTRACTMESSAGEDIALOG_P_H
+QML_DECLARE_TYPE(QQuickDialog *)
+
+#endif // QQUICKDIALOG_P_H

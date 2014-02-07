@@ -103,7 +103,20 @@ void QQuickAbstractDialog::setVisible(bool v)
                         ((QObject *)win)->setParent(this); // memory management only
                         m_dialogWindow = win;
                         m_contentItem->setParentItem(win->contentItem());
-                        m_dialogWindow->setMinimumSize(QSize(m_contentItem->implicitWidth(), m_contentItem->implicitHeight()));
+                        QSize minSize = QSize(m_contentItem->implicitWidth(), m_contentItem->implicitHeight());
+                        QVariant minHeight = m_contentItem->property("minimumHeight");
+                        if (minHeight.isValid()) {
+                            if (minHeight.toInt() > minSize.height())
+                                minSize.setHeight(minHeight.toDouble());
+                            connect(m_contentItem, SIGNAL(minimumHeightChanged()), this, SLOT(minimumHeightChanged()));
+                        }
+                        QVariant minWidth = m_contentItem->property("minimumWidth");
+                        if (minWidth.isValid()) {
+                            if (minWidth.toInt() > minSize.width())
+                                minSize.setWidth(minWidth.toInt());
+                            connect(m_contentItem, SIGNAL(minimumWidthChanged()), this, SLOT(minimumWidthChanged()));
+                        }
+                        m_dialogWindow->setMinimumSize(minSize);
                         connect(win, SIGNAL(widthChanged(int)), this, SLOT(windowGeometryChanged()));
                         connect(win, SIGNAL(heightChanged(int)), this, SLOT(windowGeometryChanged()));
                     }
@@ -228,6 +241,18 @@ void QQuickAbstractDialog::windowGeometryChanged()
         content->setWidth(m_dialogWindow->width());
         content->setHeight(m_dialogWindow->height());
     }
+}
+
+void QQuickAbstractDialog::minimumWidthChanged()
+{
+    m_dialogWindow->setMinimumWidth(qMax(m_contentItem->implicitWidth(),
+        m_contentItem->property("minimumWidth").toReal()));
+}
+
+void QQuickAbstractDialog::minimumHeightChanged()
+{
+    m_dialogWindow->setMinimumHeight(qMax(m_contentItem->implicitHeight(),
+        m_contentItem->property("minimumHeight").toReal()));
 }
 
 QQuickWindow *QQuickAbstractDialog::parentWindow()

@@ -169,7 +169,7 @@ void QQuickAbstractMessageDialog::click(QPlatformDialogHelper::StandardButton bu
     }
 }
 
-void QQuickAbstractMessageDialog::click(QQuickAbstractMessageDialog::StandardButton button)
+void QQuickAbstractMessageDialog::click(QQuickAbstractDialog::StandardButton button)
 {
     click(static_cast<QPlatformDialogHelper::StandardButton>(button),
         static_cast<QPlatformDialogHelper::ButtonRole>(

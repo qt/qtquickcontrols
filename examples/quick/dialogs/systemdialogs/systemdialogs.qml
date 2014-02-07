@@ -67,5 +67,9 @@ ApplicationWindow {
             title: "Message Dialog"
             MessageDialogs { anchors.fill:parent }
         }
+        Tab {
+            title: "Custom Dialogs"
+            CustomDialogs { anchors.fill:parent }
+        }
     }
 }
