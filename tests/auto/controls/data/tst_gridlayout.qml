@@ -528,6 +528,25 @@ Item {
                     Layout.alignment: Qt.AlignRight
                     Layout.columnSpan: 2
                 }
+                Rectangle {
+                    // (3,0)
+                    baselineOffset: 7
+                    color: "red"
+                    Layout.row: 3
+                    Layout.column: 0
+                    Layout.preferredWidth: 10
+                    Layout.preferredHeight: 10
+                    Layout.alignment: Qt.AlignLeft | Qt.AlignBaseline
+                }
+                Rectangle {
+                    // (3,1)
+                    baselineOffset: 7
+                    color: "red"
+                    Layout.preferredWidth: 10
+                    Layout.preferredHeight: 10
+                    Layout.alignment: Qt.AlignRight | Qt.AlignBaseline
+                }
+
             }
         }
 
@@ -535,13 +554,15 @@ Item {
         {
             var layout = layout_alignment_Component.createObject(container);
             layout.width = 60;
-            layout.height = 90;
+            layout.height = 100;
 
             compare(itemRect(layout.children[0]), [ 0,  0, 40, 40]);
             compare(itemRect(layout.children[1]), [40, 20, 20, 20]);
             compare(itemRect(layout.children[2]), [20, 40, 20, 20]);
             compare(itemRect(layout.children[3]), [45, 40, 10, 10]);
             compare(itemRect(layout.children[4]), [30, 60, 30, 30]);
+            compare(itemRect(layout.children[5]), [ 0, 90, 10, 10]);
+            compare(itemRect(layout.children[6]), [50, 90, 10, 10]);
 
 
             layout.children[1].Layout.alignment = Qt.AlignTop
