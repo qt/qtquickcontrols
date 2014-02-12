@@ -166,6 +166,17 @@ Item {
     onHeightChanged: d.updateLayout()
     onOrientationChanged: d.changeOrientation()
 
+    /*! Add an item to the end of the view. */
+    function addItem(item) {
+        d.updateLayoutGuard = true
+
+        d.addItem_impl(item)
+
+        d.calculateImplicitSize()
+        d.updateLayoutGuard = false
+        d.updateFillIndex()
+    }
+
     SystemPalette { id: pal }
 
     QtObject {
@@ -185,28 +196,35 @@ Item {
         property int fillIndex: -1
         property bool updateLayoutGuard: true
 
+        function addItem_impl(item)
+        {
+            // temporarily set fillIndex to new item
+            fillIndex = __items.length
+            if (splitterItems.children.length > 0)
+                handleLoader.createObject(splitterHandles, {"__handleIndex":splitterItems.children.length - 1})
+
+            item.parent = splitterItems
+
+            // should match disconnections in Component.onDestruction
+            item.widthChanged.connect(d.updateLayout)
+            item.heightChanged.connect(d.updateLayout)
+            item.Layout.maximumWidthChanged.connect(d.updateLayout)
+            item.Layout.minimumWidthChanged.connect(d.updateLayout)
+            item.Layout.maximumHeightChanged.connect(d.updateLayout)
+            item.Layout.minimumHeightChanged.connect(d.updateLayout)
+            item.visibleChanged.connect(d.updateFillIndex)
+            item.Layout.fillWidthChanged.connect(d.updateFillIndex)
+            item.Layout.fillHeightChanged.connect(d.updateFillIndex)
+        }
+
         function init()
         {
             for (var i=0; i<__contents.length; ++i) {
                 var item = __contents[i];
                 if (!item.hasOwnProperty("x"))
                     continue
-
-                if (splitterItems.children.length > 0)
-                    handleLoader.createObject(splitterHandles, {"__handleIndex":splitterItems.children.length - 1})
-                item.parent = splitterItems
+                addItem_impl(item)
                 i-- // item was removed from list
-
-                // should match disconnections in Component.onDestruction
-                item.widthChanged.connect(d.updateLayout)
-                item.heightChanged.connect(d.updateLayout)
-                item.Layout.maximumWidthChanged.connect(d.updateLayout)
-                item.Layout.minimumWidthChanged.connect(d.updateLayout)
-                item.Layout.maximumHeightChanged.connect(d.updateLayout)
-                item.Layout.minimumHeightChanged.connect(d.updateLayout)
-                item.visibleChanged.connect(d.updateFillIndex)
-                item.Layout.fillWidthChanged.connect(d.updateFillIndex)
-                item.Layout.fillHeightChanged.connect(d.updateFillIndex)
             }
 
             d.calculateImplicitSize()

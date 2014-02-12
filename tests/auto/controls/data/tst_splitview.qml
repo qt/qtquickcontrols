@@ -213,4 +213,77 @@ TestCase {
         compare (view.item3.x, view.width - view.item3.width)
         view.destroy()
     }
+
+    Component {
+        id: item_to_add_dynamically
+        Rectangle {
+            width: 50
+            height: 100
+            color: "yellow"
+        }
+    }
+
+    function test_dynamic_item_add() {
+        // QTBUG-35281
+        var view = splitView.createObject(testCase);
+        verify (view !== null, "splitview created is null")
+        verify (view.orientation === Qt.Horizontal)
+        waitForRendering(view)
+
+        var item3 = item_to_add_dynamically.createObject()
+        view.addItem(item3)
+        // reset item2 width
+        view.item2.width = 200
+        waitForRendering(view)
+
+        compare (view.__items.length, 3)
+
+        compare (view.item1.x, 0)
+        compare (view.item1.y, 0)
+        compare (view.item1.width, 100)
+        compare (view.item1.height, 500)
+
+        compare (view.item2.x, view.item1.x + view.item1.width + handleWidth)
+        compare (view.item2.y, 0)
+        compare (view.item2.width, 200)
+        compare (view.item2.height, 500)
+
+        compare (item3.x, view.item2.x + view.item2.width + handleWidth)
+        compare (item3.y, 0)
+        compare (item3.width, testCase.width - view.item2.width - view.item1.width - (handleWidth*2))
+        compare (item3.height, 500)
+
+        view.destroy()
+    }
+
+    function test_dynamic_item_add_fillWidth() {
+        var view = splitView.createObject(testCase);
+        verify (view !== null, "splitview created is null")
+        verify (view.orientation === Qt.Horizontal)
+        view.item2.Layout.fillWidth = true
+        waitForRendering(view)
+
+        var item3 = item_to_add_dynamically.createObject()
+        view.addItem(item3)
+        waitForRendering(view)
+
+        compare (view.__items.length, 3)
+
+        compare (view.item1.x, 0)
+        compare (view.item1.y, 0)
+        compare (view.item1.width, 100)
+        compare (view.item1.height, 500)
+
+        compare (view.item2.x, view.item1.x + view.item1.width + handleWidth)
+        compare (view.item2.y, 0)
+        compare (view.item2.width, testCase.width - view.item1.width - item3.width - (handleWidth*2))
+        compare (view.item2.height, 500)
+
+        compare (item3.x, view.item2.x + view.item2.width + handleWidth)
+        compare (item3.y, 0)
+        compare (item3.width, 50)
+        compare (item3.height, 500)
+
+        view.destroy()
+    }
 }
