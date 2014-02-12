@@ -90,7 +90,7 @@ QtObject {
         \li Text.ElideMiddle
         \li Text.ElideRight - the default
     \endlist
-    \sa {QtQuick2::}{Text::elide} */
+    \sa {QtQuick::}{Text::elide} */
     property int elideMode: Text.ElideRight
 
     /*! \qmlproperty enumeration TableViewColumn::horizontalAlignment
@@ -102,7 +102,7 @@ QtObject {
         \li Text.AlignHCenter
         \li Text.AlignJustify
     \endlist
-    \sa {QtQuick2::}{Text::horizontalAlignment} */
+    \sa {QtQuick::}{Text::horizontalAlignment} */
     property int horizontalAlignment: Text.AlignLeft
 
     /*! The delegate of the column. This can be used to set the

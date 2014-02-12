@@ -47,8 +47,7 @@ import QtQuick 2.1
 
         \brief A delegate used by StackView for loading transitions.
 
-        See the documentation for the \l {QtQuick.Controls1::StackView} {StackView}
-        component.
+        See the documentation for the \l {StackView} component.
 
 */
 QtObject {

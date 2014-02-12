@@ -312,7 +312,7 @@ import QtQuick.Controls.Private 1.0
     contains the properties \c enterItem and \c exitItem. You set the target of your
     inner animations to those items. Since the same items instance can be pushed several
     times to a StackView, you should always override
-    \l {StackViewDelegate::transitionFinished(properties)}{StackViewDelegate.transitionFinished(properties)}.
+    \l {StackViewDelegate::transitionFinished()}{StackViewDelegate.transitionFinished()}.
     Implement this function to reset any properties animated on the exitItem so that later
     transitions can expect the items to be in a default state.
 
@@ -360,7 +360,7 @@ import QtQuick.Controls.Private 1.0
     \section2 Advanced usage
 
     When the StackView needs a new transition, it first calls
-    \l {StackViewDelegate::getTransition(properties)}{StackViewDelegate.getTransition(properties)}.
+    \l {StackViewDelegate::getTransition()}{StackViewDelegate.getTransition()}.
     The base implementation of this function just looks for a property named \c properties.name inside
     itself (root), which is how it finds \c {property Component pushTransition} in the examples above.
 
