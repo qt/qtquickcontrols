@@ -48,6 +48,7 @@ moc_*.cpp
 ui_*.h
 qrc_*.cpp
 /src/controls/controls.qrc
+/src/dialogs/dialogs.qrc
 
 # xemacs temporary files
 *.flc
