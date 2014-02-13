@@ -110,23 +110,3 @@ function cellRectAt(index, columns, rows, availableWidth, availableHeight) {
 
     return rect;
 }
-
-function cellIndexAt(x, y, columns, rows, availableWidth, availableHeight) {
-    var remainingHorizontalSpace = Math.floor(availableWidth % columns);
-    var remainingVerticalSpace = Math.floor(availableHeight % rows);
-    var baseCellWidth = Math.floor(availableWidth / columns);
-    var baseCellHeight = Math.floor(availableHeight / rows);
-
-    // TODO: improve this.
-    for (var row = 0; row < rows; ++row) {
-        for (var col = 0; col < columns; ++col) {
-            var index = row * columns + col;
-            var rect = cellRectAt(index, columns, rows, availableWidth, availableHeight);
-            if (x >= rect.x && x < rect.x + rect.width && y >= rect.y && y < rect.y + rect.height) {
-                return index;
-            }
-        }
-    }
-
-    return -1;
-}

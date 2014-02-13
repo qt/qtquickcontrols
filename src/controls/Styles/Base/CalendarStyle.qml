@@ -146,11 +146,6 @@ Style {
             control.__panel.availableWidth, control.__panel.availableHeight);
     }
 
-    function __cellIndexAt(mouseX, mouseY) {
-        return CalendarUtils.cellIndexAt(mouseX, mouseY, control.__panel.columns, control.__panel.rows,
-            control.__panel.availableWidth, control.__panel.availableHeight);
-    }
-
     function __isValidDate(date) {
         return date !== undefined
             && date.getTime() >= control.minimumDate.getTime()
@@ -437,6 +432,100 @@ Style {
                     }
                 }
 
+                MouseArea {
+                    id: mouseArea
+                    anchors.fill: parent
+
+                    hoverEnabled: true
+
+                    function cellIndexAt(mouseX, mouseY) {
+                        var viewContainerPos = viewContainer.mapFromItem(mouseArea, mouseX, mouseY);
+                        var child = viewContainer.childAt(viewContainerPos.x, viewContainerPos.y);
+                        // In the tests, the mouseArea sometimes gets picked instead of the cells,
+                        // probably because stuff is still loading. To be safe, we check for that here.
+                        return child && child !== mouseArea ? child.__index : -1;
+                    }
+
+                    onEntered: {
+                        hoveredCellIndex = cellIndexAt(mouseX, mouseY);
+                        if (hoveredCellIndex === undefined) {
+                            hoveredCellIndex = cellIndexAt(mouseX, mouseY);
+                        }
+
+                        var date = view.model.dateAt(hoveredCellIndex);
+                        if (__isValidDate(date)) {
+                            control.hovered(date);
+                        }
+                    }
+
+                    onExited: {
+                        hoveredCellIndex = -1;
+                    }
+
+                    onPositionChanged: {
+                        var indexOfCell = cellIndexAt(mouse.x, mouse.y);
+                        var previousHoveredCellIndex = hoveredCellIndex;
+                        hoveredCellIndex = indexOfCell;
+                        if (indexOfCell !== -1) {
+                            var date = view.model.dateAt(indexOfCell);
+                            if (__isValidDate(date)) {
+                                if (hoveredCellIndex !== previousHoveredCellIndex)
+                                    control.hovered(date);
+
+                                if (pressed && date.getTime() !== control.selectedDate.getTime()) {
+                                    control.selectedDate = date;
+                                    pressedCellIndex = indexOfCell;
+                                    control.pressed(date);
+                                }
+                            }
+                        }
+                    }
+
+                    onPressed: {
+                        var indexOfCell = cellIndexAt(mouse.x, mouse.y);
+                        if (indexOfCell !== -1) {
+                            var date = view.model.dateAt(indexOfCell);
+                            pressedCellIndex = indexOfCell;
+                            if (__isValidDate(date)) {
+                                control.selectedDate = date;
+                                control.pressed(date);
+                            }
+                        }
+                    }
+
+                    onReleased: {
+                        var indexOfCell = cellIndexAt(mouse.x, mouse.y);
+                        if (indexOfCell !== -1) {
+                            // The cell index might be valid, but the date has to be too. We could let the
+                            // selected date validation take care of this, but then the selected date would
+                            // change to the earliest day if a day before the minimum date is clicked, for example.
+                            var date = view.model.dateAt(indexOfCell);
+                            if (__isValidDate(date)) {
+                                control.released(date);
+                            }
+                        }
+                        pressedCellIndex = -1;
+                    }
+
+                    onClicked: {
+                        var indexOfCell = cellIndexAt(mouse.x, mouse.y);
+                        if (indexOfCell !== -1) {
+                            var date = view.model.dateAt(indexOfCell);
+                            if (__isValidDate(date))
+                                control.clicked(date);
+                        }
+                    }
+
+                    onDoubleClicked: {
+                        var indexOfCell = cellIndexAt(mouse.x, mouse.y);
+                        if (indexOfCell !== -1) {
+                            var date = view.model.dateAt(indexOfCell);
+                            if (__isValidDate(date))
+                                control.doubleClicked(date);
+                        }
+                    }
+                }
+
                 Connections {
                     target: control
                     onSelectedDateChanged: view.selectedDateChanged()
@@ -485,88 +574,6 @@ Style {
                             readonly property bool hovered: panelItem.hoveredCellIndex == index
                             readonly property bool pressed: panelItem.pressedCellIndex == index
                             // todo: pressed property here, clicked and doubleClicked in the control itself
-                        }
-                    }
-                }
-
-                MouseArea {
-                    anchors.fill: parent
-
-                    hoverEnabled: true
-
-                    onEntered: {
-                        var indexOfCell = __cellIndexAt(mouseX, mouseY);
-                        hoveredCellIndex = indexOfCell;
-                        var date = view.model.dateAt(indexOfCell);
-                        if (__isValidDate(date)) {
-                            control.hovered(date);
-                        }
-                    }
-
-                    onExited: {
-                        hoveredCellIndex = -1;
-                    }
-
-                    onPositionChanged: {
-                        var indexOfCell = __cellIndexAt(mouse.x, mouse.y);
-                        var previousHoveredCellIndex = hoveredCellIndex;
-                        hoveredCellIndex = indexOfCell;
-                        if (indexOfCell !== -1) {
-                            var date = view.model.dateAt(indexOfCell);
-                            if (__isValidDate(date)) {
-                                if (hoveredCellIndex !== previousHoveredCellIndex)
-                                    control.hovered(date);
-
-                                if (pressed && date.getTime() !== control.selectedDate.getTime()) {
-                                    control.selectedDate = date;
-                                    pressedCellIndex = indexOfCell;
-                                    control.pressed(date);
-                                }
-                            }
-                        }
-                    }
-
-                    onPressed: {
-                        var indexOfCell = __cellIndexAt(mouse.x, mouse.y);
-                        if (indexOfCell !== -1) {
-                            var date = view.model.dateAt(indexOfCell);
-                            pressedCellIndex = indexOfCell;
-                            if (__isValidDate(date)) {
-                                control.selectedDate = date;
-                                control.pressed(date);
-                            }
-                        }
-                    }
-
-                    onReleased: {
-                        var indexOfCell = __cellIndexAt(mouse.x, mouse.y);
-                        if (indexOfCell !== -1) {
-                            // The cell index might be valid, but the date has to be too. We could let the
-                            // selected date validation take care of this, but then the selected date would
-                            // change to the earliest day if a day before the minimum date is clicked, for example.
-                            var date = view.model.dateAt(indexOfCell);
-                            if (__isValidDate(date)) {
-                                control.released(date);
-                            }
-                        }
-                        pressedCellIndex = -1;
-                    }
-
-                    onClicked: {
-                        var indexOfCell = __cellIndexAt(mouse.x, mouse.y);
-                        if (indexOfCell !== -1) {
-                            var date = view.model.dateAt(indexOfCell);
-                            if (__isValidDate(date))
-                                control.clicked(date);
-                        }
-                    }
-
-                    onDoubleClicked: {
-                        var indexOfCell = __cellIndexAt(mouse.x, mouse.y);
-                        if (indexOfCell !== -1) {
-                            var date = view.model.dateAt(indexOfCell);
-                            if (__isValidDate(date))
-                                control.doubleClicked(date);
                         }
                     }
                 }

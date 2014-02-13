@@ -778,21 +778,5 @@ Item {
                 ensureNoGapsBetweenCells(columns, rows, availableWidth, availableHeight);
             }
         }
-
-        function test_cellIndexCalculation() {
-            var columns = CalendarUtils.daysInAWeek;
-            var rows = CalendarUtils.weeksOnACalendarMonth;
-
-            var availableWidth = 10 * columns;
-            var availableHeight = 10 * rows;
-            var rect = CalendarUtils.cellRectAt(0, columns, rows, availableWidth, availableHeight);
-
-            for (var row = 0; row < rows; ++row) {
-                for (var col = 0; col < columns; ++col) {
-                    // Test against the center of each cell.
-                    compare(CalendarUtils.cellIndexAt(col * 10 + 5, row * 10 + 5, columns, rows, availableWidth, availableHeight), row * columns + col);
-                }
-            }
-        }
     }
 }
