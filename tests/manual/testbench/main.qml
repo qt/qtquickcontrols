@@ -38,8 +38,8 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.1
-import QtQuick.Controls 1.1
+import QtQuick 2.2
+import QtQuick.Controls 1.2
 import QtQuick.Layouts 1.0
 import "content"
 
@@ -214,6 +214,8 @@ ApplicationWindow {
                                     case "partiallyCheckedEnabled":
                                     case "alternatingRowColors":
                                     case "movableColumns":
+                                    case "gridVisible":
+                                    case "weekNumbersVisible":
                                         layout = layouts.boolLayout
                                         typeName = "Boolean";
                                         break
@@ -223,6 +225,8 @@ ApplicationWindow {
                                     case "decimals":
                                     case "currentIndex":
                                     case "sortIndicatorColumn":
+                                    case "visibleMonth":
+                                    case "visibleYear":
                                         layout = layouts.intLayout
                                         typeName = "Int"
                                         break;
@@ -360,6 +364,15 @@ ApplicationWindow {
                                         enumModelData.append({ text: "Qt.Checked",          value: Qt.Checked});
                                         enumModelData.append({ text: "Qt.Unchecked",        value: Qt.Unchecked});
                                         enumModelData.append({ text: "Qt.PartiallyChecked", value: Qt.PartiallyChecked});
+                                        break;
+
+                                    case "dayOfWeekFormat":
+                                        layout = layouts.enumLayout
+                                        enumModelData = Qt.createQmlObject('import QtQuick 2.2; import QtQuick.Controls 1.2; ListModel {}', layout, '');
+                                        typeName = "Enum";
+                                        enumModelData.append({ text: "ShortFormat", value: Locale.ShortFormat});
+                                        enumModelData.append({ text: "LongFormat", value: Locale.LongFormat});
+                                        enumModelData.append({ text: "NarrowFormat", value: Locale.NarrowFormat});
                                         break;
 
 
