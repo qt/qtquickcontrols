@@ -122,7 +122,7 @@ void QQuickDialog::updateStandardButtons()
         QPlatformTheme *theme = QGuiApplicationPrivate::platformTheme();
         QPlatformDialogHelper::ButtonLayout layoutPolicy =
             static_cast<QPlatformDialogHelper::ButtonLayout>(theme->themeHint(QPlatformTheme::DialogButtonBoxLayout).toInt());
-        const quint32 *buttonLayout = QPlatformDialogHelper::buttonLayout(Qt::Horizontal, layoutPolicy);
+        const int *buttonLayout = QPlatformDialogHelper::buttonLayout(Qt::Horizontal, layoutPolicy);
         QJSValue *model = &m_standardButtonsLeftModel;
         for (int r = 0; buttonLayout[r] != QPlatformDialogHelper::EOL; ++r) {
             quint32 role = (buttonLayout[r] & ~QPlatformDialogHelper::Reverse);
