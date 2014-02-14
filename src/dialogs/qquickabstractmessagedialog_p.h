@@ -99,25 +99,25 @@ public:
     QUrl standardIconSource();
 
     enum StandardButton {
-        NoButton           = QMessageDialogOptions::NoButton,
-        Ok                 = QMessageDialogOptions::Ok,
-        Save               = QMessageDialogOptions::Save,
-        SaveAll            = QMessageDialogOptions::SaveAll,
-        Open               = QMessageDialogOptions::Open,
-        Yes                = QMessageDialogOptions::Yes,
-        YesToAll           = QMessageDialogOptions::YesToAll,
-        No                 = QMessageDialogOptions::No,
-        NoToAll            = QMessageDialogOptions::NoToAll,
-        Abort              = QMessageDialogOptions::Abort,
-        Retry              = QMessageDialogOptions::Retry,
-        Ignore             = QMessageDialogOptions::Ignore,
-        Close              = QMessageDialogOptions::Close,
-        Cancel             = QMessageDialogOptions::Cancel,
-        Discard            = QMessageDialogOptions::Discard,
-        Help               = QMessageDialogOptions::Help,
-        Apply              = QMessageDialogOptions::Apply,
-        Reset              = QMessageDialogOptions::Reset,
-        RestoreDefaults    = QMessageDialogOptions::RestoreDefaults
+        NoButton           = QPlatformDialogHelper::NoButton,
+        Ok                 = QPlatformDialogHelper::Ok,
+        Save               = QPlatformDialogHelper::Save,
+        SaveAll            = QPlatformDialogHelper::SaveAll,
+        Open               = QPlatformDialogHelper::Open,
+        Yes                = QPlatformDialogHelper::Yes,
+        YesToAll           = QPlatformDialogHelper::YesToAll,
+        No                 = QPlatformDialogHelper::No,
+        NoToAll            = QPlatformDialogHelper::NoToAll,
+        Abort              = QPlatformDialogHelper::Abort,
+        Retry              = QPlatformDialogHelper::Retry,
+        Ignore             = QPlatformDialogHelper::Ignore,
+        Close              = QPlatformDialogHelper::Close,
+        Cancel             = QPlatformDialogHelper::Cancel,
+        Discard            = QPlatformDialogHelper::Discard,
+        Help               = QPlatformDialogHelper::Help,
+        Apply              = QPlatformDialogHelper::Apply,
+        Reset              = QPlatformDialogHelper::Reset,
+        RestoreDefaults    = QPlatformDialogHelper::RestoreDefaults
     };
     Q_DECLARE_FLAGS(StandardButtons, StandardButton)
 
@@ -133,7 +133,7 @@ public Q_SLOTS:
     void setDetailedText(const QString &arg);
     void setIcon(Icon icon);
     void setStandardButtons(StandardButtons buttons);
-    void click(QMessageDialogOptions::StandardButton button, QMessageDialogOptions::ButtonRole);
+    void click(QPlatformDialogHelper::StandardButton button, QPlatformDialogHelper::ButtonRole);
     void click(QQuickAbstractMessageDialog::StandardButton button);
 
 Q_SIGNALS:

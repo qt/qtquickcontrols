@@ -129,51 +129,51 @@ QUrl QQuickAbstractMessageDialog::standardIconSource()
 void QQuickAbstractMessageDialog::setStandardButtons(StandardButtons buttons)
 {
     if (buttons != m_options->standardButtons()) {
-        m_options->setStandardButtons(static_cast<QMessageDialogOptions::StandardButtons>(static_cast<int>(buttons)));
+        m_options->setStandardButtons(static_cast<QPlatformDialogHelper::StandardButtons>(static_cast<int>(buttons)));
         emit standardButtonsChanged();
     }
 }
 
-void QQuickAbstractMessageDialog::click(QMessageDialogOptions::StandardButton button, QMessageDialogOptions::ButtonRole role)
+void QQuickAbstractMessageDialog::click(QPlatformDialogHelper::StandardButton button, QPlatformDialogHelper::ButtonRole role)
 {
     setVisible(false);
     m_clickedButton = static_cast<StandardButton>(button);
     emit buttonClicked();
     switch (role) {
-    case QMessageDialogOptions::AcceptRole:
+    case QPlatformDialogHelper::AcceptRole:
         emit accept();
         break;
-    case QMessageDialogOptions::RejectRole:
+    case QPlatformDialogHelper::RejectRole:
         emit reject();
         break;
-    case QMessageDialogOptions::DestructiveRole:
+    case QPlatformDialogHelper::DestructiveRole:
         emit discard();
         break;
-    case QMessageDialogOptions::HelpRole:
+    case QPlatformDialogHelper::HelpRole:
         emit help();
         break;
-    case QMessageDialogOptions::YesRole:
+    case QPlatformDialogHelper::YesRole:
         emit yes();
         break;
-    case QMessageDialogOptions::NoRole:
+    case QPlatformDialogHelper::NoRole:
         emit no();
         break;
-    case QMessageDialogOptions::ApplyRole:
+    case QPlatformDialogHelper::ApplyRole:
         emit apply();
         break;
-    case QMessageDialogOptions::ResetRole:
+    case QPlatformDialogHelper::ResetRole:
         emit reset();
         break;
     default:
-        qWarning("unhandled MessageDialog button %d with role %d", button, role);
+        qWarning("unhandled MessageDialog button %d with role %d", (int)button, (int)role);
     }
 }
 
 void QQuickAbstractMessageDialog::click(QQuickAbstractMessageDialog::StandardButton button)
 {
-    click(static_cast<QMessageDialogOptions::StandardButton>(button),
-        static_cast<QMessageDialogOptions::ButtonRole>(
-            QMessageDialogOptions::buttonRole(static_cast<QMessageDialogOptions::StandardButton>(button))));
+    click(static_cast<QPlatformDialogHelper::StandardButton>(button),
+        static_cast<QPlatformDialogHelper::ButtonRole>(
+            QPlatformDialogHelper::buttonRole(static_cast<QPlatformDialogHelper::StandardButton>(button))));
 }
 
 QT_END_NAMESPACE

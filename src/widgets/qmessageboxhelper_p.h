@@ -97,8 +97,8 @@ public:
 
 public Q_SLOTS:
     void buttonClicked(QAbstractButton* button) {
-        emit clicked(static_cast<QMessageDialogOptions::StandardButton>(m_dialog.standardButton(button)),
-            static_cast<QMessageDialogOptions::ButtonRole>(m_dialog.buttonRole(button)));
+        emit clicked(static_cast<QPlatformDialogHelper::StandardButton>(m_dialog.standardButton(button)),
+            static_cast<QPlatformDialogHelper::ButtonRole>(m_dialog.buttonRole(button)));
     }
 };
 
