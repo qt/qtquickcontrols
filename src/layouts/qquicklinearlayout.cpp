@@ -176,6 +176,12 @@
 
 QT_BEGIN_NAMESPACE
 
+QQuickGridLayoutBase::QQuickGridLayoutBase()
+    : QQuickLayout(*new QQuickGridLayoutBasePrivate)
+{
+
+}
+
 QQuickGridLayoutBase::QQuickGridLayoutBase(QQuickGridLayoutBasePrivate &dd,
                                            Qt::Orientation orientation,
                                            QQuickItem *parent /*= 0*/)

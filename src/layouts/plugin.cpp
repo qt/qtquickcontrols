@@ -61,8 +61,7 @@ public:
         qmlRegisterType<QQuickGridLayout>(uri, 1, 0, "GridLayout");
         qmlRegisterUncreatableType<QQuickLayout>(uri, 1, 0, "Layout",
                                                            QLatin1String("Do not create objects of type Layout"));
-        qmlRegisterUncreatableType<QQuickGridLayoutBase, 1>(uri, 1, 1, "LayoutBase",
-                                                            QLatin1String("Do not create objects of type LayoutBase"));
+        qmlRegisterRevision<QQuickGridLayoutBase, 1>(uri, 1, 1);
     }
 };
 //![class decl]

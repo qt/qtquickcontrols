@@ -62,6 +62,9 @@ class QQuickGridLayoutBase : public QQuickLayout
     Q_PROPERTY(Qt::LayoutDirection layoutDirection READ layoutDirection WRITE setLayoutDirection NOTIFY layoutDirectionChanged REVISION 1)
 
 public:
+
+    QQuickGridLayoutBase();
+
     explicit QQuickGridLayoutBase(QQuickGridLayoutBasePrivate &dd,
                                   Qt::Orientation orientation,
                                   QQuickItem *parent = 0);
@@ -83,7 +86,7 @@ protected:
     int itemCount() const Q_DECL_OVERRIDE;
 
     void rearrange(const QSizeF &size);
-    virtual void insertLayoutItems() = 0;
+    virtual void insertLayoutItems() {}
     void removeLayoutItem(QQuickItem *item);
     void itemChange(ItemChange change, const ItemChangeData &data);
     void geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry);

@@ -37,9 +37,6 @@ Module {
         name: "QQuickGridLayoutBase"
         defaultProperty: "data"
         prototype: "QQuickLayout"
-        exports: ["QtQuick.Layouts/LayoutBase 1.1"]
-        isCreatable: false
-        exportMetaObjectRevisions: [1]
         Property { name: "layoutDirection"; revision: 1; type: "Qt::LayoutDirection" }
         Signal { name: "layoutDirectionChanged"; revision: 1 }
     }
