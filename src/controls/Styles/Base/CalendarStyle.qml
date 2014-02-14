@@ -49,7 +49,31 @@ import QtQuick.Controls.Private 1.0
     \ingroup controlsstyling
     \brief Provides custom styling for \l Calendar
 
-    Example:
+    \section2 Component Map
+
+    \image calendarstyle-components-week-numbers.png
+
+    The calendar has the following styleable components:
+
+    \table
+        \row \li \image square-white.png
+            \li \l background
+            \li Fills the entire control.
+        \row \li \image square-yellow.png
+            \li \l navigationBar
+            \li
+        \row \li \image square-green.png
+            \li \l dayOfWeekDelegate
+            \li One instance per day of week.
+        \row \li \image square-red.png
+            \li \l weekNumberDelegate
+            \li One instance per week.
+        \row \li \image square-blue.png
+            \li \l dayDelegate
+            \li One instance per day of month.
+    \endtable
+
+    \section2 Custom Style Example
     \qml
     Calendar {
         anchors.centerIn: parent
