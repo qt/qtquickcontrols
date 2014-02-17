@@ -375,8 +375,8 @@ Control {
         an intermediate state. The accepted signal will only be sent
         if the text is in an acceptable state when enter is pressed.
 
-        Currently supported validators are \l{QtQuick2::IntValidator},
-        \l{QtQuick2::DoubleValidator}, and \l{QtQuick2::RegExpValidator}. An
+        Currently supported validators are \l{QtQuick::}{IntValidator},
+        \l{QtQuick::}{DoubleValidator}, and \l{QtQuick::}{RegExpValidator}. An
         example of using validators is shown below, which allows input of
         integers between 11 and 31 into the text input:
 
@@ -582,7 +582,7 @@ Control {
     TextInput {
         id: textInput
         focus: true
-        selectByMouse: true
+        selectByMouse: Qt.platform.os !== "android" // Workaround for QTBUG-36515
         selectionColor: __panel ? __panel.selectionColor : "darkred"
         selectedTextColor: __panel ? __panel.selectedTextColor : "white"
 

@@ -536,6 +536,42 @@ Item {
 
             layout.destroy()
         }
+
+        Component {
+            id: layout_change_implicitWidth_during_rearrange
+            ColumnLayout {
+                width: 100
+                height: 20
+                RowLayout {
+                    spacing: 0
+                    Rectangle {
+                        Layout.fillHeight: true
+                        Layout.fillWidth: false
+                        implicitWidth: height
+                        color: "red"
+                    }
+                    Rectangle {
+                        Layout.fillHeight: true
+                        Layout.fillWidth: true
+                        color: "blue"
+                    }
+                }
+            }
+        }
+
+        function test_change_implicitWidth_during_rearrange() {
+            var layout = layout_change_implicitWidth_during_rearrange.createObject(container)
+            var red = layout.children[0].children[0]
+            var blue = layout.children[0].children[1]
+            waitForRendering(layout);
+            tryCompare(red, 'width', 20)
+            tryCompare(blue, 'width', 80)
+            layout.height = 40
+            tryCompare(red, 'width', 40)
+            tryCompare(blue, 'width', 60)
+            layout.destroy()
+        }
+
         Component {
             id: layout_addIgnoredItem_Component
             RowLayout {

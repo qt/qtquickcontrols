@@ -405,8 +405,6 @@ ScrollView {
         This property contains the link string when user hovers a link
         embedded in the text. The link must be in rich text or HTML format
         and the link string provides access to the particular link.
-
-        \sa onLinkHovered
     */
     readonly property alias hoveredLink: edit.hoveredLink
 
@@ -718,7 +716,7 @@ ScrollView {
             wrapMode: TextEdit.WordWrap
             textMargin: 4
 
-            selectByMouse: true
+            selectByMouse: Qt.platform.os !== "android" // Workaround for QTBUG-36515
             readOnly: false
 
             Keys.forwardTo: area
