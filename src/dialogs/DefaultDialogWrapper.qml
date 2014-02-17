@@ -74,6 +74,8 @@ AbstractDialog {
                 case Qt.Key_Return:
                     accept()
                     break
+                default:
+                    event.accepted = false
             }
         }
 
