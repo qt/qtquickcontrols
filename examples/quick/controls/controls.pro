@@ -1,7 +1,6 @@
 TEMPLATE = subdirs
 
 SUBDIRS += \
-    calendar \
     gallery \
     splitview \
     tableview \
@@ -10,4 +9,8 @@ SUBDIRS += \
 
 qtHaveModule(widgets) {
     SUBDIRS += texteditor
+}
+
+qtHaveModule(sql) {
+    SUBDIRS += calendar
 }
