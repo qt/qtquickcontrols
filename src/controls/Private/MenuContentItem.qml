@@ -160,7 +160,7 @@ Loader {
         x: d.style ? d.style.padding.left : 0
         y: d.style ? d.style.padding.top : 0
         menuItemDelegate: menuItemComponent
-        scrollIndicatorStyle: d.style && d.style.scrollIndicator
+        scrollIndicatorStyle: d.style && d.style.scrollIndicator || null
         scrollerStyle: d.style && d.style.__scrollerStyle
         itemsModel: __menu.items
         minWidth: __menu.__minimumWidth
