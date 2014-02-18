@@ -80,6 +80,7 @@ protected:
 
 protected Q_SLOTS:
     void updateSize();
+    void applicationStateChanged(Qt::ApplicationState state);
 
 private:
     void forwardEventToTransientParent(QMouseEvent *);
