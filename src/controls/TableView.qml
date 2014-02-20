@@ -610,7 +610,7 @@ ScrollView {
 
                 if (pressed && !Settings.hasTouchScreen) {
                     var newIndex = Math.max(0, listView.indexAt(0, mouseY + listView.contentY))
-                    if (newIndex >= 0 && newIndex != currentRow) {
+                    if (newIndex >= 0 && newIndex !== currentRow) {
                         listView.currentIndex = newIndex;
                         if (selectionMode === SelectionMode.SingleSelection) {
                             selection.__selectOne(newIndex)
@@ -799,8 +799,8 @@ ScrollView {
 
                 // Reassign row-specific bindings
                 rowItem.rowIndex = model.index;
-                rowItem.alternate = Qt.binding( function() {  return alternatingRowColors && model.index % 2 == 1 });
-                rowItem.itemModelData = Qt.binding( function() { return typeof modelData == "undefined" ? null : modelData });
+                rowItem.alternate = Qt.binding( function() {  return alternatingRowColors && model.index % 2 === 1 });
+                rowItem.itemModelData = Qt.binding( function() { return typeof modelData === "undefined" ? null : modelData });
                 rowItem.itemModel = Qt.binding( function() { return model });
                 rowItem.parent = rowItemContainer;
                 rowItem.visible = true;
@@ -931,7 +931,7 @@ ScrollView {
 
                     delegate: Item {
                         z:-index
-                        width: columnCount == 1 ? viewport.width + __verticalScrollBar.width : modelData.width
+                        width: columnCount === 1 ? viewport.width + __verticalScrollBar.width : modelData.width
                         implicitWidth: headerStyle.implicitWidth
                         visible: modelData.visible
                         height: headerVisible ? headerStyle.height : 0
@@ -953,7 +953,7 @@ ScrollView {
                             id: targetmark
                             width: parent.width
                             height:parent.height
-                            opacity: (index == repeater.targetIndex && repeater.targetIndex != repeater.dragIndex) ? 0.5 : 0
+                            opacity: (index === repeater.targetIndex && repeater.targetIndex !== repeater.dragIndex) ? 0.5 : 0
                             Behavior on opacity { NumberAnimation{duration:160}}
                             color: palette.highlight
                             visible: modelData.movable
@@ -965,8 +965,8 @@ ScrollView {
                             hoverEnabled: true
                             anchors.fill: parent
                             onClicked: {
-                                if (sortIndicatorColumn == index)
-                                    sortIndicatorOrder = sortIndicatorOrder == Qt.AscendingOrder ? Qt.DescendingOrder : Qt.AscendingOrder
+                                if (sortIndicatorColumn === index)
+                                    sortIndicatorOrder = sortIndicatorOrder === Qt.AscendingOrder ? Qt.DescendingOrder : Qt.AscendingOrder
                                 sortIndicatorColumn = index
                             }
                             // Here we handle moving header sections
@@ -989,11 +989,11 @@ ScrollView {
                             }
 
                             onReleased: {
-                                if (repeater.targetIndex >= 0 && repeater.targetIndex != index ) {
+                                if (repeater.targetIndex >= 0 && repeater.targetIndex !== index ) {
                                     var targetColumn = columnModel.get(repeater.targetIndex).columnItem
                                     if (targetColumn.movable) {
                                         columnModel.move(index, repeater.targetIndex, 1)
-                                        if (sortIndicatorColumn == index)
+                                        if (sortIndicatorColumn === index)
                                             sortIndicatorColumn = repeater.targetIndex
                                     }
                                 }
