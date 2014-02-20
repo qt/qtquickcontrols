@@ -116,6 +116,7 @@ Style {
     property Component background: Item {
         implicitWidth: Math.round(control.__contentHeight * 8)
         implicitHeight: Math.max(25, Math.round(control.__contentHeight * 1.2))
+        baselineOffset: control.__baselineOffset
         Rectangle {
             anchors.fill: parent
             anchors.bottomMargin: -1
@@ -150,6 +151,7 @@ Style {
 
         implicitWidth: backgroundLoader.implicitWidth ? backgroundLoader.implicitWidth : 100
         implicitHeight: backgroundLoader.implicitHeight ? backgroundLoader.implicitHeight : 20
+        baselineOffset: backgroundLoader.item ? padding.top + backgroundLoader.item.baselineOffset : 0
 
         property color placeholderTextColor: style.placeholderTextColor
         property font font: style.font

@@ -194,6 +194,9 @@ Control {
     /*! \internal */
     property alias __text: input.text
 
+    /*! \internal */
+    property alias __baselineOffset: input.baselineOffset
+
     __styleData: QtObject {
         readonly property bool upEnabled: value != maximumValue;
         readonly property alias upHovered: mouseUp.containsMouse
