@@ -851,5 +851,59 @@ TestCase {
         }
         return undefined // no matching child found
     }
+
+    function test_activeFocusOnTab() {
+        if (!SystemInfo.tabAllWidgets)
+            skip("This function doesn't support NOT iterating all.")
+
+        var component = Qt.createComponent("tableview/table_activeFocusOnTab.qml")
+        compare(component.status, Component.Ready)
+        var control = component.createObject(container)
+
+        verify(!control.control2.activeFocusOnTab)
+
+        control.control1.forceActiveFocus()
+        verify(control.control1.activeFocus)
+        verify(!control.control2.activeFocus)
+        verify(!control.control3.activeFocus)
+        keyPress(Qt.Key_Tab)
+        verify(!control.control1.activeFocus)
+        verify(!control.control2.activeFocus)
+        verify(control.control3.activeFocus)
+        keyPress(Qt.Key_Tab)
+        verify(control.control1.activeFocus)
+        verify(!control.control2.activeFocus)
+        verify(!control.control3.activeFocus)
+        keyPress(Qt.Key_Tab, Qt.ShiftModifier)
+        verify(!control.control1.activeFocus)
+        verify(!control.control2.activeFocus)
+        verify(control.control3.activeFocus)
+        keyPress(Qt.Key_Tab, Qt.ShiftModifier)
+        verify(control.control1.activeFocus)
+        verify(!control.control2.activeFocus)
+        verify(!control.control3.activeFocus)
+
+        control.control2.activeFocusOnTab = true
+
+        verify(control.control2.activeFocusOnTab)
+
+        keyPress(Qt.Key_Tab)
+        verify(!control.control1.activeFocus)
+        verify(control.control2.activeFocus)
+        verify(!control.control3.activeFocus)
+        keyPress(Qt.Key_Tab)
+        verify(!control.control1.activeFocus)
+        verify(!control.control2.activeFocus)
+        verify(control.control3.activeFocus)
+        keyPress(Qt.Key_Tab, Qt.ShiftModifier)
+        verify(!control.control1.activeFocus)
+        verify(control.control2.activeFocus)
+        verify(!control.control3.activeFocus)
+        keyPress(Qt.Key_Tab, Qt.ShiftModifier)
+        verify(control.control1.activeFocus)
+        verify(!control.control2.activeFocus)
+        verify(!control.control3.activeFocus)
+        control.destroy()
+    }
 }
 }
