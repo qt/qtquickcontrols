@@ -129,6 +129,7 @@ Style {
             \row \li readonly property bool \b styleData.nextSelected \li The next tab is selected.
             \row \li readonly property bool \b styleData.previousSelected \li The previous tab is selected.
             \row \li readonly property bool \b styleData.hovered \li The tab is being hovered.
+            \row \li readonly property bool \b styleData.enabled \li The tab is enabled. (since QtQuick.Controls.Styles 1.2)
             \row \li readonly property bool \b styleData.activeFocus \li The tab button has keyboard focus.
             \row \li readonly property bool \b styleData.availableWidth \li The available width for the tabs.
         \endtable
@@ -166,6 +167,10 @@ Style {
             elide: Text.ElideMiddle
             renderType: Text.NativeRendering
             scale: control.tabPosition === Qt.TopEdge ? 1 : -1
+            property var __syspal: SystemPalette {
+                colorGroup: styleData.enabled ?
+                                SystemPalette.Active : SystemPalette.Disabled
+            }
             color: __syspal.text
             Rectangle {
                 anchors.centerIn: parent

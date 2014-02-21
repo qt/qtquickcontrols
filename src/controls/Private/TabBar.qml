@@ -164,6 +164,7 @@ FocusScope {
             objectName: "mousearea"
             hoverEnabled: true
             focus: true
+            enabled: modelData.enabled
 
             Binding {
                 target: tabbar
@@ -218,6 +219,7 @@ FocusScope {
                     readonly property alias nextSelected: tabitem.nextSelected
                     readonly property alias previsousSelected: tabitem.previousSelected
                     readonly property alias hovered: tabitem.containsMouse
+                    readonly property alias enabled: tabitem.enabled
                     readonly property bool activeFocus: tabbar.activeFocus
                     readonly property real availableWidth: tabbar.availableWidth
                 }
