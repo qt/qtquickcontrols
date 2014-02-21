@@ -686,7 +686,7 @@ ScrollView {
             }
             property int rowHeight: rowSizeItem.implicitHeight
             property int paddedRowCount: height/rowHeight
-            property int count: listView.count
+
             y: listView.contentHeight
             width: parent.width
             visible: alternatingRowColors
@@ -799,7 +799,6 @@ ScrollView {
 
                 // Reassign row-specific bindings
                 rowItem.rowIndex = model.index;
-                rowItem.alternate = Qt.binding( function() {  return alternatingRowColors && model.index % 2 === 1 });
                 rowItem.itemModelData = Qt.binding( function() { return typeof modelData === "undefined" ? null : modelData });
                 rowItem.itemModel = Qt.binding( function() { return model });
                 rowItem.parent = rowItemContainer;
@@ -815,10 +814,10 @@ ScrollView {
                 visible: false
 
                 property int rowIndex
-                property bool alternate
                 property var itemModelData
                 property var itemModel
                 property bool itemSelected: selected()
+                property bool alternate: alternatingRowColors && rowIndex % 2 === 1
                 readonly property color itemTextColor: itemSelected ? __style.highlightedTextColor : __style.textColor
 
                 function selected() {
@@ -1036,7 +1035,6 @@ ScrollView {
                                 var newHeaderWidth = modelData.width + (mouseX - offset)
                                 modelData.width = Math.max(minimumSize, newHeaderWidth)
                             }
-                            property bool found:false
 
                             onDoubleClicked: getColumn(index).resizeToContents()
                             onPressedChanged: if (pressed) offset=mouseX
