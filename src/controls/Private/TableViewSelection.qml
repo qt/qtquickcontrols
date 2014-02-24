@@ -46,7 +46,7 @@ QtObject {
     signal selectionChanged
 
     property bool __dirty: false
-    property var __ranges: new Array()
+    property var __ranges: []
 
     function forEach (callback) {
         if (!(callback instanceof Function)) {
@@ -67,7 +67,7 @@ QtObject {
     }
 
     function clear() {
-        __ranges = new Array()
+        __ranges = []
         __dirty = true
         count = 0
         selectionChanged()
@@ -146,7 +146,7 @@ QtObject {
                     newRangePos = i + 1
                     continue;
                 }
-                if (startRangeIndex == -1)
+                if (startRangeIndex === -1)
                     startRangeIndex = i
                 stopRangeIndex = i
             }
@@ -156,7 +156,7 @@ QtObject {
             if (stopRangeIndex !== -1)
                 stop = Math.max(__ranges[stopRangeIndex][1], stop)
 
-            if (startRangeIndex  == -1)
+            if (startRangeIndex  === -1)
                 startRangeIndex = newRangePos
 
             __ranges.splice(Math.max(0, startRangeIndex),
@@ -169,7 +169,7 @@ QtObject {
                 range = __ranges[i]
                 if (range[1] < start) continue; // below range
                 if (range[0] > stop) continue;  // above range
-                if (startRangeIndex == -1)
+                if (startRangeIndex === -1)
                     startRangeIndex = i
                 stopRangeIndex = i
             }

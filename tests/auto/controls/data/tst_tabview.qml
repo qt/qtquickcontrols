@@ -390,6 +390,21 @@ TestCase {
         verify(!tab3.activeFocus)
         verify(!textField.activeFocus)
 
+        compare(tabView.currentIndex, 2)
+        tab1.enabled = false
+        mouseClick(tab1, tab1.width/2, tab1.height/2)
+        compare(tabView.currentIndex, 2)
+        mouseClick(tab2, tab2.width/2, tab2.height/2)
+        compare(tabView.currentIndex, 1)
+        tab2.enabled = false
+        compare(tabView.currentIndex, 1)
+        tab1.enabled = true
+        mouseClick(tab1, tab1.width/2, tab1.height/2)
+        compare(tabView.currentIndex, 0)
+        tab2.enabled = true
+        mouseClick(tab2, tab2.width/2, tab2.height/2)
+        compare(tabView.currentIndex, 1)
+
         item.destroy()
     }
 

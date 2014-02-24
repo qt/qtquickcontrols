@@ -542,6 +542,7 @@ ScrollView {
         currentIndex: -1
         visible: columnCount > 0
         interactive: Settings.hasTouchScreen
+        property var rowItemStack: [] // Used as a cache for rowDelegates
 
         SystemPalette {
             id: palette
@@ -609,7 +610,7 @@ ScrollView {
 
                 if (pressed && !Settings.hasTouchScreen) {
                     var newIndex = Math.max(0, listView.indexAt(0, mouseY + listView.contentY))
-                    if (newIndex >= 0 && newIndex != currentRow) {
+                    if (newIndex >= 0 && newIndex !== currentRow) {
                         listView.currentIndex = newIndex;
                         if (selectionMode === SelectionMode.SingleSelection) {
                             selection.__selectOne(newIndex)
@@ -685,7 +686,7 @@ ScrollView {
             }
             property int rowHeight: rowSizeItem.implicitHeight
             property int paddedRowCount: height/rowHeight
-            property int count: listView.count
+
             y: listView.contentHeight
             width: parent.width
             visible: alternatingRowColors
@@ -770,82 +771,125 @@ ScrollView {
                 root.activated(currentRow);
         }
 
-        delegate: FocusScope {
-            id: rowitem
-            width: itemrow.width
-            height: rowstyle.height
+        delegate: Item {
+            id: rowItemContainer
 
-            function selected() {
-                if (mousearea.dragRow > -1 && (rowIndex >= mousearea.clickedRow && rowIndex <= mousearea.dragRow
-                        || rowIndex <= mousearea.clickedRow && rowIndex >=mousearea.dragRow))
-                    return selection.contains(mousearea.clickedRow)
+            property Item rowItem
+            // We recycle instantiated row items to speed up list scrolling
 
-                return selection.count && selection.contains(rowIndex)
-            }
-            readonly property int rowIndex: model.index
-            readonly property bool alternate: alternatingRowColors && rowIndex % 2 == 1
-            readonly property var itemModelData: typeof modelData == "undefined" ? null : modelData
-            readonly property var itemModel: model
-            readonly property bool itemSelected: selected()
-            readonly property color itemTextColor: itemSelected ? __style.highlightedTextColor : __style.textColor
-
-            onActiveFocusChanged: {
-                if (activeFocus)
-                    listView.currentIndex = rowIndex
-            }
-
-            Loader {
-                id: rowstyle
-                // row delegate
-                sourceComponent: root.rowDelegate
-                // Row fills the view width regardless of item size
-                // But scrollbar should not adjust to it
-                height: item ? item.height : 16
-                width: parent.width + __horizontalScrollBar.width
-                x: listView.contentX
-
-                // these properties are exposed to the row delegate
-                // Note: these properties should be mirrored in the row filler as well
-                property QtObject styleData: QtObject {
-                    readonly property int row: rowitem.rowIndex
-                    readonly property bool alternate: rowitem.alternate
-                    readonly property bool selected: rowitem.itemSelected
-                    readonly property bool hasActiveFocus: root.activeFocus
+            Component.onDestruction: {
+                // move the rowItem back in cache
+                if (rowItem) {
+                    rowItem.visible = false;
+                    rowItem.parent = null;
+                    listView.rowItemStack.push(rowItem); // return rowItem to cache
                 }
-                readonly property var model: listView.model
-                readonly property var modelData: rowitem.itemModelData
             }
-            Row {
-                id: itemrow
-                height: parent.height
-                Repeater {
-                    id: repeater
-                    model: columnModel
 
-                    Loader {
-                        id: itemDelegateLoader
-                        width:  columnItem.width
-                        height: parent ? parent.height : 0
-                        visible: columnItem.visible
-                        sourceComponent: columnItem.delegate ? columnItem.delegate : itemDelegate
+            Component.onCompleted: {
+                // retrieve row item from cache
+                if (listView.rowItemStack.length > 0)
+                    rowItem = listView.rowItemStack.pop();
+                else
+                    rowItem = rowComponent.createObject(listView);
 
-                        // these properties are exposed to the item delegate
-                        readonly property var model: listView.model
-                        readonly property var modelData: itemModelData
+                // Bind container to item size
+                rowItemContainer.width = Qt.binding( function() { return rowItem.width });
+                rowItemContainer.height = Qt.binding( function() { return rowItem.height });
 
-                        property QtObject styleData: QtObject {
-                            readonly property int row: rowitem.rowIndex
-                            readonly property int column: index
-                            readonly property int elideMode: columnItem.elideMode
-                            readonly property int textAlignment: columnItem.horizontalAlignment
-                            readonly property bool selected: rowitem.itemSelected
-                            readonly property color textColor: rowitem.itemTextColor
-                            readonly property string role: columnItem.role
-                            readonly property var value: itemModel.hasOwnProperty(role)
-                                                         ? itemModel[role] // Qml ListModel and QAbstractItemModel
-                                                         : modelData && modelData.hasOwnProperty(role)
-                                                           ? modelData[role] // QObjectList / QObject
-                                                           : modelData != undefined ? modelData : "" // Models without role
+                // Reassign row-specific bindings
+                rowItem.rowIndex = model.index;
+                rowItem.itemModelData = Qt.binding( function() { return typeof modelData === "undefined" ? null : modelData });
+                rowItem.itemModel = Qt.binding( function() { return model });
+                rowItem.parent = rowItemContainer;
+                rowItem.visible = true;
+            }
+        }
+
+        Component {
+            id: rowComponent
+
+            FocusScope {
+                id: rowitem
+                visible: false
+
+                property int rowIndex
+                property var itemModelData
+                property var itemModel
+                property bool itemSelected: selected()
+                property bool alternate: alternatingRowColors && rowIndex % 2 === 1
+                readonly property color itemTextColor: itemSelected ? __style.highlightedTextColor : __style.textColor
+
+                function selected() {
+                    if (mousearea.dragRow > -1 && (rowIndex >= mousearea.clickedRow && rowIndex <= mousearea.dragRow
+                                                   || rowIndex <= mousearea.clickedRow && rowIndex >=mousearea.dragRow))
+                        return selection.contains(mousearea.clickedRow)
+
+                    return selection.count && selection.contains(rowIndex)
+                }
+
+
+                width: itemrow.width
+                height: rowstyle.height
+
+                onActiveFocusChanged: {
+                    if (activeFocus)
+                        listView.currentIndex = rowIndex
+                }
+
+                Loader {
+                    id: rowstyle
+                    // row delegate
+                    sourceComponent: root.rowDelegate
+                    // Row fills the view width regardless of item size
+                    // But scrollbar should not adjust to it
+                    height: item ? item.height : 16
+                    width: parent.width + __horizontalScrollBar.width
+                    x: listView.contentX
+
+                    // these properties are exposed to the row delegate
+                    // Note: these properties should be mirrored in the row filler as well
+                    property QtObject styleData: QtObject {
+                        readonly property int row: rowitem.rowIndex
+                        readonly property bool alternate: rowitem.alternate
+                        readonly property bool selected: rowitem.itemSelected
+                        readonly property bool hasActiveFocus: root.activeFocus
+                    }
+                    readonly property var model: listView.model
+                    readonly property var modelData: rowitem.itemModelData
+                }
+                Row {
+                    id: itemrow
+                    height: parent.height
+                    Repeater {
+                        id: repeater
+                        model: columnModel
+
+                        Loader {
+                            id: itemDelegateLoader
+                            width:  columnItem.width
+                            height: parent ? parent.height : 0
+                            visible: columnItem.visible
+                            sourceComponent: columnItem.delegate ? columnItem.delegate : itemDelegate
+
+                            // these properties are exposed to the item delegate
+                            readonly property var model: listView.model
+                            readonly property var modelData: itemModelData
+
+                            property QtObject styleData: QtObject {
+                                readonly property int row: rowitem.rowIndex
+                                readonly property int column: index
+                                readonly property int elideMode: columnItem.elideMode
+                                readonly property int textAlignment: columnItem.horizontalAlignment
+                                readonly property bool selected: rowitem.itemSelected
+                                readonly property color textColor: rowitem.itemTextColor
+                                readonly property string role: columnItem.role
+                                readonly property var value: (itemModel && itemModel.hasOwnProperty(role))
+                                                             ? itemModel[role] // Qml ListModel and QAbstractItemModel
+                                                             : modelData && modelData.hasOwnProperty(role)
+                                                               ? modelData[role] // QObjectList / QObject
+                                                               : modelData != undefined ? modelData : "" // Models without role
+                            }
                         }
                     }
                 }
@@ -886,7 +930,7 @@ ScrollView {
 
                     delegate: Item {
                         z:-index
-                        width: columnCount == 1 ? viewport.width + __verticalScrollBar.width : modelData.width
+                        width: columnCount === 1 ? viewport.width + __verticalScrollBar.width : modelData.width
                         implicitWidth: headerStyle.implicitWidth
                         visible: modelData.visible
                         height: headerVisible ? headerStyle.height : 0
@@ -908,7 +952,7 @@ ScrollView {
                             id: targetmark
                             width: parent.width
                             height:parent.height
-                            opacity: (index == repeater.targetIndex && repeater.targetIndex != repeater.dragIndex) ? 0.5 : 0
+                            opacity: (index === repeater.targetIndex && repeater.targetIndex !== repeater.dragIndex) ? 0.5 : 0
                             Behavior on opacity { NumberAnimation{duration:160}}
                             color: palette.highlight
                             visible: modelData.movable
@@ -920,8 +964,8 @@ ScrollView {
                             hoverEnabled: true
                             anchors.fill: parent
                             onClicked: {
-                                if (sortIndicatorColumn == index)
-                                    sortIndicatorOrder = sortIndicatorOrder == Qt.AscendingOrder ? Qt.DescendingOrder : Qt.AscendingOrder
+                                if (sortIndicatorColumn === index)
+                                    sortIndicatorOrder = sortIndicatorOrder === Qt.AscendingOrder ? Qt.DescendingOrder : Qt.AscendingOrder
                                 sortIndicatorColumn = index
                             }
                             // Here we handle moving header sections
@@ -944,11 +988,11 @@ ScrollView {
                             }
 
                             onReleased: {
-                                if (repeater.targetIndex >= 0 && repeater.targetIndex != index ) {
+                                if (repeater.targetIndex >= 0 && repeater.targetIndex !== index ) {
                                     var targetColumn = columnModel.get(repeater.targetIndex).columnItem
                                     if (targetColumn.movable) {
                                         columnModel.move(index, repeater.targetIndex, 1)
-                                        if (sortIndicatorColumn == index)
+                                        if (sortIndicatorColumn === index)
                                             sortIndicatorColumn = repeater.targetIndex
                                     }
                                 }
@@ -991,7 +1035,6 @@ ScrollView {
                                 var newHeaderWidth = modelData.width + (mouseX - offset)
                                 modelData.width = Math.max(minimumSize, newHeaderWidth)
                             }
-                            property bool found:false
 
                             onDoubleClicked: getColumn(index).resizeToContents()
                             onPressedChanged: if (pressed) offset=mouseX

@@ -103,6 +103,7 @@ Style {
             properties: { "hasFrame" : true, "orientation": orientation, "tabpos": tabpos, "selectedpos": selectedpos }
             hints: control.styleHints
 
+            enabled: styleData.enabled
             selected: styleData.selected
             text: elidedText(styleData.title, tabbarItem.elide, item.width - item.tabHSpace)
             hover: styleData.hovered
