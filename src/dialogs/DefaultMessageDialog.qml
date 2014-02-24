@@ -69,6 +69,10 @@ AbstractMessageDialog {
                 case Qt.Key_C:
                     detailedText.copy()
                     break
+                case Qt.Key_Period:
+                    if (Qt.platform.os === "osx")
+                        reject()
+                    break
             } else switch (event.key) {
                 case Qt.Key_Escape:
                 case Qt.Key_Back:

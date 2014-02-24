@@ -58,6 +58,28 @@
 
 QT_BEGIN_NAMESPACE
 
+class QCloseableMessageBox : public QMessageBox
+{
+public:
+    QCloseableMessageBox(QWidget *parent = 0) : QMessageBox(parent) { }
+
+    void closeEvent(QCloseEvent *e) {
+        // QTBUG-36227: Bypass QMessageBox::closeEvent()
+        QDialog::closeEvent(e);
+    }
+
+    void keyPressEvent(QKeyEvent *e) {
+        QMessageBox::keyPressEvent(e);
+        // QTBUG-36227: reject on escape or cmd-period even if there's no cancel button
+        if ((isVisible() && e->key() == Qt::Key_Escape)
+#ifdef Q_OS_MAC
+            || (e->modifiers() == Qt::ControlModifier && e->key() == Qt::Key_Period)
+#endif
+                )
+            reject();
+    }
+};
+
 class QMessageBoxHelper : public QPlatformMessageDialogHelper
 {
     Q_OBJECT
@@ -93,7 +115,7 @@ public:
 
     virtual void hide() { m_dialog.hide(); }
 
-    QMessageBox m_dialog;
+    QCloseableMessageBox m_dialog;
 
 public Q_SLOTS:
     void buttonClicked(QAbstractButton* button) {
