@@ -222,6 +222,7 @@ FocusScope {
                     readonly property alias enabled: tabitem.enabled
                     readonly property bool activeFocus: tabbar.activeFocus
                     readonly property real availableWidth: tabbar.availableWidth
+                    readonly property real totalWidth: tabrow.contentWidth
                 }
 
                 sourceComponent: loader.item ? loader.item.tab : null
