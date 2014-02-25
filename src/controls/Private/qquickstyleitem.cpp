@@ -345,6 +345,7 @@ void QQuickStyleItem::initStyleOption()
 
         QStyleOptionHeader *opt = qstyleoption_cast<QStyleOptionHeader*>(m_styleoption);
         opt->text = text();
+        opt->textAlignment = static_cast<Qt::AlignmentFlag>(m_properties.value("textalignment").toInt());
         opt->sortIndicator = activeControl() == "down" ?
                     QStyleOptionHeader::SortDown
                   : activeControl() == "up" ?

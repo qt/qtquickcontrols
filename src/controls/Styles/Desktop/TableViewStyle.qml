@@ -75,7 +75,7 @@ ScrollViewStyle {
         text: styleData.value
         hover: styleData.containsMouse
         hints: control.styleHints
-        properties: {"headerpos": headerPosition}
+        properties: {"headerpos": headerPosition, "textalignment": styleData.textAlignment}
         property string itemSort:  (control.sortIndicatorVisible && styleData.column === control.sortIndicatorColumn) ? (control.sortIndicatorOrder == Qt.AscendingOrder ? "up" : "down") : "";
         property string headerPosition: control.columnCount === 1 ? "only" :
                                                           styleData.column === control.columnCount-1 ? "end" :

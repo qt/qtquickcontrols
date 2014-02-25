@@ -87,7 +87,7 @@ ScrollViewStyle {
             id: textItem
             anchors.fill: parent
             verticalAlignment: Text.AlignVCenter
-            horizontalAlignment: Text.AlignLeft
+            horizontalAlignment: styleData.textAlignment
             anchors.leftMargin: 12
             text: styleData.value
             elide: Text.ElideRight
