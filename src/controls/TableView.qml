@@ -873,7 +873,7 @@ ScrollView {
                             sourceComponent: columnItem.delegate ? columnItem.delegate : itemDelegate
 
                             // these properties are exposed to the item delegate
-                            readonly property var model: listView.model
+                            readonly property var model: itemModel
                             readonly property var modelData: itemModelData
 
                             property QtObject styleData: QtObject {
