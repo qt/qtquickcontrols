@@ -58,6 +58,7 @@ TestCase {
         var test_control = 'import QtQuick 2.1; \
         import QtQuick.Controls 1.1;            \
         ApplicationWindow {                     \
+            visible: true;                      \
             width: 100; height: 100;            \
             property alias contentArea: rect;   \
             statusBar: StatusBar {              \
@@ -80,17 +81,17 @@ TestCase {
         }                                       '
 
         var window = Qt.createQmlObject(test_control, container, '')
-        wait(0)
         var contentArea = window.contentArea
+        waitForRendering(contentArea)
         var oldHeight = contentArea.height
         compare(contentArea.height, 100)
         window.statusBar.visible = true
-        wait(0)
+        waitForRendering(window.statusBar)
         verify(contentArea.height < oldHeight)
 
         oldHeight = contentArea.height;
         window.toolBar.visible = true
-        wait(0)
+        waitForRendering(window.toolBar)
         verify(contentArea.height < oldHeight)
         window.destroy()
     }
