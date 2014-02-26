@@ -216,14 +216,9 @@ Control {
     MouseArea {
         id: mouseArea
 
+        anchors.fill: parent
         hoverEnabled: true
-        anchors.centerIn: parent
-
         preventStealing: true
-
-        width: parent.width
-        height: parent.height
-
         property int clickOffset: 0
 
         function clamp ( val ) {
