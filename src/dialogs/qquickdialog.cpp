@@ -212,7 +212,7 @@ void QQuickDialog::click(QPlatformDialogHelper::StandardButton button, QPlatform
         emit reset();
         break;
     default:
-        qWarning("unhandled MessageDialog button %d with role %ld", button, role);
+        qWarning("unhandled MessageDialog button %d with role %d", (int)button, (int)role);
     }
 }
 
