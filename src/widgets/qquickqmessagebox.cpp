@@ -134,8 +134,8 @@ QPlatformDialogHelper *QQuickQMessageBox::helper()
         // dismissed by closing the window rather than by one of its button widgets.
         connect(helper, SIGNAL(accept()), this, SLOT(accept()));
         connect(helper, SIGNAL(reject()), this, SLOT(reject()));
-        connect(helper, SIGNAL(clicked(QMessageDialogOptions::StandardButton,QMessageDialogOptions::ButtonRole)),
-            this, SLOT(click(QMessageDialogOptions::StandardButton,QMessageDialogOptions::ButtonRole)));
+        connect(helper, SIGNAL(clicked(QPlatformDialogHelper::StandardButton,QPlatformDialogHelper::ButtonRole)),
+            this, SLOT(click(QPlatformDialogHelper::StandardButton,QPlatformDialogHelper::ButtonRole)));
     }
 
     return QQuickAbstractMessageDialog::m_dlgHelper;
