@@ -168,5 +168,43 @@ TestCase {
         }
     }
 
+    function test_minimumSizeLargerThan_MaximumSize() {
+        var test_control = 'import QtQuick 2.1; \
+        import QtQuick.Controls 1.1;            \
+        import QtQuick.Layouts 1.1;             \
+        ApplicationWindow {                     \
+            minimumWidth: 200;                  \
+            maximumWidth: 200;                  \
+            minimumHeight: 200;                 \
+            maximumHeight: 200;                 \
+            Rectangle {                         \
+                implicitWidth: 1;               \
+                implicitHeight: 20;             \
+            }                                   \
+        }                                       '
+
+        var window = Qt.createQmlObject(test_control, container, '')
+        window.visible = true
+        wait(0)
+        // The following two calls will set the min,max range to be invalid
+        // this should *not* produce a warning
+        compare(window.height, 200)
+        window.maximumHeight -= 10
+        window.minimumHeight += 10
+        // Restore min,max range back to sane values
+        window.maximumHeight += 20
+        compare(window.height, 210)
+
+        // Do the same test for width
+        compare(window.width, 200)
+        window.maximumWidth-= 10
+        window.minimumWidth+= 10
+        // Restore back to sane values
+        window.maximumWidth += 20
+        compare(window.width, 210)
+
+        window.destroy()
+    }
+
 }
 }

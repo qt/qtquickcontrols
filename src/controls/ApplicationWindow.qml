@@ -149,8 +149,24 @@ Window {
     */
     readonly property real __qwindowsize_max: (1 << 24) - 1
 
-    width: contentArea.__noImplicitWidthGiven ? 0 : Math.min(Math.max(minimumWidth, contentArea.implicitWidth), maximumWidth)
-    height: contentArea.__noImplicitHeightGiven ? 0 : Math.min(Math.max(minimumHeight, contentArea.implicitHeight + __topBottomMargins), maximumHeight)
+    /*! \internal */
+    property real __width: 0
+    Binding {
+        target: root
+        property: "__width"
+        when: root.minimumWidth <= root.maximumWidth
+        value: Math.max(Math.min(root.maximumWidth, contentArea.implicitWidth), root.minimumWidth)
+    }
+    /*! \internal */
+    property real __height: 0
+    Binding {
+        target: root
+        property: "__height"
+        when: root.minimumHeight <= root.maximumHeight
+        value: Math.max(Math.min(root.maximumHeight, contentArea.implicitHeight), root.minimumHeight)
+    }
+    width: contentArea.__noImplicitWidthGiven ? 0 : __width
+    height: contentArea.__noImplicitHeightGiven ? 0 : __height
 
     minimumWidth: contentArea.__noMinimumWidthGiven ? 0 : contentArea.minimumWidth
     minimumHeight: contentArea.__noMinimumHeightGiven ? 0 : (contentArea.minimumHeight + __topBottomMargins)
