@@ -1534,6 +1534,15 @@ void QQuickStyleItem::paint(QPainter *painter)
         painter->setPen(pen);
     }    break;
     case SpinBox:
+#ifdef Q_OS_MAC
+        // macstyle depends on the embedded qlineedit to fill the editfield background
+        if (style() == "mac") {
+            QRect editRect = qApp->style()->subControlRect(QStyle::CC_SpinBox,
+                                                           qstyleoption_cast<QStyleOptionComplex*>(m_styleoption),
+                                                           QStyle::SC_SpinBoxEditField);
+            painter->fillRect(editRect.adjusted(-1, -1, 1, 1), m_styleoption->palette.base());
+        }
+#endif
         qApp->style()->drawComplexControl(QStyle::CC_SpinBox,
                                           qstyleoption_cast<QStyleOptionComplex*>(m_styleoption),
                                           painter);
