@@ -83,7 +83,7 @@ Item {
         Button {
             anchors.margins: 20
             style: touchStyle
-            text: "Dont press me"
+            text: "Don't press me"
             onClicked: if (stackView) stackView.pop()
         }
 
