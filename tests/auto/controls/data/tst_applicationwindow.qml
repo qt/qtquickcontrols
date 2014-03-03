@@ -122,13 +122,13 @@ TestCase {
                         expected: {implicitHeight: 0} },
                 { tag: "minimum_implicit_maximum_anchorsFill",
                         input: {anchorsFill: true, Layout_minimumHeight: 10, implicitHeight: 100, Layout_maximumHeight: 150},
-                        expected: {minimumHeight: 10, implicitHeight: 100, maximumHeight: 150} },
+                        expected: {minimumHeight: 10, implicitHeight: 100, maximumHeight: Number.POSITIVE_INFINITY} },
                 { tag: "minimum_implicit_maximum_anchorsFill_margins",
                         input: {anchorsFill: true, anchors_margins: 20, Layout_minimumHeight: 10, implicitHeight: 100, Layout_maximumHeight: 150},
-                        expected: {minimumHeight: 50, implicitHeight: 140, maximumHeight: 190} },
+                        expected: {minimumHeight: 50, implicitHeight: 140, maximumHeight: Number.POSITIVE_INFINITY} },
                 { tag: "minimum_height_maximum_anchorsFill",
                         input: {anchorsFill: true, Layout_minimumHeight: 0, height: 100, Layout_maximumHeight: 150},
-                        expected: {minimumHeight: 0, implicitHeight: 0, maximumHeight: 150} },
+                        expected: {minimumHeight: 0, implicitHeight: 0, maximumHeight: Number.POSITIVE_INFINITY} },
                ];
     }
     function test_defaultContentItemConstraints(data) {
@@ -203,6 +203,35 @@ TestCase {
         window.maximumWidth += 20
         compare(window.width, 210)
 
+        window.destroy()
+    }
+
+    function test_defaultSizeHints() {
+        var test_control = 'import QtQuick 2.1; \
+        import QtQuick.Controls 1.1;            \
+        import QtQuick.Layouts 1.1;             \
+        ApplicationWindow {                     \
+            Rectangle {                         \
+                anchors.fill: parent;           \
+                Layout.minimumWidth: 250;       \
+                Layout.minimumHeight: 250;      \
+                implicitWidth: 300;             \
+                implicitHeight: 300;            \
+                Layout.maximumWidth: 350;       \
+                Layout.maximumHeight: 350;      \
+            }                                   \
+        }                                       '
+
+        var window = Qt.createQmlObject(test_control, container, '')
+        window.visible = true
+        waitForRendering(window.contentItem)
+        compare(window.minimumWidth, 250)
+        compare(window.minimumHeight, 250)
+        compare(window.width, 300)
+        compare(window.height, 300)
+        var maxLimit = Math.pow(2,24)-1
+        compare(window.maximumWidth, maxLimit)
+        compare(window.maximumHeight, maxLimit)
         window.destroy()
     }
 
