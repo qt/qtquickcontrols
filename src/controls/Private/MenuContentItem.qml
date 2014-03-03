@@ -216,7 +216,12 @@ Loader {
                 onTriggered: menuItemLoader.__showSubMenu(true)
             }
 
-            function __closeSubMenu() { closeMenuTimer.start() }
+            function __closeSubMenu() {
+                if (openMenuTimer.running)
+                    openMenuTimer.stop()
+                else if (__menuItem.__popupVisible)
+                    closeMenuTimer.start()
+            }
 
             Timer {
                 id: closeMenuTimer
