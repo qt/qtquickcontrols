@@ -54,10 +54,6 @@ Style {
     property Component frame: StyleItem {
         elementType: "menu"
 
-        contentWidth: parent ? Math.round(parent.contentWidth) : 0
-        contentHeight: parent ? Math.round(parent.contentHeight) : 0
-        width: implicitWidth + 2 * (pixelMetric("menuhmargin") + pixelMetric("menupanelwidth"))
-        height: implicitHeight + 2 * (pixelMetric("menuvmargin") + pixelMetric("menupanelwidth"))
         Rectangle {
             visible: anchors.margins > 0
             anchors {
@@ -69,16 +65,15 @@ Style {
 
         Accessible.role: Accessible.PopupMenu
 
-        Binding {
-            target: styleRoot
-            property: "submenuOverlap"
-            value: 2 * pixelMetric("menupanelwidth")
-        }
-
-        Binding {
-            target: styleRoot
-            property: "margin"
-            value: pixelMetric("menuvmargin") + pixelMetric("menupanelwidth")
+        Component.onCompleted: {
+            var menuHMargin = pixelMetric("menuhmargin")
+            var menuVMargin = pixelMetric("menuvmargin")
+            var menuPanelWidth = pixelMetric("menupanelwidth")
+            styleRoot.padding.left = menuHMargin + menuPanelWidth
+            styleRoot.padding.right = menuHMargin + menuPanelWidth
+            styleRoot.padding.top = menuVMargin + menuPanelWidth
+            styleRoot.padding.bottom = menuVMargin + menuPanelWidth
+            styleRoot.submenuOverlap = 2 * menuPanelWidth
         }
 
         // ### The Screen attached property can only be set on an Item,
