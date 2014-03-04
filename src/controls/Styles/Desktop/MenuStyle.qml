@@ -49,6 +49,7 @@ Style {
     property string __menuItemType: "menuitem"
 
     property int submenuOverlap: 0
+    property int submenuPopupDelay: 0
     property int __maxPopupHeight: 0
 
     property Component frame: StyleItem {
@@ -74,6 +75,7 @@ Style {
             styleRoot.padding.top = menuVMargin + menuPanelWidth
             styleRoot.padding.bottom = menuVMargin + menuPanelWidth
             styleRoot.submenuOverlap = 2 * menuPanelWidth
+            styleRoot.submenuPopupDelay = styleHint("submenupopupdelay")
         }
 
         // ### The Screen attached property can only be set on an Item,

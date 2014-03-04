@@ -212,7 +212,7 @@ Loader {
 
             Timer {
                 id: openMenuTimer
-                interval: 50
+                interval: d.style.submenuPopupDelay
                 onTriggered: menuItemLoader.__showSubMenu(true)
             }
 

@@ -93,6 +93,9 @@ Style {
     /*! The amount of pixels by which a submenu popup overlaps horizontally its parent menu. */
     property int submenuOverlap: 1
 
+    /*! The number of milliseconds to wait before opening a submenu. */
+    property int submenuPopupDelay: 200
+
     /*! Returns a rich-text string to render mnemonics for a given menu item.
 
         The mnemonic character is prefixed by an ampersand in the original string.

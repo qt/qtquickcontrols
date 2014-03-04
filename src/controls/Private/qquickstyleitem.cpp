@@ -1145,9 +1145,11 @@ QVariant QQuickStyleItem::styleHint(const QString &metric)
         return qApp->style()->styleHint(QStyle::SH_ScrollBar_LeftClickAbsolutePosition);
     else if (metric == "activateItemOnSingleClick")
         return qApp->style()->styleHint(QStyle::SH_ItemView_ActivateItemOnSingleClick);
+    else if (metric == "submenupopupdelay")
+        return qApp->style()->styleHint(QStyle::SH_Menu_SubMenuPopupDelay, m_styleoption);
     return 0;
 
-    // Add SH_Menu_SpaceActivatesItem, SH_Menu_SubMenuPopupDelay
+    // Add SH_Menu_SpaceActivatesItem
 }
 
 void QQuickStyleItem::setHints(const QVariantMap &str)
