@@ -929,6 +929,7 @@ ScrollView {
                     model: columnModel
 
                     delegate: Item {
+                        id: headerRowDelegate
                         z:-index
                         width: columnCount === 1 ? viewport.width + __verticalScrollBar.width : modelData.width
                         implicitWidth: headerStyle.implicitWidth
@@ -974,7 +975,7 @@ ScrollView {
                             onPositionChanged: {
                                 if (modelData.movable && pressed && columnCount > 1) { // only do this while dragging
                                     for (var h = columnCount-1 ; h >= 0 ; --h) {
-                                        if (drag.target.x > headerrow.children[h].x) {
+                                        if (drag.target.x + listView.contentX + headerRowDelegate.width/2 > headerrow.children[h].x) {
                                             repeater.targetIndex = h
                                             break
                                         }
@@ -984,7 +985,6 @@ ScrollView {
 
                             onPressed: {
                                 repeater.dragIndex = index
-                                draghandle.x = parent.x
                             }
 
                             onReleased: {
@@ -1012,8 +1012,8 @@ ScrollView {
                                 readonly property int column: index
                                 readonly property int textAlignment: modelData.horizontalAlignment
                             }
-
                             parent: tableHeader
+                            x: headerRowDelegate.x - listView.contentX
                             width: modelData.width
                             height: parent.height
                             sourceComponent: root.headerDelegate
