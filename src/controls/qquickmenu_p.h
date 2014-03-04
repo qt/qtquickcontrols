@@ -74,6 +74,7 @@ class QQuickMenu : public QQuickMenuText
     Q_PROPERTY(qreal __xOffset READ xOffset WRITE setXOffset)
     Q_PROPERTY(qreal __yOffset READ yOffset WRITE setYOffset)
     Q_PROPERTY(QQuickAction *__action READ action CONSTANT)
+    Q_PROPERTY(QRect __popupGeometry READ popupGeometry NOTIFY __popupGeometryChanged)
 
 public:
     Q_INVOKABLE void popup();
@@ -99,6 +100,7 @@ Q_SIGNALS:
     void __selectedIndexChanged();
     void __menuClosed();
     void popupVisibleChanged();
+    void __popupGeometryChanged();
     void menuContentItemChanged();
     void minimumWidthChanged();
 
@@ -133,6 +135,8 @@ public:
     bool popupVisible() const { return m_popupVisible; }
 
     bool isNative() { return m_platformMenu != 0; }
+
+    QRect popupGeometry() const;
 
 protected Q_SLOTS:
     void updateSelectedIndex();

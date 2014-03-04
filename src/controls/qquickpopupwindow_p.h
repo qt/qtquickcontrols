@@ -70,6 +70,7 @@ public Q_SLOTS:
 
 Q_SIGNALS:
     void popupDismissed();
+    void geometryChanged();
 
 protected:
     void mousePressEvent(QMouseEvent *);
