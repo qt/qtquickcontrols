@@ -11,6 +11,6 @@
 #
 %dependencies = (
     "qtbase" => "ca4b9f624a41aa656e1d336ea48ec50fe53fa17e",
-    "qtdeclarative" => "",
+    "qtdeclarative" => "75b191b31d9936b134ca9776f1e69e891d03be11",
     "qtxmlpatterns" => "",
 );
