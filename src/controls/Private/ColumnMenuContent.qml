@@ -69,22 +69,62 @@ Item {
     readonly property bool shouldUseScrollers: scrollView.style === emptyScrollerStyle && itemsModel.length > fittingItems
     readonly property real upScrollerHeight: upScroller.visible ? upScroller.height : 0
     readonly property real downScrollerHeight: downScroller.visible ? downScroller.height : 0
+    property var oldMousePos: undefined
+    property var openedSubmenu: null
 
     function updateCurrentItem(mouse) {
         var pos = mapToItem(list.contentItem, mouse.x, mouse.y)
+        var dx = 0
+        var dy = 0
+        var dist = 0
+        var angle = 0
+        if (openedSubmenu && oldMousePos !== undefined) {
+            dx = mouse.x - oldMousePos.x
+            dy = mouse.y - oldMousePos.y
+            dist = Math.sqrt(dx * dx + dy * dy)
+        }
+        oldMousePos = mouse
+        if (dist > 10) {
+            angle = Math.atan2(dy, dx)
+            if (openedSubmenu.__popupGeometry.x < __menu.__popupGeometry.x)
+                angle = Math.PI - angle // Submenu opened on the left side
+            if (-Math.PI / 10 < angle && angle < Math.PI / 4) {
+                sloppyTimer.start()
+                return
+            }
+        }
+
         if (!currentItem || !currentItem.contains(Qt.point(pos.x - currentItem.x, pos.y - currentItem.y))) {
             if (currentItem && !hoverArea.pressed
-                && currentItem.styleData.type === MenuItemType.Menu)
+                && currentItem.styleData.type === MenuItemType.Menu) {
                 currentItem.__closeSubMenu()
+                openedSubmenu = null
+            }
             currentItem = list.itemAt(pos.x, pos.y)
             if (currentItem) {
                 __menu.__currentIndex = currentItem.__menuItemIndex
                 if (currentItem.styleData.type === MenuItemType.Menu
-                    && !currentItem.__menuItem.__popupVisible)
+                    && !currentItem.__menuItem.__popupVisible) {
                     currentItem.__showSubMenu(false)
+                    openedSubmenu = currentItem.__menuItem
+                }
             } else {
                 __menu.__currentIndex = -1
             }
+        }
+    }
+
+    Timer {
+        id: sloppyTimer
+        interval: 500
+
+        // Stop timer as soon as we hover one of the submenu items
+        property int currentIndex: openedSubmenu ? openedSubmenu.__currentIndex : -1
+        onCurrentIndexChanged: if (currentIndex !== -1) stop()
+
+        onTriggered: {
+            if (openedSubmenu && openedSubmenu.__currentIndex === -1)
+                updateCurrentItem(oldMousePos)
         }
     }
 
@@ -130,7 +170,7 @@ Item {
         hoverEnabled: true
         acceptedButtons: Qt.AllButtons
 
-        onPositionChanged: updateCurrentItem(mouse)
+        onPositionChanged: updateCurrentItem({ "x": mouse.x, "y": mouse.y })
         onReleased: content.triggered(currentItem)
         onExited: {
             if (currentItem && !currentItem.__menuItem.__popupVisible) {
