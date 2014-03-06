@@ -49,7 +49,10 @@ import QtQuick.Controls.Private 1.0
     \ingroup controls
     \brief Provides a drop-down list functionality.
 
-    Add items to the comboBox by assigning it a ListModel, or a list of strings to the \l model property.
+    \image combobox.png
+
+    Add items to the ComboBox by assigning it a ListModel, or a list of strings
+    to the \l model property.
 
     \qml
        ComboBox {

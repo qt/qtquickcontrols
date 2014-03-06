@@ -142,6 +142,38 @@ void QQuickMenuBase::setVisualItem(QQuickItem *item)
     \ingroup menus
     \brief MenuSeparator provides a separator for items inside a menu.
 
+    \image menu.png
+
+    \code
+    Menu {
+        text: "Edit"
+
+        MenuItem {
+            text: "Cut"
+            shortcut: "Ctrl+X"
+            onTriggered: ...
+        }
+
+        MenuItem {
+            text: "Copy"
+            shortcut: "Ctrl+C"
+            onTriggered: ...
+        }
+
+        MenuItem {
+            text: "Paste"
+            shortcut: "Ctrl+V"
+            onTriggered: ...
+        }
+        MenuSeparator { }
+        MenuItem {
+            text: "Do Nothing"
+            shortcut: "Ctrl+E,Shift+Ctrl+X"
+            enabled: false
+        }
+    }
+    \endcode
+
     \sa Menu, MenuItem
 */
 
@@ -258,6 +290,8 @@ void QQuickMenuText::updateIcon()
     \ingroup menus
     \inqmlmodule QtQuick.Controls
     \brief MenuItem provides an item to add in a menu or a menu bar.
+
+    \image menu.png
 
     \code
     Menu {

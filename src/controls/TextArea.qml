@@ -48,12 +48,18 @@ import QtQuick.Controls.Private 1.0
     \ingroup controls
     \brief Displays multiple lines of editable formatted text.
 
+    \image textarea.png
+
     It can display both plain and rich text. For example:
 
     \qml
     TextArea {
         width: 240
-        text: "<b>Hello</b> <i>World!</i>"
+        text:
+            "Lorem ipsum dolor sit amet, consectetur adipisicing elit, " +
+            "sed do eiusmod tempor incididunt ut labore et dolore magna " +
+            "aliqua. Ut enim ad minim veniam, quis nostrud exercitation " +
+            "ullamco laboris nisi ut aliquip ex ea commodo cosnsequat. ";
     }
     \endqml
 

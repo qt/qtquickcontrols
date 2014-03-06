@@ -49,6 +49,8 @@ import QtQuick.Controls.Private 1.0
     \ingroup applicationwindow
     \brief Contains ToolButton and related controls.
 
+    \image toolbar.png
+
     The common way of using ToolBar is in relation to \l ApplicationWindow. It
     provides styling and is generally designed to work well with ToolButton as
     well as other controls.
@@ -61,15 +63,26 @@ import QtQuick.Controls.Private 1.0
     Otherwise the height is platform dependent.
 
     \code
-    import QtQuick.Controls 1.2
-    import QtQuick.Layouts 1.0
-
     ApplicationWindow {
-        toolBar: ToolBar {
+        ...
+        toolBar:ToolBar {
             RowLayout {
-                ToolButton { ... }
-                ToolButton { ... }
-                ToolButton { ... }
+                anchors.fill: parent
+                ToolButton {
+                    iconSource: "new.png"
+                }
+                ToolButton {
+                    iconSource: "open.png"
+                }
+                ToolButton {
+                    iconSource: "save-as.png"
+                }
+                Item { Layout.fillWidth: true }
+                CheckBox {
+                    text: "Enabled"
+                    checked: true
+                    Layout.alignment: Qt.AlignRight
+                }
             }
         }
     }

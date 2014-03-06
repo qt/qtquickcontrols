@@ -49,7 +49,10 @@ import QtQuick.Controls.Private 1.0
     \ingroup controls
     \brief A switch.
 
-    A Switch is an option button that can be switched on (checked) or off
+    \image switch.png
+    \caption On and Off states of a Switch.
+
+    A Switch is a toggle button that can be switched on (checked) or off
     (unchecked). Switches are typically used to represent features in an
     application that can be enabled or disabled without affecting others.
 

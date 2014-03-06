@@ -49,10 +49,18 @@ import QtQuick.Controls.Private 1.0
     \ingroup controls
     \brief Displays a single line of editable plain text.
 
+    \image textfield.png
+
     TextField is used to accept a line of text input. Input constraints can be
     placed on a TextField item (for example, through a \l validator or \l
     inputMask). Setting \l echoMode to an appropriate value enables
     TextField to be used for a password input field.
+
+    \qml
+      TextField {
+          placeholderText: qsTr("Enter name")
+      }
+    \endqml
 
     You can create a custom appearance for a TextField by
     assigning a \l {QtQuick.Controls.Styles::TextFieldStyle}{TextFieldStyle}.

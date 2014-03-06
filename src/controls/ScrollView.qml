@@ -50,6 +50,8 @@ import QtQuick.Controls.Styles 1.1
     \ingroup views
     \brief Provides a scrolling view within another Item.
 
+    \image scrollview.png
+
     A ScrollView can be used either to replace a \l Flickable or decorate an
     existing \l Flickable. Depending on the platform, it will add scroll bars and
     a content frame.

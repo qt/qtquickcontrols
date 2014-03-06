@@ -97,34 +97,32 @@ static bool isChecked(const QObject *o)
     }
     \endcode
 
-    Several controls already support ExclusiveGroup, e.g. \l Action, \l MenuItem, \l {QtQuick.Controls::}{Button}, and \l RadioButton.
+    Several controls already support ExclusiveGroup, e.g. \l Action,
+    \l MenuItem, \l {QtQuick.Controls::}{Button}, and \l RadioButton.
 
-    Since ExclusiveGroup only supports \l Action as child items, we need to manually assign the \c exclusiveGroup
-    property for other objects.
+    As ExclusiveGroup only supports \l Action as child items, we need to manually
+    assign the \c exclusiveGroup property for other objects.
 
     \code
-    ExclusiveGroup { id: textAlignmentGroup }
-
-    Menu {
-        MenuItem {
-            text: "Alignt Left"
-            checkable: true
-            exclusiveGroup: textAlignmentGroup
-        }
-        MenuItem {
-            text: "Alignt Right"
-            checkable: true
-            exclusiveGroup: textAlignmentGroup
-        }
-        MenuItem {
-            text: "Center"
-            checkable: true
-            exclusiveGroup: textAlignmentGroup
-        }
-        MenuItem {
-            text: "Justify"
-            checkable: true
-            exclusiveGroup: textAlignmentGroup
+    GroupBox {
+        id: group2
+        title: qsTr("Tab Position")
+        Layout.fillWidth: true
+        RowLayout {
+            ExclusiveGroup { id: tabPositionGroup }
+            RadioButton {
+                id: topButton
+                text: qsTr("Top")
+                checked: true
+                exclusiveGroup: tabPositionGroup
+                Layout.minimumWidth: 100
+            }
+            RadioButton {
+                id: bottomButton
+                text: qsTr("Bottom")
+                exclusiveGroup: tabPositionGroup
+                Layout.minimumWidth: 100
+            }
         }
     }
     \endcode

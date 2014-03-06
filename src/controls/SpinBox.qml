@@ -49,6 +49,8 @@ import QtQuick.Controls.Private 1.0
     \ingroup controls
     \brief Provides a spin box control.
 
+    \image spinbox.png
+
     SpinBox allows the user to choose a value by clicking the up or down buttons, or by
     pressing up or down on the keyboard. The user can also type the value in manually.
 

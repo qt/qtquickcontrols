@@ -58,6 +58,8 @@ QT_BEGIN_NAMESPACE
     \inqmlmodule QtQuick.Controls
     \brief Action provides an abstract user interface action that can be bound to items
 
+    \image menubar.png
+
     In applications many common commands can be invoked via menus, toolbar buttons, and keyboard
     shortcuts. Since the user expects each command to be performed in the same way, regardless of
     the user interface used, it is useful to represent each command as an \e action.
@@ -68,18 +70,11 @@ QT_BEGIN_NAMESPACE
 
     QtQuick Controls supports actions in \l {QtQuick.Controls::}{Button}, \l ToolButton, and \l MenuItem.
 
-    Example:
-    \qml
-        Action {
-            id: openAction
-            text: "&Open"
-            shortcut: "Ctrl+O"
-            iconSource: "images/document-open.png"
-            onTriggered: fileDialog.open()
-            tooltip: "Open an Image"
-        }
-    \endqml
-
+    \quotefromfile gallery/main.qml
+    \dots
+    \skipto Action
+    \printto SystemPalette
+    \dots
 */
 
 /*!
