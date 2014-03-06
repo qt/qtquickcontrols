@@ -57,8 +57,7 @@ AbstractDialog {
         property bool buttonsInSingleRow: contentItem.width >= buttonsRowImplicitWidth
         property real minimumHeight: implicitHeight
         property real minimumWidth: Screen.pixelDensity * 50
-        implicitHeight: contentItem.implicitHeight + spacing + outerSpacing * 2 +
-            (buttonsInSingleRow ? moreButton.implicitHeight : moreButton.implicitHeight * 2 + spacing)
+        implicitHeight: contentItem.implicitHeight + spacing + outerSpacing * 2 + buttonsRight.implicitHeight
         implicitWidth: Math.min(Screen.desktopAvailableWidth * 0.9, Math.max(
             contentItem.implicitWidth, buttonsRowImplicitWidth, Screen.pixelDensity * 50) + outerSpacing * 2);
         color: palette.window
@@ -103,7 +102,6 @@ AbstractDialog {
 
             Repeater {
                 model: standardButtonsLeftModel
-                onCountChanged: calculateImplicitWidth()
                 Button {
                     text: standardButtonsLeftModel[index].text
                     onClicked: root.click(standardButtonsLeftModel[index].standardButton)
@@ -130,7 +128,6 @@ AbstractDialog {
 
             Repeater {
                 model: standardButtonsRightModel
-                onCountChanged: calculateImplicitWidth()
                 // TODO maybe: insert gaps if the button requires it (destructive buttons only)
                 Button {
                     text: standardButtonsRightModel[index].text
@@ -140,7 +137,7 @@ AbstractDialog {
         }
     }
     function calculateImplicitWidth() {
-        if (buttonsRight.visibleChildren.length < 2)
+        if (standardButtonsRightModel.length < 2)
             return;
         var calcWidth = 0;
 
@@ -160,5 +157,6 @@ AbstractDialog {
             calculateForButton(i, buttonsLeft.visibleChildren[i])
         content.buttonsRowImplicitWidth = calcWidth + content.spacing
     }
+    onStandardButtonsChanged: calculateImplicitWidth()
     Component.onCompleted: calculateImplicitWidth()
 }
