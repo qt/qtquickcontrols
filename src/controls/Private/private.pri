@@ -53,6 +53,7 @@ PRIVATE_QML_FILES += \
     $$PWD/MenuContentItem.qml \
     $$PWD/MenuContentScroller.qml \
     $$PWD/ContentItem.qml \
+    $$PWD/HoverButton.qml \
     $$PWD/qmldir
 
 QML_FILES += $$PRIVATE_QML_FILES

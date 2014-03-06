@@ -46,9 +46,10 @@ import org.qtproject.examples.calendar 1.0
 ApplicationWindow {
     visible: true
     width: 640
-    height: 480
+    height: 400
     minimumWidth: 400
     minimumHeight: 300
+    color: "#f4f4f4"
 
     title: "Calendar Example"
 
@@ -65,7 +66,7 @@ ApplicationWindow {
         Rectangle {
             width: row.width * 0.4 - row.spacing / 2
             height: calendar.height
-
+            border.color: Qt.darker(color, 1.2)
             Column {
                 id: eventsPane
                 anchors.fill: parent
@@ -112,19 +113,32 @@ ApplicationWindow {
                         width: eventsListView.width
                         height: eventItemColumn.height
 
+                        Image {
+                            anchors.top: parent.top
+                            anchors.topMargin: 4
+                            width: 12
+                            height: width
+                            source: "qrc:/images/eventindicator.png"
+                        }
+
+                        Rectangle {
+                            width: parent.width
+                            height: 1
+                            color: "#eee"
+                        }
+
                         Column {
                             id: eventItemColumn
                             anchors.left: parent.left
-                            anchors.leftMargin: 4
+                            anchors.leftMargin: 20
                             anchors.right: parent.right
-                            height: timeLabel.height + nameLabel.height
+                            height: timeLabel.height + nameLabel.height + 8
 
                             Label {
                                 id: nameLabel
                                 width: parent.width
                                 wrapMode: Text.Wrap
                                 text: modelData.name
-                                font.pointSize: 12
                             }
                             Label {
                                 id: timeLabel
@@ -147,13 +161,29 @@ ApplicationWindow {
             focus: true
 
             style: CalendarStyle {
-                dayDelegate: Rectangle {
-                    color: styleData.date !== undefined && styleData.selected ? selectedDateColor : "white"
-                    readonly property color sameMonthDateTextColor: "black"
-                    readonly property color selectedDateColor: "#aaa"
+                dayDelegate: Item {
+                    readonly property color sameMonthDateTextColor: "#444"
+                    readonly property color selectedDateColor: Qt.platform.os === "osx" ? "#3778d0" : __syspal.highlight
                     readonly property color selectedDateTextColor: "white"
-                    readonly property color differentMonthDateTextColor: Qt.darker("darkgrey", 1.4)
+                    readonly property color differentMonthDateTextColor: "#bbb"
                     readonly property color invalidDatecolor: "#dddddd"
+
+                    Rectangle {
+                        anchors.fill: parent
+                        border.color: "transparent"
+                        color: styleData.date !== undefined && styleData.selected ? selectedDateColor : "transparent"
+                        anchors.margins: styleData.selected ? -1 : 0
+                    }
+
+                    Image {
+                        visible: eventModel.eventsForDate(styleData.date).length > 0
+                        anchors.top: parent.top
+                        anchors.left: parent.left
+                        anchors.margins: -1
+                        width: 12
+                        height: width
+                        source: "qrc:/images/eventindicator.png"
+                    }
 
                     Label {
                         id: dayDelegateText
@@ -171,17 +201,6 @@ ApplicationWindow {
                             }
                             color;
                         }
-                    }
-
-                    Rectangle {
-                        color: styleData.selected ? "white" : "red"
-                        width: 4
-                        height: width
-                        radius: width / 2
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        anchors.top: dayDelegateText.bottom
-                        anchors.topMargin: 2
-                        visible: eventModel.eventsForDate(styleData.date).length > 0
                     }
                 }
             }

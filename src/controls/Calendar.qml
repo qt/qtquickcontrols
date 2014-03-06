@@ -156,11 +156,12 @@ Control {
     }
 
     /*!
-        This property determines the visibility of the grid.
+        This property determines the visibility of the frame
+        surrounding the calendar.
 
         The default value is \c true.
     */
-    property bool gridVisible: true
+    property bool frameVisible: true
 
     /*!
         This property determines the visibility of week numbers.

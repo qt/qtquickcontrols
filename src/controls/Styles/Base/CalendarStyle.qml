@@ -77,9 +77,9 @@ import QtQuick.Controls.Private 1.0
     \qml
     Calendar {
         anchors.centerIn: parent
-        gridVisible: false
 
         style: CalendarStyle {
+            gridVisible: false
             dayDelegate: Rectangle {
                 gradient: Gradient {
                     GradientStop {
@@ -132,7 +132,14 @@ Style {
     /*!
         The color of the grid lines.
     */
-    property color gridColor: "#f0f0f0"
+    property color gridColor: "#d3d3d3"
+
+    /*!
+        This property determines the visibility of the grid.
+
+        The default value is \c true.
+    */
+    property bool gridVisible: true
 
     /*!
         \internal
@@ -165,18 +172,28 @@ Style {
         Styles the bar at the top of the calendar that contains the
         next month/previous month buttons and the selected date label.
     */
-    property Component navigationBar: Item {
-        height: 50
+    property Component navigationBar: Rectangle {
+        height: 41
+        color: "#f9f9f9"
 
-        Button {
+        Rectangle {
+            color: Qt.rgba(1,1,1,0.6)
+            height: 1
+            width: parent.width
+        }
+
+        Rectangle {
+            anchors.bottom: parent.bottom
+            height: 1
+            width: parent.width
+            color: "#ddd"
+        }
+        HoverButton {
             id: previousMonth
-            width: parent.height * 0.6
-            height: width
             anchors.left: parent.left
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.leftMargin: (parent.height - height) / 2
-            iconSource: "images/arrow-left.png"
-
+            width: parent.height
+            height: parent.height
+            source: "images/leftanglearrow.png"
             onClicked: control.showPreviousMonth()
         }
         Label {
@@ -192,15 +209,13 @@ Style {
             anchors.right: nextMonth.left
             anchors.rightMargin: 2
         }
-        Button {
+        HoverButton {
             id: nextMonth
-            width: parent.height * 0.6
+            width: parent.height
             height: width
-            anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
-            anchors.rightMargin: (parent.height - height) / 2
-            iconSource: "images/arrow-right.png"
-
+            anchors.right: parent.right
+            source: "images/rightanglearrow.png"
             onClicked: control.showNextMonth()
         }
     }
@@ -232,18 +247,20 @@ Style {
         \endtable
     */
     property Component dayDelegate: Rectangle {
-        color: styleData.date !== undefined && styleData.selected ? selectedDateColor : "white"/*"transparent"*/
-        readonly property color sameMonthDateTextColor: "black"
-        readonly property color selectedDateColor: __syspal.highlight
+        anchors.fill: parent
+        anchors.margins: styleData.selected ? -1 : 0
+        color: styleData.date !== undefined && styleData.selected ? selectedDateColor : "transparent"
+        readonly property color sameMonthDateTextColor: "#444"
+        readonly property color selectedDateColor: Qt.platform.os === "osx" ? "#3778d0" : __syspal.highlight
         readonly property color selectedDateTextColor: "white"
-        readonly property color differentMonthDateTextColor: Qt.darker("darkgrey", 1.4);
+        readonly property color differentMonthDateTextColor: "#bbb"
         readonly property color invalidDateColor: "#dddddd"
-
         Label {
             id: dayDelegateText
             text: styleData.date.getDate()
             anchors.centerIn: parent
             horizontalAlignment: Text.AlignRight
+            font.pixelSize: Math.min(parent.height/3, parent.width/3)
             color: {
                 var theColor = invalidDateColor;
                 if (styleData.valid) {
@@ -261,7 +278,7 @@ Style {
         The delegate that styles each weekday.
     */
     property Component dayOfWeekDelegate: Rectangle {
-        color: "white"
+        color: gridVisible ? "#fcfcfc" : "transparent"
         Label {
             text: control.__locale.dayName(styleData.dayOfWeek, control.dayOfWeekFormat)
             anchors.centerIn: parent
@@ -272,10 +289,10 @@ Style {
         The delegate that styles each week number.
     */
     property Component weekNumberDelegate: Rectangle {
-        color: "white"
         Label {
             text: styleData.weekNumber
             anchors.centerIn: parent
+            color: "#444"
         }
     }
 
@@ -295,8 +312,8 @@ Style {
         readonly property int columns: CalendarUtils.daysInAWeek
 
         // The combined available width and height to be shared amongst each cell.
-        readonly property real availableWidth: (viewContainer.width - (control.gridVisible ? __gridLineWidth : 0))
-        readonly property real availableHeight: (viewContainer.height - (control.gridVisible ? __gridLineWidth : 0))
+        readonly property real availableWidth: (viewContainer.width - (control.frameVisible ? 2 * __gridLineWidth : 0))
+        readonly property real availableHeight: (viewContainer.height - (control.frameVisible ? 2 * __gridLineWidth : 0))
 
         property int hoveredCellIndex: -1
         property int pressedCellIndex: -1
@@ -312,6 +329,7 @@ Style {
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.top: parent.top
+            anchors.margins: control.frameVisible ? 1 : 0
             sourceComponent: navigationBar
 
             property QtObject styleData: QtObject {
@@ -322,10 +340,9 @@ Style {
 
         Row {
             id: dayOfWeekHeaderRow
-            spacing: (control.gridVisible ? __gridLineWidth : 0)
             anchors.top: navigationBarLoader.bottom
             anchors.left: parent.left
-            anchors.leftMargin: (control.weekNumbersVisible ? weekNumbersItem.width : 0) + (control.gridVisible ? __gridLineWidth : 0)
+            anchors.leftMargin: (control.weekNumbersVisible ? weekNumbersItem.width : 0)
             anchors.right: parent.right
             height: dayOfWeekHeaderRowHeight
 
@@ -337,7 +354,7 @@ Style {
                 Loader {
                     id: dayOfWeekDelegateLoader
                     sourceComponent: dayOfWeekDelegate
-                    width: __cellRectAt(index).width - (control.gridVisible ? __gridLineWidth : 0)
+                    width: __cellRectAt(index).width
                     height: dayOfWeekHeaderRow.height
 
                     readonly property var __dayOfWeek: dayOfWeek
@@ -360,16 +377,15 @@ Style {
                 visible: control.weekNumbersVisible
                 width: 30
                 height: viewContainer.height
-
                 Repeater {
                     id: weekNumberRepeater
                     model: panelItem.weeksToShow
 
                     Loader {
                         id: weekNumberDelegateLoader
-                        y: __cellRectAt(index * panelItem.columns).y + (control.gridVisible ? __gridLineWidth : 0)
+                        y: __cellRectAt(index * panelItem.columns).y + (gridVisible ? __gridLineWidth : 0)
                         width: weekNumbersItem.width
-                        height: __cellRectAt(index * panelItem.columns).height - (control.gridVisible ? __gridLineWidth : 0)
+                        height: __cellRectAt(index * panelItem.columns).height - (control.frameVisible ? __gridLineWidth : 0)
                         sourceComponent: weekNumberDelegate
 
                         readonly property int __index: index
@@ -392,6 +408,17 @@ Style {
                         }
                     }
                 }
+                Rectangle {
+                    anchors.topMargin: - navigationBarLoader.height
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
+
+                    width: 1
+                    anchors.rightMargin: -1
+                    anchors.right: parent.right
+                    color: gridColor
+                }
+
             }
 
             // Contains the grid lines and the grid itself.
@@ -402,23 +429,23 @@ Style {
 
                 Repeater {
                     id: verticalGridLineRepeater
-                    model: panelItem.columns + 1
+                    model: panelItem.columns - 1
                     delegate: Rectangle {
                         // The last line will be an invalid index, so we must handle it
                         x: index < panelItem.columns
-                           ? __cellRectAt(index).x
-                           : __cellRectAt(panelItem.columns - 1).x + __cellRectAt(panelItem.columns - 1).width
+                           ? __cellRectAt(index + 1).x
+                           : __cellRectAt(panelItem.columns).x + __cellRectAt(panelItem.columns).width
                         y: 0
                         width: __gridLineWidth
                         height: viewContainer.height
                         color: gridColor
-                        visible: control.gridVisible
+                        visible: gridVisible
                     }
                 }
 
                 Repeater {
                     id: horizontalGridLineRepeater
-                    model: panelItem.rows + 1
+                    model: panelItem.rows
                     delegate: Rectangle {
                         x: 0
                         // The last line will be an invalid index, so we must handle it
@@ -428,7 +455,7 @@ Style {
                         width: viewContainer.width
                         height: __gridLineWidth
                         color: gridColor
-                        visible: control.gridVisible
+                        visible: gridVisible
                     }
                 }
 
@@ -549,11 +576,11 @@ Style {
                     delegate: Loader {
                         id: delegateLoader
 
-                        x: __cellRectAt(index).x + (control.gridVisible ? __gridLineWidth : 0)
-                        y: __cellRectAt(index).y + (control.gridVisible ? __gridLineWidth : 0)
-                        width: __cellRectAt(index).width - (control.gridVisible ? __gridLineWidth : 0)
-                        height: __cellRectAt(index).height - (control.gridVisible ? __gridLineWidth : 0)
-
+                        x: __cellRectAt(index).x + (gridVisible ? __gridLineWidth : 0)
+                        y: __cellRectAt(index).y + (gridVisible ? __gridLineWidth : 0)
+                        width: __cellRectAt(index).width - (gridVisible ? __gridLineWidth : 0)
+                        height: __cellRectAt(index).height - (gridVisible ? __gridLineWidth : 0)
+                        z: styleData.selected ? 1 : 0
                         sourceComponent: dayDelegate
 
                         readonly property int __index: index
@@ -579,5 +606,12 @@ Style {
                 }
             }
         }
+        Rectangle {
+            anchors.fill: parent
+            color: "transparent"
+            border.color: gridColor
+            visible: control.frameVisible
+        }
+
     }
 }
