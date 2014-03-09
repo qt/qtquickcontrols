@@ -41,6 +41,8 @@
 
 #include "qquickdialog_p.h"
 #include <QQuickItem>
+#include <QQmlEngine>
+#include <QStandardPaths>
 #include <private/qguiapplication_p.h>
 
 QT_BEGIN_NAMESPACE

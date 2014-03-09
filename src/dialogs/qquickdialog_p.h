@@ -54,6 +54,7 @@
 //
 
 #include "qquickabstractmessagedialog_p.h"
+#include <QJSValue>
 
 QT_BEGIN_NAMESPACE
 

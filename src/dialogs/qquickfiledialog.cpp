@@ -41,6 +41,7 @@
 
 #include "qquickfiledialog_p.h"
 #include <QQuickItem>
+#include <QQmlEngine>
 #include <private/qguiapplication_p.h>
 #include <private/qv4object_p.h>
 
