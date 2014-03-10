@@ -171,6 +171,7 @@ Item {
         acceptedButtons: Qt.AllButtons
 
         onPositionChanged: updateCurrentItem({ "x": mouse.x, "y": mouse.y })
+        onPressed: updateCurrentItem({ "x": mouse.x, "y": mouse.y })
         onReleased: content.triggered(currentItem)
         onExited: {
             if (currentItem && !currentItem.__menuItem.__popupVisible) {
