@@ -426,6 +426,7 @@ QQuickMenuItem::QQuickMenuItem(QObject *parent)
 
     connect(action(), SIGNAL(shortcutChanged(QVariant)), this, SLOT(updateShortcut()));
     connect(action(), SIGNAL(triggered()), this, SIGNAL(triggered()));
+    connect(action(), SIGNAL(checkableChanged()), this, SLOT(updateCheckable()));
     connect(action(), SIGNAL(toggled(bool)), this, SLOT(updateChecked()));
     if (platformItem())
         connect(platformItem(), SIGNAL(activated()), this, SLOT(trigger()), Qt::QueuedConnection);
@@ -457,7 +458,7 @@ void QQuickMenuItem::bindToAction(QQuickAction *action)
     connect(m_boundAction, SIGNAL(enabledChanged()), this, SLOT(updateEnabled()));
     connect(m_boundAction, SIGNAL(textChanged()), this, SLOT(updateText()));
     connect(m_boundAction, SIGNAL(shortcutChanged(QVariant)), this, SLOT(updateShortcut()));
-    connect(m_boundAction, SIGNAL(checkableChanged()), this, SIGNAL(checkableChanged()));
+    connect(m_boundAction, SIGNAL(checkableChanged()), this, SLOT(updateCheckable()));
     connect(m_boundAction, SIGNAL(iconNameChanged()), this, SLOT(updateIcon()));
     connect(m_boundAction, SIGNAL(iconNameChanged()), this, SIGNAL(iconNameChanged()));
     connect(m_boundAction, SIGNAL(iconSourceChanged()), this, SLOT(updateIcon()));
@@ -493,7 +494,7 @@ void QQuickMenuItem::unbindFromAction(QObject *o)
     disconnect(action, SIGNAL(enabledChanged()), this, SLOT(updateEnabled()));
     disconnect(action, SIGNAL(textChanged()), this, SLOT(updateText()));
     disconnect(action, SIGNAL(shortcutChanged(QVariant)), this, SLOT(updateShortcut()));
-    disconnect(action, SIGNAL(checkableChanged()), this, SIGNAL(checkableChanged()));
+    disconnect(action, SIGNAL(checkableChanged()), this, SLOT(updateCheckable()));
     disconnect(action, SIGNAL(iconNameChanged()), this, SLOT(updateIcon()));
     disconnect(action, SIGNAL(iconNameChanged()), this, SIGNAL(iconNameChanged()));
     disconnect(action, SIGNAL(iconSourceChanged()), this, SLOT(updateIcon()));
@@ -590,6 +591,16 @@ void QQuickMenuItem::setCheckable(bool checkable)
 {
     if (!m_boundAction)
         action()->setCheckable(checkable);
+}
+
+void QQuickMenuItem::updateCheckable()
+{
+    if (platformItem()) {
+        platformItem()->setCheckable(checkable());
+        syncWithPlatformMenu();
+    }
+
+    emit checkableChanged();
 }
 
 bool QQuickMenuItem::checked() const
