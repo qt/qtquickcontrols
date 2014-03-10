@@ -45,6 +45,8 @@
 #include <qqmlengine.h>
 #include <qdir.h>
 #include <QTouchDevice>
+#include <QGuiApplication>
+#include <QStyleHints>
 
 QT_BEGIN_NAMESPACE
 
@@ -173,6 +175,11 @@ qreal QQuickControlSettings::dpiScaleFactor() const
     return (qreal(qt_defaultDpiX()) / 96.0);
 #endif
     return 1.0;
+}
+
+qreal QQuickControlSettings::dragThreshold() const
+{
+    return qApp->styleHints()->startDragDistance();
 }
 
 
