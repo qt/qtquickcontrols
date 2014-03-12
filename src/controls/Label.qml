@@ -81,7 +81,7 @@ Text {
     */
 
     id: label
-    color: pal.text
+    color: pal.windowText
     activeFocusOnTab: false
     renderType: Text.NativeRendering
     SystemPalette {
