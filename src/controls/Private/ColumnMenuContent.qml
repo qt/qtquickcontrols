@@ -63,7 +63,19 @@ Item {
 
     readonly property int currentIndex: __menu.__currentIndex
     property Item currentItem: null
-    readonly property int itemHeight: (list.count > 0 && list.contentItem.children[0]) ? list.contentItem.children[0].height : 23
+    property int itemHeight: 23
+
+    Component.onCompleted: {
+        var children = list.contentItem.children
+        for (var i = 0; i < list.count; i++) {
+            var child = children[i]
+            if (child.visible && child.styleData.type === MenuItemType.Item) {
+                itemHeight = children[i].height
+                break
+            }
+        }
+    }
+
     readonly property int fittingItems: Math.floor((maxHeight - downScroller.height) / itemHeight)
     readonly property real fittedMaxHeight: itemHeight * fittingItems + downScroller.height
     readonly property bool shouldUseScrollers: scrollView.style === emptyScrollerStyle && itemsModel.length > fittingItems
