@@ -84,6 +84,8 @@ QT_BEGIN_NAMESPACE
         onAccepted: { console.log("accepted") }
     }
     \endqml
+
+    The corresponding handler is \c onAccepted.
 */
 
 /*!
@@ -91,6 +93,8 @@ QT_BEGIN_NAMESPACE
 
     The \a rejected signal is emitted when the user has dismissed the dialog,
     either by closing the dialog window or by pressing the Cancel button.
+
+    The corresponding handler is \c onRejected.
 */
 
 /*!

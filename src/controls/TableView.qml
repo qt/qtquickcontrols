@@ -255,6 +255,8 @@ ScrollView {
         \a row int provides access to the activated row index.
 
         \note This signal is only emitted for mouse interaction that is not blocked in the row or item delegate.
+
+        The corresponding handler is \c onActivated.
     */
     signal activated(int row)
 
@@ -265,6 +267,8 @@ ScrollView {
         \a row int provides access to the clicked row index.
 
         \note This signal is only emitted if the row or item delegate does not accept mouse events.
+
+        The corresponding handler is \c onClicked.
     */
     signal clicked(int row)
 
@@ -275,6 +279,8 @@ ScrollView {
         \a row int provides access to the clicked row index.
 
         \note This signal is only emitted if the row or item delegate does not accept mouse events.
+
+        The corresponding handler is \c onDoubleClicked.
     */
     signal doubleClicked(int row)
 

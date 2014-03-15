@@ -172,6 +172,8 @@ Control {
         the control loses focus. Note that if there is a validator
         set on the control and enter/return is pressed, this signal will
         only be emitted if the validator returns an acceptable state.
+
+        The corresponding handler is \c onEditingFinished.
     */
     signal editingFinished()
 

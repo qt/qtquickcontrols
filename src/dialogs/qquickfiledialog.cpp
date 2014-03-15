@@ -69,12 +69,16 @@ using namespace QV4;
     \qmlsignal QtQuick::Dialogs::AbstractFileDialog::accepted
 
     This signal is emitted by \l accept().
+
+    The corresponding handler is \c onAccepted.
 */
 
 /*!
     \qmlsignal QtQuick::Dialogs::AbstractFileDialog::rejected
 
     This signal is emitted by \l reject().
+
+    The corresponding handler is \c onRejected.
 */
 
 /*!

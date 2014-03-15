@@ -118,6 +118,8 @@ private:
         onAccepted: { console.log("Selected color: " + color) }
     }
     \endqml
+
+    The corresponding handler is \c onAccepted.
 */
 
 /*!
@@ -125,6 +127,8 @@ private:
 
     The \a rejected signal is emitted when the user has dismissed the dialog,
     either by closing the dialog window or by pressing the Cancel button.
+
+    The corresponding handler is \c onRejected.
 */
 
 /*!

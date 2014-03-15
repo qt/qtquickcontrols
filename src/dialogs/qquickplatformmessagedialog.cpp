@@ -108,6 +108,8 @@ QT_BEGIN_NAMESPACE
     This signal is emitted when the user has pressed any button which has the
     \l {QMessageBox::AcceptRole} {AcceptRole}: \gui OK, \gui Open, \gui Save,
     \gui {Save All}, \gui Retry or \gui Ignore.
+
+    The corresponding handler is \c onAccepted.
 */
 
 /*!
@@ -116,12 +118,16 @@ QT_BEGIN_NAMESPACE
     This signal is emitted when the user has dismissed the dialog, by closing
     the dialog window, by pressing a \gui Cancel, \gui Close or \gui Abort
     button on the dialog, or by pressing the back button or the escape key.
+
+    The corresponding handler is \c onRejected.
 */
 
 /*!
     \qmlsignal MessageDialog::discard()
 
     This signal is emitted when the user has pressed the \gui Discard button.
+
+    The corresponding handler is \c onDiscard.
 */
 
 /*!
@@ -134,6 +140,8 @@ QT_BEGIN_NAMESPACE
     decision. However on other platforms it's not possible to show a dialog and
     a help window at the same time. If you want to be sure that the dialog will
     close, you can set \l visible to \c false in your handler.
+
+    The corresponding handler is \c onHelp.
 */
 
 /*!
@@ -141,6 +149,8 @@ QT_BEGIN_NAMESPACE
 
     This signal is emitted when the user has pressed any button which has
     the \l {QMessageBox::YesRole} {YesRole}: \gui Yes or \gui {Yes to All}.
+
+    The corresponding handler is \c onYes.
 */
 
 /*!
@@ -148,12 +158,16 @@ QT_BEGIN_NAMESPACE
 
     This signal is emitted when the user has pressed any button which has
     the \l {QMessageBox::NoRole} {NoRole}: \gui No or \gui {No to All}.
+
+    The corresponding handler is \c onNo.
 */
 
 /*!
     \qmlsignal MessageDialog::apply()
 
     This signal is emitted when the user has pressed the \gui Apply button.
+
+    The corresponding handler is \c onApply.
 */
 
 /*!
@@ -161,6 +175,8 @@ QT_BEGIN_NAMESPACE
 
     This signal is emitted when the user has pressed any button which has
     the \l {QMessageBox::ResetRole} {ResetRole}: \gui Reset or \gui {Restore Defaults}.
+
+    The corresponding handler is \c onReset.
 */
 
 /*!
