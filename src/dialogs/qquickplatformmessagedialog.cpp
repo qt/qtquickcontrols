@@ -105,7 +105,7 @@ QT_BEGIN_NAMESPACE
 /*!
     \qmlsignal MessageDialog::accepted()
 
-    This handler is called when the user has pressed any button which has the
+    This signal is emitted when the user has pressed any button which has the
     \l {QMessageBox::AcceptRole} {AcceptRole}: \gui OK, \gui Open, \gui Save,
     \gui {Save All}, \gui Retry or \gui Ignore.
 */
@@ -113,7 +113,7 @@ QT_BEGIN_NAMESPACE
 /*!
     \qmlsignal MessageDialog::rejected()
 
-    This handler is called when the user has dismissed the dialog, by closing
+    This signal is emitted when the user has dismissed the dialog, by closing
     the dialog window, by pressing a \gui Cancel, \gui Close or \gui Abort
     button on the dialog, or by pressing the back button or the escape key.
 */
@@ -121,13 +121,13 @@ QT_BEGIN_NAMESPACE
 /*!
     \qmlsignal MessageDialog::discard()
 
-    This handler is called when the user has pressed the \gui Discard button.
+    This signal is emitted when the user has pressed the \gui Discard button.
 */
 
 /*!
     \qmlsignal MessageDialog::help()
 
-    This handler is called when the user has pressed the \gui Help button.
+    This signal is emitted when the user has pressed the \gui Help button.
     Depending on platform, the dialog may not be automatically dismissed
     because the help that your application provides may need to be relevant to
     the text shown in this dialog in order to assist the user in making a
@@ -139,27 +139,27 @@ QT_BEGIN_NAMESPACE
 /*!
     \qmlsignal MessageDialog::yes()
 
-    This handler is called when the user has pressed any button which has
+    This signal is emitted when the user has pressed any button which has
     the \l {QMessageBox::YesRole} {YesRole}: \gui Yes or \gui {Yes to All}.
 */
 
 /*!
     \qmlsignal MessageDialog::no()
 
-    This handler is called when the user has pressed any button which has
+    This signal is emitted when the user has pressed any button which has
     the \l {QMessageBox::NoRole} {NoRole}: \gui No or \gui {No to All}.
 */
 
 /*!
     \qmlsignal MessageDialog::apply()
 
-    This handler is called when the user has pressed the \gui Apply button.
+    This signal is emitted when the user has pressed the \gui Apply button.
 */
 
 /*!
     \qmlsignal MessageDialog::reset()
 
-    This handler is called when the user has pressed any button which has
+    This signal is emitted when the user has pressed any button which has
     the \l {QMessageBox::ResetRole} {ResetRole}: \gui Reset or \gui {Restore Defaults}.
 */
 
