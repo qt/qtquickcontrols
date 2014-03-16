@@ -517,12 +517,7 @@ void QQuickMenuItem::setBoundAction(QQuickAction *a)
     if (a == m_boundAction)
         return;
 
-    if (m_boundAction) {
-        if (m_boundAction->parent() == this)
-            delete m_boundAction;
-        else
-            unbindFromAction(m_boundAction);
-    }
+    unbindFromAction(m_boundAction);
 
     bindToAction(a);
     emit actionChanged();
