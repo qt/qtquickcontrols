@@ -190,9 +190,10 @@ Style {
         }
         HoverButton {
             id: previousMonth
-            anchors.left: parent.left
             width: parent.height
-            height: parent.height
+            height: width
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.left: parent.left
             source: "images/leftanglearrow.png"
             onClicked: control.showPreviousMonth()
         }
@@ -201,7 +202,6 @@ Style {
             text: styleData.title
             elide: Text.ElideRight
             horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
             font.pointSize: 14
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: previousMonth.right

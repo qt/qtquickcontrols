@@ -65,8 +65,6 @@ Item {
         width: implicitWidth/2
         height: implicitHeight/2
         anchors.centerIn: parent
-        anchors.alignWhenCentered: true
-        source: "images/leftanglearrow.png"
         opacity: 0.6
     }
 
