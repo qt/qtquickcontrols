@@ -261,6 +261,7 @@ Control {
         horizontalAlignment: spinbox.horizontalAlignment
         verticalAlignment: __panel ? __panel.verticalAlignment : Qt.AlignVCenter
         selectByMouse: activeFocus || activeFocusOnPress
+        inputMethodHints: Qt.ImhFormattedNumbersOnly
 
         validator: SpinBoxValidator {
             id: validator
