@@ -192,6 +192,7 @@ public:
     void setContentHeight(int arg);
 
     virtual void initStyleOption ();
+    void resolvePalette();
 
     Q_INVOKABLE qreal textWidth(const QString &);
     Q_INVOKABLE qreal textHeight(const QString &);
