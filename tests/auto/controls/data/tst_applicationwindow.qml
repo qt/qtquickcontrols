@@ -41,6 +41,7 @@
 import QtQuick 2.1
 import QtTest 1.0
 import QtQuickControlsTests 1.0
+import QtQuick.Window 2.1
 
 Item {
     id: container

@@ -40,10 +40,18 @@
 
 #include "qtquickcontrolsapplication.h"
 #include <QtQml/QQmlApplicationEngine>
+#include <QtGui/QSurfaceFormat>
+#include <QtQuick/QQuickWindow>
 
 int main(int argc, char *argv[])
 {
     QtQuickControlsApplication app(argc, argv);
+    if (QCoreApplication::arguments().contains(QLatin1String("--coreprofile"))) {
+        QSurfaceFormat fmt = QQuickWindow::defaultFormat();
+        fmt.setVersion(4, 4);
+        fmt.setProfile(QSurfaceFormat::CoreProfile);
+        QQuickWindow::setDefaultFormat(fmt);
+    }
     QQmlApplicationEngine engine(QUrl("qrc:/main.qml"));
     return app.exec();
 }
