@@ -39,12 +39,13 @@
 ****************************************************************************/
 
 import QtQuick 2.1
-import QtQuick.Controls 1.1
+import QtQuick.Controls 1.2
 import QtQuick.Controls.Styles 1.1
 import QtQuick.Controls.Private 1.0
 
 Item {
     property Component button: Button { text: "Push me"}
+    property Component calendar: Calendar {}
     property Component checkbox: CheckBox { text: "A CheckBox" }
     property Component toolbutton: ToolButton { text: "A ToolButton" }
     property Component radiobutton: RadioButton { text: "A RadioButton" }
@@ -116,6 +117,7 @@ Item {
     property var componentModel: ListModel {
         Component.onCompleted: {
             append({ name: "Button",        component: button});
+            append({ name: "Calendar",      component: calendar});
             append({ name: "BusyIndicator", component: busyIndicator});
             append({ name: "ToolButton",    component: toolbutton});
             append({ name: "CheckBox",      component: checkbox});
@@ -138,6 +140,7 @@ Item {
     }
 
     property Component buttonStyle: ButtonStyle {}
+    property Component calendarStyle: CalendarStyle {}
     property Component toolbuttonStyle: ToolButtonStyle {}
     property Component checkboxStyle: CheckBoxStyle {}
     property Component comboboxStyle: ComboBoxStyle {}
@@ -161,6 +164,7 @@ Item {
         Component.onCompleted: {
             append({ name: "Button",        component: buttonStyle});
             append({ name: "BusyIndicator", component: busyIndicatorStyle});
+            append({ name: "Calendar",      component: calendarStyle});
             append({ name: "ToolButton",    component: toolbuttonStyle});
             append({ name: "CheckBox",      component: checkboxStyle});
             append({ name: "ComboBox",      component: comboboxStyle});

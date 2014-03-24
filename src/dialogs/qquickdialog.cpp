@@ -41,6 +41,8 @@
 
 #include "qquickdialog_p.h"
 #include <QQuickItem>
+#include <QQmlEngine>
+#include <QStandardPaths>
 #include <private/qguiapplication_p.h>
 
 QT_BEGIN_NAMESPACE
@@ -62,12 +64,16 @@ QT_BEGIN_NAMESPACE
     \qmlsignal QtQuick::Dialogs::Dialog::accepted
 
     This signal is emitted by \l accept().
+
+    The corresponding handler is \c onAccepted.
 */
 
 /*!
     \qmlsignal QtQuick::Dialogs::Dialog::rejected
 
     This signal is emitted by \l reject().
+
+    The corresponding handler is \c onRejected.
 */
 
 /*!
@@ -212,7 +218,7 @@ void QQuickDialog::click(QPlatformDialogHelper::StandardButton button, QPlatform
         emit reset();
         break;
     default:
-        qWarning("unhandled MessageDialog button %d with role %ld", button, role);
+        qWarning("unhandled MessageDialog button %d with role %d", (int)button, (int)role);
     }
 }
 

@@ -75,6 +75,8 @@ STYLES_QML_FILES += \
     $$PWD/Base/images/arrow-left@2x.png \
     $$PWD/Base/images/arrow-right.png \
     $$PWD/Base/images/arrow-right@2x.png \
+    $$PWD/Base/images/leftanglearrow.png \
+    $$PWD/Base/images/rightanglearrow.png \
     $$PWD/Base/images/spinner_small.png \
     $$PWD/Base/images/spinner_medium.png \
     $$PWD/Base/images/spinner_large.png \

@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2014 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the Qt Quick Controls module of the Qt Toolkit.
@@ -38,45 +38,40 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.1
-import QtQuick.Controls 1.1
-import QtQuick.Controls.Private 1.0
-import "." as Desktop
+import QtQuick 2.2
 
-Style {
-    id: styleRoot
+Item {
+    id: button
+    property alias source: image.source
+    signal clicked
 
-    property Component background: StyleItem {
-        elementType: "menubar"
-
-        Accessible.role: Accessible.MenuBar
-
-        Component.onCompleted: {
-            styleRoot.padding.left = pixelMetric("menubarhmargin") + pixelMetric("menubarpanelwidth")
-            styleRoot.padding.right = pixelMetric("menubarhmargin") + pixelMetric("menubarpanelwidth")
-            styleRoot.padding.top = pixelMetric("menubarvmargin") + pixelMetric("menubarpanelwidth")
-            styleRoot.padding.bottom = pixelMetric("menubarvmargin") + pixelMetric("menubarpanelwidth")
-        }
+    Rectangle {
+        id: fillRect
+        anchors.fill: parent
+        color: "black"
+        opacity: mouse.pressed ? 0.07 : mouse.containsMouse ? 0.02 : 0.0
     }
 
-    property Component itemDelegate: StyleItem {
-        elementType: "menubaritem"
-
-        text: styleData.text
-        property string plainText: StyleHelpers.removeMnemonics(text)
-        contentWidth: textWidth(plainText)
-        contentHeight: textHeight(plainText)
-        width: implicitWidth
-
-        enabled: styleData.enabled
-        sunken: styleData.open
-        selected: (parent && styleData.selected) || sunken
-
-        hints: { "showUnderlined": styleData.underlineMnemonic }
-
-        Accessible.role: Accessible.MenuItem
-        Accessible.name: plainText
+    Rectangle {
+        border.color: gridColor
+        anchors.fill: parent
+        anchors.margins: -1
+        color: "transparent"
+        opacity: fillRect.opacity * 10
     }
 
-    property Component menuStyle: Desktop.MenuStyle { }
+    Image {
+        id: image
+        width: implicitWidth/2
+        height: implicitHeight/2
+        anchors.centerIn: parent
+        opacity: 0.6
+    }
+
+    MouseArea {
+        id: mouse
+        anchors.fill: parent
+        onClicked: button.clicked()
+        hoverEnabled: true
+    }
 }

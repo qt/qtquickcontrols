@@ -103,7 +103,7 @@ QT_BEGIN_NAMESPACE
 /*!
     \qmlsignal QtQuick::Dialogs::FileDialog::accepted
 
-    This handler is called when the user has finished using the
+    This signal is emitted when the user has finished using the
     dialog. You can then inspect the \l fileUrl or \l fileUrls properties to
     get the selection.
 
@@ -114,13 +114,17 @@ QT_BEGIN_NAMESPACE
         onAccepted: { console.log("Selected file: " + fileUrl) }
     }
     \endqml
+
+    The corresponding handler is \c onAccepted.
 */
 
 /*!
     \qmlsignal QtQuick::Dialogs::FileDialog::rejected
 
-    This handler is called when the user has dismissed the dialog,
+    This signal is emitted when the user has dismissed the dialog,
     either by closing the dialog window or by pressing the Cancel button.
+
+    The corresponding handler is \c onRejected.
 */
 
 /*!

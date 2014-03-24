@@ -819,7 +819,7 @@ Item {
     /*! \internal */
     function __resolveComponent(unknownObjectType, element)
     {
-        // We need this extra resolve function since we dont really
+        // We need this extra resolve function since we don't really
         // know what kind of object the user pushed. So we try to
         // figure it out by inspecting the object:
         if (unknownObjectType.hasOwnProperty("createObject")) {

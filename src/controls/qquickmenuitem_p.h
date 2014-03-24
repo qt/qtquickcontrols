@@ -225,6 +225,7 @@ public:
 
 protected Q_SLOTS:
     void updateShortcut();
+    void updateCheckable();
     void updateChecked();
     void bindToAction(QQuickAction *action);
     void unbindFromAction(QObject *action);

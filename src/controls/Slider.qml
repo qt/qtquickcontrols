@@ -216,15 +216,11 @@ Control {
     MouseArea {
         id: mouseArea
 
+        anchors.fill: parent
         hoverEnabled: true
-        anchors.centerIn: parent
-
-        preventStealing: true
-
-        width: parent.width
-        height: parent.height
-
         property int clickOffset: 0
+        property real pressX: 0
+        property real pressY: 0
 
         function clamp ( val ) {
             return Math.max(range.positionAtMinimum, Math.min(range.positionAtMaximum, val))
@@ -234,6 +230,8 @@ Control {
             if (pressed && __horizontal) {
                 var pos = clamp (mouse.x + clickOffset - fakeHandle.width/2)
                 fakeHandle.x = pos
+                if (Math.abs(mouse.x - pressX) >= Settings.dragThreshold)
+                    preventStealing = true
             }
         }
 
@@ -241,6 +239,8 @@ Control {
             if (pressed && !__horizontal) {
                 var pos = clamp (mouse.y + clickOffset- fakeHandle.height/2)
                 fakeHandle.y = pos
+                if (Math.abs(mouse.y - pressY) >= Settings.dragThreshold)
+                    preventStealing = true
             }
         }
 
@@ -252,6 +252,8 @@ Control {
             if (fakeHandle.contains(Qt.point(point.x, point.y))) {
                 clickOffset = __horizontal ? fakeHandle.width/2 - point.x : fakeHandle.height/2 - point.y
             }
+            pressX = mouse.x
+            pressY = mouse.y
         }
 
         onReleased: {
@@ -260,6 +262,7 @@ Control {
             if (!slider.updateValueWhileDragging)
                 range.position = __horizontal ? fakeHandle.x : fakeHandle.y;
             clickOffset = 0
+            preventStealing = false
         }
     }
 

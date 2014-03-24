@@ -105,62 +105,78 @@ QT_BEGIN_NAMESPACE
 /*!
     \qmlsignal MessageDialog::accepted()
 
-    This handler is called when the user has pressed any button which has the
+    This signal is emitted when the user has pressed any button which has the
     \l {QMessageBox::AcceptRole} {AcceptRole}: \gui OK, \gui Open, \gui Save,
     \gui {Save All}, \gui Retry or \gui Ignore.
+
+    The corresponding handler is \c onAccepted.
 */
 
 /*!
     \qmlsignal MessageDialog::rejected()
 
-    This handler is called when the user has dismissed the dialog, by closing
+    This signal is emitted when the user has dismissed the dialog, by closing
     the dialog window, by pressing a \gui Cancel, \gui Close or \gui Abort
     button on the dialog, or by pressing the back button or the escape key.
+
+    The corresponding handler is \c onRejected.
 */
 
 /*!
     \qmlsignal MessageDialog::discard()
 
-    This handler is called when the user has pressed the \gui Discard button.
+    This signal is emitted when the user has pressed the \gui Discard button.
+
+    The corresponding handler is \c onDiscard.
 */
 
 /*!
     \qmlsignal MessageDialog::help()
 
-    This handler is called when the user has pressed the \gui Help button.
+    This signal is emitted when the user has pressed the \gui Help button.
     Depending on platform, the dialog may not be automatically dismissed
     because the help that your application provides may need to be relevant to
     the text shown in this dialog in order to assist the user in making a
     decision. However on other platforms it's not possible to show a dialog and
     a help window at the same time. If you want to be sure that the dialog will
     close, you can set \l visible to \c false in your handler.
+
+    The corresponding handler is \c onHelp.
 */
 
 /*!
     \qmlsignal MessageDialog::yes()
 
-    This handler is called when the user has pressed any button which has
+    This signal is emitted when the user has pressed any button which has
     the \l {QMessageBox::YesRole} {YesRole}: \gui Yes or \gui {Yes to All}.
+
+    The corresponding handler is \c onYes.
 */
 
 /*!
     \qmlsignal MessageDialog::no()
 
-    This handler is called when the user has pressed any button which has
+    This signal is emitted when the user has pressed any button which has
     the \l {QMessageBox::NoRole} {NoRole}: \gui No or \gui {No to All}.
+
+    The corresponding handler is \c onNo.
 */
 
 /*!
     \qmlsignal MessageDialog::apply()
 
-    This handler is called when the user has pressed the \gui Apply button.
+    This signal is emitted when the user has pressed the \gui Apply button.
+
+    The corresponding handler is \c onApply.
 */
 
 /*!
     \qmlsignal MessageDialog::reset()
 
-    This handler is called when the user has pressed any button which has
+    This signal is emitted when the user has pressed any button which has
     the \l {QMessageBox::ResetRole} {ResetRole}: \gui Reset or \gui {Restore Defaults}.
+
+    The corresponding handler is \c onReset.
 */
 
 /*!
@@ -210,8 +226,8 @@ QPlatformMessageDialogHelper *QQuickPlatformMessageDialog::helper()
         // dismissed by closing the window rather than by one of its button widgets.
         connect(m_dlgHelper, SIGNAL(accept()), this, SLOT(accept()));
         connect(m_dlgHelper, SIGNAL(reject()), this, SLOT(reject()));
-        connect(m_dlgHelper, SIGNAL(clicked(QMessageDialogOptions::StandardButton,QMessageDialogOptions::ButtonRole)),
-            this, SLOT(click(QMessageDialogOptions::StandardButton,QMessageDialogOptions::ButtonRole)));
+        connect(m_dlgHelper, SIGNAL(clicked(QPlatformDialogHelper::StandardButton,QPlatformDialogHelper::ButtonRole)),
+            this, SLOT(click(QPlatformDialogHelper::StandardButton,QPlatformDialogHelper::ButtonRole)));
     }
 
     return m_dlgHelper;

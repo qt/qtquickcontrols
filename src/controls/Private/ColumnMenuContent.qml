@@ -63,28 +63,93 @@ Item {
 
     readonly property int currentIndex: __menu.__currentIndex
     property Item currentItem: null
-    readonly property int itemHeight: (list.count > 0 && list.contentItem.children[0]) ? list.contentItem.children[0].height : 23
+    property int itemHeight: 23
+
+    Component.onCompleted: {
+        var children = list.contentItem.children
+        for (var i = 0; i < list.count; i++) {
+            var child = children[i]
+            if (child.visible && child.styleData.type === MenuItemType.Item) {
+                itemHeight = children[i].height
+                break
+            }
+        }
+    }
+
     readonly property int fittingItems: Math.floor((maxHeight - downScroller.height) / itemHeight)
     readonly property real fittedMaxHeight: itemHeight * fittingItems + downScroller.height
     readonly property bool shouldUseScrollers: scrollView.style === emptyScrollerStyle && itemsModel.length > fittingItems
     readonly property real upScrollerHeight: upScroller.visible ? upScroller.height : 0
     readonly property real downScrollerHeight: downScroller.visible ? downScroller.height : 0
+    property var oldMousePos: undefined
+    property var openedSubmenu: null
 
     function updateCurrentItem(mouse) {
         var pos = mapToItem(list.contentItem, mouse.x, mouse.y)
+        var dx = 0
+        var dy = 0
+        var dist = 0
+        if (openedSubmenu && oldMousePos !== undefined) {
+            dx = mouse.x - oldMousePos.x
+            dy = mouse.y - oldMousePos.y
+            dist = Math.sqrt(dx * dx + dy * dy)
+        }
+        oldMousePos = mouse
+        if (openedSubmenu && dist > 5) {
+            var menuRect = __menu.__popupGeometry
+            var submenuRect = openedSubmenu.__popupGeometry
+            var angle = Math.atan2(dy, dx)
+            var ds = 0
+            if (submenuRect.x > menuRect.x) {
+                ds = menuRect.width - oldMousePos.x
+            } else {
+                angle = Math.PI - angle
+                ds = oldMousePos.x
+            }
+            var above = submenuRect.y - menuRect.y - oldMousePos.y
+            var below = submenuRect.height - above
+            var minAngle = Math.atan2(above, ds)
+            var maxAngle = Math.atan2(below, ds)
+            // This tests that the current mouse position is in
+            // the triangle defined by the previous mouse position
+            // and the submenu's top-left and bottom-left corners.
+            if (minAngle < angle && angle < maxAngle) {
+                sloppyTimer.start()
+                return
+            }
+        }
+
         if (!currentItem || !currentItem.contains(Qt.point(pos.x - currentItem.x, pos.y - currentItem.y))) {
             if (currentItem && !hoverArea.pressed
-                && currentItem.styleData.type === MenuItemType.Menu)
+                && currentItem.styleData.type === MenuItemType.Menu) {
                 currentItem.__closeSubMenu()
+                openedSubmenu = null
+            }
             currentItem = list.itemAt(pos.x, pos.y)
             if (currentItem) {
                 __menu.__currentIndex = currentItem.__menuItemIndex
                 if (currentItem.styleData.type === MenuItemType.Menu
-                    && !currentItem.__menuItem.__popupVisible)
+                    && !currentItem.__menuItem.__popupVisible) {
                     currentItem.__showSubMenu(false)
+                    openedSubmenu = currentItem.__menuItem
+                }
             } else {
                 __menu.__currentIndex = -1
             }
+        }
+    }
+
+    Timer {
+        id: sloppyTimer
+        interval: 1000
+
+        // Stop timer as soon as we hover one of the submenu items
+        property int currentIndex: openedSubmenu ? openedSubmenu.__currentIndex : -1
+        onCurrentIndexChanged: if (currentIndex !== -1) stop()
+
+        onTriggered: {
+            if (openedSubmenu && openedSubmenu.__currentIndex === -1)
+                updateCurrentItem(oldMousePos)
         }
     }
 
@@ -130,7 +195,8 @@ Item {
         hoverEnabled: true
         acceptedButtons: Qt.AllButtons
 
-        onPositionChanged: updateCurrentItem(mouse)
+        onPositionChanged: updateCurrentItem({ "x": mouse.x, "y": mouse.y })
+        onPressed: updateCurrentItem({ "x": mouse.x, "y": mouse.y })
         onReleased: content.triggered(currentItem)
         onExited: {
             if (currentItem && !currentItem.__menuItem.__popupVisible) {

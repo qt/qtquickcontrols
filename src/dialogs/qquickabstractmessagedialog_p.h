@@ -53,7 +53,6 @@
 // We mean it.
 //
 
-#include <QtQml>
 #include <QQuickView>
 #include <QtGui/qpa/qplatformdialoghelper.h>
 #include <qpa/qplatformtheme.h>
@@ -124,7 +123,7 @@ Q_SIGNALS:
     void apply();
     void reset();
 
-protected:
+protected Q_SLOTS:
     void click(QPlatformDialogHelper::StandardButton button, QPlatformDialogHelper::ButtonRole);
 
 protected:

@@ -132,6 +132,7 @@ Style {
             \row \li readonly property bool \b styleData.enabled \li The tab is enabled. (since QtQuick.Controls.Styles 1.2)
             \row \li readonly property bool \b styleData.activeFocus \li The tab button has keyboard focus.
             \row \li readonly property bool \b styleData.availableWidth \li The available width for the tabs.
+            \row \li readonly property bool \b styleData.totalWidth \li The total width of the tabs. (since QtQuick.Controls.Styles 1.2)
         \endtable
     */
     property Component tab: Item {

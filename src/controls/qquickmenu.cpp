@@ -398,6 +398,7 @@ void QQuickMenu::__popup(qreal x, qreal y, int atItemIndex)
         m_popupWindow->setItemAt(atItem ? atItem->visualItem() : 0);
 
         connect(m_popupWindow, SIGNAL(visibleChanged(bool)), this, SLOT(windowVisibleChanged(bool)));
+        connect(m_popupWindow, SIGNAL(geometryChanged()), this, SIGNAL(__popupGeometryChanged()));
 
         m_popupWindow->setPosition(x + m_xOffset, y + m_yOffset);
         m_popupWindow->show();
@@ -418,6 +419,14 @@ void QQuickMenu::setPopupVisible(bool v)
         m_popupVisible = v;
         emit popupVisibleChanged();
     }
+}
+
+QRect QQuickMenu::popupGeometry() const
+{
+    if (!m_popupWindow || !m_popupVisible)
+        return QRect();
+
+    return m_popupWindow->geometry();
 }
 
 void QQuickMenu::__closeMenu()

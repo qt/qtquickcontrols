@@ -117,6 +117,7 @@ void QQuickMenuPopupWindow::setGeometry(int posx, int posy, int w, int h)
     posy = qBound(g.top(), posy, g.bottom() - h);
 
     QQuickWindow::setGeometry(posx, posy, w, h);
+    emit geometryChanged();
 }
 
 void QQuickMenuPopupWindow::updateSize()

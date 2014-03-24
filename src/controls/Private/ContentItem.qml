@@ -45,8 +45,8 @@ Item {
     id: contentItem
     property real minimumWidth: __calcMinimum('Width')
     property real minimumHeight: __calcMinimum('Height')
-    property real maximumWidth: __calcMaximum('Width')
-    property real maximumHeight: __calcMaximum('Height')
+    property real maximumWidth: Number.POSITIVE_INFINITY
+    property real maximumHeight: Number.POSITIVE_INFINITY
     implicitWidth: __calcImplicitWidth()
     implicitHeight: __calcImplicitHeight()
 

@@ -245,6 +245,8 @@ Control {
 
         \note If there is a \l validator set on the combobox,
         the signal will only be emitted if the input is in an acceptable state.
+
+        The corresponding handler is \c onAccepted.
     */
     signal accepted
 
@@ -257,6 +259,8 @@ Control {
         This signal is similar to currentIndex changed, but will only
         be emitted if the combo box index was changed by the user and not
         when set programatically.
+
+        The corresponding handler is \c onActivated.
     */
     signal activated(int index)
 

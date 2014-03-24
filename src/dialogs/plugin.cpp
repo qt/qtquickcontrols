@@ -41,6 +41,7 @@
 
 #include <QtQml/qqml.h>
 #include <QtQml/qqmlextensionplugin.h>
+#include <QtQml/qqmlcomponent.h>
 #include "qquickmessagedialog_p.h"
 #include "qquickabstractmessagedialog_p.h"
 #include "qquickdialogassets_p.h"

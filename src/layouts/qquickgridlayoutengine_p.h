@@ -113,15 +113,15 @@ public:
 
     void setGeometry(const QRectF &rect)
     {
-        const QPoint innerTopLeft(qCeil(rect.left()), qCeil(rect.top()));
-        const QPoint innerBottomRight(qFloor(rect.right()), qFloor(rect.bottom()));
-        const QSize newSize(innerBottomRight.x() - innerTopLeft.x(), innerBottomRight.y() - innerTopLeft.y());
-        m_item->setPosition(innerTopLeft);
-        QSizeF oldSize(m_item->width(), m_item->height());
+        const QSizeF oldSize(m_item->width(), m_item->height());
+        const QSizeF newSize = rect.size();
+        const QPointF topLeft(qCeil(rect.x()), qCeil(rect.y()));
+        m_item->setPosition(topLeft);
         if (newSize == oldSize) {
-            if (QQuickLayout *lay = qobject_cast<QQuickLayout *>(m_item))
+            if (QQuickLayout *lay = qobject_cast<QQuickLayout *>(m_item)) {
                 if (lay->arrangementIsDirty())
                     lay->rearrange(newSize);
+            }
         } else {
             m_item->setSize(newSize);
         }

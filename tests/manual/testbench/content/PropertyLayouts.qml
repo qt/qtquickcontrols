@@ -91,7 +91,7 @@ QtObject {
             onValueChanged: {
                 if (!ignoreUpdate) {
                     loader.item[name] = value
-                    if (name != "width" && name != "height") // We dont want to reset size when size changes
+                    if (name != "width" && name != "height") // We don't want to reset size when size changes
                         propertyChanged()
                 }
             }

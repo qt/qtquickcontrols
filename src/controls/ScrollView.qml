@@ -237,7 +237,7 @@ FocusScope {
             anchors.fill: parent
 
             property int acceleration: 40
-            property int flickThreshold: 20
+            property int flickThreshold: Settings.dragThreshold
             property real speedThreshold: 3
             property real ignored: 0.001 // ## flick() does not work with 0 yVelocity
             property int maxFlick: 400

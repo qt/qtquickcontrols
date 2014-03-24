@@ -102,7 +102,7 @@ QT_BEGIN_NAMESPACE
 /*!
     \qmlsignal QtQuick::Dialogs::ColorDialog::accepted
 
-    This handler is called when the user has finished using the
+    This signal is emitted when the user has finished using the
     dialog. You can then inspect the \l color property to get the selection.
 
     Example:
@@ -112,13 +112,17 @@ QT_BEGIN_NAMESPACE
         onAccepted: { console.log("Selected color: " + color) }
     }
     \endqml
+
+    The corresponding handler is \c onAccepted.
 */
 
 /*!
     \qmlsignal QtQuick::Dialogs::ColorDialog::rejected
 
-    This handler is called when the user has dismissed the dialog,
+    This signal is emitted when the user has dismissed the dialog,
     either by closing the dialog window or by pressing the Cancel button.
+
+    The corresponding handler is \c onRejected.
 */
 
 /*!

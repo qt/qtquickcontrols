@@ -149,7 +149,7 @@ Style {
                 renderType: Text.NativeRendering
                 anchors.verticalCenter: parent.verticalCenter
                 text: control.text
-                color: __syspal.text
+                color: __syspal.buttonText
             }
         }
     }

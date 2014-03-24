@@ -102,10 +102,9 @@ Control {
     MouseArea {
         id: internal
 
-        property Item handle: __panel ? __panel.__handle : null
-        property int min: __style ? __style.padding.left : 0
-        property int max: handle.parent.width - (handle ? handle.width : 0) -
-                          ( __style ? __style.padding.right : 0)
+        property Item handle: __panel.__handle
+        property int min: __panel.min
+        property int max: __panel.max
         focus: true
         anchors.fill: parent
         drag.threshold: 0
@@ -127,11 +126,6 @@ Control {
                 checked = (handle.x === max) ? false : true
             }
         }
-    }
-
-    Component.onCompleted: {
-        internal.handle.x = checked ? internal.max : internal.min
-        __panel.enableAnimation = true
     }
 
     onCheckedChanged:  {

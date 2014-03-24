@@ -109,7 +109,7 @@ Item {
             compare(calendar.minimumDate, new Date(1, 0, 1));
             compare(calendar.maximumDate, new Date(4000, 0, 1));
             compare(calendar.selectedDate, new Date(new Date().setHours(0, 0, 0, 0)));
-            compare(calendar.gridVisible, true);
+            compare(calendar.frameVisible, true);
             compare(calendar.dayOfWeekFormat, Locale.ShortFormat);
             compare(calendar.__locale, Qt.locale());
         }
@@ -118,14 +118,14 @@ Item {
             calendar.minimumDate = new Date(1900, 0, 1);
             calendar.maximumDate = new Date(1999, 11, 31);
             calendar.selectedDate = new Date(1980, 0, 1);
-            calendar.gridVisible = false;
+            calendar.frameVisible = false;
             calendar.dayOfWeekFormat = Locale.NarrowFormat;
             calendar.__locale = Qt.locale("de_DE");
 
             compare(calendar.minimumDate, new Date(1900, 0, 1));
             compare(calendar.maximumDate, new Date(1999, 11, 31));
             compare(calendar.selectedDate, new Date(1980, 0, 1));
-            compare(calendar.gridVisible, false);
+            compare(calendar.frameVisible, false);
             compare(calendar.__locale, Qt.locale("de_DE"));
         }
 

@@ -84,6 +84,8 @@ QT_BEGIN_NAMESPACE
         onAccepted: { console.log("accepted") }
     }
     \endqml
+
+    The corresponding handler is \c onAccepted.
 */
 
 /*!
@@ -91,6 +93,8 @@ QT_BEGIN_NAMESPACE
 
     The \a rejected signal is emitted when the user has dismissed the dialog,
     either by closing the dialog window or by pressing the Cancel button.
+
+    The corresponding handler is \c onRejected.
 */
 
 /*!
@@ -134,8 +138,8 @@ QPlatformDialogHelper *QQuickQMessageBox::helper()
         // dismissed by closing the window rather than by one of its button widgets.
         connect(helper, SIGNAL(accept()), this, SLOT(accept()));
         connect(helper, SIGNAL(reject()), this, SLOT(reject()));
-        connect(helper, SIGNAL(clicked(QMessageDialogOptions::StandardButton,QMessageDialogOptions::ButtonRole)),
-            this, SLOT(click(QMessageDialogOptions::StandardButton,QMessageDialogOptions::ButtonRole)));
+        connect(helper, SIGNAL(clicked(QPlatformDialogHelper::StandardButton,QPlatformDialogHelper::ButtonRole)),
+            this, SLOT(click(QPlatformDialogHelper::StandardButton,QPlatformDialogHelper::ButtonRole)));
     }
 
     return QQuickAbstractMessageDialog::m_dlgHelper;

@@ -41,6 +41,7 @@
 
 #include "qquickfiledialog_p.h"
 #include <QQuickItem>
+#include <QQmlEngine>
 #include <private/qguiapplication_p.h>
 #include <private/qv4object_p.h>
 
@@ -68,12 +69,16 @@ using namespace QV4;
     \qmlsignal QtQuick::Dialogs::AbstractFileDialog::accepted
 
     This signal is emitted by \l accept().
+
+    The corresponding handler is \c onAccepted.
 */
 
 /*!
     \qmlsignal QtQuick::Dialogs::AbstractFileDialog::rejected
 
     This signal is emitted by \l reject().
+
+    The corresponding handler is \c onRejected.
 */
 
 /*!
