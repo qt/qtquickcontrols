@@ -383,6 +383,8 @@ ScrollView {
         This signal is emitted when the user clicks on a link embedded in the text.
         The link must be in rich text or HTML format and the
         \a link string provides access to the particular link.
+
+        The corresponding handler is \c onLinkActivated.
     */
     signal linkActivated(string link)
 
@@ -395,6 +397,8 @@ ScrollView {
         \a link string provides access to the particular link.
 
         \sa hoveredLink
+
+        The corresponding handler is \c onLinkHovered.
     */
     signal linkHovered(string link)
 

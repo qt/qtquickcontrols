@@ -142,6 +142,7 @@ Style {
     property Component background: Item {
         implicitHeight: Math.max(25, Math.round(styleData.contentHeight * 1.2))
         implicitWidth: styleData.contentWidth + padding.left + padding.right
+        baselineOffset: control.__baselineOffset
         Rectangle {
             anchors.fill: parent
             anchors.bottomMargin: -1
@@ -166,6 +167,7 @@ Style {
         id: styleitem
         implicitWidth: backgroundLoader.implicitWidth
         implicitHeight: backgroundLoader.implicitHeight
+        baselineOffset: backgroundLoader.item ? backgroundLoader.item.baselineOffset : 0
 
         property color foregroundColor: spinboxStyle.textColor
         property color selectionColor: spinboxStyle.selectionColor

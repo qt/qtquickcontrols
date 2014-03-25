@@ -87,6 +87,7 @@ Style {
     property Component __dropDownStyle: Style {
         property int __maxPopupHeight: 600
         property int submenuOverlap: 0
+        property int submenuPopupDelay: 0
 
         property Component frame: StyleItem {
             elementType: "frame"

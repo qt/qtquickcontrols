@@ -54,6 +54,8 @@
 //
 
 #include "qquickabstractfiledialog_p.h"
+#include <QJSValue>
+#include <QStandardPaths>
 
 QT_BEGIN_NAMESPACE
 

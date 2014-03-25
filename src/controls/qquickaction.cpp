@@ -178,6 +178,8 @@ QT_BEGIN_NAMESPACE
     Emitted when either the menu item or its bound action have been activated. Includes
     the object that triggered the event if relevant (e.g. a Button or MenuItem).
     You shouldn't need to emit this signal, use \l trigger() instead.
+
+    The corresponding handler is \c onTriggered.
 */
 
 /*! \qmlmethod Action::trigger(QObject *source)
@@ -191,6 +193,8 @@ QT_BEGIN_NAMESPACE
 
     Emitted whenever a action's \l checked property changes.
     This usually happens at the same time as \l triggered.
+
+    The corresponding handler is \c onToggled.
 */
 
 QQuickAction::QQuickAction(QObject *parent)

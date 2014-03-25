@@ -70,6 +70,42 @@ import QtQuick.Controls.Private 1.0
         }
     }
     \endqml
+
+    Note that the example above is somewhat simplified and will not animate
+    an indeterminate progress bar. The following snippet demonstrates
+    how you can incorporate a custom animation for the indeterminate
+    state as well.
+
+    \code
+    progress: Rectangle {
+        border.color: "steelblue"
+        color: "lightsteelblue"
+
+        // Indeterminate animation by animating alternating stripes:
+        Item {
+            anchors.fill: parent
+            anchors.margins: 1
+            visible: control.indeterminate
+            clip: true
+            Row {
+                Repeater {
+                    Rectangle {
+                        color: index % 2 ? "steelblue" : "lightsteelblue"
+                        width: 20 ; height: control.height
+                    }
+                    model: control.width / 20 + 2
+                }
+                XAnimator on x {
+                    from: 0 ; to: -40
+                    loops: Animation.Infinite
+                    running: control.indeterminate
+                }
+            }
+        }
+    }
+    \endcode
+
+
 */
 
 Style {

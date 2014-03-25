@@ -901,14 +901,16 @@ Item {
                     var visualGeom = [child.x, child.y, child.x + child.width, child.y + child.height]
 
                     // verify that visualGeom is an integer number
-                    for (var i = 0; i < 4; ++i)
+                    for (var i = 0; i < 2; ++i)
                         compare(visualGeom[i] % 1, 0)
 
-                    // verify that visualGeom is never outside the idealGeom
+                    // verify that x,y is is inside idealGeom
                     verify(visualGeom[0] >= idealGeom[0])
                     verify(visualGeom[1] >= idealGeom[1])
-                    verify(visualGeom[2] <= idealGeom[2])
-                    verify(visualGeom[3] <= idealGeom[3])
+
+                    // verify that the visual size is no more than 1 pixel taller/wider than the ideal size.
+                    verify(visualGeom[2] <= idealGeom[2] + 1)
+                    verify(visualGeom[3] <= idealGeom[3] + 1)
                     idealGeom[0] = idealGeom[2] + sp
                     idealGeom[2] = idealGeom[0]  + rectWidth
                 }

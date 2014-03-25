@@ -23,4 +23,5 @@ MenuContentItem 1.0 MenuContentItem.qml
 MenuContentScroller 1.0 MenuContentScroller.qml
 ColumnMenuContent 1.0 ColumnMenuContent.qml
 ContentItem 1.0 ContentItem.qml
+HoverButton 1.0 HoverButton.qml
 singleton TextSingleton 1.0 TextSingleton.qml

@@ -66,12 +66,16 @@ QT_BEGIN_NAMESPACE
     \qmlsignal QtQuick::Dialogs::AbstractFontDialog::accepted
 
     The \a accepted signal is emitted by \l accept().
+
+    The corresponding handler is \c onAccepted.
 */
 
 /*!
     \qmlsignal QtQuick::Dialogs::AbstractFontDialog::rejected
 
     The \a accepted signal is emitted by \l reject().
+
+    The corresponding handler is \c onRejected.
 */
 
 /*!

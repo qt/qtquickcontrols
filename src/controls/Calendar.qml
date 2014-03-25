@@ -156,11 +156,12 @@ Control {
     }
 
     /*!
-        This property determines the visibility of the grid.
+        This property determines the visibility of the frame
+        surrounding the calendar.
 
         The default value is \c true.
     */
-    property bool gridVisible: true
+    property bool frameVisible: true
 
     /*!
         This property determines the visibility of week numbers.
@@ -216,6 +217,8 @@ Control {
         Emitted when the mouse hovers over a valid date in the calendar.
 
         \a date is the date that was hovered over.
+
+        The corresponding handler is \c onHovered.
     */
     signal hovered(date date)
 
@@ -227,6 +230,8 @@ Control {
         This is also emitted when dragging the mouse to another date while it is pressed.
 
         \a date is the date that the mouse was pressed on.
+
+        The corresponding handler is \c onPressed.
     */
     signal pressed(date date)
 
@@ -236,6 +241,8 @@ Control {
         Emitted when the mouse is released over a valid date in the calendar.
 
         \a date is the date that the mouse was released over.
+
+        The corresponding handler is \c onReleased.
     */
     signal released(date date)
 
@@ -245,6 +252,8 @@ Control {
         Emitted when the mouse is clicked on a valid date in the calendar.
 
         \a date is the date that the mouse was clicked on.
+
+        The corresponding handler is \c onClicked.
     */
     signal clicked(date date)
 
@@ -254,6 +263,8 @@ Control {
         Emitted when the mouse is double-clicked on a valid date in the calendar.
 
         \a date is the date that the mouse was double-clicked on.
+
+        The corresponding handler is \c onDoubleClicked.
     */
     signal doubleClicked(date date)
 

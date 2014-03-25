@@ -53,7 +53,6 @@
 // We mean it.
 //
 
-#include <QtQml>
 #include <QQuickView>
 #include <QtGui/qpa/qplatformdialoghelper.h>
 #include <qpa/qplatformtheme.h>

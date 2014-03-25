@@ -172,6 +172,8 @@ Control {
         the control loses focus. Note that if there is a validator
         set on the control and enter/return is pressed, this signal will
         only be emitted if the validator returns an acceptable state.
+
+        The corresponding handler is \c onEditingFinished.
     */
     signal editingFinished()
 
@@ -193,6 +195,9 @@ Control {
 
     /*! \internal */
     property alias __text: input.text
+
+    /*! \internal */
+    property alias __baselineOffset: input.baselineOffset
 
     __styleData: QtObject {
         readonly property bool upEnabled: value != maximumValue;
@@ -256,6 +261,7 @@ Control {
         horizontalAlignment: spinbox.horizontalAlignment
         verticalAlignment: __panel ? __panel.verticalAlignment : Qt.AlignVCenter
         selectByMouse: activeFocus || activeFocusOnPress
+        inputMethodHints: Qt.ImhFormattedNumbersOnly
 
         validator: SpinBoxValidator {
             id: validator

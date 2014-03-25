@@ -142,6 +142,8 @@ static inline void combineImplicitHints(QQuickLayoutAttached *info, Qt::SizeHint
     explicitly or implicitly set with QQuickLayoutAttached::isExtentExplicitlySet(). This
     determines if it should be used as a USER or as a HINT value.
 
+    Fractional size hints will be ceiled to the closest integer. This is in order to give some
+    slack when the items are snapped to the pixel grid.
 
                  | *Minimum*            | *Preferred*           | *Maximum*                |
 +----------------+----------------------+-----------------------+--------------------------+
@@ -173,12 +175,12 @@ void QQuickGridLayoutItem::effectiveSizeHints_helper(QQuickItem *item, QSizeF *c
             Q_ASSERT(getter);
 
             if (info->isExtentExplicitlySet(Qt::Horizontal, (Qt::SizeHint)i))
-                cachedSizeHints[i].setWidth((info->*getter)());
+                cachedSizeHints[i].setWidth(qCeil((info->*getter)()));
 
             getter = verGetters.call[i];
             Q_ASSERT(getter);
             if (info->isExtentExplicitlySet(Qt::Vertical, (Qt::SizeHint)i))
-                cachedSizeHints[i].setHeight((info->*getter)());
+                cachedSizeHints[i].setHeight(qCeil((info->*getter)()));
         }
     }
 
@@ -213,9 +215,9 @@ void QQuickGridLayoutItem::effectiveSizeHints_helper(QQuickItem *item, QSizeF *c
     qreal &prefWidth = prefS.rwidth();
     qreal &prefHeight = prefS.rheight();
     if (prefWidth < 0 && item->implicitWidth() > 0)
-        prefWidth = item->implicitWidth();
+        prefWidth = qCeil(item->implicitWidth());
     if (prefHeight < 0 &&  item->implicitHeight() > 0)
-        prefHeight =  item->implicitHeight();
+        prefHeight = qCeil(item->implicitHeight());
 
     // If that fails, make an ultimate fallback to width/height
 

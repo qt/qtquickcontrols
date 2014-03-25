@@ -141,10 +141,10 @@ void QQuickAbstractMessageDialog::click(QPlatformDialogHelper::StandardButton bu
     emit buttonClicked();
     switch (role) {
     case QPlatformDialogHelper::AcceptRole:
-        emit accept();
+        accept();
         break;
     case QPlatformDialogHelper::RejectRole:
-        emit reject();
+        reject();
         break;
     case QPlatformDialogHelper::DestructiveRole:
         emit discard();

@@ -255,6 +255,8 @@ ScrollView {
         \a row int provides access to the activated row index.
 
         \note This signal is only emitted for mouse interaction that is not blocked in the row or item delegate.
+
+        The corresponding handler is \c onActivated.
     */
     signal activated(int row)
 
@@ -265,6 +267,8 @@ ScrollView {
         \a row int provides access to the clicked row index.
 
         \note This signal is only emitted if the row or item delegate does not accept mouse events.
+
+        The corresponding handler is \c onClicked.
     */
     signal clicked(int row)
 
@@ -275,6 +279,8 @@ ScrollView {
         \a row int provides access to the clicked row index.
 
         \note This signal is only emitted if the row or item delegate does not accept mouse events.
+
+        The corresponding handler is \c onDoubleClicked.
     */
     signal doubleClicked(int row)
 
@@ -536,7 +542,7 @@ ScrollView {
     ListView {
         id: listView
         focus: true
-        activeFocusOnTab: true
+        activeFocusOnTab: root.activeFocusOnTab
         anchors.topMargin: tableHeader.height
         anchors.fill: parent
         currentIndex: -1
@@ -873,7 +879,7 @@ ScrollView {
                             sourceComponent: columnItem.delegate ? columnItem.delegate : itemDelegate
 
                             // these properties are exposed to the item delegate
-                            readonly property var model: listView.model
+                            readonly property var model: itemModel
                             readonly property var modelData: itemModelData
 
                             property QtObject styleData: QtObject {
@@ -929,6 +935,7 @@ ScrollView {
                     model: columnModel
 
                     delegate: Item {
+                        id: headerRowDelegate
                         z:-index
                         width: columnCount === 1 ? viewport.width + __verticalScrollBar.width : modelData.width
                         implicitWidth: headerStyle.implicitWidth
@@ -974,7 +981,7 @@ ScrollView {
                             onPositionChanged: {
                                 if (modelData.movable && pressed && columnCount > 1) { // only do this while dragging
                                     for (var h = columnCount-1 ; h >= 0 ; --h) {
-                                        if (drag.target.x > headerrow.children[h].x) {
+                                        if (drag.target.x + listView.contentX + headerRowDelegate.width/2 > headerrow.children[h].x) {
                                             repeater.targetIndex = h
                                             break
                                         }
@@ -984,7 +991,6 @@ ScrollView {
 
                             onPressed: {
                                 repeater.dragIndex = index
-                                draghandle.x = parent.x
                             }
 
                             onReleased: {
@@ -1012,8 +1018,8 @@ ScrollView {
                                 readonly property int column: index
                                 readonly property int textAlignment: modelData.horizontalAlignment
                             }
-
                             parent: tableHeader
+                            x: headerRowDelegate.x - listView.contentX
                             width: modelData.width
                             height: parent.height
                             sourceComponent: root.headerDelegate

@@ -54,6 +54,14 @@ QQuickPopupWindow::QQuickPopupWindow() :
 {
     setFlags(Qt::Popup);
     setModality(Qt::ApplicationModal);
+    connect(qApp, SIGNAL(applicationStateChanged(Qt::ApplicationState)),
+            this, SLOT(applicationStateChanged(Qt::ApplicationState)));
+}
+
+void QQuickPopupWindow::applicationStateChanged(Qt::ApplicationState state)
+{
+    if (state != Qt::ApplicationActive)
+        dismissPopup();
 }
 
 void QQuickPopupWindow::show()
@@ -86,6 +94,7 @@ void QQuickPopupWindow::show()
     } else {
         setPosition(posx, posy);
     }
+    emit geometryChanged();
 
     if (!qobject_cast<QQuickPopupWindow *>(transientParent())) // No need for parent menu windows
         if (QQuickWindow *w = qobject_cast<QQuickWindow *>(transientParent()))
@@ -119,6 +128,7 @@ void QQuickPopupWindow::updateSize()
 {
     QSize contentSize = popupContentItem()->childrenRect().size().toSize();
     setGeometry(x(), y(), contentSize.width(), contentSize.height());
+    emit geometryChanged();
 }
 
 void QQuickPopupWindow::dismissPopup()

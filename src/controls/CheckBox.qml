@@ -132,6 +132,13 @@ AbstractCheckable {
     */
     property bool __ignoreChecked: false
 
+    /*!
+        \internal
+        True if onCheckedStateChanged should be ignored because we were reacting
+        to onCheckedChanged.
+    */
+    property bool __ignoreCheckedState: false
+
     style: Qt.createComponent(Settings.style + "/CheckBoxStyle.qml", checkBox)
 
     activeFocusOnTab: true
@@ -142,8 +149,11 @@ AbstractCheckable {
     __cycleStatesHandler: __cycleCheckBoxStates
 
     onCheckedChanged: {
-        if (!__ignoreChecked)
+        if (!__ignoreChecked) {
+            __ignoreCheckedState = true;
             checkedState = checked ? Qt.Checked : Qt.Unchecked;
+            __ignoreCheckedState = false;
+        }
     }
 
     onCheckedStateChanged: {
@@ -151,7 +161,7 @@ AbstractCheckable {
         if (checkedState === Qt.PartiallyChecked) {
             partiallyCheckedEnabled = true;
             checked = false;
-        } else {
+        } else if (!__ignoreCheckedState) {
             checked = checkedState === Qt.Checked;
         }
         __ignoreChecked = false;

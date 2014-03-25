@@ -39,7 +39,7 @@
 ****************************************************************************/
 
 import QtQuick 2.1
-import QtQuick.Controls 1.1
+import QtQuick.Controls 1.2
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.0
@@ -102,12 +102,32 @@ Item {
                 Layout.alignment: Qt.AlignHCenter
                 SpinBox {
                     id: answer
+                    onEditingFinished: spinboxDialog.click(StandardButton.Ok)
                 }
                 Text {
                     text: "m/s"
                     Layout.alignment: Qt.AlignBaseline | Qt.AlignLeft
                 }
             }
+        }
+    }
+
+    Dialog {
+        id: dateDialog
+        modality: dialogModal.checked ? Qt.WindowModal : Qt.NonModal
+        title: customizeTitle.checked ? windowTitleField.text : "Choose a date"
+        onButtonClicked: console.log("clicked button " + clickedButton)
+        onAccepted: {
+            if (clickedButton == StandardButton.Ok)
+                lastChosen.text = "Accepted " + calendar.selectedDate.toLocaleDateString()
+            else
+                lastChosen.text = (clickedButton == StandardButton.Retry ? "(Retry)" : "(Ignore)")
+        }
+
+        Calendar {
+            id: calendar
+            width: parent ? parent.width : implicitWidth
+            onDoubleClicked: dateDialog.click(StandardButton.Ok)
         }
     }
 
@@ -154,6 +174,7 @@ Item {
                     buttons = StandardButton.Ok
                 helloDialog.standardButtons = buttons
                 spinboxDialog.standardButtons = buttons
+                dateDialog.standardButtons = buttons
                 updating = false
             }
 
@@ -256,6 +277,11 @@ Item {
                 text: "Input dialog"
                 anchors.verticalCenter: parent.verticalCenter
                 onClicked: spinboxDialog.open()
+            }
+            Button {
+                text: "Date picker"
+                anchors.verticalCenter: parent.verticalCenter
+                onClicked: dateDialog.open()
             }
         }
     }

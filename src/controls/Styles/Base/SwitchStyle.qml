@@ -125,9 +125,9 @@ Style {
         implicitWidth: Math.round(grooveLoader.width + padding.left + padding.right)
         implicitHeight: grooveLoader.implicitHeight + padding.top + padding.bottom
 
-        property var __groove: grooveLoader
         property var __handle: handleLoader
-        property bool enableAnimation: false
+        property int min: padding.left
+        property int max: grooveLoader.width - handleLoader.width - padding.right
 
         Loader {
             id: grooveLoader
@@ -142,6 +142,9 @@ Style {
                 id: handleLoader
 
                 z:1
+
+                x: control.checked ? max : min
+
                 anchors.top: grooveLoader.top
                 anchors.bottom: grooveLoader.bottom
                 anchors.topMargin: padding.top
@@ -149,7 +152,7 @@ Style {
 
                 Behavior on x {
                     id: behavior
-                    enabled: enableAnimation
+                    enabled: handleLoader.status === Loader.Ready
                     NumberAnimation {
                         duration: 150
                         easing.type: Easing.OutCubic

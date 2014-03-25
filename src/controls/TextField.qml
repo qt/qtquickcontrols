@@ -401,6 +401,8 @@ Control {
         Note that if there is a \l validator or \l inputMask set on the text
         field, the signal will only be emitted if the input is in an acceptable
         state.
+
+        The corresponding handler is \c onAccepted.
     */
     signal accepted()
 
@@ -413,6 +415,8 @@ Control {
         inputMask set on the text field and enter/return is pressed, this
         signal will only be emitted if the input follows
         the inputMask and the validator returns an acceptable state.
+
+        The corresponding handler is \c onEditingFinished.
     */
     signal editingFinished()
 
@@ -548,6 +552,9 @@ Control {
 
     /*! \internal */
     property alias __contentWidth: textInput.contentWidth
+
+    /*! \internal */
+    property alias __baselineOffset: textInput.baselineOffset
 
     style: Qt.createComponent(Settings.style + "/TextFieldStyle.qml", textInput)
 

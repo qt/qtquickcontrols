@@ -65,12 +65,16 @@ QT_BEGIN_NAMESPACE
     \qmlsignal QtQuick::Dialogs::AbstractColorDialog::accepted
 
     This signal is emitted by \l accept().
+
+    The corresponding handler is \c onAccepted.
 */
 
 /*!
     \qmlsignal QtQuick::Dialogs::AbstractColorDialog::rejected
 
     This signal is emitted by \l reject().
+
+    The corresponding handler is \c onRejected.
 */
 
 /*!

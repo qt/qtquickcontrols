@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2014 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the Qt Quick Controls module of the Qt Toolkit.
@@ -40,43 +40,42 @@
 
 import QtQuick 2.1
 import QtQuick.Controls 1.1
-import QtQuick.Controls.Private 1.0
-import "." as Desktop
 
-Style {
-    id: styleRoot
+Item {
+    width: 200
+    height: 200
 
-    property Component background: StyleItem {
-        elementType: "menubar"
-
-        Accessible.role: Accessible.MenuBar
-
-        Component.onCompleted: {
-            styleRoot.padding.left = pixelMetric("menubarhmargin") + pixelMetric("menubarpanelwidth")
-            styleRoot.padding.right = pixelMetric("menubarhmargin") + pixelMetric("menubarpanelwidth")
-            styleRoot.padding.top = pixelMetric("menubarvmargin") + pixelMetric("menubarpanelwidth")
-            styleRoot.padding.bottom = pixelMetric("menubarvmargin") + pixelMetric("menubarpanelwidth")
-        }
+    ListModel {
+        id: libraryModel
+        ListElement{ title: "A Masterpiece" ; author: "Gabriel" }
+        ListElement{ title: "Brilliance"    ; author: "Jens" }
+        ListElement{ title: "Outstanding"   ; author: "Frederik" }
     }
 
-    property Component itemDelegate: StyleItem {
-        elementType: "menubaritem"
+    property alias control1: _control1
+    property alias control2: _control2
+    property alias control3: _control3
 
-        text: styleData.text
-        property string plainText: StyleHelpers.removeMnemonics(text)
-        contentWidth: textWidth(plainText)
-        contentHeight: textHeight(plainText)
-        width: implicitWidth
-
-        enabled: styleData.enabled
-        sunken: styleData.open
-        selected: (parent && styleData.selected) || sunken
-
-        hints: { "showUnderlined": styleData.underlineMnemonic }
-
-        Accessible.role: Accessible.MenuItem
-        Accessible.name: plainText
+    TextField  {
+        y: 20
+        id: _control1
+        activeFocusOnTab: true
+        text: "control1"
+        readOnly: true
     }
-
-    property Component menuStyle: Desktop.MenuStyle { }
+    TableView  {
+        y: 70
+        id: _control2
+        activeFocusOnTab: false
+        TableViewColumn{ role: "title"  ; title: "Title" ; width: 100 }
+        TableViewColumn{ role: "author" ; title: "Author" ; width: 200 }
+        model: libraryModel
+    }
+    TextField  {
+        y: 120
+        id: _control3
+        activeFocusOnTab: true
+        text: "control3"
+        readOnly: true
+    }
 }
