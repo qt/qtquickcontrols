@@ -132,7 +132,8 @@ void QtQuickControlsPlugin::initializeEngine(QQmlEngine *engine, const char *uri
 {
     Q_UNUSED(uri);
 
-    // Register private API
+    // Register private API. Note that to use these types outside of the
+    // Qt Quick Controls module, both the public and private imports must be used.
     const char *private_uri = "QtQuick.Controls.Private";
     qmlRegisterType<QQuickAbstractStyle>(private_uri, 1, 0, "AbstractStyle");
     qmlRegisterType<QQuickCalendarModel>(private_uri, 1, 0, "CalendarModel");
