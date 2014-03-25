@@ -97,7 +97,7 @@ static bool isChecked(const QObject *o)
     }
     \endcode
 
-    Several controls already support ExclusiveGroup, e.g. \l Action, \l MenuItem, \l Button, and \l RadioButton.
+    Several controls already support ExclusiveGroup, e.g. \l Action, \l MenuItem, \l {QtQuick.Controls::}{Button}, and \l RadioButton.
 
     Since ExclusiveGroup only supports \l Action as child items, we need to manually assign the \c exclusiveGroup
     property for other objects.

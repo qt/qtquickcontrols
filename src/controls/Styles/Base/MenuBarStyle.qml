@@ -113,7 +113,7 @@ Style {
 
     /*! The style component for the menubar's own menus and their submenus.
 
-        \sa MenuStyle
+        \sa {QtQuick.Controls.Styles::}{MenuStyle}
     */
     property Component menuStyle: MenuStyle { }
 }
