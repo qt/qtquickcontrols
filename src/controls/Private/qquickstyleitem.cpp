@@ -104,6 +104,8 @@ public:
     {
         m_geometry.setDrawingMode(GL_TRIANGLE_STRIP);
         setGeometry(&m_geometry);
+        // The texture material has mipmap filtering set to Nearest by default. This is not ideal.
+        m_material.setMipmapFiltering(QSGTexture::None);
         setMaterial(&m_material);
     }
 
