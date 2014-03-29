@@ -91,8 +91,8 @@ class QQuickStyleItem: public QQuickItem
     Q_PROPERTY( int step READ step WRITE setStep NOTIFY stepChanged)
     Q_PROPERTY( int paintMargins READ paintMargins WRITE setPaintMargins NOTIFY paintMarginsChanged)
 
-    Q_PROPERTY( int contentWidth READ contentWidth() WRITE setContentWidth NOTIFY contentWidthChanged)
-    Q_PROPERTY( int contentHeight READ contentHeight() WRITE setContentHeight NOTIFY contentHeightChanged)
+    Q_PROPERTY( int contentWidth READ contentWidth WRITE setContentWidth NOTIFY contentWidthChanged)
+    Q_PROPERTY( int contentHeight READ contentHeight WRITE setContentHeight NOTIFY contentHeightChanged)
 
     Q_PROPERTY( int textureWidth READ textureWidth WRITE setTextureWidth NOTIFY textureWidthChanged)
     Q_PROPERTY( int textureHeight READ textureHeight WRITE setTextureHeight NOTIFY textureHeightChanged)

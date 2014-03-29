@@ -51,6 +51,7 @@ QT_BEGIN_NAMESPACE
 */
 
 /*!
+    \qmlpropertygroup QtQuick.Controls.Styles::AbstractStyle::padding
     \qmlproperty int AbstractStyle::padding.top
     \qmlproperty int AbstractStyle::padding.left
     \qmlproperty int AbstractStyle::padding.right

@@ -76,7 +76,7 @@ import QtQuick.Controls.Private 1.0
 Style {
     id: buttonstyle
 
-    /*! The \l Button attached to this style. */
+    /*! The \l {QtQuick.Controls::}{Button} attached to this style. */
     readonly property Button control: __control
 
     /*! \internal */
