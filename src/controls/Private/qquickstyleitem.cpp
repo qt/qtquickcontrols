@@ -967,7 +967,7 @@ QSize QQuickStyleItem::sizeFromContents(int width, int height)
             size = qApp->style()->sizeFromContents(QStyle::CT_SpinBox, m_styleoption, QSize(width, height + 5));
             break;
         }
-#endif // fall trough if not mac
+#endif // fall through if not mac
     case Edit:
 #ifdef Q_OS_OSX
         if (style() =="mac") {
