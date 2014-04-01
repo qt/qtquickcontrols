@@ -36,7 +36,7 @@
 */
 
 /*!
-    \example controls/gallery
+    \example gallery
     \title Qt Quick Controls - Gallery
     \ingroup qtquickcontrols_examples
     \brief A collection of components for a classic desktop-style UI.
@@ -47,7 +47,7 @@
 */
 
 /*!
-    \example controls/basiclayouts
+    \example basiclayouts
     \title Qt Quick Controls - Basic Layouts Example
     \ingroup qtquickcontrols_examples
     \brief Demonstrates how to use layout types to arrange a UI
@@ -59,7 +59,7 @@
 */
 
 /*!
-    \example controls/splitview
+    \example splitview
     \title Qt Quick Controls - Split View Example
     \ingroup qtquickcontrols_examples
     \brief An example for the SplitView UI control.
@@ -71,7 +71,7 @@
 */
 
 /*!
-    \example controls/tableview
+    \example tableview
     \title Qt Quick Controls - Table View Example
     \ingroup qtquickcontrols_examples
     \brief An example for the TableView control.
@@ -84,7 +84,7 @@
 */
 
 /*!
-    \example controls/texteditor
+    \example texteditor
     \title Qt Quick Controls - Text Editor Example
     \ingroup qtquickcontrols_examples
     \brief A text editor application.
@@ -95,7 +95,7 @@
 */
 
 /*!
-    \example controls/touch
+    \example touch
     \title Qt Quick Controls - Touch Gallery
     \ingroup qtquickcontrols_examples
     \brief Demonstrates UI controls for a touch interface
@@ -106,7 +106,7 @@
 */
 
 /*!
-    \example controls/calendar
+    \example calendar
     \title Qt Quick Controls - Calendar Example
     \ingroup qtquickcontrols_examples
     \brief Demonstrates the use of Calendar to display events

@@ -54,7 +54,7 @@ import QtQuick.Controls.Private 1.0
     Example:
     \qml
     BusyIndicator {
-        style: BusyIndicatorStyle
+        style: BusyIndicatorStyle {
             indicator: Image {
                 visible: control.running
                 source: "spinner.png"

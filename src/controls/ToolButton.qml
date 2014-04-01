@@ -49,8 +49,8 @@ import QtQuick.Controls.Private 1.0
     \ingroup controls
     \brief Provides a button type that is typically used within a ToolBar.
 
-     ToolButton is functionally similar to \l Button, but can provide a look that is more
-     suitable within a \l ToolBar.
+     ToolButton is functionally similar to \l {QtQuick.Controls::}{Button}, but
+     can provide a look that is more suitable within a \l ToolBar.
 
      \code
      ToolButton {

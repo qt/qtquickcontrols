@@ -118,7 +118,7 @@ Window {
     // The below documentation was supposed to be written as a grouped property, but qdoc would
     // not render it correctly due to a bug (https://bugreports.qt-project.org/browse/QTBUG-34206)
     /*!
-        \qmlproperty ApplicationWindow::contentItem
+        \qmlproperty ContentItem ApplicationWindow::contentItem
 
         This group holds the size constraints of the content item. This is the area between the
         \l ToolBar and the \l StatusBar.

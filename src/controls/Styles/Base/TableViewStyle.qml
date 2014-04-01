@@ -48,7 +48,7 @@ import QtQuick.Controls.Private 1.0
     \ingroup viewsstyling
     \brief Provides custom styling for TableView
 
-    Note that this class derives from \l ScrollViewStyle
+    \note This class derives from \l {QtQuick.Controls.Styles::}{ScrollViewStyle}
     and supports all of the properties defined there.
 */
 ScrollViewStyle {
