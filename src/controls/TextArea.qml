@@ -337,16 +337,13 @@ ScrollView {
         \qmlproperty enumeration TextArea::wrapMode
 
         Set this property to wrap the text to the TextArea item's width.
-        The text will only wrap if an explicit width has been set.
 
         \list
-        \li TextEdit.NoWrap - no wrapping will be performed. If the text contains insufficient newlines, then implicitWidth will exceed a set width.
-        \li TextEdit.WordWrap - wrapping is done on word boundaries only. If a word is too long, implicitWidth will exceed a set width.
+        \li TextEdit.NoWrap - no wrapping will be performed.
+        \li TextEdit.WordWrap (default) - wrapping is done on word boundaries only.
         \li TextEdit.WrapAnywhere - wrapping is done at any point on a line, even if it occurs in the middle of a word.
         \li TextEdit.Wrap - if possible, wrapping occurs at a word boundary; otherwise it will occur at the appropriate point on the line, even in the middle of a word.
         \endlist
-
-        The default is \c TextEdit.NoWrap. If you set a width, consider using TextEdit.Wrap.
     */
     property alias wrapMode: edit.wrapMode
 
