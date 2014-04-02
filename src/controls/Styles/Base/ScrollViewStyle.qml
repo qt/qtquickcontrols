@@ -117,7 +117,7 @@ Style {
         implicitHeight: Math.round(TextSingleton.implicitHeight)
         clip: true
         opacity: transientScrollBars ? 0.5 : 1.0
-        visible: !transientScrollBars || sticky
+        visible: !Settings.hasTouchScreen && (!transientScrollBars || sticky)
         Rectangle {
             anchors.fill: parent
             color: "#ddd"

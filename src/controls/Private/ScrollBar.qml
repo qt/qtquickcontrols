@@ -101,7 +101,8 @@ Item {
         onEntered: if (!pressed) __panel.activeControl = __panel.hitTest(mouseX, mouseY)
         onExited: if (!pressed) __panel.activeControl = "none"
         onMouseXChanged: if (!pressed) __panel.activeControl = __panel.hitTest(mouseX, mouseY)
-        hoverEnabled: true
+        hoverEnabled: !Settings.hasTouchScreen
+        enabled: !Settings.hasTouchScreen // TODO: touch on desktop?
 
         property var pressedX
         property var pressedY
