@@ -97,6 +97,11 @@ public:
 
     void wheelEvent(QWheelEvent *event);
 
+    bool isAtXEnd() const;
+    bool isAtXBeginning() const;
+    bool isAtYEnd() const;
+    bool isAtYBeginning() const;
+
 Q_SIGNALS:
     void verticalValueChanged();
     void horizontalValueChanged();
