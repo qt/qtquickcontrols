@@ -95,19 +95,20 @@ Style {
 
     /*! This defines the background of the button. */
     property Component background: Item {
+        property bool down: control.pressed || (control.checkable && control.checked)
         implicitWidth: Math.round(TextSingleton.implicitHeight * 4.5)
         implicitHeight: Math.max(25, Math.round(TextSingleton.implicitHeight * 1.2))
         Rectangle {
             anchors.fill: parent
-            anchors.bottomMargin: control.pressed ? 0 : -1
+            anchors.bottomMargin: down ? 0 : -1
             color: "#10000000"
             radius: baserect.radius
         }
         Rectangle {
             id: baserect
             gradient: Gradient {
-                GradientStop {color: control.pressed ? "#aaa" : "#fefefe" ; position: 0}
-                GradientStop {color: control.pressed ? "#ccc" : "#e3e3e3" ; position: control.pressed ? 0.1: 1}
+                GradientStop {color: down ? "#aaa" : "#fefefe" ; position: 0}
+                GradientStop {color: down ? "#ccc" : "#e3e3e3" ; position: down ? 0.1: 1}
             }
             radius: TextSingleton.implicitHeight * 0.16
             anchors.fill: parent
