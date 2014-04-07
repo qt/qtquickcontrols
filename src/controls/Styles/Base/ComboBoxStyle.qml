@@ -56,7 +56,7 @@ Style {
 
     /*!
         \qmlproperty enumeration renderType
-        \since 5.3
+        \since QtQuick.Controls.Styles 1.2
 
         Override the default rendering type for the control.
 

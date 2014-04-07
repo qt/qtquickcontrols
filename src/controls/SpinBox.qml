@@ -141,7 +141,7 @@ Control {
     property bool activeFocusOnPress: true
 
     /*! \qmlproperty enumeration horizontalAlignment
-        \since 5.2
+        \since QtQuick.Controls 1.1
 
         This property indicates how the content is horizontally aligned
         within the text field.
@@ -166,7 +166,7 @@ Control {
 
     /*!
         \qmlsignal SpinBox::editingFinished()
-        \since 5.2
+        \since QtQuick.Controls 1.1
 
         This signal is emitted when the Return or Enter key is pressed or
         the control loses focus. Note that if there is a validator

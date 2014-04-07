@@ -408,7 +408,7 @@ Control {
 
     /*!
         \qmlsignal TextField::editingFinished()
-        \since 5.2
+        \since QtQuick.Controls 1.1
 
         This signal is emitted when the Return or Enter key is pressed or
         the text field loses focus. Note that if there is a validator or

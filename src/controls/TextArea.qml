@@ -387,7 +387,7 @@ ScrollView {
 
     /*!
         \qmlsignal TextArea::linkHovered(string link)
-        \since 5.2
+        \since QtQuick.Controls 1.1
 
         This signal is emitted when the user hovers a link embedded in the text.
         The link must be in rich text or HTML format and the
