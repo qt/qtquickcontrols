@@ -51,7 +51,7 @@ Item {
         when: true
 
         property var rangedDate
-        readonly property string importsStr: "import QtQuick.Controls 1.1; import QtQuick.Controls.Private 1.0; "
+        readonly property string importsStr: "import QtQuick.Controls 1.2; import QtQuick.Controls.Private 1.0; "
 
         function init() {
             rangedDate = Qt.createQmlObject(importsStr + " RangedDate {}", container, "");

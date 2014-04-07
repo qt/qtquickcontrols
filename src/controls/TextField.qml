@@ -39,7 +39,7 @@
 ****************************************************************************/
 
 import QtQuick 2.2
-import QtQuick.Controls 1.1
+import QtQuick.Controls 1.2
 import QtQuick.Controls.Private 1.0
 
 /*!
@@ -382,7 +382,7 @@ Control {
 
         \code
         import QtQuick 2.2
-        import QtQuick.Controls 1.1
+        import QtQuick.Controls 1.2
 
         TextField {
             validator: IntValidator {bottom: 11; top: 31;}

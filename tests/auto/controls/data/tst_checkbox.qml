@@ -61,7 +61,7 @@ Item {
         }
 
         function init() {
-            checkBox = Qt.createQmlObject("import QtQuick.Controls 1.1; CheckBox { }", container, "");
+            checkBox = Qt.createQmlObject("import QtQuick.Controls 1.2; CheckBox { }", container, "");
         }
 
         function cleanup() {
@@ -169,7 +169,7 @@ Item {
         }
 
         function test_check_keep_binding() {
-            var root = Qt.createQmlObject("import QtQuick 2.2; import QtQuick.Controls 1.1; \n"
+            var root = Qt.createQmlObject("import QtQuick 2.2; import QtQuick.Controls 1.2; \n"
                 + "Row { \n"
                 + "    property alias checkBox1: checkBox1 \n"
                 + "    property alias checkBox2: checkBox2 \n"
@@ -188,7 +188,7 @@ Item {
         }
 
         function test_checkState_keep_binding() {
-            var root = Qt.createQmlObject("import QtQuick 2.2; import QtQuick.Controls 1.1; \n"
+            var root = Qt.createQmlObject("import QtQuick 2.2; import QtQuick.Controls 1.2; \n"
                 + "Row { \n"
                 + "    property alias checkBox1: checkBox1 \n"
                 + "    property alias checkBox2: checkBox2 \n"
@@ -208,7 +208,7 @@ Item {
 
 
         function test_exclusiveGroup() {
-            var root = Qt.createQmlObject("import QtQuick 2.2; import QtQuick.Controls 1.1; \n"
+            var root = Qt.createQmlObject("import QtQuick 2.2; import QtQuick.Controls 1.2; \n"
                 + "Row { \n"
                 + "    property alias checkBox1: checkBox1 \n"
                 + "    property alias checkBox2: checkBox2 \n"
@@ -282,7 +282,7 @@ Item {
                 skip("This function doesn't support NOT iterating all.")
 
             var test_control = 'import QtQuick 2.2; \
-            import QtQuick.Controls 1.1;            \
+            import QtQuick.Controls 1.2;            \
             Item {                                  \
                 width: 200;                         \
                 height: 200;                        \

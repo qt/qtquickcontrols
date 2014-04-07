@@ -54,7 +54,7 @@ Item {
         height:400
 
         function test_createIndicator() {
-            var indicator = Qt.createQmlObject('import QtQuick.Controls 1.1; BusyIndicator {}', testCase, '');
+            var indicator = Qt.createQmlObject('import QtQuick.Controls 1.2; BusyIndicator {}', testCase, '');
             indicator.running = true
             indicator.destroy()
         }
