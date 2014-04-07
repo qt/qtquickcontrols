@@ -126,7 +126,10 @@ FocusScope {
         height: currentItem ? currentItem.height : 0
 
         highlightMoveDuration: 0
-        currentIndex: tabView.currentIndex
+
+        // We cannot bind directly to the currentIndex because the actual model is
+        // populated after the listview is completed, resulting in an invalid contentItem
+        currentIndex: tabView.currentIndex < model.count ? tabView.currentIndex : -1
         onCurrentIndexChanged: tabrow.positionViewAtIndex(currentIndex, ListView.Contain)
 
         moveDisplaced: Transition {
