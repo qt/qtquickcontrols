@@ -65,7 +65,7 @@ QT_BEGIN_NAMESPACE
     chooses a color:
 
     \qml
-    import QtQuick 2.1
+    import QtQuick 2.2
     import QtQuick.Dialogs 1.0
 
     ColorDialog {

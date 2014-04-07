@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.1
+import QtQuick 2.2
 import QtTest 1.0
 import QtQuickControlsTests 1.0
 
@@ -55,7 +55,7 @@ TestCase {
     height:400
 
     function test_minimumHeight() {
-        var test_control = 'import QtQuick 2.1; \
+        var test_control = 'import QtQuick 2.2; \
         import QtQuick.Controls 1.1;            \
         ApplicationWindow {                     \
             visible: true;                      \
@@ -148,7 +148,7 @@ TestCase {
             }
         }
 
-        var test_control = 'import QtQuick 2.1; \
+        var test_control = 'import QtQuick 2.2; \
         import QtQuick.Controls 1.1;            \
         import QtQuick.Layouts 1.1;             \
         ApplicationWindow {                     \
@@ -169,7 +169,7 @@ TestCase {
     }
 
     function test_minimumSizeLargerThan_MaximumSize() {
-        var test_control = 'import QtQuick 2.1; \
+        var test_control = 'import QtQuick 2.2; \
         import QtQuick.Controls 1.1;            \
         import QtQuick.Layouts 1.1;             \
         ApplicationWindow {                     \
@@ -207,7 +207,7 @@ TestCase {
     }
 
     function test_defaultSizeHints() {
-        var test_control = 'import QtQuick 2.1; \
+        var test_control = 'import QtQuick 2.2; \
         import QtQuick.Controls 1.1;            \
         import QtQuick.Layouts 1.1;             \
         ApplicationWindow {                     \

@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.1
+import QtQuick 2.2
 import QtTest 1.0
 import QtQuickControlsTests 1.0
 
@@ -139,7 +139,7 @@ Item {
         }
 
         function test_exclusiveGroup() {
-            var root = Qt.createQmlObject("import QtQuick 2.1; import QtQuick.Controls 1.1; \n"
+            var root = Qt.createQmlObject("import QtQuick 2.2; import QtQuick.Controls 1.1; \n"
                 + "Row { \n"
                 + "    property alias radioButton1: radioButton1 \n"
                 + "    property alias radioButton2: radioButton2 \n"
@@ -195,7 +195,7 @@ Item {
             if (!SystemInfo.tabAllWidgets)
                 skip("This function doesn't support NOT iterating all.")
 
-            var test_control = 'import QtQuick 2.1; \
+            var test_control = 'import QtQuick 2.2; \
             import QtQuick.Controls 1.1;            \
             Item {                                  \
                 width: 200;                         \

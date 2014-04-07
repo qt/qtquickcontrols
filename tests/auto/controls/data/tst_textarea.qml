@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.1
+import QtQuick 2.2
 import QtTest 1.0
 
 Item {
@@ -81,7 +81,7 @@ TestCase {
 
     function test_activeFocusOnTab() {
         // Set TextArea readonly so the tab/backtab can be tested toward the navigation
-        var test_control = 'import QtQuick 2.1; \
+        var test_control = 'import QtQuick 2.2; \
         import QtQuick.Controls 1.1;            \
         Item {                                  \
             width: 200;                         \

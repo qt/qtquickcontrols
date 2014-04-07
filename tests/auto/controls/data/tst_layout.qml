@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.1
+import QtQuick 2.2
 import QtTest 1.0
 
 TestCase {
@@ -50,7 +50,7 @@ TestCase {
 
     function test_invalidParent() {
         ignoreWarning('Layout must be attached to Item elements')
-        var object = Qt.createQmlObject('import QtQuick 2.1; import QtQuick.Layouts 1.0; QtObject { Layout.fillWidth: true }', testCase, '');
+        var object = Qt.createQmlObject('import QtQuick 2.2; import QtQuick.Layouts 1.0; QtObject { Layout.fillWidth: true }', testCase, '');
         object.destroy()
     }
 }

@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.1
+import QtQuick 2.2
 import QtTest 1.0
 import QtQuick.Layouts 1.0
 
@@ -60,7 +60,7 @@ Item {
 
         function test_fixedAndExpanding() {
             var test_layoutStr =
-               'import QtQuick 2.1;                     \
+               'import QtQuick 2.2;                     \
                 import QtQuick.Layouts 1.0;             \
                 RowLayout {                             \
                     id: row;                            \
@@ -98,7 +98,7 @@ Item {
 
         function test_allExpanding() {
             var test_layoutStr =
-               'import QtQuick 2.1;                     \
+               'import QtQuick 2.2;                     \
                 import QtQuick.Layouts 1.0;             \
                 RowLayout {                             \
                     id: row;                            \
@@ -136,7 +136,7 @@ Item {
 
         function test_initialNestedLayouts() {
             var test_layoutStr =
-               'import QtQuick 2.1;                             \
+               'import QtQuick 2.2;                             \
                 import QtQuick.Layouts 1.0;                     \
                 ColumnLayout {                                  \
                     id : col;                                   \
@@ -174,7 +174,7 @@ Item {
 
         function test_implicitSize() {
             var test_layoutStr =
-               'import QtQuick 2.1;                             \
+               'import QtQuick 2.2;                             \
                 import QtQuick.Layouts 1.0;                     \
                 RowLayout {                                     \
                     id: row;                                    \
@@ -207,7 +207,7 @@ Item {
 
         function test_countGeometryChanges() {
             var test_layoutStr =
-               'import QtQuick 2.1;                             \
+               'import QtQuick 2.2;                             \
                 import QtQuick.Layouts 1.0;                     \
                 ColumnLayout {                                  \
                     id : col;                                   \

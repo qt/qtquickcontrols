@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.1
+import QtQuick 2.2
 import QtTest 1.0
 
 Item {
@@ -59,7 +59,7 @@ TestCase {
     }
 
     function test_repeater() {
-        var tabView = Qt.createQmlObject('import QtQuick 2.1; import QtQuick.Controls 1.1; TabView { Repeater { model: 3; Tab { } } }', testCase, '');
+        var tabView = Qt.createQmlObject('import QtQuick 2.2; import QtQuick.Controls 1.1; TabView { Repeater { model: 3; Tab { } } }', testCase, '');
         compare(tabView.count, 3)
         tabView.destroy()
     }
@@ -70,7 +70,7 @@ TestCase {
     }
 
     function test_changeIndex() {
-        var tabView = Qt.createQmlObject('import QtQuick 2.1; import QtQuick.Controls 1.1; TabView { Repeater { model: 3; Tab { Text { text: index } } } }', testCase, '');
+        var tabView = Qt.createQmlObject('import QtQuick 2.2; import QtQuick.Controls 1.1; TabView { Repeater { model: 3; Tab { Text { text: index } } } }', testCase, '');
         compare(tabView.count, 3)
         verify(tabView.getTab(1).item == undefined)
         tabView.currentIndex = 1
@@ -83,7 +83,7 @@ TestCase {
 
 
     function test_addRemoveTab() {
-        var tabView = Qt.createQmlObject('import QtQuick 2.1; import QtQuick.Controls 1.1; TabView { }', testCase, '');
+        var tabView = Qt.createQmlObject('import QtQuick 2.2; import QtQuick.Controls 1.1; TabView { }', testCase, '');
         compare(tabView.count, 0)
         tabView.addTab("title 1", newTab)
         compare(tabView.count, 1)
@@ -161,7 +161,7 @@ TestCase {
     }
 
     function test_moveTab(data) {
-        var tabView = Qt.createQmlObject('import QtQuick 2.1; import QtQuick.Controls 1.1; TabView { }', testCase, '');
+        var tabView = Qt.createQmlObject('import QtQuick 2.2; import QtQuick.Controls 1.1; TabView { }', testCase, '');
         compare(tabView.count, 0)
 
         var titles = ["title 1", "title 2", "title 3"]
@@ -193,7 +193,7 @@ TestCase {
 
     function test_dynamicTabs() {
         var test_tabView = '                                \
-        import QtQuick 2.1;                                 \
+        import QtQuick 2.2;                                 \
         import QtQuick.Controls 1.1;                        \
         TabView {                                           \
             id: tabView;                                    \
@@ -225,7 +225,7 @@ TestCase {
 
     function test_dynamicModel() {
         var test_tabView = '                                \
-        import QtQuick 2.1;                                 \
+        import QtQuick 2.2;                                 \
         import QtQuick.Controls 1.0;                        \
         TabView {                                           \
             id: tabView;                                    \
@@ -246,7 +246,7 @@ TestCase {
     }
 
     function test_mousePressOnTabBar() {
-        var test_tabView = 'import QtQuick 2.1;             \
+        var test_tabView = 'import QtQuick 2.2;             \
         import QtQuick.Controls 1.1;                        \
         Column {                                            \
             property alias tabview: _tabview;               \

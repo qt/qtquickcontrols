@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.1
+import QtQuick 2.2
 import QtTest 1.0
 import QtQuick.Controls 1.1
 import QtQuickControlsTests 1.0
@@ -95,14 +95,14 @@ TestCase {
         compare(groupbox.width, 16)
         compare(groupbox.height, 16)
 
-        var content = Qt.createQmlObject('import QtQuick 2.1; Rectangle {implicitWidth:100 ; implicitHeight:30}', container, '')
+        var content = Qt.createQmlObject('import QtQuick 2.2; Rectangle {implicitWidth:100 ; implicitHeight:30}', container, '')
         content.parent = groupbox.contentItem
         compare(groupbox.implicitWidth, 116)
         compare(groupbox.implicitHeight, 46)
         content.parent = null
         content.destroy()
 
-        content = Qt.createQmlObject('import QtQuick 2.1; Rectangle {width:20 ; height:20}', container, '')
+        content = Qt.createQmlObject('import QtQuick 2.2; Rectangle {width:20 ; height:20}', container, '')
         content.parent = groupbox.contentItem
         compare(groupbox.implicitWidth, 36)
         compare(groupbox.implicitHeight, 36)

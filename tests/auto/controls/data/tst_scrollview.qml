@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.1
+import QtQuick 2.2
 import QtTest 1.0
 import QtQuick.Controls 1.1
 import QtQuickControlsTests 1.0
@@ -92,7 +92,7 @@ TestCase {
 
     function test_clickToCenter() {
 
-        var test_control = 'import QtQuick 2.1;                       \
+        var test_control = 'import QtQuick 2.2;                       \
         import QtQuick.Controls 1.1;                                  \
         import QtQuick.Controls.Styles 1.1;                           \
         ScrollView {                                                  \
@@ -146,7 +146,7 @@ TestCase {
         if (!SystemInfo.tabAllWidgets)
             skip("This function doesn't support NOT iterating all.")
 
-        var test_control = 'import QtQuick 2.1; \
+        var test_control = 'import QtQuick 2.2; \
     import QtQuick.Controls 1.1;            \
     Item {                                  \
         width: 200;                         \

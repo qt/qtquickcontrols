@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.1
+import QtQuick 2.2
 import QtTest 1.0
 
 Item {
@@ -131,7 +131,7 @@ TestCase {
     }
 
     function test_validator() {
-        var textfield = Qt.createQmlObject('import QtQuick 2.1; import QtQuick.Controls 1.1; TextField {validator: RegExpValidator { regExp: /(red|blue|green)?/; }}', testCase, '')
+        var textfield = Qt.createQmlObject('import QtQuick 2.2; import QtQuick.Controls 1.1; TextField {validator: RegExpValidator { regExp: /(red|blue|green)?/; }}', testCase, '')
 
         textfield.text = "blu"
         compare(textfield.acceptableInput, false)
@@ -292,7 +292,7 @@ TestCase {
 
     function test_activeFocusOnTab() {
         // Set TextField readonly so the tab/backtab can be tested toward the navigation
-        var test_control = 'import QtQuick 2.1; \
+        var test_control = 'import QtQuick 2.2; \
         import QtQuick.Controls 1.1;            \
         Item {                                  \
             width: 200;                         \

@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.1
+import QtQuick 2.2
 import QtTest 1.0
 import QtQuickControlsTests 1.0
 
@@ -169,7 +169,7 @@ Item {
         }
 
         function test_check_keep_binding() {
-            var root = Qt.createQmlObject("import QtQuick 2.1; import QtQuick.Controls 1.1; \n"
+            var root = Qt.createQmlObject("import QtQuick 2.2; import QtQuick.Controls 1.1; \n"
                 + "Row { \n"
                 + "    property alias checkBox1: checkBox1 \n"
                 + "    property alias checkBox2: checkBox2 \n"
@@ -188,7 +188,7 @@ Item {
         }
 
         function test_checkState_keep_binding() {
-            var root = Qt.createQmlObject("import QtQuick 2.1; import QtQuick.Controls 1.1; \n"
+            var root = Qt.createQmlObject("import QtQuick 2.2; import QtQuick.Controls 1.1; \n"
                 + "Row { \n"
                 + "    property alias checkBox1: checkBox1 \n"
                 + "    property alias checkBox2: checkBox2 \n"
@@ -208,7 +208,7 @@ Item {
 
 
         function test_exclusiveGroup() {
-            var root = Qt.createQmlObject("import QtQuick 2.1; import QtQuick.Controls 1.1; \n"
+            var root = Qt.createQmlObject("import QtQuick 2.2; import QtQuick.Controls 1.1; \n"
                 + "Row { \n"
                 + "    property alias checkBox1: checkBox1 \n"
                 + "    property alias checkBox2: checkBox2 \n"
@@ -281,7 +281,7 @@ Item {
             if (!SystemInfo.tabAllWidgets)
                 skip("This function doesn't support NOT iterating all.")
 
-            var test_control = 'import QtQuick 2.1; \
+            var test_control = 'import QtQuick 2.2; \
             import QtQuick.Controls 1.1;            \
             Item {                                  \
                 width: 200;                         \

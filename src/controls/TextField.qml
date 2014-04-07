@@ -381,7 +381,7 @@ Control {
         integers between 11 and 31 into the text input:
 
         \code
-        import QtQuick 2.1
+        import QtQuick 2.2
         import QtQuick.Controls 1.1
 
         TextField {

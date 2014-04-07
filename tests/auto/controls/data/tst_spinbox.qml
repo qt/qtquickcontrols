@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.1
+import QtQuick 2.2
 import QtTest 1.0
 
 Item {
@@ -354,7 +354,7 @@ Item {
         }
 
         function test_get_active_focus_when_up_or_down_was_pressed(){
-            var test_control = 'import QtQuick 2.1;             \
+            var test_control = 'import QtQuick 2.2;             \
             import QtQuick.Controls 1.1;                        \
             Column {                                            \
                 property alias spinbox: _spinbox;               \
@@ -437,7 +437,7 @@ Item {
         }
 
         function test_activeFocusOnTab() {
-            var test_control = 'import QtQuick 2.1; \
+            var test_control = 'import QtQuick 2.2; \
             import QtQuick.Controls 1.1;            \
             Item {                                  \
                 width: 200;                         \
@@ -589,7 +589,7 @@ Item {
         function test_construction() {
             // onValueChanged should not be emitted during construction.
             var root = Qt.createQmlObject("
-                import QtQuick 2.1
+                import QtQuick 2.2
                 import QtQuick.Controls 1.1
                 Item {
                     id: root
