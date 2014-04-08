@@ -1047,6 +1047,7 @@ ScrollView {
                             id: headerResizeHandle
                             property int offset: 0
                             property int minimumSize: 20
+                            preventStealing: true
                             anchors.rightMargin: -width/2
                             width: Settings.hasTouchScreen ? Screen.pixelDensity * 3.5 : 16
                             height: parent.height
