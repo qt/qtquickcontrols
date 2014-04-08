@@ -176,6 +176,8 @@ MenuBarPrivate {
             if (d.openedMenuIndex > 0) {
                 d.preselectMenuItem = true
                 d.openedMenuIndex--
+            } else {
+                event.accepted = false;
             }
         }
 
@@ -183,6 +185,8 @@ MenuBarPrivate {
             if (d.openedMenuIndex !== -1 && d.openedMenuIndex < root.menus.length - 1) {
                 d.preselectMenuItem = true
                 d.openedMenuIndex++
+            } else {
+                event.accepted = false;
             }
         }
 
