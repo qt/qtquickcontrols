@@ -104,13 +104,13 @@ QQuickDialog::~QQuickDialog()
 {
 }
 
-QJSValue QQuickDialog::standardButtonsLeftModel()
+QJSValue QQuickDialog::__standardButtonsLeftModel()
 {
     updateStandardButtons();
     return m_standardButtonsLeftModel;
 }
 
-QJSValue QQuickDialog::standardButtonsRightModel()
+QJSValue QQuickDialog::__standardButtonsRightModel()
 {
     updateStandardButtons();
     return m_standardButtonsRightModel;

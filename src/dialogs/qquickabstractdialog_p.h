@@ -82,7 +82,7 @@ public:
     bool isVisible() const { return m_visible; }
     Qt::WindowModality modality() const { return m_modality; }
     virtual QString title() const = 0;
-    QObject* qmlImplementation() { return m_qmlImplementation; }
+    QQuickItem* contentItem() { return m_contentItem; }
 
     int x() const;
     int y() const;
@@ -92,7 +92,7 @@ public:
     virtual void setVisible(bool v);
     virtual void setModality(Qt::WindowModality m);
     virtual void setTitle(const QString &t) = 0;
-    void setQmlImplementation(QObject* obj);
+    void setContentItem(QQuickItem* obj);
     bool isWindow() const { return m_hasNativeWindows; }
 
     enum StandardButton {
@@ -154,9 +154,8 @@ protected:
     Qt::WindowModality m_modality;
 
 protected: // variables for pure-QML implementations only
-    QObject *m_qmlImplementation;
-    QWindow *m_dialogWindow;
     QQuickItem *m_contentItem;
+    QWindow *m_dialogWindow;
     QQuickItem *m_windowDecoration;
     bool m_hasNativeWindows;
     QRect m_sizeAspiration;

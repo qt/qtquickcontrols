@@ -62,9 +62,9 @@ QT_BEGIN_NAMESPACE
 class QQuickFileDialog : public QQuickAbstractFileDialog
 {
     Q_OBJECT
-    Q_PROPERTY(QObject* implementation READ qmlImplementation WRITE setQmlImplementation DESIGNABLE false)
+    Q_PROPERTY(QQuickItem* contentItem READ contentItem WRITE setContentItem DESIGNABLE false)
     Q_PROPERTY(QJSValue shortcuts READ shortcuts CONSTANT)
-    Q_CLASSINFO("DefaultProperty", "implementation")    // AbstractFileDialog in QML can have only one child
+    Q_CLASSINFO("DefaultProperty", "contentItem")    // AbstractFileDialog in QML can have only one child
 
 public:
     explicit QQuickFileDialog(QObject *parent = 0);
