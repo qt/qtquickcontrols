@@ -286,9 +286,9 @@ Window {
                                     target: loaderEditor.item
                                     onAccepted: {
                                         if (typeof styleData.value === 'number')
-                                            model.setProperty(styleData.row, styleData.role, Number(parseFloat(loaderEditor.item.text).toFixed(0)))
+                                            largeModel.setProperty(styleData.row, styleData.role, Number(parseFloat(loaderEditor.item.text).toFixed(0)))
                                         else
-                                            model.setProperty(styleData.row, styleData.role, loaderEditor.item.text)
+                                            largeModel.setProperty(styleData.row, styleData.role, loaderEditor.item.text)
                                     }
                                 }
                                 sourceComponent: styleData.selected ? editor : null
