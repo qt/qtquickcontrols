@@ -224,22 +224,25 @@ Style {
     property Component __popupStyle: Style {
         property int __maxPopupHeight: 400
         property int submenuOverlap: 0
+        property int submenuPopupDelay: 100
 
         property Component frame: Rectangle {
-            width: (parent ? parent.contentWidth : 0)
-            height: (parent ? parent.contentHeight : 0) + 2
+            id: popupFrame
             border.color: "white"
-            property real maxHeight: 500
-            property int margin: 1
+            Text {
+                text: "NOT IMPLEMENTED"
+                color: "red"
+                font {
+                    pixelSize: 10
+                    bold: true
+                }
+                anchors.centerIn: parent
+                rotation: -Math.atan2(popupFrame.height, popupFrame.width) * 180 / Math.PI
+            }
         }
 
         property Component menuItemPanel: Text {
-            text: "NOT IMPLEMENTED"
-            color: "red"
-            font {
-                pixelSize: 14
-                bold: true
-            }
+            text: styleData.text
         }
 
         property Component __scrollerStyle: null
