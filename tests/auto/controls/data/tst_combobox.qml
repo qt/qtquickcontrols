@@ -698,6 +698,20 @@ TestCase {
         }
     }
 
+    function test_minusOneToZeroSelection_QTBUG_38036() {
+        var qmlObject = 'import QtQuick.Controls 1.2 ; ComboBox { model: ["A", "B", "C"] }'
+        var comboBox = Qt.createQmlObject(qmlObject, testCase, '');
+        compare(comboBox.currentIndex, 0)
+        compare(comboBox.currentText, "A")
+        comboBox.currentIndex = -1
+        compare(comboBox.currentIndex, -1)
+        compare(comboBox.currentText, "")
+        comboBox.currentIndex = 0
+        compare(comboBox.currentIndex, 0)
+        compare(comboBox.currentText, "A")
+        comboBox.destroy()
+    }
+
     function test_keys() {
         var component = Qt.createComponent("combobox/cb_keys.qml")
         compare(component.status, Component.Ready)

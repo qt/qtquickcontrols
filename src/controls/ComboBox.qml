@@ -586,6 +586,8 @@ Control {
             if (__selectedIndex !== -1 && (selectedItem = items[__selectedIndex])) {
                 input.editTextMatches = true
                 selectedText = selectedItem.text
+                if (currentText !== selectedText) // __selectedIndex went form -1 to 0
+                    selectedTextChanged()
             }
         }
     }
