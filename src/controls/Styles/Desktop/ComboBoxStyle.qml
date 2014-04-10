@@ -85,22 +85,25 @@ Style {
     }
 
     property Component __dropDownStyle: Style {
+        id: dropDownStyleRoot
         property int __maxPopupHeight: 600
         property int submenuOverlap: 0
         property int submenuPopupDelay: 0
 
         property Component frame: StyleItem {
             elementType: "frame"
-            width: (parent ? parent.contentWidth : 0)
-            height: (parent ? parent.contentHeight : 0) + 2 * pixelMetric("defaultframewidth")
+            Component.onCompleted: {
+                var defaultFrameWidth = pixelMetric("defaultframewidth")
+                dropDownStyleRoot.padding.left = defaultFrameWidth
+                dropDownStyleRoot.padding.right = defaultFrameWidth
+                dropDownStyleRoot.padding.top = defaultFrameWidth
+                dropDownStyleRoot.padding.bottom = defaultFrameWidth
+            }
         }
 
         property Component menuItemPanel: StyleItem {
             elementType: "itemrow"
             selected: styleData.selected
-
-            x: pixelMetric("defaultframewidth")
-            y: pixelMetric("defaultframewidth")
 
             implicitWidth: textItem.contentWidth
             implicitHeight: textItem.contentHeight
