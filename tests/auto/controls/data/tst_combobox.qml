@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.1
+import QtQuick 2.2
 import QtTest 1.0
 import QtQuickControlsTests 1.0
 
@@ -65,7 +65,7 @@ TestCase {
     }
 
     function init() {
-        model = Qt.createQmlObject("import QtQuick 2.1; ListModel {}", testCase, '')
+        model = Qt.createQmlObject("import QtQuick 2.2; ListModel {}", testCase, '')
         model.append({ text: "Banana", color: "Yellow" })
         model.append({ text: "Apple", color: "Green" })
         model.append({ text: "Coconut", color: "Brown" })
@@ -77,7 +77,7 @@ TestCase {
     }
 
     function test_keyupdown() {
-        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.1 ; ComboBox { model: 4 }', testCase, '');
+        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.2 ; ComboBox { model: 4 }', testCase, '');
 
         compare(comboBox.currentIndex, 0)
 
@@ -93,7 +93,7 @@ TestCase {
     }
 
     function test_textrole() {
-        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.1 ; ComboBox {}', testCase, '');
+        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.2 ; ComboBox {}', testCase, '');
         comboBox.textRole = "text"
         comboBox.model = model
         compare(comboBox.currentIndex, 0)
@@ -110,7 +110,7 @@ TestCase {
             'Coconut'
         ];
 
-        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.1 ; ComboBox {}', testCase, '');
+        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.2 ; ComboBox {}', testCase, '');
         comboBox.model = arrayModel
         compare(comboBox.currentIndex, 0)
         compare(comboBox.currentText, "Banana")
@@ -124,7 +124,7 @@ TestCase {
             {text: 'Coconut', color: 'Brown'}
         ];
 
-        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.1 ; ComboBox { }', testCase, '');
+        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.2 ; ComboBox { }', testCase, '');
         comboBox.textRole = "text"
         comboBox.model = arrayModel
         compare(comboBox.currentIndex, 0)
@@ -137,13 +137,13 @@ TestCase {
     function test_arrayModelWithoutTextRole() {
         var arrayModel = ['Banana', 'Coconut', 'Apple']
 
-        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.1 ; ComboBox {}', testCase, '');
+        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.2 ; ComboBox {}', testCase, '');
         comboBox.model = arrayModel
         compare(comboBox.currentIndex, 0)
         compare(comboBox.currentText, "Banana")
         comboBox.destroy()
 
-        comboBox = Qt.createQmlObject('import QtQuick.Controls 1.1 ; ComboBox {}', testCase, '');
+        comboBox = Qt.createQmlObject('import QtQuick.Controls 1.2 ; ComboBox {}', testCase, '');
         comboBox.editable = true
         comboBox.model = arrayModel
         compare(comboBox.currentIndex, 0)
@@ -152,8 +152,8 @@ TestCase {
     }
 
     function test_validator() {
-        var comboBox = Qt.createQmlObject('import QtQuick 2.1;              \
-                                            import QtQuick.Controls 1.1;     \
+        var comboBox = Qt.createQmlObject('import QtQuick 2.2;              \
+                                            import QtQuick.Controls 1.2;     \
                                             ComboBox {                       \
                                                 editable: true;              \
                                                 validator: RegExpValidator { \
@@ -189,7 +189,7 @@ TestCase {
     }
 
     function test_append_find() {
-    var comboBox = Qt.createQmlObject( 'import QtQuick.Controls 1.1;                    \
+    var comboBox = Qt.createQmlObject( 'import QtQuick.Controls 1.2;                    \
                                         import QtQuick 2.2;                             \
                                         ComboBox {                                      \
                                             model:ListModel{ListElement{text:"first"}}  \
@@ -225,7 +225,7 @@ TestCase {
 
     function test_editable() {
         var arrayModel = ['Banana', 'Coco', 'Coconut', 'Apple', 'Cocomuffin' ]
-        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.1;         \
+        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.2;         \
                                             ComboBox {                          \
                                                 property int acceptedCount: 0;  \
                                                 onAccepted: ++acceptedCount;    \
@@ -331,7 +331,7 @@ TestCase {
 
     function test_keySearch() {
         var arrayModel = ['Banana', 'Coco', 'Coconut', 'Apple', 'Cocomuffin' ]
-        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.1 ; ComboBox {}', testCase, '');
+        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.2 ; ComboBox {}', testCase, '');
         comboBox.model = arrayModel
         compare(comboBox.currentIndex, 0)
         compare(comboBox.currentText, "Banana")
@@ -362,7 +362,7 @@ TestCase {
 
     function test_textAt() {
         var arrayModel = ['Banana', 'Coco', 'Coconut', 'Apple', 'Cocomuffin' ]
-        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.1 ; ComboBox {}', testCase, '');
+        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.2 ; ComboBox {}', testCase, '');
         comboBox.model = arrayModel
         compare(comboBox.currentIndex, 0)
         compare(comboBox.currentText, "Banana")
@@ -378,7 +378,7 @@ TestCase {
 
     function test_find() {
         var arrayModel = ['Banana', 'banana', 'Coconut', 'Apple', 'Cocomuffin' ]
-        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.1 ; ComboBox {}', testCase, '');
+        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.2 ; ComboBox {}', testCase, '');
         comboBox.model = arrayModel
         compare(comboBox.currentIndex, 0)
         compare(comboBox.currentText, "Banana")
@@ -392,7 +392,7 @@ TestCase {
 
     function test_activated() {
         var arrayModel = ['Banana', 'Coco', 'Coconut', 'Apple', 'Cocomuffin' ]
-        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.1;         \
+        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.2;         \
                                             ComboBox {                          \
                                                 property int activatedCount: 0;  \
                                                 onActivated: ++activatedCount;    \
@@ -419,8 +419,8 @@ TestCase {
         if (!SystemInfo.tabAllWidgets)
             skip("This function doesn't support NOT iterating all.")
 
-        var test_control = 'import QtQuick 2.1; \
-        import QtQuick.Controls 1.1;            \
+        var test_control = 'import QtQuick 2.2; \
+        import QtQuick.Controls 1.2;            \
         Item {                                  \
             width: 200;                         \
             height: 200;                        \
@@ -491,7 +491,7 @@ TestCase {
         if (Qt.platform.os === "osx")
             skip("When the menu pops up on OS X, it does not return and the test fails after time out")
 
-        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.1 ; ComboBox { model: 4 }', container, '');
+        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.2 ; ComboBox { model: 4 }', container, '');
         comboBox.activeFocusOnPress = false
         verify(!comboBox.activeFocus)
         if (Qt.platform.os === "osx") // on mac when the menu open, the __popup function does not return
@@ -514,7 +514,7 @@ TestCase {
         if (Qt.platform.os === "osx")
             skip("When the menu pops up on OS X, it does not return and the test fails after time out")
 
-        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.1 ; ComboBox { model: 4 }', container, '');
+        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.2 ; ComboBox { model: 4 }', container, '');
         var menuIndex = getMenuIndex(comboBox)
         verify(menuIndex !== -1)
         comboBox.forceActiveFocus()
@@ -533,7 +533,7 @@ TestCase {
         if (Qt.platform.os === "osx")
             skip("When the menu pops up on OS X, it does not return and the test fails after time out")
 
-        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.1 ; ComboBox { model: 4 }', container, '');
+        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.2 ; ComboBox { model: 4 }', container, '');
         var menuIndex = getMenuIndex(comboBox)
         comboBox.currentIndex = 2
         verify(menuIndex !== -1)
@@ -570,7 +570,7 @@ TestCase {
     }
 
     function test_modelChange() {
-        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.1 ; ComboBox { model: ["a", "b", "c", "d"] }', container, '');
+        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.2 ; ComboBox { model: ["a", "b", "c", "d"] }', container, '');
         modelSpy.target = textSpy.target = indexSpy.target = comboBox
 
         compare(comboBox.currentIndex, 0)
@@ -614,7 +614,7 @@ TestCase {
     }
 
     function test_addRemoveItemsInModel_QTBUG_30379() {
-        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.1 ; ComboBox {}', testCase, '');
+        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.2 ; ComboBox {}', testCase, '');
         comboBox.textRole = "text"
         comboBox.model = model
         var menuIndex = getMenuIndex(comboBox)
@@ -631,7 +631,7 @@ TestCase {
     }
 
     function test_width_QTBUG_30377() {
-        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.1 ; ComboBox { model: ["A", "BB", "CCCCC"] }', testCase, '');
+        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.2 ; ComboBox { model: ["A", "BB", "CCCCC"] }', testCase, '');
         compare(comboBox.currentIndex, 0)
         var initialWidth = comboBox.width
         comboBox.currentIndex = 1
@@ -642,7 +642,7 @@ TestCase {
     }
 
     function test_stringListModel() {
-        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.1 ; ComboBox { }', testCase, '');
+        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.2 ; ComboBox { }', testCase, '');
         comboBox.model = model_qstringlist;
         compare(comboBox.currentIndex, 0)
         compare(comboBox.currentText, "A")
@@ -656,7 +656,7 @@ TestCase {
     }
 
     function test_variantListModel() {
-        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.1 ; ComboBox { }', testCase, '');
+        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.2 ; ComboBox { }', testCase, '');
         comboBox.model = model_qvarlist;
         compare(comboBox.currentIndex, 0)
         compare(comboBox.currentText, "3")
@@ -682,8 +682,8 @@ TestCase {
     }
 
     function test_minusOneIndexResetsSelection_QTBUG_35794() {
-        var qmlObjects = ['import QtQuick.Controls 1.1 ; ComboBox { model: ["A", "B", "C"] }',
-                          'import QtQuick.Controls 1.1 ; ComboBox { editable: true; model: ["A", "B", "C"] }']
+        var qmlObjects = ['import QtQuick.Controls 1.2 ; ComboBox { model: ["A", "B", "C"] }',
+                          'import QtQuick.Controls 1.2 ; ComboBox { editable: true; model: ["A", "B", "C"] }']
         for (var i = 0; i < qmlObjects.length; i++) {
             var comboBox = Qt.createQmlObject(qmlObjects[i], testCase, '');
             compare(comboBox.currentIndex, 0)

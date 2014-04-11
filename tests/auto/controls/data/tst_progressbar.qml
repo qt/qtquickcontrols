@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.1
+import QtQuick 2.2
 import QtTest 1.0
 import QtQuickControlsTests 1.0
 
@@ -55,7 +55,7 @@ TestCase {
     height:400
 
     function test_minimumvalue() {
-        var progressBar = Qt.createQmlObject('import QtQuick.Controls 1.1; ProgressBar {}', testCase, '');
+        var progressBar = Qt.createQmlObject('import QtQuick.Controls 1.2; ProgressBar {}', testCase, '');
 
         progressBar.minimumValue = 5
         progressBar.maximumValue = 10
@@ -69,7 +69,7 @@ TestCase {
     }
 
     function test_maximumvalue() {
-        var progressBar = Qt.createQmlObject('import QtQuick.Controls 1.1; ProgressBar {}', testCase, '');
+        var progressBar = Qt.createQmlObject('import QtQuick.Controls 1.2; ProgressBar {}', testCase, '');
 
         progressBar.minimumValue = 5
         progressBar.maximumValue = 10
@@ -83,7 +83,7 @@ TestCase {
     }
 
     function test_invalidMinMax() {
-        var progressBar = Qt.createQmlObject('import QtQuick.Controls 1.1; ProgressBar {}', testCase, '');
+        var progressBar = Qt.createQmlObject('import QtQuick.Controls 1.2; ProgressBar {}', testCase, '');
 
         // minimumValue has priority over maximum if they are inconsistent
 
@@ -100,7 +100,7 @@ TestCase {
         progressBar.value = 12
         compare(progressBar.value, progressBar.minimumValue)
 
-        var progressBar2 = Qt.createQmlObject('import QtQuick.Controls 1.1; ProgressBar {minimumValue: 10; maximumValue: 4; value: 5}', testCase, '');
+        var progressBar2 = Qt.createQmlObject('import QtQuick.Controls 1.2; ProgressBar {minimumValue: 10; maximumValue: 4; value: 5}', testCase, '');
         compare(progressBar.value, progressBar.minimumValue)
         progressBar.destroy()
         progressBar2.destroy()
@@ -108,20 +108,20 @@ TestCase {
 
     function test_initialization_order()
     {
-        var progressBar = Qt.createQmlObject("import QtQuick.Controls 1.1; ProgressBar {maximumValue: 100; value: 50}",
+        var progressBar = Qt.createQmlObject("import QtQuick.Controls 1.2; ProgressBar {maximumValue: 100; value: 50}",
                                          testCase, '')
         compare(progressBar.value, 50);
 
-        var progressBar2 = Qt.createQmlObject("import QtQuick.Controls 1.1; ProgressBar {" +
+        var progressBar2 = Qt.createQmlObject("import QtQuick.Controls 1.2; ProgressBar {" +
                                          "value: 50; maximumValue: 100}",
                                          testCase, '')
         compare(progressBar2.value, 50);
 
-        var progressBar3 = Qt.createQmlObject("import QtQuick.Controls 1.1; ProgressBar { minimumValue: -50 ; value:-10}",
+        var progressBar3 = Qt.createQmlObject("import QtQuick.Controls 1.2; ProgressBar { minimumValue: -50 ; value:-10}",
                                          testCase, '')
         compare(progressBar3.value, -10);
 
-        var progressBar4 = Qt.createQmlObject("import QtQuick.Controls 1.1; ProgressBar { value:-10; minimumValue: -50}",
+        var progressBar4 = Qt.createQmlObject("import QtQuick.Controls 1.2; ProgressBar { value:-10; minimumValue: -50}",
                                          testCase, '')
         compare(progressBar4.value, -10);
         progressBar.destroy()
@@ -134,8 +134,8 @@ TestCase {
         if (!SystemInfo.tabAllWidgets)
             skip("This function doesn't support NOT iterating all.")
 
-        var test_control = 'import QtQuick 2.1; \
-        import QtQuick.Controls 1.1;            \
+        var test_control = 'import QtQuick 2.2; \
+        import QtQuick.Controls 1.2;            \
         Item {                                  \
             width: 200;                         \
             height: 200;                        \

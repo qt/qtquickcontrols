@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.1
+import QtQuick 2.2
 import QtTest 1.0
 
 TestCase {
@@ -49,7 +49,7 @@ TestCase {
     height:400
 
     function test_createMenuBar() {
-        var menuBar = Qt.createQmlObject('import QtQuick.Controls 1.1; MenuBar {}', testCase, '');
+        var menuBar = Qt.createQmlObject('import QtQuick.Controls 1.2; MenuBar {}', testCase, '');
         menuBar.destroy()
     }
 }

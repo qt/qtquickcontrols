@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.1
+import QtQuick 2.2
 import QtTest 1.0
 
 TestCase {
@@ -49,7 +49,7 @@ TestCase {
     height:400
 
     function test_createTab() {
-        var tab = Qt.createQmlObject('import QtQuick.Controls 1.1; Tab {}', testCase, '');
+        var tab = Qt.createQmlObject('import QtQuick.Controls 1.2; Tab {}', testCase, '');
         tab.destroy()
     }
 }

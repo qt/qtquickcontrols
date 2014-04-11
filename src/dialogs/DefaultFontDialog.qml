@@ -38,8 +38,8 @@
 **
 *****************************************************************************/
 
-import QtQuick 2.1
-import QtQuick.Controls 1.1
+import QtQuick 2.2
+import QtQuick.Controls 1.2
 import QtQuick.Controls.Styles 1.0
 import QtQuick.Dialogs 1.1
 import QtQuick.Dialogs.Private 1.1
@@ -91,8 +91,7 @@ AbstractFontDialog {
             switch (event.key) {
             case Qt.Key_Return:
             case Qt.Key_Select:
-                root.font = content.font
-                root.accept()
+                updateUponAccepted()
                 break
             case Qt.Key_Escape:
             case Qt.Key_Back:
@@ -103,6 +102,11 @@ AbstractFontDialog {
                 event.accepted = false
                 break
             }
+        }
+
+        function updateUponAccepted() {
+            root.font = content.font
+            root.accept()
         }
 
         ColumnLayout {
@@ -235,19 +239,52 @@ AbstractFontDialog {
                         positionViewAtRow(row, ListView.Contain)
                     }
                 }
-                TableView {
-                    id: pointSizesListView
-                    Layout.fillHeight: true
-                    headerVisible: false
-                    implicitWidth: (Component.status == Component.Ready) ? (psColumn.width + content.outerSpacing) : (80)
-                    Component.onCompleted: resizeColumnsToContents();
-                    TableViewColumn{ id: psColumn; role: ""; title: qsTr("Size") }
-                    model: content.pointSizes
-                    onClicked: {
-                        if (row == -1)
-                            return
-                        content.font.pointSize = content.pointSizes[row]
-                        positionViewAtRow(row, ListView.Contain)
+                ColumnLayout {
+                    SpinBox {
+                        id: pointSizeSpinBox;
+                        implicitWidth: (Component.status == Component.Ready) ? (psColumn.width + content.outerSpacing) : (80)
+                        value: content.font.pointSize
+                        decimals: 0
+                        minimumValue: 1
+                        maximumValue: 512
+                        onValueChanged: {
+                            content.font.pointSize = Number(value);
+                            updatePointSizesIndex();
+                        }
+                        function updatePointSizesIndex() {
+                            pointSizesListView.selection.clear()
+                            if (content.pointSizes.length <= 0 || pointSizesListView.rowCount <= 0)
+                                return
+                            var currentRow = -1
+                            for (var i = 0; i < content.pointSizes.length; ++i) {
+                                if (content.font.pointSize == content.pointSizes[i]) {
+                                    currentRow = i
+                                    break
+                                }
+                            }
+                            if (currentRow < 0)
+                                return
+                            content.font.pointSize = content.pointSizes[currentRow]
+                            pointSizesListView.selection.select(currentRow)
+                            pointSizesListView.positionViewAtRow(currentRow, ListView.Contain)
+                            pointSizesListView.clicked(currentRow)
+                        }
+                    }
+                    TableView {
+                        id: pointSizesListView
+                        Layout.fillHeight: true
+                        headerVisible: false
+                        implicitWidth: (Component.status == Component.Ready) ? (psColumn.width + content.outerSpacing) : (80)
+                        Component.onCompleted: resizeColumnsToContents();
+                        TableViewColumn{ id: psColumn; role: ""; title: qsTr("Size") }
+                        model: content.pointSizes
+                        onClicked: {
+                            if (row == -1)
+                                return
+                            content.font.pointSize = content.pointSizes[row]
+                            pointSizeSpinBox.value = content.pointSizes[row]
+                            positionViewAtRow(row, ListView.Contain)
+                        }
                     }
                 }
             }
@@ -350,8 +387,7 @@ AbstractFontDialog {
                 Button {
                     text: qsTr("OK")
                     onClicked: {
-                        root.font = content.font
-                        root.accept()
+                        content.updateUponAccepted()
                     }
                 }
             }

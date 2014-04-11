@@ -37,8 +37,8 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-import QtQuick 2.1
-import QtQuick.Controls 1.1
+import QtQuick 2.2
+import QtQuick.Controls 1.2
 import QtQuick.Controls.Private 1.0
 
 /*!
@@ -93,7 +93,7 @@ Style {
 
     /*!
         \qmlproperty enumeration renderType
-        \since 5.2
+        \since QtQuick.Controls.Styles 1.1
 
         Override the default rendering type for the control.
 
@@ -108,7 +108,7 @@ Style {
     property int renderType: Text.NativeRendering
 
     /*! The placeholder text color, used when the text field is empty.
-        \since 5.2
+        \since QtQuick.Controls.Styles 1.1
     */
     property color placeholderTextColor: Qt.rgba(0, 0, 0, 0.5)
 

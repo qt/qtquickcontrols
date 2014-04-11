@@ -263,7 +263,7 @@ ApplicationWindow {
 
                                     case "horizontalAlignment":
                                         layout = layouts.enumLayout
-                                        enumModelData = Qt.createQmlObject('import QtQuick 2.1; import QtQuick.Controls 1.1; ListModel {}', layout, '');
+                                        enumModelData = Qt.createQmlObject('import QtQuick 2.2; import QtQuick.Controls 1.2; ListModel {}', layout, '');
                                         typeName = "Enum";
                                         enumModelData.append({ text: "TextEdit.AlignLeft",    value: TextEdit.AlignLeft});
                                         enumModelData.append({ text: "TextEdit.AlignRight",   value: TextEdit.AlignRight});
@@ -272,7 +272,7 @@ ApplicationWindow {
 
                                     case "textFormat":
                                         layout = layouts.enumLayout
-                                        enumModelData = Qt.createQmlObject('import QtQuick 2.1; import QtQuick.Controls 1.1; ListModel {}', layout, '');
+                                        enumModelData = Qt.createQmlObject('import QtQuick 2.2; import QtQuick.Controls 1.2; ListModel {}', layout, '');
                                         typeName = "Enum";
                                         enumModelData.append({ text: "TextEdit.RichText",      value: TextEdit.RichText});
                                         enumModelData.append({ text: "TextEdit.PlainText",   value: TextEdit.PlainText});
@@ -281,7 +281,7 @@ ApplicationWindow {
 
                                     case "verticalAlignment":
                                         layout = layouts.enumLayout
-                                        enumModelData = Qt.createQmlObject('import QtQuick 2.1; import QtQuick.Controls 1.1; ListModel {}', layout, '');
+                                        enumModelData = Qt.createQmlObject('import QtQuick 2.2; import QtQuick.Controls 1.2; ListModel {}', layout, '');
                                         typeName = "Enum";
                                         enumModelData.append({ text: "TextEdit.AlignTop",      value: TextEdit.AlignTop});
                                         enumModelData.append({ text: "TextEdit.AlignBottom",   value: TextEdit.AlignBottom});
@@ -290,7 +290,7 @@ ApplicationWindow {
 
                                     case "textFormat":
                                         layout = layouts.enumLayout
-                                        enumModelData = Qt.createQmlObject('import QtQuick 2.1; import QtQuick.Controls 1.1; ListModel {}', layout, '');
+                                        enumModelData = Qt.createQmlObject('import QtQuick 2.2; import QtQuick.Controls 1.2; ListModel {}', layout, '');
                                         typeName = "Enum";
                                         enumModelData.append({ text: "TextEdit.RichText",      value: TextEdit.RichText});
                                         enumModelData.append({ text: "TextEdit.PlainText",   value: TextEdit.PlainText});
@@ -299,7 +299,7 @@ ApplicationWindow {
 
                                     case "inputMethodHints":
                                         layout = layouts.enumLayout
-                                        enumModelData = Qt.createQmlObject('import QtQuick 2.1; import QtQuick.Controls 1.1; ListModel {}', layout, '');
+                                        enumModelData = Qt.createQmlObject('import QtQuick 2.2; import QtQuick.Controls 1.2; ListModel {}', layout, '');
                                         typeName = "Enum";
                                         enumModelData.append({ text: "Qt.ImhNone",                  value: Qt.ImhNone});
                                         enumModelData.append({ text: "Qt.ImhHiddenText",            value: Qt.ImhHiddenText});
@@ -322,7 +322,7 @@ ApplicationWindow {
 
                                     case "orientation":
                                         layout = layouts.enumLayout
-                                        enumModelData = Qt.createQmlObject('import QtQuick 2.1; import QtQuick.Controls 1.1; ListModel {}', layout, '');
+                                        enumModelData = Qt.createQmlObject('import QtQuick 2.2; import QtQuick.Controls 1.2; ListModel {}', layout, '');
                                         typeName = "Enum";
                                         enumModelData.append({ text: "Qt.Horizontal",    value: Qt.Horizontal});
                                         enumModelData.append({ text: "Qt.Vertical",      value: Qt.Vertical});
@@ -330,7 +330,7 @@ ApplicationWindow {
 
                                     case "echoMode":
                                         layout = layouts.enumLayout
-                                        enumModelData = Qt.createQmlObject('import QtQuick 2.1; import QtQuick.Controls 1.1; ListModel {}', layout, '');
+                                        enumModelData = Qt.createQmlObject('import QtQuick 2.2; import QtQuick.Controls 1.2; ListModel {}', layout, '');
                                         typeName = "Enum";
                                         enumModelData.append({ text: "TextInput.Normal",            value: TextInput.Normal});
                                         enumModelData.append({ text: "TextInput.Password",          value: TextInput.Password});
@@ -342,7 +342,7 @@ ApplicationWindow {
                                     case "textColor":
                                         isColor = true
                                         layout = layouts.enumLayout
-                                        enumModelData = Qt.createQmlObject('import QtQuick 2.1; import QtQuick.Controls 1.1; ListModel {}', layout, '');
+                                        enumModelData = Qt.createQmlObject('import QtQuick 2.2; import QtQuick.Controls 1.2; ListModel {}', layout, '');
                                         typeName = "Enum";
                                         enumModelData.append({ text: "Amber",       value: "#FF7E00"});
                                         enumModelData.append({ text: "Azure",       value: "#007FFF"});
@@ -351,7 +351,7 @@ ApplicationWindow {
 
                                     case "sortIndicatorOrder":
                                         layout = layouts.enumLayout
-                                        enumModelData = Qt.createQmlObject('import QtQuick 2.1; import QtQuick.Controls 1.1; ListModel {}', layout, '');
+                                        enumModelData = Qt.createQmlObject('import QtQuick 2.2; import QtQuick.Controls 1.2; ListModel {}', layout, '');
                                         typeName = "Enum";
                                         enumModelData.append({ text: "Qt.AscendingOrder",    value: Qt.AscendingOrder});
                                         enumModelData.append({ text: "Qt.DescendingOrder",   value: Qt.DescendingOrder});
@@ -359,7 +359,7 @@ ApplicationWindow {
 
                                     case "checkedState":
                                         layout = layouts.enumLayout
-                                        enumModelData = Qt.createQmlObject('import QtQuick 2.1; import QtQuick.Controls 1.1; ListModel {}', layout, '');
+                                        enumModelData = Qt.createQmlObject('import QtQuick 2.2; import QtQuick.Controls 1.2; ListModel {}', layout, '');
                                         typeName = "Enum";
                                         enumModelData.append({ text: "Qt.Checked",          value: Qt.Checked});
                                         enumModelData.append({ text: "Qt.Unchecked",        value: Qt.Unchecked});

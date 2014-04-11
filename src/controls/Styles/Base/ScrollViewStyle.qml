@@ -37,8 +37,8 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-import QtQuick 2.1
-import QtQuick.Controls 1.1
+import QtQuick 2.2
+import QtQuick.Controls 1.2
 import QtQuick.Controls.Private 1.0
 
 /*!
@@ -117,7 +117,7 @@ Style {
         implicitHeight: Math.round(TextSingleton.implicitHeight)
         clip: true
         opacity: transientScrollBars ? 0.5 : 1.0
-        visible: !transientScrollBars || sticky
+        visible: !Settings.hasTouchScreen && (!transientScrollBars || sticky)
         Rectangle {
             anchors.fill: parent
             color: "#ddd"

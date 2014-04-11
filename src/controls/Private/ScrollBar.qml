@@ -38,8 +38,8 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.1
-import QtQuick.Controls 1.1
+import QtQuick 2.2
+import QtQuick.Controls 1.2
 import QtQuick.Controls.Private 1.0
 
 /*!
@@ -101,8 +101,9 @@ Item {
         onEntered: if (!pressed) __panel.activeControl = __panel.hitTest(mouseX, mouseY)
         onExited: if (!pressed) __panel.activeControl = "none"
         onMouseXChanged: if (!pressed) __panel.activeControl = __panel.hitTest(mouseX, mouseY)
-        hoverEnabled: true
-
+        hoverEnabled: !Settings.hasTouchScreen
+        enabled: !Settings.hasTouchScreen // TODO: touch on desktop?
+        preventStealing: true
         property var pressedX
         property var pressedY
         property int oldPosition

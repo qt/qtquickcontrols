@@ -161,6 +161,7 @@ void QQuickAbstractDialog::setVisible(bool v)
             }
         }
         if (m_windowDecoration) {
+            m_windowDecoration->setProperty("dismissOnOuterClick", (m_modality == Qt::NonModal));
             m_windowDecoration->setVisible(v);
         } else if (m_dialogWindow) {
             if (v) {

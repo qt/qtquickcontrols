@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.1
+import QtQuick 2.2
 import QtTest 1.0
 
 Item {
@@ -56,7 +56,7 @@ Item {
         property point downCoord: "0,0"
 
         function test_increment_key() {
-            var spinbox = Qt.createQmlObject('import QtQuick.Controls 1.1; SpinBox {maximumValue: 50}', container, '')
+            var spinbox = Qt.createQmlObject('import QtQuick.Controls 1.2; SpinBox {maximumValue: 50}', container, '')
             spinbox.forceActiveFocus()
 
             compare(spinbox.maximumValue, 50)
@@ -72,7 +72,7 @@ Item {
         }
 
         function test_decrement_key() {
-            var spinbox = Qt.createQmlObject('import QtQuick.Controls 1.1; SpinBox {minimumValue: 10}', container, '')
+            var spinbox = Qt.createQmlObject('import QtQuick.Controls 1.2; SpinBox {minimumValue: 10}', container, '')
             spinbox.forceActiveFocus()
 
             compare(spinbox.minimumValue, 10)
@@ -88,11 +88,11 @@ Item {
         }
 
         function test_initial_value() {
-            var spinbox = Qt.createQmlObject('import QtQuick.Controls 1.0; SpinBox {decimals: 3 ; value: 0.25}', container, '')
+            var spinbox = Qt.createQmlObject('import QtQuick.Controls 1.2; SpinBox {decimals: 3 ; value: 0.25}', container, '')
             compare(spinbox.value, 0.25)
             spinbox.destroy()
 
-            spinbox = Qt.createQmlObject('import QtQuick.Controls 1.0; SpinBox {value: 0.25 ; decimals: 3}', container, '')
+            spinbox = Qt.createQmlObject('import QtQuick.Controls 1.2; SpinBox {value: 0.25 ; decimals: 3}', container, '')
             compare(spinbox.value, 0.25)
             spinbox.destroy()
         }
@@ -128,7 +128,7 @@ Item {
         }
 
         function test_keyboard_input(data) {
-            var spinbox = Qt.createQmlObject('import QtQuick.Controls 1.1; SpinBox {}', container, '')
+            var spinbox = Qt.createQmlObject('import QtQuick.Controls 1.2; SpinBox {}', container, '')
             spinbox.forceActiveFocus()
 
             if (data.decimals !== undefined)
@@ -151,7 +151,7 @@ Item {
         }
 
         function test_increment_mouse() {
-            var spinbox = Qt.createQmlObject('import QtQuick.Controls 1.1; SpinBox {maximumValue: 50}', container, '')
+            var spinbox = Qt.createQmlObject('import QtQuick.Controls 1.2; SpinBox {maximumValue: 50}', container, '')
             spinbox.forceActiveFocus()
             setCoordinates(spinbox)
 
@@ -167,7 +167,7 @@ Item {
         }
 
         function test_decrement_mouse() {
-            var spinbox = Qt.createQmlObject('import QtQuick.Controls 1.1; SpinBox {minimumValue: 10}', container, '')
+            var spinbox = Qt.createQmlObject('import QtQuick.Controls 1.2; SpinBox {minimumValue: 10}', container, '')
             spinbox.forceActiveFocus()
             setCoordinates(spinbox)
 
@@ -183,7 +183,7 @@ Item {
         }
 
         function test_move_mouse() {
-            var spinbox = Qt.createQmlObject('import QtQuick.Controls 1.1; SpinBox {}', container, '')
+            var spinbox = Qt.createQmlObject('import QtQuick.Controls 1.2; SpinBox {}', container, '')
             spinbox.forceActiveFocus()
             setCoordinates(spinbox)
 
@@ -208,7 +208,7 @@ Item {
         }
 
         function test_maxvalue() {
-            var spinbox = Qt.createQmlObject('import QtQuick.Controls 1.1; SpinBox {}', container, '')
+            var spinbox = Qt.createQmlObject('import QtQuick.Controls 1.2; SpinBox {}', container, '')
             spinbox.value = spinbox.maximumValue + 1
             compare(spinbox.value, spinbox.maximumValue)
 
@@ -225,7 +225,7 @@ Item {
         }
 
         function test_minvalue() {
-            var spinbox = Qt.createQmlObject('import QtQuick.Controls 1.1; SpinBox {}', container, '')
+            var spinbox = Qt.createQmlObject('import QtQuick.Controls 1.2; SpinBox {}', container, '')
             spinbox.value = spinbox.minimumValue - 1
             compare(spinbox.value, spinbox.minimumValue)
 
@@ -242,7 +242,7 @@ Item {
         }
 
         function test_decimals() {
-            var spinbox = Qt.createQmlObject('import QtQuick.Controls 1.1; SpinBox {}', container, '')
+            var spinbox = Qt.createQmlObject('import QtQuick.Controls 1.2; SpinBox {}', container, '')
 
             spinbox.decimals = 0
             spinbox.value = 1.00001
@@ -269,7 +269,7 @@ Item {
         }
 
         function test_groupSeparators() {
-            var spinbox = Qt.createQmlObject('import QtQuick.Controls 1.1; SpinBox { maximumValue: 1000 }', container, '')
+            var spinbox = Qt.createQmlObject('import QtQuick.Controls 1.2; SpinBox { maximumValue: 1000 }', container, '')
 
             spinbox.value = 1000
             // QTBUG-31839: SpinBox displays group separators
@@ -280,7 +280,7 @@ Item {
 
         function test_stepsize()
         {
-            var spinbox = Qt.createQmlObject('import QtQuick.Controls 1.1; SpinBox {}', container, '')
+            var spinbox = Qt.createQmlObject('import QtQuick.Controls 1.2; SpinBox {}', container, '')
             spinbox.forceActiveFocus()
 
             spinbox.stepSize = 2
@@ -299,7 +299,7 @@ Item {
 
         function test_negativeStepSize()
         {
-            var spinbox = Qt.createQmlObject('import QtQuick.Controls 1.1; SpinBox {}', container, '')
+            var spinbox = Qt.createQmlObject('import QtQuick.Controls 1.2; SpinBox {}', container, '')
             spinbox.forceActiveFocus()
 
             spinbox.minimumValue = -50
@@ -331,12 +331,12 @@ Item {
 
         function test_initialization_order()
         {
-            var spinbox = Qt.createQmlObject("import QtQuick.Controls 1.1; SpinBox { id: spinbox;"  +
+            var spinbox = Qt.createQmlObject("import QtQuick.Controls 1.2; SpinBox { id: spinbox;"  +
                                              "maximumValue: 2000; value: 1000; implicitWidth:80}",
                                              container, '')
             compare(spinbox.value, 1000);
 
-            var spinbox2 = Qt.createQmlObject('import QtQuick.Controls 1.1; SpinBox { minimumValue: -1000 ; value:-1000}',
+            var spinbox2 = Qt.createQmlObject('import QtQuick.Controls 1.2; SpinBox { minimumValue: -1000 ; value:-1000}',
                                              container, '')
             compare(spinbox2.value, -1000);
             spinbox.destroy()
@@ -344,7 +344,7 @@ Item {
         }
 
         function test_setFontsize(){
-            var control = Qt.createQmlObject('import QtQuick.Controls 1.1; import QtQuick.Controls.Styles 1.1; SpinBox {style: SpinBoxStyle{}}', container, '')
+            var control = Qt.createQmlObject('import QtQuick.Controls 1.2; import QtQuick.Controls.Styles 1.1; SpinBox {style: SpinBoxStyle{}}', container, '')
             var width = control.width;
             var height = control.height;
             control.font.pixelSize = 40
@@ -354,8 +354,8 @@ Item {
         }
 
         function test_get_active_focus_when_up_or_down_was_pressed(){
-            var test_control = 'import QtQuick 2.1;             \
-            import QtQuick.Controls 1.1;                        \
+            var test_control = 'import QtQuick 2.2;             \
+            import QtQuick.Controls 1.2;                        \
             Column {                                            \
                 property alias spinbox: _spinbox;               \
                 property alias textfield: _textfield;           \
@@ -424,7 +424,7 @@ Item {
         }
 
         function test_activeFocusOnPress(){
-            var spinbox = Qt.createQmlObject('import QtQuick.Controls 1.1; SpinBox {x: 20; y: 20; width: 100; height: 50}', container, '')
+            var spinbox = Qt.createQmlObject('import QtQuick.Controls 1.2; SpinBox {x: 20; y: 20; width: 100; height: 50}', container, '')
             spinbox.activeFocusOnPress = false
             verify(!spinbox.activeFocus)
             mouseClick(spinbox, 30, 30)
@@ -437,8 +437,8 @@ Item {
         }
 
         function test_activeFocusOnTab() {
-            var test_control = 'import QtQuick 2.1; \
-            import QtQuick.Controls 1.1;            \
+            var test_control = 'import QtQuick 2.2; \
+            import QtQuick.Controls 1.2;            \
             Item {                                  \
                 width: 200;                         \
                 height: 200;                        \
@@ -508,7 +508,7 @@ Item {
 
         function test_ImplicitSize() // Verify if we correctly grow and shrink depending on contents
         {
-            var spinbox = Qt.createQmlObject('import QtQuick.Controls 1.1; SpinBox {}', container, '')
+            var spinbox = Qt.createQmlObject('import QtQuick.Controls 1.2; SpinBox {}', container, '')
             spinbox.forceActiveFocus()
             spinbox.minimumValue = -50
             spinbox.maximumValue = 50
@@ -543,7 +543,7 @@ Item {
         }
 
         function test_wheel() {
-            var spinbox = Qt.createQmlObject('import QtQuick.Controls 1.1; SpinBox {}', container, '')
+            var spinbox = Qt.createQmlObject('import QtQuick.Controls 1.2; SpinBox {}', container, '')
             spinbox.forceActiveFocus()
             spinbox.minimumValue = 0
             spinbox.maximumValue = 99
@@ -589,8 +589,8 @@ Item {
         function test_construction() {
             // onValueChanged should not be emitted during construction.
             var root = Qt.createQmlObject("
-                import QtQuick 2.1
-                import QtQuick.Controls 1.1
+                import QtQuick 2.2
+                import QtQuick.Controls 1.2
                 Item {
                     id: root
                     property bool ok: true
@@ -619,7 +619,7 @@ Item {
         }
 
         function test_fixup() {
-            var spinbox = Qt.createQmlObject('import QtQuick.Controls 1.1; SpinBox { minimumValue: -1 }', container, '')
+            var spinbox = Qt.createQmlObject('import QtQuick.Controls 1.2; SpinBox { minimumValue: -1 }', container, '')
             verify(spinbox)
             spinbox.forceActiveFocus()
             verify(spinbox.activeFocus)

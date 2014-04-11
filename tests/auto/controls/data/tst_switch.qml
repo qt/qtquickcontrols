@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.1
+import QtQuick 2.2
 import QtTest 1.0
 import QtQuickControlsTests 1.0
 
@@ -61,7 +61,7 @@ Item {
         }
 
         function init() {
-            aSwitch = Qt.createQmlObject("import QtQuick.Controls 1.1; Switch { }", container, "");
+            aSwitch = Qt.createQmlObject("import QtQuick.Controls 1.2; Switch { }", container, "");
         }
 
         function cleanup() {
@@ -115,7 +115,7 @@ Item {
         }
 
         function test_exclusiveGroup() {
-            var root = Qt.createQmlObject("import QtQuick 2.1; import QtQuick.Controls 1.1; \n"
+            var root = Qt.createQmlObject("import QtQuick 2.2; import QtQuick.Controls 1.2; \n"
                 + "Row { \n"
                 + "    property alias aSwitch1: aSwitch1 \n"
                 + "    property alias aSwitch2: aSwitch2 \n"
@@ -187,8 +187,8 @@ Item {
             if (!SystemInfo.tabAllWidgets)
                 skip("This function doesn't support NOT iterating all.")
 
-            var test_control = 'import QtQuick 2.1; \
-            import QtQuick.Controls 1.1;            \
+            var test_control = 'import QtQuick 2.2; \
+            import QtQuick.Controls 1.2;            \
             Item {                                  \
                 width: 200;                         \
                 height: 200;                        \

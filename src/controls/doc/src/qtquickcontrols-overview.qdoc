@@ -38,7 +38,7 @@
     The QML types can be imported into your application using the following import statement in your \c {.qml} file.
 
     \code
-     import QtQuick.Controls 1.1
+     import QtQuick.Controls 1.2
     \endcode
 
     \section1 Creating a basic example
@@ -46,7 +46,7 @@
     A basic example of a QML file that makes use of controls is shown here:
 
     \code
-    import QtQuick.Controls 1.1
+    import QtQuick.Controls 1.2
 
     ApplicationWindow {
         title: "My Application"

@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.1
+import QtQuick 2.2
 import QtTest 1.0
 
 Item {
@@ -53,7 +53,7 @@ TestCase {
     height: 400
 
     function test_text() {
-        var textfield = Qt.createQmlObject('import QtQuick.Controls 1.1; TextField {}', testCase, '')
+        var textfield = Qt.createQmlObject('import QtQuick.Controls 1.2; TextField {}', testCase, '')
 
         compare(textfield.text, "")
         textfield.text = "hello world"
@@ -62,7 +62,7 @@ TestCase {
     }
 
     function test_maximumLength() {
-        var textfield = Qt.createQmlObject('import QtQuick.Controls 1.1; TextField {}', testCase, '')
+        var textfield = Qt.createQmlObject('import QtQuick.Controls 1.2; TextField {}', testCase, '')
 
         textfield.text = "hello world"
         textfield.maximumLength = 5
@@ -71,7 +71,7 @@ TestCase {
     }
 
     function test_length() {
-        var textfield = Qt.createQmlObject('import QtQuick.Controls 1.1; TextField {}', testCase, '')
+        var textfield = Qt.createQmlObject('import QtQuick.Controls 1.2; TextField {}', testCase, '')
 
         textfield.text = "hello world"
         compare(textfield.length, 11)
@@ -80,7 +80,7 @@ TestCase {
 
 
     function test_readonly() {
-        var textfield = Qt.createQmlObject('import QtQuick.Controls 1.1; TextField {}', container, '')
+        var textfield = Qt.createQmlObject('import QtQuick.Controls 1.2; TextField {}', container, '')
         textfield.forceActiveFocus()
 
         compare(textfield.readOnly, false)
@@ -92,7 +92,7 @@ TestCase {
     }
 
     function test_inputMask() {
-        var textfield = Qt.createQmlObject('import QtQuick.Controls 1.1; TextField {}', container , '')
+        var textfield = Qt.createQmlObject('import QtQuick.Controls 1.2; TextField {}', container , '')
         textfield.forceActiveFocus()
 
         // +/- not required, 1 digit required, 1 aphabetic character required and 2 digits not required
@@ -131,7 +131,7 @@ TestCase {
     }
 
     function test_validator() {
-        var textfield = Qt.createQmlObject('import QtQuick 2.1; import QtQuick.Controls 1.1; TextField {validator: RegExpValidator { regExp: /(red|blue|green)?/; }}', testCase, '')
+        var textfield = Qt.createQmlObject('import QtQuick 2.2; import QtQuick.Controls 1.2; TextField {validator: RegExpValidator { regExp: /(red|blue|green)?/; }}', testCase, '')
 
         textfield.text = "blu"
         compare(textfield.acceptableInput, false)
@@ -145,7 +145,7 @@ TestCase {
     }
 
     function test_selectAll() {
-        var textfield = Qt.createQmlObject('import QtQuick.Controls 1.1; TextField {}', container, '')
+        var textfield = Qt.createQmlObject('import QtQuick.Controls 1.2; TextField {}', container, '')
         textfield.forceActiveFocus()
 
         textfield.text = "this is my text"
@@ -157,7 +157,7 @@ TestCase {
     }
 
     function test_select() {
-        var textfield = Qt.createQmlObject('import QtQuick.Controls 1.1; TextField {}', container, '')
+        var textfield = Qt.createQmlObject('import QtQuick.Controls 1.2; TextField {}', container, '')
         textfield.forceActiveFocus()
 
         textfield.text = "this is my text"
@@ -172,7 +172,7 @@ TestCase {
     }
 
     function test_cursorPosition() {
-        var textfield = Qt.createQmlObject('import QtQuick.Controls 1.1; TextField {}', container, '')
+        var textfield = Qt.createQmlObject('import QtQuick.Controls 1.2; TextField {}', container, '')
         textfield.forceActiveFocus()
 
         compare(textfield.cursorPosition, 0)
@@ -188,7 +188,7 @@ TestCase {
     }
 
     function test_selectWord() {
-        var textfield = Qt.createQmlObject('import QtQuick.Controls 1.1; TextField {}', container, '')
+        var textfield = Qt.createQmlObject('import QtQuick.Controls 1.2; TextField {}', container, '')
         textfield.forceActiveFocus()
 
         textfield.text = "this is my text"
@@ -201,7 +201,7 @@ TestCase {
     }
 
     function test_copyPaste() {
-        var textfield = Qt.createQmlObject('import QtQuick.Controls 1.1; TextField {}', testCase, '')
+        var textfield = Qt.createQmlObject('import QtQuick.Controls 1.2; TextField {}', testCase, '')
         textfield.text = "this is my text"
         textfield.select(0, 5)
         textfield.copy()
@@ -212,7 +212,7 @@ TestCase {
     }
 
     function test_getText() {
-        var textfield = Qt.createQmlObject('import QtQuick.Controls 1.1; TextField {}', container, '')
+        var textfield = Qt.createQmlObject('import QtQuick.Controls 1.2; TextField {}', container, '')
         textfield.forceActiveFocus()
 
         textfield.text = "this is my text"
@@ -222,7 +222,7 @@ TestCase {
     }
 
     function test_insert() {
-        var textfield = Qt.createQmlObject('import QtQuick.Controls 1.1; TextField {}', container, '')
+        var textfield = Qt.createQmlObject('import QtQuick.Controls 1.2; TextField {}', container, '')
         textfield.forceActiveFocus()
 
         textfield.text = "this is my text"
@@ -232,7 +232,7 @@ TestCase {
     }
 
     function test_deselect() {
-        var textfield = Qt.createQmlObject('import QtQuick.Controls 1.1; TextField {}', container, '')
+        var textfield = Qt.createQmlObject('import QtQuick.Controls 1.2; TextField {}', container, '')
         textfield.forceActiveFocus()
 
         textfield.text = "this is my text"
@@ -243,7 +243,7 @@ TestCase {
     }
 
     function test_undo() {
-        var textfield = Qt.createQmlObject('import QtQuick.Controls 1.1; TextField {}', container, '')
+        var textfield = Qt.createQmlObject('import QtQuick.Controls 1.2; TextField {}', container, '')
         textfield.forceActiveFocus()
 
         textfield.text = "this is my text"
@@ -255,7 +255,7 @@ TestCase {
     }
 
     function test_redo() {
-        var textfield = Qt.createQmlObject('import QtQuick.Controls 1.1; TextField {}', container, '')
+        var textfield = Qt.createQmlObject('import QtQuick.Controls 1.2; TextField {}', container, '')
         textfield.forceActiveFocus()
 
         textfield.text = "this is my text"
@@ -268,7 +268,7 @@ TestCase {
     }
 
     function test_activeFocusOnPress(){
-        var control = Qt.createQmlObject('import QtQuick.Controls 1.1; TextField {x: 20; y: 20; width: 100; height: 50}', container, '')
+        var control = Qt.createQmlObject('import QtQuick.Controls 1.2; TextField {x: 20; y: 20; width: 100; height: 50}', container, '')
         control.activeFocusOnPress = false
         verify(!control.activeFocus)
         mouseClick(control, 30, 30)
@@ -281,7 +281,7 @@ TestCase {
     }
 
     function test_setFontsize(){
-        var control = Qt.createQmlObject('import QtQuick.Controls 1.1; import QtQuick.Controls.Styles 1.1; TextField {style:TextFieldStyle{}}', container, '')
+        var control = Qt.createQmlObject('import QtQuick.Controls 1.2; import QtQuick.Controls.Styles 1.1; TextField {style:TextFieldStyle{}}', container, '')
         var width = control.width;
         var height = control.height;
         control.font.pixelSize = 40
@@ -292,8 +292,8 @@ TestCase {
 
     function test_activeFocusOnTab() {
         // Set TextField readonly so the tab/backtab can be tested toward the navigation
-        var test_control = 'import QtQuick 2.1; \
-        import QtQuick.Controls 1.1;            \
+        var test_control = 'import QtQuick 2.2; \
+        import QtQuick.Controls 1.2;            \
         Item {                                  \
             width: 200;                         \
             height: 200;                        \

@@ -38,8 +38,8 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.1
-import QtQuick.Controls 1.1
+import QtQuick 2.2
+import QtQuick.Controls 1.2
 import QtQuick.Controls.Styles 1.1
 import QtQuick.Controls.Private 1.0
 
@@ -176,6 +176,8 @@ MenuBarPrivate {
             if (d.openedMenuIndex > 0) {
                 d.preselectMenuItem = true
                 d.openedMenuIndex--
+            } else {
+                event.accepted = false;
             }
         }
 
@@ -183,6 +185,8 @@ MenuBarPrivate {
             if (d.openedMenuIndex !== -1 && d.openedMenuIndex < root.menus.length - 1) {
                 d.preselectMenuItem = true
                 d.openedMenuIndex++
+            } else {
+                event.accepted = false;
             }
         }
 

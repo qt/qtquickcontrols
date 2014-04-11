@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.1
+import QtQuick 2.2
 import QtTest 1.0
 import QtQuickControlsTests 1.0
 
@@ -55,12 +55,12 @@ TestCase {
     height:400
 
     function test_createToolButton() {
-        var toolButton = Qt.createQmlObject('import QtQuick.Controls 1.1; ToolButton {}', testCase, '');
+        var toolButton = Qt.createQmlObject('import QtQuick.Controls 1.2; ToolButton {}', testCase, '');
         toolButton.destroy()
     }
 
     function test_activeFocusOnPress(){
-        var control = Qt.createQmlObject('import QtQuick.Controls 1.1; ToolButton {x: 20; y: 20; width: 100; height: 50}', container, '')
+        var control = Qt.createQmlObject('import QtQuick.Controls 1.2; ToolButton {x: 20; y: 20; width: 100; height: 50}', container, '')
         control.activeFocusOnPress = false
         verify(!control.activeFocus)
         mouseClick(control, 30, 30)
@@ -76,8 +76,8 @@ TestCase {
         if (!SystemInfo.tabAllWidgets)
             skip("This function doesn't support NOT iterating all.")
 
-        var test_control = 'import QtQuick 2.1; \
-        import QtQuick.Controls 1.1;            \
+        var test_control = 'import QtQuick 2.2; \
+        import QtQuick.Controls 1.2;            \
         Item {                                  \
             width: 200;                         \
             height: 200;                        \

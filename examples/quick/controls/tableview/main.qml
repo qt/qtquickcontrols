@@ -42,9 +42,9 @@
 
 
 
-import QtQuick 2.1
+import QtQuick 2.2
 import QtQuick.Window 2.1
-import QtQuick.Controls 1.1
+import QtQuick.Controls 1.2
 import QtQuick.XmlListModel 2.0
 
 Window {
@@ -286,9 +286,9 @@ Window {
                                     target: loaderEditor.item
                                     onAccepted: {
                                         if (typeof styleData.value === 'number')
-                                            model.setProperty(styleData.row, styleData.role, Number(parseFloat(loaderEditor.item.text).toFixed(0)))
+                                            largeModel.setProperty(styleData.row, styleData.role, Number(parseFloat(loaderEditor.item.text).toFixed(0)))
                                         else
-                                            model.setProperty(styleData.row, styleData.role, loaderEditor.item.text)
+                                            largeModel.setProperty(styleData.row, styleData.role, loaderEditor.item.text)
                                     }
                                 }
                                 sourceComponent: styleData.selected ? editor : null

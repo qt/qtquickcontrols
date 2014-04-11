@@ -38,8 +38,8 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.1
-import QtQuick.Controls 1.1
+import QtQuick 2.2
+import QtQuick.Controls 1.2
 
 /*!
         \qmltype TabBar
@@ -126,7 +126,10 @@ FocusScope {
         height: currentItem ? currentItem.height : 0
 
         highlightMoveDuration: 0
-        currentIndex: tabView.currentIndex
+
+        // We cannot bind directly to the currentIndex because the actual model is
+        // populated after the listview is completed, resulting in an invalid contentItem
+        currentIndex: tabView.currentIndex < model.count ? tabView.currentIndex : -1
         onCurrentIndexChanged: tabrow.positionViewAtIndex(currentIndex, ListView.Contain)
 
         moveDisplaced: Transition {

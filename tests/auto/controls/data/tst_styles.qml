@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.1
+import QtQuick 2.2
 import QtTest 1.0
 
 Item {
@@ -55,112 +55,112 @@ Item {
 
         function test_createButtonStyle() {
             var control = Qt.createQmlObject(
-                        'import QtQuick 2.1; import QtQuick.Controls 1.1; import QtQuick.Controls.Styles 1.1; \
+                        'import QtQuick 2.2; import QtQuick.Controls 1.2; import QtQuick.Controls.Styles 1.1; \
                     Rectangle { width: 50; height: 50;  property Component style: ButtonStyle {}}'
                         , container, '')
         }
 
         function test_createToolButtonStyle() {
             var control = Qt.createQmlObject(
-                        'import QtQuick 2.1; import QtQuick.Controls 1.1; import QtQuick.Controls.Private 1.0; \
+                        'import QtQuick 2.2; import QtQuick.Controls 1.2; import QtQuick.Controls.Private 1.0; \
                     Rectangle { width: 50; height: 50;  property Component style: ToolButtonStyle {}}'
                         , container, '')
         }
 
         function test_createCheckBoxStyle() {
             var control = Qt.createQmlObject(
-                        'import QtQuick 2.1; import QtQuick.Controls 1.1; import QtQuick.Controls.Styles 1.1; \
+                        'import QtQuick 2.2; import QtQuick.Controls 1.2; import QtQuick.Controls.Styles 1.1; \
                     Rectangle { width: 50; height: 50;  property Component style: CheckBoxStyle {}}'
                         , container, '')
         }
 
         function test_createComboBoxStyle() {
             var control = Qt.createQmlObject(
-                        'import QtQuick 2.1; import QtQuick.Controls 1.1; import QtQuick.Controls.Styles 1.1; \
+                        'import QtQuick 2.2; import QtQuick.Controls 1.2; import QtQuick.Controls.Styles 1.1; \
                     Rectangle { width: 50; height: 50;  property Component style: ComboBoxStyle {}}'
                         , container, '')
         }
 
         function test_createRadioButtonStyle() {
             var control = Qt.createQmlObject(
-                        'import QtQuick 2.1; import QtQuick.Controls 1.1; import QtQuick.Controls.Styles 1.1; \
+                        'import QtQuick 2.2; import QtQuick.Controls 1.2; import QtQuick.Controls.Styles 1.1; \
                     Rectangle { width: 50; height: 50;  property Component style: RadioButtonStyle {}}'
                         , container, '')
         }
 
         function test_createProgressBarStyle() {
             var control = Qt.createQmlObject(
-                        'import QtQuick 2.1; import QtQuick.Controls 1.1; import QtQuick.Controls.Styles 1.1; \
+                        'import QtQuick 2.2; import QtQuick.Controls 1.2; import QtQuick.Controls.Styles 1.1; \
                     Rectangle { width: 50; height: 50;  property Component style: ProgressBarStyle {}}'
                         , container, '')
         }
 
         function test_createSliderStyle() {
             var control = Qt.createQmlObject(
-                        'import QtQuick 2.1; import QtQuick.Controls 1.1; import QtQuick.Controls.Styles 1.1; \
+                        'import QtQuick 2.2; import QtQuick.Controls 1.2; import QtQuick.Controls.Styles 1.1; \
                     Rectangle { width: 50; height: 50;  property Component style: SliderStyle {}}'
                         , container, '')
         }
 
         function test_createTextFieldStyle() {
             var control = Qt.createQmlObject(
-                        'import QtQuick 2.1; import QtQuick.Controls 1.1; import QtQuick.Controls.Styles 1.1; \
+                        'import QtQuick 2.2; import QtQuick.Controls 1.2; import QtQuick.Controls.Styles 1.1; \
                     Rectangle { width: 50; height: 50;  property Component style: TextFieldStyle {}}'
                         , container, '')
         }
 
         function test_createSpinBoxStyle() {
             var control = Qt.createQmlObject(
-                        'import QtQuick 2.1; import QtQuick.Controls 1.1; import QtQuick.Controls.Styles 1.1; \
+                        'import QtQuick 2.2; import QtQuick.Controls 1.2; import QtQuick.Controls.Styles 1.1; \
                     Rectangle { width: 50; height: 50;  property Component style: SpinBoxStyle {}}'
                         , container, '')
         }
 
         function test_createToolBarStyle() {
             var control = Qt.createQmlObject(
-                        'import QtQuick 2.1; import QtQuick.Controls 1.1; import QtQuick.Controls.Styles 1.1; \
+                        'import QtQuick 2.2; import QtQuick.Controls 1.2; import QtQuick.Controls.Styles 1.1; \
                     Rectangle { width: 50; height: 50;  property Component style: ToolBarStyle {}}'
                         , container, '')
         }
 
         function test_createStatusBarStyle() {
             var control = Qt.createQmlObject(
-                        'import QtQuick 2.1; import QtQuick.Controls 1.1; import QtQuick.Controls.Styles 1.1; \
+                        'import QtQuick 2.2; import QtQuick.Controls 1.2; import QtQuick.Controls.Styles 1.1; \
                     Rectangle { width: 50; height: 50;  property Component style: StatusBarStyle {}}'
                         , container, '')
         }
 
         function test_createTableViewStyle() {
             var control = Qt.createQmlObject(
-                        'import QtQuick 2.1; import QtQuick.Controls 1.1; import QtQuick.Controls.Styles 1.1; \
+                        'import QtQuick 2.2; import QtQuick.Controls 1.2; import QtQuick.Controls.Styles 1.1; \
                     Rectangle { width: 50; height: 50;  property Component style: TableViewStyle {}}'
                         , container, '')
         }
 
         function test_createScrollViewStyle() {
             var control = Qt.createQmlObject(
-                        'import QtQuick 2.1; import QtQuick.Controls 1.1; import QtQuick.Controls.Styles 1.1; \
+                        'import QtQuick 2.2; import QtQuick.Controls 1.2; import QtQuick.Controls.Styles 1.1; \
                     Rectangle { width: 50; height: 50;  property Component style: ScrollViewStyle {}}'
                         , container, '')
         }
 
         function test_createGroupBoxStyle() {
             var control = Qt.createQmlObject(
-                        'import QtQuick 2.1; import QtQuick.Controls 1.1; import QtQuick.Controls.Private 1.0; \
+                        'import QtQuick 2.2; import QtQuick.Controls 1.2; import QtQuick.Controls.Private 1.0; \
                     Rectangle { width: 50; height: 50;  property Component style: GroupBoxStyle {}}'
                         , container, '')
         }
 
         function test_createTabViewStyle() {
             var control = Qt.createQmlObject(
-                        'import QtQuick 2.1; import QtQuick.Controls 1.1; import QtQuick.Controls.Styles 1.1; \
+                        'import QtQuick 2.2; import QtQuick.Controls 1.2; import QtQuick.Controls.Styles 1.1; \
                     Rectangle { width: 50; height: 50;  property Component style: TabViewStyle {}}'
                         , container, '')
         }
 
         function test_createTextAreaStyle() {
             var control = Qt.createQmlObject(
-                        'import QtQuick 2.1; import QtQuick.Controls 1.1; import QtQuick.Controls.Styles 1.1; \
+                        'import QtQuick 2.2; import QtQuick.Controls 1.2; import QtQuick.Controls.Styles 1.1; \
                     Rectangle { width: 50; height: 50;  property Component style: TextAreaStyle {}}'
                         , container, '')
         }

@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.1
+import QtQuick 2.2
 import QtTest 1.0
 import QtQuickControlsTests 1.0
 
@@ -63,7 +63,7 @@ Item {
         }
 
         function test_vertical() {
-            var slider = Qt.createQmlObject('import QtQuick.Controls 1.1; Slider {}', testCase, '');
+            var slider = Qt.createQmlObject('import QtQuick.Controls 1.2; Slider {}', testCase, '');
             verify(slider.height < slider.width)
 
             slider.orientation = Qt.Vertical;
@@ -72,7 +72,7 @@ Item {
         }
 
         function test_minimumvalue() {
-            var slider = Qt.createQmlObject('import QtQuick.Controls 1.1; Slider {}', testCase, '');
+            var slider = Qt.createQmlObject('import QtQuick.Controls 1.2; Slider {}', testCase, '');
 
             slider.minimumValue = 5
             slider.maximumValue = 10
@@ -83,7 +83,7 @@ Item {
         }
 
         function test_maximumvalue() {
-            var slider = Qt.createQmlObject('import QtQuick.Controls 1.1; Slider {}', testCase, '');
+            var slider = Qt.createQmlObject('import QtQuick.Controls 1.2; Slider {}', testCase, '');
 
             slider.minimumValue = 5
             slider.maximumValue = 10
@@ -94,7 +94,7 @@ Item {
         }
 
         function test_rightLeftKeyPressed() {
-            var slider = Qt.createQmlObject('import QtQuick.Controls 1.1; Slider {}', container, '');
+            var slider = Qt.createQmlObject('import QtQuick.Controls 1.2; Slider {}', container, '');
             slider.forceActiveFocus()
             slider.maximumValue = 20
             slider.minimumValue = 0
@@ -110,7 +110,7 @@ Item {
         }
 
         function test_mouseWheel() {
-            var slider = Qt.createQmlObject('import QtQuick.Controls 1.1; Slider {}', container, '');
+            var slider = Qt.createQmlObject('import QtQuick.Controls 1.2; Slider {}', container, '');
             slider.forceActiveFocus()
             slider.value = 0
             slider.maximumValue = 300
@@ -153,7 +153,7 @@ Item {
         }
 
         function test_activeFocusOnPress(){
-            var control = Qt.createQmlObject('import QtQuick.Controls 1.1; Slider {x: 20; y: 20; width: 100; height: 50}', container, '')
+            var control = Qt.createQmlObject('import QtQuick.Controls 1.2; Slider {x: 20; y: 20; width: 100; height: 50}', container, '')
             control.activeFocusOnPress = false
             verify(!control.activeFocus)
             mouseClick(control, 30, 30)
@@ -169,8 +169,8 @@ Item {
             if (!SystemInfo.tabAllWidgets)
                 skip("This function doesn't support NOT iterating all.")
 
-            var test_control = 'import QtQuick 2.1; \
-            import QtQuick.Controls 1.1;            \
+            var test_control = 'import QtQuick 2.2; \
+            import QtQuick.Controls 1.2;            \
             Item {                                  \
                 width: 200;                         \
                 height: 200;                        \
@@ -239,8 +239,8 @@ Item {
 
         function test_updateValueWhileDragging() {
             var controlString =
-                    'import QtQuick 2.1 ;                     \
-                     import QtQuick.Controls 1.1 ;            \
+                    'import QtQuick 2.2 ;                     \
+                     import QtQuick.Controls 1.2 ;            \
                      import QtQuick.Controls.Styles 1.1;      \
                      Slider {                                 \
                          width: 200 ;                         \
@@ -270,7 +270,7 @@ Item {
         }
 
         function test_sliderOffset() {
-            var control = Qt.createQmlObject('import QtQuick.Controls 1.1; Slider {x: 20; y: 20; width: 100; height: 50}', container, '')
+            var control = Qt.createQmlObject('import QtQuick.Controls 1.2; Slider {x: 20; y: 20; width: 100; height: 50}', container, '')
             // Don't move slider value if mouse is inside handle regtion
             mouseClick(control, control.width/2, control.height/2)
             compare(control.value, 0.5)
@@ -285,7 +285,7 @@ Item {
 
         function test_valueAndHandlePosition()
         {
-            var slider = Qt.createQmlObject('import QtQuick.Controls 1.1; Slider {minimumValue: 0; maximumValue: 100; width: 100; height: 20; stepSize: 1}', container, '');
+            var slider = Qt.createQmlObject('import QtQuick.Controls 1.2; Slider {minimumValue: 0; maximumValue: 100; width: 100; height: 20; stepSize: 1}', container, '');
             slider.forceActiveFocus()
             slider.value = 0
             compare(slider.__handlePos, 0)

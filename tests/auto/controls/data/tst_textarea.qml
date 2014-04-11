@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.1
+import QtQuick 2.2
 import QtTest 1.0
 
 Item {
@@ -54,7 +54,7 @@ TestCase {
     height: 400
 
     function test_append() {
-        var textarea = Qt.createQmlObject('import QtQuick.Controls 1.1; TextArea {}', testCase, '')
+        var textarea = Qt.createQmlObject('import QtQuick.Controls 1.2; TextArea {}', testCase, '')
 
         compare(textarea.text, "")
 
@@ -67,7 +67,7 @@ TestCase {
     }
 
     function test_activeFocusOnPress(){
-        var control = Qt.createQmlObject('import QtQuick.Controls 1.1; TextArea {x: 20; y: 20; width: 100; height: 50}', container, '')
+        var control = Qt.createQmlObject('import QtQuick.Controls 1.2; TextArea {x: 20; y: 20; width: 100; height: 50}', container, '')
         control.activeFocusOnPress = false
         verify(!control.activeFocus)
         mouseClick(control, 30, 30)
@@ -81,8 +81,8 @@ TestCase {
 
     function test_activeFocusOnTab() {
         // Set TextArea readonly so the tab/backtab can be tested toward the navigation
-        var test_control = 'import QtQuick 2.1; \
-        import QtQuick.Controls 1.1;            \
+        var test_control = 'import QtQuick 2.2; \
+        import QtQuick.Controls 1.2;            \
         Item {                                  \
             width: 200;                         \
             height: 200;                        \

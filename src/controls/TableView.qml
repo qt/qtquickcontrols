@@ -38,8 +38,8 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.1
-import QtQuick.Controls 1.1
+import QtQuick 2.2
+import QtQuick.Controls 1.2
 import QtQuick.Controls.Private 1.0
 import QtQuick.Controls.Styles 1.1
 import QtQuick.Window 2.1
@@ -1047,6 +1047,7 @@ ScrollView {
                             id: headerResizeHandle
                             property int offset: 0
                             property int minimumSize: 20
+                            preventStealing: true
                             anchors.rightMargin: -width/2
                             width: Settings.hasTouchScreen ? Screen.pixelDensity * 3.5 : 16
                             height: parent.height
