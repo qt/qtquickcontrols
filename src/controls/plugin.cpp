@@ -105,7 +105,9 @@ static const struct {
     { "ToolBar", 1, 0 },
     { "ToolButton", 1, 0 },
 
-    { "BusyIndicator", 1, 1 }
+    { "BusyIndicator", 1, 1 },
+
+    { "TextArea", 1, 3 }
 };
 
 void QtQuickControlsPlugin::registerTypes(const char *uri)

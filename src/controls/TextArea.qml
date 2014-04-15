@@ -642,6 +642,20 @@ ScrollView {
     */
     property alias textMargin: edit.textMargin
 
+    /*! \qmlproperty real TextArea::contentWidth
+        \since QtQuick.Controls 1.3
+
+        The width of the text content.
+    */
+    readonly property alias contentWidth: edit.contentWidth
+
+    /*! \qmlproperty real TextArea::contentHeight
+        \since QtQuick.Controls 1.3
+
+        The height of the text content.
+    */
+    readonly property alias contentHeight: edit.contentHeight
+
     frameVisible: true
 
     activeFocusOnTab: true
