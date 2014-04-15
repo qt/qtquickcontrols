@@ -85,7 +85,7 @@ Style {
         property int tabHSpace: __barstyle.pixelMetric("tabhspace");
         property int tabVSpace: __barstyle.pixelMetric("tabvspace");
         property int totalOverlap: tabOverlap * (control.count - 1)
-        property real maxTabWidth: (control.width + totalOverlap) / control.count
+        property real maxTabWidth: control.count > 0 ? (control.width + totalOverlap) / control.count : 0
         implicitWidth: Math.min(maxTabWidth, Math.max(50, styleitem.textWidth(styleData.title)) + tabHSpace + 2)
         implicitHeight: Math.max(styleitem.font.pixelSize + tabVSpace + 6, 0)
 
