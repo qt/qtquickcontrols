@@ -64,7 +64,7 @@
     The QML types can be imported into your application using the following import statement in your \c {.qml} file.
 
     \code
-    import QtQuick.Controls.Styles 1.1
+    import QtQuick.Controls.Styles 1.2
     \endcode
 
     \section1 Styling Views
@@ -95,7 +95,7 @@
 */
 
 /*!
-    \qmlmodule QtQuick.Controls.Styles 1.1
+    \qmlmodule QtQuick.Controls.Styles 1.2
     \title Qt Quick Controls Styles QML Types
     \ingroup qmlmodules
     \brief Provides QML types for Qt Quick Controls styles.
@@ -108,6 +108,6 @@
     that can be replaced with custom QML snippets.
 
     \code
-    import QtQuick.Controls.Styles 1.1
+    import QtQuick.Controls.Styles 1.2
     \endcode
 */
