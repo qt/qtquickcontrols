@@ -47,5 +47,3 @@ OTHER_FILES += \
     $$PWD/data/tst_styles.qml \
     $$PWD/data/tst_layout.qml \
     $$PWD/data/tst_keys.qml
-
-win32-msvc2010:contains(QT_CONFIG, angle):CONFIG += insignificant_test # QTBUG-33029
