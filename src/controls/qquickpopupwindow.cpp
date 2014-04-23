@@ -53,7 +53,6 @@ QQuickPopupWindow::QQuickPopupWindow() :
     m_dismissed(false)
 {
     setFlags(Qt::Popup);
-    setModality(Qt::ApplicationModal);
     connect(qApp, SIGNAL(applicationStateChanged(Qt::ApplicationState)),
             this, SLOT(applicationStateChanged(Qt::ApplicationState)));
 }
