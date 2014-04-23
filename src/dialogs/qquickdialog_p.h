@@ -68,10 +68,8 @@ class QQuickDialog : public QQuickAbstractDialog
     Q_PROPERTY(QString title READ title WRITE setTitle NOTIFY titleChanged)
     Q_PROPERTY(QQuickAbstractDialog::StandardButtons standardButtons READ standardButtons WRITE setStandardButtons NOTIFY standardButtonsChanged)
     Q_PROPERTY(QQuickAbstractDialog::StandardButton clickedButton READ clickedButton NOTIFY buttonClicked)
-    Q_PROPERTY(QObject* implementation READ qmlImplementation WRITE setQmlImplementation DESIGNABLE false)
-    Q_PROPERTY(QJSValue standardButtonsLeftModel READ standardButtonsLeftModel NOTIFY standardButtonsChanged)
-    Q_PROPERTY(QJSValue standardButtonsRightModel READ standardButtonsRightModel NOTIFY standardButtonsChanged)
-    Q_CLASSINFO("DefaultProperty", "implementation")    // Dialog in QML can have only one child
+    Q_PROPERTY(QQuickItem* contentItem READ contentItem WRITE setContentItem DESIGNABLE false)
+    Q_CLASSINFO("DefaultProperty", "contentItem")    // Dialog in QML can have only one child
 
 public:
     explicit QQuickDialog(QObject *parent = 0);
@@ -79,8 +77,8 @@ public:
 
     StandardButtons standardButtons() const { return m_enabledButtons; }
     StandardButton clickedButton() const { return m_clickedButton; }
-    QJSValue standardButtonsLeftModel();
-    QJSValue standardButtonsRightModel();
+    Q_INVOKABLE QJSValue __standardButtonsLeftModel();
+    Q_INVOKABLE QJSValue __standardButtonsRightModel();
 
     QString title() const { return m_title; }
 

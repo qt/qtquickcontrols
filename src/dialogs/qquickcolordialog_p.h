@@ -60,8 +60,8 @@ QT_BEGIN_NAMESPACE
 class QQuickColorDialog : public QQuickAbstractColorDialog
 {
     Q_OBJECT
-    Q_PROPERTY(QObject* implementation READ qmlImplementation WRITE setQmlImplementation DESIGNABLE false)
-    Q_CLASSINFO("DefaultProperty", "implementation")    // AbstractColorDialog in QML can have only one child
+    Q_PROPERTY(QQuickItem* contentItem READ contentItem WRITE setContentItem DESIGNABLE false)
+    Q_CLASSINFO("DefaultProperty", "contentItem")    // AbstractColorDialog in QML can have only one child
 
 public:
     explicit QQuickColorDialog(QObject *parent = 0);

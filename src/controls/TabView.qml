@@ -63,7 +63,7 @@ FocusScope {
     property int currentIndex: 0
 
     /*! The current tab count */
-    property int count: 0
+    readonly property int count: __tabs.count
 
     /*! The visibility of the tab frame around contents */
     property bool frameVisible: true
@@ -157,7 +157,6 @@ FocusScope {
             var child = __tabs.get(i).tab
             child.visible = (i == currentIndex ? true : false)
         }
-        count = __tabs.count
     }
 
     activeFocusOnTab: false
