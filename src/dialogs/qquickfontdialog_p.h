@@ -60,8 +60,8 @@ QT_BEGIN_NAMESPACE
 class QQuickFontDialog : public QQuickAbstractFontDialog
 {
     Q_OBJECT
-    Q_PROPERTY(QObject* implementation READ qmlImplementation WRITE setQmlImplementation DESIGNABLE false)
-    Q_CLASSINFO("DefaultProperty", "implementation")
+    Q_PROPERTY(QQuickItem* contentItem READ contentItem WRITE setContentItem DESIGNABLE false)
+    Q_CLASSINFO("DefaultProperty", "contentItem")
 
 public:
     explicit QQuickFontDialog(QObject *parent = 0);

@@ -44,6 +44,8 @@
 
     This example project demonstrates the various UI components provided by
     \l{Qt Quick Controls}.
+
+    \include examples-run.qdocinc
 */
 
 /*!
@@ -56,6 +58,8 @@
     This example shows how to easily arrange UI components into
     \l{Qt Quick Layouts}{layouts} with \l{GridLayout}, \l{RowLayout}, and
     \l{ColumnLayout}.
+
+    \include examples-run.qdocinc
 */
 
 /*!
@@ -68,6 +72,8 @@
     This example project demonstrates the usage of \l {SplitView} from
     \l{Qt Quick Controls} - a control that lays out items horizontally or
     vertically with a draggable splitter between each item.
+
+    \include examples-run.qdocinc
 */
 
 /*!
@@ -81,6 +87,8 @@
     can be used together with different types of data models to display
     lists of information with support for scroll bars, selections and
     resizable header sections.
+
+    \include examples-run.qdocinc
 */
 
 /*!
@@ -92,6 +100,8 @@
 
     This example implements a text editor using \l{Qt Quick Controls},
     complete with text formatting options, copy-paste and undo/redo.
+
+    \include examples-run.qdocinc
 */
 
 /*!
@@ -103,6 +113,8 @@
 
     This example shows how to implement a UI suitable
     for touch input using \l{Qt Quick Controls}.
+
+    \include examples-run.qdocinc
 */
 
 /*!
@@ -114,4 +126,6 @@
 
     This example shows how Calendar can be used to view events retrieved from
     an SQL database.
+
+    \include examples-run.qdocinc
 */

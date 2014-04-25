@@ -139,7 +139,7 @@ Style {
         scale: control.tabPosition === Qt.TopEdge ? 1 : -1
 
         property int totalOverlap: tabOverlap * (control.count - 1)
-        property real maxTabWidth: (styleData.availableWidth + totalOverlap) / control.count
+        property real maxTabWidth: control.count > 0 ? (styleData.availableWidth + totalOverlap) / control.count : 0
 
         implicitWidth: Math.round(Math.min(maxTabWidth, textitem.implicitWidth + 20))
         implicitHeight: Math.round(textitem.implicitHeight + 10)

@@ -47,19 +47,19 @@ import "qml"
 
 AbstractDialog {
     id: root
-    default property alias data: contentItem.data
+    default property alias data: defaultContentItem.data
 
     Rectangle {
         id: content
         property real spacing: 6
         property real outerSpacing: 12
         property real buttonsRowImplicitWidth: minimumWidth
-        property bool buttonsInSingleRow: contentItem.width >= buttonsRowImplicitWidth
+        property bool buttonsInSingleRow: defaultContentItem.width >= buttonsRowImplicitWidth
         property real minimumHeight: implicitHeight
         property real minimumWidth: Screen.pixelDensity * 50
-        implicitHeight: contentItem.implicitHeight + spacing + outerSpacing * 2 + buttonsRight.implicitHeight
+        implicitHeight: defaultContentItem.implicitHeight + spacing + outerSpacing * 2 + buttonsRight.implicitHeight
         implicitWidth: Math.min(Screen.desktopAvailableWidth * 0.9, Math.max(
-            contentItem.implicitWidth, buttonsRowImplicitWidth, Screen.pixelDensity * 50) + outerSpacing * 2);
+            defaultContentItem.implicitWidth, buttonsRowImplicitWidth, Screen.pixelDensity * 50) + outerSpacing * 2);
         color: palette.window
         focus: root.visible
         Keys.onPressed: {
@@ -81,7 +81,7 @@ AbstractDialog {
         SystemPalette { id: palette }
 
         Item {
-            id: contentItem
+            id: defaultContentItem
             anchors {
                 left: parent.left
                 right: parent.right
@@ -101,10 +101,10 @@ AbstractDialog {
             }
 
             Repeater {
-                model: standardButtonsLeftModel
+                id: buttonsLeftRepeater
                 Button {
-                    text: standardButtonsLeftModel[index].text
-                    onClicked: root.click(standardButtonsLeftModel[index].standardButton)
+                    text: (buttonsLeftRepeater.model && buttonsLeftRepeater.model[index] ? buttonsLeftRepeater.model[index].text : index)
+                    onClicked: root.click(buttonsLeftRepeater.model[index].standardButton)
                 }
             }
 
@@ -127,17 +127,19 @@ AbstractDialog {
             }
 
             Repeater {
-                model: standardButtonsRightModel
+                id: buttonsRightRepeater
                 // TODO maybe: insert gaps if the button requires it (destructive buttons only)
                 Button {
-                    text: standardButtonsRightModel[index].text
-                    onClicked: root.click(standardButtonsRightModel[index].standardButton)
+                    text: (buttonsRightRepeater.model && buttonsRightRepeater.model[index] ? buttonsRightRepeater.model[index].text : index)
+                    onClicked: root.click(buttonsRightRepeater.model[index].standardButton)
                 }
             }
         }
     }
-    function calculateImplicitWidth() {
-        if (standardButtonsRightModel.length < 2)
+    function setupButtons() {
+        buttonsLeftRepeater.model = root.__standardButtonsLeftModel()
+        buttonsRightRepeater.model = root.__standardButtonsRightModel()
+        if (!buttonsRightRepeater.model || buttonsRightRepeater.model.length < 2)
             return;
         var calcWidth = 0;
 
@@ -157,6 +159,6 @@ AbstractDialog {
             calculateForButton(i, buttonsLeft.visibleChildren[i])
         content.buttonsRowImplicitWidth = calcWidth + content.spacing
     }
-    onStandardButtonsChanged: calculateImplicitWidth()
-    Component.onCompleted: calculateImplicitWidth()
+    onStandardButtonsChanged: setupButtons()
+    Component.onCompleted: setupButtons()
 }
