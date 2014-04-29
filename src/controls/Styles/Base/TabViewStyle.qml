@@ -128,6 +128,7 @@ Style {
             \row \li readonly property string \b styleData.title \li Tab title text.
             \row \li readonly property bool \b styleData.nextSelected \li The next tab is selected.
             \row \li readonly property bool \b styleData.previousSelected \li The previous tab is selected.
+            \row \li readonly property bool \b styleData.pressed \li The tab is being pressed. (since QtQuick.Controls.Styles 1.3)
             \row \li readonly property bool \b styleData.hovered \li The tab is being hovered.
             \row \li readonly property bool \b styleData.enabled \li The tab is enabled. (since QtQuick.Controls.Styles 1.2)
             \row \li readonly property bool \b styleData.activeFocus \li The tab button has keyboard focus.
