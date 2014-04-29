@@ -81,6 +81,16 @@ FocusScope {
     */
     property int tabPosition: Qt.TopEdge
 
+    /*!
+        \qmlproperty Item TabView::contentItem
+        \since QtQuick.Controls 1.3
+
+        This property holds the content item of the tab view.
+
+        Tabs declared as children of a TabView are automatically parented to the TabView's contentItem.
+     */
+    readonly property alias contentItem: stack
+
     /*! \internal */
     default property alias data: stack.data
 
