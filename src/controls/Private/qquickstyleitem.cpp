@@ -50,6 +50,7 @@
 #include <qsgsimpletexturenode.h>
 #include <qquickwindow.h>
 #include "private/qguiapplication_p.h"
+#include <QtQuick/private/qquickwindow_p.h>
 #include <QtGui/qpa/qplatformtheme.h>
 #include "../qquickmenuitem_p.h"
 
@@ -756,6 +757,15 @@ void QQuickStyleItem::initStyleOption()
         m_styleoption->state |= QStyle::State_MouseOver;
     if (m_horizontal)
         m_styleoption->state |= QStyle::State_Horizontal;
+
+    // some styles don't draw a focus rectangle if
+    // QStyle::State_KeyboardFocusChange is not set
+    if (window()) {
+         Qt::FocusReason lastFocusReason = QQuickWindowPrivate::get(window())->lastFocusReason;
+         if (lastFocusReason == Qt::TabFocusReason || lastFocusReason == Qt::BacktabFocusReason) {
+             m_styleoption->state |= QStyle::State_KeyboardFocusChange;
+         }
+    }
 
     if (sizeHint == "mini") {
         m_styleoption->state |= QStyle::State_Mini;
