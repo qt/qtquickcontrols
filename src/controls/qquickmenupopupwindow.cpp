@@ -45,6 +45,7 @@
 #include <qpa/qwindowsysteminterface.h>
 #include <qquickitem.h>
 #include <QtGui/QScreen>
+#include <QtQuick/private/qquickrendercontrol_p.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -84,8 +85,10 @@ void QQuickMenuPopupWindow::setItemAt(QQuickItem *menuItem)
 
 void QQuickMenuPopupWindow::setParentWindow(QQuickWindow *parentWindow)
 {
-    if (transientParent() != parentWindow)
-        setTransientParent(parentWindow);
+    QWindow *proxyWindow = QQuickRenderControl::renderWindowFor(parentWindow);
+    QWindow *renderWindow = proxyWindow ? proxyWindow : parentWindow;
+    if (transientParent() != renderWindow)
+        setTransientParent(renderWindow);
     if (parentWindow) {
         connect(parentWindow, SIGNAL(destroyed()), this, SLOT(dismissPopup()));
         if (QQuickMenuPopupWindow *pw = qobject_cast<QQuickMenuPopupWindow *>(parentWindow))
