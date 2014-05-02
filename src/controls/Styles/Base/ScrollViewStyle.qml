@@ -372,6 +372,8 @@ Style {
         property int extent: Math.max(minimumHandleLength, __styleData.horizontal ?
                                           (flickableItem ? flickableItem.width/flickableItem.contentWidth : 0 ) * bg.width :
                                           (flickableItem ? flickableItem.height/flickableItem.contentHeight : 0) * bg.height)
+        readonly property real range: __control.maximumValue - __control.minimumValue
+        readonly property real begin: __control.value - __control.minimumValue
 
         Loader {
             id: handleControl
@@ -379,8 +381,8 @@ Style {
             width: __styleData.horizontal ? extent : implicitWidth
             anchors.top: bg.top
             anchors.left: bg.left
-            anchors.topMargin: __styleData.horizontal ? 0 : -handleOverlap + (__control.value / __control.maximumValue) * (bg.height + 2 * handleOverlap- height)
-            anchors.leftMargin: __styleData.horizontal ? -handleOverlap + (__control.value / __control.maximumValue) * (bg.width + 2 * handleOverlap - width) : 0
+            anchors.topMargin: __styleData.horizontal ? 0 : -handleOverlap + (2 * begin * (bg.height + (2 * handleOverlap) - extent) + range) / (2 * range)
+            anchors.leftMargin: __styleData.horizontal ? -handleOverlap + (2 * begin * (bg.width + (2 * handleOverlap) - extent) + range) / (2 * range) : 0
             sourceComponent: handle
             property QtObject styleData: QtObject {
                 readonly property bool hovered: activeControl === "handle"
