@@ -268,6 +268,9 @@ QQuickMenu::~QQuickMenu()
             item->setParentMenu(0);
     }
 
+    if (platformItem())
+        platformItem()->setMenu(0);
+
     delete m_platformMenu;
     m_platformMenu = 0;
 }
