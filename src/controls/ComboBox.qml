@@ -358,6 +358,7 @@ Control {
 
         verticalAlignment: Text.AlignVCenter
 
+        font: __style && __style.editorFont !== undefined ? __style.editorFont : TextSingleton.font
         renderType: __style ? __style.renderType : Text.NativeRendering
         selectByMouse: true
         color: __style.__syspal.text
