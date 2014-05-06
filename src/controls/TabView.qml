@@ -103,6 +103,7 @@ FocusScope {
         __tabs.insert(index, {tab: tab})
         tab.__inserted = true
         tab.parent = stack
+        __didInsertIndex(index)
         __setOpacities()
         return tab
     }
@@ -110,10 +111,9 @@ FocusScope {
     /*! Removes and destroys a tab at the given \a index. */
     function removeTab(index) {
         var tab = __tabs.get(index).tab
+        __willRemoveIndex(index)
         __tabs.remove(index, 1)
         tab.destroy()
-        if (currentIndex > 0)
-            currentIndex--
         __setOpacities()
     }
 
@@ -153,6 +153,19 @@ FocusScope {
     onCurrentIndexChanged: __setOpacities()
 
     /*! \internal */
+    function __willRemoveIndex(index) {
+        // Make sure currentIndex will points to the same tab after the removal.
+        // Also activate the next index if the current index is being removed,
+        // except when it's both the current and last index.
+        if (count > 1 && (currentIndex > index || currentIndex == count -1))
+            --currentIndex
+    }
+    function __didInsertIndex(index) {
+        // Make sure currentIndex points to the same tab as before the insertion.
+        if (count > 1 && currentIndex >= index)
+            currentIndex++
+    }
+
     function __setOpacities() {
         for (var i = 0; i < __tabs.count; ++i) {
             var child = __tabs.get(i).tab
@@ -229,6 +242,7 @@ FocusScope {
                         if (completed)
                             tab.Component.onDestruction.connect(stack.onDynamicTabDestroyed.bind(tab))
                         __tabs.append({tab: tab})
+                        __didInsertIndex(__tabs.count - 1)
                         tabAdded = true
                     }
                 }
@@ -239,6 +253,7 @@ FocusScope {
             function onDynamicTabDestroyed() {
                 for (var i = 0; i < __tabs.count; ++i) {
                     if (__tabs.get(i).tab === this) {
+                        __willRemoveIndex(i)
                         __tabs.remove(i, 1)
                         __setOpacities()
                         break

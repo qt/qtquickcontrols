@@ -84,22 +84,53 @@ TestCase {
 
     function test_addRemoveTab() {
         var tabView = Qt.createQmlObject('import QtQuick 2.2; import QtQuick.Controls 1.2; TabView { }', testCase, '');
+
+        function verifyCurrentIndexCountDiff() {
+            verify(!tabView.currentIndex || tabView.count > tabView.currentIndex)
+        }
+        tabView.currentIndexChanged.connect(verifyCurrentIndexCountDiff)
+        tabView.countChanged.connect(verifyCurrentIndexCountDiff)
+
         compare(tabView.count, 0)
+        compare(tabView.currentIndex, 0)
         tabView.addTab("title 1", newTab)
         compare(tabView.count, 1)
+        compare(tabView.currentIndex, 0)
         tabView.addTab("title 2", newTab)
         compare(tabView.count, 2)
+        compare(tabView.currentIndex, 0)
         compare(tabView.getTab(0).title, "title 1")
         compare(tabView.getTab(1).title, "title 2")
 
+        tabView.currentIndex = 1
+
         tabView.insertTab(1, "title 3")
         compare(tabView.count, 3)
+        compare(tabView.currentIndex, 2)
         compare(tabView.getTab(0).title, "title 1")
         compare(tabView.getTab(1).title, "title 3")
         compare(tabView.getTab(2).title, "title 2")
 
         tabView.insertTab(0, "title 4")
         compare(tabView.count, 4)
+        compare(tabView.currentIndex, 3)
+        compare(tabView.getTab(0).title, "title 4")
+        compare(tabView.getTab(1).title, "title 1")
+        compare(tabView.getTab(2).title, "title 3")
+        compare(tabView.getTab(3).title, "title 2")
+
+        tabView.insertTab(tabView.count, "title 5")
+        compare(tabView.count, 5)
+        compare(tabView.currentIndex, 3)
+        compare(tabView.getTab(0).title, "title 4")
+        compare(tabView.getTab(1).title, "title 1")
+        compare(tabView.getTab(2).title, "title 3")
+        compare(tabView.getTab(3).title, "title 2")
+        compare(tabView.getTab(4).title, "title 5")
+
+        tabView.removeTab(tabView.count - 1)
+        compare(tabView.count, 4)
+        compare(tabView.currentIndex, 3)
         compare(tabView.getTab(0).title, "title 4")
         compare(tabView.getTab(1).title, "title 1")
         compare(tabView.getTab(2).title, "title 3")
@@ -107,21 +138,25 @@ TestCase {
 
         tabView.removeTab(0)
         compare(tabView.count, 3)
+        compare(tabView.currentIndex, 2)
         compare(tabView.getTab(0).title, "title 1")
         compare(tabView.getTab(1).title, "title 3")
         compare(tabView.getTab(2).title, "title 2")
 
         tabView.removeTab(1)
         compare(tabView.count, 2)
+        compare(tabView.currentIndex, 1)
         compare(tabView.getTab(0).title, "title 1")
         compare(tabView.getTab(1).title, "title 2")
 
         tabView.removeTab(1)
         compare(tabView.count, 1)
+        compare(tabView.currentIndex, 0)
         compare(tabView.getTab(0).title, "title 1")
 
         tabView.removeTab(0)
         compare(tabView.count, 0)
+        compare(tabView.currentIndex, 0)
         tabView.destroy()
     }
 
