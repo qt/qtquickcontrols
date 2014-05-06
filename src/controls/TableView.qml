@@ -819,7 +819,7 @@ ScrollView {
                 rowItemContainer.height = Qt.binding( function() { return rowItem.height });
 
                 // Reassign row-specific bindings
-                rowItem.rowIndex = model.index;
+                rowItem.rowIndex = Qt.binding( function() { return model.index });
                 rowItem.itemModelData = Qt.binding( function() { return typeof modelData === "undefined" ? null : modelData });
                 rowItem.itemModel = Qt.binding( function() { return model });
                 rowItem.parent = rowItemContainer;
