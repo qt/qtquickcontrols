@@ -137,7 +137,8 @@ FocusScope {
 
     /*! Returns the \l Tab item at \a index. */
     function getTab(index) {
-        return __tabs.get(index).tab
+        var data = __tabs.get(index)
+        return data && data.tab
     }
 
     /*! \internal */
