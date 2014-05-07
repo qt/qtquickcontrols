@@ -220,7 +220,7 @@ FocusScope {
                     readonly property alias selected: tabitem.selected
                     readonly property alias title: tabitem.title
                     readonly property alias nextSelected: tabitem.nextSelected
-                    readonly property alias previsousSelected: tabitem.previousSelected
+                    readonly property alias previousSelected: tabitem.previousSelected
                     readonly property alias hovered: tabitem.containsMouse
                     readonly property alias enabled: tabitem.enabled
                     readonly property bool activeFocus: tabitem.activeFocus
