@@ -43,6 +43,8 @@
 #define QQUICKCONTROLSPRIVATE_P_H
 
 #include "qqml.h"
+#include "qquicktooltip_p.h"
+#include "qquickcontrolsettings_p.h"
 
 QT_BEGIN_NAMESPACE
 
