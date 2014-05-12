@@ -39,7 +39,7 @@
 ****************************************************************************/
 
 import QtQuick 2.2
-import QtQuick.Controls 0.1
+import QtQuick.Controls 1.2
 
 ApplicationWindow {
     width: 400
@@ -48,7 +48,7 @@ ApplicationWindow {
     Rectangle {
         id: back
         anchors.fill: parent
-        color: enabled ? "red" : "blue"
+        color: enabled ? "lightgray" : "wheat"
     }
 
     Column {
@@ -109,11 +109,12 @@ ApplicationWindow {
             }
         }
 
-        ButtonRow {
-            exclusive: true
+        Row {
+            ExclusiveGroup { id: exclusive }
             RadioButton {
                 id: radioButton1
                 text: "RadioButton 1"
+                exclusiveGroup: exclusive
                 activeFocusOnPress: true
                 KeyNavigation.tab: radioButton2
                 KeyNavigation.backtab: checkbox3
@@ -122,6 +123,7 @@ ApplicationWindow {
             RadioButton {
                 id: radioButton2
                 text: "RadioButton 2"
+                exclusiveGroup: exclusive
                 activeFocusOnPress: true
                 KeyNavigation.tab: radioButton3
                 KeyNavigation.backtab: radioButton1
@@ -130,6 +132,7 @@ ApplicationWindow {
             RadioButton {
                 id: radioButton3
                 text: "RadioButton 3"
+                exclusiveGroup: exclusive
                 activeFocusOnPress: true
                 KeyNavigation.backtab: radioButton2
                 onClicked: back.enabled = !back.enabled
