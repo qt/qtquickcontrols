@@ -642,13 +642,27 @@ Item {
                 dragTo(x, Math.floor(index / CalendarUtils.daysInAWeek), index, new Date(2014, 1, 24 + x));
             }
 
-            // Dragging into the next month should work.
-            var firstDateInNextMonth = new Date(2014, 2, 1);
-            dragTo(5, 4, 33, firstDateInNextMonth);
+            // Dragging into the next month shouldn't work, as it can lead to
+            // unwanted month changes if moving within a bunch of "next month" cells.
+            // We still emit the signals as usual, though.
+            var oldDate = calendar.selectedDate;
+            mouseMove(calendar, toPixelsX(5), toPixelsY(4), Qt.LeftButton);
+            compare(calendar.selectedDate, oldDate);
+            compare(calendar.__panel.pressedCellIndex, 32);
+            compare(calendar.__panel.hoveredCellIndex, 33);
+            compare(hoveredSignalSpy.count, 1);
+            compare(pressedSignalSpy.count, 1);
+            compare(releasedSignalSpy.count, 0);
+            compare(clickedSignalSpy.count, 0);
 
-            // Finish the drag.
-            mouseRelease(calendar, toPixelsX(5), toPixelsY(0), Qt.LeftButton);
-            compare(calendar.selectedDate, firstDateInNextMonth);
+            hoveredSignalSpy.clear();
+            pressedSignalSpy.clear();
+            releasedSignalSpy.clear();
+            clickedSignalSpy.clear();
+
+            // Finish the drag over the day in the next month.
+            mouseRelease(calendar, toPixelsX(5), toPixelsY(4), Qt.LeftButton);
+            compare(calendar.selectedDate, oldDate);
             compare(calendar.__panel.pressedCellIndex, -1);
             compare(hoveredSignalSpy.count, 0);
             compare(pressedSignalSpy.count, 0);

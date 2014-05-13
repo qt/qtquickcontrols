@@ -518,10 +518,15 @@ Style {
                                     if (hoveredCellIndex !== previousHoveredCellIndex)
                                         control.hovered(date);
 
+                                    // The date must be different for the pressed signal to be emitted.
                                     if (pressed && date.getTime() !== control.selectedDate.getTime()) {
-                                        control.selectedDate = date;
-                                        pressedCellIndex = indexOfCell;
                                         control.pressed(date);
+
+                                        // You can't select dates in a different month while dragging.
+                                        if (date.getMonth() === control.selectedDate.getMonth()) {
+                                            control.selectedDate = date;
+                                            pressedCellIndex = indexOfCell;
+                                        }
                                     }
                                 }
                             }
