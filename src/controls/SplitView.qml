@@ -166,7 +166,8 @@ Item {
     onHeightChanged: d.updateLayout()
     onOrientationChanged: d.changeOrientation()
 
-    /*! Add an item to the end of the view. */
+    /*! Add an item to the end of the view.
+        \since QtQuick.Controls 1.3 */
     function addItem(item) {
         d.updateLayoutGuard = true
 
