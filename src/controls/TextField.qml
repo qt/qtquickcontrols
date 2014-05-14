@@ -129,6 +129,14 @@ Control {
     property alias cursorPosition: textInput.cursorPosition
 
     /*!
+        \qmlproperty rect TextField::cursorRectangle
+        \since QtQuick.Controls 1.3
+
+        The rectangle where the text cursor is rendered within the text field.
+    */
+    readonly property alias cursorRectangle: textInput.cursorRectangle
+
+    /*!
        \qmlproperty string TextField::displayText
 
        This property holds the text displayed in the TextField.

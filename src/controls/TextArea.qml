@@ -132,6 +132,14 @@ ScrollView {
     */
     property alias cursorPosition: edit.cursorPosition
 
+    /*!
+        \qmlproperty rect TextArea::cursorRectangle
+        \since QtQuick.Controls 1.3
+
+        The rectangle where the text cursor is rendered within the text area.
+    */
+    readonly property alias cursorRectangle: edit.cursorRectangle
+
     /*! \qmlproperty font TextArea::font
 
         The font of the TextArea.
