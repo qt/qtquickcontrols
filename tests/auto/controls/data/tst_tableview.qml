@@ -385,6 +385,24 @@ TestCase {
         verify(table.selection.contains(8))
     }
 
+    function test_initializedStyleData() {
+        var table = Qt.createQmlObject('import QtQuick.Controls 1.2; \
+                                        import QtQuick 2.2; \
+                                            TableView { \
+                                                model: 3; \
+                                                TableViewColumn{} \
+                                                property var items: []; \
+                                                property var rows: []; \
+                                                itemDelegate: Item{ Component.onCompleted: { items.push(styleData.row) } } \
+                                                rowDelegate: Item{ Component.onCompleted: { if (styleData.row !== undefined) rows.push(styleData.row) } } \
+                                         }'
+                                       , testCase, '')
+        waitForRendering(table)
+        compare(table.items, [0, 1, 2]);
+        compare(table.rows, [0, 1, 2]);
+    }
+
+
     function test_usingcppqobjectmodel() {
 
         var component = Qt.createComponent("tableview/table1_qobjectmodel.qml")

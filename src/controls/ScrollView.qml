@@ -231,7 +231,7 @@ FocusScope {
         WheelArea {
             id: wheelArea
             parent: flickableItem
-
+            z: -1
             // ### Note this is needed due to broken mousewheel behavior in Flickable.
 
             anchors.fill: parent

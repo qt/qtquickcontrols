@@ -58,7 +58,7 @@ import QtQuick.Controls.Private 1.0
             indicator: Image {
                 visible: control.running
                 source: "spinner.png"
-                NumberAnimation on rotation {
+                RotationAnimator on rotation {
                     running: control.running
                     loops: Animation.Infinite
                     duration: 2000

@@ -819,7 +819,7 @@ ScrollView {
                 rowItemContainer.height = Qt.binding( function() { return rowItem.height });
 
                 // Reassign row-specific bindings
-                rowItem.rowIndex = model.index;
+                rowItem.rowIndex = Qt.binding( function() { return model.index });
                 rowItem.itemModelData = Qt.binding( function() { return typeof modelData === "undefined" ? null : modelData });
                 rowItem.itemModel = Qt.binding( function() { return model });
                 rowItem.parent = rowItemContainer;
@@ -861,7 +861,7 @@ ScrollView {
                 Loader {
                     id: rowstyle
                     // row delegate
-                    sourceComponent: root.rowDelegate
+                    sourceComponent: rowitem.itemModel !== undefined ? root.rowDelegate : null
                     // Row fills the view width regardless of item size
                     // But scrollbar should not adjust to it
                     height: item ? item.height : 16
@@ -891,7 +891,8 @@ ScrollView {
                             width:  columnItem.width
                             height: parent ? parent.height : 0
                             visible: columnItem.visible
-                            sourceComponent: columnItem.delegate ? columnItem.delegate : itemDelegate
+                            sourceComponent: rowitem.itemModel !== undefined ? // delays construction until model is initialized
+                                                 (columnItem.delegate ? columnItem.delegate : itemDelegate) : null
 
                             // these properties are exposed to the item delegate
                             readonly property var model: itemModel

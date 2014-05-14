@@ -272,16 +272,19 @@ ApplicationWindow {
                 implicitWidth: 150
                 model: Qt.fontFamilies()
                 property bool special : false
-                onCurrentTextChanged: {
-                    if (special == false || currentIndex != 0)
-                        document.fontFamily = currentText
+                onActivated: {
+                    if (special == false || index != 0) {
+                        document.fontFamily = textAt(index)
+                    }
                 }
             }
             SpinBox {
                 id: fontSizeSpinBox
+                activeFocusOnPress: false
                 implicitWidth: 50
                 value: 0
-                onValueChanged: document.fontSize = value
+                property bool valueGuard: true
+                onValueChanged: if (valueGuard) document.fontSize = value
             }
             Item { Layout.fillWidth: true }
         }
@@ -307,7 +310,11 @@ ApplicationWindow {
         selectionStart: textArea.selectionStart
         selectionEnd: textArea.selectionEnd
         Component.onCompleted: document.fileUrl = "qrc:/example.html"
-        onFontSizeChanged: fontSizeSpinBox.value = document.fontSize
+        onFontSizeChanged: {
+            fontSizeSpinBox.valueGuard = false
+            fontSizeSpinBox.value = document.fontSize
+            fontSizeSpinBox.valueGuard = true
+        }
         onFontFamilyChanged: {
             var index = Qt.fontFamilies().indexOf(document.fontFamily)
             if (index == -1) {

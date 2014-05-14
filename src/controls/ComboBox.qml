@@ -354,7 +354,7 @@ Control {
 
         anchors.fill: parent
         anchors.leftMargin: 8
-        anchors.rightMargin: __style.dropDownButtonWidth
+        anchors.rightMargin: __style.dropDownButtonWidth + __style.padding.right
 
         verticalAlignment: Text.AlignVCenter
 
@@ -587,6 +587,8 @@ Control {
             if (__selectedIndex !== -1 && (selectedItem = items[__selectedIndex])) {
                 input.editTextMatches = true
                 selectedText = selectedItem.text
+                if (currentText !== selectedText) // __selectedIndex went form -1 to 0
+                    selectedTextChanged()
             }
         }
     }

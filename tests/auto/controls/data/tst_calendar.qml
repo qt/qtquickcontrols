@@ -642,13 +642,27 @@ Item {
                 dragTo(x, Math.floor(index / CalendarUtils.daysInAWeek), index, new Date(2014, 1, 24 + x));
             }
 
-            // Dragging into the next month should work.
-            var firstDateInNextMonth = new Date(2014, 2, 1);
-            dragTo(5, 4, 33, firstDateInNextMonth);
+            // Dragging into the next month shouldn't work, as it can lead to
+            // unwanted month changes if moving within a bunch of "next month" cells.
+            // We still emit the signals as usual, though.
+            var oldDate = calendar.selectedDate;
+            mouseMove(calendar, toPixelsX(5), toPixelsY(4), Qt.LeftButton);
+            compare(calendar.selectedDate, oldDate);
+            compare(calendar.__panel.pressedCellIndex, 32);
+            compare(calendar.__panel.hoveredCellIndex, 33);
+            compare(hoveredSignalSpy.count, 1);
+            compare(pressedSignalSpy.count, 1);
+            compare(releasedSignalSpy.count, 0);
+            compare(clickedSignalSpy.count, 0);
 
-            // Finish the drag.
-            mouseRelease(calendar, toPixelsX(5), toPixelsY(0), Qt.LeftButton);
-            compare(calendar.selectedDate, firstDateInNextMonth);
+            hoveredSignalSpy.clear();
+            pressedSignalSpy.clear();
+            releasedSignalSpy.clear();
+            clickedSignalSpy.clear();
+
+            // Finish the drag over the day in the next month.
+            mouseRelease(calendar, toPixelsX(5), toPixelsY(4), Qt.LeftButton);
+            compare(calendar.selectedDate, oldDate);
             compare(calendar.__panel.pressedCellIndex, -1);
             compare(hoveredSignalSpy.count, 0);
             compare(pressedSignalSpy.count, 0);
@@ -691,49 +705,68 @@ Item {
             }
         }
 
-        function test_cellRectCalculation() {
+        function ensureGapsBetweenCells(columns, rows, availableWidth, availableHeight, gridLineWidth) {
+            for (var row = 1; row < rows; ++row) {
+                for (var col = 1; col < columns; ++col) {
+                    var lastHorizontalRect = CalendarUtils.cellRectAt((row - 1) * columns + col - 1, columns, rows, availableWidth, availableHeight);
+                    var thisHorizontalRect = CalendarUtils.cellRectAt((row - 1) * columns + col, columns, rows, availableWidth, availableHeight);
+                    compare (lastHorizontalRect.x + lastHorizontalRect.width + gridLineWidth, thisHorizontalRect.x,
+                        "No gap for grid line between column " + (col - 1) + " and " + col + " in a grid of " + columns + " columns and " + rows + " rows, "
+                        + "with an availableWidth of " + availableWidth + " and availableHeight of " + availableHeight);
+
+                    var lastVerticalRect = CalendarUtils.cellRectAt((row - 1) * columns + col - 1, columns, rows, availableWidth, availableHeight);
+                    var thisVerticalRect = CalendarUtils.cellRectAt(row * columns + col - 1, columns, rows, availableWidth, availableHeight);
+                    compare (lastVerticalRect.y + lastVerticalRect.height + gridLineWidth, thisVerticalRect.y,
+                        "No gap for grid line between row " + (row - 1) + " and " + row + " in a grid of " + columns + " columns and " + rows + " rows, "
+                        + "with an availableWidth of " + availableWidth + " and availableHeight of " + availableHeight);
+                }
+            }
+        }
+
+        function test_gridlessCellRectCalculation() {
             var columns = CalendarUtils.daysInAWeek;
             var rows = CalendarUtils.weeksOnACalendarMonth;
+            var gridLineWidth = 0;
 
             // No extra space available.
             var availableWidth = 10 * columns;
             var availableHeight = 10 * rows;
-            var rect = CalendarUtils.cellRectAt(0, columns, rows, availableWidth, availableHeight);
+            var rect = CalendarUtils.cellRectAt(0, columns, rows, availableWidth, availableHeight, gridLineWidth);
             compare(rect.x, 0);
             compare(rect.y, 0);
             compare(rect.width, 10);
             compare(rect.height, 10);
 
-            rect = CalendarUtils.cellRectAt(columns - 1, columns, rows, availableWidth, availableHeight);
+            rect = CalendarUtils.cellRectAt(columns - 1, columns, rows, availableWidth, availableHeight, gridLineWidth);
             compare(rect.x, (columns - 1) * 10);
             compare(rect.y, 0);
             compare(rect.width, 10);
             compare(rect.height, 10);
 
-            rect = CalendarUtils.cellRectAt(rows * columns - 1, columns, rows, availableWidth, availableHeight);
+            rect = CalendarUtils.cellRectAt(rows * columns - 1, columns, rows, availableWidth, availableHeight, gridLineWidth);
             compare(rect.x, (columns - 1) * 10);
             compare(rect.y, (rows - 1) * 10);
             compare(rect.width, 10);
             compare(rect.height, 10);
 
-            ensureNoGapsBetweenCells(columns, rows, availableWidth, availableHeight);
+            ensureNoGapsBetweenCells(columns, rows, availableWidth, availableHeight, gridLineWidth);
 
             // 1 extra pixel of space in both width and height.
             availableWidth = 10 * columns + 1;
             availableHeight = 10 * rows + 1;
-            rect = CalendarUtils.cellRectAt(0, columns, rows, availableWidth, availableHeight);
+            rect = CalendarUtils.cellRectAt(0, columns, rows, availableWidth, availableHeight, gridLineWidth);
             compare(rect.x, 0);
             compare(rect.y, 0);
             compare(rect.width, 10 + 1);
             compare(rect.height, 10 + 1);
 
-            rect = CalendarUtils.cellRectAt(columns - 1, columns, rows, availableWidth, availableHeight);
+            rect = CalendarUtils.cellRectAt(columns - 1, columns, rows, availableWidth, availableHeight, gridLineWidth);
             compare(rect.x, (columns - 1) * 10 + 1);
             compare(rect.y, 0);
             compare(rect.width, 10);
             compare(rect.height, 10 + 1);
 
-            rect = CalendarUtils.cellRectAt(rows * columns - 1, columns, rows, availableWidth, availableHeight);
+            rect = CalendarUtils.cellRectAt(rows * columns - 1, columns, rows, availableWidth, availableHeight, gridLineWidth);
             compare(rect.x, (columns - 1) * 10 + 1);
             compare(rect.y, (rows - 1) * 10 + 1);
             compare(rect.width, 10);
@@ -744,19 +777,19 @@ Item {
             // 6 extra pixels in width, 5 in height.
             availableWidth = 10 * columns + 6;
             availableHeight = 10 * rows + 5;
-            rect = CalendarUtils.cellRectAt(0, columns, rows, availableWidth, availableHeight);
+            rect = CalendarUtils.cellRectAt(0, columns, rows, availableWidth, availableHeight, gridLineWidth);
             compare(rect.x, 0);
             compare(rect.y, 0);
             compare(rect.width, 10 + 1);
             compare(rect.height, 10 + 1);
 
-            rect = CalendarUtils.cellRectAt(columns - 1, columns, rows, availableWidth, availableHeight);
+            rect = CalendarUtils.cellRectAt(columns - 1, columns, rows, availableWidth, availableHeight, gridLineWidth);
             compare(rect.x, (columns - 1) * 10 + 6);
             compare(rect.y, 0);
             compare(rect.width, 10);
             compare(rect.height, 10 + 1);
 
-            rect = CalendarUtils.cellRectAt(rows * columns - 1, columns, rows, availableWidth, availableHeight);
+            rect = CalendarUtils.cellRectAt(rows * columns - 1, columns, rows, availableWidth, availableHeight, gridLineWidth);
             compare(rect.x, (columns - 1) * 10 + 6);
             compare(rect.y, (rows - 1) * 10 + 5);
             compare(rect.width, 10);
@@ -770,12 +803,54 @@ Item {
 
             for (var i = 0; i < columns; ++i) {
                 ++availableWidth;
-                ensureNoGapsBetweenCells(columns, rows, availableWidth, availableHeight);
+                ensureNoGapsBetweenCells(columns, rows, availableWidth, availableHeight, gridLineWidth);
             }
 
             for (i = 0; i < columns; ++i) {
                 ++availableHeight;
-                ensureNoGapsBetweenCells(columns, rows, availableWidth, availableHeight);
+                ensureNoGapsBetweenCells(columns, rows, availableWidth, availableHeight, gridLineWidth);
+            }
+        }
+
+        function test_gridCellRectCalculation() {
+            var columns = CalendarUtils.daysInAWeek;
+            var rows = CalendarUtils.weeksOnACalendarMonth;
+            var gridLineWidth = 1;
+
+            var availableWidth = 10 * columns;
+            var availableHeight = 10 * rows;
+            var expectedXs = [0, 11, 21, 31, 41, 51, 61];
+            var expectedWidths = [10, 9, 9, 9, 9, 9, 9];
+            // Expected y positions and heights actually are the same as the x positions and widths in this case.
+            // The code below assumes that columns >= rows; if this becomes false, arrays for the expected
+            // y positions and heights must be created to avoid out of bounds accesses.
+            for (var row = 0; row < rows; ++row) {
+                for (var col = 0; col < columns; ++col) {
+                    var index = row * columns + col;
+                    var rect = CalendarUtils.cellRectAt(index, columns, rows, availableWidth, availableHeight, gridLineWidth);
+                    compare(rect.x, expectedXs[col]);
+                    compare(rect.y, expectedXs[row]);
+                    compare(rect.width, expectedWidths[col]);
+                    compare(rect.height, expectedWidths[row]);
+                }
+            }
+
+            // The available width and height of a 250x250 calendar (its implicit size).
+            availableWidth = 250;
+            availableHeight = 168;
+            expectedXs = [0, 36, 72, 108, 144, 180, 216];
+            var expectedYs = [0, 29, 57, 85, 113, 141];
+            expectedWidths = [35, 35, 35, 35, 35, 35, 34];
+            var expectedHeights = [28, 27, 27, 27, 27, 27];
+            for (row = 0; row < rows; ++row) {
+                for (col = 0; col < columns; ++col) {
+                    index = row * columns + col;
+                    rect = CalendarUtils.cellRectAt(index, columns, rows, availableWidth, availableHeight, gridLineWidth);
+                    compare(rect.x, expectedXs[col]);
+                    compare(rect.y, expectedYs[row]);
+                    compare(rect.width, expectedWidths[col]);
+                    compare(rect.height, expectedHeights[row]);
+                }
             }
         }
     }

@@ -75,14 +75,37 @@ function setMonth(date, month) {
     return newDate;
 }
 
-function cellRectAt(index, columns, rows, availableWidth, availableHeight) {
+/*!
+    Returns the cell rectangle for the cell at the given \a index, assuming
+    that the grid has a number of columns equal to \a columns and rows
+    equal to \a rows, with an available width of \a availableWidth and height
+    of \a availableHeight.
+
+    If \a gridLineWidth is greater than \c 0, the cell rectangle will be
+    calculated under the assumption that there is a grid between the cells:
+
+        31 |  1 |  2 |  3 |  4 |  5 |  6
+        --------------------------------
+         7 |  8 |  9 | 10 | 11 | 12 | 13
+        --------------------------------
+        14 | 15 | 16 | 17 | 18 | 19 | 20
+        --------------------------------
+        21 | 22 | 23 | 24 | 25 | 26 | 27
+        --------------------------------
+        28 | 29 | 30 | 31 |  1 |  2 |  3
+        --------------------------------
+         4 |  5 |  6 |  7 |  8 |  9 | 10
+*/
+function cellRectAt(index, columns, rows, availableWidth, availableHeight, gridLineWidth) {
     var col = Math.floor(index % columns);
     var row = Math.floor(index / columns);
 
-    var remainingHorizontalSpace = Math.floor(availableWidth % columns);
-    var remainingVerticalSpace = Math.floor(availableHeight % rows);
-    var baseCellWidth = Math.floor(availableWidth / columns);
-    var baseCellHeight = Math.floor(availableHeight / rows);
+    var availableWidthMinusGridLines = availableWidth - ((columns - 1) * gridLineWidth);
+    var availableHeightMinusGridLines = availableHeight - ((rows - 1) * gridLineWidth);
+    var remainingHorizontalSpace = Math.floor(availableWidthMinusGridLines % columns);
+    var remainingVerticalSpace = Math.floor(availableHeightMinusGridLines % rows);
+    var baseCellWidth = Math.floor(availableWidthMinusGridLines / columns);
+    var baseCellHeight = Math.floor(availableHeightMinusGridLines / rows);
 
     var rect = Qt.rect(0, 0, 0, 0);
 
@@ -107,6 +130,9 @@ function cellRectAt(index, columns, rows, availableWidth, availableHeight) {
         // This cell's y position should be increased by 1 for every row above it.
         rect.y += Math.min(remainingVerticalSpace, row);
     }
+
+    rect.x += col * gridLineWidth;
+    rect.y += row * gridLineWidth;
 
     return rect;
 }

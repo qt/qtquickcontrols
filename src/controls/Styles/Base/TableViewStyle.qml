@@ -106,7 +106,7 @@ ScrollViewStyle {
     }
 
     /*! \qmlproperty Component TableViewStyle::rowDelegate
-    Delegate for header. This delegate is described in \l {TableView::rowDelegate}
+    Delegate for row. This delegate is described in \l {TableView::rowDelegate}
     */
     property Component rowDelegate: Rectangle {
         height: Math.round(TextSingleton.implicitHeight * 1.2)

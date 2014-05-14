@@ -316,12 +316,11 @@ AbstractFileDialog {
                             x: 4
                             height: parent.height - 2
                             source: "images/folder.png"
-                            property var isDir: view.model.get(styleData.row, "fileIsDir")
-                            visible: isDir !== undefined && isDir
                         }
                         Text {
                             id: pathText
                             text: styleData.value
+                            onTextChanged: fileIcon.visible = view.model.isFolder(styleData.row)
                             anchors {
                                 left: parent.left
                                 right: parent.right

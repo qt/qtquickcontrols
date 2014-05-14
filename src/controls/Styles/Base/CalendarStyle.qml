@@ -150,7 +150,7 @@ Style {
 
     function __cellRectAt(index) {
         return CalendarUtils.cellRectAt(index, control.__panel.columns, control.__panel.rows,
-            control.__panel.availableWidth, control.__panel.availableHeight);
+            control.__panel.availableWidth, control.__panel.availableHeight, gridVisible ? __gridLineWidth : 0);
     }
 
     function __isValidDate(date) {
@@ -248,8 +248,13 @@ Style {
     */
     property Component dayDelegate: Rectangle {
         anchors.fill: parent
-        anchors.margins: styleData.selected ? -1 : 0
+        anchors.leftMargin: (!addExtraMargin || control.weekNumbersVisible) && styleData.index % CalendarUtils.daysInAWeek === 0 ? 0 : -1
+        anchors.rightMargin: !addExtraMargin && styleData.index % CalendarUtils.daysInAWeek === CalendarUtils.daysInAWeek - 1 ? 0 : -1
+        anchors.bottomMargin: !addExtraMargin && styleData.index >= CalendarUtils.daysInAWeek * (CalendarUtils.weeksOnACalendarMonth - 1) ? 0 : -1
+        anchors.topMargin: styleData.selected ? -1 : 0
         color: styleData.date !== undefined && styleData.selected ? selectedDateColor : "transparent"
+
+        readonly property bool addExtraMargin: control.frameVisible && styleData.selected
         readonly property color sameMonthDateTextColor: "#444"
         readonly property color selectedDateColor: Qt.platform.os === "osx" ? "#3778d0" : __syspal.highlight
         readonly property color selectedDateTextColor: "white"
@@ -312,300 +317,12 @@ Style {
         readonly property int columns: CalendarUtils.daysInAWeek
 
         // The combined available width and height to be shared amongst each cell.
-        readonly property real availableWidth: (viewContainer.width - (control.frameVisible ? 2 * __gridLineWidth : 0))
-        readonly property real availableHeight: (viewContainer.height - (control.frameVisible ? 2 * __gridLineWidth : 0))
+        readonly property real availableWidth: viewContainer.width
+        readonly property real availableHeight: viewContainer.height
 
         property int hoveredCellIndex: -1
         property int pressedCellIndex: -1
 
-        Loader {
-            id: backgroundLoader
-            anchors.fill: parent
-            sourceComponent: background
-        }
-
-        Loader {
-            id: navigationBarLoader
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.top: parent.top
-            anchors.margins: control.frameVisible ? 1 : 0
-            sourceComponent: navigationBar
-
-            property QtObject styleData: QtObject {
-                readonly property string title: control.__locale.standaloneMonthName(control.visibleMonth)
-                    + new Date(control.visibleYear, control.visibleMonth, 1).toLocaleDateString(control.__locale, " yyyy")
-            }
-        }
-
-        Row {
-            id: dayOfWeekHeaderRow
-            anchors.top: navigationBarLoader.bottom
-            anchors.left: parent.left
-            anchors.leftMargin: (control.weekNumbersVisible ? weekNumbersItem.width : 0)
-            anchors.right: parent.right
-            height: dayOfWeekHeaderRowHeight
-
-            Repeater {
-                id: repeater
-                model: CalendarHeaderModel {
-                    locale: control.__locale
-                }
-                Loader {
-                    id: dayOfWeekDelegateLoader
-                    sourceComponent: dayOfWeekDelegate
-                    width: __cellRectAt(index).width
-                    height: dayOfWeekHeaderRow.height
-
-                    readonly property var __dayOfWeek: dayOfWeek
-
-                    property QtObject styleData: QtObject {
-                        readonly property alias dayOfWeek: dayOfWeekDelegateLoader.__dayOfWeek
-                    }
-                }
-            }
-        }
-
-        Row {
-            id: gridRow
-            width: weekNumbersItem.width + viewContainer.width
-            height: viewContainer.height
-            anchors.top: dayOfWeekHeaderRow.bottom
-
-            Item {
-                id: weekNumbersItem
-                visible: control.weekNumbersVisible
-                width: 30
-                height: viewContainer.height
-                Repeater {
-                    id: weekNumberRepeater
-                    model: panelItem.weeksToShow
-
-                    Loader {
-                        id: weekNumberDelegateLoader
-                        y: __cellRectAt(index * panelItem.columns).y + (gridVisible ? __gridLineWidth : 0)
-                        width: weekNumbersItem.width
-                        height: __cellRectAt(index * panelItem.columns).height - (control.frameVisible ? __gridLineWidth : 0)
-                        sourceComponent: weekNumberDelegate
-
-                        readonly property int __index: index
-                        property int __weekNumber: control.__model.weekNumberAt(index)
-
-                        Connections {
-                            target: control
-                            onVisibleMonthChanged: __weekNumber = control.__model.weekNumberAt(index)
-                            onVisibleYearChanged: __weekNumber = control.__model.weekNumberAt(index)
-                        }
-
-                        Connections {
-                            target: control.__model
-                            onCountChanged: __weekNumber = control.__model.weekNumberAt(index)
-                        }
-
-                        property QtObject styleData: QtObject {
-                            readonly property alias index: weekNumberDelegateLoader.__index
-                            readonly property int weekNumber: weekNumberDelegateLoader.__weekNumber
-                        }
-                    }
-                }
-                Rectangle {
-                    anchors.topMargin: - navigationBarLoader.height
-                    anchors.top: parent.top
-                    anchors.bottom: parent.bottom
-
-                    width: 1
-                    anchors.rightMargin: -1
-                    anchors.right: parent.right
-                    color: gridColor
-                }
-
-            }
-
-            // Contains the grid lines and the grid itself.
-            Item {
-                id: viewContainer
-                width: panelItem.width - (control.weekNumbersVisible ? weekNumbersItem.width : 0)
-                height: panelItem.height - navigationBarLoader.height - dayOfWeekHeaderRow.height
-
-                Repeater {
-                    id: verticalGridLineRepeater
-                    model: panelItem.columns - 1
-                    delegate: Rectangle {
-                        // The last line will be an invalid index, so we must handle it
-                        x: index < panelItem.columns
-                           ? __cellRectAt(index + 1).x
-                           : __cellRectAt(panelItem.columns).x + __cellRectAt(panelItem.columns).width
-                        y: 0
-                        width: __gridLineWidth
-                        height: viewContainer.height
-                        color: gridColor
-                        visible: gridVisible
-                    }
-                }
-
-                Repeater {
-                    id: horizontalGridLineRepeater
-                    model: panelItem.rows
-                    delegate: Rectangle {
-                        x: 0
-                        // The last line will be an invalid index, so we must handle it
-                        y: index < panelItem.columns - 1
-                            ? __cellRectAt(index * panelItem.columns).y
-                            : __cellRectAt((panelItem.rows - 1) * panelItem.columns).y + __cellRectAt((panelItem.rows - 1) * panelItem.columns).height
-                        width: viewContainer.width
-                        height: __gridLineWidth
-                        color: gridColor
-                        visible: gridVisible
-                    }
-                }
-
-                MouseArea {
-                    id: mouseArea
-                    anchors.fill: parent
-
-                    hoverEnabled: true
-
-                    function cellIndexAt(mouseX, mouseY) {
-                        var viewContainerPos = viewContainer.mapFromItem(mouseArea, mouseX, mouseY);
-                        var child = viewContainer.childAt(viewContainerPos.x, viewContainerPos.y);
-                        // In the tests, the mouseArea sometimes gets picked instead of the cells,
-                        // probably because stuff is still loading. To be safe, we check for that here.
-                        return child && child !== mouseArea ? child.__index : -1;
-                    }
-
-                    onEntered: {
-                        hoveredCellIndex = cellIndexAt(mouseX, mouseY);
-                        if (hoveredCellIndex === undefined) {
-                            hoveredCellIndex = cellIndexAt(mouseX, mouseY);
-                        }
-
-                        var date = view.model.dateAt(hoveredCellIndex);
-                        if (__isValidDate(date)) {
-                            control.hovered(date);
-                        }
-                    }
-
-                    onExited: {
-                        hoveredCellIndex = -1;
-                    }
-
-                    onPositionChanged: {
-                        var indexOfCell = cellIndexAt(mouse.x, mouse.y);
-                        var previousHoveredCellIndex = hoveredCellIndex;
-                        hoveredCellIndex = indexOfCell;
-                        if (indexOfCell !== -1) {
-                            var date = view.model.dateAt(indexOfCell);
-                            if (__isValidDate(date)) {
-                                if (hoveredCellIndex !== previousHoveredCellIndex)
-                                    control.hovered(date);
-
-                                if (pressed && date.getTime() !== control.selectedDate.getTime()) {
-                                    control.selectedDate = date;
-                                    pressedCellIndex = indexOfCell;
-                                    control.pressed(date);
-                                }
-                            }
-                        }
-                    }
-
-                    onPressed: {
-                        var indexOfCell = cellIndexAt(mouse.x, mouse.y);
-                        if (indexOfCell !== -1) {
-                            var date = view.model.dateAt(indexOfCell);
-                            pressedCellIndex = indexOfCell;
-                            if (__isValidDate(date)) {
-                                control.selectedDate = date;
-                                control.pressed(date);
-                            }
-                        }
-                    }
-
-                    onReleased: {
-                        var indexOfCell = cellIndexAt(mouse.x, mouse.y);
-                        if (indexOfCell !== -1) {
-                            // The cell index might be valid, but the date has to be too. We could let the
-                            // selected date validation take care of this, but then the selected date would
-                            // change to the earliest day if a day before the minimum date is clicked, for example.
-                            var date = view.model.dateAt(indexOfCell);
-                            if (__isValidDate(date)) {
-                                control.released(date);
-                            }
-                        }
-                        pressedCellIndex = -1;
-                    }
-
-                    onClicked: {
-                        var indexOfCell = cellIndexAt(mouse.x, mouse.y);
-                        if (indexOfCell !== -1) {
-                            var date = view.model.dateAt(indexOfCell);
-                            if (__isValidDate(date))
-                                control.clicked(date);
-                        }
-                    }
-
-                    onDoubleClicked: {
-                        var indexOfCell = cellIndexAt(mouse.x, mouse.y);
-                        if (indexOfCell !== -1) {
-                            var date = view.model.dateAt(indexOfCell);
-                            if (__isValidDate(date))
-                                control.doubleClicked(date);
-                        }
-                    }
-                }
-
-                Connections {
-                    target: control
-                    onSelectedDateChanged: view.selectedDateChanged()
-                }
-
-                Repeater {
-                    id: view
-
-                    property int currentIndex: -1
-
-                    model: control.__model
-
-                    Component.onCompleted: selectedDateChanged()
-
-                    function selectedDateChanged() {
-                        if (model !== undefined && model.locale !== undefined) {
-                            currentIndex = model.indexAt(control.selectedDate);
-                        }
-                    }
-
-                    delegate: Loader {
-                        id: delegateLoader
-
-                        x: __cellRectAt(index).x + (gridVisible ? __gridLineWidth : 0)
-                        y: __cellRectAt(index).y + (gridVisible ? __gridLineWidth : 0)
-                        width: __cellRectAt(index).width - (gridVisible ? __gridLineWidth : 0)
-                        height: __cellRectAt(index).height - (gridVisible ? __gridLineWidth : 0)
-                        z: styleData.selected ? 1 : 0
-                        sourceComponent: dayDelegate
-
-                        readonly property int __index: index
-                        readonly property date __date: date
-                        // We rely on the fact that an invalid QDate will be converted to a Date
-                        // whose year is -4713, which is always an invalid date since our
-                        // earliest minimum date is the year 1.
-                        readonly property bool valid: __isValidDate(date)
-
-                        property QtObject styleData: QtObject {
-                            readonly property alias index: delegateLoader.__index
-                            readonly property bool selected: control.selectedDate.getTime() === date.getTime()
-                            readonly property alias date: delegateLoader.__date
-                            readonly property bool valid: delegateLoader.valid
-                            // TODO: this will not be correct if the app is running when a new day begins.
-                            readonly property bool today: date.getTime() === new Date().setHours(0, 0, 0, 0)
-                            readonly property bool visibleMonth: date.getMonth() === control.visibleMonth
-                            readonly property bool hovered: panelItem.hoveredCellIndex == index
-                            readonly property bool pressed: panelItem.pressedCellIndex == index
-                            // todo: pressed property here, clicked and doubleClicked in the control itself
-                        }
-                    }
-                }
-            }
-        }
         Rectangle {
             anchors.fill: parent
             color: "transparent"
@@ -613,5 +330,305 @@ Style {
             visible: control.frameVisible
         }
 
+        Item {
+            id: container
+            anchors.fill: parent
+            anchors.margins: control.frameVisible ? 1 : 0
+
+            Loader {
+                id: backgroundLoader
+                anchors.fill: parent
+                sourceComponent: background
+            }
+
+            Loader {
+                id: navigationBarLoader
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.top: parent.top
+                sourceComponent: navigationBar
+
+                property QtObject styleData: QtObject {
+                    readonly property string title: control.__locale.standaloneMonthName(control.visibleMonth)
+                        + new Date(control.visibleYear, control.visibleMonth, 1).toLocaleDateString(control.__locale, " yyyy")
+                }
+            }
+
+            Row {
+                id: dayOfWeekHeaderRow
+                anchors.top: navigationBarLoader.bottom
+                anchors.left: parent.left
+                anchors.leftMargin: (control.weekNumbersVisible ? weekNumbersItem.width : 0)
+                anchors.right: parent.right
+                height: dayOfWeekHeaderRowHeight
+
+                Repeater {
+                    id: repeater
+                    model: CalendarHeaderModel {
+                        locale: control.__locale
+                    }
+                    Loader {
+                        id: dayOfWeekDelegateLoader
+                        sourceComponent: dayOfWeekDelegate
+                        width: __cellRectAt(index).width
+                        height: dayOfWeekHeaderRow.height
+
+                        readonly property var __dayOfWeek: dayOfWeek
+
+                        property QtObject styleData: QtObject {
+                            readonly property alias dayOfWeek: dayOfWeekDelegateLoader.__dayOfWeek
+                        }
+                    }
+                }
+            }
+
+            Rectangle {
+                id: topGridLine
+                color: gridColor
+                width: parent.width
+                height: __gridLineWidth
+                visible: gridVisible
+                anchors.top: dayOfWeekHeaderRow.bottom
+            }
+
+            Row {
+                id: gridRow
+                width: weekNumbersItem.width + viewContainer.width
+                height: viewContainer.height
+                anchors.top: topGridLine.bottom
+
+                Item {
+                    id: weekNumbersItem
+                    visible: control.weekNumbersVisible
+                    width: 30
+                    height: viewContainer.height
+                    Repeater {
+                        id: weekNumberRepeater
+                        model: panelItem.weeksToShow
+
+                        Loader {
+                            id: weekNumberDelegateLoader
+                            y: __cellRectAt(index * panelItem.columns).y
+                            width: weekNumbersItem.width
+                            height: __cellRectAt(index * panelItem.columns).height
+                            sourceComponent: weekNumberDelegate
+
+                            readonly property int __index: index
+                            property int __weekNumber: control.__model.weekNumberAt(index)
+
+                            Connections {
+                                target: control
+                                onVisibleMonthChanged: __weekNumber = control.__model.weekNumberAt(index)
+                                onVisibleYearChanged: __weekNumber = control.__model.weekNumberAt(index)
+                            }
+
+                            Connections {
+                                target: control.__model
+                                onCountChanged: __weekNumber = control.__model.weekNumberAt(index)
+                            }
+
+                            property QtObject styleData: QtObject {
+                                readonly property alias index: weekNumberDelegateLoader.__index
+                                readonly property int weekNumber: weekNumberDelegateLoader.__weekNumber
+                            }
+                        }
+                    }
+                    Rectangle {
+                        anchors.topMargin: - navigationBarLoader.height
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
+
+                        width: __gridLineWidth
+                        anchors.rightMargin: -__gridLineWidth
+                        anchors.right: parent.right
+                        color: gridColor
+                    }
+
+                }
+
+                // Contains the grid lines and the grid itself.
+                Item {
+                    id: viewContainer
+                    width: container.width - (control.weekNumbersVisible ? weekNumbersItem.width : 0)
+                    height: container.height - navigationBarLoader.height - dayOfWeekHeaderRow.height - topGridLine.height
+
+                    Repeater {
+                        id: verticalGridLineRepeater
+                        model: panelItem.columns - 1
+                        delegate: Rectangle {
+                            x: __cellRectAt(index + 1).x - __gridLineWidth
+                            y: 0
+                            width: __gridLineWidth
+                            height: viewContainer.height
+                            color: gridColor
+                            visible: gridVisible
+                        }
+                    }
+
+                    Repeater {
+                        id: horizontalGridLineRepeater
+                        model: panelItem.rows - 1
+                        delegate: Rectangle {
+                            x: 0
+                            y: __cellRectAt((index + 1) * panelItem.columns).y - __gridLineWidth
+                            width: viewContainer.width
+                            height: __gridLineWidth
+                            color: gridColor
+                            visible: gridVisible
+                        }
+                    }
+
+                    MouseArea {
+                        id: mouseArea
+                        anchors.fill: parent
+
+                        hoverEnabled: true
+
+                        function cellIndexAt(mouseX, mouseY) {
+                            var viewContainerPos = viewContainer.mapFromItem(mouseArea, mouseX, mouseY);
+                            var child = viewContainer.childAt(viewContainerPos.x, viewContainerPos.y);
+                            // In the tests, the mouseArea sometimes gets picked instead of the cells,
+                            // probably because stuff is still loading. To be safe, we check for that here.
+                            return child && child !== mouseArea ? child.__index : -1;
+                        }
+
+                        onEntered: {
+                            hoveredCellIndex = cellIndexAt(mouseX, mouseY);
+                            if (hoveredCellIndex === undefined) {
+                                hoveredCellIndex = cellIndexAt(mouseX, mouseY);
+                            }
+
+                            var date = view.model.dateAt(hoveredCellIndex);
+                            if (__isValidDate(date)) {
+                                control.hovered(date);
+                            }
+                        }
+
+                        onExited: {
+                            hoveredCellIndex = -1;
+                        }
+
+                        onPositionChanged: {
+                            var indexOfCell = cellIndexAt(mouse.x, mouse.y);
+                            var previousHoveredCellIndex = hoveredCellIndex;
+                            hoveredCellIndex = indexOfCell;
+                            if (indexOfCell !== -1) {
+                                var date = view.model.dateAt(indexOfCell);
+                                if (__isValidDate(date)) {
+                                    if (hoveredCellIndex !== previousHoveredCellIndex)
+                                        control.hovered(date);
+
+                                    // The date must be different for the pressed signal to be emitted.
+                                    if (pressed && date.getTime() !== control.selectedDate.getTime()) {
+                                        control.pressed(date);
+
+                                        // You can't select dates in a different month while dragging.
+                                        if (date.getMonth() === control.selectedDate.getMonth()) {
+                                            control.selectedDate = date;
+                                            pressedCellIndex = indexOfCell;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        onPressed: {
+                            var indexOfCell = cellIndexAt(mouse.x, mouse.y);
+                            if (indexOfCell !== -1) {
+                                var date = view.model.dateAt(indexOfCell);
+                                pressedCellIndex = indexOfCell;
+                                if (__isValidDate(date)) {
+                                    control.selectedDate = date;
+                                    control.pressed(date);
+                                }
+                            }
+                        }
+
+                        onReleased: {
+                            var indexOfCell = cellIndexAt(mouse.x, mouse.y);
+                            if (indexOfCell !== -1) {
+                                // The cell index might be valid, but the date has to be too. We could let the
+                                // selected date validation take care of this, but then the selected date would
+                                // change to the earliest day if a day before the minimum date is clicked, for example.
+                                var date = view.model.dateAt(indexOfCell);
+                                if (__isValidDate(date)) {
+                                    control.released(date);
+                                }
+                            }
+                            pressedCellIndex = -1;
+                        }
+
+                        onClicked: {
+                            var indexOfCell = cellIndexAt(mouse.x, mouse.y);
+                            if (indexOfCell !== -1) {
+                                var date = view.model.dateAt(indexOfCell);
+                                if (__isValidDate(date))
+                                    control.clicked(date);
+                            }
+                        }
+
+                        onDoubleClicked: {
+                            var indexOfCell = cellIndexAt(mouse.x, mouse.y);
+                            if (indexOfCell !== -1) {
+                                var date = view.model.dateAt(indexOfCell);
+                                if (__isValidDate(date))
+                                    control.doubleClicked(date);
+                            }
+                        }
+                    }
+
+                    Connections {
+                        target: control
+                        onSelectedDateChanged: view.selectedDateChanged()
+                    }
+
+                    Repeater {
+                        id: view
+
+                        property int currentIndex: -1
+
+                        model: control.__model
+
+                        Component.onCompleted: selectedDateChanged()
+
+                        function selectedDateChanged() {
+                            if (model !== undefined && model.locale !== undefined) {
+                                currentIndex = model.indexAt(control.selectedDate);
+                            }
+                        }
+
+                        delegate: Loader {
+                            id: delegateLoader
+
+                            x: __cellRectAt(index).x
+                            y: __cellRectAt(index).y
+                            width: __cellRectAt(index).width
+                            height: __cellRectAt(index).height
+                            sourceComponent: dayDelegate
+
+                            readonly property int __index: index
+                            readonly property date __date: date
+                            // We rely on the fact that an invalid QDate will be converted to a Date
+                            // whose year is -4713, which is always an invalid date since our
+                            // earliest minimum date is the year 1.
+                            readonly property bool valid: __isValidDate(date)
+
+                            property QtObject styleData: QtObject {
+                                readonly property alias index: delegateLoader.__index
+                                readonly property bool selected: control.selectedDate.getTime() === date.getTime()
+                                readonly property alias date: delegateLoader.__date
+                                readonly property bool valid: delegateLoader.valid
+                                // TODO: this will not be correct if the app is running when a new day begins.
+                                readonly property bool today: date.getTime() === new Date().setHours(0, 0, 0, 0)
+                                readonly property bool visibleMonth: date.getMonth() === control.visibleMonth
+                                readonly property bool hovered: panelItem.hoveredCellIndex == index
+                                readonly property bool pressed: panelItem.pressedCellIndex == index
+                                // todo: pressed property here, clicked and doubleClicked in the control itself
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

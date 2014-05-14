@@ -60,8 +60,8 @@ QT_BEGIN_NAMESPACE
 class QQuickMessageDialog : public QQuickAbstractMessageDialog
 {
     Q_OBJECT
-    Q_PROPERTY(QObject* implementation READ qmlImplementation WRITE setQmlImplementation DESIGNABLE false)
-    Q_CLASSINFO("DefaultProperty", "implementation")    // AbstractMessageDialog in QML can have only one child
+    Q_PROPERTY(QQuickItem* contentItem READ contentItem WRITE setContentItem DESIGNABLE false)
+    Q_CLASSINFO("DefaultProperty", "contentItem")    // AbstractMessageDialog in QML can have only one child
 
 public:
     explicit QQuickMessageDialog(QObject *parent = 0);

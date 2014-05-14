@@ -219,14 +219,14 @@ QSizeF QQuickGridLayoutBase::sizeHint(Qt::SizeHint whichSizeHint) const
     \since QtQuick.Layouts 1.1
 
     This property holds the layout direction of the grid layout - it controls whether items are
-    laid out from left ro right or right to left. If \c Qt.RightToLeft is specified,
+    laid out from left to right or right to left. If \c Qt.RightToLeft is specified,
     left-aligned items will be right-aligned and right-aligned items will be left-aligned.
 
     Possible values:
 
     \list
     \li Qt.LeftToRight (default) - Items are laid out from left to right.
-    \li Qt.RightToLeft - Items are laid out from right to left
+    \li Qt.RightToLeft - Items are laid out from right to left.
     \endlist
 
     \sa RowLayout::layoutDirection, ColumnLayout::layoutDirection

@@ -264,7 +264,7 @@ QPlatformFileDialogHelper *QQuickPlatformFileDialog::helper()
 
     The value of this property is also updated after the dialog is closed.
 
-    By default, this property is false.
+    By default, the url is empty.
 */
 
 /*!
