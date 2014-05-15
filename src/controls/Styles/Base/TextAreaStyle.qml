@@ -96,4 +96,38 @@ ScrollViewStyle {
         \sa Text::renderType
     */
     property int renderType: Text.NativeRendering
+
+    /*! The cursor handle.
+        \since QtQuick.Controls.Styles 1.3
+
+        The parent of the handle is positioned to the top left corner of
+        the cursor position. The interactive area is determined by the
+        geometry of the handle delegate.
+
+        The following read-only properties are available within the scope
+        of the handle delegate:
+        \table
+            \row \li \b {styleData.pressed} : bool \li Whether the handle is pressed.
+            \row \li \b {styleData.position} : int \li The character position of the handle.
+            \row \li \b {styleData.lineHeight} : real \li The height of the line the handle is on.
+        \endtable
+    */
+    property Component cursorHandle
+
+    /*! The selection handle.
+        \since QtQuick.Controls.Styles 1.3
+
+        The parent of the handle is positioned to the top left corner of
+        the first selected character. The interactive area is determined
+        by the geometry of the handle delegate.
+
+        The following read-only properties are available within the scope
+        of the handle delegate:
+        \table
+            \row \li \b {styleData.pressed} : bool \li Whether the handle is pressed.
+            \row \li \b {styleData.position} : int \li The character position of the handle.
+            \row \li \b {styleData.lineHeight} : real \li The height of the line the handle is on.
+        \endtable
+    */
+    property Component selectionHandle
 }

@@ -25,3 +25,4 @@ ColumnMenuContent 1.0 ColumnMenuContent.qml
 ContentItem 1.0 ContentItem.qml
 HoverButton 1.0 HoverButton.qml
 singleton TextSingleton 1.0 TextSingleton.qml
+TextHandle 1.0 TextHandle.qml

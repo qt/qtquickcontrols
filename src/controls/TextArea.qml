@@ -683,7 +683,7 @@ ScrollView {
     Flickable {
         id: flickable
 
-        interactive: false
+        interactive: !edit.selectByMouse
         anchors.fill: parent
 
         TextEdit {
@@ -739,7 +739,7 @@ ScrollView {
             wrapMode: TextEdit.WordWrap
             textMargin: 4
 
-            selectByMouse: Qt.platform.os !== "android" // Workaround for QTBUG-36515
+            selectByMouse: !cursorHandle.delegate || !selectionHandle.delegate
             readOnly: false
 
             Keys.forwardTo: area
@@ -748,32 +748,139 @@ ScrollView {
             KeyNavigation.tab: area.tabChangesFocus ? area.KeyNavigation.tab : null
             KeyNavigation.backtab: area.tabChangesFocus ? area.KeyNavigation.backtab : null
 
-            // keep textcursor within scroll view
-            onCursorPositionChanged: {
-                if (cursorRectangle.y >= flickableItem.contentY + viewport.height - cursorRectangle.height - textMargin) {
-                    // moving down
-                    flickableItem.contentY = cursorRectangle.y - viewport.height +  cursorRectangle.height + textMargin
-                } else if (cursorRectangle.y < flickableItem.contentY) {
-                    // moving up
-                    flickableItem.contentY = cursorRectangle.y - textMargin
-                }
+            property bool blockRecursion: false
+            property bool hasSelection: selectionStart !== selectionEnd
+            readonly property int selectionPosition: selectionStart !== cursorPosition ? selectionStart : selectionEnd
 
-                if (cursorRectangle.x >= flickableItem.contentX + viewport.width - textMargin) {
-                    // moving right
-                    flickableItem.contentX = cursorRectangle.x - viewport.width + textMargin
-                } else if (cursorRectangle.x < flickableItem.contentX) {
-                    // moving left
-                    flickableItem.contentX = cursorRectangle.x - textMargin
+            // force re-evaluation when contentWidth changes => text layout changes => selection moves
+            property rect selectionRectangle: contentWidth ? positionToRectangle(selectionPosition)
+                                                           : positionToRectangle(selectionPosition)
+
+            onSelectionStartChanged: {
+                if (!blockRecursion && selectionHandle.delegate) {
+                    blockRecursion = true
+                    selectionHandle.position = selectionPosition
+                    blockRecursion = false
                 }
             }
+
+            onCursorPositionChanged: {
+                if (!blockRecursion && cursorHandle.delegate) {
+                    blockRecursion = true
+                    cursorHandle.position = cursorPosition
+                    blockRecursion = false
+                }
+                ensureVisible(cursorRectangle)
+            }
+
+            function ensureVisible(rect) {
+                if (rect.y >= flickableItem.contentY + viewport.height - rect.height - textMargin) {
+                    // moving down
+                    flickableItem.contentY = rect.y - viewport.height +  rect.height + textMargin
+                } else if (rect.y < flickableItem.contentY) {
+                    // moving up
+                    flickableItem.contentY = rect.y - textMargin
+                }
+
+                if (rect.x >= flickableItem.contentX + viewport.width - textMargin) {
+                    // moving right
+                    flickableItem.contentX = rect.x - viewport.width + textMargin
+                } else if (rect.x < flickableItem.contentX) {
+                    // moving left
+                    flickableItem.contentX = rect.x - textMargin
+                }
+            }
+
             onLinkActivated: area.linkActivated(link)
             onLinkHovered: area.linkHovered(link)
 
+            function activate() {
+                if (activeFocusOnPress) {
+                    forceActiveFocus()
+                    if (!readOnly)
+                        Qt.inputMethod.show()
+                }
+            }
+
+            function moveHandles(cursor, selection) {
+                blockRecursion = true
+                Qt.inputMethod.commit()
+                cursorPosition = cursor
+                if (selection === -1) {
+                    selectWord()
+                    selection = selectionStart
+                }
+                selectionHandle.position = selection
+                cursorHandle.position = cursorPosition
+                blockRecursion = false
+            }
+
             MouseArea {
-                parent: area.viewport
                 anchors.fill: parent
                 cursorShape: edit.hoveredLink ? Qt.PointingHandCursor : Qt.IBeamCursor
-                acceptedButtons: Qt.NoButton
+                acceptedButtons: edit.selectByMouse ? Qt.NoButton : Qt.LeftButton
+                onClicked: {
+                    var pos = edit.positionAt(mouse.x, mouse.y)
+                    edit.moveHandles(pos, pos)
+                    edit.activate()
+                }
+                onPressAndHold: {
+                    var pos = edit.positionAt(mouse.x, mouse.y)
+                    edit.moveHandles(pos, -1)
+                    edit.activate()
+                }
+            }
+
+            TextHandle {
+                id: selectionHandle
+
+                editor: edit
+                control: area
+                z: 1 // above scrollbars
+                parent: __scroller // no clip
+                delegate: __style.selectionHandle
+                maximum: cursorHandle.position - 1
+                x: edit.selectionRectangle.x - flickableItem.contentX
+                y: edit.selectionRectangle.y - flickableItem.contentY
+                visible: pressed || (edit.hasSelection && handleY + handleHeight >= -1 && handleY <= viewport.height + 1
+                                                       && handleX + handleWidth >= -1 && handleX <= viewport.width + 1)
+
+                onPositionChanged: {
+                    if (!edit.blockRecursion) {
+                        edit.blockRecursion = true
+                        edit.select(selectionHandle.position, cursorHandle.position)
+                        if (pressed)
+                            edit.ensureVisible(edit.selectionRectangle)
+                        edit.blockRecursion = false
+                    }
+                }
+            }
+
+            TextHandle {
+                id: cursorHandle
+
+                editor: edit
+                control: area
+                z: 1 // above scrollbars
+                parent: __scroller // no clip
+                delegate: __style.cursorHandle
+                minimum: edit.hasSelection ? selectionHandle.position + 1 : -1
+                x: edit.cursorRectangle.x - flickableItem.contentX
+                y: edit.cursorRectangle.y - flickableItem.contentY
+                visible: pressed || ((edit.cursorVisible || edit.hasSelection)
+                                 && handleY + handleHeight >= -1 && handleY <= viewport.height + 1
+                                 && handleX + handleWidth >= -1 && handleX <= viewport.width + 1)
+
+                onPositionChanged: {
+                    if (!edit.blockRecursion) {
+                        edit.blockRecursion = true
+                        if (!edit.hasSelection)
+                            selectionHandle.position = cursorHandle.position
+                        Qt.inputMethod.commit()
+                        edit.select(selectionHandle.position, cursorHandle.position)
+                        edit.blockRecursion = false
+                    }
+                }
             }
         }
     }

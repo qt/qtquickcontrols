@@ -572,14 +572,6 @@ Control {
     Accessible.role: Accessible.EditableText
     Accessible.description: placeholderText
 
-    MouseArea {
-        id: mouseArea
-        anchors.fill: parent
-        hoverEnabled: true
-        cursorShape: Qt.IBeamCursor
-        onClicked: textfield.forceActiveFocus()
-    }
-
     Text {
         id: placeholderTextComponent
         anchors.fill: textInput
@@ -597,7 +589,7 @@ Control {
     TextInput {
         id: textInput
         focus: true
-        selectByMouse: Qt.platform.os !== "android" // Workaround for QTBUG-36515
+        selectByMouse: !cursorHandle.delegate || !selectionHandle.delegate
         selectionColor: __panel ? __panel.selectionColor : "darkred"
         selectedTextColor: __panel ? __panel.selectedTextColor : "white"
 
@@ -624,5 +616,117 @@ Control {
         }
 
         onEditingFinished: textfield.editingFinished()
+
+        property bool blockRecursion: false
+        property bool hasSelection: selectionStart !== selectionEnd
+        readonly property int selectionPosition: selectionStart !== cursorPosition ? selectionStart : selectionEnd
+
+        // force re-evaluation when selection moves:
+        // - cyrsorRectangle changes => content scrolled
+        // - contentWidth changes => text layout changed
+        property rect selectionRectangle: cursorRectangle.x && contentWidth ? positionToRectangle(selectionPosition)
+                                                                            : positionToRectangle(selectionPosition)
+
+        onSelectionStartChanged: {
+            if (!blockRecursion && selectionHandle.delegate) {
+                blockRecursion = true
+                selectionHandle.position = selectionPosition
+                blockRecursion = false
+            }
+        }
+
+        onCursorPositionChanged: {
+            if (!blockRecursion && cursorHandle.delegate) {
+                blockRecursion = true
+                cursorHandle.position = cursorPosition
+                blockRecursion = false
+            }
+        }
+
+        function activate() {
+            if (activeFocusOnPress) {
+                forceActiveFocus()
+                if (!readOnly)
+                    Qt.inputMethod.show()
+            }
+        }
+
+        function moveHandles(cursor, selection) {
+            blockRecursion = true
+            Qt.inputMethod.commit()
+            cursorPosition = cursor
+            if (selection === -1) {
+                selectWord()
+                selection = selectionStart
+            }
+            selectionHandle.position = selection
+            cursorHandle.position = cursorPosition
+            blockRecursion = false
+        }
+    }
+
+    MouseArea {
+        id: mouseArea
+        anchors.fill: parent
+        hoverEnabled: true
+        cursorShape: Qt.IBeamCursor
+        acceptedButtons: textInput.selectByMouse ? Qt.NoButton : Qt.LeftButton
+        onClicked: {
+            var pos = textInput.positionAt(mouse.x, mouse.y)
+            textInput.moveHandles(pos, pos)
+            textInput.activate()
+        }
+        onPressAndHold: {
+            var pos = textInput.positionAt(mouse.x, mouse.y)
+            textInput.moveHandles(pos, -1)
+            textInput.activate()
+        }
+    }
+
+    TextHandle {
+        id: selectionHandle
+
+        editor: textInput
+        control: textfield
+        delegate: __style.selectionHandle
+        maximum: cursorHandle.position - 1
+        readonly property real selectionX: textInput.selectionRectangle.x
+        x: textInput.x + (pressed ? Math.max(0, selectionX) : selectionX)
+        y: textInput.selectionRectangle.y + textInput.y
+        visible: pressed || (textInput.hasSelection && handleX + handleWidth >= -1 && handleX <= textfield.width + 1)
+
+        onPositionChanged: {
+            if (!textInput.blockRecursion) {
+                textInput.blockRecursion = true
+                textInput.select(selectionHandle.position, cursorHandle.position)
+                if (pressed)
+                    textInput.ensureVisible(position)
+                textInput.blockRecursion = false
+            }
+        }
+    }
+
+    TextHandle {
+        id: cursorHandle
+
+        editor: textInput
+        control: textfield
+        delegate: __style.cursorHandle
+        minimum: textInput.hasSelection ? selectionHandle.position + 1 : -1
+        x: textInput.cursorRectangle.x + textInput.x
+        y: textInput.cursorRectangle.y + textInput.y
+        visible: pressed || ((textInput.cursorVisible || textInput.hasSelection)
+                         && handleX + handleWidth >= -1 && handleX <= textfield.width + 1)
+
+        onPositionChanged: {
+            if (!textInput.blockRecursion) {
+                textInput.blockRecursion = true
+                if (!textInput.hasSelection)
+                    selectionHandle.position = cursorHandle.position
+                Qt.inputMethod.commit()
+                textInput.select(selectionHandle.position, cursorHandle.position)
+                textInput.blockRecursion = false
+            }
+        }
     }
 }

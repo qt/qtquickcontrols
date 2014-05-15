@@ -47,6 +47,7 @@ PRIVATE_QML_FILES += \
     $$PWD/ScrollViewHelper.qml \
     $$PWD/ScrollBar.qml \
     $$PWD/TableViewSelection.qml \
+    $$PWD/TextHandle.qml \
     $$PWD/TextSingleton.qml \
     $$PWD/FocusFrame.qml \
     $$PWD/ColumnMenuContent.qml \
