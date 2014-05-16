@@ -12,7 +12,6 @@ OTHER_FILES += \
     content/Controls.qml \
     content/ImageViewer.qml \
     content/ModelView.qml \
-    content/Panel.qml \
     content/Styles.qml
 
 RESOURCES += \
