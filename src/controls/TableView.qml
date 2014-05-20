@@ -918,8 +918,6 @@ ScrollView {
             }
         }
 
-        Text{ id:text }
-
         Item {
             id: tableHeader
             clip: true
