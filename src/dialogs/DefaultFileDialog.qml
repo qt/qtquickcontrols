@@ -139,6 +139,18 @@ AbstractFileDialog {
             property: "text"
             value: root.urlToPath(root.folder)
         }
+        Keys.onPressed: {
+            event.accepted = true
+            switch (event.key) {
+            case Qt.Key_Back:
+            case Qt.Key_Escape:
+                reject()
+                break
+            default:
+                event.accepted = false
+                break
+            }
+        }
 
         SplitView {
             id: splitter
