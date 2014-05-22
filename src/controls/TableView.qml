@@ -708,7 +708,7 @@ ScrollView {
             property int rowHeight: rowSizeItem.implicitHeight
             property int paddedRowCount: height/rowHeight
 
-            y: listView.contentHeight
+            y: listView.contentHeight - listView.contentY + listView.originY
             width: parent.width
             visible: alternatingRowColors
             height: viewport.height - listView.contentHeight
@@ -917,8 +917,6 @@ ScrollView {
                 }
             }
         }
-
-        Text{ id:text }
 
         Item {
             id: tableHeader

@@ -77,6 +77,26 @@ QQuickWheelArea::~QQuickWheelArea()
 
 }
 
+bool QQuickWheelArea::isAtXEnd() const
+{
+    return qFuzzyCompare(m_horizontalMaximumValue, m_horizontalValue);
+}
+
+bool QQuickWheelArea::isAtXBeginning() const
+{
+    return qFuzzyCompare(m_horizontalMinimumValue, m_horizontalValue);
+}
+
+bool QQuickWheelArea::isAtYEnd() const
+{
+    return qFuzzyCompare(m_verticalMaximumValue, m_verticalValue);
+}
+
+bool QQuickWheelArea::isAtYBeginning() const
+{
+    return qFuzzyCompare(m_verticalMinimumValue, m_verticalValue);
+}
+
 void QQuickWheelArea::wheelEvent(QWheelEvent *we)
 {
     if (we->phase() == Qt::ScrollBegin)
@@ -95,7 +115,21 @@ void QQuickWheelArea::wheelEvent(QWheelEvent *we)
         setVerticalDelta(numDegrees.y() / 15.0 * m_scrollSpeed);
     }
 
-    we->accept();
+    // This allows other parent WheelArea's to handle scrolling
+    // For example this allows for ScrollView inside of another ScrollView to work correctly
+    // Once this scrollbar can't scroll anymore, ie it reaches the limits,
+    // it will ignore the scroll event so the parent WheelArea can start scrolling
+    if ((numPixels.x() != 0 || numDegrees.x() != 0) &&
+        m_horizontalMinimumValue <= m_horizontalMaximumValue &&
+        (isAtXBeginning() || isAtXEnd())) {
+        we->ignore();
+    } else if ((numPixels.y() != 0 || numDegrees.y() != 0) &&
+               m_verticalMinimumValue <= m_verticalMaximumValue &&
+               (isAtYBeginning() || isAtYEnd())) {
+        we->ignore();
+    } else {
+        we->accept();
+    }
 }
 
 void QQuickWheelArea::setHorizontalMinimumValue(qreal value)

@@ -295,7 +295,7 @@ int QQuickAbstractDialog::height() const
 void QQuickAbstractDialog::setX(int arg)
 {
     m_hasAspiredPosition = true;
-    m_sizeAspiration.setX(arg);
+    m_sizeAspiration.moveLeft(arg);
     if (helper()) {
         // TODO
     } else if (m_dialogWindow) {
@@ -310,7 +310,7 @@ void QQuickAbstractDialog::setX(int arg)
 void QQuickAbstractDialog::setY(int arg)
 {
     m_hasAspiredPosition = true;
-    m_sizeAspiration.setY(arg);
+    m_sizeAspiration.moveTop(arg);
     if (helper()) {
         // TODO
     } else if (m_dialogWindow) {
