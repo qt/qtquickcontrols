@@ -100,12 +100,20 @@ Item {
             slider.minimumValue = 0
             slider.value = 1
             slider.stepSize = 1
-            var keyStep = 2 // (maximumValue - minimumValue)/10.0
             keyPress(Qt.Key_Right)
             keyPress(Qt.Key_Right)
-            compare(slider.value, 1 + keyStep * 2)
+            compare(slider.value, 1 + slider.stepSize * 2)
             keyPress(Qt.Key_Left)
-            compare(slider.value, 1 + keyStep)
+            compare(slider.value, 1 + slider.stepSize)
+
+            slider.stepSize = 5
+            slider.value = 15
+            keyPress(Qt.Key_Right)
+            compare(slider.value, 20)
+            keyPress(Qt.Key_Right)
+            compare(slider.value, 20)
+            keyPress(Qt.Key_Left)
+            compare(slider.value, 15)
             slider.destroy()
         }
 

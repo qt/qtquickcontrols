@@ -177,13 +177,21 @@ Control {
     activeFocusOnTab: true
 
     Accessible.role: Accessible.Slider
+    /*! \internal */
+    function accessibleIncreaseAction() {
+        range.increaseSingleStep()
+    }
+    /*! \internal */
+    function accessibleDecreaseAction() {
+        range.decreaseSingleStep()
+    }
 
     style: Qt.createComponent(Settings.style + "/SliderStyle.qml", slider)
 
-    Keys.onRightPressed: if (__horizontal) value += (maximumValue - minimumValue)/10.0
-    Keys.onLeftPressed: if (__horizontal) value -= (maximumValue - minimumValue)/10.0
-    Keys.onUpPressed: if (!__horizontal) value += (maximumValue - minimumValue)/10.0
-    Keys.onDownPressed: if (!__horizontal) value -= (maximumValue - minimumValue)/10.0
+    Keys.onRightPressed: if (__horizontal) range.increaseSingleStep()
+    Keys.onLeftPressed: if (__horizontal) range.decreaseSingleStep()
+    Keys.onUpPressed: if (!__horizontal) range.increaseSingleStep()
+    Keys.onDownPressed: if (!__horizontal) range.decreaseSingleStep()
 
     RangeModel {
         id: range

@@ -97,6 +97,8 @@ public Q_SLOTS:
     void toMaximum();
     void setValue(qreal value);
     void setPosition(qreal position);
+    void increaseSingleStep();
+    void decreaseSingleStep();
 
 Q_SIGNALS:
     void valueChanged(qreal value);

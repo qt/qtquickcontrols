@@ -521,4 +521,22 @@ void QQuickRangeModel::toMaximum()
     setValue(d->maximum);
 }
 
+void QQuickRangeModel::increaseSingleStep()
+{
+    Q_D(const QQuickRangeModel);
+    if (qFuzzyIsNull(d->stepSize))
+        setValue(value() + (d->maximum - d->minimum)/10.0);
+    else
+        setValue(value() + d->stepSize);
+}
+
+void QQuickRangeModel::decreaseSingleStep()
+{
+    Q_D(const QQuickRangeModel);
+    if (qFuzzyIsNull(d->stepSize))
+        setValue(value() - (d->maximum - d->minimum)/10.0);
+    else
+        setValue(value() - d->stepSize);
+}
+
 QT_END_NAMESPACE
