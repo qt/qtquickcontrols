@@ -271,8 +271,8 @@ Style {
         transitions: Transition {
             to: "out"
             SequentialAnimation {
-                PauseAnimation { duration: 450 }
-                NumberAnimation { properties: "opacity"; duration: 200 }
+                PauseAnimation { duration: root.__scrollBarFadeDelay }
+                NumberAnimation { properties: "opacity"; duration: root.__scrollBarFadeDuration }
                 PropertyAction { target: panel; property: "visible"; value: false }
             }
         }
@@ -397,4 +397,8 @@ Style {
     property bool __externalScrollBars: false
     /*! \internal */
     property int __scrollBarSpacing: 4
+    /*! \internal */
+    property int __scrollBarFadeDelay: 450
+    /*! \internal */
+    property int __scrollBarFadeDuration: 200
 }
