@@ -102,6 +102,36 @@ Item {
             compare(aSwitch.checked, true);
         }
 
+        function test_pressed() {
+            signalSpy.signalName = "pressedChanged"
+            signalSpy.target = aSwitch;
+            compare(signalSpy.count, 0);
+            compare(aSwitch.pressed, false);
+
+            mousePress(aSwitch, aSwitch.x + 1, aSwitch.y + 1, Qt.LeftButton);
+            compare(aSwitch.pressed, true);
+            compare(signalSpy.count, 1);
+
+            mouseRelease(aSwitch, aSwitch.x + 1, aSwitch.y + 1, Qt.LeftButton);
+            compare(aSwitch.pressed, false);
+            compare(signalSpy.count, 2);
+        }
+
+        function test_clicked() {
+            signalSpy.signalName = "clicked"
+            signalSpy.target = aSwitch;
+            compare(signalSpy.count, 0);
+
+            mouseClick(aSwitch, aSwitch.x + 1, aSwitch.y + 1, Qt.LeftButton);
+            compare(signalSpy.count, 1);
+
+            // release outside -> no clicked()
+            mousePress(aSwitch, aSwitch.x + 1, aSwitch.y + 1, Qt.LeftButton);
+            mouseMove(aSwitch, aSwitch.x - 1, aSwitch.y - 1, Qt.LeftButton);
+            mouseRelease(aSwitch, aSwitch.x - 1, aSwitch.y - 1, Qt.LeftButton);
+            compare(signalSpy.count, 1);
+        }
+
         function test_keyPressed() {
             aSwitch.forceActiveFocus();
             signalSpy.signalName = "checkedChanged";
