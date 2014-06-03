@@ -49,6 +49,7 @@
 #include "qquickstack_p.h"
 #include "qquickdesktopiconprovider_p.h"
 #include "qquickselectionmode_p.h"
+#include "qquickapplicationwindow_p.h"
 
 #include "Private/qquickcalendarmodel_p.h"
 #include "Private/qquickrangeddate_p.h"
@@ -150,6 +151,7 @@ void QtQuickControlsPlugin::initializeEngine(QQmlEngine *engine, const char *uri
     qmlRegisterType<QQuickMenu>(private_uri, 1, 0, "MenuPrivate");
     qmlRegisterType<QQuickMenuBar>(private_uri, 1, 0, "MenuBarPrivate");
     qmlRegisterType<QQuickPopupWindow>(private_uri, 1, 0, "PopupWindow");
+    qmlRegisterType<QQuickApplicationWindow>(private_uri, 1, 0, "ApplicationWindowPrivate");
 
 #ifdef QT_WIDGETS_LIB
     qmlRegisterType<QQuickStyleItem>(private_uri, 1, 0, "StyleItem");

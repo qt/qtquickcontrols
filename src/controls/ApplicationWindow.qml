@@ -88,7 +88,7 @@ import QtQuick.Controls.Private 1.0
     point to explore this type.
 */
 
-Window {
+ApplicationWindowPrivate {
     id: root
 
     /*!
@@ -146,6 +146,14 @@ Window {
     */
     property alias contentItem : contentArea
 
+    /*! The style Component for the window.
+        \sa {Qt Quick Controls Styles QML Types}
+    */
+    property Component style: Qt.createComponent(Settings.style + "/ApplicationWindowStyle.qml", root)
+
+    /*! \internal */
+    property alias __style: styleLoader.item
+
     /*! \internal */
     property real __topBottomMargins: contentArea.y + statusBarArea.height
     /*! \internal
@@ -191,8 +199,6 @@ Window {
     /*! \internal */
     default property alias data: contentArea.data
 
-    color: SystemPaletteSingleton.window(true)
-
     flags: Qt.Window | Qt.WindowFullscreenButtonHint |
         Qt.WindowTitleHint | Qt.WindowSystemMenuHint | Qt.WindowMinMaxButtonsHint |
         Qt.WindowCloseButtonHint | Qt.WindowFullscreenButtonHint
@@ -204,6 +210,22 @@ Window {
         anchors.fill: parent
 
         Keys.forwardTo: menuBar ? [menuBar.__contentItem] : []
+
+        Loader {
+            id: backgroundLoader
+            anchors.fill: parent
+            sourceComponent: __style ? __style.background : null
+            onStatusChanged: if (status === Loader.Error) console.error("Failed to load Style for", root)
+            Loader {
+                id: styleLoader
+                sourceComponent: style
+                property var __control: root
+                property QtObject styleData: QtObject {
+                    readonly property bool hasColor: root.__hasColor
+                }
+                onStatusChanged: if (status === Loader.Error) console.error("Failed to load Style for", root)
+            }
+        }
 
         ContentItem {
             id: contentArea

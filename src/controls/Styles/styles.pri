@@ -1,6 +1,7 @@
 
 # Base
 STYLES_QML_FILES = \
+    $$PWD/Base/ApplicationWindowStyle.qml \
     $$PWD/Base/ButtonStyle.qml \
     $$PWD/Base/BusyIndicatorStyle.qml \
     $$PWD/Base/CalendarStyle.qml \
@@ -28,6 +29,7 @@ STYLES_QML_FILES = \
 !no_desktop {
     STYLES_QML_FILES += \
         $$PWD/Desktop/qmldir \
+        $$PWD/Desktop/ApplicationWindowStyle.qml \
         $$PWD/Desktop/RowItemSingleton.qml \
         $$PWD/Desktop/ButtonStyle.qml \
         $$PWD/Desktop/CalendarStyle.qml \

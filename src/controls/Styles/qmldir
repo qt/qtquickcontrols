@@ -1,4 +1,5 @@
 module QtQuick.Controls.Styles
+ApplicationWindowStyle 1.3 Base/ApplicationWindowStyle.qml
 ButtonStyle 1.0 Base/ButtonStyle.qml
 BusyIndicatorStyle 1.1 Base/BusyIndicatorStyle.qml
 CalendarStyle 1.1 Base/CalendarStyle.qml
