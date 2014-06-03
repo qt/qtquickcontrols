@@ -593,7 +593,7 @@ Control {
         selectionColor: __panel ? __panel.selectionColor : "darkred"
         selectedTextColor: __panel ? __panel.selectedTextColor : "white"
 
-        font: __panel ? __panel.font : undefined
+        font: __panel ? __panel.font : TextSingleton.font
         anchors.leftMargin: __panel ? __panel.leftMargin : 0
         anchors.topMargin: __panel ? __panel.topMargin : 0
         anchors.rightMargin: __panel ? __panel.rightMargin : 0
