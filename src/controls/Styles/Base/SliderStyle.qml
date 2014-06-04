@@ -71,8 +71,8 @@ import QtQuick.Controls.Private 1.0
                 color: control.pressed ? "white" : "lightgray"
                 border.color: "gray"
                 border.width: 2
-                width: 34
-                height: 34
+                implicitWidth: 34
+                implicitHeight: 34
                 radius: 12
             }
         }

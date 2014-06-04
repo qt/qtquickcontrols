@@ -132,7 +132,7 @@ QtObject {
             if (__view.__columns[i] === this)
                 __index = i
         for (var row = 0 ; row < listdata.children.length ; ++row) {
-            var item = listdata.children[row+1] ? listdata.children[row+1].rowItem : undefined
+            var item = listdata.children[row] ? listdata.children[row].rowItem : undefined
             if (item && item.children[1] && item.children[1].children[__index] && item.children[1].children[__index].children[0] &&
                     item.children[1].children[__index].children[0].hasOwnProperty("implicitWidth"))
                 minWidth = Math.max(minWidth, item.children[1].children[__index].children[0].implicitWidth)

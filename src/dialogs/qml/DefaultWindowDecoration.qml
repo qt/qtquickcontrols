@@ -1,6 +1,6 @@
 /*****************************************************************************
 **
-** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2014 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the QtQuick.Dialogs module of the Qt Toolkit.
@@ -49,8 +49,7 @@ Rectangle {
     signal dismissed
     MouseArea {
         anchors.fill: parent
-        enabled: dismissOnOuterClick
-        onClicked: dismissed()
+        onClicked: if (dismissOnOuterClick) dismissed()
         BorderImage {
             id: borderImage
             property Item content
