@@ -1033,11 +1033,16 @@ ScrollView {
                                 readonly property int textAlignment: modelData.horizontalAlignment
                             }
                             parent: tableHeader
-                            x: headerRowDelegate.x - listView.contentX
+                            x: __implicitX
+                            property double __implicitX: headerRowDelegate.x - listView.contentX
                             width: modelData.width
                             height: parent.height
                             sourceComponent: root.headerDelegate
                             visible: headerClickArea.pressed
+                            onVisibleChanged: {
+                                if (!visible)
+                                    x = Qt.binding(function () { return __implicitX })
+                            }
                             opacity: 0.5
                         }
 
