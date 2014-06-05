@@ -558,7 +558,7 @@ ScrollView {
         id: listView
         focus: true
         activeFocusOnTab: root.activeFocusOnTab
-        anchors.topMargin: tableHeader.height
+        anchors.topMargin: headerVisible ? tableHeader.height : 0
         anchors.fill: parent
         currentIndex: -1
         visible: columnCount > 0
@@ -954,7 +954,7 @@ ScrollView {
                         width: columnCount === 1 ? viewport.width + __verticalScrollBar.width : modelData.width
                         implicitWidth: headerStyle.implicitWidth
                         visible: modelData.visible
-                        height: headerVisible ? headerStyle.height : 0
+                        height: headerStyle.height
 
                         Loader {
                             id: headerStyle
