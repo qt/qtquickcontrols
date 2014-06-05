@@ -167,7 +167,7 @@ ApplicationWindow {
         RowLayout {
             id: toolbarLayout
             spacing: 0
-            width: parent.width
+            anchors.fill: parent
             ToolButton {
                 iconSource: "images/window-new.png"
                 onClicked: window1.visible = !window1.visible
