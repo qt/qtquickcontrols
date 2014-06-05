@@ -109,6 +109,7 @@ public:
     virtual ~QQuickMenu();
 
     void setVisible(bool);
+    void setEnabled(bool);
 
     int selectedIndex() const { return m_selectedIndex; }
     void setSelectedIndex(int index);
@@ -149,6 +150,7 @@ protected Q_SLOTS:
 
 private:
     QQuickWindow *findParentWindow();
+    void syncParentMenuBar();
 
     int itemIndexForListIndex(int listIndex) const;
     void itemIndexToListIndex(int, int *, int *) const;
