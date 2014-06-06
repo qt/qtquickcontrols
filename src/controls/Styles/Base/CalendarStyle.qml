@@ -361,6 +361,7 @@ Style {
                 anchors.leftMargin: (control.weekNumbersVisible ? weekNumbersItem.width : 0)
                 anchors.right: parent.right
                 height: dayOfWeekHeaderRowHeight
+                spacing: gridVisible ? __gridLineWidth : 0
 
                 Repeater {
                     id: repeater
