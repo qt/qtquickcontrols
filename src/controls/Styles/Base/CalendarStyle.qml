@@ -161,9 +161,13 @@ Style {
 
     /*!
         The background of the calendar.
+
+        The implicit size of the calendar is calculated based on the implicit size of the background delegate.
     */
     property Component background: Rectangle {
         color: "#fff"
+        implicitWidth: 250
+        implicitHeight: 250
     }
 
     /*!
@@ -305,8 +309,8 @@ Style {
     property Component panel: Item {
         id: panelItem
 
-        implicitWidth: 200
-        implicitHeight: 200
+        implicitWidth: backgroundLoader.implicitWidth
+        implicitHeight: backgroundLoader.implicitHeight
 
         property alias navigationBarItem: navigationBarLoader.item
 

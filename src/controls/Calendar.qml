@@ -74,9 +74,6 @@ import QtQuick.Controls.Private 1.0
 Control {
     id: calendar
 
-    implicitWidth: 250
-    implicitHeight: 250
-
     /*!
         \qmlproperty date Calendar::selectedDate
 
