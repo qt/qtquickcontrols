@@ -174,8 +174,13 @@ MenuBarPrivate {
 
         Keys.onLeftPressed: {
             if (d.openedMenuIndex > 0) {
-                d.preselectMenuItem = true
-                d.openedMenuIndex--
+                var idx = d.openedMenuIndex - 1
+                while (idx >= 0 && !root.menus[idx].enabled)
+                    idx--
+                if (idx >= 0) {
+                    d.preselectMenuItem = true
+                    d.openedMenuIndex = idx
+                }
             } else {
                 event.accepted = false;
             }
@@ -183,8 +188,13 @@ MenuBarPrivate {
 
         Keys.onRightPressed: {
             if (d.openedMenuIndex !== -1 && d.openedMenuIndex < root.menus.length - 1) {
-                d.preselectMenuItem = true
-                d.openedMenuIndex++
+                var idx = d.openedMenuIndex + 1
+                while (idx < root.menus.length && !root.menus[idx].enabled)
+                    idx++
+                if (idx < root.menus.length) {
+                    d.preselectMenuItem = true
+                    d.openedMenuIndex = idx
+                }
             } else {
                 event.accepted = false;
             }
@@ -223,6 +233,8 @@ MenuBarPrivate {
                     Connections {
                         target: d
                         onOpenedMenuIndexChanged: {
+                            if (!__menuItem.enabled)
+                                return;
                             if (d.openedMenuIndex === index) {
                                 if (__menuItem.__usingDefaultStyle)
                                     __menuItem.style = d.style.menuStyle
