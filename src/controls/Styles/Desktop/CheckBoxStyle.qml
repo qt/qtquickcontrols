@@ -59,7 +59,7 @@ Style {
             hints: control.styleHints
             properties: {"partiallyChecked": (control.checkedState === Qt.PartiallyChecked) }
             contentHeight: textitem.implicitHeight
-            contentWidth: textitem.implicitWidth + 4
+            contentWidth: Math.ceil(textitem.implicitWidth) + 4
             property int indicatorWidth: pixelMetric("indicatorwidth") + (macStyle ? 2 : 4)
             property bool macStyle: (style === "mac")
 
