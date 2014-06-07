@@ -285,9 +285,12 @@ Style {
 
     /*!
         The delegate that styles each weekday.
+
+        The height of the weekday row is calculated based on the maximum implicit height of the delegates.
     */
     property Component dayOfWeekDelegate: Rectangle {
         color: gridVisible ? "#fcfcfc" : "transparent"
+        implicitHeight: 40
         Label {
             text: control.__locale.dayName(styleData.dayOfWeek, control.dayOfWeekFormat)
             anchors.centerIn: parent
@@ -314,7 +317,7 @@ Style {
 
         property alias navigationBarItem: navigationBarLoader.item
 
-        readonly property real dayOfWeekHeaderRowHeight: 40
+        property alias dayOfWeekHeaderRow: dayOfWeekHeaderRow
 
         readonly property int weeksToShow: 6
         readonly property int rows: weeksToShow
@@ -364,7 +367,6 @@ Style {
                 anchors.left: parent.left
                 anchors.leftMargin: (control.weekNumbersVisible ? weekNumbersItem.width : 0)
                 anchors.right: parent.right
-                height: dayOfWeekHeaderRowHeight
                 spacing: gridVisible ? __gridLineWidth : 0
 
                 Repeater {
@@ -376,7 +378,6 @@ Style {
                         id: dayOfWeekDelegateLoader
                         sourceComponent: dayOfWeekDelegate
                         width: __cellRectAt(index).width
-                        height: dayOfWeekHeaderRow.height
 
                         readonly property var __dayOfWeek: dayOfWeek
 
@@ -439,7 +440,7 @@ Style {
                         }
                     }
                     Rectangle {
-                        anchors.topMargin: - navigationBarLoader.height
+                        anchors.topMargin: - dayOfWeekHeaderRow.height - 1
                         anchors.top: parent.top
                         anchors.bottom: parent.bottom
 
