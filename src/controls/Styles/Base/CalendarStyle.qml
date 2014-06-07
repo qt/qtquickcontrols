@@ -299,8 +299,11 @@ Style {
 
     /*!
         The delegate that styles each week number.
+
+        The width of the week number column is calculated based on the maximum implicit width of the delegates.
     */
     property Component weekNumberDelegate: Rectangle {
+        implicitWidth: 30
         Label {
             text: styleData.weekNumber
             anchors.centerIn: parent
@@ -403,19 +406,17 @@ Style {
                 height: viewContainer.height
                 anchors.top: topGridLine.bottom
 
-                Item {
+                Column {
                     id: weekNumbersItem
                     visible: control.weekNumbersVisible
-                    width: 30
                     height: viewContainer.height
+                    spacing: gridVisible ? __gridLineWidth : 0
                     Repeater {
                         id: weekNumberRepeater
                         model: panelItem.weeksToShow
 
                         Loader {
                             id: weekNumberDelegateLoader
-                            y: __cellRectAt(index * panelItem.columns).y
-                            width: weekNumbersItem.width
                             height: __cellRectAt(index * panelItem.columns).height
                             sourceComponent: weekNumberDelegate
 
@@ -439,23 +440,23 @@ Style {
                             }
                         }
                     }
-                    Rectangle {
-                        anchors.topMargin: - dayOfWeekHeaderRow.height - 1
-                        anchors.top: parent.top
-                        anchors.bottom: parent.bottom
+                }
 
-                        width: __gridLineWidth
-                        anchors.rightMargin: -__gridLineWidth
-                        anchors.right: parent.right
-                        color: gridColor
-                    }
+                Rectangle {
+                    id: separator
+                    anchors.topMargin: - dayOfWeekHeaderRow.height - 1
+                    anchors.top: weekNumbersItem.top
+                    anchors.bottom: weekNumbersItem.bottom
 
+                    width: __gridLineWidth
+                    color: gridColor
+                    visible: control.weekNumbersVisible
                 }
 
                 // Contains the grid lines and the grid itself.
                 Item {
                     id: viewContainer
-                    width: container.width - (control.weekNumbersVisible ? weekNumbersItem.width : 0)
+                    width: container.width - (control.weekNumbersVisible ? weekNumbersItem.width + separator.width : 0)
                     height: container.height - navigationBarLoader.height - dayOfWeekHeaderRow.height - topGridLine.height
 
                     Repeater {
