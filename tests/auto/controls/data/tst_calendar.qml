@@ -52,7 +52,7 @@ Item {
         name: "Tests_Calendar"
         when: windowShown
         readonly property int navigationBarHeight: calendar !== undefined ? calendar.__panel.navigationBarItem.height : 0
-        readonly property int dayOfWeekHeaderRowHeight: calendar !== undefined ? calendar.__panel.dayOfWeekHeaderRowHeight : 0
+        readonly property int dayOfWeekHeaderRowHeight: calendar !== undefined ? calendar.__panel.dayOfWeekHeaderRow.height : 0
         readonly property int firstDateCellX: 0
         readonly property int firstDateCellY: navigationBarHeight + dayOfWeekHeaderRowHeight
         readonly property int previousMonthButtonX: navigationBarHeight / 2
@@ -83,6 +83,7 @@ Item {
                 " Calendar { }", container, "");
             calendar.width = 300;
             calendar.height = 300;
+            waitForRendering(calendar);
         }
 
         function cleanup() {

@@ -275,14 +275,28 @@ QQuickMenu::~QQuickMenu()
     m_platformMenu = 0;
 }
 
+void QQuickMenu::syncParentMenuBar()
+{
+    QQuickMenuBar *menubar = qobject_cast<QQuickMenuBar *>(parent());
+    if (menubar && menubar->platformMenuBar())
+        menubar->platformMenuBar()->syncMenu(m_platformMenu);
+}
+
 void QQuickMenu::setVisible(bool v)
 {
     QQuickMenuBase::setVisible(v);
     if (m_platformMenu) {
         m_platformMenu->setVisible(v);
-        QQuickMenuBar *menubar = qobject_cast<QQuickMenuBar *>(parent());
-        if (menubar && menubar->platformMenuBar())
-            menubar->platformMenuBar()->syncMenu(m_platformMenu);
+        syncParentMenuBar();
+    }
+}
+
+void QQuickMenu::setEnabled(bool e)
+{
+    QQuickMenuText::setEnabled(e);
+    if (m_platformMenu) {
+        m_platformMenu->setEnabled(e);
+        syncParentMenuBar();
     }
 }
 
