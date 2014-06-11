@@ -296,6 +296,8 @@ Style {
 
         The properties provided to each delegate are:
         \table
+            \row \li readonly property int \b styleData.index
+                 \li The index (0-6) of the delegate.
             \row \li readonly property int \b styleData.dayOfWeek
                  \li The day of the week this delegate represents. Possible values:
                      \list
@@ -411,9 +413,11 @@ Style {
                         sourceComponent: dayOfWeekDelegate
                         width: __cellRectAt(index).width
 
+                        readonly property int __index: index
                         readonly property var __dayOfWeek: dayOfWeek
 
                         property QtObject styleData: QtObject {
+                            readonly property alias index: dayOfWeekDelegateLoader.__index
                             readonly property alias dayOfWeek: dayOfWeekDelegateLoader.__dayOfWeek
                         }
                     }
