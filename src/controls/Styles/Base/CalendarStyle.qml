@@ -127,7 +127,7 @@ Style {
     /*!
         The Calendar attached to this style.
     */
-    property Calendar control: __control
+    readonly property Calendar control: __control
 
     /*!
         The color of the grid lines.
