@@ -22,7 +22,7 @@ qhp.QtQuickControls.subprojects = qtquickcontrolsqmltypes qtquickcontrolsstyles
 
 qhp.QtQuickControls.subprojects.qtquickcontrolsqmltypes.title      = Controls QML Types
 qhp.QtQuickControls.subprojects.qtquickcontrolsqmltypes.indexTitle = Qt Quick Controls QML Types
-qhp.QtQuickControls.subprojects.qtquickcontrolsqmltypes.selectors  = fake:qmlclass # cannot choose qmltypes from a specific group QTBUG-32985
+qhp.QtQuickControls.subprojects.qtquickcontrolsqmltypes.selectors  = qmlclass # cannot choose qmltypes from a specific group QTBUG-32985
 qhp.QtQuickControls.subprojects.qtquickcontrolsqmltypes.sortPages  = true
 
 qhp.QtQuickControls.subprojects.qtquickcontrolsstyles.title      = Qt Quick Controls Styles Structure
