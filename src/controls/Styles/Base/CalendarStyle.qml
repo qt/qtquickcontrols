@@ -175,6 +175,12 @@ Style {
 
         Styles the bar at the top of the calendar that contains the
         next month/previous month buttons and the selected date label.
+
+        The properties provided to the delegate are:
+        \table
+            \row \li readonly property string \b styleData.title
+                 \li The title of the calendar.
+        \endtable
     */
     property Component navigationBar: Rectangle {
         height: 41
@@ -287,6 +293,21 @@ Style {
         The delegate that styles each weekday.
 
         The height of the weekday row is calculated based on the maximum implicit height of the delegates.
+
+        The properties provided to each delegate are:
+        \table
+            \row \li readonly property int \b styleData.dayOfWeek
+                 \li The day of the week this delegate represents. Possible values:
+                     \list
+                     \li \c Locale.Sunday
+                     \li \c Locale.Monday
+                     \li \c Locale.Tuesday
+                     \li \c Locale.Wednesday
+                     \li \c Locale.Thursday
+                     \li \c Locale.Friday
+                     \li \c Locale.Saturday
+                     \endlist
+        \endtable
     */
     property Component dayOfWeekDelegate: Rectangle {
         color: gridVisible ? "#fcfcfc" : "transparent"
@@ -301,6 +322,14 @@ Style {
         The delegate that styles each week number.
 
         The width of the week number column is calculated based on the maximum implicit width of the delegates.
+
+        The properties provided to each delegate are:
+        \table
+            \row \li readonly property int \b styleData.index
+                 \li The index (0-5) of the delegate.
+            \row \li readonly property int \b styleData.weekNumber
+                 \li The number of the week this delegate represents.
+        \endtable
     */
     property Component weekNumberDelegate: Rectangle {
         implicitWidth: 30
