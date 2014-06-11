@@ -77,9 +77,9 @@ ScrollViewStyle {
         hints: control.styleHints
         properties: {"headerpos": headerPosition, "textalignment": styleData.textAlignment}
         property string itemSort:  (control.sortIndicatorVisible && styleData.column === control.sortIndicatorColumn) ? (control.sortIndicatorOrder == Qt.AscendingOrder ? "up" : "down") : "";
-        property string headerPosition: control.columnCount === 1 ? "only" :
-                                                          styleData.column === control.columnCount-1 ? "end" :
-                                                                                  styleData.column === 0 ? "beginning" : ""
+        property string headerPosition: !styleData.resizable && control.columnCount === 1 ? "only" :
+                                        !styleData.resizable && styleData.column === control.columnCount-1 ? "end" :
+                                        styleData.column === 0 ? "beginning" : ""
     }
 
     property Component rowDelegate: BorderImage {
