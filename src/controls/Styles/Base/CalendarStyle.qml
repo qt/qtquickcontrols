@@ -127,7 +127,7 @@ Style {
     /*!
         The Calendar attached to this style.
     */
-    property Calendar control: __control
+    readonly property Calendar control: __control
 
     /*!
         The color of the grid lines.
@@ -161,9 +161,13 @@ Style {
 
     /*!
         The background of the calendar.
+
+        The implicit size of the calendar is calculated based on the implicit size of the background delegate.
     */
     property Component background: Rectangle {
         color: "#fff"
+        implicitWidth: 250
+        implicitHeight: 250
     }
 
     /*!
@@ -171,6 +175,12 @@ Style {
 
         Styles the bar at the top of the calendar that contains the
         next month/previous month buttons and the selected date label.
+
+        The properties provided to the delegate are:
+        \table
+            \row \li readonly property string \b styleData.title
+                 \li The title of the calendar.
+        \endtable
     */
     property Component navigationBar: Rectangle {
         height: 41
@@ -281,9 +291,29 @@ Style {
 
     /*!
         The delegate that styles each weekday.
+
+        The height of the weekday row is calculated based on the maximum implicit height of the delegates.
+
+        The properties provided to each delegate are:
+        \table
+            \row \li readonly property int \b styleData.index
+                 \li The index (0-6) of the delegate.
+            \row \li readonly property int \b styleData.dayOfWeek
+                 \li The day of the week this delegate represents. Possible values:
+                     \list
+                     \li \c Locale.Sunday
+                     \li \c Locale.Monday
+                     \li \c Locale.Tuesday
+                     \li \c Locale.Wednesday
+                     \li \c Locale.Thursday
+                     \li \c Locale.Friday
+                     \li \c Locale.Saturday
+                     \endlist
+        \endtable
     */
     property Component dayOfWeekDelegate: Rectangle {
         color: gridVisible ? "#fcfcfc" : "transparent"
+        implicitHeight: 40
         Label {
             text: control.__locale.dayName(styleData.dayOfWeek, control.dayOfWeekFormat)
             anchors.centerIn: parent
@@ -292,8 +322,19 @@ Style {
 
     /*!
         The delegate that styles each week number.
+
+        The width of the week number column is calculated based on the maximum implicit width of the delegates.
+
+        The properties provided to each delegate are:
+        \table
+            \row \li readonly property int \b styleData.index
+                 \li The index (0-5) of the delegate.
+            \row \li readonly property int \b styleData.weekNumber
+                 \li The number of the week this delegate represents.
+        \endtable
     */
     property Component weekNumberDelegate: Rectangle {
+        implicitWidth: 30
         Label {
             text: styleData.weekNumber
             anchors.centerIn: parent
@@ -305,12 +346,12 @@ Style {
     property Component panel: Item {
         id: panelItem
 
-        implicitWidth: 200
-        implicitHeight: 200
+        implicitWidth: backgroundLoader.implicitWidth
+        implicitHeight: backgroundLoader.implicitHeight
 
         property alias navigationBarItem: navigationBarLoader.item
 
-        readonly property real dayOfWeekHeaderRowHeight: 40
+        property alias dayOfWeekHeaderRow: dayOfWeekHeaderRow
 
         readonly property int weeksToShow: 6
         readonly property int rows: weeksToShow
@@ -360,7 +401,7 @@ Style {
                 anchors.left: parent.left
                 anchors.leftMargin: (control.weekNumbersVisible ? weekNumbersItem.width : 0)
                 anchors.right: parent.right
-                height: dayOfWeekHeaderRowHeight
+                spacing: gridVisible ? __gridLineWidth : 0
 
                 Repeater {
                     id: repeater
@@ -371,11 +412,12 @@ Style {
                         id: dayOfWeekDelegateLoader
                         sourceComponent: dayOfWeekDelegate
                         width: __cellRectAt(index).width
-                        height: dayOfWeekHeaderRow.height
 
+                        readonly property int __index: index
                         readonly property var __dayOfWeek: dayOfWeek
 
                         property QtObject styleData: QtObject {
+                            readonly property alias index: dayOfWeekDelegateLoader.__index
                             readonly property alias dayOfWeek: dayOfWeekDelegateLoader.__dayOfWeek
                         }
                     }
@@ -397,19 +439,17 @@ Style {
                 height: viewContainer.height
                 anchors.top: topGridLine.bottom
 
-                Item {
+                Column {
                     id: weekNumbersItem
                     visible: control.weekNumbersVisible
-                    width: 30
                     height: viewContainer.height
+                    spacing: gridVisible ? __gridLineWidth : 0
                     Repeater {
                         id: weekNumberRepeater
                         model: panelItem.weeksToShow
 
                         Loader {
                             id: weekNumberDelegateLoader
-                            y: __cellRectAt(index * panelItem.columns).y
-                            width: weekNumbersItem.width
                             height: __cellRectAt(index * panelItem.columns).height
                             sourceComponent: weekNumberDelegate
 
@@ -433,23 +473,23 @@ Style {
                             }
                         }
                     }
-                    Rectangle {
-                        anchors.topMargin: - navigationBarLoader.height
-                        anchors.top: parent.top
-                        anchors.bottom: parent.bottom
+                }
 
-                        width: __gridLineWidth
-                        anchors.rightMargin: -__gridLineWidth
-                        anchors.right: parent.right
-                        color: gridColor
-                    }
+                Rectangle {
+                    id: separator
+                    anchors.topMargin: - dayOfWeekHeaderRow.height - 1
+                    anchors.top: weekNumbersItem.top
+                    anchors.bottom: weekNumbersItem.bottom
 
+                    width: __gridLineWidth
+                    color: gridColor
+                    visible: control.weekNumbersVisible
                 }
 
                 // Contains the grid lines and the grid itself.
                 Item {
                     id: viewContainer
-                    width: container.width - (control.weekNumbersVisible ? weekNumbersItem.width : 0)
+                    width: container.width - (control.weekNumbersVisible ? weekNumbersItem.width + separator.width : 0)
                     height: container.height - navigationBarLoader.height - dayOfWeekHeaderRow.height - topGridLine.height
 
                     Repeater {
