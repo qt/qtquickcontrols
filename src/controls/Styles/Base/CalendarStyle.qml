@@ -148,6 +148,12 @@ Style {
     */
     property real __gridLineWidth: 1
 
+    /*! \internal */
+    property color __horizontalSeparatorColor: gridColor
+
+    /*! \internal */
+    property color __verticalSeparatorColor: gridColor
+
     function __cellRectAt(index) {
         return CalendarUtils.cellRectAt(index, control.__panel.columns, control.__panel.rows,
             control.__panel.availableWidth, control.__panel.availableHeight, gridVisible ? __gridLineWidth : 0);
@@ -426,7 +432,7 @@ Style {
 
             Rectangle {
                 id: topGridLine
-                color: gridColor
+                color: __horizontalSeparatorColor
                 width: parent.width
                 height: __gridLineWidth
                 visible: gridVisible
@@ -482,7 +488,7 @@ Style {
                     anchors.bottom: weekNumbersItem.bottom
 
                     width: __gridLineWidth
-                    color: gridColor
+                    color: __verticalSeparatorColor
                     visible: control.weekNumbersVisible
                 }
 
