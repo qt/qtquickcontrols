@@ -169,6 +169,8 @@ Style {
         implicitHeight: backgroundLoader.implicitHeight
         baselineOffset: backgroundLoader.item ? backgroundLoader.item.baselineOffset : 0
 
+        property font font
+
         property color foregroundColor: spinboxStyle.textColor
         property color selectionColor: spinboxStyle.selectionColor
         property color selectedTextColor: spinboxStyle.selectedTextColor

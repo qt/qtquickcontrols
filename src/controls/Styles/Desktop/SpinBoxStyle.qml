@@ -68,6 +68,8 @@ Style {
         property int horizontalAlignment: Qt.platform.os === "osx" ? Qt.AlignRight : Qt.AlignLeft
         property int verticalAlignment: Qt.AlignVCenter
 
+        property alias font: styleitem.font
+
         property color foregroundColor: __syspal.text
         property color backgroundColor: __syspal.base
         property color selectionColor: __syspal.highlight
