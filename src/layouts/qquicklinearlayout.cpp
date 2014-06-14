@@ -69,6 +69,39 @@
         \li \l{Layout::alignment}{Layout.alignment}
     \endlist
 
+    \image rowlayout.png
+
+    \code
+    RowLayout {
+        id: layout
+        anchors.fill: parent
+        spacing: 6
+        Rectangle {
+            color: 'teal'
+            Layout.fillWidth: true
+            Layout.minimumWidth: 50
+            Layout.preferredWidth: 100
+            Layout.maximumWidth: 300
+            Layout.minimumHeight: 150
+            Text {
+                anchors.centerIn: parent
+                text: parent.width + 'x' + parent.height
+            }
+        }
+        Rectangle {
+            color: 'plum'
+            Layout.fillWidth: true
+            Layout.minimumWidth: 100
+            Layout.preferredWidth: 200
+            Layout.preferredHeight: 100
+            Text {
+                anchors.centerIn: parent
+                text: parent.width + 'x' + parent.height
+            }
+        }
+    }
+    \endcode
+
     Read more about attached properties \l{QML Object Attributes}{here}.
     \sa ColumnLayout
     \sa GridLayout
@@ -98,6 +131,36 @@
         \li \l{Layout::alignment}{Layout.alignment}
     \endlist
 
+    \image columnlayout.png
+
+    \code
+    ColumnLayout{
+        spacing: 2
+
+        Rectangle {
+            Layout.alignment: Qt.AlignCenter
+            color: "red"
+            Layout.preferredWidth: 40
+            Layout.preferredHeight: 40
+        }
+
+        Rectangle {
+            Layout.alignment: Qt.AlignRight
+            color: "green"
+            Layout.preferredWidth: 40
+            Layout.preferredHeight: 70
+        }
+
+        Rectangle {
+            Layout.alignment: Qt.AlignBottom
+            Layout.fillHeight: true
+            color: "blue"
+            Layout.preferredWidth: 70
+            Layout.preferredHeight: 40
+        }
+    }
+    \endcode
+
     Read more about attached properties \l{QML Object Attributes}{here}.
 
     \sa RowLayout
@@ -114,6 +177,8 @@
     \ingroup layouts
     \brief Provides a way of dynamically arranging items in a grid.
 
+
+
     If the GridLayout is resized, all items in the layout will be rearranged. It is similar
     to the widget-based QGridLayout. All visible children of the GridLayout element will belong to
     the layout. If you want a layout with just one row or one column, you can use the
@@ -127,16 +192,19 @@
     columns the layout can have, before the auto-positioning wraps back to the beginning of the
     next row. The \l columns property is only used when \l flow is  \c GridLayout.LeftToRight.
 
+    \image gridlayout.png
+
     \code
-        GridLayout {
-            id: grid
-            columns: 3
-            Text { text: "Three" }
-            Text { text: "words" }
-            Text { text: "in" }
-            Text { text: "a" }
-            Text { text: "row" }
-        }
+    GridLayout {
+        id: grid
+        columns: 3
+
+        Text { text: "Three"; font.bold: true; }
+        Text { text: "words"; color: "red" }
+        Text { text: "in"; font.underline: true }
+        Text { text: "a"; font.pixelSize: 20 }
+        Text { text: "row"; font.strikeout: true }
+    }
     \endcode
 
     The \l rows property works in a similar way, but items are auto-positioned vertically. The \l

@@ -165,7 +165,7 @@ Loader {
         itemsModel: __menu.items
         minWidth: __menu.__minimumWidth
         maxHeight: d.style ? d.style.__maxPopupHeight : 0
-        onTriggered: d.triggerAndDismiss(item)
+        onTriggered: if (item.__menuItem.enabled) d.triggerAndDismiss(item)
     }
 
     Component {
@@ -199,6 +199,8 @@ Loader {
             active: visible
 
             function __showSubMenu(immediately) {
+                if (!__menuItem.enabled)
+                    return;
                 if (immediately) {
                     if (__menu.__currentIndex === __menuItemIndex) {
                         if (__menuItem.__usingDefaultStyle)
