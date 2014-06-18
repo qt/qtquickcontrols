@@ -105,7 +105,7 @@ Style {
             text: formatMnemonic(styleData.text, styleData.underlineMnemonic)
             anchors.centerIn: parent
             renderType: Text.NativeRendering
-            color: styleData.open ? "white" : __syspal.windowText
+            color: styleData.open ? "white" : SystemPaletteSingleton.windowText(control.enabled)
         }
     }
 

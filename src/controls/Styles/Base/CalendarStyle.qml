@@ -266,7 +266,7 @@ Style {
 
         readonly property bool addExtraMargin: control.frameVisible && styleData.selected
         readonly property color sameMonthDateTextColor: "#444"
-        readonly property color selectedDateColor: Qt.platform.os === "osx" ? "#3778d0" : __syspal.highlight
+        readonly property color selectedDateColor: Qt.platform.os === "osx" ? "#3778d0" : SystemPaletteSingleton.highlight(control.enabled)
         readonly property color selectedDateTextColor: "white"
         readonly property color differentMonthDateTextColor: "#bbb"
         readonly property color invalidDateColor: "#dddddd"

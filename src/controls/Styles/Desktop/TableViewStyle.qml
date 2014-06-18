@@ -48,7 +48,7 @@ ScrollViewStyle {
     readonly property TableView control: __control
     property bool activateItemOnSingleClick: __styleitem.styleHint("activateItemOnSingleClick")
     property color textColor: __styleitem.textColor
-    property color backgroundColor: __syspal.base
+    property color backgroundColor: SystemPaletteSingleton.base(control.enabled)
     property color highlightedTextColor: __styleitem.highlightedTextColor
 
     property StyleItem __styleitem: StyleItem{

@@ -360,9 +360,9 @@ Control {
 
         renderType: __style ? __style.renderType : Text.NativeRendering
         selectByMouse: true
-        color: __style.__syspal.text
-        selectionColor: __style.__syspal.highlight
-        selectedTextColor: __style.__syspal.highlightedText
+        color: SystemPaletteSingleton.text(enabled)
+        selectionColor: SystemPaletteSingleton.highlight(enabled)
+        selectedTextColor: SystemPaletteSingleton.highlightedText(enabled)
         onAccepted: {
             var idx = input.find(editText, Qt.MatchFixedString)
             if (idx > -1) {

@@ -168,7 +168,7 @@ Style {
             anchors.verticalCenter: parent.verticalCenter
             text: control.currentText
             renderType: cbStyle.renderType
-            color: __syspal.text
+            color: SystemPaletteSingleton.text(control.enabled)
             elide: Text.ElideRight
         }
     }

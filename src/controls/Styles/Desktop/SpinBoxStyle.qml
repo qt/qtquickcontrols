@@ -63,10 +63,10 @@ Style {
         property int horizontalAlignment: Qt.platform.os === "osx" ? Qt.AlignRight : Qt.AlignLeft
         property int verticalAlignment: Qt.AlignVCenter
 
-        property color foregroundColor: __syspal.text
-        property color backgroundColor: __syspal.base
-        property color selectionColor: __syspal.highlight
-        property color selectedTextColor: __syspal.highlightedText
+        property color foregroundColor: SystemPaletteSingleton.text(control.enabled)
+        property color backgroundColor: SystemPaletteSingleton.base(control.enabled)
+        property color selectionColor: SystemPaletteSingleton.highlight(control.enabled)
+        property color selectedTextColor: SystemPaletteSingleton.highlightedText(control.enabled)
 
         property int topPadding: edit.anchors.topMargin
         property int leftPadding: 3 + edit.anchors.leftMargin

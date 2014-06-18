@@ -100,7 +100,7 @@ Style {
             id: text
             text: control.text
             anchors.centerIn: parent
-            color: __syspal.text
+            color: SystemPaletteSingleton.text(control.enabled)
             renderType: Text.NativeRendering
         }
     }

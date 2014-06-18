@@ -62,7 +62,7 @@ Style {
     }
 
     /*! The title text color. */
-    property color textColor: __syspal.text
+    property color textColor: SystemPaletteSingleton.text(control.enabled)
 
     /*! The check box. */
     property Component checkbox:  Item {

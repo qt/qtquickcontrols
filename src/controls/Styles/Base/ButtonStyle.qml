@@ -144,7 +144,7 @@ Style {
                 renderType: Text.NativeRendering
                 anchors.verticalCenter: parent.verticalCenter
                 text: control.text
-                color: __syspal.buttonText
+                color: SystemPaletteSingleton.buttonText(control.enabled)
             }
         }
     }

@@ -168,11 +168,7 @@ Style {
             elide: Text.ElideMiddle
             renderType: Text.NativeRendering
             scale: control.tabPosition === Qt.TopEdge ? 1 : -1
-            property var __syspal: SystemPalette {
-                colorGroup: styleData.enabled ?
-                                SystemPalette.Active : SystemPalette.Disabled
-            }
-            color: __syspal.text
+            color: SystemPaletteSingleton.text(styleData.enabled)
             Rectangle {
                 anchors.centerIn: parent
                 width: textitem.paintedWidth + 6
