@@ -126,8 +126,6 @@ Control {
     property string iconName: action ? action.iconName : ""
 
     /*! \internal */
-    property color __textColor: syspal.text
-    /*! \internal */
     property string __position: "only"
     /*! \internal */
     readonly property bool __iconOverriden: button.action && (button.action.iconSource !== button.iconSource || button.action.iconName !== button.iconName)
@@ -217,8 +215,6 @@ Control {
 
     /*! \internal */
     property bool __effectivePressed: behavior.effectivePressed
-
-    SystemPalette { id: syspal }
 
     states: [
         State {
