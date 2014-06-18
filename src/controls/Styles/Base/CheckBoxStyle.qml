@@ -78,11 +78,6 @@ Style {
 
     /*! The \l CheckBox attached to this style. */
     readonly property CheckBox control: __control
-    /*! \internal */
-    property var __syspal: SystemPalette {
-        colorGroup: control.enabled ?
-                        SystemPalette.Active : SystemPalette.Disabled
-    }
 
     /*! This defines the text label. */
     property Component label: Item {

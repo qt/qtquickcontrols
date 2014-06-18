@@ -69,11 +69,7 @@ Style {
         \sa Text::renderType
     */
     property int renderType: Text.NativeRendering
-    /*! \internal */
-    property var __syspal: SystemPalette {
-        colorGroup: control.enabled ?
-                        SystemPalette.Active : SystemPalette.Disabled
-    }
+
     /*! The \l ComboBox attached to this style. */
     readonly property ComboBox control: __control
 

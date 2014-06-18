@@ -44,11 +44,6 @@ import QtQuick.Controls.Private 1.0
 Style {
     readonly property SpinBox control: __control
 
-    property var __syspal: SystemPalette {
-        colorGroup: control.enabled ?
-                        SystemPalette.Active : SystemPalette.Disabled
-    }
-
     padding {
        top: control.__panel ? control.__panel.topPadding + (styleitem.style === "mac" ? 2 : 0) : 0
        left: control.__panel ? control.__panel.leftPadding : 0

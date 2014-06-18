@@ -51,11 +51,6 @@ import QtQuick.Controls.Private 1.0
 Style {
     id: root
 
-    /*! \internal */
-    property var __syspal: SystemPalette {
-        colorGroup: control.enabled ?
-                        SystemPalette.Active : SystemPalette.Disabled
-    }
     /*! The \l ScrollView attached to this style. */
     readonly property ScrollView control: __control
 

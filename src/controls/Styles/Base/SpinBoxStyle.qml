@@ -69,12 +69,6 @@ Style {
     /*! The \l SpinBox attached to this style. */
     readonly property SpinBox control: __control
 
-    /*! \internal */
-    property var __syspal: SystemPalette {
-        colorGroup: control.enabled ?
-                        SystemPalette.Active : SystemPalette.Disabled
-    }
-
     /*! The content margins of the text field. */
     padding { top: 1 ; left: Math.round(styleData.contentHeight/2) ; right: Math.max(22, Math.round(styleData.contentHeight)) ; bottom: 0 }
     /*! \qmlproperty enumeration horizontalAlignment

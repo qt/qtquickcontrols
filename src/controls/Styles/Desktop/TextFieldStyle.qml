@@ -54,17 +54,10 @@ Style {
         hover: hovered
         hints: control.styleHints
 
-        SystemPalette {
-            id: syspal
-            colorGroup: control.enabled ?
-                            SystemPalette.Active :
-                            SystemPalette.Disabled
-        }
-
-        property color textColor: syspal.text
+        property color textColor: __syspal.text
         property color placeholderTextColor: "darkGray"
-        property color selectionColor: syspal.highlight
-        property color selectedTextColor: syspal.highlightedText
+        property color selectionColor: __syspal.highlight
+        property color selectedTextColor: __syspal.highlightedText
 
 
         property bool rounded: !!hints["rounded"]

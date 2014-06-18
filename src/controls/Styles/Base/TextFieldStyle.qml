@@ -68,11 +68,6 @@ import QtQuick.Controls.Private 1.0
 Style {
     id: style
 
-    /*! \internal */
-    property var __syspal: SystemPalette {
-        colorGroup: control.enabled ?
-                        SystemPalette.Active : SystemPalette.Disabled
-    }
     /*! The \l TextField attached to this style. */
     readonly property TextField control: __control
 

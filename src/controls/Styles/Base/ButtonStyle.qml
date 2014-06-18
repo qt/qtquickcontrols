@@ -79,12 +79,6 @@ Style {
     /*! The \l {QtQuick.Controls::}{Button} attached to this style. */
     readonly property Button control: __control
 
-    /*! \internal */
-    property var __syspal: SystemPalette {
-        colorGroup: control.enabled ?
-                        SystemPalette.Active : SystemPalette.Disabled
-    }
-
     /*! The padding between the background and the label components. */
     padding {
         top: 4
