@@ -468,12 +468,16 @@ void QQuickMenu::__closeMenu()
 
 void QQuickMenu::__dismissMenu()
 {
-    QQuickMenuPopupWindow *topMenuWindow = m_popupWindow;
-    while (topMenuWindow) {
-        QQuickMenuPopupWindow *pw = qobject_cast<QQuickMenuPopupWindow *>(topMenuWindow->transientParent());
-        if (!pw)
-            topMenuWindow->dismissPopup();
-        topMenuWindow = pw;
+    if (m_platformMenu) {
+        m_platformMenu->dismiss();
+    } else {
+        QQuickMenuPopupWindow *topMenuWindow = m_popupWindow;
+        while (topMenuWindow) {
+            QQuickMenuPopupWindow *pw = qobject_cast<QQuickMenuPopupWindow *>(topMenuWindow->transientParent());
+            if (!pw)
+                topMenuWindow->dismissPopup();
+            topMenuWindow = pw;
+        }
     }
 }
 
