@@ -168,6 +168,14 @@ Control {
     property bool weekNumbersVisible: false
 
     /*!
+        This property determines the visibility of the navigation bar.
+        \since QtQuick.Controls 1.3
+
+        The default value is \c true.
+    */
+    property bool navigationBarVisible: true
+
+    /*!
         \qmlproperty enum Calendar::dayOfWeekFormat
 
         The format in which the days of the week (in the header) are displayed.

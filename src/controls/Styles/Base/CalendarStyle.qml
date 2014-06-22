@@ -394,6 +394,7 @@ Style {
                 anchors.right: parent.right
                 anchors.top: parent.top
                 sourceComponent: navigationBar
+                active: control.navigationBarVisible
 
                 property QtObject styleData: QtObject {
                     readonly property string title: control.__locale.standaloneMonthName(control.visibleMonth)
