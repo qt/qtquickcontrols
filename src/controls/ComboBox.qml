@@ -153,7 +153,7 @@ Control {
     /*! \qmlproperty bool ComboBox::pressed
 
         This property holds whether the button is being pressed. */
-    readonly property bool pressed: mouseArea.pressed && mouseArea.containsMouse || popup.__popupVisible
+    readonly property bool pressed: mouseArea.effectivePressed || popup.__popupVisible
 
     /*! \qmlproperty bool ComboBox::hovered
 
@@ -309,12 +309,23 @@ Control {
 
     MouseArea {
         id: mouseArea
+        property bool overridePressed: false
+        readonly property bool effectivePressed: (pressed || overridePressed) && containsMouse
         anchors.fill: parent
         hoverEnabled: true
         onPressed: {
             if (comboBox.activeFocusOnPress)
                 forceActiveFocus()
-            popup.show()
+            if (!Settings.hasTouchScreen)
+                popup.show()
+            else
+                overridePressed = true
+        }
+        onCanceled: overridePressed = false
+        onClicked: {
+            if (Settings.hasTouchScreen)
+                popup.show()
+            overridePressed = false
         }
         onWheel: {
             if (wheel.angleDelta.y > 0) {
