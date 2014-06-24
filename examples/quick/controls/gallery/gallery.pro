@@ -1,6 +1,6 @@
 QT += qml quick
 TARGET = gallery
-!android: !ios: !blackberry: !qnx: qtHaveModule(widgets): QT += widgets
+!android: !ios: !blackberry: !qnx: !winrt: qtHaveModule(widgets): QT += widgets
 
 include(src/src.pri)
 include(../shared/shared.pri)
