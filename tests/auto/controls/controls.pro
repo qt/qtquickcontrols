@@ -3,7 +3,7 @@ TARGET = tst_controls
 
 IMPORTPATH = $$OUT_PWD/../testplugin
 
-!android: !ios: !blackberry: !qnx: !winrt: qtHaveModule(widgets): QT += widgets
+!android:!ios:!blackberry:!qnx:!winrt:qtHaveModule(widgets): QT += widgets
 
 CONFIG += qmltestcase console
 
