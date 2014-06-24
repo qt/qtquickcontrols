@@ -188,11 +188,15 @@ QString QtQuickControlsPlugin::fileLocation() const
 
 bool QtQuickControlsPlugin::isLoadedFromResource() const
 {
+#if defined(ALWAYS_LOAD_FROM_RESOURCES)
+    return true;
+#else
     // If one file is missing, it will load all the files from the resource
     QFile file(baseUrl().toLocalFile() + "/ApplicationWindow.qml");
     if (!file.exists())
         return true;
     return false;
+#endif
 }
 
 QT_END_NAMESPACE

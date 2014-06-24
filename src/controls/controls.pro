@@ -38,7 +38,8 @@ CONTROLS_QML_FILES = \
     ToolBar.qml \
     ToolButton.qml
 
-QML_FILES += $$CONTROLS_QML_FILES
+!qtquickcompiler: QML_FILES += $$CONTROLS_QML_FILES
+qtquickcompiler: DEFINES += ALWAYS_LOAD_FROM_RESOURCES
 
 SOURCES += $$PWD/plugin.cpp
 HEADERS += $$PWD/plugin.h
