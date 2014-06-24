@@ -22,7 +22,7 @@ SOURCES += \
     $$PWD/qquickabstractstyle.cpp
 
 
-!android: !ios: !blackberry: qtHaveModule(widgets) {
+!android: !ios: !blackberry: !qnx: qtHaveModule(widgets) {
     QT += widgets
     HEADERS += $$PWD/qquickstyleitem_p.h
     SOURCES += $$PWD/qquickstyleitem.cpp

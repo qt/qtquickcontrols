@@ -1,6 +1,6 @@
 QT += qml quick
 TARGET = tableview
-!android: !ios: !blackberry: qtHaveModule(widgets): QT += widgets
+!android: !ios: !blackberry: !qnx: qtHaveModule(widgets): QT += widgets
 
 include(src/src.pri)
 include(../shared/shared.pri)
