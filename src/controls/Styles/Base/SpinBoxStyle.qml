@@ -69,12 +69,6 @@ Style {
     /*! The \l SpinBox attached to this style. */
     readonly property SpinBox control: __control
 
-    /*! \internal */
-    property var __syspal: SystemPalette {
-        colorGroup: control.enabled ?
-                        SystemPalette.Active : SystemPalette.Disabled
-    }
-
     /*! The content margins of the text field. */
     padding { top: 1 ; left: Math.round(styleData.contentHeight/2) ; right: Math.max(22, Math.round(styleData.contentHeight)) ; bottom: 0 }
     /*! \qmlproperty enumeration horizontalAlignment
@@ -93,13 +87,13 @@ Style {
     property int horizontalAlignment: Qt.AlignRight
 
     /*! The text color. */
-    property color textColor: __syspal.text
+    property color textColor: SystemPaletteSingleton.text(control.enabled)
 
     /*! The text highlight color, used behind selections. */
-    property color selectionColor: __syspal.highlight
+    property color selectionColor: SystemPaletteSingleton.highlight(control.enabled)
 
     /*! The highlighted text color, used in selections. */
-    property color selectedTextColor: __syspal.highlightedText
+    property color selectedTextColor: SystemPaletteSingleton.highlightedText(control.enabled)
 
     /*!
         \qmlproperty enumeration renderType

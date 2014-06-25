@@ -58,10 +58,10 @@ ScrollViewStyle {
     readonly property TableView control: __control
 
     /*! The text color. */
-    property color textColor: __syspal.text
+    property color textColor: SystemPaletteSingleton.text(control.enabled)
 
     /*! The background color. */
-    property color backgroundColor: control.backgroundVisible ? __syspal.base : "transparent"
+    property color backgroundColor: control.backgroundVisible ? SystemPaletteSingleton.base(control.enabled) : "transparent"
 
     /*! The alternate background color. */
     property color alternateBackgroundColor: "#f5f5f5"

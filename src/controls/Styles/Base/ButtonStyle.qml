@@ -79,12 +79,6 @@ Style {
     /*! The \l {QtQuick.Controls::}{Button} attached to this style. */
     readonly property Button control: __control
 
-    /*! \internal */
-    property var __syspal: SystemPalette {
-        colorGroup: control.enabled ?
-                        SystemPalette.Active : SystemPalette.Disabled
-    }
-
     /*! The padding between the background and the label components. */
     padding {
         top: 4
@@ -150,7 +144,7 @@ Style {
                 renderType: Text.NativeRendering
                 anchors.verticalCenter: parent.verticalCenter
                 text: control.text
-                color: __syspal.buttonText
+                color: SystemPaletteSingleton.buttonText(control.enabled)
             }
         }
     }

@@ -68,11 +68,6 @@ import QtQuick.Controls.Private 1.0
 Style {
     id: style
 
-    /*! \internal */
-    property var __syspal: SystemPalette {
-        colorGroup: control.enabled ?
-                        SystemPalette.Active : SystemPalette.Disabled
-    }
     /*! The \l TextField attached to this style. */
     readonly property TextField control: __control
 
@@ -83,13 +78,13 @@ Style {
     property font font
 
     /*! The text color. */
-    property color textColor: __syspal.text
+    property color textColor: SystemPaletteSingleton.text(control.enabled)
 
     /*! The text highlight color, used behind selections. */
-    property color selectionColor: __syspal.highlight
+    property color selectionColor: SystemPaletteSingleton.highlight(control.enabled)
 
     /*! The highlighted text color, used in selections. */
-    property color selectedTextColor: __syspal.highlightedText
+    property color selectedTextColor: SystemPaletteSingleton.highlightedText(control.enabled)
 
     /*!
         \qmlproperty enumeration renderType

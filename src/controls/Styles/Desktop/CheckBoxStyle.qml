@@ -74,7 +74,7 @@ Style {
                 renderType: Text.NativeRendering
                 elide: Text.ElideRight
                 enabled: control.enabled
-                color: __syspal.windowText
+                color: SystemPaletteSingleton.windowText(control.enabled)
                 StyleItem {
                     elementType: "focusrect"
                     anchors.margins: -1

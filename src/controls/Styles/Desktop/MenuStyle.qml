@@ -61,7 +61,7 @@ Style {
                 fill: parent
                 margins: pixelMetric("menupanelwidth")
             }
-            color: __syspal.window
+            color: SystemPaletteSingleton.window(control.enabled)
         }
 
         Accessible.role: Accessible.PopupMenu

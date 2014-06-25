@@ -71,16 +71,16 @@ ScrollViewStyle {
     property font font
 
     /*! The text color. */
-    property color textColor: __syspal.text
+    property color textColor: SystemPaletteSingleton.text(control.enabled)
 
     /*! The text highlight color, used behind selections. */
-    property color selectionColor: __syspal.highlight
+    property color selectionColor: SystemPaletteSingleton.highlight(control.enabled)
 
     /*! The highlighted text color, used in selections. */
-    property color selectedTextColor: __syspal.highlightedText
+    property color selectedTextColor: SystemPaletteSingleton.highlightedText(control.enabled)
 
     /*! The background color. */
-    property color backgroundColor: control.backgroundVisible ? __syspal.base : "transparent"
+    property color backgroundColor: control.backgroundVisible ? SystemPaletteSingleton.base(control.enabled) : "transparent"
 
     /*!
         \qmlproperty enumeration renderType

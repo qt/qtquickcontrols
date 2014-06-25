@@ -237,18 +237,22 @@ Control {
         onMouseXChanged: {
             if (pressed && __horizontal) {
                 var pos = clamp (mouse.x + clickOffset - fakeHandle.width/2)
-                fakeHandle.x = pos
-                if (Math.abs(mouse.x - pressX) >= Settings.dragThreshold)
+                var overThreshold = Math.abs(mouse.x - pressX) >= Settings.dragThreshold
+                if (overThreshold)
                     preventStealing = true
+                if (overThreshold || !Settings.hasTouchScreen)
+                    fakeHandle.x = pos
             }
         }
 
         onMouseYChanged: {
             if (pressed && !__horizontal) {
                 var pos = clamp (mouse.y + clickOffset- fakeHandle.height/2)
-                fakeHandle.y = pos
-                if (Math.abs(mouse.y - pressY) >= Settings.dragThreshold)
+                var overThreshold = Math.abs(mouse.y - pressY) >= Settings.dragThreshold
+                if (overThreshold)
                     preventStealing = true
+                if (overThreshold || !Settings.hasTouchScreen)
+                    fakeHandle.y = pos
             }
         }
 

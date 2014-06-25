@@ -50,11 +50,6 @@ import QtQuick.Controls.Private 1.0
 */
 Style {
 
-    /*! \internal */
-    property var __syspal: SystemPalette {
-        colorGroup: control.enabled ?
-                        SystemPalette.Active : SystemPalette.Disabled
-    }
     /*! The \l GroupBox attached to this style. */
     readonly property GroupBox control: __control
 
@@ -67,7 +62,7 @@ Style {
     }
 
     /*! The title text color. */
-    property color textColor: __syspal.text
+    property color textColor: SystemPaletteSingleton.text(control.enabled)
 
     /*! The check box. */
     property Component checkbox:  Item {

@@ -100,14 +100,12 @@ Style {
         implicitHeight: text.height + 4
         color: styleData.open ? "#49d" : "transparent"
 
-        SystemPalette { id: syspal }
-
         Text {
             id: text
             text: formatMnemonic(styleData.text, styleData.underlineMnemonic)
             anchors.centerIn: parent
             renderType: Text.NativeRendering
-            color: styleData.open ? "white" : syspal.windowText
+            color: styleData.open ? "white" : SystemPaletteSingleton.windowText(control.enabled)
         }
     }
 
