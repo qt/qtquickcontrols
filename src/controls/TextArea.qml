@@ -812,6 +812,8 @@ ScrollView {
                     if (!readOnly)
                         Qt.inputMethod.show()
                 }
+                cursorHandle.activate()
+                selectionHandle.activate()
             }
 
             function moveHandles(cursor, selection) {

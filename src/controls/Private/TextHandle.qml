@@ -57,10 +57,16 @@ Loader {
 
     property Item control
     property QtObject styleData: QtObject {
+        id: styleData
+        signal activated()
         readonly property alias pressed: mouse.pressed
         readonly property alias position: handle.position
         readonly property real lineHeight: position !== -1 ? editor.positionToRectangle(position).height
                                                            : editor.cursorRectangle.height
+    }
+
+    function activate() {
+        styleData.activated()
     }
 
     MouseArea {
