@@ -54,15 +54,21 @@ ApplicationWindow {
             anchors.fill: parent
             anchors.margins: window.spacing
             CheckBox {
+                id: selectBox
+                text: "SelectByMouse"
+                checked: true
+            }
+            CheckBox {
                 id: handleBox
                 text: "Handles"
                 checked: true
+                enabled: selectBox.checked
             }
             CheckBox {
                 id: outlineBox
                 text: "Outlines"
                 checked: false
-                enabled: handleBox.checked
+                enabled: handleBox.enabled && handleBox.checked
             }
             Item { width: 1; height: 1; Layout.fillWidth: true }
             CheckBox {
@@ -96,6 +102,7 @@ ApplicationWindow {
             z: 1
             text: loremIpsum
             Layout.fillWidth: true
+            selectByMouse: selectBox.checked
 
             style: TextFieldStyle {
                 cursorHandle: handleBox.checked ? cursorDelegate : null
@@ -109,6 +116,7 @@ ApplicationWindow {
             Layout.fillHeight: true
 
             textFormat: Qt.RichText
+            selectByMouse: selectBox.checked
             wrapMode: wrapBox.checked ? Text.Wrap : Text.NoWrap
             text: loremIpsum + "<p>" + loremIpsum + "<p>" + loremIpsum + "<p>" + loremIpsum
 
