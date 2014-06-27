@@ -1,6 +1,7 @@
 TEMPLATE = subdirs
 
 SUBDIRS += controls
+android: SUBDIRS += controls/Styles/Android
 
 SUBDIRS += layouts
 

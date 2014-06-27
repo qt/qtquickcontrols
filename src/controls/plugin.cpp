@@ -139,7 +139,7 @@ void QtQuickControlsPlugin::initializeEngine(QQmlEngine *engine, const char *uri
     const char *private_uri = "QtQuick.Controls.Private";
     qmlRegisterType<QQuickAbstractStyle>(private_uri, 1, 0, "AbstractStyle");
     qmlRegisterType<QQuickCalendarModel>(private_uri, 1, 0, "CalendarModel");
-    qmlRegisterType<QQuickPadding>();
+    qmlRegisterType<QQuickPadding>(private_uri, 1, 0, "Padding");
     qmlRegisterType<QQuickRangedDate>(private_uri, 1, 0, "RangedDate");
     qmlRegisterType<QQuickRangeModel>(private_uri, 1, 0, "RangeModel");
     qmlRegisterType<QQuickWheelArea>(private_uri, 1, 0, "WheelArea");

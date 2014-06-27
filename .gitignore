@@ -114,3 +114,7 @@ qtc-debugging-helper
 
 # osx shared libraries
 *.dylib
+
+# android
+android-build
+app_process
