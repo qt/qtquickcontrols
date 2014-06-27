@@ -74,6 +74,8 @@ import QtQuick.Controls.Private 1.0
 
     \note You can create a custom appearance for a TabView by
     assigning a \l {QtQuick.Controls.Styles::TabViewStyle}{TabViewStyle}.
+
+    \l Tab represents the content of a tab in a TabView.
 */
 
 FocusScope {
