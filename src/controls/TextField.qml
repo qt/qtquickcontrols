@@ -331,6 +331,17 @@ Control {
     Accessible.readOnly: readOnly
 
     /*!
+        \qmlproperty bool TextField::selectByMouse
+        \since QtQuick.Controls 1.3
+
+        This property determines if the user can select the text with the
+        mouse.
+
+        The default value is \c true.
+    */
+    property bool selectByMouse: true
+
+    /*!
         \qmlproperty string TextField::selectedText
 
         Provides the text currently selected in the text input.
@@ -589,7 +600,7 @@ Control {
     TextInput {
         id: textInput
         focus: true
-        selectByMouse: !cursorHandle.delegate || !selectionHandle.delegate
+        selectByMouse: textfield.selectByMouse && (!cursorHandle.delegate || !selectionHandle.delegate)
         selectionColor: __panel ? __panel.selectionColor : "darkred"
         selectedTextColor: __panel ? __panel.selectedTextColor : "white"
 
@@ -678,7 +689,7 @@ Control {
         }
         onPressAndHold: {
             var pos = textInput.positionAt(mouse.x, mouse.y)
-            textInput.moveHandles(pos, -1)
+            textInput.moveHandles(pos, textfield.selectByMouse ? -1 : pos)
             textInput.activate()
         }
     }
@@ -688,6 +699,7 @@ Control {
 
         editor: textInput
         control: textfield
+        active: textfield.selectByMouse
         delegate: __style.selectionHandle
         maximum: cursorHandle.position - 1
         readonly property real selectionX: textInput.selectionRectangle.x
@@ -711,6 +723,7 @@ Control {
 
         editor: textInput
         control: textfield
+        active: textfield.selectByMouse
         delegate: __style.cursorHandle
         minimum: textInput.hasSelection ? selectionHandle.position + 1 : -1
         x: textInput.cursorRectangle.x + textInput.x
