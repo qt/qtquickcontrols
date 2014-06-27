@@ -363,7 +363,7 @@ ScrollView {
 
         The default value is \c true.
     */
-    property alias selectByMouse: edit.selectByMouse
+    property bool selectByMouse: true
 
     /*!
         \qmlproperty bool TextArea::selectByKeyboard
@@ -739,7 +739,7 @@ ScrollView {
             wrapMode: TextEdit.WordWrap
             textMargin: 4
 
-            selectByMouse: !cursorHandle.delegate || !selectionHandle.delegate
+            selectByMouse: area.selectByMouse && (!cursorHandle.delegate || !selectionHandle.delegate)
             readOnly: false
 
             Keys.forwardTo: area
@@ -826,7 +826,7 @@ ScrollView {
                 }
                 onPressAndHold: {
                     var pos = edit.positionAt(mouse.x, mouse.y)
-                    edit.moveHandles(pos, -1)
+                    edit.moveHandles(pos, area.selectByMouse ? -1 : pos)
                     edit.activate()
                 }
             }
@@ -838,6 +838,7 @@ ScrollView {
                 control: area
                 z: 1 // above scrollbars
                 parent: __scroller // no clip
+                active: area.selectByMouse
                 delegate: __style.selectionHandle
                 maximum: cursorHandle.position - 1
                 x: edit.selectionRectangle.x - flickableItem.contentX
@@ -863,6 +864,7 @@ ScrollView {
                 control: area
                 z: 1 // above scrollbars
                 parent: __scroller // no clip
+                active: area.selectByMouse
                 delegate: __style.cursorHandle
                 minimum: edit.hasSelection ? selectionHandle.position + 1 : -1
                 x: edit.cursorRectangle.x - flickableItem.contentX

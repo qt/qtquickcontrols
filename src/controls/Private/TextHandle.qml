@@ -66,6 +66,7 @@ Loader {
     MouseArea {
         id: mouse
         anchors.fill: item
+        enabled: handle.active
         property point offset
         onPressed: offset = Qt.point(x + mouse.x, y + mouse.y)
         onPositionChanged: {
