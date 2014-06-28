@@ -64,8 +64,11 @@ void QQuickMenuPopupWindow::show()
 void QQuickMenuPopupWindow::setParentItem(QQuickItem *item)
 {
     QQuickPopupWindow::setParentItem(item);
-    if (item)
-        setParentWindow(item->window());
+    if (item) {
+        QWindow *parentWindow = item->window();
+        QWindow *renderWindow = QQuickRenderControl::renderWindowFor(static_cast<QQuickWindow *>(parentWindow));
+        setParentWindow(renderWindow ? renderWindow : parentWindow, item->window());
+    }
 }
 
 void QQuickMenuPopupWindow::setItemAt(QQuickItem *menuItem)
@@ -83,12 +86,10 @@ void QQuickMenuPopupWindow::setItemAt(QQuickItem *menuItem)
     }
 }
 
-void QQuickMenuPopupWindow::setParentWindow(QQuickWindow *parentWindow)
+void QQuickMenuPopupWindow::setParentWindow(QWindow *effectiveParentWindow, QQuickWindow *parentWindow)
 {
-    QWindow *proxyWindow = QQuickRenderControl::renderWindowFor(parentWindow);
-    QWindow *renderWindow = proxyWindow ? proxyWindow : parentWindow;
-    if (transientParent() != renderWindow)
-        setTransientParent(renderWindow);
+    if (transientParent() != effectiveParentWindow)
+        setTransientParent(effectiveParentWindow);
     if (parentWindow) {
         connect(parentWindow, SIGNAL(destroyed()), this, SLOT(dismissPopup()));
         if (QQuickMenuPopupWindow *pw = qobject_cast<QQuickMenuPopupWindow *>(parentWindow))
