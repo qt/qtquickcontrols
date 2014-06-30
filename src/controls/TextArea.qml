@@ -235,7 +235,7 @@ ScrollView {
         \li Qt.ImhExclusiveInputMask - This mask yields nonzero if any of the exclusive flags are used.
         \endlist
     */
-    property alias inputMethodHints: edit.inputMethodHints
+    property int inputMethodHints: edit.inputMethodHints || Qt.ImhNone
 
     /*!
         \qmlproperty int TextArea::length
