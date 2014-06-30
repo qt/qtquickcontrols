@@ -53,11 +53,6 @@ Item {
         width: 200
         height: 200
 
-        function itemRect(item)
-        {
-            return [item.x, item.y, item.width, item.height];
-        }
-
         Component {
             id: layout_flow_Component
             GridLayout {
@@ -67,6 +62,7 @@ Item {
                 Repeater {
                     model: 6
                     Rectangle {
+                        property var itemRect: [x, y, width, height]
                         color: "red"
                         Layout.preferredWidth: 10
                         Layout.preferredHeight: 10
@@ -79,23 +75,25 @@ Item {
         function test_flow()
         {
             var layout = layout_flow_Component.createObject(container);
-            compare(itemRect(layout.children[0]), [ 0,  0, 10, 10])
-            compare(itemRect(layout.children[1]), [10,  0, 10, 10])
-            compare(itemRect(layout.children[2]), [20,  0, 10, 10])
-            compare(itemRect(layout.children[3]), [30,  0, 10, 10])
+            tryCompare(layout.children[0], "itemRect", [ 0,  0, 10, 10])
+            tryCompare(layout.children[1], "itemRect", [10,  0, 10, 10])
+            tryCompare(layout.children[2], "itemRect", [20,  0, 10, 10])
+            tryCompare(layout.children[3], "itemRect", [30,  0, 10, 10])
 
-            compare(itemRect(layout.children[4]), [ 0, 10, 10, 10])
-            compare(itemRect(layout.children[5]), [10, 10, 10, 10])
+            tryCompare(layout.children[4], "itemRect", [ 0, 10, 10, 10])
+            tryCompare(layout.children[5], "itemRect", [10, 10, 10, 10])
 
             layout.rows = 4
             layout.flow = GridLayout.TopToBottom
-            compare(itemRect(layout.children[0]), [ 0,  0, 10, 10])
-            compare(itemRect(layout.children[1]), [ 0, 10, 10, 10])
-            compare(itemRect(layout.children[2]), [ 0, 20, 10, 10])
-            compare(itemRect(layout.children[3]), [ 0, 30, 10, 10])
+            tryCompare(layout.children[0], "itemRect", [ 0,  0, 10, 10])
+            tryCompare(layout.children[1], "itemRect", [ 0, 10, 10, 10])
+            tryCompare(layout.children[2], "itemRect", [ 0, 20, 10, 10])
+            tryCompare(layout.children[3], "itemRect", [ 0, 30, 10, 10])
 
-            compare(itemRect(layout.children[4]), [10,  0, 10, 10])
-            compare(itemRect(layout.children[5]), [10, 10, 10, 10])
+            tryCompare(layout.children[4], "itemRect", [10,  0, 10, 10])
+            tryCompare(layout.children[5], "itemRect", [10, 10, 10, 10])
+
+            layout.destroy()
         }
 
         Component {
@@ -493,6 +491,7 @@ Item {
                 rowSpacing: 0
                 Rectangle {
                     // First one should auto position itself at (0,0)
+                    property var itemRect: [x, y, width, height]
                     color: "red"
                     Layout.preferredWidth: 20
                     Layout.preferredHeight: 20
@@ -501,6 +500,7 @@ Item {
                 }
                 Rectangle {
                     // (0,1)
+                    property var itemRect: [x, y, width, height]
                     color: "red"
                     Layout.preferredWidth: 20
                     Layout.preferredHeight: 20
@@ -508,6 +508,7 @@ Item {
                 }
                 Rectangle {
                     // (1,0)
+                    property var itemRect: [x, y, width, height]
                     color: "red"
                     Layout.preferredWidth: 20
                     Layout.preferredHeight: 20
@@ -515,6 +516,7 @@ Item {
                 }
                 Rectangle {
                     // (1,1)
+                    property var itemRect: [x, y, width, height]
                     color: "red"
                     Layout.preferredWidth: 10
                     Layout.preferredHeight: 10
@@ -522,6 +524,7 @@ Item {
                 }
                 Rectangle {
                     // (2,0)
+                    property var itemRect: [x, y, width, height]
                     color: "red"
                     Layout.preferredWidth: 30
                     Layout.preferredHeight: 30
@@ -530,6 +533,7 @@ Item {
                 }
                 Rectangle {
                     // (3,0)
+                    property var itemRect: [x, y, width, height]
                     baselineOffset: 7
                     color: "red"
                     Layout.row: 3
@@ -540,6 +544,7 @@ Item {
                 }
                 Rectangle {
                     // (3,1)
+                    property var itemRect: [x, y, width, height]
                     baselineOffset: 7
                     color: "red"
                     Layout.preferredWidth: 10
@@ -556,13 +561,14 @@ Item {
             layout.width = 60;
             layout.height = 100;
 
-            compare(itemRect(layout.children[0]), [ 0,  0, 40, 40]);
-            compare(itemRect(layout.children[1]), [40, 20, 20, 20]);
-            compare(itemRect(layout.children[2]), [20, 40, 20, 20]);
-            compare(itemRect(layout.children[3]), [45, 40, 10, 10]);
-            compare(itemRect(layout.children[4]), [30, 60, 30, 30]);
-            compare(itemRect(layout.children[5]), [ 0, 90, 10, 10]);
-            compare(itemRect(layout.children[6]), [50, 90, 10, 10]);
+
+            tryCompare(layout.children[0], "itemRect", [ 0,  0, 40, 40]);
+            tryCompare(layout.children[1], "itemRect", [40, 20, 20, 20]);
+            tryCompare(layout.children[2], "itemRect", [20, 40, 20, 20]);
+            tryCompare(layout.children[3], "itemRect", [45, 40, 10, 10]);
+            tryCompare(layout.children[4], "itemRect", [30, 60, 30, 30]);
+            tryCompare(layout.children[5], "itemRect", [ 0, 90, 10, 10]);
+            tryCompare(layout.children[6], "itemRect", [50, 90, 10, 10]);
 
 
             layout.children[1].Layout.alignment = Qt.AlignTop
@@ -593,18 +599,21 @@ Item {
                 rowSpacing: 0
                 columns: 3
                 Rectangle {
+                    property var itemRect: [x, y, width, height]
                     color: "#cbffc4"
                     Layout.preferredWidth: 50
                     Layout.preferredHeight: 50
                     Layout.alignment: Qt.AlignCenter
                 }
                 Rectangle {
+                    property var itemRect: [x, y, width, height]
                     color: "#c4d1ff"
                     Layout.preferredWidth: 50
                     Layout.preferredHeight: 50
                     Layout.alignment: Qt.AlignRight
                 }
                 Rectangle {
+                    property var itemRect: [x, y, width, height]
                     color: "#ffd5c4"
                     Layout.preferredWidth: 50
                     Layout.preferredHeight: 50
@@ -615,16 +624,16 @@ Item {
 
         function verifyIsRightToLeft(layout)
         {
-            compare(itemRect(layout.children[0]), [125, 0, 50, 50]);
-            compare(itemRect(layout.children[1]), [60,  0, 50, 50]);
-            compare(itemRect(layout.children[2]), [10,  0, 50, 50]);
+            tryCompare(layout.children[0], "itemRect", [125, 0, 50, 50]);
+            tryCompare(layout.children[1], "itemRect", [60,  0, 50, 50]);
+            tryCompare(layout.children[2], "itemRect", [10,  0, 50, 50]);
         }
 
         function verifyIsLeftToRight(layout)
         {
-            compare(itemRect(layout.children[0]), [5,   0, 50, 50]);
-            compare(itemRect(layout.children[1]), [70,  0, 50, 50]);
-            compare(itemRect(layout.children[2]), [120, 0, 50, 50]);
+            tryCompare(layout.children[0], "itemRect", [5,   0, 50, 50]);
+            tryCompare(layout.children[1], "itemRect", [70,  0, 50, 50]);
+            tryCompare(layout.children[2], "itemRect", [120, 0, 50, 50]);
         }
 
         function test_rightToLeft()
@@ -637,30 +646,23 @@ Item {
             verifyIsRightToLeft(layout)
             layout.LayoutMirroring.enabled = true
             layout.layoutDirection = Qt.LeftToRight
-            waitForRendering(layout)
             verifyIsRightToLeft(layout)
-
 
             // Left To Right
             layout.LayoutMirroring.enabled = false
             layout.layoutDirection = Qt.LeftToRight
-            waitForRendering(layout)
             verifyIsLeftToRight(layout);
             layout.LayoutMirroring.enabled = true
             layout.layoutDirection = Qt.RightToLeft
-            waitForRendering(layout)
             verifyIsLeftToRight(layout);
 
             layout.LayoutMirroring.enabled = false
-            waitForRendering(layout)
             verifyIsRightToLeft(layout)
 
             layout.layoutDirection = Qt.LeftToRight
-            waitForRendering(layout)
             verifyIsLeftToRight(layout);
 
             layout.LayoutMirroring.enabled = true
-            waitForRendering(layout)
             verifyIsRightToLeft(layout)
 
             layout.destroy();
@@ -675,6 +677,7 @@ Item {
                 Repeater {
                     model: 4
                     Rectangle {
+                        property var itemRect: [x, y, width, height]
                         width: 10
                         height: 10
                         color: "#ff0000"
@@ -688,18 +691,18 @@ Item {
             var layout = layout_columnsOrRowsChanged_Component.createObject(container);
             layout.width = 40;
             layout.height = 20;
-            waitForRendering(layout)
-            compare(itemRect(layout.children[0]), [ 0,  5,  10, 10])
-            compare(itemRect(layout.children[1]), [10,  5,  10, 10])
-            compare(itemRect(layout.children[2]), [20,  5,  10, 10])
-            compare(itemRect(layout.children[3]), [30,  5,  10, 10])
+            tryCompare(layout.children[0], "itemRect", [ 0,  5,  10, 10])
+            tryCompare(layout.children[1], "itemRect", [10,  5,  10, 10])
+            tryCompare(layout.children[2], "itemRect", [20,  5,  10, 10])
+            tryCompare(layout.children[3], "itemRect", [30,  5,  10, 10])
 
             layout.columns = 2
-            waitForRendering(layout)
-            compare(itemRect(layout.children[0]), [ 0,  0,  10, 10])
-            compare(itemRect(layout.children[1]), [20,  0,  10, 10])
-            compare(itemRect(layout.children[2]), [ 0, 10,  10, 10])
-            compare(itemRect(layout.children[3]), [20, 10,  10, 10])
+            tryCompare(layout.children[0], "itemRect", [ 0,  0,  10, 10])
+            tryCompare(layout.children[1], "itemRect", [20,  0,  10, 10])
+            tryCompare(layout.children[2], "itemRect", [ 0, 10,  10, 10])
+            tryCompare(layout.children[3], "itemRect", [20, 10,  10, 10])
+
+            layout.destroy()
         }
 
         function test_rowsChanged()
@@ -708,18 +711,18 @@ Item {
             layout.flow = GridLayout.TopToBottom
             layout.width = 20;
             layout.height = 40;
-            waitForRendering(layout)
-            compare(itemRect(layout.children[0]), [ 0,  0,  10, 10])
-            compare(itemRect(layout.children[1]), [ 0, 10,  10, 10])
-            compare(itemRect(layout.children[2]), [ 0, 20,  10, 10])
-            compare(itemRect(layout.children[3]), [ 0, 30,  10, 10])
+            tryCompare(layout.children[0], "itemRect", [ 0,  0,  10, 10])
+            tryCompare(layout.children[1], "itemRect", [ 0, 10,  10, 10])
+            tryCompare(layout.children[2], "itemRect", [ 0, 20,  10, 10])
+            tryCompare(layout.children[3], "itemRect", [ 0, 30,  10, 10])
 
             layout.rows = 2
-            waitForRendering(layout)
-            compare(itemRect(layout.children[0]), [ 0,  5,  10, 10])
-            compare(itemRect(layout.children[1]), [ 0, 25,  10, 10])
-            compare(itemRect(layout.children[2]), [10,  5,  10, 10])
-            compare(itemRect(layout.children[3]), [10, 25,  10, 10])
+            tryCompare(layout.children[0], "itemRect", [ 0,  5,  10, 10])
+            tryCompare(layout.children[1], "itemRect", [ 0, 25,  10, 10])
+            tryCompare(layout.children[2], "itemRect", [10,  5,  10, 10])
+            tryCompare(layout.children[3], "itemRect", [10, 25,  10, 10])
+
+            layout.destroy()
         }
 
         Component {
@@ -729,18 +732,21 @@ Item {
                 rowSpacing: 0
                 columnSpacing: 0
                 Rectangle {
+                    property var itemRect: [x, y, width, height]
                     width: 10
                     height: 10
                     Layout.column: 0
                     color: "#ff0000"
                 }
                 Rectangle {
+                    property var itemRect: [x, y, width, height]
                     Layout.column: 1
                     width: 10
                     height: 10
                     color: "#ff0000"
                 }
                 Rectangle {
+                    property var itemRect: [x, y, width, height]
                     //Layout.column: 2
                     width: 10
                     height: 10
@@ -754,35 +760,33 @@ Item {
             var layout = layout_columnOrRowChanged_Component.createObject(container);
             layout.width = layout.implicitWidth
             layout.height = layout.implicitHeight
-            waitForRendering(layout)
             // c0-c1-c2
-            compare(itemRect(layout.children[0]), [ 0,  0,  10, 10])
-            compare(itemRect(layout.children[1]), [10,  0,  10, 10])
-            compare(itemRect(layout.children[2]), [20,  0,  10, 10])
+            tryCompare(layout.children[0], "itemRect", [ 0,  0,  10, 10])
+            tryCompare(layout.children[1], "itemRect", [10,  0,  10, 10])
+            tryCompare(layout.children[2], "itemRect", [20,  0,  10, 10])
 
             layout.children[0].Layout.column = 3
-            waitForRendering(layout)
             //c1-c2-c0
-            compare(itemRect(layout.children[0]), [20,  0,  10, 10])
-            compare(itemRect(layout.children[1]), [ 0,  0,  10, 10])
-            compare(itemRect(layout.children[2]), [10,  0,  10, 10])
+            tryCompare(layout.children[0], "itemRect", [20,  0,  10, 10])
+            tryCompare(layout.children[1], "itemRect", [ 0,  0,  10, 10])
+            tryCompare(layout.children[2], "itemRect", [10,  0,  10, 10])
 
             layout.children[2].Layout.column = 4
-            waitForRendering(layout)
             //c1-c0-c2
-            compare(itemRect(layout.children[0]), [10,  0,  10, 10])
-            compare(itemRect(layout.children[1]), [ 0,  0,  10, 10])
-            compare(itemRect(layout.children[2]), [20,  0,  10, 10])
+            tryCompare(layout.children[0], "itemRect", [10,  0,  10, 10])
+            tryCompare(layout.children[1], "itemRect", [ 0,  0,  10, 10])
+            tryCompare(layout.children[2], "itemRect", [20,  0,  10, 10])
 
             layout.children[0].Layout.row = 1
             // two rows, so we adjust it to its new implicitHeight
             layout.height = layout.implicitHeight
-            waitForRendering(layout)
             //c1  c2
             //  c0
-            compare(itemRect(layout.children[0]), [10, 10,  10, 10])
-            compare(itemRect(layout.children[1]), [ 0,  0,  10, 10])
-            compare(itemRect(layout.children[2]), [20,  0,  10, 10])
+            tryCompare(layout.children[0], "itemRect", [10, 10,  10, 10])
+            tryCompare(layout.children[1], "itemRect", [ 0,  0,  10, 10])
+            tryCompare(layout.children[2], "itemRect", [20,  0,  10, 10])
+
+            layout.destroy()
         }
 
         Component {
@@ -791,11 +795,13 @@ Item {
                 id: layout
                 columnSpacing: 0
                 Rectangle {
+                    property var itemRect: [x, y, width, height]
                     implicitWidth: 10
                     implicitHeight: 10
                     baselineOffset: 10
                 }
                 Rectangle {
+                    property var itemRect: [x, y, width, height]
                     implicitWidth: 10
                     implicitHeight: 10
                 }
@@ -804,18 +810,16 @@ Item {
         function test_baselines()
         {
             var layout = layout_baselines_Component.createObject(container);
-            waitForRendering(layout)
-            compare(itemRect(layout.children[0]), [ 0, 0, 10, 10])
-            compare(itemRect(layout.children[1]), [10, 0, 10, 10])
+            tryCompare(layout.children[0], "itemRect", [ 0, 0, 10, 10])
+            tryCompare(layout.children[1], "itemRect", [10, 0, 10, 10])
             compare(layout.implicitWidth, 20)
             compare(layout.implicitHeight, 10)
-
 
             layout.children[0].Layout.alignment = Qt.AlignBaseline
             layout.children[1].Layout.alignment = Qt.AlignBaseline
 
-            compare(itemRect(layout.children[0]), [ 0, 0, 10, 10])
-            compare(itemRect(layout.children[1]), [10, 10, 10, 10])
+            tryCompare(layout.children[0], "itemRect", [ 0, 0, 10, 10])
+            tryCompare(layout.children[1], "itemRect", [10, 10, 10, 10])
             compare(layout.implicitWidth, 20)
             compare(layout.implicitHeight, 20)
 
@@ -829,6 +833,7 @@ Item {
                 Repeater {
                     model: 2
                     Rectangle {
+                        property var itemRect: [x, y, width, height]
                         implicitWidth: 10
                         implicitHeight: 10
                     }
@@ -839,7 +844,6 @@ Item {
         function test_spacings()
         {
             var layout = layout_spacings_Component.createObject(container);
-            waitForRendering(layout)
 
             // breaks down below -19. This is acceptable, since it means that the implicit size of the layout is negative
             var testSpacings = [Number.NaN, 0, 10, -5, -19]
@@ -851,8 +855,8 @@ Item {
                 } else {
                     layout.columnSpacing = sp
                 }
-                compare(itemRect(layout.children[0]), [ 0,  0,  10,  10])
-                compare(itemRect(layout.children[1]), [10 + sp,  0,  10,  10])
+                tryCompare(layout.children[0], "itemRect", [ 0,  0,  10,  10])
+                tryCompare(layout.children[1], "itemRect", [10 + sp,  0,  10,  10])
                 compare(layout.implicitWidth, 20 + sp)
             }
 
