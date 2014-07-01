@@ -148,6 +148,7 @@ ScrollView {
     \li  styleData.column - the index of the column
     \li  styleData.elideMode - the elide mode of the column
     \li  styleData.textAlignment - the horizontal text alignment of the column
+    \li  styleData.pressed - true when the item is pressed (since QtQuick.Controls 1.3)
     \endlist
 
     Example:
@@ -178,6 +179,7 @@ ScrollView {
     \li  styleData.alternate - true when the row uses the alternate background color
     \li  styleData.selected - true when the row is currently selected
     \li  styleData.row - the index of the row
+    \li  styleData.pressed - true when the row is pressed (since QtQuick.Controls 1.3)
     \endlist
 
     \note For performance reasons, created delegates can be recycled
@@ -592,8 +594,12 @@ ScrollView {
             property int clickedRow: -1
             property int dragRow: -1
             property int firstKeyRow: -1
+            property int pressedRow: -1
+            property int pressedColumn: -1
 
             onReleased: {
+                pressedRow = -1
+                pressedColumn = -1
                 autoincrement = false
                 autodecrement = false
                 var clickIndex = listView.indexAt(0, mouseY + listView.contentY)
@@ -629,14 +635,17 @@ ScrollView {
                     autodecrement = false;
                 }
 
-                if (pressed && !Settings.hasTouchScreen) {
-                    var newIndex = Math.max(0, listView.indexAt(0, mouseY + listView.contentY))
-                    if (newIndex >= 0 && newIndex !== currentRow) {
-                        listView.currentIndex = newIndex;
-                        if (selectionMode === SelectionMode.SingleSelection) {
-                            selection.__selectOne(newIndex)
-                        } else if (selectionMode > 1) {
-                            dragRow = newIndex
+                if (pressed && containsMouse) {
+                    pressedRow = Math.max(0, listView.indexAt(0, mouseY + listView.contentY))
+                    pressedColumn = headerrow.columnAt(mouseX)
+                    if (!Settings.hasTouchScreen) {
+                        if (pressedRow >= 0 && pressedRow !== currentRow) {
+                            listView.currentIndex = pressedRow;
+                            if (selectionMode === SelectionMode.SingleSelection) {
+                                selection.__selectOne(pressedRow)
+                            } else if (selectionMode > 1) {
+                                dragRow = pressedRow
+                            }
                         }
                     }
                 }
@@ -653,14 +662,25 @@ ScrollView {
             }
 
             onPressed: {
-                var newIndex = listView.indexAt(0, mouseY + listView.contentY)
+                pressedRow = listView.indexAt(0, mouseY + listView.contentY)
+                pressedColumn = headerrow.columnAt(mouseX)
                 listView.forceActiveFocus()
-                if (newIndex > -1 && !Settings.hasTouchScreen) {
-                    listView.currentIndex = newIndex
-                    mouseSelect(newIndex, mouse.modifiers)
-                    mousearea.clickedRow = newIndex
+                if (pressedRow > -1 && !Settings.hasTouchScreen) {
+                    listView.currentIndex = pressedRow
+                    mouseSelect(pressedRow, mouse.modifiers)
+                    mousearea.clickedRow = pressedRow
                 }
                 mouseModifiers = mouse.modifiers
+            }
+
+            onExited: {
+                mousearea.pressedRow = -1
+                mousearea.pressedColumn = -1
+            }
+
+            onCanceled: {
+                mousearea.pressedRow = -1
+                mousearea.pressedColumn = -1
             }
 
             function mouseSelect(index, modifiers) {
@@ -875,6 +895,7 @@ ScrollView {
                         readonly property bool alternate: rowitem.alternate
                         readonly property bool selected: rowitem.itemSelected
                         readonly property bool hasActiveFocus: root.activeFocus
+                        readonly property bool pressed: rowitem.rowIndex === mousearea.pressedRow
                     }
                     readonly property var model: listView.model
                     readonly property var modelData: rowitem.itemModelData
@@ -904,6 +925,7 @@ ScrollView {
                                 readonly property int elideMode: columnItem.elideMode
                                 readonly property int textAlignment: columnItem.horizontalAlignment
                                 readonly property bool selected: rowitem.itemSelected
+                                readonly property bool pressed: row === mousearea.pressedRow && column === mousearea.pressedColumn
                                 readonly property color textColor: rowitem.itemTextColor
                                 readonly property string role: columnItem.role
                                 readonly property var value: (itemModel && itemModel.hasOwnProperty(role))
@@ -940,6 +962,11 @@ ScrollView {
                 id: headerrow
                 x: -listView.contentX
 
+                function columnAt(offset) {
+                    var item = childAt(offset, 0)
+                    return item ? item.column : -1
+                }
+
                 Repeater {
                     id: repeater
 
@@ -950,6 +977,7 @@ ScrollView {
 
                     delegate: Item {
                         id: headerRowDelegate
+                        readonly property int column: index
                         z:-index
                         width: modelData.width
                         implicitWidth: columnCount === 1 ? viewport.width + __verticalScrollBar.width : headerStyle.implicitWidth
