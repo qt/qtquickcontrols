@@ -99,6 +99,30 @@
     to the context of the current QML engine. See QQmlContext for more
     information.
 
+    \section2 Deploying Qt Quick Controls
+
+    Since Qt 5.2, the Qt Quick Controls JavaScript and QML files are embedded into the plugin
+    using \l{The Qt Resource System}{Qt resources} (.qrc) for the QtQuick.Controls and QtQuick.Controls.Styles imports. It is only
+    necessary to deploy the qtquickcontrolsplugin C++ library and its qmldir file found in the plugin directory
+    \e{qml/QtQuick/Controls}.
+
+    The .js/.qml files are still placed into the plugin directory though for keeping the development
+    tasks convenient, debugging and autocompletion capabilities remain unchanged. For deployment,
+    these files can be ignored. In practice, the \e{Styles} and \e{Private} subfolders can be deleted as
+    well as all .js and .qml files present under \e{qml/QtQuick/Controls}.
+
+    \note On Windows, the \l{Qt for Windows - Deployment#The Windows Deployment Tool}{Windows Deployment Tool}
+    only deploys the Qt Quick Controls plugin and its qmldir file.
+
+    Using resources facilitates the deployment of the Qt Quick Controls though it has limitations
+    that still need to be addressed.
+
+    \note On iOS, the qmlimportscanner tool is used to parse the required qml imports so they can
+    be deployed accordingly. The files embedded in resources are not scanned by this tool though
+    and when linking statically, some required imports used by the Qt Quick Controls can be
+    forgotten. This is a known limitation and a workaround is to add potentially missing imports in
+    one of the qml files of the application using the controls.
+
     \section1 Related information
 
      \list
