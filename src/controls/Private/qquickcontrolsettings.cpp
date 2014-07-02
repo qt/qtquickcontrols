@@ -90,7 +90,9 @@ static QString styleImportPath(QQmlEngine *engine, const QString &styleName)
 {
     QString path = qgetenv("QT_QUICK_CONTROLS_STYLE");
     QFileInfo info(path);
-    if (info.isRelative()) {
+    if (fromResource(path)) {
+        path = info.path();
+    } else if (info.isRelative()) {
         bool found = false;
         foreach (const QString &import, engine->importPathList()) {
             QDir dir(import + QLatin1String("/QtQuick/Controls/Styles"));
