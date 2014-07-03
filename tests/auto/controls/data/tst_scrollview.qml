@@ -90,6 +90,42 @@ TestCase {
         scrollView.destroy()
     }
 
+
+    function test_scrollbars() {
+        var component = scrollViewComponent
+        var scrollView = component.createObject(testCase);
+        scrollView.contentItem = bigItem
+        scrollView.parent = container
+
+        bigItem.height = 100
+        bigItem.width = 100
+
+        verify(!scrollView.__horizontalScrollBar.visible, "Scrollbar showing when contents already fit")
+        verify(!scrollView.__verticalScrollBar.visible, "Scrollbar showing when contents already fit")
+
+        bigItem.height = 1000
+        bigItem.width = 1000
+
+        verify(scrollView.__horizontalScrollBar.visible, "Scrollbar not showing when contents are too big")
+        verify(scrollView.__verticalScrollBar.visible, "Scrollbar not showing when contents are too big")
+
+        //always off
+        bigItem.height = 1000
+        scrollView.verticalScrollBarPolicy = Qt.ScrollBarAlwaysOff
+        verify(!scrollView.__verticalScrollBar.visible, "Scrollbar showing when disabled")
+        bigItem.height = 100
+        verify(!scrollView.__verticalScrollBar.visible, "Scrollbar showing when disabled")
+
+        //always on
+        scrollView.verticalScrollBarPolicy = Qt.ScrollBarAlwaysOn
+        bigItem.height = 1000
+        verify(scrollView.__verticalScrollBar.visible, "Scrollbar not showing when forced on")
+        bigItem.height = 100
+        verify(scrollView.__verticalScrollBar.visible, "Scrollbar not showing when forced on")
+
+        scrollView.destroy()
+    }
+
     function test_clickToCenter() {
 
         var test_control = 'import QtQuick 2.2;                       \

@@ -100,6 +100,36 @@ FocusScope {
     */
     property bool frameVisible: false
 
+    /*! \qmlproperty enumeration ScrollView::horizontalScrollBarPolicy
+        \since QtQuick.Controls 1.3
+
+        This property holds the policy for showing the horizontal scrollbar.
+        It can be any of the following values:
+        \list
+        \li Qt.ScrollBarAsNeeded
+        \li Qt.ScrollBarAlwaysOff
+        \li Qt.ScrollBarAlwaysOn
+        \endlist
+
+        The default policy is \c Qt.ScrollBarAsNeeded.
+     */
+    property alias horizontalScrollBarPolicy: scroller.horizontalScrollBarPolicy
+
+    /*! \qmlproperty enumeration ScrollView::verticalScrollBarPolicy
+        \since QtQuick.Controls 1.3
+
+        This property holds the policy for showing the vertical scrollbar.
+        It can be any of the following values:
+        \list
+        \li Qt.ScrollBarAsNeeded
+        \li Qt.ScrollBarAlwaysOff
+        \li Qt.ScrollBarAlwaysOn
+        \endlist
+
+        The default policy is \c Qt.ScrollBarAsNeeded.
+     */
+    property alias verticalScrollBarPolicy: scroller.verticalScrollBarPolicy
+
     /*!
         This property controls if there should be a highlight
         around the frame when the ScrollView has input focus.
