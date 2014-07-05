@@ -60,6 +60,8 @@ import QtQuick.Controls.Private 1.0
     \code
     ApplicationWindow {
         id: window
+        visible: true
+
         menuBar: MenuBar {
             Menu { MenuItem {...} }
             Menu { MenuItem {...} }
@@ -79,6 +81,8 @@ import QtQuick.Controls.Private 1.0
         }
     }
     \endcode
+
+    \note By default, an ApplicationWindow is not visible.
 
     The \l{Qt Quick Controls - Gallery} example is a good starting
     point to explore this type.
