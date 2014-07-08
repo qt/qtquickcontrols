@@ -369,7 +369,7 @@ Control {
 
         verticalAlignment: Text.AlignVCenter
 
-        font: __style && __style.editorFont !== undefined ? __style.editorFont : TextSingleton.font
+        font: __style && __style.font !== undefined ? __style.font : TextSingleton.font
         renderType: __style ? __style.renderType : Text.NativeRendering
         selectByMouse: true
         color: SystemPaletteSingleton.text(enabled)

@@ -70,6 +70,12 @@ Style {
     */
     property int renderType: Text.NativeRendering
 
+    /*!
+        \since QtQuick.Controls.Styles 1.3
+        The font of the control.
+    */
+    property font font
+
     /*! The \l ComboBox attached to this style. */
     readonly property ComboBox control: __control
 
@@ -168,6 +174,7 @@ Style {
             anchors.verticalCenter: parent.verticalCenter
             text: control.currentText
             renderType: cbStyle.renderType
+            font: cbStyle.font
             color: SystemPaletteSingleton.text(control.enabled)
             elide: Text.ElideRight
         }
@@ -211,6 +218,7 @@ Style {
 
     /*! \internal */
     property Component __dropDownStyle: MenuStyle {
+        font: cbStyle.font
         __maxPopupHeight: 600
         __menuItemType: "comboboxitem"
         __scrollerStyle: ScrollViewStyle { }
