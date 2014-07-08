@@ -162,7 +162,7 @@ Control {
 
         This property indicates whether the control is being hovered.
     */
-    readonly property alias hovered: mouseArea.containsMouse
+    readonly property bool hovered: mouseArea.containsMouse || cursorArea.containsMouse
 
     /*! \qmlproperty int ComboBox::count
         \since QtQuick.Controls 1.1
@@ -460,6 +460,14 @@ Control {
                 }
             }
             prevText = text
+        }
+
+        MouseArea {
+            id: cursorArea
+            anchors.fill: parent
+            hoverEnabled: true
+            cursorShape: Qt.IBeamCursor
+            acceptedButtons: Qt.NoButton
         }
     }
 
