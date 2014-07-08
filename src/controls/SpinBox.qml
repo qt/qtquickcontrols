@@ -164,7 +164,8 @@ Control {
 
         This property indicates whether the control is being hovered.
     */
-    readonly property alias hovered: mouseArea.containsMouse
+    readonly property bool hovered: mouseArea.containsMouse || cursorArea.containsMouse
+                                    || mouseUp.containsMouse || mouseDown.containsMouse
 
     /*!
         \qmlsignal SpinBox::editingFinished()
@@ -289,6 +290,14 @@ Control {
 
         function selectValue() {
             select(prefix.length, text.length - suffix.length)
+        }
+
+        MouseArea {
+            id: cursorArea
+            anchors.fill: parent
+            hoverEnabled: true
+            cursorShape: Qt.IBeamCursor
+            acceptedButtons: Qt.NoButton
         }
     }
 
