@@ -190,12 +190,12 @@ Style {
         label: Text {
             text: formatMnemonic(styleData.text, styleData.underlineMnemonic)
             color: __currentTextColor
-            font.pixelSize: __labelFontPixelSize
+            font: styleRoot.font
         }
 
         submenuIndicator: Text {
             text: __mirrored ? "\u25c2" : "\u25b8" // BLACK LEFT/RIGHT-POINTING SMALL TRIANGLE
-            font.pixelSize: __labelFontPixelSize
+            font: styleRoot.font
             color: __currentTextColor
             style: styleData.selected ? Text.Normal : Text.Raised
             styleColor: Qt.lighter(color, 4)
@@ -203,7 +203,18 @@ Style {
 
         shortcut: Text {
             text: styleData.shortcut
-            font.pixelSize: __labelFontPixelSize * 0.9
+            font {
+                bold: styleRoot.font.bold
+                capitalization: styleRoot.font.capitalization
+                family: styleRoot.font.family
+                italic: styleRoot.font.italic
+                letterSpacing: styleRoot.font.letterSpacing
+                pixelSize: styleRoot.font.pixelSize * 0.9
+                strikeout: styleRoot.font.strikeout
+                underline: styleRoot.font.underline
+                weight: styleRoot.font.weight
+                wordSpacing: styleRoot.font.wordSpacing
+            }
             color: __currentTextColor
         }
 
@@ -291,6 +302,12 @@ Style {
         source: styleData.scrollerDirection === Qt.UpArrow ? "images/arrow-up.png" : "images/arrow-down.png"
     }
 
+    /*!
+        \since QtQuick.Controls.Styles 1.3
+        The font of the control.
+    */
+    property font font
+
     /*! \internal */
     property string __menuItemType: "menuitem"
 
@@ -353,9 +370,6 @@ Style {
     /*! \internal */
     readonly property bool __mirrored: Qt.application.layoutDirection === Qt.RightToLeft
 
-    /*! \internal */
-    readonly property real __labelFontPixelSize: TextSingleton.font.pixelSize
-
     /*! \internal
         The margin between the frame and the menu item label's left side.
 
@@ -398,8 +412,8 @@ Style {
         implicitWidth: Math.max((parent ? parent.width : 0),
                                 Math.round(__leftLabelMargin + labelLoader.width + __rightLabelMargin +
                                            (rightIndicatorLoader.active ? __minRightLabelSpacing + rightIndicatorLoader.width : 0)))
-        implicitHeight: Math.round(styleData.isSeparator ? __labelFontPixelSize / 2 :
-                                   !!styleData.scrollerDirection ? __labelFontPixelSize * 0.75 : labelLoader.height + 4)
+        implicitHeight: Math.round(styleData.isSeparator ? styleRoot.font.pixelSize / 2 :
+                                   !!styleData.scrollerDirection ? styleRoot.font.pixelSize * 0.75 : labelLoader.height + 4)
 
         Loader {
             property alias styleData: panel.__styleData
@@ -420,7 +434,8 @@ Style {
             property alias styleData: panel.__styleData
             property alias __currentTextColor: panel.currentTextColor
             x: __mirrored ? parent.width - width - 4 : 4
-            y: styleData.exclusive ? 5 : 4
+            anchors.verticalCenterOffset: -1
+            anchors.verticalCenter: parent.verticalCenter
             active: __menuItemType === "menuitem" && styleData.checkable
             sourceComponent: itemDelegate.checkmarkIndicator
         }
