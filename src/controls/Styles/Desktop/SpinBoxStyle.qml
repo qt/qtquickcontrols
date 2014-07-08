@@ -53,6 +53,7 @@ Style {
     StyleItem {id: styleitem ; visible: false}
 
     property int renderType: Text.NativeRendering
+    property alias font: styleitem.font
 
     property Component panel: Item {
         id: style
@@ -62,8 +63,6 @@ Style {
 
         property int horizontalAlignment: Qt.platform.os === "osx" ? Qt.AlignRight : Qt.AlignLeft
         property int verticalAlignment: Qt.AlignVCenter
-
-        property alias font: styleitem.font
 
         property color foregroundColor: SystemPaletteSingleton.text(control.enabled)
         property color backgroundColor: SystemPaletteSingleton.base(control.enabled)

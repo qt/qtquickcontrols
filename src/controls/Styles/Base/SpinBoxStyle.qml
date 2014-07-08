@@ -110,6 +110,12 @@ Style {
     */
     property int renderType: Text.NativeRendering
 
+    /*!
+        \since QtQuick.Controls.Styles 1.3
+        The font of the control.
+    */
+    property font font
+
     /*! The button used to increment the value. */
     property Component incrementControl: Item {
         implicitWidth: padding.right
@@ -162,8 +168,6 @@ Style {
         implicitWidth: backgroundLoader.implicitWidth
         implicitHeight: backgroundLoader.implicitHeight
         baselineOffset: backgroundLoader.item ? backgroundLoader.item.baselineOffset : 0
-
-        property font font
 
         property color foregroundColor: spinboxStyle.textColor
         property color selectionColor: spinboxStyle.selectionColor
