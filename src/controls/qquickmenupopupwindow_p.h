@@ -58,12 +58,12 @@ public:
 
     void setParentItem(QQuickItem *);
 
-public Q_SLOTS:
-    void show();
-
 protected Q_SLOTS:
     void updateSize();
     void updatePosition();
+
+protected:
+    void exposeEvent(QExposeEvent *);
 
 private:
     QQuickItem *m_itemAt;

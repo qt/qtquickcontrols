@@ -53,14 +53,6 @@ QQuickMenuPopupWindow::QQuickMenuPopupWindow() :
     QQuickPopupWindow(), m_itemAt(0)
 { }
 
-void QQuickMenuPopupWindow::show()
-{
-    QQuickPopupWindow::show();
-    // show() will reposition the popup at the last moment,
-    // so its initial position must be captured after the call.
-    m_initialPos = position();
-}
-
 void QQuickMenuPopupWindow::setParentItem(QQuickItem *item)
 {
     QQuickPopupWindow::setParentItem(item);
@@ -139,6 +131,14 @@ void QQuickMenuPopupWindow::updatePosition()
     QPointF newPos = position() + m_oldItemPos - m_itemAt->position();
     m_initialPos += m_oldItemPos - m_itemAt->position();
     setGeometry(newPos.x(), newPos.y(), width(), height());
+}
+
+void QQuickMenuPopupWindow::exposeEvent(QExposeEvent *e)
+{
+    // the popup will reposition at the last moment, so its
+    // initial position must be captured for updateSize().
+    m_initialPos = position();
+    QQuickPopupWindow::exposeEvent(e);
 }
 
 QT_END_NAMESPACE
