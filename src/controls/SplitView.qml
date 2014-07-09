@@ -51,6 +51,8 @@ import QtQuick.Window 2.1
     \ingroup views
     \brief Lays out items with a draggable splitter between each item.
 
+    \image splitview.png
+
     SplitView is a control that lays out items horizontally or
     vertically with a draggable splitter between each item.
 
@@ -92,26 +94,39 @@ import QtQuick.Window 2.1
     could do the following:
 
     \qml
-       SplitView {
-           anchors.fill: parent
-           orientation: Qt.Horizontal
+    SplitView {
+        anchors.fill: parent
+        orientation: Qt.Horizontal
 
-           Rectangle {
-               width: 200
-               Layout.maximumWidth: 400
-               color: "gray"
-           }
-           Rectangle {
-               id: centerItem
-               Layout.minimumWidth: 50
-               Layout.fillWidth: true
-               color: "darkgray"
-           }
-           Rectangle {
-               width: 200
-               color: "gray"
-           }
-       }
+        Rectangle {
+            width: 200
+            Layout.maximumWidth: 400
+            color: "lightblue"
+            Text {
+                text: "View 1"
+                anchors.centerIn: parent
+            }
+        }
+        Rectangle {
+            id: centerItem
+            Layout.minimumWidth: 50
+            Layout.fillWidth: true
+            color: "lightgray"
+            Text {
+                text: "View 2"
+                anchors.centerIn: parent
+            }
+        }
+        Rectangle {
+            width: 200
+            color: "lightgreen"
+            Text {
+                text: "View 3"
+                anchors.centerIn: parent
+            }
+        }
+    }
+
    \endqml
 */
 

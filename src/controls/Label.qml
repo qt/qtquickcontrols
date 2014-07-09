@@ -47,7 +47,9 @@ import QtQuick 2.2
     \ingroup controls
     \brief A text label.
 
-    In addition to the normal \l Text element, Label follows the font and
+    \image label.png
+
+    In addition to the normal \l Text type, Label follows the font and
     color scheme of the system.
     Use the \c text property to assign a text to the label. For other properties
     check \l Text.

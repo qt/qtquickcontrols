@@ -50,19 +50,27 @@ import QtQuick.Controls.Private 1.0
     \ingroup applicationwindow
     \brief Provides a horizontal menu bar.
 
-    \code
-    MenuBar {
-        Menu {
-            title: "File"
-            MenuItem { text: "Open..." }
-            MenuItem { text: "Close" }
-        }
+    \image menubar.png
 
-        Menu {
-            title: "Edit"
-            MenuItem { text: "Cut" }
-            MenuItem { text: "Copy" }
-            MenuItem { text: "Paste" }
+    MenuBar can be added to an \l ApplicationWindow, providing menu options
+    to access additional functionality of the application.
+
+    \code
+    ApplicationWindow {
+        ...
+        menuBar: MenuBar {
+            Menu {
+                title: "File"
+                MenuItem { text: "Open..." }
+                MenuItem { text: "Close" }
+            }
+
+            Menu {
+                title: "Edit"
+                MenuItem { text: "Cut" }
+                MenuItem { text: "Copy" }
+                MenuItem { text: "Paste" }
+            }
         }
     }
     \endcode

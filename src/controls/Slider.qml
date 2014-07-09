@@ -49,13 +49,15 @@ import QtQuick.Controls.Private 1.0
     \ingroup controls
     \brief Provides a vertical or horizontal slider control.
 
+    \image slider.png
+
     The slider is the classic control for providing a bounded value. It lets
     the user move a slider handle along a horizontal or vertical groove
     and translates the handle's position into a value within the legal range.
 
     \code
     Slider {
-        onValueChanged: print(value)
+        value: 0.5
     }
     \endcode
 

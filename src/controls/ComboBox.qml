@@ -49,7 +49,10 @@ import QtQuick.Controls.Private 1.0
     \ingroup controls
     \brief Provides a drop-down list functionality.
 
-    Add items to the comboBox by assigning it a ListModel, or a list of strings to the \l model property.
+    \image combobox.png
+
+    Add items to the ComboBox by assigning it a ListModel, or a list of strings
+    to the \l model property.
 
     \qml
        ComboBox {
@@ -159,7 +162,7 @@ Control {
 
         This property indicates whether the control is being hovered.
     */
-    readonly property alias hovered: mouseArea.containsMouse
+    readonly property bool hovered: mouseArea.containsMouse || cursorArea.containsMouse
 
     /*! \qmlproperty int ComboBox::count
         \since QtQuick.Controls 1.1
@@ -458,6 +461,14 @@ Control {
                 }
             }
             prevText = text
+        }
+
+        MouseArea {
+            id: cursorArea
+            anchors.fill: parent
+            hoverEnabled: true
+            cursorShape: Qt.IBeamCursor
+            acceptedButtons: Qt.NoButton
         }
     }
 

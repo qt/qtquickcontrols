@@ -51,6 +51,7 @@
 #include <QtGui/qpa/qplatformtheme.h>
 #include <QtGui/qpa/qplatformmenu.h>
 #include <qquickitem.h>
+#include <QtQuick/private/qquickrendercontrol_p.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -395,7 +396,11 @@ void QQuickMenu::__popup(qreal x, qreal y, int atItemIndex)
 
     QQuickMenuBase *atItem = menuItemAtIndex(atItemIndex);
 
-    QQuickWindow *parentWindow = findParentWindow();
+    QQuickWindow *quickWindow = findParentWindow();
+    QWindow *parentWindow = quickWindow;
+    QWindow *renderWindow = QQuickRenderControl::renderWindowFor(static_cast<QQuickWindow *>(parentWindow));
+    if (renderWindow)
+        parentWindow = renderWindow; // may not be a QQuickWindow anymore (happens when using QQuickWidget)
 
     if (m_platformMenu) {
         QPointF screenPosition(x + m_xOffset, y + m_yOffset);
@@ -410,7 +415,7 @@ void QQuickMenu::__popup(qreal x, qreal y, int atItemIndex)
         if (visualItem())
             m_popupWindow->setParentItem(visualItem());
         else
-            m_popupWindow->setParentWindow(parentWindow);
+            m_popupWindow->setParentWindow(parentWindow, quickWindow);
         m_popupWindow->setPopupContentItem(m_menuContentItem);
         m_popupWindow->setItemAt(atItem ? atItem->visualItem() : 0);
 

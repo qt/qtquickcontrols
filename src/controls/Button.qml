@@ -49,10 +49,18 @@ import QtQuick.Controls.Private 1.0
     \ingroup controls
     \brief A push button with a text label.
 
+    \image button.png
+
     The push button is perhaps the most commonly used widget in any graphical
     user interface. Pushing (or clicking) a button commands the computer to
     perform some action or answer a question. Common examples of buttons are
     OK, Apply, Cancel, Close, Yes, No, and Help buttons.
+
+    \qml
+    Button {
+        text: "Button"
+    }
+    \endqml
 
     Button is similar to the QPushButton widget.
 

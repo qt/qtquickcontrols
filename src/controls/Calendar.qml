@@ -50,6 +50,8 @@ import QtQuick.Controls.Private 1.0
     \ingroup controls
     \brief Provides a way to select dates from a calendar
 
+    \image calendar.png
+
     Calendar allows selection of dates from a grid of days, similar to
     QCalendarWidget.
 
@@ -66,6 +68,12 @@ import QtQuick.Controls.Private 1.0
 
     Week numbers can be displayed by setting the weekNumbersVisible property to
     \c true.
+
+    \qml
+    Calendar{
+        weekNumbersVisible: true
+    }
+    \endqml
 
     You can create a custom appearance for Calendar by assigning a
     \l {QtQuick.Controls.Styles::CalendarStyle}{CalendarStyle}.

@@ -49,6 +49,8 @@ import QtQuick 2.2
 
     A Tab item inherits from Loader and provides a similar
     api.
+
+    \sa TabView
 */
 
 Loader {
