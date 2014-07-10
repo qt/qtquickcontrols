@@ -375,9 +375,9 @@ Control {
         font: __style && __style.font !== undefined ? __style.font : TextSingleton.font
         renderType: __style ? __style.renderType : Text.NativeRendering
         selectByMouse: true
-        color: SystemPaletteSingleton.text(enabled)
-        selectionColor: SystemPaletteSingleton.highlight(enabled)
-        selectedTextColor: SystemPaletteSingleton.highlightedText(enabled)
+        color: __style ? __style.textColor : "black"
+        selectionColor: __style ? __style.selectionColor : "blue"
+        selectedTextColor: __style ? __style.selectedTextColor : "white"
         onAccepted: {
             var idx = input.find(editText, Qt.MatchFixedString)
             if (idx > -1) {

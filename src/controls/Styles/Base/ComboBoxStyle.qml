@@ -76,6 +76,24 @@ Style {
     */
     property font font
 
+    /*!
+        \since QtQuick.Controls.Styles 1.3
+        The text color.
+    */
+    property color textColor: SystemPaletteSingleton.text(control.enabled)
+
+    /*!
+        \since QtQuick.Controls.Styles 1.3
+        The text highlight color, used behind selections.
+    */
+    property color selectionColor: SystemPaletteSingleton.highlight(control.enabled)
+
+    /*!
+        \since QtQuick.Controls.Styles 1.3
+        The highlighted text color, used in selections.
+    */
+    property color selectedTextColor: SystemPaletteSingleton.highlightedText(control.enabled)
+
     /*! The \l ComboBox attached to this style. */
     readonly property ComboBox control: __control
 
@@ -175,7 +193,7 @@ Style {
             text: control.currentText
             renderType: cbStyle.renderType
             font: cbStyle.font
-            color: SystemPaletteSingleton.text(control.enabled)
+            color: cbStyle.textColor
             elide: Text.ElideRight
         }
     }
@@ -219,6 +237,9 @@ Style {
     /*! \internal */
     property Component __dropDownStyle: MenuStyle {
         font: cbStyle.font
+        __labelColor: cbStyle.textColor
+        __selectedLabelColor: cbStyle.selectedTextColor
+        __selectedBackgroundColor: cbStyle.selectionColor
         __maxPopupHeight: 600
         __menuItemType: "comboboxitem"
         __scrollerStyle: ScrollViewStyle { }
