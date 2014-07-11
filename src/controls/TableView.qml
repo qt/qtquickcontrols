@@ -1018,6 +1018,7 @@ ScrollView {
                                     }
                                 }
                                 repeater.targetIndex = -1
+                                repeater.dragIndex = -1
                             }
                             drag.maximumX: 1000
                             drag.minimumX: -1000
@@ -1065,7 +1066,7 @@ ScrollView {
 
                             onDoubleClicked: getColumn(index).resizeToContents()
                             onPressedChanged: if (pressed) offset=mouseX
-                            cursorShape: enabled ? Qt.SplitHCursor : Qt.ArrowCursor
+                            cursorShape: enabled && repeater.dragIndex==-1 ? Qt.SplitHCursor : Qt.ArrowCursor
                         }
                     }
                 }
