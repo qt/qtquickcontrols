@@ -301,6 +301,19 @@ ScrollView {
     */
     signal doubleClicked(int row)
 
+    /*! \qmlsignal TableView::pressAndHold(int row)
+        \since QtQuick.Controls 1.3
+
+        Emitted when the user presses and holds a valid row.
+
+        \a row int provides access to the pressed row index.
+
+        \note This signal is only emitted if the row or item delegate does not accept mouse events.
+
+        The corresponding handler is \c onPressAndHold.
+    */
+    signal pressAndHold(int row)
+
     /*!
         \qmlmethod TableView::positionViewAtRow( int row, PositionMode mode )
 
@@ -703,6 +716,12 @@ ScrollView {
                         root.activated(clickIndex)
                     root.doubleClicked(clickIndex)
                 }
+            }
+
+            onPressAndHold: {
+                var pressIndex = listView.indexAt(0, mouseY + listView.contentY)
+                if (pressIndex > -1)
+                    root.pressAndHold(pressIndex)
             }
 
             // Note:  with boolean preventStealing we are keeping the flickable from

@@ -542,6 +542,7 @@ TestCase {
         compare(table._clicked, false)
         compare(table._released, false)
         compare(table._doubleClicked, false)
+        compare(table._pressAndHold, false)
 
         mousePress(table, 25 , 10, Qt.LeftButton)
         compare(table._pressed, true)
@@ -557,6 +558,11 @@ TestCase {
 
         mouseDoubleClick(table, 25 , 10, Qt.LeftButton)
         compare(table._doubleClicked, true)
+        table.clearTestData()
+
+        mousePress(table, 25 , 10, Qt.LeftButton)
+        compare(table._pressAndHold, false)
+        tryCompare(table, "_pressAndHold", true, 5000)
         table.clearTestData()
 
         table.destroy()
@@ -580,6 +586,7 @@ TestCase {
         compare(table._clicked, false)
         compare(table._released, false)
         compare(table._doubleClicked, false)
+        compare(table._pressAndHold, false)
 
         mousePress(table, 25, 10, Qt.RightButton)
         compare(table._pressed, true)
@@ -595,6 +602,11 @@ TestCase {
 
         mouseDoubleClick(table, 25, 10, Qt.RightButton)
         compare(table._doubleClicked, true)
+        table.clearTestData()
+
+        mousePress(table, 25 , 10, Qt.RightButton)
+        compare(table._pressAndHold, false)
+        tryCompare(table, "_pressAndHold", true, 5000)
         table.clearTestData()
 
         table.destroy()

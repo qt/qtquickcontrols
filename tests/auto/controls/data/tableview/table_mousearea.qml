@@ -49,6 +49,7 @@ TableView {
     property bool _clicked: false
     property bool _released: false
     property bool _doubleClicked: false
+    property bool _pressAndHold: false
 
     headerVisible: false
 
@@ -57,6 +58,7 @@ TableView {
         _released = false
         _clicked = false
         _doubleClicked = false
+        _pressAndHold = false
     }
 
     TableViewColumn {
@@ -73,5 +75,6 @@ TableView {
         onClicked: table._clicked = true
         onReleased: table._released = true
         onDoubleClicked: table._doubleClicked = true
+        onPressAndHold: table._pressAndHold = true
     }
 }
