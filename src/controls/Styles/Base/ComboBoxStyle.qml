@@ -70,7 +70,7 @@ Style {
     */
     property int renderType: Text.NativeRendering
 
-    /*! The \l ComboBox attached to this style. */
+    /*! The \l ComboBox this style is attached to. */
     readonly property ComboBox control: __control
 
     /*! The padding between the background and the label components. */

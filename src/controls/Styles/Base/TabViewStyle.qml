@@ -81,7 +81,7 @@ import QtQuick.Controls.Private 1.0
 
 Style {
 
-    /*! The \l ScrollView attached to this style. */
+    /*! The \l ScrollView this style is attached to. */
     readonly property TabView control: __control
 
     /*! This property holds whether the user can move the tabs.

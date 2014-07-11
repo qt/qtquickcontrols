@@ -111,7 +111,7 @@ import QtQuick.Controls.Private 1.0
 Style {
     id: progressBarStyle
 
-    /*! The \l ProgressBar attached to this style. */
+    /*! The \l ProgressBar this style is attached to. */
     readonly property ProgressBar control: __control
 
     /*! A value in the range [0-1] indicating the current progress. */

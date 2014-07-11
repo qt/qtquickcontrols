@@ -68,7 +68,7 @@ import QtQuick.Controls.Private 1.0
 Style {
     id: style
 
-    /*! The \l TextField attached to this style. */
+    /*! The \l TextField this style is attached to. */
     readonly property TextField control: __control
 
     /*! The content margins of the text field. */
