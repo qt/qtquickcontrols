@@ -282,6 +282,18 @@ Control {
     signal doubleClicked(date date)
 
     /*!
+        \qmlsignal Calendar::pressAndHold(date date)
+        \since QtQuick.Controls 1.3
+
+        Emitted when the mouse is pressed and held on a valid date in the calendar.
+
+        \a date is the date that the mouse was pressed on.
+
+        The corresponding handler is \c onPressAndHold.
+    */
+    signal pressAndHold(date date)
+
+    /*!
         Sets visibleMonth to the previous month.
     */
     function showPreviousMonth() {

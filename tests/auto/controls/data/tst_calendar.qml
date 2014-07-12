@@ -78,6 +78,10 @@ Item {
             id: releasedSignalSpy
         }
 
+        SignalSpy {
+            id: pressAndHoldSignalSpy
+        }
+
         function init() {
             calendar = Qt.createQmlObject("import QtQuick.Controls 1.2; " +
                 " Calendar { }", container, "");
@@ -91,6 +95,7 @@ Item {
             pressedSignalSpy.clear();
             clickedSignalSpy.clear();
             releasedSignalSpy.clear();
+            pressAndHoldSignalSpy.clear();
         }
 
         function toPixelsX(cellPosX) {
@@ -853,6 +858,41 @@ Item {
                     compare(rect.height, expectedHeights[row]);
                 }
             }
+        }
+
+        function test_pressAndHold() {
+            calendar.selectedDate = new Date(2013, 0, 1);
+            calendar.__locale = Qt.locale("en_GB");
+
+            pressedSignalSpy.target = calendar;
+            pressedSignalSpy.signalName = "pressed";
+
+            releasedSignalSpy.target = calendar;
+            releasedSignalSpy.signalName = "released";
+
+            pressAndHoldSignalSpy.target = calendar;
+            pressAndHoldSignalSpy.signalName = "pressAndHold";
+
+            /*         January 2013
+                 M   T   W   T   F   S   S
+                31   1   2   3   4   5   6
+                 7   8   9  10  11  12 [13]
+                14  15  16  17  18  19  20
+                21  22  23  24  25  26  27
+                28  29  30  31   1   2   3
+                 4   5   6   7   8   9  10 */
+            mousePress(calendar, toPixelsX(6), toPixelsY(1), Qt.LeftButton);
+            compare(calendar.__panel.pressedCellIndex, 13);
+            compare(pressedSignalSpy.count, 1);
+            compare(releasedSignalSpy.count, 0);
+            compare(pressAndHoldSignalSpy.count, 0);
+            tryCompare(pressAndHoldSignalSpy, "count", 1);
+
+            mouseRelease(calendar, toPixelsX(6), toPixelsY(1), Qt.LeftButton);
+            compare(calendar.__panel.pressedCellIndex, -1);
+            compare(pressedSignalSpy.count, 1);
+            compare(releasedSignalSpy.count, 1);
+            compare(pressAndHoldSignalSpy.count, 1);
         }
     }
 }
