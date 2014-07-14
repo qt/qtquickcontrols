@@ -320,7 +320,7 @@ Control {
         height: upRect ? upRect.height : 0
 
         onClicked: __increment()
-        onPressed: if (activeFocusOnPress) input.forceActiveFocus()
+        onPressed: if (!Settings.hasTouchScreen && activeFocusOnPress) input.forceActiveFocus()
 
         property bool autoincrement: false;
         onReleased: autoincrement = false
@@ -336,7 +336,7 @@ Control {
         hoverEnabled: true
 
         onClicked: __decrement()
-        onPressed: if (activeFocusOnPress) input.forceActiveFocus()
+        onPressed: if (!Settings.hasTouchScreen && activeFocusOnPress) input.forceActiveFocus()
 
         property var downRect: __panel ? __panel.downRect : null
 
