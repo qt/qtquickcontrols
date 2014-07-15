@@ -201,6 +201,11 @@ Style {
     /*! \internal */
     property Component panel: Item {
         property bool popup: false
+        property font font: cbStyle.font
+        property color textColor: cbStyle.textColor
+        property color selectionColor: cbStyle.selectionColor
+        property color selectedTextColor: cbStyle.selectedTextColor
+        property int dropDownButtonWidth: cbStyle.dropDownButtonWidth
         anchors.centerIn: parent
         anchors.fill: parent
         implicitWidth: backgroundLoader.implicitWidth

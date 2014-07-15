@@ -368,16 +368,16 @@ Control {
 
         anchors.fill: parent
         anchors.leftMargin: 8
-        anchors.rightMargin: __style.dropDownButtonWidth + __style.padding.right
+        anchors.rightMargin: __panel.dropDownButtonWidth + __style.padding.right
 
         verticalAlignment: Text.AlignVCenter
 
-        font: __style && __style.font !== undefined ? __style.font : TextSingleton.font
+        font: __panel && __panel.font !== undefined ? __panel.font : TextSingleton.font
         renderType: __style ? __style.renderType : Text.NativeRendering
         selectByMouse: true
-        color: __style ? __style.textColor : "black"
-        selectionColor: __style ? __style.selectionColor : "blue"
-        selectedTextColor: __style ? __style.selectedTextColor : "white"
+        color: __panel ? __panel.textColor : "black"
+        selectionColor: __panel ? __panel.selectionColor : "blue"
+        selectedTextColor: __panel ? __panel.selectedTextColor : "white"
         onAccepted: {
             var idx = input.find(editText, Qt.MatchFixedString)
             if (idx > -1) {

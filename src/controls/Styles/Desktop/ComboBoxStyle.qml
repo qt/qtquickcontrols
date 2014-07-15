@@ -46,12 +46,12 @@ import "." as Desktop
 Style {
     readonly property ComboBox control: __control
     property int renderType: Text.NativeRendering
-    property color textColor: SystemPaletteSingleton.text(control.enabled)
-    property color selectionColor: SystemPaletteSingleton.highlight(control.enabled)
-    property color selectedTextColor: SystemPaletteSingleton.highlightedText(control.enabled)
-    property int dropDownButtonWidth: 24
     property Component panel: Item {
         property bool popup: !!styleItem.styleHint("comboboxpopup")
+        property color textColor: SystemPaletteSingleton.text(control.enabled)
+        property color selectionColor: SystemPaletteSingleton.highlight(control.enabled)
+        property color selectedTextColor: SystemPaletteSingleton.highlightedText(control.enabled)
+        property int dropDownButtonWidth: 24
 
         implicitWidth: 125
         implicitHeight: styleItem.implicitHeight
