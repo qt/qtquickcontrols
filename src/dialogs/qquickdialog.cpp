@@ -416,14 +416,6 @@ void QQuickDialog::reject() {
     QQuickAbstractDialog::reject();
 }
 
-// TODO after QTBUG-35019 is fixed: fix links to this module's enums
-// rather than linking to those in QMessageBox
-/*!
-    \enum QQuickStandardButton::StandardButton
-
-    This enum specifies a button with a standard label to be used on a dialog.
-*/
-
 /*!
     \qmlproperty StandardButtons Dialog::standardButtons
 
@@ -434,27 +426,61 @@ void QQuickDialog::reject() {
     property. You can control which buttons are available by setting
     standardButtons to a bitwise-or combination of the following flags:
 
-    \table
-    \row \li StandardButton.Ok          \li An \gui OK button defined with the \l {QMessageBox::AcceptRole} {AcceptRole}.
-    \row \li  StandardButton.Open       \li An \gui Open button defined with the \l {QMessageBox::AcceptRole} {AcceptRole}.
-    \row \li  StandardButton.Save       \li A \gui Save button defined with the \l {QMessageBox::AcceptRole} {AcceptRole}.
-    \row \li  StandardButton.Cancel     \li A \gui Cancel button defined with the \l {QMessageBox::RejectRole} {RejectRole}.
-    \row \li  StandardButton.Close      \li A \gui Close button defined with the \l {QMessageBox::RejectRole} {RejectRole}.
-    \row \li  StandardButton.Discard    \li A \gui Discard or \gui {Don't Save} button, depending on the platform,
-                                        defined with the \l {QMessageBox::DestructiveRole} {DestructiveRole}.
-    \row \li  StandardButton.Apply      \li An \gui Apply button defined with the \l {QMessageBox::ApplyRole} {ApplyRole}.
-    \row \li  StandardButton.Reset      \li A \gui Reset button defined with the \l {QMessageBox::ResetRole} {ResetRole}.
-    \row \li  StandardButton.RestoreDefaults \li A \gui {Restore Defaults} button defined with the \l {QMessageBox::ResetRole} {ResetRole}.
-    \row \li  StandardButton.Help       \li A \gui Help button defined with the \l {QMessageBox::HelpRole} {HelpRole}.
-    \row \li  StandardButton.SaveAll    \li A \gui {Save All} button defined with the \l {QMessageBox::AcceptRole} {AcceptRole}.
-    \row \li  StandardButton.Yes        \li A \gui Yes button defined with the \l {QMessageBox::YesRole} {YesRole}.
-    \row \li  StandardButton.YesToAll   \li A \gui {Yes to All} button defined with the \l {QMessageBox::YesRole} {YesRole}.
-    \row \li  StandardButton.No         \li A \gui No button defined with the \l {QMessageBox::NoRole} {NoRole}.
-    \row \li  StandardButton.NoToAll    \li A \gui {No to All} button defined with the \l {QMessageBox::NoRole} {NoRole}.
-    \row \li  StandardButton.Abort      \li An \gui Abort button defined with the \l {QMessageBox::RejectRole} {RejectRole}.
-    \row \li  StandardButton.Retry      \li A \gui Retry button defined with the \l {QMessageBox::AcceptRole} {AcceptRole}.
-    \row \li  StandardButton.Ignore     \li An \gui Ignore button defined with the \l {QMessageBox::AcceptRole} {AcceptRole}.
-    \endtable
+    \value StandardButton.Ok
+           An \gui OK button defined with the
+           \l {QMessageBox::}{AcceptRole}.
+    \value StandardButton.Open
+           An \gui Open button defined with the
+           \l {QMessageBox::}{AcceptRole}.
+    \value StandardButton.Save
+           A \gui Save button defined with the
+           \l {QMessageBox::}{AcceptRole}.
+    \value StandardButton.Cancel
+           A \gui Cancel button defined with the
+           \l {QMessageBox::}{RejectRole}.
+    \value StandardButton.Close
+           A \gui Close button defined with the
+           \l {QMessageBox::}{RejectRole}.
+    \value StandardButton.Discard
+           A \gui Discard or \gui {Don't Save} button,
+           depending on the platform, defined with the
+           \l {QMessageBox::}{DestructiveRole}.
+    \value StandardButton.Apply
+           An \gui Apply button defined with the
+           \l {QMessageBox::}{ApplyRole}.
+    \value StandardButton.Reset
+           A \gui Reset button defined with the
+           \l {QMessageBox::}{ResetRole}.
+    \value StandardButton.RestoreDefaults
+           A \gui {Restore Defaults} button defined with the
+           \l {QMessageBox::}{ResetRole}.
+    \value StandardButton.Help
+           A \gui Help button defined with the
+           \l {QMessageBox::}{HelpRole}.
+    \value StandardButton.SaveAll
+           A \gui {Save All} button defined with the
+           \l {QMessageBox::}{AcceptRole}.
+    \value StandardButton.Yes
+           A \gui Yes button defined with the
+           \l {QMessageBox::}{YesRole}.
+    \value StandardButton.YesToAll
+           A \gui {Yes to All} button defined with the
+           \l {QMessageBox::}{YesRole}.
+    \value StandardButton.No
+           A \gui No button defined with the
+           \l {QMessageBox::}{NoRole}.
+    \value StandardButton.NoToAll
+           A \gui {No to All} button defined with the
+           \l {QMessageBox::}{NoRole}.
+    \value StandardButton.Abort
+           An \gui Abort button defined with the
+           \l {QMessageBox::}{RejectRole}.
+    \value StandardButton.Retry
+           A \gui Retry button defined with the
+           \l {QMessageBox::}{AcceptRole}.
+    \value StandardButton.Ignore
+           An \gui Ignore button defined with the
+           \l {QMessageBox::}{AcceptRole}.
 
     For example the following dialog will show a calendar with the ability to
     save or cancel a date:
