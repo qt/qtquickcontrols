@@ -673,7 +673,7 @@ Item {
             compare(hoveredSignalSpy.count, 0);
             compare(pressedSignalSpy.count, 0);
             compare(releasedSignalSpy.count, 1);
-            compare(clickedSignalSpy.count, 1);
+            compare(clickedSignalSpy.count, 0);
 
             hoveredSignalSpy.clear();
             pressedSignalSpy.clear();

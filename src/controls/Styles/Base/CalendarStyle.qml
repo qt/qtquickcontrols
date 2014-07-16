@@ -369,7 +369,7 @@ Style {
 
         property int hoveredCellIndex: -1
         property int pressedCellIndex: -1
-        property int pressAndHoldIndex: -1
+        property int pressCellIndex: -1
 
         Rectangle {
             anchors.fill: parent
@@ -581,11 +581,10 @@ Style {
                         }
 
                         onPressed: {
-                            var indexOfCell = cellIndexAt(mouse.x, mouse.y);
-                            if (indexOfCell !== -1) {
-                                var date = view.model.dateAt(indexOfCell);
-                                pressedCellIndex = indexOfCell;
-                                pressAndHoldIndex = indexOfCell;
+                            pressCellIndex = cellIndexAt(mouse.x, mouse.y);
+                            if (pressCellIndex !== -1) {
+                                var date = view.model.dateAt(pressCellIndex);
+                                pressedCellIndex = pressCellIndex;
                                 if (__isValidDate(date)) {
                                     control.selectedDate = date;
                                     control.pressed(date);
@@ -609,7 +608,7 @@ Style {
 
                         onClicked: {
                             var indexOfCell = cellIndexAt(mouse.x, mouse.y);
-                            if (indexOfCell !== -1) {
+                            if (indexOfCell !== -1 && indexOfCell === pressCellIndex) {
                                 var date = view.model.dateAt(indexOfCell);
                                 if (__isValidDate(date))
                                     control.clicked(date);
@@ -627,7 +626,7 @@ Style {
 
                         onPressAndHold: {
                             var indexOfCell = cellIndexAt(mouse.x, mouse.y);
-                            if (indexOfCell !== -1 && indexOfCell === pressAndHoldIndex) {
+                            if (indexOfCell !== -1 && indexOfCell === pressCellIndex) {
                                 var date = view.model.dateAt(indexOfCell);
                                 if (__isValidDate(date))
                                     control.pressAndHold(date);
