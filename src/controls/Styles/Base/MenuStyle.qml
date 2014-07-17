@@ -191,6 +191,7 @@ Style {
             text: formatMnemonic(styleData.text, styleData.underlineMnemonic)
             color: __currentTextColor
             font.pixelSize: __labelFontPixelSize
+            renderType: Text.NativeRendering
         }
 
         submenuIndicator: Text {
@@ -199,12 +200,14 @@ Style {
             color: __currentTextColor
             style: styleData.selected ? Text.Normal : Text.Raised
             styleColor: Qt.lighter(color, 4)
+            renderType: Text.NativeRendering
         }
 
         shortcut: Text {
             text: styleData.shortcut
             font.pixelSize: __labelFontPixelSize * 0.9
             color: __currentTextColor
+            renderType: Text.NativeRendering
         }
 
         checkmarkIndicator: Loader {
