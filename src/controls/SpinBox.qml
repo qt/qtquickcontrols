@@ -281,7 +281,7 @@ Control {
 
         onEditingFinished: spinbox.editingFinished()
 
-        font: __style ? __style.font : TextSingleton.font
+        font: __panel ? __panel.font : TextSingleton.font
         color: __panel ? __panel.foregroundColor : "black"
         selectionColor: __panel ? __panel.selectionColor : "black"
         selectedTextColor: __panel ? __panel.selectedTextColor : "black"
