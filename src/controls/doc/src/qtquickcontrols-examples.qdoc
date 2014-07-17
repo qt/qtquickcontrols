@@ -95,11 +95,39 @@
     \example texteditor
     \title Qt Quick Controls - Text Editor Example
     \ingroup qtquickcontrols_examples
-    \brief A text editor application.
+    \brief A QML app using Qt Quick Controls and a C++ class to
+    provide a fully-functional rich-text editor application.
+
     \image qtquickcontrols-example-text.png
 
-    This example implements a text editor using \l{Qt Quick Controls},
-    complete with text formatting options, copy-paste and undo/redo.
+    The \e{Text Editor Example} presents a sample HTML file using the TextArea
+    control, preserving the HTML formatting. It uses a C++ class to handle the
+    document by providing options to open, format, and edit. The app also lets
+    you open and edit a plain text files.
+
+    The C++ class, DocumentHandler, extends QObject and is registered
+    as a QML type under the namespace, "\c{org.qtproject.example 1.0}".
+
+    The following snippets show how the type is registered under
+    a namespace and later imported by \e main.qml.
+
+    QML type registration:
+
+    \code
+    #include <QtQml/qqml.h>
+    ...
+    qmlRegisterType<DocumentHandler>("org.qtproject.example", 1, 0, "DocumentHandler");
+    ...
+    \endcode
+
+    QML namespace import:
+
+    \qml
+    import org.qtproject.example 1.0
+    \endqml
+
+    For more information about registering C++ classses as QML types, see
+    \l {Defining QML Types from C++}.
 
     \include examples-run.qdocinc
 */
