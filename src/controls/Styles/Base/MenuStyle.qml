@@ -284,6 +284,7 @@ Style {
         Will be used when \l {styleData properties} {styleData.type} equals \c MenuItemType.Separator.
     */
     property Component separator: Item {
+        implicitHeight: styleRoot.font.pixelSize / 2
         Rectangle {
             width: parent.width - 2
             height: 1
@@ -416,7 +417,7 @@ Style {
         implicitWidth: Math.max((parent ? parent.width : 0),
                                 Math.round(__leftLabelMargin + labelLoader.width + __rightLabelMargin +
                                            (rightIndicatorLoader.active ? __minRightLabelSpacing + rightIndicatorLoader.width : 0)))
-        implicitHeight: Math.round(styleData.isSeparator ? styleRoot.font.pixelSize / 2 :
+        implicitHeight: Math.round(styleData.type === MenuItemType.Separator ? separatorLoader.implicitHeight :
                                    !!styleData.scrollerDirection ? styleRoot.font.pixelSize * 0.75 : labelLoader.height + 4)
 
         Loader {
@@ -427,6 +428,7 @@ Style {
         }
 
         Loader {
+            id: separatorLoader
             property alias styleData: panel.__styleData
             property alias __currentTextColor: panel.currentTextColor
             anchors.fill: parent
