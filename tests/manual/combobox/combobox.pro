@@ -1,6 +1,6 @@
 QT += qml quick
 TARGET = combobox
-!android:!ios:!blackberry:!qnx:!winrt:qtHaveModule(widgets): QT += widgets
+!no_desktop: QT += widgets
 
 SOURCES += $$PWD/main.cpp
 

@@ -25,7 +25,7 @@ STYLES_QML_FILES = \
     $$PWD/Base/ToolButtonStyle.qml
 
 # Desktop
-!android:!ios:!blackberry:!qnx:!winrt:qtHaveModule(widgets) {
+!no_desktop {
     STYLES_QML_FILES += \
         $$PWD/Desktop/qmldir \
         $$PWD/Desktop/RowItemSingleton.qml \

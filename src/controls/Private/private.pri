@@ -22,7 +22,7 @@ SOURCES += \
     $$PWD/qquickabstractstyle.cpp
 
 
-!android:!ios:!blackberry:!qnx:!winrt:qtHaveModule(widgets) {
+!no_desktop {
     QT += widgets
     HEADERS += $$PWD/qquickstyleitem_p.h
     SOURCES += $$PWD/qquickstyleitem.cpp
