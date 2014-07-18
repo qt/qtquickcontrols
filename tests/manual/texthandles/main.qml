@@ -126,6 +126,33 @@ ApplicationWindow {
             }
         }
 
+        ComboBox {
+            id: combobox
+            z: 1
+            editable: true
+            currentIndex: 1
+            Layout.fillWidth: true
+            selectByMouse: selectBox.checked
+            model: ListModel {
+                id: combomodel
+                ListElement { text: "Apple" }
+                ListElement { text: "Banana" }
+                ListElement { text: "Coconut" }
+                ListElement { text: "Orange" }
+            }
+            onAccepted: {
+                if (find(currentText) === -1) {
+                    combomodel.append({text: editText})
+                    currentIndex = find(editText)
+                }
+            }
+
+            style: ComboBoxStyle {
+                cursorHandle: handleBox.checked ? cursorDelegate : null
+                selectionHandle: handleBox.checked ? selectionDelegate : null
+            }
+        }
+
         TextArea {
             id: edit
             Layout.fillWidth: true

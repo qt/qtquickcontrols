@@ -162,7 +162,7 @@ Control {
 
         This property indicates whether the control is being hovered.
     */
-    readonly property bool hovered: mouseArea.containsMouse || cursorArea.containsMouse
+    readonly property bool hovered: mouseArea.containsMouse || input.containsMouse
 
     /*! \qmlproperty int ComboBox::count
         \since QtQuick.Controls 1.1
@@ -236,6 +236,17 @@ Control {
 
     */
     readonly property alias acceptableInput: input.acceptableInput
+
+    /*!
+        \qmlproperty bool ComboBox::selectByMouse
+        \since QtQuick.Controls 1.3
+
+        This property determines if the user can select the text in
+        the editable text field with the mouse.
+
+        The default value is \c true.
+    */
+    property bool selectByMouse: true
 
     /*!
         \qmlproperty bool ComboBox::inputMethodComposing
@@ -370,13 +381,17 @@ Control {
         }
     }
 
-    TextInput {
+    TextInputWithHandles {
         id: input
 
         visible: editable
         enabled: editable
         focus: true
         clip: contentWidth > width
+
+        control: comboBox
+        cursorHandle: __style ? __style.cursorHandle : undefined
+        selectionHandle: __style ? __style.selectionHandle : undefined
 
         anchors.fill: parent
         anchors.leftMargin: 8
@@ -386,7 +401,6 @@ Control {
 
         font: __panel && __panel.font !== undefined ? __panel.font : TextSingleton.font
         renderType: __style ? __style.renderType : Text.NativeRendering
-        selectByMouse: true
         color: __panel ? __panel.textColor : "black"
         selectionColor: __panel ? __panel.selectionColor : "blue"
         selectedTextColor: __panel ? __panel.selectedTextColor : "white"
@@ -473,14 +487,6 @@ Control {
                 }
             }
             prevText = text
-        }
-
-        MouseArea {
-            id: cursorArea
-            anchors.fill: parent
-            hoverEnabled: true
-            cursorShape: Qt.IBeamCursor
-            acceptedButtons: Qt.NoButton
         }
     }
 
