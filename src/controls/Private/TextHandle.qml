@@ -61,6 +61,7 @@ Loader {
         signal activated()
         readonly property alias pressed: mouse.pressed
         readonly property alias position: handle.position
+        readonly property bool hasSelection: editor.selectionStart !== editor.selectionEnd
         readonly property real lineHeight: position !== -1 ? editor.positionToRectangle(position).height
                                                            : editor.cursorRectangle.height
     }

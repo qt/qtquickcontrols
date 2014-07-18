@@ -146,7 +146,7 @@ ApplicationWindow {
                 anchors.right: parent.right
                 anchors.rightMargin: width / 2
                 anchors.verticalCenter: parent.verticalCenter
-                visible: control.activeFocus && control.selectionStart !== control.selectionEnd
+                visible: control.activeFocus && styleData.hasSelection
             }
         }
     }
@@ -154,7 +154,7 @@ ApplicationWindow {
     Component {
         id: cursorDelegate
         Rectangle {
-            x: control.selectionStart !== control.selectionEnd ? -edit.font.pixelSize / 2 : -width / 2
+            x: styleData.hasSelection ? -edit.font.pixelSize / 2 : -width / 2
             y: (styleData.lineHeight - height) / 2
             width: edit.font.pixelSize * 2.5
             height: edit.font.pixelSize * 2.5
@@ -170,7 +170,7 @@ ApplicationWindow {
                 anchors.left: parent.left
                 anchors.leftMargin: width / 2
                 anchors.verticalCenter: parent.verticalCenter
-                visible: control.activeFocus && control.selectionStart !== control.selectionEnd
+                visible: control.activeFocus && styleData.hasSelection
             }
         }
     }

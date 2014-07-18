@@ -169,6 +169,7 @@ Style {
             \row \li \b {styleData.pressed} : bool \li Whether the handle is pressed.
             \row \li \b {styleData.position} : int \li The character position of the handle.
             \row \li \b {styleData.lineHeight} : real \li The height of the line the handle is on.
+            \row \li \b {styleData.hasSelection} : bool \li Whether the editor has selected text.
         \endtable
     */
     property Component cursorHandle
@@ -187,6 +188,7 @@ Style {
             \row \li \b {styleData.pressed} : bool \li Whether the handle is pressed.
             \row \li \b {styleData.position} : int \li The character position of the handle.
             \row \li \b {styleData.lineHeight} : real \li The height of the line the handle is on.
+            \row \li \b {styleData.hasSelection} : bool \li Whether the editor has selected text.
         \endtable
     */
     property Component selectionHandle
