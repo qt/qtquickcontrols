@@ -110,6 +110,22 @@ ApplicationWindow {
             }
         }
 
+        SpinBox {
+            id: spinbox
+            z: 1
+            decimals: 2
+            value: 500000
+            maximumValue: 1000000
+            Layout.fillWidth: true
+            selectByMouse: selectBox.checked
+            horizontalAlignment: Qt.AlignHCenter
+
+            style: SpinBoxStyle {
+                cursorHandle: handleBox.checked ? cursorDelegate : null
+                selectionHandle: handleBox.checked ? selectionDelegate : null
+            }
+        }
+
         TextArea {
             id: edit
             Layout.fillWidth: true

@@ -164,7 +164,7 @@ Control {
 
         This property indicates whether the control is being hovered.
     */
-    readonly property bool hovered: mouseArea.containsMouse || cursorArea.containsMouse
+    readonly property bool hovered: mouseArea.containsMouse || input.containsMouse
                                     || mouseUp.containsMouse || mouseDown.containsMouse
 
     /*!
@@ -179,6 +179,17 @@ Control {
         The corresponding handler is \c onEditingFinished.
     */
     signal editingFinished()
+
+    /*!
+        \qmlproperty bool SpinBox::selectByMouse
+        \since QtQuick.Controls 1.3
+
+        This property determines if the user can select the text with the
+        mouse.
+
+        The default value is \c true.
+    */
+    property bool selectByMouse: true
 
     /*!
         \qmlproperty bool SpinBox::inputMethodComposing
@@ -261,7 +272,7 @@ Control {
         }
     }
 
-    TextInput {
+    TextInputWithHandles {
         id: input
         clip: contentWidth > width
         anchors.fill: parent
@@ -270,12 +281,15 @@ Control {
         anchors.rightMargin: __style ? __style.padding.right: 0
         anchors.bottomMargin: __style ? __style.padding.bottom: 0
 
+        control: spinbox
+        cursorHandle: __style ? __style.cursorHandle : undefined
+        selectionHandle: __style ? __style.selectionHandle : undefined
+
         focus: true
         activeFocusOnPress: spinbox.activeFocusOnPress
 
         horizontalAlignment: spinbox.horizontalAlignment
         verticalAlignment: __panel ? __panel.verticalAlignment : Qt.AlignVCenter
-        selectByMouse: activeFocus || activeFocusOnPress
         inputMethodHints: Qt.ImhFormattedNumbersOnly
 
         validator: SpinBoxValidator {
@@ -303,14 +317,6 @@ Control {
 
         function selectValue() {
             select(prefix.length, text.length - suffix.length)
-        }
-
-        MouseArea {
-            id: cursorArea
-            anchors.fill: parent
-            hoverEnabled: true
-            cursorShape: Qt.IBeamCursor
-            acceptedButtons: Qt.NoButton
         }
     }
 
