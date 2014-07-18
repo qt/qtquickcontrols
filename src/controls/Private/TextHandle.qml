@@ -38,6 +38,8 @@
 **
 ****************************************************************************/
 import QtQuick 2.2
+import QtQuick.Controls 1.2
+import QtQuick.Controls.Private 1.0
 
 Loader {
     id: handle
@@ -74,8 +76,17 @@ Loader {
         id: mouse
         anchors.fill: item
         enabled: handle.active
+        property real pressX
         property point offset
-        onPressed: offset = Qt.point(x + mouse.x, y + mouse.y)
+        onPressed: {
+            pressX = mouse.x
+            offset = Qt.point(x + mouse.x, y + mouse.y)
+        }
+        onReleased: preventStealing = false
+        onMouseXChanged: {
+            if (Math.abs(mouse.x - pressX) >= Settings.dragThreshold)
+                preventStealing = true
+        }
         onPositionChanged: {
             var pt = mapToItem(editor, mouse.x - offset.x, mouse.y - offset.y)
 
