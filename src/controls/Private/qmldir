@@ -28,3 +28,4 @@ HoverButton 1.0 HoverButton.qml
 singleton SystemPaletteSingleton 1.0 SystemPaletteSingleton.qml
 singleton TextSingleton 1.0 TextSingleton.qml
 TextHandle 1.0 TextHandle.qml
+TextInputWithHandles 1.0 TextInputWithHandles.qml
