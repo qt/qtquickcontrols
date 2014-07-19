@@ -25,31 +25,33 @@ STYLES_QML_FILES = \
     $$PWD/Base/ToolButtonStyle.qml
 
 # Desktop
-STYLES_QML_FILES += \
-    $$PWD/Desktop/qmldir \
-    $$PWD/Desktop/RowItemSingleton.qml \
-    $$PWD/Desktop/ButtonStyle.qml \
-    $$PWD/Desktop/CalendarStyle.qml \
-    $$PWD/Desktop/BusyIndicatorStyle.qml \
-    $$PWD/Desktop/CheckBoxStyle.qml \
-    $$PWD/Desktop/ComboBoxStyle.qml \
-    $$PWD/Desktop/FocusFrameStyle.qml \
-    $$PWD/Desktop/GroupBoxStyle.qml \
-    $$PWD/Desktop/MenuBarStyle.qml \
-    $$PWD/Desktop/MenuStyle.qml \
-    $$PWD/Desktop/ProgressBarStyle.qml \
-    $$PWD/Desktop/RadioButtonStyle.qml \
-    $$PWD/Desktop/ScrollViewStyle.qml \
-    $$PWD/Desktop/SliderStyle.qml \
-    $$PWD/Desktop/SpinBoxStyle.qml \
-    $$PWD/Desktop/SwitchStyle.qml \
-    $$PWD/Desktop/StatusBarStyle.qml\
-    $$PWD/Desktop/TabViewStyle.qml \
-    $$PWD/Desktop/TableViewStyle.qml \
-    $$PWD/Desktop/TextAreaStyle.qml \
-    $$PWD/Desktop/TextFieldStyle.qml \
-    $$PWD/Desktop/ToolBarStyle.qml \
-    $$PWD/Desktop/ToolButtonStyle.qml
+!no_desktop {
+    STYLES_QML_FILES += \
+        $$PWD/Desktop/qmldir \
+        $$PWD/Desktop/RowItemSingleton.qml \
+        $$PWD/Desktop/ButtonStyle.qml \
+        $$PWD/Desktop/CalendarStyle.qml \
+        $$PWD/Desktop/BusyIndicatorStyle.qml \
+        $$PWD/Desktop/CheckBoxStyle.qml \
+        $$PWD/Desktop/ComboBoxStyle.qml \
+        $$PWD/Desktop/FocusFrameStyle.qml \
+        $$PWD/Desktop/GroupBoxStyle.qml \
+        $$PWD/Desktop/MenuBarStyle.qml \
+        $$PWD/Desktop/MenuStyle.qml \
+        $$PWD/Desktop/ProgressBarStyle.qml \
+        $$PWD/Desktop/RadioButtonStyle.qml \
+        $$PWD/Desktop/ScrollViewStyle.qml \
+        $$PWD/Desktop/SliderStyle.qml \
+        $$PWD/Desktop/SpinBoxStyle.qml \
+        $$PWD/Desktop/SwitchStyle.qml \
+        $$PWD/Desktop/StatusBarStyle.qml\
+        $$PWD/Desktop/TabViewStyle.qml \
+        $$PWD/Desktop/TableViewStyle.qml \
+        $$PWD/Desktop/TextAreaStyle.qml \
+        $$PWD/Desktop/TextFieldStyle.qml \
+        $$PWD/Desktop/ToolBarStyle.qml \
+        $$PWD/Desktop/ToolButtonStyle.qml
+}
 
 # Images
 STYLES_QML_FILES += \

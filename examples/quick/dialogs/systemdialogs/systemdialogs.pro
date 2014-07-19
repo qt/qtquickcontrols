@@ -1,5 +1,5 @@
 QT += qml quick
-!android:!ios:!blackberry:!qnx:!winrt:qtHaveModule(widgets): QT += widgets
+!no_desktop: QT += widgets
 
 QT += quick qml
 SOURCES += main.cpp

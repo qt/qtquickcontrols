@@ -172,8 +172,8 @@ Style {
     */
     property Component background: Rectangle {
         color: "#fff"
-        implicitWidth: 250
-        implicitHeight: 250
+        implicitWidth: Math.max(250, Math.round(TextSingleton.implicitHeight * 14))
+        implicitHeight: Math.max(250, Math.round(TextSingleton.implicitHeight * 14))
     }
 
     /*!
@@ -189,7 +189,7 @@ Style {
         \endtable
     */
     property Component navigationBar: Rectangle {
-        height: 41
+        height: Math.round(TextSingleton.implicitHeight * 2.73)
         color: "#f9f9f9"
 
         Rectangle {
@@ -218,7 +218,7 @@ Style {
             text: styleData.title
             elide: Text.ElideRight
             horizontalAlignment: Text.AlignHCenter
-            font.pointSize: 14
+            font.pixelSize: TextSingleton.implicitHeight * 1.25
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: previousMonth.right
             anchors.leftMargin: 2
@@ -319,7 +319,7 @@ Style {
     */
     property Component dayOfWeekDelegate: Rectangle {
         color: gridVisible ? "#fcfcfc" : "transparent"
-        implicitHeight: 40
+        implicitHeight: Math.round(TextSingleton.implicitHeight * 2.25)
         Label {
             text: control.__locale.dayName(styleData.dayOfWeek, control.dayOfWeekFormat)
             anchors.centerIn: parent
@@ -340,7 +340,7 @@ Style {
         \endtable
     */
     property Component weekNumberDelegate: Rectangle {
-        implicitWidth: 30
+        implicitWidth: Math.round(TextSingleton.implicitHeight * 2)
         Label {
             text: styleData.weekNumber
             anchors.centerIn: parent
