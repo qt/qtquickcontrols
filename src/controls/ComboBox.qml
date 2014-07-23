@@ -222,6 +222,18 @@ Control {
     property alias validator: input.validator
 
     /*!
+        \qmlproperty Menu ComboBox::menu
+        \since QtQuick.Controls 1.3
+
+        This property contains the edit menu for working
+        with text selection. Set it to \c null if no menu
+        is wanted.
+
+        \note The menu is only in use when \l editable is \c true
+    */
+    property Menu menu: input.editMenu.defaultMenu
+
+    /*!
         \qmlproperty bool ComboBox::acceptableInput
         \since QtQuick.Controls 1.1
 

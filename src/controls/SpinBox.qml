@@ -203,6 +203,16 @@ Control {
     */
     readonly property bool inputMethodComposing: !!input.inputMethodComposing
 
+    /*!
+        \qmlproperty Menu SpinBox::menu
+        \since QtQuick.Controls 1.3
+
+        This property contains the edit menu for working
+        with text selection. Set it to \c null if no menu
+        is wanted.
+    */
+    property Menu menu: input.editMenu.defaultMenu
+
     style: Qt.createComponent(Settings.style + "/SpinBoxStyle.qml", spinbox)
 
     /*! \internal */
