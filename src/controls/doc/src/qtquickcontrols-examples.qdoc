@@ -149,11 +149,86 @@
     \example calendar
     \title Qt Quick Controls - Calendar Example
     \ingroup qtquickcontrols_examples
-    \brief Demonstrates the use of Calendar to display events
+    \brief Demonstrates the use of Calendar control
     \image qtquickcontrols-example-calendar.png
 
-    This example shows how Calendar can be used to view events retrieved from
-    an SQL database.
+    The Calendar example displays a Calendar control and an events list for
+    the selected date. It uses a C++ class to fetch the event details from an
+    SQLite database. The example app uses a custom CalendarStyle to highlight
+    the selected date and mark the dates that have events.
 
+    The following snippet from \e main.qml shows how the Calendar control is
+    used in the app:
+
+    \code
+    Calendar {
+        id: calendar
+        width: (parent.width > parent.height ? parent.width * 0.6 - parent.spacing : parent.width)
+        height: (parent.height > parent.width ? parent.height * 0.6 - parent.spacing : parent.height)
+        frameVisible: true
+        weekNumbersVisible: true
+        selectedDate: new Date(2014, 0, 1)
+        focus: true
+
+        style: CalendarStyle {
+            dayDelegate: Item {
+                     ...
+                }
+           }
+    }
+    \endcode
+
+    The C++ class, SqlEventModel, inherits SqlQueryModel to create a database
+    with dummy events for certain dates.
+
+    \quotefromfile calendar/src/sqleventmodel.cpp
+    \skipto SqlEventModel::SqlEventModel()
+    \printto QList
+    \skipto void SqlEventModel
+    \printuntil /\^}
+
+    In \e main.qml, the SqlEventModel custom type is used to get the list of
+    events to mark the dates on the calendar.
+
+    \code
+    SqlEventModel {
+        id: eventModel
+    }
+
+    Calendar {
+        ...
+        style: CalendarStyle {
+            dayDelegate: Item {
+                ...
+                Image {
+                    visible: eventModel.eventsForDate(styleData.date).length > 0
+                    ...
+                    source: "qrc:/images/eventindicator.png"
+                }
+            }
+        }
+    }
+    \endcode
+
+    The app uses a Flow type to position the items, and manipulates the
+    items' width and height based on the orientation change on mobile devices.
+
+    \code
+    Calendar {
+        id: calendar
+        width: (parent.width > parent.height ? parent.width * 0.6 - parent.spacing : parent.width)
+        height: (parent.height > parent.width ? parent.height * 0.6 - parent.spacing : parent.height)
+    }
+
+    Rectangle {
+        width: (parent.width > parent.height ? parent.width * 0.4 - parent.spacing : parent.width)
+        height: (parent.height > parent.width ? parent.height * 0.4 - parent.spacing : parent.height)
+        border.color: Qt.darker(color, 1.2)
+
+        ListView {
+            ...
+        }
+    }
+    \endcode
     \include examples-run.qdocinc
 */
