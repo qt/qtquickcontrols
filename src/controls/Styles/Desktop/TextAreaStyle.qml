@@ -55,4 +55,5 @@ ScrollViewStyle {
     }
 
     property int renderType: Text.NativeRendering
+    property real textMargin: 4
 }

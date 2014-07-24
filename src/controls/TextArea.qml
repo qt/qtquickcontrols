@@ -755,7 +755,7 @@ ScrollView {
             selectionColor: __style ? __style.selectionColor : "darkred"
             selectedTextColor: __style ? __style.selectedTextColor : "white"
             wrapMode: TextEdit.WordWrap
-            textMargin: 4
+            textMargin: __style && __style.textMargin !== undefined ? __style.textMargin : 4
 
             selectByMouse: area.selectByMouse && (!cursorHandle.delegate || !selectionHandle.delegate)
             readOnly: false

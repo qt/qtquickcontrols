@@ -97,6 +97,11 @@ ScrollViewStyle {
     */
     property int renderType: Text.NativeRendering
 
+    /*! The default margin, in pixels, around the text in the TextArea.
+      \since QtQuick.Controls.Styles 1.3
+      \sa TextArea::textMargin */
+    property real textMargin: 4
+
     /*! The cursor handle.
         \since QtQuick.Controls.Styles 1.3
 
