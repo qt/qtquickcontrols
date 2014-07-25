@@ -824,7 +824,6 @@ ScrollView {
 
             function moveHandles(cursor, selection) {
                 blockRecursion = true
-                Qt.inputMethod.commit()
                 cursorPosition = cursor
                 if (selection === -1) {
                     selectWord()
@@ -898,7 +897,6 @@ ScrollView {
                         edit.blockRecursion = true
                         if (!edit.hasSelection)
                             selectionHandle.position = cursorHandle.position
-                        Qt.inputMethod.commit()
                         edit.select(selectionHandle.position, cursorHandle.position)
                         edit.blockRecursion = false
                     }

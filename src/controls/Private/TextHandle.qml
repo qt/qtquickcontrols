@@ -88,6 +88,7 @@ Loader {
                 preventStealing = true
         }
         onPositionChanged: {
+            Qt.inputMethod.commit()
             var pt = mapToItem(editor, mouse.x - offset.x, mouse.y - offset.y)
 
             // limit vertically within mix/max coordinates or content bounds

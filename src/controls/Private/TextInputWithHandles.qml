@@ -87,7 +87,6 @@ TextInput {
 
     function moveHandles(cursor, selection) {
         blockRecursion = true
-        Qt.inputMethod.commit()
         cursorPosition = cursor
         if (selection === -1) {
             selectWord()
@@ -159,7 +158,6 @@ TextInput {
                 input.blockRecursion = true
                 if (!input.hasSelection)
                     selectionHandle.position = cursorHandle.position
-                Qt.inputMethod.commit()
                 input.select(selectionHandle.position, cursorHandle.position)
                 input.blockRecursion = false
             }
