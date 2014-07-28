@@ -93,7 +93,7 @@ Loader {
 
             // limit vertically within mix/max coordinates or content bounds
             var min = (minimum !== -1) ? minimum : 0
-            var max = (maximum !== -1) ? maximum : editor.length - 1
+            var max = (maximum !== -1) ? maximum : editor.length
             pt.y = Math.max(pt.y, editor.positionToRectangle(min).y)
             pt.y = Math.min(pt.y, editor.positionToRectangle(max).y)
 
@@ -102,8 +102,10 @@ Loader {
             // limit horizontally within min/max character positions
             if (minimum !== -1)
                 pos = Math.max(pos, minimum)
+            pos = Math.max(pos, 0)
             if (maximum !== -1)
                 pos = Math.min(pos, maximum)
+            pos = Math.min(pos, editor.length)
 
             handle.position = pos
         }
