@@ -46,6 +46,7 @@ import "." as Desktop
 Style {
     readonly property ComboBox control: __control
     property int renderType: Text.NativeRendering
+    padding { top: 4 ; left: 6 ; right: 6 ; bottom:4 }
     property Component panel: Item {
         property bool popup: !!styleItem.styleHint("comboboxpopup")
         property color textColor: SystemPaletteSingleton.text(control.enabled)

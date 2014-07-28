@@ -394,8 +394,10 @@ Control {
         selectionHandle: __style ? __style.selectionHandle : undefined
 
         anchors.fill: parent
-        anchors.leftMargin: 8
-        anchors.rightMargin: __panel.dropDownButtonWidth + __style.padding.right
+        anchors.leftMargin: __style ? __style.padding.left : 0
+        anchors.topMargin: __style ? __style.padding.top : 0
+        anchors.rightMargin: __style ? __panel.dropDownButtonWidth + __style.padding.right : 0
+        anchors.bottomMargin: __style ? __style.padding.bottom: 0
 
         verticalAlignment: Text.AlignVCenter
 
