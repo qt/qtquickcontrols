@@ -742,6 +742,7 @@ ScrollView {
                     property bool alternate: false
                     property bool selected: false
                     property bool hasActiveFocus: false
+                    property bool pressed: false
                 }
             }
             property int rowHeight: rowSizeItem.implicitHeight
@@ -761,6 +762,7 @@ ScrollView {
                         readonly property bool alternate: (index + rowCount) % 2 === 1
                         readonly property bool selected: false
                         readonly property bool hasActiveFocus: root.activeFocus
+                        readonly property bool pressed: false
                     }
                     readonly property var model: listView.model
                     readonly property var modelData: null
