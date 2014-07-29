@@ -56,6 +56,7 @@ import QtQuick.Controls.Private 1.0
         \row \li \b {styleData.index} : int \li The index of the menu item in its menu.
         \row \li \b {styleData.type} : enumeration \li The type of menu item. See below for possible values.
         \row \li \b {styleData.selected} : bool \li \c true if the menu item is selected.
+        \row \li \b {styleData.pressed} : bool \li \c true if the menu item is pressed. Available since 5.4.
         \row \li \b {styleData.text} : string \li The menu item's text, or title if it's a submenu.
         \row \li \b {styleData.underlineMnemonic} : bool \li Whether the style should underline the menu item's label mnemonic.
         \row \li \b {styleData.shortcut} : string \li The text for the menu item's shortcut.

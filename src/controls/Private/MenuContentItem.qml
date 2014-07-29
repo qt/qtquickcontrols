@@ -178,6 +178,8 @@ Loader {
                 readonly property int index: __menuItemIndex
                 readonly property int type: __menuItem ? __menuItem.type : -1
                 readonly property bool selected: type !== MenuItemType.Separator && __menu.__currentIndex === index
+                readonly property bool pressed: type !== MenuItemType.Separator && __menu.__currentIndex === index
+                                                && content.mousePressed // TODO Add key pressed condition once we get delayed menu closing
                 readonly property string text: type === MenuItemType.Menu ? __menuItem.title :
                                                type !== MenuItemType.Separator ? __menuItem.text : ""
                 readonly property bool underlineMnemonic: __menu.__contentItem.altPressed
