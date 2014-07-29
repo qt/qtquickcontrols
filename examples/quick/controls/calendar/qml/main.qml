@@ -54,121 +54,30 @@ ApplicationWindow {
 
     title: "Calendar Example"
 
-    SystemPalette {
-        id: systemPalette
-    }
-
     SqlEventModel {
         id: eventModel
     }
 
-    Row {
+    Flow {
         id: row
         anchors.fill: parent
         anchors.margins: 20
         spacing: 10
-
-        Rectangle {
-            width: row.width * 0.4 - row.spacing / 2
-            height: calendar.height
-            border.color: Qt.darker(color, 1.2)
-            Column {
-                id: eventsPane
-                anchors.fill: parent
-                anchors.margins: spacing / 2
-                spacing: 10
-
-                Row {
-                    id: eventDateRow
-                    width: parent.width
-                    height: eventDayLabel.height
-                    spacing: 10
-
-                    Label {
-                        id: eventDayLabel
-                        text: calendar.selectedDate.getDate()
-                        font.pointSize: 35
-                    }
-
-                    Column {
-                        height: eventDayLabel.height
-
-                        Label {
-                            readonly property var options: { weekday: "long" }
-                            text: Qt.locale().standaloneDayName(calendar.selectedDate.getDay(), Locale.LongFormat)
-                            font.pointSize: 18
-                        }
-                        Label {
-                            text: Qt.locale().standaloneMonthName(calendar.selectedDate.getMonth())
-                                  + calendar.selectedDate.toLocaleDateString(Qt.locale(), " yyyy")
-                            font.pointSize: 12
-                        }
-                    }
-                }
-
-                ListView {
-                    id: eventsListView
-                    width: parent.width
-                    height: parent.height - eventDateRow.height
-                    spacing: 4
-                    clip: true
-
-                    model: eventModel.eventsForDate(calendar.selectedDate)
-                    delegate: Rectangle {
-                        width: eventsListView.width
-                        height: eventItemColumn.height
-
-                        Image {
-                            anchors.top: parent.top
-                            anchors.topMargin: 4
-                            width: 12
-                            height: width
-                            source: "qrc:/images/eventindicator.png"
-                        }
-
-                        Rectangle {
-                            width: parent.width
-                            height: 1
-                            color: "#eee"
-                        }
-
-                        Column {
-                            id: eventItemColumn
-                            anchors.left: parent.left
-                            anchors.leftMargin: 20
-                            anchors.right: parent.right
-                            height: timeLabel.height + nameLabel.height + 8
-
-                            Label {
-                                id: nameLabel
-                                width: parent.width
-                                wrapMode: Text.Wrap
-                                text: modelData.name
-                            }
-                            Label {
-                                id: timeLabel
-                                width: parent.width
-                                wrapMode: Text.Wrap
-                                text: modelData.startDate.toLocaleTimeString(calendar.locale, Locale.ShortFormat)
-                                color: "#aaa"
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        layoutDirection: Qt.RightToLeft
 
         Calendar {
             id: calendar
-            width: parent.width * 0.6 - row.spacing / 2
-            height: parent.height
+            width: (parent.width > parent.height ? parent.width * 0.6 - parent.spacing : parent.width)
+            height: (parent.height > parent.width ? parent.height * 0.6 - parent.spacing : parent.height)
+            frameVisible: true
+            weekNumbersVisible: true
             selectedDate: new Date(2014, 0, 1)
             focus: true
 
             style: CalendarStyle {
                 dayDelegate: Item {
                     readonly property color sameMonthDateTextColor: "#444"
-                    readonly property color selectedDateColor: Qt.platform.os === "osx" ? "#3778d0" : systemPalette.highlight
+                    readonly property color selectedDateColor: Qt.platform.os === "osx" ? "#3778d0" : __syspal.highlight
                     readonly property color selectedDateTextColor: "white"
                     readonly property color differentMonthDateTextColor: "#bbb"
                     readonly property color invalidDatecolor: "#dddddd"
@@ -193,7 +102,6 @@ ApplicationWindow {
                     Label {
                         id: dayDelegateText
                         text: styleData.date.getDate()
-                        font.pixelSize: 14
                         anchors.centerIn: parent
                         color: {
                             var color = invalidDatecolor;
@@ -205,6 +113,96 @@ ApplicationWindow {
                                 }
                             }
                             color;
+                        }
+                    }
+                }
+            }
+        }
+
+        Component {
+            id: eventListHeader
+
+            Row {
+                id: eventDateRow
+                width: parent.width
+                height: eventDayLabel.height
+                spacing: 10
+
+                Label {
+                    id: eventDayLabel
+                    text: calendar.selectedDate.getDate()
+                    font.pointSize: 35
+                }
+
+                Column {
+                    height: eventDayLabel.height
+
+                    Label {
+                        readonly property var options: { weekday: "long" }
+                        text: Qt.locale().standaloneDayName(calendar.selectedDate.getDay(), Locale.LongFormat)
+                        font.pointSize: 18
+                    }
+                    Label {
+                        text: Qt.locale().standaloneMonthName(calendar.selectedDate.getMonth())
+                              + calendar.selectedDate.toLocaleDateString(Qt.locale(), " yyyy")
+                        font.pointSize: 12
+                    }
+                }
+            }
+        }
+
+        Rectangle {
+            width: (parent.width > parent.height ? parent.width * 0.4 - parent.spacing : parent.width)
+            height: (parent.height > parent.width ? parent.height * 0.4 - parent.spacing : parent.height)
+            border.color: Qt.darker(color, 1.2)
+
+            ListView {
+                id: eventsListView
+                spacing: 4
+                clip: true
+                header: eventListHeader
+                anchors.fill: parent
+                anchors.margins: 10
+                model: eventModel.eventsForDate(calendar.selectedDate)
+
+                delegate: Rectangle {
+                    width: eventsListView.width
+                    height: eventItemColumn.height
+                    anchors.horizontalCenter: parent.horizontalCenter
+
+                    Image {
+                        anchors.top: parent.top
+                        anchors.topMargin: 4
+                        width: 12
+                        height: width
+                        source: "qrc:/images/eventindicator.png"
+                    }
+
+                    Rectangle {
+                        width: parent.width
+                        height: 1
+                        color: "#eee"
+                    }
+
+                    Column {
+                        id: eventItemColumn
+                        anchors.left: parent.left
+                        anchors.leftMargin: 20
+                        anchors.right: parent.right
+                        height: timeLabel.height + nameLabel.height + 8
+
+                        Label {
+                            id: nameLabel
+                            width: parent.width
+                            wrapMode: Text.Wrap
+                            text: modelData.name
+                        }
+                        Label {
+                            id: timeLabel
+                            width: parent.width
+                            wrapMode: Text.Wrap
+                            text: modelData.startDate.toLocaleTimeString(calendar.locale, Locale.ShortFormat)
+                            color: "#aaa"
                         }
                     }
                 }
