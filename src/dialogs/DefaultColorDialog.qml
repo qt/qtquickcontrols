@@ -136,7 +136,7 @@ AbstractColorDialog {
                     anchors.centerIn: parent
                     property real hue: hueSlider.value
 
-                    fragmentShader: root.window.glslIsCoreProfile ? "#version 150
+                    fragmentShader: content.window && content.window.glslIsCoreProfile ? "#version 150
                     in vec2 qt_TexCoord0;
                     uniform float qt_Opacity;
                     uniform float hue;
