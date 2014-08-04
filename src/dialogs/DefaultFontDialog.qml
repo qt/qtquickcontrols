@@ -125,7 +125,7 @@ AbstractFontDialog {
                     id: fontListView
                     Layout.fillWidth: true
                     Layout.fillHeight: true
-                    Layout.minimumWidth: fontColumn.width + content.outerSpacing
+                    Layout.minimumWidth: fontColumn.width
                     headerVisible: false
                     function reset() {
                         fontModel.findIndex()
@@ -184,6 +184,7 @@ AbstractFontDialog {
                         content.font.family = fontModel.get(row).family
                         positionViewAtRow(row, ListView.Contain)
                     }
+
                 }
                 TableView {
                     id: weightListView
