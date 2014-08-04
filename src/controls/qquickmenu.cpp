@@ -388,7 +388,7 @@ void QQuickMenu::popup()
     __popup(mousePos.x(), mousePos.y());
 }
 
-void QQuickMenu::__popup(qreal x, qreal y, int atItemIndex)
+void QQuickMenu::__popup(qreal x, qreal y, int atItemIndex, MenuType menuType)
 {
     if (popupVisible()) {
         __closeMenu();
@@ -415,6 +415,7 @@ void QQuickMenu::__popup(qreal x, qreal y, int atItemIndex)
                 screenPosition.rx() -= qMax(static_cast<qreal>(m_minimumWidth), m_menuContentItem->width());
             screenPosition = visualItem()->mapToScene(screenPosition);
         }
+        m_platformMenu->setMenuType(QPlatformMenu::MenuType(menuType));
         m_platformMenu->showPopup(parentWindow, screenPosition.toPoint(), atItem ? atItem->platformItem() : 0);
     } else {
         m_popupWindow = new QQuickMenuPopupWindow();

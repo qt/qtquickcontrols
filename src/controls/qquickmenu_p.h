@@ -75,8 +75,12 @@ class QQuickMenu : public QQuickMenuText
     Q_PROPERTY(qreal __yOffset READ yOffset WRITE setYOffset)
     Q_PROPERTY(QQuickAction *__action READ action CONSTANT)
     Q_PROPERTY(QRect __popupGeometry READ popupGeometry NOTIFY __popupGeometryChanged)
+    Q_ENUMS(MenuType)
 
 public:
+    // MenuType must stay in sync with QPlatformMenu::MenuType
+    enum MenuType { DefaultMenu = 0, EditMenu };
+
     Q_INVOKABLE void popup();
     Q_INVOKABLE QQuickMenuItem *addItem(QString);
     Q_INVOKABLE QQuickMenuItem *insertItem(int, QString);
@@ -87,7 +91,7 @@ public:
     Q_INVOKABLE void removeItem(QQuickMenuBase *);
     Q_INVOKABLE void clear();
 
-    Q_INVOKABLE void __popup(qreal x, qreal y, int atActionIndex = -1);
+    Q_INVOKABLE void __popup(qreal x, qreal y, int atActionIndex = -1, MenuType menuType = DefaultMenu);
 
 public Q_SLOTS:
     void __closeMenu();
