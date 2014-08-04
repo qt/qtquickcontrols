@@ -57,7 +57,33 @@ ScrollViewStyle {
         visible: false
     }
 
-    property Component headerDelegate: null
+    property Component headerDelegate: Rectangle {
+        color: AndroidStyle.colorValue(styleDef.defaultBackgroundColor)
+        height: Math.max(styleDef.View_minHeight || 0, headerLabel.implicitHeight)
+
+        readonly property var styleDef: AndroidStyle.styleDef.listSeparatorTextViewStyle
+        readonly property real paddingStart: styleDef.View_paddingStart || styleDef.View_paddingLeft || 0
+        readonly property real paddingEnd: styleDef.View_paddingEnd || styleDef.View_paddingRight || 0
+
+        DrawableLoader {
+            id: bg
+            anchors.fill: parent
+            window_focused: control.window && control.window.active
+            styleDef: parent.styleDef.View_background
+        }
+
+        LabelStyle {
+            id: headerLabel
+            text: styleData.value !== undefined ? styleData.value : ""
+            horizontalAlignment: styleData.textAlignment
+            pressed: styleData.pressed
+            window_focused: control.window && control.window.active
+            styleDef: parent.styleDef
+            anchors.fill: parent
+            anchors.leftMargin: paddingStart
+            anchors.rightMargin: paddingEnd
+        }
+    }
 
     property Component rowDelegate: Rectangle {
         readonly property var styleDef: AndroidStyle.styleDef.simple_list_item
