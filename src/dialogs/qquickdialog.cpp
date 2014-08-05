@@ -73,7 +73,9 @@ QT_BEGIN_NAMESPACE
 /*!
     \qmlsignal Dialog::accepted()
 
-    This signal is emitted by \l accept().
+    This signal is emitted when the user has pressed any button which has the
+    \l {QMessageBox::}{AcceptRole}: \gui OK, \gui Open, \gui Save,
+    \gui {Save All}, \gui Retry or \gui Ignore.
 
     The corresponding handler is \c onAccepted.
 */
@@ -81,7 +83,9 @@ QT_BEGIN_NAMESPACE
 /*!
     \qmlsignal Dialog::rejected()
 
-    This signal is emitted by \l reject().
+    This signal is emitted when the user has dismissed the dialog, by closing
+    the dialog window, by pressing a \gui Cancel, \gui Close or \gui Abort
+    button on the dialog, or by pressing the back button or the escape key.
 
     The corresponding handler is \c onRejected.
 */
@@ -150,6 +154,12 @@ QT_BEGIN_NAMESPACE
     \c false.
 
     \sa modality
+*/
+
+/*! \qmlproperty StandardButton Dialog::clickedButton
+
+    This property holds the button pressed by the user. Its value is
+    one of the flags set for the standardButtons property.
 */
 
 /*!
@@ -292,12 +302,6 @@ void QQuickDialog::setStandardButtons(StandardButtons buttons)
     m_standardButtonsRightModel = QJSValue();
     emit standardButtonsChanged();
 }
-
-/*!
-    \qmlproperty bool Dialog::visible
-
-    This property holds whether the dialog is visible. By default this is false.
-*/
 
 /*!
     \qmlproperty QObject Dialog::contentItem

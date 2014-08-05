@@ -185,12 +185,17 @@ QPlatformColorDialogHelper *QQuickPlatformColorDialog::helper()
     containing the dialog's parent Item, modal with respect to the whole
     application, or non-modal.
 
-    By default it is \l NonModal.
+    By default it is \c Qt.NonModal.
 
     Modality does not mean that there are any blocking calls to wait for the
     dialog to be accepted or rejected; it's only that the user will be
     prevented from interacting with the parent window and/or the application
     windows at the same time.
+
+    You probably need to write an onAccepted handler if you wish to change a
+    color after the user has pressed the OK button, or an
+    onCurrentColorChanged handler if you wish to react to every change the
+    user makes while the dialog is open.
 
     On MacOS the color dialog is only allowed to be non-modal.
 */
