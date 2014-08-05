@@ -54,6 +54,7 @@ AbstractFileDialog {
         if (visible) {
             view.needsWidthAdjustment = true
             view.selection.clear()
+            view.focus = true
         }
     }
 
@@ -151,6 +152,7 @@ AbstractFileDialog {
                 break
             }
         }
+        Keys.forwardTo: [view.flickableItem]
 
         SplitView {
             id: splitter
