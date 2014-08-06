@@ -1,6 +1,5 @@
 HEADERS += \
     $$PWD/qquickaction_p.h \
-    $$PWD/qquickapplicationwindow_p.h \
     $$PWD/qquickexclusivegroup_p.h \
     $$PWD/qquickmenu_p.h \
     $$PWD/qquickmenubar_p.h \
@@ -14,7 +13,6 @@ HEADERS += \
 
 SOURCES += \
     $$PWD/qquickaction.cpp \
-    $$PWD/qquickapplicationwindow.cpp \
     $$PWD/qquickexclusivegroup.cpp \
     $$PWD/qquickmenu.cpp \
     $$PWD/qquickmenubar.cpp \

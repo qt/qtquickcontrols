@@ -88,7 +88,7 @@ import QtQuick.Controls.Private 1.0
     point to explore this type.
 */
 
-ApplicationWindowPrivate {
+Window {
     id: root
 
     /*!
@@ -221,7 +221,7 @@ ApplicationWindowPrivate {
                 sourceComponent: style
                 property var __control: root
                 property QtObject styleData: QtObject {
-                    readonly property bool hasColor: root.__hasColor
+                    readonly property bool hasColor: root.color != "#ffffff"
                 }
                 onStatusChanged: if (status === Loader.Error) console.error("Failed to load Style for", root)
             }
