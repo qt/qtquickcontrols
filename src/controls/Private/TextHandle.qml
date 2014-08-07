@@ -80,7 +80,11 @@ Loader {
         property point offset
         onPressed: {
             pressX = mouse.x
-            offset = Qt.point(x + mouse.x, y + mouse.y)
+            var handleRect = editor.positionToRectangle(handle.position)
+            var centerX = handleRect.x + (handleRect.width / 2)
+            var centerY = handleRect.y + (handleRect.height / 2)
+            var center = mapFromItem(editor, centerX, centerY)
+            offset = Qt.point(mouseX - center.x, mouseY - center.y)
         }
         onReleased: preventStealing = false
         onMouseXChanged: {
