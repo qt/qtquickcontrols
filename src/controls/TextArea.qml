@@ -774,18 +774,16 @@ ScrollView {
             property rect selectionRectangle: contentWidth ? positionToRectangle(selectionPosition)
                                                            : positionToRectangle(selectionPosition)
 
-            onSelectionStartChanged: {
+            onSelectionStartChanged: syncHandlesWithSelection()
+            onCursorPositionChanged: syncHandlesWithSelection()
+
+            function syncHandlesWithSelection()
+            {
                 if (!blockRecursion && selectionHandle.delegate) {
                     blockRecursion = true
-                    selectionHandle.position = selectionPosition
-                    blockRecursion = false
-                }
-            }
-
-            onCursorPositionChanged: {
-                if (!blockRecursion && cursorHandle.delegate) {
-                    blockRecursion = true
+                    // We cannot use property selectionPosition since it gets updated after onSelectionStartChanged
                     cursorHandle.position = cursorPosition
+                    selectionHandle.position = (selectionStart !== cursorPosition) ? selectionStart : selectionEnd
                     blockRecursion = false
                 }
                 ensureVisible(cursorRectangle)
