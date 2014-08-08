@@ -2,7 +2,7 @@ TARGET  = qtquickcontrolsplugin
 TARGETPATH = QtQuick/Controls
 IMPORT_VERSION = 1.2
 
-QT += qml quick quick-private gui-private core-private
+QT += qml quick quick-private qml-private gui-private core-private
 
 QMAKE_DOCS = $$PWD/doc/qtquickcontrols.qdocconf
 

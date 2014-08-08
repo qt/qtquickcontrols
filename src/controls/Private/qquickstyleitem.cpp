@@ -51,6 +51,7 @@
 #include <qquickwindow.h>
 #include "private/qguiapplication_p.h"
 #include <QtQuick/private/qquickwindow_p.h>
+#include <QtQuick/private/qquickitem_p.h>
 #include <QtGui/qpa/qplatformtheme.h>
 #include "../qquickmenuitem_p.h"
 
@@ -97,7 +98,7 @@ CGContextRef qt_mac_cg_context(const QPaintDevice *pdev)
 
 #endif
 
-class QQuickStyleNode : public QSGGeometryNode
+class QQuickStyleNode : public QSGNinePatchNode
 {
 public:
     QQuickStyleNode()
@@ -115,38 +116,58 @@ public:
         delete m_material.texture();
     }
 
-    void initialize(QSGTexture *texture,
-                    const QRectF &bounds, qreal devicePixelRatio,
-                    int left, int top, int right, int bottom) {
-
+    virtual void setTexture(QSGTexture *texture)
+    {
         delete m_material.texture();
         m_material.setTexture(texture);
+    }
 
-        if (left <= 0 && top <= 0 && right <= 0 && bottom <= 0) {
+    virtual void setBounds(const QRectF &bounds)
+    {
+        m_bounds = bounds;
+    }
+
+    virtual void setDevicePixelRatio(qreal ratio)
+    {
+        m_devicePixelRatio = ratio;
+    }
+
+    virtual void setPadding(qreal left, qreal top, qreal right, qreal bottom)
+    {
+        m_paddingLeft = left;
+        m_paddingTop = top;
+        m_paddingRight = right;
+        m_paddingBottom = bottom;
+    }
+
+    virtual void update() {
+        QSGTexture *texture = m_material.texture();
+
+        if (m_paddingLeft <= 0 && m_paddingTop <= 0 && m_paddingRight <= 0 && m_paddingBottom <= 0) {
             m_geometry.allocate(4, 0);
-            QSGGeometry::updateTexturedRectGeometry(&m_geometry, bounds, texture->normalizedTextureSubRect());
+            QSGGeometry::updateTexturedRectGeometry(&m_geometry, m_bounds, texture->normalizedTextureSubRect());
             markDirty(QSGNode::DirtyGeometry | QSGNode::DirtyMaterial);
             return;
         }
 
         QRectF tc = texture->normalizedTextureSubRect();
         QSize ts = texture->textureSize();
-        ts.setHeight(ts.height() / devicePixelRatio);
-        ts.setWidth(ts.width() / devicePixelRatio);
+        ts.setHeight(ts.height() / m_devicePixelRatio);
+        ts.setWidth(ts.width() / m_devicePixelRatio);
 
         qreal invtw = tc.width() / ts.width();
         qreal invth = tc.height() / ts.height();
 
         struct Coord { qreal p; qreal t; };
-        Coord cx[4] = { { bounds.left(), tc.left() },
-                        { bounds.left() + left, tc.left() + left * invtw },
-                        { bounds.right() - right, tc.right() - right * invtw },
-                        { bounds.right(), tc.right() }
+        Coord cx[4] = { { m_bounds.left(), tc.left() },
+                        { m_bounds.left() + m_paddingLeft, tc.left() + m_paddingLeft * invtw },
+                        { m_bounds.right() - m_paddingRight, tc.right() - m_paddingRight * invtw },
+                        { m_bounds.right(), tc.right() }
                       };
-        Coord cy[4] = { { bounds.top(), tc.top() },
-                        { bounds.top() + top, tc.top() + top * invth },
-                        { bounds.bottom() - bottom, tc.bottom() - bottom * invth },
-                        { bounds.bottom(), tc.bottom() }
+        Coord cy[4] = { { m_bounds.top(), tc.top() },
+                        { m_bounds.top() + m_paddingTop, tc.top() + m_paddingTop * invth },
+                        { m_bounds.bottom() - m_paddingBottom, tc.bottom() - m_paddingBottom * invth },
+                        { m_bounds.bottom(), tc.bottom() }
                       };
 
         m_geometry.allocate(16, 28);
@@ -183,6 +204,12 @@ public:
 
     }
 
+    QRectF m_bounds;
+    qreal m_devicePixelRatio;
+    qreal m_paddingLeft;
+    qreal m_paddingTop;
+    qreal m_paddingRight;
+    qreal m_paddingBottom;
     QSGGeometry m_geometry;
     QSGTextureMaterial m_material;
 };
@@ -1762,9 +1789,12 @@ QSGNode *QQuickStyleItem::updatePaintNode(QSGNode *node, UpdatePaintNodeData *)
         return 0;
     }
 
-    QQuickStyleNode *styleNode = static_cast<QQuickStyleNode *>(node);
-    if (!styleNode)
-        styleNode = new QQuickStyleNode;
+    QSGNinePatchNode *styleNode = static_cast<QSGNinePatchNode *>(node);
+    if (!styleNode) {
+        styleNode = QQuickItemPrivate::get(this)->sceneGraphContext()->createQStyleNode();
+        if (!styleNode)
+            styleNode = new QQuickStyleNode;
+    }
 
 #ifdef QSG_RUNTIME_DESCRIPTION
     qsgnode_set_description(styleNode,
@@ -1774,10 +1804,12 @@ QSGNode *QQuickStyleItem::updatePaintNode(QSGNode *node, UpdatePaintNodeData *)
                             .arg(text()));
 #endif
 
-    styleNode->initialize(window()->createTextureFromImage(m_image, QQuickWindow::TextureCanUseAtlas),
-                          boundingRect(),
-                          window()->devicePixelRatio(),
-                          m_border.left(), m_border.top(), m_border.right(), m_border.bottom());
+    styleNode->setTexture(window()->createTextureFromImage(m_image, QQuickWindow::TextureCanUseAtlas));
+    styleNode->setBounds(boundingRect());
+    styleNode->setDevicePixelRatio(window()->devicePixelRatio());
+    styleNode->setPadding(m_border.left(), m_border.top(), m_border.right(), m_border.bottom());
+    styleNode->update();
+
     return styleNode;
 }
 
