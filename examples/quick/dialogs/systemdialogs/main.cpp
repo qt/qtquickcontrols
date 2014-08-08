@@ -47,10 +47,10 @@ int main(int argc, char *argv[])
 {
     QtQuickControlsApplication app(argc, argv);
     if (QCoreApplication::arguments().contains(QLatin1String("--coreprofile"))) {
-        QSurfaceFormat fmt = QQuickWindow::defaultFormat();
+        QSurfaceFormat fmt;
         fmt.setVersion(4, 4);
         fmt.setProfile(QSurfaceFormat::CoreProfile);
-        QQuickWindow::setDefaultFormat(fmt);
+        QSurfaceFormat::setDefaultFormat(fmt);
     }
     QQmlApplicationEngine engine(QUrl("qrc:/dialogs/systemdialogs/systemdialogs.qml"));
     return app.exec();
