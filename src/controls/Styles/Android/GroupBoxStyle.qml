@@ -38,6 +38,7 @@
 **
 ****************************************************************************/
 import QtQuick 2.2
+import QtQuick.Window 2.2
 import QtQuick.Controls 1.2
 import QtQuick.Controls.Private 1.0
 import QtQuick.Controls.Styles.Android 1.0
@@ -98,7 +99,7 @@ GroupBoxStyle {
             checked: control.checked
             pressed: check.pressed
             focused: check.activeFocus
-            window_focused: control.window && control.window.active
+            window_focused: control.Window.active
             styleDef: AndroidStyle.styleDef.checkboxStyle.CompoundButton_button
             anchors.verticalCenter: label.verticalCenter
             width: control.checkable ? item.implicitWidth : 0
@@ -110,7 +111,7 @@ GroupBoxStyle {
             pressed: check.pressed
             selected: control.checked
             focused: check.activeFocus
-            window_focused: control.window && control.window.active
+            window_focused: control.Window.active
             styleDef: AndroidStyle.styleDef.checkboxStyle
 
             anchors.top: parent.top

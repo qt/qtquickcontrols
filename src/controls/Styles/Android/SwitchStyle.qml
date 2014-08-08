@@ -72,7 +72,7 @@ SwitchStyle {
                 pressed: control.pressed
                 checked: control.checked
                 focused: control.activeFocus
-                window_focused: control.window && control.window.active
+                window_focused: control.Window.active
                 styleDef: panel.styleDef.Switch_track
             }
 
@@ -114,7 +114,7 @@ SwitchStyle {
                     pressed: control.pressed
                     checked: control.checked
                     focused: control.activeFocus
-                    window_focused: control.window && control.window.active
+                    window_focused: control.Window.active
                     styleDef: panel.styleDef.Switch_thumb
                 }
 
@@ -125,7 +125,7 @@ SwitchStyle {
                     pressed: control.pressed
                     focused: control.activeFocus
                     selected: control.checked
-                    window_focused: control.window && control.window.active
+                    window_focused: control.Window.active
                     styleDef: panel.styleDef.Switch_switchTextAppearance
 
                     anchors.fill: parent

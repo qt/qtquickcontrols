@@ -54,7 +54,7 @@ DrawableLoader {
 
     pressed: styleData.pressed
     focused: control.activeFocus
-    window_focused: focused && control.window && control.window.active
+    window_focused: focused && control.Window.active
 
     Connections {
         target: editor

@@ -73,7 +73,7 @@ ScrollViewStyle {
             styleDef: styleData.horizontal ? AndroidStyle.styleDef.scrollViewStyle.View_scrollbarTrackHorizontal
                                            : AndroidStyle.styleDef.scrollViewStyle.View_scrollbarTrackVertical
             focused: control.activeFocus
-            window_focused: control.window && control.window.active
+            window_focused: control.Window.active
         }
     }
 
@@ -82,6 +82,6 @@ ScrollViewStyle {
                                        : AndroidStyle.styleDef.scrollViewStyle.View_scrollbarThumbVertical
         pressed: styleData.pressed
         focused: control.activeFocus
-        window_focused: control.window && control.window.active
+        window_focused: control.Window.active
     }
 }
