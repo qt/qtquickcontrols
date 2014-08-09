@@ -38,7 +38,7 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.2
+import QtQuick 2.4
 
 Item {
     id: rootItem
@@ -64,7 +64,7 @@ Item {
         hideSource: visible
     }
 
-    property string __internalBlurVertexShader: rootItem.window.glslIsCoreProfile ? "#version 150
+    property string __internalBlurVertexShader: OpenGLInfo.profile === OpenGLInfo.CoreProfile ? "#version 150
         in vec4 qt_Vertex;
         in vec2 qt_MultiTexCoord0;
         uniform mat4 qt_Matrix;
@@ -101,7 +101,7 @@ Item {
             gl_Position = qt_Matrix * qt_Vertex;
         }
     "
-    property string __internalBlurFragmentShader: rootItem.window.glslIsCoreProfile ? "#version 150
+    property string __internalBlurFragmentShader: OpenGLInfo.profile === OpenGLInfo.CoreProfile ? "#version 150
         uniform sampler2D source;
         uniform float qt_Opacity;
         in vec2 qt_TexCoord0;
@@ -392,7 +392,7 @@ Item {
 
         onLodChanged: calculateWeights()
 
-        fragmentShader: rootItem.window.glslIsCoreProfile ? "#version 150
+        fragmentShader: rootItem.OpenGLInfo.profile === OpenGLInfo.CoreProfile ? "#version 150
             uniform sampler2D source1;
             uniform sampler2D source2;
             uniform sampler2D source3;
