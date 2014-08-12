@@ -58,3 +58,5 @@ imagedirs += images
 
 navigation.landingpage = "Qt Quick Controls"
 navigation.qmltypespage = "Qt Quick Controls QML Types"
+
+tagfile                 = qtquickcontrols.tags
