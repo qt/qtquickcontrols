@@ -156,6 +156,22 @@ TestCase {
         textfield.destroy()
     }
 
+    function test_remove() {
+        var textfield = Qt.createQmlObject('import QtQuick.Controls 1.2; TextField {}', container, '')
+        textfield.forceActiveFocus()
+
+        textfield.text = "this is my text"
+
+        textfield.remove(0, 5);
+        compare(textfield.text, "is my text")
+        textfield.remove(2, 5);
+        compare(textfield.text, "is text")
+        textfield.remove(2, 7);
+        compare(textfield.text, "is")
+
+        textfield.destroy()
+    }
+
     function test_select() {
         var textfield = Qt.createQmlObject('import QtQuick.Controls 1.2; TextField {}', container, '')
         textfield.forceActiveFocus()
