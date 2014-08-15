@@ -76,6 +76,7 @@ Loader {
         id: mouse
         anchors.fill: item
         enabled: handle.active
+        preventStealing: true
         property real pressX
         property point offset
         property bool handleDragged: false
@@ -91,7 +92,6 @@ Loader {
             offset = Qt.point(mouseX - center.x, mouseY - center.y)
         }
         onReleased: {
-            preventStealing = false
             if (!handleDragged) {
                 // The user just clicked on the handle. In that
                 // case clear the selection.
@@ -99,10 +99,6 @@ Loader {
                 var editorPos = editor.positionAt(mousePos.x, mousePos.y)
                 editor.select(editorPos, editorPos)
             }
-        }
-        onMouseXChanged: {
-            if (Math.abs(mouse.x - pressX) >= Settings.dragThreshold)
-                preventStealing = true
         }
         onPositionChanged: {
             handleDragged = true
