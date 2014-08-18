@@ -38,7 +38,7 @@
 **
 *****************************************************************************/
 
-import QtQuick 2.2
+import QtQuick 2.4
 import QtQuick.Controls 1.2
 import QtQuick.Dialogs 1.0
 import QtQuick.Window 2.1
@@ -136,7 +136,7 @@ AbstractColorDialog {
                     anchors.centerIn: parent
                     property real hue: hueSlider.value
 
-                    fragmentShader: content.window && content.window.glslIsCoreProfile ? "#version 150
+                    fragmentShader: content.OpenGLInfo.profile === OpenGLInfo.CoreProfile ? "#version 150
                     in vec2 qt_TexCoord0;
                     uniform float qt_Opacity;
                     uniform float hue;

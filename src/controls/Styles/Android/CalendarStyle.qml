@@ -65,7 +65,7 @@ CalendarStyle {
             id: navigationBar
             text: styleData.title
             focused: control.activeFocus
-            window_focused: control.window && control.window.active
+            window_focused: control.Window.active
             styleDef: AndroidStyle.styleDef.calendarViewStyle
             width: parent.width - prevButton.width - nextButton.width
             height: parent.height
@@ -85,7 +85,7 @@ CalendarStyle {
             anchors.centerIn: parent
             text: control.__locale.dayName(styleData.dayOfWeek, control.dayOfWeekFormat)
             focused: control.activeFocus
-            window_focused: control.window && control.window.active
+            window_focused: control.Window.active
             styleDef: AndroidStyle.styleDef.calendarViewStyle.CalendarView_weekDayTextAppearance
         }
     }
@@ -98,7 +98,7 @@ CalendarStyle {
             anchors.centerIn: parent
             text: styleData.weekNumber
             focused: control.activeFocus
-            window_focused: control.window && control.window.active
+            window_focused: control.Window.active
             styleDef: AndroidStyle.styleDef.calendarViewStyle
             color: AndroidStyle.colorValue(styleDef.CalendarView_weekNumberColor)
         }
@@ -116,7 +116,7 @@ CalendarStyle {
         DrawableLoader {
             height: parent.height
             focused: control.activeFocus
-            window_focused: control.window && control.window.active
+            window_focused: control.Window.active
             active: styleData.selected
             styleDef: AndroidStyle.styleDef.calendarViewStyle.CalendarView_selectedDateVerticalBar
             width: 6 // UNSCALED_SELECTED_DATE_VERTICAL_BAR_WIDTH
@@ -125,7 +125,7 @@ CalendarStyle {
         DrawableLoader {
             height: parent.height
             focused: control.activeFocus
-            window_focused: control.window && control.window.active
+            window_focused: control.Window.active
             anchors.right: parent.right
             active: styleData.selected
             styleDef: AndroidStyle.styleDef.calendarViewStyle.CalendarView_selectedDateVerticalBar
@@ -139,7 +139,7 @@ CalendarStyle {
             pressed: styleData.pressed
             selected: styleData.selected
             focused: control.activeFocus
-            window_focused: control.window && control.window.active
+            window_focused: control.Window.active
             styleDef: AndroidStyle.styleDef.calendarViewStyle.CalendarView_dateTextAppearance
             color: styleData.valid && styleData.visibleMonth ? AndroidStyle.colorValue(AndroidStyle.styleDef.calendarViewStyle.CalendarView_focusedMonthDateColor)
                                                              : AndroidStyle.colorValue(AndroidStyle.styleDef.calendarViewStyle.CalendarView_unfocusedMonthDateColor)

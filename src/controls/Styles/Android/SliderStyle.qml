@@ -84,7 +84,7 @@ Style {
                 id: thumb
                 pressed: control.pressed
                 focused: control.activeFocus
-                window_focused: control.window && control.window.active
+                window_focused: control.Window.active
                 styleDef: panel.styleDef.SeekBar_thumb
                 x: Math.round((control.__handlePos - control.minimumValue) / (control.maximumValue - control.minimumValue) * ((horizontal ? panel.width : panel.height) - thumb.width))
             }

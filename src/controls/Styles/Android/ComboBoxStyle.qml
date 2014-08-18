@@ -81,7 +81,7 @@ Style {
             anchors.fill: parent
             pressed: control.pressed
             focused: control.activeFocus
-            window_focused: control.window && control.window.active
+            window_focused: control.Window.active
             styleDef: panel.styleDef.View_background
         }
 
@@ -91,7 +91,7 @@ Style {
             visible: !control.editable
             pressed: control.pressed
             focused: control.activeFocus
-            window_focused: control.window && control.window.active
+            window_focused: control.Window.active
             styleDef: panel.styleDef
 
             anchors.fill: bg

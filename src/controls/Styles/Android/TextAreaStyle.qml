@@ -68,7 +68,7 @@ ScrollViewStyle {
         visible: false
         enabled: control.enabled
         focused: control.activeFocus
-        window_focused: focused && control.window && control.window.active
+        window_focused: focused && control.Window.active
         styleDef: style.styleDef
     }
 

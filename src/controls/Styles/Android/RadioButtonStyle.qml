@@ -63,7 +63,7 @@ Style {
             pressed: control.pressed
             checked: control.checked
             focused: control.activeFocus
-            window_focused: control.window && control.window.active
+            window_focused: control.Window.active
             styleDef: panel.styleDef.CompoundButton_button
             anchors.verticalCenter: parent.verticalCenter
         }
@@ -74,7 +74,7 @@ Style {
             pressed: control.pressed
             focused: control.activeFocus
             selected: control.checked
-            window_focused: control.window && control.window.active
+            window_focused: control.Window.active
             styleDef: panel.styleDef
 
             anchors.fill: parent

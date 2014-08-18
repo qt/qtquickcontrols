@@ -70,7 +70,7 @@ Style {
             id: bg
             anchors.fill: parent
             focused: control.activeFocus
-            window_focused: focused && control.window && control.window.active
+            window_focused: focused && control.Window.active
             styleDef: panel.styleDef.ActionBar_backgroundStacked
         }
     }
