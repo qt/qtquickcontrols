@@ -38,6 +38,7 @@
 **
 ****************************************************************************/
 import QtQuick 2.2
+import QtQuick.Controls.Private 1.0
 
 TextInput {
     id: input
@@ -71,6 +72,7 @@ TextInput {
             selectionHandle.position = (selectionStart !== cursorPosition) ? selectionStart : selectionEnd
             blockRecursion = false
         }
+        TextSingleton.updateSelectionItem(input)
     }
 
     function activate() {
