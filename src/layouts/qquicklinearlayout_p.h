@@ -87,7 +87,6 @@ protected:
 
     void rearrange(const QSizeF &size);
     virtual void insertLayoutItems() {}
-    void removeLayoutItem(QQuickItem *item);
     void itemChange(ItemChange change, const ItemChangeData &data);
     void geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry);
     bool shouldIgnoreItem(QQuickItem *child, QQuickLayoutAttached *&info, QSizeF *sizeHints);

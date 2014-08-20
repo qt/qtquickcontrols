@@ -508,17 +508,6 @@ bool QQuickGridLayoutBase::isReady() const
     return d_func()->m_isReady;
 }
 
-void QQuickGridLayoutBase::removeLayoutItem(QQuickItem *item)
-{
-    Q_D(QQuickGridLayoutBase);
-    quickLayoutDebug() << "QQuickGridLayoutBase::removeLayoutItem";
-    if (QQuickGridLayoutItem *gridItem = d->engine.findLayoutItem(item)) {
-        removeGridItem(gridItem);
-        delete gridItem;
-        invalidate();
-    }
-}
-
 void QQuickGridLayoutBase::onItemVisibleChanged()
 {
     if (!isReady())
