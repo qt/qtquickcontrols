@@ -695,6 +695,61 @@ Item {
             layout.destroy()    // Do not crash
         }
 
+        function test_sizeHintWithHiddenChildren(data) {
+            var layout = layout_sizeHint_Component.createObject(container)
+            var grid = layout.children[0]
+            var child = grid.children[0]
+
+            // Implicit sizes are not affected by the visibility of the parent layout.
+            // This is in order for the layout to know the preferred size it should show itself at.
+            compare(grid.visible, true)     // LAYOUT SHOWN
+            compare(grid.implicitWidth, 2);
+            child.visible = false
+            compare(grid.implicitWidth, 0);
+            child.visible = true
+            compare(grid.implicitWidth, 2);
+
+            grid.visible = false            // LAYOUT HIDDEN
+            compare(grid.implicitWidth, 2);
+            child.visible = false
+            expectFail('', 'If GridLayout is hidden, GridLayout is not notified when child is explicitly hidden')
+            compare(grid.implicitWidth, 0);
+            child.visible = true
+            compare(grid.implicitWidth, 2);
+
+            layout.destroy();
+        }
+
+        Component {
+            id: row_sizeHint_Component
+            Row {
+                Rectangle {
+                    id: r1
+                    color: "red"
+                    width: 2
+                    height: 20
+                }
+            }
+        }
+
+        function test_sizeHintWithHiddenChildrenForRow(data) {
+            var row = row_sizeHint_Component.createObject(container)
+            var child = row.children[0]
+            compare(row.visible, true)     // POSITIONER SHOWN
+            compare(row.implicitWidth, 2);
+            child.visible = false
+            tryCompare(row, 'implicitWidth', 0);
+            child.visible = true
+            tryCompare(row, 'implicitWidth', 2);
+
+            row.visible = false            // POSITIONER HIDDEN
+            compare(row.implicitWidth, 2);
+            child.visible = false
+            expectFail('', 'If Row is hidden, Row is not notified when child is explicitly hidden')
+            compare(row.implicitWidth, 0);
+            child.visible = true
+            compare(row.implicitWidth, 2);
+        }
 
         Component {
             id: rearrangeNestedLayouts_Component
@@ -736,7 +791,33 @@ Item {
             waitForRendering(layout)
             compare(itemRect(fixed),  [0,0,100,20])
             compare(itemRect(filler), [100,0,100,20])
+        }
 
+        Component {
+            id: changeChildrenOfHiddenLayout_Component
+            RowLayout {
+                property int childCount: 1
+                Repeater {
+                    model: parent.childCount
+                    Text {
+                        text: 'Just foo it'
+                    }
+                }
+            }
+        }
+        function test_changeChildrenOfHiddenLayout()
+        {
+            var layout = changeChildrenOfHiddenLayout_Component.createObject(container)
+            var child = layout.children[0]
+            waitForRendering(layout)
+            layout.visible = false
+            waitForRendering(layout)
+            // Remove and add children to the hidden layout..
+            layout.childCount = 0
+            waitForRendering(layout)
+            layout.childCount = 1
+            waitForRendering(layout)
+            layout.destroy()
         }
     }
 }

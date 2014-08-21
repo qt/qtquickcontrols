@@ -427,7 +427,7 @@ void QQuickGridLayoutBase::invalidate(QQuickItem *childItem)
 void QQuickGridLayoutBase::updateLayoutItems()
 {
     Q_D(QQuickGridLayoutBase);
-    if (!isReady() || !isVisible())
+    if (!isReady())
         return;
     quickLayoutDebug() << "QQuickGridLayoutBase::updateLayoutItems";
     d->engine.deleteItems();
@@ -460,7 +460,7 @@ void QQuickGridLayoutBase::itemChange(ItemChange change, const ItemChangeData &v
         QObject::connect(item, SIGNAL(implicitHeightChanged()), this, SLOT(invalidateSenderItem()));
         QObject::connect(item, SIGNAL(baselineOffsetChanged(qreal)), this, SLOT(invalidateSenderItem()));
 
-        if (isReady() && isVisible())
+        if (isReady())
             updateLayoutItems();
     } else if (change == ItemChildRemovedChange) {
         quickLayoutDebug() << "ItemChildRemovedChange";
@@ -470,7 +470,7 @@ void QQuickGridLayoutBase::itemChange(ItemChange change, const ItemChangeData &v
         QObject::disconnect(item, SIGNAL(implicitWidthChanged()), this, SLOT(invalidateSenderItem()));
         QObject::disconnect(item, SIGNAL(implicitHeightChanged()), this, SLOT(invalidateSenderItem()));
         QObject::disconnect(item, SIGNAL(baselineOffsetChanged(qreal)), this, SLOT(invalidateSenderItem()));
-        if (isReady() && isVisible())
+        if (isReady())
             updateLayoutItems();
     }
 
@@ -569,7 +569,8 @@ bool QQuickGridLayoutBase::shouldIgnoreItem(QQuickItem *child, QQuickLayoutAttac
 {
     Q_D(QQuickGridLayoutBase);
     bool ignoreItem = true;
-    if (child->isVisible()) {
+    QQuickItemPrivate *childPrivate = QQuickItemPrivate::get(child);
+    if (childPrivate->explicitVisible) {
         QQuickGridLayoutItem::effectiveSizeHints_helper(child, sizeHints, &info, true);
         QSizeF effectiveMaxSize = sizeHints[Qt::MaximumSize];
         if (!effectiveMaxSize.isNull()) {
