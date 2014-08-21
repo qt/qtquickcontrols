@@ -105,7 +105,6 @@ protected:
 protected Q_SLOTS:
     virtual void accept();
     virtual void reject();
-    void clicked();
 
 private:
     void updateStandardButtons();

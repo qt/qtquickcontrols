@@ -211,7 +211,6 @@ QT_BEGIN_NAMESPACE
 QQuickDialog::QQuickDialog(QObject *parent)
     : QQuickAbstractDialog(parent)
 {
-    connect(this, SIGNAL(buttonClicked()), this, SLOT(clicked()));
 }
 
 
@@ -369,37 +368,6 @@ void QQuickDialog::click(QQuickAbstractDialog::StandardButton button)
     click(static_cast<QPlatformDialogHelper::StandardButton>(button),
         static_cast<QPlatformDialogHelper::ButtonRole>(
             QPlatformDialogHelper::buttonRole(static_cast<QPlatformDialogHelper::StandardButton>(button))));
-}
-
-void QQuickDialog::clicked() {
-    switch (QPlatformDialogHelper::buttonRole(static_cast<QPlatformDialogHelper::StandardButton>(m_clickedButton))) {
-    case QPlatformDialogHelper::AcceptRole:
-        accept();
-        break;
-    case QPlatformDialogHelper::RejectRole:
-        reject();
-        break;
-    case QPlatformDialogHelper::DestructiveRole:
-        emit discard();
-        break;
-    case QPlatformDialogHelper::HelpRole:
-        emit help();
-        break;
-    case QPlatformDialogHelper::YesRole:
-        emit yes();
-        break;
-    case QPlatformDialogHelper::NoRole:
-        emit no();
-        break;
-    case QPlatformDialogHelper::ApplyRole:
-        emit apply();
-        break;
-    case QPlatformDialogHelper::ResetRole:
-        emit reset();
-        break;
-    default:
-        qWarning("StandardButton %d has no role", m_clickedButton);
-    }
 }
 
 void QQuickDialog::accept() {
