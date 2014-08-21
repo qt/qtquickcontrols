@@ -160,6 +160,7 @@ protected: // variables for pure-QML implementations only
     bool m_hasNativeWindows;
     QRect m_sizeAspiration;
     bool m_hasAspiredPosition;
+    bool m_visibleChangedConnected;
 
     static QQmlComponent *m_decorationComponent;
 

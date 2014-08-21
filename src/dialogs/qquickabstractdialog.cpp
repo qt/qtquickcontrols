@@ -65,6 +65,7 @@ QQuickAbstractDialog::QQuickAbstractDialog(QObject *parent)
         QGuiApplicationPrivate::platformIntegration()->
         hasCapability(QPlatformIntegration::WindowManagement))
     , m_hasAspiredPosition(false)
+    , m_visibleChangedConnected(false)
 {
 }
 
@@ -145,11 +146,14 @@ void QQuickAbstractDialog::setVisible(bool v)
                     if (m_sizeAspiration.height() > 0)
                         m_dialogWindow->setHeight(m_sizeAspiration.height());
                 }
-                connect(m_dialogWindow, SIGNAL(visibleChanged(bool)), this, SLOT(visibleChanged(bool)));
                 connect(m_dialogWindow, SIGNAL(xChanged(int)), this, SLOT(setX(int)));
                 connect(m_dialogWindow, SIGNAL(yChanged(int)), this, SLOT(setY(int)));
                 connect(m_dialogWindow, SIGNAL(widthChanged(int)), this, SLOT(setWidth(int)));
                 connect(m_dialogWindow, SIGNAL(heightChanged(int)), this, SLOT(setHeight(int)));
+            }
+            if (!m_visibleChangedConnected) {
+                connect(m_dialogWindow, SIGNAL(visibleChanged(bool)), this, SLOT(visibleChanged(bool)));
+                m_visibleChangedConnected = true;
             }
         }
         if (m_windowDecoration) {
