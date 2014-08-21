@@ -210,6 +210,8 @@ QT_BEGIN_NAMESPACE
 */
 QQuickDialog::QQuickDialog(QObject *parent)
     : QQuickAbstractDialog(parent)
+    , m_enabledButtons(Ok)
+    , m_clickedButton(NoButton)
 {
 }
 
@@ -231,6 +233,13 @@ QJSValue QQuickDialog::__standardButtonsRightModel()
 {
     updateStandardButtons();
     return m_standardButtonsRightModel;
+}
+
+void QQuickDialog::setVisible(bool v)
+{
+    if (v)
+        m_clickedButton == NoButton;
+    QQuickAbstractDialog::setVisible(v);
 }
 
 void QQuickDialog::updateStandardButtons()
