@@ -51,7 +51,9 @@ DIALOGS_QML_FILES += \
     DefaultDialogWrapper.qml \
     qml/ColorSlider.qml \
     qml/DefaultWindowDecoration.qml \
+    qml/IconButtonStyle.qml \
     qml/qmldir \
+    qml/icons.ttf \
     images/critical.png \
     images/information.png \
     images/question.png \

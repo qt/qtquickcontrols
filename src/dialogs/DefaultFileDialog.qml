@@ -47,6 +47,7 @@ import QtQuick.Layouts 1.1
 import QtQuick.Window 2.1
 import Qt.labs.folderlistmodel 2.1
 import Qt.labs.settings 1.0
+import "qml"
 
 AbstractFileDialog {
     id: root
@@ -75,6 +76,7 @@ AbstractFileDialog {
         property alias height: root.height
         property alias sidebarWidth: sidebar.width
         property alias sidebarSplit: shortcuts.height
+        property alias sidebarVisible: root.sidebarVisible
         property variant favoriteFolders: []
     }
 
@@ -166,6 +168,7 @@ AbstractFileDialog {
                 Component.onCompleted: if (width < 1) width = sidebarSplitter.maxShortcutWidth
                 height: parent.height
                 width: 0 // initial width only; settings and onCompleted will override it
+                visible: root.sidebarVisible
                 SplitView {
                     id: sidebarSplitter
                     orientation: Qt.Vertical
@@ -414,11 +417,23 @@ AbstractFileDialog {
                 anchors.rightMargin: spacing
                 anchors.verticalCenter: parent.verticalCenter
                 spacing: 4
+                Button {
+                    id: toggleSidebarButton
+                    checkable: true
+                    style: IconButtonStyle { }
+                    text: "\u25E7"
+                    height: cancelButton.height
+                    width: height
+                    checked: root.sidebarVisible
+                    onClicked: {
+                        root.sidebarVisible = !root.sidebarVisible
+                    }
+                }
                 ComboBox {
                     id: filterField
                     model: root.nameFilters
                     visible: !selectFolder
-                    width: bottomBar.width - cancelButton.width - okButton.width - parent.spacing * 5
+                    width: bottomBar.width - toggleSidebarButton.width - cancelButton.width - okButton.width - parent.spacing * 6
                     anchors.verticalCenter: parent.verticalCenter
                     onCurrentTextChanged: {
                         root.selectNameFilter(currentText)

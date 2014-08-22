@@ -329,4 +329,15 @@ QPlatformFileDialogHelper *QQuickPlatformFileDialog::helper()
     The list of file paths which were selected by the user.
 */
 
+/*!
+    \qmlproperty bool FileDialog::sidebarVisible
+
+    This property holds whether the sidebar in the dialog containing shortcuts
+    and bookmarks is visible. By default it depends on the setting stored in
+    the \c QQControlsFileDialog section of the application's
+    \l {Qt.labs.settings::Settings} {Settings}.
+
+    \since 5.4
+*/
+
 QT_END_NAMESPACE

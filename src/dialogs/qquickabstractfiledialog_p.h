@@ -65,6 +65,7 @@ class QQuickAbstractFileDialog : public QQuickAbstractDialog
     Q_PROPERTY(int selectedNameFilterIndex READ selectedNameFilterIndex WRITE setSelectedNameFilterIndex NOTIFY filterSelected)
     Q_PROPERTY(QUrl fileUrl READ fileUrl NOTIFY selectionAccepted)
     Q_PROPERTY(QList<QUrl> fileUrls READ fileUrls NOTIFY selectionAccepted)
+    Q_PROPERTY(bool sidebarVisible READ sidebarVisible WRITE setSidebarVisible NOTIFY sidebarVisibleChanged)
 
 public:
     QQuickAbstractFileDialog(QObject *parent = 0);
@@ -81,6 +82,7 @@ public:
     int selectedNameFilterIndex() const;
     QUrl fileUrl() const;
     virtual QList<QUrl> fileUrls() const;
+    bool sidebarVisible() const { return m_sidebarVisible; }
 
 public Q_SLOTS:
     void setVisible(bool v);
@@ -92,6 +94,7 @@ public Q_SLOTS:
     void setNameFilters(const QStringList &f);
     void selectNameFilter(const QString &f);
     void setSelectedNameFilterIndex(int idx);
+    void setSidebarVisible(bool s);
 
 Q_SIGNALS:
     void folderChanged();
@@ -99,6 +102,7 @@ Q_SIGNALS:
     void filterSelected();
     void fileModeChanged();
     void selectionAccepted();
+    void sidebarVisibleChanged();
 
 protected:
     void updateModes();
@@ -109,6 +113,7 @@ protected:
     bool m_selectExisting;
     bool m_selectMultiple;
     bool m_selectFolder;
+    bool m_sidebarVisible;
 
     Q_DISABLE_COPY(QQuickAbstractFileDialog)
 };

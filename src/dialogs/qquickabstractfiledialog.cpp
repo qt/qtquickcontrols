@@ -48,6 +48,7 @@ QQuickAbstractFileDialog::QQuickAbstractFileDialog(QObject *parent)
     , m_selectExisting(true)
     , m_selectMultiple(false)
     , m_selectFolder(false)
+    , m_sidebarVisible(true)
 {
     updateModes();
     connect(this, SIGNAL(accepted()), this, SIGNAL(selectionAccepted()));
@@ -153,6 +154,13 @@ void QQuickAbstractFileDialog::selectNameFilter(const QString &f)
 void QQuickAbstractFileDialog::setSelectedNameFilterIndex(int idx)
 {
     selectNameFilter(nameFilters().at(idx));
+}
+
+void QQuickAbstractFileDialog::setSidebarVisible(bool s)
+{
+    if (s == m_sidebarVisible) return;
+    m_sidebarVisible = s;
+    emit sidebarVisibleChanged();
 }
 
 QStringList QQuickAbstractFileDialog::selectedNameFilterExtensions() const
