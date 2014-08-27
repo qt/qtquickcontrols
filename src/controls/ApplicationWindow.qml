@@ -180,7 +180,7 @@ Window {
         target: root
         property: "__height"
         when: root.minimumHeight <= root.maximumHeight
-        value: Math.max(Math.min(root.maximumHeight, contentArea.implicitHeight), root.minimumHeight)
+        value: Math.max(Math.min(root.maximumHeight, contentArea.implicitHeight + __topBottomMargins), root.minimumHeight)
     }
     width: contentArea.__noImplicitWidthGiven ? 0 : __width
     height: contentArea.__noImplicitHeightGiven ? 0 : __height

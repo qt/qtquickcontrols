@@ -260,5 +260,37 @@ TestCase {
         window.destroy()
     }
 
+    function test_windowHeight() {
+        var test_control = 'import QtQuick 2.2; \
+        import QtQuick.Controls 1.2;            \
+        ApplicationWindow {                     \
+            toolBar: ToolBar {                  \
+                ToolButton {                    \
+                    text: "Menu"                \
+                }                               \
+            }                                   \
+            statusBar: StatusBar {              \
+                Row {                           \
+                    Label {                     \
+                        text: "Window test"     \
+                    }                           \
+                }                               \
+            }                                   \
+                                                \
+            Rectangle {                         \
+                anchors.fill: parent;           \
+                implicitWidth: 300;             \
+                implicitHeight: 300;            \
+            }                                   \
+        }                                       '
+
+        var window = Qt.createQmlObject(test_control, container, '')
+        window.visible = true
+        waitForRendering(window.contentItem)
+        compare(window.contentItem.implicitHeight, 300)
+        verify(window.height > 300)
+        window.destroy()
+    }
+
 }
 }
