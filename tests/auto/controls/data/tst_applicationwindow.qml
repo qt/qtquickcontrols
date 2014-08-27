@@ -236,5 +236,29 @@ TestCase {
         window.destroy()
     }
 
+    function test_invisibleContentItemChildren() {
+        var test_control = 'import QtQuick 2.2; \
+        import QtQuick.Controls 1.2;            \
+        ApplicationWindow {                     \
+            Rectangle {                         \
+                visible: false;                 \
+                implicitWidth: 400;             \
+                implicitHeight: 400;            \
+            }                                   \
+            Rectangle {                         \
+                anchors.fill: parent;           \
+                implicitWidth: 300;             \
+                implicitHeight: 300;            \
+            }                                   \
+        }                                       '
+
+        var window = Qt.createQmlObject(test_control, container, '')
+        window.visible = true
+        waitForRendering(window.contentItem)
+        compare(window.width, 300)
+        compare(window.height, 300)
+        window.destroy()
+    }
+
 }
 }

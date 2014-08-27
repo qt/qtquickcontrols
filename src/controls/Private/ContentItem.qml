@@ -51,7 +51,7 @@ Item {
     implicitHeight: __calcImplicitHeight()
 
     /*! \internal */
-    property Item __layoutItem: contentItem.children.length === 1 ? contentItem.children[0] : null
+    property Item __layoutItem: contentItem.visibleChildren.length === 1 ? contentItem.visibleChildren[0] : null
     /*! \internal */
     property real __marginsWidth: __layoutItem ? __layoutItem.anchors.leftMargin + __layoutItem.anchors.rightMargin : 0
     /*! \internal */
