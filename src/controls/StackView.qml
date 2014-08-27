@@ -752,9 +752,6 @@ Item {
 
     /********* PRIVATE API *********/
 
-    width: parent ? parent.width : 0
-    height: parent ? parent.height : 0
-
     /*! \internal The currently top-most item on the stack. */
     property Item __currentItem: null
     /*! \internal The number of items currently pushed onto the stack. */

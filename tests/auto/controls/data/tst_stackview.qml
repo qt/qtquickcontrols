@@ -73,5 +73,9 @@ TestCase {
         verify (stack.depth === 1)
         stack.push(pageComponent)
         verify (stack.depth === 2)
+
+        var w = stack.width
+        testCase.width = w + 333
+        compare(stack.width, w)
     }
 }
