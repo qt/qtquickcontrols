@@ -171,7 +171,7 @@ Window {
     Binding {
         target: root
         property: "__width"
-        when: root.minimumWidth <= root.maximumWidth
+        when: (root.minimumWidth <= root.maximumWidth) && !contentArea.__noImplicitWidthGiven
         value: Math.max(Math.min(root.maximumWidth, contentArea.implicitWidth), root.minimumWidth)
     }
     /*! \internal */
@@ -179,11 +179,16 @@ Window {
     Binding {
         target: root
         property: "__height"
-        when: root.minimumHeight <= root.maximumHeight
+        when: (root.minimumHeight <= root.maximumHeight) && !contentArea.__noImplicitHeightGiven
         value: Math.max(Math.min(root.maximumHeight, contentArea.implicitHeight + __topBottomMargins), root.minimumHeight)
     }
-    width: contentArea.__noImplicitWidthGiven ? 0 : __width
-    height: contentArea.__noImplicitHeightGiven ? 0 : __height
+    /* As soon as an application developer writes
+         width: 200
+       this binding will be broken. This is the reason for this indirection
+       via __width (and __height)
+    */
+    width: __width
+    height: __height
 
     minimumWidth: contentArea.__noMinimumWidthGiven ? 0 : contentArea.minimumWidth
     minimumHeight: contentArea.__noMinimumHeightGiven ? 0 : (contentArea.minimumHeight + __topBottomMargins)

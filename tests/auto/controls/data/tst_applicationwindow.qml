@@ -292,5 +292,29 @@ TestCase {
         window.destroy()
     }
 
+    function test_windowHeight2() {
+        var test_control = 'import QtQuick 2.2; \
+        import QtQuick 2.2;                     \
+        import QtQuick.Controls 1.2;            \
+        ApplicationWindow {                     \
+            Rectangle {                         \
+                anchors.fill: parent;           \
+                color: "red"                    \
+            }                                   \
+                                                \
+            menuBar: MenuBar {                  \
+                Menu {                          \
+                    title: qsTr("Menu")         \
+                }                               \
+            }                                   \
+        }                                       '
+
+        var window = Qt.createQmlObject(test_control, container, '')
+        window.visible = true
+        waitForRendering(window.contentItem)
+        verify(window.height > 0)
+        window.destroy()
+    }
+
 }
 }
