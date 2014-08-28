@@ -68,7 +68,7 @@ ScrollViewStyle {
         DrawableLoader {
             id: bg
             anchors.fill: parent
-            window_focused: control.window && control.window.active
+            window_focused: control.Window.active
             styleDef: parent.styleDef.View_background
         }
 
@@ -77,7 +77,7 @@ ScrollViewStyle {
             text: styleData.value !== undefined ? styleData.value : ""
             horizontalAlignment: styleData.textAlignment
             pressed: styleData.pressed
-            window_focused: control.window && control.window.active
+            window_focused: control.Window.active
             styleDef: parent.styleDef
             anchors.fill: parent
             anchors.leftMargin: paddingStart
@@ -97,7 +97,7 @@ ScrollViewStyle {
             pressed: styleData.pressed
             checked: styleData.selected
             selected: styleData.selected
-            window_focused: control.window && control.window.active
+            window_focused: control.Window.active
             styleDef: AndroidStyle.styleDef.simple_selectable_list_item.View_background
         }
 
@@ -128,7 +128,7 @@ ScrollViewStyle {
             pressed: styleData.pressed
             focused: control.activeFocus
             selected: styleData.selected
-            window_focused: control.window && control.window.active
+            window_focused: control.Window.active
             styleDef: parent.styleDef
             anchors.left: parent.left
             anchors.right: parent.right

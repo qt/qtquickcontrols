@@ -143,8 +143,7 @@ void QQuickPopupWindow::setPopupContentItem(QQuickItem *contentItem)
 
 void QQuickPopupWindow::updateSize()
 {
-    QSize contentSize = popupContentItem()->childrenRect().size().toSize();
-    setGeometry(x(), y(), contentSize.width(), contentSize.height());
+    setGeometry(x(), y(), popupContentItem()->width(), popupContentItem()->height());
     emit geometryChanged();
 }
 

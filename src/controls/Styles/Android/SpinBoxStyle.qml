@@ -68,7 +68,7 @@ Style {
             id: bg
             anchors.fill: parent
             focused: control.activeFocus
-            window_focused: focused && control.window && control.window.active
+            window_focused: focused && control.Window.active
             styleDef: panel.styleDef.View_background
         }
 
@@ -93,7 +93,7 @@ Style {
             visible: false
             text: control.__text
             focused: control.activeFocus
-            window_focused: focused && control.window && control.window.active
+            window_focused: focused && control.Window.active
             styleDef: panel.styleDef
         }
     }

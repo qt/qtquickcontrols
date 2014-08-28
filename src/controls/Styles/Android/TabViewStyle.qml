@@ -71,7 +71,7 @@ Style {
             id: loader
             anchors.fill: parent
             focused: control.activeFocus
-            window_focused: focused && control.window && control.window.active
+            window_focused: focused && control.Window.active
             styleDef: panel.styleDef.ActionBar_backgroundStacked
         }
     }
@@ -94,7 +94,7 @@ Style {
             pressed: styleData.pressed
             selected: styleData.selected
             focused: styleData.activeFocus
-            window_focused: focused && control.window && control.window.active
+            window_focused: focused && control.Window.active
             styleDef: AndroidStyle.styleDef.actionBarTabStyle.View_background
         }
 
@@ -107,7 +107,7 @@ Style {
             pressed: styleData.pressed
             selected: styleData.selected
             focused: styleData.activeFocus
-            window_focused: focused && control.window && control.window.active
+            window_focused: focused && control.Window.active
             styleDef: AndroidStyle.styleDef.actionBarTabBarStyle.LinearLayout_divider
             visible: styleData.index < control.count - 1 && control.count > 1
         }
@@ -119,7 +119,7 @@ Style {
             enabled: styleData.enabled
             focused: styleData.activeFocus
             selected: styleData.selected
-            window_focused: control.window && control.window.active
+            window_focused: control.Window.active
             styleDef: AndroidStyle.styleDef.actionBarTabTextStyle
 
             anchors.fill: bg

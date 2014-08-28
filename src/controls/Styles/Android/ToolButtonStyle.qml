@@ -72,7 +72,7 @@ Style {
             pressed: control.pressed
             checked: control.checked
             focused: control.activeFocus
-            window_focused: control.window && control.window.active
+            window_focused: control.Window.active
             styleDef: panel.styleDef.View_background
         }
 
@@ -99,7 +99,7 @@ Style {
                 pressed: control.pressed
                 focused: control.activeFocus
                 selected: control.checked
-                window_focused: control.window && control.window.active
+                window_focused: control.Window.active
                 styleDef: panel.styleDef
                 Layout.fillWidth: true
             }
@@ -110,7 +110,7 @@ Style {
                 pressed: control.pressed
                 checked: control.checked
                 focused: control.activeFocus
-                window_focused: control.window && control.window.active
+                window_focused: control.Window.active
                 styleDef: AndroidStyle.styleDef.actionOverflowButtonStyle.ImageView_src
                 Layout.alignment: Qt.AlignCenter
             }

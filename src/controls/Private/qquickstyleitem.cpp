@@ -1791,7 +1791,7 @@ QSGNode *QQuickStyleItem::updatePaintNode(QSGNode *node, UpdatePaintNodeData *)
 
     QSGNinePatchNode *styleNode = static_cast<QSGNinePatchNode *>(node);
     if (!styleNode) {
-        styleNode = QQuickItemPrivate::get(this)->sceneGraphContext()->createQStyleNode();
+        styleNode = QQuickItemPrivate::get(this)->sceneGraphContext()->createNinePatchNode();
         if (!styleNode)
             styleNode = new QQuickStyleNode;
     }

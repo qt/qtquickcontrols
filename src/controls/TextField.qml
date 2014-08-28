@@ -624,7 +624,6 @@ Control {
         clip: contentWidth > width;
         elide: Text.ElideRight
         renderType: __style ? __style.renderType : Text.NativeRendering
-        Behavior on opacity { NumberAnimation { duration: 90 } }
     }
 
     TextInputWithHandles {

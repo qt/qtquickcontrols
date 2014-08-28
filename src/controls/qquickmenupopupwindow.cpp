@@ -118,12 +118,11 @@ void QQuickMenuPopupWindow::setGeometry(int posx, int posy, int w, int h)
 
 void QQuickMenuPopupWindow::updateSize()
 {
-    QSize contentSize = popupContentItem()->childrenRect().size().toSize();
     qreal x = m_initialPos.x();
     qreal y = m_initialPos.y();
     if (qGuiApp->layoutDirection() == Qt::RightToLeft)
-        x -= contentSize.width();
-    setGeometry(x, y, contentSize.width(), contentSize.height());
+        x -= popupContentItem()->width();
+    setGeometry(x, y, popupContentItem()->width(), popupContentItem()->height());
 }
 
 void QQuickMenuPopupWindow::updatePosition()
