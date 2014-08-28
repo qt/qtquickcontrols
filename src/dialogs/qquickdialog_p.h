@@ -73,6 +73,7 @@ public:
     Q_INVOKABLE QJSValue __standardButtonsRightModel();
 
     QString title() const { return m_title; }
+    virtual void setVisible(bool v);
 
 public Q_SLOTS:
     virtual void setTitle(const QString &arg);
@@ -97,7 +98,6 @@ protected:
 protected Q_SLOTS:
     virtual void accept();
     virtual void reject();
-    void clicked();
 
 private:
     void updateStandardButtons();

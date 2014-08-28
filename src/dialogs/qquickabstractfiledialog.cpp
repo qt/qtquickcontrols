@@ -49,6 +49,7 @@ QQuickAbstractFileDialog::QQuickAbstractFileDialog(QObject *parent)
     , m_selectMultiple(false)
     , m_selectFolder(false)
 {
+    updateModes();
     connect(this, SIGNAL(accepted()), this, SIGNAL(selectionAccepted()));
 }
 
