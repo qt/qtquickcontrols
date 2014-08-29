@@ -90,6 +90,28 @@ QT_BEGIN_NAMESPACE
     support multiple top-level windows. When the dialog becomes visible, it
     will automatically be wrapped in a Window if possible, or simply reparented
     on top of the main window if there can only be one window.
+
+    The QML implementation has a sidebar containing shortcuts to common
+    platform-specific locations, and user-modifiable shortcuts. It uses
+    application-specific \l {Qt.labs.settings::Settings} {settings} to store
+    these bookmarks, as well as other user-modifiable state, such as whether or
+    not the sidebar is shown, the positions of the splitters, and the dialog
+    size. The settings are stored in a section called \c QQControlsFileDialog
+    of the application-specific \l QSettings. For example when testing an
+    application with the qml tool, the \c QQControlsFileDialog section will be
+    created in the \c {Qml Runtime} settings file (or registry entry). If an
+    application is started via a custom C++ main() function, it is recommended
+    to set the
+    \l {QCoreApplication::applicationName}{name},
+    \l {QCoreApplication::organizationName}{organization} and
+    \l {QCoreApplication::organizationDomain}{domain} in order to control
+    the location of the application's settings. If you use
+    \l {Qt.labs.settings::Settings} {Settings} objects in other parts of an
+    application, they will be stored in other sections of the same file.
+
+    \l QFileDialog stores its settings globally instead of per-application.
+    Platform-native file dialogs may or may not store settings in various
+    platform-dependent ways.
 */
 
 /*!
