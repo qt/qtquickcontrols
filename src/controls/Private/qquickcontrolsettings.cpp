@@ -50,6 +50,8 @@ static QString defaultStyleName()
         return QLatin1String("Desktop");
 #elif defined(Q_OS_ANDROID) && !defined(Q_OS_ANDROID_NO_SDK)
     return QLatin1String("Android");
+#elif defined(Q_OS_IOS)
+    return QLatin1String("iOS");
 #endif
     return QLatin1String("Base");
 }
