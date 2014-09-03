@@ -113,9 +113,8 @@ AbstractFileDialog {
     }
 
     property Action dirUpAction: Action {
-        text: "&Up"
+        text: "\ue810"
         shortcut: "Ctrl+U"
-        iconSource: "images/up.png"
         onTriggered: dirUp()
         tooltip: "Go up to the folder containing this one"
     }
@@ -278,10 +277,15 @@ AbstractFileDialog {
 
                 Row {
                     id: favoritesButtons
-                    height: plusButton.height
+                    height: plusButton.height + 1
+                    anchors.right: parent.right
+                    anchors.rightMargin: 6
+                    layoutDirection: Qt.RightToLeft
                     Button {
                         id: plusButton
-                        text: "+"
+                        style: IconButtonStyle { }
+                        text: "\ue83e"
+                        tooltip: "Add the current directory as a favorite"
                         width: height
                         onClicked: {
                             root.favoriteFolders.push(root.folder)
@@ -321,27 +325,26 @@ AbstractFileDialog {
                     }
                 }
 
+
                 TableViewColumn {
                     id: fileNameColumn
                     role: "fileName"
                     title: "Filename"
                     delegate: Item {
                         implicitWidth: pathText.implicitWidth + pathText.anchors.leftMargin + pathText.anchors.rightMargin
-                        Image {
+                        IconGlyph {
                             id: fileIcon
-                            width: height
                             x: 4
                             height: parent.height - 2
-                            source: "images/folder.png"
+                            unicode: view.model.isFolder(styleData.row) ? "\ue804" : "\ue802"
                         }
                         Text {
                             id: pathText
                             text: styleData.value
-                            onTextChanged: fileIcon.visible = view.model.isFolder(styleData.row)
                             anchors {
                                 left: parent.left
                                 right: parent.right
-                                leftMargin: fileIcon.width + 8
+                                leftMargin: fileIcon.width + 6
                                 rightMargin: 4
                                 verticalCenter: parent.verticalCenter
                             }
@@ -387,10 +390,11 @@ AbstractFileDialog {
         ToolBar {
             id: titleBar
             RowLayout {
-                width: parent.width
+                anchors.fill: parent
                 ToolButton {
-                    iconSource: "images/up.png"
                     action: dirUpAction
+                    style: IconButtonStyle { }
+                    Layout.maximumWidth: height * 1.5
                 }
                 TextField {
                     id: currentPathField

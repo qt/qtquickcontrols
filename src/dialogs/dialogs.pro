@@ -52,6 +52,7 @@ DIALOGS_QML_FILES += \
     qml/ColorSlider.qml \
     qml/DefaultWindowDecoration.qml \
     qml/IconButtonStyle.qml \
+    qml/IconGlyph.qml \
     qml/qmldir \
     qml/icons.ttf \
     images/critical.png \
@@ -64,9 +65,7 @@ DIALOGS_QML_FILES += \
     images/crosshairs.png \
     images/slider_handle.png \
     images/sunken_frame.png \
-    images/window_border.png \
-    images/folder.png \
-    images/up.png
+    images/window_border.png
 
 QT += quick-private gui gui-private core core-private qml qml-private
 
