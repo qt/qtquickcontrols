@@ -112,8 +112,8 @@ private:
 
 private:
     QString m_title;
-    StandardButton m_clickedButton;
     StandardButtons m_enabledButtons;
+    StandardButton m_clickedButton;
     QJSValue m_standardButtonsLeftModel;
     QJSValue m_standardButtonsRightModel;
     Q_DISABLE_COPY(QQuickDialog)

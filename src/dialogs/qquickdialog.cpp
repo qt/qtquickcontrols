@@ -238,7 +238,7 @@ QJSValue QQuickDialog::__standardButtonsRightModel()
 void QQuickDialog::setVisible(bool v)
 {
     if (v)
-        m_clickedButton == NoButton;
+        m_clickedButton = NoButton;
     QQuickAbstractDialog::setVisible(v);
 }
 
