@@ -898,9 +898,8 @@ ScrollView {
                 x: mappedPos.x
                 y: mappedPos.y
 
-                visible: pressed || ((edit.cursorVisible || edit.hasSelection)
-                                 && handleY + handleHeight >= -1 && handleY <= viewport.height + 1
-                                 && handleX + handleWidth >= -1 && handleX <= viewport.width + 1)
+                visible: pressed || (edit.hasSelection && handleY + handleHeight >= -1 && handleY <= viewport.height + 1
+                                                       && handleX + handleWidth >= -1 && handleX <= viewport.width + 1)
 
                 onPositionChanged: {
                     if (!edit.blockRecursion) {
