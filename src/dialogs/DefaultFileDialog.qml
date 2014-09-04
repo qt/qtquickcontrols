@@ -170,7 +170,7 @@ AbstractFileDialog {
                     id: sidebarSplitter
                     orientation: Qt.Vertical
                     property real rowHeight: 10
-                    property real maxShortcutWidth: 50
+                    property real maxShortcutWidth: 80
                     width: parent.width
                     height: parent.height - favoritesButtons.height
 
@@ -178,8 +178,8 @@ AbstractFileDialog {
                         id: shortcuts
                         Component.onCompleted: {
                             if (height < 1)
-                                height = shortcutsView.model.count * sidebarSplitter.rowHeight
-                            Layout.minimumHeight = sidebarSplitter.rowHeight * 2.5
+                                height = sidebarSplitter.rowHeight * 4.65
+                            Layout.minimumHeight = sidebarSplitter.rowHeight * 2.65
                         }
                         height: 0 // initial width only; settings and onCompleted will override it
                         ListView {
