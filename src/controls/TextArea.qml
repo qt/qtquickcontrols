@@ -856,7 +856,7 @@ ScrollView {
                 editor: edit
                 control: area
                 z: 1 // above scrollbars
-                parent: __scroller // no clip
+                parent:  Qt.platform.os === "ios"  ? editor : __scroller // no clip
                 active: area.selectByMouse
                 delegate: __style.selectionHandle
                 maximum: cursorHandle.position - 1
@@ -887,7 +887,7 @@ ScrollView {
                 editor: edit
                 control: area
                 z: 1 // above scrollbars
-                parent: __scroller // no clip
+                parent:  Qt.platform.os === "ios"  ? editor : __scroller // no clip
                 active: area.selectByMouse
                 delegate: __style.cursorHandle
                 minimum: edit.hasSelection ? selectionHandle.position + 1 : -1
