@@ -123,9 +123,11 @@ TextInput {
         control: input.control
         active: control.selectByMouse
         maximum: cursorHandle.position - 1
-        readonly property real selectionX: input.selectionRectangle.x
-        x: input.x + (pressed ? Math.max(0, selectionX) : selectionX)
-        y: input.selectionRectangle.y + input.y
+
+        property var mappedPos: parent.mapFromItem(editor, editor.selectionRectangle.x, editor.selectionRectangle.y)
+        x: mappedPos.x
+        y: mappedPos.y
+
         visible: pressed || (input.hasSelection && handleX + handleWidth >= -1 && handleX <= control.width + 1)
 
         onPositionChanged: {
@@ -148,8 +150,11 @@ TextInput {
         active: control.selectByMouse
         delegate: style.cursorHandle
         minimum: input.hasSelection ? selectionHandle.position + 1 : -1
-        x: input.cursorRectangle.x + input.x
-        y: input.cursorRectangle.y + input.y
+
+        property var mappedPos: parent.mapFromItem(editor, editor.cursorRectangle.x, editor.cursorRectangle.y)
+        x: mappedPos.x
+        y: mappedPos.y
+
         visible: pressed || ((input.cursorVisible || input.hasSelection)
                          && handleX + handleWidth >= -1 && handleX <= control.width + 1)
 

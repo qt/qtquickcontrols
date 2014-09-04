@@ -860,8 +860,13 @@ ScrollView {
                 active: area.selectByMouse
                 delegate: __style.selectionHandle
                 maximum: cursorHandle.position - 1
-                x: edit.selectionRectangle.x - flickableItem.contentX
-                y: edit.selectionRectangle.y - flickableItem.contentY
+
+                // Mention contentX and contentY in the mappedPos binding to force re-evaluation if they change
+                property var mappedPos: flickableItem.contentX !== flickableItem.contentY !== Number.MAX_VALUE ?
+                                            parent.mapFromItem(editor, editor.selectionRectangle.x, editor.selectionRectangle.y) : -1
+                x: mappedPos.x
+                y: mappedPos.y
+
                 visible: pressed || (edit.hasSelection && handleY + handleHeight >= -1 && handleY <= viewport.height + 1
                                                        && handleX + handleWidth >= -1 && handleX <= viewport.width + 1)
 
@@ -886,8 +891,13 @@ ScrollView {
                 active: area.selectByMouse
                 delegate: __style.cursorHandle
                 minimum: edit.hasSelection ? selectionHandle.position + 1 : -1
-                x: edit.cursorRectangle.x - flickableItem.contentX
-                y: edit.cursorRectangle.y - flickableItem.contentY
+
+                // Mention contentX and contentY in the mappedPos binding to force re-evaluation if they change
+                property var mappedPos: flickableItem.contentX !== flickableItem.contentY !== Number.MAX_VALUE ?
+                                            parent.mapFromItem(editor, editor.cursorRectangle.x, editor.cursorRectangle.y) : -1
+                x: mappedPos.x
+                y: mappedPos.y
+
                 visible: pressed || ((edit.cursorVisible || edit.hasSelection)
                                  && handleY + handleHeight >= -1 && handleY <= viewport.height + 1
                                  && handleX + handleWidth >= -1 && handleX <= viewport.width + 1)
