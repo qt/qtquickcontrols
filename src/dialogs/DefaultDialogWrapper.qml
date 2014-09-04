@@ -110,7 +110,7 @@ AbstractDialog {
 
             Button {
                 id: moreButton
-                text: "Show Details..."
+                text: qsTr("Show Details...")
                 visible: false
             }
         }

@@ -116,7 +116,7 @@ AbstractFileDialog {
         text: "\ue810"
         shortcut: "Ctrl+U"
         onTriggered: dirUp()
-        tooltip: "Go up to the folder containing this one"
+        tooltip: qsTr("Go up to the folder containing this one")
     }
 
     Rectangle {
@@ -243,7 +243,7 @@ AbstractFileDialog {
                                     id: favoriteCtxMenu
                                     title: root.favoriteFolders[index]
                                     MenuItem {
-                                        text: "Remove favorite"
+                                        text: qsTr("Remove favorite")
                                         onTriggered: {
                                             root.favoriteFolders.splice(index, 1)
                                             favorites.model = root.favoriteFolders
@@ -285,7 +285,7 @@ AbstractFileDialog {
                         id: plusButton
                         style: IconButtonStyle { }
                         text: "\ue83e"
-                        tooltip: "Add the current directory as a favorite"
+                        tooltip: qsTr("Add the current directory as a favorite")
                         width: height
                         onClicked: {
                             root.favoriteFolders.push(root.folder)
@@ -329,7 +329,7 @@ AbstractFileDialog {
                 TableViewColumn {
                     id: fileNameColumn
                     role: "fileName"
-                    title: "Filename"
+                    title: qsTr("Filename")
                     delegate: Item {
                         implicitWidth: pathText.implicitWidth + pathText.anchors.leftMargin + pathText.anchors.rightMargin
                         IconGlyph {
@@ -356,7 +356,7 @@ AbstractFileDialog {
                 }
                 TableViewColumn {
                     role: "fileSuffix"
-                    title: "Type"
+                    title: qsTr("Type", "file type (extension)")
                     // TODO should not need to create a whole new component just to customize the text value
                     // something like textFormat: function(text) { return view.model.get(styleData.row, "fileIsDir") ? "folder" : text }
                     delegate: Item {
@@ -379,11 +379,11 @@ AbstractFileDialog {
                 }
                 TableViewColumn {
                     role: "fileSize"
-                    title: "Size"
+                    title: qsTr("Size", "file size")
                     horizontalAlignment: Text.AlignRight
                 }
-                TableViewColumn { role: "fileModified" ; title: "Modified" }
-                TableViewColumn { role: "fileAccessed" ; title: "Accessed" }
+                TableViewColumn { id: modifiedColumn; role: "fileModified" ; title: qsTr("Modified", "last-modified time") }
+                TableViewColumn { id: accessedColumn; role: "fileAccessed" ; title: qsTr("Accessed", "last-accessed time") }
             }
         }
 
@@ -446,12 +446,12 @@ AbstractFileDialog {
                 }
                 Button {
                     id: cancelButton
-                    text: "Cancel"
+                    text: qsTr("Cancel")
                     onClicked: root.reject()
                 }
                 Button {
                     id: okButton
-                    text: "OK"
+                    text: qsTr("OK")
                     onClicked: {
                         if (view.model.isFolder(view.currentIndex) && !selectFolder)
                             dirDown(view.model.get(view.currentIndex, "filePath"))
