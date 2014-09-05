@@ -93,11 +93,10 @@ void QQuickPopupWindow::show()
         QPointF pos = m_parentItem->mapToItem(quickWindow->contentItem(), QPointF(posx, posy));
         posx = pos.x();
         posy = pos.y();
-        if (renderWindow) {
-            QPoint parentWindowOffset = renderWindow->mapToGlobal(QPoint());
-            posx += offset.x() + parentWindowOffset.x();
-            posy += offset.y() + parentWindowOffset.y();
-        }
+
+        QPoint parentWindowOffset = (renderWindow ? renderWindow : quickWindow)->mapToGlobal(QPoint());
+        posx += offset.x() + parentWindowOffset.x();
+        posy += offset.y() + parentWindowOffset.y();
     }
 
     if (m_contentItem) {
