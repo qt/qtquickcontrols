@@ -90,6 +90,7 @@ MenuBarPrivate {
         active: !root.__isNative
         focus: true
         Keys.forwardTo: [item]
+        width: parent && active ? parent.width : 0
         property bool altPressed: item ? item.__altPressed : false
     }
 
