@@ -69,6 +69,7 @@ private:
     QQuickItem *m_itemAt;
     QPointF m_oldItemPos;
     QPointF m_initialPos;
+    QQuickWindow *m_logicalParentWindow;
 };
 
 QT_END_NAMESPACE

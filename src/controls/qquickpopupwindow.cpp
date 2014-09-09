@@ -68,23 +68,16 @@ void QQuickPopupWindow::show()
 {
     qreal posx = x();
     qreal posy = y();
-    if (QQuickWindow *parentWindow = qobject_cast<QQuickWindow *>(transientParent())) {
+    // transientParent may not be a QQuickWindow when embedding into widgets
+    if (QWindow *tp = transientParent()) {
         if (m_parentItem) {
-            QPointF pos = m_parentItem->mapToItem(parentWindow->contentItem(), QPointF(posx, posy));
+            QPointF pos = m_parentItem->mapToItem(m_parentItem->window()->contentItem(), QPointF(posx, posy));
             posx = pos.x();
             posy = pos.y();
         }
-
-        if (parentWindow->parent()) {
-            // If the parent window is embedded in another window, the offset needs to be relative to
-            // its top-level window container, or to global coordinates, which is the same in the end.
-            QPoint parentWindowOffset = parentWindow->mapToGlobal(QPoint());
-            posx += parentWindowOffset.x();
-            posy += parentWindowOffset.y();
-        } else {
-            posx += parentWindow->geometry().left();
-            posy += parentWindow->geometry().top();
-        }
+        QPoint tlwOffset = tp->mapToGlobal(QPoint());
+        posx += tlwOffset.x();
+        posy += tlwOffset.y();
     } else if (m_parentItem && m_parentItem->window()) {
         QPoint offset;
         QQuickWindow *quickWindow = m_parentItem->window();
