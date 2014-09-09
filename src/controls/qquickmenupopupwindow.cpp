@@ -88,6 +88,8 @@ void QQuickMenuPopupWindow::setItemAt(QQuickItem *menuItem)
 
 void QQuickMenuPopupWindow::setParentWindow(QWindow *effectiveParentWindow, QQuickWindow *parentWindow)
 {
+    while (effectiveParentWindow && effectiveParentWindow->parent())
+        effectiveParentWindow = effectiveParentWindow->parent();
     if (transientParent() != effectiveParentWindow)
         setTransientParent(effectiveParentWindow);
     if (parentWindow) {
