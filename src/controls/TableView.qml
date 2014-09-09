@@ -792,8 +792,10 @@ ScrollView {
                 root.activated(currentRow);
         }
 
-        delegate: Item {
+        delegate: FocusScope {
             id: rowItemContainer
+
+            activeFocusOnTab: false
 
             property Item rowItem
             // We recycle instantiated row items to speed up list scrolling

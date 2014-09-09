@@ -875,6 +875,13 @@ TestCase {
         return undefined // no matching child found
     }
 
+    Component {
+        id: textFieldDelegate
+        TextField {
+            objectName: "delegate-" + styleData.row + "-" + styleData.column
+        }
+    }
+
     function test_activeFocusOnTab() {
         if (!SystemInfo.tabAllWidgets)
             skip("This function doesn't support NOT iterating all.")
@@ -926,6 +933,23 @@ TestCase {
         verify(control.control1.activeFocus)
         verify(!control.control2.activeFocus)
         verify(!control.control3.activeFocus)
+
+        control.control2.itemDelegate = textFieldDelegate
+
+        keyPress(Qt.Key_Tab)
+        verify(!control.control1.activeFocus)
+        verify(control.control2.activeFocus)
+        verify(!control.control3.activeFocus)
+
+        for (var row = 0; row < 3; ++row) {
+            for (var col = 0; col < 2; ++col) {
+                keyPress(Qt.Key_Tab)
+                var delegate = findAChild(control.control2.__currentRowItem, "delegate-" + row + "-" + col)
+                verify(delegate)
+                verify(delegate.activeFocus)
+            }
+        }
+
         control.destroy()
     }
 }
