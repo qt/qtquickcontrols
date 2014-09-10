@@ -57,6 +57,11 @@
 #include "Private/qquickstyleitem_p.h"
 #endif
 
+#ifndef QT_NO_TRANSLATION
+#include <QtCore/qlibraryinfo.h>
+#include <QtCore/qlocale.h>
+#endif
+
 static void initResources()
 {
     Q_INIT_RESOURCE(controls);
@@ -150,6 +155,12 @@ void QtQuickControlsPlugin::initializeEngine(QQmlEngine *engine, const char *uri
     engine->addImageProvider("desktoptheme", new QQuickDesktopIconProvider);
     if (isLoadedFromResource())
         engine->addImportPath(QStringLiteral("qrc:/"));
+
+#ifndef QT_NO_TRANSLATION
+    if (m_translator.load(QLocale(), QLatin1String("qtquickcontrols"),
+                          QLatin1String("_"), QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
+        QCoreApplication::installTranslator(&m_translator);
+#endif
 }
 
 QString QtQuickControlsPlugin::fileLocation() const

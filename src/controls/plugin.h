@@ -38,6 +38,10 @@
 #include <QtQml/qqml.h>
 #include <QtQml/qqmlengine.h>
 
+#ifndef QT_NO_TRANSLATION
+#include <QtCore/qtranslator.h>
+#endif
+
 QT_BEGIN_NAMESPACE
 
 class QtQuickControlsPlugin: public QQmlExtensionPlugin
@@ -50,6 +54,9 @@ public:
 private:
     QString fileLocation() const;
     bool isLoadedFromResource() const;
+#ifndef QT_NO_TRANSLATION
+    QTranslator m_translator;
+#endif
 };
 
 QT_END_NAMESPACE
