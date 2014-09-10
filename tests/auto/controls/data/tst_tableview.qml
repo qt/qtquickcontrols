@@ -280,6 +280,7 @@ TestCase {
         table.selection.selectAll()
         compare(table.selection.__ranges.length, 1)
         verify(rangeTest([[0,49]], table))
+        table.destroy()
     }
 
     function test_selectionCount() {
@@ -300,6 +301,7 @@ TestCase {
         compare(table.selection.count, 100)
         table.model = 50
         compare(table.selection.count, 0)
+        table.destroy()
     }
 
     function test_selectionForeach() {
@@ -363,6 +365,7 @@ TestCase {
         table.selection.select(0)
         table.selection.forEach(addEven)
         compare(iteration, 50)
+        table.destroy()
     }
 
     function test_selectionContains() {
@@ -383,6 +386,7 @@ TestCase {
         verify(!table.selection.contains(6))
         verify(!table.selection.contains(7))
         verify(table.selection.contains(8))
+        table.destroy()
     }
 
     function test_initializedStyleData() {
@@ -400,6 +404,7 @@ TestCase {
         waitForRendering(table)
         compare(table.items, [0, 1, 2]);
         compare(table.rows, [0, 1, 2]);
+        table.destroy()
     }
 
 
