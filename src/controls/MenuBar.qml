@@ -95,7 +95,7 @@ MenuBarPrivate {
         active: !root.__isNative
         focus: true
         Keys.forwardTo: [item]
-        width: parent && active ? parent.width : 0
+        property real preferredWidth: parent && active ? parent.width : 0
         property bool altPressed: item ? item.__altPressed : false
 
         Loader {
@@ -119,7 +119,7 @@ MenuBarPrivate {
         visible: status === Loader.Ready
         sourceComponent: d.style ? d.style.background : undefined
 
-        width: root.__contentItem.width
+        width: implicitWidth || root.__contentItem.preferredWidth
         height: Math.max(row.height + d.heightPadding, item ? item.implicitHeight : 0)
 
         Binding {
