@@ -84,6 +84,11 @@ MenuBarPrivate {
     property Component style: Qt.createComponent(Settings.style + "/MenuBarStyle.qml", root)
 
     /*! \internal */
+    property QtObject __style: styleLoader.item
+
+    __isNative: !__style.hasOwnProperty("__isNative") || __style.__isNative
+
+    /*! \internal */
     __contentItem: Loader {
         id: topLoader
         sourceComponent: __menuBarComponent
@@ -92,6 +97,16 @@ MenuBarPrivate {
         Keys.forwardTo: [item]
         width: parent && active ? parent.width : 0
         property bool altPressed: item ? item.__altPressed : false
+
+        Loader {
+            id: styleLoader
+            property alias __control: topLoader.item
+            sourceComponent: root.style
+            onStatusChanged: {
+                if (status === Loader.Error)
+                    console.error("Failed to load Style for", root)
+            }
+        }
     }
 
     /*! \internal */
@@ -103,16 +118,6 @@ MenuBarPrivate {
 
         visible: status === Loader.Ready
         sourceComponent: d.style ? d.style.background : undefined
-
-        Loader {
-            id: styleLoader
-            property alias __control: menuBarLoader
-            sourceComponent: root.style
-            onStatusChanged: {
-                if (status === Loader.Error)
-                    console.error("Failed to load Style for", root)
-            }
-        }
 
         width: root.__contentItem.width
         height: Math.max(row.height + d.heightPadding, item ? item.implicitHeight : 0)
@@ -127,7 +132,7 @@ MenuBarPrivate {
         QtObject {
             id: d
 
-            property Style style: styleLoader.item
+            property Style style: __style
 
             property int openedMenuIndex: -1
             property bool preselectMenuItem: false

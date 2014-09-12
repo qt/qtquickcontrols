@@ -124,4 +124,7 @@ Style {
         The font of the control.
     */
     property font font
+
+    /*! \internal */
+    property bool __isNative: true
 }

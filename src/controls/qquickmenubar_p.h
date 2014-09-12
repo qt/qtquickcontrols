@@ -53,11 +53,11 @@ class QQuickMenuBar: public QObject
 
     Q_PROPERTY(QQuickItem *__contentItem READ contentItem WRITE setContentItem NOTIFY contentItemChanged)
     Q_PROPERTY(QQuickWindow *__parentWindow READ parentWindow WRITE setParentWindow)
-    Q_PROPERTY(bool __isNative READ isNative CONSTANT)
+    Q_PROPERTY(bool __isNative READ isNative WRITE setNative NOTIFY nativeChanged)
 
 Q_SIGNALS:
     void menusChanged();
-
+    void nativeChanged();
     void contentItemChanged();
 
 public:
@@ -66,7 +66,8 @@ public:
 
     QQmlListProperty<QQuickMenu> menus();
 
-    bool isNative();
+    bool isNative() const;
+    void setNative(bool native);
 
     QQuickItem *contentItem() const { return m_contentItem; }
     void setContentItem(QQuickItem *);

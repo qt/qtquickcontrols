@@ -63,9 +63,8 @@ QT_BEGIN_NAMESPACE
 */
 
 QQuickMenuBar::QQuickMenuBar(QObject *parent)
-    : QObject(parent), m_contentItem(0), m_parentWindow(0)
+    : QObject(parent), m_platformMenuBar(0), m_contentItem(0), m_parentWindow(0)
 {
-    m_platformMenuBar = QGuiApplicationPrivate::platformTheme()->createPlatformMenuBar();
 }
 
 QQuickMenuBar::~QQuickMenuBar()
@@ -77,9 +76,23 @@ QQmlListProperty<QQuickMenu> QQuickMenuBar::menus()
     return QQmlListProperty<QQuickMenu>(this, 0, &QQuickMenuBar::append_menu, &QQuickMenuBar::count_menu, &QQuickMenuBar::at_menu, 0);
 }
 
-bool QQuickMenuBar::isNative()
+bool QQuickMenuBar::isNative() const
 {
     return m_platformMenuBar != 0;
+}
+
+void QQuickMenuBar::setNative(bool native)
+{
+    bool wasNative = isNative();
+    if (native) {
+        if (!m_platformMenuBar)
+            m_platformMenuBar = QGuiApplicationPrivate::platformTheme()->createPlatformMenuBar();
+    } else {
+        delete m_platformMenuBar;
+        m_platformMenuBar = 0;
+    }
+    if (isNative() != wasNative)
+        emit nativeChanged();
 }
 
 void QQuickMenuBar::setContentItem(QQuickItem *item)
