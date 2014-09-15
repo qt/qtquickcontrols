@@ -158,7 +158,7 @@ Window {
     property alias __panel: panelLoader.item
 
     /*! \internal */
-    property real __topBottomMargins: contentArea.y + __panel.statusBarArea.height
+    property real __topBottomMargins: __panel.contentArea.y + __panel.statusBarArea.height
     /*! \internal
         There is a similar macro QWINDOWSIZE_MAX in qwindow_p.h that is used to limit the
         range of QWindow::maximum{Width,Height}
