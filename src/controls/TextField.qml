@@ -281,7 +281,7 @@ Control {
         \li Qt.ImhExclusiveInputMask - This mask yields nonzero if any of the exclusive flags are used.
         \endlist
     */
-    property int inputMethodHints: textInput.inputMethodHints || Qt.ImhNone
+    property alias inputMethodHints: textInput.inputMethodHints
 
     /*!
         \qmlproperty int TextField::length
