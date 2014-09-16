@@ -472,7 +472,6 @@ Item {
             verify(!control.control2.activeFocus)
             verify(control.control3.activeFocus)
             keyPress(Qt.Key_Tab)
-            sleep(4000)
             verify(control.control1.activeFocus)
             verify(!control.control2.activeFocus)
             verify(!control.control3.activeFocus)
