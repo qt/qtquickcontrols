@@ -107,7 +107,7 @@ QQuickLayoutAttached::QQuickLayoutAttached(QObject *parent)
 /*!
     \qmlattachedproperty real Layout::minimumWidth
 
-    This property holds the maximum width of an item in a layout.
+    This property holds the minimum width of an item in a layout.
     The default value is the items implicit minimum width.
 
     If the item is a layout, the implicit minimum width will be the minimum width the layout can
