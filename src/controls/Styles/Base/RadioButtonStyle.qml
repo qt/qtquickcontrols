@@ -75,7 +75,7 @@ import QtQuick.Controls.Private 1.0
 Style {
     id: radiobuttonStyle
 
-    /*! The \l RadioButton attached to this style. */
+    /*! The \l RadioButton this style is attached to. */
     readonly property RadioButton control: __control
 
     /*! This defines the text label. */

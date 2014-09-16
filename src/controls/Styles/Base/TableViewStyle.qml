@@ -54,7 +54,7 @@ import QtQuick.Controls.Private 1.0
 ScrollViewStyle {
     id: root
 
-    /*! The \l TableView attached to this style. */
+    /*! The \l TableView this style is attached to. */
     readonly property TableView control: __control
 
     /*! The text color. */
