@@ -196,13 +196,17 @@ QValidator::State QQuickSpinBoxValidator::validate(QString &input, int &pos) con
     input = m_prefix + value + m_suffix;
     pos = m_prefix.length() + valuePos;
 
-    if (state == QValidator::Acceptable) {
+    if (state == QValidator::Acceptable || state == QValidator::Intermediate) {
         bool ok = false;
         qreal val = locale().toDouble(value, &ok);
         if (ok) {
-            const_cast<QQuickSpinBoxValidator *>(this)->setValue(val);
-            if (input != textFromValue(val))
-                state = QValidator::Intermediate;
+            if (state == QValidator::Acceptable) {
+                const_cast<QQuickSpinBoxValidator *>(this)->setValue(val);
+                if (input != textFromValue(val))
+                    state = QValidator::Intermediate;
+            } else if (val < m_validator.bottom() || val > m_validator.top()) {
+                return QValidator::Invalid;
+            }
         }
     }
     return state;
