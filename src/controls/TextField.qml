@@ -282,6 +282,7 @@ Control {
 
         \li Qt.ImhDate - The text editor functions as a date field.
         \li Qt.ImhTime - The text editor functions as a time field.
+        \li Qt.ImhMultiLine - The text editor doesn't close software input keyboard when Return or Enter key is pressed (since QtQuick.Controls 1.3).
         \endlist
 
         Flags that restrict input (exclusive flags) are:
@@ -653,7 +654,8 @@ Control {
 
         onAccepted: {
             Qt.inputMethod.commit()
-            Qt.inputMethod.hide()
+            if (!(textInput.inputMethodHints & Qt.ImhMultiLine))
+                Qt.inputMethod.hide()
             textfield.accepted()
         }
 
