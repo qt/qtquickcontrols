@@ -100,7 +100,7 @@ Style {
             text: control.text
             anchors.centerIn: parent
             color: SystemPaletteSingleton.text(control.enabled)
-            renderType: Text.NativeRendering
+            renderType: Settings.isMobile ? Text.QtRendering : Text.NativeRendering
         }
     }
 

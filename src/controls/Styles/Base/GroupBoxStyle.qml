@@ -126,7 +126,7 @@ Style {
             anchors.margins: 4
             text: control.title
             color: textColor
-            renderType: Text.NativeRendering
+            renderType: Settings.isMobile ? Text.QtRendering : Text.NativeRendering
         }
 
         BorderImage {

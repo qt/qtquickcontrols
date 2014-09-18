@@ -95,12 +95,14 @@ Style {
         Supported render types are:
         \list
         \li Text.QtRendering
-        \li Text.NativeRendering - the default
+        \li Text.NativeRendering
         \endlist
+
+        The default value is platform dependent.
 
         \sa Text::renderType
     */
-    property int renderType: Text.NativeRendering
+    property int renderType: Settings.isMobile ? Text.QtRendering : Text.NativeRendering
 
     /*! The placeholder text color, used when the text field is empty.
         \since QtQuick.Controls.Styles 1.1

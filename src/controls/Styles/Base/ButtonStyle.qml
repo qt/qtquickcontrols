@@ -141,7 +141,7 @@ Style {
             }
             Text {
                 id: text
-                renderType: Text.NativeRendering
+                renderType: Settings.isMobile ? Text.QtRendering : Text.NativeRendering
                 anchors.verticalCenter: parent.verticalCenter
                 text: control.text
                 color: SystemPaletteSingleton.buttonText(control.enabled)

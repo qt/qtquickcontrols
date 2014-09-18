@@ -106,7 +106,7 @@ Style {
             font: root.font
             text: formatMnemonic(styleData.text, styleData.underlineMnemonic)
             anchors.centerIn: parent
-            renderType: Text.NativeRendering
+            renderType: Settings.isMobile ? Text.QtRendering : Text.NativeRendering
             color: styleData.open ? "white" : SystemPaletteSingleton.windowText(control.enabled)
         }
     }

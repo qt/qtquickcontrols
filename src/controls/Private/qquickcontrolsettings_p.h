@@ -50,6 +50,7 @@ class QQuickControlSettings : public QObject
     Q_PROPERTY(qreal dpiScaleFactor READ dpiScaleFactor CONSTANT)
     Q_PROPERTY(qreal dragThreshold READ dragThreshold CONSTANT)
     Q_PROPERTY(bool hasTouchScreen READ hasTouchScreen CONSTANT)
+    Q_PROPERTY(bool isMobile READ isMobile CONSTANT)
 
 public:
     QQuickControlSettings(QQmlEngine *engine);
@@ -66,6 +67,7 @@ public:
     qreal dragThreshold() const;
 
     bool hasTouchScreen() const;
+    bool isMobile() const;
 
 signals:
     void styleChanged();

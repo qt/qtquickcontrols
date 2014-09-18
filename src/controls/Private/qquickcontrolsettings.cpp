@@ -82,6 +82,15 @@ bool QQuickControlSettings::hasTouchScreen() const
 #endif
 }
 
+bool QQuickControlSettings::isMobile() const
+{
+#if defined(Q_OS_IOS) || defined(Q_OS_ANDROID) || defined(Q_OS_BLACKBERRY) || defined(Q_OS_QNX) || defined(Q_OS_WINRT)
+    return true;
+#else
+    return false;
+#endif
+}
+
 static QString styleImportPath(QQmlEngine *engine, const QString &styleName)
 {
     QString path = qgetenv("QT_QUICK_CONTROLS_STYLE");

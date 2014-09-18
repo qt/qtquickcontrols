@@ -167,7 +167,7 @@ Style {
             horizontalAlignment: Text.AlignHCenter
             text: styleData.title
             elide: Text.ElideMiddle
-            renderType: Text.NativeRendering
+            renderType: Settings.isMobile ? Text.QtRendering : Text.NativeRendering
             scale: control.tabPosition === Qt.TopEdge ? 1 : -1
             color: SystemPaletteSingleton.text(styleData.enabled)
             Rectangle {
