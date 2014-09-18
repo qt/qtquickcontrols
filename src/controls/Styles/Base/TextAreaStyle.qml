@@ -64,7 +64,7 @@ import QtQuick.Controls.Private 1.0
 ScrollViewStyle {
     id: style
 
-    /*! The \l TextArea attached to this style. */
+    /*! The \l TextArea this style is attached to. */
     readonly property TextArea control: __control
 
     /*! The current font. */

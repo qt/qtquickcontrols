@@ -94,7 +94,7 @@ Style {
     */
     property color selectedTextColor: SystemPaletteSingleton.highlightedText(control.enabled)
 
-    /*! The \l ComboBox attached to this style. */
+    /*! The \l ComboBox this style is attached to. */
     readonly property ComboBox control: __control
 
     /*! The padding between the background and the label components. */

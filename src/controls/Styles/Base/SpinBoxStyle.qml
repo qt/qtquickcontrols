@@ -66,7 +66,7 @@ import QtQuick.Controls.Private 1.0
 Style {
     id: spinboxStyle
 
-    /*! The \l SpinBox attached to this style. */
+    /*! The \l SpinBox this style is attached to. */
     readonly property SpinBox control: __control
 
     /*! The content margins of the text field. */
