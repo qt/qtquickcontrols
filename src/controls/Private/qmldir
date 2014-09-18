@@ -30,4 +30,5 @@ singleton TextSingleton 1.0 TextSingleton.qml
 TextHandle 1.0 TextHandle.qml
 TextInputWithHandles 1.0 TextInputWithHandles.qml
 EditMenu 1.0 EditMenu.qml
+EditMenu_base 1.0 EditMenu_base.qml
 EditMenu_ios 1.0 EditMenu_ios.qml

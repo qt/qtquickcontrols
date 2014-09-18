@@ -3,7 +3,7 @@
 ** Copyright (C) 2014 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
-** This file is part of the Qt Quick Controls module of the Qt Toolkit.
+** This file is part of the Qt Quick controls module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:BSD$
 ** You may use this file under the terms of the BSD license as follows:
@@ -41,13 +41,66 @@ import QtQuick 2.2
 import QtQuick.Controls 1.2
 import QtQuick.Controls.Private 1.0
 
-Loader {
-    property Item control
-    property Item input
-    property Item cursorHandle
-    property Item selectionHandle
-    property Flickable flickable
-    property Menu defaultMenu: item && item.defaultMenu ? item.defaultMenu : null
+Item {
+    anchors.fill: parent
 
-    source: Qt.resolvedUrl("EditMenu_" + (Qt.platform.os === "ios"  ? "ios" : "base") + ".qml")
+    Action {
+        id: cutAction
+        text: "Cu&t"
+        shortcut: StandardKey.Cut
+        iconName: "edit-cut"
+        enabled: !input.readOnly && selectionStart !== selectionEnd
+        onTriggered: {
+            input.cut();
+            input.select(input.cursorPosition, input.cursorPosition);
+        }
+    }
+
+    Action {
+        id: copyAction
+        text: "&Copy"
+        shortcut: StandardKey.Copy
+        iconName: "edit-copy"
+        enabled: input.selectionStart !== input.selectionEnd
+        onTriggered: {
+            input.copy();
+            input.select(input.cursorPosition, input.cursorPosition);
+        }
+    }
+
+    Action {
+        id: pasteAction
+        text: "&Paste"
+        shortcut: StandardKey.Paste
+        iconName: "edit-paste"
+        enabled: input.canPaste
+        onTriggered: input.paste()
+    }
+
+    property Menu defaultMenu: Menu {
+        MenuItem { action: cutAction }
+        MenuItem { action: copyAction }
+        MenuItem { action: pasteAction }
+    }
+
+    MouseArea {
+        id: mouseArea
+        anchors.fill: parent
+        acceptedButtons: Qt.RightButton
+
+        onClicked: {
+            if (input.selectionStart === input.selectionEnd) {
+                var cursorPos = input.positionAt(mouse.x, mouse.y)
+                input.moveHandles(cursorPos, cursorPos)
+            }
+
+            input.activate()
+
+            if (control.menu) {
+                control.menu.__dismissMenu();
+                var menuPos = mapToItem(null, mouse.x, mouse.y)
+                control.menu.__popup(menuPos.x, menuPos.y, -1, MenuPrivate.EditMenu);
+            }
+        }
+    }
 }
