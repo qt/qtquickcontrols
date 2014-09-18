@@ -38,10 +38,30 @@
 **
 ****************************************************************************/
 import QtQuick 2.2
-import QtQuick.Controls 1.2
-import QtQuick.Controls.Styles 1.3
 
-SpinBoxStyle {
-    selectionHandle: SelectionHandleStyle{}
-    cursorHandle: CursorHandleStyle{}
+Item {
+    id: cursorDelegate
+    x: -10
+    y: -20
+    width: 80
+    height: knob.height + knobLine.height + 60
+
+    Rectangle {
+        id: knob
+        x: knobLine.x + (knobLine.width / 2) - (width / 2)
+        y: knobLine.y + knobLine.height - 1
+        width: 10
+        height: width
+        radius: width / 2
+        visible: knobLine.visible
+        color: knobLine.color
+    }
+    Rectangle {
+        id: knobLine
+        x: -parent.x
+        y: -parent.y
+        width: 2
+        height: styleData.lineHeight + 1
+        color: "#ff146fe1"
+    }
 }

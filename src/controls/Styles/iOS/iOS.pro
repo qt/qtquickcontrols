@@ -24,6 +24,8 @@ QML_FILES += \
     $$PWD/TextAreaStyle.qml \
     $$PWD/TextFieldStyle.qml \
     $$PWD/ToolBarStyle.qml \
-    $$PWD/ToolButtonStyle.qml
+    $$PWD/ToolButtonStyle.qml \
+    $$PWD/CursorHandleStyle.qml \
+    $$PWD/SelectionHandleStyle.qml
 
 load(qml_module)
