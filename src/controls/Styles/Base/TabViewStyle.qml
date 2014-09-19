@@ -81,7 +81,7 @@ import QtQuick.Controls.Private 1.0
 
 Style {
 
-    /*! The \l ScrollView attached to this style. */
+    /*! The \l ScrollView this style is attached to. */
     readonly property TabView control: __control
 
     /*! This property holds whether the user can move the tabs.
@@ -167,7 +167,7 @@ Style {
             horizontalAlignment: Text.AlignHCenter
             text: styleData.title
             elide: Text.ElideMiddle
-            renderType: Text.NativeRendering
+            renderType: Settings.isMobile ? Text.QtRendering : Text.NativeRendering
             scale: control.tabPosition === Qt.TopEdge ? 1 : -1
             color: SystemPaletteSingleton.text(styleData.enabled)
             Rectangle {

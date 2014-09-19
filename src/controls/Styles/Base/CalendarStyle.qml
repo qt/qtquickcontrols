@@ -125,7 +125,7 @@ Style {
     id: calendarStyle
 
     /*!
-        The Calendar attached to this style.
+        The Calendar this style is attached to.
     */
     readonly property Calendar control: __control
 

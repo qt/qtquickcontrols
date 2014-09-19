@@ -395,12 +395,12 @@ AbstractColorDialog {
                 anchors.right: parent.right
                 Button {
                     id: cancelButton
-                    text: "Cancel"
+                    text: qsTr("Cancel")
                     onClicked: root.reject()
                 }
                 Button {
                     id: okButton
-                    text: "OK"
+                    text: qsTr("OK")
                     onClicked: root.accept()
                 }
             }

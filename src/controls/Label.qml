@@ -39,6 +39,8 @@
 ****************************************************************************/
 
 import QtQuick 2.2
+import QtQuick.Controls 1.2
+import QtQuick.Controls.Private 1.0
 
 /*!
     \qmltype Label
@@ -85,7 +87,7 @@ Text {
     id: label
     color: pal.windowText
     activeFocusOnTab: false
-    renderType: Text.NativeRendering
+    renderType: Settings.isMobile ? Text.QtRendering : Text.NativeRendering
     SystemPalette {
         id: pal
         colorGroup: enabled ? SystemPalette.Active : SystemPalette.Disabled

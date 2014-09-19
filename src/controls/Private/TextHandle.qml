@@ -76,19 +76,32 @@ Loader {
         id: mouse
         anchors.fill: item
         enabled: handle.active
+        preventStealing: true
         property real pressX
         property point offset
+        property bool handleDragged: false
+
         onPressed: {
+            Qt.inputMethod.commit()
+            handleDragged = false
             pressX = mouse.x
-            offset = Qt.point(x + mouse.x, y + mouse.y)
+            var handleRect = editor.positionToRectangle(handle.position)
+            var centerX = handleRect.x + (handleRect.width / 2)
+            var centerY = handleRect.y + (handleRect.height / 2)
+            var center = mapFromItem(editor, centerX, centerY)
+            offset = Qt.point(mouseX - center.x, mouseY - center.y)
         }
-        onReleased: preventStealing = false
-        onMouseXChanged: {
-            if (Math.abs(mouse.x - pressX) >= Settings.dragThreshold)
-                preventStealing = true
+        onReleased: {
+            if (!handleDragged) {
+                // The user just clicked on the handle. In that
+                // case clear the selection.
+                var mousePos = editor.mapFromItem(item, mouse.x, mouse.y)
+                var editorPos = editor.positionAt(mousePos.x, mousePos.y)
+                editor.select(editorPos, editorPos)
+            }
         }
         onPositionChanged: {
-            Qt.inputMethod.commit()
+            handleDragged = true
             var pt = mapToItem(editor, mouse.x - offset.x, mouse.y - offset.y)
 
             // limit vertically within mix/max coordinates or content bounds

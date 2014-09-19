@@ -54,7 +54,7 @@ import QtQuick.Controls.Private 1.0
 ScrollViewStyle {
     id: root
 
-    /*! The \l TableView attached to this style. */
+    /*! The \l TableView this style is attached to. */
     readonly property TableView control: __control
 
     /*! The text color. */
@@ -92,7 +92,7 @@ ScrollViewStyle {
             text: styleData.value
             elide: Text.ElideRight
             color: textColor
-            renderType: Text.NativeRendering
+            renderType: Settings.isMobile ? Text.QtRendering : Text.NativeRendering
         }
         Rectangle {
             anchors.right: parent.right
@@ -135,7 +135,7 @@ ScrollViewStyle {
             elide: styleData.elideMode
             text: styleData.value !== undefined ? styleData.value : ""
             color: styleData.textColor
-            renderType: Text.NativeRendering
+            renderType: Settings.isMobile ? Text.QtRendering : Text.NativeRendering
         }
     }
 }

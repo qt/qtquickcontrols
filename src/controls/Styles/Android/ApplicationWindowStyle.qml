@@ -39,10 +39,11 @@
 ****************************************************************************/
 import QtQuick 2.2
 import QtQuick.Controls 1.2
+import QtQuick.Controls.Styles 1.3
 import QtQuick.Controls.Styles.Android 1.0
 import "drawables"
 
-QtObject {
+ApplicationWindowStyle {
     readonly property ApplicationWindow control: __control
 
     property Component background: DrawableLoader {

@@ -66,7 +66,7 @@ import QtQuick.Controls.Private 1.0
 Style {
     id: spinboxStyle
 
-    /*! The \l SpinBox attached to this style. */
+    /*! The \l SpinBox this style is attached to. */
     readonly property SpinBox control: __control
 
     /*! The content margins of the text field. */
@@ -103,12 +103,14 @@ Style {
         Supported render types are:
         \list
         \li Text.QtRendering
-        \li Text.NativeRendering - the default
+        \li Text.NativeRendering
         \endlist
+
+        The default value is platform dependent.
 
         \sa Text::renderType
     */
-    property int renderType: Text.NativeRendering
+    property int renderType: Settings.isMobile ? Text.QtRendering : Text.NativeRendering
 
     /*!
         \since QtQuick.Controls.Styles 1.3

@@ -47,6 +47,7 @@ import QtQuick.Layouts 1.1
 import QtQuick.Window 2.1
 import Qt.labs.folderlistmodel 2.1
 import Qt.labs.settings 1.0
+import "qml"
 
 AbstractFileDialog {
     id: root
@@ -75,6 +76,7 @@ AbstractFileDialog {
         property alias height: root.height
         property alias sidebarWidth: sidebar.width
         property alias sidebarSplit: shortcuts.height
+        property alias sidebarVisible: root.sidebarVisible
         property variant favoriteFolders: []
     }
 
@@ -111,11 +113,10 @@ AbstractFileDialog {
     }
 
     property Action dirUpAction: Action {
-        text: "&Up"
+        text: "\ue810"
         shortcut: "Ctrl+U"
-        iconSource: "images/up.png"
         onTriggered: dirUp()
-        tooltip: "Go up to the folder containing this one"
+        tooltip: qsTr("Go up to the folder containing this one")
     }
 
     Rectangle {
@@ -166,11 +167,12 @@ AbstractFileDialog {
                 Component.onCompleted: if (width < 1) width = sidebarSplitter.maxShortcutWidth
                 height: parent.height
                 width: 0 // initial width only; settings and onCompleted will override it
+                visible: root.sidebarVisible
                 SplitView {
                     id: sidebarSplitter
                     orientation: Qt.Vertical
                     property real rowHeight: 10
-                    property real maxShortcutWidth: 50
+                    property real maxShortcutWidth: 80
                     width: parent.width
                     height: parent.height - favoritesButtons.height
 
@@ -178,8 +180,8 @@ AbstractFileDialog {
                         id: shortcuts
                         Component.onCompleted: {
                             if (height < 1)
-                                height = shortcutsView.model.count * sidebarSplitter.rowHeight
-                            Layout.minimumHeight = sidebarSplitter.rowHeight * 2.5
+                                height = sidebarSplitter.rowHeight * 4.65
+                            Layout.minimumHeight = sidebarSplitter.rowHeight * 2.65
                         }
                         height: 0 // initial width only; settings and onCompleted will override it
                         ListView {
@@ -241,7 +243,7 @@ AbstractFileDialog {
                                     id: favoriteCtxMenu
                                     title: root.favoriteFolders[index]
                                     MenuItem {
-                                        text: "Remove favorite"
+                                        text: qsTr("Remove favorite")
                                         onTriggered: {
                                             root.favoriteFolders.splice(index, 1)
                                             favorites.model = root.favoriteFolders
@@ -275,10 +277,15 @@ AbstractFileDialog {
 
                 Row {
                     id: favoritesButtons
-                    height: plusButton.height
+                    height: plusButton.height + 1
+                    anchors.right: parent.right
+                    anchors.rightMargin: 6
+                    layoutDirection: Qt.RightToLeft
                     Button {
                         id: plusButton
-                        text: "+"
+                        style: IconButtonStyle { }
+                        text: "\ue83e"
+                        tooltip: qsTr("Add the current directory as a favorite")
                         width: height
                         onClicked: {
                             root.favoriteFolders.push(root.folder)
@@ -318,27 +325,26 @@ AbstractFileDialog {
                     }
                 }
 
+
                 TableViewColumn {
                     id: fileNameColumn
                     role: "fileName"
-                    title: "Filename"
+                    title: qsTr("Filename")
                     delegate: Item {
                         implicitWidth: pathText.implicitWidth + pathText.anchors.leftMargin + pathText.anchors.rightMargin
-                        Image {
+                        IconGlyph {
                             id: fileIcon
-                            width: height
                             x: 4
                             height: parent.height - 2
-                            source: "images/folder.png"
+                            unicode: view.model.isFolder(styleData.row) ? "\ue804" : "\ue802"
                         }
                         Text {
                             id: pathText
                             text: styleData.value
-                            onTextChanged: fileIcon.visible = view.model.isFolder(styleData.row)
                             anchors {
                                 left: parent.left
                                 right: parent.right
-                                leftMargin: fileIcon.width + 8
+                                leftMargin: fileIcon.width + 6
                                 rightMargin: 4
                                 verticalCenter: parent.verticalCenter
                             }
@@ -350,7 +356,7 @@ AbstractFileDialog {
                 }
                 TableViewColumn {
                     role: "fileSuffix"
-                    title: "Type"
+                    title: qsTr("Type", "file type (extension)")
                     // TODO should not need to create a whole new component just to customize the text value
                     // something like textFormat: function(text) { return view.model.get(styleData.row, "fileIsDir") ? "folder" : text }
                     delegate: Item {
@@ -373,21 +379,22 @@ AbstractFileDialog {
                 }
                 TableViewColumn {
                     role: "fileSize"
-                    title: "Size"
+                    title: qsTr("Size", "file size")
                     horizontalAlignment: Text.AlignRight
                 }
-                TableViewColumn { role: "fileModified" ; title: "Modified" }
-                TableViewColumn { role: "fileAccessed" ; title: "Accessed" }
+                TableViewColumn { id: modifiedColumn; role: "fileModified" ; title: qsTr("Modified", "last-modified time") }
+                TableViewColumn { id: accessedColumn; role: "fileAccessed" ; title: qsTr("Accessed", "last-accessed time") }
             }
         }
 
         ToolBar {
             id: titleBar
             RowLayout {
-                width: parent.width
+                anchors.fill: parent
                 ToolButton {
-                    iconSource: "images/up.png"
                     action: dirUpAction
+                    style: IconButtonStyle { }
+                    Layout.maximumWidth: height * 1.5
                 }
                 TextField {
                     id: currentPathField
@@ -414,11 +421,23 @@ AbstractFileDialog {
                 anchors.rightMargin: spacing
                 anchors.verticalCenter: parent.verticalCenter
                 spacing: 4
+                Button {
+                    id: toggleSidebarButton
+                    checkable: true
+                    style: IconButtonStyle { }
+                    text: "\u25E7"
+                    height: cancelButton.height
+                    width: height
+                    checked: root.sidebarVisible
+                    onClicked: {
+                        root.sidebarVisible = !root.sidebarVisible
+                    }
+                }
                 ComboBox {
                     id: filterField
                     model: root.nameFilters
                     visible: !selectFolder
-                    width: bottomBar.width - cancelButton.width - okButton.width - parent.spacing * 5
+                    width: bottomBar.width - toggleSidebarButton.width - cancelButton.width - okButton.width - parent.spacing * 6
                     anchors.verticalCenter: parent.verticalCenter
                     onCurrentTextChanged: {
                         root.selectNameFilter(currentText)
@@ -427,12 +446,12 @@ AbstractFileDialog {
                 }
                 Button {
                     id: cancelButton
-                    text: "Cancel"
+                    text: qsTr("Cancel")
                     onClicked: root.reject()
                 }
                 Button {
                     id: okButton
-                    text: "OK"
+                    text: qsTr("OK")
                     onClicked: {
                         if (view.model.isFolder(view.currentIndex) && !selectFolder)
                             dirDown(view.model.get(view.currentIndex, "filePath"))

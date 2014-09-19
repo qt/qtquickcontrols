@@ -51,7 +51,7 @@ import QtQuick.Controls.Private 1.0
 Style {
     id: root
 
-    /*! The \l ScrollView attached to this style. */
+    /*! The \l ScrollView this style is attached to. */
     readonly property ScrollView control: __control
 
     /*! This property controls the frame border padding of the scrollView. */
