@@ -216,13 +216,7 @@ Item {
                 wrapMode: wrapCheck.checked ? TextEdit.WordWrap : TextEdit.NoWrap
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                MouseArea {
-                    id: contextMenu
-                    parent: area.viewport
-                    anchors.fill: parent
-                    acceptedButtons: Qt.RightButton
-                    onPressed: editmenu.popup()
-                }
+                menu: editmenu
             }
         }
     }
