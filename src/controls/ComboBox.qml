@@ -343,14 +343,14 @@ Control {
             if (comboBox.activeFocusOnPress)
                 forceActiveFocus()
             if (!Settings.hasTouchScreen)
-                popup.show()
+                popup.toggleShow()
             else
                 overridePressed = true
         }
         onCanceled: overridePressed = false
         onClicked: {
             if (Settings.hasTouchScreen)
-                popup.show()
+                popup.toggleShow()
             overridePressed = false
         }
         onWheel: {
@@ -614,14 +614,18 @@ Control {
                 updateSelectedText()
         }
 
-        function show() {
-            if (items[__selectedIndex])
-                items[__selectedIndex].checked = true
-            __currentIndex = comboBox.currentIndex
-            if (Qt.application.layoutDirection === Qt.RightToLeft)
-                __popup(comboBox.width, y, isPopup ? __selectedIndex : 0)
-            else
-                __popup(0, y, isPopup ? __selectedIndex : 0)
+        function toggleShow() {
+            if (popup.__popupVisible) {
+                popup.__dismissMenu()
+            } else {
+                if (items[__selectedIndex])
+                    items[__selectedIndex].checked = true
+                __currentIndex = comboBox.currentIndex
+                if (Qt.application.layoutDirection === Qt.RightToLeft)
+                    __popup(comboBox.width, y, isPopup ? __selectedIndex : 0)
+                else
+                    __popup(0, y, isPopup ? __selectedIndex : 0)
+            }
         }
 
         function updateSelectedText() {
@@ -638,8 +642,7 @@ Control {
     // The key bindings below will only be in use when popup is
     // not visible. Otherwise, native popup key handling will take place:
     Keys.onSpacePressed: {
-        if (!popup.popupVisible)
-            popup.show()
+        popup.toggleShow()
     }
 
     Keys.onUpPressed: __selectPrevItem()
