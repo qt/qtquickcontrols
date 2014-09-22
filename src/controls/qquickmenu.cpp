@@ -453,11 +453,8 @@ QRect QQuickMenu::popupGeometry() const
 void QQuickMenu::__closeMenu()
 {
     setPopupVisible(false);
-    if (m_platformMenu)
-        m_platformMenu->setVisible(false);
-    else if (m_popupWindow)
+    if (m_popupWindow)
         m_popupWindow->setVisible(false);
-
     m_parentWindow = 0;
     emit __menuClosed();
 }
