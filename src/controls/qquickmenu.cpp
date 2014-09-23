@@ -675,8 +675,6 @@ void QQuickMenu::setupMenuItem(QQuickMenuBase *item, int platformIndex)
 void QQuickMenu::append_menuItems(QQuickMenuItems *list, QObject *o)
 {
     if (QQuickMenu *menu = qobject_cast<QQuickMenu *>(list->object)) {
-        Q_ASSERT(o->parent() == menu);
-
         if (QQuickMenuBase *menuItem = qobject_cast<QQuickMenuBase *>(o)) {
             menu->m_menuItems.append(menuItem);
             menu->setupMenuItem(menuItem);
