@@ -140,25 +140,27 @@ ApplicationWindow {
 
     ChildWindow { id: window1 }
 
-    Menu {
+    Component {
         id: editmenu
-        MenuItem { action: cutAction }
-        MenuItem { action: copyAction }
-        MenuItem { action: pasteAction }
-        MenuSeparator {}
         Menu {
-            title: "Text &Format"
-            MenuItem { action: a1 }
-            MenuItem { action: a2 }
-            MenuItem { action: a3 }
-            MenuSeparator { }
-            MenuItem { text: "Allow &Hyphenation"; checkable: true }
-        }
-        Menu {
-            title: "Font &Style"
-            MenuItem { text: "&Bold"; checkable: true }
-            MenuItem { text: "&Italic"; checkable: true }
-            MenuItem { text: "&Underline"; checkable: true }
+            MenuItem { action: cutAction }
+            MenuItem { action: copyAction }
+            MenuItem { action: pasteAction }
+            MenuSeparator {}
+            Menu {
+                title: "Text &Format"
+                MenuItem { action: a1 }
+                MenuItem { action: a2 }
+                MenuItem { action: a3 }
+                MenuSeparator { }
+                MenuItem { text: "Allow &Hyphenation"; checkable: true }
+            }
+            Menu {
+                title: "Font &Style"
+                MenuItem { text: "&Bold"; checkable: true }
+                MenuItem { text: "&Italic"; checkable: true }
+                MenuItem { text: "&Underline"; checkable: true }
+            }
         }
     }
 

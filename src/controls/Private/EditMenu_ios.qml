@@ -46,7 +46,7 @@ Item {
     anchors.fill: parent
     property bool __showMenuFromTouchAndHold: false
 
-    property Menu defaultMenu: Menu {
+    property Component defaultMenu: Menu {
         MenuItem {
             text: "cut"
             visible: !input.readOnly && selectionStart !== selectionEnd
@@ -99,7 +99,7 @@ Item {
         }
 
         onClicked: {
-            if (control.menu && control.menu.__popupVisible) {
+            if (control.menu && getMenuInstance().__popupVisible) {
                 select(input.cursorPosition, input.cursorPosition);
             } else {
                 input.activate();
@@ -180,10 +180,10 @@ Item {
                 var xMax = Math.max(r1.x, r2.x);
                 var centerX = xMin + ((xMax - xMin) / 2);
                 var popupPos = input.mapToItem(null, centerX, r1.y);
-                control.menu.__dismissMenu();
-                control.menu.__popup(popupPos.x, popupPos.y, -1, MenuPrivate.EditMenu);
+                getMenuInstance().__dismissMenu();
+                getMenuInstance().__popup(popupPos.x, popupPos.y, -1, MenuPrivate.EditMenu);
             } else {
-                control.menu.__dismissMenu();
+                getMenuInstance().__dismissMenu();
             }
         }
     }

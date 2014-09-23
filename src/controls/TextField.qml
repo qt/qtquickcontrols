@@ -434,14 +434,13 @@ Control {
     property alias validator: textInput.validator
 
     /*!
-        \qmlproperty Menu TextField::menu
         \since QtQuick.Controls 1.3
 
-        This property contains the edit menu for working
+        This property contains the edit \l Menu for working
         with text selection. Set it to \c null if no menu
         is wanted.
     */
-    property Menu menu: textInput.editMenu.defaultMenu
+    property Component menu: textInput.editMenu.defaultMenu
 
     /*!
         \qmlsignal TextField::accepted()

@@ -436,14 +436,15 @@ ScrollView {
     readonly property alias hoveredLink: edit.hoveredLink
 
     /*!
-        \qmlproperty Menu TextArea::menu
         \since QtQuick.Controls 1.3
 
-        This property contains the edit menu for working
+        This property contains the edit \l Menu for working
         with text selection. Set it to \c null if no menu
         is wanted.
+
+        \sa Menu
     */
-    property Menu menu: editMenu.defaultMenu
+    property Component menu: editMenu.defaultMenu
 
     /*!
         \qmlmethod TextArea::append(string)

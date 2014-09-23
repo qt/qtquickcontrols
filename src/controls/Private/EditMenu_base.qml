@@ -42,45 +42,52 @@ import QtQuick.Controls 1.2
 import QtQuick.Controls.Private 1.0
 
 Item {
+    id: editMenuBase
     anchors.fill: parent
 
-    Action {
+    Component {
         id: cutAction
-        text: "Cu&t"
-        shortcut: StandardKey.Cut
-        iconName: "edit-cut"
-        enabled: !input.readOnly && selectionStart !== selectionEnd
-        onTriggered: {
-            input.cut();
-            input.select(input.cursorPosition, input.cursorPosition);
+        Action {
+            text: "Cu&t"
+            shortcut: StandardKey.Cut
+            iconName: "edit-cut"
+            enabled: !input.readOnly && selectionStart !== selectionEnd
+            onTriggered: {
+                input.cut();
+                input.select(input.cursorPosition, input.cursorPosition);
+            }
         }
     }
 
-    Action {
+    Component {
         id: copyAction
-        text: "&Copy"
-        shortcut: StandardKey.Copy
-        iconName: "edit-copy"
-        enabled: input.selectionStart !== input.selectionEnd
-        onTriggered: {
-            input.copy();
-            input.select(input.cursorPosition, input.cursorPosition);
+        Action {
+            text: "&Copy"
+            shortcut: StandardKey.Copy
+            iconName: "edit-copy"
+            enabled: input.selectionStart !== input.selectionEnd
+            onTriggered: {
+                input.copy();
+                input.select(input.cursorPosition, input.cursorPosition);
+            }
         }
     }
 
-    Action {
+    Component {
         id: pasteAction
-        text: "&Paste"
-        shortcut: StandardKey.Paste
-        iconName: "edit-paste"
-        enabled: input.canPaste
-        onTriggered: input.paste()
+        Action {
+            text: "&Paste"
+            shortcut: StandardKey.Paste
+            iconName: "edit-paste"
+            enabled: input.canPaste
+            onTriggered: input.paste()
+        }
     }
 
-    property Menu defaultMenu: Menu {
-        MenuItem { action: cutAction }
-        MenuItem { action: copyAction }
-        MenuItem { action: pasteAction }
+    property Component defaultMenu: Menu {
+        MenuItem { action: cutAction.createObject(editMenuBase) }
+        MenuItem { action: copyAction.createObject(editMenuBase) }
+        MenuItem { action: pasteAction.createObject(editMenuBase) }
     }
 
     MouseArea {
@@ -97,9 +104,9 @@ Item {
             input.activate()
 
             if (control.menu) {
-                control.menu.__dismissMenu();
+                getMenuInstance().__dismissMenu();
                 var menuPos = mapToItem(null, mouse.x, mouse.y)
-                control.menu.__popup(menuPos.x, menuPos.y, -1, MenuPrivate.EditMenu);
+                getMenuInstance().__popup(menuPos.x, menuPos.y, -1, MenuPrivate.EditMenu);
             }
         }
     }
