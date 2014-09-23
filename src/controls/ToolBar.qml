@@ -115,6 +115,9 @@ FocusScope {
     /*! \internal */
     default property alias __content: container.data
 
+    /*! \internal */
+    property var __menu
+
     /*!
         \qmlproperty Item ToolBar::contentItem
 
@@ -148,7 +151,7 @@ FocusScope {
 
             anchors.topMargin: topMargin
             anchors.leftMargin: leftMargin
-            anchors.rightMargin: rightMargin
+            anchors.rightMargin: rightMargin + buttonLoader.active ? buttonLoader.width : 0
             anchors.bottomMargin: bottomMargin
 
             property int topMargin: __style ? __style.padding.top : 0
@@ -163,5 +166,17 @@ FocusScope {
             property real layoutHeight: layoutItem ? (layoutItem.implicitHeight || layoutItem.height) +
                                                      (layoutItem.anchors.fill ? layoutItem.anchors.topMargin +
                                                                                 layoutItem.anchors.bottomMargin : 0) : 0
-        }]
+        },
+        Loader {
+            id: buttonLoader
+            anchors.right: parent.right
+            anchors.rightMargin: container.rightMargin
+            anchors.verticalCenter: parent.verticalCenter
+            sourceComponent: ToolMenuButton {
+                menu: toolbar.__menu
+                panel: toolbar.__style.menuButton || null
+            }
+            active: !!__menu && __menu.items.length > 0 && !!__style.menuButton
+        }
+    ]
 }
