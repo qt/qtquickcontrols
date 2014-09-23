@@ -68,6 +68,28 @@ ListModel {
     */
     property var locale
 
+    ListElement {
+        dayOfWeek: Locale.Sunday
+    }
+    ListElement {
+        dayOfWeek: Locale.Monday
+    }
+    ListElement {
+        dayOfWeek: Locale.Tuesday
+    }
+    ListElement {
+        dayOfWeek: Locale.Wednesday
+    }
+    ListElement {
+        dayOfWeek: Locale.Thursday
+    }
+    ListElement {
+        dayOfWeek: Locale.Friday
+    }
+    ListElement {
+        dayOfWeek: Locale.Saturday
+    }
+
     Component.onCompleted: {
         var daysOfWeek = [Locale.Sunday, Locale.Monday, Locale.Tuesday,
             Locale.Wednesday, Locale.Thursday, Locale.Friday, Locale.Saturday];
@@ -76,9 +98,10 @@ ListModel {
         var shifted = daysOfWeek.splice(firstDayOfWeek, daysOfWeek.length - firstDayOfWeek);
         daysOfWeek = shifted.concat(daysOfWeek)
 
-        for (var i = 0; i < daysOfWeek.length; ++i) {
-            var element = { dayOfWeek: daysOfWeek[i] }
-            root.append(element);
+        if (firstDayOfWeek !== Locale.Sunday) {
+            for (var i = 0; i < daysOfWeek.length; ++i) {
+                root.setProperty(i, "dayOfWeek", daysOfWeek[i]);
+            }
         }
     }
 }
