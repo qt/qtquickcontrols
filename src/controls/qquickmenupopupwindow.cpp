@@ -42,8 +42,10 @@
 QT_BEGIN_NAMESPACE
 
 QQuickMenuPopupWindow::QQuickMenuPopupWindow() :
-    QQuickPopupWindow(), m_itemAt(0)
-{ }
+    m_itemAt(0),
+    m_logicalParentWindow(0)
+{
+}
 
 void QQuickMenuPopupWindow::setParentItem(QQuickItem *item)
 {
@@ -72,8 +74,11 @@ void QQuickMenuPopupWindow::setItemAt(QQuickItem *menuItem)
 
 void QQuickMenuPopupWindow::setParentWindow(QWindow *effectiveParentWindow, QQuickWindow *parentWindow)
 {
+    while (effectiveParentWindow && effectiveParentWindow->parent())
+        effectiveParentWindow = effectiveParentWindow->parent();
     if (transientParent() != effectiveParentWindow)
         setTransientParent(effectiveParentWindow);
+    m_logicalParentWindow = parentWindow;
     if (parentWindow) {
         connect(parentWindow, SIGNAL(destroyed()), this, SLOT(dismissPopup()));
         if (QQuickMenuPopupWindow *pw = qobject_cast<QQuickMenuPopupWindow *>(parentWindow))
@@ -129,6 +134,10 @@ void QQuickMenuPopupWindow::exposeEvent(QExposeEvent *e)
     // the popup will reposition at the last moment, so its
     // initial position must be captured for updateSize().
     m_initialPos = position();
+    if (m_logicalParentWindow && m_logicalParentWindow->parent()) {
+        // This must be a QQuickWindow embedded via createWindowContainer.
+        m_initialPos += m_logicalParentWindow->geometry().topLeft();
+    }
     QQuickPopupWindow::exposeEvent(e);
 }
 
