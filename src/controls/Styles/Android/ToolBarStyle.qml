@@ -54,6 +54,36 @@ Style {
         bottom: AndroidStyle.styleDef.actionBarStyle.View_paddingBottom
     }
 
+    property Component menuButton: Item {
+        readonly property var styleDef: AndroidStyle.styleDef.actionButtonStyle
+
+        readonly property real minWidth: styleDef.View_minWidth || 0
+        readonly property real minHeight: styleDef.View_minHeight || 0
+        readonly property real paddingStart: styleDef.View_paddingStart || 0
+        readonly property real paddingEnd: styleDef.View_paddingEnd || 0
+
+        implicitWidth: Math.max(minWidth, button.implicitWidth)
+        implicitHeight: Math.max(minHeight, button.implicitHeight)
+
+        DrawableLoader {
+            id: button
+            anchors.fill: parent
+            pressed: styleData.pressed
+            focused: styleData.activeFocus
+            window_focused: control.Window.active
+            styleDef: parent.styleDef.View_background
+        }
+
+        DrawableLoader {
+            id: icon
+            anchors.centerIn: parent
+            pressed: styleData.pressed
+            focused: styleData.activeFocus
+            window_focused: control.Window.active
+            styleDef: AndroidStyle.styleDef.actionOverflowButtonStyle.ImageView_src
+        }
+    }
+
     property Component panel: Item {
         id: panel
 

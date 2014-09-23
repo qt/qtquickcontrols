@@ -39,4 +39,8 @@
 ****************************************************************************/
 import QtQuick.Controls.Styles 1.2
 
-MenuBarStyle { }
+MenuBarStyle {
+    __isNative: false
+    background: null
+    itemDelegate: null
+}
