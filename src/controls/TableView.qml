@@ -572,7 +572,7 @@ ScrollView {
     ListView {
         id: listView
         focus: true
-        activeFocusOnTab: root.activeFocusOnTab
+        activeFocusOnTab: false
         anchors.topMargin: headerVisible ? tableHeader.height : 0
         anchors.fill: parent
         currentIndex: -1
@@ -788,6 +788,7 @@ ScrollView {
             }
         }
 
+        Keys.forwardTo: root
         Keys.onUpPressed: {
             event.accepted = false
             __scroller.blockUpdates = true;
