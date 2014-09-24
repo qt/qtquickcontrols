@@ -60,6 +60,8 @@ static QString defaultStyleName()
     return QLatin1String("Android");
 #elif defined(Q_OS_IOS)
     return QLatin1String("iOS");
+#elif defined(Q_OS_WINRT)
+    return QLatin1String("WinRT");
 #endif
     return QLatin1String("Base");
 }
