@@ -173,15 +173,13 @@ Item {
                     && (!cursorHandle.pressed && !selectionHandle.pressed)
                     && (!flickable || !flickable.moving)
                     && (cursorHandle.delegate)) {
-                // center menu on top of selection:
-                var r1 = input.positionToRectangle(input.selectionStart);
-                var r2 = input.cursorRectangle;
-                var xMin = Math.min(r1.x, r2.x);
-                var xMax = Math.max(r1.x, r2.x);
-                var centerX = xMin + ((xMax - xMin) / 2);
-                var popupPos = input.mapToItem(null, centerX, r1.y);
+                var p1 = input.positionToRectangle(input.selectionStart);
+                var p2 = input.positionToRectangle(input.selectionEnd);
+                var topLeft = input.mapToItem(null, p1.x, p1.y);
+                var size = Qt.size(p2.x - p1.x + p1.width, p2.y - p1.y + p1.height)
+                var targetRect = Qt.rect(topLeft.x, topLeft.y, size.width, size.height);
                 getMenuInstance().__dismissMenu();
-                getMenuInstance().__popup(popupPos.x, popupPos.y, -1, MenuPrivate.EditMenu);
+                getMenuInstance().__popup(targetRect, -1, MenuPrivate.EditMenu);
             } else {
                 getMenuInstance().__dismissMenu();
             }

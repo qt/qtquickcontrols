@@ -633,9 +633,9 @@ Control {
                     items[__selectedIndex].checked = true
                 __currentIndex = comboBox.currentIndex
                 if (Qt.application.layoutDirection === Qt.RightToLeft)
-                    __popup(comboBox.width, y, isPopup ? __selectedIndex : 0)
+                    __popup(Qt.rect(comboBox.width, y, 0, 0), isPopup ? __selectedIndex : 0)
                 else
-                    __popup(0, y, isPopup ? __selectedIndex : 0)
+                    __popup(Qt.rect(0, y, 0, 0), isPopup ? __selectedIndex : 0)
             }
         }
 

@@ -377,10 +377,10 @@ void QQuickMenu::popup()
     if (QQuickWindow *parentWindow = findParentWindow())
         mousePos = parentWindow->mapFromGlobal(mousePos);
 
-    __popup(mousePos.x(), mousePos.y());
+    __popup(QRectF(mousePos.x(), mousePos.y(), 0, 0));
 }
 
-void QQuickMenu::__popup(qreal x, qreal y, int atItemIndex, MenuType menuType)
+void QQuickMenu::__popup(const QRectF &targetRect, int atItemIndex, MenuType menuType)
 {
     if (popupVisible()) {
         __closeMenu();
@@ -401,14 +401,16 @@ void QQuickMenu::__popup(qreal x, qreal y, int atItemIndex, MenuType menuType)
         parentWindow = renderWindow; // may not be a QQuickWindow anymore (happens when using QQuickWidget)
 
     if (m_platformMenu) {
-        QPointF screenPosition(x + m_xOffset, y + m_yOffset);
+        QRectF globalTargetRect = targetRect.translated(m_xOffset, m_yOffset);
         if (visualItem()) {
-            if (qGuiApp->isRightToLeft())
-                screenPosition.rx() -= qMax(static_cast<qreal>(m_minimumWidth), m_menuContentItem->width());
-            screenPosition = visualItem()->mapToScene(screenPosition);
+            if (qGuiApp->isRightToLeft()) {
+                qreal w = qMax(static_cast<qreal>(m_minimumWidth), m_menuContentItem->width());
+                globalTargetRect.moveLeft(w - targetRect.x() - targetRect.width());
+            }
+            globalTargetRect = visualItem()->mapRectToScene(globalTargetRect);
         }
         m_platformMenu->setMenuType(QPlatformMenu::MenuType(menuType));
-        m_platformMenu->showPopup(parentWindow, screenPosition.toPoint(), atItem ? atItem->platformItem() : 0);
+        m_platformMenu->showPopup(parentWindow, globalTargetRect.toRect(), atItem ? atItem->platformItem() : 0);
     } else {
         m_popupWindow = new QQuickMenuPopupWindow();
         if (visualItem())
@@ -421,7 +423,7 @@ void QQuickMenu::__popup(qreal x, qreal y, int atItemIndex, MenuType menuType)
         connect(m_popupWindow, SIGNAL(visibleChanged(bool)), this, SLOT(windowVisibleChanged(bool)));
         connect(m_popupWindow, SIGNAL(geometryChanged()), this, SIGNAL(__popupGeometryChanged()));
 
-        m_popupWindow->setPosition(x + m_xOffset, y + m_yOffset);
+        m_popupWindow->setPosition(targetRect.x() + m_xOffset, targetRect.y() + targetRect.height() + m_yOffset);
         m_popupWindow->show();
     }
 }

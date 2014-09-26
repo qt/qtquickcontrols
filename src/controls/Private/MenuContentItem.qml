@@ -207,7 +207,7 @@ Loader {
                     if (__menu.__currentIndex === __menuItemIndex) {
                         if (__menuItem.__usingDefaultStyle)
                             __menuItem.style = __menu.style
-                        __menuItem.__popup(menuFrameLoader.width - (d.style.submenuOverlap + d.style.padding.right), -d.style.padding.top, -1)
+                        __menuItem.__popup(Qt.rect(menuFrameLoader.width - (d.style.submenuOverlap + d.style.padding.right), -d.style.padding.top, 0, 0), -1)
                     }
                 } else {
                     openMenuTimer.start()

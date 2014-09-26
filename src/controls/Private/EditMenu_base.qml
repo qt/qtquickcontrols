@@ -106,7 +106,7 @@ Item {
             if (control.menu) {
                 getMenuInstance().__dismissMenu();
                 var menuPos = mapToItem(null, mouse.x, mouse.y)
-                getMenuInstance().__popup(menuPos.x, menuPos.y, -1, MenuPrivate.EditMenu);
+                getMenuInstance().__popup(Qt.rect(menuPos.x, menuPos.y, 0, 0), -1, MenuPrivate.EditMenu);
             }
         }
     }

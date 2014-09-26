@@ -83,7 +83,7 @@ public:
     Q_INVOKABLE void removeItem(QQuickMenuBase *);
     Q_INVOKABLE void clear();
 
-    Q_INVOKABLE void __popup(qreal x, qreal y, int atActionIndex = -1, MenuType menuType = DefaultMenu);
+    Q_INVOKABLE void __popup(const QRectF &targetRect, int atItemIndex = -1, MenuType menuType = DefaultMenu);
 
 public Q_SLOTS:
     void __closeMenu();

@@ -252,8 +252,8 @@ MenuBarPrivate {
                             if (d.openedMenuIndex === index) {
                                 if (__menuItem.__usingDefaultStyle)
                                     __menuItem.style = d.style.menuStyle
-                                __menuItem.__popup(row.LayoutMirroring.enabled ? menuItemLoader.width : 0,
-                                                   menuBarLoader.height - d.heightPadding, 0)
+                                __menuItem.__popup(Qt.rect(row.LayoutMirroring.enabled ? menuItemLoader.width : 0,
+                                                   menuBarLoader.height - d.heightPadding, 0, 0), 0)
                                 if (d.preselectMenuItem)
                                     __menuItem.__currentIndex = 0
                             } else {
