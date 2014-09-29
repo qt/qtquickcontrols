@@ -66,9 +66,10 @@ void QQuickTooltip::showText(QQuickItem *item, const QPointF &pos, const QString
     if (QGuiApplicationPrivate::platformIntegration()->
             hasCapability(QPlatformIntegration::MultipleWindows) &&
         QCoreApplication::instance()->inherits("QApplication")) {
-        QWindow *renderWindow = QQuickRenderControl::renderWindowFor(item->window());
+        QPoint offset;
+        QWindow *renderWindow = QQuickRenderControl::renderWindowFor(item->window(), &offset);
         QWindow *window = renderWindow ? renderWindow : item->window();
-        QPoint mappedPos = window->mapToGlobal(item->mapToScene(pos).toPoint());
+        QPoint mappedPos = window->mapToGlobal(item->mapToScene(pos).toPoint() + offset);
         QToolTip::showText(mappedPos, str);
     }
 #else
