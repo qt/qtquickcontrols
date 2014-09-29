@@ -210,6 +210,55 @@ TestCase {
         test.destroy()
     }
 
+    function test_keys_2() {
+        var component = Qt.createComponent("tableview/tv_keys_2.qml")
+        compare(component.status, Component.Ready)
+        var test =  component.createObject(container);
+        verify(test !== null, "test control created is null")
+        var control1 = test.control1
+        verify(control1 !== null)
+        var control2 = control1.control2
+        verify(control2 !== null)
+
+        control2.forceActiveFocus()
+        verify(control2.activeFocus)
+
+        control2.currentRow = 1
+        control2.selection.select(1, 1)
+
+        verify(control1.gotit === false)
+        verify(control2.currentRow === 1)
+
+        keyClick(Qt.Key_Up);
+        verify(control1.activeFocus)
+        verify(control1.gotit === false)
+        verify(control2.currentRow === 0)
+
+        keyClick(Qt.Key_Up);
+        verify(control1.activeFocus)
+        verify(control1.gotit === true)
+        verify(control2.currentRow === 0)
+
+        control2.currentRow = 1
+        control2.selection.select(1, 1)
+        control1.gotit = false
+
+        verify(control1.gotit === false)
+        verify(control2.currentRow === 1)
+
+        keyClick(Qt.Key_Down);
+        verify(control1.activeFocus)
+        verify(control1.gotit === false)
+        verify(control2.currentRow === 2)
+
+        keyClick(Qt.Key_Down);
+        verify(control1.activeFocus)
+        verify(control1.gotit === true)
+        verify(control2.currentRow === 2)
+
+        test.destroy()
+    }
+
     function test_selection() {
 
         var component = Qt.createComponent("tableview/table2_qabstractitemmodel.qml")

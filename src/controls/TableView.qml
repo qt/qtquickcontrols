@@ -790,19 +790,23 @@ ScrollView {
 
         Keys.forwardTo: root
         Keys.onUpPressed: {
-            event.accepted = false
+            var oldIndex = listView.currentIndex
             __scroller.blockUpdates = true;
             listView.decrementCurrentIndex();
             __scroller.blockUpdates = false;
+            if (oldIndex === listView.currentIndex)
+                event.accepted = false
             if (selectionMode)
                 keySelect(event.modifiers & Qt.ShiftModifier, currentRow)
         }
 
         Keys.onDownPressed: {
-            event.accepted = false
+            var oldIndex = listView.currentIndex
             __scroller.blockUpdates = true;
             listView.incrementCurrentIndex();
             __scroller.blockUpdates = false;
+            if (oldIndex === listView.currentIndex)
+                event.accepted = false
             if (selectionMode)
                 keySelect(event.modifiers & Qt.ShiftModifier, currentRow)
         }
@@ -829,9 +833,10 @@ ScrollView {
         }
 
         Keys.onReturnPressed: {
-            event.accepted = false
             if (currentRow > -1)
                 root.activated(currentRow);
+            else
+                event.accepted = false
         }
 
         delegate: FocusScope {
