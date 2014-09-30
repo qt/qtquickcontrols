@@ -310,6 +310,7 @@ Window {
                         }
                     }
                     TableView {
+                        id: delegatesView
                         model: largeModel
                         anchors.margins: 12
                         anchors.fill:parent
@@ -338,10 +339,27 @@ Window {
                             source: "images/header.png"
                             border{left:2;right:2;top:2;bottom:2}
                             Text {
+                                anchors.verticalCenter: parent.verticalCenter
+                                anchors.left: parent.left
+                                anchors.right: indicator.visible ? indicator.left : parent.right
+                                anchors.margins: 6
                                 text: styleData.value
-                                anchors.centerIn:parent
+                                elide: Text.ElideRight
                                 color:"#333"
                             }
+                            // Sort indicator
+                            Image {
+                                id: indicator
+                                anchors.verticalCenter: parent.verticalCenter
+                                anchors.right: parent.right
+                                anchors.rightMargin: 6
+                                source: "images/sort-up.png"
+                                visible: delegatesView.sortIndicatorVisible &&
+                                            styleData.column === delegatesView.sortIndicatorColumn
+                                rotation: delegatesView.sortIndicatorOrder === Qt.AscendingOrder ? 180 : 0
+                                Behavior on rotation { NumberAnimation { } }
+                            }
+
                         }
 
                         rowDelegate: Rectangle {
