@@ -39,4 +39,4 @@
 ****************************************************************************/
 import QtQuick.Controls.Styles 1.3
 
-ToolBarStyle { }
+ToolButtonStyle { }
