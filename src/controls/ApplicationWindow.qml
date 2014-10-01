@@ -208,6 +208,7 @@ Window {
         anchors.fill: parent
         sourceComponent: __style ? __style.panel : null
         onStatusChanged: if (status === Loader.Error) console.error("Failed to load Style for", root)
+        focus: true
         Loader {
             id: styleLoader
             sourceComponent: style

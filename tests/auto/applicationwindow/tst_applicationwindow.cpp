@@ -52,6 +52,7 @@ private slots:
     void qmlCreation();
     void activeFocusOnTab1();
     void activeFocusOnTab2();
+    void defaultFocus();
 };
 
 void tst_applicationwindow::qmlCreation()
@@ -180,6 +181,34 @@ void tst_applicationwindow::activeFocusOnTab2()
 
     item = findItem<QQuickItem>(window->contentItem(), "sub2");
     QVERIFY(item);
+    QVERIFY(item->hasActiveFocus());
+}
+
+void tst_applicationwindow::defaultFocus()
+{
+    QQmlEngine engine;
+    QQmlComponent component(&engine);
+    component.loadUrl(testFileUrl("defaultFocus.qml"));
+    QObject* created = component.create();
+    QScopedPointer<QObject> cleanup(created);
+    Q_UNUSED(cleanup);
+    QVERIFY(created);
+
+    QQuickWindow* window = qobject_cast<QQuickWindow*>(created);
+    QVERIFY(window);
+    window->show();
+    window->requestActivate();
+    QVERIFY(QTest::qWaitForWindowActive(window));
+    QVERIFY(QGuiApplication::focusWindow() == window);
+
+    QQuickItem* contentItem = window->contentItem();
+    QVERIFY(contentItem);
+    QVERIFY(contentItem->hasActiveFocus());
+
+    // A single item in an ApplicationWindow with focus: true should receive focus.
+    QQuickItem* item = findItem<QQuickItem>(window->contentItem(), "item");
+    QVERIFY(item);
+    QVERIFY(item->hasFocus());
     QVERIFY(item->hasActiveFocus());
 }
 
