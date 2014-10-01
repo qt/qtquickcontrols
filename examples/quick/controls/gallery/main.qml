@@ -228,9 +228,6 @@ ApplicationWindow {
         }
     }
 
-
-    SystemPalette {id: syspal}
-    color: syspal.window
     ListModel {
         id: choices
         ListElement { text: "Banana" }
