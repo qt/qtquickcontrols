@@ -774,21 +774,20 @@ ScrollView {
             property rect selectionRectangle: contentWidth ? positionToRectangle(selectionPosition)
                                                            : positionToRectangle(selectionPosition)
 
-            onSelectionStartChanged: {
+            onSelectionStartChanged: syncHandlesWithSelection()
+            onCursorPositionChanged: syncHandlesWithSelection()
+
+            function syncHandlesWithSelection()
+            {
                 if (!blockRecursion && selectionHandle.delegate) {
                     blockRecursion = true
-                    selectionHandle.position = selectionPosition
-                    blockRecursion = false
-                }
-            }
-
-            onCursorPositionChanged: {
-                if (!blockRecursion && cursorHandle.delegate) {
-                    blockRecursion = true
+                    // We cannot use property selectionPosition since it gets updated after onSelectionStartChanged
                     cursorHandle.position = cursorPosition
+                    selectionHandle.position = (selectionStart !== cursorPosition) ? selectionStart : selectionEnd
                     blockRecursion = false
                 }
                 ensureVisible(cursorRectangle)
+                TextSingleton.updateSelectionItem(area)
             }
 
             function ensureVisible(rect) {
@@ -856,12 +855,17 @@ ScrollView {
                 editor: edit
                 control: area
                 z: 1 // above scrollbars
-                parent: __scroller // no clip
+                parent:  Qt.platform.os === "ios"  ? editor : __scroller // no clip
                 active: area.selectByMouse
                 delegate: __style.selectionHandle
                 maximum: cursorHandle.position - 1
-                x: edit.selectionRectangle.x - flickableItem.contentX
-                y: edit.selectionRectangle.y - flickableItem.contentY
+
+                // Mention contentX and contentY in the mappedPos binding to force re-evaluation if they change
+                property var mappedPos: flickableItem.contentX !== flickableItem.contentY !== Number.MAX_VALUE ?
+                                            parent.mapFromItem(editor, editor.selectionRectangle.x, editor.selectionRectangle.y) : -1
+                x: mappedPos.x
+                y: mappedPos.y
+
                 visible: pressed || (edit.hasSelection && handleY + handleHeight >= -1 && handleY <= viewport.height + 1
                                                        && handleX + handleWidth >= -1 && handleX <= viewport.width + 1)
 
@@ -882,15 +886,19 @@ ScrollView {
                 editor: edit
                 control: area
                 z: 1 // above scrollbars
-                parent: __scroller // no clip
+                parent:  Qt.platform.os === "ios"  ? editor : __scroller // no clip
                 active: area.selectByMouse
                 delegate: __style.cursorHandle
                 minimum: edit.hasSelection ? selectionHandle.position + 1 : -1
-                x: edit.cursorRectangle.x - flickableItem.contentX
-                y: edit.cursorRectangle.y - flickableItem.contentY
-                visible: pressed || ((edit.cursorVisible || edit.hasSelection)
-                                 && handleY + handleHeight >= -1 && handleY <= viewport.height + 1
-                                 && handleX + handleWidth >= -1 && handleX <= viewport.width + 1)
+
+                // Mention contentX and contentY in the mappedPos binding to force re-evaluation if they change
+                property var mappedPos: flickableItem.contentX !== flickableItem.contentY !== Number.MAX_VALUE ?
+                                            parent.mapFromItem(editor, editor.cursorRectangle.x, editor.cursorRectangle.y) : -1
+                x: mappedPos.x
+                y: mappedPos.y
+
+                visible: pressed || (edit.hasSelection && handleY + handleHeight >= -1 && handleY <= viewport.height + 1
+                                                       && handleX + handleWidth >= -1 && handleX <= viewport.width + 1)
 
                 onPositionChanged: {
                     if (!edit.blockRecursion) {

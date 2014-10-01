@@ -280,6 +280,7 @@ TestCase {
         table.selection.selectAll()
         compare(table.selection.__ranges.length, 1)
         verify(rangeTest([[0,49]], table))
+        table.destroy()
     }
 
     function test_selectionCount() {
@@ -300,6 +301,7 @@ TestCase {
         compare(table.selection.count, 100)
         table.model = 50
         compare(table.selection.count, 0)
+        table.destroy()
     }
 
     function test_selectionForeach() {
@@ -363,6 +365,7 @@ TestCase {
         table.selection.select(0)
         table.selection.forEach(addEven)
         compare(iteration, 50)
+        table.destroy()
     }
 
     function test_selectionContains() {
@@ -383,6 +386,7 @@ TestCase {
         verify(!table.selection.contains(6))
         verify(!table.selection.contains(7))
         verify(table.selection.contains(8))
+        table.destroy()
     }
 
     function test_initializedStyleData() {
@@ -400,6 +404,7 @@ TestCase {
         waitForRendering(table)
         compare(table.items, [0, 1, 2]);
         compare(table.rows, [0, 1, 2]);
+        table.destroy()
     }
 
 
@@ -882,6 +887,13 @@ TestCase {
         return undefined // no matching child found
     }
 
+    Component {
+        id: textFieldDelegate
+        TextField {
+            objectName: "delegate-" + styleData.row + "-" + styleData.column
+        }
+    }
+
     function test_activeFocusOnTab() {
         if (!SystemInfo.tabAllWidgets)
             skip("This function doesn't support NOT iterating all.")
@@ -933,6 +945,23 @@ TestCase {
         verify(control.control1.activeFocus)
         verify(!control.control2.activeFocus)
         verify(!control.control3.activeFocus)
+
+        control.control2.itemDelegate = textFieldDelegate
+
+        keyPress(Qt.Key_Tab)
+        verify(!control.control1.activeFocus)
+        verify(control.control2.activeFocus)
+        verify(!control.control3.activeFocus)
+
+        for (var row = 0; row < 3; ++row) {
+            for (var col = 0; col < 2; ++col) {
+                keyPress(Qt.Key_Tab)
+                var delegate = findAChild(control.control2.__currentRowItem, "delegate-" + row + "-" + col)
+                verify(delegate)
+                verify(delegate.activeFocus)
+            }
+        }
+
         control.destroy()
     }
 }

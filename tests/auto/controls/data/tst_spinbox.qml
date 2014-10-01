@@ -124,6 +124,15 @@ Item {
 
                 {tag: "asdf foo", input: [Qt.Key_A, Qt.Key_S, Qt.Key_D, Qt.Key_F, Qt.Key_Space, Qt.Key_F, Qt.Key_O, Qt.Key_O], value: 0},
                 {tag: "a1b2c3d4e5", input: [Qt.Key_A, Qt.Key_1, Qt.Key_B, Qt.Key_2, Qt.Key_C, Qt.Key_3, Qt.Key_D, Qt.Key_4, Qt.Key_E, Qt.Key_5], value: 1234, maximumValue: 2000},
+
+                {tag: "20", input: [Qt.Key_2, Qt.Key_0, Qt.Key_Return], value: 2, maximumValue: 10},
+                {tag: "200", input: [Qt.Key_2, Qt.Key_0, Qt.Key_0, Qt.Key_Return], value: 20, maximumValue: 100},
+                {tag: "2000", input: [Qt.Key_2, Qt.Key_0, Qt.Key_0, Qt.Key_0, Qt.Key_Return], value: 200, maximumValue: 1000},
+                {tag: "0123", input: [Qt.Key_0, Qt.Key_1, Qt.Key_2, Qt.Key_3, Qt.Key_Return], value: 123, maximumValue: 150},
+                {tag: "-20", input: [Qt.Key_Minus, Qt.Key_2, Qt.Key_0, Qt.Key_Return], value: -2, minimumValue: -10},
+                {tag: "-200", input: [Qt.Key_Minus, Qt.Key_2, Qt.Key_0, Qt.Key_0, Qt.Key_Return], value: -20, minimumValue: -100},
+                {tag: "-2000", input: [Qt.Key_Minus, Qt.Key_2, Qt.Key_0, Qt.Key_0, Qt.Key_0, Qt.Key_Return], value: -200, minimumValue: -1000},
+                {tag: "-0123", input: [Qt.Key_Minus, Qt.Key_0, Qt.Key_1, Qt.Key_2, Qt.Key_3, Qt.Key_Return], value: -123, minimumValue: -150}
             ]
         }
 
@@ -472,7 +481,6 @@ Item {
             verify(!control.control2.activeFocus)
             verify(control.control3.activeFocus)
             keyPress(Qt.Key_Tab)
-            sleep(4000)
             verify(control.control1.activeFocus)
             verify(!control.control2.activeFocus)
             verify(!control.control3.activeFocus)

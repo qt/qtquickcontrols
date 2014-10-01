@@ -61,6 +61,7 @@ Item {
         selectFolder: fileDialogSelectFolder.checked
         nameFilters: [ "Image files (*.png *.jpg)", "All files (*)" ]
         selectedNameFilter: "All files (*)"
+        sidebarVisible: fileDialogSidebarVisible.checked
         onAccepted: {
             console.log("Accepted: " + fileUrls)
             if (fileDialogOpenFiles.checked)
@@ -105,6 +106,12 @@ Item {
         CheckBox {
             id: fileDialogOpenFiles
             text: "Open Files After Accepting"
+        }
+        CheckBox {
+            id: fileDialogSidebarVisible
+            text: "Show Sidebar"
+            checked: fileDialog.sidebarVisible
+            Binding on checked { value: fileDialog.sidebarVisible }
         }
         CheckBox {
             id: fileDialogVisible

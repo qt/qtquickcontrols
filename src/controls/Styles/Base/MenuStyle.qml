@@ -192,7 +192,7 @@ Style {
             text: formatMnemonic(styleData.text, styleData.underlineMnemonic)
             color: __currentTextColor
             font: styleRoot.font
-            renderType: Text.NativeRendering
+            renderType: Settings.isMobile ? Text.QtRendering : Text.NativeRendering
         }
 
         submenuIndicator: Text {
@@ -201,7 +201,7 @@ Style {
             color: __currentTextColor
             style: styleData.selected ? Text.Normal : Text.Raised
             styleColor: Qt.lighter(color, 4)
-            renderType: Text.NativeRendering
+            renderType: Settings.isMobile ? Text.QtRendering : Text.NativeRendering
         }
 
         shortcut: Text {
@@ -219,7 +219,7 @@ Style {
                 wordSpacing: styleRoot.font.wordSpacing
             }
             color: __currentTextColor
-            renderType: Text.NativeRendering
+            renderType: Settings.isMobile ? Text.QtRendering : Text.NativeRendering
         }
 
         checkmarkIndicator: Loader {

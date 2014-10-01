@@ -75,6 +75,7 @@ Style {
                 visible: !hasIcon
                 anchors.centerIn: parent
                 text: control.text
+                renderType: Settings.isMobile ? Text.QtRendering : Text.NativeRendering
             }
             Image {
                 id: icon

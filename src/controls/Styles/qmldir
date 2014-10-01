@@ -19,3 +19,4 @@ TextAreaStyle 1.1 Base/TextAreaStyle.qml
 TextFieldStyle 1.0 Base/TextFieldStyle.qml
 ToolBarStyle 1.0 Base/ToolBarStyle.qml
 StatusBarStyle 1.0 Base/StatusBarStyle.qml
+designersupported

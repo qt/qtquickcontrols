@@ -155,7 +155,10 @@ Window {
     property alias __style: styleLoader.item
 
     /*! \internal */
-    property real __topBottomMargins: contentArea.y + statusBarArea.height
+    property alias __panel: panelLoader.item
+
+    /*! \internal */
+    property real __topBottomMargins: __panel.contentArea.y + __panel.statusBarArea.height
     /*! \internal
         There is a similar macro QWINDOWSIZE_MAX in qwindow_p.h that is used to limit the
         range of QWindow::maximum{Width,Height}
@@ -195,11 +198,6 @@ Window {
 
     maximumWidth: Math.min(__qwindowsize_max, contentArea.maximumWidth)
     maximumHeight: Math.min(__qwindowsize_max, contentArea.maximumHeight + __topBottomMargins)
-    onToolBarChanged: { if (toolBar) { toolBar.parent = toolBarArea } }
-
-    onStatusBarChanged: { if (statusBar) { statusBar.parent = statusBarArea } }
-
-    onVisibleChanged: { if (visible && menuBar) { menuBar.__parentWindow = root } }
 
     /*! \internal */
     default property alias data: contentArea.data
@@ -210,76 +208,38 @@ Window {
     // QTBUG-35049: Windows is removing features we didn't ask for, even though Qt::CustomizeWindowHint is not set
     // Otherwise Qt.Window | Qt.WindowFullscreenButtonHint would be enough
 
-    Item {
-        id: backgroundItem
+    Loader {
+        id: panelLoader
         anchors.fill: parent
+        sourceComponent: __style ? __style.panel : null
+        onStatusChanged: if (status === Loader.Error) console.error("Failed to load Style for", root)
+        Loader {
+            id: styleLoader
+            sourceComponent: style
+            property var __control: root
+            property QtObject styleData: QtObject {
+                readonly property bool hasColor: root.color != "#ffffff"
+            }
+            onStatusChanged: if (status === Loader.Error) console.error("Failed to load Style for", root)
+        }
+
+        Binding { target: toolBar; property: "parent"; value: __panel.toolBarArea }
+        Binding { target: statusBar; property: "parent"; value: __panel.statusBarArea }
+
+        Binding {
+            property: "parent"
+            target: menuBar ? menuBar.__contentItem : null
+            when: menuBar && !menuBar.__isNative
+            value: __panel.menuBarArea
+        }
+        Binding { target: menuBar; property: "__parentWindow"; value: root }
 
         Keys.forwardTo: menuBar ? [menuBar.__contentItem] : []
 
-        Loader {
-            id: backgroundLoader
-            anchors.fill: parent
-            sourceComponent: __style ? __style.background : null
-            onStatusChanged: if (status === Loader.Error) console.error("Failed to load Style for", root)
-            Loader {
-                id: styleLoader
-                sourceComponent: style
-                property var __control: root
-                property QtObject styleData: QtObject {
-                    readonly property bool hasColor: root.color != "#ffffff"
-                }
-                onStatusChanged: if (status === Loader.Error) console.error("Failed to load Style for", root)
-            }
-        }
-
         ContentItem {
             id: contentArea
-            anchors.top: toolBarArea.bottom
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.bottom: statusBarArea.top
-        }
-
-        Item {
-            id: toolBarArea
-            anchors.top: parent.top
-            anchors.left: parent.left
-            anchors.right: parent.right
-            implicitHeight: childrenRect.height
-            height: visibleChildren.length > 0 ? implicitHeight: 0
-        }
-
-        Item {
-            id: statusBarArea
-            anchors.bottom: parent.bottom
-            anchors.left: parent.left
-            anchors.right: parent.right
-            implicitHeight: childrenRect.height
-            height: visibleChildren.length > 0 ? implicitHeight: 0
-        }
-
-        onVisibleChanged: if (visible && menuBar) menuBar.__parentWindow = root
-
-        states: State {
-            name: "hasMenuBar"
-            when: menuBar && !menuBar.__isNative
-
-            ParentChange {
-                target: menuBar.__contentItem
-                parent: backgroundItem
-            }
-
-            PropertyChanges {
-                target: menuBar.__contentItem
-                x: 0
-                y: 0
-                width: backgroundItem.width
-            }
-
-            AnchorChanges {
-                target: toolBarArea
-                anchors.top: menuBar.__contentItem.bottom
-            }
+            anchors.fill: parent
+            parent: __panel.contentArea
         }
     }
 }

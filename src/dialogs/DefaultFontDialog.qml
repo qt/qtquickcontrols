@@ -123,6 +123,7 @@ AbstractFontDialog {
                 Label { id: sizeLabel; text: qsTr("Size"); font.bold: true }
                 TableView {
                     id: fontListView
+                    focus: true
                     Layout.fillWidth: true
                     Layout.fillHeight: true
                     Layout.minimumWidth: fontColumn.width
@@ -165,26 +166,30 @@ AbstractFontDialog {
                             if (content.pointSizes.length <= 0 || pointSizesListView.rowCount <= 0)
                                 return
 
-                            var currentRow = 0
+                            var currentRow = -1
                             for (var i = 0; i < content.pointSizes.length; ++i) {
                                 if (content.font.pointSize == content.pointSizes[i]) {
                                     currentRow = i
                                     break
                                 }
                             }
-                            content.font.pointSize = content.pointSizes[currentRow]
-                            pointSizesListView.selection.select(currentRow)
-                            pointSizesListView.positionViewAtRow(currentRow, ListView.Contain)
-                            pointSizesListView.clicked(currentRow)
+                            if (currentRow != -1) {
+                                content.font.pointSize = content.pointSizes[currentRow]
+                                pointSizesListView.selection.select(currentRow)
+                                pointSizesListView.positionViewAtRow(currentRow, ListView.Contain)
+                                pointSizesListView.clicked(currentRow)
+                            }
                         }
                     }
-                    onClicked: {
+                    function select(row) {
                         if (row == -1)
                             return
+                        currentRow = row
                         content.font.family = fontModel.get(row).family
                         positionViewAtRow(row, ListView.Contain)
                     }
-
+                    onClicked: select(row)
+                    onCurrentRowChanged: select(currentRow)
                 }
                 TableView {
                     id: weightListView
@@ -233,12 +238,15 @@ AbstractFontDialog {
                             weightListView.clicked(currentRow)
                         }
                     }
-                    onClicked: {
+                    function select(row) {
                         if (row == -1)
                             return
+                        currentRow = row
                         content.font.weight = weightModel.get(row).weight
                         positionViewAtRow(row, ListView.Contain)
                     }
+                    onClicked: select(row)
+                    onCurrentRowChanged: select(currentRow)
                 }
                 ColumnLayout {
                     SpinBox {
@@ -279,12 +287,20 @@ AbstractFontDialog {
                         Component.onCompleted: resizeColumnsToContents();
                         TableViewColumn{ id: psColumn; role: ""; title: qsTr("Size") }
                         model: content.pointSizes
-                        onClicked: {
-                            if (row == -1)
+                        property bool guard: false
+                        function select(row) {
+                            if (row == -1 || !guard)
                                 return
+                            currentRow = row
                             content.font.pointSize = content.pointSizes[row]
                             pointSizeSpinBox.value = content.pointSizes[row]
                             positionViewAtRow(row, ListView.Contain)
+                        }
+                        onClicked: select(row)
+                        onCurrentRowChanged: {
+                            select(currentRow)
+                            if (!guard)
+                                guard = true
                         }
                     }
                 }

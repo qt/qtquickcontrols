@@ -76,7 +76,7 @@ import QtQuick.Controls.Private 1.0
 Style {
     id: checkboxStyle
 
-    /*! The \l CheckBox attached to this style. */
+    /*! The \l CheckBox this style is attached to. */
     readonly property CheckBox control: __control
 
     /*! This defines the text label. */
@@ -101,7 +101,7 @@ Style {
             text: control.text
             anchors.centerIn: parent
             color: SystemPaletteSingleton.text(control.enabled)
-            renderType: Text.NativeRendering
+            renderType: Settings.isMobile ? Text.QtRendering : Text.NativeRendering
         }
     }
     /*! The background under indicator and label. */

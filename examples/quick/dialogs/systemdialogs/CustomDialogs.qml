@@ -131,6 +131,24 @@ Item {
         }
     }
 
+    Dialog {
+        id: filledDialog
+        modality: dialogModal.checked ? Qt.WindowModal : Qt.NonModal
+        title: customizeTitle.checked ? windowTitleField.text : "Customized content"
+        contentItem: Rectangle {
+            color: "lightskyblue"
+            implicitWidth: 400
+            implicitHeight: 100
+            Text {
+                text: "Hello blue sky!"
+                color: "navy"
+                anchors.centerIn: parent
+            }
+            focus: true
+            Keys.onEscapePressed: filledDialog.close()
+        }
+    }
+
     Column {
         anchors.fill: parent
         anchors.margins: 12
@@ -143,7 +161,6 @@ Item {
         CheckBox {
             id: dialogModal
             text: "Modal"
-            checked: true
             Binding on checked { value: helloDialog.modality != Qt.NonModal }
         }
         CheckBox {
@@ -282,6 +299,11 @@ Item {
                 text: "Date picker"
                 anchors.verticalCenter: parent.verticalCenter
                 onClicked: dateDialog.open()
+            }
+            Button {
+                text: "Buttonless marginless dialog"
+                anchors.verticalCenter: parent.verticalCenter
+                onClicked: filledDialog.open()
             }
         }
     }

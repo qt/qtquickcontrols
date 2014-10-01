@@ -64,7 +64,7 @@ import QtQuick.Controls.Private 1.0
 ScrollViewStyle {
     id: style
 
-    /*! The \l TextArea attached to this style. */
+    /*! The \l TextArea this style is attached to. */
     readonly property TextArea control: __control
 
     /*! The current font. */
@@ -90,12 +90,14 @@ ScrollViewStyle {
         Supported render types are:
         \list
         \li Text.QtRendering
-        \li Text.NativeRendering - the default
+        \li Text.NativeRendering
         \endlist
+
+        The default value is platform dependent.
 
         \sa Text::renderType
     */
-    property int renderType: Text.NativeRendering
+    property int renderType: Settings.isMobile ? Text.QtRendering : Text.NativeRendering
 
     /*! The default margin, in pixels, around the text in the TextArea.
       \since QtQuick.Controls.Styles 1.3
