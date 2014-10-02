@@ -40,6 +40,7 @@
 
 import QtQuick 2.2
 import QtQuick.Controls 1.2
+import QtQuick.Controls.Private 1.0
 import QtQuick.Controls.Styles 1.0
 import QtQuick.Dialogs 1.1
 import QtQuick.Dialogs.Private 1.1
@@ -387,6 +388,7 @@ AbstractFontDialog {
                             anchors.centerIn: parent
                             font: content.font
                             onFocusChanged: if (!focus && sample.text == "") sample.text = content.writingSystemSample
+                            renderType: Settings.isMobile ? Text.QtRendering : Text.NativeRendering
                         }
                     }
                 }
