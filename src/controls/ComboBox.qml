@@ -93,9 +93,9 @@ import QtQuick.Controls.Private 1.0
                 ListElement { text: "Coconut"; color: "Brown" }
             }
             onAccepted: {
-                if (editableCombo.find(currentText) === -1) {
+                if (find(currentText) === -1) {
                     model.append({text: editText})
-                    currentIndex = editableCombo.find(editText)
+                    currentIndex = find(editText)
                 }
             }
         }
