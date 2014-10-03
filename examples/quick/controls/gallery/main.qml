@@ -50,7 +50,7 @@ import "content"
 
 ApplicationWindow {
     visible: true
-    title: "Component Gallery"
+    title: "Qt Quick Controls Gallery"
 
     width: 640
     height: 420
