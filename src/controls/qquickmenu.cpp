@@ -367,14 +367,16 @@ QQuickWindow *QQuickMenu::findParentWindow()
 
 void QQuickMenu::popup()
 {
-    QPoint mousePos = QCursor::pos();
+    QQuickWindow *parentWindow = findParentWindow();
+    QScreen *screen = parentWindow ? parentWindow->screen() : qGuiApp->primaryScreen();
+    QPoint mousePos = QCursor::pos(screen);
 
     if (mousePos.x() == int(qInf())) {
         // ### fixme: no mouse pos registered. Get pos from touch...
-        mousePos = qGuiApp->primaryScreen()->availableGeometry().center();
+        mousePos = screen->availableGeometry().center();
     }
 
-    if (QQuickWindow *parentWindow = findParentWindow())
+    if (parentWindow)
         mousePos = parentWindow->mapFromGlobal(mousePos);
 
     __popup(QRectF(mousePos.x(), mousePos.y(), 0, 0));
