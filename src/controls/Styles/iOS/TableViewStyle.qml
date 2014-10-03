@@ -37,6 +37,26 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-import QtQuick.Controls.Styles 1.3
+import QtQuick 2.2
+import QtQuick.Controls 1.3
+import QtQuick.Controls.Private 1.0
+import QtQuick.Controls.Styles 1.3 as Base
 
-TableViewStyle { }
+ScrollViewStyle {
+    id: root
+
+    Base.TableViewStyle {
+        id: baseStyle
+    }
+
+    readonly property TableView control: __control
+    property color textColor: baseStyle.textColor
+    property color backgroundColor: baseStyle.backgroundColor
+    property color alternateBackgroundColor: baseStyle.alternateBackgroundColor
+    property color highlightedTextColor: baseStyle.highlightedTextColor
+    property bool activateItemOnSingleClick: baseStyle.activateItemOnSingleClick
+    padding.top: baseStyle.padding.top
+    property Component headerDelegate: baseStyle.headerDelegate
+    property Component rowDelegate: baseStyle.rowDelegate
+    property Component itemDelegate: baseStyle.itemDelegate
+}
