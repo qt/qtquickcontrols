@@ -39,9 +39,18 @@
 ****************************************************************************/
 import QtQuick 2.2
 import QtQuick.Controls 1.2
-import QtQuick.Controls.Styles 1.3
+import QtQuick.Controls.Private 1.0
 
-TextAreaStyle {
-    selectionHandle: SelectionHandleStyle{}
-    cursorHandle: CursorHandleStyle{}
+ScrollViewStyle {
+    id: style
+
+    readonly property TextArea control: __control
+    property font font
+    property color textColor: SystemPaletteSingleton.text(control.enabled)
+    property color selectionColor: SystemPaletteSingleton.highlight(control.enabled)
+    property color selectedTextColor: SystemPaletteSingleton.highlightedText(control.enabled)
+    property color backgroundColor: control.backgroundVisible ? SystemPaletteSingleton.base(control.enabled) : "transparent"
+    property int renderType: Text.QtRendering
+    property Component selectionHandle: SelectionHandleStyle{}
+    property Component cursorHandle: CursorHandleStyle{}
 }
