@@ -103,20 +103,12 @@ ApplicationWindow {
         onTriggered: activeFocusItem.paste()
     }
 
-    ChildWindow { id: window1 }
-
     toolBar: ToolBar {
         id: toolbar
         RowLayout {
             id: toolbarLayout
             spacing: 0
             anchors.fill: parent
-            ToolButton {
-                iconSource: "images/window-new.png"
-                onClicked: window1.visible = !window1.visible
-                Accessible.name: "New window"
-                tooltip: "Toggle visibility of the second window"
-            }
             ToolButton { action: openAction }
             ToolButton {
                 Accessible.name: "Save as"

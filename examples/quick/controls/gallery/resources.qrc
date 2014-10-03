@@ -2,7 +2,6 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>content/AboutDialog.qml</file>
-        <file>content/ChildWindow.qml</file>
         <file>content/Controls.qml</file>
         <file>content/ImageViewer.qml</file>
         <file>content/ModelView.qml</file>
@@ -14,8 +13,6 @@
         <file>images/folder_new.png</file>
         <file>images/tab.png</file>
         <file>images/tab_selected.png</file>
-        <file>images/window-new.png</file>
-        <file>images/window-new@2x.png</file>
         <file>images/bubble.png</file>
         <file>images/button-pressed.png</file>
         <file>images/button.png</file>
