@@ -103,12 +103,6 @@ ApplicationWindow {
         onTriggered: activeFocusItem.paste()
     }
 
-    Action {
-        id: aboutAction
-        text: "About"
-        onTriggered: aboutDialog.open()
-    }
-
     ChildWindow { id: window1 }
 
     toolBar: ToolBar {
@@ -143,7 +137,7 @@ ApplicationWindow {
             title: "&File"
             MenuItem { action: openAction }
             MenuItem {
-                text: "Close"
+                text: "E&xit"
                 shortcut: StandardKey.Quit
                 onTriggered: Qt.quit()
             }
@@ -153,25 +147,13 @@ ApplicationWindow {
             MenuItem { action: cutAction }
             MenuItem { action: copyAction }
             MenuItem { action: pasteAction }
-            MenuSeparator { }
-            MenuItem {
-                text: "Do Nothing"
-                shortcut: "Ctrl+E,Shift+Ctrl+X"
-                enabled: false
-            }
-            MenuItem {
-                text: "Not Even There"
-                shortcut: "Ctrl+E,Shift+Ctrl+Y"
-                visible: false
-            }
-            Menu {
-                title: "Me Neither"
-                visible: false
-            }
         }
         Menu {
             title: "&Help"
-            MenuItem { action: aboutAction }
+            MenuItem {
+                text: "About..."
+                onTriggered: aboutDialog.open()
+            }
         }
     }
 
