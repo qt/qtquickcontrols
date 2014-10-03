@@ -50,13 +50,13 @@ ScrollViewStyle {
     }
 
     readonly property TableView control: __control
-    property color textColor: baseStyle.textColor
-    property color backgroundColor: baseStyle.backgroundColor
-    property color alternateBackgroundColor: baseStyle.alternateBackgroundColor
-    property color highlightedTextColor: baseStyle.highlightedTextColor
-    property bool activateItemOnSingleClick: baseStyle.activateItemOnSingleClick
+    property alias textColor: baseStyle.textColor
+    property alias backgroundColor: baseStyle.backgroundColor
+    property alias alternateBackgroundColor: baseStyle.alternateBackgroundColor
+    property alias highlightedTextColor: baseStyle.highlightedTextColor
+    property alias activateItemOnSingleClick: baseStyle.activateItemOnSingleClick
+    property alias headerDelegate: baseStyle.headerDelegate
+    property alias rowDelegate: baseStyle.rowDelegate
+    property alias itemDelegate: baseStyle.itemDelegate
     padding.top: baseStyle.padding.top
-    property Component headerDelegate: baseStyle.headerDelegate
-    property Component rowDelegate: baseStyle.rowDelegate
-    property Component itemDelegate: baseStyle.itemDelegate
 }
