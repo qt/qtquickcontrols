@@ -465,3 +465,15 @@
     \endcode
     \include examples-run.qdocinc
 */
+
+/*!
+    \example styles
+    \title Qt Quick Controls - Styles Example
+    \ingroup qtquickcontrols_examples
+    \brief Demonstrates custom styles
+    \image qtquickcontrols-example-styles.png
+
+    This example shows how to create custom styles for \l{Qt Quick Controls}.
+
+    \include examples-run.qdocinc
+*/
