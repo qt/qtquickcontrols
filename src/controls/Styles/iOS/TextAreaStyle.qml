@@ -53,4 +53,5 @@ ScrollViewStyle {
     property int renderType: Text.QtRendering
     property Component selectionHandle: SelectionHandleStyle{}
     property Component cursorHandle: CursorHandleStyle{}
+    property Component cursorDelegate: CursorDelegate{}
 }

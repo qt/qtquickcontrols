@@ -38,11 +38,40 @@
 **
 ****************************************************************************/
 import QtQuick 2.2
-import QtQuick.Controls 1.2
-import QtQuick.Controls.Styles 1.3
 
-ComboBoxStyle {
-    selectionHandle: SelectionHandleStyle{}
-    cursorHandle: CursorHandleStyle{}
-    cursorDelegate: CursorDelegate{}
+Rectangle {
+    id: cursor
+    width: 2
+    height: parent.cursorRectangle.height
+    color: "#446cf2"
+    antialiasing: false
+    visible: parent.activeFocus && parent.selectionStart === parent.selectionEnd
+    state: "on"
+
+    Timer {
+        running: true
+        repeat: true
+        interval: 500
+        onTriggered: cursor.state = cursor.state == "on" ? "off" : "on"
+    }
+
+    states: [
+        State {
+            name: "on"
+            PropertyChanges { target: cursor; opacity: 1 }
+        },
+        State {
+            name: "off"
+            PropertyChanges { target: cursor; opacity: 0 }
+        }
+    ]
+
+    transitions: [
+        Transition {
+            from: "on"
+            to: "off"
+            NumberAnimation { property: "opacity"; duration: 150 }
+        }
+    ]
 }
+
