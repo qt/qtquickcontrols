@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2014 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the Qt Quick Controls module of the Qt Toolkit.
@@ -38,12 +38,8 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.2
-import QtQuick.Dialogs 1.1
+.pragma library
 
-MessageDialog {
-    icon: StandardIcon.Information
-    text: "QtQuick.Controls gallery example"
-    detailedText: "This example demonstrates most of the available Qt Quick Controls."
-    title: "About Gallery"
-}
+var margin = 0
+var tabPosition = Qt.BottomEdge
+var label = "Gallery"

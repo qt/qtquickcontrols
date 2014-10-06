@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2014 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the Qt Quick Controls module of the Qt Toolkit.
@@ -38,22 +38,8 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.2
-import QtQuick.Window 2.1
+.pragma library
 
-Window {
-    id: imageViewer
-    minimumWidth: viewerImage.width
-    minimumHeight: viewerImage.height
-    function open(source) {
-        viewerImage.source = source
-        width = viewerImage.implicitWidth + 20
-        height = viewerImage.implicitHeight + 20
-        title = source
-        visible = true
-    }
-    Image {
-        id: viewerImage
-        anchors.centerIn: parent
-    }
-}
+var margin = 0
+var tabPosition = Qt.BottomEdge
+var label = "Gallery"

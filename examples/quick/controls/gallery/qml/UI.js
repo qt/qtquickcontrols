@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2014 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the Qt Quick Controls module of the Qt Toolkit.
@@ -38,20 +38,8 @@
 **
 ****************************************************************************/
 
-#include "qtquickcontrolsapplication.h"
-#include <QtQml/QQmlApplicationEngine>
-#include <QtGui/QSurfaceFormat>
-#include <QtQuick/QQuickWindow>
+.pragma library
 
-int main(int argc, char *argv[])
-{
-    QtQuickControlsApplication app(argc, argv);
-    if (QCoreApplication::arguments().contains(QLatin1String("--coreprofile"))) {
-        QSurfaceFormat fmt;
-        fmt.setVersion(4, 4);
-        fmt.setProfile(QSurfaceFormat::CoreProfile);
-        QSurfaceFormat::setDefaultFormat(fmt);
-    }
-    QQmlApplicationEngine engine(QUrl("qrc:/main.qml"));
-    return app.exec();
-}
+var margin = 2
+var tabPosition = Qt.TopEdge
+var label = ""
