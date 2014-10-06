@@ -718,6 +718,7 @@ ScrollView {
         TextEdit {
             id: edit
             focus: true
+            cursorDelegate: __style && __style.cursorDelegate ? __style.cursorDelegate : null
 
             Rectangle {
                 id: colorRect
