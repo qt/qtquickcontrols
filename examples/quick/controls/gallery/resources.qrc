@@ -6,7 +6,6 @@
         <file>content/Controls.qml</file>
         <file>content/ImageViewer.qml</file>
         <file>content/ModelView.qml</file>
-        <file>content/Layouts.qml</file>
         <file>content/Styles.qml</file>
         <file>images/document-open.png</file>
         <file>images/document-open@2x.png</file>

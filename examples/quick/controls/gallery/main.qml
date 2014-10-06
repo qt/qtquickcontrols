@@ -195,10 +195,6 @@ ApplicationWindow {
             title: "Styles"
             Styles { anchors.fill: parent }
         }
-        Tab {
-            title: "Layouts"
-            Layouts { anchors.fill:parent }
-        }
     }
 }
 
