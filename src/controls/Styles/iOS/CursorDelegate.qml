@@ -41,15 +41,27 @@ import QtQuick 2.2
 
 Rectangle {
     id: cursor
+
+    property Item input: parent
+
     width: 2
-    height: parent.cursorRectangle.height
+    height: input.cursorRectangle.height
     color: "#446cf2"
     antialiasing: false
-    visible: parent.activeFocus && parent.selectionStart === parent.selectionEnd
+    visible: input.activeFocus && input.selectionStart === input.selectionEnd
     state: "on"
 
+    Connections {
+        target: input
+        onCursorPositionChanged: {
+            state = "on"
+            timer.restart()
+        }
+    }
+
     Timer {
-        running: true
+        id: timer
+        running: cursor.visible
         repeat: true
         interval: 500
         onTriggered: cursor.state = cursor.state == "on" ? "off" : "on"
