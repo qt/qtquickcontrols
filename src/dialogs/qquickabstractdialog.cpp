@@ -142,6 +142,7 @@ void QQuickAbstractDialog::setVisible(bool v)
                 connect(m_dialogWindow, SIGNAL(yChanged(int)), this, SLOT(setY(int)));
                 connect(m_dialogWindow, SIGNAL(widthChanged(int)), this, SLOT(setWidth(int)));
                 connect(m_dialogWindow, SIGNAL(heightChanged(int)), this, SLOT(setHeight(int)));
+                connect(m_contentItem, SIGNAL(implicitHeightChanged()), this, SLOT(implicitHeightChanged()));
             }
             if (!m_visibleChangedConnected) {
                 connect(m_dialogWindow, SIGNAL(visibleChanged(bool)), this, SLOT(visibleChanged(bool)));
@@ -240,6 +241,12 @@ void QQuickAbstractDialog::minimumHeightChanged()
 {
     m_dialogWindow->setMinimumHeight(qMax(m_contentItem->implicitHeight(),
         m_contentItem->property("minimumHeight").toReal()));
+}
+
+void QQuickAbstractDialog::implicitHeightChanged()
+{
+    if (m_contentItem->implicitHeight() < m_dialogWindow->minimumHeight())
+        m_dialogWindow->setMinimumHeight(m_contentItem->implicitHeight());
 }
 
 QQuickWindow *QQuickAbstractDialog::parentWindow()

@@ -135,6 +135,7 @@ protected Q_SLOTS:
     void windowGeometryChanged();
     void minimumWidthChanged();
     void minimumHeightChanged();
+    void implicitHeightChanged();
 
 protected:
     virtual QPlatformDialogHelper *helper() = 0;
