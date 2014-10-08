@@ -120,10 +120,9 @@ AbstractFileDialog {
     }
 
     Rectangle {
-        property int maxSize: Math.min(Screen.desktopAvailableWidth, Screen.desktopAvailableHeight)
-        implicitWidth: Math.min(maxSize, Math.max(Screen.pixelDensity * 100, splitter.implicitWidth))
-        implicitHeight: Math.min(maxSize, Screen.pixelDensity * 80)
         id: window
+        implicitWidth: Math.min(root.__maximumDimension, Math.max(Screen.pixelDensity * 100, splitter.implicitWidth))
+        implicitHeight: Math.min(root.__maximumDimension, Screen.pixelDensity * 80)
         color: root.palette.window
 
         Binding {

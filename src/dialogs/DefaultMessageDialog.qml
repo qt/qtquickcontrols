@@ -55,7 +55,7 @@ AbstractMessageDialog {
         property real buttonsRowImplicitWidth: Screen.pixelDensity * 50
         implicitHeight: contentColumn.implicitHeight + outerSpacing * 2
         onImplicitHeightChanged: root.height = implicitHeight
-        implicitWidth: Math.min(Screen.desktopAvailableWidth * 0.9, Math.max(
+        implicitWidth: Math.min(root.__maximumDimension, Math.max(
             mainText.implicitWidth, buttonsRowImplicitWidth) + outerSpacing * 2);
         onImplicitWidthChanged: root.width = implicitWidth
         color: palette.window

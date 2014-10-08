@@ -61,8 +61,7 @@ AbstractColorDialog {
 
     Rectangle {
         id: content
-        property int maxSize: 0.9 * Math.min(Screen.desktopAvailableWidth, Screen.desktopAvailableHeight)
-        implicitHeight: Math.min(maxSize, Screen.pixelDensity * (usePaletteMap ? 100 : 50))
+        implicitHeight: Math.min(root.__maximumDimension, Screen.pixelDensity * (usePaletteMap ? 100 : 50))
         implicitWidth: usePaletteMap ? implicitHeight - bottomMinHeight : implicitHeight * 1.5
         color: palette.window
         focus: root.visible

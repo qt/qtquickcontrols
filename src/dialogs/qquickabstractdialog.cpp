@@ -295,6 +295,25 @@ int QQuickAbstractDialog::height() const
     return m_sizeAspiration.height();
 }
 
+/*
+    A non-fullscreen dialog is not allowed to be too large
+    to fit on the screen in either orientation (portrait or landscape).
+    That way on platforms which can do rotation, the dialog does not
+    change its size when the screen is rotated.  So the value returned
+    here is the maximum for both width and height.  We need to know
+    at init time, not wait until the dialog's content item is shown in
+    a window so that the desktopAvailableWidth and Height will be valid
+    in the Screen attached property.  And to allow space for window borders,
+    the max is further reduced by 10%.
+*/
+int QQuickAbstractDialog::__maximumDimension() const
+{
+    QScreen *screen = QGuiApplication::primaryScreen();
+    return (screen ?
+                qMin(screen->availableVirtualGeometry().width(), screen->availableVirtualGeometry().height()) :
+                480) * 9 / 10;
+}
+
 void QQuickAbstractDialog::setX(int arg)
 {
     m_hasAspiredPosition = true;

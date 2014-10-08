@@ -58,9 +58,8 @@ AbstractFontDialog {
         id: content
         SystemPalette { id: palette }
 
-        property int maxSize: Math.min(Screen.desktopAvailableWidth, Screen.desktopAvailableHeight)
-        implicitWidth: Math.min(maxSize, Math.max(Screen.pixelDensity * 60, mainLayout.implicitWidth + outerSpacing * 2))
-        implicitHeight: Math.min(maxSize, Math.max(Screen.pixelDensity * 40, mainLayout.implicitHeight + outerSpacing * 2))
+        implicitWidth: Math.min(root.__maximumDimension, Math.max(Screen.pixelDensity * 60, mainLayout.implicitWidth + outerSpacing * 2))
+        implicitHeight: Math.min(root.__maximumDimension, Math.max(Screen.pixelDensity * 40, mainLayout.implicitHeight + outerSpacing * 2))
         property real spacing: 6
         property real outerSpacing: 12
         color: palette.window
