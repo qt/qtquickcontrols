@@ -89,12 +89,9 @@ AbstractMessageDialog {
         Column {
             id: contentColumn
             spacing: content.spacing
-            anchors {
-                top: parent.top
-                left: parent.left
-                right: parent.right
-                margins: content.outerSpacing
-            }
+            x: content.outerSpacing
+            y: content.outerSpacing
+            width: content.width - content.outerSpacing * 2
 
             SystemPalette { id: palette }
 
