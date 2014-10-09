@@ -84,13 +84,13 @@ void QQuickPopupWindow::show()
         posy += offset.y() + parentWindowOffset.y();
     }
 
-    if (m_contentItem) {
-        qreal initialWidth = qMax(qreal(1), m_contentItem->width());
-        qreal initialHeight = qMax(qreal(1), m_contentItem->height());
-        setGeometry(posx, posy, initialWidth, initialHeight);
-    } else {
+    QSize initialSize;
+    if (m_contentItem)
+        initialSize = QSize(m_contentItem->width(), m_contentItem->height());
+    if (!initialSize.isEmpty())
+        setGeometry(posx, posy, initialSize.width(), initialSize.height());
+    else
         setPosition(posx, posy);
-    }
     emit geometryChanged();
 
     if (!qobject_cast<QQuickPopupWindow *>(transientParent())) { // No need for parent menu windows
