@@ -38,13 +38,8 @@
 **
 ****************************************************************************/
 
-
-
-
-
 import QtQuick 2.2
 import QtQuick.Controls 1.2
-//import QtQuick.XmlListModel 2.1
 
 Item {
     id: root
@@ -52,16 +47,6 @@ Item {
     height: 300
     anchors.fill: parent
     anchors.margins: Qt.platform.os === "osx" ? 12 : 6
-
-//    XmlListModel {
-//        id: flickerModel
-//        source: "http://api.flickr.com/services/feeds/photos_public.gne?format=rss2&tags=" + "Cat"
-//        query: "/rss/channel/item"
-//        namespaceDeclarations: "declare namespace media=\"http://search.yahoo.com/mrss/\";"
-//        XmlRole { name: "title"; query: "title/string()" }
-//        XmlRole { name: "imagesource"; query: "media:thumbnail/@url/string()" }
-//        XmlRole { name: "credit"; query: "media:credit/string()" }
-//    }
 
     ListModel {
         id: dummyModel

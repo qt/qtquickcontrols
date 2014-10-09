@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2014 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the Qt Quick Controls module of the Qt Toolkit.
@@ -38,70 +38,15 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.2
-import QtQuick.Controls 1.2
-import QtQuick.Layouts 1.0
+#include <QGuiApplication>
+#include <QQmlApplicationEngine>
 
-Item {
-    id:root
-    anchors.fill: parent
-    anchors.margins: 8
+int main(int argc, char *argv[])
+{
+    QGuiApplication app(argc, argv);
 
-    ColumnLayout {
-        id: mainLayout
-        anchors.fill: parent
-        spacing: 4
-        GroupBox {
-            id: rowBox
-            title: "Row layout"
-            Layout.fillWidth: true
-            RowLayout {
-                id: rowLayout
-                anchors.fill: parent
-                TextField {
-                    placeholderText: "This wants to grow horizontally"
-                    Layout.fillWidth: true
-                }
-                Button {
-                    text: "Button"
-                }
-            }
-        }
+    QQmlApplicationEngine engine;
+    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 
-        GroupBox {
-            id: gridBox
-            title: "Grid layout"
-            Layout.fillWidth: true
-
-            GridLayout {
-                id: gridLayout
-                anchors.fill: parent
-                rows: 3
-                flow: GridLayout.TopToBottom
-
-                Label { text: "Line 1" }
-                Label { text: "Line 2" }
-                Label { text: "Line 3" }
-
-                TextField { }
-                TextField { }
-                TextField { }
-
-                TextArea {
-                    text: "This widget spans over three rows in the GridLayout.\n"
-                          + "All items in the GridLayout are implicitly positioned from top to bottom."
-                    Layout.rowSpan: 3
-                    Layout.fillHeight: true
-                    Layout.fillWidth: true
-                }
-            }
-        }
-        TextArea {
-            id: t3
-            text: "This fills the whole cell"
-            Layout.minimumHeight: 30
-            Layout.fillHeight: true
-            Layout.fillWidth: true
-        }
-    }
+    return app.exec();
 }

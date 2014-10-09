@@ -40,6 +40,7 @@
 
 import QtQuick 2.2
 import QtQuick.Controls 1.2
+import QtQuick.Controls.Private 1.0
 import QtQuick.Dialogs 1.1
 import QtQuick.Window 2.1
 import "qml"
@@ -115,6 +116,7 @@ AbstractMessageDialog {
                     text: root.text
                     font.weight: Font.Bold
                     wrapMode: Text.WordWrap
+                    renderType: Settings.isMobile ? Text.QtRendering : Text.NativeRendering
                 }
 
                 Text {
@@ -128,6 +130,7 @@ AbstractMessageDialog {
                     }
                     text: root.informativeText
                     wrapMode: Text.WordWrap
+                    renderType: Settings.isMobile ? Text.QtRendering : Text.NativeRendering
                 }
             }
 
@@ -285,6 +288,7 @@ AbstractMessageDialog {
                     wrapMode: Text.WordWrap
                     readOnly: true
                     selectByMouse: true
+                    renderType: Settings.isMobile ? Text.QtRendering : Text.NativeRendering
                 }
             }
         }

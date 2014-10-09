@@ -44,4 +44,5 @@ import QtQuick.Controls.Styles 1.3
 ComboBoxStyle {
     selectionHandle: SelectionHandleStyle{}
     cursorHandle: CursorHandleStyle{}
+    cursorDelegate: CursorDelegate{}
 }

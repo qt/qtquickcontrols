@@ -43,13 +43,78 @@ import QtQuick.Controls.Styles 1.3
 import QtQuick.Controls.Styles.Android 1.0
 import "drawables"
 
-ApplicationWindowStyle {
+QtObject {
     readonly property ApplicationWindow control: __control
 
-    property Component background: DrawableLoader {
-        accelerated: true
-        visible: !styleData.hasColor
-        window_focused: control.active
-        styleDef: AndroidStyle.styleDef.windowStyle.Window_windowBackground
+    property Component panel: Item {
+        readonly property alias contentArea: contentArea
+        readonly property alias menuBarArea: menuBarArea
+        readonly property alias toolBarArea: toolBarArea
+        readonly property alias statusBarArea: statusBarArea
+        readonly property bool hasToolBar: !!control.toolBar && control.toolBar.Accessible.role === Accessible.ToolBar
+
+        DrawableLoader {
+            anchors.fill: parent
+            accelerated: true
+            visible: !styleData.hasColor
+            window_focused: control.active
+            styleDef: AndroidStyle.styleDef.windowStyle.Window_windowBackground
+        }
+
+        Item {
+            id: contentArea
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.bottom: statusBarArea.top
+            anchors.topMargin: toolBarArea.implicitHeight
+        }
+
+        Item {
+            id: toolBarArea
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.right: parent.right
+            implicitHeight: childrenRect.height
+            height: visibleChildren.length > 0 ? implicitHeight : 0
+
+            Loader {
+                visible: active
+                active: !hasToolBar && !!control.menuBar
+                anchors.left: parent.left
+                anchors.right: parent.right
+                sourceComponent: ToolBar {
+                    __menu: proxyMenu.items.length > 1 ? proxyMenu :
+                            proxyMenu.items.length === 1 ? proxyMenu.items[0] : null
+                }
+            }
+        }
+
+        Item {
+            id: statusBarArea
+            anchors.bottom: parent.bottom
+            anchors.left: parent.left
+            anchors.right: parent.right
+            implicitHeight: childrenRect.height
+            height: visibleChildren.length > 0 ? implicitHeight : 0
+        }
+
+        Item {
+            id: menuBarArea
+            visible: false
+
+            Menu {
+                id: proxyMenu
+                items: control.menuBar ? control.menuBar.menus : []
+            }
+
+            Binding {
+                target: control.toolBar
+                property: "__menu"
+                value: proxyMenu.items.length > 1 ? proxyMenu :
+                       proxyMenu.items.length === 1 ? proxyMenu.items[0] : null
+                when: hasToolBar
+            }
+        }
     }
 }

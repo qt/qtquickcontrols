@@ -171,6 +171,12 @@ QT_BEGIN_NAMESPACE
     The corresponding handler is \c onReset.
 */
 
+/*! \qmlproperty StandardButton MessageDialog::clickedButton
+
+    This property holds the button pressed by the user. Its value is
+    one of the flags set for the standardButtons property.
+*/
+
 /*!
     \class QQuickPlatformMessageDialog
     \inmodule QtQuick.Dialogs

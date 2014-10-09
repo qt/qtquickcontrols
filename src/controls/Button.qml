@@ -109,7 +109,11 @@ BasicButton {
     Connections {
         target: __behavior
         onEffectivePressedChanged: {
-            if (__behavior.effectivePressed && menu)
+            if (!Settings.hasTouchScreen && __behavior.effectivePressed && menu)
+                popupMenuTimer.start()
+        }
+        onReleased: {
+            if (Settings.hasTouchScreen && __behavior.containsMouse && menu)
                 popupMenuTimer.start()
         }
     }
@@ -120,9 +124,9 @@ BasicButton {
         onTriggered: {
             __behavior.keyPressed = false
             if (Qt.application.layoutDirection === Qt.RightToLeft)
-                menu.__popup(button.width, button.height, 0)
+                menu.__popup(Qt.rect(button.width, button.height, 0, 0), 0)
             else
-                menu.__popup(0, button.height, 0)
+                menu.__popup(Qt.rect(0, button.height, 0, 0), 0)
         }
     }
 }

@@ -38,10 +38,6 @@
 **
 ****************************************************************************/
 
-
-
-
-
 import QtQuick 2.2
 import QtQuick.Controls 1.2
 import QtQuick.Layouts 1.1
@@ -53,6 +49,20 @@ Item {
     enabled: enabledCheck.checked
 
     property int tabPosition: tabPositionGroup.current === r2 ? Qt.BottomEdge : Qt.TopEdge
+
+    property string loremIpsum:
+            "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor "+
+            "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor "+
+            "incididunt ut labore et dolore magna aliqua.\n Ut enim ad minim veniam, quis nostrud "+
+            "exercitation ullamco laboris nisi ut aliquip ex ea commodo cosnsequat. ";
+
+    ListModel {
+        id: choices
+        ListElement { text: "Banana" }
+        ListElement { text: "Orange" }
+        ListElement { text: "Apple" }
+        ListElement { text: "Coconut" }
+    }
 
     RowLayout {
         id: contentRow
@@ -216,13 +226,54 @@ Item {
                 wrapMode: wrapCheck.checked ? TextEdit.WordWrap : TextEdit.NoWrap
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                MouseArea {
-                    id: contextMenu
-                    parent: area.viewport
-                    anchors.fill: parent
-                    acceptedButtons: Qt.RightButton
-                    onPressed: editmenu.popup()
-                }
+                menu: editmenu
+            }
+        }
+    }
+
+    ExclusiveGroup {
+        id: textFormatGroup
+
+        Action {
+            id: a1
+            text: "Align &Left"
+            checkable: true
+            Component.onCompleted: checked = true
+        }
+
+        Action {
+            id: a2
+            text: "&Center"
+            checkable: true
+        }
+
+        Action {
+            id: a3
+            text: "Align &Right"
+            checkable: true
+        }
+    }
+
+    Component {
+        id: editmenu
+        Menu {
+            MenuItem { action: cutAction }
+            MenuItem { action: copyAction }
+            MenuItem { action: pasteAction }
+            MenuSeparator {}
+            Menu {
+                title: "Text &Format"
+                MenuItem { action: a1 }
+                MenuItem { action: a2 }
+                MenuItem { action: a3 }
+                MenuSeparator { }
+                MenuItem { text: "Allow &Hyphenation"; checkable: true }
+            }
+            Menu {
+                title: "Font &Style"
+                MenuItem { text: "&Bold"; checkable: true }
+                MenuItem { text: "&Italic"; checkable: true }
+                MenuItem { text: "&Underline"; checkable: true }
             }
         }
     }

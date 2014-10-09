@@ -47,7 +47,27 @@ Loader {
     property Item cursorHandle
     property Item selectionHandle
     property Flickable flickable
-    property Menu defaultMenu: item && item.defaultMenu ? item.defaultMenu : null
+    property Component defaultMenu: item && item.defaultMenu ? item.defaultMenu : null
+    property Menu menuInstance: null
 
-    source: Qt.platform.os === "ios"  ? Qt.resolvedUrl("EditMenu_ios.qml") : ""
+    Connections {
+        target: control
+        onMenuChanged: {
+            if (menuInstance !== null) {
+                menuInstance.destroy()
+                menuInstance = null
+            }
+        }
+    }
+
+    function getMenuInstance()
+    {
+        // Lazy load menu when first requested
+        if (!menuInstance && control.menu) {
+            menuInstance = control.menu.createObject(input);
+        }
+        return menuInstance;
+    }
+
+    source: Qt.resolvedUrl("EditMenu_" + (Qt.platform.os === "ios"  ? "ios" : "base") + ".qml")
 }

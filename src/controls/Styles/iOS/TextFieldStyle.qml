@@ -44,4 +44,5 @@ import QtQuick.Controls.Styles 1.3
 TextFieldStyle {
     selectionHandle: SelectionHandleStyle{}
     cursorHandle: CursorHandleStyle{}
+    cursorDelegate: CursorDelegate{}
 }

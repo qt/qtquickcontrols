@@ -26,6 +26,7 @@ QML_FILES += \
     $$PWD/ToolBarStyle.qml \
     $$PWD/ToolButtonStyle.qml \
     $$PWD/CursorHandleStyle.qml \
-    $$PWD/SelectionHandleStyle.qml
+    $$PWD/SelectionHandleStyle.qml \
+    $$PWD/CursorDelegate.qml
 
 load(qml_module)

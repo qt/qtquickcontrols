@@ -38,10 +38,6 @@
 **
 ****************************************************************************/
 
-
-
-
-
 import QtQuick 2.2
 import QtQuick.Controls 1.2
 import QtQuick.Layouts 1.0
@@ -50,18 +46,12 @@ import "content"
 
 ApplicationWindow {
     visible: true
-    title: "Component Gallery"
+    title: "Qt Quick Controls Gallery"
 
     width: 640
     height: 420
     minimumHeight: 400
     minimumWidth: 600
-
-    property string loremIpsum:
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor "+
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor "+
-            "incididunt ut labore et dolore magna aliqua.\n Ut enim ad minim veniam, quis nostrud "+
-            "exercitation ullamco laboris nisi ut aliquip ex ea commodo cosnsequat. ";
 
     ImageViewer { id: imageViewer }
 
@@ -109,71 +99,12 @@ ApplicationWindow {
         onTriggered: activeFocusItem.paste()
     }
 
-    Action {
-        id: aboutAction
-        text: "About"
-        onTriggered: aboutDialog.open()
-    }
-
-    ExclusiveGroup {
-        id: textFormatGroup
-
-        Action {
-            id: a1
-            text: "Align &Left"
-            checkable: true
-            Component.onCompleted: checked = true
-        }
-
-        Action {
-            id: a2
-            text: "&Center"
-            checkable: true
-        }
-
-        Action {
-            id: a3
-            text: "Align &Right"
-            checkable: true
-        }
-    }
-
-    ChildWindow { id: window1 }
-
-    Menu {
-        id: editmenu
-        MenuItem { action: cutAction }
-        MenuItem { action: copyAction }
-        MenuItem { action: pasteAction }
-        MenuSeparator {}
-        Menu {
-            title: "Text &Format"
-            MenuItem { action: a1 }
-            MenuItem { action: a2 }
-            MenuItem { action: a3 }
-            MenuSeparator { }
-            MenuItem { text: "Allow &Hyphenation"; checkable: true }
-        }
-        Menu {
-            title: "Font &Style"
-            MenuItem { text: "&Bold"; checkable: true }
-            MenuItem { text: "&Italic"; checkable: true }
-            MenuItem { text: "&Underline"; checkable: true }
-        }
-    }
-
     toolBar: ToolBar {
         id: toolbar
         RowLayout {
             id: toolbarLayout
             spacing: 0
             anchors.fill: parent
-            ToolButton {
-                iconSource: "images/window-new.png"
-                onClicked: window1.visible = !window1.visible
-                Accessible.name: "New window"
-                tooltip: "Toggle visibility of the second window"
-            }
             ToolButton { action: openAction }
             ToolButton {
                 Accessible.name: "Save as"
@@ -194,7 +125,7 @@ ApplicationWindow {
             title: "&File"
             MenuItem { action: openAction }
             MenuItem {
-                text: "Close"
+                text: "E&xit"
                 shortcut: StandardKey.Quit
                 onTriggered: Qt.quit()
             }
@@ -204,37 +135,14 @@ ApplicationWindow {
             MenuItem { action: cutAction }
             MenuItem { action: copyAction }
             MenuItem { action: pasteAction }
-            MenuSeparator { }
-            MenuItem {
-                text: "Do Nothing"
-                shortcut: "Ctrl+E,Shift+Ctrl+X"
-                enabled: false
-            }
-            MenuItem {
-                text: "Not Even There"
-                shortcut: "Ctrl+E,Shift+Ctrl+Y"
-                visible: false
-            }
-            Menu {
-                title: "Me Neither"
-                visible: false
-            }
         }
         Menu {
             title: "&Help"
-            MenuItem { action: aboutAction }
+            MenuItem {
+                text: "About..."
+                onTriggered: aboutDialog.open()
+            }
         }
-    }
-
-
-    SystemPalette {id: syspal}
-    color: syspal.window
-    ListModel {
-        id: choices
-        ListElement { text: "Banana" }
-        ListElement { text: "Orange" }
-        ListElement { text: "Apple" }
-        ListElement { text: "Coconut" }
     }
 
     TabView {
@@ -257,10 +165,5 @@ ApplicationWindow {
             title: "Styles"
             Styles { anchors.fill: parent }
         }
-        Tab {
-            title: "Layouts"
-            Layouts { anchors.fill:parent }
-        }
     }
 }
-

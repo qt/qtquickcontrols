@@ -282,6 +282,7 @@ Control {
 
         \li Qt.ImhDate - The text editor functions as a date field.
         \li Qt.ImhTime - The text editor functions as a time field.
+        \li Qt.ImhMultiLine - The text editor doesn't close software input keyboard when Return or Enter key is pressed (since QtQuick.Controls 1.3).
         \endlist
 
         Flags that restrict input (exclusive flags) are:
@@ -301,7 +302,7 @@ Control {
         \li Qt.ImhExclusiveInputMask - This mask yields nonzero if any of the exclusive flags are used.
         \endlist
     */
-    property int inputMethodHints: textInput.inputMethodHints || Qt.ImhNone
+    property alias inputMethodHints: textInput.inputMethodHints
 
     /*!
         \qmlproperty int TextField::length
@@ -432,6 +433,15 @@ Control {
         \sa acceptableInput, inputMask, accepted
     */
     property alias validator: textInput.validator
+
+    /*!
+        \since QtQuick.Controls 1.3
+
+        This property contains the edit \l Menu for working
+        with text selection. Set it to \c null if no menu
+        is wanted.
+    */
+    property Component menu: textInput.editMenu.defaultMenu
 
     /*!
         \qmlsignal TextField::accepted()
@@ -654,7 +664,8 @@ Control {
 
         onAccepted: {
             Qt.inputMethod.commit()
-            Qt.inputMethod.hide()
+            if (!(textInput.inputMethodHints & Qt.ImhMultiLine))
+                Qt.inputMethod.hide()
             textfield.accepted()
         }
 

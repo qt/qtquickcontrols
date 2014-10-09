@@ -93,9 +93,9 @@ import QtQuick.Controls.Private 1.0
                 ListElement { text: "Coconut"; color: "Brown" }
             }
             onAccepted: {
-                if (editableCombo.find(currentText) === -1) {
+                if (find(currentText) === -1) {
                     model.append({text: editText})
-                    currentIndex = editableCombo.find(editText)
+                    currentIndex = find(editText)
                 }
             }
         }
@@ -222,6 +222,17 @@ Control {
     property alias validator: input.validator
 
     /*!
+        \since QtQuick.Controls 1.3
+
+        This property contains the edit \l Menu for working
+        with text selection. Set it to \c null if no menu
+        is wanted.
+
+        \note The menu is only in use when \l editable is \c true
+    */
+    property Component menu: input.editMenu.defaultMenu
+
+    /*!
         \qmlproperty bool ComboBox::acceptableInput
         \since QtQuick.Controls 1.1
 
@@ -343,14 +354,14 @@ Control {
             if (comboBox.activeFocusOnPress)
                 forceActiveFocus()
             if (!Settings.hasTouchScreen)
-                popup.show()
+                popup.toggleShow()
             else
                 overridePressed = true
         }
         onCanceled: overridePressed = false
         onClicked: {
             if (Settings.hasTouchScreen)
-                popup.show()
+                popup.toggleShow()
             overridePressed = false
         }
         onWheel: {
@@ -614,14 +625,18 @@ Control {
                 updateSelectedText()
         }
 
-        function show() {
-            if (items[__selectedIndex])
-                items[__selectedIndex].checked = true
-            __currentIndex = comboBox.currentIndex
-            if (Qt.application.layoutDirection === Qt.RightToLeft)
-                __popup(comboBox.width, y, isPopup ? __selectedIndex : 0)
-            else
-                __popup(0, y, isPopup ? __selectedIndex : 0)
+        function toggleShow() {
+            if (popup.__popupVisible) {
+                popup.__dismissMenu()
+            } else {
+                if (items[__selectedIndex])
+                    items[__selectedIndex].checked = true
+                __currentIndex = comboBox.currentIndex
+                if (Qt.application.layoutDirection === Qt.RightToLeft)
+                    __popup(Qt.rect(comboBox.width, y, 0, 0), isPopup ? __selectedIndex : 0)
+                else
+                    __popup(Qt.rect(0, y, 0, 0), isPopup ? __selectedIndex : 0)
+            }
         }
 
         function updateSelectedText() {
@@ -638,8 +653,7 @@ Control {
     // The key bindings below will only be in use when popup is
     // not visible. Otherwise, native popup key handling will take place:
     Keys.onSpacePressed: {
-        if (!popup.popupVisible)
-            popup.show()
+        popup.toggleShow()
     }
 
     Keys.onUpPressed: __selectPrevItem()

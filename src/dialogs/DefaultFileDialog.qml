@@ -203,7 +203,7 @@ AbstractFileDialog {
                                         margins: 4
                                     }
                                     elide: Text.ElideLeft
-                                    renderType: Text.NativeRendering
+                                    renderType: ControlsPrivate.Settings.isMobile ? Text.QtRendering : Text.NativeRendering
                                     Component.onCompleted: {
                                         sidebarSplitter.rowHeight = parent.height
                                         if (implicitWidth * 1.2 > sidebarSplitter.maxShortcutWidth)
@@ -237,7 +237,7 @@ AbstractFileDialog {
                                         margins: 4
                                     }
                                     elide: Text.ElideLeft
-                                    renderType: Text.NativeRendering
+                                    renderType: ControlsPrivate.Settings.isMobile ? Text.QtRendering : Text.NativeRendering
                                 }
                                 Menu {
                                     id: favoriteCtxMenu
@@ -350,7 +350,7 @@ AbstractFileDialog {
                             }
                             color: styleData.textColor
                             elide: Text.ElideRight
-                            renderType: Text.NativeRendering
+                            renderType: ControlsPrivate.Settings.isMobile ? Text.QtRendering : Text.NativeRendering
                         }
                     }
                 }
@@ -373,7 +373,7 @@ AbstractFileDialog {
                             }
                             color: styleData.textColor
                             elide: Text.ElideRight
-                            renderType: Text.NativeRendering
+                            renderType: ControlsPrivate.Settings.isMobile ? Text.QtRendering : Text.NativeRendering
                         }
                     }
                 }

@@ -5,12 +5,14 @@
 /examples/quick/controls/calendar/calendar
 /examples/quick/controls/gallery/gallery
 /examples/quick/controls/splitview/splitview
+/examples/quick/controls/styles/styles
 /examples/quick/controls/tableview/tableview
 /examples/quick/controls/touch/touch
 /examples/quick/controls/texteditor/texteditor
 /examples/quick/dialogs/systemdialogs/systemdialogs
 /tests/auto/activeFocusOnTab/tst_activeFocusOnTab
 /tests/auto/controls/tst_controls
+/tests/auto/dialogs/tst_dialogs
 /tests/auto/qtdesktop/tst_qtdesktop
 /tests/auto/applicationwindow/tst_applicationwindow
 /tests/auto/testplugin/QtQuickControlsTests/testplugin.*

@@ -255,7 +255,7 @@ ScrollView {
         \li Qt.ImhExclusiveInputMask - This mask yields nonzero if any of the exclusive flags are used.
         \endlist
     */
-    property int inputMethodHints: edit.inputMethodHints || Qt.ImhNone
+    property alias inputMethodHints: edit.inputMethodHints
 
     /*!
         \qmlproperty int TextArea::length
@@ -434,6 +434,17 @@ ScrollView {
         and the link string provides access to the particular link.
     */
     readonly property alias hoveredLink: edit.hoveredLink
+
+    /*!
+        \since QtQuick.Controls 1.3
+
+        This property contains the edit \l Menu for working
+        with text selection. Set it to \c null if no menu
+        is wanted.
+
+        \sa Menu
+    */
+    property Component menu: editMenu.defaultMenu
 
     /*!
         \qmlmethod TextArea::append(string)
@@ -707,6 +718,7 @@ ScrollView {
         TextEdit {
             id: edit
             focus: true
+            cursorDelegate: __style && __style.cursorDelegate ? __style.cursorDelegate : null
 
             Rectangle {
                 id: colorRect
@@ -847,6 +859,16 @@ ScrollView {
                     edit.moveHandles(pos, area.selectByMouse ? -1 : pos)
                     edit.activate()
                 }
+            }
+
+            EditMenu {
+                id: editMenu
+                control: area
+                input: edit
+                cursorHandle: cursorHandle
+                selectionHandle: selectionHandle
+                flickable: flickable
+                anchors.fill: parent
             }
 
             TextHandle {

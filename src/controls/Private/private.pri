@@ -58,7 +58,9 @@ PRIVATE_QML_FILES += \
     $$PWD/HoverButton.qml \
     $$PWD/TextInputWithHandles.qml \
     $$PWD/EditMenu.qml \
+    $$PWD/EditMenu_base.qml \
     $$PWD/EditMenu_ios.qml \
+    $$PWD/ToolMenuButton.qml \
     $$PWD/qmldir
 
 QML_FILES += $$PRIVATE_QML_FILES

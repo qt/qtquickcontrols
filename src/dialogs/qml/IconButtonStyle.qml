@@ -49,7 +49,7 @@ ButtonStyle {
         id: text
         font.family: iconFont.name
         font.pointSize: TextSingleton.font.pointSize * 1.5
-        renderType: Text.NativeRendering
+        renderType: Settings.isMobile ? Text.QtRendering : Text.NativeRendering
         text: control.text
         color: SystemPaletteSingleton.buttonText(control.enabled)
         verticalAlignment: Text.AlignVCenter

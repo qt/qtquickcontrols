@@ -60,8 +60,10 @@
       \li \l{Qt Quick}
       \li \l{Qt Quick Controls Overview}
       \li \l{Qt Quick Controls QML Types}{Qt Quick Controls QML Types}
+      \li \l{Qt Quick Controls Platform Notes}
       \li \l{Qt Quick Controls Examples}
       \li \l{Qt Quick Controls Styles}
       \li \l{Qt Quick Layouts}
+      \li \l{Qt Quick Dialogs}
      \endlist
 */

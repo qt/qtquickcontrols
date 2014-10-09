@@ -259,7 +259,11 @@ Style {
 
         states: State {
             name: "out"
-            when: isTransient && panel.activeControl === "none" && !panel.on && !panel.raised
+            when: isTransient
+                  && (!__stickyScrollbars || !flickableItem.moving)
+                  && panel.activeControl === "none"
+                  && !panel.on
+                  && !panel.raised
             PropertyChanges { target: panel; opacity: 0 }
         }
 
@@ -396,4 +400,6 @@ Style {
     property int __scrollBarFadeDelay: 450
     /*! \internal */
     property int __scrollBarFadeDuration: 200
+    /*! \internal */
+    property bool __stickyScrollbars: false
 }

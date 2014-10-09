@@ -51,6 +51,8 @@ TextInput {
     property bool hasSelection: selectionStart !== selectionEnd
     readonly property int selectionPosition: selectionStart !== cursorPosition ? selectionStart : selectionEnd
     readonly property alias containsMouse: mouseArea.containsMouse
+    property alias editMenu: editMenu
+    cursorDelegate: __style && __style.cursorDelegate ? __style.cursorDelegate : null
 
     selectByMouse: control.selectByMouse && (!cursorHandle.delegate || !selectionHandle.delegate)
 
@@ -113,6 +115,15 @@ TextInput {
             input.moveHandles(pos, control.selectByMouse ? -1 : pos)
             input.activate()
         }
+    }
+
+    EditMenu {
+        id: editMenu
+        input: parent
+        control: parent.control
+        cursorHandle: cursorHandle
+        selectionHandle: selectionHandle
+        anchors.fill: parent
     }
 
     TextHandle {

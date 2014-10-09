@@ -141,4 +141,9 @@ ScrollViewStyle {
         \endtable
     */
     property Component selectionHandle
+
+    /*! The cursor delegate.
+        \since QtQuick.Controls.Styles 1.3
+    */
+    property Component cursorDelegate
 }
