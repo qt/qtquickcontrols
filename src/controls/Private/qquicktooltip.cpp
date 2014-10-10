@@ -36,7 +36,7 @@
 #include <qquickitem.h>
 #include <private/qguiapplication_p.h>
 #include <qpa/qplatformintegration.h>
-#include <QtQuick/private/qquickrendercontrol_p.h>
+#include <QtQuick/QQuickRenderControl>
 
 #ifdef QT_WIDGETS_LIB
 #include <qtooltip.h>

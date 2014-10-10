@@ -36,7 +36,7 @@
 #include <qguiapplication.h>
 #include <qpa/qwindowsysteminterface.h>
 #include <QtQuick/qquickitem.h>
-#include <QtQuick/private/qquickrendercontrol_p.h>
+#include <QtQuick/QQuickRenderControl>
 
 QT_BEGIN_NAMESPACE
 
