@@ -123,6 +123,7 @@ Item {
             else
                 lastChosen.text = (clickedButton == StandardButton.Retry ? "(Retry)" : "(Ignore)")
         }
+        onRejected: lastChosen.text = "Rejected"
 
         Calendar {
             id: calendar
@@ -136,6 +137,9 @@ Item {
         modality: dialogModal.checked ? Qt.WindowModal : Qt.NonModal
         title: customizeTitle.checked ? windowTitleField.text : "Customized content"
         onRejected: lastChosen.text = "Rejected"
+        onAccepted: lastChosen.text = "Accepted " +
+                    (clickedButton === StandardButton.Retry ? "(Retry)" : "(OK)")
+        onButtonClicked: if (clickedButton === StandardButton.Retry) lastChosen.text = "Retry"
         contentItem: Rectangle {
             color: "lightskyblue"
             implicitWidth: 400
@@ -145,6 +149,8 @@ Item {
                 color: "navy"
                 anchors.centerIn: parent
             }
+            Keys.onPressed: if (event.key === Qt.Key_R && (event.modifiers & Qt.ControlModifier)) filledDialog.click(StandardButton.Retry)
+            Keys.onEnterPressed: filledDialog.accept()
             Keys.onEscapePressed: filledDialog.reject()
             Keys.onBackPressed: filledDialog.reject() // especially necessary on Android
         }
