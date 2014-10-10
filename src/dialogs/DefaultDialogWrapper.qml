@@ -48,6 +48,7 @@ import "qml"
 AbstractDialog {
     id: root
     default property alias data: defaultContentItem.data
+    onVisibilityChanged: if (visible && contentItem) contentItem.forceActiveFocus()
 
     Rectangle {
         id: content
@@ -61,7 +62,6 @@ AbstractDialog {
         implicitWidth: Math.min(root.__maximumDimension, Math.max(
             defaultContentItem.implicitWidth, buttonsRowImplicitWidth, Screen.pixelDensity * 50) + outerSpacing * 2);
         color: palette.window
-        focus: root.visible
         Keys.onPressed: {
             event.accepted = true
             switch (event.key) {
