@@ -135,6 +135,7 @@ Item {
         id: filledDialog
         modality: dialogModal.checked ? Qt.WindowModal : Qt.NonModal
         title: customizeTitle.checked ? windowTitleField.text : "Customized content"
+        onRejected: lastChosen.text = "Rejected"
         contentItem: Rectangle {
             color: "lightskyblue"
             implicitWidth: 400
@@ -144,8 +145,8 @@ Item {
                 color: "navy"
                 anchors.centerIn: parent
             }
-            focus: true
-            Keys.onEscapePressed: filledDialog.close()
+            Keys.onEscapePressed: filledDialog.reject()
+            Keys.onBackPressed: filledDialog.reject() // especially necessary on Android
         }
     }
 
