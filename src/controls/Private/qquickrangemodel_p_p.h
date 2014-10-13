@@ -61,6 +61,8 @@ public:
     qreal posatmin, posatmax;
     qreal minimum, maximum, stepSize, pos, value;
 
+    bool componentInitialized;
+
     uint inverted : 1;
 
     QQuickRangeModel *q_ptr;
