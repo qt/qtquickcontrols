@@ -367,7 +367,10 @@ QQuickWindow *QQuickMenu::findParentWindow()
 
 void QQuickMenu::popup()
 {
-    QQuickWindow *parentWindow = findParentWindow();
+    QQuickWindow *quickWindow = findParentWindow();
+    QPoint renderOffset;
+    QWindow *renderWindow = QQuickRenderControl::renderWindowFor(quickWindow, &renderOffset);
+    QWindow *parentWindow = renderWindow ? renderWindow : quickWindow;
     QScreen *screen = parentWindow ? parentWindow->screen() : qGuiApp->primaryScreen();
     QPoint mousePos = QCursor::pos(screen);
 
@@ -379,7 +382,7 @@ void QQuickMenu::popup()
     if (parentWindow)
         mousePos = parentWindow->mapFromGlobal(mousePos);
 
-    __popup(QRectF(mousePos.x(), mousePos.y(), 0, 0));
+    __popup(QRectF(mousePos.x() - renderOffset.x(), mousePos.y() - renderOffset.y(), 0, 0));
 }
 
 void QQuickMenu::__popup(const QRectF &targetRect, int atItemIndex, MenuType menuType)
@@ -397,10 +400,10 @@ void QQuickMenu::__popup(const QRectF &targetRect, int atItemIndex, MenuType men
     QQuickMenuBase *atItem = menuItemAtIndex(atItemIndex);
 
     QQuickWindow *quickWindow = findParentWindow();
-    QWindow *parentWindow = quickWindow;
-    QWindow *renderWindow = QQuickRenderControl::renderWindowFor(static_cast<QQuickWindow *>(parentWindow));
-    if (renderWindow)
-        parentWindow = renderWindow; // may not be a QQuickWindow anymore (happens when using QQuickWidget)
+    QPoint renderOffset;
+    QWindow *renderWindow = QQuickRenderControl::renderWindowFor(quickWindow, &renderOffset);
+    QWindow *parentWindow = renderWindow ? renderWindow : quickWindow;
+    // parentWindow may not be a QQuickWindow (happens when using QQuickWidget)
 
     if (m_platformMenu) {
         QRectF globalTargetRect = targetRect.translated(m_xOffset, m_yOffset);
@@ -425,7 +428,8 @@ void QQuickMenu::__popup(const QRectF &targetRect, int atItemIndex, MenuType men
         connect(m_popupWindow, SIGNAL(visibleChanged(bool)), this, SLOT(windowVisibleChanged(bool)));
         connect(m_popupWindow, SIGNAL(geometryChanged()), this, SIGNAL(__popupGeometryChanged()));
 
-        m_popupWindow->setPosition(targetRect.x() + m_xOffset, targetRect.y() + targetRect.height() + m_yOffset);
+        m_popupWindow->setPosition(targetRect.x() + m_xOffset + renderOffset.x(),
+                                   targetRect.y() + targetRect.height() + m_yOffset + renderOffset.y());
         m_popupWindow->show();
     }
 }
