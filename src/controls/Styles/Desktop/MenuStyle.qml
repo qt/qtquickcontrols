@@ -100,7 +100,7 @@ Style {
         selected: styleData.selected
         on: styleData.checkable && styleData.checked
 
-        hints: { "showUnderlined": styleData.underlineMnemonics }
+        hints: { "showUnderlined": styleData.underlineMnemonic }
 
         properties: {
             "checkable": styleData.checkable,
