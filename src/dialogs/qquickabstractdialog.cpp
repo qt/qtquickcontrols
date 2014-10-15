@@ -88,6 +88,7 @@ void QQuickAbstractDialog::setVisible(bool v)
             if (!m_dialogWindow && m_hasNativeWindows) {
                 QQuickWindow *win = new QQuickWindow;
                 ((QObject *)win)->setParent(this); // memory management only
+                win->setFlags(Qt::Dialog);
                 m_dialogWindow = win;
                 m_contentItem->setParentItem(win->contentItem());
                 QSize minSize = QSize(m_contentItem->implicitWidth(), m_contentItem->implicitHeight());
