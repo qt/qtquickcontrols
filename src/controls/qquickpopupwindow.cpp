@@ -191,11 +191,11 @@ void QQuickPopupWindow::exposeEvent(QExposeEvent *e)
 {
     if (isExposed() && m_needsActivatedEvent) {
         m_needsActivatedEvent = false;
-        QWindowSystemInterface::handleWindowActivated(this, Qt::PopupFocusReason);
+        QWindowSystemInterface::handleWindowActivated(this);
     } else if (!isExposed() && !m_needsActivatedEvent) {
         m_needsActivatedEvent = true;
         if (QWindow *tp = transientParent())
-            QWindowSystemInterface::handleWindowActivated(tp, Qt::PopupFocusReason);
+            QWindowSystemInterface::handleWindowActivated(tp);
     }
     QQuickWindow::exposeEvent(e);
 }
@@ -204,7 +204,7 @@ void QQuickPopupWindow::hideEvent(QHideEvent *e)
 {
     if (QWindow *tp = !m_needsActivatedEvent ? transientParent() : 0) {
         m_needsActivatedEvent = true;
-        QWindowSystemInterface::handleWindowActivated(tp, Qt::PopupFocusReason);
+        QWindowSystemInterface::handleWindowActivated(tp);
     }
 
     QQuickWindow::hideEvent(e);
