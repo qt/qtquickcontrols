@@ -40,6 +40,7 @@
 
 import QtQuick 2.4
 import QtQuick.Controls 1.2
+import QtQuick.Controls.Private 1.0
 import QtQuick.Dialogs 1.0
 import QtQuick.Window 2.1
 import "qml"
@@ -61,8 +62,8 @@ AbstractColorDialog {
 
     Rectangle {
         id: content
-        implicitHeight: Math.min(root.__maximumDimension, Screen.pixelDensity * (usePaletteMap ? 100 : 50))
-        implicitWidth: usePaletteMap ? implicitHeight - bottomMinHeight : implicitHeight * 1.5
+        implicitHeight: Math.min(root.__maximumDimension, Screen.pixelDensity * (usePaletteMap ? 120 : 50))
+        implicitWidth: Math.min(root.__maximumDimension, usePaletteMap ? Screen.pixelDensity * (usePaletteMap ? 100 : 50) : implicitHeight * 1.5)
         color: palette.window
         focus: root.visible
         property real bottomMinHeight: sliders.height + buttonRow.height + outerSpacing * 3
@@ -97,9 +98,6 @@ AbstractColorDialog {
                 break
             }
         }
-
-        // set the preferred width based on height, to avoid "letterboxing" the paletteMap
-        onHeightChanged: implicitHeight = Math.max((usePaletteMap ? 480 : bottomMinHeight), height)
 
         SystemPalette { id: palette }
 
@@ -275,7 +273,6 @@ AbstractColorDialog {
                 right: parent.right
                 margins: content.outerSpacing
             }
-            spacing: content.spacing
 
             ColorSlider {
                 id: hueSlider
@@ -370,7 +367,8 @@ AbstractColorDialog {
             }
             Row {
                 spacing: content.spacing
-                height: parent.height
+                height: visible ? parent.height : 0
+                visible: !Settings.isMobile
                 TextField {
                     id: colorField
                     text: root.currentColor.toString()
