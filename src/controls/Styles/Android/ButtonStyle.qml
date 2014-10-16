@@ -93,7 +93,7 @@ Style {
             LabelStyle {
                 id: label
                 visible: !!text
-                text: control.text
+                text: StyleHelpers.removeMnemonics(control.text)
                 pressed: control.pressed
                 focused: control.activeFocus
                 selected: control.checked
