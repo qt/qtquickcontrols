@@ -50,6 +50,7 @@
 #include "qquickdialog_p.h"
 #include <private/qguiapplication_p.h>
 #include <qpa/qplatformintegration.h>
+#include <QTouchDevice>
 
 //#define PURE_QML_ONLY
 //#define DEBUG_REGISTRATION
@@ -186,9 +187,20 @@ protected:
         Q_UNUSED(widgetsDir)
         Q_UNUSED(hasTopLevelWindows)
 #else
+        bool mobileTouchPlatform = false;
+#if defined(Q_OS_IOS)
+        mobileTouchPlatform = true;
+#elif defined(Q_OS_ANDROID) || defined(Q_OS_BLACKBERRY) || defined(Q_OS_QNX) || defined(Q_OS_WINRT)
+        foreach (const QTouchDevice *dev, QTouchDevice::devices())
+            if (dev->type() == QTouchDevice::TouchScreen)
+                mobileTouchPlatform = true;
+#endif
         // If there is a qmldir and we have a QApplication instance (as opposed to a
-        // widget-free QGuiApplication), assume that the widget-based dialog will work.
-        if (hasTopLevelWindows && widgetsDir.exists("qmldir") &&
+        // widget-free QGuiApplication), and this isn't a mobile touch-based platform,
+        // assume that the widget-based dialog will work.  Otherwise an application developer
+        // can ensure that widgets are omitted from the deployment to ensure that the widget
+        // dialogs won't be used.
+        if (!mobileTouchPlatform && hasTopLevelWindows && widgetsDir.exists("qmldir") &&
                 QCoreApplication::instance()->inherits("QApplication")) {
             QUrl dialogQmlPath =  m_useResources ?
                 QUrl(QString("qrc:/QtQuick/Dialogs/Widget%1.qml").arg(qmlName)) :
