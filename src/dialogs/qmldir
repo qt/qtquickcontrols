@@ -4,3 +4,4 @@ classname QtQuick2DialogsPlugin
 typeinfo plugins.qmltypes
 depends Qt.labs.folderlistmodel 1.0
 depends Qt.labs.settings 1.0
+depends QtQuick.Dialogs.Private 1.0
