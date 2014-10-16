@@ -100,4 +100,14 @@ Rectangle {
         text: "&test"
         onTriggered: text.text = "alt t pressed"
     }
+
+    CheckBox {
+        text: "&checkbox"
+        onClicked: text.text = "alt c pressed"
+    }
+
+    RadioButton {
+        text: "&radiobutton"
+        onClicked: text.text = "alt r pressed"
+    }
 }

@@ -80,6 +80,8 @@ TestCase {
             { tag: "nokey_pressed3", key: Qt.Key_T, modifier: Qt.NoModifier, expected: "no key press" },
             // on mac we don't have mnemonics
             { tag: "mnemonics", key: Qt.Key_T, modifier: Qt.AltModifier, expected: Qt.platform.os === "osx" ? "no key press" : "alt t pressed" },
+            { tag: "checkbox", key: Qt.Key_C, modifier: Qt.AltModifier, expected: Qt.platform.os === "osx" ? "no key press" : "alt c pressed" },
+            { tag: "radiobutton", key: Qt.Key_R, modifier: Qt.AltModifier, expected: Qt.platform.os === "osx" ? "no key press" : "alt r pressed" },
         ]
     }
 
