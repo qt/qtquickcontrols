@@ -152,6 +152,10 @@ Control {
         id: ownAction
         iconSource: !button.action || __iconOverriden ? button.iconSource : ""
         iconName: !button.action || __iconOverriden ? button.iconName : ""
+
+        // let ownAction handle mnemonic if and only if the button does
+        // not already have an action assigned to avoid ambiguous shortcuts
+        text: button.action ? "" : button.text
     }
 
     Connections {

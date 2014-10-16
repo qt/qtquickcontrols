@@ -110,4 +110,28 @@ Rectangle {
         text: "&radiobutton"
         onClicked: text.text = "alt r pressed"
     }
+
+    Button {
+        text: "button&1"
+        onClicked: text.text = "alt 1 pressed"
+    }
+
+    Button {
+        action: Action {
+            text: "button&2"
+        }
+        onClicked: text.text = "alt 2 pressed"
+    }
+
+    ToolButton {
+        text: "toolbutton&3"
+        onClicked: text.text = "alt 3 pressed"
+    }
+
+    ToolButton {
+        action: Action {
+            text: "toolbutton&4"
+        }
+        onClicked: text.text = "alt 4 pressed"
+    }
 }
