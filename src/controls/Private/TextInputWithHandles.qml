@@ -104,7 +104,7 @@ TextInput {
         anchors.fill: parent
         hoverEnabled: true
         cursorShape: Qt.IBeamCursor
-        acceptedButtons: input.selectByMouse ? Qt.NoButton : Qt.LeftButton
+        acceptedButtons: (input.selectByMouse ? Qt.NoButton : Qt.LeftButton) | (control.menu ? Qt.RightButton : Qt.NoButton)
         onClicked: {
             var pos = input.positionAt(mouse.x, mouse.y)
             input.moveHandles(pos, pos)
@@ -120,6 +120,7 @@ TextInput {
     EditMenu {
         id: editMenu
         input: parent
+        mouseArea: mouseArea
         control: parent.control
         cursorHandle: cursorHandle
         selectionHandle: selectionHandle

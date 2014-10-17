@@ -846,9 +846,10 @@ ScrollView {
             }
 
             MouseArea {
+                id: mouseArea
                 anchors.fill: parent
                 cursorShape: edit.hoveredLink ? Qt.PointingHandCursor : Qt.IBeamCursor
-                acceptedButtons: edit.selectByMouse ? Qt.NoButton : Qt.LeftButton
+                acceptedButtons: (edit.selectByMouse ? Qt.NoButton : Qt.LeftButton) | (area.menu ? Qt.RightButton : Qt.NoButton)
                 onClicked: {
                     var pos = edit.positionAt(mouse.x, mouse.y)
                     edit.moveHandles(pos, pos)
@@ -865,6 +866,7 @@ ScrollView {
                 id: editMenu
                 control: area
                 input: edit
+                mouseArea: mouseArea
                 cursorHandle: cursorHandle
                 selectionHandle: selectionHandle
                 flickable: flickable

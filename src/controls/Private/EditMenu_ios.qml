@@ -85,9 +85,8 @@ Item {
         }
     }
 
-    MouseArea {
-        id: mouseArea
-        anchors.fill: parent
+    Connections {
+        target: mouseArea
 
         function clearFocusFromOtherItems()
         {

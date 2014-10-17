@@ -90,10 +90,8 @@ Item {
         MenuItem { action: pasteAction.createObject(editMenuBase) }
     }
 
-    MouseArea {
-        id: mouseArea
-        anchors.fill: parent
-        acceptedButtons: Qt.RightButton
+    Connections {
+        target: mouseArea
 
         onClicked: {
             if (input.selectionStart === input.selectionEnd) {
