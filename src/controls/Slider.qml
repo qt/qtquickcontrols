@@ -175,8 +175,11 @@ Control {
     /*! \internal */
     property bool __horizontal: orientation === Qt.Horizontal
 
-    /*! \internal */
-    property real __handlePos: range.valueForPosition(__horizontal ? fakeHandle.x : fakeHandle.y)
+    /*! \internal
+        The extra arguments positionAtMinimum and positionAtMaximum are there to force
+        re-evaluation of the handle position when the constraints change (QTBUG-41255).
+    */
+    property real __handlePos: range.valueForPosition(__horizontal ? fakeHandle.x : fakeHandle.y, range.positionAtMinimum, range.positionAtMaximum)
 
     activeFocusOnTab: true
 
