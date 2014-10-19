@@ -165,9 +165,9 @@ ScrollView {
 
     \note For performance reasons, created delegates can be recycled
     across multiple table rows. This implies that when you make use of implicit
-    properties such as \c styledata.row or \c model, these values can change also
-    after the delegate has been constructed. In practice this means you should not assume
-    that content is fixed when \c Component.onCompleted happens, but instead rely on
+    properties such as \c styleData.row or \c model, these values can change
+    after the delegate has been constructed. This means that you should not assume
+    that content is fixed when \c Component.onCompleted is called, but instead rely on
     bindings to such properties.
     */
     property Component itemDelegate: __style ? __style.itemDelegate : null
@@ -184,9 +184,9 @@ ScrollView {
 
     \note For performance reasons, created delegates can be recycled
     across multiple table rows. This implies that when you make use of implicit
-    properties such as \c styledata.row or \c model, these values can change also
-    after the delegate has been constructed. In practice this means you should not assume
-    that content is fixed when \c Component.onCompleted happens, but instead rely on
+    properties such as \c styleData.row or \c model, these values can change
+    after the delegate has been constructed. This means that you should not assume
+    that content is fixed when \c Component.onCompleted is called, but instead rely on
     bindings to such properties.
     */
     property Component rowDelegate: __style ? __style.rowDelegate : null
