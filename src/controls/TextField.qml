@@ -619,7 +619,7 @@ Control {
         font: textInput.font
         horizontalAlignment: textInput.horizontalAlignment
         verticalAlignment: textInput.verticalAlignment
-        opacity: !textInput.text.length && !textInput.inputMethodComposing ? 1 : 0
+        opacity: textInput.displayText.length ? 0.0 : 1.0
         color: __panel ? __panel.placeholderTextColor : "darkgray"
         clip: contentWidth > width;
         elide: Text.ElideRight
