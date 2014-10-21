@@ -843,6 +843,7 @@ ScrollView {
             id: rowItemContainer
 
             activeFocusOnTab: false
+            z: rowItem.activeFocus ? 0.7 : rowItem.itemSelected ? 0.5 : 0
 
             property Item rowItem
             // We recycle instantiated row items to speed up list scrolling
