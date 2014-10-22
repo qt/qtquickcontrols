@@ -652,12 +652,7 @@ Control {
 
         Keys.forwardTo: textfield
 
-        onAccepted: {
-            Qt.inputMethod.commit()
-            if (!(textInput.inputMethodHints & Qt.ImhMultiLine))
-                Qt.inputMethod.hide()
-            textfield.accepted()
-        }
+        onAccepted: textfield.accepted()
 
         onEditingFinished: textfield.editingFinished()
     }
