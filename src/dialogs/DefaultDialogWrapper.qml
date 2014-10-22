@@ -58,7 +58,7 @@ AbstractDialog {
         property real minimumHeight: implicitHeight
         property real minimumWidth: Screen.pixelDensity * 50
         implicitHeight: defaultContentItem.implicitHeight + spacing + outerSpacing * 2 + buttonsRight.implicitHeight
-        implicitWidth: Math.min(root.maximumDimension, Math.max(
+        implicitWidth: Math.min(root.__maximumDimension, Math.max(
             defaultContentItem.implicitWidth, buttonsRowImplicitWidth, Screen.pixelDensity * 50) + outerSpacing * 2);
         color: palette.window
         focus: root.visible
