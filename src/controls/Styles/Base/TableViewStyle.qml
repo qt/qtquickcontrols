@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2014 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the Qt Quick Controls module of the Qt Toolkit.
@@ -110,7 +110,7 @@ ScrollViewStyle {
     */
     property Component rowDelegate: Rectangle {
         height: Math.round(TextSingleton.implicitHeight * 1.2)
-        property color selectedColor: styleData.hasActiveFocus ? "#07c" : "#999"
+        property color selectedColor: control.activeFocus ? "#07c" : "#999"
         color: styleData.selected ? selectedColor :
                                     !styleData.alternate ? alternateBackgroundColor : backgroundColor
     }

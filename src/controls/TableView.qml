@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2014 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the Qt Quick Controls module of the Qt Toolkit.
@@ -149,6 +149,7 @@ ScrollView {
     \li  styleData.elideMode - the elide mode of the column
     \li  styleData.textAlignment - the horizontal text alignment of the column
     \li  styleData.pressed - true when the item is pressed (since QtQuick.Controls 1.3)
+    \li  styleData.hasActiveFocus - true when the row has focus (since QtQuick.Controls 1.3)
     \endlist
 
     Example:
@@ -179,6 +180,7 @@ ScrollView {
     \li  styleData.alternate - true when the row uses the alternate background color
     \li  styleData.selected - true when the row is currently selected
     \li  styleData.row - the index of the row
+    \li  styleData.hasActiveFocus - true when the row has focus
     \li  styleData.pressed - true when the row is pressed (since QtQuick.Controls 1.3)
     \endlist
 
@@ -761,7 +763,7 @@ ScrollView {
                     property QtObject styleData: QtObject {
                         readonly property bool alternate: (index + rowCount) % 2 === 1
                         readonly property bool selected: false
-                        readonly property bool hasActiveFocus: root.activeFocus
+                        readonly property bool hasActiveFocus: false
                         readonly property bool pressed: false
                     }
                     readonly property var model: listView.model
@@ -924,7 +926,7 @@ ScrollView {
                         readonly property int row: rowitem.rowIndex
                         readonly property bool alternate: rowitem.alternate
                         readonly property bool selected: rowitem.itemSelected
-                        readonly property bool hasActiveFocus: root.activeFocus
+                        readonly property bool hasActiveFocus: rowitem.activeFocus
                         readonly property bool pressed: rowitem.rowIndex === mousearea.pressedRow
                     }
                     readonly property var model: listView.model
@@ -955,6 +957,7 @@ ScrollView {
                                 readonly property int elideMode: columnItem.elideMode
                                 readonly property int textAlignment: columnItem.horizontalAlignment
                                 readonly property bool selected: rowitem.itemSelected
+                                readonly property bool hasActiveFocus: rowitem.activeFocus
                                 readonly property bool pressed: row === mousearea.pressedRow && column === mousearea.pressedColumn
                                 readonly property color textColor: rowitem.itemTextColor
                                 readonly property string role: columnItem.role
