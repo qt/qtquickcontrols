@@ -263,6 +263,24 @@ Item {
             }
 
             CheckBox {
+                text: "Apply"
+                property int button: StandardButton.Apply
+                onCheckedChanged: parent.updateButtons(button, checked)
+            }
+
+            CheckBox {
+                text: "Reset"
+                property int button: StandardButton.Reset
+                onCheckedChanged: parent.updateButtons(button, checked)
+            }
+
+            CheckBox {
+                text: "Restore Defaults"
+                property int button: StandardButton.RestoreDefaults
+                onCheckedChanged: parent.updateButtons(button, checked)
+            }
+
+            CheckBox {
                 text: "OK"
                 checked: true
                 property int button: StandardButton.Ok
