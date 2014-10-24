@@ -309,8 +309,6 @@ Control {
         }
         onAccepted: {
             input.text = validator.text
-            Qt.inputMethod.commit()
-            Qt.inputMethod.hide()
             selectValue()
         }
 
