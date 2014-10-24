@@ -35,6 +35,7 @@
 #include "qquickitem.h"
 
 #include <private/qguiapplication_p.h>
+#include <private/qqmlglobal_p.h>
 #include <QWindow>
 #include <QQmlComponent>
 #include <QQuickWindow>
@@ -109,22 +110,28 @@ void QQuickAbstractDialog::setVisible(bool v)
                 connect(win, SIGNAL(heightChanged(int)), this, SLOT(windowGeometryChanged()));
             }
 
-            QQuickItem *parentItem = qobject_cast<QQuickItem *>(parent());
-
-            // If the platform does not support multiple windows, but the dialog is
-            // implemented as an Item, then try to decorate it as a fake window and make it visible.
-            if (parentItem && !m_dialogWindow && !m_windowDecoration) {
-                if (m_decorationComponent) {
-                    if (m_decorationComponent->isLoading())
-                        connect(m_decorationComponent, SIGNAL(statusChanged(QQmlComponent::Status)),
-                                this, SLOT(decorationLoaded()));
-                    else
-                        decorationLoaded();
+            if (!m_dialogWindow) {
+                if (Q_UNLIKELY(!parentWindow())) {
+                    qWarning("cannot set dialog visible: no window");
+                    return;
                 }
-                // Window decoration wasn't possible, so just reparent it into the scene
-                else {
-                    m_contentItem->setParentItem(parentItem);
-                    m_contentItem->setZ(10000);
+                m_dialogWindow = parentWindow();
+
+                // If the platform does not support multiple windows, but the dialog is
+                // implemented as an Item, then try to decorate it as a fake window and make it visible.
+                if (!m_windowDecoration) {
+                    if (m_decorationComponent) {
+                        if (m_decorationComponent->isLoading())
+                            connect(m_decorationComponent, SIGNAL(statusChanged(QQmlComponent::Status)),
+                                    this, SLOT(decorationLoaded()));
+                        else
+                            decorationLoaded(); // do the reparenting of contentItem on top of it
+                    }
+                    // Window decoration wasn't possible, so just reparent it into the scene
+                    else {
+                        m_contentItem->setParentItem(parentWindow()->contentItem());
+                        m_contentItem->setZ(10000);
+                    }
                 }
             }
         }
@@ -168,9 +175,9 @@ void QQuickAbstractDialog::setVisible(bool v)
 void QQuickAbstractDialog::decorationLoaded()
 {
     bool ok = false;
-    QQuickItem *parentItem = qobject_cast<QQuickItem *>(parent());
-    while (parentItem->parentItem() && !parentItem->parentItem()->inherits("QQuickRootItem"))
-        parentItem = parentItem->parentItem();
+    Q_ASSERT(parentWindow());
+    QQuickItem *parentItem = parentWindow()->contentItem();
+    Q_ASSERT(parentItem);
     if (m_decorationComponent->isError()) {
         qWarning() << m_decorationComponent->errors();
     } else {
@@ -252,9 +259,12 @@ void QQuickAbstractDialog::implicitHeightChanged()
 
 QQuickWindow *QQuickAbstractDialog::parentWindow()
 {
-    QQuickItem *parentItem = qobject_cast<QQuickItem *>(parent());
-    if (parentItem)
-        m_parentWindow = parentItem->window();
+    if (!m_parentWindow) {
+        // Usually a dialog is declared inside an Item; but if its QObject parent
+        // is a Window, that's the window we are interested in. (QTBUG-38578)
+        QQuickItem *parentItem = qobject_cast<QQuickItem *>(parent());
+        m_parentWindow = (parentItem ? parentItem->window() : qmlobject_cast<QQuickWindow *>(parent()));
+    }
     return m_parentWindow;
 }
 
