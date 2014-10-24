@@ -164,4 +164,23 @@ TestCase {
         compare(spy.count, 2)
         compare(range.position, 100)
     }
+
+    function test_bindings() {
+        var component = Qt.createComponent("rangemodel/bindings.qml")
+        compare(component.status, Component.Ready)
+        var object = component.createObject(testCase)
+        verify(object !== null, "created object is null")
+
+        compare(object.range1.value, 50)
+        compare(object.range1.minimumValue, 25)
+        compare(object.range1.maximumValue, 75)
+
+        compare(object.range2.value, 50)
+        compare(object.range2.minimumValue, 25)
+        compare(object.range2.maximumValue, 75)
+
+        compare(object.range3.value, 50)
+        compare(object.range3.minimumValue, 25)
+        compare(object.range3.maximumValue, 75)
+    }
 }

@@ -66,7 +66,6 @@ void QQuickRangeModelPrivate::init()
     posatmin = 0;
     posatmax = 0;
     inverted = false;
-    componentInitialized = false;
 }
 
 /*!
@@ -148,8 +147,6 @@ qreal QQuickRangeModelPrivate::publicValue(qreal value) const
 void QQuickRangeModelPrivate::emitValueAndPositionIfChanged(const qreal oldValue, const qreal oldPosition)
 {
     Q_Q(QQuickRangeModel);
-    if (!componentInitialized)
-        return;
 
     // Effective value and position might have changed even in cases when e.g. d->value is
     // unchanged. This will be the case when operating with values outside range:
@@ -222,13 +219,12 @@ void QQuickRangeModel::setPositionRange(qreal min, qreal max)
     // the positionChanged signal.
     d->pos = d->equivalentPosition(d->value);
 
-    if (d->componentInitialized) {
-        if (emitPosAtMinChanged)
-            emit positionAtMinimumChanged(d->posatmin);
-        if (emitPosAtMaxChanged)
-            emit positionAtMaximumChanged(d->posatmax);
-        d->emitValueAndPositionIfChanged(value(), oldPosition);
-    }
+    if (emitPosAtMinChanged)
+        emit positionAtMinimumChanged(d->posatmin);
+    if (emitPosAtMaxChanged)
+        emit positionAtMaximumChanged(d->posatmax);
+
+    d->emitValueAndPositionIfChanged(value(), oldPosition);
 }
 /*!
     Sets the range of valid values, that \l value can assume externally, with
@@ -255,13 +251,12 @@ void QQuickRangeModel::setRange(qreal min, qreal max)
     // Update internal position if it was changed. It can occurs if internal value changes, due to range update
     d->pos = d->equivalentPosition(d->value);
 
-    if (d->componentInitialized) {
-        if (emitMinimumChanged)
-            emit minimumChanged(d->minimum);
-        if (emitMaximumChanged)
-            emit maximumChanged(d->maximum);
-        d->emitValueAndPositionIfChanged(oldValue, oldPosition);
-    }
+    if (emitMinimumChanged)
+        emit minimumChanged(d->minimum);
+    if (emitMaximumChanged)
+        emit maximumChanged(d->maximum);
+
+    d->emitValueAndPositionIfChanged(oldValue, oldPosition);
 }
 
 /*!
@@ -324,10 +319,8 @@ void QQuickRangeModel::setStepSize(qreal stepSize)
     const qreal oldPosition = position();
     d->stepSize = stepSize;
 
-    if (d->componentInitialized) {
-        emit stepSizeChanged(d->stepSize);
-        d->emitValueAndPositionIfChanged(oldValue, oldPosition);
-    }
+    emit stepSizeChanged(d->stepSize);
+    d->emitValueAndPositionIfChanged(oldValue, oldPosition);
 }
 
 qreal QQuickRangeModel::stepSize() const
@@ -348,11 +341,6 @@ qreal QQuickRangeModel::positionForValue(qreal value) const
 
     const qreal unconstrainedPosition = d->equivalentPosition(value);
     return d->publicPosition(unconstrainedPosition);
-}
-
-void QQuickRangeModel::componentComplete()
-{
-    d_ptr->componentInitialized = true;
 }
 
 /*!
@@ -493,9 +481,7 @@ void QQuickRangeModel::setInverted(bool inverted)
         return;
 
     d->inverted = inverted;
-
-    if (d->componentInitialized)
-        emit invertedChanged(d->inverted);
+    emit invertedChanged(d->inverted);
 
     // After updating the internal value, the position property can change.
     setPosition(d->equivalentPosition(d->value));
