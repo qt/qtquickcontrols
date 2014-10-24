@@ -70,5 +70,6 @@ Loader {
         return menuInstance;
     }
 
-    source: Qt.resolvedUrl("EditMenu_" + (Qt.platform.os === "ios"  ? "ios" : "base") + ".qml")
+    source: Qt.resolvedUrl(Qt.platform.os === "ios" ? "EditMenu_ios.qml"
+                                                    : Qt.platform.os === "android" ? "" : "EditMenu_base.qml")
 }
