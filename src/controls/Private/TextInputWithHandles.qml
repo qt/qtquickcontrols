@@ -106,11 +106,15 @@ TextInput {
         cursorShape: Qt.IBeamCursor
         acceptedButtons: (input.selectByMouse ? Qt.NoButton : Qt.LeftButton) | (control.menu ? Qt.RightButton : Qt.NoButton)
         onClicked: {
+            if (editMenu.source)
+                return;
             var pos = input.positionAt(mouse.x, mouse.y)
             input.moveHandles(pos, pos)
             input.activate()
         }
         onPressAndHold: {
+            if (editMenu.source)
+                return;
             var pos = input.positionAt(mouse.x, mouse.y)
             input.moveHandles(pos, control.selectByMouse ? -1 : pos)
             input.activate()
