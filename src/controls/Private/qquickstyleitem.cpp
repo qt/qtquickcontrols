@@ -354,6 +354,8 @@ void QQuickStyleItem::initStyleOption()
         opt->features = QStyleOptionViewItem::HasDisplay;
         opt->text = text();
         opt->textElideMode = Qt::ElideRight;
+        opt->displayAlignment = Qt::AlignLeft | Qt::AlignVCenter;
+        opt->decorationAlignment = Qt::AlignCenter;
         resolvePalette();
         needsResolvePalette = false;
         QPalette pal = m_styleoption->palette;

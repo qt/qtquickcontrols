@@ -109,8 +109,8 @@ Style {
             elementType: "itemrow"
             selected: styleData.selected
 
-            implicitWidth: textItem.contentWidth
-            implicitHeight: textItem.contentHeight
+            implicitWidth: textItem.implicitWidth
+            implicitHeight: textItem.implicitHeight
 
             StyleItem {
                 id: textItem
