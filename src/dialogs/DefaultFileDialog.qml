@@ -316,13 +316,14 @@ AbstractFileDialog {
                     sortReversed: view.sortIndicatorOrder === Qt.DescendingOrder
                 }
 
-                onActivated: {
-                    if (view.model.isFolder(row)) {
+                onActivated: if (view.focus) {
+                    if (view.selection.count > 0 && view.model.isFolder(row)) {
                         dirDown(view.model.get(row, "filePath"))
                     } else {
                         root.acceptSelection()
                     }
                 }
+                onClicked: currentPathField.text = view.model.get(row, "filePath")
 
 
                 TableViewColumn {
@@ -398,13 +399,14 @@ AbstractFileDialog {
                 TextField {
                     id: currentPathField
                     Layout.fillWidth: true
-                    onAccepted: {
+                    function doAccept() {
                         root.clearSelection()
                         if (root.addSelection(root.pathToUrl(text)))
                             root.accept()
                         else
                             root.folder = root.pathFolder(text)
                     }
+                    onAccepted: doAccept()
                 }
             }
         }
@@ -454,6 +456,8 @@ AbstractFileDialog {
                     onClicked: {
                         if (view.model.isFolder(view.currentIndex) && !selectFolder)
                             dirDown(view.model.get(view.currentIndex, "filePath"))
+                        else if (!(root.selectExisting))
+                            currentPathField.doAccept()
                         else
                             root.acceptSelection()
                     }
