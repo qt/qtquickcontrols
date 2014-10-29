@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2014 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the Qt Quick Controls module of the Qt Toolkit.
@@ -117,9 +117,9 @@ Control {
     /*!
         \qmlproperty bool Slider::hovered
 
-        This property indicates whether the control is being hovered.
+        This property indicates whether the slider handle is being hovered.
     */
-    readonly property alias hovered: mouseArea.containsMouse
+    readonly property alias hovered: mouseArea.handleHovered
 
     /*!
         \qmlproperty real Slider::stepSize
@@ -231,26 +231,24 @@ Control {
         property int clickOffset: 0
         property real pressX: 0
         property real pressY: 0
+        property bool handleHovered: false
 
         function clamp ( val ) {
             return Math.max(range.positionAtMinimum, Math.min(range.positionAtMaximum, val))
         }
 
-        onMouseXChanged: {
-            if (pressed && __horizontal) {
-                var pos = clamp (mouse.x + clickOffset - fakeHandle.width/2)
-                var overThreshold = Math.abs(mouse.x - pressX) >= Settings.dragThreshold
+        function updateHandlePosition(mouse) {
+            var pos, overThreshold
+            if (__horizontal) {
+                pos = clamp (mouse.x + clickOffset - fakeHandle.width/2)
+                overThreshold = Math.abs(mouse.x - pressX) >= Settings.dragThreshold
                 if (overThreshold)
                     preventStealing = true
                 if (overThreshold || !Settings.hasTouchScreen)
                     fakeHandle.x = pos
-            }
-        }
-
-        onMouseYChanged: {
-            if (pressed && !__horizontal) {
-                var pos = clamp (mouse.y + clickOffset- fakeHandle.height/2)
-                var overThreshold = Math.abs(mouse.y - pressY) >= Settings.dragThreshold
+            } else if (!__horizontal) {
+                pos = clamp (mouse.y + clickOffset- fakeHandle.height/2)
+                overThreshold = Math.abs(mouse.y - pressY) >= Settings.dragThreshold
                 if (overThreshold)
                     preventStealing = true
                 if (overThreshold || !Settings.hasTouchScreen)
@@ -258,16 +256,25 @@ Control {
             }
         }
 
+        onPositionChanged: {
+            if (pressed)
+                updateHandlePosition(mouse)
+
+            var point = mouseArea.mapToItem(fakeHandle, mouse.x, mouse.y)
+            handleHovered = fakeHandle.contains(Qt.point(point.x, point.y))
+        }
+
         onPressed: {
             if (slider.activeFocusOnPress)
                 slider.forceActiveFocus();
 
-            var point = mouseArea.mapToItem(fakeHandle, mouse.x, mouse.y)
-            if (fakeHandle.contains(Qt.point(point.x, point.y))) {
+            if (handleHovered) {
+                var point = mouseArea.mapToItem(fakeHandle, mouse.x, mouse.y)
                 clickOffset = __horizontal ? fakeHandle.width/2 - point.x : fakeHandle.height/2 - point.y
             }
             pressX = mouse.x
             pressY = mouse.y
+            updateHandlePosition(mouse)
         }
 
         onReleased: {
@@ -278,6 +285,8 @@ Control {
             clickOffset = 0
             preventStealing = false
         }
+
+        onExited: handleHovered = false
     }
 
 
