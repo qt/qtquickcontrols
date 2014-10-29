@@ -52,7 +52,7 @@ TextInput {
     readonly property int selectionPosition: selectionStart !== cursorPosition ? selectionStart : selectionEnd
     readonly property alias containsMouse: mouseArea.containsMouse
     property alias editMenu: editMenu
-    cursorDelegate: __style && __style.cursorDelegate ? __style.cursorDelegate : null
+    cursorDelegate: __style && __style.__cursorDelegate ? __style.__cursorDelegate : null
 
     selectByMouse: control.selectByMouse && (!cursorHandle.delegate || !selectionHandle.delegate)
 
@@ -164,7 +164,6 @@ TextInput {
         parent: control
         control: input.control
         active: control.selectByMouse
-        delegate: style.cursorHandle
         minimum: input.hasSelection ? selectionHandle.position + 1 : -1
 
         property var mappedPos: parent.mapFromItem(editor, editor.cursorRectangle.x, editor.cursorRectangle.y)

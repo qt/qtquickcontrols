@@ -51,7 +51,7 @@ ScrollViewStyle {
     property color selectedTextColor: SystemPaletteSingleton.highlightedText(control.enabled)
     property color backgroundColor: control.backgroundVisible ? SystemPaletteSingleton.base(control.enabled) : "transparent"
     property int renderType: Text.QtRendering
-    property Component selectionHandle: SelectionHandleStyle{}
-    property Component cursorHandle: CursorHandleStyle{}
-    property Component cursorDelegate: CursorDelegate{}
+    property Component __selectionHandle: SelectionHandleStyle{}
+    property Component __cursorHandle: CursorHandleStyle{}
+    property Component __cursorDelegate: CursorDelegate{}
 }

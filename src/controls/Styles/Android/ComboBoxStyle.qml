@@ -105,11 +105,11 @@ Style {
     property Component __popupStyle: null
     property Component __dropDownStyle: null
 
-    property Component selectionHandle: DrawableLoader {
+    property Component __selectionHandle: DrawableLoader {
         styleDef: AndroidStyle.styleDef.textViewStyle.TextView_textSelectHandleLeft
         x: -width / 4 * 3
         y: styleData.lineHeight
     }
 
-    property Component cursorHandle: CursorHandleStyle { }
+    property Component __cursorHandle: CursorHandleStyle { }
 }

@@ -633,8 +633,8 @@ Control {
         selectedTextColor: __panel ? __panel.selectedTextColor : "white"
 
         control: textfield
-        cursorHandle: __style ? __style.cursorHandle : undefined
-        selectionHandle: __style ? __style.selectionHandle : undefined
+        cursorHandle: __style ? __style.__cursorHandle : undefined
+        selectionHandle: __style ? __style.__selectionHandle : undefined
 
         font: __panel ? __panel.font : TextSingleton.font
         anchors.leftMargin: __panel ? __panel.leftMargin : 0
