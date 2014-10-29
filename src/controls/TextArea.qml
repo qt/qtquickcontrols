@@ -851,14 +851,14 @@ ScrollView {
                 cursorShape: edit.hoveredLink ? Qt.PointingHandCursor : Qt.IBeamCursor
                 acceptedButtons: (edit.selectByMouse ? Qt.NoButton : Qt.LeftButton) | (area.menu ? Qt.RightButton : Qt.NoButton)
                 onClicked: {
-                    if (editMenu.source)
+                    if (editMenu.item)
                         return;
                     var pos = edit.positionAt(mouse.x, mouse.y)
                     edit.moveHandles(pos, pos)
                     edit.activate()
                 }
                 onPressAndHold: {
-                    if (editMenu.source)
+                    if (editMenu.item)
                         return;
                     var pos = edit.positionAt(mouse.x, mouse.y)
                     edit.moveHandles(pos, area.selectByMouse ? -1 : pos)
