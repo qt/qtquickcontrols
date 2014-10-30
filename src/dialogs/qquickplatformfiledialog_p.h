@@ -56,6 +56,7 @@ class QQuickPlatformFileDialog : public QQuickAbstractFileDialog
 public:
     QQuickPlatformFileDialog(QObject *parent = 0);
     virtual ~QQuickPlatformFileDialog();
+    virtual void setModality(Qt::WindowModality m) Q_DECL_OVERRIDE;
 
 protected:
     QPlatformFileDialogHelper *helper();

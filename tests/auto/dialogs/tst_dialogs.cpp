@@ -124,7 +124,11 @@ void tst_dialogs::fileDialogNonModal()
     QTest::mouseClick(window, Qt::LeftButton, 0, QPoint(1000, 100));  // hide
     QTRY_VERIFY(spyVisibilityChanged.count() > visibilityChangedCount);
     QCOMPARE(dlg->property("visible").toBool(), false);
+#ifdef Q_OS_WIN
+    QCOMPARE(dlg->property("modality").toInt(), (int)Qt::ApplicationModal);
+#else
     QCOMPARE(dlg->property("modality").toInt(), (int)Qt::NonModal);
+#endif
 }
 
 void tst_dialogs::fileDialogNameFilters()
