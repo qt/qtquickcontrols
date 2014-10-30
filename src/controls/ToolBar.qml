@@ -151,7 +151,7 @@ FocusScope {
 
             anchors.topMargin: topMargin
             anchors.leftMargin: leftMargin
-            anchors.rightMargin: rightMargin + (buttonLoader.active ? buttonLoader.width : 0)
+            anchors.rightMargin: rightMargin + (buttonLoader.active ? buttonLoader.width + rightMargin : 0)
             anchors.bottomMargin: bottomMargin
 
             property int topMargin: __style ? __style.padding.top : 0
