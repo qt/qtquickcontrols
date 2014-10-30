@@ -719,6 +719,7 @@ ScrollView {
             id: edit
             focus: true
             cursorDelegate: __style && __style.__cursorDelegate ? __style.__cursorDelegate : null
+            persistentSelection: true
 
             Rectangle {
                 id: colorRect
