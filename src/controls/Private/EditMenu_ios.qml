@@ -75,7 +75,7 @@ Item {
         }
         MenuItem {
             text: "select"
-            visible: selectionStart === selectionEnd
+            visible: selectionStart === selectionEnd && input.length > 0
             onTriggered: selectWord();
         }
         MenuItem {
