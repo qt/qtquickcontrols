@@ -111,7 +111,8 @@ qtc-debugging-helper
 # linux shared libraries
 *.so*
 
-# windows shared libraries
+# windows binaries
+*.exe
 *.dll
 
 # osx shared libraries
