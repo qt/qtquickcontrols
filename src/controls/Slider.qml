@@ -61,7 +61,7 @@ import QtQuick.Controls.Private 1.0
     }
     \endcode
 
-    The Slider value is by default in the range [0, 1]. If integer values are
+    The slider value is by default in the range [0, 1]. If integer values are
     needed, you can set the \l stepSize.
 
     You can create a custom appearance for a Slider by
@@ -82,7 +82,7 @@ Control {
     /*!
         \qmlproperty real Slider::minimumValue
 
-        This property holds the minimum value of the Slider.
+        This property holds the minimum value of the slider.
         The default value is \c{0.0}.
     */
     property alias minimumValue: range.minimumValue
@@ -90,7 +90,7 @@ Control {
     /*!
         \qmlproperty real Slider::maximumValue
 
-        This property holds the maximum value of the Slider
+        This property holds the maximum value of the slider.
         The default value is \c{1.0}.
     */
     property alias maximumValue: range.maximumValue
@@ -146,7 +146,7 @@ Control {
     /*!
         \qmlproperty real Slider::value
 
-        This property holds the current value of the Slider.
+        This property holds the current value of the slider.
         The default value is \c{0.0}.
     */
     property alias value: range.value
@@ -154,7 +154,7 @@ Control {
     /*!
         \qmlproperty bool Slider::activeFocusOnPress
 
-        This property indicates whether the Slider should receive active focus when
+        This property indicates whether the slider should receive active focus when
         pressed.
     */
     property bool activeFocusOnPress: false
@@ -162,7 +162,7 @@ Control {
     /*!
         \qmlproperty bool Slider::tickmarksEnabled
 
-        This property indicates whether the Slider should display tickmarks
+        This property indicates whether the slider should display tickmarks
         at step intervals. Tick mark spacing is calculated based on the
         \l stepSize property.
 
