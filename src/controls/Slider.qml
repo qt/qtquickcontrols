@@ -237,21 +237,21 @@ Control {
             return Math.max(range.positionAtMinimum, Math.min(range.positionAtMaximum, val))
         }
 
-        function updateHandlePosition(mouse) {
+        function updateHandlePosition(mouse, force) {
             var pos, overThreshold
             if (__horizontal) {
                 pos = clamp (mouse.x + clickOffset - fakeHandle.width/2)
                 overThreshold = Math.abs(mouse.x - pressX) >= Settings.dragThreshold
                 if (overThreshold)
                     preventStealing = true
-                if (overThreshold || !Settings.hasTouchScreen)
+                if (overThreshold || force)
                     fakeHandle.x = pos
             } else if (!__horizontal) {
                 pos = clamp (mouse.y + clickOffset- fakeHandle.height/2)
                 overThreshold = Math.abs(mouse.y - pressY) >= Settings.dragThreshold
                 if (overThreshold)
                     preventStealing = true
-                if (overThreshold || !Settings.hasTouchScreen)
+                if (overThreshold || force)
                     fakeHandle.y = pos
             }
         }
@@ -274,10 +274,11 @@ Control {
             }
             pressX = mouse.x
             pressY = mouse.y
-            updateHandlePosition(mouse)
+            updateHandlePosition(mouse, !Settings.hasTouchScreen)
         }
 
         onReleased: {
+            updateHandlePosition(mouse, Settings.hasTouchScreen)
             // If we don't update while dragging, this is the only
             // moment that the range is updated.
             if (!slider.updateValueWhileDragging)
