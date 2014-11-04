@@ -31,31 +31,23 @@
 **
 ****************************************************************************/
 
-#ifndef QT_QUICK_CONTROLS_QUICKTEST_H
-#define QT_QUICK_CONTROLS_QUICKTEST_H
+#ifndef QT_QUICK_CONTROLS_TESTAPP_H
+#define QT_QUICK_CONTROLS_TESTAPP_H
 
-#include "qt_quick_controls_testapp.h"
-#include <QtQuickTest/quicktestglobal.h>
+#ifdef QT_WIDGETS_LIB
+#include <QtWidgets/QApplication>
+#else
+#include <QtGui/QGuiApplication>
+#endif
 
 QT_BEGIN_NAMESPACE
 
-#ifdef QUICK_TEST_SOURCE_DIR
-#define QT_QUICK_CONTROLS_TEST_MAIN_VAR QUICK_TEST_SOURCE_DIR
+#ifdef QT_WIDGETS_LIB
+#define QtQuickControlsTestApp QApplication
 #else
-#define QT_QUICK_CONTROLS_TEST_MAIN_VAR 0
+#define QtQuickControlsTestApp QGuiApplication
 #endif
-
-#define QT_QUICK_CONTROLS_TEST_MAIN(name) \
-    int main(int argc, char **argv) \
-    { \
-        QtQuickControlsTestApp* app = 0; \
-        if (!QCoreApplication::instance()) \
-            app = new QtQuickControlsTestApp(argc, argv); \
-        int i = quick_test_main(argc, argv, #name, QT_QUICK_CONTROLS_TEST_MAIN_VAR); \
-        delete app; \
-        return i; \
-    }
 
 QT_END_NAMESPACE
 
-#endif // QT_QUICK_CONTROLS_QUICKTEST_H
+#endif // QT_QUICK_CONTROLS_TESTAPP_H
