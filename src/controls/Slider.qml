@@ -167,6 +167,8 @@ Control {
         \l stepSize property.
 
         The default value is \c false.
+
+        \note This property may be ignored on some platforms when using the native style (e.g. Android).
     */
     property bool tickmarksEnabled: false
 
