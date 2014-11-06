@@ -75,7 +75,7 @@ Loader {
     MouseArea {
         id: mouse
         anchors.fill: item
-        enabled: handle.active
+        enabled: item && item.visible
         preventStealing: true
         property real pressX
         property point offset

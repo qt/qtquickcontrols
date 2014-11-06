@@ -170,7 +170,7 @@ TextInput {
         x: mappedPos.x
         y: mappedPos.y
 
-        visible: pressed || (input.hasSelection && handleX + handleWidth >= -1 && handleX <= control.width + 1)
+        visible: pressed || ((input.cursorVisible || input.hasSelection) && handleX + handleWidth >= -1 && handleX <= control.width + 1)
 
         onPositionChanged: {
             if (!input.blockRecursion) {

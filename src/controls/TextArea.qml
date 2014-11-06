@@ -933,7 +933,7 @@ ScrollView {
 
                 property var posInViewport: flickableItem.contentX !== flickableItem.contentY !== Number.MAX_VALUE ?
                                                 parent.mapToItem(viewport, handleX, handleY) : -1
-                visible: pressed || (edit.hasSelection
+                visible: pressed || ((edit.cursorVisible || edit.hasSelection)
                                      && posInViewport.y + handleHeight >= -1
                                      && posInViewport.y <= viewport.height + 1
                                      && posInViewport.x + handleWidth >= -1
