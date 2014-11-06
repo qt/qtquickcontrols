@@ -40,7 +40,22 @@
     \title Qt Quick Controls - Gallery
     \ingroup qtquickcontrols_examples
     \brief A collection of components for a classic desktop-style UI.
-    \image qtquickcontrols-example-gallery.png
+
+    \raw HTML
+    <div class="table"><table style="background:transparent; border:0px">
+    <tr><td style="border:0px">
+    \endraw
+    \image qtquickcontrols-example-gallery-osx.png
+    \caption OS X
+    \raw HTML
+    </td><td style="border:0px">
+    \endraw
+    \image qtquickcontrols-example-gallery-android.png
+    \caption Android - Nexus 5
+    \raw HTML
+    </td></tr>
+    </table></div>
+    \endraw
 
     This example project demonstrates the various UI components provided by
     \l{Qt Quick Controls}.
