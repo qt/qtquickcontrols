@@ -81,16 +81,22 @@ SwitchStyle {
 
                 x: control.checked ? max : min
 
-                FontMetrics {
-                    id: metrics
+                TextMetrics {
+                    id: onMetrics
                     font: label.font
+                    text: panel.styleDef.Switch_textOn
                 }
 
-                readonly property real maxTextWidth: Math.max(metrics.boundingRect(panel.styleDef.Switch_textOn).width,
-                                                              metrics.boundingRect(panel.styleDef.Switch_textOff).width)
+                TextMetrics {
+                    id: offMetrics
+                    font: label.font
+                    text: panel.styleDef.Switch_textOff
+                }
+
+                readonly property real maxTextWidth: Math.max(onMetrics.width, offMetrics.width)
 
                 implicitWidth: Math.max(loader.implicitWidth, maxTextWidth + 2 * panel.styleDef.Switch_thumbTextPadding)
-                implicitHeight: Math.max(loader.implicitHeight, metrics.height)
+                implicitHeight: Math.max(loader.implicitHeight, onMetrics.height, offMetrics.height)
 
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
