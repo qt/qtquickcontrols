@@ -79,6 +79,8 @@ SwitchStyle {
             Item {
                 id: thumb
 
+                readonly property bool hideText: AndroidStyle.styleDef.switchStyle.Switch_showText === false
+
                 x: control.checked ? max : min
 
                 TextMetrics {
@@ -126,6 +128,7 @@ SwitchStyle {
 
                 LabelStyle {
                     id: label
+                    visible: !thumb.hideText
                     text: control.checked ? panel.styleDef.Switch_textOn : panel.styleDef.Switch_textOff
 
                     pressed: control.pressed
