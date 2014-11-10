@@ -38,22 +38,20 @@
 **
 ****************************************************************************/
 
-#include "qtquickcontrolsapplication.h"
-#include "sortfilterproxymodel.h"
-#include <QtQml/qqmlapplicationengine.h>
-#include <QtGui/qsurfaceformat.h>
-#include <QtQml/qqml.h>
+#include "qt_quick_controls_testapp.h"
+#include <QtQml/QQmlApplicationEngine>
+#include <QtGui/QSurfaceFormat>
+#include <QtQuick/QQuickWindow>
 
 int main(int argc, char *argv[])
 {
-    QtQuickControlsApplication app(argc, argv);
+    QtQuickControlsTestApp app(argc, argv);
     if (QCoreApplication::arguments().contains(QLatin1String("--coreprofile"))) {
         QSurfaceFormat fmt;
         fmt.setVersion(4, 4);
         fmt.setProfile(QSurfaceFormat::CoreProfile);
         QSurfaceFormat::setDefaultFormat(fmt);
     }
-    qmlRegisterType<SortFilterProxyModel>("org.qtproject.example", 1, 0, "SortFilterProxyModel");
     QQmlApplicationEngine engine(QUrl("qrc:/main.qml"));
     return app.exec();
 }

@@ -45,6 +45,7 @@ Item {
     y: -20
     width: 80
     height: knob.height + knobLine.height + 60
+    visible: styleData.hasSelection
 
     Rectangle {
         id: knob

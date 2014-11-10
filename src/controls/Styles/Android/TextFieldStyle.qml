@@ -37,7 +37,7 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-import QtQuick 2.2
+import QtQuick 2.4
 import QtQuick.Window 2.2
 import QtQuick.Controls 1.2
 import QtQuick.Controls.Private 1.0
@@ -56,7 +56,7 @@ Style {
 
         readonly property real minWidth: styleDef.View_minWidth || 0
         readonly property real minHeight: styleDef.View_minHeight || 0
-        readonly property real labelWidth: label.implicitWidth + bg.padding.left + bg.padding.right
+        readonly property real labelWidth: Math.max(label.implicitWidth, metrics.width) + bg.padding.left + bg.padding.right
         readonly property real labelHeight: label.implicitHeight + bg.padding.top + bg.padding.bottom
 
         implicitWidth: Math.max(minWidth, Math.max(bg.implicitWidth, labelWidth))
@@ -81,10 +81,15 @@ Style {
         readonly property alias selectionColor: label.selectionColor
         readonly property color selectedTextColor: label.selectedTextColor
 
+        TextMetrics {
+            id: metrics
+            text: "12345678901234567890"
+        }
+
         LabelStyle {
             id: label
             visible: false
-            text: control.text
+            text: control.text || control.placeholderText
             focused: control.activeFocus
             window_focused: focused && control.Window.active
             styleDef: panel.styleDef

@@ -41,6 +41,8 @@
 import QtQuick 2.2
 import QtTest 1.0
 import QtQuickControlsTests 1.0
+import QtQuick.Controls 1.2
+import QtQuick.Controls.Private 1.0
 
 Item {
     id: container
@@ -304,6 +306,29 @@ Item {
             slider.value = 50
             compare(slider.__handlePos, 50)
             slider.destroy()
+        }
+
+        function test_dragThreshold() {
+            var control = Qt.createQmlObject('import QtQuick.Controls 1.2; Slider {x: 20; y: 20; width: 100; height: 50}', container, '')
+
+            var pt = { x: control.width/2, y: control.height/2 }
+
+            mousePress(control, pt.x, pt.y)
+            compare(control.value, 0.5)
+
+            // drag less than the threshold distance
+            mouseMove(control, pt.x + Settings.dragThreshold - 1, pt.y)
+            compare(control.value, 0.5)
+
+            // drag over the threshold
+            mouseMove(control, pt.x + Settings.dragThreshold + 1, pt.y)
+            verify(control.value > 0.5)
+
+            // move back close to the original press point, less than the threshold distance away
+            mouseMove(control, pt.x - Settings.dragThreshold / 2, pt.y)
+            verify(control.value < 0.5)
+
+            control.destroy()
         }
     }
 }

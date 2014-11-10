@@ -38,22 +38,51 @@
 **
 ****************************************************************************/
 
-#include "qtquickcontrolsapplication.h"
-#include "sortfilterproxymodel.h"
-#include <QtQml/qqmlapplicationengine.h>
-#include <QtGui/qsurfaceformat.h>
-#include <QtQml/qqml.h>
+import QtQuick 2.2
+import QtQuick.Controls 1.2
 
-int main(int argc, char *argv[])
-{
-    QtQuickControlsApplication app(argc, argv);
-    if (QCoreApplication::arguments().contains(QLatin1String("--coreprofile"))) {
-        QSurfaceFormat fmt;
-        fmt.setVersion(4, 4);
-        fmt.setProfile(QSurfaceFormat::CoreProfile);
-        QSurfaceFormat::setDefaultFormat(fmt);
+Item {
+    id: root
+    width: 600
+    height: 300
+    anchors.fill: parent
+    anchors.margins: Qt.platform.os === "osx" ? 12 : 6
+
+    ListModel {
+        id: dummyModel
+        Component.onCompleted: {
+            for (var i = 0 ; i < 100 ; ++i) {
+                append({"index": i, "title": "A title " + i, "imagesource" :"http://someurl.com", "credit" : "N/A"})
+            }
+        }
     }
-    qmlRegisterType<SortFilterProxyModel>("org.qtproject.example", 1, 0, "SortFilterProxyModel");
-    QQmlApplicationEngine engine(QUrl("qrc:/main.qml"));
-    return app.exec();
+
+    TableView{
+        model: dummyModel
+        anchors.fill: parent
+
+        TableViewColumn {
+            role: "index"
+            title: "#"
+            width: 36
+            resizable: false
+            movable: false
+        }
+        TableViewColumn {
+            role: "title"
+            title: "Title"
+            width: 120
+        }
+        TableViewColumn {
+            role: "credit"
+            title: "Credit"
+            width: 120
+        }
+        TableViewColumn {
+            role: "imagesource"
+            title: "Image source"
+            width: 200
+            visible: true
+        }
+    }
 }

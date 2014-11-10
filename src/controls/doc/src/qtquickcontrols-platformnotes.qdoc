@@ -33,7 +33,7 @@
     This page contains platform specific notes for creating applications
     that use \l{Qt Quick Controls}.
 
-    \section1 Android
+    \section1 Android Style
 
     Qt 5.4 introduced a native Android style for Qt Quick Controls.
 
@@ -41,8 +41,7 @@
 
     \note The Android style requires Android 3.0 (API level 11) or later.
 
-    No special actions are required to use the Android style. It is
-    automatically selected and deployed on Android. See \l{Getting Started
+    It is automatically selected and deployed on Android. See \l{Getting Started
     with Qt for Android} and \l{Deploying an Application on Android} for
     more details on the Android essentials.
 
@@ -62,8 +61,8 @@
     items declared in QML. Just to name a few possibilities:
     \list
     \li ToolButton actions,
-    \li A TextField as a search field,
-    \li A ComboBox for navigation, and
-    \li A ProgressBar for displaying progress.
+    \li a TextField as a search field,
+    \li a ComboBox for navigation, and
+    \li a ProgressBar for displaying progress.
     \endlist
 */
