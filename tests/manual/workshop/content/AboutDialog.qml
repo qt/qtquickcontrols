@@ -38,22 +38,12 @@
 **
 ****************************************************************************/
 
-#include "qtquickcontrolsapplication.h"
-#include "sortfilterproxymodel.h"
-#include <QtQml/qqmlapplicationengine.h>
-#include <QtGui/qsurfaceformat.h>
-#include <QtQml/qqml.h>
+import QtQuick 2.2
+import QtQuick.Dialogs 1.1
 
-int main(int argc, char *argv[])
-{
-    QtQuickControlsApplication app(argc, argv);
-    if (QCoreApplication::arguments().contains(QLatin1String("--coreprofile"))) {
-        QSurfaceFormat fmt;
-        fmt.setVersion(4, 4);
-        fmt.setProfile(QSurfaceFormat::CoreProfile);
-        QSurfaceFormat::setDefaultFormat(fmt);
-    }
-    qmlRegisterType<SortFilterProxyModel>("org.qtproject.example", 1, 0, "SortFilterProxyModel");
-    QQmlApplicationEngine engine(QUrl("qrc:/main.qml"));
-    return app.exec();
+MessageDialog {
+    icon: StandardIcon.Information
+    title: "Qt Quick Controls Workshop"
+    text: "Qt Quick Controls Workshop"
+    detailedText: "A manual test for most of the available Qt Quick Controls"
 }

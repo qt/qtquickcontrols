@@ -4,7 +4,6 @@
 /examples/quick/controls/basiclayouts/basiclayouts
 /examples/quick/controls/calendar/calendar
 /examples/quick/controls/gallery/gallery
-/examples/quick/controls/splitview/splitview
 /examples/quick/controls/styles/styles
 /examples/quick/controls/tableview/tableview
 /examples/quick/controls/touch/touch
@@ -111,7 +110,8 @@ qtc-debugging-helper
 # linux shared libraries
 *.so*
 
-# windows shared libraries
+# windows binaries
+*.exe
 *.dll
 
 # osx shared libraries

@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2014 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the Qt Quick Controls module of the Qt Toolkit.
@@ -38,385 +38,150 @@
 **
 ****************************************************************************/
 
-
-
-
-
 import QtQuick 2.2
-import QtQuick.Window 2.1
+import QtQuick.Layouts 1.1
 import QtQuick.Controls 1.2
-import QtQuick.XmlListModel 2.0
+import org.qtproject.example 1.0
 
-Window {
+ApplicationWindow {
+    id: window
     visible: true
-    width: 538 + frame.margins * 2
-    height: 360 + frame.margins * 2
+    title: "Table View Example"
 
-    ToolBar {
-        id: toolbar
-        width: parent.width
+    toolBar: ToolBar {
+        TextField {
+            id: searchBox
+
+            placeholderText: "Search..."
+            inputMethodHints: Qt.ImhNoPredictiveText
+
+            width: window.width / 5 * 2
+            anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
+        }
+    }
+
+    TableView {
+        id: tableView
+
+        frameVisible: false
+        sortIndicatorVisible: true
+
+        anchors.fill: parent
+
+        Layout.minimumWidth: 400
+        Layout.minimumHeight: 240
+        Layout.preferredWidth: 600
+        Layout.preferredHeight: 400
+
+        TableViewColumn {
+            id: titleColumn
+            title: "Title"
+            role: "title"
+            movable: false
+            resizable: false
+            width: tableView.viewport.width - authorColumn.width
+        }
+
+        TableViewColumn {
+            id: authorColumn
+            title: "Author"
+            role: "author"
+            movable: false
+            resizable: false
+            width: tableView.viewport.width / 3
+        }
+
+        model: SortFilterProxyModel {
+            id: proxyModel
+            source: sourceModel.count > 0 ? sourceModel : null
+
+            sortOrder: tableView.sortIndicatorOrder
+            sortCaseSensitivity: Qt.CaseInsensitive
+            sortRole: sourceModel.count > 0 ? tableView.getColumn(tableView.sortIndicatorColumn).role : ""
+
+            filterString: "*" + searchBox.text + "*"
+            filterSyntax: SortFilterProxyModel.Wildcard
+            filterCaseSensitivity: Qt.CaseInsensitive
+        }
 
         ListModel {
-            id: delegatemenu
-            ListElement { text: "Shiny delegate" }
-            ListElement { text: "Scale selected" }
-            ListElement { text: "Editable items" }
-        }
-
-        ComboBox {
-            id: delegateChooser
-            enabled: frame.currentIndex === 3 ? 1 : 0
-            model: delegatemenu
-            width: 150
-            anchors.left: parent.left
-            anchors.leftMargin: 8
-            anchors.verticalCenter: parent.verticalCenter
-        }
-
-        CheckBox {
-            id: enabledCheck
-            text: "Enabled"
-            checked: true
-            anchors.right: parent.right
-            anchors.verticalCenter: parent.verticalCenter
-        }
-    }
-
-    SystemPalette {id: syspal}
-    color: syspal.window
-
-    XmlListModel {
-        id: flickerModel
-        source: "http://api.flickr.com/services/feeds/photos_public.gne?format=rss2&tags=" + "Qt"
-        query: "/rss/channel/item"
-        namespaceDeclarations: "declare namespace media=\"http://search.yahoo.com/mrss/\";"
-        XmlRole { name: "title"; query: "title/string()" }
-        XmlRole { name: "imagesource"; query: "media:thumbnail/@url/string()" }
-        XmlRole { name: "credit"; query: "media:credit/string()" }
-    }
-
-    ListModel {
-        id: nestedModel
-        ListElement{content: ListElement { description: "Core" ; color:"#ffaacc"}}
-        ListElement{content: ListElement { description: "Second" ; color:"#ffccaa"}}
-        ListElement{content: ListElement { description: "Third" ; color:"#ffffaa"}}
-    }
-
-    ListModel {
-        id: largeModel
-        Component.onCompleted: {
-            for (var i=0 ; i< 500 ; ++i)
-                largeModel.append({"name":"Person "+i , "age": Math.round(Math.random()*100), "gender": Math.random()>0.5 ? "Male" : "Female"})
-        }
-    }
-
-    Column {
-        anchors.top: toolbar.bottom
-        anchors.right: parent.right
-        anchors.left: parent.left
-        anchors.bottom:  parent.bottom
-        anchors.margins: 8
-
-        TabView {
-            id:frame
-            focus:true
-            enabled: enabledCheck.checked
-
-            property int margins: Qt.platform.os === "osx" ? 16 : 0
-
-            height: parent.height - 34
-            anchors.right: parent.right
-            anchors.left: parent.left
-            anchors.margins: margins
-
-            Tab {
-                title: "XmlListModel"
-
-                TableView {
-                    model: flickerModel
-                    anchors.fill: parent
-                    anchors.margins: 12
-
-                    TableViewColumn {
-                        role: "title"
-                        title: "Title"
-                        width: 120
-                    }
-                    TableViewColumn {
-                        role: "credit"
-                        title: "Credit"
-                        width: 120
-                    }
-                    TableViewColumn {
-                        role: "imagesource"
-                        title: "Image source"
-                        width: 200
-                        visible: true
-                    }
-
-                    frameVisible: frameCheckbox.checked
-                    headerVisible: headerCheckbox.checked
-                    sortIndicatorVisible: sortableCheckbox.checked
-                    alternatingRowColors: alternateCheckbox.checked
-                }
+            id: sourceModel
+            ListElement {
+                title: "Moby-Dick"
+                author: "Herman Melville"
             }
-            Tab {
-                title: "Multivalue"
-
-                TableView {
-                    model: nestedModel
-                    anchors.fill: parent
-                    anchors.margins: 12
-
-                    TableViewColumn {
-                        role: "content"
-                        title: "Text and Color"
-                        width: 220
-                    }
-
-                    itemDelegate: Item {
-                        Rectangle{
-                            color: styleData.value.get(0).color
-                            anchors.top:parent.top
-                            anchors.right:parent.right
-                            anchors.bottom:parent.bottom
-                            anchors.margins: 4
-                            width:32
-                            border.color:"#666"
-                        }
-                        Text {
-                            width: parent.width
-                            anchors.margins: 4
-                            anchors.left: parent.left
-                            anchors.verticalCenter: parent.verticalCenter
-                            elide: styleData.elideMode
-                            text: styleData.value.get(0).description
-                            color: styleData.textColor
-                        }
-                    }
-
-                    frameVisible: frameCheckbox.checked
-                    headerVisible: headerCheckbox.checked
-                    sortIndicatorVisible: sortableCheckbox.checked
-                    alternatingRowColors: alternateCheckbox.checked
-                }
+            ListElement {
+                title: "The Adventures of Tom Sawyer"
+                author: "Mark Twain"
             }
-            Tab {
-                title: "Generated"
-
-                TableView {
-                    model: largeModel
-                    anchors.margins: 12
-                    anchors.fill: parent
-                    TableViewColumn {
-                        role: "name"
-                        title: "Name"
-                        width: 120
-                    }
-                    TableViewColumn {
-                        role: "age"
-                        title: "Age"
-                        width: 120
-                    }
-                    TableViewColumn {
-                        role: "gender"
-                        title: "Gender"
-                        width: 120
-                    }
-                    frameVisible: frameCheckbox.checked
-                    headerVisible: headerCheckbox.checked
-                    sortIndicatorVisible: sortableCheckbox.checked
-                    alternatingRowColors: alternateCheckbox.checked
-                }
+            ListElement {
+                title: "Cat’s Cradle"
+                author: "Kurt Vonnegut"
             }
-
-            Tab {
-                title: "Delegates"
-                Item {
-                    anchors.fill: parent
-
-                    Component {
-                        id: delegate1
-                        Item {
-                            clip: true
-                            Text {
-                                width: parent.width
-                                anchors.margins: 4
-                                anchors.left: parent.left
-                                anchors.verticalCenter: parent.verticalCenter
-                                elide: styleData.elideMode
-                                text: styleData.value !== undefined  ? styleData.value : ""
-                                color: styleData.textColor
-                            }
-                        }
-                    }
-
-                    Component {
-                        id: delegate2
-                        Text {
-                            width: parent.width
-                            anchors.margins: 4
-                            anchors.left: parent.left
-                            anchors.verticalCenter: parent.verticalCenter
-                            elide: styleData.elideMode
-                            text: styleData.value !== undefined  ? styleData.value : ""
-                            color: styleData.textColor
-                        }
-                    }
-
-                    Component {
-                        id: editableDelegate
-                        Item {
-
-                            Text {
-                                width: parent.width
-                                anchors.margins: 4
-                                anchors.left: parent.left
-                                anchors.verticalCenter: parent.verticalCenter
-                                elide: styleData.elideMode
-                                text: styleData.value !== undefined ? styleData.value : ""
-                                color: styleData.textColor
-                                visible: !styleData.selected
-                            }
-                            Loader { // Initialize text editor lazily to improve performance
-                                id: loaderEditor
-                                anchors.fill: parent
-                                anchors.margins: 4
-                                Connections {
-                                    target: loaderEditor.item
-                                    onAccepted: {
-                                        if (typeof styleData.value === 'number')
-                                            largeModel.setProperty(styleData.row, styleData.role, Number(parseFloat(loaderEditor.item.text).toFixed(0)))
-                                        else
-                                            largeModel.setProperty(styleData.row, styleData.role, loaderEditor.item.text)
-                                    }
-                                }
-                                sourceComponent: styleData.selected ? editor : null
-                                Component {
-                                    id: editor
-                                    TextInput {
-                                        id: textinput
-                                        color: styleData.textColor
-                                        text: styleData.value
-                                        MouseArea {
-                                            id: mouseArea
-                                            anchors.fill: parent
-                                            hoverEnabled: true
-                                            onClicked: textinput.forceActiveFocus()
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    TableView {
-                        id: delegatesView
-                        model: largeModel
-                        anchors.margins: 12
-                        anchors.fill:parent
-                        frameVisible: frameCheckbox.checked
-                        headerVisible: headerCheckbox.checked
-                        sortIndicatorVisible: sortableCheckbox.checked
-                        alternatingRowColors: alternateCheckbox.checked
-
-                        TableViewColumn {
-                            role: "name"
-                            title: "Name"
-                            width: 120
-                        }
-                        TableViewColumn {
-                            role: "age"
-                            title: "Age"
-                            width: 120
-                        }
-                        TableViewColumn {
-                            role: "gender"
-                            title: "Gender"
-                            width: 120
-                        }
-
-                        headerDelegate: BorderImage{
-                            source: "images/header.png"
-                            border{left:2;right:2;top:2;bottom:2}
-                            Text {
-                                anchors.verticalCenter: parent.verticalCenter
-                                anchors.left: parent.left
-                                anchors.right: indicator.visible ? indicator.left : parent.right
-                                anchors.margins: 6
-                                text: styleData.value
-                                elide: Text.ElideRight
-                                color:"#333"
-                            }
-                            // Sort indicator
-                            Image {
-                                id: indicator
-                                anchors.verticalCenter: parent.verticalCenter
-                                anchors.right: parent.right
-                                anchors.rightMargin: 6
-                                source: "images/sort-up.png"
-                                visible: delegatesView.sortIndicatorVisible &&
-                                            styleData.column === delegatesView.sortIndicatorColumn
-                                rotation: delegatesView.sortIndicatorOrder === Qt.AscendingOrder ? 180 : 0
-                                Behavior on rotation { NumberAnimation { } }
-                            }
-
-                        }
-
-                        rowDelegate: Rectangle {
-                            height: (delegateChooser.currentIndex == 1 && styleData.selected) ? 30 : 20
-                            Behavior on height{ NumberAnimation{} }
-
-                            color: styleData.selected ? "#448" : (styleData.alternate? "#eee" : "#fff")
-                            BorderImage{
-                                id: selected
-                                anchors.fill: parent
-                                source: "images/selectedrow.png"
-                                visible: styleData.selected
-                                border{left:2; right:2; top:2; bottom:2}
-                                SequentialAnimation {
-                                    running: true; loops: Animation.Infinite
-                                    NumberAnimation { target:selected; property: "opacity"; to: 1.0; duration: 900}
-                                    NumberAnimation { target:selected; property: "opacity"; to: 0.5; duration: 900}
-                                }
-                            }
-                        }
-
-                        itemDelegate: {
-                            if (delegateChooser.currentIndex == 2)
-                                return editableDelegate;
-                            else
-                                return delegate1;
-                        }
-                    }
-                }
+            ListElement {
+                title: "Farenheit 451"
+                author: "Ray Bradbury"
             }
-        }
-        Row{
-            x: 12
-            height: 34
-            CheckBox{
-                id: alternateCheckbox
-                checked: true
-                text: "Alternate"
-                anchors.verticalCenter: parent.verticalCenter
+            ListElement {
+                title: "It"
+                author: "Stephen King"
             }
-            CheckBox{
-                id: sortableCheckbox
-                checked: false
-                text: "Sort indicator"
-                anchors.verticalCenter: parent.verticalCenter
+            ListElement {
+                title: "On the Road"
+                author: "Jack Kerouac"
             }
-            CheckBox{
-                id: frameCheckbox
-                checked: true
-                text: "Frame"
-                anchors.verticalCenter: parent.verticalCenter
+            ListElement {
+                title: "Of Mice and Men"
+                author: "John Steinbeck"
             }
-            CheckBox{
-                id: headerCheckbox
-                checked: true
-                text: "Headers"
-                anchors.verticalCenter: parent.verticalCenter
+            ListElement {
+                title: "Do Androids Dream of Electric Sheep?"
+                author: "Philip K. Dick"
+            }
+            ListElement {
+                title: "Uncle Tom’s Cabin"
+                author: "Harriet Beecher Stowe"
+            }
+            ListElement {
+                title: "The Call of the Wild"
+                author: "Jack London"
+            }
+            ListElement {
+                title: "The Old Man and the Sea"
+                author: "Ernest Hemingway"
+            }
+            ListElement {
+                title: "A Streetcar Named Desire"
+                author: "Tennessee Williams"
+            }
+            ListElement {
+                title: "Catch-22"
+                author: "Joseph Heller"
+            }
+            ListElement {
+                title: "One Flew Over the Cuckoo’s Nest"
+                author: "Ken Kesey"
+            }
+            ListElement {
+                title: "The Murders in the Rue Morgue"
+                author: "Edgar Allan Poe"
+            }
+            ListElement {
+                title: "Breakfast at Tiffany’s"
+                author: "Truman Capote"
+            }
+            ListElement {
+                title: "Death of a Salesman"
+                author: "Arthur Miller"
+            }
+            ListElement {
+                title: "Post Office"
+                author: "Charles Bukowski"
+            }
+            ListElement {
+                title: "Herbert West—Reanimator"
+                author: "H. P. Lovecraft"
             }
         }
     }

@@ -78,30 +78,40 @@
 */
 
 /*!
-    \example splitview
-    \title Qt Quick Controls - Split View Example
-    \ingroup qtquickcontrols_examples
-    \brief An example for the SplitView UI control.
-    \image qtquickcontrols-example-splitview.png
-
-    This example project demonstrates the usage of \l {SplitView} from
-    \l{Qt Quick Controls} - a control that lays out items horizontally or
-    vertically with a draggable splitter between each item.
-
-    \include examples-run.qdocinc
-*/
-
-/*!
     \example tableview
     \title Qt Quick Controls - Table View Example
     \ingroup qtquickcontrols_examples
     \brief An example for the TableView control.
     \image qtquickcontrols-example-tableview.png
 
-    This example shows how a \l{TableView} from \l{Qt Quick Controls}
-    can be used together with different types of data models to display
-    lists of information with support for scroll bars, selections and
-    resizable header sections.
+    This example project demonstrates the usage of \l {TableView} from
+    \l{Qt Quick Controls} - a control to display one or more columns of
+    information from a data list model. The example includes a model
+    that supports sorting and filtering.
+
+    The C++ class, SortFilterProxyModel, is registered as a QML type
+    under the namespace, "\c{org.qtproject.example 1.0}".
+
+    The following snippets show how the type is registered under
+    a namespace and later imported by \e main.qml.
+
+    QML type registration:
+
+    \code
+    #include <QtQml/qqml.h>
+    ...
+    qmlRegisterType<SortFilterProxyModel>("org.qtproject.example", 1, 0, "SortFilterProxyModel");
+    ...
+    \endcode
+
+    QML namespace import:
+
+    \qml
+    import org.qtproject.example 1.0
+    \endqml
+
+    For more information about registering C++ classses as QML types, see
+    \l {Defining QML Types from C++}.
 
     \include examples-run.qdocinc
 */

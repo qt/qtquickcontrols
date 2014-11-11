@@ -1,12 +1,11 @@
-QT += qml quick
+TEMPLATE = app
 TARGET = tableview
-!no_desktop: QT += widgets
 
-include(src/src.pri)
-include(../shared/shared.pri)
+RESOURCES += \
+    tableview.qrc
 
 OTHER_FILES += \
     main.qml
 
-RESOURCES += \
-    resources.qrc
+include(src/src.pri)
+include(../shared/shared.pri)

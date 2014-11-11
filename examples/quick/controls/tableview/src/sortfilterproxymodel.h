@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2014 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the Qt Quick Controls module of the Qt Toolkit.
@@ -38,45 +38,74 @@
 **
 ****************************************************************************/
 
+#ifndef SORTFILTERPROXYMODEL_H
+#define SORTFILTERPROXYMODEL_H
 
+#include <QtCore/qsortfilterproxymodel.h>
+#include <QtQml/qqmlparserstatus.h>
+#include <QtQml/qjsvalue.h>
 
+class SortFilterProxyModel : public QSortFilterProxyModel, public QQmlParserStatus
+{
+    Q_OBJECT
+    Q_INTERFACES(QQmlParserStatus)
 
+    Q_PROPERTY(int count READ count NOTIFY countChanged)
+    Q_PROPERTY(QObject *source READ source WRITE setSource)
 
-import QtQuick 2.2
-import QtQuick.Controls 1.2
-import QtQuick.Layouts 1.0
+    Q_PROPERTY(QByteArray sortRole READ sortRole WRITE setSortRole)
+    Q_PROPERTY(Qt::SortOrder sortOrder READ sortOrder WRITE setSortOrder)
 
-ApplicationWindow {
-    visible: true
-    width: 600
-    height: 400
+    Q_PROPERTY(QByteArray filterRole READ filterRole WRITE setFilterRole)
+    Q_PROPERTY(QString filterString READ filterString WRITE setFilterString)
+    Q_PROPERTY(FilterSyntax filterSyntax READ filterSyntax WRITE setFilterSyntax)
 
-    SplitView {
-        anchors.fill: parent
+    Q_ENUMS(FilterSyntax)
 
-        Rectangle {
-            id: column
-            width: 200
-            Layout.minimumWidth: 100
-            Layout.maximumWidth: 300
-            color: "lightsteelblue"
-        }
+public:
+    explicit SortFilterProxyModel(QObject *parent = 0);
 
-        SplitView {
-            orientation: Qt.Vertical
-            Layout.fillWidth: true
+    QObject *source() const;
+    void setSource(QObject *source);
 
-            Rectangle {
-                id: row1
-                height: 200
-                color: "lightblue"
-                Layout.minimumHeight: 1
-            }
+    QByteArray sortRole() const;
+    void setSortRole(const QByteArray &role);
 
-            Rectangle {
-                id: row2
-                color: "lightgray"
-            }
-        }
-    }
-}
+    void setSortOrder(Qt::SortOrder order);
+
+    QByteArray filterRole() const;
+    void setFilterRole(const QByteArray &role);
+
+    QString filterString() const;
+    void setFilterString(const QString &filter);
+
+    enum FilterSyntax {
+        RegExp,
+        Wildcard,
+        FixedString
+    };
+
+    FilterSyntax filterSyntax() const;
+    void setFilterSyntax(FilterSyntax syntax);
+
+    int count() const;
+    Q_INVOKABLE QJSValue get(int index) const;
+
+    void classBegin();
+    void componentComplete();
+
+signals:
+    void countChanged();
+
+protected:
+    int roleKey(const QByteArray &role) const;
+    QHash<int, QByteArray> roleNames() const;
+    bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
+
+private:
+    bool m_complete;
+    QByteArray m_sortRole;
+    QByteArray m_filterRole;
+};
+
+#endif // SORTFILTERPROXYMODEL_H
