@@ -56,25 +56,42 @@ import QtQuick.Window 2.1
    A TableView is similar to \l ListView, and adds scroll bars, selection, and
    resizable header sections. As with \l ListView, data for each row is provided through a \l model:
 
- \code
- ListModel {
-    id: libraryModel
-    ListElement{ title: "A Masterpiece" ; author: "Gabriel" }
-    ListElement{ title: "Brilliance"    ; author: "Jens" }
-    ListElement{ title: "Outstanding"   ; author: "Frederik" }
- }
- \endcode
+   \code
+   ListModel {
+       id: libraryModel
+       ListElement {
+           title: "A Masterpiece"
+           author: "Gabriel"
+       }
+       ListElement {
+           title: "Brilliance"
+           author: "Jens"
+       }
+       ListElement {
+           title: "Outstanding"
+           author: "Frederik"
+       }
+   }
+   \endcode
 
    You provide title and size of a column header
    by adding a \l TableViewColumn as demonstrated below.
- \code
 
- TableView {
-    TableViewColumn{ role: "title"  ; title: "Title" ; width: 100 }
-    TableViewColumn{ role: "author" ; title: "Author" ; width: 200 }
-    model: libraryModel
- }
- \endcode
+   \code
+   TableView {
+       TableViewColumn {
+           role: "title"
+           title: "Title"
+           width: 100
+       }
+       TableViewColumn {
+           role: "author"
+           title: "Author"
+           width: 200
+       }
+       model: libraryModel
+   }
+   \endcode
 
    The header sections are attached to values in the \l model by defining
    the model role they attach to. Each property in the model will
