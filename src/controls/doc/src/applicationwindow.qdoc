@@ -27,5 +27,6 @@
 
 /*!
     \group applicationwindow
+    \brief A window adding convenience for positioning items.
     \title Application Window
 */
