@@ -157,6 +157,7 @@ Item {
                 keyClick(data.input[i])
 
             compare(spinbox.value, data.value)
+            spinbox.destroy()
         }
 
         function test_increment_mouse() {
