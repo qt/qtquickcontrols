@@ -132,7 +132,10 @@ Item {
                 {tag: "-20", input: [Qt.Key_Minus, Qt.Key_2, Qt.Key_0, Qt.Key_Return], value: -2, minimumValue: -10},
                 {tag: "-200", input: [Qt.Key_Minus, Qt.Key_2, Qt.Key_0, Qt.Key_0, Qt.Key_Return], value: -20, minimumValue: -100},
                 {tag: "-2000", input: [Qt.Key_Minus, Qt.Key_2, Qt.Key_0, Qt.Key_0, Qt.Key_0, Qt.Key_Return], value: -200, minimumValue: -1000},
-                {tag: "-0123", input: [Qt.Key_Minus, Qt.Key_0, Qt.Key_1, Qt.Key_2, Qt.Key_3, Qt.Key_Return], value: -123, minimumValue: -150}
+                {tag: "-0123", input: [Qt.Key_Minus, Qt.Key_0, Qt.Key_1, Qt.Key_2, Qt.Key_3, Qt.Key_Return], value: -123, minimumValue: -150},
+
+                {tag: "5", input: [Qt.Key_2, Qt.Key_0, Qt.Key_Return], value: 20, minimumValue: 10, maximumValue: 99},
+                {tag: "-5", input: [Qt.Key_Minus, Qt.Key_2, Qt.Key_0, Qt.Key_Return], value: -20, minimumValue: -99, maximumValue: -10},
             ]
         }
 
