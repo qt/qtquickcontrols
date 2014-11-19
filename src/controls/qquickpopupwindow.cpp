@@ -180,7 +180,8 @@ void QQuickPopupWindow::forwardEventToTransientParent(QMouseEvent *e)
             || e->type() == QEvent::MouseButtonPress)) {
         // Clicked outside any popup
         dismissPopup();
-    } else if (transientParent()) {
+    }
+    if (transientParent()) {
         QPoint parentPos = transientParent()->mapFromGlobal(mapToGlobal(e->pos()));
         QMouseEvent pe = QMouseEvent(e->type(), parentPos, e->button(), e->buttons(), e->modifiers());
         QGuiApplication::sendEvent(transientParent(), &pe);
