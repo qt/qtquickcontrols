@@ -53,7 +53,8 @@
 #include <QTouchDevice>
 
 //#define PURE_QML_ONLY
-//#define DEBUG_REGISTRATION
+
+Q_LOGGING_CATEGORY(lcRegistration, "qt.quick.dialogs.registration")
 
 static void initResources()
 {
@@ -86,11 +87,7 @@ public:
     QtQuick2DialogsPlugin() : QQmlExtensionPlugin(), m_useResources(true) { }
 
     virtual void initializeEngine(QQmlEngine *engine, const char * uri) {
-#ifdef DEBUG_REGISTRATION
-        qDebug() << Q_FUNC_INFO << uri << m_decorationComponentUrl;
-#else
-        Q_UNUSED(uri)
-#endif
+        qCDebug(lcRegistration) << uri << m_decorationComponentUrl;
         QQuickAbstractDialog::m_decorationComponent =
             new QQmlComponent(engine, m_decorationComponentUrl, QQmlComponent::Asynchronous);
     }
@@ -98,12 +95,10 @@ public:
     virtual void registerTypes(const char *uri) {
         initResources();
 
-#ifdef DEBUG_REGISTRATION
-        qDebug() << Q_FUNC_INFO << uri;
-#endif
         Q_ASSERT(QLatin1String(uri) == QLatin1String("QtQuick.Dialogs"));
         bool hasTopLevelWindows = QGuiApplicationPrivate::platformIntegration()->
             hasCapability(QPlatformIntegration::MultipleWindows);
+        qCDebug(lcRegistration) << uri << "can use top-level windows?" << hasTopLevelWindows;
         QDir qmlDir(baseUrl().toLocalFile());
         QDir widgetsDir(baseUrl().toLocalFile());
         widgetsDir.cd("../PrivateWidgets");
@@ -165,9 +160,7 @@ public:
             QUrl dialogQmlPath = m_useResources ?
                 QUrl("qrc:/QtQuick/Dialogs/DefaultDialogWrapper.qml") :
                 QUrl::fromLocalFile(qmlDir.filePath("DefaultDialogWrapper.qml"));
-#ifdef DEBUG_REGISTRATION
-            qDebug() << "    registering DefaultDialogWrapper.qml as Dialog; success?" <<
-#endif
+            qCDebug(lcRegistration) << "    registering" << dialogQmlPath << "as Dialog";
             qmlRegisterType(dialogQmlPath, uri, 1, 2, "Dialog");
         }
     }
@@ -176,11 +169,8 @@ protected:
     template <class WrapperType>
     void registerWidgetOrQmlImplementation(QDir widgetsDir, QDir qmlDir,
             const char *qmlName, const char *uri, bool hasTopLevelWindows, int versionMajor, int versionMinor) {
-        // qDebug() << "QtQuick2DialogsPlugin::registerWidgetOrQmlImplementation" << uri << qmlName << ": QML in" << qmlDir.absolutePath()
-        // << "using resources?" << m_useResources << "; widgets in" << widgetsDir.absolutePath();
-#ifdef DEBUG_REGISTRATION
-        qDebug() << Q_FUNC_INFO << qmlDir << qmlName << uri;
-#endif
+        qCDebug(lcRegistration) << qmlName << uri << ": QML in" << qmlDir.absolutePath()
+                                << "using resources?" << m_useResources << "; widgets in" << widgetsDir.absolutePath();
         bool needQmlImplementation = true;
 
 #ifdef PURE_QML_ONLY
@@ -207,9 +197,7 @@ protected:
                 QUrl::fromLocalFile(qmlDir.filePath(QString("Widget%1.qml").arg(qmlName)));
             if (qmlRegisterType(dialogQmlPath, uri, versionMajor, versionMinor, qmlName) >= 0) {
                 needQmlImplementation = false;
-#ifdef DEBUG_REGISTRATION
-                qDebug() << "    registering" << qmlName << " as " << dialogQmlPath << "success?" << !needQmlImplementation;
-#endif
+                qCDebug(lcRegistration) << "    registering" << qmlName << " as " << dialogQmlPath << "success?" << !needQmlImplementation;
             }
         }
 #endif
@@ -219,9 +207,7 @@ protected:
             QUrl dialogQmlPath =  m_useResources ?
                 QUrl(QString("qrc:/QtQuick/Dialogs/Default%1.qml").arg(qmlName)) :
                 QUrl::fromLocalFile(qmlDir.filePath(QString("Default%1.qml").arg(qmlName)));
-#ifdef DEBUG_REGISTRATION
-            qDebug() << "    registering" << qmlName << " as " << dialogQmlPath << "success?" <<
-#endif
+            qCDebug(lcRegistration) << "    registering" << qmlName << " as " << dialogQmlPath;
             qmlRegisterType(dialogQmlPath, uri, versionMajor, versionMinor, qmlName);
         }
     }
