@@ -36,12 +36,15 @@
 
 #include <private/qguiapplication_p.h>
 #include <private/qqmlglobal_p.h>
+#include <QLoggingCategory>
 #include <QWindow>
 #include <QQmlComponent>
 #include <QQuickWindow>
 #include <qpa/qplatformintegration.h>
 
 QT_BEGIN_NAMESPACE
+
+Q_LOGGING_CATEGORY(lcWindow, "qt.quick.dialogs.window")
 
 QQmlComponent *QQuickAbstractDialog::m_decorationComponent(0);
 
@@ -71,6 +74,7 @@ void QQuickAbstractDialog::setVisible(bool v)
     if (m_visible == v) return;
     m_visible = v;
     if (helper()) {
+        qCDebug(lcWindow) << "via helper" << helper();
         if (v) {
             Qt::WindowFlags flags = Qt::Dialog;
             if (!title().isEmpty())
@@ -108,6 +112,7 @@ void QQuickAbstractDialog::setVisible(bool v)
                 m_dialogWindow->setMinimumSize(minSize);
                 connect(win, SIGNAL(widthChanged(int)), this, SLOT(windowGeometryChanged()));
                 connect(win, SIGNAL(heightChanged(int)), this, SLOT(windowGeometryChanged()));
+                qCDebug(lcWindow) << "created window" << win;
             }
 
             if (!m_dialogWindow) {
@@ -129,6 +134,7 @@ void QQuickAbstractDialog::setVisible(bool v)
                     }
                     // Window decoration wasn't possible, so just reparent it into the scene
                     else {
+                        qCDebug(lcWindow) << "no window and no decoration";
                         m_contentItem->setParentItem(parentWindow()->contentItem());
                         m_contentItem->setZ(10000);
                     }
@@ -138,9 +144,11 @@ void QQuickAbstractDialog::setVisible(bool v)
         if (m_dialogWindow) {
             // "grow up" to the size and position expected to achieve
             if (!m_sizeAspiration.isNull()) {
-                if (m_hasAspiredPosition)
+                if (m_hasAspiredPosition) {
+                    qCDebug(lcWindow) << "geometry aspiration" << m_sizeAspiration;
                     m_dialogWindow->setGeometry(m_sizeAspiration);
-                else {
+                } else {
+                    qCDebug(lcWindow) << "size aspiration" << m_sizeAspiration.size();
                     if (m_sizeAspiration.width() > 0)
                         m_dialogWindow->setWidth(m_sizeAspiration.width());
                     if (m_sizeAspiration.height() > 0)
@@ -191,6 +199,7 @@ void QQuickAbstractDialog::decorationLoaded()
             m_windowDecoration->setProperty("content", contentVariant);
             connect(m_windowDecoration, SIGNAL(dismissed()), this, SLOT(reject()));
             ok = true;
+            qCDebug(lcWindow) << "using synthetic window decoration" << m_windowDecoration;
         } else {
             qWarning() << m_decorationComponent->url() <<
                 "cannot be used as a window decoration because it's not an Item";
@@ -203,12 +212,14 @@ void QQuickAbstractDialog::decorationLoaded()
     if (!ok) {
         m_contentItem->setParentItem(parentItem);
         m_contentItem->setZ(10000);
+        qCDebug(lcWindow) << "no decoration";
     }
 }
 
 void QQuickAbstractDialog::setModality(Qt::WindowModality m)
 {
     if (m_modality == m) return;
+    qCDebug(lcWindow) << "modality" << m;
     m_modality = m;
     emit modalityChanged();
 }
@@ -228,12 +239,14 @@ void QQuickAbstractDialog::reject()
 void QQuickAbstractDialog::visibleChanged(bool v)
 {
     m_visible = v;
+    qCDebug(lcWindow) << "visible" << v;
     emit visibilityChanged();
 }
 
 void QQuickAbstractDialog::windowGeometryChanged()
 {
     if (m_dialogWindow && m_contentItem) {
+        qCDebug(lcWindow) << m_dialogWindow->geometry();
         m_contentItem->setWidth(m_dialogWindow->width());
         m_contentItem->setHeight(m_dialogWindow->height());
     }
@@ -241,18 +254,23 @@ void QQuickAbstractDialog::windowGeometryChanged()
 
 void QQuickAbstractDialog::minimumWidthChanged()
 {
-    m_dialogWindow->setMinimumWidth(qMax(m_contentItem->implicitWidth(),
-        m_contentItem->property("minimumWidth").toReal()));
+    qreal min = m_contentItem->property("minimumWidth").toReal();
+    qCDebug(lcWindow) << "content implicitWidth" << m_contentItem->implicitWidth() << "minimumWidth" << min;
+    m_dialogWindow->setMinimumWidth(qMax(m_contentItem->implicitWidth(), min));
 }
 
 void QQuickAbstractDialog::minimumHeightChanged()
 {
+    qreal min = m_contentItem->property("minimumHeight").toReal();
+    qCDebug(lcWindow) << "content implicitHeight" << m_contentItem->implicitHeight() << "minimumHeight" << min;
     m_dialogWindow->setMinimumHeight(qMax(m_contentItem->implicitHeight(),
         m_contentItem->property("minimumHeight").toReal()));
 }
 
 void QQuickAbstractDialog::implicitHeightChanged()
 {
+    qCDebug(lcWindow) << "content implicitHeight" << m_contentItem->implicitHeight()
+                      << "window minimumHeight" << m_dialogWindow->minimumHeight();
     if (m_contentItem->implicitHeight() < m_dialogWindow->minimumHeight())
         m_dialogWindow->setMinimumHeight(m_contentItem->implicitHeight());
 }
@@ -271,6 +289,7 @@ QQuickWindow *QQuickAbstractDialog::parentWindow()
 void QQuickAbstractDialog::setContentItem(QQuickItem *obj)
 {
     m_contentItem = obj;
+    qCDebug(lcWindow) << obj;
     if (m_dialogWindow) {
         disconnect(this, SLOT(visibleChanged(bool)));
         // Can't necessarily delete because m_dialogWindow might have been provided by the QML.
@@ -337,6 +356,7 @@ void QQuickAbstractDialog::setX(int arg)
     } else if (m_contentItem) {
         m_contentItem->setX(arg);
     }
+    qCDebug(lcWindow) << arg;
     emit geometryChanged();
 }
 
@@ -352,6 +372,7 @@ void QQuickAbstractDialog::setY(int arg)
     } else if (m_contentItem) {
         m_contentItem->setY(arg);
     }
+    qCDebug(lcWindow) << arg;
     emit geometryChanged();
 }
 
@@ -366,6 +387,7 @@ void QQuickAbstractDialog::setWidth(int arg)
     } else if (m_contentItem) {
         m_contentItem->setWidth(arg);
     }
+    qCDebug(lcWindow) << arg;
     emit geometryChanged();
 }
 
@@ -380,6 +402,7 @@ void QQuickAbstractDialog::setHeight(int arg)
     } else if (m_contentItem) {
         m_contentItem->setHeight(arg);
     }
+    qCDebug(lcWindow) << arg;
     emit geometryChanged();
 }
 
