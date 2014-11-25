@@ -58,8 +58,8 @@ AbstractFontDialog {
         id: content
         SystemPalette { id: palette }
 
-        implicitWidth: Math.min(root.__maximumDimension, Math.max(Screen.pixelDensity * 60, mainLayout.implicitWidth + outerSpacing * 2))
-        implicitHeight: Math.min(root.__maximumDimension, Math.max(Screen.pixelDensity * 40, mainLayout.implicitHeight + outerSpacing * 2))
+        implicitWidth: Math.min(root.__maximumDimension, Math.max(Screen.pixelDensity * 100, mainLayout.implicitWidth + outerSpacing * 2))
+        implicitHeight: Math.min(root.__maximumDimension, Math.max(Screen.pixelDensity * 60, mainLayout.implicitHeight + outerSpacing * 2))
         property real spacing: 6
         property real outerSpacing: 12
         color: palette.window
@@ -126,7 +126,7 @@ AbstractFontDialog {
                     focus: true
                     Layout.fillWidth: true
                     Layout.fillHeight: true
-                    Layout.minimumWidth: fontColumn.width
+                    Layout.preferredWidth: fontColumn.width
                     headerVisible: false
                     function reset() {
                         fontModel.findIndex()
@@ -200,7 +200,7 @@ AbstractFontDialog {
                     function reset() {
                         weightModel.findIndex()
                     }
-                    TableViewColumn{ id: weightColumn; role: "name"; title: qsTr("Weight") }
+                    TableViewColumn { id: weightColumn; role: "name"; title: qsTr("Weight") }
                     model: ListModel {
                         id: weightModel
                         ListElement {
@@ -339,28 +339,6 @@ AbstractFontDialog {
                     }
                     Item { Layout.fillHeight: true; } //spacer
                     Label { id: writingSystemLabel; text: qsTr("Writing System"); font.bold: true }
-                    ComboBox {
-                        id: wsComboBox
-                        function reset() {
-                            if (wsModel.count > 0) {
-                                currentIndex = 0
-                            }
-                        }
-                        textRole: "name"
-                        model: WritingSystemListModel {
-                            id: wsModel
-                            Component.onCompleted: wsComboBox.reset()
-                        }
-                        onCurrentIndexChanged: {
-                            if (currentIndex == -1)
-                                return
-
-                            content.writingSystem = wsModel.get(currentIndex).name
-                            fontModel.writingSystem = content.writingSystem
-                            content.writingSystemSample = wsModel.get(currentIndex).sample
-                            fontListView.reset()
-                        }
-                    }
                 }
 
                 ColumnLayout {
@@ -397,6 +375,28 @@ AbstractFontDialog {
                 id: buttonRow
                 Layout.columnSpan: 3
                 spacing: content.spacing
+                ComboBox {
+                    id: wsComboBox
+                    function reset() {
+                        if (wsModel.count > 0) {
+                            currentIndex = 0
+                        }
+                    }
+                    textRole: "name"
+                    model: WritingSystemListModel {
+                        id: wsModel
+                        Component.onCompleted: wsComboBox.reset()
+                    }
+                    onCurrentIndexChanged: {
+                        if (currentIndex == -1)
+                            return
+
+                        content.writingSystem = wsModel.get(currentIndex).name
+                        fontModel.writingSystem = content.writingSystem
+                        content.writingSystemSample = wsModel.get(currentIndex).sample
+                        fontListView.reset()
+                    }
+                }
                 Item { Layout.fillWidth: true; } //spacer
                 Button {
                     text: qsTr("Cancel")
