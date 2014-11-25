@@ -908,9 +908,9 @@ Item {
                     for (var i = 0; i < 2; ++i)
                         compare(visualGeom[i] % 1, 0)
 
-                    // verify that x,y is is inside idealGeom
-                    verify(visualGeom[0] >= idealGeom[0])
-                    verify(visualGeom[1] >= idealGeom[1])
+                    // verify that x,y is no more than one pixel from idealGeom
+                    fuzzyCompare(visualGeom[0], idealGeom[0], 1)
+                    fuzzyCompare(visualGeom[1], idealGeom[1], 1)
 
                     // verify that the visual size is no more than 1 pixel taller/wider than the ideal size.
                     verify(visualGeom[2] <= idealGeom[2] + 1)

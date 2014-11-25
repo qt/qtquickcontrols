@@ -675,6 +675,94 @@ Item {
             layout.destroy();
         }
 
+        Component {
+            id: test_distributeToPixelGrid_Component
+            RowLayout {
+                spacing: 0
+                Rectangle {
+                    color: 'red'
+                    Layout.minimumWidth: 10
+                    Layout.preferredWidth: 50
+                    Layout.maximumWidth: 90
+                    Layout.fillWidth: true
+                    implicitHeight: 10
+                }
+                Rectangle {
+                    color: 'red'
+                    Layout.minimumWidth: 10
+                    Layout.preferredWidth: 20
+                    Layout.maximumWidth: 90
+                    Layout.fillWidth: true
+                    implicitHeight: 10
+                }
+                Rectangle {
+                    color: 'red'
+                    Layout.minimumWidth: 10
+                    Layout.preferredWidth: 70
+                    Layout.maximumWidth: 90
+                    Layout.fillWidth: true
+                    implicitHeight: 10
+                }
+            }
+        }
+
+        function test_distributeToPixelGrid_data() {
+            return [
+                    { tag: "narrow",  spacing: 0, width: 60 },
+                    { tag: "belowPreferred",  spacing: 0, width: 130 },
+                    { tag: "belowPreferredWithSpacing", spacing: 10, width: 130 },
+                    { tag: "abovePreferred",  spacing: 0, width: 150 },
+                    { tag: "stretchSomethingToMaximum",  spacing: 0, width: 240,
+                      expected: [90, 60, 90] },
+                    { tag: "minSizeHasFractions",  spacing: 2, width: 31 + 4, hints: [{min: 10+1/3}, {min: 10+1/3}, {min: 10+1/3}],
+                      /*expected: [11, 11, 11]*/ },     /* verify that nothing gets allocated a size smaller than its minimum */
+                    { tag: "maxSizeHasFractions",  spacing: 2, width: 271 + 4, hints: [{max: 90+1/3}, {max: 90+1/3}, {max: 90+1/3}],
+                      /*expected: [90, 90, 90]*/ },     /* verify that nothing gets allocated a size larger than its maximum */
+                    { tag: "fixedSizeHasFractions",  spacing: 2, width: 31 + 4, hints: [{min: 10+1/3, max: 10+1/3}, {min: 10+1/3, max: 10+1/3}, {min: 10+1/3, max: 10+1/3}],
+                      /*expected: [11, 11, 11]*/ },     /* verify that nothing gets allocated a size smaller than its minimum */
+                    ];
+        }
+
+        function test_distributeToPixelGrid(data)
+        {
+            // CONFIGURATION
+            var layout = test_distributeToPixelGrid_Component.createObject(container)
+            layout.spacing = data.spacing
+            layout.width  = data.width
+            layout.height = 10
+            var kids = layout.children
+
+            if (data.hasOwnProperty('hints')) {
+                var hints = data.hints
+                for (var i = 0; i < hints.length; ++i) {
+                    var h = hints[i]
+                    if (h.hasOwnProperty('min'))
+                        kids[i].Layout.minimumWidth = h.min
+                    if (h.hasOwnProperty('pref'))
+                        kids[i].Layout.preferredWidth = h.pref
+                    if (h.hasOwnProperty('max'))
+                        kids[i].Layout.maximumWidth = h.max
+                }
+            }
+            waitForRendering(layout)
+
+            var sum = 2 * layout.spacing
+            // TEST
+            for (var i = 0; i < kids.length; ++i) {
+                compare(kids[i].x % 1, 0)           // checks if position is a whole integer
+                // verify if the items are within the size constraints as specified
+                verify(kids[i].width >= kids[i].Layout.minimumWidth)
+                verify(kids[i].width <= kids[i].Layout.maximumWidth)
+                if (data.hasOwnProperty('expected'))
+                    compare(kids[i].width,  data.expected[i])
+                sum += kids[i].width
+            }
+            fuzzyCompare(sum, layout.width, 1)
+
+            layout.destroy();
+        }
+
+
 
         Component {
             id: layout_deleteLayout

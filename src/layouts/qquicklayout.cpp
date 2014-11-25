@@ -934,12 +934,12 @@ void QQuickLayout::effectiveSizeHints_helper(QQuickItem *item, QSizeF *cachedSiz
             Q_ASSERT(getter);
 
             if (info->isExtentExplicitlySet(Qt::Horizontal, (Qt::SizeHint)i))
-                cachedSizeHints[i].setWidth(qCeil((info->*getter)()));
+                cachedSizeHints[i].setWidth((info->*getter)());
 
             getter = verGetters.call[i];
             Q_ASSERT(getter);
             if (info->isExtentExplicitlySet(Qt::Vertical, (Qt::SizeHint)i))
-                cachedSizeHints[i].setHeight(qCeil((info->*getter)()));
+                cachedSizeHints[i].setHeight((info->*getter)());
         }
     }
 
