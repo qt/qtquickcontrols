@@ -46,10 +46,12 @@ TestCase {
     id: testCase
     name: "Tests_StackView"
     when: windowShown
+    visible: true
     width: 400
     height: 400
 
     Item { id: anItem  }
+    TextField { id: textField }
     Component {
         id: pageComponent
         Item {}
@@ -57,7 +59,7 @@ TestCase {
 
     Component {
         id: stackComponent
-        StackView {}
+        StackView { anchors.fill: parent }
     }
 
     function test_stackview() {
@@ -73,5 +75,27 @@ TestCase {
         verify (stack.depth === 1)
         stack.push(pageComponent)
         verify (stack.depth === 2)
+        stack.destroy()
+    }
+
+    function test_focus() {
+        var stack = stackComponent.createObject(testCase, {initialItem: anItem})
+        verify (stack !== null, "stackview created is null")
+        compare(stack.currentItem, anItem)
+
+        stack.forceActiveFocus()
+        verify(stack.activeFocus)
+
+        stack.push({item: textField, immediate: true})
+        compare(stack.currentItem, textField)
+        textField.forceActiveFocus()
+        verify(textField.activeFocus)
+
+        stack.pop({immediate: true})
+        compare(stack.currentItem, anItem)
+        verify(stack.activeFocus)
+        verify(!textField.activeFocus)
+
+        stack.destroy()
     }
 }

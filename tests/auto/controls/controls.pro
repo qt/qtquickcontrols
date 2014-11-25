@@ -34,6 +34,8 @@ OTHER_FILES += \
     $$PWD/data/tst_rowlayout.qml \
     $$PWD/data/tst_gridlayout.qml \
     $$PWD/data/tst_slider.qml \
+    $$PWD/data/tst_stack.qml \
+    $$PWD/data/tst_stackview.qml \
     $$PWD/data/tst_statusbar.qml \
     $$PWD/data/tst_switch.qml \
     $$PWD/data/tst_tab.qml \

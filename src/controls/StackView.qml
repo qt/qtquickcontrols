@@ -473,7 +473,7 @@ import QtQuick.Controls.Private 1.0
     \endlist
 */
 
-Item {
+FocusScope {
     id: root
 
     /*! \qmlproperty int StackView::depth
