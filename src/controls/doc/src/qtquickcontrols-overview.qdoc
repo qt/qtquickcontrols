@@ -61,7 +61,7 @@
     For an overview of the controls provided by \l{Qt Quick Controls}, you can look at
     the \l{Qt Quick Controls - Gallery}{Gallery} example.
 
-    \image qtquickcontrols-example-gallery.png
+    \image qtquickcontrols-example-gallery-osx.png
 
     \section1 Setting Up Controls from C++
 

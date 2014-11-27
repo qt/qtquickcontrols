@@ -37,7 +37,7 @@
 
     Qt 5.4 introduced a native Android style for Qt Quick Controls.
 
-    \image qtquickcontrols-android.png
+    \image qtquickcontrols-example-gallery-android.png
 
     \note The Android style requires Android 3.0 (API level 11) or later.
 

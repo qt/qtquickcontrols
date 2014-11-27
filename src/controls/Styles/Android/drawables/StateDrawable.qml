@@ -46,10 +46,12 @@ Drawable {
     implicitWidth: Math.max(loader.implicitWidth, styleDef.width || 0)
     implicitHeight: Math.max(loader.implicitHeight, styleDef.height || 0)
 
+    property int prevMatch: 0
+
     DrawableLoader {
         id: loader
         anchors.fill: parent
-        styleDef: bestStateMatch()
+        visible: !animation.active
         focused: root.focused
         pressed: root.pressed
         checked: root.checked
@@ -65,16 +67,69 @@ Drawable {
         clippables: root.clippables
     }
 
-    function bestStateMatch () {
+    Loader {
+        id: animation
+        property var animDef
+        active: false
+        anchors.fill: parent
+        sourceComponent: AnimationDrawable {
+            anchors.fill: parent
+            styleDef: animDef
+            focused: root.focused
+            pressed: root.pressed
+            checked: root.checked
+            selected: root.selected
+            accelerated: root.accelerated
+            window_focused: root.window_focused
+            index: root.index
+            level: root.level
+            levelId: root.levelId
+            orientations: root.orientations
+            duration: root.duration
+            excludes: root.excludes
+            clippables: root.clippables
+
+            oneshot: true
+            onRunningChanged: if (!running) animation.active = false
+        }
+    }
+
+    onStyleDefChanged: resolveState()
+    Component.onCompleted: resolveState()
+
+    // In order to be able to find appropriate transition paths between
+    // various states, the following states must be allowed to change in
+    // batches. For example, button-like controls could have a transition
+    // path from pressed+checked to unpressed+unchecked. We must let both
+    // properties change before we try to find the transition path.
+    onEnabledChanged: resolver.start()
+    onFocusedChanged: resolver.start()
+    onPressedChanged: resolver.start()
+    onCheckedChanged: resolver.start()
+    onSelectedChanged: resolver.start()
+    onAcceleratedChanged: resolver.start()
+    onWindow_focusedChanged: resolver.start()
+
+    Timer {
+        id: resolver
+        interval: 15
+        onTriggered: resolveState()
+    }
+
+    function resolveState () {
         if (styleDef && styleDef.stateslist) {
             var bestMatch = 0
             var highestScore = -1
             var stateslist = styleDef.stateslist
+            var transitions = []
 
             for (var i = 0; i < stateslist.length; ++i) {
 
                 var score = 0
                 var state = stateslist[i]
+
+                if (state.transition)
+                    transitions.push(i)
 
                 for (var s in state.states) {
                     if (s === "pressed")
@@ -98,8 +153,21 @@ Drawable {
                     highestScore = score
                 }
             }
-            return stateslist[bestMatch].drawable
+
+            if (prevMatch != bestMatch) {
+                for (var t = 0; t < transitions.length; ++t) {
+                    var transition = stateslist[transitions[t]].transition
+                    if ((transition.from == prevMatch && transition.to == bestMatch) ||
+                        (transition.reverse && transition.from == bestMatch && transition.to == prevMatch)) {
+                        animation.animDef = stateslist[transitions[t]].drawable
+                        animation.active = true
+                        break
+                    }
+                }
+                prevMatch = bestMatch
+            }
+
+            loader.styleDef = stateslist[bestMatch].drawable
         }
-        return undefined
     }
 }

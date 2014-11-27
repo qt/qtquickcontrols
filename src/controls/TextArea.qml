@@ -770,7 +770,7 @@ ScrollView {
             wrapMode: TextEdit.WordWrap
             textMargin: __style && __style.textMargin !== undefined ? __style.textMargin : 4
 
-            selectByMouse: area.selectByMouse && (!cursorHandle.delegate || !selectionHandle.delegate)
+            selectByMouse: area.selectByMouse && (!Settings.isMobile || !cursorHandle.delegate || !selectionHandle.delegate)
             readOnly: false
 
             Keys.forwardTo: area
@@ -885,7 +885,7 @@ ScrollView {
                 control: area
                 z: 1 // above scrollbars
                 parent:  Qt.platform.os === "ios"  ? editor : __scroller // no clip
-                active: area.selectByMouse
+                active: area.selectByMouse && Settings.isMobile
                 delegate: __style.__selectionHandle
                 maximum: cursorHandle.position - 1
 
@@ -921,7 +921,7 @@ ScrollView {
                 control: area
                 z: 1 // above scrollbars
                 parent:  Qt.platform.os === "ios"  ? editor : __scroller // no clip
-                active: area.selectByMouse
+                active: area.selectByMouse && Settings.isMobile
                 delegate: __style.__cursorHandle
                 minimum: edit.hasSelection ? selectionHandle.position + 1 : -1
 

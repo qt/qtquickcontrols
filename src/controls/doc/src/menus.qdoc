@@ -27,5 +27,6 @@
 
 /*!
     \group menus
+    \brief How to create a menu bar.
     \title Menus
 */

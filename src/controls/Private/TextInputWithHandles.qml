@@ -54,7 +54,7 @@ TextInput {
     property alias editMenu: editMenu
     cursorDelegate: __style && __style.__cursorDelegate ? __style.__cursorDelegate : null
 
-    selectByMouse: control.selectByMouse && (!cursorHandle.delegate || !selectionHandle.delegate)
+    selectByMouse: control.selectByMouse && (!Settings.isMobile || !cursorHandle.delegate || !selectionHandle.delegate)
 
     // force re-evaluation when selection moves:
     // - cursorRectangle changes => content scrolled
@@ -137,7 +137,7 @@ TextInput {
         editor: input
         parent: control
         control: input.control
-        active: control.selectByMouse
+        active: control.selectByMouse && Settings.isMobile
         maximum: cursorHandle.position - 1
 
         property var mappedPos: parent.mapFromItem(editor, editor.selectionRectangle.x, editor.selectionRectangle.y)
@@ -163,7 +163,7 @@ TextInput {
         editor: input
         parent: control
         control: input.control
-        active: control.selectByMouse
+        active: control.selectByMouse && Settings.isMobile
         minimum: input.hasSelection ? selectionHandle.position + 1 : -1
 
         property var mappedPos: parent.mapFromItem(editor, editor.cursorRectangle.x, editor.cursorRectangle.y)
