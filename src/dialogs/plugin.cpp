@@ -106,11 +106,13 @@ public:
         QDir widgetsDir(baseUrl().toLocalFile());
         widgetsDir.cd("../PrivateWidgets");
 
+#ifndef ALWAYS_LOAD_FROM_RESOURCES
         // If at least one file was actually installed, then use installed qml files instead of resources.
         // This makes debugging and incremental development easier, whereas the "normal" installation
         // uses resources to save space and cut down on the number of files to deploy.
         if (qmlDir.exists(QString("DefaultFileDialog.qml")))
             m_useResources = false;
+#endif
         m_decorationComponentUrl = m_useResources ?
             QUrl("qrc:/QtQuick/Dialogs/qml/DefaultWindowDecoration.qml") :
             QUrl::fromLocalFile(qmlDir.filePath(QString("qml/DefaultWindowDecoration.qml")));
