@@ -41,9 +41,28 @@
 
     \note The Android style requires Android 3.0 (API level 11) or later.
 
-    It is automatically selected and deployed on Android. See \l{Getting Started
+    The style is automatically selected and deployed on Android. See \l{Getting Started
     with Qt for Android} and \l{Deploying an Application on Android} for
     more details on the Android essentials.
+
+    \section2 Android Themes
+
+    Applications may choose a specific \l{http://developer.android.com/design/style/themes.html}
+    {Android theme} by specifying it in \l{AndroidManifest.xml}.
+
+    \image qtquickcontrols-example-gallery-android-dark.png
+
+    The following example sets a dark Holo theme, and the result can be
+    seen in the screenshot above.
+
+    \code
+    <manifest ...>
+      <application ... android:theme="@android:style/Theme.Holo">
+        ...
+      </application>
+      ...
+    </manifest>
+    \endcode
 
     \section2 Action Bar
 
