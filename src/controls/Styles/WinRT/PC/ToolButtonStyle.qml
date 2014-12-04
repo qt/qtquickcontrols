@@ -37,6 +37,6 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-import QtQuick.Controls.Styles 1.3
+import QtQuick.Controls.Private 1.0
 
 ToolButtonStyle { }
