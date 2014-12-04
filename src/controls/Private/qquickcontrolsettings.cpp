@@ -68,7 +68,7 @@ static QString styleImportName()
 
 static bool fromResource(const QString &path)
 {
-    return path.startsWith("qrc:");
+    return path.startsWith(":/");
 }
 
 bool QQuickControlSettings::hasTouchScreen() const
@@ -108,9 +108,11 @@ static QString styleImportPath(QQmlEngine *engine, const QString &styleName)
                 path = dir.absolutePath();
                 break;
             }
+            if (found)
+                break;
         }
         if (!found)
-            path = "qrc:/QtQuick/Controls/Styles";
+            path = ":/QtQuick/Controls/Styles";
     } else {
         path = info.absolutePath();
     }
@@ -123,8 +125,6 @@ QQuickControlSettings::QQuickControlSettings(QQmlEngine *engine)
     m_path = styleImportPath(engine, m_name);
 
     QString path = styleFilePath();
-    if (fromResource(path))
-        path = path.remove(0, 3); // remove qrc from the path
 
     if (!QDir(path).exists()) {
         QString unknownStyle = m_name;
@@ -137,12 +137,17 @@ QQuickControlSettings::QQuickControlSettings(QQmlEngine *engine)
     connect(this, SIGNAL(stylePathChanged()), SIGNAL(styleChanged()));
 }
 
-QString QQuickControlSettings::style() const
+QUrl QQuickControlSettings::style() const
 {
-    if (fromResource(styleFilePath()))
-        return styleFilePath();
-    else
-        return QUrl::fromLocalFile(styleFilePath()).toString();
+    QUrl result;
+    QString path = styleFilePath();
+    if (fromResource(path)) {
+        result.setScheme("qrc");
+        path.remove(0, 1); // remove ':' prefix
+        result.setPath(path);
+    } else
+        result = QUrl::fromLocalFile(path);
+    return result;
 }
 
 QString QQuickControlSettings::styleName() const
