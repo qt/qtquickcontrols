@@ -1,5 +1,8 @@
+TARGET  = qtquickcontrolswinrtstyleplugin
+TARGETPATH = QtQuick/Controls/Styles/WinRT
+
 !winphone: {
-QML_FILES += \
+OTHER_FILES += \
     $$PWD/PC/ApplicationWindowStyle.qml \
     $$PWD/PC/BusyIndicatorStyle.qml \
     $$PWD/PC/ButtonStyle.qml \
@@ -25,9 +28,9 @@ QML_FILES += \
     $$PWD/PC/ToolButtonStyle.qml
 
 RESOURCES += \
-    $$PWD/PC/WinRTPC.qrc
+    $$PWD/PC/WinRT.qrc
 } else {
-QML_FILES += \
+OTHER_FILES += \
     $$PWD/Phone/ApplicationWindowStyle.qml \
     $$PWD/Phone/BusyIndicatorStyle.qml \
     $$PWD/Phone/ButtonStyle.qml \
@@ -53,5 +56,11 @@ QML_FILES += \
     $$PWD/Phone/ToolButtonStyle.qml
 
 RESOURCES += \
-    $$PWD/Phone/WinRTPhone.qrc
+    $$PWD/Phone/WinRT.qrc
 }
+
+SOURCES += \
+    $$PWD/plugin.cpp
+
+CONFIG += no_cxx_module
+load(qml_plugin)

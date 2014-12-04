@@ -46,8 +46,6 @@ include(plugin.pri)
 include(Private/private.pri)
 include(Styles/styles.pri)
 
-winrt: include(Styles/WinRT/WinRT.pri)
-
 osx: LIBS_PRIVATE += -framework Carbon
 
 # Create the resource file
