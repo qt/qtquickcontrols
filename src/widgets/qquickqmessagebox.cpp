@@ -47,7 +47,7 @@ QT_BEGIN_NAMESPACE
 /*!
     \qmltype QtMessageDialog
     \instantiates QQuickQMessageBox
-    \inqmlmodule QtQuick.PrivateWidgets 1
+    \inqmlmodule QtQuick.PrivateWidgets
     \ingroup qtquick-visual
     \brief Dialog component for choosing a color.
     \since 5.2

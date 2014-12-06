@@ -40,7 +40,7 @@ QT_BEGIN_NAMESPACE
 /*!
     \qmltype AbstractMessageDialog
     \instantiates QQuickMessageDialog
-    \inqmlmodule QtQuick.Dialogs 1
+    \inqmlmodule QtQuick.Dialogs
     \ingroup qtquick-visual
     \brief API wrapper for QML message dialog implementations
     \since 5.2

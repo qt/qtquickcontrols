@@ -40,7 +40,7 @@ QT_BEGIN_NAMESPACE
 /*!
     \qmltype AbstractColorDialog
     \instantiates QQuickColorDialog
-    \inqmlmodule QtQuick.Dialogs 1
+    \inqmlmodule QtQuick.Dialogs
     \ingroup qtquick-visual
     \brief API wrapper for QML file dialog implementations
     \since 5.1

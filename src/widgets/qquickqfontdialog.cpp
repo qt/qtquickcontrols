@@ -83,7 +83,7 @@ private:
 /*!
     \qmltype QtFontDialog
     \instantiates QQuickQFontDialog
-    \inqmlmodule QtQuick.PrivateWidgets 1
+    \inqmlmodule QtQuick.PrivateWidgets
     \ingroup qtquick-visual
     \brief Dialog component for choosing files from a local filesystem.
     \since 5.2

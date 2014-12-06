@@ -44,7 +44,7 @@ using namespace QV4;
 /*!
     \qmltype AbstractFileDialog
     \instantiates QQuickFileDialog
-    \inqmlmodule QtQuick.Dialogs 1
+    \inqmlmodule QtQuick.Dialogs
     \ingroup qtquick-visual
     \brief API wrapper for QML file dialog implementations
     \since 5.1
