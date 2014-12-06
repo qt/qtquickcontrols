@@ -170,6 +170,7 @@ Item {
                 return;
 
             if ((__showMenuFromTouchAndHold || selectionStart !== selectionEnd)
+                    && control.activeFocus
                     && (!cursorHandle.pressed && !selectionHandle.pressed)
                     && (!flickable || !flickable.moving)
                     && (cursorHandle.delegate)) {
