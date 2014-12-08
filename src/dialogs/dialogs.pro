@@ -1,7 +1,7 @@
 CXX_MODULE = qml
 TARGET  = dialogplugin
 TARGETPATH = QtQuick/Dialogs
-IMPORT_VERSION = 1.1
+IMPORT_VERSION = 1.2
 
 QMAKE_DOCS = $$PWD/doc/qtquickdialogs.qdocconf
 
