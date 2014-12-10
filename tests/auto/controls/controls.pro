@@ -13,6 +13,7 @@ SOURCES += $$PWD/tst_controls.cpp
 TESTDATA = $$PWD/data/*
 
 OTHER_FILES += \
+    $$PWD/data/tst_baselines.qml \
     $$PWD/data/tst_button.qml \
     $$PWD/data/tst_busyindicator.qml \
     $$PWD/data/tst_calendar.qml \
