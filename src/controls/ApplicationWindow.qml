@@ -125,7 +125,7 @@ Window {
     property Item statusBar
 
     // The below documentation was supposed to be written as a grouped property, but qdoc would
-    // not render it correctly due to a bug (https://bugreports.qt-project.org/browse/QTBUG-34206)
+    // not render it correctly due to a bug (QTBUG-34206)
     /*!
         \qmlproperty ContentItem ApplicationWindow::contentItem
 
