@@ -924,5 +924,73 @@ Item {
 
             layout.destroy()
         }
+
+        Component {
+            id: layout_Margins_Component
+            GridLayout {
+                columns: 2
+                rowSpacing: 0
+                columnSpacing: 0
+                Rectangle {
+                    color: "red"
+                    Layout.preferredWidth: 20
+                    Layout.preferredHeight: 20
+                    Layout.margins: 10
+                    Layout.leftMargin: 2
+                    Layout.topMargin: 3
+                    Layout.rightMargin: 4
+                    Layout.bottomMargin: 4
+                }
+                Rectangle {
+                    color: "red"
+                    Layout.preferredWidth: 20
+                    Layout.preferredHeight: 20
+                    Layout.leftMargin: 4
+                    Layout.topMargin: 5
+                    Layout.rightMargin: 6
+                    Layout.bottomMargin: 6
+                }
+                Rectangle {
+                    color: "red"
+                    Layout.preferredWidth: 20
+                    Layout.preferredHeight: 20
+                    Layout.leftMargin: 3
+                    Layout.topMargin: 4
+                    Layout.rightMargin: 5
+                    Layout.bottomMargin: 5
+                }
+            }
+        }
+
+        function test_Margins()
+        {
+            var layout = layout_Margins_Component.createObject(container)
+
+            compare(layout.implicitWidth, 3 + 20 + 5 + 4 + 20 + 6)
+            compare(layout.implicitHeight, 5 + 20 + 6 + 4 + 20 + 5)
+            layout.width = layout.implicitWidth
+            layout.height = layout.implicitHeight
+
+            waitForRendering(layout)
+
+            var c0 = layout.children[0]
+            var c1 = layout.children[1]
+            var c2 = layout.children[2]
+
+            compare(c0.x, 2)
+            compare(c0.y, 5)
+            compare(c1.x, 3 + 20 + 5 + 4)
+            compare(c1.y, 5)
+            compare(c2.x, 3)
+            compare(c2.y, 5 + 20 + 6 + 4)
+
+            // reset left|rightMargin. It should then use the generic "margins" property
+            c0.Layout.leftMargin = undefined
+            compare(layout.implicitWidth, 10 + 20 + 4 + 4 + 20 + 6)
+            c0.Layout.bottomMargin = undefined
+            compare(layout.implicitHeight, 3 + 20 + 10 + 4 + 20 + 5)
+
+            layout.destroy()
+        }
     }
 }

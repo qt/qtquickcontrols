@@ -52,7 +52,9 @@ public:
         qmlRegisterType<QQuickColumnLayout>(uri, 1, 0, "ColumnLayout");
         qmlRegisterType<QQuickGridLayout>(uri, 1, 0, "GridLayout");
         qmlRegisterUncreatableType<QQuickLayout>(uri, 1, 0, "Layout",
-                                                           QLatin1String("Do not create objects of type Layout"));
+                                                           QStringLiteral("Do not create objects of type Layout"));
+        qmlRegisterUncreatableType<QQuickLayout>(uri, 1, 2, "Layout",
+                                                           QStringLiteral("Do not create objects of type Layout"));
         qmlRegisterRevision<QQuickGridLayoutBase, 1>(uri, 1, 1);
     }
 };

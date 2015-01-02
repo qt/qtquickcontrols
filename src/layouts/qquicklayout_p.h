@@ -119,6 +119,12 @@ class QQuickLayoutAttached : public QObject
     Q_PROPERTY(int columnSpan READ columnSpan WRITE setColumnSpan NOTIFY columnSpanChanged)
     Q_PROPERTY(Qt::Alignment alignment READ alignment WRITE setAlignment NOTIFY alignmentChanged)
 
+    Q_PROPERTY(qreal margins READ margins WRITE setMargins NOTIFY marginsChanged)
+    Q_PROPERTY(qreal leftMargin READ leftMargin WRITE setLeftMargin RESET resetLeftMargin NOTIFY leftMarginChanged)
+    Q_PROPERTY(qreal topMargin READ topMargin WRITE setTopMargin RESET resetTopMargin NOTIFY topMarginChanged)
+    Q_PROPERTY(qreal rightMargin READ rightMargin WRITE setRightMargin RESET resetRightMargin NOTIFY rightMarginChanged)
+    Q_PROPERTY(qreal bottomMargin READ bottomMargin WRITE setBottomMargin RESET resetBottomMargin NOTIFY bottomMarginChanged)
+
 public:
     QQuickLayoutAttached(QObject *object);
 
@@ -166,6 +172,29 @@ public:
     Qt::Alignment alignment() const { return m_alignment; }
     void setAlignment(Qt::Alignment align);
 
+    qreal margins() const { return m_defaultMargins; }
+    void setMargins(qreal m);
+
+    qreal leftMargin() const { return m_isLeftMarginSet ? m_margins.left() : m_defaultMargins; }
+    void setLeftMargin(qreal m);
+    void resetLeftMargin();
+
+    qreal topMargin() const { return m_isTopMarginSet ? m_margins.top() : m_defaultMargins; }
+    void setTopMargin(qreal m);
+    void resetTopMargin();
+
+    qreal rightMargin() const { return m_isRightMarginSet ? m_margins.right() : m_defaultMargins; }
+    void setRightMargin(qreal m);
+    void resetRightMargin();
+
+    qreal bottomMargin() const { return m_isBottomMarginSet ? m_margins.bottom() : m_defaultMargins; }
+    void setBottomMargin(qreal m);
+    void resetBottomMargin();
+
+    QMarginsF qMargins() const {
+        return QMarginsF(leftMargin(), topMargin(), rightMargin(), bottomMargin());
+    }
+
     bool setChangesNotificationEnabled(bool enabled)
     {
         const bool old = m_changesNotificationEnabled;
@@ -200,6 +229,11 @@ signals:
     void maximumHeightChanged();
     void fillWidthChanged();
     void fillHeightChanged();
+    void leftMarginChanged();
+    void topMarginChanged();
+    void rightMarginChanged();
+    void bottomMarginChanged();
+    void marginsChanged();
     void rowChanged();
     void columnChanged();
     void rowSpanChanged();
@@ -219,6 +253,9 @@ private:
     qreal m_maximumWidth;
     qreal m_maximumHeight;
 
+    qreal m_defaultMargins;
+    QMarginsF m_margins;
+
     // GridLayout specific properties
     int m_row;
     int m_column;
@@ -236,6 +273,10 @@ private:
     unsigned m_isMaximumWidthSet : 1;
     unsigned m_isMaximumHeightSet : 1;
     unsigned m_changesNotificationEnabled : 1;
+    unsigned m_isLeftMarginSet : 1;
+    unsigned m_isTopMarginSet : 1;
+    unsigned m_isRightMarginSet : 1;
+    unsigned m_isBottomMarginSet : 1;
     Qt::Alignment m_alignment;
     friend class QQuickLayout;
 };

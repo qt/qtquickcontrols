@@ -105,9 +105,11 @@ public:
 
     void setGeometry(const QRectF &rect)
     {
+        QQuickLayoutAttached *info = attachedLayoutObject(m_item, false);
+        const QRectF r = info ? rect.marginsRemoved(info->qMargins()) : rect;
         const QSizeF oldSize(m_item->width(), m_item->height());
-        const QSizeF newSize = rect.size();
-        const QPointF topLeft(qCeil(rect.x()), qCeil(rect.y()));
+        const QSizeF newSize = r.size();
+        QPointF topLeft(qCeil(r.x()), qCeil(r.y()));
         m_item->setPosition(topLeft);
         if (newSize == oldSize) {
             if (QQuickLayout *lay = qobject_cast<QQuickLayout *>(m_item)) {

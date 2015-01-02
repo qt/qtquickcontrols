@@ -256,6 +256,14 @@ void QQuickGridLayoutItem::effectiveSizeHints_helper(QQuickItem *item, QSizeF *c
     const qreal minimumDescent = minS.height() - item->baselineOffset();
     descentS.setHeight(minimumDescent);
 
+    if (info) {
+        QMarginsF margins = info->qMargins();
+        QSizeF extraMargins(margins.left() + margins.right(), margins.top() + margins.bottom());
+        minS += extraMargins;
+        prefS += extraMargins;
+        maxS += extraMargins;
+        descentS += extraMargins;
+    }
     if (attachedInfo)
         *attachedInfo = info;
 }
