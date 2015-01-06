@@ -139,14 +139,27 @@ QtObject {
     function resizeToContents() {
         var minWidth = 0
         var listdata = __view.__listView.children[0]
-        for (var i = 0; __index < 0 && i < __view.__columns.length; ++i)
+        for (var i = 0; __index === -1 && i < __view.__columns.length; ++i) {
             if (__view.__columns[i] === this)
                 __index = i
+        }
+        // ### HACK We don't have direct access to the instantiated item,
+        // so we go spelunking. Each 'item' variable check is annotated
+        // with the expected object it should point to in BasicTableView.
         for (var row = 0 ; row < listdata.children.length ; ++row) {
             var item = listdata.children[row] ? listdata.children[row].rowItem : undefined
-            if (item && item.children[1] && item.children[1].children[__index] && item.children[1].children[__index].children[0] &&
-                    item.children[1].children[__index].children[0].hasOwnProperty("implicitWidth"))
-                minWidth = Math.max(minWidth, item.children[1].children[__index].children[0].implicitWidth)
+            if (item) { // FocusScope { id: rowitem }
+                item = item.children[1]
+                if (item) { // Row { id: itemrow }
+                    item = item.children[__index]
+                    if (item) { // Loader { id: itemDelegateLoader }
+                        item  = item.item
+                        if (item && item.hasOwnProperty("implicitWidth")) {
+                            minWidth = Math.max(minWidth, item.implicitWidth)
+                        }
+                    }
+                }
+            }
         }
         if (minWidth)
             width = minWidth

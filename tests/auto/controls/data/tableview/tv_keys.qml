@@ -45,11 +45,13 @@ Row {
     TableView {
         id: _control1
         property bool gotit: false
+
+        TableViewColumn { }
+
         Keys.onPressed: {
+            event.accepted = !gotit
             if ((!gotit) && (event.key === Qt.Key_Down)) {
                 gotit = true;
-                event.accepted = true;
-                return;
             }
         }
     }
