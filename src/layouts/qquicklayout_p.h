@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2014 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2015 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the Qt Quick Layouts module of the Qt Toolkit.
@@ -45,7 +45,7 @@ class QQuickLayoutAttached;
 #if 0 && !defined(QT_NO_DEBUG) && !defined(QT_NO_DEBUG_OUTPUT)
 # define quickLayoutDebug QMessageLogger(__FILE__, __LINE__, Q_FUNC_INFO).debug
 #else
-# define quickLayoutDebug QT_NO_QWARNING_MACRO
+# define quickLayoutDebug QT_NO_QDEBUG_MACRO
 #endif
 
 class QQuickLayoutPrivate;
