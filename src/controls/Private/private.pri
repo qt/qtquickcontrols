@@ -9,7 +9,8 @@ HEADERS += \
     $$PWD/qquickwheelarea_p.h \
     $$PWD/qquickabstractstyle_p.h \
     $$PWD/qquickpadding_p.h \
-    $$PWD/qquickcontrolsprivate_p.h
+    $$PWD/qquickcontrolsprivate_p.h \
+    $$PWD/qquicktreemodeladaptor_p.h
 
 SOURCES += \
     $$PWD/qquickcalendarmodel.cpp \
@@ -19,7 +20,8 @@ SOURCES += \
     $$PWD/qquickrangeddate.cpp \
     $$PWD/qquickcontrolsettings.cpp \
     $$PWD/qquickwheelarea.cpp \
-    $$PWD/qquickabstractstyle.cpp
+    $$PWD/qquickabstractstyle.cpp \
+    $$PWD/qquicktreemodeladaptor.cpp
 
 
 !no_desktop {

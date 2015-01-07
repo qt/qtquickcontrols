@@ -3,7 +3,7 @@
 ** Copyright (C) 2015 The Qt Company Ltd.
 ** Contact: http://www.qt.io/licensing/
 **
-** This file is part of the test suite of the Qt Toolkit.
+** This file is part of the Qt Quick Controls module of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL3$
 ** Commercial License Usage
@@ -34,39 +34,34 @@
 **
 ****************************************************************************/
 
-#include <QtQml/qqml.h>
-#include <QQmlEngine>
-#include <QVariant>
-#include <QStringList>
-#include "testplugin.h"
-#include "testcppmodels.h"
-#include "../shared/testmodel.h"
+import QtQuick 2.2
+import QtQuick.Controls 1.4
+import QtQuick.Controls.Private 1.0
+import "." as Desktop
 
-void TestPlugin::registerTypes(const char *uri)
-{
-    // cpp models
-    qmlRegisterType<TestObject>(uri, 1, 0, "TestObject");
-    qmlRegisterType<TestItemModel>(uri, 1, 0, "TestItemModel");
-    qmlRegisterType<TestModel>(uri, 1, 0, "TreeModel");
-}
+Desktop.TableViewStyle {
+    id: root
 
-void TestPlugin::initializeEngine(QQmlEngine *engine, const char * /*uri*/)
-{
-    QObjectList model_qobjectlist;
-    model_qobjectlist << new TestObject(0);
-    model_qobjectlist << new TestObject(1);
-    model_qobjectlist << new TestObject(2);
-    engine->rootContext()->setContextProperty("model_qobjectlist", QVariant::fromValue(model_qobjectlist));
+    __indentation: 12
 
-    QStringList model_qstringlist;
-    model_qstringlist << QStringLiteral("A");
-    model_qstringlist << QStringLiteral("B");
-    model_qstringlist << QStringLiteral("C");
-    engine->rootContext()->setContextProperty("model_qstringlist", model_qstringlist);
+    __branchDelegate: StyleItem {
+        id: si
+        elementType: "itembranchindicator"
+        properties: {
+            "hasChildren": styleData.hasChildren,
+            "hasSibling": styleData.hasSibling && !styleData.isExpanded
+        }
+        on: styleData.isExpanded
+        selected: styleData.selected
+        hasFocus: __styleitem.active
 
-    QList<QVariant> model_qvarlist;
-    model_qvarlist << 3;
-    model_qvarlist << 2;
-    model_qvarlist << 1;
-    engine->rootContext()->setContextProperty("model_qvarlist", model_qvarlist);
+        Component.onCompleted: {
+            implicitWidth = si.pixelMetric("treeviewindentation")
+            implicitHeight = implicitWidth
+            var rect = si.subControlRect("dummy");
+            width = rect.width
+            height = rect.height
+            root.__indentation = width
+        }
+    }
 }

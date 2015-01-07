@@ -36,20 +36,56 @@
 
 import QtQuick 2.5
 import QtQuick.Controls 1.4
+import QtQuick.Controls.Private 1.0
 
 /*!
-    \qmltype TableViewStyle
+    \qmltype TreeViewStyle
     \inqmlmodule QtQuick.Controls.Styles
-    \since 5.1
+    \since 5.5
     \ingroup viewsstyling
-    \brief Provides custom styling for TableView
-
-    \note This class derives from \l {QtQuick.Controls.Styles::}{ScrollViewStyle}
-    and supports all of the properties defined there.
+    \brief Provides custom styling for TreeView
 */
 BasicTableViewStyle {
     id: root
 
-    /*! The \l TableView this style is attached to. */
-    readonly property TableView control: __control
+    /*! The \l TreeView this style is attached to. */
+    readonly property TreeView control: __control
+
+    /*!
+        The amount each level is indented relatively to its parent level.
+    */
+    property int indentation: 12
+
+    // TODO - to update
+    /*! \qmlproperty Component TreeViewStyle::branchDelegate
+
+    This property defines a delegate to draw the branch indicator.
+
+    In the branch delegate you have access to the following special properties:
+    \list
+    \li  styleData.column - the index of the column
+    \li  styleData.selected - if the item is currently selected
+    \li  styleData.textColor - the default text color for an item
+    \li  styleData.isExpanded - true when the item is expanded
+    \li  styleData.hasChildren - true if the model index of the current item has children
+    \li  styleData.hasSibling - true if the model index of the current item has sibling
+    \endlist
+    */
+
+    property Component branchDelegate: Item {
+        width: 16
+        height: 16
+        Text {
+            visible: styleData.column === 0 && styleData.hasChildren
+            text: styleData.isExpanded ? "\u25bc" : "\u25b6"
+            color: !control.activeFocus || styleData.selected ? styleData.textColor : "#666"
+            font.pointSize: 10
+            renderType: Text.NativeRendering
+            anchors.centerIn: parent
+            anchors.verticalCenterOffset: styleData.isExpanded ? 2 : 0
+        }
+    }
+
+    __branchDelegate: branchDelegate
+    __indentation: indentation
 }

@@ -42,7 +42,8 @@ import "."
 ScrollViewStyle {
     id: root
 
-    readonly property TableView control: __control
+    readonly property BasicTableView control: __control
+    property int __indentation: 8
     property bool activateItemOnSingleClick: __styleitem.styleHint("activateItemOnSingleClick")
     property color textColor: __styleitem.textColor
     property color backgroundColor: SystemPaletteSingleton.base(control.enabled)
@@ -92,10 +93,10 @@ ScrollViewStyle {
             id: label
             objectName: "label"
             width: parent.width
-            anchors.leftMargin: 8
             font: __styleitem.font
             anchors.left: parent.left
             anchors.right: parent.right
+            anchors.leftMargin: styleData["depth"] && styleData.column === 0 ? 0 : 8
             horizontalAlignment: styleData.textAlignment
             anchors.verticalCenter: parent.verticalCenter
             elide: styleData.elideMode
@@ -104,5 +105,6 @@ ScrollViewStyle {
             renderType: Text.NativeRendering
         }
     }
-}
 
+    property Component __branchDelegate: null
+}

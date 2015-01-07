@@ -41,11 +41,11 @@ import QtQuick 2.2
     \inqmlmodule QtQuick.Controls
     \since 5.1
     \ingroup viewitems
-    \brief Used to define columns in a \l TableView.
+    \brief Used to define columns in a \l TableView or in a \l TreeView.
 
     \image tableview.png
 
-    TableViewColumn represents a column within a TableView. It provides
+    TableViewColumn represents a column within a TableView or a TreeView. It provides
     properties to decide how the data in that column is presented.
 
     \qml
@@ -56,7 +56,7 @@ import QtQuick 2.2
     }
     \endqml
 
-    \sa TableView
+    \sa TableView, TreeView
 */
 
 QtObject {
@@ -117,7 +117,7 @@ QtObject {
     property int horizontalAlignment: Text.AlignLeft
 
     /*! The delegate of the column. This can be used to set the
-    \l TableView::itemDelegate for a specific column.
+    \l TableView::itemDelegate or TreeView::itemDelegate for a specific column.
 
     In the delegate you have access to the following special properties:
     \list

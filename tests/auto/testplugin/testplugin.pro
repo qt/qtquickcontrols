@@ -18,7 +18,8 @@ SOURCES += \
 
 HEADERS += \
     $$PWD/testplugin.h \
-    $$PWD/testcppmodels.h
+    $$PWD/testcppmodels.h \
+    $$PWD/../shared/testmodel.h
 
 mac {
     LIBS += -framework Carbon

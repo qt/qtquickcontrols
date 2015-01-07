@@ -122,6 +122,7 @@ public:
         Header,
         Item,
         ItemRow,
+        ItemBranchIndicator,
         Splitter,
         Menu,
         MenuItem,

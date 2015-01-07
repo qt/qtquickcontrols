@@ -34,39 +34,43 @@
 **
 ****************************************************************************/
 
-#include <QtQml/qqml.h>
-#include <QQmlEngine>
-#include <QVariant>
-#include <QStringList>
-#include "testplugin.h"
-#include "testcppmodels.h"
-#include "../shared/testmodel.h"
+import QtQuick 2.4
+import QtQuick.Controls 1.4
+import QtQuick.Controls.Styles 1.4
+import QtQuickControlsTests 1.0
 
-void TestPlugin::registerTypes(const char *uri)
-{
-    // cpp models
-    qmlRegisterType<TestObject>(uri, 1, 0, "TestObject");
-    qmlRegisterType<TestItemModel>(uri, 1, 0, "TestItemModel");
-    qmlRegisterType<TestModel>(uri, 1, 0, "TreeModel");
-}
+TreeView {
+    width: 400
+    height: 400
+    model: TreeModel {}
 
-void TestPlugin::initializeEngine(QQmlEngine *engine, const char * /*uri*/)
-{
-    QObjectList model_qobjectlist;
-    model_qobjectlist << new TestObject(0);
-    model_qobjectlist << new TestObject(1);
-    model_qobjectlist << new TestObject(2);
-    engine->rootContext()->setContextProperty("model_qobjectlist", QVariant::fromValue(model_qobjectlist));
+    TableViewColumn {
+        role: "display"
+        title: "Default"
+        width: 200
+    }
 
-    QStringList model_qstringlist;
-    model_qstringlist << QStringLiteral("A");
-    model_qstringlist << QStringLiteral("B");
-    model_qstringlist << QStringLiteral("C");
-    engine->rootContext()->setContextProperty("model_qstringlist", model_qstringlist);
-
-    QList<QVariant> model_qvarlist;
-    model_qvarlist << 3;
-    model_qvarlist << 2;
-    model_qvarlist << 1;
-    engine->rootContext()->setContextProperty("model_qvarlist", model_qvarlist);
+    style: TreeViewStyle {
+        indentation: 20
+        rowDelegate: Rectangle {
+            color: styleData.selected? "blue" : styleData.alternate ? "red" : "yellow"
+            height: 50
+            width: parent.width
+        }
+        headerDelegate: Text {
+            text: styleData.value
+            height: 50
+            width: parent.width
+        }
+        itemDelegate: Text {
+            text: styleData.value
+            height: 50
+            width: parent.width
+        }
+        branchDelegate: Rectangle {
+            color: styleData.isExpanded? "purple" : "green"
+            height: 50
+            width: 20
+        }
+    }
 }

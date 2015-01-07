@@ -49,4 +49,5 @@ OTHER_FILES += \
     $$PWD/data/tst_splitview.qml \
     $$PWD/data/tst_styles.qml \
     $$PWD/data/tst_layout.qml \
-    $$PWD/data/tst_keys.qml
+    $$PWD/data/tst_keys.qml \
+    $$PWD/data/tst_treeview.qml

@@ -18,7 +18,9 @@ STYLES_QML_FILES = \
     $$PWD/Base/SpinBoxStyle.qml \
     $$PWD/Base/SwitchStyle.qml \
     $$PWD/Base/StatusBarStyle.qml \
+    $$PWD/Base/BasicTableViewStyle.qml \
     $$PWD/Base/TableViewStyle.qml \
+    $$PWD/Base/TreeViewStyle.qml \
     $$PWD/Base/TabViewStyle.qml \
     $$PWD/Base/TextAreaStyle.qml \
     $$PWD/Base/TextFieldStyle.qml \
@@ -49,6 +51,7 @@ STYLES_QML_FILES = \
         $$PWD/Desktop/StatusBarStyle.qml\
         $$PWD/Desktop/TabViewStyle.qml \
         $$PWD/Desktop/TableViewStyle.qml \
+        $$PWD/Desktop/TreeViewStyle.qml \
         $$PWD/Desktop/TextAreaStyle.qml \
         $$PWD/Desktop/TextFieldStyle.qml \
         $$PWD/Desktop/ToolBarStyle.qml \

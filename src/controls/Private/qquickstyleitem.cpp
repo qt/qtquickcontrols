@@ -370,6 +370,19 @@ void QQuickStyleItem::initStyleOption()
         }
     }
         break;
+    case ItemBranchIndicator: {
+        if (!m_styleoption)
+            m_styleoption = new QStyleOption;
+
+        m_styleoption->state = QStyle::State_Item; // We don't want to fully support Win 95
+        if (m_properties.value("hasChildren").toBool())
+            m_styleoption->state |= QStyle::State_Children;
+        if (m_properties.value("hasSibling").toBool()) // Even this one could go away
+            m_styleoption->state |= QStyle::State_Sibling;
+        if (m_on)
+            m_styleoption->state |= QStyle::State_Open;
+    }
+        break;
     case Header: {
         if (!m_styleoption)
             m_styleoption = new QStyleOptionHeader();
@@ -1223,6 +1236,8 @@ int QQuickStyleItem::pixelMetric(const QString &metric)
         return qApp->style()->pixelMetric(QStyle::PM_SplitterWidth, 0 );
     else if (metric == "scrollbarspacing")
         return abs(qApp->style()->pixelMetric(QStyle::PM_ScrollView_ScrollBarSpacing, 0 ));
+    else if (metric == "treeviewindentation")
+        return qApp->style()->pixelMetric(QStyle::PM_TreeViewIndentation, 0 );
     return 0;
 }
 
@@ -1309,6 +1324,8 @@ void QQuickStyleItem::setElementType(const QString &str)
         } else {
             m_itemType = (str == "item") ? Item : ItemRow;
         }
+    } else if (str == "itembranchindicator") {
+        m_itemType = ItemBranchIndicator;
     } else if (str == "groupbox") {
         m_itemType = GroupBox;
     } else if (str == "tab") {
@@ -1422,6 +1439,11 @@ QRectF QQuickStyleItem::subControlRect(const QString &subcontrolString)
                                              subcontrol);
     }
         break;
+    case ItemBranchIndicator: {
+        QStyleOption opt;
+        opt.rect = QRect(0, 0, implicitWidth(), implicitHeight());
+        return qApp->style()->subElementRect(QStyle::SE_TreeViewDisclosureItem, &opt, 0);
+    }
     default:
         break;
     }
@@ -1501,6 +1523,9 @@ void QQuickStyleItem::paint(QPainter *painter)
         break;
     case Item:
         qApp->style()->drawControl(QStyle::CE_ItemViewItem, m_styleoption, painter);
+        break;
+    case ItemBranchIndicator:
+        qApp->style()->drawPrimitive(QStyle::PE_IndicatorBranch, m_styleoption, painter);
         break;
     case Header:
         qApp->style()->drawControl(QStyle::CE_Header, m_styleoption, painter);

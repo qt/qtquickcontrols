@@ -54,6 +54,7 @@
 #include "Private/qquickspinboxvalidator_p.h"
 #include "Private/qquickabstractstyle_p.h"
 #include "Private/qquickcontrolsprivate_p.h"
+#include "Private/qquicktreemodeladaptor_p.h"
 
 #ifdef QT_WIDGETS_LIB
 #include <QtQuick/qquickimageprovider.h>
@@ -107,7 +108,9 @@ static const struct {
 
     { "BusyIndicator", 1, 1 },
 
-    { "TextArea", 1, 3 }
+    { "TextArea", 1, 3 },
+
+    { "TreeView", 1, 4 }
 };
 
 void QtQuickControlsPlugin::registerTypes(const char *uri)
@@ -146,10 +149,14 @@ void QtQuickControlsPlugin::initializeEngine(QQmlEngine *engine, const char *uri
     qmlRegisterType<QQuickSpinBoxValidator>(private_uri, 1, 0, "SpinBoxValidator");
     qmlRegisterSingletonType<QQuickTooltip>(private_uri, 1, 0, "Tooltip", QQuickControlsPrivate::registerTooltipModule);
     qmlRegisterSingletonType<QQuickControlSettings>(private_uri, 1, 0, "Settings", QQuickControlsPrivate::registerSettingsModule);
+    qmlRegisterType<QQuickTreeModelAdaptor>(private_uri, 1, 0, "TreeModelAdaptor");
 
     qmlRegisterType<QQuickMenu>(private_uri, 1, 0, "MenuPrivate");
     qmlRegisterType<QQuickMenuBar>(private_uri, 1, 0, "MenuBarPrivate");
     qmlRegisterType<QQuickPopupWindow>(private_uri, 1, 0, "PopupWindow");
+
+    qmlRegisterUncreatableType<QAbstractItemModel>(private_uri, 1, 0, "AbstractItemModel",
+                                                   QLatin1String("AbstractItemModel is an abstract type."));
 
 #ifdef QT_WIDGETS_LIB
     qmlRegisterType<QQuickStyleItem>(private_uri, 1, 0, "StyleItem");

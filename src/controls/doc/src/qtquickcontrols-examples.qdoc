@@ -502,3 +502,17 @@
 
     \include examples-run.qdocinc
 */
+
+/*!
+    \example filesystembrowser
+    \title Qt Quick Controls - File System Browser Example
+    \ingroup qtquickcontrols_examples
+    \brief An example for the TreeView control.
+    \image qtquickcontrols-example-filesystembrowser.png
+
+    This example project demonstrates the usage of \l {TreeView} from
+    \l{Qt Quick Controls} - a control to display a tree representation of items
+    from a model derived from the QAbstractItemModel class.
+
+    The example displays the home path data given by the QFileSystemModel model.
+*/

@@ -269,11 +269,14 @@ ScrollView {
         Otherwise  \c null is returned.
     */
     function insertColumn(index, column) {
+        if (__isTreeView && index === 0 && columnCount > 0) {
+            console.warn(__viewTypeName + "::insertColumn(): Can't replace column 0")
+            return null
+        }
         var object = column
-        if (typeof column['createObject'] === 'function')
+        if (typeof column['createObject'] === 'function') {
             object = column.createObject(root)
-
-        else if (object.__view) {
+        } else if (object.__view) {
             console.warn(__viewTypeName + "::insertColumn(): you cannot add a column to multiple views")
             return null
         }
@@ -299,6 +302,10 @@ ScrollView {
             console.warn(__viewTypeName + "::removeColumn(): invalid argument")
             return
         }
+        if (__isTreeView && index === 0) {
+            console.warn(__viewTypeName + "::removeColumn(): Can't remove column 0")
+            return
+        }
         var column = columnModel.get(index).columnItem
         columnModel.remove(index, 1)
         column.destroy()
@@ -312,6 +319,10 @@ ScrollView {
     function moveColumn(from, to) {
         if (from < 0 || from >= columnCount || to < 0 || to >= columnCount) {
             console.warn(__viewTypeName + "::moveColumn(): invalid argument")
+            return
+        }
+        if (__isTreeView && to === 0) {
+            console.warn(__viewTypeName + "::moveColumn(): Can't move column 0")
             return
         }
         columnModel.move(from, to, 1)
@@ -369,6 +380,9 @@ ScrollView {
         Use this to display user-friendly messages in TableView and TreeView common functions.
     */
     property string __viewTypeName
+
+    /*! \internal */
+    readonly property bool __isTreeView: __viewTypeName === "TreeView"
 
     /*! \internal */
     default property alias __columns: root.data
@@ -543,6 +557,7 @@ ScrollView {
                 property bool itemSelected: __mouseArea.selected(rowIndex)
                 property bool alternate: alternatingRowColors && rowIndex % 2 === 1
                 readonly property color itemTextColor: itemSelected ? __style.highlightedTextColor : __style.textColor
+                property Item branchDecoration: null
 
                 width: itemrow.width
                 height: rowstyle.height
@@ -608,6 +623,37 @@ ScrollView {
                                                              : modelData && modelData.hasOwnProperty(role)
                                                                ? modelData[role] // QObjectList / QObject
                                                                : modelData != undefined ? modelData : "" // Models without role
+                                readonly property int depth: itemModel && column === 0 && itemModel["_q_TreeView_ItemDepth"] || 0
+                                readonly property bool hasChildren: itemModel && itemModel["_q_TreeView_HasChildren"] || false
+                                readonly property bool hasSibling: itemModel && itemModel["_q_TreeView_HasSibling"] || false
+                                readonly property bool isExpanded: itemModel && itemModel["_q_TreeView_ItemExpanded"] || false
+                            }
+
+                            readonly property int __itemIndentation: __style.__indentation * (styleData.depth + 1)
+
+                            Binding {
+                                target: item
+                                property: "x"
+                                value: __itemIndentation
+                            }
+
+                            Binding {
+                                target: item
+                                property: "width"
+                                value: itemDelegateLoader.width - __itemIndentation
+                            }
+
+                            Loader {
+                                id: branchDelegateLoader
+                                active: rowitem.itemModel !== undefined
+                                        && index === 0
+                                        && itemDelegateLoader.width > __itemIndentation
+                                        && styleData.hasChildren
+                                sourceComponent: __style ? __style.__branchDelegate : null
+                                anchors.right: parent.item.left
+                                anchors.verticalCenter: parent.verticalCenter
+                                property QtObject styleData: itemDelegateLoader.styleData
+                                onLoaded: rowitem.branchDecoration = item
                             }
                         }
                     }
@@ -654,6 +700,8 @@ ScrollView {
                         visible: modelData.visible
                         height: headerStyle.height
 
+                        readonly property bool treeViewMovable: !__isTreeView || index > 0
+
                         Loader {
                             id: headerStyle
                             sourceComponent: root.headerDelegate
@@ -673,7 +721,7 @@ ScrollView {
                             id: targetmark
                             width: parent.width
                             height:parent.height
-                            opacity: (index === repeater.targetIndex && repeater.targetIndex !== repeater.dragIndex) ? 0.5 : 0
+                            opacity: (treeViewMovable && index === repeater.targetIndex && repeater.targetIndex !== repeater.dragIndex) ? 0.5 : 0
                             Behavior on opacity { NumberAnimation { duration: 160 } }
                             color: palette.highlight
                             visible: modelData.movable
@@ -693,7 +741,7 @@ ScrollView {
                             // NOTE: the direction is different from the master branch
                             // so this indicates that I am using an invalid assumption on item ordering
                             onPositionChanged: {
-                                if (modelData.movable && pressed && columnCount > 1) { // only do this while dragging
+                                if (drag.active && modelData.movable && pressed && columnCount > 1) { // only do this while dragging
                                     for (var h = columnCount-1 ; h >= 0 ; --h) {
                                         if (drag.target.x + listView.contentX + headerRowDelegate.width/2 > headerrow.children[h].x) {
                                             repeater.targetIndex = h
@@ -710,7 +758,7 @@ ScrollView {
                             onReleased: {
                                 if (repeater.targetIndex >= 0 && repeater.targetIndex !== index ) {
                                     var targetColumn = columnModel.get(repeater.targetIndex).columnItem
-                                    if (targetColumn.movable) {
+                                    if (targetColumn.movable && (!__isTreeView || repeater.targetIndex > 0)) {
                                         columnModel.move(index, repeater.targetIndex, 1)
                                         if (sortIndicatorColumn === index)
                                             sortIndicatorColumn = repeater.targetIndex
@@ -719,7 +767,7 @@ ScrollView {
                                 repeater.targetIndex = -1
                                 repeater.dragIndex = -1
                             }
-                            drag.target: modelData.movable && columnCount > 1 ? draghandle : null
+                            drag.target: treeViewMovable && modelData.movable && columnCount > 1 ? draghandle : null
                         }
 
                         Loader {
