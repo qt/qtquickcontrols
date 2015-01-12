@@ -286,4 +286,48 @@ TestCase {
 
         view.destroy()
     }
+
+    Component {
+        id: splitViewMargins
+        SplitView {
+            anchors.fill: parent
+            property alias item1: item1
+            property alias item2: item2
+            handleDelegate: Rectangle { width: handleWidth; height: handleHeight; color: "black" }
+
+            Rectangle {
+                id: item1
+                width: 100
+                height: 80
+                color: "red"
+                Layout.margins: 3
+            }
+            Rectangle {
+                id: item2
+                width: 200
+                height: 90
+                color: "blue"
+                Layout.margins: 7
+                Layout.fillWidth: true
+            }
+        }
+    }
+
+    function test_item_margins() {
+        var view = splitViewMargins.createObject(testCase);
+        verify (view !== null, "splitview created is null")
+        verify (view.orientation === Qt.Horizontal)
+        compare(view.implicitWidth, 100 + 3*2 + 1 + 200 + 7*2)
+        waitForRendering(view)
+
+        compare(view.item1.width, 100)
+
+        compare(view.item2.width, testCase.width - 100 - (3*2) - handleWidth - (7*2))
+        compare(view.item2.height, testCase.height - 7*2)
+
+        view.item2.Layout.rightMargin = 0
+        compare(view.item2.width, testCase.width - 100 - 3*2 - handleWidth - 7)
+
+        view.destroy()
+    }
 }

@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2015 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the Qt Quick Controls module of the Qt Toolkit.
@@ -197,6 +197,11 @@ Item {
 
     QtObject {
         id: d
+
+        readonly property string leftMargin: horizontal ? "leftMargin" : "topMargin"
+        readonly property string topMargin: horizontal ? "topMargin" : "leftMargin"
+        readonly property string rightMargin: horizontal ? "rightMargin" : "bottomMargin"
+
         property bool horizontal: orientation == Qt.Horizontal
         readonly property string minimum: horizontal ? "minimumWidth" : "minimumHeight"
         readonly property string maximum: horizontal ? "maximumWidth" : "maximumHeight"
@@ -211,6 +216,15 @@ Item {
 
         property int fillIndex: -1
         property bool updateLayoutGuard: true
+
+        function extraMarginSize(item, other) {
+            if (typeof(other) === 'undefined')
+                other = false;
+            if (other === horizontal)
+                // vertical
+                return item.Layout.topMargin + item.Layout.bottomMargin
+            return item.Layout.leftMargin + item.Layout.rightMargin
+        }
 
         function addItem_impl(item)
         {
@@ -228,6 +242,10 @@ Item {
             item.Layout.minimumWidthChanged.connect(d.updateLayout)
             item.Layout.maximumHeightChanged.connect(d.updateLayout)
             item.Layout.minimumHeightChanged.connect(d.updateLayout)
+            item.Layout.leftMarginChanged.connect(d.updateLayout)
+            item.Layout.topMarginChanged.connect(d.updateLayout)
+            item.Layout.rightMarginChanged.connect(d.updateLayout)
+            item.Layout.bottomMarginChanged.connect(d.updateLayout)
             item.visibleChanged.connect(d.updateFillIndex)
             item.Layout.fillWidthChanged.connect(d.updateFillIndex)
             item.Layout.fillHeightChanged.connect(d.updateFillIndex)
@@ -302,17 +320,17 @@ Item {
 
             for (var i=0; i<__items.length; ++i) {
                 var item = __items[i];
-                implicitSize += clampedMinMax(item[d.size], item.Layout[minimum], item.Layout[maximum])
+                implicitSize += clampedMinMax(item[d.size], item.Layout[minimum], item.Layout[maximum]) + extraMarginSize(item)
                 var os = clampedMinMax(item[otherSize], item.Layout[otherMinimum], item.Layout[otherMaximum])
                 implicitOtherSize = Math.max(implicitOtherSize, os)
 
                 var handle = __handles[i]
                 if (handle)
-                    implicitSize += handle[d.size]
+                    implicitSize += handle[d.size]  //### Can handles have margins??
             }
 
             root[d.implicitSize] = implicitSize
-            root[d.implicitOtherSize] = implicitOtherSize
+            root[d.implicitOtherSize] = implicitOtherSize + extraMarginSize(item, true)
         }
 
         function clampedMinMax(value, minimum, maximum)
@@ -327,16 +345,16 @@ Item {
         function accumulatedSize(firstIndex, lastIndex, includeFillItemMinimum)
         {
             // Go through items and handles, and
-            // calculate their acummulated width.
+            // calculate their accummulated width.
             var w = 0
             for (var i=firstIndex; i<lastIndex; ++i) {
 
                 var item = __items[i]
                 if (item.visible || i == d.fillIndex) {
                     if (i !== d.fillIndex)
-                        w += item[d.size];
+                        w += item[d.size] + extraMarginSize(item)
                     else if (includeFillItemMinimum && item.Layout[minimum] !== undefined)
-                        w += item.Layout[minimum]
+                        w += item.Layout[minimum] + extraMarginSize(item)
                 }
 
                 var handle = __handles[i]
@@ -374,29 +392,31 @@ Item {
             if (root[d.size] != 0) {
                 var fillItem = __items[fillIndex]
                 var superfluous = root[d.size] - d.accumulatedSize(0, __items.length, false)
-                var s = Math.max(superfluous, fillItem.Layout[minimum])
-                s = Math.min(s, fillItem.Layout[maximum])
-                fillItem[d.size] = s
+                fillItem[d.size] = clampedMinMax(superfluous - extraMarginSize(fillItem), fillItem.Layout[minimum], fillItem.Layout[maximum]);
             }
 
             // Position items and handles according to their width:
             var lastVisibleItem, lastVisibleHandle, handle
+            var pos = 0;
             for (i=0; i<__items.length; ++i) {
                 // Position item to the right of the previous visible handle:
                 item = __items[i];
                 if (item.visible || i == d.fillIndex) {
-                    item[d.offset] = lastVisibleHandle ? lastVisibleHandle[d.offset] + lastVisibleHandle[d.size] : 0
-                    item[d.otherOffset] = 0
-                    item[d.otherSize] = clampedMinMax(root[otherSize], item.Layout[otherMinimum], item.Layout[otherMaximum])
+                    pos += item.Layout[leftMargin]
+                    item[d.offset] = pos
+                    item[d.otherOffset] = item.Layout[topMargin]
+                    item[d.otherSize] = clampedMinMax(root[otherSize], item.Layout[otherMinimum], item.Layout[otherMaximum]) - extraMarginSize(item, true)
                     lastVisibleItem = item
+                    pos += Math.max(0, item[d.size]) + item.Layout[rightMargin]
                 }
 
                 handle = __handles[i]
                 if (handle && handle.visible) {
-                    handle[d.offset] = lastVisibleItem[d.offset] + Math.max(0, lastVisibleItem[d.size])
-                    handle[d.otherOffset] = 0
+                    handle[d.offset] = pos
+                    handle[d.otherOffset] = 0   //### can handles have margins?
                     handle[d.otherSize] = root[d.otherSize]
                     lastVisibleHandle = handle
+                    pos += handle[d.size]
                 }
             }
 
