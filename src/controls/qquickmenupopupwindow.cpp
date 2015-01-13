@@ -93,7 +93,7 @@ void QQuickMenuPopupWindow::setGeometry(int posx, int posy, int w, int h)
         pw = parentItem()->window();
     if (!pw)
         pw = this;
-    QRect g = pw->screen()->availableVirtualGeometry();
+    QRect g = pw->screen()->virtualGeometry();
 
     if (posx + w > g.right()) {
         if (qobject_cast<QQuickMenuPopupWindow *>(transientParent())) {
