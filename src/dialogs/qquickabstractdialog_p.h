@@ -66,6 +66,7 @@ class QQuickAbstractDialog : public QObject
     Q_PROPERTY(int y READ y WRITE setY NOTIFY geometryChanged)
     Q_PROPERTY(int width READ width WRITE setWidth NOTIFY geometryChanged)
     Q_PROPERTY(int height READ height WRITE setHeight NOTIFY geometryChanged)
+    Q_PROPERTY(int __maximumDimension READ __maximumDimension CONSTANT)
 
 public:
     QQuickAbstractDialog(QObject *parent = 0);
@@ -80,6 +81,7 @@ public:
     int y() const;
     int width() const;
     int height() const;
+    int __maximumDimension() const;
 
     virtual void setVisible(bool v);
     virtual void setModality(Qt::WindowModality m);
@@ -135,6 +137,7 @@ protected Q_SLOTS:
     void windowGeometryChanged();
     void minimumWidthChanged();
     void minimumHeightChanged();
+    void implicitHeightChanged();
 
 protected:
     virtual QPlatformDialogHelper *helper() = 0;

@@ -97,7 +97,7 @@ Style {
         }
         Text {
             id: text
-            text: control.text
+            text: StyleHelpers.stylizeMnemonics(control.text)
             anchors.centerIn: parent
             color: SystemPaletteSingleton.text(control.enabled)
             renderType: Settings.isMobile ? Text.QtRendering : Text.NativeRendering

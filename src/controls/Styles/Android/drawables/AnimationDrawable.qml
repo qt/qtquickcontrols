@@ -49,14 +49,17 @@ Drawable {
     property int currentFrame: 0
     readonly property int frameCount: styleDef.frames ? styleDef.frames.length : 0
     readonly property var frameDef: styleDef.frames ? styleDef.frames[currentFrame] : undefined
+    readonly property alias running: timer.running
+    property bool oneshot: styleDef.oneshot
 
     Timer {
+        id: timer
         repeat: true
         running: root.frameCount && root.visible && Qt.application.active
         interval: root.frameDef ? root.frameDef.duration : 0
         onTriggered: {
             var frame = root.currentFrame + 1
-            repeat = !root.styleDef.oneshot || frame < root.frameCount - 1
+            repeat = !root.oneshot || frame < root.frameCount - 1
             root.currentFrame = frame % root.frameCount
         }
     }

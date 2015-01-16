@@ -401,8 +401,8 @@ Control {
         clip: contentWidth > width
 
         control: comboBox
-        cursorHandle: __style ? __style.cursorHandle : undefined
-        selectionHandle: __style ? __style.selectionHandle : undefined
+        cursorHandle: __style ? __style.__cursorHandle : undefined
+        selectionHandle: __style ? __style.__selectionHandle : undefined
 
         anchors.fill: parent
         anchors.leftMargin: __style ? __style.padding.left : 0

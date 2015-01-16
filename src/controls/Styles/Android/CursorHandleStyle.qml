@@ -45,66 +45,51 @@ import "drawables"
 
 DrawableLoader {
     id: delegate
-    property bool active: false
+
+    property bool hasText: !!editor.text || !!editor.displayText
+
     styleDef: styleData.hasSelection ? AndroidStyle.styleDef.textViewStyle.TextView_textSelectHandleRight
                                      : AndroidStyle.styleDef.textViewStyle.TextView_textSelectHandle
     x: styleData.hasSelection ? -width / 4 : -width / 2
     y: styleData.lineHeight
-    opacity: 1.0
 
     pressed: styleData.pressed
     focused: control.activeFocus
     window_focused: focused && control.Window.active
 
-    Connections {
-        target: editor
-        ignoreUnknownSignals: true
-        onDisplayTextChanged: {
-            delegate.state = "hidden"
-        }
+    opacity: hasText && (styleData.hasSelection || styleData.pressed || idle.running) ? 1.0 : 0.0
+
+    Timer {
+        id: idle
+        repeat: false
+        interval: 4000
     }
 
     Connections {
         target: styleData
-        onActivated: {
-            if (editor.text) {
-                delegate.active = true
-                delegate.opacity = 1.0
-                delegate.state = ""
-                if (!styleData.hasSelection)
-                    delegate.state = "idle"
-            }
+        onActivated: idle.restart()
+        onPressedChanged: {
+            if (!styleData.pressed)
+                idle.restart()
         }
     }
 
-    state: "hidden"
+    // Hide the cursor handle on textual changes, unless the signals are
+    // indirectly triggered by activating/tapping/moving the handle. When
+    // text prediction is enabled, the textual content may change when the
+    // cursor moves and the predicted text is committed.
+    Connections {
+        target: editor
+        ignoreUnknownSignals: true
+        onTextChanged: if (!ignore.running) idle.stop()
+        onDisplayTextChanged: if (!ignore.running) idle.stop()
+        onInputMethodComposing: if (!ignore.running) idle.stop()
+    }
 
-    states: [
-        State {
-            name: "hidden"
-            when: editor.inputMethodComposing && !delegate.active && !editor.text
-        },
-        State {
-            name: "idle"
-            when: !styleData.hasSelection && !styleData.pressed
-        }
-    ]
-
-    transitions: [
-        Transition {
-            to: "hidden"
-            SequentialAnimation {
-                PauseAnimation { duration: 100 }
-                PropertyAction { target: delegate; property: "opacity"; value: 0.0 }
-            }
-        },
-        Transition {
-            to: "idle"
-            SequentialAnimation {
-                PauseAnimation { duration: 4000 }
-                NumberAnimation { target: delegate; property: "opacity"; to: 0.0 }
-                PropertyAction { target: delegate; property: "active"; value: false }
-            }
-        }
-    ]
+    Timer {
+        id: ignore
+        repeat: false
+        interval: 250
+        running: idle.running
+    }
 }

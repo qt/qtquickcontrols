@@ -52,9 +52,9 @@ TextInput {
     readonly property int selectionPosition: selectionStart !== cursorPosition ? selectionStart : selectionEnd
     readonly property alias containsMouse: mouseArea.containsMouse
     property alias editMenu: editMenu
-    cursorDelegate: __style && __style.cursorDelegate ? __style.cursorDelegate : null
+    cursorDelegate: __style && __style.__cursorDelegate ? __style.__cursorDelegate : null
 
-    selectByMouse: control.selectByMouse && (!cursorHandle.delegate || !selectionHandle.delegate)
+    selectByMouse: control.selectByMouse && (!Settings.isMobile || !cursorHandle.delegate || !selectionHandle.delegate)
 
     // force re-evaluation when selection moves:
     // - cursorRectangle changes => content scrolled
@@ -104,13 +104,17 @@ TextInput {
         anchors.fill: parent
         hoverEnabled: true
         cursorShape: Qt.IBeamCursor
-        acceptedButtons: input.selectByMouse ? Qt.NoButton : Qt.LeftButton
+        acceptedButtons: (input.selectByMouse ? Qt.NoButton : Qt.LeftButton) | (control.menu ? Qt.RightButton : Qt.NoButton)
         onClicked: {
+            if (editMenu.item)
+                return;
             var pos = input.positionAt(mouse.x, mouse.y)
             input.moveHandles(pos, pos)
             input.activate()
         }
         onPressAndHold: {
+            if (editMenu.item)
+                return;
             var pos = input.positionAt(mouse.x, mouse.y)
             input.moveHandles(pos, control.selectByMouse ? -1 : pos)
             input.activate()
@@ -120,6 +124,7 @@ TextInput {
     EditMenu {
         id: editMenu
         input: parent
+        mouseArea: mouseArea
         control: parent.control
         cursorHandle: cursorHandle
         selectionHandle: selectionHandle
@@ -132,7 +137,7 @@ TextInput {
         editor: input
         parent: control
         control: input.control
-        active: control.selectByMouse
+        active: control.selectByMouse && Settings.isMobile
         maximum: cursorHandle.position - 1
 
         property var mappedPos: parent.mapFromItem(editor, editor.selectionRectangle.x, editor.selectionRectangle.y)
@@ -158,15 +163,14 @@ TextInput {
         editor: input
         parent: control
         control: input.control
-        active: control.selectByMouse
-        delegate: style.cursorHandle
+        active: control.selectByMouse && Settings.isMobile
         minimum: input.hasSelection ? selectionHandle.position + 1 : -1
 
         property var mappedPos: parent.mapFromItem(editor, editor.cursorRectangle.x, editor.cursorRectangle.y)
         x: mappedPos.x
         y: mappedPos.y
 
-        visible: pressed || (input.hasSelection && handleX + handleWidth >= -1 && handleX <= control.width + 1)
+        visible: pressed || ((input.cursorVisible || input.hasSelection) && handleX + handleWidth >= -1 && handleX <= control.width + 1)
 
         onPositionChanged: {
             if (!input.blockRecursion) {

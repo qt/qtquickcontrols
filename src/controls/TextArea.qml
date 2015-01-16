@@ -718,7 +718,8 @@ ScrollView {
         TextEdit {
             id: edit
             focus: true
-            cursorDelegate: __style && __style.cursorDelegate ? __style.cursorDelegate : null
+            cursorDelegate: __style && __style.__cursorDelegate ? __style.__cursorDelegate : null
+            persistentSelection: true
 
             Rectangle {
                 id: colorRect
@@ -769,7 +770,7 @@ ScrollView {
             wrapMode: TextEdit.WordWrap
             textMargin: __style && __style.textMargin !== undefined ? __style.textMargin : 4
 
-            selectByMouse: area.selectByMouse && (!cursorHandle.delegate || !selectionHandle.delegate)
+            selectByMouse: area.selectByMouse && (!Settings.isMobile || !cursorHandle.delegate || !selectionHandle.delegate)
             readOnly: false
 
             Keys.forwardTo: area
@@ -846,15 +847,20 @@ ScrollView {
             }
 
             MouseArea {
+                id: mouseArea
                 anchors.fill: parent
                 cursorShape: edit.hoveredLink ? Qt.PointingHandCursor : Qt.IBeamCursor
-                acceptedButtons: edit.selectByMouse ? Qt.NoButton : Qt.LeftButton
+                acceptedButtons: (edit.selectByMouse ? Qt.NoButton : Qt.LeftButton) | (area.menu ? Qt.RightButton : Qt.NoButton)
                 onClicked: {
+                    if (editMenu.item)
+                        return;
                     var pos = edit.positionAt(mouse.x, mouse.y)
                     edit.moveHandles(pos, pos)
                     edit.activate()
                 }
                 onPressAndHold: {
+                    if (editMenu.item)
+                        return;
                     var pos = edit.positionAt(mouse.x, mouse.y)
                     edit.moveHandles(pos, area.selectByMouse ? -1 : pos)
                     edit.activate()
@@ -865,6 +871,7 @@ ScrollView {
                 id: editMenu
                 control: area
                 input: edit
+                mouseArea: mouseArea
                 cursorHandle: cursorHandle
                 selectionHandle: selectionHandle
                 flickable: flickable
@@ -878,8 +885,8 @@ ScrollView {
                 control: area
                 z: 1 // above scrollbars
                 parent:  Qt.platform.os === "ios"  ? editor : __scroller // no clip
-                active: area.selectByMouse
-                delegate: __style.selectionHandle
+                active: area.selectByMouse && Settings.isMobile
+                delegate: __style.__selectionHandle
                 maximum: cursorHandle.position - 1
 
                 // Mention contentX and contentY in the mappedPos binding to force re-evaluation if they change
@@ -888,8 +895,13 @@ ScrollView {
                 x: mappedPos.x
                 y: mappedPos.y
 
-                visible: pressed || (edit.hasSelection && handleY + handleHeight >= -1 && handleY <= viewport.height + 1
-                                                       && handleX + handleWidth >= -1 && handleX <= viewport.width + 1)
+                property var posInViewport: flickableItem.contentX !== flickableItem.contentY !== Number.MAX_VALUE ?
+                                                parent.mapToItem(viewport, handleX, handleY) : -1
+                visible: pressed || (edit.hasSelection
+                                     && posInViewport.y + handleHeight >= -1
+                                     && posInViewport.y <= viewport.height + 1
+                                     && posInViewport.x + handleWidth >= -1
+                                     && posInViewport.x <= viewport.width + 1)
 
                 onPositionChanged: {
                     if (!edit.blockRecursion) {
@@ -909,8 +921,8 @@ ScrollView {
                 control: area
                 z: 1 // above scrollbars
                 parent:  Qt.platform.os === "ios"  ? editor : __scroller // no clip
-                active: area.selectByMouse
-                delegate: __style.cursorHandle
+                active: area.selectByMouse && Settings.isMobile
+                delegate: __style.__cursorHandle
                 minimum: edit.hasSelection ? selectionHandle.position + 1 : -1
 
                 // Mention contentX and contentY in the mappedPos binding to force re-evaluation if they change
@@ -919,8 +931,13 @@ ScrollView {
                 x: mappedPos.x
                 y: mappedPos.y
 
-                visible: pressed || (edit.hasSelection && handleY + handleHeight >= -1 && handleY <= viewport.height + 1
-                                                       && handleX + handleWidth >= -1 && handleX <= viewport.width + 1)
+                property var posInViewport: flickableItem.contentX !== flickableItem.contentY !== Number.MAX_VALUE ?
+                                                parent.mapToItem(viewport, handleX, handleY) : -1
+                visible: pressed || ((edit.cursorVisible || edit.hasSelection)
+                                     && posInViewport.y + handleHeight >= -1
+                                     && posInViewport.y <= viewport.height + 1
+                                     && posInViewport.x + handleWidth >= -1
+                                     && posInViewport.x <= viewport.width + 1)
 
                 onPositionChanged: {
                     if (!edit.blockRecursion) {

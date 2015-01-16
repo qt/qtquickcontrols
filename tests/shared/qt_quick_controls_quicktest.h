@@ -34,13 +34,8 @@
 #ifndef QT_QUICK_CONTROLS_QUICKTEST_H
 #define QT_QUICK_CONTROLS_QUICKTEST_H
 
+#include "qt_quick_controls_testapp.h"
 #include <QtQuickTest/quicktestglobal.h>
-
-#ifdef QT_WIDGETS_LIB
-#include <QtWidgets/QApplication>
-#else
-#include <QtGui/QGuiApplication>
-#endif
 
 QT_BEGIN_NAMESPACE
 
@@ -50,18 +45,12 @@ QT_BEGIN_NAMESPACE
 #define QT_QUICK_CONTROLS_TEST_MAIN_VAR 0
 #endif
 
-#ifdef QT_WIDGETS_LIB
-#define Application QApplication
-#else
-#define Application QGuiApplication
-#endif
-
 #define QT_QUICK_CONTROLS_TEST_MAIN(name) \
     int main(int argc, char **argv) \
     { \
-        Application* app = 0; \
+        QtQuickControlsTestApp* app = 0; \
         if (!QCoreApplication::instance()) \
-            app = new Application(argc, argv); \
+            app = new QtQuickControlsTestApp(argc, argv); \
         int i = quick_test_main(argc, argv, #name, QT_QUICK_CONTROLS_TEST_MAIN_VAR); \
         delete app; \
         return i; \

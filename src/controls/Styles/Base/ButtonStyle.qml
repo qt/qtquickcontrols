@@ -143,7 +143,7 @@ Style {
                 id: text
                 renderType: Settings.isMobile ? Text.QtRendering : Text.NativeRendering
                 anchors.verticalCenter: parent.verticalCenter
-                text: control.text
+                text: StyleHelpers.stylizeMnemonics(control.text)
                 color: SystemPaletteSingleton.buttonText(control.enabled)
             }
         }

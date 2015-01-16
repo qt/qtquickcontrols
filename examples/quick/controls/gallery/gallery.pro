@@ -1,17 +1,20 @@
-QT += qml quick
+TEMPLATE = app
 TARGET = gallery
-!no_desktop: QT += widgets
 
-include(src/src.pri)
-include(../shared/shared.pri)
+SOURCES += \
+    main.cpp
+
+RESOURCES += \
+    gallery.qrc
 
 OTHER_FILES += \
     main.qml \
-    content/AboutDialog.qml \
-    content/Controls.qml \
-    content/ImageViewer.qml \
-    content/ModelView.qml \
-    content/Styles.qml
+    qml/ButtonPage.qml \
+    qml/InputPage.qml \
+    qml/ProgressPage.qml \
+    qml/UI.js \
+    qml/+android/UI.js \
+    qml/+ios/UI.js \
+    qml/+osx/UI.js
 
-RESOURCES += \
-    resources.qrc
+include(../shared/shared.pri)

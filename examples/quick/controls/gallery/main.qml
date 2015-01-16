@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2014 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the Qt Quick Controls module of the Qt Toolkit.
@@ -39,37 +39,22 @@
 ****************************************************************************/
 
 import QtQuick 2.2
+import QtQuick.Layouts 1.1
+import QtQuick.Dialogs 1.1
 import QtQuick.Controls 1.2
-import QtQuick.Layouts 1.0
-import QtQuick.Dialogs 1.0
-import "content"
+import "qml/UI.js" as UI
+import "qml"
 
 ApplicationWindow {
     visible: true
     title: "Qt Quick Controls Gallery"
 
-    width: 640
-    height: 420
-    minimumHeight: 400
-    minimumWidth: 600
-
-    ImageViewer { id: imageViewer }
-
-    FileDialog {
-        id: fileDialog
-        nameFilters: [ "Image files (*.png *.jpg)" ]
-        onAccepted: imageViewer.open(fileUrl)
-    }
-
-    AboutDialog { id: aboutDialog }
-
-    Action {
-        id: openAction
-        text: "&Open"
-        shortcut: StandardKey.Open
-        iconSource: "images/document-open.png"
-        onTriggered: fileDialog.open()
-        tooltip: "Open an image"
+    MessageDialog {
+        id: aboutDialog
+        icon: StandardIcon.Information
+        title: "About"
+        text: "Qt Quick Controls Gallery"
+        informativeText: "This example demonstrates most of the available Qt Quick Controls."
     }
 
     Action {
@@ -100,20 +85,15 @@ ApplicationWindow {
     }
 
     toolBar: ToolBar {
-        id: toolbar
         RowLayout {
-            id: toolbarLayout
-            spacing: 0
             anchors.fill: parent
-            ToolButton { action: openAction }
-            ToolButton {
-                Accessible.name: "Save as"
-                iconSource: "images/document-save-as.png"
-                tooltip: "(Pretend to) Save as..."
+            anchors.margins: spacing
+            Label {
+                text: UI.label
             }
             Item { Layout.fillWidth: true }
             CheckBox {
-                id: enabledCheck
+                id: enabler
                 text: "Enabled"
                 checked: true
             }
@@ -123,7 +103,6 @@ ApplicationWindow {
     menuBar: MenuBar {
         Menu {
             title: "&File"
-            MenuItem { action: openAction }
             MenuItem {
                 text: "E&xit"
                 shortcut: StandardKey.Quit
@@ -132,6 +111,7 @@ ApplicationWindow {
         }
         Menu {
             title: "&Edit"
+            visible: tabView.currentIndex == 2
             MenuItem { action: cutAction }
             MenuItem { action: copyAction }
             MenuItem { action: pasteAction }
@@ -146,24 +126,34 @@ ApplicationWindow {
     }
 
     TabView {
-        id:frame
-        enabled: enabledCheck.checked
-        tabPosition: controlPage.item ? controlPage.item.tabPosition : Qt.TopEdge
+        id: tabView
+
         anchors.fill: parent
-        anchors.margins: Qt.platform.os === "osx" ? 12 : 2
+        anchors.margins: UI.margin
+        tabPosition: UI.tabPosition
+
+        Layout.minimumWidth: 360
+        Layout.minimumHeight: 360
+        Layout.preferredWidth: 480
+        Layout.preferredHeight: 640
 
         Tab {
-            id: controlPage
-            title: "Controls"
-            Controls { }
+            title: "Buttons"
+            ButtonPage {
+                enabled: enabler.checked
+            }
         }
         Tab {
-            title: "Itemviews"
-            ModelView { }
+            title: "Progress"
+            ProgressPage {
+                enabled: enabler.checked
+            }
         }
         Tab {
-            title: "Styles"
-            Styles { anchors.fill: parent }
+            title: "Input"
+            InputPage {
+                enabled: enabler.checked
+            }
         }
     }
 }

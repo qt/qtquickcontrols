@@ -629,7 +629,7 @@ Control {
         font: textInput.font
         horizontalAlignment: textInput.horizontalAlignment
         verticalAlignment: textInput.verticalAlignment
-        opacity: !textInput.text.length && !textInput.inputMethodComposing ? 1 : 0
+        opacity: textInput.displayText.length ? 0.0 : 1.0
         color: __panel ? __panel.placeholderTextColor : "darkgray"
         clip: contentWidth > width;
         elide: Text.ElideRight
@@ -643,8 +643,8 @@ Control {
         selectedTextColor: __panel ? __panel.selectedTextColor : "white"
 
         control: textfield
-        cursorHandle: __style ? __style.cursorHandle : undefined
-        selectionHandle: __style ? __style.selectionHandle : undefined
+        cursorHandle: __style ? __style.__cursorHandle : undefined
+        selectionHandle: __style ? __style.__selectionHandle : undefined
 
         font: __panel ? __panel.font : TextSingleton.font
         anchors.leftMargin: __panel ? __panel.leftMargin : 0
@@ -662,12 +662,7 @@ Control {
 
         Keys.forwardTo: textfield
 
-        onAccepted: {
-            Qt.inputMethod.commit()
-            if (!(textInput.inputMethodHints & Qt.ImhMultiLine))
-                Qt.inputMethod.hide()
-            textfield.accepted()
-        }
+        onAccepted: textfield.accepted()
 
         onEditingFinished: textfield.editingFinished()
     }

@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2014 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the Qt Quick Controls module of the Qt Toolkit.
@@ -39,11 +39,21 @@
 ****************************************************************************/
 
 #include "qtquickcontrolsapplication.h"
-#include <QtQml/QQmlApplicationEngine>
+#include "sortfilterproxymodel.h"
+#include <QtQml/qqmlapplicationengine.h>
+#include <QtGui/qsurfaceformat.h>
+#include <QtQml/qqml.h>
 
 int main(int argc, char *argv[])
 {
     QtQuickControlsApplication app(argc, argv);
+    if (QCoreApplication::arguments().contains(QLatin1String("--coreprofile"))) {
+        QSurfaceFormat fmt;
+        fmt.setVersion(4, 4);
+        fmt.setProfile(QSurfaceFormat::CoreProfile);
+        QSurfaceFormat::setDefaultFormat(fmt);
+    }
+    qmlRegisterType<SortFilterProxyModel>("org.qtproject.example", 1, 0, "SortFilterProxyModel");
     QQmlApplicationEngine engine(QUrl("qrc:/main.qml"));
     return app.exec();
 }

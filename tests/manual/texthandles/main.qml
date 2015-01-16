@@ -105,8 +105,8 @@ ApplicationWindow {
             selectByMouse: selectBox.checked
 
             style: TextFieldStyle {
-                cursorHandle: handleBox.checked ? cursorDelegate : null
-                selectionHandle: handleBox.checked ? selectionDelegate : null
+                __cursorHandle: handleBox.checked ? cursorDelegate : null
+                __selectionHandle: handleBox.checked ? selectionDelegate : null
             }
         }
 
@@ -121,8 +121,8 @@ ApplicationWindow {
             horizontalAlignment: Qt.AlignHCenter
 
             style: SpinBoxStyle {
-                cursorHandle: handleBox.checked ? cursorDelegate : null
-                selectionHandle: handleBox.checked ? selectionDelegate : null
+                __cursorHandle: handleBox.checked ? cursorDelegate : null
+                __selectionHandle: handleBox.checked ? selectionDelegate : null
             }
         }
 
@@ -148,8 +148,8 @@ ApplicationWindow {
             }
 
             style: ComboBoxStyle {
-                cursorHandle: handleBox.checked ? cursorDelegate : null
-                selectionHandle: handleBox.checked ? selectionDelegate : null
+                __cursorHandle: handleBox.checked ? cursorDelegate : null
+                __selectionHandle: handleBox.checked ? selectionDelegate : null
             }
         }
 
@@ -164,8 +164,8 @@ ApplicationWindow {
             text: loremIpsum + "<p>" + loremIpsum + "<p>" + loremIpsum + "<p>" + loremIpsum
 
             style: TextAreaStyle {
-                cursorHandle: handleBox.checked ? cursorDelegate : null
-                selectionHandle: handleBox.checked ? selectionDelegate : null
+                __cursorHandle: handleBox.checked ? cursorDelegate : null
+                __selectionHandle: handleBox.checked ? selectionDelegate : null
             }
         }
     }

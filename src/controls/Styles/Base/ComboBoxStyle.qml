@@ -280,7 +280,8 @@ Style {
         property Component __scrollerStyle: null
     }
 
-    /*! The cursor handle.
+    /*! \internal
+        The cursor handle.
         \since QtQuick.Controls.Styles 1.3
 
         The parent of the handle is positioned to the top left corner of
@@ -297,9 +298,10 @@ Style {
             \row \li \b {styleData.hasSelection} : bool \li Whether the editor has selected text.
         \endtable
     */
-    property Component cursorHandle
+    property Component __cursorHandle
 
-    /*! The selection handle.
+    /*! \internal
+        The selection handle.
         \since QtQuick.Controls.Styles 1.3
 
         The parent of the handle is positioned to the top left corner of
@@ -316,10 +318,11 @@ Style {
             \row \li \b {styleData.hasSelection} : bool \li Whether the editor has selected text.
         \endtable
     */
-    property Component selectionHandle
+    property Component __selectionHandle
 
-    /*! The cursor delegate.
+    /*! \internal
+        The cursor delegate.
         \since QtQuick.Controls.Styles 1.3
     */
-    property Component cursorDelegate
+    property Component __cursorDelegate
 }

@@ -75,7 +75,7 @@ Item {
         }
         MenuItem {
             text: "select"
-            visible: selectionStart === selectionEnd
+            visible: selectionStart === selectionEnd && input.length > 0
             onTriggered: selectWord();
         }
         MenuItem {
@@ -85,9 +85,8 @@ Item {
         }
     }
 
-    MouseArea {
-        id: mouseArea
-        anchors.fill: parent
+    Connections {
+        target: mouseArea
 
         function clearFocusFromOtherItems()
         {
@@ -115,7 +114,8 @@ Item {
         onPressAndHold: {
             var pos = input.positionAt(mouseArea.mouseX, mouseArea.mouseY);
             input.select(pos, pos);
-            if (!control.menu || !input.activeFocus || (selectionStart != selectionEnd)) {
+            var hasSelection = selectionStart != selectionEnd;
+            if (!control.menu || (input.length > 0 && (!input.activeFocus || hasSelection))) {
                 selectWord();
             } else {
                 // We don't select anything at this point, the
@@ -170,6 +170,7 @@ Item {
                 return;
 
             if ((__showMenuFromTouchAndHold || selectionStart !== selectionEnd)
+                    && control.activeFocus
                     && (!cursorHandle.pressed && !selectionHandle.pressed)
                     && (!flickable || !flickable.moving)
                     && (cursorHandle.delegate)) {

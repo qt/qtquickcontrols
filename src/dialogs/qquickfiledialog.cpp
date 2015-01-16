@@ -44,7 +44,7 @@ using namespace QV4;
 /*!
     \qmltype AbstractFileDialog
     \instantiates QQuickFileDialog
-    \inqmlmodule QtQuick.Dialogs 1
+    \inqmlmodule QtQuick.Dialogs
     \ingroup qtquick-visual
     \brief API wrapper for QML file dialog implementations
     \since 5.1
@@ -176,14 +176,15 @@ void QQuickFileDialog::clearSelection()
 bool QQuickFileDialog::addSelection(const QUrl &path)
 {
     QFileInfo info(path.toLocalFile());
-    if (info.exists() && ((info.isDir() && m_selectFolder) || !info.isDir())) {
-        if (m_selectFolder)
-            m_selections.append(pathFolder(path.toLocalFile()));
-        else
-            m_selections.append(path);
-        return true;
-    }
-    return false;
+    if (selectExisting() && !info.exists())
+        return false;
+    if (selectFolder() != info.isDir())
+        return false;
+    if (selectFolder())
+        m_selections.append(pathFolder(path.toLocalFile()));
+    else
+        m_selections.append(path);
+    return true;
 }
 
 /*!

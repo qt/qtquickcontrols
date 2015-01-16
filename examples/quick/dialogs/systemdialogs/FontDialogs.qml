@@ -42,12 +42,11 @@ import QtQuick 2.2
 import QtQuick.Controls 1.2
 import QtQuick.Dialogs 1.1
 
-Rectangle {
+Item {
     width: 320
     height: 360
     SystemPalette { id: palette }
     clip: true
-    color: palette.window
 
     FontDialog {
         id: fontDialog
@@ -70,7 +69,7 @@ Rectangle {
         anchors.fill: parent
         anchors.margins: 12
         spacing: 8
-        Text {
+        Label {
             font.bold: true
             text: "Font dialog properties:"
         }
@@ -105,12 +104,11 @@ Rectangle {
             text: "Visible"
             Binding on checked { value: fontDialog.visible }
         }
-        Text {
+        Label {
             text: "Current font:"
         }
-        Text {
+        Label {
             id: fontLabel
-            color: palette.windowText
             text: "<b>" + fontDialog.font.family + " - " + fontDialog.font.pointSize + "</b>"
             MouseArea {
                 anchors.fill: parent

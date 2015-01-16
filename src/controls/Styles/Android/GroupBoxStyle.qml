@@ -53,7 +53,7 @@ GroupBoxStyle {
         readonly property var styleDef: AndroidStyle.styleDef.checkboxStyle
 
         readonly property real contentMargin: label.implicitHeight / 3
-        readonly property real topMargin: indicator.height
+        readonly property real topMargin: control.checkable ? indicator.height : label.height
         Binding { target: root; property: "padding.top"; value: topMargin + contentMargin }
         Binding { target: root; property: "padding.left"; value: contentMargin }
         Binding { target: root; property: "padding.right"; value: contentMargin }
@@ -95,14 +95,15 @@ GroupBoxStyle {
 
         DrawableLoader {
             id: indicator
-            visible: control.checkable
+            active: control.checkable
             checked: control.checked
             pressed: check.pressed
             focused: check.activeFocus
             window_focused: control.Window.active
             styleDef: AndroidStyle.styleDef.checkboxStyle.CompoundButton_button
-            anchors.verticalCenter: label.verticalCenter
             width: control.checkable ? item.implicitWidth : 0
+            anchors.verticalCenter: parent.top
+            anchors.verticalCenterOffset: topMargin / 2
         }
 
         LabelStyle {
@@ -114,9 +115,10 @@ GroupBoxStyle {
             window_focused: control.Window.active
             styleDef: AndroidStyle.styleDef.checkboxStyle
 
-            anchors.top: parent.top
             anchors.left: indicator.right
             anchors.right: parent.right
+            anchors.verticalCenter: parent.top
+            anchors.verticalCenterOffset: topMargin / 2
         }
     }
 }

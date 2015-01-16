@@ -27,5 +27,6 @@
 
 /*!
     \group controls
+    \brief Buttons and UI Controls.
     \title Buttons and Controls
 */

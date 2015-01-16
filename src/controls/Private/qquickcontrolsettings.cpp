@@ -35,10 +35,14 @@
 #include <qquickitem.h>
 #include <qcoreapplication.h>
 #include <qqmlengine.h>
+#include <qlibrary.h>
 #include <qdir.h>
 #include <QTouchDevice>
 #include <QGuiApplication>
 #include <QStyleHints>
+#if defined(Q_OS_ANDROID) && !defined(Q_OS_ANDROID_NO_SDK)
+#include <private/qjnihelpers_p.h>
+#endif
 
 QT_BEGIN_NAMESPACE
 
@@ -49,7 +53,8 @@ static QString defaultStyleName()
     if (QCoreApplication::instance()->inherits("QApplication"))
         return QLatin1String("Desktop");
 #elif defined(Q_OS_ANDROID) && !defined(Q_OS_ANDROID_NO_SDK)
-    return QLatin1String("Android");
+    if (QtAndroidPrivate::androidSdkVersion() >= 11)
+        return QLatin1String("Android");
 #elif defined(Q_OS_IOS)
     return QLatin1String("iOS");
 #elif defined(Q_OS_WINRT)
@@ -126,11 +131,29 @@ QQuickControlSettings::QQuickControlSettings(QQmlEngine *engine)
 
     QString path = styleFilePath();
 
-    if (!QDir(path).exists()) {
+    QDir dir(path);
+    if (!dir.exists()) {
         QString unknownStyle = m_name;
         m_name = defaultStyleName();
         m_path = styleImportPath(engine, m_name);
         qWarning() << "WARNING: Cannot find style" << unknownStyle << "- fallback:" << styleFilePath();
+    } else {
+        typedef bool (*StyleInitFunc)();
+        typedef const char *(*StylePathFunc)();
+
+        foreach (const QString &fileName, dir.entryList()) {
+            if (QLibrary::isLibrary(fileName)) {
+                QLibrary lib(dir.absoluteFilePath(fileName));
+                StyleInitFunc initFunc = (StyleInitFunc) lib.resolve("qt_quick_controls_style_init");
+                if (initFunc)
+                    initFunc();
+                StylePathFunc pathFunc = (StylePathFunc) lib.resolve("qt_quick_controls_style_path");
+                if (pathFunc)
+                    m_path = QString::fromLocal8Bit(pathFunc());
+                if (initFunc || pathFunc)
+                    break;
+            }
+        }
     }
 
     connect(this, SIGNAL(styleNameChanged()), SIGNAL(styleChanged()));

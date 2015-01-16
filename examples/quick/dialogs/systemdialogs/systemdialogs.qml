@@ -52,23 +52,23 @@ ApplicationWindow {
         anchors.margins: 8
         Tab {
             id: controlPage
-            title: "File Dialog"
+            title: "File"
             FileDialogs { }
         }
         Tab {
-            title: "Color Dialog"
+            title: "Color"
             ColorDialogs { }
         }
         Tab {
-            title: "Font Dialog"
+            title: "Font"
             FontDialogs { anchors.fill: parent }
         }
         Tab {
-            title: "Message Dialog"
+            title: "Message"
             MessageDialogs { anchors.fill:parent }
         }
         Tab {
-            title: "Custom Dialogs"
+            title: "Custom"
             CustomDialogs { anchors.fill:parent }
         }
     }

@@ -65,7 +65,7 @@ Item {
         anchors.fill: parent
         anchors.margins: 12
         spacing: 8
-        Text {
+        Label {
             font.bold: true
             text: "Color dialog properties:"
         }
@@ -99,9 +99,8 @@ Item {
                     onClicked: colorDialog.open()
                 }
             }
-            Text {
+            Label {
                 id: colorLabel
-                color: palette.windowText
                 text: "<b>current color:</b> " + colorDialog.color
                 anchors.verticalCenter: parent.verticalCenter
             }

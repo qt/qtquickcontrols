@@ -51,7 +51,7 @@ ApplicationWindow {
     property bool ignoreUpdate: false
     onPropertyChanged: container.resetSize()
 
-    property var propertyMap: []
+    property var propertyMap: ({})
 
     property SpinBox widthControl
     property SpinBox heightControl
@@ -175,8 +175,8 @@ ApplicationWindow {
                         customStyle.checked = false
 
                         if (status == Loader.Ready) {
-                            propertyMap = []
-                            var arr = new Array
+                            propertyMap = {}
+                            var arr = {}
 
                             for (var prop in item) {
 
@@ -391,9 +391,9 @@ ApplicationWindow {
                                         arr[typeName].push({name: prop , result: val, typeString: typeName, layoutComponent: layout, enumModel: enumModelData})
                                     }
                                 }
-                                propertyMap = arr;
-                                container.resetSize();
                             }
+                            propertyMap = arr;
+                            container.resetSize();
                         }
                     }
 

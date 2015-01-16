@@ -74,7 +74,7 @@ Style {
                 id: label
                 visible: !hasIcon
                 anchors.centerIn: parent
-                text: control.text
+                text: StyleHelpers.stylizeMnemonics(control.text)
                 renderType: Settings.isMobile ? Text.QtRendering : Text.NativeRendering
             }
             Image {

@@ -44,7 +44,7 @@ QT_BEGIN_NAMESPACE
 /*!
     \qmltype FontDialog
     \instantiates QQuickPlatformFontDialog
-    \inqmlmodule QtQuick.Dialogs 1
+    \inqmlmodule QtQuick.Dialogs
     \ingroup qtquick-visual
     \ingroup dialogs
     \brief Dialog component for choosing a font.

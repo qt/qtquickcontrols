@@ -41,7 +41,7 @@ QT_BEGIN_NAMESPACE
 /*!
     \qmltype AbstractFontDialog
     \instantiates QQuickFontDialog
-    \inqmlmodule QtQuick.Dialogs 1
+    \inqmlmodule QtQuick.Dialogs
     \ingroup qtquick-visual
     \brief API wrapper for QML font dialog implementations
     \since 5.2

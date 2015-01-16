@@ -44,7 +44,7 @@ QT_BEGIN_NAMESPACE
 /*!
     \qmltype FileDialog
     \instantiates QQuickPlatformFileDialog
-    \inqmlmodule QtQuick.Dialogs 1
+    \inqmlmodule QtQuick.Dialogs
     \ingroup dialogs
     \brief Dialog component for choosing files from a local filesystem.
     \since 5.1
@@ -170,6 +170,21 @@ QQuickPlatformFileDialog::~QQuickPlatformFileDialog()
     if (m_dlgHelper)
         m_dlgHelper->hide();
     delete m_dlgHelper;
+}
+
+void QQuickPlatformFileDialog::setModality(Qt::WindowModality m)
+{
+#ifdef Q_OS_WIN
+    // A non-modal native file dialog is not possible on Windows, so
+    // be stubborn about it.  Emit modalityChanged() whether it changed
+    // or not, to ensure that anything which depends on the property
+    // will re-read the actual current value.
+    if (m != Qt::ApplicationModal)
+        m = Qt::ApplicationModal;
+    if (m == m_modality)
+        emit modalityChanged();
+#endif
+    QQuickAbstractFileDialog::setModality(m);
 }
 
 QPlatformFileDialogHelper *QQuickPlatformFileDialog::helper()

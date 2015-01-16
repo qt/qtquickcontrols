@@ -41,6 +41,7 @@
 import QtQuick 2.2
 import QtQuick.Controls 1.2
 import QtQuick.Dialogs 1.1
+import QtQuick.Layouts 1.1
 import QtQuick.Window 2.0
 
 Item {
@@ -72,83 +73,79 @@ Item {
     }
     //! [filedialog]
 
-    Column {
-        anchors.fill: parent
-        anchors.margins: 12
-        spacing: 8
-        Text {
-            color: palette.windowText
-            font.bold: true
-            text: "File dialog properties:"
+    ScrollView {
+        id: scrollView
+        anchors {
+            left: parent.left
+            right: parent.right
+            top: parent.top
+            bottom: bottomBar.top
+            leftMargin: 12
         }
-        CheckBox {
-            id: fileDialogModal
-            text: "Modal"
-            checked: true
-            Binding on checked { value: fileDialog.modality != Qt.NonModal }
-        }
-        CheckBox {
-            id: fileDialogSelectFolder
-            text: "Select Folder"
-            Binding on checked { value: fileDialog.selectFolder }
-        }
-        CheckBox {
-            id: fileDialogSelectExisting
-            text: "Select Existing Files"
-            checked: true
-            Binding on checked { value: fileDialog.selectExisting }
-        }
-        CheckBox {
-            id: fileDialogSelectMultiple
-            text: "Select Multiple Files"
-            Binding on checked { value: fileDialog.selectMultiple }
-        }
-        CheckBox {
-            id: fileDialogOpenFiles
-            text: "Open Files After Accepting"
-        }
-        CheckBox {
-            id: fileDialogSidebarVisible
-            text: "Show Sidebar"
-            checked: fileDialog.sidebarVisible
-            Binding on checked { value: fileDialog.sidebarVisible }
-        }
-        CheckBox {
-            id: fileDialogVisible
-            text: "Visible"
-            Binding on checked { value: fileDialog.visible }
-        }
-        Text {
-            color: palette.windowText
-            text: "<b>current view folder:</b> " + fileDialog.folder
-        }
-        Text {
-            color: palette.windowText
-            text: "<b>name filters:</b> {" + fileDialog.nameFilters + "}"
-            width: parent.width
-            wrapMode: Text.Wrap
-        }
-        Text {
-            color: palette.windowText
-            text: "<b>current filter:</b>" + fileDialog.selectedNameFilter
-            width: parent.width
-            wrapMode: Text.Wrap
-        }
-        Text {
-            color: palette.windowText
-            text: "<b>chosen files:</b> " + fileDialog.fileUrls
-            width: parent.width
-            wrapMode: Text.Wrap
-        }
-        Text {
-            color: palette.windowText
-            text: "<b>chosen single path:</b> " + fileDialog.fileUrl
-            width: parent.width
-            wrapMode: Text.Wrap
+        ColumnLayout {
+            spacing: 8
+            Item { Layout.preferredHeight: 4 } // padding
+            Label {
+                font.bold: true
+                text: "File dialog properties:"
+            }
+            CheckBox {
+                id: fileDialogModal
+                text: "Modal"
+                checked: true
+                Binding on checked { value: fileDialog.modality != Qt.NonModal }
+            }
+            CheckBox {
+                id: fileDialogSelectFolder
+                text: "Select Folder"
+                Binding on checked { value: fileDialog.selectFolder }
+            }
+            CheckBox {
+                id: fileDialogSelectExisting
+                text: "Select Existing Files"
+                checked: true
+                Binding on checked { value: fileDialog.selectExisting }
+            }
+            CheckBox {
+                id: fileDialogSelectMultiple
+                text: "Select Multiple Files"
+                Binding on checked { value: fileDialog.selectMultiple }
+            }
+            CheckBox {
+                id: fileDialogOpenFiles
+                text: "Open Files After Accepting"
+            }
+            CheckBox {
+                id: fileDialogSidebarVisible
+                text: "Show Sidebar"
+                checked: fileDialog.sidebarVisible
+                Binding on checked { value: fileDialog.sidebarVisible }
+            }
+            CheckBox {
+                id: fileDialogVisible
+                text: "Visible"
+                Binding on checked { value: fileDialog.visible }
+            }
+            Label {
+                text: "<b>current view folder:</b> " + fileDialog.folder
+            }
+            Label {
+                text: "<b>name filters:</b> {" + fileDialog.nameFilters + "}"
+            }
+            Label {
+                text: "<b>current filter:</b>" + fileDialog.selectedNameFilter
+            }
+            Label {
+                text: "<b>chosen files:</b> " + fileDialog.fileUrls
+            }
+            Label {
+                text: "<b>chosen single path:</b> " + fileDialog.fileUrl
+            }
         }
     }
 
     Rectangle {
+        id: bottomBar
         anchors {
             left: parent.left
             right: parent.right

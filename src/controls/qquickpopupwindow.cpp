@@ -36,7 +36,7 @@
 #include <qguiapplication.h>
 #include <qpa/qwindowsysteminterface.h>
 #include <QtQuick/qquickitem.h>
-#include <QtQuick/private/qquickrendercontrol_p.h>
+#include <QtQuick/QQuickRenderControl>
 
 QT_BEGIN_NAMESPACE
 
@@ -180,7 +180,8 @@ void QQuickPopupWindow::forwardEventToTransientParent(QMouseEvent *e)
             || e->type() == QEvent::MouseButtonPress)) {
         // Clicked outside any popup
         dismissPopup();
-    } else if (transientParent()) {
+    }
+    if (transientParent()) {
         QPoint parentPos = transientParent()->mapFromGlobal(mapToGlobal(e->pos()));
         QMouseEvent pe = QMouseEvent(e->type(), parentPos, e->button(), e->buttons(), e->modifiers());
         QGuiApplication::sendEvent(transientParent(), &pe);
@@ -191,11 +192,11 @@ void QQuickPopupWindow::exposeEvent(QExposeEvent *e)
 {
     if (isExposed() && m_needsActivatedEvent) {
         m_needsActivatedEvent = false;
-        QWindowSystemInterface::handleWindowActivated(this, Qt::PopupFocusReason);
+        QWindowSystemInterface::handleWindowActivated(this);
     } else if (!isExposed() && !m_needsActivatedEvent) {
         m_needsActivatedEvent = true;
         if (QWindow *tp = transientParent())
-            QWindowSystemInterface::handleWindowActivated(tp, Qt::PopupFocusReason);
+            QWindowSystemInterface::handleWindowActivated(tp);
     }
     QQuickWindow::exposeEvent(e);
 }
@@ -204,7 +205,7 @@ void QQuickPopupWindow::hideEvent(QHideEvent *e)
 {
     if (QWindow *tp = !m_needsActivatedEvent ? transientParent() : 0) {
         m_needsActivatedEvent = true;
-        QWindowSystemInterface::handleWindowActivated(tp, Qt::PopupFocusReason);
+        QWindowSystemInterface::handleWindowActivated(tp);
     }
 
     QQuickWindow::hideEvent(e);

@@ -291,8 +291,8 @@ Control {
         anchors.bottomMargin: __style ? __style.padding.bottom: 0
 
         control: spinbox
-        cursorHandle: __style ? __style.cursorHandle : undefined
-        selectionHandle: __style ? __style.selectionHandle : undefined
+        cursorHandle: __style ? __style.__cursorHandle : undefined
+        selectionHandle: __style ? __style.__selectionHandle : undefined
 
         focus: true
         activeFocusOnPress: spinbox.activeFocusOnPress

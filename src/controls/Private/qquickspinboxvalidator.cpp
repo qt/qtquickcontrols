@@ -200,7 +200,9 @@ QValidator::State QQuickSpinBoxValidator::validate(QString &input, int &pos) con
         bool ok = false;
         qreal val = locale().toDouble(value, &ok);
         if (ok) {
-            if (state == QValidator::Acceptable) {
+            if (state == QValidator::Acceptable ||
+               (state == QValidator::Intermediate && val >= 0 && val <= m_validator.top()) ||
+               (state == QValidator::Intermediate && val < 0 && val >= m_validator.bottom())) {
                 const_cast<QQuickSpinBoxValidator *>(this)->setValue(val);
                 if (input != textFromValue(val))
                     state = QValidator::Intermediate;

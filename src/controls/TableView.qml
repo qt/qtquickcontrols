@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2014 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the Qt Quick Controls module of the Qt Toolkit.
@@ -56,25 +56,42 @@ import QtQuick.Window 2.1
    A TableView is similar to \l ListView, and adds scroll bars, selection, and
    resizable header sections. As with \l ListView, data for each row is provided through a \l model:
 
- \code
- ListModel {
-    id: libraryModel
-    ListElement{ title: "A Masterpiece" ; author: "Gabriel" }
-    ListElement{ title: "Brilliance"    ; author: "Jens" }
-    ListElement{ title: "Outstanding"   ; author: "Frederik" }
- }
- \endcode
+   \code
+   ListModel {
+       id: libraryModel
+       ListElement {
+           title: "A Masterpiece"
+           author: "Gabriel"
+       }
+       ListElement {
+           title: "Brilliance"
+           author: "Jens"
+       }
+       ListElement {
+           title: "Outstanding"
+           author: "Frederik"
+       }
+   }
+   \endcode
 
    You provide title and size of a column header
    by adding a \l TableViewColumn as demonstrated below.
- \code
 
- TableView {
-    TableViewColumn{ role: "title"  ; title: "Title" ; width: 100 }
-    TableViewColumn{ role: "author" ; title: "Author" ; width: 200 }
-    model: libraryModel
- }
- \endcode
+   \code
+   TableView {
+       TableViewColumn {
+           role: "title"
+           title: "Title"
+           width: 100
+       }
+       TableViewColumn {
+           role: "author"
+           title: "Author"
+           width: 200
+       }
+       model: libraryModel
+   }
+   \endcode
 
    The header sections are attached to values in the \l model by defining
    the model role they attach to. Each property in the model will
@@ -149,6 +166,7 @@ ScrollView {
     \li  styleData.elideMode - the elide mode of the column
     \li  styleData.textAlignment - the horizontal text alignment of the column
     \li  styleData.pressed - true when the item is pressed (since QtQuick.Controls 1.3)
+    \li  styleData.hasActiveFocus - true when the row has focus (since QtQuick.Controls 1.3)
     \endlist
 
     Example:
@@ -165,9 +183,9 @@ ScrollView {
 
     \note For performance reasons, created delegates can be recycled
     across multiple table rows. This implies that when you make use of implicit
-    properties such as \c styledata.row or \c model, these values can change also
-    after the delegate has been constructed. In practice this means you should not assume
-    that content is fixed when \c Component.onCompleted happens, but instead rely on
+    properties such as \c styleData.row or \c model, these values can change
+    after the delegate has been constructed. This means that you should not assume
+    that content is fixed when \c Component.onCompleted is called, but instead rely on
     bindings to such properties.
     */
     property Component itemDelegate: __style ? __style.itemDelegate : null
@@ -179,14 +197,15 @@ ScrollView {
     \li  styleData.alternate - true when the row uses the alternate background color
     \li  styleData.selected - true when the row is currently selected
     \li  styleData.row - the index of the row
+    \li  styleData.hasActiveFocus - true when the row has focus
     \li  styleData.pressed - true when the row is pressed (since QtQuick.Controls 1.3)
     \endlist
 
     \note For performance reasons, created delegates can be recycled
     across multiple table rows. This implies that when you make use of implicit
-    properties such as \c styledata.row or \c model, these values can change also
-    after the delegate has been constructed. In practice this means you should not assume
-    that content is fixed when \c Component.onCompleted happens, but instead rely on
+    properties such as \c styleData.row or \c model, these values can change
+    after the delegate has been constructed. This means that you should not assume
+    that content is fixed when \c Component.onCompleted is called, but instead rely on
     bindings to such properties.
     */
     property Component rowDelegate: __style ? __style.rowDelegate : null
@@ -761,7 +780,7 @@ ScrollView {
                     property QtObject styleData: QtObject {
                         readonly property bool alternate: (index + rowCount) % 2 === 1
                         readonly property bool selected: false
-                        readonly property bool hasActiveFocus: root.activeFocus
+                        readonly property bool hasActiveFocus: false
                         readonly property bool pressed: false
                     }
                     readonly property var model: listView.model
@@ -790,19 +809,23 @@ ScrollView {
 
         Keys.forwardTo: root
         Keys.onUpPressed: {
-            event.accepted = false
+            var oldIndex = listView.currentIndex
             __scroller.blockUpdates = true;
             listView.decrementCurrentIndex();
             __scroller.blockUpdates = false;
+            if (oldIndex === listView.currentIndex)
+                event.accepted = false
             if (selectionMode)
                 keySelect(event.modifiers & Qt.ShiftModifier, currentRow)
         }
 
         Keys.onDownPressed: {
-            event.accepted = false
+            var oldIndex = listView.currentIndex
             __scroller.blockUpdates = true;
             listView.incrementCurrentIndex();
             __scroller.blockUpdates = false;
+            if (oldIndex === listView.currentIndex)
+                event.accepted = false
             if (selectionMode)
                 keySelect(event.modifiers & Qt.ShiftModifier, currentRow)
         }
@@ -829,15 +852,17 @@ ScrollView {
         }
 
         Keys.onReturnPressed: {
-            event.accepted = false
             if (currentRow > -1)
                 root.activated(currentRow);
+            else
+                event.accepted = false
         }
 
         delegate: FocusScope {
             id: rowItemContainer
 
             activeFocusOnTab: false
+            z: rowItem.activeFocus ? 0.7 : rowItem.itemSelected ? 0.5 : 0
 
             property Item rowItem
             // We recycle instantiated row items to speed up list scrolling
@@ -918,7 +943,7 @@ ScrollView {
                         readonly property int row: rowitem.rowIndex
                         readonly property bool alternate: rowitem.alternate
                         readonly property bool selected: rowitem.itemSelected
-                        readonly property bool hasActiveFocus: root.activeFocus
+                        readonly property bool hasActiveFocus: rowitem.activeFocus
                         readonly property bool pressed: rowitem.rowIndex === mousearea.pressedRow
                     }
                     readonly property var model: listView.model
@@ -949,6 +974,7 @@ ScrollView {
                                 readonly property int elideMode: columnItem.elideMode
                                 readonly property int textAlignment: columnItem.horizontalAlignment
                                 readonly property bool selected: rowitem.itemSelected
+                                readonly property bool hasActiveFocus: rowitem.activeFocus
                                 readonly property bool pressed: row === mousearea.pressedRow && column === mousearea.pressedColumn
                                 readonly property color textColor: rowitem.itemTextColor
                                 readonly property string role: columnItem.role

@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2014 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the Qt Quick Controls module of the Qt Toolkit.
@@ -41,48 +41,35 @@
 import QtQuick 2.2
 import QtQuick.Controls 1.2
 
-Item {
-    id: root
-    width: 600
-    height: 300
-    anchors.fill: parent
-    anchors.margins: Qt.platform.os === "osx" ? 12 : 6
-
+Row {
+    width: 100
+    height: 200
+    spacing: 10
+    property alias control1: _control1
     ListModel {
-        id: dummyModel
-        Component.onCompleted: {
-            for (var i = 0 ; i < 100 ; ++i) {
-                append({"index": i, "title": "A title " + i, "imagesource" :"http://someurl.com", "credit" : "N/A"})
-            }
-        }
+        id: libraryModel
+        ListElement{ title: "A Masterpiece" ; author: "Gabriel" }
+        ListElement{ title: "Brilliance"    ; author: "Jens" }
+        ListElement{ title: "Outstanding"   ; author: "Frederik" }
     }
 
-    TableView{
-        model: dummyModel
-        anchors.fill: parent
-
-        TableViewColumn {
-            role: "index"
-            title: "#"
-            width: 36
-            resizable: false
-            movable: false
+    FocusScope {
+        focus: true
+        id: _control1
+        property alias control2: _control2
+        property bool gotit: false
+        TableView {
+            id: _control2
+            TableViewColumn{ role: "title"  ; title: "Title" ; width: 100 }
+            TableViewColumn{ role: "author" ; title: "Author" ; width: 200 }
+            model: libraryModel
         }
-        TableViewColumn {
-            role: "title"
-            title: "Title"
-            width: 120
-        }
-        TableViewColumn {
-            role: "credit"
-            title: "Credit"
-            width: 120
-        }
-        TableViewColumn {
-            role: "imagesource"
-            title: "Image source"
-            width: 200
-            visible: true
+        Keys.onPressed: {
+            if ((!gotit) && (event.key === Qt.Key_Up || event.key === Qt.Key_Down)) {
+                gotit = true;
+                event.accepted = true;
+                return;
+            }
         }
     }
 }

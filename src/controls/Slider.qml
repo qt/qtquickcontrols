@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+** Copyright (C) 2014 Digia Plc and/or its subsidiary(-ies).
 ** Contact: http://www.qt-project.org/legal
 **
 ** This file is part of the Qt Quick Controls module of the Qt Toolkit.
@@ -61,7 +61,7 @@ import QtQuick.Controls.Private 1.0
     }
     \endcode
 
-    The Slider value is by default in the range [0, 1]. If integer values are
+    The slider value is by default in the range [0, 1]. If integer values are
     needed, you can set the \l stepSize.
 
     You can create a custom appearance for a Slider by
@@ -82,7 +82,7 @@ Control {
     /*!
         \qmlproperty real Slider::minimumValue
 
-        This property holds the minimum value of the Slider.
+        This property holds the minimum value of the slider.
         The default value is \c{0.0}.
     */
     property alias minimumValue: range.minimumValue
@@ -90,7 +90,7 @@ Control {
     /*!
         \qmlproperty real Slider::maximumValue
 
-        This property holds the maximum value of the Slider
+        This property holds the maximum value of the slider.
         The default value is \c{1.0}.
     */
     property alias maximumValue: range.maximumValue
@@ -117,9 +117,9 @@ Control {
     /*!
         \qmlproperty bool Slider::hovered
 
-        This property indicates whether the control is being hovered.
+        This property indicates whether the slider handle is being hovered.
     */
-    readonly property alias hovered: mouseArea.containsMouse
+    readonly property alias hovered: mouseArea.handleHovered
 
     /*!
         \qmlproperty real Slider::stepSize
@@ -146,7 +146,7 @@ Control {
     /*!
         \qmlproperty real Slider::value
 
-        This property holds the current value of the Slider.
+        This property holds the current value of the slider.
         The default value is \c{0.0}.
     */
     property alias value: range.value
@@ -154,7 +154,7 @@ Control {
     /*!
         \qmlproperty bool Slider::activeFocusOnPress
 
-        This property indicates whether the Slider should receive active focus when
+        This property indicates whether the slider should receive active focus when
         pressed.
     */
     property bool activeFocusOnPress: false
@@ -162,11 +162,13 @@ Control {
     /*!
         \qmlproperty bool Slider::tickmarksEnabled
 
-        This property indicates whether the Slider should display tickmarks
+        This property indicates whether the slider should display tickmarks
         at step intervals. Tick mark spacing is calculated based on the
         \l stepSize property.
 
         The default value is \c false.
+
+        \note This property may be ignored on some platforms when using the native style (e.g. Android).
     */
     property bool tickmarksEnabled: false
 
@@ -231,46 +233,54 @@ Control {
         property int clickOffset: 0
         property real pressX: 0
         property real pressY: 0
+        property bool handleHovered: false
 
         function clamp ( val ) {
             return Math.max(range.positionAtMinimum, Math.min(range.positionAtMaximum, val))
         }
 
-        onMouseXChanged: {
-            if (pressed && __horizontal) {
-                var pos = clamp (mouse.x + clickOffset - fakeHandle.width/2)
-                var overThreshold = Math.abs(mouse.x - pressX) >= Settings.dragThreshold
+        function updateHandlePosition(mouse, force) {
+            var pos, overThreshold
+            if (__horizontal) {
+                pos = clamp (mouse.x + clickOffset - fakeHandle.width/2)
+                overThreshold = Math.abs(mouse.x - pressX) >= Settings.dragThreshold
                 if (overThreshold)
                     preventStealing = true
-                if (overThreshold || !Settings.hasTouchScreen)
+                if (overThreshold || force)
                     fakeHandle.x = pos
+            } else if (!__horizontal) {
+                pos = clamp (mouse.y + clickOffset- fakeHandle.height/2)
+                overThreshold = Math.abs(mouse.y - pressY) >= Settings.dragThreshold
+                if (overThreshold)
+                    preventStealing = true
+                if (overThreshold || force)
+                    fakeHandle.y = pos
             }
         }
 
-        onMouseYChanged: {
-            if (pressed && !__horizontal) {
-                var pos = clamp (mouse.y + clickOffset- fakeHandle.height/2)
-                var overThreshold = Math.abs(mouse.y - pressY) >= Settings.dragThreshold
-                if (overThreshold)
-                    preventStealing = true
-                if (overThreshold || !Settings.hasTouchScreen)
-                    fakeHandle.y = pos
-            }
+        onPositionChanged: {
+            if (pressed)
+                updateHandlePosition(mouse, preventStealing)
+
+            var point = mouseArea.mapToItem(fakeHandle, mouse.x, mouse.y)
+            handleHovered = fakeHandle.contains(Qt.point(point.x, point.y))
         }
 
         onPressed: {
             if (slider.activeFocusOnPress)
                 slider.forceActiveFocus();
 
-            var point = mouseArea.mapToItem(fakeHandle, mouse.x, mouse.y)
-            if (fakeHandle.contains(Qt.point(point.x, point.y))) {
+            if (handleHovered) {
+                var point = mouseArea.mapToItem(fakeHandle, mouse.x, mouse.y)
                 clickOffset = __horizontal ? fakeHandle.width/2 - point.x : fakeHandle.height/2 - point.y
             }
             pressX = mouse.x
             pressY = mouse.y
+            updateHandlePosition(mouse, !Settings.hasTouchScreen)
         }
 
         onReleased: {
+            updateHandlePosition(mouse, Settings.hasTouchScreen)
             // If we don't update while dragging, this is the only
             // moment that the range is updated.
             if (!slider.updateValueWhileDragging)
@@ -278,6 +288,8 @@ Control {
             clickOffset = 0
             preventStealing = false
         }
+
+        onExited: handleHovered = false
     }
 
 

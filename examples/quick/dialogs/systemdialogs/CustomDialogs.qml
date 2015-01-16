@@ -67,7 +67,7 @@ Item {
         onApply: lastChosen.text = "Apply"
         onReset: lastChosen.text = "Reset"
 
-        Text {
+        Label {
             text: "Hello world!"
         }
     }
@@ -91,9 +91,8 @@ Item {
         ColumnLayout {
             id: column
             width: parent ? parent.width : 100
-            Text {
+            Label {
                 text: "<b>What</b> is the average airspeed velocity of an unladen European swallow?"
-                textFormat: Text.StyledText
                 Layout.columnSpan: 2
                 Layout.fillWidth: true
                 wrapMode: Text.WordWrap
@@ -104,7 +103,7 @@ Item {
                     id: answer
                     onEditingFinished: spinboxDialog.click(StandardButton.Ok)
                 }
-                Text {
+                Label {
                     text: "m/s"
                     Layout.alignment: Qt.AlignBaseline | Qt.AlignLeft
                 }
@@ -123,6 +122,7 @@ Item {
             else
                 lastChosen.text = (clickedButton == StandardButton.Retry ? "(Retry)" : "(Ignore)")
         }
+        onRejected: lastChosen.text = "Rejected"
 
         Calendar {
             id: calendar
@@ -135,26 +135,31 @@ Item {
         id: filledDialog
         modality: dialogModal.checked ? Qt.WindowModal : Qt.NonModal
         title: customizeTitle.checked ? windowTitleField.text : "Customized content"
+        onRejected: lastChosen.text = "Rejected"
+        onAccepted: lastChosen.text = "Accepted " +
+                    (clickedButton === StandardButton.Retry ? "(Retry)" : "(OK)")
+        onButtonClicked: if (clickedButton === StandardButton.Retry) lastChosen.text = "Retry"
         contentItem: Rectangle {
             color: "lightskyblue"
             implicitWidth: 400
             implicitHeight: 100
-            Text {
+            Label {
                 text: "Hello blue sky!"
                 color: "navy"
                 anchors.centerIn: parent
             }
-            focus: true
-            Keys.onEscapePressed: filledDialog.close()
+            Keys.onPressed: if (event.key === Qt.Key_R && (event.modifiers & Qt.ControlModifier)) filledDialog.click(StandardButton.Retry)
+            Keys.onEnterPressed: filledDialog.accept()
+            Keys.onEscapePressed: filledDialog.reject()
+            Keys.onBackPressed: filledDialog.reject() // especially necessary on Android
         }
     }
 
-    Column {
+    ColumnLayout {
         anchors.fill: parent
         anchors.margins: 12
         spacing: 8
-        Text {
-            color: palette.windowText
+        Label {
             font.bold: true
             text: "Message dialog properties:"
         }
@@ -163,22 +168,26 @@ Item {
             text: "Modal"
             Binding on checked { value: helloDialog.modality != Qt.NonModal }
         }
-        CheckBox {
-            id: customizeTitle
-            text: "Window Title"
-            checked: true
-            width: parent.width
+        RowLayout {
+            CheckBox {
+                id: customizeTitle
+                text: "Window Title"
+                Layout.alignment: Qt.AlignBaseline
+                checked: true
+            }
             TextField {
                 id: windowTitleField
-                anchors.right: parent.right
+                Layout.alignment: Qt.AlignBaseline
+                Layout.fillWidth: true
                 text: "Custom Dialog"
-                width: root.width - customizeTitle.implicitWidth - 30
             }
         }
-
+        Label {
+            text: "Buttons:"
+        }
         Flow {
             spacing: 8
-            width: parent.width
+            Layout.fillWidth: true
             property bool updating: false
             function updateButtons(button, checked) {
                 if (updating) return
@@ -256,6 +265,24 @@ Item {
             }
 
             CheckBox {
+                text: "Apply"
+                property int button: StandardButton.Apply
+                onCheckedChanged: parent.updateButtons(button, checked)
+            }
+
+            CheckBox {
+                text: "Reset"
+                property int button: StandardButton.Reset
+                onCheckedChanged: parent.updateButtons(button, checked)
+            }
+
+            CheckBox {
+                text: "Restore Defaults"
+                property int button: StandardButton.RestoreDefaults
+                onCheckedChanged: parent.updateButtons(button, checked)
+            }
+
+            CheckBox {
                 text: "OK"
                 checked: true
                 property int button: StandardButton.Ok
@@ -264,12 +291,14 @@ Item {
 
             Component.onCompleted: updateButtons()
         }
-        Text {
+        Label {
             id: lastChosen
         }
+        Item { Layout.fillHeight: true }
     }
 
     Rectangle {
+        id: bottomBar
         anchors {
             left: parent.left
             right: parent.right
@@ -286,22 +315,22 @@ Item {
             anchors.leftMargin: 12
             width: parent.width
             Button {
-                text: "Hello World dialog"
+                text: "Hello World"
                 anchors.verticalCenter: parent.verticalCenter
                 onClicked: helloDialog.open()
             }
             Button {
-                text: "Input dialog"
+                text: "Input"
                 anchors.verticalCenter: parent.verticalCenter
                 onClicked: spinboxDialog.open()
             }
             Button {
-                text: "Date picker"
+                text: "Date"
                 anchors.verticalCenter: parent.verticalCenter
                 onClicked: dateDialog.open()
             }
             Button {
-                text: "Buttonless marginless dialog"
+                text: "No buttons or margins"
                 anchors.verticalCenter: parent.verticalCenter
                 onClicked: filledDialog.open()
             }

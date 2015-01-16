@@ -37,7 +37,7 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-import QtQuick 2.2
+import QtQuick 2.4
 import QtQuick.Window 2.2
 import QtQuick.Controls 1.2
 import QtQuick.Controls.Private 1.0
@@ -70,7 +70,7 @@ Style {
 
         readonly property real minWidth: styleDef.View_minWidth || 0
         readonly property real minHeight: styleDef.View_minHeight || 0
-        readonly property real labelWidth: label.implicitWidth + paddingStart + paddingEnd
+        readonly property real labelWidth: Math.max(label.implicitWidth, metrics.width) + paddingStart + paddingEnd
         readonly property real labelHeight: label.implicitHeight + bg.padding.top + bg.padding.bottom
 
         implicitWidth: Math.max(minWidth, Math.max(bg.implicitWidth, labelWidth))
@@ -83,6 +83,11 @@ Style {
             focused: control.activeFocus
             window_focused: control.Window.active
             styleDef: panel.styleDef.View_background
+        }
+
+        TextMetrics {
+            id: metrics
+            text: "12345678901234567890"
         }
 
         LabelStyle {
@@ -105,11 +110,11 @@ Style {
     property Component __popupStyle: null
     property Component __dropDownStyle: null
 
-    property Component selectionHandle: DrawableLoader {
+    property Component __selectionHandle: DrawableLoader {
         styleDef: AndroidStyle.styleDef.textViewStyle.TextView_textSelectHandleLeft
         x: -width / 4 * 3
         y: styleData.lineHeight
     }
 
-    property Component cursorHandle: CursorHandleStyle { }
+    property Component __cursorHandle: CursorHandleStyle { }
 }

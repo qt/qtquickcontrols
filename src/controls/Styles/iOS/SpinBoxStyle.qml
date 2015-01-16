@@ -42,7 +42,7 @@ import QtQuick.Controls 1.2
 import QtQuick.Controls.Styles 1.3
 
 SpinBoxStyle {
-    selectionHandle: SelectionHandleStyle{}
-    cursorHandle: CursorHandleStyle{}
-    cursorDelegate: CursorDelegate{}
+    __selectionHandle: SelectionHandleStyle{}
+    __cursorHandle: CursorHandleStyle{}
+    __cursorDelegate: CursorDelegate{}
 }
