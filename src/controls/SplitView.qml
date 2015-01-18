@@ -181,12 +181,25 @@ Item {
         \since QtQuick.Controls 1.3 */
     function addItem(item) {
         d.updateLayoutGuard = true
-
         d.addItem_impl(item)
-
         d.calculateImplicitSize()
         d.updateLayoutGuard = false
         d.updateFillIndex()
+    }
+
+    /*! Remove \a item from the view.
+        \since QtQuick.Controls 1.4 */
+    function removeItem(item) {
+        d.updateLayoutGuard = true
+        var result = d.removeItem_impl(item)
+        if (result !== null) {
+            d.calculateImplicitSize()
+            d.updateLayoutGuard = false
+            d.updateFillIndex()
+        }
+        else {
+            d.updateLayoutGuard = false
+        }
     }
 
     SystemPalette { id: pal }
@@ -230,8 +243,12 @@ Item {
                 handleLoader.createObject(splitterHandles, {"__handleIndex":splitterItems.children.length - 1})
 
             item.parent = splitterItems
+            d.initItemConnections(item)
+        }
 
-            // should match disconnections in Component.onDestruction
+        function initItemConnections(item)
+        {
+            // should match disconnections in terminateItemConnections
             item.widthChanged.connect(d.updateLayout)
             item.heightChanged.connect(d.updateLayout)
             item.Layout.maximumWidthChanged.connect(d.updateLayout)
@@ -245,6 +262,66 @@ Item {
             item.visibleChanged.connect(d.updateFillIndex)
             item.Layout.fillWidthChanged.connect(d.updateFillIndex)
             item.Layout.fillHeightChanged.connect(d.updateFillIndex)
+        }
+
+        function terminateItemConnections(item)
+        {
+            // should match connections in initItemConnections
+            item.widthChanged.disconnect(d.updateLayout)
+            item.heightChanged.disconnect(d.updateLayout)
+            item.Layout.maximumWidthChanged.disconnect(d.updateLayout)
+            item.Layout.minimumWidthChanged.disconnect(d.updateLayout)
+            item.Layout.maximumHeightChanged.disconnect(d.updateLayout)
+            item.Layout.minimumHeightChanged.disconnect(d.updateLayout)
+            item.visibleChanged.disconnect(d.updateFillIndex)
+            item.Layout.fillWidthChanged.disconnect(d.updateFillIndex)
+            item.Layout.fillHeightChanged.disconnect(d.updateFillIndex)
+        }
+
+        function removeItem_impl(item)
+        {
+            var pos = itemPos(item)
+
+            // Check pos range
+            if (pos < 0 || pos >= __items.length)
+                return null
+
+            // Temporary unset the fillIndex
+            fillIndex = __items.length - 1
+
+            // Remove the handle at the left/right of the item that
+            // is going to be removed
+            var handlePos = -1
+            var hasPrevious = pos > 0
+            var hasNext = (pos + 1) < __items.length
+
+            if (hasPrevious)
+                handlePos = pos-1
+            else if (hasNext)
+                handlePos = pos
+            if (handlePos >= 0) {
+                var handle = __handles[handlePos]
+                handle.visible = false
+                handle.parent = null
+                handle.destroy()
+                for (var i = handlePos; i < __handles.length; ++i)
+                    __handles[i].__handleIndex = i
+            }
+
+            // Remove the item.
+            // Disconnect the item to be removed
+            terminateItemConnections(item)
+            item.parent = null
+
+            return item
+        }
+
+        function itemPos(item)
+        {
+            for (var i = 0; i < __items.length; ++i)
+                if (item === __items[i])
+                    return i
+            return -1
         }
 
         function init()
@@ -540,17 +617,7 @@ Item {
     Component.onDestruction: {
         for (var i=0; i<splitterItems.children.length; ++i) {
             var item = splitterItems.children[i];
-
-            // should match connections in init()
-            item.widthChanged.disconnect(d.updateLayout)
-            item.heightChanged.disconnect(d.updateLayout)
-            item.Layout.maximumWidthChanged.disconnect(d.updateLayout)
-            item.Layout.minimumWidthChanged.disconnect(d.updateLayout)
-            item.Layout.maximumHeightChanged.disconnect(d.updateLayout)
-            item.Layout.minimumHeightChanged.disconnect(d.updateLayout)
-            item.visibleChanged.disconnect(d.updateFillIndex)
-            item.Layout.fillWidthChanged.disconnect(d.updateFillIndex)
-            item.Layout.fillHeightChanged.disconnect(d.updateFillIndex)
+            d.terminateItemConnections(item)
         }
     }
 }

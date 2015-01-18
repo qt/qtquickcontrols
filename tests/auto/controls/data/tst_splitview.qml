@@ -327,4 +327,87 @@ TestCase {
 
         view.destroy()
     }
+
+    Component
+    {
+        id: splitView_dynamic_item_remove
+        SplitView
+        {
+            anchors.fill: parent
+            property alias item1: item4
+            property alias item2: item5
+            property alias item3: item6
+            handleDelegate: Rectangle { width: handleWidth; height: handleHeight; color: "black" }
+            Rectangle {
+                id: item4
+                color: "yellow"
+                Layout.minimumWidth: 100
+            }
+            Rectangle {
+                id: item5
+                color: "green"
+                Layout.fillWidth: true
+            }
+            Rectangle {
+                id: item6
+                color: "blue"
+                Layout.minimumWidth: 100
+            }
+        }
+    }
+
+    function test_dynamic_item_remove() {
+        var view = splitView_dynamic_item_remove.createObject(testCase);
+        verify (view !== null, "splitview created is null")
+        waitForRendering(view)
+        compare (view.__items.length, 3)
+
+        // verify initial positions
+        compare (view.item1.x, 0)
+        compare (view.item1.y, 0)
+        compare (view.item1.width, 100)
+        compare (view.item1.height, 500)
+
+        compare (view.item2.x, 100 + handleWidth)
+        compare (view.item2.y, 0)
+        compare (view.item2.width, view.item3.x - view.item2.x - handleWidth)
+        compare (view.item2.height, 500)
+
+        compare (view.item3.x, 300)
+        compare (view.item3.y, 0)
+        compare (view.item3.width, 100)
+        compare (view.item3.height, 500)
+
+        // remove center item and verify the position of the other two
+        // the last should fill width since there's no other item with fillwidth=true
+        view.removeItem(view.item2)
+        waitForRendering(view)
+        compare (view.__items.length, 2)
+
+        compare (view.item1.x, 0)
+        compare (view.item1.y, 0)
+        compare (view.item1.width, 100)
+        compare (view.item1.height, 500)
+
+        compare (view.item3.x, 100 + handleWidth)
+        compare (view.item3.y, 0)
+        compare (view.item3.width, view.width - view.item1.width - handleWidth)
+        compare (view.item3.height, 500)
+
+        // remove first item the last should fill width since there's no other
+        // item with fillwidth=true
+        view.removeItem(view.item1)
+        waitForRendering(view)
+        compare (view.__items.length, 1)
+
+        compare (view.item3.x, 0)
+        compare (view.item3.y, 0)
+        compare (view.item3.width, 400)
+        compare (view.item3.height, 500)
+
+        // remove the last item
+        view.removeItem(view.item3)
+        waitForRendering(view)
+        compare (view.__items.length, 0)
+    }
 }
