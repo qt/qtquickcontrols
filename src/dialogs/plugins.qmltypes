@@ -104,6 +104,7 @@ Module {
         Property { name: "y"; type: "int" }
         Property { name: "width"; type: "int" }
         Property { name: "height"; type: "int" }
+        Property { name: "__maximumDimension"; type: "int"; isReadonly: true }
         Signal { name: "visibilityChanged" }
         Signal { name: "geometryChanged" }
         Signal { name: "accepted" }
@@ -140,6 +141,7 @@ Module {
         Property { name: "selectedNameFilterIndex"; type: "int" }
         Property { name: "fileUrl"; type: "QUrl"; isReadonly: true }
         Property { name: "fileUrls"; type: "QList<QUrl>"; isReadonly: true }
+        Property { name: "sidebarVisible"; type: "bool" }
         Signal { name: "filterSelected" }
         Signal { name: "fileModeChanged" }
         Signal { name: "selectionAccepted" }
@@ -178,6 +180,10 @@ Module {
         Method {
             name: "setSelectedNameFilterIndex"
             Parameter { name: "idx"; type: "int" }
+        }
+        Method {
+            name: "setSidebarVisible"
+            Parameter { name: "s"; type: "bool" }
         }
     }
     Component {
@@ -428,6 +434,7 @@ Module {
         Property { name: "y"; type: "int" }
         Property { name: "width"; type: "int" }
         Property { name: "height"; type: "int" }
+        Property { name: "__maximumDimension"; type: "int"; isReadonly: true }
         Signal { name: "visibilityChanged" }
         Signal { name: "geometryChanged" }
         Signal { name: "accepted" }
@@ -496,6 +503,7 @@ Module {
         Property { name: "y"; type: "int" }
         Property { name: "width"; type: "int" }
         Property { name: "height"; type: "int" }
+        Property { name: "__maximumDimension"; type: "int"; isReadonly: true }
         Signal { name: "visibilityChanged" }
         Signal { name: "geometryChanged" }
         Signal { name: "accepted" }
@@ -556,6 +564,7 @@ Module {
         Property { name: "selectedNameFilterIndex"; type: "int" }
         Property { name: "fileUrl"; type: "QUrl"; isReadonly: true }
         Property { name: "fileUrls"; type: "QList<QUrl>"; isReadonly: true }
+        Property { name: "sidebarVisible"; type: "bool" }
         Signal { name: "filterSelected" }
         Signal { name: "fileModeChanged" }
         Signal { name: "selectionAccepted" }
@@ -595,6 +604,10 @@ Module {
             name: "setSelectedNameFilterIndex"
             Parameter { name: "idx"; type: "int" }
         }
+        Method {
+            name: "setSidebarVisible"
+            Parameter { name: "s"; type: "bool" }
+        }
         Property { name: "visible"; type: "bool" }
         Property { name: "modality"; type: "Qt::WindowModality" }
         Property { name: "title"; type: "string" }
@@ -603,6 +616,7 @@ Module {
         Property { name: "y"; type: "int" }
         Property { name: "width"; type: "int" }
         Property { name: "height"; type: "int" }
+        Property { name: "__maximumDimension"; type: "int"; isReadonly: true }
         Signal { name: "visibilityChanged" }
         Signal { name: "geometryChanged" }
         Signal { name: "accepted" }
@@ -685,6 +699,7 @@ Module {
         Property { name: "y"; type: "int" }
         Property { name: "width"; type: "int" }
         Property { name: "height"; type: "int" }
+        Property { name: "__maximumDimension"; type: "int"; isReadonly: true }
         Signal { name: "visibilityChanged" }
         Signal { name: "geometryChanged" }
         Signal { name: "accepted" }
@@ -775,6 +790,7 @@ Module {
         Property { name: "y"; type: "int" }
         Property { name: "width"; type: "int" }
         Property { name: "height"; type: "int" }
+        Property { name: "__maximumDimension"; type: "int"; isReadonly: true }
         Signal { name: "visibilityChanged" }
         Signal { name: "geometryChanged" }
         Signal { name: "accepted" }

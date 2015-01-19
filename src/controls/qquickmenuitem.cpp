@@ -177,8 +177,9 @@ void QQuickMenuBase::setVisualItem(QQuickItem *item)
 
 /*!
     \qmlproperty enumeration MenuSeparator::type
+    \readonly
 
-    This property is read-only and constant, and its value is \l MenuItemType.Separator.
+    This property is read-only and constant, and its value is \c MenuItemType.Separator.
 */
 
 QQuickMenuSeparator::QQuickMenuSeparator(QObject *parent)
@@ -320,8 +321,9 @@ void QQuickMenuText::updateIcon()
 
 /*!
     \qmlproperty enumeration MenuItem::type
+    \readonly
 
-    This property is read-only and constant, and its value is \l MenuItemType.Item.
+    This property is read-only and constant, and its value is \c MenuItemType.Item.
 */
 
 /*!

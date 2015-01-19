@@ -65,7 +65,7 @@ Style {
         for \c underline will return the plain text form (e.g., \c formatMnemonic("&File", false)
         will return \c "File").
 
-        \sa label
+        \sa Label
     */
     function formatMnemonic(text, underline) {
         return underline ? StyleHelpers.stylizeMnemonics(text) : StyleHelpers.removeMnemonics(text)
