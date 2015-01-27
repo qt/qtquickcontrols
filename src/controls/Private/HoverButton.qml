@@ -62,9 +62,10 @@ Item {
 
     Image {
         id: image
-        width: implicitWidth/2
-        height: implicitHeight/2
+        width: Math.min(implicitWidth, parent.width * 0.4)
+        height: Math.min(implicitHeight, parent.height * 0.4)
         anchors.centerIn: parent
+        fillMode: Image.PreserveAspectFit
         opacity: 0.6
     }
 
