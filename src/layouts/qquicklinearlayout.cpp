@@ -390,6 +390,11 @@ void QQuickGridLayoutBase::invalidate(QQuickItem *childItem)
     Q_D(QQuickGridLayoutBase);
     if (!isReady())
         return;
+    if (d->m_rearranging) {
+        d->m_invalidateAfterRearrange << childItem;
+        return;
+    }
+
     quickLayoutDebug() << "QQuickGridLayoutBase::invalidate()";
 
     if (childItem) {
@@ -429,6 +434,11 @@ void QQuickGridLayoutBase::updateLayoutItems()
     Q_D(QQuickGridLayoutBase);
     if (!isReady())
         return;
+    if (d->m_rearranging) {
+        d->m_updateAfterRearrange = true;
+        return;
+    }
+
     quickLayoutDebug() << "QQuickGridLayoutBase::updateLayoutItems";
     d->engine.deleteItems();
     insertLayoutItems();
@@ -548,6 +558,7 @@ void QQuickGridLayoutBase::rearrange(const QSizeF &size)
     if (!isReady())
         return;
 
+    d->m_rearranging = true;
     quickLayoutDebug() << objectName() << "QQuickGridLayoutBase::rearrange()" << size;
     Qt::LayoutDirection visualDir = effectiveLayoutDirection();
     d->engine.setVisualDirection(visualDir);
@@ -563,6 +574,16 @@ void QQuickGridLayoutBase::rearrange(const QSizeF &size)
     // This could happen if there is a binding like implicitWidth: height
     QQuickLayout::rearrange(size);
     d->engine.setGeometries(QRectF(QPointF(0,0), size), d->styleInfo);
+    d->m_rearranging = false;
+
+    foreach (QQuickItem *invalid, d->m_invalidateAfterRearrange)
+        invalidate(invalid);
+    d->m_invalidateAfterRearrange.clear();
+
+    if (d->m_updateAfterRearrange) {
+        updateLayoutItems();
+        d->m_updateAfterRearrange = false;
+    }
 }
 
 bool QQuickGridLayoutBase::shouldIgnoreItem(QQuickItem *child, QQuickLayoutAttached *&info, QSizeF *sizeHints)

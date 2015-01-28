@@ -924,5 +924,36 @@ Item {
 
             layout.destroy()
         }
+
+        Component {
+            id: layout_invalidateWhileRearranging_Component
+
+            GridLayout {
+                columns: 1
+                Rectangle {
+                    height: 50
+                    Layout.fillWidth: true
+                    color: 'blue'
+                }
+
+                Rectangle {
+                    height: 50
+                    Layout.fillWidth: true
+                    color: 'red'
+                    onYChanged: {
+                        visible = false;
+                    }
+                }
+            }
+        }
+
+        function test_invalidateWhileRearranging_QTBUG_44139()
+        {
+            var layout = layout_invalidateWhileRearranging_Component.createObject(container)
+
+            waitForRendering(layout);
+            verify(layout.children[1].visible == false);
+            layout.destroy()
+        }
     }
 }
