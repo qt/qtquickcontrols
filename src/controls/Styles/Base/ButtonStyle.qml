@@ -83,7 +83,7 @@ Style {
     padding {
         top: 4
         left: 4
-        right:  control.menu !== null ? Math.round(TextSingleton.implicitHeight * 0.5) : 4
+        right: 4 + (control.menu !== null ? Math.round(TextSingleton.implicitHeight * 0.5) : 0)
         bottom: 4
     }
 
@@ -121,7 +121,7 @@ Style {
             source: "images/arrow-down.png"
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: parent.right
-            anchors.rightMargin: padding.right
+            anchors.rightMargin: 4
             opacity: control.enabled ? 0.6 : 0.5
         }
     }
