@@ -872,6 +872,7 @@ ScrollView {
                 if (rowItem) {
                     rowItem.visible = false;
                     rowItem.parent = null;
+                    rowItem.rowIndex = -1;
                     listView.rowItemStack.push(rowItem); // return rowItem to cache
                 }
             }
