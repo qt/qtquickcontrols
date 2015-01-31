@@ -639,6 +639,8 @@ Control {
     TextInputWithHandles {
         id: textInput
         focus: true
+        passwordCharacter: __style && __style.passwordCharacter !== undefined ? __style.passwordCharacter
+                                                                              : Qt.styleHints.passwordMaskCharacter
         selectionColor: __panel ? __panel.selectionColor : "darkred"
         selectedTextColor: __panel ? __panel.selectedTextColor : "white"
 

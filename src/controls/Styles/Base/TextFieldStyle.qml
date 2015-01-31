@@ -87,6 +87,16 @@ Style {
     property color selectedTextColor: SystemPaletteSingleton.highlightedText(control.enabled)
 
     /*!
+        \qmlproperty string passwordCharacter
+        \since QtQuick.Controls.Styles 1.4
+
+        The password character that is displayed when echoMode
+        on the TextField is set to TextInput.Password or
+        TextInput.PasswordEchoOnEdit.
+    */
+    property string passwordCharacter: Qt.styleHints.passwordMaskCharacter
+
+    /*!
         \qmlproperty enumeration renderType
         \since QtQuick.Controls.Styles 1.1
 

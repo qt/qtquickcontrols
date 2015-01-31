@@ -444,5 +444,21 @@ TestCase {
 
         test.destroy()
     }
+
+    function test_passwordCharacter() {
+        var textfield = Qt.createQmlObject('import QtQuick 2.2; \
+            import QtQuick.Controls 1.3;                        \
+            import QtQuick.Controls.Styles 1.1;                 \
+            TextField {                                         \
+                style: TextFieldStyle {                         \
+                    passwordCharacter: "+"                      \
+                }                                               \
+                echoMode: TextInput.Password                    \
+        }', container, '')
+        textfield.forceActiveFocus()
+
+        textfield.text = "foo"
+        compare(textfield.displayText, "+++")
+    }
 }
 }
