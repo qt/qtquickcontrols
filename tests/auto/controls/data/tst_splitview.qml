@@ -300,14 +300,14 @@ TestCase {
                 width: 100
                 height: 80
                 color: "red"
-                Layout.margins: 3
+                Layout.margins: 7
             }
             Rectangle {
                 id: item2
                 width: 200
                 height: 90
                 color: "blue"
-                Layout.margins: 7
+                Layout.margins: 3
                 Layout.fillWidth: true
             }
         }
@@ -317,16 +317,17 @@ TestCase {
         var view = splitViewMargins.createObject(testCase);
         verify (view !== null, "splitview created is null")
         verify (view.orientation === Qt.Horizontal)
-        compare(view.implicitWidth, 100 + 3*2 + 1 + 200 + 7*2)
+        compare(view.implicitWidth, 100 + 7*2 + 1 + 200 + 3*2)
+        compare(view.implicitHeight, 90 + 3*2)
         waitForRendering(view)
 
         compare(view.item1.width, 100)
 
-        compare(view.item2.width, testCase.width - 100 - (3*2) - handleWidth - (7*2))
-        compare(view.item2.height, testCase.height - 7*2)
+        compare(view.item2.width, testCase.width - 100 - (7*2) - handleWidth - (3*2))
+        compare(view.item2.height, testCase.height - 3*2)
 
         view.item2.Layout.rightMargin = 0
-        compare(view.item2.width, testCase.width - 100 - 3*2 - handleWidth - 7)
+        compare(view.item2.width, testCase.width - 100 - 7*2 - handleWidth - 3)
 
         view.destroy()
     }

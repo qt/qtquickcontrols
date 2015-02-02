@@ -321,7 +321,7 @@ Item {
             for (var i=0; i<__items.length; ++i) {
                 var item = __items[i];
                 implicitSize += clampedMinMax(item[d.size], item.Layout[minimum], item.Layout[maximum]) + extraMarginSize(item)
-                var os = clampedMinMax(item[otherSize], item.Layout[otherMinimum], item.Layout[otherMaximum])
+                var os = clampedMinMax(item[otherSize], item.Layout[otherMinimum], item.Layout[otherMaximum]) + extraMarginSize(item, true)
                 implicitOtherSize = Math.max(implicitOtherSize, os)
 
                 var handle = __handles[i]
@@ -330,7 +330,7 @@ Item {
             }
 
             root[d.implicitSize] = implicitSize
-            root[d.implicitOtherSize] = implicitOtherSize + extraMarginSize(item, true)
+            root[d.implicitOtherSize] = implicitOtherSize
         }
 
         function clampedMinMax(value, minimum, maximum)
