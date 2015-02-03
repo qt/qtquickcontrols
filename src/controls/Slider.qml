@@ -229,7 +229,7 @@ Control {
         id: mouseArea
 
         anchors.fill: parent
-        hoverEnabled: true
+        hoverEnabled: Settings.hoverEnabled
         property int clickOffset: 0
         property real pressX: 0
         property real pressY: 0

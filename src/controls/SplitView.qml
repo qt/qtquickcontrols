@@ -433,7 +433,7 @@ Item {
                 anchors.rightMargin: (parent.width <= 1) ? -defaultMargin : 0
                 anchors.topMargin: (parent.height <= 1) ? -defaultMargin : 0
                 anchors.bottomMargin: (parent.height <= 1) ? -defaultMargin : 0
-                hoverEnabled: true
+                hoverEnabled: Private.Settings.hoverEnabled
                 drag.threshold: 0
                 drag.target: parent
                 drag.axis: root.orientation === Qt.Horizontal ? Drag.XAxis : Drag.YAxis

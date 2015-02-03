@@ -271,7 +271,7 @@ Control {
     MouseArea {
         id: mouseArea
         anchors.fill: parent
-        hoverEnabled: true
+        hoverEnabled: Settings.hoverEnabled
         onPressed: if (activeFocusOnPress) input.forceActiveFocus()
         onWheel: {
             if (wheel.angleDelta.y > 0)
@@ -334,7 +334,7 @@ Control {
     MouseArea {
         id: mouseUp
         objectName: "mouseUp"
-        hoverEnabled: true
+        hoverEnabled: Settings.hoverEnabled
 
         property var upRect: __panel  ?  __panel.upRect : null
 
@@ -361,7 +361,7 @@ Control {
     MouseArea {
         id: mouseDown
         objectName: "mouseDown"
-        hoverEnabled: true
+        hoverEnabled: Settings.hoverEnabled
 
         onClicked: __decrement()
         onPressed: if (!Settings.hasTouchScreen && activeFocusOnPress) input.forceActiveFocus()

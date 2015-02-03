@@ -102,7 +102,7 @@ TextInput {
     MouseArea {
         id: mouseArea
         anchors.fill: parent
-        hoverEnabled: true
+        hoverEnabled: Settings.hoverEnabled
         cursorShape: Qt.IBeamCursor
         acceptedButtons: (input.selectByMouse ? Qt.NoButton : Qt.LeftButton) | (control.menu ? Qt.RightButton : Qt.NoButton)
         onClicked: {

@@ -290,7 +290,7 @@ MenuBarPrivate {
         MouseArea {
             id: menuMouseArea
             anchors.fill: parent
-            hoverEnabled: true
+            hoverEnabled: Settings.hoverEnabled
 
             onPositionChanged: updateCurrentItem(mouse, false)
             onPressed: {

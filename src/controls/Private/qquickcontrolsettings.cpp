@@ -96,6 +96,11 @@ bool QQuickControlSettings::isMobile() const
 #endif
 }
 
+bool QQuickControlSettings::hoverEnabled() const
+{
+    return !isMobile() || !hasTouchScreen();
+}
+
 static QString styleImportPath(QQmlEngine *engine, const QString &styleName)
 {
     QString path = qgetenv("QT_QUICK_CONTROLS_STYLE");

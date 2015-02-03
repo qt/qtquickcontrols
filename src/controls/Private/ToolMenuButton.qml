@@ -91,7 +91,7 @@ FocusScope {
 
         anchors.fill: parent
         enabled: !keyPressed
-        hoverEnabled: true
+        hoverEnabled: Settings.hoverEnabled
 
         onReleased: {
             if (Settings.hasTouchScreen && containsMouse && menu)

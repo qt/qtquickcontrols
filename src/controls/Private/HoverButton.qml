@@ -39,6 +39,8 @@
 ****************************************************************************/
 
 import QtQuick 2.2
+import QtQuick.Controls 1.2
+import QtQuick.Controls.Private 1.0
 
 Item {
     id: button
@@ -73,6 +75,6 @@ Item {
         id: mouse
         anchors.fill: parent
         onClicked: button.clicked()
-        hoverEnabled: true
+        hoverEnabled: Settings.hoverEnabled
     }
 }

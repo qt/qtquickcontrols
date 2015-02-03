@@ -145,7 +145,7 @@ Control {
     MouseArea {
         id: hoverArea
         anchors.fill: parent
-        hoverEnabled: true
+        hoverEnabled: Settings.hoverEnabled
     }
 
     /*! \internal */
