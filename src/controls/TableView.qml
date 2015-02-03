@@ -783,7 +783,7 @@ ScrollView {
                         readonly property bool hasActiveFocus: false
                         readonly property bool pressed: false
                     }
-                    readonly property var model: listView.model
+                    readonly property var model: null
                     readonly property var modelData: null
                 }
             }
@@ -947,7 +947,7 @@ ScrollView {
                         readonly property bool hasActiveFocus: rowitem.activeFocus
                         readonly property bool pressed: rowitem.rowIndex === mousearea.pressedRow
                     }
-                    readonly property var model: listView.model
+                    readonly property var model: rowitem.itemModel
                     readonly property var modelData: rowitem.itemModelData
                 }
                 Row {
