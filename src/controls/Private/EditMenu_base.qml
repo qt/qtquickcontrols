@@ -70,7 +70,7 @@ Item {
     Component {
         id: cutAction
         Action {
-            text: "Cu&t"
+            text: qsTr("Cu&t")
             shortcut: StandardKey.Cut
             iconName: "edit-cut"
             enabled: !input.readOnly && selectionStart !== selectionEnd
@@ -84,7 +84,7 @@ Item {
     Component {
         id: copyAction
         Action {
-            text: "&Copy"
+            text: qsTr("&Copy")
             shortcut: StandardKey.Copy
             iconName: "edit-copy"
             enabled: input.selectionStart !== input.selectionEnd
@@ -98,7 +98,7 @@ Item {
     Component {
         id: pasteAction
         Action {
-            text: "&Paste"
+            text: qsTr("&Paste")
             shortcut: StandardKey.Paste
             iconName: "edit-paste"
             enabled: input.canPaste

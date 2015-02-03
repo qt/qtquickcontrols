@@ -39,6 +39,7 @@
 ****************************************************************************/
 import QtQuick 2.2
 import QtQuick.Controls 1.2
+import QtQuick.Layouts 1.1
 import QtQuick.Window 2.1
 import QtQuick.Controls.Private 1.0
 
@@ -168,7 +169,7 @@ Style {
             sourceComponent: background
             anchors.fill: parent
         }
-        Row {
+        RowLayout {
             id: row
             anchors.fill: parent
 
@@ -185,6 +186,7 @@ Style {
             }
             Loader {
                 id: labelLoader
+                Layout.fillWidth: true
                 sourceComponent: label
                 anchors.verticalCenter: parent.verticalCenter
             }

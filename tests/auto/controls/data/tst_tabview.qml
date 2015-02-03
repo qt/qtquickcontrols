@@ -443,6 +443,23 @@ TestCase {
         item.destroy()
     }
 
+    function test_43701() {
+        var test_tabView = '                                \
+        import QtQuick 2.2;                                 \
+        import QtQuick.Controls 1.3;                        \
+        TabView {                                           \
+            id: tabView;                                    \
+            currentIndex: 2;                                \
+            Tab {} Tab {} Tab {}                            \
+        }                                                   '
+
+        var tabView = Qt.createQmlObject(test_tabView, testCase, '')
+        compare(tabView.count, 3)
+        compare(tabView.currentIndex, 2)
+
+        tabView.destroy()
+    }
+
     function printGeometry(control) {
         console.log("printGeometry:" + control)
         console.log("x=" + control.x + ",y=" + control.y + ",w=" + control.width + ",h=" + control.height)

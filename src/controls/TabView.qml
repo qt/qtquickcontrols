@@ -277,7 +277,6 @@ FocusScope {
                         if (completed)
                             tab.Component.onDestruction.connect(stack.onDynamicTabDestroyed.bind(tab))
                         __tabs.append({tab: tab})
-                        __didInsertIndex(__tabs.count - 1)
                         tabAdded = true
                     }
                 }
