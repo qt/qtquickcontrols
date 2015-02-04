@@ -1099,8 +1099,6 @@ ScrollView {
                                 repeater.targetIndex = -1
                                 repeater.dragIndex = -1
                             }
-                            drag.maximumX: 1000
-                            drag.minimumX: -1000
                             drag.target: modelData.movable && columnCount > 1 ? draghandle : null
                         }
 
