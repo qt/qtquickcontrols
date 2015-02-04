@@ -138,7 +138,7 @@ TestCase {
     }
 
     function test_activeFocusOnTab() {
-        if (!SystemInfo.tabAllWidgets)
+        if (Qt.styleHints.tabFocusBehavior != Qt.TabFocusAllControls)
             skip("This function doesn't support NOT iterating all.")
 
         var component = Qt.createComponent("groupbox/gb_activeFocusOnTab.qml")

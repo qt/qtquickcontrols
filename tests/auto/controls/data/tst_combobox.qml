@@ -412,7 +412,7 @@ TestCase {
     }
 
     function test_activeFocusOnTab() {
-        if (!SystemInfo.tabAllWidgets)
+        if (Qt.styleHints.tabFocusBehavior != Qt.TabFocusAllControls)
             skip("This function doesn't support NOT iterating all.")
 
         var test_control = 'import QtQuick 2.2; \

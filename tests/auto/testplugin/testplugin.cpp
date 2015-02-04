@@ -46,7 +46,6 @@ void TestPlugin::registerTypes(const char *uri)
     // cpp models
     qmlRegisterType<TestObject>(uri, 1, 0, "TestObject");
     qmlRegisterType<TestItemModel>(uri, 1, 0, "TestItemModel");
-    qmlRegisterSingletonType<SystemInfo>(uri, 1, 0, "SystemInfo", systeminfo_provider);
 }
 
 void TestPlugin::initializeEngine(QQmlEngine *engine, const char * /*uri*/)
