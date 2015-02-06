@@ -398,6 +398,9 @@ ScrollView {
     /*! \internal */
     readonly property alias __listView: listView
 
+    /*! \internal */
+    property Component __itemDelegateLoader: null
+
     /*! \internal
         Allows to override the model property in cases like TreeView,
         where we want to use a proxy/adaptor model between the user's model
@@ -596,65 +599,13 @@ ScrollView {
                         id: repeater
                         model: columnModel
 
-                        Loader {
-                            id: itemDelegateLoader
-                            width: columnItem.width
-                            height: parent ? parent.height : 0
-                            visible: columnItem.visible
-                            sourceComponent: rowitem.itemModel !== undefined ? // delays construction until model is initialized
-                                                 (columnItem.delegate ? columnItem.delegate : itemDelegate) : null
+                        delegate: __itemDelegateLoader
 
-                            // these properties are exposed to the item delegate
-                            readonly property var model: itemModel
-                            readonly property var modelData: itemModelData
-
-                            property QtObject styleData: QtObject {
-                                readonly property int row: rowitem.rowIndex
-                                readonly property int column: index
-                                readonly property int elideMode: columnItem.elideMode
-                                readonly property int textAlignment: columnItem.horizontalAlignment
-                                readonly property bool selected: rowitem.itemSelected
-                                readonly property bool hasActiveFocus: rowitem.activeFocus
-                                readonly property bool pressed: row === __mouseArea.pressedRow && column === __mouseArea.pressedColumn
-                                readonly property color textColor: rowitem.itemTextColor
-                                readonly property string role: columnItem.role
-                                readonly property var value: (itemModel && itemModel.hasOwnProperty(role))
-                                                             ? itemModel[role] // Qml ListModel and QAbstractItemModel
-                                                             : modelData && modelData.hasOwnProperty(role)
-                                                               ? modelData[role] // QObjectList / QObject
-                                                               : modelData != undefined ? modelData : "" // Models without role
-                                readonly property int depth: itemModel && column === 0 && itemModel["_q_TreeView_ItemDepth"] || 0
-                                readonly property bool hasChildren: itemModel && itemModel["_q_TreeView_HasChildren"] || false
-                                readonly property bool hasSibling: itemModel && itemModel["_q_TreeView_HasSibling"] || false
-                                readonly property bool isExpanded: itemModel && itemModel["_q_TreeView_ItemExpanded"] || false
-                            }
-
-                            readonly property int __itemIndentation: __style.__indentation * (styleData.depth + 1)
-
-                            Binding {
-                                target: item
-                                property: "x"
-                                value: __itemIndentation
-                            }
-
-                            Binding {
-                                target: item
-                                property: "width"
-                                value: itemDelegateLoader.width - __itemIndentation
-                            }
-
-                            Loader {
-                                id: branchDelegateLoader
-                                active: rowitem.itemModel !== undefined
-                                        && index === 0
-                                        && itemDelegateLoader.width > __itemIndentation
-                                        && styleData.hasChildren
-                                sourceComponent: __style ? __style.__branchDelegate : null
-                                anchors.right: parent.item.left
-                                anchors.verticalCenter: parent.verticalCenter
-                                property QtObject styleData: itemDelegateLoader.styleData
-                                onLoaded: rowitem.branchDecoration = item
-                            }
+                        onItemAdded: {
+                            var columnItem = columnModel.get(index).columnItem
+                            item.__index = index
+                            item.__rowItem = rowitem
+                            item.__column = columnItem
                         }
                     }
                 }

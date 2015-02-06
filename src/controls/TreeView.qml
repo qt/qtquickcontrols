@@ -258,6 +258,12 @@ BasicTableView {
         onCollapsed: root.collapsed(index)
     }
 
+    __itemDelegateLoader: TreeViewItemDelegateLoader {
+        __style: root.__style
+        __itemDelegate: root.itemDelegate
+        __mouseArea: mouseArea
+    }
+
     onSelectionModeChanged: if (!!selection) selection.clear()
 
     __mouseArea: MouseArea {

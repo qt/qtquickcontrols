@@ -64,6 +64,8 @@ PRIVATE_QML_FILES += \
     $$PWD/EditMenu_ios.qml \
     $$PWD/ToolMenuButton.qml \
     $$PWD/BasicTableView.qml \
+    $$PWD/TableViewItemDelegateLoader.qml \
+    $$PWD/TreeViewItemDelegateLoader.qml \
     $$PWD/qmldir
 
 QML_FILES += $$PRIVATE_QML_FILES

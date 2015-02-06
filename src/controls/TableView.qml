@@ -288,6 +288,12 @@ BasicTableView {
     __viewTypeName: "TableView"
     __model: model
 
+    __itemDelegateLoader: TableViewItemDelegateLoader {
+        __style: root.__style
+        __itemDelegate: root.itemDelegate
+        __mouseArea: mousearea
+    }
+
     __mouseArea: MouseArea {
         id: mousearea
 
