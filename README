@@ -4,9 +4,9 @@ This project aims to deliver widgets/controls functionality with Qt Quick.
 
 Some more information can be found on the following blog entries:
 
-https://blog.qt.digia.com/blog/2011/03/10/qml-components-for-desktop/
-https://blog.qt.digia.com/blog/2011/05/26/table-view-with-qt-quick/
-https://blog.qt.digia.com/blog/2011/08/26/toplevel-windows-and-menus-with-qt-quick/
+https://blog.qt.io/blog/2011/03/10/qml-components-for-desktop/
+https://blog.qt.io/blog/2011/05/26/table-view-with-qt-quick/
+https://blog.qt.io/blog/2011/08/26/toplevel-windows-and-menus-with-qt-quick/
 
 
 HELP
@@ -38,6 +38,6 @@ application. This is because it will ensure that the QMLViewer application itsel
 show and make up the main window in your application.
 
 Again, please refer to :
-https://blog.qt.digia.com/blog/2011/08/26/toplevel-windows-and-menus-with-qt-quick/
+https://blog.qt.io/blog/2011/08/26/toplevel-windows-and-menus-with-qt-quick/
 
 For more information on this.
