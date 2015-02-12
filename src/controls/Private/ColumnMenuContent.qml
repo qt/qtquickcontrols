@@ -36,6 +36,7 @@
 
 import QtQuick 2.2
 import QtQuick.Controls 1.2
+import QtQuick.Controls.Private 1.0
 
 Item {
     id: content
@@ -189,7 +190,7 @@ Item {
         width: scrollView.width - scrollView.__verticalScrollBar.width
         height: parent.height
 
-        hoverEnabled: true
+        hoverEnabled: Settings.hoverEnabled
         acceptedButtons: Qt.AllButtons
 
         onPositionChanged: updateCurrentItem({ "x": mouse.x, "y": mouse.y })

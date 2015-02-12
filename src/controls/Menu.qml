@@ -44,8 +44,8 @@ import QtQuick.Controls.Private 1.0
     \inqmlmodule QtQuick.Controls
     \since 5.1
     \ingroup menus
-    \brief Provides a menu component for use in menu bars, as context menu,
-    and other popup menus.
+    \brief Provides a menu component for use as a context menu, popup menu, or
+    as part of a menu bar.
 
     \image menu.png
 

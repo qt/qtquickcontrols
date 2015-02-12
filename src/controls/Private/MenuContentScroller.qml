@@ -36,6 +36,7 @@
 
 import QtQuick 2.2
 import QtQuick.Controls 1.2
+import QtQuick.Controls.Private 1.0
 
 MouseArea {
     id: scrollIndicator
@@ -46,7 +47,7 @@ MouseArea {
         bottom: direction === Qt.DownArrow ? parent.bottom : undefined
     }
 
-    hoverEnabled: visible
+    hoverEnabled: visible && Settings.hoverEnabled
     height: scrollerLoader.height
     width: parent.width
 

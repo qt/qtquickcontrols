@@ -526,7 +526,7 @@ Style {
                         id: mouseArea
                         anchors.fill: parent
 
-                        hoverEnabled: true
+                        hoverEnabled: Settings.hoverEnabled
 
                         function cellIndexAt(mouseX, mouseY) {
                             var viewContainerPos = viewContainer.mapFromItem(mouseArea, mouseX, mouseY);

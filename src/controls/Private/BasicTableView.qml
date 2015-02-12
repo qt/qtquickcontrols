@@ -682,7 +682,7 @@ ScrollView {
                         MouseArea{
                             id: headerClickArea
                             drag.axis: Qt.YAxis
-                            hoverEnabled: true
+                            hoverEnabled: Settings.hoverEnabled
                             anchors.fill: parent
                             onClicked: {
                                 if (sortIndicatorColumn === index)

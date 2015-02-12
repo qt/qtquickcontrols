@@ -36,6 +36,7 @@
 
 import QtQuick 2.2
 import QtQuick.Controls 1.2
+import QtQuick.Controls.Private 1.0
 
 /*!
     \qmltype AbstractCheckable
@@ -109,7 +110,7 @@ Control {
         id: mouseArea
         focus: true
         anchors.fill: parent
-        hoverEnabled: true
+        hoverEnabled: Settings.hoverEnabled
         enabled: !keyPressed
 
         property bool keyPressed: false

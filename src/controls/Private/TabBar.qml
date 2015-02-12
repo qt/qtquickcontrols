@@ -36,6 +36,7 @@
 
 import QtQuick 2.2
 import QtQuick.Controls 1.2
+import QtQuick.Controls.Private 1.0
 
 /*!
         \qmltype TabBar
@@ -161,7 +162,7 @@ FocusScope {
         delegate: MouseArea {
             id: tabitem
             objectName: "mousearea"
-            hoverEnabled: true
+            hoverEnabled: Settings.hoverEnabled
             focus: true
             enabled: modelData.enabled
 

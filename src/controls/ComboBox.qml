@@ -345,7 +345,7 @@ Control {
         property bool overridePressed: false
         readonly property bool effectivePressed: (pressed || overridePressed) && containsMouse
         anchors.fill: parent
-        hoverEnabled: true
+        hoverEnabled: Settings.hoverEnabled
         onPressed: {
             if (comboBox.activeFocusOnPress)
                 forceActiveFocus()

@@ -182,7 +182,7 @@ Control {
         property bool effectivePressed: pressed && containsMouse || keyPressed
 
         anchors.fill: parent
-        hoverEnabled: true
+        hoverEnabled: Settings.hoverEnabled
         enabled: !keyPressed
 
         function toggle() {
