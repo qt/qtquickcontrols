@@ -1,0 +1,4 @@
+include($QT_INSTALL_DOCS/global/qt-cpp-defines.qdocconf)
+include($QT_INSTALL_DOCS/global/fileextensions.qdocconf)
+
+include(qtquickextras-project.qdocconf)

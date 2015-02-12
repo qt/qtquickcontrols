@@ -1,0 +1,19 @@
+<RCC>
+    <qresource prefix="/ExtrasImports/QtQuick/Extras/Styles/Base">
+        <file>TumblerStyle.qml</file>
+        <file>ToggleButtonStyle.qml</file>
+        <file>StatusIndicatorStyle.qml</file>
+        <file>PieMenuStyle.qml</file>
+        <file>HandleStyleHelper.qml</file>
+        <file>HandleStyle.qml</file>
+        <file>GaugeStyle.qml</file>
+        <file>DialStyle.qml</file>
+        <file>DelayButtonStyle.qml</file>
+        <file>CommonStyleHelper.qml</file>
+        <file>CircularTickmarkLabelStyle.qml</file>
+        <file>CircularGaugeStyle.qml</file>
+        <file>CircularButtonStyle.qml</file>
+        <file>images/needle.png</file>
+        <file>images/knob.png</file>
+    </qresource>
+</RCC>

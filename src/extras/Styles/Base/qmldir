@@ -1,0 +1,4 @@
+module QtQuick.Extras.Styles
+plugin qtquickextrasstylesplugin
+classname QtQuickExtrasStylesPlugin
+depends QtGraphicalEffects 1.0

@@ -7,6 +7,9 @@ winrt: SUBDIRS += controls/Styles/WinRT
 
 SUBDIRS += layouts
 
+SUBDIRS += extras
+SUBDIRS += extras/Styles/styles.pro
+
 SUBDIRS += dialogs
 SUBDIRS += dialogs/Private
 

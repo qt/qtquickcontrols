@@ -1,0 +1,4 @@
+module QtQuick.Extras
+plugin qtquickextrasplugin
+classname QtQuickExtrasPlugin
+#typeinfo plugins.qmltypes

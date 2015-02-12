@@ -1,0 +1,5 @@
+include(../qtquickextras-compat.qdocconf)
+
+# Workaround for qdoc not parsing relative include paths correctly
+exampledirs += ../../../../examples
+imagedirs += ../images
