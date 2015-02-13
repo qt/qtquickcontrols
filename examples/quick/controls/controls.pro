@@ -5,11 +5,10 @@ SUBDIRS += \
     tableview \
     touch \
     basiclayouts \
-    styles \
-    filesystembrowser
+    styles
 
 qtHaveModule(widgets) {
-    SUBDIRS += texteditor
+    SUBDIRS += texteditor filesystembrowser
 }
 
 qtHaveModule(sql) {
