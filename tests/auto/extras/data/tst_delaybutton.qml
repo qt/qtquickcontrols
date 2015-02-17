@@ -46,12 +46,13 @@ TestCase {
     height: 400
 
     function test_instance() {
-        var button = Qt.createQmlObject('import QtQuick.Extras 1.3; DelayButton { }', testcase, '')
+        var button = Qt.createQmlObject('import QtQuick.Extras 1.4; DelayButton { }', testcase, '')
         verify (button, "DelayButton: failed to create an instance")
         verify(button.__style)
         verify(!button.checked)
         verify(!button.pressed)
-        button.destroy()
+        // QTBUG-44664
+//        button.destroy()
     }
 
     SignalSpy {
@@ -68,7 +69,7 @@ TestCase {
     }
 
     function test_activation(data) {
-        var button = Qt.createQmlObject('import QtQuick.Extras 1.3; DelayButton { }', testcase, '')
+        var button = Qt.createQmlObject('import QtQuick.Extras 1.4; DelayButton { }', testcase, '')
         verify (button, "DelayButton: failed to create an instance")
         button.delay = data.delay
 
@@ -89,7 +90,8 @@ TestCase {
         verify(!button.pressed)
         compare(activationSpy.count, 1)
 
-        button.destroy()
+        // QTBUG-44664
+//        button.destroy()
     }
 
     SignalSpy {
@@ -98,7 +100,7 @@ TestCase {
     }
 
     function test_progress() {
-        var button = Qt.createQmlObject('import QtQuick.Extras 1.3; DelayButton { delay: 1 }', testcase, '')
+        var button = Qt.createQmlObject('import QtQuick.Extras 1.4; DelayButton { delay: 1 }', testcase, '')
         verify (button, "DelayButton: failed to create an instance")
 
         progressSpy.target = button
@@ -109,7 +111,8 @@ TestCase {
         tryCompare(button, "progress", 1.0)
         verify(progressSpy.count > 0)
 
-        button.destroy()
+        // QTBUG-44664
+//        button.destroy()
     }
 
     SignalSpy {
@@ -126,7 +129,7 @@ TestCase {
     }
 
     function test_checked(data) {
-        var button = Qt.createQmlObject('import QtQuick.Extras 1.3; DelayButton { }', testcase, '')
+        var button = Qt.createQmlObject('import QtQuick.Extras 1.4; DelayButton { }', testcase, '')
         verify (button, "DelayButton: failed to create an instance")
         button.delay = data.delay
 
@@ -164,11 +167,12 @@ TestCase {
         verify(!button.checked)
         compare(checkSpy.count, checkCount)
 
-        button.destroy()
+        // QTBUG-44664
+//        button.destroy()
     }
 
     function test_programmaticCheck() {
-        var button = Qt.createQmlObject("import QtQuick.Extras 1.3; DelayButton {}", testcase, "");
+        var button = Qt.createQmlObject("import QtQuick.Extras 1.4; DelayButton {}", testcase, "");
         verify(button, "DelayButton: failed to create an instance");
 
         checkSpy.clear();
@@ -181,14 +185,16 @@ TestCase {
         button.checked = false;
         compare(button.progress, 0);
 
-        button.destroy();
+        // QTBUG-44664
+//        button.destroy();
     }
 
     function test_largeText() {
         // Should be no binding loop warnings.
-        var button = Qt.createQmlObject("import QtQuick.Extras 1.3; DelayButton { "
+        var button = Qt.createQmlObject("import QtQuick.Extras 1.4; DelayButton { "
             + "anchors.centerIn: parent; text: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' }", testcase, "");
         verify(button, "DelayButton: failed to create an instance");
-        button.destroy();
+        // QTBUG-44664
+//        button.destroy();
     }
 }

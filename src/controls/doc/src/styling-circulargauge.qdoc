@@ -29,12 +29,12 @@
     \page styling-circulargauge.html
     \title Styling CircularGauge
     \brief Tutorial for styling CircularGauge.
-    \ingroup extrasstyling
+    \ingroup stylingtutorials
 
     \target styling-circulargauge-needle
     \section2 The Needle Component
 
-    The \l {QtQuick.Extras.Styles::CircularGaugeStyle::}{needle}
+    The \l {QtQuick.Controls.Styles::CircularGaugeStyle::}{needle}
     component is rotated around the gauge to represent the current value.
 
     Starting from the default style, we'll add a very basic white needle:
@@ -43,11 +43,11 @@
 
     \image styling-circulargauge-needle-example.png
 
-    As mentioned in the documentation for \l {QtQuick.Extras.Styles::}
+    As mentioned in the documentation for \l {QtQuick.Controls.Styles::}
     {CircularGaugeStyle}, \c implicitWidth
     and \c implicitHeight properties need to be set. This is so that the needle
     can be positioned properly. We always scale items by the
-    \l {QtQuick.Extras.Styles::CircularGaugeStyle::}{outerRadius}
+    \l {QtQuick.Controls.Styles::CircularGaugeStyle::}{outerRadius}
     property of the style, ensuring the control resizes gracefully.
 
     We offset the needle vertically so that its back sits beyond the knob.
@@ -56,7 +56,7 @@
     \section2 The Foreground Component
 
     We've now changed the needle, but the default knob is still there; let's
-    replace it. The \l {QtQuick.Extras.Styles::CircularGaugeStyle::}
+    replace it. The \l {QtQuick.Controls.Styles::CircularGaugeStyle::}
     {foreground} component defines the default knob, so we can specify our own by
     overriding it (note that we could also set it to \c null if we didn't want a
     foreground):
@@ -130,7 +130,7 @@
 
     Next, we do the drawing of the range using Canvas. We draw an arc between
     \c 80 and \c 100, using the
-    \l {QtQuick.Extras.Styles::CircularGaugeStyle::}{valueToAngle()}
+    \l {QtQuick.Controls.Styles::CircularGaugeStyle::}{valueToAngle()}
     function provided by CircularGaugeStyle. Note that we subtract \c 90 degrees
     before converting to radians, as our origin is north and Canvas' is east.
 

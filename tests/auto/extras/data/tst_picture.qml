@@ -36,7 +36,7 @@
 
 import QtTest 1.0
 import QtQuick 2.4
-import QtQuick.Extras 1.3
+import QtQuick.Extras 1.4
 import QtQuick.Extras.Private 1.0
 
 TestCase {
@@ -69,7 +69,7 @@ TestCase {
     }
 
     function test_instance() {
-        picture = Qt.createQmlObject("import QtQuick.Extras 1.3; Picture { }", testCase, "");
+        picture = Qt.createQmlObject("import QtQuick.Extras 1.4; Picture { }", testCase, "");
         verify(picture, "Picture: failed to create an instance");
     }
 
@@ -93,7 +93,7 @@ TestCase {
     }
 
     function test_source(data) {
-        picture = Qt.createQmlObject("import QtQuick.Extras 1.3; Picture {}", testCase, "");
+        picture = Qt.createQmlObject("import QtQuick.Extras 1.4; Picture {}", testCase, "");
         verify(picture, "Picture: failed to create an instance");
         picture.source = data.tag;
         picture.width = data.implicitSize.width;
@@ -120,14 +120,17 @@ TestCase {
     }
 
     function test_color(data) {
-        picture = Qt.createQmlObject("import QtQuick.Extras 1.3; Picture {}", testCase, "");
+        picture = Qt.createQmlObject("import QtQuick.Extras 1.4; Picture {}", testCase, "");
         verify(picture, "Picture: failed to create an instance");
 
         picture.width = pictureDotDatImplicitSize.width;
         picture.height = pictureDotDatImplicitSize.height;
         picture.source = "picture.dat";
         picture.color = data.color;
-        waitForRendering(picture);
+        // For some reason we need two waits here, otherwise the color detected is *sometimes* white instead of black.
+        // Also, we use an explicit, shorter timeout, otherwise the default (5000 ms) seems to be exhausted.
+        waitForRendering(picture, 200);
+        waitForRendering(picture, 200);
 
         var pictureImage = grabImage(picture);
 
@@ -144,7 +147,7 @@ TestCase {
     }
 
     function test_size() {
-        picture = Qt.createQmlObject("import QtQuick.Extras 1.3; Picture {}", testCase, "");
+        picture = Qt.createQmlObject("import QtQuick.Extras 1.4; Picture {}", testCase, "");
         verify(picture, "Picture: failed to create an instance");
 
         compare(picture.implicitWidth, fontMetrics.height * 4);

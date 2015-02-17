@@ -27,8 +27,8 @@
 
 //! [tickmarks]
 import QtQuick 2.0
-import QtQuick.Extras 1.3
-import QtQuick.Extras.Styles 1.3
+import QtQuick.Controls.Styles 1.4
+import QtQuick.Extras 1.4
 
 Rectangle {
     width: 400

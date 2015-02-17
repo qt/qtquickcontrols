@@ -252,7 +252,7 @@ BasicTableView {
         modelAdaptor.expand(index)
     }
 
-    style: Qt.createComponent(Settings.style + "/TreeViewStyle.qml", root)
+    style: Settings.styleComponent(Settings.style, "TreeViewStyle.qml", root)
 
     // Internal stuff. Do not look
 

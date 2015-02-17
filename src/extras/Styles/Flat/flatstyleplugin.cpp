@@ -56,7 +56,7 @@ extern "C" {
 
     Q_DECL_EXPORT const char* qt_quick_controls_style_path()
     {
-        return "qrc:/ExtrasImports/QtQuick/Controls/Styles/";
+        return ":/ExtrasImports/QtQuick/Controls/Styles/Flat";
     }
 }
 

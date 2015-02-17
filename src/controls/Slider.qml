@@ -189,7 +189,7 @@ Control {
         range.decreaseSingleStep()
     }
 
-    style: Qt.createComponent(Settings.style + "/SliderStyle.qml", slider)
+    style: Settings.styleComponent(Settings.style, "SliderStyle.qml", slider)
 
     Keys.onRightPressed: if (__horizontal) range.increaseSingleStep()
     Keys.onLeftPressed: if (__horizontal) range.decreaseSingleStep()

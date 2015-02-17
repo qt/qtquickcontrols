@@ -332,7 +332,7 @@ Control {
     /*! \internal */
     property var __popup: popup
 
-    style: Qt.createComponent(Settings.style + "/ComboBoxStyle.qml", comboBox)
+    style: Settings.styleComponent(Settings.style, "ComboBoxStyle.qml", comboBox)
 
     activeFocusOnTab: true
 

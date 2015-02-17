@@ -37,13 +37,13 @@
 import QtQuick 2.2
 import QtGraphicalEffects 1.0
 import QtQuick.Controls.Private 1.0
-import QtQuick.Extras 1.3
+import QtQuick.Extras 1.4
 
 /*!
     \qmltype StatusIndicatorStyle
-    \inqmlmodule QtQuick.Extras.Styles
-    \since QtQuick.Extras.Styles 1.1
-    \ingroup extrasstyles
+    \inqmlmodule QtQuick.Controls.Styles
+    \since 5.5
+    \ingroup controlsstyling
     \brief Provides custom styling for StatusIndicatorStyle.
 
     You can create a custom status indicator by defining the \l indicator
@@ -54,15 +54,11 @@ Style {
     id: pieMenuStyle
 
     /*!
-        \since 1.3
-
         The \l StatusIndicator that this style is attached to.
     */
     readonly property StatusIndicator control: __control
 
     /*!
-        \since 1.3
-
         The color that instances of
         \l {QtQuick.Extras::}{StatusIndicator} will have.
         The \l {QtQuick.Extras::StatusIndicator::}{color}

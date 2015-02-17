@@ -43,6 +43,8 @@ QML_FILES += $$CONTROLS_QML_FILES
 SOURCES += $$PWD/plugin.cpp
 HEADERS += $$PWD/plugin.h
 
+OTHER_FILES += doc/src/*
+
 include(plugin.pri)
 include(Private/private.pri)
 include(Styles/styles.pri)

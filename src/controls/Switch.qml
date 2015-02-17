@@ -159,5 +159,5 @@ Control {
 
         \codeline Qt.createComponent("path/to/style.qml", switchId);
     */
-    style: Qt.createComponent(Settings.style + "/SwitchStyle.qml", root)
+    style: Settings.styleComponent(Settings.style, "SwitchStyle.qml", root)
 }

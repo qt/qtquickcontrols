@@ -1,6 +1,6 @@
 import QtQuick 2.2
 import QtQuick.Controls 1.1
-import QtQuick.Extras 1.3
+import QtQuick.Extras 1.4
 
 Rectangle {
     id: rect

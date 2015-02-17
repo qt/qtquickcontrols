@@ -34,25 +34,51 @@
 **
 ****************************************************************************/
 
-#ifndef STYLES_PLUGIN_H
-#define STYLES_PLUGIN_H
+import QtQuick 2.2
+import QtQuick.Controls.Styles 1.4
+import QtQuick.Extras.Private 1.0
 
-#include <QtQml/qqmlextensionplugin.h>
-#include <QtQml/qqml.h>
-#include <QtQml/qqmlengine.h>
+ButtonStyle {
+    id: buttonStyle
 
-QT_BEGIN_NAMESPACE
+    label: Text {
+        anchors.fill: parent
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
+        text: control.text
+        font.pixelSize: TextSingleton.font.pixelSize * 1.25
+        color: control.pressed || control.checked ? __buttonHelper.textColorDown : __buttonHelper.textColorUp
+        styleColor: control.pressed || control.checked ? __buttonHelper.textRaisedColorDown : __buttonHelper.textRaisedColorUp
+        style: Text.Raised
+        wrapMode: Text.Wrap
+        fontSizeMode: Text.Fit
+    }
 
-class QtQuickExtrasStylesPlugin : public QQmlExtensionPlugin
-{
-    Q_OBJECT
-    Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QQmlExtensionInterface/1.0")
-public:
-    explicit QtQuickExtrasStylesPlugin(QObject *parent = 0);
+    /*! \internal */
+    property alias __buttonHelper: buttonHelper
 
-    void registerTypes(const char *uri);
-};
+    CircularButtonStyleHelper {
+        id: buttonHelper
+        control: buttonStyle.control
+    }
 
-QT_END_NAMESPACE
+    background: Item {
+        implicitWidth: __buttonHelper.implicitWidth
+        implicitHeight: __buttonHelper.implicitHeight
 
-#endif // STYLES_PLUGIN_H
+        Canvas {
+            id: backgroundCanvas
+            anchors.fill: parent
+
+            Connections {
+                target: control
+                onPressedChanged: backgroundCanvas.requestPaint()
+            }
+
+            onPaint: {
+                var ctx = getContext("2d");
+                __buttonHelper.paintBackground(ctx);
+            }
+        }
+    }
+}

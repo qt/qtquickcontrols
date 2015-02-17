@@ -218,7 +218,7 @@ Control {
         visibleDate: new Date(visibleYear, visibleMonth, 1)
     }
 
-    style: Qt.createComponent(Settings.style + "/CalendarStyle.qml", calendar)
+    style: Settings.styleComponent(Settings.style, "CalendarStyle.qml", calendar)
 
     /*!
         \qmlsignal Calendar::hovered(date date)

@@ -59,6 +59,6 @@ Item {
         id: loader
         z: 2
         anchors.fill: parent
-        sourceComponent: Qt.createComponent(Settings.style + "/FocusFrameStyle.qml", root)
+        sourceComponent: Settings.styleComponent(Settings.style, "FocusFrameStyle.qml", root)
     }
 }

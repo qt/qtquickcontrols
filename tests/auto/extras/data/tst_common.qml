@@ -53,11 +53,11 @@ TestCase {
              { tag: "DelayButton" },
              { tag: "Dial" },
              { tag: "Gauge" },
-             { tag: "PieMenu", qml: "import QtQuick.Controls 1.1; import QtQuick.Extras 1.3;"
+             { tag: "PieMenu", qml: "import QtQuick.Controls 1.1; import QtQuick.Extras 1.4;"
                 + "PieMenu { visible: true; MenuItem { text: 'foo' } }"},
              { tag: "StatusIndicator" },
              { tag: "ToggleButton" },
-             { tag: "Tumbler", qml: "import QtQuick.Extras 1.3; Tumbler { TumblerColumn { model: 10 } }" }
+             { tag: "Tumbler", qml: "import QtQuick.Extras 1.4; Tumbler { TumblerColumn { model: 10 } }" }
          ];
     }
 
@@ -66,7 +66,7 @@ TestCase {
     }
 
     function test_resize(data) {
-        var qml = data.qml ? data.qml : "import QtQuick.Extras 1.3; " + data.tag + " { }";
+        var qml = data.qml ? data.qml : "import QtQuick.Extras 1.4; " + data.tag + " { }";
         control = Qt.createQmlObject(qml, testCase, "");
 
         var resizeAnimation = Qt.createQmlObject("import QtQuick 2.2; NumberAnimation {}", testCase, "");

@@ -35,15 +35,15 @@
 ****************************************************************************/
 
 import QtQuick 2.2
+import QtQuick.Controls.Styles 1.4
 import QtQuick.Controls.Private 1.0
-import QtQuick.Extras 1.3
-import QtQuick.Extras.Styles 1.3
+import QtQuick.Extras 1.4
 import QtQuick.Extras.Private 1.0
 
 /*!
     \qmltype StatusIndicator
     \inqmlmodule QtQuick.Extras
-    \since QtQuick.Extras 1.1
+    \since 5.5
     \ingroup extras
     \ingroup extras-non-interactive
     \brief An indicator that displays active or inactive states.
@@ -65,7 +65,7 @@ import QtQuick.Extras.Private 1.0
         \li
             \code
                 import QtQuick 2.2
-                import QtQuick.Extras 1.3
+                import QtQuick.Extras 1.4
 
                 Rectangle {
                     width: 100
@@ -82,13 +82,13 @@ import QtQuick.Extras.Private 1.0
     \endtable
 
     You can create a custom appearance for a StatusIndicator by assigning a
-    \l {QtQuick.Extras.Styles::}{StatusIndicatorStyle}.
+    \l {QtQuick.Controls.Styles::}{StatusIndicatorStyle}.
 */
 
 Control {
     id: statusIndicator
 
-    style: Qt.createComponent(StyleSettings.style + "/StatusIndicatorStyle.qml", statusIndicator)
+    style: Settings.styleComponent(Settings.style, "StatusIndicatorStyle.qml", statusIndicator)
 
     /*!
         This property specifies whether the indicator is active or inactive.
@@ -100,8 +100,6 @@ Control {
     property alias on: statusIndicator.active
 
     /*!
-        \since QtQuick.Extras 1.2
-
         This property specifies whether the indicator is active or inactive.
 
         The default value is \c false (inactive).

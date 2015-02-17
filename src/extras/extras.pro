@@ -1,6 +1,6 @@
 TARGET = qtquickextrasplugin
 TARGETPATH = QtQuick/Extras
-IMPORT_VERSION = 1.3
+IMPORT_VERSION = 1.4
 
 QT += qml
 

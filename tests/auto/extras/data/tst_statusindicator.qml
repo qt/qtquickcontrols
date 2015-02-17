@@ -36,8 +36,9 @@
 
 import QtTest 1.0
 import QtQuick 2.1
-import QtQuick.Extras 1.3
-import QtQuick.Extras.Private 1.0
+import QtQuick.Controls 1.4
+import QtQuick.Controls.Private 1.0
+import QtQuick.Extras 1.4
 
 TestCase {
     id: testCase
@@ -55,13 +56,13 @@ TestCase {
     }
 
     function test_instance() {
-        indicator = Qt.createQmlObject("import QtQuick.Extras 1.3; StatusIndicator { }", testCase, "");
+        indicator = Qt.createQmlObject("import QtQuick.Extras 1.4; StatusIndicator { }", testCase, "");
         verify(indicator, "StatusIndicator: failed to create an instance")
         verify(indicator.__style);
     }
 
     function test_active_data() {
-        if (StyleSettings.styleName === "Flat") {
+        if (Settings.styleName === "Flat") {
             return [
                 { tag: "active", active: true, expectedColor: { r: 18, g: 136, b: 203 } },
                 { tag: "inactive", active: false, expectedColor: { r: 179, g: 179, b: 179 } }
@@ -75,13 +76,13 @@ TestCase {
     }
 
     function test_active(data) {
-        indicator = Qt.createQmlObject("import QtQuick.Extras 1.3; StatusIndicator { }", testCase, "");
+        indicator = Qt.createQmlObject("import QtQuick.Extras 1.4; StatusIndicator { }", testCase, "");
         verify(indicator);
         compare(indicator.active, false);
 
         indicator.active = data.active;
         // Color is slightly different on some platforms/machines, like Windows.
-        var lenience = StyleSettings.styleName === "Flat" ? 0 : 2;
+        var lenience = Settings.styleName === "Flat" ? 0 : 2;
 
         waitForRendering(indicator);
         var image = grabImage(indicator);
@@ -91,9 +92,9 @@ TestCase {
     }
 
     function test_color() {
-        var flatStyle = StyleSettings.styleName === "Flat";
+        var flatStyle = Settings.styleName === "Flat";
 
-        indicator = Qt.createQmlObject("import QtQuick.Extras 1.3; StatusIndicator { }", testCase, "");
+        indicator = Qt.createQmlObject("import QtQuick.Extras 1.4; StatusIndicator { }", testCase, "");
         verify(indicator);
         compare(indicator.color, flatStyle ? "#1288cb" : "#ff0000");
 
@@ -113,10 +114,10 @@ TestCase {
     }
 
     function test_baseStyleHasOuterShadow() {
-        if (StyleSettings.styleName !== "Base")
+        if (Settings.styleName !== "Base")
             return;
 
-        indicator = Qt.createQmlObject("import QtQuick.Extras 1.3; StatusIndicator { }", testCase, "");
+        indicator = Qt.createQmlObject("import QtQuick.Extras 1.4; StatusIndicator { }", testCase, "");
         verify(indicator);
 
         // There should be a "shadow" here...

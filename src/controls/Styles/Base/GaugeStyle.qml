@@ -35,17 +35,17 @@
 ****************************************************************************/
 
 import QtQuick 2.2
-import QtQuick.Controls 1.1
-import QtQuick.Controls.Styles 1.1
+import QtQuick.Controls 1.4
+import QtQuick.Controls.Styles 1.4
 import QtQuick.Controls.Private 1.0
-import QtQuick.Extras 1.3
+import QtQuick.Extras 1.4
 import QtQuick.Extras.Private 1.0
 
 /*!
     \qmltype GaugeStyle
-    \inqmlmodule QtQuick.Extras.Styles
-    \since QtQuick.Extras.Styles 1.0
-    \ingroup extrasstyles
+    \inqmlmodule QtQuick.Controls.Styles
+    \since 5.5
+    \ingroup controlsstyling
     \brief Provides custom styling for Gauge.
 
     You can create a custom gauge by replacing the following delegates:
@@ -60,9 +60,9 @@ import QtQuick.Extras.Private 1.0
 
     \code
     import QtQuick 2.2
-    import QtQuick.Controls 1.1
-    import QtQuick.Extras 1.3
-    import QtQuick.Extras.Styles 1.3
+    import QtQuick.Controls 1.4
+    import QtQuick.Controls.Styles 1.4
+    import QtQuick.Extras 1.4
 
     Rectangle {
         width: 80
@@ -107,15 +107,11 @@ Style {
     id: gaugeStyle
 
     /*!
-        \since 1.3
-
         The \l Gauge that this style is attached to.
     */
     readonly property Gauge control: __control
 
     /*!
-        \since QtQuick.Extras.Styles 1.3
-
         This property holds the value displayed by the gauge as a position in
         pixels.
 

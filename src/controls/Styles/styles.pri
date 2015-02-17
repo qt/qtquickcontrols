@@ -27,6 +27,22 @@ STYLES_QML_FILES = \
     $$PWD/Base/ToolBarStyle.qml \
     $$PWD/Base/ToolButtonStyle.qml
 
+# Extras
+STYLES_QML_FILES += \
+    $$PWD/Base/CircularGaugeStyle.qml \
+    $$PWD/Base/CircularButtonStyle.qml \
+    $$PWD/Base/CircularTickmarkLabelStyle.qml \
+    $$PWD/Base/CommonStyleHelper.qml \
+    $$PWD/Base/DelayButtonStyle.qml \
+    $$PWD/Base/DialStyle.qml \
+    $$PWD/Base/GaugeStyle.qml \
+    $$PWD/Base/HandleStyle.qml \
+    $$PWD/Base/HandleStyleHelper.qml \
+    $$PWD/Base/PieMenuStyle.qml \
+    $$PWD/Base/StatusIndicatorStyle.qml \
+    $$PWD/Base/ToggleButtonStyle.qml \
+    $$PWD/Base/TumblerStyle.qml
+
 # Desktop
 !no_desktop {
     STYLES_QML_FILES += \
@@ -88,7 +104,9 @@ STYLES_QML_FILES += \
     $$PWD/Base/images/spinner_medium.png \
     $$PWD/Base/images/spinner_large.png \
     $$PWD/Base/images/check.png \
-    $$PWD/Base/images/check@2x.png
+    $$PWD/Base/images/check@2x.png \
+    $$PWD/Base/images/knob.png \
+    $$PWD/Base/images/needle.png
 
 STYLES_QML_FILES += $$PWD/qmldir
 

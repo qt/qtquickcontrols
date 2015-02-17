@@ -36,16 +36,15 @@
 
 import QtQuick 2.2
 import QtGraphicalEffects 1.0
-import QtQuick.Controls.Styles 1.1
-import QtQuick.Extras 1.3
-import QtQuick.Extras.Styles 1.3
+import QtQuick.Controls.Styles 1.4
+import QtQuick.Extras 1.4
 import QtQuick.Extras.Private.CppUtils 1.1
 
 /*!
     \qmltype DelayButtonStyle
-    \inqmlmodule QtQuick.Extras.Styles
-    \since QtQuick.Extras.Styles 1.0
-    \ingroup extrasstyles
+    \inqmlmodule QtQuick.Controls.Styles
+    \since 5.5
+    \ingroup controlsstyling
     \brief Provides custom styling for DelayButton.
 
     You can create a custom DelayButton by replacing the following delegates:
@@ -59,8 +58,6 @@ CircularButtonStyle {
     id: delayButtonStyle
 
     /*!
-        \since 1.3
-
         The \l DelayButton that this style is attached to.
     */
     readonly property DelayButton control: __control
