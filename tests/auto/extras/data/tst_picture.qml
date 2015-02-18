@@ -73,6 +73,11 @@ TestCase {
         verify(picture, "Picture: failed to create an instance");
     }
 
+    function verifyColorEqualMessage(pictureImage, pixelX, pixelY, expectedPixelColor) {
+        return "pixel " + pictureImage.pixel(pixelX, pixelY) + " at "
+            + pixelX + "," + pixelY + " isn't equal to " + expectedPixelColor;
+    }
+
     function test_source_data() {
         return [
             {
@@ -101,8 +106,7 @@ TestCase {
             var pixel = data.pixels[i];
             // TODO: use compare when QTBUG-34878 is fixed
             verify(Qt.colorEqual(pictureImage.pixel(pixel.x, pixel.y), pixel.color),
-                "pixel " + pictureImage.pixel(pixel.x, pixel.y) + " at "
-                + pixel.x + "," + pixel.y + " isn't equal to " + pixel.color);
+                verifyColorEqualMessage(pictureImage, pixel.x, pixel.y, pixel.color));
         }
     }
 
@@ -127,9 +131,12 @@ TestCase {
 
         var pictureImage = grabImage(picture);
 
-        verify(Qt.colorEqual(pictureImage.pixel(0, 0), Qt.rgba(1, 1, 1, 1)));
-        verify(Qt.colorEqual(pictureImage.pixel(17, 17), data.expectedColor));
-        verify(Qt.colorEqual(pictureImage.pixel(picture.width / 2, picture.height / 2), Qt.rgba(1, 1, 1, 1)));
+        verify(Qt.colorEqual(pictureImage.pixel(0, 0), Qt.rgba(1, 1, 1, 1)),
+               verifyColorEqualMessage(pictureImage, 0, 0, Qt.rgba(1, 1, 1, 1)));
+        verify(Qt.colorEqual(pictureImage.pixel(17, 17), data.expectedColor),
+               verifyColorEqualMessage(pictureImage, 17, 17, data.expectedColor));
+        verify(Qt.colorEqual(pictureImage.pixel(picture.width / 2, picture.height / 2), Qt.rgba(1, 1, 1, 1)),
+               verifyColorEqualMessage(pictureImage, picture.width / 2, picture.height / 2, Qt.rgba(1, 1, 1, 1)));
     }
 
     FontMetrics {
