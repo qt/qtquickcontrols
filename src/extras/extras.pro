@@ -35,5 +35,7 @@ OTHER_FILES += doc/src/*
 
 RESOURCES += extras.qrc
 
+TR_EXCLUDE += designer/*
+
 CONFIG += no_cxx_module
 load(qml_plugin)
