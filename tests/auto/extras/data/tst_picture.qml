@@ -47,6 +47,11 @@ TestCase {
     width: 400
     height: 400
 
+    Rectangle {
+        anchors.fill: parent
+        color: "white"
+    }
+
     property var picture
 
     /*
