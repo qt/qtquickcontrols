@@ -329,13 +329,14 @@ BasicTableView {
 
             if (selectionMode) {
                 var modelIndex = modelAdaptor.mapRowToModelIndex(row)
+                selection.setCurrentIndex(modelIndex, ItemSelectionModel.NoUpdate)
                 if (selectionMode === SelectionMode.SingleSelection) {
-                    selection.setCurrentIndex(modelIndex, ItemSelectionModel.NoUpdate)
+                    selection.select(modelIndex, ItemSelectionModel.ClearAndSelect)
                 } else {
                     var itemSelection = clickedRow === row ? modelIndex
                                         : modelAdaptor.selectionForRowRange(clickedRow, row)
                     if (selectionMode === SelectionMode.MultiSelection
-                        || modifiers & Qt.ControlModifier) {
+                        || selectionMode === SelectionMode.ExtendedSelection && modifiers & Qt.ControlModifier) {
                         if (drag)
                             selection.select(itemSelection, ItemSelectionModel.ToggleCurrent)
                         else

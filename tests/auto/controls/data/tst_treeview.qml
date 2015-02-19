@@ -369,12 +369,9 @@ Item {
 
             compare(secondItem.internalId, tree.currentIndex.internalId)
             compare(secondItem.internalId, tree.selection.currentIndex.internalId)
-            expectFailContinue('', 'BUG isSelected is always false when SingleSelection')
             compare(tree.selection.isSelected(secondItem), true)
-            expectFailContinue('', 'BUG hasSelection is always false when SingleSelection')
             compare(tree.selection.hasSelection, true)
             var list = tree.selection.selectedIndexes()
-            expectFailContinue('', 'BUG empty selectedIndex when SingleSelection')
             compare(list.length, 1)
             if (list.length === 1) {
                 compare(list.at(0).internalId, secondItem.internalId)
@@ -386,7 +383,6 @@ Item {
             compare(thirdItem.internalId, tree.selection.currentIndex.internalId)
 
             keyClick(Qt.Key_Down, Qt.ControlModifier)
-
             compare(fourthItem.internalId, tree.currentIndex.internalId)
             expectFailContinue('', 'BUG selected state not updated with Command/Control when SingleSelection')
             compare(fourthItem.internalId, tree.selection.currentIndex.internalId)
@@ -446,8 +442,6 @@ Item {
             keyClick(Qt.Key_Down, Qt.ControlModifier)
             verify(!tree.selection.currentIndex.valid)
             compare(tree.selection.hasSelection, false)
-            expectFailContinue('', 'BUG selected state not updated with Command/Controls when SingleSelection')
-            compare(tree.selection.isSelected(fourthItem), true)
 
             tree.destroy()
         }
@@ -495,7 +489,6 @@ Item {
             var listIndexes = tree.selection.selectedIndexes()
             compare(listIndexes.length, 1)
             compare(listIndexes.at(0).internalId, secondItem.internalId)
-            expectFailContinue('', 'BUG selection.currentIndex is invalid when MultiSelection')
             verify(tree.selection.currentIndex.valid)
             if (tree.selection.currentIndex.valid)
                 compare(tree.selection.currentIndex.internalId, secondItem.internalId)
@@ -509,7 +502,6 @@ Item {
             compare(listIndexes.length, 2)
             compare(listIndexes.at(0).internalId, secondItem.internalId)
             compare(listIndexes.at(1).internalId, fourthItem.internalId)
-            expectFailContinue('', 'BUG selection.currentIndex is invalid when MultiSelection')
             verify(tree.selection.currentIndex.valid)
             if (tree.selection.currentIndex.valid)
                 compare(tree.selection.currentIndex.internalId, fourthItem.internalId)
@@ -528,7 +520,6 @@ Item {
             compare(listIndexes.at(0).internalId, secondItem.internalId)
             compare(listIndexes.at(1).internalId, fourthItem.internalId)
             compare(listIndexes.at(2).internalId, sixthItem.internalId)
-            expectFailContinue('', 'BUG selection.currentIndex is invalid when MultiSelection')
             verify(tree.selection.currentIndex.valid)
             if (tree.selection.currentIndex.valid)
                 compare(tree.selection.currentIndex.internalId, sixthItem.internalId)
@@ -544,10 +535,7 @@ Item {
             compare(listIndexes.length, 2)
             compare(listIndexes.at(0).internalId, secondItem.internalId)
             compare(listIndexes.at(1).internalId, sixthItem.internalId)
-            expectFailContinue('', 'BUG selection.currentIndex is invalid when MultiSelection')
             verify(tree.selection.currentIndex.valid)
-            if (tree.selection.currentIndex.valid) // TO VERIFY
-                verify(!tree.selection.currentIndex.valid)
 
             mouseClick(tree, semiIndent + 50, 70+150, Qt.LeftButton)
             compare(fourthItem.internalId, tree.currentIndex.internalId)
@@ -612,7 +600,6 @@ Item {
             var listIndexes = tree.selection.selectedIndexes()
             compare(listIndexes.length, 1)
             compare(listIndexes.at(0).internalId, secondItem.internalId)
-            expectFailContinue('', 'BUG selection.currentIndex is invalid when ExtendedSelection')
             verify(tree.selection.currentIndex.valid)
             if (tree.selection.currentIndex.valid)
                 compare(tree.selection.currentIndex.internalId, secondItem.internalId)
@@ -701,7 +688,6 @@ Item {
             var listIndexes = tree.selection.selectedIndexes()
             compare(listIndexes.length, 1)
             compare(listIndexes.at(0).internalId, secondItem.internalId)
-            expectFailContinue('', 'BUG selection.currentIndex is invalid when ContiguousSelection')
             verify(tree.selection.currentIndex.valid)
             if (tree.selection.currentIndex.valid)
                 compare(tree.selection.currentIndex.internalId, secondItem.internalId)
@@ -710,12 +696,12 @@ Item {
             mouseClick(tree, semiIndent + 50, 70+50, Qt.LeftButton)
             compare(tree.selection.hasSelection, true)
             compare(tree.selection.isSelected(secondItem), true)
-            // Ctrl/Cmd click deselect
+            // Ctrl/Cmd click deselect all, selects current
             mouseClick(tree, semiIndent + 50, 70+52, Qt.LeftButton, Qt.ControlModifier)
-            compare(tree.selection.hasSelection, false)
-            compare(tree.selection.isSelected(secondItem), false)
+            compare(tree.selection.hasSelection, true)
+            compare(tree.selection.isSelected(secondItem), true)
             listIndexes = tree.selection.selectedIndexes()
-            compare(listIndexes.length, 0)
+            compare(listIndexes.length, 1)
 
             mouseClick(tree, semiIndent + 50, 70+50, Qt.LeftButton)
             keyPress(Qt.Key_Down, Qt.ShiftModifier)
@@ -729,7 +715,6 @@ Item {
             compare(tree.selection.isSelected(thirdItem), true)
             compare(tree.selection.isSelected(fourthItem), true)
             compare(tree.selection.isSelected(fifthItem), true)
-            expectFailContinue('', 'BUG selection.currentIndex is invalid when ContiguousSelection')
             verify(tree.selection.currentIndex.valid)
             if (tree.selection.currentIndex.valid)
                 compare(tree.selection.currentIndex.internalId, fifthItem.internalId)
