@@ -66,7 +66,7 @@ import QtQuick.Controls.Private 1.0
     \c true.
 
     \qml
-    Calendar{
+    Calendar {
         weekNumbersVisible: true
     }
     \endqml

@@ -649,7 +649,10 @@ Control {
     // The key bindings below will only be in use when popup is
     // not visible. Otherwise, native popup key handling will take place:
     Keys.onSpacePressed: {
-        popup.toggleShow()
+        if (!editable)
+            popup.toggleShow()
+        else
+            event.accepted = false
     }
 
     Keys.onUpPressed: __selectPrevItem()
