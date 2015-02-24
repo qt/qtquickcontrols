@@ -45,7 +45,7 @@ import QtQuick.Extras.Styles 1.3 as Base
 Base.ToggleButtonStyle {
     label: Label {
         text: control.text
-        color: FlatStyle.mediumFrameColor
+        color: FlatStyle.darkFrameColor
         font.family: FlatStyle.fontFamily
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
