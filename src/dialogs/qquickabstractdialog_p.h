@@ -159,6 +159,7 @@ protected: // variables for pure-QML implementations only
     QRect m_sizeAspiration;
     bool m_hasAspiredPosition;
     bool m_visibleChangedConnected;
+    bool m_dialogHelperInUse;
 
     static QQmlComponent *m_decorationComponent;
 
