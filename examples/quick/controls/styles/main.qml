@@ -108,7 +108,7 @@ Window {
         Slider {
             id: slider2
             value: 0.5
-            implicitWidth: columnWidth
+            implicitWidth: window.width / columnFactor
             style: SliderStyle {
                 groove: BorderImage {
                     height: 6
@@ -172,7 +172,7 @@ Window {
 
         ComboBox {
             model: ["Paris", "Oslo", "New York"]
-            implicitWidth: columnWidth
+            implicitWidth: window.width / columnFactor
         }
 
         TabView {
