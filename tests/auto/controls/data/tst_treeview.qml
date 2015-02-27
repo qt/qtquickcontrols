@@ -121,30 +121,31 @@ Item {
             compare(tree.currentIndex.row, 1)
             compare(clickedItem.internalId, tree.currentIndex.internalId)
 
-            // TO FIX
-//            spy.clear()
-//            spy.target = tree
-//            spy.signalName = "doubleClicked"
-//            compare(spy.count, 0)
-//            mouseDoubleClick(tree, semiIndent + 50, 120, Qt.LeftButton)
-//            compare(spy.count, 1)
-//            verify(spy.signalArguments[1][0].valid)
-//            compare(spy.signalArguments[1][0].row, 2)
-//            compare(tree.currentIndex.row, 2)
+            spy.clear()
+            spy.target = tree
+            spy.signalName = "doubleClicked"
+            compare(spy.count, 0)
+            mouseDoubleClickSequence(tree, semiIndent + 50, 220, Qt.LeftButton)
+            compare(spy.count, 1)
+            clickedItem = spy.signalArguments[0][0]
+            verify(clickedItem.valid)
+            compare(clickedItem.row, 3)
+            compare(clickedItem.internalId, tree.currentIndex.internalId)
 
-//            spy.clear()
-//            spy.target = tree
-//            spy.signalName = "activated"
-//            compare(spy.count, 0)
-//            if (!tree.__activateItemOnSingleClick)
-//                mouseDoubleClick(tree, semiIndent + 50 , 120, Qt.LeftButton)
-//            else
-//                mouseClick(tree, semiIndent + 50, 120, Qt.LeftButton)
-//            compare(spy.count, 1)
-//            verify(spy.signalArguments[0][0].valid)
-//            compare(spy.signalArguments[0][0].row, 1)
-//            compare(tree.currentIndex.row, 1)
-//            tree.destroy()
+            spy.clear()
+            spy.target = tree
+            spy.signalName = "activated"
+            compare(spy.count, 0)
+            if (!tree.__activateItemOnSingleClick)
+                mouseDoubleClickSequence(tree, semiIndent + 50 , 120, Qt.LeftButton)
+            else
+                mouseClick(tree, semiIndent + 50, 120, Qt.LeftButton)
+            compare(spy.count, 1)
+            clickedItem = spy.signalArguments[0][0]
+            verify(clickedItem.valid)
+            compare(clickedItem.row, 1)
+            compare(clickedItem.internalId, tree.currentIndex.internalId)
+            tree.destroy()
         }
 
         function test_headerHidden()
