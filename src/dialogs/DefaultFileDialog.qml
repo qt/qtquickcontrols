@@ -47,6 +47,9 @@ import "qml"
 
 AbstractFileDialog {
     id: root
+
+    folder: view.model.folder
+
     onVisibleChanged: {
         if (visible) {
             view.needsWidthAdjustment = true
@@ -59,7 +62,6 @@ AbstractFileDialog {
         view.model.nameFilters = root.selectedNameFilterExtensions
         filterField.currentIndex = root.selectedNameFilterIndex
         root.favoriteFolders = settings.favoriteFolders
-        root.folder = view.model.folder
     }
 
     Component.onDestruction: {
@@ -121,11 +123,6 @@ AbstractFileDialog {
         implicitHeight: Math.min(root.__maximumDimension, Screen.pixelDensity * 80)
         color: root.palette.window
 
-        Binding {
-            target: root
-            property: "folder"
-            value: view.model.folder
-        }
         Binding {
             target: view.model
             property: "folder"
