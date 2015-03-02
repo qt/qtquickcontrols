@@ -134,8 +134,11 @@ public:
 
         // FileDialog
 #ifndef PURE_QML_ONLY
+        // We register the QML version of the filedialog, even if the platform has native support.
+        // QQuickAbstractDialog::setVisible() will check if a native dialog can be shown, and
+        // only fall back to use the QML version if showing fails.
         if (QGuiApplicationPrivate::platformTheme()->usePlatformNativeDialog(QPlatformTheme::FileDialog))
-            qmlRegisterType<QQuickPlatformFileDialog>(uri, 1, 0, "FileDialog");
+            registerQmlImplementation<QQuickPlatformFileDialog>(qmlDir, "FileDialog", uri, 1, 0);
         else
 #endif
             registerWidgetOrQmlImplementation<QQuickFileDialog>(widgetsDir, qmlDir, "FileDialog", uri, hasTopLevelWindows, 1, 0);

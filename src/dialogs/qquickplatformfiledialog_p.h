@@ -48,11 +48,11 @@
 // We mean it.
 //
 
-#include "qquickabstractfiledialog_p.h"
+#include "qquickfiledialog_p.h"
 
 QT_BEGIN_NAMESPACE
 
-class QQuickPlatformFileDialog : public QQuickAbstractFileDialog
+class QQuickPlatformFileDialog : public QQuickFileDialog
 {
     Q_OBJECT
 

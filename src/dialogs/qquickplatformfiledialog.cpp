@@ -161,7 +161,7 @@ QT_BEGIN_NAMESPACE
     Constructs a file dialog with parent window \a parent.
 */
 QQuickPlatformFileDialog::QQuickPlatformFileDialog(QObject *parent) :
-    QQuickAbstractFileDialog(parent)
+    QQuickFileDialog(parent)
 {
 }
 
