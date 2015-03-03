@@ -100,7 +100,7 @@ FocusScope {
                     + Math.max(container.layoutHeight, __panel ? __panel.implicitHeight : 0)
 
     /*! \internal */
-    property Component style: Qt.createComponent(Settings.style + "/ToolBarStyle.qml", toolbar)
+    property Component style: Settings.styleComponent(Settings.style, "ToolBarStyle.qml", toolbar)
 
     /*! \internal */
     property alias __style: styleLoader.item

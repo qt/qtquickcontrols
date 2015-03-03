@@ -35,15 +35,14 @@
 ****************************************************************************/
 
 import QtQuick 2.2
-import QtQuick.Controls 1.1
-import QtQuick.Extras 1.3
-import QtQuick.Extras.Styles 1.3
-import QtQuick.Extras.Private 1.0
+import QtQuick.Controls 1.4
+import QtQuick.Controls.Styles 1.4
+import QtQuick.Controls.Private 1.0
 
 /*!
     \qmltype ToggleButton
     \inqmlmodule QtQuick.Extras
-    \since QtQuick.Extras 1.0
+    \since 5.5
     \ingroup extras
     \ingroup extras-interactive
     \brief A push button that toggles between two states.
@@ -59,11 +58,11 @@ import QtQuick.Extras.Private 1.0
     placing color-coded indicators around the button.
 
     You can create a custom appearance for a ToggleButton by assigning a
-    \l {QtQuick.Extras.Styles::}{ToggleButtonStyle}.
+    \l {QtQuick.Controls.Styles::}{ToggleButtonStyle}.
 */
 
 Button {
     id: button
     checkable: true
-    style: Qt.createComponent(StyleSettings.style + "/ToggleButtonStyle.qml", button)
+    style: Settings.styleComponent(Settings.style, "ToggleButtonStyle.qml", button)
 }

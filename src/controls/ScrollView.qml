@@ -180,7 +180,7 @@ FocusScope {
         \sa {Qt Quick Controls Styles QML Types}
 
     */
-    property Component style: Qt.createComponent(Settings.style + "/ScrollViewStyle.qml", root)
+    property Component style: Settings.styleComponent(Settings.style, "ScrollViewStyle.qml", root)
 
     /*! \internal */
     property Style __style: styleLoader.item

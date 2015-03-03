@@ -45,12 +45,25 @@
     \since QtQuick.Extras 1.4
     \ingroup extras
     \ingroup extras-non-interactive
-    \brief An indicator that displays a colorized ISO 7000 icon
+    \brief An indicator that displays a colorized QPicture icon
 
     Picture displays icons in a scalable vector format. It can also colorize
     the icons via the \l color property.
 
     The icon to display is set with the \l source property.
+
+    For example, if you have access to the ISO 7000 icons that come with Qt
+    Enterprise, you can specify the following URL:
+
+    \code
+    "qrc:/iso-icons/iso_grs_7000_4_0001.dat"
+    \endcode
+
+    Due to the
+    \l {http://www.iso.org/iso/home/store/catalogue_tc/catalogue_detail.htm?csnumber=65977}
+    {large selection of icons} available in this package, it is advisable to
+    use Qt Creator's Qt Quick Designer tool to browse and select icons, as this
+    property will then be set automatically.
 */
 
 QQuickPicture::QQuickPicture(QQuickItem *parent)
@@ -85,23 +98,7 @@ void QQuickPicture::paint(QPainter *painter)
     \qmlproperty url Picture::source
 
     This property specifies the URL of the icon to use. The URL must point to a
-    local file that contains \l QPicture data.
-
-    For example, if you have the \l <NewControlName> from \l
-    <NewEnterpriseControlsName>, you can specify the following URL:
-
-    \code
-    "qrc:/iso-icons/iso_grs_7000_4_0001.dat"
-    \endcode
-
-    Due to the
-    \l {http://www.iso.org/iso/home/store/catalogue_tc/catalogue_detail.htm?csnumber=65977}
-    {large selection of icons} available in this package, it is advisable to
-    use Qt Creator's Qt Quick Designer tool to browse and select icons, as this
-    property will then be set automatically.
-
-    If you have your own picture that you'd like to display, you can set the
-    following URL:
+    local file that contains \l QPicture data. For example:
 
     \code
     "mypicture.dat"

@@ -36,17 +36,16 @@
 
 import QtQuick 2.2
 import QtGraphicalEffects 1.0
-import QtQuick.Controls.Styles 1.1
-import QtQuick.Extras 1.3
-import QtQuick.Extras.Styles 1.3
+import QtQuick.Controls.Styles 1.4
+import QtQuick.Extras 1.4
 import QtQuick.Extras.Private 1.0
 import QtQuick.Extras.Private.CppUtils 1.0
 
 /*!
     \qmltype ToggleButtonStyle
-    \inqmlmodule QtQuick.Extras.Styles
-    \since QtQuick.Extras.Styles 1.0
-    \ingroup extrasstyles
+    \inqmlmodule QtQuick.Controls.Styles
+    \since 5.5
+    \ingroup controlsstyling
     \brief Provides custom styling for ToggleButton.
 
     You can create a custom toggle button by replacing the same delegates that
@@ -57,8 +56,6 @@ CircularButtonStyle {
     id: circularButtonStyle
 
     /*!
-        \since 1.3
-
         The \l ToggleButton that this style is attached to.
     */
     readonly property ToggleButton control: __control

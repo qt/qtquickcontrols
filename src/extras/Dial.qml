@@ -35,16 +35,16 @@
 ****************************************************************************/
 
 import QtQuick 2.2
-import QtQuick.Controls 1.1
+import QtQuick.Controls 1.4
+import QtQuick.Controls.Styles 1.4
 import QtQuick.Controls.Private 1.0
-import QtQuick.Extras 1.3
-import QtQuick.Extras.Styles 1.3
+import QtQuick.Extras 1.4
 import QtQuick.Extras.Private 1.0
 
 /*!
     \qmltype Dial
     \inqmlmodule QtQuick.Extras
-    \since QtQuick.Extras 1.0
+    \since 5.5
     \ingroup extras
     \ingroup extras-interactive
     \brief A circular dial that is rotated to set a value.
@@ -57,18 +57,18 @@ import QtQuick.Extras.Private 1.0
 
     Like CircularGauge, Dial can display tickmarks to give an indication of
     the current value. When a suitable stepSize is combined with
-    \l {QtQuick.Extras.Styles::DialStyle::}{tickmarkStepSize},
+    \l {QtQuick.Controls.Styles::DialStyle::}{tickmarkStepSize},
     the dial "snaps" to each tickmark.
 
     You can create a custom appearance for a Dial by assigning a
-    \l {QtQuick.Extras.Styles::}{DialStyle}.
+    \l {QtQuick.Controls.Styles::}{DialStyle}.
 */
 
 Control {
     id: dial
 
     activeFocusOnTab: true
-    style: Qt.createComponent(StyleSettings.style + "/DialStyle.qml", dial)
+    style: Settings.styleComponent(Settings.style, "DialStyle.qml", dial)
 
     /*!
         \qmlproperty real Dial::value
@@ -144,19 +144,17 @@ Control {
     readonly property alias pressed: mouseArea.pressed
 
     /*!
-        \since QtQuick.Extras 1.1
-
         This property determines whether or not the dial displays tickmarks,
         minor tickmarks, and labels.
 
         For more fine-grained control over what is displayed, the following
         style components of
-        \l {QtQuick.Extras.Styles::}{DialStyle} can be used:
+        \l {QtQuick.Controls.Styles::}{DialStyle} can be used:
 
         \list
-            \li \l {QtQuick.Extras.Styles::DialStyle::tickmark}{tickmark}
-            \li \l {QtQuick.Extras.Styles::DialStyle::minorTickmark}{minorTickmark}
-            \li \l {QtQuick.Extras.Styles::DialStyle::tickmarkLabel}{tickmarkLabel}
+            \li \l {QtQuick.Controls.Styles::DialStyle::tickmark}{tickmark}
+            \li \l {QtQuick.Controls.Styles::DialStyle::minorTickmark}{minorTickmark}
+            \li \l {QtQuick.Controls.Styles::DialStyle::tickmarkLabel}{tickmarkLabel}
         \endlist
 
         The default value is \c true.

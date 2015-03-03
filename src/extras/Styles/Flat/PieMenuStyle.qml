@@ -35,8 +35,8 @@
 ****************************************************************************/
 
 import QtQuick 2.3
+import QtQuick.Controls.Styles 1.4 as Base
 import QtQuick.Controls.Styles.Flat 1.0
-import QtQuick.Extras.Styles 1.3 as Base
 import QtQuick.Extras.Private 1.0
 
 Base.PieMenuStyle {

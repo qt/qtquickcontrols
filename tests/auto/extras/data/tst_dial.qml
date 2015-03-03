@@ -47,7 +47,7 @@ TestCase {
     height: 400
 
     function test_instance() {
-        var dial = Qt.createQmlObject('import QtQuick.Extras 1.3; Dial { }', testcase, '');
+        var dial = Qt.createQmlObject('import QtQuick.Extras 1.4; Dial { }', testcase, '');
         verify (dial, "Dial: failed to create an instance")
         verify(dial.__style)
         compare(dial.value, 0.0)
@@ -62,7 +62,7 @@ TestCase {
     }
 
     function test_minimumValue() {
-        var dial = Qt.createQmlObject('import QtQuick.Extras 1.3; Dial { }', testcase, '');
+        var dial = Qt.createQmlObject('import QtQuick.Extras 1.4; Dial { }', testcase, '');
         verify (dial, "Dial: failed to create an instance")
         dial.minimumValue = 5
         dial.maximumValue = 10
@@ -73,7 +73,7 @@ TestCase {
     }
 
     function test_maximumValue() {
-        var dial = Qt.createQmlObject('import QtQuick.Extras 1.3; Dial { }', testcase, '');
+        var dial = Qt.createQmlObject('import QtQuick.Extras 1.4; Dial { }', testcase, '');
         verify (dial, "Dial: failed to create an instance")
         dial.minimumValue = 5
         dial.maximumValue = 10
@@ -87,7 +87,7 @@ TestCase {
         var scope = Qt.createQmlObject('import QtQuick 2.2; FocusScope { focus: false }', testcase, '')
         verify(!scope.activeFocus)
 
-        var dial = Qt.createQmlObject('import QtQuick.Extras 1.3; Dial { }', scope, '')
+        var dial = Qt.createQmlObject('import QtQuick.Extras 1.4; Dial { }', scope, '')
         verify (dial, "Dial: failed to create an instance")
         verify(!dial.activeFocusOnPress)
         verify(!dial.activeFocus)
@@ -119,7 +119,7 @@ TestCase {
     }
 
     function test_pressed() {
-        var dial = Qt.createQmlObject('import QtQuick.Extras 1.3; Dial { }', testcase, '')
+        var dial = Qt.createQmlObject('import QtQuick.Extras 1.4; Dial { }', testcase, '')
         verify (dial, "Dial: failed to create an instance")
 
         pressSpy.target = dial
@@ -143,7 +143,7 @@ TestCase {
     }
 
     function test_hovered() {
-        var dial = Qt.createQmlObject('import QtQuick.Extras 1.3; Dial { }', testcase, '')
+        var dial = Qt.createQmlObject('import QtQuick.Extras 1.4; Dial { }', testcase, '')
         verify (dial, "Dial: failed to create an instance")
 
         hoverSpy.target = dial
@@ -175,7 +175,7 @@ TestCase {
     }
 
     function test_dragging(data) {
-        var dial = Qt.createQmlObject('import QtQuick.Extras 1.3; Dial { }', testcase, '')
+        var dial = Qt.createQmlObject('import QtQuick.Extras 1.4; Dial { }', testcase, '')
         verify(dial, "Dial: failed to create an instance")
         dial.minimumValue = data.min
         dial.maximumValue = data.max
@@ -211,7 +211,7 @@ TestCase {
     }
 
     function test_outerRadius() {
-        var dial = Qt.createQmlObject("import QtQuick.Extras 1.3; Dial { }", testcase, "");
+        var dial = Qt.createQmlObject("import QtQuick.Extras 1.4; Dial { }", testcase, "");
         verify(dial, "Dial: failed to create an instance");
         // Implicit width and height are identical.
         compare(dial.__style.outerRadius, dial.width / 2);
@@ -250,7 +250,7 @@ TestCase {
     }
 
     function test_tickmarksVisible() {
-        var dial = Qt.createQmlObject("import QtQuick.Extras 1.3; Dial { }", testcase, "");
+        var dial = Qt.createQmlObject("import QtQuick.Extras 1.4; Dial { }", testcase, "");
         verify(dial, "Dial: failed to create an instance");
 
         dial.__style.minorTickmarkCount = 4;
@@ -291,7 +291,7 @@ TestCase {
         parentEventSpy.target = focusScope;
         parentEventSpy.signalName = "receivedKeyPress";
 
-        var dial = Qt.createQmlObject("import QtQuick.Extras 1.3; Dial { }", focusScope, "");
+        var dial = Qt.createQmlObject("import QtQuick.Extras 1.4; Dial { }", focusScope, "");
         verify(dial, "Dial: failed to create an instance");
         compare(dial.activeFocusOnTab, true);
         compare(dial.value, 0);
@@ -343,7 +343,7 @@ TestCase {
     }
 
     function test_dragToSet() {
-        var dial = Qt.createQmlObject("import QtQuick.Extras 1.3; Dial { }", testcase, "");
+        var dial = Qt.createQmlObject("import QtQuick.Extras 1.4; Dial { }", testcase, "");
         verify(dial, "Dial: failed to create an instance");
 
         dial.__style.__dragToSet = false;

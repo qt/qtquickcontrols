@@ -77,7 +77,7 @@ import QtQuick.Controls.Private 1.0
 MenuBarPrivate {
     id: root
 
-    property Component style: Qt.createComponent(Settings.style + "/MenuBarStyle.qml", root)
+    property Component style: Settings.styleComponent(Settings.style, "MenuBarStyle.qml", root)
 
     /*! \internal */
     property QtObject __style: styleLoader.item

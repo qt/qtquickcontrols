@@ -114,7 +114,7 @@ Control {
     readonly property alias hovered: hoverArea.containsMouse
 
     /*! \internal */
-    style: Qt.createComponent(Settings.style + "/ProgressBarStyle.qml", progressbar)
+    style: Settings.styleComponent(Settings.style, "ProgressBarStyle.qml", progressbar)
 
     /*! \internal */
     property bool __initialized: false

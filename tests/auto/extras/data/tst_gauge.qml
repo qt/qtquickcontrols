@@ -36,7 +36,7 @@
 
 import QtTest 1.0
 import QtQuick 2.2
-import QtQuick.Extras.Styles 1.3
+import QtQuick.Controls.Styles 1.4
 import "TestUtils.js" as TestUtils
 
 TestCase {
@@ -69,7 +69,7 @@ TestCase {
     }
 
     function init() {
-        gauge = Qt.createQmlObject("import QtQuick.Extras 1.3; Gauge { }", testcase, "");
+        gauge = Qt.createQmlObject("import QtQuick.Extras 1.4; Gauge { }", testcase, "");
         verify(gauge, "Gauge: failed to create an instance");
         verify(gauge.__style);
     }

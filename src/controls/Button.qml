@@ -88,7 +88,7 @@ BasicButton {
 
     Accessible.name: text
 
-    style: Qt.createComponent(Settings.style + "/ButtonStyle.qml", button)
+    style: Settings.styleComponent(Settings.style, "ButtonStyle.qml", button)
 
     Binding {
         target: menu

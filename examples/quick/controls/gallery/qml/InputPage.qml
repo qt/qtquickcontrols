@@ -44,6 +44,8 @@ import QtQuick.Controls 1.2
 
 ScrollView {
     id: page
+    implicitWidth: 640
+    implicitHeight: 400
 
     horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
 

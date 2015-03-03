@@ -49,6 +49,9 @@ ApplicationWindow {
     visible: true
     title: "Qt Quick Controls Gallery"
 
+    width: 640
+    height: 480
+
     MessageDialog {
         id: aboutDialog
         icon: StandardIcon.Information

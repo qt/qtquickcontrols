@@ -90,7 +90,7 @@ AbstractCheckable {
 
         \codeline Qt.createComponent("path/to/style.qml", radioButtonId);
     */
-    style: Qt.createComponent(Settings.style + "/RadioButtonStyle.qml", radioButton)
+    style: Settings.styleComponent(Settings.style, "RadioButtonStyle.qml", radioButton)
 
     __cycleStatesHandler: function() { checked = !checked; }
 }

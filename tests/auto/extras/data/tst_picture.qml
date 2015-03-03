@@ -36,7 +36,7 @@
 
 import QtTest 1.0
 import QtQuick 2.4
-import QtQuick.Extras 1.3
+import QtQuick.Extras 1.4
 import QtQuick.Extras.Private 1.0
 
 TestCase {
@@ -46,6 +46,11 @@ TestCase {
     when: windowShown
     width: 400
     height: 400
+
+    Rectangle {
+        anchors.fill: parent
+        color: "white"
+    }
 
     property var picture
 
@@ -64,8 +69,13 @@ TestCase {
     }
 
     function test_instance() {
-        picture = Qt.createQmlObject("import QtQuick.Extras 1.3; Picture { }", testCase, "");
+        picture = Qt.createQmlObject("import QtQuick.Extras 1.4; Picture { }", testCase, "");
         verify(picture, "Picture: failed to create an instance");
+    }
+
+    function verifyColorEqualMessage(pictureImage, pixelX, pixelY, expectedPixelColor) {
+        return "pixel " + pictureImage.pixel(pixelX, pixelY) + " at "
+            + pixelX + "," + pixelY + " isn't equal to " + expectedPixelColor;
     }
 
     function test_source_data() {
@@ -83,7 +93,7 @@ TestCase {
     }
 
     function test_source(data) {
-        picture = Qt.createQmlObject("import QtQuick.Extras 1.3; Picture {}", testCase, "");
+        picture = Qt.createQmlObject("import QtQuick.Extras 1.4; Picture {}", testCase, "");
         verify(picture, "Picture: failed to create an instance");
         picture.source = data.tag;
         picture.width = data.implicitSize.width;
@@ -96,8 +106,7 @@ TestCase {
             var pixel = data.pixels[i];
             // TODO: use compare when QTBUG-34878 is fixed
             verify(Qt.colorEqual(pictureImage.pixel(pixel.x, pixel.y), pixel.color),
-                "pixel " + pictureImage.pixel(pixel.x, pixel.y) + " at "
-                + pixel.x + "," + pixel.y + " isn't equal to " + pixel.color);
+                verifyColorEqualMessage(pictureImage, pixel.x, pixel.y, pixel.color));
         }
     }
 
@@ -111,20 +120,26 @@ TestCase {
     }
 
     function test_color(data) {
-        picture = Qt.createQmlObject("import QtQuick.Extras 1.3; Picture {}", testCase, "");
+        picture = Qt.createQmlObject("import QtQuick.Extras 1.4; Picture {}", testCase, "");
         verify(picture, "Picture: failed to create an instance");
 
         picture.width = pictureDotDatImplicitSize.width;
         picture.height = pictureDotDatImplicitSize.height;
         picture.source = "picture.dat";
         picture.color = data.color;
-        waitForRendering(picture);
+        // For some reason we need two waits here, otherwise the color detected is *sometimes* white instead of black.
+        // Also, we use an explicit, shorter timeout, otherwise the default (5000 ms) seems to be exhausted.
+        waitForRendering(picture, 200);
+        waitForRendering(picture, 200);
 
         var pictureImage = grabImage(picture);
 
-        verify(Qt.colorEqual(pictureImage.pixel(0, 0), Qt.rgba(1, 1, 1, 1)));
-        verify(Qt.colorEqual(pictureImage.pixel(17, 17), data.expectedColor));
-        verify(Qt.colorEqual(pictureImage.pixel(picture.width / 2, picture.height / 2), Qt.rgba(1, 1, 1, 1)));
+        verify(Qt.colorEqual(pictureImage.pixel(0, 0), Qt.rgba(1, 1, 1, 1)),
+               verifyColorEqualMessage(pictureImage, 0, 0, Qt.rgba(1, 1, 1, 1)));
+        verify(Qt.colorEqual(pictureImage.pixel(17, 17), data.expectedColor),
+               verifyColorEqualMessage(pictureImage, 17, 17, data.expectedColor));
+        verify(Qt.colorEqual(pictureImage.pixel(picture.width / 2, picture.height / 2), Qt.rgba(1, 1, 1, 1)),
+               verifyColorEqualMessage(pictureImage, picture.width / 2, picture.height / 2, Qt.rgba(1, 1, 1, 1)));
     }
 
     FontMetrics {
@@ -132,7 +147,7 @@ TestCase {
     }
 
     function test_size() {
-        picture = Qt.createQmlObject("import QtQuick.Extras 1.3; Picture {}", testCase, "");
+        picture = Qt.createQmlObject("import QtQuick.Extras 1.4; Picture {}", testCase, "");
         verify(picture, "Picture: failed to create an instance");
 
         compare(picture.implicitWidth, fontMetrics.height * 4);

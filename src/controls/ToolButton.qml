@@ -80,5 +80,5 @@ import QtQuick.Controls.Private 1.0
 
 Button {
     id: button
-    style: Qt.createComponent(Settings.style + "/ToolButtonStyle.qml", button)
+    style: Settings.styleComponent(Settings.style, "ToolButtonStyle.qml", button)
 }

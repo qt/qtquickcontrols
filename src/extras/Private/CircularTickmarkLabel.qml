@@ -38,12 +38,12 @@ import QtQuick 2.2
 // Workaround for QTBUG-37751; we need this import for RangeModel, although we shouldn't.
 import QtQuick.Controls 1.1
 import QtQuick.Controls.Private 1.0
-import QtQuick.Extras 1.3
+import QtQuick.Extras 1.4
 import QtQuick.Extras.Private 1.0
 
 Control {
     id: label
-    style: Qt.createComponent(StyleSettings.style + "/CircularTickmarkLabelStyle.qml", label)
+    style: Settings.styleComponent(Settings.style, "CircularTickmarkLabelStyle.qml", label)
 
     property alias minimumValue: range.minimumValue
 

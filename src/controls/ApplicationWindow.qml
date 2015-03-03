@@ -145,7 +145,7 @@ Window {
     /*! The style Component for the window.
         \sa {Qt Quick Controls Styles QML Types}
     */
-    property Component style: Qt.createComponent(Settings.style + "/ApplicationWindowStyle.qml", root)
+    property Component style: Settings.styleComponent(Settings.style, "ApplicationWindowStyle.qml", root)
 
     /*! \internal */
     property alias __style: styleLoader.item

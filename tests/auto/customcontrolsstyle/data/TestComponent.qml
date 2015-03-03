@@ -3,7 +3,7 @@
 ** Copyright (C) 2015 The Qt Company Ltd.
 ** Contact: http://www.qt.io/licensing/
 **
-** This file is part of the Qt Quick Extras module of the Qt Toolkit.
+** This file is part of the test suite of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL3$
 ** Commercial License Usage
@@ -34,46 +34,24 @@
 **
 ****************************************************************************/
 
-#ifndef STYLESETTINGS_P_H
-#define STYLESETTINGS_P_H
+import QtTest 1.0
+import QtQuick 2.4
+import QtQuick.Controls 1.4
+import QtQuick.Controls.Private 1.0
+import QtQuick.Window 2.0
 
-#include <QtCore/qurl.h>
-#include <QtCore/qobject.h>
+Window {
+    visible: true
+    width: 400
+    height: 400
 
-QT_BEGIN_NAMESPACE
+    Button {
+        id: button
+    }
 
-class QQmlEngine;
+    function buttonStyleComponent() {
+        return Settings.styleComponent(Settings.style, "Button.qml", button);
+    }
 
-class QQuickStyleSettings : public QObject
-{
-    Q_OBJECT
-    Q_PROPERTY(QUrl style READ style NOTIFY styleChanged)
-    Q_PROPERTY(QString styleName READ styleName WRITE setStyleName NOTIFY styleNameChanged)
-    Q_PROPERTY(QString stylePath READ stylePath WRITE setStylePath NOTIFY stylePathChanged)
-
-public:
-    QQuickStyleSettings(QQmlEngine *engine);
-
-    QUrl style() const;
-
-    QString styleName() const;
-    void setStyleName(const QString &name);
-
-    QString stylePath() const;
-    void setStylePath(const QString &path);
-
-signals:
-    void styleChanged();
-    void styleNameChanged();
-    void stylePathChanged();
-
-private:
-    QString styleFilePath() const;
-
-    QString m_name;
-    QString m_path;
-};
-
-QT_END_NAMESPACE
-
-#endif // STYLESETTINGS_P_H
+    property string styleName: Settings.styleName
+}

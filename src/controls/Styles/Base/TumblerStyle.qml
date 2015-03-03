@@ -36,17 +36,17 @@
 
 import QtQuick 2.0
 import QtGraphicalEffects 1.0
-import QtQuick.Controls 1.0
+import QtQuick.Controls 1.4
+import QtQuick.Controls.Styles 1.4
 import QtQuick.Controls.Private 1.0
-import QtQuick.Extras 1.3
-import QtQuick.Extras.Styles 1.3
+import QtQuick.Extras 1.4
 import QtQuick.Extras.Private 1.0
 
 /*!
     \qmltype TumblerStyle
-    \inqmlmodule QtQuick.Extras.Styles
-    \since QtQuick.Extras.Styles 1.2
-    \ingroup extrasstyles
+    \inqmlmodule QtQuick.Controls.Styles
+    \since 5.5
+    \ingroup controlsstyling
     \brief Provides custom styling for Tumbler.
 
     \note TumblerStyle requires Qt 5.3.2 or later.
@@ -71,8 +71,6 @@ Style {
     padding.bottom: __padding
 
     /*!
-        \since 1.3
-
         The \l Tumbler that this style is attached to.
     */
     readonly property Tumbler control: __control

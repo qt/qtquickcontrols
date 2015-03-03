@@ -92,6 +92,7 @@ bool QQuickWheelArea::isAtYBeginning() const
     return qFuzzyCompare(m_verticalMinimumValue, m_verticalValue);
 }
 
+#ifndef QT_NO_WHEELEVENT
 void QQuickWheelArea::wheelEvent(QWheelEvent *we)
 {
     if (we->phase() == Qt::ScrollBegin)
@@ -126,6 +127,7 @@ void QQuickWheelArea::wheelEvent(QWheelEvent *we)
         we->accept();
     }
 }
+#endif
 
 void QQuickWheelArea::setHorizontalMinimumValue(qreal value)
 {

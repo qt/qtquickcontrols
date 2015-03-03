@@ -35,17 +35,17 @@
 ****************************************************************************/
 
 import QtQuick 2.2
-import QtQuick.Controls 1.2
+import QtQuick.Controls 1.4
 import QtQuick.Controls.Private 1.0
 
 /*!
     \qmltype TumblerColumn
     \inqmlmodule QtQuick.Extras
-    \since QtQuick.Extras 1.2
+    \since 5.5
     \ingroup extras
     \brief A column within a tumbler.
 
-    \note TumblerColumn requires Qt 5.3.2 or later.
+    \note TumblerColumn requires Qt 5.5.0 or later.
 
     TumblerColumn represents a column within a tumbler, providing the interface
     to define the items and width of each column.
@@ -64,7 +64,7 @@ import QtQuick.Controls.Private 1.0
     \endcode
 
     You can create a custom appearance for a Tumbler by assigning a
-    \l {QtQuick.Extras.Styles::}{TumblerStyle}.
+    \l {QtQuick.Controls.Styles::}{TumblerStyle}.
 */
 
 QtObject {
@@ -116,8 +116,8 @@ QtObject {
 
         If set, this delegate will be used to display items in this column,
         instead of the
-        \l {QtQuick.Extras.Styles::TumblerStyle::delegate}{delegate}
-        property in \l {QtQuick.Extras.Styles::}{TumblerStyle}.
+        \l {QtQuick.Controls.Styles::TumblerStyle::delegate}{delegate}
+        property in \l {QtQuick.Controls.Styles::}{TumblerStyle}.
 
         The \l {Item::implicitHeight}{implicitHeight} property must be set,
         and it must be the same for each delegate.
@@ -129,8 +129,8 @@ QtObject {
 
         If set, this highlight will be used to display the highlight in this
         column, instead of the
-        \l {QtQuick.Extras.Styles::TumblerStyle::highlight}{highlight}
-        property in \l {QtQuick.Extras.Styles::}{TumblerStyle}.
+        \l {QtQuick.Controls.Styles::TumblerStyle::highlight}{highlight}
+        property in \l {QtQuick.Controls.Styles::}{TumblerStyle}.
     */
     property Component highlight
 
@@ -139,8 +139,8 @@ QtObject {
 
         If set, this component will be used to display the foreground in this
         column, instead of the
-        \l {QtQuick.Extras.Styles::TumblerStyle::columnForeground}{columnForeground}
-        property in \l {QtQuick.Extras.Styles::}{TumblerStyle}.
+        \l {QtQuick.Controls.Styles::TumblerStyle::columnForeground}{columnForeground}
+        property in \l {QtQuick.Controls.Styles::}{TumblerStyle}.
     */
     property Component columnForeground
 

@@ -611,7 +611,7 @@ Control {
     /*! \internal */
     property alias __baselineOffset: textInput.baselineOffset
 
-    style: Qt.createComponent(Settings.style + "/TextFieldStyle.qml", textInput)
+    style: Settings.styleComponent(Settings.style, "TextFieldStyle.qml", textInput)
 
     activeFocusOnTab: true
 

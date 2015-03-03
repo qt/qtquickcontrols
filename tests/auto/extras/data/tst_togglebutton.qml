@@ -46,7 +46,7 @@ TestCase {
     height: 400
 
     function test_instance() {
-        var button = Qt.createQmlObject('import QtQuick.Extras 1.3; ToggleButton { }', testcase, '');
+        var button = Qt.createQmlObject('import QtQuick.Extras 1.4; ToggleButton { }', testcase, '');
         verify (button, "ToggleButton: failed to create an instance")
         verify(button.__style)
         verify(button.checkable)
@@ -57,7 +57,7 @@ TestCase {
 
     function test_largeText() {
         // Should be no binding loop warnings.
-        var button = Qt.createQmlObject("import QtQuick.Extras 1.3; ToggleButton { "
+        var button = Qt.createQmlObject("import QtQuick.Extras 1.4; ToggleButton { "
             + "anchors.centerIn: parent; text: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' }", testcase, "");
         verify(button, "ToggleButton: failed to create an instance");
         waitForRendering(button);

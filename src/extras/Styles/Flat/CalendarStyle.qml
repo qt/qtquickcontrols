@@ -39,7 +39,7 @@ import QtQuick.Controls 1.2
 import QtQuick.Controls.Styles 1.2 as Base
 import QtQuick.Controls.Styles.Flat 1.0
 import QtQuick.Controls.Private 1.0
-import QtQuick.Extras 1.3
+import QtQuick.Extras 1.4
 import QtQuick.Extras.Private 1.0
 import QtQuick.Extras.Private.CppUtils 1.0
 

@@ -49,7 +49,7 @@ TestCase {
     property var label: null
 
     function init() {
-        label = Qt.createQmlObject("import QtQuick.Extras 1.3; import QtQuick.Extras.Private 1.0; CircularTickmarkLabel {}", testcase, "");
+        label = Qt.createQmlObject("import QtQuick.Extras 1.4; import QtQuick.Extras.Private 1.0; CircularTickmarkLabel {}", testcase, "");
         verify(label, "CircularTickmarkLabel: failed to create an instance");
         verify(label.__style);
     }

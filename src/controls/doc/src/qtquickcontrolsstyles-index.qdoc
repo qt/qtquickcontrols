@@ -48,6 +48,11 @@
     \internal
 */
 
+/*!
+    \group stylingtutorials
+    \title Styling Tutorials
+*/
+
 
 /*!
     \page qtquickcontrolsstyles-index.html
@@ -66,11 +71,47 @@
     import QtQuick.Controls.Styles 1.4
     \endcode
 
+    \section1 Styles
+
+    \section2 Base Style
+
+    The Base Style is the default style used when none is specified. It is also
+    used as a fallback when the specified style cannot be found.
+
+    \image tumbler.png
+    \caption The Base Style Tumbler.
+
+    \section2 Flat Style
+
+    The Flat Style is designed for touch devices.
+
+    \image tumbler-flat-style.png
+    \caption The Flat Style Tumbler.
+
+    \section2 Selecting Styles
+
+    You can apply a different style to the controls by setting the
+    \e QT_QUICK_CONTROLS_STYLE environment variable to the name of the style.
+    For example, to use the Flat style, you can do the following:
+
+    \code
+    QT_QUICK_CONTROLS_STYLE=Flat ./app
+    \endcode
+
+    This can also be done in C++, using qputenv():
+
+    \code
+    qputenv("QT_QUICK_CONTROLS_STYLE", "Flat");
+    \endcode
+
     \section1 Styling Views
     \annotatedlist viewsstyling
 
     \section1 Styling Controls
     \annotatedlist controlsstyling
+
+    \section1 Styling Tutorials
+    \annotatedlist stylingtutorials
 
     \section1 Related information
 

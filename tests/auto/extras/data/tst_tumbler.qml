@@ -36,9 +36,10 @@
 
 import QtTest 1.0
 import QtQuick 2.1
-import QtQuick.Extras 1.3
-import QtQuick.Extras.Styles 1.3
-import QtQuick.Extras.Private 1.0
+import QtQuick.Controls 1.4
+import QtQuick.Controls.Styles 1.4
+import QtQuick.Controls.Private 1.0
+import QtQuick.Extras 1.4
 import "TestUtils.js" as TestUtils
 
 Item {
@@ -75,7 +76,7 @@ Item {
         }
 
         function init() {
-            tumbler = Qt.createQmlObject("import QtQuick.Extras 1.3; Tumbler { }", container, "");
+            tumbler = Qt.createQmlObject("import QtQuick.Extras 1.4; Tumbler { }", container, "");
             verify(tumbler, "Tumbler: failed to create an instance");
         }
 
@@ -165,7 +166,7 @@ Item {
 
             tumbler.getColumn(0).visible = false;
             verify(!tumbler.__viewAt(0).visible);
-            if (StyleSettings.styleName === "Base")
+            if (Settings.styleName === "Base")
                 verify(!tumbler.__viewAt(0).parent.separator.visible);
         }
 
@@ -243,7 +244,7 @@ Item {
             // Somehow it works with the Base style. It could be rewritten to use an
             // equal amount of items for the model and visibleItemCount, judging from
             // the snippet in QTBUG-40298.
-            if (StyleSettings.styleName === "Flat")
+            if (Settings.styleName === "Flat")
                 skip("Not a valid test case as the model count is less than the visibleItemCount");
 
             tumbler.height = 120;
@@ -308,7 +309,7 @@ Item {
             var pos = Qt.point(columnXCenter(0), tumbler.__style.padding.top);
             mouseDrag(tumbler, pos.x, pos.y, 0, tumbler.height - tumbler.__style.padding.bottom,
                 Qt.LeftButton, Qt.NoModifier, 300);
-            tryCompare(tumbler.__viewAt(0), "offset", StyleSettings.styleName === "Flat" ? 6.0 : 4.0);
+            tryCompare(tumbler.__viewAt(0), "offset", Settings.styleName === "Flat" ? 6.0 : 4.0);
 
             tumbler.height += 100;
             var padding = tumbler.__style.padding;

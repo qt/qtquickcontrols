@@ -35,7 +35,7 @@
 ****************************************************************************/
 
 import QtQuick 2.3
-import QtQuick.Extras 1.3
+import QtQuick.Extras 1.4
 import QtQuick.Extras.Private 1.0
 import QtQuick.Extras.Private.CppUtils 1.0
 

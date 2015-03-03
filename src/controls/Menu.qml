@@ -132,7 +132,7 @@ MenuPrivate {
     Component.onCompleted: {
         if (!style) {
             __usingDefaultStyle = true
-            style = Qt.binding(function() { return Qt.createComponent(Settings.style + "/MenuStyle.qml", root) })
+            style = Qt.binding(function() { return Settings.styleComponent(Settings.style, "MenuStyle.qml", root) })
         }
     }
 

@@ -82,7 +82,7 @@ FocusScope {
                     + Math.max(container.layoutHeight, __panel ? __panel.implicitHeight : 0)
 
     /*! \internal */
-    property Component style: Qt.createComponent(Settings.style + "/StatusBarStyle.qml", statusbar)
+    property Component style: Settings.styleComponent(Settings.style, "StatusBarStyle.qml", statusbar)
 
     /*! \internal */
     property alias __style: styleLoader.item

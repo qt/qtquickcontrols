@@ -39,7 +39,7 @@
 ****************************************************************************/
 
 import QtQuick 2.2
-import QtQuick.Extras 1.3
+import QtQuick.Extras 1.4
 
 Text {
     font.pixelSize: Math.max(textSingleton.font.pixelSize, Math.min(32, root.toPixels(0.045)))

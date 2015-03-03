@@ -281,7 +281,7 @@ BasicTableView {
 
     onModelChanged: selection.clear()
 
-    style: Qt.createComponent(Settings.style + "/TableViewStyle.qml", root)
+    style: Settings.styleComponent(Settings.style, "TableViewStyle.qml", root)
 
     Accessible.role: Accessible.Table
 

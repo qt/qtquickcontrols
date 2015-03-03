@@ -35,16 +35,16 @@
 ****************************************************************************/
 
 import QtQuick 2.2
-import QtQuick.Controls 1.1
+import QtQuick.Controls 1.4
+import QtQuick.Controls.Styles 1.4
 import QtQuick.Controls.Private 1.0
-import QtQuick.Extras 1.3
-import QtQuick.Extras.Styles 1.3
+import QtQuick.Extras 1.4
 import QtQuick.Extras.Private 1.0
 
 /*!
     \qmltype Gauge
     \inqmlmodule QtQuick.Extras
-    \since QtQuick.Extras 1.0
+    \since 5.5
     \ingroup extras
     \ingroup extras-non-interactive
     \brief A straight gauge that displays a value within a range.
@@ -70,13 +70,13 @@ import QtQuick.Extras.Private 1.0
     \endcode
 
     You can create a custom appearance for a Gauge by assigning a
-    \l {QtQuick.Extras.Styles::}{GaugeStyle}.
+    \l {QtQuick.Controls.Styles::}{GaugeStyle}.
 */
 
 Control {
     id: gauge
 
-    style: Qt.createComponent(StyleSettings.style + "/GaugeStyle.qml", gauge)
+    style: Settings.styleComponent(Settings.style, "GaugeStyle.qml", gauge)
 
     /*!
         This property holds the smallest value displayed by the gauge.
@@ -172,11 +172,9 @@ Control {
     property alias font: hiddenText.font
 
     /*!
-        \since QtQuick.Extras 1.3
-
         This property accepts a function that formats the given \a value for
         display in
-        \l {QtQuick.Extras.Styles::GaugeStyle}{tickmarkLabel}.
+        \l {QtQuick.Controls.Styles::GaugeStyle}{tickmarkLabel}.
 
         For example, to provide a custom format that displays all values with 3
         decimal places:

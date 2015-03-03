@@ -78,5 +78,5 @@ Control {
     Accessible.role: Accessible.Indicator
     Accessible.name: "busy"
 
-    style: Qt.createComponent(Settings.style + "/BusyIndicatorStyle.qml", indicator)
+    style: Settings.styleComponent(Settings.style, "BusyIndicatorStyle.qml", indicator)
 }
