@@ -40,6 +40,7 @@
 #include <QPointer>
 #include <QQuickItem>
 #include <private/qquickitem_p.h>
+#include <QtGui/private/qlayoutpolicy_p.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -81,6 +82,16 @@ public:
 
     virtual void rearrange(const QSizeF &);
     bool arrangementIsDirty() const { return m_dirty; }
+
+    static void effectiveSizeHints_helper(QQuickItem *item, QSizeF *cachedSizeHints, QQuickLayoutAttached **info, bool useFallbackToWidthOrHeight);
+    static QLayoutPolicy::Policy effectiveSizePolicy_helper(QQuickItem *item, Qt::Orientation orientation, QQuickLayoutAttached *info);
+    bool shouldIgnoreItem(QQuickItem *child, QQuickLayoutAttached *&info, QSizeF *sizeHints) const;
+
+    void itemChange(ItemChange change, const ItemChangeData &value) Q_DECL_OVERRIDE;
+    void geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry)  Q_DECL_OVERRIDE;
+    bool isReady() const;
+
+
 protected:
     void updatePolish() Q_DECL_OVERRIDE;
 
@@ -89,6 +100,9 @@ protected:
         Horizontal,
         NOrientations
     };
+
+protected slots:
+    void invalidateSenderItem();
 
 private:
     bool m_dirty;
@@ -102,6 +116,13 @@ private:
 class QQuickLayoutPrivate : public QQuickItemPrivate
 {
     Q_DECLARE_PUBLIC(QQuickLayout)
+public:
+    QQuickLayoutPrivate() : m_isReady(false), m_disableRearrange(true) {}
+
+protected:
+    unsigned m_isReady : 1;
+    unsigned m_disableRearrange : 1;
+    mutable QSet<QQuickItem *> m_ignoredItems;
 };
 
 

@@ -39,7 +39,6 @@
 
 #include "qquicklayout_p.h"
 #include "qquickgridlayoutengine_p.h"
-#include <QtCore/qset.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -83,8 +82,6 @@ protected:
     void rearrange(const QSizeF &size);
     virtual void insertLayoutItems() {}
     void itemChange(ItemChange change, const ItemChangeData &data);
-    void geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry);
-    bool shouldIgnoreItem(QQuickItem *child, QQuickLayoutAttached *&info, QSizeF *sizeHints);
 
 signals:
     Q_REVISION(1) void layoutDirectionChanged();
@@ -92,11 +89,9 @@ signals:
 protected slots:
     void onItemVisibleChanged();
     void onItemDestroyed();
-    void invalidateSenderItem();
 
 private:
     void removeGridItem(QGridLayoutItem *gridItem);
-    bool isReady() const;
     Q_DECLARE_PRIVATE(QQuickGridLayoutBase)
 };
 
@@ -107,9 +102,7 @@ class QQuickGridLayoutBasePrivate : public QQuickLayoutPrivate
     Q_DECLARE_PUBLIC(QQuickGridLayoutBase)
 
 public:
-    QQuickGridLayoutBasePrivate() : m_disableRearrange(true)
-                                    , m_isReady(false)
-                                    , m_rearranging(false)
+    QQuickGridLayoutBasePrivate() : m_rearranging(false)
                                     , m_updateAfterRearrange(false)
                                     , m_layoutDirection(Qt::LeftToRight)
                                     {}
@@ -122,14 +115,11 @@ public:
 
     QQuickGridLayoutEngine engine;
     Qt::Orientation orientation;
-    unsigned m_disableRearrange : 1;
-    unsigned m_isReady : 1;
     unsigned m_rearranging : 1;
     unsigned m_updateAfterRearrange : 1;
     QVector<QQuickItem *> m_invalidateAfterRearrange;
     Qt::LayoutDirection m_layoutDirection : 2;
 
-    QSet<QQuickItem *> m_ignoredItems;
     QQuickLayoutStyleInfo *styleInfo;
 };
 
