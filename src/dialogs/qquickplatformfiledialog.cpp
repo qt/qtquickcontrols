@@ -175,6 +175,13 @@ QQuickPlatformFileDialog::~QQuickPlatformFileDialog()
     delete m_dlgHelper;
 }
 
+QList<QUrl> QQuickPlatformFileDialog::fileUrls() const
+{
+    if (m_dialogHelperInUse)
+        return m_dlgHelper->selectedFiles();
+    return QQuickFileDialog::fileUrls();
+}
+
 void QQuickPlatformFileDialog::setModality(Qt::WindowModality m)
 {
 #ifdef Q_OS_WIN
