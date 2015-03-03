@@ -110,7 +110,9 @@ static const struct {
 
     { "TextArea", 1, 3 },
 
-    { "TreeView", 1, 4 }
+    { "TreeView", 1, 4 },
+
+    { "TextArea", 1, 5 }
 };
 
 void QtQuickControlsPlugin::registerTypes(const char *uri)

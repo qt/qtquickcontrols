@@ -34,7 +34,7 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.2
+import QtQuick 2.6
 import QtQuick.Controls 1.2
 import QtQuick.Controls.Private 1.0
 /*!
@@ -420,6 +420,16 @@ ScrollView {
         The corresponding handler is \c onLinkHovered.
     */
     signal linkHovered(string link)
+
+    /*!
+        \qmlsignal TextArea::editingFinished()
+        \since QtQuick.Controls 1.5
+
+        This signal is emitted when the text area loses focus.
+
+        The corresponding handler is \c onEditingFinished.
+    */
+    signal editingFinished()
 
     /*!
         \qmlproperty string TextArea::hoveredLink
@@ -819,6 +829,7 @@ ScrollView {
 
             onLinkActivated: area.linkActivated(link)
             onLinkHovered: area.linkHovered(link)
+            onEditingFinished: area.editingFinished()
 
             function activate() {
                 if (activeFocusOnPress) {

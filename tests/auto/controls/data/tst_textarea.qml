@@ -152,6 +152,36 @@ TestCase {
         control.destroy()
     }
 
+    function test_editingFinished() {
+        var component = Qt.createComponent("textarea/ta_editingfinished.qml")
+        compare(component.status, Component.Ready)
+        var test =  component.createObject(container);
+        verify(test !== null, "test control created is null")
+        var control1 = test.control1
+        verify(control1 !== null)
+        var control2 = test.control2
+        verify(control2 !== null)
+
+        control1.forceActiveFocus()
+        verify(control1.activeFocus)
+        verify(!control2.activeFocus)
+
+        verify(control1.myeditingfinished === false)
+        verify(control2.myeditingfinished === false)
+
+        keyPress(Qt.Key_Backtab)
+        verify(!control1.activeFocus)
+        verify(control2.activeFocus)
+        verify(control1.myeditingfinished === true)
+
+        keyPress(Qt.Key_Backtab)
+        verify(control1.activeFocus)
+        verify(!control2.activeFocus)
+        verify(control2.myeditingfinished === true)
+
+        test.destroy()
+    }
+
     function test_keys() {
         var component = Qt.createComponent("textarea/ta_keys.qml")
         compare(component.status, Component.Ready)
