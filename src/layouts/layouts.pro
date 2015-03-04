@@ -10,12 +10,14 @@ QMAKE_DOCS = $$PWD/doc/qtquicklayouts.qdocconf
 SOURCES += plugin.cpp \
     qquicklayout.cpp \
     qquicklinearlayout.cpp \
+    qquickstacklayout.cpp \
     qquickgridlayoutengine.cpp \
     qquicklayoutstyleinfo.cpp
 
 HEADERS += \
     qquicklayout_p.h \
     qquicklinearlayout_p.h \
+    qquickstacklayout_p.h \
     qquickgridlayoutengine_p.h \
     qquicklayoutstyleinfo_p.h
 

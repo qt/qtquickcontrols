@@ -685,9 +685,6 @@ QQuickItem *QQuickLayoutAttached::item() const
 }
 
 
-
-
-
 QQuickLayout::QQuickLayout(QQuickLayoutPrivate &dd, QQuickItem *parent)
     : QQuickItem(dd, parent),
       m_dirty(false)

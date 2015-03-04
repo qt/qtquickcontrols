@@ -37,6 +37,7 @@
 #include <QtQml/qqmlextensionplugin.h>
 
 #include "qquicklinearlayout_p.h"
+#include "qquickstacklayout_p.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -54,6 +55,7 @@ public:
         qmlRegisterType<QQuickRowLayout>(uri, 1, 0, "RowLayout");
         qmlRegisterType<QQuickColumnLayout>(uri, 1, 0, "ColumnLayout");
         qmlRegisterType<QQuickGridLayout>(uri, 1, 0, "GridLayout");
+        qmlRegisterType<QQuickStackLayout>(uri, 1, 3, "StackLayout");
         qmlRegisterUncreatableType<QQuickLayout>(uri, 1, 0, "Layout",
                                                            QStringLiteral("Do not create objects of type Layout"));
         qmlRegisterUncreatableType<QQuickLayout>(uri, 1, 2, "Layout",
