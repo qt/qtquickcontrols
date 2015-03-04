@@ -77,8 +77,8 @@ import QtQml.Models 2.2
    the model role they attach to. Each property in the model will
    then be shown in their corresponding column.
 
-   You can customize the look by overriding the \l itemDelegate,
-   \l rowDelegate, or \l headerDelegate properties.
+   You can customize the look by overriding the \l {BasicTableView::itemDelegate}{itemDelegate},
+   \l {BasicTableView::rowDelegate}{rowDelegate}, or \l {BasicTableView::headerDelegate}{headerDelegate} properties.
 
    The view itself does not provide sorting. This has to
    be done on the model itself. However you can provide sorting
@@ -91,7 +91,7 @@ import QtQml.Models 2.2
 \endlist
 
    You can create a custom appearance for a TreeView by
-   assigning a \l {QtQuick.Controls.Styles::TreeViewStyle}{TreeViewStyle}.
+   assigning a \l {TreeViewStyle}.
 */
 
 BasicTableView {

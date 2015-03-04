@@ -82,7 +82,7 @@ import QtQuick.Extras.Private 1.0
     \endtable
 
     You can create a custom appearance for a StatusIndicator by assigning a
-    \l {QtQuick.Controls.Styles::}{StatusIndicatorStyle}.
+    \l {StatusIndicatorStyle}.
 */
 
 Control {

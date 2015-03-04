@@ -35,7 +35,7 @@
 */
 
 /*!
-    \example extras/gallery
+    \example gallery
     \title Qt Quick Extras - Gallery
     \ingroup qtquickextras-examples
     \brief An interactive showcase of the various controls.
@@ -46,7 +46,7 @@
 */
 
 /*!
-    \example extras/dashboard
+    \example dashboard
     \title Qt Quick Extras - Dashboard
     \ingroup qtquickextras-examples
     \brief A car dashboard created using several CircularGauge controls.
@@ -56,7 +56,7 @@
 */
 
 /*!
-    \example extras/flat
+    \example flat
     \title Qt Quick Extras - Flat
     \ingroup qtquickextras-examples
     \brief An interactive showcase of the flat style.

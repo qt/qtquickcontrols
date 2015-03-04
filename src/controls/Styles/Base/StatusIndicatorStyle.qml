@@ -60,9 +60,9 @@ Style {
 
     /*!
         The color that instances of
-        \l {QtQuick.Extras::}{StatusIndicator} will have.
-        The \l {QtQuick.Extras::StatusIndicator::}{color}
-        property in \l {QtQuick.Extras::}{StatusIndicator}
+        \l [QtQuickExtras]{StatusIndicator} will have.
+        The \l [QtQuickExtras]{StatusIndicator::}{color}
+        property in \l [QtQuickExtras]{StatusIndicator}
         will override this property when set.
     */
     property color color: "red"

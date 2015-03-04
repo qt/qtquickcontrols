@@ -64,7 +64,7 @@ import QtQuick.Controls.Private 1.0
     \endcode
 
     You can create a custom appearance for a Tumbler by assigning a
-    \l {QtQuick.Controls.Styles::}{TumblerStyle}.
+    \l {TumblerStyle}.
 */
 
 QtObject {
@@ -116,8 +116,8 @@ QtObject {
 
         If set, this delegate will be used to display items in this column,
         instead of the
-        \l {QtQuick.Controls.Styles::TumblerStyle::delegate}{delegate}
-        property in \l {QtQuick.Controls.Styles::}{TumblerStyle}.
+        \l {TumblerStyle::}{delegate}
+        property in \l {TumblerStyle}.
 
         The \l {Item::implicitHeight}{implicitHeight} property must be set,
         and it must be the same for each delegate.
@@ -129,8 +129,8 @@ QtObject {
 
         If set, this highlight will be used to display the highlight in this
         column, instead of the
-        \l {QtQuick.Controls.Styles::TumblerStyle::highlight}{highlight}
-        property in \l {QtQuick.Controls.Styles::}{TumblerStyle}.
+        \l {TumblerStyle::}{highlight}
+        property in \l {TumblerStyle}.
     */
     property Component highlight
 
@@ -139,8 +139,8 @@ QtObject {
 
         If set, this component will be used to display the foreground in this
         column, instead of the
-        \l {QtQuick.Controls.Styles::TumblerStyle::columnForeground}{columnForeground}
-        property in \l {QtQuick.Controls.Styles::}{TumblerStyle}.
+        \l {TumblerStyle::}{columnForeground}
+        property in \l {TumblerStyle}.
     */
     property Component columnForeground
 

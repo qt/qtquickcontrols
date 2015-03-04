@@ -147,12 +147,11 @@ import QtQuick.Extras.Private.CppUtils 1.0 as CppUtils
 
     You can hide individual menu items by setting their visible property to
     \c false. Hiding items does not affect the
-    \l {QtQuick.Controls.Styles::PieMenuStyle::}{startAngle} or
-    \l {QtQuick.Controls.Styles::PieMenuStyle::}{endAngle}; the
+    \l {PieMenuStyle::}{startAngle} or
+    \l {PieMenuStyle::}{endAngle}; the
     remaining items will grow to consume the available space.
 
-    You can create a custom appearance for a PieMenu by assigning a
-    \l {QtQuick.Controls.Styles::}{PieMenuStyle}.
+    You can create a custom appearance for a PieMenu by assigning a \l {PieMenuStyle}
 */
 
 Control {

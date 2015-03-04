@@ -87,7 +87,7 @@ import QtQuick.Controls.Private 1.0
     Whenever a CheckBox is clicked, it emits the \l {AbstractCheckable::clicked}{clicked()} signal.
 
     You can create a custom appearance for a CheckBox by
-    assigning a \l {QtQuick.Controls.Styles::CheckBoxStyle}{CheckBoxStyle}.
+    assigning a \l {CheckBoxStyle}.
 */
 
 AbstractCheckable {

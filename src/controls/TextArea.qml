@@ -67,7 +67,7 @@ import QtQuick.Controls.Private 1.0
     points using positionAt() and positionToRectangle().
 
     You can create a custom appearance for a TextArea by
-    assigning a \l{QtQuick.Controls.Styles::TextAreaStyle}{TextAreaStyle}.
+    assigning a \l {TextAreaStyle}.
 
     \sa TextField, TextEdit
 */

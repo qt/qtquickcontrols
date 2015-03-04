@@ -87,7 +87,7 @@ Style {
         bottom: 2
     }
 
-    /*! This defines the background of the tool bar. */
+    /*! This defines the background of the status bar. */
     property Component background: Rectangle {
         implicitHeight: 16
         implicitWidth: 200
@@ -105,6 +105,7 @@ Style {
         }
     }
 
+    /*! This defines the panel of the status bar. */
     property Component panel: Loader {
         sourceComponent: background
     }

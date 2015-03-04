@@ -79,7 +79,7 @@ import QtQuick.Controls.Styles 1.1
     \l flickableItem.
 
     You can create a custom appearance for a ScrollView by
-    assigning a \l {QtQuick.Controls.Styles::ScrollViewStyle}{ScrollViewStyle}.
+    assigning a \l {ScrollViewStyle}.
 */
 
 FocusScope {

@@ -109,7 +109,7 @@ Style {
 
     /*! The style component for the menubar's own menus and their submenus.
 
-        \sa {QtQuick.Controls.Styles::}{MenuStyle}
+        \sa {MenuStyle}
     */
     property Component menuStyle: MenuStyle {
         font: root.font

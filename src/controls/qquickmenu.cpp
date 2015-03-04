@@ -113,7 +113,7 @@ QT_BEGIN_NAMESPACE
 /*!
     \qmlproperty enumeration Menu::type
 
-    This property is read-only and constant, and its value is \l MenuItemType.Menu.
+    This property is read-only and constant, and its value is \l {QtQuick.Controls::MenuItem::}{type}.
 */
 
 /*!

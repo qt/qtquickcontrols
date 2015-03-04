@@ -58,7 +58,7 @@ import QtQuick.Controls.Private 1.0
     placing color-coded indicators around the button.
 
     You can create a custom appearance for a ToggleButton by assigning a
-    \l {QtQuick.Controls.Styles::}{ToggleButtonStyle}.
+    \l {ToggleButtonStyle}.
 */
 
 Button {

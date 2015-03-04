@@ -68,7 +68,7 @@ QT_BEGIN_NAMESPACE
     \quotefromfile gallery/main.qml
     \dots
     \skipto Action
-    \printto SystemPalette
+    \printto TabView
     \dots
 */
 

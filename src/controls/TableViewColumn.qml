@@ -101,7 +101,7 @@ QtObject {
         \li Text.ElideMiddle
         \li Text.ElideRight - the default
     \endlist
-    \sa {QtQuick::}{Text::elide} */
+    \sa {Text::elide}{elide} */
     property int elideMode: Text.ElideRight
 
     /*! \qmlproperty enumeration TableViewColumn::horizontalAlignment
@@ -113,11 +113,11 @@ QtObject {
         \li Text.AlignHCenter
         \li Text.AlignJustify
     \endlist
-    \sa {QtQuick::}{Text::horizontalAlignment} */
+    \sa {Text::horizontalAlignment}{horizontalAlignment} */
     property int horizontalAlignment: Text.AlignLeft
 
-    /*! The delegate of the column. This can be used to set the
-    \l TableView::itemDelegate or TreeView::itemDelegate for a specific column.
+    /*! The delegate of the column. This can be used to set the itemDelagate
+    of a \l TableView or \l TreeView for a specific column.
 
     In the delegate you have access to the following special properties:
     \list

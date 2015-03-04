@@ -57,11 +57,11 @@ import QtQuick.Extras.Private 1.0
 
     Like CircularGauge, Dial can display tickmarks to give an indication of
     the current value. When a suitable stepSize is combined with
-    \l {QtQuick.Controls.Styles::DialStyle::}{tickmarkStepSize},
+    \l {DialStyle::}{tickmarkStepSize},
     the dial "snaps" to each tickmark.
 
     You can create a custom appearance for a Dial by assigning a
-    \l {QtQuick.Controls.Styles::}{DialStyle}.
+    \l {DialStyle}.
 */
 
 Control {
@@ -149,12 +149,12 @@ Control {
 
         For more fine-grained control over what is displayed, the following
         style components of
-        \l {QtQuick.Controls.Styles::}{DialStyle} can be used:
+        \l {DialStyle} can be used:
 
         \list
-            \li \l {QtQuick.Controls.Styles::DialStyle::tickmark}{tickmark}
-            \li \l {QtQuick.Controls.Styles::DialStyle::minorTickmark}{minorTickmark}
-            \li \l {QtQuick.Controls.Styles::DialStyle::tickmarkLabel}{tickmarkLabel}
+            \li \l {DialStyle::}{tickmark}
+            \li \l {DialStyle::}{minorTickmark}
+            \li \l {DialStyle::}{tickmarkLabel}
         \endlist
 
         The default value is \c true.

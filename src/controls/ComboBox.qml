@@ -99,7 +99,7 @@ import QtQuick.Controls.Private 1.0
 
 
     You can create a custom appearance for a ComboBox by
-    assigning a \l {QtQuick.Controls.Styles::ComboBoxStyle}{ComboBoxStyle}.
+    assigning a \l {ComboBoxStyle}.
 */
 
 Control {
@@ -194,8 +194,8 @@ Control {
         an intermediate state. The accepted signal will only be sent
         if the text is in an acceptable state when enter is pressed.
 
-        Currently supported validators are \l{QtQuick::}{IntValidator},
-        \l{QtQuick::}{DoubleValidator}, and \l{QtQuick::}{RegExpValidator}. An
+        Currently supported validators are \l[QtQuick]{IntValidator},
+        \l[QtQuick]{DoubleValidator}, and \l[QtQuick]{RegExpValidator}. An
         example of using validators is shown below, which allows input of
         integers between 11 and 31 into the text field:
 

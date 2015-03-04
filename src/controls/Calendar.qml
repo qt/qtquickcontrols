@@ -72,7 +72,7 @@ import QtQuick.Controls.Private 1.0
     \endqml
 
     You can create a custom appearance for Calendar by assigning a
-    \l {QtQuick.Controls.Styles::CalendarStyle}{CalendarStyle}.
+    \l {CalendarStyle}.
 */
 
 Control {

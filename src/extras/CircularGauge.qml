@@ -58,9 +58,9 @@ import QtQuick.Extras.Private 1.0
     The minimum and maximum values displayable by the gauge can be set with the
     \l minimumValue and \l maximumValue properties. The angle at which these
     values are displayed can be set with the
-    \l {QtQuick.Controls.Styles::CircularGaugeStyle::}{minimumValueAngle} and
-    \l {QtQuick.Controls.Styles::CircularGaugeStyle::}{maximumValueAngle} properties of
-    \l {QtQuick.Controls.Styles::}{CircularGaugeStyle}.
+    \l {CircularGaugeStyle::}{minimumValueAngle} and
+    \l {CircularGaugeStyle::}{maximumValueAngle} properties of
+    \l {CircularGaugeStyle}.
 
     Example:
     \code
@@ -89,7 +89,7 @@ import QtQuick.Extras.Private 1.0
     \endcode
 
     You can create a custom appearance for a CircularGauge by assigning a
-    \l {QtQuick.Controls.Styles::}{CircularGaugeStyle}.
+    \l {CircularGaugeStyle}.
 */
 
 Control {
@@ -136,13 +136,13 @@ Control {
 
         For more fine-grained control over what is displayed, the following
         style components of
-        \l {QtQuick.Controls.Styles::}{CircularGaugeStyle} can be
+        \l CircularGaugeStyle can be
         used:
 
         \list
-            \li \l {QtQuick.Controls.Styles::CircularGaugeStyle::tickmark}{tickmark}
-            \li \l {QtQuick.Controls.Styles::CircularGaugeStyle::minorTickmark}{minorTickmark}
-            \li \l {QtQuick.Controls.Styles::CircularGaugeStyle::tickmarkLabel}{tickmarkLabel}
+            \li \l {CircularGaugeStyle::}{tickmark}
+            \li \l {CircularGaugeStyle::}{minorTickmark}
+            \li \l {CircularGaugeStyle::}{tickmarkLabel}
         \endlist
     */
     property bool tickmarksVisible: true
