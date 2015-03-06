@@ -35,10 +35,10 @@
 ****************************************************************************/
 
 import QtQuick 2.2
-import QtQuick.Controls 1.1
+import QtQuick.Controls 1.4
+import QtQuick.Controls.Styles 1.4 as Base
 import QtQuick.Controls.Styles.Flat 1.0
 import QtQuick.Controls.Private 1.0
-import QtQuick.Extras.Styles 1.1 as Base
 import QtQuick.Extras.Private 1.0
 import QtQuick.Extras.Private.CppUtils 1.1
 

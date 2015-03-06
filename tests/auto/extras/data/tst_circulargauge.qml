@@ -46,7 +46,7 @@ TestCase {
     height: 400
 
     function test_instance() {
-        var gauge = Qt.createQmlObject('import QtQuick.Extras 1.3; CircularGauge { }', testcase, '');
+        var gauge = Qt.createQmlObject('import QtQuick.Extras 1.4; CircularGauge { }', testcase, '');
         verify (gauge, "CircularGauge: failed to create an instance")
         verify(gauge.__style)
         gauge.destroy()
@@ -73,7 +73,7 @@ TestCase {
     }
 
     function test_tickmarksVisible() {
-        var gauge = Qt.createQmlObject("import QtQuick.Extras 1.3; CircularGauge { }", testcase, "");
+        var gauge = Qt.createQmlObject("import QtQuick.Extras 1.4; CircularGauge { }", testcase, "");
         verify(gauge, "CircularGauge: failed to create an instance");
 
         gauge.__style.tickmark = tickmark;

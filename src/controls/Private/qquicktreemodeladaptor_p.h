@@ -88,7 +88,7 @@ public:
     const QModelIndex &mapToModel(const QModelIndex &index) const;
     Q_INVOKABLE QModelIndex mapRowToModelIndex(int row) const;
 
-    Q_INVOKABLE QItemSelection selectionForRowRange(int form, int to) const;
+    Q_INVOKABLE QItemSelection selectionForRowRange(int from, int to) const;
 
     void showModelTopLevelItems(bool doInsertRows = true);
     void showModelChildItems(const TreeItem &parent, int start, int end, bool doInsertRows = true, bool doExpandPendingRows = true);
@@ -102,19 +102,19 @@ public:
     void collapseRow(int n);
     bool isExpanded(int row) const;
 
-    Q_INVOKABLE bool isExpanded(QModelIndex) const;
+    Q_INVOKABLE bool isExpanded(const QModelIndex &) const;
 
     void dump() const;
     bool testConsistency(bool dumpOnFail = false) const;
 
 signals:
     void modelChanged(QAbstractItemModel *model);
-    void expanded(QModelIndex index);
-    void collapsed(QModelIndex index);
+    void expanded(const QModelIndex &index);
+    void collapsed(const QModelIndex &index);
 
 public slots:
-    void expand(QModelIndex);
-    void collapse(QModelIndex);
+    void expand(const QModelIndex &);
+    void collapse(const QModelIndex &);
 
     void setModel(QAbstractItemModel *model);
 

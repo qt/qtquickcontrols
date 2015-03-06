@@ -176,7 +176,7 @@ FocusScope {
     property ListModel __tabs: ListModel { }
 
     /*! \internal */
-    property Component style: Qt.createComponent(Settings.style + "/TabViewStyle.qml", root)
+    property Component style: Settings.styleComponent(Settings.style, "TabViewStyle.qml", root)
 
     /*! \internal */
     property var __styleItem: loader.item

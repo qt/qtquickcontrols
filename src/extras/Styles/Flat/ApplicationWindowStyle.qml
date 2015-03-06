@@ -35,7 +35,7 @@
 ****************************************************************************/
 import QtQuick 2.2
 import QtQuick.Controls 1.2
-import QtQuick.Controls.Styles 1.3 as Base
+import QtQuick.Controls.Styles 1.4 as Base
 import QtQuick.Controls.Styles.Flat 1.0
 
 Base.ApplicationWindowStyle {

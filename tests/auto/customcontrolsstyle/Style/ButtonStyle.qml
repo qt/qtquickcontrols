@@ -3,7 +3,7 @@
 ** Copyright (C) 2015 The Qt Company Ltd.
 ** Contact: http://www.qt.io/licensing/
 **
-** This file is part of the Qt Quick Extras module of the Qt Toolkit.
+** This file is part of the test suite of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL3$
 ** Commercial License Usage
@@ -34,40 +34,14 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.2
-import QtQuick.Controls.Private 1.0
-import QtQuick.Extras 1.3
+import QtQuick 2.4
+import QtQuick.Controls 1.4
+import QtQuick.Controls.Styles 1.4
 
-Style {
-    id: handleStyle
-    property alias handleColorTop: __helper.handleColorTop
-    property alias handleColorBottom: __helper.handleColorBottom
-    property alias handleColorBottomStop: __helper.handleColorBottomStop
-
-    HandleStyleHelper {
-        id: __helper
-    }
-
-    property Component handle: Item {
-        implicitWidth: 50
+ButtonStyle {
+    background: Rectangle {
+        implicitWidth: 200
         implicitHeight: 50
-
-        Canvas {
-            id: handleCanvas
-            anchors.fill: parent
-
-            onPaint: {
-                var ctx = getContext("2d");
-                __helper.paintHandle(ctx);
-            }
-        }
-    }
-
-    property Component panel: Item {
-        Loader {
-            id: handleLoader
-            sourceComponent: handle
-            anchors.fill: parent
-        }
+        color: "red"
     }
 }

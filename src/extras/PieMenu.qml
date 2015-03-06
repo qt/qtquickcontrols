@@ -35,17 +35,17 @@
 ****************************************************************************/
 
 import QtQuick 2.2
-import QtQuick.Controls 1.1
+import QtQuick.Controls 1.4
+import QtQuick.Controls.Styles 1.4
 import QtQuick.Controls.Private 1.0
-import QtQuick.Extras 1.3
+import QtQuick.Extras 1.4
 import QtQuick.Extras.Private 1.0
 import QtQuick.Extras.Private.CppUtils 1.0 as CppUtils
-import QtQuick.Extras.Styles 1.3
 
 /*!
     \qmltype PieMenu
     \inqmlmodule QtQuick.Extras
-    \since QtQuick.Extras 1.0
+    \since 5.5
     \ingroup extras
     \ingroup extras-interactive
     \brief A popup menu that displays several menu items along an arc.
@@ -147,19 +147,19 @@ import QtQuick.Extras.Styles 1.3
 
     You can hide individual menu items by setting their visible property to
     \c false. Hiding items does not affect the
-    \l {QtQuick.Extras.Styles::PieMenuStyle::}{startAngle} or
-    \l {QtQuick.Extras.Styles::PieMenuStyle::}{endAngle}; the
+    \l {QtQuick.Controls.Styles::PieMenuStyle::}{startAngle} or
+    \l {QtQuick.Controls.Styles::PieMenuStyle::}{endAngle}; the
     remaining items will grow to consume the available space.
 
     You can create a custom appearance for a PieMenu by assigning a
-    \l {QtQuick.Extras.Styles::}{PieMenuStyle}.
+    \l {QtQuick.Controls.Styles::}{PieMenuStyle}.
 */
 
 Control {
     id: pieMenu
     visible: false
 
-    style: Qt.createComponent(StyleSettings.style + "/PieMenuStyle.qml", pieMenu)
+    style: Settings.styleComponent(Settings.style, "PieMenuStyle.qml", pieMenu)
 
     /*!
         This property reflects the angle (in radians) created by the imaginary
@@ -276,8 +276,6 @@ Control {
     readonly property alias currentItem: protectedScope.currentItem
 
     /*!
-        \since QtQuick.Extras 1.1
-
         This property defines the text that is shown above the menu when
         there is no current menu item (currentIndex is \c -1).
 
@@ -286,8 +284,6 @@ Control {
     property string title: ""
 
     /*!
-        \since QtQuick.Extras 1.2
-
         The item which the menu must stay within.
 
         A typical use case for PieMenu involves:
@@ -332,8 +328,6 @@ Control {
     }
 
     /*!
-        \since QtQuick.Extras 1.1
-
         \qmlmethod void addItem(string text)
 
         Adds an item to the end of the menu items.
@@ -347,8 +341,6 @@ Control {
     }
 
     /*!
-        \since QtQuick.Extras 1.1
-
         \qmlmethod void insertItem(int before, string text)
 
         Inserts a MenuItem with \a text before the index at \a before.
@@ -372,8 +364,6 @@ Control {
     }
 
     /*!
-        \since QtQuick.Extras 1.1
-
         \qmlmethod void removeItem(item)
 
         Removes \a item from the menu.

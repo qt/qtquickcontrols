@@ -35,17 +35,17 @@
 ****************************************************************************/
 
 import QtQuick 2.2
-import QtQuick.Controls 1.0
+import QtQuick.Controls 1.4
+import QtQuick.Controls.Styles 1.4
 import QtQuick.Controls.Private 1.0
-import QtQuick.Extras 1.3
+import QtQuick.Extras 1.4
 import QtQuick.Extras.Private 1.0
-import QtQuick.Extras.Styles 1.3
 import QtQuick.Layouts 1.0
 
 /*!
     \qmltype Tumbler
     \inqmlmodule QtQuick.Extras
-    \since QtQuick.Extras 1.2
+    \since 5.5
     \ingroup extras
     \ingroup extras-interactive
     \brief A control that can have several spinnable wheels, each with items
@@ -53,7 +53,7 @@ import QtQuick.Layouts 1.0
 
     \image tumbler.png A Tumbler
 
-    \note Tumbler requires Qt 5.3.2 or later.
+    \note Tumbler requires Qt 5.5.0 or later.
 
     The Tumbler control is used with one or more TumblerColumn items, which
     define the content of each column:
@@ -67,7 +67,7 @@ import QtQuick.Layouts 1.0
             model: [0, 1, 2, 3, 4]
         }
         TumblerColumn {
-            model: ["A", "B", "C", "D", "E]
+            model: ["A", "B", "C", "D", "E"]
         }
     }
     \endcode
@@ -122,13 +122,13 @@ import QtQuick.Layouts 1.0
     \section1 Limitations
 
     For technical reasons, the model count must be equal to or greater than
-    \l {QtQuick.Extras.Styles::TumblerStyle}{visibleItemCount}
+    \l {QtQuick.Controls.Styles::TumblerStyle}{visibleItemCount}
     plus one. The
-    \l {QtQuick.Extras.Styles::TumblerStyle::}{visibleItemCount}
+    \l {QtQuick.Controls.Styles::TumblerStyle::}{visibleItemCount}
     must also be an odd number.
 
     You can create a custom appearance for a Tumbler by assigning a
-    \l {QtQuick.Extras.Styles::}{TumblerStyle}. To style
+    \l {QtQuick.Controls.Styles::}{TumblerStyle}. To style
     individual columns, use the \l {TumblerColumn::delegate}{delegate} and
     \l {TumblerColumn::highlight}{highlight} properties of TumblerColumn.
 */
@@ -136,7 +136,7 @@ import QtQuick.Layouts 1.0
 Control {
     id: tumbler
 
-    style: Qt.createComponent(StyleSettings.style + "/TumblerStyle.qml", tumbler)
+    style: Settings.styleComponent(Settings.style, "TumblerStyle.qml", tumbler)
 
     ListModel {
         id: columnModel

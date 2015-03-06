@@ -4,14 +4,12 @@ HEADERS += \
     $$PWD/qquickcircularprogressbar_p.h \
     $$PWD/qquickflatprogressbar_p.h \
     $$PWD/qquickmousethief_p.h \
-    $$PWD/qquickstylesettings_p.h \
     $$PWD/qquickmathutils_p.h
 
 SOURCES += \
     $$PWD/qquickcircularprogressbar.cpp \
     $$PWD/qquickflatprogressbar.cpp \
     $$PWD/qquickmousethief.cpp \
-    $$PWD/qquickstylesettings.cpp \
     $$PWD/qquickmathutils.cpp
 
 OTHER_FILES += \

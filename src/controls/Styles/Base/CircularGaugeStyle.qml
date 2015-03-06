@@ -36,17 +36,17 @@
 
 import QtQuick 2.2
 import QtGraphicalEffects 1.0
-import QtQuick.Controls 1.1
+import QtQuick.Controls 1.4
+import QtQuick.Controls.Styles 1.4
 import QtQuick.Controls.Private 1.0
-import QtQuick.Extras 1.3
-import QtQuick.Extras.Styles 1.3
+import QtQuick.Extras 1.4
 import QtQuick.Extras.Private 1.0
 
 /*!
     \qmltype CircularGaugeStyle
-    \inqmlmodule QtQuick.Extras.Styles
-    \since QtQuick.Extras.Styles 1.0
-    \ingroup extrasstyles
+    \inqmlmodule QtQuick.Controls.Styles
+    \since 5.5
+    \ingroup controlsstyling
     \brief Provides custom styling for CircularGauge.
 
     You can create a custom circular gauge by replacing the following delegates:
@@ -96,8 +96,6 @@ Style {
     id: circularGaugeStyle
 
     /*!
-        \since 1.3
-
         The \l CircularGauge that this style is attached to.
     */
     readonly property CircularGauge control: __control
@@ -241,8 +239,6 @@ Style {
     readonly property int labelCount: control.__panel.circularTickmarkLabel.labelCount
 
     /*!
-        \since QtQuick.Extras 1.2
-
         Returns \a value as an angle in degrees.
 
         This function is useful for custom drawing or positioning of items in

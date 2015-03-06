@@ -39,7 +39,7 @@
 ****************************************************************************/
 
 import QtQuick 2.2
-import QtQuick.Extras.Styles 1.3
+import QtQuick.Controls.Styles 1.4
 
 CircularGaugeStyle {
     labelStepSize: 20

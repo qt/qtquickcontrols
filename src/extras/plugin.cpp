@@ -43,7 +43,6 @@
 #include "Private/qquickcircularprogressbar_p.h"
 #include "Private/qquickflatprogressbar_p.h"
 #include "Private/qquickmousethief_p.h"
-#include "Private/qquickstylesettings_p.h"
 #include "Private/qquickmathutils_p.h"
 
 QT_BEGIN_NAMESPACE
@@ -83,7 +82,7 @@ void QtQuickExtrasPlugin::registerTypes(const char *uri)
     // register 1.3
     qmlRegisterUncreatableType<QQuickTriggerMode>(uri, 1, 3, "TriggerMode", QLatin1String("Do not create objects of type TriggerMode"));
     // register 1.4
-    qmlRegisterType<QQuickPicture>(uri, 1, /*TODO: 4*/3, "Picture");
+    qmlRegisterType<QQuickPicture>(uri, 1, 4, "Picture");
 }
 
 void QtQuickExtrasPlugin::initializeEngine(QQmlEngine *engine, const char *uri)
@@ -93,7 +92,6 @@ void QtQuickExtrasPlugin::initializeEngine(QQmlEngine *engine, const char *uri)
     qmlRegisterType<QQuickMouseThief>("QtQuick.Extras.Private.CppUtils", 1, 0, "MouseThief");
     qmlRegisterType<QQuickCircularProgressBar>("QtQuick.Extras.Private.CppUtils", 1, 1, "CircularProgressBar");
     qmlRegisterType<QQuickFlatProgressBar>("QtQuick.Extras.Private.CppUtils", 1, 1, "FlatProgressBar");
-    qmlRegisterSingletonType<QQuickStyleSettings>("QtQuick.Extras.Private", 1, 0, "StyleSettings", registerSettingsModule);
     qmlRegisterSingletonType<QQuickMathUtils>("QtQuick.Extras.Private.CppUtils", 1, 0, "MathUtils", registerMathUtilsSingleton);
 
     const QString prefix = "qrc:///ExtrasImports/QtQuick/Extras";
@@ -104,13 +102,6 @@ void QtQuickExtrasPlugin::initializeEngine(QQmlEngine *engine, const char *uri)
     qmlRegisterType(QUrl(prefix + "/Private/Handle.qml"), private_uri, 1, 0, "Handle");
     qmlRegisterType(QUrl(prefix + "/Private/PieMenuIcon.qml"), private_uri, 1, 0, "PieMenuIcon");
     qmlRegisterSingletonType(QUrl(prefix + "/Private/TextSingleton.qml"), private_uri, 1, 0, "TextSingleton");
-}
-
-QObject *QtQuickExtrasPlugin::registerSettingsModule(QQmlEngine *engine, QJSEngine *jsEngine)
-{
-    Q_UNUSED(engine);
-    Q_UNUSED(jsEngine);
-    return new QQuickStyleSettings(engine);
 }
 
 QT_END_NAMESPACE

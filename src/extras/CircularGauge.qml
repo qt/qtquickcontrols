@@ -36,15 +36,15 @@
 
 import QtQuick 2.2
 // Workaround for QTBUG-37751; we need this import for RangeModel, although we shouldn't.
-import QtQuick.Controls 1.1
+import QtQuick.Controls 1.4
+import QtQuick.Controls.Styles 1.4
 import QtQuick.Controls.Private 1.0
 import QtQuick.Extras.Private 1.0
-import QtQuick.Extras.Styles 1.3
 
 /*!
     \qmltype CircularGauge
     \inqmlmodule QtQuick.Extras
-    \since QtQuick.Extras 1.0
+    \since 5.5
     \ingroup extras
     \ingroup extras-non-interactive
     \brief A gauge that displays a value within a range along an arc.
@@ -58,9 +58,9 @@ import QtQuick.Extras.Styles 1.3
     The minimum and maximum values displayable by the gauge can be set with the
     \l minimumValue and \l maximumValue properties. The angle at which these
     values are displayed can be set with the
-    \l {QtQuick.Extras.Styles::CircularGaugeStyle::}{minimumValueAngle} and
-    \l {QtQuick.Extras.Styles::CircularGaugeStyle::}{maximumValueAngle} properties of
-    \l {QtQuick.Extras.Styles::}{CircularGaugeStyle}.
+    \l {QtQuick.Controls.Styles::CircularGaugeStyle::}{minimumValueAngle} and
+    \l {QtQuick.Controls.Styles::CircularGaugeStyle::}{maximumValueAngle} properties of
+    \l {QtQuick.Controls.Styles::}{CircularGaugeStyle}.
 
     Example:
     \code
@@ -89,13 +89,13 @@ import QtQuick.Extras.Styles 1.3
     \endcode
 
     You can create a custom appearance for a CircularGauge by assigning a
-    \l {QtQuick.Extras.Styles::}{CircularGaugeStyle}.
+    \l {QtQuick.Controls.Styles::}{CircularGaugeStyle}.
 */
 
 Control {
     id: circularGauge
 
-    style: Qt.createComponent(StyleSettings.style + "/CircularGaugeStyle.qml", circularGauge)
+    style: Settings.styleComponent(Settings.style, "CircularGaugeStyle.qml", circularGauge)
 
     /*!
         \qmlproperty real CircularGauge::minimumValue
@@ -131,20 +131,18 @@ Control {
     property alias stepSize: range.stepSize
 
     /*!
-        \since 1.2
-
         This property determines whether or not the gauge displays tickmarks,
         minor tickmarks, and labels.
 
         For more fine-grained control over what is displayed, the following
         style components of
-        \l {QtQuick.Extras.Styles::}{CircularGaugeStyle} can be
+        \l {QtQuick.Controls.Styles::}{CircularGaugeStyle} can be
         used:
 
         \list
-            \li \l {QtQuick.Extras.Styles::CircularGaugeStyle::tickmark}{tickmark}
-            \li \l {QtQuick.Extras.Styles::CircularGaugeStyle::minorTickmark}{minorTickmark}
-            \li \l {QtQuick.Extras.Styles::CircularGaugeStyle::tickmarkLabel}{tickmarkLabel}
+            \li \l {QtQuick.Controls.Styles::CircularGaugeStyle::tickmark}{tickmark}
+            \li \l {QtQuick.Controls.Styles::CircularGaugeStyle::minorTickmark}{minorTickmark}
+            \li \l {QtQuick.Controls.Styles::CircularGaugeStyle::tickmarkLabel}{tickmarkLabel}
         \endlist
     */
     property bool tickmarksVisible: true

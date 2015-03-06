@@ -38,7 +38,7 @@ import QtQuick.Controls 1.2
 import QtQuick.Controls.Styles 1.2 as Base
 import QtQuick.Controls.Styles.Flat 1.0
 import QtQuick.Controls.Private 1.0
-import QtQuick.Extras 1.3
+import QtQuick.Extras 1.4
 
 Base.RadioButtonStyle {
     spacing: Math.round(8 * FlatStyle.scaleFactor)

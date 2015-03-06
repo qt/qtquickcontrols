@@ -26,7 +26,7 @@
 ****************************************************************************/
 
 /*!
-    \page index.html
+    \page qtquickextras-index.html
     \title Qt Quick Extras
 
     \brief The Qt Quick Extras module provides a set of UI controls for Qt
@@ -51,6 +51,6 @@
       \li \l{Qt Quick Extras Overview}
       \li \l{Qt Quick Extras QML Types}{Qt Quick Extras QML Types}
       \li \l{Qt Quick Extras Examples}
-      \li \l{Qt Quick Extras Styles}
+      \li \l{Qt Quick Controls Styles}
      \endlist
 */

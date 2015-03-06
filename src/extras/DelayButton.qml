@@ -35,16 +35,15 @@
 ****************************************************************************/
 
 import QtQuick 2.2
-import QtQuick.Controls 1.1
-import QtQuick.Extras 1.3
-import QtQuick.Extras.Styles 1.3
-import QtQuick.Extras.Private 1.0
+import QtQuick.Controls 1.4
+import QtQuick.Controls.Styles 1.4
+import QtQuick.Controls.Private 1.0
 
 /*!
     \qmltype DelayButton
     \inherits QtQuickControls::Button
     \inqmlmodule QtQuick.Extras
-    \since QtQuick.Extras 1.0
+    \since 5.5
     \ingroup extras
     \ingroup extras-interactive
     \brief A checkable button that triggers an action when held in long enough.
@@ -68,13 +67,13 @@ import QtQuick.Extras.Private 1.0
     A DelayButton after being activated
 
     You can create a custom appearance for a DelayButton by assigning a
-    \l {QtQuick.Extras.Styles::}{DelayButtonStyle}.
+    \l {QtQuick.Controls.Styles::}{DelayButtonStyle}.
 */
 
 Button {
     id: root
 
-    style: Qt.createComponent(StyleSettings.style + "/DelayButtonStyle.qml", root)
+    style: Settings.styleComponent(Settings.style, "DelayButtonStyle.qml", root)
 
     /*!
         \qmlproperty real DelayButton::progress

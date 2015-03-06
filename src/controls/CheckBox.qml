@@ -139,7 +139,7 @@ AbstractCheckable {
     */
     property bool __ignoreCheckedState: false
 
-    style: Qt.createComponent(Settings.style + "/CheckBoxStyle.qml", checkBox)
+    style: Settings.styleComponent(Settings.style, "CheckBoxStyle.qml", checkBox)
 
     activeFocusOnTab: true
 

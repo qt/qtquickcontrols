@@ -36,8 +36,8 @@
 
 import QtQuick 2.0
 import QtGraphicalEffects 1.0
+import QtQuick.Controls.Styles 1.4
 import QtQuick.Controls.Private 1.0
-import QtQuick.Extras.Styles 1.3
 import QtQuick.Extras.Private 1.1
 import QtQuick.Extras.Private.CppUtils 1.0
 
@@ -46,7 +46,7 @@ Control {
     x: handleArea.centerOfHandle.x - width / 2
     y: handleArea.centerOfHandle.y - height / 2
 
-    style: Qt.createComponent(StyleSettings.style + "/HandleStyle.qml", root)
+    style: Settings.styleComponent(Settings.style, "HandleStyle.qml", root)
 
     /*!
         The angle of the handle along the circumference of \l rotationRadius in

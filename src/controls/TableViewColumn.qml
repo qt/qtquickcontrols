@@ -152,10 +152,11 @@ QtObject {
                 item = item.children[1]
                 if (item) { // Row { id: itemrow }
                     item = item.children[__index]
-                    if (item) { // Loader { id: itemDelegateLoader }
+                    if (item) { // Repeater.delegate a.k.a. __view.__itemDelegateLoader
+                        var indent = __view.__isTreeView && __index === 0 ? item.__itemIndentation : 0
                         item  = item.item
                         if (item && item.hasOwnProperty("implicitWidth")) {
-                            minWidth = Math.max(minWidth, item.implicitWidth)
+                            minWidth = Math.max(minWidth, item.implicitWidth + indent)
                         }
                     }
                 }

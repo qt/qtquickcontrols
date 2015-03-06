@@ -36,18 +36,18 @@
 
 import QtQuick 2.2
 import QtGraphicalEffects 1.0
-import QtQuick.Controls 1.1
+import QtQuick.Controls 1.4
+import QtQuick.Controls.Styles 1.4
 import QtQuick.Controls.Private 1.0
-import QtQuick.Extras 1.3
-import QtQuick.Extras.Styles 1.3
+import QtQuick.Extras 1.4
 import QtQuick.Extras.Private 1.0
 import QtQuick.Extras.Private.CppUtils 1.0
 
 /*!
     \qmltype PieMenuStyle
-    \inqmlmodule QtQuick.Extras.Styles
-    \since QtQuick.Extras.Styles 1.0
-    \ingroup extrasstyles
+    \inqmlmodule QtQuick.Controls.Styles
+    \since 5.5
+    \ingroup controlsstyling
     \brief Provides custom styling for PieMenu.
 
     PieMenuStyle is a style for PieMenu that draws each section of the menu as a
@@ -105,8 +105,6 @@ Style {
     id: pieMenuStyle
 
     /*!
-        \since 1.3
-
         The \l PieMenu that this style is attached to.
     */
     readonly property PieMenu control: __control
@@ -224,8 +222,6 @@ Style {
     property Component cancel: null
 
     /*!
-        \since QtQuick.Extras 1.1
-
         The component that displays the text of the currently selected menu
         item, or the title if there is no current item.
 
@@ -260,7 +256,6 @@ Style {
                 \li \c true if this menu item is under the mouse.
             \row \li \c {readonly property bool} \b styleData.pressed
                 \li \c true if the mouse is pressed down on this menu item.
-                    (since QtQuick.Extras 1.3)
         \endtable
     */
     property Component menuItem: Item {

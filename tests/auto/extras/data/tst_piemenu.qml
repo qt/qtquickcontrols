@@ -37,7 +37,7 @@
 import QtTest 1.0
 import QtQuick 2.1
 import QtQuick.Controls 1.1
-import QtQuick.Extras 1.3
+import QtQuick.Extras 1.4
 import QtQuick.Extras.Private 1.0
 import QtQuick.Extras.Private.CppUtils 1.0
 
@@ -94,7 +94,7 @@ Item {
         }
 
         function test_instance() {
-            var pieMenu = Qt.createQmlObject("import QtQuick.Extras 1.3; PieMenu { }", container, "");
+            var pieMenu = Qt.createQmlObject("import QtQuick.Extras 1.4; PieMenu { }", container, "");
             verify(pieMenu, "PieMenu: failed to create an instance");
             verify(pieMenu.__style);
             compare(pieMenu.triggerMode, TriggerMode.TriggerOnClick);

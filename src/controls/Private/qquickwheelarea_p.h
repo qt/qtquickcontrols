@@ -90,7 +90,9 @@ public:
     bool isActive() const;
     void setActive(bool active);
 
+#ifndef QT_NO_WHEELEVENT
     void wheelEvent(QWheelEvent *event);
+#endif
 
     bool isAtXEnd() const;
     bool isAtXBeginning() const;

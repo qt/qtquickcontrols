@@ -705,7 +705,7 @@ ScrollView {
 
     Accessible.role: Accessible.EditableText
 
-    style: Qt.createComponent(Settings.style + "/TextAreaStyle.qml", area)
+    style: Settings.styleComponent(Settings.style, "TextAreaStyle.qml", area)
 
     /*!
         \qmlproperty TextDocument TextArea::textDocument

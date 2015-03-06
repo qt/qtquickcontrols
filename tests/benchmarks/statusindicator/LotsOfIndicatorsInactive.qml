@@ -35,7 +35,7 @@
 ****************************************************************************/
 
 import QtQuick 2.2
-import QtQuick.Extras 1.3
+import QtQuick.Extras 1.4
 
 Rectangle {
     id: root

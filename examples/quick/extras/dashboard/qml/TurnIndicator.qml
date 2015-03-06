@@ -39,7 +39,6 @@
 ****************************************************************************/
 
 import QtQuick 2.2
-import QtQuick.Extras.Styles 1.3
 
 Item {
     // This enum is actually keyboard-related, but it serves its purpose

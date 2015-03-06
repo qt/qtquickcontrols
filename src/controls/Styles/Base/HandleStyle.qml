@@ -35,51 +35,39 @@
 ****************************************************************************/
 
 import QtQuick 2.2
-import QtQuick.Controls.Styles 1.1
-import QtQuick.Extras.Styles 1.3
-import QtQuick.Extras.Private 1.0
+import QtQuick.Controls.Private 1.0
+import QtQuick.Extras 1.4
 
-ButtonStyle {
-    id: buttonStyle
+Style {
+    id: handleStyle
+    property alias handleColorTop: __helper.handleColorTop
+    property alias handleColorBottom: __helper.handleColorBottom
+    property alias handleColorBottomStop: __helper.handleColorBottomStop
 
-    label: Text {
-        anchors.fill: parent
-        horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignVCenter
-        text: control.text
-        font.pixelSize: TextSingleton.font.pixelSize * 1.25
-        color: control.pressed || control.checked ? __buttonHelper.textColorDown : __buttonHelper.textColorUp
-        styleColor: control.pressed || control.checked ? __buttonHelper.textRaisedColorDown : __buttonHelper.textRaisedColorUp
-        style: Text.Raised
-        wrapMode: Text.Wrap
-        fontSizeMode: Text.Fit
+    HandleStyleHelper {
+        id: __helper
     }
 
-    /*! \internal */
-    property alias __buttonHelper: buttonHelper
-
-    CircularButtonStyleHelper {
-        id: buttonHelper
-        control: buttonStyle.control
-    }
-
-    background: Item {
-        implicitWidth: __buttonHelper.implicitWidth
-        implicitHeight: __buttonHelper.implicitHeight
+    property Component handle: Item {
+        implicitWidth: 50
+        implicitHeight: 50
 
         Canvas {
-            id: backgroundCanvas
+            id: handleCanvas
             anchors.fill: parent
-
-            Connections {
-                target: control
-                onPressedChanged: backgroundCanvas.requestPaint()
-            }
 
             onPaint: {
                 var ctx = getContext("2d");
-                __buttonHelper.paintBackground(ctx);
+                __helper.paintHandle(ctx);
             }
+        }
+    }
+
+    property Component panel: Item {
+        Loader {
+            id: handleLoader
+            sourceComponent: handle
+            anchors.fill: parent
         }
     }
 }

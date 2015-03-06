@@ -39,6 +39,9 @@
 
 #include <QtCore/qurl.h>
 #include <QtCore/qobject.h>
+#include <QtCore/qstring.h>
+#include <QtCore/qhash.h>
+#include <QtQml/qqmlcomponent.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -74,6 +77,9 @@ public:
     bool isMobile() const;
     bool hoverEnabled() const;
 
+    Q_INVOKABLE QQmlComponent *styleComponent(const QUrl &styleDirUrl,
+        const QString &controlStyleName, QObject *control);
+
 signals:
     void styleChanged();
     void styleNameChanged();
@@ -81,9 +87,22 @@ signals:
 
 private:
     QString styleFilePath() const;
+    void findStyle(QQmlEngine *engine, const QString &styleName);
+    bool resolveCurrentStylePath();
+    QString makeStyleComponentPath(const QString &controlStyleName, const QString &styleDirPath);
+    QUrl makeStyleComponentUrl(const QString &controlStyleName, QString styleDirPath);
+
+    struct StyleData
+    {
+        // Path to the style's plugin or qmldir file.
+        QString m_stylePluginPath;
+        // Path to the directory containing the style's files.
+        QString m_styleDirPath;
+    };
 
     QString m_name;
     QString m_path;
+    QHash<QString, StyleData> m_styleMap;
 };
 
 QT_END_NAMESPACE

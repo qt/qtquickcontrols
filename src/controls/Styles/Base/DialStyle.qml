@@ -35,18 +35,18 @@
 ****************************************************************************/
 
 import QtQuick 2.2
-import QtQuick.Controls 1.2
+import QtQuick.Controls 1.4
+import QtQuick.Controls.Styles 1.4
 import QtQuick.Controls.Private 1.0
-import QtQuick.Extras 1.3
-import QtQuick.Extras.Styles 1.3
+import QtQuick.Extras 1.4
 import QtQuick.Extras.Private 1.0
 import QtQuick.Extras.Private.CppUtils 1.0
 
 /*!
     \qmltype DialStyle
-    \inqmlmodule QtQuick.Extras.Styles
-    \since QtQuick.Extras.Styles 1.0
-    \ingroup extrasstyles
+    \inqmlmodule QtQuick.Controls.Styles
+    \since 5.5
+    \ingroup controlsstyling
     \brief Provides custom styling for Dial.
 
     You can create a custom dial by replacing the following delegates:
@@ -59,15 +59,11 @@ Style {
     id: dialStyle
 
     /*!
-        \since 1.3
-
         The \l Dial that this style is attached to.
     */
     readonly property Dial control: __control
 
     /*!
-        \since QtQuick.Extras 1.1
-
         The distance from the center of the dial to the outer edge of the dial.
 
         This property is useful for determining the size of the various
@@ -77,16 +73,12 @@ Style {
     readonly property real outerRadius: Math.min(control.height, control.width) / 2
 
     /*!
-        \since 1.2
-
         The distance in pixels from the outside of the dial (outerRadius)
         to the center of the handle.
     */
     property real handleInset: (__tickmarkRadius * 4) + ((__handleRadius * 2) * 0.55)
 
     /*!
-        \since QtQuick.Extras 1.1
-
         The interval at which tickmarks are displayed.
 
         For example, if this property is set to \c 10,
@@ -97,8 +89,6 @@ Style {
     property real tickmarkStepSize: 1
 
     /*!
-        \since QtQuick.Extras 1.1
-
         The distance in pixels from the outside of the dial (outerRadius) at
         which the outermost point of the tickmark line is drawn.
     */
@@ -106,8 +96,6 @@ Style {
 
 
     /*!
-        \since QtQuick.Extras 1.1
-
         The amount of tickmarks displayed by the dial, calculated from
         \l tickmarkStepSize and the control's
         \l {Dial::minimumValue}{minimumValue} and
@@ -118,8 +106,6 @@ Style {
     readonly property int tickmarkCount: control.__panel.circularTickmarkLabel.tickmarkCount
 
     /*!
-        \since QtQuick.Extras 1.1
-
         The amount of minor tickmarks between each tickmark.
 
         \sa tickmarkCount
@@ -127,24 +113,18 @@ Style {
     property int minorTickmarkCount: 0
 
     /*!
-        \since QtQuick.Extras 1.1
-
         The distance in pixels from the outside of the dial (outerRadius) at
         which the outermost point of the minor tickmark line is drawn.
     */
     property real minorTickmarkInset: 0
 
     /*!
-        \since QtQuick.Extras 1.1
-
         The distance in pixels from the outside of the dial (outerRadius) at
         which the center of the value marker text is drawn.
     */
     property real labelInset: 0
 
     /*!
-        \since QtQuick.Extras 1.1
-
         The interval at which tickmark labels are displayed.
 
         For example, if this property is set to \c 10 (the default),
@@ -155,8 +135,6 @@ Style {
     property real labelStepSize: tickmarkStepSize
 
     /*!
-        \since QtQuick.Extras 1.1
-
         The amount of tickmark labels displayed by the dial, calculated from
         \l labelStepSize and the control's
         \l {Dial::minimumValue}{minimumValue} and
@@ -167,8 +145,6 @@ Style {
     readonly property int labelCount: control.__panel.circularTickmarkLabel.labelCount
 
     /*!
-        \since QtQuick.Extras 1.2
-
         Returns \a value as an angle in degrees.
 
         This function is useful for custom drawing or positioning of items in
@@ -240,8 +216,6 @@ Style {
     }
 
     /*!
-        \since 1.2
-
         The handle of the dial.
 
         The handle is automatically positioned within the dial, based on the
@@ -262,8 +236,6 @@ Style {
     }
 
     /*!
-        \since QtQuick.Extras 1.1
-
         This component defines each individual tickmark. The position of each
         tickmark is already set; only the
         \l {Item::implicitWidth}{implicitWidth} and
@@ -289,8 +261,6 @@ Style {
     }
 
     /*!
-        \since QtQuick.Extras 1.1
-
         This component defines each individual minor tickmark. The position of each
         minor tickmark is already set; only the
         \l {Item::implicitWidth}{implicitWidth} and
@@ -310,8 +280,6 @@ Style {
     property Component minorTickmark
 
     /*!
-        \since QtQuick.Extras 1.1
-
         This defines the text of each tickmark label on the dial.
 
         Each instance of this component has access to the following properties:

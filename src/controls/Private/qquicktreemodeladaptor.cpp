@@ -362,7 +362,7 @@ void QQuickTreeModelAdaptor::showModelChildItems(const TreeItem &parentItem, int
 }
 
 
-void QQuickTreeModelAdaptor::expand(QModelIndex idx)
+void QQuickTreeModelAdaptor::expand(const QModelIndex &idx)
 {
     ASSERT_CONSISTENCY();
     if (!idx.isValid() || !m_model->hasChildren(idx))
@@ -380,7 +380,7 @@ void QQuickTreeModelAdaptor::expand(QModelIndex idx)
     emit expanded(idx);
 }
 
-void QQuickTreeModelAdaptor::collapse(QModelIndex idx)
+void QQuickTreeModelAdaptor::collapse(const QModelIndex &idx)
 {
     ASSERT_CONSISTENCY();
     if (!idx.isValid() || !m_model->hasChildren(idx))
@@ -398,7 +398,7 @@ void QQuickTreeModelAdaptor::collapse(QModelIndex idx)
     emit collapsed(idx);
 }
 
-bool QQuickTreeModelAdaptor::isExpanded(QModelIndex index) const
+bool QQuickTreeModelAdaptor::isExpanded(const QModelIndex &index) const
 {
     ASSERT_CONSISTENCY();
     return !index.isValid() || m_expandedItems.contains(index);

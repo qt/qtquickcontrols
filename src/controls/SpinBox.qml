@@ -208,7 +208,7 @@ Control {
     */
     property Component menu: input.editMenu.defaultMenu
 
-    style: Qt.createComponent(Settings.style + "/SpinBoxStyle.qml", spinbox)
+    style: Settings.styleComponent(Settings.style, "SpinBoxStyle.qml", spinbox)
 
     /*! \internal */
     function __increment() {
