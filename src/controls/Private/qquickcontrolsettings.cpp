@@ -239,6 +239,7 @@ bool QQuickControlSettings::resolveCurrentStylePath()
     if (pathFunc) {
         styleData.m_styleDirPath = QString::fromLocal8Bit(pathFunc());
         m_styleMap[m_name] = styleData;
+        m_path = styleData.m_styleDirPath;
     }
 
     return true;
