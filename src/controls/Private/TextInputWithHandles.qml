@@ -35,6 +35,7 @@
 ****************************************************************************/
 
 import QtQuick 2.2
+import QtQuick.Window 2.2
 import QtQuick.Controls.Private 1.0
 
 TextInput {
@@ -128,16 +129,25 @@ TextInput {
         anchors.fill: parent
     }
 
+    ScenePosListener {
+        id: listener
+        item: input
+        enabled: input.activeFocus && Qt.platform.os !== "ios" && Settings.isMobile
+    }
+
     TextHandle {
         id: selectionHandle
 
         editor: input
-        parent: control
+        z: 1000001 // DefaultWindowDecoration+1
+        parent: !input.activeFocus || Qt.platform.os === "ios" ? control : Window.contentItem // float (QTBUG-42538)
         control: input.control
         active: control.selectByMouse && Settings.isMobile
         maximum: cursorHandle.position - 1
 
-        property var mappedPos: parent.mapFromItem(editor, editor.selectionRectangle.x, editor.selectionRectangle.y)
+        // Mention scenePos in the mappedPos binding to force re-evaluation if it changes
+        property var mappedPos: listener.scenePos.x !== listener.scenePos.y !== Number.MAX_VALUE ?
+                                    editor.mapToItem(parent, editor.selectionRectangle.x, editor.selectionRectangle.y) : -1
         x: mappedPos.x
         y: mappedPos.y
 
@@ -158,12 +168,15 @@ TextInput {
         id: cursorHandle
 
         editor: input
-        parent: control
+        z: 1000001 // DefaultWindowDecoration+1
+        parent: !input.activeFocus || Qt.platform.os === "ios" ? control : Window.contentItem // float (QTBUG-42538)
         control: input.control
         active: control.selectByMouse && Settings.isMobile
         minimum: input.hasSelection ? selectionHandle.position + 1 : -1
 
-        property var mappedPos: parent.mapFromItem(editor, editor.cursorRectangle.x, editor.cursorRectangle.y)
+        // Mention scenePos in the mappedPos binding to force re-evaluation if it changes
+        property var mappedPos: listener.scenePos.x !== listener.scenePos.y !== Number.MAX_VALUE ?
+                                    editor.mapToItem(parent, editor.cursorRectangle.x, editor.cursorRectangle.y) : -1
         x: mappedPos.x
         y: mappedPos.y
 

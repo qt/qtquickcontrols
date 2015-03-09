@@ -35,6 +35,7 @@
 ****************************************************************************/
 
 import QtQuick 2.2
+import QtQuick.Window 2.2
 import QtQuick.Controls 1.2
 import QtQuick.Controls.Private 1.0
 /*!
@@ -874,25 +875,31 @@ ScrollView {
                 anchors.fill: parent
             }
 
+            ScenePosListener {
+                id: listener
+                item: edit
+                enabled: edit.activeFocus && Qt.platform.os !== "ios" && Settings.isMobile
+            }
+
             TextHandle {
                 id: selectionHandle
 
                 editor: edit
                 control: area
-                z: 1 // above scrollbars
-                parent:  Qt.platform.os === "ios"  ? editor : __scroller // no clip
+                z: 1000001 // DefaultWindowDecoration+1
+                parent: !edit.activeFocus || Qt.platform.os === "ios" ? editor : Window.contentItem // float (QTBUG-42538)
                 active: area.selectByMouse && Settings.isMobile
                 delegate: __style.__selectionHandle
                 maximum: cursorHandle.position - 1
 
-                // Mention contentX and contentY in the mappedPos binding to force re-evaluation if they change
-                property var mappedPos: flickableItem.contentX !== flickableItem.contentY !== Number.MAX_VALUE ?
-                                            parent.mapFromItem(editor, editor.selectionRectangle.x, editor.selectionRectangle.y) : -1
+                // Mention scenePos, contentX and contentY in the mappedPos binding to force re-evaluation if they change
+                property var mappedPos: listener.scenePos.x !== listener.scenePos.y !== flickableItem.contentX !== flickableItem.contentY !== Number.MAX_VALUE ?
+                                            editor.mapToItem(parent, editor.selectionRectangle.x, editor.selectionRectangle.y) : -1
                 x: mappedPos.x
                 y: mappedPos.y
 
                 property var posInViewport: flickableItem.contentX !== flickableItem.contentY !== Number.MAX_VALUE ?
-                                                parent.mapToItem(viewport, handleX, handleY) : -1
+                                                viewport.mapFromItem(parent, handleX, handleY) : -1
                 visible: pressed || (edit.hasSelection
                                      && posInViewport.y + handleHeight >= -1
                                      && posInViewport.y <= viewport.height + 1
@@ -915,20 +922,20 @@ ScrollView {
 
                 editor: edit
                 control: area
-                z: 1 // above scrollbars
-                parent:  Qt.platform.os === "ios"  ? editor : __scroller // no clip
+                z: 1000001 // DefaultWindowDecoration+1
+                parent: !edit.activeFocus || Qt.platform.os === "ios" ? editor : Window.contentItem // float (QTBUG-42538)
                 active: area.selectByMouse && Settings.isMobile
                 delegate: __style.__cursorHandle
                 minimum: edit.hasSelection ? selectionHandle.position + 1 : -1
 
-                // Mention contentX and contentY in the mappedPos binding to force re-evaluation if they change
-                property var mappedPos: flickableItem.contentX !== flickableItem.contentY !== Number.MAX_VALUE ?
-                                            parent.mapFromItem(editor, editor.cursorRectangle.x, editor.cursorRectangle.y) : -1
+                // Mention scenePos, contentX and contentY in the mappedPos binding to force re-evaluation if they change
+                property var mappedPos: listener.scenePos.x !== listener.scenePos.y !== flickableItem.contentX !== flickableItem.contentY !== Number.MAX_VALUE ?
+                                            editor.mapToItem(parent, editor.cursorRectangle.x, editor.cursorRectangle.y) : -1
                 x: mappedPos.x
                 y: mappedPos.y
 
                 property var posInViewport: flickableItem.contentX !== flickableItem.contentY !== Number.MAX_VALUE ?
-                                                parent.mapToItem(viewport, handleX, handleY) : -1
+                                                viewport.mapFromItem(parent, handleX, handleY) : -1
                 visible: pressed || ((edit.cursorVisible || edit.hasSelection)
                                      && posInViewport.y + handleHeight >= -1
                                      && posInViewport.y <= viewport.height + 1
