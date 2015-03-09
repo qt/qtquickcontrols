@@ -60,7 +60,7 @@ TestCase {
         rootObject.forceActiveFocus();
     }
 
-    function cleanup() {
+    function cleanupTestCase() {
         if (rootObject !== null)
             rootObject.destroy()
     }
