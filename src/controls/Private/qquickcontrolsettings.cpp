@@ -232,18 +232,15 @@ bool QQuickControlSettings::resolveCurrentStylePath()
     }
 
     // Check for the existence of this first, as we don't want to init if this doesn't exist.
-    StylePathFunc pathFunc = (StylePathFunc) lib.resolve("qt_quick_controls_style_path");
-    if (!pathFunc) {
-        qWarning() << "WARNING: Style" << m_name << "is a plugin but does not expose qt_quick_controls_style_path";
-        return false;
-    }
-
     StyleInitFunc initFunc = (StyleInitFunc) lib.resolve("qt_quick_controls_style_init");
     if (initFunc)
         initFunc();
+    StylePathFunc pathFunc = (StylePathFunc) lib.resolve("qt_quick_controls_style_path");
+    if (pathFunc) {
+        styleData.m_styleDirPath = QString::fromLocal8Bit(pathFunc());
+        m_styleMap[m_name] = styleData;
+    }
 
-    styleData.m_styleDirPath = QString::fromLocal8Bit(pathFunc());
-    m_styleMap[m_name] = styleData;
     return true;
 }
 
@@ -270,8 +267,7 @@ void QQuickControlSettings::findStyle(QQmlEngine *engine, const QString &styleNa
 
     // If there's no plugin for the style, then the style's files are
     // contained in this directory (which contains a qmldir file instead).
-    if (styleData.m_stylePluginPath.isEmpty())
-        styleData.m_styleDirPath = dir.absolutePath();
+    styleData.m_styleDirPath = dir.absolutePath();
 
     m_styleMap[styleName] = styleData;
 }
