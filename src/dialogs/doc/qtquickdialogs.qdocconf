@@ -22,7 +22,7 @@ qhp.QtQuickDialogs.subprojects.qtquickdialogsqmltypes.indexTitle = Qt Quick Dial
 qhp.QtQuickDialogs.subprojects.qtquickdialogsqmltypes.selectors = qmlclass
 qhp.QtQuickDialogs.subprojects.qtquickdialogsqmltypes.sortPages = true
 
-depends = qtqml qtquick qtgui qtwidgets qtdoc
+depends = qtqml qtquick qtgui qtwidgets qtdoc qtcore
 
 exampledirs += ../../../examples/quick/dialogs
 
