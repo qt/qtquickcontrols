@@ -49,7 +49,7 @@ import QtQuick.Extras.Private.CppUtils 1.0
     \brief Provides custom styling for ToggleButton.
 
     You can create a custom toggle button by replacing the same delegates that
-    \l {QtQuick.Controls.Styles::ButtonStyle}{ButtonStyle} provides.
+    \l {ButtonStyle} provides.
 */
 
 CircularButtonStyle {

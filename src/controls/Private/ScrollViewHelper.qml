@@ -92,6 +92,8 @@ Item {
         target: flickableItem
         onContentWidthChanged: doLayout()
         onContentHeightChanged: doLayout()
+        onOriginXChanged: doLayout()
+        onOriginYChanged: doLayout()
     }
 
     Connections {

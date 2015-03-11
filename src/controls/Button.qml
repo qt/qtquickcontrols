@@ -61,7 +61,7 @@ import QtQuick.Controls.Private 1.0
     Button is similar to the QPushButton widget.
 
     You can create a custom appearance for a Button by
-    assigning a \l {QtQuick.Controls.Styles::ButtonStyle}{ButtonStyle}.
+    assigning a \l {ButtonStyle}.
  */
 BasicButton {
     id: button

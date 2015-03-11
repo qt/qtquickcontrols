@@ -50,10 +50,10 @@ import QtQuick.Controls.Private 1.0
     ToolButton is functionally similar to \l {QtQuick.Controls::}{Button}, but
     can provide a look that is more suitable within a \l ToolBar.
 
-    \qml
+    \code
     ApplicationWindow {
         ...
-        toolBar:ToolBar {
+        toolBar: ToolBar {
             RowLayout {
                 ToolButton {
                     iconSource: "new.png"
@@ -72,10 +72,10 @@ import QtQuick.Controls.Private 1.0
             }
         }
     }
-    \endqml
+    \endcode
 
     You can create a custom appearance for a ToolButton by
-    assigning a \l {QtQuick.Controls.Styles::ButtonStyle}{ButtonStyle}.
+    assigning a \l {ButtonStyle}.
 */
 
 Button {

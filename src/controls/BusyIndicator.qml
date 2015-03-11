@@ -59,7 +59,7 @@ import QtQuick.Controls.Private 1.0
     \endqml
 
     You can create a custom appearance for a Busy Indicator by
-    assigning a \l {QtQuick.Controls.Styles::BusyIndicatorStyle}{BusyIndicatorStyle}.
+    assigning a \l {BusyIndicatorStyle}.
  */
 Control {
     id: indicator

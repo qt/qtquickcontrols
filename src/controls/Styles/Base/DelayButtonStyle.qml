@@ -50,7 +50,7 @@ import QtQuick.Extras.Private.CppUtils 1.1
     You can create a custom DelayButton by replacing the following delegates:
     \list
         \li \l foreground
-        \li \l {QtQuick.Controls.Styles::ButtonStyle::label}{label}
+        \li \l {ButtonStyle::}{label}
     \endlist
 */
 

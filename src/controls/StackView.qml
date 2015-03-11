@@ -294,7 +294,7 @@ import QtQuick.Controls.Private 1.0
 
     When the transition starts, the StackView will search for a transition that
     matches the operation executed. There are three transitions to choose
-    from: pushTransition, popTransition, and replaceTransition. Each implements how
+    from: \l {StackViewDelegate::}{pushTransition}, \l {StackViewDelegate::}{popTransition}, and \l {StackViewDelegate::}{replaceTransition}. Each implements how
     enterItem should animate in, and exitItem out. The transitions are
     collected inside a StackViewDelegate object assigned to
     \l {StackView::delegate}{delegate}. By default, popTransition and
@@ -484,7 +484,7 @@ FocusScope {
     */
     readonly property alias currentItem: root.__currentItem
 
-    /*! The first \l item that should be shown when the StackView is created.
+    /*! The first item that should be shown when the StackView is created.
         \a initialItem can take same value as the first argument to \l{StackView::push()}
         {StackView.push()}. Note that this is just a convenience for writing
         \c{Component.onCompleted: stackView.push(myInitialItem)}
@@ -506,7 +506,7 @@ FocusScope {
 
     /*! The transitions to use when pushing or popping items.
         For better understanding on how to apply custom transitions, read \l{Transitions}.
-        \sa {Stack::transitions}{Stack.transitions} */
+        \sa {Transitions} */
     property StackViewDelegate delegate: StackViewSlideDelegate {}
 
     /*! Pushes an item onto the stack. The function takes a property list as argument, which

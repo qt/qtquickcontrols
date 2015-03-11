@@ -62,7 +62,7 @@ import QtQuick.Controls.Private 1.0
     \endcode
 
     You can create a custom appearance for a ProgressBar by
-    assigning a \l {QtQuick.Controls.Styles::ProgressBarStyle}{ProgressBarStyle}.
+    assigning a \l {ProgressBarStyle}.
 */
 
 Control {

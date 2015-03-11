@@ -96,7 +96,7 @@ QT_BEGIN_NAMESPACE
 
     The QML implementation has a sidebar containing shortcuts to common
     platform-specific locations, and user-modifiable shortcuts. It uses
-    application-specific \l {Qt.labs.settings::Settings} {settings} to store
+    application-specific \l {Qt.labs.settings}{settings} to store
     these bookmarks, as well as other user-modifiable state, such as whether or
     not the sidebar is shown, the positions of the splitters, and the dialog
     size. The settings are stored in a section called \c QQControlsFileDialog
@@ -109,7 +109,7 @@ QT_BEGIN_NAMESPACE
     \l {QCoreApplication::organizationName}{organization} and
     \l {QCoreApplication::organizationDomain}{domain} in order to control
     the location of the application's settings. If you use
-    \l {Qt.labs.settings::Settings} {Settings} objects in other parts of an
+    \l {Qt.labs.settings}{Settings} objects in other parts of an
     application, they will be stored in other sections of the same file.
 
     \l QFileDialog stores its settings globally instead of per-application.
@@ -353,7 +353,7 @@ QPlatformFileDialogHelper *QQuickPlatformFileDialog::helper()
     This property holds whether the sidebar in the dialog containing shortcuts
     and bookmarks is visible. By default it depends on the setting stored in
     the \c QQControlsFileDialog section of the application's
-    \l {Qt.labs.settings::Settings} {Settings}.
+    \l {Qt.labs.settings}{Settings}.
 
     \since 5.4
 */

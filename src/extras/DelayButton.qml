@@ -67,7 +67,7 @@ import QtQuick.Controls.Private 1.0
     A DelayButton after being activated
 
     You can create a custom appearance for a DelayButton by assigning a
-    \l {QtQuick.Controls.Styles::}{DelayButtonStyle}.
+    \l {DelayButtonStyle}.
 */
 
 Button {

@@ -82,7 +82,7 @@
     \list A
         \li Change the color of the tickmarks depending on \c styleData.value
         \li Add an image to the background
-        \li Draw it with \l {QtQuick::}{Canvas}
+        \li Draw it with \l [QtQuick]{Canvas}
     \endlist
 
     We'll choose options 1 and 3, as they are more flexible than using an
@@ -126,7 +126,7 @@
     \snippet circulargauge-background-range.qml background
 
     We define a function to convert degrees to radians, which are the
-    units used by \l {QtQuick::}{Canvas}.
+    units used by \l [QtQuick]{Canvas}.
 
     Next, we do the drawing of the range using Canvas. We draw an arc between
     \c 80 and \c 100, using the

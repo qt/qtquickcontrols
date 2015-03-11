@@ -122,13 +122,13 @@ import QtQuick.Layouts 1.0
     \section1 Limitations
 
     For technical reasons, the model count must be equal to or greater than
-    \l {QtQuick.Controls.Styles::TumblerStyle}{visibleItemCount}
+    \l {TumblerStyle::}{visibleItemCount}
     plus one. The
-    \l {QtQuick.Controls.Styles::TumblerStyle::}{visibleItemCount}
+    \l {TumblerStyle::}{visibleItemCount}
     must also be an odd number.
 
     You can create a custom appearance for a Tumbler by assigning a
-    \l {QtQuick.Controls.Styles::}{TumblerStyle}. To style
+    \l {TumblerStyle}. To style
     individual columns, use the \l {TumblerColumn::delegate}{delegate} and
     \l {TumblerColumn::highlight}{highlight} properties of TumblerColumn.
 */

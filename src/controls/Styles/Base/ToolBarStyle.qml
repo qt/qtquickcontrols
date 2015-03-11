@@ -116,6 +116,7 @@ Style {
     */
     property Component menuButton: null
 
+    /*! This defines the panel of the tool bar. */
     property Component panel: Loader {
         sourceComponent: background
     }

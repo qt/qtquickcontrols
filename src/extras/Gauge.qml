@@ -70,7 +70,7 @@ import QtQuick.Extras.Private 1.0
     \endcode
 
     You can create a custom appearance for a Gauge by assigning a
-    \l {QtQuick.Controls.Styles::}{GaugeStyle}.
+    \l {GaugeStyle}.
 */
 
 Control {
@@ -174,7 +174,7 @@ Control {
     /*!
         This property accepts a function that formats the given \a value for
         display in
-        \l {QtQuick.Controls.Styles::GaugeStyle}{tickmarkLabel}.
+        \l {GaugeStyle::}{tickmarkLabel}.
 
         For example, to provide a custom format that displays all values with 3
         decimal places:

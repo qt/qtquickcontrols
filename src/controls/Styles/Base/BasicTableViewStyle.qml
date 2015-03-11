@@ -47,7 +47,7 @@ import QtQuick.Controls.Private 1.0
     \ingroup viewsstyling
     \brief Provides custom styling for TableView
 
-    \note This class derives from \l {QtQuick.Controls.Styles::}{ScrollViewStyle}
+    \note This class derives from \l {ScrollViewStyle}
     and supports all of the properties defined there.
 */
 ScrollViewStyle {
@@ -74,7 +74,7 @@ ScrollViewStyle {
     padding.top: control.headerVisible ? 0 : 1
 
     /*! \qmlproperty Component BasicTableViewStyle::headerDelegate
-    Delegate for header. This delegate is described in \l {TableView::headerDelegate}
+    Delegate for header. This delegate is described in \l {TreeView}{TreeView.headerDelegate} and \l {TableView}{TableView.headerDelegate}
     */
     property Component headerDelegate: BorderImage {
         height: textItem.implicitHeight * 1.2
@@ -105,7 +105,7 @@ ScrollViewStyle {
     }
 
     /*! \qmlproperty Component BasicTableViewStyle::rowDelegate
-    Delegate for row. This delegate is described in \l {TableView::rowDelegate}
+    Delegate for row. This delegate is described in \l {TreeView}{TreeView.rowDelegate} and \l {TableView}{TableView.rowDelegate}
     */
     property Component rowDelegate: Rectangle {
         height: Math.round(TextSingleton.implicitHeight * 1.2)
@@ -115,7 +115,7 @@ ScrollViewStyle {
     }
 
     /*! \qmlproperty Component BasicTableViewStyle::itemDelegate
-    Delegate for item. This delegate is described in \l {TableView::itemDelegate}
+    Delegate for item. This delegate is described in \l {TreeView}{TreeView.itemDelegate} and \l {TableView}{TableView.itemDelegate}
     */
     property Component itemDelegate: Item {
         height: Math.max(16, label.implicitHeight)

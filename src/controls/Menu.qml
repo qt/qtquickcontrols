@@ -127,6 +127,13 @@ MenuPrivate {
     /*! \internal */
     property Component __selfComponent: null
 
+    /*! \qmlproperty Component Menu::style
+        \since QtQuick.Controls.Styles 1.2
+
+        The style Component for this control.
+        \sa {MenuStyle}
+
+    */
     property Component style
 
     Component.onCompleted: {

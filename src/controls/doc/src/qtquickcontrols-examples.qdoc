@@ -106,9 +106,9 @@
 
     QML namespace import:
 
-    \qml
+    \code
     import org.qtproject.example 1.0
-    \endqml
+    \endcode
 
     For more information about registering C++ classses as QML types, see
     \l {Defining QML Types from C++}.
@@ -147,9 +147,9 @@
 
     QML namespace import:
 
-    \qml
+    \code
     import org.qtproject.example 1.0
-    \endqml
+    \endcode
 
     For more information about registering C++ classses as QML types, see
     \l {Defining QML Types from C++}.
@@ -249,7 +249,7 @@
     The stack is used by invoking its navigation methods. To load the first item
     in the stack view, we assign it to \c initialItem:
 
-    \printuntil \printuntil /^\}/
+    \printuntil /^\}/
 
     We use a ListView type to display a list of the items provided by
     \c pageModel. The \c AndroidDelegate custom type defines each item
@@ -443,7 +443,7 @@
     \skipto SqlEventModel::SqlEventModel()
     \printto QList
     \skipto void SqlEventModel
-    \printuntil /\^}
+    \printuntil /^\}/
 
     In \e main.qml, the SqlEventModel custom type is used to get the list of
     events to mark the dates on the calendar.

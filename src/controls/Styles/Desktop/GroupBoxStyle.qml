@@ -69,5 +69,6 @@ Style {
         properties: { "checkable" : control.checkable , "sunken" : !control.flat}
         textureHeight: 128
         border {top: 32 ; bottom: 8}
+        Accessible.role: Accessible.Grouping
     }
 }

@@ -81,7 +81,12 @@ FocusScope {
     implicitHeight: container.topMargin + container.bottomMargin
                     + Math.max(container.layoutHeight, __panel ? __panel.implicitHeight : 0)
 
-    /*! \internal */
+    /*! \qmlproperty Component StatusBar::style
+
+        The style Component for this control.
+        \sa {StatusBarStyle}
+
+    */
     property Component style: Settings.styleComponent(Settings.style, "StatusBarStyle.qml", statusbar)
 
     /*! \internal */
