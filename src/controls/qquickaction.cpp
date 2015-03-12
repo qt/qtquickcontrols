@@ -50,7 +50,7 @@ QT_BEGIN_NAMESPACE
     \inqmlmodule QtQuick.Controls
     \brief Action provides an abstract user interface action that can be bound to items
 
-    \image menubar.png
+    \image menubar-action.png
 
     In applications many common commands can be invoked via menus, toolbar buttons, and keyboard
     shortcuts. Since the user expects each command to be performed in the same way, regardless of
@@ -65,7 +65,7 @@ QT_BEGIN_NAMESPACE
     \quotefromfile gallery/main.qml
     \dots
     \skipto Action
-    \printto SystemPalette
+    \printto TabView
     \dots
 */
 
