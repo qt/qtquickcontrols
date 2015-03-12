@@ -377,7 +377,7 @@ void QQuickMenuText::updateIcon()
     The corresponding handler is \c onTriggered.
 */
 
-/*! \qmlmethod MenuItem::trigger()
+/*! \qmlmethod void MenuItem::trigger()
 
     Manually trigger a menu item. Will also trigger the item's bound action.
 

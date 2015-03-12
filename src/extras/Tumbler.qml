@@ -136,6 +136,11 @@ import QtQuick.Layouts 1.0
 Control {
     id: tumbler
 
+    /*
+        \qmlproperty Component Tumbler::style
+
+        The style Component for this control.
+    */
     style: Settings.styleComponent(Settings.style, "TumblerStyle.qml", tumbler)
 
     ListModel {
@@ -160,6 +165,7 @@ Control {
     }
 
     /*!
+        \qmlmethod int Tumbler::currentIndexAt(int columnIndex)
         Returns the current index of the column at \a columnIndex, or \c null
         if the \a index is invalid.
     */
@@ -171,6 +177,7 @@ Control {
     }
 
     /*!
+        \qmlmethod void Tumbler::setCurrentIndexAt(int columnIndex, int itemIndex)
         Sets the current index of the column at \a columnIndex to \a itemIndex.
 
         Does nothing if \a columnIndex or \a itemIndex are invalid.
@@ -190,7 +197,8 @@ Control {
     }
 
     /*!
-        Returns the column at \a columnIndex or \c null if the \a index is
+        \qmlmethod TumblerColumn Tumbler::getColumn(int columnIndex)
+        Returns the column at \a columnIndex or \c null if the index is
         invalid.
     */
     function getColumn(columnIndex) {
@@ -201,10 +209,11 @@ Control {
     }
 
     /*!
+        \qmlmethod TumblerColumn Tumbler::addColumn(TumblerColumn column)
         Adds a \a column and returns the added column.
 
         The \a column argument can be an instance of TumblerColumn,
-        or a Component. The component has to contain a TumblerColumn.
+        or a \l Component. The component has to contain a TumblerColumn.
         Otherwise  \c null is returned.
     */
     function addColumn(column) {
@@ -212,10 +221,11 @@ Control {
     }
 
     /*!
+        \qmlmethod TumblerColumn Tumbler::insertColumn(int index, TumblerColumn column)
         Inserts a \a column at the given \a index and returns the inserted column.
 
         The \a column argument can be an instance of TumblerColumn,
-        or a Component. The component has to contain a TumblerColumn.
+        or a \l Component. The component has to contain a TumblerColumn.
         Otherwise, \c null is returned.
     */
     function insertColumn(index, column) {

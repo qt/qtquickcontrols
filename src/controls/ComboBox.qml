@@ -166,7 +166,8 @@ Control {
     */
     readonly property alias count: popupItems.count
 
-    /*! Returns the text for a given \a index.
+    /*! \qmlmethod string ComboBox::textAt(int index)
+        Returns the text for a given \a index.
         If an invalid index is provided, \c null is returned
         \since QtQuick.Controls 1.1
     */
@@ -176,7 +177,8 @@ Control {
         return popupItems.objectAt(index).text;
     }
 
-    /*! Finds and returns the index of a given \a text
+    /*! \qmlmethod int ComboBox::find(string text)
+        Finds and returns the index of a given \a text
         If no match is found, \c -1 is returned. The search is case sensitive.
         \since QtQuick.Controls 1.1
     */
@@ -298,7 +300,7 @@ Control {
     signal activated(int index)
 
     /*!
-        \qmlmethod ComboBox::selectAll()
+        \qmlmethod void ComboBox::selectAll()
         \since QtQuick.Controls 1.1
 
         Causes all \l editText to be selected.

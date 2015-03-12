@@ -117,7 +117,7 @@ import QtQuick.Controls.Private 1.0
     \li \l{pop()}{pop(A)} => [A] - "pop" transition between C and A
     \endlist
 
-    \note Note that when the stack is empty, a push() will not perform a
+    \note When the stack is empty, a push() will not perform a
     transition animation because there is nothing to transition from (typically during
     application start-up). A pop() on a stack with depth 1 or 0 is a no-operation.
     If removing all items from the stack is needed, a separate function clear() is
@@ -217,7 +217,7 @@ import QtQuick.Controls.Private 1.0
     \endcode
 
 
-    \note Note that if an item is declared inside another item, and if that parent gets destroyed,
+    \note If an item is declared inside another item, and if that parent gets destroyed,
     (even if a component was used), that child item will also be destroyed.
     This follows normal Qt parent-child destruction rules, but sometimes comes as a surprise
     for developers.
@@ -509,7 +509,10 @@ FocusScope {
         \sa {Transitions} */
     property StackViewDelegate delegate: StackViewSlideDelegate {}
 
-    /*! Pushes an item onto the stack. The function takes a property list as argument, which
+    /*! \qmlmethod Item StackView::push(Item item)
+        Pushes an item onto the stack.
+
+        The function can also take a property list as argument - \c {Item StackView::push(jsobject dict)}, which
         should contain one or more of the following properties:
         \list
         \li \c item: this property is required, and holds the item you want to push.
@@ -545,7 +548,7 @@ FocusScope {
         \li stackView.push([{item:anitem, immediate:true}, {item:aURL}])
         \endlist
 
-        \note Note: if the only argument needed is "item", you can apply the following short-
+        \note If the only argument needed is "item", you can apply the following short-
         hand notation: \c{stackView.push(anItem)}.
 
         Returns the item that became current.
@@ -599,7 +602,10 @@ FocusScope {
         return __currentItem
     }
 
-    /*! Pops one or more items off the stack. The function takes a property list as argument
+    /*! \qmlmethod Item StackView::pop(Item item = undefined)
+        Pops one or more items off the stack.
+
+        The function can also take a property list as argument - \c {Item StackView::pop(jsobject dict)},
         which can contain one or more of the following properties:
         \list
         \li \c item: if specified, all items down to (but not including) \a item will be
@@ -617,7 +623,7 @@ FocusScope {
         \li stackView.pop(null)
         \endlist
 
-        \note Note: If the only argument needed is "item", you can apply the following short-
+        \note If the only argument needed is "item", you can apply the following short-
         hand notation: \c{stackView.pop(anItem)}.
 
         Returns the item that was popped off
@@ -671,7 +677,8 @@ FocusScope {
         return outElement.item;
     }
 
-    /*! Remove all items from the stack. No animations will be applied. */
+    /*! \qmlmethod void StackView::clear()
+        Remove all items from the stack. No animations will be applied. */
     function clear() {
         if (__recursionGuard(true))
             return
@@ -687,7 +694,8 @@ FocusScope {
         __recursionGuard(false)
     }
 
-    /*! Search for a specific item inside the stack. \a func will
+    /*! \qmlmethod Item StackView::find(function, bool onlySearchLoadedItems = false)
+        Search for a specific item inside the stack. \a func will
         be called for each item in the stack (with the item as argument)
         until the function returns true. Return value will be the item found. For
         example:
@@ -707,7 +715,8 @@ FocusScope {
         return null;
     }
 
-    /*! Returns the item at position \a index in
+    /*! \qmlmethod Item StackView::get(int index, bool dontLoad = false)
+        Returns the item at position \a index in
         the stack. If \a dontLoad is true, the
         item will not be forced to load (and \c null
         will be returned if not yet loaded) */
@@ -726,7 +735,8 @@ FocusScope {
         }
     }
 
-    /*! Immediately completes any ongoing transition.
+    /*! \qmlmethod void StackView::completeTransition()
+        Immediately completes any ongoing transition.
         /sa Animation.complete
       */
     function completeTransition()

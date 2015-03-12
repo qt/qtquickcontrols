@@ -466,7 +466,7 @@ Control {
     signal editingFinished()
 
     /*!
-        \qmlmethod TextField::copy()
+        \qmlmethod void TextField::copy()
 
         Copies the currently selected text to the system clipboard.
     */
@@ -475,7 +475,7 @@ Control {
     }
 
     /*!
-        \qmlmethod TextField::cut()
+        \qmlmethod void TextField::cut()
 
         Moves the currently selected text to the system clipboard.
     */
@@ -484,7 +484,7 @@ Control {
     }
 
     /*!
-        \qmlmethod TextField::deselect()
+        \qmlmethod void TextField::deselect()
 
         Removes active text selection.
     */
@@ -503,7 +503,7 @@ Control {
     }
 
     /*!
-        \qmlmethod TextField::insert(int position, string text)
+        \qmlmethod void TextField::insert(int position, string text)
 
         Inserts \a text into the TextField at \a position.
     */
@@ -522,7 +522,7 @@ Control {
     }
 
     /*!
-        \qmlmethod TextField::paste()
+        \qmlmethod void TextField::paste()
 
         Replaces the currently selected text by the contents of the system
         clipboard.
@@ -532,7 +532,7 @@ Control {
     }
 
     /*!
-        \qmlmethod TextField::redo()
+        \qmlmethod void TextField::redo()
 
         Performs the last operation if redo is \l {canRedo}{available}.
     */
@@ -541,7 +541,7 @@ Control {
     }
 
     /*!
-        \qmlmethod TextField::remove(int start, int end)
+        \qmlmethod void TextField::remove(int start, int end)
         \since QtQuick.Controls 1.4
 
         Removes the section of text that is between the start and end positions.
@@ -551,7 +551,7 @@ Control {
     }
 
     /*!
-        \qmlmethod TextField::select(int start, int end)
+        \qmlmethod void TextField::select(int start, int end)
 
         Causes the text from \a start to \a end to be selected.
 
@@ -568,7 +568,7 @@ Control {
     }
 
     /*!
-        \qmlmethod TextField::selectAll()
+        \qmlmethod void TextField::selectAll()
 
         Causes all text to be selected.
     */
@@ -577,7 +577,7 @@ Control {
     }
 
     /*!
-        \qmlmethod TextField::selectWord()
+        \qmlmethod void TextField::selectWord()
 
         Causes the word closest to the current cursor position to be selected.
     */
@@ -586,7 +586,7 @@ Control {
     }
 
     /*!
-        \qmlmethod TextField::undo()
+        \qmlmethod void TextField::undo()
 
         Reverts the last operation if undo is \l {canUndo}{available}. undo()
         deselects any current selection and updates the selection start to the

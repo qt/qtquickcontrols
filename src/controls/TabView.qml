@@ -115,14 +115,16 @@ FocusScope {
     /*! \internal */
     default property alias data: stack.data
 
-    /*! Adds a new tab page with title with and optional Component.
+    /*! \qmlmethod Tab TabView::addTab(string title, Component component)
+        Adds a new tab page with title with and optional Component.
         Returns the newly added tab.
     */
     function addTab(title, component) {
         return insertTab(__tabs.count, title, component)
     }
 
-    /*! Inserts a new tab with title at index, with an optional Component.
+    /*! \qmlmethod Tab TabView::insertTab(int index, string title, Component component)
+        Inserts a new tab with title at index, with an optional Component.
         Returns the newly added tab.
     */
     function insertTab(index, title, component) {
@@ -139,7 +141,8 @@ FocusScope {
         return tab
     }
 
-    /*! Removes and destroys a tab at the given \a index. */
+    /*! \qmlmethod void TabView::removeTab(int index)
+        Removes and destroys a tab at the given \a index. */
     function removeTab(index) {
         var tab = __tabs.get(index).tab
         __willRemoveIndex(index)
@@ -148,7 +151,8 @@ FocusScope {
         __setOpacities()
     }
 
-    /*! Moves a tab \a from index \a to another. */
+    /*! \qmlmethod void TabView::moveTab(int from, int to)
+        Moves a tab \a from index \a to another. */
     function moveTab(from, to) {
         __tabs.move(from, to, 1)
 
@@ -166,7 +170,8 @@ FocusScope {
         }
     }
 
-    /*! Returns the \l Tab item at \a index. */
+    /*! \qmlmethod Tab TabView::getTab(int index)
+        Returns the \l Tab item at \a index. */
     function getTab(index) {
         var data = __tabs.get(index)
         return data && data.tab

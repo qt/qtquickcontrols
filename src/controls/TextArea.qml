@@ -443,7 +443,7 @@ ScrollView {
     property Component menu: editMenu.defaultMenu
 
     /*!
-        \qmlmethod TextArea::append(string)
+        \qmlmethod void TextArea::append(string text)
 
         Appends \a string as a new line to the end of the text area.
     */
@@ -453,7 +453,7 @@ ScrollView {
     }
 
     /*!
-        \qmlmethod TextArea::copy()
+        \qmlmethod void TextArea::copy()
 
         Copies the currently selected text to the system clipboard.
     */
@@ -462,7 +462,7 @@ ScrollView {
     }
 
     /*!
-        \qmlmethod TextArea::cut()
+        \qmlmethod void TextArea::cut()
 
         Moves the currently selected text to the system clipboard.
     */
@@ -471,7 +471,7 @@ ScrollView {
     }
 
     /*!
-        \qmlmethod TextArea::deselect()
+        \qmlmethod void TextArea::deselect()
 
         Removes active text selection.
     */
@@ -502,7 +502,7 @@ ScrollView {
     }
 
     /*!
-        \qmlmethod TextArea::insert(int position, string text)
+        \qmlmethod void TextArea::insert(int position, string text)
 
         Inserts \a text into the TextArea at position.
     */
@@ -511,7 +511,7 @@ ScrollView {
     }
 
     /*!
-        \qmlmethod TextArea::isRightToLeft(int start, int end)
+        \qmlmethod bool TextArea::isRightToLeft(int start, int end)
 
         Returns true if the natural reading direction of the editor text
         found between positions \a start and \a end is right to left.
@@ -521,7 +521,7 @@ ScrollView {
     }
 
     /*!
-        \qmlmethod TextArea::moveCursorSelection(int position, SelectionMode mode = TextEdit.SelectCharacters)
+        \qmlmethod void TextArea::moveCursorSelection(int position, SelectionMode mode = TextEdit.SelectCharacters)
 
         Moves the cursor to \a position and updates the selection according to the optional \a mode
         parameter. (To only move the cursor, set the \l cursorPosition property.)
@@ -562,7 +562,7 @@ ScrollView {
     }
 
     /*!
-        \qmlmethod TextArea::paste()
+        \qmlmethod void TextArea::paste()
 
         Replaces the currently selected text by the contents of the system clipboard.
     */
@@ -594,7 +594,7 @@ ScrollView {
     }
 
     /*!
-        \qmlmethod TextArea::redo()
+        \qmlmethod void TextArea::redo()
 
         Redoes the last operation if redo is \l {canRedo}{available}.
     */
@@ -612,7 +612,7 @@ ScrollView {
     }
 
     /*!
-        \qmlmethod TextArea::select(int start, int end)
+        \qmlmethod void TextArea::select(int start, int end)
 
         Causes the text from \a start to \a end to be selected.
 
@@ -629,7 +629,7 @@ ScrollView {
     }
 
     /*!
-        \qmlmethod TextArea::selectAll()
+        \qmlmethod void TextArea::selectAll()
 
         Causes all text to be selected.
     */
@@ -638,7 +638,7 @@ ScrollView {
     }
 
     /*!
-        \qmlmethod TextArea::selectWord()
+        \qmlmethod void TextArea::selectWord()
 
         Causes the word closest to the current cursor position to be selected.
     */
@@ -647,7 +647,7 @@ ScrollView {
     }
 
     /*!
-        \qmlmethod TextArea::undo()
+        \qmlmethod void TextArea::undo()
 
         Undoes the last operation if undo is \l {canUndo}{available}. Deselects any
         current selection, and updates the selection start to the current cursor

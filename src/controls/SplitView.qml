@@ -177,7 +177,8 @@ Item {
     onHeightChanged: d.updateLayout()
     onOrientationChanged: d.changeOrientation()
 
-    /*! Add an item to the end of the view.
+    /*! \qmlmethod void SplitView::addItem(Item item)
+        Add an item to the end of the view.
         \since QtQuick.Controls 1.3 */
     function addItem(item) {
         d.updateLayoutGuard = true
@@ -187,7 +188,8 @@ Item {
         d.updateFillIndex()
     }
 
-    /*! Remove \a item from the view.
+    /*! \qmlmethod void SplitView::removeItem(Item item)
+        Remove \a item from the view.
         \since QtQuick.Controls 1.4 */
     function removeItem(item) {
         d.updateLayoutGuard = true

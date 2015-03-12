@@ -134,7 +134,8 @@ QtObject {
 
     Accessible.role: Accessible.ColumnHeader
 
-    /*! Resizes the column so that the implicitWidth of the contents on every row will fit.
+    /*! \qmlmethod void TableViewColumn::resizeToContents()
+        Resizes the column so that the implicitWidth of the contents on every row will fit.
         \since QtQuick.Controls 1.2 */
     function resizeToContents() {
         var minWidth = 0

@@ -238,7 +238,7 @@ Style {
     */
     readonly property int labelCount: control.__panel.circularTickmarkLabel.labelCount
 
-    /*!
+    /*! \qmlmethod real CircularGaugeStyle::valueToAngle(real value)
         Returns \a value as an angle in degrees.
 
         This function is useful for custom drawing or positioning of items in
