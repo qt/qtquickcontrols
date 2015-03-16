@@ -64,6 +64,67 @@
 */
 
 /*!
+    \example uiforms
+    \title Qt Quick Controls - UI Forms
+    \ingroup qtquickcontrols_examples
+    \brief Demonstrates how to separate the application logic from the UI.
+
+    \image qtquickcontrols-example-uiforms.png
+
+    \e{UI Forms} demonstrates how to separate the application logic
+    from the UI using \e ui.qml files. The example is a simple interface to a customer
+    database, purely written in QML and JavaScript.
+
+    UI Forms are rigorously split into \e .qml and \e .js files that contain the business logic, and \e .ui.qml
+    files that only contain the purely declarative description of the UI.
+    The \e .ui.qml files act as forms and they should be only edited in the Design mode of Qt Creator.
+
+    \section1 Exporting Items from Forms
+
+    In all forms, items that are supposed to interact with the application logic are exported:
+
+    \qml
+    property alias cancel: cancel
+    property alias save: save
+    property alias textArea: textArea
+    \endqml
+
+    This is the way the items are exported in \e NotesForm.ui.qml, so they can be used in
+    \e Notes.ui.qml to implement the logic as follows:
+
+    \qml
+    function readData() {
+        CustomerModel.selection.forEach(function (rowIndex) {
+            form.textArea.text = CustomerModel.model.get(rowIndex).notes
+        })
+
+        save.enabled = true
+        cancel.enabled = true
+        form.textArea.enabled = true
+    }
+
+    function writeData() {
+        CustomerModel.selection.forEach(function (rowIndex) {
+            var data = CustomerModel.model.get(rowIndex)
+            data.notes = form.textArea.text
+            CustomerModel.model.set(rowIndex, data)
+        })
+    }
+
+    cancel.onClicked: readData()
+    save.onClicked: writeData()
+    \endqml
+
+    \section1 Implementing the Backend in a Singleton
+
+    Because the ListModel is accessed from several different \e .qml files, we access the
+    ListModel through a singleton defined in \e CustomerModel.qml and registered in \e main.ccp.
+    This way we do not have to rely on the QML context scoping rules to access the ListModel.
+
+    \include examples-run.qdocinc
+*/
+
+/*!
     \example basiclayouts
     \title Qt Quick Controls - Basic Layouts Example
     \ingroup qtquickcontrols_examples
