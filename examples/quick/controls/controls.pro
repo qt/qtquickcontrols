@@ -5,7 +5,8 @@ SUBDIRS += \
     tableview \
     touch \
     basiclayouts \
-    styles
+    styles \
+    uiforms
 
 qtHaveModule(widgets) {
     SUBDIRS += texteditor filesystembrowser

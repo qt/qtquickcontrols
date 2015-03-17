@@ -199,7 +199,7 @@ BasicTableView {
     signal pressAndHold(int row)
 
     /*!
-        \qmlmethod TableView::positionViewAtRow( int row, PositionMode mode )
+        \qmlmethod void TableView::positionViewAtRow( int row, PositionMode mode )
 
         Positions the view such that the specified \a row is at the position defined by \a mode:
            \list

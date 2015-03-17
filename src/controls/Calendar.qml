@@ -290,6 +290,7 @@ Control {
     signal pressAndHold(date date)
 
     /*!
+        \qmlmethod void Calendar::showPreviousMonth()
         Sets visibleMonth to the previous month.
     */
     function showPreviousMonth() {
@@ -302,6 +303,7 @@ Control {
     }
 
     /*!
+        \qmlmethod void Calendar::showNextMonth()
         Sets visibleMonth to the next month.
     */
     function showNextMonth() {
@@ -314,6 +316,7 @@ Control {
     }
 
     /*!
+        \qmlmethod void Calendar::showPreviousYear()
         Sets visibleYear to the previous year.
     */
     function showPreviousYear() {
@@ -323,6 +326,7 @@ Control {
     }
 
     /*!
+        \qmlmethod void Calendar::showNextYear()
         Sets visibleYear to the next year.
     */
     function showNextYear() {

@@ -172,7 +172,7 @@ QT_BEGIN_NAMESPACE
     The corresponding handler is \c onTriggered.
 */
 
-/*! \qmlmethod Action::trigger(QObject *source)
+/*! \qmlmethod void Action::trigger(QObject *source)
 
     Will emit the \l triggered signal if the action is enabled. You may provide a source
     object if the Action would benefit from knowing the origin of the triggering (e.g.

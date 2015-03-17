@@ -52,7 +52,9 @@ import QtQuick.Controls.Private 1.0
 Style {
     id: root
 
-    /*! Returns a formatted string to render mnemonics for a given menu item.
+    /*!
+        \qmlmethod string MenuBarStyle::formatMnemonic(string text, bool underline = false)
+        Returns a formatted string to render mnemonics for a given menu item.
 
         The mnemonic character is prefixed by an ampersand in the original string.
 

@@ -93,7 +93,9 @@ Style {
     /*! The number of milliseconds to wait before opening a submenu. */
     property int submenuPopupDelay: 200
 
-    /*! Returns a rich-text string to render mnemonics for a given menu item.
+    /*!
+        \qmlmethod string MenuStyle::formatMnemonic(string text, bool underline = false)
+        Returns a rich-text string to render mnemonics for a given menu item.
 
         The mnemonic character is prefixed by an ampersand in the original string.
 

@@ -165,6 +165,7 @@ Style {
     property real endAngle: 90
 
     /*!
+        \qmlmethod real PieMenuStyle::sectionStartAngle(int itemIndex)
         Returns the start of the section at \a itemIndex as an angle in degrees.
     */
     function sectionStartAngle(itemIndex) {
@@ -172,6 +173,7 @@ Style {
     }
 
     /*!
+        \qmlmethod real PieMenuStyle::sectionCenterAngle(int itemIndex)
         Returns the center of the section at \a itemIndex as an angle in
         degrees.
     */
@@ -180,6 +182,7 @@ Style {
     }
 
     /*!
+        \qmlmethod real PieMenuStyle::sectionEndAngle(int itemIndex)
         Returns the end of the section at \a itemIndex as an angle in degrees.
     */
     function sectionEndAngle(itemIndex) {
