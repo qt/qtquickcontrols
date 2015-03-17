@@ -58,7 +58,8 @@ class QQuickFileDialog : public QQuickAbstractFileDialog
 {
     Q_OBJECT
     Q_PROPERTY(QQuickItem* contentItem READ contentItem WRITE setContentItem DESIGNABLE false)
-    Q_PROPERTY(QJSValue shortcuts READ shortcuts CONSTANT)
+    Q_PROPERTY(QJSValue shortcuts READ shortcuts CONSTANT) // map of QStandardDirectory names to QUrls
+    Q_PROPERTY(QJSValue __shortcuts READ __shortcuts CONSTANT) // map of details for QML dialog implementations
     Q_CLASSINFO("DefaultProperty", "contentItem")    // AbstractFileDialog in QML can have only one child
 
 public:
@@ -67,6 +68,7 @@ public:
     virtual QList<QUrl> fileUrls() const;
 
     QJSValue shortcuts();
+    QJSValue __shortcuts();
 
 Q_SIGNALS:
 
@@ -80,14 +82,16 @@ protected:
     Q_INVOKABLE QUrl pathToUrl(const QString &path) { return QUrl::fromLocalFile(path); }
     Q_INVOKABLE QUrl pathFolder(const QString &path);
 
-    void addShortcut(int &i, const QString &name, const QString &path);
-    void addIfReadable(int &i, const QString &name, QStandardPaths::StandardLocation loc);
+    void addShortcut(uint &i, const QString &name, const QString &visibleName, const QString &path);
+    void addIfReadable(uint &i, const QString &name, const QString &visibleName, QStandardPaths::StandardLocation loc);
+    void populateShortcuts();
 
 private:
     QList<QUrl> m_selections;
 
     Q_DISABLE_COPY(QQuickFileDialog)
     QJSValue m_shortcuts;
+    QJSValue m_shortcutDetails;
 };
 
 QT_END_NAMESPACE

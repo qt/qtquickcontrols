@@ -37,6 +37,7 @@
 #include "qquickfiledialog_p.h"
 #include <QQuickItem>
 #include <QQmlEngine>
+#include <QJSValueIterator>
 #include <private/qguiapplication_p.h>
 #include <private/qv4object_p.h>
 
@@ -111,42 +112,68 @@ QList<QUrl> QQuickFileDialog::fileUrls() const
     return m_selections;
 }
 
-
-void QQuickFileDialog::addShortcut(int &i, const QString &name, const QString &path)
+void QQuickFileDialog::addShortcut(uint &i, const QString &name, const QString &visibleName, const QString &path)
 {
     QJSEngine *engine = qmlEngine(this);
+    QUrl url = QUrl::fromLocalFile(path);
     QJSValue o = engine->newObject();
-    o.setProperty("name", name);
-    o.setProperty("url", QUrl::fromLocalFile(path).toString());
-    m_shortcuts.setProperty(i++, o);
+    o.setProperty("name", visibleName);
+    // TODO maybe some day QJSValue could directly store a QUrl
+    o.setProperty("url", url.toString());
+    m_shortcutDetails.setProperty(name, o);
+    m_shortcuts.setProperty(name, url.toString());
+    ++i;
 }
 
-void QQuickFileDialog::addIfReadable(int &i, const QString &name, QStandardPaths::StandardLocation loc)
+void QQuickFileDialog::addIfReadable(uint &i, const QString &name, const QString &visibleName, QStandardPaths::StandardLocation loc)
 {
     QStringList paths = QStandardPaths::standardLocations(loc);
     if (!paths.isEmpty() && QDir(paths.first()).isReadable())
-        addShortcut(i, name, paths.first());
+        addShortcut(i, name, visibleName, paths.first());
+}
+
+void QQuickFileDialog::populateShortcuts()
+{
+    QJSEngine *engine = qmlEngine(this);
+    m_shortcutDetails = engine->newObject();
+    m_shortcuts = engine->newObject();
+    uint i = 0;
+
+    addIfReadable(i, QLatin1String("desktop"), QStandardPaths::displayName(QStandardPaths::DesktopLocation), QStandardPaths::DesktopLocation);
+    addIfReadable(i, QLatin1String("documents"), QStandardPaths::displayName(QStandardPaths::DocumentsLocation), QStandardPaths::DocumentsLocation);
+    addIfReadable(i, QLatin1String("music"), QStandardPaths::displayName(QStandardPaths::MusicLocation), QStandardPaths::MusicLocation);
+    addIfReadable(i, QLatin1String("movies"), QStandardPaths::displayName(QStandardPaths::MoviesLocation), QStandardPaths::MoviesLocation);
+    addIfReadable(i, QLatin1String("pictures"), QStandardPaths::displayName(QStandardPaths::PicturesLocation), QStandardPaths::PicturesLocation);
+    addIfReadable(i, QLatin1String("home"), QStandardPaths::displayName(QStandardPaths::HomeLocation), QStandardPaths::HomeLocation);
+
+#ifdef Q_OS_IOS
+    // PicturesLocation is a special URL, which we cannot check with QDir::isReadable()
+    addShortcut(i, QLatin1String("pictures"), tr("Pictures"),
+                QStandardPaths::standardLocations(QStandardPaths::PicturesLocation).last());
+#else
+    // on iOS, this returns only "/", which is never a useful path to read or write anything
+    QFileInfoList drives = QDir::drives();
+    foreach (QFileInfo fi, drives)
+        addShortcut(i, fi.absoluteFilePath(), fi.absoluteFilePath(), fi.absoluteFilePath());
+#endif
+
+    m_shortcutDetails.setProperty(QLatin1String("length"), i);
 }
 
 QJSValue QQuickFileDialog::shortcuts()
 {
-    if (m_shortcuts.isUndefined()) {
-        QJSEngine *engine = qmlEngine(this);
-        m_shortcuts = engine->newArray();
-        int i = 0;
+    if (m_shortcuts.isUndefined())
+        populateShortcuts();
 
-        addIfReadable(i, "Desktop", QStandardPaths::DesktopLocation);
-        addIfReadable(i, "Documents", QStandardPaths::DocumentsLocation);
-        addIfReadable(i, "Music", QStandardPaths::MusicLocation);
-        addIfReadable(i, "Movies", QStandardPaths::MoviesLocation);
-        addIfReadable(i, "Pictures", QStandardPaths::PicturesLocation);
-        addIfReadable(i, "Home", QStandardPaths::HomeLocation);
-
-        QFileInfoList drives = QDir::drives();
-        foreach (QFileInfo fi, drives)
-            addShortcut(i, fi.absoluteFilePath(), fi.absoluteFilePath());
-    }
     return m_shortcuts;
+}
+
+QJSValue QQuickFileDialog::__shortcuts()
+{
+    if (m_shortcutDetails.isUndefined())
+        populateShortcuts();
+
+    return m_shortcutDetails;
 }
 
 /*!
