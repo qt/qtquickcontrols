@@ -679,8 +679,9 @@ void QQuickStyleItem::initStyleOption()
         if (opt->singleStep) {
             qreal numOfSteps = (opt->maximum - opt->minimum) / opt->singleStep;
             // at least 5 pixels between tick marks
-            if (numOfSteps && (width() / numOfSteps < 5))
-                opt->tickInterval = qRound((5 * numOfSteps / width()) + 0.5) * step();
+            qreal extent = horizontal() ? width() : height();
+            if (numOfSteps && (extent / numOfSteps < 5))
+                opt->tickInterval = qRound((5 * numOfSteps / extent) + 0.5) * step();
             else
                 opt->tickInterval = opt->singleStep;
 
