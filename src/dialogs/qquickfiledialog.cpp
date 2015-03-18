@@ -45,6 +45,10 @@ QT_BEGIN_NAMESPACE
 
 using namespace QV4;
 
+// Note: documentation comments here are not currently used to generate
+// user documentation, because AbstractFileDialog is not a user-facing type.
+// FileDialog docs go into qquickplatformfiledialog.cpp
+
 /*!
     \qmltype AbstractFileDialog
     \instantiates QQuickFileDialog
