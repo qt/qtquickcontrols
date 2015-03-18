@@ -157,8 +157,13 @@ ApplicationWindow {
 
     FileDialog {
         id: fileDialog
-        nameFilters: ["Text files (*.txt)", "HTML files (*.html)"]
-        onAccepted: document.fileUrl = fileUrl
+        nameFilters: ["Text files (*.txt)", "HTML files (*.html, *.htm)"]
+        onAccepted: {
+            if (fileDialog.selectExisting)
+                document.fileUrl = fileUrl
+            else
+                document.saveAs(fileUrl, selectedNameFilter)
+        }
     }
 
     ColorDialog {
@@ -172,13 +177,28 @@ ApplicationWindow {
         iconSource: "images/fileopen.png"
         iconName: "document-open"
         text: "Open"
-        onTriggered: fileDialog.open()
+        onTriggered: {
+            fileDialog.selectExisting = true
+            fileDialog.open()
+        }
+    }
+
+    Action {
+        id: fileSaveAsAction
+        iconSource: "images/filesave.png"
+        iconName: "document-save"
+        text: "Save As…"
+        onTriggered: {
+            fileDialog.selectExisting = false
+            fileDialog.open()
+        }
     }
 
     menuBar: MenuBar {
         Menu {
             title: "&File"
             MenuItem { action: fileOpenAction }
+            MenuItem { action: fileSaveAsAction }
             MenuItem { text: "Quit"; onTriggered: Qt.quit() }
         }
         Menu {
@@ -303,6 +323,10 @@ ApplicationWindow {
         Component.onCompleted: forceActiveFocus()
     }
 
+    MessageDialog {
+        id: errorDialog
+    }
+
     DocumentHandler {
         id: document
         target: textArea
@@ -324,6 +348,10 @@ ApplicationWindow {
                 fontFamilyComboBox.currentIndex = index
                 fontFamilyComboBox.special = false
             }
+        }
+        onError: {
+            errorDialog.text = message
+            errorDialog.visible = true
         }
     }
 }

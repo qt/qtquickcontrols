@@ -119,6 +119,24 @@ void DocumentHandler::setText(const QString &arg)
     }
 }
 
+void DocumentHandler::saveAs(const QUrl &arg, const QString &fileType)
+{
+    bool isHtml = fileType.contains(QLatin1String("htm"));
+    QLatin1String ext(isHtml ? ".html" : ".txt");
+    QString localPath = arg.toLocalFile();
+    if (!localPath.endsWith(ext))
+        localPath += ext;
+    QFile f(localPath);
+    if (!f.open(QFile::WriteOnly | QFile::Truncate | (isHtml ? QFile::NotOpen : QFile::Text))) {
+        emit error(tr("Cannot save: ") + f.errorString());
+        return;
+    }
+    f.write((isHtml ? m_doc->toHtml() : m_doc->toPlainText()).toLocal8Bit());
+    f.close();
+    qDebug() << "saved to" << localPath;
+    setFileUrl(QUrl::fromLocalFile(localPath));
+}
+
 QUrl DocumentHandler::fileUrl() const
 {
     return m_fileUrl;
