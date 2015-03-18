@@ -125,11 +125,27 @@ void QQuickFileDialog::addShortcut(uint &i, const QString &name, const QString &
     ++i;
 }
 
-void QQuickFileDialog::addIfReadable(uint &i, const QString &name, const QString &visibleName, QStandardPaths::StandardLocation loc)
+void QQuickFileDialog::maybeAdd(uint &i, const QString &name, const QString &visibleName, QStandardPaths::StandardLocation loc)
 {
-    QStringList paths = QStandardPaths::standardLocations(loc);
-    if (!paths.isEmpty() && QDir(paths.first()).isReadable())
-        addShortcut(i, name, visibleName, paths.first());
+    if (name.isEmpty() || visibleName.isEmpty())
+        return;
+    QString path;
+    bool usable = false;
+    if (m_selectExisting) {
+        QStringList readPaths = QStandardPaths::standardLocations(loc);
+        if (!readPaths.isEmpty()) {
+            path = readPaths.first();
+            usable = QDir(path).isReadable();
+        }
+    } else {
+        path = QStandardPaths::writableLocation(loc);
+        // There is no QDir::isWritable(), but we can assume that if you don't have
+        // permission to read, you can't write either.  When you actually try to write,
+        // other things can go wrong anyway, and we cannot know until we try.
+        usable = QDir(path).isReadable();
+    }
+    if (usable)
+        addShortcut(i, name, visibleName, path);
 }
 
 void QQuickFileDialog::populateShortcuts()
@@ -139,17 +155,18 @@ void QQuickFileDialog::populateShortcuts()
     m_shortcuts = engine->newObject();
     uint i = 0;
 
-    addIfReadable(i, QLatin1String("desktop"), QStandardPaths::displayName(QStandardPaths::DesktopLocation), QStandardPaths::DesktopLocation);
-    addIfReadable(i, QLatin1String("documents"), QStandardPaths::displayName(QStandardPaths::DocumentsLocation), QStandardPaths::DocumentsLocation);
-    addIfReadable(i, QLatin1String("music"), QStandardPaths::displayName(QStandardPaths::MusicLocation), QStandardPaths::MusicLocation);
-    addIfReadable(i, QLatin1String("movies"), QStandardPaths::displayName(QStandardPaths::MoviesLocation), QStandardPaths::MoviesLocation);
-    addIfReadable(i, QLatin1String("pictures"), QStandardPaths::displayName(QStandardPaths::PicturesLocation), QStandardPaths::PicturesLocation);
-    addIfReadable(i, QLatin1String("home"), QStandardPaths::displayName(QStandardPaths::HomeLocation), QStandardPaths::HomeLocation);
+    maybeAdd(i, QLatin1String("desktop"), QStandardPaths::displayName(QStandardPaths::DesktopLocation), QStandardPaths::DesktopLocation);
+    maybeAdd(i, QLatin1String("documents"), QStandardPaths::displayName(QStandardPaths::DocumentsLocation), QStandardPaths::DocumentsLocation);
+    maybeAdd(i, QLatin1String("music"), QStandardPaths::displayName(QStandardPaths::MusicLocation), QStandardPaths::MusicLocation);
+    maybeAdd(i, QLatin1String("movies"), QStandardPaths::displayName(QStandardPaths::MoviesLocation), QStandardPaths::MoviesLocation);
+    maybeAdd(i, QLatin1String("pictures"), QStandardPaths::displayName(QStandardPaths::PicturesLocation), QStandardPaths::PicturesLocation);
+    maybeAdd(i, QLatin1String("home"), QStandardPaths::displayName(QStandardPaths::HomeLocation), QStandardPaths::HomeLocation);
 
 #ifdef Q_OS_IOS
     // PicturesLocation is a special URL, which we cannot check with QDir::isReadable()
-    addShortcut(i, QLatin1String("pictures"), tr("Pictures"),
-                QStandardPaths::standardLocations(QStandardPaths::PicturesLocation).last());
+    if (m_selectExisting)
+        addShortcut(i, QLatin1String("pictures"), QStandardPaths::displayName(QStandardPaths::PicturesLocation),
+                    QStandardPaths::standardLocations(QStandardPaths::PicturesLocation).last());
 #else
     // on iOS, this returns only "/", which is never a useful path to read or write anything
     QFileInfoList drives = QDir::drives();
@@ -158,6 +175,13 @@ void QQuickFileDialog::populateShortcuts()
 #endif
 
     m_shortcutDetails.setProperty(QLatin1String("length"), i);
+    emit shortcutsChanged();
+}
+
+void QQuickFileDialog::updateModes()
+{
+    QQuickAbstractFileDialog::updateModes();
+    populateShortcuts();
 }
 
 QJSValue QQuickFileDialog::shortcuts()

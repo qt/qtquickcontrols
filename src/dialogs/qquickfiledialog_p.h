@@ -58,8 +58,8 @@ class QQuickFileDialog : public QQuickAbstractFileDialog
 {
     Q_OBJECT
     Q_PROPERTY(QQuickItem* contentItem READ contentItem WRITE setContentItem DESIGNABLE false)
-    Q_PROPERTY(QJSValue shortcuts READ shortcuts CONSTANT) // map of QStandardDirectory names to QUrls
-    Q_PROPERTY(QJSValue __shortcuts READ __shortcuts CONSTANT) // map of details for QML dialog implementations
+    Q_PROPERTY(QJSValue shortcuts READ shortcuts NOTIFY shortcutsChanged) // map of QStandardDirectory names to QUrls
+    Q_PROPERTY(QJSValue __shortcuts READ __shortcuts NOTIFY shortcutsChanged) // map of details for QML dialog implementations
     Q_CLASSINFO("DefaultProperty", "contentItem")    // AbstractFileDialog in QML can have only one child
 
 public:
@@ -71,6 +71,7 @@ public:
     QJSValue __shortcuts();
 
 Q_SIGNALS:
+    void shortcutsChanged();
 
 public Q_SLOTS:
     void clearSelection();
@@ -83,8 +84,9 @@ protected:
     Q_INVOKABLE QUrl pathFolder(const QString &path);
 
     void addShortcut(uint &i, const QString &name, const QString &visibleName, const QString &path);
-    void addIfReadable(uint &i, const QString &name, const QString &visibleName, QStandardPaths::StandardLocation loc);
+    void maybeAdd(uint &i, const QString &name, const QString &visibleName, QStandardPaths::StandardLocation loc);
     void populateShortcuts();
+    void updateModes() Q_DECL_OVERRIDE;
 
 private:
     QList<QUrl> m_selections;

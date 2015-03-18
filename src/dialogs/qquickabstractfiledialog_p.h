@@ -108,7 +108,7 @@ Q_SIGNALS:
     void sidebarVisibleChanged();
 
 protected:
-    void updateModes();
+    virtual void updateModes();
 
 protected:
     QPlatformFileDialogHelper *m_dlgHelper;
