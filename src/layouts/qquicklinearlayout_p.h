@@ -65,8 +65,8 @@ public:
                                   QQuickItem *parent = 0);
 
     ~QQuickGridLayoutBase();
-    void componentComplete();
-    void invalidate(QQuickItem *childItem = 0);
+    void componentComplete() Q_DECL_OVERRIDE;
+    void invalidate(QQuickItem *childItem = 0) Q_DECL_OVERRIDE;
     Qt::Orientation orientation() const;
     void setOrientation(Qt::Orientation orientation);
     QSizeF sizeHint(Qt::SizeHint whichSizeHint) const Q_DECL_OVERRIDE;
@@ -80,10 +80,10 @@ protected:
     QQuickItem *itemAt(int index) const Q_DECL_OVERRIDE;
     int itemCount() const Q_DECL_OVERRIDE;
 
-    void rearrange(const QSizeF &size);
+    void rearrange(const QSizeF &size) Q_DECL_OVERRIDE;
     virtual void insertLayoutItems() {}
-    void itemChange(ItemChange change, const ItemChangeData &data);
-    void geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry);
+    void itemChange(ItemChange change, const ItemChangeData &data) Q_DECL_OVERRIDE;
+    void geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry) Q_DECL_OVERRIDE;
     bool shouldIgnoreItem(QQuickItem *child, QQuickLayoutAttached *&info, QSizeF *sizeHints);
 
 signals:
