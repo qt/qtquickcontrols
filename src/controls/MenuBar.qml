@@ -132,6 +132,11 @@ MenuBarPrivate {
             value: menuMouseArea.z - 1
         }
 
+        ContentItem {
+            // Only used for system padding, the real content item is the Row below
+            id: contentItem
+        }
+
         QtObject {
             id: d
 
@@ -139,7 +144,8 @@ MenuBarPrivate {
 
             property int openedMenuIndex: -1
             property bool preselectMenuItem: false
-            property real heightPadding: style ? style.padding.top + style.padding.bottom : 0
+            property real heightPadding: (style ? style.padding.top + style.padding.bottom : 0)
+                            + contentItem.systemPadding.top + contentItem.systemPadding.bottom
 
             property bool altPressed: false
             property bool altPressedAgain: false
@@ -219,9 +225,10 @@ MenuBarPrivate {
 
         Row {
             id: row
-            x: d.style ? d.style.padding.left : 0
-            y: d.style ? d.style.padding.top : 0
+            x: (d.style ? d.style.padding.left : 0) + contentItem.systemPadding.left
+            y: (d.style ? d.style.padding.top : 0) + contentItem.systemPadding.top
             width: parent.width - (d.style ? d.style.padding.left + d.style.padding.right : 0)
+                    - (contentItem.systemPadding.left + contentItem.systemPadding.right)
             LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft
 
             Repeater {
