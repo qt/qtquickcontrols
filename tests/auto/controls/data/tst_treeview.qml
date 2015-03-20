@@ -80,13 +80,6 @@ Item {
             }
         }
 
-        function nth(list, i)
-        {
-            if (list instanceof Array)
-                return list[i]
-            return list.at(i)
-        }
-
         function test_basic_setup()
         {
             var test_instanceStr =
@@ -379,7 +372,7 @@ Item {
             var list = tree.selection.selectedIndexes
             compare(list.length, 1)
             if (list.length === 1) {
-                compare(nth(list, 0).internalId, secondItem.internalId)
+                compare(list[0].internalId, secondItem.internalId)
                 compare(tree.selection.isSelected(secondItem), true)
             }
 
@@ -489,7 +482,7 @@ Item {
             compare(tree.selection.isSelected(secondItem), true)
             var listIndexes = tree.selection.selectedIndexes
             compare(listIndexes.length, 1)
-            compare(nth(listIndexes, 0).internalId, secondItem.internalId)
+            compare(listIndexes[0].internalId, secondItem.internalId)
             verify(tree.selection.currentIndex.valid)
             if (tree.selection.currentIndex.valid)
                 compare(tree.selection.currentIndex.internalId, secondItem.internalId)
@@ -501,8 +494,8 @@ Item {
             compare(tree.selection.isSelected(fourthItem), true)
             listIndexes = tree.selection.selectedIndexes
             compare(listIndexes.length, 2)
-            compare(nth(listIndexes, 0).internalId, secondItem.internalId)
-            compare(nth(listIndexes, 1).internalId, fourthItem.internalId)
+            compare(listIndexes[0].internalId, secondItem.internalId)
+            compare(listIndexes[1].internalId, fourthItem.internalId)
             verify(tree.selection.currentIndex.valid)
             if (tree.selection.currentIndex.valid)
                 compare(tree.selection.currentIndex.internalId, fourthItem.internalId)
@@ -518,9 +511,9 @@ Item {
 
             listIndexes = tree.selection.selectedIndexes
             compare(listIndexes.length, 3)
-            compare(nth(listIndexes, 0).internalId, secondItem.internalId)
-            compare(nth(listIndexes, 1).internalId, fourthItem.internalId)
-            compare(nth(listIndexes, 2).internalId, sixthItem.internalId)
+            compare(listIndexes[0].internalId, secondItem.internalId)
+            compare(listIndexes[1].internalId, fourthItem.internalId)
+            compare(listIndexes[2].internalId, sixthItem.internalId)
             verify(tree.selection.currentIndex.valid)
             if (tree.selection.currentIndex.valid)
                 compare(tree.selection.currentIndex.internalId, sixthItem.internalId)
@@ -534,8 +527,8 @@ Item {
 
             listIndexes = tree.selection.selectedIndexes
             compare(listIndexes.length, 2)
-            compare(nth(listIndexes, 0).internalId, secondItem.internalId)
-            compare(nth(listIndexes, 1).internalId, sixthItem.internalId)
+            compare(listIndexes[0].internalId, secondItem.internalId)
+            compare(listIndexes[1].internalId, sixthItem.internalId)
             verify(tree.selection.currentIndex.valid)
 
             mouseClick(tree, semiIndent + 50, 70+150, Qt.LeftButton)
@@ -598,7 +591,7 @@ Item {
             compare(tree.selection.isSelected(secondItem), true)
             var listIndexes = tree.selection.selectedIndexes
             compare(listIndexes.length, 1)
-            compare(nth(listIndexes, 0).internalId, secondItem.internalId)
+            compare(listIndexes[0].internalId, secondItem.internalId)
             verify(tree.selection.currentIndex.valid)
             if (tree.selection.currentIndex.valid)
                 compare(tree.selection.currentIndex.internalId, secondItem.internalId)
@@ -684,7 +677,7 @@ Item {
             compare(tree.selection.isSelected(secondItem), true)
             var listIndexes = tree.selection.selectedIndexes
             compare(listIndexes.length, 1)
-            compare(nth(listIndexes, 0).internalId, secondItem.internalId)
+            compare(listIndexes[0].internalId, secondItem.internalId)
             verify(tree.selection.currentIndex.valid)
             if (tree.selection.currentIndex.valid)
                 compare(tree.selection.currentIndex.internalId, secondItem.internalId)
