@@ -76,6 +76,8 @@ private slots:
     void moveRows();
 
     void selectionForRowRange();
+
+    void hasChildrenEmit();
 };
 
 void tst_QQuickTreeModelAdaptor::initTestCase()
@@ -1128,6 +1130,66 @@ void tst_QQuickTreeModelAdaptor::selectionForRowRange()
             else
                 QFAIL("Unexpected selection range");
         }
+    }
+}
+
+void tst_QQuickTreeModelAdaptor::hasChildrenEmit()
+{
+    TestModel model(1, 1);
+    model.alternateChildlessRows = false;
+    QQuickTreeModelAdaptor tma;
+    tma.setModel(&model);
+
+    QModelIndex root = model.index(0,0);
+    QVERIFY(root.isValid());
+
+    QModelIndex child = root.child(0,0);
+    QVERIFY(child.isValid());
+
+    // Root not expanded , child not expanded, insert in child, expect no datachanged
+    {
+        QVERIFY(!tma.isExpanded(root));
+        QVERIFY(!tma.isExpanded(child));
+        QSignalSpy dataChangedSpy(&tma, SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)));
+        QCOMPARE(dataChangedSpy.count(), 0);
+        QCOMPARE(model.rowCount(child), 1);
+        model.insertRow(1, child);
+        QCOMPARE(model.rowCount(child), 2);
+        QCOMPARE(dataChangedSpy.count(), 0);
+    }
+
+    // Root not expanded, insert in root, expect datachanged
+    {
+        QVERIFY(!tma.isExpanded(root));
+        QSignalSpy dataChangedSpy(&tma, SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)));
+        QCOMPARE(dataChangedSpy.count(), 0);
+        QCOMPARE(model.rowCount(root), 1);
+        model.insertRow(1, root);
+        QCOMPARE(model.rowCount(root), 2);
+        QCOMPARE(dataChangedSpy.count(), 1);
+    }
+
+    // Root not expanded, child not expanded, remove in child, expect no datachanged
+    {
+        QVERIFY(!tma.isExpanded(root));
+        QVERIFY(!tma.isExpanded(child));
+        QSignalSpy dataChangedSpy(&tma, SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)));
+        QCOMPARE(dataChangedSpy.count(), 0);
+        QCOMPARE(model.rowCount(child), 2);
+        model.removeRow(1, child);
+        QCOMPARE(model.rowCount(child), 1);
+        QCOMPARE(dataChangedSpy.count(), 0);
+    }
+
+    // Root not expanded, remove in root, expected datachanged on hasChildren
+    {
+        QVERIFY(!tma.isExpanded(root));
+        QSignalSpy dataChangedSpy(&tma, SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)));
+        QCOMPARE(dataChangedSpy.count(), 0);
+        QCOMPARE(model.rowCount(root), 2);
+        model.removeRow(1, root);
+        QCOMPARE(model.rowCount(root), 1);
+        QCOMPARE(dataChangedSpy.count(), 1);
     }
 }
 

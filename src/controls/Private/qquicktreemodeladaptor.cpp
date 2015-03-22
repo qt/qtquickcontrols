@@ -608,6 +608,9 @@ void QQuickTreeModelAdaptor::modelRowsInserted(const QModelIndex & parent, int s
     TreeItem item;
     int parentRow = itemIndex(parent);
     if (parentRow >= 0) {
+        const QModelIndex& parentIndex = index(parentRow);
+        QVector<int> changedRole(1, HasChildrenRole);
+        emit dataChanged(parentIndex, parentIndex, changedRole);
         item = m_items.at(parentRow);
         if (!item.expanded) {
             ASSERT_CONSISTENCY();
@@ -645,6 +648,12 @@ void QQuickTreeModelAdaptor::modelRowsAboutToBeRemoved(const QModelIndex & paren
 void QQuickTreeModelAdaptor::modelRowsRemoved(const QModelIndex & parent, int start, int end)
 {
     qDebug() << "modelRowsRemoved" << parent << "start" << start << "end" << end;
+    int parentRow = itemIndex(parent);
+    if (parentRow >= 0) {
+        const QModelIndex& parentIndex = index(parentRow);
+        QVector<int> changedRole(1, HasChildrenRole);
+        emit dataChanged(parentIndex, parentIndex, changedRole);
+    }
     ASSERT_CONSISTENCY();
 }
 
