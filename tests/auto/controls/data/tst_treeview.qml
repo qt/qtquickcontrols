@@ -329,7 +329,7 @@ Item {
             tree.destroy()
         }
 
-        function disabled_selection_singleSelection()
+        function test_selection_singleSelection()
         {
             var component = Qt.createComponent("treeview/treeview_1.qml")
             compare(component.status, Component.Ready)
@@ -383,7 +383,7 @@ Item {
             compare(secondItem.internalId, tree.selection.currentIndex.internalId)
             compare(tree.selection.isSelected(secondItem), true)
             compare(tree.selection.hasSelection, true)
-            var list = tree.selection.selectedIndexes()
+            var list = tree.selection.selectedIndexes
             compare(list.length, 1)
             if (list.length === 1) {
                 compare(nth(list, 0).internalId, secondItem.internalId)
@@ -458,7 +458,7 @@ Item {
             tree.destroy()
         }
 
-        function disabled_selection_multiSelection()
+        function test_selection_multiSelection()
         {
             var component = Qt.createComponent("treeview/treeview_1.qml")
             compare(component.status, Component.Ready)
@@ -498,7 +498,7 @@ Item {
             compare(secondItem.internalId, tree.currentIndex.internalId)
             compare(tree.selection.hasSelection, true)
             compare(tree.selection.isSelected(secondItem), true)
-            var listIndexes = tree.selection.selectedIndexes()
+            var listIndexes = tree.selection.selectedIndexes
             compare(listIndexes.length, 1)
             compare(nth(listIndexes, 0).internalId, secondItem.internalId)
             verify(tree.selection.currentIndex.valid)
@@ -510,7 +510,7 @@ Item {
             compare(tree.selection.hasSelection, true)
             compare(tree.selection.isSelected(secondItem), true)
             compare(tree.selection.isSelected(fourthItem), true)
-            listIndexes = tree.selection.selectedIndexes()
+            listIndexes = tree.selection.selectedIndexes
             compare(listIndexes.length, 2)
             compare(nth(listIndexes, 0).internalId, secondItem.internalId)
             compare(nth(listIndexes, 1).internalId, fourthItem.internalId)
@@ -527,7 +527,7 @@ Item {
             compare(tree.selection.isSelected(fifthItem), false)
             compare(tree.selection.isSelected(sixthItem), true)
 
-            listIndexes = tree.selection.selectedIndexes()
+            listIndexes = tree.selection.selectedIndexes
             compare(listIndexes.length, 3)
             compare(nth(listIndexes, 0).internalId, secondItem.internalId)
             compare(nth(listIndexes, 1).internalId, fourthItem.internalId)
@@ -543,7 +543,7 @@ Item {
             compare(tree.selection.isSelected(fourthItem), false)
             compare(tree.selection.isSelected(sixthItem), true)
 
-            listIndexes = tree.selection.selectedIndexes()
+            listIndexes = tree.selection.selectedIndexes
             compare(listIndexes.length, 2)
             compare(nth(listIndexes, 0).internalId, secondItem.internalId)
             compare(nth(listIndexes, 1).internalId, sixthItem.internalId)
@@ -563,13 +563,13 @@ Item {
             compare(tree.selection.isSelected(fourthItem), true)
             compare(tree.selection.isSelected(fifthItem), true)
             compare(tree.selection.isSelected(sixthItem), false)
-            listIndexes = tree.selection.selectedIndexes()
+            listIndexes = tree.selection.selectedIndexes
             compare(listIndexes.length, 4)
 
             tree.destroy()
         }
 
-        function disabled_selection_extendedSelection()
+        function test_selection_extendedSelection()
         {
             var component = Qt.createComponent("treeview/treeview_1.qml")
             compare(component.status, Component.Ready)
@@ -609,7 +609,7 @@ Item {
             compare(secondItem.internalId, tree.currentIndex.internalId)
             compare(tree.selection.hasSelection, true)
             compare(tree.selection.isSelected(secondItem), true)
-            var listIndexes = tree.selection.selectedIndexes()
+            var listIndexes = tree.selection.selectedIndexes
             compare(listIndexes.length, 1)
             compare(nth(listIndexes, 0).internalId, secondItem.internalId)
             verify(tree.selection.currentIndex.valid)
@@ -624,7 +624,7 @@ Item {
             mouseClick(tree, semiIndent + 50, 70+52, Qt.LeftButton, Qt.ControlModifier)
             compare(tree.selection.hasSelection, false)
             compare(tree.selection.isSelected(secondItem), false)
-            listIndexes = tree.selection.selectedIndexes()
+            listIndexes = tree.selection.selectedIndexes
             compare(listIndexes.length, 0)
 
             mouseClick(tree, semiIndent + 50, 70+50, Qt.LeftButton)
@@ -632,7 +632,7 @@ Item {
             keyPress(Qt.Key_Down, Qt.ShiftModifier)
             keyClick(Qt.Key_Down, Qt.ShiftModifier)
 
-            listIndexes = tree.selection.selectedIndexes()
+            listIndexes = tree.selection.selectedIndexes
             compare(listIndexes.length, 4)
             compare(tree.selection.hasSelection, true)
             compare(tree.selection.isSelected(secondItem), true)
@@ -641,11 +641,11 @@ Item {
             compare(tree.selection.isSelected(fifthItem), true)
 
             mouseClick(tree, semiIndent + 50, 70+300, Qt.LeftButton, Qt.ShiftModifier)
-            listIndexes = tree.selection.selectedIndexes()
+            listIndexes = tree.selection.selectedIndexes
             compare(listIndexes.length, 6)
 
             mouseClick(tree, semiIndent + 50, 70+150, Qt.LeftButton, Qt.ControlModifier)
-            listIndexes = tree.selection.selectedIndexes()
+            listIndexes = tree.selection.selectedIndexes
             compare(listIndexes.length, 5)
             compare(tree.selection.isSelected(fourthItem), false)
             compare(tree.selection.hasSelection, true)
@@ -657,7 +657,7 @@ Item {
             tree.destroy()
         }
 
-        function disabled_selection_contiguousSelection()
+        function test_selection_contiguousSelection()
         {
             var component = Qt.createComponent("treeview/treeview_1.qml")
             compare(component.status, Component.Ready)
@@ -697,7 +697,7 @@ Item {
             compare(secondItem.internalId, tree.currentIndex.internalId)
             compare(tree.selection.hasSelection, true)
             compare(tree.selection.isSelected(secondItem), true)
-            var listIndexes = tree.selection.selectedIndexes()
+            var listIndexes = tree.selection.selectedIndexes
             compare(listIndexes.length, 1)
             compare(nth(listIndexes, 0).internalId, secondItem.internalId)
             verify(tree.selection.currentIndex.valid)
@@ -712,7 +712,7 @@ Item {
             mouseClick(tree, semiIndent + 50, 70+52, Qt.LeftButton, Qt.ControlModifier)
             compare(tree.selection.hasSelection, true)
             compare(tree.selection.isSelected(secondItem), true)
-            listIndexes = tree.selection.selectedIndexes()
+            listIndexes = tree.selection.selectedIndexes
             compare(listIndexes.length, 1)
 
             mouseClick(tree, semiIndent + 50, 70+50, Qt.LeftButton)
@@ -720,7 +720,7 @@ Item {
             keyPress(Qt.Key_Down, Qt.ShiftModifier)
             keyClick(Qt.Key_Down, Qt.ShiftModifier)
 
-            listIndexes = tree.selection.selectedIndexes()
+            listIndexes = tree.selection.selectedIndexes
             compare(listIndexes.length, 4)
             compare(tree.selection.hasSelection, true)
             compare(tree.selection.isSelected(secondItem), true)
@@ -732,12 +732,12 @@ Item {
                 compare(tree.selection.currentIndex.internalId, fifthItem.internalId)
 
             mouseClick(tree, semiIndent + 50, 70+300, Qt.LeftButton, Qt.ShiftModifier)
-            listIndexes = tree.selection.selectedIndexes()
+            listIndexes = tree.selection.selectedIndexes
             compare(listIndexes.length, 6)
 
             mouseClick(tree, semiIndent + 50, 70+150, Qt.LeftButton, Qt.ShiftModifier)
 
-            listIndexes = tree.selection.selectedIndexes()
+            listIndexes = tree.selection.selectedIndexes
             compare(listIndexes.length, 3)
             compare(tree.selection.hasSelection, true)
             compare(tree.selection.isSelected(secondItem), true)
@@ -747,7 +747,7 @@ Item {
             compare(tree.selection.isSelected(sixthItem), false)
 
             mouseClick(tree, semiIndent + 50, 70+100, Qt.LeftButton)
-            listIndexes = tree.selection.selectedIndexes()
+            listIndexes = tree.selection.selectedIndexes
             compare(listIndexes.length, 1)
             compare(tree.selection.hasSelection, true)
             compare(tree.selection.isSelected(thirdItem), true)
