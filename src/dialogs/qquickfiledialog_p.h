@@ -84,7 +84,7 @@ protected:
     Q_INVOKABLE QUrl pathFolder(const QString &path);
 
     void addShortcut(const QString &name, const QString &visibleName, const QString &path);
-    void maybeAdd(const QString &name, const QString &visibleName, QStandardPaths::StandardLocation loc);
+    void addShortcutFromStandardLocation(const QString &name, QStandardPaths::StandardLocation loc, bool local = true);
     void populateShortcuts();
     void updateModes() Q_DECL_OVERRIDE;
 

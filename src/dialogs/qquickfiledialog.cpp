@@ -120,36 +120,34 @@ void QQuickFileDialog::addShortcut(const QString &name, const QString &visibleNa
 {
     QJSEngine *engine = qmlEngine(this);
     QUrl url = QUrl::fromLocalFile(path);
+
+    // Since the app can have bindings to the shortcut, we always add it
+    // to the public API, even if the directory doesn't (yet) exist.
+    m_shortcuts.setProperty(name, url.toString());
+
+    // ...but we are more strict about showing it as a clickable link inside the dialog
+    if (visibleName.isEmpty() || !QDir(path).exists())
+        return;
+
     QJSValue o = engine->newObject();
     o.setProperty("name", visibleName);
     // TODO maybe some day QJSValue could directly store a QUrl
     o.setProperty("url", url.toString());
-    m_shortcuts.setProperty(name, url.toString());
+
     int length = m_shortcutDetails.property(QLatin1String("length")).toInt();
     m_shortcutDetails.setProperty(length, o);
 }
 
-void QQuickFileDialog::maybeAdd(const QString &name, const QString &visibleName, QStandardPaths::StandardLocation loc)
+void QQuickFileDialog::addShortcutFromStandardLocation(const QString &name, QStandardPaths::StandardLocation loc, bool local)
 {
-    if (name.isEmpty() || visibleName.isEmpty())
-        return;
-    QString path;
-    bool usable = false;
     if (m_selectExisting) {
         QStringList readPaths = QStandardPaths::standardLocations(loc);
-        if (!readPaths.isEmpty()) {
-            path = readPaths.first();
-            usable = QDir(path).isReadable();
-        }
+        QString path = readPaths.isEmpty() ? QString() : local ? readPaths.first() : readPaths.last();
+        addShortcut(name, QStandardPaths::displayName(loc), path);
     } else {
-        path = QStandardPaths::writableLocation(loc);
-        // There is no QDir::isWritable(), but we can assume that if you don't have
-        // permission to read, you can't write either.  When you actually try to write,
-        // other things can go wrong anyway, and we cannot know until we try.
-        usable = QDir(path).isReadable();
+        QString path = QStandardPaths::writableLocation(loc);
+        addShortcut(name, QStandardPaths::displayName(loc), path);
     }
-    if (usable)
-        addShortcut(name, visibleName, path);
 }
 
 void QQuickFileDialog::populateShortcuts()
@@ -158,19 +156,20 @@ void QQuickFileDialog::populateShortcuts()
     m_shortcutDetails = engine->newArray();
     m_shortcuts = engine->newObject();
 
-    maybeAdd(QLatin1String("desktop"), QStandardPaths::displayName(QStandardPaths::DesktopLocation), QStandardPaths::DesktopLocation);
-    maybeAdd(QLatin1String("documents"), QStandardPaths::displayName(QStandardPaths::DocumentsLocation), QStandardPaths::DocumentsLocation);
-    maybeAdd(QLatin1String("music"), QStandardPaths::displayName(QStandardPaths::MusicLocation), QStandardPaths::MusicLocation);
-    maybeAdd(QLatin1String("movies"), QStandardPaths::displayName(QStandardPaths::MoviesLocation), QStandardPaths::MoviesLocation);
-    maybeAdd(QLatin1String("pictures"), QStandardPaths::displayName(QStandardPaths::PicturesLocation), QStandardPaths::PicturesLocation);
-    maybeAdd(QLatin1String("home"), QStandardPaths::displayName(QStandardPaths::HomeLocation), QStandardPaths::HomeLocation);
+    addShortcutFromStandardLocation(QLatin1String("desktop"), QStandardPaths::DesktopLocation);
+    addShortcutFromStandardLocation(QLatin1String("documents"), QStandardPaths::DocumentsLocation);
+    addShortcutFromStandardLocation(QLatin1String("music"), QStandardPaths::MusicLocation);
+    addShortcutFromStandardLocation(QLatin1String("movies"), QStandardPaths::MoviesLocation);
+    addShortcutFromStandardLocation(QLatin1String("home"), QStandardPaths::HomeLocation);
 
-#ifdef Q_OS_IOS
-    // PicturesLocation is a special URL, which we cannot check with QDir::isReadable()
-    if (m_selectExisting)
-        addShortcut(QLatin1String("pictures"), QStandardPaths::displayName(QStandardPaths::PicturesLocation),
-                    QStandardPaths::standardLocations(QStandardPaths::PicturesLocation).last());
+#ifndef Q_OS_IOS
+    addShortcutFromStandardLocation(QLatin1String("pictures"), QStandardPaths::PicturesLocation);
 #else
+    // On iOS we point pictures to the system picture folder when loading
+    addShortcutFromStandardLocation(QLatin1String("pictures"), QStandardPaths::PicturesLocation, !m_selectExisting);
+#endif
+
+#ifndef Q_OS_IOS
     // on iOS, this returns only "/", which is never a useful path to read or write anything
     QFileInfoList drives = QDir::drives();
     foreach (QFileInfo fi, drives)
