@@ -70,7 +70,7 @@ public:
     static QQuickLayoutAttached *qmlAttachedProperties(QObject *object);
 
 
-    void componentComplete();
+    void componentComplete() Q_DECL_OVERRIDE;
     virtual QSizeF sizeHint(Qt::SizeHint whichSizeHint) const = 0;
     virtual void setAlignment(QQuickItem *item, Qt::Alignment align) = 0;
     virtual void invalidate(QQuickItem * childItem = 0);

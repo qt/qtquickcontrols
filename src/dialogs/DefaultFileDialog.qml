@@ -47,6 +47,9 @@ import "qml"
 
 AbstractFileDialog {
     id: root
+
+    folder: view.model.folder
+
     onVisibleChanged: {
         if (visible) {
             view.needsWidthAdjustment = true
@@ -59,7 +62,6 @@ AbstractFileDialog {
         view.model.nameFilters = root.selectedNameFilterExtensions
         filterField.currentIndex = root.selectedNameFilterIndex
         root.favoriteFolders = settings.favoriteFolders
-        root.folder = view.model.folder
     }
 
     Component.onDestruction: {
@@ -71,7 +73,7 @@ AbstractFileDialog {
         property alias width: root.width
         property alias height: root.height
         property alias sidebarWidth: sidebar.width
-        property alias sidebarSplit: shortcuts.height
+        property alias sidebarSplit: shortcutsScroll.height
         property alias sidebarVisible: root.sidebarVisible
         property variant favoriteFolders: []
     }
@@ -122,11 +124,6 @@ AbstractFileDialog {
         color: root.palette.window
 
         Binding {
-            target: root
-            property: "folder"
-            value: view.model.folder
-        }
-        Binding {
             target: view.model
             property: "folder"
             value: root.folder
@@ -172,7 +169,7 @@ AbstractFileDialog {
                     height: parent.height - favoritesButtons.height
 
                     ScrollView {
-                        id: shortcuts
+                        id: shortcutsScroll
                         Component.onCompleted: {
                             if (height < 1)
                                 height = sidebarSplitter.rowHeight * 4.65
@@ -181,7 +178,7 @@ AbstractFileDialog {
                         height: 0 // initial width only; settings and onCompleted will override it
                         ListView {
                             id: shortcutsView
-                            model: root.shortcuts
+                            model: __shortcuts.length
                             anchors.bottomMargin: ControlsPrivate.Settings.hasTouchScreen ? Screen.pixelDensity * 3.5 : anchors.margins
                             implicitHeight: model.count * sidebarSplitter.rowHeight
                             delegate: Item {
@@ -190,7 +187,7 @@ AbstractFileDialog {
                                 height: shortcutLabel.implicitHeight * 1.5
                                 Text {
                                     id: shortcutLabel
-                                    text: shortcutsView.model[index]["name"]
+                                    text: __shortcuts[Object.keys(__shortcuts)[index]].name
                                     anchors {
                                         verticalCenter: parent.verticalCenter
                                         left: parent.left
@@ -207,7 +204,7 @@ AbstractFileDialog {
                                 }
                                 MouseArea {
                                     anchors.fill: parent
-                                    onClicked: root.folder = shortcutsView.model[index]["url"]
+                                    onClicked: root.folder = __shortcuts[Object.keys(__shortcuts)[index]].url
                                 }
                             }
                         }
@@ -448,7 +445,7 @@ AbstractFileDialog {
                 }
                 Button {
                     id: okButton
-                    text: qsTr("OK")
+                    text: selectExisting ? qsTr("Open") : qsTr("Save")
                     onClicked: {
                         if (view.model.isFolder(view.currentIndex) && !selectFolder)
                             dirDown(view.model.get(view.currentIndex, "filePath"))

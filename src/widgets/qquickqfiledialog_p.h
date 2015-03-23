@@ -61,6 +61,8 @@ public:
     QQuickQFileDialog(QObject *parent = 0);
     virtual ~QQuickQFileDialog();
 
+    virtual QList<QUrl> fileUrls() const Q_DECL_OVERRIDE;
+
 protected:
     QPlatformFileDialogHelper *helper();
 

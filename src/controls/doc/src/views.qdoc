@@ -27,5 +27,6 @@
 
 /*!
     \group views
+    \brief How to add views and navigation within an application.
     \title Application Navigation and Views
 */

@@ -134,8 +134,11 @@ public:
 
         // FileDialog
 #ifndef PURE_QML_ONLY
+        // We register the QML version of the filedialog, even if the platform has native support.
+        // QQuickAbstractDialog::setVisible() will check if a native dialog can be shown, and
+        // only fall back to use the QML version if showing fails.
         if (QGuiApplicationPrivate::platformTheme()->usePlatformNativeDialog(QPlatformTheme::FileDialog))
-            qmlRegisterType<QQuickPlatformFileDialog>(uri, 1, 0, "FileDialog");
+            registerQmlImplementation<QQuickPlatformFileDialog>(qmlDir, "FileDialog", uri, 1, 0);
         else
 #endif
             registerWidgetOrQmlImplementation<QQuickFileDialog>(widgetsDir, qmlDir, "FileDialog", uri, hasTopLevelWindows, 1, 0);
@@ -174,12 +177,22 @@ protected:
             const char *qmlName, const char *uri, bool hasTopLevelWindows, int versionMajor, int versionMinor) {
         qCDebug(lcRegistration) << qmlName << uri << ": QML in" << qmlDir.absolutePath()
                                 << "using resources?" << m_useResources << "; widgets in" << widgetsDir.absolutePath();
-        bool needQmlImplementation = true;
 
-#ifdef PURE_QML_ONLY
+#ifndef PURE_QML_ONLY
+        if (!registerWidgetImplementation<WrapperType>(
+                    widgetsDir, qmlDir, qmlName, uri, hasTopLevelWindows, versionMajor, versionMinor))
+#else
         Q_UNUSED(widgetsDir)
         Q_UNUSED(hasTopLevelWindows)
-#else
+#endif
+        registerQmlImplementation<WrapperType>(qmlDir, qmlName, uri, versionMajor, versionMinor);
+    }
+
+    template <class WrapperType>
+    bool registerWidgetImplementation(QDir widgetsDir, QDir qmlDir,
+            const char *qmlName, const char *uri, bool hasTopLevelWindows, int versionMajor, int versionMinor)
+    {
+
         bool mobileTouchPlatform = false;
 #if defined(Q_OS_IOS)
         mobileTouchPlatform = true;
@@ -188,6 +201,7 @@ protected:
             if (dev->type() == QTouchDevice::TouchScreen)
                 mobileTouchPlatform = true;
 #endif
+
         // If there is a qmldir and we have a QApplication instance (as opposed to a
         // widget-free QGuiApplication), and this isn't a mobile touch-based platform,
         // assume that the widget-based dialog will work.  Otherwise an application developer
@@ -199,20 +213,25 @@ protected:
                 QUrl(QString("qrc:/QtQuick/Dialogs/Widget%1.qml").arg(qmlName)) :
                 QUrl::fromLocalFile(qmlDir.filePath(QString("Widget%1.qml").arg(qmlName)));
             if (qmlRegisterType(dialogQmlPath, uri, versionMajor, versionMinor, qmlName) >= 0) {
-                needQmlImplementation = false;
-                qCDebug(lcRegistration) << "    registering" << qmlName << " as " << dialogQmlPath << "success?" << !needQmlImplementation;
+                qCDebug(lcRegistration) << "    registering" << qmlName << " as " << dialogQmlPath;
+                return true;
             }
         }
-#endif
-        if (needQmlImplementation) {
-            QByteArray abstractTypeName = QByteArray("Abstract") + qmlName;
-            qmlRegisterType<WrapperType>(uri, versionMajor, versionMinor, abstractTypeName); // implementation wrapper
-            QUrl dialogQmlPath =  m_useResources ?
-                QUrl(QString("qrc:/QtQuick/Dialogs/Default%1.qml").arg(qmlName)) :
-                QUrl::fromLocalFile(qmlDir.filePath(QString("Default%1.qml").arg(qmlName)));
-            qCDebug(lcRegistration) << "    registering" << qmlName << " as " << dialogQmlPath;
-            qmlRegisterType(dialogQmlPath, uri, versionMajor, versionMinor, qmlName);
-        }
+        return false;
+    }
+
+    template <class WrapperType>
+    void registerQmlImplementation(QDir qmlDir, const char *qmlName, const char *uri , int versionMajor, int versionMinor)
+    {
+        qCDebug(lcRegistration) << "Register QML version for" << qmlName << "with uri:" << uri;
+
+        QByteArray abstractTypeName = QByteArray("Abstract") + qmlName;
+        qmlRegisterType<WrapperType>(uri, versionMajor, versionMinor, abstractTypeName);
+        QUrl dialogQmlPath =  m_useResources ?
+                    QUrl(QString("qrc:/QtQuick/Dialogs/Default%1.qml").arg(qmlName)) :
+                    QUrl::fromLocalFile(qmlDir.filePath(QString("Default%1.qml").arg(qmlName)));
+        qCDebug(lcRegistration) << "    registering" << qmlName << " as " << dialogQmlPath;
+        qmlRegisterType(dialogQmlPath, uri, versionMajor, versionMinor, qmlName);
     }
 
     QUrl m_decorationComponentUrl;

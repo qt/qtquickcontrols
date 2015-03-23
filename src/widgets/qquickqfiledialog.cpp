@@ -136,6 +136,13 @@ QPlatformFileDialogHelper *QQuickQFileDialog::helper()
     return m_dlgHelper;
 }
 
+QList<QUrl> QQuickQFileDialog::fileUrls() const
+{
+    if (m_dialogHelperInUse)
+        return m_dlgHelper->selectedFiles();
+    return QList<QUrl>();
+}
+
 QFileDialogHelper::QFileDialogHelper() :
     QPlatformFileDialogHelper()
 {

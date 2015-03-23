@@ -168,21 +168,18 @@ Item {
                 onClicked: fileDialog.open()
             }
             Button {
-                text: "Close"
+                text: "Pictures"
+                tooltip: "go to my Pictures directory"
                 anchors.verticalCenter: parent.verticalCenter
-                onClicked: fileDialog.close()
+                enabled: fileDialog.shortcuts.hasOwnProperty("pictures")
+                onClicked: fileDialog.folder = fileDialog.shortcuts.pictures
             }
             Button {
-                text: "go to /tmp"
+                text: "Home"
+                tooltip: "go to my home directory"
                 anchors.verticalCenter: parent.verticalCenter
-                // TODO: QTBUG-29814 This isn't portable, but we don't expose QDir::tempPath to QML yet.
-                onClicked: fileDialog.folder = "/tmp" // file:///tmp would also be OK
-            }
-            Button {
-                text: "home dir"
-                anchors.verticalCenter: parent.verticalCenter
-                // TODO: QTBUG-29814 This isn't portable, but we don't expose QDir::tempPath to QML yet.
-                onClicked: fileDialog.folder = "~"
+                enabled: fileDialog.shortcuts.hasOwnProperty("home")
+                onClicked: fileDialog.folder = fileDialog.shortcuts.home
             }
         }
     }

@@ -84,7 +84,7 @@ public:
     QStringList selectedNameFilterExtensions() const;
     int selectedNameFilterIndex() const;
     QUrl fileUrl() const;
-    virtual QList<QUrl> fileUrls() const;
+    virtual QList<QUrl> fileUrls() const = 0;
     bool sidebarVisible() const { return m_sidebarVisible; }
 
 public Q_SLOTS:
@@ -108,7 +108,7 @@ Q_SIGNALS:
     void sidebarVisibleChanged();
 
 protected:
-    void updateModes();
+    virtual void updateModes();
 
 protected:
     QPlatformFileDialogHelper *m_dlgHelper;

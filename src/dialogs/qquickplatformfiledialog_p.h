@@ -48,11 +48,11 @@
 // We mean it.
 //
 
-#include "qquickabstractfiledialog_p.h"
+#include "qquickfiledialog_p.h"
 
 QT_BEGIN_NAMESPACE
 
-class QQuickPlatformFileDialog : public QQuickAbstractFileDialog
+class QQuickPlatformFileDialog : public QQuickFileDialog
 {
     Q_OBJECT
 
@@ -60,6 +60,7 @@ public:
     QQuickPlatformFileDialog(QObject *parent = 0);
     virtual ~QQuickPlatformFileDialog();
     virtual void setModality(Qt::WindowModality m) Q_DECL_OVERRIDE;
+    virtual QList<QUrl> fileUrls() const Q_DECL_OVERRIDE;
 
 protected:
     QPlatformFileDialogHelper *helper();

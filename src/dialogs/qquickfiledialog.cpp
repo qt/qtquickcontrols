@@ -37,12 +37,17 @@
 #include "qquickfiledialog_p.h"
 #include <QQuickItem>
 #include <QQmlEngine>
+#include <QJSValueIterator>
 #include <private/qguiapplication_p.h>
 #include <private/qv4object_p.h>
 
 QT_BEGIN_NAMESPACE
 
 using namespace QV4;
+
+// Note: documentation comments here are not currently used to generate
+// user documentation, because AbstractFileDialog is not a user-facing type.
+// FileDialog docs go into qquickplatformfiledialog.cpp
 
 /*!
     \qmltype AbstractFileDialog
@@ -111,42 +116,92 @@ QList<QUrl> QQuickFileDialog::fileUrls() const
     return m_selections;
 }
 
-
-void QQuickFileDialog::addShortcut(int &i, const QString &name, const QString &path)
+void QQuickFileDialog::addShortcut(uint &i, const QString &name, const QString &visibleName, const QString &path)
 {
     QJSEngine *engine = qmlEngine(this);
+    QUrl url = QUrl::fromLocalFile(path);
     QJSValue o = engine->newObject();
-    o.setProperty("name", name);
-    o.setProperty("url", QUrl::fromLocalFile(path).toString());
-    m_shortcuts.setProperty(i++, o);
+    o.setProperty("name", visibleName);
+    // TODO maybe some day QJSValue could directly store a QUrl
+    o.setProperty("url", url.toString());
+    m_shortcutDetails.setProperty(name, o);
+    m_shortcuts.setProperty(name, url.toString());
+    ++i;
 }
 
-void QQuickFileDialog::addIfReadable(int &i, const QString &name, QStandardPaths::StandardLocation loc)
+void QQuickFileDialog::maybeAdd(uint &i, const QString &name, const QString &visibleName, QStandardPaths::StandardLocation loc)
 {
-    QStringList paths = QStandardPaths::standardLocations(loc);
-    if (!paths.isEmpty() && QDir(paths.first()).isReadable())
-        addShortcut(i, name, paths.first());
+    if (name.isEmpty() || visibleName.isEmpty())
+        return;
+    QString path;
+    bool usable = false;
+    if (m_selectExisting) {
+        QStringList readPaths = QStandardPaths::standardLocations(loc);
+        if (!readPaths.isEmpty()) {
+            path = readPaths.first();
+            usable = QDir(path).isReadable();
+        }
+    } else {
+        path = QStandardPaths::writableLocation(loc);
+        // There is no QDir::isWritable(), but we can assume that if you don't have
+        // permission to read, you can't write either.  When you actually try to write,
+        // other things can go wrong anyway, and we cannot know until we try.
+        usable = QDir(path).isReadable();
+    }
+    if (usable)
+        addShortcut(i, name, visibleName, path);
+}
+
+void QQuickFileDialog::populateShortcuts()
+{
+    QJSEngine *engine = qmlEngine(this);
+    m_shortcutDetails = engine->newObject();
+    m_shortcuts = engine->newObject();
+    uint i = 0;
+
+    maybeAdd(i, QLatin1String("desktop"), QStandardPaths::displayName(QStandardPaths::DesktopLocation), QStandardPaths::DesktopLocation);
+    maybeAdd(i, QLatin1String("documents"), QStandardPaths::displayName(QStandardPaths::DocumentsLocation), QStandardPaths::DocumentsLocation);
+    maybeAdd(i, QLatin1String("music"), QStandardPaths::displayName(QStandardPaths::MusicLocation), QStandardPaths::MusicLocation);
+    maybeAdd(i, QLatin1String("movies"), QStandardPaths::displayName(QStandardPaths::MoviesLocation), QStandardPaths::MoviesLocation);
+    maybeAdd(i, QLatin1String("pictures"), QStandardPaths::displayName(QStandardPaths::PicturesLocation), QStandardPaths::PicturesLocation);
+    maybeAdd(i, QLatin1String("home"), QStandardPaths::displayName(QStandardPaths::HomeLocation), QStandardPaths::HomeLocation);
+
+#ifdef Q_OS_IOS
+    // PicturesLocation is a special URL, which we cannot check with QDir::isReadable()
+    if (m_selectExisting)
+        addShortcut(i, QLatin1String("pictures"), QStandardPaths::displayName(QStandardPaths::PicturesLocation),
+                    QStandardPaths::standardLocations(QStandardPaths::PicturesLocation).last());
+#else
+    // on iOS, this returns only "/", which is never a useful path to read or write anything
+    QFileInfoList drives = QDir::drives();
+    foreach (QFileInfo fi, drives)
+        addShortcut(i, fi.absoluteFilePath(), fi.absoluteFilePath(), fi.absoluteFilePath());
+#endif
+
+    m_shortcutDetails.setProperty(QLatin1String("length"), i);
+    emit shortcutsChanged();
+}
+
+void QQuickFileDialog::updateModes()
+{
+    QQuickAbstractFileDialog::updateModes();
+    populateShortcuts();
 }
 
 QJSValue QQuickFileDialog::shortcuts()
 {
-    if (m_shortcuts.isUndefined()) {
-        QJSEngine *engine = qmlEngine(this);
-        m_shortcuts = engine->newArray();
-        int i = 0;
+    if (m_shortcuts.isUndefined())
+        populateShortcuts();
 
-        addIfReadable(i, "Desktop", QStandardPaths::DesktopLocation);
-        addIfReadable(i, "Documents", QStandardPaths::DocumentsLocation);
-        addIfReadable(i, "Music", QStandardPaths::MusicLocation);
-        addIfReadable(i, "Movies", QStandardPaths::MoviesLocation);
-        addIfReadable(i, "Pictures", QStandardPaths::PicturesLocation);
-        addIfReadable(i, "Home", QStandardPaths::HomeLocation);
-
-        QFileInfoList drives = QDir::drives();
-        foreach (QFileInfo fi, drives)
-            addShortcut(i, fi.absoluteFilePath(), fi.absoluteFilePath());
-    }
     return m_shortcuts;
+}
+
+QJSValue QQuickFileDialog::__shortcuts()
+{
+    if (m_shortcutDetails.isUndefined())
+        populateShortcuts();
+
+    return m_shortcutDetails;
 }
 
 /*!

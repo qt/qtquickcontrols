@@ -194,13 +194,6 @@ QUrl QQuickAbstractFileDialog::fileUrl() const
     return (urls.count() == 1) ? urls[0] : QUrl();
 }
 
-QList<QUrl> QQuickAbstractFileDialog::fileUrls() const
-{
-    if (m_dlgHelper)
-        return m_dlgHelper->selectedFiles();
-    return QList<QUrl>();
-}
-
 void QQuickAbstractFileDialog::updateModes()
 {
     // The 4 possible modes are AnyFile, ExistingFile, Directory, ExistingFiles

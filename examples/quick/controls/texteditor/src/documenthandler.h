@@ -122,6 +122,7 @@ public Q_SLOTS:
 
     void setFileUrl(const QUrl &arg);
     void setText(const QString &arg);
+    void saveAs(const QUrl &arg, const QString &fileType);
 
     void setDocumentTitle(QString arg);
 
@@ -146,6 +147,7 @@ Q_SIGNALS:
 
     void textChanged();
     void documentTitleChanged();
+    void error(QString message);
 
 private:
     void reset();

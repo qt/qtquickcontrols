@@ -67,6 +67,7 @@ QT_BEGIN_NAMESPACE
     FileDialog {
         id: fileDialog
         title: "Please choose a file"
+        folder: shortcuts.home
         onAccepted: {
             console.log("You chose: " + fileDialog.fileUrls)
             Qt.quit()
@@ -94,10 +95,10 @@ QT_BEGIN_NAMESPACE
     will automatically be wrapped in a Window if possible, or simply reparented
     on top of the main window if there can only be one window.
 
-    The QML implementation has a sidebar containing shortcuts to common
-    platform-specific locations, and user-modifiable shortcuts. It uses
-    application-specific \l {Qt.labs.settings}{settings} to store
-    these bookmarks, as well as other user-modifiable state, such as whether or
+    The QML implementation has a sidebar containing \l shortcuts to common
+    platform-specific locations, and user-modifiable favorites. It uses
+    application-specific \l {Qt.labs.settings}{settings} to store the user's
+    favorites, as well as other user-modifiable state, such as whether or
     not the sidebar is shown, the positions of the splitters, and the dialog
     size. The settings are stored in a section called \c QQControlsFileDialog
     of the application-specific \l QSettings. For example when testing an
@@ -148,20 +149,19 @@ QT_BEGIN_NAMESPACE
     \class QQuickPlatformFileDialog
     \inmodule QtQuick.Dialogs
     \internal
+    \since 5.1
 
     \brief The QQuickPlatformFileDialog class provides a file dialog
 
     The dialog is implemented via the QPlatformFileDialogHelper when possible;
     otherwise it falls back to a QFileDialog or a QML implementation.
-
-    \since 5.1
 */
 
 /*!
     Constructs a file dialog with parent window \a parent.
 */
 QQuickPlatformFileDialog::QQuickPlatformFileDialog(QObject *parent) :
-    QQuickAbstractFileDialog(parent)
+    QQuickFileDialog(parent)
 {
 }
 
@@ -173,6 +173,13 @@ QQuickPlatformFileDialog::~QQuickPlatformFileDialog()
     if (m_dlgHelper)
         m_dlgHelper->hide();
     delete m_dlgHelper;
+}
+
+QList<QUrl> QQuickPlatformFileDialog::fileUrls() const
+{
+    if (m_dialogHelperInUse)
+        return m_dlgHelper->selectedFiles();
+    return QQuickFileDialog::fileUrls();
 }
 
 void QQuickPlatformFileDialog::setModality(Qt::WindowModality m)
@@ -297,6 +304,49 @@ QPlatformFileDialogHelper *QQuickPlatformFileDialog::helper()
     The value of this property is also updated after the dialog is closed.
 
     By default, the url is empty.
+
+    \sa shortcuts
+*/
+
+/*!
+    \qmlproperty Object FileDialog::shortcuts
+    \since 5.5
+
+    A map of some useful paths from QStandardPaths to their URLs.
+    Each path is verified to exist on the user's computer before being added
+    to this list, at the time when the FileDialog is created.
+
+    \table
+    \row
+    \li \c desktop
+    \li \l QStandardPaths::DesktopLocation
+    \li The user's desktop directory.
+    \row
+    \li \c documents
+    \li \l QStandardPaths::DocumentsLocation
+    \li The directory containing user document files.
+    \row
+    \li \c home
+    \li \l QStandardPaths::HomeLocation
+    \li The user's home directory.
+    \row
+    \li \c music
+    \li \l QStandardPaths::MusicLocation
+    \li The directory containing the user's music or other audio files.
+    \row
+    \li \c movies
+    \li \l QStandardPaths::MoviesLocation
+    \li The directory containing the user's movies and videos.
+    \row
+    \li \c pictures
+    \li \l QStandardPaths::PicturesLocation
+    \li The directory containing the user's pictures or photos.  It is always
+        a kind of \c file: URL; but on some platforms, it will be specialized,
+        such that the FileDialog will be realized as a gallery browser dialog.
+    \endtable
+
+    For example, \c shortcuts.home will provide the URL of the user's
+    home directory.
 */
 
 /*!
@@ -349,13 +399,12 @@ QPlatformFileDialogHelper *QQuickPlatformFileDialog::helper()
 
 /*!
     \qmlproperty bool FileDialog::sidebarVisible
+    \since 5.4
 
     This property holds whether the sidebar in the dialog containing shortcuts
     and bookmarks is visible. By default it depends on the setting stored in
     the \c QQControlsFileDialog section of the application's
     \l {Qt.labs.settings}{Settings}.
-
-    \since 5.4
 */
 
 QT_END_NAMESPACE

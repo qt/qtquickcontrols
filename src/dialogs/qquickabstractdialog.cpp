@@ -65,6 +65,7 @@ QQuickAbstractDialog::QQuickAbstractDialog(QObject *parent)
         hasCapability(QPlatformIntegration::WindowManagement))
     , m_hasAspiredPosition(false)
     , m_visibleChangedConnected(false)
+    , m_dialogHelperInUse(false)
 {
 }
 
@@ -76,110 +77,127 @@ void QQuickAbstractDialog::setVisible(bool v)
 {
     if (m_visible == v) return;
     m_visible = v;
-    if (helper()) {
-        qCDebug(lcWindow) << "via helper" << helper();
-        if (v) {
-            Qt::WindowFlags flags = Qt::Dialog;
-            if (!title().isEmpty())
-                flags |= Qt::WindowTitleHint;
-            m_visible = helper()->show(flags, m_modality, parentWindow());
-        } else {
-            helper()->hide();
-        }
-    } else {
-        // Pure QML implementation: wrap the contentItem in a window, or fake it
-        if (!m_dialogWindow && m_contentItem) {
-            if (m_hasNativeWindows)
-                m_dialogWindow = m_contentItem->window();
-            // An Item-based dialog implementation doesn't come with a window, so
-            // we have to instantiate one iff the platform allows it.
-            if (!m_dialogWindow && m_hasNativeWindows) {
-                QQuickWindow *win = new QQuickWindow;
-                ((QObject *)win)->setParent(this); // memory management only
-                win->setFlags(Qt::Dialog);
-                m_dialogWindow = win;
-                m_contentItem->setParentItem(win->contentItem());
-                QSize minSize = QSize(m_contentItem->implicitWidth(), m_contentItem->implicitHeight());
-                QVariant minHeight = m_contentItem->property("minimumHeight");
-                if (minHeight.isValid()) {
-                    if (minHeight.toInt() > minSize.height())
-                        minSize.setHeight(minHeight.toDouble());
-                    connect(m_contentItem, SIGNAL(minimumHeightChanged()), this, SLOT(minimumHeightChanged()));
-                }
-                QVariant minWidth = m_contentItem->property("minimumWidth");
-                if (minWidth.isValid()) {
-                    if (minWidth.toInt() > minSize.width())
-                        minSize.setWidth(minWidth.toInt());
-                    connect(m_contentItem, SIGNAL(minimumWidthChanged()), this, SLOT(minimumWidthChanged()));
-                }
-                m_dialogWindow->setMinimumSize(minSize);
-                connect(win, SIGNAL(widthChanged(int)), this, SLOT(windowGeometryChanged()));
-                connect(win, SIGNAL(heightChanged(int)), this, SLOT(windowGeometryChanged()));
-                qCDebug(lcWindow) << "created window" << win;
-            }
 
-            if (!m_dialogWindow) {
-                if (Q_UNLIKELY(!parentWindow())) {
-                    qWarning("cannot set dialog visible: no window");
+    if (m_dialogHelperInUse || v) {
+        // To show the dialog, we first check if there is a dialog helper that can be used
+        // and that show succeeds given the current configuration. Otherwise we fall back
+        // to use the pure QML version.
+        if (QPlatformDialogHelper *dialogHelper = helper()) {
+            if (v) {
+                Qt::WindowFlags flags = Qt::Dialog;
+                if (!title().isEmpty())
+                    flags |= Qt::WindowTitleHint;
+                if (dialogHelper->show(flags, m_modality, parentWindow())) {
+                    qCDebug(lcWindow) << "Show dialog using helper:" << dialogHelper;
+                    m_dialogHelperInUse = true;
+                    emit visibilityChanged();
                     return;
                 }
-                m_dialogWindow = parentWindow();
-
-                // If the platform does not support multiple windows, but the dialog is
-                // implemented as an Item, then try to decorate it as a fake window and make it visible.
-                if (!m_windowDecoration) {
-                    if (m_decorationComponent) {
-                        if (m_decorationComponent->isLoading())
-                            connect(m_decorationComponent, SIGNAL(statusChanged(QQmlComponent::Status)),
-                                    this, SLOT(decorationLoaded()));
-                        else
-                            decorationLoaded(); // do the reparenting of contentItem on top of it
-                    }
-                    // Window decoration wasn't possible, so just reparent it into the scene
-                    else {
-                        qCDebug(lcWindow) << "no window and no decoration";
-                        m_contentItem->setParentItem(parentWindow()->contentItem());
-                        m_contentItem->setZ(10000);
-                    }
-                }
+            } else {
+                qCDebug(lcWindow) << "Hide dialog using helper:" << dialogHelper;
+                dialogHelper->hide();
+                emit visibilityChanged();
+                return;
             }
-        }
-        if (m_dialogWindow) {
-            // "grow up" to the size and position expected to achieve
-            if (!m_sizeAspiration.isNull()) {
-                if (m_hasAspiredPosition) {
-                    qCDebug(lcWindow) << "geometry aspiration" << m_sizeAspiration;
-                    m_dialogWindow->setGeometry(m_sizeAspiration);
-                } else {
-                    qCDebug(lcWindow) << "size aspiration" << m_sizeAspiration.size();
-                    if (m_sizeAspiration.width() > 0)
-                        m_dialogWindow->setWidth(m_sizeAspiration.width());
-                    if (m_sizeAspiration.height() > 0)
-                        m_dialogWindow->setHeight(m_sizeAspiration.height());
-                }
-                connect(m_dialogWindow, SIGNAL(xChanged(int)), this, SLOT(setX(int)));
-                connect(m_dialogWindow, SIGNAL(yChanged(int)), this, SLOT(setY(int)));
-                connect(m_dialogWindow, SIGNAL(widthChanged(int)), this, SLOT(setWidth(int)));
-                connect(m_dialogWindow, SIGNAL(heightChanged(int)), this, SLOT(setHeight(int)));
-                connect(m_contentItem, SIGNAL(implicitHeightChanged()), this, SLOT(implicitHeightChanged()));
-            }
-            if (!m_visibleChangedConnected) {
-                connect(m_dialogWindow, SIGNAL(visibleChanged(bool)), this, SLOT(visibleChanged(bool)));
-                m_visibleChangedConnected = true;
-            }
-        }
-        if (m_windowDecoration) {
-            m_windowDecoration->setProperty("dismissOnOuterClick", (m_modality == Qt::NonModal));
-            m_windowDecoration->setVisible(v);
-        } else if (m_dialogWindow) {
-            if (v) {
-                m_dialogWindow->setTransientParent(parentWindow());
-                m_dialogWindow->setTitle(title());
-                m_dialogWindow->setModality(m_modality);
-            }
-            m_dialogWindow->setVisible(v);
         }
     }
+
+    qCDebug(lcWindow) << "Show/hide dialog using pure QML";
+    m_dialogHelperInUse = false;
+
+    // Pure QML implementation: wrap the contentItem in a window, or fake it
+    if (!m_dialogWindow && m_contentItem) {
+        if (m_hasNativeWindows)
+            m_dialogWindow = m_contentItem->window();
+        // An Item-based dialog implementation doesn't come with a window, so
+        // we have to instantiate one iff the platform allows it.
+        if (!m_dialogWindow && m_hasNativeWindows) {
+            QQuickWindow *win = new QQuickWindow;
+            ((QObject *)win)->setParent(this); // memory management only
+            win->setFlags(Qt::Dialog);
+            m_dialogWindow = win;
+            m_contentItem->setParentItem(win->contentItem());
+            QSize minSize = QSize(m_contentItem->implicitWidth(), m_contentItem->implicitHeight());
+            QVariant minHeight = m_contentItem->property("minimumHeight");
+            if (minHeight.isValid()) {
+                if (minHeight.toInt() > minSize.height())
+                    minSize.setHeight(minHeight.toDouble());
+                connect(m_contentItem, SIGNAL(minimumHeightChanged()), this, SLOT(minimumHeightChanged()));
+            }
+            QVariant minWidth = m_contentItem->property("minimumWidth");
+            if (minWidth.isValid()) {
+                if (minWidth.toInt() > minSize.width())
+                    minSize.setWidth(minWidth.toInt());
+                connect(m_contentItem, SIGNAL(minimumWidthChanged()), this, SLOT(minimumWidthChanged()));
+            }
+            m_dialogWindow->setMinimumSize(minSize);
+            connect(win, SIGNAL(widthChanged(int)), this, SLOT(windowGeometryChanged()));
+            connect(win, SIGNAL(heightChanged(int)), this, SLOT(windowGeometryChanged()));
+            qCDebug(lcWindow) << "created window" << win;
+        }
+
+        if (!m_dialogWindow) {
+            if (Q_UNLIKELY(!parentWindow())) {
+                qWarning("cannot set dialog visible: no window");
+                return;
+            }
+            m_dialogWindow = parentWindow();
+
+            // If the platform does not support multiple windows, but the dialog is
+            // implemented as an Item, then try to decorate it as a fake window and make it visible.
+            if (!m_windowDecoration) {
+                if (m_decorationComponent) {
+                    if (m_decorationComponent->isLoading())
+                        connect(m_decorationComponent, SIGNAL(statusChanged(QQmlComponent::Status)),
+                                this, SLOT(decorationLoaded()));
+                    else
+                        decorationLoaded(); // do the reparenting of contentItem on top of it
+                }
+                // Window decoration wasn't possible, so just reparent it into the scene
+                else {
+                    qCDebug(lcWindow) << "no window and no decoration";
+                    m_contentItem->setParentItem(parentWindow()->contentItem());
+                    m_contentItem->setZ(10000);
+                }
+            }
+        }
+    }
+    if (m_dialogWindow) {
+        // "grow up" to the size and position expected to achieve
+        if (!m_sizeAspiration.isNull()) {
+            if (m_hasAspiredPosition) {
+                qCDebug(lcWindow) << "geometry aspiration" << m_sizeAspiration;
+                m_dialogWindow->setGeometry(m_sizeAspiration);
+            } else {
+                qCDebug(lcWindow) << "size aspiration" << m_sizeAspiration.size();
+                if (m_sizeAspiration.width() > 0)
+                    m_dialogWindow->setWidth(m_sizeAspiration.width());
+                if (m_sizeAspiration.height() > 0)
+                    m_dialogWindow->setHeight(m_sizeAspiration.height());
+            }
+            connect(m_dialogWindow, SIGNAL(xChanged(int)), this, SLOT(setX(int)));
+            connect(m_dialogWindow, SIGNAL(yChanged(int)), this, SLOT(setY(int)));
+            connect(m_dialogWindow, SIGNAL(widthChanged(int)), this, SLOT(setWidth(int)));
+            connect(m_dialogWindow, SIGNAL(heightChanged(int)), this, SLOT(setHeight(int)));
+            connect(m_contentItem, SIGNAL(implicitHeightChanged()), this, SLOT(implicitHeightChanged()));
+        }
+        if (!m_visibleChangedConnected) {
+            connect(m_dialogWindow, SIGNAL(visibleChanged(bool)), this, SLOT(visibleChanged(bool)));
+            m_visibleChangedConnected = true;
+        }
+    }
+    if (m_windowDecoration) {
+        m_windowDecoration->setProperty("dismissOnOuterClick", (m_modality == Qt::NonModal));
+        m_windowDecoration->setVisible(v);
+    } else if (m_dialogWindow) {
+        if (v) {
+            m_dialogWindow->setTransientParent(parentWindow());
+            m_dialogWindow->setTitle(title());
+            m_dialogWindow->setModality(m_modality);
+        }
+        m_dialogWindow->setVisible(v);
+    }
+
     emit visibilityChanged();
 }
 
