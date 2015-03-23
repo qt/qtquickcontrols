@@ -329,7 +329,7 @@ Item {
             tree.destroy()
         }
 
-        function test_selection_singleSelection()
+        function disabled_selection_singleSelection()
         {
             var component = Qt.createComponent("treeview/treeview_1.qml")
             compare(component.status, Component.Ready)
@@ -458,7 +458,7 @@ Item {
             tree.destroy()
         }
 
-        function test_selection_multiSelection()
+        function disabled_selection_multiSelection()
         {
             var component = Qt.createComponent("treeview/treeview_1.qml")
             compare(component.status, Component.Ready)
@@ -569,7 +569,7 @@ Item {
             tree.destroy()
         }
 
-        function test_selection_extendedSelection()
+        function disabled_selection_extendedSelection()
         {
             var component = Qt.createComponent("treeview/treeview_1.qml")
             compare(component.status, Component.Ready)
@@ -657,7 +657,7 @@ Item {
             tree.destroy()
         }
 
-        function test_selection_contiguousSelection()
+        function disabled_selection_contiguousSelection()
         {
             var component = Qt.createComponent("treeview/treeview_1.qml")
             compare(component.status, Component.Ready)
