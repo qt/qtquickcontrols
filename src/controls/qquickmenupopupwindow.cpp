@@ -80,10 +80,19 @@ void QQuickMenuPopupWindow::setParentWindow(QWindow *effectiveParentWindow, QQui
         setTransientParent(effectiveParentWindow);
     m_logicalParentWindow = parentWindow;
     if (parentWindow) {
-        connect(parentWindow, SIGNAL(destroyed()), this, SLOT(dismissPopup()));
-        if (QQuickMenuPopupWindow *pw = qobject_cast<QQuickMenuPopupWindow *>(parentWindow))
+        if (QQuickMenuPopupWindow *pw = qobject_cast<QQuickMenuPopupWindow *>(parentWindow)) {
             connect(pw, SIGNAL(popupDismissed()), this, SLOT(dismissPopup()));
+            connect(pw, SIGNAL(willBeDeletedLater()), this, SLOT(setToBeDeletedLater()));
+        } else {
+            connect(parentWindow, SIGNAL(destroyed()), this, SLOT(deleteLater()));
+        }
     }
+}
+
+void QQuickMenuPopupWindow::setToBeDeletedLater()
+{
+    deleteLater();
+    emit willBeDeletedLater();
 }
 
 void QQuickMenuPopupWindow::setGeometry(int posx, int posy, int w, int h)

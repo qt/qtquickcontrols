@@ -428,6 +428,7 @@ void QQuickMenu::__popup(const QRectF &targetRect, int atItemIndex, MenuType men
 
         connect(m_popupWindow, SIGNAL(visibleChanged(bool)), this, SLOT(windowVisibleChanged(bool)));
         connect(m_popupWindow, SIGNAL(geometryChanged()), this, SIGNAL(__popupGeometryChanged()));
+        connect(m_popupWindow, SIGNAL(willBeDeletedLater()), this, SLOT(clearPopupWindow()));
 
         m_popupWindow->setPosition(targetRect.x() + m_xOffset + renderOffset.x(),
                                    targetRect.y() + targetRect.height() + m_yOffset + renderOffset.y());
@@ -468,32 +469,55 @@ void QQuickMenu::__closeMenu()
     emit __menuClosed();
 }
 
+QQuickMenuPopupWindow *QQuickMenu::topMenuPopup() const
+{
+    QQuickMenuPopupWindow *topMenuWindow = m_popupWindow;
+    while (topMenuWindow) {
+        QQuickMenuPopupWindow *pw = qobject_cast<QQuickMenuPopupWindow *>(topMenuWindow->transientParent());
+        if (!pw)
+            return topMenuWindow;
+        topMenuWindow = pw;
+    }
+
+    return 0;
+}
+
 void QQuickMenu::__dismissMenu()
 {
     if (m_platformMenu) {
         m_platformMenu->dismiss();
-    } else {
-        QQuickMenuPopupWindow *topMenuWindow = m_popupWindow;
-        while (topMenuWindow) {
-            QQuickMenuPopupWindow *pw = qobject_cast<QQuickMenuPopupWindow *>(topMenuWindow->transientParent());
-            if (!pw)
-                topMenuWindow->dismissPopup();
-            topMenuWindow = pw;
-        }
+    } else if (QQuickMenuPopupWindow *topPopup = topMenuPopup()) {
+        topPopup->dismissPopup();
     }
 }
 
 void QQuickMenu::windowVisibleChanged(bool v)
 {
     if (!v) {
-        if (qobject_cast<QQuickMenuPopupWindow *>(m_popupWindow->transientParent())) {
+        if (m_popupWindow && qobject_cast<QQuickMenuPopupWindow *>(m_popupWindow->transientParent())) {
             m_popupWindow->transientParent()->setMouseGrabEnabled(true);
             m_popupWindow->transientParent()->setKeyboardGrabEnabled(true);
         }
-        m_popupWindow->deleteLater();
-        m_popupWindow = 0;
         __closeMenu();
     }
+}
+
+void QQuickMenu::clearPopupWindow()
+{
+    m_popupWindow = 0;
+    emit __menuPopupDestroyed();
+}
+
+void QQuickMenu::__destroyMenuPopup()
+{
+    if (m_popupWindow)
+        m_popupWindow->setToBeDeletedLater();
+}
+
+void QQuickMenu::__destroyAllMenuPopups() {
+    QQuickMenuPopupWindow *popup = topMenuPopup();
+    if (popup)
+        popup->setToBeDeletedLater();
 }
 
 void QQuickMenu::itemIndexToListIndex(int itemIndex, int *listIndex, int *containerIndex) const

@@ -628,6 +628,7 @@ Control {
         function toggleShow() {
             if (popup.__popupVisible) {
                 popup.__dismissMenu()
+                popup.__destroyAllMenuPopups()
             } else {
                 if (items[__selectedIndex])
                     items[__selectedIndex].checked = true

@@ -50,9 +50,15 @@ public:
 
     void setParentItem(QQuickItem *);
 
+public Q_SLOTS:
+    void setToBeDeletedLater();
+
 protected Q_SLOTS:
     void updateSize();
     void updatePosition();
+
+Q_SIGNALS:
+    void willBeDeletedLater();
 
 protected:
     void exposeEvent(QExposeEvent *);

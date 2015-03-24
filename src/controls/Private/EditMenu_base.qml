@@ -102,9 +102,11 @@ Item {
             input.activate()
 
             if (control.menu) {
-                getMenuInstance().__dismissMenu();
+                var menu = getMenuInstance();
+                menu.__dismissMenu();
+                menu.__destroyAllMenuPopups();
                 var menuPos = mapToItem(null, mouse.x, mouse.y)
-                getMenuInstance().__popup(Qt.rect(menuPos.x, menuPos.y, 0, 0), -1, MenuPrivate.EditMenu);
+                menu.__popup(Qt.rect(menuPos.x, menuPos.y, 0, 0), -1, MenuPrivate.EditMenu);
             }
         }
     }

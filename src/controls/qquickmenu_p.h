@@ -88,6 +88,8 @@ public:
 public Q_SLOTS:
     void __closeMenu();
     void __dismissMenu();
+    void __destroyMenuPopup();
+    void __destroyAllMenuPopups();
 
 Q_SIGNALS:
     void itemsChanged();
@@ -95,6 +97,7 @@ Q_SIGNALS:
 
     void __selectedIndexChanged();
     void __menuClosed();
+    void __menuPopupDestroyed();
     void popupVisibleChanged();
     void __popupGeometryChanged();
     void menuContentItemChanged();
@@ -140,6 +143,7 @@ protected Q_SLOTS:
 
     void setMenuContentItem(QQuickItem *);
     void setPopupVisible(bool);
+    void clearPopupWindow();
 
     void updateText();
     void windowVisibleChanged(bool);
@@ -147,6 +151,7 @@ protected Q_SLOTS:
 private:
     QQuickWindow *findParentWindow();
     void syncParentMenuBar();
+    QQuickMenuPopupWindow *topMenuPopup() const;
 
     int itemIndexForListIndex(int listIndex) const;
     void itemIndexToListIndex(int, int *, int *) const;

@@ -256,8 +256,9 @@ MenuBarPrivate {
                                                    menuBarLoader.height - d.heightPadding, 0, 0), 0)
                                 if (d.preselectMenuItem)
                                     __menuItem.__currentIndex = 0
-                            } else {
-                                __menuItem.__closeMenu()
+                            } else if (__menuItem.__popupVisible) {
+                                __menuItem.__dismissMenu()
+                                __menuItem.__destroyAllMenuPopups()
                             }
                         }
                     }
