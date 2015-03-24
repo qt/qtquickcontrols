@@ -116,7 +116,7 @@ QList<QUrl> QQuickFileDialog::fileUrls() const
     return m_selections;
 }
 
-void QQuickFileDialog::addShortcut(uint &i, const QString &name, const QString &visibleName, const QString &path)
+void QQuickFileDialog::addShortcut(const QString &name, const QString &visibleName, const QString &path)
 {
     QJSEngine *engine = qmlEngine(this);
     QUrl url = QUrl::fromLocalFile(path);
@@ -124,12 +124,12 @@ void QQuickFileDialog::addShortcut(uint &i, const QString &name, const QString &
     o.setProperty("name", visibleName);
     // TODO maybe some day QJSValue could directly store a QUrl
     o.setProperty("url", url.toString());
-    m_shortcutDetails.setProperty(name, o);
     m_shortcuts.setProperty(name, url.toString());
-    ++i;
+    int length = m_shortcutDetails.property(QLatin1String("length")).toInt();
+    m_shortcutDetails.setProperty(length, o);
 }
 
-void QQuickFileDialog::maybeAdd(uint &i, const QString &name, const QString &visibleName, QStandardPaths::StandardLocation loc)
+void QQuickFileDialog::maybeAdd(const QString &name, const QString &visibleName, QStandardPaths::StandardLocation loc)
 {
     if (name.isEmpty() || visibleName.isEmpty())
         return;
@@ -149,36 +149,34 @@ void QQuickFileDialog::maybeAdd(uint &i, const QString &name, const QString &vis
         usable = QDir(path).isReadable();
     }
     if (usable)
-        addShortcut(i, name, visibleName, path);
+        addShortcut(name, visibleName, path);
 }
 
 void QQuickFileDialog::populateShortcuts()
 {
     QJSEngine *engine = qmlEngine(this);
-    m_shortcutDetails = engine->newObject();
+    m_shortcutDetails = engine->newArray();
     m_shortcuts = engine->newObject();
-    uint i = 0;
 
-    maybeAdd(i, QLatin1String("desktop"), QStandardPaths::displayName(QStandardPaths::DesktopLocation), QStandardPaths::DesktopLocation);
-    maybeAdd(i, QLatin1String("documents"), QStandardPaths::displayName(QStandardPaths::DocumentsLocation), QStandardPaths::DocumentsLocation);
-    maybeAdd(i, QLatin1String("music"), QStandardPaths::displayName(QStandardPaths::MusicLocation), QStandardPaths::MusicLocation);
-    maybeAdd(i, QLatin1String("movies"), QStandardPaths::displayName(QStandardPaths::MoviesLocation), QStandardPaths::MoviesLocation);
-    maybeAdd(i, QLatin1String("pictures"), QStandardPaths::displayName(QStandardPaths::PicturesLocation), QStandardPaths::PicturesLocation);
-    maybeAdd(i, QLatin1String("home"), QStandardPaths::displayName(QStandardPaths::HomeLocation), QStandardPaths::HomeLocation);
+    maybeAdd(QLatin1String("desktop"), QStandardPaths::displayName(QStandardPaths::DesktopLocation), QStandardPaths::DesktopLocation);
+    maybeAdd(QLatin1String("documents"), QStandardPaths::displayName(QStandardPaths::DocumentsLocation), QStandardPaths::DocumentsLocation);
+    maybeAdd(QLatin1String("music"), QStandardPaths::displayName(QStandardPaths::MusicLocation), QStandardPaths::MusicLocation);
+    maybeAdd(QLatin1String("movies"), QStandardPaths::displayName(QStandardPaths::MoviesLocation), QStandardPaths::MoviesLocation);
+    maybeAdd(QLatin1String("pictures"), QStandardPaths::displayName(QStandardPaths::PicturesLocation), QStandardPaths::PicturesLocation);
+    maybeAdd(QLatin1String("home"), QStandardPaths::displayName(QStandardPaths::HomeLocation), QStandardPaths::HomeLocation);
 
 #ifdef Q_OS_IOS
     // PicturesLocation is a special URL, which we cannot check with QDir::isReadable()
     if (m_selectExisting)
-        addShortcut(i, QLatin1String("pictures"), QStandardPaths::displayName(QStandardPaths::PicturesLocation),
+        addShortcut(QLatin1String("pictures"), QStandardPaths::displayName(QStandardPaths::PicturesLocation),
                     QStandardPaths::standardLocations(QStandardPaths::PicturesLocation).last());
 #else
     // on iOS, this returns only "/", which is never a useful path to read or write anything
     QFileInfoList drives = QDir::drives();
     foreach (QFileInfo fi, drives)
-        addShortcut(i, fi.absoluteFilePath(), fi.absoluteFilePath(), fi.absoluteFilePath());
+        addShortcut(fi.absoluteFilePath(), fi.absoluteFilePath(), fi.absoluteFilePath());
 #endif
 
-    m_shortcutDetails.setProperty(QLatin1String("length"), i);
     emit shortcutsChanged();
 }
 

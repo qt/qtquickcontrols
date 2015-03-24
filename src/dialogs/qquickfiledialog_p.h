@@ -83,8 +83,8 @@ protected:
     Q_INVOKABLE QUrl pathToUrl(const QString &path) { return QUrl::fromLocalFile(path); }
     Q_INVOKABLE QUrl pathFolder(const QString &path);
 
-    void addShortcut(uint &i, const QString &name, const QString &visibleName, const QString &path);
-    void maybeAdd(uint &i, const QString &name, const QString &visibleName, QStandardPaths::StandardLocation loc);
+    void addShortcut(const QString &name, const QString &visibleName, const QString &path);
+    void maybeAdd(const QString &name, const QString &visibleName, QStandardPaths::StandardLocation loc);
     void populateShortcuts();
     void updateModes() Q_DECL_OVERRIDE;
 

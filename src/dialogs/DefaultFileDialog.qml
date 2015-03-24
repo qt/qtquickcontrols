@@ -187,7 +187,7 @@ AbstractFileDialog {
                                 height: shortcutLabel.implicitHeight * 1.5
                                 Text {
                                     id: shortcutLabel
-                                    text: __shortcuts[Object.keys(__shortcuts)[index]].name
+                                    text: __shortcuts[index].name
                                     anchors {
                                         verticalCenter: parent.verticalCenter
                                         left: parent.left
@@ -204,7 +204,7 @@ AbstractFileDialog {
                                 }
                                 MouseArea {
                                     anchors.fill: parent
-                                    onClicked: root.folder = __shortcuts[Object.keys(__shortcuts)[index]].url
+                                    onClicked: root.folder = __shortcuts[index].url
                                 }
                             }
                         }
