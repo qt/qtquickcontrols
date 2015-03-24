@@ -189,7 +189,7 @@ MenuBarPrivate {
         Keys.onLeftPressed: {
             if (d.openedMenuIndex > 0) {
                 var idx = d.openedMenuIndex - 1
-                while (idx >= 0 && !root.menus[idx].enabled)
+                while (idx >= 0 && !(root.menus[idx].enabled && root.menus[idx].visible))
                     idx--
                 if (idx >= 0) {
                     d.preselectMenuItem = true
@@ -203,7 +203,7 @@ MenuBarPrivate {
         Keys.onRightPressed: {
             if (d.openedMenuIndex !== -1 && d.openedMenuIndex < root.menus.length - 1) {
                 var idx = d.openedMenuIndex + 1
-                while (idx < root.menus.length && !root.menus[idx].enabled)
+                while (idx < root.menus.length && !(root.menus[idx].enabled && root.menus[idx].visible))
                     idx++
                 if (idx < root.menus.length) {
                     d.preselectMenuItem = true

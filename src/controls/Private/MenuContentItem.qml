@@ -71,7 +71,7 @@ Loader {
 
         function canBeHovered(index) {
             var item = content.menuItemAt(index)
-            if (item && item.styleData.type !== MenuItemType.Separator && item.styleData.enabled) {
+            if (item && item.visible && item.styleData.type !== MenuItemType.Separator && item.styleData.enabled) {
                 __menu.__currentIndex = index
                 return true
             }
