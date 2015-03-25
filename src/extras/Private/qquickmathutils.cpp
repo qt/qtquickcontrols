@@ -98,8 +98,8 @@ qreal QQuickMathUtils::radToDegOffset(qreal radians) const {
 QPointF QQuickMathUtils::centerAlongCircle(qreal xCenter, qreal yCenter,
     qreal width, qreal height, qreal angleOnCircle, qreal distanceAlongRadius) const {
     return QPointF(
-        (xCenter - width / 2) + (distanceAlongRadius * cos(angleOnCircle)),
-        (yCenter - height / 2) + (distanceAlongRadius * sin(angleOnCircle)));
+        (xCenter - width / 2) + (distanceAlongRadius * qCos(angleOnCircle)),
+        (yCenter - height / 2) + (distanceAlongRadius * qSin(angleOnCircle)));
 }
 
 /*!
