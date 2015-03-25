@@ -34,47 +34,42 @@
 **
 ****************************************************************************/
 
-#ifndef QQUICKCONTROLSPRIVATE_P_H
-#define QQUICKCONTROLSPRIVATE_P_H
-
-#include "qqml.h"
-#include "qquicktooltip_p.h"
-#include "qquickcontrolsettings_p.h"
+#include "qquickcontrolsprivate_p.h"
+#include <qquickitem.h>
+#include <qquickwindow.h>
 
 QT_BEGIN_NAMESPACE
 
-class QQuickWindow;
-
-class QQuickControlsPrivateAttached : public QObject
+QQuickControlsPrivateAttached::QQuickControlsPrivateAttached(QObject *attachee)
+    : m_attachee(qobject_cast<QQuickItem*>(attachee))
 {
-    Q_OBJECT
-    Q_PROPERTY(QQuickWindow* window READ window NOTIFY windowChanged)
+    if (m_attachee)
+        connect(m_attachee, &QQuickItem::windowChanged, this, &QQuickControlsPrivateAttached::windowChanged);
+}
 
-public:
-    QQuickControlsPrivateAttached(QObject* attachee);
-
-    QQuickWindow *window() const;
-
-Q_SIGNALS:
-    void windowChanged();
-
-private:
-    QQuickItem* m_attachee;
-};
-
-class QQuickControlsPrivate : public QObject
+QQuickWindow *QQuickControlsPrivateAttached::window() const
 {
-    Q_OBJECT
+    return m_attachee ? m_attachee->window() : 0;
+}
 
-public:
-    static QObject *registerTooltipModule(QQmlEngine *engine, QJSEngine *jsEngine);
-    static QObject *registerSettingsModule(QQmlEngine *engine, QJSEngine *jsEngine);
+QObject *QQuickControlsPrivate::registerTooltipModule(QQmlEngine *engine, QJSEngine *jsEngine)
+{
+    Q_UNUSED(engine);
+    Q_UNUSED(jsEngine);
+    return new QQuickTooltip();
+}
 
-    static QQuickControlsPrivateAttached *qmlAttachedProperties(QObject *object);
-};
+QObject *QQuickControlsPrivate::registerSettingsModule(QQmlEngine *engine, QJSEngine *jsEngine)
+{
+    Q_UNUSED(jsEngine);
+    return new QQuickControlSettings(engine);
+}
+
+QQuickControlsPrivateAttached *QQuickControlsPrivate::qmlAttachedProperties(QObject *object)
+{
+    return new QQuickControlsPrivateAttached(object);
+}
 
 QT_END_NAMESPACE
 
-QML_DECLARE_TYPEINFO(QQuickControlsPrivate, QML_HAS_ATTACHED_PROPERTIES)
 
-#endif // QQUICKCONTROLSPRIVATE_P_H

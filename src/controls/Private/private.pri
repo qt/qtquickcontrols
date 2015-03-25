@@ -21,7 +21,8 @@ SOURCES += \
     $$PWD/qquickcontrolsettings.cpp \
     $$PWD/qquickwheelarea.cpp \
     $$PWD/qquickabstractstyle.cpp \
-    $$PWD/qquicktreemodeladaptor.cpp
+    $$PWD/qquicktreemodeladaptor.cpp \
+    $$PWD/qquickcontrolsprivate.cpp
 
 
 !no_desktop {
