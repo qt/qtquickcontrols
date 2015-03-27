@@ -55,6 +55,8 @@ sources += ../Private/AbstractCheckable.qml \
            ../Private/qquickabstractstyle.h \
            ../Private/qquickabstractstyle.cpp
 
+excludefiles += ../TableView.qml ../TreeView.qml
+
 imagedirs += images \
     ../../extras/doc/images
 

@@ -63,9 +63,12 @@ BasicTableViewStyle {
 
     In the branch delegate you have access to the following special properties:
     \list
-    \li  styleData.column - the index of the column
+    \li  styleData.row - the index of the view row
+    \li  styleData.column - the index of the view column. Will always be 0
     \li  styleData.selected - if the item is currently selected
     \li  styleData.textColor - the default text color for an item
+    \li  styleData.index - the QModelIndex of the current item in the model
+    \li  styleData.depth - the depth of the current item in the tree model
     \li  styleData.isExpanded - true when the item is expanded
     \li  styleData.hasChildren - true if the model index of the current item has children
     \li  styleData.hasSibling - true if the model index of the current item has sibling
