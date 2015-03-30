@@ -65,6 +65,18 @@ TestCase {
         signalName: "triggered"
     }
 
+    SignalSpy {
+        id: aboutToShowSpy
+        target: testcase.menu
+        signalName: "aboutToShow"
+    }
+
+    SignalSpy {
+        id: aboutToHideSpy
+        target: testcase.menu
+        signalName: "aboutToHide"
+    }
+
     Component {
         id: creationComponent
         Menu {
@@ -82,6 +94,8 @@ TestCase {
     function cleanup() {
         menuSpy.clear()
         menuItemSpy.clear()
+        aboutToShowSpy.clear()
+        aboutToHideSpy.clear()
         if (menu !== 0)
             menu.destroy()
     }
@@ -217,5 +231,21 @@ TestCase {
             else if (i !== separatorIdx)
                 compare(item.text, "Item " + i)
         }
+    }
+
+    function test_popupSignals() {
+        if (Qt.platform.os === "osx") {
+            // On Mac the popup() function blocks. The signals are still
+            // emitted by the QPA plugin and the relayed by QQuickMenu.
+            return;
+        }
+        menu.__popup(Qt.rect(50, 50, 20, 20))
+        wait(100) // Give it a chance to actually pop-up
+        compare(aboutToShowSpy.count, 1)
+        compare(aboutToHideSpy.count, 0)
+        aboutToShowSpy.clear()
+        menu.__dismissMenu()
+        compare(aboutToShowSpy.count, 0)
+        compare(aboutToHideSpy.count, 1)
     }
 }

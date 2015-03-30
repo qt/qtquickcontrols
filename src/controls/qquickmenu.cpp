@@ -106,8 +106,12 @@ QT_BEGIN_NAMESPACE
 /*!
     \qmlproperty bool Menu::visible
 
-    Whether the menu should be visible. This is only enabled when the menu is used as
-    a submenu or in the menubar. Its value defaults to \c true.
+    Whether the menu should be visible as a submenu of another Menu, or as a menu on a MenuBar.
+    Its value defaults to \c true.
+
+    \note This has nothing to do with the actual menu pop-up window being visible. Use
+    \l aboutToShow() and \l aboutToHide() if you need to know when the pop-up window will
+    be shown or hidden.
 */
 
 /*!
@@ -231,6 +235,25 @@ QT_BEGIN_NAMESPACE
     \sa insertItem()
 */
 
+
+/*!
+    \qmlsignal Menu::aboutToShow()
+    \since QtQuick.Controls 1.4
+
+    This signal is emitted just before the menu is shown to the user.
+
+    \sa aboutToHide()
+*/
+
+/*!
+    \qmlsignal Menu::aboutToHide()
+    \since QtQuick.Controls 1.4
+
+    This signal is emitted just before the menu is hidden from the user.
+
+    \sa aboutToShow()
+*/
+
 QQuickMenu::QQuickMenu(QObject *parent)
     : QQuickMenuText(parent, QQuickMenuItemType::Menu),
       m_itemsCount(0),
@@ -248,6 +271,7 @@ QQuickMenu::QQuickMenu(QObject *parent)
 
     m_platformMenu = QGuiApplicationPrivate::platformTheme()->createPlatformMenu();
     if (m_platformMenu) {
+        connect(m_platformMenu, SIGNAL(aboutToShow()), this, SIGNAL(aboutToShow()));
         connect(m_platformMenu, SIGNAL(aboutToHide()), this, SLOT(__closeMenu()));
         if (platformItem())
             platformItem()->setMenu(m_platformMenu);
@@ -435,6 +459,7 @@ void QQuickMenu::__popup(const QRectF &targetRect, int atItemIndex, MenuType men
 
         m_popupWindow->setPosition(targetRect.x() + m_xOffset + renderOffset.x(),
                                    targetRect.y() + targetRect.height() + m_yOffset + renderOffset.y());
+        emit aboutToShow();
         m_popupWindow->show();
     }
 }
@@ -465,11 +490,13 @@ QRect QQuickMenu::popupGeometry() const
 
 void QQuickMenu::__closeMenu()
 {
-    setPopupVisible(false);
+    if (m_popupVisible) {
+        emit aboutToHide();
+        setPopupVisible(false);
+    }
     if (m_popupWindow)
         m_popupWindow->setVisible(false);
     m_parentWindow = 0;
-    emit __menuClosed();
 }
 
 QQuickMenuPopupWindow *QQuickMenu::topMenuPopup() const

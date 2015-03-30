@@ -99,9 +99,10 @@ Q_SIGNALS:
     void titleChanged();
 
     void __selectedIndexChanged();
-    void __menuClosed();
-    void __menuPopupDestroyed();
+    void aboutToShow();
+    void aboutToHide();
     void popupVisibleChanged();
+    void __menuPopupDestroyed();
     void __popupGeometryChanged();
     void menuContentItemChanged();
     void minimumWidthChanged();
