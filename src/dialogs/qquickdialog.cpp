@@ -338,27 +338,31 @@ void QQuickDialog::setStandardButtons(StandardButtons buttons)
 
 void QQuickDialog::click(QPlatformDialogHelper::StandardButton button, QPlatformDialogHelper::ButtonRole role)
 {
-    setVisible(false);
     m_clickedButton = static_cast<StandardButton>(button);
     emit buttonClicked();
     switch (role) {
     case QPlatformDialogHelper::AcceptRole:
-        emit accept();
+        emit accepted();
+        setVisible(false);
         break;
     case QPlatformDialogHelper::RejectRole:
-        emit reject();
+        emit rejected();
+        setVisible(false);
         break;
     case QPlatformDialogHelper::DestructiveRole:
         emit discard();
+        setVisible(false);
         break;
     case QPlatformDialogHelper::HelpRole:
         emit help();
         break;
     case QPlatformDialogHelper::YesRole:
         emit yes();
+        setVisible(false);
         break;
     case QPlatformDialogHelper::NoRole:
         emit no();
+        setVisible(false);
         break;
     case QPlatformDialogHelper::ApplyRole:
         emit apply();
