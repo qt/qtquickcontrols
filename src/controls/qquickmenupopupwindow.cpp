@@ -41,12 +41,14 @@
 #include <qquickitem.h>
 #include <QtGui/QScreen>
 #include <QtQuick/QQuickRenderControl>
+#include "qquickmenu_p.h"
 
 QT_BEGIN_NAMESPACE
 
-QQuickMenuPopupWindow::QQuickMenuPopupWindow() :
+QQuickMenuPopupWindow::QQuickMenuPopupWindow(QQuickMenu *menu) :
     m_itemAt(0),
-    m_logicalParentWindow(0)
+    m_logicalParentWindow(0),
+    m_menu(menu)
 {
 }
 
@@ -142,6 +144,11 @@ void QQuickMenuPopupWindow::exposeEvent(QExposeEvent *e)
         m_initialPos += m_logicalParentWindow->geometry().topLeft();
     }
     QQuickPopupWindow::exposeEvent(e);
+}
+
+QQuickMenu *QQuickMenuPopupWindow::menu() const
+{
+    return m_menu;
 }
 
 QT_END_NAMESPACE

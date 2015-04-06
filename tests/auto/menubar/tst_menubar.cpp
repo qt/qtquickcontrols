@@ -42,6 +42,9 @@
 #include <QtQml/QQmlApplicationEngine>
 #include <QSignalSpy>
 #include <QTest>
+#include "qquickmenupopupwindow_p.h"
+#include "qquickpopupwindow_p.h"
+#include "qquickmenu_p.h"
 
 #define WAIT_TIME 500
 
@@ -59,7 +62,9 @@ private slots:
     void init();
     void cleanup();
 
-     void testClickSubMenu();
+    void testClickSubMenu();
+    void testParentMenuForPopupsOutsideMenuBar();
+    void testParentMenuForPopupsInsideMenuBar();
 
 private:
     QQmlApplicationEngine* m_engine;
@@ -154,6 +159,42 @@ void tst_menubar::testClickSubMenu()
     clickOnPos(actionsSubMenuContentItem->window(), QPointF(100,100));
     QTest::qWait(WAIT_TIME);
     QCOMPARE(actionsSubMenu->property("__popupVisible").toBool(), false);
+}
+
+void tst_menubar::testParentMenuForPopupsOutsideMenuBar()
+{
+    waitForRendering(m_window);
+    QCOMPARE(qApp->focusWindow() == m_window, true);
+    moveOnPos(m_window, QPointF(50,50));
+    clickOnPos(m_window, QPointF(50,50));
+    QTest::qWait(500);
+    QCOMPARE(qApp->focusWindow() == m_window, false);
+
+    QQuickMenuPopupWindow *window = dynamic_cast<QQuickMenuPopupWindow*>(qApp->focusWindow());
+    QVERIFY(window);
+
+    QObject *contextMenu = m_window->findChildren<QObject*>("contextMenu").first();
+    QVERIFY(contextMenu);
+
+    QCOMPARE(contextMenu, window->menu());
+}
+
+void tst_menubar::testParentMenuForPopupsInsideMenuBar()
+{
+    waitForRendering(m_window);
+    QCOMPARE(qApp->focusWindow() == m_window, true);
+    moveOnPos(m_window, QPointF(5,5));
+    clickOnPos(m_window, QPointF(5,5));
+    QTest::qWait(500);
+    QCOMPARE(qApp->focusWindow() == m_window, false);
+
+    QQuickMenuPopupWindow *window = dynamic_cast<QQuickMenuPopupWindow*>(qApp->focusWindow());
+    QVERIFY(window);
+
+    QObject *fileMenu = m_window->findChildren<QObject*>("fileMenu").first();
+    QVERIFY(fileMenu);
+
+    QCOMPARE(fileMenu, window->menu());
 }
 
 

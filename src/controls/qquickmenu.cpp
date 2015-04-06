@@ -421,7 +421,7 @@ void QQuickMenu::__popup(const QRectF &targetRect, int atItemIndex, MenuType men
         m_platformMenu->setMenuType(QPlatformMenu::MenuType(menuType));
         m_platformMenu->showPopup(parentWindow, globalTargetRect.toRect(), atItem ? atItem->platformItem() : 0);
     } else {
-        m_popupWindow = new QQuickMenuPopupWindow();
+        m_popupWindow = new QQuickMenuPopupWindow(this);
         if (visualItem())
             m_popupWindow->setParentItem(visualItem());
         else
