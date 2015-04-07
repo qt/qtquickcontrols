@@ -252,6 +252,20 @@ BasicTableView {
         modelAdaptor.expand(index)
     }
 
+    /*!
+        \qmlmethod QModelIndex TreeView::indexAt( int x, int y )
+
+        Returns the model index of the visible row at the point \a x, \a y in content
+        coordinates. If there is no visible row at the point specified, an invalid
+        \l QModelIndex is returned.
+
+        \note This method should only be called after the component has completed.
+    */
+    function indexAt(x, y) {
+        var obj = root.mapToItem(__listView.contentItem, x, y)
+        return modelAdaptor.mapRowToModelIndex(__listView.indexAt(obj.x, obj.y))
+    }
+
     style: Settings.styleComponent(Settings.style, "TreeViewStyle.qml", root)
 
     // Internal stuff. Do not look

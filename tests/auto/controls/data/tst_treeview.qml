@@ -754,5 +754,62 @@ Item {
 
             tree.destroy()
         }
+
+        function test_indexAt() {
+            var component = Qt.createComponent("treeview/treeview_1.qml")
+            compare(component.status, Component.Ready)
+            var tree = component.createObject(container);
+            verify(tree !== null, "tree created is null")
+            waitForRendering(tree)
+            var model = tree.model
+
+            // Sample each row and test
+            for (var row = 0; row < tree.__listView.count; row++) {
+                for (var x = 1; x < tree.getColumn(0).width; x += 10) {
+                    var treeIndex = tree.indexAt(x, 50 * (row + 1) + 1) // offset by header height
+                    var modelIndex = model.index(row, 0)
+                    compare(treeIndex.row, modelIndex.row)
+                    compare(treeIndex.column, modelIndex.column)
+                    compare(treeIndex.internalId, modelIndex.internalId)
+                }
+            }
+
+            // Hide header, test again
+            tree.headerVisible = false
+            for (row = 0; row < tree.__listView.count; row++) {
+                for (x = 1; x < tree.getColumn(0).width; x += 10) {
+                    treeIndex = tree.indexAt(x, 50 * row + 1)
+                    modelIndex = model.index(row, 0)
+                    compare(treeIndex.row, modelIndex.row)
+                    compare(treeIndex.column, modelIndex.column)
+                    compare(treeIndex.internalId, modelIndex.internalId)
+                }
+            }
+
+            // Test outside the view content area
+            modelIndex = model.index(-1,-1)
+
+            treeIndex = tree.indexAt(-10, 55)
+            compare(treeIndex.row, modelIndex.row)
+            compare(treeIndex.column, modelIndex.column)
+            compare(treeIndex.internalId, modelIndex.internalId)
+
+            treeIndex = tree.indexAt(-10, tree.getColumn(0).width + 10)
+            compare(treeIndex.row, modelIndex.row)
+            compare(treeIndex.column, modelIndex.column)
+            compare(treeIndex.internalId, modelIndex.internalId)
+
+            treeIndex = tree.indexAt(10, -10)
+            compare(treeIndex.row, modelIndex.row)
+            compare(treeIndex.column, modelIndex.column)
+            compare(treeIndex.internalId, modelIndex.internalId)
+
+            treeIndex = tree.indexAt(10, tree.__listView.contentHeight + 10)
+            compare(treeIndex.row, modelIndex.row)
+            compare(treeIndex.column, modelIndex.column)
+            compare(treeIndex.internalId, modelIndex.internalId)
+
+            tree.destroy()
+        }
     }
 }
