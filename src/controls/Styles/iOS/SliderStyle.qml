@@ -34,6 +34,54 @@
 **
 ****************************************************************************/
 
+import QtQuick 2.3
 import QtQuick.Controls.Styles 1.3
 
-SliderStyle { }
+SliderStyle {
+    groove: Rectangle {
+        implicitWidth: 20
+        implicitHeight: 2
+
+        color: "#a8a8a8"
+        radius: 45.0
+
+        Rectangle {
+            width: styleData.handlePosition
+            height: parent.height
+            color: "#0a60ff"
+            radius: parent.radius
+        }
+    }
+
+    handle: Item {
+        width: 29
+        height: 32
+
+        Rectangle {
+            y: 3
+            width: 29
+            height: 29
+            radius: 90.0
+
+            color: "#d6d6d6"
+            opacity: 0.2
+        }
+
+        Rectangle {
+            width: 29
+            height: 29
+            radius: 90.0
+
+            gradient: Gradient {
+                GradientStop { position: 0.0; color: "#e2e2e2" }
+                GradientStop { position: 1.0; color: "#d6d6d6" }
+            }
+
+            Rectangle {
+                anchors.fill: parent
+                anchors.margins: 1
+                radius: parent.radius
+            }
+        }
+    }
+}
