@@ -161,7 +161,7 @@ Loader {
         itemsModel: __menu.items
         minWidth: __menu.__minimumWidth
         maxHeight: d.style ? d.style.__maxPopupHeight : 0
-        onTriggered: if (item.__menuItem.enabled) d.triggerAndDismiss(item)
+        onTriggered: d.triggerAndDismiss(item)
     }
 
     Component {

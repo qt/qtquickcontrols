@@ -107,6 +107,8 @@ void QQuickAbstractDialog::setVisible(bool v)
 
     // Pure QML implementation: wrap the contentItem in a window, or fake it
     if (!m_dialogWindow && m_contentItem) {
+        if (v)
+            emit __maximumDimensionChanged();
         if (m_hasNativeWindows)
             m_dialogWindow = m_contentItem->window();
         // An Item-based dialog implementation doesn't come with a window, so
@@ -220,7 +222,7 @@ void QQuickAbstractDialog::decorationLoaded()
             m_windowDecoration->setProperty("content", contentVariant);
             connect(m_windowDecoration, SIGNAL(dismissed()), this, SLOT(reject()));
             ok = true;
-            qCDebug(lcWindow) << "using synthetic window decoration" << m_windowDecoration;
+            qCDebug(lcWindow) << "using synthetic window decoration" << m_windowDecoration << "from" << m_decorationComponent->url();
         } else {
             qWarning() << m_decorationComponent->url() <<
                 "cannot be used as a window decoration because it's not an Item";
@@ -360,6 +362,7 @@ int QQuickAbstractDialog::height() const
 int QQuickAbstractDialog::__maximumDimension() const
 {
     QScreen *screen = QGuiApplication::primaryScreen();
+    qCDebug(lcWindow) << "__maximumDimension checking screen" << screen << "geometry" << screen->availableVirtualGeometry();
     return (screen ?
                 qMin(screen->availableVirtualGeometry().width(), screen->availableVirtualGeometry().height()) :
                 480) * 9 / 10;

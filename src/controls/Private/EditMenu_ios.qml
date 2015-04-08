@@ -45,7 +45,7 @@ Item {
 
     property Component defaultMenu: Menu {
         MenuItem {
-            text: "cut"
+            text: qsTr("Cut")
             visible: !input.readOnly && selectionStart !== selectionEnd
             onTriggered: {
                 cut();
@@ -53,7 +53,7 @@ Item {
             }
         }
         MenuItem {
-            text: "copy"
+            text: qsTr("Copy")
             visible: selectionStart !== selectionEnd
             onTriggered: {
                 copy();
@@ -61,22 +61,22 @@ Item {
             }
         }
         MenuItem {
-            text: "paste"
+            text: qsTr("Paste")
             visible: input.canPaste
             onTriggered: paste();
         }
         MenuItem {
-            text: "delete"
+            text: qsTr("Delete")
             visible: !input.readOnly && selectionStart !== selectionEnd
             onTriggered: remove(selectionStart, selectionEnd)
         }
         MenuItem {
-            text: "select"
+            text: qsTr("Select")
             visible: selectionStart === selectionEnd && input.length > 0
             onTriggered: selectWord();
         }
         MenuItem {
-            text: "select all"
+            text: qsTr("Select All")
             visible: !(selectionStart === 0 && selectionEnd === length)
             onTriggered: selectAll();
         }

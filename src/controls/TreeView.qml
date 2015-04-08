@@ -270,6 +270,7 @@ BasicTableView {
         __style: root.__style
         __itemDelegate: root.itemDelegate
         __mouseArea: mouseArea
+        __treeModel: modelAdaptor
     }
 
     onSelectionModeChanged: if (!!selection) selection.clear()

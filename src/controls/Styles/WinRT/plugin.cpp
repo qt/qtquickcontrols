@@ -50,6 +50,6 @@ extern "C" {
 
     Q_DECL_EXPORT const char *qt_quick_controls_style_path()
     {
-        return ":/QtQuick/Controls/Styles/";
+        return ":/QtQuick/Controls/Styles/WinRT/";
     }
 }
