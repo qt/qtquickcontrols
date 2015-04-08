@@ -17,8 +17,9 @@
 /tests/auto/dialogs/tst_dialogs
 /tests/auto/extras/tst_extras
 /tests/auto/paint/tst_paint
-/tests/auto/qtdesktop/tst_qtdesktop
 /tests/auto/applicationwindow/tst_applicationwindow
+/tests/auto/customcontrolsstyle/tst_customcontrolsstyle
+/tests/auto/qquicktreemodeladaptor/tst_qquicktreemodeladaptor
 /tests/auto/testplugin/QtQuickControlsTests/testplugin.*
 /tests/benchmarks/statusindicator/tst_bench_statusindicator
 
