@@ -69,7 +69,7 @@ class QQuickAbstractDialog : public QObject
     Q_PROPERTY(int y READ y WRITE setY NOTIFY geometryChanged)
     Q_PROPERTY(int width READ width WRITE setWidth NOTIFY geometryChanged)
     Q_PROPERTY(int height READ height WRITE setHeight NOTIFY geometryChanged)
-    Q_PROPERTY(int __maximumDimension READ __maximumDimension CONSTANT)
+    Q_PROPERTY(int __maximumDimension READ __maximumDimension NOTIFY __maximumDimensionChanged)
 
 public:
     QQuickAbstractDialog(QObject *parent = 0);
@@ -131,6 +131,7 @@ Q_SIGNALS:
     void titleChanged();
     void accepted();
     void rejected();
+    void __maximumDimensionChanged();
 
 protected Q_SLOTS:
     void decorationLoaded();

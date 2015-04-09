@@ -48,6 +48,7 @@
 import QtQuick 2.5
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
+import QtQuick.Controls.Private 1.0
 
 /*!
     \qmltype TreeViewItemDelegateLoader
@@ -62,6 +63,9 @@ TableViewItemDelegateLoader {
     /* \internal */
     readonly property int __itemIndentation: __style && __index === 0
                                              ? __style.__indentation * (styleData.depth + 1) : 0
+    /* \internal */
+    property TreeModelAdaptor __treeModel: null
+
     // Exposed to the item delegate
     styleData: QtObject {
         readonly property int row: __rowItem ? __rowItem.rowIndex : -1
@@ -74,6 +78,7 @@ TableViewItemDelegateLoader {
         readonly property color textColor: __rowItem ? __rowItem.itemTextColor : "black"
         readonly property string role: __column ? __column.role : ""
         readonly property var value: model && model.hasOwnProperty(role) ? model[role] : ""
+        readonly property var index: __treeModel.mapRowToModelIndex(row)
         readonly property int depth: model && column === 0 ? model["_q_TreeView_ItemDepth"] : 0
         readonly property bool hasChildren: model ? model["_q_TreeView_HasChildren"] : false
         readonly property bool hasSibling: model ? model["_q_TreeView_HasSibling"] : false

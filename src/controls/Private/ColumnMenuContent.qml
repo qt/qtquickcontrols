@@ -126,14 +126,19 @@ Item {
             currentItem = list.itemAt(pos.x, pos.y)
             if (currentItem) {
                 __menu.__currentIndex = currentItem.__menuItemIndex
-                if (currentItem.styleData.type === MenuItemType.Menu
-                    && !currentItem.__menuItem.__popupVisible) {
-                    currentItem.__showSubMenu(false)
-                    openedSubmenu = currentItem.__menuItem
+                if (currentItem.styleData.type === MenuItemType.Menu) {
+                    showCurrentItemSubMenu(false)
                 }
             } else {
                 __menu.__currentIndex = -1
             }
+        }
+    }
+
+    function showCurrentItemSubMenu(immediately) {
+        if (!currentItem.__menuItem.__popupVisible) {
+            currentItem.__showSubMenu(immediately)
+            openedSubmenu = currentItem.__menuItem
         }
     }
 
@@ -195,7 +200,15 @@ Item {
 
         onPositionChanged: updateCurrentItem({ "x": mouse.x, "y": mouse.y })
         onPressed: updateCurrentItem({ "x": mouse.x, "y": mouse.y })
-        onReleased: content.triggered(currentItem)
+        onReleased: {
+            if (currentItem.__menuItem.enabled) {
+                if (currentItem.styleData.type === MenuItemType.Menu) {
+                    showCurrentItemSubMenu(true)
+                } else {
+                    content.triggered(currentItem)
+                }
+            }
+        }
         onExited: {
             if (currentItem && !currentItem.__menuItem.__popupVisible) {
                 currentItem = null

@@ -151,6 +151,10 @@ void QtQuickControlsPlugin::initializeEngine(QQmlEngine *engine, const char *uri
     qmlRegisterType<QQuickSpinBoxValidator>(private_uri, 1, 0, "SpinBoxValidator");
     qmlRegisterSingletonType<QQuickTooltip>(private_uri, 1, 0, "Tooltip", QQuickControlsPrivate::registerTooltipModule);
     qmlRegisterSingletonType<QQuickControlSettings>(private_uri, 1, 0, "Settings", QQuickControlsPrivate::registerSettingsModule);
+
+    qmlRegisterUncreatableType<QQuickControlsPrivate>(private_uri, 1, 0, "Controls", QLatin1String("Controls is an abstract type."));
+    qmlRegisterType<QQuickControlsPrivateAttached>();
+
     qmlRegisterType<QQuickTreeModelAdaptor>(private_uri, 1, 0, "TreeModelAdaptor");
 
     qmlRegisterType<QQuickMenu>(private_uri, 1, 0, "MenuPrivate");

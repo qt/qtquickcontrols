@@ -1,9 +1,10 @@
 /****************************************************************************
 **
 ** Copyright (C) 2015 The Qt Company Ltd.
+** Copyright (C) 2015 Cucchetto Filippo <filippocucchetto@gmail.com>
 ** Contact: http://www.qt.io/licensing/
 **
-** This file is part of the Qt Quick Controls module of the Qt Toolkit.
+** This file is part of the test suite of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:LGPL3$
 ** Commercial License Usage
@@ -34,47 +35,68 @@
 **
 ****************************************************************************/
 
-#ifndef QQUICKCONTROLSPRIVATE_P_H
-#define QQUICKCONTROLSPRIVATE_P_H
+import QtQuick 2.2
+import QtQuick.Controls 1.2
 
-#include "qqml.h"
-#include "qquicktooltip_p.h"
-#include "qquickcontrolsettings_p.h"
+ApplicationWindow {
+    id: root
+    objectName: "root"
+    visible: true
+    width: 400
+    height: 400
 
-QT_BEGIN_NAMESPACE
+    menuBar: MenuBar {
+        id: menubar
+        objectName: "menuBar"
 
-class QQuickWindow;
+        Menu {
+            id: fileMenu
+            objectName: "fileMenu"
+            title: "&File"
 
-class QQuickControlsPrivateAttached : public QObject
-{
-    Q_OBJECT
-    Q_PROPERTY(QQuickWindow* window READ window NOTIFY windowChanged)
+            Menu {
+                id: actionsSubMenu
+                objectName: "actionsSubMenu"
+                title: "&Action"
 
-public:
-    QQuickControlsPrivateAttached(QObject* attachee);
+                MenuItem {
+                    id: loadMenuItem
+                    objectName: "loadMenuItem"
+                    text: "&Load"
+                }
 
-    QQuickWindow *window() const;
+                MenuItem {
+                    id: saveMenuItem
+                    objectName: "saveMenuItem"
+                    text: "&Save"
+                }
+            }
 
-Q_SIGNALS:
-    void windowChanged();
+            MenuItem {
+                id: exitMenuItem
+                objectName: "exitMenuItem"
+                text: "&Exit"
+            }
+        }
 
-private:
-    QQuickItem* m_attachee;
-};
+        Menu {
+            id: modifyMenu
+            objectName: "modifyMenu"
+            title: "&Modify"
 
-class QQuickControlsPrivate : public QObject
-{
-    Q_OBJECT
+            MenuItem {
+                id: preferencesMenuItem
+                objectName: "preferencesMenuItem"
+                text: "&Preferences"
+            }
+        }
+    }
 
-public:
-    static QObject *registerTooltipModule(QQmlEngine *engine, QJSEngine *jsEngine);
-    static QObject *registerSettingsModule(QQmlEngine *engine, QJSEngine *jsEngine);
-
-    static QQuickControlsPrivateAttached *qmlAttachedProperties(QObject *object);
-};
-
-QT_END_NAMESPACE
-
-QML_DECLARE_TYPEINFO(QQuickControlsPrivate, QML_HAS_ATTACHED_PROPERTIES)
-
-#endif // QQUICKCONTROLSPRIVATE_P_H
+    TextEdit {
+        id: centralTextEdit
+        objectName: "centralTextEdit"
+        anchors.centerIn: parent
+        width: 100
+        height: 20
+    }
+}
