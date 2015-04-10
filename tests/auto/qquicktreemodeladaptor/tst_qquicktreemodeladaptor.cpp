@@ -69,6 +69,10 @@ private slots:
     void removeRows_data();
     void removeRows();
 
+    void removeRowsChildrenAndParent();
+    void removeChildrenMoveParent();
+    void removeChildrenRelayoutParent();
+
     void insertRows_data();
     void insertRows();
 
@@ -669,6 +673,127 @@ void tst_QQuickTreeModelAdaptor::removeRows()
         QCOMPARE(rowsAboutToBeRemovedArgs.at(1).toInt(), tmaItemIdx);
         QCOMPARE(rowsAboutToBeRemovedArgs.at(2).toInt(), tmaItemIdx + expectedRemovedCount - 1);
     }
+}
+
+void tst_QQuickTreeModelAdaptor::removeRowsChildrenAndParent()
+{
+    TestModel model(ModelRowCount, 1);
+    QQuickTreeModelAdaptor tma;
+    tma.setModel(&model);
+
+    // Expand the first node
+    const QModelIndex &parent = model.index(0, 0);
+    tma.expand(parent);
+    QVERIFY(tma.isExpanded(parent));
+
+    QSignalSpy rowsAboutToBeRemovedSpy(&tma, SIGNAL(rowsAboutToBeRemoved(const QModelIndex&, int, int)));
+    QSignalSpy rowsRemovedSpy(&tma, SIGNAL(rowsRemoved(const QModelIndex&, int, int)));
+
+    // Remove the first node children
+    int expectedRemovedCount = model.rowCount(parent);
+    int tmaItemIdx = tma.itemIndex(model.index(0, 0, parent));
+    QCOMPARE(tmaItemIdx, tma.itemIndex(parent) + 1);
+    model.removeRows(0, expectedRemovedCount, parent);
+    QCOMPARE(rowsAboutToBeRemovedSpy.count(), 1);
+    QCOMPARE(rowsRemovedSpy.count(), 1);
+    QVariantList rowsAboutToBeRemovedArgs = rowsAboutToBeRemovedSpy.first();
+    QVariantList rowsRemovedArgs = rowsRemovedSpy.first();
+    QCOMPARE(rowsAboutToBeRemovedArgs, rowsRemovedArgs);
+    QCOMPARE(rowsAboutToBeRemovedArgs.at(0).toModelIndex(), QModelIndex());
+    QCOMPARE(rowsAboutToBeRemovedArgs.at(1).toInt(), tmaItemIdx);
+    QCOMPARE(rowsAboutToBeRemovedArgs.at(2).toInt(), tmaItemIdx + expectedRemovedCount - 1);
+
+    // Remove the first node
+    rowsAboutToBeRemovedSpy.clear();
+    rowsRemovedSpy.clear();
+    model.removeRows(0, 1, QModelIndex());
+    QCOMPARE(rowsAboutToBeRemovedSpy.count(), 1);
+    QCOMPARE(rowsRemovedSpy.count(), 1);
+    rowsAboutToBeRemovedArgs = rowsAboutToBeRemovedSpy.first();
+    rowsRemovedArgs = rowsRemovedSpy.first();
+    QCOMPARE(rowsAboutToBeRemovedArgs, rowsRemovedArgs);
+    QCOMPARE(rowsAboutToBeRemovedArgs.at(0).toModelIndex(), QModelIndex());
+    QCOMPARE(rowsAboutToBeRemovedArgs.at(1).toInt(), 0);
+    QCOMPARE(rowsAboutToBeRemovedArgs.at(2).toInt(), 0);
+}
+
+void tst_QQuickTreeModelAdaptor::removeChildrenMoveParent()
+{
+    TestModel model(ModelRowCount, 1);
+    QQuickTreeModelAdaptor tma;
+    tma.setModel(&model);
+
+    // Expand the first node
+    const QModelIndex &parent = model.index(0, 0);
+    tma.expand(parent);
+    QVERIFY(tma.isExpanded(parent));
+
+    // Remove the first node children
+    QSignalSpy rowsAboutToBeRemovedSpy(&tma, SIGNAL(rowsAboutToBeRemoved(const QModelIndex&, int, int)));
+    QSignalSpy rowsRemovedSpy(&tma, SIGNAL(rowsRemoved(const QModelIndex&, int, int)));
+    int expectedRemovedCount = model.rowCount(parent);
+    int tmaItemIdx = tma.itemIndex(model.index(0, 0, parent));
+    QCOMPARE(tmaItemIdx, tma.itemIndex(parent) + 1);
+    model.removeRows(0, expectedRemovedCount, parent);
+    QCOMPARE(rowsAboutToBeRemovedSpy.count(), 1);
+    QCOMPARE(rowsRemovedSpy.count(), 1);
+    QVariantList rowsAboutToBeRemovedArgs = rowsAboutToBeRemovedSpy.first();
+    QVariantList rowsRemovedArgs = rowsRemovedSpy.first();
+    QCOMPARE(rowsAboutToBeRemovedArgs, rowsRemovedArgs);
+    QCOMPARE(rowsAboutToBeRemovedArgs.at(0).toModelIndex(), QModelIndex());
+    QCOMPARE(rowsAboutToBeRemovedArgs.at(1).toInt(), tmaItemIdx);
+    QCOMPARE(rowsAboutToBeRemovedArgs.at(2).toInt(), tmaItemIdx + expectedRemovedCount - 1);
+
+    // Move the first node
+    QSignalSpy rowsAboutToBeMovedSpy(&tma, SIGNAL(rowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)));
+    QSignalSpy rowsMovedSpy(&tma, SIGNAL(rowsMoved(QModelIndex,int,int,QModelIndex,int)));
+    model.moveRows(QModelIndex(), 0, 1, QModelIndex(), 3);
+    QCOMPARE(rowsAboutToBeMovedSpy.count(), 1);
+    QCOMPARE(rowsRemovedSpy.count(), 1);
+    QVariantList rowsAboutToBeMovedArgs = rowsAboutToBeMovedSpy.first();
+    QVariantList rowsMovedArgs = rowsMovedSpy.first();
+    QCOMPARE(rowsAboutToBeMovedArgs, rowsMovedArgs);
+    QCOMPARE(rowsAboutToBeMovedArgs.at(0).toModelIndex(), QModelIndex());
+    QCOMPARE(rowsAboutToBeMovedArgs.at(1).toInt(), 0);
+    QCOMPARE(rowsAboutToBeMovedArgs.at(2).toInt(), 0);
+    QCOMPARE(rowsAboutToBeMovedArgs.at(3).toModelIndex(), QModelIndex());
+    QCOMPARE(rowsAboutToBeMovedArgs.at(4).toInt(), 3);
+}
+
+void tst_QQuickTreeModelAdaptor::removeChildrenRelayoutParent()
+{
+    TestModel model(ModelRowCount, 1);
+    QQuickTreeModelAdaptor tma;
+    tma.setModel(&model);
+
+    // Expand the first node
+    const QModelIndex &parent = model.index(0, 0);
+    tma.expand(parent);
+    QVERIFY(tma.isExpanded(parent));
+
+    QSignalSpy rowsAboutToBeRemovedSpy(&tma, SIGNAL(rowsAboutToBeRemoved(const QModelIndex&, int, int)));
+    QSignalSpy rowsRemovedSpy(&tma, SIGNAL(rowsRemoved(const QModelIndex&, int, int)));
+
+    // Remove the first node children
+    int expectedRemovedCount = model.rowCount(parent);
+    int tmaItemIdx = tma.itemIndex(model.index(0, 0, parent));
+    QCOMPARE(tmaItemIdx, tma.itemIndex(parent) + 1);
+    model.removeRows(0, expectedRemovedCount, parent);
+    QCOMPARE(rowsAboutToBeRemovedSpy.count(), 1);
+    QCOMPARE(rowsRemovedSpy.count(), 1);
+    QVariantList rowsAboutToBeRemovedArgs = rowsAboutToBeRemovedSpy.first();
+    QVariantList rowsRemovedArgs = rowsRemovedSpy.first();
+    QCOMPARE(rowsAboutToBeRemovedArgs, rowsRemovedArgs);
+    QCOMPARE(rowsAboutToBeRemovedArgs.at(0).toModelIndex(), QModelIndex());
+    QCOMPARE(rowsAboutToBeRemovedArgs.at(1).toInt(), tmaItemIdx);
+    QCOMPARE(rowsAboutToBeRemovedArgs.at(2).toInt(), tmaItemIdx + expectedRemovedCount - 1);
+
+    // Relayout the first node
+    QSignalSpy dataChanged(&tma, SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)));
+    QList<QPersistentModelIndex> parents;
+    parents << parent;
+    model.changeLayout(parents);
+    QCOMPARE(dataChanged.count(), 0);
 }
 
 void tst_QQuickTreeModelAdaptor::insertRows_data()

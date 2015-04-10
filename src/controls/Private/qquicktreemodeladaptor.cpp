@@ -473,7 +473,7 @@ void QQuickTreeModelAdaptor::collapseRow(int n)
     }
 
     qDebug() << "collapsing" << n << childrenCount;
-    const QModelIndex &emi = m_model->index(m_model->rowCount(item.index) - 1, 0, item.index);
+    const QModelIndex &emi = m_model->index(childrenCount - 1, 0, item.index);
     int lastIndex = lastChildIndex(emi);
     removeVisibleRows(n + 1, lastIndex);
 }
@@ -503,10 +503,10 @@ int QQuickTreeModelAdaptor::lastChildIndex(const QModelIndex &index)
 
 void QQuickTreeModelAdaptor::removeVisibleRows(int startIndex, int endIndex, bool doRemoveRows)
 {
+    qDebug() << "removing" << startIndex << endIndex;
     if (startIndex < 0 || endIndex < 0 || startIndex > endIndex)
         return;
 
-    qDebug() << "removing" << startIndex << endIndex;
     if (doRemoveRows)
         beginRemoveRows(QModelIndex(), startIndex, endIndex);
     m_items.erase(m_items.begin() + startIndex, m_items.begin() + endIndex + 1);
@@ -582,14 +582,17 @@ void QQuickTreeModelAdaptor::modelLayoutChanged(const QList<QPersistentModelInde
     }
 
     Q_FOREACH (const QPersistentModelIndex &pmi, parents) {
-        if (m_expandedItems.contains(pmi) && m_model->hasChildren(pmi)) {
+        if (m_expandedItems.contains(pmi)) {
             int row = itemIndex(pmi);
             if (row != -1) {
-                const QModelIndex &lmi = m_model->index(m_model->rowCount(pmi) - 1, 0, pmi);
-                int lastRow = lastChildIndex(lmi);
-                removeVisibleRows(row + 1, lastRow, false /*doRemoveRows*/);
-                showModelChildItems(m_items.at(row), 0, m_model->rowCount(pmi) - 1, false /*doInsertRows*/);
-                emit dataChanged(index(row + 1), index(lastRow));
+                int rowCount = m_model->rowCount(pmi);
+                if (rowCount > 0) {
+                    const QModelIndex &lmi = m_model->index(rowCount - 1, 0, pmi);
+                    int lastRow = lastChildIndex(lmi);
+                    removeVisibleRows(row + 1, lastRow, false /*doRemoveRows*/);
+                    showModelChildItems(m_items.at(row), 0, rowCount - 1, false /*doInsertRows*/);
+                    emit dataChanged(index(row + 1), index(lastRow));
+                }
             }
         }
     }
@@ -631,11 +634,17 @@ void QQuickTreeModelAdaptor::modelRowsAboutToBeRemoved(const QModelIndex & paren
         const QModelIndex &smi = m_model->index(start, 0, parent);
         int startIndex = itemIndex(smi);
         const QModelIndex &emi = m_model->index(end, 0, parent);
-        int endIndex = itemIndex(emi);
+        int endIndex = -1;
         if (isExpanded(emi)) {
-            const QModelIndex &idx = m_model->index(m_model->rowCount(emi) - 1, 0, emi);
-            endIndex = lastChildIndex(idx);
+            int rowCount = m_model->rowCount(emi);
+            if (rowCount > 0) {
+                const QModelIndex &idx = m_model->index(rowCount - 1, 0, emi);
+                endIndex = lastChildIndex(idx);
+            }
         }
+        if (endIndex == -1)
+            endIndex = itemIndex(emi);
+
         removeVisibleRows(startIndex, endIndex);
     }
 
@@ -683,10 +692,13 @@ void QQuickTreeModelAdaptor::modelRowsAboutToBeMoved(const QModelIndex & sourceP
 
         int startIndex = itemIndex(m_model->index(sourceStart, 0, sourceParent));
         const QModelIndex &emi = m_model->index(sourceEnd, 0, sourceParent);
-        int endIndex;
-        if (isExpanded(emi))
-            endIndex = lastChildIndex(m_model->index(m_model->rowCount(emi) - 1, 0, emi));
-        else
+        int endIndex = -1;
+        if (isExpanded(emi)) {
+            int rowCount = m_model->rowCount(emi);
+            if (rowCount > 0)
+                endIndex = lastChildIndex(m_model->index(rowCount - 1, 0, emi));
+        }
+        if (endIndex == -1)
             endIndex = itemIndex(emi);
 
         int destIndex = -1;
