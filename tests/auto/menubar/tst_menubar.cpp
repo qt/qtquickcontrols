@@ -62,14 +62,20 @@ private slots:
     void init();
     void cleanup();
 
-    void testClickSubMenu();
     void testParentMenuForPopupsOutsideMenuBar();
     void testParentMenuForPopupsInsideMenuBar();
+    void testClickMenuBarSubMenu();
+    void testClickMenuBarRootMenu();
 
 private:
-    QQmlApplicationEngine* m_engine;
-    QQuickWindow* m_window;
-    QObject* m_menuBar;
+    void moveOnPos(QObject *window, const QPoint &point);
+    void moveOnPos(const QPoint &point);
+    void clickOnPos(QObject *window, const QPoint &point);
+    void clickOnPos(const QPoint &point);
+
+    QQmlApplicationEngine *m_engine;
+    QQuickWindow *m_window;
+    QObject *m_menuBar;
 };
 
 bool waitForRendering(QQuickWindow* window, int timeout = WAIT_TIME)
@@ -78,7 +84,7 @@ bool waitForRendering(QQuickWindow* window, int timeout = WAIT_TIME)
     return signalSpy.wait(timeout);
 }
 
-void moveOnPos(QObject* window, QPointF point)
+void tst_menubar::moveOnPos(QObject *window, const QPoint &point)
 {
     qApp->sendEvent(window, new QMouseEvent(QEvent::MouseMove,
                                             point,
@@ -87,7 +93,14 @@ void moveOnPos(QObject* window, QPointF point)
                                             0));
 }
 
-void clickOnPos(QObject* window, QPointF point)
+void tst_menubar::moveOnPos(const QPoint &point)
+{
+    QPoint global = m_window->mapToGlobal(point);
+    QWindow *focusWindow = qApp->focusWindow();
+    moveOnPos(focusWindow, focusWindow->mapFromGlobal(global));
+}
+
+void tst_menubar::clickOnPos(QObject *window, const QPoint &point)
 {
     qApp->sendEvent(window, new QMouseEvent(QEvent::MouseButtonPress,
                                             point,
@@ -100,6 +113,13 @@ void clickOnPos(QObject* window, QPointF point)
                                             Qt::LeftButton,
                                             Qt::NoButton,
                                             0));
+}
+
+void tst_menubar::clickOnPos(const QPoint &point)
+{
+    QPoint global = m_window->mapToGlobal(point);
+    QWindow *focusWindow = qApp->focusWindow();
+    clickOnPos(focusWindow, focusWindow->mapFromGlobal(global));
 }
 
 void tst_menubar::init()
@@ -124,15 +144,44 @@ void tst_menubar::cleanup()
     m_engine = 0;
 }
 
-void tst_menubar::testClickSubMenu()
+void tst_menubar::testClickMenuBarRootMenu()
 {
     QObject* fileMenu = m_menuBar->findChildren<QObject*>("fileMenu").first();
     QVERIFY(fileMenu);
     QCOMPARE(fileMenu->property("__popupVisible").toBool(), false);
-    clickOnPos(m_window, QPointF(5,5));
-    waitForRendering(m_window);
-    QCOMPARE(fileMenu->property("__popupVisible").toBool(), true);
+
+    // Clicking two times should open and close
+    {
+        clickOnPos(QPoint(5,5));
+        QTest::qWait(WAIT_TIME);
+        QCOMPARE(fileMenu->property("__popupVisible").toBool(), true);
+
+        clickOnPos(QPoint(5,5));
+        QTest::qWait(WAIT_TIME);;
+        QCOMPARE(fileMenu->property("__popupVisible").toBool(), false);
+    }
+
+    // Clicking outside should close the menu as well
+    {
+        clickOnPos(QPoint(5,5));
+        QTest::qWait(WAIT_TIME);
+        QCOMPARE(fileMenu->property("__popupVisible").toBool(), true);
+
+        clickOnPos(QPoint(300,300));
+        QTest::qWait(WAIT_TIME);;
+        QCOMPARE(fileMenu->property("__popupVisible").toBool(), false);
+    }
+}
+
+void tst_menubar::testClickMenuBarSubMenu()
+{
+    QObject *fileMenu = m_menuBar->findChildren<QObject*>("fileMenu").first();
+    QVERIFY(fileMenu);
+    QCOMPARE(fileMenu->property("__popupVisible").toBool(), false);
+
+    clickOnPos(QPoint(5,5));
     QTest::qWait(WAIT_TIME);
+    QCOMPARE(fileMenu->property("__popupVisible").toBool(), true);
 
     QQuickItem* fileMenuContentItem = fileMenu->property("__contentItem").value<QQuickItem*>();
     QVERIFY(fileMenuContentItem);
@@ -146,17 +195,17 @@ void tst_menubar::testClickSubMenu()
     QVERIFY(actionsSubMenuContentItem);
 
     // Click on a submenu should open it
-    clickOnPos(fileMenuContentItem->window(), QPointF(5,5));
+    clickOnPos(QPoint(5,25));
     QTest::qWait(WAIT_TIME);
     QCOMPARE(actionsSubMenu->property("__popupVisible").toBool(), true);
 
     // Click on a submenu should not close the popup
-    clickOnPos(actionsSubMenuContentItem->window(), QPointF(-5,0));
+    clickOnPos(QPoint(5,25));
     QTest::qWait(WAIT_TIME);
     QCOMPARE(actionsSubMenu->property("__popupVisible").toBool(), true);
 
     // Click outside should close the popup
-    clickOnPos(actionsSubMenuContentItem->window(), QPointF(100,100));
+    clickOnPos(QPoint(100,100));
     QTest::qWait(WAIT_TIME);
     QCOMPARE(actionsSubMenu->property("__popupVisible").toBool(), false);
 }
@@ -165,8 +214,8 @@ void tst_menubar::testParentMenuForPopupsOutsideMenuBar()
 {
     waitForRendering(m_window);
     QCOMPARE(qApp->focusWindow() == m_window, true);
-    moveOnPos(m_window, QPointF(50,50));
-    clickOnPos(m_window, QPointF(50,50));
+    moveOnPos(QPoint(50,50));
+    clickOnPos(QPoint(50,50));
     QTest::qWait(500);
     QCOMPARE(qApp->focusWindow() == m_window, false);
 
@@ -183,8 +232,8 @@ void tst_menubar::testParentMenuForPopupsInsideMenuBar()
 {
     waitForRendering(m_window);
     QCOMPARE(qApp->focusWindow() == m_window, true);
-    moveOnPos(m_window, QPointF(5,5));
-    clickOnPos(m_window, QPointF(5,5));
+    moveOnPos(QPoint(5,5));
+    clickOnPos(QPoint(5,5));
     QTest::qWait(500);
     QCOMPARE(qApp->focusWindow() == m_window, false);
 

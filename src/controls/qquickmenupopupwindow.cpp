@@ -42,6 +42,7 @@
 #include <QtGui/QScreen>
 #include <QtQuick/QQuickRenderControl>
 #include "qquickmenu_p.h"
+#include "qquickmenubar_p.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -149,6 +150,42 @@ void QQuickMenuPopupWindow::exposeEvent(QExposeEvent *e)
 QQuickMenu *QQuickMenuPopupWindow::menu() const
 {
     return m_menu;
+}
+
+QQuickMenuBar *QQuickMenuPopupWindow::menuBar() const
+{
+    QObject *pi = menu()->parentMenuOrMenuBar();
+    while (pi) {
+        if (QQuickMenuBar *menuBar = qobject_cast<QQuickMenuBar*>(pi))
+            return menuBar;
+        else if (QQuickMenu *menu = qobject_cast<QQuickMenu*>(pi))
+            pi = menu->parentMenuOrMenuBar();
+        else
+            return 0;
+    }
+    return 0;
+}
+
+bool QQuickMenuPopupWindow::shouldForwardEventAfterDismiss(QMouseEvent *e) const
+{
+    // The events that dismissed a popup child of a menu contained in the menubar
+    // are never forwarded
+    if (QQuickMenuBar *mb = menuBar()) {
+        QPoint parentPos = transientParent()->mapFromGlobal(mapToGlobal(e->pos()));
+        if (!mb->isNative() && mb->contentItem()->contains(parentPos))
+            return false;
+    }
+
+#ifdef Q_OS_OSX
+    if (e->button() == Qt::RightButton)
+        return true;
+#endif
+
+#ifdef Q_OS_WIN
+    return true;
+#endif
+
+    return false;
 }
 
 QT_END_NAMESPACE

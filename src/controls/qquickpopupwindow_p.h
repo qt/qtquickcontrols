@@ -73,6 +73,7 @@ protected:
     void mouseMoveEvent(QMouseEvent *);
     void exposeEvent(QExposeEvent *);
     void hideEvent(QHideEvent *);
+    virtual bool shouldForwardEventAfterDismiss(QMouseEvent *) const;
 
 protected Q_SLOTS:
     void updateSize();

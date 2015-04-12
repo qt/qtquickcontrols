@@ -178,17 +178,26 @@ void QQuickPopupWindow::mouseReleaseEvent(QMouseEvent *e)
 
 void QQuickPopupWindow::forwardEventToTransientParent(QMouseEvent *e)
 {
+    bool forwardEvent = true;
+
     if (!qobject_cast<QQuickPopupWindow*>(transientParent())
         && ((m_mouseMoved && e->type() == QEvent::MouseButtonRelease)
             || e->type() == QEvent::MouseButtonPress)) {
         // Clicked outside any popup
         dismissPopup();
+        forwardEvent = shouldForwardEventAfterDismiss(e);
     }
-    if (transientParent()) {
+
+    if (forwardEvent && transientParent()) {
         QPoint parentPos = transientParent()->mapFromGlobal(mapToGlobal(e->pos()));
         QMouseEvent pe = QMouseEvent(e->type(), parentPos, e->button(), e->buttons(), e->modifiers());
         QGuiApplication::sendEvent(transientParent(), &pe);
     }
+}
+
+bool QQuickPopupWindow::shouldForwardEventAfterDismiss(QMouseEvent*) const
+{
+    return false;
 }
 
 void QQuickPopupWindow::exposeEvent(QExposeEvent *e)

@@ -42,6 +42,7 @@
 QT_BEGIN_NAMESPACE
 
 class QQuickMenu;
+class QQuickMenuBar;
 
 class QQuickMenuPopupWindow : public QQuickPopupWindow
 {
@@ -63,6 +64,7 @@ protected Q_SLOTS:
 
 protected:
     void exposeEvent(QExposeEvent *);
+    bool shouldForwardEventAfterDismiss(QMouseEvent *) const;
 
 private:
     QQuickItem *m_itemAt;
@@ -70,6 +72,9 @@ private:
     QPointF m_initialPos;
     QQuickWindow *m_logicalParentWindow;
     QQuickMenu *m_menu;
+
+private:
+    QQuickMenuBar *menuBar() const;
 };
 
 QT_END_NAMESPACE
