@@ -55,6 +55,7 @@
 #include "Private/qquickabstractstyle_p.h"
 #include "Private/qquickcontrolsprivate_p.h"
 #include "Private/qquicktreemodeladaptor_p.h"
+#include "Private/qquicksceneposlistener_p.h"
 
 #ifdef QT_WIDGETS_LIB
 #include <QtQuick/qquickimageprovider.h>
@@ -154,6 +155,7 @@ void QtQuickControlsPlugin::initializeEngine(QQmlEngine *engine, const char *uri
     qmlRegisterType<QQuickControlsPrivateAttached>();
 
     qmlRegisterType<QQuickTreeModelAdaptor>(private_uri, 1, 0, "TreeModelAdaptor");
+    qmlRegisterType<QQuickScenePosListener>(private_uri, 1, 0, "ScenePosListener");
 
     qmlRegisterType<QQuickMenu>(private_uri, 1, 0, "MenuPrivate");
     qmlRegisterType<QQuickMenuBar>(private_uri, 1, 0, "MenuBarPrivate");

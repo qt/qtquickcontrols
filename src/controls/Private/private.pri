@@ -10,7 +10,8 @@ HEADERS += \
     $$PWD/qquickabstractstyle_p.h \
     $$PWD/qquickpadding_p.h \
     $$PWD/qquickcontrolsprivate_p.h \
-    $$PWD/qquicktreemodeladaptor_p.h
+    $$PWD/qquicktreemodeladaptor_p.h \
+    $$PWD/qquicksceneposlistener_p.h
 
 SOURCES += \
     $$PWD/qquickcalendarmodel.cpp \
@@ -22,8 +23,8 @@ SOURCES += \
     $$PWD/qquickwheelarea.cpp \
     $$PWD/qquickabstractstyle.cpp \
     $$PWD/qquicktreemodeladaptor.cpp \
-    $$PWD/qquickcontrolsprivate.cpp
-
+    $$PWD/qquickcontrolsprivate.cpp \
+    $$PWD/qquicksceneposlistener.cpp
 
 !no_desktop {
     QT += widgets
