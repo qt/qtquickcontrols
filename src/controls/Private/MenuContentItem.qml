@@ -41,7 +41,7 @@ import QtQuick.Controls.Styles 1.1
 Loader {
     id: menuFrameLoader
 
-    property var __menu: root
+    property var __menu
 
     visible: status === Loader.Ready
     width: content.width + (d.style ? d.style.padding.left + d.style.padding.right : 0)
@@ -67,7 +67,7 @@ Loader {
 
         function canBeHovered(index) {
             var item = content.menuItemAt(index)
-            if (item && item.styleData.type !== MenuItemType.Separator && item.styleData.enabled) {
+            if (item && item.visible && item.styleData.type !== MenuItemType.Separator && item.styleData.enabled) {
                 __menu.__currentIndex = index
                 return true
             }
@@ -85,6 +85,7 @@ Loader {
                 __menu.__dismissMenu()
                 if (item.styleData.type !== MenuItemType.Menu)
                     item.__menuItem.trigger()
+                __menu.__destroyAllMenuPopups()
             }
         }
     }
@@ -128,8 +129,10 @@ Loader {
     }
 
     Keys.onLeftPressed: {
-        if ((event.accepted = __menu.__parentMenu.hasOwnProperty("title")))
-            __closeMenu()
+        if ((event.accepted = __menu.__parentMenu.hasOwnProperty("title"))) {
+            __menu.__closeMenu()
+            __menu.__destroyMenuPopup()
+        }
     }
 
     Keys.onRightPressed: {
@@ -227,8 +230,10 @@ Loader {
                 id: closeMenuTimer
                 interval: 1
                 onTriggered: {
-                    if (__menu.__currentIndex !== __menuItemIndex)
+                    if (__menu.__currentIndex !== __menuItemIndex) {
                         __menuItem.__closeMenu()
+                        __menuItem.__destroyMenuPopup()
+                    }
                 }
             }
 
