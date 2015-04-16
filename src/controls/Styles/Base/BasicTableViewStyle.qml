@@ -40,41 +40,48 @@ import QtQuick.Controls.Private 1.0
 
 /*!
     \qmltype BasicTableViewStyle
-    \inqmlmodule QtQuick.Controls.Styles
-    \since 5.1
     \internal
+    \inherits ScrollViewStyle
     \qmlabstract
-    \ingroup viewsstyling
-    \brief Provides custom styling for TableView
-
-    \note This class derives from \l {ScrollViewStyle}
-    and supports all of the properties defined there.
 */
+
 ScrollViewStyle {
     id: root
 
-    /*! \internal */
+    /*! \qmlproperty BasicTableView BasicTableViewStyle::control
+        \internal */
     readonly property BasicTableView control: __control
 
-    /*! The text color. */
+    /*! \qmlproperty color BasicTableViewStyle::textColor
+        The text color. */
     property color textColor: SystemPaletteSingleton.text(control.enabled)
 
-    /*! The background color. */
+    /*! \qmlproperty color BasicTableViewStyle::backgroundColor
+        The background color. */
     property color backgroundColor: control.backgroundVisible ? SystemPaletteSingleton.base(control.enabled) : "transparent"
 
-    /*! The alternate background color. */
+    /*! \qmlproperty color BasicTableViewStyle::alternateBackgroundColor
+        The alternate background color. */
     property color alternateBackgroundColor: "#f5f5f5"
 
-    /*! The text highlight color, used within selections. */
+    /*! \qmlproperty color BasicTableViewStyle::highlightedTextColor
+        The text highlight color, used within selections. */
     property color highlightedTextColor: "white"
 
-    /*! Activates items on single click. */
+    /*! \qmlproperty bool BasicTableViewStyle::activateItemOnSingleClick
+        Activates items on single click.
+
+        Its default value is \c false.
+    */
     property bool activateItemOnSingleClick: false
 
     padding.top: control.headerVisible ? 0 : 1
 
     /*! \qmlproperty Component BasicTableViewStyle::headerDelegate
-    Delegate for header. This delegate is described in \l {TreeView}{TreeView.headerDelegate} and \l {TableView}{TableView.headerDelegate}
+        \internal
+
+        Different documentation for TableViewStyle and TreeViewStyle.
+        See qtquickcontrolsstyles-tableviewstyle.qdoc and qtquickcontrolsstyles-treeviewstyle.qdoc
     */
     property Component headerDelegate: BorderImage {
         height: textItem.implicitHeight * 1.2
@@ -105,7 +112,10 @@ ScrollViewStyle {
     }
 
     /*! \qmlproperty Component BasicTableViewStyle::rowDelegate
-    Delegate for row. This delegate is described in \l {TreeView}{TreeView.rowDelegate} and \l {TableView}{TableView.rowDelegate}
+        \internal
+
+        Different documentation for TableViewStyle and TreeViewStyle.
+        See qtquickcontrolsstyles-tableviewstyle.qdoc and qtquickcontrolsstyles-treeviewstyle.qdoc
     */
     property Component rowDelegate: Rectangle {
         height: Math.round(TextSingleton.implicitHeight * 1.2)
@@ -115,7 +125,10 @@ ScrollViewStyle {
     }
 
     /*! \qmlproperty Component BasicTableViewStyle::itemDelegate
-    Delegate for item. This delegate is described in \l {TreeView}{TreeView.itemDelegate} and \l {TableView}{TableView.itemDelegate}
+        \internal
+
+        Different documentation for TableViewStyle and TreeViewStyle.
+        See qtquickcontrolsstyles-tableviewstyle.qdoc and qtquickcontrolsstyles-treeviewstyle.qdoc
     */
     property Component itemDelegate: Item {
         height: Math.max(16, label.implicitHeight)

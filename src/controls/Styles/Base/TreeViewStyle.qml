@@ -38,42 +38,12 @@ import QtQuick 2.5
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Private 1.0
 
-/*!
-    \qmltype TreeViewStyle
-    \inqmlmodule QtQuick.Controls.Styles
-    \since 5.5
-    \ingroup viewsstyling
-    \brief Provides custom styling for TreeView
-*/
 BasicTableViewStyle {
     id: root
 
-    /*! The \l TreeView this style is attached to. */
     readonly property TreeView control: __control
 
-    /*!
-        The amount each level is indented relatively to its parent level.
-    */
     property int indentation: 12
-
-    // TODO - to update
-    /*! \qmlproperty Component TreeViewStyle::branchDelegate
-
-    This property defines a delegate to draw the branch indicator.
-
-    In the branch delegate you have access to the following special properties:
-    \list
-    \li  styleData.row - the index of the view row
-    \li  styleData.column - the index of the view column. Will always be 0
-    \li  styleData.selected - if the item is currently selected
-    \li  styleData.textColor - the default text color for an item
-    \li  styleData.index - the QModelIndex of the current item in the model
-    \li  styleData.depth - the depth of the current item in the tree model
-    \li  styleData.isExpanded - true when the item is expanded
-    \li  styleData.hasChildren - true if the model index of the current item has children
-    \li  styleData.hasSibling - true if the model index of the current item has sibling
-    \endlist
-    */
 
     property Component branchDelegate: Item {
         width: 16
