@@ -41,12 +41,15 @@
 #include <qquickitem.h>
 #include <QtGui/QScreen>
 #include <QtQuick/QQuickRenderControl>
+#include "qquickmenu_p.h"
+#include "qquickmenubar_p.h"
 
 QT_BEGIN_NAMESPACE
 
-QQuickMenuPopupWindow::QQuickMenuPopupWindow() :
+QQuickMenuPopupWindow::QQuickMenuPopupWindow(QQuickMenu *menu) :
     m_itemAt(0),
-    m_logicalParentWindow(0)
+    m_logicalParentWindow(0),
+    m_menu(menu)
 {
 }
 
@@ -83,10 +86,19 @@ void QQuickMenuPopupWindow::setParentWindow(QWindow *effectiveParentWindow, QQui
         setTransientParent(effectiveParentWindow);
     m_logicalParentWindow = parentWindow;
     if (parentWindow) {
-        connect(parentWindow, SIGNAL(destroyed()), this, SLOT(dismissPopup()));
-        if (QQuickMenuPopupWindow *pw = qobject_cast<QQuickMenuPopupWindow *>(parentWindow))
+        if (QQuickMenuPopupWindow *pw = qobject_cast<QQuickMenuPopupWindow *>(parentWindow)) {
             connect(pw, SIGNAL(popupDismissed()), this, SLOT(dismissPopup()));
+            connect(pw, SIGNAL(willBeDeletedLater()), this, SLOT(setToBeDeletedLater()));
+        } else {
+            connect(parentWindow, SIGNAL(destroyed()), this, SLOT(deleteLater()));
+        }
     }
+}
+
+void QQuickMenuPopupWindow::setToBeDeletedLater()
+{
+    deleteLater();
+    emit willBeDeletedLater();
 }
 
 void QQuickMenuPopupWindow::setGeometry(int posx, int posy, int w, int h)
@@ -96,7 +108,7 @@ void QQuickMenuPopupWindow::setGeometry(int posx, int posy, int w, int h)
         pw = parentItem()->window();
     if (!pw)
         pw = this;
-    QRect g = pw->screen()->virtualGeometry();
+    QRect g = pw->screen()->geometry();
 
     if (posx + w > g.right()) {
         if (qobject_cast<QQuickMenuPopupWindow *>(transientParent())) {
@@ -142,6 +154,47 @@ void QQuickMenuPopupWindow::exposeEvent(QExposeEvent *e)
         m_initialPos += m_logicalParentWindow->geometry().topLeft();
     }
     QQuickPopupWindow::exposeEvent(e);
+}
+
+QQuickMenu *QQuickMenuPopupWindow::menu() const
+{
+    return m_menu;
+}
+
+QQuickMenuBar *QQuickMenuPopupWindow::menuBar() const
+{
+    QObject *pi = menu()->parentMenuOrMenuBar();
+    while (pi) {
+        if (QQuickMenuBar *menuBar = qobject_cast<QQuickMenuBar*>(pi))
+            return menuBar;
+        else if (QQuickMenu *menu = qobject_cast<QQuickMenu*>(pi))
+            pi = menu->parentMenuOrMenuBar();
+        else
+            return 0;
+    }
+    return 0;
+}
+
+bool QQuickMenuPopupWindow::shouldForwardEventAfterDismiss(QMouseEvent *e) const
+{
+    // The events that dismissed a popup child of a menu contained in the menubar
+    // are never forwarded
+    if (QQuickMenuBar *mb = menuBar()) {
+        QPoint parentPos = transientParent()->mapFromGlobal(mapToGlobal(e->pos()));
+        if (!mb->isNative() && mb->contentItem()->contains(parentPos))
+            return false;
+    }
+
+#ifdef Q_OS_OSX
+    if (e->button() == Qt::RightButton)
+        return true;
+#endif
+
+#ifdef Q_OS_WIN
+    return true;
+#endif
+
+    return false;
 }
 
 QT_END_NAMESPACE

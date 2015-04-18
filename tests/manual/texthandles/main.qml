@@ -100,7 +100,6 @@ ApplicationWindow {
 
         TextField {
             id: field
-            z: 1
             text: loremIpsum
             Layout.fillWidth: true
             selectByMouse: selectBox.checked
@@ -113,7 +112,6 @@ ApplicationWindow {
 
         SpinBox {
             id: spinbox
-            z: 1
             decimals: 2
             value: 500000
             maximumValue: 1000000
@@ -129,7 +127,6 @@ ApplicationWindow {
 
         ComboBox {
             id: combobox
-            z: 1
             editable: true
             currentIndex: 1
             Layout.fillWidth: true

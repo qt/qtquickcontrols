@@ -86,40 +86,10 @@ ScrollView {
     property alias backgroundVisible: colorRect.visible
 
     /*! \qmlproperty Component BasicTableView::itemDelegate
+        \internal
 
-        This property defines a delegate to draw a specific cell.
-
-        In the item delegate you have access to the following special properties:
-        \list
-        \li  styleData.selected - if the item is currently selected
-        \li  styleData.value - the value or text for this item
-        \li  styleData.textColor - the default text color for an item
-        \li  styleData.row - the index of the row
-        \li  styleData.column - the index of the column
-        \li  styleData.elideMode - the elide mode of the column
-        \li  styleData.textAlignment - the horizontal text alignment of the column
-        \li  styleData.pressed - true when the item is pressed (since QtQuick.Controls 1.3)
-        \li  styleData.hasActiveFocus - true when the row has focus (since QtQuick.Controls 1.3)
-        \endlist
-
-        Example:
-        \code
-        itemDelegate: Item {
-            Text {
-                anchors.verticalCenter: parent.verticalCenter
-                color: styleData.textColor
-                elide: styleData.elideMode
-                text: styleData.value
-            }
-        }
-        \endcode
-
-        \note For performance reasons, created delegates can be recycled
-        across multiple table rows. This implies that when you make use of implicit
-        properties such as \c styleData.row or \c model, these values can change
-        after the delegate has been constructed. This means that you should not assume
-        that content is fixed when \c Component.onCompleted is called, but instead rely on
-        bindings to such properties.
+        Documentation differs between TableView and TreeView.
+        See qtquickcontrols-treeview.qdoc and qtquickcontrols-tableview.qdoc
     */
     property Component itemDelegate: __style ? __style.itemDelegate : null
 
@@ -201,13 +171,15 @@ ScrollView {
     */
     readonly property alias columnCount: columnModel.count
 
-    /*! \qmlproperty string BasicTableView::section.property
+    /*! \qmlpropertygroup BasicTableView::section
+        \internal
+        \qmlproperty string BasicTableView::section.property
         \qmlproperty enumeration BasicTableView::section.criteria
         \qmlproperty Component BasicTableView::section.delegate
         \qmlproperty enumeration BasicTableView::section.labelPositioning
 
-        These properties determine the section labels.
-        \sa ListView::section
+        Moved to the qdoc files to keep the grouped property layout.
+        See qtquickcontrols-treeview.qdoc and qtquickcontrols-tableview.qdoc
     */
     property alias section: listView.section
 

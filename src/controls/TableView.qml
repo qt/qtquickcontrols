@@ -40,250 +40,37 @@ import QtQuick.Controls.Private 1.0
 import QtQuick.Controls.Styles 1.1
 import QtQuick.Window 2.1
 
-/*!
-   \qmltype TableView
-   \inqmlmodule QtQuick.Controls
-   \since 5.1
-   \ingroup views
-   \brief Provides a list view with scroll bars, styling and header sections.
-
-   \image tableview.png
-
-   A TableView is similar to \l ListView, and adds scroll bars, selection, and
-   resizable header sections. As with \l ListView, data for each row is provided through a \l model:
-
-   \code
-   ListModel {
-       id: libraryModel
-       ListElement {
-           title: "A Masterpiece"
-           author: "Gabriel"
-       }
-       ListElement {
-           title: "Brilliance"
-           author: "Jens"
-       }
-       ListElement {
-           title: "Outstanding"
-           author: "Frederik"
-       }
-   }
-   \endcode
-
-   You provide title and size of a column header
-   by adding a \l TableViewColumn as demonstrated below.
-
-   \code
-   TableView {
-       TableViewColumn {
-           role: "title"
-           title: "Title"
-           width: 100
-       }
-       TableViewColumn {
-           role: "author"
-           title: "Author"
-           width: 200
-       }
-       model: libraryModel
-   }
-   \endcode
-
-   The header sections are attached to values in the \l model by defining
-   the model role they attach to. Each property in the model will
-   then be shown in their corresponding column.
-
-   You can customize the look by overriding the \l {BasicTableView::}{itemDelegate},
-   \l {BasicTableView::}{rowDelegate}, or \l {BasicTableView::}{headerDelegate} properties.
-
-   The view itself does not provide sorting. This has to
-   be done on the model itself. However you can provide sorting
-   on the model, and enable sort indicators on headers.
-
-\list
-    \li int sortIndicatorColumn - The index of the current sort column
-    \li bool sortIndicatorVisible - Whether the sort indicator should be enabled
-    \li enum sortIndicatorOrder - Qt.AscendingOrder or Qt.DescendingOrder depending on state
-\endlist
-
-    You can create a custom appearance for a TableView by
-    assigning a \l {TableViewStyle}.
-*/
-
 BasicTableView {
     id: root
 
-    /*! \qmlproperty model TableView::model
-    This property holds the model providing data for the table view.
-
-    The model provides the set of data that is used to create the items in the view.
-    Models can be created directly in QML using ListModel, XmlListModel or VisualItemModel,
-    or provided by C++ model classes. \sa ListView::model
-
-    Example model:
-
-    \code
-    model: ListModel {
-        ListElement {
-            column1: "value 1"
-            column2: "value 2"
-        }
-        ListElement {
-            column1: "value 3"
-            column2: "value 4"
-        }
-    }
-    \endcode
-    \sa {qml-data-models}{Data Models}
-    */
     property var model
 
-    /*! \qmlproperty int TableView::rowCount
-    The current number of rows */
     readonly property int rowCount: __listView.count
-
-    /*! \qmlproperty int TableView::currentRow
-    The current row index of the view.
-    The default value is \c -1 to indicate that no row is selected.
-    */
     property alias currentRow: root.__currentRow
 
-    /*! \qmlsignal TableView::activated(int row)
-
-        Emitted when the user activates an item by mouse or keyboard interaction.
-        Mouse activation is triggered by single- or double-clicking, depending on the platform.
-
-        \a row int provides access to the activated row index.
-
-        \note This signal is only emitted for mouse interaction that is not blocked in the row or item delegate.
-
-        The corresponding handler is \c onActivated.
-    */
     signal activated(int row)
-
-    /*! \qmlsignal TableView::clicked(int row)
-
-        Emitted when the user clicks a valid row by single clicking
-
-        \a row int provides access to the clicked row index.
-
-        \note This signal is only emitted if the row or item delegate does not accept mouse events.
-
-        The corresponding handler is \c onClicked.
-    */
     signal clicked(int row)
-
-    /*! \qmlsignal TableView::doubleClicked(int row)
-
-        Emitted when the user double clicks a valid row.
-
-        \a row int provides access to the clicked row index.
-
-        \note This signal is only emitted if the row or item delegate does not accept mouse events.
-
-        The corresponding handler is \c onDoubleClicked.
-    */
     signal doubleClicked(int row)
-
-    /*! \qmlsignal TableView::pressAndHold(int row)
-        \since QtQuick.Controls 1.3
-
-        Emitted when the user presses and holds a valid row.
-
-        \a row int provides access to the pressed row index.
-
-        \note This signal is only emitted if the row or item delegate does not accept mouse events.
-
-        The corresponding handler is \c onPressAndHold.
-    */
     signal pressAndHold(int row)
 
-    /*!
-        \qmlmethod void TableView::positionViewAtRow( int row, PositionMode mode )
-
-        Positions the view such that the specified \a row is at the position defined by \a mode:
-           \list
-           \li ListView.Beginning - position item at the top of the view.
-           \li ListView.Center - position item in the center of the view.
-           \li ListView.End - position item at bottom of the view.
-           \li ListView.Visible - if any part of the item is visible then take no action, otherwise bring the item into view.
-           \li ListView.Contain - ensure the entire item is visible. If the item is larger than the view the item is positioned
-               at the top of the view.
-           \endlist
-
-        If positioning the \a row creates an empty space at the beginning
-        or end of the view, then the view is positioned at the boundary.
-
-        For example, to position the view at the end at startup:
-
-        \code
-        Component.onCompleted: table.positionViewAtRow(rowCount -1, ListView.Contain)
-        \endcode
-
-        Depending on how the model is populated, the model may not be ready when
-        TableView Component.onCompleted is called. In that case you may need to
-        delay the call to positionViewAtRow by using a \l [QtQml]{Timer}.
-
-        \note This method should only be called after the component has completed.
-    */
     function positionViewAtRow(row, mode) {
         __listView.positionViewAtIndex(row, mode)
     }
 
-    /*!
-        \qmlmethod int TableView::rowAt( int x, int y )
-
-        Returns the index of the visible row at the point \a x, \a y in content
-        coordinates. If there is no visible row at the point specified, \c -1 is returned.
-
-        \note This method should only be called after the component has completed.
-    */
     function rowAt(x, y) {
         var obj = root.mapToItem(__listView.contentItem, x, y)
         return __listView.indexAt(obj.x, obj.y)
     }
 
-    /*! \qmlproperty Selection TableView::selection
-        \since QtQuick.Controls 1.1
-
-        This property contains the current row-selection of the \l TableView.
-        The selection allows you to select, deselect or iterate over selected rows.
-
-        \list
-        \li function \b clear() - deselects all rows
-        \li function \b selectAll() - selects all rows
-        \li function \b select(from, to) - select a range
-        \li functton \b deselect(from, to) - de-selects a range
-        \li function \b forEach(callback) - iterates over all selected rows
-        \li function \b contains(index) - checks whether the selection includes the given index
-        \li signal \b selectionChanged() - the current row selection changed
-        \li readonly property int \b count - the number of selected rows
-        \endlist
-
-        \b Example:
-        \code
-            tableview.selection.select(0)       // select row index 0
-
-            tableview.selection.select(1, 3)    // select row indexes 1, 2 and 3
-
-            tableview.selection.deselect(0, 1)  // deselects row index 0 and 1
-
-            tableview.selection.deselect(2)     // deselects row index 2
-        \endcode
-
-        \b Example: To iterate over selected indexes, you can pass a callback function.
-                    \a rowIndex is passed as as an argument to the callback function.
-        \code
-            tableview.selection.forEach( function(rowIndex) {console.log(rowIndex)} )
-        \endcode
-    */
     readonly property alias selection: selectionObject
-
-    onModelChanged: selection.clear()
 
     style: Settings.styleComponent(Settings.style, "TableViewStyle.qml", root)
 
     Accessible.role: Accessible.Table
+
+    // Internal stuff. Do not look
+
+    onModelChanged: selection.clear()
 
     __viewTypeName: "TableView"
     __model: model

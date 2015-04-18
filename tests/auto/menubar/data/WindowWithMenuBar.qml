@@ -99,4 +99,24 @@ ApplicationWindow {
         width: 100
         height: 20
     }
+
+    Menu {
+        id: contextMenu
+        objectName: "contextMenu"
+        MenuItem {
+            id: contextMenuItem1
+            objectName: "contextMenuItem1"
+            text: "contextMenuItem1"
+        }
+        MenuItem {
+            id: contextMenuItem2
+            objectName: "contextMenuItem2"
+            text: "contextMenuItem2"
+        }
+    }
+
+    MouseArea {
+        anchors.fill: parent
+        onClicked: contextMenu.popup()
+    }
 }

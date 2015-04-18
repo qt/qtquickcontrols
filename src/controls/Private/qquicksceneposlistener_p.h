@@ -34,61 +34,60 @@
 **
 ****************************************************************************/
 
-#ifndef QQUICKPOPUPWINDOW_H
-#define QQUICKPOPUPWINDOW_H
+#ifndef QQUICKSCENEPOSLISTENER_P_H
+#define QQUICKSCENEPOSLISTENER_P_H
 
-#include <QtQuick/qquickwindow.h>
+#include <QtCore/qobject.h>
+#include <QtCore/qpoint.h>
+#include <QtCore/qset.h>
+#include <QtQuick/private/qquickitemchangelistener_p.h>
 
 QT_BEGIN_NAMESPACE
 
 class QQuickItem;
 
-class QQuickPopupWindow : public QQuickWindow
+class QQuickScenePosListener : public QObject, public QQuickItemChangeListener
 {
     Q_OBJECT
-    Q_PROPERTY(QQuickItem *popupContentItem READ popupContentItem WRITE setPopupContentItem)
-    Q_CLASSINFO("DefaultProperty", "popupContentItem")
-    Q_PROPERTY(QQuickItem *parentItem READ parentItem WRITE setParentItem)
+    Q_PROPERTY(QQuickItem *item READ item WRITE setItem FINAL)
+    Q_PROPERTY(QPointF scenePos READ scenePos NOTIFY scenePosChanged FINAL)
+    Q_PROPERTY(bool enabled READ isEnabled WRITE setEnabled NOTIFY enabledChanged FINAL)
 
 public:
-    QQuickPopupWindow();
+    explicit QQuickScenePosListener(QObject *parent = 0);
+    ~QQuickScenePosListener();
 
-    QQuickItem *popupContentItem() const { return m_contentItem; }
-    void setPopupContentItem(QQuickItem *popupContentItem);
+    QQuickItem *item() const;
+    void setItem(QQuickItem *item);
 
-    QQuickItem *parentItem() const { return m_parentItem; }
-    virtual void setParentItem(QQuickItem *);
+    QPointF scenePos() const;
 
-public Q_SLOTS:
-    virtual void show();
-    void dismissPopup();
+    bool isEnabled() const;
+    void setEnabled(bool enabled);
 
 Q_SIGNALS:
-    void popupDismissed();
-    void geometryChanged();
+    void scenePosChanged();
+    void enabledChanged();
 
 protected:
-    void mousePressEvent(QMouseEvent *);
-    void mouseReleaseEvent(QMouseEvent *);
-    void mouseMoveEvent(QMouseEvent *);
-    void exposeEvent(QExposeEvent *);
-    void hideEvent(QHideEvent *);
-    virtual bool shouldForwardEventAfterDismiss(QMouseEvent *) const;
-
-protected Q_SLOTS:
-    void updateSize();
-    void applicationStateChanged(Qt::ApplicationState state);
+    void itemGeometryChanged(QQuickItem *, const QRectF &, const QRectF &);
+    void itemParentChanged(QQuickItem *, QQuickItem *parent);
+    void itemChildRemoved(QQuickItem *, QQuickItem *child);
+    void itemDestroyed(QQuickItem *item);
 
 private:
-    void forwardEventToTransientParent(QMouseEvent *);
+    void updateScenePos();
 
-    QQuickItem *m_parentItem;
-    QQuickItem *m_contentItem;
-    bool m_mouseMoved;
-    bool m_needsActivatedEvent;
-    bool m_dismissed;
+    void removeAncestorListeners(QQuickItem *item);
+    void addAncestorListeners(QQuickItem *item);
+
+    bool isAncestor(QQuickItem *item) const;
+
+    bool m_enabled;
+    QPointF m_scenePos;
+    QQuickItem *m_item;
 };
 
 QT_END_NAMESPACE
 
-#endif // QQUICKPOPUPWINDOW_H
+#endif // QQUICKSCENEPOSLISTENER_P_H

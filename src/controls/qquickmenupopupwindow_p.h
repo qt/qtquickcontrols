@@ -41,11 +41,14 @@
 
 QT_BEGIN_NAMESPACE
 
+class QQuickMenu;
+class QQuickMenuBar;
+
 class QQuickMenuPopupWindow : public QQuickPopupWindow
 {
     Q_OBJECT
 public:
-    QQuickMenuPopupWindow();
+    QQuickMenuPopupWindow(QQuickMenu *menu);
 
     void setItemAt(QQuickItem *menuItem);
     void setParentWindow(QWindow *effectiveParentWindow, QQuickWindow *parentWindow);
@@ -53,18 +56,30 @@ public:
 
     void setParentItem(QQuickItem *);
 
+    QQuickMenu *menu() const;
+public Q_SLOTS:
+    void setToBeDeletedLater();
+
 protected Q_SLOTS:
     void updateSize();
     void updatePosition();
 
+Q_SIGNALS:
+    void willBeDeletedLater();
+
 protected:
     void exposeEvent(QExposeEvent *);
+    bool shouldForwardEventAfterDismiss(QMouseEvent *) const;
 
 private:
     QQuickItem *m_itemAt;
     QPointF m_oldItemPos;
     QPointF m_initialPos;
     QQuickWindow *m_logicalParentWindow;
+    QQuickMenu *m_menu;
+
+private:
+    QQuickMenuBar *menuBar() const;
 };
 
 QT_END_NAMESPACE

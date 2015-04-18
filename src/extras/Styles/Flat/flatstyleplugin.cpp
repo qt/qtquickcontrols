@@ -71,7 +71,7 @@ void QtQuickExtrasStylesPlugin::registerTypes(const char *uri)
 {
     Q_INIT_RESOURCE(flatstyle);
 
-    const QString prefix = ":/ExtrasImports/QtQuick/Controls/Styles/Flat/";
+    const QString prefix = "qrc:/ExtrasImports/QtQuick/Controls/Styles/Flat/";
     // register version 1.0
     qmlRegisterSingletonType(QUrl(prefix + "FlatStyle.qml"), uri, 1, 0, "FlatStyle");
     qmlRegisterType(QUrl(prefix + "ApplicationWindowStyle.qml"), uri, 1, 0, "ApplicationWindowStyle");
