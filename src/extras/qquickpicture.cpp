@@ -37,6 +37,7 @@
 #include "qquickpicture_p.h"
 
 #include <QQmlFile>
+#include <QDebug>
 
 /*!
     \qmltype Picture
