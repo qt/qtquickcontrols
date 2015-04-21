@@ -115,6 +115,7 @@ FocusScope {
         orientation: Qt.Horizontal
         interactive: false
         focus: true
+        clip: true
 
         // Note this will silence the binding loop warnings caused by QTBUG-35038
         // and should be removed when this issue is resolved.

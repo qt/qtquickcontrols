@@ -37,11 +37,9 @@ exampledirs += ../../../examples/quick/controls \
     snippets
 examplesinstallpath = quick/controls
 
-headerdirs += ../ \
-              Styles/Base
+headerdirs += ..
 
-sourcedirs += ../ \
-              Styles/Base
+sourcedirs += ..
 
 sources += ../Private/AbstractCheckable.qml \
            ../Private/BasicButton.qml \
@@ -55,7 +53,14 @@ sources += ../Private/AbstractCheckable.qml \
            ../Private/qquickabstractstyle.h \
            ../Private/qquickabstractstyle.cpp
 
-excludefiles += ../TableView.qml ../TreeView.qml
+excludefiles += ../TableView.qml \
+                ../TreeView.qml \
+                ../Styles/Base/TableViewStyle.qml \
+                ../Styles/Base/TreeViewStyle.qml
+
+excludedirs += ../Styles/Desktop \
+               ../Styles/Android \
+               ../Styles/iOS
 
 imagedirs += images \
     ../../extras/doc/images

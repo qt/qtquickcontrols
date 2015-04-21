@@ -37,19 +37,8 @@
 import QtQuick 2.5
 import QtQuick.Controls 1.4
 
-/*!
-    \qmltype TableViewStyle
-    \inqmlmodule QtQuick.Controls.Styles
-    \since 5.1
-    \ingroup viewsstyling
-    \brief Provides custom styling for TableView
-
-    \note This class derives from \l {ScrollViewStyle}
-    and supports all of the properties defined there.
-*/
 BasicTableViewStyle {
     id: root
 
-    /*! The \l TableView this style is attached to. */
     readonly property TableView control: __control
 }

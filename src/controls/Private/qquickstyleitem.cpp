@@ -815,6 +815,9 @@ void QQuickStyleItem::initStyleOption()
 
 void QQuickStyleItem::resolvePalette()
 {
+    if (QCoreApplication::testAttribute(Qt::AA_SetPalette))
+        return;
+
     QPlatformTheme::Palette paletteType = QPlatformTheme::SystemPalette;
     switch (m_itemType) {
     case Button:
