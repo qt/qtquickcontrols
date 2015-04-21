@@ -499,7 +499,6 @@ Control {
             var sectionEnd = __protectedScope.sectionEndAngle(itemIndex) + Math.PI / 2;
 
             var selAngle = selectionAngle;
-            var pastStart = selAngle >= sectionStart;
             var isWithinOurAngle = false;
 
             if (sectionStart > CppUtils.MathUtils.pi2) {
