@@ -106,7 +106,6 @@ Item {
             compare(tree.columnCount, 1)
             tree.addColumn(newColumn)
             compare(tree.columnCount, 2)
-            tree.destroy()
         }
 
         function test_clicked_signals()
@@ -156,7 +155,6 @@ Item {
             verify(clickedItem.valid)
             compare(clickedItem.row, 1)
             compare(clickedItem.internalId, tree.currentIndex.internalId)
-            tree.destroy()
         }
 
         function test_headerHidden()
@@ -180,7 +178,6 @@ Item {
             verify(spy.signalArguments[0][0].valid)
             compare(spy.signalArguments[0][0].row, 0)
             compare(tree.currentIndex.row, 0)
-            tree.destroy()
         }
 
         function test_expand_collapse()
@@ -245,8 +242,6 @@ Item {
             compare(tree.isExpanded(expandedIndex), true)
             compare(spy.count, 1)
             compare(spy.signalArguments[0][0].row, 0)
-
-            tree.destroy()
         }
 
         function test_pressAndHold()
@@ -271,7 +266,6 @@ Item {
             verify(spy.signalArguments[0][0].valid)
             compare(spy.signalArguments[0][0].row, 0)
             compare(tree.currentIndex.row, 0)
-            tree.destroy()
         }
 
         function test_keys_navigation()
@@ -326,7 +320,6 @@ Item {
             compare(tree.isExpanded(tree.currentIndex), false)
             compare(tree.collapsedCount, 1)
             compare(tree.expandedCount, 1)
-            tree.destroy()
         }
 
         function test_selection_singleSelection()
@@ -400,8 +393,6 @@ Item {
             compare(fourthItem.internalId, tree.selection.currentIndex.internalId)
             expectFailContinue('', 'BUG selected state not updated with Command/Control when SingleSelection')
             compare(tree.selection.isSelected(fourthItem), true)
-
-            tree.destroy()
         }
 
         function test_selection_noSelection()
@@ -454,8 +445,6 @@ Item {
             keyClick(Qt.Key_Down, Qt.ControlModifier)
             verify(!tree.selection.currentIndex.valid)
             compare(tree.selection.hasSelection, false)
-
-            tree.destroy()
         }
 
         function test_selection_multiSelection()
@@ -565,8 +554,6 @@ Item {
             compare(tree.selection.isSelected(sixthItem), false)
             listIndexes = tree.selection.selectedIndexes
             compare(listIndexes.length, 4)
-
-            tree.destroy()
         }
 
         function test_selection_extendedSelection()
@@ -653,8 +640,6 @@ Item {
             compare(tree.selection.isSelected(thirdItem), true)
             compare(tree.selection.isSelected(sixthItem), true)
             compare(tree.selection.isSelected(fifthItem), true)
-
-            tree.destroy()
         }
 
         function test_selection_contiguousSelection()
@@ -751,8 +736,6 @@ Item {
             compare(listIndexes.length, 1)
             compare(tree.selection.hasSelection, true)
             compare(tree.selection.isSelected(thirdItem), true)
-
-            tree.destroy()
         }
 
         function test_indexAt() {
@@ -808,8 +791,6 @@ Item {
             compare(treeIndex.row, modelIndex.row)
             compare(treeIndex.column, modelIndex.column)
             compare(treeIndex.internalId, modelIndex.internalId)
-
-            tree.destroy()
         }
     }
 }
