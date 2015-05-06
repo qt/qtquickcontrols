@@ -305,6 +305,12 @@ QPlatformFileDialogHelper *QQuickPlatformFileDialog::helper()
 
     By default, the url is empty.
 
+    \note On iOS, if you set \a folder to \l{shortcuts}
+        {shortcuts.pictures},
+        a native image picker dialog will be used for accessing the user's photo album.
+        The URL returned can be set as \l{Image::source}{source} for \l{Image}.
+        This feature was added in Qt 5.5.
+
     \sa shortcuts
 */
 
