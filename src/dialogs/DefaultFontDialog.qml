@@ -199,26 +199,15 @@ AbstractFontDialog {
                     TableViewColumn { id: weightColumn; role: "name"; title: qsTr("Weight") }
                     model: ListModel {
                         id: weightModel
-                        ListElement {
-                            name: "Light"
-                            weight: Font.Light
-                        }
-                        ListElement {
-                            name: "Normal"
-                            weight: Font.Normal
-                        }
-                        ListElement {
-                            name: "DemiBold"
-                            weight: Font.DemiBold
-                        }
-                        ListElement {
-                            name: "Bold"
-                            weight: Font.Bold
-                        }
-                        ListElement {
-                            name: "Black"
-                            weight: Font.Black
-                        }
+                        ListElement { name: "Thin"; weight: Font.Thin }
+                        ListElement { name: "ExtraLight"; weight: Font.ExtraLight }
+                        ListElement { name: "Light"; weight: Font.Light }
+                        ListElement { name: "Normal"; weight: Font.Normal }
+                        ListElement { name: "Medium"; weight: Font.Medium }
+                        ListElement { name: "DemiBold"; weight: Font.DemiBold }
+                        ListElement { name: "Bold"; weight: Font.Bold }
+                        ListElement { name: "ExtraBold"; weight: Font.ExtraBold }
+                        ListElement { name: "Black"; weight: Font.Black }
                         Component.onCompleted: weightListView.reset()
                         function findIndex() {
                             var currentRow = 1
