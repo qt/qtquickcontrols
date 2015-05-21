@@ -354,6 +354,7 @@ void QQuickTreeModelAdaptor::expand(const QModelIndex &idx)
     ASSERT_CONSISTENCY();
     if (!m_model)
         return;
+    Q_ASSERT(!idx.isValid() || idx.model() == m_model);
     if (!idx.isValid() || !m_model->hasChildren(idx))
         return;
     if (m_expandedItems.contains(idx))
@@ -374,6 +375,7 @@ void QQuickTreeModelAdaptor::collapse(const QModelIndex &idx)
     ASSERT_CONSISTENCY();
     if (!m_model)
         return;
+    Q_ASSERT(!idx.isValid() || idx.model() == m_model);
     if (!idx.isValid() || !m_model->hasChildren(idx))
         return;
     if (!m_expandedItems.contains(idx))
@@ -394,6 +396,7 @@ bool QQuickTreeModelAdaptor::isExpanded(const QModelIndex &index) const
     ASSERT_CONSISTENCY();
     if (!m_model)
         return false;
+    Q_ASSERT(!index.isValid() || index.model() == m_model);
     return !index.isValid() || m_expandedItems.contains(index);
 }
 

@@ -56,15 +56,25 @@ BasicTableView {
     signal collapsed(var index)
 
     function isExpanded(index) {
+        if (index.valid && index.model !== model) {
+            console.warn("TreeView.isExpanded: model and index mismatch")
+            return false
+        }
         return modelAdaptor.isExpanded(index)
     }
 
     function collapse(index) {
-        modelAdaptor.collapse(index)
+        if (index.valid && index.model !== model)
+            console.warn("TreeView.collapse: model and index mismatch")
+        else
+            modelAdaptor.collapse(index)
     }
 
     function expand(index) {
-        modelAdaptor.expand(index)
+        if (index.valid && index.model !== model)
+            console.warn("TreeView.expand: model and index mismatch")
+        else
+            modelAdaptor.expand(index)
     }
 
     function indexAt(x, y) {
