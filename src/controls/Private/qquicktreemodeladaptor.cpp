@@ -69,6 +69,8 @@ void QQuickTreeModelAdaptor::setModel(QAbstractItemModel *arg)
         const char *slot;
     };
     static const Cx connections[] = {
+        { SIGNAL(destroyed(QObject*)),
+          SLOT(modelHasBeenDestroyed()) },
         { SIGNAL(modelReset()),
           SLOT(modelHasBeenReset()) },
         { SIGNAL(dataChanged(const QModelIndex&, const QModelIndex&, const QVector<int>&)),
@@ -240,6 +242,8 @@ const QModelIndex &QQuickTreeModelAdaptor::mapToModel(const QModelIndex &index) 
 
 QModelIndex QQuickTreeModelAdaptor::mapRowToModelIndex(int row) const
 {
+    if (!m_model)
+        return QModelIndex();
     if (row < 0 || row >= m_items.count())
         return QModelIndex();
     return m_items.at(row).index;
@@ -364,6 +368,8 @@ void QQuickTreeModelAdaptor::showModelChildItems(const TreeItem &parentItem, int
 
 void QQuickTreeModelAdaptor::expand(const QModelIndex &idx)
 {
+    if (!m_model)
+        return;
     ASSERT_CONSISTENCY();
     if (!idx.isValid() || !m_model->hasChildren(idx))
         return;
@@ -382,6 +388,8 @@ void QQuickTreeModelAdaptor::expand(const QModelIndex &idx)
 
 void QQuickTreeModelAdaptor::collapse(const QModelIndex &idx)
 {
+    if (!m_model)
+        return;
     ASSERT_CONSISTENCY();
     if (!idx.isValid() || !m_model->hasChildren(idx))
         return;
@@ -400,6 +408,8 @@ void QQuickTreeModelAdaptor::collapse(const QModelIndex &idx)
 
 bool QQuickTreeModelAdaptor::isExpanded(const QModelIndex &index) const
 {
+    if (!m_model)
+        return false;
     ASSERT_CONSISTENCY();
     return !index.isValid() || m_expandedItems.contains(index);
 }
@@ -512,6 +522,13 @@ void QQuickTreeModelAdaptor::removeVisibleRows(int startIndex, int endIndex, boo
     m_items.erase(m_items.begin() + startIndex, m_items.begin() + endIndex + 1);
     if (doRemoveRows)
         endRemoveRows();
+}
+
+void QQuickTreeModelAdaptor::modelHasBeenDestroyed()
+{
+    // The model has been deleted. This should behave as if no model was set
+    clearModelData();
+    emit modelChanged(Q_NULLPTR);
 }
 
 void QQuickTreeModelAdaptor::modelHasBeenReset()
@@ -747,6 +764,8 @@ void QQuickTreeModelAdaptor::modelRowsMoved(const QModelIndex & sourceParent, in
 
 void QQuickTreeModelAdaptor::dump() const
 {
+    if (!m_model)
+        return;
     int count = m_items.count();
     if (count == 0)
         return;
@@ -765,6 +784,8 @@ void QQuickTreeModelAdaptor::dump() const
 
 bool QQuickTreeModelAdaptor::testConsistency(bool dumpOnFail) const
 {
+    if (!m_model)
+        return true;
     QModelIndex parent;
     QStack<QModelIndex> ancestors;
     QModelIndex idx = m_model->index(0, 0);
