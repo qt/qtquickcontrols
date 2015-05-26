@@ -139,7 +139,7 @@ FocusScope {
                 sourceComponent: style
             }
         },
-        ContentItem {
+        Item {
             id: container
             z: 1
             focus: true
@@ -150,10 +150,10 @@ FocusScope {
             anchors.rightMargin: rightMargin + (buttonLoader.active ? buttonLoader.width + rightMargin : 0)
             anchors.bottomMargin: bottomMargin
 
-            property int topMargin: (__style ? __style.padding.top : 0) + systemPadding.top
-            property int bottomMargin: (__style ? __style.padding.bottom : 0) + systemPadding.bottom
-            property int leftMargin: (__style ? __style.padding.left : 0) + systemPadding.left
-            property int rightMargin: (__style ? __style.padding.right : 0) + systemPadding.right
+            property int topMargin: __style ? __style.padding.top : 0
+            property int bottomMargin: __style ? __style.padding.bottom : 0
+            property int leftMargin: __style ? __style.padding.left : 0
+            property int rightMargin: __style ? __style.padding.right : 0
 
             property Item layoutItem: container.children.length === 1 ? container.children[0] : null
             property real layoutWidth: layoutItem ? (layoutItem.implicitWidth || layoutItem.width) +
