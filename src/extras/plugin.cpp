@@ -45,6 +45,11 @@
 #include "Private/qquickmousethief_p.h"
 #include "Private/qquickmathutils_p.h"
 
+static void initResources()
+{
+    Q_INIT_RESOURCE(extras);
+}
+
 QT_BEGIN_NAMESPACE
 
 static QObject *registerMathUtilsSingleton(QQmlEngine *engine, QJSEngine *jsEngine)
@@ -61,7 +66,7 @@ QtQuickExtrasPlugin::QtQuickExtrasPlugin(QObject *parent) :
 
 void QtQuickExtrasPlugin::registerTypes(const char *uri)
 {
-    Q_INIT_RESOURCE(extras);
+    initResources();
     const QString prefix = "qrc:///ExtrasImports/QtQuick/Extras";
     // Register public API.
     qmlRegisterUncreatableType<QQuickActivationMode>(uri, 1, 0, "ActivationMode", QLatin1String("Do not create objects of type ActivationMode"));
