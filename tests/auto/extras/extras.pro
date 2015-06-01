@@ -2,7 +2,6 @@ TEMPLATE = app
 TARGET = tst_extras
 
 CONFIG += qmltestcase console
-CONFIG += insignificant_test # requires qtgraphicaleffects (QTBUG-35112)
 
 SOURCES += $$PWD/tst_extras.cpp
 

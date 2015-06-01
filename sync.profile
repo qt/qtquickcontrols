@@ -13,4 +13,5 @@
     "qtbase" => "",
     "qtdeclarative" => "",
     "qtxmlpatterns" => "",
+    "qtgraphicaleffects" => ""
 );
