@@ -34,7 +34,7 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.2
+import QtQuick 2.6
 import QtQuick.Controls 1.2
 import QtQuick.Controls.Private 1.0
 
@@ -659,6 +659,8 @@ Control {
         renderType: __style ? __style.renderType : Text.NativeRendering
 
         Keys.forwardTo: textfield
+
+        EnterKey.type: control.EnterKey.type
 
         onAccepted: textfield.accepted()
 
