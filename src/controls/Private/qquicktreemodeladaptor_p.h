@@ -49,6 +49,7 @@
 //
 
 #include <QtCore/qset.h>
+#include <QtCore/qpointer.h>
 #include <QtCore/qabstractitemmodel.h>
 #include <QtCore/qitemselectionmodel.h>
 
@@ -119,6 +120,7 @@ public slots:
     void setModel(QAbstractItemModel *model);
 
 private slots:
+    void modelHasBeenDestroyed();
     void modelHasBeenReset();
     void modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRigth, const QVector<int> &roles);
     void modelLayoutAboutToBeChanged(const QList<QPersistentModelIndex> &parents, QAbstractItemModel::LayoutChangeHint hint);
@@ -146,7 +148,7 @@ private:
         }
     };
 
-    QAbstractItemModel *m_model;
+    QPointer<QAbstractItemModel> m_model;
     QList<TreeItem> m_items;
     QSet<QPersistentModelIndex> m_expandedItems;
     QList<TreeItem *> m_itemsToExpand;

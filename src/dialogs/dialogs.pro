@@ -5,6 +5,8 @@ IMPORT_VERSION = 1.2
 
 QMAKE_DOCS = $$PWD/doc/qtquickdialogs.qdocconf
 
+qtquickcompiler: DEFINES += ALWAYS_LOAD_FROM_RESOURCES
+
 SOURCES += \
     qquickabstractmessagedialog.cpp \
     qquickplatformmessagedialog.cpp \
@@ -99,6 +101,6 @@ write_file($$GENERATED_RESOURCE_FILE, RESOURCE_CONTENT)|error("Aborting.")
 RESOURCES += $$GENERATED_RESOURCE_FILE
 
 # In case of a debug build, deploy the QML files too
-CONFIG(debug, debug|release): QML_FILES += $$DIALOGS_QML_FILES
+!qtquickcompiler:CONFIG(debug, debug|release): QML_FILES += $$DIALOGS_QML_FILES
 
 load(qml_plugin)

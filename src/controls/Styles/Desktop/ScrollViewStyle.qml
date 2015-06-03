@@ -72,6 +72,8 @@ Style {
     readonly property int __scrollBarSpacing: __styleitem.pixelMetric("scrollbarspacing")
     readonly property bool scrollToClickedPosition: __styleitem.styleHint("scrollToClickPosition") !== 0
 
+    readonly property int __wheelScrollLines: __styleitem.styleHint("wheelScrollLines")
+
     property Component __scrollbar: StyleItem {
         anchors.fill:parent
         elementType: "scrollbar"

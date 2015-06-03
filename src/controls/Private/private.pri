@@ -70,4 +70,4 @@ PRIVATE_QML_FILES += \
     $$PWD/TreeViewItemDelegateLoader.qml \
     $$PWD/qmldir
 
-QML_FILES += $$PRIVATE_QML_FILES
+!qtquickcompiler: QML_FILES += $$PRIVATE_QML_FILES

@@ -223,4 +223,27 @@ void QQuickPopupWindow::hideEvent(QHideEvent *e)
     QQuickWindow::hideEvent(e);
 }
 
+ /*! \reimp */
+bool QQuickPopupWindow::event(QEvent *event)
+{
+    //QTBUG-45079
+    //This is a workaround for popup menu not being closed when using touch input.
+    //Currently mouse synthesized events are not created for touch events which are
+    //outside the qquickwindow.
+
+    if (event->type() == QEvent::TouchBegin && !qobject_cast<QQuickPopupWindow*>(transientParent())) {
+        QRect rect = QRect(QPoint(), size());
+        QTouchEvent *touch = static_cast<QTouchEvent*>(event);
+        QTouchEvent::TouchPoint point = touch->touchPoints().first();
+        if ((point.state() == Qt::TouchPointPressed) && !rect.contains(point.pos().toPoint())) {
+          //first default handling
+          bool result = QQuickWindow::event(event);
+          //now specific broken case
+          if (!m_dismissed)
+              dismissPopup();
+          return result;
+        }
+    }
+    return QQuickWindow::event(event);
+}
 QT_END_NAMESPACE

@@ -198,19 +198,11 @@ Window {
     /*! \internal */
     default property alias data: contentArea.data
 
-    flags: {
-        var flags = Qt.Window | Qt.WindowFullscreenButtonHint;
-
-        // QTBUG-35049: Windows is removing features we didn't ask for, even though Qt::CustomizeWindowHint is not set
-        // Otherwise Qt.Window | Qt.WindowFullscreenButtonHint would be enough
-        flags |= Qt.WindowTitleHint | Qt.WindowSystemMenuHint | Qt.WindowMinMaxButtonsHint |
-            Qt.WindowCloseButtonHint | Qt.WindowFullscreenButtonHint
-
-        if (Settings.styleName === "iOS")
-            flags |= Qt.MaximizeUsingFullscreenGeometryHint;
-
-        return flags;
-    }
+    flags: Qt.Window | Qt.WindowFullscreenButtonHint |
+        Qt.WindowTitleHint | Qt.WindowSystemMenuHint | Qt.WindowMinMaxButtonsHint |
+        Qt.WindowCloseButtonHint | Qt.WindowFullscreenButtonHint
+    // QTBUG-35049: Windows is removing features we didn't ask for, even though Qt::CustomizeWindowHint is not set
+    // Otherwise Qt.Window | Qt.WindowFullscreenButtonHint would be enough
 
     Loader {
         id: panelLoader
@@ -243,12 +235,8 @@ Window {
 
         ContentItem {
             id: contentArea
+            anchors.fill: parent
             parent: __panel.contentArea
-            anchors {
-                fill: parent
-                topMargin: systemPadding.top; bottomMargin: systemPadding.bottom
-                leftMargin: systemPadding.left; rightMargin: systemPadding.right
-            }
         }
     }
 }

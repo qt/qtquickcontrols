@@ -80,13 +80,6 @@ Item {
             }
         }
 
-        function nth(list, i)
-        {
-            if (list instanceof Array)
-                return list[i]
-            return list.at(i)
-        }
-
         function test_basic_setup()
         {
             var test_instanceStr =
@@ -106,7 +99,6 @@ Item {
             compare(tree.columnCount, 1)
             tree.addColumn(newColumn)
             compare(tree.columnCount, 2)
-            tree.destroy()
         }
 
         function test_clicked_signals()
@@ -156,7 +148,6 @@ Item {
             verify(clickedItem.valid)
             compare(clickedItem.row, 1)
             compare(clickedItem.internalId, tree.currentIndex.internalId)
-            tree.destroy()
         }
 
         function test_headerHidden()
@@ -180,7 +171,6 @@ Item {
             verify(spy.signalArguments[0][0].valid)
             compare(spy.signalArguments[0][0].row, 0)
             compare(tree.currentIndex.row, 0)
-            tree.destroy()
         }
 
         function test_expand_collapse()
@@ -245,8 +235,6 @@ Item {
             compare(tree.isExpanded(expandedIndex), true)
             compare(spy.count, 1)
             compare(spy.signalArguments[0][0].row, 0)
-
-            tree.destroy()
         }
 
         function test_pressAndHold()
@@ -271,7 +259,6 @@ Item {
             verify(spy.signalArguments[0][0].valid)
             compare(spy.signalArguments[0][0].row, 0)
             compare(tree.currentIndex.row, 0)
-            tree.destroy()
         }
 
         function test_keys_navigation()
@@ -326,7 +313,6 @@ Item {
             compare(tree.isExpanded(tree.currentIndex), false)
             compare(tree.collapsedCount, 1)
             compare(tree.expandedCount, 1)
-            tree.destroy()
         }
 
         function test_selection_singleSelection()
@@ -386,7 +372,7 @@ Item {
             var list = tree.selection.selectedIndexes
             compare(list.length, 1)
             if (list.length === 1) {
-                compare(nth(list, 0).internalId, secondItem.internalId)
+                compare(list[0].internalId, secondItem.internalId)
                 compare(tree.selection.isSelected(secondItem), true)
             }
 
@@ -400,8 +386,6 @@ Item {
             compare(fourthItem.internalId, tree.selection.currentIndex.internalId)
             expectFailContinue('', 'BUG selected state not updated with Command/Control when SingleSelection')
             compare(tree.selection.isSelected(fourthItem), true)
-
-            tree.destroy()
         }
 
         function test_selection_noSelection()
@@ -454,8 +438,6 @@ Item {
             keyClick(Qt.Key_Down, Qt.ControlModifier)
             verify(!tree.selection.currentIndex.valid)
             compare(tree.selection.hasSelection, false)
-
-            tree.destroy()
         }
 
         function test_selection_multiSelection()
@@ -500,7 +482,7 @@ Item {
             compare(tree.selection.isSelected(secondItem), true)
             var listIndexes = tree.selection.selectedIndexes
             compare(listIndexes.length, 1)
-            compare(nth(listIndexes, 0).internalId, secondItem.internalId)
+            compare(listIndexes[0].internalId, secondItem.internalId)
             verify(tree.selection.currentIndex.valid)
             if (tree.selection.currentIndex.valid)
                 compare(tree.selection.currentIndex.internalId, secondItem.internalId)
@@ -512,8 +494,8 @@ Item {
             compare(tree.selection.isSelected(fourthItem), true)
             listIndexes = tree.selection.selectedIndexes
             compare(listIndexes.length, 2)
-            compare(nth(listIndexes, 0).internalId, secondItem.internalId)
-            compare(nth(listIndexes, 1).internalId, fourthItem.internalId)
+            compare(listIndexes[0].internalId, secondItem.internalId)
+            compare(listIndexes[1].internalId, fourthItem.internalId)
             verify(tree.selection.currentIndex.valid)
             if (tree.selection.currentIndex.valid)
                 compare(tree.selection.currentIndex.internalId, fourthItem.internalId)
@@ -529,9 +511,9 @@ Item {
 
             listIndexes = tree.selection.selectedIndexes
             compare(listIndexes.length, 3)
-            compare(nth(listIndexes, 0).internalId, secondItem.internalId)
-            compare(nth(listIndexes, 1).internalId, fourthItem.internalId)
-            compare(nth(listIndexes, 2).internalId, sixthItem.internalId)
+            compare(listIndexes[0].internalId, secondItem.internalId)
+            compare(listIndexes[1].internalId, fourthItem.internalId)
+            compare(listIndexes[2].internalId, sixthItem.internalId)
             verify(tree.selection.currentIndex.valid)
             if (tree.selection.currentIndex.valid)
                 compare(tree.selection.currentIndex.internalId, sixthItem.internalId)
@@ -545,8 +527,8 @@ Item {
 
             listIndexes = tree.selection.selectedIndexes
             compare(listIndexes.length, 2)
-            compare(nth(listIndexes, 0).internalId, secondItem.internalId)
-            compare(nth(listIndexes, 1).internalId, sixthItem.internalId)
+            compare(listIndexes[0].internalId, secondItem.internalId)
+            compare(listIndexes[1].internalId, sixthItem.internalId)
             verify(tree.selection.currentIndex.valid)
 
             mouseClick(tree, semiIndent + 50, 70+150, Qt.LeftButton)
@@ -565,8 +547,6 @@ Item {
             compare(tree.selection.isSelected(sixthItem), false)
             listIndexes = tree.selection.selectedIndexes
             compare(listIndexes.length, 4)
-
-            tree.destroy()
         }
 
         function test_selection_extendedSelection()
@@ -611,7 +591,7 @@ Item {
             compare(tree.selection.isSelected(secondItem), true)
             var listIndexes = tree.selection.selectedIndexes
             compare(listIndexes.length, 1)
-            compare(nth(listIndexes, 0).internalId, secondItem.internalId)
+            compare(listIndexes[0].internalId, secondItem.internalId)
             verify(tree.selection.currentIndex.valid)
             if (tree.selection.currentIndex.valid)
                 compare(tree.selection.currentIndex.internalId, secondItem.internalId)
@@ -653,8 +633,6 @@ Item {
             compare(tree.selection.isSelected(thirdItem), true)
             compare(tree.selection.isSelected(sixthItem), true)
             compare(tree.selection.isSelected(fifthItem), true)
-
-            tree.destroy()
         }
 
         function test_selection_contiguousSelection()
@@ -699,7 +677,7 @@ Item {
             compare(tree.selection.isSelected(secondItem), true)
             var listIndexes = tree.selection.selectedIndexes
             compare(listIndexes.length, 1)
-            compare(nth(listIndexes, 0).internalId, secondItem.internalId)
+            compare(listIndexes[0].internalId, secondItem.internalId)
             verify(tree.selection.currentIndex.valid)
             if (tree.selection.currentIndex.valid)
                 compare(tree.selection.currentIndex.internalId, secondItem.internalId)
@@ -751,8 +729,6 @@ Item {
             compare(listIndexes.length, 1)
             compare(tree.selection.hasSelection, true)
             compare(tree.selection.isSelected(thirdItem), true)
-
-            tree.destroy()
         }
 
         function test_indexAt() {
@@ -808,8 +784,6 @@ Item {
             compare(treeIndex.row, modelIndex.row)
             compare(treeIndex.column, modelIndex.column)
             compare(treeIndex.internalId, modelIndex.internalId)
-
-            tree.destroy()
         }
     }
 }

@@ -54,6 +54,7 @@ private slots:
     void cleanup();
 
     void setModel();
+    void modelDestroyed();
     void modelReset();
 
     void dataAccess();
@@ -233,6 +234,24 @@ void tst_QQuickTreeModelAdaptor::setModel()
     tma.setModel(0);
     QCOMPARE(modelChangedSpy.count(), 1);
     QCOMPARE(tma.model(), static_cast<QAbstractItemModel *>(0));
+}
+
+void tst_QQuickTreeModelAdaptor::modelDestroyed()
+{
+    TestModel *model = new TestModel(5, 1);
+    QQuickTreeModelAdaptor tma;
+
+    QSignalSpy modelChangedSpy(&tma, SIGNAL(modelChanged(QAbstractItemModel*)));
+    tma.setModel(model);
+    QCOMPARE(modelChangedSpy.count(), 1);
+    QCOMPARE(tma.model(), model);
+
+    QModelIndex idx = model->index(0, 0);
+    modelChangedSpy.clear();
+    delete model;
+    QCOMPARE(modelChangedSpy.count(), 1);
+    QCOMPARE(tma.model(), (QAbstractItemModel *)0);
+    tma.expand(idx); // No crash, all fine
 }
 
 void tst_QQuickTreeModelAdaptor::modelReset()

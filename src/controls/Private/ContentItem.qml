@@ -36,9 +36,6 @@
 
 import QtQuick 2.2
 import QtQuick.Layouts 1.1
-import QtQuick.Controls 1.0
-import QtQuick.Controls.Private 1.0
-import QtQuick.Window 2.2
 
 Item {
     id: contentItem
@@ -48,8 +45,6 @@ Item {
     property real maximumHeight: Number.POSITIVE_INFINITY
     implicitWidth: __calcImplicitWidth()
     implicitHeight: __calcImplicitHeight()
-
-    property Padding systemPadding: Padding { top: 0; left: 0; bottom: 0; right: 0 }
 
     /*! \internal */
     property Item __layoutItem: contentItem.visibleChildren.length === 1 ? contentItem.visibleChildren[0] : null
@@ -106,33 +101,5 @@ Item {
 
         extent += contentItem['__margins' + hw]
         return extent
-    }
-
-    /*! \internal */
-    property rect __screenReservedArea: {
-        return Qt.rect(
-            Screen.width - Screen.desktopAvailableWidth,
-            Screen.height - Screen.desktopAvailableHeight,
-            0, 0
-        );
-    }
-
-    /*! \internal */
-    property rect __systemPadding: {
-        if (Window.visibility != Window.Maximized)
-            return Qt.rect(0, 0, 0, 0)
-
-        return Qt.rect(
-            Math.max(0, __screenReservedArea.x - contentItem.parent.x - Controls.window.x),
-            Math.max(0, __screenReservedArea.y - contentItem.parent.y - Controls.window.y),
-            0, 0
-        );
-    }
-
-    on__SystemPaddingChanged: {
-        systemPadding.top = __systemPadding.y
-        systemPadding.left = __systemPadding.x
-        systemPadding.right = __systemPadding.width
-        systemPadding.bottom = __systemPadding.height
     }
 }
