@@ -209,6 +209,7 @@ void QFileDialogHelper::fileSelected(const QString& path)
 void QFileDialogHelper::filesSelected(const QStringList& paths)
 {
     QList<QUrl> pathUrls;
+    pathUrls.reserve(paths.count());
     foreach (const QString &path, paths)
         pathUrls << QUrl::fromLocalFile(path);
     emit QPlatformFileDialogHelper::filesSelected(pathUrls);
