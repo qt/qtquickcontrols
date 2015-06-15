@@ -65,7 +65,7 @@ Style {
         appear when the content is scrolled and disappear when they are no longer needed.
 
         The default value is platform dependent. */
-    property bool transientScrollBars: !Settings.isMobile && Settings.hasTouchScreen
+    property bool transientScrollBars: Settings.isMobile && Settings.hasTouchScreen
 
     /*! This Component paints the frame around scroll bars. */
     property Component frame: Rectangle {
