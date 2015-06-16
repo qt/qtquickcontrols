@@ -37,25 +37,4 @@
 pragma Singleton
 import QtQuick 2.2
 Text {
-    /**
-      selectionItem is the item that currently has a text selection. On some platforms
-      (iOS) you can select text without activating the input field. This means that
-      selectionItem can be different from item with active focus on those platforms.
-      */
-    property Item selectionItem: null
-
-    function updateSelectionItem(item)
-    {
-        // Convenience function to check if we should transfer or
-        // remove selectionItem status from item.
-        var selection = item.selectionStart !== item.selectionEnd
-        if (item === selectionItem) {
-            if (!selection)
-                selectionItem = null
-        } else if (selection) {
-            if (selectionItem)
-                selectionItem.select(selectionItem.cursorPosition, selectionItem.cursorPosition)
-            selectionItem = item
-        }
-    }
 }

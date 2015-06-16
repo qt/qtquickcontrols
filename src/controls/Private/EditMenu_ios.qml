@@ -41,7 +41,7 @@ import QtQuick.Controls.Private 1.0
 
 Item {
     anchors.fill: parent
-    property bool __showMenuFromTouchAndHold: false
+    property bool __showMenuFromTouch: false
 
     property Component defaultMenu: Menu {
         MenuItem {
@@ -85,46 +85,25 @@ Item {
     Connections {
         target: mouseArea
 
-        function clearFocusFromOtherItems()
-        {
-            var selectionItem = TextSingleton.selectionItem;
-            if (!selectionItem)
-                return;
-            var otherPos = selectionItem.cursorPosition;
-            selectionItem.select(otherPos, otherPos)
-        }
-
         onClicked: {
-            if (control.menu && getMenuInstance().__popupVisible) {
-                select(input.cursorPosition, input.cursorPosition);
-            } else {
-                input.activate();
-                clearFocusFromOtherItems();
-            }
+            var pos = input.positionAt(mouse.x, mouse.y);
+            var posMoved = (pos !== input.cursorPosition);
+            var popupVisible = (control.menu && getMenuInstance().__popupVisible);
 
-            if (input.activeFocus) {
-                var pos = input.positionAt(mouse.x, mouse.y)
-                input.moveHandles(pos, pos)
-            }
+            if (!input.activeFocus)
+                input.activate();
+            else if (!popupVisible && !posMoved)
+                __showMenuFromTouch = true;
+
+            input.moveHandles(pos, pos)
+            menuTimer.start();
         }
 
         onPressAndHold: {
-            var pos = input.positionAt(mouseArea.mouseX, mouseArea.mouseY);
-            input.select(pos, pos);
-            var hasSelection = selectionStart != selectionEnd;
-            if (!control.menu || (input.length > 0 && (!input.activeFocus || hasSelection))) {
-                selectWord();
-            } else {
-                // We don't select anything at this point, the
-                // menu will instead offer to select a word.
-                __showMenuFromTouchAndHold = true;
-                menuTimer.start();
-                clearFocusFromOtherItems();
-            }
+            __showMenuFromTouch = true;
+            menuTimer.start();
         }
 
-        onReleased: __showMenuFromTouchAndHold = false
-        onCanceled: __showMenuFromTouchAndHold = false
     }
 
     Connections {
@@ -166,7 +145,7 @@ Item {
             if (!control.menu)
                 return;
 
-            if ((__showMenuFromTouchAndHold || selectionStart !== selectionEnd)
+            if ((__showMenuFromTouch || selectionStart !== selectionEnd)
                     && control.activeFocus
                     && (!cursorHandle.pressed && !selectionHandle.pressed)
                     && (!flickable || !flickable.moving)
@@ -178,6 +157,7 @@ Item {
                 var targetRect = Qt.rect(topLeft.x, topLeft.y, size.width, size.height);
                 getMenuInstance().__dismissMenu();
                 getMenuInstance().__popup(targetRect, -1, MenuPrivate.EditMenu);
+                __showMenuFromTouch = false;
             } else {
                 getMenuInstance().__dismissMenu();
             }
