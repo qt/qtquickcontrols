@@ -642,7 +642,7 @@ Control {
             var selectedItem;
             if (__selectedIndex !== -1 && (selectedItem = items[__selectedIndex])) {
                 input.editTextMatches = true
-                selectedText = selectedItem.text
+                selectedText = Qt.binding(function () { return selectedItem.text })
                 if (currentText !== selectedText) // __selectedIndex went form -1 to 0
                     selectedTextChanged()
             }
