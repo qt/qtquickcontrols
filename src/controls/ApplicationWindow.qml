@@ -231,7 +231,7 @@ Window {
         }
         Binding { target: menuBar; property: "__parentWindow"; value: root }
 
-        Keys.forwardTo: menuBar ? [menuBar.__contentItem] : []
+        Keys.forwardTo: menuBar ? [menuBar.__contentItem, __panel] : []
 
         ContentItem {
             id: contentArea
