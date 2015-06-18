@@ -169,7 +169,6 @@ ApplicationWindow {
     ColorDialog {
         id: colorDialog
         color: "black"
-        onAccepted: document.textColor = color
     }
 
     Action {
@@ -333,6 +332,7 @@ ApplicationWindow {
         cursorPosition: textArea.cursorPosition
         selectionStart: textArea.selectionStart
         selectionEnd: textArea.selectionEnd
+        textColor: colorDialog.color
         Component.onCompleted: document.fileUrl = "qrc:/example.html"
         onFontSizeChanged: {
             fontSizeSpinBox.valueGuard = false
