@@ -128,8 +128,6 @@ void QQuickScenePosListener::itemGeometryChanged(QQuickItem *, const QRectF &, c
 
 void QQuickScenePosListener::itemParentChanged(QQuickItem *, QQuickItem *parent)
 {
-    Q_ASSERT(m_item == parent);
-
     addAncestorListeners(parent);
 }
 
@@ -165,7 +163,8 @@ void QQuickScenePosListener::updateScenePos()
  */
 void QQuickScenePosListener::removeAncestorListeners(QQuickItem *item)
 {
-    Q_ASSERT(item != m_item);
+    if (item == m_item)
+        return;
 
     QQuickItem *p = item;
     while (p != 0) {
@@ -181,7 +180,8 @@ void QQuickScenePosListener::removeAncestorListeners(QQuickItem *item)
  */
 void QQuickScenePosListener::addAncestorListeners(QQuickItem *item)
 {
-    Q_ASSERT(item != m_item);
+    if (item == m_item)
+        return;
 
     QQuickItem *p = item;
     while (p != 0) {
