@@ -785,5 +785,34 @@ Item {
             compare(treeIndex.column, modelIndex.column)
             compare(treeIndex.internalId, modelIndex.internalId)
         }
+
+        function test_QTBUG_46891_selection_collapse_parent()
+        {
+            var component = Qt.createComponent("treeview/treeview_1.qml")
+            compare(component.status, Component.Ready)
+            var tree = component.createObject(container);
+            verify(tree !== null, "tree created is null")
+            var model = tree.model
+            model.removeRows(1, 9)
+            model.removeRows(1, 9, model.index(0, 0))
+            waitForRendering(tree)
+
+            var selectionModel = Qt.createQmlObject(testCase.instance_selectionModel, container, '')
+            selectionModel.model = tree.model
+            tree.selection = selectionModel
+            tree.selectionMode = SelectionMode.ExtendedSelection
+
+            var parentItem = tree.model.index(0, 0)
+            tree.expand(parentItem)
+            verify(tree.isExpanded(parentItem))
+
+            wait(100)
+            mouseClick(tree, semiIndent + 50, 20 + 100, Qt.LeftButton)
+            verify(selectionModel.isSelected(tree.currentIndex))
+
+            tree.collapse(parentItem)
+            mouseClick(tree, semiIndent + 50, 20 + 50, Qt.LeftButton)
+            verify(selectionModel.isSelected(parentItem))
+        }
     }
 }

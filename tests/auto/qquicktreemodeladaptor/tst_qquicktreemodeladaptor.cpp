@@ -1138,7 +1138,8 @@ void tst_QQuickTreeModelAdaptor::selectionForRowRange()
 
     for (int i = 0; i < ModelRowCount; i += ModelRowCountLoopStep) {
         // Single row selection
-        const QItemSelection &sel = tma.selectionForRowRange(i, i);
+        const QModelIndex &idx = model.index(i, 0);
+        const QItemSelection &sel = tma.selectionForRowRange(idx, idx);
         QCOMPARE(sel.count(), 1);
         const QItemSelectionRange &range = sel.first();
         QCOMPARE(QModelIndex(range.topLeft()), model.index(i, 0));
@@ -1147,7 +1148,9 @@ void tst_QQuickTreeModelAdaptor::selectionForRowRange()
 
     for (int i = 0; i < ModelRowCount - ModelRowCountLoopStep; i += ModelRowCountLoopStep) {
         // Single range selection
-        const QItemSelection &sel = tma.selectionForRowRange(i, i + ModelRowCountLoopStep);
+        const QModelIndex &from = model.index(i, 0);
+        const QModelIndex &to = model.index(i + ModelRowCountLoopStep, 0);
+        const QItemSelection &sel = tma.selectionForRowRange(from, to);
         QCOMPARE(sel.count(), 1);
         const QItemSelectionRange &range = sel.first();
         QCOMPARE(QModelIndex(range.topLeft()), model.index(i, 0));
@@ -1155,7 +1158,9 @@ void tst_QQuickTreeModelAdaptor::selectionForRowRange()
     }
 
     {   // Select all, no branch expanded
-        const QItemSelection &sel = tma.selectionForRowRange(0, ModelRowCount - 1);
+        const QModelIndex &from = model.index(0, 0);
+        const QModelIndex &to = model.index(ModelRowCount - 1, 0);
+        const QItemSelection &sel = tma.selectionForRowRange(from, to);
         QCOMPARE(sel.count(), 1);
         const QItemSelectionRange &range = sel.first();
         QCOMPARE(QModelIndex(range.topLeft()), model.index(0, 0));
@@ -1167,7 +1172,9 @@ void tst_QQuickTreeModelAdaptor::selectionForRowRange()
     tma.expand(parent);
 
     {   // 1st item expanded, select first 5 rows
-        const QItemSelection &sel = tma.selectionForRowRange(0, 4);
+        const QModelIndex &from = tma.mapRowToModelIndex(0);
+        const QModelIndex &to = tma.mapRowToModelIndex(4);
+        const QItemSelection &sel = tma.selectionForRowRange(from, to);
         QCOMPARE(sel.count(), 2);
         // We don't know in which order the selection ranges are
         // being added, so we iterate and try to find what we expect.
@@ -1182,7 +1189,9 @@ void tst_QQuickTreeModelAdaptor::selectionForRowRange()
     }
 
     {   // 1st item expanded, select first 5 top-level items
-        const QItemSelection &sel = tma.selectionForRowRange(0, 4 + ModelRowCount);
+        const QModelIndex &from = tma.mapRowToModelIndex(0);
+        const QModelIndex &to = tma.mapRowToModelIndex(4 + ModelRowCount);
+        const QItemSelection &sel = tma.selectionForRowRange(from, to);
         QCOMPARE(sel.count(), 2);
         // We don't know in which order the selection ranges are
         // being added, so we iterate and try to find what we expect.
@@ -1201,7 +1210,9 @@ void tst_QQuickTreeModelAdaptor::selectionForRowRange()
     tma.expand(parent2);
 
     {   // 1st two items expanded, select first 5 top-level items
-        const QItemSelection &sel = tma.selectionForRowRange(0, 4 + 2 * ModelRowCount);
+        const QModelIndex &from = tma.mapRowToModelIndex(0);
+        const QModelIndex &to = tma.mapRowToModelIndex(4 + 2 * ModelRowCount);
+        const QItemSelection &sel = tma.selectionForRowRange(from, to);
         QCOMPARE(sel.count(), 3);
         // We don't know in which order the selection ranges are
         // being added, so we iterate and try to find what we expect.
@@ -1222,7 +1233,9 @@ void tst_QQuickTreeModelAdaptor::selectionForRowRange()
     tma.expand(parent3);
 
     {   // 1st two items, and 1st child of 1st item expanded, select first 5 rows
-        const QItemSelection &sel = tma.selectionForRowRange(0, 4);
+        const QModelIndex &from = tma.mapRowToModelIndex(0);
+        const QModelIndex &to = tma.mapRowToModelIndex(4);
+        const QItemSelection &sel = tma.selectionForRowRange(from, to);
         QCOMPARE(sel.count(), 3);
         // We don't know in which order the selection ranges are
         // being added, so we iterate and try to find what we expect.
@@ -1239,7 +1252,9 @@ void tst_QQuickTreeModelAdaptor::selectionForRowRange()
     }
 
     {   // 1st two items, and 1st child of 1st item expanded, select all
-        const QItemSelection &sel = tma.selectionForRowRange(0, 4 * ModelRowCount - 1);
+        const QModelIndex &from = tma.mapRowToModelIndex(0);
+        const QModelIndex &to = tma.mapRowToModelIndex(4 * ModelRowCount - 1);
+        const QItemSelection &sel = tma.selectionForRowRange(from, to);
         QCOMPARE(sel.count(), 4);
         // We don't know in which order the selection ranges are
         // being added, so we iterate and try to find what we expect.
@@ -1258,7 +1273,9 @@ void tst_QQuickTreeModelAdaptor::selectionForRowRange()
     }
 
     {   // 1st two items, and 1st child of 1st item expanded, select rows across branches
-        const QItemSelection &sel = tma.selectionForRowRange(8, 23);
+        const QModelIndex &from = tma.mapRowToModelIndex(8);
+        const QModelIndex &to = tma.mapRowToModelIndex(23);
+        const QItemSelection &sel = tma.selectionForRowRange(from, to);
         QCOMPARE(sel.count(), 4);
         // We don't know in which order the selection ranges are
         // being added, so we iterate and try to find what we expect.
