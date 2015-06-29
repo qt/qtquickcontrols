@@ -72,7 +72,6 @@ TextInput {
             selectionHandle.position = (selectionStart !== cursorPosition) ? selectionStart : selectionEnd
             blockRecursion = false
         }
-        TextSingleton.updateSelectionItem(input)
     }
 
     function activate() {

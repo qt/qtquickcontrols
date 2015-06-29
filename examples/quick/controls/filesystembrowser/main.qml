@@ -83,12 +83,6 @@ ApplicationWindow {
     ItemSelectionModel {
         id: sel
         model: fileSystemModel
-        onSelectionChanged: {
-            console.log("selected", selected)
-            console.log("deselected", deselected)
-            console.log("selection", sel.selection())
-        }
-        onCurrentChanged: console.log("current", current)
     }
 
     TreeView {
@@ -97,8 +91,6 @@ ApplicationWindow {
         anchors.margins: 2 * 12 + row.height
         model: fileSystemModel
         selection: sel
-
-        onCurrentIndexChanged: console.log("current index", currentIndex)
 
         TableViewColumn {
             title: "Name"
@@ -112,7 +104,6 @@ ApplicationWindow {
             resizable: true
         }
 
-        onClicked: console.log("clicked", index)
         onDoubleClicked: isExpanded(index) ? collapse(index) : expand(index)
     }
 }

@@ -807,7 +807,6 @@ ScrollView {
                     blockRecursion = false
                 }
                 ensureVisible(cursorRectangle)
-                TextSingleton.updateSelectionItem(area)
             }
 
             function ensureVisible(rect) {

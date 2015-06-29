@@ -743,5 +743,16 @@ TestCase {
 
         test.destroy()
     }
+
+    function test_modelDataChange() {
+        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.2 ; ComboBox {}', testCase, '');
+        comboBox.textRole = "text"
+        comboBox.model = model
+        compare(comboBox.currentIndex, 0)
+        compare(comboBox.currentText, "Banana")
+        model.set(0, { text: "Pomegranate", color: "Yellow" })
+        compare(comboBox.currentText, "Pomegranate")
+        comboBox.destroy()
+    }
 }
 }

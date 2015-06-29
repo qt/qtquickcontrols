@@ -69,6 +69,32 @@ TestCase {
                 ]
     }
 
+    function test_QTBUG_46468() {
+        var table = Qt.createQmlObject('import QtQuick.Controls 1.3; \n\
+                                        import QtQuick 2.4; \n\
+                                        TableView { \n\
+                                                headerVisible: false; \n\
+                                                TableViewColumn{} \n\
+                                                model: 10; \n\
+                                        }', testCase, '')
+        wait(50);
+        verify(table.__viewTopMargin === 0)
+        table.destroy()
+    }
+
+    function test_headervisible() {
+        var table = Qt.createQmlObject('import QtQuick.Controls 1.3; \n\
+                                        import QtQuick 2.4; \n\
+                                        TableView { \n\
+                                                headerVisible: true; \n\
+                                                TableViewColumn{} \n\
+                                                model: 10; \n\
+                                        }', testCase, '')
+        wait(50);
+        verify(table.__viewTopMargin > 0)
+        table.destroy()
+    }
+
     function test_basic_setup() {
         var test_instanceStr =
            'import QtQuick 2.2;             \

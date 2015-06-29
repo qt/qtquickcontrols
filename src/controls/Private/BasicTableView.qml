@@ -346,7 +346,7 @@ ScrollView {
 
     frameVisible: true
     __scrollBarTopMargin: (__style && __style.transientScrollBars || Qt.platform.os === "osx") ? headerrow.height : 0
-    __viewTopMargin: headerrow.height
+    __viewTopMargin: headerVisible ? headerrow.height : 0
 
     /*! \internal
         Use this to display user-friendly messages in TableView and TreeView common functions.
