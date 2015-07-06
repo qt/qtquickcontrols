@@ -49,8 +49,6 @@ import QtQuick.Extras.Private 1.0
     \ingroup controlsstyling
     \brief Provides custom styling for Tumbler.
 
-    \note TumblerStyle requires Qt 5.3.2 or later.
-
     You can create a custom tumbler by replacing the following delegates:
     \list
         \li \l background
