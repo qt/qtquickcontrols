@@ -154,6 +154,9 @@ void QQuickMenuPopupWindow::exposeEvent(QExposeEvent *e)
         m_initialPos += m_logicalParentWindow->geometry().topLeft();
     }
     QQuickPopupWindow::exposeEvent(e);
+
+    if (isExposed())
+        updateSize();
 }
 
 QQuickMenu *QQuickMenuPopupWindow::menu() const
