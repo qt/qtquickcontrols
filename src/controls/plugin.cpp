@@ -63,6 +63,7 @@
 #endif
 
 #ifndef QT_NO_TRANSLATION
+#include <QtCore/qcoreapplication.h>
 #include <QtCore/qlibraryinfo.h>
 #include <QtCore/qlocale.h>
 #endif

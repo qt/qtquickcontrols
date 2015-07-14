@@ -730,7 +730,7 @@ void QQuickTreeModelAdaptor::dump() const
     int count = m_items.count();
     if (count == 0)
         return;
-    int countWidth = floorf(log10f(float(count))) + 1;
+    int countWidth = floor(log10(double(count))) + 1;
     qInfo() << "Dumping" << this;
     for (int i = 0; i < count; i++) {
         const TreeItem &item = m_items.at(i);

@@ -37,6 +37,7 @@
 #include "qquickcontrolsettings_p.h"
 #include <qquickitem.h>
 #include <qcoreapplication.h>
+#include <qdebug.h>
 #include <qqmlengine.h>
 #include <qlibrary.h>
 #include <qdir.h>
