@@ -45,8 +45,6 @@ Style {
     property Component background: StyleItem {
         elementType: "menubar"
 
-        Accessible.role: Accessible.MenuBar
-
         Component.onCompleted: {
             styleRoot.padding.left = pixelMetric("menubarhmargin") + pixelMetric("menubarpanelwidth")
             styleRoot.padding.right = pixelMetric("menubarhmargin") + pixelMetric("menubarpanelwidth")
@@ -69,9 +67,6 @@ Style {
         selected: (parent && styleData.selected) || sunken
 
         hints: { "showUnderlined": styleData.underlineMnemonic }
-
-        Accessible.role: Accessible.MenuItem
-        Accessible.name: plainText
     }
 
     property Component menuStyle: Desktop.MenuStyle { }

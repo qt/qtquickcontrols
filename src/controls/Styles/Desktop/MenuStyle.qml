@@ -60,8 +60,6 @@ Style {
             color: SystemPaletteSingleton.window(control.enabled)
         }
 
-        Accessible.role: Accessible.PopupMenu
-
         Component.onCompleted: {
             var menuHMargin = pixelMetric("menuhmargin")
             var menuVMargin = pixelMetric("menuvmargin")
@@ -106,9 +104,6 @@ Style {
             "scrollerDirection": styleData.scrollerDirection,
             "icon": !!__menuItem && __menuItem.__icon
         }
-
-        Accessible.role: Accessible.MenuItem
-        Accessible.name: StyleHelpers.removeMnemonics(text)
     }
 
     property Component scrollIndicator: menuItemPanel
