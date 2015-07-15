@@ -99,11 +99,25 @@ ApplicationWindow {
         }
 
         TableViewColumn {
+            title: "Size"
+            role: "size"
+            resizable: true
+            horizontalAlignment : Text.AlignRight
+        }
+
+        TableViewColumn {
             title: "Permissions"
-            role: "filePermissions"
+            role: "displayableFilePermissions"
+            resizable: true
+        }
+
+        TableViewColumn {
+            title: "Date Modified"
+            role: "lastModified"
             resizable: true
         }
 
         onDoubleClicked: isExpanded(index) ? collapse(index) : expand(index)
+        onActivated : Qt.openUrlExternally(fileSystemModel.data(index, 263))
     }
 }
