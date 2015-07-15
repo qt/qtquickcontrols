@@ -37,11 +37,11 @@
 #ifndef QQUICKPOPUPWINDOW_H
 #define QQUICKPOPUPWINDOW_H
 
+#include <QtCore/QPointer>
+#include <QtQuick/qquickitem.h>
 #include <QtQuick/qquickwindow.h>
 
 QT_BEGIN_NAMESPACE
-
-class QQuickItem;
 
 class QQuickPopupWindow : public QQuickWindow
 {
@@ -84,7 +84,7 @@ private:
     void forwardEventToTransientParent(QMouseEvent *);
 
     QQuickItem *m_parentItem;
-    QQuickItem *m_contentItem;
+    QPointer<QQuickItem> m_contentItem;
     bool m_mouseMoved;
     bool m_needsActivatedEvent;
     bool m_dismissed;
