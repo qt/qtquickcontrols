@@ -72,6 +72,8 @@ QQuickMenuBar::QQuickMenuBar(QObject *parent)
 
 QQuickMenuBar::~QQuickMenuBar()
 {
+    if (isNative())
+        setNativeNoNotify(false);
 }
 
 QQmlListProperty<QQuickMenu> QQuickMenuBar::menus()
@@ -87,6 +89,13 @@ bool QQuickMenuBar::isNative() const
 void QQuickMenuBar::setNative(bool native)
 {
     bool wasNative = isNative();
+    setNativeNoNotify(native);
+    if (isNative() != wasNative)
+        emit nativeChanged();
+}
+
+void QQuickMenuBar::setNativeNoNotify(bool native)
+{
     if (native) {
         if (!m_platformMenuBar) {
             m_platformMenuBar = QGuiApplicationPrivate::platformTheme()->createPlatformMenuBar();
@@ -104,8 +113,6 @@ void QQuickMenuBar::setNative(bool native)
         delete m_platformMenuBar;
         m_platformMenuBar = 0;
     }
-    if (isNative() != wasNative)
-        emit nativeChanged();
 }
 
 void QQuickMenuBar::setContentItem(QQuickItem *item)

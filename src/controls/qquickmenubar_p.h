@@ -81,6 +81,7 @@ public:
     QPlatformMenuBar *platformMenuBar() const { return m_platformMenuBar; }
 
 private:
+    void setNativeNoNotify(bool native);
     static void append_menu(QQmlListProperty<QQuickMenu> *list, QQuickMenu *menu);
     static int count_menu(QQmlListProperty<QQuickMenu> *list);
     static QQuickMenu *at_menu(QQmlListProperty<QQuickMenu> *list, int index);
