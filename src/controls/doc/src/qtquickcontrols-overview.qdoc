@@ -126,6 +126,10 @@
     forgotten. This is a known limitation and a workaround is to add potentially missing imports in
     one of the qml files of the application using the controls.
 
+    \section2 Testing Desktop and Mobile behavior of the controls
+    You can test how the controls on your application or style will behave on
+    a mobile platform by setting the environment variable \e QT_QUICK_CONTROLS_MOBILE, to force a behavior optimized for mobile devices.
+
     \section1 Related information
 
      \list

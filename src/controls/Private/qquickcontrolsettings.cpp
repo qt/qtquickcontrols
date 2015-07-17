@@ -97,6 +97,9 @@ bool QQuickControlSettings::isMobile() const
 #if defined(Q_OS_IOS) || defined(Q_OS_ANDROID) || defined(Q_OS_BLACKBERRY) || defined(Q_OS_QNX) || defined(Q_OS_WINRT)
     return true;
 #else
+    if (qEnvironmentVariableIsSet("QT_QUICK_CONTROLS_MOBILE")) {
+        return true;
+    }
     return false;
 #endif
 }
