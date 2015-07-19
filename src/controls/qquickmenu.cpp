@@ -648,12 +648,12 @@ int QQuickMenu::indexOfMenuItem(QQuickMenuBase *item) const
     }
 }
 
-QQuickMenuItem *QQuickMenu::addItem(QString title)
+QQuickMenuItem *QQuickMenu::addItem(const QString &title)
 {
     return insertItem(m_itemsCount, title);
 }
 
-QQuickMenuItem *QQuickMenu::insertItem(int index, QString title)
+QQuickMenuItem *QQuickMenu::insertItem(int index, const QString &title)
 {
     QQuickMenuItem *item = new QQuickMenuItem(this);
     item->setText(title);

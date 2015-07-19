@@ -104,7 +104,7 @@ public:
 
     QIcon icon() const { return m_icon; }
     QVariant iconVariant() const { return QVariant(m_icon); }
-    void setIcon(QIcon icon) { m_icon = icon; emit iconChanged(); }
+    void setIcon(const QIcon &icon) { m_icon = icon; emit iconChanged(); }
 
     bool event(QEvent *e);
 
@@ -116,12 +116,12 @@ Q_SIGNALS:
     void toggled(bool checked);
 
     void textChanged();
-    void shortcutChanged(QVariant shortcut);
+    void shortcutChanged(const QVariant &shortcut);
 
     void iconChanged();
     void iconNameChanged();
     void iconSourceChanged();
-    void tooltipChanged(QString arg);
+    void tooltipChanged(const QString &arg);
     void enabledChanged();
     void checkableChanged();
 

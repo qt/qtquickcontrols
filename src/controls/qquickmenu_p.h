@@ -77,8 +77,8 @@ public:
     enum MenuType { DefaultMenu = 0, EditMenu };
 
     Q_INVOKABLE void popup();
-    Q_INVOKABLE QQuickMenuItem *addItem(QString);
-    Q_INVOKABLE QQuickMenuItem *insertItem(int, QString);
+    Q_INVOKABLE QQuickMenuItem *addItem(const QString &);
+    Q_INVOKABLE QQuickMenuItem *insertItem(int, const QString &);
     Q_INVOKABLE void addSeparator();
     Q_INVOKABLE void insertSeparator(int);
 

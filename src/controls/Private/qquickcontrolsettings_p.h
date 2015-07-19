@@ -90,7 +90,7 @@ private:
     void findStyle(QQmlEngine *engine, const QString &styleName);
     bool resolveCurrentStylePath();
     QString makeStyleComponentPath(const QString &controlStyleName, const QString &styleDirPath);
-    QUrl makeStyleComponentUrl(const QString &controlStyleName, QString styleDirPath);
+    QUrl makeStyleComponentUrl(const QString &controlStyleName, const QString &styleDirPath);
 
     struct StyleData
     {

@@ -111,7 +111,7 @@ QString QQuickControlSettings::makeStyleComponentPath(const QString &controlStyl
     return styleDirPath + QStringLiteral("/") + controlStyleName;
 }
 
-QUrl QQuickControlSettings::makeStyleComponentUrl(const QString &controlStyleName, QString styleDirPath)
+QUrl QQuickControlSettings::makeStyleComponentUrl(const QString &controlStyleName, const QString &styleDirPath)
 {
     QString styleFilePath = makeStyleComponentPath(controlStyleName, styleDirPath);
 

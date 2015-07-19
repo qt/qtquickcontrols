@@ -175,7 +175,7 @@ public:
 
 protected:
     template <class WrapperType>
-    void registerWidgetOrQmlImplementation(QDir widgetsDir, QDir qmlDir,
+    void registerWidgetOrQmlImplementation(const QDir &widgetsDir, const QDir &qmlDir,
             const char *qmlName, const char *uri, bool hasTopLevelWindows, int versionMajor, int versionMinor) {
         qCDebug(lcRegistration) << qmlName << uri << ": QML in" << qmlDir.absolutePath()
                                 << "using resources?" << m_useResources << "; widgets in" << widgetsDir.absolutePath();
@@ -191,7 +191,7 @@ protected:
     }
 
     template <class WrapperType>
-    bool registerWidgetImplementation(QDir widgetsDir, QDir qmlDir,
+    bool registerWidgetImplementation(const QDir &widgetsDir, const QDir &qmlDir,
             const char *qmlName, const char *uri, bool hasTopLevelWindows, int versionMajor, int versionMinor)
     {
 
@@ -223,7 +223,7 @@ protected:
     }
 
     template <class WrapperType>
-    void registerQmlImplementation(QDir qmlDir, const char *qmlName, const char *uri , int versionMajor, int versionMinor)
+    void registerQmlImplementation(const QDir &qmlDir, const char *qmlName, const char *uri , int versionMajor, int versionMinor)
     {
         qCDebug(lcRegistration) << "Register QML version for" << qmlName << "with uri:" << uri;
 
