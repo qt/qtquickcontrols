@@ -64,7 +64,7 @@ public:
     virtual QList<QUrl> fileUrls() const Q_DECL_OVERRIDE;
 
 protected:
-    QPlatformFileDialogHelper *helper();
+    QPlatformFileDialogHelper *helper() Q_DECL_OVERRIDE;
 
     Q_DISABLE_COPY(QQuickQFileDialog)
 };
