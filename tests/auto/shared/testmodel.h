@@ -124,7 +124,7 @@ public:
         return false;
     }
 
-    Q_INVOKABLE QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const
+    QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const
     {
         if (row < 0 || column < 0 || (level(parent) > levels) || column >= cols)
             return QModelIndex();
@@ -199,7 +199,7 @@ public:
         emit layoutChanged(parents);
     }
 
-    bool removeRows(int row, int count, const QModelIndex &parent)
+    Q_INVOKABLE bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex())
     {
         beginRemoveRows(parent, row, row + count - 1);
         Node *n = (Node *)parent.internalPointer();

@@ -89,12 +89,12 @@ public:
     const QModelIndex &mapToModel(const QModelIndex &index) const;
     Q_INVOKABLE QModelIndex mapRowToModelIndex(int row) const;
 
-    Q_INVOKABLE QItemSelection selectionForRowRange(int from, int to) const;
+    Q_INVOKABLE QItemSelection selectionForRowRange(const QModelIndex &fromIndex, const QModelIndex &toIndex) const;
 
     void showModelTopLevelItems(bool doInsertRows = true);
     void showModelChildItems(const TreeItem &parent, int start, int end, bool doInsertRows = true, bool doExpandPendingRows = true);
 
-    int itemIndex(const QModelIndex &index);
+    int itemIndex(const QModelIndex &index) const;
     void expandPendingRows(bool doInsertRows = true);
     int lastChildIndex(const QModelIndex &index);
     void removeVisibleRows(int startIndex, int endIndex, bool doRemoveRows = true);
@@ -152,7 +152,7 @@ private:
     QList<TreeItem> m_items;
     QSet<QPersistentModelIndex> m_expandedItems;
     QList<TreeItem *> m_itemsToExpand;
-    int m_lastItemIndex;
+    mutable int m_lastItemIndex;
 };
 
 QT_END_NAMESPACE

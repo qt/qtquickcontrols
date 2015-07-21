@@ -35,7 +35,7 @@
     The Qt Quick Extras module provides a specialized set of
     controls that can be used to build interfaces in Qt Quick.
 
-    The module requires \l{Qt Quick} 2.2, and \l{Qt Quick Controls} 1.1.
+    The module was introduced in Qt 5.5.
 
     Visit the \l{Qt Quick Extras Overview} page to get started.
 
