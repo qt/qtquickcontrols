@@ -127,7 +127,7 @@ Item {
 
             // release outside -> no clicked()
             mousePress(aSwitch, aSwitch.x + 1, aSwitch.y + 1, Qt.LeftButton);
-            mouseMove(aSwitch, aSwitch.x - 1, aSwitch.y - 1, Qt.LeftButton);
+            mouseMove(aSwitch, aSwitch.x - 1, aSwitch.y - 1);
             mouseRelease(aSwitch, aSwitch.x - 1, aSwitch.y - 1, Qt.LeftButton);
             compare(signalSpy.count, 1);
         }

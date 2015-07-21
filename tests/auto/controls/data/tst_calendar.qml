@@ -574,7 +574,7 @@ Item {
         }
 
         function dragTo(cellX, cellY, expectedCellIndex, expectedDate) {
-            mouseMove(calendar, toPixelsX(cellX), toPixelsY(cellY), Qt.LeftButton);
+            mouseMove(calendar, toPixelsX(cellX), toPixelsY(cellY));
             compare(calendar.selectedDate, expectedDate);
             compare(calendar.__panel.pressedCellIndex, expectedCellIndex);
             compare(hoveredSignalSpy.count, 1);
@@ -657,7 +657,7 @@ Item {
             // unwanted month changes if moving within a bunch of "next month" cells.
             // We still emit the signals as usual, though.
             var oldDate = calendar.selectedDate;
-            mouseMove(calendar, toPixelsX(5), toPixelsY(4), Qt.LeftButton);
+            mouseMove(calendar, toPixelsX(5), toPixelsY(4));
             compare(calendar.selectedDate, oldDate);
             compare(calendar.__panel.pressedCellIndex, 32);
             compare(calendar.__panel.hoveredCellIndex, 33);
@@ -689,7 +689,7 @@ Item {
             calendar.selectedDate = calendar.minimumDate;
             compare(calendar.visibleMonth, calendar.minimumDate.getMonth());
 
-            mouseMove(calendar, toPixelsX(4), toPixelsY(0), Qt.LeftButton);
+            mouseMove(calendar, toPixelsX(4), toPixelsY(0));
             compare(calendar.selectedDate, calendar.minimumDate);
             compare(calendar.__panel.pressedCellIndex, -1);
             compare(hoveredSignalSpy.count, 0);
