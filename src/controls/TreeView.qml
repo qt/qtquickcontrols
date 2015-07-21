@@ -44,6 +44,7 @@ BasicTableView {
     id: root
 
     property var model: null
+    property alias rootIndex: modelAdaptor.rootIndex
 
     readonly property var currentIndex: modelAdaptor.mapRowToModelIndex(__currentRow)
     property ItemSelectionModel selection: null

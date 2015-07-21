@@ -137,6 +137,7 @@ int main(int argc, char *argv[])
     fsm->setRootPath(QDir::homePath());
     fsm->setResolveSymlinks(true);
     engine.rootContext()->setContextProperty("fileSystemModel", fsm);
+    engine.rootContext()->setContextProperty("rootPathIndex", fsm->index(fsm->rootPath()));
     engine.load(QUrl(QStringLiteral("qrc:///main.qml")));
 
     return app.exec();

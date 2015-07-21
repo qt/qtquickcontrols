@@ -61,6 +61,7 @@ class QQuickTreeModelAdaptor : public QAbstractListModel
 {
     Q_OBJECT
     Q_PROPERTY(QAbstractItemModel *model READ model WRITE setModel NOTIFY modelChanged)
+    Q_PROPERTY(QModelIndex rootIndex READ rootIndex WRITE setRootIndex RESET resetRootIndex NOTIFY rootIndexChanged)
 
     struct TreeItem;
 
@@ -68,6 +69,9 @@ public:
     explicit QQuickTreeModelAdaptor(QObject *parent = 0);
 
     QAbstractItemModel *model() const;
+    const QModelIndex &rootIndex() const;
+    void setRootIndex(const QModelIndex &idx);
+    void resetRootIndex();
 
     enum {
         DepthRole = Qt::UserRole - 4,
@@ -110,6 +114,7 @@ public:
 
 signals:
     void modelChanged(QAbstractItemModel *model);
+    void rootIndexChanged();
     void expanded(const QModelIndex &index);
     void collapsed(const QModelIndex &index);
 
@@ -149,6 +154,7 @@ private:
     };
 
     QPointer<QAbstractItemModel> m_model;
+    QPersistentModelIndex m_rootIndex;
     QList<TreeItem> m_items;
     QSet<QPersistentModelIndex> m_expandedItems;
     QList<TreeItem *> m_itemsToExpand;

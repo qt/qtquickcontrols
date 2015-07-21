@@ -142,6 +142,19 @@
 */
 
 /*!
+    \qmlproperty QModelIndex TreeView::rootIndex
+    The model index of the root item in the tree view. The root item is the
+    parent item to the view's top-level items. Only items descending from the
+    root item will be visible in the view.
+
+    Its default value is an invalid QModelIndex, which means the whole
+    model data is shown by the tree view (assigning \c undefined to this
+    proprety resets it to its default value.)
+
+    \since QtQuick.Controls 1.5
+*/
+
+/*!
     \qmlproperty QModelIndex TreeView::currentIndex
     The model index of the current row in the tree view.
 */

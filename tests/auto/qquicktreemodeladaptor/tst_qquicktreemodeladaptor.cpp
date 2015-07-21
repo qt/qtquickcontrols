@@ -57,6 +57,8 @@ private slots:
     void modelDestroyed();
     void modelReset();
 
+    void rootIndex();
+
     void dataAccess();
     void dataChange();
     void groupedDataChange();
@@ -96,9 +98,10 @@ void tst_QQuickTreeModelAdaptor::cleanup()
 void tst_QQuickTreeModelAdaptor::compareData(int row, QQuickTreeModelAdaptor &tma, const QModelIndex &modelIdx, TestModel &model, bool expanded)
 {
     const QModelIndex &tmaIdx = tma.index(row);
+    const int indexDepth = model.level(modelIdx) - model.level(tma.rootIndex()) - 1;
     QCOMPARE(tma.mapToModel(tmaIdx), modelIdx);
     QCOMPARE(tma.data(tmaIdx, Qt::DisplayRole).toString(), model.displayData(modelIdx));
-    QCOMPARE(tma.data(tmaIdx, QQuickTreeModelAdaptor::DepthRole).toInt(), model.level(modelIdx));
+    QCOMPARE(tma.data(tmaIdx, QQuickTreeModelAdaptor::DepthRole).toInt(), indexDepth);
     QCOMPARE(tma.data(tmaIdx, QQuickTreeModelAdaptor::ExpandedRole).toBool(), expanded);
     QCOMPARE(tma.data(tmaIdx, QQuickTreeModelAdaptor::HasChildrenRole).toBool(), model.hasChildren(modelIdx));
 }
@@ -117,7 +120,7 @@ void tst_QQuickTreeModelAdaptor::expandAndTest(const QModelIndex &idx, QQuickTre
     const QModelIndex &tmaIdx = tma.index(tma.itemIndex(idx));
     QCOMPARE(tma.data(tmaIdx, QQuickTreeModelAdaptor::ExpandedRole).toBool(), expandable);
 
-    if (expandable) {
+    if (expandable && expectedRowCountDifference != 0) {
         // Rows were added below the parent
         QCOMPARE(tma.rowCount(), oldRowCount + expectedRowCountDifference);
         QCOMPARE(rowsAboutToBeInsertedSpy.count(), rowsInsertedSpy.count());
@@ -160,7 +163,7 @@ void tst_QQuickTreeModelAdaptor::collapseAndTest(const QModelIndex &idx, QQuickT
     if (tmaIdx.isValid())
         QCOMPARE(tma.data(tmaIdx, QQuickTreeModelAdaptor::ExpandedRole).toBool(), false);
 
-    if (expandable) {
+    if (expandable && expectedRowCountDifference != 0) {
         // Rows were removed below the parent
         QCOMPARE(tma.rowCount(), oldRowCount - expectedRowCountDifference);
         QCOMPARE(rowsAboutToBeRemovedSpy.count(), 1);
@@ -188,9 +191,9 @@ void tst_QQuickTreeModelAdaptor::collapseAndTest(const QModelIndex &idx, QQuickT
 
 void tst_QQuickTreeModelAdaptor::compareModels(QQuickTreeModelAdaptor &tma, TestModel &model)
 {
-    QModelIndex parent;
+    QModelIndex parent = tma.rootIndex();
     QStack<QModelIndex> parents;
-    QModelIndex idx = model.index(0, 0);
+    QModelIndex idx = model.index(0, 0, parent);
     int modelVisibleRows = model.rowCount(parent);
     for (int i = 0; i < tma.rowCount(); i++) {
         bool expanded = tma.isExpanded(i);
@@ -281,6 +284,40 @@ void tst_QQuickTreeModelAdaptor::modelReset()
     QCOMPARE(modelResetSpy.count(), 1);
     QCOMPARE(tma.rowCount(), model.rowCount());
     compareModels(tma, model);
+}
+
+void tst_QQuickTreeModelAdaptor::rootIndex()
+{
+    TestModel model(5, 1);
+
+    QQuickTreeModelAdaptor tma;
+    tma.setModel(&model);
+
+    QVERIFY(!tma.rootIndex().isValid());
+    compareModels(tma, model);
+
+    QSignalSpy rootIndexSpy(&tma, SIGNAL(rootIndexChanged()));
+    QModelIndex rootIndex = model.index(0, 0);
+    tma.setRootIndex(rootIndex);
+    QCOMPARE(tma.rootIndex(), rootIndex);
+    QCOMPARE(rootIndexSpy.count(), 1);
+    compareModels(tma, model);
+
+    rootIndexSpy.clear();
+    rootIndex = model.index(2, 2, tma.rootIndex());
+    tma.setRootIndex(rootIndex);
+    QCOMPARE(tma.rootIndex(), rootIndex);
+    QCOMPARE(rootIndexSpy.count(), 1);
+    compareModels(tma, model);
+
+    // Expand 1st visible item, business as usual
+    expandAndTest(model.index(0, 0, rootIndex), tma, true /*expandable*/, 5);
+    // Expand non root item descendant item, nothing should happen
+    expandAndTest(model.index(0, 0), tma, true /*expandable*/, 0);
+    // Collapse 1st visible item, business as usual
+    collapseAndTest(model.index(0, 0, rootIndex), tma, true /*expandable*/, 5);
+    // Collapse non root item descendant item, nothing should happen
+    collapseAndTest(model.index(0, 0), tma, true /*expandable*/, 0);
 }
 
 void tst_QQuickTreeModelAdaptor::dataAccess()
