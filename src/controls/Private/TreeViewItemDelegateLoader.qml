@@ -98,6 +98,7 @@ TableViewItemDelegateLoader {
         visible: itemDelegateLoader.width > __itemIndentation
         sourceComponent: __style && __style.__branchDelegate || null
         anchors.right: parent.item ? parent.item.left : undefined
+        anchors.rightMargin: __style.__indentation > width ? (__style.__indentation - width) / 2 : 0
         anchors.verticalCenter: parent.verticalCenter
         property QtObject styleData: itemDelegateLoader.styleData
         onLoaded: if (__rowItem) __rowItem.branchDecoration = item

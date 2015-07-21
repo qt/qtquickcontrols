@@ -56,12 +56,12 @@ Desktop.TableViewStyle {
         hasFocus: __styleitem.active
 
         Component.onCompleted: {
-            implicitWidth = si.pixelMetric("treeviewindentation")
+            root.__indentation = si.pixelMetric("treeviewindentation")
+            implicitWidth = root.__indentation
             implicitHeight = implicitWidth
             var rect = si.subControlRect("dummy");
             width = rect.width
             height = rect.height
-            root.__indentation = width
         }
     }
 }

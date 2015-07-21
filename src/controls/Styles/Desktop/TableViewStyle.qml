@@ -96,7 +96,7 @@ ScrollViewStyle {
             font: __styleitem.font
             anchors.left: parent.left
             anchors.right: parent.right
-            anchors.leftMargin: styleData["depth"] && styleData.column === 0 ? 0 : 8
+            anchors.leftMargin: styleData.hasOwnProperty("depth") && styleData.column === 0 ? 0 : 8
             horizontalAlignment: styleData.textAlignment
             anchors.verticalCenter: parent.verticalCenter
             elide: styleData.elideMode
