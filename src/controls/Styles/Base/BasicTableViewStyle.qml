@@ -94,7 +94,8 @@ ScrollViewStyle {
             anchors.fill: parent
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: styleData.textAlignment
-            anchors.leftMargin: 12
+            anchors.leftMargin: horizontalAlignment === Text.AlignLeft ? 12 : 1
+            anchors.rightMargin: horizontalAlignment === Text.AlignRight ? 8 : 1
             text: styleData.value
             elide: Text.ElideRight
             color: textColor
@@ -137,8 +138,9 @@ ScrollViewStyle {
         Text {
             id: label
             objectName: "label"
-            width: parent.width - x
-            x: styleData.depth && styleData.column === 0 ? 0 : 8
+            width: parent.width - x - (horizontalAlignment === Text.AlignRight ? 8 : 1)
+            x: (styleData.hasOwnProperty("depth") && styleData.column === 0) ? 0 :
+               horizontalAlignment === Text.AlignRight ? 1 : 8
             horizontalAlignment: styleData.textAlignment
             anchors.verticalCenter: parent.verticalCenter
             anchors.verticalCenterOffset: 1
