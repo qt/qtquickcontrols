@@ -43,10 +43,10 @@ BasicTableViewStyle {
 
     readonly property TreeView control: __control
 
-    property int indentation: 12
+    property int indentation: 16
 
     property Component branchDelegate: Item {
-        width: 16
+        width: indentation
         height: 16
         Text {
             visible: styleData.column === 0 && styleData.hasChildren
@@ -54,8 +54,9 @@ BasicTableViewStyle {
             color: !control.activeFocus || styleData.selected ? styleData.textColor : "#666"
             font.pointSize: 10
             renderType: Text.NativeRendering
+            style: Text.PlainText
             anchors.centerIn: parent
-            anchors.verticalCenterOffset: styleData.isExpanded ? 2 : 0
+            anchors.verticalCenterOffset: 2
         }
     }
 
