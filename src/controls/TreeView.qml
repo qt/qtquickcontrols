@@ -118,10 +118,11 @@ BasicTableView {
         // the flickable from eating our mouse press events
         preventStealing: !Settings.hasTouchScreen
 
-        property int clickedRow: -1
-        property int pressedRow: -1
+        property var clickedIndex: undefined
+        property var pressedIndex: undefined
         property int pressedColumn: -1
         readonly property alias currentRow: root.__currentRow
+        readonly property alias currentIndex: root.currentIndex
 
         // Handle vertical scrolling whem dragging mouse outside boundaries
         property int autoScroll: 0 // 0 -> do nothing; 1 -> increment; 2 -> decrement
@@ -132,7 +133,7 @@ BasicTableView {
             interval: 20
             repeat: true
             onTriggered: {
-                var oldPressedRow = mouseArea.pressedRow
+                var oldPressedIndex = mouseArea.pressedIndex
                 var row
                 if (mouseArea.autoScroll === 1) {
                     __listView.incrementCurrentIndexBlocking();
@@ -144,28 +145,33 @@ BasicTableView {
                     row = __listView.indexAt(0, __listView.contentY)
                 }
 
-                if (row !== oldPressedRow) {
-                    mouseArea.pressedRow = row
+                var index = modelAdaptor.mapRowToModelIndex(row)
+                if (index !== oldPressedIndex) {
+                    mouseArea.pressedIndex = index
                     var modifiers = mouseArea.shiftPressed ? Qt.ShiftModifier : Qt.NoModifier
-                    mouseArea.mouseSelect(row, modifiers, true /* drag */)
+                    mouseArea.mouseSelect(index, modifiers, true /* drag */)
                 }
             }
         }
 
-        function mouseSelect(row, modifiers, drag) {
+        function mouseSelect(modelIndex, modifiers, drag) {
             if (!selection) {
                 maybeWarnAboutSelectionMode()
                 return
             }
 
             if (selectionMode) {
-                var modelIndex = modelAdaptor.mapRowToModelIndex(row)
                 selection.setCurrentIndex(modelIndex, ItemSelectionModel.NoUpdate)
                 if (selectionMode === SelectionMode.SingleSelection) {
                     selection.select(modelIndex, ItemSelectionModel.ClearAndSelect)
                 } else {
-                    var itemSelection = clickedRow === row ? modelIndex
-                                        : modelAdaptor.selectionForRowRange(clickedRow, row)
+                    var selectRowRange = (drag && (selectionMode === SelectionMode.MultiSelection
+                                                   || (selectionMode === SelectionMode.ExtendedSelection
+                                                       && modifiers & Qt.ControlModifier)))
+                                         || modifiers & Qt.ShiftModifier
+                    var itemSelection = !selectRowRange || clickedIndex === modelIndex ? modelIndex
+                                        : modelAdaptor.selectionForRowRange(clickedIndex, modelIndex)
+
                     if (selectionMode === SelectionMode.MultiSelection
                         || selectionMode === SelectionMode.ExtendedSelection && modifiers & Qt.ControlModifier) {
                         if (drag)
@@ -175,7 +181,7 @@ BasicTableView {
                     } else if (modifiers & Qt.ShiftModifier) {
                         selection.select(itemSelection, ItemSelectionModel.SelectCurrent)
                     } else {
-                        clickedRow = row // Needed only when drag is true
+                        clickedIndex = modelIndex // Needed only when drag is true
                         selection.select(modelIndex, ItemSelectionModel.ClearAndSelect)
                     }
                 }
@@ -185,9 +191,9 @@ BasicTableView {
         function keySelect(keyModifiers) {
             if (selectionMode) {
                 if (!keyModifiers)
-                    clickedRow = currentRow
+                    clickedIndex = currentIndex
                 if (!(keyModifiers & Qt.ControlModifier))
-                    mouseSelect(currentRow, keyModifiers, keyModifiers & Qt.ShiftModifier)
+                    mouseSelect(currentIndex, keyModifiers, keyModifiers & Qt.ShiftModifier)
             }
         }
 
@@ -227,22 +233,23 @@ BasicTableView {
         }
 
         onPressed: {
-            pressedRow = __listView.indexAt(0, mouseY + __listView.contentY)
+            var pressedRow = __listView.indexAt(0, mouseY + __listView.contentY)
+            pressedIndex = modelAdaptor.mapRowToModelIndex(pressedRow)
             pressedColumn = __listView.columnAt(mouseX)
             __listView.forceActiveFocus()
             if (pressedRow > -1 && !Settings.hasTouchScreen
                 && !branchDecorationContains(mouse.x, mouse.y)) {
                 __listView.currentIndex = pressedRow
-                if (clickedRow === -1)
-                    clickedRow = pressedRow
-                mouseSelect(pressedRow, mouse.modifiers, false)
+                if (!clickedIndex)
+                    clickedIndex = pressedIndex
+                mouseSelect(pressedIndex, mouse.modifiers, false)
                 if (!mouse.modifiers)
-                    clickedRow = pressedRow
+                    clickedIndex = pressedIndex
             }
         }
 
         onReleased: {
-            pressedRow = -1
+            pressedIndex = undefined
             pressedColumn = -1
             autoScroll = 0
         }
@@ -261,23 +268,24 @@ BasicTableView {
             }
 
             if (pressed && containsMouse) {
-                var oldPressedRow = pressedRow
-                pressedRow = __listView.indexAt(0, mouseY + __listView.contentY)
+                var oldPressedIndex = pressedIndex
+                var pressedRow = __listView.indexAt(0, mouseY + __listView.contentY)
+                pressedIndex = modelAdaptor.mapRowToModelIndex(pressedRow)
                 pressedColumn = __listView.columnAt(mouseX)
-                if (pressedRow > -1 && oldPressedRow !== pressedRow) {
+                if (pressedRow > -1 && oldPressedIndex !== pressedIndex) {
                     __listView.currentIndex = pressedRow
-                    mouseSelect(pressedRow, mouse.modifiers, true /* drag */)
+                    mouseSelect(pressedIndex, mouse.modifiers, true /* drag */)
                 }
             }
         }
 
         onExited: {
-            pressedRow = -1
+            pressedIndex = undefined
             pressedColumn = -1
         }
 
         onCanceled: {
-            pressedRow = -1
+            pressedIndex = undefined
             pressedColumn = -1
             autoScroll = 0
         }

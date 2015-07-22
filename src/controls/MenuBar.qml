@@ -116,6 +116,7 @@ MenuBarPrivate {
     property Component __menuBarComponent: Loader {
         id: menuBarLoader
 
+        Accessible.role: Accessible.MenuBar
 
         onStatusChanged: if (status === Loader.Error) console.error("Failed to load panel for", root)
 
@@ -230,7 +231,12 @@ MenuBarPrivate {
                 Loader {
                     id: menuItemLoader
 
+                    Accessible.role: Accessible.MenuItem
+                    Accessible.name: StyleHelpers.removeMnemonics(opts.text)
+                    Accessible.onPressAction: d.openedMenuIndex = opts.index
+
                     property var styleData: QtObject {
+                        id: opts
                         readonly property int index: __menuItemIndex
                         readonly property string text: !!__menuItem && __menuItem.title
                         readonly property bool enabled: !!__menuItem && __menuItem.enabled

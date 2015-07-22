@@ -55,6 +55,7 @@ DrawableLoader {
     window_focused: focused && control.Window.active
 
     opacity: hasText && (styleData.hasSelection || styleData.pressed || idle.running) ? 1.0 : 0.0
+    visible: opacity > 0.0 && focused
 
     Timer {
         id: idle

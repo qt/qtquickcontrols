@@ -65,7 +65,7 @@ class QQuickFileDialog : public QQuickAbstractFileDialog
 public:
     explicit QQuickFileDialog(QObject *parent = 0);
     ~QQuickFileDialog();
-    virtual QList<QUrl> fileUrls() const;
+    virtual QList<QUrl> fileUrls() const Q_DECL_OVERRIDE;
 
     QJSValue shortcuts();
     QJSValue __shortcuts();
@@ -78,7 +78,7 @@ public Q_SLOTS:
     bool addSelection(const QUrl &path);
 
 protected:
-    virtual QPlatformFileDialogHelper *helper() { return 0; }
+    virtual QPlatformFileDialogHelper *helper() Q_DECL_OVERRIDE { return 0; }
     Q_INVOKABLE QString urlToPath(const QUrl &url) { return url.toLocalFile(); }
     Q_INVOKABLE QUrl pathToUrl(const QString &path) { return QUrl::fromLocalFile(path); }
     Q_INVOKABLE QUrl pathFolder(const QString &path);
