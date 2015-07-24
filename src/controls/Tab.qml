@@ -41,6 +41,7 @@ import QtQuick 2.2
     \inqmlmodule QtQuick.Controls
     \since 5.1
     \ingroup viewaddons
+    \ingroup controls
     \brief Tab represents the content of a tab in a TabView.
 
     A Tab item inherits from Loader and provides a similar

@@ -45,6 +45,7 @@ import QtQuick.Controls.Private 1.0
     \since 5.1
     \inqmlmodule QtQuick.Controls
     \ingroup applicationwindow
+    \ingroup controls
     \brief Provides a top-level application window.
 
     \image applicationwindow.png

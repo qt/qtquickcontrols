@@ -43,6 +43,7 @@ import QtQuick.Controls.Private 1.0
     \inqmlmodule QtQuick.Controls
     \since 5.1
     \ingroup applicationwindow
+    \ingroup controls
     \brief Contains ToolButton and related controls.
 
     \image toolbar.png

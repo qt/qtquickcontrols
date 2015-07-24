@@ -125,17 +125,6 @@
 */
 
 /*!
-    \page qtquickcontrolsstyles-structure.html
-    \title Qt Quick Controls Styles Structure
-     \list
-      \li \l{Qt Quick Controls Styles}
-          \list
-          \li \l{Qt Quick Controls Styles QML Types}{Styles QMl Types}
-          \endlist
-     \endlist
-*/
-
-/*!
     \qmlmodule QtQuick.Controls.Styles 1.4
     \title Qt Quick Controls Styles QML Types
     \ingroup qmlmodules

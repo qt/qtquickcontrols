@@ -44,6 +44,7 @@ import QtQuick.Controls.Styles 1.1
     \inqmlmodule QtQuick.Controls
     \since  5.1
     \ingroup views
+    \ingroup controls
     \brief Provides a scrolling view within another Item.
 
     \image scrollview.png

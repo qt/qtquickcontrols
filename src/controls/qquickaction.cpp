@@ -50,6 +50,7 @@ QT_BEGIN_NAMESPACE
     \qmltype Action
     \instantiates QQuickAction
     \ingroup applicationwindow
+    \ingroup controls
     \inqmlmodule QtQuick.Controls
     \brief Action provides an abstract user interface action that can be bound to items
 

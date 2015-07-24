@@ -31,6 +31,7 @@
    \inherits BasicTableView
    \since 5.1
    \ingroup views
+   \ingroup controls
    \brief Provides a list view with scroll bars, styling and header sections.
 
    \image tableview.png

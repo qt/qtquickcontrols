@@ -41,7 +41,6 @@ import QtQuick.Controls.Private 1.0
 /*!
     \qmltype AbstractCheckable
     \inqmlmodule QtQuick.Controls
-    \ingroup controls
     \brief An abstract representation of a checkable control with a label
     \qmlabstract
     \internal

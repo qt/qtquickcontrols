@@ -42,6 +42,7 @@ import QtQuick.Controls.Private 1.0
     \qmltype StackView
     \inherits Item
     \ingroup views
+    \ingroup controls
     \inqmlmodule QtQuick.Controls
     \since 5.1
 

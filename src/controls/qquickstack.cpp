@@ -42,6 +42,7 @@ QT_BEGIN_NAMESPACE
     \qmltype Stack
     \instantiates QQuickStack
     \inqmlmodule QtQuick.Controls
+    \ingroup controls
     \brief Provides attached properties for items pushed onto a StackView.
 
     The Stack type provides attached properties for items pushed onto a \l StackView.

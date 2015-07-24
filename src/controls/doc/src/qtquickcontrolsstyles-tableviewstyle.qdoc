@@ -31,6 +31,7 @@
     \inherits BasicTableViewStyle
     \since 5.1
     \ingroup viewsstyling
+    \ingroup controlsstyling
     \brief Provides custom styling for TableView
 */
 

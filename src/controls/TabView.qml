@@ -43,6 +43,7 @@ import QtQuick.Controls.Private 1.0
     \inqmlmodule QtQuick.Controls
     \since 5.1
     \ingroup views
+    \ingroup controls
     \brief A control that allows the user to select one of multiple stacked items.
 
     \image tabview.png

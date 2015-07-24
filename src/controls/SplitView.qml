@@ -45,6 +45,7 @@ import QtQuick.Window 2.1
     \inqmlmodule QtQuick.Controls
     \since 5.1
     \ingroup views
+    \ingroup controls
     \brief Lays out items with a draggable splitter between each item.
 
     \image splitview.png

@@ -17,16 +17,22 @@ qhp.QtQuickControls.filterAttributes    = qtquickcontrols $QT_VERSION qtrefdoc
 qhp.QtQuickControls.customFilters.Qt.name = QtQuickControls $QT_VERSION
 qhp.QtQuickControls.customFilters.Qt.filterAttributes = qtquickcontrols $QT_VERSION
 
-qhp.QtQuickControls.subprojects = qtquickcontrolsqmltypes qtquickcontrolsstyles
+qhp.QtQuickControls.subprojects = qqcqmltypes qqcstylesqmltypes qqcexamples
 
-qhp.QtQuickControls.subprojects.qtquickcontrolsqmltypes.title      = Controls QML Types
-qhp.QtQuickControls.subprojects.qtquickcontrolsqmltypes.indexTitle = Qt Quick Controls QML Types
-qhp.QtQuickControls.subprojects.qtquickcontrolsqmltypes.selectors  = qmlclass # cannot choose qmltypes from a specific group QTBUG-32985
-qhp.QtQuickControls.subprojects.qtquickcontrolsqmltypes.sortPages  = true
+qhp.QtQuickControls.subprojects.qqcqmltypes.title      = Controls QML Types
+qhp.QtQuickControls.subprojects.qqcqmltypes.indexTitle = Qt Quick Controls QML Types
+qhp.QtQuickControls.subprojects.qqcqmltypes.selectors  = group:controls
+qhp.QtQuickControls.subprojects.qqcqmltypes.sortPages  = true
 
-qhp.QtQuickControls.subprojects.qtquickcontrolsstyles.title      = Qt Quick Controls Styles Structure
-qhp.QtQuickControls.subprojects.qtquickcontrolsstyles.indexTitle = Qt Quick Controls Styles Structure
-qhp.QtQuickControls.subprojects.qtquickcontrolsstyles.type       = manual
+qhp.QtQuickControls.subprojects.qqcstylesqmltypes.title      = Controls Styles QML Types
+qhp.QtQuickControls.subprojects.qqcstylesqmltypes.indexTitle = Qt Quick Controls Styles QML Types
+qhp.QtQuickControls.subprojects.qqcstylesqmltypes.selectors  = group:controlsstyling
+qhp.QtQuickControls.subprojects.qqcstylesqmltypes.sortPages  = true
+
+qhp.QtQuickControls.subprojects.qqcexamples.title      = Examples and Tutorials
+qhp.QtQuickControls.subprojects.qqcexamples.indexTitle = Qt Quick Controls Examples
+qhp.QtQuickControls.subprojects.qqcexamples.selectors  = doc:example group:stylingtutorials
+qhp.QtQuickControls.subprojects.qqcexamples.sortpages  = true
 
 depends = qtcore qtdoc qtgui qtwidgets qtqml qtquick qtquicklayouts qtquickdialogs qtquickextras
 

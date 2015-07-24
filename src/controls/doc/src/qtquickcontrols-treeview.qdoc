@@ -31,6 +31,7 @@
    \inherits BasicTableView
    \since 5.5
    \ingroup views
+   \ingroup controls
    \brief Provides a tree view with scroll bars, styling and header sections.
 
    \image treeview.png
