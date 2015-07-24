@@ -45,7 +45,7 @@
 // We mean it.
 //
 
-import QtQuick 2.4
+import QtQuick 2.5
 import QtQuick.Controls 1.3
 import QtQuick.Controls.Private 1.0
 import QtQuick.Controls.Styles 1.2
@@ -58,7 +58,7 @@ import QtQuick.Window 2.2
     \inqmlmodule QtQuick.Controls.Private
 */
 
-ScrollView {
+Flickable {
     id: root
 
     /*! \qmlproperty bool BasicTableView::alternatingRowColors
