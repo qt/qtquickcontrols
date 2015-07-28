@@ -143,6 +143,8 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("fileSystemModel", fsm);
     engine.rootContext()->setContextProperty("rootPathIndex", fsm->index(fsm->rootPath()));
     engine.load(QUrl(QStringLiteral("qrc:///main.qml")));
+    if (engine.rootObjects().isEmpty())
+        return -1;
 
     return app.exec();
 }
