@@ -39,6 +39,7 @@
 ****************************************************************************/
 
 import QtQuick 2.2
+import QtQuick.Controls 1.3
 import QtTest 1.0
 
 TestCase {
@@ -48,8 +49,61 @@ TestCase {
     width:400
     height:400
 
+    Component {
+        id: windowComponent
+        ApplicationWindow {
+            width: 300; height: 300
+            visible: true
+            menuBar: MenuBar {
+                Menu {
+                    title: "&File"; objectName: "fileMenu"
+                    Menu {
+                        title: "&Recent Files"; objectName: "actionSubMenu"
+                        MenuItem { text: "RecentFile1"; objectName: "recentFile1MenuItem" }
+                        MenuItem { text: "RecentFile2"; objectName: "recentFile2MenuItem" }
+                    }
+                    MenuItem { text: "&Save"; objectName: "saveMenuItem" }
+                    MenuItem { text: "&Load"; objectName: "loadMenuItem" }
+                    MenuItem { text: "&Exit"; objectName: "exitMenuItem" }
+                }
+                Menu {
+                    title: "&Edit"; objectName: "editMenu"
+                    Menu {
+                        title: "&Advanced"; objectName: "advancedSubMenu"
+                        MenuItem { text: "advancedOption1"; objectName: "advancedOption1MenuItem" }
+                    }
+                    MenuItem { text: "&Preferences"; objectName: "preferencesMenuItem" }
+                }
+            }
+        }
+    }
+
     function test_createMenuBar() {
         var menuBar = Qt.createQmlObject('import QtQuick.Controls 1.2; MenuBar {}', testCase, '');
         menuBar.destroy()
+    }
+
+    function test_clickMenuBar() {
+        if (Qt.platform.os === "osx")
+            skip("MenuBar cannot be reliably tested on OS X")
+
+        var window = windowComponent.createObject()
+        waitForRendering(window.contentItem)
+        var fileMenu = findChild(window, "fileMenu")
+        compare(fileMenu !== null, true)
+        // Click menu should open
+        compare(fileMenu.__popupVisible, false)
+        mouseClick(fileMenu.__visualItem)
+        tryCompare(fileMenu, "__popupVisible", true)
+        // wait until popup is visible
+        tryCompare(fileMenu.__contentItem, "status", Loader.Ready)
+        waitForRendering(fileMenu.__contentItem.item)
+        // Clicking on menu should close, we workaround the current
+        // implementation event routing of the TestCase suite.
+        // We send the event to an item that is child of the menupopupwindow
+        // to a a negative coordinate
+        mouseClick(fileMenu.__contentItem, 20, -13)
+        tryCompare(fileMenu, "__popupVisible", false)
+        window.destroy()
     }
 }
