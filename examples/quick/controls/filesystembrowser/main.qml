@@ -41,6 +41,7 @@
 import QtQuick 2.2
 import QtQuick.Controls 1.5
 import QtQml.Models 2.2
+import io.qt.examples.quick.controls.filesystembrowser 1.0
 
 ApplicationWindow {
     visible: true
@@ -120,6 +121,9 @@ ApplicationWindow {
             resizable: true
         }
 
-        onActivated : Qt.openUrlExternally(fileSystemModel.data(index, 263))
+        onActivated : {
+            var url = fileSystemModel.data(index, FileSystemModel.UrlStringRole)
+            Qt.openUrlExternally(url)
+        }
     }
 }
