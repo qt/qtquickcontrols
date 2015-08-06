@@ -146,4 +146,10 @@ ScrollViewStyle {
         \since QtQuick.Controls.Styles 1.3
     */
     property Component __cursorDelegate
+
+    /*! \internal
+        The delegate for the cut/copy/paste menu.
+        \since QtQuick.Controls.Styles 1.4
+    */
+    property Component __editMenu
 }

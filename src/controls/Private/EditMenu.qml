@@ -45,7 +45,7 @@ Loader {
     property Item selectionHandle
     property Flickable flickable
     property Component defaultMenu: item && item.defaultMenu ? item.defaultMenu : null
-    property Menu menuInstance: null
+    property QtObject menuInstance: null
     property MouseArea mouseArea
 
     Connections {
@@ -67,6 +67,13 @@ Loader {
         return menuInstance;
     }
 
-    source: Qt.resolvedUrl(Qt.platform.os === "ios" ? "EditMenu_ios.qml"
-                                                    : Qt.platform.os === "android" ? "" : "EditMenu_base.qml")
+    Component.onCompleted: {
+        if (__style.__editMenu) {
+            sourceComponent = __style.__editMenu;
+        } else {
+            // todo: get ios/android/base menus from style as well
+            source = (Qt.resolvedUrl(Qt.platform.os === "ios" ? "EditMenu_ios.qml"
+                : Qt.platform.os === "android" ? "" : "EditMenu_base.qml"));
+        }
+    }
 }
