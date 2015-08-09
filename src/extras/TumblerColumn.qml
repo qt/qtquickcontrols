@@ -89,7 +89,7 @@ QtObject {
     Accessible.role: Accessible.ColumnHeader
 
     /*!
-        \qmlproperty readonly int TumblerColumn::currentIndex
+        \qmlproperty int TumblerColumn::currentIndex
 
         This read-only property holds the index of the current item for this
         column. If the model count is reduced, the current index will be

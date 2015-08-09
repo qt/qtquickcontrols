@@ -190,7 +190,7 @@ QPlatformFontDialogHelper *QQuickPlatformFontDialog::helper()
     containing the dialog's parent Item, modal with respect to the whole
     application, or non-modal.
 
-    By default it is \c Qt.WindowModal.
+    By default it is \c Qt.NonModal.
 
     Modality does not mean that there are any blocking calls to wait for the
     dialog to be accepted or rejected; it's only that the user will be

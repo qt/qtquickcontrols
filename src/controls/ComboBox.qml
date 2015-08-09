@@ -289,11 +289,12 @@ Control {
         \qmlsignal ComboBox::activated(int index)
         \since QtQuick.Controls 1.1
 
-        \a index is the triggered model index or -1 if a new string is accepted
-
         This signal is similar to currentIndex changed, but will only
-        be emitted if the combo box index was changed by the user and not
-        when set programatically.
+        be emitted if the combo box index was changed by the user, not
+        when set programmatically.
+
+        \a index is the activated model index, or \c -1 if a new string is
+        accepted.
 
         The corresponding handler is \c onActivated.
     */
