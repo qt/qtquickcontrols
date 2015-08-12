@@ -736,7 +736,7 @@ Item {
             compare(component.status, Component.Ready)
             var tree = component.createObject(container);
             verify(tree !== null, "tree created is null")
-            waitForRendering(tree)
+            verify(waitForRendering(tree), "TreeView did not render on time")
             var model = tree.model
 
             // Sample each row and test
@@ -744,6 +744,12 @@ Item {
                 for (var x = 1; x < tree.getColumn(0).width; x += 10) {
                     var treeIndex = tree.indexAt(x, 50 * (row + 1) + 1) // offset by header height
                     var modelIndex = model.index(row, 0)
+                    if (treeIndex.row !== modelIndex.row
+                        || treeIndex.column !== modelIndex.column
+                        || treeIndex.internalId !== modelIndex.internalId) {
+                        console.log("Test about to fail: row = " + row + ", __listView.count =" + __listView.count)
+                        console.log(" . . . . . . . . .  x =" + x + ", getColumn(0).width =" + getColumn(0).width)
+                    }
                     compare(treeIndex.row, modelIndex.row)
                     compare(treeIndex.column, modelIndex.column)
                     compare(treeIndex.internalId, modelIndex.internalId)
@@ -756,6 +762,12 @@ Item {
                 for (x = 1; x < tree.getColumn(0).width; x += 10) {
                     treeIndex = tree.indexAt(x, 50 * row + 1)
                     modelIndex = model.index(row, 0)
+                    if (treeIndex.row !== modelIndex.row
+                        || treeIndex.column !== modelIndex.column
+                        || treeIndex.internalId !== modelIndex.internalId) {
+                        console.log("Test about to fail: row = " + row + ", __listView.count =" + __listView.count)
+                        console.log(" . . . . . . . . .  x =" + x + ", getColumn(0).width =" + getColumn(0).width)
+                    }
                     compare(treeIndex.row, modelIndex.row)
                     compare(treeIndex.column, modelIndex.column)
                     compare(treeIndex.internalId, modelIndex.internalId)
