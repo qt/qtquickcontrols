@@ -115,13 +115,25 @@ Style {
     /*! The selection color. */
     property color selectionColor: "#eee"
 
-    /*! The shadow color. */
+    /*!
+        The shadow color.
+
+        \sa DropShadow
+    */
     property color shadowColor: Qt.rgba(0, 0, 0, 0.26)
 
-    /*! The shadow radius. */
-    property real shadowRadius: 50
+    /*!
+        The shadow radius.
 
-    /*! The shadow spread. */
+        \sa DropShadow
+    */
+    property real shadowRadius: 10
+
+    /*!
+        The shadow spread.
+
+        \sa DropShadow
+    */
     property real shadowSpread: 0.3
 
     /*!
@@ -366,11 +378,9 @@ Style {
         DropShadow {
             id: dropShadow
             anchors.fill: itemgroup
-            fast: true
-            radius: shadowRadius
             spread: shadowSpread
+            samples: shadowRadius * 2 + 1
             transparentBorder: true
-            samples: 12
             color: shadowColor
             source: itemgroup
         }

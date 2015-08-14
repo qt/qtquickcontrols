@@ -73,7 +73,6 @@ Style {
     property Component indicator: Item {
         readonly property real shineStep: 0.05
         readonly property real smallestAxis: Math.min(control.width, control.height)
-        readonly property real shadowRadius: smallestAxis * 0.4
         readonly property real outerRecessPercentage: 0.11
         readonly property color offColor: Qt.rgba(0.13, 0.13, 0.13)
         readonly property color baseColor: control.active ? control.color : offColor
@@ -113,12 +112,12 @@ Style {
         Item {
             id: shadowGuard
             anchors.fill: backgroundCanvas
-            anchors.margins: -shadowRadius
+            anchors.margins: -shadow.radius
 
             Canvas {
                 id: colorCanvas
                 anchors.fill: parent
-                anchors.margins: shadowRadius
+                anchors.margins: shadow.radius
 
                 Connections {
                     target: control
@@ -144,9 +143,6 @@ Style {
             id: shadow
             source: shadowGuard
             color: control.color
-            // Don't set fast here because Qt < 5.3 will run into QTBUG-36931
-            radius: shadowRadius
-            samples: Math.min(32, radius)
             cached: true
             anchors.fill: shadowGuard
             visible: control.active
