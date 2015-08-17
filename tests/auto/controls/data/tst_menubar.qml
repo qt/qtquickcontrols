@@ -106,4 +106,24 @@ TestCase {
         tryCompare(fileMenu, "__popupVisible", false)
         window.destroy()
     }
+
+    function test_closeOnEscapePressed() {
+        if (Qt.platform.os === "osx")
+            skip("MenuBar cannot be reliably tested on OS X")
+
+        var window = windowComponent.createObject()
+        waitForRendering(window.contentItem)
+        var fileMenu = findChild(window, "fileMenu")
+        verify(fileMenu)
+        // Click menu should open
+        compare(fileMenu.__popupVisible, false)
+        mouseClick(fileMenu.__visualItem)
+        tryCompare(fileMenu, "__popupVisible", true)
+        // wait until popup is visible
+        tryCompare(fileMenu.__contentItem, "status", Loader.Ready)
+        waitForRendering(fileMenu.__contentItem.item)
+        // Pressing escape should close the popup
+        keyPress(Qt.Key_Escape)
+        compare(fileMenu.__popupVisible, false)
+    }
 }
