@@ -1,7 +1,7 @@
 QT += qml quick sql
 TARGET = calendar
 
-QTPLUGIN += qsqlite
+!contains(sql-drivers, sqlite): QTPLUGIN += qsqlite
 
 include(src/src.pri)
 include(../shared/shared.pri)
