@@ -16,5 +16,3 @@ TESTDATA = data/*
 
 OTHER_FILES += \
     data/RectWithFileDialog.qml
-
-DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0
