@@ -58,6 +58,7 @@ class QQuickWheelArea : public QQuickItem
     Q_PROPERTY(qreal verticalValue READ verticalValue WRITE setVerticalValue)
     Q_PROPERTY(qreal scrollSpeed READ scrollSpeed WRITE setScrollSpeed NOTIFY scrollSpeedChanged)
     Q_PROPERTY(bool active READ isActive WRITE setActive NOTIFY activeChanged)
+    Q_PROPERTY(bool inverted READ isInverted)
 
 public:
     QQuickWheelArea(QQuickItem *parent = 0);
@@ -92,6 +93,7 @@ public:
 
     bool isActive() const;
     void setActive(bool active);
+    bool isInverted() const;
 
 #ifndef QT_NO_WHEELEVENT
     void wheelEvent(QWheelEvent *event);
@@ -121,6 +123,7 @@ private:
     qreal m_horizontalDelta;
     qreal m_scrollSpeed;
     bool m_active;
+    bool m_inverted;
 
     Q_DISABLE_COPY(QQuickWheelArea)
 };

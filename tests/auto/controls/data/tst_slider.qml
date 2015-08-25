@@ -146,7 +146,7 @@ Item {
             var sliderDeltaRatio = 1; //(slider.maximumValue - slider.minimumValue)/slider.width
             var ratio = mouseRatio / sliderDeltaRatio
 
-            mouseWheel(slider, 5, 5, 20 * ratio, 0)
+            mouseWheel(slider, 5, 5, -20 * ratio, 0)
             compare(slider.value, 22)
 
             slider.maximumValue = 30
@@ -159,15 +159,15 @@ Item {
             compare(slider.value, 10)
 
             var previousValue = slider.value
-            mouseWheel(slider, 5, 5, 6 * ratio, 0)
+            mouseWheel(slider, 5, 5, -6 * ratio, 0)
             compare(slider.value, Math.round(previousValue + 6))
 
-            mouseWheel(slider, 5, 5, -6 * ratio, 0)
+            mouseWheel(slider, 5, 5, 6 * ratio, 0)
             compare(slider.value, previousValue)
 
             // Reach maximum
             slider.value = 0
-            mouseWheel(slider, 5, 5, 40 * ratio, 0)
+            mouseWheel(slider, 5, 5, -40 * ratio, 0)
             compare(slider.value, slider.maximumValue)
             slider.destroy()
         }

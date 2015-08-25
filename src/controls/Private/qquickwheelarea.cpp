@@ -95,6 +95,11 @@ bool QQuickWheelArea::isAtYBeginning() const
     return qFuzzyCompare(m_verticalMinimumValue, m_verticalValue);
 }
 
+bool QQuickWheelArea::isInverted() const
+{
+    return m_inverted;
+}
+
 #ifndef QT_NO_WHEELEVENT
 void QQuickWheelArea::wheelEvent(QWheelEvent *we)
 {
@@ -105,6 +110,8 @@ void QQuickWheelArea::wheelEvent(QWheelEvent *we)
 
     QPoint numPixels = we->pixelDelta();
     QPoint numDegrees = we->angleDelta() / 8;
+
+    m_inverted = we->inverted();
 
     if (!numPixels.isNull()) {
         setHorizontalDelta(numPixels.x() * pixelDeltaAdjustment);
