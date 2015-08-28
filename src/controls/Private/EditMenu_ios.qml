@@ -34,8 +34,8 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.1
-import QtQuick.Controls 1.1
+import QtQuick 2.2
+import QtQuick.Controls 1.2
 import QtQuick.Controls.Styles 1.1
 import QtQuick.Controls.Private 1.0
 
@@ -46,6 +46,7 @@ Item {
     property Component defaultMenu: Menu {
         MenuItem {
             text: qsTr("Cut")
+            shortcut: StandardKey.Cut
             visible: !input.readOnly && selectionStart !== selectionEnd
             onTriggered: {
                 cut();
@@ -54,6 +55,7 @@ Item {
         }
         MenuItem {
             text: qsTr("Copy")
+            shortcut: StandardKey.Copy
             visible: selectionStart !== selectionEnd
             onTriggered: {
                 copy();
@@ -62,21 +64,25 @@ Item {
         }
         MenuItem {
             text: qsTr("Paste")
+            shortcut: StandardKey.Paste
             visible: input.canPaste
             onTriggered: paste();
         }
         MenuItem {
             text: qsTr("Delete")
+            shortcut: StandardKey.Delete
             visible: !input.readOnly && selectionStart !== selectionEnd
             onTriggered: remove(selectionStart, selectionEnd)
         }
         MenuItem {
             text: qsTr("Select")
+            shortcut: StandardKey.Select
             visible: selectionStart === selectionEnd && input.length > 0
             onTriggered: selectWord();
         }
         MenuItem {
             text: qsTr("Select All")
+            shortcut: StandardKey.SelectAll
             visible: !(selectionStart === 0 && selectionEnd === length)
             onTriggered: selectAll();
         }
