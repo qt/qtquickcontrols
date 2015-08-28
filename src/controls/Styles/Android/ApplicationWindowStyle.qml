@@ -96,6 +96,8 @@ QtObject {
             height: visibleChildren.length > 0 ? implicitHeight : 0
         }
 
+        Keys.onMenuPressed: proxyMenu.popup()
+
         Item {
             id: menuBarArea
             visible: false
