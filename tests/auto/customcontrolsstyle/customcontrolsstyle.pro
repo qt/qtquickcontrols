@@ -6,7 +6,6 @@ include (../shared/util.pri)
 
 osx:CONFIG -= app_bundle
 
-CONFIG += parallel_test
 QT += core-private qml-private quick-private testlib
 
 TESTDATA = data/*
