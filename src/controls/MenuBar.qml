@@ -302,7 +302,7 @@ MenuBarPrivate {
             anchors.fill: parent
             hoverEnabled: Settings.hoverEnabled
 
-            onPositionChanged: updateCurrentItem(mouse, false)
+            onPositionChanged: updateCurrentItem(mouse)
             onPressed: {
                 if (updateCurrentItem(mouse)) {
                     d.preselectMenuItem = false
