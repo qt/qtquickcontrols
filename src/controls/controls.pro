@@ -1,3 +1,5 @@
+requires(contains(QT_CONFIG, accessibility))
+
 TARGET  = qtquickcontrolsplugin
 TARGETPATH = QtQuick/Controls
 IMPORT_VERSION = 1.5

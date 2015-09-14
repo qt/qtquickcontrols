@@ -1,3 +1,5 @@
+requires(contains(QT_CONFIG, accessibility))
+
 CXX_MODULE = qml
 TARGET  = widgetsplugin
 TARGETPATH = QtQuick/PrivateWidgets

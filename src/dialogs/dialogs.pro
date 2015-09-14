@@ -1,3 +1,5 @@
+requires(contains(QT_CONFIG, accessibility))
+
 CXX_MODULE = qml
 TARGET  = dialogplugin
 TARGETPATH = QtQuick/Dialogs

@@ -1,3 +1,5 @@
+requires(contains(QT_CONFIG, accessibility))
+
 TARGET = qtquickextrasplugin
 TARGETPATH = QtQuick/Extras
 IMPORT_VERSION = 1.4
