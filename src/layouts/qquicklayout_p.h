@@ -40,6 +40,7 @@
 #include <QPointer>
 #include <QQuickItem>
 #include <private/qquickitem_p.h>
+#include <QtQuick/private/qquickitemchangelistener_p.h>
 #include <QtGui/private/qlayoutpolicy_p.h>
 
 QT_BEGIN_NAMESPACE
@@ -53,7 +54,8 @@ class QQuickLayoutAttached;
 #endif
 
 class QQuickLayoutPrivate;
-class QQuickLayout : public QQuickItem
+class QQuickLayout : public QQuickItem, public QQuickItemChangeListener
+
 {
     Q_OBJECT
 public:
@@ -91,6 +93,9 @@ public:
     void geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry)  Q_DECL_OVERRIDE;
     bool isReady() const;
 
+
+    /* QQuickItemChangeListener */
+    void itemSiblingOrderChanged(QQuickItem *item) Q_DECL_OVERRIDE;
 
 protected:
     void updatePolish() Q_DECL_OVERRIDE;
