@@ -750,6 +750,11 @@ bool QQuickLayout::shouldIgnoreItem(QQuickItem *child, QQuickLayoutAttached *&in
         d->m_ignoredItems << child;
     return ignoreItem;
 }
+struct QQuickItemPublic : public QQuickItem {
+    static bool isCompleted(QQuickItem *item) {
+        return static_cast<QQuickItemPublic*>(item)->isComponentComplete();
+    }
+};
 
 void QQuickLayout::itemChange(ItemChange change, const ItemChangeData &value)
 {
@@ -758,6 +763,7 @@ void QQuickLayout::itemChange(ItemChange change, const ItemChangeData &value)
         QObject::connect(item, SIGNAL(implicitWidthChanged()), this, SLOT(invalidateSenderItem()));
         QObject::connect(item, SIGNAL(implicitHeightChanged()), this, SLOT(invalidateSenderItem()));
         QObject::connect(item, SIGNAL(baselineOffsetChanged(qreal)), this, SLOT(invalidateSenderItem()));
+        QQuickItemPrivate::get(item)->addItemChangeListener(this, QQuickItemPrivate::SiblingOrder);
         if (isReady())
             updateLayoutItems();
     } else if (change == ItemChildRemovedChange) {
@@ -765,6 +771,7 @@ void QQuickLayout::itemChange(ItemChange change, const ItemChangeData &value)
         QObject::disconnect(item, SIGNAL(implicitWidthChanged()), this, SLOT(invalidateSenderItem()));
         QObject::disconnect(item, SIGNAL(implicitHeightChanged()), this, SLOT(invalidateSenderItem()));
         QObject::disconnect(item, SIGNAL(baselineOffsetChanged(qreal)), this, SLOT(invalidateSenderItem()));
+        QQuickItemPrivate::get(item)->removeItemChangeListener(this, QQuickItemPrivate::SiblingOrder);
         if (isReady())
             updateLayoutItems();
     }
@@ -794,6 +801,12 @@ void QQuickLayout::invalidateSenderItem()
 bool QQuickLayout::isReady() const
 {
     return d_func()->m_isReady;
+}
+
+void QQuickLayout::itemSiblingOrderChanged(QQuickItem *item)
+{
+    Q_UNUSED(item);
+    updateLayoutItems();
 }
 
 void QQuickLayout::rearrange(const QSizeF &/*size*/)
