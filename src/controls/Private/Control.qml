@@ -72,19 +72,20 @@ FocusScope {
     property alias __styleData: styleLoader.styleData
 
     Loader {
+        id: styleLoader
+        sourceComponent: style
+        property Item __control: root
+        property QtObject styleData: null
+        onStatusChanged: {
+            if (status === Loader.Error)
+                console.error("Failed to load Style for", root)
+        }
+    }
+
+    Loader {
         id: panelLoader
         anchors.fill: parent
         sourceComponent: __style ? __style.panel : null
         onStatusChanged: if (status === Loader.Error) console.error("Failed to load Style for", root)
-        Loader {
-            id: styleLoader
-            sourceComponent: style
-            property Item __control: root
-            property QtObject styleData: null
-            onStatusChanged: {
-                if (status === Loader.Error)
-                    console.error("Failed to load Style for", root)
-            }
-        }
     }
 }
