@@ -146,11 +146,41 @@ MenuBarPrivate {
             property bool altPressedAgain: false
             property var mnemonicsMap: ({})
 
+            function openMenuAtIndex(index) {
+                if (openedMenuIndex === index)
+                    return;
+
+                var oldIndex = openedMenuIndex
+                openedMenuIndex = index
+
+                if (oldIndex !== -1) {
+                    var menu = root.menus[oldIndex]
+                    if (menu.__popupVisible) {
+                        menu.__dismissMenu()
+                        menu.__destroyAllMenuPopups()
+                    }
+                }
+
+                if (openedMenuIndex !== -1) {
+                    menu = root.menus[openedMenuIndex]
+                    if (menu.enabled) {
+                        if (menu.__usingDefaultStyle)
+                            menu.style = d.style.menuStyle
+
+                        var xPos = row.LayoutMirroring.enabled ? menuItemLoader.width : 0
+                        menu.__popup(Qt.rect(xPos, menuBarLoader.height - d.heightPadding, 0, 0), 0)
+
+                        if (preselectMenuItem)
+                            menu.__currentIndex = 0
+                    }
+                }
+            }
+
             function dismissActiveFocus(event, reason) {
                 if (reason) {
                     altPressedAgain = false
                     altPressed = false
-                    openedMenuIndex = -1
+                    openMenuAtIndex(-1)
                     root.__contentItem.parent.forceActiveFocus()
                 } else {
                     event.accepted = false
@@ -160,7 +190,7 @@ MenuBarPrivate {
             function maybeOpenFirstMenu(event) {
                 if (altPressed && openedMenuIndex === -1) {
                     preselectMenuItem = true
-                    openedMenuIndex = 0
+                    openMenuAtIndex(0)
                 } else {
                     event.accepted = false
                 }
@@ -197,7 +227,7 @@ MenuBarPrivate {
                     idx--
                 if (idx >= 0) {
                     d.preselectMenuItem = true
-                    d.openedMenuIndex = idx
+                    d.openMenuAtIndex(idx)
                 }
             } else {
                 event.accepted = false;
@@ -211,7 +241,7 @@ MenuBarPrivate {
                     idx++
                 if (idx < root.menus.length) {
                     d.preselectMenuItem = true
-                    d.openedMenuIndex = idx
+                    d.openMenuAtIndex(idx)
                 }
             } else {
                 event.accepted = false;
@@ -233,7 +263,7 @@ MenuBarPrivate {
 
                     Accessible.role: Accessible.MenuItem
                     Accessible.name: StyleHelpers.removeMnemonics(opts.text)
-                    Accessible.onPressAction: d.openedMenuIndex = opts.index
+                    Accessible.onPressAction: d.openMenuAtIndex(opts.index)
 
                     property var styleData: QtObject {
                         id: opts
@@ -254,35 +284,18 @@ MenuBarPrivate {
                     visible: __menuItem.visible
 
                     Connections {
-                        target: d
-                        onOpenedMenuIndexChanged: {
-                            if (!__menuItem.enabled)
-                                return;
+                        target: __menuItem
+                        onAboutToHide: {
                             if (d.openedMenuIndex === index) {
-                                if (__menuItem.__usingDefaultStyle)
-                                    __menuItem.style = d.style.menuStyle
-                                __menuItem.__popup(Qt.rect(row.LayoutMirroring.enabled ? menuItemLoader.width : 0,
-                                                   menuBarLoader.height - d.heightPadding, 0, 0), 0)
-                                if (d.preselectMenuItem)
-                                    __menuItem.__currentIndex = 0
-                            } else if (__menuItem.__popupVisible) {
-                                __menuItem.__dismissMenu()
-                                __menuItem.__destroyAllMenuPopups()
+                                d.openMenuAtIndex(-1)
+                                menuMouseArea.hoveredItem = null
                             }
                         }
                     }
 
                     Connections {
-                        target: __menuItem
-                        onPopupVisibleChanged: {
-                            if (!__menuItem.__popupVisible && d.openedMenuIndex === index)
-                                d.openedMenuIndex = -1
-                        }
-                    }
-
-                    Connections {
                         target: __menuItem.__action
-                        onTriggered: d.openedMenuIndex = __menuItemIndex
+                        onTriggered: d.openMenuAtIndex(__menuItemIndex)
                     }
 
                     Component.onCompleted: {
@@ -303,26 +316,22 @@ MenuBarPrivate {
             hoverEnabled: Settings.hoverEnabled
 
             onPositionChanged: updateCurrentItem(mouse)
-            onPressed: {
-                if (updateCurrentItem(mouse)) {
-                    d.preselectMenuItem = false
-                    d.openedMenuIndex = currentItem.__menuItemIndex
-                }
-            }
+            onPressed: updateCurrentItem(mouse)
             onExited: hoveredItem = null
 
             property Item currentItem: null
             property Item hoveredItem: null
             function updateCurrentItem(mouse) {
                 var pos = mapToItem(row, mouse.x, mouse.y)
-                if (!hoveredItem || !hoveredItem.contains(Qt.point(pos.x - currentItem.x, pos.y - currentItem.y))) {
+                if (pressed || !hoveredItem
+                    || !hoveredItem.contains(Qt.point(pos.x - currentItem.x, pos.y - currentItem.y))) {
                     hoveredItem = row.childAt(pos.x, pos.y)
                     if (!hoveredItem)
                         return false;
                     currentItem = hoveredItem
-                    if (d.openedMenuIndex !== -1) {
+                    if (pressed || d.openedMenuIndex !== -1) {
                         d.preselectMenuItem = false
-                        d.openedMenuIndex = currentItem.__menuItemIndex
+                        d.openMenuAtIndex(currentItem.__menuItemIndex)
                     }
                 }
                 return true;
