@@ -155,10 +155,8 @@ MenuBarPrivate {
 
                 if (oldIndex !== -1) {
                     var menu = root.menus[oldIndex]
-                    if (menu.__popupVisible) {
-                        menu.__dismissMenu()
-                        menu.__destroyAllMenuPopups()
-                    }
+                    if (menu.__popupVisible)
+                        menu.__dismissAndDestroy()
                 }
 
                 if (openedMenuIndex !== -1) {

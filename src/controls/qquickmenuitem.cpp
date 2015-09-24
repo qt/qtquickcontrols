@@ -674,7 +674,12 @@ void QQuickMenuItem::setEnabled(bool enabled)
 
 void QQuickMenuItem::trigger()
 {
+    QPointer<QQuickMenu> menu(parentMenu());
+    if (menu)
+        menu->prepareItemTrigger(this);
     action()->trigger(this);
+    if (menu)
+        menu->concludeItemTrigger(this);
 }
 
 QT_END_NAMESPACE

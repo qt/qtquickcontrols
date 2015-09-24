@@ -265,14 +265,15 @@ QQuickMenu::QQuickMenu(QObject *parent)
       m_popupVisible(false),
       m_containersCount(0),
       m_xOffset(0),
-      m_yOffset(0)
+      m_yOffset(0),
+      m_triggerCount(0)
 {
     connect(this, SIGNAL(__textChanged()), this, SIGNAL(titleChanged()));
 
     m_platformMenu = QGuiApplicationPrivate::platformTheme()->createPlatformMenu();
     if (m_platformMenu) {
         connect(m_platformMenu, SIGNAL(aboutToShow()), this, SIGNAL(aboutToShow()));
-        connect(m_platformMenu, SIGNAL(aboutToHide()), this, SLOT(__closeMenu()));
+        connect(m_platformMenu, SIGNAL(aboutToHide()), this, SLOT(hideMenu()));
         if (platformItem())
             platformItem()->setMenu(m_platformMenu);
     }
@@ -415,7 +416,7 @@ void QQuickMenu::popup()
 void QQuickMenu::__popup(const QRectF &targetRect, int atItemIndex, MenuType menuType)
 {
     if (popupVisible()) {
-        __closeMenu();
+        hideMenu();
         // Mac and Windows would normally move the menu under the cursor, so we should not
         // return here. However, very often we want to re-contextualize the menu, and this
         // has to be done at the application level.
@@ -488,14 +489,30 @@ QRect QQuickMenu::popupGeometry() const
     return m_popupWindow->geometry();
 }
 
-void QQuickMenu::__closeMenu()
+void QQuickMenu::prepareItemTrigger(QQuickMenuItem *)
+{
+    m_triggerCount++;
+    __dismissMenu();
+}
+
+void QQuickMenu::concludeItemTrigger(QQuickMenuItem *)
+{
+    if (--m_triggerCount == 0)
+        destroyAllMenuPopups();
+}
+
+/*!
+ * \internal
+ * Close this menu's popup window. Emits aboutToHide and sets __popupVisible to false.
+ */
+void QQuickMenu::hideMenu()
 {
     if (m_popupVisible) {
         emit aboutToHide();
         setPopupVisible(false);
     }
-    if (m_popupWindow)
-        m_popupWindow->setVisible(false);
+    if (m_popupWindow && m_popupWindow->isVisible())
+        m_popupWindow->hide();
     m_parentWindow = 0;
 }
 
@@ -512,6 +529,12 @@ QQuickMenuPopupWindow *QQuickMenu::topMenuPopup() const
     return 0;
 }
 
+/*!
+ * \internal
+ * Dismiss all the menus this menu is attached to, bottom-up.
+ * In QQuickPopupWindow, before closing, dismissPopup() emits popupDismissed()
+ * which is connected to dismissPopup() on any child popup.
+ */
 void QQuickMenu::__dismissMenu()
 {
     if (m_platformMenu) {
@@ -521,14 +544,22 @@ void QQuickMenu::__dismissMenu()
     }
 }
 
+/*!
+ * \internal
+ * Called when the popup window visible property changes.
+ */
 void QQuickMenu::windowVisibleChanged(bool v)
 {
     if (!v) {
-        if (m_popupWindow && qobject_cast<QQuickMenuPopupWindow *>(m_popupWindow->transientParent())) {
-            m_popupWindow->transientParent()->setMouseGrabEnabled(true);
-            m_popupWindow->transientParent()->setKeyboardGrabEnabled(true);
+        if (m_popupWindow) {
+            QQuickMenuPopupWindow *parentMenuPopup = qobject_cast<QQuickMenuPopupWindow *>(m_popupWindow->transientParent());
+            if (parentMenuPopup) {
+                parentMenuPopup->setMouseGrabEnabled(true);
+                parentMenuPopup->setKeyboardGrabEnabled(true);
+            }
         }
-        __closeMenu();
+        if (m_popupVisible)
+            __closeAndDestroy();
     }
 }
 
@@ -538,16 +569,32 @@ void QQuickMenu::clearPopupWindow()
     emit __menuPopupDestroyed();
 }
 
-void QQuickMenu::__destroyMenuPopup()
+void QQuickMenu::destroyMenuPopup()
 {
+    if (m_triggerCount > 0)
+        return;
     if (m_popupWindow)
         m_popupWindow->setToBeDeletedLater();
 }
 
-void QQuickMenu::__destroyAllMenuPopups() {
+void QQuickMenu::destroyAllMenuPopups() {
+    if (m_triggerCount > 0)
+        return;
     QQuickMenuPopupWindow *popup = topMenuPopup();
     if (popup)
         popup->setToBeDeletedLater();
+}
+
+void QQuickMenu::__closeAndDestroy()
+{
+    hideMenu();
+    destroyMenuPopup();
+}
+
+void QQuickMenu::__dismissAndDestroy()
+{
+    __dismissMenu();
+    destroyAllMenuPopups();
 }
 
 void QQuickMenu::itemIndexToListIndex(int itemIndex, int *listIndex, int *containerIndex) const

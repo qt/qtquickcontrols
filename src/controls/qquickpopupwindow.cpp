@@ -138,7 +138,7 @@ void QQuickPopupWindow::dismissPopup()
 {
     m_dismissed = true;
     emit popupDismissed();
-    close();
+    hide();
 }
 
 void QQuickPopupWindow::mouseMoveEvent(QMouseEvent *e)

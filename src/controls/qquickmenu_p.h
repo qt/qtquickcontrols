@@ -89,10 +89,10 @@ public:
     Q_INVOKABLE void __popup(const QRectF &targetRect, int atItemIndex = -1, MenuType menuType = DefaultMenu);
 
 public Q_SLOTS:
-    void __closeMenu();
     void __dismissMenu();
-    void __destroyMenuPopup();
-    void __destroyAllMenuPopups();
+
+    void __closeAndDestroy();
+    void __dismissAndDestroy();
 
 Q_SIGNALS:
     void itemsChanged();
@@ -142,11 +142,17 @@ public:
 
     QRect popupGeometry() const;
 
+    void prepareItemTrigger(QQuickMenuItem *);
+    void concludeItemTrigger(QQuickMenuItem *);
+    void destroyMenuPopup();
+    void destroyAllMenuPopups();
+
 protected Q_SLOTS:
     void updateSelectedIndex();
 
     void setMenuContentItem(QQuickItem *);
     void setPopupVisible(bool);
+    void hideMenu();
     void clearPopupWindow();
 
     void updateText();
@@ -189,6 +195,7 @@ private:
     qreal m_xOffset;
     qreal m_yOffset;
     QFont m_font;
+    int m_triggerCount;
 };
 
 QT_END_NAMESPACE
