@@ -555,6 +555,8 @@ Control {
 
     onTextRoleChanged: popup.resolveTextValue(textRole)
 
+    ExclusiveGroup { id: eg }
+
     Menu {
         id: popup
         objectName: "popup"
@@ -579,8 +581,6 @@ Control {
         property int y: isPopup ? (comboBox.__panel.height - comboBox.__panel.implicitHeight) / 2.0 : comboBox.__panel.height
         __minimumWidth: comboBox.width
         __visualItem: comboBox
-
-        property ExclusiveGroup eg: ExclusiveGroup { id: eg }
 
         property bool modelIsArray: false
 
