@@ -150,7 +150,7 @@ MenuPrivate {
     /*! \internal */
     property int __currentIndex: -1
     /*! \internal */
-    onAboutToHide: { __currentIndex = -1; __destroyMenuPopup() }
+    onAboutToHide: __currentIndex = -1
     on__MenuPopupDestroyed: contentLoader.active = false
     onPopupVisibleChanged: {
         if (__popupVisible)
