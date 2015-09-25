@@ -176,7 +176,7 @@ Loader {
             id: menuItemLoader
 
             Accessible.role: opts.type === MenuItemType.Item || opts.type === MenuItemType.Menu ?
-                                 Accessible.MenuItem : Acccessible.NoRole
+                                 Accessible.MenuItem : Accessible.NoRole
             Accessible.name: StyleHelpers.removeMnemonics(opts.text)
             Accessible.checkable: opts.checkable
             Accessible.checked: opts.checked

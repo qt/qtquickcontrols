@@ -53,5 +53,7 @@ int main(int argc, char *argv[])
         QSurfaceFormat::setDefaultFormat(fmt);
     }
     QQmlApplicationEngine engine(QUrl("qrc:/dialogs/systemdialogs/systemdialogs.qml"));
+    if (engine.rootObjects().isEmpty())
+        return -1;
     return app.exec();
 }

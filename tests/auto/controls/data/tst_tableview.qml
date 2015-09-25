@@ -1070,5 +1070,53 @@ TestCase {
 
         control.destroy()
     }
+
+    ListModel {
+        id: testModel
+
+        ListElement {
+            name: "Red"
+            color: "#ff0000"
+        }
+        ListElement {
+            name: "Green"
+            color: "#00ff00"
+        }
+        ListElement {
+            name: "Blue"
+            color: "#0000ff"
+        }
+    }
+
+    Component {
+        id: tableViewComponent
+
+        TableView {
+            model: testModel
+            anchors.fill: parent
+            sortIndicatorVisible: true
+
+            TableViewColumn {
+                title: "Name"
+                role: "name"
+                width: 100
+            }
+
+            TableViewColumn {
+                title: "Color"
+                role: "color"
+                width: 100
+            }
+        }
+    }
+
+    function test_sortIndicatorAfterColumnMoved() {
+        var tableView = tableViewComponent.createObject(testCase);
+        verify(tableView);
+
+        compare(tableView.sortIndicatorColumn, 0);
+        tableView.moveColumn(0, 1);
+        compare(tableView.sortIndicatorColumn, 1);
+    }
 }
 }

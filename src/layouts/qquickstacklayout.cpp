@@ -50,11 +50,11 @@
     The index corresponds to the order of the StackLayout's children.
 
     In contrast to most other layouts, child Items' \l{Layout::fillWidth}{Layout.fillWidth} and \l{Layout::fillHeight}{Layout.fillHeight} properties
-    defaults to \c true. As a consequence, child items are by default filled to match the size of the StackLayout as long as their
+    default to \c true. As a consequence, child items are by default filled to match the size of the StackLayout as long as their
     \l{Layout::maximumWidth}{Layout.maximumWidth} or \l{Layout::maximumHeight}{Layout.maximumHeight} does not prevent it.
 
     Items are added to the layout by reparenting the item to the layout. Similarly, removal is done by reparenting the item from the layout.
-    Both of these operations will affect the layouts \l count property.
+    Both of these operations will affect the layout's \l count property.
 
     The following code will create a StackLayout where only the 'plum' rectangle is visible.
     \code
@@ -102,7 +102,7 @@ QQuickStackLayout::QQuickStackLayout(QQuickItem *parent) :
 /*!
     \qmlproperty int StackLayout::count
 
-    This property holds the number of items that belongs to the layout.
+    This property holds the number of items that belong to the layout.
 
     Only items that are children of the StackLayout will be candidates for layouting.
 */
@@ -115,8 +115,8 @@ int QQuickStackLayout::count() const
 /*!
     \qmlproperty int StackLayout::currentIndex
 
-    This property holds the current index of which of the StackLayout's items that should be visible.
-    By default it will be -1 for an empty layout, otherwise the default is 0 (referring to the first item).
+    This property holds the index of the child item that is currently visible in the StackLayout.
+    By default it will be \c -1 for an empty layout, otherwise the default is \c 0 (referring to the first item).
 */
 int QQuickStackLayout::currentIndex() const
 {

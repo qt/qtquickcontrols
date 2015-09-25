@@ -47,6 +47,7 @@ Loader {
     property Component defaultMenu: item && item.defaultMenu ? item.defaultMenu : null
     property QtObject menuInstance: null
     property MouseArea mouseArea
+    property QtObject style: __style
 
     Connections {
         target: control
@@ -67,13 +68,18 @@ Loader {
         return menuInstance;
     }
 
-    Component.onCompleted: {
-        if (__style.__editMenu) {
-            sourceComponent = __style.__editMenu;
-        } else {
+    function syncStyle() {
+        if (!style)
+            return;
+
+        if (style.__editMenu)
+            sourceComponent = style.__editMenu;
+        else {
             // todo: get ios/android/base menus from style as well
             source = (Qt.resolvedUrl(Qt.platform.os === "ios" ? "EditMenu_ios.qml"
                 : Qt.platform.os === "android" ? "" : "EditMenu_base.qml"));
         }
     }
+    onStyleChanged: syncStyle();
+    Component.onCompleted: syncStyle();
 }

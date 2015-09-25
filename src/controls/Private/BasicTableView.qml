@@ -94,6 +94,7 @@ ScrollView {
     property Component itemDelegate: __style ? __style.itemDelegate : null
 
     /*! \qmlproperty Component BasicTableView::rowDelegate
+        \keyword basictableview-rowdelegate
 
         This property defines a delegate to draw a row.
 
@@ -116,6 +117,7 @@ ScrollView {
     property Component rowDelegate: __style ? __style.rowDelegate : null
 
     /*! \qmlproperty Component BasicTableView::headerDelegate
+        \keyword basictableview-headerdelegate
 
         This property defines a delegate to draw a header.
 
@@ -297,6 +299,8 @@ ScrollView {
             console.warn(__viewTypeName + "::moveColumn(): Can't move column 0")
             return
         }
+        if (sortIndicatorColumn === from)
+            sortIndicatorColumn = to
         columnModel.move(from, to, 1)
     }
 
@@ -682,9 +686,9 @@ ScrollView {
                                 if (repeater.targetIndex >= 0 && repeater.targetIndex !== index ) {
                                     var targetColumn = columnModel.get(repeater.targetIndex).columnItem
                                     if (targetColumn.movable && (!__isTreeView || repeater.targetIndex > 0)) {
-                                        columnModel.move(index, repeater.targetIndex, 1)
                                         if (sortIndicatorColumn === index)
                                             sortIndicatorColumn = repeater.targetIndex
+                                        columnModel.move(index, repeater.targetIndex, 1)
                                     }
                                 }
                                 repeater.targetIndex = -1

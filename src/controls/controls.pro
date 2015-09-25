@@ -1,6 +1,8 @@
+requires(contains(QT_CONFIG, accessibility))
+
 TARGET  = qtquickcontrolsplugin
 TARGETPATH = QtQuick/Controls
-IMPORT_VERSION = 1.4
+IMPORT_VERSION = 1.5
 
 QT += qml quick quick-private qml-private gui-private core-private
 

@@ -55,8 +55,7 @@ TestCase {
         verify(button.__style)
         verify(!button.checked)
         verify(!button.pressed)
-        // QTBUG-44664
-//        button.destroy()
+        button.destroy()
     }
 
     SignalSpy {
@@ -94,8 +93,7 @@ TestCase {
         verify(!button.pressed)
         compare(activationSpy.count, 1)
 
-        // QTBUG-44664
-//        button.destroy()
+        button.destroy()
     }
 
     SignalSpy {
@@ -115,8 +113,7 @@ TestCase {
         tryCompare(button, "progress", 1.0)
         verify(progressSpy.count > 0)
 
-        // QTBUG-44664
-//        button.destroy()
+        button.destroy()
     }
 
     SignalSpy {
@@ -171,8 +168,7 @@ TestCase {
         verify(!button.checked)
         compare(checkSpy.count, checkCount)
 
-        // QTBUG-44664
-//        button.destroy()
+        button.destroy()
     }
 
     function test_programmaticCheck() {
@@ -189,8 +185,7 @@ TestCase {
         button.checked = false;
         compare(button.progress, 0);
 
-        // QTBUG-44664
-//        button.destroy();
+        button.destroy();
     }
 
     function test_largeText() {
@@ -198,7 +193,6 @@ TestCase {
         var button = Qt.createQmlObject("import QtQuick.Extras 1.4; DelayButton { "
             + "anchors.centerIn: parent; text: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' }", testcase, "");
         verify(button, "DelayButton: failed to create an instance");
-        // QTBUG-44664
-//        button.destroy();
+        button.destroy();
     }
 }
