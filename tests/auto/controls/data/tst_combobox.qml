@@ -74,6 +74,7 @@ TestCase {
     function cleanup() {
         if (model !== 0)
             model.destroy()
+        wait(0) // spin the event loop to get all popups to close
     }
 
     function test_keyupdown() {
