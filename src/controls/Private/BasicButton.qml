@@ -147,6 +147,7 @@ Control {
 
     Action {
         id: ownAction
+        enabled: button.enabled
         iconSource: !button.action || __iconOverriden ? button.iconSource : ""
         iconName: !button.action || __iconOverriden ? button.iconName : ""
 

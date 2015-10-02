@@ -40,6 +40,7 @@
 
 import QtQuick 2.2
 import QtTest 1.0
+import QtQuick.Controls 1.4
 import QtQuickControlsTests 1.0
 
 Item {
@@ -277,6 +278,27 @@ TestCase {
         compare(checkSpy.count, ++checkCount)
 
         button.destroy()
+    }
+
+    Component {
+        id: mnemonicButtonComponent
+
+        Button {
+            text: "&Hi"
+            enabled: false
+        }
+    }
+
+    function test_mnemonic() {
+        var button = mnemonicButtonComponent.createObject(container);
+        verify(button);
+
+        clickSpy.clear();
+        clickSpy.target = button;
+        keyClick(Qt.Key_H, Qt.AltModifier);
+        compare(clickSpy.count, 0);
+
+        button.destroy();
     }
 }
 }

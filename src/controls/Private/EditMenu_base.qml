@@ -161,8 +161,7 @@ Item {
 
             if (control.menu) {
                 var menu = getMenuInstance();
-                menu.__dismissMenu();
-                menu.__destroyAllMenuPopups();
+                menu.__dismissAndDestroy();
                 var menuPos = mapToItem(null, mouse.x, mouse.y)
                 menu.__popup(Qt.rect(menuPos.x, menuPos.y, 0, 0), -1, MenuPrivate.EditMenu);
             }
