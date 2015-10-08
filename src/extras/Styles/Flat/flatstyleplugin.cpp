@@ -69,7 +69,7 @@ QtQuickExtrasStylesPlugin::QtQuickExtrasStylesPlugin(QObject *parent) :
 
 void QtQuickExtrasStylesPlugin::registerTypes(const char *uri)
 {
-    Q_INIT_RESOURCE(flatstyle);
+    initResources();
 
     const QString prefix = "qrc:/ExtrasImports/QtQuick/Controls/Styles/Flat/";
     // register version 1.0
