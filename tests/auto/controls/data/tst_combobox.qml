@@ -74,6 +74,7 @@ TestCase {
     function cleanup() {
         if (model !== 0)
             model.destroy()
+        wait(0) // spin the event loop to get all popups to close
     }
 
     function test_keyupdown() {
@@ -523,7 +524,7 @@ TestCase {
         verify(comboBox.data[menuIndex].__popupVisible)
 
         // close the menu before destroying the combobox
-        comboBox.data[menuIndex].__closeMenu()
+        comboBox.data[menuIndex].__closeAndDestroy()
         verify(!comboBox.data[menuIndex].__popupVisible)
 
         comboBox.destroy()
@@ -549,7 +550,7 @@ TestCase {
                 verify(comboBox.data[menuIndex].items[i].checked)
         }
         // close the menu before destroying the combobox
-        comboBox.data[menuIndex].__closeMenu()
+        comboBox.data[menuIndex].__closeAndDestroy()
         verify(!comboBox.data[menuIndex].__popupVisible)
         comboBox.destroy()
     }

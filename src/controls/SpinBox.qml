@@ -132,6 +132,15 @@ Control {
     */
     property alias font: input.font
 
+    /*!
+        \qmlproperty int SpinBox::cursorPosition
+        \since QtQuick.Controls 1.5
+
+        This property holds the position of the cursor in the SpinBox.
+    */
+    property alias cursorPosition: input.cursorPosition
+
+
     /*! This property indicates whether the Spinbox should get active
       focus when pressed.
       The default value is \c true.
