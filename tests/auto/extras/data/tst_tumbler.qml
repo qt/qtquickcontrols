@@ -150,6 +150,12 @@ Item {
             tumbler.setCurrentIndexAt(0, 1);
             tryCompare(tumbler.__viewAt(0), "offset", 4);
             compare(tumbler.currentIndexAt(0), 1);
+
+            tumbler.setCurrentIndexAt(0, 0);
+            waitForRendering(tumbler);
+            tumbler.setCurrentIndexAt(0, tumbler.getColumn(0).model.count-1, 1000);
+            tryCompare(tumbler.__viewAt(0), "offset", 1);
+            compare(tumbler.currentIndexAt(0), tumbler.getColumn(0).model.count-1);
         }
 
         function test_visible() {
