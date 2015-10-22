@@ -65,8 +65,8 @@ Private.GroupBoxStyle {
 
         // TODO:
         Binding {
-            target: root
-            property: "padding.top"
+            target: root.padding
+            property: "top"
             value: background.anchors.topMargin + root.spacing
         }
 
