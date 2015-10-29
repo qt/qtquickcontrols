@@ -55,15 +55,16 @@ TableView {
     onClicked: ++clickCount
 
     TableViewColumn {
+        id: column
         width: 100
     }
     rowDelegate: Item {
         height: 40
-        width: parent.width
+        width: column.width
     }
     itemDelegate: Button {
         height: 40
-        width: parent.width
+        width: column.width
         text: styleData.value
         activeFocusOnPress: true
         onClicked: ++table.buttonClickCount

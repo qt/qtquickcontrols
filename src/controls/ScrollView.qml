@@ -164,7 +164,9 @@ FocusScope {
     default property Item contentItem
 
     /*! \internal */
-    property Item __scroller: scroller
+    property alias __scroller: scroller
+    /*! \internal */
+    property alias __verticalScrollbarOffset: scroller.verticalScrollbarOffset
     /*! \internal */
     property alias __wheelAreaScrollSpeed: wheelArea.scrollSpeed
     /*! \internal */
@@ -328,9 +330,9 @@ FocusScope {
             property bool outerFrame: !frameVisible || !(__style ? __style.__externalScrollBars : 0)
             property int scrollBarSpacing: outerFrame ? 0 : (__style ? __style.__scrollBarSpacing : 0)
             property int verticalScrollbarOffset: verticalScrollBar.visible && !verticalScrollBar.isTransient ?
-                                                      verticalScrollBar.width + scrollBarSpacing : 0
+                                                  verticalScrollBar.width + scrollBarSpacing : 0
             property int horizontalScrollbarOffset: horizontalScrollBar.visible && !horizontalScrollBar.isTransient ?
-                                                        horizontalScrollBar.height + scrollBarSpacing : 0
+                                                    horizontalScrollBar.height + scrollBarSpacing : 0
             Loader {
                 id: frameLoader
                 sourceComponent: __style ? __style.frame : null
