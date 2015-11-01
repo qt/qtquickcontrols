@@ -37,6 +37,7 @@
 import QtQuick 2.2
 import QtQuick.Controls 1.2
 import QtQuick.Controls.Private 1.0
+import QtQuick.Window 2.2
 
 /*!
     \qmltype AbstractCheckable
@@ -100,6 +101,14 @@ Control {
     */
     property string text
 
+    /*!
+        This property holds the button tooltip.
+
+        \since QtQuick.Controls 1.7
+    */
+    property string tooltip
+    Accessible.description: tooltip
+
     /*! \internal */
     property var __cycleStatesHandler: cycleRadioButtonStates
 
@@ -119,9 +128,18 @@ Control {
 
         onPressed: if (activeFocusOnPress) forceActiveFocus();
 
+        onExited: Tooltip.hideText()
+        onCanceled: Tooltip.hideText()
+
         onReleased: {
             if (containsMouse && (!exclusiveGroup || !checked))
                 __cycleStatesHandler();
+        }
+
+        Timer {
+            interval: 1000
+            running: mouseArea.containsMouse && !pressed && tooltip.length && mouseArea.Window.visibility !== Window.Hidden
+            onTriggered: Tooltip.showText(mouseArea, Qt.point(mouseArea.mouseX, mouseArea.mouseY), tooltip)
         }
     }
 
