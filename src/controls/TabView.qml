@@ -115,16 +115,23 @@ FocusScope {
     /*! \internal */
     default property alias data: stack.data
 
-    /*! \qmlmethod Tab TabView::addTab(string title, Component component)
-        Adds a new tab page with title with and optional Component.
+    /*!
+        \qmlmethod Tab TabView::addTab(string title, Component component)
+
+        Adds a new tab with the given \a title and an optional \a component.
+
         Returns the newly added tab.
     */
     function addTab(title, component) {
         return insertTab(__tabs.count, title, component)
     }
 
-    /*! \qmlmethod Tab TabView::insertTab(int index, string title, Component component)
-        Inserts a new tab with title at index, with an optional Component.
+    /*!
+        \qmlmethod Tab TabView::insertTab(int index, string title, Component component)
+
+        Inserts a new tab at \a index, with the given \a title and
+        an optional \a component.
+
         Returns the newly added tab.
     */
     function insertTab(index, title, component) {
