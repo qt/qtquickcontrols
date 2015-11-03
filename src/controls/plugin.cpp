@@ -122,7 +122,7 @@ void QtQuickControlsPlugin::registerTypes(const char *uri)
 {
     initResources();
     qmlRegisterType<QQuickAction>(uri, 1, 0, "Action");
-    qmlRegisterType<QQuickExclusiveGroup>(uri, 1, 0, "ExclusiveGroup");
+    qmlRegisterType<QQuickExclusiveGroup1>(uri, 1, 0, "ExclusiveGroup");
     qmlRegisterType<QQuickMenuItem>(uri, 1, 0, "MenuItem");
     qmlRegisterUncreatableType<QQuickMenuItemType>(uri, 1, 0, "MenuItemType",
                                                    QLatin1String("Do not create objects of type MenuItemType"));
