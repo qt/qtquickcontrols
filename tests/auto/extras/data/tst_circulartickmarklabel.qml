@@ -314,6 +314,15 @@ TestCase {
         compare(label.__panel.tickmarkValueFromMinorIndex(((label.tickmarkCount - 1) * label.minorTickmarkCount) - 1), 98);
     }
 
+    function test_labelText() {
+        for (var i = 0; i < label.labelCount; ++i) {
+            var labelDelegateLoader = findChild(label, "labelDelegateLoader" + i);
+            verify(labelDelegateLoader);
+            compare(labelDelegateLoader.styleData.index, i);
+            compare(labelDelegateLoader.styleData.value, i * label.labelStepSize);
+        }
+    }
+
     function test_invalidValues() {
         // Shouldn't produce warnings.
         label.labelStepSize = 0;

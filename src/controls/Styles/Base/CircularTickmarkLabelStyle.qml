@@ -285,6 +285,7 @@ Style {
                     }
                     delegate: Loader {
                         id: tickmarkLabelDelegateLoader
+                        objectName: "labelDelegateLoader" + index
                         sourceComponent: tickmarkLabel
                         x: pos.x
                         y: pos.y
@@ -292,8 +293,9 @@ Style {
                         readonly property point pos: panelItem.labelPosFromIndex(index, width, height);
 
                         readonly property int __index: index
+                        readonly property real __value: value
                         property QtObject styleData: QtObject {
-                            readonly property var value: index != -1 ? labelItemRepeater.model.get(index).value : 0
+                            readonly property var value: index != -1 ? tickmarkLabelDelegateLoader.__value : 0
                             readonly property alias index: tickmarkLabelDelegateLoader.__index
                         }
                     }
