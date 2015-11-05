@@ -41,7 +41,7 @@ depends = qtcore qtdoc qtgui qtwidgets qtqml qtquick qtquicklayouts qtquickdialo
 # is given as part of \example commands
 exampledirs += ../../../examples/quick/controls \
     snippets
-examplesinstallpath = quick/controls
+examplesinstallpath = qtquickcontrols/quick/controls
 
 headerdirs += ..
 

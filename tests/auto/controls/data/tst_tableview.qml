@@ -91,7 +91,10 @@ TestCase {
                                                 model: 10; \n\
                                         }', testCase, '')
         wait(50);
-        verify(table.__viewTopMargin > 0)
+        testCase.visible = true // ### FIXME Why do I need this at all?
+        verify(table.visible)
+        verify(table.__listView.headerItem.visible)
+        verify(table.__listView.headerItem.height > 0)
         table.destroy()
     }
 

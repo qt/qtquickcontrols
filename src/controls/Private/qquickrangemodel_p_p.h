@@ -93,7 +93,11 @@ public:
             return minimum;
 
         const qreal scale = (maximum - minimum) / posRange;
-        return (pos - effectivePosAtMin()) * scale + minimum;
+        // Avoid perverse rounding glitches when at an end:
+        const qreal mid = (effectivePosAtMax() + effectivePosAtMin()) * 0.5;
+        if (pos < mid)
+            return (pos - effectivePosAtMin()) * scale + minimum;
+        return maximum - scale * (effectivePosAtMax() - pos);
     }
 
     qreal publicPosition(qreal position) const;

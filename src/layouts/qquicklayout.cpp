@@ -51,7 +51,7 @@
 
     An object of type Layout is attached to children of the layout to provide layout specific
     information about the item.
-    The properties of the attached object influences how the layout will arrange the items.
+    The properties of the attached object influence how the layout will arrange the items.
 
     For instance, you can specify \l minimumWidth, \l preferredWidth, and
     \l maximumWidth if the default values are not satisfactory.
@@ -60,18 +60,18 @@
     \l{Layout::minimumWidth}{minimum size}, \l{Layout::preferredWidth}{preferred size} and a
     \l{Layout::maximumWidth}{maximum size}.
 
-    If minimum size have not been explicitly specified on an item, the size is set to \c 0.
-    If maximum size have not been explicitly specified on an item, the size is set to
+    If minimum size has not been explicitly specified on an item, the size is set to \c 0.
+    If maximum size has not been explicitly specified on an item, the size is set to
     \c Number.POSITIVE_INFINITY.
 
-    For layouts, the implicit minimum and maximum size depends on the content of the layouts.
+    For layouts, the implicit minimum and maximum sizes depend on the content of the layouts.
 
-    The \l fillWidth and \l fillHeight properties can either be \c true or \c false. If it is \c
+    The \l fillWidth and \l fillHeight properties can either be \c true or \c false. If they are \c
     false, the item's size will be fixed to its preferred size. Otherwise, it will grow or shrink
     between its minimum and maximum size as the layout is resized.
 
     \note It is not recommended to have bindings to the x, y, width, or height properties of items
-    in a layout, since this would conflict with the goal of the Layout, and also cause binding
+    in a layout, since this would conflict with the goals of Layout, and can also cause binding
     loops.
 
 
@@ -117,10 +117,10 @@ QQuickLayoutAttached::QQuickLayoutAttached(QObject *parent)
     \qmlattachedproperty real Layout::minimumWidth
 
     This property holds the minimum width of an item in a layout.
-    The default value is the items implicit minimum width.
+    The default value is the item's implicit minimum width.
 
     If the item is a layout, the implicit minimum width will be the minimum width the layout can
-    have without any of its items shrink beyond their minimum width.
+    have without any of its items shrinking below their minimum width.
     The implicit minimum width for any other item is \c 0.
 
     Setting this value to -1 will reset the width back to its implicit minimum width.
@@ -145,10 +145,11 @@ void QQuickLayoutAttached::setMinimumWidth(qreal width)
 /*!
     \qmlattachedproperty real Layout::minimumHeight
 
-    The default value is the items implicit minimum height.
+    This property holds the minimum height of an item in a layout.
+    The default value is the item's implicit minimum height.
 
     If the item is a layout, the implicit minimum height will be the minimum height the layout can
-    have without any of its items shrink beyond their minimum height.
+    have without any of its items shrinking below their minimum height.
     The implicit minimum height for any other item is \c 0.
 
     Setting this value to -1 will reset the height back to its implicit minimum height.
@@ -173,7 +174,7 @@ void QQuickLayoutAttached::setMinimumHeight(qreal height)
     \qmlattachedproperty real Layout::preferredWidth
 
     This property holds the preferred width of an item in a layout.
-    If the preferred width is -1 it will be ignored, and the layout
+    If the preferred width is \c -1 it will be ignored, and the layout
     will use \l{Item::implicitWidth}{implicitWidth} instead.
     The default is \c -1.
 
@@ -194,7 +195,7 @@ void QQuickLayoutAttached::setPreferredWidth(qreal width)
     \qmlattachedproperty real Layout::preferredHeight
 
     This property holds the preferred height of an item in a layout.
-    If the preferred height is -1 it will be ignored, and the layout
+    If the preferred height is \c -1 it will be ignored, and the layout
     will use \l{Item::implicitHeight}{implicitHeight} instead.
     The default is \c -1.
 
@@ -215,13 +216,13 @@ void QQuickLayoutAttached::setPreferredHeight(qreal height)
     \qmlattachedproperty real Layout::maximumWidth
 
     This property holds the maximum width of an item in a layout.
-    The default value is the items implicit maximum width.
+    The default value is the item's implicit maximum width.
 
     If the item is a layout, the implicit maximum width will be the maximum width the layout can
-    have without any of its items grow beyond their maximum width.
+    have without any of its items growing beyond their maximum width.
     The implicit maximum width for any other item is \c Number.POSITIVE_INFINITY.
 
-    Setting this value to -1 will reset the width back to its implicit maximum width.
+    Setting this value to \c -1 will reset the width back to its implicit maximum width.
 
     \sa minimumWidth
     \sa preferredWidth
@@ -242,13 +243,13 @@ void QQuickLayoutAttached::setMaximumWidth(qreal width)
 /*!
     \qmlattachedproperty real Layout::maximumHeight
 
-    The default value is the items implicit maximum height.
+    The default value is the item's implicit maximum height.
 
     If the item is a layout, the implicit maximum height will be the maximum height the layout can
-    have without any of its items grow beyond their maximum height.
+    have without any of its items growing beyond their maximum height.
     The implicit maximum height for any other item is \c Number.POSITIVE_INFINITY.
 
-    Setting this value to -1 will reset the height back to its implicit maximum height.
+    Setting this value to \c -1 will reset the height back to its implicit maximum height.
 
     \sa minimumHeight
     \sa preferredHeight
@@ -430,7 +431,7 @@ void QQuickLayoutAttached::setAlignment(Qt::Alignment align)
     \qmlattachedproperty real Layout::margins
 
     Sets the margins outside of an item to all have the same value. The item
-    itself does not evaluate its own margins. It is the parents responsibility
+    itself does not evaluate its own margins. It is the parent's responsibility
     to decide if it wants to evaluate the margins.
 
     Specifically, margins are only evaluated by ColumnLayout, RowLayout,
@@ -441,12 +442,12 @@ void QQuickLayoutAttached::setAlignment(Qt::Alignment align)
     Therefore, if an item with margins is a child of another \c Item, its
     position, size and implicit size will remain unchanged.
 
-    Combining margins with alignment will align the item *including* its
-    margins. For instance, a vertically-centered Item with top margin 1 and
-    bottom margin 9 will cause the Items effective alignment within the cell to
-    be 4 pixels above the center.
+    Combining margins with alignment will align the item \e including its
+    margins. For instance, a vertically-centered Item with a top margin of \c 1
+    and a bottom margin of \c 9 will cause the Items effective alignment within
+    the cell to be 4 pixels above the center.
 
-    The default value is 0
+    The default value is \c 0.
 
     \sa leftMargin
     \sa topMargin

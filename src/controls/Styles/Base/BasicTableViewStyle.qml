@@ -84,7 +84,7 @@ ScrollViewStyle {
         See qtquickcontrolsstyles-tableviewstyle.qdoc and qtquickcontrolsstyles-treeviewstyle.qdoc
     */
     property Component headerDelegate: BorderImage {
-        height: textItem.implicitHeight * 1.2
+        height: Math.round(textItem.implicitHeight * 1.2)
         source: "images/header.png"
         border.left: 4
         border.bottom: 2
@@ -102,12 +102,9 @@ ScrollViewStyle {
             renderType: Settings.isMobile ? Text.QtRendering : Text.NativeRendering
         }
         Rectangle {
-            anchors.right: parent.right
-            anchors.top: parent.top
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: 1
-            anchors.topMargin: 1
             width: 1
+            height: parent.height - 2
+            y: 1
             color: "#ccc"
         }
     }

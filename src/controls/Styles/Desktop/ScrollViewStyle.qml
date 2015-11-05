@@ -71,6 +71,7 @@ Style {
     readonly property bool __externalScrollBars: __styleitem.styleHint("externalScrollBars")
     readonly property int __scrollBarSpacing: __styleitem.pixelMetric("scrollbarspacing")
     readonly property bool scrollToClickedPosition: __styleitem.styleHint("scrollToClickPosition") !== 0
+    property bool transientScrollBars: false
 
     readonly property int __wheelScrollLines: __styleitem.styleHint("wheelScrollLines")
 
@@ -88,6 +89,8 @@ Style {
 
         implicitWidth: horizontal ? 200 : pixelMetric("scrollbarExtent")
         implicitHeight: horizontal ? pixelMetric("scrollbarExtent") : 200
+
+        onIsTransientChanged: root.transientScrollBars = isTransient
     }
 
 }

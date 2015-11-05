@@ -40,40 +40,36 @@
 
 import QtQuick 2.2
 import QtQuick.Controls 1.2
+import QtQuick.Controls.Styles 1.2
 
-TableView {
-    id: table
+/* Rounding errors in the value at end of range are elusive.
+ * They're sensitive to fine details in hard-to-anticipate ways.
+ */
+Item {
+    visible: true
+    /* Sensitive to slider width */
+    width: 800
+    height: 400
 
-    headerVisible: false
-    model: ["text1", "text2", "text3"]
+    /* Let test know value and where to click */
+    property int waist: slider.y + slider.height / 2
+    property alias value: slider.value
 
-    property int tableClickCount: 0
-    property int buttonPressCount: 0
-    property int buttonReleaseCount: 0
-    property int buttonClickCount: 0
+    Slider {
+        id: slider
+        width: parent.width
 
-    onClicked: ++clickCount
+        /* Sensitive to value range. */
+        minimumValue: 0
+        maximumValue: 100
 
-    TableViewColumn {
-        id: column
-        width: 100
-    }
-    rowDelegate: Item {
-        height: 40
-        width: column.width
-    }
-    itemDelegate: Button {
-        height: 40
-        width: column.width
-        text: styleData.value
-        activeFocusOnPress: true
-        onClicked: ++table.buttonClickCount
-        onPressedChanged: {
-            if (pressed)
-                ++table.buttonPressCount
-            else
-                ++table.buttonReleaseCount
+        style: SliderStyle {
+            /* Sensitive to handle size. */
+            handle: Rectangle {
+                implicitHeight: 26
+                implicitWidth: 26
+                color: "salmon"
+            }
         }
     }
 }
-

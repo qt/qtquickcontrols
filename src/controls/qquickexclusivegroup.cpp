@@ -60,7 +60,7 @@ static bool isChecked(const QObject *o)
 
 /*!
     \qmltype ExclusiveGroup
-    \instantiates QQuickExclusiveGroup
+    \instantiates QQuickExclusiveGroup1
     \ingroup controls
     \inqmlmodule QtQuick.Controls
     \brief ExclusiveGroup provides a way to declare several checkable controls as mutually exclusive.
@@ -172,25 +172,25 @@ static bool isChecked(const QObject *o)
     \sa ExclusiveGroup::bindCheckable()
 */
 
-QQuickExclusiveGroup::QQuickExclusiveGroup(QObject *parent)
+QQuickExclusiveGroup1::QQuickExclusiveGroup1(QObject *parent)
     : QObject(parent), m_current(0)
 {
     int index = metaObject()->indexOfMethod("updateCurrent()");
     m_updateCurrentMethod = metaObject()->method(index);
 }
 
-QQmlListProperty<QQuickAction> QQuickExclusiveGroup::actions()
+QQmlListProperty<QQuickAction> QQuickExclusiveGroup1::actions()
 {
-    return QQmlListProperty<QQuickAction>(this, 0, &QQuickExclusiveGroup::append_actions, 0, 0, 0);
+    return QQmlListProperty<QQuickAction>(this, 0, &QQuickExclusiveGroup1::append_actions, 0, 0, 0);
 }
 
-void QQuickExclusiveGroup::append_actions(QQmlListProperty<QQuickAction> *list, QQuickAction *action)
+void QQuickExclusiveGroup1::append_actions(QQmlListProperty<QQuickAction> *list, QQuickAction *action)
 {
-    if (QQuickExclusiveGroup *eg = qobject_cast<QQuickExclusiveGroup *>(list->object))
+    if (QQuickExclusiveGroup1 *eg = qobject_cast<QQuickExclusiveGroup1 *>(list->object))
         action->setExclusiveGroup(eg);
 }
 
-void QQuickExclusiveGroup::setCurrent(QObject * o)
+void QQuickExclusiveGroup1::setCurrent(QObject * o)
 {
     if (m_current == o)
         return;
@@ -203,14 +203,14 @@ void QQuickExclusiveGroup::setCurrent(QObject * o)
     emit currentChanged();
 }
 
-void QQuickExclusiveGroup::updateCurrent()
+void QQuickExclusiveGroup1::updateCurrent()
 {
     QObject *checkable = sender();
     if (isChecked(checkable))
         setCurrent(checkable);
 }
 
-void QQuickExclusiveGroup::bindCheckable(QObject *o)
+void QQuickExclusiveGroup1::bindCheckable(QObject *o)
 {
     for (const char **signalName = checkableSignals; *signalName; signalName++) {
         int signalIndex = o->metaObject()->indexOfSignal(*signalName);
@@ -224,10 +224,10 @@ void QQuickExclusiveGroup::bindCheckable(QObject *o)
         }
     }
 
-    qWarning() << "QQuickExclusiveGroup::bindCheckable(): Cannot bind to" << o;
+    qWarning() << "QQuickExclusiveGroup1::bindCheckable(): Cannot bind to" << o;
 }
 
-void QQuickExclusiveGroup::unbindCheckable(QObject *o)
+void QQuickExclusiveGroup1::unbindCheckable(QObject *o)
 {
     if (m_current == o)
         setCurrent(0);

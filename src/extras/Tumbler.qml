@@ -177,20 +177,19 @@ Control {
     }
 
     /*!
-        \qmlmethod void Tumbler::setCurrentIndexAt(int columnIndex, int itemIndex)
-        Sets the current index of the column at \a columnIndex to \a itemIndex.
+        \qmlmethod void Tumbler::setCurrentIndexAt(int columnIndex, int itemIndex, int interval)
+        Sets the current index of the column at \a columnIndex to \a itemIndex. The animation
+        length can be set with \a interval, which defaults to \c 0.
 
         Does nothing if \a columnIndex or \a itemIndex are invalid.
     */
-    function setCurrentIndexAt(columnIndex, itemIndex) {
+    function setCurrentIndexAt(columnIndex, itemIndex, interval) {
         if (!__isValidColumnAndItemIndex(columnIndex, itemIndex))
             return;
 
         var view = columnRepeater.itemAt(columnIndex).view;
         if (view.currentIndex !== itemIndex) {
-            // Hack to work around the pathview jumping when the index is changed.
-            // TODO: doesn't seem to be necessary anymore?
-            view.highlightMoveDuration = 0;
+            view.highlightMoveDuration = typeof interval !== 'undefined' ? interval : 0;
             view.currentIndex = itemIndex;
             view.highlightMoveDuration = Qt.binding(function(){ return __highlightMoveDuration; });
         }

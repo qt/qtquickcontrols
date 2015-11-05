@@ -45,8 +45,8 @@
 // We mean it.
 //
 
-import QtQuick 2.4
-import QtQuick.Controls 1.3
+import QtQuick 2.6
+import QtQuick.Controls 1.5
 import QtQuick.Controls.Private 1.0
 import QtQuick.Controls.Styles 1.2
 import QtQuick.Window 2.2
@@ -325,7 +325,7 @@ ScrollView {
     function resizeColumnsToContents () {
         for (var i = 0; i < __columns.length; ++i) {
             var col = getColumn(i)
-            var header = repeater.itemAt(i)
+            var header = __listView.headerItem.headerRepeater.itemAt(i)
             if (col) {
                 col.__index = i
                 col.resizeToContents()
@@ -349,8 +349,8 @@ ScrollView {
     implicitHeight: 150
 
     frameVisible: true
-    __scrollBarTopMargin: (__style && __style.transientScrollBars || Qt.platform.os === "osx") ? headerrow.height : 0
-    __viewTopMargin: headerVisible ? headerrow.height : 0
+    __scrollBarTopMargin: headerVisible && (listView.transientScrollBars || Qt.platform.os === "osx")
+                          ? listView.headerItem.height : 0
 
     /*! \internal
         Use this to display user-friendly messages in TableView and TreeView common functions.
@@ -395,12 +395,31 @@ ScrollView {
         focus: true
         activeFocusOnTab: false
         Keys.forwardTo: [__mouseArea]
-        anchors.topMargin: headerVisible ? tableHeader.height : 0
         anchors.fill: parent
+        contentWidth: headerItem.headerRow.width + listView.vScrollbarPadding
+        // ### FIXME Late configuration of the header item requires
+        // this binding to get the header visible after creation
+        contentY: -headerItem.height
+
         currentIndex: -1
         visible: columnCount > 0
         interactive: Settings.hasTouchScreen
         property var rowItemStack: [] // Used as a cache for rowDelegates
+
+        readonly property bool transientScrollbars: __style && !!__style.transientScrollBars
+        readonly property real vScrollbarPadding: __scroller.verticalScrollBar.visible
+                                                  && !transientScrollbars && Qt.platform.os === "osx" ?
+                                                  __verticalScrollBar.width + __scroller.scrollBarSpacing + root.__style.padding.right : 0
+
+        Binding {
+            // On Mac, we reserve the vSB space in the contentItem because the vSB should
+            // appear under the header. Unfortunately, the ListView header won't expand
+            // beyond the ListView's boundaries, that's why we need to ressort to this.
+            target: root.__scroller
+            when: Qt.platform.os === "osx"
+            property: "verticalScrollbarOffset"
+            value: 0
+        }
 
         function incrementCurrentIndexBlocking() {
             var oldIndex = __listView.currentIndex
@@ -572,7 +591,6 @@ ScrollView {
                     id: itemrow
                     height: parent.height
                     Repeater {
-                        id: repeater
                         model: columnModel
 
                         delegate: __itemDelegateLoader
@@ -588,27 +606,17 @@ ScrollView {
             }
         }
 
-        Item {
+        headerPositioning: ListView.OverlayHeader
+        header: Item {
             id: tableHeader
-            clip: true
-            parent: __scroller
             visible: headerVisible
-            anchors.top: parent.top
-            anchors.topMargin: viewport.anchors.topMargin
-            anchors.leftMargin: viewport.anchors.leftMargin
-            anchors.margins: viewport.anchors.margins
-            anchors.rightMargin: (frameVisible ? __scroller.rightMargin : 0) +
-                                 (__scroller.outerFrame && __scrollBarTopMargin ? 0
-                                  : __verticalScrollBar.width + __scroller.scrollBarSpacing + root.__style.padding.right)
+            width: Math.max(headerRow.width + listView.vScrollbarPadding, root.viewport.width)
+            height: visible ? headerRow.height : 0
 
-            anchors.left: parent.left
-            anchors.right: parent.right
-
-            height: headerrow.height
-
+            property alias headerRow: row
+            property alias headerRepeater: repeater
             Row {
-                id: headerrow
-                x: -listView.contentX
+                id: row
 
                 Repeater {
                     id: repeater
@@ -632,8 +640,7 @@ ScrollView {
                         Loader {
                             id: headerStyle
                             sourceComponent: root.headerDelegate
-                            anchors.left: parent.left
-                            anchors.right: parent.right
+                            width: parent.width
                             property QtObject styleData: QtObject {
                                 readonly property string value: modelData.title
                                 readonly property bool pressed: headerClickArea.pressed
@@ -670,7 +677,7 @@ ScrollView {
                             onPositionChanged: {
                                 if (drag.active && modelData.movable && pressed && columnCount > 1) { // only do this while dragging
                                     for (var h = columnCount-1 ; h >= 0 ; --h) {
-                                        if (drag.target.x + listView.contentX + headerRowDelegate.width/2 > headerrow.children[h].x) {
+                                        if (drag.target.x + listView.contentX + headerRowDelegate.width/2 > headerRow.children[h].x) {
                                             repeater.targetIndex = h
                                             break
                                         }
@@ -742,12 +749,9 @@ ScrollView {
                         }
                     }
                 }
-
-                onWidthChanged: listView.contentWidth = width
             }
 
             Loader {
-                id: loader
                 property QtObject styleData: QtObject{
                     readonly property string value: ""
                     readonly property bool pressed: false
@@ -758,17 +762,17 @@ ScrollView {
 
                 anchors.top: parent.top
                 anchors.right: parent.right
-                anchors.bottom: headerrow.bottom
-                anchors.rightMargin: -2
+                anchors.bottom: headerRow.bottom
                 sourceComponent: root.headerDelegate
-                width: root.width - headerrow.width + 2
-                visible: root.columnCount
+                readonly property real __remainingWidth: parent.width - headerRow.width
+                visible: __remainingWidth > 0
+                width: __remainingWidth
                 z:-1
             }
         }
 
         function columnAt(offset) {
-            var item = headerrow.childAt(offset, 0)
+            var item = listView.headerItem.headerRow.childAt(offset, 0)
             return item ? item.column : -1
         }
     }

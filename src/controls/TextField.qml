@@ -625,7 +625,7 @@ Control {
         font: textInput.font
         horizontalAlignment: textInput.horizontalAlignment
         verticalAlignment: textInput.verticalAlignment
-        opacity: textInput.displayText.length ? 0.0 : 1.0
+        opacity: !textInput.displayText && (!textInput.activeFocus || textInput.horizontalAlignment !== Qt.AlignHCenter) ? 1.0 : 0.0
         color: __panel ? __panel.placeholderTextColor : "darkgray"
         clip: contentWidth > width;
         elide: Text.ElideRight

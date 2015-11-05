@@ -682,6 +682,25 @@ TestCase {
         return index
     }
 
+    function test_emptyTextItem() {
+        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.2 ; ComboBox { }', testCase, '');
+        comboBox.model = [
+            "1",
+            "",
+            "3"
+        ]
+        compare(comboBox.currentIndex, 0)
+        compare(comboBox.currentText, "1")
+        comboBox.currentIndex = 1
+        compare(comboBox.currentIndex, 1)
+        compare(comboBox.currentText, "")
+        comboBox.currentIndex = 2
+        compare(comboBox.currentIndex, 2)
+        compare(comboBox.currentText, "3")
+        compare(comboBox.find(""), 1)
+        comboBox.destroy()
+    }
+
     function test_minusOneIndexResetsSelection_QTBUG_35794() {
         var qmlObjects = ['import QtQuick.Controls 1.2 ; ComboBox { model: ["A", "B", "C"] }',
                           'import QtQuick.Controls 1.2 ; ComboBox { editable: true; model: ["A", "B", "C"] }']

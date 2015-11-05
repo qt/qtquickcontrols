@@ -464,15 +464,11 @@ void QQuickGridLayoutBase::itemChange(ItemChange change, const ItemChangeData &v
         QQuickItem *item = value.item;
         QObject::connect(item, SIGNAL(destroyed()), this, SLOT(onItemDestroyed()));
         QObject::connect(item, SIGNAL(visibleChanged()), this, SLOT(onItemVisibleChanged()));
-        if (isReady())
-            updateLayoutItems();
     } else if (change == ItemChildRemovedChange) {
         quickLayoutDebug() << "ItemChildRemovedChange";
         QQuickItem *item = value.item;
         QObject::disconnect(item, SIGNAL(destroyed()), this, SLOT(onItemDestroyed()));
         QObject::disconnect(item, SIGNAL(visibleChanged()), this, SLOT(onItemVisibleChanged()));
-        if (isReady())
-            updateLayoutItems();
     }
 
     QQuickLayout::itemChange(change, value);

@@ -564,7 +564,7 @@ Control {
         style: isPopup ? __style.__popupStyle : __style.__dropDownStyle
 
         property string currentText: selectedText
-        onSelectedTextChanged: if (selectedText) popup.currentText = selectedText
+        onSelectedTextChanged: popup.currentText = selectedText
 
         property string selectedText
         on__SelectedIndexChanged: {
