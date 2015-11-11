@@ -593,6 +593,9 @@ void QQuickMenu::__closeAndDestroy()
 
 void QQuickMenu::__dismissAndDestroy()
 {
+    if (m_platformMenu)
+        return;
+
     __dismissMenu();
     destroyAllMenuPopups();
 }
