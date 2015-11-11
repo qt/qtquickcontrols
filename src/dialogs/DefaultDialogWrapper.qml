@@ -135,7 +135,7 @@ AbstractDialog {
     function setupButtons() {
         buttonsLeftRepeater.model = root.__standardButtonsLeftModel()
         buttonsRightRepeater.model = root.__standardButtonsRightModel()
-        if (!buttonsRightRepeater.model || buttonsRightRepeater.model.length < 2)
+        if (buttonsLeftRepeater.count + buttonsRightRepeater.count < 2)
             return;
         var calcWidth = 0;
 
