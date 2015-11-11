@@ -75,7 +75,7 @@ private:
     QQuickItem *m_itemAt;
     QPointF m_oldItemPos;
     QPointF m_initialPos;
-    QQuickWindow *m_logicalParentWindow;
+    QPointer<QQuickWindow> m_logicalParentWindow;
     QQuickMenu *m_menu;
 
 private:
