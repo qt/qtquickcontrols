@@ -50,13 +50,14 @@ AbstractDialog {
         id: content
         property real spacing: 6
         property real outerSpacing: 12
-        property real buttonsRowImplicitWidth: minimumWidth
+        property real buttonsRowImplicitHeight: 0
+        property real buttonsRowImplicitWidth: Screen.pixelDensity * 50
         property bool buttonsInSingleRow: defaultContentItem.width >= buttonsRowImplicitWidth
         property real minimumHeight: implicitHeight
-        property real minimumWidth: Screen.pixelDensity * 50
-        implicitHeight: defaultContentItem.implicitHeight + spacing + outerSpacing * 2 + buttonsRight.implicitHeight
+        property real minimumWidth: implicitWidth
+        implicitHeight: defaultContentItem.implicitHeight + spacing + outerSpacing * 2 + Math.max(buttonsRight.implicitHeight, buttonsRowImplicitHeight)
         implicitWidth: Math.min(root.__maximumDimension, Math.max(
-            defaultContentItem.implicitWidth, buttonsRowImplicitWidth, Screen.pixelDensity * 50) + outerSpacing * 2);
+            defaultContentItem.implicitWidth, buttonsRowImplicitWidth, Screen.pixelDensity * 50) + outerSpacing * 2)
         color: palette.window
         Keys.onPressed: {
             event.accepted = true
@@ -82,9 +83,14 @@ AbstractDialog {
                 left: parent.left
                 right: parent.right
                 top: parent.top
+                bottom: buttonsLeft.implicitHeight ? buttonsLeft.top : buttonsRight.top
                 margins: content.outerSpacing
+                bottomMargin: buttonsLeft.implicitHeight + buttonsRight.implicitHeight > 0 ? content.spacing : 0
             }
-            implicitHeight: childrenRect.height
+            implicitHeight: children.length === 1 ? children[0].implicitHeight
+                                                  : (children.length ? childrenRect.height : 0)
+            implicitWidth: children.length === 1 ? children[0].implicitWidth
+                                                 : (children.length ? childrenRect.width : 0)
         }
 
         Flow {
@@ -135,7 +141,9 @@ AbstractDialog {
     function setupButtons() {
         buttonsLeftRepeater.model = root.__standardButtonsLeftModel()
         buttonsRightRepeater.model = root.__standardButtonsRightModel()
-        if (buttonsLeftRepeater.count + buttonsRightRepeater.count < 2)
+        if (buttonsRightRepeater.model && buttonsRightRepeater.model.length > 0)
+            content.buttonsRowImplicitHeight = buttonsRight.visibleChildren[0].implicitHeight
+        if (buttonsLeftRepeater.count + buttonsRightRepeater.count < 1)
             return;
         var calcWidth = 0;
 
@@ -150,7 +158,7 @@ AbstractDialog {
 
         for (var i = 0; i < buttonsRight.visibleChildren.length; ++i)
             calculateForButton(i, buttonsRight.visibleChildren[i])
-        content.minimumWidth = calcWidth + content.outerSpacing * 2
+        content.minimumWidth = Math.max(calcWidth + content.outerSpacing * 2, content.implicitWidth)
         for (i = 0; i < buttonsLeft.visibleChildren.length; ++i)
             calculateForButton(i, buttonsLeft.visibleChildren[i])
         content.buttonsRowImplicitWidth = calcWidth + content.spacing

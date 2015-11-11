@@ -36,6 +36,10 @@
 
 #include <qtest.h>
 #include "../shared/util.h"
+#include "qquickabstractdialog_p.h"
+#include <QtQml/QQmlComponent>
+#include <QtQml/QQmlContext>
+#include <QtQml/QQmlEngine>
 #include <QtQuick/QQuickItem>
 #include <QtQuick/QQuickView>
 #include <QSignalSpy>
@@ -51,6 +55,11 @@ private slots:
         QQmlDataTest::initTestCase();
     }
 
+    //Dialog
+    void dialogImplicitWidth_data();
+    void dialogImplicitWidth();
+    void dialogContentResize();
+
     // FileDialog
     void fileDialogDefaultModality();
     void fileDialogNonModal();
@@ -58,6 +67,58 @@ private slots:
 
 private:
 };
+
+void tst_dialogs::dialogImplicitWidth_data()
+{
+    QTest::addColumn<int>("standardButtons");
+    QTest::addColumn<int>("minimumHeight");
+
+    QTest::newRow("No buttons") <<
+        int(QQuickAbstractDialog::NoButton) <<
+        150;
+    QTest::newRow("OK button") <<
+        int(QQuickAbstractDialog::Ok) <<
+        160;
+}
+
+void tst_dialogs::dialogImplicitWidth()
+{
+    QFETCH(int, standardButtons);
+    QFETCH(int, minimumHeight);
+
+    /* This is the outerSpacing from DefaultDialogWrapper.qml,
+     * which is always present */
+    int heightMargins = 12 * 2;
+    QQmlEngine engine;
+    engine.rootContext()->setContextProperty("buttonsFromTest", standardButtons);
+    QQmlComponent component(&engine);
+    component.loadUrl(testFileUrl("DialogImplicitSize.qml"));
+    QObject *created = component.create();
+    QScopedPointer<QObject> cleanup(created);
+    QVERIFY(created);
+
+    QTRY_VERIFY(created->property("width").toInt() >= 400);
+    QTRY_VERIFY(created->property("height").toInt() >= minimumHeight + heightMargins);
+}
+
+void tst_dialogs::dialogContentResize()
+{
+    QQmlEngine engine;
+    QQmlComponent component(&engine);
+    component.loadUrl(testFileUrl("DialogMinimumSize.qml"));
+    QObject *created = component.create();
+    QScopedPointer<QObject> cleanup(created);
+    QVERIFY(created);
+
+    QTRY_COMPARE(created->property("width").toInt(), 400);
+    QTRY_COMPARE(created->property("height").toInt(), 300);
+
+    // Check that the content item has been sized up from its implicit size
+    QQuickItem *userContent = created->findChild<QQuickItem*>("userContent");
+    QVERIFY(userContent);
+    QVERIFY(userContent->width() > 350);
+    QVERIFY(userContent->height() > 200);
+}
 
 void tst_dialogs::fileDialogDefaultModality()
 {

@@ -2,6 +2,8 @@ CONFIG += testcase
 TARGET = tst_dialogs
 SOURCES += tst_dialogs.cpp
 
+INCLUDEPATH += $$PWD/../../../src/dialogs
+
 include (../shared/util.pri)
 
 osx:CONFIG -= app_bundle
