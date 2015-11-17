@@ -768,8 +768,8 @@ Item {
                     if (treeIndex.row !== modelIndex.row
                         || treeIndex.column !== modelIndex.column
                         || treeIndex.internalId !== modelIndex.internalId) {
-                        console.log("Test about to fail: row = " + row + ", __listView.count =" + __listView.count)
-                        console.log(" . . . . . . . . .  x =" + x + ", getColumn(0).width =" + getColumn(0).width)
+                        console.log("Test about to fail: row = " + row + ", __listView.count =" + tree.__listView.count)
+                        console.log(" . . . . . . . . .  x =" + x + ", getColumn(0).width =" + tree.getColumn(0).width)
                     }
                     compare(treeIndex.row, modelIndex.row)
                     compare(treeIndex.column, modelIndex.column)
