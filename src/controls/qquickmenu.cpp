@@ -266,7 +266,8 @@ QQuickMenu::QQuickMenu(QObject *parent)
       m_containersCount(0),
       m_xOffset(0),
       m_yOffset(0),
-      m_triggerCount(0)
+      m_triggerCount(0),
+      m_proxy(false)
 {
     connect(this, SIGNAL(__textChanged()), this, SIGNAL(titleChanged()));
 
@@ -765,6 +766,11 @@ void QQuickMenu::clear()
 {
     m_containers.clear();
     m_containersCount = 0;
+
+    // QTBUG-48927: a proxy menu (ApplicationWindowStyle.qml) must not
+    // delete its items, because they are owned by the menubar
+    if (m_proxy)
+        m_menuItems.clear();
 
     while (!m_menuItems.empty())
         delete m_menuItems.takeFirst();

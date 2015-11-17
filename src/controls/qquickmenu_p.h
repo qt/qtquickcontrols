@@ -70,6 +70,7 @@ class QQuickMenu : public QQuickMenuText
     Q_PROPERTY(qreal __yOffset READ yOffset WRITE setYOffset)
     Q_PROPERTY(QQuickAction *__action READ action CONSTANT)
     Q_PROPERTY(QRect __popupGeometry READ popupGeometry NOTIFY __popupGeometryChanged)
+    Q_PROPERTY(bool __isProxy READ isProxy WRITE setProxy NOTIFY __proxyChanged)
     Q_ENUMS(MenuType)
 
 public:
@@ -106,6 +107,7 @@ Q_SIGNALS:
     void __popupGeometryChanged();
     void menuContentItemChanged();
     void minimumWidthChanged();
+    void __proxyChanged();
 
 public:
     QQuickMenu(QObject *parent = 0);
@@ -141,6 +143,9 @@ public:
     bool isNative() { return m_platformMenu != 0; }
 
     QRect popupGeometry() const;
+
+    bool isProxy() const { return m_proxy; }
+    void setProxy(bool proxy) { if (m_proxy != proxy) { m_proxy = proxy; emit __proxyChanged(); } }
 
     void prepareItemTrigger(QQuickMenuItem *);
     void concludeItemTrigger(QQuickMenuItem *);
@@ -196,6 +201,7 @@ private:
     qreal m_yOffset;
     QFont m_font;
     int m_triggerCount;
+    bool m_proxy;
 };
 
 QT_END_NAMESPACE
