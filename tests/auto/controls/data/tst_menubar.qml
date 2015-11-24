@@ -39,6 +39,7 @@
 ****************************************************************************/
 
 import QtQuick 2.2
+import QtQuick.Controls 1.4
 import QtTest 1.0
 
 TestCase {
@@ -48,8 +49,58 @@ TestCase {
     width:400
     height:400
 
+    Component {
+        id: windowComponent
+        ApplicationWindow {
+            width: 300; height: 300
+            visible: true
+            menuBar: MenuBar {
+                Menu {
+                    title: "&File"; objectName: "fileMenu"
+                    Menu {
+                        title: "&Recent Files"; objectName: "recentFilesSubMenu"
+                        MenuItem { text: "RecentFile1"; objectName: "recentFile1MenuItem" }
+                        MenuItem { text: "RecentFile2"; objectName: "recentFile2MenuItem" }
+                    }
+                    MenuItem { text: "&Save"; objectName: "saveMenuItem" }
+                    MenuItem { text: "&Load"; objectName: "loadMenuItem" }
+                    MenuItem { text: "&Exit"; objectName: "exitMenuItem" }
+                }
+                Menu {
+                    title: "&Edit"; objectName: "editMenu"
+                    Menu {
+                        title: "&Advanced"; objectName: "advancedSubMenu"
+                        MenuItem { text: "advancedOption1"; objectName: "advancedOption1MenuItem" }
+                    }
+                    MenuItem { text: "&Preferences"; objectName: "preferencesMenuItem" }
+                }
+            }
+        }
+    }
+
     function test_createMenuBar() {
         var menuBar = Qt.createQmlObject('import QtQuick.Controls 1.2; MenuBar {}', testCase, '');
         menuBar.destroy()
+    }
+
+
+    function test_qtBug47295()
+    {
+        if (Qt.platform.os === "osx")
+            skip("MenuBar cannot be reliably tested on OS X")
+
+        var window = windowComponent.createObject()
+        waitForRendering(window.contentItem)
+        var fileMenu = findChild(window, "fileMenu")
+        verify(fileMenu)
+        tryCompare(fileMenu, "__popupVisible", false)
+        mousePress(fileMenu.__visualItem)
+        wait(200);
+        tryCompare(fileMenu, "__popupVisible", true)
+        mouseMove(fileMenu.__contentItem, 0, -10)
+        wait(200)
+        mouseRelease(fileMenu.__contentItem, 0, -10)
+        tryCompare(fileMenu, "__popupVisible", true)
+        wait(200)
     }
 }

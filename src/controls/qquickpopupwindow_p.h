@@ -88,6 +88,7 @@ private:
     bool m_mouseMoved;
     bool m_needsActivatedEvent;
     bool m_dismissed;
+    bool m_pressed;
 };
 
 QT_END_NAMESPACE
