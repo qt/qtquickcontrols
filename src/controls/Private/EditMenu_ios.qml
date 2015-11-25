@@ -44,48 +44,7 @@ Item {
     property bool __showMenuFromTouch: false
 
     property Component defaultMenu: Menu {
-        MenuItem {
-            text: qsTr("Cut")
-            shortcut: StandardKey.Cut
-            visible: !input.readOnly && selectionStart !== selectionEnd
-            onTriggered: {
-                cut();
-                select(input.cursorPosition, input.cursorPosition);
-            }
-        }
-        MenuItem {
-            text: qsTr("Copy")
-            shortcut: StandardKey.Copy
-            visible: selectionStart !== selectionEnd
-            onTriggered: {
-                copy();
-                select(input.cursorPosition, input.cursorPosition);
-            }
-        }
-        MenuItem {
-            text: qsTr("Paste")
-            shortcut: StandardKey.Paste
-            visible: input.canPaste
-            onTriggered: paste();
-        }
-        MenuItem {
-            text: qsTr("Delete")
-            shortcut: StandardKey.Delete
-            visible: !input.readOnly && selectionStart !== selectionEnd
-            onTriggered: remove(selectionStart, selectionEnd)
-        }
-        MenuItem {
-            text: qsTr("Select")
-            shortcut: StandardKey.Select
-            visible: selectionStart === selectionEnd && input.length > 0
-            onTriggered: selectWord();
-        }
-        MenuItem {
-            text: qsTr("Select All")
-            shortcut: StandardKey.SelectAll
-            visible: !(selectionStart === 0 && selectionEnd === length)
-            onTriggered: selectAll();
-        }
+        /* iOS plugin will automatically populate edit menus with standard edit actions */
     }
 
     Connections {
