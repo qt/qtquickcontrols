@@ -249,8 +249,6 @@ CircularButtonStyle {
             id: uncheckedDropShadow
             anchors.fill: uncheckedCanvas
             cached: true
-            radius: 4
-            samples: 8
             color: uncheckedDropShadowColor
             source: uncheckedCanvas
             visible: !control.checked
@@ -260,8 +258,6 @@ CircularButtonStyle {
             id: checkedDropShadow
             anchors.fill: checkedCanvas
             cached: true
-            radius: 4
-            samples: 8
             color: checkedDropShadowColor
             source: checkedCanvas
             visible: control.checked

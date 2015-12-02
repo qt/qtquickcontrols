@@ -39,7 +39,7 @@
 ****************************************************************************/
 
 import QtQuick 2.2
-import QtQuick.Controls 1.3
+import QtQuick.Controls 1.4
 import QtTest 1.0
 
 TestCase {
@@ -58,7 +58,7 @@ TestCase {
                 Menu {
                     title: "&File"; objectName: "fileMenu"
                     Menu {
-                        title: "&Recent Files"; objectName: "actionSubMenu"
+                        title: "&Recent Files"; objectName: "recentFilesSubMenu"
                         MenuItem { text: "RecentFile1"; objectName: "recentFile1MenuItem" }
                         MenuItem { text: "RecentFile2"; objectName: "recentFile2MenuItem" }
                     }
@@ -125,5 +125,25 @@ TestCase {
         // Pressing escape should close the popup
         keyPress(Qt.Key_Escape)
         compare(fileMenu.__popupVisible, false)
+    }
+
+    function test_qtBug47295()
+    {
+        if (Qt.platform.os === "osx")
+            skip("MenuBar cannot be reliably tested on OS X")
+
+        var window = windowComponent.createObject()
+        waitForRendering(window.contentItem)
+        var fileMenu = findChild(window, "fileMenu")
+        verify(fileMenu)
+        tryCompare(fileMenu, "__popupVisible", false)
+        mousePress(fileMenu.__visualItem)
+        wait(200);
+        tryCompare(fileMenu, "__popupVisible", true)
+        mouseMove(fileMenu.__contentItem, 0, -10)
+        wait(200)
+        mouseRelease(fileMenu.__contentItem, 0, -10)
+        tryCompare(fileMenu, "__popupVisible", true)
+        wait(200)
     }
 }

@@ -41,6 +41,7 @@
 import QtTest 1.0
 import QtQuick 2.1
 import QtQuick.Controls 1.1
+import QtQuick.Controls.Private 1.0
 import QtQuick.Extras 1.4
 import QtQuick.Extras.Private 1.0
 import QtQuick.Extras.Private.CppUtils 1.0
@@ -354,6 +355,8 @@ Item {
         }
 
         function test_selectionAngle(data) {
+            if (Settings.hasTouchScreen)
+                skip("Fails with touch screens");
             var pieMenuComponent = Qt.createComponent("PieMenu3Items.qml");
             tryCompare(pieMenuComponent, "status", Component.Ready);
             root = pieMenuComponent.createObject(container);
@@ -505,6 +508,8 @@ Item {
         }
 
         function test_hideItem(data) {
+            if (Settings.hasTouchScreen)
+                skip("Fails with touch screens");
             var pieMenuComponent = Qt.createComponent("PieMenu3Items.qml");
             tryCompare(pieMenuComponent, "status", Component.Ready);
             root = pieMenuComponent.createObject(container);
@@ -605,6 +610,8 @@ Item {
         }
 
         function test_selectionItemOnMouseMove_QTRD3024() {
+            if (Settings.hasTouchScreen)
+                skip("Fails with touch screens");
             // Check when an item is hovered by the mouse, it gets made current
             // as expected and the current item is cleared when the mouse moves outside the menu
             var pieMenuComponent = Qt.createComponent("PieMenu3Items.qml");
@@ -676,6 +683,8 @@ Item {
         function test_QTRD3027() {
             // Check that an item's selection is cleared when the mouse moves outside
             // its boundaries without changing the selectionAngle
+            if (Settings.hasTouchScreen)
+                skip("Fails with touch screens");
             var pieMenuComponent = Qt.createComponent("PieMenu3Items.qml");
             tryCompare(pieMenuComponent, "status", Component.Ready);
             root = pieMenuComponent.createObject(container);
@@ -702,6 +711,8 @@ Item {
         }
 
         function test_rotatedBoundingItem() {
+            if (Settings.hasTouchScreen)
+                skip("Fails with touch screens");
             var pieMenuComponent = Qt.createComponent("PieMenuRotatedBoundingItem.qml");
             tryCompare(pieMenuComponent, "status", Component.Ready);
             root = pieMenuComponent.createObject(container);

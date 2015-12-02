@@ -39,6 +39,7 @@
 ****************************************************************************/
 
 import QtQuick 2.2
+import QtQuick.Controls.Private 1.0
 import QtTest 1.0
 
 Item {
@@ -367,6 +368,8 @@ Item {
         }
 
         function test_get_active_focus_when_up_or_down_was_pressed(){
+            if (Settings.hasTouchScreen)
+                skip("Fails with touch screens");
             var test_control = 'import QtQuick 2.2;             \
             import QtQuick.Controls 1.2;                        \
             Column {                                            \

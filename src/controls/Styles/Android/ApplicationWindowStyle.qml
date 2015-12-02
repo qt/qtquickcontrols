@@ -104,6 +104,7 @@ QtObject {
 
             Menu {
                 id: proxyMenu
+                __isProxy: true
                 items: control.menuBar ? control.menuBar.menus : []
             }
 

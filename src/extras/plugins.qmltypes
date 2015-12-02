@@ -1,4 +1,4 @@
-import QtQuick.tooling 1.1
+import QtQuick.tooling 1.2
 
 // This file describes the plugin-supplied types contained in the library.
 // It is used for QML tooling purposes only.
@@ -7,6 +7,12 @@ import QtQuick.tooling 1.1
 // 'qmlplugindump -nonrelocatable QtQuick.Extras 1.4'
 
 Module {
+    dependencies: [
+        "QtGraphicalEffects 1.0",
+        "QtGraphicalEffects.private 1.0",
+        "QtQuick 2.0",
+        "QtQuick.Window 2.1"
+    ]
     Component {
         name: "QQuickActivationMode"
         exports: ["QtQuick.Extras/ActivationMode 1.0"]
@@ -195,13 +201,13 @@ Module {
     }
     Component {
         prototype: "QQuickFocusScope"
-        name: "QtQuick.Extras.Private/CircularButton"
+        name: "QtQuick.Extras.Private/CircularButton 1.0"
         exports: ["QtQuick.Extras.Private/CircularButton 1.0"]
         exportMetaObjectRevisions: [0]
         isComposite: true
         defaultProperty: "data"
         Property { name: "isDefault"; type: "bool" }
-        Property { name: "menu"; type: "Menu_QMLTYPE_33"; isPointer: true }
+        Property { name: "menu"; type: "Menu_QMLTYPE_28"; isPointer: true }
         Property { name: "checkable"; type: "bool" }
         Property { name: "checked"; type: "bool" }
         Property { name: "exclusiveGroup"; type: "QQuickExclusiveGroup"; isPointer: true }
@@ -215,8 +221,8 @@ Module {
         Property { name: "__iconOverriden"; type: "bool"; isReadonly: true }
         Property { name: "__action"; type: "QQuickAction"; isPointer: true }
         Property { name: "__iconAction"; type: "QQuickAction"; isReadonly: true; isPointer: true }
-        Property { name: "__effectivePressed"; type: "bool" }
         Property { name: "__behavior"; type: "QVariant" }
+        Property { name: "__effectivePressed"; type: "bool" }
         Property { name: "pressed"; type: "bool"; isReadonly: true }
         Property { name: "hovered"; type: "bool"; isReadonly: true }
         Signal { name: "clicked" }
@@ -229,7 +235,7 @@ Module {
     }
     Component {
         prototype: "QObject"
-        name: "QtQuick.Extras.Private/CircularButtonStyleHelper"
+        name: "QtQuick.Extras.Private/CircularButtonStyleHelper 1.0"
         exports: ["QtQuick.Extras.Private/CircularButtonStyleHelper 1.0"]
         exportMetaObjectRevisions: [0]
         isComposite: true
@@ -275,7 +281,7 @@ Module {
     }
     Component {
         prototype: "QQuickFocusScope"
-        name: "QtQuick.Extras/CircularGauge"
+        name: "QtQuick.Extras/CircularGauge 1.0"
         exports: ["QtQuick.Extras/CircularGauge 1.0"]
         exportMetaObjectRevisions: [0]
         isComposite: true
@@ -293,7 +299,7 @@ Module {
     }
     Component {
         prototype: "QQuickFocusScope"
-        name: "QtQuick.Extras.Private/CircularTickmarkLabel"
+        name: "QtQuick.Extras.Private/CircularTickmarkLabel 1.0"
         exports: ["QtQuick.Extras.Private/CircularTickmarkLabel 1.0"]
         exportMetaObjectRevisions: [0]
         isComposite: true
@@ -327,7 +333,7 @@ Module {
     }
     Component {
         prototype: "QQuickFocusScope"
-        name: "QtQuick.Extras/DelayButton"
+        name: "QtQuick.Extras/DelayButton 1.0"
         exports: ["QtQuick.Extras/DelayButton 1.0"]
         exportMetaObjectRevisions: [0]
         isComposite: true
@@ -337,7 +343,7 @@ Module {
         Property { name: "progress"; type: "double"; isReadonly: true }
         Signal { name: "activated" }
         Property { name: "isDefault"; type: "bool" }
-        Property { name: "menu"; type: "Menu_QMLTYPE_33"; isPointer: true }
+        Property { name: "menu"; type: "Menu_QMLTYPE_28"; isPointer: true }
         Property { name: "checkable"; type: "bool" }
         Property { name: "checked"; type: "bool" }
         Property { name: "exclusiveGroup"; type: "QQuickExclusiveGroup"; isPointer: true }
@@ -351,8 +357,8 @@ Module {
         Property { name: "__iconOverriden"; type: "bool"; isReadonly: true }
         Property { name: "__action"; type: "QQuickAction"; isPointer: true }
         Property { name: "__iconAction"; type: "QQuickAction"; isReadonly: true; isPointer: true }
-        Property { name: "__effectivePressed"; type: "bool" }
         Property { name: "__behavior"; type: "QVariant" }
+        Property { name: "__effectivePressed"; type: "bool" }
         Property { name: "pressed"; type: "bool"; isReadonly: true }
         Property { name: "hovered"; type: "bool"; isReadonly: true }
         Signal { name: "clicked" }
@@ -365,7 +371,29 @@ Module {
     }
     Component {
         prototype: "QQuickFocusScope"
-        name: "QtQuick.Extras/Dial"
+        name: "QtQuick.Extras/Dial 1.0"
+        exports: ["QtQuick.Extras/Dial 1.0"]
+        exportMetaObjectRevisions: [0]
+        isComposite: true
+        defaultProperty: "data"
+        Property { name: "__wrap"; type: "bool" }
+        Property { name: "activeFocusOnPress"; type: "bool" }
+        Property { name: "tickmarksVisible"; type: "bool" }
+        Property { name: "value"; type: "double" }
+        Property { name: "minimumValue"; type: "double" }
+        Property { name: "maximumValue"; type: "double" }
+        Property { name: "hovered"; type: "bool"; isReadonly: true }
+        Property { name: "stepSize"; type: "double" }
+        Property { name: "pressed"; type: "bool"; isReadonly: true }
+        Property { name: "style"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "__style"; type: "QObject"; isPointer: true }
+        Property { name: "__panel"; type: "QQuickItem"; isPointer: true }
+        Property { name: "styleHints"; type: "QVariant" }
+        Property { name: "__styleData"; type: "QObject"; isPointer: true }
+    }
+    Component {
+        prototype: "QQuickFocusScope"
+        name: "QtQuick.Extras/Dial 1.1"
         exports: ["QtQuick.Extras/Dial 1.1"]
         exportMetaObjectRevisions: [1]
         isComposite: true
@@ -387,7 +415,7 @@ Module {
     }
     Component {
         prototype: "QQuickFocusScope"
-        name: "QtQuick.Extras/Gauge"
+        name: "QtQuick.Extras/Gauge 1.0"
         exports: ["QtQuick.Extras/Gauge 1.0"]
         exportMetaObjectRevisions: [0]
         isComposite: true
@@ -412,7 +440,7 @@ Module {
     }
     Component {
         prototype: "QQuickFocusScope"
-        name: "QtQuick.Extras/PieMenu"
+        name: "QtQuick.Extras/PieMenu 1.0"
         exports: ["QtQuick.Extras/PieMenu 1.0"]
         exportMetaObjectRevisions: [0]
         isComposite: true
@@ -457,18 +485,18 @@ Module {
     }
     Component {
         prototype: "QQuickLoader"
-        name: "QtQuick.Extras.Private/PieMenuIcon"
+        name: "QtQuick.Extras.Private/PieMenuIcon 1.0"
         exports: ["QtQuick.Extras.Private/PieMenuIcon 1.0"]
         exportMetaObjectRevisions: [0]
         isComposite: true
         defaultProperty: "data"
-        Property { name: "control"; type: "PieMenu_QMLTYPE_93"; isPointer: true }
+        Property { name: "control"; type: "PieMenu_QMLTYPE_84"; isPointer: true }
         Property { name: "styleData"; type: "QObject"; isPointer: true }
         Property { name: "iconSource"; type: "string"; isReadonly: true }
     }
     Component {
         prototype: "QQuickFocusScope"
-        name: "QtQuick.Extras/StatusIndicator"
+        name: "QtQuick.Extras/StatusIndicator 1.1"
         exports: ["QtQuick.Extras/StatusIndicator 1.1"]
         exportMetaObjectRevisions: [1]
         isComposite: true
@@ -483,8 +511,24 @@ Module {
         Property { name: "__styleData"; type: "QObject"; isPointer: true }
     }
     Component {
+        prototype: "QQuickFocusScope"
+        name: "QtQuick.Extras/StatusIndicator 1.0"
+        exports: ["QtQuick.Extras/StatusIndicator 1.0"]
+        exportMetaObjectRevisions: [0]
+        isComposite: true
+        defaultProperty: "data"
+        Property { name: "active"; type: "bool" }
+        Property { name: "color"; type: "QColor" }
+        Property { name: "on"; type: "bool" }
+        Property { name: "style"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "__style"; type: "QObject"; isPointer: true }
+        Property { name: "__panel"; type: "QQuickItem"; isPointer: true }
+        Property { name: "styleHints"; type: "QVariant" }
+        Property { name: "__styleData"; type: "QObject"; isPointer: true }
+    }
+    Component {
         prototype: "QQuickText"
-        name: "QtQuick.Extras.Private/TextSingleton"
+        name: "QtQuick.Extras.Private/TextSingleton 1.0"
         exports: ["QtQuick.Extras.Private/TextSingleton 1.0"]
         exportMetaObjectRevisions: [0]
         isComposite: true
@@ -494,13 +538,13 @@ Module {
     }
     Component {
         prototype: "QQuickFocusScope"
-        name: "QtQuick.Extras/ToggleButton"
+        name: "QtQuick.Extras/ToggleButton 1.0"
         exports: ["QtQuick.Extras/ToggleButton 1.0"]
         exportMetaObjectRevisions: [0]
         isComposite: true
         defaultProperty: "data"
         Property { name: "isDefault"; type: "bool" }
-        Property { name: "menu"; type: "Menu_QMLTYPE_33"; isPointer: true }
+        Property { name: "menu"; type: "Menu_QMLTYPE_28"; isPointer: true }
         Property { name: "checkable"; type: "bool" }
         Property { name: "checked"; type: "bool" }
         Property { name: "exclusiveGroup"; type: "QQuickExclusiveGroup"; isPointer: true }
@@ -514,8 +558,8 @@ Module {
         Property { name: "__iconOverriden"; type: "bool"; isReadonly: true }
         Property { name: "__action"; type: "QQuickAction"; isPointer: true }
         Property { name: "__iconAction"; type: "QQuickAction"; isReadonly: true; isPointer: true }
-        Property { name: "__effectivePressed"; type: "bool" }
         Property { name: "__behavior"; type: "QVariant" }
+        Property { name: "__effectivePressed"; type: "bool" }
         Property { name: "pressed"; type: "bool"; isReadonly: true }
         Property { name: "hovered"; type: "bool"; isReadonly: true }
         Signal { name: "clicked" }
@@ -528,7 +572,7 @@ Module {
     }
     Component {
         prototype: "QQuickFocusScope"
-        name: "QtQuick.Extras/Tumbler"
+        name: "QtQuick.Extras/Tumbler 1.2"
         exports: ["QtQuick.Extras/Tumbler 1.2"]
         exportMetaObjectRevisions: [2]
         isComposite: true
@@ -588,13 +632,14 @@ Module {
     }
     Component {
         prototype: "QObject"
-        name: "QtQuick.Extras/TumblerColumn"
+        name: "QtQuick.Extras/TumblerColumn 1.2"
         exports: ["QtQuick.Extras/TumblerColumn 1.2"]
         exportMetaObjectRevisions: [2]
         isComposite: true
         Property { name: "__tumbler"; type: "QQuickItem"; isPointer: true }
         Property { name: "__index"; type: "int" }
         Property { name: "__currentIndex"; type: "int" }
+        Property { name: "model"; type: "QVariant" }
         Property { name: "role"; type: "string" }
         Property { name: "delegate"; type: "QQmlComponent"; isPointer: true }
         Property { name: "highlight"; type: "QQmlComponent"; isPointer: true }
@@ -602,7 +647,6 @@ Module {
         Property { name: "visible"; type: "bool" }
         Property { name: "activeFocus"; type: "bool"; isReadonly: true }
         Property { name: "width"; type: "double" }
-        Property { name: "model"; type: "QVariant" }
         Property { name: "currentIndex"; type: "int"; isReadonly: true }
     }
 }

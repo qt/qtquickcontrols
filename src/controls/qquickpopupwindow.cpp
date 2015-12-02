@@ -46,7 +46,7 @@ QT_BEGIN_NAMESPACE
 QQuickPopupWindow::QQuickPopupWindow() :
     QQuickWindow(), m_parentItem(0), m_contentItem(0),
     m_mouseMoved(false), m_needsActivatedEvent(true),
-    m_dismissed(false)
+    m_dismissed(false), m_pressed(false)
 {
     setFlags(Qt::Popup);
     connect(qApp, SIGNAL(applicationStateChanged(Qt::ApplicationState)),
@@ -146,17 +146,22 @@ void QQuickPopupWindow::mouseMoveEvent(QMouseEvent *e)
 {
     QRect rect = QRect(QPoint(), size());
     m_mouseMoved = true;
-    if (rect.contains(e->pos()))
+    if (rect.contains(e->pos())) {
+        if (e->buttons() != Qt::NoButton)
+            m_pressed = true;
         QQuickWindow::mouseMoveEvent(e);
+    }
     else
         forwardEventToTransientParent(e);
 }
 
 void QQuickPopupWindow::mousePressEvent(QMouseEvent *e)
 {
+    m_pressed = true;
     QRect rect = QRect(QPoint(), size());
-    if (rect.contains(e->pos()))
+    if (rect.contains(e->pos())) {
         QQuickWindow::mousePressEvent(e);
+    }
     else
         forwardEventToTransientParent(e);
 }
@@ -173,8 +178,10 @@ void QQuickPopupWindow::mouseReleaseEvent(QMouseEvent *e)
         }
         m_mouseMoved = true; // Initial mouse release counts as move.
     } else {
-        forwardEventToTransientParent(e);
+        if (m_pressed)
+            forwardEventToTransientParent(e);
     }
+    m_pressed = false;
 }
 
 void QQuickPopupWindow::forwardEventToTransientParent(QMouseEvent *e)

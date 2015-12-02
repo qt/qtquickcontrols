@@ -191,11 +191,8 @@ CircularButtonStyle {
         DropShadow {
             id: progressBarDropShadow
             anchors.fill: progressBar
-            fast: true
             // QTBUG-33747
 //            cached: !control.pressed
-            radius: 4
-            samples: radius * 2
             color: progressBarDropShadowColor
             source: progressBar
         }

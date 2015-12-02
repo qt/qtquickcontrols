@@ -132,8 +132,9 @@ Style {
         DropShadow {
             anchors.fill: rect
             source: rect
-            radius: __padding
-            samples: Math.min(32, radius * 2)
+            samples: 15
+            spread: 0.45
+            cached: true
         }
     }
 

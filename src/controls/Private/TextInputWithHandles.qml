@@ -144,13 +144,15 @@ TextInput {
         active: control.selectByMouse && Settings.isMobile
         maximum: cursorHandle.position - 1
 
+        readonly property var mappedOrigin: editor.mapToItem(parent, 0,0)
+
         // Mention scenePos in the mappedPos binding to force re-evaluation if it changes
-        property var mappedPos: listener.scenePos.x !== listener.scenePos.y !== Number.MAX_VALUE ?
+        readonly property var mappedPos: listener.scenePos.x !== listener.scenePos.y !== Number.MAX_VALUE ?
                                     editor.mapToItem(parent, editor.selectionRectangle.x, editor.selectionRectangle.y) : -1
         x: mappedPos.x
         y: mappedPos.y
 
-        visible: pressed || (input.hasSelection && handleX + handleWidth >= -1 && handleX <= control.width + 1)
+        visible: pressed || (input.hasSelection && handleX + handleWidth >= -1 && handleX - mappedOrigin.x <= control.width + 1)
 
         onPositionChanged: {
             if (!input.blockRecursion) {
@@ -173,13 +175,15 @@ TextInput {
         active: control.selectByMouse && Settings.isMobile
         minimum: input.hasSelection ? selectionHandle.position + 1 : -1
 
+        readonly property var mappedOrigin: editor.mapToItem(parent, 0,0)
+
         // Mention scenePos in the mappedPos binding to force re-evaluation if it changes
-        property var mappedPos: listener.scenePos.x !== listener.scenePos.y !== Number.MAX_VALUE ?
+        readonly property var mappedPos: listener.scenePos.x !== listener.scenePos.y !== Number.MAX_VALUE ?
                                     editor.mapToItem(parent, editor.cursorRectangle.x, editor.cursorRectangle.y) : -1
         x: mappedPos.x
         y: mappedPos.y
 
-        visible: pressed || ((input.cursorVisible || input.hasSelection) && handleX + handleWidth >= -1 && handleX <= control.width + 1)
+        visible: pressed || ((input.cursorVisible || input.hasSelection) && handleX + handleWidth >= -1 && handleX - mappedOrigin.x <= control.width + 1)
 
         onPositionChanged: {
             if (!input.blockRecursion) {
