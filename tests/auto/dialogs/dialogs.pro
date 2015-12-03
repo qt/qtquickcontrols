@@ -5,9 +5,6 @@ SOURCES += tst_dialogs.cpp
 include (../shared/util.pri)
 
 osx:CONFIG -= app_bundle
-osx:CONFIG+=insignificant_test    # QTBUG-30513 - test is unstable
-linux-*:CONFIG+=insignificant_test    # QTBUG-30513 - test is unstable
-win32:CONFIG+=insignificant_test    # QTBUG-30513 - test is unstable
 
 QT += core-private gui-private qml-private quick-private testlib
 
