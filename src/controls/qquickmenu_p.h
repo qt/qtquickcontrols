@@ -51,6 +51,7 @@ class QPlatformMenu;
 class QQuickMenuPopupWindow;
 class QQuickMenuItemContainer;
 class QQuickWindow;
+class QQuickMenuBar;
 
 typedef QQmlListProperty<QObject> QQuickMenuItems;
 
@@ -151,6 +152,8 @@ public:
     void concludeItemTrigger(QQuickMenuItem *);
     void destroyMenuPopup();
     void destroyAllMenuPopups();
+
+    QQuickMenuBar *menuBar();
 
 protected Q_SLOTS:
     void updateSelectedIndex();

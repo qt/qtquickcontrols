@@ -77,9 +77,6 @@ private:
     QPointF m_initialPos;
     QPointer<QQuickWindow> m_logicalParentWindow;
     QQuickMenu *m_menu;
-
-private:
-    QQuickMenuBar *menuBar() const;
 };
 
 QT_END_NAMESPACE

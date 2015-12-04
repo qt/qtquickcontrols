@@ -586,6 +586,20 @@ void QQuickMenu::destroyAllMenuPopups() {
         popup->setToBeDeletedLater();
 }
 
+QQuickMenuBar *QQuickMenu::menuBar()
+{
+    QObject *pi = parentMenuOrMenuBar();
+    while (pi) {
+        if (QQuickMenuBar *menuBar = qobject_cast<QQuickMenuBar*>(pi))
+            return menuBar;
+        else if (QQuickMenu *menu = qobject_cast<QQuickMenu*>(pi))
+            pi = menu->parentMenuOrMenuBar();
+        else
+            return 0;
+    }
+    return 0;
+}
+
 void QQuickMenu::__closeAndDestroy()
 {
     hideMenu();

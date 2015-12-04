@@ -168,25 +168,11 @@ QQuickMenu *QQuickMenuPopupWindow::menu() const
     return m_menu;
 }
 
-QQuickMenuBar *QQuickMenuPopupWindow::menuBar() const
-{
-    QObject *pi = menu()->parentMenuOrMenuBar();
-    while (pi) {
-        if (QQuickMenuBar *menuBar = qobject_cast<QQuickMenuBar*>(pi))
-            return menuBar;
-        else if (QQuickMenu *menu = qobject_cast<QQuickMenu*>(pi))
-            pi = menu->parentMenuOrMenuBar();
-        else
-            return 0;
-    }
-    return 0;
-}
-
 bool QQuickMenuPopupWindow::shouldForwardEventAfterDismiss(QMouseEvent *e) const
 {
     // If the event falls inside this item the event should not be forwarded.
     // For example for comboboxes or top menus of the menubar
-    QQuickMenuBar *mb = menuBar();
+    QQuickMenuBar *mb = m_menu ? m_menu->menuBar() : Q_NULLPTR;
     QQuickItem *item = mb && !mb->isNative() ? mb->contentItem() : menu()->visualItem();
     QWindow *window = transientParent();
     if (item && window && item->window() == window) {
