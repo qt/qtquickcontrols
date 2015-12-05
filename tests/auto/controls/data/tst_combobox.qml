@@ -774,5 +774,19 @@ TestCase {
         compare(comboBox.currentText, "Pomegranate")
         comboBox.destroy()
     }
+
+    function test_qtBug44532() {
+        if (Qt.platform.os === "osx")
+            skip("When the menu pops up on OS X, it does not return and the test fails after time out")
+        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.2 ; ComboBox { model: ["A", "BB", "CCCCC"] }', container, '')
+        var popup = comboBox.__popup
+        verify(popup)
+        tryCompare(popup, "__popupVisible", false)
+        mouseClick(comboBox)
+        tryCompare(popup, "__popupVisible", true)
+        mouseClick(comboBox)
+        tryCompare(popup, "__popupVisible", false)
+        comboBox.destroy()
+    }
 }
 }

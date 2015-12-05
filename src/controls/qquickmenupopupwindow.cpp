@@ -184,11 +184,15 @@ QQuickMenuBar *QQuickMenuPopupWindow::menuBar() const
 
 bool QQuickMenuPopupWindow::shouldForwardEventAfterDismiss(QMouseEvent *e) const
 {
-    // The events that dismissed a popup child of a menu contained in the menubar
-    // are never forwarded
-    if (QQuickMenuBar *mb = menuBar()) {
-        QPoint parentPos = transientParent()->mapFromGlobal(mapToGlobal(e->pos()));
-        if (!mb->isNative() && mb->contentItem()->contains(parentPos))
+    // If the event falls inside this item the event should not be forwarded.
+    // For example for comboboxes or top menus of the menubar
+    QQuickMenuBar *mb = menuBar();
+    QQuickItem *item = mb && !mb->isNative() ? mb->contentItem() : menu()->visualItem();
+    QWindow *window = transientParent();
+    if (item && window && item->window() == window) {
+        QPointF pos = window->mapFromGlobal(mapToGlobal(e->pos()));
+        pos = item->mapFromScene(pos);
+        if (item->contains(pos))
             return false;
     }
 
