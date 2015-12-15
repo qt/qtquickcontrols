@@ -45,13 +45,13 @@ QT_BEGIN_NAMESPACE
 
 
 /*!
-  \class QQuickMenuBar
+  \class QQuickMenuBar1
   \internal
  */
 
 /*!
   \qmltype MenuBarPrivate
-  \instantiates QQuickMenuBar
+  \instantiates QQuickMenuBar1
   \internal
   \inqmlmodule QtQuick.Controls
  */
@@ -65,28 +65,28 @@ QT_BEGIN_NAMESPACE
     \sa Menu
 */
 
-QQuickMenuBar::QQuickMenuBar(QObject *parent)
+QQuickMenuBar1::QQuickMenuBar1(QObject *parent)
     : QObject(parent), m_platformMenuBar(0), m_contentItem(0), m_parentWindow(0)
 {
 }
 
-QQuickMenuBar::~QQuickMenuBar()
+QQuickMenuBar1::~QQuickMenuBar1()
 {
     if (isNative())
         setNativeNoNotify(false);
 }
 
-QQmlListProperty<QQuickMenu> QQuickMenuBar::menus()
+QQmlListProperty<QQuickMenu1> QQuickMenuBar1::menus()
 {
-    return QQmlListProperty<QQuickMenu>(this, 0, &QQuickMenuBar::append_menu, &QQuickMenuBar::count_menu, &QQuickMenuBar::at_menu, 0);
+    return QQmlListProperty<QQuickMenu1>(this, 0, &QQuickMenuBar1::append_menu, &QQuickMenuBar1::count_menu, &QQuickMenuBar1::at_menu, 0);
 }
 
-bool QQuickMenuBar::isNative() const
+bool QQuickMenuBar1::isNative() const
 {
     return m_platformMenuBar != 0;
 }
 
-void QQuickMenuBar::setNative(bool native)
+void QQuickMenuBar1::setNative(bool native)
 {
     bool wasNative = isNative();
     setNativeNoNotify(native);
@@ -94,20 +94,20 @@ void QQuickMenuBar::setNative(bool native)
         emit nativeChanged();
 }
 
-void QQuickMenuBar::setNativeNoNotify(bool native)
+void QQuickMenuBar1::setNativeNoNotify(bool native)
 {
     if (native) {
         if (!m_platformMenuBar) {
             m_platformMenuBar = QGuiApplicationPrivate::platformTheme()->createPlatformMenuBar();
             if (m_platformMenuBar) {
                 m_platformMenuBar->handleReparent(m_parentWindow);
-                foreach (QQuickMenu *menu, m_menus)
+                foreach (QQuickMenu1 *menu, m_menus)
                     m_platformMenuBar->insertMenu(menu->platformMenu(), 0 /* append */);
             }
         }
     } else {
         if (m_platformMenuBar) {
-            foreach (QQuickMenu *menu, m_menus)
+            foreach (QQuickMenu1 *menu, m_menus)
                 m_platformMenuBar->removeMenu(menu->platformMenu());
         }
         delete m_platformMenuBar;
@@ -115,7 +115,7 @@ void QQuickMenuBar::setNativeNoNotify(bool native)
     }
 }
 
-void QQuickMenuBar::setContentItem(QQuickItem *item)
+void QQuickMenuBar1::setContentItem(QQuickItem *item)
 {
     if (item != m_contentItem) {
         m_contentItem = item;
@@ -123,7 +123,7 @@ void QQuickMenuBar::setContentItem(QQuickItem *item)
     }
 }
 
-void QQuickMenuBar::setParentWindow(QQuickWindow *newParentWindow)
+void QQuickMenuBar1::setParentWindow(QQuickWindow *newParentWindow)
 {
     if (newParentWindow != m_parentWindow) {
         m_parentWindow = newParentWindow;
@@ -132,9 +132,9 @@ void QQuickMenuBar::setParentWindow(QQuickWindow *newParentWindow)
     }
 }
 
-void QQuickMenuBar::append_menu(QQmlListProperty<QQuickMenu> *list, QQuickMenu *menu)
+void QQuickMenuBar1::append_menu(QQmlListProperty<QQuickMenu1> *list, QQuickMenu1 *menu)
 {
-    if (QQuickMenuBar *menuBar = qobject_cast<QQuickMenuBar *>(list->object)) {
+    if (QQuickMenuBar1 *menuBar = qobject_cast<QQuickMenuBar1 *>(list->object)) {
         menu->setParent(menuBar);
         menuBar->m_menus.append(menu);
 
@@ -145,16 +145,16 @@ void QQuickMenuBar::append_menu(QQmlListProperty<QQuickMenu> *list, QQuickMenu *
     }
 }
 
-int QQuickMenuBar::count_menu(QQmlListProperty<QQuickMenu> *list)
+int QQuickMenuBar1::count_menu(QQmlListProperty<QQuickMenu1> *list)
 {
-    if (QQuickMenuBar *menuBar = qobject_cast<QQuickMenuBar *>(list->object))
+    if (QQuickMenuBar1 *menuBar = qobject_cast<QQuickMenuBar1 *>(list->object))
         return menuBar->m_menus.size();
     return 0;
 }
 
-QQuickMenu *QQuickMenuBar::at_menu(QQmlListProperty<QQuickMenu> *list, int index)
+QQuickMenu1 *QQuickMenuBar1::at_menu(QQmlListProperty<QQuickMenu1> *list, int index)
 {
-    QQuickMenuBar *menuBar = qobject_cast<QQuickMenuBar *>(list->object);
+    QQuickMenuBar1 *menuBar = qobject_cast<QQuickMenuBar1 *>(list->object);
     if (menuBar &&  0 <= index && index < menuBar->m_menus.size())
         return menuBar->m_menus[index];
     return 0;

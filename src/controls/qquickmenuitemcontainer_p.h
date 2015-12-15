@@ -56,7 +56,7 @@ public:
         setParentMenu(0);
     }
 
-    void setParentMenu(QQuickMenu *parentMenu)
+    void setParentMenu(QQuickMenu1 *parentMenu)
     {
         QQuickMenuBase::setParentMenu(parentMenu);
         Q_FOREACH (QQuickMenuBase *item, m_menuItems)

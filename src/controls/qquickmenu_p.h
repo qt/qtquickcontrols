@@ -51,11 +51,11 @@ class QPlatformMenu;
 class QQuickMenuPopupWindow;
 class QQuickMenuItemContainer;
 class QQuickWindow;
-class QQuickMenuBar;
+class QQuickMenuBar1;
 
 typedef QQmlListProperty<QObject> QQuickMenuItems;
 
-class QQuickMenu : public QQuickMenuText
+class QQuickMenu1 : public QQuickMenuText
 {
     Q_OBJECT
     Q_PROPERTY(QString title READ text WRITE setText NOTIFY titleChanged)
@@ -79,8 +79,8 @@ public:
     enum MenuType { DefaultMenu = 0, EditMenu };
 
     Q_INVOKABLE void popup();
-    Q_INVOKABLE QQuickMenuItem *addItem(const QString &);
-    Q_INVOKABLE QQuickMenuItem *insertItem(int, const QString &);
+    Q_INVOKABLE QQuickMenuItem1 *addItem(const QString &);
+    Q_INVOKABLE QQuickMenuItem1 *insertItem(int, const QString &);
     Q_INVOKABLE void addSeparator();
     Q_INVOKABLE void insertSeparator(int);
 
@@ -111,8 +111,8 @@ Q_SIGNALS:
     void __proxyChanged();
 
 public:
-    QQuickMenu(QObject *parent = 0);
-    virtual ~QQuickMenu();
+    QQuickMenu1(QObject *parent = 0);
+    virtual ~QQuickMenu1();
 
     void setVisible(bool);
     void setEnabled(bool);
@@ -148,12 +148,12 @@ public:
     bool isProxy() const { return m_proxy; }
     void setProxy(bool proxy) { if (m_proxy != proxy) { m_proxy = proxy; emit __proxyChanged(); } }
 
-    void prepareItemTrigger(QQuickMenuItem *);
-    void concludeItemTrigger(QQuickMenuItem *);
+    void prepareItemTrigger(QQuickMenuItem1 *);
+    void concludeItemTrigger(QQuickMenuItem1 *);
     void destroyMenuPopup();
     void destroyAllMenuPopups();
 
-    QQuickMenuBar *menuBar();
+    QQuickMenuBar1 *menuBar();
 
 protected Q_SLOTS:
     void updateSelectedIndex();
@@ -209,6 +209,6 @@ private:
 
 QT_END_NAMESPACE
 
-QML_DECLARE_TYPE(QQuickMenu)
+QML_DECLARE_TYPE(QQuickMenu1)
 
 #endif // QQUICKMENU_P_H

@@ -236,7 +236,7 @@ TestCase {
     function test_popupSignals() {
         if (Qt.platform.os === "osx") {
             // On Mac the popup() function blocks. The signals are still
-            // emitted by the QPA plugin and the relayed by QQuickMenu.
+            // emitted by the QPA plugin and the relayed by QQuickMenu1.
             return;
         }
         menu.__popup(Qt.rect(50, 50, 20, 20))
