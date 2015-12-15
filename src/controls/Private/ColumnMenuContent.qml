@@ -201,7 +201,7 @@ Item {
         onPositionChanged: updateCurrentItem({ "x": mouse.x, "y": mouse.y })
         onPressed: updateCurrentItem({ "x": mouse.x, "y": mouse.y })
         onReleased: {
-            if (currentItem.__menuItem.enabled) {
+            if (currentItem && currentItem.__menuItem.enabled) {
                 if (currentItem.styleData.type === MenuItemType.Menu) {
                     showCurrentItemSubMenu(true)
                 } else {
