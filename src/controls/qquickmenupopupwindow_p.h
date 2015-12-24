@@ -68,6 +68,7 @@ Q_SIGNALS:
     void willBeDeletedLater();
 
 protected:
+    void focusInEvent(QFocusEvent *);
     void exposeEvent(QExposeEvent *);
     bool shouldForwardEventAfterDismiss(QMouseEvent *) const;
 

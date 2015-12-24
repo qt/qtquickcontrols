@@ -148,6 +148,13 @@ void QQuickMenuPopupWindow::updatePosition()
     setGeometry(newPos.x(), newPos.y(), width(), height());
 }
 
+void QQuickMenuPopupWindow::focusInEvent(QFocusEvent *e)
+{
+    QQuickWindow::focusInEvent(e);
+    if (m_menu && m_menu->menuContentItem())
+        m_menu->menuContentItem()->forceActiveFocus();
+}
+
 void QQuickMenuPopupWindow::exposeEvent(QExposeEvent *e)
 {
     // the popup will reposition at the last moment, so its
