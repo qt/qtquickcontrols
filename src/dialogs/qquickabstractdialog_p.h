@@ -152,7 +152,9 @@ protected:
     bool m_visible;
     Qt::WindowModality m_modality;
 
-protected: // variables for pure-QML implementations only
+protected: // variables and methods for pure-QML implementations only
+    void setDecorationDismissBehavior();
+
     QQuickItem *m_contentItem;
     QWindow *m_dialogWindow;
     QQuickItem *m_windowDecoration;

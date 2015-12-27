@@ -189,7 +189,7 @@ void QQuickAbstractDialog::setVisible(bool v)
         }
     }
     if (m_windowDecoration) {
-        m_windowDecoration->setProperty("dismissOnOuterClick", (m_modality == Qt::NonModal));
+        setDecorationDismissBehavior();
         m_windowDecoration->setVisible(v);
     } else if (m_dialogWindow) {
         if (v) {
@@ -220,6 +220,7 @@ void QQuickAbstractDialog::decorationLoaded()
             QVariant contentVariant;
             contentVariant.setValue<QQuickItem*>(m_contentItem);
             m_windowDecoration->setProperty("content", contentVariant);
+            setDecorationDismissBehavior();
             connect(m_windowDecoration, SIGNAL(dismissed()), this, SLOT(reject()));
             ok = true;
             qCDebug(lcWindow) << "using synthetic window decoration" << m_windowDecoration << "from" << m_decorationComponent->url();
@@ -307,6 +308,11 @@ QQuickWindow *QQuickAbstractDialog::parentWindow()
         m_parentWindow = (parentItem ? parentItem->window() : qmlobject_cast<QQuickWindow *>(parent()));
     }
     return m_parentWindow;
+}
+
+void QQuickAbstractDialog::setDecorationDismissBehavior()
+{
+    m_windowDecoration->setProperty("dismissOnOuterClick", (m_modality == Qt::NonModal));
 }
 
 void QQuickAbstractDialog::setContentItem(QQuickItem *obj)
