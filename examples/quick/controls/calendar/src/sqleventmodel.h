@@ -43,11 +43,10 @@
 
 #include <QList>
 #include <QObject>
-#include <QSqlTableModel>
 
 #include "event.h"
 
-class SqlEventModel : public QSqlQueryModel
+class SqlEventModel : public QObject
 {
     Q_OBJECT
 

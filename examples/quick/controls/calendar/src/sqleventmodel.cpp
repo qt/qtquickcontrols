@@ -45,8 +45,7 @@
 #include <QSqlError>
 #include <QSqlQuery>
 
-SqlEventModel::SqlEventModel() :
-    QSqlQueryModel()
+SqlEventModel::SqlEventModel()
 {
     createConnection();
 }
