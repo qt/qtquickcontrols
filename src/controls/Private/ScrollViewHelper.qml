@@ -58,10 +58,10 @@ Item {
     property int verticalScrollBarPolicy: Qt.ScrollBarAsNeeded
 
 
-    property int leftMargin: outerFrame ? root.__style.padding.left : 0
-    property int rightMargin: outerFrame ? root.__style.padding.right : 0
-    property int topMargin: outerFrame ? root.__style.padding.top : 0
-    property int bottomMargin: outerFrame ? root.__style.padding.bottom : 0
+    property int leftMargin: outerFrame && root.__style ? root.__style.padding.left : 0
+    property int rightMargin: outerFrame && root.__style ? root.__style.padding.right : 0
+    property int topMargin: outerFrame && root.__style ? root.__style.padding.top : 0
+    property int bottomMargin: outerFrame && root.__style ? root.__style.padding.bottom : 0
 
     anchors.fill: parent
 
@@ -101,7 +101,7 @@ Item {
     Loader {
         id: cornerFill
         z: 1
-        sourceComponent: __style.corner
+        sourceComponent: __style ? __style.corner : null
         anchors.right: parent.right
         anchors.bottom: parent.bottom
         anchors.bottomMargin: bottomMargin
