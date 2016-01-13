@@ -677,7 +677,7 @@ ScrollView {
                             onPositionChanged: {
                                 if (drag.active && modelData.movable && pressed && columnCount > 1) { // only do this while dragging
                                     for (var h = columnCount-1 ; h >= 0 ; --h) {
-                                        if (drag.target.x + listView.contentX + headerRowDelegate.width/2 > headerRow.children[h].x) {
+                                        if (drag.target.x + headerRowDelegate.width/2 > headerRow.children[h].x) {
                                             repeater.targetIndex = h
                                             break
                                         }
@@ -715,7 +715,7 @@ ScrollView {
                             }
                             parent: tableHeader
                             x: __implicitX
-                            property double __implicitX: headerRowDelegate.x - listView.contentX
+                            property double __implicitX: headerRowDelegate.x
                             width: modelData.width
                             height: parent.height
                             sourceComponent: root.headerDelegate
