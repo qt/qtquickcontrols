@@ -677,7 +677,7 @@ ScrollView {
                             onPositionChanged: {
                                 if (drag.active && modelData.movable && pressed && columnCount > 1) { // only do this while dragging
                                     for (var h = columnCount-1 ; h >= 0 ; --h) {
-                                        if (drag.target.x + headerRowDelegate.width/2 > headerRow.children[h].x) {
+                                        if (headerRow.children[h].visible && drag.target.x + headerRowDelegate.width/2 > headerRow.children[h].x) {
                                             repeater.targetIndex = h
                                             break
                                         }
