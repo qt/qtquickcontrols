@@ -206,7 +206,7 @@ QJSValue QQuickFontListModel::get(int idx) const
         return engine->newObject();
 
     QJSValue result = engine->newObject();
-    int count = d->roleNames.keys().count();
+    int count = d->roleNames.count();
     for (int i = 0; i < count; ++i)
         result.setProperty(QString(d->roleNames[Qt::UserRole + i + 1]), data(index(idx, 0), Qt::UserRole + i + 1).toString());
 
