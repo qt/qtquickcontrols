@@ -152,7 +152,7 @@ void QQuickAndroid9PatchDivs::fill(const QVariantList &divs, qreal size)
         data.reserve(divs.size() + 1);
     }
 
-    foreach (const QVariant &div, divs)
+    for (const QVariant &div : divs)
         data.append(div.toReal());
 
     data.append(size);

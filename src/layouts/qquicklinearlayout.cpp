@@ -528,7 +528,7 @@ void QQuickGridLayoutBase::rearrange(const QSizeF &size)
     d->engine.setGeometries(QRectF(QPointF(0,0), size), d->styleInfo);
     d->m_rearranging = false;
 
-    foreach (QQuickItem *invalid, d->m_invalidateAfterRearrange)
+    for (QQuickItem *invalid : qAsConst(d->m_invalidateAfterRearrange))
         invalidate(invalid);
     d->m_invalidateAfterRearrange.clear();
 
@@ -694,7 +694,8 @@ void QQuickGridLayout::insertLayoutItems()
 
     d->m_ignoredItems.clear();
     QSizeF sizeHints[Qt::NSizeHints];
-    foreach (QQuickItem *child,  childItems()) {
+    const auto items = childItems();
+    for (QQuickItem *child : items) {
         QQuickLayoutAttached *info = 0;
 
         // Will skip all items with effective maximum width/height == 0
@@ -875,7 +876,8 @@ void QQuickLinearLayout::insertLayoutItems()
     Q_D(QQuickLinearLayout);
     d->m_ignoredItems.clear();
     QSizeF sizeHints[Qt::NSizeHints];
-    foreach (QQuickItem *child,  childItems()) {
+    const auto items = childItems();
+    for (QQuickItem *child : items) {
         Q_ASSERT(child);
         QQuickLayoutAttached *info = 0;
 

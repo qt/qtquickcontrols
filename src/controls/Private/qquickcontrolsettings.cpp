@@ -86,7 +86,8 @@ bool QQuickControlSettings::hasTouchScreen() const
 #if defined(Q_OS_ANDROID)
     return true;
 #else
-    foreach (const QTouchDevice *dev, QTouchDevice::devices())
+    const auto devices = QTouchDevice::devices();
+    for (const QTouchDevice *dev : devices)
         if (dev->type() == QTouchDevice::TouchScreen)
             return true;
     return false;
@@ -146,7 +147,8 @@ static QString relativeStyleImportPath(QQmlEngine *engine, const QString &styleN
 {
     QString path;
     bool found = false;
-    foreach (const QString &import, engine->importPathList()) {
+    const auto importPathList = engine->importPathList();
+    for (const QString &import : importPathList) {
         QDir dir(import + QStringLiteral("/QtQuick/Controls/Styles"));
         if (dir.exists(styleName)) {
             found = true;
@@ -182,7 +184,8 @@ QQuickControlSettings::QQuickControlSettings(QQmlEngine *engine)
     const QString defaultStyle = defaultStyleName();
     dir.setPath(relativeStyleImportPath(engine, defaultStyle));
     dir.setFilter(QDir::Dirs | QDir::NoDotAndDotDot);
-    foreach (const QString &styleDirectory, dir.entryList()) {
+    const auto list = dir.entryList();
+    for (const QString &styleDirectory : list) {
         findStyle(engine, styleDirectory);
     }
 
@@ -259,7 +262,8 @@ void QQuickControlSettings::findStyle(QQmlEngine *engine, const QString &styleNa
 
     StyleData styleData;
 
-    foreach (const QString &fileName, dir.entryList()) {
+    const auto list = dir.entryList();
+    for (const QString &fileName : list) {
         // This assumes that there is only one library in the style directory,
         // which should be a safe assumption. If at some point it's determined
         // not to be safe, we'll have to resolve the init and path functions

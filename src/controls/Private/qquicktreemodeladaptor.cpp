@@ -314,7 +314,7 @@ QItemSelection  QQuickTreeModelAdaptor::selectionForRowRange(const QModelIndex &
 
     QItemSelection sel;
     sel.reserve(ranges.count());
-    foreach (const MIPair &pair, ranges)
+    for (const MIPair &pair : qAsConst(ranges))
        sel.append(QItemSelectionRange(pair.first, pair.second));
 
     return sel;
@@ -587,7 +587,7 @@ void QQuickTreeModelAdaptor::modelLayoutChanged(const QList<QPersistentModelInde
         emit dataChanged(index(0), index(m_items.count() - 1));
     }
 
-    Q_FOREACH (const QPersistentModelIndex &pmi, parents) {
+    for (const QPersistentModelIndex &pmi : parents) {
         if (m_expandedItems.contains(pmi)) {
             int row = itemIndex(pmi);
             if (row != -1) {

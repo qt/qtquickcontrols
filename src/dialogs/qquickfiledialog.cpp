@@ -171,8 +171,8 @@ void QQuickFileDialog::populateShortcuts()
 
 #ifndef Q_OS_IOS
     // on iOS, this returns only "/", which is never a useful path to read or write anything
-    QFileInfoList drives = QDir::drives();
-    foreach (QFileInfo fi, drives)
+    const QFileInfoList drives = QDir::drives();
+    for (const QFileInfo &fi : drives)
         addShortcut(fi.absoluteFilePath(), fi.absoluteFilePath(), fi.absoluteFilePath());
 #endif
 

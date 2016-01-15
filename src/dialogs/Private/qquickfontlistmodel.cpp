@@ -138,8 +138,7 @@ void QQuickFontListModel::setWritingSystem(const QString &wSystem)
     QList<QFontDatabase::WritingSystem> wss;
     wss << QFontDatabase::Any;
     wss << d->db.writingSystems();
-    QFontDatabase::WritingSystem ws;
-    foreach (ws, wss) {
+    for (QFontDatabase::WritingSystem ws : qAsConst(wss)) {
         if (wSystem == QFontDatabase::writingSystemName(ws)) {
             d->ws = ws;
             updateFamilies();
@@ -158,7 +157,8 @@ void QQuickFontListModel::updateFamilies()
     const QFontDialogOptions::FontDialogOptions options = d->options->options();
 
     d->families.clear();
-    foreach (const QString &family, d->db.families(d->ws)) {
+    const auto families = d->db.families(d->ws);
+    for (const QString &family : families) {
         if ((options & scalableMask) && (options & scalableMask) != scalableMask) {
             if (bool(options & QFontDialogOptions::ScalableFonts) != d->db.isSmoothlyScalable(family))
                 continue;

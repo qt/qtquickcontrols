@@ -801,7 +801,8 @@ void QQuickMenu::append_menuItems(QQuickMenuItems *list, QObject *o)
             menu->m_containers.insert(o, menuItemContainer);
             menuItemContainer->setParentMenu(menu);
             ++menu->m_containersCount;
-            foreach (QObject *child, o->children()) {
+            const auto children = o->children();
+            for (QObject *child : children) {
                 if (QQuickMenuBase *item = qobject_cast<QQuickMenuBase *>(child)) {
                     menuItemContainer->insertItem(-1, item);
                     menu->setupMenuItem(item);

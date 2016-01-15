@@ -101,13 +101,13 @@ void QQuickMenuBar::setNativeNoNotify(bool native)
             m_platformMenuBar = QGuiApplicationPrivate::platformTheme()->createPlatformMenuBar();
             if (m_platformMenuBar) {
                 m_platformMenuBar->handleReparent(m_parentWindow);
-                foreach (QQuickMenu *menu, m_menus)
+                for (QQuickMenu *menu : qAsConst(m_menus))
                     m_platformMenuBar->insertMenu(menu->platformMenu(), 0 /* append */);
             }
         }
     } else {
         if (m_platformMenuBar) {
-            foreach (QQuickMenu *menu, m_menus)
+            for (QQuickMenu *menu : qAsConst(m_menus))
                 m_platformMenuBar->removeMenu(menu->platformMenu());
         }
         delete m_platformMenuBar;

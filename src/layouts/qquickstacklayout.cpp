@@ -188,7 +188,8 @@ int QQuickStackLayout::indexOf(QQuickItem *childItem) const
 {
     if (childItem) {
         int indexOfItem = 0;
-        foreach (QQuickItem *item, childItems()) {
+        const auto items = childItems();
+        for (QQuickItem *item : items) {
             if (shouldIgnoreItem(item))
                 continue;
             if (childItem == item)
@@ -201,7 +202,8 @@ int QQuickStackLayout::indexOf(QQuickItem *childItem) const
 
 QQuickItem *QQuickStackLayout::itemAt(int index) const
 {
-    foreach (QQuickItem *item, childItems()) {
+    const auto items = childItems();
+    for (QQuickItem *item : items) {
         if (shouldIgnoreItem(item))
             continue;
         if (index == 0)
@@ -214,7 +216,8 @@ QQuickItem *QQuickStackLayout::itemAt(int index) const
 int QQuickStackLayout::itemCount() const
 {
     int count = 0;
-    foreach (QQuickItem *item, childItems()) {
+    const auto items = childItems();
+    for (QQuickItem *item : items) {
         if (shouldIgnoreItem(item))
             continue;
         ++count;
