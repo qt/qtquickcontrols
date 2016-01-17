@@ -127,6 +127,7 @@ QStringList QQuickWritingSystemListModel::writingSystems() const
 {
     Q_D(const QQuickWritingSystemListModel);
     QStringList result;
+    result.reserve(d->wss.size());
     for (QFontDatabase::WritingSystem ws : qAsConst(d->wss))
         result.append(QFontDatabase::writingSystemName(ws));
 
