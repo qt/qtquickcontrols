@@ -119,7 +119,7 @@ QUrl QQuickControlSettings::makeStyleComponentUrl(const QString &controlStyleNam
 {
     QString styleFilePath = makeStyleComponentPath(controlStyleName, styleDirPath);
 
-    if (styleDirPath.startsWith(QStringLiteral(":/")))
+    if (styleDirPath.startsWith(QLatin1String(":/")))
         return QUrl(QStringLiteral("qrc") + styleFilePath);
 
     return QUrl::fromLocalFile(styleFilePath);

@@ -1120,7 +1120,7 @@ qreal QQuickStyleItem::baselineOffset()
     case ComboBox:
         if (const QStyleOptionComboBox *combo = qstyleoption_cast<const QStyleOptionComboBox *>(m_styleoption)) {
             r = qApp->style()->subControlRect(QStyle::CC_ComboBox, combo, QStyle::SC_ComboBoxEditField);
-            if (style() != QStringLiteral("mac"))
+            if (style() != QLatin1String("mac"))
                 r.adjust(0,0,0,1);
         }
         break;
@@ -1140,7 +1140,7 @@ qreal QQuickStyleItem::baselineOffset()
             surplus++;
         int result = r.top() + surplus/2 + fm.ascent();
 #ifdef Q_OS_OSX
-        if (style() == QStringLiteral("mac")) {
+        if (style() == QLatin1String("mac")) {
             switch (m_itemType) {
             case Button:
             case Edit:
