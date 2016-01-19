@@ -285,8 +285,8 @@ void QQuickStyleItem::initStyleOption()
         m_styleoption->state = 0;
 
     QString sizeHint = m_hints.value("size").toString();
-    QPlatformTheme::Font platformFont = (sizeHint == "mini") ? QPlatformTheme::MiniFont :
-                                        (sizeHint == "small") ? QPlatformTheme::SmallFont :
+    QPlatformTheme::Font platformFont = (sizeHint == QLatin1String("mini")) ? QPlatformTheme::MiniFont :
+                                        (sizeHint == QLatin1String("small")) ? QPlatformTheme::SmallFont :
                                         QPlatformTheme::SystemFont;
 
     bool needsResolvePalette = true;
@@ -301,7 +301,7 @@ void QQuickStyleItem::initStyleOption()
         opt->icon = m_properties["icon"].value<QIcon>();
         int e = qApp->style()->pixelMetric(QStyle::PM_ButtonIconSize, m_styleoption, 0);
         opt->iconSize = QSize(e, e);
-        opt->features = (activeControl() == "default") ?
+        opt->features = activeControl() == QLatin1String("default") ?
                     QStyleOptionButton::DefaultButton :
                     QStyleOptionButton::None;
         if (platformFont == QPlatformTheme::SystemFont)
@@ -313,7 +313,7 @@ void QQuickStyleItem::initStyleOption()
         if (menu) {
             opt->features |= QStyleOptionButton::HasMenu;
 #ifdef Q_OS_OSX
-            if (style() == "mac") {
+            if (style() == QLatin1String("mac")) {
                 if (platformFont == QPlatformTheme::PushButtonFont)
                     menu->setProperty("__xOffset", 12);
                 else
@@ -337,7 +337,7 @@ void QQuickStyleItem::initStyleOption()
 
         QStyleOptionViewItem *opt = qstyleoption_cast<QStyleOptionViewItem*>(m_styleoption);
         opt->features = 0;
-        if (activeControl() == "alternate")
+        if (activeControl() == QLatin1String("alternate"))
             opt->features |= QStyleOptionViewItem::Alternate;
     }
         break;
@@ -390,16 +390,16 @@ void QQuickStyleItem::initStyleOption()
         QStyleOptionHeader *opt = qstyleoption_cast<QStyleOptionHeader*>(m_styleoption);
         opt->text = text();
         opt->textAlignment = static_cast<Qt::AlignmentFlag>(m_properties.value("textalignment").toInt());
-        opt->sortIndicator = activeControl() == "down" ?
+        opt->sortIndicator = activeControl() == QLatin1String("down") ?
                     QStyleOptionHeader::SortDown
-                  : activeControl() == "up" ?
+                  : activeControl() == QLatin1String("up") ?
                         QStyleOptionHeader::SortUp : QStyleOptionHeader::None;
         QString headerpos = m_properties.value("headerpos").toString();
-        if (headerpos == "beginning")
+        if (headerpos == QLatin1String("beginning"))
             opt->position = QStyleOptionHeader::Beginning;
-        else if (headerpos == "end")
+        else if (headerpos == QLatin1String("end"))
             opt->position = QStyleOptionHeader::End;
-        else if (headerpos == "only")
+        else if (headerpos == QLatin1String("only"))
             opt->position = QStyleOptionHeader::OnlyOneSection;
         else
             opt->position = QStyleOptionHeader::Middle;
@@ -458,7 +458,7 @@ void QQuickStyleItem::initStyleOption()
         QString position = m_properties.value("tabpos").toString();
         QString selectedPosition = m_properties.value("selectedpos").toString();
 
-        opt->shape = (orientation == "Bottom") ? QTabBar::RoundedSouth : QTabBar::RoundedNorth;
+        opt->shape = orientation == QLatin1String("Bottom") ? QTabBar::RoundedSouth : QTabBar::RoundedNorth;
         if (position == QLatin1String("beginning"))
             opt->position = QStyleOptionTab::Beginning;
         else if (position == QLatin1String("end"))
@@ -627,7 +627,7 @@ void QQuickStyleItem::initStyleOption()
         opt->currentText = text();
         opt->editable = m_properties["editable"].toBool();
 #ifdef Q_OS_OSX
-        if (m_properties["popup"].canConvert<QObject *>() && style() == "mac") {
+        if (m_properties["popup"].canConvert<QObject *>() && style() == QLatin1String("mac")) {
             QObject *popup = m_properties["popup"].value<QObject *>();
             if (platformFont == QPlatformTheme::MiniFont) {
                 popup->setProperty("__xOffset", -2);
@@ -690,8 +690,8 @@ void QQuickStyleItem::initStyleOption()
 
         opt->sliderValue = value();
         opt->subControls = QStyle::SC_SliderGroove | QStyle::SC_SliderHandle;
-        opt->tickPosition = (activeControl() == "ticks" ?
-                    QSlider::TicksBelow : QSlider::NoTicks);
+        opt->tickPosition = activeControl() == QLatin1String("ticks") ?
+                    QSlider::TicksBelow : QSlider::NoTicks;
         if (opt->tickPosition != QSlider::NoTicks)
             opt->subControls |= QStyle::SC_SliderTickmarks;
 
@@ -805,9 +805,9 @@ void QQuickStyleItem::initStyleOption()
          }
     }
 
-    if (sizeHint == "mini") {
+    if (sizeHint == QLatin1String("mini")) {
         m_styleoption->state |= QStyle::State_Mini;
-    } else if (sizeHint == "small") {
+    } else if (sizeHint == QLatin1String("small")) {
         m_styleoption->state |= QStyle::State_Small;
     }
 
@@ -888,7 +888,7 @@ QString QQuickStyleItem::style() const
     style = style.toLower();
     if (style.startsWith(QLatin1Char('q')))
         style = style.right(style.length() - 1);
-    if (style.endsWith("style"))
+    if (style.endsWith(QLatin1String("style")))
         style = style.left(style.length() - 5);
     return style;
 }
@@ -955,7 +955,7 @@ QSize QQuickStyleItem::sizeFromContents(int width, int height)
         size =  qApp->style()->sizeFromContents(QStyle::CT_CheckBox, m_styleoption, QSize(width,height));
         break;
     case ToolBar:
-        size = QSize(200, style().contains("windows") ? 30 : 42);
+        size = QSize(200, style().contains(QLatin1String("windows")) ? 30 : 42);
         break;
     case ToolButton: {
         QStyleOptionToolButton *btn = qstyleoption_cast<QStyleOptionToolButton*>(m_styleoption);
@@ -999,7 +999,7 @@ QSize QQuickStyleItem::sizeFromContents(int width, int height)
         int newHeight = qMax(height, contentHeight);
         size = qApp->style()->sizeFromContents(QStyle::CT_PushButton, m_styleoption, QSize(newWidth, newHeight)); }
 #ifdef Q_OS_OSX
-        if (style() == "mac") {
+        if (style() == QLatin1String("mac")) {
             // Cancel out QMacStylePrivate::PushButton*Offset, or part of it
             size -= QSize(7, 6);
         }
@@ -1022,20 +1022,20 @@ QSize QQuickStyleItem::sizeFromContents(int width, int height)
         break;
     case SpinBox:
 #ifdef Q_OS_OSX
-        if (style() == "mac") {
+        if (style() == QLatin1String("mac")) {
             size = qApp->style()->sizeFromContents(QStyle::CT_SpinBox, m_styleoption, QSize(width, height + 5));
             break;
         }
 #endif // fall through if not mac
     case Edit:
 #ifdef Q_OS_OSX
-        if (style() =="mac") {
+        if (style() == QLatin1String("mac")) {
             QString sizeHint = m_hints.value("size").toString();
-            if ((sizeHint == "small") || (sizeHint == "mini"))
+            if (sizeHint == QLatin1String("small") || sizeHint == QLatin1String("mini"))
                 size = QSize(width, 19);
             else
                 size = QSize(width, 22);
-            if (style() == "mac" && hints().value("rounded").toBool())
+            if (hints().value("rounded").toBool())
                 size += QSize(4, 4);
 
         } else
@@ -1069,7 +1069,7 @@ QSize QQuickStyleItem::sizeFromContents(int width, int height)
     case Header:
         size = qApp->style()->sizeFromContents(QStyle::CT_HeaderSection, m_styleoption, QSize(width,height));
 #ifdef Q_OS_OSX
-        if (style() =="mac")
+        if (style() == QLatin1String("mac"))
             size.setHeight(15);
 #endif
         break;
@@ -1200,47 +1200,47 @@ void QQuickStyleItem::updateRect()
 int QQuickStyleItem::pixelMetric(const QString &metric)
 {
 
-    if (metric == "scrollbarExtent")
+    if (metric == QLatin1String("scrollbarExtent"))
         return qApp->style()->pixelMetric(QStyle::PM_ScrollBarExtent, 0 );
-    else if (metric == "defaultframewidth")
+    else if (metric == QLatin1String("defaultframewidth"))
         return qApp->style()->pixelMetric(QStyle::PM_DefaultFrameWidth, m_styleoption);
-    else if (metric == "taboverlap")
+    else if (metric == QLatin1String("taboverlap"))
         return qApp->style()->pixelMetric(QStyle::PM_TabBarTabOverlap, 0 );
-    else if (metric == "tabbaseoverlap")
+    else if (metric == QLatin1String("tabbaseoverlap"))
         return qApp->style()->pixelMetric(QStyle::PM_TabBarBaseOverlap, m_styleoption );
-    else if (metric == "tabhspace")
+    else if (metric == QLatin1String("tabhspace"))
         return qApp->style()->pixelMetric(QStyle::PM_TabBarTabHSpace, 0 );
-    else if (metric == "indicatorwidth")
+    else if (metric == QLatin1String("indicatorwidth"))
         return qApp->style()->pixelMetric(QStyle::PM_ExclusiveIndicatorWidth, 0 );
-    else if (metric == "tabvspace")
+    else if (metric == QLatin1String("tabvspace"))
         return qApp->style()->pixelMetric(QStyle::PM_TabBarTabVSpace, 0 );
-    else if (metric == "tabbaseheight")
+    else if (metric == QLatin1String("tabbaseheight"))
         return qApp->style()->pixelMetric(QStyle::PM_TabBarBaseHeight, 0 );
-    else if (metric == "tabvshift")
+    else if (metric == QLatin1String("tabvshift"))
         return qApp->style()->pixelMetric(QStyle::PM_TabBarTabShiftVertical, 0 );
-    else if (metric == "menubarhmargin")
+    else if (metric == QLatin1String("menubarhmargin"))
         return qApp->style()->pixelMetric(QStyle::PM_MenuBarHMargin, 0 );
-    else if (metric == "menubarvmargin")
+    else if (metric == QLatin1String("menubarvmargin"))
         return qApp->style()->pixelMetric(QStyle::PM_MenuBarVMargin, 0 );
-    else if (metric == "menubarpanelwidth")
+    else if (metric == QLatin1String("menubarpanelwidth"))
         return qApp->style()->pixelMetric(QStyle::PM_MenuBarPanelWidth, 0 );
-    else if (metric == "menubaritemspacing")
+    else if (metric == QLatin1String("menubaritemspacing"))
         return qApp->style()->pixelMetric(QStyle::PM_MenuBarItemSpacing, 0 );
-    else if (metric == "spacebelowmenubar")
+    else if (metric == QLatin1String("spacebelowmenubar"))
         return qApp->style()->styleHint(QStyle::SH_MainWindow_SpaceBelowMenuBar, m_styleoption);
-    else if (metric == "menuhmargin")
+    else if (metric == QLatin1String("menuhmargin"))
         return qApp->style()->pixelMetric(QStyle::PM_MenuHMargin, 0 );
-    else if (metric == "menuvmargin")
+    else if (metric == QLatin1String("menuvmargin"))
         return qApp->style()->pixelMetric(QStyle::PM_MenuVMargin, 0 );
-    else if (metric == "menupanelwidth")
+    else if (metric == QLatin1String("menupanelwidth"))
         return qApp->style()->pixelMetric(QStyle::PM_MenuPanelWidth, 0 );
-    else if (metric == "submenuoverlap")
+    else if (metric == QLatin1String("submenuoverlap"))
         return qApp->style()->pixelMetric(QStyle::PM_SubMenuOverlap, 0 );
-    else if (metric == "splitterwidth")
+    else if (metric == QLatin1String("splitterwidth"))
         return qApp->style()->pixelMetric(QStyle::PM_SplitterWidth, 0 );
-    else if (metric == "scrollbarspacing")
+    else if (metric == QLatin1String("scrollbarspacing"))
         return abs(qApp->style()->pixelMetric(QStyle::PM_ScrollView_ScrollBarSpacing, 0 ));
-    else if (metric == "treeviewindentation")
+    else if (metric == QLatin1String("treeviewindentation"))
         return qApp->style()->pixelMetric(QStyle::PM_TreeViewIndentation, 0 );
     return 0;
 }
@@ -1248,30 +1248,30 @@ int QQuickStyleItem::pixelMetric(const QString &metric)
 QVariant QQuickStyleItem::styleHint(const QString &metric)
 {
     initStyleOption();
-    if (metric == "comboboxpopup") {
+    if (metric == QLatin1String("comboboxpopup")) {
         return qApp->style()->styleHint(QStyle::SH_ComboBox_Popup, m_styleoption);
-    } else if (metric == "highlightedTextColor") {
+    } else if (metric == QLatin1String("highlightedTextColor")) {
         return m_styleoption->palette.highlightedText().color().name();
-    } else if (metric == "textColor") {
+    } else if (metric == QLatin1String("textColor")) {
         QPalette pal = m_styleoption->palette;
         pal.setCurrentColorGroup(active()? QPalette::Active : QPalette::Inactive);
         return pal.text().color().name();
-    } else if (metric == "focuswidget") {
+    } else if (metric == QLatin1String("focuswidget")) {
         return qApp->style()->styleHint(QStyle::SH_FocusFrame_AboveWidget);
-    } else if (metric == "tabbaralignment") {
+    } else if (metric == QLatin1String("tabbaralignment")) {
         int result = qApp->style()->styleHint(QStyle::SH_TabBar_Alignment);
         if (result == Qt::AlignCenter)
             return "center";
         return "left";
-    } else if (metric == "externalScrollBars") {
+    } else if (metric == QLatin1String("externalScrollBars")) {
         return qApp->style()->styleHint(QStyle::SH_ScrollView_FrameOnlyAroundContents);
-    } else if (metric == "scrollToClickPosition")
+    } else if (metric == QLatin1String("scrollToClickPosition"))
         return qApp->style()->styleHint(QStyle::SH_ScrollBar_LeftClickAbsolutePosition);
-    else if (metric == "activateItemOnSingleClick")
+    else if (metric == QLatin1String("activateItemOnSingleClick"))
         return qApp->style()->styleHint(QStyle::SH_ItemView_ActivateItemOnSingleClick);
-    else if (metric == "submenupopupdelay")
+    else if (metric == QLatin1String("submenupopupdelay"))
         return qApp->style()->styleHint(QStyle::SH_Menu_SubMenuPopupDelay, m_styleoption);
-    else if (metric == "wheelScrollLines")
+    else if (metric == QLatin1String("wheelScrollLines"))
         return qApp->wheelScrollLines();
     return 0;
 
@@ -1316,76 +1316,76 @@ void QQuickStyleItem::setElementType(const QString &str)
     }
 
     // Only enable visible if the widget can animate
-    if (str == "menu") {
+    if (str == QLatin1String("menu")) {
         m_itemType = Menu;
-    } else if (str == "menuitem") {
+    } else if (str == QLatin1String("menuitem")) {
         m_itemType = MenuItem;
-    } else if (str == "item" || str == "itemrow" || str == "header") {
+    } else if (str == QLatin1String("item") || str == QLatin1String("itemrow") || str == QLatin1String("header")) {
 #ifdef Q_OS_OSX
         m_font.setPointSize(11.0);
         emit fontChanged();
 #endif
-        if (str == "header") {
+        if (str == QLatin1String("header")) {
             m_itemType = Header;
         } else {
-            m_itemType = (str == "item") ? Item : ItemRow;
+            m_itemType = str == QLatin1String("item") ? Item : ItemRow;
         }
-    } else if (str == "itembranchindicator") {
+    } else if (str == QLatin1String("itembranchindicator")) {
         m_itemType = ItemBranchIndicator;
-    } else if (str == "groupbox") {
+    } else if (str == QLatin1String("groupbox")) {
         m_itemType = GroupBox;
-    } else if (str == "tab") {
+    } else if (str == QLatin1String("tab")) {
         m_itemType = Tab;
-    } else if (str == "tabframe") {
+    } else if (str == QLatin1String("tabframe")) {
         m_itemType = TabFrame;
-    } else if (str == "comboboxitem")  {
+    } else if (str == QLatin1String("comboboxitem"))  {
         // Gtk uses qobject cast, hence we need to separate this from menuitem
         // On mac, we temporarily use the menu item because it has more accurate
         // palette.
         m_itemType = ComboBoxItem;
-    } else if (str == "toolbar") {
+    } else if (str == QLatin1String("toolbar")) {
         m_itemType = ToolBar;
-    } else if (str == "toolbutton") {
+    } else if (str == QLatin1String("toolbutton")) {
         m_itemType = ToolButton;
-    } else if (str == "slider") {
+    } else if (str == QLatin1String("slider")) {
         m_itemType = Slider;
-    } else if (str == "frame") {
+    } else if (str == QLatin1String("frame")) {
         m_itemType = Frame;
-    } else if (str == "combobox") {
+    } else if (str == QLatin1String("combobox")) {
         m_itemType = ComboBox;
-    } else if (str == "splitter") {
+    } else if (str == QLatin1String("splitter")) {
         m_itemType = Splitter;
-    } else if (str == "progressbar") {
+    } else if (str == QLatin1String("progressbar")) {
         m_itemType = ProgressBar;
-    } else if (str == "button") {
+    } else if (str == QLatin1String("button")) {
         m_itemType = Button;
-    } else if (str == "checkbox") {
+    } else if (str == QLatin1String("checkbox")) {
         m_itemType = CheckBox;
-    } else if (str == "radiobutton") {
+    } else if (str == QLatin1String("radiobutton")) {
         m_itemType = RadioButton;
-    } else if (str == "edit") {
+    } else if (str == QLatin1String("edit")) {
         m_itemType = Edit;
-    } else if (str == "spinbox") {
+    } else if (str == QLatin1String("spinbox")) {
         m_itemType = SpinBox;
-    } else if (str == "scrollbar") {
+    } else if (str == QLatin1String("scrollbar")) {
         m_itemType = ScrollBar;
-    } else if (str == "widget") {
+    } else if (str == QLatin1String("widget")) {
         m_itemType = Widget;
-    } else if (str == "focusframe") {
+    } else if (str == QLatin1String("focusframe")) {
         m_itemType = FocusFrame;
-    } else if (str == "focusrect") {
+    } else if (str == QLatin1String("focusrect")) {
         m_itemType = FocusRect;
-    } else if (str == "dial") {
+    } else if (str == QLatin1String("dial")) {
         m_itemType = Dial;
-    } else if (str == "statusbar") {
+    } else if (str == QLatin1String("statusbar")) {
         m_itemType = StatusBar;
-    } else if (str == "machelpbutton") {
+    } else if (str == QLatin1String("machelpbutton")) {
         m_itemType = MacHelpButton;
-    } else if (str == "scrollareacorner") {
+    } else if (str == QLatin1String("scrollareacorner")) {
         m_itemType = ScrollAreaCorner;
-    } else if (str == "menubar") {
+    } else if (str == QLatin1String("menubar")) {
         m_itemType = MenuBar;
-    } else if (str == "menubaritem") {
+    } else if (str == QLatin1String("menubaritem")) {
         m_itemType = MenuBarItem;
     } else {
         m_itemType = Undefined;
@@ -1500,7 +1500,7 @@ void QQuickStyleItem::paint(QPainter *painter)
     switch (m_itemType) {
     case Button:
 #ifdef Q_OS_OSX
-        if (style() == "mac") {
+        if (style() == QLatin1String("mac")) {
             // Add back what was substracted in sizeFromContents()
             m_styleoption->rect.adjust(-4, -2, 3, 4);
         }
@@ -1517,7 +1517,7 @@ void QQuickStyleItem::paint(QPainter *painter)
             pixmap.fill(Qt::transparent);
             QPainter pixpainter(&pixmap);
             qApp->style()->drawPrimitive(QStyle::PE_PanelItemViewRow, m_styleoption, &pixpainter);
-            if ((style() == "mac" || !qApp->style()->styleHint(QStyle::SH_ItemView_ShowDecorationSelected)) && selected()) {
+            if ((style() == QLatin1String("mac") || !qApp->style()->styleHint(QStyle::SH_ItemView_ShowDecorationSelected)) && selected()) {
                 QPalette pal = QApplication::palette("QAbstractItemView");
                 pal.setCurrentColorGroup(m_styleoption->palette.currentColorGroup());
                 pixpainter.fillRect(m_styleoption->rect, pal.highlight());
@@ -1539,7 +1539,7 @@ void QQuickStyleItem::paint(QPainter *painter)
     case ToolButton:
 
 #ifdef Q_OS_OSX
-        if (style() == "mac" && hints().value("segmented").toBool()) {
+        if (style() == QLatin1String("mac") && hints().value("segmented").toBool()) {
             const QPaintDevice *target = painter->device();
              HIThemeSegmentDrawInfo sgi;
             sgi.version = 0;
@@ -1556,9 +1556,9 @@ void QQuickStyleItem::paint(QPainter *painter)
             SInt32 button_height;
             GetThemeMetric(kThemeMetricButtonRoundedHeight, &button_height);
             QString buttonPos = m_properties.value("position").toString();
-            sgi.position = buttonPos == "leftmost" ? kHIThemeSegmentPositionFirst :
-                           buttonPos == "rightmost" ? kHIThemeSegmentPositionLast :
-                           buttonPos == "h_middle" ? kHIThemeSegmentPositionMiddle :
+            sgi.position = buttonPos == QLatin1String("leftmost") ? kHIThemeSegmentPositionFirst :
+                           buttonPos == QLatin1String("rightmost") ? kHIThemeSegmentPositionLast :
+                           buttonPos == QLatin1String("h_middle") ? kHIThemeSegmentPositionMiddle :
                            kHIThemeSegmentPositionOnly;
             QRect centered = m_styleoption->rect;
             centered.setHeight(button_height);
@@ -1571,7 +1571,7 @@ void QQuickStyleItem::paint(QPainter *painter)
         break;
     case Tab:
 #ifdef Q_OS_OSX
-        if (style() == "mac") {
+        if (style() == QLatin1String("mac")) {
             m_styleoption->rect.translate(0, 1); // Unhack QMacStyle's hack
             qApp->style()->drawControl(QStyle::CE_TabBarTabShape, m_styleoption, painter);
             m_styleoption->rect.translate(0, -1);
@@ -1616,7 +1616,7 @@ void QQuickStyleItem::paint(QPainter *painter)
         break;
     case Edit: {
 #ifdef Q_OS_OSX
-        if (style() == "mac" && hints().value("rounded").toBool()) {
+        if (style() == QLatin1String("mac") && hints().value("rounded").toBool()) {
             const QPaintDevice *target = painter->device();
             HIThemeFrameDrawInfo fdi;
             fdi.version = 0;
@@ -1674,7 +1674,7 @@ void QQuickStyleItem::paint(QPainter *painter)
     case SpinBox:
 #ifdef Q_OS_MAC
         // macstyle depends on the embedded qlineedit to fill the editfield background
-        if (style() == "mac") {
+        if (style() == QLatin1String("mac")) {
             QRect editRect = qApp->style()->subControlRect(QStyle::CC_SpinBox,
                                                            qstyleoption_cast<QStyleOptionComplex*>(m_styleoption),
                                                            QStyle::SC_SpinBoxEditField);
@@ -1702,14 +1702,14 @@ void QQuickStyleItem::paint(QPainter *painter)
         painter->fillRect(m_styleoption->rect, m_styleoption->palette.window().color());
         qApp->style()->drawControl(QStyle::CE_ToolBar, m_styleoption, painter);
         painter->save();
-        painter->setPen(style() != "fusion" ? m_styleoption->palette.dark().color().darker(120) :
+        painter->setPen(style() != QLatin1String("fusion") ? m_styleoption->palette.dark().color().darker(120) :
                                               m_styleoption->palette.window().color().lighter(107));
         painter->drawLine(m_styleoption->rect.bottomLeft(), m_styleoption->rect.bottomRight());
         painter->restore();
         break;
     case StatusBar:
 #ifdef Q_OS_OSX
-        if (style() == "mac") {
+        if (style() == QLatin1String("mac")) {
             qApp->style()->drawControl(QStyle::CE_ToolBar, m_styleoption, painter);
             painter->setPen(m_styleoption->palette.dark().color().darker(120));
             painter->drawLine(m_styleoption->rect.topLeft(), m_styleoption->rect.topRight());
@@ -1876,20 +1876,20 @@ QPixmap QQuickTableRowImageProvider::requestPixmap(const QString &id, QSize *siz
     QString style = qApp->style()->metaObject()->className();
     opt.features = 0;
 
-    if (id.contains("selected"))
+    if (id.contains(QLatin1String("selected")))
         opt.state |= QStyle::State_Selected;
 
-    if (id.contains("active")) {
+    if (id.contains(QLatin1String("active"))) {
         opt.state |= QStyle::State_Active;
         opt.palette.setCurrentColorGroup(QPalette::Active);
     } else
         opt.palette.setCurrentColorGroup(QPalette::Inactive);
 
-    if (id.contains("alternate"))
+    if (id.contains(QLatin1String("alternate")))
         opt.features |= QStyleOptionViewItem::Alternate;
 
     QPalette pal = QApplication::palette("QAbstractItemView");
-    if (opt.state & QStyle::State_Selected && (style.contains("Mac") ||
+    if (opt.state & QStyle::State_Selected && (style.contains(QLatin1String("Mac")) ||
                                                !qApp->style()->styleHint(QStyle::SH_ItemView_ShowDecorationSelected))) {
         pal.setCurrentColorGroup(opt.palette.currentColorGroup());
         pixmap.fill(pal.highlight().color());
