@@ -906,7 +906,6 @@ QString QQuickStyleItem::hitTest(int px, int py)
             return QStringLiteral("up");
         else if (subcontrol == QStyle::SC_SpinBoxDown)
             return QStringLiteral("down");
-
     }
         break;
 
@@ -916,27 +915,35 @@ QString QQuickStyleItem::hitTest(int px, int py)
                                                           QPoint(px,py), 0);
         if (subcontrol == QStyle::SC_SliderHandle)
             return QStringLiteral("handle");
-
     }
         break;
+
     case ScrollBar: {
         subcontrol = qApp->style()->hitTestComplexControl(QStyle::CC_ScrollBar,
                                                           qstyleoption_cast<QStyleOptionComplex*>(m_styleoption),
                                                           QPoint(px,py), 0);
-        if (subcontrol == QStyle::SC_ScrollBarSlider)
+        switch (subcontrol) {
+        case QStyle::SC_ScrollBarSlider:
             return QStringLiteral("handle");
 
-        if (subcontrol == QStyle::SC_ScrollBarSubLine)
+        case QStyle::SC_ScrollBarSubLine:
             return QStringLiteral("up");
-        else if (subcontrol == QStyle::SC_ScrollBarSubPage)
+
+        case QStyle::SC_ScrollBarSubPage:
             return QStringLiteral("upPage");
 
-        if (subcontrol == QStyle::SC_ScrollBarAddLine)
+        case QStyle::SC_ScrollBarAddLine:
             return QStringLiteral("down");
-        else if (subcontrol == QStyle::SC_ScrollBarAddPage)
+
+        case QStyle::SC_ScrollBarAddPage:
             return QStringLiteral("downPage");
+
+        default:
+            break;
+        }
     }
         break;
+
     default:
         break;
     }
