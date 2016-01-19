@@ -284,7 +284,7 @@ void QQuickStyleItem::initStyleOption()
     if (m_styleoption)
         m_styleoption->state = 0;
 
-    QString sizeHint = m_hints.value("size").toString();
+    QString sizeHint = m_hints.value(QStringLiteral("size")).toString();
     QPlatformTheme::Font platformFont = (sizeHint == QLatin1String("mini")) ? QPlatformTheme::MiniFont :
                                         (sizeHint == QLatin1String("small")) ? QPlatformTheme::SmallFont :
                                         QPlatformTheme::SystemFont;
@@ -298,7 +298,7 @@ void QQuickStyleItem::initStyleOption()
 
         QStyleOptionButton *opt = qstyleoption_cast<QStyleOptionButton*>(m_styleoption);
         opt->text = text();
-        opt->icon = m_properties["icon"].value<QIcon>();
+        opt->icon = m_properties[QStringLiteral("icon")].value<QIcon>();
         int e = qApp->style()->pixelMetric(QStyle::PM_ButtonIconSize, m_styleoption, 0);
         opt->iconSize = QSize(e, e);
         opt->features = activeControl() == QLatin1String("default") ?
@@ -309,7 +309,7 @@ void QQuickStyleItem::initStyleOption()
         const QFont *font = QGuiApplicationPrivate::platformTheme()->font(platformFont);
         if (font)
             opt->fontMetrics = QFontMetrics(*font);
-        QObject * menu = m_properties["menu"].value<QObject *>();
+        QObject * menu = m_properties[QStringLiteral("menu")].value<QObject *>();
         if (menu) {
             opt->features |= QStyleOptionButton::HasMenu;
 #ifdef Q_OS_OSX
@@ -375,9 +375,9 @@ void QQuickStyleItem::initStyleOption()
             m_styleoption = new QStyleOption;
 
         m_styleoption->state = QStyle::State_Item; // We don't want to fully support Win 95
-        if (m_properties.value("hasChildren").toBool())
+        if (m_properties.value(QStringLiteral("hasChildren")).toBool())
             m_styleoption->state |= QStyle::State_Children;
-        if (m_properties.value("hasSibling").toBool()) // Even this one could go away
+        if (m_properties.value(QStringLiteral("hasSibling")).toBool()) // Even this one could go away
             m_styleoption->state |= QStyle::State_Sibling;
         if (m_on)
             m_styleoption->state |= QStyle::State_Open;
@@ -389,12 +389,12 @@ void QQuickStyleItem::initStyleOption()
 
         QStyleOptionHeader *opt = qstyleoption_cast<QStyleOptionHeader*>(m_styleoption);
         opt->text = text();
-        opt->textAlignment = static_cast<Qt::AlignmentFlag>(m_properties.value("textalignment").toInt());
+        opt->textAlignment = static_cast<Qt::AlignmentFlag>(m_properties.value(QStringLiteral("textalignment")).toInt());
         opt->sortIndicator = activeControl() == QLatin1String("down") ?
                     QStyleOptionHeader::SortDown
                   : activeControl() == QLatin1String("up") ?
                         QStyleOptionHeader::SortUp : QStyleOptionHeader::None;
-        QString headerpos = m_properties.value("headerpos").toString();
+        QString headerpos = m_properties.value(QStringLiteral("headerpos")).toString();
         if (headerpos == QLatin1String("beginning"))
             opt->position = QStyleOptionHeader::Beginning;
         else if (headerpos == QLatin1String("end"))
@@ -417,9 +417,9 @@ void QQuickStyleItem::initStyleOption()
         opt->state |= QStyle::State_AutoRaise;
         opt->activeSubControls = QStyle::SC_ToolButton;
         opt->text = text();
-        opt->icon = m_properties["icon"].value<QIcon>();
+        opt->icon = m_properties[QStringLiteral("icon")].value<QIcon>();
 
-        if (m_properties.value("menu").toBool()) {
+        if (m_properties.value(QStringLiteral("menu")).toBool()) {
             opt->subControls |= QStyle::SC_ToolButtonMenu;
             opt->features = QStyleOptionToolButton::HasMenu;
         }
@@ -451,12 +451,12 @@ void QQuickStyleItem::initStyleOption()
         QStyleOptionTab *opt = qstyleoption_cast<QStyleOptionTab*>(m_styleoption);
         opt->text = text();
 
-        if (m_properties.value("hasFrame").toBool())
+        if (m_properties.value(QStringLiteral("hasFrame")).toBool())
             opt->features |= QStyleOptionTab::HasFrame;
 
-        QString orientation = m_properties.value("orientation").toString();
-        QString position = m_properties.value("tabpos").toString();
-        QString selectedPosition = m_properties.value("selectedpos").toString();
+        QString orientation = m_properties.value(QStringLiteral("orientation")).toString();
+        QString position = m_properties.value(QStringLiteral("tabpos")).toString();
+        QString selectedPosition = m_properties.value(QStringLiteral("selectedpos")).toString();
 
         opt->shape = orientation == QLatin1String("Bottom") ? QTabBar::RoundedSouth : QTabBar::RoundedNorth;
         if (position == QLatin1String("beginning"))
@@ -500,8 +500,8 @@ void QQuickStyleItem::initStyleOption()
             m_styleoption = new QStyleOptionTabWidgetFrame();
         QStyleOptionTabWidgetFrame *opt = qstyleoption_cast<QStyleOptionTabWidgetFrame*>(m_styleoption);
 
-        opt->selectedTabRect = m_properties["selectedTabRect"].toRect();
-        opt->shape = m_properties["orientation"] == Qt::BottomEdge ? QTabBar::RoundedSouth : QTabBar::RoundedNorth;
+        opt->selectedTabRect = m_properties[QStringLiteral("selectedTabRect")].toRect();
+        opt->shape = m_properties[QStringLiteral("orientation")] == Qt::BottomEdge ? QTabBar::RoundedSouth : QTabBar::RoundedNorth;
         if (minimum())
             opt->selectedTabRect = QRect(value(), 0, minimum(), height());
         opt->tabBarSize = QSize(minimum() , height());
@@ -525,7 +525,7 @@ void QQuickStyleItem::initStyleOption()
         QStyleOptionMenuItem *opt = qstyleoption_cast<QStyleOptionMenuItem*>(m_styleoption);
         opt->text = text();
         opt->menuItemType = QStyleOptionMenuItem::Normal;
-        setProperty("_q_showUnderlined", m_hints["showUnderlined"].toBool());
+        setProperty("_q_showUnderlined", m_hints[QStringLiteral("showUnderlined")].toBool());
 
         if (const QFont *font = QGuiApplicationPrivate::platformTheme()->font(QPlatformTheme::MenuBarFont)) {
             opt->font = *font;
@@ -550,9 +550,9 @@ void QQuickStyleItem::initStyleOption()
         setProperty("_q_isComboBoxPopupItem", m_itemType == ComboBoxItem);
 
         QQuickMenuItemType::MenuItemType type =
-                static_cast<QQuickMenuItemType::MenuItemType>(m_properties["type"].toInt());
+                static_cast<QQuickMenuItemType::MenuItemType>(m_properties[QStringLiteral("type")].toInt());
         if (type == QQuickMenuItemType::ScrollIndicator) {
-            int scrollerDirection = m_properties["scrollerDirection"].toInt();
+            int scrollerDirection = m_properties[QStringLiteral("scrollerDirection")].toInt();
             opt->menuItemType = QStyleOptionMenuItem::Scroller;
             opt->state |= scrollerDirection == Qt::UpArrow ?
                         QStyle::State_UpArrow : QStyle::State_DownArrow;
@@ -566,21 +566,21 @@ void QQuickStyleItem::initStyleOption()
             } else {
                 opt->menuItemType = QStyleOptionMenuItem::Normal;
 
-                QString shortcut = m_properties["shortcut"].toString();
+                QString shortcut = m_properties[QStringLiteral("shortcut")].toString();
                 if (!shortcut.isEmpty()) {
                     opt->text += QLatin1Char('\t') + shortcut;
                     opt->tabWidth = qMax(opt->tabWidth, qRound(textWidth(shortcut)));
                 }
 
-                if (m_properties["checkable"].toBool()) {
+                if (m_properties[QStringLiteral("checkable")].toBool()) {
                     opt->checked = on();
-                    QVariant exclusive = m_properties["exclusive"];
+                    QVariant exclusive = m_properties[QStringLiteral("exclusive")];
                     opt->checkType = exclusive.toBool() ? QStyleOptionMenuItem::Exclusive :
                                                           QStyleOptionMenuItem::NonExclusive;
                 }
             }
-            if (m_properties["icon"].canConvert<QIcon>())
-                opt->icon = m_properties["icon"].value<QIcon>();
+            if (m_properties[QStringLiteral("icon")].canConvert<QIcon>())
+                opt->icon = m_properties[QStringLiteral("icon")].value<QIcon>();
             setProperty("_q_showUnderlined", m_hints["showUnderlined"].toBool());
 
             if (const QFont *font = QGuiApplicationPrivate::platformTheme()->font(m_itemType == ComboBoxItem ? QPlatformTheme::ComboMenuItemFont : QPlatformTheme::MenuFont)) {
@@ -600,7 +600,7 @@ void QQuickStyleItem::initStyleOption()
         QStyleOptionButton *opt = qstyleoption_cast<QStyleOptionButton*>(m_styleoption);
         if (!on())
             opt->state |= QStyle::State_Off;
-        if (m_properties.value("partiallyChecked").toBool())
+        if (m_properties.value(QStringLiteral("partiallyChecked")).toBool())
             opt->state |= QStyle::State_NoChange;
         opt->text = text();
     }
@@ -625,10 +625,11 @@ void QQuickStyleItem::initStyleOption()
         if (font)
             opt->fontMetrics = QFontMetrics(*font);
         opt->currentText = text();
-        opt->editable = m_properties["editable"].toBool();
+        opt->editable = m_properties[QStringLiteral("editable")].toBool();
 #ifdef Q_OS_OSX
-        if (m_properties["popup"].canConvert<QObject *>() && style() == QLatin1String("mac")) {
-            QObject *popup = m_properties["popup"].value<QObject *>();
+        if (m_properties[QStringLiteral("popup")].canConvert<QObject *>()
+                && style() == QLatin1String("mac")) {
+            QObject *popup = m_properties[QStringLiteral("popup")].value<QObject *>();
             if (platformFont == QPlatformTheme::MiniFont) {
                 popup->setProperty("__xOffset", -2);
                 popup->setProperty("__yOffset", 5);
@@ -718,12 +719,12 @@ void QQuickStyleItem::initStyleOption()
         opt->lineWidth = 1;
         opt->subControls = QStyle::SC_GroupBoxLabel;
         opt->features = 0;
-        if (m_properties["sunken"].toBool()) { // Qt draws an ugly line here so I ignore it
+        if (m_properties[QStringLiteral("sunken")].toBool()) { // Qt draws an ugly line here so I ignore it
             opt->subControls |= QStyle::SC_GroupBoxFrame;
         } else {
             opt->features |= QStyleOptionFrame::Flat;
         }
-        if (m_properties["checkable"].toBool())
+        if (m_properties[QStringLiteral("checkable")].toBool())
             opt->subControls |= QStyle::SC_GroupBoxCheckBox;
 
     }
@@ -902,9 +903,9 @@ QString QQuickStyleItem::hitTest(int px, int py)
                                                           qstyleoption_cast<QStyleOptionComplex*>(m_styleoption),
                                                           QPoint(px,py), 0);
         if (subcontrol == QStyle::SC_SpinBoxUp)
-            return "up";
+            return QStringLiteral("up");
         else if (subcontrol == QStyle::SC_SpinBoxDown)
-            return "down";
+            return QStringLiteral("down");
 
     }
         break;
@@ -914,7 +915,7 @@ QString QQuickStyleItem::hitTest(int px, int py)
                                                           qstyleoption_cast<QStyleOptionComplex*>(m_styleoption),
                                                           QPoint(px,py), 0);
         if (subcontrol == QStyle::SC_SliderHandle)
-            return "handle";
+            return QStringLiteral("handle");
 
     }
         break;
@@ -923,23 +924,23 @@ QString QQuickStyleItem::hitTest(int px, int py)
                                                           qstyleoption_cast<QStyleOptionComplex*>(m_styleoption),
                                                           QPoint(px,py), 0);
         if (subcontrol == QStyle::SC_ScrollBarSlider)
-            return "handle";
+            return QStringLiteral("handle");
 
         if (subcontrol == QStyle::SC_ScrollBarSubLine)
-            return "up";
+            return QStringLiteral("up");
         else if (subcontrol == QStyle::SC_ScrollBarSubPage)
-            return "upPage";
+            return QStringLiteral("upPage");
 
         if (subcontrol == QStyle::SC_ScrollBarAddLine)
-            return "down";
+            return QStringLiteral("down");
         else if (subcontrol == QStyle::SC_ScrollBarAddPage)
-            return "downPage";
+            return QStringLiteral("downPage");
     }
         break;
     default:
         break;
     }
-    return "none";
+    return QStringLiteral("none");
 }
 
 QSize QQuickStyleItem::sizeFromContents(int width, int height)
@@ -1030,12 +1031,12 @@ QSize QQuickStyleItem::sizeFromContents(int width, int height)
     case Edit:
 #ifdef Q_OS_OSX
         if (style() == QLatin1String("mac")) {
-            QString sizeHint = m_hints.value("size").toString();
+            QString sizeHint = m_hints.value(QStringLiteral("size")).toString();
             if (sizeHint == QLatin1String("small") || sizeHint == QLatin1String("mini"))
                 size = QSize(width, 19);
             else
                 size = QSize(width, 22);
-            if (hints().value("rounded").toBool())
+            if (hints().value(QStringLiteral("rounded")).toBool())
                 size += QSize(4, 4);
 
         } else
@@ -1261,8 +1262,8 @@ QVariant QQuickStyleItem::styleHint(const QString &metric)
     } else if (metric == QLatin1String("tabbaralignment")) {
         int result = qApp->style()->styleHint(QStyle::SH_TabBar_Alignment);
         if (result == Qt::AlignCenter)
-            return "center";
-        return "left";
+            return QStringLiteral("center");
+        return QStringLiteral("left");
     } else if (metric == QLatin1String("externalScrollBars")) {
         return qApp->style()->styleHint(QStyle::SH_ScrollView_FrameOnlyAroundContents);
     } else if (metric == QLatin1String("scrollToClickPosition"))
@@ -1539,7 +1540,7 @@ void QQuickStyleItem::paint(QPainter *painter)
     case ToolButton:
 
 #ifdef Q_OS_OSX
-        if (style() == QLatin1String("mac") && hints().value("segmented").toBool()) {
+        if (style() == QLatin1String("mac") && hints().value(QStringLiteral("segmented")).toBool()) {
             const QPaintDevice *target = painter->device();
              HIThemeSegmentDrawInfo sgi;
             sgi.version = 0;
@@ -1555,7 +1556,7 @@ void QQuickStyleItem::paint(QPainter *painter)
             }
             SInt32 button_height;
             GetThemeMetric(kThemeMetricButtonRoundedHeight, &button_height);
-            QString buttonPos = m_properties.value("position").toString();
+            QString buttonPos = m_properties.value(QStringLiteral("position")).toString();
             sgi.position = buttonPos == QLatin1String("leftmost") ? kHIThemeSegmentPositionFirst :
                            buttonPos == QLatin1String("rightmost") ? kHIThemeSegmentPositionLast :
                            buttonPos == QLatin1String("h_middle") ? kHIThemeSegmentPositionMiddle :
@@ -1616,7 +1617,7 @@ void QQuickStyleItem::paint(QPainter *painter)
         break;
     case Edit: {
 #ifdef Q_OS_OSX
-        if (style() == QLatin1String("mac") && hints().value("rounded").toBool()) {
+        if (style() == QLatin1String("mac") && hints().value(QStringLiteral("rounded")).toBool()) {
             const QPaintDevice *target = painter->device();
             HIThemeFrameDrawInfo fdi;
             fdi.version = 0;
