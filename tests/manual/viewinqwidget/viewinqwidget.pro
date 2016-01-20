@@ -1,6 +1,5 @@
-QT += qml quick widgets
+QT += qml quick widgets quickwidgets
 TARGET = viewinqwidget
 SOURCES += $$PWD/main.cpp
-
-OTHER_FILES += \
-    qml/main.qml
+DEFINES += SRCDIR=\\\"$$PWD/\\\"
+OTHER_FILES += main.qml
