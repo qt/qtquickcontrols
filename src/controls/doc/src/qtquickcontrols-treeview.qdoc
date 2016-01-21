@@ -215,13 +215,13 @@
 /*!
     \qmlsignal TreeView::doubleClicked(QModelIndex index)
 
-    Emitted when the user presses and holds a valid row in the tree.
+    Emitted when the user double clicks a valid row.
 
     \a index is the model index of the double clicked row in the tree.
 
     \note This signal is only emitted if the row or item delegate does not accept mouse events.
 
-    The corresponding handler is \c onPressAndHold.
+    The corresponding handler is \c onDoubleClicked.
 */
 
 /*!

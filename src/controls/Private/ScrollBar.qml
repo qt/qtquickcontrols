@@ -88,7 +88,7 @@ Item {
         property int pageStep: internal.horizontal ? width : height
         property bool scrollToClickposition: internal.scrollToClickPosition
         anchors.fill: parent
-        cursorShape: __panel.visible ? Qt.ArrowCursor : Qt.IBeamCursor // forces a cursor change
+        cursorShape: __panel && __panel.visible ? Qt.ArrowCursor : Qt.IBeamCursor // forces a cursor change
 
         property bool autoincrement: false
         property bool scrollToClickPosition: __style ? __style.scrollToClickedPosition : 0

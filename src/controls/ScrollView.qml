@@ -286,7 +286,7 @@ FocusScope {
             // comes originally from QTextEdit, which sets 20px steps by default, as well as
             // QQuickWheelArea.
             // TODO: centralize somewhere, QPlatformTheme?
-            scrollSpeed: 20 * (__style.__wheelScrollLines || 1)
+            scrollSpeed: 20 * (__style && __style.__wheelScrollLines || 1)
 
             Connections {
                 target: flickableItem
