@@ -48,6 +48,8 @@
 // We mean it.
 //
 
+#include <QJSValue>
+#include <QStandardPaths>
 #include <QQuickView>
 #include <QtGui/qpa/qplatformdialoghelper.h>
 #include <qpa/qplatformtheme.h>
@@ -69,6 +71,8 @@ class QQuickAbstractFileDialog : public QQuickAbstractDialog
     Q_PROPERTY(QUrl fileUrl READ fileUrl NOTIFY selectionAccepted)
     Q_PROPERTY(QList<QUrl> fileUrls READ fileUrls NOTIFY selectionAccepted)
     Q_PROPERTY(bool sidebarVisible READ sidebarVisible WRITE setSidebarVisible NOTIFY sidebarVisibleChanged)
+    Q_PROPERTY(QJSValue shortcuts READ shortcuts NOTIFY shortcutsChanged) // map of QStandardDirectory names to QUrls
+    Q_PROPERTY(QJSValue __shortcuts READ __shortcuts NOTIFY shortcutsChanged) // map of details for QML dialog implementations
 
 public:
     QQuickAbstractFileDialog(QObject *parent = 0);
@@ -86,6 +90,8 @@ public:
     QUrl fileUrl() const;
     virtual QList<QUrl> fileUrls() const = 0;
     bool sidebarVisible() const { return m_sidebarVisible; }
+    QJSValue shortcuts();
+    QJSValue __shortcuts();
 
 public Q_SLOTS:
     void setVisible(bool v);
@@ -106,13 +112,19 @@ Q_SIGNALS:
     void fileModeChanged();
     void selectionAccepted();
     void sidebarVisibleChanged();
+    void shortcutsChanged();
 
 protected:
-    virtual void updateModes();
+    void updateModes();
+    void addShortcut(const QString &name, const QString &visibleName, const QString &path);
+    void addShortcutFromStandardLocation(const QString &name, QStandardPaths::StandardLocation loc, bool local = true);
+    void populateShortcuts();
 
 protected:
     QPlatformFileDialogHelper *m_dlgHelper;
     QSharedPointer<QFileDialogOptions> m_options;
+    QJSValue m_shortcuts;
+    QJSValue m_shortcutDetails;
     bool m_selectExisting;
     bool m_selectMultiple;
     bool m_selectFolder;

@@ -49,8 +49,6 @@
 //
 
 #include "qquickabstractfiledialog_p.h"
-#include <QJSValue>
-#include <QStandardPaths>
 
 QT_BEGIN_NAMESPACE
 
@@ -58,20 +56,12 @@ class QQuickFileDialog : public QQuickAbstractFileDialog
 {
     Q_OBJECT
     Q_PROPERTY(QQuickItem* contentItem READ contentItem WRITE setContentItem DESIGNABLE false)
-    Q_PROPERTY(QJSValue shortcuts READ shortcuts NOTIFY shortcutsChanged) // map of QStandardDirectory names to QUrls
-    Q_PROPERTY(QJSValue __shortcuts READ __shortcuts NOTIFY shortcutsChanged) // map of details for QML dialog implementations
     Q_CLASSINFO("DefaultProperty", "contentItem")    // AbstractFileDialog in QML can have only one child
 
 public:
     explicit QQuickFileDialog(QObject *parent = 0);
     ~QQuickFileDialog();
     virtual QList<QUrl> fileUrls() const Q_DECL_OVERRIDE;
-
-    QJSValue shortcuts();
-    QJSValue __shortcuts();
-
-Q_SIGNALS:
-    void shortcutsChanged();
 
 public Q_SLOTS:
     void clearSelection();
@@ -83,17 +73,10 @@ protected:
     Q_INVOKABLE QUrl pathToUrl(const QString &path) { return QUrl::fromLocalFile(path); }
     Q_INVOKABLE QUrl pathFolder(const QString &path);
 
-    void addShortcut(const QString &name, const QString &visibleName, const QString &path);
-    void addShortcutFromStandardLocation(const QString &name, QStandardPaths::StandardLocation loc, bool local = true);
-    void populateShortcuts();
-    void updateModes() Q_DECL_OVERRIDE;
-
 private:
     QList<QUrl> m_selections;
 
     Q_DISABLE_COPY(QQuickFileDialog)
-    QJSValue m_shortcuts;
-    QJSValue m_shortcutDetails;
 };
 
 QT_END_NAMESPACE

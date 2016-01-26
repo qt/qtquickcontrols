@@ -38,9 +38,10 @@
 #include "qquickitem.h"
 
 #include <private/qguiapplication_p.h>
+#include <QQmlEngine>
+#include <QQuickWindow>
 #include <QRegularExpression>
 #include <QWindow>
-#include <QQuickWindow>
 
 QT_BEGIN_NAMESPACE
 
@@ -219,6 +220,85 @@ void QQuickAbstractFileDialog::updateModes()
     m_options->setAcceptMode(m_selectExisting ?
                            QFileDialogOptions::AcceptOpen : QFileDialogOptions::AcceptSave);
     emit fileModeChanged();
+}
+
+void QQuickAbstractFileDialog::addShortcut(const QString &name, const QString &visibleName, const QString &path)
+{
+    QQmlEngine *engine = qmlEngine(this);
+    QUrl url = QUrl::fromLocalFile(path);
+
+    // Since the app can have bindings to the shortcut, we always add it
+    // to the public API, even if the directory doesn't (yet) exist.
+    m_shortcuts.setProperty(name, url.toString());
+
+    // ...but we are more strict about showing it as a clickable link inside the dialog
+    if (visibleName.isEmpty() || !QDir(path).exists())
+        return;
+
+    QJSValue o = engine->newObject();
+    o.setProperty("name", visibleName);
+    // TODO maybe some day QJSValue could directly store a QUrl
+    o.setProperty("url", url.toString());
+
+    int length = m_shortcutDetails.property(QLatin1String("length")).toInt();
+    m_shortcutDetails.setProperty(length, o);
+}
+
+void QQuickAbstractFileDialog::addShortcutFromStandardLocation(const QString &name, QStandardPaths::StandardLocation loc, bool local)
+{
+    if (m_selectExisting) {
+        QStringList readPaths = QStandardPaths::standardLocations(loc);
+        QString path = readPaths.isEmpty() ? QString() : local ? readPaths.first() : readPaths.last();
+        addShortcut(name, QStandardPaths::displayName(loc), path);
+    } else {
+        QString path = QStandardPaths::writableLocation(loc);
+        addShortcut(name, QStandardPaths::displayName(loc), path);
+    }
+}
+
+void QQuickAbstractFileDialog::populateShortcuts()
+{
+    QJSEngine *engine = qmlEngine(this);
+    m_shortcutDetails = engine->newArray();
+    m_shortcuts = engine->newObject();
+
+    addShortcutFromStandardLocation(QLatin1String("desktop"), QStandardPaths::DesktopLocation);
+    addShortcutFromStandardLocation(QLatin1String("documents"), QStandardPaths::DocumentsLocation);
+    addShortcutFromStandardLocation(QLatin1String("music"), QStandardPaths::MusicLocation);
+    addShortcutFromStandardLocation(QLatin1String("movies"), QStandardPaths::MoviesLocation);
+    addShortcutFromStandardLocation(QLatin1String("home"), QStandardPaths::HomeLocation);
+
+#ifndef Q_OS_IOS
+    addShortcutFromStandardLocation(QLatin1String("pictures"), QStandardPaths::PicturesLocation);
+#else
+    // On iOS we point pictures to the system picture folder when loading
+    addShortcutFromStandardLocation(QLatin1String("pictures"), QStandardPaths::PicturesLocation, !m_selectExisting);
+#endif
+
+#ifndef Q_OS_IOS
+    // on iOS, this returns only "/", which is never a useful path to read or write anything
+    QFileInfoList drives = QDir::drives();
+    foreach (QFileInfo fi, drives)
+        addShortcut(fi.absoluteFilePath(), fi.absoluteFilePath(), fi.absoluteFilePath());
+#endif
+
+    emit shortcutsChanged();
+}
+
+QJSValue QQuickAbstractFileDialog::shortcuts()
+{
+    if (m_shortcuts.isUndefined())
+        populateShortcuts();
+
+    return m_shortcuts;
+}
+
+QJSValue QQuickAbstractFileDialog::__shortcuts()
+{
+    if (m_shortcutDetails.isUndefined())
+        populateShortcuts();
+
+    return m_shortcutDetails;
 }
 
 QT_END_NAMESPACE
