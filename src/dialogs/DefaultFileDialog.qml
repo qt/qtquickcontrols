@@ -48,10 +48,39 @@ import "qml"
 AbstractFileDialog {
     id: root
 
-    folder: view.model.folder
+    Component {
+        id: modelComponent
+        FolderListModel {
+            showFiles: !root.selectFolder
+            nameFilters: root.selectedNameFilterExtensions
+            sortField: (view.sortIndicatorColumn === 0 ? FolderListModel.Name :
+                        (view.sortIndicatorColumn === 1 ? FolderListModel.Type :
+                        (view.sortIndicatorColumn === 2 ? FolderListModel.Size : FolderListModel.LastModified)))
+            sortReversed: view.sortIndicatorOrder === Qt.DescendingOrder
+        }
+    }
 
     onVisibleChanged: {
         if (visible) {
+            // If the TableView doesn't have a model yet, create it asynchronously to avoid a UI freeze
+            if (!view.model) {
+                var incubator = modelComponent.incubateObject(null, { })
+                function init(model) {
+                    view.model = model
+                    model.nameFilters = root.selectedNameFilterExtensions
+                    root.folder = model.folder
+                }
+
+                if (incubator.status === Component.Ready) {
+                    init(incubator.object)
+                } else {
+                    incubator.onStatusChanged = function(status) {
+                        if (status === Component.Ready)
+                            init(incubator.object)
+                    }
+                }
+            }
+
             view.needsWidthAdjustment = true
             view.selection.clear()
             view.focus = true
@@ -59,7 +88,6 @@ AbstractFileDialog {
     }
 
     Component.onCompleted: {
-        view.model.nameFilters = root.selectedNameFilterExtensions
         filterField.currentIndex = root.selectedNameFilterIndex
         root.favoriteFolders = settings.favoriteFolders
     }
@@ -300,14 +328,7 @@ AbstractFileDialog {
                     resizeColumnsToContents()
                     needsWidthAdjustment = false
                 }
-                model: FolderListModel {
-                    showFiles: !root.selectFolder
-                    nameFilters: root.selectedNameFilterExtensions
-                    sortField: (view.sortIndicatorColumn === 0 ? FolderListModel.Name :
-                                (view.sortIndicatorColumn === 1 ? FolderListModel.Type :
-                                (view.sortIndicatorColumn === 2 ? FolderListModel.Size : FolderListModel.LastModified)))
-                    sortReversed: view.sortIndicatorOrder === Qt.DescendingOrder
-                }
+                model: null
 
                 onActivated: if (view.focus) {
                     if (view.selection.count > 0 && view.model.isFolder(row)) {
@@ -435,7 +456,8 @@ AbstractFileDialog {
                     anchors.verticalCenter: parent.verticalCenter
                     onCurrentTextChanged: {
                         root.selectNameFilter(currentText)
-                        view.model.nameFilters = root.selectedNameFilterExtensions
+                        if (view.model)
+                            view.model.nameFilters = root.selectedNameFilterExtensions
                     }
                 }
                 Button {
