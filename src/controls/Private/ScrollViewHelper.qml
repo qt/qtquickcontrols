@@ -131,6 +131,11 @@ Item {
         anchors.right: cornerFill.left
         anchors.leftMargin:  leftMargin
         anchors.bottomMargin: bottomMargin
+        onScrollAmountChanged: {
+            if (flickableItem && (flickableItem.atXBeginning || flickableItem.atXEnd)) {
+                value = flickableItem.contentX - flickableItem.originX
+            }
+        }
         onValueChanged: {
             if (!blockUpdates) {
                 flickableItem.contentX = value + flickableItem.originX
@@ -180,6 +185,11 @@ Item {
         anchors.top: parent.top
         anchors.topMargin: __scrollBarTopMargin + topMargin
         anchors.rightMargin: rightMargin
+        onScrollAmountChanged: {
+            if (flickableItem && (flickableItem.atYBeginning || flickableItem.atYEnd)) {
+                value = flickableItem.contentY - flickableItem.originY
+            }
+        }
         onValueChanged: {
             if (flickableItem && !blockUpdates && enabled) {
                 flickableItem.contentY = value + flickableItem.originY
