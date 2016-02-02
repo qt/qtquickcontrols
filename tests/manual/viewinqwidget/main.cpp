@@ -35,19 +35,56 @@
 ****************************************************************************/
 
 #include <QApplication>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QDebug>
+#include <QDesktopWidget>
+#include <QGroupBox>
+#include <QQmlError>
 #include <QQuickView>
-#include <QWidget>
+#include <QQuickWidget>
 
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-    QQuickView *view = new QQuickView;
     QWidget widget;
-    QWidget *container = QWidget::createWindowContainer(view, &widget);
-    container->setGeometry(100,100,300,300);
+    widget.setWindowTitle(QT_VERSION_STR);
 
-    view->setSource(QUrl(QStringLiteral("main.qml")));
+    const QUrl source(QUrl::fromLocalFile(QLatin1String(SRCDIR) + QStringLiteral("/main.qml")));
+
+    QHBoxLayout *hLayout = new QHBoxLayout(&widget);
+    QGroupBox *groupBox = new QGroupBox("QuickWidget", &widget);
+    QVBoxLayout *vLayout = new QVBoxLayout(groupBox);
+    QQuickWidget *quickWidget = new QQuickWidget(groupBox);
+    quickWidget->setMinimumSize(200, 200);
+    vLayout->addWidget(quickWidget);
+    quickWidget->setResizeMode(QQuickWidget::SizeRootObjectToView);
+    quickWidget->setSource(source);
+    if (quickWidget->status() == QQuickWidget::Error) {
+        qWarning() << quickWidget->errors();
+        return 1;
+    }
+    hLayout->addWidget(groupBox);
+
+    groupBox = new QGroupBox("QQuickView/createWindowContainer", &widget);
+    vLayout = new QVBoxLayout(groupBox);
+    QQuickView *view = new QQuickView;
+    view->setSource(source);
+    if (view->status() == QQuickView::Error) {
+        qWarning() << view->errors();
+        return 1;
+    }
+
+    view->setResizeMode(QQuickView::SizeRootObjectToView);
+    QWidget *container = QWidget::createWindowContainer(view, groupBox);
+    container->setMinimumSize(200, 200);
+    vLayout->addWidget(container);
+    hLayout->addWidget(groupBox);
+
+    const QRect availableGeometry = QApplication::desktop()->availableGeometry(&widget);
+    widget.move(availableGeometry.center() - QPoint(widget.sizeHint().width() / 2, widget.sizeHint().height() / 2));
+
     widget.show();
 
     return app.exec();

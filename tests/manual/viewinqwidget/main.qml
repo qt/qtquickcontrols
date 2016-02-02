@@ -39,9 +39,8 @@ import QtQuick.Controls 1.3
 
 Item {
     visible: true
-    width: 360
-    height: 360
-
+    width: 200
+    height: 200
 
     ComboBox {
         anchors.centerIn: parent
