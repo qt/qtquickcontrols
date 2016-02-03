@@ -125,6 +125,7 @@
 */
 
 /*!
+    \qmlpropertygroup TreeView::section
     \qmlproperty string TreeView::section.property
     \qmlproperty enumeration TreeView::section.criteria
     \qmlproperty Component TreeView::section.delegate
