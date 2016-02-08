@@ -121,6 +121,7 @@ BasicTableView {
 
         property var clickedIndex: undefined
         property var pressedIndex: undefined
+        property bool selectOnRelease: false
         property int pressedColumn: -1
         readonly property alias currentRow: root.__currentRow
         readonly property alias currentIndex: root.currentIndex
@@ -237,22 +238,37 @@ BasicTableView {
             var pressedRow = __listView.indexAt(0, mouseY + __listView.contentY)
             pressedIndex = modelAdaptor.mapRowToModelIndex(pressedRow)
             pressedColumn = __listView.columnAt(mouseX)
+            selectOnRelease = false
             __listView.forceActiveFocus()
-            if (pressedRow > -1 && !Settings.hasTouchScreen
-                && !branchDecorationContains(mouse.x, mouse.y)) {
-                __listView.currentIndex = pressedRow
-                if (!clickedIndex)
-                    clickedIndex = pressedIndex
-                mouseSelect(pressedIndex, mouse.modifiers, false)
-                if (!mouse.modifiers)
-                    clickedIndex = pressedIndex
+            if (pressedRow === -1
+                || Settings.hasTouchScreen
+                || branchDecorationContains(mouse.x, mouse.y)) {
+                return
             }
+            if (selectionMode === SelectionMode.ExtendedSelection
+                && selection.isSelected(pressedIndex)) {
+                selectOnRelease = true
+                return
+            }
+            __listView.currentIndex = pressedRow
+            if (!clickedIndex)
+                clickedIndex = pressedIndex
+            mouseSelect(pressedIndex, mouse.modifiers, false)
+            if (!mouse.modifiers)
+                clickedIndex = pressedIndex
         }
 
         onReleased: {
+            if (selectOnRelease) {
+                var releasedRow = __listView.indexAt(0, mouseY + __listView.contentY)
+                var releasedIndex = modelAdaptor.mapRowToModelIndex(releasedRow)
+                if (releasedRow >= 0 && releasedIndex === pressedIndex)
+                    mouseSelect(pressedIndex, mouse.modifiers, false)
+            }
             pressedIndex = undefined
             pressedColumn = -1
             autoScroll = 0
+            selectOnRelease = false
         }
 
         onPositionChanged: {
@@ -283,12 +299,14 @@ BasicTableView {
         onExited: {
             pressedIndex = undefined
             pressedColumn = -1
+            selectOnRelease = false
         }
 
         onCanceled: {
             pressedIndex = undefined
             pressedColumn = -1
             autoScroll = 0
+            selectOnRelease = false
         }
 
         onClicked: {
