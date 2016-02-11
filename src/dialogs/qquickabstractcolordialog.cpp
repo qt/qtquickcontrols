@@ -49,7 +49,11 @@ QT_BEGIN_NAMESPACE
 QQuickAbstractColorDialog::QQuickAbstractColorDialog(QObject *parent)
     : QQuickAbstractDialog(parent)
     , m_dlgHelper(0)
+#ifdef QPLATFORMDIALOGHELPERS_HAS_CREATE
+    , m_options(QColorDialogOptions::create())
+#else
     , m_options(QSharedPointer<QColorDialogOptions>(new QColorDialogOptions()))
+#endif
 {
     // On the Mac, modality doesn't work unless you call exec().  But this is a reasonable default anyway.
     m_modality = Qt::NonModal;

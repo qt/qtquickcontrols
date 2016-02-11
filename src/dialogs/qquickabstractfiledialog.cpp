@@ -51,7 +51,11 @@ QT_BEGIN_NAMESPACE
 QQuickAbstractFileDialog::QQuickAbstractFileDialog(QObject *parent)
     : QQuickAbstractDialog(parent)
     , m_dlgHelper(0)
+#ifdef QPLATFORMDIALOGHELPERS_HAS_CREATE
+    , m_options(QFileDialogOptions::create())
+#else
     , m_options(QSharedPointer<QFileDialogOptions>(new QFileDialogOptions()))
+#endif
     , m_selectExisting(true)
     , m_selectMultiple(false)
     , m_selectFolder(false)
