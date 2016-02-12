@@ -49,6 +49,8 @@ TestCase {
     width:400
     height:400
 
+    readonly property int waitTime: 200
+
     Component {
         id: windowComponent
         ApplicationWindow {
@@ -95,12 +97,104 @@ TestCase {
         verify(fileMenu)
         tryCompare(fileMenu, "__popupVisible", false)
         mousePress(fileMenu.__visualItem)
-        wait(200);
+        wait(waitTime);
         tryCompare(fileMenu, "__popupVisible", true)
         mouseMove(fileMenu.__contentItem, 0, -10)
-        wait(200)
+        wait(waitTime)
         mouseRelease(fileMenu.__contentItem, 0, -10)
         tryCompare(fileMenu, "__popupVisible", true)
-        wait(200)
+        wait(waitTime)
+
+        window.destroy();
+    }
+
+    function test_keyNavigation() {
+        if (Qt.platform.os === "osx")
+            skip("MenuBar cannot be reliably tested on OS X")
+
+        var window = windowComponent.createObject()
+        waitForRendering(window.contentItem)
+        var fileMenu = findChild(window, "fileMenu")
+        verify(fileMenu)
+        var editMenu = findChild(window, "editMenu")
+        verify(editMenu)
+
+        // Click menu should open
+        tryCompare(fileMenu, "__popupVisible", false)
+        mouseClick(fileMenu.__visualItem)
+        wait(waitTime)
+        tryCompare(fileMenu, "__popupVisible", true)
+        tryCompare(fileMenu, "__currentIndex", -1)
+        tryCompare(fileMenu.__contentItem, "status", Loader.Ready)
+
+        // Move right
+        tryCompare(editMenu, "__popupVisible", false)
+        keyPress(Qt.Key_Right, Qt.NoModifier, waitTime)
+        keyRelease(Qt.Key_Right, Qt.NoModifier, waitTime)
+        tryCompare(editMenu, "__popupVisible", true)
+        tryCompare(editMenu.__contentItem, "status", Loader.Ready)
+
+        // Move left
+        tryCompare(fileMenu, "__popupVisible", false)
+        keyPress(Qt.Key_Left, Qt.NoModifier, waitTime)
+        keyRelease(Qt.Key_Left, Qt.NoModifier, waitTime)
+        tryCompare(fileMenu, "__popupVisible", true)
+        tryCompare(fileMenu, "__currentIndex", 0)
+        tryCompare(fileMenu.__contentItem, "status", Loader.Ready)
+
+        // Move down
+        var saveMenuItem = findChild(window, "saveMenuItem")
+        verify(saveMenuItem)
+        tryCompare(saveMenuItem.__visualItem.styleData, "selected", false)
+        keyPress(Qt.Key_Down, Qt.NoModifier, waitTime)
+        keyRelease(Qt.Key_Down, Qt.NoModifier, waitTime)
+        tryCompare(fileMenu, "__currentIndex", 1)
+        tryCompare(saveMenuItem.__visualItem.styleData, "selected", true)
+
+        // Move up
+        var recentFilesSubMenu = findChild(window, "recentFilesSubMenu")
+        verify(recentFilesSubMenu)
+        tryCompare(recentFilesSubMenu.__visualItem.styleData, "selected", false)
+        keyPress(Qt.Key_Up, Qt.NoModifier, waitTime)
+        keyRelease(Qt.Key_Up, Qt.NoModifier, waitTime)
+        tryCompare(fileMenu, "__currentIndex", 0)
+        tryCompare(recentFilesSubMenu.__visualItem.styleData, "selected", true)
+
+        // Move right inside sub menu
+        tryCompare(recentFilesSubMenu, "__popupVisible", false)
+        tryCompare(recentFilesSubMenu, "__currentIndex", -1)
+        keyPress(Qt.Key_Right, Qt.NoModifier, waitTime)
+        keyRelease(Qt.Key_Right, Qt.NoModifier, waitTime)
+        tryCompare(recentFilesSubMenu, "__popupVisible", true)
+        tryCompare(recentFilesSubMenu, "__currentIndex", 0)
+        tryCompare(recentFilesSubMenu.__contentItem, "status", Loader.Ready)
+
+        // Move down inside sub menu
+        var recentFile2MenuItem = findChild(window, "recentFile2MenuItem")
+        verify(recentFile2MenuItem)
+        tryCompare(recentFile2MenuItem.__visualItem.styleData, "selected", false)
+        tryCompare(recentFilesSubMenu, "__currentIndex", 0)
+        keyPress(Qt.Key_Down, Qt.NoModifier, waitTime)
+        keyRelease(Qt.Key_Down, Qt.NoModifier, waitTime)
+        tryCompare(recentFilesSubMenu, "__currentIndex", 1)
+        tryCompare(recentFile2MenuItem.__visualItem.styleData, "selected", true)
+
+        // Move up inside sub menu
+        var recentFile1MenuItem = findChild(window, "recentFile1MenuItem")
+        verify(recentFile1MenuItem)
+        tryCompare(recentFile1MenuItem.__visualItem.styleData, "selected", false)
+        tryCompare(recentFilesSubMenu, "__currentIndex", 1)
+        keyPress(Qt.Key_Up, Qt.NoModifier, waitTime)
+        keyRelease(Qt.Key_Up, Qt.NoModifier, waitTime)
+        tryCompare(recentFilesSubMenu, "__currentIndex", 0)
+        tryCompare(recentFile1MenuItem.__visualItem.styleData, "selected", true)
+
+        // Move left out of sub menu
+        keyPress(Qt.Key_Left, Qt.NoModifier, waitTime)
+        keyRelease(Qt.Key_Left, Qt.NoModifier, waitTime)
+        tryCompare(recentFilesSubMenu, "__popupVisible", false)
+        tryCompare(recentFilesSubMenu, "__currentIndex", -1)
+
+        window.destroy()
     }
 }
