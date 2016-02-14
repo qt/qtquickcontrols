@@ -418,6 +418,61 @@ TestCase {
         comboBox.destroy()
     }
 
+    function test_activated_index_QTBUG_43050(){
+        if (Qt.platform.os === "osx")
+            skip("When the menu pops up on OS X, it does not return and the test fails after time out")
+        if (Qt.platform.os === "windows")
+            skip("Test randomly fails under Windows")
+
+        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.2; \
+        ComboBox { \
+            property bool indexWasUpdated: false; \
+            model: 4; \
+            onActivated: indexWasUpdated = (index === currentIndex); \
+        }', container, '');
+        var menuIndex = getMenuIndex(comboBox)
+        verify(menuIndex !== -1)
+        comboBox.forceActiveFocus()
+        verify(!comboBox.data[menuIndex].__popupVisible)
+        keyPress(Qt.Key_Space)
+        verify(comboBox.data[menuIndex].__popupVisible)
+
+        waitForRendering(comboBox)
+        keyPress(Qt.Key_Down)
+        keyPress(Qt.Key_Down)
+        verify(!comboBox.indexWasUpdated)
+        keyPress(Qt.Key_Enter)
+        verify(comboBox.indexWasUpdated)
+
+        comboBox.destroy()
+    }
+
+    function test_update_index_on_activated_QTBUG_51113(){
+        if (Qt.platform.os === "osx")
+            skip("When the menu pops up on OS X, it does not return and the test fails after time out")
+        if (Qt.platform.os === "windows")
+            skip("Test randomly fails under Windows")
+
+        var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.2; \
+        ComboBox { \
+            model: 4; \
+            onActivated: if (index == 1) currentIndex = 3; \
+        }', container, '');
+        var menuIndex = getMenuIndex(comboBox)
+        verify(menuIndex !== -1)
+        comboBox.forceActiveFocus()
+        verify(!comboBox.data[menuIndex].__popupVisible)
+        keyPress(Qt.Key_Space)
+        verify(comboBox.data[menuIndex].__popupVisible)
+
+        waitForRendering(comboBox)
+        keyPress(Qt.Key_Down)
+        keyPress(Qt.Key_Enter)
+        compare(comboBox.currentIndex, 3)
+
+        comboBox.destroy()
+    }
+
     function test_activeFocusOnTab() {
         if (Qt.styleHints.tabFocusBehavior != Qt.TabFocusAllControls)
             skip("This function doesn't support NOT iterating all.")
