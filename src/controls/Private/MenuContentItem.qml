@@ -141,9 +141,13 @@ Loader {
 
     Keys.onRightPressed: {
         var item = content.menuItemAt(__menu.__currentIndex)
-        if ((event.accepted = (item && item.styleData.type === MenuItemType.Menu))) {
+        if (item && item.styleData.type === MenuItemType.Menu
+                 && !item.__menuItem.__popupVisible) {
             item.__showSubMenu(true)
             item.__menuItem.__currentIndex = 0
+            event.accepted = true
+        } else {
+            event.accepted = false
         }
     }
 

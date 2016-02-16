@@ -288,6 +288,7 @@
 */
 
 /*!
+    \qmlpropertygroup TableView::section
     \qmlproperty string TableView::section.property
     \qmlproperty enumeration TableView::section.criteria
     \qmlproperty Component TableView::section.delegate

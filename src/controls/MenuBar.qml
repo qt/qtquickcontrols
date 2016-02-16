@@ -250,6 +250,8 @@ MenuBarPrivate {
             }
         }
 
+        Keys.forwardTo: d.openedMenuIndex !== -1 ? [root.menus[d.openedMenuIndex].__contentItem] : []
+
         Row {
             id: row
             x: d.style ? d.style.padding.left : 0

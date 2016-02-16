@@ -70,7 +70,6 @@ void QQuickPopupWindow::show()
     if (QWindow *tp = transientParent()) {
         if (m_parentItem) {
             QPointF pos = m_parentItem->mapToItem(m_parentItem->window()->contentItem(), QPointF(posx, posy));
-            pos += tp->mapFromGlobal(m_parentItem->window()->mapToGlobal(QPoint()));
             posx = pos.x();
             posy = pos.y();
         }
