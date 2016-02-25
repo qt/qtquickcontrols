@@ -53,7 +53,7 @@ QQuickMenuBase::QQuickMenuBase(QObject *parent, int type)
     : QObject(parent), m_visible(true), m_type(static_cast<QQuickMenuItemType::MenuItemType>(type))
     , m_parentMenu(0), m_container(0), m_platformItem(0), m_visualItem(0)
 {
-    if (type >= 0) {
+    if (type >= 0 && QGuiApplication::platformName() != QStringLiteral("xcb")) { // QTBUG-51372)
         m_platformItem = QGuiApplicationPrivate::platformTheme()->createPlatformMenuItem();
         if (m_platformItem)
             m_platformItem->setRole(QPlatformMenuItem::TextHeuristicRole);
