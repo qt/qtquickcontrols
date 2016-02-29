@@ -259,6 +259,7 @@ QT_BEGIN_NAMESPACE
 
 QQuickMenu1::QQuickMenu1(QObject *parent)
     : QQuickMenuText(parent, QQuickMenuItemType::Menu),
+      m_platformMenu(0),
       m_itemsCount(0),
       m_selectedIndex(-1),
       m_parentWindow(0),
@@ -274,12 +275,14 @@ QQuickMenu1::QQuickMenu1(QObject *parent)
 {
     connect(this, SIGNAL(__textChanged()), this, SIGNAL(titleChanged()));
 
-    m_platformMenu = QGuiApplicationPrivate::platformTheme()->createPlatformMenu();
-    if (m_platformMenu) {
-        connect(m_platformMenu, SIGNAL(aboutToShow()), this, SIGNAL(aboutToShow()));
-        connect(m_platformMenu, SIGNAL(aboutToHide()), this, SLOT(hideMenu()));
-        if (platformItem())
-            platformItem()->setMenu(m_platformMenu);
+    if (QGuiApplication::platformName() != QStringLiteral("xcb")) { // QTBUG-51372
+        m_platformMenu = QGuiApplicationPrivate::platformTheme()->createPlatformMenu();
+        if (m_platformMenu) {
+            connect(m_platformMenu, SIGNAL(aboutToShow()), this, SIGNAL(aboutToShow()));
+            connect(m_platformMenu, SIGNAL(aboutToHide()), this, SLOT(hideMenu()));
+            if (platformItem())
+                platformItem()->setMenu(m_platformMenu);
+        }
     }
     if (const QFont *font = QGuiApplicationPrivate::platformTheme()->font(QPlatformTheme::MenuItemFont))
         m_font = *const_cast<QFont*>(font);

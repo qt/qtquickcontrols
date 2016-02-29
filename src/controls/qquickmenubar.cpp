@@ -99,6 +99,10 @@ void QQuickMenuBar1::setNative(bool native)
 
 void QQuickMenuBar1::setNativeNoNotify(bool native)
 {
+    // QTBUG-51372
+    if (QGuiApplication::platformName() == QStringLiteral("xcb"))
+        return;
+
     if (native) {
         if (!m_platformMenuBar) {
             m_platformMenuBar = QGuiApplicationPrivate::platformTheme()->createPlatformMenuBar();
