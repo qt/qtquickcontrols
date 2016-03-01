@@ -50,7 +50,11 @@
 
 static void initResources()
 {
+#ifndef QT_STATIC
     Q_INIT_RESOURCE(extras);
+#else
+    Q_INIT_RESOURCE(qmake_QtQuick_Extras);
+#endif
 }
 
 QT_BEGIN_NAMESPACE
@@ -65,12 +69,16 @@ static QObject *registerMathUtilsSingleton(QQmlEngine *engine, QJSEngine *jsEngi
 QtQuickExtrasPlugin::QtQuickExtrasPlugin(QObject *parent) :
     QQmlExtensionPlugin(parent)
 {
+    initResources();
 }
 
 void QtQuickExtrasPlugin::registerTypes(const char *uri)
 {
-    initResources();
+#ifndef QT_STATIC
     const QString prefix = "qrc:///ExtrasImports/QtQuick/Extras";
+#else
+    const QString prefix = "qrc:/qt-project.org/imports/QtQuick/Extras";
+#endif
     // Register public API.
     qmlRegisterUncreatableType<QQuickActivationMode>(uri, 1, 0, "ActivationMode", QLatin1String("Do not create objects of type ActivationMode"));
     // register 1.0
@@ -102,7 +110,11 @@ void QtQuickExtrasPlugin::initializeEngine(QQmlEngine *engine, const char *uri)
     qmlRegisterType<QQuickFlatProgressBar>("QtQuick.Extras.Private.CppUtils", 1, 1, "FlatProgressBar");
     qmlRegisterSingletonType<QQuickMathUtils>("QtQuick.Extras.Private.CppUtils", 1, 0, "MathUtils", registerMathUtilsSingleton);
 
+#ifndef QT_STATIC
     const QString prefix = "qrc:///ExtrasImports/QtQuick/Extras";
+#else
+    const QString prefix = "qrc:/qt-project.org/imports/QtQuick/Extras";
+#endif
     const char *private_uri = "QtQuick.Extras.Private";
     qmlRegisterType(QUrl(prefix + "/Private/CircularButton.qml"), private_uri, 1, 0, "CircularButton");
     qmlRegisterType(QUrl(prefix + "/Private/CircularButtonStyleHelper.qml"), private_uri, 1, 0, "CircularButtonStyleHelper");

@@ -42,6 +42,13 @@
 #include "qquickwritingsystemlistmodel_p.h"
 #include "qquickfontlistmodel_p.h"
 
+static void initResources()
+{
+#ifdef QT_STATIC
+    Q_INIT_RESOURCE(qmake_QtQuick_Dialogs_Private);
+#endif
+}
+
 QT_BEGIN_NAMESPACE
 
 class QtQuick2DialogsPrivatePlugin : public QQmlExtensionPlugin
@@ -50,6 +57,7 @@ class QtQuick2DialogsPrivatePlugin : public QQmlExtensionPlugin
     Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QQmlExtensionInterface/1.0")
 
 public:
+    QtQuick2DialogsPrivatePlugin(QObject *parent = 0) : QQmlExtensionPlugin(parent) { initResources(); }
     virtual void registerTypes(const char *uri)
     {
         Q_ASSERT(QLatin1String(uri) == QLatin1String("QtQuick.Dialogs.Private"));

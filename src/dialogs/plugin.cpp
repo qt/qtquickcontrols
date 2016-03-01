@@ -64,7 +64,11 @@ Q_LOGGING_CATEGORY(lcRegistration, "qt.quick.dialogs.registration")
 
 static void initResources()
 {
+#ifdef QT_STATIC
+    Q_INIT_RESOURCE(qmake_QtQuick_Dialogs);
+#else
     Q_INIT_RESOURCE(dialogs);
+#endif
 }
 
 QT_BEGIN_NAMESPACE
@@ -90,7 +94,7 @@ class QtQuick2DialogsPlugin : public QQmlExtensionPlugin
     Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QQmlExtensionInterface/1.0")
 
 public:
-    QtQuick2DialogsPlugin() : QQmlExtensionPlugin(), m_useResources(true) { }
+    QtQuick2DialogsPlugin() : QQmlExtensionPlugin(), m_useResources(true) { initResources(); }
 
     virtual void initializeEngine(QQmlEngine *engine, const char * uri) {
         qCDebug(lcRegistration) << uri << m_decorationComponentUrl;
@@ -99,16 +103,18 @@ public:
     }
 
     virtual void registerTypes(const char *uri) {
-        initResources();
-
         Q_ASSERT(QLatin1String(uri) == QLatin1String("QtQuick.Dialogs"));
         bool hasTopLevelWindows = QGuiApplicationPrivate::platformIntegration()->
             hasCapability(QPlatformIntegration::MultipleWindows);
         qCDebug(lcRegistration) << uri << "can use top-level windows?" << hasTopLevelWindows;
         QDir qmlDir(baseUrl().toLocalFile());
         QDir widgetsDir(baseUrl().toLocalFile());
+#ifndef QT_STATIC
         widgetsDir.cd("../PrivateWidgets");
-
+#endif
+#ifdef QT_STATIC
+        m_useResources = false;
+#else
 #ifndef ALWAYS_LOAD_FROM_RESOURCES
         // If at least one file was actually installed, then use installed qml files instead of resources.
         // This makes debugging and incremental development easier, whereas the "normal" installation
@@ -116,10 +122,14 @@ public:
         if (qmlDir.exists(QString("DefaultFileDialog.qml")))
             m_useResources = false;
 #endif
+#endif
         m_decorationComponentUrl = m_useResources ?
             QUrl("qrc:/QtQuick/Dialogs/qml/DefaultWindowDecoration.qml") :
+#ifndef QT_STATIC
             QUrl::fromLocalFile(qmlDir.filePath(QString("qml/DefaultWindowDecoration.qml")));
-
+#else
+            QUrl("qrc:/qt-project.org/imports/QtQuick/Dialogs/qml/DefaultWindowDecoration.qml");
+#endif
         // Prefer the QPA dialog helpers if the platform supports them.
         // Else if there is a QWidget-based implementation, check whether it's
         // possible to instantiate it from Qt Quick.
@@ -170,7 +180,11 @@ public:
             qmlRegisterType<QQuickDialog>(uri, 1, 2, "AbstractDialog"); // implementation wrapper
             QUrl dialogQmlPath = m_useResources ?
                 QUrl("qrc:/QtQuick/Dialogs/DefaultDialogWrapper.qml") :
+#ifndef QT_STATIC
                 QUrl::fromLocalFile(qmlDir.filePath("DefaultDialogWrapper.qml"));
+#else
+                QUrl("qrc:/qt-project.org/imports/QtQuick/Dialogs/DefaultDialogWrapper.qml");
+#endif
             qCDebug(lcRegistration) << "    registering" << dialogQmlPath << "as Dialog";
             qmlRegisterType(dialogQmlPath, uri, 1, 2, "Dialog");
         }
@@ -217,7 +231,11 @@ protected:
                 QCoreApplication::instance()->inherits("QApplication")) {
             QUrl dialogQmlPath =  m_useResources ?
                 QUrl(QString("qrc:/QtQuick/Dialogs/Widget%1.qml").arg(qmlName)) :
-                QUrl::fromLocalFile(qmlDir.filePath(QString("Widget%1.qml").arg(qmlName)));
+#ifndef QT_STATIC
+                    QUrl::fromLocalFile(qmlDir.filePath(QString("Widget%1.qml").arg(qmlName)));
+#else
+                    QUrl(QString("qrc:/qt-project.org/imports/QtQuick/Dialogs/Widget%1.qml").arg(qmlName));
+#endif
             if (qmlRegisterType(dialogQmlPath, uri, versionMajor, versionMinor, qmlName) >= 0) {
                 qCDebug(lcRegistration) << "    registering" << qmlName << " as " << dialogQmlPath;
                 return true;
@@ -235,7 +253,11 @@ protected:
         qmlRegisterType<WrapperType>(uri, versionMajor, versionMinor, abstractTypeName);
         QUrl dialogQmlPath =  m_useResources ?
                     QUrl(QString("qrc:/QtQuick/Dialogs/Default%1.qml").arg(qmlName)) :
+#ifndef QT_STATIC
                     QUrl::fromLocalFile(qmlDir.filePath(QString("Default%1.qml").arg(qmlName)));
+#else
+                    QUrl(QString("qrc:/qt-project.org/imports/QtQuick/Dialogs/Default%1.qml").arg(qmlName));
+#endif
         qCDebug(lcRegistration) << "    registering" << qmlName << " as " << dialogQmlPath;
         qmlRegisterType(dialogQmlPath, uri, versionMajor, versionMinor, qmlName);
     }

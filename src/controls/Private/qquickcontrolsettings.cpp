@@ -149,6 +149,7 @@ QQmlComponent *QQuickControlSettings::styleComponent(const QUrl &styleDirUrl, co
 static QString relativeStyleImportPath(QQmlEngine *engine, const QString &styleName)
 {
     QString path;
+#ifndef QT_STATIC
     bool found = false;
     const auto importPathList = engine->importPathList();
     for (const QString &import : importPathList) {
@@ -163,6 +164,9 @@ static QString relativeStyleImportPath(QQmlEngine *engine, const QString &styleN
     }
     if (!found)
         path = ":/QtQuick/Controls/Styles";
+#else
+    path = ":/qt-project.org/imports/QtQuick/Controls/Styles";
+#endif
     return path;
 }
 
@@ -175,7 +179,11 @@ static QString styleImportPath(QQmlEngine *engine, const QString &styleName)
     } else if (info.isRelative()) {
         path = relativeStyleImportPath(engine, styleName);
     } else {
+#ifndef QT_STATIC
         path = info.absolutePath();
+#else
+        path = "qrc:/qt-project.org/imports/QtQuick/Controls/Styles";
+#endif
     }
     return path;
 }
@@ -185,7 +193,11 @@ QQuickControlSettings::QQuickControlSettings(QQmlEngine *engine)
     // First, register all style paths in the default style location.
     QDir dir;
     const QString defaultStyle = defaultStyleName();
+#ifndef QT_STATIC
     dir.setPath(relativeStyleImportPath(engine, defaultStyle));
+#else
+    dir.setPath(":/qt-project.org/imports/QtQuick/Controls/Styles");
+#endif
     dir.setFilter(QDir::Dirs | QDir::NoDotAndDotDot);
     const auto list = dir.entryList();
     for (const QString &styleDirectory : list) {
@@ -265,6 +277,7 @@ void QQuickControlSettings::findStyle(QQmlEngine *engine, const QString &styleNa
 
     StyleData styleData;
 
+#ifndef QT_STATIC
     const auto list = dir.entryList();
     for (const QString &fileName : list) {
         // This assumes that there is only one library in the style directory,
@@ -276,6 +289,7 @@ void QQuickControlSettings::findStyle(QQmlEngine *engine, const QString &styleNa
             break;
         }
     }
+#endif
 
     // If there's no plugin for the style, then the style's files are
     // contained in this directory (which contains a qmldir file instead).

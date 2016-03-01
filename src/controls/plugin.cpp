@@ -73,7 +73,11 @@
 
 static void initResources()
 {
+#ifdef QT_STATIC
+    Q_INIT_RESOURCE(qmake_QtQuick_Controls);
+#else
     Q_INIT_RESOURCE(controls);
+#endif
 }
 
 QT_BEGIN_NAMESPACE
@@ -121,9 +125,13 @@ static const struct {
     { "TreeView", 1, 5 }
 };
 
-void QtQuickControlsPlugin::registerTypes(const char *uri)
+QtQuickControlsPlugin::QtQuickControlsPlugin(QObject *parent) : QQmlExtensionPlugin(parent)
 {
     initResources();
+}
+
+void QtQuickControlsPlugin::registerTypes(const char *uri)
+{
     qmlRegisterType<QQuickAction>(uri, 1, 0, "Action");
     qmlRegisterType<QQuickExclusiveGroup1>(uri, 1, 0, "ExclusiveGroup");
     qmlRegisterType<QQuickMenuItem1>(uri, 1, 0, "MenuItem");
@@ -188,13 +196,22 @@ void QtQuickControlsPlugin::initializeEngine(QQmlEngine *engine, const char *uri
 
 QString QtQuickControlsPlugin::fileLocation() const
 {
+#ifndef QT_STATIC
     if (isLoadedFromResource())
         return "qrc:/QtQuick/Controls";
     return baseUrl().toString();
+#else
+    return "qrc:/qt-project.org/imports/QtQuick/Controls";
+#endif
 }
 
 bool QtQuickControlsPlugin::isLoadedFromResource() const
 {
+#ifdef QT_STATIC
+    // When static it is included automatically
+    // for us.
+    return false;
+#endif
 #if defined(ALWAYS_LOAD_FROM_RESOURCES)
     return true;
 #else

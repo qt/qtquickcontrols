@@ -30,7 +30,8 @@ include(designer/designer.pri)
 
 OTHER_FILES += doc/src/*
 
-RESOURCES += extras.qrc
+!static:RESOURCES += extras.qrc
+else: QML_FILES += $$CONTROLS_QML_FILES
 
 TR_EXCLUDE += designer/*
 

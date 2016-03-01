@@ -110,4 +110,4 @@ STYLES_QML_FILES += \
 
 STYLES_QML_FILES += $$PWD/qmldir
 
-!qtquickcompiler: QML_FILES += $$STYLES_QML_FILES
+!qtquickcompiler|static: QML_FILES += $$STYLES_QML_FILES
