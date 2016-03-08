@@ -159,8 +159,11 @@ Style {
         }
     }
 
-    /*! This property holds the tick mark labels
+    /*! This property holds the tick mark labels.
         \since QtQuick.Controls.Styles 1.1
+
+        Every tickmark that should be drawn must be defined within this
+        component, so it is common to use a \l Repeater, for example.
 
         You can access the handle width through the \c styleData.handleWidth property.
     */
