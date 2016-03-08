@@ -177,9 +177,7 @@ Control {
         \since QtQuick.Controls 1.1
 
         This signal is emitted when the Return or Enter key is pressed or
-        the control loses focus. Note that if there is a validator
-        set on the control and enter/return is pressed, this signal will
-        only be emitted if the validator returns an acceptable state.
+        the control loses focus.
 
         The corresponding handler is \c onEditingFinished.
     */
