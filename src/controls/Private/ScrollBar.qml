@@ -101,7 +101,6 @@ Item {
         onExited: if (!pressed) __panel.activeControl = "none"
         onMouseXChanged: if (!pressed) __panel.activeControl = __panel.hitTest(mouseX, mouseY)
         hoverEnabled: Settings.hoverEnabled
-        enabled: !Settings.isMobile || !Settings.hasTouchScreen // ### Not ideal, but will usually behave as expected...
         preventStealing: true
         property var pressedX
         property var pressedY
@@ -140,6 +139,10 @@ Item {
         }
 
         onPressed: {
+            if (mouse.source !== Qt.MouseEventNotSynthesized) {
+                mouse.accepted = false
+                return
+            }
             __panel.activeControl = __panel.hitTest(mouseX, mouseY)
             scrollToClickposition = scrollToClickPosition
             var handleRect = __panel.subControlRect("handle")
