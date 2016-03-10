@@ -44,7 +44,7 @@ QT_BEGIN_NAMESPACE
 
 class QQuickRangeModelPrivate;
 
-class QQuickRangeModel : public QObject
+class QQuickRangeModel : public QObject, public QQmlParserStatus
 {
     Q_OBJECT
     Q_PROPERTY(qreal value READ value WRITE setValue NOTIFY valueChanged USER true)
@@ -55,6 +55,8 @@ class QQuickRangeModel : public QObject
     Q_PROPERTY(qreal positionAtMinimum READ positionAtMinimum WRITE setPositionAtMinimum NOTIFY positionAtMinimumChanged)
     Q_PROPERTY(qreal positionAtMaximum READ positionAtMaximum WRITE setPositionAtMaximum NOTIFY positionAtMaximumChanged)
     Q_PROPERTY(bool inverted READ inverted WRITE setInverted NOTIFY invertedChanged)
+
+    Q_INTERFACES(QQmlParserStatus)
 
 public:
     QQuickRangeModel(QObject *parent = 0);
@@ -86,6 +88,9 @@ public:
 
     Q_INVOKABLE qreal valueForPosition(qreal position) const;
     Q_INVOKABLE qreal positionForValue(qreal value) const;
+
+    void classBegin();
+    void componentComplete();
 
 public Q_SLOTS:
     void toMinimum();

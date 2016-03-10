@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2015 The Qt Company Ltd.
+** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: http://www.qt.io/licensing/
 **
 ** This file is part of the test suite of the Qt Toolkit.
@@ -66,6 +66,14 @@ TestCase {
         if (range !== 0)
             range.destroy()
         spy.clear()
+    }
+
+    function test_delayedinit() {
+        var component = Qt.createComponent("rangemodel/init.qml");
+        compare(component.status, Component.Ready)
+        var r =  component.createObject(testCase, {minimumValue: 40, maximumValue: 90, value: 80});
+        compare(r.value, 80)
+        compare(r.spy.count, 1)
     }
 
     function test_setminimumvalue() {

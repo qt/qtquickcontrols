@@ -69,6 +69,9 @@ void QQuickRangeModelPrivate::init()
     posatmin = 0;
     posatmax = 0;
     inverted = false;
+    isComplete = false;
+    positionChanged = false;
+    valueChanged = false;
 }
 
 /*!
@@ -155,10 +158,16 @@ void QQuickRangeModelPrivate::emitValueAndPositionIfChanged(const qreal oldValue
     // unchanged. This will be the case when operating with values outside range:
     const qreal newValue = q->value();
     const qreal newPosition = q->position();
-    if (!qFuzzyCompare(newValue, oldValue))
-        emit q->valueChanged(newValue);
-    if (!qFuzzyCompare(newPosition, oldPosition))
-        emit q->positionChanged(newPosition);
+
+    if (isComplete) {
+        if (!qFuzzyCompare(newValue, oldValue))
+            emit q->valueChanged(newValue);
+        if (!qFuzzyCompare(newPosition, oldPosition))
+            emit q->positionChanged(newPosition);
+    } else {
+        positionChanged |= qFuzzyCompare(oldPosition, newPosition);
+        valueChanged |= !qFuzzyCompare(oldValue, newValue);
+    }
 }
 
 /*!
@@ -344,6 +353,22 @@ qreal QQuickRangeModel::positionForValue(qreal value) const
 
     const qreal unconstrainedPosition = d->equivalentPosition(value);
     return d->publicPosition(unconstrainedPosition);
+}
+
+void QQuickRangeModel::classBegin()
+{
+}
+
+void QQuickRangeModel::componentComplete()
+{
+    Q_D(QQuickRangeModel);
+    d->isComplete = true;
+    emit minimumChanged(minimum());
+    emit maximumChanged(maximum());
+    if (d->valueChanged)
+        emit valueChanged(value());
+    if (d->positionChanged)
+        emit positionChanged(position());
 }
 
 /*!
