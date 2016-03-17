@@ -41,7 +41,7 @@
 
 QT_BEGIN_NAMESPACE
 
-QQuickSpinBoxValidator::QQuickSpinBoxValidator(QObject *parent)
+QQuickSpinBoxValidator1::QQuickSpinBoxValidator1(QObject *parent)
     : QValidator(parent), m_value(0), m_step(1), m_initialized(false)
 {
     m_validator.setTop(99);
@@ -61,21 +61,21 @@ QQuickSpinBoxValidator::QQuickSpinBoxValidator(QObject *parent)
     connect(this, SIGNAL(suffixChanged()), this, SIGNAL(textChanged()));
 }
 
-QQuickSpinBoxValidator::~QQuickSpinBoxValidator()
+QQuickSpinBoxValidator1::~QQuickSpinBoxValidator1()
 {
 }
 
-QString QQuickSpinBoxValidator::text() const
+QString QQuickSpinBoxValidator1::text() const
 {
     return textFromValue(m_value);
 }
 
-qreal QQuickSpinBoxValidator::value() const
+qreal QQuickSpinBoxValidator1::value() const
 {
     return m_value;
 }
 
-void QQuickSpinBoxValidator::setValue(qreal value)
+void QQuickSpinBoxValidator1::setValue(qreal value)
 {
     if (m_initialized) {
         value = qBound(minimumValue(), value, maximumValue());
@@ -90,12 +90,12 @@ void QQuickSpinBoxValidator::setValue(qreal value)
     }
 }
 
-qreal QQuickSpinBoxValidator::minimumValue() const
+qreal QQuickSpinBoxValidator1::minimumValue() const
 {
     return m_validator.bottom();
 }
 
-void QQuickSpinBoxValidator::setMinimumValue(qreal min)
+void QQuickSpinBoxValidator1::setMinimumValue(qreal min)
 {
     if (min != m_validator.bottom()) {
         m_validator.setBottom(min);
@@ -105,12 +105,12 @@ void QQuickSpinBoxValidator::setMinimumValue(qreal min)
     }
 }
 
-qreal QQuickSpinBoxValidator::maximumValue() const
+qreal QQuickSpinBoxValidator1::maximumValue() const
 {
     return m_validator.top();
 }
 
-void QQuickSpinBoxValidator::setMaximumValue(qreal max)
+void QQuickSpinBoxValidator1::setMaximumValue(qreal max)
 {
     if (max != m_validator.top()) {
         m_validator.setTop(max);
@@ -120,12 +120,12 @@ void QQuickSpinBoxValidator::setMaximumValue(qreal max)
     }
 }
 
-int QQuickSpinBoxValidator::decimals() const
+int QQuickSpinBoxValidator1::decimals() const
 {
     return m_validator.decimals();
 }
 
-void QQuickSpinBoxValidator::setDecimals(int decimals)
+void QQuickSpinBoxValidator1::setDecimals(int decimals)
 {
     if (decimals != m_validator.decimals()) {
         m_validator.setDecimals(decimals);
@@ -135,12 +135,12 @@ void QQuickSpinBoxValidator::setDecimals(int decimals)
     }
 }
 
-qreal QQuickSpinBoxValidator::stepSize() const
+qreal QQuickSpinBoxValidator1::stepSize() const
 {
     return m_step;
 }
 
-void QQuickSpinBoxValidator::setStepSize(qreal step)
+void QQuickSpinBoxValidator1::setStepSize(qreal step)
 {
     if (m_step != step) {
         m_step = step;
@@ -148,12 +148,12 @@ void QQuickSpinBoxValidator::setStepSize(qreal step)
     }
 }
 
-QString QQuickSpinBoxValidator::prefix() const
+QString QQuickSpinBoxValidator1::prefix() const
 {
     return m_prefix;
 }
 
-void QQuickSpinBoxValidator::setPrefix(const QString &prefix)
+void QQuickSpinBoxValidator1::setPrefix(const QString &prefix)
 {
     if (m_prefix != prefix) {
         m_prefix = prefix;
@@ -161,12 +161,12 @@ void QQuickSpinBoxValidator::setPrefix(const QString &prefix)
     }
 }
 
-QString QQuickSpinBoxValidator::suffix() const
+QString QQuickSpinBoxValidator1::suffix() const
 {
     return m_suffix;
 }
 
-void QQuickSpinBoxValidator::setSuffix(const QString &suffix)
+void QQuickSpinBoxValidator1::setSuffix(const QString &suffix)
 {
     if (m_suffix != suffix) {
         m_suffix = suffix;
@@ -174,12 +174,12 @@ void QQuickSpinBoxValidator::setSuffix(const QString &suffix)
     }
 }
 
-void QQuickSpinBoxValidator::fixup(QString &input) const
+void QQuickSpinBoxValidator1::fixup(QString &input) const
 {
     input = textFromValue(m_value).remove(locale().groupSeparator());
 }
 
-QValidator::State QQuickSpinBoxValidator::validate(QString &input, int &pos) const
+QValidator::State QQuickSpinBoxValidator1::validate(QString &input, int &pos) const
 {
     if (pos > 0 && pos < input.length()) {
         if (input.at(pos - 1) == locale().groupSeparator())
@@ -209,7 +209,7 @@ QValidator::State QQuickSpinBoxValidator::validate(QString &input, int &pos) con
             if (state == QValidator::Acceptable ||
                (state == QValidator::Intermediate && val >= 0 && val <= m_validator.top()) ||
                (state == QValidator::Intermediate && val < 0 && val >= m_validator.bottom())) {
-                const_cast<QQuickSpinBoxValidator *>(this)->setValue(val);
+                const_cast<QQuickSpinBoxValidator1 *>(this)->setValue(val);
                 if (input != textFromValue(val))
                     state = QValidator::Intermediate;
             } else if (val < m_validator.bottom() || val > m_validator.top()) {
@@ -220,23 +220,23 @@ QValidator::State QQuickSpinBoxValidator::validate(QString &input, int &pos) con
     return state;
 }
 
-void QQuickSpinBoxValidator::componentComplete()
+void QQuickSpinBoxValidator1::componentComplete()
 {
     m_initialized = true;
     setValue(m_value);
 }
 
-void QQuickSpinBoxValidator::increment()
+void QQuickSpinBoxValidator1::increment()
 {
     setValue(m_value + m_step);
 }
 
-void QQuickSpinBoxValidator::decrement()
+void QQuickSpinBoxValidator1::decrement()
 {
     setValue(m_value - m_step);
 }
 
-QString QQuickSpinBoxValidator::textFromValue(qreal value) const
+QString QQuickSpinBoxValidator1::textFromValue(qreal value) const
 {
     return m_prefix + locale().toString(value, 'f', m_validator.decimals()) + m_suffix;
 }

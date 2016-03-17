@@ -46,7 +46,7 @@
 
 QT_BEGIN_NAMESPACE
 
-QQuickPopupWindow::QQuickPopupWindow() :
+QQuickPopupWindow1::QQuickPopupWindow1() :
     QQuickWindow(), m_parentItem(0), m_contentItem(0),
     m_mouseMoved(false), m_needsActivatedEvent(true),
     m_dismissed(false), m_pressed(false)
@@ -56,13 +56,13 @@ QQuickPopupWindow::QQuickPopupWindow() :
             this, SLOT(applicationStateChanged(Qt::ApplicationState)));
 }
 
-void QQuickPopupWindow::applicationStateChanged(Qt::ApplicationState state)
+void QQuickPopupWindow1::applicationStateChanged(Qt::ApplicationState state)
 {
     if (state != Qt::ApplicationActive)
         dismissPopup();
 }
 
-void QQuickPopupWindow::show()
+void QQuickPopupWindow1::show()
 {
     qreal posx = x();
     qreal posy = y();
@@ -99,7 +99,7 @@ void QQuickPopupWindow::show()
     }
     emit geometryChanged();
 
-    if (!qobject_cast<QQuickPopupWindow *>(transientParent())) { // No need for parent menu windows
+    if (!qobject_cast<QQuickPopupWindow1 *>(transientParent())) { // No need for parent menu windows
         if (QQuickWindow *w = qobject_cast<QQuickWindow *>(transientParent())) {
             if (QQuickItem *mg = w->mouseGrabberItem())
                 mg->ungrabMouse();
@@ -113,14 +113,14 @@ void QQuickPopupWindow::show()
     setKeyboardGrabEnabled(true);
 }
 
-void QQuickPopupWindow::setParentItem(QQuickItem *item)
+void QQuickPopupWindow1::setParentItem(QQuickItem *item)
 {
     m_parentItem = item;
     if (m_parentItem)
         setTransientParent(m_parentItem->window());
 }
 
-void QQuickPopupWindow::setPopupContentItem(QQuickItem *contentItem)
+void QQuickPopupWindow1::setPopupContentItem(QQuickItem *contentItem)
 {
     if (!contentItem)
         return;
@@ -131,20 +131,20 @@ void QQuickPopupWindow::setPopupContentItem(QQuickItem *contentItem)
     m_contentItem = contentItem;
 }
 
-void QQuickPopupWindow::updateSize()
+void QQuickPopupWindow1::updateSize()
 {
     setGeometry(x(), y(), popupContentItem()->width(), popupContentItem()->height());
     emit geometryChanged();
 }
 
-void QQuickPopupWindow::dismissPopup()
+void QQuickPopupWindow1::dismissPopup()
 {
     m_dismissed = true;
     emit popupDismissed();
     hide();
 }
 
-void QQuickPopupWindow::mouseMoveEvent(QMouseEvent *e)
+void QQuickPopupWindow1::mouseMoveEvent(QMouseEvent *e)
 {
     QRect rect = QRect(QPoint(), size());
     m_mouseMoved = true;
@@ -157,7 +157,7 @@ void QQuickPopupWindow::mouseMoveEvent(QMouseEvent *e)
         forwardEventToTransientParent(e);
 }
 
-void QQuickPopupWindow::mousePressEvent(QMouseEvent *e)
+void QQuickPopupWindow1::mousePressEvent(QMouseEvent *e)
 {
     m_pressed = true;
     QRect rect = QRect(QPoint(), size());
@@ -168,7 +168,7 @@ void QQuickPopupWindow::mousePressEvent(QMouseEvent *e)
         forwardEventToTransientParent(e);
 }
 
-void QQuickPopupWindow::mouseReleaseEvent(QMouseEvent *e)
+void QQuickPopupWindow1::mouseReleaseEvent(QMouseEvent *e)
 {
     QRect rect = QRect(QPoint(), size());
     if (rect.contains(e->pos())) {
@@ -186,11 +186,11 @@ void QQuickPopupWindow::mouseReleaseEvent(QMouseEvent *e)
     m_pressed = false;
 }
 
-void QQuickPopupWindow::forwardEventToTransientParent(QMouseEvent *e)
+void QQuickPopupWindow1::forwardEventToTransientParent(QMouseEvent *e)
 {
     bool forwardEvent = true;
 
-    if (!qobject_cast<QQuickPopupWindow*>(transientParent())
+    if (!qobject_cast<QQuickPopupWindow1*>(transientParent())
         && ((m_mouseMoved && e->type() == QEvent::MouseButtonRelease)
             || e->type() == QEvent::MouseButtonPress)) {
         // Clicked outside any popup
@@ -205,12 +205,12 @@ void QQuickPopupWindow::forwardEventToTransientParent(QMouseEvent *e)
     }
 }
 
-bool QQuickPopupWindow::shouldForwardEventAfterDismiss(QMouseEvent*) const
+bool QQuickPopupWindow1::shouldForwardEventAfterDismiss(QMouseEvent*) const
 {
     return false;
 }
 
-void QQuickPopupWindow::exposeEvent(QExposeEvent *e)
+void QQuickPopupWindow1::exposeEvent(QExposeEvent *e)
 {
     if (isExposed() && m_needsActivatedEvent) {
         m_needsActivatedEvent = false;
@@ -223,7 +223,7 @@ void QQuickPopupWindow::exposeEvent(QExposeEvent *e)
     QQuickWindow::exposeEvent(e);
 }
 
-void QQuickPopupWindow::hideEvent(QHideEvent *e)
+void QQuickPopupWindow1::hideEvent(QHideEvent *e)
 {
     if (QWindow *tp = !m_needsActivatedEvent ? transientParent() : 0) {
         m_needsActivatedEvent = true;
@@ -234,14 +234,14 @@ void QQuickPopupWindow::hideEvent(QHideEvent *e)
 }
 
  /*! \reimp */
-bool QQuickPopupWindow::event(QEvent *event)
+bool QQuickPopupWindow1::event(QEvent *event)
 {
     //QTBUG-45079
     //This is a workaround for popup menu not being closed when using touch input.
     //Currently mouse synthesized events are not created for touch events which are
     //outside the qquickwindow.
 
-    if (event->type() == QEvent::TouchBegin && !qobject_cast<QQuickPopupWindow*>(transientParent())) {
+    if (event->type() == QEvent::TouchBegin && !qobject_cast<QQuickPopupWindow1*>(transientParent())) {
         QRect rect = QRect(QPoint(), size());
         QTouchEvent *touch = static_cast<QTouchEvent*>(event);
         QTouchEvent::TouchPoint point = touch->touchPoints().first();

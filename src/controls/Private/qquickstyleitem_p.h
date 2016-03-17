@@ -50,19 +50,19 @@ QT_BEGIN_NAMESPACE
 class QWidget;
 class QStyleOption;
 
-class QQuickTableRowImageProvider : public QQuickImageProvider
+class QQuickTableRowImageProvider1 : public QQuickImageProvider
 {
 public:
-    QQuickTableRowImageProvider()
+    QQuickTableRowImageProvider1()
         : QQuickImageProvider(QQuickImageProvider::Pixmap) {}
     QPixmap requestPixmap(const QString &id, QSize *size, const QSize &requestedSize);
 };
 
-class QQuickStyleItem: public QQuickItem
+class QQuickStyleItem1: public QQuickItem
 {
     Q_OBJECT
 
-    Q_PROPERTY(QQuickPadding* border READ border CONSTANT)
+    Q_PROPERTY(QQuickPadding1* border READ border CONSTANT)
 
     Q_PROPERTY( bool sunken READ sunken WRITE setSunken NOTIFY sunkenChanged)
     Q_PROPERTY( bool raised READ raised WRITE setRaised NOTIFY raisedChanged)
@@ -95,11 +95,11 @@ class QQuickStyleItem: public QQuickItem
     Q_PROPERTY( int textureWidth READ textureWidth WRITE setTextureWidth NOTIFY textureWidthChanged)
     Q_PROPERTY( int textureHeight READ textureHeight WRITE setTextureHeight NOTIFY textureHeightChanged)
 
-    QQuickPadding* border() { return &m_border; }
+    QQuickPadding1* border() { return &m_border; }
 
 public:
-    QQuickStyleItem(QQuickItem *parent = 0);
-    ~QQuickStyleItem();
+    QQuickStyleItem1(QQuickItem *parent = 0);
+    ~QQuickStyleItem1();
 
     enum Type {
         Undefined,
@@ -289,7 +289,7 @@ protected:
     int m_textureHeight;
 
     QImage m_image;
-    QQuickPadding m_border;
+    QQuickPadding1 m_border;
 };
 
 QT_END_NAMESPACE

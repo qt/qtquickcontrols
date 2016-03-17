@@ -46,15 +46,15 @@
 
 QT_BEGIN_NAMESPACE
 
-class QQuickRangedDate : public QObject
+class QQuickRangedDate1 : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QDate date READ date WRITE setDate NOTIFY dateChanged RESET resetDate)
     Q_PROPERTY(QDate minimumDate READ minimumDate WRITE setMinimumDate NOTIFY minimumDateChanged RESET resetMinimumDate)
     Q_PROPERTY(QDate maximumDate READ maximumDate WRITE setMaximumDate NOTIFY maximumDateChanged RESET resetMaximumDate)
 public:
-    QQuickRangedDate();
-    ~QQuickRangedDate() {}
+    QQuickRangedDate1();
+    ~QQuickRangedDate1() {}
 
     QDate date() const { return mDate; }
     void setDate(const QDate &date);
@@ -81,6 +81,6 @@ private:
 
 QT_END_NAMESPACE
 
-QML_DECLARE_TYPE(QQuickRangedDate)
+QML_DECLARE_TYPE(QQuickRangedDate1)
 
 #endif // QQUICKRANGEDDATE_H

@@ -258,7 +258,7 @@ QT_BEGIN_NAMESPACE
 */
 
 QQuickMenu1::QQuickMenu1(QObject *parent)
-    : QQuickMenuText(parent, QQuickMenuItemType::Menu),
+    : QQuickMenuText1(parent, QQuickMenuItemType1::Menu),
       m_platformMenu(0),
       m_itemsCount(0),
       m_selectedIndex(-1),
@@ -291,7 +291,7 @@ QQuickMenu1::QQuickMenu1(QObject *parent)
 QQuickMenu1::~QQuickMenu1()
 {
     while (!m_menuItems.empty()) {
-        QQuickMenuBase *item = m_menuItems.takeFirst();
+        QQuickMenuBase1 *item = m_menuItems.takeFirst();
         if (item)
             item->setParentMenu(0);
     }
@@ -312,7 +312,7 @@ void QQuickMenu1::syncParentMenuBar()
 
 void QQuickMenu1::setVisible(bool v)
 {
-    QQuickMenuBase::setVisible(v);
+    QQuickMenuBase1::setVisible(v);
     if (m_platformMenu) {
         m_platformMenu->setVisible(v);
         syncParentMenuBar();
@@ -321,7 +321,7 @@ void QQuickMenu1::setVisible(bool v)
 
 void QQuickMenu1::setEnabled(bool e)
 {
-    QQuickMenuText::setEnabled(e);
+    QQuickMenuText1::setEnabled(e);
     if (m_platformMenu) {
         m_platformMenu->setEnabled(e);
         syncParentMenuBar();
@@ -332,7 +332,7 @@ void QQuickMenu1::updateText()
 {
     if (m_platformMenu)
         m_platformMenu->setText(this->text());
-    QQuickMenuText::updateText();
+    QQuickMenuText1::updateText();
 }
 
 void QQuickMenu1::setMinimumWidth(int w)
@@ -432,7 +432,7 @@ void QQuickMenu1::__popup(const QRectF &targetRect, int atItemIndex, MenuType me
 
     setPopupVisible(true);
 
-    QQuickMenuBase *atItem = menuItemAtIndex(atItemIndex);
+    QQuickMenuBase1 *atItem = menuItemAtIndex(atItemIndex);
 
     QQuickWindow *quickWindow = findParentWindow();
     QPoint renderOffset;
@@ -453,7 +453,7 @@ void QQuickMenu1::__popup(const QRectF &targetRect, int atItemIndex, MenuType me
         m_platformMenu->setMenuType(QPlatformMenu::MenuType(menuType));
         m_platformMenu->showPopup(parentWindow, globalTargetRect.toRect(), atItem ? atItem->platformItem() : 0);
     } else {
-        m_popupWindow = new QQuickMenuPopupWindow(this);
+        m_popupWindow = new QQuickMenuPopupWindow1(this);
         if (visualItem())
             m_popupWindow->setParentItem(visualItem());
         else
@@ -523,11 +523,11 @@ void QQuickMenu1::hideMenu()
     m_parentWindow = 0;
 }
 
-QQuickMenuPopupWindow *QQuickMenu1::topMenuPopup() const
+QQuickMenuPopupWindow1 *QQuickMenu1::topMenuPopup() const
 {
-    QQuickMenuPopupWindow *topMenuWindow = m_popupWindow;
+    QQuickMenuPopupWindow1 *topMenuWindow = m_popupWindow;
     while (topMenuWindow) {
-        QQuickMenuPopupWindow *pw = qobject_cast<QQuickMenuPopupWindow *>(topMenuWindow->transientParent());
+        QQuickMenuPopupWindow1 *pw = qobject_cast<QQuickMenuPopupWindow1 *>(topMenuWindow->transientParent());
         if (!pw)
             return topMenuWindow;
         topMenuWindow = pw;
@@ -546,7 +546,7 @@ void QQuickMenu1::__dismissMenu()
 {
     if (m_platformMenu) {
         m_platformMenu->dismiss();
-    } else if (QQuickMenuPopupWindow *topPopup = topMenuPopup()) {
+    } else if (QQuickMenuPopupWindow1 *topPopup = topMenuPopup()) {
         topPopup->dismissPopup();
     }
 }
@@ -559,7 +559,7 @@ void QQuickMenu1::windowVisibleChanged(bool v)
 {
     if (!v) {
         if (m_popupWindow) {
-            QQuickMenuPopupWindow *parentMenuPopup = qobject_cast<QQuickMenuPopupWindow *>(m_popupWindow->transientParent());
+            QQuickMenuPopupWindow1 *parentMenuPopup = qobject_cast<QQuickMenuPopupWindow1 *>(m_popupWindow->transientParent());
             if (parentMenuPopup) {
                 parentMenuPopup->setMouseGrabEnabled(true);
                 parentMenuPopup->setKeyboardGrabEnabled(true);
@@ -587,7 +587,7 @@ void QQuickMenu1::destroyMenuPopup()
 void QQuickMenu1::destroyAllMenuPopups() {
     if (m_triggerCount > 0)
         return;
-    QQuickMenuPopupWindow *popup = topMenuPopup();
+    QQuickMenuPopupWindow1 *popup = topMenuPopup();
     if (popup)
         popup->setToBeDeletedLater();
 }
@@ -624,9 +624,9 @@ void QQuickMenu1::__dismissAndDestroy()
 void QQuickMenu1::itemIndexToListIndex(int itemIndex, int *listIndex, int *containerIndex) const
 {
     *listIndex = -1;
-    QQuickMenuItemContainer *container = 0;
+    QQuickMenuItemContainer1 *container = 0;
     while (itemIndex >= 0 && ++*listIndex < m_menuItems.count())
-        if ((container = qobject_cast<QQuickMenuItemContainer *>(m_menuItems[*listIndex])))
+        if ((container = qobject_cast<QQuickMenuItemContainer1 *>(m_menuItems[*listIndex])))
             itemIndex -= container->items().count();
         else
             --itemIndex;
@@ -642,7 +642,7 @@ int QQuickMenu1::itemIndexForListIndex(int listIndex) const
     int index = 0;
     int i = 0;
     while (i < listIndex && i < m_menuItems.count())
-        if (QQuickMenuItemContainer *container = qobject_cast<QQuickMenuItemContainer *>(m_menuItems[i++]))
+        if (QQuickMenuItemContainer1 *container = qobject_cast<QQuickMenuItemContainer1 *>(m_menuItems[i++]))
             index += container->items().count();
         else
             ++index;
@@ -650,16 +650,16 @@ int QQuickMenu1::itemIndexForListIndex(int listIndex) const
     return index;
 }
 
-QQuickMenuBase *QQuickMenu1::nextMenuItem(QQuickMenu1::MenuItemIterator *it) const
+QQuickMenuBase1 *QQuickMenu1::nextMenuItem(QQuickMenu1::MenuItemIterator *it) const
 {
     if (it->containerIndex != -1) {
-        QQuickMenuItemContainer *container = qobject_cast<QQuickMenuItemContainer *>(m_menuItems[it->index]);
+        QQuickMenuItemContainer1 *container = qobject_cast<QQuickMenuItemContainer1 *>(m_menuItems[it->index]);
         if (++it->containerIndex < container->items().count())
             return container->items()[it->containerIndex];
     }
 
     if (++it->index < m_menuItems.count()) {
-        if (QQuickMenuItemContainer *container = qobject_cast<QQuickMenuItemContainer *>(m_menuItems[it->index])) {
+        if (QQuickMenuItemContainer1 *container = qobject_cast<QQuickMenuItemContainer1 *>(m_menuItems[it->index])) {
             it->containerIndex = 0;
             return container->items()[0];
         } else {
@@ -671,20 +671,20 @@ QQuickMenuBase *QQuickMenu1::nextMenuItem(QQuickMenu1::MenuItemIterator *it) con
     return 0;
 }
 
-QQuickMenuBase *QQuickMenu1::menuItemAtIndex(int index) const
+QQuickMenuBase1 *QQuickMenu1::menuItemAtIndex(int index) const
 {
     if (0 <= index && index < m_itemsCount) {
         if (!m_containersCount) {
             return m_menuItems[index];
         } else if (m_containersCount == 1 && m_menuItems.count() == 1) {
-            QQuickMenuItemContainer *container = qobject_cast<QQuickMenuItemContainer *>(m_menuItems[0]);
+            QQuickMenuItemContainer1 *container = qobject_cast<QQuickMenuItemContainer1 *>(m_menuItems[0]);
             return container->items()[index];
         } else {
             int containerIndex;
             int i;
             itemIndexToListIndex(index, &i, &containerIndex);
             if (containerIndex != -1) {
-                QQuickMenuItemContainer *container = qobject_cast<QQuickMenuItemContainer *>(m_menuItems[i]);
+                QQuickMenuItemContainer1 *container = qobject_cast<QQuickMenuItemContainer1 *>(m_menuItems[i]);
                 return container->items()[containerIndex];
             } else {
                 return m_menuItems[i];
@@ -695,7 +695,7 @@ QQuickMenuBase *QQuickMenu1::menuItemAtIndex(int index) const
     return 0;
 }
 
-bool QQuickMenu1::contains(QQuickMenuBase *item)
+bool QQuickMenu1::contains(QQuickMenuBase1 *item)
 {
     if (item->container())
         return item->container()->items().contains(item);
@@ -703,7 +703,7 @@ bool QQuickMenu1::contains(QQuickMenuBase *item)
     return m_menuItems.contains(item);
 }
 
-int QQuickMenu1::indexOfMenuItem(QQuickMenuBase *item) const
+int QQuickMenu1::indexOfMenuItem(QQuickMenuBase1 *item) const
 {
     if (!item)
         return -1;
@@ -739,17 +739,17 @@ void QQuickMenu1::addSeparator()
 
 void QQuickMenu1::insertSeparator(int index)
 {
-    QQuickMenuSeparator *item = new QQuickMenuSeparator(this);
+    QQuickMenuSeparator1 *item = new QQuickMenuSeparator1(this);
     insertItem(index, item);
 }
 
-void QQuickMenu1::insertItem(int index, QQuickMenuBase *menuItem)
+void QQuickMenu1::insertItem(int index, QQuickMenuBase1 *menuItem)
 {
     if (!menuItem)
         return;
     int itemIndex;
     if (m_containersCount) {
-        QQuickMenuItemContainer *container = menuItem->parent() != this ? m_containers[menuItem->parent()] : 0;
+        QQuickMenuItemContainer1 *container = menuItem->parent() != this ? m_containers[menuItem->parent()] : 0;
         if (container) {
             container->insertItem(index, menuItem);
             itemIndex = itemIndexForListIndex(m_menuItems.indexOf(container)) + index;
@@ -766,13 +766,13 @@ void QQuickMenu1::insertItem(int index, QQuickMenuBase *menuItem)
     emit itemsChanged();
 }
 
-void QQuickMenu1::removeItem(QQuickMenuBase *menuItem)
+void QQuickMenu1::removeItem(QQuickMenuBase1 *menuItem)
 {
     if (!menuItem)
         return;
     menuItem->setParentMenu(0);
 
-    QQuickMenuItemContainer *container = menuItem->parent() != this ? m_containers[menuItem->parent()] : 0;
+    QQuickMenuItemContainer1 *container = menuItem->parent() != this ? m_containers[menuItem->parent()] : 0;
     if (container)
         container->removeItem(menuItem);
     else
@@ -797,7 +797,7 @@ void QQuickMenu1::clear()
     m_itemsCount = 0;
 }
 
-void QQuickMenu1::setupMenuItem(QQuickMenuBase *item, int platformIndex)
+void QQuickMenu1::setupMenuItem(QQuickMenuBase1 *item, int platformIndex)
 {
     item->setParentMenu(this);
     if (m_platformMenu) {
@@ -812,18 +812,18 @@ void QQuickMenu1::setupMenuItem(QQuickMenuBase *item, int platformIndex)
 void QQuickMenu1::append_menuItems(QQuickMenuItems *list, QObject *o)
 {
     if (QQuickMenu1 *menu = qobject_cast<QQuickMenu1 *>(list->object)) {
-        if (QQuickMenuBase *menuItem = qobject_cast<QQuickMenuBase *>(o)) {
+        if (QQuickMenuBase1 *menuItem = qobject_cast<QQuickMenuBase1 *>(o)) {
             menu->m_menuItems.append(menuItem);
             menu->setupMenuItem(menuItem);
         } else {
-            QQuickMenuItemContainer *menuItemContainer = new QQuickMenuItemContainer(menu);
+            QQuickMenuItemContainer1 *menuItemContainer = new QQuickMenuItemContainer1(menu);
             menu->m_menuItems.append(menuItemContainer);
             menu->m_containers.insert(o, menuItemContainer);
             menuItemContainer->setParentMenu(menu);
             ++menu->m_containersCount;
             const auto children = o->children();
             for (QObject *child : children) {
-                if (QQuickMenuBase *item = qobject_cast<QQuickMenuBase *>(child)) {
+                if (QQuickMenuBase1 *item = qobject_cast<QQuickMenuBase1 *>(child)) {
                     menuItemContainer->insertItem(-1, item);
                     menu->setupMenuItem(item);
                 }

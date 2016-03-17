@@ -46,7 +46,7 @@
 
 QT_BEGIN_NAMESPACE
 
-class QQuickPopupWindow : public QQuickWindow
+class QQuickPopupWindow1 : public QQuickWindow
 {
     Q_OBJECT
     Q_PROPERTY(QQuickItem *popupContentItem READ popupContentItem WRITE setPopupContentItem)
@@ -54,7 +54,7 @@ class QQuickPopupWindow : public QQuickWindow
     Q_PROPERTY(QQuickItem *parentItem READ parentItem WRITE setParentItem)
 
 public:
-    QQuickPopupWindow();
+    QQuickPopupWindow1();
 
     QQuickItem *popupContentItem() const { return m_contentItem; }
     void setPopupContentItem(QQuickItem *popupContentItem);

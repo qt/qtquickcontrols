@@ -51,7 +51,7 @@ QT_BEGIN_NAMESPACE
 
 class QQuickExclusiveGroup1;
 
-class QQuickAction : public QObject
+class QQuickAction1 : public QObject
 {
     Q_OBJECT
 
@@ -70,8 +70,8 @@ class QQuickAction : public QObject
 #endif
 
 public:
-    explicit QQuickAction(QObject *parent = 0);
-    ~QQuickAction();
+    explicit QQuickAction1(QObject *parent = 0);
+    ~QQuickAction1();
 
     QString text() const { return m_text; }
     void resetText() { setText(QString()); }

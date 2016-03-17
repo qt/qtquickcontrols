@@ -45,7 +45,7 @@
 
 QT_BEGIN_NAMESPACE
 
-class QQuickWheelArea : public QQuickItem
+class QQuickWheelArea1 : public QQuickItem
 {
     Q_OBJECT
     Q_PROPERTY(qreal verticalDelta READ verticalDelta WRITE setVerticalDelta NOTIFY verticalWheelMoved)
@@ -61,8 +61,8 @@ class QQuickWheelArea : public QQuickItem
     Q_PROPERTY(bool inverted READ isInverted)
 
 public:
-    QQuickWheelArea(QQuickItem *parent = 0);
-    virtual ~QQuickWheelArea();
+    QQuickWheelArea1(QQuickItem *parent = 0);
+    virtual ~QQuickWheelArea1();
 
     void setHorizontalMinimumValue(qreal value);
     qreal horizontalMinimumValue() const;
@@ -125,11 +125,11 @@ private:
     bool m_active;
     bool m_inverted;
 
-    Q_DISABLE_COPY(QQuickWheelArea)
+    Q_DISABLE_COPY(QQuickWheelArea1)
 };
 
 QT_END_NAMESPACE
 
-QML_DECLARE_TYPE(QQuickWheelArea)
+QML_DECLARE_TYPE(QQuickWheelArea1)
 
 #endif // QQUICKWHEELAREA_P_H

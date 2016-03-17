@@ -49,7 +49,7 @@ QT_BEGIN_NAMESPACE
 
 class QQuickItem;
 
-class QQuickScenePosListener : public QObject, public QQuickItemChangeListener
+class QQuickScenePosListener1 : public QObject, public QQuickItemChangeListener
 {
     Q_OBJECT
     Q_PROPERTY(QQuickItem *item READ item WRITE setItem FINAL)
@@ -57,8 +57,8 @@ class QQuickScenePosListener : public QObject, public QQuickItemChangeListener
     Q_PROPERTY(bool enabled READ isEnabled WRITE setEnabled NOTIFY enabledChanged FINAL)
 
 public:
-    explicit QQuickScenePosListener(QObject *parent = 0);
-    ~QQuickScenePosListener();
+    explicit QQuickScenePosListener1(QObject *parent = 0);
+    ~QQuickScenePosListener1();
 
     QQuickItem *item() const;
     void setItem(QQuickItem *item);

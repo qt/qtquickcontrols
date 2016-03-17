@@ -44,7 +44,7 @@
 
 QT_BEGIN_NAMESPACE
 
-class QQuickPadding : public QObject
+class QQuickPadding1 : public QObject
 {
     Q_OBJECT
 
@@ -59,7 +59,7 @@ class QQuickPadding : public QObject
     int m_bottom;
 
 public:
-    QQuickPadding(QObject *parent = 0) :
+    QQuickPadding1(QObject *parent = 0) :
         QObject(parent),
         m_left(0),
         m_top(0),

@@ -79,7 +79,7 @@ QT_BEGIN_NAMESPACE
     [03][04][05][06][07][08][09]
 */
 
-QQuickCalendarModel::QQuickCalendarModel(QObject *parent) :
+QQuickCalendarModel1::QQuickCalendarModel1(QObject *parent) :
     QAbstractListModel(parent)
 {
 }
@@ -90,7 +90,7 @@ QQuickCalendarModel::QQuickCalendarModel(QObject *parent) :
     We store all of the days in the month of visibleDate, as well as any days
     in the previous or following month if there is enough space.
 */
-QDate QQuickCalendarModel::visibleDate() const
+QDate QQuickCalendarModel1::visibleDate() const
 {
     return mVisibleDate;
 }
@@ -102,7 +102,7 @@ QDate QQuickCalendarModel::visibleDate() const
     visible date, the visible date is changed and
     populateFromVisibleDate() called.
 */
-void QQuickCalendarModel::setVisibleDate(const QDate &date)
+void QQuickCalendarModel1::setVisibleDate(const QDate &date)
 {
     if (date != mVisibleDate && date.isValid()) {
         const QDate previousDate = mVisibleDate;
@@ -137,7 +137,7 @@ void QQuickCalendarModel::setVisibleDate(const QDate &date)
     [30][31][01][02][03][04][05]
     ...
 */
-QLocale QQuickCalendarModel::locale() const
+QLocale QQuickCalendarModel1::locale() const
 {
     return mLocale;
 }
@@ -145,7 +145,7 @@ QLocale QQuickCalendarModel::locale() const
 /*!
     Sets the locale to \a locale.
 */
-void QQuickCalendarModel::setLocale(const QLocale &locale)
+void QQuickCalendarModel1::setLocale(const QLocale &locale)
 {
     if (locale != mLocale) {
         Qt::DayOfWeek previousFirstDayOfWeek = mLocale.firstDayOfWeek();
@@ -159,19 +159,19 @@ void QQuickCalendarModel::setLocale(const QLocale &locale)
     }
 }
 
-QVariant QQuickCalendarModel::data(const QModelIndex &index, int role) const
+QVariant QQuickCalendarModel1::data(const QModelIndex &index, int role) const
 {
     if (role == DateRole)
         return mVisibleDates.at(index.row());
     return QVariant();
 }
 
-int QQuickCalendarModel::rowCount(const QModelIndex &) const
+int QQuickCalendarModel1::rowCount(const QModelIndex &) const
 {
     return mVisibleDates.isEmpty() ? 0 : weeksOnACalendarMonth * daysInAWeek;
 }
 
-QHash<int, QByteArray> QQuickCalendarModel::roleNames() const
+QHash<int, QByteArray> QQuickCalendarModel1::roleNames() const
 {
     QHash<int, QByteArray> names;
     names[DateRole] = QByteArrayLiteral("date");
@@ -181,7 +181,7 @@ QHash<int, QByteArray> QQuickCalendarModel::roleNames() const
 /*!
     Returns the date at \a index, or an invalid date if \a index is invalid.
 */
-QDate QQuickCalendarModel::dateAt(int index) const
+QDate QQuickCalendarModel1::dateAt(int index) const
 {
     return index >= 0 && index < mVisibleDates.size() ? mVisibleDates.at(index) : QDate();
 }
@@ -189,7 +189,7 @@ QDate QQuickCalendarModel::dateAt(int index) const
 /*!
     Returns the index for \a date, or -1 if \a date is outside of our range.
 */
-int QQuickCalendarModel::indexAt(const QDate &date)
+int QQuickCalendarModel1::indexAt(const QDate &date)
 {
     if (mVisibleDates.size() == 0 || date < mFirstVisibleDate || date > mLastVisibleDate)
         return -1;
@@ -204,7 +204,7 @@ int QQuickCalendarModel::indexAt(const QDate &date)
     Returns the week number for the first day of the week corresponding to \a row,
     or -1 if \a row is outside of our range.
 */
-int QQuickCalendarModel::weekNumberAt(int row) const
+int QQuickCalendarModel1::weekNumberAt(int row) const
 {
     const int index = row * daysInAWeek;
     const QDate date = dateAt(index);
@@ -223,7 +223,7 @@ int QQuickCalendarModel::weekNumberAt(int row) const
     shown doesn't change, but the days displayed do.
     The \a previousDate parameter is ignored when \a force is true.
 */
-void QQuickCalendarModel::populateFromVisibleDate(const QDate &previousDate, bool force)
+void QQuickCalendarModel1::populateFromVisibleDate(const QDate &previousDate, bool force)
 {
     // We don't need to populate if the year and month haven't changed.
     if (!force && mVisibleDate.year() == previousDate.year() && mVisibleDate.month() == previousDate.month())

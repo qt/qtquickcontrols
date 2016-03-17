@@ -60,7 +60,7 @@ QT_BEGIN_NAMESPACE
 
 class QAbstractItemModel;
 
-class QQuickTreeModelAdaptor : public QAbstractListModel
+class QQuickTreeModelAdaptor1 : public QAbstractListModel
 {
     Q_OBJECT
     Q_PROPERTY(QAbstractItemModel *model READ model WRITE setModel NOTIFY modelChanged)
@@ -69,7 +69,7 @@ class QQuickTreeModelAdaptor : public QAbstractListModel
     struct TreeItem;
 
 public:
-    explicit QQuickTreeModelAdaptor(QObject *parent = 0);
+    explicit QQuickTreeModelAdaptor1(QObject *parent = 0);
 
     QAbstractItemModel *model() const;
     const QModelIndex &rootIndex() const;

@@ -50,7 +50,7 @@ QT_BEGIN_NAMESPACE
 
 class QQmlEngine;
 
-class QQuickControlSettings : public QObject
+class QQuickControlSettings1 : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QUrl style READ style NOTIFY styleChanged)
@@ -63,7 +63,7 @@ class QQuickControlSettings : public QObject
     Q_PROPERTY(bool hoverEnabled READ hoverEnabled CONSTANT)
 
 public:
-    QQuickControlSettings(QQmlEngine *engine);
+    QQuickControlSettings1(QQmlEngine *engine);
 
     QUrl style() const;
 

@@ -125,65 +125,65 @@ static const struct {
     { "TreeView", 1, 5 }
 };
 
-QtQuickControlsPlugin::QtQuickControlsPlugin(QObject *parent) : QQmlExtensionPlugin(parent)
+QtQuickControls1Plugin::QtQuickControls1Plugin(QObject *parent) : QQmlExtensionPlugin(parent)
 {
     initResources();
 }
 
-void QtQuickControlsPlugin::registerTypes(const char *uri)
+void QtQuickControls1Plugin::registerTypes(const char *uri)
 {
-    qmlRegisterType<QQuickAction>(uri, 1, 0, "Action");
+    qmlRegisterType<QQuickAction1>(uri, 1, 0, "Action");
     qmlRegisterType<QQuickExclusiveGroup1>(uri, 1, 0, "ExclusiveGroup");
     qmlRegisterType<QQuickMenuItem1>(uri, 1, 0, "MenuItem");
-    qmlRegisterUncreatableType<QQuickMenuItemType>(uri, 1, 0, "MenuItemType",
+    qmlRegisterUncreatableType<QQuickMenuItemType1>(uri, 1, 0, "MenuItemType",
                                                    QLatin1String("Do not create objects of type MenuItemType"));
-    qmlRegisterType<QQuickMenuSeparator>(uri, 1, 0, "MenuSeparator");
-    qmlRegisterUncreatableType<QQuickMenuBase>(uri, 1, 0, "MenuBase",
+    qmlRegisterType<QQuickMenuSeparator1>(uri, 1, 0, "MenuSeparator");
+    qmlRegisterUncreatableType<QQuickMenuBase1>(uri, 1, 0, "MenuBase",
                                                QLatin1String("Do not create objects of type MenuBase"));
 
-    qmlRegisterUncreatableType<QQuickStack>(uri, 1, 0, "Stack", QLatin1String("Do not create objects of type Stack"));
-    qmlRegisterUncreatableType<QQuickSelectionMode>(uri, 1, 1, "SelectionMode", QLatin1String("Do not create objects of type SelectionMode"));
+    qmlRegisterUncreatableType<QQuickStack1>(uri, 1, 0, "Stack", QLatin1String("Do not create objects of type Stack"));
+    qmlRegisterUncreatableType<QQuickSelectionMode1>(uri, 1, 1, "SelectionMode", QLatin1String("Do not create objects of type SelectionMode"));
 
     const QString filesLocation = fileLocation();
     for (int i = 0; i < int(sizeof(qmldir)/sizeof(qmldir[0])); i++)
         qmlRegisterType(QUrl(filesLocation + "/" + qmldir[i].type + ".qml"), uri, qmldir[i].major, qmldir[i].minor, qmldir[i].type);
 }
 
-void QtQuickControlsPlugin::initializeEngine(QQmlEngine *engine, const char *uri)
+void QtQuickControls1Plugin::initializeEngine(QQmlEngine *engine, const char *uri)
 {
     Q_UNUSED(uri);
 
     // Register private API. Note that to use these types outside of the
     // Qt Quick Controls module, both the public and private imports must be used.
     const char *private_uri = "QtQuick.Controls.Private";
-    qmlRegisterType<QQuickAbstractStyle>(private_uri, 1, 0, "AbstractStyle");
-    qmlRegisterType<QQuickCalendarModel>(private_uri, 1, 0, "CalendarModel");
-    qmlRegisterType<QQuickPadding>(private_uri, 1, 0, "Padding");
-    qmlRegisterType<QQuickRangedDate>(private_uri, 1, 0, "RangedDate");
-    qmlRegisterType<QQuickRangeModel>(private_uri, 1, 0, "RangeModel");
-    qmlRegisterType<QQuickWheelArea>(private_uri, 1, 0, "WheelArea");
-    qmlRegisterType<QQuickSpinBoxValidator>(private_uri, 1, 0, "SpinBoxValidator");
-    qmlRegisterSingletonType<QQuickTooltip>(private_uri, 1, 0, "Tooltip", QQuickControlsPrivate::registerTooltipModule);
-    qmlRegisterSingletonType<QQuickControlSettings>(private_uri, 1, 0, "Settings", QQuickControlsPrivate::registerSettingsModule);
+    qmlRegisterType<QQuickAbstractStyle1>(private_uri, 1, 0, "AbstractStyle");
+    qmlRegisterType<QQuickCalendarModel1>(private_uri, 1, 0, "CalendarModel");
+    qmlRegisterType<QQuickPadding1>(private_uri, 1, 0, "Padding");
+    qmlRegisterType<QQuickRangedDate1>(private_uri, 1, 0, "RangedDate");
+    qmlRegisterType<QQuickRangeModel1>(private_uri, 1, 0, "RangeModel");
+    qmlRegisterType<QQuickWheelArea1>(private_uri, 1, 0, "WheelArea");
+    qmlRegisterType<QQuickSpinBoxValidator1>(private_uri, 1, 0, "SpinBoxValidator");
+    qmlRegisterSingletonType<QQuickTooltip1>(private_uri, 1, 0, "Tooltip", QQuickControlsPrivate1::registerTooltipModule);
+    qmlRegisterSingletonType<QQuickControlSettings1>(private_uri, 1, 0, "Settings", QQuickControlsPrivate1::registerSettingsModule);
 
-    qmlRegisterUncreatableType<QQuickControlsPrivate>(private_uri, 1, 0, "Controls", QLatin1String("Controls is an abstract type."));
-    qmlRegisterType<QQuickControlsPrivateAttached>();
+    qmlRegisterUncreatableType<QQuickControlsPrivate1>(private_uri, 1, 0, "Controls", QLatin1String("Controls is an abstract type."));
+    qmlRegisterType<QQuickControlsPrivate1Attached>();
 
-    qmlRegisterType<QQuickTreeModelAdaptor>(private_uri, 1, 0, "TreeModelAdaptor");
-    qmlRegisterType<QQuickScenePosListener>(private_uri, 1, 0, "ScenePosListener");
+    qmlRegisterType<QQuickTreeModelAdaptor1>(private_uri, 1, 0, "TreeModelAdaptor");
+    qmlRegisterType<QQuickScenePosListener1>(private_uri, 1, 0, "ScenePosListener");
 
     qmlRegisterType<QQuickMenu1>(private_uri, 1, 0, "MenuPrivate");
     qmlRegisterType<QQuickMenuBar1>(private_uri, 1, 0, "MenuBarPrivate");
-    qmlRegisterType<QQuickPopupWindow>(private_uri, 1, 0, "PopupWindow");
+    qmlRegisterType<QQuickPopupWindow1>(private_uri, 1, 0, "PopupWindow");
 
     qmlRegisterUncreatableType<QAbstractItemModel>(private_uri, 1, 0, "AbstractItemModel",
                                                    QLatin1String("AbstractItemModel is an abstract type."));
 
 #ifdef QT_WIDGETS_LIB
-    qmlRegisterType<QQuickStyleItem>(private_uri, 1, 0, "StyleItem");
-    engine->addImageProvider("__tablerow", new QQuickTableRowImageProvider);
+    qmlRegisterType<QQuickStyleItem1>(private_uri, 1, 0, "StyleItem");
+    engine->addImageProvider("__tablerow", new QQuickTableRowImageProvider1);
 #endif
-    engine->addImageProvider("desktoptheme", new QQuickDesktopIconProvider);
+    engine->addImageProvider("desktoptheme", new QQuickDesktopIconProvider1);
     if (isLoadedFromResource())
         engine->addImportPath(QStringLiteral("qrc:/"));
 
@@ -194,7 +194,7 @@ void QtQuickControlsPlugin::initializeEngine(QQmlEngine *engine, const char *uri
 #endif
 }
 
-QString QtQuickControlsPlugin::fileLocation() const
+QString QtQuickControls1Plugin::fileLocation() const
 {
 #ifndef QT_STATIC
     if (isLoadedFromResource())
@@ -205,7 +205,7 @@ QString QtQuickControlsPlugin::fileLocation() const
 #endif
 }
 
-bool QtQuickControlsPlugin::isLoadedFromResource() const
+bool QtQuickControls1Plugin::isLoadedFromResource() const
 {
 #ifdef QT_STATIC
     // When static it is included automatically

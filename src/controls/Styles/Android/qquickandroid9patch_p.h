@@ -46,7 +46,7 @@
 
 QT_BEGIN_NAMESPACE
 
-struct QQuickAndroid9PatchDivs
+struct QQuickAndroid9PatchDivs1
 {
     QVector<qreal> coordsForSize(qreal size) const;
 
@@ -57,7 +57,7 @@ struct QQuickAndroid9PatchDivs
     QVector<qreal> data;
 };
 
-class QQuickAndroid9Patch : public QQuickItem
+class QQuickAndroid9Patch1 : public QQuickItem
 {
     Q_OBJECT
 
@@ -67,8 +67,8 @@ class QQuickAndroid9Patch : public QQuickItem
     Q_PROPERTY(QSize sourceSize READ sourceSize NOTIFY sourceSizeChanged FINAL)
 
 public:
-    explicit QQuickAndroid9Patch(QQuickItem *parent = 0);
-    ~QQuickAndroid9Patch();
+    explicit QQuickAndroid9Patch1(QQuickItem *parent = 0);
+    ~QQuickAndroid9Patch1();
 
     QUrl source() const;
     QVariantList xDivs() const;
@@ -101,8 +101,8 @@ private:
     QSize m_sourceSize;
     QVariantList m_xVars;
     QVariantList m_yVars;
-    QQuickAndroid9PatchDivs m_xDivs;
-    QQuickAndroid9PatchDivs m_yDivs;
+    QQuickAndroid9PatchDivs1 m_xDivs;
+    QQuickAndroid9PatchDivs1 m_yDivs;
 };
 
 QT_END_NAMESPACE

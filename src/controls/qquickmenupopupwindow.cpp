@@ -49,16 +49,16 @@
 
 QT_BEGIN_NAMESPACE
 
-QQuickMenuPopupWindow::QQuickMenuPopupWindow(QQuickMenu1 *menu) :
+QQuickMenuPopupWindow1::QQuickMenuPopupWindow1(QQuickMenu1 *menu) :
     m_itemAt(0),
     m_logicalParentWindow(0),
     m_menu(menu)
 {
 }
 
-void QQuickMenuPopupWindow::setParentItem(QQuickItem *item)
+void QQuickMenuPopupWindow1::setParentItem(QQuickItem *item)
 {
-    QQuickPopupWindow::setParentItem(item);
+    QQuickPopupWindow1::setParentItem(item);
     if (item) {
         QWindow *parentWindow = item->window();
         QWindow *renderWindow = QQuickRenderControl::renderWindowFor(static_cast<QQuickWindow *>(parentWindow));
@@ -66,7 +66,7 @@ void QQuickMenuPopupWindow::setParentItem(QQuickItem *item)
     }
 }
 
-void QQuickMenuPopupWindow::setItemAt(QQuickItem *menuItem)
+void QQuickMenuPopupWindow1::setItemAt(QQuickItem *menuItem)
 {
     if (m_itemAt) {
         disconnect(m_itemAt, SIGNAL(xChanged()), this, SLOT(updatePosition()));
@@ -81,7 +81,7 @@ void QQuickMenuPopupWindow::setItemAt(QQuickItem *menuItem)
     }
 }
 
-void QQuickMenuPopupWindow::setParentWindow(QWindow *effectiveParentWindow, QQuickWindow *parentWindow)
+void QQuickMenuPopupWindow1::setParentWindow(QWindow *effectiveParentWindow, QQuickWindow *parentWindow)
 {
     while (effectiveParentWindow && effectiveParentWindow->parent())
         effectiveParentWindow = effectiveParentWindow->parent();
@@ -89,7 +89,7 @@ void QQuickMenuPopupWindow::setParentWindow(QWindow *effectiveParentWindow, QQui
         setTransientParent(effectiveParentWindow);
     m_logicalParentWindow = parentWindow;
     if (parentWindow) {
-        if (QQuickMenuPopupWindow *pw = qobject_cast<QQuickMenuPopupWindow *>(parentWindow)) {
+        if (QQuickMenuPopupWindow1 *pw = qobject_cast<QQuickMenuPopupWindow1 *>(parentWindow)) {
             connect(pw, SIGNAL(popupDismissed()), this, SLOT(dismissPopup()));
             connect(pw, SIGNAL(willBeDeletedLater()), this, SLOT(setToBeDeletedLater()));
         } else {
@@ -98,13 +98,13 @@ void QQuickMenuPopupWindow::setParentWindow(QWindow *effectiveParentWindow, QQui
     }
 }
 
-void QQuickMenuPopupWindow::setToBeDeletedLater()
+void QQuickMenuPopupWindow1::setToBeDeletedLater()
 {
     deleteLater();
     emit willBeDeletedLater();
 }
 
-void QQuickMenuPopupWindow::setGeometry(int posx, int posy, int w, int h)
+void QQuickMenuPopupWindow1::setGeometry(int posx, int posy, int w, int h)
 {
     QWindow *pw = transientParent();
     if (!pw && parentItem())
@@ -114,7 +114,7 @@ void QQuickMenuPopupWindow::setGeometry(int posx, int posy, int w, int h)
     QRect g = pw->screen()->geometry();
 
     if (posx + w > g.right()) {
-        if (qobject_cast<QQuickMenuPopupWindow *>(transientParent())) {
+        if (qobject_cast<QQuickMenuPopupWindow1 *>(transientParent())) {
             // reposition submenu window on the parent menu's left side
             int submenuOverlap = pw->x() + pw->width() - posx;
             posx -= pw->width() + w - 2 * submenuOverlap;
@@ -131,7 +131,7 @@ void QQuickMenuPopupWindow::setGeometry(int posx, int posy, int w, int h)
     emit geometryChanged();
 }
 
-void QQuickMenuPopupWindow::updateSize()
+void QQuickMenuPopupWindow1::updateSize()
 {
     const QQuickItem *contentItem = popupContentItem();
     if (!contentItem)
@@ -144,21 +144,21 @@ void QQuickMenuPopupWindow::updateSize()
     setGeometry(x, y, contentItem->width(), contentItem->height());
 }
 
-void QQuickMenuPopupWindow::updatePosition()
+void QQuickMenuPopupWindow1::updatePosition()
 {
     QPointF newPos = position() + m_oldItemPos - m_itemAt->position();
     m_initialPos += m_oldItemPos - m_itemAt->position();
     setGeometry(newPos.x(), newPos.y(), width(), height());
 }
 
-void QQuickMenuPopupWindow::focusInEvent(QFocusEvent *e)
+void QQuickMenuPopupWindow1::focusInEvent(QFocusEvent *e)
 {
     QQuickWindow::focusInEvent(e);
     if (m_menu && m_menu->menuContentItem())
         m_menu->menuContentItem()->forceActiveFocus();
 }
 
-void QQuickMenuPopupWindow::exposeEvent(QExposeEvent *e)
+void QQuickMenuPopupWindow1::exposeEvent(QExposeEvent *e)
 {
     // the popup will reposition at the last moment, so its
     // initial position must be captured for updateSize().
@@ -167,18 +167,18 @@ void QQuickMenuPopupWindow::exposeEvent(QExposeEvent *e)
         // This must be a QQuickWindow embedded via createWindowContainer.
         m_initialPos += m_logicalParentWindow->geometry().topLeft();
     }
-    QQuickPopupWindow::exposeEvent(e);
+    QQuickPopupWindow1::exposeEvent(e);
 
     if (isExposed())
         updateSize();
 }
 
-QQuickMenu1 *QQuickMenuPopupWindow::menu() const
+QQuickMenu1 *QQuickMenuPopupWindow1::menu() const
 {
     return m_menu;
 }
 
-bool QQuickMenuPopupWindow::shouldForwardEventAfterDismiss(QMouseEvent *e) const
+bool QQuickMenuPopupWindow1::shouldForwardEventAfterDismiss(QMouseEvent *e) const
 {
     // If the event falls inside this item the event should not be forwarded.
     // For example for comboboxes or top menus of the menubar

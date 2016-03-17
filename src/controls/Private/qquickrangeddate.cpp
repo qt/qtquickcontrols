@@ -45,7 +45,7 @@ QT_BEGIN_NAMESPACE
 Q_GLOBAL_STATIC_WITH_ARGS(const QDate, jsMinimumDate, (QDate(1, 1, 1)))
 Q_GLOBAL_STATIC_WITH_ARGS(const QDate, jsMaximumDate, (QDate(275759, 10, 25)))
 
-QQuickRangedDate::QQuickRangedDate() :
+QQuickRangedDate1::QQuickRangedDate1() :
     QObject(0),
     mDate(QDate::currentDate()),
     mMinimumDate(*jsMinimumDate),
@@ -56,7 +56,7 @@ QQuickRangedDate::QQuickRangedDate() :
 /*! \internal
     \qmlproperty date QQuickRangedDate::date
 */
-void QQuickRangedDate::setDate(const QDate &date)
+void QQuickRangedDate1::setDate(const QDate &date)
 {
     if (date == mDate)
         return;
@@ -75,7 +75,7 @@ void QQuickRangedDate::setDate(const QDate &date)
 /*! \internal
     \qmlproperty date QQuickRangedDate::minimumDate
 */
-void QQuickRangedDate::setMinimumDate(const QDate &minimumDate)
+void QQuickRangedDate1::setMinimumDate(const QDate &minimumDate)
 {
     if (minimumDate == mMinimumDate)
         return;
@@ -93,7 +93,7 @@ void QQuickRangedDate::setMinimumDate(const QDate &minimumDate)
 /*! \internal
     \qmlproperty date QQuickRangedDate::maximumDate
 */
-void QQuickRangedDate::setMaximumDate(const QDate &maximumDate)
+void QQuickRangedDate1::setMaximumDate(const QDate &maximumDate)
 {
     if (maximumDate == mMaximumDate)
         return;

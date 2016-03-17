@@ -51,7 +51,7 @@ QT_BEGIN_NAMESPACE
 
 /*!
     \qmltype Action
-    \instantiates QQuickAction
+    \instantiates QQuickAction1
     \ingroup applicationwindow
     \ingroup controls
     \inqmlmodule QtQuick.Controls
@@ -191,7 +191,7 @@ QT_BEGIN_NAMESPACE
     The corresponding handler is \c onToggled.
 */
 
-QQuickAction::QQuickAction(QObject *parent)
+QQuickAction1::QQuickAction1(QObject *parent)
     : QObject(parent)
     , m_enabled(true)
     , m_checkable(false)
@@ -199,14 +199,14 @@ QQuickAction::QQuickAction(QObject *parent)
 {
 }
 
-QQuickAction::~QQuickAction()
+QQuickAction1::~QQuickAction1()
 {
     setShortcut(QString());
     setMnemonicFromText(QString());
     setExclusiveGroup(0);
 }
 
-void QQuickAction::setText(const QString &text)
+void QQuickAction1::setText(const QString &text)
 {
     if (text == m_text)
         return;
@@ -219,7 +219,7 @@ namespace {
 
 bool qShortcutContextMatcher(QObject *o, Qt::ShortcutContext context)
 {
-    if (!static_cast<QQuickAction*>(o)->isEnabled())
+    if (!static_cast<QQuickAction1*>(o)->isEnabled())
         return false;
 
     switch (context) {
@@ -245,7 +245,7 @@ bool qShortcutContextMatcher(QObject *o, Qt::ShortcutContext context)
 
 bool qMnemonicContextMatcher(QObject *o, Qt::ShortcutContext context)
 {
-    if (!static_cast<QQuickAction*>(o)->isEnabled())
+    if (!static_cast<QQuickAction1*>(o)->isEnabled())
         return false;
 
     switch (context) {
@@ -257,7 +257,7 @@ bool qMnemonicContextMatcher(QObject *o, Qt::ShortcutContext context)
             w = w->parent();
             if (QQuickItem * item = qobject_cast<QQuickItem*>(w))
                 w = item->window();
-            else if (QQuickMenuBase *mb = qobject_cast<QQuickMenuBase *>(w)) {
+            else if (QQuickMenuBase1 *mb = qobject_cast<QQuickMenuBase1 *>(w)) {
                 QQuickItem *vi = mb->visualItem();
                 if (vi && vi->isVisible())
                     w = vi->window();
@@ -278,12 +278,12 @@ bool qMnemonicContextMatcher(QObject *o, Qt::ShortcutContext context)
 
 } // namespace
 
-QVariant QQuickAction::shortcut() const
+QVariant QQuickAction1::shortcut() const
 {
     return m_shortcut.toString(QKeySequence::NativeText);
 }
 
-void QQuickAction::setShortcut(const QVariant &arg)
+void QQuickAction1::setShortcut(const QVariant &arg)
 {
     QKeySequence sequence;
     if (arg.type() == QVariant::Int)
@@ -306,7 +306,7 @@ void QQuickAction::setShortcut(const QVariant &arg)
     emit shortcutChanged(shortcut());
 }
 
-void QQuickAction::setMnemonicFromText(const QString &text)
+void QQuickAction1::setMnemonicFromText(const QString &text)
 {
     QKeySequence sequence = QKeySequence::mnemonic(text);
     if (m_mnemonic == sequence)
@@ -323,7 +323,7 @@ void QQuickAction::setMnemonicFromText(const QString &text)
     }
 }
 
-void QQuickAction::setIconSource(const QUrl &iconSource)
+void QQuickAction1::setIconSource(const QUrl &iconSource)
 {
     if (iconSource == m_iconSource)
         return;
@@ -338,12 +338,12 @@ void QQuickAction::setIconSource(const QUrl &iconSource)
     emit iconSourceChanged();
 }
 
-QString QQuickAction::iconName() const
+QString QQuickAction1::iconName() const
 {
     return m_iconName;
 }
 
-void QQuickAction::setIconName(const QString &iconName)
+void QQuickAction1::setIconName(const QString &iconName)
 {
     if (iconName == m_iconName)
         return;
@@ -353,7 +353,7 @@ void QQuickAction::setIconName(const QString &iconName)
     emit iconChanged();
 }
 
-void QQuickAction::setTooltip(const QString &arg)
+void QQuickAction1::setTooltip(const QString &arg)
 {
     if (m_tooltip != arg) {
         m_tooltip = arg;
@@ -361,7 +361,7 @@ void QQuickAction::setTooltip(const QString &arg)
     }
 }
 
-void QQuickAction::setEnabled(bool e)
+void QQuickAction1::setEnabled(bool e)
 {
     if (e == m_enabled)
         return;
@@ -370,7 +370,7 @@ void QQuickAction::setEnabled(bool e)
     emit enabledChanged();
 }
 
-void QQuickAction::setCheckable(bool c)
+void QQuickAction1::setCheckable(bool c)
 {
     if (c == m_checkable)
         return;
@@ -384,7 +384,7 @@ void QQuickAction::setCheckable(bool c)
         emit toggled(m_checkable);
 }
 
-void QQuickAction::setChecked(bool c)
+void QQuickAction1::setChecked(bool c)
 {
     if (c == m_checked)
         return;
@@ -395,12 +395,12 @@ void QQuickAction::setChecked(bool c)
         emit toggled(m_checked);
 }
 
-QQuickExclusiveGroup1 *QQuickAction::exclusiveGroup() const
+QQuickExclusiveGroup1 *QQuickAction1::exclusiveGroup() const
 {
     return m_exclusiveGroup.data();
 }
 
-void QQuickAction::setExclusiveGroup(QQuickExclusiveGroup1 *eg)
+void QQuickAction1::setExclusiveGroup(QQuickExclusiveGroup1 *eg)
 {
     if (m_exclusiveGroup == eg)
         return;
@@ -414,7 +414,7 @@ void QQuickAction::setExclusiveGroup(QQuickExclusiveGroup1 *eg)
     emit exclusiveGroupChanged();
 }
 
-bool QQuickAction::event(QEvent *e)
+bool QQuickAction1::event(QEvent *e)
 {
     if (!m_enabled)
         return false;
@@ -437,7 +437,7 @@ bool QQuickAction::event(QEvent *e)
     return true;
 }
 
-void QQuickAction::trigger(QObject *source)
+void QQuickAction1::trigger(QObject *source)
 {
     if (!m_enabled)
         return;

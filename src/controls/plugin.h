@@ -50,12 +50,12 @@
 
 QT_BEGIN_NAMESPACE
 
-class QtQuickControlsPlugin: public QQmlExtensionPlugin
+class QtQuickControls1Plugin: public QQmlExtensionPlugin
 {
     Q_OBJECT
     Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QQmlExtensionInterface/1.0")
 public:
-    QtQuickControlsPlugin(QObject *parent = 0);
+    QtQuickControls1Plugin(QObject *parent = 0);
     void registerTypes(const char *uri);
     void initializeEngine(QQmlEngine *engine, const char *uri);
 private:

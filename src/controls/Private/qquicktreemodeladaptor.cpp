@@ -51,17 +51,17 @@ QT_BEGIN_NAMESPACE
 #   define ASSERT_CONSISTENCY qt_noop
 #endif
 
-QQuickTreeModelAdaptor::QQuickTreeModelAdaptor(QObject *parent) :
+QQuickTreeModelAdaptor1::QQuickTreeModelAdaptor1(QObject *parent) :
     QAbstractListModel(parent), m_model(0), m_lastItemIndex(0)
 {
 }
 
-QAbstractItemModel *QQuickTreeModelAdaptor::model() const
+QAbstractItemModel *QQuickTreeModelAdaptor1::model() const
 {
     return m_model;
 }
 
-void QQuickTreeModelAdaptor::setModel(QAbstractItemModel *arg)
+void QQuickTreeModelAdaptor1::setModel(QAbstractItemModel *arg)
 {
     struct Cx {
         const char *signal;
@@ -115,7 +115,7 @@ void QQuickTreeModelAdaptor::setModel(QAbstractItemModel *arg)
     }
 }
 
-void QQuickTreeModelAdaptor::clearModelData()
+void QQuickTreeModelAdaptor1::clearModelData()
 {
     beginResetModel();
     m_items.clear();
@@ -123,12 +123,12 @@ void QQuickTreeModelAdaptor::clearModelData()
     endResetModel();
 }
 
-const QModelIndex &QQuickTreeModelAdaptor::rootIndex() const
+const QModelIndex &QQuickTreeModelAdaptor1::rootIndex() const
 {
     return m_rootIndex;
 }
 
-void QQuickTreeModelAdaptor::setRootIndex(const QModelIndex &idx)
+void QQuickTreeModelAdaptor1::setRootIndex(const QModelIndex &idx)
 {
     if (m_rootIndex == idx)
         return;
@@ -141,12 +141,12 @@ void QQuickTreeModelAdaptor::setRootIndex(const QModelIndex &idx)
     emit rootIndexChanged();
 }
 
-void QQuickTreeModelAdaptor::resetRootIndex()
+void QQuickTreeModelAdaptor1::resetRootIndex()
 {
     setRootIndex(QModelIndex());
 }
 
-QHash<int, QByteArray> QQuickTreeModelAdaptor::roleNames() const
+QHash<int, QByteArray> QQuickTreeModelAdaptor1::roleNames() const
 {
     if (!m_model)
         return QHash<int, QByteArray>();
@@ -159,12 +159,12 @@ QHash<int, QByteArray> QQuickTreeModelAdaptor::roleNames() const
     return modelRoleNames;
 }
 
-int QQuickTreeModelAdaptor::rowCount(const QModelIndex &) const
+int QQuickTreeModelAdaptor1::rowCount(const QModelIndex &) const
 {
     return m_items.count();
 }
 
-QVariant QQuickTreeModelAdaptor::data(const QModelIndex &index, int role) const
+QVariant QQuickTreeModelAdaptor1::data(const QModelIndex &index, int role) const
 {
     if (!m_model)
         return QVariant();
@@ -185,7 +185,7 @@ QVariant QQuickTreeModelAdaptor::data(const QModelIndex &index, int role) const
     }
 }
 
-bool QQuickTreeModelAdaptor::setData(const QModelIndex &index, const QVariant &value, int role)
+bool QQuickTreeModelAdaptor1::setData(const QModelIndex &index, const QVariant &value, int role)
 {
     if (!m_model)
         return false;
@@ -203,7 +203,7 @@ bool QQuickTreeModelAdaptor::setData(const QModelIndex &index, const QVariant &v
     }
 }
 
-int QQuickTreeModelAdaptor::itemIndex(const QModelIndex &index) const
+int QQuickTreeModelAdaptor1::itemIndex(const QModelIndex &index) const
 {
     // This is basically a plagiarism of QTreeViewPrivate::viewIndex()
     if (!index.isValid() || index == m_rootIndex || m_items.isEmpty())
@@ -245,23 +245,23 @@ int QQuickTreeModelAdaptor::itemIndex(const QModelIndex &index) const
     return -1;
 }
 
-bool QQuickTreeModelAdaptor::isVisible(const QModelIndex &index)
+bool QQuickTreeModelAdaptor1::isVisible(const QModelIndex &index)
 {
     return itemIndex(index) != -1;
 }
 
-bool QQuickTreeModelAdaptor::childrenVisible(const QModelIndex &index)
+bool QQuickTreeModelAdaptor1::childrenVisible(const QModelIndex &index)
 {
     return (index == m_rootIndex && !m_items.isEmpty())
            || (m_expandedItems.contains(index) && isVisible(index));
 }
 
-const QModelIndex &QQuickTreeModelAdaptor::mapToModel(const QModelIndex &index) const
+const QModelIndex &QQuickTreeModelAdaptor1::mapToModel(const QModelIndex &index) const
 {
     return m_items.at(index.row()).index;
 }
 
-QModelIndex QQuickTreeModelAdaptor::mapRowToModelIndex(int row) const
+QModelIndex QQuickTreeModelAdaptor1::mapRowToModelIndex(int row) const
 {
     if (!m_model)
         return QModelIndex();
@@ -270,7 +270,7 @@ QModelIndex QQuickTreeModelAdaptor::mapRowToModelIndex(int row) const
     return m_items.at(row).index;
 }
 
-QItemSelection  QQuickTreeModelAdaptor::selectionForRowRange(const QModelIndex &fromIndex, const QModelIndex &toIndex) const
+QItemSelection  QQuickTreeModelAdaptor1::selectionForRowRange(const QModelIndex &fromIndex, const QModelIndex &toIndex) const
 {
     int from = itemIndex(fromIndex);
     int to = itemIndex(toIndex);
@@ -323,7 +323,7 @@ QItemSelection  QQuickTreeModelAdaptor::selectionForRowRange(const QModelIndex &
     return sel;
 }
 
-void QQuickTreeModelAdaptor::showModelTopLevelItems(bool doInsertRows)
+void QQuickTreeModelAdaptor1::showModelTopLevelItems(bool doInsertRows)
 {
     if (!m_model)
         return;
@@ -337,7 +337,7 @@ void QQuickTreeModelAdaptor::showModelTopLevelItems(bool doInsertRows)
     showModelChildItems(TreeItem(m_rootIndex), 0, topLevelRowCount - 1, doInsertRows);
 }
 
-void QQuickTreeModelAdaptor::showModelChildItems(const TreeItem &parentItem, int start, int end, bool doInsertRows, bool doExpandPendingRows)
+void QQuickTreeModelAdaptor1::showModelChildItems(const TreeItem &parentItem, int start, int end, bool doInsertRows, bool doExpandPendingRows)
 {
     const QModelIndex &parentIndex = parentItem.index;
     int rowIdx = parentIndex.isValid() && parentIndex != m_rootIndex ? itemIndex(parentIndex) + 1 : 0;
@@ -379,7 +379,7 @@ void QQuickTreeModelAdaptor::showModelChildItems(const TreeItem &parentItem, int
 }
 
 
-void QQuickTreeModelAdaptor::expand(const QModelIndex &idx)
+void QQuickTreeModelAdaptor1::expand(const QModelIndex &idx)
 {
     ASSERT_CONSISTENCY();
     if (!m_model)
@@ -400,7 +400,7 @@ void QQuickTreeModelAdaptor::expand(const QModelIndex &idx)
     emit expanded(idx);
 }
 
-void QQuickTreeModelAdaptor::collapse(const QModelIndex &idx)
+void QQuickTreeModelAdaptor1::collapse(const QModelIndex &idx)
 {
     ASSERT_CONSISTENCY();
     if (!m_model)
@@ -421,7 +421,7 @@ void QQuickTreeModelAdaptor::collapse(const QModelIndex &idx)
     emit collapsed(idx);
 }
 
-bool QQuickTreeModelAdaptor::isExpanded(const QModelIndex &index) const
+bool QQuickTreeModelAdaptor1::isExpanded(const QModelIndex &index) const
 {
     ASSERT_CONSISTENCY();
     if (!m_model)
@@ -430,12 +430,12 @@ bool QQuickTreeModelAdaptor::isExpanded(const QModelIndex &index) const
     return !index.isValid() || m_expandedItems.contains(index);
 }
 
-bool QQuickTreeModelAdaptor::isExpanded(int row) const
+bool QQuickTreeModelAdaptor1::isExpanded(int row) const
 {
     return m_items.at(row).expanded;
 }
 
-void QQuickTreeModelAdaptor::expandRow(int n)
+void QQuickTreeModelAdaptor1::expandRow(int n)
 {
     if (!m_model || isExpanded(n))
         return;
@@ -452,7 +452,7 @@ void QQuickTreeModelAdaptor::expandRow(int n)
     expandPendingRows();
 }
 
-void QQuickTreeModelAdaptor::expandPendingRows(bool doInsertRows)
+void QQuickTreeModelAdaptor1::expandPendingRows(bool doInsertRows)
 {
     while (!m_itemsToExpand.isEmpty()) {
         TreeItem *item = m_itemsToExpand.takeFirst();
@@ -472,7 +472,7 @@ void QQuickTreeModelAdaptor::expandPendingRows(bool doInsertRows)
     }
 }
 
-void QQuickTreeModelAdaptor::collapseRow(int n)
+void QQuickTreeModelAdaptor1::collapseRow(int n)
 {
     if (!m_model || !isExpanded(n))
         return;
@@ -491,7 +491,7 @@ void QQuickTreeModelAdaptor::collapseRow(int n)
     removeVisibleRows(n + 1, lastIndex);
 }
 
-int QQuickTreeModelAdaptor::lastChildIndex(const QModelIndex &index)
+int QQuickTreeModelAdaptor1::lastChildIndex(const QModelIndex &index)
 {
     if (!m_expandedItems.contains(index))
         return itemIndex(index);
@@ -509,7 +509,7 @@ int QQuickTreeModelAdaptor::lastChildIndex(const QModelIndex &index)
     return firstIndex - 1;
 }
 
-void QQuickTreeModelAdaptor::removeVisibleRows(int startIndex, int endIndex, bool doRemoveRows)
+void QQuickTreeModelAdaptor1::removeVisibleRows(int startIndex, int endIndex, bool doRemoveRows)
 {
     if (startIndex < 0 || endIndex < 0 || startIndex > endIndex)
         return;
@@ -521,14 +521,14 @@ void QQuickTreeModelAdaptor::removeVisibleRows(int startIndex, int endIndex, boo
         endRemoveRows();
 }
 
-void QQuickTreeModelAdaptor::modelHasBeenDestroyed()
+void QQuickTreeModelAdaptor1::modelHasBeenDestroyed()
 {
     // The model has been deleted. This should behave as if no model was set
     clearModelData();
     emit modelChanged(Q_NULLPTR);
 }
 
-void QQuickTreeModelAdaptor::modelHasBeenReset()
+void QQuickTreeModelAdaptor1::modelHasBeenReset()
 {
     clearModelData();
 
@@ -536,7 +536,7 @@ void QQuickTreeModelAdaptor::modelHasBeenReset()
     ASSERT_CONSISTENCY();
 }
 
-void QQuickTreeModelAdaptor::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRigth, const QVector<int> &roles)
+void QQuickTreeModelAdaptor1::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRigth, const QVector<int> &roles)
 {
     Q_ASSERT(topLeft.parent() == bottomRigth.parent());
     const QModelIndex &parent = topLeft.parent();
@@ -574,14 +574,14 @@ void QQuickTreeModelAdaptor::modelDataChanged(const QModelIndex &topLeft, const 
     ASSERT_CONSISTENCY();
 }
 
-void QQuickTreeModelAdaptor::modelLayoutAboutToBeChanged(const QList<QPersistentModelIndex> &parents, QAbstractItemModel::LayoutChangeHint hint)
+void QQuickTreeModelAdaptor1::modelLayoutAboutToBeChanged(const QList<QPersistentModelIndex> &parents, QAbstractItemModel::LayoutChangeHint hint)
 {
     ASSERT_CONSISTENCY();
     Q_UNUSED(parents);
     Q_UNUSED(hint);
 }
 
-void QQuickTreeModelAdaptor::modelLayoutChanged(const QList<QPersistentModelIndex> &parents, QAbstractItemModel::LayoutChangeHint hint)
+void QQuickTreeModelAdaptor1::modelLayoutChanged(const QList<QPersistentModelIndex> &parents, QAbstractItemModel::LayoutChangeHint hint)
 {
     Q_UNUSED(hint);
     if (parents.isEmpty()) {
@@ -608,7 +608,7 @@ void QQuickTreeModelAdaptor::modelLayoutChanged(const QList<QPersistentModelInde
     ASSERT_CONSISTENCY();
 }
 
-void QQuickTreeModelAdaptor::modelRowsAboutToBeInserted(const QModelIndex & parent, int start, int end)
+void QQuickTreeModelAdaptor1::modelRowsAboutToBeInserted(const QModelIndex & parent, int start, int end)
 {
     Q_UNUSED(parent);
     Q_UNUSED(start);
@@ -616,7 +616,7 @@ void QQuickTreeModelAdaptor::modelRowsAboutToBeInserted(const QModelIndex & pare
     ASSERT_CONSISTENCY();
 }
 
-void QQuickTreeModelAdaptor::modelRowsInserted(const QModelIndex & parent, int start, int end)
+void QQuickTreeModelAdaptor1::modelRowsInserted(const QModelIndex & parent, int start, int end)
 {
     TreeItem item;
     int parentRow = itemIndex(parent);
@@ -639,7 +639,7 @@ void QQuickTreeModelAdaptor::modelRowsInserted(const QModelIndex & parent, int s
     ASSERT_CONSISTENCY();
 }
 
-void QQuickTreeModelAdaptor::modelRowsAboutToBeRemoved(const QModelIndex & parent, int start, int end)
+void QQuickTreeModelAdaptor1::modelRowsAboutToBeRemoved(const QModelIndex & parent, int start, int end)
 {
     ASSERT_CONSISTENCY();
     if (parent == m_rootIndex || childrenVisible(parent)) {
@@ -666,7 +666,7 @@ void QQuickTreeModelAdaptor::modelRowsAboutToBeRemoved(const QModelIndex & paren
     }
 }
 
-void QQuickTreeModelAdaptor::modelRowsRemoved(const QModelIndex & parent, int start, int end)
+void QQuickTreeModelAdaptor1::modelRowsRemoved(const QModelIndex & parent, int start, int end)
 {
     Q_UNUSED(start);
     Q_UNUSED(end);
@@ -679,7 +679,7 @@ void QQuickTreeModelAdaptor::modelRowsRemoved(const QModelIndex & parent, int st
     ASSERT_CONSISTENCY();
 }
 
-void QQuickTreeModelAdaptor::modelRowsAboutToBeMoved(const QModelIndex & sourceParent, int sourceStart, int sourceEnd, const QModelIndex & destinationParent, int destinationRow)
+void QQuickTreeModelAdaptor1::modelRowsAboutToBeMoved(const QModelIndex & sourceParent, int sourceStart, int sourceEnd, const QModelIndex & destinationParent, int destinationRow)
 {
     ASSERT_CONSISTENCY();
     if (!childrenVisible(sourceParent))
@@ -743,14 +743,14 @@ void QQuickTreeModelAdaptor::modelRowsAboutToBeMoved(const QModelIndex & sourceP
     }
 }
 
-void QQuickTreeModelAdaptor::modelRowsMoved(const QModelIndex & sourceParent, int sourceStart, int sourceEnd, const QModelIndex & destinationParent, int destinationRow)
+void QQuickTreeModelAdaptor1::modelRowsMoved(const QModelIndex & sourceParent, int sourceStart, int sourceEnd, const QModelIndex & destinationParent, int destinationRow)
 {
     if (!childrenVisible(sourceParent) && childrenVisible(destinationParent))
         modelRowsInserted(destinationParent, destinationRow, destinationRow + sourceEnd - sourceStart);
     ASSERT_CONSISTENCY();
 }
 
-void QQuickTreeModelAdaptor::dump() const
+void QQuickTreeModelAdaptor1::dump() const
 {
     if (!m_model)
         return;
@@ -770,7 +770,7 @@ void QQuickTreeModelAdaptor::dump() const
     }
 }
 
-bool QQuickTreeModelAdaptor::testConsistency(bool dumpOnFail) const
+bool QQuickTreeModelAdaptor1::testConsistency(bool dumpOnFail) const
 {
     if (!m_model) {
         if (!m_items.isEmpty()) {

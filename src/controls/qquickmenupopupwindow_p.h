@@ -47,11 +47,11 @@ QT_BEGIN_NAMESPACE
 class QQuickMenu1;
 class QQuickMenuBar1;
 
-class QQuickMenuPopupWindow : public QQuickPopupWindow
+class QQuickMenuPopupWindow1 : public QQuickPopupWindow1
 {
     Q_OBJECT
 public:
-    QQuickMenuPopupWindow(QQuickMenu1 *menu);
+    QQuickMenuPopupWindow1(QQuickMenu1 *menu);
 
     void setItemAt(QQuickItem *menuItem);
     void setParentWindow(QWindow *effectiveParentWindow, QQuickWindow *parentWindow);

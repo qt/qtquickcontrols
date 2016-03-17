@@ -45,15 +45,15 @@
 
 QT_BEGIN_NAMESPACE
 
-class QQuickMenuItemContainer : public QQuickMenuBase
+class QQuickMenuItemContainer1 : public QQuickMenuBase1
 {
     Q_OBJECT
 public:
-    explicit QQuickMenuItemContainer(QObject *parent = 0)
-        : QQuickMenuBase(parent, -1)
+    explicit QQuickMenuItemContainer1(QObject *parent = 0)
+        : QQuickMenuBase1(parent, -1)
     { }
 
-    ~QQuickMenuItemContainer()
+    ~QQuickMenuItemContainer1()
     {
         clear();
         setParentMenu(0);
@@ -61,12 +61,12 @@ public:
 
     void setParentMenu(QQuickMenu1 *parentMenu)
     {
-        QQuickMenuBase::setParentMenu(parentMenu);
-        for (QQuickMenuBase *item : qAsConst(m_menuItems))
+        QQuickMenuBase1::setParentMenu(parentMenu);
+        for (QQuickMenuBase1 *item : qAsConst(m_menuItems))
             item->setParentMenu(parentMenu);
     }
 
-    void insertItem(int index, QQuickMenuBase *item)
+    void insertItem(int index, QQuickMenuBase1 *item)
     {
         if (index == -1)
             index = m_menuItems.count();
@@ -74,14 +74,14 @@ public:
         item->setContainer(this);
     }
 
-    void removeItem(QQuickMenuBase *item)
+    void removeItem(QQuickMenuBase1 *item)
     {
         item->setParentMenu(0);
         item->setContainer(0);
         m_menuItems.removeOne(item);
     }
 
-    const QList<QPointer<QQuickMenuBase> > &items()
+    const QList<QPointer<QQuickMenuBase1> > &items()
     {
         return m_menuItems;
     }
@@ -89,7 +89,7 @@ public:
     void clear()
     {
         while (!m_menuItems.empty()) {
-            QQuickMenuBase *item = m_menuItems.takeFirst();
+            QQuickMenuBase1 *item = m_menuItems.takeFirst();
             if (item) {
                 item->setParentMenu(0);
                 item->setContainer(0);
@@ -98,7 +98,7 @@ public:
     }
 
 private:
-    QList<QPointer<QQuickMenuBase> > m_menuItems;
+    QList<QPointer<QQuickMenuBase1> > m_menuItems;
 };
 
 QT_END_NAMESPACE
