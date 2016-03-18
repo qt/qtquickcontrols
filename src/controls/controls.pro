@@ -82,7 +82,7 @@ osx: LIBS_PRIVATE += -framework Carbon
 
     RESOURCES += $$GENERATED_RESOURCE_FILE
 } else {
-    QML_FILES += $$CONTROLS_QML_FILES \
+    QML_FILES *= $$CONTROLS_QML_FILES \
                  $$PRIVATE_QML_FILES \
                  $$STYLES_QML_FILES
 }
