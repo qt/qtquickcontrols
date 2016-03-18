@@ -235,6 +235,7 @@ protected:
                     QUrl::fromLocalFile(qmlDir.filePath(QString("Widget%1.qml").arg(qmlName)));
 #else
                     QUrl(QString("qrc:/qt-project.org/imports/QtQuick/Dialogs/Widget%1.qml").arg(qmlName));
+            Q_UNUSED(qmlDir);
 #endif
             if (qmlRegisterType(dialogQmlPath, uri, versionMajor, versionMinor, qmlName) >= 0) {
                 qCDebug(lcRegistration) << "    registering" << qmlName << " as " << dialogQmlPath;
@@ -257,6 +258,7 @@ protected:
                     QUrl::fromLocalFile(qmlDir.filePath(QString("Default%1.qml").arg(qmlName)));
 #else
                     QUrl(QString("qrc:/qt-project.org/imports/QtQuick/Dialogs/Default%1.qml").arg(qmlName));
+        Q_UNUSED(qmlDir);
 #endif
         qCDebug(lcRegistration) << "    registering" << qmlName << " as " << dialogQmlPath;
         qmlRegisterType(dialogQmlPath, uri, versionMajor, versionMinor, qmlName);

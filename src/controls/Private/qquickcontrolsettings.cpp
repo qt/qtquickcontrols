@@ -165,6 +165,8 @@ static QString relativeStyleImportPath(QQmlEngine *engine, const QString &styleN
     if (!found)
         path = ":/QtQuick/Controls/Styles";
 #else
+    Q_UNUSED(engine);
+    Q_UNUSED(styleName);
     path = ":/qt-project.org/imports/QtQuick/Controls/Styles";
 #endif
     return path;
