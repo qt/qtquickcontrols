@@ -137,9 +137,9 @@ Item {
             root = pieMenuComponent.createObject(container);
             var mouseArea = root.mouseArea;
             var pieMenu = root.pieMenu;
-            currentIndexSignalSpy.signalName = "onCurrentIndexChanged"
+            currentIndexSignalSpy.signalName = "currentIndexChanged"
             currentIndexSignalSpy.target = pieMenu;
-            actionSignalSpy.signalName = "onActionTriggered";
+            actionSignalSpy.signalName = "actionTriggered";
             actionSignalSpy.target = root;
 
             compare(pieMenu.triggerMode, TriggerMode.TriggerOnClick);
@@ -547,7 +547,7 @@ Item {
             compare(pieMenu.__style.endAngle, originalEndAngle);
 
             for (i = 0; i < data.indexVisibility.length; ++i) {
-                actionSignalSpy.signalName = "onActionTriggered";
+                actionSignalSpy.signalName = "actionTriggered";
                 actionSignalSpy.target = root;
 
                 compare(pieMenu.visible, false);
@@ -712,7 +712,7 @@ Item {
             // Move over middle item
             mouseMove(root, 100, 50)
             compare(pieMenu.currentIndex, 1)
-            selectedAngleChangedSpy.signalName = "onSelectionAngleChanged"
+            selectedAngleChangedSpy.signalName = "selectionAngleChanged"
             selectedAngleChangedSpy.target = pieMenu;
             // Move outside the middle item without changing angle
             mouseMove(root, 100, 98)
@@ -737,7 +737,7 @@ Item {
             if (pieMenu.__style.title)
                 tryCompare(pieMenu.__panel.titleItem, "text", "Action 1");
 
-            actionSignalSpy.signalName = "onActionTriggered";
+            actionSignalSpy.signalName = "actionTriggered";
             actionSignalSpy.target = root;
             mouseClick(root, 230, 145);
             compare(actionSignalSpy.count, 1);
@@ -811,7 +811,7 @@ Item {
             tryCompare(pieMenuComponent, "status", Component.Ready);
             root = pieMenuComponent.createObject(container);
             var pieMenu = root.pieMenu;
-            actionSignalSpy.signalName = "onActionTriggered";
+            actionSignalSpy.signalName = "actionTriggered";
             actionSignalSpy.target = root;
 
             mouseClick(root, 0, 0, Qt.LeftButton);
@@ -840,7 +840,7 @@ Item {
             tryCompare(pieMenuComponent, "status", Component.Ready);
             root = pieMenuComponent.createObject(container);
             pieMenu = root.pieMenu;
-            actionSignalSpy.signalName = "onActionTriggered";
+            actionSignalSpy.signalName = "actionTriggered";
             actionSignalSpy.target = root;
 
             mouseClick(root, 0, 0, Qt.LeftButton);
