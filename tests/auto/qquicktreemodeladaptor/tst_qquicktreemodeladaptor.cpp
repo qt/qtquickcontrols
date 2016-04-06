@@ -81,6 +81,7 @@ private slots:
 
     void moveRows_data();
     void moveRows();
+    void reparentOnSameRow();
 
     void selectionForRowRange();
 
@@ -1156,6 +1157,56 @@ void tst_QQuickTreeModelAdaptor::moveRows()
             QCOMPARE(rowsAboutToBeRemovedArgs.at(2).toInt(), tmaSourceItemIdx + expectedMovedCount - 1);
         }
     }
+    QVERIFY(tma.testConsistency());
+    compareModels(tma, model);
+}
+
+void tst_QQuickTreeModelAdaptor::reparentOnSameRow()
+{
+    TestModel model(2, 1);
+    model.alternateChildlessRows = false;
+    QQuickTreeModelAdaptor tma;
+    tma.setModel(&model);
+
+    const QModelIndex &destParent = model.index(0, 0);
+    const QModelIndex &sourceParent = QModelIndex();
+    QVERIFY(destParent.isValid());
+    tma.expand(destParent);
+    QVERIFY(tma.isExpanded(destParent));
+
+    QSignalSpy dataChangedSpy(&tma, SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)));
+    QSignalSpy rowsMovedSpy(&tma, SIGNAL(rowsMoved(QModelIndex,int,int,QModelIndex,int)));
+    QVERIFY(rowsMovedSpy.isValid());
+    QVERIFY(dataChangedSpy.isValid());
+
+    QVERIFY(model.moveRows(sourceParent, 1, 1, destParent, 2));
+
+    QModelIndex movedIndex = tma.index(3, 0, QModelIndex());
+    QVERIFY(movedIndex.isValid());
+    QCOMPARE(movedIndex.data(QQuickTreeModelAdaptor::DepthRole).toInt(), 1);
+    QCOMPARE(tma.data(movedIndex, QQuickTreeModelAdaptor::ModelIndexRole).toModelIndex(), model.index(2, 0, destParent));
+
+    // at least DepthRole and ModeIndexRole changes should have happened for the affected row
+    bool depthChanged = false;
+    bool modelIndexChanged = false;
+    QList<QList<QVariant> > &changes = dataChangedSpy;
+    foreach (QList<QVariant> change, changes) {
+        if (change.at(0) == movedIndex) {
+            if (change.at(2).value<QVector<int> >().contains(QQuickTreeModelAdaptor::DepthRole))
+                depthChanged = true;
+            if (change.at(2).value<QVector<int> >().contains(QQuickTreeModelAdaptor::ModelIndexRole))
+                modelIndexChanged = true;
+        }
+    }
+
+    QCOMPARE(depthChanged, true);
+    QCOMPARE(modelIndexChanged, true);
+
+    QCOMPARE(rowsMovedSpy.count(), 0);
+
+    model.moveRow(destParent, 2, QModelIndex(), 1);
+
+    QCOMPARE(rowsMovedSpy.count(), 0);
     QVERIFY(tma.testConsistency());
     compareModels(tma, model);
 }
