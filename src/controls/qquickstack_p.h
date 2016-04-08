@@ -44,7 +44,7 @@
 
 QT_BEGIN_NAMESPACE
 
-class QQuickStack : public QObject
+class QQuickStack1 : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(int index READ index NOTIFY indexChanged)
@@ -56,9 +56,9 @@ class QQuickStack : public QObject
     Q_ENUMS(Status)
 
 public:
-    QQuickStack(QObject *object = 0);
+    QQuickStack1(QObject *object = 0);
 
-    static QQuickStack *qmlAttachedProperties(QObject *object);
+    static QQuickStack1 *qmlAttachedProperties(QObject *object);
 
     int index() const;
     void setIndex(int index);
@@ -89,7 +89,7 @@ private:
 
 QT_END_NAMESPACE
 
-QML_DECLARE_TYPE(QQuickStack)
-QML_DECLARE_TYPEINFO(QQuickStack, QML_HAS_ATTACHED_PROPERTIES)
+QML_DECLARE_TYPE(QQuickStack1)
+QML_DECLARE_TYPEINFO(QQuickStack1, QML_HAS_ATTACHED_PROPERTIES)
 
 #endif // QQUICKSTACK_P_H

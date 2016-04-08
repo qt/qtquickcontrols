@@ -46,10 +46,10 @@
 QT_BEGIN_NAMESPACE
 
 // Load icons from desktop theme
-class QQuickDesktopIconProvider : public QQuickImageProvider
+class QQuickDesktopIconProvider1 : public QQuickImageProvider
 {
 public:
-    QQuickDesktopIconProvider()
+    QQuickDesktopIconProvider1()
         : QQuickImageProvider(QQuickImageProvider::Pixmap)
     {
     }

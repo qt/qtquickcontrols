@@ -54,7 +54,7 @@ static const qreal pixelDeltaAdjustment = 0.5;
 // comes originally from QTextEdit, which sets 20px steps by default.
 static const qreal defaultScrollSpeed = 20.0;
 
-QQuickWheelArea::QQuickWheelArea(QQuickItem *parent)
+QQuickWheelArea1::QQuickWheelArea1(QQuickItem *parent)
     : QQuickItem(parent),
       m_horizontalMinimumValue(0),
       m_horizontalMaximumValue(0),
@@ -70,33 +70,38 @@ QQuickWheelArea::QQuickWheelArea(QQuickItem *parent)
 
 }
 
-QQuickWheelArea::~QQuickWheelArea()
+QQuickWheelArea1::~QQuickWheelArea1()
 {
 
 }
 
-bool QQuickWheelArea::isAtXEnd() const
+bool QQuickWheelArea1::isAtXEnd() const
 {
     return qFuzzyCompare(m_horizontalMaximumValue, m_horizontalValue);
 }
 
-bool QQuickWheelArea::isAtXBeginning() const
+bool QQuickWheelArea1::isAtXBeginning() const
 {
     return qFuzzyCompare(m_horizontalMinimumValue, m_horizontalValue);
 }
 
-bool QQuickWheelArea::isAtYEnd() const
+bool QQuickWheelArea1::isAtYEnd() const
 {
     return qFuzzyCompare(m_verticalMaximumValue, m_verticalValue);
 }
 
-bool QQuickWheelArea::isAtYBeginning() const
+bool QQuickWheelArea1::isAtYBeginning() const
 {
     return qFuzzyCompare(m_verticalMinimumValue, m_verticalValue);
 }
 
+bool QQuickWheelArea1::isInverted() const
+{
+    return m_inverted;
+}
+
 #ifndef QT_NO_WHEELEVENT
-void QQuickWheelArea::wheelEvent(QWheelEvent *we)
+void QQuickWheelArea1::wheelEvent(QWheelEvent *we)
 {
     if (we->phase() == Qt::ScrollBegin)
         setActive(true);
@@ -105,6 +110,8 @@ void QQuickWheelArea::wheelEvent(QWheelEvent *we)
 
     QPoint numPixels = we->pixelDelta();
     QPoint numDegrees = we->angleDelta() / 8;
+
+    m_inverted = we->inverted();
 
     if (!numPixels.isNull()) {
         setHorizontalDelta(numPixels.x() * pixelDeltaAdjustment);
@@ -132,47 +139,47 @@ void QQuickWheelArea::wheelEvent(QWheelEvent *we)
 }
 #endif
 
-void QQuickWheelArea::setHorizontalMinimumValue(qreal value)
+void QQuickWheelArea1::setHorizontalMinimumValue(qreal value)
 {
     m_horizontalMinimumValue = value;
 }
 
-qreal QQuickWheelArea::horizontalMinimumValue() const
+qreal QQuickWheelArea1::horizontalMinimumValue() const
 {
     return m_horizontalMinimumValue;
 }
 
-void QQuickWheelArea::setHorizontalMaximumValue(qreal value)
+void QQuickWheelArea1::setHorizontalMaximumValue(qreal value)
 {
     m_horizontalMaximumValue = value;
 }
 
-qreal QQuickWheelArea::horizontalMaximumValue() const
+qreal QQuickWheelArea1::horizontalMaximumValue() const
 {
     return m_horizontalMaximumValue;
 }
 
-void QQuickWheelArea::setVerticalMinimumValue(qreal value)
+void QQuickWheelArea1::setVerticalMinimumValue(qreal value)
 {
     m_verticalMinimumValue = value;
 }
 
-qreal QQuickWheelArea::verticalMinimumValue() const
+qreal QQuickWheelArea1::verticalMinimumValue() const
 {
     return m_verticalMinimumValue;
 }
 
-void QQuickWheelArea::setVerticalMaximumValue(qreal value)
+void QQuickWheelArea1::setVerticalMaximumValue(qreal value)
 {
     m_verticalMaximumValue = value;
 }
 
-qreal QQuickWheelArea::verticalMaximumValue() const
+qreal QQuickWheelArea1::verticalMaximumValue() const
 {
     return m_verticalMaximumValue;
 }
 
-void QQuickWheelArea::setHorizontalValue(qreal value)
+void QQuickWheelArea1::setHorizontalValue(qreal value)
 {
     value = qBound<qreal>(m_horizontalMinimumValue, value, m_horizontalMaximumValue);
 
@@ -182,12 +189,12 @@ void QQuickWheelArea::setHorizontalValue(qreal value)
     }
 }
 
-qreal QQuickWheelArea::horizontalValue() const
+qreal QQuickWheelArea1::horizontalValue() const
 {
     return m_horizontalValue;
 }
 
-void QQuickWheelArea::setVerticalValue(qreal value)
+void QQuickWheelArea1::setVerticalValue(qreal value)
 {
     value = qBound<qreal>(m_verticalMinimumValue, value, m_verticalMaximumValue);
 
@@ -197,12 +204,12 @@ void QQuickWheelArea::setVerticalValue(qreal value)
     }
 }
 
-qreal QQuickWheelArea::verticalValue() const
+qreal QQuickWheelArea1::verticalValue() const
 {
     return m_verticalValue;
 }
 
-void QQuickWheelArea::setVerticalDelta(qreal value)
+void QQuickWheelArea1::setVerticalDelta(qreal value)
 {
     m_verticalDelta = value;
     setVerticalValue(m_verticalValue - m_verticalDelta);
@@ -210,12 +217,12 @@ void QQuickWheelArea::setVerticalDelta(qreal value)
     emit verticalWheelMoved();
 }
 
-qreal QQuickWheelArea::verticalDelta() const
+qreal QQuickWheelArea1::verticalDelta() const
 {
     return m_verticalDelta;
 }
 
-void QQuickWheelArea::setHorizontalDelta(qreal value)
+void QQuickWheelArea1::setHorizontalDelta(qreal value)
 {
     m_horizontalDelta = value;
     setHorizontalValue(m_horizontalValue - m_horizontalDelta);
@@ -223,12 +230,12 @@ void QQuickWheelArea::setHorizontalDelta(qreal value)
     emit horizontalWheelMoved();
 }
 
-qreal QQuickWheelArea::horizontalDelta() const
+qreal QQuickWheelArea1::horizontalDelta() const
 {
     return m_horizontalDelta;
 }
 
-void QQuickWheelArea::setScrollSpeed(qreal value)
+void QQuickWheelArea1::setScrollSpeed(qreal value)
 {
     if (value != m_scrollSpeed) {
         m_scrollSpeed = value;
@@ -236,17 +243,17 @@ void QQuickWheelArea::setScrollSpeed(qreal value)
     }
 }
 
-qreal QQuickWheelArea::scrollSpeed() const
+qreal QQuickWheelArea1::scrollSpeed() const
 {
     return m_scrollSpeed;
 }
 
-bool QQuickWheelArea::isActive() const
+bool QQuickWheelArea1::isActive() const
 {
     return m_active;
 }
 
-void QQuickWheelArea::setActive(bool active)
+void QQuickWheelArea1::setActive(bool active)
 {
     if (active != m_active) {
         m_active = active;

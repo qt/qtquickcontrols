@@ -182,12 +182,12 @@ QQuickExclusiveGroup1::QQuickExclusiveGroup1(QObject *parent)
     m_updateCurrentMethod = metaObject()->method(index);
 }
 
-QQmlListProperty<QQuickAction> QQuickExclusiveGroup1::actions()
+QQmlListProperty<QQuickAction1> QQuickExclusiveGroup1::actions()
 {
-    return QQmlListProperty<QQuickAction>(this, 0, &QQuickExclusiveGroup1::append_actions, 0, 0, 0);
+    return QQmlListProperty<QQuickAction1>(this, 0, &QQuickExclusiveGroup1::append_actions, 0, 0, 0);
 }
 
-void QQuickExclusiveGroup1::append_actions(QQmlListProperty<QQuickAction> *list, QQuickAction *action)
+void QQuickExclusiveGroup1::append_actions(QQmlListProperty<QQuickAction1> *list, QQuickAction1 *action)
 {
     if (QQuickExclusiveGroup1 *eg = qobject_cast<QQuickExclusiveGroup1 *>(list->object))
         action->setExclusiveGroup(eg);

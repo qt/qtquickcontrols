@@ -43,21 +43,21 @@
 
 QT_BEGIN_NAMESPACE
 
-class QQuickAndroid9PatchNode : public QSGGeometryNode
+class QQuickAndroid9PatchNode1 : public QSGGeometryNode
 {
 public:
-    QQuickAndroid9PatchNode();
-    ~QQuickAndroid9PatchNode();
+    QQuickAndroid9PatchNode1();
+    ~QQuickAndroid9PatchNode1();
 
     void initialize(QSGTexture *texture, const QRectF &bounds, const QSize &sourceSize,
-                    const QQuickAndroid9PatchDivs &xDivs, const QQuickAndroid9PatchDivs &yDivs);
+                    const QQuickAndroid9PatchDivs1 &xDivs, const QQuickAndroid9PatchDivs1 &yDivs);
 
 private:
     QSGGeometry m_geometry;
     QSGTextureMaterial m_material;
 };
 
-QQuickAndroid9PatchNode::QQuickAndroid9PatchNode()
+QQuickAndroid9PatchNode1::QQuickAndroid9PatchNode1()
     : m_geometry(QSGGeometry::defaultAttributes_TexturedPoint2D(), 4)
 {
     m_geometry.setDrawingMode(GL_TRIANGLES);
@@ -65,13 +65,13 @@ QQuickAndroid9PatchNode::QQuickAndroid9PatchNode()
     setMaterial(&m_material);
 }
 
-QQuickAndroid9PatchNode::~QQuickAndroid9PatchNode()
+QQuickAndroid9PatchNode1::~QQuickAndroid9PatchNode1()
 {
     delete m_material.texture();
 }
 
-void QQuickAndroid9PatchNode::initialize(QSGTexture *texture, const QRectF &bounds, const QSize &sourceSize,
-                                         const QQuickAndroid9PatchDivs &xDivs, const QQuickAndroid9PatchDivs &yDivs)
+void QQuickAndroid9PatchNode1::initialize(QSGTexture *texture, const QRectF &bounds, const QSize &sourceSize,
+                                         const QQuickAndroid9PatchDivs1 &xDivs, const QQuickAndroid9PatchDivs1 &yDivs)
 {
     delete m_material.texture();
     m_material.setTexture(texture);
@@ -115,7 +115,7 @@ void QQuickAndroid9PatchNode::initialize(QSGTexture *texture, const QRectF &boun
     markDirty(QSGNode::DirtyGeometry | QSGNode::DirtyMaterial);
 }
 
-QVector<qreal> QQuickAndroid9PatchDivs::coordsForSize(qreal size) const
+QVector<qreal> QQuickAndroid9PatchDivs1::coordsForSize(qreal size) const
 {
     // n = number of stretchable sections
     // We have to compensate when adding 0 and/or
@@ -141,7 +141,7 @@ QVector<qreal> QQuickAndroid9PatchDivs::coordsForSize(qreal size) const
     return coords;
 }
 
-void QQuickAndroid9PatchDivs::fill(const QVariantList &divs, qreal size)
+void QQuickAndroid9PatchDivs1::fill(const QVariantList &divs, qreal size)
 {
     if (!data.isEmpty())
         return;
@@ -161,27 +161,27 @@ void QQuickAndroid9PatchDivs::fill(const QVariantList &divs, qreal size)
     data.append(size);
 }
 
-void QQuickAndroid9PatchDivs::clear()
+void QQuickAndroid9PatchDivs1::clear()
 {
     data.clear();
 }
 
-QQuickAndroid9Patch::QQuickAndroid9Patch(QQuickItem *parent) : QQuickItem(parent)
+QQuickAndroid9Patch1::QQuickAndroid9Patch1(QQuickItem *parent) : QQuickItem(parent)
 {
     connect(this, SIGNAL(widthChanged()), this, SLOT(updateDivs()));
     connect(this, SIGNAL(heightChanged()), this, SLOT(updateDivs()));
 }
 
-QQuickAndroid9Patch::~QQuickAndroid9Patch()
+QQuickAndroid9Patch1::~QQuickAndroid9Patch1()
 {
 }
 
-QUrl QQuickAndroid9Patch::source() const
+QUrl QQuickAndroid9Patch1::source() const
 {
     return m_source;
 }
 
-void QQuickAndroid9Patch::setSource(const QUrl &source)
+void QQuickAndroid9Patch1::setSource(const QUrl &source)
 {
     if (m_source != source) {
         m_source = source;
@@ -195,12 +195,12 @@ void QQuickAndroid9Patch::setSource(const QUrl &source)
     }
 }
 
-QVariantList QQuickAndroid9Patch::xDivs() const
+QVariantList QQuickAndroid9Patch1::xDivs() const
 {
     return m_xVars;
 }
 
-void QQuickAndroid9Patch::setXDivs(const QVariantList &divs)
+void QQuickAndroid9Patch1::setXDivs(const QVariantList &divs)
 {
     if (m_xVars != divs) {
         m_xVars = divs;
@@ -211,12 +211,12 @@ void QQuickAndroid9Patch::setXDivs(const QVariantList &divs)
     }
 }
 
-QVariantList QQuickAndroid9Patch::yDivs() const
+QVariantList QQuickAndroid9Patch1::yDivs() const
 {
     return m_yVars;
 }
 
-void QQuickAndroid9Patch::setYDivs(const QVariantList &divs)
+void QQuickAndroid9Patch1::setYDivs(const QVariantList &divs)
 {
     if (m_yVars != divs) {
         m_yVars = divs;
@@ -227,23 +227,23 @@ void QQuickAndroid9Patch::setYDivs(const QVariantList &divs)
     }
 }
 
-QSize QQuickAndroid9Patch::sourceSize() const
+QSize QQuickAndroid9Patch1::sourceSize() const
 {
     return m_sourceSize;
 }
 
-void QQuickAndroid9Patch::classBegin()
+void QQuickAndroid9Patch1::classBegin()
 {
     QQuickItem::classBegin();
 }
 
-void QQuickAndroid9Patch::componentComplete()
+void QQuickAndroid9Patch1::componentComplete()
 {
     QQuickItem::componentComplete();
     loadImage();
 }
 
-QSGNode *QQuickAndroid9Patch::updatePaintNode(QSGNode *node, UpdatePaintNodeData *data)
+QSGNode *QQuickAndroid9Patch1::updatePaintNode(QSGNode *node, UpdatePaintNodeData *data)
 {
     Q_UNUSED(data);
 
@@ -252,9 +252,9 @@ QSGNode *QQuickAndroid9Patch::updatePaintNode(QSGNode *node, UpdatePaintNodeData
         return 0;
     }
 
-    QQuickAndroid9PatchNode *patchNode = static_cast<QQuickAndroid9PatchNode *>(node);
+    QQuickAndroid9PatchNode1 *patchNode = static_cast<QQuickAndroid9PatchNode1 *>(node);
     if (!patchNode)
-        patchNode = new QQuickAndroid9PatchNode;
+        patchNode = new QQuickAndroid9PatchNode1;
 
 #ifdef QSG_RUNTIME_DESCRIPTION
     qsgnode_set_description(patchNode, QString::fromLatin1("Android9Patch: '%1'").arg(m_source.toString()));
@@ -265,7 +265,7 @@ QSGNode *QQuickAndroid9Patch::updatePaintNode(QSGNode *node, UpdatePaintNodeData
     return patchNode;
 }
 
-void QQuickAndroid9Patch::loadImage()
+void QQuickAndroid9Patch1::loadImage()
 {
     if (!isComponentComplete())
         return;
@@ -281,7 +281,7 @@ void QQuickAndroid9Patch::loadImage()
     updateDivs();
 }
 
-void QQuickAndroid9Patch::updateDivs()
+void QQuickAndroid9Patch1::updateDivs()
 {
     if (!isComponentComplete() || m_image.isNull() || width() <= 0 || height() <= 0)
         return;

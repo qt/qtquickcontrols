@@ -47,12 +47,12 @@ QT_BEGIN_NAMESPACE
 class QPointF;
 class QQuickItem;
 
-class QQuickTooltip : public QObject
+class QQuickTooltip1 : public QObject
 {
     Q_OBJECT
 
 public:
-    QQuickTooltip(QObject *parent = 0);
+    QQuickTooltip1(QObject *parent = 0);
 
     Q_INVOKABLE void showText(QQuickItem *item, const QPointF &pos, const QString &text);
     Q_INVOKABLE void hideText();

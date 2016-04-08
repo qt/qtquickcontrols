@@ -50,13 +50,13 @@
 
 QT_BEGIN_NAMESPACE
 
-QQuickTooltip::QQuickTooltip(QObject *parent)
+QQuickTooltip1::QQuickTooltip1(QObject *parent)
     : QObject(parent)
 {
 
 }
 
-void QQuickTooltip::showText(QQuickItem *item, const QPointF &pos, const QString &str)
+void QQuickTooltip1::showText(QQuickItem *item, const QPointF &pos, const QString &str)
 {
     if (!item || !item->window())
         return;
@@ -78,7 +78,7 @@ void QQuickTooltip::showText(QQuickItem *item, const QPointF &pos, const QString
 #endif
 }
 
-void QQuickTooltip::hideText()
+void QQuickTooltip1::hideText()
 {
 #ifdef QT_WIDGETS_LIB
     QToolTip::hideText();

@@ -47,9 +47,14 @@
 
 static void initResources()
 {
+#ifndef QT_STATIC
     Q_INIT_RESOURCE(flatstyle);
+#else
+    Q_INIT_RESOURCE(qmake_QtQuick_Controls_Styles_Flat);
+#endif
 }
 
+#ifndef QT_STATIC
 extern "C" {
     Q_DECL_EXPORT bool qt_quick_controls_style_init()
     {
@@ -62,19 +67,23 @@ extern "C" {
         return ":/ExtrasImports/QtQuick/Controls/Styles/Flat";
     }
 }
+#endif
 
 QT_BEGIN_NAMESPACE
 
 QtQuickExtrasStylesPlugin::QtQuickExtrasStylesPlugin(QObject *parent) :
     QQmlExtensionPlugin(parent)
 {
+    initResources();
 }
 
 void QtQuickExtrasStylesPlugin::registerTypes(const char *uri)
 {
-    initResources();
-
-    const QString prefix = "qrc:/ExtrasImports/QtQuick/Controls/Styles/Flat/";
+#ifndef QT_STATIC
+    const QString prefix = "qrc:///ExtrasImports/QtQuick/Controls/Styles/Flat/";
+#else
+    const QString prefix = "qrc:/qt-project.org/imports/QtQuick/Controls/Styles/Flat/";
+#endif
     // register version 1.0
     qmlRegisterSingletonType(QUrl(prefix + "FlatStyle.qml"), uri, 1, 0, "FlatStyle");
     qmlRegisterType(QUrl(prefix + "ApplicationWindowStyle.qml"), uri, 1, 0, "ApplicationWindowStyle");

@@ -80,29 +80,32 @@ ios|android|blackberry|winrt {
 
 QT += quick-private gui gui-private core core-private qml qml-private
 
-# Create the resource file
-GENERATED_RESOURCE_FILE = $$OUT_PWD/dialogs.qrc
+!static {
+    # Create the resource file
+    GENERATED_RESOURCE_FILE = $$OUT_PWD/dialogs.qrc
 
-RESOURCE_CONTENT = \
-    "<RCC>" \
-    "<qresource prefix=\"/QtQuick/Dialogs\">"
+    RESOURCE_CONTENT = \
+        "<RCC>" \
+        "<qresource prefix=\"/QtQuick/Dialogs\">"
 
-for(resourcefile, DIALOGS_QML_FILES) {
-    resourcefileabsolutepath = $$absolute_path($$resourcefile)
-    relativepath_in = $$relative_path($$resourcefileabsolutepath, $$_PRO_FILE_PWD_)
-    relativepath_out = $$relative_path($$resourcefileabsolutepath, $$OUT_PWD)
-    RESOURCE_CONTENT += "<file alias=\"$$relativepath_in\">$$relativepath_out</file>"
+    for(resourcefile, DIALOGS_QML_FILES) {
+        resourcefileabsolutepath = $$absolute_path($$resourcefile)
+        relativepath_in = $$relative_path($$resourcefileabsolutepath, $$_PRO_FILE_PWD_)
+        relativepath_out = $$relative_path($$resourcefileabsolutepath, $$OUT_PWD)
+        RESOURCE_CONTENT += "<file alias=\"$$relativepath_in\">$$relativepath_out</file>"
+    }
+
+    RESOURCE_CONTENT += \
+        "</qresource>" \
+        "</RCC>"
+
+    write_file($$GENERATED_RESOURCE_FILE, RESOURCE_CONTENT)|error("Aborting.")
+
+    RESOURCES += $$GENERATED_RESOURCE_FILE
+    # In case of a debug build, deploy the QML files too
+    !qtquickcompiler:CONFIG(debug, debug|release): QML_FILES += $$DIALOGS_QML_FILES
+} else {
+    QML_FILES += $$DIALOGS_QML_FILES
 }
-
-RESOURCE_CONTENT += \
-    "</qresource>" \
-    "</RCC>"
-
-write_file($$GENERATED_RESOURCE_FILE, RESOURCE_CONTENT)|error("Aborting.")
-
-RESOURCES += $$GENERATED_RESOURCE_FILE
-
-# In case of a debug build, deploy the QML files too
-!qtquickcompiler:CONFIG(debug, debug|release): QML_FILES += $$DIALOGS_QML_FILES
 
 load(qml_plugin)

@@ -48,7 +48,7 @@
 
 QT_BEGIN_NAMESPACE
 
-class QQuickCalendarModel : public QAbstractListModel
+class QQuickCalendarModel1 : public QAbstractListModel
 {
     Q_OBJECT
     Q_PROPERTY(QDate visibleDate READ visibleDate WRITE setVisibleDate NOTIFY visibleDateChanged)
@@ -56,7 +56,7 @@ class QQuickCalendarModel : public QAbstractListModel
     Q_PROPERTY(int count READ rowCount NOTIFY countChanged)
 
 public:
-    explicit QQuickCalendarModel(QObject *parent = 0);
+    explicit QQuickCalendarModel1(QObject *parent = 0);
 
     enum {
         // If this class is made public, this will have to be changed.

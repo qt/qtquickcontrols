@@ -43,34 +43,34 @@
 
 QT_BEGIN_NAMESPACE
 
-QQuickControlsPrivateAttached::QQuickControlsPrivateAttached(QObject *attachee)
+QQuickControlsPrivate1Attached::QQuickControlsPrivate1Attached(QObject *attachee)
     : m_attachee(qobject_cast<QQuickItem*>(attachee))
 {
     if (m_attachee)
-        connect(m_attachee, &QQuickItem::windowChanged, this, &QQuickControlsPrivateAttached::windowChanged);
+        connect(m_attachee, &QQuickItem::windowChanged, this, &QQuickControlsPrivate1Attached::windowChanged);
 }
 
-QQuickWindow *QQuickControlsPrivateAttached::window() const
+QQuickWindow *QQuickControlsPrivate1Attached::window() const
 {
     return m_attachee ? m_attachee->window() : 0;
 }
 
-QObject *QQuickControlsPrivate::registerTooltipModule(QQmlEngine *engine, QJSEngine *jsEngine)
+QObject *QQuickControlsPrivate1::registerTooltipModule(QQmlEngine *engine, QJSEngine *jsEngine)
 {
     Q_UNUSED(engine);
     Q_UNUSED(jsEngine);
-    return new QQuickTooltip();
+    return new QQuickTooltip1();
 }
 
-QObject *QQuickControlsPrivate::registerSettingsModule(QQmlEngine *engine, QJSEngine *jsEngine)
+QObject *QQuickControlsPrivate1::registerSettingsModule(QQmlEngine *engine, QJSEngine *jsEngine)
 {
     Q_UNUSED(jsEngine);
-    return new QQuickControlSettings(engine);
+    return new QQuickControlSettings1(engine);
 }
 
-QQuickControlsPrivateAttached *QQuickControlsPrivate::qmlAttachedProperties(QObject *object)
+QQuickControlsPrivate1Attached *QQuickControlsPrivate1::qmlAttachedProperties(QObject *object)
 {
-    return new QQuickControlsPrivateAttached(object);
+    return new QQuickControlsPrivate1Attached(object);
 }
 
 QT_END_NAMESPACE

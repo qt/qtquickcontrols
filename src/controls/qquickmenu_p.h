@@ -51,14 +51,14 @@
 QT_BEGIN_NAMESPACE
 
 class QPlatformMenu;
-class QQuickMenuPopupWindow;
-class QQuickMenuItemContainer;
+class QQuickMenuPopupWindow1;
+class QQuickMenuItemContainer1;
 class QQuickWindow;
 class QQuickMenuBar1;
 
 typedef QQmlListProperty<QObject> QQuickMenuItems;
 
-class QQuickMenu1 : public QQuickMenuText
+class QQuickMenu1 : public QQuickMenuText1
 {
     Q_OBJECT
     Q_PROPERTY(QString title READ text WRITE setText NOTIFY titleChanged)
@@ -72,7 +72,7 @@ class QQuickMenu1 : public QQuickMenuText
     Q_PROPERTY(QFont __font READ font WRITE setFont)
     Q_PROPERTY(qreal __xOffset READ xOffset WRITE setXOffset)
     Q_PROPERTY(qreal __yOffset READ yOffset WRITE setYOffset)
-    Q_PROPERTY(QQuickAction *__action READ action CONSTANT)
+    Q_PROPERTY(QQuickAction1 *__action READ action CONSTANT)
     Q_PROPERTY(QRect __popupGeometry READ popupGeometry NOTIFY __popupGeometryChanged)
     Q_PROPERTY(bool __isProxy READ isProxy WRITE setProxy NOTIFY __proxyChanged)
     Q_ENUMS(MenuType)
@@ -87,8 +87,8 @@ public:
     Q_INVOKABLE void addSeparator();
     Q_INVOKABLE void insertSeparator(int);
 
-    Q_INVOKABLE void insertItem(int, QQuickMenuBase *);
-    Q_INVOKABLE void removeItem(QQuickMenuBase *);
+    Q_INVOKABLE void insertItem(int, QQuickMenuBase1 *);
+    Q_INVOKABLE void removeItem(QQuickMenuBase1 *);
     Q_INVOKABLE void clear();
 
     Q_INVOKABLE void __popup(const QRectF &targetRect, int atItemIndex = -1, MenuType menuType = DefaultMenu);
@@ -124,9 +124,9 @@ public:
     void setSelectedIndex(int index);
 
     QQuickMenuItems menuItems();
-    QQuickMenuBase *menuItemAtIndex(int index) const;
-    bool contains(QQuickMenuBase *);
-    int indexOfMenuItem(QQuickMenuBase *) const;
+    QQuickMenuBase1 *menuItemAtIndex(int index) const;
+    bool contains(QQuickMenuBase1 *);
+    int indexOfMenuItem(QQuickMenuBase1 *) const;
 
     QPlatformMenu *platformMenu() const { return m_platformMenu; }
 
@@ -172,7 +172,7 @@ protected Q_SLOTS:
 private:
     QQuickWindow *findParentWindow();
     void syncParentMenuBar();
-    QQuickMenuPopupWindow *topMenuPopup() const;
+    QQuickMenuPopupWindow1 *topMenuPopup() const;
 
     int itemIndexForListIndex(int listIndex) const;
     void itemIndexToListIndex(int, int *, int *) const;
@@ -183,23 +183,23 @@ private:
         int index, containerIndex;
     };
 
-    QQuickMenuBase *nextMenuItem(MenuItemIterator *) const;
+    QQuickMenuBase1 *nextMenuItem(MenuItemIterator *) const;
 
     static void append_menuItems(QQuickMenuItems *list, QObject *o);
     static int count_menuItems(QQuickMenuItems *list);
     static QObject *at_menuItems(QQuickMenuItems *list, int index);
     static void clear_menuItems(QQuickMenuItems *list);
-    void setupMenuItem(QQuickMenuBase *item, int platformIndex = -1);
+    void setupMenuItem(QQuickMenuBase1 *item, int platformIndex = -1);
 
     QPlatformMenu *m_platformMenu;
-    QList<QQuickMenuBase *> m_menuItems;
-    QHash<QObject *, QQuickMenuItemContainer *> m_containers;
+    QList<QQuickMenuBase1 *> m_menuItems;
+    QHash<QObject *, QQuickMenuItemContainer1 *> m_containers;
     int m_itemsCount;
     int m_selectedIndex;
     int m_highlightedIndex;
     QQuickWindow *m_parentWindow;
     int m_minimumWidth;
-    QQuickMenuPopupWindow *m_popupWindow;
+    QQuickMenuPopupWindow1 *m_popupWindow;
     QQuickItem * m_menuContentItem;
     bool m_popupVisible;
     int m_containersCount;

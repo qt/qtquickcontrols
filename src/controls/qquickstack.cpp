@@ -43,7 +43,7 @@ QT_BEGIN_NAMESPACE
 
 /*!
     \qmltype Stack
-    \instantiates QQuickStack
+    \instantiates QQuickStack1
     \inqmlmodule QtQuick.Controls
     \ingroup controls
     \brief Provides attached properties for items pushed onto a StackView.
@@ -55,7 +55,7 @@ QT_BEGIN_NAMESPACE
     \sa StackView
 */
 
-QQuickStack::QQuickStack(QObject *object)
+QQuickStack1::QQuickStack1(QObject *object)
     : QObject(object),
       m_index(-1),
       m_status(Inactive),
@@ -63,9 +63,9 @@ QQuickStack::QQuickStack(QObject *object)
 {
 }
 
-QQuickStack *QQuickStack::qmlAttachedProperties(QObject *object)
+QQuickStack1 *QQuickStack1::qmlAttachedProperties(QObject *object)
 {
-    return new QQuickStack(object);
+    return new QQuickStack1(object);
 }
 
 /*!
@@ -76,12 +76,12 @@ QQuickStack *QQuickStack::qmlAttachedProperties(QObject *object)
     so that \l{StackView::get()}{StackView.get(index)} will return the item itself.
     If \l{Stack::view}{view} is \c null, \a index will be \c -1.
 */
-int QQuickStack::index() const
+int QQuickStack1::index() const
 {
     return m_index;
 }
 
-void QQuickStack::setIndex(int index)
+void QQuickStack1::setIndex(int index)
 {
     if (m_index != index) {
         m_index = index;
@@ -101,12 +101,12 @@ void QQuickStack::setIndex(int index)
     \li \c Stack.Deactivating: the item is transitioning into becoming inactive
     \endlist
 */
-QQuickStack::Status QQuickStack::status() const
+QQuickStack1::Status QQuickStack1::status() const
 {
     return m_status;
 }
 
-void QQuickStack::setStatus(Status status)
+void QQuickStack1::setStatus(Status status)
 {
     if (m_status != status) {
         m_status = status;
@@ -121,12 +121,12 @@ void QQuickStack::setStatus(Status status)
     This property holds the StackView the item is in. If the item is not inside
     a StackView, \a view will be \c null.
 */
-QQuickItem *QQuickStack::view() const
+QQuickItem *QQuickStack1::view() const
 {
     return m_view;
 }
 
-void QQuickStack::setView(QQuickItem *view)
+void QQuickStack1::setView(QQuickItem *view)
 {
     if (m_view != view) {
         m_view = view;

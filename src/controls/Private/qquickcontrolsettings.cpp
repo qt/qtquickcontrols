@@ -83,7 +83,7 @@ static bool fromResource(const QString &path)
     return path.startsWith(":/");
 }
 
-bool QQuickControlSettings::hasTouchScreen() const
+bool QQuickControlSettings1::hasTouchScreen() const
 {
 // QTBUG-36007
 #if defined(Q_OS_ANDROID)
@@ -97,7 +97,7 @@ bool QQuickControlSettings::hasTouchScreen() const
 #endif
 }
 
-bool QQuickControlSettings::isMobile() const
+bool QQuickControlSettings1::isMobile() const
 {
 #if defined(Q_OS_IOS) || defined(Q_OS_ANDROID) || defined(Q_OS_BLACKBERRY) || defined(Q_OS_QNX) || defined(Q_OS_WINRT)
     return true;
@@ -109,17 +109,17 @@ bool QQuickControlSettings::isMobile() const
 #endif
 }
 
-bool QQuickControlSettings::hoverEnabled() const
+bool QQuickControlSettings1::hoverEnabled() const
 {
     return !isMobile() || !hasTouchScreen();
 }
 
-QString QQuickControlSettings::makeStyleComponentPath(const QString &controlStyleName, const QString &styleDirPath)
+QString QQuickControlSettings1::makeStyleComponentPath(const QString &controlStyleName, const QString &styleDirPath)
 {
     return styleDirPath + QStringLiteral("/") + controlStyleName;
 }
 
-QUrl QQuickControlSettings::makeStyleComponentUrl(const QString &controlStyleName, const QString &styleDirPath)
+QUrl QQuickControlSettings1::makeStyleComponentUrl(const QString &controlStyleName, const QString &styleDirPath)
 {
     QString styleFilePath = makeStyleComponentPath(controlStyleName, styleDirPath);
 
@@ -129,7 +129,7 @@ QUrl QQuickControlSettings::makeStyleComponentUrl(const QString &controlStyleNam
     return QUrl::fromLocalFile(styleFilePath);
 }
 
-QQmlComponent *QQuickControlSettings::styleComponent(const QUrl &styleDirUrl, const QString &controlStyleName, QObject *control)
+QQmlComponent *QQuickControlSettings1::styleComponent(const QUrl &styleDirUrl, const QString &controlStyleName, QObject *control)
 {
     Q_UNUSED(styleDirUrl); // required for hack that forces this function to be re-called from within QML when style changes
 
@@ -149,6 +149,7 @@ QQmlComponent *QQuickControlSettings::styleComponent(const QUrl &styleDirUrl, co
 static QString relativeStyleImportPath(QQmlEngine *engine, const QString &styleName)
 {
     QString path;
+#ifndef QT_STATIC
     bool found = false;
     const auto importPathList = engine->importPathList();
     for (const QString &import : importPathList) {
@@ -163,6 +164,11 @@ static QString relativeStyleImportPath(QQmlEngine *engine, const QString &styleN
     }
     if (!found)
         path = ":/QtQuick/Controls/Styles";
+#else
+    Q_UNUSED(engine);
+    Q_UNUSED(styleName);
+    path = ":/qt-project.org/imports/QtQuick/Controls/Styles";
+#endif
     return path;
 }
 
@@ -175,17 +181,25 @@ static QString styleImportPath(QQmlEngine *engine, const QString &styleName)
     } else if (info.isRelative()) {
         path = relativeStyleImportPath(engine, styleName);
     } else {
+#ifndef QT_STATIC
         path = info.absolutePath();
+#else
+        path = "qrc:/qt-project.org/imports/QtQuick/Controls/Styles";
+#endif
     }
     return path;
 }
 
-QQuickControlSettings::QQuickControlSettings(QQmlEngine *engine)
+QQuickControlSettings1::QQuickControlSettings1(QQmlEngine *engine)
 {
     // First, register all style paths in the default style location.
     QDir dir;
     const QString defaultStyle = defaultStyleName();
+#ifndef QT_STATIC
     dir.setPath(relativeStyleImportPath(engine, defaultStyle));
+#else
+    dir.setPath(":/qt-project.org/imports/QtQuick/Controls/Styles");
+#endif
     dir.setFilter(QDir::Dirs | QDir::NoDotAndDotDot);
     const auto list = dir.entryList();
     for (const QString &styleDirectory : list) {
@@ -219,7 +233,7 @@ QQuickControlSettings::QQuickControlSettings(QQmlEngine *engine)
     connect(this, SIGNAL(stylePathChanged()), SIGNAL(styleChanged()));
 }
 
-bool QQuickControlSettings::resolveCurrentStylePath()
+bool QQuickControlSettings1::resolveCurrentStylePath()
 {
     if (!m_styleMap.contains(m_name)) {
         qWarning() << "WARNING: Cannot find style" << m_name;
@@ -255,7 +269,7 @@ bool QQuickControlSettings::resolveCurrentStylePath()
     return true;
 }
 
-void QQuickControlSettings::findStyle(QQmlEngine *engine, const QString &styleName)
+void QQuickControlSettings1::findStyle(QQmlEngine *engine, const QString &styleName)
 {
     QString path = styleImportPath(engine, styleName);
     QDir dir;
@@ -265,6 +279,7 @@ void QQuickControlSettings::findStyle(QQmlEngine *engine, const QString &styleNa
 
     StyleData styleData;
 
+#ifndef QT_STATIC
     const auto list = dir.entryList();
     for (const QString &fileName : list) {
         // This assumes that there is only one library in the style directory,
@@ -276,6 +291,7 @@ void QQuickControlSettings::findStyle(QQmlEngine *engine, const QString &styleNa
             break;
         }
     }
+#endif
 
     // If there's no plugin for the style, then the style's files are
     // contained in this directory (which contains a qmldir file instead).
@@ -284,7 +300,7 @@ void QQuickControlSettings::findStyle(QQmlEngine *engine, const QString &styleNa
     m_styleMap[styleName] = styleData;
 }
 
-QUrl QQuickControlSettings::style() const
+QUrl QQuickControlSettings1::style() const
 {
     QUrl result;
     QString path = styleFilePath();
@@ -297,12 +313,12 @@ QUrl QQuickControlSettings::style() const
     return result;
 }
 
-QString QQuickControlSettings::styleName() const
+QString QQuickControlSettings1::styleName() const
 {
     return m_name;
 }
 
-void QQuickControlSettings::setStyleName(const QString &name)
+void QQuickControlSettings1::setStyleName(const QString &name)
 {
     if (m_name != name) {
         QString oldName = m_name;
@@ -316,12 +332,12 @@ void QQuickControlSettings::setStyleName(const QString &name)
     }
 }
 
-QString QQuickControlSettings::stylePath() const
+QString QQuickControlSettings1::stylePath() const
 {
     return m_path;
 }
 
-void QQuickControlSettings::setStylePath(const QString &path)
+void QQuickControlSettings1::setStylePath(const QString &path)
 {
     if (m_path != path) {
         m_path = path;
@@ -329,14 +345,14 @@ void QQuickControlSettings::setStylePath(const QString &path)
     }
 }
 
-QString QQuickControlSettings::styleFilePath() const
+QString QQuickControlSettings1::styleFilePath() const
 {
     return m_path;
 }
 
 extern Q_GUI_EXPORT int qt_defaultDpiX();
 
-qreal QQuickControlSettings::dpiScaleFactor() const
+qreal QQuickControlSettings1::dpiScaleFactor() const
 {
 #ifndef Q_OS_MAC
     return (qreal(qt_defaultDpiX()) / 96.0);
@@ -344,7 +360,7 @@ qreal QQuickControlSettings::dpiScaleFactor() const
     return 1.0;
 }
 
-qreal QQuickControlSettings::dragThreshold() const
+qreal QQuickControlSettings1::dragThreshold() const
 {
     return qApp->styleHints()->startDragDistance();
 }

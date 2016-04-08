@@ -45,7 +45,7 @@
 
 QT_BEGIN_NAMESPACE
 
-class QQuickSpinBoxValidator : public QValidator, public QQmlParserStatus
+class QQuickSpinBoxValidator1 : public QValidator, public QQmlParserStatus
 {
     Q_OBJECT
     Q_INTERFACES(QQmlParserStatus)
@@ -59,8 +59,8 @@ class QQuickSpinBoxValidator : public QValidator, public QQmlParserStatus
     Q_PROPERTY(QString suffix READ suffix WRITE setSuffix NOTIFY suffixChanged)
 
 public:
-    explicit QQuickSpinBoxValidator(QObject *parent = 0);
-    virtual ~QQuickSpinBoxValidator();
+    explicit QQuickSpinBoxValidator1(QObject *parent = 0);
+    virtual ~QQuickSpinBoxValidator1();
 
     QString text() const;
 
@@ -116,11 +116,11 @@ private:
     bool m_initialized;
     QDoubleValidator m_validator;
 
-    Q_DISABLE_COPY(QQuickSpinBoxValidator)
+    Q_DISABLE_COPY(QQuickSpinBoxValidator1)
 };
 
 QT_END_NAMESPACE
 
-QML_DECLARE_TYPE(QQuickSpinBoxValidator)
+QML_DECLARE_TYPE(QQuickSpinBoxValidator1)
 
 #endif // QQUICKSPINBOXVALIDATOR_P_H

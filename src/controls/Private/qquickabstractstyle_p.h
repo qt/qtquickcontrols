@@ -46,18 +46,18 @@
 
 QT_BEGIN_NAMESPACE
 
-class QQuickAbstractStyle : public QObject
+class QQuickAbstractStyle1 : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(QQuickPadding* padding READ padding CONSTANT)
+    Q_PROPERTY(QQuickPadding1* padding READ padding CONSTANT)
     Q_PROPERTY(QQmlListProperty<QObject> data READ data DESIGNABLE false)
     Q_CLASSINFO("DefaultProperty", "data")
 
 public:
-    QQuickAbstractStyle(QObject *parent = 0);
+    QQuickAbstractStyle1(QObject *parent = 0);
 
-    QQuickPadding* padding() { return &m_padding; }
+    QQuickPadding1* padding() { return &m_padding; }
 
     QQmlListProperty<QObject> data();
 
@@ -67,7 +67,7 @@ private:
     static QObject *data_at(QQmlListProperty<QObject> *list, int index);
     static void data_clear(QQmlListProperty<QObject> *list);
 
-    QQuickPadding m_padding;
+    QQuickPadding1 m_padding;
     QList<QObject *> m_data;
 };
 

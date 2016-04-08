@@ -73,26 +73,26 @@ static QString resolvePath()
     return stylePath;
 }
 
-QQuickAndroidStyle::QQuickAndroidStyle(QObject *parent) : QObject(parent)
+QQuickAndroidStyle1::QQuickAndroidStyle1(QObject *parent) : QObject(parent)
 {
     m_path = resolvePath();
 }
 
-QByteArray QQuickAndroidStyle::data() const
+QByteArray QQuickAndroidStyle1::data() const
 {
     if (m_data.isNull() && !m_path.isNull())
         m_data = readFile(m_path + QLatin1String("style.json"));
     return m_data;
 }
 
-QString QQuickAndroidStyle::filePath(const QString &fileName) const
+QString QQuickAndroidStyle1::filePath(const QString &fileName) const
 {
     if (!fileName.isEmpty())
         return m_path + QFileInfo(fileName).fileName();
     return QString();
 }
 
-QColor QQuickAndroidStyle::colorValue(uint value) const
+QColor QQuickAndroidStyle1::colorValue(uint value) const
 {
     return QColor::fromRgba(value);
 }

@@ -48,13 +48,13 @@ QT_BEGIN_NAMESPACE
 
 class QQuickWindow;
 
-class QQuickControlsPrivateAttached : public QObject
+class QQuickControlsPrivate1Attached : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QQuickWindow* window READ window NOTIFY windowChanged)
 
 public:
-    QQuickControlsPrivateAttached(QObject* attachee);
+    QQuickControlsPrivate1Attached(QObject* attachee);
 
     QQuickWindow *window() const;
 
@@ -65,7 +65,7 @@ private:
     QQuickItem* m_attachee;
 };
 
-class QQuickControlsPrivate : public QObject
+class QQuickControlsPrivate1 : public QObject
 {
     Q_OBJECT
 
@@ -73,11 +73,11 @@ public:
     static QObject *registerTooltipModule(QQmlEngine *engine, QJSEngine *jsEngine);
     static QObject *registerSettingsModule(QQmlEngine *engine, QJSEngine *jsEngine);
 
-    static QQuickControlsPrivateAttached *qmlAttachedProperties(QObject *object);
+    static QQuickControlsPrivate1Attached *qmlAttachedProperties(QObject *object);
 };
 
 QT_END_NAMESPACE
 
-QML_DECLARE_TYPEINFO(QQuickControlsPrivate, QML_HAS_ATTACHED_PROPERTIES)
+QML_DECLARE_TYPEINFO(QQuickControlsPrivate1, QML_HAS_ATTACHED_PROPERTIES)
 
 #endif // QQUICKCONTROLSPRIVATE_P_H

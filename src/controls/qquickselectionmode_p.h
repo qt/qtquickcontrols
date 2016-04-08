@@ -44,7 +44,7 @@
 
 QT_BEGIN_NAMESPACE
 
-class QQuickSelectionMode
+class QQuickSelectionMode1
 {
     Q_GADGET
     Q_ENUMS(SelectionMode)

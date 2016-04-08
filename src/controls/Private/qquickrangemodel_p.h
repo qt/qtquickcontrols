@@ -45,9 +45,9 @@
 
 QT_BEGIN_NAMESPACE
 
-class QQuickRangeModelPrivate;
+class QQuickRangeModel1Private;
 
-class QQuickRangeModel : public QObject
+class QQuickRangeModel1 : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(qreal value READ value WRITE setValue NOTIFY valueChanged USER true)
@@ -60,8 +60,8 @@ class QQuickRangeModel : public QObject
     Q_PROPERTY(bool inverted READ inverted WRITE setInverted NOTIFY invertedChanged)
 
 public:
-    QQuickRangeModel(QObject *parent = 0);
-    virtual ~QQuickRangeModel();
+    QQuickRangeModel1(QObject *parent = 0);
+    virtual ~QQuickRangeModel1();
 
     void setRange(qreal min, qreal max);
     void setPositionRange(qreal min, qreal max);
@@ -112,17 +112,17 @@ Q_SIGNALS:
     void positionAtMaximumChanged(qreal max);
 
 protected:
-    QQuickRangeModel(QQuickRangeModelPrivate &dd, QObject *parent);
-    QQuickRangeModelPrivate* d_ptr;
+    QQuickRangeModel1(QQuickRangeModel1Private &dd, QObject *parent);
+    QQuickRangeModel1Private* d_ptr;
 
 private:
-    Q_DISABLE_COPY(QQuickRangeModel)
-    Q_DECLARE_PRIVATE(QQuickRangeModel)
+    Q_DISABLE_COPY(QQuickRangeModel1)
+    Q_DECLARE_PRIVATE(QQuickRangeModel1)
 
 };
 
 QT_END_NAMESPACE
 
-QML_DECLARE_TYPE(QQuickRangeModel)
+QML_DECLARE_TYPE(QQuickRangeModel1)
 
 #endif // QQUICKRANGEMODEL_P_H

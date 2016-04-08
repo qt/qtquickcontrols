@@ -50,14 +50,14 @@ static const QQuickItemPrivate::ChangeTypes ItemChangeTypes = QQuickItemPrivate:
                                                              | QQuickItemPrivate::Parent
                                                              | QQuickItemPrivate::Destroyed;
 
-QQuickScenePosListener::QQuickScenePosListener(QObject *parent)
+QQuickScenePosListener1::QQuickScenePosListener1(QObject *parent)
     : QObject(parent)
     , m_enabled(false)
     , m_item(0)
 {
 }
 
-QQuickScenePosListener::~QQuickScenePosListener()
+QQuickScenePosListener1::~QQuickScenePosListener1()
 {
     if (m_item == 0)
         return;
@@ -66,12 +66,12 @@ QQuickScenePosListener::~QQuickScenePosListener()
     removeAncestorListeners(m_item->parentItem());
 }
 
-QQuickItem *QQuickScenePosListener::item() const
+QQuickItem *QQuickScenePosListener1::item() const
 {
     return m_item;
 }
 
-void QQuickScenePosListener::setItem(QQuickItem *item)
+void QQuickScenePosListener1::setItem(QQuickItem *item)
 {
     if (m_item == item)
         return;
@@ -94,17 +94,17 @@ void QQuickScenePosListener::setItem(QQuickItem *item)
     updateScenePos();
 }
 
-QPointF QQuickScenePosListener::scenePos() const
+QPointF QQuickScenePosListener1::scenePos() const
 {
     return m_scenePos;
 }
 
-bool QQuickScenePosListener::isEnabled() const
+bool QQuickScenePosListener1::isEnabled() const
 {
     return m_enabled;
 }
 
-void QQuickScenePosListener::setEnabled(bool enabled)
+void QQuickScenePosListener1::setEnabled(bool enabled)
 {
     if (m_enabled == enabled)
         return;
@@ -124,23 +124,23 @@ void QQuickScenePosListener::setEnabled(bool enabled)
     emit enabledChanged();
 }
 
-void QQuickScenePosListener::itemGeometryChanged(QQuickItem *, const QRectF &, const QRectF &)
+void QQuickScenePosListener1::itemGeometryChanged(QQuickItem *, const QRectF &, const QRectF &)
 {
     updateScenePos();
 }
 
-void QQuickScenePosListener::itemParentChanged(QQuickItem *, QQuickItem *parent)
+void QQuickScenePosListener1::itemParentChanged(QQuickItem *, QQuickItem *parent)
 {
     addAncestorListeners(parent);
 }
 
-void QQuickScenePosListener::itemChildRemoved(QQuickItem *, QQuickItem *child)
+void QQuickScenePosListener1::itemChildRemoved(QQuickItem *, QQuickItem *child)
 {
     if (isAncestor(child))
         removeAncestorListeners(child);
 }
 
-void QQuickScenePosListener::itemDestroyed(QQuickItem *item)
+void QQuickScenePosListener1::itemDestroyed(QQuickItem *item)
 {
     Q_ASSERT(m_item == item);
 
@@ -150,7 +150,7 @@ void QQuickScenePosListener::itemDestroyed(QQuickItem *item)
     removeAncestorListeners(item->parentItem());
 }
 
-void QQuickScenePosListener::updateScenePos()
+void QQuickScenePosListener1::updateScenePos()
 {
     const QPointF &scenePos = m_item->mapToScene(QPointF(0, 0));
     if (m_scenePos != scenePos) {
@@ -164,7 +164,7 @@ void QQuickScenePosListener::updateScenePos()
 
     Remove this listener from \a item and all its ancestors.
  */
-void QQuickScenePosListener::removeAncestorListeners(QQuickItem *item)
+void QQuickScenePosListener1::removeAncestorListeners(QQuickItem *item)
 {
     if (item == m_item)
         return;
@@ -181,7 +181,7 @@ void QQuickScenePosListener::removeAncestorListeners(QQuickItem *item)
 
     Injects this as a listener to \a item and all its ancestors.
  */
-void QQuickScenePosListener::addAncestorListeners(QQuickItem *item)
+void QQuickScenePosListener1::addAncestorListeners(QQuickItem *item)
 {
     if (item == m_item)
         return;
@@ -193,7 +193,7 @@ void QQuickScenePosListener::addAncestorListeners(QQuickItem *item)
     }
 }
 
-bool QQuickScenePosListener::isAncestor(QQuickItem *item) const
+bool QQuickScenePosListener1::isAncestor(QQuickItem *item) const
 {
     if (!m_item)
         return false;

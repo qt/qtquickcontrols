@@ -45,14 +45,14 @@
 
 QT_BEGIN_NAMESPACE
 
-class QQuickAndroidStyle : public QObject
+class QQuickAndroidStyle1 : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QByteArray data READ data CONSTANT FINAL)
     Q_ENUMS(Gravity)
 
 public:
-    QQuickAndroidStyle(QObject *parent = 0);
+    QQuickAndroidStyle1(QObject *parent = 0);
 
     QByteArray data() const;
 

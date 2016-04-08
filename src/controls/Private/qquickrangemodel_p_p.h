@@ -55,12 +55,12 @@
 
 QT_BEGIN_NAMESPACE
 
-class QQuickRangeModelPrivate
+class QQuickRangeModel1Private
 {
-    Q_DECLARE_PUBLIC(QQuickRangeModel)
+    Q_DECLARE_PUBLIC(QQuickRangeModel1)
 public:
-    QQuickRangeModelPrivate(QQuickRangeModel *qq);
-    virtual ~QQuickRangeModelPrivate();
+    QQuickRangeModel1Private(QQuickRangeModel1 *qq);
+    virtual ~QQuickRangeModel1Private();
 
     void init();
 
@@ -69,7 +69,7 @@ public:
 
     uint inverted : 1;
 
-    QQuickRangeModel *q_ptr;
+    QQuickRangeModel1 *q_ptr;
 
     inline qreal effectivePosAtMin() const {
         return inverted ? posatmax : posatmin;

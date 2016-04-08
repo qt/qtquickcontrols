@@ -213,6 +213,8 @@ BasicTableView {
                     if (selectionMode === SelectionMode.SingleSelection)
                         return selection.currentIndex === modelIndex
                     return selection.hasSelection && selection.isSelected(modelIndex)
+                } else {
+                    return false
                 }
             }
 
