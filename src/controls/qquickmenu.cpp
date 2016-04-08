@@ -75,7 +75,7 @@ QT_BEGIN_NAMESPACE
     as children. It also supports \l Instantiator objects as long as the insertion is
     being done manually using \l insertItem().
 
-    \code
+    \qml
     Menu {
         id: recentFilesMenu
 
@@ -97,7 +97,8 @@ QT_BEGIN_NAMESPACE
             enabled: recentFilesModel.count > 0
             onTriggered: recentFilesModel.clear()
         }
-    \endcode
+    }
+    \endqml
 
     Note that in this case, the \c index parameter passed to \l insertItem() is relative
     to the position of the \l Instantiator in the menu, as opposed to absolute position
