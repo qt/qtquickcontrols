@@ -751,6 +751,7 @@ Item {
         }
 
         function test_indexAt() {
+            skip("Fails because of bug QTBUG-47523")
             if (Settings.hasTouchScreen)
                 skip("Fails with touch screens");
             var component = Qt.createComponent("treeview/treeview_1.qml")
