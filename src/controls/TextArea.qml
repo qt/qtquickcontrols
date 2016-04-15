@@ -780,7 +780,7 @@ ScrollView {
             wrapMode: TextEdit.WordWrap
             textMargin: __style && __style.textMargin !== undefined ? __style.textMargin : 4
 
-            selectByMouse: area.selectByMouse && (!Settings.isMobile || !cursorHandle.delegate || !selectionHandle.delegate)
+            selectByMouse: area.selectByMouse && Qt.platform.os != "ios" && (!Settings.isMobile || !cursorHandle.delegate || !selectionHandle.delegate)
             readOnly: false
 
             Keys.forwardTo: area
