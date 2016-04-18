@@ -151,10 +151,6 @@ Style {
         the style's components. For example, it can be used to calculate the
         angles at which to draw an arc around the dial indicating the safe
         range of values.
-
-        For example, if minimumValueAngle is set to \c 270 and
-        maximumValueAngle is set to \c 90, this function will return \c 270
-        when passed minimumValue and \c 90 when passed maximumValue.
     */
     function valueToAngle(value) {
         return control.__panel.circularTickmarkLabel.valueToAngle(value);
