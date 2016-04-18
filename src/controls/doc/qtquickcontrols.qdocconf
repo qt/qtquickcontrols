@@ -56,7 +56,7 @@ sources += ../Private/AbstractCheckable.qml \
            ../Private/Control.qml \
            ../Private/qquickstyleitem.cpp \
            ../Private/Style.qml \
-           ../Private/qquickabstractstyle.h \
+           ../Private/qquickabstractstyle_p.h \
            ../Private/qquickabstractstyle.cpp
 
 excludefiles += ../TableView.qml \
