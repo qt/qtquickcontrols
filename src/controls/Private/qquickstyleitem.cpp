@@ -280,7 +280,6 @@ QQuickStyleItem::~QQuickStyleItem()
 
 void QQuickStyleItem::initStyleOption()
 {
-    QString type = elementType();
     if (m_styleoption)
         m_styleoption->state = 0;
 
