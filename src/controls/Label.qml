@@ -81,13 +81,9 @@ Text {
     */
 
     id: label
-    color: pal.windowText
+    color: SystemPaletteSingleton.windowText(enabled)
     activeFocusOnTab: false
     renderType: Settings.isMobile ? Text.QtRendering : Text.NativeRendering
-    SystemPalette {
-        id: pal
-        colorGroup: enabled ? SystemPalette.Active : SystemPalette.Disabled
-    }
     Accessible.name: text
     Accessible.role: Accessible.StaticText
 }
