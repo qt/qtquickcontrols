@@ -47,7 +47,12 @@ int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
     if (qgetenv("QT_QUICK_CONTROLS_STYLE").isEmpty()) {
+#ifdef QT_STATIC
+        // Need a full path to find the style when built statically
+        qputenv("QT_QUICK_CONTROLS_STYLE", ":/ExtrasImports/QtQuick/Controls/Styles/Flat");
+#else
         qputenv("QT_QUICK_CONTROLS_STYLE", "Flat");
+#endif
     }
     QQmlApplicationEngine engine;
     engine.load(QUrl("qrc:/main.qml"));
