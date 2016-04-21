@@ -19,3 +19,6 @@ OTHER_FILES += \
     qml/CustomerModel.qml
 
 include(../shared/shared.pri)
+
+target.path = $$[QT_INSTALL_EXAMPLES]/quickcontrols/controls/uiforms
+INSTALLS += target

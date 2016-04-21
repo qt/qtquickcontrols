@@ -17,3 +17,6 @@ OTHER_FILES += \
 
 RESOURCES += \
     resources.qrc
+
+target.path = $$[QT_INSTALL_EXAMPLES]/quickcontrols/controls/touch
+INSTALLS += target

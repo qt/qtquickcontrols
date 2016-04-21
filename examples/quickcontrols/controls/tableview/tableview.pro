@@ -9,3 +9,6 @@ OTHER_FILES += \
 
 include(src/src.pri)
 include(../shared/shared.pri)
+
+target.path = $$[QT_INSTALL_EXAMPLES]/quickcontrols/controls/tableview
+INSTALLS += target

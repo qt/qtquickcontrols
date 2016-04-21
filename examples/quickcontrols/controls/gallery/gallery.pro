@@ -18,3 +18,6 @@ OTHER_FILES += \
     qml/+osx/UI.js
 
 include(../shared/shared.pri)
+
+target.path = $$[QT_INSTALL_EXAMPLES]/quickcontrols/controls/gallery
+INSTALLS += target

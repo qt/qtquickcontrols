@@ -13,7 +13,7 @@ OTHER_FILES += \
     MessageDialogs.qml \
     CustomDialogs.qml
 
-target.path = $$[QT_INSTALL_EXAMPLES]/quick/dialogs/systemdialogs
+target.path = $$[QT_INSTALL_EXAMPLES]/quickcontrols/dialogs/systemdialogs
 INSTALLS += target
 
 RESOURCES += systemdialogs.qrc

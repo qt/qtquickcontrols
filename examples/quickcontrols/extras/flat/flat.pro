@@ -14,3 +14,6 @@ OTHER_FILES += \
 DISTFILES += \
     Content.qml \
     SettingsIcon.qml
+
+target.path = $$[QT_INSTALL_EXAMPLES]/quickcontrols/extras/flat
+INSTALLS += target

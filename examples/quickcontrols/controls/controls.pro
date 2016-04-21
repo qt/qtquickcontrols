@@ -15,3 +15,6 @@ qtHaveModule(widgets) {
 qtHaveModule(sql) {
     SUBDIRS += calendar
 }
+
+EXAMPLE_FILES += \
+    shared

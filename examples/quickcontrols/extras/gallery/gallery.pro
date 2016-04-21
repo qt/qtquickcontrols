@@ -9,6 +9,9 @@ SOURCES += \
 RESOURCES += \
     gallery.qrc
 
+target.path = $$[QT_INSTALL_EXAMPLES]/quickcontrols/extras/gallery
+INSTALLS += target
+
 OTHER_FILES += \
     qml/BlackButtonBackground.qml \
     qml/BlackButtonStyle.qml \
