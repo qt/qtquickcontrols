@@ -69,7 +69,7 @@ void tst_customcontrolsstyle::style()
     QFETCH(QString, specifiedStyle);
     QFETCH(QString, expectedStyleName);
 
-    qputenv("QT_QUICK_CONTROLS_STYLE", specifiedStyle.toLocal8Bit());
+    qputenv("QT_QUICK_CONTROLS_1_STYLE", specifiedStyle.toLocal8Bit());
 
     const bool expectBase = expectedStyleName == QLatin1String("Base");
 

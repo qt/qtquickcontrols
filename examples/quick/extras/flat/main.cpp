@@ -56,8 +56,8 @@
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
-    if (qgetenv("QT_QUICK_CONTROLS_STYLE").isEmpty()) {
-        qputenv("QT_QUICK_CONTROLS_STYLE", "Flat");
+    if (qgetenv("QT_QUICK_CONTROLS_1_STYLE").isEmpty()) {
+        qputenv("QT_QUICK_CONTROLS_1_STYLE", "Flat");
     }
     QQmlApplicationEngine engine;
     engine.load(QUrl("qrc:/main.qml"));

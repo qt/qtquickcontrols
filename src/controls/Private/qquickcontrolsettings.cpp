@@ -70,9 +70,17 @@ static QString defaultStyleName()
     return QLatin1String("Base");
 }
 
+static QString styleEnvironmentVariable()
+{
+    QString style = qgetenv("QT_QUICK_CONTROLS_1_STYLE");
+    if (style.isEmpty())
+        style = qgetenv("QT_QUICK_CONTROLS_STYLE");
+    return style;
+}
+
 static QString styleImportName()
 {
-    QString name = qgetenv("QT_QUICK_CONTROLS_STYLE");
+    QString name = styleEnvironmentVariable();
     if (name.isEmpty())
         name = defaultStyleName();
     return QFileInfo(name).fileName();
@@ -174,7 +182,7 @@ static QString relativeStyleImportPath(QQmlEngine *engine, const QString &styleN
 
 static QString styleImportPath(QQmlEngine *engine, const QString &styleName)
 {
-    QString path = qgetenv("QT_QUICK_CONTROLS_STYLE");
+    QString path = styleEnvironmentVariable();
     QFileInfo info(path);
     if (fromResource(path)) {
         path = info.path();
@@ -209,7 +217,7 @@ QQuickControlSettings1::QQuickControlSettings1(QQmlEngine *engine)
     m_name = styleImportName();
 
     // If the style name is a path..
-    const QString styleNameFromEnvVar = qgetenv("QT_QUICK_CONTROLS_STYLE");
+    const QString styleNameFromEnvVar = styleEnvironmentVariable();
     if (QFile::exists(styleNameFromEnvVar)) {
         StyleData styleData;
         styleData.m_styleDirPath = styleNameFromEnvVar;
