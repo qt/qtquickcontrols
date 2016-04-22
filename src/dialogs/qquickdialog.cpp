@@ -46,7 +46,7 @@ QT_BEGIN_NAMESPACE
     \qmltype Dialog
     \instantiates QQuickDialog
     \inqmlmodule QtQuick.Dialogs
-    \ingroup dialogs
+    \ingroup qtquickdialogs
     \brief A generic QtQuick dialog wrapper with standard buttons.
     \since 5.3
 

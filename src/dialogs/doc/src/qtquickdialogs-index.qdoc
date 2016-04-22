@@ -26,12 +26,6 @@
 ****************************************************************************/
 
 /*!
-    \group dialogs
-    \brief Dialog components
-    \title Dialogs
-*/
-
-/*!
     \page qtquickdialogs-index.html
     \title Qt Quick Dialogs
 
@@ -41,7 +35,7 @@
 
     \section1 Dialogs
 
-    \annotatedlist dialogs
+    \annotatedlist qtquickdialogs
 
     \section1 Related information
 

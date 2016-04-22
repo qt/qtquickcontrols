@@ -48,7 +48,7 @@ QT_BEGIN_NAMESPACE
     \qmltype MessageDialog
     \instantiates QQuickPlatformMessageDialog
     \inqmlmodule QtQuick.Dialogs
-    \ingroup dialogs
+    \ingroup qtquickdialogs
     \brief Dialog component for displaying popup messages.
     \since 5.2
 
