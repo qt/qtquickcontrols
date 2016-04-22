@@ -29,10 +29,7 @@ DESTDIR = $$TARGETPATH
 
 !equals(PWD, $$OUT_PWD) {
     # move qmldir alongside the plugin if shadow build
-    qmldirfile.input = QMLDIR
-    qmldirfile.output = $$DESTDIR/qmldir
-    qmldirfile.variable_out = PRE_TARGETDEPS
-    qmldirfile.commands = $$QMAKE_COPY ${QMAKE_FILE_IN} ${QMAKE_FILE_OUT}
-    qmldirfile.CONFIG = no_link no_clean
-    QMAKE_EXTRA_COMPILERS += qmldirfile
+    qmldirfile.files = $$QMLDIR
+    qmldirfile.path = $$DESTDIR
+    COPIES += qmldirfile
 }
