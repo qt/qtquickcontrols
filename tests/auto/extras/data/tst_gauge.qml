@@ -48,7 +48,7 @@ TestCase {
     name: "Tests_Gauge"
     visible: windowShown
     when: windowShown
-    width: 60
+    width: 200
     height: 200
 
     property var gauge
