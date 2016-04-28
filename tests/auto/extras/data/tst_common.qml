@@ -73,7 +73,7 @@ TestCase {
         var qml = data.qml ? data.qml : "import QtQuick.Extras 1.4; " + data.tag + " { }";
         control = Qt.createQmlObject(qml, testCase, "");
 
-        var resizeAnimation = Qt.createQmlObject("import QtQuick 2.2; NumberAnimation {}", testCase, "");
+        var resizeAnimation = Qt.createQmlObject("import QtQuick 2.2; NumberAnimation {}", control, "");
         resizeAnimation.target = control;
         resizeAnimation.properties = "width,height";
         resizeAnimation.duration = 100;
@@ -81,6 +81,5 @@ TestCase {
         resizeAnimation.start();
         // Shouldn't get any warnings.
         tryCompare(resizeAnimation, "running", false);
-        resizeAnimation.destroy();
     }
 }
