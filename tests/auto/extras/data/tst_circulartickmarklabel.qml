@@ -45,7 +45,7 @@ import "TestUtils.js" as TestUtils
 TestCase {
     id: testcase
     name: "Tests_CircularTickmarkLabel"
-    visible: windowShown
+    visible: true
     when: windowShown
     width: 400
     height: 400

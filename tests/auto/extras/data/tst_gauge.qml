@@ -46,7 +46,7 @@ import "TestUtils.js" as TestUtils
 TestCase {
     id: testcase
     name: "Tests_Gauge"
-    visible: windowShown
+    visible: true
     when: windowShown
     width: 200
     height: 200

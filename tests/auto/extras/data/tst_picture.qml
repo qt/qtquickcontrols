@@ -46,7 +46,7 @@ import QtQuick.Extras.Private 1.0
 TestCase {
     id: testCase
     name: "Tests_Picture"
-    visible: windowShown
+    visible: true
     when: windowShown
     width: 400
     height: 400

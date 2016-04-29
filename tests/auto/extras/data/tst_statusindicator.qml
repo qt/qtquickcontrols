@@ -47,7 +47,7 @@ import QtQuick.Extras 1.4
 TestCase {
     id: testCase
     name: "Tests_StatusIndicator"
-    visible: windowShown
+    visible: true
     when: windowShown
     width: 400
     height: 400
