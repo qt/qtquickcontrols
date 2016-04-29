@@ -4,3 +4,4 @@ classname QtQuickControlsPlugin
 typeinfo plugins.qmltypes
 designersupported
 depends QtQuick.Window 2.2
+depends QtQuick.Layouts 1.0
