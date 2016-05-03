@@ -65,15 +65,17 @@ TestCase {
          ];
     }
 
+    function init() {
+        if (Qt.platform.os === "windows")
+            skip("QTBUG-53123");
+    }
+
     function cleanup() {
         if (control)
             control.destroy();
     }
 
     function test_resize(data) {
-        if (data.tag === "PieMenu" && Qt.platform.os === "windows")
-            skip("QTBUG-53123");
-
         var qml = data.qml ? data.qml : "import QtQuick.Extras 1.4; " + data.tag + " { }";
         control = Qt.createQmlObject(qml, testCase, "");
 
