@@ -65,7 +65,7 @@ QT_BEGIN_NAMESPACE
 class QtQuick2PrivateWidgetsPlugin : public QQmlExtensionPlugin
 {
     Q_OBJECT
-    Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QQmlExtensionInterface/1.0")
+    Q_PLUGIN_METADATA(IID QQmlExtensionInterface_iid)
 
 public:
     virtual void registerTypes(const char *uri)
