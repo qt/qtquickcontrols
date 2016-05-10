@@ -135,7 +135,7 @@ void QQuickAbstractDialog::setVisible(bool v)
             m_dialogWindow->setMinimumSize(minSize);
             connect(win, SIGNAL(widthChanged(int)), this, SLOT(windowGeometryChanged()));
             connect(win, SIGNAL(heightChanged(int)), this, SLOT(windowGeometryChanged()));
-            qCDebug(lcWindow) << "created window" << win;
+            qCDebug(lcWindow) << "created window" << win << "with min size" << win->minimumSize() << "geometry" << win->geometry();
         }
 
         if (!m_dialogWindow) {
@@ -279,16 +279,21 @@ void QQuickAbstractDialog::windowGeometryChanged()
 void QQuickAbstractDialog::minimumWidthChanged()
 {
     qreal min = m_contentItem->property("minimumWidth").toReal();
+    qreal implicitOrMin = qMax(m_contentItem->implicitWidth(), min);
     qCDebug(lcWindow) << "content implicitWidth" << m_contentItem->implicitWidth() << "minimumWidth" << min;
-    m_dialogWindow->setMinimumWidth(qMax(m_contentItem->implicitWidth(), min));
+    if (m_dialogWindow->width() < implicitOrMin)
+        m_dialogWindow->setWidth(implicitOrMin);
+    m_dialogWindow->setMinimumWidth(implicitOrMin);
 }
 
 void QQuickAbstractDialog::minimumHeightChanged()
 {
     qreal min = m_contentItem->property("minimumHeight").toReal();
+    qreal implicitOrMin = qMax(m_contentItem->implicitHeight(), min);
     qCDebug(lcWindow) << "content implicitHeight" << m_contentItem->implicitHeight() << "minimumHeight" << min;
-    m_dialogWindow->setMinimumHeight(qMax(m_contentItem->implicitHeight(),
-        m_contentItem->property("minimumHeight").toReal()));
+    if (m_dialogWindow->height() < implicitOrMin)
+        m_dialogWindow->setHeight(implicitOrMin);
+    m_dialogWindow->setMinimumHeight(implicitOrMin);
 }
 
 void QQuickAbstractDialog::implicitHeightChanged()
