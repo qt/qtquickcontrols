@@ -26,7 +26,7 @@ depends = qtqml qtquick qtgui qtwidgets qtdoc qtcore
 
 exampledirs += ../../../examples/quickcontrols/dialogs
 
-examplesinstallpath = qtquickcontrols/quickcontrols/dialogs
+examplesinstallpath = quickcontrols/dialogs
 
 headerdirs += ..
 
