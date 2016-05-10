@@ -54,7 +54,7 @@ import QtQuick 2.1
 TestCase {
     id: testcase
     name: "Tests_ToggleButton"
-    visible: windowShown
+    visible: true
     when: windowShown
     width: 400
     height: 400

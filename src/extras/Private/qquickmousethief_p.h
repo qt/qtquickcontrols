@@ -41,6 +41,7 @@
 #define MOUSETHIEF_H
 
 #include <QObject>
+#include <QPointer>
 #include <QtQuick/QQuickItem>
 
 class QQuickMouseThief : public QObject
@@ -81,7 +82,7 @@ private:
     void emitReleased(const QPointF &pos);
     void emitClicked(const QPointF &pos);
 
-    QQuickItem *mItem;
+    QPointer<QQuickItem> mItem;
     bool mReceivedPressEvent;
     bool mAcceptCurrentEvent;
 };

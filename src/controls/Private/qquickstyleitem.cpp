@@ -283,7 +283,6 @@ QQuickStyleItem1::~QQuickStyleItem1()
 
 void QQuickStyleItem1::initStyleOption()
 {
-    QString type = elementType();
     if (m_styleoption)
         m_styleoption->state = 0;
 

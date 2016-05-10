@@ -55,7 +55,7 @@ import "TestUtils.js" as TestUtils
 TestCase {
     id: testcase
     name: "Tests_Dial"
-    visible: windowShown
+    visible: true
     when: windowShown
     width: 400
     height: 400
@@ -375,6 +375,16 @@ TestCase {
         mousePress(dial, dial.width / 4, dial.height / 2, Qt.LeftButton);
         verify(dial.value === lastValue);
         mouseRelease(dial, dial.width / 4, dial.height / 2, Qt.LeftButton);
+
+        dial.destroy();
+    }
+
+    function test_valueToAngle() {
+        var dial = Qt.createQmlObject("import QtQuick.Extras 1.4; Dial { }", testcase, "");
+        verify(dial, "Dial: failed to create an instance");
+
+        compare(dial.__style.valueToAngle(0.0), dial.__panel.circularTickmarkLabel.minimumValueAngle);
+        compare(dial.__style.valueToAngle(1.0), dial.__panel.circularTickmarkLabel.maximumValueAngle);
 
         dial.destroy();
     }

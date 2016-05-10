@@ -93,16 +93,11 @@ static bool fromResource(const QString &path)
 
 bool QQuickControlSettings1::hasTouchScreen() const
 {
-// QTBUG-36007
-#if defined(Q_OS_ANDROID)
-    return true;
-#else
     const auto devices = QTouchDevice::devices();
     for (const QTouchDevice *dev : devices)
         if (dev->type() == QTouchDevice::TouchScreen)
             return true;
     return false;
-#endif
 }
 
 bool QQuickControlSettings1::isMobile() const
