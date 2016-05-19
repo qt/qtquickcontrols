@@ -83,16 +83,16 @@
 
     In all forms, items that are supposed to interact with the application logic are exported:
 
-    \qml
+    \code
     property alias cancel: cancel
     property alias save: save
     property alias textArea: textArea
-    \endqml
+    \endcode
 
     This is the way the items are exported in \e NotesForm.ui.qml, so they can be used in
     \e Notes.ui.qml to implement the logic as follows:
 
-    \qml
+    \code
     function readData() {
         CustomerModel.selection.forEach(function (rowIndex) {
             form.textArea.text = CustomerModel.model.get(rowIndex).notes
@@ -113,7 +113,7 @@
 
     cancel.onClicked: readData()
     save.onClicked: writeData()
-    \endqml
+    \endcode
 
     \section1 Implementing the Backend in a Singleton
 
