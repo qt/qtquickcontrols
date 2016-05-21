@@ -45,12 +45,12 @@
 #include <qstyle.h>
 #include <qstyleoption.h>
 #include <qapplication.h>
-#include <qsgsimpletexturenode.h>
 #include <qquickwindow.h>
 #include "private/qguiapplication_p.h"
 #include <QtQuick/private/qquickwindow_p.h>
 #include <QtQuick/private/qquickitem_p.h>
 #include <QtGui/qpa/qplatformtheme.h>
+#include <QtQuick/qsgninepatchnode.h>
 #include "../qquickmenuitem_p.h"
 
 QT_BEGIN_NAMESPACE
@@ -95,122 +95,6 @@ CGContextRef qt_mac_cg_context(const QPaintDevice *pdev)
 }
 
 #endif
-
-class QQuickStyleNode1 : public QSGNinePatchNode
-{
-public:
-    QQuickStyleNode1()
-        : m_geometry(QSGGeometry::defaultAttributes_TexturedPoint2D(), 4)
-    {
-        m_geometry.setDrawingMode(GL_TRIANGLE_STRIP);
-        setGeometry(&m_geometry);
-        // The texture material has mipmap filtering set to Nearest by default. This is not ideal.
-        m_material.setMipmapFiltering(QSGTexture::None);
-        setMaterial(&m_material);
-    }
-
-    ~QQuickStyleNode1()
-    {
-        delete m_material.texture();
-    }
-
-    virtual void setTexture(QSGTexture *texture)
-    {
-        delete m_material.texture();
-        m_material.setTexture(texture);
-    }
-
-    virtual void setBounds(const QRectF &bounds)
-    {
-        m_bounds = bounds;
-    }
-
-    virtual void setDevicePixelRatio(qreal ratio)
-    {
-        m_devicePixelRatio = ratio;
-    }
-
-    virtual void setPadding(qreal left, qreal top, qreal right, qreal bottom)
-    {
-        m_paddingLeft = left;
-        m_paddingTop = top;
-        m_paddingRight = right;
-        m_paddingBottom = bottom;
-    }
-
-    virtual void update() {
-        QSGTexture *texture = m_material.texture();
-
-        if (m_paddingLeft <= 0 && m_paddingTop <= 0 && m_paddingRight <= 0 && m_paddingBottom <= 0) {
-            m_geometry.allocate(4, 0);
-            QSGGeometry::updateTexturedRectGeometry(&m_geometry, m_bounds, texture->normalizedTextureSubRect());
-            markDirty(QSGNode::DirtyGeometry | QSGNode::DirtyMaterial);
-            return;
-        }
-
-        QRectF tc = texture->normalizedTextureSubRect();
-        QSize ts = texture->textureSize();
-        ts.setHeight(ts.height() / m_devicePixelRatio);
-        ts.setWidth(ts.width() / m_devicePixelRatio);
-
-        qreal invtw = tc.width() / ts.width();
-        qreal invth = tc.height() / ts.height();
-
-        struct Coord { qreal p; qreal t; };
-        Coord cx[4] = { { m_bounds.left(), tc.left() },
-                        { m_bounds.left() + m_paddingLeft, tc.left() + m_paddingLeft * invtw },
-                        { m_bounds.right() - m_paddingRight, tc.right() - m_paddingRight * invtw },
-                        { m_bounds.right(), tc.right() }
-                      };
-        Coord cy[4] = { { m_bounds.top(), tc.top() },
-                        { m_bounds.top() + m_paddingTop, tc.top() + m_paddingTop * invth },
-                        { m_bounds.bottom() - m_paddingBottom, tc.bottom() - m_paddingBottom * invth },
-                        { m_bounds.bottom(), tc.bottom() }
-                      };
-
-        m_geometry.allocate(16, 28);
-        QSGGeometry::TexturedPoint2D *v = m_geometry.vertexDataAsTexturedPoint2D();
-        for (int y=0; y<4; ++y) {
-            for (int x=0; x<4; ++x) {
-                v->set(cx[x].p, cy[y].p, cx[x].t, cy[y].t);
-                ++v;
-            }
-        }
-
-        quint16 *i = m_geometry.indexDataAsUShort();
-        for (int r=0; r<3; ++r) {
-            if (r > 0)
-                *i++ = 4 * r;
-            for (int c=0; c<4; ++c) {
-                i[0] = 4 * r + c;
-                i[1] = 4 * r + c + 4;
-                i+=2;
-            }
-            if (r < 2)
-                *i++ = 4 * r + 3 + 4;
-        }
-
-        markDirty(QSGNode::DirtyGeometry | QSGNode::DirtyMaterial);
-
-//        v = m_geometry.vertexDataAsTexturedPoint2D();
-//        for (int j=0; j<m_geometry.vertexCount(); ++j)
-//            qDebug() << v[j].x << v[j].y << v[j].tx << v[j].ty;
-
-//        i = m_geometry.indexDataAsUShort();
-//        for (int j=0; j<m_geometry.indexCount(); ++j)
-//            qDebug() << i[j];
-
-    }
-
-    QRectF m_bounds;
-    qreal m_devicePixelRatio;
-    qreal m_paddingLeft;
-    qreal m_paddingTop;
-    qreal m_paddingRight;
-    qreal m_paddingBottom;
-    QSGGeometry m_geometry;
-    QSGTextureMaterial m_material;
-};
 
 QQuickStyleItem1::QQuickStyleItem1(QQuickItem *parent)
     : QQuickItem(parent),
@@ -1860,11 +1744,8 @@ QSGNode *QQuickStyleItem1::updatePaintNode(QSGNode *node, UpdatePaintNodeData *)
     }
 
     QSGNinePatchNode *styleNode = static_cast<QSGNinePatchNode *>(node);
-    if (!styleNode) {
-        styleNode = QQuickItemPrivate::get(this)->sceneGraphContext()->createNinePatchNode();
-        if (!styleNode)
-            styleNode = new QQuickStyleNode1;
-    }
+    if (!styleNode)
+        styleNode = window()->createNinePatchNode();
 
 #ifdef QSG_RUNTIME_DESCRIPTION
     qsgnode_set_description(styleNode,
