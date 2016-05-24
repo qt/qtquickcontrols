@@ -47,7 +47,7 @@
 #include <QTouchDevice>
 #include <QGuiApplication>
 #include <QStyleHints>
-#if defined(Q_OS_ANDROID) && !defined(Q_OS_ANDROID_NO_SDK)
+#if defined(Q_OS_ANDROID)
 #include <private/qjnihelpers_p.h>
 #endif
 
@@ -59,7 +59,7 @@ static QString defaultStyleName()
 #if defined(QT_WIDGETS_LIB) && !defined(Q_OS_IOS) && !defined(Q_OS_ANDROID) && !defined(Q_OS_BLACKBERRY) && !defined(Q_OS_QNX) && !defined(Q_OS_WINRT)
     if (QCoreApplication::instance()->inherits("QApplication"))
         return QLatin1String("Desktop");
-#elif defined(Q_OS_ANDROID) && !defined(Q_OS_ANDROID_NO_SDK)
+#elif defined(Q_OS_ANDROID)
     if (QtAndroidPrivate::androidSdkVersion() >= 11)
         return QLatin1String("Android");
 #elif defined(Q_OS_IOS)
@@ -70,9 +70,17 @@ static QString defaultStyleName()
     return QLatin1String("Base");
 }
 
+static QString styleEnvironmentVariable()
+{
+    QString style = qgetenv("QT_QUICK_CONTROLS_1_STYLE");
+    if (style.isEmpty())
+        style = qgetenv("QT_QUICK_CONTROLS_STYLE");
+    return style;
+}
+
 static QString styleImportName()
 {
-    QString name = qgetenv("QT_QUICK_CONTROLS_STYLE");
+    QString name = styleEnvironmentVariable();
     if (name.isEmpty())
         name = defaultStyleName();
     return QFileInfo(name).fileName();
@@ -85,16 +93,11 @@ static bool fromResource(const QString &path)
 
 bool QQuickControlSettings1::hasTouchScreen() const
 {
-// QTBUG-36007
-#if defined(Q_OS_ANDROID)
-    return true;
-#else
     const auto devices = QTouchDevice::devices();
     for (const QTouchDevice *dev : devices)
         if (dev->type() == QTouchDevice::TouchScreen)
             return true;
     return false;
-#endif
 }
 
 bool QQuickControlSettings1::isMobile() const
@@ -174,7 +177,7 @@ static QString relativeStyleImportPath(QQmlEngine *engine, const QString &styleN
 
 static QString styleImportPath(QQmlEngine *engine, const QString &styleName)
 {
-    QString path = qgetenv("QT_QUICK_CONTROLS_STYLE");
+    QString path = styleEnvironmentVariable();
     QFileInfo info(path);
     if (fromResource(path)) {
         path = info.path();
@@ -209,7 +212,7 @@ QQuickControlSettings1::QQuickControlSettings1(QQmlEngine *engine)
     m_name = styleImportName();
 
     // If the style name is a path..
-    const QString styleNameFromEnvVar = qgetenv("QT_QUICK_CONTROLS_STYLE");
+    const QString styleNameFromEnvVar = styleEnvironmentVariable();
     if (QFile::exists(styleNameFromEnvVar)) {
         StyleData styleData;
         styleData.m_styleDirPath = styleNameFromEnvVar;

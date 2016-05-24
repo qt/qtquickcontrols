@@ -54,7 +54,7 @@ import QtQuick 2.1
 TestCase {
     id: testCase
     name: "Tests_Common"
-    visible: windowShown
+    visible: true
     when: windowShown
     width: 400
     height: 400
@@ -67,23 +67,29 @@ TestCase {
              { tag: "DelayButton" },
              { tag: "Dial" },
              { tag: "Gauge" },
-             { tag: "PieMenu", qml: "import QtQuick.Controls 1.1; import QtQuick.Extras 1.4;"
-                + "PieMenu { visible: true; MenuItem { text: 'foo' } }"},
              { tag: "StatusIndicator" },
              { tag: "ToggleButton" },
-             { tag: "Tumbler", qml: "import QtQuick.Extras 1.4; Tumbler { TumblerColumn { model: 10 } }" }
+             { tag: "Tumbler", qml: "import QtQuick.Extras 1.4; Tumbler { TumblerColumn { model: 10 } }" },
+             { tag: "PieMenu", qml: "import QtQuick.Controls 1.1; import QtQuick.Extras 1.4;"
+                + "PieMenu { visible: true; MenuItem { text: 'foo' } }"}
          ];
     }
 
+    function init() {
+        if (Qt.platform.os === "windows")
+            skip("QTBUG-53123");
+    }
+
     function cleanup() {
-        control.destroy();
+        if (control)
+            control.destroy();
     }
 
     function test_resize(data) {
         var qml = data.qml ? data.qml : "import QtQuick.Extras 1.4; " + data.tag + " { }";
         control = Qt.createQmlObject(qml, testCase, "");
 
-        var resizeAnimation = Qt.createQmlObject("import QtQuick 2.2; NumberAnimation {}", testCase, "");
+        var resizeAnimation = Qt.createQmlObject("import QtQuick 2.2; NumberAnimation {}", control, "");
         resizeAnimation.target = control;
         resizeAnimation.properties = "width,height";
         resizeAnimation.duration = 100;
@@ -91,6 +97,5 @@ TestCase {
         resizeAnimation.start();
         // Shouldn't get any warnings.
         tryCompare(resizeAnimation, "running", false);
-        resizeAnimation.destroy();
     }
 }

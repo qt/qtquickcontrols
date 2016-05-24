@@ -61,10 +61,14 @@ Rectangle {
 
     Timer {
         id: timer
-        running: cursor.visible
+        running: cursor.visible && Qt.styleHints.cursorFlashTime >= 2
         repeat: true
-        interval: 500
+        interval: Qt.styleHints.cursorFlashTime / 2
         onTriggered: cursor.state = cursor.state == "on" ? "off" : "on"
+        onRunningChanged: {
+            if (!running)
+                cursor.state = "on"
+        }
     }
 
     states: [

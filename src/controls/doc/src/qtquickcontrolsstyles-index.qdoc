@@ -92,17 +92,17 @@
     \section2 Selecting Styles
 
     You can apply a different style to the controls by setting the
-    \e QT_QUICK_CONTROLS_STYLE environment variable to the name of the style.
+    \e QT_QUICK_CONTROLS_1_STYLE environment variable to the name of the style.
     For example, to use the Flat style, you can do the following:
 
     \code
-    QT_QUICK_CONTROLS_STYLE=Flat ./app
+    QT_QUICK_CONTROLS_1_STYLE=Flat ./app
     \endcode
 
     This can also be done in C++, using qputenv():
 
     \code
-    qputenv("QT_QUICK_CONTROLS_STYLE", "Flat");
+    qputenv("QT_QUICK_CONTROLS_1_STYLE", "Flat");
     \endcode
 
     \section1 Styling Views

@@ -79,7 +79,7 @@ Loader {
             sourceComponent = style.__editMenu;
         else {
             // todo: get ios/android/base menus from style as well
-            source = (Qt.resolvedUrl(Qt.platform.os === "ios" ? "EditMenu_ios.qml"
+            source = (Qt.resolvedUrl(Qt.platform.os === "ios" ? ""
                 : Qt.platform.os === "android" ? "" : "EditMenu_base.qml"));
         }
     }

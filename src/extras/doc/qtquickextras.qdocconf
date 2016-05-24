@@ -29,8 +29,8 @@ qhp.QtQuickExtras.subprojects.qtquickextrasexamples.sortPages  = true
 
 depends = qtqml qtquick qtdoc qtquickcontrols qtgui
 
-exampledirs += ../../../examples/quick/extras
-examplesinstallpath = qtquickcontrols/quick/extras
+exampledirs += ../../../examples/quickcontrols/extras
+examplesinstallpath = quickcontrols/extras
 
 headerdirs += ../
 

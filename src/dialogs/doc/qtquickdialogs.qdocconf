@@ -24,9 +24,9 @@ qhp.QtQuickDialogs.subprojects.qtquickdialogsqmltypes.sortPages = true
 
 depends = qtqml qtquick qtgui qtwidgets qtdoc qtcore
 
-exampledirs += ../../../examples/quick/dialogs
+exampledirs += ../../../examples/quickcontrols/dialogs
 
-examplesinstallpath = qtquickcontrols/quick/dialogs
+examplesinstallpath = quickcontrols/dialogs
 
 headerdirs += ..
 
