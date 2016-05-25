@@ -43,3 +43,10 @@ information about a particular change.
 
  - General
    * [QTBUG-45868] Enabled using the module in statically built applications.
+
+****************************************************************************
+*                          Layouts                                         *
+****************************************************************************
+
+ - General
+   * QtQuick.Layouts moved to the qtdeclarative repository.
