@@ -46,6 +46,7 @@ import QtQuick.Controls.Private 1.0
     \inqmlmodule QtQuick.Controls
     \since 5.1
     \ingroup controls
+    \inherits QtQuickControls1::ScrollView
     \brief Displays multiple lines of editable formatted text.
 
     \image textarea.png

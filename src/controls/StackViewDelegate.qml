@@ -43,6 +43,7 @@ import QtQuick 2.2
         \qmltype StackViewDelegate
         \inqmlmodule QtQuick.Controls
         \ingroup controls
+        \inherits QtQml::QtObject
         \since 5.1
 
         \brief A delegate used by StackView for loading transitions.
