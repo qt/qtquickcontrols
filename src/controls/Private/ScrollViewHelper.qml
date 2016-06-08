@@ -70,10 +70,12 @@ Item {
     function doLayout() {
         if (!recursionGuard) {
             recursionGuard = true
+            blockUpdates = true;
             scrollHelper.contentWidth = flickableItem !== null ? flickableItem.contentWidth : 0
             scrollHelper.contentHeight = flickableItem !== null ? flickableItem.contentHeight : 0
             scrollHelper.availableWidth = viewport.width
             scrollHelper.availableHeight = viewport.height
+            blockUpdates = false;
             recursionGuard = false
         }
     }
