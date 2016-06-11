@@ -46,6 +46,7 @@ import QtQuick.Controls.Private 1.0
     \inqmlmodule QtQuick.Controls
     \since 5.2
     \ingroup controls
+    \inherits QtQuickControls1::Control
     \brief A busy indicator.
 
     \image busyindicator.png

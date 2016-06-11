@@ -46,6 +46,7 @@ import QtQuick.Controls.Private 1.0
     \inqmlmodule QtQuick.Controls
     \since 5.1
     \ingroup controls
+    \inherits QtQuickControls1::BasicButton
     \brief A push button with a text label.
 
     \image button.png

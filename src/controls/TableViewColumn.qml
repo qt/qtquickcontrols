@@ -45,6 +45,7 @@ import QtQuick 2.2
     \since 5.1
     \ingroup viewitems
     \ingroup controls
+    \inherits QtQml::QtObject
     \brief Used to define columns in a \l TableView or in a \l TreeView.
 
     \image tableview.png
