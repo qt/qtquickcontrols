@@ -339,6 +339,11 @@ void QQuickControlSettings1::setStyleName(const QString &name)
         QString oldName = m_name;
         m_name = name;
 
+        if (!m_styleMap.contains(name)) {
+            // Maybe this style is not next to the default style, but elsewhere in the import path
+            findStyle(m_engine, name);
+        }
+
         // Don't change the style if it can't be resolved.
         if (!resolveCurrentStylePath())
             m_name = oldName;

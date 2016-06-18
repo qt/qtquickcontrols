@@ -47,6 +47,7 @@ private slots:
 
     void style_data();
     void style();
+    void changeStyle();
 };
 
 void tst_customcontrolsstyle::initTestCase()
@@ -103,6 +104,43 @@ void tst_customcontrolsstyle::style()
         QImage windowImage = window->grabWindow();
         QCOMPARE(windowImage.pixel(0, 0), QColor(Qt::red).rgb());
     }
+}
+
+// start with Base, switch to custom style later on (for a specific QML engine)
+void tst_customcontrolsstyle::changeStyle()
+{
+    qputenv("QT_QUICK_CONTROLS_1_STYLE", "Base");
+    qputenv("QML2_IMPORT_PATH", QFile::encodeName(directory()));
+
+    QQmlEngine engine;
+
+    QQmlComponent component(&engine, testFileUrl("TestComponent.qml"));
+    QTRY_COMPARE(component.status(), QQmlComponent::Ready);
+
+    QScopedPointer<QObject> object(component.create());
+    QVERIFY(object);
+
+    QCOMPARE(object->property("styleName").toString(), QString("Base"));
+
+    // Switch to "Style" custom style
+    QQmlComponent c(&engine);
+    c.setData("import QtQuick 2.1\n"
+        "import QtQuick.Controls 1.0\n"
+        "import QtQuick.Controls.Private 1.0\n"
+        "Item {"
+          "Component.onCompleted: {"
+            "Settings.styleName = \"Style\";"
+          "}"
+        "}", QUrl());
+    QObject *o = c.create();
+    o->deleteLater();
+
+    QCOMPARE(object->property("styleName").toString(), QString("Style"));
+    QMetaObject::invokeMethod(object.data(), "buttonStyleComponent");
+    QQuickWindow *window = qobject_cast<QQuickWindow*>(object.data());
+    QVERIFY(QTest::qWaitForWindowExposed(window));
+    QImage windowImage = window->grabWindow();
+    QCOMPARE(windowImage.pixel(0, 0), QColor(Qt::blue).rgb());
 }
 
 QTEST_MAIN(tst_customcontrolsstyle)
