@@ -106,6 +106,7 @@ private:
     QString m_name;
     QString m_path;
     QHash<QString, StyleData> m_styleMap;
+    QQmlEngine *m_engine;
 };
 
 QT_END_NAMESPACE

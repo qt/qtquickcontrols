@@ -61,6 +61,7 @@ void tst_customcontrolsstyle::style_data()
 
     QTest::newRow("NonExistentStyle") << QString::fromLatin1("NonExistentStyle") << QString::fromLatin1("Base");
     QTest::newRow("CustomFileSystemStyle") << directory() + QString::fromLatin1("/Style") << QString::fromLatin1("Style");
+    QTest::newRow("BuiltinQrcStyle") << QString::fromLatin1("ResourceStyle") << QString::fromLatin1("ResourceStyle"); // from :/qt-project.org/imports/QtQuick/Controls/Styles
     QTest::newRow("CustomQrcStyle") << QString::fromLatin1(":/Style") << QString::fromLatin1("Style");
 }
 
