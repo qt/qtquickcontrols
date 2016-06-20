@@ -52,7 +52,7 @@ Column {
         SectionLayout {
             Label {
                 text: qsTr("Source")
-                toolTip: qsTr("Source")
+                tooltip: qsTr("Source")
             }
             SecondColumnLayout {
                 LineEdit {
