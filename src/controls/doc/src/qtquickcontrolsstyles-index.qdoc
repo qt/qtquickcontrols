@@ -141,3 +141,7 @@
     import QtQuick.Controls.Styles 1.4
     \endcode
 */
+
+/*! \qmlmodule QtQuick.Controls.Private 1.0
+    \internal
+*/
