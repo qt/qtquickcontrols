@@ -46,7 +46,6 @@ import QtQuick.Controls.Private 1.0
     \inqmlmodule QtQuick.Controls
     \since 5.1
     \ingroup controls
-    \inherits QtQuickControls1::Control
     \brief Provides a drop-down list functionality.
 
     \image combobox.png

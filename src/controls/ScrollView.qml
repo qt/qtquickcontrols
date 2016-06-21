@@ -48,7 +48,6 @@ import QtQuick.Controls.Styles 1.1
     \since  5.1
     \ingroup views
     \ingroup controls
-    \inherits QtQuick::FocusScope
     \brief Provides a scrolling view within another Item.
 
     \image scrollview.png

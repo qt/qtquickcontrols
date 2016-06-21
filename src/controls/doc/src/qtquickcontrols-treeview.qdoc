@@ -32,7 +32,6 @@
    \since 5.5
    \ingroup views
    \ingroup controls
-   \inherits QtQuickControls1::BasicTableView
    \brief Provides a tree view with scroll bars, styling and header sections.
 
    \image treeview.png

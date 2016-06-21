@@ -32,7 +32,6 @@
    \since 5.1
    \ingroup views
    \ingroup controls
-   \inherits QtQuickControls1::BasicTableView
    \brief Provides a list view with scroll bars, styling and header sections.
 
    \image tableview.png

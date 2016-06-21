@@ -47,7 +47,6 @@ import QtQuick.Controls.Private 1.0
     \since 5.1
     \ingroup views
     \ingroup controls
-    \inherits QtQuickControls1::FocusScope
     \brief A control that allows the user to select one of multiple stacked items.
 
     \image tabview.png
