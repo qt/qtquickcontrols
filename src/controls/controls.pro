@@ -51,6 +51,7 @@ OTHER_FILES += doc/src/*
 include(plugin.pri)
 include(Private/private.pri)
 include(Styles/styles.pri)
+include(Shaders/shaders.pri)
 
 osx: LIBS_PRIVATE += -framework Carbon
 
@@ -61,7 +62,8 @@ osx: LIBS_PRIVATE += -framework Carbon
     INCLUDED_RESOURCE_FILES = \
         $$CONTROLS_QML_FILES \
         $$PRIVATE_QML_FILES \
-        $$STYLES_QML_FILES
+        $$STYLES_QML_FILES \
+        $$SHADER_FILES
 
     RESOURCE_CONTENT = \
         "<RCC>" \
@@ -84,7 +86,8 @@ osx: LIBS_PRIVATE += -framework Carbon
 } else {
     QML_FILES *= $$CONTROLS_QML_FILES \
                  $$PRIVATE_QML_FILES \
-                 $$STYLES_QML_FILES
+                 $$STYLES_QML_FILES \
+                 $$SHADER_FILES
 }
 CONFIG += no_cxx_module
 load(qml_plugin)
