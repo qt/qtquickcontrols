@@ -4,7 +4,7 @@ MetaInfo {
         icon: "images/delaybutton-icon16.png"
 
         ItemLibraryEntry {
-            name: "DelayButton"
+            name: "Delay Button"
             category: "Qt Quick - Extras"
             libraryIcon: "images/delaybutton-icon.png"
             version: "1.0"
@@ -22,7 +22,7 @@ MetaInfo {
         icon: "images/togglebutton-icon16.png"
 
         ItemLibraryEntry {
-            name: "ToggleButton"
+            name: "Toggle Button"
             category: "Qt Quick - Extras"
             libraryIcon: "images/togglebutton-icon.png"
             version: "1.0"
@@ -52,7 +52,7 @@ MetaInfo {
         icon: "images/circulargauge-icon16.png"
 
         ItemLibraryEntry {
-            name: "CircularGauge"
+            name: "Circular Gauge"
             category: "Qt Quick - Extras"
             libraryIcon: "images/circulargauge-icon.png"
             version: "1.0"
@@ -64,7 +64,7 @@ MetaInfo {
         icon: "images/piemenu-icon16.png"
 
         ItemLibraryEntry {
-            name: "PieMenu"
+            name: "Pie Menu"
             category: "Qt Quick - Extras"
             libraryIcon: "images/piemenu-icon.png"
             version: "1.0"
@@ -88,7 +88,7 @@ MetaInfo {
         icon: "images/statusindicator-icon16.png"
 
         ItemLibraryEntry {
-            name: "StatusIndicator"
+            name: "Status Indicator"
             category: "Qt Quick - Extras"
             libraryIcon: "images/statusindicator-icon.png"
             version: "1.1"
