@@ -266,7 +266,7 @@ void QQuickRangeModel1::setRange(qreal min, qreal max)
 }
 
 /*!
-    \property QQuickRangeModel::minimumValue
+    \property QQuickRangeModel1::minimumValue
     \brief the minimum value that \l value can assume
 
     This property's default value is 0
@@ -285,7 +285,7 @@ qreal QQuickRangeModel1::minimum() const
 }
 
 /*!
-    \property QQuickRangeModel::maximumValue
+    \property QQuickRangeModel1::maximumValue
     \brief the maximum value that \l value can assume
 
     This property's default value is 99
@@ -306,7 +306,7 @@ qreal QQuickRangeModel1::maximum() const
 }
 
 /*!
-    \property QQuickRangeModel::stepSize
+    \property QQuickRangeModel1::stepSize
     \brief the value that is added to the \l value and \l position property
 
     Example: If a user sets a range of [0,100] and stepSize
@@ -350,7 +350,7 @@ qreal QQuickRangeModel1::positionForValue(qreal value) const
 }
 
 /*!
-    \property QQuickRangeModel::position
+    \property QQuickRangeModel1::position
     \brief the current position of the model
 
     Represents a valid external position, based on the \l positionAtMinimum,
@@ -385,7 +385,7 @@ void QQuickRangeModel1::setPosition(qreal newPosition)
 }
 
 /*!
-    \property QQuickRangeModel::positionAtMinimum
+    \property QQuickRangeModel1::positionAtMinimum
     \brief the minimum value that \l position can assume
 
     This property's default value is 0
@@ -404,7 +404,7 @@ qreal QQuickRangeModel1::positionAtMinimum() const
 }
 
 /*!
-    \property QQuickRangeModel::positionAtMaximum
+    \property QQuickRangeModel1::positionAtMaximum
     \brief the maximum value that \l position can assume
 
     This property's default value is 0
@@ -437,7 +437,7 @@ qreal QQuickRangeModel1::valueForPosition(qreal position) const
 }
 
 /*!
-    \property QQuickRangeModel::value
+    \property QQuickRangeModel1::value
     \brief the current value of the model
 
     Represents a valid external value, based on the \l minimumValue,
@@ -472,7 +472,7 @@ void QQuickRangeModel1::setValue(qreal newValue)
 }
 
 /*!
-    \property QQuickRangeModel::inverted
+    \property QQuickRangeModel1::inverted
     \brief the model is inverted or not
 
     The model can be represented with an inverted behavior, e.g. when \l value assumes
