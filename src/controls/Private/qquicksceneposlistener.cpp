@@ -124,7 +124,7 @@ void QQuickScenePosListener1::setEnabled(bool enabled)
     emit enabledChanged();
 }
 
-void QQuickScenePosListener1::itemGeometryChanged(QQuickItem *, const QRectF &, const QRectF &)
+void QQuickScenePosListener1::itemGeometryChanged(QQuickItem *, QQuickGeometryChange, const QRectF &)
 {
     updateScenePos();
 }

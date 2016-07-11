@@ -73,10 +73,10 @@ Q_SIGNALS:
     void enabledChanged();
 
 protected:
-    void itemGeometryChanged(QQuickItem *, const QRectF &, const QRectF &);
-    void itemParentChanged(QQuickItem *, QQuickItem *parent);
-    void itemChildRemoved(QQuickItem *, QQuickItem *child);
-    void itemDestroyed(QQuickItem *item);
+    void itemGeometryChanged(QQuickItem *, QQuickGeometryChange, const QRectF &) override;
+    void itemParentChanged(QQuickItem *, QQuickItem *parent) override;
+    void itemChildRemoved(QQuickItem *, QQuickItem *child) override;
+    void itemDestroyed(QQuickItem *item) override;
 
 private:
     void updateScenePos();
