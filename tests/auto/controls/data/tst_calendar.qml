@@ -604,9 +604,6 @@ Item {
             calendar.maximumDate = new Date(2014, 2, 31);
             calendar.__locale = Qt.locale("en_GB");
 
-            hoveredSignalSpy.target = calendar;
-            hoveredSignalSpy.signalName = "hovered";
-
             pressedSignalSpy.target = calendar;
             pressedSignalSpy.signalName = "pressed";
 
@@ -632,12 +629,13 @@ Item {
             mousePress(calendar, toPixelsX(5), toPixelsY(0), Qt.LeftButton);
             compare(calendar.selectedDate, new Date(2014, 1, 1));
             compare(calendar.__panel.pressedCellIndex, 5);
-            compare(hoveredSignalSpy.count, 1);
             compare(pressedSignalSpy.count, 1);
             compare(releasedSignalSpy.count, 0);
             compare(clickedSignalSpy.count, 0);
 
-            hoveredSignalSpy.clear();
+            hoveredSignalSpy.target = calendar;
+            hoveredSignalSpy.signalName = "hovered";
+
             pressedSignalSpy.clear();
             releasedSignalSpy.clear();
             clickedSignalSpy.clear();
