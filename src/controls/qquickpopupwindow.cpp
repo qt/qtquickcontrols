@@ -224,7 +224,8 @@ void QQuickPopupWindow::hideEvent(QHideEvent *e)
 {
     if (QWindow *tp = !m_needsActivatedEvent ? transientParent() : 0) {
         m_needsActivatedEvent = true;
-        QWindowSystemInterface::handleWindowActivated(tp);
+        if (tp->isVisible())
+            QWindowSystemInterface::handleWindowActivated(tp);
     }
 
     QQuickWindow::hideEvent(e);
