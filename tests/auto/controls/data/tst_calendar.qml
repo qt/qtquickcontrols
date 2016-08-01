@@ -941,14 +941,17 @@ Item {
             asyncCalendar.parent = container;
             waitForRendering(asyncCalendar);
 
+            tryCompare(testcase.aysncDelegatesConstructed, "length", CalendarUtils.daysInAWeek);
+
             for (var i = 0; i < testcase.aysncDelegatesConstructed.length; ++i) {
-                tryCompare(testcase.aysncDelegatesConstructed, i, true);
+                compare(testcase.aysncDelegatesConstructed[i], true);
             }
 
             asyncCalendarLoader.active = false;
+            tryCompare(testcase.aysncDelegatesDestructed, "length", CalendarUtils.daysInAWeek);
 
             for (i = 0; i < testcase.aysncDelegatesDestructed.length; ++i) {
-                tryCompare(testcase.aysncDelegatesDestructed, i, true);
+                compare(testcase.aysncDelegatesDestructed[i], true);
             }
         }
     }
