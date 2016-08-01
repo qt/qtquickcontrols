@@ -165,6 +165,7 @@ protected Q_SLOTS:
 
     void updateText();
     void windowVisibleChanged(bool);
+    void platformMenuWindowVisibleChanged(bool);
 
 private:
     QQuickWindow *findParentWindow();
@@ -205,6 +206,7 @@ private:
     QFont m_font;
     int m_triggerCount;
     bool m_proxy;
+    QMetaObject::Connection m_windowConnection;
 };
 
 QT_END_NAMESPACE
