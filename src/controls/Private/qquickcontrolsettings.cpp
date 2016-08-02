@@ -42,6 +42,7 @@
 #include <qcoreapplication.h>
 #include <qdebug.h>
 #include <qqmlengine.h>
+#include <qfileinfo.h>
 #include <qlibrary.h>
 #include <qdir.h>
 #include <QTouchDevice>
@@ -154,16 +155,21 @@ static QString relativeStyleImportPath(QQmlEngine *engine, const QString &styleN
     QString path;
 #ifndef QT_STATIC
     bool found = false;
-    const auto importPathList = engine->importPathList();
-    for (const QString &import : importPathList) {
-        QDir dir(import + QStringLiteral("/QtQuick/Controls/Styles"));
-        if (dir.exists(styleName)) {
-            found = true;
-            path = dir.absolutePath();
-            break;
+    const auto importPathList = engine->importPathList(); // ideally we'd call QQmlImportDatabase::importPathList(Local) here, but it's not exported
+    for (QString import : importPathList) {
+        bool localPath = QFileInfo(import).isAbsolute();
+        if (import.startsWith(QLatin1String("qrc:/"), Qt::CaseInsensitive)) {
+            import = QLatin1Char(':') + import.mid(4);
+            localPath = true;
         }
-        if (found)
-            break;
+        if (localPath) {
+            QDir dir(import + QStringLiteral("/QtQuick/Controls/Styles"));
+            if (dir.exists(styleName)) {
+                found = true;
+                path = dir.absolutePath();
+                break;
+            }
+        }
     }
     if (!found)
         path = ":/QtQuick/Controls/Styles";
@@ -194,6 +200,7 @@ static QString styleImportPath(QQmlEngine *engine, const QString &styleName)
 }
 
 QQuickControlSettings1::QQuickControlSettings1(QQmlEngine *engine)
+    : m_engine(engine)
 {
     // First, register all style paths in the default style location.
     QDir dir;
@@ -223,10 +230,14 @@ QQuickControlSettings1::QQuickControlSettings1(QQmlEngine *engine)
     if (m_styleMap.contains(m_name)) {
         m_path = m_styleMap.value(m_name).m_styleDirPath;
     } else {
-        QString unknownStyle = m_name;
-        m_name = defaultStyle;
         m_path = m_styleMap.value(defaultStyle).m_styleDirPath;
-        qWarning() << "WARNING: Cannot find style" << unknownStyle << "- fallback:" << styleFilePath();
+        // Maybe the requested style is not next to the default style, but elsewhere in the import path
+        findStyle(engine, m_name);
+        if (!m_styleMap.contains(m_name)) {
+            QString unknownStyle = m_name;
+            m_name = defaultStyle;
+            qWarning() << "WARNING: Cannot find style" << unknownStyle << "- fallback:" << styleFilePath();
+        }
     }
 
     // Can't really do anything about this failing here, so don't bother checking...
@@ -278,7 +289,8 @@ void QQuickControlSettings1::findStyle(QQmlEngine *engine, const QString &styleN
     QDir dir;
     dir.setFilter(QDir::Files | QDir::NoDotAndDotDot);
     dir.setPath(path);
-    dir.cd(styleName);
+    if (!dir.cd(styleName))
+        return;
 
     StyleData styleData;
 
@@ -326,6 +338,11 @@ void QQuickControlSettings1::setStyleName(const QString &name)
     if (m_name != name) {
         QString oldName = m_name;
         m_name = name;
+
+        if (!m_styleMap.contains(name)) {
+            // Maybe this style is not next to the default style, but elsewhere in the import path
+            findStyle(m_engine, name);
+        }
 
         // Don't change the style if it can't be resolved.
         if (!resolveCurrentStylePath())

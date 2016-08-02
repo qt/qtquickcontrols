@@ -48,7 +48,6 @@ import QtQuick.Layouts 1.0
     \inqmlmodule QtQuick.Controls
     \since 5.1
     \ingroup controls
-    \inherits QtQuick::FocusScope
     \brief GroupBox provides a group box frame with a title.
 
     \image groupbox.png

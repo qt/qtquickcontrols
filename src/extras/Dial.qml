@@ -50,7 +50,6 @@ import QtQuick.Extras.Private 1.0
     \since 5.5
     \ingroup extras
     \ingroup extras-interactive
-    \inherits QtQuickControls1::Control
     \brief A circular dial that is rotated to set a value.
 
     \image dial.png A Dial

@@ -44,6 +44,7 @@ QT_BEGIN_NAMESPACE
 /*!
     \qmltype AbstractStyle
     \instantiates QQuickAbstractStyle1
+    \inqmlmodule QtQuick.Controls.Styles
     \qmlabstract
     \internal
 */

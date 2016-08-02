@@ -44,6 +44,7 @@ import QtQuick.Controls.Private 1.0
 /*!
     \qmltype BasicTableViewStyle
     \internal
+    \inqmlmodule QtQuick.Controls.Styles
     \inherits ScrollViewStyle
     \qmlabstract
 */

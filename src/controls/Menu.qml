@@ -48,7 +48,6 @@ import QtQuick.Controls.Private 1.0
     \since 5.1
     \ingroup menus
     \ingroup controls
-    \inherits QtQuickControls1::MenuPrivate
     \brief Provides a menu component for use as a context menu, popup menu, or
     as part of a menu bar.
 

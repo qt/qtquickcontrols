@@ -32,7 +32,6 @@
    \since 5.5
    \ingroup views
    \ingroup controls
-   \inherits QtQuickControls1::BasicTableView
    \brief Provides a tree view with scroll bars, styling and header sections.
 
    \image treeview.png
@@ -126,14 +125,15 @@
 */
 
 /*!
-    \qmlpropertygroup TreeView::section
+    \qmlpropertygroup QtQuick.Controls::TreeView::section
     \qmlproperty string TreeView::section.property
     \qmlproperty enumeration TreeView::section.criteria
     \qmlproperty Component TreeView::section.delegate
     \qmlproperty enumeration TreeView::section.labelPositioning
 
     These properties determine the section labels.
-    \sa ListView::section
+
+    \sa {QtQuick::ListView::section}{ListView.section}
 */
 
 /*!

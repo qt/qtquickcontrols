@@ -46,7 +46,6 @@ import QtQuick.Controls.Private 1.0
     \inqmlmodule QtQuick.Controls
     \since 5.1
     \ingroup controls
-    \inherits QtQuickControls1::AbstractCheckable
     \brief A checkbox with a text label.
 
     \image checkbox.png

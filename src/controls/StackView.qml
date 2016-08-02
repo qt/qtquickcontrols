@@ -47,7 +47,6 @@ import QtQuick.Controls.Private 1.0
     \ingroup views
     \ingroup controls
     \inqmlmodule QtQuick.Controls
-    \inherits QtQuick::FocusScope
     \since 5.1
 
     \brief Provides a stack-based navigation model.

@@ -47,7 +47,6 @@ import QtQuick.Controls.Private 1.0
     \since 5.1
     \ingroup applicationwindow
     \ingroup controls
-    \inherits QtQuick::FocusScope
     \brief Contains ToolButton and related controls.
 
     \image toolbar.png
