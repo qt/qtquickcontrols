@@ -171,7 +171,7 @@
     import org.qtproject.example 1.0
     \endcode
 
-    For more information about registering C++ classses as QML types, see
+    For more information about registering C++ classes as QML types, see
     \l {Defining QML Types from C++}.
 
     \include examples-run.qdocinc
@@ -212,7 +212,7 @@
     import org.qtproject.example 1.0
     \endcode
 
-    For more information about registering C++ classses as QML types, see
+    For more information about registering C++ classes as QML types, see
     \l {Defining QML Types from C++}.
 
     \include examples-run.qdocinc
