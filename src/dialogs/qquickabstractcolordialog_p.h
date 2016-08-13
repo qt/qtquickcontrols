@@ -96,6 +96,9 @@ Q_SIGNALS:
     void currentColorChanged();
     void selectionAccepted();
 
+protected Q_SLOTS:
+    virtual void accept();
+
 protected:
     QPlatformColorDialogHelper *m_dlgHelper;
     QSharedPointer<QColorDialogOptions> m_options;

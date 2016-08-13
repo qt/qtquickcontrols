@@ -124,4 +124,10 @@ void QQuickAbstractColorDialog::setShowAlphaChannel(bool arg)
     emit showAlphaChannelChanged();
 }
 
+void QQuickAbstractColorDialog::accept()
+{
+    setColor(m_currentColor);
+    QQuickAbstractDialog::accept();
+}
+
 QT_END_NAMESPACE

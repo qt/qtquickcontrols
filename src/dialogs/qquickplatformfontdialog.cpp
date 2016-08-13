@@ -170,7 +170,7 @@ QPlatformFontDialogHelper *QQuickPlatformFontDialog::helper()
             return m_dlgHelper;
         connect(m_dlgHelper, SIGNAL(accept()), this, SLOT(accept()));
         connect(m_dlgHelper, SIGNAL(reject()), this, SLOT(reject()));
-        connect(m_dlgHelper, SIGNAL(currentFontChanged(QFont)), this, SLOT(setFont(QFont)));
+        connect(m_dlgHelper, SIGNAL(currentFontChanged(QFont)), this, SLOT(setCurrentFont(QFont)));
         connect(m_dlgHelper, SIGNAL(fontSelected(QFont)), this, SLOT(setFont(QFont)));
     }
 
