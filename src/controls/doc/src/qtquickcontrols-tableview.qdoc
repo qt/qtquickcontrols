@@ -223,8 +223,8 @@
     \list
     \li function \b clear() - deselects all rows
     \li function \b selectAll() - selects all rows
-    \li function \b select(from, to) - select a range
-    \li function \b deselect(from, to) - de-selects a range
+    \li function \b select(from, to) - selects a range
+    \li function \b deselect(from, to) - deselects a range
     \li function \b forEach(callback) - iterates over all selected rows
     \li function \b contains(index) - checks whether the selection includes the given index
     \li signal \b selectionChanged() - the current row selection changed
