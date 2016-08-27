@@ -156,6 +156,7 @@ QHash<int, QByteArray> QQuickTreeModelAdaptor1::roleNames() const
     modelRoleNames.insert(ExpandedRole, "_q_TreeView_ItemExpanded");
     modelRoleNames.insert(HasChildrenRole, "_q_TreeView_HasChildren");
     modelRoleNames.insert(HasSiblingRole, "_q_TreeView_HasSibling");
+    modelRoleNames.insert(ModelIndexRole, "_q_TreeView_ModelIndex");
     return modelRoleNames;
 }
 
@@ -180,6 +181,8 @@ QVariant QQuickTreeModelAdaptor1::data(const QModelIndex &index, int role) const
         return !(modelIndex.flags() & Qt::ItemNeverHasChildren) && m_model->hasChildren(modelIndex);
     case HasSiblingRole:
         return modelIndex.row() != m_model->rowCount(modelIndex.parent()) - 1;
+    case ModelIndexRole:
+        return modelIndex;
     default:
         return m_model->data(modelIndex, role);
     }
@@ -195,6 +198,7 @@ bool QQuickTreeModelAdaptor1::setData(const QModelIndex &index, const QVariant &
     case ExpandedRole:
     case HasChildrenRole:
     case HasSiblingRole:
+    case ModelIndexRole:
         return false;
     default: {
         const QModelIndex &pmi = mapToModel(index);
@@ -719,8 +723,11 @@ void QQuickTreeModelAdaptor1::modelRowsAboutToBeMoved(const QModelIndex & source
             destIndex = itemIndex(m_model->index(destinationRow, 0, destinationParent));
         }
 
-        beginMoveRows(QModelIndex(), startIndex, endIndex, QModelIndex(), destIndex);
         int totalMovedCount = endIndex - startIndex + 1;
+
+        const bool visibleRowsMoved = startIndex != destIndex &&
+            beginMoveRows(QModelIndex(), startIndex, endIndex, QModelIndex(), destIndex);
+
         const QList<TreeItem> &buffer = m_items.mid(startIndex, totalMovedCount);
         int bufferCopyOffset;
         if (destIndex > endIndex) {
@@ -729,6 +736,7 @@ void QQuickTreeModelAdaptor1::modelRowsAboutToBeMoved(const QModelIndex & source
             }
             bufferCopyOffset = destIndex - totalMovedCount;
         } else {
+            // NOTE: we will not enter this loop if startIndex == destIndex
             for (int i = startIndex - 1; i >= destIndex; i--) {
                 m_items.swap(i, i + totalMovedCount); // Fast move from 1st to 2nd position
             }
@@ -739,14 +747,49 @@ void QQuickTreeModelAdaptor1::modelRowsAboutToBeMoved(const QModelIndex & source
             item.depth += depthDifference;
             m_items.replace(bufferCopyOffset + i, item);
         }
-        endMoveRows();
+
+        if (visibleRowsMoved)
+            endMoveRows();
+
+        if (depthDifference != 0) {
+            const QModelIndex &topLeft = index(bufferCopyOffset, 0, QModelIndex());
+            const QModelIndex &bottomRight = index(bufferCopyOffset + totalMovedCount - 1, 0, QModelIndex());
+            const QVector<int> changedRole(1, DepthRole);
+            emit dataChanged(topLeft, bottomRight, changedRole);
+        }
     }
 }
 
 void QQuickTreeModelAdaptor1::modelRowsMoved(const QModelIndex & sourceParent, int sourceStart, int sourceEnd, const QModelIndex & destinationParent, int destinationRow)
 {
-    if (!childrenVisible(sourceParent) && childrenVisible(destinationParent))
-        modelRowsInserted(destinationParent, destinationRow, destinationRow + sourceEnd - sourceStart);
+    if (childrenVisible(destinationParent)) {
+        if (!childrenVisible(sourceParent))
+            modelRowsInserted(destinationParent, destinationRow, destinationRow + sourceEnd - sourceStart);
+        else {
+            int destIndex = -1;
+            if (destinationRow == m_model->rowCount(destinationParent)) {
+                const QModelIndex &emi = m_model->index(destinationRow - 1, 0, destinationParent);
+                destIndex = lastChildIndex(emi) + 1;
+            } else {
+                destIndex = itemIndex(m_model->index(destinationRow, 0, destinationParent));
+            }
+
+            const QModelIndex &emi = m_model->index(destinationRow + sourceEnd - sourceStart, 0, destinationParent);
+            int endIndex = -1;
+            if (isExpanded(emi)) {
+                int rowCount = m_model->rowCount(emi);
+                if (rowCount > 0)
+                    endIndex = lastChildIndex(m_model->index(rowCount - 1, 0, emi));
+            }
+            if (endIndex == -1)
+                endIndex = itemIndex(emi);
+
+            const QModelIndex &topLeft = index(destIndex, 0, QModelIndex());
+            const QModelIndex &bottomRight = index(endIndex, 0, QModelIndex());
+            const QVector<int> changedRole(1, ModelIndexRole);
+            emit dataChanged(topLeft, bottomRight, changedRole);
+        }
+    }
     ASSERT_CONSISTENCY();
 }
 
