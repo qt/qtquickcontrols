@@ -442,6 +442,10 @@ void QQuickMenu1::__popup(const QRectF &targetRect, int atItemIndex, MenuType me
     // parentWindow may not be a QQuickWindow (happens when using QQuickWidget)
 
     if (m_platformMenu) {
+        if (m_windowConnection)
+            QObject::disconnect(m_windowConnection);
+        m_windowConnection = connect(parentWindow, &QWindow::visibleChanged, this,
+                                     &QQuickMenu1::platformMenuWindowVisibleChanged, Qt::UniqueConnection);
         QRectF globalTargetRect = targetRect.translated(m_xOffset, m_yOffset);
         if (visualItem()) {
             if (qGuiApp->isRightToLeft()) {
@@ -568,6 +572,19 @@ void QQuickMenu1::windowVisibleChanged(bool v)
         }
         if (m_popupVisible)
             __closeAndDestroy();
+    }
+}
+
+void QQuickMenu1::platformMenuWindowVisibleChanged(bool visible)
+{
+    if (!visible) {
+        if (m_windowConnection) {
+            QObject::disconnect(m_windowConnection);
+            m_windowConnection = QMetaObject::Connection();
+        }
+        if (m_platformMenu) {
+            m_platformMenu->dismiss();
+        }
     }
 }
 

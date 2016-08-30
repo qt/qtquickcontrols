@@ -40,6 +40,7 @@ void TestPlugin::registerTypes(const char *uri)
     qmlRegisterType<TestObject>(uri, 1, 0, "TestObject");
     qmlRegisterType<TestItemModel>(uri, 1, 0, "TestItemModel");
     qmlRegisterType<TestModel>(uri, 1, 0, "TreeModel");
+    qmlRegisterType<TestFetchAppendModel>(uri, 1, 0, "TestFetchAppendModel");
 }
 
 void TestPlugin::initializeEngine(QQmlEngine *engine, const char * /*uri*/)

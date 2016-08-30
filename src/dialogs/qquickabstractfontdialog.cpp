@@ -154,4 +154,10 @@ void QQuickAbstractFontDialog::setProportionalFonts(bool arg)
     emit proportionalFontsChanged();
 }
 
+void QQuickAbstractFontDialog::accept()
+{
+    setFont(m_currentFont);
+    QQuickAbstractDialog::accept();
+}
+
 QT_END_NAMESPACE

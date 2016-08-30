@@ -179,6 +179,9 @@ void DocumentHandler::reset()
 
 QTextCursor DocumentHandler::textCursor() const
 {
+    if (!m_doc)
+        return QTextCursor();
+
     QTextCursor cursor = QTextCursor(m_doc);
     if (m_selectionStart != m_selectionEnd) {
         cursor.setPosition(m_selectionStart);
@@ -209,6 +212,9 @@ void DocumentHandler::setSelectionEnd(int position)
 
 void DocumentHandler::setAlignment(Qt::Alignment a)
 {
+    if (!m_doc)
+        return;
+
     QTextBlockFormat fmt;
     fmt.setAlignment((Qt::Alignment) a);
     QTextCursor cursor = QTextCursor(m_doc);

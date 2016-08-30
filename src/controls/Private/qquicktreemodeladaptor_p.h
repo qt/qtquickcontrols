@@ -77,10 +77,11 @@ public:
     void resetRootIndex();
 
     enum {
-        DepthRole = Qt::UserRole - 4,
+        DepthRole = Qt::UserRole - 5,
         ExpandedRole,
         HasChildrenRole,
-        HasSiblingRole
+        HasSiblingRole,
+        ModelIndexRole
     };
 
     QHash<int, QByteArray> roleNames() const;

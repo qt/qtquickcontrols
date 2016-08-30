@@ -101,6 +101,9 @@ Q_SIGNALS:
     void currentFontChanged();
     void selectionAccepted();
 
+protected Q_SLOTS:
+    virtual void accept();
+
 protected:
     QPlatformFontDialogHelper *m_dlgHelper;
     QSharedPointer<QFontDialogOptions> m_options;
