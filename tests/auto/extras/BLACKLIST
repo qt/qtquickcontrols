@@ -1,5 +1,3 @@
-[Tests_CircularTickmarkLabel::test_tickmarksAndLabels]
-*
 [Tests_Tumbler::test_focusPastLastColumn]
 *
 [Tests_Tumbler::test_itemsCorrectlyPositioned]
