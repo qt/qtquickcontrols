@@ -133,7 +133,7 @@ TestCase {
         var scrollView = dragFetchAppendComponent.createObject(container)
         verify(scrollView !== null, "view created is null")
         waitForRendering(scrollView)
-        verify(scrollView.flickableItem.contentHeight === 60 * 20)
+        tryCompare(scrollView.flickableItem, "contentHeight", 60 * 20)
 
         // After scrolling to the end, view should ask the model to fetch more
         // data, content height should increase and scrollbar handle should move
