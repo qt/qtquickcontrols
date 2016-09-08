@@ -85,6 +85,8 @@ osx: LIBS_PRIVATE += -framework Carbon
     QML_FILES *= $$CONTROLS_QML_FILES \
                  $$PRIVATE_QML_FILES \
                  $$STYLES_QML_FILES
+    OTHER_FILES += $$QML_FILES
 }
+
 CONFIG += no_cxx_module
 load(qml_plugin)
