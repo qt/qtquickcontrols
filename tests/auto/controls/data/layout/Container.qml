@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2015 The Qt Company Ltd.
+** Copyright (C) 2016 The Qt Company Ltd.
 ** Contact: http://www.qt.io/licensing/
 **
 ** This file is part of the test suite of the Qt Toolkit.
@@ -38,31 +38,18 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.2
-import QtTest 1.0
+import QtQuick 2.5
+import QtQuick.Layouts 1.2
 
-TestCase {
-    id: testCase
-    name: "Tests_Layout"
-    when:windowShown
-    width:400
-    height:400
+Item {
+    objectName: "qtbug51927-window"
+    visible: true
 
-    function test_invalidParent() {
-        ignoreWarning('Layout must be attached to Item elements')
-        var object = Qt.createQmlObject('import QtQuick 2.2; import QtQuick.Layouts 1.0; QtObject { Layout.fillWidth: true }', testCase, '');
-        object.destroy()
-    }
+    default property alias _contents: customContent.data
 
-    function test_defaultPropertyAliasCrash() {
-        var containerUserComponent = Qt.createComponent("layout/ContainerUser.qml");
-        compare(containerUserComponent.status, Component.Ready);
-
-        var containerUser = containerUserComponent.createObject(testCase);
-        verify(containerUser);
-
-        // Shouldn't crash.
-        containerUser.destroy();
+    ColumnLayout {
+        id: customContent
+        objectName: "qtbug51927-columnLayout"
+        anchors.fill: parent
     }
 }
-

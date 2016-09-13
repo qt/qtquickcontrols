@@ -695,6 +695,9 @@ QQuickLayout::QQuickLayout(QQuickLayoutPrivate &dd, QQuickItem *parent)
 QQuickLayout::~QQuickLayout()
 {
     d_func()->m_isReady = false;
+
+    foreach (QQuickItem *child, d_func()->childItems)
+        QQuickItemPrivate::get(child)->removeItemChangeListener(this, QQuickItemPrivate::SiblingOrder);
 }
 
 QQuickLayoutAttached *QQuickLayout::qmlAttachedProperties(QObject *object)
