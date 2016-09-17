@@ -77,7 +77,7 @@ QtObject {
     /*! The model \c role of the column. */
     property string role
 
-    /*! The current width of the column
+    /*! The current width of the column.
     The default value depends on platform. If only one
     column is defined, the width expands to the viewport.
     */
