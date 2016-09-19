@@ -114,7 +114,7 @@ Style {
     /*! This defines the indicator button. */
     property Component indicator:  Item {
         implicitWidth: Math.round(TextSingleton.implicitHeight)
-        height: width
+        implicitHeight: implicitWidth
         Rectangle {
             anchors.fill: parent
             anchors.bottomMargin: -1

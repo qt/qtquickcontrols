@@ -48,11 +48,12 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.2
+import QtQuick 2.6
 import QtTest 1.0
 import QtQuickControlsTests 1.0
-import QtQuick.Controls 1.2
+import QtQuick.Controls 1.4
 import QtQuick.Controls.Private 1.0
+import QtQuick.Controls.Styles 1.4
 
 Item {
     id: container
@@ -72,6 +73,12 @@ Item {
 
         TestUtil {
             id: util
+        }
+
+        Component {
+            id: sliderComponent
+
+            Slider {}
         }
 
         function test_vertical() {
@@ -370,6 +377,35 @@ Item {
             // Tidy up.
             control.destroy()
             component.destroy()
+        }
+
+        Component {
+            id: namedHandleStyle
+
+            SliderStyle {
+                handle: Rectangle {
+                    objectName: "sliderHandle"
+                    implicitWidth:  20
+                    implicitHeight: 20
+                    color: "salmon"
+                }
+            }
+        }
+
+        function test_minimumValueLargerThanValue() {
+            var control = sliderComponent.createObject(container, { "style": namedHandleStyle, "minimumValue": 0, "maximumValue": 2, value: "minimumValue" });
+            verify(control);
+
+            var handle = findChild(control, "sliderHandle");
+            verify(handle);
+
+            // The handle should stay within the bounds of the slider when
+            // minimumValue is set to a value larger than "value".
+            control.minimumValue = 1;
+            compare(control.value, control.minimumValue);
+            compare(handle.mapToItem(null, 0, 0).x, 0)
+
+            control.destroy();
         }
     }
 }
