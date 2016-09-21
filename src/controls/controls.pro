@@ -88,6 +88,8 @@ osx: LIBS_PRIVATE += -framework Carbon
                  $$PRIVATE_QML_FILES \
                  $$STYLES_QML_FILES \
                  $$SHADER_FILES
+    OTHER_FILES += $$QML_FILES
 }
+
 CONFIG += no_cxx_module
 load(qml_plugin)

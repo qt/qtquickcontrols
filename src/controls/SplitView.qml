@@ -61,9 +61,13 @@ import QtQuick.Window 2.1
     item will get all leftover space when other items have been laid out.
     By default, the last visible child of the SplitView will have this set, but
     it can be changed by explicitly setting fillWidth to \c true on another item.
+
     As the fillWidth item will automatically be resized to fit the extra space, explicit assignments
-    to width and height will be ignored (but \l{Layout::minimumWidth}{Layout.minimumWidth} and
+    to its width and height properties will be ignored (but \l{Layout::minimumWidth}{Layout.minimumWidth} and
     \l{Layout::maximumWidth}{Layout.maximumWidth} will still be respected).
+    The initial sizes of other items should be set via their width and height properties.
+    Any binding assignment to an item's width or height will be broken as soon as the user
+    drags that item's splitter handle.
 
     A handle can belong to the item either on the left or top side, or on the right or bottom side:
     \list

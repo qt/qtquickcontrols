@@ -88,6 +88,58 @@ private:
     QList<TestObject> m_testobject;
 };
 
+class TestFetchAppendModel : public QAbstractListModel
+{
+    Q_OBJECT
+public:
+    explicit TestFetchAppendModel(QObject *parent = 0)
+        : QAbstractListModel(parent) { }
+
+    virtual int rowCount(const QModelIndex &parent) const
+    {
+        if (parent.isValid()) {
+            return 0;
+        }
+
+        return m_data.size();
+    }
+    virtual QVariant data(const QModelIndex &index, int role) const
+    {
+        if (!index.isValid() || role != Qt::DisplayRole) {
+            return QVariant();
+        }
+
+        return QVariant::fromValue(index.row());
+    }
+
+    virtual bool canFetchMore(const QModelIndex &parent) const
+    {
+        Q_UNUSED(parent)
+
+        return true;
+    }
+    virtual void fetchMore(const QModelIndex & parent)
+    {
+        Q_UNUSED(parent)
+
+        addMoreData();
+    }
+
+private:
+    void addMoreData()
+    {
+        static const int insertCount = 20;
+
+        beginInsertRows(QModelIndex(), m_data.size(), m_data.size() + insertCount - 1);
+        for (int i = 0; i < insertCount; i++) {
+            m_data.append(int());
+        }
+        endInsertRows();
+    }
+
+    QList<int> m_data;
+};
+
 
 #endif // TESTCPPMODELS_H
 

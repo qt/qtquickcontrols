@@ -70,6 +70,9 @@ public:
     uint inverted : 1;
 
     QQuickRangeModel1 *q_ptr;
+    bool isComplete;
+    bool positionChanged;
+    bool valueChanged;
 
     inline qreal effectivePosAtMin() const {
         return inverted ? posatmax : posatmin;

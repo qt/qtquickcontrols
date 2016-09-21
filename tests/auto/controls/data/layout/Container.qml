@@ -1,22 +1,12 @@
 /****************************************************************************
 **
 ** Copyright (C) 2016 The Qt Company Ltd.
-** Contact: https://www.qt.io/licensing/
+** Contact: http://www.qt.io/licensing/
 **
 ** This file is part of the test suite of the Qt Toolkit.
 **
 ** $QT_BEGIN_LICENSE:BSD$
-** Commercial License Usage
-** Licensees holding valid commercial Qt licenses may use this file in
-** accordance with the commercial license agreement provided with the
-** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and The Qt Company. For licensing terms
-** and conditions see https://www.qt.io/terms-conditions. For further
-** information use the contact form at https://www.qt.io/contact-us.
-**
-** BSD License Usage
-** Alternatively, you may use this file under the terms of the BSD license
-** as follows:
+** You may use this file under the terms of the BSD license as follows:
 **
 ** "Redistribution and use in source and binary forms, with or without
 ** modification, are permitted provided that the following conditions are
@@ -48,31 +38,18 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.2
-import QtTest 1.0
+import QtQuick 2.5
+import QtQuick.Layouts 1.2
 
-TestCase {
-    id: testCase
-    name: "Tests_Layout"
-    when:windowShown
-    width:400
-    height:400
+Item {
+    objectName: "qtbug51927-window"
+    visible: true
 
-    function test_invalidParent() {
-        ignoreWarning('Layout must be attached to Item elements')
-        var object = Qt.createQmlObject('import QtQuick 2.2; import QtQuick.Layouts 1.0; QtObject { Layout.fillWidth: true }', testCase, '');
-        object.destroy()
-    }
+    default property alias _contents: customContent.data
 
-    function test_defaultPropertyAliasCrash() {
-        var containerUserComponent = Qt.createComponent("layout/ContainerUser.qml");
-        compare(containerUserComponent.status, Component.Ready);
-
-        var containerUser = containerUserComponent.createObject(testCase);
-        verify(containerUser);
-
-        // Shouldn't crash.
-        containerUser.destroy();
+    ColumnLayout {
+        id: customContent
+        objectName: "qtbug51927-columnLayout"
+        anchors.fill: parent
     }
 }
-

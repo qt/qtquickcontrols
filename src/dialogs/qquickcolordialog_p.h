@@ -65,9 +65,6 @@ public:
     explicit QQuickColorDialog(QObject *parent = 0);
     ~QQuickColorDialog();
 
-protected Q_SLOTS:
-    virtual void accept();
-
 protected:
     virtual QPlatformColorDialogHelper *helper() { return 0; }
 

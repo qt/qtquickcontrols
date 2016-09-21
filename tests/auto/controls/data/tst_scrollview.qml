@@ -51,6 +51,7 @@
 import QtQuick 2.2
 import QtTest 1.0
 import QtQuick.Controls 1.2
+import QtQuick.Controls.Styles 1.1
 import QtQuickControlsTests 1.0
 
 Item {
@@ -100,6 +101,68 @@ TestCase {
         scrollView.destroy()
     }
 
+    Component {
+        id: dragFetchAppendComponent
+
+        ScrollView {
+            width: 400; height: 400
+            frameVisible: false
+            style: ScrollViewStyle {
+                transientScrollBars: false
+                handle: Rectangle {
+                    implicitWidth: 16; implicitHeight: 16
+                    color: "red"
+                }
+                scrollBarBackground: Item {width: 16 ; height: 16}
+                incrementControl: Rectangle {
+                    width: 16; height: 16
+                    color: "blue"
+                }
+                decrementControl: Rectangle {
+                    width: 16; height: 16
+                    color: "blue"
+                }
+            }
+            ListView {
+                id: view
+
+                verticalLayoutDirection: ListView.BottomToTop
+                model: TestFetchAppendModel { }
+                delegate: Text {
+                    width: view.width
+                    height: 60
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    text: "Item %1".arg(model.index)
+                }
+            }
+        }
+    }
+
+    function test_dragFetchAppend() {   // QTBUG-50795
+        var scrollView = dragFetchAppendComponent.createObject(container)
+        verify(scrollView !== null, "view created is null")
+        waitForRendering(scrollView)
+        tryCompare(scrollView.flickableItem, "contentHeight", 60 * 20)
+
+        // After scrolling to the end, view should ask the model to fetch more
+        // data, content height should increase and scrollbar handle should move
+        // to the center.
+        mouseDrag(scrollView, scrollView.width - 2, scrollView.height - 8 - 16, 0, -scrollView.height + 8 + 16)
+        waitForRendering(scrollView)
+
+        // Move it again to fetch more data from the model.
+        mouseDrag(scrollView, scrollView.width - 2, scrollView.height / 2, 0, -scrollView.height / 2  + 8 + 16)
+        waitForRendering(scrollView)
+
+        mouseRelease(scrollView, scrollView.width - 2, 8 + 16)
+        waitForRendering(scrollView)
+
+        verify(Math.round(scrollView.flickableItem.contentHeight) > 60 * 20)
+        verify(Math.round(scrollView.flickableItem.contentY) < -(60 * 20))
+
+        scrollView.destroy()
+    }
 
     function test_scrollbars() {
         var component = scrollViewComponent

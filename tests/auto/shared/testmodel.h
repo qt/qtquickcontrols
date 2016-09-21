@@ -230,7 +230,7 @@ public:
     bool moveRows(const QModelIndex &sourceParent, int sourceRow, int count, const QModelIndex &destinationParent, int destinationChild)
     {
         Q_ASSERT_X(sourceRow >= 0 && sourceRow < rowCount(sourceParent)
-                   && count > 0 && sourceRow + count < rowCount(sourceParent)
+                   && count > 0 && sourceRow + count - 1 < rowCount(sourceParent)
                    && destinationChild >= 0 && destinationChild <= rowCount(destinationParent),
                    Q_FUNC_INFO, "Rows out of range.");
         Q_ASSERT_X(!(sourceParent == destinationParent && destinationChild >= sourceRow && destinationChild < sourceRow + count),
