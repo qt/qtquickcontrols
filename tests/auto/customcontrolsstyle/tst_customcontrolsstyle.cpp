@@ -110,7 +110,12 @@ void tst_customcontrolsstyle::style()
 void tst_customcontrolsstyle::changeStyle()
 {
     qputenv("QT_QUICK_CONTROLS_1_STYLE", "Base");
-    qputenv("QML2_IMPORT_PATH", QFile::encodeName(directory()));
+    QByteArray importPath = qgetenv("QML2_IMPORT_PATH");
+    if (importPath.isEmpty())
+        importPath = QFile::encodeName(directory());
+    else
+        importPath.prepend(QFile::encodeName(directory()) + QDir::listSeparator().toLatin1());
+    qputenv("QML2_IMPORT_PATH", importPath);
 
     QQmlEngine engine;
 
