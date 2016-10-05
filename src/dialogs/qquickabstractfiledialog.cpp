@@ -112,16 +112,28 @@ QUrl QQuickAbstractFileDialog::folder() const
     return m_options->initialDirectory();
 }
 
-void QQuickAbstractFileDialog::setFolder(const QUrl &f)
+static QUrl fixupFolder(const QUrl &f)
 {
     QString lf = f.toLocalFile();
     while (lf.startsWith("//"))
         lf.remove(0, 1);
     if (lf.isEmpty())
         lf = QDir::currentPath();
-    QUrl u = QUrl::fromLocalFile(lf);
+    return QUrl::fromLocalFile(lf);
+}
+
+void QQuickAbstractFileDialog::setFolder(const QUrl &f)
+{
+    QUrl u = fixupFolder(f);
     if (m_dlgHelper)
         m_dlgHelper->setDirectory(u);
+    m_options->setInitialDirectory(u);
+    emit folderChanged();
+}
+
+void QQuickAbstractFileDialog::updateFolder(const QUrl &f)
+{
+    QUrl u = fixupFolder(f);
     m_options->setInitialDirectory(u);
     emit folderChanged();
 }
