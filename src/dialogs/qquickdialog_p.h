@@ -56,7 +56,7 @@
 
 QT_BEGIN_NAMESPACE
 
-class QQuickDialog : public QQuickAbstractDialog
+class QQuickDialog1 : public QQuickAbstractDialog
 {
     Q_OBJECT
 
@@ -70,8 +70,8 @@ class QQuickDialog : public QQuickAbstractDialog
     Q_CLASSINFO("DefaultProperty", "contentItem")    // Dialog in QML can have only one child
 
 public:
-    explicit QQuickDialog(QObject *parent = 0);
-    ~QQuickDialog();
+    explicit QQuickDialog1(QObject *parent = 0);
+    ~QQuickDialog1();
 
     StandardButtons standardButtons() const { return m_enabledButtons; }
     StandardButton clickedButton() const { return m_clickedButton; }
@@ -114,11 +114,11 @@ private:
     StandardButton m_clickedButton;
     QJSValue m_standardButtonsLeftModel;
     QJSValue m_standardButtonsRightModel;
-    Q_DISABLE_COPY(QQuickDialog)
+    Q_DISABLE_COPY(QQuickDialog1)
 };
 
 QT_END_NAMESPACE
 
-QML_DECLARE_TYPE(QQuickDialog *)
+QML_DECLARE_TYPE(QQuickDialog1 *)
 
 #endif // QQUICKDIALOG_P_H

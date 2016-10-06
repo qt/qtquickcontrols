@@ -61,7 +61,7 @@ QT_BEGIN_NAMESPACE
 class QQuickAbstractDialog : public QObject
 {
     Q_OBJECT
-    // TODO move the enum to QQuickDialog at the same time that QQuickMessageDialog inherits from it
+    // TODO move the enum to QQuickDialog1 at the same time that QQuickMessageDialog inherits from it
     Q_ENUMS(StandardButton)
     Q_FLAGS(StandardButtons)
     Q_PROPERTY(bool visible READ isVisible WRITE setVisible NOTIFY visibilityChanged)
