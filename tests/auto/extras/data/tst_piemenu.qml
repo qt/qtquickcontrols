@@ -246,6 +246,8 @@ Item {
                     actionSignalSpy.clear();
                 }
             }
+
+            pieMenuComponent.destroy()
         }
 
         function test_selectionAngle_data() {
@@ -377,6 +379,8 @@ Item {
             mouseMove(root, data.mouseX, data.mouseY);
             compare(pieMenu.selectionAngle, data.expectedAngle);
             compare(pieMenu.currentIndex, data.expectedCurrentIndex);
+
+            pieMenuComponent.destroy()
         }
 
         function test_sectionAngles_data() {
@@ -420,6 +424,8 @@ Item {
             compare(pieMenu.__protectedScope.sectionStartAngle(data.section), data.expectedSectionStartAngle);
             compare(pieMenu.__protectedScope.sectionCenterAngle(data.section), data.expectedSectionCenterAngle);
             compare(pieMenu.__protectedScope.sectionEndAngle(data.section), data.expectedSectionEndAngle);
+
+            pieMenuComponent.destroy()
         }
 
         function test_bounds_data() {
@@ -497,6 +503,8 @@ Item {
             // Angles shouldn't change.
             compare(pieMenu.__style.startAngle, originalStartAngle);
             compare(pieMenu.__style.endAngle, originalEndAngle);
+
+            pieMenuComponent.destroy()
         }
 
         function test_hideItem_data() {
@@ -561,6 +569,8 @@ Item {
 
                 actionSignalSpy.clear();
             }
+
+            pieMenuComponent.destroy()
         }
 
         function test_addItem() {
@@ -596,6 +606,8 @@ Item {
                 pieMenu.removeItem(pieMenu.menuItems[pieMenu.menuItems.length - 1]);
                 compare(pieMenu.menuItems.length, originalLength - (i + 1));
             }
+
+            pieMenuComponent.destroy()
         }
 
         function debugMousePosition(pieMenu, mouseX, mouseY, positionText) {
@@ -678,6 +690,8 @@ Item {
                 compare(pieMenu.currentIndex, expectedCurrentIndex, data[i].name + ": current index should be "
                     + expectedCurrentIndex + " when mouse is at " + mouseX + ", " + mouseY);
             }
+
+            pieMenuComponent.destroy()
         }
 
         function test_QTRD3027() {
@@ -708,6 +722,8 @@ Item {
             mouseMove(root, 100, 98)
             compare(pieMenu.currentIndex, -1)
             compare(selectedAngleChangedSpy.count, 0)
+
+            pieMenuComponent.destroy()
         }
 
         function test_rotatedBoundingItem() {
@@ -732,6 +748,8 @@ Item {
             mouseClick(root, 230, 145);
             compare(actionSignalSpy.count, 1);
             compare(actionSignalSpy.signalArguments[0][0], 0);
+
+            pieMenuComponent.destroy()
         }
 
         function test_boundingItem() {
@@ -763,6 +781,8 @@ Item {
 
             container.width = oldContainerWidth;
             container.height = oldContainerHeight;
+
+            pieMenuComponent.destroy()
         }
 
         function test_longPressTriggerOnClick() {
@@ -793,6 +813,8 @@ Item {
             compare(pieMenu.visible, false);
             compare(pieMenu.__mouseThief.receivedPressEvent, false);
             compare(pieMenu.__protectedScope.pressedIndex, -1);
+
+            pieMenuComponent.destroy()
         }
 
         function test_keepMenuOpenWhenTriggered() {
@@ -823,6 +845,8 @@ Item {
             tryCompare(pieMenu, "visible", true);
             compare(actionSignalSpy.count, 1);
             compare(actionSignalSpy.signalArguments[0][0], 2);
+
+            pieMenuComponent.destroy()
         }
 
         function test_pressedIndex() {
@@ -846,6 +870,8 @@ Item {
             compare(actionSignalSpy.count, 1);
             compare(actionSignalSpy.signalArguments[0][0], 0);
             compare(pieMenu.__protectedScope.pressedIndex, -1);
+
+            pieMenuComponent.destroy()
         }
     }
 }
