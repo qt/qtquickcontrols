@@ -117,6 +117,9 @@ Q_SIGNALS:
     void sidebarVisibleChanged();
     void shortcutsChanged();
 
+protected Q_SLOTS:
+    void updateFolder(const QUrl &f);
+
 protected:
     void updateModes();
     void addShortcut(const QString &name, const QString &visibleName, const QString &path);
