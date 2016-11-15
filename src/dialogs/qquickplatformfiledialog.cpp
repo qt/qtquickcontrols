@@ -213,7 +213,7 @@ QPlatformFileDialogHelper *QQuickPlatformFileDialog::helper()
         if (!m_dlgHelper)
             return m_dlgHelper;
         m_dlgHelper->setOptions(m_options);
-        connect(m_dlgHelper, SIGNAL(directoryEntered(QUrl)), this, SIGNAL(folderChanged()));
+        connect(m_dlgHelper, SIGNAL(directoryEntered(QUrl)), this, SLOT(updateFolder(QUrl)));
         connect(m_dlgHelper, SIGNAL(filterSelected(QString)), this, SIGNAL(filterSelected()));
         connect(m_dlgHelper, SIGNAL(accept()), this, SLOT(accept()));
         connect(m_dlgHelper, SIGNAL(reject()), this, SLOT(reject()));
