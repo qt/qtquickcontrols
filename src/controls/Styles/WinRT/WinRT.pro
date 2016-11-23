@@ -1,7 +1,6 @@
 TARGET  = qtquickcontrolswinrtstyleplugin
 TARGETPATH = QtQuick/Controls/Styles/WinRT
 
-!winphone: {
 OTHER_FILES += \
     $$PWD/PC/ApplicationWindowStyle.qml \
     $$PWD/PC/BusyIndicatorStyle.qml \
@@ -29,35 +28,6 @@ OTHER_FILES += \
 
 RESOURCES += \
     $$PWD/PC/WinRT.qrc
-} else {
-OTHER_FILES += \
-    $$PWD/Phone/ApplicationWindowStyle.qml \
-    $$PWD/Phone/BusyIndicatorStyle.qml \
-    $$PWD/Phone/ButtonStyle.qml \
-    $$PWD/Phone/CalendarStyle.qml \
-    $$PWD/Phone/CheckBoxStyle.qml \
-    $$PWD/Phone/ComboBoxStyle.qml \
-    $$PWD/Phone/FocusFrameStyle.qml \
-    $$PWD/Phone/GroupBoxStyle.qml \
-    $$PWD/Phone/MenuBarStyle.qml \
-    $$PWD/Phone/MenuStyle.qml \
-    $$PWD/Phone/ProgressBarStyle.qml \
-    $$PWD/Phone/RadioButtonStyle.qml \
-    $$PWD/Phone/ScrollViewStyle.qml\
-    $$PWD/Phone/SliderStyle.qml \
-    $$PWD/Phone/SpinBoxStyle.qml \
-    $$PWD/Phone/StatusBarStyle.qml \
-    $$PWD/Phone/SwitchStyle.qml \
-    $$PWD/Phone/TableViewStyle.qml \
-    $$PWD/Phone/TabViewStyle.qml \
-    $$PWD/Phone/TextAreaStyle.qml \
-    $$PWD/Phone/TextFieldStyle.qml \
-    $$PWD/Phone/ToolBarStyle.qml \
-    $$PWD/Phone/ToolButtonStyle.qml
-
-RESOURCES += \
-    $$PWD/Phone/WinRT.qrc
-}
 
 SOURCES += \
     $$PWD/plugin.cpp
