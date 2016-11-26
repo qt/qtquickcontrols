@@ -474,8 +474,8 @@ ScrollView {
                     property bool pressed: false
                 }
             }
-            property int rowHeight: rowSizeItem.implicitHeight
-            property int paddedRowCount: height/rowHeight
+            property int rowHeight: Math.floor(rowSizeItem.implicitHeight)
+            property int paddedRowCount: rowHeight != 0 ? height/rowHeight : 0
 
             y: listView.contentHeight - listView.contentY + listView.originY
             width: parent.width
