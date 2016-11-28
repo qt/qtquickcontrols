@@ -47,7 +47,7 @@ QT_BEGIN_NAMESPACE
 
 /*!
     \qmltype Dialog
-    \instantiates QQuickDialog
+    \instantiates QQuickDialog1
     \inqmlmodule QtQuick.Dialogs
     \ingroup qtquickdialogs
     \brief A generic QtQuick dialog wrapper with standard buttons.
@@ -203,11 +203,11 @@ QT_BEGIN_NAMESPACE
 */
 
 /*!
-    \class QQuickDialog
+    \class QQuickDialog1
     \inmodule QtQuick.Dialogs
     \internal
 
-    The QQuickDialog class represents a container for arbitrary
+    The QQuickDialog1 class represents a container for arbitrary
     dialog contents.
 
     \since 5.3
@@ -216,7 +216,7 @@ QT_BEGIN_NAMESPACE
 /*!
     Constructs a dialog wrapper with parent window \a parent.
 */
-QQuickDialog::QQuickDialog(QObject *parent)
+QQuickDialog1::QQuickDialog1(QObject *parent)
     : QQuickAbstractDialog(parent)
     , m_enabledButtons(Ok)
     , m_clickedButton(NoButton)
@@ -227,30 +227,30 @@ QQuickDialog::QQuickDialog(QObject *parent)
 /*!
     Destroys the dialog wrapper.
 */
-QQuickDialog::~QQuickDialog()
+QQuickDialog1::~QQuickDialog1()
 {
 }
 
-QJSValue QQuickDialog::__standardButtonsLeftModel()
+QJSValue QQuickDialog1::__standardButtonsLeftModel()
 {
     updateStandardButtons();
     return m_standardButtonsLeftModel;
 }
 
-QJSValue QQuickDialog::__standardButtonsRightModel()
+QJSValue QQuickDialog1::__standardButtonsRightModel()
 {
     updateStandardButtons();
     return m_standardButtonsRightModel;
 }
 
-void QQuickDialog::setVisible(bool v)
+void QQuickDialog1::setVisible(bool v)
 {
     if (v)
         m_clickedButton = NoButton;
     QQuickAbstractDialog::setVisible(v);
 }
 
-void QQuickDialog::updateStandardButtons()
+void QQuickDialog1::updateStandardButtons()
 {
     if (m_standardButtonsRightModel.isUndefined()) {
         QJSEngine *engine = qmlEngine(this);
@@ -293,7 +293,7 @@ void QQuickDialog::updateStandardButtons()
     }
 }
 
-void QQuickDialog::setTitle(const QString &arg)
+void QQuickDialog1::setTitle(const QString &arg)
 {
     if (m_title != arg) {
         m_title = arg;
@@ -301,7 +301,7 @@ void QQuickDialog::setTitle(const QString &arg)
     }
 }
 
-void QQuickDialog::setStandardButtons(StandardButtons buttons)
+void QQuickDialog1::setStandardButtons(StandardButtons buttons)
 {
     m_enabledButtons = buttons;
     m_standardButtonsLeftModel = QJSValue();
@@ -339,7 +339,7 @@ void QQuickDialog::setStandardButtons(StandardButtons buttons)
     \endqml
 */
 
-void QQuickDialog::click(QPlatformDialogHelper::StandardButton button, QPlatformDialogHelper::ButtonRole role)
+void QQuickDialog1::click(QPlatformDialogHelper::StandardButton button, QPlatformDialogHelper::ButtonRole role)
 {
     m_clickedButton = static_cast<StandardButton>(button);
     emit buttonClicked();
@@ -378,21 +378,21 @@ void QQuickDialog::click(QPlatformDialogHelper::StandardButton button, QPlatform
     }
 }
 
-void QQuickDialog::click(QQuickAbstractDialog::StandardButton button)
+void QQuickDialog1::click(QQuickAbstractDialog::StandardButton button)
 {
     click(static_cast<QPlatformDialogHelper::StandardButton>(button),
         static_cast<QPlatformDialogHelper::ButtonRole>(
             QPlatformDialogHelper::buttonRole(static_cast<QPlatformDialogHelper::StandardButton>(button))));
 }
 
-void QQuickDialog::accept() {
+void QQuickDialog1::accept() {
     // enter key is treated like OK
     if (m_clickedButton == NoButton)
         m_clickedButton = Ok;
     QQuickAbstractDialog::accept();
 }
 
-void QQuickDialog::reject() {
+void QQuickDialog1::reject() {
     // escape key is treated like cancel
     if (m_clickedButton == NoButton)
         m_clickedButton = Cancel;
