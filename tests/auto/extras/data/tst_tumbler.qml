@@ -67,7 +67,11 @@ Item {
         when: windowShown
         anchors.fill: parent
 
-        property var tumbler: null
+        Component {
+            id: tumblerComponent
+
+            Tumbler {}
+        }
 
         property Component simpleColumn: TumblerColumn {
             model: ListModel {
@@ -89,47 +93,45 @@ Item {
             }
         }
 
-        function init() {
-            tumbler = Qt.createQmlObject("import QtQuick.Extras 1.4; Tumbler { }", container, "");
-            verify(tumbler, "Tumbler: failed to create an instance");
-        }
-
-        function cleanup() {
-            tumbler.destroy();
-        }
-
         function test_instance() {
-            // Tests instance creation via init() => cleanup().
+            var tumbler = createTemporaryObject(tumblerComponent, container);
+            verify(tumbler);
         }
 
-        function columnXCenter(columnIndex) {
+        function columnXCenter(tumbler, columnIndex) {
             var columnWidth = tumbler.width / tumbler.columnCount;
             var halfColumnWidth = (columnWidth) / 2;
             return tumbler.__style.padding.left + halfColumnWidth + (columnWidth * columnIndex);
         }
 
         // visualItemIndex is from 0 to the amount of visible items.
-        function itemCenterPos(columnIndex, visualItemIndex) {
+        function itemCenterPos(tumbler, columnIndex, visualItemIndex) {
             var halfDelegateHeight = tumbler.__style.__delegateHeight / 2;
             var yCenter = tumbler.y + tumbler.__style.padding.top + halfDelegateHeight
                 + (tumbler.__style.__delegateHeight * visualItemIndex);
-            return Qt.point(columnXCenter(columnIndex), yCenter);
+            return Qt.point(columnXCenter(tumbler, columnIndex), yCenter);
         }
 
         function test_currentIndex() {
+            var tumbler = createTemporaryObject(tumblerComponent, container);
+            verify(tumbler);
+
             var column = simpleColumn.createObject(tumbler);
             compare(tumbler.addColumn(column), column);
             compare(tumbler.currentIndexAt(0), 0);
             compare(column.currentIndex, 0);
             waitForRendering(tumbler);
 
-            var pos = Qt.point(columnXCenter(0), tumbler.height / 2);
+            var pos = Qt.point(columnXCenter(tumbler, 0), tumbler.height / 2);
             mouseDrag(tumbler, pos.x, pos.y, 0, -tumbler.__style.__delegateHeight / 2, Qt.LeftButton, Qt.NoModifier, 200);
             compare(tumbler.currentIndexAt(0), 1);
             compare(column.currentIndex, 1);
         }
 
         function test_setCurrentIndexAt() {
+            var tumbler = createTemporaryObject(tumblerComponent, container);
+            verify(tumbler);
+
             var column = simpleColumn.createObject(tumbler);
             compare(tumbler.addColumn(column), column);
             compare(tumbler.currentIndexAt(0), 0);
@@ -169,6 +171,9 @@ Item {
         }
 
         function test_visible() {
+            var tumbler = createTemporaryObject(tumblerComponent, container);
+            verify(tumbler);
+
             var column = simpleColumn.createObject(tumbler);
             compare(tumbler.addColumn(column), column);
             column = simpleColumn.createObject(tumbler);
@@ -193,6 +198,9 @@ Item {
         function test_keyboardNavigation() {
             if (Qt.platform.os === "osx")
                 skip("OS X doesn't allow tab focus for certain controls by default");
+
+            var tumbler = createTemporaryObject(tumblerComponent, container);
+            verify(tumbler);
 
             var column = simpleColumn.createObject(tumbler);
             compare(tumbler.addColumn(column), column);
@@ -273,6 +281,9 @@ Item {
             if (Settings.styleName === "Flat")
                 skip("Not a valid test case as the model count is less than the visibleItemCount");
 
+            var tumbler = createTemporaryObject(tumblerComponent, container);
+            verify(tumbler);
+
             tumbler.height = 120;
             // By default, the delegate height is based on the height of the tumbler,
             // but it starts off at 0.
@@ -287,7 +298,7 @@ Item {
 
             keyClick(Qt.Key_Tab)
             verify(tumbler.__viewAt(0).activeFocus);
-            var firstItemCenterPos = itemCenterPos(0, 1);
+            var firstItemCenterPos = itemCenterPos(tumbler, 0, 1);
             var firstItem = tumbler.__viewAt(0).itemAt(firstItemCenterPos.x, firstItemCenterPos.y);
             var actualPos = container.mapFromItem(firstItem, 0, 0);
             compare(actualPos.x, tumbler.__style.padding.left);
@@ -295,7 +306,7 @@ Item {
 
             keyClick(Qt.Key_Down);
             tryCompare(tumbler.__viewAt(0), "offset", 3.0);
-            firstItemCenterPos = itemCenterPos(0, 0);
+            firstItemCenterPos = itemCenterPos(tumbler, 0, 0);
             firstItem = tumbler.__viewAt(0).itemAt(firstItemCenterPos.x, firstItemCenterPos.y);
             verify(firstItem);
             // Test QTBUG-40298.
@@ -303,12 +314,12 @@ Item {
             compare(actualPos.x, tumbler.__style.padding.left);
             compare(actualPos.y, tumbler.__style.padding.top);
 
-            var secondItemCenterPos = itemCenterPos(0, 1);
+            var secondItemCenterPos = itemCenterPos(tumbler, 0, 1);
             var secondItem = tumbler.__viewAt(0).itemAt(secondItemCenterPos.x, secondItemCenterPos.y);
             verify(secondItem);
             verify(firstItem.y < secondItem.y);
 
-            var thirdItemCenterPos = itemCenterPos(0, 2);
+            var thirdItemCenterPos = itemCenterPos(tumbler, 0, 2);
             var thirdItem = tumbler.__viewAt(0).itemAt(thirdItemCenterPos.x, thirdItemCenterPos.y);
             verify(thirdItem);
             verify(firstItem.y < thirdItem.y);
@@ -326,13 +337,16 @@ Item {
         }
 
         function test_resizeAfterFlicking() {
+            var tumbler = createTemporaryObject(tumblerComponent, container);
+            verify(tumbler);
+
             // Test QTBUG-40367 (which is actually invalid because it was my fault :)).
             var column = oneHundredItemColumn.createObject(tumbler);
             compare(tumbler.addColumn(column), column);
             waitForRendering(tumbler);
 
             // Flick in some direction.
-            var pos = Qt.point(columnXCenter(0), tumbler.__style.padding.top);
+            var pos = Qt.point(columnXCenter(tumbler, 0), tumbler.__style.padding.top);
             mouseDrag(tumbler, pos.x, pos.y, 0, tumbler.height - tumbler.__style.padding.bottom,
                 Qt.LeftButton, Qt.NoModifier, 300);
             tryCompare(tumbler.__viewAt(0), "offset", Settings.styleName === "Flat" ? 6.0 : 4.0);
@@ -342,7 +356,7 @@ Item {
             compare(tumbler.__style.__delegateHeight,
                 (tumbler.height - padding.top - padding.bottom) / tumbler.__style.visibleItemCount);
             waitForRendering(tumbler);
-            pos = itemCenterPos(0, 1);
+            pos = itemCenterPos(tumbler, 0, 1);
             var ninetyEighthItem = tumbler.__viewAt(0).itemAt(pos.x, pos.y);
             verify(ninetyEighthItem);
         }
@@ -371,13 +385,17 @@ Item {
             if (Qt.platform.os === "osx")
                 skip("OS X doesn't allow tab focus for certain controls by default");
 
+            var tumbler = createTemporaryObject(tumblerComponent, container);
+            verify(tumbler);
+
             var column = dayOfMonthColumn.createObject(tumbler);
             compare(tumbler.addColumn(column), column);
             column = yearColumn.createObject(tumbler);
             compare(tumbler.addColumn(column), column);
 
-            var mouseArea = Qt.createQmlObject(
+            var mouseArea = createTemporaryQmlObject(
                 "import QtQuick 2.2; MouseArea { activeFocusOnTab: true; width: 50; height: 50 }", container, "");
+            verify(mouseArea);
 
             keyClick(Qt.Key_Tab);
             verify(tumbler.__viewAt(0).activeFocus);
@@ -397,16 +415,13 @@ Item {
             verify(!tumbler.__viewAt(1).activeFocus);
             verify(!tumbler.getColumn(1).activeFocus);
             verify(mouseArea.activeFocus);
-
-            mouseArea.destroy();
         }
 
         function test_datePicker() {
-            tumbler.destroy();
-
             var component = Qt.createComponent("TumblerDatePicker.qml");
             compare(component.status, Component.Ready);
-            tumbler = component.createObject(container);
+            var tumbler = createTemporaryObject(component, container);
+            verify(tumbler);
             // Should not be any warnings.
 
             // March.
@@ -478,7 +493,8 @@ Item {
         }
 
         function test_displacement(data) {
-            tumbler.style = displacementStyle;
+            var tumbler = createTemporaryObject(tumblerComponent, container, { style: displacementStyle });
+            verify(tumbler);
 
             var column = simpleColumn6Items.createObject(tumbler);
             compare(tumbler.addColumn(column), column);
@@ -510,7 +526,9 @@ Item {
         }
 
         function test_visibleItemCount(data) {
-            tumbler.style = displacementStyle;
+            var tumbler = createTemporaryObject(tumblerComponent, container, { style: displacementStyle });
+            verify(tumbler);
+
             tumbler.__style.visibleItemCount = data.visibleItemCount;
 
             var column = simpleColumn.createObject(tumbler);
