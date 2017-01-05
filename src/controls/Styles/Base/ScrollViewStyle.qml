@@ -370,8 +370,8 @@ Style {
 
         property var flickableItem: control.flickableItem
         property int extent: Math.max(minimumHandleLength, __styleData.horizontal ?
-                                          (flickableItem ? flickableItem.width/flickableItem.contentWidth : 0 ) * bg.width :
-                                          (flickableItem ? flickableItem.height/flickableItem.contentHeight : 0) * bg.height)
+                                          Math.min(1, (flickableItem ? flickableItem.width/flickableItem.contentWidth : 0)) * bg.width :
+                                          Math.min(1, (flickableItem ? flickableItem.height/flickableItem.contentHeight : 0)) * bg.height)
         readonly property real range: __control.maximumValue - __control.minimumValue
         readonly property real begin: __control.value - __control.minimumValue
 
