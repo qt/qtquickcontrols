@@ -82,11 +82,18 @@ public:
     virtual void registerTypes(const char *uri)
     {
         Q_ASSERT(QLatin1String(uri) == QLatin1String("QtQuick.PrivateWidgets"));
-
+#if QT_CONFIG(messagebox)
         qmlRegisterType<QQuickQMessageBox>(uri, 1, 1, "QtMessageDialog");
+#endif
+#if QT_CONFIG(filedialog)
         qmlRegisterType<QQuickQFileDialog>(uri, 1, 0, "QtFileDialog");
+#endif
+#if QT_CONFIG(colordialog)
         qmlRegisterType<QQuickQColorDialog>(uri, 1, 0, "QtColorDialog");
+#endif
+#if QT_CONFIG(fontdialog)
         qmlRegisterType<QQuickQFontDialog>(uri, 1, 1, "QtFontDialog");
+#endif
     }
 };
 
