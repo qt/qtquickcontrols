@@ -69,6 +69,17 @@ TestCase {
         label.destroy()
     }
 
+    function test_textPaddings() {
+        var label = Qt.createQmlObject('import QtQuick.Controls 1.2; Label { leftPadding: 2; rightPadding: 2; topPadding: 2; bottomPadding: 2 }', testCase, '');
+
+        compare(label.leftPadding, 2)
+        compare(label.rightPadding, 2)
+        compare(label.topPadding, 2)
+        compare(label.bottomPadding, 2)
+
+        label.destroy()
+    }
+
     function test_activeFocusOnTab() {
         if (Qt.styleHints.tabFocusBehavior != Qt.TabFocusAllControls)
             skip("This function doesn't support NOT iterating all.")
