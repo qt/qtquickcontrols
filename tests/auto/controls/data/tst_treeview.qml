@@ -116,6 +116,8 @@ Item {
         {
             if (Settings.hasTouchScreen)
                 skip("Fails with touch screens");
+            if (Qt.platform.os === "windows")
+                skip("See QTBUG-49360, it failed on Windows 10");
             var component = Qt.createComponent("treeview/treeview_1.qml")
             compare(component.status, Component.Ready)
             var tree = component.createObject(container);
@@ -167,6 +169,8 @@ Item {
         {
             if (Settings.hasTouchScreen)
                 skip("Fails with touch screens");
+            if (Qt.platform.os === "windows")
+                skip("See QTBUG-49360, it failed on Windows 10");
             var component = Qt.createComponent("treeview/treeview_1.qml")
             compare(component.status, Component.Ready)
             var tree = component.createObject(container);
@@ -192,6 +196,8 @@ Item {
         {
             if (Settings.hasTouchScreen)
                 skip("Fails with touch screens");
+            if (Qt.platform.os === "windows")
+                skip("See QTBUG-49360, it failed on Windows 10");
             var component = Qt.createComponent("treeview/treeview_1.qml")
             compare(component.status, Component.Ready)
             var tree = component.createObject(container);
@@ -578,6 +584,8 @@ Item {
         {
             if (Settings.hasTouchScreen)
                 skip("Fails with touch screens");
+            if (Qt.platform.os === "windows")
+                skip("See QTBUG-49360, it failed on Windows 10");
             var component = Qt.createComponent("treeview/treeview_1.qml")
             compare(component.status, Component.Ready)
             var tree = component.createObject(container);
