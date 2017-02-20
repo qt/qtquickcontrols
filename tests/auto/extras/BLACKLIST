@@ -4,3 +4,5 @@
 *
 [Tests_Tumbler::test_keyboardNavigation]
 *
+[Tests_PieMenu::test_bounds]
+windows
