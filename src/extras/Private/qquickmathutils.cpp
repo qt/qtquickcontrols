@@ -55,7 +55,7 @@ qreal QQuickMathUtils::pi2() const
     Converts the angle \a degrees to radians.
 */
 qreal QQuickMathUtils::degToRad(qreal degrees) const {
-    return degrees * (M_PI / 180);
+    return qDegreesToRadians(degrees);
 }
 
 /*!
@@ -68,14 +68,14 @@ qreal QQuickMathUtils::degToRad(qreal degrees) const {
     for example.
 */
 qreal QQuickMathUtils::degToRadOffset(qreal degrees) const {
-    return (degrees - 90) * (M_PI / 180);
+    return qDegreesToRadians(degrees - 90);
 }
 
 /*!
     Converts the angle \a radians to degrees.
 */
 qreal QQuickMathUtils::radToDeg(qreal radians) const {
-    return radians * (180 / M_PI);
+    return qRadiansToDegrees(radians);
 }
 
 /*!
@@ -88,7 +88,7 @@ qreal QQuickMathUtils::radToDeg(qreal radians) const {
     expect.
 */
 qreal QQuickMathUtils::radToDegOffset(qreal radians) const {
-    return radians * (180 / M_PI) + 90;
+    return qRadiansToDegrees(radians) + 90;
 }
 
 /*!
