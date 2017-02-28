@@ -254,28 +254,26 @@ TestCase {
         gauge.height = gaugeHeightFor100PixelHighValueBar(gauge);
         compare(gauge.__panel.barLength, 100);
 
-        // Give stuff time to re-layout after the new control height, etc.,
-        // otherwise we'll be comparing against incorrect pixel positions.
-        wait(0);
-
         for (var tickmarkIndex = 0; tickmarkIndex < data.expectedTickmarkValues.length; ++tickmarkIndex) {
             var tickmark = TestUtils.findChild(gauge, "tickmark" + tickmarkIndex);
-            compare(tickmark.value, data.expectedTickmarkValues[tickmarkIndex],
-                "Value of tickmark at index " + tickmarkIndex + " is " + data.expectedTickmarkValues[tickmarkIndex]);
+            // QTBUG-58859: give stuff time to re-layout after the new control height, etc.,
+            // otherwise we'll be comparing against incorrect pixel positions.
+            tryCompare(tickmark, "value", data.expectedTickmarkValues[tickmarkIndex], undefined,
+                "Value of tickmark at index " + tickmarkIndex + " should be " + data.expectedTickmarkValues[tickmarkIndex]);
 
             var expectedValuePos = data.expectedTickmarkValuePositions[tickmarkIndex];
-            compare(tickmark.valuePosition, expectedValuePos,
-                "Value position of tickmark at index " + tickmarkIndex + " is " + expectedValuePos);
+            tryCompare(tickmark, "valuePosition", expectedValuePos, undefined,
+                "Value position of tickmark at index " + tickmarkIndex + " should be " + expectedValuePos);
         }
 
         for (var minorTickmarkIndex = 0; minorTickmarkIndex < data.expectedMinorTickmarkValues.length; ++minorTickmarkIndex) {
             var minorTickmark = TestUtils.findChild(gauge, "minorTickmark" + minorTickmarkIndex);
             compare(minorTickmark.value, data.expectedMinorTickmarkValues[minorTickmarkIndex],
-                "Value of minor tickmark at index " + minorTickmarkIndex + " is " + data.expectedMinorTickmarkValues[minorTickmarkIndex]);
+                "Value of minor tickmark at index " + minorTickmarkIndex + " should be " + data.expectedMinorTickmarkValues[minorTickmarkIndex]);
 
             expectedValuePos = data.expectedMinorTickmarkValuePositions[minorTickmarkIndex];
             compare(minorTickmark.valuePosition, expectedValuePos,
-                "Value position of minor tickmark at index " + minorTickmarkIndex + " is " + expectedValuePos);
+                "Value position of minor tickmark at index " + minorTickmarkIndex + " should be " + expectedValuePos);
         }
     }
 

@@ -67,6 +67,7 @@ public:
 
 protected:
     QPlatformFileDialogHelper *helper() Q_DECL_OVERRIDE;
+    virtual void accept() override;
 
     Q_DISABLE_COPY(QQuickPlatformFileDialog)
 };
