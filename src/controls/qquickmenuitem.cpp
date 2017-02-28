@@ -343,7 +343,7 @@ void QQuickMenuText1::updateIcon()
     For instance, \c "\&Open" will bind the \c Alt-O shortcut to the
     \c "Open" menu item. Note that not all platforms support mnemonics.
 
-    Defaults to the empty string.
+    Defaults to an empty string.
 
     \sa Action::text
 */
@@ -358,7 +358,7 @@ void QQuickMenuText1::updateIcon()
     \qmlproperty url MenuItem::iconSource
 
     Sets the icon file or resource url for the \l MenuItem icon.
-    Overrides the item's bound action \c iconSource property. Defaults to the empty URL.
+    Overrides the item's bound action \c iconSource property. Defaults to an empty URL.
 
     \sa iconName, Action::iconSource
 */
@@ -368,7 +368,7 @@ void QQuickMenuText1::updateIcon()
 
     Sets the icon name for the \l MenuItem icon. This will pick the icon
     with the given name from the current theme. Overrides the item's bound
-    action \c iconName property. Defaults to the empty string.
+    action \c iconName property. Defaults to an empty string.
 
     \include icons.qdocinc iconName
 

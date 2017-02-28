@@ -86,13 +86,13 @@ QT_BEGIN_NAMESPACE
     For instance, \c "\&Open" will bind the \c Alt-O shortcut to the
     \c "Open" menu item. Note that not all platforms support mnemonics.
 
-    Defaults to the empty string.
+    Defaults to an empty string.
 */
 
 /*!
     \qmlproperty url Action::iconSource
 
-    Sets the icon file or resource url for the action. Defaults to the empty URL.
+    Sets the icon file or resource url for the action. Defaults to an empty URL.
 */
 
 /*!
@@ -101,7 +101,7 @@ QT_BEGIN_NAMESPACE
     Sets the icon name for the action. This will pick the icon
     with the given name from the current theme.
 
-    Defaults to the empty string.
+    Defaults to an empty string.
 
     \include icons.qdocinc iconName
 */
@@ -112,7 +112,7 @@ QT_BEGIN_NAMESPACE
     Tooltip to be shown when hovering the control bound to this action.
     Not all controls support tooltips on all platforms, especially \l MenuItem.
 
-    Defaults to the empty string.
+    Defaults to an empty string.
 */
 
 /*!
