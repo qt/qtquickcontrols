@@ -122,6 +122,8 @@ Control {
     /*! The image label source as theme name.
         When an icon from the platform icon theme is found, this takes
         precedence over iconSource.
+
+        \include icons.qdocinc iconName
     */
     property string iconName: action ? action.iconName : ""
 

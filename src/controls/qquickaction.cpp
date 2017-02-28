@@ -102,6 +102,8 @@ QT_BEGIN_NAMESPACE
     with the given name from the current theme.
 
     Defaults to the empty string.
+
+    \include icons.qdocinc iconName
 */
 
 /*!

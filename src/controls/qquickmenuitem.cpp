@@ -370,6 +370,8 @@ void QQuickMenuText1::updateIcon()
     with the given name from the current theme. Overrides the item's bound
     action \c iconName property. Defaults to the empty string.
 
+    \include icons.qdocinc iconName
+
     \sa iconSource, Action::iconName
 */
 
