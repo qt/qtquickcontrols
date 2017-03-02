@@ -606,6 +606,7 @@ void QQuickMenuItem1::setShortcut(const QVariant &shortcut)
 
 void QQuickMenuItem1::updateShortcut()
 {
+#if QT_CONFIG(shortcut)
     if (platformItem()) {
         QKeySequence sequence;
         QVariant var = shortcut();
@@ -617,6 +618,7 @@ void QQuickMenuItem1::updateShortcut()
         syncWithPlatformMenu();
     }
     emit shortcutChanged();
+#endif // QT_CONFIG(shortcut)
 }
 
 bool QQuickMenuItem1::checkable() const
