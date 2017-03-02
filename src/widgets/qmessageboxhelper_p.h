@@ -103,8 +103,10 @@ public:
             m_dialog.setText(QPlatformMessageDialogHelper::options()->text());
         if (!QPlatformMessageDialogHelper::options()->informativeText().isNull())
             m_dialog.setInformativeText(QPlatformMessageDialogHelper::options()->informativeText());
+#if QT_CONFIG(textedit)
         if (!QPlatformMessageDialogHelper::options()->detailedText().isNull())
             m_dialog.setDetailedText(QPlatformMessageDialogHelper::options()->detailedText());
+#endif
         m_dialog.setStandardButtons(static_cast<QMessageBox::StandardButtons>(static_cast<int>(
             QPlatformMessageDialogHelper::options()->standardButtons())));
         m_dialog.show();
