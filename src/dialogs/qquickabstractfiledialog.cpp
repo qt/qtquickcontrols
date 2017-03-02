@@ -186,6 +186,7 @@ QStringList QQuickAbstractFileDialog::selectedNameFilterExtensions() const
 {
     QString filterRaw = selectedNameFilter();
     QStringList ret;
+#if QT_CONFIG(regularexpression)
     if (filterRaw.isEmpty()) {
         ret << "*";
         return ret;
@@ -194,6 +195,7 @@ QStringList QQuickAbstractFileDialog::selectedNameFilterExtensions() const
     QRegularExpressionMatchIterator i = re.globalMatch(filterRaw);
     while (i.hasNext())
         ret << i.next().captured(1);
+#endif // QT_CONFIG(regularexpression)
     if (ret.isEmpty())
         ret << filterRaw;
     return ret;
