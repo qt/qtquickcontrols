@@ -39,6 +39,8 @@
 
 #include "qquickpicture_p.h"
 
+#if QT_CONFIG(picture)
+
 #include <QQmlFile>
 #include <QDebug>
 
@@ -157,3 +159,4 @@ void QQuickPicture::resetColor()
     setColor(QColor());
 }
 
+#endif // QT_CONFIG(picture)

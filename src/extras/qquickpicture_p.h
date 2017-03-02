@@ -44,6 +44,8 @@
 #include <QPainter>
 #include <QPicture>
 
+#if QT_CONFIG(picture)
+
 class QQuickPicture : public QQuickPaintedItem
 {
     Q_OBJECT
@@ -71,5 +73,7 @@ private:
     QColor mColor;
     QPicture mPicture;
 };
+
+#endif // QT_CONFIG(picture)
 
 #endif // QQUICKPICTURE_H
