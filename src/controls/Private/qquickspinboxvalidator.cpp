@@ -39,6 +39,8 @@
 
 #include "qquickspinboxvalidator_p.h"
 
+#if QT_CONFIG(validator)
+
 QT_BEGIN_NAMESPACE
 
 QQuickSpinBoxValidator1::QQuickSpinBoxValidator1(QObject *parent)
@@ -242,3 +244,5 @@ QString QQuickSpinBoxValidator1::textFromValue(qreal value) const
 }
 
 QT_END_NAMESPACE
+
+#endif // QT_CONFIG(validator)
