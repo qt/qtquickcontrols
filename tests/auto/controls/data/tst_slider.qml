@@ -51,7 +51,7 @@
 import QtQuick 2.6
 import QtTest 1.0
 import QtQuickControlsTests 1.0
-import QtQuick.Controls 1.4
+import QtQuick.Controls 1.6
 import QtQuick.Controls.Private 1.0
 import QtQuick.Controls.Styles 1.4
 
@@ -176,6 +176,13 @@ Item {
             slider.value = 0
             mouseWheel(slider, 5, 5, -40 * ratio, 0)
             compare(slider.value, slider.maximumValue)
+
+            // Mousewheel deactivated
+            slider.value = 0
+            slider.wheelEnabled = false
+            mouseWheel(slider, 5, 5, 4 * ratio, 0)
+            compare(slider.value, 0)
+
             slider.destroy()
         }
 

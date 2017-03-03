@@ -171,6 +171,16 @@ Control {
     */
     property bool tickmarksEnabled: false
 
+    /*!
+        \qmlproperty bool Slider::wheelEnabled
+
+        This property determines whether the control handles wheel events.
+        The default value is \c true.
+
+        \since QtQuick.Controls 1.6
+    */
+    property alias wheelEnabled: wheelarea.enabled
+
     /*! \internal */
     property bool __horizontal: orientation === Qt.Horizontal
 
