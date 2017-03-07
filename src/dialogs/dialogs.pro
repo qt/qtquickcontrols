@@ -7,7 +7,11 @@ IMPORT_VERSION = 1.2
 
 QMAKE_DOCS = $$PWD/doc/qtquickdialogs.qdocconf
 
-qtquickcompiler: DEFINES += ALWAYS_LOAD_FROM_RESOURCES
+qtquickcompiler {
+    DEFINES += ALWAYS_LOAD_FROM_RESOURCES
+} else {
+    !static: CONFIG += qmlcache
+}
 
 SOURCES += \
     qquickabstractmessagedialog.cpp \
@@ -80,7 +84,7 @@ ios|android|blackberry|winrt {
 
 QT += quick-private gui gui-private core core-private qml qml-private
 
-!static {
+!qmlcache {
     # Create the resource file
     GENERATED_RESOURCE_FILE = $$OUT_PWD/dialogs.qrc
 

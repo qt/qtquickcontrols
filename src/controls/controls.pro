@@ -40,8 +40,12 @@ CONTROLS_QML_FILES = \
     ToolBar.qml \
     ToolButton.qml
 
-!qtquickcompiler: QML_FILES += $$CONTROLS_QML_FILES
-qtquickcompiler: DEFINES += ALWAYS_LOAD_FROM_RESOURCES
+qtquickcompiler {
+    DEFINES += ALWAYS_LOAD_FROM_RESOURCES
+} else {
+    QML_FILES += $$CONTROLS_QML_FILES
+    !static: CONFIG += qmlcache
+}
 
 SOURCES += $$PWD/plugin.cpp
 HEADERS += $$PWD/plugin.h
@@ -55,7 +59,7 @@ include(Shaders/shaders.pri)
 
 osx: LIBS_PRIVATE += -framework Carbon
 
-!static {
+!qmlcache {
     # Create the resource file
     GENERATED_RESOURCE_FILE = $$OUT_PWD/controls.qrc
 
