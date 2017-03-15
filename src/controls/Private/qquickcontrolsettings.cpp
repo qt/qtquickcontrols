@@ -43,7 +43,9 @@
 #include <qdebug.h>
 #include <qqmlengine.h>
 #include <qfileinfo.h>
+#if QT_CONFIG(library)
 #include <qlibrary.h>
+#endif
 #include <qdir.h>
 #include <QTouchDevice>
 #include <QGuiApplication>
