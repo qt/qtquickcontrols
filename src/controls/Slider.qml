@@ -264,7 +264,7 @@ Control {
 
         onPositionChanged: {
             if (pressed)
-                updateHandlePosition(mouse, preventStealing)
+                updateHandlePosition(mouse, !Settings.hasTouchScreen || preventStealing)
 
             var point = mouseArea.mapToItem(fakeHandle, mouse.x, mouse.y)
             handleHovered = fakeHandle.contains(Qt.point(point.x, point.y))

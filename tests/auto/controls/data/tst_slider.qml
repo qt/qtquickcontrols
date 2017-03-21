@@ -339,7 +339,7 @@ Item {
 
             // drag less than the threshold distance
             mouseMove(control, pt.x + Settings.dragThreshold - 1, pt.y)
-            compare(control.value, 0.5)
+            verify(control.value > 0.5)
 
             // drag over the threshold
             mouseMove(control, pt.x + Settings.dragThreshold + 1, pt.y)
