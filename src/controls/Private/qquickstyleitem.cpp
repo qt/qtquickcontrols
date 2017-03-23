@@ -1850,6 +1850,8 @@ QPixmap QQuickTableRowImageProvider1::requestPixmap(const QString &id, QSize *si
         QPainter pixpainter(&pixmap);
         qApp->style()->drawPrimitive(QStyle::PE_PanelItemViewRow, &opt, &pixpainter);
     }
+#else
+    Q_UNUSED(id);
 #endif
     return pixmap;
 }
