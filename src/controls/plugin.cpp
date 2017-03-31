@@ -164,7 +164,9 @@ void QtQuickControls1Plugin::initializeEngine(QQmlEngine *engine, const char *ur
     qmlRegisterType<QQuickRangedDate1>(private_uri, 1, 0, "RangedDate");
     qmlRegisterType<QQuickRangeModel1>(private_uri, 1, 0, "RangeModel");
     qmlRegisterType<QQuickWheelArea1>(private_uri, 1, 0, "WheelArea");
+#if QT_CONFIG(validator)
     qmlRegisterType<QQuickSpinBoxValidator1>(private_uri, 1, 0, "SpinBoxValidator");
+#endif
     qmlRegisterSingletonType<QQuickTooltip1>(private_uri, 1, 0, "Tooltip", QQuickControlsPrivate1::registerTooltipModule);
     qmlRegisterSingletonType<QQuickControlSettings1>(private_uri, 1, 0, "Settings", QQuickControlsPrivate1::registerSettingsModule);
 

@@ -43,7 +43,9 @@
 #include <qdebug.h>
 #include <qqmlengine.h>
 #include <qfileinfo.h>
+#if QT_CONFIG(library)
 #include <qlibrary.h>
+#endif
 #include <qdir.h>
 #include <QTouchDevice>
 #include <QGuiApplication>
@@ -249,6 +251,7 @@ QQuickControlSettings1::QQuickControlSettings1(QQmlEngine *engine)
 
 bool QQuickControlSettings1::resolveCurrentStylePath()
 {
+#if QT_CONFIG(library)
     if (!m_styleMap.contains(m_name)) {
         qWarning() << "WARNING: Cannot find style" << m_name;
         return false;
@@ -279,7 +282,7 @@ bool QQuickControlSettings1::resolveCurrentStylePath()
         m_styleMap[m_name] = styleData;
         m_path = styleData.m_styleDirPath;
     }
-
+#endif // QT_CONFIG(library)
     return true;
 }
 
@@ -294,7 +297,7 @@ void QQuickControlSettings1::findStyle(QQmlEngine *engine, const QString &styleN
 
     StyleData styleData;
 
-#ifndef QT_STATIC
+#if QT_CONFIG(library) && !defined(QT_STATIC)
     const auto list = dir.entryList();
     for (const QString &fileName : list) {
         // This assumes that there is only one library in the style directory,

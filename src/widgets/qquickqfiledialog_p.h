@@ -54,6 +54,8 @@
 #include <QFileDialog>
 #include "../dialogs/qquickabstractfiledialog_p.h"
 
+#if QT_CONFIG(filedialog)
+
 QT_BEGIN_NAMESPACE
 
 class QQuickQFileDialog : public QQuickAbstractFileDialog
@@ -103,5 +105,7 @@ private:
 QT_END_NAMESPACE
 
 QML_DECLARE_TYPE(QQuickQFileDialog *)
+
+#endif // QT_CONFIG(filedialog)
 
 #endif // QQUICKQFILEDIALOG_P_H

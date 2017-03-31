@@ -320,6 +320,8 @@ Control {
     WheelArea {
         id: wheelarea
         anchors.fill: parent
+        verticalValue: slider.value
+        horizontalValue: slider.value
         horizontalMinimumValue: slider.minimumValue
         horizontalMaximumValue: slider.maximumValue
         verticalMinimumValue: slider.minimumValue

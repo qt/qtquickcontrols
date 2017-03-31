@@ -98,7 +98,9 @@ void QtQuickExtrasPlugin::registerTypes(const char *uri)
     // register 1.3
     qmlRegisterUncreatableType<QQuickTriggerMode>(uri, 1, 3, "TriggerMode", QLatin1String("Do not create objects of type TriggerMode"));
     // register 1.4
+#if QT_CONFIG(picture)
     qmlRegisterType<QQuickPicture>(uri, 1, 4, "Picture");
+#endif
 }
 
 void QtQuickExtrasPlugin::initializeEngine(QQmlEngine *engine, const char *uri)

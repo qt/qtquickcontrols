@@ -100,7 +100,7 @@ Style {
     property Component itemDelegate: Rectangle {
         implicitWidth: text.width + 12
         implicitHeight: text.height + 4
-        color: styleData.open ? "#49d" : "transparent"
+        color: styleData.enabled && styleData.open ? "#49d" : "transparent"
 
         Text {
             id: text
@@ -108,7 +108,7 @@ Style {
             text: formatMnemonic(styleData.text, styleData.underlineMnemonic)
             anchors.centerIn: parent
             renderType: Settings.isMobile ? Text.QtRendering : Text.NativeRendering
-            color: styleData.open ? "white" : SystemPaletteSingleton.windowText(control.enabled)
+            color: styleData.open ? "white" : SystemPaletteSingleton.windowText(control.enabled && styleData.enabled)
         }
     }
 

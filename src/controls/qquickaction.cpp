@@ -86,13 +86,13 @@ QT_BEGIN_NAMESPACE
     For instance, \c "\&Open" will bind the \c Alt-O shortcut to the
     \c "Open" menu item. Note that not all platforms support mnemonics.
 
-    Defaults to the empty string.
+    Defaults to an empty string.
 */
 
 /*!
     \qmlproperty url Action::iconSource
 
-    Sets the icon file or resource url for the action. Defaults to the empty URL.
+    Sets the icon file or resource url for the action. Defaults to an empty URL.
 */
 
 /*!
@@ -101,7 +101,9 @@ QT_BEGIN_NAMESPACE
     Sets the icon name for the action. This will pick the icon
     with the given name from the current theme.
 
-    Defaults to the empty string.
+    Defaults to an empty string.
+
+    \include icons.qdocinc iconName
 */
 
 /*!
@@ -110,7 +112,7 @@ QT_BEGIN_NAMESPACE
     Tooltip to be shown when hovering the control bound to this action.
     Not all controls support tooltips on all platforms, especially \l MenuItem.
 
-    Defaults to the empty string.
+    Defaults to an empty string.
 */
 
 /*!
@@ -280,11 +282,16 @@ bool qMnemonicContextMatcher(QObject *o, Qt::ShortcutContext context)
 
 QVariant QQuickAction1::shortcut() const
 {
+#if QT_CONFIG(shortcut)
     return m_shortcut.toString(QKeySequence::NativeText);
+#else
+    return QString();
+#endif
 }
 
 void QQuickAction1::setShortcut(const QVariant &arg)
 {
+#if QT_CONFIG(shortcut)
     QKeySequence sequence;
     if (arg.type() == QVariant::Int)
         sequence = QKeySequence(static_cast<QKeySequence::StandardKey>(arg.toInt()));
@@ -304,10 +311,12 @@ void QQuickAction1::setShortcut(const QVariant &arg)
         QGuiApplicationPrivate::instance()->shortcutMap.addShortcut(this, m_shortcut, context, qShortcutContextMatcher);
     }
     emit shortcutChanged(shortcut());
+#endif // QT_CONFIG(shortcut)
 }
 
 void QQuickAction1::setMnemonicFromText(const QString &text)
 {
+#if QT_CONFIG(shortcut)
     QKeySequence sequence = QKeySequence::mnemonic(text);
     if (m_mnemonic == sequence)
         return;
@@ -321,6 +330,7 @@ void QQuickAction1::setMnemonicFromText(const QString &text)
         Qt::ShortcutContext context = Qt::WindowShortcut;
         QGuiApplicationPrivate::instance()->shortcutMap.addShortcut(this, m_mnemonic, context, qMnemonicContextMatcher);
     }
+#endif // QT_CONFIG(shortcut)
 }
 
 void QQuickAction1::setIconSource(const QUrl &iconSource)
@@ -416,6 +426,7 @@ void QQuickAction1::setExclusiveGroup(QQuickExclusiveGroup1 *eg)
 
 bool QQuickAction1::event(QEvent *e)
 {
+#if QT_CONFIG(shortcut)
     if (!m_enabled)
         return false;
 
@@ -435,6 +446,9 @@ bool QQuickAction1::event(QEvent *e)
     trigger();
 
     return true;
+#else
+    return false;
+#endif // QT_CONFIG(shortcut)
 }
 
 void QQuickAction1::trigger(QObject *source)

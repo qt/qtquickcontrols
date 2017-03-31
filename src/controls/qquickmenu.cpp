@@ -133,7 +133,7 @@ QT_BEGIN_NAMESPACE
     For instance, \c "\&File" will bind the \c Alt-F shortcut to the
     \c "File" menu. Note that not all platforms support mnemonics.
 
-    Its value defaults to the empty string.
+    Its value defaults to an empty string.
 */
 
 /*!
@@ -147,7 +147,7 @@ QT_BEGIN_NAMESPACE
     \qmlproperty url Menu::iconSource
 
     Sets the icon file or resource url for the menu icon as a submenu.
-    Defaults to the empty URL.
+    Defaults to an empty URL.
 
     \sa iconName
 */
@@ -158,7 +158,7 @@ QT_BEGIN_NAMESPACE
     Sets the icon name for the menu icon. This will pick the icon
     with the given name from the current theme. Only works as a submenu.
 
-    Its value defaults to the empty string.
+    Its value defaults to an empty string.
 
     \sa iconSource
 */

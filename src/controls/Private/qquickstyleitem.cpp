@@ -163,30 +163,42 @@ QQuickStyleItem1::~QQuickStyleItem1()
 {
     if (const QStyleOptionButton *aux = qstyleoption_cast<const QStyleOptionButton*>(m_styleoption))
         delete aux;
+#if QT_CONFIG(itemviews)
     else if (const QStyleOptionViewItem *aux = qstyleoption_cast<const QStyleOptionViewItem*>(m_styleoption))
         delete aux;
+#endif
     else if (const QStyleOptionHeader *aux = qstyleoption_cast<const QStyleOptionHeader*>(m_styleoption))
         delete aux;
     else if (const QStyleOptionToolButton *aux = qstyleoption_cast<const QStyleOptionToolButton*>(m_styleoption))
         delete aux;
+#if QT_CONFIG(toolbar)
     else if (const QStyleOptionToolBar *aux = qstyleoption_cast<const QStyleOptionToolBar*>(m_styleoption))
         delete aux;
+#endif
+#if QT_CONFIG(tabbar)
     else if (const QStyleOptionTab *aux = qstyleoption_cast<const QStyleOptionTab*>(m_styleoption))
         delete aux;
+#endif
     else if (const QStyleOptionFrame *aux = qstyleoption_cast<const QStyleOptionFrame*>(m_styleoption))
         delete aux;
     else if (const QStyleOptionFocusRect *aux = qstyleoption_cast<const QStyleOptionFocusRect*>(m_styleoption))
         delete aux;
+#if QT_CONFIG(tabwidget)
     else if (const QStyleOptionTabWidgetFrame *aux = qstyleoption_cast<const QStyleOptionTabWidgetFrame*>(m_styleoption))
         delete aux;
+#endif
     else if (const QStyleOptionMenuItem *aux = qstyleoption_cast<const QStyleOptionMenuItem*>(m_styleoption))
         delete aux;
     else if (const QStyleOptionComboBox *aux = qstyleoption_cast<const QStyleOptionComboBox*>(m_styleoption))
         delete aux;
+#if QT_CONFIG(spinbox)
     else if (const QStyleOptionSpinBox *aux = qstyleoption_cast<const QStyleOptionSpinBox*>(m_styleoption))
         delete aux;
+#endif
+#if QT_CONFIG(slider)
     else if (const QStyleOptionSlider *aux = qstyleoption_cast<const QStyleOptionSlider*>(m_styleoption))
         delete aux;
+#endif
     else if (const QStyleOptionProgressBar *aux = qstyleoption_cast<const QStyleOptionProgressBar*>(m_styleoption))
         delete aux;
     else if (const QStyleOptionGroupBox *aux = qstyleoption_cast<const QStyleOptionGroupBox*>(m_styleoption))
@@ -249,6 +261,7 @@ void QQuickStyleItem1::initStyleOption()
         }
     }
         break;
+#if QT_CONFIG(itemviews)
     case ItemRow: {
         if (!m_styleoption)
             m_styleoption = new QStyleOptionViewItem();
@@ -259,14 +272,14 @@ void QQuickStyleItem1::initStyleOption()
             opt->features |= QStyleOptionViewItem::Alternate;
     }
         break;
-
+#endif // QT_CONFIG(itemviews)
     case Splitter: {
         if (!m_styleoption) {
             m_styleoption = new QStyleOption;
         }
     }
         break;
-
+#if QT_CONFIG(itemviews)
     case Item: {
         if (!m_styleoption) {
             m_styleoption = new QStyleOptionViewItem();
@@ -288,6 +301,7 @@ void QQuickStyleItem1::initStyleOption()
         }
     }
         break;
+#endif // QT_CONFIG(itemviews)
     case ItemBranchIndicator: {
         if (!m_styleoption)
             m_styleoption = new QStyleOption;
@@ -357,11 +371,14 @@ void QQuickStyleItem1::initStyleOption()
 
     }
         break;
+#if QT_CONFIG(toolbar)
     case ToolBar: {
         if (!m_styleoption)
             m_styleoption = new QStyleOptionToolBar();
     }
         break;
+#endif
+#if QT_CONFIG(tabbar)
     case Tab: {
         if (!m_styleoption)
             m_styleoption = new QStyleOptionTab();
@@ -395,7 +412,7 @@ void QQuickStyleItem1::initStyleOption()
 
 
     } break;
-
+#endif // QT_CONFIG(tabbar)
     case Frame: {
         if (!m_styleoption)
             m_styleoption = new QStyleOptionFrame();
@@ -413,6 +430,7 @@ void QQuickStyleItem1::initStyleOption()
         m_styleoption->state |= QStyle::State_KeyboardFocusChange;
     }
         break;
+#if QT_CONFIG(tabwidget)
     case TabFrame: {
         if (!m_styleoption)
             m_styleoption = new QStyleOptionTabWidgetFrame();
@@ -427,6 +445,7 @@ void QQuickStyleItem1::initStyleOption()
         opt->leftCornerWidgetSize = QSize(value(), 0);
     }
         break;
+#endif // QT_CONFIG(tabwidget)
     case MenuBar:
         if (!m_styleoption) {
             QStyleOptionMenuItem *menuOpt = new QStyleOptionMenuItem();
@@ -562,6 +581,7 @@ void QQuickStyleItem1::initStyleOption()
 #endif
     }
         break;
+#if QT_CONFIG(spinbox)
     case SpinBox: {
         if (!m_styleoption)
             m_styleoption = new QStyleOptionSpinBox();
@@ -581,6 +601,8 @@ void QQuickStyleItem1::initStyleOption()
             opt->stepEnabled |= QAbstractSpinBox::StepDownEnabled;
     }
         break;
+#endif // QT_CONFIG(spinbox)
+#if QT_CONFIG(slider)
     case Slider:
     case Dial:
     {
@@ -617,6 +639,7 @@ void QQuickStyleItem1::initStyleOption()
         opt->activeSubControls = QStyle::SC_SliderHandle;
     }
         break;
+#endif // QT_CONFIG(slider)
     case ProgressBar: {
         if (!m_styleoption)
             m_styleoption = new QStyleOptionProgressBar();
@@ -647,6 +670,7 @@ void QQuickStyleItem1::initStyleOption()
 
     }
         break;
+#if QT_CONFIG(slider)
     case ScrollBar: {
         if (!m_styleoption)
             m_styleoption = new QStyleOptionSlider();
@@ -672,6 +696,7 @@ void QQuickStyleItem1::initStyleOption()
         setTransient(qApp->style()->styleHint(QStyle::SH_ScrollBar_Transient, m_styleoption));
         break;
     }
+#endif // QT_CONFIG(slider)
     default:
         break;
     }
@@ -1050,12 +1075,14 @@ qreal QQuickStyleItem1::baselineOffset()
                 r.adjust(0,0,0,1);
         }
         break;
+#if QT_CONFIG(spinbox)
     case SpinBox:
         if (const QStyleOptionSpinBox *spinbox = qstyleoption_cast<const QStyleOptionSpinBox *>(m_styleoption)) {
             r = qApp->style()->subControlRect(QStyle::CC_SpinBox, spinbox, QStyle::SC_SpinBoxEditField);
             ceilResult = false;
         }
         break;
+#endif
     default:
         break;
     }
@@ -1197,8 +1224,10 @@ QVariant QQuickStyleItem1::styleHint(const QString &metric)
         return qApp->style()->styleHint(QStyle::SH_ItemView_ActivateItemOnSingleClick);
     else if (metric == QLatin1String("submenupopupdelay"))
         return qApp->style()->styleHint(QStyle::SH_Menu_SubMenuPopupDelay, m_styleoption);
+#if QT_CONFIG(wheelevent)
     else if (metric == QLatin1String("wheelScrollLines"))
         return qApp->wheelScrollLines();
+#endif
     return 0;
 
     // Add SH_Menu_SpaceActivatesItem
@@ -1792,7 +1821,7 @@ QPixmap QQuickTableRowImageProvider1::requestPixmap(const QString &id, QSize *si
         *size = QSize(width, height);
 
     QPixmap pixmap(width, height);
-
+#if QT_CONFIG(itemviews)
     QStyleOptionViewItem opt;
     opt.state |= QStyle::State_Enabled;
     opt.rect = QRect(0, 0, width, height);
@@ -1821,6 +1850,9 @@ QPixmap QQuickTableRowImageProvider1::requestPixmap(const QString &id, QSize *si
         QPainter pixpainter(&pixmap);
         qApp->style()->drawPrimitive(QStyle::PE_PanelItemViewRow, &opt, &pixpainter);
     }
+#else
+    Q_UNUSED(id);
+#endif
     return pixmap;
 }
 

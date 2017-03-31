@@ -43,6 +43,8 @@
 #include <QtGui/qvalidator.h>
 #include <QtQml/qqml.h>
 
+#if QT_CONFIG(validator)
+
 QT_BEGIN_NAMESPACE
 
 class QQuickSpinBoxValidator1 : public QValidator, public QQmlParserStatus
@@ -123,4 +125,5 @@ QT_END_NAMESPACE
 
 QML_DECLARE_TYPE(QQuickSpinBoxValidator1)
 
+#endif // QT_CONFIG(validator)
 #endif // QQUICKSPINBOXVALIDATOR_P_H
