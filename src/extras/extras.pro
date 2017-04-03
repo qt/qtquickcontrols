@@ -8,7 +8,7 @@ QT += qml
 
 QMAKE_DOCS = $$PWD/doc/qtquickextras.qdocconf
 
-CONTROLS_QML_FILES = \
+QML_FILES += \
     CircularGauge.qml \
     DelayButton.qml \
     Dial.qml \
@@ -29,9 +29,6 @@ include(Private/private.pri)
 include(designer/designer.pri)
 
 OTHER_FILES += doc/src/*
-
-!static:RESOURCES += extras.qrc
-else: QML_FILES += $$CONTROLS_QML_FILES
 
 TR_EXCLUDE += designer/*
 

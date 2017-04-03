@@ -73,7 +73,7 @@ QtQuickExtrasPlugin::QtQuickExtrasPlugin(QObject *parent) :
 void QtQuickExtrasPlugin::registerTypes(const char *uri)
 {
 #ifndef QT_STATIC
-    const QString prefix = "qrc:///ExtrasImports/QtQuick/Extras";
+    const QString prefix = baseUrl().toString();
 #else
     const QString prefix = "qrc:/qt-project.org/imports/QtQuick/Extras";
 #endif
@@ -111,7 +111,7 @@ void QtQuickExtrasPlugin::initializeEngine(QQmlEngine *engine, const char *uri)
     qmlRegisterSingletonType<QQuickMathUtils>("QtQuick.Extras.Private.CppUtils", 1, 0, "MathUtils", registerMathUtilsSingleton);
 
 #ifndef QT_STATIC
-    const QString prefix = "qrc:///ExtrasImports/QtQuick/Extras";
+    const QString prefix = baseUrl().toString();
 #else
     const QString prefix = "qrc:/qt-project.org/imports/QtQuick/Extras";
 #endif
