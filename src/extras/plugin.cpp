@@ -50,9 +50,7 @@
 
 static void initResources()
 {
-#ifndef QT_STATIC
-    Q_INIT_RESOURCE(extras);
-#else
+#ifdef QT_STATIC
     Q_INIT_RESOURCE(qmake_QtQuick_Extras);
 #endif
 }
