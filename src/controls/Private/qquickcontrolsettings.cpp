@@ -50,7 +50,7 @@
 #include <QTouchDevice>
 #include <QGuiApplication>
 #include <QStyleHints>
-#if defined(Q_OS_ANDROID)
+#if defined(Q_OS_ANDROID) && !defined(Q_OS_ANDROID_EMBEDDED)
 #include <private/qjnihelpers_p.h>
 #endif
 
@@ -62,7 +62,7 @@ static QString defaultStyleName()
 #if defined(QT_WIDGETS_LIB) && !defined(Q_OS_IOS) && !defined(Q_OS_ANDROID) && !defined(Q_OS_BLACKBERRY) && !defined(Q_OS_QNX) && !defined(Q_OS_WINRT)
     if (QCoreApplication::instance()->inherits("QApplication"))
         return QLatin1String("Desktop");
-#elif defined(Q_OS_ANDROID)
+#elif defined(Q_OS_ANDROID) && !defined(Q_OS_ANDROID_EMBEDDED)
     if (QtAndroidPrivate::androidSdkVersion() >= 11)
         return QLatin1String("Android");
 #elif defined(Q_OS_IOS)
