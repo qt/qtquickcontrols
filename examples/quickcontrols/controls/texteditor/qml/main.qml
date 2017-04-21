@@ -93,7 +93,7 @@ ApplicationWindow {
         id: pasteAction
         text: "Paste"
         shortcut: "ctrl+v"
-        iconSource: "qrc:images/editpaste.png"
+        iconSource: "images/editpaste.png"
         iconName: "edit-paste"
         onTriggered: textArea.paste()
     }
