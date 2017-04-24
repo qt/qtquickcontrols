@@ -87,7 +87,7 @@ void tst_dialogs::dialogImplicitWidth()
     component.loadUrl(testFileUrl("DialogImplicitSize.qml"));
     QObject *created = component.create();
     QScopedPointer<QObject> cleanup(created);
-    QVERIFY(created);
+    QVERIFY2(created, qPrintable(component.errorString()));
 
     QTRY_VERIFY(created->property("width").toInt() >= 400);
     QTRY_VERIFY(created->property("height").toInt() >= minimumHeight + heightMargins);
@@ -100,7 +100,7 @@ void tst_dialogs::dialogContentResize()
     component.loadUrl(testFileUrl("DialogMinimumSize.qml"));
     QObject *created = component.create();
     QScopedPointer<QObject> cleanup(created);
-    QVERIFY(created);
+    QVERIFY2(created, qPrintable(component.errorString()));
 
     QTRY_COMPARE(created->property("width").toInt(), 400);
     QTRY_COMPARE(created->property("height").toInt(), 300);
@@ -121,7 +121,7 @@ void tst_dialogs::fileDialogDefaultModality()
     window->setGeometry(240,240,1024,320);
     window->show();
     QVERIFY(QTest::qWaitForWindowExposed(window));
-    QVERIFY(window->rootObject());
+    QVERIFY2(window->rootObject(), qPrintable(window->errors().value(0).toString()));
 
     // Click to show
     QObject *dlg = qvariant_cast<QObject *>(window->rootObject()->property("fileDialog"));
@@ -167,7 +167,7 @@ void tst_dialogs::fileDialogNonModal()
     window->setGeometry(240,240,1024,320);
     window->show();
     QVERIFY(QTest::qWaitForWindowExposed(window));
-    QVERIFY(window->rootObject());
+    QVERIFY2(window->rootObject(), qPrintable(window->errors().value(0).toString()));
 
     // Click to toggle visibility
     QObject *dlg = qvariant_cast<QObject *>(window->rootObject()->property("fileDialog"));
@@ -196,7 +196,7 @@ void tst_dialogs::fileDialogNameFilters()
     window->setGeometry(240,240,1024,320);
     window->show();
     QVERIFY(QTest::qWaitForWindowExposed(window));
-    QVERIFY(window->rootObject());
+    QVERIFY2(window->rootObject(), qPrintable(window->errors().value(0).toString()));
 
     QObject *dlg = qvariant_cast<QObject *>(window->rootObject()->property("fileDialog"));
     QStringList filters;
