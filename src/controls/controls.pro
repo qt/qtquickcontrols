@@ -60,33 +60,11 @@ include(Shaders/shaders.pri)
 osx: LIBS_PRIVATE += -framework Carbon
 
 !qmlcache {
-    # Create the resource file
-    GENERATED_RESOURCE_FILE = $$OUT_PWD/controls.qrc
-
     INCLUDED_RESOURCE_FILES = \
         $$CONTROLS_QML_FILES \
         $$PRIVATE_QML_FILES \
-        $$STYLES_QML_FILES \
-        $$SHADER_FILES
+        $$STYLES_QML_FILES
 
-    RESOURCE_CONTENT = \
-        "<RCC>" \
-        "<qresource prefix=\"/QtQuick/Controls\">"
-
-    for(resourcefile, INCLUDED_RESOURCE_FILES) {
-        resourcefileabsolutepath = $$absolute_path($$resourcefile)
-        relativepath_in = $$relative_path($$resourcefileabsolutepath, $$_PRO_FILE_PWD_)
-        relativepath_out = $$relative_path($$resourcefileabsolutepath, $$OUT_PWD)
-        RESOURCE_CONTENT += "<file alias=\"$$relativepath_in\">$$relativepath_out</file>"
-    }
-
-    RESOURCE_CONTENT += \
-        "</qresource>" \
-        "</RCC>"
-
-    write_file($$GENERATED_RESOURCE_FILE, RESOURCE_CONTENT)|error("Aborting.")
-
-    RESOURCES += $$GENERATED_RESOURCE_FILE
 } else {
     QML_FILES *= $$CONTROLS_QML_FILES \
                  $$PRIVATE_QML_FILES \
@@ -94,6 +72,12 @@ osx: LIBS_PRIVATE += -framework Carbon
                  $$SHADER_FILES
     OTHER_FILES += $$QML_FILES
 }
+
+INCLUDED_RESOURCE_FILES += $$SHADER_FILES
+
+controls.files = $$INCLUDED_RESOURCE_FILES
+controls.prefix = /QtQuick/Controls
+RESOURCES += controls
 
 CONFIG += no_cxx_module
 load(qml_plugin)
