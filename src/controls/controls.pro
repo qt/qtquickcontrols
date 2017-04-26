@@ -68,9 +68,9 @@ osx: LIBS_PRIVATE += -framework Carbon
 } else {
     QML_FILES *= $$CONTROLS_QML_FILES \
                  $$PRIVATE_QML_FILES \
-                 $$STYLES_QML_FILES \
+                 $$STYLES_QML_FILES
+    OTHER_FILES += $$QML_FILES \
                  $$SHADER_FILES
-    OTHER_FILES += $$QML_FILES
 }
 
 INCLUDED_RESOURCE_FILES += $$SHADER_FILES
