@@ -1,4 +1,5 @@
 TEMPLATE = subdirs
 SUBDIRS = \
     objectcount \
-    statusindicator
+    statusindicator \
+    startup
