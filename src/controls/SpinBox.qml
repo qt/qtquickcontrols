@@ -273,6 +273,7 @@ Control {
 
     Accessible.name: input.text
     Accessible.role: Accessible.SpinBox
+    Accessible.editable: true
 
     MouseArea {
         id: mouseArea
