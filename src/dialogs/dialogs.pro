@@ -7,12 +7,6 @@ IMPORT_VERSION = 1.2
 
 QMAKE_DOCS = $$PWD/doc/qtquickdialogs.qdocconf
 
-qtquickcompiler {
-    DEFINES += ALWAYS_LOAD_FROM_RESOURCES
-} else {
-    !static: CONFIG += qmlcache
-}
-
 SOURCES += \
     qquickabstractmessagedialog.cpp \
     qquickplatformmessagedialog.cpp \
@@ -85,5 +79,14 @@ ios|android|blackberry|winrt {
 QT += quick-private gui gui-private core core-private qml qml-private
 
 QML_FILES += $$DIALOGS_QML_FILES
+
+qtquickcompiler {
+    DEFINES += ALWAYS_LOAD_FROM_RESOURCES
+    dialogs.files = $$QML_FILES
+    dialogs.prefix = /QtQuick/Dialogs
+    RESOURCES += dialogs
+} else {
+    !static: CONFIG += qmlcache
+}
 
 load(qml_plugin)
