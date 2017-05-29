@@ -90,6 +90,9 @@ TestCase {
     }
 
     function test_active(data) {
+        if (Qt.platform.pluginName === "offscreen")
+            skip("Using grabImage does not work on offscreen platform");
+
         indicator = Qt.createQmlObject("import QtQuick.Extras 1.4; StatusIndicator { }", testCase, "");
         verify(indicator);
         compare(indicator.active, false);
@@ -106,6 +109,9 @@ TestCase {
     }
 
     function test_color() {
+        if (Qt.platform.pluginName === "offscreen")
+            skip("Using grabImage does not work on offscreen platform");
+
         var flatStyle = Settings.styleName === "Flat";
 
         indicator = Qt.createQmlObject("import QtQuick.Extras 1.4; StatusIndicator { }", testCase, "");

@@ -68,6 +68,9 @@ void tst_customcontrolsstyle::style_data()
 
 void tst_customcontrolsstyle::style()
 {
+    if (QGuiApplication::platformName() == "offscreen")
+        QSKIP("Using grabImage does not work on offscreen platform");
+
     QFETCH(QString, specifiedStyle);
     QFETCH(QString, expectedStyleName);
 
@@ -109,6 +112,9 @@ void tst_customcontrolsstyle::style()
 // start with Base, switch to custom style later on (for a specific QML engine)
 void tst_customcontrolsstyle::changeStyle()
 {
+    if (QGuiApplication::platformName() == "offscreen")
+        QSKIP("Using grabImage does not work on offscreen platform");
+
     qputenv("QT_QUICK_CONTROLS_1_STYLE", "Base");
     QByteArray importPath = qgetenv("QML2_IMPORT_PATH");
     if (importPath.isEmpty())

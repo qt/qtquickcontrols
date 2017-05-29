@@ -512,10 +512,13 @@ TestCase {
         mouseClick(comboBox, comboBox.x + 1, comboBox.y + 1)
         verify(!comboBox.activeFocus)
         comboBox.activeFocusOnPress = true
-        if (Qt.platform.os === "osx") // on mac when the menu open, the __popup function does not return
+        if (Qt.platform.os === "osx") { // on macOS when the menu open, the __popup function does not return
             timer.start()
-        else // two mouse clicks to open and close the popup menu
-            mouseClick(comboBox, comboBox.x + 1, comboBox.y + 1)
+        } else {
+            // two mouse clicks to open and close the popup menu. The 1ms delay between mouse presses is
+            // needed with software quick renderer. Without the delay, this test is flaky.
+            mouseClick(comboBox, comboBox.x + 1, comboBox.y + 1, Qt.LeftButton, Qt.NoModifier, 1)
+        }
         mouseClick(comboBox, comboBox.x + 1, comboBox.y + 1)
         verify(comboBox.activeFocus)
         comboBox.destroy()

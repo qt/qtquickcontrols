@@ -107,6 +107,9 @@ TestCase {
     }
 
     function test_source(data) {
+        if (Qt.platform.pluginName === "offscreen")
+            skip("Using grabImage does not work on offscreen platform");
+
         picture = Qt.createQmlObject("import QtQuick.Extras 1.4; Picture {}", testCase, "");
         verify(picture, "Picture: failed to create an instance");
         picture.source = data.tag;
@@ -134,6 +137,9 @@ TestCase {
     }
 
     function test_color(data) {
+        if (Qt.platform.pluginName === "offscreen")
+            skip("Using grabImage does not work on offscreen platform");
+
         picture = Qt.createQmlObject("import QtQuick.Extras 1.4; Picture {}", testCase, "");
         verify(picture, "Picture: failed to create an instance");
 
