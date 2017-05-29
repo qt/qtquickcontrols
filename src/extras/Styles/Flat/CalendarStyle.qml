@@ -190,7 +190,7 @@ Base.CalendarStyle {
 
         Label {
             text: localeDayName.length == 0 || localeDayName.length > 1
-                ? control.__locale.dayName(styleData.dayOfWeek, Locale.ShortFormat)[0]
+                ? control.locale.dayName(styleData.dayOfWeek, Locale.ShortFormat)[0]
                 : localeDayName
             color: !control.enabled ? FlatStyle.disabledColor : FlatStyle.styleColor
             opacity: !control.enabled ? FlatStyle.disabledOpacity : 1
@@ -202,7 +202,7 @@ Base.CalendarStyle {
             font.pixelSize: control.height * __headerFontRatio
             renderType: FlatStyle.__renderType
 
-            property string localeDayName: control.__locale.dayName(styleData.dayOfWeek, Locale.NarrowFormat)
+            property string localeDayName: control.locale.dayName(styleData.dayOfWeek, Locale.NarrowFormat)
         }
     }
 }

@@ -320,7 +320,7 @@ Style {
         color: gridVisible ? "#fcfcfc" : "transparent"
         implicitHeight: Math.round(TextSingleton.implicitHeight * 2.25)
         Label {
-            text: control.__locale.dayName(styleData.dayOfWeek, control.dayOfWeekFormat)
+            text: control.locale.dayName(styleData.dayOfWeek, control.dayOfWeekFormat)
             anchors.centerIn: parent
         }
     }
@@ -397,8 +397,8 @@ Style {
                 active: control.navigationBarVisible
 
                 property QtObject styleData: QtObject {
-                    readonly property string title: control.__locale.standaloneMonthName(control.visibleMonth)
-                        + new Date(control.visibleYear, control.visibleMonth, 1).toLocaleDateString(control.__locale, " yyyy")
+                    readonly property string title: control.locale.standaloneMonthName(control.visibleMonth)
+                        + new Date(control.visibleYear, control.visibleMonth, 1).toLocaleDateString(control.locale, " yyyy")
                 }
             }
 
@@ -413,7 +413,7 @@ Style {
                 Repeater {
                     id: repeater
                     model: CalendarHeaderModel {
-                        locale: control.__locale
+                        locale: control.locale
                     }
                     Loader {
                         id: dayOfWeekDelegateLoader

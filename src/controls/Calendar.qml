@@ -37,8 +37,8 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.2
-import QtQuick.Controls 1.2
+import QtQuick 2.9
+import QtQuick.Controls 1.5
 import QtQuick.Controls.Styles 1.1
 import QtQuick.Controls.Private 1.0
 
@@ -195,20 +195,27 @@ Control {
     property int dayOfWeekFormat: Locale.ShortFormat
 
     /*!
-        The locale that this calendar should use to display itself.
+        \qmlproperty object Calendar::locale
+        \since QtQuick.Controls 1.6
 
-        Affects how dates and day names are localized, as well as which
-        day is considered the first in a week.
+        This property controls the locale that this calendar uses to display
+        itself.
 
-        To set an Australian locale, for example:
+        The locale affects how dates and day names are localized, as well as
+        which day is considered the first in a week.
+
+        The following example sets an Australian locale:
 
         \code
         locale: Qt.locale("en_AU")
         \endcode
 
-        The default locale is \c Qt.locale().
+        The default value is equivalent to \c Qt.locale().
     */
-    property var __locale: Qt.locale()
+    property var locale: Qt.locale()
+
+    // left for compatibility reasons; can be removed in next minor version/Qt 6
+    property alias __locale: calendar.locale
 
     /*!
         \internal
@@ -217,7 +224,7 @@ Control {
         populate the dates available to the user.
     */
     property CalendarModel __model: CalendarModel {
-        locale: calendar.__locale
+        locale: calendar.locale
 
         // TODO: don't set the hour when QTBUG-56787 is fixed
         visibleDate: new Date(visibleYear, visibleMonth, 1, 12)

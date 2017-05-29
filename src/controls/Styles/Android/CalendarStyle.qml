@@ -83,7 +83,7 @@ CalendarStyle {
         LabelStyle {
             id: dayOfWeek
             anchors.centerIn: parent
-            text: control.__locale.dayName(styleData.dayOfWeek, control.dayOfWeekFormat)
+            text: control.locale.dayName(styleData.dayOfWeek, control.dayOfWeekFormat)
             focused: control.activeFocus
             window_focused: control.Window.active
             styleDef: AndroidStyle.styleDef.calendarViewStyle.CalendarView_weekDayTextAppearance
