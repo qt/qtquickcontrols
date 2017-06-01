@@ -74,6 +74,7 @@ class QQuickAbstractFileDialog : public QQuickAbstractDialog
     Q_PROPERTY(QUrl fileUrl READ fileUrl NOTIFY selectionAccepted)
     Q_PROPERTY(QList<QUrl> fileUrls READ fileUrls NOTIFY selectionAccepted)
     Q_PROPERTY(bool sidebarVisible READ sidebarVisible WRITE setSidebarVisible NOTIFY sidebarVisibleChanged)
+    Q_PROPERTY(QString defaultSuffix READ defaultSuffix WRITE setDefaultSuffix NOTIFY defaultSuffixChanged)
     Q_PROPERTY(QJSValue shortcuts READ shortcuts NOTIFY shortcutsChanged) // map of QStandardDirectory names to QUrls
     Q_PROPERTY(QJSValue __shortcuts READ __shortcuts NOTIFY shortcutsChanged) // map of details for QML dialog implementations
 
@@ -95,6 +96,7 @@ public:
     bool sidebarVisible() const { return m_sidebarVisible; }
     QJSValue shortcuts();
     QJSValue __shortcuts();
+    QString defaultSuffix() const { return m_options->defaultSuffix(); }
 
 public Q_SLOTS:
     void setVisible(bool v);
@@ -107,6 +109,7 @@ public Q_SLOTS:
     void selectNameFilter(const QString &f);
     void setSelectedNameFilterIndex(int idx);
     void setSidebarVisible(bool s);
+    void setDefaultSuffix(const QString &suffix);
 
 Q_SIGNALS:
     void folderChanged();
@@ -116,6 +119,7 @@ Q_SIGNALS:
     void selectionAccepted();
     void sidebarVisibleChanged();
     void shortcutsChanged();
+    void defaultSuffixChanged();
 
 protected Q_SLOTS:
     void updateFolder(const QUrl &f);

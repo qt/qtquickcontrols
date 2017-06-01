@@ -3,7 +3,7 @@ requires(contains(QT_CONFIG, accessibility))
 CXX_MODULE = qml
 TARGET  = dialogplugin
 TARGETPATH = QtQuick/Dialogs
-IMPORT_VERSION = 1.2
+IMPORT_VERSION = 1.3
 
 QMAKE_DOCS = $$PWD/doc/qtquickdialogs.qdocconf
 
