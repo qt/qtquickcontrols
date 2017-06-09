@@ -71,14 +71,6 @@
 #include <QtCore/qlocale.h>
 #endif
 
-static void initResources()
-{
-#ifdef QT_STATIC
-    Q_INIT_RESOURCE(qmake_QtQuick_Controls);
-    Q_INIT_RESOURCE(qmake_controls);
-#endif
-}
-
 QT_BEGIN_NAMESPACE
 
 static const struct {
@@ -129,7 +121,6 @@ static const struct {
 
 QtQuickControls1Plugin::QtQuickControls1Plugin(QObject *parent) : QQmlExtensionPlugin(parent)
 {
-    initResources();
 }
 
 void QtQuickControls1Plugin::registerTypes(const char *uri)

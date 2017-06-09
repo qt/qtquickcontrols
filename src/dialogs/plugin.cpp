@@ -62,13 +62,6 @@
 
 Q_LOGGING_CATEGORY(lcRegistration, "qt.quick.dialogs.registration")
 
-static void initResources()
-{
-#ifdef QT_STATIC
-    Q_INIT_RESOURCE(qmake_QtQuick_Dialogs);
-#endif
-}
-
 QT_BEGIN_NAMESPACE
 
 /*!
@@ -92,7 +85,7 @@ class QtQuick2DialogsPlugin : public QQmlExtensionPlugin
     Q_PLUGIN_METADATA(IID QQmlExtensionInterface_iid)
 
 public:
-    QtQuick2DialogsPlugin() : QQmlExtensionPlugin(), m_useResources(true) { initResources(); }
+    QtQuick2DialogsPlugin() : QQmlExtensionPlugin(), m_useResources(true) { }
 
     virtual void initializeEngine(QQmlEngine *engine, const char * uri) {
         qCDebug(lcRegistration) << uri << m_decorationComponentUrl;
