@@ -66,8 +66,6 @@ static void initResources()
 {
 #ifdef QT_STATIC
     Q_INIT_RESOURCE(qmake_QtQuick_Dialogs);
-#else
-    Q_INIT_RESOURCE(dialogs);
 #endif
 }
 

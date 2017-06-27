@@ -141,7 +141,11 @@ void QQuickWheelArea1::wheelEvent(QWheelEvent *we)
 
 void QQuickWheelArea1::setHorizontalMinimumValue(qreal value)
 {
+    if (value == m_horizontalMinimumValue)
+        return;
+
     m_horizontalMinimumValue = value;
+    emit horizontalMinimumValueChanged();
 }
 
 qreal QQuickWheelArea1::horizontalMinimumValue() const
@@ -151,7 +155,11 @@ qreal QQuickWheelArea1::horizontalMinimumValue() const
 
 void QQuickWheelArea1::setHorizontalMaximumValue(qreal value)
 {
+    if (value == m_horizontalMaximumValue)
+        return;
+
     m_horizontalMaximumValue = value;
+    emit horizontalMaximumValueChanged();
 }
 
 qreal QQuickWheelArea1::horizontalMaximumValue() const
@@ -161,7 +169,11 @@ qreal QQuickWheelArea1::horizontalMaximumValue() const
 
 void QQuickWheelArea1::setVerticalMinimumValue(qreal value)
 {
+    if (value == m_verticalMinimumValue)
+        return;
+
     m_verticalMinimumValue = value;
+    emit verticalMinimumValueChanged();
 }
 
 qreal QQuickWheelArea1::verticalMinimumValue() const
@@ -171,7 +183,11 @@ qreal QQuickWheelArea1::verticalMinimumValue() const
 
 void QQuickWheelArea1::setVerticalMaximumValue(qreal value)
 {
+    if (value == m_verticalMaximumValue)
+        return;
+
     m_verticalMaximumValue = value;
+    emit verticalMaximumValueChanged();
 }
 
 qreal QQuickWheelArea1::verticalMaximumValue() const

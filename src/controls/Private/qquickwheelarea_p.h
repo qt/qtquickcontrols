@@ -50,12 +50,12 @@ class QQuickWheelArea1 : public QQuickItem
     Q_OBJECT
     Q_PROPERTY(qreal verticalDelta READ verticalDelta WRITE setVerticalDelta NOTIFY verticalWheelMoved)
     Q_PROPERTY(qreal horizontalDelta READ horizontalDelta WRITE setHorizontalDelta NOTIFY horizontalWheelMoved)
-    Q_PROPERTY(qreal horizontalMinimumValue READ horizontalMinimumValue WRITE setHorizontalMinimumValue)
-    Q_PROPERTY(qreal horizontalMaximumValue READ horizontalMaximumValue WRITE setHorizontalMaximumValue)
-    Q_PROPERTY(qreal verticalMinimumValue READ verticalMinimumValue WRITE setVerticalMinimumValue)
-    Q_PROPERTY(qreal verticalMaximumValue READ verticalMaximumValue WRITE setVerticalMaximumValue)
-    Q_PROPERTY(qreal horizontalValue READ horizontalValue WRITE setHorizontalValue)
-    Q_PROPERTY(qreal verticalValue READ verticalValue WRITE setVerticalValue)
+    Q_PROPERTY(qreal horizontalMinimumValue READ horizontalMinimumValue WRITE setHorizontalMinimumValue NOTIFY horizontalMinimumValueChanged)
+    Q_PROPERTY(qreal horizontalMaximumValue READ horizontalMaximumValue WRITE setHorizontalMaximumValue NOTIFY horizontalMaximumValueChanged)
+    Q_PROPERTY(qreal verticalMinimumValue READ verticalMinimumValue WRITE setVerticalMinimumValue NOTIFY verticalMinimumValueChanged)
+    Q_PROPERTY(qreal verticalMaximumValue READ verticalMaximumValue WRITE setVerticalMaximumValue NOTIFY verticalMaximumValueChanged)
+    Q_PROPERTY(qreal horizontalValue READ horizontalValue WRITE setHorizontalValue NOTIFY horizontalValueChanged)
+    Q_PROPERTY(qreal verticalValue READ verticalValue WRITE setVerticalValue NOTIFY verticalValueChanged)
     Q_PROPERTY(qreal scrollSpeed READ scrollSpeed WRITE setScrollSpeed NOTIFY scrollSpeedChanged)
     Q_PROPERTY(bool active READ isActive WRITE setActive NOTIFY activeChanged)
     Q_PROPERTY(bool inverted READ isInverted)
@@ -106,7 +106,11 @@ public:
 
 Q_SIGNALS:
     void verticalValueChanged();
+    void verticalMinimumValueChanged();
+    void verticalMaximumValueChanged();
     void horizontalValueChanged();
+    void horizontalMinimumValueChanged();
+    void horizontalMaximumValueChanged();
     void verticalWheelMoved();
     void horizontalWheelMoved();
     void scrollSpeedChanged();

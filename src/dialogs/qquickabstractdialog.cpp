@@ -187,7 +187,7 @@ void QQuickAbstractDialog::setVisible(bool v)
             connect(m_contentItem, SIGNAL(implicitHeightChanged()), this, SLOT(implicitHeightChanged()));
         }
         if (!m_visibleChangedConnected) {
-            connect(m_dialogWindow, SIGNAL(visibleChanged(bool)), this, SLOT(visibleChanged(bool)));
+            connect(m_dialogWindow, &QQuickWindow::visibleChanged, this, &QQuickAbstractDialog::visibleChanged);
             m_visibleChangedConnected = true;
         }
     }
@@ -328,7 +328,7 @@ void QQuickAbstractDialog::setContentItem(QQuickItem *obj)
     m_contentItem = obj;
     qCDebug(lcWindow) << obj;
     if (m_dialogWindow) {
-        disconnect(this, SLOT(visibleChanged(bool)));
+        disconnect(m_dialogWindow, &QQuickWindow::visibleChanged, this, &QQuickAbstractDialog::visibleChanged);
         // Can't necessarily delete because m_dialogWindow might have been provided by the QML.
         m_dialogWindow = 0;
     }
