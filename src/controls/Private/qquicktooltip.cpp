@@ -44,8 +44,11 @@
 #include <qpa/qplatformintegration.h>
 #include <QtQuick/QQuickRenderControl>
 
-#if defined(QT_WIDGETS_LIB) && !defined(QT_NO_TOOLTIP)
+#if defined(QT_WIDGETS_LIB)
+#include <QtWidgets/qtwidgetsglobal.h>
+#if QT_CONFIG(tooltip)
 #include <qtooltip.h>
+#endif
 #endif
 
 QT_BEGIN_NAMESPACE
@@ -60,7 +63,7 @@ void QQuickTooltip1::showText(QQuickItem *item, const QPointF &pos, const QStrin
 {
     if (!item || !item->window())
         return;
-#if defined(QT_WIDGETS_LIB) && !defined(QT_NO_TOOLTIP)
+#if defined(QT_WIDGETS_LIB) && QT_CONFIG(tooltip)
     if (QGuiApplicationPrivate::platformIntegration()->
             hasCapability(QPlatformIntegration::MultipleWindows) &&
         QCoreApplication::instance()->inherits("QApplication")) {
@@ -80,7 +83,7 @@ void QQuickTooltip1::showText(QQuickItem *item, const QPointF &pos, const QStrin
 
 void QQuickTooltip1::hideText()
 {
-#if defined(QT_WIDGETS_LIB) && !defined(QT_NO_TOOLTIP)
+#if defined(QT_WIDGETS_LIB) && QT_CONFIG(tooltip)
     QToolTip::hideText();
 #endif
 }

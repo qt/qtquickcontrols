@@ -62,6 +62,13 @@ import QtQuick.Controls.Private 1.0
     \l maximumDate. The earliest minimum date that can be set is 1 January, 1
     AD. The latest maximum date that can be set is 25 October, 275759 AD.
 
+    \code
+    Calendar {
+        minimumDate: new Date(2017, 0, 1)
+        maximumDate: new Date(2018, 0, 1)
+    }
+    \endcode
+
     The selected date is displayed using the format in the application's
     default locale.
 
