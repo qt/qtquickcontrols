@@ -91,15 +91,14 @@ TestCase {
     }
 
     function test_createMenuBar() {
-        var menuBar = Qt.createQmlObject('import QtQuick.Controls 1.2; MenuBar {}', testCase, '');
-        menuBar.destroy()
+        createTemporaryQmlObject('import QtQuick.Controls 1.2; MenuBar {}', testCase, '');
     }
 
     function test_clickMenuBar() {
         if (Qt.platform.os === "osx")
             skip("MenuBar cannot be reliably tested on OS X")
 
-        var window = windowComponent.createObject()
+        var window = createTemporaryObject(windowComponent)
         waitForRendering(window.contentItem)
         var fileMenu = findChild(window, "fileMenu")
         compare(fileMenu !== null, true)
@@ -116,14 +115,13 @@ TestCase {
         // to a a negative coordinate
         mouseClick(fileMenu.__contentItem, 20, -13)
         tryCompare(fileMenu, "__popupVisible", false)
-        window.destroy()
     }
 
     function test_closeOnEscapePressed() {
         if (Qt.platform.os === "osx")
             skip("MenuBar cannot be reliably tested on OS X")
 
-        var window = windowComponent.createObject()
+        var window = createTemporaryObject(windowComponent)
         waitForRendering(window.contentItem)
         var fileMenu = findChild(window, "fileMenu")
         verify(fileMenu)
@@ -144,7 +142,7 @@ TestCase {
         if (Qt.platform.os === "osx")
             skip("MenuBar cannot be reliably tested on OS X")
 
-        var window = windowComponent.createObject()
+        var window = createTemporaryObject(windowComponent)
         waitForRendering(window.contentItem)
         var fileMenu = findChild(window, "fileMenu")
         verify(fileMenu)
@@ -157,15 +155,13 @@ TestCase {
         mouseRelease(fileMenu.__contentItem, 0, -10)
         tryCompare(fileMenu, "__popupVisible", true)
         wait(waitTime)
-
-        window.destroy();
     }
 
     function test_keyNavigation() {
         if (Qt.platform.os === "osx")
             skip("MenuBar cannot be reliably tested on OS X")
 
-        var window = windowComponent.createObject()
+        var window = createTemporaryObject(windowComponent)
         waitForRendering(window.contentItem)
         var fileMenu = findChild(window, "fileMenu")
         verify(fileMenu)
@@ -247,7 +243,5 @@ TestCase {
         keyRelease(Qt.Key_Left, Qt.NoModifier, waitTime)
         tryCompare(recentFilesSubMenu, "__popupVisible", false)
         tryCompare(recentFilesSubMenu, "__currentIndex", -1)
-
-        window.destroy()
     }
 }
