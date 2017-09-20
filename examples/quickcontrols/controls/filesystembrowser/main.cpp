@@ -111,7 +111,7 @@ public:
     };
     Q_ENUM(Roles)
 
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const Q_DECL_OVERRIDE
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override
     {
         if (index.isValid() && role >= SizeRole) {
             switch (role) {
@@ -130,7 +130,7 @@ public:
         return QFileSystemModel::data(index, role);
     }
 
-    QHash<int,QByteArray> roleNames() const Q_DECL_OVERRIDE
+    QHash<int,QByteArray> roleNames() const override
     {
          QHash<int, QByteArray> result = QFileSystemModel::roleNames();
          result.insert(SizeRole, QByteArrayLiteral("size"));

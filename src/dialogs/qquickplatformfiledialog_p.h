@@ -62,12 +62,12 @@ class QQuickPlatformFileDialog : public QQuickFileDialog
 public:
     QQuickPlatformFileDialog(QObject *parent = 0);
     virtual ~QQuickPlatformFileDialog();
-    virtual void setModality(Qt::WindowModality m) Q_DECL_OVERRIDE;
-    virtual QList<QUrl> fileUrls() const Q_DECL_OVERRIDE;
+    void setModality(Qt::WindowModality m) override;
+    QList<QUrl> fileUrls() const override;
 
 protected:
-    QPlatformFileDialogHelper *helper() Q_DECL_OVERRIDE;
-    virtual void accept() override;
+    QPlatformFileDialogHelper *helper() override;
+    void accept() override;
 
     Q_DISABLE_COPY(QQuickPlatformFileDialog)
 };
