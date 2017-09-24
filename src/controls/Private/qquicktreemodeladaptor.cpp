@@ -529,7 +529,7 @@ void QQuickTreeModelAdaptor1::modelHasBeenDestroyed()
 {
     // The model has been deleted. This should behave as if no model was set
     clearModelData();
-    emit modelChanged(Q_NULLPTR);
+    emit modelChanged(nullptr);
 }
 
 void QQuickTreeModelAdaptor1::modelHasBeenReset()

@@ -100,7 +100,7 @@ static inline QString sizeString(const QFileInfo &fi)
 class DisplayFileSystemModel : public QFileSystemModel {
     Q_OBJECT
 public:
-    explicit DisplayFileSystemModel(QObject *parent = Q_NULLPTR)
+    explicit DisplayFileSystemModel(QObject *parent = nullptr)
         : QFileSystemModel(parent) {}
 
     enum Roles  {
