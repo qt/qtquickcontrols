@@ -49,7 +49,7 @@
 ****************************************************************************/
 
 import QtQuick 2.2
-
+//! [0]
 Item {
     id: valueSource
     property real kph: 0
@@ -79,6 +79,7 @@ Item {
     property int turnSignal: gear == "P" && !start ? randomDirection() : -1
     property real temperature: 0.6
     property bool start: true
+//! [0]
 
     function randomDirection() {
         return Math.random() > 0.5 ? Qt.LeftArrow : Qt.RightArrow;
@@ -101,7 +102,7 @@ Item {
 
         SequentialAnimation {
             loops: Animation.Infinite
-
+//! [1]
             ParallelAnimation {
                 NumberAnimation {
                     target: valueSource
@@ -120,6 +121,7 @@ Item {
                     duration: 3000
                 }
             }
+//! [1]
             ParallelAnimation {
                 // We changed gears so we lost a bit of speed.
                 NumberAnimation {

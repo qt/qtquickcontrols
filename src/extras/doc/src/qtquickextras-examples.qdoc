@@ -31,7 +31,7 @@
     \title Qt Quick Extras Examples
     \brief A collection of examples for \l{Qt Quick Extras}.
 
-    Below is a listing of the examples for \l{Qt Quick Extras}.
+    Below you will find a list with examples for \l{Qt Quick Extras}.
 */
 
 /*!
@@ -53,6 +53,41 @@
     \image qtquickextras-example-dashboard.png
 
     This example project demonstrates the use of \l CircularGauge to create a car dashboard.
+
+
+    The ValueSource type generates random data for testing the dashboard.
+    The data is random but there is a logical link between some of them,
+    for example, \c kph and \c rpm.
+
+
+    \snippet dashboard/qml/ValueSource.qml 0
+
+    It runs a looping SequentialAnimation that sets the values of
+    the properties over time.
+
+    The SequentialAnimation object consists of several ParallelAnimation
+    objects, which in turn consist of two NumberAnimations, one for
+    \c kph and one for \c rpm. Both let the value develop to a certain
+    value over a specified \c duration with the Easing type \c Easing.InOutSine
+
+    \snippet dashboard/qml/ValueSource.qml 1
+
+    The flashTimer object switches the turn signals \c on or \c off.
+
+    \snippet dashboard/qml/TurnIndicator.qml 1
+
+    The \c paintOutlinePath(ctx) method does the actual painting of the arrow
+    for the turn signal.
+
+    \snippet dashboard/qml/TurnIndicator.qml 2
+
+    The screen consists of a \c foregroundCanvas and a \c backgroundCanvas.
+    \c foregroundCanvas displays the green turn signal if the \c on and
+    \c flashing booleans are \c true.
+
+    \snippet dashboard/qml/TurnIndicator.qml 3
+*/
+
 */
 
 /*!
