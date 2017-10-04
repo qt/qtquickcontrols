@@ -43,3 +43,6 @@ imagedirs += images
 navigation.landingpage = "Qt Quick Extras"
 navigation.qmltypespage = "Qt Quick Extras QML Types"
 
+manifestmeta.highlighted.names = "QtQuickExtras/Qt Quick Extras - Dashboard" \
+                                 "QtQuickExtras/Qt Quick Extras - Flat" \
+                                 "QtQuickExtras/Qt Quick Extras - Gallery"
