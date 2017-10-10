@@ -177,10 +177,10 @@ Control {
     /*! \internal
         The extra arguments positionAtMinimum and positionAtMaximum are there to force
         re-evaluation of the handle position when the constraints change (QTBUG-41255),
-        and the same for range.minimumValue (QTBUG-51765).
+        and the same for range.minimumValue (QTBUG-51765) and range.maximumValue (QTBUG-63354).
     */
     property real __handlePos: range.valueForPosition(__horizontal ? fakeHandle.x : fakeHandle.y,
-        range.positionAtMinimum, range.positionAtMaximum, range.minimumValue)
+        range.positionAtMinimum, range.positionAtMaximum, range.minimumValue, range.maximumValue)
 
     activeFocusOnTab: true
 
