@@ -28,6 +28,8 @@ exampledirs += ../../../examples/quickcontrols/dialogs
 
 examplesinstallpath = quickcontrols/dialogs
 
+manifestmeta.highlighted.names = "QtQuickDialogs/Qt Quick System Dialog Examples"
+
 headerdirs += ..
 
 sourcedirs += ..
