@@ -971,8 +971,6 @@ TestCase {
         table.getColumn(0).width = 20
         compare(table.getColumn(0).width, 20)
         table.resizeColumnsToContents()
-        if (Qt.platform.pluginName === "offscreen")
-            skip("", "QTBUG-62496")
         compare(table.getColumn(0).width, 50)
         table.destroy()
     }
