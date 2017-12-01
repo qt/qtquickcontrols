@@ -422,4 +422,18 @@ void QQuickPlatformFileDialog::accept()
     \l {Qt.labs.settings}{Settings}.
 */
 
+/*!
+    \qmlproperty string FileDialog::defaultSuffix
+    \since 5.10
+
+    This property holds the suffix added to the filename if no other suffix was
+    specified.
+
+    This property specifies a string that will be added to the filename if it
+    has no suffix already. The suffix is typically used to indicate the file
+    type (e.g. "txt" indicates a text file).
+
+    If the first character is a dot ('.'), it is removed.
+*/
+
 QT_END_NAMESPACE

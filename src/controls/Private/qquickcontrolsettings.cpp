@@ -222,7 +222,7 @@ QQuickControlSettings1::QQuickControlSettings1(QQmlEngine *engine)
 
     // If the style name is a path..
     const QString styleNameFromEnvVar = styleEnvironmentVariable();
-    if (QFile::exists(styleNameFromEnvVar)) {
+    if (!styleNameFromEnvVar.isEmpty() && QFile::exists(styleNameFromEnvVar)) {
         StyleData styleData;
         styleData.m_styleDirPath = styleNameFromEnvVar;
         m_styleMap[m_name] = styleData;

@@ -28,14 +28,24 @@
 
 import QtQuick 2.2
 import QtQuick.Controls 1.3
+import QtQuick.Layouts 1.3
 
 Item {
     visible: true
     width: 200
     height: 200
 
-    ComboBox {
-        anchors.centerIn: parent
-        model: [ "Banana", "Apple", "Coconut" ]
+    ColumnLayout {
+        anchors.fill: parent
+
+        TextField {
+            Layout.alignment: Qt.AlignCenter
+            text : "Text with context menu"
+        }
+
+        ComboBox {
+            Layout.alignment: Qt.AlignCenter
+            model: [ "Banana", "Apple", "Coconut" ]
+        }
     }
 }

@@ -75,6 +75,7 @@ static void initResources()
 {
 #ifdef QT_STATIC
     Q_INIT_RESOURCE(qmake_QtQuick_Controls);
+    Q_INIT_RESOURCE(qmake_controls);
 #endif
 }
 

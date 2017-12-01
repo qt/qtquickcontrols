@@ -52,6 +52,7 @@
 #include <QtQml/QQmlApplicationEngine>
 #include <QtCore/QElapsedTimer>
 #include <functional>
+#include <stdio.h>
 
 int runBenchmark(std::function<int()> f) {
     {

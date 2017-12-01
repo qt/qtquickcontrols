@@ -59,7 +59,7 @@ Item {
     property bool flashing: false
 
     scale: direction === Qt.LeftArrow ? 1 : -1
-
+//! [1]
     Timer {
         id: flashTimer
         interval: 500
@@ -67,7 +67,8 @@ Item {
         repeat: true
         onTriggered: flashing = !flashing
     }
-
+//! [1]
+//! [2]
     function paintOutlinePath(ctx) {
         ctx.beginPath();
         ctx.moveTo(0, height * 0.5);
@@ -79,7 +80,7 @@ Item {
         ctx.lineTo(0.6 * width, height);
         ctx.lineTo(0, height * 0.5);
     }
-
+//! [2]
     Canvas {
         id: backgroundCanvas
         anchors.fill: parent
@@ -95,7 +96,7 @@ Item {
             ctx.stroke();
         }
     }
-
+//! [3]
     Canvas {
         id: foregroundCanvas
         anchors.fill: parent
@@ -111,4 +112,5 @@ Item {
             ctx.fill();
         }
     }
+//! [3]
 }

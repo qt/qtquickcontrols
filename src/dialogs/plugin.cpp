@@ -72,7 +72,7 @@ static void initResources()
 QT_BEGIN_NAMESPACE
 
 /*!
-    \qmlmodule QtQuick.Dialogs 1.2
+    \qmlmodule QtQuick.Dialogs 1.3
     \title Qt Quick Dialogs QML Types
     \ingroup qmlmodules
     \brief Provides QML types for standard file, color picker and message dialogs
@@ -82,7 +82,7 @@ QT_BEGIN_NAMESPACE
     To use the types in this module, import the module with the following line:
 
     \code
-    import QtQuick.Dialogs 1.2
+    import QtQuick.Dialogs 1.3
     \endcode
 */
 
@@ -185,6 +185,7 @@ public:
 #endif
             qCDebug(lcRegistration) << "    registering" << dialogQmlPath << "as Dialog";
             qmlRegisterType(dialogQmlPath, uri, 1, 2, "Dialog");
+            qmlRegisterType(dialogQmlPath, uri, 1, 3, "Dialog");
         }
     }
 

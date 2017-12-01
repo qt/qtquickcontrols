@@ -318,4 +318,12 @@ QJSValue QQuickAbstractFileDialog::__shortcuts()
     return m_shortcutDetails;
 }
 
+void QQuickAbstractFileDialog::setDefaultSuffix(const QString &suffix)
+{
+    if (suffix == m_options->defaultSuffix())
+        return;
+    m_options->setDefaultSuffix(suffix);
+    emit defaultSuffixChanged();
+}
+
 QT_END_NAMESPACE

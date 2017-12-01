@@ -56,6 +56,7 @@ private slots:
     void fileDialogDefaultModality();
     void fileDialogNonModal();
     void fileDialogNameFilters();
+    void fileDialogDefaultSuffix();
 
 private:
 };
@@ -205,6 +206,28 @@ void tst_dialogs::fileDialogNameFilters()
     filters << "All files (*)";
     dlg->setProperty("nameFilters", QVariant(filters));
     QCOMPARE(dlg->property("selectedNameFilter").toString(), filters.first());
+}
+
+void tst_dialogs::fileDialogDefaultSuffix()
+{
+    QQuickView *window = new QQuickView;
+    QScopedPointer<QQuickWindow> cleanup(window);
+
+    const QUrl sourceUrl = testFileUrl("RectWithFileDialog.qml");
+    window->setSource(sourceUrl);
+    window->setGeometry(240, 240, 1024, 320);
+    window->show();
+    QTRY_VERIFY(QTest::qWaitForWindowExposed(window));
+    QVERIFY(window->rootObject());
+
+    QObject *dlg = qvariant_cast<QObject *>(window->rootObject()->property("fileDialog"));
+    QCOMPARE(dlg->property("defaultSuffix").toString(), QString());
+    dlg->setProperty("defaultSuffix", "txt");
+    QCOMPARE(dlg->property("defaultSuffix").toString(), QString("txt"));
+    dlg->setProperty("defaultSuffix", ".txt");
+    QCOMPARE(dlg->property("defaultSuffix").toString(), QString("txt"));
+    dlg->setProperty("defaultSuffix", QString());
+    QCOMPARE(dlg->property("defaultSuffix").toString(), QString());
 }
 
 QTEST_MAIN(tst_dialogs)
