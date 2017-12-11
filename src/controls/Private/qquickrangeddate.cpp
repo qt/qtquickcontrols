@@ -42,12 +42,12 @@
 QT_BEGIN_NAMESPACE
 
 // JavaScript Date > QDate conversion is not correct for large negative dates.
-Q_GLOBAL_STATIC_WITH_ARGS(const QDate, jsMinimumDate, (QDate(1, 1, 1)))
-Q_GLOBAL_STATIC_WITH_ARGS(const QDate, jsMaximumDate, (QDate(275759, 10, 25)))
+Q_GLOBAL_STATIC_WITH_ARGS(const QDateTime, jsMinimumDate, (QDateTime(QDate(1, 1, 1), QTime())))
+Q_GLOBAL_STATIC_WITH_ARGS(const QDateTime, jsMaximumDate, (QDateTime(QDate(275759, 10, 25), QTime())))
 
 QQuickRangedDate1::QQuickRangedDate1() :
     QObject(0),
-    mDate(QDate::currentDate()),
+    mDate(QDateTime::currentDateTime()),
     mMinimumDate(*jsMinimumDate),
     mMaximumDate(*jsMaximumDate)
 {
@@ -56,7 +56,7 @@ QQuickRangedDate1::QQuickRangedDate1() :
 /*! \internal
     \qmlproperty date QQuickRangedDate::date
 */
-void QQuickRangedDate1::setDate(const QDate &date)
+void QQuickRangedDate1::setDate(const QDateTime &date)
 {
     if (date == mDate)
         return;
@@ -75,7 +75,7 @@ void QQuickRangedDate1::setDate(const QDate &date)
 /*! \internal
     \qmlproperty date QQuickRangedDate::minimumDate
 */
-void QQuickRangedDate1::setMinimumDate(const QDate &minimumDate)
+void QQuickRangedDate1::setMinimumDate(const QDateTime &minimumDate)
 {
     if (minimumDate == mMinimumDate)
         return;
@@ -93,7 +93,7 @@ void QQuickRangedDate1::setMinimumDate(const QDate &minimumDate)
 /*! \internal
     \qmlproperty date QQuickRangedDate::maximumDate
 */
-void QQuickRangedDate1::setMaximumDate(const QDate &maximumDate)
+void QQuickRangedDate1::setMaximumDate(const QDateTime &maximumDate)
 {
     if (maximumDate == mMaximumDate)
         return;
