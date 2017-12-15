@@ -134,8 +134,7 @@ Style {
         clip: true
         Rectangle {
             id: base
-            width: control.width
-            height: control.height
+            anchors.fill: parent
             radius: TextSingleton.implicitHeight * 0.16
             antialiasing: true
             gradient: Gradient {
