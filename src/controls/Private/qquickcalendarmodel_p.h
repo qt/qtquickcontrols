@@ -75,7 +75,7 @@ public:
 
     QHash<int, QByteArray> roleNames() const override;
 
-    Q_INVOKABLE QDate dateAt(int index) const;
+    Q_INVOKABLE QDateTime dateAt(int index) const;
     Q_INVOKABLE int indexAt(const QDate &visibleDate);
     Q_INVOKABLE int weekNumberAt(int row) const;
 

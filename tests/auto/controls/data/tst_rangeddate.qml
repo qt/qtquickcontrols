@@ -69,7 +69,10 @@ Item {
 
         function test_defaultConstruction() {
             // rangedDate.date should be the current date.
-            compare(rangedDate.date.getTime(), new Date(Date.now()).setHours(0, 0, 0, 0));
+            var expectedDate = new Date();
+            compare(rangedDate.date.getFullYear(), expectedDate.getFullYear());
+            compare(rangedDate.date.getMonth(), expectedDate.getMonth());
+            compare(rangedDate.date.getDate(), expectedDate.getDate());
         }
 
         function test_minMax() {

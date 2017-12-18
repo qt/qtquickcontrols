@@ -58,19 +58,31 @@ QT_BEGIN_NAMESPACE
 
 static QString defaultStyleName()
 {
-    //Only enable QStyle support when we are using QApplication
-#if defined(QT_WIDGETS_LIB) && !defined(Q_OS_IOS) && !defined(Q_OS_ANDROID) && !defined(Q_OS_BLACKBERRY) && !defined(Q_OS_QNX) && !defined(Q_OS_WINRT)
-    if (QCoreApplication::instance()->inherits("QApplication"))
-        return QLatin1String("Desktop");
-#elif defined(Q_OS_ANDROID) && !defined(Q_OS_ANDROID_EMBEDDED)
-    if (QtAndroidPrivate::androidSdkVersion() >= 11)
-        return QLatin1String("Android");
-#elif defined(Q_OS_IOS)
-    return QLatin1String("iOS");
-#elif defined(Q_OS_WINRT) && 0 // Enable once style is ready
-    return QLatin1String("WinRT");
+    static const QMap<QString, QString> styleMap {
+#if defined(QT_WIDGETS_LIB)
+        {QLatin1String("cocoa"), QLatin1String("Desktop")},
+        {QLatin1String("wayland"), QLatin1String("Desktop")},
+        {QLatin1String("windows"), QLatin1String("Desktop")},
+        {QLatin1String("xcb"), QLatin1String("Desktop")},
 #endif
-    return QLatin1String("Base");
+        {QLatin1String("android"), QLatin1String("Android")},
+        {QLatin1String("ios"), QLatin1String("iOS")},
+#if 0 // Enable once style is ready
+        {QLatin1String("winrt"), QLatin1String("WinRT")},
+#endif
+    };
+
+    QGuiApplication *app = static_cast<QGuiApplication *>(
+        QCoreApplication::instance());
+    const QString styleName = styleMap.value(app->platformName(), QLatin1String("Base"));
+
+#if defined(QT_WIDGETS_LIB)
+    // Only enable QStyle support when we are using QApplication
+    if (styleName == QLatin1String("Desktop") && !app->inherits("QApplication"))
+        return QLatin1String("Base");
+#endif
+
+    return styleName;
 }
 
 static QString styleEnvironmentVariable()

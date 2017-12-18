@@ -162,7 +162,7 @@ void QQuickCalendarModel1::setLocale(const QLocale &locale)
 QVariant QQuickCalendarModel1::data(const QModelIndex &index, int role) const
 {
     if (role == DateRole)
-        return mVisibleDates.at(index.row());
+        return QDateTime(mVisibleDates.at(index.row()), QTime(12, 0));
     return QVariant();
 }
 
@@ -181,9 +181,9 @@ QHash<int, QByteArray> QQuickCalendarModel1::roleNames() const
 /*!
     Returns the date at \a index, or an invalid date if \a index is invalid.
 */
-QDate QQuickCalendarModel1::dateAt(int index) const
+QDateTime QQuickCalendarModel1::dateAt(int index) const
 {
-    return index >= 0 && index < mVisibleDates.size() ? mVisibleDates.at(index) : QDate();
+    return index >= 0 && index < mVisibleDates.size() ? QDateTime(mVisibleDates.at(index), QTime(12, 0)) : QDateTime();
 }
 
 /*!
@@ -207,7 +207,7 @@ int QQuickCalendarModel1::indexAt(const QDate &date)
 int QQuickCalendarModel1::weekNumberAt(int row) const
 {
     const int index = row * daysInAWeek;
-    const QDate date = dateAt(index);
+    const QDate date = dateAt(index).date();
     if (date.isValid())
         return date.weekNumber();
     return -1;

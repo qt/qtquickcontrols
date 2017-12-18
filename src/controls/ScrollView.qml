@@ -191,7 +191,7 @@ FocusScope {
     /*! \internal */
     property Style __style: styleLoader.item
 
-    activeFocusOnTab: true
+    activeFocusOnTab: false
 
     onContentItemChanged: {
 

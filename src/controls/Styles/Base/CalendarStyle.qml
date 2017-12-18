@@ -671,7 +671,9 @@ Style {
 
                             property QtObject styleData: QtObject {
                                 readonly property alias index: delegateLoader.__index
-                                readonly property bool selected: control.selectedDate.getTime() === date.getTime()
+                                readonly property bool selected: control.selectedDate.getFullYear() === date.getFullYear() &&
+                                                                 control.selectedDate.getMonth() === date.getMonth() &&
+                                                                 control.selectedDate.getDate() === date.getDate()
                                 readonly property alias date: delegateLoader.__date
                                 readonly property bool valid: delegateLoader.valid
                                 // TODO: this will not be correct if the app is running when a new day begins.

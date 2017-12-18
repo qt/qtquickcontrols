@@ -49,23 +49,23 @@ QT_BEGIN_NAMESPACE
 class QQuickRangedDate1 : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QDate date READ date WRITE setDate NOTIFY dateChanged RESET resetDate)
-    Q_PROPERTY(QDate minimumDate READ minimumDate WRITE setMinimumDate NOTIFY minimumDateChanged RESET resetMinimumDate)
-    Q_PROPERTY(QDate maximumDate READ maximumDate WRITE setMaximumDate NOTIFY maximumDateChanged RESET resetMaximumDate)
+    Q_PROPERTY(QDateTime date READ date WRITE setDate NOTIFY dateChanged RESET resetDate)
+    Q_PROPERTY(QDateTime minimumDate READ minimumDate WRITE setMinimumDate NOTIFY minimumDateChanged RESET resetMinimumDate)
+    Q_PROPERTY(QDateTime maximumDate READ maximumDate WRITE setMaximumDate NOTIFY maximumDateChanged RESET resetMaximumDate)
 public:
     QQuickRangedDate1();
     ~QQuickRangedDate1() {}
 
-    QDate date() const { return mDate; }
-    void setDate(const QDate &date);
+    QDateTime date() const { return mDate; }
+    void setDate(const QDateTime &date);
     void resetDate() {}
 
-    QDate minimumDate() const { return mMinimumDate; }
-    void setMinimumDate(const QDate &minimumDate);
+    QDateTime minimumDate() const { return mMinimumDate; }
+    void setMinimumDate(const QDateTime &minimumDate);
     void resetMinimumDate() {}
 
-    QDate maximumDate() const { return mMaximumDate; }
-    void setMaximumDate(const QDate &maximumDate);
+    QDateTime maximumDate() const { return mMaximumDate; }
+    void setMaximumDate(const QDateTime &maximumDate);
     void resetMaximumDate() {}
 
 Q_SIGNALS:
@@ -74,9 +74,9 @@ Q_SIGNALS:
     void maximumDateChanged();
 
 private:
-    QDate mDate;
-    QDate mMinimumDate;
-    QDate mMaximumDate;
+    QDateTime mDate;
+    QDateTime mMinimumDate;
+    QDateTime mMaximumDate;
 };
 
 QT_END_NAMESPACE

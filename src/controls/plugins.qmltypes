@@ -10,10 +10,9 @@ Module {
     dependencies: [
         "QtGraphicalEffects 1.0",
         "QtQml.Models 2.2",
-        "QtQuick 2.6",
+        "QtQuick 2.9",
         "QtQuick.Controls.Styles 1.4",
         "QtQuick.Extras 1.4",
-        "QtQuick.Extras.Private.CppUtils 1.1",
         "QtQuick.Layouts 1.1",
         "QtQuick.Window 2.2"
     ]
@@ -673,7 +672,7 @@ Module {
         exportMetaObjectRevisions: [0]
         isComposite: true
         defaultProperty: "data"
-        Property { name: "menuBar"; type: "MenuBar_QMLTYPE_2"; isPointer: true }
+        Property { name: "menuBar"; type: "MenuBar_QMLTYPE_3"; isPointer: true }
         Property { name: "toolBar"; type: "QQuickItem"; isPointer: true }
         Property { name: "statusBar"; type: "QQuickItem"; isPointer: true }
         Property { name: "style"; type: "QQmlComponent"; isPointer: true }
@@ -681,12 +680,7 @@ Module {
         Property { name: "__qwindowsize_max"; type: "double"; isReadonly: true }
         Property { name: "__width"; type: "double" }
         Property { name: "__height"; type: "double" }
-        Property {
-            name: "contentItem"
-            type: "ContentItem_QMLTYPE_10"
-            isReadonly: true
-            isPointer: true
-        }
+        Property { name: "contentItem"; type: "ContentItem_QMLTYPE_1"; isReadonly: true; isPointer: true }
         Property { name: "__style"; type: "QObject"; isReadonly: true; isPointer: true }
         Property { name: "__panel"; type: "QObject"; isReadonly: true; isPointer: true }
         Property { name: "data"; type: "QObject"; isList: true; isReadonly: true }
@@ -752,11 +746,73 @@ Module {
         Property { name: "weekNumbersVisible"; type: "bool" }
         Property { name: "navigationBarVisible"; type: "bool" }
         Property { name: "dayOfWeekFormat"; type: "int" }
-        Property { name: "__locale"; type: "QVariant" }
+        Property { name: "locale"; type: "QVariant" }
         Property { name: "__model"; type: "QQuickCalendarModel1"; isPointer: true }
         Property { name: "selectedDate"; type: "QDate" }
         Property { name: "minimumDate"; type: "QDate" }
         Property { name: "maximumDate"; type: "QDate" }
+        Property { name: "__locale"; type: "QVariant" }
+        Signal {
+            name: "hovered"
+            Parameter { name: "date"; type: "QDateTime" }
+        }
+        Signal {
+            name: "pressed"
+            Parameter { name: "date"; type: "QDateTime" }
+        }
+        Signal {
+            name: "released"
+            Parameter { name: "date"; type: "QDateTime" }
+        }
+        Signal {
+            name: "clicked"
+            Parameter { name: "date"; type: "QDateTime" }
+        }
+        Signal {
+            name: "doubleClicked"
+            Parameter { name: "date"; type: "QDateTime" }
+        }
+        Signal {
+            name: "pressAndHold"
+            Parameter { name: "date"; type: "QDateTime" }
+        }
+        Method { name: "showPreviousMonth"; type: "QVariant" }
+        Method { name: "showNextMonth"; type: "QVariant" }
+        Method { name: "showPreviousYear"; type: "QVariant" }
+        Method { name: "showNextYear"; type: "QVariant" }
+        Method { name: "__selectPreviousMonth"; type: "QVariant" }
+        Method { name: "__selectNextMonth"; type: "QVariant" }
+        Method { name: "__selectPreviousWeek"; type: "QVariant" }
+        Method { name: "__selectNextWeek"; type: "QVariant" }
+        Method { name: "__selectFirstDayOfMonth"; type: "QVariant" }
+        Method { name: "__selectLastDayOfMonth"; type: "QVariant" }
+        Method { name: "__selectPreviousDay"; type: "QVariant" }
+        Method { name: "__selectNextDay"; type: "QVariant" }
+        Property { name: "style"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "__style"; type: "QObject"; isPointer: true }
+        Property { name: "__panel"; type: "QQuickItem"; isPointer: true }
+        Property { name: "styleHints"; type: "QVariant" }
+        Property { name: "__styleData"; type: "QObject"; isPointer: true }
+    }
+    Component {
+        prototype: "QQuickFocusScope"
+        name: "QtQuick.Controls/Calendar 1.6"
+        exports: ["QtQuick.Controls/Calendar 1.6"]
+        exportMetaObjectRevisions: [6]
+        isComposite: true
+        defaultProperty: "data"
+        Property { name: "visibleMonth"; type: "int" }
+        Property { name: "visibleYear"; type: "int" }
+        Property { name: "frameVisible"; type: "bool" }
+        Property { name: "weekNumbersVisible"; type: "bool" }
+        Property { name: "navigationBarVisible"; type: "bool" }
+        Property { name: "dayOfWeekFormat"; type: "int" }
+        Property { name: "locale"; type: "QVariant" }
+        Property { name: "__model"; type: "QQuickCalendarModel1"; isPointer: true }
+        Property { name: "selectedDate"; type: "QDate" }
+        Property { name: "minimumDate"; type: "QDate" }
+        Property { name: "maximumDate"; type: "QDate" }
+        Property { name: "__locale"; type: "QVariant" }
         Signal {
             name: "hovered"
             Parameter { name: "date"; type: "QDateTime" }
@@ -1364,14 +1420,14 @@ Module {
         Property { name: "__scrollBarTopMargin"; type: "int" }
         Property { name: "__viewTopMargin"; type: "int" }
         Property { name: "style"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "__style"; type: "Style_QMLTYPE_1"; isPointer: true }
+        Property { name: "__style"; type: "Style_QMLTYPE_2"; isPointer: true }
         Property { name: "horizontalScrollBarPolicy"; type: "int" }
         Property { name: "verticalScrollBarPolicy"; type: "int" }
         Property { name: "viewport"; type: "QQuickItem"; isReadonly: true; isPointer: true }
         Property { name: "flickableItem"; type: "QQuickFlickable"; isReadonly: true; isPointer: true }
         Property {
             name: "__scroller"
-            type: "ScrollViewHelper_QMLTYPE_26"
+            type: "ScrollViewHelper_QMLTYPE_27"
             isReadonly: true
             isPointer: true
         }
@@ -1379,16 +1435,44 @@ Module {
         Property { name: "__wheelAreaScrollSpeed"; type: "double" }
         Property {
             name: "__horizontalScrollBar"
-            type: "ScrollBar_QMLTYPE_22"
+            type: "ScrollBar_QMLTYPE_23"
             isReadonly: true
             isPointer: true
         }
         Property {
             name: "__verticalScrollBar"
-            type: "ScrollBar_QMLTYPE_22"
+            type: "ScrollBar_QMLTYPE_23"
             isReadonly: true
             isPointer: true
         }
+    }
+    Component {
+        prototype: "QQuickFocusScope"
+        name: "QtQuick.Controls/Slider 1.6"
+        exports: ["QtQuick.Controls/Slider 1.6"]
+        exportMetaObjectRevisions: [6]
+        isComposite: true
+        defaultProperty: "data"
+        Property { name: "orientation"; type: "int" }
+        Property { name: "updateValueWhileDragging"; type: "bool" }
+        Property { name: "activeFocusOnPress"; type: "bool" }
+        Property { name: "tickmarksEnabled"; type: "bool" }
+        Property { name: "__horizontal"; type: "bool" }
+        Property { name: "__handlePos"; type: "double" }
+        Property { name: "minimumValue"; type: "double" }
+        Property { name: "maximumValue"; type: "double" }
+        Property { name: "pressed"; type: "bool"; isReadonly: true }
+        Property { name: "hovered"; type: "bool"; isReadonly: true }
+        Property { name: "stepSize"; type: "double" }
+        Property { name: "value"; type: "double" }
+        Property { name: "wheelEnabled"; type: "bool" }
+        Method { name: "accessibleIncreaseAction"; type: "QVariant" }
+        Method { name: "accessibleDecreaseAction"; type: "QVariant" }
+        Property { name: "style"; type: "QQmlComponent"; isPointer: true }
+        Property { name: "__style"; type: "QObject"; isPointer: true }
+        Property { name: "__panel"; type: "QQuickItem"; isPointer: true }
+        Property { name: "styleHints"; type: "QVariant" }
+        Property { name: "__styleData"; type: "QObject"; isPointer: true }
     }
     Component {
         prototype: "QQuickFocusScope"
@@ -1409,6 +1493,7 @@ Module {
         Property { name: "hovered"; type: "bool"; isReadonly: true }
         Property { name: "stepSize"; type: "double" }
         Property { name: "value"; type: "double" }
+        Property { name: "wheelEnabled"; type: "bool" }
         Method { name: "accessibleIncreaseAction"; type: "QVariant" }
         Method { name: "accessibleDecreaseAction"; type: "QVariant" }
         Property { name: "style"; type: "QQmlComponent"; isPointer: true }
@@ -1603,9 +1688,9 @@ Module {
     }
     Component {
         prototype: "QQuickFocusScope"
-        name: "QtQuick.Extras/StatusIndicator 1.0"
-        exports: ["QtQuick.Extras/StatusIndicator 1.0"]
-        exportMetaObjectRevisions: [0]
+        name: "QtQuick.Extras/StatusIndicator 1.1"
+        exports: ["QtQuick.Extras/StatusIndicator 1.1"]
+        exportMetaObjectRevisions: [1]
         isComposite: true
         defaultProperty: "data"
         Property { name: "active"; type: "bool" }
@@ -1619,9 +1704,9 @@ Module {
     }
     Component {
         prototype: "QQuickFocusScope"
-        name: "QtQuick.Extras/StatusIndicator 1.1"
-        exports: ["QtQuick.Extras/StatusIndicator 1.1"]
-        exportMetaObjectRevisions: [1]
+        name: "QtQuick.Extras/StatusIndicator 1.0"
+        exports: ["QtQuick.Extras/StatusIndicator 1.0"]
+        exportMetaObjectRevisions: [0]
         isComposite: true
         defaultProperty: "data"
         Property { name: "active"; type: "bool" }
@@ -1822,14 +1907,14 @@ Module {
         Property { name: "__scrollBarTopMargin"; type: "int" }
         Property { name: "__viewTopMargin"; type: "int" }
         Property { name: "style"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "__style"; type: "Style_QMLTYPE_1"; isPointer: true }
+        Property { name: "__style"; type: "Style_QMLTYPE_2"; isPointer: true }
         Property { name: "horizontalScrollBarPolicy"; type: "int" }
         Property { name: "verticalScrollBarPolicy"; type: "int" }
         Property { name: "viewport"; type: "QQuickItem"; isReadonly: true; isPointer: true }
         Property { name: "flickableItem"; type: "QQuickFlickable"; isReadonly: true; isPointer: true }
         Property {
             name: "__scroller"
-            type: "ScrollViewHelper_QMLTYPE_26"
+            type: "ScrollViewHelper_QMLTYPE_27"
             isReadonly: true
             isPointer: true
         }
@@ -1837,13 +1922,13 @@ Module {
         Property { name: "__wheelAreaScrollSpeed"; type: "double" }
         Property {
             name: "__horizontalScrollBar"
-            type: "ScrollBar_QMLTYPE_22"
+            type: "ScrollBar_QMLTYPE_23"
             isReadonly: true
             isPointer: true
         }
         Property {
             name: "__verticalScrollBar"
-            type: "ScrollBar_QMLTYPE_22"
+            type: "ScrollBar_QMLTYPE_23"
             isReadonly: true
             isPointer: true
         }
@@ -1989,14 +2074,14 @@ Module {
         Property { name: "__scrollBarTopMargin"; type: "int" }
         Property { name: "__viewTopMargin"; type: "int" }
         Property { name: "style"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "__style"; type: "Style_QMLTYPE_1"; isPointer: true }
+        Property { name: "__style"; type: "Style_QMLTYPE_2"; isPointer: true }
         Property { name: "horizontalScrollBarPolicy"; type: "int" }
         Property { name: "verticalScrollBarPolicy"; type: "int" }
         Property { name: "viewport"; type: "QQuickItem"; isReadonly: true; isPointer: true }
         Property { name: "flickableItem"; type: "QQuickFlickable"; isReadonly: true; isPointer: true }
         Property {
             name: "__scroller"
-            type: "ScrollViewHelper_QMLTYPE_26"
+            type: "ScrollViewHelper_QMLTYPE_27"
             isReadonly: true
             isPointer: true
         }
@@ -2004,13 +2089,13 @@ Module {
         Property { name: "__wheelAreaScrollSpeed"; type: "double" }
         Property {
             name: "__horizontalScrollBar"
-            type: "ScrollBar_QMLTYPE_22"
+            type: "ScrollBar_QMLTYPE_23"
             isReadonly: true
             isPointer: true
         }
         Property {
             name: "__verticalScrollBar"
-            type: "ScrollBar_QMLTYPE_22"
+            type: "ScrollBar_QMLTYPE_23"
             isReadonly: true
             isPointer: true
         }
@@ -2137,14 +2222,14 @@ Module {
         Property { name: "__scrollBarTopMargin"; type: "int" }
         Property { name: "__viewTopMargin"; type: "int" }
         Property { name: "style"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "__style"; type: "Style_QMLTYPE_1"; isPointer: true }
+        Property { name: "__style"; type: "Style_QMLTYPE_2"; isPointer: true }
         Property { name: "horizontalScrollBarPolicy"; type: "int" }
         Property { name: "verticalScrollBarPolicy"; type: "int" }
         Property { name: "viewport"; type: "QQuickItem"; isReadonly: true; isPointer: true }
         Property { name: "flickableItem"; type: "QQuickFlickable"; isReadonly: true; isPointer: true }
         Property {
             name: "__scroller"
-            type: "ScrollViewHelper_QMLTYPE_26"
+            type: "ScrollViewHelper_QMLTYPE_27"
             isReadonly: true
             isPointer: true
         }
@@ -2152,13 +2237,13 @@ Module {
         Property { name: "__wheelAreaScrollSpeed"; type: "double" }
         Property {
             name: "__horizontalScrollBar"
-            type: "ScrollBar_QMLTYPE_22"
+            type: "ScrollBar_QMLTYPE_23"
             isReadonly: true
             isPointer: true
         }
         Property {
             name: "__verticalScrollBar"
-            type: "ScrollBar_QMLTYPE_22"
+            type: "ScrollBar_QMLTYPE_23"
             isReadonly: true
             isPointer: true
         }
@@ -2285,14 +2370,14 @@ Module {
         Property { name: "__scrollBarTopMargin"; type: "int" }
         Property { name: "__viewTopMargin"; type: "int" }
         Property { name: "style"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "__style"; type: "Style_QMLTYPE_1"; isPointer: true }
+        Property { name: "__style"; type: "Style_QMLTYPE_2"; isPointer: true }
         Property { name: "horizontalScrollBarPolicy"; type: "int" }
         Property { name: "verticalScrollBarPolicy"; type: "int" }
         Property { name: "viewport"; type: "QQuickItem"; isReadonly: true; isPointer: true }
         Property { name: "flickableItem"; type: "QQuickFlickable"; isReadonly: true; isPointer: true }
         Property {
             name: "__scroller"
-            type: "ScrollViewHelper_QMLTYPE_26"
+            type: "ScrollViewHelper_QMLTYPE_27"
             isReadonly: true
             isPointer: true
         }
@@ -2300,13 +2385,13 @@ Module {
         Property { name: "__wheelAreaScrollSpeed"; type: "double" }
         Property {
             name: "__horizontalScrollBar"
-            type: "ScrollBar_QMLTYPE_22"
+            type: "ScrollBar_QMLTYPE_23"
             isReadonly: true
             isPointer: true
         }
         Property {
             name: "__verticalScrollBar"
-            type: "ScrollBar_QMLTYPE_22"
+            type: "ScrollBar_QMLTYPE_23"
             isReadonly: true
             isPointer: true
         }
@@ -2602,14 +2687,14 @@ Module {
         Property { name: "__scrollBarTopMargin"; type: "int" }
         Property { name: "__viewTopMargin"; type: "int" }
         Property { name: "style"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "__style"; type: "Style_QMLTYPE_1"; isPointer: true }
+        Property { name: "__style"; type: "Style_QMLTYPE_2"; isPointer: true }
         Property { name: "horizontalScrollBarPolicy"; type: "int" }
         Property { name: "verticalScrollBarPolicy"; type: "int" }
         Property { name: "viewport"; type: "QQuickItem"; isReadonly: true; isPointer: true }
         Property { name: "flickableItem"; type: "QQuickFlickable"; isReadonly: true; isPointer: true }
         Property {
             name: "__scroller"
-            type: "ScrollViewHelper_QMLTYPE_26"
+            type: "ScrollViewHelper_QMLTYPE_27"
             isReadonly: true
             isPointer: true
         }
@@ -2617,13 +2702,13 @@ Module {
         Property { name: "__wheelAreaScrollSpeed"; type: "double" }
         Property {
             name: "__horizontalScrollBar"
-            type: "ScrollBar_QMLTYPE_22"
+            type: "ScrollBar_QMLTYPE_23"
             isReadonly: true
             isPointer: true
         }
         Property {
             name: "__verticalScrollBar"
-            type: "ScrollBar_QMLTYPE_22"
+            type: "ScrollBar_QMLTYPE_23"
             isReadonly: true
             isPointer: true
         }
@@ -2742,14 +2827,14 @@ Module {
         Property { name: "__scrollBarTopMargin"; type: "int" }
         Property { name: "__viewTopMargin"; type: "int" }
         Property { name: "style"; type: "QQmlComponent"; isPointer: true }
-        Property { name: "__style"; type: "Style_QMLTYPE_1"; isPointer: true }
+        Property { name: "__style"; type: "Style_QMLTYPE_2"; isPointer: true }
         Property { name: "horizontalScrollBarPolicy"; type: "int" }
         Property { name: "verticalScrollBarPolicy"; type: "int" }
         Property { name: "viewport"; type: "QQuickItem"; isReadonly: true; isPointer: true }
         Property { name: "flickableItem"; type: "QQuickFlickable"; isReadonly: true; isPointer: true }
         Property {
             name: "__scroller"
-            type: "ScrollViewHelper_QMLTYPE_26"
+            type: "ScrollViewHelper_QMLTYPE_27"
             isReadonly: true
             isPointer: true
         }
@@ -2757,13 +2842,13 @@ Module {
         Property { name: "__wheelAreaScrollSpeed"; type: "double" }
         Property {
             name: "__horizontalScrollBar"
-            type: "ScrollBar_QMLTYPE_22"
+            type: "ScrollBar_QMLTYPE_23"
             isReadonly: true
             isPointer: true
         }
         Property {
             name: "__verticalScrollBar"
-            type: "ScrollBar_QMLTYPE_22"
+            type: "ScrollBar_QMLTYPE_23"
             isReadonly: true
             isPointer: true
         }
