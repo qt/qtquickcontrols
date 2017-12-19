@@ -110,6 +110,10 @@ TestCase {
         }
     }
 
+    function init() {
+        skip("QTBUG-65211")
+    }
+
     function test_01_splitView() {
         var view = splitView.createObject(testCase);
         verify (view !== null, "splitview created is null")

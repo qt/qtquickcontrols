@@ -160,6 +160,8 @@ TestCase {
     function test_keyNavigation() {
         if (Qt.platform.os === "osx")
             skip("MenuBar cannot be reliably tested on OS X")
+        if (Qt.platform.pluginName === "offscreen")
+            skip("QTBUG-65211")
 
         var window = createTemporaryObject(windowComponent)
         waitForRendering(window.contentItem)

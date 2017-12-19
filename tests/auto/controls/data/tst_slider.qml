@@ -81,6 +81,11 @@ Item {
             Slider {}
         }
 
+        function init() {
+            if (Qt.platform.pluginName === "offscreen")
+                skip("QTBUG-65211")
+        }
+
         function test_vertical() {
             var slider = Qt.createQmlObject('import QtQuick.Controls 1.2; Slider {}', testCase, '');
             verify(slider.height < slider.width)

@@ -59,6 +59,11 @@ TestCase {
     width: 400
     height: 400
 
+    function init() {
+        if (Qt.platform.pluginName === "offscreen")
+            skip("QTBUG-65211")
+    }
+
     function test_instance() {
         var button = Qt.createQmlObject('import QtQuick.Extras 1.4; DelayButton { }', testcase, '')
         verify (button, "DelayButton: failed to create an instance")

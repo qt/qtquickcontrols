@@ -82,6 +82,12 @@ Item {
         property var instance_selectionModel: 'import QtQml.Models 2.2; ItemSelectionModel {}'
         property var semiIndent: 20/2 // PM_TreeViewIndentation 20 in commonStyle
 
+        function init()
+        {
+            if (Qt.platform.pluginName === "offscreen")
+                skip("QTBUG-65211")
+        }
+
         function cleanup()
         {
             // Make sure to delete all children even when the test has failed.

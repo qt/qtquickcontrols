@@ -78,6 +78,8 @@ TestCase {
     function init() {
         if (Qt.platform.os === "windows")
             skip("QTBUG-53123");
+        if (Qt.platform.pluginName === "offscreen")
+            skip("QTBUG-65211")
     }
 
     function cleanup() {

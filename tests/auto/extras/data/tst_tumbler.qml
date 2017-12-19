@@ -93,6 +93,11 @@ Item {
             }
         }
 
+        function init() {
+            if (Qt.platform.pluginName === "offscreen")
+                skip("QTBUG-65211")
+        }
+
         function test_instance() {
             var tumbler = createTemporaryObject(tumblerComponent, container);
             verify(tumbler);
