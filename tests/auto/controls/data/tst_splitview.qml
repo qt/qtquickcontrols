@@ -111,7 +111,8 @@ TestCase {
     }
 
     function init() {
-        skip("QTBUG-65211")
+        if (Qt.platform.pluginName === "offscreen")
+            skip("QTBUG-65211")
     }
 
     function test_01_splitView() {
