@@ -79,11 +79,6 @@ TestCase {
         Item {}
     }
 
-    function init() {
-        if (Qt.platform.pluginName === "offscreen")
-            skip("QTBUG-65211")
-    }
-
     function test_changeIndex() {
         var tabView = Qt.createQmlObject('import QtQuick 2.2; import QtQuick.Controls 1.2; TabView { Repeater { model: 3; Tab { Text { text: index } } } }', testCase, '');
         compare(tabView.count, 3)

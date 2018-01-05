@@ -89,11 +89,6 @@ Item {
             PieMenu {}
         }
 
-        function init() {
-            if (Qt.platform.pluginName === "offscreen")
-                skip("QTBUG-65211")
-        }
-
         function cleanup() {
             currentIndexSignalSpy.clear();
             actionSignalSpy.clear();

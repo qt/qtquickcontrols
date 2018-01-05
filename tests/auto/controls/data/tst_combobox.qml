@@ -192,9 +192,7 @@ TestCase {
     }
 
     function test_append_find() {
-        if (Qt.platform.pluginName === "offscreen")
-            skip("QTBUG-65211")
-        var comboBox = Qt.createQmlObject( 'import QtQuick.Controls 1.2;                \
+        var comboBox = Qt.createQmlObject( 'import QtQuick.Controls 1.2;                    \
                                         import QtQuick 2.2;                             \
                                         ComboBox {                                      \
                                             model:ListModel{ListElement{text:"first"}}  \
@@ -229,9 +227,6 @@ TestCase {
     }
 
     function test_editable() {
-        if (Qt.platform.pluginName === "offscreen")
-            skip("QTBUG-65211")
-
         var arrayModel = ['Banana', 'Coco', 'Coconut', 'Apple', 'Cocomuffin' ]
         var comboBox = Qt.createQmlObject('import QtQuick.Controls 1.2;         \
                                             ComboBox {                          \

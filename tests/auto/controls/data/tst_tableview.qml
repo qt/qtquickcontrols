@@ -70,12 +70,6 @@ TestCase {
         TableViewColumn { }
     }
 
-    function init() {
-        if (Qt.platform.pluginName === "offscreen")
-            skip("QTBUG-65211")
-
-    }
-
     function test_usingqmlmodel_data() {
         return [
                     {tag: "listmodel", a: "tableview/table5_listmodel.qml", expected: "A"},

@@ -110,11 +110,6 @@ TestCase {
         }
     }
 
-    function init() {
-        if (Qt.platform.pluginName === "offscreen")
-            skip("QTBUG-65211")
-    }
-
     function test_01_splitView() {
         var view = splitView.createObject(testCase);
         verify (view !== null, "splitview created is null")
