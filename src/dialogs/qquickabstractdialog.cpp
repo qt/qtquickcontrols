@@ -230,7 +230,7 @@ void QQuickAbstractDialog::decorationLoaded()
         } else {
             qWarning() << m_decorationComponent->url() <<
                 "cannot be used as a window decoration because it's not an Item";
-            delete m_windowDecoration;
+            delete decoration;
             delete m_decorationComponent;
             m_decorationComponent = 0;
         }
