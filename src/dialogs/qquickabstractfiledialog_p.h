@@ -74,8 +74,8 @@ class QQuickAbstractFileDialog : public QQuickAbstractDialog
     Q_PROPERTY(QUrl fileUrl READ fileUrl NOTIFY selectionAccepted)
     Q_PROPERTY(QList<QUrl> fileUrls READ fileUrls NOTIFY selectionAccepted)
     Q_PROPERTY(bool sidebarVisible READ sidebarVisible WRITE setSidebarVisible NOTIFY sidebarVisibleChanged)
-    Q_PROPERTY(QJSValue shortcuts READ shortcuts NOTIFY shortcutsChanged) // map of QStandardDirectory names to QUrls
-    Q_PROPERTY(QJSValue __shortcuts READ __shortcuts NOTIFY shortcutsChanged) // map of details for QML dialog implementations
+    Q_PROPERTY(QJSValue shortcuts READ shortcuts CONSTANT) // map of QStandardDirectory names to QUrls
+    Q_PROPERTY(QJSValue __shortcuts READ __shortcuts CONSTANT) // map of details for QML dialog implementations
 
 public:
     QQuickAbstractFileDialog(QObject *parent = 0);
@@ -115,7 +115,6 @@ Q_SIGNALS:
     void fileModeChanged();
     void selectionAccepted();
     void sidebarVisibleChanged();
-    void shortcutsChanged();
 
 protected Q_SLOTS:
     void updateFolder(const QUrl &f);

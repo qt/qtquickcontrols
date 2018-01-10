@@ -298,8 +298,6 @@ void QQuickAbstractFileDialog::populateShortcuts()
     for (const QFileInfo &fi : drives)
         addShortcut(fi.absoluteFilePath(), fi.absoluteFilePath(), fi.absoluteFilePath());
 #endif
-
-    emit shortcutsChanged();
 }
 
 QJSValue QQuickAbstractFileDialog::shortcuts()
