@@ -62,7 +62,7 @@
 
     The Qt Quick Controls Styles submodule allows custom styling for \l {Qt Quick Controls}.
 
-    The submodule is new in Qt 5.1.
+    The submodule was introduced in Qt 5.1.
 
     \section1 Getting started
 

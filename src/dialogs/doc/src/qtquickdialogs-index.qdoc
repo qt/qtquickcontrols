@@ -31,7 +31,7 @@
 
     \brief Qt Quick Dialogs submodule
 
-    The module is new in Qt 5.1.
+    The module was introduced in Qt 5.1.
 
     \section1 Dialogs
 
