@@ -114,8 +114,6 @@ Item {
 
         function test_clicked_signals()
         {
-            if (Settings.hasTouchScreen)
-                skip("Fails with touch screens");
             var component = Qt.createComponent("treeview/treeview_1.qml")
             compare(component.status, Component.Ready)
             var tree = component.createObject(container);
@@ -165,8 +163,6 @@ Item {
 
         function test_headerHidden()
         {
-            if (Settings.hasTouchScreen)
-                skip("Fails with touch screens");
             var component = Qt.createComponent("treeview/treeview_1.qml")
             compare(component.status, Component.Ready)
             var tree = component.createObject(container);
@@ -282,8 +278,6 @@ Item {
 
         function test_keys_navigation()
         {
-            if (Settings.hasTouchScreen)
-                skip("Fails with touch screens");
             var component = Qt.createComponent("treeview/treeview_2.qml")
             compare(component.status, Component.Ready)
             var tree = component.createObject(container);
@@ -338,8 +332,6 @@ Item {
 
         function test_selection_singleSelection()
         {
-            if (Settings.hasTouchScreen)
-                skip("Fails with touch screens");
             var component = Qt.createComponent("treeview/treeview_1.qml")
             compare(component.status, Component.Ready)
             var tree = component.createObject(container);
@@ -465,8 +457,6 @@ Item {
 
         function test_selection_multiSelection()
         {
-            if (Settings.hasTouchScreen)
-                skip("Fails with touch screens");
             var component = Qt.createComponent("treeview/treeview_1.qml")
             compare(component.status, Component.Ready)
             var tree = component.createObject(container);
@@ -576,8 +566,6 @@ Item {
 
         function test_selection_extendedSelection()
         {
-            if (Settings.hasTouchScreen)
-                skip("Fails with touch screens");
             var component = Qt.createComponent("treeview/treeview_1.qml")
             compare(component.status, Component.Ready)
             var tree = component.createObject(container);
@@ -664,8 +652,6 @@ Item {
 
         function test_selection_contiguousSelection()
         {
-            if (Settings.hasTouchScreen)
-                skip("Fails with touch screens");
             var component = Qt.createComponent("treeview/treeview_1.qml")
             compare(component.status, Component.Ready)
             var tree = component.createObject(container);
@@ -762,8 +748,6 @@ Item {
 
         function test_indexAt() {
             skip("Fails because of bug QTBUG-47523")
-            if (Settings.hasTouchScreen)
-                skip("Fails with touch screens");
             var component = Qt.createComponent("treeview/treeview_1.qml")
             compare(component.status, Component.Ready)
             var tree = component.createObject(container);
@@ -832,8 +816,6 @@ Item {
 
         function test_QTBUG_46891_selection_collapse_parent()
         {
-            if (Settings.hasTouchScreen)
-                skip("Fails with touch screens");
             var component = Qt.createComponent("treeview/treeview_1.qml")
             compare(component.status, Component.Ready)
             var tree = component.createObject(container);
