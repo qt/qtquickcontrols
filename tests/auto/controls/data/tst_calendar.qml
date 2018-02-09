@@ -414,6 +414,9 @@ Item {
                     compare(calendar.selectedDate.getDate(), expectedDate.getDate());
                     compare(calendar.__panel.pressedCellIndex, cellIndex);
                     compare(pressedSignalSpy.count, 1);
+                    compare(pressedSignalSpy.signalArguments[0][0].getFullYear(), expectedDate.getFullYear());
+                    compare(pressedSignalSpy.signalArguments[0][0].getMonth(), expectedDate.getMonth());
+                    compare(pressedSignalSpy.signalArguments[0][0].getDate(), expectedDate.getDate());
                     compare(releasedSignalSpy.count, 0);
                     compare(clickedSignalSpy.count, 0);
 
@@ -421,7 +424,14 @@ Item {
                     compare(calendar.__panel.pressedCellIndex, -1);
                     compare(pressedSignalSpy.count, 1);
                     compare(releasedSignalSpy.count, 1);
+                    // Will fail
+//                    compare(releasedSignalSpy.signalArguments[0][0].getFullYear(), expectedDate.getFullYear());
+//                    compare(releasedSignalSpy.signalArguments[0][0].getMonth(), expectedDate.getMonth());
+//                    compare(releasedSignalSpy.signalArguments[0][0].getDate(), expectedDate.getDate());
                     compare(clickedSignalSpy.count, 1);
+                    compare(clickedSignalSpy.signalArguments[0][0].getFullYear(), expectedDate.getFullYear());
+                    compare(clickedSignalSpy.signalArguments[0][0].getMonth(), expectedDate.getMonth());
+                    compare(clickedSignalSpy.signalArguments[0][0].getDate(), expectedDate.getDate());
 
                     pressedSignalSpy.clear();
                     releasedSignalSpy.clear();
