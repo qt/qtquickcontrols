@@ -369,6 +369,7 @@ Style {
         property int hoveredCellIndex: -1
         property int pressedCellIndex: -1
         property int pressCellIndex: -1
+        property var pressDate: null
 
         Rectangle {
             anchors.fill: parent
@@ -581,9 +582,11 @@ Style {
 
                         onPressed: {
                             pressCellIndex = cellIndexAt(mouse.x, mouse.y);
+                            pressDate = null;
                             if (pressCellIndex !== -1) {
                                 var date = view.model.dateAt(pressCellIndex);
                                 pressedCellIndex = pressCellIndex;
+                                pressDate = date;
                                 if (__isValidDate(date)) {
                                     control.selectedDate = date;
                                     control.pressed(date);
@@ -608,9 +611,8 @@ Style {
                         onClicked: {
                             var indexOfCell = cellIndexAt(mouse.x, mouse.y);
                             if (indexOfCell !== -1 && indexOfCell === pressCellIndex) {
-                                var date = view.model.dateAt(indexOfCell);
-                                if (__isValidDate(date))
-                                    control.clicked(date);
+                                if (__isValidDate(pressDate))
+                                    control.clicked(pressDate);
                             }
                         }
 

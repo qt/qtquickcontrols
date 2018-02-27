@@ -149,11 +149,6 @@ void QtQuickControls1Plugin::registerTypes(const char *uri)
     const QString filesLocation = fileLocation();
     for (int i = 0; i < int(sizeof(qmldir)/sizeof(qmldir[0])); i++)
         qmlRegisterType(QUrl(filesLocation + "/" + qmldir[i].type + ".qml"), uri, qmldir[i].major, qmldir[i].minor, qmldir[i].type);
-}
-
-void QtQuickControls1Plugin::initializeEngine(QQmlEngine *engine, const char *uri)
-{
-    Q_UNUSED(uri);
 
     // Register private API. Note that to use these types outside of the
     // Qt Quick Controls module, both the public and private imports must be used.
@@ -185,6 +180,14 @@ void QtQuickControls1Plugin::initializeEngine(QQmlEngine *engine, const char *ur
 
 #ifdef QT_WIDGETS_LIB
     qmlRegisterType<QQuickStyleItem1>(private_uri, 1, 0, "StyleItem");
+#endif
+}
+
+void QtQuickControls1Plugin::initializeEngine(QQmlEngine *engine, const char *uri)
+{
+    Q_UNUSED(uri);
+
+#ifdef QT_WIDGETS_LIB
     engine->addImageProvider("__tablerow", new QQuickTableRowImageProvider1);
 #endif
     engine->addImageProvider("desktoptheme", new QQuickDesktopIconProvider1);

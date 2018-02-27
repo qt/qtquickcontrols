@@ -45,6 +45,7 @@
 #include <qdebug.h>
 #include <qabstractitemmodel.h>
 #include <qcursor.h>
+#include <private/qhighdpiscaling_p.h>
 #include <private/qguiapplication_p.h>
 #include <QtGui/qpa/qplatformtheme.h>
 #include <QtGui/qpa/qplatformmenu.h>
@@ -456,7 +457,9 @@ void QQuickMenu1::__popup(const QRectF &targetRect, int atItemIndex, MenuType me
         }
         globalTargetRect.translate(renderOffset);
         m_platformMenu->setMenuType(QPlatformMenu::MenuType(menuType));
-        m_platformMenu->showPopup(parentWindow, globalTargetRect.toRect(), atItem ? atItem->platformItem() : 0);
+        m_platformMenu->showPopup(parentWindow,
+                                  QHighDpi::toNativePixels(globalTargetRect.toRect(), parentWindow),
+                                  atItem ? atItem->platformItem() : 0);
     } else {
         m_popupWindow = new QQuickMenuPopupWindow1(this);
         if (visualItem())
