@@ -162,12 +162,10 @@ Style {
             Loader {
                 id: indicatorLoader
                 sourceComponent: indicator
-                anchors.verticalCenter: parent.verticalCenter
             }
             Loader {
                 id: labelLoader
                 sourceComponent: label
-                anchors.verticalCenter: parent.verticalCenter
             }
         }
     }
