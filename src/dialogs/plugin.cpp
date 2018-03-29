@@ -214,7 +214,7 @@ protected:
         bool mobileTouchPlatform = false;
 #if defined(Q_OS_IOS)
         mobileTouchPlatform = true;
-#elif defined(Q_OS_ANDROID) || defined(Q_OS_BLACKBERRY) || defined(Q_OS_QNX) || defined(Q_OS_WINRT)
+#elif defined(Q_OS_ANDROID) || defined(Q_OS_BLACKBERRY) || defined(Q_OS_QNX)
         const auto devices = QTouchDevice::devices();
         for (const QTouchDevice *dev : devices)
             if (dev->type() == QTouchDevice::TouchScreen)
