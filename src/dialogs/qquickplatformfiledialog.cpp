@@ -318,7 +318,9 @@ void QQuickPlatformFileDialog1::accept()
         {shortcuts.pictures},
         a native image picker dialog will be used for accessing the user's photo album.
         The URL returned can be set as \l{Image::source}{source} for \l{Image}.
-        This feature was added in Qt 5.5.
+        For this to be enabled, the Info.plist assigned to QMAKE_INFO_PLIST in the project file must
+        contain the key, NSPhotoLibraryUsageDescription. See Info.plist documentation from Apple for
+        more information regarding this key. This feature was added in Qt 5.5.
 
     \sa shortcuts
 */
