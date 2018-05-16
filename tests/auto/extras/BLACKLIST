@@ -1,3 +1,10 @@
+[Tests_StatusIndicator::test_active]
+*
+[Tests_StatusIndicator::test_baseStyleHasOuterShadow]
+*
+[Tests_StatusIndicator::test_color]
+*
+
 [Tests_Tumbler::test_focusPastLastColumn]
 *
 [Tests_Tumbler::test_itemsCorrectlyPositioned]
