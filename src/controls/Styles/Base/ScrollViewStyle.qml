@@ -47,7 +47,7 @@ import QtQuick.Controls.Private 1.0
     \since 5.1
     \ingroup viewsstyling
     \ingroup controlsstyling
-    \brief Provides custom styling for ScrollView
+    \brief Provides custom styling for ScrollView.
 */
 Style {
     id: root

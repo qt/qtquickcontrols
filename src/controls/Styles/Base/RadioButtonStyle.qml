@@ -46,7 +46,7 @@ import QtQuick.Controls.Private 1.0
     \inqmlmodule QtQuick.Controls.Styles
     \since 5.1
     \ingroup controlsstyling
-    \brief Provides custom styling for RadioButton
+    \brief Provides custom styling for RadioButton.
 
     Example:
     \qml
