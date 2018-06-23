@@ -46,7 +46,7 @@ import QtQuick.Controls.Private 1.0
     \inqmlmodule QtQuick.Controls.Styles
     \since 5.3
     \ingroup controlsstyling
-    \brief Provides custom styling for \l Calendar
+    \brief Provides custom styling for \l Calendar.
 
     \section2 Component Map
 

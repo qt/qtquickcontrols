@@ -47,7 +47,7 @@ import QtQuick.Controls.Private 1.0
     \inqmlmodule QtQuick.Controls.Styles
     \since 5.1
     \ingroup controlsstyling
-    \brief Provides custom styling for ProgressBar
+    \brief Provides custom styling for ProgressBar.
 
     Example:
     \qml

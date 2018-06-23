@@ -208,7 +208,7 @@
     \example touch
     \title Qt Quick Controls - Touch Gallery
     \ingroup qtquickcontrols_examples
-    \brief Demonstrates UI controls for a touch interface
+    \brief Demonstrates UI controls for a touch interface.
     \image qtquickcontrols-example-touch.png
 
     \e {Touch Gallery} demonstrates how to implement a UI suitable for touch
@@ -454,7 +454,7 @@
     \example calendar
     \title Qt Quick Controls - Calendar Example
     \ingroup qtquickcontrols_examples
-    \brief Demonstrates the use of Calendar control
+    \brief Demonstrates the use of Calendar control.
     \image qtquickcontrols-example-calendar.png
 
     The Calendar example displays a Calendar control and an events list for
@@ -542,7 +542,7 @@
     \example styles
     \title Qt Quick Controls - Styles Example
     \ingroup qtquickcontrols_examples
-    \brief Demonstrates custom styles
+    \brief Demonstrates custom styles.
     \image qtquickcontrols-example-styles.png
 
     This example shows how to create custom styles for \l{Qt Quick Controls}.
