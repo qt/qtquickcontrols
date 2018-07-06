@@ -130,6 +130,15 @@
     The default value is \c -1 to indicate that no row is selected.
 */
 
+/*!
+    \qmlproperty bool BasicTableView::frameVisible
+
+    This property tells the TableView if it should render
+    a frame around its content.
+
+    The default value is \c true.
+*/
+
 /*! \qmlsignal TableView::activated(int row)
 
     Emitted when the user activates an item by mouse or keyboard interaction.
