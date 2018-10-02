@@ -51,10 +51,12 @@
 // We mean it.
 //
 
-#include <QFileDialog>
-#include "../dialogs/qquickabstractfiledialog_p.h"
+#include <QtWidgets/qtwidgetsglobal.h>
 
 #if QT_CONFIG(filedialog)
+
+#include <QFileDialog>
+#include "../dialogs/qquickabstractfiledialog_p.h"
 
 QT_BEGIN_NAMESPACE
 
