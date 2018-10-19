@@ -260,6 +260,17 @@ ScrollView {
         if (index >= 0 && index <= columnCount && object.Accessible.role === Accessible.ColumnHeader) {
             object.__view = root
             columnModel.insert(index, {columnItem: object})
+            if (root.__columns[index] !== object) {
+                // The new column needs to be put into __columns at the specified index
+                // so the list needs to be recreated to be correct
+                var arr = []
+                for (var i = 0; i < index; ++i)
+                    arr.push(root.__columns[i])
+                arr.push(object)
+                for (i = index; i < root.__columns.length; ++i)
+                    arr.push(root.__columns[i])
+                root.__columns = arr
+            }
             return object
         }
 
