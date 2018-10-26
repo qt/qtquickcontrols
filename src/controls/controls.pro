@@ -6,7 +6,7 @@ IMPORT_VERSION = 1.5
 
 QT += qml quick quick-private qml-private gui-private core-private
 
-QMAKE_DOCS = $$PWD/doc/qtquickcontrols.qdocconf
+QMAKE_DOCS = $$PWD/doc/qtquickcontrols1.qdocconf
 
 CONTROLS_QML_FILES = \
     ApplicationWindow.qml \
