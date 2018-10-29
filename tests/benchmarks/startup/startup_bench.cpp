@@ -50,6 +50,7 @@
 
 #include "qtquickcontrolsapplication.h"
 #include <QtQml/QQmlApplicationEngine>
+#include <QQuickWindow>
 #include <QtCore/QElapsedTimer>
 #include <functional>
 #include <stdio.h>
@@ -83,11 +84,11 @@ int main(int argc, char *argv[])
         QElapsedTimer timer;
         timer.start();
         QQmlApplicationEngine engine(QUrl("qrc:/main.qml"));
-        QObject::connect(&engine, &QQmlApplicationEngine::quit,
-                         QCoreApplication::instance(), &QCoreApplication::quit);
-        engine.load(QUrl("qrc:/timer.qml"));
-        if (engine.rootObjects().size() != 2)
+        if (engine.rootObjects().size() != 1)
             return -1;
+        QQuickWindow *window = qobject_cast<QQuickWindow*>(engine.rootObjects().first());
+        QObject::connect(window, &QQuickWindow::frameSwapped,
+                         QCoreApplication::instance(), &QCoreApplication::quit);
         if (app.exec() != 0)
             return -1;
         return timer.elapsed();
