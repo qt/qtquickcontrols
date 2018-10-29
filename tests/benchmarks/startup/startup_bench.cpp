@@ -54,25 +54,21 @@
 #include <functional>
 #include <stdio.h>
 
-int runBenchmark(std::function<int()> f) {
+int runBenchmark(std::function<qint64()> f) {
     {
-        QElapsedTimer t;
-        t.start();
-        int r = f();
-        if (r == 0)
-            printf("%d,", static_cast<int>(t.elapsed()));
+        auto r = f();
+        if (r >= 0)
+            printf("%d,", static_cast<int>(r));
         else
-            return r;
+            return -1;
     }
 
     {
-        QElapsedTimer t;
-        t.start();
-        int r = f();
-        if (r == 0)
-            printf("%d\n", static_cast<int>(t.elapsed()));
+        auto r = f();
+        if (r >= 0)
+            printf("%d\n", static_cast<int>(r));
         else
-            return r;
+            return -1;
     }
 
     return 0;
@@ -83,14 +79,18 @@ int main(int argc, char *argv[])
 {
     QtQuickControlsApplication app(argc, argv);
 
-    auto startup = [&app]() {
+    auto startup = [&app]() -> qint64 {
+        QElapsedTimer timer;
+        timer.start();
         QQmlApplicationEngine engine(QUrl("qrc:/main.qml"));
         QObject::connect(&engine, &QQmlApplicationEngine::quit,
                          QCoreApplication::instance(), &QCoreApplication::quit);
         engine.load(QUrl("qrc:/timer.qml"));
         if (engine.rootObjects().size() != 2)
             return -1;
-        return app.exec();
+        if (app.exec() != 0)
+            return -1;
+        return timer.elapsed();
     };
 
     return runBenchmark(startup);
