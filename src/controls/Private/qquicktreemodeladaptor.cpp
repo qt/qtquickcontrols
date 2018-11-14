@@ -283,6 +283,8 @@ QItemSelection  QQuickTreeModelAdaptor1::selectionForRowRange(const QModelIndex 
             return QItemSelection();
         return QItemSelection(toIndex, toIndex);
     }
+
+    to = qMax(to, 0);
     if (from > to)
         qSwap(from, to);
 
