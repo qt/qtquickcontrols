@@ -69,7 +69,9 @@ excludefiles += ../TableView.qml \
 
 excludedirs += ../Styles/Desktop \
                ../Styles/Android \
-               ../Styles/iOS
+               ../Styles/iOS \
+               ../Styles/WinRT
+
 
 imagedirs += images \
     ../../extras/doc/images
