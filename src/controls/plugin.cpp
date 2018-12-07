@@ -73,10 +73,12 @@
 
 QT_BEGIN_NAMESPACE
 
-static const struct {
+struct QmldirStruct {
     const char *type;
     int major, minor;
-} qmldir [] = {
+};
+
+static const QmldirStruct qmldir [] = {
     { "ApplicationWindow", 1, 0 },
     { "Button", 1, 0 },
     { "Calendar", 1, 2 },
@@ -117,6 +119,43 @@ static const struct {
 
     { "Calendar", 1, 6 },
     { "Slider", 1, 6 }
+};
+
+static const QmldirStruct stylesQmldir [] = {
+    { "ApplicationWindowStyle", 1, 3 },
+    { "ButtonStyle", 1, 0 },
+    { "BusyIndicatorStyle", 1, 1 },
+    { "CalendarStyle", 1, 1 },
+    { "CheckBoxStyle", 1, 0 },
+    { "ComboBoxStyle", 1, 0 },
+    { "MenuStyle", 1, 2 },
+    { "MenuBarStyle", 1, 2 },
+    { "ProgressBarStyle", 1, 0 },
+    { "RadioButtonStyle", 1, 0 },
+    { "ScrollViewStyle", 1, 0 },
+    { "SliderStyle", 1, 0 },
+    { "SpinBoxStyle", 1, 1 },
+    { "SwitchStyle", 1, 1 },
+    { "TabViewStyle", 1, 0 },
+    { "TableViewStyle", 1, 0 },
+    { "TreeViewStyle", 1, 4 },
+    { "TextAreaStyle", 1, 1 },
+    { "TextFieldStyle", 1, 0 },
+    { "ToolBarStyle", 1, 0 },
+    { "StatusBarStyle", 1, 0 },
+    { "CircularGaugeStyle", 1, 0 },
+    { "CircularButtonStyle", 1, 0 },
+    { "CircularTickmarkLabelStyle", 1, 0 },
+    { "CommonStyleHelper", 1, 0 },
+    { "DelayButtonStyle", 1, 0 },
+    { "DialStyle", 1, 1 },
+    { "GaugeStyle", 1, 0 },
+    { "HandleStyle", 1, 0 },
+    { "HandleStyleHelper", 1, 0 },
+    { "PieMenuStyle", 1, 3 },
+    { "StatusIndicatorStyle", 1, 1 },
+    { "ToggleButtonStyle", 1, 0 },
+    { "TumblerStyle", 1, 2 }
 };
 
 QtQuickControls1Plugin::QtQuickControls1Plugin(QObject *parent) : QQmlExtensionPlugin(parent)
@@ -172,6 +211,12 @@ void QtQuickControls1Plugin::registerTypes(const char *uri)
 #ifdef QT_WIDGETS_LIB
     qmlRegisterType<QQuickStyleItem1>(private_uri, 1, 0, "StyleItem");
 #endif
+
+    const char *styles_uri = "QtQuick.Controls.Styles";
+    const QString baseStyleLocation = filesLocation + "/Styles/Base";
+    for (int i = 0; i < int(sizeof(stylesQmldir)/sizeof(stylesQmldir[0])); i++)
+        qmlRegisterType(QUrl(baseStyleLocation + "/" + stylesQmldir[i].type + ".qml"), styles_uri,
+                        stylesQmldir[i].major, stylesQmldir[i].minor, stylesQmldir[i].type);
 }
 
 void QtQuickControls1Plugin::initializeEngine(QQmlEngine *engine, const char *uri)
