@@ -45,6 +45,7 @@ qtquickcompiler {
 } else {
     QML_FILES += $$CONTROLS_QML_FILES
     !static: CONFIG += qmlcache
+    else: CONTROLS_QML_FILES += qmldir
 }
 
 SOURCES += $$PWD/plugin.cpp
