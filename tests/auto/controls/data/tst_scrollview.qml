@@ -197,8 +197,12 @@ TestCase {
         mouseRelease(scrollView, scrollView.width - 2, 8 + 16)
         waitForRendering(scrollView)
 
-        verify(Math.round(scrollView.flickableItem.contentHeight) > 60 * 20)
-        verify(Math.round(scrollView.flickableItem.contentY) < -(60 * 20))
+        tryVerify(
+                function() { return Math.round(scrollView.flickableItem.contentHeight) > 60 * 20 },
+                50, "contentHeight did not adjust to new data.")
+        tryVerify(
+                function() { return Math.round(scrollView.flickableItem.contentY) < -(60 * 20) },
+                50, "contentY did not adjust to new data.")
 
         scrollView.destroy()
     }
