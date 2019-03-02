@@ -421,9 +421,9 @@ ScrollView {
         interactive: Settings.hasTouchScreen
         property var rowItemStack: [] // Used as a cache for rowDelegates
 
-        readonly property bool transientScrollbars: __style && !!__style.transientScrollBars
+        readonly property bool transientScrollBars: __style && !!__style.transientScrollBars
         readonly property real vScrollbarPadding: __scroller.verticalScrollBar.visible
-                                                  && !transientScrollbars && Qt.platform.os === "osx" ?
+                                                  && !transientScrollBars && Qt.platform.os === "osx" ?
                                                   __verticalScrollBar.width + __scroller.scrollBarSpacing + root.__style.padding.right : 0
 
         Binding {

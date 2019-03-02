@@ -410,6 +410,7 @@ Style {
                 anchors.leftMargin: (control.weekNumbersVisible ? weekNumbersItem.width : 0)
                 anchors.right: parent.right
                 spacing: gridVisible ? __gridLineWidth : 0
+                property alias __repeater: repeater
 
                 Repeater {
                     id: repeater
