@@ -179,6 +179,8 @@ TestCase {
     }
 
     function test_dragFetchAppend() {   // QTBUG-50795
+        skip("This is flaky: QTBUG-55727. Can't use BLACKLIST because of QTBUG-74117.")
+
         var scrollView = dragFetchAppendComponent.createObject(container)
         verify(scrollView !== null, "view created is null")
         waitForRendering(scrollView)
