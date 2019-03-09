@@ -985,5 +985,13 @@ Item {
                 compare(testcase.aysncDelegatesDestructed[i], true);
             }
         }
+
+        function test_firstDayOfWeekAfterLocaleChange() {
+            calendar.selectedDate = new Date(2013, 0, 1);
+            calendar.locale = Qt.locale("en");
+            compare(calendar.__panel.dayOfWeekHeaderRow.__repeater.model.get(0).dayOfWeek, 0)
+            calendar.locale = Qt.locale("fr");
+            compare(calendar.__panel.dayOfWeekHeaderRow.__repeater.model.get(0).dayOfWeek, 1)
+        }
     }
 }
