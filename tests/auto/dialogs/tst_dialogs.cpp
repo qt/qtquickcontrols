@@ -55,6 +55,7 @@ private slots:
     void dialogButtonHandler();
     void dialogKeyHandler_data();
     void dialogKeyHandler();
+    void dialogWithDynamicTitle();
 
     // FileDialog
     void fileDialogDefaultModality();
@@ -368,6 +369,21 @@ void tst_dialogs::fileDialogDefaultSuffix()
     QCOMPARE(dlg->property("defaultSuffix").toString(), QString("txt"));
     dlg->setProperty("defaultSuffix", QString());
     QCOMPARE(dlg->property("defaultSuffix").toString(), QString());
+}
+
+void tst_dialogs::dialogWithDynamicTitle()
+{
+    QQmlEngine engine;
+    QQmlComponent component(&engine);
+    component.loadUrl(testFileUrl("DialogWithDynamicTitle.qml"));
+    QObject *dlg = component.create();
+    QScopedPointer<QObject> cleanup(dlg);
+    QVERIFY2(dlg, qPrintable(component.errorString()));
+    QWindow *window = dlg->findChild<QWindow *>();
+    QVERIFY(window);
+    QTRY_COMPARE(window->title(), QLatin1String("Title"));
+    dlg->setProperty("newTitle", true);
+    QTRY_COMPARE(window->title(), QLatin1String("New Title"));
 }
 
 QTEST_MAIN(tst_dialogs)
