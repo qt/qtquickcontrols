@@ -322,6 +322,8 @@ void QQuickDialog1::setTitle(const QString &arg)
 {
     if (m_title != arg) {
         m_title = arg;
+        if (m_dialogWindow)
+            m_dialogWindow->setTitle(m_title);
         emit titleChanged();
     }
 }
