@@ -1,0 +1,8 @@
+[Tests_Picture::test_color]
+msvc-2019
+[Tests_StatusIndicator::test_active]
+msvc-2019
+[Tests_StatusIndicator::test_baseStyleHasOuterShadow]
+msvc-2019
+[Tests_StatusIndicator::test_color]
+msvc-2019
