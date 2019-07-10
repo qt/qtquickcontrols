@@ -1181,8 +1181,8 @@ void tst_QQuickTreeModelAdaptor::reparentOnSameRow()
     // at least DepthRole and ModeIndexRole changes should have happened for the affected row
     bool depthChanged = false;
     bool modelIndexChanged = false;
-    QList<QList<QVariant> > &changes = dataChangedSpy;
-    foreach (QList<QVariant> change, changes) {
+    const QList<QList<QVariant> > &changes = dataChangedSpy;
+    for (const QList<QVariant> &change : changes) {
         if (change.at(0) == movedIndex) {
             if (change.at(2).value<QVector<int> >().contains(QQuickTreeModelAdaptor1::DepthRole))
                 depthChanged = true;
@@ -1258,7 +1258,7 @@ void tst_QQuickTreeModelAdaptor::selectionForRowRange()
         QCOMPARE(sel.count(), 2);
         // We don't know in which order the selection ranges are
         // being added, so we iterate and try to find what we expect.
-        foreach (const QItemSelectionRange &range, sel) {
+        for (const QItemSelectionRange &range : sel) {
             if (range.topLeft() ==  model.index(0, 0))
                 QCOMPARE(QModelIndex(range.bottomRight()), model.index(0, 0));
             else if (range.topLeft() ==  model.index(0, 0, parent))
@@ -1275,7 +1275,7 @@ void tst_QQuickTreeModelAdaptor::selectionForRowRange()
         QCOMPARE(sel.count(), 2);
         // We don't know in which order the selection ranges are
         // being added, so we iterate and try to find what we expect.
-        foreach (const QItemSelectionRange &range, sel) {
+        for (const QItemSelectionRange &range : sel) {
             if (range.topLeft() ==  model.index(0, 0))
                 QCOMPARE(QModelIndex(range.bottomRight()), model.index(4, 0));
             else if (range.topLeft() ==  model.index(0, 0, parent))
@@ -1296,7 +1296,7 @@ void tst_QQuickTreeModelAdaptor::selectionForRowRange()
         QCOMPARE(sel.count(), 3);
         // We don't know in which order the selection ranges are
         // being added, so we iterate and try to find what we expect.
-        foreach (const QItemSelectionRange &range, sel) {
+        for (const QItemSelectionRange &range : sel) {
             if (range.topLeft() ==  model.index(0, 0))
                 QCOMPARE(QModelIndex(range.bottomRight()), model.index(4, 0));
             else if (range.topLeft() ==  model.index(0, 0, parent))
@@ -1319,7 +1319,7 @@ void tst_QQuickTreeModelAdaptor::selectionForRowRange()
         QCOMPARE(sel.count(), 3);
         // We don't know in which order the selection ranges are
         // being added, so we iterate and try to find what we expect.
-        foreach (const QItemSelectionRange &range, sel) {
+        for (const QItemSelectionRange &range : sel) {
             if (range.topLeft() ==  model.index(0, 0))
                 QCOMPARE(QModelIndex(range.bottomRight()), model.index(0, 0));
             else if (range.topLeft() ==  model.index(0, 0, parent))
@@ -1338,7 +1338,7 @@ void tst_QQuickTreeModelAdaptor::selectionForRowRange()
         QCOMPARE(sel.count(), 4);
         // We don't know in which order the selection ranges are
         // being added, so we iterate and try to find what we expect.
-        foreach (const QItemSelectionRange &range, sel) {
+        for (const QItemSelectionRange &range : sel) {
             if (range.topLeft() ==  model.index(0, 0))
                 QCOMPARE(QModelIndex(range.bottomRight()), model.index(ModelRowCount - 1, 0));
             else if (range.topLeft() ==  model.index(0, 0, parent))
@@ -1359,7 +1359,7 @@ void tst_QQuickTreeModelAdaptor::selectionForRowRange()
         QCOMPARE(sel.count(), 4);
         // We don't know in which order the selection ranges are
         // being added, so we iterate and try to find what we expect.
-        foreach (const QItemSelectionRange &range, sel) {
+        for (const QItemSelectionRange &range : sel) {
             if (range.topLeft() ==  model.index(1, 0))
                 QCOMPARE(QModelIndex(range.bottomRight()), model.index(1, 0));
             else if (range.topLeft() ==  model.index(1, 0, parent))
