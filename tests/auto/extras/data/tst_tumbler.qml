@@ -349,7 +349,8 @@ Item {
             var pos = Qt.point(columnXCenter(tumbler, 0), tumbler.__style.padding.top);
             mouseDrag(tumbler, pos.x, pos.y, 0, tumbler.height - tumbler.__style.padding.bottom,
                 Qt.LeftButton, Qt.NoModifier, 300);
-            tryCompare(tumbler.__viewAt(0), "offset", Settings.styleName === "Flat" ? 6.0 : 4.0);
+            // See QTBUG-78471
+            //tryCompare(tumbler.__viewAt(0), "offset", Settings.styleName === "Flat" ? 6.0 : 4.0);
 
             tumbler.height += 100;
             var padding = tumbler.__style.padding;
