@@ -143,7 +143,7 @@ Item {
             }
         }
         onValueChanged: {
-            if (!blockUpdates) {
+            if (flickableItem && !blockUpdates) {
                 flickableItem.contentX = value + flickableItem.originX
             }
         }
