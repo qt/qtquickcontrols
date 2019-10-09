@@ -765,8 +765,8 @@ ScrollView {
 
             Connections {
                 target: area.viewport
-                onWidthChanged: edit.doLayout()
-                onHeightChanged: edit.doLayout()
+                function onWidthChanged() { edit.doLayout() }
+                function onHeightChanged() { edit.doLayout() }
             }
             onContentWidthChanged: edit.doLayout()
             onContentHeightChanged: edit.doLayout()
