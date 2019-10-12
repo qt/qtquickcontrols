@@ -37,6 +37,7 @@
 **
 ****************************************************************************/
 
+import QtQml 2.14 as Qml
 import QtQuick 2.2
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
@@ -330,10 +331,11 @@ Control {
                     visible: columnObject.visible
                     clip: true
 
-                    Binding {
+                    Qml.Binding {
                         target: columnObject
                         property: "__currentIndex"
                         value: columnPathView.currentIndex
+                        restoreMode: Binding.RestoreBinding
                     }
 
                     // We add one here so that the delegate's don't just appear in the view instantly,

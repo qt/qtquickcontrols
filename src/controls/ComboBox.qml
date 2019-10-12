@@ -37,6 +37,7 @@
 **
 ****************************************************************************/
 
+import QtQml 2.14 as Qml
 import QtQuick 2.2
 import QtQuick.Controls 1.2
 import QtQuick.Controls.Private 1.0
@@ -549,11 +550,12 @@ Control {
         }
     }
 
-    Binding {
+    Qml.Binding {
         target: input
         property: "text"
         value: popup.currentText
         when: input.editTextMatches
+        restoreMode: Binding.RestoreBinding
     }
 
     onTextRoleChanged: popup.resolveTextValue(textRole)
