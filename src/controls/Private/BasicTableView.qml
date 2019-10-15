@@ -48,6 +48,7 @@
 // We mean it.
 //
 
+import QtQml 2.14 as Qml
 import QtQuick 2.6
 import QtQuick.Controls 1.5
 import QtQuick.Controls.Private 1.0
@@ -426,7 +427,7 @@ ScrollView {
                                                   && !transientScrollBars && Qt.platform.os === "osx" ?
                                                   __verticalScrollBar.width + __scroller.scrollBarSpacing + root.__style.padding.right : 0
 
-        Binding {
+        Qml.Binding {
             // On Mac, we reserve the vSB space in the contentItem because the vSB should
             // appear under the header. Unfortunately, the ListView header won't expand
             // beyond the ListView's boundaries, that's why we need to ressort to this.
@@ -434,6 +435,7 @@ ScrollView {
             when: Qt.platform.os === "osx"
             property: "verticalScrollbarOffset"
             value: 0
+            restoreMode: Binding.RestoreBinding
         }
 
         function incrementCurrentIndexBlocking() {
@@ -492,7 +494,7 @@ ScrollView {
             y: listView.contentHeight - listView.contentY + listView.originY
             width: parent.width
             visible: alternatingRowColors
-            height: viewport.height - listView.contentHeight
+            height: listView.model && listView.model.count ? (viewport.height - listView.contentHeight) : 0
             Repeater {
                 model: visible ? parent.paddedRowCount : 0
                 Loader {
