@@ -1,7 +1,7 @@
 dependencies:
   ../qtdeclarative:
-    ref: 74b9d94fc14eab083bbce17c12ba63e48cfc7eae
+    ref: 8dd994291ec8c40e772d5bdbbc9f73ee684f7be6
     required: true
   ../qtgraphicaleffects:
-    ref: fabfaebebd30397122730dfecd50e64415616850
+    ref: deeb2e9e4addb95059d34ac199976da186fab7ff
     required: false
