@@ -69,7 +69,7 @@ DrawableLoader {
     Connections {
         target: styleData
         onActivated: idle.restart()
-        onPressedChanged: {
+        function onPressedChanged() {
             if (!styleData.pressed)
                 idle.restart()
         }
@@ -82,9 +82,9 @@ DrawableLoader {
     Connections {
         target: editor
         ignoreUnknownSignals: true
-        onTextChanged: if (!ignore.running) idle.stop()
-        onDisplayTextChanged: if (!ignore.running) idle.stop()
-        onInputMethodComposing: if (!ignore.running) idle.stop()
+        function onTextChanged() { if (!ignore.running) idle.stop() }
+        function onDisplayTextChanged() { if (!ignore.running) idle.stop() }
+        function onInputMethodComposing() { if (!ignore.running) idle.stop() }
     }
 
     Timer {
