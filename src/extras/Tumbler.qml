@@ -171,7 +171,7 @@ Control {
     /*!
         \qmlmethod int Tumbler::currentIndexAt(int columnIndex)
         Returns the current index of the column at \a columnIndex, or \c null
-        if the \a index is invalid.
+        if \a columnIndex is invalid.
     */
     function currentIndexAt(columnIndex) {
         if (!__isValidColumnIndex(columnIndex))
