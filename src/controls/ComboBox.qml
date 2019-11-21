@@ -341,7 +341,7 @@ Control {
         be emitted if the combo box index was changed by the user, not
         when set programmatically.
 
-        \a index is the activated model index, or \c -1 if a new string is
+        \e index is the activated model index, or \c -1 if a new string is
         accepted.
 
         The corresponding handler is \c onActivated.
