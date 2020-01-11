@@ -65,7 +65,7 @@
    then be shown in their corresponding column.
 
    You can customize the look by overriding the \l [QML]{TreeView::}{itemDelegate},
-   \l {basictableview-rowdelegate}{rowDelegate}, or \l {basictableview-headerdelegate}{headerDelegate} properties.
+   rowDelegate, or headerDelegate properties.
 
    The view itself does not provide sorting. This has to
    be done on the model itself. However you can provide sorting
