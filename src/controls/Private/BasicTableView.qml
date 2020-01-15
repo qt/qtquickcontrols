@@ -57,7 +57,6 @@ import QtQuick.Window 2.2
 
 /*!
     \qmltype BasicTableView
-    \internal
     \qmlabstract
     \inqmlmodule QtQuick.Controls.Private
 */
@@ -98,7 +97,6 @@ ScrollView {
     property Component itemDelegate: __style ? __style.itemDelegate : null
 
     /*! \qmlproperty Component BasicTableView::rowDelegate
-        \keyword basictableview-rowdelegate
 
         This property defines a delegate to draw a row.
 
@@ -121,7 +119,6 @@ ScrollView {
     property Component rowDelegate: __style ? __style.rowDelegate : null
 
     /*! \qmlproperty Component BasicTableView::headerDelegate
-        \keyword basictableview-headerdelegate
 
         This property defines a delegate to draw a header.
 
