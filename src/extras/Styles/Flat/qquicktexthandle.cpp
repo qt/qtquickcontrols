@@ -39,6 +39,8 @@
 
 #include "qquicktexthandle.h"
 
+#include <QtGui/qpainterpath.h>
+
 QQuickTextHandle::QQuickTextHandle(QQuickItem *parent) :
     QQuickPaintedItem(parent)
 {

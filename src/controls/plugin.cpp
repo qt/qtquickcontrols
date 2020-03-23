@@ -65,6 +65,7 @@
 #include "Private/qquickstyleitem_p.h"
 #endif
 
+#include <QtCore/qfile.h>
 #ifndef QT_NO_TRANSLATION
 #include <QtCore/qcoreapplication.h>
 #include <QtCore/qlibraryinfo.h>
