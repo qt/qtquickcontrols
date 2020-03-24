@@ -69,6 +69,8 @@ class QQuickAction1 : public QObject
     Q_PROPERTY(QVariant shortcut READ shortcut WRITE setShortcut NOTIFY shortcutChanged)
 #endif
 
+    Q_MOC_INCLUDE("qquickexclusivegroup_p.h")
+
 public:
     explicit QQuickAction1(QObject *parent = 0);
     ~QQuickAction1();

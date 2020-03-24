@@ -61,6 +61,8 @@ class QQuickColorDialog : public QQuickAbstractColorDialog
     Q_PROPERTY(QQuickItem* contentItem READ contentItem WRITE setContentItem DESIGNABLE false)
     Q_CLASSINFO("DefaultProperty", "contentItem")    // AbstractColorDialog in QML can have only one child
 
+    Q_MOC_INCLUDE(<QtQuick/qquickitem.h>)
+
 public:
     explicit QQuickColorDialog(QObject *parent = 0);
     ~QQuickColorDialog();

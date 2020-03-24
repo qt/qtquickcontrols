@@ -81,6 +81,8 @@ class QQuickMenuBase1: public QObject
     Q_PROPERTY(bool __isNative READ isNative CONSTANT)
     Q_PROPERTY(QQuickItem *__visualItem READ visualItem WRITE setVisualItem)
 
+    Q_MOC_INCLUDE(<QtQuick/qquickitem.h>)
+
 Q_SIGNALS:
     void visibleChanged();
 
@@ -179,6 +181,9 @@ class QQuickMenuItem1 : public QQuickMenuText1
     Q_PROPERTY(QQuickExclusiveGroup1 *exclusiveGroup READ exclusiveGroup WRITE setExclusiveGroup NOTIFY exclusiveGroupChanged)
     Q_PROPERTY(QVariant shortcut READ shortcut WRITE setShortcut NOTIFY shortcutChanged)
     Q_PROPERTY(QQuickAction1 *action READ boundAction WRITE setBoundAction NOTIFY actionChanged)
+
+    Q_MOC_INCLUDE("qquickexclusivegroup_p.h")
+    Q_MOC_INCLUDE("qquickaction_p.h")
 
 public Q_SLOTS:
     void trigger();

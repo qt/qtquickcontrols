@@ -77,6 +77,9 @@ class QQuickMenu1 : public QQuickMenuText1
     Q_PROPERTY(bool __isProxy READ isProxy WRITE setProxy NOTIFY __proxyChanged)
     Q_ENUMS(MenuType)
 
+    Q_MOC_INCLUDE(<QtQuick/qquickitem.h>)
+    Q_MOC_INCLUDE("qquickaction_p.h")
+
 public:
     // MenuType must stay in sync with QPlatformMenu::MenuType
     enum MenuType { DefaultMenu = 0, EditMenu };

@@ -69,6 +69,8 @@ class QQuickDialog1 : public QQuickAbstractDialog
     Q_PROPERTY(QQuickItem* contentItem READ contentItem WRITE setContentItem DESIGNABLE false)
     Q_CLASSINFO("DefaultProperty", "contentItem")    // Dialog in QML can have only one child
 
+    Q_MOC_INCLUDE(<QtQuick/qquickitem.h>)
+
 public:
     explicit QQuickDialog1(QObject *parent = 0);
     ~QQuickDialog1();

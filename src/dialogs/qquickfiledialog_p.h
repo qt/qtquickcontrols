@@ -61,6 +61,8 @@ class QQuickFileDialog : public QQuickAbstractFileDialog
     Q_PROPERTY(QQuickItem* contentItem READ contentItem WRITE setContentItem DESIGNABLE false)
     Q_CLASSINFO("DefaultProperty", "contentItem")    // AbstractFileDialog in QML can have only one child
 
+    Q_MOC_INCLUDE(<QtQuick/qquickitem.h>)
+
 public:
     explicit QQuickFileDialog(QObject *parent = 0);
     ~QQuickFileDialog();

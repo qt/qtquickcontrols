@@ -61,6 +61,8 @@ class QQuickMenuBar1: public QObject
     Q_PROPERTY(QQuickWindow *__parentWindow READ parentWindow WRITE setParentWindow)
     Q_PROPERTY(bool __isNative READ isNative WRITE setNative NOTIFY nativeChanged)
 
+    Q_MOC_INCLUDE(<QtQuick/qquickwindow.h>)
+
 Q_SIGNALS:
     void menusChanged();
     void nativeChanged();

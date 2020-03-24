@@ -56,6 +56,8 @@ class QQuickScenePosListener1 : public QObject, public QQuickItemChangeListener
     Q_PROPERTY(QPointF scenePos READ scenePos NOTIFY scenePosChanged FINAL)
     Q_PROPERTY(bool enabled READ isEnabled WRITE setEnabled NOTIFY enabledChanged FINAL)
 
+    Q_MOC_INCLUDE(<QtQuick/qquickitem.h>)
+
 public:
     explicit QQuickScenePosListener1(QObject *parent = 0);
     ~QQuickScenePosListener1();

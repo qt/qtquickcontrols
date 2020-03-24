@@ -53,6 +53,8 @@ class QQuickControlsPrivate1Attached : public QObject
     Q_OBJECT
     Q_PROPERTY(QQuickWindow* window READ window NOTIFY windowChanged)
 
+    Q_MOC_INCLUDE(<QtQuick/qquickwindow.h>)
+
 public:
     QQuickControlsPrivate1Attached(QObject* attachee);
 

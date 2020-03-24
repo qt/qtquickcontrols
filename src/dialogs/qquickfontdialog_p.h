@@ -61,6 +61,8 @@ class QQuickFontDialog : public QQuickAbstractFontDialog
     Q_PROPERTY(QQuickItem* contentItem READ contentItem WRITE setContentItem DESIGNABLE false)
     Q_CLASSINFO("DefaultProperty", "contentItem")
 
+    Q_MOC_INCLUDE(<QtQuick/qquickitem.h>)
+
 public:
     explicit QQuickFontDialog(QObject *parent = 0);
     ~QQuickFontDialog();
