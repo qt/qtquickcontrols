@@ -155,12 +155,12 @@ TestCase {
     }
 
     function test_validator() {
-        var comboBox = Qt.createQmlObject('import QtQuick 2.2;              \
+        var comboBox = Qt.createQmlObject('import QtQuick 2.14;              \
                                             import QtQuick.Controls 1.2;     \
                                             ComboBox {                       \
                                                 editable: true;              \
-                                                validator: RegExpValidator { \
-                                                                regExp: /(red|blue|green)?/ \
+                                                validator: RegularExpressionValidator { \
+                                                                regularExpression: /(red|blue|green)?/ \
                                             }}', testCase, '')
 
         comboBox.editText = "blu"

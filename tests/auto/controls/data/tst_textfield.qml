@@ -141,7 +141,7 @@ TestCase {
     }
 
     function test_validator() {
-        var textfield = Qt.createQmlObject('import QtQuick 2.2; import QtQuick.Controls 1.2; TextField {validator: RegExpValidator { regExp: /(red|blue|green)?/; }}', testCase, '')
+        var textfield = Qt.createQmlObject('import QtQuick 2.14; import QtQuick.Controls 1.2; TextField {validator: RegularExpressionValidator { regularExpression: /(red|blue|green)?/; }}', testCase, '')
 
         textfield.text = "blu"
         compare(textfield.acceptableInput, false)
