@@ -38,6 +38,9 @@
 ****************************************************************************/
 
 #include "qquicktexthandle.h"
+#include <QPainterPath>
+
+#include <QPainterPath>
 
 #include <QtGui/qpainterpath.h>
 
