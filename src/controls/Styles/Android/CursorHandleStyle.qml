@@ -68,7 +68,7 @@ DrawableLoader {
 
     Connections {
         target: styleData
-        onActivated: idle.restart()
+        function onActivated() { idle.restart() }
         function onPressedChanged() {
             if (!styleData.pressed)
                 idle.restart()
