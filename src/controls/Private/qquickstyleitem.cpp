@@ -1041,8 +1041,7 @@ QSize QQuickStyleItem1::sizeFromContents(int width, int height)
     case MenuItem:
     case ComboBoxItem:
         if (static_cast<QStyleOptionMenuItem *>(m_styleoption)->menuItemType == QStyleOptionMenuItem::Scroller) {
-            size.setHeight(qMax(QApplication::globalStrut().height(),
-                                qApp->style()->pixelMetric(QStyle::PM_MenuScrollerHeight, 0, 0)));
+            size.setHeight(qApp->style()->pixelMetric(QStyle::PM_MenuScrollerHeight, 0, 0));
         } else {
             size = qApp->style()->sizeFromContents(QStyle::CT_MenuItem, m_styleoption, QSize(width,height));
         }

@@ -1,4 +1,4 @@
 dependencies:
   ../qtgraphicaleffects:
-    ref: 0e5719d4cd3b0dddeee8dae06d158f534293bd89
+    ref: d355f47a57248a79ad85adfd83c33a1b1fb63062
     required: false

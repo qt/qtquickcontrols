@@ -111,9 +111,12 @@ protected:
     int roleKey(const QByteArray &role) const;
     QHash<int, QByteArray> roleNames() const;
     bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
+    void updateRegularExpression();
 
 private:
     bool m_complete;
+    FilterSyntax m_filterSyntax;
+    QString m_filterString;
     QByteArray m_sortRole;
     QByteArray m_filterRole;
 };
