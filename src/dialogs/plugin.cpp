@@ -88,7 +88,7 @@ class QtQuick2DialogsPlugin : public QQmlExtensionPlugin
 public:
     QtQuick2DialogsPlugin() : QQmlExtensionPlugin(), m_useResources(true) { }
 
-    virtual void registerTypes(const char *uri) {
+    void registerTypes(const char *uri) override {
         Q_ASSERT(QLatin1String(uri) == QLatin1String("QtQuick.Dialogs"));
         bool hasTopLevelWindows = QGuiApplicationPrivate::platformIntegration()->
             hasCapability(QPlatformIntegration::MultipleWindows);
