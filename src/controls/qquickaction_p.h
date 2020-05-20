@@ -109,7 +109,7 @@ public:
     QVariant iconVariant() const { return QVariant(m_icon); }
     void setIcon(const QIcon &icon) { m_icon = icon; emit iconChanged(); }
 
-    bool event(QEvent *e);
+    bool event(QEvent *e) override;
 
 public Q_SLOTS:
     void trigger(QObject *source = 0);
