@@ -177,8 +177,8 @@ protected:
         if (!registerWidgetImplementation<WrapperType>(
                     widgetsDir, qmlDir, qmlName, uri, hasTopLevelWindows, versionMajor, versionMinor))
 #else
-        Q_UNUSED(widgetsDir)
-        Q_UNUSED(hasTopLevelWindows)
+        Q_UNUSED(widgetsDir);
+        Q_UNUSED(hasTopLevelWindows);
 #endif
         registerQmlImplementation<WrapperType>(qmlDir, qmlName, uri, versionMajor, versionMinor);
     }
@@ -187,7 +187,7 @@ protected:
     bool registerWidgetImplementation(const QDir &widgetsDir, const QDir &qmlDir,
             const char *qmlName, const char *uri, bool hasTopLevelWindows, int versionMajor, int versionMinor)
     {
-        Q_UNUSED(qmlDir)
+        Q_UNUSED(qmlDir);
         bool mobileTouchPlatform = false;
 #if defined(Q_OS_IOS)
         mobileTouchPlatform = true;
@@ -217,7 +217,7 @@ protected:
     template <class WrapperType>
     void registerQmlImplementation(const QDir &qmlDir, const char *qmlName, const char *uri , int versionMajor, int versionMinor)
     {
-        Q_UNUSED(qmlDir)
+        Q_UNUSED(qmlDir);
         qCDebug(lcRegistration) << "Register QML version for" << qmlName << "with uri:" << uri;
 
         QByteArray abstractTypeName = QByteArray("Abstract") + qmlName;

@@ -114,13 +114,13 @@ public:
 
     virtual bool canFetchMore(const QModelIndex &parent) const
     {
-        Q_UNUSED(parent)
+        Q_UNUSED(parent);
 
         return true;
     }
     virtual void fetchMore(const QModelIndex & parent)
     {
-        Q_UNUSED(parent)
+        Q_UNUSED(parent);
 
         addMoreData();
     }
