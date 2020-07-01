@@ -95,7 +95,7 @@ public:
     bool childrenVisible(const QModelIndex &index);
 
     const QModelIndex &mapToModel(const QModelIndex &index) const;
-    Q_INVOKABLE QModelIndex mapRowToModelIndex(int row) const;
+    Q_INVOKABLE QPersistentModelIndex mapRowToModelIndex(int row) const;
 
     Q_INVOKABLE QItemSelection selectionForRowRange(const QModelIndex &fromIndex, const QModelIndex &toIndex) const;
 
