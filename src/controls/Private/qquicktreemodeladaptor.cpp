@@ -73,8 +73,8 @@ void QQuickTreeModelAdaptor1::setModel(QAbstractItemModel *arg)
           SLOT(modelHasBeenDestroyed()) },
         { SIGNAL(modelReset()),
           SLOT(modelHasBeenReset()) },
-        { SIGNAL(dataChanged(const QModelIndex&, const QModelIndex&, const QVector<int>&)),
-          SLOT(modelDataChanged(const QModelIndex&, const QModelIndex&, const QVector<int>&)) },
+        { SIGNAL(dataChanged(const QModelIndex&, const QModelIndex&, const QList<int>&)),
+          SLOT(modelDataChanged(const QModelIndex&, const QModelIndex&, const QList<int>&)) },
 
         { SIGNAL(layoutAboutToBeChanged(const QList<QPersistentModelIndex>&, QAbstractItemModel::LayoutChangeHint)),
           SLOT(modelLayoutAboutToBeChanged(const QList<QPersistentModelIndex>&, QAbstractItemModel::LayoutChangeHint)) },
@@ -459,7 +459,7 @@ void QQuickTreeModelAdaptor1::expandRow(int n)
         return;
     item.expanded = true;
     m_expandedItems.insert(item.index);
-    QVector<int> changedRole(1, ExpandedRole);
+    const QList<int> changedRole = { ExpandedRole };
     emit dataChanged(index(n), index(n), changedRole);
 
     m_itemsToExpand.append(&item);
@@ -496,7 +496,7 @@ void QQuickTreeModelAdaptor1::collapseRow(int n)
     TreeItem &item = m_items[n];
     item.expanded = false;
     m_expandedItems.remove(item.index);
-    QVector<int> changedRole(1, ExpandedRole);
+    const QList<int> changedRole = { ExpandedRole };
     queueDataChanged(index(n), index(n), changedRole);
     int childrenCount = m_model->rowCount(item.index);
     if ((item.index.flags() & Qt::ItemNeverHasChildren) || !m_model->hasChildren(item.index) || childrenCount == 0)
@@ -541,7 +541,7 @@ void QQuickTreeModelAdaptor1::removeVisibleRows(int startIndex, int endIndex, bo
         if (startIndex <= lastIndex) {
             const QModelIndex &topLeft = index(startIndex, 0, QModelIndex());
             const QModelIndex &bottomRight = index(lastIndex, 0, QModelIndex());
-            const QVector<int> changedRole(1, ModelIndexRole);
+            const QList<int> changedRole = { ModelIndexRole };
             queueDataChanged(topLeft, bottomRight, changedRole);
         }
     }
@@ -562,7 +562,7 @@ void QQuickTreeModelAdaptor1::modelHasBeenReset()
     ASSERT_CONSISTENCY();
 }
 
-void QQuickTreeModelAdaptor1::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRigth, const QVector<int> &roles)
+void QQuickTreeModelAdaptor1::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRigth, const QList<int> &roles)
 {
     Q_ASSERT(topLeft.parent() == bottomRigth.parent());
     const QModelIndex &parent = topLeft.parent();
@@ -648,7 +648,7 @@ void QQuickTreeModelAdaptor1::modelRowsInserted(const QModelIndex & parent, int 
     int parentRow = itemIndex(parent);
     if (parentRow >= 0) {
         const QModelIndex& parentIndex = index(parentRow);
-        QVector<int> changedRole(1, HasChildrenRole);
+        const QList<int> changedRole = { HasChildrenRole };
         queueDataChanged(parentIndex, parentIndex, changedRole);
         item = m_items.at(parentRow);
         if (!item.expanded) {
@@ -700,7 +700,7 @@ void QQuickTreeModelAdaptor1::modelRowsRemoved(const QModelIndex & parent, int s
     int parentRow = itemIndex(parent);
     if (parentRow >= 0) {
         const QModelIndex& parentIndex = index(parentRow);
-        QVector<int> changedRole(1, HasChildrenRole);
+        const QList<int> changedRole = { HasChildrenRole };
         queueDataChanged(parentIndex, parentIndex, changedRole);
     }
     disableSignalAggregation();
@@ -722,7 +722,7 @@ void QQuickTreeModelAdaptor1::modelRowsAboutToBeMoved(const QModelIndex & source
         if (isVisible(destinationParent) && m_model->rowCount(destinationParent) == 0) {
             const QModelIndex &topLeft = index(itemIndex(destinationParent), 0, QModelIndex());
             const QModelIndex &bottomRight = topLeft;
-            const QVector<int> changedRole(1, HasChildrenRole);
+            const QList<int> changedRole = { HasChildrenRole };
             queueDataChanged(topLeft, bottomRight, changedRole);
         }
     } else {
@@ -806,13 +806,13 @@ void QQuickTreeModelAdaptor1::modelRowsAboutToBeMoved(const QModelIndex & source
         }
         const QModelIndex &topLeft = index(top, 0, QModelIndex());
         const QModelIndex &bottomRight = index(bottom, 0, QModelIndex());
-        const QVector<int> changedRole(1, ModelIndexRole);
+        const QList<int> changedRole = { ModelIndexRole };
         queueDataChanged(topLeft, bottomRight, changedRole);
 
         if (depthDifference != 0) {
             const QModelIndex &topLeft = index(bufferCopyOffset, 0, QModelIndex());
             const QModelIndex &bottomRight = index(bufferCopyOffset + totalMovedCount - 1, 0, QModelIndex());
-            const QVector<int> changedRole(1, DepthRole);
+            const QList<int> changedRole = { DepthRole };
             queueDataChanged(topLeft, bottomRight, changedRole);
         }
     }
@@ -834,7 +834,7 @@ void QQuickTreeModelAdaptor1::modelRowsMoved(const QModelIndex & sourceParent, i
         collapseRow(parentRow);
         const QModelIndex &topLeft = index(parentRow, 0, QModelIndex());
         const QModelIndex &bottomRight = topLeft;
-        const QVector<int> changedRole { ExpandedRole, HasChildrenRole };
+        const QList<int> changedRole { ExpandedRole, HasChildrenRole };
         queueDataChanged(topLeft, bottomRight, changedRole);
     }
 
@@ -942,7 +942,7 @@ void QQuickTreeModelAdaptor1::disableSignalAggregation() {
 
 void QQuickTreeModelAdaptor1::queueDataChanged(const QModelIndex &topLeft,
                                                const QModelIndex &bottomRight,
-                                               const QVector<int> &roles)
+                                               const QList<int> &roles)
 {
     if (isAggregatingSignals()) {
         m_queuedDataChanged.append(DataChangedParams { topLeft, bottomRight, roles });
@@ -953,7 +953,7 @@ void QQuickTreeModelAdaptor1::queueDataChanged(const QModelIndex &topLeft,
 
 void QQuickTreeModelAdaptor1::emitQueuedSignals()
 {
-    QVector<DataChangedParams> combinedUpdates;
+    QList<DataChangedParams> combinedUpdates;
     /* First, iterate through the queued updates and merge the overlapping ones
      * to reduce the number of updates.
      * We don't merge adjacent updates, because they are typically filed with a

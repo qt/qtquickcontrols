@@ -48,13 +48,13 @@ QT_BEGIN_NAMESPACE
 
 struct QQuickAndroid9PatchDivs1
 {
-    QVector<qreal> coordsForSize(qreal size) const;
+    QList<qreal> coordsForSize(qreal size) const;
 
     void fill(const QVariantList &divs, qreal size);
     void clear();
 
     bool inverted;
-    QVector<qreal> data;
+    QList<qreal> data;
 };
 
 class QQuickAndroid9Patch1 : public QQuickItem

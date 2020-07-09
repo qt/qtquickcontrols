@@ -108,7 +108,7 @@ void tst_QQuickTreeModelAdaptor::expandAndTest(const QModelIndex &idx, QQuickTre
 {
     QSignalSpy rowsAboutToBeInsertedSpy(&tma, SIGNAL(rowsAboutToBeInserted(QModelIndex,int,int)));
     QSignalSpy rowsInsertedSpy(&tma, SIGNAL(rowsInserted(QModelIndex,int,int)));
-    QSignalSpy dataChangedSpy(&tma, SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)));
+    QSignalSpy dataChangedSpy(&tma, SIGNAL(dataChanged(QModelIndex,QModelIndex,QList<int>)));
 
     int oldRowCount = tma.rowCount();
     tma.expand(idx);
@@ -137,7 +137,7 @@ void tst_QQuickTreeModelAdaptor::expandAndTest(const QModelIndex &idx, QQuickTre
         const QVariantList &dataChangedArgs = dataChangedSpy.first();
         QCOMPARE(dataChangedArgs.at(0).toModelIndex(), tmaIdx);
         QCOMPARE(dataChangedArgs.at(1).toModelIndex(), tmaIdx);
-        QCOMPARE(dataChangedArgs.at(2).value<QVector<int> >(), QVector<int>(1, QQuickTreeModelAdaptor1::ExpandedRole));
+        QCOMPARE(dataChangedArgs.at(2).value<QList<int>>(), (QList<int> { QQuickTreeModelAdaptor1::ExpandedRole }));
     } else {
         QCOMPARE(tma.rowCount(), oldRowCount);
         QCOMPARE(rowsAboutToBeInsertedSpy.count(), 0);
@@ -150,7 +150,7 @@ void tst_QQuickTreeModelAdaptor::collapseAndTest(const QModelIndex &idx, QQuickT
 {
     QSignalSpy rowsAboutToBeRemovedSpy(&tma, SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)));
     QSignalSpy rowsRemovedSpy(&tma, SIGNAL(rowsRemoved(QModelIndex,int,int)));
-    QSignalSpy dataChangedSpy(&tma, SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)));
+    QSignalSpy dataChangedSpy(&tma, SIGNAL(dataChanged(QModelIndex,QModelIndex,QList<int>)));
 
     int oldRowCount = tma.rowCount();
     tma.collapse(idx);
@@ -178,7 +178,7 @@ void tst_QQuickTreeModelAdaptor::collapseAndTest(const QModelIndex &idx, QQuickT
         const QVariantList &dataChangedArgs = dataChangedSpy.first();
         QCOMPARE(dataChangedArgs.at(0).toModelIndex(), tmaIdx);
         QCOMPARE(dataChangedArgs.at(1).toModelIndex(), tmaIdx);
-        QCOMPARE(dataChangedArgs.at(2).value<QVector<int> >(), QVector<int>(1, QQuickTreeModelAdaptor1::ExpandedRole));
+        QCOMPARE(dataChangedArgs.at(2).value<QList<int>>(), (QList<int> { QQuickTreeModelAdaptor1::ExpandedRole }));
     } else {
         QCOMPARE(tma.rowCount(), oldRowCount);
         QCOMPARE(rowsAboutToBeRemovedSpy.count(), 0);
@@ -192,7 +192,7 @@ bool tst_QQuickTreeModelAdaptor::rowRoleWasChanged(const QSignalSpy &captured, i
         const int startRow = args.at(0).toModelIndex().row();
         const int endRow = args.at(1).toModelIndex().row();
         if (row >= startRow && row <= endRow) {
-            const QVector<int> roles = args.at(2).value<QVector<int>>();
+            const QList<int> roles = args.at(2).value<QList<int>>();
             if (roles.contains(role))
                 return true;
         }
@@ -360,7 +360,7 @@ void tst_QQuickTreeModelAdaptor::dataChange()
     QQuickTreeModelAdaptor1 tma;
     tma.setModel(&model);
 
-    QSignalSpy dataChangedSpy(&tma, SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)));
+    QSignalSpy dataChangedSpy(&tma, SIGNAL(dataChanged(QModelIndex,QModelIndex,QList<int>)));
     const QModelIndex &idx = model.index(2, 0);
     model.setData(idx, QVariant(), Qt::DisplayRole);
     QCOMPARE(dataChangedSpy.count(), 1);
@@ -368,7 +368,7 @@ void tst_QQuickTreeModelAdaptor::dataChange()
     const QModelIndex &tmaIdx = tma.index(tma.itemIndex(idx));
     QCOMPARE(dataChangedArgs.at(0).toModelIndex(), tmaIdx);
     QCOMPARE(dataChangedArgs.at(1).toModelIndex(), tmaIdx);
-    QCOMPARE(dataChangedArgs.at(2).value<QVector<int> >(), QVector<int>(1, Qt::DisplayRole));
+    QCOMPARE(dataChangedArgs.at(2).value<QList<int>>(), (QList<int> { Qt::DisplayRole }));
     compareModels(tma, model);
 
     {
@@ -389,7 +389,7 @@ void tst_QQuickTreeModelAdaptor::dataChange()
         const QModelIndex &tmaIdx = tma.index(tma.itemIndex(childIdx));
         QCOMPARE(dataChangedArgs.at(0).toModelIndex(), tmaIdx);
         QCOMPARE(dataChangedArgs.at(1).toModelIndex(), tmaIdx);
-        QCOMPARE(dataChangedArgs.at(2).value<QVector<int> >(), QVector<int>(1, Qt::DisplayRole));
+        QCOMPARE(dataChangedArgs.at(2).value<QList<int>>(), (QList<int> { Qt::DisplayRole }));
         compareModels(tma, model);
     }
 }
@@ -403,8 +403,8 @@ void tst_QQuickTreeModelAdaptor::groupedDataChange()
     QQuickTreeModelAdaptor1 tma;
     tma.setModel(&model);
 
-    QSignalSpy dataChangedSpy(&tma, SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)));
-    const QVector<int> roles(1, Qt::DisplayRole);
+    QSignalSpy dataChangedSpy(&tma, SIGNAL(dataChanged(QModelIndex,QModelIndex,QList<int>)));
+    const QList<int> roles = { Qt::DisplayRole };
 
     {
         // No expanded items
@@ -417,7 +417,7 @@ void tst_QQuickTreeModelAdaptor::groupedDataChange()
         const QVariantList &dataChangedArgs = dataChangedSpy.first();
         QCOMPARE(dataChangedArgs.at(0).toModelIndex(), tmaTLIdx);
         QCOMPARE(dataChangedArgs.at(1).toModelIndex(), tmaBRIdx);
-        QCOMPARE(dataChangedArgs.at(2).value<QVector<int> >(), roles);
+        QCOMPARE(dataChangedArgs.at(2).value<QList<int>>(), roles);
     }
 
     // One item expanded in the group range
@@ -439,12 +439,12 @@ void tst_QQuickTreeModelAdaptor::groupedDataChange()
         QVariantList dataChangedArgs = dataChangedSpy.takeFirst();
         QCOMPARE(dataChangedArgs.at(0).toModelIndex(), tmaTLIdx);
         QCOMPARE(dataChangedArgs.at(1).toModelIndex(), tmaExpandedIdx);
-        QCOMPARE(dataChangedArgs.at(2).value<QVector<int> >(), roles);
+        QCOMPARE(dataChangedArgs.at(2).value<QList<int>>(), roles);
 
         dataChangedArgs = dataChangedSpy.takeFirst();
         QCOMPARE(dataChangedArgs.at(0).toModelIndex(), tmaExpandedSiblingIdx);
         QCOMPARE(dataChangedArgs.at(1).toModelIndex(), tmaBRIdx);
-        QCOMPARE(dataChangedArgs.at(2).value<QVector<int> >(), roles);
+        QCOMPARE(dataChangedArgs.at(2).value<QList<int>>(), roles);
 
         // Further expanded descendants should not change grouping
         tma.expand(model.index(0, 0, expandedIdx));
@@ -473,17 +473,17 @@ void tst_QQuickTreeModelAdaptor::groupedDataChange()
         QVariantList dataChangedArgs = dataChangedSpy.takeFirst();
         QCOMPARE(dataChangedArgs.at(0).toModelIndex(), tmaTLIdx);
         QCOMPARE(dataChangedArgs.at(1).toModelIndex(), tmaExpandedIdx);
-        QCOMPARE(dataChangedArgs.at(2).value<QVector<int> >(), roles);
+        QCOMPARE(dataChangedArgs.at(2).value<QList<int>>(), roles);
 
         dataChangedArgs = dataChangedSpy.takeFirst();
         QCOMPARE(dataChangedArgs.at(0).toModelIndex(), tmaExpandedSiblingIdx);
         QCOMPARE(dataChangedArgs.at(1).toModelIndex(), tmaOtherExpandedIdx);
-        QCOMPARE(dataChangedArgs.at(2).value<QVector<int> >(), roles);
+        QCOMPARE(dataChangedArgs.at(2).value<QList<int>>(), roles);
 
         dataChangedArgs = dataChangedSpy.takeFirst();
         QCOMPARE(dataChangedArgs.at(0).toModelIndex(), tmaOtherExpandedSiblingIdx);
         QCOMPARE(dataChangedArgs.at(1).toModelIndex(), tmaBRIdx);
-        QCOMPARE(dataChangedArgs.at(2).value<QVector<int> >(), roles);
+        QCOMPARE(dataChangedArgs.at(2).value<QList<int>>(), roles);
 
         // Further expanded descendants should not change grouping
         if (i == 0) {
@@ -591,13 +591,13 @@ void tst_QQuickTreeModelAdaptor::layoutChange()
     tma.setModel(&model);
 
     // Nothing expanded
-    QSignalSpy dataChangedSpy(&tma, SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)));
+    QSignalSpy dataChangedSpy(&tma, SIGNAL(dataChanged(QModelIndex,QModelIndex,QList<int>)));
     model.changeLayout();
     QCOMPARE(dataChangedSpy.count(), 1);
     QVariantList dataChangedArgs = dataChangedSpy.takeFirst();
     QCOMPARE(dataChangedArgs.at(0).toModelIndex(), tma.index(0));
     QCOMPARE(dataChangedArgs.at(1).toModelIndex(), tma.index(tma.rowCount() - 1));
-    QVERIFY(dataChangedArgs.at(2).value<QVector<int> >().isEmpty());
+    QVERIFY(dataChangedArgs.at(2).value<QList<int>>().isEmpty());
     compareModels(tma, model);
 
     // One item expanded
@@ -609,7 +609,7 @@ void tst_QQuickTreeModelAdaptor::layoutChange()
     dataChangedArgs = dataChangedSpy.takeFirst();
     QCOMPARE(dataChangedArgs.at(0).toModelIndex(), tma.index(0));
     QCOMPARE(dataChangedArgs.at(1).toModelIndex(), tma.index(tma.rowCount() - 1));
-    QVERIFY(dataChangedArgs.at(2).value<QVector<int> >().isEmpty());
+    QVERIFY(dataChangedArgs.at(2).value<QList<int>>().isEmpty());
     compareModels(tma, model);
 
     // One parent layout change, expanded
@@ -621,7 +621,7 @@ void tst_QQuickTreeModelAdaptor::layoutChange()
     dataChangedArgs = dataChangedSpy.takeFirst();
     QCOMPARE(dataChangedArgs.at(0).toModelIndex(), tma.index(tma.itemIndex(model.index(0, 0, idx))));
     QCOMPARE(dataChangedArgs.at(1).toModelIndex(), tma.index(tma.itemIndex(model.index(model.rowCount(idx) - 1, 0, idx))));
-    QVERIFY(dataChangedArgs.at(2).value<QVector<int> >().isEmpty());
+    QVERIFY(dataChangedArgs.at(2).value<QList<int>>().isEmpty());
     compareModels(tma, model);
 
     // One parent layout change, collapsed
@@ -647,7 +647,7 @@ void tst_QQuickTreeModelAdaptor::layoutChange()
     dataChangedArgs = dataChangedSpy.takeFirst();
     QCOMPARE(dataChangedArgs.at(0).toModelIndex(), tma.index(tma.itemIndex(model.index(0, 0, idx2))));
     QCOMPARE(dataChangedArgs.at(1).toModelIndex(), tma.index(tma.itemIndex(model.index(model.rowCount(idx2) - 1, 0, idx2))));
-    QVERIFY(dataChangedArgs.at(2).value<QVector<int> >().isEmpty());
+    QVERIFY(dataChangedArgs.at(2).value<QList<int>>().isEmpty());
     compareModels(tma, model);
 
     // Two-parent layout change, both expanded
@@ -659,11 +659,11 @@ void tst_QQuickTreeModelAdaptor::layoutChange()
     dataChangedArgs = dataChangedSpy.takeFirst();
     QCOMPARE(dataChangedArgs.at(0).toModelIndex(), tma.index(tma.itemIndex(model.index(0, 0, idx))));
     QCOMPARE(dataChangedArgs.at(1).toModelIndex(), tma.index(tma.itemIndex(model.index(model.rowCount(idx) - 1, 0, idx))));
-    QVERIFY(dataChangedArgs.at(2).value<QVector<int> >().isEmpty());
+    QVERIFY(dataChangedArgs.at(2).value<QList<int>>().isEmpty());
     dataChangedArgs = dataChangedSpy.takeFirst();
     QCOMPARE(dataChangedArgs.at(0).toModelIndex(), tma.index(tma.itemIndex(model.index(0, 0, idx2))));
     QCOMPARE(dataChangedArgs.at(1).toModelIndex(), tma.index(tma.itemIndex(model.index(model.rowCount(idx2) - 1, 0, idx2))));
-    QVERIFY(dataChangedArgs.at(2).value<QVector<int> >().isEmpty());
+    QVERIFY(dataChangedArgs.at(2).value<QList<int>>().isEmpty());
     compareModels(tma, model);
 }
 
@@ -856,7 +856,7 @@ void tst_QQuickTreeModelAdaptor::removeChildrenRelayoutParent()
     QCOMPARE(rowsAboutToBeRemovedArgs.at(2).toInt(), tmaItemIdx + expectedRemovedCount - 1);
 
     // Relayout the first node
-    QSignalSpy dataChanged(&tma, SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)));
+    QSignalSpy dataChanged(&tma, SIGNAL(dataChanged(QModelIndex,QModelIndex,QList<int>)));
     QList<QPersistentModelIndex> parents;
     parents << parent;
     model.changeLayout(parents);
@@ -1174,35 +1174,35 @@ void tst_QQuickTreeModelAdaptor::moveRows()
 void tst_QQuickTreeModelAdaptor::moveRowsDataChanged_data()
 {
     /* This is the list of rows in the *list* model which are expanded. */
-    QTest::addColumn<QVector<int>>("expandedRows");
+    QTest::addColumn<QList<int>>("expandedRows");
 
     /* Here's the row to be moved (always just one) and the destination
-     * position. We use a QVector<int> to identify a single row of the tree
+     * position. We use a QList<int> to identify a single row of the tree
      * model: the array value at index n represents the row number at the depth
      * n.
      */
-    QTest::addColumn<QVector<int>>("sourcePath");
-    QTest::addColumn<QVector<int>>("destPath");
+    QTest::addColumn<QList<int>>("sourcePath");
+    QTest::addColumn<QList<int>>("destPath");
 
     /* This is the list of expected changed rows in the *list* model. */
     QTest::addColumn<QSet<int>>("expectedRowChanges");
 
     QTest::newRow("From and to top-level parent")
-            << QVector<int> {}
-            << QVector<int> { 4 }
-            << QVector<int> { 3 }
+            << QList<int> {}
+            << QList<int> { 4 }
+            << QList<int> { 3 }
             << QSet<int> { 3, 4 };
 
     QTest::newRow("From and to top-level parent, expanded")
-            << QVector<int> { 3, 5 }
-            << QVector<int> { 4 }
-            << QVector<int> { 3 }
+            << QList<int> { 3, 5 }
+            << QList<int> { 4 }
+            << QList<int> { 3 }
             << QSet<int> { 3, 4, 5, 6, 7, 8, 9 };
 
     QTest::newRow("From and to top-level parent, expanded, down")
-            << QVector<int> { 3, 5 }
-            << QVector<int> { 3 }
-            << QVector<int> { 5 }
+            << QList<int> { 3, 5 }
+            << QList<int> { 3 }
+            << QList<int> { 5 }
             << QSet<int> { 3, 4, 5, 6, 7, 8, 9 };
 
     /* Expected visible result:
@@ -1217,23 +1217,23 @@ void tst_QQuickTreeModelAdaptor::moveRowsDataChanged_data()
      * M      M
      */
     QTest::newRow("Visible move, different parents")
-            << QVector<int> { 3, 1 }
-            << QVector<int> { 3, 0 }
-            << QVector<int> { 1, 1 }
+            << QList<int> { 3, 1 }
+            << QList<int> { 3, 0 }
+            << QList<int> { 1, 1 }
             << QSet<int> { 3, 4, 5, 6, 7 };
 
     QTest::newRow("Move to non expanded parent")
-            << QVector<int> {}
-            << QVector<int> { 3 }
-            << QVector<int> { 1, 0 }
+            << QList<int> {}
+            << QList<int> { 3 }
+            << QList<int> { 1, 0 }
             << QSet<int> { 3 };
 }
 
 void tst_QQuickTreeModelAdaptor::moveRowsDataChanged()
 {
-    QFETCH(QVector<int>, expandedRows);
-    QFETCH(QVector<int>, sourcePath);
-    QFETCH(QVector<int>, destPath);
+    QFETCH(QList<int>, expandedRows);
+    QFETCH(QList<int>, sourcePath);
+    QFETCH(QList<int>, destPath);
     QFETCH(QSet<int>, expectedRowChanges);
 
     TestModel model(0, 1);
@@ -1285,7 +1285,7 @@ void tst_QQuickTreeModelAdaptor::moveRowsDataChanged()
         destIndex = model.index(row, 0, destIndex);
     }
 
-    QSignalSpy dataChangedSpy(&tma, SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)));
+    QSignalSpy dataChangedSpy(&tma, SIGNAL(dataChanged(QModelIndex,QModelIndex,QList<int>)));
     QVERIFY(dataChangedSpy.isValid());
 
     QVERIFY(model.moveRows(sourceIndex, sourceRow, 1, destIndex, destRow));
@@ -1293,7 +1293,7 @@ void tst_QQuickTreeModelAdaptor::moveRowsDataChanged()
     QSet<int> emittedChanges;
     for (int i = 0; i < dataChangedSpy.count(); i++) {
         QVariantList args = dataChangedSpy.at(i);
-        QVector<int> roles = args.at(2).value<QVector<int>>();
+        const QList<int> roles = args.at(2).value<QList<int>>();
         if (!roles.isEmpty() &&
             !roles.contains(QQuickTreeModelAdaptor1::ModelIndexRole))
             continue;
@@ -1321,7 +1321,7 @@ void tst_QQuickTreeModelAdaptor::reparentOnSameRow()
     tma.expand(destParent);
     QVERIFY(tma.isExpanded(destParent));
 
-    QSignalSpy dataChangedSpy(&tma, SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)));
+    QSignalSpy dataChangedSpy(&tma, SIGNAL(dataChanged(QModelIndex,QModelIndex,QList<int>)));
     QSignalSpy rowsMovedSpy(&tma, SIGNAL(rowsMoved(QModelIndex,int,int,QModelIndex,int)));
     QVERIFY(rowsMovedSpy.isValid());
     QVERIFY(dataChangedSpy.isValid());
@@ -1339,9 +1339,9 @@ void tst_QQuickTreeModelAdaptor::reparentOnSameRow()
     const QList<QList<QVariant> > &changes = dataChangedSpy;
     for (const QList<QVariant> &change : changes) {
         if (change.at(0) == movedIndex) {
-            if (change.at(2).value<QVector<int> >().contains(QQuickTreeModelAdaptor1::DepthRole))
+            if (change.at(2).value<QList<int>>().contains(QQuickTreeModelAdaptor1::DepthRole))
                 depthChanged = true;
-            if (change.at(2).value<QVector<int> >().contains(QQuickTreeModelAdaptor1::ModelIndexRole))
+            if (change.at(2).value<QList<int>>().contains(QQuickTreeModelAdaptor1::ModelIndexRole))
                 modelIndexChanged = true;
         }
     }
@@ -1381,7 +1381,7 @@ void tst_QQuickTreeModelAdaptor::moveAllChildren()
     tma.expandRow(1);
 
 
-    QSignalSpy dataChangedSpy(&tma, SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)));
+    QSignalSpy dataChangedSpy(&tma, SIGNAL(dataChanged(QModelIndex,QModelIndex,QList<int>)));
     QVERIFY(dataChangedSpy.isValid());
 
     QVERIFY(model.moveRows(bIndex, 0, 1, aIndex, 0));
@@ -1594,7 +1594,7 @@ void tst_QQuickTreeModelAdaptor::hasChildrenEmit()
     {
         QVERIFY(!tma.isExpanded(root));
         QVERIFY(!tma.isExpanded(child));
-        QSignalSpy dataChangedSpy(&tma, SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)));
+        QSignalSpy dataChangedSpy(&tma, SIGNAL(dataChanged(QModelIndex,QModelIndex,QList<int>)));
         QCOMPARE(dataChangedSpy.count(), 0);
         QCOMPARE(model.rowCount(child), 1);
         model.insertRow(1, child);
@@ -1605,7 +1605,7 @@ void tst_QQuickTreeModelAdaptor::hasChildrenEmit()
     // Root not expanded, insert in root, expect datachanged
     {
         QVERIFY(!tma.isExpanded(root));
-        QSignalSpy dataChangedSpy(&tma, SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)));
+        QSignalSpy dataChangedSpy(&tma, SIGNAL(dataChanged(QModelIndex,QModelIndex,QList<int>)));
         QCOMPARE(dataChangedSpy.count(), 0);
         QCOMPARE(model.rowCount(root), 1);
         model.insertRow(1, root);
@@ -1617,7 +1617,7 @@ void tst_QQuickTreeModelAdaptor::hasChildrenEmit()
     {
         QVERIFY(!tma.isExpanded(root));
         QVERIFY(!tma.isExpanded(child));
-        QSignalSpy dataChangedSpy(&tma, SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)));
+        QSignalSpy dataChangedSpy(&tma, SIGNAL(dataChanged(QModelIndex,QModelIndex,QList<int>)));
         QCOMPARE(dataChangedSpy.count(), 0);
         QCOMPARE(model.rowCount(child), 2);
         model.removeRow(1, child);
@@ -1628,7 +1628,7 @@ void tst_QQuickTreeModelAdaptor::hasChildrenEmit()
     // Root not expanded, remove in root, expected datachanged on hasChildren
     {
         QVERIFY(!tma.isExpanded(root));
-        QSignalSpy dataChangedSpy(&tma, SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)));
+        QSignalSpy dataChangedSpy(&tma, SIGNAL(dataChanged(QModelIndex,QModelIndex,QList<int>)));
         QCOMPARE(dataChangedSpy.count(), 0);
         QCOMPARE(model.rowCount(root), 2);
         model.removeRow(1, root);

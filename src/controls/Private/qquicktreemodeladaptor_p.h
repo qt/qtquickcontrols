@@ -131,7 +131,7 @@ public slots:
 private slots:
     void modelHasBeenDestroyed();
     void modelHasBeenReset();
-    void modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRigth, const QVector<int> &roles);
+    void modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRigth, const QList<int> &roles);
     void modelLayoutAboutToBeChanged(const QList<QPersistentModelIndex> &parents, QAbstractItemModel::LayoutChangeHint hint);
     void modelLayoutChanged(const QList<QPersistentModelIndex> &parents, QAbstractItemModel::LayoutChangeHint hint);
     void modelRowsAboutToBeInserted(const QModelIndex & parent, int start, int end);
@@ -160,7 +160,7 @@ private:
     struct DataChangedParams {
         QModelIndex topLeft;
         QModelIndex bottomRight;
-        QVector<int> roles;
+        QList<int> roles;
     };
 
     struct SignalFreezer {
@@ -178,7 +178,7 @@ private:
     bool isAggregatingSignals() const { return m_signalAggregatorStack > 0; }
     void queueDataChanged(const QModelIndex &topLeft,
                           const QModelIndex &bottomRight,
-                          const QVector<int> &roles);
+                          const QList<int> &roles);
     void emitQueuedSignals();
 
     QPointer<QAbstractItemModel> m_model;
@@ -189,7 +189,7 @@ private:
     mutable int m_lastItemIndex;
     bool m_visibleRowsMoved;
     int m_signalAggregatorStack;
-    QVector<DataChangedParams> m_queuedDataChanged;
+    QList<DataChangedParams> m_queuedDataChanged;
 };
 
 QT_END_NAMESPACE

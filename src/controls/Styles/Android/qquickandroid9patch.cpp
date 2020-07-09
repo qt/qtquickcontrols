@@ -85,8 +85,8 @@ void QQuickAndroid9PatchNode1::initialize(QSGTexture *texture, const QRectF &bou
         m_geometry.allocate(xlen * ylen, verticesPerQuad * quads);
 
         QSGGeometry::TexturedPoint2D *vertices = m_geometry.vertexDataAsTexturedPoint2D();
-        QVector<qreal> xCoords = xDivs.coordsForSize(bounds.width());
-        QVector<qreal> yCoords = yDivs.coordsForSize(bounds.height());
+        QList<qreal> xCoords = xDivs.coordsForSize(bounds.width());
+        QList<qreal> yCoords = yDivs.coordsForSize(bounds.height());
         for (int y = 0; y < ylen; ++y) {
             for (int x = 0; x < xlen; ++x, ++vertices)
                 vertices->set(xCoords[x], yCoords[y], xDivs.data[x] / sourceSize.width(),
@@ -115,7 +115,7 @@ void QQuickAndroid9PatchNode1::initialize(QSGTexture *texture, const QRectF &bou
     markDirty(QSGNode::DirtyGeometry | QSGNode::DirtyMaterial);
 }
 
-QVector<qreal> QQuickAndroid9PatchDivs1::coordsForSize(qreal size) const
+QList<qreal> QQuickAndroid9PatchDivs1::coordsForSize(qreal size) const
 {
     // n = number of stretchable sections
     // We have to compensate when adding 0 and/or
@@ -124,7 +124,7 @@ QVector<qreal> QQuickAndroid9PatchDivs1::coordsForSize(qreal size) const
     const int n = (inverted ? l - 1 : l) >> 1;
     const qreal stretchAmount = (size - data.last()) / n;
 
-    QVector<qreal> coords;
+    QList<qreal> coords;
     coords.reserve(l);
     coords.append(0);
 

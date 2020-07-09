@@ -90,7 +90,7 @@ protected:
     QDate mVisibleDate;
     QDate mFirstVisibleDate;
     QDate mLastVisibleDate;
-    QVector<QDate> mVisibleDates;
+    QList<QDate> mVisibleDates;
     QLocale mLocale;
 };
 
