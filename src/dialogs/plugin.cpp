@@ -110,7 +110,7 @@ public:
 #endif
 #endif
 
-        QQuickAbstractDialog::m_decorationComponentUrl = fileLocation("DefaultWindowDecoration");
+        QQuickAbstractDialog::m_decorationComponentUrl = fileLocation("qml/DefaultWindowDecoration");
         // Prefer the QPA dialog helpers if the platform supports them.
         // Else if there is a QWidget-based implementation, check whether it's
         // possible to instantiate it from Qt Quick.
