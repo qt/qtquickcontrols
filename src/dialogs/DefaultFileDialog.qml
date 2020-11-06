@@ -115,7 +115,7 @@ AbstractFileDialog {
 
     function dirDown(path) {
         view.selection.clear()
-        root.folder = "file://" + path
+        root.folder = root.pathToUrl(path)
     }
     function dirUp() {
         view.selection.clear()
