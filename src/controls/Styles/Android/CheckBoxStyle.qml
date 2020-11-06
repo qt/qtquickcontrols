@@ -66,6 +66,7 @@ Style {
             window_focused: control.Window.active
             styleDef: panel.styleDef.CompoundButton_button
             anchors.verticalCenter: parent.verticalCenter
+            anchors.left: parent.left
         }
 
         LabelStyle {
