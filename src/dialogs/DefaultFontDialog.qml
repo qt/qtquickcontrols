@@ -52,13 +52,31 @@ AbstractFontDialog {
 
     property alias font: content.externalFont
     property alias currentFont: content.font
+    property bool isAndroid: Qt.platform.os === "android"
+
+    Screen.onPrimaryOrientationChanged: {
+        if (isAndroid)
+            setWidthsToMatchAndroid()
+    }
+
+    Component.onCompleted: {
+        if (isAndroid)
+            setWidthsToMatchAndroid()
+    }
+
+    function setWidthsToMatchAndroid() {
+        fontListView.Layout.maximumWidth = content.width - weightListView.width - pointSizeSpinBox.width - content.outerSpacing
+        wsComboBox.Layout.maximumWidth = (content.width / 2) - content.outerSpacing
+    }
 
     Rectangle {
         id: content
         SystemPalette { id: palette }
 
-        implicitWidth: Math.min(root.__maximumDimension, Math.max(Screen.pixelDensity * 100, mainLayout.implicitWidth + outerSpacing * 2))
-        implicitHeight: Math.min(root.__maximumDimension, Math.max(Screen.pixelDensity * 60, mainLayout.implicitHeight + outerSpacing * 2))
+        implicitWidth: root.isAndroid ? Math.min(Screen.width, Screen.height) * (9 / 10) : Math.min(root.__maximumDimension, Screen.pixelDensity * 100)
+        implicitHeight: (Screen.primaryOrientation === Qt.PortraitOrientation || Screen.primaryOrientation === Qt.InvertedPortraitOrientation)
+                        ? Math.max(root.__maximumDimension, Screen.pixelDensity * 60)
+                        : Math.min(root.__maximumDimension, Screen.pixelDensity * 60)
         property real spacing: 6
         property real outerSpacing: 12
         color: palette.window
@@ -117,9 +135,9 @@ AbstractFontDialog {
                 columnSpacing: content.spacing; rowSpacing: content.spacing
                 columns: 3
 
-                Label { id: fontNameLabel; Layout.fillWidth: true; text: qsTr("Font"); font.bold: true }
-                Label { id: weightLabel; text: qsTr("Weight"); font.bold: true }
-                Label { id: sizeLabel; text: qsTr("Size"); font.bold: true }
+                Label { id: fontNameLabel; horizontalAlignment: Text.AlignLeft; Layout.fillWidth: true; text: qsTr("Font"); font.bold: true }
+                Label { id: weightLabel; horizontalAlignment: Text.AlignLeft; text: qsTr("Weight"); font.bold: true }
+                Label { id: sizeLabel; horizontalAlignment: Text.AlignLeft; text: qsTr("Size"); font.bold: true }
                 TableView {
                     id: fontListView
                     focus: true
@@ -133,6 +151,13 @@ AbstractFontDialog {
                         fontModel.findPointSizesIndex()
                     }
                     TableViewColumn{ id: fontColumn; role: "family"; title: qsTr("Font Family") }
+                    itemDelegate: Text {
+                        width: parent.width
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignLeft
+                        elide: styleData.elideMode
+                        text: styleData.value
+                    }
                     model: FontListModel {
                         id: fontModel
                         scalableFonts: root.scalableFonts
@@ -192,7 +217,7 @@ AbstractFontDialog {
                 }
                 TableView {
                     id: weightListView
-                    implicitWidth: (Component.status == Component.Ready) ? (weightColumn.width + content.outerSpacing) : (100)
+                    implicitWidth: (Component.status == Component.Ready) ? (weightColumn.width + content.outerSpacing) : (root.isAndroid ? 180 : 100)
                     Layout.fillHeight: true
                     Component.onCompleted: resizeColumnsToContents();
                     headerVisible: false
@@ -200,6 +225,13 @@ AbstractFontDialog {
                         weightModel.findIndex()
                     }
                     TableViewColumn { id: weightColumn; role: "name"; title: qsTr("Weight") }
+                    itemDelegate: Text {
+                        width: parent.width
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignLeft
+                        elide: styleData.elideMode
+                        text: styleData.value
+                    }
                     model: ListModel {
                         id: weightModel
                         ListElement { name: qsTr("Thin"); weight: Font.Thin }
@@ -239,7 +271,7 @@ AbstractFontDialog {
                 ColumnLayout {
                     SpinBox {
                         id: pointSizeSpinBox;
-                        implicitWidth: (Component.status == Component.Ready) ? (psColumn.width + content.outerSpacing) : (80)
+                        implicitWidth: (Component.status == Component.Ready) ? (psColumn.width + content.outerSpacing) : (root.isAndroid ? 130 : 80)
                         value: content.font.pointSize
                         decimals: 0
                         minimumValue: 1
@@ -271,9 +303,16 @@ AbstractFontDialog {
                         id: pointSizesListView
                         Layout.fillHeight: true
                         headerVisible: false
-                        implicitWidth: (Component.status == Component.Ready) ? (psColumn.width + content.outerSpacing) : (80)
+                        implicitWidth: (Component.status == Component.Ready) ? (psColumn.width + content.outerSpacing) : (root.isAndroid ? 130 : 80)
                         Component.onCompleted: resizeColumnsToContents();
                         TableViewColumn{ id: psColumn; role: ""; title: qsTr("Size") }
+                        itemDelegate: Text {
+                            width: parent.width
+                            verticalAlignment: Text.AlignVCenter
+                            horizontalAlignment: Text.AlignLeft
+                            elide: styleData.elideMode
+                            text: styleData.value
+                        }
                         model: content.pointSizes
                         property bool guard: false
                         function select(row) {
@@ -300,7 +339,7 @@ AbstractFontDialog {
                 ColumnLayout {
                     spacing: content.spacing
                     Layout.rowSpan: 3
-                    Label { id: optionsLabel; text: qsTr("Style"); font.bold: true }
+                    Label { text: qsTr("Style"); font.bold: true }
                     CheckBox {
                         id: italicCheckBox
                         text: qsTr("Italic")
@@ -326,7 +365,7 @@ AbstractFontDialog {
                         onClicked: { content.font.strikeout = strikeoutCheckBox.checked }
                     }
                     Item { Layout.fillHeight: true; } //spacer
-                    Label { id: writingSystemLabel; text: qsTr("Writing System"); font.bold: true }
+                    Label { text: qsTr("Writing System"); font.bold: true }
                 }
 
                 ColumnLayout {
