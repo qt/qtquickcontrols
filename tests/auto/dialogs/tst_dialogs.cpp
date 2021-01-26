@@ -63,6 +63,9 @@ private slots:
     void fileDialogNameFilters();
     void fileDialogDefaultSuffix();
 
+    // ColorDialog
+    void colorDialogCreated();
+
 private:
 };
 
@@ -384,6 +387,18 @@ void tst_dialogs::dialogWithDynamicTitle()
     QTRY_COMPARE(window->title(), QLatin1String("Title"));
     dlg->setProperty("newTitle", true);
     QTRY_COMPARE(window->title(), QLatin1String("New Title"));
+}
+
+void tst_dialogs::colorDialogCreated()
+{
+    // Test to ensure it is not crashing when color is assigned
+    // on startup
+    QQmlEngine engine;
+    QQmlComponent component(&engine);
+    component.loadUrl(testFileUrl("ColorDialogCreated.qml"));
+    QScopedPointer<QObject> cleanup(component.create());
+    QObject *colorDlg = cleanup->findChild<QObject *>("colorDialog");
+    QVERIFY(colorDlg);
 }
 
 QTEST_MAIN(tst_dialogs)

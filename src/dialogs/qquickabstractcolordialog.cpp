@@ -100,8 +100,10 @@ void QQuickAbstractColorDialog::setTitle(const QString &t)
 
 void QQuickAbstractColorDialog::setColor(QColor arg)
 {
-    if (m_dlgHelper)
+    if (m_dlgHelper) {
+        m_dlgHelper->setOptions(m_options);
         m_dlgHelper->setCurrentColor(arg);
+    }
     // m_options->setCustomColor or setStandardColor don't make sense here
     if (m_color != arg) {
         m_color = arg;
