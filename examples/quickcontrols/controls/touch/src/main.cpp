@@ -53,6 +53,7 @@
 
 int main(int argc, char *argv[])
 {
+    qputenv("QT_ANDROID_NO_EXIT_CALL", "1");
     QtQuickControlsApplication app(argc, argv);
     QQmlApplicationEngine engine(QUrl("qrc:/main.qml"));
     if (engine.rootObjects().isEmpty())
