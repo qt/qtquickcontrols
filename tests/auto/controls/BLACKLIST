@@ -4,3 +4,4 @@ macos
 [Tests_StackLayout::test_addAndRemoveItems]
 ci ubuntu-20.04 # QTBUG-106520
 ci macos # QTBUG-106521
+windows # QTBUG-106521
