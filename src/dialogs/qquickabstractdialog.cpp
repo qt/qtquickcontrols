@@ -267,6 +267,8 @@ void QQuickAbstractDialog::reject()
 
 void QQuickAbstractDialog::visibleChanged(bool v)
 {
+    if (m_visible && !v) // closed by user
+        emit rejected(); // treat as rejected
     m_visible = v;
     qCDebug(lcWindow) << "visible" << v;
     emit visibilityChanged();
